@@ -12,7 +12,8 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        terraform = pkgs.terraform_0_15;
+        terraform = pkgs.opentofu;
+        terraformBin = "${terraform}/bin/tofu";
         terraformConfiguration = terranix.lib.terranixConfiguration {
           inherit system;
           modules = [ ./config.nix ];
@@ -23,7 +24,7 @@
         # nix develop
         devShell = pkgs.mkShell {
           buildInputs = [
-            pkgs.terraform_0_15
+            terraform
             terranix.defaultPackage.${system}
           ];
         };
@@ -33,8 +34,8 @@
           program = toString (pkgs.writers.writeBash "apply" ''
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
             cp ${terraformConfiguration} config.tf.json \
-              && ${terraform}/bin/terraform init \
-              && ${terraform}/bin/terraform apply
+              && ${terraformBin} init \
+              && ${terraformBin} apply
           '');
         };
         # nix run ".#destroy"
@@ -43,8 +44,8 @@
           program = toString (pkgs.writers.writeBash "destroy" ''
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
             cp ${terraformConfiguration} config.tf.json \
-              && ${terraform}/bin/terraform init \
-              && ${terraform}/bin/terraform destroy
+              && ${terraformBin} init \
+              && ${terraformBin} destroy
           '');
         };
         # nix run
