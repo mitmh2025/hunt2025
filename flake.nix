@@ -12,7 +12,9 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        terraform = pkgs.opentofu;
+        terraform = pkgs.opentofu.withPlugins (p: with p; [
+          local
+        ]);
         terraformBin = "${terraform}/bin/tofu";
         terraformConfiguration = terranix.lib.terranixConfiguration {
           inherit system;
