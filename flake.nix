@@ -52,5 +52,12 @@
         };
         # nix run
         defaultApp = self.apps.${system}.apply;
-      });
+      }) // {
+        nixosConfigurations.server = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./server.nix
+          ];
+        };
+      };
 }
