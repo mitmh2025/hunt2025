@@ -1,4 +1,5 @@
-import express, { Request, Response, RequestHandler } from 'express';
+import { WebSocketExpress, Router } from 'websocket-express';
+import { Request, Response, RequestHandler } from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
@@ -8,8 +9,8 @@ import { ROUND_PAGE_MAP } from './components/rounds';
 import Layout from './components/Layout';
 import LoginPage from './components/LoginPage';
 
-const app = express();
-const router = express.Router();
+const app = new WebSocketExpress();
+const router = new Router();
 
 const SHOW_SOLUTIONS = true;
 const LOG_REQUESTS = true;
