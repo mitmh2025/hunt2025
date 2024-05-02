@@ -11,7 +11,10 @@
   outputs = { self, nixpkgs, flake-utils, terranix }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ self.overlays.default ];
+        };
         terraform = pkgs.opentofu.withPlugins (p: with p; [
           local
         ]);
@@ -20,8 +23,8 @@
           inherit system;
           modules = [ ./config.nix ];
         };
-      in
-      {
+      in {
+        legacyPackages = pkgs;
         defaultPackage = terraformConfiguration;
         # nix develop
         devShell = pkgs.mkShell {
@@ -59,5 +62,6 @@
             ./server.nix
           ];
         };
+        overlays.default = import ./pkgs/all-packages.nix;
       };
 }
