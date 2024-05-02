@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "esNext",
+    "lib": ["esnext", "dom"],
+    "jsx": "preserve",
+    "noEmit": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
+
+    /* Modules Resolution Options */
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "esModuleInterop": true,
+    "preserveSymlinks": true
+  }
+}
