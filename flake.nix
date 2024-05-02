@@ -59,6 +59,11 @@
         nixosConfigurations.server = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            {
+              nixpkgs.overlays = [
+                self.overlays.default
+              ];
+            }
             ./server.nix
           ];
         };
