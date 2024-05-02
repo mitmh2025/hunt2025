@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 {
+  imports = [
+    ./services/thingsboard.nix
+  ];
   config = {
     system.stateVersion = "24.05";
 
