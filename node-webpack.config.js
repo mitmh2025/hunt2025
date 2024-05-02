@@ -4,12 +4,13 @@ const nodeExternals = require('webpack-node-externals');
 module.exports = {
   entry: {
     server: './src/serverMain.tsx',
+    dump: './puzzledata/dump-json.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     // If we hook assets up to a CDN:
     // publicPath: 'https://cdn.example.com/assets/[fullhash]/',
-    filename: 'server-bundle.js',
+    filename: '[name]-bundle.js',
   },
   module: {
     rules: [
