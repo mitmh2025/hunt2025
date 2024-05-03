@@ -12,3 +12,5 @@ export function newClient(baseUrl: string, token: string) {
     // Uses `tsRestFetchApi` by default
   });
 }
+
+export type Client = ReturnType<typeof newClient>;

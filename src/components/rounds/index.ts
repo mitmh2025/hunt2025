@@ -15,7 +15,7 @@ import StakeoutRoundPage from "./StakeoutRoundPage";
 // TODO: figure out the props we want to pass to the round pages
 export const ROUND_PAGE_MAP: Record<
   string,
-  FunctionComponent<{ session: object }>
+  FunctionComponent<{}>
 > = {
   sd: ShadowDiamondRoundPage,
   so: StakeoutRoundPage,

@@ -1,14 +1,12 @@
 import express, {
   Request,
   Response,
-  NextFunction,
   RequestHandler,
-  request,
 } from "express";
 import React from "react";
 import { Router } from "websocket-express";
 import { renderToString } from "react-dom/server";
-import { newClient } from "./api/client";
+import { Client, newClient } from "./api/client";
 import cookieParser from "cookie-parser";
 
 import type { Round, PuzzleSlot } from "../puzzledata/types";
@@ -18,13 +16,6 @@ import Layout from "./components/Layout";
 import LoginPage from "./components/LoginPage";
 
 const SHOW_SOLUTIONS = true;
-const LOG_REQUESTS = true;
-
-function requestLogger(req: Request, _res: Response, next: NextFunction) {
-  // Middleware that just logs requests on the way in for development
-  console.log(`${req.method} ${req.path} ${req.headers["cookie"]}`);
-  next();
-}
 
 function hackLoginGetHandler(_req: Request, res: Response) {
   const doctype = "<!DOCTYPE html>";
@@ -41,7 +32,7 @@ interface LoginQueryTypes {
   next: string;
 }
 interface RequestWithAPI extends Request {
-  api: ReturnType<typeof newClient>;
+  api: Client;
 }
 const loginPostHandler: RequestHandler<
   unknown,
@@ -94,8 +85,8 @@ const renderRound = (req: Request, res: Response, roundKey: string) => {
   const doctype = "<!DOCTYPE html>";
   // TODO: pass props about current unlock state to Component
   const doc = (
-    <Layout session={req.session}>
-      <Component session={req.session} />
+    <Layout>
+      <Component />
     </Layout>
   );
   const html = doctype + renderToString(doc) + "\n";
@@ -206,29 +197,43 @@ function solutionHandler(req: RequestWithAPI, res: Response) {
   res.send(html);
 }
 
-export function getUiRouter({ apiUrl }) {
+export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   const router = new Router();
-  if (LOG_REQUESTS) {
-    router.use(requestLogger);
-  }
   router.use(cookieParser());
   router.use(express.urlencoded({ extended: true }));
   router.use(express.json());
-  router.use((req, res, next) => {
+
+  const unauthRouter = express.Router();
+  unauthRouter.use((req, res, next) => {
     req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
     return next();
   });
 
-  router.get("/login", hackLoginGetHandler);
-  router.post("/login", loginPostHandler);
-  router.get("/logout", logoutHandler);
+  const authRouter = express.Router();
+  authRouter.use(async (req, res, next) => {
+    req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
+    const teamStateResp = await req.api.public.getMyTeamState();
+    if (teamStateResp.status != 200) {
+      res.redirect(`login?next=${encodeURIComponent(req.path)}`);
+      return;
+    }
+    return next();
+  });
 
-  router.get("/", (req, res) => {
+  unauthRouter.get("/login", hackLoginGetHandler);
+  unauthRouter.post("/login", loginPostHandler);
+  unauthRouter.get("/logout", logoutHandler);
+
+  authRouter.get("/", (req, res) => {
     // Root page should be shadow diamond round page
     return renderRound(req, res, "sd");
   });
-  router.get("/rounds/:roundSlug", roundHandler);
-  router.get("/puzzles/:puzzleSlug", puzzleHandler);
-  router.get("/puzzles/:puzzleSlug/solution", solutionHandler);
+  authRouter.get("/rounds/:roundSlug", roundHandler);
+  authRouter.get("/puzzles/:puzzleSlug", puzzleHandler);
+  authRouter.get("/puzzles/:puzzleSlug/solution", solutionHandler);
+
+  router.use(unauthRouter);
+  router.use(authRouter);
+
   return router;
 }

@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 
 const puzzleState: Record<
   string,
-  ServerInferResponseBody<typeof contract.getPuzzleState, 200>
+  ServerInferResponseBody<typeof contract.public.getPuzzleState, 200>
 > = {
   "burger-king": {
     round: "first-round",
@@ -25,6 +25,8 @@ const puzzleState: Record<
   },
 };
 
+const JWT_SECRET = "secret"; // FIXME
+
 function newPassport() {
   const passport = new Passport();
   passport.use(
@@ -34,12 +36,12 @@ function newPassport() {
           ExtractJwt.fromUrlQueryParameter("mitmh2025_auth"),
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: "secret", // FIXME
+        secretOrKey: JWT_SECRET,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
       function (jwt_payload, done) {
-        return done(null, jwt_payload.sub);
+        return done(null, jwt_payload.user);
       },
     ),
   );
@@ -56,6 +58,8 @@ export function getRouter() {
 
   const s = initServer();
 
+  const authMiddleware = passport.authenticate('jwt', { session: false });
+
   const router = s.router(contract, {
     auth: {
       login: async ({ body: { username, password } }) => {
@@ -65,7 +69,7 @@ export function getRouter() {
             {
               user: username,
             },
-            "secret",
+            JWT_SECRET,
             {},
           );
 
@@ -82,36 +86,44 @@ export function getRouter() {
         };
       },
     },
-    getMyTeamState: async ({}) => {
-      return {
-        status: 200,
-        body: {
-          teamName: "Unicode Snowman ☃",
-          rounds: {
-            "first-round": {
-              name: "First Round",
-              slots: {
-                "1": "burger-king",
-                "2": "automaton",
+    public: {
+      getMyTeamState: {
+        middleware: [authMiddleware],
+        handler: async ({ req }) => {
+          return {
+            status: 200,
+            body: {
+              teamName: `Unicode Snowman ☃ (${req.user})`,
+              rounds: {
+                "first-round": {
+                  name: "First Round",
+                  slots: {
+                    "1": "burger-king",
+                    "2": "automaton",
+                  },
+                },
               },
+              puzzles: puzzleState,
             },
-          },
-          puzzles: puzzleState,
+          };
         },
-      };
-    },
-    getPuzzleState: async ({ params }) => {
-      const state = puzzleState[params.slug];
-      if (!state) {
-        return {
-          status: 404,
-          body: null,
-        };
-      }
-      return {
-        status: 200,
-        body: state,
-      };
+      },
+      getPuzzleState: {
+        middleware: [authMiddleware],
+        handler: async ({ params }) => {
+          const state = puzzleState[params.slug];
+          if (!state) {
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+          return {
+            status: 200,
+            body: state,
+          };
+        },
+      },
     },
   });
 

@@ -61,8 +61,7 @@ const authContract = c.router({
   },
 });
 
-export const contract = c.router({
-  auth: authContract,
+const publicContract = c.router({
   getMyTeamState: {
     method: "GET",
     path: `/me`,
@@ -80,4 +79,9 @@ export const contract = c.router({
     },
     summary: "Get the state of one puzzle",
   },
+});
+
+export const contract = c.router({
+  auth: authContract,
+  public: publicContract,
 });
