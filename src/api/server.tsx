@@ -4,6 +4,8 @@ import { createExpressEndpoints, initServer } from '@ts-rest/express';
 import { contract } from './contract';
 import { ServerInferResponseBody } from '@ts-rest/core';
 import { Router } from 'express';
+import { generateOpenApi } from '@ts-rest/open-api';
+import * as swaggerUi from 'swagger-ui-express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
@@ -80,6 +82,18 @@ export function getRouter() {
         jsonQuery: true,
         responseValidation: true,
     });
+
+    const openApiDocument = generateOpenApi(contract, {
+        info: {
+            title: 'Hunt API',
+            version: '2025',
+        },
+        servers: [{
+            url: '/api/',
+        }],
+    });
+
+    app.use('/', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
     return app;
 }
