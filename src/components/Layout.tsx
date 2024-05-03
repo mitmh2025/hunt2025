@@ -71,6 +71,7 @@ const renderDevPane = (teamState?: TeamState) => {
       }}
     >
       <h2>Devtools</h2>
+      <h3>{teamState.teamName}</h3>
       <h3>Nav</h3>
       {rounds}
       <h3>Actions</h3>
