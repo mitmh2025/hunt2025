@@ -8,6 +8,7 @@ import type { Round, PuzzleSlot } from '../puzzledata/types';
 import { ROUND_PAGE_MAP } from './components/rounds';
 import Layout from './components/Layout';
 import LoginPage from './components/LoginPage';
+import { getRouter } from './api/server';
 
 const app = new WebSocketExpress();
 const router = new Router();
@@ -246,5 +247,8 @@ router.get('/puzzles/:puzzleSlug/solution', (req: RequestWithSession, res: Respo
 });
 
 app.use("/", router);
+
+const apiRouter = getRouter();
+app.use("/api", apiRouter);
 
 export default app;
