@@ -1,5 +1,6 @@
 import { WebSocketExpress, Router } from 'websocket-express';
-import { Request, Response, RequestHandler } from 'express';
+import express, { Request, Response, RequestHandler } from 'express';
+import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
@@ -250,6 +251,7 @@ router.get('/puzzles/:puzzleSlug/solution', (req: RequestWithSession, res: Respo
   res.send(html);
 });
 
+app.use("/assets", express.static(path.join(__dirname, 'assets')))
 app.use("/", router);
 
 export default app;
