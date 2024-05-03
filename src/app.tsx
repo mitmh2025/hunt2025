@@ -11,6 +11,10 @@ import LoginPage from './components/LoginPage';
 import { getRouter } from './api/server';
 
 const app = new WebSocketExpress();
+
+const apiRouter = getRouter();
+app.use("/api", apiRouter);
+
 const router = new Router();
 
 const SHOW_SOLUTIONS = true;
@@ -247,8 +251,5 @@ router.get('/puzzles/:puzzleSlug/solution', (req: RequestWithSession, res: Respo
 });
 
 app.use("/", router);
-
-const apiRouter = getRouter();
-app.use("/api", apiRouter);
 
 export default app;
