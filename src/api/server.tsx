@@ -27,13 +27,21 @@ const puzzleState: Record<
 
 const JWT_SECRET = "secret"; // FIXME
 
+function cookieExtractor(req) {
+  var token = null;
+  if (req && req.cookies) {
+      token = req.cookies['mitmh2025_auth'];
+  }
+  return token;
+};
+
 function newPassport() {
   const passport = new Passport();
   passport.use(
     new Strategy(
       {
         jwtFromRequest: ExtractJwt.fromExtractors([
-          ExtractJwt.fromUrlQueryParameter("mitmh2025_auth"),
+          cookieExtractor,
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
         secretOrKey: JWT_SECRET,
