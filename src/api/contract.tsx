@@ -53,7 +53,7 @@ const authContract = c.router({
         body: LoginRequestSchema,
         responses: {
             200: LoginResponseSchema,
-            401: z.null(),
+            401: z.object({}),
         },
         summary: 'Login to a team',
     },

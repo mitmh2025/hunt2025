@@ -1,7 +1,9 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import express, { Request, Response, NextFunction, RequestHandler, request } from 'express';
 import React from 'react';
 import { Router } from 'websocket-express';
 import { renderToString } from 'react-dom/server';
+import { newClient } from './api/client';
+import cookieParser from 'cookie-parser';
 
 import type { Round, PuzzleSlot } from '../puzzledata/types';
 import HUNT from '../puzzledata';
@@ -18,69 +20,6 @@ function requestLogger(req: Request, _res: Response, next: NextFunction) {
   next();
 }
 
-// An in-memory session map for development, until we have a real backend
-type Session = object;
-const HACK_SESSIONS = new Map<string, Session>();
-
-// If session is valid, returns session object.  Otherwise, returns undefined.
-function hackFetchSessionState(sessId: string): Session | undefined {
-  console.log(`fetch session ${sessId}`);
-  // TODO: fetch from backend instead
-  return HACK_SESSIONS.get(sessId);
-};
-
-interface RequestWithSession extends Request {
-  session: Session;
-}
-
-function hackAuthMiddleware(req: Request, res: Response, next: NextFunction) {
-  // Allowlisted "no login required" routes.  All other requests will
-  // redirect to /login (with a next= parameter).
-  const UNAUTHENTICATED_ROUTES = [
-    '/login',
-    '/logout',
-  ];
-  if (UNAUTHENTICATED_ROUTES.includes(req.path)) {
-    // Allowlisted.  Skip session lookup.
-    return next();
-  } else {
-    // Look up session id in cookie header, if present.
-    // If cookie missing or session id invalid, redirect to /login
-    // If session valid, populate req.session
-
-    const cookies = req.headers["cookie"];
-    if (cookies) {
-      const parsedCookies = cookies.split(';').map(c => c.trim());
-      const cookieKVPairs = parsedCookies.flatMap((cookie) => {
-        const separatorPos = cookie.indexOf("=");
-        if (separatorPos === -1) {
-          return [];
-        } else {
-          const key = cookie.slice(0, separatorPos);
-          const val = cookie.slice(separatorPos+1);
-          return [[key, val]];
-        }
-      });
-      // Only respect the first session cookie provided if multiple are presented.
-      const sessionCookiePair = cookieKVPairs.filter(([k,_v]) => k === "sess_id")[0];
-      if (sessionCookiePair !== undefined) {
-        const sessionId = sessionCookiePair[1]!;
-        const session = hackFetchSessionState(sessionId);
-        if (session !== undefined) {
-          req.session = session;
-          return next();
-        } else {
-          console.log(`Invalid session id "${sessionId}"`);
-        }
-      }
-    }
-
-    // If for any reason we bailed from the happy path above, we didn't load a valid session.
-    // Redirect to the login page.  Save the next param in the URL.
-    res.redirect(`/login?next=${encodeURIComponent(req.path)}`);
-  }
-}
-
 function hackLoginGetHandler(_req: Request, res: Response) {
   const doctype = "<!DOCTYPE html>";
   const doc = (
@@ -95,29 +34,45 @@ function hackLoginGetHandler(_req: Request, res: Response) {
 interface LoginQueryTypes {
   next: string;
 }
-const hackLoginPostHandler: RequestHandler<unknown, unknown, unknown, LoginQueryTypes> = (req, res) => {
+interface RequestWithAPI extends Request {
+  api: ReturnType<typeof newClient>;
+}
+const loginPostHandler: RequestHandler<unknown, unknown, unknown, LoginQueryTypes> = async (req: RequestWithAPI, res) => {
   // TODO: extract the POSTed username/password from the form data
   // TODO: implement CSRF tokens for forms
   // TODO: forward the login attempt to the backend, handle failures, and
   //       return the session id provided, instead of this in-memory hack.
-  const sessId = crypto.randomUUID();
-  // A fixed mock user state, set on initial login.
-  const HACK_SESSION_STUB = {
-  };
-  HACK_SESSIONS.set(sessId, HACK_SESSION_STUB);
-
-  res.setHeader('Set-Cookie', `sess_id=${sessId}`);
-
-  // Redirect to the page the user was trying to view before getting redirected
-  // to the login page, or the root route if absent.
+  const { username, password } = req.body;
+  const loginResult = await req.api.auth.login({ body: {
+    username,
+    password,
+  }});
+  if (loginResult.status != 200 && loginResult.status != 403) {
+    console.log("login result", loginResult, loginResult.body);
+    res.status(500).send("Internal server error");
+    return;
+  }
   const qs = req.query['next'];
   const target = qs ? (typeof qs === "string" ? qs : qs[0] ) : '/';
-  res.redirect(target);
+  if (loginResult.status == 200) {
+    res.cookie('mitmh2025_auth', loginResult.body.token, {
+      httpOnly: true,
+      sameSite: true,
+      // secure: true,
+    });
+
+    // Redirect to the page the user was trying to view before getting redirected
+    // to the login page, or the root route if absent.
+
+    res.redirect(target);
+    return;
+  }
+  res.redirect(`/login?next=${encodeURIComponent(target)}`);
 }
 
+
 function logoutHandler(_req: Request, res: Response) {
-  // Unset the sess_id cookie, and redirect back to the index page.
-  res.setHeader('Set-Cookie', "sess_id=; expires=Thu, Jan 01 1970 00:00:00 UTC");
+  res.cookie('mitmh2025_auth', '', { expires: new Date(0)});
   res.redirect('/');
 }
 
@@ -140,7 +95,7 @@ const render404 = (_req: Request, res: Response) => {
   res.status(404).send(html);
 };
 
-function roundHandler(req: RequestWithSession, res: Response) {
+function roundHandler(req: RequestWithAPI, res: Response) {
   // Look up round by slug.  If none exists, 404.
   const round = HUNT.rounds.filter((round) => round.slug === req.params.roundSlug)[0];
   if (round) {
@@ -170,7 +125,7 @@ function lookupPuzzleBySlug(slug: string | undefined): [Round, PuzzleSlot] | und
   return undefined;
 }
 
-function puzzleHandler(req: RequestWithSession, res: Response) {
+function puzzleHandler(req: RequestWithAPI, res: Response) {
   // Look up puzzle by slug.  If none exists, 404.
   const slug = req.params.puzzleSlug;
   const match = lookupPuzzleBySlug(slug);
@@ -204,7 +159,7 @@ function puzzleHandler(req: RequestWithSession, res: Response) {
   res.send(html);
 }
 
-function solutionHandler(req: RequestWithSession, res: Response) {
+function solutionHandler(req: RequestWithAPI, res: Response) {
   // Only show solutions if we're in dev mode
   if (process.env.NODE_ENV !== "development" || SHOW_SOLUTIONS !== true) {
     return render404(req, res);
@@ -234,17 +189,21 @@ function solutionHandler(req: RequestWithSession, res: Response) {
   res.send(html);
 }
 
-export function getUiRouter() { 
+export function getUiRouter({ apiUrl }) { 
   const router = new Router();
   if (LOG_REQUESTS) {
     router.use(requestLogger);
   }
-
-  // TODO: replace with backend-directed team state retrieval middleware
-  router.use(hackAuthMiddleware);
+  router.use(cookieParser());
+  router.use(express.urlencoded({ extended: true }));
+  router.use(express.json());
+  router.use((req, res, next) => {
+    req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
+    return next();
+  })
 
   router.get('/login', hackLoginGetHandler);
-  router.post('/login', hackLoginPostHandler);
+  router.post('/login', loginPostHandler);
   router.get('/logout', logoutHandler);
 
   router.get('/', (req, res) => {

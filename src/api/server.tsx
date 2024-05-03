@@ -41,6 +41,7 @@ export function getRouter() {
                     }
                     return {
                         status: 403,
+                        body: {},
                     };
                 },
             },
