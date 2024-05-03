@@ -20,7 +20,7 @@ module.exports = [
     target: 'node',
     dependencies: ['browser'],
     entry: {
-      server: './src/serverMain.tsx',
+      server: './src/main.ts',
       dump: './puzzledata/dump-json.ts',
     },
     output: {
