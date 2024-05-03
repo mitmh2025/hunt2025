@@ -8,6 +8,9 @@ import { generateOpenApi } from '@ts-rest/open-api';
 import * as swaggerUi from 'swagger-ui-express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { Strategy, ExtractJwt } from 'passport-jwt';
+import { Passport } from 'passport';
+import jwt from 'jsonwebtoken';
 
 const puzzleState: Record<string, ServerInferResponseBody<typeof contract.getPuzzleState, 200>> = {
     "burger-king": {
@@ -19,11 +22,29 @@ const puzzleState: Record<string, ServerInferResponseBody<typeof contract.getPuz
     },
 };
 
+function newPassport() {
+    const passport = new Passport();
+    passport.use(new Strategy({
+        jwtFromRequest: ExtractJwt.fromExtractors([
+            ExtractJwt.fromUrlQueryParameter('mitmh2025_auth'),
+            ExtractJwt.fromAuthHeaderAsBearerToken(),
+        ]),
+        secretOrKey: 'secret', // FIXME
+        //issuer: 'mitmh2025.com',
+        //audience: 'mitmh2025.com',
+    }, function(jwt_payload, done) {
+        return done(null, jwt_payload.sub);
+    }));
+    return passport;
+}
+
 export function getRouter() {
     const app = Router();
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+
+    const passport = newPassport();
 
     const s = initServer();
 
@@ -31,11 +52,15 @@ export function getRouter() {
         {
             auth: {
                 login: async ({ body: { username, password } }) => {
-                    if (password == "password") {
+                    if (password == "password") { // FIXME
+                        const token = jwt.sign({
+                            user: username,
+                        }, "secret", {});
+
                         return {
                             status: 200,
                             body: {
-                                token: username, // FIXME
+                                token: token,
                             }
                         };
                     }
