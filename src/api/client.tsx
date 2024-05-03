@@ -14,6 +14,9 @@ export function newClient(baseUrl: string, token: string) {
   });
 }
 
-export type TeamState = ClientInferResponseBody<typeof contract.public.getMyTeamState, 200>;
+export type TeamState = ClientInferResponseBody<
+  typeof contract.public.getMyTeamState,
+  200
+>;
 
 export type Client = ReturnType<typeof newClient>;

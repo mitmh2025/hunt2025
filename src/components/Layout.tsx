@@ -21,12 +21,20 @@ const renderDevPane = (teamState?: TeamState) => {
       // TODO: do something visually different if the puzzle is locked/visible/unlocked/solved (based on data from session)
       let bgcolor = "black";
       // If visible: gray
-      if (puzzleState?.locked === "locked") { bgcolor = "gray"; }
-      if (puzzleState?.locked === "unlockable") { bgcolor = "lightgray"; }
+      if (puzzleState?.locked === "locked") {
+        bgcolor = "gray";
+      }
+      if (puzzleState?.locked === "unlockable") {
+        bgcolor = "lightgray";
+      }
       // If unlocked: white
-      if (puzzleState?.locked === "unlocked") { bgcolor = "white"; }
+      if (puzzleState?.locked === "unlocked") {
+        bgcolor = "white";
+      }
       // If solved: green
-      if (puzzleState?.answer) { bgcolor = "green"; }
+      if (puzzleState?.answer) {
+        bgcolor = "green";
+      }
       const box = (
         <div
           key={puzzleSlot.id}
