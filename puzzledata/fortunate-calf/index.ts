@@ -5,7 +5,7 @@ import Solution from './solution';
 const puzzle: PuzzleDefinition = {
   title: "The Casino",
   slug: "the_casino",
-  authors: ["|octember>"],
+  authors: ["Elan Blaustein"],
   content: Puzzle,
   solution: Solution,
   answer: "FACE CARD SHARKS",
