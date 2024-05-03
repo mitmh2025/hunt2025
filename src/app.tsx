@@ -214,11 +214,16 @@ router.get('/puzzles/:puzzleSlug', (req: RequestWithSession, res: Response) => {
 
   // Select content component.
   const Content = puzzleSlot.assignment!.content;
+  const title = puzzleSlot.assignment!.title;
 
   const doctype = "<!DOCTYPE html>";
   const doc = (
     <Layout session={req.session}>
-      <Content />
+      <h1>{title}</h1>
+      {/* TODO: add guess form, history, errata, etc. */}
+      <div id="puzzle-content">
+        <Content />
+      </div>
     </Layout>
   );
   const html = doctype + renderToString(doc) + "\n";
