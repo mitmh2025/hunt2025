@@ -7,8 +7,6 @@ const Solution = () => {
 
   return (
     <div>
-      <h1>The Casino Solution</h1>
-
       <p>
         This puzzle contains 7 rounds of Texas Hold&apos;Em Poker played against an opponent.  On
         the table in each round, the community cards are arranged in increasing value (by rank, then

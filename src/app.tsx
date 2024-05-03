@@ -246,10 +246,14 @@ router.get('/puzzles/:puzzleSlug/solution', (req: RequestWithSession, res: Respo
   // TODO: look up round-specific solution page layout if applicable.
 
   const Solution = puzzleSlot.assignment!.solution;
+  const title = puzzleSlot.assignment!.title;
   const doctype = "<!DOCTYPE html>";
   const doc = (
     <Layout session={req.session}>
-      <Solution />
+      <h1>Solution to {title}</h1>
+      <div id="solution-content">
+        <Solution />
+      </div>
     </Layout>
   );
   const html = doctype + renderToString(doc) + "\n";
