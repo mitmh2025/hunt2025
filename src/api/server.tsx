@@ -61,7 +61,10 @@ export function getRouter() {
         },
     );
 
-    createExpressEndpoints(contract, router, app);
+    createExpressEndpoints(contract, router, app, {
+        jsonQuery: true,
+        responseValidation: true,
+    });
 
     return app;
 }
