@@ -24,6 +24,10 @@ const puzzleState: Record<
   automaton: {
     round: "wasteland",
   },
+  the_casino: {
+    round: "shadow_diamond",
+    locked: "unlocked",
+  }
 };
 
 const JWT_SECRET = "secret"; // FIXME
@@ -112,6 +116,12 @@ export function getRouter() {
                     "2": "automaton",
                   },
                 },
+                "shadow_diamond": {
+                  name: "Shadow Diamond",
+                  slots: {
+                    "sdm3": "the_casino",
+                  },
+                }
               },
               puzzles: puzzleState,
             },

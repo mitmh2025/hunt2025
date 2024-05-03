@@ -81,7 +81,7 @@ const renderRound = (req: Request, res: Response, roundKey: string) => {
   const doctype = "<!DOCTYPE html>";
   // TODO: pass props about current unlock state to Component
   const doc = (
-    <Layout>
+    <Layout teamState={req.teamState}>
       <Component />
     </Layout>
   );
@@ -151,7 +151,7 @@ function puzzleHandler(req: RequestWithAPI, res: Response) {
 
   const doctype = "<!DOCTYPE html>";
   const doc = (
-    <Layout session={req.session}>
+    <Layout teamState={req.teamState}>
       <h1>{title}</h1>
       {/* TODO: add guess form, history, errata, etc. */}
       <div id="puzzle-content">
@@ -182,7 +182,7 @@ function solutionHandler(req: RequestWithAPI, res: Response) {
   const title = puzzleSlot.assignment!.title;
   const doctype = "<!DOCTYPE html>";
   const doc = (
-    <Layout session={req.session}>
+    <Layout teamState={req.teamState}>
       <h1>Solution to {title}</h1>
       <div id="solution-content">
         <Solution />
@@ -213,6 +213,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
       res.redirect(`login?next=${encodeURIComponent(req.path)}`);
       return;
     }
+    req.teamState = teamStateResp.body;
     return next();
   });
 

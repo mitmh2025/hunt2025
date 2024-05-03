@@ -1,25 +1,32 @@
 import React, { ReactNode } from "react";
 import HUNT from "../../puzzledata";
+import type { TeamState } from "src/api/client";
 
 const SHOW_DEV_PANE = true;
 
-const renderDevPane = (session: object | undefined) => {
-  if (process.env.NODE_ENV !== "development" || !SHOW_DEV_PANE || !session)
+const renderDevPane = (teamState?: TeamState) => {
+  if (process.env.NODE_ENV !== "development" || !SHOW_DEV_PANE || !teamState)
     return undefined;
 
   const rounds = HUNT.rounds.map((round) => {
+    const roundState = teamState.rounds[round.key];
     const puzzleCells = round.puzzles.map((puzzleSlot) => {
       let title = puzzleSlot.id;
-      let slug = undefined;
+      let slug = roundState?.slots[puzzleSlot.id];
       if (puzzleSlot.assignment) {
         title = puzzleSlot.assignment.title;
         slug = puzzleSlot.assignment.slug;
       }
+      const puzzleState = slug ? teamState.puzzles[slug] : undefined;
       // TODO: do something visually different if the puzzle is locked/visible/unlocked/solved (based on data from session)
       let bgcolor = "black";
       // If visible: gray
+      if (puzzleState?.locked === "locked") { bgcolor = "gray"; }
+      if (puzzleState?.locked === "unlockable") { bgcolor = "lightgray"; }
       // If unlocked: white
+      if (puzzleState?.locked === "unlocked") { bgcolor = "white"; }
       // If solved: green
+      if (puzzleState?.answer) { bgcolor = "green"; }
       const box = (
         <div
           key={puzzleSlot.id}
@@ -80,12 +87,12 @@ const Layout = ({
   children,
   scripts,
   title,
-  session,
+  teamState,
 }: {
   children: ReactNode;
   scripts?: string[];
   title?: string;
-  session?: object;
+  teamState?: TeamState;
 }) => {
   return (
     <html>
@@ -103,7 +110,7 @@ const Layout = ({
           }}
         >
           <div style={{ flex: 1 }}>{children}</div>
-          {renderDevPane(session)}
+          {renderDevPane(teamState)}
         </div>
       </body>
     </html>
