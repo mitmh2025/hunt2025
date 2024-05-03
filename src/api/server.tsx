@@ -11,6 +11,7 @@ import cors from "cors";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { Passport } from "passport";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 const puzzleState: Record<
   string,
@@ -59,6 +60,7 @@ function newPassport() {
 export function getRouter() {
   const app = Router();
   app.use(cors());
+  app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
