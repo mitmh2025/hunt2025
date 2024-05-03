@@ -2,8 +2,8 @@
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
 
 // import Boardwalk from './dental-shark';
-import Casino from './fortunate-calf';
-import type { Hunt } from './types';
+import Casino from "./fortunate-calf";
+import type { Hunt } from "./types";
 
 const HUNT: Hunt = {
   rounds: [
@@ -11,7 +11,8 @@ const HUNT: Hunt = {
       key: "sd", // Shadow Diamond
       slug: "shadow_diamond", // mounted at root
       title: "The Shadow Diamond",
-      puzzles: [ // slots
+      puzzles: [
+        // slots
         { id: "sdp1" },
         { id: "sdp2" },
         // ...
@@ -24,7 +25,7 @@ const HUNT: Hunt = {
         { id: "sdm5" }, // Where is the Diamond?
       ],
       unlock_conditions: [
-        // These are the conditions for the /round/ page being visible.  
+        // These are the conditions for the /round/ page being visible.
         // The initial round should be open from the start, with maybe a
         // wall-clock time condition?
       ],
@@ -120,39 +121,27 @@ const HUNT: Hunt = {
   interactions: [
     {
       id: "meet_billie",
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm5" },
-      ],
+      unlock_conditions: [{ type: "puzzle_solved", id: "sdm5" }],
     },
     {
       id: "catch_the_thief",
-      unlock_conditions: [
-        { type: "interaction_completed", id: "meet_billie" },
-      ],
+      unlock_conditions: [{ type: "interaction_completed", id: "meet_billie" }],
     },
     {
       id: "interview_the_longshoreman",
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm1" },
-      ],
+      unlock_conditions: [{ type: "puzzle_solved", id: "sdm1" }],
     },
     {
       id: "interview_the_salesman",
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm2" },
-      ],
+      unlock_conditions: [{ type: "puzzle_solved", id: "sdm2" }],
     },
     {
       id: "interview_the_bookmaker",
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm3" },
-      ],
+      unlock_conditions: [{ type: "puzzle_solved", id: "sdm3" }],
     },
     {
       id: "interview_the_valet",
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm4" },
-      ],
+      unlock_conditions: [{ type: "puzzle_solved", id: "sdm4" }],
     },
     {
       id: "meet_katrina",

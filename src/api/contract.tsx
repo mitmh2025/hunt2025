@@ -1,81 +1,83 @@
 // contract.ts
 
-import { initContract } from '@ts-rest/core';
-import { z } from 'zod';
+import { initContract } from "@ts-rest/core";
+import { z } from "zod";
 
 const c = initContract();
 
 const slug = z.string();
 
 const GuessSchema = z.object({
-    canonicalInput: z.string(),
-    response: z.string(),
-    timestamp: z.string().datetime(),
+  canonicalInput: z.string(),
+  response: z.string(),
+  timestamp: z.string().datetime(),
 });
 
-const PuzzleLockEnum = z.enum(["locked", "unlockable", "unlocked"]).default("locked");
+const PuzzleLockEnum = z
+  .enum(["locked", "unlockable", "unlocked"])
+  .default("locked");
 
 const PuzzleSummarySchema = z.object({
-    round: slug,
-    // visible implied by existence
-    locked: PuzzleLockEnum,
-    answer: z.string().optional(),
-})
+  round: slug,
+  // visible implied by existence
+  locked: PuzzleLockEnum,
+  answer: z.string().optional(),
+});
 
 const PuzzleStateSchema = PuzzleSummarySchema.extend({
-    guesses: z.array(GuessSchema).default([]),
+  guesses: z.array(GuessSchema).default([]),
 });
 
 const RoundStateSchema = z.object({
-    name: z.string(),
-    slots: z.record(z.string(), slug),
-})
+  name: z.string(),
+  slots: z.record(z.string(), slug),
+});
 
 const TeamStateSchema = z.object({
-    teamName: z.string(),
-    rounds: z.record(slug, RoundStateSchema),
-    puzzles: z.record(slug, PuzzleSummarySchema),
+  teamName: z.string(),
+  rounds: z.record(slug, RoundStateSchema),
+  puzzles: z.record(slug, PuzzleSummarySchema),
 });
 
 const LoginRequestSchema = z.object({
-    username: z.string(),
-    password: z.string(),
+  username: z.string(),
+  password: z.string(),
 });
 
 const LoginResponseSchema = z.object({
-    token: z.string(),
+  token: z.string(),
 });
 
 const authContract = c.router({
-    login: {
-        method: 'POST',
-        path: `/auth/login`,
-        body: LoginRequestSchema,
-        responses: {
-            200: LoginResponseSchema,
-            401: z.object({}),
-        },
-        summary: 'Login to a team',
+  login: {
+    method: "POST",
+    path: `/auth/login`,
+    body: LoginRequestSchema,
+    responses: {
+      200: LoginResponseSchema,
+      401: z.object({}),
     },
+    summary: "Login to a team",
+  },
 });
 
 export const contract = c.router({
-    auth: authContract,
-    getMyTeamState: {
-        method: 'GET',
-        path: `/me`,
-        responses: {
-            200: TeamStateSchema,
-        },
-        summary: 'Get my team state',
+  auth: authContract,
+  getMyTeamState: {
+    method: "GET",
+    path: `/me`,
+    responses: {
+      200: TeamStateSchema,
     },
-    getPuzzleState: {
-        method: 'GET',
-        path: `/puzzle/:slug`,
-        responses: {
-            200: PuzzleStateSchema,
-            404: z.null(),
-        },
-        summary: 'Get the state of one puzzle',
+    summary: "Get my team state",
+  },
+  getPuzzleState: {
+    method: "GET",
+    path: `/puzzle/:slug`,
+    responses: {
+      200: PuzzleStateSchema,
+      404: z.null(),
     },
+    summary: "Get the state of one puzzle",
+  },
 });

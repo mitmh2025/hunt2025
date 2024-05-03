@@ -1,22 +1,28 @@
-import express, { Request, Response, NextFunction, RequestHandler, request } from 'express';
-import React from 'react';
-import { Router } from 'websocket-express';
-import { renderToString } from 'react-dom/server';
-import { newClient } from './api/client';
-import cookieParser from 'cookie-parser';
+import express, {
+  Request,
+  Response,
+  NextFunction,
+  RequestHandler,
+  request,
+} from "express";
+import React from "react";
+import { Router } from "websocket-express";
+import { renderToString } from "react-dom/server";
+import { newClient } from "./api/client";
+import cookieParser from "cookie-parser";
 
-import type { Round, PuzzleSlot } from '../puzzledata/types';
-import HUNT from '../puzzledata';
-import { ROUND_PAGE_MAP } from './components/rounds';
-import Layout from './components/Layout';
-import LoginPage from './components/LoginPage';
+import type { Round, PuzzleSlot } from "../puzzledata/types";
+import HUNT from "../puzzledata";
+import { ROUND_PAGE_MAP } from "./components/rounds";
+import Layout from "./components/Layout";
+import LoginPage from "./components/LoginPage";
 
 const SHOW_SOLUTIONS = true;
 const LOG_REQUESTS = true;
 
 function requestLogger(req: Request, _res: Response, next: NextFunction) {
   // Middleware that just logs requests on the way in for development
-  console.log(`${req.method} ${req.path} ${req.headers['cookie']}`);
+  console.log(`${req.method} ${req.path} ${req.headers["cookie"]}`);
   next();
 }
 
@@ -37,25 +43,32 @@ interface LoginQueryTypes {
 interface RequestWithAPI extends Request {
   api: ReturnType<typeof newClient>;
 }
-const loginPostHandler: RequestHandler<unknown, unknown, unknown, LoginQueryTypes> = async (req: RequestWithAPI, res) => {
+const loginPostHandler: RequestHandler<
+  unknown,
+  unknown,
+  unknown,
+  LoginQueryTypes
+> = async (req: RequestWithAPI, res) => {
   // TODO: extract the POSTed username/password from the form data
   // TODO: implement CSRF tokens for forms
   // TODO: forward the login attempt to the backend, handle failures, and
   //       return the session id provided, instead of this in-memory hack.
   const { username, password } = req.body;
-  const loginResult = await req.api.auth.login({ body: {
-    username,
-    password,
-  }});
+  const loginResult = await req.api.auth.login({
+    body: {
+      username,
+      password,
+    },
+  });
   if (loginResult.status != 200 && loginResult.status != 403) {
     console.log("login result", loginResult, loginResult.body);
     res.status(500).send("Internal server error");
     return;
   }
-  const qs = req.query['next'];
-  const target = qs ? (typeof qs === "string" ? qs : qs[0] ) : '/';
+  const qs = req.query["next"];
+  const target = qs ? (typeof qs === "string" ? qs : qs[0]) : "/";
   if (loginResult.status == 200) {
-    res.cookie('mitmh2025_auth', loginResult.body.token, {
+    res.cookie("mitmh2025_auth", loginResult.body.token, {
       httpOnly: true,
       sameSite: true,
       // secure: true,
@@ -68,12 +81,11 @@ const loginPostHandler: RequestHandler<unknown, unknown, unknown, LoginQueryType
     return;
   }
   res.redirect(`/login?next=${encodeURIComponent(target)}`);
-}
-
+};
 
 function logoutHandler(_req: Request, res: Response) {
-  res.cookie('mitmh2025_auth', '', { expires: new Date(0)});
-  res.redirect('/');
+  res.cookie("mitmh2025_auth", "", { expires: new Date(0) });
+  res.redirect("/");
 }
 
 const renderRound = (req: Request, res: Response, roundKey: string) => {
@@ -91,21 +103,26 @@ const renderRound = (req: Request, res: Response, roundKey: string) => {
 };
 
 const render404 = (_req: Request, res: Response) => {
-  const html = "<!DOCTYPE html><html><body><h1>404 Not Found</h1><p>We didn&apos;t find what you were looking for.</p></body></html>";
+  const html =
+    "<!DOCTYPE html><html><body><h1>404 Not Found</h1><p>We didn&apos;t find what you were looking for.</p></body></html>";
   res.status(404).send(html);
 };
 
 function roundHandler(req: RequestWithAPI, res: Response) {
   // Look up round by slug.  If none exists, 404.
-  const round = HUNT.rounds.filter((round) => round.slug === req.params.roundSlug)[0];
+  const round = HUNT.rounds.filter(
+    (round) => round.slug === req.params.roundSlug,
+  )[0];
   if (round) {
-    return renderRound(req, res, round.key)
+    return renderRound(req, res, round.key);
   } else {
     return render404(req, res);
   }
 }
 
-function lookupPuzzleBySlug(slug: string | undefined): [Round, PuzzleSlot] | undefined {
+function lookupPuzzleBySlug(
+  slug: string | undefined,
+): [Round, PuzzleSlot] | undefined {
   if (slug === undefined) return undefined;
   // returns [round, puzzle] if found or undefined if not
   const rounds = HUNT.rounds;
@@ -189,7 +206,7 @@ function solutionHandler(req: RequestWithAPI, res: Response) {
   res.send(html);
 }
 
-export function getUiRouter({ apiUrl }) { 
+export function getUiRouter({ apiUrl }) {
   const router = new Router();
   if (LOG_REQUESTS) {
     router.use(requestLogger);
@@ -200,18 +217,18 @@ export function getUiRouter({ apiUrl }) {
   router.use((req, res, next) => {
     req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
     return next();
-  })
+  });
 
-  router.get('/login', hackLoginGetHandler);
-  router.post('/login', loginPostHandler);
-  router.get('/logout', logoutHandler);
+  router.get("/login", hackLoginGetHandler);
+  router.post("/login", loginPostHandler);
+  router.get("/logout", logoutHandler);
 
-  router.get('/', (req, res) => {
+  router.get("/", (req, res) => {
     // Root page should be shadow diamond round page
     return renderRound(req, res, "sd");
   });
-  router.get('/rounds/:roundSlug', roundHandler);
-  router.get('/puzzles/:puzzleSlug', puzzleHandler);
-  router.get('/puzzles/:puzzleSlug/solution', solutionHandler);
+  router.get("/rounds/:roundSlug", roundHandler);
+  router.get("/puzzles/:puzzleSlug", puzzleHandler);
+  router.get("/puzzles/:puzzleSlug/solution", solutionHandler);
   return router;
 }

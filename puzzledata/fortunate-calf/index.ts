@@ -1,6 +1,6 @@
-import type { PuzzleDefinition } from '../types';
-import Puzzle from './puzzle';
-import Solution from './solution';
+import type { PuzzleDefinition } from "../types";
+import Puzzle from "./puzzle";
+import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "The Casino",

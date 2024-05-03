@@ -1,10 +1,10 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = [
   {
-    name: 'browser',
-    target: 'web',
+    name: "browser",
+    target: "web",
     entry: {
       // TODO: walk all child folders of puzzledata, look for immediate child
       // package.json?  For each one that has one, define an entry point.
@@ -16,19 +16,19 @@ module.exports = [
     // server and client context as needed.
   },
   {
-    name: 'server',
-    target: 'node',
-    dependencies: ['browser'],
+    name: "server",
+    target: "node",
+    dependencies: ["browser"],
     entry: {
-      server: './src/main.ts',
-      dump: './puzzledata/dump-json.ts',
+      server: "./src/main.ts",
+      dump: "./puzzledata/dump-json.ts",
     },
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, "dist"),
       // If we hook assets up to a CDN:
       // publicPath: 'https://cdn.example.com/assets/[fullhash]/',
-      filename: '[name]-bundle.js',
-      publicPath: '/assets/',
+      filename: "[name]-bundle.js",
+      publicPath: "/assets/",
     },
     module: {
       rules: [
@@ -37,25 +37,25 @@ module.exports = [
           exclude: /(node_modules)/,
           use: {
             // .swcrc can be used to configure swc
-            loader: 'swc-loader',
+            loader: "swc-loader",
           },
         },
-        { test: /\.css$/, use: 'css-loader' },
+        { test: /\.css$/, use: "css-loader" },
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
         {
           test: /\.png$/,
-          type: 'asset/resource',
+          type: "asset/resource",
           generator: {
-            outputPath: 'assets/',
-            filename: '[hash][ext][query]',
-          }
+            outputPath: "assets/",
+            filename: "[hash][ext][query]",
+          },
         },
       ],
       // Add modules as appropriate
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '...'],
+      extensions: [".ts", ".tsx", "..."],
     },
     externalsPresets: { node: true },
     externals: [nodeExternals()],

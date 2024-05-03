@@ -5,15 +5,15 @@ Work in progress.
 
 Puzzles are postprodded in the `puzzledata` folder, where each puzzle's
 metadata (including components for how to render the puzzle content and
-solution) is placed in a folder matching the Puzzup random name.  Puzzle
+solution) is placed in a folder matching the Puzzup random name. Puzzle
 definitions should include the fields described in `puzzledata/types.ts`.
 
 The overall hunt structure (including how puzzles are slotted into the hunt)
 lives in `puzzledata/index.ts`, which should be updated to include each typeset
-puzzle.  It is incomplete at present, as:
+puzzle. It is incomplete at present, as:
 
 1. most puzzles have yet to be assigned, let alone written
-2. we do not yet know how many puzzle slots will sit in each round, and 
+2. we do not yet know how many puzzle slots will sit in each round, and
 3. we don't really know what the endgame round(s) will look like.
 
 Assets for puzzles (like images, javascript to run in the browser, or styles)
@@ -61,7 +61,7 @@ At the time of this writing, authentication is a facade and any
 username/password are accepted.
 
 If you build the dev bundle, once you "log in" you'll see a pane where you can
-easily jump to any round page or (typeset) puzzle.  In the fullness of time,
+easily jump to any round page or (typeset) puzzle. In the fullness of time,
 we'll add additional actions for things like granting unlock currency, marking
 puzzles as visible or unlocked, or marking interactions as completed.
 

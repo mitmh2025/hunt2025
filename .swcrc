@@ -2,17 +2,17 @@
   "jsc": {
     "parser": {
       "syntax": "typescript",
-      "tsx": true,
+      "tsx": true
     },
     "loose": false,
     "minify": {
       "compress": false,
-      "mangle": false,
+      "mangle": false
     },
     "externalHelpers": true
   },
   "module": {
-    "type": "commonjs",
+    "type": "commonjs"
   },
   "env": {
     "targets": {

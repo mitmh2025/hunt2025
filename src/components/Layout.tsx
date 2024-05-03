@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react';
-import HUNT from '../../puzzledata';
+import React, { ReactNode } from "react";
+import HUNT from "../../puzzledata";
 
 const SHOW_DEV_PANE = true;
 
 const renderDevPane = (session: object | undefined) => {
-  if (process.env.NODE_ENV !== "development" || !SHOW_DEV_PANE || !session) return undefined;
+  if (process.env.NODE_ENV !== "development" || !SHOW_DEV_PANE || !session)
+    return undefined;
 
   const rounds = HUNT.rounds.map((round) => {
     const puzzleCells = round.puzzles.map((puzzleSlot) => {
@@ -22,16 +23,20 @@ const renderDevPane = (session: object | undefined) => {
       const box = (
         <div
           key={puzzleSlot.id}
-          style={{ display: "inline-block", width: "8px", height: "8px", backgroundColor: bgcolor, border: `1px solid ${bgcolor}`, margin: "2px" }}
+          style={{
+            display: "inline-block",
+            width: "8px",
+            height: "8px",
+            backgroundColor: bgcolor,
+            border: `1px solid ${bgcolor}`,
+            margin: "2px",
+          }}
           title={title}
         />
       );
       if (slug) {
         return (
-          <a
-            key={puzzleSlot.id}
-            href={`/puzzles/${slug}`}
-          >
+          <a key={puzzleSlot.id} href={`/puzzles/${slug}`}>
             {box}
           </a>
         );
@@ -41,33 +46,46 @@ const renderDevPane = (session: object | undefined) => {
     });
     return (
       <div key={round.key}>
-        <h4><a href={`/rounds/${round.slug}`}>{round.title}</a></h4>
-        <div>
-          {puzzleCells}
-        </div>
+        <h4>
+          <a href={`/rounds/${round.slug}`}>{round.title}</a>
+        </h4>
+        <div>{puzzleCells}</div>
       </div>
     );
   });
 
-
   return (
-    <div style={{flex: 0, minWidth: "200px", height: "100vh", backgroundColor: "#eee" }}>
+    <div
+      style={{
+        flex: 0,
+        minWidth: "200px",
+        height: "100vh",
+        backgroundColor: "#eee",
+      }}
+    >
       <h2>Devtools</h2>
       <h3>Nav</h3>
       {rounds}
       <h3>Actions</h3>
       <ul>
-        <li><a href="/logout">Logout</a></li>
+        <li>
+          <a href="/logout">Logout</a>
+        </li>
       </ul>
     </div>
   );
 };
 
-const Layout = ({ children, scripts, title, session }: {
-  children: ReactNode,
-  scripts?: string[],
-  title?: string,
-  session?: object,
+const Layout = ({
+  children,
+  scripts,
+  title,
+  session,
+}: {
+  children: ReactNode;
+  scripts?: string[];
+  title?: string;
+  session?: object;
 }) => {
   return (
     <html>
@@ -76,10 +94,15 @@ const Layout = ({ children, scripts, title, session }: {
         {scripts && scripts.map((s) => `<script src="${s}"></script>`)}
       </head>
       <body>
-        <div style={{display: "flex", flexDirection: "row", alignItems: "flex-start", justifyContent: "flex-start"}}>
-          <div style={{flex: 1}}>
-            {children}
-          </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+          }}
+        >
+          <div style={{ flex: 1 }}>{children}</div>
           {renderDevPane(session)}
         </div>
       </body>
