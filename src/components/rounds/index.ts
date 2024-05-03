@@ -13,10 +13,7 @@ import StakeoutRoundPage from "./StakeoutRoundPage";
 
 // Map from round `key` to component that should be rendered for that round.
 // TODO: figure out the props we want to pass to the round pages
-export const ROUND_PAGE_MAP: Record<
-  string,
-  FunctionComponent<{}>
-> = {
+export const ROUND_PAGE_MAP: Record<string, FunctionComponent<{}>> = {
   sd: ShadowDiamondRoundPage,
   so: StakeoutRoundPage,
   pt: PapertrailRoundPage,

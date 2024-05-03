@@ -31,10 +31,10 @@ const JWT_SECRET = "secret"; // FIXME
 function cookieExtractor(req) {
   var token = null;
   if (req && req.cookies) {
-      token = req.cookies['mitmh2025_auth'];
+    token = req.cookies["mitmh2025_auth"];
   }
   return token;
-};
+}
 
 function newPassport() {
   const passport = new Passport();
@@ -68,7 +68,7 @@ export function getRouter() {
 
   const s = initServer();
 
-  const authMiddleware = passport.authenticate('jwt', { session: false });
+  const authMiddleware = passport.authenticate("jwt", { session: false });
 
   const router = s.router(contract, {
     auth: {

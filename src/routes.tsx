@@ -1,8 +1,4 @@
-import express, {
-  Request,
-  Response,
-  RequestHandler,
-} from "express";
+import express, { Request, Response, RequestHandler } from "express";
 import React from "react";
 import { Router } from "websocket-express";
 import { renderToString } from "react-dom/server";
