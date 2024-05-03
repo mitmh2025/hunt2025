@@ -37,7 +37,30 @@ const TeamStateSchema = z.object({
     puzzles: z.record(slug, PuzzleSummarySchema),
 });
 
+const LoginRequestSchema = z.object({
+    username: z.string(),
+    password: z.string(),
+});
+
+const LoginResponseSchema = z.object({
+    token: z.string(),
+});
+
+const authContract = c.router({
+    login: {
+        method: 'POST',
+        path: `/auth/login`,
+        body: LoginRequestSchema,
+        responses: {
+            200: LoginResponseSchema,
+            401: z.null(),
+        },
+        summary: 'Login to a team',
+    },
+});
+
 export const contract = c.router({
+    auth: authContract,
     getMyTeamState: {
         method: 'GET',
         path: `/me`,

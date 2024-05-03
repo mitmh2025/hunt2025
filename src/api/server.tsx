@@ -27,6 +27,21 @@ export function getRouter() {
 
     const router = s.router(contract,
         {
+            auth: {
+                login: async ({ body: { username, password } }) => {
+                    if (password == "password") {
+                        return {
+                            status: 200,
+                            body: {
+                                token: username, // FIXME
+                            }
+                        };
+                    }
+                    return {
+                        status: 403,
+                    };
+                },
+            },
             getMyTeamState: async ({ }) => {
                 return {
                     status: 200,
