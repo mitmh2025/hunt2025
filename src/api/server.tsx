@@ -24,6 +24,10 @@ const puzzleState: Record<
   automaton: {
     round: "wasteland",
   },
+  just_keep_swiping: {
+    round: "shadow_diamond",
+    locked: "unlocked",
+  },
   the_casino: {
     round: "shadow_diamond",
     locked: "unlocked",
@@ -120,6 +124,7 @@ export function getRouter() {
                   name: "Shadow Diamond",
                   slots: {
                     sdm03: "the_casino",
+                    sdfake: "just_keep_swiping",
                   },
                 },
               },

@@ -3,6 +3,8 @@
 
 // import Boardwalk from './dental-shark';
 import Casino from "./fortunate-calf";
+import Tinder from "./tinder";
+
 import type { Hunt } from "./types";
 
 const HUNT: Hunt = {
@@ -41,6 +43,7 @@ const HUNT: Hunt = {
         { id: "sdp26" },
         { id: "sdp27" },
         { id: "sdp28" },
+        { id: "sdpfake", assignment: Tinder }, // Tinder, fake thing I'm doing to test integrating other build deps
         { id: "sdm01" }, // Boardwalk (meta)
         { id: "sdm02" }, // Jewelry Store (meta)
         { id: "sdm03", assignment: Casino }, // Casino (meta)
