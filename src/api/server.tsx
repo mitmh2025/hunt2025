@@ -119,7 +119,7 @@ export function getRouter() {
                 shadow_diamond: {
                   name: "Shadow Diamond",
                   slots: {
-                    sdm3: "the_casino",
+                    sdm03: "the_casino",
                   },
                 },
               },
