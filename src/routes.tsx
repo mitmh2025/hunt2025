@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import parseurl from "parseurl";
 import stream from "stream";
+import path from "path";
 
 import {routerLocationAsyncLocalStorage} from '@mfng/core/router-location-async-local-storage';
 import {
@@ -15,13 +16,16 @@ import {
 import {createHtmlStream} from '@mfng/core/server/ssr';
 import * as React from 'react';
 import type {ReactFormState} from 'react-dom/server';
+//import * as manifests from './handler/manifests.js';
 import {
   cssManifest,
   jsManifest,
   reactClientManifest,
   reactServerManifest,
   reactSsrManifest,
-} from './handler/manifests.mjs';
+} from './handler/manifests.js';
+
+//console.log("manifests", manifests);
 
 import type { Round, PuzzleSlot } from "../puzzledata/types";
 import HUNT from "../puzzledata";
@@ -219,6 +223,8 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   router.use(multer().none()); // Don't handle file uploads
   router.use(express.text());
 
+  router.use("/client", express.static(path.join(__dirname, "static/client")));
+
   // FIXME: routes
   router.get("/", renderApp);
   router.post("/", handlePost);
@@ -226,8 +232,11 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   return router;
 }
 
-function App() {
-  return (<div>Hello world</div>);
+function App(req: RequestWithAPI) {
+  return (
+    <Layout teamState={req?.teamState}>
+      <div>Hello world</div>
+    </Layout>);
 }
 
 const oneDay = 60 * 60 * 24;
@@ -240,8 +249,9 @@ async function renderApp(
 ) {
   const {pathname, search} = parseurl(req);
 
+
   return routerLocationAsyncLocalStorage.run({pathname, search}, async () => {
-    const rscAppStream = createRscAppStream(<App />, {
+    const rscAppStream = createRscAppStream(<App req={req}/>, {
       reactClientManifest,
       //FIXME: mainCssHref: cssManifest[`main.css`]!,
       formState,
@@ -252,7 +262,7 @@ async function renderApp(
         'Content-Type': `text/x-component; charset=utf-8`,
         'Cache-Control': `s-maxage=60, stale-while-revalidate=${oneDay}`,
       });
-      res.sendStatus(200);
+      res.status(200);
       await stream.Readable.fromWeb(rscAppStream).pipe(res);
       return;
     }
@@ -267,7 +277,12 @@ async function renderApp(
       'Content-Type': `text/html; charset=utf-8`,
       'Cache-Control': `s-maxage=60, stale-while-revalidate=${oneDay}`,
     });
-    res.sendStatus(200);
+    res.status(200);
+    // for await (const chunk of htmlStream) {
+    //   console.log("chunk", new TextDecoder("utf-8").decode(chunk));
+    //   res.write(chunk);
+    // }
+    // res.end();
     await stream.Readable.fromWeb(htmlStream).pipe(res);
   });
 }
@@ -292,7 +307,7 @@ async function handlePost(req: Request, res: Response, next: NextFunction) {
     });
 
     res.set({'Content-Type': `text/x-component`});
-    res.sendStatus(rscActionStream ? 200 : 500);
+    res.status(rscActionStream ? 200 : 500);
     await stream.Readable.fromWeb(rscActionStream).pipe(res);
     return;
   } else {

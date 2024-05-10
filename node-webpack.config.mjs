@@ -99,8 +99,8 @@ export default function createConfigs(_env, argv) {
       // publicPath: 'https://cdn.example.com/assets/[fullhash]/',
       filename: "[name]-bundle.js",
       publicPath: "/assets/",
-      // libraryTarget: "module",
-      // chunkFormat: "module",
+      libraryTarget: "module",
+      chunkFormat: "module",
       devtoolModuleFilenameTemplate: (
         /** @type {{ absoluteResourcePath: string; }} */ info,
       ) => info.absoluteResourcePath,
@@ -148,6 +148,10 @@ export default function createConfigs(_env, argv) {
     },
     resolve: {
       extensions: [".ts", ".tsx", "..."],
+      extensionAlias: {
+        ".js": [".ts", ".js"],
+        ".mjs": [".mts", ".mjs"]
+      },
       alias: {
         // Work around bug in websocket-express
         'ws': path.join(currentDirname, 'node_modules/ws/index.js'),
@@ -169,10 +173,10 @@ export default function createConfigs(_env, argv) {
       }),
     ],
     experiments: {
-      //outputModule: true,
+      outputModule: true,
       layers: true,
     },
-    devtool: dev ? 'eval' : `source-map`,
+    devtool: dev ? 'source-map' : `source-map`,
     mode,
     // TODO: stats
   };

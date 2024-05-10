@@ -11,9 +11,6 @@
     },
     "externalHelpers": true
   },
-  "module": {
-    "type": "commonjs"
-  },
   "env": {
     "targets": {
       "node": 79
