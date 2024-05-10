@@ -24,7 +24,7 @@
     "baseUrl": ".",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["node"],
+    "types": ["node", "react/experimental", "react-dom/experimental"],
     "esModuleInterop": true,
     "preserveSymlinks": true
   }

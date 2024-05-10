@@ -1,0 +1,230 @@
+import {createRequire} from 'module';
+import path from "path";
+import url from "url";
+import nodeExternals from "webpack-node-externals";
+import {WebpackManifestPlugin} from 'webpack-manifest-plugin';
+
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+import {
+  WebpackRscClientPlugin,
+  WebpackRscServerPlugin,
+  createWebpackRscClientLoader,
+  createWebpackRscServerLoader,
+  createWebpackRscSsrLoader,
+  webpackRscLayerName,
+} from '@mfng/webpack-rsc';
+
+const require = createRequire(import.meta.url);
+const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
+const outputDirname = path.join(currentDirname, `dist`);
+const outputManifestDirname = outputDirname;
+
+const reactServerManifestFilename = path.join(
+  outputManifestDirname,
+  `react-server-manifest.json`,
+);
+
+const reactClientManifestFilename = path.join(
+  outputManifestDirname,
+  `react-client-manifest.json`,
+);
+
+const reactSsrManifestFilename = path.join(
+  outputManifestDirname,
+  `react-ssr-manifest.json`,
+);
+
+const jsManifestFilename = path.join(outputManifestDirname, `js-manifest.json`);
+
+const cssManifestFilename = path.join(
+  outputManifestDirname,
+  `css-manifest.json`,
+);
+
+/**
+ * @param {unknown} _env
+ * @param {{readonly mode?: import('webpack').Configuration['mode']}} argv
+ * @return {import('webpack').Configuration[]}
+ */
+export default function createConfigs(_env, argv) {
+  const {mode} = argv;
+  const dev = mode === `development`;
+
+  const clientReferencesMap = new Map();
+  const serverReferencesMap = new Map();
+
+  const rscServerLoader = createWebpackRscServerLoader({
+    clientReferencesMap,
+    serverReferencesMap,
+  });
+
+  const rscSsrLoader = createWebpackRscSsrLoader({serverReferencesMap});
+  const rscClientLoader = createWebpackRscClientLoader({serverReferencesMap});
+
+  const cssRule = {
+    test: /\.css$/,
+    use: [
+      MiniCssExtractPlugin.loader,
+      {
+        loader: "css-loader",
+        options: {
+          modules: {
+            localIdentName: dev
+              ? `[local]__[hash:base64:5]`
+              : `[hash:base64:7]`,
+            auto: true,
+          },
+        },
+      },
+      // TODO: {loader: "postcss-loader",},
+    ],
+  };
+
+  const serverSwcLoader = {
+    // .swcrc can be used to configure swc
+    loader: "swc-loader",
+  };
+
+  const serverConfig = {
+    name: "server",
+    target: "node",
+    entry: {
+      server: "./src/main.ts",
+      dump: "./puzzledata/dump-json.ts",
+    },
+    output: {
+      path: outputDirname,
+      // If we hook assets up to a CDN:
+      // publicPath: 'https://cdn.example.com/assets/[fullhash]/',
+      filename: "[name]-bundle.js",
+      publicPath: "/assets/",
+      // libraryTarget: "module",
+      // chunkFormat: "module",
+      devtoolModuleFilenameTemplate: (
+        /** @type {{ absoluteResourcePath: string; }} */ info,
+      ) => info.absoluteResourcePath,
+    },
+    module: {
+      rules: [
+        {
+          resource: [/\/server\/rsc\//, /\/components\//],
+          layer: webpackRscLayerName,
+        },
+        {
+          resource: /\/server\/shared\//,
+          layer: `shared`,
+        },
+        {
+          issuerLayer: webpackRscLayerName,
+          resolve: {conditionNames: [`react-server`, `...`]},
+        },
+        {
+          oneOf: [
+            {
+              issuerLayer: webpackRscLayerName,
+              test: /\.tsx?$/,
+              use: [rscServerLoader, serverSwcLoader],
+            },
+            {
+              test: /\.tsx?$/,
+              use: [rscSsrLoader, serverSwcLoader],
+            },
+          ],
+        },
+        cssRule,
+        // TODO: support importing other kinds of assets, and aliases for
+        // the results of the browser build bundles
+        {
+          test: /\.png$/,
+          type: "asset/resource",
+          generator: {
+            outputPath: "assets/",
+            filename: "[hash][ext][query]",
+          },
+        },
+      ],
+      // Add modules as appropriate
+    },
+    resolve: {
+      extensions: [".ts", ".tsx", "..."],
+      alias: {
+        // Work around bug in websocket-express
+        'ws': path.join(currentDirname, 'node_modules/ws/index.js'),
+      }
+    },
+    externalsPresets: { node: true },
+    // FIXME: Requires conditions
+    // externals: [nodeExternals({ importType: "module", })],
+    plugins: [
+      // server-main.css is not used, but required by MiniCssExtractPlugin.
+      new MiniCssExtractPlugin({filename: `server-main.css`, runtime: false}),
+      new WebpackRscServerPlugin({
+        clientReferencesMap,
+        serverReferencesMap,
+        serverManifestFilename: path.relative(
+          outputManifestDirname,
+          reactServerManifestFilename,
+        ),
+      }),
+    ],
+    experiments: {
+      //outputModule: true,
+      layers: true,
+    },
+    devtool: dev ? 'eval' : `source-map`,
+    mode,
+    // TODO: stats
+  };
+
+  const clientOutputDirname = path.join(outputDirname, `static/client`);
+
+  const clientConfig = {
+    name: 'client',
+    dependencies: ['server'],
+    entry: './src/client.tsx',
+    output: {
+      filename: dev ? `main.js` : `main.[contenthash:8].js`,
+      path: clientOutputDirname,
+      clean: !dev,
+      publicPath: `/client/`,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: [rscClientLoader, 'swc-loader'],
+        },
+        cssRule,
+      ],
+    },
+    plugins: [
+      new WebpackManifestPlugin({
+        fileName: cssManifestFilename,
+        publicPath: `/client/`,
+        filter: (file) => file.path.endsWith(`.css`),
+      }),
+      new WebpackManifestPlugin({
+        fileName: jsManifestFilename,
+        publicPath: `/client/`,
+        filter: (file) => file.path.endsWith(`.js`),
+      }),
+      new WebpackRscClientPlugin({
+        clientReferencesMap,
+        clientManifestFilename: path.relative(
+          clientOutputDirname,
+          reactClientManifestFilename,
+        ),
+        ssrManifestFilename: path.relative(
+          clientOutputDirname,
+          reactSsrManifestFilename,
+        ),
+      }),
+    ],
+    // ...
+  };
+  return [
+    serverConfig,
+    clientConfig,
+  ];
+};

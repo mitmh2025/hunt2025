@@ -1,9 +1,27 @@
-import express, { Request, Response, RequestHandler } from "express";
-import React from "react";
+import express, { Request, Response, RequestHandler, NextFunction } from "express";
 import { Router } from "websocket-express";
-import { renderToString } from "react-dom/server";
 import { Client, newClient } from "./api/client";
 import cookieParser from "cookie-parser";
+import multer from "multer";
+import parseurl from "parseurl";
+import stream from "stream";
+
+import {routerLocationAsyncLocalStorage} from '@mfng/core/router-location-async-local-storage';
+import {
+  createRscActionStream,
+  createRscAppStream,
+  createRscFormState,
+} from '@mfng/core/server/rsc';
+import {createHtmlStream} from '@mfng/core/server/ssr';
+import * as React from 'react';
+import type {ReactFormState} from 'react-dom/server';
+import {
+  cssManifest,
+  jsManifest,
+  reactClientManifest,
+  reactServerManifest,
+  reactSsrManifest,
+} from './handler/manifests.mjs';
 
 import type { Round, PuzzleSlot } from "../puzzledata/types";
 import HUNT from "../puzzledata";
@@ -198,7 +216,97 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   router.use(cookieParser());
   router.use(express.urlencoded({ extended: true }));
   router.use(express.json());
+  router.use(multer().none()); // Don't handle file uploads
+  router.use(express.text());
 
+  // FIXME: routes
+  router.get("/", renderApp);
+  router.post("/", handlePost);
+
+  return router;
+}
+
+function App() {
+  return (<div>Hello world</div>);
+}
+
+const oneDay = 60 * 60 * 24;
+
+async function renderApp(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  formState?: ReactFormState,
+) {
+  const {pathname, search} = parseurl(req);
+
+  return routerLocationAsyncLocalStorage.run({pathname, search}, async () => {
+    const rscAppStream = createRscAppStream(<App />, {
+      reactClientManifest,
+      //FIXME: mainCssHref: cssManifest[`main.css`]!,
+      formState,
+    });
+
+    if (req.get('accept') === `text/x-component`) {
+      res.set({
+        'Content-Type': `text/x-component; charset=utf-8`,
+        'Cache-Control': `s-maxage=60, stale-while-revalidate=${oneDay}`,
+      });
+      res.sendStatus(200);
+      await stream.Readable.fromWeb(rscAppStream).pipe(res);
+      return;
+    }
+
+    const htmlStream = await createHtmlStream(rscAppStream, {
+      reactSsrManifest,
+      bootstrapScripts: [jsManifest[`main.js`]!],
+      formState,
+    });
+
+    res.set({
+      'Content-Type': `text/html; charset=utf-8`,
+      'Cache-Control': `s-maxage=60, stale-while-revalidate=${oneDay}`,
+    });
+    res.sendStatus(200);
+    await stream.Readable.fromWeb(htmlStream).pipe(res);
+  });
+}
+
+async function handlePost(req: Request, res: Response, next: NextFunction) {
+  const serverReferenceId = req.get(`x-rsc-action`);
+
+  if (serverReferenceId) {
+    // POST via callServer:
+
+    const contentType = req.get(`content-type`);
+
+    const body = await (contentType?.startsWith(`multipart/form-data`)
+      ? req.body
+      : req.body);
+
+    const rscActionStream = await createRscActionStream({
+      body,
+      serverReferenceId,
+      reactClientManifest,
+      reactServerManifest,
+    });
+
+    res.set({'Content-Type': `text/x-component`});
+    res.sendStatus(rscActionStream ? 200 : 500);
+    await stream.Readable.fromWeb(rscActionStream).pipe(res);
+    return;
+  } else {
+    // POST before hydration (progressive enhancement):
+
+    const formData = req.body;
+    const formState = await createRscFormState(formData, reactServerManifest);
+
+    return renderApp(req, res, next, formState);
+  }
+}
+
+function getRoutes() {
+  // FIXME
   const unauthRouter = express.Router();
   unauthRouter.use((req, res, next) => {
     req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
