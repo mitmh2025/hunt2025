@@ -1,6 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, Suspense } from "react";
 import HUNT from "../../puzzledata";
-import type { TeamState } from "src/api/client";
+import { Counter } from "./counter";
+import type { TeamState } from "../api/client.js";
 
 const SHOW_DEV_PANE = true;
 
@@ -110,6 +111,8 @@ const Layout = ({
         {scripts && scripts.map((s) => `<script src="${s}"></script>`)}
       </head>
       <body>
+        <Suspense>
+          <Counter />
         <div
           style={{
             display: "flex",
@@ -121,6 +124,7 @@ const Layout = ({
           <div style={{ flex: 1 }}>{children}</div>
           {renderDevPane(teamState)}
         </div>
+        </Suspense>
       </body>
     </html>
   );

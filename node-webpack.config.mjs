@@ -42,6 +42,21 @@ const cssManifestFilename = path.join(
   `css-manifest.json`,
 );
 
+class LogValue {
+  constructor(name, m) {
+    this.name = name;
+    this.m = m;
+  }
+  apply(compiler) {
+    compiler.hooks.emit.tap(
+      'LogValue',
+      () => {
+        console.log(this.name, this.m);
+      },
+    )
+  }
+}
+
 /**
  * @param {unknown} _env
  * @param {{readonly mode?: import('webpack').Configuration['mode']}} argv
@@ -91,7 +106,7 @@ export default function createConfigs(_env, argv) {
     target: "node",
     entry: {
       server: "./src/main.ts",
-      dump: "./puzzledata/dump-json.ts",
+      //dump: "./puzzledata/dump-json.ts",
     },
     output: {
       path: outputDirname,
@@ -108,7 +123,7 @@ export default function createConfigs(_env, argv) {
     module: {
       rules: [
         {
-          resource: [/\/server\/rsc\//, /\/components\//],
+          resource: [/\/server\/rsc\//, /\/components\/Layout.tsx/],
           layer: webpackRscLayerName,
         },
         {
@@ -153,6 +168,7 @@ export default function createConfigs(_env, argv) {
         ".mjs": [".mts", ".mjs"]
       },
       alias: {
+        '@': '.',
         // Work around bug in websocket-express
         'ws': path.join(currentDirname, 'node_modules/ws/index.js'),
       }
@@ -193,6 +209,7 @@ export default function createConfigs(_env, argv) {
       clean: !dev,
       publicPath: `/client/`,
     },
+    devtool: 'source-map',
     module: {
       rules: [
         {
@@ -224,6 +241,8 @@ export default function createConfigs(_env, argv) {
           reactSsrManifestFilename,
         ),
       }),
+      new LogValue(`clientReferencesMap`, clientReferencesMap),
+      new LogValue(`serverReferencesMap`, serverReferencesMap),
     ],
     // ...
   };

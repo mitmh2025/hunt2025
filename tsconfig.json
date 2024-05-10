@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
     "target": "es2019",
-    "module": "esNext",
+    "module": "es2020",
     "lib": ["esnext", "dom"],
     "jsx": "preserve",
     "noEmit": true,
+
+    "paths": {
+      "@/*": ["./src/*"],
+    },
 
     /* Strict Type-Checking Options */
     "strict": true,
@@ -22,10 +26,10 @@
 
     /* Modules Resolution Options */
     "baseUrl": ".",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": ["node", "react/experimental", "react-dom/experimental"],
     "esModuleInterop": true,
     "preserveSymlinks": true
-  }
+  },
 }

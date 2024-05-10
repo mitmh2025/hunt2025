@@ -1,6 +1,6 @@
 import express, { Request, Response, RequestHandler, NextFunction } from "express";
 import { Router } from "websocket-express";
-import { Client, newClient } from "./api/client";
+import { Client, newClient } from "@/api/client";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import parseurl from "parseurl";
@@ -36,14 +36,11 @@ import LoginPage from "./components/LoginPage";
 const SHOW_SOLUTIONS = true;
 
 function hackLoginGetHandler(_req: Request, res: Response) {
-  const doctype = "<!DOCTYPE html>";
-  const doc = (
+  return (
     <Layout>
       <LoginPage />
     </Layout>
   );
-  const html = doctype + renderToString(doc) + "\n";
-  res.send(html);
 }
 
 interface LoginQueryTypes {
@@ -100,15 +97,12 @@ function logoutHandler(_req: Request, res: Response) {
 const renderRound = (req: Request, res: Response, roundKey: string) => {
   const Component = ROUND_PAGE_MAP[roundKey]!;
 
-  const doctype = "<!DOCTYPE html>";
   // TODO: pass props about current unlock state to Component
-  const doc = (
+  return (
     <Layout teamState={req.teamState}>
       <Component />
     </Layout>
   );
-  const html = doctype + renderToString(doc) + "\n";
-  res.send(html);
 };
 
 const render404 = (_req: Request, res: Response) => {
@@ -171,8 +165,7 @@ function puzzleHandler(req: RequestWithAPI, res: Response) {
   const Content = puzzleSlot.assignment!.content;
   const title = puzzleSlot.assignment!.title;
 
-  const doctype = "<!DOCTYPE html>";
-  const doc = (
+  return (
     <Layout teamState={req.teamState}>
       <h1>{title}</h1>
       {/* TODO: add guess form, history, errata, etc. */}
@@ -181,8 +174,6 @@ function puzzleHandler(req: RequestWithAPI, res: Response) {
       </div>
     </Layout>
   );
-  const html = doctype + renderToString(doc) + "\n";
-  res.send(html);
 }
 
 function solutionHandler(req: RequestWithAPI, res: Response) {
@@ -202,8 +193,7 @@ function solutionHandler(req: RequestWithAPI, res: Response) {
 
   const Solution = puzzleSlot.assignment!.solution;
   const title = puzzleSlot.assignment!.title;
-  const doctype = "<!DOCTYPE html>";
-  const doc = (
+  return (
     <Layout teamState={req.teamState}>
       <h1>Solution to {title}</h1>
       <div id="solution-content">
@@ -211,8 +201,6 @@ function solutionHandler(req: RequestWithAPI, res: Response) {
       </div>
     </Layout>
   );
-  const html = doctype + renderToString(doc) + "\n";
-  res.send(html);
 }
 
 export function getUiRouter({ apiUrl }: { apiUrl: string }) {
@@ -266,6 +254,8 @@ async function renderApp(
       await stream.Readable.fromWeb(rscAppStream).pipe(res);
       return;
     }
+
+    console.log("ssr manifest", reactSsrManifest);
 
     const htmlStream = await createHtmlStream(rscAppStream, {
       reactSsrManifest,
