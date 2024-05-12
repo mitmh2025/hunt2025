@@ -1,10 +1,10 @@
-import {createRequire} from 'module';
+import { createRequire } from "module";
 import path from "path";
 import url from "url";
 import nodeExternals from "webpack-node-externals";
-import {WebpackManifestPlugin} from 'webpack-manifest-plugin';
+import { WebpackManifestPlugin } from "webpack-manifest-plugin";
 
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 import {
   WebpackRscClientPlugin,
@@ -13,7 +13,7 @@ import {
   createWebpackRscServerLoader,
   createWebpackRscSsrLoader,
   webpackRscLayerName,
-} from '@mfng/webpack-rsc';
+} from "@mfng/webpack-rsc";
 
 const require = createRequire(import.meta.url);
 const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -48,12 +48,9 @@ class LogValue {
     this.m = m;
   }
   apply(compiler) {
-    compiler.hooks.emit.tap(
-      'LogValue',
-      () => {
-        console.log(this.name, this.m);
-      },
-    )
+    compiler.hooks.emit.tap("LogValue", () => {
+      console.log(this.name, this.m);
+    });
   }
 }
 
@@ -63,7 +60,7 @@ class LogValue {
  * @return {import('webpack').Configuration[]}
  */
 export default function createConfigs(_env, argv) {
-  const {mode} = argv;
+  const { mode } = argv;
   const dev = mode === `development`;
 
   const clientReferencesMap = new Map();
@@ -74,8 +71,8 @@ export default function createConfigs(_env, argv) {
     serverReferencesMap,
   });
 
-  const rscSsrLoader = createWebpackRscSsrLoader({serverReferencesMap});
-  const rscClientLoader = createWebpackRscClientLoader({serverReferencesMap});
+  const rscSsrLoader = createWebpackRscSsrLoader({ serverReferencesMap });
+  const rscClientLoader = createWebpackRscClientLoader({ serverReferencesMap });
 
   const cssRule = {
     test: /\.css$/,
@@ -132,7 +129,7 @@ export default function createConfigs(_env, argv) {
         },
         {
           issuerLayer: webpackRscLayerName,
-          resolve: {conditionNames: [`react-server`, `...`]},
+          resolve: { conditionNames: [`react-server`, `...`] },
         },
         {
           oneOf: [
@@ -165,20 +162,20 @@ export default function createConfigs(_env, argv) {
       extensions: [".ts", ".tsx", "..."],
       extensionAlias: {
         ".js": [".ts", ".js"],
-        ".mjs": [".mts", ".mjs"]
+        ".mjs": [".mts", ".mjs"],
       },
       alias: {
-        '@': path.join(currentDirname, "src"),
+        "@": path.join(currentDirname, "src"),
         // Work around bug in websocket-express
-        'ws': path.join(currentDirname, 'node_modules/ws/index.js'),
-      }
+        ws: path.join(currentDirname, "node_modules/ws/index.js"),
+      },
     },
     externalsPresets: { node: true },
     // FIXME: Requires conditions
     // externals: [nodeExternals({ importType: "module", })],
     plugins: [
       // server-main.css is not used, but required by MiniCssExtractPlugin.
-      new MiniCssExtractPlugin({filename: `server-main.css`, runtime: false}),
+      new MiniCssExtractPlugin({ filename: `server-main.css`, runtime: false }),
       new WebpackRscServerPlugin({
         clientReferencesMap,
         serverReferencesMap,
@@ -192,7 +189,7 @@ export default function createConfigs(_env, argv) {
       outputModule: true,
       layers: true,
     },
-    devtool: dev ? 'source-map' : `source-map`,
+    devtool: dev ? "source-map" : `source-map`,
     mode,
     // TODO: stats
   };
@@ -200,21 +197,21 @@ export default function createConfigs(_env, argv) {
   const clientOutputDirname = path.join(outputDirname, `static/client`);
 
   const clientConfig = {
-    name: 'client',
-    dependencies: ['server'],
-    entry: './src/client.tsx',
+    name: "client",
+    dependencies: ["server"],
+    entry: "./src/client.tsx",
     output: {
       filename: dev ? `main.js` : `main.[contenthash:8].js`,
       path: clientOutputDirname,
       clean: !dev,
       publicPath: `/client/`,
     },
-    devtool: 'source-map',
+    devtool: "source-map",
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          use: [rscClientLoader, 'swc-loader'],
+          use: [rscClientLoader, "swc-loader"],
         },
         cssRule,
       ],
@@ -246,8 +243,5 @@ export default function createConfigs(_env, argv) {
     ],
     // ...
   };
-  return [
-    serverConfig,
-    clientConfig,
-  ];
-};
+  return [serverConfig, clientConfig];
+}

@@ -1,4 +1,10 @@
-import express, { Request, Response, RequestHandler, NextFunction, application } from "express";
+import express, {
+  Request,
+  Response,
+  RequestHandler,
+  NextFunction,
+  application,
+} from "express";
 import { Router } from "websocket-express";
 import { newClient } from "@/api/client";
 import cookieParser from "cookie-parser";
@@ -7,15 +13,15 @@ import parseurl from "parseurl";
 import stream from "stream";
 import path from "path";
 
-import {routerLocationAsyncLocalStorage} from '@mfng/core/router-location-async-local-storage';
+import { routerLocationAsyncLocalStorage } from "@mfng/core/router-location-async-local-storage";
 import {
   createRscActionStream,
   createRscAppStream,
   createRscFormState,
-} from '@mfng/core/server/rsc';
-import {createHtmlStream} from '@mfng/core/server/ssr';
-import * as React from 'react';
-import type {ReactFormState} from 'react-dom/server';
+} from "@mfng/core/server/rsc";
+import { createHtmlStream } from "@mfng/core/server/ssr";
+import * as React from "react";
+import type { ReactFormState } from "react-dom/server";
 //import * as manifests from './handler/manifests.js';
 import {
   cssManifest,
@@ -23,7 +29,7 @@ import {
   reactClientManifest,
   reactServerManifest,
   reactSsrManifest,
-} from './handler/manifests.js';
+} from "./handler/manifests.js";
 
 //console.log("manifests", manifests);
 
@@ -113,12 +119,26 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
     return next();
   });
 
-  const addRoute = (router: Router, path: string, handler: (req: Request) => React.ReactNode) => {
-    router.get(path, async (req, res, next) => await renderApp(handler, req, res, next));
-    router.post(path, async (req, res, next) => await handlePost(handler, req, res, next));
-  }
+  const addRoute = (
+    router: Router,
+    path: string,
+    handler: (req: Request) => React.ReactNode,
+  ) => {
+    router.get(
+      path,
+      async (req, res, next) => await renderApp(handler, req, res, next),
+    );
+    router.post(
+      path,
+      async (req, res, next) => await handlePost(handler, req, res, next),
+    );
+  };
 
-  unauthRouter.get("/login", async (req, res, next) => await renderApp(hackLoginGetHandler, req, res, next));
+  unauthRouter.get(
+    "/login",
+    async (req, res, next) =>
+      await renderApp(hackLoginGetHandler, req, res, next),
+  );
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
 
@@ -146,9 +166,9 @@ async function renderApp(
   next: NextFunction,
   formState?: ReactFormState,
 ) {
-  const {pathname, search} = parseurl(req);
+  const { pathname, search } = parseurl(req);
 
-  return routerLocationAsyncLocalStorage.run({pathname, search}, async () => {
+  return routerLocationAsyncLocalStorage.run({ pathname, search }, async () => {
     console.log("renderApp", pathname, search);
     const app = await handler(req);
     if (app === undefined) {
@@ -161,10 +181,10 @@ async function renderApp(
       formState,
     });
 
-    if (req.get('accept') === `text/x-component`) {
+    if (req.get("accept") === `text/x-component`) {
       res.set({
-        'Content-Type': `text/x-component; charset=utf-8`,
-        'Cache-Control': `s-maxage=60, stale-while-revalidate=${oneDay}`,
+        "Content-Type": `text/x-component; charset=utf-8`,
+        "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
       });
       res.status(200);
       await stream.Readable.fromWeb(rscAppStream).pipe(res);
@@ -178,8 +198,8 @@ async function renderApp(
     });
 
     res.set({
-      'Content-Type': `text/html; charset=utf-8`,
-      'Cache-Control': `s-maxage=60, stale-while-revalidate=${oneDay}`,
+      "Content-Type": `text/html; charset=utf-8`,
+      "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
     });
     res.status(200);
     // for await (const chunk of htmlStream) {
@@ -215,7 +235,7 @@ async function handlePost(
       reactServerManifest,
     });
 
-    res.set({'Content-Type': `text/x-component`});
+    res.set({ "Content-Type": `text/x-component` });
     res.status(rscActionStream ? 200 : 500);
     await stream.Readable.fromWeb(rscActionStream).pipe(res);
     return;

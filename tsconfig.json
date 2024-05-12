@@ -7,7 +7,7 @@
     "noEmit": true,
 
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     },
 
     /* Strict Type-Checking Options */
@@ -31,5 +31,5 @@
     "types": ["node", "react/experimental", "react-dom/experimental"],
     "esModuleInterop": true,
     "preserveSymlinks": true
-  },
+  }
 }
