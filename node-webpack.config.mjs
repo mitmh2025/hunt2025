@@ -123,7 +123,7 @@ export default function createConfigs(_env, argv) {
     module: {
       rules: [
         {
-          resource: [/\/server\/rsc\//, /\/components\/Layout.tsx/],
+          resource: [/\/server\/rsc\//, /\/routes\/.*\.tsx/],
           layer: webpackRscLayerName,
         },
         {
@@ -168,7 +168,7 @@ export default function createConfigs(_env, argv) {
         ".mjs": [".mts", ".mjs"]
       },
       alias: {
-        '@': '.',
+        '@': path.join(currentDirname, "src"),
         // Work around bug in websocket-express
         'ws': path.join(currentDirname, 'node_modules/ws/index.js'),
       }
