@@ -110,7 +110,6 @@ const Layout = ({
         {scripts && scripts.map((s) => `<script src="${s}"></script>`)}
       </head>
       <body>
-        <Suspense>
         <div
           style={{
             display: "flex",
@@ -122,7 +121,6 @@ const Layout = ({
           <div style={{ flex: 1 }}>{children}</div>
           {renderDevPane(teamState)}
         </div>
-        </Suspense>
       </body>
     </html>
   );
