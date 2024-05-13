@@ -9,7 +9,8 @@ import { newClient } from "@/api/client";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import parseurl from "parseurl";
-import stream from "stream";
+import stream from "node:stream";
+import type { ReadableStream } from "node:stream/web";
 import path from "path";
 
 import { routerLocationAsyncLocalStorage } from "@mfng/core/router-location-async-local-storage";
@@ -186,7 +187,9 @@ async function renderApp(
         "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
       });
       res.status(200);
-      await stream.Readable.fromWeb(rscAppStream).pipe(res);
+      await stream.Readable.fromWeb(
+        rscAppStream as ReadableStream<Uint8Array>,
+      ).pipe(res);
       return;
     }
 
@@ -206,7 +209,9 @@ async function renderApp(
     //   res.write(chunk);
     // }
     // res.end();
-    await stream.Readable.fromWeb(htmlStream).pipe(res);
+    await stream.Readable.fromWeb(
+      htmlStream as ReadableStream<Uint8Array>,
+    ).pipe(res);
   });
 }
 
@@ -236,7 +241,9 @@ async function handlePost(
 
     res.set({ "Content-Type": `text/x-component` });
     res.status(rscActionStream ? 200 : 500);
-    await stream.Readable.fromWeb(rscActionStream).pipe(res);
+    await stream.Readable.fromWeb(
+      rscActionStream as ReadableStream<Uint8Array>,
+    ).pipe(res);
     return;
   } else {
     // POST before hydration (progressive enhancement):
