@@ -28,12 +28,24 @@ function lookupPuzzleBySlug(
   return undefined;
 }
 
-export function puzzleHandler(req: Request) {
-  // Look up puzzle by slug.  If none exists, 404.
+export async function puzzleHandler(req: Request) {
   const slug = req.params.puzzleSlug;
+  if (slug === undefined) {
+    return undefined;
+  }
+  const result = await req.api.public.getPuzzleState({ params: { slug: slug }});
+  if (result.status !== 200) {
+    // Puzzle doesn't exist or team doesn't have access.
+    return undefined;
+  }
+
+  // Look up puzzle by slug.  If none exists, 404.
   const match = lookupPuzzleBySlug(slug);
   if (match === undefined) {
-    return undefined;
+    return (<Layout teamState={req.teamState}>
+      <h1>Puzzle not found</h1>
+      <p>The puzzle you requested (<code>{slug}</code>) exists, but we can't seem to find it.</p>
+    </Layout>);
   }
 
   // Puzzle is valid and known to have an assignment.

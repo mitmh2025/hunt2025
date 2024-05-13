@@ -10,7 +10,7 @@ const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
 const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
-export default function ({ apiUrl }) {
+export default function ({ apiUrl } : { apiUrl: string }) {
   const app = new WebSocketExpress();
 
   app.use(morgan(LOG_FORMAT));

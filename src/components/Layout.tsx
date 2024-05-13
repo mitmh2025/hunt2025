@@ -1,4 +1,4 @@
-import React, { ReactNode, Suspense } from "react";
+import React, { ReactNode } from "react";
 import HUNT from "../../puzzledata";
 import type { TeamState } from "../api/client.js";
 

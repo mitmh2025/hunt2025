@@ -3,7 +3,6 @@ import express, {
   Response,
   RequestHandler,
   NextFunction,
-  application,
 } from "express";
 import { Router } from "websocket-express";
 import { newClient } from "@/api/client";
@@ -102,7 +101,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   router.use("/client", express.static(path.join(__dirname, "static/client")));
 
   const unauthRouter = new Router();
-  unauthRouter.use((req, res, next) => {
+  unauthRouter.use((req, _res, next) => {
     req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
     return next();
   });
@@ -163,7 +162,7 @@ async function renderApp(
   handler: (req: Request) => React.ReactNode,
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
   formState?: ReactFormState,
 ) {
   const { pathname, search } = parseurl(req);

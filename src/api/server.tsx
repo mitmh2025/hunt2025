@@ -3,7 +3,7 @@
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { contract } from "./contract";
 import { ServerInferResponseBody } from "@ts-rest/core";
-import { Router } from "express";
+import { Request, Router } from "express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import * as swaggerUi from "swagger-ui-express";
 import bodyParser from "body-parser";
@@ -32,7 +32,7 @@ const puzzleState: Record<
 
 const JWT_SECRET = "secret"; // FIXME
 
-function cookieExtractor(req) {
+function cookieExtractor(req: Request) {
   var token = null;
   if (req && req.cookies) {
     token = req.cookies["mitmh2025_auth"];
