@@ -1,7 +1,7 @@
 import React from 'react';
 
-import App from './src/App';
-import "./src/index.css";
+import { App } from './src/App';
+//import "./src/index.css";
 
 const PuzzleContent = () => {
   return (

@@ -1,7 +1,7 @@
 'use client'
 
 //import PropTypes from 'prop-types';
-import React, { useEffect, Component } from 'react';
+import React, { useRef, useEffect, Component } from 'react';
 
 // require('hammerjs') when in a browser. This is safe because Hammer is only
 // invoked in componentDidMount, which is not executed on the server.
@@ -103,7 +103,7 @@ function updateHammer(hammer, props) {
 	});
 }
 
-const HammerComponent = (props) => {
+export const Hammer = (props) => {
 
   const elem = useRef(null);
   const hammer = useRef(null);

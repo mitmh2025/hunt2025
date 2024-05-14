@@ -1,7 +1,7 @@
 "use client"
 
 import React, { Component, useCallback, useRef } from "react";
-import Hammer from "./Hammer";
+import { Hammer } from "./Hammer";
 
 const Card = ({image, text = "Default text"}) => {
   return (
@@ -31,7 +31,7 @@ const Card = ({image, text = "Default text"}) => {
 //  right: null,
 //};
 
-const Tinderable = ({ onSwipeLeft, onSwipeRight, onAnimationDone, animation, currentCard, ...rest }) => {
+export const Tinderable = ({ onSwipeLeft, onSwipeRight, onAnimationDone, animation, currentCard, ...rest }) => {
 
   const cardRef = useRef(null);
   const [pos, setPos] = useState({ x: 0, y: 0});
@@ -210,5 +210,3 @@ class Tinderable extends Component {
   }
 }
 */
-
-export default Tinderable;

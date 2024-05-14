@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import React, { Component } from "react";
-import Tinderable from "./tinderable";
+import { Tinderable } from "./tinderable";
 import { data } from "./constants";
 
 import Tooltip from "react-bootstrap/Tooltip";
@@ -12,12 +12,16 @@ import borderLeft from "../public/assets/border-left.png";
 import borderRight from "../public/assets/border-right.png";
 import borderBottom from "../public/assets/border-bottom.png";
 
-const cards = {};
+const cards: Record<string, any> = {};
 data.forEach((c) => {
   cards[c.index] = c;
 });
 
-class App extends Component {
+export function App(props) {
+  return <AppInner {...props} />;
+}
+
+export class AppInner extends Component {
   constructor(props) {
     super(props);
     this.state = { currentCard: cards["node1"] };
@@ -131,5 +135,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

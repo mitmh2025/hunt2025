@@ -93,6 +93,15 @@ export default function createConfigs(_env, argv) {
     ],
   };
 
+  const pngRule = {
+    test: /\.png$/,
+    type: "asset/resource",
+    generator: {
+      outputPath: "assets/",
+      filename: "[hash][ext][query]",
+    },
+  };
+
   const serverSwcLoader = {
     // .swcrc can be used to configure swc
     loader: "swc-loader",
@@ -128,6 +137,15 @@ export default function createConfigs(_env, argv) {
           layer: `shared`,
         },
         {
+          // Work around bug in websocket-express
+          test: /^ws$/,
+          resolve: { conditionNames: [`require`] },
+        },
+        // {
+        //   test: [/^dom-helpers\/.*/, /^@restart\//],
+        //   resolve: { conditionNames: [`import`] },
+        // },
+        {
           issuerLayer: webpackRscLayerName,
           resolve: { conditionNames: [`react-server`, `...`] },
         },
@@ -147,14 +165,7 @@ export default function createConfigs(_env, argv) {
         cssRule,
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
-        {
-          test: /\.png$/,
-          type: "asset/resource",
-          generator: {
-            outputPath: "assets/",
-            filename: "[hash][ext][query]",
-          },
-        },
+        pngRule,
       ],
       // Add modules as appropriate
     },
@@ -166,8 +177,6 @@ export default function createConfigs(_env, argv) {
       },
       alias: {
         "@": path.join(currentDirname, "src"),
-        // Work around bug in websocket-express
-        ws: path.join(currentDirname, "node_modules/ws/index.js"),
       },
     },
     externalsPresets: { node: true },
@@ -191,6 +200,9 @@ export default function createConfigs(_env, argv) {
     },
     devtool: dev ? "source-map" : `source-map`,
     mode,
+    stats: {
+      errorDetails: true,
+    },
     // TODO: stats
   };
 
@@ -214,6 +226,7 @@ export default function createConfigs(_env, argv) {
           use: [rscClientLoader, "swc-loader"],
         },
         cssRule,
+        pngRule,
       ],
     },
     plugins: [
