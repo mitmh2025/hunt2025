@@ -160,6 +160,15 @@ export default function createConfigs(_env, argv) {
               test: /\.tsx?$/,
               use: [rscSsrLoader, serverSwcLoader],
             },
+            {
+              issuerLayer: webpackRscLayerName,
+              test: /\.m?js$/,
+              use: rscServerLoader,
+            },
+            {
+              test: /\.m?js$/,
+              use: rscSsrLoader,
+            },
           ],
         },
         cssRule,
