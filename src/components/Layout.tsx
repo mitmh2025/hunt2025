@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import HUNT from "../../puzzledata";
+import { Link } from "@mfng/core/client";
 import type { TeamState } from "../api/client.js";
 
 const SHOW_DEV_PANE = true;
@@ -51,9 +52,9 @@ const renderDevPane = (teamState?: TeamState) => {
       );
       if (slug) {
         return (
-          <a key={puzzleSlot.id} href={`/puzzles/${slug}`}>
+          <Link key={puzzleSlot.id} to={{ pathname: `/puzzles/${slug}` }}>
             {box}
-          </a>
+          </Link>
         );
       }
 
