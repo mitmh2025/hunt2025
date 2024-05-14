@@ -138,7 +138,7 @@ export default function createConfigs(_env, argv) {
         },
         {
           // Work around bug in websocket-express
-          test: /^ws$/,
+          test: /websocket-express/,
           resolve: { conditionNames: [`require`] },
         },
         // {
