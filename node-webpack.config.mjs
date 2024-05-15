@@ -1,7 +1,6 @@
 import { createRequire } from "module";
 import path from "path";
 import url from "url";
-import nodeExternals from "webpack-node-externals";
 import { WebpackManifestPlugin } from "webpack-manifest-plugin";
 
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -112,7 +111,6 @@ export default function createConfigs(_env, argv) {
     target: "node",
     entry: {
       server: "./src/main.ts",
-      //dump: "./puzzledata/dump-json.ts",
     },
     output: {
       path: outputDirname,
@@ -141,10 +139,6 @@ export default function createConfigs(_env, argv) {
           test: /websocket-express/,
           resolve: { conditionNames: [`require`] },
         },
-        // {
-        //   test: [/^dom-helpers\/.*/, /^@restart\//],
-        //   resolve: { conditionNames: [`import`] },
-        // },
         {
           issuerLayer: webpackRscLayerName,
           resolve: { conditionNames: [`react-server`, `...`] },
@@ -162,11 +156,11 @@ export default function createConfigs(_env, argv) {
             },
             {
               issuerLayer: webpackRscLayerName,
-              test: /\.m?js$/,
+              test: /\.m?jsx?$/,
               use: rscServerLoader,
             },
             {
-              test: /\.m?js$/,
+              test: /\.m?jsx?$/,
               use: rscSsrLoader,
             },
           ],
@@ -189,8 +183,6 @@ export default function createConfigs(_env, argv) {
       },
     },
     externalsPresets: { node: true },
-    // FIXME: Requires conditions
-    // externals: [nodeExternals({ importType: "module", })],
     plugins: [
       // server-main.css is not used, but required by MiniCssExtractPlugin.
       new MiniCssExtractPlugin({ filename: `server-main.css`, runtime: false }),
@@ -233,6 +225,10 @@ export default function createConfigs(_env, argv) {
         {
           test: /\.tsx?$/,
           use: [rscClientLoader, "swc-loader"],
+        },
+        {
+          test: /\.m?jsx?$/,
+          use: rscClientLoader,
         },
         cssRule,
         pngRule,
