@@ -1,8 +1,11 @@
 "use client";
 
 import React, { Component } from "react";
-import { Tinderable } from "./tinderable";
-import { data } from "./constants";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Tinderable } from "./tinderable.tsx";
+import { data } from "./constants.tsx";
 
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -96,7 +99,7 @@ export class AppInner extends Component {
 
   render() {
     const tooltip = (
-      <Tooltip id="start-again-tooltip" positionTop="50px">
+      <Tooltip id="start-again-tooltip">
         Start again
       </Tooltip>
     );
@@ -116,10 +119,10 @@ export class AppInner extends Component {
             />
             <span className="app-buttons">
               <button onClick={this.onAnimateLeft}>
-                <i className="fa fa-arrow-left"></i>
+                <FontAwesomeIcon icon={faArrowLeft} />
               </button>
               <button onClick={this.onAnimateRight}>
-                <i className="fa fa-arrow-right"></i>
+                <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </span>
           </div>

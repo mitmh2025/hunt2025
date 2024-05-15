@@ -96,11 +96,13 @@ const renderDevPane = (teamState?: TeamState) => {
 const Layout = ({
   children,
   scripts,
+  stylesheets,
   title,
   teamState,
 }: {
   children: ReactNode;
   scripts?: string[];
+  stylesheets?: string[];
   title?: string;
   teamState?: TeamState;
 }) => {
@@ -108,7 +110,7 @@ const Layout = ({
     <html>
       <head>
         {title && <title>{title}</title>}
-        {scripts && scripts.map((s) => `<script src="${s}"></script>`)}
+        {stylesheets && stylesheets.map((s) => <link key={s} rel="stylesheet" href={s} />)}
       </head>
       <body>
         <div
@@ -122,6 +124,7 @@ const Layout = ({
           <div style={{ flex: 1 }}>{children}</div>
           {renderDevPane(teamState)}
         </div>
+        {scripts && scripts.map((s) => <script key={s} type="text/javascript" src={s} />)}
       </body>
     </html>
   );

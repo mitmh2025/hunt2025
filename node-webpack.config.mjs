@@ -212,29 +212,51 @@ export default function createConfigs(_env, argv) {
   const clientConfig = {
     name: "client",
     dependencies: ["server"],
-    entry: "./src/client.tsx",
+    entry: {
+      main: {
+        import: "./src/client.tsx",
+        layer: "main",
+      },
+      tinder: "./puzzledata/tinder/src/main.tsx",
+    },
     output: {
-      filename: dev ? `main.js` : `main.[contenthash:8].js`,
+      filename: dev ? `[name].js` : `[contenthash:16].js`,
       path: clientOutputDirname,
       clean: !dev,
-      publicPath: `/client/`,
+      publicPath: `/client/assets/`,
     },
     devtool: "source-map",
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
-          use: [rscClientLoader, "swc-loader"],
-        },
-        {
-          test: /\.m?jsx?$/,
+          issuerLayer: "main",
+          test: [/\.tsx?$/, /\.m?jsx?$/],
           use: rscClientLoader,
+        },
+        // Matching rules are applied in reverse order (so swc-loader comes first).
+        {
+          test: /\.tsx?$/,
+          use: ["swc-loader"],
         },
         cssRule,
         pngRule,
       ],
     },
+    resolve: {
+      extensions: [".ts", ".tsx", "..."],
+      extensionAlias: {
+        ".js": [".ts", ".js"],
+        ".mjs": [".mts", ".mjs"],
+      },
+      alias: {
+        "@": path.join(currentDirname, "src"),
+      },
+    },
     plugins: [
+      new MiniCssExtractPlugin({
+        filename: dev ? `[name].css` : `[contenthash:16].css`,
+        runtime: false,
+      }),
       new WebpackManifestPlugin({
         fileName: cssManifestFilename,
         publicPath: `/client/`,
@@ -259,7 +281,9 @@ export default function createConfigs(_env, argv) {
       new LogValue(`clientReferencesMap`, clientReferencesMap),
       new LogValue(`serverReferencesMap`, serverReferencesMap),
     ],
-    // ...
+    experiments: {
+      layers: true,
+    },
   };
   return [serverConfig, clientConfig];
 }

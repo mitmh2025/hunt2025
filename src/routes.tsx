@@ -22,14 +22,13 @@ import {
 import { createHtmlStream } from "@mfng/core/server/ssr";
 import * as React from "react";
 import type { ReactFormState } from "react-dom/server";
-//import * as manifests from './handler/manifests.js';
 import {
   cssManifest,
   jsManifest,
   reactClientManifest,
   reactServerManifest,
   reactSsrManifest,
-} from "./handler/manifests.js";
+} from "./manifests.js";
 
 //console.log("manifests", manifests);
 

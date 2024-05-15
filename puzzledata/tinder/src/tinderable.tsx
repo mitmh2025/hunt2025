@@ -1,11 +1,11 @@
 "use client"
 
-import React, { Component, useCallback, useRef } from "react";
-import { Hammer } from "./Hammer";
+import React, { Component, useCallback, useEffect, useState, useRef } from "react";
+import Hammer from "react-hammerjs";
 
-const Card = ({image, text = "Default text"}) => {
+const Card = React.forwardRef(({image, text = "Default text"}, ref) => {
   return (
-    <div className="card">
+    <div ref={ref} className="card">
       <div className="image">
         <img
           src={image}
@@ -15,21 +15,7 @@ const Card = ({image, text = "Default text"}) => {
       <p>Screenname: {text}</p>
     </div>
   );
-}
-
-//class Card extends Component {
-//  render() {
-//  }
-//}
-//
-//Card.defaultProps = {
-//  index: "",
-//  title: "Default title",
-//  text: "Default text",
-//  image: "",
-//  left: null,
-//  right: null,
-//};
+});
 
 export const Tinderable = ({ onSwipeLeft, onSwipeRight, onAnimationDone, animation, currentCard, ...rest }) => {
 
@@ -63,9 +49,6 @@ export const Tinderable = ({ onSwipeLeft, onSwipeRight, onAnimationDone, animati
       onSwipeLeft();
     }
   }, [resetPosition]);
-  //handlePanCancel(ev) {
-  //  this.resetPosition();
-  //}
 
   useEffect(() => {
     if (cardRef.current) {
@@ -115,98 +98,3 @@ export const Tinderable = ({ onSwipeLeft, onSwipeRight, onAnimationDone, animati
     </div>
   );
 };
-
-/*
-class Tinderable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { pos: { x: 0, y: 0 } };
-    this.handleSwipe = this.handleSwipe.bind(this);
-    this.onAnimationDone = this.onAnimationDone.bind(this);
-    this.handlePan = this.handlePan.bind(this);
-    this.handlePanEnd = this.handlePanEnd.bind(this);
-    this.handlePanCancel = this.handlePanCancel.bind(this);
-  }
-
-  onAnimationDone(ev) {
-    this.props.onAnimationDone(ev.animationName);
-  }
-
-  componentDidMount() {
-    const c = this.refs.card;
-    c.addEventListener("animationend", this.onAnimationDone);
-  }
-
-  componentWillUnmount() {
-    const c = this.refs.card;
-    c.removeEventListener("animationend", this.onAnimationDone);
-  }
-
-  resetPosition() {
-    this.setState({ pos: { x: 0, y: 0 } });
-  }
-
-  handleSwipe(ev) {
-    this.resetPosition();
-    if (ev.direction === 2) {
-      this.props.onSwipeLeft();
-    } else if (ev.direction === 4) {
-      this.props.onSwipeRight();
-    }
-  }
-
-  handlePan(ev) {
-    this.setState({ pos: { x: ev.deltaX, y: ev.deltaY } });
-  }
-
-  handlePanEnd(ev) {
-    this.resetPosition();
-    if (ev.deltaX > 150) {
-      this.props.onSwipeRight();
-    } else if (ev.deltaX < -150) {
-      this.props.onSwipeLeft();
-    }
-  }
-
-  handlePanCancel(ev) {
-    this.resetPosition();
-  }
-
-  render() {
-    const hammerOptions = {
-      swipe: {
-        threshold: 0,
-      },
-    };
-
-    const x = Math.min(Math.max(-200, this.state.pos.x), 200);
-    const y = Math.min(Math.max(-200, this.state.pos.y), 200);
-
-    const position = {
-      transform: `translate3d(${x}px, ${y}px, 0)`,
-    };
-
-    return (
-      <div
-        ref="card"
-        className={`screen ${this.props.animation}`}
-        style={position}
-      >
-        <Hammer
-          options={hammerOptions}
-          onSwipe={this.handleSwipe}
-          onPan={this.handlePan}
-          onPanEnd={this.handlePanEnd}
-          onPanCancel={this.handlePanCancel}
-          key={`hammer-${this.props.currentCard.index}`}
-        >
-          <Card
-            {...this.props.currentCard}
-            key={`card-${this.props.currentCard.index}`}
-          />
-        </Hammer>
-      </div>
-    );
-  }
-}
-*/

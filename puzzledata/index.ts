@@ -47,7 +47,7 @@ const HUNT: Hunt = {
         { id: "sdm01" }, // Boardwalk (meta)
         { id: "sdm02" }, // Jewelry Store (meta)
         { id: "sdm03", assignment: Casino }, // Casino (meta)
-        { id: "sdm04" }, // Estate (meta)
+        { id: "sdm04" }, // Art Gallery (meta)
         { id: "sdm05" }, // Where is the Diamond? (super)
       ],
       unlock_conditions: [

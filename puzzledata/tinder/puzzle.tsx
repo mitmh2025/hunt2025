@@ -1,12 +1,9 @@
 import React from 'react';
 
-//import { App } from './src/App';
-//import "./src/index.css";
-
 const PuzzleContent = () => {
-  // <App />
   return (
     <div id="master-root">
+      <noscript>This puzzle requires Javascript.</noscript>
     </div>
   );
 };
