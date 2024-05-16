@@ -19,7 +19,7 @@ export const roundHandler = (req: Request) => {
   // TODO: pass props about current unlock state to Component
   return (
     <Layout teamState={req.teamState}>
-      <Component />
+      <Component teamState={req.teamState} />
     </Layout>
   );
 };
