@@ -1,7 +1,5 @@
-import { createRequire } from "module";
 import path from "path";
 import url from "url";
-import nodeExternals from "webpack-node-externals";
 import { WebpackManifestPlugin } from "webpack-manifest-plugin";
 
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -15,9 +13,8 @@ import {
   webpackRscLayerName,
 } from "@mfng/webpack-rsc";
 
-const require = createRequire(import.meta.url);
 const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
-const outputDirname = path.join(currentDirname, `dist`);
+const outputDirname = path.join(currentDirname, "dist");
 const outputManifestDirname = outputDirname;
 
 const reactServerManifestFilename = path.join(
@@ -35,12 +32,8 @@ const reactSsrManifestFilename = path.join(
   `react-ssr-manifest.json`,
 );
 
-const jsManifestFilename = path.join(outputManifestDirname, `js-manifest.json`);
-
-const cssManifestFilename = path.join(
-  outputManifestDirname,
-  `css-manifest.json`,
-);
+const jsManifestFilename = path.join(outputManifestDirname, "js-manifest.json");
+const cssManifestFilename = path.join(outputManifestDirname, "css-manifest.json");
 
 class LogValue {
   constructor(name, m) {
@@ -61,7 +54,7 @@ class LogValue {
  */
 export default function createConfigs(_env, argv) {
   const { mode } = argv;
-  const dev = mode === `development`;
+  const dev = mode === "development";
 
   const clientReferencesMap = new Map();
   const serverReferencesMap = new Map();
@@ -83,8 +76,8 @@ export default function createConfigs(_env, argv) {
         options: {
           modules: {
             localIdentName: dev
-              ? `[local]__[hash:base64:5]`
-              : `[hash:base64:7]`,
+              ? "[local]__[hash:base64:5]"
+              : "[hash:base64:7]",
             auto: true,
           },
         },
@@ -92,6 +85,16 @@ export default function createConfigs(_env, argv) {
       // TODO: {loader: "postcss-loader",},
     ],
   };
+
+  const pngRule = (publicPath) => ({
+    test: /\.png$/,
+    type: "asset/resource",
+    generator: {
+      outputPath: "assets/",
+      publicPath: `${publicPath}/assets/`,
+      filename: "[hash][ext][query]",
+    },
+  });
 
   const serverSwcLoader = {
     // .swcrc can be used to configure swc
@@ -128,6 +131,11 @@ export default function createConfigs(_env, argv) {
           layer: `shared`,
         },
         {
+          // Work around bug in websocket-express
+          test: /websocket-express/,
+          resolve: { conditionNames: ["require"] },
+        },
+        {
           issuerLayer: webpackRscLayerName,
           resolve: { conditionNames: [`react-server`, `...`] },
         },
@@ -142,19 +150,21 @@ export default function createConfigs(_env, argv) {
               test: /\.tsx?$/,
               use: [rscSsrLoader, serverSwcLoader],
             },
+            {
+              issuerLayer: webpackRscLayerName,
+              test: /\.m?jsx?$/,
+              use: rscServerLoader,
+            },
+            {
+              test: /\.m?jsx?$/,
+              use: rscSsrLoader,
+            },
           ],
         },
         cssRule,
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
-        {
-          test: /\.png$/,
-          type: "asset/resource",
-          generator: {
-            outputPath: "assets/",
-            filename: "[hash][ext][query]",
-          },
-        },
+        pngRule(""),
       ],
       // Add modules as appropriate
     },
@@ -166,16 +176,15 @@ export default function createConfigs(_env, argv) {
       },
       alias: {
         "@": path.join(currentDirname, "src"),
-        // Work around bug in websocket-express
-        ws: path.join(currentDirname, "node_modules/ws/index.js"),
       },
     },
     externalsPresets: { node: true },
-    // FIXME: Requires conditions
-    // externals: [nodeExternals({ importType: "module", })],
     plugins: [
       // server-main.css is not used, but required by MiniCssExtractPlugin.
-      new MiniCssExtractPlugin({ filename: `server-main.css`, runtime: false }),
+      new MiniCssExtractPlugin({
+        filename: `[contenthash].css`,
+        runtime: false,
+      }),
       new WebpackRscServerPlugin({
         clientReferencesMap,
         serverReferencesMap,
@@ -191,7 +200,10 @@ export default function createConfigs(_env, argv) {
     },
     devtool: dev ? "source-map" : `source-map`,
     mode,
-    // TODO: stats
+    stats: {
+      errorDetails: true,
+      // TODO: stats
+    },
   };
 
   const clientOutputDirname = path.join(outputDirname, `static/client`);
@@ -199,33 +211,61 @@ export default function createConfigs(_env, argv) {
   const clientConfig = {
     name: "client",
     dependencies: ["server"],
-    entry: "./src/client.tsx",
+    entry: {
+      main: {
+        import: "./src/client.tsx",
+        layer: "main",
+      },
+      shadow_diamond: "./src/client/shadow_diamond.tsx",
+    },
+    target: "web",
     output: {
-      filename: dev ? `main.js` : `main.[contenthash:8].js`,
+      filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
       path: clientOutputDirname,
       clean: !dev,
-      publicPath: `/client/`,
+      publicPath: "/client/",
     },
     devtool: "source-map",
     module: {
       rules: [
         {
+          issuerLayer: "main",
+          test: [/\.tsx?$/, /\.m?jsx?$/],
+          use: rscClientLoader,
+        },
+        // Matching rules are applied in reverse order (so swc-loader comes first).
+        {
           test: /\.tsx?$/,
-          use: [rscClientLoader, "swc-loader"],
+          use: ["swc-loader"],
         },
         cssRule,
+        pngRule("/client"),
       ],
     },
+    resolve: {
+      extensions: [".ts", ".tsx", "..."],
+      extensionAlias: {
+        ".js": [".ts", ".js"],
+        ".mjs": [".mts", ".mjs"],
+      },
+      alias: {
+        "@": path.join(currentDirname, "src"),
+      },
+    },
     plugins: [
+      new MiniCssExtractPlugin({
+        filename: dev ? "[name].[contenthash:16].css" : "[contenthash:16].css",
+        runtime: false,
+      }),
       new WebpackManifestPlugin({
         fileName: cssManifestFilename,
-        publicPath: `/client/`,
-        filter: (file) => file.path.endsWith(`.css`),
+        publicPath: "/client/",
+        filter: (file) => file.path.endsWith(".css"),
       }),
       new WebpackManifestPlugin({
         fileName: jsManifestFilename,
-        publicPath: `/client/`,
-        filter: (file) => file.path.endsWith(`.js`),
+        publicPath: "/client/",
+        filter: (file) => file.path.endsWith(".js"),
       }),
       new WebpackRscClientPlugin({
         clientReferencesMap,
@@ -241,6 +281,9 @@ export default function createConfigs(_env, argv) {
       new LogValue(`clientReferencesMap`, clientReferencesMap),
       new LogValue(`serverReferencesMap`, serverReferencesMap),
     ],
+    experiments: {
+      layers: true,
+    },
     // ...
   };
   return [serverConfig, clientConfig];
