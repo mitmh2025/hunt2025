@@ -1,0 +1,220 @@
+import path from "path";
+import url from "url";
+import nodeExternals from "webpack-node-externals";
+import { WebpackManifestPlugin } from "webpack-manifest-plugin";
+
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+
+const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
+const outputDirname = path.join(currentDirname, "dist");
+const outputManifestDirname = outputDirname;
+
+const jsManifestFilename = path.join(outputManifestDirname, "js-manifest.json");
+const cssManifestFilename = path.join(outputManifestDirname, "css-manifest.json");
+const assetManifestFilename = path.join(outputManifestDirname, "asset-manifest.json");
+
+class LogValue {
+  constructor(name, m) {
+    this.name = name;
+    this.m = m;
+  }
+  apply(compiler) {
+    compiler.hooks.emit.tap("LogValue", () => {
+      console.log(this.name, this.m);
+    });
+  }
+}
+
+/**
+ * @param {unknown} _env
+ * @param {{readonly mode?: import('webpack').Configuration['mode']}} argv
+ * @return {import('webpack').Configuration[]}
+ */
+export default function createConfigs(_env, argv) {
+  const { mode } = argv;
+  const dev = mode === "development";
+
+  const cssRule = {
+    test: /\.css$/,
+    use: [
+      MiniCssExtractPlugin.loader,
+      {
+        loader: "css-loader",
+        options: {
+          modules: {
+            localIdentName: dev
+              ? "[local]__[hash:base64:5]"
+              : "[hash:base64:7]",
+            auto: true,
+          },
+        },
+      },
+      // TODO: {loader: "postcss-loader",},
+    ],
+  };
+
+  const pngRule = {
+    test: /\.png$/,
+    type: "asset/resource",
+    generator: {
+      outputPath: "assets/",
+        filename: "[hash][ext][query]",
+    },
+  };
+
+  const serverSwcLoader = {
+    // .swcrc can be used to configure swc
+    loader: "swc-loader",
+  };
+
+  const serverConfig = {
+    name: "server",
+    target: "node",
+    entry: {
+      server: "./src/main.ts",
+      //dump: "./puzzledata/dump-json.ts",
+    },
+    output: {
+      path: outputDirname,
+      // If we hook assets up to a CDN:
+      // publicPath: 'https://cdn.example.com/assets/[fullhash]/',
+      filename: "[name]-bundle.js",
+      publicPath: "/assets/",
+      libraryTarget: "module",
+      chunkFormat: "module",
+      devtoolModuleFilenameTemplate: (
+        /** @type {{ absoluteResourcePath: string; }} */ info,
+      ) => info.absoluteResourcePath,
+    },
+    module: {
+      rules: [
+        {
+          // Work around bug in websocket-express
+          test: /websocket-express/,
+          resolve: { conditionNames: ["require"] },
+        },
+        {
+          test: /\.m?[jt]sx?$/,
+          use: serverSwcLoader,
+        },
+        cssRule,
+        // TODO: support importing other kinds of assets, and aliases for
+        // the results of the browser build bundles
+        pngRule,
+      ],
+      // Add modules as appropriate
+    },
+    resolve: {
+      extensions: [".ts", ".tsx", "..."],
+      extensionAlias: {
+        ".js": [".ts", ".js"],
+        ".mjs": [".mts", ".mjs"],
+      },
+      alias: {
+        "@": path.join(currentDirname, "src"),
+      },
+    },
+    externalsPresets: { node: true },
+    // FIXME: Requires conditions
+    externals: [nodeExternals({ importType: "module" })],
+    plugins: [
+      // server-main.css is not used, but required by MiniCssExtractPlugin.
+      new MiniCssExtractPlugin({
+        filename: `[contenthash].css`,
+        runtime: false,
+      }),
+    ],
+    experiments: {
+      outputModule: true,
+      layers: true,
+    },
+    devtool: dev ? "source-map" : `source-map`,
+    mode,
+    stats: {
+      errorDetails: true,
+      // TODO: stats
+    },
+  };
+
+  const clientOutputDirname = path.join(outputDirname, `static/client`);
+
+  const clientConfig = {
+    name: "client",
+    entry: {
+      main: "./src/client.tsx",
+    },
+    target: "web",
+    output: {
+      filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
+      path: clientOutputDirname,
+      clean: !dev,
+      publicPath: "/client/",
+
+      libraryTarget: "module",
+      chunkFormat: "module",
+      devtoolModuleFilenameTemplate: (
+        /** @type {{ absoluteResourcePath: string; }} */ info,
+      ) => info.absoluteResourcePath,
+    },
+    devtool: "source-map",
+    module: {
+      rules: [
+        {
+          test: /\.m?tsx?$/,
+          exclude: /(node_modules)/,
+          use: ["swc-loader"],
+        },
+        cssRule,
+        {
+          // Collect client-referenced assets separately
+          test: /\.png$/,
+          type: "asset/resource",
+          generator: {
+            //outputPath: "assets/"
+            filename: "[hash][ext][query]",
+          },
+        },
+      ],
+    },
+    resolve: {
+      extensions: [".ts", ".tsx", "..."],
+      extensionAlias: {
+        ".js": [".ts", ".js"],
+        ".mjs": [".mts", ".mjs"],
+      },
+      alias: {
+        "@": path.join(currentDirname, "src"),
+      },
+      modules: [
+        path.join(currentDirname, "node_modules"),
+      ],
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: dev ? "[name].[contenthash:16].css" : "[contenthash:16].css",
+        runtime: false,
+      }),
+      new WebpackManifestPlugin({
+        fileName: cssManifestFilename,
+        publicPath: "/client/",
+        filter: (file) => file.path.endsWith(".css"),
+      }),
+      new WebpackManifestPlugin({
+        fileName: jsManifestFilename,
+        publicPath: "/client/",
+        filter: (file) => file.path.endsWith(".js"),
+      }),
+      new WebpackManifestPlugin({
+        fileName: assetManifestFilename,
+        publicPath: "/client",
+        filter: (file) => !file.path.endsWith(`.js`) && !file.path.endsWith(".css"),
+      }),
+    ],
+    experiments: {
+      outputModule: true,
+      layers: true,
+    },
+    // ...
+  };
+  return [serverConfig, clientConfig];
+}
