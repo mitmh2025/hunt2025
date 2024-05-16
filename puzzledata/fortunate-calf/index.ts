@@ -6,8 +6,12 @@ const puzzle: PuzzleDefinition = {
   title: "The Casino",
   slug: "the_casino",
   authors: ["Elan Blaustein"],
-  content: Puzzle,
-  solution: Solution,
+  content: {
+    component: Puzzle,
+  },
+  solution: {
+    component: Solution,
+  },
   answer: "FACE CARD SHARKS",
   hints: [], // TODO: typeset
   canned_responses: [], // TODO: typeset

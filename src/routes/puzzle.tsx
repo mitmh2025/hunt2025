@@ -64,15 +64,22 @@ export async function puzzleHandler(req: Request) {
   // TODO: fetch puzzle details from backend (in particular, for guess history)
 
   // Select content component.
-  const Content = puzzleSlot.assignment!.content;
+  const content = puzzleSlot.assignment!.content;
+  const ContentComponent = content.component;
+  const scripts = content.scripts;
+  const stylesheets = content.stylesheets;
   const title = puzzleSlot.assignment!.title;
 
   return (
-    <Layout teamState={req.teamState}>
+    <Layout
+      scripts={scripts}
+      stylesheets={stylesheets}
+      teamState={req.teamState}
+    >
       <h1>{title}</h1>
       {/* TODO: add guess form, history, errata, etc. */}
-      <div id="puzzle-content">
-        <Content />
+      <div id="puzzle-content" className="puzzle-content">
+        <ContentComponent />
       </div>
     </Layout>
   );
@@ -93,13 +100,20 @@ export function solutionHandler(req: Request) {
 
   // TODO: look up round-specific solution page layout if applicable.
 
-  const Solution = puzzleSlot.assignment!.solution;
+  const content = puzzleSlot.assignment!.solution;
+  const SolutionComponent = content.component;
+  const scripts = content.scripts;
+  const stylesheets = content.stylesheets;
   const title = puzzleSlot.assignment!.title;
   return (
-    <Layout teamState={req.teamState}>
+    <Layout
+      scripts={scripts}
+      stylesheets={stylesheets}
+      teamState={req.teamState}
+    >
       <h1>Solution to {title}</h1>
-      <div id="solution-content">
-        <Solution />
+      <div id="solution-content" className="solution-content">
+        <SolutionComponent />
       </div>
     </Layout>
   );

@@ -29,13 +29,26 @@ export type AnswerWithSubmitConstraint = {
   submit_constraints: Condition[]; // Conditions which must all be true to permit attempting to submit a guess for this answer.
 };
 
+export type Content = {
+  // TODO: figure out what props get passed to this FunctionComponent
+  component: FunctionComponent;
+
+  // Scripts that will be injected into the page's <head> when rendered.
+  // Generally, should contain the result of lookupScript(webpackEntryPoint)
+  scripts?: string[];
+
+  // Stylesheets that will be injected into the page's <head> when rendered.
+  // Generally, should contain the result of lookupStylesheet(webpackEntryPoint)
+  stylesheets?: string[];
+}
+
 export type PuzzleDefinition = {
   title: string;
   slug: string;
   authors: string[];
   submit_constraints?: Condition[][]; // Parallel array to answers
-  content: FunctionComponent; // TODO: figure out what props get passed to this FunctionComponent
-  solution: FunctionComponent; // TODO: figure out what props get passed to this FunctionComponent
+  content: Content;
+  solution: Content;
   hints: Hint[];
   canned_responses: CannedResponse[];
 } & (
