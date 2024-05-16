@@ -13,25 +13,9 @@ import stream from "node:stream";
 import type { ReadableStream } from "node:stream/web";
 import path from "path";
 
-import { routerLocationAsyncLocalStorage } from "@mfng/core/router-location-async-local-storage";
-import {
-  createRscActionStream,
-  createRscAppStream,
-  createRscFormState,
-} from "@mfng/core/server/rsc";
-import { createHtmlStream } from "@mfng/core/server/ssr";
 import * as React from "react";
+import { renderToString } from "react-dom/server";
 import type { ReactFormState } from "react-dom/server";
-//import * as manifests from './handler/manifests.js';
-import {
-  cssManifest,
-  jsManifest,
-  reactClientManifest,
-  reactServerManifest,
-  reactSsrManifest,
-} from "./handler/manifests.js";
-
-//console.log("manifests", manifests);
 
 import { roundHandler } from "./routes/round";
 import { puzzleHandler, solutionHandler } from "./routes/puzzle";
@@ -128,10 +112,6 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
       path,
       async (req, res, next) => await renderApp(handler, req, res, next),
     );
-    router.post(
-      path,
-      async (req, res, next) => await handlePost(handler, req, res, next),
-    );
   };
 
   unauthRouter.get(
@@ -166,91 +146,17 @@ async function renderApp(
   _next: NextFunction,
   formState?: ReactFormState,
 ) {
-  const { pathname, search } = parseurl(req);
-
-  return routerLocationAsyncLocalStorage.run({ pathname, search }, async () => {
-    console.log("renderApp", pathname, search);
-    const app = await handler(req);
-    if (app === undefined) {
-      return render404(req, res);
-    }
-
-    const rscAppStream = createRscAppStream(app, {
-      reactClientManifest,
-      //FIXME: mainCssHref: cssManifest[`main.css`]!,
-      formState,
-    });
-
-    if (req.get("accept") === `text/x-component`) {
-      res.set({
-        "Content-Type": `text/x-component; charset=utf-8`,
-        "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
-      });
-      res.status(200);
-      await stream.Readable.fromWeb(
-        rscAppStream as ReadableStream<Uint8Array>,
-      ).pipe(res);
-      return;
-    }
-
-    const htmlStream = await createHtmlStream(rscAppStream, {
-      reactSsrManifest,
-      bootstrapScripts: [jsManifest[`main.js`]!],
-      formState,
-    });
-
-    res.set({
-      "Content-Type": `text/html; charset=utf-8`,
-      "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
-    });
-    res.status(200);
-    // for await (const chunk of htmlStream) {
-    //   console.log("chunk", new TextDecoder("utf-8").decode(chunk));
-    //   res.write(chunk);
-    // }
-    // res.end();
-    await stream.Readable.fromWeb(
-      htmlStream as ReadableStream<Uint8Array>,
-    ).pipe(res);
-  });
-}
-
-async function handlePost(
-  handler: (req: Request) => React.ReactNode,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  const serverReferenceId = req.get(`x-rsc-action`);
-
-  if (serverReferenceId) {
-    // POST via callServer:
-
-    const contentType = req.get(`content-type`);
-
-    const body = await (contentType?.startsWith(`multipart/form-data`)
-      ? req.body
-      : req.body);
-
-    const rscActionStream = await createRscActionStream({
-      body,
-      serverReferenceId,
-      reactClientManifest,
-      reactServerManifest,
-    });
-
-    res.set({ "Content-Type": `text/x-component` });
-    res.status(rscActionStream ? 200 : 500);
-    await stream.Readable.fromWeb(
-      rscActionStream as ReadableStream<Uint8Array>,
-    ).pipe(res);
-    return;
-  } else {
-    // POST before hydration (progressive enhancement):
-
-    const formData = req.body;
-    const formState = await createRscFormState(formData, reactServerManifest);
-
-    return renderApp(handler, req, res, next, formState);
+  const reactRoot = await handler(req);
+  if (reactRoot === undefined) {
+    return render404(req, res);
   }
+
+  const doctype = "<!DOCTYPE html>";
+  const html = doctype + renderToString(reactRoot) + "\n";
+  res.set({
+    "Content-Type": `text/html; charset=utf-8`,
+    "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
+  });
+  res.status(200);
+  res.send(html)
 }
