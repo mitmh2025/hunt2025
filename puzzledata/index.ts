@@ -3,7 +3,11 @@
 
 // import Boardwalk from './dental-shark';
 import Casino from "./fortunate-calf";
-import type { Hunt } from "./types";
+import type { Hunt, PuzzleDefinition } from "./types";
+
+export const PUZZLES: Record<string, PuzzleDefinition> = {
+  "the_casino": Casino,
+};
 
 const HUNT: Hunt = {
   rounds: [
@@ -43,7 +47,7 @@ const HUNT: Hunt = {
         { id: "sdp28" },
         { id: "sdm01" }, // Boardwalk (meta)
         { id: "sdm02" }, // Jewelry Store (meta)
-        { id: "sdm03", assignment: Casino }, // Casino (meta)
+        { id: "sdm03", slug: "the_casino" }, // Casino (meta)
         { id: "sdm04" }, // Estate (meta)
         { id: "sdm05" }, // Where is the Diamond? (super)
       ],

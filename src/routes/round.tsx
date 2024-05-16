@@ -26,7 +26,7 @@ export const roundHandler = (req: Request) => {
       stylesheets={stylesheets}
       teamState={req.teamState}
     >
-      <Component />
+      <Component teamState={req.teamState} />
     </Layout>
   );
 };

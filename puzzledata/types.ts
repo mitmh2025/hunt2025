@@ -67,7 +67,7 @@ export type PuzzleDefinition = {
 
 export type PuzzleSlot = {
   id: string; // globally-unique id for this puzzle slot
-  assignment?: PuzzleDefinition; // imported from the folder under puzzledata containing the puzzle content assigned to this slot.
+  slug?: string; // slug of the puzzle currently assigned to this slot
   // TODO: in the fullness of time, we should lint for unassigned slots, and make assignment a required field, but not now
 };
 
