@@ -1,32 +1,9 @@
 import Layout from "../components/Layout";
-import HUNT from "../../puzzledata";
-import { Round, PuzzleSlot } from "puzzledata/types";
+import { PUZZLES } from "../../puzzledata";
 import { Request } from "express";
 import React from "react";
 
 const SHOW_SOLUTIONS = true;
-
-function lookupPuzzleBySlug(
-  slug: string | undefined,
-): [Round, PuzzleSlot] | undefined {
-  if (slug === undefined) return undefined;
-  // returns [round, puzzle] if found or undefined if not
-  const rounds = HUNT.rounds;
-  for (let r = 0; r < rounds.length; r++) {
-    const round = rounds[r]!;
-    const puzzles = round.puzzles;
-    for (let p = 0; p < puzzles.length; p++) {
-      const puzzleSlot = puzzles[p]!;
-      if (puzzleSlot.assignment !== undefined) {
-        if (puzzleSlot.assignment.slug === slug) {
-          return [round, puzzleSlot];
-        }
-      }
-    }
-  }
-
-  return undefined;
-}
 
 export async function puzzleHandler(req: Request) {
   const slug = req.params.puzzleSlug;
@@ -42,8 +19,8 @@ export async function puzzleHandler(req: Request) {
   }
 
   // Look up puzzle by slug.  If none exists, 404.
-  const match = lookupPuzzleBySlug(slug);
-  if (match === undefined) {
+  const puzzle = PUZZLES[slug];
+  if (puzzle === undefined) {
     return (
       <Layout teamState={req.teamState}>
         <h1>Puzzle not found</h1>
@@ -54,20 +31,14 @@ export async function puzzleHandler(req: Request) {
       </Layout>
     );
   }
-
-  // Puzzle is valid and known to have an assignment.
-  const [_round, puzzleSlot] = match;
-
-  // TODO: look up round-specific puzzle page layout, if applicable.  For
+  // TODO: Use round-specific puzzle page layout for result.body.round.  For
   // outlands puzzles, the layout may depend on round and puzzle visibility.
 
-  // TODO: fetch puzzle details from backend (in particular, for guess history)
-
   // Select content component.
-  const content = puzzleSlot.assignment!.content;
+  const content = puzzle.content;
   const ContentComponent = content.component;
   const { scripts, stylesheets } = content;
-  const title = puzzleSlot.assignment!.title;
+  const title = puzzle.title;
 
   return (
     <Layout
@@ -91,18 +62,25 @@ export function solutionHandler(req: Request) {
   }
 
   const slug = req.params.puzzleSlug;
-  const match = lookupPuzzleBySlug(slug);
-  if (match === undefined) {
-    return undefined;
+  const puzzle = PUZZLES[slug];
+  if (puzzle === undefined) {
+    return (
+      <Layout teamState={req.teamState}>
+        <h1>Puzzle not found</h1>
+        <p>
+          The puzzle you requested (<code>{slug}</code>) exists, but we can't
+          seem to find it.
+        </p>
+      </Layout>
+    );
   }
-  const [_round, puzzleSlot] = match;
 
   // TODO: look up round-specific solution page layout if applicable.
 
-  const content = puzzleSlot.assignment!.solution;
+  const content = puzzle.solution;
   const SolutionComponent = content.component;
   const { scripts, stylesheets } = content;
-  const title = puzzleSlot.assignment!.title;
+  const title = puzzle.title;
   return (
     <Layout
       scripts={scripts}

@@ -5,7 +5,13 @@
 import Casino from "./fortunate-calf";
 import Tinder from "./tinder";
 
-import type { Hunt } from "./types";
+import type { Hunt, PuzzleDefinition } from "./types";
+
+// TODO: Generate automatically from the directory contents.
+export const PUZZLES: Record<string, PuzzleDefinition> = {
+  "the_casino": Casino,
+  "just_keep_swiping": Tinder,
+};
 
 const HUNT: Hunt = {
   rounds: [
@@ -43,10 +49,10 @@ const HUNT: Hunt = {
         { id: "sdp26" },
         { id: "sdp27" },
         { id: "sdp28" },
-        { id: "sdpfake", assignment: Tinder }, // Tinder, fake thing I'm doing to test integrating other build deps
+        { id: "sdpfake", slug: "just_keep_swiping" }, // Tinder, fake thing I'm doing to test integrating other build deps
         { id: "sdm01" }, // Boardwalk (meta)
         { id: "sdm02" }, // Jewelry Store (meta)
-        { id: "sdm03", assignment: Casino }, // Casino (meta)
+        { id: "sdm03", slug: "the_casino" }, // Casino (meta)
         { id: "sdm04" }, // Art Gallery (meta)
         { id: "sdm05" }, // Where is the Diamond? (super)
       ],

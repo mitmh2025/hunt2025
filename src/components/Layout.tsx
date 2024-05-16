@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import HUNT from "../../puzzledata";
+import HUNT, { PUZZLES } from "../../puzzledata";
 import { Link } from "@mfng/core/client";
 import type { TeamState } from "../api/client.js";
 
@@ -13,10 +13,9 @@ const renderDevPane = (teamState?: TeamState) => {
     const roundState = teamState.rounds[round.key];
     const puzzleCells = round.puzzles.map((puzzleSlot) => {
       let title = puzzleSlot.id;
-      let slug = roundState?.slots[puzzleSlot.id];
-      if (puzzleSlot.assignment) {
-        title = puzzleSlot.assignment.title;
-        slug = puzzleSlot.assignment.slug;
+      let slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
+      if (slug !== undefined) {
+        title = PUZZLES[slug]?.title;
       }
       const puzzleState = slug ? teamState.puzzles[slug] : undefined;
       // TODO: do something visually different if the puzzle is locked/visible/unlocked/solved (based on data from session)
