@@ -92,14 +92,15 @@ export default function createConfigs(_env, argv) {
     ],
   };
 
-  const pngRule = {
+  const pngRule = (publicPath) => ({
     test: /\.png$/,
     type: "asset/resource",
     generator: {
       outputPath: "assets/",
+      publicPath: `${publicPath}/assets/`,
       filename: "[hash][ext][query]",
     },
-  };
+  });
 
   const serverSwcLoader = {
     // .swcrc can be used to configure swc
@@ -168,7 +169,7 @@ export default function createConfigs(_env, argv) {
         cssRule,
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
-        pngRule,
+        pngRule(""),
       ],
       // Add modules as appropriate
     },
@@ -223,7 +224,7 @@ export default function createConfigs(_env, argv) {
       filename: dev ? `[name].js` : `[contenthash:16].js`,
       path: clientOutputDirname,
       clean: !dev,
-      publicPath: `/client/assets/`,
+      publicPath: `/client/`,
     },
     devtool: "source-map",
     module: {
@@ -239,7 +240,7 @@ export default function createConfigs(_env, argv) {
           use: ["swc-loader"],
         },
         cssRule,
-        pngRule,
+        pngRule("/client"),
       ],
     },
     resolve: {
