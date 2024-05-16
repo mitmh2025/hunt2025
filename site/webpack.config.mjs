@@ -153,6 +153,7 @@ export default function createConfigs(_env, argv) {
       main: "./src/frontend/client/main.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
       shadow_diamond: "./src/frontend/rounds/shadow_diamond/client.tsx",
+      tinder: "./src/frontend/puzzles/tinder/client/index.tsx",
     },
     target: "web",
     output: {
