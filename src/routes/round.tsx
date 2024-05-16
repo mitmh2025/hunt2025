@@ -11,14 +11,21 @@ export const roundHandler = (req: Request) => {
   if (round === undefined) {
     return undefined;
   }
-  const Component = ROUND_PAGE_MAP[round.key];
-  if (Component === undefined) {
+  const content = ROUND_PAGE_MAP[round.key];
+  if (content === undefined) {
     return undefined;
   }
+  const Component = content.component;
+  const scripts = content.scripts;
+  const stylesheets = content.stylesheets;
 
   // TODO: pass props about current unlock state to Component
   return (
-    <Layout teamState={req.teamState}>
+    <Layout
+      scripts={scripts}
+      stylesheets={stylesheets}
+      teamState={req.teamState}
+    >
       <Component />
     </Layout>
   );
