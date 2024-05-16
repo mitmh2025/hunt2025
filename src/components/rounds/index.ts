@@ -1,5 +1,5 @@
 import type { FunctionComponent } from "react";
-import type { Content } from "puzzledata/types";
+import type { TeamState } from "@/api/client";
 
 import { lookupScript, lookupStylesheet } from "@/assets";
 import BackgroundCheckRoundPage from "./BackgroundCheckRoundPage";
@@ -15,7 +15,13 @@ import StakeoutRoundPage from "./StakeoutRoundPage";
 
 // Map from round `key` to component that should be rendered for that round.
 // TODO: figure out the props we want to pass to the round pages
-export const ROUND_PAGE_MAP: Record<string, Content> = {
+type RoundDefinition = {
+  component: FunctionComponent<{ teamState: TeamState }>;
+  scripts?: string[];
+  stylesheets?: string[];
+}
+
+export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   sd: {
     component: ShadowDiamondRoundPage,
     scripts: [lookupScript("shadow_diamond")],
