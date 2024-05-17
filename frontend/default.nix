@@ -1,5 +1,6 @@
 { lib
 , nodejs_22
+, postgresql
 , buildNpmPackage
 , makeWrapper
 }:
@@ -12,11 +13,18 @@ in buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = "sha256-ZULMuUdf1uzKSDXaFJRE4GSxds3U8pU743UhwNQ9iGY=";
+  npmDepsHash = "sha256-uO9WFfLP0PdtgN8ULOKdzAYPpz75uSffLLW4lnagf98=";
 
   inherit nodejs;
 
-  nativeBuildInputs = [ makeWrapper ];
+  buildInputs = [
+    postgresql
+  ];
+
+  nativeBuildInputs = [
+    postgresql
+    makeWrapper
+  ];
 
   installPhase = ''
     runHook preInstall
