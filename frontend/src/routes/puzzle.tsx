@@ -30,8 +30,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       <Layout teamState={req.teamState}>
         <h1>Puzzle not found</h1>
         <p>
-          The puzzle you requested (<code>{slug}</code>) exists, but we can't
-          seem to find it.
+          The puzzle you requested (<code>{slug}</code>) exists, but we
+          can&rsquo;t seem to find it.
         </p>
       </Layout>
     );
@@ -76,7 +76,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
         <h1>Puzzle not found</h1>
         <p>
           The puzzle you requested a solution for (<code>{slug}</code>) exists,
-          but we can't seem to find it.
+          but we can&rsquo;t seem to find it.
         </p>
       </Layout>
     );
