@@ -1,9 +1,11 @@
 { lib
-, nodejs_21
+, nodejs_22
 , buildNpmPackage
 , makeWrapper
 }:
-let package = builtins.fromJSON (builtins.readFile ./package.json);
+let
+  package = builtins.fromJSON (builtins.readFile ./package.json);
+  nodejs = nodejs_22;
 in buildNpmPackage {
   pname = package.name;
   inherit (package) version;
@@ -12,7 +14,7 @@ in buildNpmPackage {
 
   npmDepsHash = "sha256-ZULMuUdf1uzKSDXaFJRE4GSxds3U8pU743UhwNQ9iGY=";
 
-  nodejs = nodejs_21;
+  inherit nodejs;
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -21,7 +23,7 @@ in buildNpmPackage {
     mkdir -p $out/share
     cp -R dist $out/share/hunt2025
     cp package.json $out/share/hunt2025/
-    makeWrapper ${nodejs_21}/bin/node $out/bin/hunt2025 \
+    makeWrapper ${nodejs}/bin/node $out/bin/hunt2025 \
       --add-flags $out/share/hunt2025/server-bundle.js
     runHook postInstall
   '';
