@@ -108,7 +108,7 @@ const Layout = ({
   teamState?: TeamState;
 }) => {
   return (
-    <html>
+    <html lang="en">
       <head>
         {title && <title>{title}</title>}
         {stylesheets &&

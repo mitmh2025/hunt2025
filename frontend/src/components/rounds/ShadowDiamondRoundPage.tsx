@@ -35,7 +35,11 @@ const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
         </a>,
       )}
       <ul></ul>
-      <img className="photo" src={photoimage} />
+      <img
+        className="photo"
+        src={photoimage}
+        alt="Outline of suspect photograph"
+      />
       <p>This image was included via SSR asset usage.</p>
       <div id="shadow-diamond-root" />
     </div>
