@@ -12,7 +12,7 @@ const renderDevPane = (teamState?: TeamState) => {
     const roundState = teamState.rounds[round.key];
     const puzzleCells = round.puzzles.map((puzzleSlot) => {
       let title = puzzleSlot.id;
-      let slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
+      const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
       if (slug !== undefined) {
         const puzzle = PUZZLES[slug];
         if (puzzle) {
@@ -108,7 +108,7 @@ const Layout = ({
   teamState?: TeamState;
 }) => {
   return (
-    <html>
+    <html lang="en">
       <head>
         {title && <title>{title}</title>}
         {stylesheets &&

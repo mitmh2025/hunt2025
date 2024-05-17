@@ -33,7 +33,7 @@ const puzzleState: Record<
 const JWT_SECRET = "secret"; // FIXME
 
 function cookieExtractor(req: Request) {
-  var token = null;
+  let token = null;
   if (req && req.cookies) {
     token = req.cookies["mitmh2025_auth"];
   }

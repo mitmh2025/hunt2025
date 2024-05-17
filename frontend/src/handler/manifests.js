@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @ts-nocheck
 
 export const reactServerManifest = await import(

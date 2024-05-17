@@ -31,10 +31,11 @@ const Solution = () => {
         It turns out that each of the 7 feeders to the puzzle have a
         commonality: aside from all being 13 letters long, each feeder contains
         the name of a card rank as a substring (e.g. Ace, Nine, King), hinted by
-        "keep rank" and "conceal your con" in the flavor text. In addition, each
-        feeder begins with either the letter C, H, or S, which are abbreviations
-        for card suits. From this, we can infer that each feeder is associated
-        with a specific playing card from the standard 52-card deck:
+        &ldquo;keep rank&rdquo; and &ldquo;conceal your con&rdquo; in the flavor
+        text. In addition, each feeder begins with either the letter C, H, or S,
+        which are abbreviations for card suits. From this, we can infer that
+        each feeder is associated with a specific playing card from the standard
+        52-card deck:
       </p>
 
       <table style={mono}>
@@ -96,8 +97,8 @@ const Solution = () => {
         Given this set, there is a unique way to beat the opponent in each round
         of poker, with one distinction: you cannot play cards that are already
         on the table, otherwise you will be caught cheating. In this way, each
-        card will be used exactly twice ("double up"), which provides
-        confirmation of the correct assignment.
+        card will be used exactly twice (&ldquo;double up&rdquo;), which
+        provides confirmation of the correct assignment.
       </p>
 
       <table style={mono}>
