@@ -4,28 +4,34 @@ import express, {
   RequestHandler,
   NextFunction,
 } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
 import { Router } from "websocket-express";
 import { newClient } from "@/api/client";
 import cookieParser from "cookie-parser";
 import multer from "multer";
-import parseurl from "parseurl";
-import stream from "node:stream";
-import type { ReadableStream } from "node:stream/web";
 import path from "path";
 
 import * as React from "react";
 import { renderToString } from "react-dom/server";
-import type { ReactFormState } from "react-dom/server";
 
-import { roundHandler } from "./routes/round";
-import { puzzleHandler, solutionHandler } from "./routes/puzzle";
+import { roundHandler, RoundParams } from "./routes/round";
+import { puzzleHandler, PuzzleParams, solutionHandler } from "./routes/puzzle";
 import { hackLoginGetHandler } from "./routes/login";
 
-interface LoginQueryTypes {
+// Type parameters to RequestHandler are:
+// 1. Params
+// 2. ResBody
+// 3. ReqBody
+// 4. ReqQuery
+//
+// When annotating particular handlers, annotations should name concrete types
+// rather than interfaces.
+type LoginQueryTypes = {
   next: string;
-}
+};
+type LoginPostParams = {};
 const loginPostHandler: RequestHandler<
-  unknown,
+  LoginPostParams,
   unknown,
   unknown,
   LoginQueryTypes
@@ -47,7 +53,9 @@ const loginPostHandler: RequestHandler<
     return;
   }
   const qs = req.query["next"];
-  const target = qs ? (typeof qs === "string" ? qs : qs[0]) : "/";
+  // Don't bother with weird query string formats.  Get a string, or get your
+  // next path ignored.
+  const target = qs && typeof qs === "string" ? qs : "/";
   if (loginResult.status == 200) {
     res.cookie("mitmh2025_auth", loginResult.body.token, {
       httpOnly: true,
@@ -103,17 +111,6 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
     return next();
   });
 
-  const addRoute = (
-    router: Router,
-    path: string,
-    handler: (req: Request) => React.ReactNode,
-  ) => {
-    router.get(
-      path,
-      async (req, res, next) => await renderApp(handler, req, res, next),
-    );
-  };
-
   unauthRouter.get(
     "/login",
     async (req, res, next) =>
@@ -122,14 +119,32 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
 
-  addRoute(authRouter, "/", (req) => {
-    // Root page should be shadow diamond round page
-    req.params.roundSlug = "shadow_diamond";
-    return roundHandler(req);
-  });
-  addRoute(authRouter, "/rounds/:roundSlug", roundHandler);
-  addRoute(authRouter, "/puzzles/:puzzleSlug", puzzleHandler);
-  addRoute(authRouter, "/puzzles/:puzzleSlug/solution", solutionHandler);
+  authRouter.get(
+    "/",
+    (req: Request<{ roundSlug: string | undefined }>, res, next) => {
+      // Root page should be shadow diamond round page
+      req.params.roundSlug = "shadow_diamond";
+      return renderApp(roundHandler, req as Request<RoundParams>, res, next);
+    },
+  );
+  authRouter.get(
+    "/rounds/:roundSlug",
+    async (req: Request<RoundParams>, res, next) => {
+      await renderApp(roundHandler, req, res, next);
+    },
+  );
+  authRouter.get(
+    "/puzzles/:puzzleSlug",
+    async (req: Request<PuzzleParams>, res, next) => {
+      await renderApp(puzzleHandler, req, res, next);
+    },
+  );
+  authRouter.get(
+    "/puzzles/:puzzleSlug/solution",
+    async (req: Request<PuzzleParams>, res, next) => {
+      await renderApp(solutionHandler, req, res, next);
+    },
+  );
 
   router.use(unauthRouter);
   router.use(authRouter);
@@ -139,12 +154,11 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
 
 const oneDay = 60 * 60 * 24;
 
-async function renderApp(
-  handler: (req: Request) => React.ReactNode,
-  req: Request,
+async function renderApp<Params extends ParamsDictionary>(
+  handler: (req: Request<Params>) => React.ReactNode,
+  req: Request<Params>,
   res: Response,
   _next: NextFunction,
-  formState?: ReactFormState,
 ) {
   const reactRoot = await handler(req);
   if (reactRoot === undefined) {

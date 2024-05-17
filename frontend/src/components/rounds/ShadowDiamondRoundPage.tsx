@@ -1,4 +1,5 @@
 import React from "react";
+import type { ReactNode } from "react";
 
 import type { TeamState } from "@/api/client";
 import photoimage from "@/assets/demo-photo.png";
@@ -11,12 +12,13 @@ const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
   }
   const slots = roundState.slots;
   const puzzleStates = teamState.puzzles;
-  const ifUnlocked = (slot: string, component) => {
+  const ifUnlocked = (slot: string, component: ReactNode) => {
     const slug = slots[slot];
-    const puzzleState = slug && puzzleStates[slug];
+    const puzzleState = slug ? puzzleStates[slug] : undefined;
     if (puzzleState?.locked === "unlocked") {
       return component;
     }
+    return undefined;
   };
   return (
     <div>

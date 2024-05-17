@@ -5,7 +5,12 @@ import React from "react";
 
 const SHOW_SOLUTIONS = true;
 
-export async function puzzleHandler(req: Request) {
+// URL parameters
+export type PuzzleParams = {
+  puzzleSlug: string;
+};
+
+export async function puzzleHandler(req: Request<PuzzleParams>) {
   const slug = req.params.puzzleSlug;
   if (slug === undefined) {
     return undefined;
@@ -57,7 +62,7 @@ export async function puzzleHandler(req: Request) {
   );
 }
 
-export function solutionHandler(req: Request) {
+export function solutionHandler(req: Request<PuzzleParams>) {
   // Only show solutions if we're in dev mode
   if (process.env.NODE_ENV !== "development" || SHOW_SOLUTIONS !== true) {
     return undefined;

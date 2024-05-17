@@ -4,7 +4,10 @@ import { ROUND_PAGE_MAP } from "../components/rounds";
 import { Request } from "express";
 import React from "react";
 
-export const roundHandler = (req: Request) => {
+export type RoundParams = {
+  roundSlug: string;
+};
+export const roundHandler = (req: Request<RoundParams>) => {
   const round = HUNT.rounds.filter(
     (round) => round.slug === req.params.roundSlug,
   )[0];
@@ -19,14 +22,11 @@ export const roundHandler = (req: Request) => {
   const scripts = content.scripts;
   const stylesheets = content.stylesheets;
 
+  const teamState = req.teamState!;
   // TODO: pass props about current unlock state to Component
   return (
-    <Layout
-      scripts={scripts}
-      stylesheets={stylesheets}
-      teamState={req.teamState}
-    >
-      <Component teamState={req.teamState} />
+    <Layout scripts={scripts} stylesheets={stylesheets} teamState={teamState}>
+      <Component teamState={teamState} />
     </Layout>
   );
 };

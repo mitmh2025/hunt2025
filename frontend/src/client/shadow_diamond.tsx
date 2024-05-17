@@ -13,5 +13,5 @@ const RoundSpecificClientComponent = () => {
   );
 };
 
-const root = createRoot(document.getElementById("shadow-diamond-root"));
+const root = createRoot(document.getElementById("shadow-diamond-root")!);
 root.render(<RoundSpecificClientComponent />);

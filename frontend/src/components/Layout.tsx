@@ -14,7 +14,10 @@ const renderDevPane = (teamState?: TeamState) => {
       let title = puzzleSlot.id;
       let slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
       if (slug !== undefined) {
-        title = PUZZLES[slug]?.title;
+        const puzzle = PUZZLES[slug];
+        if (puzzle) {
+          title = puzzle.title;
+        }
       }
       const puzzleState = slug ? teamState.puzzles[slug] : undefined;
       // TODO: do something visually different if the puzzle is locked/visible/unlocked/solved (based on data from session)
