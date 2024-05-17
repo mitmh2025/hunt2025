@@ -4,7 +4,7 @@ import express, {
   RequestHandler,
   NextFunction,
 } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
+import type { ParamsDictionary } from "express-serve-static-core";
 import { Router } from "websocket-express";
 import { newClient } from "@/api/client";
 import cookieParser from "cookie-parser";
@@ -29,7 +29,7 @@ import { hackLoginGetHandler } from "./routes/login";
 type LoginQueryTypes = {
   next: string;
 };
-type LoginPostParams = {};
+type LoginPostParams = Record<string, never>;
 const loginPostHandler: RequestHandler<
   LoginPostParams,
   unknown,

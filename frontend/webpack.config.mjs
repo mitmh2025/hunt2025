@@ -19,6 +19,7 @@ const assetManifestFilename = path.join(
   "asset-manifest.json",
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class LogValue {
   constructor(name, m) {
     this.name = name;
