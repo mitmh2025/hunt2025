@@ -109,7 +109,6 @@ export default function createConfigs(_env, argv) {
     target: "node",
     entry: {
       server: "./src/main.ts",
-      //dump: "./puzzledata/dump-json.ts",
     },
     output: {
       path: outputDirname,
