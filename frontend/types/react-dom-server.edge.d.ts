@@ -1,4 +1,4 @@
-declare module "react-dom/server.edge" {
+declare module 'react-dom/server.edge' {
   export {
     renderToNodeStream,
     renderToReadableStream,
@@ -6,5 +6,5 @@ declare module "react-dom/server.edge" {
     renderToStaticNodeStream,
     renderToString,
     version,
-  } from "react-dom/server";
+  } from 'react-dom/server';
 }

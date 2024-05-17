@@ -1,12 +1,12 @@
-declare module "react-server-dom-webpack/server.edge" {
-  import type { ReactElement, Thenable } from "react";
-  import type { ReactFormState } from "react-dom/server";
+declare module 'react-server-dom-webpack/server.edge' {
+  import type {ReactElement, Thenable} from 'react';
+  import type {ReactFormState} from 'react-dom/server';
   import type {
     ClientManifest,
     ReactClientValue,
     ReactServerValue,
     ServerManifest,
-  } from "react-server-dom-webpack";
+  } from 'react-server-dom-webpack';
 
   export interface RenderToReadableStreamOptions {
     identifierPrefix?: string;
@@ -21,7 +21,7 @@ declare module "react-server-dom-webpack/server.edge" {
     | number
     | null
     | ReadonlyArray<ServerContextJSONValue>
-    | { [key: string]: ServerContextJSONValue };
+    | {[key: string]: ServerContextJSONValue};
 
   export function renderToReadableStream(
     model: ReactClientValue,

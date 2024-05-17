@@ -1,5 +1,0 @@
-# Ignore artifacts
-dist
-# Ignore types from @mfng
-types/react-*
-types/wrangler.d.ts

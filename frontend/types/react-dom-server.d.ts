@@ -1,6 +1,6 @@
-import { RenderToReadableStreamOptions } from "react-dom/server";
+import {RenderToReadableStreamOptions} from 'react-dom/server';
 
-declare module "react-dom/server" {
+declare module 'react-dom/server' {
   export type ReactFormState = [
     unknown /* actual state value */,
     string /* key path */,
