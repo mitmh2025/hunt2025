@@ -119,7 +119,7 @@ export default function createConfigs(_env, argv) {
     },
     externalsPresets: { node: true },
     // FIXME: Requires conditions
-    externals: [nodeExternals({ importType: "module" })],
+    externals: dev ? [nodeExternals({ importType: "module" })] : [],
     plugins: [
       // server-main.css is not used, but required by MiniCssExtractPlugin.
       new MiniCssExtractPlugin({
