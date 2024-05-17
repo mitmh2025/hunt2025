@@ -21,7 +21,7 @@
         terraformBin = "${terraform}/bin/tofu";
         terraformConfiguration = terranix.lib.terranixConfiguration {
           inherit system;
-          modules = [ ./config.nix ];
+          modules = [ ./infra/config.nix ];
         };
       in {
         legacyPackages = pkgs;
@@ -64,9 +64,9 @@
                 self.overlays.default
               ];
             }
-            ./server.nix
+            ./infra/server.nix
           ];
         };
-        overlays.default = import ./pkgs/all-packages.nix;
+        overlays.default = import ./infra/pkgs/all-packages.nix;
       };
 }
