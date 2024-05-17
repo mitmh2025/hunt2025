@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ./services/thingsboard.nix
+    ./services/postgres.nix
+    ./services/redis.nix
+    #./services/thingsboard.nix
   ];
   config = {
     system.stateVersion = "24.05";
@@ -13,39 +15,43 @@
     # Don't build documentation
     documentation.nixos.enable = false;
 
+    networking.firewall.enable = false; # FIXME: Consider enabling and configuring?
+
     services.nginx = {
       enable = true;
     };
 
-    services.postgresql = {
-      enable = true;
-      ensureDatabases = [
-        "mitmh2025"
-      ];
-      ensureUsers = [
-        {
-          name = "mitmh2025";
-          ensureDBOwnership = true;
-        }
-      ];
-    };
-
-    services.postgresqlBackup = {
-      enable = true;
-      startAt = "*-*-* *:15:00";
-    };
-
-    users.users.mitmh2025 = {
+    users.users.hunt2025 = {
       isSystemUser = true;
-      group = "mitmh2025";
+      group = "hunt2025";
       extraGroups = [
-        config.services.redis.servers.mitmh2025.user
+        config.services.redis.servers.hunt2025.user
       ];
     };
-    users.groups.mitmh2025 = {};
+    users.groups.hunt2025 = {};
 
-    services.redis.servers.mitmh2025 = {
-      enable = true;
+    systemd.services.hunt2025 = {
+      description = "Hunt 2025 Frontend";
+
+      wantedBy = ["multi-user.target"];
+      wants = [
+        "postgresql.service"
+        "${config.services.redis.servers.hunt2025.user}.service"
+      ];
+
+      serviceConfig = {
+        ExecStart = "${pkgs.hunt2025}/bin/hunt2025";
+        Restart = "always";
+        RestartSec = "5s";
+        User = "hunt2025";
+        Group = "hunt2025";
+      };
+    };
+
+    virtualisation.vmVariant = {
+      virtualisation.forwardPorts = [
+        { from = "host"; host.port = 3000; guest.port = 3000; }
+      ];
     };
   };
 }

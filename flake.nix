@@ -55,6 +55,12 @@
               && ${terraformBin} destroy
           '');
         };
+        # nix run
+        # TODO: use ${system} to allow running from macOS
+        apps.default = {
+          type = "app";
+          program = "${self.nixosConfigurations.server.config.system.build.vm}/bin/run-nixos-vm";
+        };
       }) // {
         nixosConfigurations.server = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
