@@ -6,7 +6,7 @@
 
   outputs = { self, nixpkgs, flake-utils }: let
     overlay = (final: prev: {
-      hunt2025 = final.callPackage ./default.nix {};
+      hunt2025 = final.callPackage ./frontend {};
     });
   in
     (flake-utils.lib.eachDefaultSystem (system:
