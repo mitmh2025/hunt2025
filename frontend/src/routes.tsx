@@ -158,5 +158,5 @@ async function renderApp(
     "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
   });
   res.status(200);
-  res.send(html)
+  res.send(html);
 }

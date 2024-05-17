@@ -33,7 +33,10 @@ const reactSsrManifestFilename = path.join(
 );
 
 const jsManifestFilename = path.join(outputManifestDirname, "js-manifest.json");
-const cssManifestFilename = path.join(outputManifestDirname, "css-manifest.json");
+const cssManifestFilename = path.join(
+  outputManifestDirname,
+  "css-manifest.json",
+);
 
 class LogValue {
   constructor(name, m) {

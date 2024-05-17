@@ -10,8 +10,14 @@ const outputDirname = path.join(currentDirname, "dist");
 const outputManifestDirname = outputDirname;
 
 const jsManifestFilename = path.join(outputManifestDirname, "js-manifest.json");
-const cssManifestFilename = path.join(outputManifestDirname, "css-manifest.json");
-const assetManifestFilename = path.join(outputManifestDirname, "asset-manifest.json");
+const cssManifestFilename = path.join(
+  outputManifestDirname,
+  "css-manifest.json",
+);
+const assetManifestFilename = path.join(
+  outputManifestDirname,
+  "asset-manifest.json",
+);
 
 class LogValue {
   constructor(name, m) {
@@ -58,7 +64,7 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
     generator: {
       outputPath: "assets/",
-        filename: "[hash][ext][query]",
+      filename: "[hash][ext][query]",
     },
   };
 
@@ -189,9 +195,7 @@ export default function createConfigs(_env, argv) {
       alias: {
         "@": path.join(currentDirname, "src"),
       },
-      modules: [
-        path.join(currentDirname, "node_modules"),
-      ],
+      modules: [path.join(currentDirname, "node_modules")],
     },
     plugins: [
       new MiniCssExtractPlugin({
@@ -211,7 +215,8 @@ export default function createConfigs(_env, argv) {
       new WebpackManifestPlugin({
         fileName: assetManifestFilename,
         publicPath: "/client",
-        filter: (file) => !file.path.endsWith(`.js`) && !file.path.endsWith(".css"),
+        filter: (file) =>
+          !file.path.endsWith(`.js`) && !file.path.endsWith(".css"),
       }),
     ],
     experiments: {

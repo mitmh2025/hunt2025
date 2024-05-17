@@ -6,7 +6,7 @@ import Casino from "./fortunate-calf";
 import type { Hunt, PuzzleDefinition } from "./types";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
-  "the_casino": Casino,
+  the_casino: Casino,
 };
 
 const HUNT: Hunt = {

@@ -40,7 +40,7 @@ export type Content = {
   // Stylesheets that will be injected into the page's <head> when rendered.
   // Generally, should contain the result of lookupStylesheet(webpackEntryPoint)
   stylesheets?: string[];
-}
+};
 
 export type PuzzleDefinition = {
   title: string;

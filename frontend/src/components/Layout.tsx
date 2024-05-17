@@ -108,7 +108,8 @@ const Layout = ({
     <html>
       <head>
         {title && <title>{title}</title>}
-        {stylesheets && stylesheets.map((s) => <link key={s} rel="stylesheet" href={s} />)}
+        {stylesheets &&
+          stylesheets.map((s) => <link key={s} rel="stylesheet" href={s} />)}
       </head>
       <body>
         <div
@@ -122,7 +123,8 @@ const Layout = ({
           <div style={{ flex: 1 }}>{children}</div>
           {renderDevPane(teamState)}
         </div>
-        {scripts && scripts.map((s) => <script key={s} type="text/javascript" src={s} />)}
+        {scripts &&
+          scripts.map((s) => <script key={s} type="text/javascript" src={s} />)}
       </body>
     </html>
   );

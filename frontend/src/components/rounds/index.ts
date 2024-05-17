@@ -19,7 +19,7 @@ type RoundDefinition = {
   component: FunctionComponent<{ teamState: TeamState }>;
   scripts?: string[];
   stylesheets?: string[];
-}
+};
 
 export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   sd: {

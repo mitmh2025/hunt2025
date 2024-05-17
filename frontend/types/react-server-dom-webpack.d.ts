@@ -1,10 +1,10 @@
-declare module 'react-server-dom-webpack' {
+declare module "react-server-dom-webpack" {
   import type {
     Component,
     Context,
     LazyExoticComponent,
     ReactElement,
-  } from 'react';
+  } from "react";
 
   export interface ClientManifest {
     [id: string]: ImportManifestEntry;
@@ -27,7 +27,7 @@ declare module 'react-server-dom-webpack' {
 
   export interface ModuleLoading {
     prefix: string;
-    crossOrigin?: 'use-credentials' | '';
+    crossOrigin?: "use-credentials" | "";
   }
 
   export interface ImportManifestEntry {
@@ -67,7 +67,7 @@ declare module 'react-server-dom-webpack' {
     | ReactClientObject
     | Promise<ReactClientValue>; // Thenable<ReactClientValue>
 
-  export type ReactClientObject = {[key: string]: ReactClientValue};
+  export type ReactClientObject = { [key: string]: ReactClientValue };
 
   // Serializable values for the server
   export type ReactServerValue =
@@ -86,5 +86,5 @@ declare module 'react-server-dom-webpack' {
     | ReactServerObject
     | Promise<ReactServerValue>; // Thenable<ReactServerValue>
 
-  export type ReactServerObject = {[key: string]: ReactServerValue};
+  export type ReactServerObject = { [key: string]: ReactServerValue };
 }
