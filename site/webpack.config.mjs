@@ -125,7 +125,11 @@ export default function createConfigs(_env, argv) {
     },
     externalsPresets: { node: true },
     // FIXME: Requires conditions
-    externals: dev ? [nodeExternals({ importType: "module" })] : [],
+    externals: (dev ? [nodeExternals({ importType: "module" })] : []).concat([
+      "better-sqlite3",
+      "pg-native",
+      "knex",
+    ]),
     plugins: [
       // server-main.css is not used, but required by MiniCssExtractPlugin.
       new MiniCssExtractPlugin({

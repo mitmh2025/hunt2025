@@ -13,7 +13,7 @@ in buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = "sha256-TN+UU+I5trX93Myrgl2bJvcz+ckCVGYhk5cA1LtwVTc=";
+  npmDepsHash = "sha256-fwtc2oGyd2oo2Dq2ba0rsLGYQqWrvqqcqdqc8tyhLq0=";
 
   inherit nodejs;
 
@@ -26,13 +26,9 @@ in buildNpmPackage {
     makeWrapper
   ];
 
-  installPhase = ''
-    runHook preInstall
-    mkdir -p $out/share
-    cp -R dist $out/share/hunt2025
-    cp package.json $out/share/hunt2025/
+  postInstall = ''
+    cp -R dist $out/lib/node_modules/hunt2025/dist
     makeWrapper ${nodejs}/bin/node $out/bin/hunt2025 \
-      --add-flags $out/share/hunt2025/server-bundle.js
-    runHook postInstall
+      --add-flags $out/lib/node_modules/hunt2025/dist/server-bundle.js
   '';
 }
