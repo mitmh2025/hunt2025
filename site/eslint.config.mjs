@@ -74,6 +74,22 @@ export default tseslint.config(
     },
   },
   {
+    // Required to ensure typescript-eslint can find the tsconfig
+    languageOptions: {
+      parserOptions: {
+        project: true,
+        tsConfigDirName: import.meta.dirname,
+      },
+    },
+  },
+  {
+    // Don't do type-checking on any plain .js files in the tree.
+    // We probably won't write any untyped source ourselves, but some puzzle
+    // authors might.
+    files: ["**/*.js", "**/*.mjs"],
+    ...tseslint.configs.disableTypeChecked,
+  },
+  {
     ignores: [
       // Don't lint generated stuff under dist/
       "dist/*",
