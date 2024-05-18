@@ -1,6 +1,6 @@
+import path from "path";
 import Knex from "knex";
 import connections from "../../knexfile";
-import path from "path";
 
 class WebpackMigrationSource {
   context: webpack.Context;

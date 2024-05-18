@@ -6,11 +6,11 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { Request, Router } from "express";
 import jwt from "jsonwebtoken";
+import { Knex } from "knex";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { contract } from "../../lib/api/contract";
-import { Knex } from "knex";
 
 const puzzleState: Record<
   string,
