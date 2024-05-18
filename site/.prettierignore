@@ -1,7 +1,7 @@
 # prettier seems to treat the multi-byte emoji characters as taking up multiple
 # spaces of width, so letting it format the solution does violence to the
 # readability of many of the tables
-puzzledata/fortunate-calf/solution.mdx
+src/frontend/puzzles/fortunate-calf/solution.mdx
 # Ignore artifacts
 dist
 # Ignore types from @mfng

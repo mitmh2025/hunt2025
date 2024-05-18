@@ -1,4 +1,4 @@
-import type { Client, TeamState } from "../../src/api/client";
+import type { Client, TeamState } from "../../lib/api/client";
 export {};
 
 declare global {
