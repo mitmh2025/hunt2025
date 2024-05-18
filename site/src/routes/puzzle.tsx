@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../frontend/components/Layout";
 import { PUZZLES } from "../frontend/puzzles";
 import { Request } from "express";
 import React from "react";

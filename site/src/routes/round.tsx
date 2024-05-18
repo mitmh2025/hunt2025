@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../frontend/components/Layout";
 import { ROUND_PAGE_MAP } from "../frontend/rounds";
 import HUNT from "../huntdata";
 import { Request } from "express";
