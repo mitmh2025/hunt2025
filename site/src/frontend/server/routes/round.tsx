@@ -1,6 +1,6 @@
-import Layout from "../frontend/components/Layout";
-import { ROUND_PAGE_MAP } from "../frontend/rounds";
-import HUNT from "../huntdata";
+import Layout from "../../components/Layout";
+import { ROUND_PAGE_MAP } from "../../rounds";
+import HUNT from "../../../huntdata";
 import { Request } from "express";
 import React from "react";
 

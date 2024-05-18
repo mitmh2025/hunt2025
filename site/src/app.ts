@@ -4,7 +4,7 @@ import path from "path";
 import morgan from "morgan";
 
 import { getRouter } from "./api/server";
-import { getUiRouter } from "./routes";
+import { getUiRouter } from "./frontend/server/routes";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
