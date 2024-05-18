@@ -6,14 +6,13 @@ import express, {
 } from "express";
 import type { ParamsDictionary } from "express-serve-static-core";
 import { Router } from "websocket-express";
-import { newClient } from "@/api/client";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path";
-
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 
+import { newClient } from "../../lib/api/client";
 import { roundHandler, RoundParams } from "./routes/round";
 import { puzzleHandler, PuzzleParams, solutionHandler } from "./routes/puzzle";
 import { hackLoginGetHandler } from "./routes/login";

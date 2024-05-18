@@ -1,7 +1,6 @@
 // main.ts
 
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
-import { contract } from "./contract";
 import { ServerInferResponseBody } from "@ts-rest/core";
 import { Request, Router } from "express";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -12,6 +11,7 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import { Passport } from "passport";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import { contract } from "../../lib/api/contract";
 
 const puzzleState: Record<
   string,

@@ -192,9 +192,11 @@ export default function createConfigs(_env, argv) {
         ".js": [".ts", ".js"],
         ".mjs": [".mts", ".mjs"],
       },
+      /*
       alias: {
         "@": path.join(currentDirname, "src"),
       },
+      */
       modules: [path.join(currentDirname, "node_modules")],
     },
     plugins: [

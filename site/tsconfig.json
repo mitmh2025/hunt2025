@@ -7,7 +7,7 @@
     "noEmit": true,
 
     "paths": {
-      "@/*": ["./src/*"]
+      // "@/*": ["./src/*"]
     },
 
     /* Strict Type-Checking Options */

@@ -1,6 +1,6 @@
-import Layout from "@/components/Layout";
 import { Request } from "express";
 import React from "react";
+import Layout from "../components/Layout";
 
 export function hackLoginGetHandler(_req: Request) {
   return (
