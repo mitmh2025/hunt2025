@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import type { TeamState } from "../../../lib/api/client.js";
-import { PUZZLES } from "../puzzles";
 import HUNT from "../../huntdata";
+import { PUZZLES } from "../puzzles";
 
 const SHOW_DEV_PANE = true;
 

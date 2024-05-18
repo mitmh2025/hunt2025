@@ -1,5 +1,4 @@
 import React from "react";
-
 import casino1 from "./casino1.png";
 import casino2 from "./casino2.png";
 import casino3 from "./casino3.png";

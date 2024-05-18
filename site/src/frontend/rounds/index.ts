@@ -1,5 +1,4 @@
 import type { FunctionComponent } from "react";
-
 import type { TeamState } from "../../../lib/api/client";
 import { lookupScript, lookupStylesheet } from "../server/assets";
 import BackgroundCheckRoundPage from "./BackgroundCheckRoundPage";

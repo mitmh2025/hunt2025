@@ -1,8 +1,8 @@
-import Layout from "../../components/Layout";
-import { ROUND_PAGE_MAP } from "../../rounds";
-import HUNT from "../../../huntdata";
 import { Request } from "express";
 import React from "react";
+import HUNT from "../../../huntdata";
+import Layout from "../../components/Layout";
+import { ROUND_PAGE_MAP } from "../../rounds";
 
 export type RoundParams = {
   roundSlug: string;

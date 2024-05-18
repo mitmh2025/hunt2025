@@ -1,6 +1,5 @@
 import type { FunctionComponent } from "react";
 // Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
-
 import type { Condition } from "../../huntdata/types";
 // An expression indicating the nature of a dependency.
 

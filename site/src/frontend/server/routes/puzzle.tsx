@@ -1,7 +1,7 @@
-import Layout from "../../components/Layout";
-import { PUZZLES } from "../../puzzles";
 import { Request } from "express";
 import React from "react";
+import Layout from "../../components/Layout";
+import { PUZZLES } from "../../puzzles";
 
 const SHOW_SOLUTIONS = true;
 

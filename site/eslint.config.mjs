@@ -1,12 +1,12 @@
 import { fixupConfigRules } from "@eslint/compat";
 import eslint from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
 import prettierConfig from "eslint-config-prettier";
+import importPlugin from "eslint-plugin-import";
 import jsxa11y from "eslint-plugin-jsx-a11y";
 import reactRecommended from "eslint-plugin-react/configs/recommended.js";
 import reactHooks from "eslint-plugin-react-hooks";
-import importPlugin from "eslint-plugin-import";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 // ESLint 9 was recently released.  Not all config/plugin packages have been
 // migrated to use the new flat config structure yet, nor have all been
@@ -70,6 +70,13 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      "import/order": [
+        "error",
+        {
+          alphabetize: { order: "asc" },
+          "newlines-between": "never",
+        },
       ],
     },
   },

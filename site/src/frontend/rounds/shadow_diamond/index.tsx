@@ -1,6 +1,5 @@
 import React from "react";
 import type { ReactNode } from "react";
-
 import type { TeamState } from "../../../../lib/api/client";
 import photoimage from "../../../assets/demo-photo.png";
 
