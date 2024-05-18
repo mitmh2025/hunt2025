@@ -12,7 +12,7 @@ import path from "path";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 
-import { newClient } from "../../lib/api/client";
+import { newClient } from "../lib/api/client";
 import { roundHandler, RoundParams } from "./routes/round";
 import { puzzleHandler, PuzzleParams, solutionHandler } from "./routes/puzzle";
 import { hackLoginGetHandler } from "./routes/login";
