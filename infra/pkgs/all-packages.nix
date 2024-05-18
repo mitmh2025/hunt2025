@@ -1,4 +1,4 @@
 final: prev: {
-  hunt2025 = final.callPackage ../../frontend {};
+  hunt2025 = final.callPackage ../../site {};
   thingsboard = final.callPackage ./thingsboard.nix {};
 }
