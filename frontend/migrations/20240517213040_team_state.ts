@@ -15,8 +15,9 @@ export async function up(knex: Knex): Promise<void> {
         .createTable('team_puzzle_guesses', function (table) {
             table.string('username', 255).notNullable().references('teams.username').onDelete('CASCADE').onUpdate('CASCADE');
             table.string('slug', 255).notNullable();
-            table.datetime('timestamp').defaultTo(knex.fn.now());
             table.string('canonical_input', 255).notNullable();
+            table.primary(['username', 'slug', 'canonical_input']);
+            table.datetime('timestamp').defaultTo(knex.fn.now());
             // TODO: Enum for wrong/partial/correct?
             table.text('response');
         });
