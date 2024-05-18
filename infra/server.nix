@@ -39,6 +39,8 @@
         "${config.services.redis.servers.hunt2025.user}.service"
       ];
 
+      environment.DB_ENV = "production";
+
       serviceConfig = {
         ExecStart = "${pkgs.hunt2025}/bin/hunt2025";
         Restart = "always";

@@ -20,34 +20,23 @@ const config: { [key: string]: Knex.Config } = {
   },
 
   staging: {
-    client: "postgresql",
-    connection: {
-      database: "my_db",
-      user: "username",
-      password: "password",
-    },
+    client: "pgnative",
+    connection: process.env.DB_URI,
     pool: {
       min: 2,
       max: 10,
-    },
-    migrations: {
-      tableName: "knex_migrations",
     },
   },
 
   production: {
-    client: "postgresql",
-    connection: {
-      database: "my_db",
-      user: "username",
-      password: "password",
-    },
+    client: "pgnative",
+    // N.B. pg has a very different idea of a "connection string" than libpq :(
+    // Refer to the source: https://github.com/brianc/node-postgres/blob/master/packages/pg-connection-string/index.js
+    connection:
+      process.env.DB_URI || "postgresql:///hunt2025?host=/run/postgresql",
     pool: {
       min: 2,
       max: 10,
-    },
-    migrations: {
-      tableName: "knex_migrations",
     },
   },
 };
