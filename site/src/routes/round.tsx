@@ -1,6 +1,6 @@
-import HUNT from "../../puzzledata";
 import Layout from "../components/Layout";
-import { ROUND_PAGE_MAP } from "../components/rounds";
+import { ROUND_PAGE_MAP } from "../frontend/rounds";
+import HUNT from "../huntdata";
 import { Request } from "express";
 import React from "react";
 

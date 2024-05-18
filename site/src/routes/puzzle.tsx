@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import { PUZZLES } from "../../puzzledata";
+import { PUZZLES } from "../frontend/puzzles";
 import { Request } from "express";
 import React from "react";
 

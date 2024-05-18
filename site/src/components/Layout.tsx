@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
-import HUNT, { PUZZLES } from "../../puzzledata";
+import HUNT from "../huntdata";
 import type { TeamState } from "../api/client.js";
+import { PUZZLES } from "../frontend/puzzles";
 
 const SHOW_DEV_PANE = true;
 

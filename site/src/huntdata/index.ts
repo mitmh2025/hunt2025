@@ -1,13 +1,6 @@
 // This is the canonical description of the structure of our hunt, with a full
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
-
-// import Boardwalk from './dental-shark';
-import Casino from "./fortunate-calf";
-import type { Hunt, PuzzleDefinition } from "./types";
-
-export const PUZZLES: Record<string, PuzzleDefinition> = {
-  the_casino: Casino,
-};
+import type { Hunt } from "./types";
 
 const HUNT: Hunt = {
   rounds: [
