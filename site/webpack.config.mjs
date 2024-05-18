@@ -151,7 +151,7 @@ export default function createConfigs(_env, argv) {
     name: "client",
     entry: {
       main: "./src/frontend/client/main.tsx",
-      shadow_diamond: "./src/frontend/client/shadow_diamond.tsx",
+      shadow_diamond: "./src/frontend/rounds/shadow_diamond/client.tsx",
     },
     target: "web",
     output: {

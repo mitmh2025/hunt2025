@@ -7,8 +7,8 @@ import DeadThiefRoundPage from "./DeadThiefRoundPage";
 import IllegalSearchRoundPage from "./IllegalSearchRoundPage";
 import PapertrailRoundPage from "./PapertrailRoundPage";
 import RealDiamondRoundPage from "./RealDiamondRoundPage";
-import ShadowDiamondRoundPage from "./ShadowDiamondRoundPage";
 import StakeoutRoundPage from "./StakeoutRoundPage";
+import ShadowDiamondRoundPage from "./shadow_diamond";
 
 // This file is intended to include non-structural data that is only relevant
 // to the frontend concerning rounds.
