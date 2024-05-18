@@ -28,7 +28,12 @@
     "baseUrl": ".",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": ["node", "react/experimental", "react-dom/experimental"],
+    "types": [
+      "node",
+      "react/experimental",
+      "react-dom/experimental",
+      "webpack/module"
+    ],
     "esModuleInterop": true,
     "preserveSymlinks": true
   }

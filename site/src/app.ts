@@ -4,18 +4,32 @@ import morgan from "morgan";
 import { WebSocketExpress } from "websocket-express";
 import { getRouter } from "./api/server";
 import { getUiRouter } from "./frontend/server/routes";
+import { connect } from "./api/db";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
 const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
-export default function ({ apiUrl }: { apiUrl: string }) {
+export default async function ({
+  environment,
+  jwt_secret,
+  apiUrl,
+}: {
+  environment: string;
+  jwt_secret: string;
+  apiUrl: string;
+}) {
+  const knex = await connect(environment);
+
   const app = new WebSocketExpress();
 
   app.use(morgan(LOG_FORMAT));
 
   // Mount the API router at /api
-  const apiRouter = getRouter();
+  const apiRouter = await getRouter({
+    jwt_secret,
+    knex,
+  });
   app.use("/api", apiRouter);
 
   // Serve assets from the bundle without auth

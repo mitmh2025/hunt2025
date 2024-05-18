@@ -4,7 +4,6 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { WebpackManifestPlugin } from "webpack-manifest-plugin";
 import nodeExternals from "webpack-node-externals";
 
-
 const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
 const outputDirname = path.join(currentDirname, "dist");
 const outputManifestDirname = outputDirname;

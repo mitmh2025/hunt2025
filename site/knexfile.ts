@@ -3,11 +3,20 @@ import type { Knex } from "knex";
 // Update with your config settings.
 
 const config: { [key: string]: Knex.Config } = {
+  memory: {
+    client: "better-sqlite3",
+    connection: {
+      filename: ":memory:",
+    },
+    debug: true,
+  },
+
   development: {
     client: "better-sqlite3",
     connection: {
       filename: "./dev.sqlite3",
     },
+    debug: true,
   },
 
   staging: {
@@ -43,4 +52,4 @@ const config: { [key: string]: Knex.Config } = {
   },
 };
 
-module.exports = config;
+export default config;

@@ -1,5 +1,3 @@
-// main.ts
-
 import { ServerInferResponseBody } from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -12,6 +10,7 @@ import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { contract } from "../../lib/api/contract";
+import { Knex } from "knex";
 
 const puzzleState: Record<
   string,
@@ -30,8 +29,6 @@ const puzzleState: Record<
   },
 };
 
-const JWT_SECRET = "secret"; // FIXME
-
 function cookieExtractor(req: Request) {
   let token = null;
   if (req && req.cookies) {
@@ -40,7 +37,7 @@ function cookieExtractor(req: Request) {
   return token;
 }
 
-function newPassport() {
+function newPassport(jwt_secret: string) {
   const passport = new Passport();
   passport.use(
     new Strategy(
@@ -49,7 +46,7 @@ function newPassport() {
           cookieExtractor,
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: JWT_SECRET,
+        secretOrKey: jwt_secret,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
@@ -61,14 +58,20 @@ function newPassport() {
   return passport;
 }
 
-export function getRouter() {
+export async function getRouter({
+  jwt_secret,
+  knex,
+}: {
+  jwt_secret: string;
+  knex: Knex;
+}) {
   const app = Router();
   app.use(cors());
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  const passport = newPassport();
+  const passport = newPassport(jwt_secret);
 
   const s = initServer();
 
@@ -77,13 +80,18 @@ export function getRouter() {
   const router = s.router(contract, {
     auth: {
       login: async ({ body: { username, password } }) => {
-        if (password == "password") {
-          // FIXME
+        const team = await knex("teams")
+          .where({
+            username,
+            password,
+          })
+          .first("username");
+        if (team !== undefined) {
           const token = jwt.sign(
             {
               user: username,
             },
-            JWT_SECRET,
+            jwt_secret,
             {},
           );
 
