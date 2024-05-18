@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 
 import type { TeamState } from "../../../lib/api/client";
-import { lookupScript, lookupStylesheet } from "../../assets";
+import { lookupScript, lookupStylesheet } from "../server/assets";
 import BackgroundCheckRoundPage from "./BackgroundCheckRoundPage";
 import DeadThiefRoundPage from "./DeadThiefRoundPage";
 import IllegalSearchRoundPage from "./IllegalSearchRoundPage";
