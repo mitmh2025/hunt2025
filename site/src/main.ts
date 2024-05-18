@@ -15,6 +15,6 @@ app({
       console.log(`Listening on port ${port}`);
     }),
   )
-  .catch((err) => {
+  .catch((err: unknown) => {
     console.error(err);
   });

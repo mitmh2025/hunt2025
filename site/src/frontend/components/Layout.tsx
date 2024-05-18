@@ -6,6 +6,7 @@ import { PUZZLES } from "../puzzles";
 const SHOW_DEV_PANE = true;
 
 const renderDevPane = (teamState?: TeamState) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- !SHOW_DEV_PANE is always falsy in development
   if (process.env.NODE_ENV !== "development" || !SHOW_DEV_PANE || !teamState)
     return undefined;
 

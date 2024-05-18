@@ -52,7 +52,7 @@ export default tseslint.config(
       },
     },
   },
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
   prettierConfig,
   {
     // Webpack configs run under node and can use globals like console
@@ -71,6 +71,7 @@ export default tseslint.config(
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
+      "@typescript-eslint/restrict-template-expressions": ["off"], // This rule is more annoying than useful
       "import/order": [
         "error",
         {

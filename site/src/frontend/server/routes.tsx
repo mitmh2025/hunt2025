@@ -99,7 +99,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   const unauthRouter = new Router();
   unauthRouter.use((req: Request, _res: Response, next: NextFunction) => {
     req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"] as string);
-    return next();
+    next();
   });
 
   const authRouter = new Router();
@@ -112,16 +112,15 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
         return;
       }
       req.teamState = teamStateResp.body;
-      return next();
+      next();
     }),
   );
 
   unauthRouter.get(
     "/login",
-    asyncHandler(
-      async (req: Request, res: Response, next: NextFunction) =>
-        await renderApp(hackLoginGetHandler, req, res, next),
-    ),
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(hackLoginGetHandler, req, res, next);
+    }),
   );
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
@@ -171,7 +170,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   return router;
 }
 
-const oneDay = 60 * 60 * 24;
+const oneDay = String(60 * 60 * 24);
 
 async function renderApp<Params extends ParamsDictionary>(
   handler: (req: Request<Params>) => React.ReactNode,
@@ -181,7 +180,8 @@ async function renderApp<Params extends ParamsDictionary>(
 ) {
   const reactRoot = await handler(req);
   if (reactRoot === undefined) {
-    return render404(req, res);
+    render404(req, res);
+    return;
   }
 
   const doctype = "<!DOCTYPE html>";

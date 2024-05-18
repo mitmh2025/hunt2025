@@ -26,7 +26,7 @@ export default async function ({
   app.use(morgan(LOG_FORMAT));
 
   // Mount the API router at /api
-  const apiRouter = await getRouter({
+  const apiRouter = getRouter({
     jwt_secret,
     knex,
   });

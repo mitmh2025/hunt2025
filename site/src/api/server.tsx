@@ -29,12 +29,13 @@ const puzzleState: Record<
   },
 };
 
+type JWTPayload = {
+  user: string;
+};
+
 function cookieExtractor(req: Request) {
-  let token = null;
-  if (req && req.cookies) {
-    token = req.cookies["mitmh2025_auth"];
-  }
-  return token;
+  const token = req.cookies["mitmh2025_auth"] as string | undefined;
+  return token ? token : null;
 }
 
 function newPassport(jwt_secret: string) {
@@ -50,15 +51,15 @@ function newPassport(jwt_secret: string) {
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
-      function (jwt_payload, done) {
-        return done(null, jwt_payload.user);
+      function (jwt_payload: JWTPayload, done) {
+        done(null, jwt_payload.user);
       },
     ),
   );
   return passport;
 }
 
-export async function getRouter({
+export function getRouter({
   jwt_secret,
   knex,
 }: {
@@ -75,11 +76,19 @@ export async function getRouter({
 
   const s = initServer();
 
+  /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
+   * I can't tell what's untyped here, but maybe something in passport? */
   const authMiddleware = passport.authenticate("jwt", { session: false });
 
   const router = s.router(contract, {
     auth: {
-      login: async ({ body: { username, password } }) => {
+      login: async ({
+        body: { username, password },
+      }: {
+        body: { username: string; password: string };
+      }) => {
+        /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
+         * I can't tell what's untyped here either.  knex table results? */
         const team = await knex("teams")
           .where({
             username,
@@ -108,6 +117,9 @@ export async function getRouter({
         };
       },
     },
+    /* eslint-disable @typescript-eslint/require-await --
+     * These async functions really should return promises, even though they
+     * don't currently await anything. */
     public: {
       getMyTeamState: {
         middleware: [authMiddleware],
@@ -153,6 +165,7 @@ export async function getRouter({
         },
       },
     },
+    /* eslint-enable @typescript-eslint/require-await */
   });
 
   createExpressEndpoints(contract, router, app, {

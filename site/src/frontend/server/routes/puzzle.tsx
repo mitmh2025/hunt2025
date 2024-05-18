@@ -12,9 +12,6 @@ export type PuzzleParams = {
 
 export async function puzzleHandler(req: Request<PuzzleParams>) {
   const slug = req.params.puzzleSlug;
-  if (slug === undefined) {
-    return undefined;
-  }
   const result = await req.api.public.getPuzzleState({
     params: { slug: slug },
   });
@@ -64,7 +61,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
 export function solutionHandler(req: Request<PuzzleParams>) {
   // Only show solutions if we're in dev mode
-  if (process.env.NODE_ENV !== "development" || SHOW_SOLUTIONS !== true) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- !SHOW_SOLUTIONS always falsy
+  if (process.env.NODE_ENV !== "development" || !SHOW_SOLUTIONS) {
     return undefined;
   }
 
