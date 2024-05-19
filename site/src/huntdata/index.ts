@@ -9,8 +9,8 @@ const HUNT: Hunt = {
       title: "The Shadow Diamond",
       puzzles: [
         // slots (28 feeders, 4 metas, 1 super)
-        { id: "sdp01" },
-        { id: "sdp02" },
+        { id: "sdp01", unlocked_if: [] }, // unlocked by default
+        { id: "sdp02", unlocked_if: [] }, // unlocked by default
         { id: "sdp03", unlockable_if: { puzzles_solved: 1 } },
         { id: "sdp04", unlockable_if: { puzzles_solved: 2 } },
         { id: "sdp05", unlockable_if: { puzzles_solved: 3 } },

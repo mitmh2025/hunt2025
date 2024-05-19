@@ -11,6 +11,8 @@ import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { contract } from "../../lib/api/contract";
+import { Hunt } from "../huntdata/types";
+import { recalculateTeamState } from "./db";
 
 const puzzleState: Record<
   string,
@@ -62,9 +64,11 @@ function newPassport(jwt_secret: string | Buffer) {
 export function getRouter({
   jwt_secret,
   knex,
+  hunt,
 }: {
   jwt_secret: string | Buffer;
   knex: Knex;
+  hunt: Hunt;
 }) {
   const app = Router();
   app.use(cors());
@@ -124,6 +128,9 @@ export function getRouter({
       getMyTeamState: {
         middleware: [authMiddleware],
         handler: async ({ req }) => {
+          await knex.transaction(
+            recalculateTeamState.bind(null, hunt, req.user as string),
+          );
           return {
             status: 200,
             body: {

@@ -1,12 +1,12 @@
 import type { Hunt, Condition } from "./types";
 
 interface ConditionState {
+  hunt: Hunt;
   interactions_completed: Set<string>;
   puzzle_solution_count: Record<string, number>;
 }
 
 interface ConditionStateInternal extends ConditionState {
-  hunt: Hunt;
   current_round?: string;
   slug_by_slot: Record<string, string>;
 }
@@ -84,10 +84,9 @@ function getSlugsBySlot(hunt: Hunt) {
   return slug_by_slot;
 }
 
-export function calculateTeamState(
-  hunt: Hunt,
-  condition_state: ConditionState,
-) {
+export function calculateTeamState(condition_state: ConditionState) {
+  const { hunt } = condition_state;
+
   const unlocked_rounds: Set<string> = new Set();
   const visible_puzzles: Set<string> = new Set();
   const unlockable_puzzles: Set<string> = new Set();
@@ -101,7 +100,6 @@ export function calculateTeamState(
         condition,
         Object.assign(
           {
-            hunt,
             current_round: round.slug,
             slug_by_slot,
           },

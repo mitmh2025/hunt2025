@@ -1,6 +1,9 @@
 import path from "path";
 import Knex from "knex";
 import connections from "../../knexfile";
+import { Hunt } from "../huntdata/types";
+import { calculateTeamState } from "../huntdata/logic";
+import { TeamPuzzle } from "knex/types/tables";
 
 class WebpackMigrationSource {
   context: webpack.Context;
@@ -66,4 +69,139 @@ export async function connect(environment: string) {
     });
   }
   return knex;
+}
+
+declare module "knex/types/tables" {
+  interface Team {
+    username: string;
+    password?: string;
+  }
+
+  interface TeamRound {
+    username: string;
+    slug: string;
+    unlocked: boolean;
+  }
+
+  interface TeamPuzzle {
+    username: string;
+    slug: string;
+    visible: boolean;
+    unlockable: boolean;
+    unlocked: boolean;
+    solved: boolean;
+  }
+
+  interface TeamPuzzleGuess {
+    username: string;
+    slug: string;
+    canonical_input: string;
+    timestamp: Date;
+    correct: boolean;
+    response?: string;
+  }
+
+  interface Tables {
+    teams: Team;
+    team_rounds: TeamRound;
+    team_puzzles: TeamPuzzle;
+    team_puzzle_guesses: TeamPuzzleGuess;
+  }
+}
+
+export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
+  const puzzle_status = await trx("team_puzzles")
+    .where("username", team)
+    .select("slug", "visible", "unlockable", "unlocked");
+  return {
+    unlocked_rounds: new Set(
+      await trx("team_rounds").where("username", team).pluck("slug"),
+    ),
+    visible_puzzles: new Set(
+      puzzle_status.flatMap(({ slug, visible }) => (visible ? [slug] : [])),
+    ),
+    unlockable_puzzles: new Set(
+      puzzle_status.flatMap(({ slug, unlockable }) =>
+        unlockable ? [slug] : [],
+      ),
+    ),
+    unlocked_puzzles: new Set(
+      puzzle_status.flatMap(({ slug, unlocked }) => (unlocked ? [slug] : [])),
+    ),
+  };
+}
+
+export async function recalculateTeamState(
+  hunt: Hunt,
+  team: string,
+  trx: Knex.Knex.Transaction,
+) {
+  const interactions_completed = new Set(
+    await trx("team_interactions").where("username", team).pluck("id"),
+  );
+  const puzzle_solution_count = Object.fromEntries(
+    (
+      await trx("team_puzzle_guesses")
+        .select("slug")
+        .where("username", team)
+        .where("correct", true)
+        .count("*", { as: "count" })
+        .groupBy("slug")
+    ).map(({ slug, count }) => [slug, Number(count || 0)]),
+  );
+  console.log(interactions_completed);
+  console.log(puzzle_solution_count);
+  const old = await getTeamState(team, trx);
+  const next = calculateTeamState({
+    hunt,
+    interactions_completed,
+    puzzle_solution_count,
+  });
+  console.log(next);
+  for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
+    await trx("team_rounds")
+      .insert({
+        username: team,
+        slug: slug,
+        unlocked: true,
+      })
+      .onConflict(["username", "slug"])
+      .merge({
+        unlocked: true,
+      });
+  }
+  const diff = {
+    visible_puzzles: next.visible_puzzles.difference(old.visible_puzzles),
+    unlockable_puzzles: next.unlockable_puzzles.difference(
+      old.unlockable_puzzles,
+    ),
+    unlocked_puzzles: next.unlocked_puzzles.difference(old.unlocked_puzzles),
+  };
+  const diff_puzzles = diff.visible_puzzles
+    .union(diff.unlockable_puzzles)
+    .union(diff.unlocked_puzzles);
+  for (const slug of diff_puzzles) {
+    let record: Partial<TeamPuzzle> = {};
+    if (diff.visible_puzzles.has(slug)) {
+      record.visible = true;
+    }
+    if (diff.unlockable_puzzles.has(slug)) {
+      record.unlockable = true;
+    }
+    if (diff.unlocked_puzzles.has(slug)) {
+      record.unlocked = true;
+    }
+    await trx("team_puzzles")
+      .insert(
+        Object.assign(
+          {
+            username: team,
+            slug: slug,
+          },
+          record,
+        ),
+      )
+      .onConflict(["username", "slug"])
+      .merge(record);
+  }
 }

@@ -5,6 +5,7 @@ import { WebSocketExpress } from "websocket-express";
 import { connect } from "./api/db";
 import { getRouter } from "./api/server";
 import { getUiRouter } from "./frontend/server/routes";
+import HUNT from "./huntdata";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
@@ -21,6 +22,8 @@ export default async function ({
 }) {
   const knex = await connect(db_environment);
 
+  const hunt = HUNT;
+
   const app = new WebSocketExpress();
 
   app.use(morgan(LOG_FORMAT));
@@ -29,6 +32,7 @@ export default async function ({
   const apiRouter = getRouter({
     jwt_secret,
     knex,
+    hunt,
   });
   app.use("/api", apiRouter);
 
