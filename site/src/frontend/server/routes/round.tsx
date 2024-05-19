@@ -8,6 +8,10 @@ export type RoundParams = {
   roundSlug: string;
 };
 export const roundHandler = (req: Request<RoundParams>) => {
+  const teamState = req.teamState;
+  if (!teamState) {
+    return undefined;
+  }
   const round = HUNT.rounds.filter(
     (round) => round.slug === req.params.roundSlug,
   )[0];
@@ -22,7 +26,6 @@ export const roundHandler = (req: Request<RoundParams>) => {
   const scripts = content.scripts;
   const stylesheets = content.stylesheets;
 
-  const teamState = req.teamState!;
   // TODO: pass props about current unlock state to Component
   return (
     <Layout scripts={scripts} stylesheets={stylesheets} teamState={teamState}>

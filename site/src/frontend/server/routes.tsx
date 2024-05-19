@@ -6,6 +6,7 @@ import express, {
   RequestHandler,
   NextFunction,
 } from "express";
+import asyncHandler from "express-async-handler";
 import type { ParamsDictionary } from "express-serve-static-core";
 import multer from "multer";
 import * as React from "react";
@@ -27,13 +28,17 @@ import { roundHandler, RoundParams } from "./routes/round";
 type LoginQueryTypes = {
   next: string;
 };
+type LoginReqBody = {
+  username: string;
+  password: string;
+};
 type LoginPostParams = Record<string, never>;
 const loginPostHandler: RequestHandler<
   LoginPostParams,
   unknown,
-  unknown,
+  LoginReqBody,
   LoginQueryTypes
-> = async (req: Request, res) => {
+> = asyncHandler(async (req, res) => {
   // TODO: extract the POSTed username/password from the form data
   // TODO: implement CSRF tokens for forms
   // TODO: forward the login attempt to the backend, handle failures, and
@@ -68,7 +73,7 @@ const loginPostHandler: RequestHandler<
     return;
   }
   res.redirect(`/login?next=${encodeURIComponent(target)}`);
-};
+});
 
 function logoutHandler(_req: Request, res: Response) {
   res.cookie("mitmh2025_auth", "", { expires: new Date(0) });
@@ -92,56 +97,77 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   router.use("/client", express.static(path.join(__dirname, "static/client")));
 
   const unauthRouter = new Router();
-  unauthRouter.use((req, _res, next) => {
-    req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
-    return next();
+  unauthRouter.use((req: Request, _res: Response, next: NextFunction) => {
+    req.api = newClient(
+      apiUrl,
+      req.cookies["mitmh2025_auth"] as string | undefined,
+    );
+    next();
   });
 
   const authRouter = new Router();
-  authRouter.use(async (req, res, next) => {
-    req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"]);
-    const teamStateResp = await req.api.public.getMyTeamState();
-    if (teamStateResp.status != 200) {
-      res.redirect(`login?next=${encodeURIComponent(req.path)}`);
-      return;
-    }
-    req.teamState = teamStateResp.body;
-    return next();
-  });
+  authRouter.use(
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      req.api = newClient(
+        apiUrl,
+        req.cookies["mitmh2025_auth"] as string | undefined,
+      );
+      const teamStateResp = await req.api.public.getMyTeamState();
+      if (teamStateResp.status != 200) {
+        res.redirect(`login?next=${encodeURIComponent(req.path)}`);
+        return;
+      }
+      req.teamState = teamStateResp.body;
+      next();
+    }),
+  );
 
   unauthRouter.get(
     "/login",
-    async (req, res, next) =>
-      await renderApp(hackLoginGetHandler, req, res, next),
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(hackLoginGetHandler, req, res, next);
+    }),
   );
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
 
   authRouter.get(
     "/",
-    (req: Request<{ roundSlug: string | undefined }>, res, next) => {
-      // Root page should be shadow diamond round page
-      req.params.roundSlug = "shadow_diamond";
-      return renderApp(roundHandler, req as Request<RoundParams>, res, next);
-    },
+    asyncHandler(
+      async (
+        req: Request<{ roundSlug: string | undefined }>,
+        res: Response,
+        next: NextFunction,
+      ) => {
+        // Root page should be shadow diamond round page
+        req.params.roundSlug = "shadow_diamond";
+        await renderApp(roundHandler, req as Request<RoundParams>, res, next);
+      },
+    ),
   );
   authRouter.get(
     "/rounds/:roundSlug",
-    async (req: Request<RoundParams>, res, next) => {
-      await renderApp(roundHandler, req, res, next);
-    },
+    asyncHandler(
+      async (req: Request<RoundParams>, res: Response, next: NextFunction) => {
+        await renderApp(roundHandler, req, res, next);
+      },
+    ),
   );
   authRouter.get(
     "/puzzles/:puzzleSlug",
-    async (req: Request<PuzzleParams>, res, next) => {
-      await renderApp(puzzleHandler, req, res, next);
-    },
+    asyncHandler(
+      async (req: Request<PuzzleParams>, res: Response, next: NextFunction) => {
+        await renderApp(puzzleHandler, req, res, next);
+      },
+    ),
   );
   authRouter.get(
     "/puzzles/:puzzleSlug/solution",
-    async (req: Request<PuzzleParams>, res, next) => {
-      await renderApp(solutionHandler, req, res, next);
-    },
+    asyncHandler(
+      async (req: Request<PuzzleParams>, res: Response, next: NextFunction) => {
+        await renderApp(solutionHandler, req, res, next);
+      },
+    ),
   );
 
   router.use(unauthRouter);
@@ -150,7 +176,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   return router;
 }
 
-const oneDay = 60 * 60 * 24;
+const oneDay = String(60 * 60 * 24);
 
 async function renderApp<Params extends ParamsDictionary>(
   handler: (req: Request<Params>) => React.ReactNode,
@@ -160,7 +186,8 @@ async function renderApp<Params extends ParamsDictionary>(
 ) {
   const reactRoot = await handler(req);
   if (reactRoot === undefined) {
-    return render404(req, res);
+    render404(req, res);
+    return;
   }
 
   const doctype = "<!DOCTYPE html>";

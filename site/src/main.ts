@@ -9,8 +9,12 @@ app({
   environment,
   jwt_secret: JWT_SECRET,
   apiUrl: "http://localhost:3000",
-}).then((app) =>
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-  }),
-);
+})
+  .then((app) =>
+    app.listen(port, () => {
+      console.log(`Listening on port ${port}`);
+    }),
+  )
+  .catch((err: unknown) => {
+    console.error(err);
+  });

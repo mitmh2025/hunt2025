@@ -1,7 +1,7 @@
 import { initClient, ClientInferResponseBody } from "@ts-rest/core";
 import { contract } from "./contract";
 
-export function newClient(baseUrl: string, token: string) {
+export function newClient(baseUrl: string, token?: string) {
   const baseHeaders: Record<string, string> = {};
   if (token) {
     baseHeaders["Authorization"] = "bearer " + token;
