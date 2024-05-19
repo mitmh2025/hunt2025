@@ -40,6 +40,8 @@
       ];
 
       environment.DB_ENV = "production";
+      # FIXME: Use a real key in production.
+      environment.JWT_SECRET = "%m";
 
       serviceConfig = {
         ExecStart = "${pkgs.hunt2025}/bin/hunt2025";
