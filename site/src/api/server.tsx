@@ -38,7 +38,7 @@ function cookieExtractor(req: Request) {
   return token ? token : null;
 }
 
-function newPassport(jwt_secret: string) {
+function newPassport(jwt_secret: string | Buffer) {
   const passport = new Passport();
   passport.use(
     new Strategy(
@@ -63,7 +63,7 @@ export function getRouter({
   jwt_secret,
   knex,
 }: {
-  jwt_secret: string;
+  jwt_secret: string | Buffer;
   knex: Knex;
 }) {
   const app = Router();

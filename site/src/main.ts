@@ -1,13 +1,22 @@
+import { randomBytes } from "node:crypto";
 import app from "./app";
 
 const port = 3000;
 
-const environment = process.env.DB_ENV || "development";
-const JWT_SECRET = "secret"; // FIXME
+// N.B. process.env.NODE_ENV is compiled by webpack
+const environment = process.env.NODE_ENV || "development";
+const db_environment = process.env.DB_ENV || "development";
+let jwt_secret: string | Buffer | undefined = process.env.JWT_SECRET;
+if (environment == "development" && !jwt_secret) {
+  jwt_secret = randomBytes(128);
+}
+if (!jwt_secret) {
+  throw new Error("$JWT_SECRET not defined in production");
+}
 
 app({
-  environment,
-  jwt_secret: JWT_SECRET,
+  db_environment,
+  jwt_secret: jwt_secret,
   apiUrl: "http://localhost:3000",
 })
   .then((app) =>
