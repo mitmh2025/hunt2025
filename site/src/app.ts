@@ -11,15 +11,15 @@ const LOG_FORMAT_DEBUG =
 const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
 export default async function ({
-  environment,
+  db_environment,
   jwt_secret,
   apiUrl,
 }: {
-  environment: string;
-  jwt_secret: string;
+  db_environment: string;
+  jwt_secret: string | Buffer;
   apiUrl: string;
 }) {
-  const knex = await connect(environment);
+  const knex = await connect(db_environment);
 
   const app = new WebSocketExpress();
 
