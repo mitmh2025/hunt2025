@@ -98,14 +98,20 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
 
   const unauthRouter = new Router();
   unauthRouter.use((req: Request, _res: Response, next: NextFunction) => {
-    req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"] as string);
+    req.api = newClient(
+      apiUrl,
+      req.cookies["mitmh2025_auth"] as string | undefined,
+    );
     next();
   });
 
   const authRouter = new Router();
   authRouter.use(
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      req.api = newClient(apiUrl, req.cookies["mitmh2025_auth"] as string);
+      req.api = newClient(
+        apiUrl,
+        req.cookies["mitmh2025_auth"] as string | undefined,
+      );
       const teamStateResp = await req.api.public.getMyTeamState();
       if (teamStateResp.status != 200) {
         res.redirect(`login?next=${encodeURIComponent(req.path)}`);

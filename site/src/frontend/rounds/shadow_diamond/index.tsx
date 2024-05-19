@@ -1,4 +1,5 @@
 import React from "react";
+import type { ReactNode } from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import photoimage from "../../../assets/demo-photo.png";
 
@@ -10,11 +11,11 @@ const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
   }
   const slots = roundState.slots;
   const puzzleStates = teamState.puzzles;
-  const linkIfUnlocked = (slot: string, linkText: string) => {
+  const ifUnlocked = (slot: string, callback: (slug: string) => ReactNode) => {
     const slug = slots[slot];
     const puzzleState = slug ? puzzleStates[slug] : undefined;
-    if (puzzleState?.locked === "unlocked" && slug) {
-      return <a href={`/puzzles/${slug}`}>{linkText}</a>;
+    if (slug && puzzleState?.locked === "unlocked") {
+      return callback(slug);
     }
     return undefined;
   };
@@ -22,8 +23,14 @@ const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
     <div>
       <h1>Shadow Diamond investigation</h1>
       <p>TODO: show puzzle list based on props</p>
-      {linkIfUnlocked("sdm02", "sdm02 is unlocked")}
-      {linkIfUnlocked("sdm03", "sdm03 (which should be Casino) is unlocked")}
+      {ifUnlocked("sdm02", (slug) => (
+        <a href={`/puzzles/${slug}`}>sdm02 is unlocked</a>
+      ))}
+      {ifUnlocked("sdm03", (slug) => (
+        <a href={`/puzzles/${slug}`}>
+          sdm03 (which should be Casino) is unlocked
+        </a>
+      ))}
       <ul></ul>
       <img
         className="photo"
