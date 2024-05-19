@@ -18,7 +18,7 @@ export const roundHandler = (req: Request<RoundParams>) => {
   if (round === undefined) {
     return undefined;
   }
-  const content = ROUND_PAGE_MAP[round.key];
+  const content = ROUND_PAGE_MAP[round.slug];
   if (content === undefined) {
     return undefined;
   }

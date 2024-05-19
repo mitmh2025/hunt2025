@@ -11,7 +11,7 @@ const renderDevPane = (teamState?: TeamState) => {
     return undefined;
 
   const rounds = HUNT.rounds.map((round) => {
-    const roundState = teamState.rounds[round.key];
+    const roundState = teamState.rounds[round.slug];
     const puzzleCells = round.puzzles.map((puzzleSlot) => {
       let title = puzzleSlot.id;
       const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
@@ -64,7 +64,7 @@ const renderDevPane = (teamState?: TeamState) => {
       return box;
     });
     return (
-      <div key={round.key}>
+      <div key={round.slug}>
         <h4>
           <a href={`/rounds/${round.slug}`}>{round.title}</a>
         </h4>

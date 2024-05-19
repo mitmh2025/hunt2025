@@ -3,15 +3,25 @@ import type { FunctionComponent } from "react";
 
 // An expression indicating the nature of a dependency.
 export type Condition =
-  | {
-      type: "puzzle_solved";
-      id: string; // The puzzle with this id must be solved.
+  | ({
       answer_count?: number; // If present, the required number of (unique) solves for this puzzle for this condition to be met.
+    } & (
+      | {
+          slot_solved: string; // The puzzle in this slot must be solved.
+        }
+      | {
+          slug_solved: string; // The puzzle with this slug must be solved.
+        }
+    ))
+  | {
+      interaction_completed: string; // The id of the interaction which must be marked as completed before this condition is satisfied.
     }
   | {
-      type: "interaction_completed";
-      id: string; // The id of the interaction which must be marked as completed before this condition is satisfied.
-    };
+      puzzles_solved: number; // The number of puzzles solved in a set.
+      slots?: string[]; // The list of puzzle slots to check, if not all puzzles in the current round.
+    }
+  | Condition[] // All of the conditions must be true (empty array is true)
+  | { oneOf: Condition[] }; // Any of the conditions must be true (empty array is false);
 
 export type Hint = {
   order: number;
@@ -26,7 +36,7 @@ export type CannedResponse = {
 
 export type AnswerWithSubmitConstraint = {
   answer: string;
-  submit_constraints: Condition[]; // Conditions which must all be true to permit attempting to submit a guess for this answer.
+  submit_if: Condition; // Conditions which must all be true to permit attempting to submit a guess for this answer.
 };
 
 export type Content = {
@@ -68,20 +78,22 @@ export type PuzzleDefinition = {
 export type PuzzleSlot = {
   id: string; // globally-unique id for this puzzle slot
   slug?: string; // slug of the puzzle currently assigned to this slot
-  // TODO: in the fullness of time, we should lint for unassigned slots, and make assignment a required field, but not now
+  // TODO: in the fullness of time, we should lint for unassigned slots, and make slug a required field, but not now
+  visible_if?: Condition; // Conditions under which the puzzle is visible. If unset, the puzzle is visible if it is unlocked or unlockable.
+  unlockable_if?: Condition; // Conditions under which the puzzle is unlockable. If unset, the puzzle is not unlockable.
+  unlocked_if?: Condition; // Conditions under which the puzzle is unlocked.
 };
 
 export type Round = {
-  key: string; // The string prefix that we expect most puzzle ids in this round to share.
   slug: string; // The string presented in the URL when viewing this round's page.
   title: string; // The title of the round
   puzzles: PuzzleSlot[]; // The set of puzzle slots that are canonically in this round.
-  unlock_conditions: Condition[]; // The set of unlock conditions that constrain when this round becomes visible.
+  unlock_if: Condition; // The set of unlock conditions that constrain when this round becomes visible.
 };
 
 export type Interaction = {
   id: string; // The globally-unique id for this interaction
-  unlock_conditions: Condition[]; // A list of dependencies which must *all* be satisfied before this interaction becomes available
+  unlock_if: Condition; // A list of dependencies which must *all* be satisfied before this interaction becomes available
 };
 
 // A full description of a hunt.

@@ -5,46 +5,108 @@ import type { Hunt } from "./types";
 const HUNT: Hunt = {
   rounds: [
     {
-      key: "sd", // Shadow Diamond
       slug: "shadow_diamond", // mounted at root
       title: "The Shadow Diamond",
       puzzles: [
         // slots (28 feeders, 4 metas, 1 super)
         { id: "sdp01" },
         { id: "sdp02" },
-        { id: "sdp03" },
-        { id: "sdp04" },
-        { id: "sdp05" },
-        { id: "sdp06" },
-        { id: "sdp07" },
-        { id: "sdp08" },
-        { id: "sdp09" },
-        { id: "sdp10" },
-        { id: "sdp11" },
-        { id: "sdp12" },
-        { id: "sdp13" },
-        { id: "sdp14" },
-        { id: "sdp15" },
-        { id: "sdp16" },
-        { id: "sdp17" },
-        { id: "sdp18" },
-        { id: "sdp19" },
-        { id: "sdp20" },
-        { id: "sdp21" },
-        { id: "sdp22" },
-        { id: "sdp23" },
-        { id: "sdp24" },
-        { id: "sdp25" },
-        { id: "sdp26" },
-        { id: "sdp27" },
-        { id: "sdp28" },
-        { id: "sdm01" }, // Boardwalk (meta)
-        { id: "sdm02" }, // Jewelry Store (meta)
-        { id: "sdm03", slug: "the_casino" }, // Casino (meta)
-        { id: "sdm04" }, // Estate (meta)
-        { id: "sdm05" }, // Where is the Diamond? (super)
+        { id: "sdp03", unlockable_if: { puzzles_solved: 1 } },
+        { id: "sdp04", unlockable_if: { puzzles_solved: 2 } },
+        { id: "sdp05", unlockable_if: { puzzles_solved: 3 } },
+        { id: "sdp06", unlockable_if: { puzzles_solved: 4 } },
+        { id: "sdp07", unlockable_if: { puzzles_solved: 5 } },
+        { id: "sdp08", unlockable_if: { puzzles_solved: 6 } },
+        { id: "sdp09", unlockable_if: { puzzles_solved: 7 } },
+        { id: "sdp10", unlockable_if: { puzzles_solved: 8 } },
+        { id: "sdp11", unlockable_if: { puzzles_solved: 9 } },
+        { id: "sdp12", unlockable_if: { puzzles_solved: 10 } },
+        { id: "sdp13", unlockable_if: { puzzles_solved: 11 } },
+        { id: "sdp14", unlockable_if: { puzzles_solved: 12 } },
+        { id: "sdp15", unlockable_if: { puzzles_solved: 13 } },
+        { id: "sdp16", unlockable_if: { puzzles_solved: 14 } },
+        { id: "sdp17", unlockable_if: { puzzles_solved: 15 } },
+        { id: "sdp18", unlockable_if: { puzzles_solved: 16 } },
+        { id: "sdp19", unlockable_if: { puzzles_solved: 17 } },
+        { id: "sdp20", unlockable_if: { puzzles_solved: 18 } },
+        { id: "sdp21", unlockable_if: { puzzles_solved: 19 } },
+        { id: "sdp22", unlockable_if: { puzzles_solved: 20 } },
+        { id: "sdp23", unlockable_if: { puzzles_solved: 21 } },
+        { id: "sdp24", unlockable_if: { puzzles_solved: 22 } },
+        { id: "sdp25", unlockable_if: { puzzles_solved: 23 } },
+        { id: "sdp26", unlockable_if: { puzzles_solved: 24 } },
+        { id: "sdp27", unlockable_if: { puzzles_solved: 25 } },
+        { id: "sdp28", unlockable_if: { puzzles_solved: 26 } },
+        {
+          id: "sdm01",
+          unlocked_if: {
+            puzzles_solved: 5,
+            slots: [
+              "sdp01",
+              "sdp02",
+              "sdp03",
+              "sdp04",
+              "sdp05",
+              "sdp06",
+              "sdp07",
+            ],
+          },
+        }, // Boardwalk (meta)
+        {
+          id: "sdm02",
+          unlocked_if: {
+            puzzles_solved: 5,
+            slots: [
+              "sdp08",
+              "sdp09",
+              "sdp10",
+              "sdp11",
+              "sdp12",
+              "sdp13",
+              "sdp14",
+            ],
+          },
+        }, // Jewelry Store (meta)
+        {
+          id: "sdm03",
+          slug: "the_casino",
+          unlocked_if: {
+            puzzles_solved: 5,
+            slots: [
+              "sdp15",
+              "sdp16",
+              "sdp17",
+              "sdp18",
+              "sdp19",
+              "sdp20",
+              "sdp21",
+            ],
+          },
+        }, // Casino (meta)
+        {
+          id: "sdm04",
+          unlocked_if: {
+            puzzles_solved: 5,
+            slots: [
+              "sdp22",
+              "sdp23",
+              "sdp24",
+              "sdp25",
+              "sdp26",
+              "sdp27",
+              "sdp28",
+            ],
+          },
+        }, // Estate (meta)
+        {
+          id: "sdm05",
+          unlocked_if: {
+            puzzles_solved: 2,
+            slots: ["sdm01", "sdm02", "sdm03", "sdm04"],
+          },
+        }, // Where is the Diamond? (super)
       ],
-      unlock_conditions: [
+      unlock_if: [
         // These are the conditions for the /round/ page being visible.
         // The initial round should be open from the start, with maybe a
         // wall-clock time condition?
@@ -55,7 +117,6 @@ const HUNT: Hunt = {
       // * default cost of unlocking a visible puzzle in this round?
     },
     {
-      key: "so", // Stakeout
       slug: "stakeout",
       title: "Stakeout",
       puzzles: [
@@ -104,13 +165,12 @@ const HUNT: Hunt = {
         { id: "sop42" },
         { id: "som01" }, // (meta)
       ],
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm01" },
-        { type: "interaction_completed", id: "interview_the_longshoreman" },
+      unlock_if: [
+        { slot_solved: "sdm01" },
+        { interaction_completed: "interview_the_longshoreman" },
       ],
     },
     {
-      key: "pt", // Paper Trail
       slug: "paper_trail",
       title: "Paper Trail",
       puzzles: [
@@ -141,126 +201,122 @@ const HUNT: Hunt = {
         { id: "ptm08" }, // meta 8 dir: "bountiful-maple"
         { id: "ptm09" }, // supermeta
       ],
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm02" },
-        { type: "interaction_completed", id: "interview_the_salesman" },
+      unlock_if: [
+        { slot_solved: "sdm02" },
+        { interaction_completed: "interview_the_salesman" },
       ],
     },
     {
-      key: "is", // Illegal Search
       slug: "illegal_search",
       title: "Illegal Search",
       puzzles: [
         // TODO
       ],
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm03" },
-        { type: "interaction_completed", id: "interview_the_bookmaker" },
+      unlock_if: [
+        { slot_solved: "sdm03" },
+        { interaction_completed: "interview_the_bookmaker" },
       ],
     },
     {
-      key: "bg", // Background Check
       slug: "background_check",
       title: "Background Check",
       puzzles: [
         // TODO
       ],
-      unlock_conditions: [
-        { type: "puzzle_solved", id: "sdm04" },
-        { type: "interaction_completed", id: "interview_the_valet" },
+      unlock_if: [
+        { slot_solved: "sdm04" },
+        { interaction_completed: "interview_the_valet" },
       ],
     },
     {
-      key: "dt", // The Dead Thief
       slug: "the_dead_thief",
       title: "The Dead Thief",
       puzzles: [
         // TODO
       ],
-      unlock_conditions: [
-        { type: "interaction_completed", id: "meet_billie" },
-        { type: "interaction_completed", id: "catch_the_thief" },
+      unlock_if: [
+        { interaction_completed: "meet_billie" },
+        { interaction_completed: "catch_the_thief" },
       ],
     },
     {
-      key: "rd", // The Real Diamond
       slug: "the_real_diamond",
       title: "The Real Diamond",
       puzzles: [
         // TODO
       ],
-      unlock_conditions: [
-        { type: "interaction_completed", id: "meet_katrina" },
-        { type: "interaction_completed", id: "meet_gladys" },
-        { type: "interaction_completed", id: "meet_carter" },
-        { type: "interaction_completed", id: "meet_papa" },
-        { type: "interaction_completed", id: "unmask_the_killer" },
+      unlock_if: [
+        { interaction_completed: "meet_katrina" },
+        { interaction_completed: "meet_gladys" },
+        { interaction_completed: "meet_carter" },
+        { interaction_completed: "meet_papa" },
+        { interaction_completed: "unmask_the_killer" },
       ],
     },
   ],
   interactions: [
     {
       id: "meet_billie",
-      unlock_conditions: [{ type: "puzzle_solved", id: "sdm05" }],
+      unlock_if: [{ slot_solved: "sdm05" }],
     },
     {
       id: "catch_the_thief",
-      unlock_conditions: [{ type: "interaction_completed", id: "meet_billie" }],
+      unlock_if: [{ interaction_completed: "meet_billie" }],
     },
     {
       id: "interview_the_longshoreman",
-      unlock_conditions: [{ type: "puzzle_solved", id: "sdm01" }],
+      unlock_if: [{ slot_solved: "sdm01" }],
     },
     {
       id: "interview_the_salesman",
-      unlock_conditions: [{ type: "puzzle_solved", id: "sdm02" }],
+      unlock_if: [{ slot_solved: "sdm02" }],
     },
     {
       id: "interview_the_bookmaker",
-      unlock_conditions: [{ type: "puzzle_solved", id: "sdm03" }],
+      unlock_if: [{ slot_solved: "sdm03" }],
     },
     {
       id: "interview_the_valet",
-      unlock_conditions: [{ type: "puzzle_solved", id: "sdm04" }],
+      unlock_if: [{ slot_solved: "sdm04" }],
     },
     {
       id: "meet_katrina",
-      unlock_conditions: [
-        // TODO: solve stakeout super, once we know the puzzle id
+      unlock_if: [
+        // TODO: solve stakeout super, once we know the slot id
       ],
     },
     {
       id: "meet_gladys",
-      unlock_conditions: [
-        // TODO: solve paper trail super, once we know the puzzle id
+      unlock_if: [
+        // TODO: solve paper trail super, once we know the slot id
       ],
     },
     {
       id: "meet_carter",
-      unlock_conditions: [
-        // TODO: solve background check super, once we know the puzzle id
+      unlock_if: [
+        // TODO: solve background check super, once we know the slot id
       ],
     },
     {
       id: "meet_papa",
-      unlock_conditions: [
-        // TODO: solve illegal search super, once we know the puzzle id
+      unlock_if: [
+        // TODO: solve illegal search super, once we know the slot id
       ],
     },
     {
       id: "unmask_the_killer",
-      unlock_conditions: [
-        // TODO: solve unmask the killer (The Dead Thief supermeta), once we know the puzzle id
+      unlock_if: [
+        // TODO: solve unmask the killer (The Dead Thief supermeta), once we know the slot id
       ],
     },
     {
       id: "find_the_diamond",
-      unlock_conditions: [
-        { type: "interaction_completed", id: "meet_katrina" },
-        { type: "interaction_completed", id: "meet_gladys" },
-        { type: "interaction_completed", id: "meet_carter" },
-        { type: "interaction_completed", id: "meet_papa" },
-        { type: "interaction_completed", id: "unmask_the_killer" },
+      unlock_if: [
+        { interaction_completed: "meet_katrina" },
+        { interaction_completed: "meet_gladys" },
+        { interaction_completed: "meet_carter" },
+        { interaction_completed: "meet_papa" },
+        { interaction_completed: "unmask_the_killer" },
       ],
     },
   ],

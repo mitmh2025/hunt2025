@@ -21,27 +21,27 @@ type RoundDefinition = {
 };
 
 export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
-  sd: {
+  shadow_diamond: {
     component: ShadowDiamondRoundPage,
     scripts: [lookupScript("shadow_diamond")],
     stylesheets: [lookupStylesheet("shadow_diamond")],
   },
-  so: {
+  stakeout: {
     component: StakeoutRoundPage,
   },
-  pt: {
+  paper_trail: {
     component: PapertrailRoundPage,
   },
-  is: {
+  illegal_search: {
     component: IllegalSearchRoundPage,
   },
-  bg: {
+  background_check: {
     component: BackgroundCheckRoundPage,
   },
-  dt: {
+  the_dead_thief: {
     component: DeadThiefRoundPage,
   },
-  rd: {
+  the_real_diamond: {
     component: RealDiamondRoundPage,
   },
 };
