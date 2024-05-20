@@ -86,6 +86,30 @@ const render404 = (_req: Request, res: Response) => {
   res.status(404).send(html);
 };
 
+const render500 = (
+  res: Response,
+  showError: boolean,
+  status: number,
+  errorText: string,
+) => {
+  const doctype = "<!DOCTYPE html>";
+  const reactRoot = (
+    <html lang="en">
+      <body>
+        <h1>500 Service Temporarily Unavailable</h1>
+        {showError ? (
+          <>
+            <p>API request returned {status}:</p>
+            <pre>{errorText}</pre>
+          </>
+        ) : undefined}
+      </body>
+    </html>
+  );
+  const html = doctype + renderToString(reactRoot) + "\n";
+  res.status(500).send(html);
+};
+
 export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   const router = new Router();
   router.use(cookieParser());
@@ -113,8 +137,22 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
         req.cookies["mitmh2025_auth"] as string | undefined,
       );
       const teamStateResp = await req.api.public.getMyTeamState();
-      if (teamStateResp.status != 200) {
+      if (teamStateResp.status === 401) {
+        // Unauthorized means we should prompt the user to log in
         res.redirect(`login?next=${encodeURIComponent(req.path)}`);
+        return;
+      }
+      if (teamStateResp.status !== 200) {
+        // We didn't get an acceptable answer from the backend, so complain and
+        // don't render anything else since we don't have the state necessary
+        // to do so correctly.
+        const showError = process.env.NODE_ENV == "development";
+        render500(
+          res,
+          showError,
+          teamStateResp.status,
+          teamStateResp.body as string,
+        );
         return;
       }
       req.teamState = teamStateResp.body;
