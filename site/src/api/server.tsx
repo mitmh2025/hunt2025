@@ -134,8 +134,6 @@ export function getRouter({
       }: {
         body: { username: string; password: string };
       }) => {
-        /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
-         * I can't tell what's untyped here either.  knex table results? */
         const team = await knex("teams")
           .where({
             username,
@@ -164,9 +162,6 @@ export function getRouter({
         };
       },
     },
-    /* eslint-disable @typescript-eslint/require-await --
-     * These async functions really should return promises, even though they
-     * don't currently await anything. */
     public: {
       getMyTeamState: {
         middleware: [authMiddleware],
