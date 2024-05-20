@@ -1,4 +1,4 @@
-import type { Hunt, Condition } from "./types";
+import type { Hunt, Condition, PuzzleSlot } from "./types";
 
 interface ConditionState {
   hunt: Hunt;
@@ -67,12 +67,15 @@ function evaluateCondition(
   throw new Error("unknown condition");
 }
 
+export function getSlotSlug(slot: PuzzleSlot) {
+  return slot.slug || (process.env.NODE_ENV == "development" && slot.id);
+}
+
 function getSlugsBySlot(hunt: Hunt) {
   const slug_by_slot: Record<string, string> = {};
   hunt.rounds.forEach((round) => {
     round.puzzles.forEach((slot) => {
-      const puzzleSlug =
-        slot.slug || (process.env.NODE_ENV == "development" && slot.id);
+      const puzzleSlug = getSlotSlug(slot);
       if (!puzzleSlug) {
         // In dev, empty slugs are treated as fake puzzles with slug == slot.
         // In prod, empty slugs are invisible.
@@ -110,8 +113,7 @@ export function calculateTeamState(condition_state: ConditionState) {
       unlocked_rounds.add(round.slug);
     }
     round.puzzles.forEach((slot) => {
-      const puzzleSlug =
-        slot.slug || (process.env.NODE_ENV == "development" && slot.id);
+      const puzzleSlug = getSlotSlug(slot);
       if (!puzzleSlug) {
         // In dev, empty slugs are treated as fake puzzles with slug == slot.
         // In prod, empty slugs are invisible.

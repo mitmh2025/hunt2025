@@ -29,7 +29,7 @@ const PuzzleStateSchema = PuzzleSummarySchema.extend({
 });
 
 const RoundStateSchema = z.object({
-  name: z.string(),
+  title: z.string(),
   slots: z.record(z.string(), slug),
 });
 

@@ -11,8 +11,9 @@ import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { contract } from "../../lib/api/contract";
+import { getSlotSlug } from "../huntdata/logic";
 import { Hunt } from "../huntdata/types";
-import { recalculateTeamState } from "./db";
+import { getTeamState, recalculateTeamState } from "./db";
 
 const puzzleState: Record<
   string,
@@ -128,29 +129,61 @@ export function getRouter({
       getMyTeamState: {
         middleware: [authMiddleware],
         handler: async ({ req }) => {
+          const team = req.user as string;
+          // TODO: Recalculate on every mutation.
           await knex.transaction(
             recalculateTeamState.bind(null, hunt, req.user as string),
+          );
+          const data = await knex.transaction(getTeamState.bind(null, team));
+          console.log(data);
+          const rounds = Object.fromEntries(
+            hunt.rounds
+              .filter(({ slug: roundSlug }) =>
+                data.unlocked_rounds.has(roundSlug),
+              )
+              .map(({ slug, title, puzzles }) => [
+                slug,
+                {
+                  title,
+                  slots: Object.fromEntries(
+                    puzzles.flatMap((slot) => {
+                      const slug = getSlotSlug(slot);
+                      if (slug && data.visible_puzzles.has(slug)) {
+                        return [[slot.id, slug]];
+                      }
+                      return [];
+                    }),
+                  ),
+                },
+              ]),
+          );
+          const puzzleRounds = Object.fromEntries(
+            Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
+              Object.entries(slots).map(([_id, puzzleSlug]) => [
+                puzzleSlug,
+                roundSlug,
+              ]),
+            ),
           );
           return {
             status: 200,
             body: {
-              teamName: `Unicode Snowman ☃ (${req.user})`,
-              rounds: {
-                "first-round": {
-                  name: "First Round",
-                  slots: {
-                    "1": "burger-king",
-                    "2": "automaton",
+              teamName: team,
+              rounds,
+              puzzles: Object.fromEntries(
+                [...data.visible_puzzles].map((slug) => [
+                  slug,
+                  {
+                    round: puzzleRounds[slug] || "outlands", // TODO: Should this be hardcoded?
+                    locked: data.unlocked_puzzles.has(slug)
+                      ? "unlocked"
+                      : data.unlockable_puzzles.has(slug)
+                        ? "unlockable"
+                        : "locked",
+                    answer: data.correct_answers[slug],
                   },
-                },
-                shadow_diamond: {
-                  name: "Shadow Diamond",
-                  slots: {
-                    sdm03: "the_casino",
-                  },
-                },
-              },
-              puzzles: puzzleState,
+                ]),
+              ),
             },
           };
         },

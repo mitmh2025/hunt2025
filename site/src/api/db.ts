@@ -1,9 +1,9 @@
 import path from "path";
 import Knex from "knex";
-import connections from "../../knexfile";
-import { Hunt } from "../huntdata/types";
-import { calculateTeamState } from "../huntdata/logic";
 import { TeamPuzzle } from "knex/types/tables";
+import connections from "../../knexfile";
+import { calculateTeamState } from "../huntdata/logic";
+import { Hunt } from "../huntdata/types";
 
 class WebpackMigrationSource {
   context: webpack.Context;
@@ -101,11 +101,33 @@ declare module "knex/types/tables" {
     response?: string;
   }
 
+  interface TeamInteraction {
+    username: string;
+    id: string;
+    unlocked: boolean;
+    completed: boolean;
+  }
+
   interface Tables {
     teams: Team;
     team_rounds: TeamRound;
     team_puzzles: TeamPuzzle;
     team_puzzle_guesses: TeamPuzzleGuess;
+    team_interactions: TeamInteraction;
+  }
+}
+
+function string_agg(knex: Knex.Knex, field: string, delimeter: string) {
+  const driverName = (knex.client as Knex.Knex.Client).driverName;
+  switch (driverName) {
+    case "sqlite3":
+    case "better-sqlite3":
+      return knex.raw<string>("(group_concat(??, ?))", [field, delimeter]);
+    case "pg":
+    case "pgnative":
+      return knex.raw<string>("(string_agg(??, ?))", [field, delimeter]);
+    default:
+      throw new Error(`${driverName} does not have a string_agg function`);
   }
 }
 
@@ -113,6 +135,15 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
   const puzzle_status = await trx("team_puzzles")
     .where("username", team)
     .select("slug", "visible", "unlockable", "unlocked");
+  const correct_answers = (await trx("team_puzzle_guesses")
+    .where("username", team)
+    .where("correct", true)
+    .select("slug", { answer: string_agg(trx, "canonical_input", ", ") })
+    .orderBy("canonical_input")
+    .groupBy("slug")) as {
+    slug: string;
+    answer: string;
+  }[]; /* I can't tell how to tell TypeScript that answer is a string without forcing it here. */
   return {
     unlocked_rounds: new Set(
       await trx("team_rounds").where("username", team).pluck("slug"),
@@ -127,6 +158,9 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
     ),
     unlocked_puzzles: new Set(
       puzzle_status.flatMap(({ slug, unlocked }) => (unlocked ? [slug] : [])),
+    ),
+    correct_answers: Object.fromEntries(
+      correct_answers.map(({ slug, answer }) => [slug, answer]),
     ),
   };
 }
@@ -181,7 +215,7 @@ export async function recalculateTeamState(
     .union(diff.unlockable_puzzles)
     .union(diff.unlocked_puzzles);
   for (const slug of diff_puzzles) {
-    let record: Partial<TeamPuzzle> = {};
+    const record: Partial<TeamPuzzle> = {};
     if (diff.visible_puzzles.has(slug)) {
       record.visible = true;
     }
