@@ -165,6 +165,42 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
   };
 }
 
+export async function getPuzzleState(
+  team: string,
+  slug: string,
+  trx: Knex.Knex.Transaction,
+) {
+  const unlocked_rounds = new Set(
+    await trx("team_rounds")
+      .where("username", team)
+      .where("unlocked", true)
+      .pluck("slug"),
+  );
+  const puzzle_status = await trx("team_puzzles")
+    .where("username", team)
+    .where("slug", slug)
+    .select("slug", "visible", "unlockable", "unlocked")
+    .first();
+  const correct_answers: { answer: string } | undefined = await trx(
+    "team_puzzle_guesses",
+  )
+    .where("username", team)
+    .where("slug", slug)
+    .where("correct", true)
+    .select({ answer: string_agg(trx, "canonical_input", ", ") })
+    .first();
+  const guesses = await trx("team_puzzle_guesses")
+    .where("username", team)
+    .where("slug", slug)
+    .orderBy("timestamp", "desc");
+  return {
+    unlocked_rounds,
+    puzzle_status,
+    guesses,
+    answer: correct_answers?.answer,
+  };
+}
+
 export async function recalculateTeamState(
   hunt: Hunt,
   team: string,

@@ -39,6 +39,10 @@ const TeamStateSchema = z.object({
   puzzles: z.record(slug, PuzzleSummarySchema),
 });
 
+const SubmitGuessSchema = z.object({
+  guess: z.string(),
+});
+
 const LoginRequestSchema = z.object({
   username: z.string(),
   password: z.string(),
@@ -78,6 +82,15 @@ const publicContract = c.router({
       404: z.null(),
     },
     summary: "Get the state of one puzzle",
+  },
+  submitGuess: {
+    method: "PUT",
+    path: `/puzzle/:slug/guess`,
+    body: SubmitGuessSchema,
+    responses: {
+      200: PuzzleStateSchema,
+      404: z.null(),
+    },
   },
 });
 

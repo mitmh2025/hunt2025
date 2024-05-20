@@ -11,26 +11,19 @@ import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { contract } from "../../lib/api/contract";
+import { PUZZLES } from "../frontend/puzzles";
 import { getSlotSlug } from "../huntdata/logic";
 import { Hunt } from "../huntdata/types";
-import { getTeamState, recalculateTeamState } from "./db";
+import {
+  getTeamState as dbGetTeamState,
+  getPuzzleState as dbGetPuzzleState,
+  recalculateTeamState,
+} from "./db";
 
-const puzzleState: Record<
-  string,
-  ServerInferResponseBody<typeof contract.public.getPuzzleState, 200>
-> = {
-  "burger-king": {
-    round: "first-round",
-    locked: "unlocked",
-  },
-  automaton: {
-    round: "wasteland",
-  },
-  the_casino: {
-    round: "shadow_diamond",
-    locked: "unlocked",
-  },
-};
+type PuzzleState = ServerInferResponseBody<
+  typeof contract.public.getPuzzleState,
+  200
+>;
 
 type JWTPayload = {
   user: string;
@@ -62,6 +55,11 @@ function newPassport(jwt_secret: string | Buffer) {
   return passport;
 }
 
+function canonicalizeInput(input: string) {
+  // TODO: Make sure puzzles agrees with this definition.
+  return input.replaceAll(/\s+/, "").toUpperCase();
+}
+
 export function getRouter({
   jwt_secret,
   knex,
@@ -80,6 +78,47 @@ export function getRouter({
   const passport = newPassport(jwt_secret);
 
   const s = initServer();
+
+  const getPuzzleState = async (
+    team: string,
+    slug: string,
+    trx: Knex.Transaction,
+  ): Promise<PuzzleState | undefined> => {
+    const { unlocked_rounds, puzzle_status, answer, guesses } =
+      await dbGetPuzzleState(team, slug, trx);
+    if (!puzzle_status) {
+      return undefined;
+    }
+    let round: string | undefined;
+    hunt.rounds.forEach(({ slug: roundSlug, puzzles }) => {
+      if (!unlocked_rounds.has(roundSlug)) {
+        return;
+      }
+      puzzles.forEach((slot) => {
+        if (slug == getSlotSlug(slot)) {
+          round = roundSlug;
+        }
+      });
+    });
+    if (!round) {
+      round = "outlands"; // TODO: Configurable?
+    }
+    const locked: "locked" | "unlockable" | "unlocked" = puzzle_status.unlocked
+      ? "unlocked"
+      : puzzle_status.unlockable
+        ? "unlockable"
+        : "locked";
+    return {
+      round,
+      answer,
+      locked,
+      guesses: guesses.map(({ canonical_input, response, timestamp }) => ({
+        canonicalInput: canonical_input,
+        response: response || "",
+        timestamp: timestamp.toJSON(),
+      })),
+    };
+  };
 
   /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
    * I can't tell what's untyped here, but maybe something in passport? */
@@ -134,7 +173,7 @@ export function getRouter({
           await knex.transaction(
             recalculateTeamState.bind(null, hunt, req.user as string),
           );
-          const data = await knex.transaction(getTeamState.bind(null, team));
+          const data = await knex.transaction(dbGetTeamState.bind(null, team));
           console.log(data);
           const rounds = Object.fromEntries(
             hunt.rounds
@@ -190,8 +229,10 @@ export function getRouter({
       },
       getPuzzleState: {
         middleware: [authMiddleware],
-        handler: async ({ params }) => {
-          const state = puzzleState[params.slug];
+        handler: async ({ params: { slug }, req }) => {
+          const state = await knex.transaction(
+            getPuzzleState.bind(null, req.user as string, slug),
+          );
           if (!state) {
             return {
               status: 404,
@@ -202,6 +243,64 @@ export function getRouter({
             status: 200,
             body: state,
           };
+        },
+      },
+      submitGuess: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug }, body: { guess }, req }) => {
+          const team = req.user as string;
+          const puzzle = PUZZLES[slug];
+          if (!puzzle) {
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+          let canonical_input = canonicalizeInput(guess);
+          const answers =
+            "answer" in puzzle
+              ? [{ answer: puzzle.answer, submit_if: [] }]
+              : puzzle.answers;
+          // TODO: Figure out the semantics of a correct answer with false submit_if
+          const correct_answer = answers.find(
+            ({ answer }) => canonicalizeInput(answer) == canonical_input,
+          );
+          // TODO: Make sure that we retry/wait for conflicts.
+          return await knex.transaction(async function (trx) {
+            const result = await trx("team_puzzles")
+              .where("team", team)
+              .where("slug", slug)
+              .select("unlocked")
+              .first();
+            if (!result?.unlocked) {
+              return {
+                status: 404,
+                body: null,
+              };
+            }
+            let response = "Incorrect";
+            if (correct_answer) {
+              canonical_input = correct_answer.answer;
+              response = "Correct!";
+            }
+            // TODO: Recognize partial answers
+            await trx("team_puzzle_guesses")
+              .insert({
+                username: team,
+                slug,
+                canonical_input,
+                correct: !!correct_answer,
+                response,
+              })
+              .onConflict(["username", "slug", "canonical_input"])
+              .ignore();
+            return {
+              status: 200,
+              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+               * We know the puzzle state exists because we checked the db above. */
+              body: (await getPuzzleState(team, slug, trx))!,
+            };
+          });
         },
       },
     },
