@@ -189,10 +189,18 @@ export async function getPuzzleState(
     .where("correct", true)
     .select({ answer: string_agg(trx, "canonical_input", ", ") })
     .first();
-  const guesses = await trx("team_puzzle_guesses")
-    .where("username", team)
-    .where("slug", slug)
-    .orderBy("timestamp", "desc");
+  const guesses = (
+    await trx("team_puzzle_guesses")
+      .where("username", team)
+      .where("slug", slug)
+      .orderBy("timestamp", "desc")
+  ).map((row) => {
+    if (typeof row.timestamp == "string") {
+      // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
+      row.timestamp = new Date((row.timestamp as string) + "Z");
+    }
+    return row;
+  });
   return {
     unlocked_rounds,
     puzzle_status,

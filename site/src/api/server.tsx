@@ -57,7 +57,7 @@ function newPassport(jwt_secret: string | Buffer) {
 
 function canonicalizeInput(input: string) {
   // TODO: Make sure puzzles agrees with this definition.
-  return input.replaceAll(/\s+/, "").toUpperCase();
+  return input.replaceAll(/\s+/g, "").toUpperCase();
 }
 
 export function getRouter({
@@ -108,16 +108,19 @@ export function getRouter({
       : puzzle_status.unlockable
         ? "unlockable"
         : "locked";
-    return {
+    const result: PuzzleState = {
       round,
-      answer,
       locked,
       guesses: guesses.map(({ canonical_input, response, timestamp }) => ({
         canonicalInput: canonical_input,
         response: response || "",
-        timestamp: timestamp.toJSON(),
+        timestamp: timestamp.toISOString(),
       })),
     };
+    if (answer) {
+      result.answer = answer;
+    }
+    return result;
   };
 
   /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
@@ -250,17 +253,14 @@ export function getRouter({
         handler: async ({ params: { slug }, body: { guess }, req }) => {
           const team = req.user as string;
           const puzzle = PUZZLES[slug];
-          if (!puzzle) {
-            return {
-              status: 404,
-              body: null,
-            };
-          }
           let canonical_input = canonicalizeInput(guess);
-          const answers =
-            "answer" in puzzle
+          const answers = puzzle
+            ? "answer" in puzzle
               ? [{ answer: puzzle.answer, submit_if: [] }]
-              : puzzle.answers;
+              : puzzle.answers
+            : process.env.NODE_ENV == "development"
+              ? [{ answer: "PLACEHOLDER ANSWER", submit_if: [] }]
+              : [];
           // TODO: Figure out the semantics of a correct answer with false submit_if
           const correct_answer = answers.find(
             ({ answer }) => canonicalizeInput(answer) == canonical_input,
@@ -268,7 +268,7 @@ export function getRouter({
           // TODO: Make sure that we retry/wait for conflicts.
           return await knex.transaction(async function (trx) {
             const result = await trx("team_puzzles")
-              .where("team", team)
+              .where("username", team)
               .where("slug", slug)
               .select("unlocked")
               .first();
