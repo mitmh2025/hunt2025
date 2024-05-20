@@ -4,12 +4,13 @@ import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { Request, Router } from "express";
+import { Request, RequestHandler, Router } from "express";
 import jwt from "jsonwebtoken";
 import { Knex } from "knex";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
+import { TeamState } from "../../lib/api/client";
 import { contract } from "../../lib/api/contract";
 import { PUZZLES } from "../frontend/puzzles";
 import { getSlotSlug } from "../huntdata/logic";
@@ -27,6 +28,7 @@ type PuzzleState = ServerInferResponseBody<
 
 type JWTPayload = {
   user: string;
+  adminUser?: string;
 };
 
 function cookieExtractor(req: Request) {
@@ -48,7 +50,7 @@ function newPassport(jwt_secret: string | Buffer) {
         //audience: 'mitmh2025.com',
       },
       function (jwt_payload: JWTPayload, done) {
-        done(null, jwt_payload.user);
+        done(null, jwt_payload.user, { adminUser: jwt_payload.adminUser });
       },
     ),
   );
@@ -78,6 +80,59 @@ export function getRouter({
   const passport = newPassport(jwt_secret);
 
   const s = initServer();
+
+  const getTeamState = async (
+    team: string,
+    trx: Knex.Transaction,
+  ): Promise<TeamState> => {
+    const data = await dbGetTeamState(team, trx);
+    console.log(data);
+    const rounds = Object.fromEntries(
+      hunt.rounds
+        .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
+        .map(({ slug, title, puzzles }) => [
+          slug,
+          {
+            title,
+            slots: Object.fromEntries(
+              puzzles.flatMap((slot) => {
+                const slug = getSlotSlug(slot);
+                if (slug && data.visible_puzzles.has(slug)) {
+                  return [[slot.id, slug]];
+                }
+                return [];
+              }),
+            ),
+          },
+        ]),
+    );
+    const puzzleRounds = Object.fromEntries(
+      Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
+        Object.entries(slots).map(([_id, puzzleSlug]) => [
+          puzzleSlug,
+          roundSlug,
+        ]),
+      ),
+    );
+    return {
+      teamName: team,
+      rounds,
+      puzzles: Object.fromEntries(
+        [...data.visible_puzzles].map((slug) => [
+          slug,
+          {
+            round: puzzleRounds[slug] || "outlands", // TODO: Should this be hardcoded?
+            locked: data.unlocked_puzzles.has(slug)
+              ? "unlocked"
+              : data.unlockable_puzzles.has(slug)
+                ? "unlockable"
+                : "locked",
+            answer: data.correct_answers[slug],
+          },
+        ]),
+      ),
+    };
+  };
 
   const getPuzzleState = async (
     team: string,
@@ -125,7 +180,20 @@ export function getRouter({
 
   /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
    * I can't tell what's untyped here, but maybe something in passport? */
-  const authMiddleware = passport.authenticate("jwt", { session: false });
+  const authMiddleware: RequestHandler = passport.authenticate("jwt", {
+    session: false,
+  });
+
+  const adminAuthMiddlewares: RequestHandler[] = [
+    authMiddleware,
+    (req, res, next) => {
+      if (process.env.NODE_ENV == "development" || req.authInfo?.adminUser) {
+        next();
+        return;
+      }
+      res.status(403).send("not an admin");
+    },
+  ];
 
   const router = s.router(contract, {
     auth: {
@@ -167,57 +235,9 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team = req.user as string;
-          const data = await knex.transaction(dbGetTeamState.bind(null, team));
-          console.log(data);
-          const rounds = Object.fromEntries(
-            hunt.rounds
-              .filter(({ slug: roundSlug }) =>
-                data.unlocked_rounds.has(roundSlug),
-              )
-              .map(({ slug, title, puzzles }) => [
-                slug,
-                {
-                  title,
-                  slots: Object.fromEntries(
-                    puzzles.flatMap((slot) => {
-                      const slug = getSlotSlug(slot);
-                      if (slug && data.visible_puzzles.has(slug)) {
-                        return [[slot.id, slug]];
-                      }
-                      return [];
-                    }),
-                  ),
-                },
-              ]),
-          );
-          const puzzleRounds = Object.fromEntries(
-            Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
-              Object.entries(slots).map(([_id, puzzleSlug]) => [
-                puzzleSlug,
-                roundSlug,
-              ]),
-            ),
-          );
           return {
             status: 200,
-            body: {
-              teamName: team,
-              rounds,
-              puzzles: Object.fromEntries(
-                [...data.visible_puzzles].map((slug) => [
-                  slug,
-                  {
-                    round: puzzleRounds[slug] || "outlands", // TODO: Should this be hardcoded?
-                    locked: data.unlocked_puzzles.has(slug)
-                      ? "unlocked"
-                      : data.unlockable_puzzles.has(slug)
-                        ? "unlockable"
-                        : "locked",
-                    answer: data.correct_answers[slug],
-                  },
-                ]),
-              ),
-            },
+            body: await knex.transaction(getTeamState.bind(null, team)),
           };
         },
       },
@@ -297,7 +317,62 @@ export function getRouter({
         },
       },
     },
-    /* eslint-enable @typescript-eslint/require-await */
+    admin: {
+      getTeamState: {
+        middleware: adminAuthMiddlewares,
+        handler: async ({ params: { team } }) => {
+          return {
+            status: 200,
+            body: await knex.transaction(getTeamState.bind(null, team)),
+          };
+        },
+      },
+      getPuzzleState: {
+        middleware: adminAuthMiddlewares,
+        handler: async ({ params: { team, slug } }) => {
+          const state = await knex.transaction(
+            getPuzzleState.bind(null, team, slug),
+          );
+          if (!state) {
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+          return {
+            status: 200,
+            body: state,
+          };
+        },
+      },
+      forcePuzzleState: {
+        middleware: adminAuthMiddlewares,
+        handler: async ({ params: { team, slug }, body }) => {
+          return await knex.transaction(async (trx) => {
+            await trx("team_puzzles")
+              .insert(
+                Object.assign(
+                  {
+                    username: team,
+                    slug,
+                  },
+                  body,
+                ),
+              )
+              .onConflict(["username", "slug"])
+              .merge(body);
+            await recalculateTeamState(hunt, team, trx);
+            // TODO: Invalidate caches
+            return {
+              status: 200,
+              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+               * We know the puzzle state exists because we checked the db above. */
+              body: (await getPuzzleState(team, slug, trx))!,
+            };
+          });
+        },
+      },
+    },
   });
 
   createExpressEndpoints(contract, router, app, {
