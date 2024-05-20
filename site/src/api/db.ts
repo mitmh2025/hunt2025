@@ -117,18 +117,22 @@ declare module "knex/types/tables" {
   }
 }
 
-function string_agg(knex: Knex.Knex, field: string, delimeter: string) {
+function string_agg(knex: Knex.Knex, field: string, delimeter: string, orderBy?: string[]) {
   const driverName = (knex.client as Knex.Knex.Client).driverName;
+  let fn;
   switch (driverName) {
     case "sqlite3":
     case "better-sqlite3":
-      return knex.raw<string>("(group_concat(??, ?))", [field, delimeter]);
+      fn = "group_concat";
+      break;
     case "pg":
     case "pgnative":
-      return knex.raw<string>("(string_agg(??, ?))", [field, delimeter]);
+      fn = "string_agg";
+      break;
     default:
       throw new Error(`${driverName} does not have a string_agg function`);
   }
+  return knex.raw<string>(`(${fn}(??, ? ORDER BY ??))`, [field, delimeter, field])
 }
 
 export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
@@ -139,7 +143,6 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
     .where("username", team)
     .where("correct", true)
     .select("slug", { answer: string_agg(trx, "canonical_input", ", ") })
-    .orderBy("canonical_input")
     .groupBy("slug")) as {
     slug: string;
     answer: string;
