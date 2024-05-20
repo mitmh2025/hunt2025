@@ -1,6 +1,5 @@
 import { Request } from "express";
 import React from "react";
-import HUNT from "../../../huntdata";
 import Layout from "../../components/Layout";
 import { ROUND_PAGE_MAP } from "../../rounds";
 
@@ -12,13 +11,11 @@ export const roundHandler = (req: Request<RoundParams>) => {
   if (!teamState) {
     return undefined;
   }
-  const round = HUNT.rounds.filter(
-    (round) => round.slug === req.params.roundSlug,
-  )[0];
-  if (round === undefined) {
+  const { roundSlug } = req.params;
+  if (teamState.rounds[roundSlug] === undefined) {
     return undefined;
   }
-  const content = ROUND_PAGE_MAP[round.slug];
+  const content = ROUND_PAGE_MAP[roundSlug];
   if (content === undefined) {
     return undefined;
   }
