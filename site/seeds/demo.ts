@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+import { recalculateTeamState } from "../src/api/db";
 import { PUZZLES } from "../src/frontend/puzzles";
 import HUNT from "../src/huntdata";
 import { getSlugsBySlot } from "../src/huntdata/logic";
@@ -59,4 +60,10 @@ export async function seed(knex: Knex): Promise<void> {
       }));
     }),
   );
+  const usernames = await knex("teams").select("username").pluck("username");
+  await knex.transaction(async (trx) => {
+    for (const username of usernames) {
+      await recalculateTeamState(HUNT, username, trx);
+    }
+  })
 }

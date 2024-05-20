@@ -167,10 +167,6 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team = req.user as string;
-          // TODO: Recalculate on every mutation.
-          await knex.transaction(
-            recalculateTeamState.bind(null, hunt, req.user as string),
-          );
           const data = await knex.transaction(dbGetTeamState.bind(null, team));
           console.log(data);
           const rounds = Object.fromEntries(
