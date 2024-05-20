@@ -289,6 +289,8 @@ export function getRouter({
               })
               .onConflict(["username", "slug", "canonical_input"])
               .ignore();
+            await recalculateTeamState(hunt, team, trx);
+            // TODO: Invalidate caches
             return {
               status: 200,
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --

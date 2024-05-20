@@ -71,7 +71,7 @@ export function getSlotSlug(slot: PuzzleSlot) {
   return slot.slug || (process.env.NODE_ENV == "development" && slot.id);
 }
 
-function getSlugsBySlot(hunt: Hunt) {
+export function getSlugsBySlot(hunt: Hunt) {
   const slug_by_slot: Record<string, string> = {};
   hunt.rounds.forEach((round) => {
     round.puzzles.forEach((slot) => {
