@@ -117,7 +117,7 @@ declare module "knex/types/tables" {
   }
 }
 
-function string_agg(knex: Knex.Knex, field: string, delimeter: string, orderBy?: string[]) {
+function string_agg(knex: Knex.Knex, field: string, delimeter: string) {
   const driverName = (knex.client as Knex.Knex.Client).driverName;
   let fn;
   switch (driverName) {
@@ -132,7 +132,11 @@ function string_agg(knex: Knex.Knex, field: string, delimeter: string, orderBy?:
     default:
       throw new Error(`${driverName} does not have a string_agg function`);
   }
-  return knex.raw<string>(`(${fn}(??, ? ORDER BY ??))`, [field, delimeter, field])
+  return knex.raw<string>(`(${fn}(??, ? ORDER BY ??))`, [
+    field,
+    delimeter,
+    field,
+  ]);
 }
 
 export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {

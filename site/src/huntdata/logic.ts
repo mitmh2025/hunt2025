@@ -68,7 +68,12 @@ function evaluateCondition(
 }
 
 export function getSlotSlug(slot: PuzzleSlot) {
-  return slot.slug || (process.env.NODE_ENV == "development" && slot.id);
+  return (
+    slot.slug ||
+    ((process.env.NODE_ENV == "development" ||
+      process.env.NODE_ENV == "test") &&
+      slot.id)
+  );
 }
 
 export function getSlugsBySlot(hunt: Hunt) {

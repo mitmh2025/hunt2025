@@ -1,0 +1,53 @@
+import { test, it, expect } from "@jest/globals";
+import { getSlugsBySlot, calculateTeamState } from "./logic";
+
+test("getSlugsBySlot", () => {
+  expect(
+    getSlugsBySlot({
+      rounds: [
+        {
+          slug: "one",
+          title: "One",
+          unlock_if: [],
+          puzzles: [{ id: "11", slug: "p11" }, { id: "12" }],
+        },
+        { slug: "two", title: "Two", unlock_if: [], puzzles: [{ id: "22" }] },
+      ],
+      interactions: [],
+    }),
+  ).toStrictEqual({
+    "11": "p11",
+    "12": "12",
+    "22": "22",
+  });
+});
+
+it("unlocks if solved", () => {
+  expect(
+    calculateTeamState({
+      hunt: {
+        rounds: [
+          {
+            slug: "round",
+            title: "Round",
+            unlock_if: [],
+            puzzles: [
+              { id: "11", slug: "p11", unlocked_if: [] },
+              { id: "12", slug: "p12", unlocked_if: { slot_solved: "11" } },
+            ],
+          },
+        ],
+        interactions: [],
+      },
+      interactions_completed: new Set(),
+      puzzle_solution_count: {
+        p11: 1,
+      },
+    }),
+  ).toStrictEqual({
+    unlocked_rounds: new Set(["round"]),
+    visible_puzzles: new Set(["p11", "p12"]),
+    unlockable_puzzles: new Set([]),
+    unlocked_puzzles: new Set(["p11", "p12"]),
+  });
+});

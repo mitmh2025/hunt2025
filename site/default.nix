@@ -13,7 +13,7 @@ in buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = "sha256-fwtc2oGyd2oo2Dq2ba0rsLGYQqWrvqqcqdqc8tyhLq0=";
+  npmDepsHash = "sha256-SaeODbiAnGHhx3SmLZ1V7iY8eHlsoeP6ib7GLq7Vufw=";
 
   inherit nodejs;
 

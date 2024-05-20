@@ -65,5 +65,5 @@ export async function seed(knex: Knex): Promise<void> {
     for (const username of usernames) {
       await recalculateTeamState(HUNT, username, trx);
     }
-  })
+  });
 }
