@@ -38,7 +38,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string("slug", 255).notNullable();
       table.string("canonical_input", 255).notNullable();
       table.primary(["username", "slug", "canonical_input"]);
-      table.datetime("timestamp").defaultTo(knex.fn.now());
+      table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
       // TODO: Enum for wrong/partial/correct?
       table.boolean("correct").notNullable().defaultTo(false);
       table.text("response");
@@ -54,6 +54,25 @@ export async function up(knex: Knex): Promise<void> {
       table.primary(["username", "id"]);
       table.boolean("unlocked").notNullable().defaultTo(false);
       table.boolean("completed").notNullable().defaultTo(false);
+    })
+    .createTable("activity_log", function (table) {
+      table.increments("id");
+      table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
+      table.string("username", 255);
+      table.enu("type", [
+        "currency_adjusted",
+        "round_unlocked",
+        "puzzle_unlocked",
+        "puzzle_solved",
+        "interaction_unlocked",
+        "interaction_completed",
+      ]);
+      table.string("slug", 255);
+      table.integer("currency_delta").notNullable().defaultTo(0);
+      table.jsonb("data");
+      table.jsonb("internal_data");
+
+      table.index(["username", "type"]);
     });
 }
 
@@ -62,5 +81,6 @@ export async function down(knex: Knex): Promise<void> {
     .dropTable("team_rounds")
     .dropTable("team_puzzles")
     .dropTable("team_puzzle_guesses")
-    .dropTable("team_interactions");
+    .dropTable("team_interactions")
+    .dropTable("activity_log");
 }

@@ -7,6 +7,7 @@ import cors from "cors";
 import { Request, RequestHandler, Router } from "express";
 import jwt from "jsonwebtoken";
 import { Knex } from "knex";
+import { ActivityLogEntry } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
@@ -19,10 +20,17 @@ import {
   getTeamState as dbGetTeamState,
   getPuzzleState as dbGetPuzzleState,
   recalculateTeamState,
+  fixTimestamp,
+  appendActivityLog,
 } from "./db";
 
 type PuzzleState = ServerInferResponseBody<
   typeof contract.public.getPuzzleState,
+  200
+>;
+
+type ActivityLog = ServerInferResponseBody<
+  typeof contract.public.getActivityLog,
   200
 >;
 
@@ -259,6 +267,34 @@ export function getRouter({
           };
         },
       },
+      getActivityLog: {
+        middleware: [authMiddleware],
+        handler: async ({ req }) => {
+          const entries = (await knex("activity_log")
+            .where("username", req.user as string)
+            .select("timestamp", "type", "slug", "currency_delta", "data")
+            .orderBy("timestamp", "desc")) as ActivityLogEntry[];
+          const body = entries.map((e) => {
+            // TODO: Is there a type-safe way to do this that doesn't involve a switch on e.type?
+            let entry: Partial<ActivityLog[number]> = {
+              timestamp: fixTimestamp(e.timestamp).toISOString(),
+              currency_delta: e.currency_delta,
+              type: e.type,
+            };
+            if ("slug" in e) {
+              (entry as { slug: string }).slug = e.slug;
+            }
+            if ("data" in e) {
+              entry = Object.assign(entry, e.data);
+            }
+            return entry as ActivityLog[number];
+          });
+          return {
+            status: 200,
+            body,
+          };
+        },
+      },
       submitGuess: {
         middleware: [authMiddleware],
         handler: async ({ params: { slug }, body: { guess }, req }) => {
@@ -293,6 +329,17 @@ export function getRouter({
             if (correct_answer) {
               canonical_input = correct_answer.answer;
               response = "Correct!";
+              await appendActivityLog(
+                {
+                  username: team,
+                  slug,
+                  type: "puzzle_solved",
+                  data: {
+                    answer: canonical_input,
+                  },
+                },
+                trx,
+              );
             }
             // TODO: Recognize partial answers
             await trx("team_puzzle_guesses")

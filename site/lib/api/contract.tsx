@@ -43,6 +43,38 @@ const SubmitGuessSchema = z.object({
   guess: z.string(),
 });
 
+const ActivityLogEntryBaseSchema = z.object({
+  timestamp: z.string().datetime(),
+  currency_delta: z.number(),
+});
+
+const ActivityLogEntrySchema = z.discriminatedUnion("type", [
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("currency_adjusted") }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("round_unlocked"), slug: z.string() }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("puzzle_unlocked"), slug: z.string() }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("puzzle_solved"),
+      slug: z.string(),
+      answer: z.string(),
+    }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("interaction_unlocked"), slug: z.string() }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("interaction_completed"), slug: z.string() }),
+  ),
+]);
+
+const ActivityLogSchema = z.array(ActivityLogEntrySchema);
+
 const ForcePuzzleStateSchema = z.object({
   visible: z.boolean().optional(),
   unlockable: z.boolean().optional(),
@@ -88,6 +120,14 @@ const publicContract = c.router({
       404: z.null(),
     },
     summary: "Get the state of one puzzle",
+  },
+  getActivityLog: {
+    method: "GET",
+    path: "/activity",
+    responses: {
+      200: ActivityLogSchema,
+    },
+    summary: "Get activity log",
   },
   submitGuess: {
     method: "PUT",

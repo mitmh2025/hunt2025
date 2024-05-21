@@ -63,6 +63,7 @@ export async function seed(knex: Knex): Promise<void> {
   const usernames = await knex("teams").select("username").pluck("username");
   await knex.transaction(async (trx) => {
     for (const username of usernames) {
+      await trx("activity_log").where("username", username).del();
       await recalculateTeamState(HUNT, username, trx);
     }
   });

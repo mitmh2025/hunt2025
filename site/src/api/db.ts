@@ -1,6 +1,6 @@
 import path from "path";
 import Knex from "knex";
-import { TeamPuzzle } from "knex/types/tables";
+import { InsertActivityLogEntry, TeamPuzzle } from "knex/types/tables";
 import connections from "../../knexfile";
 import { calculateTeamState } from "../huntdata/logic";
 import { Hunt } from "../huntdata/types";
@@ -108,12 +108,57 @@ declare module "knex/types/tables" {
     completed: boolean;
   }
 
+  type InsertActivityLogEntry = {
+    username?: string;
+    currency_delta?: number;
+    internal_data?: {
+      operator?: string;
+    };
+  } & (
+    | {
+        type: "currency_adjusted";
+      }
+    | {
+        type: "round_unlocked";
+        slug: string;
+      }
+    | {
+        type: "puzzle_unlocked";
+        slug: string;
+      }
+    | {
+        type: "puzzle_solved";
+        slug: string;
+        data: {
+          answer: string;
+        };
+      }
+    | {
+        type: "interaction_unlocked";
+        slug: string;
+      }
+    | {
+        type: "interaction_completed";
+        slug: string;
+      }
+  );
+
+  type ActivityLogEntry = {
+    id: number;
+    timestamp: Date;
+    currency_delta: number;
+  } & InsertActivityLogEntry;
+
   interface Tables {
     teams: Team;
     team_rounds: TeamRound;
     team_puzzles: TeamPuzzle;
     team_puzzle_guesses: TeamPuzzleGuess;
     team_interactions: TeamInteraction;
+    activity_log: Knex.Knex.CompositeTableType<
+      ActivityLogEntry,
+      InsertActivityLogEntry
+    >;
   }
 }
 
@@ -172,6 +217,21 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
   };
 }
 
+export async function appendActivityLog(
+  entry: InsertActivityLogEntry,
+  trx: Knex.Knex.Transaction,
+) {
+  await trx("activity_log").insert(entry);
+}
+
+export function fixTimestamp(value: string | Date): Date {
+  if (typeof value == "string") {
+    // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
+    return new Date(value + "Z");
+  }
+  return value;
+}
+
 export async function getPuzzleState(
   team: string,
   slug: string,
@@ -202,10 +262,7 @@ export async function getPuzzleState(
       .where("slug", slug)
       .orderBy("timestamp", "desc")
   ).map((row) => {
-    if (typeof row.timestamp == "string") {
-      // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
-      row.timestamp = new Date((row.timestamp as string) + "Z");
-    }
+    row.timestamp = fixTimestamp(row.timestamp);
     return row;
   });
   return {
@@ -244,6 +301,14 @@ export async function recalculateTeamState(
   });
   console.log(next);
   for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
+    await appendActivityLog(
+      {
+        username: team,
+        type: "round_unlocked",
+        slug,
+      },
+      trx,
+    );
     await trx("team_rounds")
       .insert({
         username: team,
@@ -275,6 +340,14 @@ export async function recalculateTeamState(
     }
     if (diff.unlocked_puzzles.has(slug)) {
       record.unlocked = true;
+      await appendActivityLog(
+        {
+          username: team,
+          type: "puzzle_unlocked",
+          slug,
+        },
+        trx,
+      );
     }
     await trx("team_puzzles")
       .insert(
