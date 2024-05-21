@@ -125,6 +125,7 @@ export function getRouter({
     return {
       teamName: team,
       rounds,
+      currency: data.available_currency,
       puzzles: Object.fromEntries(
         [...data.visible_puzzles].map((slug) => [
           slug,
@@ -285,7 +286,12 @@ export function getRouter({
               (entry as { slug: string }).slug = e.slug;
             }
             if ("data" in e) {
-              entry = Object.assign(entry, e.data);
+              // SQLite doesn't parse JSON automatically
+              const data =
+                typeof e.data == "string"
+                  ? (JSON.parse(e.data as string) as typeof e.data)
+                  : e.data;
+              entry = Object.assign(entry, data);
             }
             return entry as ActivityLog[number];
           });
@@ -360,6 +366,57 @@ export function getRouter({
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
               body: (await getPuzzleState(team, slug, trx))!,
+            };
+          });
+        },
+      },
+      unlockPuzzle: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug }, req }) => {
+          const team = req.user as string;
+
+          // TODO: Make sure that we retry/wait for conflicts.
+          return await knex.transaction(async function (trx) {
+            const data = await dbGetTeamState(team, trx);
+            const slot = hunt.rounds
+              .filter(({ slug }) => data.unlocked_rounds.has(slug))
+              .flatMap(({ puzzles }) =>
+                puzzles.flatMap((slot) =>
+                  getSlotSlug(slot) == slug ? [slot] : [],
+                ),
+              )[0];
+            const unlock_cost = slot?.unlock_cost;
+            if (
+              data.unlockable_puzzles.has(slug) &&
+              unlock_cost &&
+              data.available_currency >= unlock_cost
+            ) {
+              await trx("team_puzzles")
+                .where("username", team)
+                .where("slug", slug)
+                .update({ unlocked: true });
+              await appendActivityLog(
+                {
+                  username: team,
+                  type: "puzzle_unlocked",
+                  slug,
+                  currency_delta: -unlock_cost,
+                },
+                trx,
+              );
+
+              await recalculateTeamState(hunt, team, trx);
+              // TODO: Invalidate caches
+              return {
+                status: 200,
+                /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+                 * We know the puzzle state exists because we checked the db above. */
+                body: (await getPuzzleState(team, slug, trx))!,
+              };
+            }
+            return {
+              status: 404,
+              body: null,
             };
           });
         },

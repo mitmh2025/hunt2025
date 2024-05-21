@@ -35,6 +35,7 @@ const RoundStateSchema = z.object({
 
 const TeamStateSchema = z.object({
   teamName: z.string(),
+  currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
 });
@@ -133,6 +134,15 @@ const publicContract = c.router({
     method: "PUT",
     path: `/puzzle/:slug/guess`,
     body: SubmitGuessSchema,
+    responses: {
+      200: PuzzleStateSchema,
+      404: z.null(),
+    },
+  },
+  unlockPuzzle: {
+    method: "POST",
+    path: `/puzzle/:slug/unlock`,
+    body: z.object({}),
     responses: {
       200: PuzzleStateSchema,
       404: z.null(),

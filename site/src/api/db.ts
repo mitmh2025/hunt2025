@@ -196,7 +196,17 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
     slug: string;
     answer: string;
   }[]; /* I can't tell how to tell TypeScript that answer is a string without forcing it here. */
+  const available_currency = Number(
+    (
+      await trx("activity_log")
+        .where("username", team)
+        .orWhere("username", null)
+        .sum({ sum: "currency_delta" })
+        .first()
+    )?.sum || 0,
+  );
   return {
+    available_currency,
     unlocked_rounds: new Set(
       await trx("team_rounds").where("username", team).pluck("slug"),
     ),
