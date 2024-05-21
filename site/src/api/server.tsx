@@ -303,10 +303,10 @@ export function getRouter({
           let canonical_input = canonicalizeInput(guess);
           const answers = puzzle
             ? "answer" in puzzle
-              ? [{ answer: puzzle.answer, submit_if: [] }]
+              ? [{ answer: puzzle.answer, prize: puzzle.prize, submit_if: [] }]
               : puzzle.answers
             : process.env.NODE_ENV == "development"
-              ? [{ answer: "PLACEHOLDER ANSWER", submit_if: [] }]
+              ? [{ answer: "PLACEHOLDER ANSWER", prize: 1, submit_if: [] }]
               : [];
           // TODO: Figure out the semantics of a correct answer with false submit_if
           const correct_answer = answers.find(
@@ -334,6 +334,7 @@ export function getRouter({
                   username: team,
                   slug,
                   type: "puzzle_solved",
+                  currency_delta: correct_answer.prize || 0,
                   data: {
                     answer: canonical_input,
                   },
