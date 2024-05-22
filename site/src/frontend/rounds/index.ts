@@ -1,13 +1,13 @@
 import type { FunctionComponent } from "react";
 import type { TeamState } from "../../../lib/api/client";
 import { lookupScript, lookupStylesheet } from "../server/assets";
-import BackgroundCheckRoundPage from "./BackgroundCheckRoundPage";
-import DeadThiefRoundPage from "./DeadThiefRoundPage";
-import IllegalSearchRoundPage from "./IllegalSearchRoundPage";
-import PapertrailRoundPage from "./PapertrailRoundPage";
-import RealDiamondRoundPage from "./RealDiamondRoundPage";
-import StakeoutRoundPage from "./StakeoutRoundPage";
+import BackgroundCheckRoundPage from "./background_check";
+import IllegalSearchRoundPage from "./illegal_search";
+import PapertrailRoundPage from "./papertrail";
 import ShadowDiamondRoundPage from "./shadow_diamond";
+import StakeoutRoundPage from "./stakeout";
+import DeadThiefRoundPage from "./the_dead_thief";
+import RealDiamondRoundPage from "./the_real_diamond";
 
 // This file is intended to include non-structural data that is only relevant
 // to the frontend concerning rounds.
