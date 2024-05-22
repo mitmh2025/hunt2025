@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --mode=production --config ./webpack.config.mjs",
     "build-dev": "webpack --mode=development --config ./webpack.config.mjs",
+    "start": "npm run build && node ./dist/server-bundle.js",
     "check": "tsc && prettier . --check && eslint .",
     "format": "prettier . --write",
     "knex": "node --import tsx/esm ./node_modules/.bin/knex",
