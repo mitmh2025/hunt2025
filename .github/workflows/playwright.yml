@@ -6,13 +6,16 @@ on:
     branches: [ main, master ]
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 5
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./site
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: lts/*
+        node-version: ">=22.0.0"
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -23,5 +26,5 @@ jobs:
       if: always()
       with:
         name: playwright-report
-        path: playwright-report/
+        path: site/playwright-report/
         retention-days: 30
