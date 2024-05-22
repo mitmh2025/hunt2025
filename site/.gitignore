@@ -1,3 +1,7 @@
 dist
 node_modules
 /dev.sqlite3
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
