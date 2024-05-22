@@ -1,6 +1,7 @@
 { lib
 , nodejs_22
 , postgresql
+, playwright-driver
 , buildNpmPackage
 , makeWrapper
 }:
@@ -12,7 +13,7 @@ in buildNpmPackage {
   inherit (package) version;
 
   src = ./.;
-  npmDepsHash = "sha256-wptv1smokbfPQNozWxD8W555Hc8lcPiR2j20eBUEewQ=";
+  npmDepsHash = "sha256-Jr8EAhAa0TUKwMlJ4OuvWNN2G1Mk4WytzaHI2oqMQH8=";
 
   inherit nodejs;
 
@@ -23,6 +24,10 @@ in buildNpmPackage {
   nativeBuildInputs = [
     postgresql
     makeWrapper
+  ];
+
+  nativeCheckInputs = [
+    playwright-driver.browsers
   ];
 
   postInstall = ''

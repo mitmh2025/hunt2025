@@ -35,6 +35,7 @@
             terranix.defaultPackage.${system}
           ];
         };
+        devShells.hunt2025 = pkgs.callPackage ./site/shell.nix {};
         # nix run ".#apply"
         apps.apply = {
           type = "app";
