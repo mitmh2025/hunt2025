@@ -1,9 +1,12 @@
 import path from "path";
 import Knex from "knex";
-import { InsertActivityLogEntry, TeamPuzzle } from "knex/types/tables";
+import {
+  type InsertActivityLogEntry,
+  type TeamPuzzle,
+} from "knex/types/tables";
 import connections from "../../knexfile";
 import { calculateTeamState } from "../huntdata/logic";
-import { Hunt } from "../huntdata/types";
+import { type Hunt } from "../huntdata/types";
 
 class WebpackMigrationSource {
   context: webpack.Context;

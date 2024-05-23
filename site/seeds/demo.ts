@@ -1,4 +1,4 @@
-import { Knex } from "knex";
+import { type Knex } from "knex";
 import { recalculateTeamState } from "../src/api/db";
 import { PUZZLES } from "../src/frontend/puzzles";
 import HUNT from "../src/huntdata";

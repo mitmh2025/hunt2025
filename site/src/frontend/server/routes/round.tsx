@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { type Request } from "express";
 import React from "react";
 import Layout from "../../components/Layout";
 import { ROUND_PAGE_MAP } from "../../rounds";

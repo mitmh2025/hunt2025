@@ -1,4 +1,4 @@
-import { initClient, ClientInferResponseBody } from "@ts-rest/core";
+import { initClient, type ClientInferResponseBody } from "@ts-rest/core";
 import { contract } from "./contract";
 
 export function newClient(baseUrl: string, token?: string) {

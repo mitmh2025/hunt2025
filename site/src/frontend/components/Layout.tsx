@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import type { TeamState } from "../../../lib/api/client.js";
 import HUNT from "../../huntdata";
 import { PUZZLES } from "../puzzles";

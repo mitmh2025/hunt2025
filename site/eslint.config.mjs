@@ -76,6 +76,11 @@ export default tseslint.config(
       // Either TypeScript or Webpack seem to be smoothing over the distinction
       // between objects under default imports and named imports.
       "import/no-named-as-default-member": ["off"],
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports", fixStyle: "inline-type-imports" },
+      ],
+      "import/no-duplicates": ["error", { "prefer-inline": true }],
       "import/order": [
         "error",
         {

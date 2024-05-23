@@ -1,21 +1,21 @@
-import { ServerInferResponseBody } from "@ts-rest/core";
+import { type ServerInferResponseBody } from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { Request, RequestHandler, Router } from "express";
+import { type Request, type RequestHandler, Router } from "express";
 import jwt from "jsonwebtoken";
-import { Knex } from "knex";
-import { ActivityLogEntry } from "knex/types/tables";
+import { type Knex } from "knex";
+import { type ActivityLogEntry } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
-import { TeamState } from "../../lib/api/client";
+import { type TeamState } from "../../lib/api/client";
 import { contract } from "../../lib/api/contract";
 import { PUZZLES } from "../frontend/puzzles";
 import { getSlotSlug } from "../huntdata/logic";
-import { Hunt } from "../huntdata/types";
+import { type Hunt } from "../huntdata/types";
 import {
   getTeamState as dbGetTeamState,
   getPuzzleState as dbGetPuzzleState,

@@ -1,10 +1,10 @@
 import path from "path";
 import cookieParser from "cookie-parser";
 import express, {
-  Request,
-  Response,
-  RequestHandler,
-  NextFunction,
+  type Request,
+  type Response,
+  type RequestHandler,
+  type NextFunction,
 } from "express";
 import asyncHandler from "express-async-handler";
 import type { ParamsDictionary } from "express-serve-static-core";
@@ -14,8 +14,12 @@ import { renderToString } from "react-dom/server";
 import { Router } from "websocket-express";
 import { newClient } from "../../../lib/api/client";
 import { hackLoginGetHandler } from "./routes/login";
-import { puzzleHandler, PuzzleParams, solutionHandler } from "./routes/puzzle";
-import { roundHandler, RoundParams } from "./routes/round";
+import {
+  puzzleHandler,
+  type PuzzleParams,
+  solutionHandler,
+} from "./routes/puzzle";
+import { roundHandler, type RoundParams } from "./routes/round";
 
 // Type parameters to RequestHandler are:
 // 1. Params
