@@ -33,6 +33,7 @@
       virtualisation.forwardPorts = [
         { from = "host"; host.port = 3000; guest.port = 3000; }
       ];
+      hunt2025.site.db_env = "ci";
     };
   };
 }

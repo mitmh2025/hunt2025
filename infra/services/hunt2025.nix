@@ -1,5 +1,12 @@
 { config, pkgs, lib, ... }:
 {
+  options = with lib; {
+    hunt2025.site.db_env = mkOption {
+      type = types.str;
+      default = "production";
+      description = "Value to pass as $DB_ENV";
+    };
+  };
   config = {
     users.users.hunt2025 = {
       isSystemUser = true;
@@ -19,7 +26,7 @@
         "${config.services.redis.servers.hunt2025.user}.service"
       ];
 
-      environment.DB_ENV = "production";
+      environment.DB_ENV = config.hunt2025.site.db_env;
       # FIXME: Use a real key in production.
       environment.JWT_SECRET = "%m";
 
