@@ -1,6 +1,8 @@
 import { fixupConfigRules } from "@eslint/compat";
 import eslint from "@eslint/js";
 import prettierConfig from "eslint-config-prettier";
+import deprecation from "eslint-plugin-deprecation";
+import eslintComments from "eslint-plugin-eslint-comments";
 import importPlugin from "eslint-plugin-import";
 import jsxa11y from "eslint-plugin-jsx-a11y";
 import reactRecommended from "eslint-plugin-react/configs/recommended.js";
@@ -54,6 +56,19 @@ export default tseslint.config(
     },
   },
   ...tseslint.configs.strictTypeChecked,
+  {
+    plugins: {
+      "eslint-comments": eslintComments,
+    },
+    rules: eslintComments.configs.recommended.rules,
+  },
+  {
+    files: ["*.ts", "*.tsx"],
+    plugins: {
+      deprecation,
+    },
+    rules: deprecation.configs.recommended.rules,
+  },
   prettierConfig,
   {
     // Webpack configs run under node and can use globals like console
@@ -88,6 +103,7 @@ export default tseslint.config(
           "newlines-between": "never",
         },
       ],
+      "eslint-comments/require-description": ["error"],
     },
   },
   {

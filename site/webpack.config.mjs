@@ -18,7 +18,7 @@ const assetManifestFilename = path.join(
   "asset-manifest.json",
 );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Used by mfng, if we add it back in
 class LogValue {
   constructor(name, m) {
     this.name = name;

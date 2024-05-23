@@ -1,4 +1,4 @@
-/* eslint-disable */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- File is currently unused
 // @ts-nocheck
 
 export const reactServerManifest = await import(
