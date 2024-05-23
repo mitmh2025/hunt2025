@@ -12,8 +12,8 @@ const HUNT: Hunt = {
         { id: "sdp01", unlocked_if: [] }, // unlocked by default
         { id: "sdp02", unlocked_if: [] }, // unlocked by default
         { id: "sdp03", unlocked_if: [] }, // unlocked by default
-        { id: "sdp04", unlockable_if: { puzzles_solved: 0 }, unlock_cost: 1 }, // initially visible
-        { id: "sdp05", unlockable_if: { puzzles_solved: 0 }, unlock_cost: 1 }, // initially visible
+        { id: "sdp04", unlockable_if: [], unlock_cost: 1 }, // initially visible
+        { id: "sdp05", unlockable_if: [], unlock_cost: 1 }, // initially visible
         { id: "sdp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "sdp07", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
         { id: "sdp08", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
