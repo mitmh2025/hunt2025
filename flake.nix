@@ -32,7 +32,9 @@
         devShells.default = pkgs.mkShell {
           buildInputs = [
             terraform
-            terranix.defaultPackage.${system}
+            (terranix.defaultPackage.${system}.override {
+              nix = pkgs.nixVersions.latest;
+            })
           ];
         };
         devShells.hunt2025 = pkgs.callPackage ./site/shell.nix {};
