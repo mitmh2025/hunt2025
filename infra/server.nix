@@ -1,13 +1,20 @@
 { config, lib, pkgs, modulesPath, ... }:
 {
   imports = [
-    "${modulesPath}/virtualisation/google-compute-config.nix"
+    #"${modulesPath}/virtualisation/google-compute-config.nix"
     ./services/postgres.nix
     ./services/redis.nix
+    ./services/hunt2025.nix
     #./services/thingsboard.nix
   ];
   config = {
     system.stateVersion = "24.05";
+
+    fileSystems."/" = {
+      fsType = "ext4";
+      device = "/dev/disk/by-label/nixos";
+      autoResize = true;
+    };
 
     # Allow console login with no password
     users.users.root.hashedPassword = "";
@@ -20,37 +27,6 @@
 
     services.nginx = {
       enable = true;
-    };
-
-    users.users.hunt2025 = {
-      isSystemUser = true;
-      group = "hunt2025";
-      extraGroups = [
-        config.services.redis.servers.hunt2025.user
-      ];
-    };
-    users.groups.hunt2025 = {};
-
-    systemd.services.hunt2025 = {
-      description = "Hunt 2025 Frontend";
-
-      wantedBy = ["multi-user.target"];
-      wants = [
-        "postgresql.service"
-        "${config.services.redis.servers.hunt2025.user}.service"
-      ];
-
-      environment.DB_ENV = "production";
-      # FIXME: Use a real key in production.
-      environment.JWT_SECRET = "%m";
-
-      serviceConfig = {
-        ExecStart = "${pkgs.hunt2025}/bin/hunt2025";
-        Restart = "always";
-        RestartSec = "5s";
-        User = "hunt2025";
-        Group = "hunt2025";
-      };
     };
 
     virtualisation.vmVariant = {

@@ -62,7 +62,7 @@ export async function connect(environment: string) {
     migrationSource: new WebpackMigrationSource(migrationContext),
   });
 
-  if (environment == "memory" || environment == "development") {
+  if (environment == "memory" || environment == "development" || environment == "ci") {
     const seedContext = import.meta.webpackContext("../../seeds", {
       regExp: /^\.\/.*\.ts$/,
     });
