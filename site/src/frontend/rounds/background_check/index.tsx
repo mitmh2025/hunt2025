@@ -1,11 +1,12 @@
 import React from "react";
+import type { TeamState } from "../../../../lib/api/client";
+import RoundPuzzleList from "../../components/RoundPuzzleList";
 
-const BackgroundCheckRoundPage = () => {
+const BackgroundCheckRoundPage = ({ teamState }: { teamState: TeamState }) => {
   return (
     <div>
       <h1>Background Check round page</h1>
-      <p>TODO: show puzzle list based on props</p>
-      <ul></ul>
+      <RoundPuzzleList teamState={teamState} round="background_check" />
     </div>
   );
 };
