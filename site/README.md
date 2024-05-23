@@ -3,21 +3,18 @@
 A nodejs app with server-side-rendering for serving the 2025 Mystery Hunt site.
 Work in progress.
 
-Puzzles are postprodded in the `puzzledata` folder, where each puzzle's
+Puzzles are postprodded in the `src/frontend/puzzles/` folder, where each puzzle's
 metadata (including components for how to render the puzzle content and
 solution) is placed in a folder matching the Puzzup random name. Puzzle
-definitions should include the fields described in `puzzledata/types.ts`.
+definitions should include the fields described in `src/frontend/puzzles/types.ts`.
 
 The overall hunt structure (including how puzzles are slotted into the hunt)
-lives in `puzzledata/index.ts`, which should be updated to include each typeset
+lives in `src/huntdata/index.ts`, which should be updated to include each typeset
 puzzle. It is incomplete at present, as:
 
 1. most puzzles have yet to be assigned, let alone written
 2. we do not yet know how many puzzle slots will sit in each round, and
 3. we don't really know what the endgame round(s) will look like.
-
-Assets for puzzles (like images, javascript to run in the browser, or styles)
-are currently TODO, but will be a high priority.
 
 ## Getting started
 
@@ -57,20 +54,10 @@ node dist/server-bundle.js # listens on port 3000
 
 And then open http://localhost:3000 in your browser.
 
-At the time of this writing, authentication is a facade and any
-username/password are accepted.
+At the time of this writing, a fixture allows logging into a `DB_ENV=development`
+instance with username: `team` and password: `password`.
 
 If you build the dev bundle, once you "log in" you'll see a pane where you can
 easily jump to any round page or (typeset) puzzle. In the fullness of time,
 we'll add additional actions for things like granting unlock currency, marking
 puzzles as visible or unlocked, or marking interactions as completed.
-
-### Dump hunt structure description as JSON
-
-There's a quick script for exporting the hunt structure as JSON (without the
-React components), in case that's useful for linting or for the backend to
-consume:
-
-```sh
-node dist/dump-bundle.js > dump.json
-```
