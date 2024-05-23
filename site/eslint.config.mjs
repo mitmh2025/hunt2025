@@ -42,13 +42,14 @@ export default tseslint.config(
     plugins: {
       import: importPlugin,
     },
-    rules: importPlugin.configs.recommended.rules,
+    rules: {
+      ...importPlugin.configs.recommended.rules,
+      ...importPlugin.configs.typescript.rules,
+    },
     settings: {
+      ...importPlugin.configs.typescript.settings,
       "import/resolver": {
         typescript: true,
-        node: {
-          extensions: [".js", ".jsx", ".ts", ".tsx"],
-        },
       },
     },
   },
@@ -72,6 +73,9 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/restrict-template-expressions": ["off"], // This rule is more annoying than useful
+      // Either TypeScript or Webpack seem to be smoothing over the distinction
+      // between objects under default imports and named imports.
+      "import/no-named-as-default-member": ["off"],
       "import/order": [
         "error",
         {
