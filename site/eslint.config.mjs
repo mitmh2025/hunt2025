@@ -1,6 +1,8 @@
 import { fixupConfigRules } from "@eslint/compat";
 import eslint from "@eslint/js";
 import prettierConfig from "eslint-config-prettier";
+import deprecation from "eslint-plugin-deprecation";
+import eslintComments from "eslint-plugin-eslint-comments";
 import importPlugin from "eslint-plugin-import";
 import jsxa11y from "eslint-plugin-jsx-a11y";
 import reactRecommended from "eslint-plugin-react/configs/recommended.js";
@@ -42,17 +44,31 @@ export default tseslint.config(
     plugins: {
       import: importPlugin,
     },
-    rules: importPlugin.configs.recommended.rules,
+    rules: {
+      ...importPlugin.configs.recommended.rules,
+      ...importPlugin.configs.typescript.rules,
+    },
     settings: {
+      ...importPlugin.configs.typescript.settings,
       "import/resolver": {
         typescript: true,
-        node: {
-          extensions: [".js", ".jsx", ".ts", ".tsx"],
-        },
       },
     },
   },
   ...tseslint.configs.strictTypeChecked,
+  {
+    plugins: {
+      "eslint-comments": eslintComments,
+    },
+    rules: eslintComments.configs.recommended.rules,
+  },
+  {
+    files: ["*.ts", "*.tsx"],
+    plugins: {
+      deprecation,
+    },
+    rules: deprecation.configs.recommended.rules,
+  },
   prettierConfig,
   {
     // Webpack configs run under node and can use globals like console
@@ -72,6 +88,14 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/restrict-template-expressions": ["off"], // This rule is more annoying than useful
+      // Either TypeScript or Webpack seem to be smoothing over the distinction
+      // between objects under default imports and named imports.
+      "import/no-named-as-default-member": ["off"],
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports", fixStyle: "inline-type-imports" },
+      ],
+      "import/no-duplicates": ["error", { "prefer-inline": true }],
       "import/order": [
         "error",
         {
@@ -79,6 +103,7 @@ export default tseslint.config(
           "newlines-between": "never",
         },
       ],
+      "eslint-comments/require-description": ["error"],
     },
   },
   {
