@@ -114,6 +114,9 @@ export default tseslint.config(
         tsConfigDirName: import.meta.dirname,
       },
     },
+    linterOptions: {
+      reportUnusedDisableDirectives: true,
+    }
   },
   {
     // Don't do type-checking on any plain .js files in the tree.
