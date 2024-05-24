@@ -187,11 +187,9 @@ export function getRouter({
     return result;
   };
 
-  /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
-   * I can't tell what's untyped here, but maybe something in passport? */
-  const authMiddleware: RequestHandler = passport.authenticate("jwt", {
+  const authMiddleware = passport.authenticate("jwt", {
     session: false,
-  });
+  }) as RequestHandler;
 
   const adminAuthMiddlewares: RequestHandler[] = [
     authMiddleware,
