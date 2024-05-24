@@ -1,7 +1,7 @@
 // Load manifests
-import cssManifest from "../../../dist/css-manifest.json";
-import jsManifest from "../../../dist/js-manifest.json";
-// import assetManifest from "../dist/asset-manifest.json";
+import cssManifest from "../../../dist/isolated-css-manifest.json";
+import jsManifest from "../../../dist/isolated-js-manifest.json";
+// import assetManifest from "../dist/isolated-asset-manifest.json";
 
 export function lookupScript(entryPointName: string): string {
   const key = `${entryPointName}.js` as keyof typeof jsManifest;

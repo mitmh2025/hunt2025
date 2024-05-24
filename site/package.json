@@ -13,6 +13,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@mfng/core": "^4.1.4",
     "@ts-rest/core": "^3.45.2",
     "@ts-rest/express": "^3.45.2",
     "@ts-rest/open-api": "^3.45.2",
@@ -32,8 +33,10 @@
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.5",
     "pg-native": "^3.0.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.0.0-rc-935180c7e0-20240524",
+    "react-dom": "^19.0.0-rc-935180c7e0-20240524",
+    "react-server-dom-webpack": "^19.0.0-rc-935180c7e0-20240524",
+    "react-test-renderer": "^19.0.0-rc-935180c7e0-20240524",
     "swagger-ui-express": "^5.0.0",
     "utf-8-validate": "^6.0.4",
     "websocket-express": "^3.1.0",
@@ -43,6 +46,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.0.1",
     "@eslint/js": "^9.2.0",
+    "@mfng/webpack-rsc": "^4.2.1",
     "@playwright/test": "1.40.0",
     "@swc/cli": "^0.3.12",
     "@swc/core": "^1.4.16",
@@ -74,7 +78,6 @@
     "jest": "^29.7.0",
     "mini-css-extract-plugin": "^2.9.0",
     "prettier": "3.2.5",
-    "react-test-renderer": "^18.3.1",
     "swc-loader": "^0.2.6",
     "ts-node": "^10.9.2",
     "tsx": "^4.10.4",

@@ -9,5 +9,7 @@ test("can log in", async ({ page }) => {
 
   await expect(page.locator("h1")).toHaveText("Shadow Diamond investigation");
 
-  await expect(page.getByText("This portion of the page was rendered by browser code")).toBeVisible();
+  await expect(
+    page.getByText("This portion of the page was rendered by browser code"),
+  ).toBeVisible();
 });
