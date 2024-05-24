@@ -92,6 +92,8 @@ export default tseslint.config(
       // Either TypeScript or Webpack seem to be smoothing over the distinction
       // between objects under default imports and named imports.
       "import/no-named-as-default-member": ["off"],
+      // This rule does not seem to work with eslint 9 and TypeScript will validate it anyway
+      "import/namespace": ["off"],
       "@typescript-eslint/consistent-type-imports": [
         "error",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
