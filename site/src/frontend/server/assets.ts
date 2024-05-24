@@ -1,5 +1,5 @@
 // Load manifests
-import entrypointManifest from "../../../dist/js-manifest-with-chunks.json";
+import entrypointManifest from "../../../dist/isolated-js-manifest-with-chunks.json";
 // import assetManifest from "../dist/asset-manifest.json";
 export type Entrypoint = keyof typeof entrypointManifest;
 

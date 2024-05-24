@@ -2,7 +2,6 @@ import React, { type ReactNode } from "react";
 import type { TeamState } from "../../../lib/api/client.js";
 import HUNT from "../../huntdata";
 import { PUZZLES } from "../puzzles";
-import { lookupScripts, lookupStylesheets } from "../server/assets";
 
 const SHOW_DEV_PANE = true;
 
@@ -110,8 +109,8 @@ const Layout = ({
   title?: string;
   teamState?: TeamState;
 }) => {
-  const allScripts = [...lookupScripts("main"), ...(scripts ?? [])];
-  const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
+  const allScripts = scripts ?? [];
+  const allStyles = stylesheets ?? [];
 
   return (
     <html lang="en">
