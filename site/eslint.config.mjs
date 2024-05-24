@@ -56,6 +56,7 @@ export default tseslint.config(
     },
   },
   ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
   {
     plugins: {
       "eslint-comments": eslintComments,
@@ -104,6 +105,19 @@ export default tseslint.config(
         },
       ],
       "eslint-comments/require-description": ["error"],
+      // interfaces are not perfectly substitutable for types so don't prefer
+      // them
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    },
+  },
+  {
+    // Type definitions are constrained by external libraries and won't always
+    // pass linting
+    files: ["**/*.d.ts"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": ["off"],
+      "@typescript-eslint/consistent-type-definitions": ["off"],
+      "@typescript-eslint/no-explicit-any": ["off"],
     },
   },
   {
@@ -113,6 +127,9 @@ export default tseslint.config(
         project: true,
         tsConfigDirName: import.meta.dirname,
       },
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: true,
     },
   },
   {
@@ -126,8 +143,6 @@ export default tseslint.config(
     ignores: [
       // Don't lint generated stuff under dist/
       "dist/*",
-      // nor our additional (usually external) type signatures
-      "types/mfng/*.ts",
       // nor the unused config
       "node-webpack.config.mjs",
     ],

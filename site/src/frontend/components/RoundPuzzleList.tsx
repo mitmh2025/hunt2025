@@ -20,7 +20,7 @@ const RoundPuzzleList = ({
     const slug = slots[slot];
     const puzzleState = slug ? puzzleStates[slug] : undefined;
     const puzzleDefinition = slug ? PUZZLES[slug] : undefined;
-    const title = puzzleDefinition?.title || `Stub puzzle for slot ${slot}`;
+    const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slot}`;
     let item;
     if (puzzleState?.locked === "locked") {
       item = (

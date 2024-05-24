@@ -40,7 +40,7 @@ type JWTPayload = {
 };
 
 function cookieExtractor(req: Request) {
-  const token = req.cookies["mitmh2025_auth"] as string | undefined;
+  const token = req.cookies.mitmh2025_auth as string | undefined;
   return token ? token : null;
 }
 
@@ -130,7 +130,7 @@ export function getRouter({
         [...data.visible_puzzles].map((slug) => [
           slug,
           {
-            round: puzzleRounds[slug] || "outlands", // TODO: Should this be hardcoded?
+            round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
             locked: data.unlocked_puzzles.has(slug)
               ? "unlocked"
               : data.unlockable_puzzles.has(slug)
@@ -177,7 +177,7 @@ export function getRouter({
       locked,
       guesses: guesses.map(({ canonical_input, response, timestamp }) => ({
         canonicalInput: canonical_input,
-        response: response || "",
+        response: response ?? "",
         timestamp: timestamp.toISOString(),
       })),
     };
@@ -187,11 +187,9 @@ export function getRouter({
     return result;
   };
 
-  /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment --
-   * I can't tell what's untyped here, but maybe something in passport? */
-  const authMiddleware: RequestHandler = passport.authenticate("jwt", {
+  const authMiddleware = passport.authenticate("jwt", {
     session: false,
-  });
+  }) as RequestHandler;
 
   const adminAuthMiddlewares: RequestHandler[] = [
     authMiddleware,
@@ -340,7 +338,7 @@ export function getRouter({
                   username: team,
                   slug,
                   type: "puzzle_solved",
-                  currency_delta: correct_answer.prize || 0,
+                  currency_delta: correct_answer.prize ?? 0,
                   data: {
                     answer: canonical_input,
                   },

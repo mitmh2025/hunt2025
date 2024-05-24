@@ -20,7 +20,7 @@ declare module 'react-server-dom-webpack/server.edge' {
     | boolean
     | number
     | null
-    | ReadonlyArray<ServerContextJSONValue>
+    | readonly ServerContextJSONValue[]
     | {[key: string]: ServerContextJSONValue};
 
   export function renderToReadableStream(
