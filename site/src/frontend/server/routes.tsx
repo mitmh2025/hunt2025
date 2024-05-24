@@ -18,6 +18,7 @@ import {
   puzzleHandler,
   type PuzzleParams,
   solutionHandler,
+  puzzleGuessPostHandler,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
 
@@ -43,10 +44,10 @@ const loginPostHandler: RequestHandler<
   LoginReqBody,
   LoginQueryTypes
 > = asyncHandler(async (req, res) => {
-  // TODO: extract the POSTed username/password from the form data
   // TODO: implement CSRF tokens for forms
   // TODO: forward the login attempt to the backend, handle failures, and
   //       return the session id provided, instead of this in-memory hack.
+  // TODO: validate req.body with zod
   const { username, password } = req.body;
   const loginResult = await req.api.auth.login({
     body: {
@@ -117,7 +118,7 @@ const render500 = (
 export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   const router = new Router();
   router.use(cookieParser());
-  router.use(express.urlencoded({ extended: true }));
+  router.use(express.urlencoded({ extended: false })); // Avoid nonstandard form nonsense
   router.use(express.json());
   router.use(multer().none()); // Don't handle file uploads
   router.use(express.text());
@@ -203,6 +204,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
       },
     ),
   );
+  authRouter.post("/puzzles/:puzzleSlug/guess", puzzleGuessPostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug/solution",
     asyncHandler(

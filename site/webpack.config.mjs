@@ -155,6 +155,7 @@ export default function createConfigs(_env, argv) {
     name: "client",
     entry: {
       main: "./src/frontend/client/main.tsx",
+      puzzle: "./src/frontend/client/puzzle.tsx",
       shadow_diamond: "./src/frontend/rounds/shadow_diamond/client.tsx",
     },
     target: "web",
