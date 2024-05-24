@@ -4,7 +4,7 @@ import photoimage from "../../../assets/demo-photo.png";
 import RoundPuzzleList from "../../components/RoundPuzzleList";
 
 const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
-  const roundState = teamState.rounds["shadow_diamond"];
+  const roundState = teamState.rounds.shadow_diamond;
   if (roundState === undefined) {
     return undefined;
   }

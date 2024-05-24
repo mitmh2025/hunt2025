@@ -1,33 +1,25 @@
-declare module 'react-server-dom-webpack' {
+declare module "react-server-dom-webpack" {
   import type {
     Component,
     Context,
     LazyExoticComponent,
     ReactElement,
-  } from 'react';
+  } from "react";
 
-  export interface ClientManifest {
-    [id: string]: ImportManifestEntry;
-  }
+  export type ClientManifest = Record<string, ImportManifestEntry>;
 
-  export interface ServerManifest {
-    [id: string]: ImportManifestEntry;
-  }
+  export type ServerManifest = Record<string, ImportManifestEntry>;
 
   export interface SSRManifest {
     moduleMap: SSRModuleMap;
     moduleLoading: ModuleLoading | null;
   }
 
-  export interface SSRModuleMap {
-    [clientId: string]: {
-      [clientExportName: string]: ImportManifestEntry;
-    };
-  }
+  export type SSRModuleMap = Record<string, Record<string, ImportManifestEntry>>;
 
   export interface ModuleLoading {
     prefix: string;
-    crossOrigin?: 'use-credentials' | '';
+    crossOrigin?: "use-credentials" | "";
   }
 
   export interface ImportManifestEntry {
@@ -61,13 +53,14 @@ declare module 'react-server-dom-webpack' {
     | number
     | symbol
     | null
-    | void
+    | undefined
     | Iterable<ReactClientValue>
     | ReactClientValue[]
     | ReactClientObject
     | Promise<ReactClientValue>; // Thenable<ReactClientValue>
 
-  export type ReactClientObject = {[key: string]: ReactClientValue};
+  /* eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style -- Need an index signature to support recursion */
+  export type ReactClientObject = { [key: string]: ReactClientValue };
 
   // Serializable values for the server
   export type ReactServerValue =
@@ -80,11 +73,12 @@ declare module 'react-server-dom-webpack' {
     | number
     | symbol
     | null
-    | void
+    | undefined
     | Iterable<ReactServerValue>
     | ReactServerValue[]
     | ReactServerObject
     | Promise<ReactServerValue>; // Thenable<ReactServerValue>
 
-  export type ReactServerObject = {[key: string]: ReactServerValue};
+  /* eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style -- Need an index signature to support recursion */
+  export type ReactServerObject = { [key: string]: ReactServerValue };
 }

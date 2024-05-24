@@ -1,15 +1,15 @@
 import type { Hunt, Condition, PuzzleSlot } from "./types";
 
-interface ConditionState {
+type ConditionState = {
   hunt: Hunt;
   interactions_completed: Set<string>;
   puzzle_solution_count: Record<string, number>;
-}
+};
 
-interface ConditionStateInternal extends ConditionState {
+type ConditionStateInternal = {
   current_round?: string;
   slug_by_slot: Record<string, string>;
-}
+} & ConditionState;
 
 function evaluateCondition(
   condition: Condition,
@@ -41,7 +41,7 @@ function evaluateCondition(
   }
   if ("slug_solved" in condition) {
     const { slug_solved, answer_count } = condition;
-    return (puzzle_solution_count[slug_solved] || 0) >= (answer_count || 1);
+    return (puzzle_solution_count[slug_solved] ?? 0) >= (answer_count ?? 1);
   }
   if ("puzzles_solved" in condition) {
     const { puzzles_solved } = condition;
@@ -69,7 +69,7 @@ function evaluateCondition(
 
 export function getSlotSlug(slot: PuzzleSlot) {
   return (
-    slot.slug ||
+    slot.slug ??
     ((process.env.NODE_ENV == "development" ||
       process.env.NODE_ENV == "test") &&
       slot.id)
@@ -95,10 +95,10 @@ export function getSlugsBySlot(hunt: Hunt) {
 export function calculateTeamState(condition_state: ConditionState) {
   const { hunt } = condition_state;
 
-  const unlocked_rounds: Set<string> = new Set();
-  const visible_puzzles: Set<string> = new Set();
-  const unlockable_puzzles: Set<string> = new Set();
-  const unlocked_puzzles: Set<string> = new Set();
+  const unlocked_rounds = new Set<string>();
+  const visible_puzzles = new Set<string>();
+  const unlockable_puzzles = new Set<string>();
+  const unlocked_puzzles = new Set<string>();
 
   const slug_by_slot = getSlugsBySlot(hunt);
 

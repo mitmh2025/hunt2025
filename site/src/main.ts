@@ -4,8 +4,8 @@ import app from "./app";
 const port = 3000;
 
 // N.B. process.env.NODE_ENV is compiled by webpack
-const environment = process.env.NODE_ENV || "development";
-const db_environment = process.env.DB_ENV || "development";
+const environment = process.env.NODE_ENV ?? "development";
+const db_environment = process.env.DB_ENV ?? "development";
 let jwt_secret: string | Buffer | undefined = process.env.JWT_SECRET;
 if (environment == "development" && !jwt_secret) {
   jwt_secret = randomBytes(128);

@@ -79,41 +79,41 @@ export async function connect(environment: string) {
 }
 
 declare module "knex/types/tables" {
-  interface Team {
+  type Team = {
     username: string;
     password?: string;
-  }
+  };
 
-  interface TeamRound {
+  type TeamRound = {
     username: string;
     slug: string;
     unlocked: boolean;
-  }
+  };
 
-  interface TeamPuzzle {
+  type TeamPuzzle = {
     username: string;
     slug: string;
     visible: boolean;
     unlockable: boolean;
     unlocked: boolean;
     solved: boolean;
-  }
+  };
 
-  interface TeamPuzzleGuess {
+  type TeamPuzzleGuess = {
     username: string;
     slug: string;
     canonical_input: string;
     timestamp: Date;
     correct: boolean;
     response?: string;
-  }
+  };
 
-  interface TeamInteraction {
+  type TeamInteraction = {
     username: string;
     id: string;
     unlocked: boolean;
     completed: boolean;
-  }
+  };
 
   type InsertActivityLogEntry = {
     username?: string;
@@ -156,6 +156,10 @@ declare module "knex/types/tables" {
     currency_delta: number;
   } & InsertActivityLogEntry;
 
+  /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
+   * This must be defined as an interface as it's extending a declaration from
+   * knex
+   */
   interface Tables {
     teams: Team;
     team_rounds: TeamRound;
@@ -210,7 +214,7 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
         .orWhere("username", null)
         .sum({ sum: "currency_delta" })
         .first()
-    )?.sum || 0,
+    )?.sum ?? 0,
   );
   return {
     available_currency,
@@ -306,7 +310,7 @@ export async function recalculateTeamState(
         .where("correct", true)
         .count("*", { as: "count" })
         .groupBy("slug")
-    ).map(({ slug, count }) => [slug, Number(count || 0)]),
+    ).map(({ slug, count }) => [slug, Number(count ?? 0)]),
   );
   console.log(interactions_completed);
   console.log(puzzle_solution_count);

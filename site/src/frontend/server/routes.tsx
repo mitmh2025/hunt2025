@@ -59,7 +59,7 @@ const loginPostHandler: RequestHandler<
     res.status(500).send("Internal server error");
     return;
   }
-  const qs = req.query["next"];
+  const qs = req.query.next;
   // Don't bother with weird query string formats.  Get a string, or get your
   // next path ignored.
   const target = qs && typeof qs === "string" ? qs : "/";
@@ -128,7 +128,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   unauthRouter.use((req: Request, _res: Response, next: NextFunction) => {
     req.api = newClient(
       apiUrl,
-      req.cookies["mitmh2025_auth"] as string | undefined,
+      req.cookies.mitmh2025_auth as string | undefined,
     );
     next();
   });
@@ -138,7 +138,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       req.api = newClient(
         apiUrl,
-        req.cookies["mitmh2025_auth"] as string | undefined,
+        req.cookies.mitmh2025_auth as string | undefined,
       );
       const teamStateResp = await req.api.public.getMyTeamState();
       if (teamStateResp.status === 401) {
