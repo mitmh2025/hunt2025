@@ -71,9 +71,11 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: huntBaseURL ? [] : {
-    command: "JWT_SECRET=playwright DB_ENV=memory npm run start",
-    url: "http://127.0.0.1:3000",
-    reuseExistingServer: true,
-  },
+  webServer: huntBaseURL
+    ? []
+    : {
+        command: "JWT_SECRET=playwright DB_ENV=memory npm run start",
+        url: "http://127.0.0.1:3000",
+        reuseExistingServer: true,
+      },
 });
