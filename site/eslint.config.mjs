@@ -127,8 +127,7 @@ export default tseslint.config(
       // Don't lint generated stuff under dist/
       "dist/*",
       // nor our additional (usually external) type signatures
-      "types/react-*",
-      "types/wrangler.d.ts",
+      "types/mfng/*.ts",
       // nor the unused config
       "node-webpack.config.mjs",
     ],
