@@ -1,6 +1,7 @@
 import type { FunctionComponent } from "react";
 // Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
 import type { Condition } from "../../huntdata/types";
+import type { Entrypoint } from "../server/assets";
 // An expression indicating the nature of a dependency.
 
 export type Hint = {
@@ -24,13 +25,10 @@ export type Content = {
   // TODO: figure out what props get passed to this FunctionComponent
   component: FunctionComponent;
 
-  // Scripts that will be injected into the page's <head> when rendered.
-  // Generally, should contain the result of lookupScript(webpackEntryPoint)
-  scripts?: string[];
-
-  // Stylesheets that will be injected into the page's <head> when rendered.
-  // Generally, should contain the result of lookupStylesheet(webpackEntryPoint)
-  stylesheets?: string[];
+  // If present, the scripts and stylesheets produced by the webpack entrypoint
+  // of the given name will be injected into the page's <body> and <head>
+  // respectively.
+  entrypoint?: Entrypoint;
 };
 
 export type PuzzleDefinition = {

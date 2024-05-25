@@ -119,9 +119,6 @@ export default function createConfigs(_env, argv) {
         ".js": [".ts", ".js"],
         ".mjs": [".mts", ".mjs"],
       },
-      alias: {
-        "@": path.join(currentDirname, "src"),
-      },
     },
     externalsPresets: { node: true },
     // FIXME: Requires conditions
@@ -131,7 +128,6 @@ export default function createConfigs(_env, argv) {
       "knex",
     ]),
     plugins: [
-      // server-main.css is not used, but required by MiniCssExtractPlugin.
       new MiniCssExtractPlugin({
         filename: `[contenthash].css`,
         runtime: false,
@@ -164,12 +160,6 @@ export default function createConfigs(_env, argv) {
       path: clientOutputDirname,
       clean: !dev,
       publicPath: "/client/",
-
-      libraryTarget: "module",
-      chunkFormat: "module",
-      devtoolModuleFilenameTemplate: (
-        /** @type {{ absoluteResourcePath: string; }} */ info,
-      ) => info.absoluteResourcePath,
     },
     devtool: "source-map",
     module: {
@@ -189,12 +179,12 @@ export default function createConfigs(_env, argv) {
         ".js": [".ts", ".js"],
         ".mjs": [".mts", ".mjs"],
       },
-      /*
-      alias: {
-        "@": path.join(currentDirname, "src"),
-      },
-      */
       modules: [path.join(currentDirname, "node_modules")],
+    },
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+      },
     },
     plugins: [
       new MiniCssExtractPlugin({
@@ -205,6 +195,36 @@ export default function createConfigs(_env, argv) {
         fileName: cssManifestFilename,
         publicPath: "/client/",
         filter: (file) => file.path.endsWith(".css"),
+      }),
+      new WebpackManifestPlugin({
+        fileName: path.join(
+          outputManifestDirname,
+          "js-manifest-with-chunks.json",
+        ),
+        generate: (seed, files) => {
+          // Walk over the universe of output files, and collect and dedupe the
+          // universe of entrypoints known to any of them
+          const entrypoints = new Set();
+          files.forEach((file) => {
+            file.chunk?._groups?.forEach((group) => {
+              entrypoints.add(group);
+            });
+          });
+          const entries = [...entrypoints];
+
+          // For each named entrypoint, collect the files referenced by the
+          // chunks needed by that entrypoint.
+          const acc = {};
+          entries.forEach((entry) => {
+            const name = entry.options?.name ?? entry.runtimeChunk?.name;
+            let files = [];
+            entry.chunks.forEach((chunk) => {
+              files = [...files, ...chunk.files];
+            });
+            acc[name] = files.map((file) => `/client/${file}`);
+          });
+          return acc;
+        },
       }),
       new WebpackManifestPlugin({
         fileName: jsManifestFilename,
