@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { type z } from "zod";
+import { newClient } from "../../../lib/api/client";
 import { type contract } from "../../../lib/api/contract";
 
 type GetPuzzleStateResponse = z.infer<
@@ -21,7 +22,6 @@ const PuzzleGuessForm = ({
   const [formError, setFormError] = useState<string | undefined>(undefined);
   const onInputChanged = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log("new value", e.target.value);
       setGuessInput(e.target.value);
     },
     [],
@@ -29,19 +29,18 @@ const PuzzleGuessForm = ({
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       setFormState("submitting");
-      console.log("submit", guessInput);
       e.preventDefault();
+
       void (async () => {
         let result;
         try {
-          result = await fetch(`/puzzles/${slug}/guess`, {
-            method: "POST",
-            body: JSON.stringify({
+          const apiClient = newClient(location.origin, undefined);
+          result = await apiClient.public.submitGuess({
+            body: {
               guess: guessInput,
-            }),
-            headers: {
-              "Content-Type": "application/json", // This body is JSON
-              Accept: "application/json", // Indicate that we want to receive JSON back
+            },
+            params: {
+              slug,
             },
           });
         } catch (e) {
@@ -51,8 +50,7 @@ const PuzzleGuessForm = ({
           return;
         }
         if (result.status === 200) {
-          // TODO: validate schema of response from server with zod?
-          const parsedResult = (await result.json()) as GetPuzzleStateResponse;
+          const parsedResult = result.body;
           setGuessInput("");
           setFormError(undefined);
           setFormState("idle");
@@ -124,7 +122,6 @@ const PuzzleGuessSection = ({
   solved: boolean;
   initialGuesses: Guesses;
 }) => {
-  console.log("initial guesses:", initialGuesses);
   const [guesses, setGuesses] = useState<Guesses>(initialGuesses);
 
   return (
