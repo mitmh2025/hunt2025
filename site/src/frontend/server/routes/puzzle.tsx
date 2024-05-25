@@ -23,8 +23,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     return undefined;
   }
   const guesses = result.body.guesses;
-  const initialGuesses = JSON.stringify(guesses);
-  const inlineScript = `window.puzzle_initialGuesses = ${initialGuesses}; window.puzzle_slug = "${slug}";`;
+  const initialPuzzleData = JSON.stringify(result.body);
+  const inlineScript = `window.initialPuzzleData = ${initialPuzzleData}; window.puzzleSlug = "${slug}";`;
 
   const guessFrag = (
     <>
@@ -33,7 +33,11 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
         dangerouslySetInnerHTML={{ __html: inlineScript }}
       />
       <div id="puzzle-guesses">
-        <PuzzleGuessSection slug={slug} initialGuesses={guesses} />
+        <PuzzleGuessSection
+          slug={slug}
+          initialGuesses={guesses}
+          solved={!!result.body.answer}
+        />
       </div>
     </>
   );
@@ -53,11 +57,36 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
             production, but for development we will pretend there is some
             content here so that we can test unlock mechanics.
           </p>
-          <p>
-            The backend will accept the answer <code>PLACEHOLDER ANSWER</code>{" "}
-            as correct.
-          </p>
-          {guessFrag}
+          {result.body.locked === "locked" ? (
+            <p>This puzzle is currently locked.</p>
+          ) : undefined}
+          {result.body.locked === "unlockable" ? (
+            <>
+              <p>
+                This puzzle is currently locked so guess submissions will 404,
+                but it can be unlocked by spending unlock currency.
+              </p>
+              <form method="POST" action={`/puzzles/${slug}/unlock`}>
+                <button type="submit">Unlock puzzle</button>
+              </form>
+            </>
+          ) : undefined}
+          {result.body.locked === "unlocked" ? (
+            result.body.answer !== undefined ? (
+              <>
+                <p>This puzzle is solved.</p>
+                {guessFrag}
+              </>
+            ) : (
+              <>
+                <p>
+                  This puzzle is unlocked. The backend will accept the answer{" "}
+                  <code>PLACEHOLDER ANSWER</code> as correct.
+                </p>
+                {guessFrag}
+              </>
+            )
+          ) : undefined}
           <div id="puzzle-content" className="puzzle-content">
             Puzzle content would go here.
           </div>
@@ -125,9 +154,41 @@ export const puzzleGuessPostHandler: RequestHandler<
   // FIXME: handle translating rate-limits into something for browser code to consume
   if (result.status !== 200) {
     console.log(result.body);
-    res.json({
+    res.status(result.status).json({
       status: "error",
       message: "Submission failed",
+    });
+  } else {
+    res.json(result.body);
+  }
+});
+
+export const puzzleUnlockPostHandler: RequestHandler<
+  PuzzleParams,
+  unknown,
+  Record<string, never>,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  const slug = req.params.puzzleSlug;
+  console.log("try unlock", slug);
+  const result = await req.api.public.unlockPuzzle({
+    params: {
+      slug,
+    },
+  });
+
+  if (req.headers.accept !== "application/json") {
+    // noscript fallback; redirect to the now-unlocked puzzle
+    res.redirect(`/puzzles/${slug}`);
+    return;
+  }
+
+  if (result.status !== 200) {
+    // TODO: figure out how we want to handle errors
+    console.log(result.body);
+    res.status(result.status).json({
+      status: "error",
+      message: "Unlock request failed",
     });
   } else {
     res.json(result.body);

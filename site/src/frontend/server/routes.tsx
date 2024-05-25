@@ -19,6 +19,7 @@ import {
   type PuzzleParams,
   solutionHandler,
   puzzleGuessPostHandler,
+  puzzleUnlockPostHandler,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
 
@@ -205,6 +206,7 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
     ),
   );
   authRouter.post("/puzzles/:puzzleSlug/guess", puzzleGuessPostHandler);
+  authRouter.post("/puzzles/:puzzleSlug/unlock", puzzleUnlockPostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug/solution",
     asyncHandler(

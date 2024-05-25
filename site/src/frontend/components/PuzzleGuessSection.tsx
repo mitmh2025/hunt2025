@@ -117,9 +117,11 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
 
 const PuzzleGuessSection = ({
   slug,
+  solved,
   initialGuesses,
 }: {
   slug: string;
+  solved: boolean;
   initialGuesses: Guesses;
 }) => {
   console.log("initial guesses:", initialGuesses);
@@ -127,7 +129,9 @@ const PuzzleGuessSection = ({
 
   return (
     <section id="puzzle-guess-section">
-      <PuzzleGuessForm slug={slug} onGuessesUpdate={setGuesses} />
+      {solved ? undefined : (
+        <PuzzleGuessForm slug={slug} onGuessesUpdate={setGuesses} />
+      )}
       <PuzzleGuessHistoryTable guesses={guesses} />
     </section>
   );

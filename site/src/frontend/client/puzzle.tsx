@@ -4,18 +4,23 @@ import { type z } from "zod";
 import { type contract } from "../../../lib/api/contract";
 import PuzzleGuessSection from "../components/PuzzleGuessSection";
 
-type Guesses = z.infer<
+type PuzzleData = z.infer<
   (typeof contract.public.getPuzzleState.responses)["200"]
->["guesses"];
+>;
 
 const guessSectionElem = document.getElementById("puzzle-guesses");
 if (guessSectionElem) {
   const guessSectionRoot = createRoot(guessSectionElem);
-  const initialGuesses = (
-    window as unknown as { puzzle_initialGuesses: Guesses }
-  ).puzzle_initialGuesses;
-  const slug = (window as unknown as { puzzle_slug: string }).puzzle_slug;
+  const initialPuzzleData = (
+    window as unknown as { initialPuzzleData: PuzzleData }
+  ).initialPuzzleData;
+  // TODO: extract puzzleSlug from the URL instead of embedding it via script?
+  const slug = (window as unknown as { puzzleSlug: string }).puzzleSlug;
   guessSectionRoot.render(
-    <PuzzleGuessSection initialGuesses={initialGuesses} slug={slug} />,
+    <PuzzleGuessSection
+      initialGuesses={initialPuzzleData.guesses}
+      slug={slug}
+      solved={!!initialPuzzleData.answer}
+    />,
   );
 }
