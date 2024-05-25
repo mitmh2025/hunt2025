@@ -1,6 +1,7 @@
 import React, { type ReactNode } from "react";
 import type { TeamState } from "../../../lib/api/client.js";
 import HUNT from "../../huntdata";
+import { lookupScripts, lookupStylesheets } from "../server/assets";
 import { PUZZLES } from "../puzzles";
 
 const SHOW_DEV_PANE = true;
@@ -109,25 +110,32 @@ const Layout = ({
   title?: string;
   teamState?: TeamState;
 }) => {
+  const allScripts = [...lookupScripts("main"), ...(scripts ?? [])];
+  const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
+
   return (
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
-        {stylesheets?.map((s) => <link key={s} rel="stylesheet" href={s} />)}
+        {allStyles.map((s) => (
+          <link key={s} rel="stylesheet" href={s} />
+        ))}
       </head>
       <body>
         <div
           style={{
             display: "flex",
             flexDirection: "row",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
+            alignItems: "stretch",
+            justifyContent: "stretch",
           }}
         >
           <div style={{ flex: 1 }}>{children}</div>
           {renderDevPane(teamState)}
         </div>
-        {scripts?.map((s) => <script key={s} type="text/javascript" src={s} />)}
+        {allScripts.map((s) => (
+          <script key={s} type="text/javascript" src={s} />
+        ))}
       </body>
     </html>
   );
