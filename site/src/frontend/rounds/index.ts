@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { TeamState } from "../../../lib/api/client";
-import { lookupScript, lookupStylesheet } from "../server/assets";
+import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
 import IllegalSearchRoundPage from "./illegal_search";
 import PapertrailRoundPage from "./papertrail";
@@ -16,15 +16,13 @@ import RealDiamondRoundPage from "./the_real_diamond";
 // TODO: figure out the props we want to pass to the round pages
 type RoundDefinition = {
   component: FunctionComponent<{ teamState: TeamState }>;
-  scripts?: string[];
-  stylesheets?: string[];
+  entrypoint?: Entrypoint;
 };
 
 export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   shadow_diamond: {
     component: ShadowDiamondRoundPage,
-    scripts: [lookupScript("shadow_diamond")],
-    stylesheets: [lookupStylesheet("shadow_diamond")],
+    entrypoint: "shadow_diamond",
   },
   stakeout: {
     component: StakeoutRoundPage,

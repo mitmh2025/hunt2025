@@ -4,7 +4,7 @@ import React from "react";
 import Layout from "../../components/Layout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import { PUZZLES } from "../../puzzles";
-import { lookupScript } from "../assets";
+import { lookupScripts, lookupStylesheets } from "../assets";
 
 const SHOW_SOLUTIONS = true;
 
@@ -25,7 +25,6 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const guesses = result.body.guesses;
   const initialPuzzleData = JSON.stringify(result.body);
   const inlineScript = `window.initialPuzzleData = ${initialPuzzleData}; window.puzzleSlug = "${slug}";`;
-
   const guessFrag = (
     <>
       <script
@@ -44,11 +43,17 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   // Look up puzzle by slug.  If none exists, 404.
   const puzzle = PUZZLES[slug];
+  const allPuzzlesScripts = lookupScripts("puzzle");
+  const allPuzzlesStylesheets = lookupStylesheets("puzzle");
   if (puzzle === undefined) {
     if (process.env.NODE_ENV === "development") {
       // This should only be reachable in dev mode.
       return (
-        <Layout teamState={req.teamState} scripts={[lookupScript("puzzle")]}>
+        <Layout
+          teamState={req.teamState}
+          scripts={allPuzzlesScripts}
+          stylesheets={allPuzzlesStylesheets}
+        >
           <h1>Puzzle not assigned (devmode-only page)</h1>
           <p>
             The puzzle you requested (<code>{slug}</code>) exists as a stub, as
@@ -103,8 +108,14 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   // Select content component.
   const content = puzzle.content;
   const ContentComponent = content.component;
-  const scripts = [lookupScript("puzzle"), ...(content.scripts ?? [])];
-  const stylesheets = content.stylesheets;
+  const puzzleScripts = content.entrypoint
+    ? lookupScripts(content.entrypoint)
+    : [];
+  const puzzleStylesheets = content.entrypoint
+    ? lookupStylesheets(content.entrypoint)
+    : [];
+  const scripts = [...allPuzzlesScripts, ...puzzleScripts];
+  const stylesheets = [...allPuzzlesStylesheets, ...puzzleStylesheets];
   const title = puzzle.title;
 
   return (
@@ -217,11 +228,12 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   }
 
   // TODO: look up round-specific solution page layout if applicable.
-
   const content = puzzle.solution;
   const SolutionComponent = content.component;
-  const scripts = content.scripts;
-  const stylesheets = content.stylesheets;
+  const scripts = content.entrypoint ? lookupScripts(content.entrypoint) : [];
+  const stylesheets = content.entrypoint
+    ? lookupStylesheets(content.entrypoint)
+    : [];
   const title = puzzle.title;
   return (
     <Layout
