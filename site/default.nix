@@ -14,7 +14,7 @@ in buildNpmPackage {
   inherit (package) version;
 
   src = ./.;
-  npmDepsHash = "sha256-3h1zc99LaS3i+zscbPdgpPYePXA78lRUEtLzC5yPmaw=";
+  npmDepsHash = "sha256-a4BSkiAB5A+per85bBpwpxr+z18DuHg0+MZbHK7xT/w=";
 
   inherit nodejs;
 
