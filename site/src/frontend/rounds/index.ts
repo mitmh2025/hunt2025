@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { TeamState } from "../../../lib/api/client";
-import { lookupScript, lookupStylesheet } from "../server/assets";
+import { lookupStylesheet } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
 import IllegalSearchRoundPage from "./illegal_search";
 import PapertrailRoundPage from "./papertrail";
@@ -23,7 +23,6 @@ type RoundDefinition = {
 export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   shadow_diamond: {
     component: ShadowDiamondRoundPage,
-    scripts: [lookupScript("shadow_diamond")],
     stylesheets: [lookupStylesheet("shadow_diamond")],
   },
   stakeout: {

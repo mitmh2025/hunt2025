@@ -1,7 +1,9 @@
 import React from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import photoimage from "../../../assets/demo-photo.png";
+import IsolatedScripts from "../../components/IsolatedScripts";
 import RoundPuzzleList from "../../components/RoundPuzzleList";
+import { lookupScript } from "../../server/assets";
 
 const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
   const roundState = teamState.rounds.shadow_diamond;
@@ -19,6 +21,7 @@ const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
       <p>This image was included via SSR asset usage.</p>
       <RoundPuzzleList teamState={teamState} round="shadow_diamond" />
       <div id="shadow-diamond-root" />
+      <IsolatedScripts scripts={[lookupScript("shadow_diamond")]} />
     </div>
   );
 };
