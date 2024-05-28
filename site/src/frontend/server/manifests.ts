@@ -7,7 +7,7 @@ import type {
 async function importManifest<M>(name: string): Promise<M> {
   return (
     (await import(
-      /* webpackIgnore: true */ `${__dirname}/react-${name}-manifest.json`,
+      /* webpackIgnore: true */ `${__dirname}/${name}-manifest.json`,
       {
         with: { type: "json" },
       }
@@ -16,15 +16,15 @@ async function importManifest<M>(name: string): Promise<M> {
 }
 
 export const reactServerManifest =
-  await importManifest<ServerManifest>("server");
+  await importManifest<ServerManifest>("react-server");
 
 export const reactClientManifest =
-  await importManifest<ClientManifest>("client");
+  await importManifest<ClientManifest>("react-client");
 
-export const reactSsrManifest = await importManifest<SSRManifest>("ssr");
+export const reactSsrManifest = await importManifest<SSRManifest>("react-ssr");
 
-export const reactCssManifest =
-  await importManifest<Record<string, string>>("css");
+export const clientCssManifest =
+  await importManifest<Record<string, string>>("client-css");
 
-export const reactJsManifest =
-  await importManifest<Record<string, string>>("js");
+export const clientJsManifest =
+  await importManifest<Record<string, string>>("client-js");
