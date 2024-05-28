@@ -249,12 +249,12 @@ export default function createConfigs(_env, argv) {
         runtime: false,
       }),
       new WebpackManifestPlugin({
-        fileName: path.join(outputManifestDirname, "react-css-manifest.json"),
+        fileName: path.join(outputManifestDirname, "client-css-manifest.json"),
         publicPath: "/client/",
         filter: (file) => file.path.endsWith(".css"),
       }),
       new WebpackManifestPlugin({
-        fileName: path.join(outputManifestDirname, "react-js-manifest.json"),
+        fileName: path.join(outputManifestDirname, "client-js-manifest.json"),
         publicPath: "/client/",
         filter: (file) => file.path.endsWith(".js"),
       }),

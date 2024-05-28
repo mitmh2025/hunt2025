@@ -25,7 +25,7 @@ import { Router } from "websocket-express";
 import { newClient } from "../../../lib/api/client";
 import { type RedisClient } from "../../app";
 import {
-  reactJsManifest,
+  clientJsManifest,
   reactClientManifest,
   reactServerManifest,
   reactSsrManifest,
@@ -291,7 +291,11 @@ async function renderApp<Params extends ParamsDictionary>(
         return;
       }
 
-      const mainJs = reactJsManifest[`main.js`];
+      const mainJs = clientJsManifest[`main.js`];
+      if (!mainJs) {
+        console.log(clientJsManifest);
+        throw new Error("missing main.js");
+      }
       const htmlStream = await createHtmlStream(rscStream, {
         reactSsrManifest,
         bootstrapScripts: mainJs ? [mainJs] : [],
