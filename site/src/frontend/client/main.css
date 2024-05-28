@@ -1,0 +1,121 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: teal;
+  color: #fff;
+}
+
+.navbar * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.navbar a {
+  text-decoration: none;
+}
+.navbar li {
+  list-style: none;
+}
+
+.navbar .nav-links a {
+  color: #fff;
+}
+
+.navbar .menu {
+  display: flex;
+  gap: 1em;
+  font-size: 18px;
+}
+
+.navbar .menu li:hover {
+  background-color: #4c9e9e;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.navbar .menu li {
+  padding: 5px 14px;
+}
+
+.navbar li.dropdown {
+  position: relative;
+}
+
+.navbar li.dropdown ul {
+  background-color: rgb(1, 139, 139);
+  padding: 1em 0;
+  position: absolute;
+  display: none;
+  border-radius: 8px;
+  left: 0px;
+}
+
+.navbar li.dropdown li + li {
+  margin-top: 10px;
+}
+
+.navbar li.dropdown li {
+  padding: 0.5em 1em;
+  width: 8em;
+  text-align: center;
+}
+
+.navbar li.dropdown ul li:hover {
+  background-color: #4c9e9e;
+}
+
+.navbar li.dropdown:hover ul {
+  display: block;
+}
+
+.navbar input[type="checkbox"] {
+  display: none;
+}
+
+.navbar .hamburger {
+  display: none;
+  font-size: 24px;
+  user-select: none;
+}
+
+@media (max-width: 1000px) {
+  .navbar .menu {
+    display: none;
+    position: absolute;
+    background-color: teal;
+    right: 0;
+    left: 0;
+    text-align: center;
+    padding: 16px 0;
+  }
+
+  .navbar .menu li:hover {
+    display: inline-block;
+    background-color: #4c9e9e;
+    transition: 0.3s ease;
+  }
+
+  .navbar .menu li + li {
+    margin-top: 12px;
+  }
+
+  .navbar input[type="checkbox"]:checked ~ .menu {
+    display: block;
+  }
+
+  .navbar .hamburger {
+    display: block;
+  }
+
+  .navbar li.dropdown ul {
+    left: 50%;
+    top: 30px;
+    transform: translateX(35%);
+  }
+
+  .navbar li.dropdown ul li:hover {
+    background-color: #4c9e9e;
+  }
+}
