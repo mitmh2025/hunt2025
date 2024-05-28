@@ -25,6 +25,7 @@ import { Router } from "websocket-express";
 import { newClient } from "../../../lib/api/client";
 import { type RedisClient } from "../../app";
 import {
+  clientCssManifest,
   clientJsManifest,
   reactClientManifest,
   reactServerManifest,
@@ -274,7 +275,7 @@ async function renderApp<Params extends ParamsDictionary>(
 
       const rscStream = createRscAppStream(reactRoot, {
         reactClientManifest,
-        //TODO: mainCssHref: cssManifest[`main.css`]!,
+        mainCssHref: clientCssManifest[`main.css`],
         formState,
       });
 
