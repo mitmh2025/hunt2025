@@ -1,5 +1,6 @@
 import { type Request } from "express";
 import React from "react";
+import IsolatedScripts from "../..//components/IsolatedScripts";
 import Layout from "../../components/Layout";
 import { ROUND_PAGE_MAP } from "../../rounds";
 import { lookupScripts, lookupStylesheets } from "../assets";
@@ -30,8 +31,9 @@ export const roundHandler = (req: Request<RoundParams>) => {
 
   // TODO: pass props about current unlock state to Component
   return (
-    <Layout scripts={scripts} stylesheets={stylesheets} teamState={teamState}>
+    <Layout stylesheets={stylesheets} teamState={teamState}>
       <Component teamState={teamState} />
+      {scripts && <IsolatedScripts scripts={scripts} />}
     </Layout>
   );
 };
