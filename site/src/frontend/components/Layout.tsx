@@ -1,7 +1,7 @@
 import React, { type ReactNode } from "react";
 import type { TeamState } from "../../../lib/api/client.js";
 import HUNT from "../../huntdata";
-import NavBar from "../client/components/NavBar";
+import NavBarManager from "../client/components/NavBarManager";
 import { PUZZLES } from "../puzzles";
 
 const SHOW_DEV_PANE = true;
@@ -117,7 +117,7 @@ const Layout = ({
         {stylesheets?.map((s) => <link key={s} rel="stylesheet" href={s} />)}
       </head>
       <body>
-        <NavBar teamState={teamState} />
+        <NavBarManager initialTeamState={teamState} />
         <div
           style={{
             display: "flex",

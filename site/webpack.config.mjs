@@ -171,7 +171,15 @@ export default function createConfigs(_env, argv) {
     externalsPresets: { node: true },
     // Webpack needs to see any libraries that include React components, so we can't use a blanket nodeExternals here.
     // This is a list of our heavyweight server-only dependencies.
-    externals: ["express", "websocket-express", "better-sqlite3", "pg-native", "knex", "swagger-ui-express", "redis"],
+    externals: [
+      "express",
+      "websocket-express",
+      "better-sqlite3",
+      "pg-native",
+      "knex",
+      "swagger-ui-express",
+      "redis",
+    ],
     plugins: [
       // server-main.css is not used, but required by MiniCssExtractPlugin.
       new MiniCssExtractPlugin({

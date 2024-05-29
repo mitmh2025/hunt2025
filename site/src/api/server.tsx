@@ -13,6 +13,7 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { type TeamState } from "../../lib/api/client";
 import { contract } from "../../lib/api/contract";
+import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
 import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
@@ -23,7 +24,6 @@ import {
   fixTimestamp,
   appendActivityLog,
 } from "./db";
-import type { RedisClient } from "../app";
 
 type PuzzleState = ServerInferResponseBody<
   typeof contract.public.getPuzzleState,
@@ -190,20 +190,27 @@ export function getRouter({
     return result;
   };
 
-  const refreshTeamState = async (hunt: Hunt, team: string, trx: Knex.Transaction) => {
+  const refreshTeamState = async (
+    hunt: Hunt,
+    team: string,
+    trx: Knex.Transaction,
+  ) => {
     await recalculateTeamState(hunt, team, trx);
     const teamState = await getTeamState(team, trx);
     if (redisClient) {
       // TODO: What if the transaction fails?
       try {
-        await redisClient.publish(`team_state.${team}`, JSON.stringify(teamState));
+        await redisClient.publish(
+          `team_state.${team}`,
+          JSON.stringify(teamState),
+        );
       } catch (e) {
         // Graceful fallback if Redis can't be reached.
         console.error(e);
       }
     }
     return teamState;
-  }
+  };
 
   const authMiddleware = passport.authenticate("jwt", {
     session: false,

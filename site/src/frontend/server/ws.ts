@@ -8,7 +8,11 @@ export async function getWsHandler(redisClient?: RedisClient) {
   if (subscriber) {
     await subscriber.connect();
   }
-  return async function wsHandler(req: Request, res: WSResponse, next: NextFunction) {
+  return async function wsHandler(
+    req: Request,
+    res: WSResponse,
+    next: NextFunction,
+  ) {
     const team = req.teamState?.teamName;
     if (!team) {
       next();
