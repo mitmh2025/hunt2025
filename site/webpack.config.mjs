@@ -123,9 +123,11 @@ export default function createConfigs(_env, argv) {
     externalsPresets: { node: true },
     // FIXME: Requires conditions
     externals: (dev ? [nodeExternals({ importType: "module" })] : []).concat([
+      "express",
       "better-sqlite3",
       "pg-native",
       "knex",
+      "swagger-ui-express",
     ]),
     plugins: [
       new MiniCssExtractPlugin({
