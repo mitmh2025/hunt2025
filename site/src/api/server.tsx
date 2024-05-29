@@ -23,6 +23,7 @@ import {
   fixTimestamp,
   appendActivityLog,
 } from "./db";
+import type { RedisClient } from "../app";
 
 type PuzzleState = ServerInferResponseBody<
   typeof contract.public.getPuzzleState,
@@ -74,10 +75,12 @@ export function getRouter({
   jwt_secret,
   knex,
   hunt,
+  redisClient,
 }: {
   jwt_secret: string | Buffer;
   knex: Knex;
   hunt: Hunt;
+  redisClient?: RedisClient;
 }) {
   const app = Router();
   app.use(cors());
@@ -186,6 +189,21 @@ export function getRouter({
     }
     return result;
   };
+
+  const refreshTeamState = async (hunt: Hunt, team: string, trx: Knex.Transaction) => {
+    await recalculateTeamState(hunt, team, trx);
+    const teamState = await getTeamState(team, trx);
+    if (redisClient) {
+      // TODO: What if the transaction fails?
+      try {
+        await redisClient.publish(`team_state.${team}`, JSON.stringify(teamState));
+      } catch (e) {
+        // Graceful fallback if Redis can't be reached.
+        console.error(e);
+      }
+    }
+    return teamState;
+  }
 
   const authMiddleware = passport.authenticate("jwt", {
     session: false,
@@ -357,7 +375,7 @@ export function getRouter({
               })
               .onConflict(["username", "slug", "canonical_input"])
               .ignore();
-            await recalculateTeamState(hunt, team, trx);
+            await refreshTeamState(hunt, team, trx);
             // TODO: Invalidate caches
             return {
               status: 200,
@@ -403,7 +421,7 @@ export function getRouter({
                 trx,
               );
 
-              await recalculateTeamState(hunt, team, trx);
+              await refreshTeamState(hunt, team, trx);
               // TODO: Invalidate caches
               return {
                 status: 200,
@@ -464,7 +482,7 @@ export function getRouter({
               )
               .onConflict(["username", "slug"])
               .merge(body);
-            await recalculateTeamState(hunt, team, trx);
+            await refreshTeamState(hunt, team, trx);
             // TODO: Invalidate caches
             return {
               status: 200,

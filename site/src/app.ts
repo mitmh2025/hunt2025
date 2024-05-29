@@ -12,14 +12,16 @@ const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
 const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
-function createRedisClient(redisUrl: string) {
+async function createRedisClient(redisUrl: string) {
   const options = redisUrl.startsWith("unix://")
     ? { socket: { path: redisUrl.replace("unix://", "") } }
     : { url: redisUrl };
-  return redisCreateClient(options);
+  const client = redisCreateClient(options);
+  await client.connect();
+  return client;
 }
 
-export type RedisClient = ReturnType<typeof createRedisClient>;
+export type RedisClient = Awaited<ReturnType<typeof createRedisClient>>;
 
 export default async function ({
   db_environment,
@@ -34,7 +36,7 @@ export default async function ({
 }) {
   const knex = await connect(db_environment);
 
-  const redisClient = redisUrl ? createRedisClient(redisUrl) : undefined;
+  const redisClient = redisUrl ? await createRedisClient(redisUrl) : undefined;
 
   const hunt = HUNT;
 
@@ -47,6 +49,7 @@ export default async function ({
     jwt_secret,
     knex,
     hunt,
+    redisClient,
   });
   app.use("/api", apiRouter);
 
