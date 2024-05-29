@@ -39,6 +39,7 @@ const HUNT: Hunt = {
         { id: "sdp28", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
         {
           id: "sdm01",
+          is_meta: true,
           unlocked_if: {
             puzzles_solved: 5,
             slots: [
@@ -54,6 +55,7 @@ const HUNT: Hunt = {
         }, // Boardwalk (meta)
         {
           id: "sdm02",
+          is_meta: true,
           unlocked_if: {
             puzzles_solved: 5,
             slots: [
@@ -70,6 +72,7 @@ const HUNT: Hunt = {
         {
           id: "sdm03",
           slug: "the_casino",
+          is_meta: true,
           unlocked_if: {
             puzzles_solved: 5,
             slots: [
@@ -85,6 +88,7 @@ const HUNT: Hunt = {
         }, // Casino (meta)
         {
           id: "sdm04",
+          is_meta: true,
           unlocked_if: {
             puzzles_solved: 5,
             slots: [
@@ -100,6 +104,7 @@ const HUNT: Hunt = {
         }, // Estate (meta)
         {
           id: "sdm05",
+          is_meta: true,
           unlocked_if: {
             puzzles_solved: 2,
             slots: ["sdm01", "sdm02", "sdm03", "sdm04"],
@@ -163,7 +168,7 @@ const HUNT: Hunt = {
         { id: "sop40" },
         { id: "sop41" },
         { id: "sop42" },
-        { id: "som01" }, // (meta)
+        { id: "som01", is_meta: true }, // (meta)
       ],
       unlock_if: [
         { slot_solved: "sdm01" },
@@ -191,15 +196,15 @@ const HUNT: Hunt = {
         { id: "ptp14" },
         { id: "ptp15" },
         { id: "ptp16" },
-        { id: "ptm01" }, // meta 1
-        { id: "ptm02" }, // meta 2
-        { id: "ptm03" }, // meta 3
-        { id: "ptm04" }, // meta 4
-        { id: "ptm05" }, // meta 5
-        { id: "ptm06" }, // meta 6 dir: "profitable-trunk"
-        { id: "ptm07" }, // meta 7 dir: "green-princess"
-        { id: "ptm08" }, // meta 8 dir: "bountiful-maple"
-        { id: "ptm09" }, // supermeta
+        { id: "ptm01", is_meta: true }, // meta 1
+        { id: "ptm02", is_meta: true }, // meta 2
+        { id: "ptm03", is_meta: true }, // meta 3
+        { id: "ptm04", is_meta: true }, // meta 4
+        { id: "ptm05", is_meta: true }, // meta 5
+        { id: "ptm06", is_meta: true }, // meta 6 dir: "profitable-trunk"
+        { id: "ptm07", is_meta: true }, // meta 7 dir: "green-princess"
+        { id: "ptm08", is_meta: true }, // meta 8 dir: "bountiful-maple"
+        { id: "ptm09", is_meta: true }, // supermeta
       ],
       unlock_if: [
         { slot_solved: "sdm02" },

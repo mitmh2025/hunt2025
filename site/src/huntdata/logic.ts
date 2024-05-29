@@ -49,7 +49,8 @@ function evaluateCondition(
     if (!slots) {
       slots = hunt.rounds
         .find((r) => r.slug == current_round)
-        ?.puzzles.map((p) => p.id);
+        ?.puzzles.filter((p) => !p.is_meta)
+        .map((p) => p.id);
     }
     if (!slots) {
       return false;

@@ -17,7 +17,7 @@ export type Condition =
     }
   | {
       puzzles_solved: number; // The number of puzzles solved in a set.
-      slots?: string[]; // The list of puzzle slots to check, if not all puzzles in the current round.
+      slots?: string[]; // The list of puzzle slots to check, if not all non-meta puzzles in the current round.
     }
   | Condition[] // All of the conditions must be true (empty array is true)
   | { oneOf: Condition[] }; // Any of the conditions must be true (empty array is false);
@@ -26,6 +26,7 @@ export type PuzzleSlot = {
   id: string; // globally-unique id for this puzzle slot
   slug?: string; // slug of the puzzle currently assigned to this slot
   // TODO: in the fullness of time, we should lint for unassigned slots, and make slug a required field, but not now
+  is_meta?: boolean; // Is this puzzle a meta (and thus should be excluded by default from the set of slots satisfying puzzles_solved and puzzles_unlocked conditions?)
   visible_if?: Condition; // Conditions under which the puzzle is visible. If unset, the puzzle is visible if it is unlocked or unlockable.
   unlockable_if?: Condition; // Conditions under which the puzzle is unlockable. If unset, the puzzle is not unlockable.
   unlock_cost?: number; // If the puzzle is unlockable, how much it should cost to unlock. Defaults to 1.
