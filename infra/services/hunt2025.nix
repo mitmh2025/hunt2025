@@ -29,6 +29,7 @@
       environment.DB_ENV = config.hunt2025.site.db_env;
       # FIXME: Use a real key in production.
       environment.JWT_SECRET = "%m";
+      environment.REDIS_URL = "unix://${config.services.redis.servers.hunt2025.unixSocket}";
 
       serviceConfig = {
         ExecStart = "${pkgs.hunt2025}/bin/hunt2025";

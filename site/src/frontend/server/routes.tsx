@@ -23,6 +23,7 @@ import * as React from "react";
 import { renderToString, type ReactFormState } from "react-dom/server";
 import { Router } from "websocket-express";
 import { newClient } from "../../../lib/api/client";
+import { type RedisClient } from "../../app";
 import {
   clientCssManifest,
   clientJsManifest,
@@ -33,6 +34,7 @@ import {
 import { hackLoginGetHandler } from "./routes/login";
 import { puzzleHandler, solutionHandler } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
+import { getWsHandler } from "./ws";
 
 // Type parameters to RequestHandler are:
 // 1. Params
@@ -153,7 +155,13 @@ function addRoute<P extends ParamsDictionary>(
   );
 }
 
-export function getUiRouter({ apiUrl }: { apiUrl: string }) {
+export async function getUiRouter({
+  apiUrl,
+  redisClient,
+}: {
+  apiUrl: string;
+  redisClient?: RedisClient;
+}) {
   const router = new Router();
   router.use(cookieParser());
   router.use(express.urlencoded({ extended: true }));
@@ -211,6 +219,8 @@ export function getUiRouter({ apiUrl }: { apiUrl: string }) {
   );
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
+
+  authRouter.ws("/ws", await getWsHandler(redisClient));
 
   authRouter.get(
     "/",
