@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import Link from "../../components/Link";
@@ -36,6 +34,13 @@ export default function NavBar({ teamState }: { teamState?: TeamState }) {
           </li>
 
           {roundsMenu}
+
+          {teamState && (
+            <li>
+              {Object.values(teamState.puzzles).filter((p) => p.answer).length}{" "}
+              solved
+            </li>
+          )}
         </div>
       </ul>
     </nav>

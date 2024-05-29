@@ -18,4 +18,9 @@ export type TeamState = ClientInferResponseBody<
   200
 >;
 
+export type PuzzleState = ClientInferResponseBody<
+  typeof contract.public.getPuzzleState,
+  200
+>;
+
 export type Client = ReturnType<typeof newClient>;
