@@ -2,6 +2,7 @@
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
 import type { Hunt } from "./types";
 
+// prettier-ignore
 const HUNT: Hunt = {
   rounds: [
     {
@@ -14,34 +15,34 @@ const HUNT: Hunt = {
         { id: "sdp03", unlocked_if: [] }, // unlocked by default
         { id: "sdp04", unlockable_if: [], unlock_cost: 1 }, // initially visible
         { id: "sdp05", unlockable_if: [], unlock_cost: 1 }, // initially visible
-        { id: "sdp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
-        { id: "sdp07", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
-        { id: "sdp08", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "sdp09", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
-        { id: "sdp10", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "sdp11", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
-        { id: "sdp12", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "sdp13", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
-        { id: "sdp14", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
-        { id: "sdp15", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1 },
-        { id: "sdp16", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
-        { id: "sdp17", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1 },
-        { id: "sdp18", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 },
-        { id: "sdp19", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1 },
-        { id: "sdp20", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1 },
-        { id: "sdp21", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1 },
-        { id: "sdp22", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1 },
-        { id: "sdp23", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1 },
-        { id: "sdp24", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 },
-        { id: "sdp25", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1 },
-        { id: "sdp26", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 },
-        { id: "sdp27", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1 },
-        { id: "sdp28", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
+        { id: "sdp06", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+        { id: "sdp07", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+        { id: "sdp08", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+        { id: "sdp09", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+        { id: "sdp10", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+        { id: "sdp11", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "sdp12", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "sdp13", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "sdp14", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+        { id: "sdp15", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "sdp16", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+        { id: "sdp17", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+        { id: "sdp18", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+        { id: "sdp19", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+        { id: "sdp20", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+        { id: "sdp21", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+        { id: "sdp22", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+        { id: "sdp23", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+        { id: "sdp24", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
+        { id: "sdp25", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
+        { id: "sdp26", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
+        { id: "sdp27", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
+        { id: "sdp28", unlockable_if: { puzzles_unlocked: 26 }, unlock_cost: 1 },
         {
           id: "sdm01",
           is_meta: true,
           unlocked_if: {
-            puzzles_solved: 5,
+            puzzles_unlocked: 5,
             slots: [
               "sdp01",
               "sdp02",
@@ -57,7 +58,7 @@ const HUNT: Hunt = {
           id: "sdm02",
           is_meta: true,
           unlocked_if: {
-            puzzles_solved: 5,
+            puzzles_unlocked: 5,
             slots: [
               "sdp08",
               "sdp09",
@@ -74,7 +75,7 @@ const HUNT: Hunt = {
           slug: "the_casino",
           is_meta: true,
           unlocked_if: {
-            puzzles_solved: 5,
+            puzzles_unlocked: 5,
             slots: [
               "sdp15",
               "sdp16",
@@ -90,7 +91,7 @@ const HUNT: Hunt = {
           id: "sdm04",
           is_meta: true,
           unlocked_if: {
-            puzzles_solved: 5,
+            puzzles_unlocked: 5,
             slots: [
               "sdp22",
               "sdp23",
@@ -106,7 +107,7 @@ const HUNT: Hunt = {
           id: "sdm05",
           is_meta: true,
           unlocked_if: {
-            puzzles_solved: 2,
+            puzzles_unlocked: 2,
             slots: ["sdm01", "sdm02", "sdm03", "sdm04"],
           },
         }, // Where is the Diamond? (super)
@@ -126,49 +127,49 @@ const HUNT: Hunt = {
       title: "Stakeout",
       puzzles: [
         // 42 feeders, 1 meta
-        { id: "sop01" },
-        { id: "sop02" },
-        { id: "sop03" },
-        { id: "sop04" },
-        { id: "sop05" },
-        { id: "sop06" },
-        { id: "sop07" },
-        { id: "sop08" },
-        { id: "sop09" },
-        { id: "sop10" },
-        { id: "sop11" },
-        { id: "sop12" },
-        { id: "sop13" },
-        { id: "sop14" },
-        { id: "sop15" },
-        { id: "sop16" },
-        { id: "sop17" },
-        { id: "sop18" },
-        { id: "sop19" },
-        { id: "sop20" },
-        { id: "sop21" },
-        { id: "sop22" },
-        { id: "sop23" },
-        { id: "sop24" },
-        { id: "sop25" },
-        { id: "sop26" },
-        { id: "sop27" },
-        { id: "sop28" },
-        { id: "sop29" },
-        { id: "sop30" },
-        { id: "sop31" },
-        { id: "sop32" },
-        { id: "sop33" },
-        { id: "sop34" },
-        { id: "sop35" },
-        { id: "sop36" },
-        { id: "sop37" },
-        { id: "sop38" },
-        { id: "sop39" },
-        { id: "sop40" },
-        { id: "sop41" },
-        { id: "sop42" },
-        { id: "som01", is_meta: true }, // (meta)
+        { id: "sop01", unlockable_if: [], unlock_cost: 1 },
+        { id: "sop02", unlockable_if: [], unlock_cost: 1 },
+        { id: "sop03", unlockable_if: [], unlock_cost: 1 },
+        { id: "sop04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+        { id: "sop05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+        { id: "sop06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+        { id: "sop07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+        { id: "sop08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+        { id: "sop09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+        { id: "sop10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+        { id: "sop11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+        { id: "sop12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "sop13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "sop14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "sop15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+        { id: "sop16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "sop17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+        { id: "sop18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+        { id: "sop19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+        { id: "sop20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+        { id: "sop21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+        { id: "sop22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+        { id: "sop23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+        { id: "sop24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+        { id: "sop25", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
+        { id: "sop26", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
+        { id: "sop27", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
+        { id: "sop28", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
+        { id: "sop29", unlockable_if: { puzzles_unlocked: 26 }, unlock_cost: 1 },
+        { id: "sop30", unlockable_if: { puzzles_unlocked: 27 }, unlock_cost: 1 },
+        { id: "sop31", unlockable_if: { puzzles_unlocked: 28 }, unlock_cost: 1 },
+        { id: "sop32", unlockable_if: { puzzles_unlocked: 29 }, unlock_cost: 1 },
+        { id: "sop33", unlockable_if: { puzzles_unlocked: 30 }, unlock_cost: 1 },
+        { id: "sop34", unlockable_if: { puzzles_unlocked: 31 }, unlock_cost: 1 },
+        { id: "sop35", unlockable_if: { puzzles_unlocked: 32 }, unlock_cost: 1 },
+        { id: "sop36", unlockable_if: { puzzles_unlocked: 33 }, unlock_cost: 1 },
+        { id: "sop37", unlockable_if: { puzzles_unlocked: 34 }, unlock_cost: 1 },
+        { id: "sop38", unlockable_if: { puzzles_unlocked: 35 }, unlock_cost: 1 },
+        { id: "sop39", unlockable_if: { puzzles_unlocked: 36 }, unlock_cost: 1 },
+        { id: "sop40", unlockable_if: { puzzles_unlocked: 37 }, unlock_cost: 1 },
+        { id: "sop41", unlockable_if: { puzzles_unlocked: 38 }, unlock_cost: 1 },
+        { id: "sop42", unlockable_if: { puzzles_unlocked: 39 }, unlock_cost: 1 },
+        { id: "som01", is_meta: true, unlocked_if: { puzzles_unlocked: 30 } }, // (meta)
       ],
       unlock_if: [
         { slot_solved: "sdm01" },
@@ -180,31 +181,31 @@ const HUNT: Hunt = {
       title: "Paper Trail",
       puzzles: [
         // 16 feeders, 8 metas, 1 super
-        { id: "ptp01" },
-        { id: "ptp02" },
-        { id: "ptp03" },
-        { id: "ptp04" },
-        { id: "ptp05" },
-        { id: "ptp06" },
-        { id: "ptp07" },
-        { id: "ptp08" },
-        { id: "ptp09" },
-        { id: "ptp10" },
-        { id: "ptp11" },
-        { id: "ptp12" },
-        { id: "ptp13" },
-        { id: "ptp14" },
-        { id: "ptp15" },
-        { id: "ptp16" },
-        { id: "ptm01", is_meta: true }, // meta 1
-        { id: "ptm02", is_meta: true }, // meta 2
-        { id: "ptm03", is_meta: true }, // meta 3
-        { id: "ptm04", is_meta: true }, // meta 4
-        { id: "ptm05", is_meta: true }, // meta 5
-        { id: "ptm06", is_meta: true }, // meta 6 dir: "profitable-trunk"
-        { id: "ptm07", is_meta: true }, // meta 7 dir: "green-princess"
-        { id: "ptm08", is_meta: true }, // meta 8 dir: "bountiful-maple"
-        { id: "ptm09", is_meta: true }, // supermeta
+        { id: "ptp01", unlockable_if: [], unlock_cost: 1 },
+        { id: "ptp02", unlockable_if: [], unlock_cost: 1 },
+        { id: "ptp03", unlockable_if: [], unlock_cost: 1 },
+        { id: "ptp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+        { id: "ptp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+        { id: "ptp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+        { id: "ptp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+        { id: "ptp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+        { id: "ptp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+        { id: "ptp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+        { id: "ptp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+        { id: "ptp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "ptp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "ptp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "ptp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+        { id: "ptp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "ptm01", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 1
+        { id: "ptm02", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 2
+        { id: "ptm03", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 3
+        { id: "ptm04", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 4
+        { id: "ptm05", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 5
+        { id: "ptm06", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 6 dir: "profitable-trunk"
+        { id: "ptm07", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 7 dir: "green-princess"
+        { id: "ptm08", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 8 dir: "bountiful-maple"
+        { id: "ptm09", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // supermeta
       ],
       unlock_if: [
         { slot_solved: "sdm02" },

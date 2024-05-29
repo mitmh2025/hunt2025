@@ -40,6 +40,7 @@ it("unlocks if solved", () => {
         interactions: [],
       },
       interactions_completed: new Set(),
+      puzzles_unlocked: new Set(["p11"]),
       puzzle_solution_count: {
         p11: 1,
       },
@@ -49,5 +50,37 @@ it("unlocks if solved", () => {
     visible_puzzles: new Set(["p11", "p12"]),
     unlockable_puzzles: new Set([]),
     unlocked_puzzles: new Set(["p11", "p12"]),
+  });
+});
+
+it("becomes visible if unlocked", () => {
+  expect(
+    calculateTeamState({
+      hunt: {
+        rounds: [
+          {
+            slug: "round",
+            title: "Round",
+            unlock_if: [],
+            puzzles: [
+              { id: "p1", slug: "p1", unlocked_if: [] },
+              { id: "p2", slug: "p2", unlocked_if: [] },
+              { id: "p3", slug: "p3", unlockable_if: { puzzles_unlocked: 1 } },
+              { id: "p4", slug: "p4", unlockable_if: { puzzles_unlocked: 2 } },
+              { id: "p5", slug: "p5", unlockable_if: { puzzles_unlocked: 3 } },
+            ],
+          },
+        ],
+        interactions: [],
+      },
+      interactions_completed: new Set(),
+      puzzles_unlocked: new Set(),
+      puzzle_solution_count: {},
+    }),
+  ).toStrictEqual({
+    unlocked_rounds: new Set(["round"]),
+    visible_puzzles: new Set(["p1", "p2", "p3", "p4"]),
+    unlockable_puzzles: new Set(["p3", "p4"]),
+    unlocked_puzzles: new Set(["p1", "p2"]),
   });
 });

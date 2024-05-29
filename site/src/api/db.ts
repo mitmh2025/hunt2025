@@ -302,6 +302,12 @@ export async function recalculateTeamState(
   const interactions_completed = new Set(
     await trx("team_interactions").where("username", team).pluck("id"),
   );
+  const puzzles_unlocked = new Set(
+    await trx("team_puzzles")
+      .where("username", team)
+      .where("unlocked", true)
+      .pluck("slug"),
+  );
   const puzzle_solution_count = Object.fromEntries(
     (
       await trx("team_puzzle_guesses")
@@ -313,11 +319,13 @@ export async function recalculateTeamState(
     ).map(({ slug, count }) => [slug, Number(count ?? 0)]),
   );
   console.log(interactions_completed);
+  console.log(puzzles_unlocked);
   console.log(puzzle_solution_count);
   const old = await getTeamState(team, trx);
   const next = calculateTeamState({
     hunt,
     interactions_completed,
+    puzzles_unlocked,
     puzzle_solution_count,
   });
   console.log(next);

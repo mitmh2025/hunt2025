@@ -13,7 +13,17 @@ export type Condition =
         }
     ))
   | {
+      slot_unlocked: string; // The puzzle in this slot must be unlocked.
+    }
+  | {
+      slug_unlocked: string; // The puzzle with this slug must be unlocked.
+    }
+  | {
       interaction_completed: string; // The id of the interaction which must be marked as completed before this condition is satisfied.
+    }
+  | {
+      puzzles_unlocked: number; // The number of puzzles unlocked in a set.
+      slots?: string[]; // The list of puzzle slots to check, if not all non-meta puzzles in the current round.
     }
   | {
       puzzles_solved: number; // The number of puzzles solved in a set.
@@ -26,7 +36,23 @@ export type PuzzleSlot = {
   id: string; // globally-unique id for this puzzle slot
   slug?: string; // slug of the puzzle currently assigned to this slot
   // TODO: in the fullness of time, we should lint for unassigned slots, and make slug a required field, but not now
-  is_meta?: boolean; // Is this puzzle a meta (and thus should be excluded by default from the set of slots satisfying puzzles_solved and puzzles_unlocked conditions?)
+
+  // Is this puzzle a meta?  Metapuzzles are excluded by default from the set
+  // of slots satisfying puzzles_solved and puzzles_unlocked, and they may be
+  // presented at the top of puzzle lists.
+  is_meta?: boolean;
+
+  // A note on the condition specifiers below: it is generally expected that
+  // * most standard non-meta puzzles will have an `unlockable_if` condition
+  //   driven by `puzzles_unlocked`
+  // * puzzles with particular physical space or schedule requirements may have
+  //   a custom `unlocked_if`
+  // * metapuzzles will have `unlocked_if` with a `puzzles_unlocked` condition
+  //   since we don't want them to cost any unlock currency since it could result
+  //   in teams getting stuck if they spend all their unlocks on metas instead of
+  //   feeders.  Teams should simply observe the discovery and unlock of a
+  //   metapuzzle when they unlock a sufficient set of feeders.
+
   visible_if?: Condition; // Conditions under which the puzzle is visible. If unset, the puzzle is visible if it is unlocked or unlockable.
   unlockable_if?: Condition; // Conditions under which the puzzle is unlockable. If unset, the puzzle is not unlockable.
   unlock_cost?: number; // If the puzzle is unlockable, how much it should cost to unlock. Defaults to 1.
@@ -37,6 +63,14 @@ export type Round = {
   slug: string; // The string presented in the URL when viewing this round's page.
   title: string; // The title of the round
   puzzles: PuzzleSlot[]; // The set of puzzle slots that are canonically in this round.
+
+  // Notes on expected Round unlock_if behaviors:
+  // * The first round will be unlocked by default.
+  // * Each side investigation will be unlocked when a particular meta is
+  //   solved and an interaction is completed.
+  // * The late-game investigation will be unlocked when all the side
+  //   investigations are solved and their interactions are completed.
+
   unlock_if: Condition; // The set of unlock conditions that constrain when this round becomes visible.
 };
 
