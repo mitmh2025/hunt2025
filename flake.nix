@@ -62,10 +62,14 @@
         # TODO: use ${system} to allow running from macOS
         apps.default = {
           type = "app";
-          program = "${self.nixosConfigurations.server.config.system.build.vm}/bin/run-nixos-vm";
+          program = "${self.nixosConfigurations.dev-vm.config.system.build.vm}/bin/run-nixos-vm";
+        };
+        apps.dev-vm-base = {
+          type = "app";
+          program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-nixos-vm";
         };
       }) // {
-        nixosConfigurations.server = nixpkgs.lib.nixosSystem {
+        nixosConfigurations.dev-vm-base = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             {
@@ -73,7 +77,18 @@
                 self.overlays.default
               ];
             }
-            ./infra/server.nix
+            ./infra/dev-vm-base.nix
+          ];
+        };
+        nixosConfigurations.dev-vm = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            {
+              nixpkgs.overlays = [
+                self.overlays.default
+              ];
+            }
+            ./infra/dev-vm.nix
           ];
         };
         overlays.default = import ./infra/pkgs/all-packages.nix;

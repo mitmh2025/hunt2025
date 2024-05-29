@@ -4,7 +4,6 @@
     #"${modulesPath}/virtualisation/google-compute-config.nix"
     ./services/postgres.nix
     ./services/redis.nix
-    ./services/hunt2025.nix
     #./services/thingsboard.nix
   ];
   config = {
@@ -15,6 +14,7 @@
       device = "/dev/disk/by-label/nixos";
       autoResize = true;
     };
+    boot.loader.systemd-boot.enable = true;
 
     # Allow console login with no password
     users.users.root.hashedPassword = "";
@@ -31,9 +31,14 @@
 
     virtualisation.vmVariant = {
       virtualisation.forwardPorts = [
-        { from = "host"; host.port = 3000; guest.port = 3000; }
+        # Redis
+        { from = "host"; host.port = 6379; guest.port = 6379; }
       ];
-      hunt2025.site.db_env = "ci";
+      services.redis.servers.hunt2025 = {
+        bind = "0.0.0.0";
+        port = 6379;
+        settings.protected-mode = "no";
+      };
     };
   };
 }
