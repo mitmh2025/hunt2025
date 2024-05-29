@@ -18,6 +18,7 @@ app({
   db_environment,
   jwt_secret: jwt_secret,
   apiUrl: "http://localhost:3000",
+  redisUrl: process.env.REDIS_URL,
 })
   .then((app) =>
     app.listen(port, () => {
