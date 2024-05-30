@@ -29,6 +29,9 @@ export type Condition =
       puzzles_solved: number; // The number of puzzles solved in a set.
       slots?: string[]; // The list of puzzle slots to check, if not all non-meta puzzles in the current round.
     }
+  | {
+      gate_satisfied: string; // The id of the gate which must be marked as completed before this condition is satisfied.
+    }
   | Condition[] // All of the conditions must be true (empty array is true)
   | { oneOf: Condition[] }; // Any of the conditions must be true (empty array is false);
 
@@ -59,10 +62,16 @@ export type PuzzleSlot = {
   unlocked_if?: Condition; // Conditions under which the puzzle is unlocked.
 };
 
+export type Gate = {
+  id: string; // unique id for this gate
+};
+
 export type Round = {
   slug: string; // The string presented in the URL when viewing this round's page.
   title: string; // The title of the round
   puzzles: PuzzleSlot[]; // The set of puzzle slots that are canonically in this round.
+
+  gates?: Gate[]; // A set of gates which are owned by this round
 
   // Notes on expected Round unlock_if behaviors:
   // * The first round will be unlocked by default.

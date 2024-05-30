@@ -39,6 +39,7 @@ it("unlocks if solved", () => {
         ],
         interactions: [],
       },
+      gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlocked: new Set(["p11"]),
       puzzle_solution_count: {
@@ -73,6 +74,7 @@ it("becomes visible if unlocked", () => {
         ],
         interactions: [],
       },
+      gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlocked: new Set(),
       puzzle_solution_count: {},
@@ -82,5 +84,36 @@ it("becomes visible if unlocked", () => {
     visible_puzzles: new Set(["p1", "p2", "p3", "p4"]),
     unlockable_puzzles: new Set(["p3", "p4"]),
     unlocked_puzzles: new Set(["p1", "p2"]),
+  });
+});
+
+it("handles gate conditions", () => {
+  expect(
+    calculateTeamState({
+      hunt: {
+        rounds: [
+          {
+            slug: "round",
+            title: "Round",
+            unlock_if: [],
+            puzzles: [
+              { id: "p1", slug: "p1", unlocked_if: [] },
+              { id: "p2", slug: "p2", unlockable_if: { gate_satisfied: "g1" } },
+              { id: "p3", slug: "p3", unlockable_if: { gate_satisfied: "g2" } },
+            ],
+          },
+        ],
+        interactions: [],
+      },
+      gates_satisfied: new Set(["g1"]),
+      interactions_completed: new Set(),
+      puzzles_unlocked: new Set(),
+      puzzle_solution_count: {},
+    }),
+  ).toStrictEqual({
+    unlocked_rounds: new Set(["round"]),
+    visible_puzzles: new Set(["p1", "p2"]),
+    unlockable_puzzles: new Set(["p2"]),
+    unlocked_puzzles: new Set(["p1"]),
   });
 });

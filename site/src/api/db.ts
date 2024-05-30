@@ -115,6 +115,11 @@ declare module "knex/types/tables" {
     completed: boolean;
   };
 
+  type TeamGateCompletions = {
+    username: string;
+    gate: string;
+  };
+
   type InsertActivityLogEntry = {
     username?: string;
     currency_delta?: number;
@@ -165,6 +170,7 @@ declare module "knex/types/tables" {
     team_rounds: TeamRound;
     team_puzzles: TeamPuzzle;
     team_puzzle_guesses: TeamPuzzleGuess;
+    team_gate_completions: TeamGateCompletions;
     team_interactions: TeamInteraction;
     activity_log: Knex.Knex.CompositeTableType<
       ActivityLogEntry,
@@ -207,6 +213,9 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
     slug: string;
     answer: string;
   }[]; /* I can't tell how to tell TypeScript that answer is a string without forcing it here. */
+  const satisfied_gates = await trx("team_gate_completions")
+    .where("username", team)
+    .pluck("gate");
   const available_currency = Number(
     (
       await trx("activity_log")
@@ -235,6 +244,7 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
     correct_answers: Object.fromEntries(
       correct_answers.map(({ slug, answer }) => [slug, answer]),
     ),
+    satisfied_gates: new Set(satisfied_gates),
   };
 }
 
@@ -308,6 +318,9 @@ export async function recalculateTeamState(
       .where("unlocked", true)
       .pluck("slug"),
   );
+  const gates_satisfied = new Set(
+    await trx("team_gate_completions").where("username", team).pluck("gate"),
+  );
   const puzzle_solution_count = Object.fromEntries(
     (
       await trx("team_puzzle_guesses")
@@ -324,6 +337,7 @@ export async function recalculateTeamState(
   const old = await getTeamState(team, trx);
   const next = calculateTeamState({
     hunt,
+    gates_satisfied,
     interactions_completed,
     puzzles_unlocked,
     puzzle_solution_count,

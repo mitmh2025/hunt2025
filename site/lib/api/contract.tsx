@@ -31,6 +31,7 @@ const PuzzleStateSchema = PuzzleSummarySchema.extend({
 const RoundStateSchema = z.object({
   title: z.string(),
   slots: z.record(z.string(), slug),
+  gates: z.array(z.string()).optional(),
 });
 
 const TeamStateSchema = z.object({

@@ -2,6 +2,7 @@ import type { Hunt, Condition, PuzzleSlot } from "./types";
 
 type ConditionState = {
   hunt: Hunt;
+  gates_satisfied: Set<string>;
   interactions_completed: Set<string>;
   puzzles_unlocked: Set<string>;
   puzzle_solution_count: Record<string, number>;
@@ -29,6 +30,7 @@ function evaluateCondition(
   const {
     hunt,
     current_round,
+    gates_satisfied,
     interactions_completed,
     puzzles_unlocked,
     puzzle_solution_count,
@@ -99,6 +101,9 @@ function evaluateCondition(
   }
   if ("interaction_completed" in condition) {
     return interactions_completed.has(condition.interaction_completed);
+  }
+  if ("gate_satisfied" in condition) {
+    return gates_satisfied.has(condition.gate_satisfied);
   }
   // TODO: Can TypeScript prove this is unreachable?
   throw new Error("unknown condition");

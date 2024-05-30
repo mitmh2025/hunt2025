@@ -43,6 +43,17 @@ export async function up(knex: Knex): Promise<void> {
       table.boolean("correct").notNullable().defaultTo(false);
       table.text("response");
     })
+    .createTable("team_gate_completions", function (table) {
+      table
+        .string("username", 255)
+        .notNullable()
+        .references("teams.username")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
+      table.string("gate", 255).notNullable();
+      table.primary(["username", "gate"]);
+      table.datetime("completed_at").notNullable().defaultTo(knex.fn.now());
+    })
     .createTable("team_interactions", function (table) {
       table
         .string("username", 255)
@@ -81,6 +92,7 @@ export async function down(knex: Knex): Promise<void> {
     .dropTable("team_rounds")
     .dropTable("team_puzzles")
     .dropTable("team_puzzle_guesses")
+    .dropTable("team_gate_completions")
     .dropTable("team_interactions")
     .dropTable("activity_log");
 }

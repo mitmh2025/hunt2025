@@ -98,7 +98,7 @@ export function getRouter({
     const rounds = Object.fromEntries(
       hunt.rounds
         .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
-        .map(({ slug, title, puzzles }) => [
+        .map(({ slug, title, puzzles, gates }) => [
           slug,
           {
             title,
@@ -111,6 +111,12 @@ export function getRouter({
                 return [];
               }),
             ),
+            gates: gates?.flatMap((gate) => {
+              if (gate.id && data.satisfied_gates.has(gate.id)) {
+                return [gate.id];
+              }
+              return [];
+            }),
           },
         ]),
     );
