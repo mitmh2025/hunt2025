@@ -39,6 +39,7 @@ const HUNT: Hunt = {
         { id: "sdp27", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
         { id: "sdp28", unlockable_if: { puzzles_unlocked: 26 }, unlock_cost: 1 },
         {
+          // Boardwalk (meta)
           id: "sdm01",
           is_meta: true,
           unlocked_if: {
@@ -53,8 +54,9 @@ const HUNT: Hunt = {
               "sdp07",
             ],
           },
-        }, // Boardwalk (meta)
+        },
         {
+          // Jewelry Store (meta)
           id: "sdm02",
           is_meta: true,
           unlocked_if: {
@@ -69,8 +71,9 @@ const HUNT: Hunt = {
               "sdp14",
             ],
           },
-        }, // Jewelry Store (meta)
+        },
         {
+          // Casino (meta)
           id: "sdm03",
           slug: "the_casino",
           is_meta: true,
@@ -86,8 +89,9 @@ const HUNT: Hunt = {
               "sdp21",
             ],
           },
-        }, // Casino (meta)
+        },
         {
+          // Art Gallery (meta)
           id: "sdm04",
           is_meta: true,
           unlocked_if: {
@@ -102,7 +106,7 @@ const HUNT: Hunt = {
               "sdp28",
             ],
           },
-        }, // Estate (meta)
+        },
         {
           id: "sdm05",
           is_meta: true,
@@ -173,7 +177,7 @@ const HUNT: Hunt = {
       ],
       unlock_if: [
         { slot_solved: "sdm01" },
-        { interaction_completed: "interview_the_longshoreman" },
+        { interaction_completed: "interview_at_the_boardwalk" },
       ],
     },
     {
@@ -209,18 +213,7 @@ const HUNT: Hunt = {
       ],
       unlock_if: [
         { slot_solved: "sdm02" },
-        { interaction_completed: "interview_the_salesman" },
-      ],
-    },
-    {
-      slug: "illegal_search",
-      title: "Illegal Search",
-      puzzles: [
-        // TODO
-      ],
-      unlock_if: [
-        { slot_solved: "sdm03" },
-        { interaction_completed: "interview_the_bookmaker" },
+        { interaction_completed: "interview_at_the_jewelry_store" },
       ],
     },
     {
@@ -230,8 +223,75 @@ const HUNT: Hunt = {
         // TODO
       ],
       unlock_if: [
+        { slot_solved: "sdm03" },
+        { interaction_completed: "interview_at_the_casino" },
+      ],
+    },
+    {
+      slug: "illegal_search",
+      title: "Illegal Search",
+      puzzles: [
+        // The first 5 puzzles are unlockable once they are discovered in the UI.
+        { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1 },
+        { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1 },
+        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 },
+        { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 },
+        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1 },
+        // The next 5 puzzles are unlockable once they are discovered in the
+        // UI, but will not be discoverable until the corresponding lock is
+        // satisfied.
+        { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1 },
+        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1 },
+        { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1 },
+        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1 },
+        { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1 },
+
+        // The next 8 puzzles are only discoverable once the first meta is
+        // solved and they are discovered in the UI.
+        { id: "isp11", unlockable_if: [{ gate_satisfied: "isg17" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp12", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp14", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp15", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp18", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+
+        { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }] }, // Bookcase
+        { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01", answer_count: 1 }, { gate_satisfied: "isg16" }] },
+      ],
+      gates: [
+        // Prototype; these particular gate assignments may not be final
+        { id: "isg00" }, // examine the bookcase
+        { id: "isg01" }, // find the first object in the first room
+        { id: "isg02" }, // find the second object in the first room
+        { id: "isg03" }, // find the third object in the first room
+        { id: "isg04" }, // find the fourth object in the first room
+        { id: "isg05" }, // find the last object in the first room
+        { id: "isg06" }, // complete the directional lock
+        { id: "isg07" }, // complete the binary switches
+        { id: "isg08" }, // complete the combination lock
+        { id: "isg09" }, // complete the numeric lock
+        { id: "isg10" }, // complete the word lock
+        { id: "isg11" }, // find the object behind the directional lock
+        { id: "isg12" }, // find the object behind the binary switch lock
+        { id: "isg13" }, // find the object behind the combination lock
+        { id: "isg14" }, // find the object behind the numeric lock
+        { id: "isg15" }, // find the object behind the word lock
+        { id: "isg16" }, // find the star pattern in the second room
+        { id: "isg17" }, // find the first object in the second room
+        { id: "isg18" }, // find the second object in the second room
+        { id: "isg19" }, // find the third object in the second room
+        { id: "isg20" }, // find the fourth object in the second room
+        { id: "isg21" }, // find the fifth object in the second room
+        { id: "isg22" }, // find the sixth object in the second room
+        { id: "isg23" }, // find the seventh object in the second room
+        { id: "isg24" }, // find the eighth object in the second room
+        { id: "isg25" }, // obtain the blacklight
+      ],
+      unlock_if: [
         { slot_solved: "sdm04" },
-        { interaction_completed: "interview_the_valet" },
+        { interaction_completed: "interview_at_the_art_gallery" },
       ],
     },
     {
@@ -270,31 +330,35 @@ const HUNT: Hunt = {
       unlock_if: [{ interaction_completed: "meet_billie" }],
     },
     {
-      id: "interview_the_longshoreman",
+      id: "interview_at_the_boardwalk",
       unlock_if: [{ slot_solved: "sdm01" }],
     },
     {
-      id: "interview_the_salesman",
+      id: "interview_at_the_jewelry_store",
       unlock_if: [{ slot_solved: "sdm02" }],
     },
     {
-      id: "interview_the_bookmaker",
+      id: "interview_at_the_casino",
       unlock_if: [{ slot_solved: "sdm03" }],
     },
     {
-      id: "interview_the_valet",
+      id: "interview_at_the_art_gallery",
       unlock_if: [{ slot_solved: "sdm04" }],
     },
     {
+      // The four interactions at the ends of each side investigation are live
+      // interactions, not in-site interactions, but we might have
+      // prerecorded video for remote solvers/folks missing at the time, so
+      // they might need URLs anyway
       id: "meet_katrina",
       unlock_if: [
-        // TODO: solve stakeout super, once we know the slot id
+        { slot_solved: "som01" }, // stakeout meta
       ],
     },
     {
       id: "meet_gladys",
       unlock_if: [
-        // TODO: solve paper trail super, once we know the slot id
+        { slot_solved: "ptm09" }, // papertrail super
       ],
     },
     {
@@ -306,7 +370,7 @@ const HUNT: Hunt = {
     {
       id: "meet_papa",
       unlock_if: [
-        // TODO: solve illegal search super, once we know the slot id
+        { slot_solved: "ism01", answer_count: 2 },
       ],
     },
     {
