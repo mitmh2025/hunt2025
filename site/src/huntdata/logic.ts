@@ -9,27 +9,16 @@ type ConditionState = {
 };
 
 type ConditionStateInternal = {
-  current_round: string;
+  default_slots: string[] | undefined;
   slug_by_slot: Record<string, string>;
 } & ConditionState;
-
-function defaultSlotsForRound(
-  hunt: Hunt,
-  round_slug: string,
-): string[] | undefined {
-  return hunt.rounds
-    .find((r) => r.slug === round_slug)
-    ?.puzzles.filter((p) => !p.is_meta)
-    .map((p) => p.id);
-}
 
 function evaluateCondition(
   condition: Condition,
   condition_state: ConditionStateInternal,
 ): boolean {
   const {
-    hunt,
-    current_round,
+    default_slots,
     gates_satisfied,
     interactions_completed,
     puzzles_unlocked,
@@ -73,7 +62,7 @@ function evaluateCondition(
     const { puzzles_unlocked } = condition;
     let { slots } = condition;
     if (!slots) {
-      slots = defaultSlotsForRound(hunt, current_round);
+      slots = default_slots;
     }
     if (!slots) {
       return false;
@@ -88,7 +77,7 @@ function evaluateCondition(
     const { puzzles_solved } = condition;
     let { slots } = condition;
     if (!slots) {
-      slots = defaultSlotsForRound(hunt, current_round);
+      slots = default_slots;
     }
     if (!slots) {
       return false;
@@ -141,6 +130,7 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
   const visible_puzzles = new Set<string>();
   const unlockable_puzzles = new Set<string>();
   const unlocked_puzzles = new Set<string>(puzzles_unlocked);
+  const unlocked_interactions = new Set<string>();
 
   const condition_state = { ...initial_condition_state };
   const slug_by_slot = getSlugsBySlot(hunt);
@@ -154,17 +144,20 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
   do {
     updated = false;
     hunt.rounds.forEach((round) => {
+      // Default set of slots to consider when evaluating puzzles_unlocked or
+      // puzzles_solved conditions
+      const default_slots = round.puzzles
+        .filter((p) => !p.is_meta)
+        .map((p) => p.id);
+      const round_condition_state = Object.assign(
+        {
+          default_slots,
+          slug_by_slot,
+        },
+        condition_state,
+      );
       const roundEvaluateCondition = (condition: Condition) =>
-        evaluateCondition(
-          condition,
-          Object.assign(
-            {
-              current_round: round.slug,
-              slug_by_slot,
-            },
-            condition_state,
-          ),
-        );
+        evaluateCondition(condition, round_condition_state);
       if (roundEvaluateCondition(round.unlock_if)) {
         if (!unlocked_rounds.has(round.slug)) {
           unlocked_rounds.add(round.slug);
@@ -219,6 +212,23 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
         }
       });
     });
+    hunt.interactions.forEach((interaction) => {
+      const interaction_condition_state = Object.assign(
+        {
+          default_slots: undefined,
+          slug_by_slot,
+        },
+        condition_state,
+      );
+      if (
+        evaluateCondition(interaction.unlock_if, interaction_condition_state)
+      ) {
+        if (!unlocked_interactions.has(interaction.id)) {
+          unlocked_interactions.add(interaction.id);
+          updated = true;
+        }
+      }
+    });
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for some reason, eslint believes this condition is always falsy
   } while (updated);
 
@@ -227,5 +237,6 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
     visible_puzzles,
     unlockable_puzzles,
     unlocked_puzzles,
+    unlocked_interactions,
   };
 }

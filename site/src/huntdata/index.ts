@@ -364,7 +364,7 @@ const HUNT: Hunt = {
     {
       id: "meet_carter",
       unlock_if: [
-        // TODO: solve background check super, once we know the slot id
+        { oneOf: [] }, // TODO: replace with background check super, once we know the slot id
       ],
     },
     {
@@ -376,7 +376,7 @@ const HUNT: Hunt = {
     {
       id: "unmask_the_killer",
       unlock_if: [
-        // TODO: solve unmask the killer (The Dead Thief supermeta), once we know the slot id
+        { oneOf: [] }, // TODO: replace slot with The Dead Thief supermeta, once we know the final slot id
       ],
     },
     {

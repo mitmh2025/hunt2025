@@ -34,11 +34,17 @@ const RoundStateSchema = z.object({
   gates: z.array(z.string()).optional(),
 });
 
+const InteractionStateSchema = z.object({
+  state: z.enum(["unlocked", "running", "completed"]),
+  result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
+});
+
 const TeamStateSchema = z.object({
   teamName: z.string(),
   currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
+  interactions: z.record(slug, InteractionStateSchema).optional(),
 });
 
 const SubmitGuessSchema = z.object({

@@ -111,8 +111,9 @@ declare module "knex/types/tables" {
   type TeamInteraction = {
     username: string;
     id: string;
-    unlocked: boolean;
-    completed: boolean;
+    started_at?: Date;
+    completed_at?: Date;
+    result?: string;
   };
 
   type TeamGateCompletions = {
@@ -216,6 +217,9 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
   const satisfied_gates = await trx("team_gate_completions")
     .where("username", team)
     .pluck("gate");
+  const interactions = await trx("team_interactions")
+    .where("username", team)
+    .select("id", "started_at", "completed_at", "result");
   const available_currency = Number(
     (
       await trx("activity_log")
@@ -245,6 +249,16 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
       correct_answers.map(({ slug, answer }) => [slug, answer]),
     ),
     satisfied_gates: new Set(satisfied_gates),
+    interactions: Object.fromEntries(
+      interactions.map(({ id, started_at, completed_at, result }) => {
+        const state = completed_at
+          ? ("completed" as const)
+          : started_at
+            ? ("running" as const)
+            : ("unlocked" as const);
+        return [id, { state, ...(result && { result }) }];
+      }),
+    ),
   };
 }
 
@@ -310,7 +324,10 @@ export async function recalculateTeamState(
   trx: Knex.Knex.Transaction,
 ) {
   const interactions_completed = new Set(
-    await trx("team_interactions").where("username", team).pluck("id"),
+    await trx("team_interactions")
+      .where("username", team)
+      .whereNotNull("completed_at")
+      .pluck("id"),
   );
   const puzzles_unlocked = new Set(
     await trx("team_puzzles")
@@ -363,12 +380,15 @@ export async function recalculateTeamState(
         unlocked: true,
       });
   }
+  const old_interactions = new Set(Object.keys(old.interactions));
   const diff = {
     visible_puzzles: next.visible_puzzles.difference(old.visible_puzzles),
     unlockable_puzzles: next.unlockable_puzzles.difference(
       old.unlockable_puzzles,
     ),
     unlocked_puzzles: next.unlocked_puzzles.difference(old.unlocked_puzzles),
+    unlocked_interactions:
+      next.unlocked_interactions.difference(old_interactions),
   };
   const diff_puzzles = diff.visible_puzzles
     .union(diff.unlockable_puzzles)
@@ -404,5 +424,22 @@ export async function recalculateTeamState(
       )
       .onConflict(["username", "slug"])
       .merge(record);
+  }
+  for (const id of diff.unlocked_interactions) {
+    await appendActivityLog(
+      {
+        username: team,
+        type: "interaction_unlocked",
+        slug: id,
+      },
+      trx,
+    );
+    await trx("team_interactions")
+      .insert({
+        username: team,
+        id,
+      })
+      .onConflict(["username", "id"])
+      .ignore();
   }
 }

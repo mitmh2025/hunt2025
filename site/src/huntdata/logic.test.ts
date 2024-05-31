@@ -51,6 +51,7 @@ it("unlocks if solved", () => {
     visible_puzzles: new Set(["p11", "p12"]),
     unlockable_puzzles: new Set([]),
     unlocked_puzzles: new Set(["p11", "p12"]),
+    unlocked_interactions: new Set(),
   });
 });
 
@@ -84,6 +85,7 @@ it("becomes visible if unlocked", () => {
     visible_puzzles: new Set(["p1", "p2", "p3", "p4"]),
     unlockable_puzzles: new Set(["p3", "p4"]),
     unlocked_puzzles: new Set(["p1", "p2"]),
+    unlocked_interactions: new Set(),
   });
 });
 
@@ -115,5 +117,6 @@ it("handles gate conditions", () => {
     visible_puzzles: new Set(["p1", "p2"]),
     unlockable_puzzles: new Set(["p2"]),
     unlocked_puzzles: new Set(["p1"]),
+    unlocked_interactions: new Set(),
   });
 });

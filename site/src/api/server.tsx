@@ -128,6 +128,26 @@ export function getRouter({
         ]),
       ),
     );
+    const interaction_kvs: [
+      string,
+      {
+        state: "running" | "completed" | "unlocked";
+        record?: string | undefined;
+      },
+    ][] = hunt.interactions.flatMap((interaction) => {
+      const { id } = interaction;
+      if (id) {
+        const interaction = data.interactions[id];
+        if (interaction) {
+          return [[id, interaction]];
+        }
+      }
+      return [];
+    });
+    const interactions =
+      interaction_kvs.length > 0
+        ? { interactions: Object.fromEntries(interaction_kvs) }
+        : {};
     return {
       teamName: team,
       rounds,
@@ -146,6 +166,8 @@ export function getRouter({
           },
         ]),
       ),
+      // Don't include interactions until one has been reached
+      ...interactions,
     };
   };
 

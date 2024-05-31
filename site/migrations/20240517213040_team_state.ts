@@ -63,8 +63,10 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate("CASCADE");
       table.string("id", 255).notNullable();
       table.primary(["username", "id"]);
-      table.boolean("unlocked").notNullable().defaultTo(false);
-      table.boolean("completed").notNullable().defaultTo(false);
+      // Interaction unlock is implied by presence in the table
+      table.datetime("started_at"); // The interaction can only be started once.
+      table.datetime("completed_at"); // The interaction can only be completed once.
+      table.string("result", 255); // optional
     })
     .createTable("activity_log", function (table) {
       table.increments("id");
