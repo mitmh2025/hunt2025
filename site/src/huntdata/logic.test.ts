@@ -120,3 +120,44 @@ it("handles gate conditions", () => {
     unlocked_interactions: new Set(),
   });
 });
+
+it("handles round unlock conditions", () => {
+  expect(
+    calculateTeamState({
+      hunt: {
+        rounds: [
+          {
+            slug: "round1",
+            title: "Round",
+            unlock_if: [],
+            puzzles: [{ id: "p1", slug: "p1", unlocked_if: [] }],
+          },
+          {
+            slug: "round2",
+            title: "Round 2",
+            unlock_if: { slot_solved: "p1" },
+            puzzles: [
+              {
+                id: "p2",
+                slug: "p2",
+                unlocked_if: { round_unlocked: "round2" },
+              },
+              { id: "p3", slug: "p3", unlockable_if: { puzzles_unlocked: 1 } },
+            ],
+          },
+        ],
+        interactions: [],
+      },
+      gates_satisfied: new Set(),
+      interactions_completed: new Set(),
+      puzzles_unlocked: new Set(["p1"]),
+      puzzle_solution_count: { p1: 1 },
+    }),
+  ).toStrictEqual({
+    unlocked_rounds: new Set(["round1", "round2"]),
+    visible_puzzles: new Set(["p1", "p2", "p3"]),
+    unlockable_puzzles: new Set(["p3"]),
+    unlocked_puzzles: new Set(["p1", "p2"]),
+    unlocked_interactions: new Set(),
+  });
+});

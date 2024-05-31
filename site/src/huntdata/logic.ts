@@ -9,6 +9,7 @@ type ConditionState = {
 };
 
 type ConditionStateInternal = {
+  unlocked_rounds: Set<string>;
   default_slots: string[] | undefined;
   slug_by_slot: Record<string, string>;
 } & ConditionState;
@@ -24,6 +25,7 @@ function evaluateCondition(
     puzzles_unlocked,
     puzzle_solution_count,
     slug_by_slot,
+    unlocked_rounds,
   } = condition_state;
   if (Array.isArray(condition)) {
     return condition.every((c) => evaluateCondition(c, condition_state));
@@ -94,6 +96,9 @@ function evaluateCondition(
   if ("gate_satisfied" in condition) {
     return gates_satisfied.has(condition.gate_satisfied);
   }
+  if ("round_unlocked" in condition) {
+    return unlocked_rounds.has(condition.round_unlocked);
+  }
   // TODO: Can TypeScript prove this is unreachable?
   throw new Error("unknown condition");
 }
@@ -151,6 +156,7 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
         .map((p) => p.id);
       const round_condition_state = Object.assign(
         {
+          unlocked_rounds,
           default_slots,
           slug_by_slot,
         },
@@ -215,6 +221,7 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
     hunt.interactions.forEach((interaction) => {
       const interaction_condition_state = Object.assign(
         {
+          unlocked_rounds,
           default_slots: undefined,
           slug_by_slot,
         },

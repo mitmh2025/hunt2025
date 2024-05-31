@@ -131,9 +131,9 @@ const HUNT: Hunt = {
       title: "Stakeout",
       puzzles: [
         // 42 feeders, 1 meta
-        { id: "sop01", unlockable_if: [], unlock_cost: 1 },
-        { id: "sop02", unlockable_if: [], unlock_cost: 1 },
-        { id: "sop03", unlockable_if: [], unlock_cost: 1 },
+        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1 },
+        { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1 },
+        { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1 },
         { id: "sop04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
         { id: "sop05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
         { id: "sop06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
@@ -185,9 +185,9 @@ const HUNT: Hunt = {
       title: "Paper Trail",
       puzzles: [
         // 16 feeders, 8 metas, 1 super
-        { id: "ptp01", unlockable_if: [], unlock_cost: 1 },
-        { id: "ptp02", unlockable_if: [], unlock_cost: 1 },
-        { id: "ptp03", unlockable_if: [], unlock_cost: 1 },
+        { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
+        { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
+        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
         { id: "ptp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
         { id: "ptp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
         { id: "ptp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },

@@ -32,6 +32,9 @@ export type Condition =
   | {
       gate_satisfied: string; // The id of the gate which must be marked as completed before this condition is satisfied.
     }
+  | {
+      round_unlocked: string; // The slug of the round which must be unlocked before this condition is satisfied.
+    }
   | Condition[] // All of the conditions must be true (empty array is true)
   | { oneOf: Condition[] }; // Any of the conditions must be true (empty array is false);
 
