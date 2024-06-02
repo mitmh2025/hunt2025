@@ -22,38 +22,25 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     // Puzzle doesn't exist or team doesn't have access.
     return undefined;
   }
-  const guesses = result.body.guesses;
-  const initialPuzzleData = JSON.stringify(result.body);
-  const inlineScript = `window.initialPuzzleData = ${initialPuzzleData}; window.puzzleSlug = "${slug}";`;
+  const puzzleState = result.body;
+  const solved = !!puzzleState.answer; // TODO: Multi-answer puzzles
   const guessFrag = (
-    <>
-      <script
-        type="text/javascript"
-        dangerouslySetInnerHTML={{ __html: inlineScript }}
+    <div id="puzzle-guesses">
+      <PuzzleGuessSection
+        slug={slug}
+        initialGuesses={puzzleState.guesses}
+        solved={solved}
       />
-      <div id="puzzle-guesses">
-        <PuzzleGuessSection
-          slug={slug}
-          initialGuesses={guesses}
-          solved={!!result.body.answer}
-        />
-      </div>
-    </>
+    </div>
   );
 
   // Look up puzzle by slug.  If none exists, 404.
   const puzzle = PUZZLES[slug];
-  const allPuzzlesScripts = lookupScripts("puzzle");
-  const allPuzzlesStylesheets = lookupStylesheets("puzzle");
   if (puzzle === undefined) {
     if (process.env.NODE_ENV === "development") {
       // This should only be reachable in dev mode.
       return (
-        <Layout
-          teamState={req.teamState}
-          scripts={allPuzzlesScripts}
-          stylesheets={allPuzzlesStylesheets}
-        >
+        <Layout teamState={req.teamState}>
           <h1>Puzzle not assigned (devmode-only page)</h1>
           <p>
             The puzzle you requested (<code>{slug}</code>) exists as a stub, as
@@ -62,10 +49,10 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
             production, but for development we will pretend there is some
             content here so that we can test unlock mechanics.
           </p>
-          {result.body.locked === "locked" ? (
+          {puzzleState.locked === "locked" ? (
             <p>This puzzle is currently locked.</p>
           ) : undefined}
-          {result.body.locked === "unlockable" ? (
+          {puzzleState.locked === "unlockable" ? (
             <>
               <p>
                 This puzzle is currently locked so guess submissions will 404,
@@ -76,8 +63,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
               </form>
             </>
           ) : undefined}
-          {result.body.locked === "unlocked" ? (
-            result.body.answer !== undefined ? (
+          {puzzleState.locked === "unlocked" ? (
+            puzzleState.answer !== undefined ? (
               <>
                 <p>This puzzle is solved.</p>
                 {guessFrag}
@@ -102,7 +89,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     }
   }
 
-  // TODO: Use round-specific puzzle page layout for result.body.round.  For
+  // TODO: Use round-specific puzzle page layout for puzzleState.round.  For
   // outlands puzzles, the layout may depend on round and puzzle visibility.
 
   // Select content component.
@@ -114,14 +101,12 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const puzzleStylesheets = content.entrypoint
     ? lookupStylesheets(content.entrypoint)
     : [];
-  const scripts = [...allPuzzlesScripts, ...puzzleScripts];
-  const stylesheets = [...allPuzzlesStylesheets, ...puzzleStylesheets];
   const title = puzzle.title;
 
   return (
     <Layout
-      scripts={scripts}
-      stylesheets={stylesheets}
+      scripts={puzzleScripts}
+      stylesheets={puzzleStylesheets}
       teamState={req.teamState}
     >
       <h1>{title}</h1>

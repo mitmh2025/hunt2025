@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useState } from "react";
 import { type z } from "zod";
 import { newClient } from "../../../lib/api/client";

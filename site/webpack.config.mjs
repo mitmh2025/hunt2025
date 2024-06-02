@@ -272,6 +272,15 @@ export default function createConfigs(_env, argv) {
       new LogValue(`clientReferencesMap`, clientReferencesMap),
       new LogValue(`serverReferencesMap`, serverReferencesMap),
     ],
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          // Put vendor code into parent chunks
+          // TODO: Figure out how to load multiple chunks in the correct order so this is unnecessary
+          defaultVendors: false,
+        },
+      },
+    },
     experiments: {
       layers: true,
     },
@@ -280,7 +289,6 @@ export default function createConfigs(_env, argv) {
   const isolatedConfig = {
     name: "isolated",
     entry: {
-      puzzle: "./src/frontend/client/puzzle.tsx",
       shadow_diamond: "./src/frontend/rounds/shadow_diamond/client.tsx",
     },
     target: "web",
