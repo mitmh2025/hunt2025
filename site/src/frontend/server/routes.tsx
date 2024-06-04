@@ -39,6 +39,7 @@ import {
   solutionHandler,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
+import { requestAsyncLocalStorage } from "./shared/request-async-local-storage";
 import { getWsHandler } from "./ws";
 
 // Type parameters to RequestHandler are:
@@ -254,53 +255,57 @@ async function renderApp<Params extends ParamsDictionary>(
 ) {
   const url = parseurl(req);
 
-  return routerLocationAsyncLocalStorage.run(
-    { pathname: url?.pathname ?? "", search: url?.search ?? "" },
-    async () => {
-      const reactRoot = await handler(req);
-      if (reactRoot === undefined) {
-        render404(req, res);
-        return;
-      }
+  const handleRequest = async () => {
+    const reactRoot = await handler(req);
+    if (reactRoot === undefined) {
+      render404(req, res);
+      return;
+    }
 
-      const rscStream = createRscAppStream(reactRoot, {
-        reactClientManifest,
-        mainCssHref: clientCssManifest[`main.css`],
-        formState,
-      });
+    const rscStream = createRscAppStream(reactRoot, {
+      reactClientManifest,
+      mainCssHref: clientCssManifest[`main.css`],
+      formState,
+    });
 
-      if (req.get("accept") === `text/x-component`) {
-        res.set({
-          "Content-Type": `text/x-component; charset=utf-8`,
-          "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
-        });
-        res.status(200);
-
-        stream.Readable.fromWeb(
-          rscStream as NodeReadableStream<Uint8Array>,
-        ).pipe(res);
-        return;
-      }
-
-      const mainJs = clientJsManifest[`main.js`];
-      if (!mainJs) {
-        console.log(clientJsManifest);
-        throw new Error("missing main.js");
-      }
-      const htmlStream = await createHtmlStream(rscStream, {
-        reactSsrManifest,
-        bootstrapScripts: mainJs ? [mainJs] : [],
-        formState,
-      });
+    if (req.get("accept") === `text/x-component`) {
       res.set({
-        "Content-Type": `text/html; charset=utf-8`,
+        "Content-Type": `text/x-component; charset=utf-8`,
         "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
       });
       res.status(200);
-      stream.Readable.fromWeb(
-        htmlStream as NodeReadableStream<Uint8Array>,
-      ).pipe(res);
-    },
+
+      stream.Readable.fromWeb(rscStream as NodeReadableStream<Uint8Array>).pipe(
+        res,
+      );
+      return;
+    }
+
+    const mainJs = clientJsManifest[`main.js`];
+    if (!mainJs) {
+      console.log(clientJsManifest);
+      throw new Error("missing main.js");
+    }
+    const htmlStream = await createHtmlStream(rscStream, {
+      reactSsrManifest,
+      bootstrapScripts: mainJs ? [mainJs] : [],
+      formState,
+    });
+    res.set({
+      "Content-Type": `text/html; charset=utf-8`,
+      "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
+    });
+    res.status(200);
+    stream.Readable.fromWeb(htmlStream as NodeReadableStream<Uint8Array>).pipe(
+      res,
+    );
+  };
+
+  await requestAsyncLocalStorage.run(req, () =>
+    routerLocationAsyncLocalStorage.run(
+      { pathname: url?.pathname ?? "", search: url?.search ?? "" },
+      handleRequest,
+    ),
   );
 }
 
@@ -333,12 +338,14 @@ async function handlePost<Params extends ParamsDictionary>(
     const body =
       typeof req.body == "object" ? multerToFormData(req.body) : req.body;
 
-    const rscActionStream = await createRscActionStream({
-      body,
-      serverReferenceId,
-      reactClientManifest,
-      reactServerManifest,
-    });
+    const rscActionStream = await requestAsyncLocalStorage.run(req, () =>
+      createRscActionStream({
+        body,
+        serverReferenceId,
+        reactClientManifest,
+        reactServerManifest,
+      }),
+    );
 
     res.set({ "Content-Type": `text/x-component` });
     res.status(rscActionStream ? 200 : 500);
@@ -352,7 +359,9 @@ async function handlePost<Params extends ParamsDictionary>(
     const formData = multerToFormData(
       req.body as Record<string, string | string[]>,
     );
-    const formState = await createRscFormState(formData, reactServerManifest);
+    const formState = await requestAsyncLocalStorage.run(req, () =>
+      createRscFormState(formData, reactServerManifest),
+    );
 
     return renderApp(handler, req, res, next, formState);
   }
