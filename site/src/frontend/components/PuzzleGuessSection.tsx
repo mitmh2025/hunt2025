@@ -1,89 +1,29 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
-import { type z } from "zod";
-import { newClient } from "../../../lib/api/client";
-import { type contract } from "../../../lib/api/contract";
+import React, { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import type { PuzzleState } from "../../../lib/api/client";
+import { type SubmitState } from "./PuzzleGuessSection.server";
 
-type GetPuzzleStateResponse = z.infer<
-  (typeof contract.public.getPuzzleState.responses)["200"]
->;
-type Guesses = GetPuzzleStateResponse["guesses"];
+type Guesses = PuzzleState["guesses"];
 
-type FormState = "idle" | "submitting" | "error";
-
-const PuzzleGuessForm = ({
-  slug,
-  onGuessesUpdate,
-}: {
-  slug: string;
-  onGuessesUpdate: (guesses: Guesses) => void;
-}) => {
-  const [guessInput, setGuessInput] = useState<string>("");
-  const [formState, setFormState] = useState<FormState>("idle");
-  const [formError, setFormError] = useState<string | undefined>(undefined);
-  const onInputChanged = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setGuessInput(e.target.value);
-    },
-    [],
-  );
-  const onSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      setFormState("submitting");
-      e.preventDefault();
-
-      void (async () => {
-        let result;
-        try {
-          const apiClient = newClient(location.origin, undefined);
-          result = await apiClient.public.submitGuess({
-            body: {
-              guess: guessInput,
-            },
-            params: {
-              slug,
-            },
-          });
-        } catch (e) {
-          // This should only happen if the fetch() network-fails
-          setFormError("Network request failed");
-          setFormState("error");
-          return;
-        }
-        if (result.status === 200) {
-          const parsedResult = result.body;
-          setGuessInput("");
-          setFormError(undefined);
-          setFormState("idle");
-          onGuessesUpdate(parsedResult.guesses);
-        } else {
-          // TODO: Handle other errors (rate-limit hit?)
-          setFormError(`Server returned status ${result.status}`);
-          setFormState("error");
-        }
-      })();
-    },
-    [guessInput, slug, onGuessesUpdate],
-  );
-  const formDisabled = formState === "submitting";
+const PuzzleGuessForm = ({ state }: { state: SubmitState }) => {
+  const { pending } = useFormStatus();
   return (
-    <form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
-      {formError ? <div>Error: {formError}</div> : undefined}
+    <>
+      {state.errors ? <div>Error: {state.errors}</div> : undefined}
       <label htmlFor="guess-input">Submit guess</label>
       <input
         id="guess-input"
         name="guess"
         type="text"
         required
-        disabled={formDisabled}
-        value={guessInput}
-        onChange={onInputChanged}
+        disabled={pending}
       />
-      <button type="submit" disabled={formDisabled}>
+      <button type="submit" disabled={pending}>
         Submit
       </button>
-    </form>
+    </>
   );
 };
 
@@ -116,22 +56,27 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
 };
 
 const PuzzleGuessSection = ({
-  slug,
-  solved,
-  initialGuesses,
+  submitGuess,
+  initialPuzzleState,
 }: {
-  slug: string;
-  solved: boolean;
-  initialGuesses: Guesses;
+  submitGuess: (
+    prevState: SubmitState,
+    formData: FormData,
+  ) => Promise<SubmitState>;
+  initialPuzzleState: PuzzleState;
 }) => {
-  const [guesses, setGuesses] = useState<Guesses>(initialGuesses);
+  const [state, formAction] = useActionState(submitGuess, {
+    puzzleState: initialPuzzleState,
+  });
 
   return (
     <section id="puzzle-guess-section">
-      {solved ? undefined : (
-        <PuzzleGuessForm slug={slug} onGuessesUpdate={setGuesses} />
+      {state.puzzleState.solved ? undefined : (
+        <form action={formAction}>
+          <PuzzleGuessForm state={state} />
+        </form>
       )}
-      <PuzzleGuessHistoryTable guesses={guesses} />
+      <PuzzleGuessHistoryTable guesses={state.puzzleState.guesses} />
     </section>
   );
 };

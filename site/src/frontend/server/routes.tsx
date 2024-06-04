@@ -33,7 +33,6 @@ import {
 } from "./manifests";
 import { hackLoginGetHandler } from "./routes/login";
 import {
-  puzzleGuessPostHandler,
   puzzleHandler,
   puzzleUnlockPostHandler,
   solutionHandler,
@@ -228,7 +227,6 @@ export async function getUiRouter({
 
   authRouter.ws("/ws", await getWsHandler(redisClient));
 
-  authRouter.post("/puzzles/:puzzleSlug/guess", puzzleGuessPostHandler);
   authRouter.post("/puzzles/:puzzleSlug/unlock", puzzleUnlockPostHandler);
   addRoute(authRouter, "/", (req: Request<RoundParams>) => {
     req.params.roundSlug = "shadow_diamond";

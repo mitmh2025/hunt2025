@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import React from "react";
 import Layout from "../../components/Layout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
+import { submitGuess } from "../../components/PuzzleGuessSection.server";
 import { PUZZLES } from "../../puzzles";
 import { lookupScripts, lookupStylesheets } from "../assets";
 
@@ -23,13 +24,11 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     return undefined;
   }
   const puzzleState = result.body;
-  const solved = !!puzzleState.answer; // TODO: Multi-answer puzzles
   const guessFrag = (
     <div id="puzzle-guesses">
       <PuzzleGuessSection
-        slug={slug}
-        initialGuesses={puzzleState.guesses}
-        solved={solved}
+        submitGuess={submitGuess.bind(null, slug)}
+        initialPuzzleState={puzzleState}
       />
     </div>
   );
@@ -118,46 +117,6 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     </Layout>
   );
 }
-
-type PuzzleGuessReqBody = {
-  guess: string;
-};
-
-export const puzzleGuessPostHandler: RequestHandler<
-  PuzzleParams,
-  unknown,
-  PuzzleGuessReqBody,
-  Record<string, never>
-> = asyncHandler(async (req, res) => {
-  // TODO: validate req.body with zod
-  const { guess } = req.body;
-  const slug = req.params.puzzleSlug;
-  const result = await req.api.public.submitGuess({
-    body: {
-      guess,
-    },
-    params: {
-      slug,
-    },
-  });
-
-  if (req.headers.accept !== "application/json") {
-    // Must be browser falling back to basic HTML forms.
-    res.redirect(`/puzzles/${slug}`);
-    return;
-  }
-
-  // FIXME: handle translating rate-limits into something for browser code to consume
-  if (result.status !== 200) {
-    console.log(result.body);
-    res.status(result.status).json({
-      status: "error",
-      message: "Submission failed",
-    });
-  } else {
-    res.json(result.body);
-  }
-});
 
 export const puzzleUnlockPostHandler: RequestHandler<
   PuzzleParams,
