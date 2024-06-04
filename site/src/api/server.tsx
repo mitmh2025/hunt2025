@@ -203,9 +203,11 @@ export function getRouter({
       : puzzle_status.unlockable
         ? "unlockable"
         : "locked";
+    const solved = !!answer; // TODO: Multi-answer puzzles. Evaluate answer conditions? Implement blacklight?
     const result: PuzzleState = {
       round,
       locked,
+      solved,
       guesses: guesses.map(({ canonical_input, response, timestamp }) => ({
         canonicalInput: canonical_input,
         response: response ?? "",

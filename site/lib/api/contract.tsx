@@ -25,6 +25,7 @@ const PuzzleSummarySchema = z.object({
 });
 
 const PuzzleStateSchema = PuzzleSummarySchema.extend({
+  solved: z.boolean(),
   guesses: z.array(GuessSchema).default([]),
 });
 
