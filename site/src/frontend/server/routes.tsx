@@ -150,7 +150,7 @@ function addRoute<P extends ParamsDictionary>(
     asyncHandler(
       async (
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any -- ResBody defaults to any */
-        req: Request<P, any, string | FormData>,
+        req: Request<P, any, string | Record<string, string | string[]>>,
         res: Response,
         next: NextFunction,
       ) => {
@@ -227,22 +227,12 @@ export async function getUiRouter({
 
   authRouter.ws("/ws", await getWsHandler(redisClient));
 
-  authRouter.get(
-    "/",
-    asyncHandler(
-      async (
-        req: Request<{ roundSlug: string | undefined }>,
-        res: Response,
-        next: NextFunction,
-      ) => {
-        // Root page should be shadow diamond round page
-        req.params.roundSlug = "shadow_diamond";
-        await renderApp(roundHandler, req as Request<RoundParams>, res, next);
-      },
-    ),
-  );
   authRouter.post("/puzzles/:puzzleSlug/guess", puzzleGuessPostHandler);
   authRouter.post("/puzzles/:puzzleSlug/unlock", puzzleUnlockPostHandler);
+  addRoute(authRouter, "/", (req: Request<RoundParams>) => {
+    req.params.roundSlug = "shadow_diamond";
+    return roundHandler(req);
+  });
   addRoute(authRouter, "/rounds/:roundSlug", roundHandler);
   addRoute(authRouter, "/puzzles/:puzzleSlug", puzzleHandler);
   addRoute(authRouter, "/puzzles/:puzzleSlug/solution", solutionHandler);
@@ -314,10 +304,24 @@ async function renderApp<Params extends ParamsDictionary>(
   );
 }
 
+function multerToFormData(body: Record<string, string | string[]>) {
+  const formData = new FormData();
+  for (const [k, values] of Object.entries(body)) {
+    if (typeof values == "object") {
+      for (const value of values) {
+        formData.append(k, value);
+      }
+    } else {
+      formData.append(k, values);
+    }
+  }
+  return formData;
+}
+
 async function handlePost<Params extends ParamsDictionary>(
   handler: (req: Request<Params>) => React.ReactNode,
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any -- ResBody defaults to any */
-  req: Request<Params, any, string | FormData>,
+  req: Request<Params, any, string | Record<string, string | string[]>>,
   res: Response,
   next: NextFunction,
 ) {
@@ -326,11 +330,8 @@ async function handlePost<Params extends ParamsDictionary>(
   if (serverReferenceId) {
     // POST via callServer:
 
-    const contentType = req.get(`content-type`);
-
-    const body = contentType?.startsWith(`multipart/form-data`)
-      ? req.body
-      : req.body;
+    const body =
+      typeof req.body == "object" ? multerToFormData(req.body) : req.body;
 
     const rscActionStream = await createRscActionStream({
       body,
@@ -348,7 +349,9 @@ async function handlePost<Params extends ParamsDictionary>(
   } else {
     // POST before hydration (progressive enhancement):
 
-    const formData = req.body as FormData;
+    const formData = multerToFormData(
+      req.body as Record<string, string | string[]>,
+    );
     const formState = await createRscFormState(formData, reactServerManifest);
 
     return renderApp(handler, req, res, next, formState);
