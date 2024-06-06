@@ -1,0 +1,26 @@
+meta {
+  name: Attach Streaming Plugin
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://{{host}}/janus/{{session}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "janus": "attach",
+    "transaction": "{{transaction}}",
+    "token": "{{token}}",
+    "plugin": "janus.plugin.streaming"
+  }
+}
+
+script:post-response {
+  if (res.body.janus == "success") {
+    bru.setVar("streaming_handle", res.body.data.id)
+  }
+}

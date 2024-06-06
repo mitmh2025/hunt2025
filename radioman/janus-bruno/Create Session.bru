@@ -1,0 +1,25 @@
+meta {
+  name: Create Session
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://{{host}}/janus
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "janus": "create",
+    "transaction": "{{transaction}}",
+    "token": "{{token}}"
+  }
+}
+
+script:post-response {
+  if (res.body.janus == "success") {
+    bru.setVar("session", res.body.data.id)
+  }
+}

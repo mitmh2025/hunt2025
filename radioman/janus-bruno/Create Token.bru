@@ -1,0 +1,26 @@
+meta {
+  name: Create Token
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://{{admin_host}}/admin
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "janus": "add_token",
+    "token": "a1b2c3d4",
+    "transaction": "{{transaction}}",
+    "admin_secret": "{{admin_secret}}"
+  }
+}
+
+script:post-response {
+  if (res.body.janus == "success") {
+    bru.setVar("token", req.body.token);
+  }
+}

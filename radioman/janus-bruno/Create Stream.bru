@@ -1,0 +1,38 @@
+meta {
+  name: Create Stream
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://{{host}}/janus/{{session}}/{{streaming_handle}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "janus": "message",
+    "transaction": "{{transaction}}",
+    "token": "{{token}}",
+    "body": {
+      "request": "create",
+      "admin_key": "{{admin_key}}",
+      "id": "{{stream_id}}",
+      "type": "rtp",
+      "media": [
+        {
+          "type": "audio",
+          "mid": "a",
+          "port": 1235,
+          "pt": 111,
+          "codec": "opus"
+        }
+      ]
+    }
+  }
+}
+
+script:pre-request {
+  bru.setVar("stream_id", require("nanoid").nanoid());
+}
