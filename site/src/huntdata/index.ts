@@ -10,34 +10,38 @@ const HUNT: Hunt = {
       title: "The Shadow Diamond",
       puzzles: [
         // slots (28 feeders, 4 metas, 1 super)
+        // TODO: determine if we should start with 8-10 puzzles unlocked & no
+        // unlock currency, or with nothing unlocked, a few puzzles
+        // unlockable, and some amount of starting currency (to teach people
+        // how to use the mechanism from the get-go).
         { id: "sdp01", unlocked_if: [] }, // unlocked by default
-        { id: "sdp02", unlocked_if: [] }, // unlocked by default
-        { id: "sdp03", unlocked_if: [] }, // unlocked by default
-        { id: "sdp04", unlockable_if: [], unlock_cost: 1 }, // initially visible
-        { id: "sdp05", unlockable_if: [], unlock_cost: 1 }, // initially visible
-        { id: "sdp06", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
-        { id: "sdp07", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
-        { id: "sdp08", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
-        { id: "sdp09", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
-        { id: "sdp10", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
-        { id: "sdp11", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
-        { id: "sdp12", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
-        { id: "sdp13", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        { id: "sdp14", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
-        { id: "sdp15", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
-        { id: "sdp16", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
-        { id: "sdp17", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
-        { id: "sdp18", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
-        { id: "sdp19", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
-        { id: "sdp20", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
-        { id: "sdp21", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
-        { id: "sdp22", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
-        { id: "sdp23", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
-        { id: "sdp24", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
-        { id: "sdp25", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
-        { id: "sdp26", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
-        { id: "sdp27", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
-        { id: "sdp28", unlockable_if: { puzzles_unlocked: 26 }, unlock_cost: 1 },
+        { id: "sdp02", unlocked_if: [] },
+        { id: "sdp03", unlocked_if: [] },
+        { id: "sdp04", unlocked_if: [] },
+        { id: "sdp05", unlocked_if: [] },
+        { id: "sdp06", unlocked_if: [] },
+        { id: "sdp07", unlocked_if: [] },
+        { id: "sdp08", unlocked_if: [] },
+        { id: "sdp09", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
+        { id: "sdp10", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
+        { id: "sdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
+        { id: "sdp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "sdp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "sdp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "sdp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+        { id: "sdp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "sdp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+        { id: "sdp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+        { id: "sdp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+        { id: "sdp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+        { id: "sdp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+        { id: "sdp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+        { id: "sdp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+        { id: "sdp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+        { id: "sdp25", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
+        { id: "sdp26", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
+        { id: "sdp27", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
+        { id: "sdp28", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
         {
           // Boardwalk (meta)
           id: "sdm01",
@@ -46,12 +50,12 @@ const HUNT: Hunt = {
             puzzles_unlocked: 5,
             slots: [
               "sdp01",
-              "sdp02",
-              "sdp03",
-              "sdp04",
               "sdp05",
-              "sdp06",
-              "sdp07",
+              "sdp09",
+              "sdp13",
+              "sdp17",
+              "sdp21",
+              "sdp25",
             ],
           },
         },
@@ -62,13 +66,13 @@ const HUNT: Hunt = {
           unlocked_if: {
             puzzles_unlocked: 5,
             slots: [
-              "sdp08",
-              "sdp09",
+              "sdp02",
+              "sdp06",
               "sdp10",
-              "sdp11",
-              "sdp12",
-              "sdp13",
               "sdp14",
+              "sdp18",
+              "sdp22",
+              "sdp26",
             ],
           },
         },
@@ -80,13 +84,13 @@ const HUNT: Hunt = {
           unlocked_if: {
             puzzles_unlocked: 5,
             slots: [
+              "sdp03",
+              "sdp07",
+              "sdp11",
               "sdp15",
-              "sdp16",
-              "sdp17",
-              "sdp18",
               "sdp19",
-              "sdp20",
-              "sdp21",
+              "sdp23",
+              "sdp27",
             ],
           },
         },
@@ -97,12 +101,12 @@ const HUNT: Hunt = {
           unlocked_if: {
             puzzles_unlocked: 5,
             slots: [
-              "sdp22",
-              "sdp23",
+              "sdp04",
+              "sdp08",
+              "sdp12",
+              "sdp16",
+              "sdp20",
               "sdp24",
-              "sdp25",
-              "sdp26",
-              "sdp27",
               "sdp28",
             ],
           },
