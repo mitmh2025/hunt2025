@@ -13,6 +13,7 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { type TeamState } from "../../lib/api/client";
 import { contract } from "../../lib/api/contract";
+import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
 import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
@@ -23,7 +24,6 @@ import {
   fixTimestamp,
   appendActivityLog,
 } from "./db";
-import type { RedisClient } from "../app";
 
 type PuzzleState = ServerInferResponseBody<
   typeof contract.public.getPuzzleState,
