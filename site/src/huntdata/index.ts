@@ -325,14 +325,10 @@ const HUNT: Hunt = {
     },
   ],
   interactions: [
-    {
-      id: "meet_billie",
-      unlock_if: [{ slot_solved: "sdm05" }],
-    },
-    {
-      id: "catch_the_thief",
-      unlock_if: [{ interaction_completed: "meet_billie" }],
-    },
+    // These four interviews are the MATE-style in-site interactions which
+    // become available after each of the four metas which open a side
+    // investigation.  Each should become immediately available to teams upon
+    // solving the corresponding metapuzzle.
     {
       id: "interview_at_the_boardwalk",
       unlock_if: [{ slot_solved: "sdm01" }],
@@ -349,11 +345,26 @@ const HUNT: Hunt = {
       id: "interview_at_the_art_gallery",
       unlock_if: [{ slot_solved: "sdm04" }],
     },
+
     {
-      // The four interactions at the ends of each side investigation are live
-      // interactions, not in-site interactions, but we might have
-      // prerecorded video for remote solvers/folks missing at the time, so
-      // they might need URLs anyway
+      // This is a brief in-person interaction which is expected to happen
+      // after teams solve the Shadow Diamond super but before they go on the
+      // funaround.
+      id: "meet_billie",
+      unlock_if: [{ slot_solved: "sdm05" }],
+    },
+    {
+      // This is a longer in-person interaction which is expected to happen
+      // after teams complete the funaround.
+      id: "catch_the_thief",
+      unlock_if: [{ interaction_completed: "meet_billie" }],
+    },
+
+    // The four interactions at the ends of each side investigation are live
+    // interactions, not in-site interactions, but we might have
+    // prerecorded video for remote solvers/folks missing at the time, so
+    // they might need URLs anyway
+    {
       id: "meet_katrina",
       unlock_if: [
         { slot_solved: "som01" }, // stakeout meta
