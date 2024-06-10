@@ -74,6 +74,47 @@ const renderDevPane = (teamState?: TeamState) => {
     );
   });
 
+  const interactions = HUNT.interactions.map((interaction) => {
+    const interactionState = teamState.interactions?.[interaction.id];
+    // If not yet unlocked: black
+    let bgcolor = "black";
+    // If unlocked: white
+    if (interactionState?.state === "unlocked") {
+      bgcolor = "white";
+    }
+    // If actively running: yellow
+    if (interactionState?.state === "running") {
+      bgcolor = "yellow";
+    }
+    // If completed: green
+    if (interactionState?.state === "completed") {
+      bgcolor = "green";
+    }
+    const box = (
+      <div
+        key={interaction.id}
+        style={{
+          display: "inline-block",
+          width: "8px",
+          height: "8px",
+          backgroundColor: bgcolor,
+          border: `1px solid ${bgcolor}`,
+          margin: "2px",
+        }}
+        title={interaction.id}
+      />
+    );
+    if (interactionState) {
+      return (
+        <a key={interaction.id} href={`/interactions/${interaction.id}`}>
+          {box}
+        </a>
+      );
+    } else {
+      return box;
+    }
+  });
+
   return (
     <div
       style={{
@@ -87,6 +128,8 @@ const renderDevPane = (teamState?: TeamState) => {
       <h3>{teamState.teamName}</h3>
       <h3>Nav</h3>
       {rounds}
+      <h3>Interactions</h3>
+      {interactions}
       <h3>Actions</h3>
       <ul>
         <li>
