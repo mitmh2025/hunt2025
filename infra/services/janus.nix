@@ -12,7 +12,7 @@ in {
     services.janus.plugins = mkOption {
       type = types.attrsOf (types.submodule {
         options.settings = mkOption {
-          type = configFormat.type;
+          inherit (configFormat) type;
         };
       });
       default = {};
@@ -20,7 +20,7 @@ in {
     services.janus.transports = mkOption {
       type = types.attrsOf (types.submodule {
         options.settings = mkOption {
-          type = configFormat.type;
+          inherit (configFormat) type;
         };
       });
       default = {};
@@ -72,6 +72,6 @@ in {
       // (lib.mapAttrs' (name: value: lib.nameValuePair "janus.plugin.${name}.jcfg" value.settings) cfg.plugins)
       // (lib.mapAttrs' (name: value: lib.nameValuePair "janus.transport.${name}.jcfg" value.settings) cfg.transports)
       ;
-    in (lib.mapAttrs configFormat.generate files);
+    in lib.mapAttrs configFormat.generate files;
   };
 }
