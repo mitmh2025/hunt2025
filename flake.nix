@@ -16,6 +16,7 @@
           overlays = [ self.overlays.default ];
         };
         terraform = pkgs.opentofu.withPlugins (p: with p; [
+          google
           local
         ]);
         terraformBin = "${terraform}/bin/tofu";
