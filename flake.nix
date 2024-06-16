@@ -30,13 +30,8 @@
           inherit terraformConfiguration;
         };
         # nix develop
-        devShells.default = pkgs.mkShell {
-          buildInputs = [
-            terraform
-            (terranix.defaultPackage.${system}.override {
-              nix = pkgs.nixVersions.latest;
-            })
-          ];
+        devShells.infra = pkgs.callPackage ./infra/shell.nix {
+          inherit terraform terranix;
         };
         devShells.hunt2025 = pkgs.callPackage ./site/shell.nix {};
         devShells.radioman = pkgs.callPackage ./radioman/shell.nix {};
