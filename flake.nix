@@ -70,7 +70,11 @@
           program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-nixos-vm";
         };
       }) // {
-        nixosConfigurations.dev-vm-base = nixpkgs.lib.nixosSystem {
+        nixosConfigurations = nixpkgs.lib.genAttrs [
+          "dev-vm-base"
+          "dev-vm"
+          "staging"
+        ] (name: nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             {
@@ -78,20 +82,9 @@
                 self.overlays.default
               ];
             }
-            ./infra/dev-vm-base.nix
+            ./infra/hosts/${name}.nix
           ];
-        };
-        nixosConfigurations.dev-vm = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            {
-              nixpkgs.overlays = [
-                self.overlays.default
-              ];
-            }
-            ./infra/dev-vm.nix
-          ];
-        };
+        });
         overlays.default = import ./infra/pkgs/all-packages.nix;
       };
 }

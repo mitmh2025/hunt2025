@@ -2,9 +2,9 @@
 {
   imports = [
     #"${modulesPath}/virtualisation/google-compute-config.nix"
-    ./services/postgres.nix
-    ./services/redis.nix
-    #./services/thingsboard.nix
+    ../services/postgres.nix
+    ../services/redis.nix
+    #../services/thingsboard.nix
   ];
   config = {
     system.stateVersion = "24.05";
