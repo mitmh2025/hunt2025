@@ -22,7 +22,10 @@
         terraformBin = "${terraform}/bin/tofu";
         terraformConfiguration = terranix.lib.terranixConfiguration {
           inherit system;
-          modules = [ ./infra/config.nix ];
+          modules = [ ./infra/terraform ];
+          extraArgs = {
+            inherit self;
+          };
         };
       in {
         legacyPackages = pkgs;
@@ -66,7 +69,9 @@
           program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-nixos-vm";
         };
       }) // {
+        inherit self;
         nixosConfigurations = nixpkgs.lib.genAttrs [
+          "gce-image"
           "dev-vm-base"
           "dev-vm"
           "staging"

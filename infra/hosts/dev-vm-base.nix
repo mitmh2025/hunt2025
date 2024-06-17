@@ -2,6 +2,7 @@
 {
   imports = [
     #"${modulesPath}/virtualisation/google-compute-config.nix"
+    ./base.nix
     ../services/postgres.nix
     ../services/redis.nix
     #../services/thingsboard.nix
@@ -16,12 +17,7 @@
     };
     boot.loader.systemd-boot.enable = true;
 
-    # Allow console login with no password
-    users.users.root.hashedPassword = "";
     users.mutableUsers = false;
-
-    # Don't build documentation
-    documentation.nixos.enable = false;
 
     networking.firewall.enable = false; # FIXME: Consider enabling and configuring?
 
