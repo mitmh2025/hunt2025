@@ -1,0 +1,35 @@
+{ lib, ... }:
+{
+  resource.google_service_account.staging = {
+    account_id = "staging-vm";
+    display_name = "Used by the staging VM";
+  };
+
+  resource.google_compute_instance.staging = {
+    name = "staging";
+    machine_type = "e2-small"; # 0.5 vCPU, 2 GB RAM
+
+    boot_disk.initialize_params = {
+      image = lib.tfRef "google_compute_image.nixos.id";
+      size = 20;
+      type = "pd-balanced";
+    };
+
+    network_interface = {
+      network = "default";
+      access_config = { # Request a public IP
+        # TODO: https://cloud.google.com/compute/docs/instances/create-ptr-record
+        # public_ptr_domain_name = "staging.mitmh2025.com";
+      };
+    };
+
+    hostname = "staging.mitmh2025.com";
+
+    metadata.enable-oslogin = "TRUE"; # Allow `gcloud compute ssh`
+
+    service_account = {
+      email = lib.tfRef "google_service_account.staging.email";
+      scopes = ["cloud-platform"];
+    };
+  };
+}

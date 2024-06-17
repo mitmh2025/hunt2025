@@ -9,11 +9,13 @@
   provider.google = {
     project = "mitmh2025-staging-gcp";
     region = "us-east5"; # Ohio
+    zone = "us-east5-a";
   };
 
   imports = [
     ./base-image.nix
     ./state.nix
+    ./staging.nix
   ];
 
   resource.google_project_service = lib.genAttrs [
