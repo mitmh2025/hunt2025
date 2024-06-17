@@ -15,6 +15,8 @@
       type = "pd-balanced";
     };
 
+    lifecycle.ignore_changes = ["boot_disk[0].initialize_params[0].image"]; # Don't recreate if there's a new base image
+
     network_interface = {
       network = "default";
       access_config = { # Request a public IP
