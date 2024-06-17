@@ -25,7 +25,7 @@
 
     hostname = "staging.mitmh2025.com";
 
-    metadata.enable-oslogin = "TRUE"; # Allow `gcloud compute ssh`
+    metadata.enable-oslogin = "FALSE"; # Doesn't work with non-@mit.edu accounts.
 
     service_account = {
       email = lib.tfRef "google_service_account.staging.email";
