@@ -2,14 +2,20 @@
 {
   # Nix's OpenTofu packaging uses registry.terraform.io for providers.
   terraform.required_providers = {
-    local.source = "registry.terraform.io/hashicorp/local";
+    aws.source = "registry.terraform.io/hashicorp/aws";
     google.source = "registry.terraform.io/hashicorp/google";
+    local.source = "registry.terraform.io/hashicorp/local";
   };
 
   provider.google = {
     project = "mitmh2025-staging-gcp";
     region = "us-east5"; # Ohio
     zone = "us-east5-a";
+  };
+
+  provider.aws = {
+    allowed_account_ids = [891377012427];
+    region = "us-east-1";
   };
 
   imports = [
@@ -26,6 +32,10 @@
 
     disable_on_destroy = false;
   });
+
+  data.aws_route53_zone.mitmh2025 = {
+    name = "mitmh2025.com.";
+  };
 
   # $ gcloud kms keyrings create sops --location global
   resource.google_kms_key_ring.sops = {

@@ -34,4 +34,24 @@
       scopes = ["cloud-platform"];
     };
   };
+
+  resource.aws_route53_record.staging = {
+    zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
+    name = "staging";
+    type = "A";
+    ttl = "300";
+    records = [
+      (lib.tfRef "resource.google_compute_instance.staging.network_interface.0.access_config.0.nat_ip")
+    ];
+  };
+
+  resource.aws_route53_record.auth = {
+    zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
+    name = "auth";
+    type = "CNAME";
+    ttl = "300";
+    records = [
+      (lib.tfRef "aws_route53_record.staging.fqdn")
+    ];
+  };
 }
