@@ -9,7 +9,7 @@ let
   imageName = builtins.replaceStrings
     ["." "_"]
     ["-" "-"]
-    "${builtins.substring 0 12 outHash}-${base.config.system.nixos.label}-${base.pkgs.stdenv.hostPlatform.system}";
+    "x${builtins.substring 0 12 outHash}-${base.config.system.nixos.label}-${base.pkgs.stdenv.hostPlatform.system}";
   imageFilename = "${outHash}-${imagePath}";
 in {
   resource.google_storage_bucket.gce-images = {

@@ -2,7 +2,7 @@
 {
   imports = [
     authentik.nixosModules.default
-    #./blueprint.nix
+    ./blueprint.nix
     #./apps
   ];
   config = {
