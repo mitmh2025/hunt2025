@@ -19,6 +19,15 @@
           aws
           google
           local
+          (mkProvider rec {
+            owner = "krostar";
+            repo = "terraform-provider-nix";
+            rev = "v${version}";
+            version = "0.0.8";
+            hash = "sha256-E742kf5pO6LK5aTVq5gukF0KqIB87tnweDf+GxvSUF8=";
+            vendorHash = "sha256-nVXzFE4iBHiqVusryteoqoJ5h2EheQpIISLjAXAsaNw=";
+            provider-source-address = "registry.terraform.io/krostar/nix";
+          })
         ]);
         terraformBin = "${terraform}/bin/tofu";
         terraformConfiguration = terranix.lib.terranixConfiguration {

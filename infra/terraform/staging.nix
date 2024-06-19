@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, self, ... }:
 {
   resource.google_service_account.staging = {
     account_id = "staging-vm";
@@ -25,6 +25,8 @@
       }];
     };
 
+    tags = ["staging"];
+
     hostname = "staging.mitmh2025.com";
 
     metadata.enable-oslogin = "FALSE"; # Doesn't work with non-@mit.edu accounts.
@@ -32,6 +34,51 @@
     service_account = {
       email = lib.tfRef "google_service_account.staging.email";
       scopes = ["cloud-platform"];
+    };
+  };
+
+  resource.google_compute_firewall.staging = {
+    name = "staging";
+    network = lib.tfRef "data.google_compute_network.default.name";
+
+    source_ranges = [
+      "0.0.0.0/0"
+    ];
+
+    allow = [
+      {
+        protocol = "tcp";
+        ports = [
+          "22" # SSH
+          "80" # HTTP
+          "443" # HTTPS
+        ];
+      }
+    ];
+
+    target_tags = ["staging"];
+  };
+
+  resource.nix_store_path_copy.staging_nixos = {
+    depends_on = [
+      "google_compute_firewall.staging"
+    ];
+    store_path = "${self.nixosConfigurations.staging.config.system.build.toplevel}";
+    to = "ssh-ng://root@\${aws_route53_record.staging.fqdn}";
+    check_sigs = false;
+
+    # TODO: Switch to deploy-rs so we get magic rollback?
+
+    provisioner.remote-exec = {
+      connection = {
+        type = "ssh";
+        user = "root";
+        agent = true;
+        host = lib.tfRef "aws_route53_record.staging.fqdn";
+      };
+      inline = [
+        "${self.nixosConfigurations.staging.config.system.build.toplevel}/bin/switch-to-configuration switch"
+      ];
     };
   };
 

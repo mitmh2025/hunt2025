@@ -5,6 +5,7 @@
     aws.source = "registry.terraform.io/hashicorp/aws";
     google.source = "registry.terraform.io/hashicorp/google";
     local.source = "registry.terraform.io/hashicorp/local";
+    nix.source = "registry.terraform.io/krostar/nix";
   };
 
   provider.google = {
@@ -47,5 +48,9 @@
     name = "sops-staging-key";
     key_ring = lib.tfRef "google_kms_key_ring.sops.id";
     purpose = "ENCRYPT_DECRYPT";
+  };
+
+  data.google_compute_network.default = {
+    name = "default";
   };
 }
