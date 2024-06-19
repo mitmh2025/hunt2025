@@ -19,10 +19,10 @@
 
     network_interface = {
       network = "default";
-      access_config = { # Request a public IP
-        # TODO: https://cloud.google.com/compute/docs/instances/create-ptr-record
-        # public_ptr_domain_name = "staging.mitmh2025.com";
-      };
+      access_config = [{ # Request a public IP
+        # https://cloud.google.com/compute/docs/instances/create-ptr-record
+        public_ptr_domain_name = "staging.mitmh2025.com.";
+      }];
     };
 
     hostname = "staging.mitmh2025.com";
