@@ -50,6 +50,18 @@
     purpose = "ENCRYPT_DECRYPT";
   };
 
+  data.google_iam_policy.sops-staging-key = {
+    binding.role = "roles/cloudkms.cryptoKeyDecrypter";
+    binding.members = [
+      (lib.tfRef "resource.google_service_account.staging.member")
+    ];
+  };
+
+  resource.google_kms_crypto_key_iam_policy.sops-staging-key = {
+    crypto_key_id = lib.tfRef "google_kms_crypto_key.sops-staging-key.id";
+    policy_data = lib.tfRef "data.google_iam_policy.sops-staging-key.policy_data";
+  };
+
   data.google_compute_network.default = {
     name = "default";
   };

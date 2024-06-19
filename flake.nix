@@ -2,13 +2,24 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
     terranix = {
       url = "github:terranix/terranix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    authentik.url = "github:nix-community/authentik-nix";
+    authentik.inputs.nixpkgs.follows = "nixpkgs";
+    authentik.inputs.flake-utils.follows = "flake-utils";
+    authentik.inputs.flake-compat.follows = "flake-compat";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, terranix }:
+  outputs = { self, nixpkgs, flake-utils, terranix, authentik, sops-nix, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -87,12 +98,16 @@
           "staging"
         ] (name: nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = {
+            inherit authentik;
+          };
           modules = [
             {
               nixpkgs.overlays = [
                 self.overlays.default
               ];
             }
+            sops-nix.nixosModules.sops
             ./infra/hosts/${name}.nix
           ];
         });

@@ -5,9 +5,12 @@
     ./base.nix
     ../services/postgres.nix
     ../services/redis.nix
+    ../services/authentik
     #../services/thingsboard.nix
   ];
   config = {
+    sops.defaultSopsFile = ./../secrets/staging.yaml;
+
     security.acme.acceptTerms = true;
     security.acme.defaults.email = "hunt2025-tech@googlegroups.com";
 
