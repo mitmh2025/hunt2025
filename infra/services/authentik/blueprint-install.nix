@@ -129,9 +129,6 @@ in {
       file = blueprintFile;
     };
 
-    sops.secrets."authentik/google_oauth/consumer_key" = {};
-    sops.secrets."authentik/google_oauth/consumer_secret" = {};
-
     services.authentik.settings.blueprints_dir = "/run/authentik/blueprints-rw";
 
     systemd.services.authentik-worker.serviceConfig.SupplementaryGroups = ["authentik-blueprint"];

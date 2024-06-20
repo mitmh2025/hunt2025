@@ -19,6 +19,11 @@ in {
     ./blueprint-install.nix
   ];
   config = {
+    sops.secrets."authentik/google_oauth/consumer_key" = {};
+    sops.secrets."authentik/google_oauth/consumer_secret" = {};
+    sops.secrets."authentik/discord_oauth/consumer_key" = {};
+    sops.secrets."authentik/discord_oauth/consumer_secret" = {};
+
     services.authentik.blueprint = {
       version = 1;
       metadata.name = "Hunt 2025";
@@ -163,14 +168,22 @@ in {
           id = "source-enrollment-if-invitation-policy";
           attrs.expression = ''
             from authentik.stages.invitation.models import Invitation
-            google_username = context.get("oauth_userinfo", {}).get("email")
-            if not google_username:
-              return False
-            try:
-              Invitation.objects.get(fixed_data__email=google_username)
-            except:
-              return False
-            return True
+            provider_type = context["source"].provider_type
+            if provider_type == "google":
+              google_username = context.get("oauth_userinfo", {}).get("email")
+              try:
+                return google_username and Invitation.objects.get(fixed_data__email=google_username)
+              except:
+                pass
+            elif provider_type == "discord":
+              # Let users pick their own username
+              context["prompt_data"].pop("username", None)
+              discord_username = context.get("oauth_userinfo", {}).get("username")
+              try:
+                return discord_username and Invitation.objects.get(fixed_data__discord_username=discord_username)
+              except:
+                pass
+            return False
           '';
         }
         # Require an invitation for source enrollment
@@ -209,6 +222,26 @@ in {
           };
         }
         {
+          model = "authentik_sources_oauth.oauthsource";
+          name = "Discord";
+          identifiers.slug = "discord";
+          attrs = {
+            access_token_url = "https://discord.com/api/oauth2/token";
+            authentication_flow = findFlow "default-source-authentication";
+            authorization_url = "https://discord.com/api/oauth2/authorize";
+            consumer_key = config.sops.placeholder."authentik/discord_oauth/consumer_key";
+            consumer_secret = config.sops.placeholder."authentik/discord_oauth/consumer_secret";
+            enabled = true;
+            enrollment_flow = findFlow "default-source-enrollment";
+            name = "Discord";
+            policy_engine_mode = "any";
+            profile_url = "https://discord.com/api/users/@me";
+            provider_type = "discord";
+            user_matching_mode = "identifier";
+            user_path_template = "goauthentik.io/sources/%(slug)s";
+          };
+        }
+        {
           model = "authentik_stages_identification.identificationstage";
           identifiers.name = "default-authentication-identification";
           attrs.user_fields = [
@@ -218,6 +251,7 @@ in {
           attrs.sources = [
             (findSource "authentik-built-in")
             (findSource "google")
+            (findSource "discord")
           ];
         }
         # Applications

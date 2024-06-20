@@ -14,6 +14,8 @@
     authentik.inputs.nixpkgs.follows = "nixpkgs";
     authentik.inputs.flake-utils.follows = "flake-utils";
     authentik.inputs.flake-compat.follows = "flake-compat";
+    # Includes fix for https://github.com/goauthentik/authentik/issues/9657
+    authentik.inputs.authentik-src.url = "github:goauthentik/authentik/version-2024.4";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
