@@ -13,6 +13,7 @@ let
       " > "$out"
     '';
   };
+  inherit (config.lib.authentik) findProvider findFlow findScope;
 in {
   options = with lib; {
     services.authentik = {

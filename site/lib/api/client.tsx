@@ -7,7 +7,7 @@ export function newClient(baseUrl: string, token?: string) {
     baseHeaders.Authorization = "bearer " + token;
   }
   return initClient(contract, {
-    baseUrl: baseUrl + "/api",
+    baseUrl: baseUrl,
     baseHeaders,
     // Uses `tsRestFetchApi` by default
   });

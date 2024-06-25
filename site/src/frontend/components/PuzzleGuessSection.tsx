@@ -34,7 +34,7 @@ const PuzzleGuessForm = ({
       void (async () => {
         let result;
         try {
-          const apiClient = newClient(location.origin, undefined);
+          const apiClient = newClient(location.origin + "/api", undefined);
           result = await apiClient.public.submitGuess({
             body: {
               guess: guessInput,

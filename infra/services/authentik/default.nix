@@ -3,7 +3,7 @@
   imports = [
     authentik.nixosModules.default
     ./blueprint.nix
-    #./apps
+    ./apps
   ];
   config = {
     sops.secrets."authentik/environment" = {

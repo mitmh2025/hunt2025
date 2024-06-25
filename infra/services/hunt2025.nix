@@ -1,10 +1,24 @@
 { config, pkgs, lib, ... }:
-{
+let
+  cfg = config.hunt2025.site;
+in {
   options = with lib; {
-    hunt2025.site.db_env = mkOption {
-      type = types.str;
-      default = "production";
-      description = "Value to pass as $DB_ENV";
+    hunt2025.site = {
+      db_env = mkOption {
+        type = types.str;
+        default = "production";
+        description = "Value to pass as $DB_ENV";
+      };
+      port = mkOption {
+        type = with types; coercedTo ints.u16 (n: toString n) str;
+        default = 3000;
+        description = "Port or path to listen on";
+      };
+      apiBaseUrl = mkOption {
+        type = types.str;
+        default = "http://localhost:3000/api";
+        description = "Base URL for API requests";
+      };
     };
   };
   config = {
@@ -26,7 +40,9 @@
         "${config.services.redis.servers.hunt2025.user}.service"
       ];
 
-      environment.DB_ENV = config.hunt2025.site.db_env;
+      environment.DB_ENV = cfg.db_env;
+      environment.PORT = cfg.port;
+      environment.API_BASE_URL = cfg.apiBaseUrl;
       # FIXME: Use a real key in production.
       environment.JWT_SECRET = "%m";
       environment.REDIS_URL = "unix://${config.services.redis.servers.hunt2025.unixSocket}";
@@ -37,6 +53,7 @@
         RestartSec = "5s";
         User = "hunt2025";
         Group = "hunt2025";
+        UMask = "0007";
       };
     };
   };

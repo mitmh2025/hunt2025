@@ -1,8 +1,10 @@
 import { randomBytes } from "node:crypto";
 import app from "./app";
 
-const port = 3000;
+const portStr = process.env.PORT ?? "3000";
+const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
 
+const apiUrl = process.env.API_BASE_URL ?? "http://localhost:3000/api";
 // N.B. process.env.NODE_ENV is compiled by webpack
 const environment = process.env.NODE_ENV ?? "development";
 const db_environment = process.env.DB_ENV ?? "development";
@@ -16,8 +18,8 @@ if (!jwt_secret) {
 
 app({
   db_environment,
-  jwt_secret: jwt_secret,
-  apiUrl: "http://localhost:3000",
+  jwt_secret,
+  apiUrl,
   redisUrl: process.env.REDIS_URL,
 })
   .then((app) =>

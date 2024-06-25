@@ -24,6 +24,10 @@ in {
     sops.secrets."authentik/discord_oauth/consumer_key" = {};
     sops.secrets."authentik/discord_oauth/consumer_secret" = {};
 
+    lib.authentik = {
+      inherit find findFlow findSource findScope findProvider findPrompt;
+    };
+
     services.authentik.blueprint = {
       version = 1;
       metadata.name = "Hunt 2025";

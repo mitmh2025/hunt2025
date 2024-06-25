@@ -21,7 +21,8 @@ const config: Record<string, Knex.Config> = {
 
   staging: {
     client: "pgnative",
-    connection: process.env.DB_URI,
+    connection:
+      process.env.DB_URI ?? "postgresql:///hunt2025?host=/run/postgresql",
     pool: {
       min: 2,
       max: 10,

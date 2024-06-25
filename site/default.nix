@@ -38,6 +38,7 @@ in buildNpmPackage {
     mv $out/lib/node_modules/hunt2025 $out/lib/hunt2025
     rmdir $out/lib/node_modules
     makeWrapper ${nodejs}/bin/node $out/bin/hunt2025 \
+      --add-flags --enable-source-maps \
       --add-flags $out/lib/hunt2025/dist/server-bundle.js
   '';
 }

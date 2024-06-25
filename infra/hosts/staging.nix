@@ -6,6 +6,7 @@
     ../services/postgres.nix
     ../services/redis.nix
     ../services/authentik
+    ../services/hunt2025.nix
     #../services/thingsboard.nix
   ];
   config = {
@@ -13,6 +14,21 @@
 
     security.acme.acceptTerms = true;
     security.acme.defaults.email = "hunt2025-tech@googlegroups.com";
+
+    hunt2025.site = {
+      db_env = "ci";  # N.B. We use "ci" to trigger a database reseed on startup.
+      port = "%t/hunt2025/hunt2025.sock";
+      apiBaseUrl = "http://localhost/api";
+    };
+
+    users.users."${config.services.nginx.user}".extraGroups = [ "hunt2025" ];
+    systemd.services.hunt2025 = {
+      serviceConfig.RuntimeDirectory = "hunt2025";
+      # Remove database every time the service restarts.
+      preStart = ''
+        ${config.services.postgresql.package}/bin/psql hunt2025 -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+      '';
+    };
 
     services.nginx = {
       enable = true;
@@ -28,10 +44,16 @@
       recommendedGzipSettings = true;
       recommendedProxySettings = true;
 
+      upstreams.hunt2025.servers."unix:/run/hunt2025/hunt2025.sock" = {};
       virtualHosts = {
         "staging.mitmh2025.com" = {
           forceSSL = true;
           enableACME = true;
+          locations."/".proxyPass = "http://hunt2025";
+        };
+        "localhost" = {
+          # Expose plain HTTP on localhost for use by the frontend
+          locations."/api".proxyPass = "http://hunt2025";
         };
       };
     };
