@@ -7,7 +7,7 @@
     ../services/redis.nix
     ../services/authentik
     ../services/hunt2025.nix
-    #../services/thingsboard.nix
+    ../services/thingsboard.nix
   ];
   config = {
     sops.defaultSopsFile = ./../secrets/staging.yaml;
@@ -45,11 +45,23 @@
       recommendedProxySettings = true;
 
       upstreams.hunt2025.servers."unix:/run/hunt2025/hunt2025.sock" = {};
+      upstreams.thingsboard.servers."127.0.0.1:8080" = {};
       virtualHosts = {
         "staging.mitmh2025.com" = {
           forceSSL = true;
           enableACME = true;
-          locations."/".proxyPass = "http://hunt2025";
+          locations."/" = {
+            proxyPass = "http://hunt2025";
+            proxyWebsockets = true;
+          };
+        };
+        "things.mitmh2025.com" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://thingsboard";
+            proxyWebsockets = true;
+          };
         };
         "localhost" = {
           # Expose plain HTTP on localhost for use by the frontend

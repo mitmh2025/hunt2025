@@ -37,6 +37,9 @@
         SPRING_DATASOURCE_USERNAME = "thingsboard";
       };
 
+      # TODO: Provision OAuth2 client
+      # https://thingsboard.io/docs/user-guide/oauth-2-support/#oauth-20-configuration-parameters
+
       serviceConfig = {
         #ExecStartPre = "${pkgs.thingsboard}/bin/thingsboard-install";
         ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -Djna.debug_load=true";

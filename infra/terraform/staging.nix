@@ -62,6 +62,8 @@
   resource.nix_store_path_copy.staging_nixos = {
     depends_on = [
       "google_compute_firewall.staging"
+      "aws_route53_record.auth"
+      "aws_route53_record.things"
     ];
     store_path = "${self.nixosConfigurations.staging.config.system.build.toplevel}";
     to = "ssh-ng://root@\${aws_route53_record.staging.fqdn}";
@@ -95,6 +97,16 @@
   resource.aws_route53_record.auth = {
     zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
     name = "auth";
+    type = "CNAME";
+    ttl = "300";
+    records = [
+      (lib.tfRef "aws_route53_record.staging.fqdn")
+    ];
+  };
+
+  resource.aws_route53_record.things = {
+    zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
+    name = "things";
     type = "CNAME";
     ttl = "300";
     records = [

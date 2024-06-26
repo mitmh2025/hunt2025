@@ -13,7 +13,8 @@ let
       " > "$out"
     '';
   };
-  inherit (config.lib.authentik) findProvider findFlow findScope;
+  inherit (config.lib.authentik) find findProvider findFlow findScope;
+  signing_key = find "authentik_crypto.certificatekeypair" "name" "authentik Self-signed Certificate";
 in {
   options = with lib; {
     services.authentik = {

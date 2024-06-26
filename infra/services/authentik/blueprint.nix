@@ -13,7 +13,6 @@ let
   findScope = find "authentik_providers_oauth2.scopemapping" "scope_name";
   findProvider = find "authentik_providers_oauth2.oauth2provider" "name";
   findPrompt = find "authentik_stages_prompt.prompt" "name";
-  signing_key = find "authentik_crypto.certificatekeypair" "name" "authentik Self-signed Certificate";
 in {
   imports = [
     ./blueprint-install.nix
