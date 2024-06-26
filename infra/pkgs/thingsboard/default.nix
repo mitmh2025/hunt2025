@@ -8,9 +8,13 @@
 , xmlstarlet
 , maven
 , systemdLibs
+, mkYarnPackage
+, fetchYarnDeps
 }:
 
 let
+  pname = "thingsboard";
+  version = "3.7.0-SNAPSHOT";
   defineMvnWrapper = ''
     mvn()
     {
@@ -21,6 +25,43 @@ let
         "${lib.getExe proot}" -b "${stdenv.cc.libc}/lib:/lib64" mvn "$@"
     }
   '';
+  src = fetchFromGitHub {
+    owner = "thingsboard";
+    repo = pname;
+    rev = "91a83a7e2a8dea403783d617a500c4059cf1e5c6"; # "v${version}";
+    hash = "sha256-U8BfWqqAdA4fiqDsCezFWlq3+3jwn/395QSJggd6DiU=";
+  };
+  ui-ngx = mkYarnPackage {
+    inherit version;
+    src = src + "/ui-ngx";
+
+    packageJSON = ./package.json;
+    offlineCache = fetchYarnDeps {
+      yarnLock = src + "/ui-ngx/yarn.lock";
+      hash = "sha256-wA6Xb2TERhwEwDwZcW387wPkjY0hG/HxN+gB0USAmFw=";
+    };
+
+    packageResolutions = {
+      "echarts" = fetchFromGitHub {
+        owner = "thingsboard";
+        repo = "echarts";
+        rev = "5.5.0-TB";
+        hash = "sha256-8jGLzpYLgXe0qeEJUZQbd1rFGcenxw4FSbrvxM4NPDQ=";
+      };
+    };
+
+    doDist = false;
+
+    buildPhase = ''
+      runHook preBuild
+      yarn --offline run build:prod
+      runHook postBuild
+    '';
+
+    installPhase = ''
+      cp -r deps/thingsboard/target/generated-resources $out
+    '';
+  };
   postPatch = ''
     xmlstarlet ed \
       --inplace \
@@ -42,6 +83,11 @@ let
       -s '//pom:dependencies/dependency' -t elem -n artifactId -v junixsocket-core \
       -s '//pom:dependencies/dependency' -t elem -n type -v pom \
       dao/pom.xml
+    xmlstarlet ed \
+      --inplace \
+      -N pom=http://maven.apache.org/POM/4.0.0 \
+      -u '//pom:resources/pom:resource/pom:directory' -v ${ui-ngx} \
+      ui-ngx/pom.xml
   '';
   jdk = jdk17;
   mavenWithJdk = maven.override { inherit jdk; };
@@ -64,15 +110,7 @@ let
     systemdLibs
   ];
 in mavenWithJdk.buildMavenPackage rec {
-  pname = "thingsboard";
-  version = "3.7.0-SNAPSHOT";
-
-  src = fetchFromGitHub {
-    owner = "thingsboard";
-    repo = pname;
-    rev = "91a83a7e2a8dea403783d617a500c4059cf1e5c6"; # "v${version}";
-    hash = "sha256-U8BfWqqAdA4fiqDsCezFWlq3+3jwn/395QSJggd6DiU=";
-  };
+  inherit pname version src;
 
   mvnParameters = "-DskipTests -Dskip.installyarn -Dskip.yarn -Dpkg.installFolder=$out/share/thingsboard -P'!yarn-build' -pl ${lib.concatStringsSep "," projectList}";
 
@@ -110,6 +148,9 @@ in mavenWithJdk.buildMavenPackage rec {
       --append-flags "-jar $out/share/thingsboard/thingsboard.jar"
   '';
 
+  passthru = {
+    inherit ui-ngx;
+  };
   meta = with lib; {
     description = "Open-source IoT Platform - Device management, data collection, processing and visualization.";
     homepage = "https://github.com/thingsboard/thingsboard";

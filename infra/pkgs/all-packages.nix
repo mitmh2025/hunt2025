@@ -1,6 +1,6 @@
 final: prev: {
   hunt2025 = final.callPackage ../../site {};
-  thingsboard = final.callPackage ./thingsboard.nix {};
+  thingsboard = final.callPackage ./thingsboard {};
 
   hunt2025-vm-test = final.callPackage ../test.nix {};
 
