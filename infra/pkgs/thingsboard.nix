@@ -7,6 +7,7 @@
 , stdenv
 , xmlstarlet
 , maven
+, systemdLibs
 }:
 
 let
@@ -27,7 +28,20 @@ let
       -u '//pom:jar-plugin.version' -v 3.4.1 \
       -d '//pom:plugin[./pom:artifactId="gradle-maven-plugin"]' \
       -d '//pom:plugin[./pom:executions/pom:execution/pom:id="install-deb"]' \
+      -s '//pom:dependencyManagement/pom:dependencies' -t elem -n dependency \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n groupId -v com.kohlschutter.junixsocket \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n artifactId -v junixsocket-core \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n version -v 2.9.1 \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n type -v pom \
       pom.xml
+    xmlstarlet ed \
+      --inplace \
+      -N pom=http://maven.apache.org/POM/4.0.0 \
+      -s '//pom:dependencies' -t elem -n dependency \
+      -s '//pom:dependencies/dependency' -t elem -n groupId -v com.kohlschutter.junixsocket \
+      -s '//pom:dependencies/dependency' -t elem -n artifactId -v junixsocket-core \
+      -s '//pom:dependencies/dependency' -t elem -n type -v pom \
+      dao/pom.xml
   '';
   jdk = jdk17;
   mavenWithJdk = maven.override { inherit jdk; };
@@ -46,6 +60,9 @@ let
     "-msa/vc-executor-docker"
     "-msa/web-ui"
   ];
+  libPath = lib.makeLibraryPath [
+    systemdLibs
+  ];
 in mavenWithJdk.buildMavenPackage rec {
   pname = "thingsboard";
   version = "3.7.0-SNAPSHOT";
@@ -57,9 +74,9 @@ in mavenWithJdk.buildMavenPackage rec {
     hash = "sha256-U8BfWqqAdA4fiqDsCezFWlq3+3jwn/395QSJggd6DiU=";
   };
 
-  mvnParameters = "-DskipTests -Dskip.installyarn -Dskip.yarn -P'!yarn-build' -pl ${lib.concatStringsSep "," projectList}";
+  mvnParameters = "-DskipTests -Dskip.installyarn -Dskip.yarn -Dpkg.installFolder=$out/share/thingsboard -P'!yarn-build' -pl ${lib.concatStringsSep "," projectList}";
 
-  mvnHash = "sha256-Fr108n3GGl82jo4YT75/RCEvyJHgiRXF+nendwMWxaY=";
+  mvnHash = "sha256-ENTnlIKQw2/fOtWkPzqaXavJifZoSlPP2h5o1pL9AkA=";
 
   mvnFetchExtraArgs = {
     preConfigure = defineMvnWrapper;
@@ -78,6 +95,7 @@ in mavenWithJdk.buildMavenPackage rec {
 
     install -Dm644 application/target/thingsboard-${version}-boot.jar $out/share/thingsboard/thingsboard.jar
     cp -r application/target/{conf,data} $out/share/thingsboard/
+    rm $out/share/thingsboard/conf/logback.xml
 
     makeWrapper ${jre}/bin/java $out/bin/thingsboard-install \
       --add-flags "-cp $out/share/thingsboard/thingsboard.jar \
@@ -87,8 +105,9 @@ in mavenWithJdk.buildMavenPackage rec {
         -Dinstall.upgrade=false" \
       --append-flags "org.springframework.boot.loader.launch.PropertiesLauncher"
     makeWrapper ${jre}/bin/java $out/bin/thingsboard-server \
-      --add-flags "-cp $out/share/thingsboard/thingsboard.jar" \
-      --append-flags "org.thingsboard.server.ThingsboardServerApplication"
+      --add-flags "-Djna.platform.library.path=${libPath}" \
+      --suffix LOADER_PATH , $out/share/thingsboard/conf,$out/share/thingsboard/extensions \
+      --append-flags "-jar $out/share/thingsboard/thingsboard.jar"
   '';
 
   meta = with lib; {

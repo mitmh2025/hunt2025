@@ -5,7 +5,7 @@
     ./base.nix
     ../services/postgres.nix
     ../services/redis.nix
-    #../services/thingsboard.nix
+    ../services/thingsboard.nix
   ];
   config = {
     system.stateVersion = "24.05";
@@ -29,6 +29,8 @@
       virtualisation.forwardPorts = [
         # Redis
         { from = "host"; host.port = 6379; guest.port = 6379; }
+        # ThingsBoard
+        { from = "host"; host.port = 8080; guest.port = 8080; }
       ];
       services.redis.servers.hunt2025 = {
         bind = "0.0.0.0";
