@@ -1,7 +1,70 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  cfg = config.services.thingsboard;
+  caseInsensitiveEnum = values:
+    let
+      elemType = lib.types.enum (builtins.map lib.toUpper values);
+    in elemType // {
+      check = x: elemType.check (lib.toUpper x);
+    };
+  logLevelType = caseInsensitiveEnum ["TRACE" "DEBUG" "INFO" "WARN" "ERROR" "ALL" "OFF"];
+  writeXML = name: stylesheet: data: pkgs.runCommand name {
+    inherit stylesheet;
+    data = builtins.toXML data;
+    passAsFile = ["data" "stylesheet"];
 
-{
-  config = {
+    nativeBuildInputs = [ pkgs.libxslt ];
+  } ''
+    xsltproc $stylesheetPath $dataPath > $out
+  '';
+  logbackStylesheet = ''
+    <?xml version='1.0' encoding='UTF-8'?>
+    <xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>
+      <xsl:output indent="yes" />
+      <xsl:template match='/expr/attrs'>
+        <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE configuration&gt;</xsl:text>
+        <configuration>
+          <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+            <target>System.err</target>
+            <encoder>
+                <pattern>%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+          </appender>
+          <xsl:for-each select="attr[@name = 'loggers']/attrs/attr">
+            <logger name="{@name}" level="{string/@value}" />
+          </xsl:for-each>
+          <root level="{attr[@name = 'rootLevel']/string/@value}">
+            <appender-ref ref="STDERR" />
+          </root>
+        </configuration>
+      </xsl:template>
+    </xsl:stylesheet>
+  '';
+  configDir = pkgs.linkFarm "thingsboard-config" {
+    "logback.xml" = writeXML "logback.xml" logbackStylesheet cfg.logback;
+  };
+in {
+  options = with lib; {
+    services.thingsboard = {
+      enable = mkEnableOption "ThingsBoard";
+      logback = {
+        loggers = mkOption {
+          type = types.attrsOf logLevelType;
+        };
+        rootLevel = mkOption {
+          type = logLevelType;
+          default = "INFO";
+        };
+      };
+    };
+  };
+  config = lib.mkIf cfg.enable {
+    services.thingsboard.logback.loggers = lib.mapAttrs (_: lib.mkDefault) {
+      "org.thingsboard.server" = "INFO";
+      "org.apache.kafka.common.utils.AppInfoParser" = "WARN";
+      "org.apache.kafka.clients" = "WARN";
+      "com.microsoft.azure.servicebus.primitives.CoreMessageReceiver" = "OFF";
+    };
     services.postgresql = {
       ensureDatabases = [
         "thingsboard"
@@ -35,6 +98,7 @@
       environment = {
         SPRING_DATASOURCE_URL = "jdbc:postgresql:thingsboard?socketFactory=org.newsclub.net.unix.AFUNIXSocketFactory$FactoryArg&socketFactoryArg=/run/postgresql/.s.PGSQL.5432";
         SPRING_DATASOURCE_USERNAME = "thingsboard";
+        LOADER_PATH = configDir;
       };
 
       # TODO: Provision OAuth2 client
