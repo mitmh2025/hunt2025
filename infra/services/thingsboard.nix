@@ -106,7 +106,7 @@ in {
 
       serviceConfig = {
         #ExecStartPre = "${pkgs.thingsboard}/bin/thingsboard-install";
-        ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -Djna.debug_load=true";
+        ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -XX:+IgnoreUnrecognizedVMOptions -XX:+HeapDumpOnOutOfMemoryError -XX:-UseBiasedLocking -XX:+UseTLAB -XX:+ResizeTLAB -XX:+PerfDisableSharedMem -XX:+UseCondCardMark -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -XX:+UseStringDeduplication -XX:+ParallelRefProcEnabled -XX:MaxTenuringThreshold=10 -Xms256m -Xmx512m -Djna.debug_load=true";
         Restart = "always";
         RestartSec = "5s";
         User = "thingsboard";
