@@ -14,7 +14,7 @@
 
 let
   pname = "thingsboard";
-  version = "3.7.0-SNAPSHOT";
+  version = "3.7";
   defineMvnWrapper = ''
     mvn()
     {
@@ -28,8 +28,8 @@ let
   src = fetchFromGitHub {
     owner = "thingsboard";
     repo = pname;
-    rev = "91a83a7e2a8dea403783d617a500c4059cf1e5c6"; # "v${version}";
-    hash = "sha256-U8BfWqqAdA4fiqDsCezFWlq3+3jwn/395QSJggd6DiU=";
+    rev = "v${version}";
+    hash = "sha256-o4vAeWRZ8uTAQpyWj5bHruOGP4Bmv84i0q6RPsFCLAo=";
   };
   ui-ngx = mkYarnPackage {
     inherit version;
@@ -114,7 +114,7 @@ in mavenWithJdk.buildMavenPackage rec {
 
   mvnParameters = "-DskipTests -Dskip.installyarn -Dskip.yarn -Dpkg.installFolder=$out/share/thingsboard -P'!yarn-build' -pl ${lib.concatStringsSep "," projectList}";
 
-  mvnHash = "sha256-ENTnlIKQw2/fOtWkPzqaXavJifZoSlPP2h5o1pL9AkA=";
+  mvnHash = "sha256-qbBnZjwuq/UymxBLISstGBByPx/FQDW5cQZ+fQqGlhQ=";
 
   mvnFetchExtraArgs = {
     preConfigure = defineMvnWrapper;
@@ -131,7 +131,7 @@ in mavenWithJdk.buildMavenPackage rec {
   installPhase = ''
     mkdir -p $out/bin $out/share/thingsboard
 
-    install -Dm644 application/target/thingsboard-${version}-boot.jar $out/share/thingsboard/thingsboard.jar
+    install -Dm644 application/target/thingsboard-*-boot.jar $out/share/thingsboard/thingsboard.jar
     cp -r application/target/{conf,data} $out/share/thingsboard/
     rm $out/share/thingsboard/conf/logback.xml
 
