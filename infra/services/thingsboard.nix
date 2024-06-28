@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   cfg = config.services.thingsboard;
+  settingsFormat = pkgs.formats.yaml {};
   caseInsensitiveEnum = values:
     let
       elemType = lib.types.enum (builtins.map lib.toUpper values);
@@ -42,6 +43,7 @@ let
   '';
   configDir = pkgs.linkFarm "thingsboard-config" {
     "logback.xml" = writeXML "logback.xml" logbackStylesheet cfg.logback;
+    "thingsboard-local.yml" = settingsFormat.generate "thingsboard-local.yml" cfg.settings;
   };
 in {
   options = with lib; {
@@ -50,11 +52,18 @@ in {
       logback = {
         loggers = mkOption {
           type = types.attrsOf logLevelType;
+          description = "Set of logger names with overridden log levels";
         };
         rootLevel = mkOption {
           type = logLevelType;
           default = "INFO";
+          description = "Default log level";
         };
+      };
+      settings = mkOption {
+        type = settingsFormat.type;
+        default = {};
+        description = "ThingsBoard configuration options";
       };
     };
   };
@@ -77,6 +86,11 @@ in {
       ];
     };
 
+    services.thingsboard.settings.spring.datasource = {
+      url = "jdbc:postgresql:thingsboard?socketFactory=org.newsclub.net.unix.AFUNIXSocketFactory$FactoryArg&socketFactoryArg=/run/postgresql/.s.PGSQL.5432";
+      username = "thingsboard";
+    };
+
     users.users.thingsboard = {
       isSystemUser = true;
       group = "thingsboard";
@@ -96,8 +110,6 @@ in {
       ];
 
       environment = {
-        SPRING_DATASOURCE_URL = "jdbc:postgresql:thingsboard?socketFactory=org.newsclub.net.unix.AFUNIXSocketFactory$FactoryArg&socketFactoryArg=/run/postgresql/.s.PGSQL.5432";
-        SPRING_DATASOURCE_USERNAME = "thingsboard";
         LOADER_PATH = configDir;
       };
 
@@ -108,7 +120,7 @@ in {
 
       serviceConfig = {
         #ExecStartPre = "${pkgs.thingsboard}/bin/thingsboard-install";
-        ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -XX:+IgnoreUnrecognizedVMOptions -XX:+HeapDumpOnOutOfMemoryError -XX:-UseBiasedLocking -XX:+UseTLAB -XX:+ResizeTLAB -XX:+PerfDisableSharedMem -XX:+UseCondCardMark -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -XX:+UseStringDeduplication -XX:+ParallelRefProcEnabled -XX:MaxTenuringThreshold=10 -Xms256m -Xmx512m -Djna.debug_load=true";
+        ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -XX:+IgnoreUnrecognizedVMOptions -XX:+HeapDumpOnOutOfMemoryError -XX:-UseBiasedLocking -XX:+UseTLAB -XX:+ResizeTLAB -XX:+PerfDisableSharedMem -XX:+UseCondCardMark -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -XX:+UseStringDeduplication -XX:+ParallelRefProcEnabled -XX:MaxTenuringThreshold=10 -Xms256m -Xmx512m -Djna.debug_load=true -Dspring.profiles.active=local";
         Restart = "always";
         RestartSec = "5s";
         User = "thingsboard";

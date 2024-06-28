@@ -32,15 +32,44 @@
         '';
       };
     }
-      {
+    {
       services.thingsboard = {
         enable = true;
+        # logback.loggers = {
+        #   "org.thingsboard.server" = "DEBUG";
+        #   "org.thingsboard.server.actors.TbActorMailbox" = "INFO";
+        #   "org.thingsboard.server.actors.service.ContextAwareActor" = "INFO";
+        # };
+        # logback.rootLevel = "DEBUG";
       };
+    }
+    {
       users.groups.acme-thingsboard = {};
       users.users.thingsboard.extraGroups = [ "acme-thingsboard" ];
       users.users."${config.services.nginx.user}".extraGroups = [ "acme-thingsboard" ];
       security.acme.certs."things.mitmh2025.com".group = "acme-thingsboard";
-      # TODO: Configure ThingsBoard to use the certs.
+
+      services.thingsboard.settings = let
+        certDir = config.security.acme.certs."things.mitmh2025.com".directory;
+        credentials = {
+          type = "PEM";
+          pem.cert_file = "${certDir}/cert.pem";
+          pem.key_file = "${certDir}/key.pem";
+        };
+      in {
+        device.connectivity = {
+          mqtts.enabled = true;
+          coaps.enabled = true;
+        };
+        transport.mqtt.ssl = {
+          enabled = true;
+          inherit credentials;
+        };
+        coap.dtls = {
+          enabled = true;
+          inherit credentials;
+        };
+      };
     }
     {
       services.nginx = {
