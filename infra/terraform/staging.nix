@@ -7,7 +7,7 @@
 
   resource.google_compute_instance.staging = {
     name = "staging";
-    machine_type = "e2-small"; # 0.5 vCPU, 2 GB RAM
+    machine_type = "e2-medium"; # 1 vCPU, 4 GB RAM
 
     boot_disk.initialize_params = {
       image = lib.tfRef "google_compute_image.nixos.id";
@@ -35,6 +35,8 @@
       email = lib.tfRef "google_service_account.staging.email";
       scopes = ["cloud-platform"];
     };
+
+    allow_stopping_for_update = true;
   };
 
   resource.google_compute_firewall.staging = {

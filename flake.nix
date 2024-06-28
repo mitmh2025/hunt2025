@@ -68,7 +68,7 @@
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
             cp ${terraformConfiguration} config.tf.json \
               && ${terraformBin} init \
-              && ${terraformBin} apply
+              && ${terraformBin} apply "$@"
           '');
         };
         # nix run ".#destroy"
