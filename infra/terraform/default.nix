@@ -23,6 +23,7 @@
     ./base-image.nix
     ./state.nix
     ./staging.nix
+    ./mail.nix
   ];
 
   resource.google_project_service = lib.genAttrs [
