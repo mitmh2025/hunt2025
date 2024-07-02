@@ -224,7 +224,25 @@ const HUNT: Hunt = {
       slug: "background_check",
       title: "Background Check",
       puzzles: [
-        // TODO
+        // 14 feeders, 3 metas, 1 super
+        { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+        { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+        { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+        { id: "bgp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+        { id: "bgp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+        { id: "bgp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+        { id: "bgp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+        { id: "bgp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+        { id: "bgp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+        { id: "bgp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+        { id: "bgp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+        { id: "bgp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "bgp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "bgp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "bgm01", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 1
+        { id: "bgm02", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 2
+        { id: "bgm03", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 3
+        { id: "bgm04", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // supermeta
       ],
       unlock_if: [
         { slot_solved: "sdm03" },
@@ -379,7 +397,7 @@ const HUNT: Hunt = {
     {
       id: "meet_carter",
       unlock_if: [
-        { oneOf: [] }, // TODO: replace with background check super, once we know the slot id
+        { slot_solved: "bgm04" }, // background check super
       ],
     },
     {
