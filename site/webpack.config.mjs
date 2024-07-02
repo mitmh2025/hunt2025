@@ -69,6 +69,16 @@ export default function createConfigs(_env, argv) {
     },
   });
 
+  const mp3Rule = (publicPath) => ({
+    test: /\.mp3$/,
+    type: "asset/resource",
+    generator: {
+      outputPath: "assets/",
+      publicPath: `${publicPath}/assets/`,
+      filename: "[hash][ext][query]",
+    },
+  });
+
   const serverSwcLoader = {
     // .swcrc can be used to configure swc
     loader: "swc-loader",
@@ -110,6 +120,7 @@ export default function createConfigs(_env, argv) {
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
         pngRule(""),
+        mp3Rule(""),
       ],
       // Add modules as appropriate
     },
