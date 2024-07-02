@@ -1,144 +1,7 @@
 import React, { type ReactNode } from "react";
 import type { TeamState } from "../../../lib/api/client.js";
-import HUNT from "../../huntdata";
-import { PUZZLES } from "../puzzles";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
-
-const SHOW_DEV_PANE = true;
-
-const renderDevPane = (teamState?: TeamState) => {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- !SHOW_DEV_PANE is always falsy in development
-  if (process.env.NODE_ENV !== "development" || !SHOW_DEV_PANE || !teamState)
-    return undefined;
-
-  const rounds = HUNT.rounds.map((round) => {
-    const roundState = teamState.rounds[round.slug];
-    const puzzleCells = round.puzzles.map((puzzleSlot) => {
-      let title = puzzleSlot.id;
-      const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
-      if (slug !== undefined) {
-        const puzzle = PUZZLES[slug];
-        if (puzzle) {
-          title = puzzle.title;
-        }
-      }
-      const puzzleState = slug ? teamState.puzzles[slug] : undefined;
-      // TODO: do something visually different if the puzzle is locked/visible/unlocked/solved (based on data from session)
-      let bgcolor = "black";
-      // If visible: gray
-      if (puzzleState?.locked === "locked") {
-        bgcolor = "gray";
-      }
-      if (puzzleState?.locked === "unlockable") {
-        bgcolor = "lightgray";
-      }
-      // If unlocked: white
-      if (puzzleState?.locked === "unlocked") {
-        bgcolor = "white";
-      }
-      // If solved: green
-      if (puzzleState?.answer) {
-        bgcolor = "green";
-      }
-      const box = (
-        <div
-          key={puzzleSlot.id}
-          style={{
-            display: "inline-block",
-            width: "8px",
-            height: "8px",
-            backgroundColor: bgcolor,
-            border: `1px solid ${bgcolor}`,
-            margin: "2px",
-          }}
-          title={title}
-        />
-      );
-      if (slug) {
-        return (
-          <a key={puzzleSlot.id} href={`/puzzles/${slug}`}>
-            {box}
-          </a>
-        );
-      }
-
-      return box;
-    });
-    return (
-      <div key={round.slug}>
-        <h4>
-          <a href={`/rounds/${round.slug}`}>{round.title}</a>
-        </h4>
-        <div>{puzzleCells}</div>
-      </div>
-    );
-  });
-
-  const interactions = HUNT.interactions.map((interaction) => {
-    const interactionState = teamState.interactions?.[interaction.id];
-    // If not yet unlocked: black
-    let bgcolor = "black";
-    // If unlocked: white
-    if (interactionState?.state === "unlocked") {
-      bgcolor = "white";
-    }
-    // If actively running: yellow
-    if (interactionState?.state === "running") {
-      bgcolor = "yellow";
-    }
-    // If completed: green
-    if (interactionState?.state === "completed") {
-      bgcolor = "green";
-    }
-    const box = (
-      <div
-        key={interaction.id}
-        style={{
-          display: "inline-block",
-          width: "8px",
-          height: "8px",
-          backgroundColor: bgcolor,
-          border: `1px solid ${bgcolor}`,
-          margin: "2px",
-        }}
-        title={interaction.id}
-      />
-    );
-    if (interactionState) {
-      return (
-        <a key={interaction.id} href={`/interactions/${interaction.id}`}>
-          {box}
-        </a>
-      );
-    } else {
-      return box;
-    }
-  });
-
-  return (
-    <div
-      style={{
-        flex: 0,
-        minWidth: "200px",
-        height: "100vh",
-        backgroundColor: "#eee",
-      }}
-    >
-      <h2>Devtools</h2>
-      <h3>{teamState.teamName}</h3>
-      <h3>Nav</h3>
-      {rounds}
-      <h3>Interactions</h3>
-      {interactions}
-      <h3>Actions</h3>
-      <ul>
-        <li>
-          <a href="/logout">Logout</a>
-        </li>
-      </ul>
-    </div>
-  );
-};
+import DevPane from "./DevPane";
 
 const Layout = ({
   children,
@@ -174,7 +37,7 @@ const Layout = ({
           }}
         >
           <div style={{ flex: 1 }}>{children}</div>
-          {renderDevPane(teamState)}
+          <DevPane teamState={teamState} />
         </div>
         {allScripts.map((s) => (
           <script key={s} type="text/javascript" src={s} />
