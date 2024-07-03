@@ -8,6 +8,7 @@
     ../services/authentik
     ../services/hunt2025.nix
     ../services/thingsboard.nix
+    ../services/zammad.nix
   ];
   config = lib.mkMerge [
     {

@@ -1,5 +1,11 @@
 { lib, self, ... }:
-{
+let
+  stagingAliases = [
+    "auth"
+    "things"
+    "tix"
+  ];
+in {
   resource.google_service_account.staging = {
     account_id = "staging-vm";
     display_name = "Used by the staging VM";
@@ -65,9 +71,7 @@
   resource.nix_store_path_copy.staging_nixos = {
     depends_on = [
       "google_compute_firewall.staging"
-      "aws_route53_record.auth"
-      "aws_route53_record.things"
-    ];
+    ] ++ (builtins.map (n: "aws_route53_record.${n}") stagingAliases);
     store_path = "${self.nixosConfigurations.staging.config.system.build.toplevel}";
     to = "ssh-ng://root@\${aws_route53_record.staging.fqdn}";
     check_sigs = false;
@@ -87,33 +91,23 @@
     };
   };
 
-  resource.aws_route53_record.staging = {
+  resource.aws_route53_record = {
+    staging = {
+      zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
+      name = "staging";
+      type = "A";
+      ttl = "300";
+      records = [
+        (lib.tfRef "resource.google_compute_instance.staging.network_interface.0.access_config.0.nat_ip")
+      ];
+    };
+  } // (lib.genAttrs stagingAliases (name: {
     zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
-    name = "staging";
-    type = "A";
-    ttl = "300";
-    records = [
-      (lib.tfRef "resource.google_compute_instance.staging.network_interface.0.access_config.0.nat_ip")
-    ];
-  };
-
-  resource.aws_route53_record.auth = {
-    zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
-    name = "auth";
+    inherit name;
     type = "CNAME";
     ttl = "300";
     records = [
       (lib.tfRef "aws_route53_record.staging.fqdn")
     ];
-  };
-
-  resource.aws_route53_record.things = {
-    zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
-    name = "things";
-    type = "CNAME";
-    ttl = "300";
-    records = [
-      (lib.tfRef "aws_route53_record.staging.fqdn")
-    ];
-  };
+  }));
 }
