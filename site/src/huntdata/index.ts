@@ -205,15 +205,33 @@ const HUNT: Hunt = {
         { id: "ptp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
         { id: "ptp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
         { id: "ptp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
-        { id: "ptm01", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 1
-        { id: "ptm02", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 2
-        { id: "ptm03", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 3
-        { id: "ptm04", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 4
-        { id: "ptm05", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 5
-        { id: "ptm06", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 6 dir: "profitable-trunk"
-        { id: "ptm07", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 7 dir: "green-princess"
-        { id: "ptm08", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // meta 8 dir: "bountiful-maple"
-        { id: "ptm09", is_meta: true, unlocked_if: { puzzles_unlocked: 10 } }, // supermeta
+        { id: "ptm01", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 1
+        { id: "ptm02", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 2
+        { id: "ptm03", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 3
+        { id: "ptm04", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 4
+        { id: "ptm05", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 5
+        { id: "ptm06", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 6 dir: "profitable-trunk"
+        { id: "ptm07", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 7 dir: "green-princess"
+        { id: "ptm08", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 8 dir: "bountiful-maple"
+        {
+          id: "ptm09", // supermeta
+          is_meta: true,
+          unlocked_if: {
+            // As written, this unlocks when all 8 metas are solved.
+            // TODO: determine if we want to release the super on some other condition?
+            puzzles_solved: 8,
+            slots: [
+              "ptm01",
+              "ptm02",
+              "ptm03",
+              "ptm04",
+              "ptm05",
+              "ptm06",
+              "ptm07",
+              "ptm08",
+            ],
+          }
+        },
       ],
       unlock_if: [
         { slot_solved: "sdm02" },
@@ -225,6 +243,9 @@ const HUNT: Hunt = {
       title: "Background Check",
       puzzles: [
         // 14 feeders, 3 metas, 1 super
+        // TODO: figure out exactly when the metas/super should actually be
+        // released, since dropping the metas immediately would reveal story
+        // that the puzzle solves are supposed to reward solvers with
         { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
         { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
         { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
@@ -320,7 +341,32 @@ const HUNT: Hunt = {
       slug: "the_dead_thief",
       title: "The Dead Thief",
       puzzles: [
-        // TODO
+        // 24 feeders + 1 meta
+        { id: "dtp01", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
+        { id: "dtp02", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
+        { id: "dtp03", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
+        { id: "dtp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+        { id: "dtp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+        { id: "dtp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+        { id: "dtp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+        { id: "dtp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+        { id: "dtp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+        { id: "dtp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+        { id: "dtp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+        { id: "dtp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "dtp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "dtp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "dtp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+        { id: "dtp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "dtp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+        { id: "dtp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+        { id: "dtp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+        { id: "dtp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+        { id: "dtp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+        { id: "dtp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+        { id: "dtp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+        { id: "dtp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+        { id: "dtm01", unlocked_if: { puzzles_unlocked: 16 } }, // TODO: figure out when this should actually release
       ],
       unlock_if: [
         { interaction_completed: "meet_billie" },
@@ -331,7 +377,7 @@ const HUNT: Hunt = {
       slug: "the_real_diamond",
       title: "The Real Diamond",
       puzzles: [
-        // TODO
+        // TODO: single piece of endgame?
       ],
       unlock_if: [
         { interaction_completed: "meet_katrina" },
