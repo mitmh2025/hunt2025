@@ -7,7 +7,6 @@
     ../services/redis.nix
     ../services/authentik
     ../services/hunt2025.nix
-    ../services/thingsboard.nix
     ../services/zammad.nix
   ];
   config = lib.mkMerge [
@@ -42,6 +41,7 @@
         #   "org.thingsboard.server.actors.service.ContextAwareActor" = "INFO";
         # };
         # logback.rootLevel = "DEBUG";
+        datasource.createLocally = true;
       };
     }
     {

@@ -61,10 +61,11 @@ in {
         };
       };
       settings = mkOption {
-        type = settingsFormat.type;
+        inherit (settingsFormat) type;
         default = {};
         description = "ThingsBoard configuration options";
       };
+      datasource.createLocally = mkEnableOption "Use local Postgres database";
     };
   };
   config = lib.mkIf cfg.enable {
@@ -74,7 +75,7 @@ in {
       "org.apache.kafka.clients" = "WARN";
       "com.microsoft.azure.servicebus.primitives.CoreMessageReceiver" = "OFF";
     };
-    services.postgresql = {
+    services.postgresql = lib.mkIf cfg.datasource.createLocally {
       ensureDatabases = [
         "thingsboard"
       ];
@@ -86,7 +87,7 @@ in {
       ];
     };
 
-    services.thingsboard.settings.spring.datasource = {
+    services.thingsboard.settings.spring.datasource = lib.mkIf cfg.datasource.createLocally {
       url = "jdbc:postgresql:thingsboard?socketFactory=org.newsclub.net.unix.AFUNIXSocketFactory$FactoryArg&socketFactoryArg=/run/postgresql/.s.PGSQL.5432";
       username = "thingsboard";
     };

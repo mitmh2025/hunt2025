@@ -22,7 +22,21 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, terranix, authentik, sops-nix, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+    let
+      findModules = dir:
+        builtins.concatLists (builtins.attrValues (builtins.mapAttrs
+          (name: type:
+            if type == "regular" then [{
+              name = builtins.elemAt (builtins.match "(.*)\\.nix" name) 0;
+              value = dir + "/${name}";
+            }] else if (
+              builtins.readDir (dir + "/${name}"))
+            ? "default.nix" then [{
+              inherit name;
+              value = dir + "/${name}";
+            }] else
+              findModules (dir + "/${name}")) (builtins.readDir dir)));
+    in flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
@@ -93,6 +107,7 @@
         };
       }) // {
         inherit self;
+        nixosModules = builtins.listToAttrs (findModules ./infra/modules);
         nixosConfigurations = nixpkgs.lib.genAttrs [
           "gce-image"
           "dev-vm-base"
@@ -103,7 +118,7 @@
           specialArgs = {
             inherit authentik;
           };
-          modules = [
+          modules = (builtins.attrValues self.nixosModules) ++ [
             {
               nixpkgs.overlays = [
                 self.overlays.default
