@@ -1,5 +1,12 @@
 { config, pkgs, lib, ... }:
 {
+  options = with lib; {
+    services.zammad.settings = mkOption {
+      type = with types; attrsOf anything;
+      default = {};
+      description = "Settings to enforce at Zammad startup";
+    };
+  };
   config = {
     sops.secrets."zammad/secret_key_base" = {
       owner = config.systemd.services.zammad-web.serviceConfig.User;
@@ -8,6 +15,14 @@
       enable = true;
       redis.port = 6389;  # Deconflict with Authentik
       secretKeyBaseFile = config.sops.secrets."zammad/secret_key_base".path;
+
+      settings = {
+        system_init_done = true;
+        organization = "Hunt 2025";
+        timezone_default = "America/New_York";
+        fqdn = "tix.mitmh2025.com";
+        http_type = "https";
+      };
     };
     services.nginx = {
       upstreams.zammad.servers."127.0.0.1:${toString config.services.zammad.port}" = {};

@@ -13,7 +13,7 @@ let
       " > "$out"
     '';
   };
-  inherit (config.lib.authentik) find findProvider findFlow findScope;
+  inherit (config.lib.authentik) find findProvider findFlow findScope findSAMLPropertyMapping;
   signing_key = find "authentik_crypto.certificatekeypair" "name" "authentik Self-signed Certificate";
 in {
   options = with lib; {
@@ -21,6 +21,9 @@ in {
       blueprint = mkOption {
         type = types.nullOr format.type;
         default = null;
+      };
+      samlPropertyMappings = mkOption {
+        type = with types; attrsOf format.type;
       };
       apps = mkOption {
         default = {};
@@ -35,7 +38,7 @@ in {
               default = name;
             };
             type = mkOption {
-              type = enum ["oauth2" "proxy"];
+              type = enum ["oauth2" "proxy" "saml"];
             };
             redirect_uris = mkOption {
               type = lines;
@@ -46,11 +49,6 @@ in {
             nginx = mkEnableOption "Configure nginx for this host";
             properties = mkOption {
               type = listOf str;
-              default = [
-                "email"
-                "openid"
-                "profile"
-              ];
             };
             provider = mkOption {
               type = nullOr format.type;
@@ -77,19 +75,38 @@ in {
             };
           };
           config = {
-            provider = lib.mkMerge [
-              {
+            properties = let
+              mkDefaultIf = c: v: lib.mkIf c (lib.mkDefault v);
+            in lib.mkMerge [
+              (mkDefaultIf (config.type == "oauth2") [
+                "goauthentik.io/providers/oauth2/scope-email"
+                "goauthentik.io/providers/oauth2/scope-openid"
+                "goauthentik.io/providers/oauth2/scope-profile"
+              ])
+              (mkDefaultIf (config.type == "proxy") [
+                "goauthentik.io/providers/oauth2/scope-email"
+                "goauthentik.io/providers/oauth2/scope-openid"
+                "goauthentik.io/providers/oauth2/scope-profile"
+                "goauthentik.io/providers/proxy/scope-proxy"
+              ])
+              (mkDefaultIf (config.type == "saml") [])
+            ];
+            redirect_uris = lib.mkIf (config.type == "proxy") ''
+              https://${config.host}/outpost.goauthentik.io/callback\?X-authentik-auth-callback=true
+              https://${config.host}\?X-authentik-auth-callback=true
+            '';
+            provider = let
+              common = {
                 identifiers.name = config.name;
                 attrs = {
                   authentication_flow = findFlow "default-authentication-flow";
                   authorization_flow = findFlow "default-provider-authorization-implicit-consent";
-
-                  refresh_token_validity = "days=30";
                 };
-              }
-              (lib.mkIf (config.type == "oauth2") {
+              };
+              oauth2 = {
                 model = "authentik_providers_oauth2.oauth2provider";
-                attrs = {
+                inherit (common) identifiers;
+                attrs = common.attrs // {
                   inherit (config) redirect_uris;
 
                   client_id = sopsPlaceholder."authentik/apps/${config.slug}/client_id";
@@ -104,11 +121,13 @@ in {
 
                   access_code_validity = "minutes=1";
                   access_token_validity = "minutes=5";
+                  refresh_token_validity = "days=30";
                 };
-              })
-              (lib.mkIf (config.type == "proxy") {
+              };
+              proxy = {
                 model = "authentik_providers_proxy.proxyprovider";
-                attrs = {
+                inherit (common) identifiers;
+                attrs = oauth2.attrs // {
                   intercept_header_auth = true;
                   mode = "forward_single";
 
@@ -116,7 +135,19 @@ in {
 
                   external_host = "https://${config.host}";
                 };
-              })
+              };
+              saml = {
+                model = "authentik_providers_saml.samlprovider";
+                inherit (common) identifiers;
+                attrs = common.attrs // {
+                  property_mappings = map findSAMLPropertyMapping config.properties;
+                  signing_kp = signing_key;
+                };
+              };
+            in lib.mkMerge [
+              (lib.mkIf (config.type == "oauth2") oauth2)
+              (lib.mkIf (config.type == "proxy") proxy)
+              (lib.mkIf (config.type == "saml") saml)
             ];
           };
         }));

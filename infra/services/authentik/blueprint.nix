@@ -9,10 +9,10 @@ let
   find = type: field: value: "!Find [${type}, [${field}, ${value}]]";
   findFlow = find "authentik_flows.flow" "slug";
   findSource = find "authentik_core.source" "slug";
-  # TODO: Figure out how to match scope mappings by the `managed` key instead.
-  findScope = find "authentik_providers_oauth2.scopemapping" "scope_name";
-  findProvider = find "authentik_providers_oauth2.oauth2provider" "name";
+  findScope = find "authentik_providers_oauth2.scopemapping" "managed";
+  findProvider = find "authentik_core.provider" "name";
   findPrompt = find "authentik_stages_prompt.prompt" "name";
+  findSAMLPropertyMapping = find "authentik_providers_saml.samlpropertymapping" "managed";
 in {
   imports = [
     ./blueprint-install.nix
@@ -24,7 +24,7 @@ in {
     sops.secrets."authentik/discord_oauth/consumer_secret" = {};
 
     lib.authentik = {
-      inherit find findFlow findSource findScope findProvider findPrompt;
+      inherit find findFlow findSource findScope findProvider findPrompt findSAMLPropertyMapping;
     };
 
     services.authentik.blueprint = {
@@ -258,7 +258,14 @@ in {
           ];
         }
         # Applications
-      ] ++ lib.concatMap (app: app.blueprint) (lib.attrValues cfg.apps) ++ [
+      ]
+      ++ lib.mapAttrsToList (managed: attrs: {
+        model = "authentik_providers_saml.samlpropertymapping";
+        identifiers.managed = managed;
+        inherit attrs;
+      }) cfg.samlPropertyMappings
+      ++ lib.concatMap (app: app.blueprint) (lib.attrValues cfg.apps)
+      ++ [
         {
           model = "authentik_outposts.outpost";
           identifiers.managed = "goauthentik.io/outposts/embedded";
