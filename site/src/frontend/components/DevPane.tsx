@@ -1,81 +1,160 @@
 import React from "react";
 import type { TeamState } from "../../../lib/api/client.js";
 import HUNT from "../../huntdata";
+import type { PuzzleSlot, Round } from "../../huntdata/types";
 import { PUZZLES } from "../puzzles";
 
 const SHOW_DEV_PANE = true;
 
-const RoundsSection = ({ teamState }: { teamState: TeamState }) => {
-  const rounds = HUNT.rounds.map((round) => {
-    const counts = {
-      locked: 0,
-      unlockable: 0,
-      unlocked: 0,
-      solved: 0,
-    };
-    const roundState = teamState.rounds[round.slug];
-    const puzzleCells = round.puzzles.map((puzzleSlot) => {
-      let title = puzzleSlot.id;
+function countsForRound(
+  round: Round,
+  teamState: TeamState,
+): {
+  locked: number;
+  unlockable: number;
+  unlocked: number;
+  solved: number;
+} {
+  const roundState = teamState.rounds[round.slug];
+  return round.puzzles
+    .map((puzzleSlot) => {
       const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
-      if (slug !== undefined) {
-        const puzzle = PUZZLES[slug];
-        if (puzzle) {
-          title = puzzle.title;
-        }
-      }
       const puzzleState = slug ? teamState.puzzles[slug] : undefined;
-      let bgcolor;
-      if (puzzleState?.locked === "locked") {
-        // If visible: gray
-        counts.locked += 1;
-        bgcolor = "gray";
-      } else if (puzzleState?.locked === "unlockable") {
-        // If unlockable: light gray
-        counts.unlockable += 1;
-        bgcolor = "lightgray";
-      } else if (puzzleState?.locked === "unlocked") {
-        // If unlocked:
-        //   if solved: green
-        //   otherwise: white
-        if (puzzleState.answer) {
-          counts.solved += 1;
-          bgcolor = "green";
+      let locked = 0;
+      let unlockable = 0;
+      let unlocked = 0;
+      let solved = 0;
+      if (puzzleState) {
+        if (puzzleState.locked === "locked") {
+          locked += 1;
+        } else if (puzzleState.locked === "unlockable") {
+          unlockable += 1;
+        } else if (puzzleState.answer) {
+          // implies puzzleState.locked === "unlocked"
+          solved += 1;
         } else {
-          counts.unlocked += 1;
-          bgcolor = "white";
+          unlocked += 1;
         }
       } else {
-        bgcolor = "black";
-        counts.locked += 1;
+        locked += 1;
       }
-      // If solved: green
-      const box = (
-        <div
-          key={puzzleSlot.id}
-          style={{
-            display: "inline-block",
-            width: "8px",
-            height: "8px",
-            backgroundColor: bgcolor,
-            border: `1px solid ${bgcolor}`,
-            margin: "2px",
-          }}
-          title={title}
-        />
-      );
-      if (slug) {
-        return (
-          <a key={puzzleSlot.id} href={`/puzzles/${slug}`}>
-            {box}
-          </a>
-        );
-      }
+      return { locked, unlockable, unlocked, solved };
+    })
+    .reduce(
+      (acc, next) => {
+        return {
+          locked: acc.locked + next.locked,
+          unlockable: acc.unlockable + next.unlockable,
+          unlocked: acc.unlocked + next.unlocked,
+          solved: acc.solved + next.solved,
+        };
+      },
+      {
+        locked: 0,
+        unlockable: 0,
+        unlocked: 0,
+        solved: 0,
+      },
+    );
+}
 
-      return box;
-    });
+function colorForPuzzle(puzzleState: TeamState["puzzles"][""] | undefined) {
+  if (puzzleState?.locked === "locked") {
+    // If visible: gray
+    return "gray";
+  } else if (puzzleState?.locked === "unlockable") {
+    // If unlockable: light gray
+    return "lightgray";
+  } else if (puzzleState?.locked === "unlocked") {
+    // If unlocked:
+    //   if solved: green
+    //   otherwise: white
+    if (puzzleState.answer) {
+      return "green";
+    } else {
+      return "white";
+    }
+  } else {
+    return "black";
+  }
+}
+
+const PuzzleBox = ({
+  slot,
+  slug,
+  teamState,
+}: {
+  slot: PuzzleSlot;
+  slug: string | undefined;
+  teamState: TeamState;
+}) => {
+  let title = slot.id;
+  if (slug !== undefined) {
+    const puzzle = PUZZLES[slug];
+    if (puzzle) {
+      title = puzzle.title;
+    }
+  }
+  const puzzleState = slug ? teamState.puzzles[slug] : undefined;
+  const bgcolor = colorForPuzzle(puzzleState);
+  const size = slot.is_meta ? "12px" : "8px";
+  const box = (
+    <div
+      style={{
+        display: "inline-block",
+        width: size,
+        height: size,
+        backgroundColor: bgcolor,
+        border: `1px solid ${bgcolor}`,
+        margin: "2px",
+      }}
+      title={title}
+    />
+  );
+  if (slug) {
+    return (
+      <a key={slot.id} href={`/puzzles/${slug}`}>
+        {box}
+      </a>
+    );
+  }
+
+  return box;
+};
+
+const RoundsSection = ({ teamState }: { teamState: TeamState }) => {
+  const rounds = HUNT.rounds.map((round) => {
+    const roundState = teamState.rounds[round.slug];
+    const metaCells = round.puzzles
+      .filter((puzzleSlot) => puzzleSlot.is_meta)
+      .map((puzzleSlot) => {
+        const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
+        return (
+          <PuzzleBox
+            key={puzzleSlot.id}
+            slot={puzzleSlot}
+            slug={slug}
+            teamState={teamState}
+          />
+        );
+      });
+    const puzzleCells = round.puzzles
+      .filter((puzzleSlot) => !puzzleSlot.is_meta)
+      .map((puzzleSlot) => {
+        const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
+        return (
+          <PuzzleBox
+            key={puzzleSlot.id}
+            slot={puzzleSlot}
+            slug={slug}
+            teamState={teamState}
+          />
+        );
+      });
+    const counts = countsForRound(round, teamState);
     return (
       <div key={round.slug}>
-        <h4>
+        <h4 style={{ margin: 0, borderTop: "1px solid #888" }}>
           <a href={`/rounds/${round.slug}`}>{round.title}</a>{" "}
           <span
             style={{ fontSize: "12px" }}
@@ -85,7 +164,12 @@ const RoundsSection = ({ teamState }: { teamState: TeamState }) => {
             {counts.solved}
           </span>
         </h4>
-        <div>{puzzleCells}</div>
+        <div>
+          <>
+            {metaCells}
+            {puzzleCells}
+          </>
+        </div>
       </div>
     );
   });
@@ -147,7 +231,7 @@ const InteractionsSection = ({ teamState }: { teamState: TeamState }) => {
   });
   return (
     <>
-      <h3>
+      <h4 style={{ margin: 0, borderTop: "1px solid #888" }}>
         Interactions{" "}
         <span
           style={{ fontSize: "12px" }}
@@ -156,7 +240,7 @@ const InteractionsSection = ({ teamState }: { teamState: TeamState }) => {
           {interactionCounts.locked}, {interactionCounts.unlocked},{" "}
           {interactionCounts.running}, {interactionCounts.completed}
         </span>
-      </h3>
+      </h4>
       {interactions}
     </>
   );
@@ -176,12 +260,12 @@ const DevPane = ({ teamState }: { teamState?: TeamState }) => {
         backgroundColor: "#eee",
       }}
     >
-      <h2>Devtools</h2>
-      <h3>{teamState.teamName}</h3>
+      <h2 style={{ margin: 0 }}>Devtools</h2>
+      <h3 style={{ margin: 0 }}>{teamState.teamName}</h3>
       <RoundsSection teamState={teamState} />
       <InteractionsSection teamState={teamState} />
-      <h3>Actions</h3>
-      <ul>
+      <h3 style={{ margin: 0, borderTop: "1px solid #888" }}>Actions</h3>
+      <ul style={{ margin: 0 }}>
         <li>
           <a href="/logout">Logout</a>
         </li>
