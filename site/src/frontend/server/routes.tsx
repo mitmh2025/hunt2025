@@ -14,6 +14,7 @@ import { renderToString } from "react-dom/server";
 import { Router } from "websocket-express";
 import { newClient } from "../../../lib/api/client";
 import { type RedisClient } from "../../app";
+import { allPuzzlesHandler } from "./routes/all_puzzles";
 import { hackLoginGetHandler } from "./routes/login";
 import {
   puzzleHandler,
@@ -224,6 +225,12 @@ export async function getUiRouter({
         await renderApp(solutionHandler, req, res, next);
       },
     ),
+  );
+  authRouter.get(
+    "/all_puzzles",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(allPuzzlesHandler, req, res, next);
+    }),
   );
 
   router.use(unauthRouter);
