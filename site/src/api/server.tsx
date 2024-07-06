@@ -37,6 +37,7 @@ type ActivityLog = ServerInferResponseBody<
 
 type JWTPayload = {
   user: string;
+  team_id: number;
   adminUser?: string;
 };
 
@@ -59,7 +60,7 @@ function newPassport(jwt_secret: string | Buffer) {
         //audience: 'mitmh2025.com',
       },
       function (jwt_payload: JWTPayload, done) {
-        done(null, jwt_payload.user, { adminUser: jwt_payload.adminUser });
+        done(null, jwt_payload.team_id, { adminUser: jwt_payload.adminUser });
       },
     ),
   );
@@ -93,10 +94,10 @@ export function getRouter({
   const s = initServer();
 
   const getTeamState = async (
-    team: string,
+    team_id: number,
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
-    const data = await dbGetTeamState(team, trx);
+    const data = await dbGetTeamState(team_id, trx);
     console.log(data);
     const rounds = Object.fromEntries(
       hunt.rounds
@@ -153,7 +154,7 @@ export function getRouter({
         ? { interactions: Object.fromEntries(interaction_kvs) }
         : {};
     return {
-      teamName: team,
+      teamName: data.team_name,
       rounds,
       currency: data.available_currency,
       puzzles: Object.fromEntries(
@@ -176,12 +177,12 @@ export function getRouter({
   };
 
   const getPuzzleState = async (
-    team: string,
+    team_id: number,
     slug: string,
     trx: Knex.Transaction,
   ): Promise<PuzzleState | undefined> => {
     const { unlocked_rounds, puzzle_status, answer, guesses } =
-      await dbGetPuzzleState(team, slug, trx);
+      await dbGetPuzzleState(team_id, slug, trx);
     if (!puzzle_status) {
       return undefined;
     }
@@ -221,16 +222,16 @@ export function getRouter({
 
   const refreshTeamState = async (
     hunt: Hunt,
-    team: string,
+    team_id: number,
     trx: Knex.Transaction,
   ) => {
-    await recalculateTeamState(hunt, team, trx);
-    const teamState = await getTeamState(team, trx);
+    await recalculateTeamState(hunt, team_id, trx);
+    const teamState = await getTeamState(team_id, trx);
     if (redisClient) {
       // TODO: What if the transaction fails?
       try {
         await redisClient.publish(
-          `team_state.${team}`,
+          `team_state.${team_id}`,
           JSON.stringify(teamState),
         );
       } catch (e) {
@@ -268,11 +269,13 @@ export function getRouter({
             username,
             password,
           })
-          .first("username");
+          .select("username", "id")
+          .first();
         if (team !== undefined) {
           const token = jwt.sign(
             {
-              user: username,
+              user: team.username,
+              team_id: team.id,
             },
             jwt_secret,
             {},
@@ -295,18 +298,19 @@ export function getRouter({
       getMyTeamState: {
         middleware: [authMiddleware],
         handler: async ({ req }) => {
-          const team = req.user as string;
+          const team_id = req.user as number;
           return {
             status: 200,
-            body: await knex.transaction(getTeamState.bind(null, team)),
+            body: await knex.transaction(getTeamState.bind(null, team_id)),
           };
         },
       },
       getPuzzleState: {
         middleware: [authMiddleware],
         handler: async ({ params: { slug }, req }) => {
+          const team_id = req.user as number;
           const state = await knex.transaction(
-            getPuzzleState.bind(null, req.user as string, slug),
+            getPuzzleState.bind(null, team_id, slug),
           );
           if (!state) {
             return {
@@ -323,8 +327,9 @@ export function getRouter({
       getActivityLog: {
         middleware: [authMiddleware],
         handler: async ({ req }) => {
+          const team_id = req.user as number;
           const entries = (await knex("activity_log")
-            .where("username", req.user as string)
+            .where("team_id", team_id)
             .select("timestamp", "type", "slug", "currency_delta", "data")
             .orderBy("timestamp", "desc")) as ActivityLogEntry[];
           const body = entries.map((e) => {
@@ -356,7 +361,7 @@ export function getRouter({
       submitGuess: {
         middleware: [authMiddleware],
         handler: async ({ params: { slug }, body: { guess }, req }) => {
-          const team = req.user as string;
+          const team_id = req.user as number;
           const puzzle = PUZZLES[slug];
           let canonical_input = canonicalizeInput(guess);
           const answers = puzzle
@@ -373,7 +378,7 @@ export function getRouter({
           // TODO: Make sure that we retry/wait for conflicts.
           return await knex.transaction(async function (trx) {
             const result = await trx("team_puzzles")
-              .where("username", team)
+              .where("team_id", team_id)
               .where("slug", slug)
               .select("unlocked")
               .first();
@@ -389,7 +394,7 @@ export function getRouter({
               response = "Correct!";
               await appendActivityLog(
                 {
-                  username: team,
+                  team_id,
                   slug,
                   type: "puzzle_solved",
                   currency_delta: correct_answer.prize ?? 0,
@@ -403,21 +408,21 @@ export function getRouter({
             // TODO: Recognize partial answers
             await trx("team_puzzle_guesses")
               .insert({
-                username: team,
+                team_id,
                 slug,
                 canonical_input,
                 correct: !!correct_answer,
                 response,
               })
-              .onConflict(["username", "slug", "canonical_input"])
+              .onConflict(["team_id", "slug", "canonical_input"])
               .ignore();
-            await refreshTeamState(hunt, team, trx);
+            await refreshTeamState(hunt, team_id, trx);
             // TODO: Invalidate caches
             return {
               status: 200,
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: (await getPuzzleState(team, slug, trx))!,
+              body: (await getPuzzleState(team_id, slug, trx))!,
             };
           });
         },
@@ -425,11 +430,10 @@ export function getRouter({
       unlockPuzzle: {
         middleware: [authMiddleware],
         handler: async ({ params: { slug }, req }) => {
-          const team = req.user as string;
-
+          const team_id = req.user as number;
           // TODO: Make sure that we retry/wait for conflicts.
           return await knex.transaction(async function (trx) {
-            const data = await dbGetTeamState(team, trx);
+            const data = await dbGetTeamState(team_id, trx);
             const slot = hunt.rounds
               .filter(({ slug }) => data.unlocked_rounds.has(slug))
               .flatMap(({ puzzles }) =>
@@ -444,12 +448,12 @@ export function getRouter({
               data.available_currency >= unlock_cost
             ) {
               await trx("team_puzzles")
-                .where("username", team)
+                .where("team_id", team_id)
                 .where("slug", slug)
                 .update({ unlocked: true });
               await appendActivityLog(
                 {
-                  username: team,
+                  team_id,
                   type: "puzzle_unlocked",
                   slug,
                   currency_delta: -unlock_cost,
@@ -457,13 +461,13 @@ export function getRouter({
                 trx,
               );
 
-              await refreshTeamState(hunt, team, trx);
+              await refreshTeamState(hunt, team_id, trx);
               // TODO: Invalidate caches
               return {
                 status: 200,
                 /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                  * We know the puzzle state exists because we checked the db above. */
-                body: (await getPuzzleState(team, slug, trx))!,
+                body: (await getPuzzleState(team_id, slug, trx))!,
               };
             }
             return {
@@ -480,15 +484,18 @@ export function getRouter({
         handler: async ({ params: { team } }) => {
           return {
             status: 200,
-            body: await knex.transaction(getTeamState.bind(null, team)),
+            body: await knex.transaction(
+              getTeamState.bind(null, parseInt(team, 10)),
+            ),
           };
         },
       },
       getPuzzleState: {
         middleware: adminAuthMiddlewares,
         handler: async ({ params: { team, slug } }) => {
+          const team_id = parseInt(team, 10);
           const state = await knex.transaction(
-            getPuzzleState.bind(null, team, slug),
+            getPuzzleState.bind(null, team_id, slug),
           );
           if (!state) {
             return {
@@ -506,25 +513,26 @@ export function getRouter({
         middleware: adminAuthMiddlewares,
         handler: async ({ params: { team, slug }, body }) => {
           return await knex.transaction(async (trx) => {
+            const team_id = parseInt(team, 10);
             await trx("team_puzzles")
               .insert(
                 Object.assign(
                   {
-                    username: team,
+                    team_id,
                     slug,
                   },
                   body,
                 ),
               )
-              .onConflict(["username", "slug"])
+              .onConflict(["team_id", "slug"])
               .merge(body);
-            await refreshTeamState(hunt, team, trx);
+            await refreshTeamState(hunt, team_id, trx);
             // TODO: Invalidate caches
             return {
               status: 200,
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: (await getPuzzleState(team, slug, trx))!,
+              body: (await getPuzzleState(team_id, slug, trx))!,
             };
           });
         },

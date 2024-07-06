@@ -80,18 +80,19 @@ export async function connect(environment: string) {
 
 declare module "knex/types/tables" {
   type Team = {
+    id: number;
     username: string;
     password?: string;
   };
 
   type TeamRound = {
-    username: string;
+    team_id: number;
     slug: string;
     unlocked: boolean;
   };
 
   type TeamPuzzle = {
-    username: string;
+    team_id: number;
     slug: string;
     visible: boolean;
     unlockable: boolean;
@@ -100,7 +101,7 @@ declare module "knex/types/tables" {
   };
 
   type TeamPuzzleGuess = {
-    username: string;
+    team_id: number;
     slug: string;
     canonical_input: string;
     timestamp: Date;
@@ -109,7 +110,7 @@ declare module "knex/types/tables" {
   };
 
   type TeamInteraction = {
-    username: string;
+    team_id: number;
     id: string;
     started_at?: Date;
     completed_at?: Date;
@@ -117,12 +118,12 @@ declare module "knex/types/tables" {
   };
 
   type TeamGateCompletions = {
-    username: string;
+    team_id: number;
     gate: string;
   };
 
   type InsertActivityLogEntry = {
-    username?: string;
+    team_id?: number;
     currency_delta?: number;
     internal_data?: {
       operator?: string;
@@ -202,12 +203,20 @@ function string_agg(knex: Knex.Knex, field: string, delimeter: string) {
   ]);
 }
 
-export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
+export async function getTeamState(
+  team_id: number,
+  trx: Knex.Knex.Transaction,
+) {
+  const team = await trx("teams")
+    .where("id", team_id)
+    .select("username")
+    .first();
+  if (!team) throw new Error(`No team found for team_id ${team_id}`);
   const puzzle_status = await trx("team_puzzles")
-    .where("username", team)
+    .where("team_id", team_id)
     .select("slug", "visible", "unlockable", "unlocked");
   const correct_answers = (await trx("team_puzzle_guesses")
-    .where("username", team)
+    .where("team_id", team_id)
     .where("correct", true)
     .select("slug", { answer: string_agg(trx, "canonical_input", ", ") })
     .groupBy("slug")) as {
@@ -215,24 +224,25 @@ export async function getTeamState(team: string, trx: Knex.Knex.Transaction) {
     answer: string;
   }[]; /* I can't tell how to tell TypeScript that answer is a string without forcing it here. */
   const satisfied_gates = await trx("team_gate_completions")
-    .where("username", team)
+    .where("team_id", team_id)
     .pluck("gate");
   const interactions = await trx("team_interactions")
-    .where("username", team)
+    .where("team_id", team_id)
     .select("id", "started_at", "completed_at", "result");
   const available_currency = Number(
     (
       await trx("activity_log")
-        .where("username", team)
-        .orWhere("username", null)
+        .where("team_id", team_id)
+        .orWhere("team_id", null)
         .sum({ sum: "currency_delta" })
         .first()
     )?.sum ?? 0,
   );
   return {
+    team_name: team.username,
     available_currency,
     unlocked_rounds: new Set(
-      await trx("team_rounds").where("username", team).pluck("slug"),
+      await trx("team_rounds").where("team_id", team_id).pluck("slug"),
     ),
     visible_puzzles: new Set(
       puzzle_status.flatMap(({ slug, visible }) => (visible ? [slug] : [])),
@@ -278,32 +288,32 @@ export function fixTimestamp(value: string | Date): Date {
 }
 
 export async function getPuzzleState(
-  team: string,
+  team_id: number,
   slug: string,
   trx: Knex.Knex.Transaction,
 ) {
   const unlocked_rounds = new Set(
     await trx("team_rounds")
-      .where("username", team)
+      .where("team_id", team_id)
       .where("unlocked", true)
       .pluck("slug"),
   );
   const puzzle_status = await trx("team_puzzles")
-    .where("username", team)
+    .where("team_id", team_id)
     .where("slug", slug)
     .select("slug", "visible", "unlockable", "unlocked")
     .first();
   const correct_answers: { answer: string } | undefined = await trx(
     "team_puzzle_guesses",
   )
-    .where("username", team)
+    .where("team_id", team_id)
     .where("slug", slug)
     .where("correct", true)
     .select({ answer: string_agg(trx, "canonical_input", ", ") })
     .first();
   const guesses = (
     await trx("team_puzzle_guesses")
-      .where("username", team)
+      .where("team_id", team_id)
       .where("slug", slug)
       .orderBy("timestamp", "desc")
   ).map((row) => {
@@ -320,29 +330,29 @@ export async function getPuzzleState(
 
 export async function recalculateTeamState(
   hunt: Hunt,
-  team: string,
+  team_id: number,
   trx: Knex.Knex.Transaction,
 ) {
   const interactions_completed = new Set(
     await trx("team_interactions")
-      .where("username", team)
+      .where("team_id", team_id)
       .whereNotNull("completed_at")
       .pluck("id"),
   );
   const puzzles_unlocked = new Set(
     await trx("team_puzzles")
-      .where("username", team)
+      .where("team_id", team_id)
       .where("unlocked", true)
       .pluck("slug"),
   );
   const gates_satisfied = new Set(
-    await trx("team_gate_completions").where("username", team).pluck("gate"),
+    await trx("team_gate_completions").where("team_id", team_id).pluck("gate"),
   );
   const puzzle_solution_count = Object.fromEntries(
     (
       await trx("team_puzzle_guesses")
         .select("slug")
-        .where("username", team)
+        .where("team_id", team_id)
         .where("correct", true)
         .count("*", { as: "count" })
         .groupBy("slug")
@@ -351,7 +361,7 @@ export async function recalculateTeamState(
   console.log(interactions_completed);
   console.log(puzzles_unlocked);
   console.log(puzzle_solution_count);
-  const old = await getTeamState(team, trx);
+  const old = await getTeamState(team_id, trx);
   const next = calculateTeamState({
     hunt,
     gates_satisfied,
@@ -363,7 +373,7 @@ export async function recalculateTeamState(
   for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
     await appendActivityLog(
       {
-        username: team,
+        team_id,
         type: "round_unlocked",
         slug,
       },
@@ -371,11 +381,11 @@ export async function recalculateTeamState(
     );
     await trx("team_rounds")
       .insert({
-        username: team,
-        slug: slug,
+        team_id,
+        slug,
         unlocked: true,
       })
-      .onConflict(["username", "slug"])
+      .onConflict(["team_id", "slug"])
       .merge({
         unlocked: true,
       });
@@ -405,7 +415,7 @@ export async function recalculateTeamState(
       record.unlocked = true;
       await appendActivityLog(
         {
-          username: team,
+          team_id,
           type: "puzzle_unlocked",
           slug,
         },
@@ -416,19 +426,19 @@ export async function recalculateTeamState(
       .insert(
         Object.assign(
           {
-            username: team,
-            slug: slug,
+            team_id,
+            slug,
           },
           record,
         ),
       )
-      .onConflict(["username", "slug"])
+      .onConflict(["team_id", "slug"])
       .merge(record);
   }
   for (const id of diff.unlocked_interactions) {
     await appendActivityLog(
       {
-        username: team,
+        team_id,
         type: "interaction_unlocked",
         slug: id,
       },
@@ -436,10 +446,10 @@ export async function recalculateTeamState(
     );
     await trx("team_interactions")
       .insert({
-        username: team,
+        team_id,
         id,
       })
-      .onConflict(["username", "id"])
+      .onConflict(["team_id", "id"])
       .ignore();
   }
 }

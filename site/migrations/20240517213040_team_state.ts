@@ -4,24 +4,24 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema
     .createTable("team_rounds", function (table) {
       table
-        .string("username", 255)
+        .integer("team_id")
         .notNullable()
-        .references("teams.username")
+        .references("teams.id")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
       table.string("slug", 255).notNullable();
-      table.primary(["username", "slug"]);
+      table.primary(["team_id", "slug"]);
       table.boolean("unlocked").notNullable().defaultTo(false);
     })
     .createTable("team_puzzles", function (table) {
       table
-        .string("username", 255)
+        .integer("team_id")
         .notNullable()
-        .references("teams.username")
+        .references("teams.id")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
       table.string("slug", 255).notNullable();
-      table.primary(["username", "slug"]);
+      table.primary(["team_id", "slug"]);
       table.boolean("visible").notNullable().defaultTo(false);
       table.boolean("unlockable").notNullable().defaultTo(false);
       table.boolean("unlocked").notNullable().defaultTo(false);
@@ -30,14 +30,14 @@ export async function up(knex: Knex): Promise<void> {
     })
     .createTable("team_puzzle_guesses", function (table) {
       table
-        .string("username", 255)
+        .integer("team_id")
         .notNullable()
-        .references("teams.username")
+        .references("teams.id")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
       table.string("slug", 255).notNullable();
       table.string("canonical_input", 255).notNullable();
-      table.primary(["username", "slug", "canonical_input"]);
+      table.primary(["team_id", "slug", "canonical_input"]);
       table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
       // TODO: Enum for wrong/partial/correct?
       table.boolean("correct").notNullable().defaultTo(false);
@@ -45,24 +45,24 @@ export async function up(knex: Knex): Promise<void> {
     })
     .createTable("team_gate_completions", function (table) {
       table
-        .string("username", 255)
+        .integer("team_id")
         .notNullable()
-        .references("teams.username")
+        .references("teams.id")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
       table.string("gate", 255).notNullable();
-      table.primary(["username", "gate"]);
+      table.primary(["team_id", "gate"]);
       table.datetime("completed_at").notNullable().defaultTo(knex.fn.now());
     })
     .createTable("team_interactions", function (table) {
       table
-        .string("username", 255)
+        .integer("team_id")
         .notNullable()
-        .references("teams.username")
+        .references("teams.id")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
       table.string("id", 255).notNullable();
-      table.primary(["username", "id"]);
+      table.primary(["team_id", "id"]);
       // Interaction unlock is implied by presence in the table
       table.datetime("started_at"); // The interaction can only be started once.
       table.datetime("completed_at"); // The interaction can only be completed once.
@@ -71,7 +71,7 @@ export async function up(knex: Knex): Promise<void> {
     .createTable("activity_log", function (table) {
       table.increments("id");
       table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
-      table.string("username", 255);
+      table.integer("team_id"); // if null, action should apply to all teams
       table.enu("type", [
         "currency_adjusted",
         "round_unlocked",
@@ -85,7 +85,7 @@ export async function up(knex: Knex): Promise<void> {
       table.jsonb("data");
       table.jsonb("internal_data");
 
-      table.index(["username", "type"]);
+      table.index(["team_id", "type"]);
     });
 }
 

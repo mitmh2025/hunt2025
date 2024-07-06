@@ -6,6 +6,7 @@ import { getSlugsBySlot } from "../src/huntdata/logic";
 
 export async function seed(knex: Knex): Promise<void> {
   // Inserts seed entries
+  const usernameToTeamId = new Map<string, number>();
   for (const username of [
     "team",
     "visible",
@@ -22,21 +23,28 @@ export async function seed(knex: Knex): Promise<void> {
   const slugs = new Set(Object.values(slotsToSlug));
 
   for (const username of ["visible", "unlockable", "unlocked", "solved"]) {
+    const team = await knex("teams")
+      .where("username", username)
+      .select("id")
+      .first();
+    if (!team) continue; // guaranteed to be truthy because we just inserted the row above
+    const team_id = team.id;
+    usernameToTeamId.set(username, team_id);
     await knex("team_rounds")
       .insert(
         HUNT.rounds.map(({ slug }) => ({
-          username,
+          team_id,
           slug,
           unlocked: true, // We don't have a concept of "unlockable" rounds, so just make them all unlocked.
         })),
       )
-      .onConflict(["username", "slug"])
+      .onConflict(["team_id", "slug"])
       .ignore();
-    await knex("team_puzzles").where("username", username).del();
-    await knex("team_puzzle_guesses").where("username", username).del();
+    await knex("team_puzzles").where("team_id", team_id).del();
+    await knex("team_puzzle_guesses").where("team_id", team_id).del();
     await knex("team_puzzles").insert(
       Array.from(slugs).map((slug) => ({
-        username,
+        team_id,
         slug,
         visible: true,
         unlockable: username != "visible",
@@ -44,6 +52,7 @@ export async function seed(knex: Knex): Promise<void> {
       })),
     );
   }
+
   await knex("team_puzzle_guesses").insert(
     Array.from(slugs).flatMap((slug) => {
       const puzzle = PUZZLES[slug];
@@ -53,18 +62,18 @@ export async function seed(knex: Knex): Promise<void> {
           : puzzle.answers
         : [{ answer: "PLACEHOLDER ANSWER", submit_if: [] }];
       return answers.map((answer) => ({
-        username: "solved",
+        team_id: usernameToTeamId.get("solved"),
         slug,
         canonical_input: answer.answer,
         correct: true,
       }));
     }),
   );
-  const usernames = await knex("teams").select("username").pluck("username");
+  const team_ids = await knex("teams").select("id").pluck("id");
   await knex.transaction(async (trx) => {
-    for (const username of usernames) {
-      await trx("activity_log").where("username", username).del();
-      await recalculateTeamState(HUNT, username, trx);
+    for (const team_id of team_ids) {
+      await trx("activity_log").where("team_id", team_id).del();
+      await recalculateTeamState(HUNT, team_id, trx);
     }
   });
 }
