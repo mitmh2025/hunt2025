@@ -17,7 +17,10 @@ const RoundPuzzleList = ({
   const slots = roundState.slots;
   const puzzleStates = teamState.puzzles;
   const entries = Object.keys(slots).map((slot) => {
-    const slug = slots[slot];
+    const slotObj = slots[slot];
+    const slug = slotObj?.slug;
+    // TODO: style metapuzzles differently
+    // const _is_meta = slotObj?.is_meta ?? false;
     const puzzleState = slug ? puzzleStates[slug] : undefined;
     const puzzleDefinition = slug ? PUZZLES[slug] : undefined;
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slot}`;

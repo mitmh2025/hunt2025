@@ -18,7 +18,7 @@ function countsForRound(
   const roundState = teamState.rounds[round.slug];
   return round.puzzles
     .map((puzzleSlot) => {
-      const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
+      const slug = roundState?.slots[puzzleSlot.id]?.slug ?? puzzleSlot.slug;
       const puzzleState = slug ? teamState.puzzles[slug] : undefined;
       let locked = 0;
       let unlockable = 0;
@@ -128,7 +128,7 @@ const RoundsSection = ({ teamState }: { teamState: TeamState }) => {
     const metaCells = round.puzzles
       .filter((puzzleSlot) => puzzleSlot.is_meta)
       .map((puzzleSlot) => {
-        const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
+        const slug = roundState?.slots[puzzleSlot.id]?.slug ?? puzzleSlot.slug;
         return (
           <PuzzleBox
             key={puzzleSlot.id}
@@ -141,7 +141,7 @@ const RoundsSection = ({ teamState }: { teamState: TeamState }) => {
     const puzzleCells = round.puzzles
       .filter((puzzleSlot) => !puzzleSlot.is_meta)
       .map((puzzleSlot) => {
-        const slug = roundState?.slots[puzzleSlot.id] ?? puzzleSlot.slug;
+        const slug = roundState?.slots[puzzleSlot.id]?.slug ?? puzzleSlot.slug;
         return (
           <PuzzleBox
             key={puzzleSlot.id}

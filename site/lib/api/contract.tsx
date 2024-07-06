@@ -28,9 +28,14 @@ const PuzzleStateSchema = PuzzleSummarySchema.extend({
   guesses: z.array(GuessSchema).default([]),
 });
 
+const PuzzleSlotSchema = z.object({
+  slug: z.string(),
+  is_meta: z.boolean().optional(),
+});
+
 const RoundStateSchema = z.object({
   title: z.string(),
-  slots: z.record(z.string(), slug),
+  slots: z.record(z.string(), PuzzleSlotSchema),
   gates: z.array(z.string()).optional(),
 });
 

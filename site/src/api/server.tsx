@@ -109,7 +109,8 @@ export function getRouter({
               puzzles.flatMap((slot) => {
                 const slug = getSlotSlug(slot);
                 if (slug && data.visible_puzzles.has(slug)) {
-                  return [[slot.id, slug]];
+                  const obj = { slug, is_meta: slot.is_meta };
+                  return [[slot.id, obj]];
                 }
                 return [];
               }),
@@ -125,7 +126,7 @@ export function getRouter({
     );
     const puzzleRounds = Object.fromEntries(
       Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
-        Object.entries(slots).map(([_id, puzzleSlug]) => [
+        Object.entries(slots).map(([_id, { slug: puzzleSlug }]) => [
           puzzleSlug,
           roundSlug,
         ]),
