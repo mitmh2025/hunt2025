@@ -1,12 +1,5 @@
 { config, pkgs, lib, ... }:
 {
-  options = with lib; {
-    services.zammad.settings = mkOption {
-      type = with types; attrsOf anything;
-      default = {};
-      description = "Settings to enforce at Zammad startup";
-    };
-  };
   config = {
     sops.secrets."zammad/secret_key_base" = {
       owner = config.systemd.services.zammad-web.serviceConfig.User;
@@ -17,7 +10,7 @@
       secretKeyBaseFile = config.sops.secrets."zammad/secret_key_base".path;
 
       settings = {
-        system_init_done = true;
+        product_name = "Hunt 2025";
         organization = "Hunt 2025";
         timezone_default = "America/New_York";
         fqdn = "tix.mitmh2025.com";
