@@ -305,31 +305,31 @@ const HUNT: Hunt = {
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final
-        { id: "isg00" }, // examine the bookcase
-        { id: "isg01" }, // find the first object in the first room
-        { id: "isg02" }, // find the second object in the first room
-        { id: "isg03" }, // find the third object in the first room
-        { id: "isg04" }, // find the fourth object in the first room
-        { id: "isg05" }, // find the last object in the first room
-        { id: "isg06" }, // complete the directional lock
-        { id: "isg07" }, // complete the binary switches
-        { id: "isg08" }, // complete the combination lock
-        { id: "isg09" }, // complete the numeric lock
-        { id: "isg10" }, // complete the word lock
+        { id: "isg00" }, // examine the bookcase (meta)
+        { id: "isg01" }, // find the first object in the first room (great wave painting)
+        { id: "isg02" }, // find the second object in the first room (globe)
+        { id: "isg03" }, // find the third object in the first room (family portrait)
+        { id: "isg04" }, // find the fourth object in the first room (typewriter)
+        { id: "isg05" }, // find the last object in the first room (desk lamp)
+        { id: "isg06" }, // complete the directional lock (desk drawer)
+        { id: "isg07" }, // complete the binary switches (fuse box)
+        { id: "isg08" }, // complete the combination lock (safe)
+        { id: "isg09" }, // complete the numeric lock (rug)
+        { id: "isg10" }, // complete the word lock (cryptex)
         { id: "isg11" }, // find the object behind the directional lock
         { id: "isg12" }, // find the object behind the binary switch lock
         { id: "isg13" }, // find the object behind the combination lock
         { id: "isg14" }, // find the object behind the numeric lock
         { id: "isg15" }, // find the object behind the word lock
-        { id: "isg16" }, // find the star pattern in the second room
-        { id: "isg17" }, // find the first object in the second room
-        { id: "isg18" }, // find the second object in the second room
-        { id: "isg19" }, // find the third object in the second room
-        { id: "isg20" }, // find the fourth object in the second room
-        { id: "isg21" }, // find the fifth object in the second room
-        { id: "isg22" }, // find the sixth object in the second room
-        { id: "isg23" }, // find the seventh object in the second room
-        { id: "isg24" }, // find the eighth object in the second room
+        { id: "isg16" }, // find the star pattern in the second room (meta)
+        { id: "isg17" }, // find the first object in the second room (birth certificate)
+        { id: "isg18" }, // find the second object in the second room (newspaper clipping)
+        { id: "isg19" }, // find the third object in the second room (letter from prison warden)
+        { id: "isg20" }, // find the fourth object in the second room (photo of the Candys and Baby)
+        { id: "isg21" }, // find the fifth object in the second room (photo of Papa, wife, and Gladys)
+        { id: "isg22" }, // find the sixth object in the second room (rare stamp)
+        { id: "isg23" }, // find the seventh object in the second room (Gladys' teddy bear)
+        { id: "isg24" }, // find the eighth object in the second room (radio drama poster)
         { id: "isg25" }, // obtain the blacklight
       ],
       unlock_if: [

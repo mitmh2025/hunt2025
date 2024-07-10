@@ -7,7 +7,14 @@ import { lookupScripts, lookupStylesheets } from "../assets";
 export type RoundParams = {
   roundSlug: string;
 };
-export const roundHandler = (req: Request<RoundParams>) => {
+export type RoundQuery = {
+  // Only the Illegal Search round currently makes use of query strings, but it
+  // seems fine to pass it to other round components that will ignore it.
+  node?: string;
+};
+export const roundHandler = (
+  req: Request<RoundParams, unknown, unknown, RoundQuery>,
+) => {
   const teamState = req.teamState;
   if (!teamState) {
     return undefined;
@@ -31,7 +38,7 @@ export const roundHandler = (req: Request<RoundParams>) => {
   // TODO: pass props about current unlock state to Component
   return (
     <Layout scripts={scripts} stylesheets={stylesheets} teamState={teamState}>
-      <Component teamState={teamState} />
+      <Component teamState={teamState} node={req.query.node} />
     </Layout>
   );
 };

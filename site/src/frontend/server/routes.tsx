@@ -16,6 +16,7 @@ import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type RedisClient } from "../../app";
+import { modalPostHandler, nodeRequestHandler } from "../rounds/illegal_search";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import { hackLoginGetHandler } from "./routes/login";
 import {
@@ -218,6 +219,8 @@ export async function getUiRouter({
       },
     ),
   );
+  authRouter.get("/rounds/illegal_search/node/:nodeSlug", nodeRequestHandler);
+  authRouter.post("/rounds/illegal_search/modal", modalPostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug",
     asyncHandler(

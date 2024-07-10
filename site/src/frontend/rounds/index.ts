@@ -15,7 +15,7 @@ import RealDiamondRoundPage from "./the_real_diamond";
 // Map from round `key` to component that should be rendered for that round.
 // TODO: figure out the props we want to pass to the round pages
 type RoundDefinition = {
-  component: FunctionComponent<{ teamState: TeamState }>;
+  component: FunctionComponent<{ teamState: TeamState; node?: string }>;
   entrypoint?: Entrypoint;
 };
 
@@ -32,6 +32,7 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   },
   illegal_search: {
     component: IllegalSearchRoundPage,
+    entrypoint: "illegal_search",
   },
   background_check: {
     component: BackgroundCheckRoundPage,
