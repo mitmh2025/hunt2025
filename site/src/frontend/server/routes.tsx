@@ -14,6 +14,7 @@ import { renderToString } from "react-dom/server";
 import { Router } from "websocket-express";
 import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
+import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type RedisClient } from "../../app";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import { hackLoginGetHandler } from "./routes/login";
@@ -122,9 +123,11 @@ const render500 = (
 
 export async function getUiRouter({
   apiUrl,
+  frontendApiSecret,
   redisClient,
 }: {
   apiUrl: string;
+  frontendApiSecret: string;
   redisClient?: RedisClient;
 }) {
   const router = new Router();
@@ -138,6 +141,7 @@ export async function getUiRouter({
 
   router.use((req: Request, _res: Response, next: NextFunction) => {
     req.authApi = newAuthClient(apiUrl);
+    req.frontendApi = newFrontendClient(apiUrl, frontendApiSecret);
     next();
   });
 

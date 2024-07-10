@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { type ServerInferResponseBody } from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -14,6 +15,7 @@ import * as swaggerUi from "swagger-ui-express";
 import { adminContract } from "../../lib/api/admin_contract";
 import { type TeamState } from "../../lib/api/client";
 import { c, authContract, publicContract } from "../../lib/api/contract";
+import { frontendContract } from "../../lib/api/frontend_contract";
 import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
 import { getSlotSlug } from "../huntdata/logic";
@@ -75,11 +77,13 @@ function canonicalizeInput(input: string) {
 
 export function getRouter({
   jwtSecret,
+  frontendApiSecret,
   knex,
   hunt,
   redisClient,
 }: {
   jwtSecret: string | Buffer;
+  frontendApiSecret: string;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -248,6 +252,17 @@ export function getRouter({
     session: false,
   }) as RequestHandler;
 
+  const frontendAuthMiddleware: RequestHandler = (req, res, next) => {
+    const authHeader = Buffer.from(req.headers.authorization ?? "", "utf8");
+    const expected = Buffer.from("frontend-auth " + frontendApiSecret, "utf8");
+    if (timingSafeEqual(expected, authHeader)) {
+      next();
+      return;
+    } else {
+      res.status(403).send("not the frontend");
+    }
+  };
+
   const adminAuthMiddlewares: RequestHandler[] = [
     authMiddleware,
     (req, res, next) => {
@@ -266,6 +281,7 @@ export function getRouter({
     auth: authContract,
     public: publicContract,
     admin: adminContract,
+    frontend: frontendContract,
   });
   const router = s.router(contract, {
     auth: {
@@ -543,6 +559,25 @@ export function getRouter({
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
               body: (await getPuzzleState(team_id, slug, trx))!,
+            };
+          });
+        },
+      },
+    },
+    frontend: {
+      markTeamGateSatisfied: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId, gateId } }) => {
+          return await knex.transaction(async (trx) => {
+            const team_id = parseInt(teamId, 10);
+            await trx("team_gate_completions")
+              .insert({ team_id, gate: gateId })
+              .onConflict(["team_id", "gate"])
+              .ignore();
+            const newState = await refreshTeamState(hunt, team_id, trx);
+            return {
+              status: 200,
+              body: newState,
             };
           });
         },

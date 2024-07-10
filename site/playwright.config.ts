@@ -74,7 +74,8 @@ export default defineConfig({
   webServer: huntBaseURL
     ? []
     : {
-        command: "JWT_SECRET=playwright DB_ENV=memory npm run start",
+        command:
+          "JWT_SECRET=playwright FRONTEND_API_SECRET=playwright DB_ENV=memory npm run start",
         url: "http://127.0.0.1:3000",
         reuseExistingServer: true,
       },

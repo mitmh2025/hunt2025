@@ -26,11 +26,13 @@ export type RedisClient = Awaited<ReturnType<typeof createRedisClient>>;
 export default async function ({
   dbEnvironment,
   jwtSecret,
+  frontendApiSecret,
   apiUrl,
   redisUrl,
 }: {
   dbEnvironment: string;
   jwtSecret: string | Buffer;
+  frontendApiSecret: string;
   apiUrl: string;
   redisUrl?: string;
 }) {
@@ -47,6 +49,7 @@ export default async function ({
   // Mount the API router at /api
   const apiRouter = getRouter({
     jwtSecret,
+    frontendApiSecret,
     knex,
     hunt,
     redisClient,
@@ -58,7 +61,11 @@ export default async function ({
 
   // Forward all other requests to the UI router, which we expect to
   // handle most user requests.
-  const uiRouter = await getUiRouter({ apiUrl, redisClient });
+  const uiRouter = await getUiRouter({
+    apiUrl,
+    frontendApiSecret,
+    redisClient,
+  });
   app.use("/", uiRouter);
 
   return app;

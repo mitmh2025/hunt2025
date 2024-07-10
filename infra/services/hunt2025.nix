@@ -45,6 +45,8 @@ in {
       environment.API_BASE_URL = cfg.apiBaseUrl;
       # FIXME: Use a real key in production.
       environment.JWT_SECRET = "%m";
+      # FIXME: Use a real key in production.
+      environment.FRONTEND_API_SECRET = "%m";
       environment.REDIS_URL = "unix://${config.services.redis.servers.hunt2025.unixSocket}";
 
       serviceConfig = {
