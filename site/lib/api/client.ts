@@ -1,12 +1,12 @@
 import { initClient, type ClientInferResponseBody } from "@ts-rest/core";
-import { contract } from "./contract";
+import { publicContract } from "./contract";
 
 export function newClient(baseUrl: string, token?: string) {
   const baseHeaders: Record<string, string> = {};
   if (token) {
     baseHeaders.Authorization = "bearer " + token;
   }
-  return initClient(contract, {
+  return initClient(publicContract, {
     baseUrl: baseUrl,
     baseHeaders,
     // Uses `tsRestFetchApi` by default
@@ -14,7 +14,7 @@ export function newClient(baseUrl: string, token?: string) {
 }
 
 export type TeamState = ClientInferResponseBody<
-  typeof contract.public.getMyTeamState,
+  typeof publicContract.getMyTeamState,
   200
 >;
 

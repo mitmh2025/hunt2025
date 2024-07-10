@@ -15,7 +15,7 @@ export type PuzzleParams = {
 
 export async function puzzleHandler(req: Request<PuzzleParams>) {
   const slug = req.params.puzzleSlug;
-  const result = await req.api.public.getPuzzleState({
+  const result = await req.api.getPuzzleState({
     params: { slug: slug },
   });
   if (result.status !== 200) {
@@ -147,7 +147,7 @@ export const puzzleGuessPostHandler: RequestHandler<
   // TODO: validate req.body with zod
   const { guess } = req.body;
   const slug = req.params.puzzleSlug;
-  const result = await req.api.public.submitGuess({
+  const result = await req.api.submitGuess({
     body: {
       guess,
     },
@@ -182,7 +182,7 @@ export const puzzleUnlockPostHandler: RequestHandler<
 > = asyncHandler(async (req, res) => {
   const slug = req.params.puzzleSlug;
   console.log("try unlock", slug);
-  const result = await req.api.public.unlockPuzzle({
+  const result = await req.api.unlockPuzzle({
     params: {
       slug,
     },

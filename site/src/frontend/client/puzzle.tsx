@@ -1,11 +1,11 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { type z } from "zod";
-import { type contract } from "../../../lib/api/contract";
+import { type publicContract } from "../../../lib/api/contract";
 import PuzzleGuessSection from "../components/PuzzleGuessSection";
 
 type PuzzleData = z.infer<
-  (typeof contract.public.getPuzzleState.responses)["200"]
+  (typeof publicContract.getPuzzleState.responses)["200"]
 >;
 
 const guessSectionElem = document.getElementById("puzzle-guesses");

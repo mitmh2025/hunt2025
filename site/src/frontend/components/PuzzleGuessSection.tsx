@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { type z } from "zod";
 import { newClient } from "../../../lib/api/client";
-import { type contract } from "../../../lib/api/contract";
+import { type publicContract } from "../../../lib/api/contract";
 
 type GetPuzzleStateResponse = z.infer<
-  (typeof contract.public.getPuzzleState.responses)["200"]
+  (typeof publicContract.getPuzzleState.responses)["200"]
 >;
 type Guesses = GetPuzzleStateResponse["guesses"];
 
@@ -35,7 +35,7 @@ const PuzzleGuessForm = ({
         let result;
         try {
           const apiClient = newClient(location.origin + "/api", undefined);
-          result = await apiClient.public.submitGuess({
+          result = await apiClient.submitGuess({
             body: {
               guess: guessInput,
             },

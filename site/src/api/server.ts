@@ -11,8 +11,9 @@ import { type ActivityLogEntry } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
+import { adminContract } from "../../lib/api/admin_contract";
 import { type TeamState } from "../../lib/api/client";
-import { contract } from "../../lib/api/contract";
+import { c, authContract, publicContract } from "../../lib/api/contract";
 import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
 import { getSlotSlug } from "../huntdata/logic";
@@ -26,12 +27,12 @@ import {
 } from "./db";
 
 type PuzzleState = ServerInferResponseBody<
-  typeof contract.public.getPuzzleState,
+  typeof publicContract.getPuzzleState,
   200
 >;
 
 type ActivityLog = ServerInferResponseBody<
-  typeof contract.public.getActivityLog,
+  typeof publicContract.getActivityLog,
   200
 >;
 
@@ -257,6 +258,14 @@ export function getRouter({
     },
   ];
 
+  // We merge contracts here so that we can implement additional contracts
+  // without having to export them to the client since there's no value in
+  // exposing schemas we don't intend to be public.
+  const contract = c.router({
+    auth: authContract,
+    public: publicContract,
+    admin: adminContract,
+  });
   const router = s.router(contract, {
     auth: {
       login: async ({

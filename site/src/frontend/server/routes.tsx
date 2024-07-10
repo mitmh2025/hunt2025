@@ -12,6 +12,7 @@ import multer from "multer";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { Router } from "websocket-express";
+import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { type RedisClient } from "../../app";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
@@ -53,7 +54,7 @@ const loginPostHandler: RequestHandler<
   //       return the session id provided, instead of this in-memory hack.
   // TODO: validate req.body with zod
   const { username, password } = req.body;
-  const loginResult = await req.api.auth.login({
+  const loginResult = await req.authApi.login({
     body: {
       username,
       password,
@@ -135,6 +136,11 @@ export async function getUiRouter({
 
   router.use("/client", express.static(path.join(__dirname, "static/client")));
 
+  router.use((req: Request, _res: Response, next: NextFunction) => {
+    req.authApi = newAuthClient(apiUrl);
+    next();
+  });
+
   const unauthRouter = new Router();
   unauthRouter.use((req: Request, _res: Response, next: NextFunction) => {
     req.api = newClient(
@@ -151,7 +157,7 @@ export async function getUiRouter({
         apiUrl,
         req.cookies.mitmh2025_auth as string | undefined,
       );
-      const teamStateResp = await req.api.public.getMyTeamState();
+      const teamStateResp = await req.api.getMyTeamState();
       if (teamStateResp.status === 401) {
         // Unauthorized means we should prompt the user to log in
         res.redirect(`login?next=${encodeURIComponent(req.path)}`);

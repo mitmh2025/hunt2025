@@ -3,7 +3,7 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
 
-const c = initContract();
+export const c = initContract();
 
 const slug = z.string();
 
@@ -24,7 +24,7 @@ const PuzzleSummarySchema = z.object({
   answer: z.string().optional(),
 });
 
-const PuzzleStateSchema = PuzzleSummarySchema.extend({
+export const PuzzleStateSchema = PuzzleSummarySchema.extend({
   guesses: z.array(GuessSchema).default([]),
 });
 
@@ -44,7 +44,7 @@ const InteractionStateSchema = z.object({
   result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
 });
 
-const TeamStateSchema = z.object({
+export const TeamStateSchema = z.object({
   teamName: z.string(),
   currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
@@ -88,12 +88,6 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
 
 const ActivityLogSchema = z.array(ActivityLogEntrySchema);
 
-const ForcePuzzleStateSchema = z.object({
-  visible: z.boolean().optional(),
-  unlockable: z.boolean().optional(),
-  unlocked: z.boolean().optional(),
-});
-
 const LoginRequestSchema = z.object({
   username: z.string(),
   password: z.string(),
@@ -103,7 +97,7 @@ const LoginResponseSchema = z.object({
   token: z.string(),
 });
 
-const authContract = c.router({
+export const authContract = c.router({
   login: {
     method: "POST",
     path: `/auth/login`,
@@ -116,7 +110,7 @@ const authContract = c.router({
   },
 });
 
-const publicContract = c.router({
+export const publicContract = c.router({
   getMyTeamState: {
     method: "GET",
     path: `/me`,
@@ -160,40 +154,4 @@ const publicContract = c.router({
       404: z.null(),
     },
   },
-});
-
-const adminContract = c.router({
-  getTeamState: {
-    method: "GET",
-    path: `/teams/:team`,
-    responses: {
-      200: TeamStateSchema,
-      404: z.null(),
-    },
-    summary: "Get a team's state",
-  },
-  getPuzzleState: {
-    method: "GET",
-    path: `/teams/:team/puzzle/:slug`,
-    responses: {
-      200: PuzzleStateSchema,
-      404: z.null(),
-    },
-    summary: "Get the state of one puzzle",
-  },
-  forcePuzzleState: {
-    method: "PATCH",
-    path: `/teams/:team/puzzle/:slug`,
-    body: ForcePuzzleStateSchema,
-    responses: {
-      200: PuzzleStateSchema,
-    },
-    summary: "Force the state of one puzzle",
-  },
-});
-
-export const contract = c.router({
-  auth: authContract,
-  public: publicContract,
-  admin: adminContract,
 });
