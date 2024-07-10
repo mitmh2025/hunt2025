@@ -490,19 +490,19 @@ export function getRouter({
     admin: {
       getTeamState: {
         middleware: adminAuthMiddlewares,
-        handler: async ({ params: { team } }) => {
+        handler: async ({ params: { teamId } }) => {
           return {
             status: 200,
             body: await knex.transaction(
-              getTeamState.bind(null, parseInt(team, 10)),
+              getTeamState.bind(null, parseInt(teamId, 10)),
             ),
           };
         },
       },
       getPuzzleState: {
         middleware: adminAuthMiddlewares,
-        handler: async ({ params: { team, slug } }) => {
-          const team_id = parseInt(team, 10);
+        handler: async ({ params: { teamId, slug } }) => {
+          const team_id = parseInt(teamId, 10);
           const state = await knex.transaction(
             getPuzzleState.bind(null, team_id, slug),
           );
@@ -520,9 +520,9 @@ export function getRouter({
       },
       forcePuzzleState: {
         middleware: adminAuthMiddlewares,
-        handler: async ({ params: { team, slug }, body }) => {
+        handler: async ({ params: { teamId, slug }, body }) => {
           return await knex.transaction(async (trx) => {
-            const team_id = parseInt(team, 10);
+            const team_id = parseInt(teamId, 10);
             await trx("team_puzzles")
               .insert(
                 Object.assign(

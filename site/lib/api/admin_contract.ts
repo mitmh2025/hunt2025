@@ -10,7 +10,7 @@ const ForcePuzzleStateSchema = z.object({
 export const adminContract = c.router({
   getTeamState: {
     method: "GET",
-    path: `/teams/:team`,
+    path: `/teams/:teamId`,
     responses: {
       200: TeamStateSchema,
       404: z.null(),
@@ -19,7 +19,7 @@ export const adminContract = c.router({
   },
   getPuzzleState: {
     method: "GET",
-    path: `/teams/:team/puzzle/:slug`,
+    path: `/teams/:teamId/puzzle/:slug`,
     responses: {
       200: PuzzleStateSchema,
       404: z.null(),
@@ -28,7 +28,7 @@ export const adminContract = c.router({
   },
   forcePuzzleState: {
     method: "PATCH",
-    path: `/teams/:team/puzzle/:slug`,
+    path: `/teams/:teamId/puzzle/:slug`,
     body: ForcePuzzleStateSchema,
     responses: {
       200: PuzzleStateSchema,
