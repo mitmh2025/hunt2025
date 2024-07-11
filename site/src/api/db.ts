@@ -63,9 +63,9 @@ export async function connect(environment: string) {
   });
 
   if (
-    environment == "memory" ||
-    environment == "development" ||
-    environment == "ci"
+    environment === "memory" ||
+    environment === "development" ||
+    environment === "ci"
   ) {
     const seedContext = import.meta.webpackContext("../../seeds", {
       regExp: /^\.\/.*\.ts$/,
@@ -280,7 +280,7 @@ export async function appendActivityLog(
 }
 
 export function fixTimestamp(value: string | Date): Date {
-  if (typeof value == "string") {
+  if (typeof value === "string") {
     // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
     return new Date(value + "Z");
   }

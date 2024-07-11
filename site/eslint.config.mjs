@@ -110,6 +110,7 @@ export default tseslint.config(
       // interfaces are not perfectly substitutable for types so don't prefer
       // them
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+      eqeqeq: ["error"],
     },
   },
   {

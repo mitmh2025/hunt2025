@@ -24,17 +24,17 @@ async function createRedisClient(redisUrl: string) {
 export type RedisClient = Awaited<ReturnType<typeof createRedisClient>>;
 
 export default async function ({
-  db_environment,
-  jwt_secret,
+  dbEnvironment,
+  jwtSecret,
   apiUrl,
   redisUrl,
 }: {
-  db_environment: string;
-  jwt_secret: string | Buffer;
+  dbEnvironment: string;
+  jwtSecret: string | Buffer;
   apiUrl: string;
   redisUrl?: string;
 }) {
-  const knex = await connect(db_environment);
+  const knex = await connect(dbEnvironment);
 
   const redisClient = redisUrl ? await createRedisClient(redisUrl) : undefined;
 
@@ -46,7 +46,7 @@ export default async function ({
 
   // Mount the API router at /api
   const apiRouter = getRouter({
-    jwt_secret,
+    jwtSecret,
     knex,
     hunt,
     redisClient,

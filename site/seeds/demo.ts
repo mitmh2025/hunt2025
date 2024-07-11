@@ -47,8 +47,8 @@ export async function seed(knex: Knex): Promise<void> {
         team_id,
         slug,
         visible: true,
-        unlockable: username != "visible",
-        unlocked: username == "unlocked" || username == "solved",
+        unlockable: username !== "visible",
+        unlocked: username === "unlocked" || username === "solved",
       })),
     );
   }

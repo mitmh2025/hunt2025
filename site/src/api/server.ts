@@ -47,7 +47,7 @@ function cookieExtractor(req: Request) {
   return token ? token : null;
 }
 
-function newPassport(jwt_secret: string | Buffer) {
+function newPassport(jwtSecret: string | Buffer) {
   const passport = new Passport();
   passport.use(
     new Strategy(
@@ -56,12 +56,12 @@ function newPassport(jwt_secret: string | Buffer) {
           cookieExtractor,
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: jwt_secret,
+        secretOrKey: jwtSecret,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
-      function (jwt_payload: JWTPayload, done) {
-        done(null, jwt_payload.team_id, { adminUser: jwt_payload.adminUser });
+      function (jwtPayload: JWTPayload, done) {
+        done(null, jwtPayload.team_id, { adminUser: jwtPayload.adminUser });
       },
     ),
   );
@@ -74,12 +74,12 @@ function canonicalizeInput(input: string) {
 }
 
 export function getRouter({
-  jwt_secret,
+  jwtSecret,
   knex,
   hunt,
   redisClient,
 }: {
-  jwt_secret: string | Buffer;
+  jwtSecret: string | Buffer;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -90,7 +90,7 @@ export function getRouter({
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  const passport = newPassport(jwt_secret);
+  const passport = newPassport(jwtSecret);
 
   const s = initServer();
 
@@ -194,7 +194,7 @@ export function getRouter({
         return;
       }
       puzzles.forEach((slot) => {
-        if (slug == getSlotSlug(slot)) {
+        if (slug === getSlotSlug(slot)) {
           round = roundSlug;
         }
       });
@@ -251,7 +251,7 @@ export function getRouter({
   const adminAuthMiddlewares: RequestHandler[] = [
     authMiddleware,
     (req, res, next) => {
-      if (process.env.NODE_ENV == "development" || req.authInfo?.adminUser) {
+      if (process.env.NODE_ENV === "development" || req.authInfo?.adminUser) {
         next();
         return;
       }
@@ -287,7 +287,7 @@ export function getRouter({
               user: team.username,
               team_id: team.id,
             },
-            jwt_secret,
+            jwtSecret,
             {},
           );
 
@@ -355,7 +355,7 @@ export function getRouter({
             if ("data" in e) {
               // SQLite doesn't parse JSON automatically
               const data =
-                typeof e.data == "string"
+                typeof e.data === "string"
                   ? (JSON.parse(e.data as string) as typeof e.data)
                   : e.data;
               entry = Object.assign(entry, data);
@@ -378,12 +378,12 @@ export function getRouter({
             ? "answer" in puzzle
               ? [{ answer: puzzle.answer, prize: puzzle.prize, submit_if: [] }]
               : puzzle.answers
-            : process.env.NODE_ENV == "development"
+            : process.env.NODE_ENV === "development"
               ? [{ answer: "PLACEHOLDER ANSWER", prize: 1, submit_if: [] }]
               : [];
           // TODO: Figure out the semantics of a correct answer with false submit_if
           const correct_answer = answers.find(
-            ({ answer }) => canonicalizeInput(answer) == canonical_input,
+            ({ answer }) => canonicalizeInput(answer) === canonical_input,
           );
           // TODO: Make sure that we retry/wait for conflicts.
           return await knex.transaction(async function (trx) {
@@ -448,7 +448,7 @@ export function getRouter({
               .filter(({ slug }) => data.unlocked_rounds.has(slug))
               .flatMap(({ puzzles }) =>
                 puzzles.flatMap((slot) =>
-                  getSlotSlug(slot) == slug ? [slot] : [],
+                  getSlotSlug(slot) === slug ? [slot] : [],
                 ),
               )[0];
             const unlock_cost = slot?.unlock_cost;

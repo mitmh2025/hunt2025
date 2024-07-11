@@ -60,7 +60,7 @@ const loginPostHandler: RequestHandler<
       password,
     },
   });
-  if (loginResult.status != 200 && loginResult.status != 403) {
+  if (loginResult.status !== 200 && loginResult.status !== 403) {
     console.log("login result", loginResult, loginResult.body);
     res.status(500).send("Internal server error");
     return;
@@ -69,7 +69,7 @@ const loginPostHandler: RequestHandler<
   // Don't bother with weird query string formats.  Get a string, or get your
   // next path ignored.
   const target = qs && typeof qs === "string" ? qs : "/";
-  if (loginResult.status == 200) {
+  if (loginResult.status === 200) {
     res.cookie("mitmh2025_auth", loginResult.body.token, {
       httpOnly: true,
       sameSite: true,
@@ -167,7 +167,7 @@ export async function getUiRouter({
         // We didn't get an acceptable answer from the backend, so complain and
         // don't render anything else since we don't have the state necessary
         // to do so correctly.
-        const showError = process.env.NODE_ENV == "development";
+        const showError = process.env.NODE_ENV === "development";
         render500(
           res,
           showError,

@@ -7,18 +7,18 @@ const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
 const apiUrl = process.env.API_BASE_URL ?? "http://localhost:3000/api";
 // N.B. process.env.NODE_ENV is compiled by webpack
 const environment = process.env.NODE_ENV ?? "development";
-const db_environment = process.env.DB_ENV ?? "development";
-let jwt_secret: string | Buffer | undefined = process.env.JWT_SECRET;
-if (environment == "development" && !jwt_secret) {
-  jwt_secret = randomBytes(128);
+const dbEnvironment = process.env.DB_ENV ?? "development";
+let jwtSecret: string | Buffer | undefined = process.env.JWT_SECRET;
+if (environment === "development" && !jwtSecret) {
+  jwtSecret = randomBytes(128);
 }
-if (!jwt_secret) {
+if (!jwtSecret) {
   throw new Error("$JWT_SECRET not defined in production");
 }
 
 app({
-  db_environment,
-  jwt_secret,
+  dbEnvironment,
+  jwtSecret,
   apiUrl,
   redisUrl: process.env.REDIS_URL,
 })
