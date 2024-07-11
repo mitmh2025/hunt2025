@@ -45,6 +45,7 @@ const InteractionStateSchema = z.object({
 });
 
 export const TeamStateSchema = z.object({
+  teamId: z.number(),
   teamName: z.string(),
   currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),

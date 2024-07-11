@@ -155,6 +155,7 @@ export function getRouter({
         ? { interactions: Object.fromEntries(interaction_kvs) }
         : {};
     return {
+      teamId: team_id,
       teamName: data.team_name,
       rounds,
       currency: data.available_currency,
