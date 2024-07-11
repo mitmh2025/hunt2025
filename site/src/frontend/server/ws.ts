@@ -13,14 +13,14 @@ export async function getWsHandler(redisClient?: RedisClient) {
     res: WSResponse,
     next: NextFunction,
   ) {
-    const team = req.teamState?.teamName;
-    if (!team) {
+    const teamId = req.teamState?.teamId;
+    if (!teamId) {
       next();
       return;
     }
     const ws = await res.accept();
     if (subscriber) {
-      const channel = `team_state.${team}`;
+      const channel = `team_state.${teamId}`;
       const listener = (message: string, _channel: string) => {
         try {
           const data = JSON.parse(message) as TeamState;
