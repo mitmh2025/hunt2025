@@ -26,6 +26,7 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   },
   stakeout: {
     component: StakeoutRoundPage,
+    entrypoint: "stakeout",
   },
   paper_trail: {
     component: PapertrailRoundPage,
