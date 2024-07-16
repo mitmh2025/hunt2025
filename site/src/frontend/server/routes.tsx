@@ -165,7 +165,7 @@ export async function getUiRouter({
       const teamStateResp = await req.api.getMyTeamState();
       if (teamStateResp.status === 401) {
         // Unauthorized means we should prompt the user to log in
-        res.redirect(`login?next=${encodeURIComponent(req.path)}`);
+        res.redirect(`/login?next=${encodeURIComponent(req.path)}`);
         return;
       }
       if (teamStateResp.status !== 200) {
