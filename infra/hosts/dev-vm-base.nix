@@ -5,7 +5,6 @@
     ./base.nix
     ../services/postgres.nix
     ../services/redis.nix
-    ../services/thingsboard.nix
   ];
   config = {
     system.stateVersion = "24.05";
@@ -25,7 +24,19 @@
       enable = true;
     };
 
+    services.thingsboard = {
+      enable = true;
+      logback.loggers = {
+        "org.thingsboard.server" = "DEBUG";
+        "org.thingsboard.server.actors.TbActorMailbox" = "INFO";
+        "org.thingsboard.server.actors.service.ContextAwareActor" = "INFO";
+      };
+      logback.rootLevel = "DEBUG";
+      datasource.createLocally = true;
+    };
+
     virtualisation.vmVariant = {
+      virtualisation.memorySize = 2048;
       virtualisation.forwardPorts = [
         # Redis
         { from = "host"; host.port = 6379; guest.port = 6379; }
