@@ -245,7 +245,6 @@ const StakeoutBody = ({
         });
 
         if (trivialMovement && focusOnTrivialMovement) {
-          console.log("TODO: should zoom in on", dragging);
           setFocused(dragging);
         }
         setDragging(undefined);

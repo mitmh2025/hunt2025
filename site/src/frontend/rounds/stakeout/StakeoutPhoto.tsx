@@ -104,8 +104,6 @@ const StakeoutPhoto = ({
     ...transitionProperties,
   };
 
-  // TODO: only make zoomable when
-
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- I'm not making this a button or supporting keyboard navigation
     <div key={slot} style={polaroidOuterStyle} onMouseDown={mouseDownHandler}>
