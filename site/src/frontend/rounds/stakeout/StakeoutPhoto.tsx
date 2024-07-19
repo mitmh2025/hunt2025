@@ -101,7 +101,7 @@ const StakeoutPhoto = ({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     textAlign: "center" as const,
-    fontSize: focused ? "40px" : "16px",
+    fontSize: focused ? "60px" : "24px",
     ...transitionProperties,
   };
 

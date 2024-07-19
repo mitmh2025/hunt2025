@@ -79,6 +79,16 @@ export default function createConfigs(_env, argv) {
     },
   });
 
+  const fontRule = (publicPath) => ({
+    test: /\.ttf$/,
+    type: "asset/resource",
+    generator: {
+      outputPath: "assets/",
+      publicPath: `${publicPath}/assets/`,
+      filename: "[hash][ext][query]",
+    },
+  });
+
   const serverSwcLoader = {
     // .swcrc can be used to configure swc
     loader: "swc-loader",
@@ -121,6 +131,7 @@ export default function createConfigs(_env, argv) {
         // the results of the browser build bundles
         pngRule(""),
         mp3Rule(""),
+        fontRule(""),
       ],
       // Add modules as appropriate
     },
@@ -188,6 +199,7 @@ export default function createConfigs(_env, argv) {
         },
         cssRule,
         pngRule("/client"),
+        fontRule("/client"),
       ],
     },
     resolve: {

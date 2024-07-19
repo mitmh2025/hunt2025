@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Just Another Hand";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/JustAnotherHand-Regular.ttf") format("truetype");
+}
+
+.just-another-hand {
+  font-family: "Just Another Hand", cursive;
+  font-weight: 400;
+  font-style: normal;
+}

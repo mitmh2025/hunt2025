@@ -307,6 +307,7 @@ const StakeoutBody = ({
         backgroundImage: `url(${state.overlay.asset})`,
         filter: "drop-shadow(0 0 4px black)",
         userSelect: "none" as const,
+        fontSize: "24px",
       }}
     >
       <div
@@ -331,6 +332,7 @@ const StakeoutBody = ({
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- I'm not making this a button or supporting keyboard navigation
     <div
+      className="just-another-hand"
       style={pageStyle}
       onMouseDown={onBackgroundMouseDown}
       onMouseLeave={endDrag}
