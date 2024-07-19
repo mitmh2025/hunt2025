@@ -1,0 +1,17 @@
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		"context": "..",
+		"dockerfile": "./Dockerfile"
+	},
+	"runArgs": [
+		"--platform",
+		"linux/amd64",
+	],
+	"privileged": true,
+	"mounts": [
+    "source=${env:HOME}${env:USERPROFILE}/.aws,target=/root/.aws,type=bind",
+		"source=${env:HOME}${env:USERPROFILE}/.config/gcloud,target=/root/.config/gcloud,type=bind"
+	]
+
+}
