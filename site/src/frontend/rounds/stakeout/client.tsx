@@ -22,7 +22,7 @@ const StakeoutManager = ({
     return stop;
   }, []);
   useEffect(() => {
-    const stop = globalSocketManager.watch("navbar", (value: object) => {
+    const stop = globalSocketManager.watch("team_state", (value: object) => {
       setTeamState(value as TeamState);
     });
     return stop;

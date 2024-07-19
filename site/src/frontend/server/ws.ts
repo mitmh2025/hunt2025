@@ -20,7 +20,7 @@ const DATASET_REGISTRY: Record<Dataset, (teamState: TeamState) => object> = {
   stakeout: (teamState: TeamState) => {
     return stakeoutState(teamState);
   },
-  navbar: (teamState: TeamState) => {
+  team_state: (teamState: TeamState) => {
     return teamState;
   },
 };
