@@ -3,7 +3,7 @@ import type { TeamState } from "../../../../lib/api/client";
 //import RoundPuzzleList from "../../components/RoundPuzzleList";
 import { PUZZLES } from "../../puzzles";
 import StakeoutBody from "./StakeoutBody";
-import metaEnvelope from "./assets/meta_envelope.png";
+import metaEnvelope from "./assets/meta_envelope_full.png";
 import polaroidDeveloping from "./assets/polaroid_developing_photo_only.png";
 import { type StakeoutSlot, type StakeoutState } from "./types";
 
@@ -71,7 +71,7 @@ function stakeoutOverlay(teamState: TeamState): StakeoutState["overlay"] {
     asset: metaEnvelope,
     // Bottom and right are used to align the image to the bottom right space on the table
     bottom: "0px",
-    right: "0px",
+    right: "-90px",
     // Left, top, and transform are used to specify the offset for the puzzle link
     left: "87px",
     top: "157px",
