@@ -59,8 +59,8 @@ export default function createConfigs(_env, argv) {
     ],
   };
 
-  const pngRule = (publicPath) => ({
-    test: /\.png$/,
+  const imageRule = (publicPath) => ({
+    test: /\.(jpg|png|svg)$/,
     type: "asset/resource",
     generator: {
       outputPath: "assets/",
@@ -129,7 +129,7 @@ export default function createConfigs(_env, argv) {
         cssRule,
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
-        pngRule(""),
+        imageRule(""),
         mp3Rule(""),
         fontRule(""),
       ],
@@ -198,7 +198,7 @@ export default function createConfigs(_env, argv) {
           use: ["swc-loader"],
         },
         cssRule,
-        pngRule("/client"),
+        imageRule("/client"),
         fontRule("/client"),
       ],
     },

@@ -39,9 +39,15 @@ const StakeoutPhoto = ({
 
   const link = useMemo(() => {
     return title && slug ? (
-      <PuzzleLink teamState={teamState} title={title} slug={slug} />
+      <PuzzleLink
+        teamState={teamState}
+        title={title}
+        slug={slug}
+        showIcon={false}
+        size={focused ? 60 : 24}
+      />
     ) : undefined;
-  }, [teamState, title, slug]);
+  }, [title, slug, teamState, focused]);
 
   const shadowX = (4 * (position.x - 920)) / 1920;
 
