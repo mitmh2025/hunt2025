@@ -1,9 +1,9 @@
+import { genId } from "./id";
 import {
   type Dataset,
   type MessageFromClient,
   type MessageToClient,
-} from "../../../lib/api/websocket";
-import { genId } from "../../../lib/id";
+} from "./websocket";
 
 type Watcher = {
   // A unique id for the watcher (so we can remove particular watchers from the list)
@@ -74,9 +74,9 @@ export class SocketManager {
   private onSocketConnectErrorBound: (e: Event) => void;
   private onSocketCloseBound: (e: CloseEvent) => void;
 
-  private shouldLog: boolean;
+  private debug: boolean;
 
-  constructor() {
+  constructor(debug = false) {
     this.subsByDataset = new Map<Dataset, SubscriptionState>();
     this.subsBySubId = new Map<string, SubscriptionState>();
     this.pendingRPCs = new Map<number, MessageFromClient>();
@@ -89,9 +89,7 @@ export class SocketManager {
     this.onSocketConnectErrorBound = this.onSocketConnectError.bind(this);
     this.onSocketCloseBound = this.onSocketClose.bind(this);
 
-    this.shouldLog =
-      process.env.NODE_ENV === "development" ||
-      localStorage.getItem("DEBUG_WEBSOCKET") !== null;
+    this.debug = debug;
 
     this.sockState = "connecting";
     this.connId = undefined;
@@ -124,7 +122,7 @@ export class SocketManager {
   }
 
   log(...args: unknown[]) {
-    if (this.shouldLog) {
+    if (this.debug) {
       this.logAlways(...args);
     }
   }
@@ -348,11 +346,3 @@ export class SocketManager {
     };
   }
 }
-
-const globalSocketManager = new SocketManager();
-// Stuff the socket manager somewhere in global scope so you can get at it from the JS console
-(
-  window as unknown as { globalSocketManager: SocketManager }
-).globalSocketManager = globalSocketManager;
-
-export default globalSocketManager;

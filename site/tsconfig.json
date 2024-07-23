@@ -1,40 +1,18 @@
 {
+  "extends": "./shared-tsconfig.json",
   "compilerOptions": {
-    "target": "es2019",
-    "module": "es2020",
     "lib": ["esnext", "dom"],
-    "jsx": "preserve",
-    "noEmit": true,
-
     "paths": {
       // "@/*": ["./src/*"]
     },
 
-    /* Strict Type-Checking Options */
-    "strict": true,
-    "strictNullChecks": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitThis": true,
-    "noUncheckedIndexedAccess": true,
-
     /* Modules Resolution Options */
-    "baseUrl": ".",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
     "types": [
       "node",
       "react/experimental",
       "react-dom/experimental",
       "webpack/module"
-    ],
-    "esModuleInterop": true,
-    "preserveSymlinks": true
-  }
+    ]
+  },
+  "exclude": ["./worker/**/*"]
 }

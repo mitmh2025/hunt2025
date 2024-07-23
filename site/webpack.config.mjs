@@ -17,6 +17,10 @@ const assetManifestFilename = path.join(
   outputManifestDirname,
   "asset-manifest.json",
 );
+const workerManifestFilename = path.join(
+  outputManifestDirname,
+  "worker-manifest.json",
+);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Used by mfng, if we add it back in
 class LogValue {
@@ -172,7 +176,6 @@ export default function createConfigs(_env, argv) {
   };
 
   const clientOutputDirname = path.join(outputDirname, `static/client`);
-
   const clientConfig = {
     name: "client",
     entry: {
@@ -182,6 +185,8 @@ export default function createConfigs(_env, argv) {
       shadow_diamond: "./src/frontend/rounds/shadow_diamond/client.tsx",
       stakeout: "./src/frontend/rounds/stakeout/client.tsx",
     },
+    // Client code needs to reference the webworker bundle by URL.
+    dependencies: ["worker"],
     target: "web",
     output: {
       filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
@@ -273,5 +278,44 @@ export default function createConfigs(_env, argv) {
     },
     // ...
   };
-  return [serverConfig, clientConfig];
+
+  const workerOutputDirname = path.join(outputDirname, `static/worker`);
+  const workerConfig = {
+    name: "worker",
+    entry: {
+      websocket_worker: "./worker/SharedWebsocketWorker.ts",
+    },
+    target: "webworker",
+    output: {
+      filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
+      path: workerOutputDirname,
+      clean: !dev,
+      publicPath: "/worker/",
+    },
+    module: {
+      rules: [
+        {
+          test: /\.m?tsx?$/,
+          exclude: /(node_modules)/,
+          use: ["swc-loader"],
+        },
+      ],
+    },
+    resolve: {
+      extensions: [".ts", ".tsx", "..."],
+      extensionAlias: {
+        ".js": [".ts", ".js"],
+        ".mjs": [".mts", ".mjs"],
+      },
+      //modules: [path.join(currentDirname, "node_modules")],
+    },
+    plugins: [
+      new WebpackManifestPlugin({
+        fileName: workerManifestFilename,
+        publicPath: "/worker/",
+      }),
+    ],
+  };
+
+  return [serverConfig, clientConfig, workerConfig];
 }

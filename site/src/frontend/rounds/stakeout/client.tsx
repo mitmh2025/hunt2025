@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { type TeamState } from "../../../../lib/api/client";
-import globalSocketManager from "../../client/SocketManager";
+import globalDatasetManager from "../../client/DatasetManager";
 import StakeoutBody from "./StakeoutBody";
 import { type StakeoutState } from "./types";
 import "./client.css";
@@ -17,13 +17,13 @@ const StakeoutManager = ({
   const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
 
   useEffect(() => {
-    const stop = globalSocketManager.watch("stakeout", (value: object) => {
+    const stop = globalDatasetManager.watch("stakeout", (value: object) => {
       setState(value as StakeoutState);
     });
     return stop;
   }, []);
   useEffect(() => {
-    const stop = globalSocketManager.watch("team_state", (value: object) => {
+    const stop = globalDatasetManager.watch("team_state", (value: object) => {
       setTeamState(value as TeamState);
     });
     return stop;
