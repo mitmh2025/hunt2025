@@ -1,11 +1,11 @@
 import workersManifest from "../../../dist/worker-manifest.json";
 import { SocketManager } from "../../../lib/SocketManager";
-import { genId } from "../../../lib/id";
 import {
   type MessageFromWorker,
   type MessageToWorker,
   type Dataset,
-} from "../../../lib/websocket";
+} from "../../../lib/api/websocket";
+import { genId } from "../../../lib/id";
 
 class DirectDatasetManager {
   private socketManager: SocketManager;
@@ -18,35 +18,37 @@ class DirectDatasetManager {
   }
 }
 
+type Watch = {
+  id: string;
+  dataset: Dataset;
+  callback: (value: object) => void;
+};
+
 class SharedWorkerDatasetManager {
   // reference to shared worker
   private sharedWorker: SharedWorker;
-  // map from subid to callback
-  private watches: Map<string, (value: object) => void>;
+  // map from subid to watch
+  private watches: Map<string, Watch>;
 
   private lockId: string;
 
+  private scriptUrl: string;
+
+  private handleMessageFromWorkerBound: (
+    e: MessageEvent<MessageFromWorker>,
+  ) => void;
+
   constructor() {
-    this.watches = new Map<string, (value: object) => void>();
-    this.sharedWorker = new SharedWorker(
-      workersManifest["websocket_worker.js"],
-    );
+    this.watches = new Map<string, Watch>();
+    this.scriptUrl = workersManifest["websocket_worker.js"];
+    this.handleMessageFromWorkerBound = this.handleMessageFromWorker.bind(this);
+    this.sharedWorker = new SharedWorker(this.scriptUrl);
     this.sharedWorker.port.addEventListener(
       "message",
-      (e: MessageEvent<MessageFromWorker>) => {
-        if (e.data.type === "debug") {
-          console.log("worker debug", e.data.value);
-        }
-        if (e.data.type === "update") {
-          const { subId, value } = e.data;
-          const update = this.watches.get(subId);
-          if (update) {
-            update(value);
-          }
-        }
-      },
+      this.handleMessageFromWorkerBound,
     );
     this.sharedWorker.port.start();
+    this.notifyWorkerInitialScript();
     // Generate a random lock ID for this tab
     this.lockId = genId();
     if ("locks" in navigator) {
@@ -62,10 +64,81 @@ class SharedWorkerDatasetManager {
     }
   }
 
+  handleMessageFromWorker(e: MessageEvent<MessageFromWorker>) {
+    if (e.data.type === "debug") {
+      console.log("worker debug", e.data.value);
+    }
+    if (e.data.type === "update") {
+      const { subId, value } = e.data;
+      const watch = this.watches.get(subId);
+      if (watch) {
+        watch.callback(value);
+      }
+    }
+    if (e.data.type === "new_script_url") {
+      const { scriptUrl } = e.data;
+      if (this.scriptUrl !== scriptUrl) {
+        console.log(
+          `worker scriptUrl changed from ${this.scriptUrl} to ${scriptUrl}, restarting worker`,
+        );
+        this.scriptUrl = scriptUrl;
+        this.restartWorker();
+      }
+    }
+  }
+
+  notifyWorkerInitialScript() {
+    const startupMessage: MessageToWorker = {
+      type: "set_initial_script_url",
+      initialScriptUrl: this.scriptUrl,
+    };
+    this.sharedWorker.port.postMessage(startupMessage);
+  }
+
+  restartWorker() {
+    // Executed when we get notified of a new script URL from the current shared worker.
+    // We will, in order:
+    // * Close our port to the old worker, so it can be GC'd by the browser.  It
+    //   will terminate itself after telling us the new worker script URL.
+    this.sharedWorker.port.close();
+    // * Remove the event listener, so we will no longer receive messages from the worker.
+    this.sharedWorker.port.removeEventListener(
+      "message",
+      this.handleMessageFromWorkerBound,
+    );
+    // * Create a new worker (precondition: this.scriptUrl should have been updated to the new URL)
+    this.sharedWorker = new SharedWorker(this.scriptUrl);
+    this.sharedWorker.port.addEventListener(
+      "message",
+      this.handleMessageFromWorkerBound,
+    );
+    this.sharedWorker.port.start();
+    this.notifyWorkerInitialScript();
+    // * if web locks are available, bind the port with our lockId, which we should already be holding.
+    if ("locks" in navigator) {
+      this.sharedWorker.port.postMessage({ type: "bind", lock: this.lockId });
+    }
+    // * re-post the watch requests, so the new worker will establish them
+    this.watches.forEach((watch) => {
+      const { id, dataset } = watch;
+      const subMessage: MessageToWorker = {
+        type: "sub",
+        subId: id,
+        dataset,
+      };
+      this.sharedWorker.port.postMessage(subMessage);
+    });
+  }
+
   watch(dataset: Dataset, onUpdate: (value: object) => void): () => void {
     const watchId = genId();
     console.log(`starting watch ${watchId}`);
-    this.watches.set(watchId, onUpdate);
+    const watch = {
+      id: watchId,
+      dataset,
+      callback: onUpdate,
+    };
+    this.watches.set(watchId, watch);
     const subMessage: MessageToWorker = {
       type: "sub",
       subId: watchId,

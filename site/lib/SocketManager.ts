@@ -1,9 +1,9 @@
-import { genId } from "./id";
 import {
   type Dataset,
   type MessageFromClient,
   type MessageToClient,
-} from "./websocket";
+} from "./api/websocket";
+import { genId } from "./id";
 
 type Watcher = {
   // A unique id for the watcher (so we can remove particular watchers from the list)
@@ -74,6 +74,8 @@ export class SocketManager {
   private onSocketConnectErrorBound: (e: Event) => void;
   private onSocketCloseBound: (e: CloseEvent) => void;
 
+  private scriptUrl: string | undefined;
+  private scriptUrlObserver: ((scriptUrl: string) => void) | undefined;
   private debug: boolean;
 
   constructor(debug = false) {
@@ -148,6 +150,10 @@ export class SocketManager {
           this.sockState === "connected-waiting-hello"
         ) {
           this.connId = data.connId;
+          this.scriptUrl = data.scriptUrl;
+          if (this.scriptUrlObserver) {
+            this.scriptUrlObserver(data.scriptUrl);
+          }
           this.sockState = "connected";
           this.failureCount = 0;
           this.tryDispatchPendingSubRequests();
@@ -343,6 +349,17 @@ export class SocketManager {
     this.addWatcher(dataset, watcher);
     return () => {
       this.dropWatcher(dataset, watchId);
+    };
+  }
+
+  // We expect only one observeScriptUrl caller
+  observeScriptUrl(onUpdate: (scriptUrl: string) => void): () => void {
+    this.scriptUrlObserver = onUpdate;
+    if (this.scriptUrl) {
+      this.scriptUrlObserver(this.scriptUrl);
+    }
+    return () => {
+      this.scriptUrlObserver = undefined;
     };
   }
 }

@@ -1,5 +1,8 @@
 import { SocketManager } from "../lib/SocketManager";
-import { type MessageFromWorker, type MessageToWorker } from "../lib/websocket";
+import {
+  type MessageFromWorker,
+  type MessageToWorker,
+} from "../lib/api/websocket";
 
 type Watch = {
   subId: string;
@@ -77,11 +80,62 @@ const watchManager = new WatchManager();
   socketManager;
 (self as unknown as { watchManager: WatchManager }).watchManager = watchManager;
 
+// Additional globals
+
+// The set of live ports.  We need to keep a list of them so we can notify them
+// all about a new script URL, even if there are no active subscriptions.
+const livePorts: Set<MessagePort> = new Set<MessagePort>();
+// The script URL sent to us by the browser tab, based on what was known when
+// that client script was bundled.
+let clientExpectedScriptUrl: string | undefined = undefined;
+// The script URL sent to us by the server in the hello message when the
+// websocket first connected.
+let serverExpectedScriptUrl: string | undefined = undefined;
+
+socketManager.observeScriptUrl((scriptUrl: string) => {
+  serverExpectedScriptUrl = scriptUrl;
+  console.log("server url is now", scriptUrl);
+  notifyScriptUrlsIfNeeded();
+});
+
+function notifyScriptUrlsIfNeeded() {
+  // If the script URL known to the server is not the one known to the client,
+  // the assumption is that we did a deploy which changed the worker's script
+  // version.  In that circumstance, we would like to migrate to the new
+  // version, which means 1) telling all the live tabs about it, and 2) shutting
+  // this worker down.
+  if (
+    clientExpectedScriptUrl !== undefined &&
+    serverExpectedScriptUrl !== undefined &&
+    clientExpectedScriptUrl !== serverExpectedScriptUrl
+  ) {
+    console.log(
+      `worker got new script URL (old: ${clientExpectedScriptUrl}, new ${serverExpectedScriptUrl}`,
+    );
+    // Notify all live ports that there's a new script URL and we're about to go
+    // away, which should prompt them to drop their reference to us and spawn a
+    // new SharedWorker.
+    const scriptUrl = serverExpectedScriptUrl;
+    const message: MessageFromWorker = {
+      type: "new_script_url",
+      scriptUrl,
+    };
+    console.log("Notifying each of", livePorts);
+    livePorts.forEach((port) => {
+      port.postMessage(message);
+    });
+    console.log("shutting self down");
+    // Terminate ourselves.  The user-agent will clean up the websocket and message ports and such.
+    self.close();
+  }
+}
+
 (self as unknown as SharedWorkerGlobalScope).addEventListener(
   "connect",
   (e: MessageEvent) => {
     const port = e.ports[0];
     if (port) {
+      livePorts.add(port);
       port.addEventListener("message", (ev: MessageEvent<MessageToWorker>) => {
         if (DEBUG) {
           console.log("got message", ev);
@@ -90,7 +144,14 @@ const watchManager = new WatchManager();
             value: `got message: ${JSON.stringify(ev.data)}`,
           });
         }
-        if (ev.data.type === "sub") {
+        if (ev.data.type === "set_initial_script_url") {
+          // We only care about setting this once, and it should always be the same URL.
+          if (clientExpectedScriptUrl === undefined) {
+            clientExpectedScriptUrl = ev.data.initialScriptUrl;
+            console.log("client url is now", ev.data.initialScriptUrl);
+            notifyScriptUrlsIfNeeded();
+          }
+        } else if (ev.data.type === "sub") {
           const { dataset, subId } = ev.data;
           const stop = socketManager.watch(dataset, (value: object) => {
             if (DEBUG) {
@@ -128,6 +189,7 @@ const watchManager = new WatchManager();
             );
             watchManager.dropAllSubsForPort(port);
             port.close();
+            livePorts.delete(port);
           });
         }
       });

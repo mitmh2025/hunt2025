@@ -1,5 +1,6 @@
 import type { NextFunction, Request } from "express";
 import type { WSResponse } from "websocket-express";
+import workersManifest from "../../../dist/worker-manifest.json";
 import { type TeamState } from "../../../lib/api/client";
 import {
   type MessageFromClient,
@@ -158,10 +159,10 @@ export async function getWsHandler(redisClient?: RedisClient) {
     });
     // Just a random ID for identifying the connection.
     connections.set(connHandler.connId, connHandler);
-    const helloMessage = {
-      rpc: 0,
+    const helloMessage: MessageToClient = {
       type: "hello" as const,
       connId: connHandler.connId,
+      scriptUrl: workersManifest["websocket_worker.js"],
     };
     connHandler.send(helloMessage);
 

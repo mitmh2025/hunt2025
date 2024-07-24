@@ -29,7 +29,11 @@ export type MessageFromClient = z.infer<typeof MessageFromClientSchema>;
 
 export const MessageToClientSchema = z.discriminatedUnion("type", [
   // Sent as an initial message from server to client.
-  z.object({ type: z.literal("hello"), connId: z.string() }),
+  z.object({
+    type: z.literal("hello"),
+    connId: z.string(),
+    scriptUrl: z.string(),
+  }),
 
   // Failure reply to whatever RPC was invoked.
   RPCBase.merge(z.object({ type: z.literal("fail"), error: z.string() })),
@@ -47,3 +51,42 @@ export const MessageToClientSchema = z.discriminatedUnion("type", [
   // TODO: ping/pong?
 ]);
 export type MessageToClient = z.infer<typeof MessageToClientSchema>;
+
+// These types are used for messages to and from the SharedWorker
+export type MessageToWorker =
+  | {
+      type: "sub";
+      subId: string;
+      dataset: Dataset;
+    }
+  | {
+      type: "unsub";
+      subId: string;
+    }
+  | {
+      // Tabs will generate a random lock name, acquire it, and never release it.
+      // The shared worker will attempt to acquire the lock, and if it ever
+      // succeeds, it will consider the MessagePort on which this message
+      // arrived dead, and drop the associated subscriptions.
+      type: "bind";
+      lock: string;
+    }
+  | {
+      type: "set_initial_script_url";
+      initialScriptUrl: string;
+    };
+
+export type MessageFromWorker =
+  | {
+      type: "update";
+      subId: string;
+      value: object;
+    }
+  | {
+      type: "debug";
+      value: string;
+    }
+  | {
+      type: "new_script_url";
+      scriptUrl: string;
+    };
