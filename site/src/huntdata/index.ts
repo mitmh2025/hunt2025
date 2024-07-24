@@ -188,7 +188,7 @@ const HUNT: Hunt = {
       slug: "paper_trail",
       title: "Paper Trail",
       puzzles: [
-        // 16 feeders, 8 metas, 1 super
+        // 17 feeders, 8 metas, 1 super
         { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
         { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
@@ -205,6 +205,7 @@ const HUNT: Hunt = {
         { id: "ptp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
         { id: "ptp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
         { id: "ptp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "ptp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
         { id: "ptm01", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 1
         { id: "ptm02", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 2
         { id: "ptm03", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 3
