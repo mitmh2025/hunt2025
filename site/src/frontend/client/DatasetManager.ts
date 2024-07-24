@@ -24,6 +24,8 @@ class SharedWorkerDatasetManager {
   // map from subid to callback
   private watches: Map<string, (value: object) => void>;
 
+  private lockId: string;
+
   constructor() {
     this.watches = new Map<string, (value: object) => void>();
     this.sharedWorker = new SharedWorker(
@@ -45,6 +47,19 @@ class SharedWorkerDatasetManager {
       },
     );
     this.sharedWorker.port.start();
+    // Generate a random lock ID for this tab
+    this.lockId = genId();
+    if ("locks" in navigator) {
+      void navigator.locks.request(this.lockId, (_lock: Lock | null) => {
+        // Tell the shared worker what lock to monitor for this channel.
+        this.sharedWorker.port.postMessage({ type: "bind", lock: this.lockId });
+        // Return a promise that never resolves nor rejects, so that we never release the lock.
+        // Dropping the lock is intended to be interpreted as the death of the client.
+        return new Promise((_resolve, _reject) => {
+          // Do nothing.
+        });
+      });
+    }
   }
 
   watch(dataset: Dataset, onUpdate: (value: object) => void): () => void {

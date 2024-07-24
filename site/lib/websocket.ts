@@ -58,6 +58,14 @@ export type MessageToWorker =
   | {
       type: "unsub";
       subId: string;
+    }
+  | {
+      // Tabs will generate a random lock name, acquire it, and never release it.
+      // The shared worker will attempt to acquire the lock, and if it ever
+      // succeeds, it will consider the MessagePort on which this message
+      // arrived dead, and drop the associated subscriptions.
+      type: "bind";
+      lock: string;
     };
 
 export type MessageFromWorker =
