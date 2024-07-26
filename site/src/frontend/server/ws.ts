@@ -57,11 +57,34 @@ class ConnHandler {
         // text frame, handle
         this.log(e.data);
         try {
-          const data = MessageFromClientSchema.parse(JSON.parse(e.data));
-          this.log("got inbound message", data);
-          this.handle(data, e);
-        } catch (error) {
-          console.log("got nonsensical message, ignoring:", e.data, error);
+          const json = JSON.parse(e.data) as unknown as object;
+          try {
+            const data = MessageFromClientSchema.parse(json);
+            this.log("got inbound message", data);
+            this.handle(data, e);
+          } catch (error) {
+            // If the request was at least well-formed JSON and there was an RPC
+            // id, try to send a fail message to the client so it can at least
+            // flag the error and know that no reply is coming
+            if (
+              typeof json === "object" &&
+              "rpc" in json &&
+              typeof json.rpc === "number"
+            ) {
+              this.send({
+                rpc: json.rpc,
+                type: "fail",
+                error: "invalid request",
+              });
+            }
+            console.log("got invalid request, ignoring:", e.data, error);
+          }
+        } catch (jsonParseError) {
+          console.log(
+            "got invalid JSON message, ignoring:",
+            e.data,
+            jsonParseError,
+          );
         }
       }
     });
