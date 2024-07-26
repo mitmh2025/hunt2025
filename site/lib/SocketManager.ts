@@ -21,16 +21,12 @@ type SubscriptionState = {
 
   // awaiting-socket means we want to make this subscription but the socket is not ready yet
   // requesting means our sub rpc is in flight but has not been answered yet
-  // active means out sub rpc completed successfully and we expect to receive updates
+  // active means our sub rpc completed successfully (which implies we have
+  //   received the first update already) and we expect to receive future updates
   // stopping means our unsub rpc is in flight but has not been answered yet
-  // stopped means our unsub rpc completed.  we keep the sub around so that we can reuse the lastValue if the sub is started up again.
-  state:
-    | "awaiting-socket"
-    | "requesting"
-    | "active"
-    | "stopping"
-    | "stopped"
-    | "error";
+  // error means our request to sub to the dataset got a failure reply, and a
+  //   human should probably figure out why
+  state: "awaiting-socket" | "requesting" | "active" | "stopping" | "error";
 
   // The last-known value of the subscription as provided by the server.
   lastValue: object | undefined;
@@ -78,7 +74,7 @@ export class SocketManager {
   private scriptUrlObserver: ((scriptUrl: string) => void) | undefined;
   private debug: boolean;
 
-  constructor(debug = false) {
+  constructor(debug = true) {
     this.subsByDataset = new Map<Dataset, SubscriptionState>();
     this.subsBySubId = new Map<string, SubscriptionState>();
     this.pendingRPCs = new Map<number, MessageFromClient>();
@@ -154,6 +150,7 @@ export class SocketManager {
           if (this.scriptUrlObserver) {
             this.scriptUrlObserver(data.scriptUrl);
           }
+          this.log("Websocket connected & got hello");
           this.sockState = "connected";
           this.failureCount = 0;
           this.tryDispatchPendingSubRequests();
@@ -163,10 +160,15 @@ export class SocketManager {
             const { subId, value } = data;
             const sub = this.subsBySubId.get(subId);
             if (sub) {
+              this.log("Got update for sub", subId, "to dataset", sub.dataset);
               // update the cached data for the corresponding sub
               sub.lastValue = value as object;
-              // notify watchers
-              if (value) {
+              // notify watchers, if not stopping or failed
+              if (
+                value &&
+                (sub.state === "requesting" || sub.state === "active")
+              ) {
+                this.log("Dispatching to", sub.watchers.length, "watchers");
                 sub.watchers.forEach((watcher) => {
                   watcher.callback(value);
                 });
@@ -180,6 +182,7 @@ export class SocketManager {
             // if the sub's state is requesting, mark the sub as active.
             if (sub) {
               if (sub.state === "requesting") {
+                this.log("Sub", subId, "for dataset", sub.dataset, "active");
                 sub.state = "active";
               }
             }
@@ -189,24 +192,28 @@ export class SocketManager {
             const { rpc, subId } = data;
             const sub = this.subsBySubId.get(subId);
             if (sub) {
-              if (sub.state === "stopping") {
-                sub.state = "stopped";
-              }
+              this.subsByDataset.delete(sub.dataset);
             }
-            // This subId is fully terminated.  We leave the SubscriptionState
-            // around in subsByDataset so we can reuse the lastValue, but we can
-            // now drop it from subsBySubId.
+            // This sub is fully terminated.
             this.subsBySubId.delete(subId);
             this.pendingRPCs.delete(rpc);
           } else if (type === "fail") {
             const { rpc } = data;
+            const req = this.pendingRPCs.get(rpc);
             // This is bad.  Maybe we should disconnect and try again?
             this.logAlways(
               "Got RPC failure",
               data,
               "for RPC",
               this.pendingRPCs.get(rpc),
+              req,
             );
+            if (req) {
+              const sub = this.subsBySubId.get(req.subId);
+              if (sub) {
+                sub.state = "error";
+              }
+            }
             this.pendingRPCs.delete(rpc);
           } else {
             this.log("Got unhandled message", e);
@@ -222,8 +229,8 @@ export class SocketManager {
     this.log("onSocketConnectError, state", this.sockState);
     this.sockState = "reconnect-wait";
     this.failureCount += 1;
-    // Attempt reconnection with exponential backoff (up to 256 seconds)
-    const waitTimeMsec = Math.pow(2, Math.min(this.failureCount, 8)) * 1000;
+    // Attempt reconnection with exponential backoff (up to 64 seconds)
+    const waitTimeMsec = Math.pow(2, Math.min(this.failureCount, 6)) * 1000;
     this.log(`Scheduling reconnect in ${waitTimeMsec} msec`);
     setTimeout(() => {
       this.tryReconnect();
@@ -235,9 +242,20 @@ export class SocketManager {
       "onSocketClose: socket closed, resetting sub states. state:",
       this.sockState,
     );
-    // Reset all subscription states to awaiting-socket
+    const subsToDrop: SubscriptionState[] = [];
     this.subsByDataset.forEach((subState) => {
-      subState.state = "awaiting-socket";
+      if (subState.state === "active" || subState.state === "requesting") {
+        // Rewind all active or starting-up subscription states to awaiting-socket.
+        subState.state = "awaiting-socket";
+      } else if (subState.state === "stopping") {
+        // The socket is gone, so we no longer need to wait on the server to ack
+        // our unsub to drop this subscription.
+        subsToDrop.push(subState);
+      }
+    });
+    subsToDrop.forEach((subState) => {
+      this.subsByDataset.delete(subState.dataset);
+      this.subsBySubId.delete(subState.subId);
     });
 
     // Start reconnect attempts with exponential backoff if we're not already
@@ -305,18 +323,13 @@ export class SocketManager {
 
   addWatcher(dataset: Dataset, watcher: Watcher) {
     let sub = this.subsByDataset.get(dataset);
-    if (
-      !sub ||
-      sub.state === "stopping" ||
-      sub.state === "stopped" ||
-      sub.state === "error"
-    ) {
+    if (!sub || sub.state === "stopping" || sub.state === "error") {
       const subId = genId();
       sub = {
         dataset,
         subId,
         state: "awaiting-socket",
-        lastValue: sub?.lastValue, // Reuse the last-known sub value.
+        lastValue: undefined,
         watchers: [],
       };
       this.subsByDataset.set(dataset, sub);
@@ -324,6 +337,18 @@ export class SocketManager {
       this.tryDispatchPendingSubRequests();
     }
     sub.watchers.push(watcher);
+    // Synthesize an event to deliver the last-known value to the observer, if we know one already.
+    // This is particularly relevant for the case where another tab already has
+    // a watch on the same dataset, because the inital update will have already
+    // been delivered by the server, and because we dedupe identical
+    // subscriptions on the client, we would otherwise not trigger this callback
+    // until state changes and the server pushes down an update.
+    if (
+      (sub.state === "requesting" || sub.state === "active") &&
+      sub.lastValue
+    ) {
+      watcher.callback(sub.lastValue);
+    }
   }
 
   dropWatcher(dataset: Dataset, watchId: string) {
@@ -334,8 +359,16 @@ export class SocketManager {
       });
       if (sub.watchers.length === 0) {
         // we're no longer using this subscription; tell the backend we can cancel it
-        sub.state = "stopping";
-        this.cancelSub(sub.subId);
+        if (this.sockState === "connected") {
+          this.log("Stopping sub", sub.subId, "for dataset", sub.dataset);
+          sub.state = "stopping";
+          this.cancelSub(sub.subId);
+        } else {
+          // If the socket is not connected, there's no way the sub is active,
+          // so we can just delete it from the sub maps.
+          this.subsByDataset.delete(sub.dataset);
+          this.subsBySubId.delete(sub.subId);
+        }
       }
     }
   }
@@ -346,8 +379,10 @@ export class SocketManager {
       id: watchId,
       callback: onUpdate,
     };
+    this.log("watch(", dataset, ") => assigned watchId", watchId);
     this.addWatcher(dataset, watcher);
     return () => {
+      this.log("stop(", watchId, ") for dataset", dataset);
       this.dropWatcher(dataset, watchId);
     };
   }
