@@ -201,13 +201,7 @@ export class SocketManager {
             const { rpc } = data;
             const req = this.pendingRPCs.get(rpc);
             // This is bad.  Maybe we should disconnect and try again?
-            this.logAlways(
-              "Got RPC failure",
-              data,
-              "for RPC",
-              this.pendingRPCs.get(rpc),
-              req,
-            );
+            this.logAlways("Got RPC failure", data, "for RPC", req);
             if (req) {
               const sub = this.subsBySubId.get(req.subId);
               if (sub) {
