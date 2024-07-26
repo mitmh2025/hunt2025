@@ -1,7 +1,6 @@
 import React, { type ReactNode } from "react";
 import type { TeamState } from "../../../lib/api/client.js";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
-import DevPane from "./DevPane";
 
 const Layout = ({
   children,
@@ -16,7 +15,13 @@ const Layout = ({
   title?: string;
   teamState?: TeamState;
 }) => {
-  const allScripts = [...lookupScripts("main"), ...(scripts ?? [])];
+  const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
+  const devScripts = injectDevScript ? lookupScripts("dev") : [];
+  const allScripts = [
+    ...lookupScripts("main"),
+    ...(scripts ?? []),
+    ...devScripts,
+  ];
   const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
 
   return (
@@ -28,17 +33,7 @@ const Layout = ({
         ))}
       </head>
       <body>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "stretch",
-            justifyContent: "stretch",
-          }}
-        >
-          <div style={{ flex: 1 }}>{children}</div>
-          <DevPane teamState={teamState} />
-        </div>
+        <div id="root">{children}</div>
         {allScripts.map((s) => (
           <script key={s} type="text/javascript" src={s} />
         ))}

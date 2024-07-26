@@ -11,6 +11,7 @@ import {
 import { genId } from "../../../lib/id";
 import { type RedisClient } from "../../app";
 import { stakeoutState } from "../rounds/stakeout";
+import { devtoolsState } from "./devtools";
 
 type SubscriptionHandler<T> = {
   computeFromTeamState: (teamState: TeamState) => T;
@@ -18,6 +19,9 @@ type SubscriptionHandler<T> = {
 };
 
 const DATASET_REGISTRY: Record<Dataset, (teamState: TeamState) => object> = {
+  dev: (teamState: TeamState) => {
+    return devtoolsState(teamState);
+  },
   stakeout: (teamState: TeamState) => {
     return stakeoutState(teamState);
   },
@@ -126,6 +130,14 @@ class ConnHandler {
     if (message.method === "sub") {
       const { rpc, subId, dataset } = message;
       const handler = DATASET_REGISTRY[dataset];
+      if (dataset === "dev" && process.env.NODE_ENV !== "development") {
+        this.send({
+          rpc,
+          type: "fail" as const,
+          error: `No dataset "${dataset}" known`,
+        });
+        return;
+      }
 
       // compute the initial value
       const value = handler(this.lastTeamState);

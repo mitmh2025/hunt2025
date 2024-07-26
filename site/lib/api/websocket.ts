@@ -5,7 +5,7 @@ const RPCBase = z.object({
   rpc: z.number(),
 });
 
-export const DatasetSchema = z.enum(["team_state", "stakeout"]);
+export const DatasetSchema = z.enum(["team_state", "stakeout", "dev"]);
 export type Dataset = z.infer<typeof DatasetSchema>;
 
 export const MessageFromClientSchema = z.discriminatedUnion("method", [

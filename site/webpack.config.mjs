@@ -179,6 +179,7 @@ export default function createConfigs(_env, argv) {
   const clientConfig = {
     name: "client",
     entry: {
+      dev: "./src/frontend/client/dev.tsx",
       illegal_search: "./src/frontend/rounds/illegal_search/client.tsx",
       main: "./src/frontend/client/main.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
