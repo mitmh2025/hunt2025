@@ -3,11 +3,7 @@ import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import StakeoutPhoto from "./StakeoutPhoto";
 import roundBackground from "./assets/background.png";
-import {
-  type StakeoutSlot,
-  type StakeoutPhotoState,
-  type StakeoutState,
-} from "./types";
+import { type StakeoutSlot, type StakeoutState } from "./types";
 
 type Coord = {
   x: number;
@@ -98,6 +94,7 @@ const StakeoutBody = ({
   state: StakeoutState;
   teamState: TeamState;
 }) => {
+  // Stacking order; first is on bottom; last is on top (like DOM elements would be)
   const [stackOrder, setStackOrder] = useState<StakeoutSlot[]>(() => {
     if (HAS_STORAGE) {
       const localState = localStorage.getItem(LOCALSTORAGE_KEY);
@@ -166,43 +163,48 @@ const StakeoutBody = ({
 
   const [focused, setFocused] = useState<StakeoutSlot | undefined>(undefined);
 
-  const [mouseDownPosition, setMouseDownPosition] = useState<Coord>({
+  const [pointerDownPosition, setPointerDownPosition] = useState<Coord>({
     x: 0,
     y: 0,
   });
 
-  const onPhotoMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>, slot: StakeoutSlot) => {
+  const onPhotoPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, slot: StakeoutSlot) => {
       if (e.button === 0) {
         // Only trigger on main button press.
         // Don't allow the click to propagate to the background (which would dismiss the zoomed polaroid)
         e.stopPropagation();
 
-        // If this mousedown is coming from a slot that is not the current
+        // Capture the pointer so that future move events will continue to target this photo rather
+        // than triggering e.g. mouseOut or dropping if the cursor leaves the window
+        e.currentTarget.setPointerCapture(e.pointerId);
+
+        // If this pointerdown is coming from a slot that is not the current
         // focus, dismiss the focus.  If it's already the current focus, avoid
         // immediately shrinking the polaroid back down again.
         if (focused !== slot) {
           setFocused(undefined);
         }
 
-        // Move this photo to the top of the stack, and start moving this photo with the mouse.
+        // Move this photo to the top of the stack, and start moving this photo with the pointer.
         setDragging(slot);
-        setMouseDownPosition({ x: e.clientX, y: e.clientY });
+        setPointerDownPosition({ x: e.clientX, y: e.clientY });
         moveToTopOfStack(slot);
       }
     },
     [focused, moveToTopOfStack],
   );
-  const onBackgroundMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+  const onBackgroundPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
       if (e.button === 0) {
+        // Clicking outside of all photos should return any focused photo back to its normal size
         setFocused(undefined);
       }
     },
     [],
   );
-  const onMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+  const onPointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
       if (dragging) {
         setPositions((prevPositions) => {
           const prevPosition = prevPositions[dragging];
@@ -222,11 +224,11 @@ const StakeoutBody = ({
     [dragging],
   );
   const endDrag = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>, focusOnTrivialMovement = false) => {
+    (e: React.PointerEvent<HTMLDivElement>, focusOnTrivialMovement = false) => {
       if (dragging) {
         // Only trigger on primary button release
-        const deltaX = Math.abs(e.clientX - mouseDownPosition.x);
-        const deltaY = Math.abs(e.clientY - mouseDownPosition.y);
+        const deltaX = Math.abs(e.clientX - pointerDownPosition.x);
+        const deltaY = Math.abs(e.clientY - pointerDownPosition.y);
         const trivialMovement = deltaX < 3 && deltaY < 3;
 
         setPositions((prevPositions) => {
@@ -250,12 +252,12 @@ const StakeoutBody = ({
         setDragging(undefined);
       }
     },
-    [dragging, mouseDownPosition],
+    [dragging, pointerDownPosition],
   );
 
-  const onMouseUp = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      console.log("mouseup", e);
+  const onPointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      console.log("pointerup", e);
       if (e.button === 0) {
         endDrag(e, true);
       }
@@ -263,14 +265,13 @@ const StakeoutBody = ({
     [endDrag],
   );
 
-  const photosBySlot: Record<StakeoutSlot, StakeoutPhotoState> =
-    Object.fromEntries(
-      state.photos.map((photo) => [photo.slot, photo]),
-    ) as Record<StakeoutSlot, StakeoutPhotoState>;
-
-  const photos = stackOrder.map((photoSlot) => {
-    const photo = photosBySlot[photoSlot];
-    const position = positions[photoSlot];
+  const photos = state.photos.map((photo) => {
+    const position = positions[photo.slot];
+    // TODO: figure out if it's cheaper to index the stack order
+    // or just run findIndex 42 times
+    const photoOrder = stackOrder.findIndex((item) => {
+      return item === photo.slot;
+    });
     return (
       <StakeoutPhoto
         key={photo.slot}
@@ -279,10 +280,11 @@ const StakeoutBody = ({
         slug={photo.slug}
         title={photo.title}
         asset={photo.asset}
-        dragging={dragging === photoSlot}
-        focused={focused === photoSlot}
+        dragging={dragging === photo.slot}
+        focused={focused === photo.slot}
+        photoOrder={photoOrder}
         position={position}
-        onMouseDown={onPhotoMouseDown}
+        onPointerDown={onPhotoPointerDown}
       />
     );
   });
@@ -294,6 +296,9 @@ const StakeoutBody = ({
     backgroundSize: "contain",
     position: "relative" as const, // We want to place other objects relatively within the scene
     overflow: "hidden",
+    // Establish a new stacking context for the photos to stack within without causing them to leak
+    // over other overlays
+    zIndex: 0,
   };
 
   const overlay = state.overlay ? (
@@ -330,14 +335,13 @@ const StakeoutBody = ({
     </div>
   ) : undefined;
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- I'm not making this a button or supporting keyboard navigation
     <div
       className="just-another-hand"
       style={pageStyle}
-      onMouseDown={onBackgroundMouseDown}
-      onMouseLeave={endDrag}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
+      onPointerDown={onBackgroundPointerDown}
+      onPointerLeave={endDrag}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
     >
       {overlay}
       {photos}

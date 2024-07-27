@@ -1,4 +1,4 @@
-import React, { type MouseEventHandler, useCallback, useMemo } from "react";
+import React, { type PointerEventHandler, useCallback, useMemo } from "react";
 import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { clamp, type Position } from "./StakeoutBody";
@@ -14,7 +14,8 @@ const StakeoutPhoto = ({
   dragging,
   focused,
   position,
-  onMouseDown,
+  photoOrder,
+  onPointerDown,
 }: {
   teamState: TeamState;
   slot: StakeoutSlot;
@@ -24,17 +25,18 @@ const StakeoutPhoto = ({
   dragging: boolean;
   focused: boolean;
   position: Position;
-  onMouseDown: (
-    e: React.MouseEvent<HTMLDivElement>,
+  photoOrder: number;
+  onPointerDown: (
+    e: React.PointerEvent<HTMLDivElement>,
     slot: StakeoutSlot,
   ) => void;
 }) => {
-  const mouseDownHandler: MouseEventHandler<HTMLDivElement> = useCallback(
+  const pointerDownHandler: PointerEventHandler<HTMLDivElement> = useCallback(
     (e) => {
-      onMouseDown(e, slot);
+      onPointerDown(e, slot);
       return;
     },
-    [slot, onMouseDown],
+    [slot, onPointerDown],
   );
 
   const link = useMemo(() => {
@@ -68,6 +70,7 @@ const StakeoutPhoto = ({
   const polaroidOuterStyle = {
     width: `${scaled(150)}px`,
     height: `${scaled(180)}px`,
+    zIndex: photoOrder,
     position: "absolute" as const,
     left: focused ? "585px" : `${clamp(position.x, 0, 1770)}px`,
     top: focused ? "90px" : `${clamp(position.y, 0, 900)}px`,
@@ -112,8 +115,11 @@ const StakeoutPhoto = ({
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- I'm not making this a button or supporting keyboard navigation
-    <div key={slot} style={polaroidOuterStyle} onMouseDown={mouseDownHandler}>
+    <div
+      key={slot}
+      style={polaroidOuterStyle}
+      onPointerDown={pointerDownHandler}
+    >
       <div style={polaroidInnerStyle}>
         <div style={imageStyle} />
         <div style={labelStyle}>{link}</div>
