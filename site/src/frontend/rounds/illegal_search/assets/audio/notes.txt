@@ -1,0 +1,13 @@
+The audio for:
+
+light_thump.mp3
+medium_thump.mp3
+heavy_thump.mp3
+very_heavy_thump.mp3
+
+were all extracted from https://www.youtube.com/watch?v=9alLFTiH8cc "Wooden or CardBoard Crate Falling Sound Effect" by Free Sound Library
+-----
+switch_on.mp3
+switch_off.mp3
+
+clipped from (CC0'd) https://freesound.org/people/FillSoko/sounds/257958/

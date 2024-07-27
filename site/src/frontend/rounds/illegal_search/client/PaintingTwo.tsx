@@ -1,0 +1,33 @@
+import React from "react";
+import { type TeamState } from "../../../../../lib/api/client";
+import { type ModalWithPuzzleFields, type Node } from "../types";
+import Painting from "./Painting";
+import SwitchBox from "./SwitchBox";
+
+const PaintingTwo = ({
+  node,
+  setNode,
+  showModal,
+  teamState,
+}: {
+  node: Node;
+  setNode: (node: Node) => void;
+  showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
+  teamState: TeamState;
+}) => {
+  const gateOpen =
+    teamState.rounds.illegal_search?.gates?.includes("isg07") ?? false;
+  return (
+    <>
+      <SwitchBox
+        node={node}
+        showModal={showModal}
+        setNode={setNode}
+        opened={gateOpen}
+      />
+      <Painting initialPosition={{ x: 594, y: 60 }} imageUrl="" />
+    </>
+  );
+};
+
+export default PaintingTwo;

@@ -3,7 +3,12 @@ import asyncHandler from "express-async-handler";
 import React from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
-import { MODALS_BY_POSTCODE, NODES_BY_ID, filteredForFrontend } from "./graph";
+import {
+  LOCK_DATA,
+  MODALS_BY_POSTCODE,
+  NODES_BY_ID,
+  filteredForFrontend,
+} from "./graph";
 
 type NodeRequestParams = {
   nodeSlug: string;
@@ -103,6 +108,102 @@ export const modalPostHandler: RequestHandler<
   }
 });
 
+export function painting2State(teamState: TeamState): object {
+  const solved =
+    teamState.rounds.illegal_search?.gates?.includes(
+      LOCK_DATA.painting2.gateId,
+    ) ?? false;
+  return solved ? { switches: LOCK_DATA.painting2.answer } : {};
+}
+
+export function rugState(teamState: TeamState): object {
+  const solved =
+    teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.rug.gateId) ??
+    false;
+  return solved ? { value: LOCK_DATA.rug.answer } : {};
+}
+
+export function cryptexState(teamState: TeamState): object {
+  const solved =
+    teamState.rounds.illegal_search?.gates?.includes(
+      LOCK_DATA.cryptex.gateId,
+    ) ?? false;
+  return solved ? { text: LOCK_DATA.cryptex.answer } : {};
+}
+
+export function bookcaseState(teamState: TeamState): object {
+  const solved =
+    teamState.rounds.illegal_search?.gates?.includes(
+      LOCK_DATA.bookcase.gateId,
+    ) ?? false;
+  return solved ? { books: LOCK_DATA.bookcase.answer } : {};
+}
+
+type FuseboxHandlerBody = {
+  switches: string;
+};
+export const fuseboxPostHandler: RequestHandler<
+  Record<string, never>,
+  unknown,
+  FuseboxHandlerBody,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  if (!req.teamState) {
+    // Shouldn't be possible; middleware should ensure this is populated
+    res.status(500).json({
+      status: "error",
+      message: "user not logged in?  API failed open?",
+    });
+    return;
+  }
+
+  // TODO: validate req.body with zod
+  // TODO: rate-limit guesses?
+  const lockData = LOCK_DATA.painting2;
+  const gateId = lockData.gateId;
+  const answer = lockData.answer as string;
+  const { switches } = req.body;
+  if (answer === switches) {
+    // mark isg07 as complete
+    const { teamId } = req.teamState;
+    const result = await req.frontendApi.markTeamGateSatisfied({
+      params: {
+        teamId: `${teamId}`,
+        gateId,
+      },
+    });
+    if (result.status !== 200) {
+      console.error(
+        `Got API request failure when calling markTeamGateSatisfied for team ${teamId} gate ${gateId}: ${result.body}`,
+      );
+      res.status(500).json({
+        status: "error",
+        message: "internal error (API failed)",
+      });
+    } else {
+      // The result of the request to mark the gate satisfied is the post-update
+      // team state.  Use that to compute the new node value, and return that as the reply.
+      const newTeamState = result.body;
+      const node = NODES_BY_ID.get("painting2");
+      if (!node) {
+        res.status(500).json({
+          status: "error",
+          message: "internal error (bad round definition)",
+        });
+        return;
+      } else {
+        const filtered = filteredForFrontend(node, newTeamState);
+        res.json(filtered);
+      }
+    }
+  } else {
+    res.status(400).json({
+      status: "incorrect",
+      message: "switch states are incorrect",
+    });
+  }
+});
+
 const IllegalSearchRoundPage = ({
   teamState,
   node,
@@ -125,8 +226,8 @@ const IllegalSearchRoundPage = ({
   const filteredNode = filteredForFrontend(initialNode, teamState);
   const filteredNodeJson = JSON.stringify(filteredNode);
 
-  // Embed the initial node JSON in the page
-  const inlineScript = `window.initialNode = ${filteredNodeJson}`;
+  // Embed the initial node JSON in the page, as well as the team state
+  const inlineScript = `window.initialNode = ${filteredNodeJson}; window.initialTeamState = ${JSON.stringify(teamState)};`;
 
   return (
     <div>

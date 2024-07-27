@@ -205,6 +205,7 @@ export default function createConfigs(_env, argv) {
         },
         cssRule,
         imageRule("/client"),
+        mp3Rule("/client"),
         fontRule("/client"),
       ],
     },

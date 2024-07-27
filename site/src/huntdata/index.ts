@@ -322,16 +322,17 @@ const HUNT: Hunt = {
         { id: "isg13" }, // find the object behind the combination lock
         { id: "isg14" }, // find the object behind the numeric lock
         { id: "isg15" }, // find the object behind the word lock
-        { id: "isg16" }, // find the star pattern in the second room (meta)
-        { id: "isg17" }, // find the first object in the second room (birth certificate)
-        { id: "isg18" }, // find the second object in the second room (newspaper clipping)
-        { id: "isg19" }, // find the third object in the second room (letter from prison warden)
-        { id: "isg20" }, // find the fourth object in the second room (photo of the Candys and Baby)
-        { id: "isg21" }, // find the fifth object in the second room (photo of Papa, wife, and Gladys)
-        { id: "isg22" }, // find the sixth object in the second room (rare stamp)
-        { id: "isg23" }, // find the seventh object in the second room (Gladys' teddy bear)
-        { id: "isg24" }, // find the eighth object in the second room (radio drama poster)
-        { id: "isg25" }, // obtain the blacklight
+        { id: "isg16" }, // complete the bookcase/unlock door in wall
+        { id: "isg17" }, // find the star pattern in the second room (meta)
+        { id: "isg18" }, // find the first object in the second room (birth certificate)
+        { id: "isg19" }, // find the second object in the second room (newspaper clipping)
+        { id: "isg20" }, // find the third object in the second room (letter from prison warden)
+        { id: "isg21" }, // find the fourth object in the second room (photo of the Candys and Baby)
+        { id: "isg22" }, // find the fifth object in the second room (photo of Papa, wife, and Gladys)
+        { id: "isg23" }, // find the sixth object in the second room (rare stamp)
+        { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
+        { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
+        { id: "isg26" }, // obtain the blacklight
       ],
       unlock_if: [
         { slot_solved: "sdm04" },

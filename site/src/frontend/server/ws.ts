@@ -10,6 +10,12 @@ import {
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
 import { type RedisClient } from "../../app";
+import {
+  bookcaseState,
+  cryptexState,
+  painting2State,
+  rugState,
+} from "../rounds/illegal_search";
 import { stakeoutState } from "../rounds/stakeout";
 import { devtoolsState } from "./devtools";
 
@@ -19,15 +25,15 @@ type SubscriptionHandler<T> = {
 };
 
 const DATASET_REGISTRY: Record<Dataset, (teamState: TeamState) => object> = {
-  dev: (teamState: TeamState) => {
-    return devtoolsState(teamState);
-  },
-  stakeout: (teamState: TeamState) => {
-    return stakeoutState(teamState);
-  },
+  dev: devtoolsState,
+  stakeout: stakeoutState,
   team_state: (teamState: TeamState) => {
     return teamState;
   },
+  illegal_search_painting2: painting2State,
+  illegal_search_rug: rugState,
+  illegal_search_cryptex: cryptexState,
+  illegal_search_bookcase: bookcaseState,
 };
 
 class ConnHandler {

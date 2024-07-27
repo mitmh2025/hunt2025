@@ -1,10 +1,56 @@
 import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.svg";
 import main_east_bg from "./assets/main_east.png";
-import main_north_bg from "./assets/main_north.png";
+import main_north_bg from "./assets/main_north.jpg";
 import main_west_bg from "./assets/main_west.png";
-import secret_bg from "./assets/secret.png";
-import type { ModalInternal, Node, NodeInternal } from "./types";
+import secret_bg from "./assets/secret.jpg";
+import type {
+  Modal,
+  ModalInternal,
+  Node,
+  NodeInternal,
+  PluginName,
+} from "./types";
+
+// The locks themselves correspond to gates.
+type LockDatum = {
+  answer: unknown; // The types of these vary by check
+  // TODO: rate limit?
+  gateId: string; // The gate which we will unlock when you submit the correct lock answer
+};
+// Map from which plugin does the check to the data relevant to that check
+const LOCK_DATA: Record<PluginName, LockDatum> = {
+  deskdrawer: {
+    // directional lock
+    answer: "", // TODO: set answer
+    gateId: "isg06",
+  },
+  painting2: {
+    // Fuse box/switches lock
+    // TODO: replace with actual answer, not this stub that is just switch 13 for testing purposes
+    answer: "0000000000001000000000000000000000000000",
+    gateId: "isg07",
+  },
+  painting1: {
+    // combination lock (safe)
+    answer: "", // TODO: set answer
+    gateId: "isg08",
+  },
+  rug: {
+    // numeric (seven-segment display) lock
+    answer: "", // TODO: set answer
+    gateId: "isg09",
+  },
+  cryptex: {
+    answer: "", // TODO: set answer
+    gateId: "isg10",
+  },
+  bookcase: {
+    answer: [], // TODO: set answer
+    gateId: "isg16",
+  },
+};
 
 // Inventory of the various nodes and their contents
 
@@ -71,7 +117,8 @@ const ALL_NODES: NodeInternal[] = [
         cursor: "n-resize",
         destId: "secret",
         includeIf: (_teamState: TeamState) => {
-          // TODO: only include if you've completed the gate that represents the
+          // TODO: currently stubbed for easier testing; replace with comment when ready
+          // return teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.bookcase.gateId) ?? false;
           return true;
         },
       },
@@ -341,7 +388,29 @@ const ALL_NODES: NodeInternal[] = [
     sounds: [
       // pulling rug back
     ],
-    modals: [],
+    modals: [
+      {
+        includeIf: (teamState: TeamState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.rug.gateId,
+            ) ?? false
+          );
+        },
+        ownedByInteraction: true,
+        area: {
+          // adjust area once assets exist
+          left: -1,
+          right: 1,
+          top: -1,
+          bottom: 1,
+        },
+        asset: "", // TODO: additional
+        slotId: "isp09",
+        gateId: "isg14",
+        postCode: "1K4T5XyjlogRERACrMXXbg==",
+      },
+    ],
   },
 
   {
@@ -375,6 +444,26 @@ const ALL_NODES: NodeInternal[] = [
     ],
     modals: [
       // candies
+      {
+        includeIf: (teamState: TeamState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.deskdrawer.gateId,
+            ) ?? false
+          );
+        },
+        area: {
+          // adjust area once assets exist
+          left: -1,
+          right: 1,
+          top: -1,
+          bottom: 1,
+        },
+        asset: "", // TODO: candies
+        slotId: "isp06",
+        gateId: "isg11",
+        postCode: "lxRFwDNndXOrzDkGdBQukA==",
+      },
     ],
   },
 
@@ -409,7 +498,29 @@ const ALL_NODES: NodeInternal[] = [
     sounds: [
       // cryptex wheel tick
     ],
-    modals: [],
+    modals: [
+      {
+        includeIf: (teamState: TeamState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.cryptex.gateId,
+            ) ?? false
+          );
+        },
+        ownedByInteraction: true,
+        area: {
+          // adjust area once assets exist
+          left: -1,
+          right: 1,
+          top: -1,
+          bottom: 1,
+        },
+        asset: "", // TODO: note asset
+        slotId: "isp10",
+        gateId: "isg15",
+        postCode: "YXEwRKy4tAGrLZaycOe85Q==",
+      },
+    ],
   },
 
   {
@@ -422,7 +533,29 @@ const ALL_NODES: NodeInternal[] = [
       // painting1
     ],
     sounds: [],
-    modals: [],
+    modals: [
+      {
+        includeIf: (teamState: TeamState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.painting1.gateId,
+            ) ?? false
+          );
+        },
+        ownedByInteraction: true,
+        area: {
+          // adjust area once assets exist
+          left: -1,
+          right: 1,
+          top: -1,
+          bottom: 1,
+        },
+        asset: "", // TODO: asset
+        slotId: "isp08",
+        gateId: "isg13",
+        postCode: "Ba+T1nVoh2GFJTIXnh7H8A==",
+      },
+    ],
   },
 
   {
@@ -430,15 +563,67 @@ const ALL_NODES: NodeInternal[] = [
     id: "painting2",
     background: "", // TODO: background
     placedAssets: [],
-    navigations: [],
+    navigations: [
+      {
+        area: {
+          left: -1,
+          right: -0.6,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: "zoom-out",
+        destId: "main_west",
+      },
+      {
+        area: {
+          left: 0.6,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: "zoom-out",
+        destId: "main_west",
+      },
+    ],
     interactions: [
       // painting2
+      {
+        area: {
+          // currently ignored?  maybe I want to just take this out?  or maybe it's useful?
+          left: -1,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        plugin: "painting2",
+      },
     ],
     sounds: [
       // breaker off
       // breaker on
     ],
-    modals: [],
+    modals: [
+      {
+        includeIf: (teamState: TeamState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.painting2.gateId,
+            ) ?? false
+          );
+        },
+        ownedByInteraction: true,
+        area: {
+          left: -0.0416,
+          right: 0.04,
+          top: -0.744,
+          bottom: -0.826,
+        },
+        asset: rings_closeup,
+        slotId: "isp07",
+        gateId: "isg12",
+        postCode: "Q1ouYm0ptTarIZ9GPmqwjQ==",
+      },
+    ],
   },
 
   {
@@ -498,7 +683,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp11",
-        gateId: "isg17",
+        gateId: "isg18",
         postCode: "lopyihUSAPmlZa5dOEBH/w==",
       },
       {
@@ -511,7 +696,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp12",
-        gateId: "isg18",
+        gateId: "isg19",
         postCode: "3LdOYbqNPGHYrvH7KKaMaA==",
       },
       {
@@ -524,7 +709,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp13",
-        gateId: "isg19",
+        gateId: "isg20",
         postCode: "AWmzimAkS8G0wLH7WatJlw==",
       },
       {
@@ -537,7 +722,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp14",
-        gateId: "isg20",
+        gateId: "isg21",
         postCode: "XUu27ZhwbTcOJg2l4Yohsw==",
       },
       {
@@ -550,7 +735,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp15",
-        gateId: "isg21",
+        gateId: "isg22",
         postCode: "ThjWDlBYS112vfoCFdYqxQ==",
       },
       {
@@ -563,7 +748,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp16",
-        gateId: "isg22",
+        gateId: "isg23",
         postCode: "bIUXEt8RlHayfrW/4qSQyw==",
       },
       {
@@ -576,7 +761,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp17",
-        gateId: "isg23",
+        gateId: "isg24",
         postCode: "liZx1HnT5Bxo/tIbUfRlWg==",
       },
       {
@@ -589,7 +774,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "isp18",
-        gateId: "isg24",
+        gateId: "isg25",
         postCode: "fv6Vuq1GktlO5DdXGVuBNQ==",
       },
       {
@@ -602,7 +787,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: "", // TODO
         slotId: "ism02",
-        gateId: "isg16",
+        gateId: "isg17",
         postCode: "9eUWKfZBfQZgWQ0wn5RPHA==",
       },
     ],
@@ -622,6 +807,50 @@ ALL_NODES.forEach((node) => {
   });
 });
 
+function modalFromModalInternal(
+  modalInternal: ModalInternal,
+  teamState: TeamState,
+): [Modal, boolean] | undefined {
+  const {
+    includeIf,
+    ownedByInteraction,
+    slotId,
+    postCode,
+    gateId: _gateId,
+    ...rest
+  } = modalInternal;
+  // Look up the puzzle slug for the named slotId in this round.  We know
+  // statically that the round will be "illegal_search".
+  // If the slug is not present in teamState yet, then the solver team has
+  // not yet discovered this puzzle, and so when they open this modal we
+  // should submit a POST to notify the backend that they found it.
+  const slotObj = teamState.rounds.illegal_search?.slots[slotId];
+  const slug = slotObj?.slug;
+  let mixin;
+  // If slug is undefined, then lookup the random slot id => POST code mapping and include that
+  // otherwise, lookup (or stub) puzzle title & URL based on the slug from the puzzle data map
+  if (slug) {
+    const puzzle = PUZZLES[slug];
+    const title = puzzle?.title ?? `Stub puzzle for slot ${slotId}`;
+    mixin = { title, slug };
+  } else {
+    mixin = { postCode };
+  }
+  const obj = { ...rest, ...mixin };
+  const forInteraction = ownedByInteraction ?? false;
+  if (includeIf === undefined) {
+    // No condition means always include
+    return [obj, forInteraction];
+  } else {
+    const keep = includeIf(teamState);
+    if (keep) {
+      return [obj, forInteraction];
+    } else {
+      return undefined;
+    }
+  }
+}
+
 function filteredForFrontend(node: NodeInternal, teamState: TeamState): Node {
   // Evaluates the predicates and fills out team state and puzzle information
   const keptNavigations = node.navigations.flatMap((nav) => {
@@ -638,35 +867,16 @@ function filteredForFrontend(node: NodeInternal, teamState: TeamState): Node {
       }
     }
   });
-  const keptModals = node.modals.flatMap((modal) => {
-    const { includeIf, slotId, postCode, gateId: _gateId, ...rest } = modal;
-    // Look up the puzzle slug for the named slotId in this round.  We know
-    // statically that the round will be "illegal_search".
-    // If the slug is not present in teamState yet, then the solver team has
-    // not yet discovered this puzzle, and so when they open this modal we
-    // should submit a POST to notify the backend that they found it.
-    const slotObj = teamState.rounds.illegal_search?.slots[slotId];
-    const slug = slotObj?.slug;
-    let mixin;
-    // If slug is undefined, then lookup the random slot id => POST code mapping and include that
-    // otherwise, lookup (or stub) puzzle title & URL based on the slug from the puzzle data map
-    if (slug) {
-      const puzzle = PUZZLES[slug];
-      const title = puzzle?.title ?? `Stub puzzle for slot ${slotId}`;
-      mixin = { title, slug };
-    } else {
-      mixin = { postCode };
-    }
-    const obj = { ...rest, ...mixin };
-    if (includeIf === undefined) {
-      // No condition means always include
-      return [obj];
-    } else {
-      const keep = includeIf(teamState);
-      if (keep) {
-        return [obj];
+  const modals: Modal[] = [];
+  const interactionModals: Modal[] = [];
+  node.modals.forEach((modal) => {
+    const result = modalFromModalInternal(modal, teamState);
+    if (result) {
+      const [objForFrontend, ownedByInteraction] = result;
+      if (ownedByInteraction) {
+        interactionModals.push(objForFrontend);
       } else {
-        return [];
+        modals.push(objForFrontend);
       }
     }
   });
@@ -678,11 +888,13 @@ function filteredForFrontend(node: NodeInternal, teamState: TeamState): Node {
     navigations: keptNavigations,
     interactions: node.interactions,
     sounds: node.sounds,
-    modals: keptModals,
+    modals,
+    interactionModals:
+      interactionModals.length > 0 ? interactionModals : undefined,
   };
 }
 
-export { NODES_BY_ID, MODALS_BY_POSTCODE, filteredForFrontend };
+export { NODES_BY_ID, MODALS_BY_POSTCODE, LOCK_DATA, filteredForFrontend };
 
 // node: "desk_drawer"
 //   assets:

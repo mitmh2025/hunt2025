@@ -62,6 +62,9 @@ export type ModalInternal = ModalBase & {
   // condition evaluates to true.
   includeIf?: (teamState: TeamState) => boolean;
 
+  // If present and true: include in interactionModals instead of modals
+  ownedByInteraction?: boolean;
+
   // Which puzzle slot does this modal reference?
   slotId: string;
 
@@ -130,4 +133,5 @@ export type NodeInternal = NodeShared & {
 export type Node = NodeShared & {
   navigations: Navigation[];
   modals: Modal[];
+  interactionModals?: Modal[];
 };

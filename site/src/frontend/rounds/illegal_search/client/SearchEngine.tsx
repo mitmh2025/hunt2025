@@ -5,6 +5,9 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
+import { type TeamState } from "../../../../../lib/api/client";
+import globalDatasetManager from "../../../client/DatasetManager";
+import PuzzleLink from "../../../components/PuzzleLink";
 import {
   type ScreenArea,
   type Node,
@@ -15,6 +18,7 @@ import {
   type PlacedAsset,
   type PostcodeResponse,
 } from "../types";
+import PaintingTwo from "./PaintingTwo";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
 const ENABLE_DEVTOOLS = true as boolean; // type loosened to avoid always-truthy lints firing
@@ -41,7 +45,7 @@ function boundsForArea(area: ScreenArea): {
   };
 }
 
-const Asset = ({
+export const Asset = ({
   placedAsset,
   backgroundColor,
 }: {
@@ -96,7 +100,7 @@ const Navigation = ({
   );
 };
 
-const ModalTrigger = ({
+export const ModalTrigger = ({
   modal,
   showModal,
   backgroundColor,
@@ -178,12 +182,19 @@ const ModalTrigger = ({
 
   return (
     <button style={style} onClick={onAreaClicked}>
-      Show bigger object art and puzzle title/link/state when clicked
+      {/* Show bigger object art and puzzle title/link/state when clicked */}
     </button>
   );
 };
 
-const SearchEngine = ({ initialNode }: { initialNode: Node }) => {
+const SearchEngine = ({
+  initialNode,
+  initialTeamState,
+}: {
+  initialNode: Node;
+  initialTeamState: TeamState;
+}) => {
+  const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
   const [node, setNode] = useState<Node>(initialNode);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalShown, setModalShown] = useState<
@@ -302,6 +313,13 @@ const SearchEngine = ({ initialNode }: { initialNode: Node }) => {
     };
   }, [node, onGoBack]);
 
+  useEffect(() => {
+    const stop = globalDatasetManager.watch("team_state", (value: object) => {
+      setTeamState(value as TeamState);
+    });
+    return stop;
+  }, []);
+
   const assets = node.placedAssets.map((placedAsset) => {
     return (
       <Asset
@@ -324,6 +342,18 @@ const SearchEngine = ({ initialNode }: { initialNode: Node }) => {
   });
 
   const interactions = node.interactions.map((interaction) => {
+    // Modals need to show interactions, but often on the other side of the lock, so we pass that callback down.
+    if (interaction.plugin === "painting2") {
+      return (
+        <PaintingTwo
+          key={`interaction-${interaction.plugin}`}
+          node={node}
+          showModal={showModal}
+          setNode={setNode}
+          teamState={teamState}
+        />
+      );
+    }
     // TODO: do something with interaction.plugin
     return (
       <div key={`interaction-${interaction.plugin}`}>{interaction.plugin}</div>
@@ -363,8 +393,25 @@ const SearchEngine = ({ initialNode }: { initialNode: Node }) => {
     modalOverlay = (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- prototype
       <div style={style} onClick={dismissModal}>
-        <img src={modalShown.asset} alt="TODO" />
-        <a href={`/puzzles/${modalShown.slug}`}>{modalShown.title}</a>
+        <img width={800} height={600} src={modalShown.asset} alt="TODO" />
+        <div
+          style={{
+            backgroundColor: "rgb(255,255,255,0.9)",
+            width: "600px",
+            height: "48px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <PuzzleLink
+            teamState={teamState}
+            title={modalShown.title}
+            slug={modalShown.slug}
+          />
+        </div>
+        {/* <a href={`/puzzles/${modalShown.slug}`}>{modalShown.title}</a> */}
       </div>
     );
   }
@@ -420,6 +467,7 @@ const SearchEngine = ({ initialNode }: { initialNode: Node }) => {
     backgroundSize: "contain",
     backgroundPosition: "center",
     position: "relative" as const,
+    overflow: "hidden",
   };
 
   return (
