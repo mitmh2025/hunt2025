@@ -39,6 +39,18 @@ const StakeoutPhoto = ({
     [slot, onPointerDown],
   );
 
+  const labelPointerDownHandler: PointerEventHandler<HTMLDivElement> =
+    useCallback(
+      (e) => {
+        // Capture the click and avoid bubbling it up to the parent to avoid clicks on the bottom of the
+        // polaroid (where the text goes) triggering drag
+        if (slug && title) {
+          e.stopPropagation();
+        }
+      },
+      [slug, title],
+    );
+
   const link = useMemo(() => {
     return title && slug ? (
       <PuzzleLink
@@ -111,6 +123,7 @@ const StakeoutPhoto = ({
     whiteSpace: "nowrap",
     textAlign: "center" as const,
     fontSize: focused ? "60px" : "24px",
+    cursor: slug ? "pointer" : undefined,
     ...transitionProperties,
   };
 
@@ -122,7 +135,9 @@ const StakeoutPhoto = ({
     >
       <div style={polaroidInnerStyle}>
         <div style={imageStyle} />
-        <div style={labelStyle}>{link}</div>
+        <div style={labelStyle} onPointerDown={labelPointerDownHandler}>
+          {link}
+        </div>
       </div>
     </div>
   );
