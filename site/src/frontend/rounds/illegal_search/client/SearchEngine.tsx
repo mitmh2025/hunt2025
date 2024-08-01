@@ -18,6 +18,7 @@ import {
   type PlacedAsset,
   type PostcodeResponse,
 } from "../types";
+import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
@@ -343,6 +344,17 @@ const SearchEngine = ({
 
   const interactions = node.interactions.map((interaction) => {
     // Modals need to show interactions, but often on the other side of the lock, so we pass that callback down.
+    if (interaction.plugin === "painting1") {
+      return (
+        <PaintingOne
+          key={`interaction-${interaction.plugin}`}
+          node={node}
+          showModal={showModal}
+          setNode={setNode}
+          teamState={teamState}
+        />
+      );
+    }
     if (interaction.plugin === "painting2") {
       return (
         <PaintingTwo

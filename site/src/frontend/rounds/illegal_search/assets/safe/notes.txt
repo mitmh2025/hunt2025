@@ -1,0 +1,11 @@
+The `_zarvox` file variants are the result of Drew modifying the draft files
+from the Google Drive, removing objects from the svg that are marked as
+invisible.  This reduces the combined file size to the size of one of the
+assets.
+
+These assets need additional revision -- the center of the dial is not placed
+at the center of the viewBox, which means that rotating the image causes it to
+process slightly, which means the dial no longer aligns with the
+highlight/shadow layer (which needs to not rotate, to stay aligned with the
+room lighting).
+
