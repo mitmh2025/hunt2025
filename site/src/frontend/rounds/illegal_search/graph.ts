@@ -405,7 +405,7 @@ const ALL_NODES: NodeInternal[] = [
           top: -1,
           bottom: 1,
         },
-        asset: "", // TODO: additional
+        asset: "", // TODO: whatever's in the number lock
         slotId: "isp09",
         gateId: "isg14",
         postCode: "1K4T5XyjlogRERACrMXXbg==",
@@ -529,9 +529,7 @@ const ALL_NODES: NodeInternal[] = [
     background: "", // TODO: background
     placedAssets: [],
     navigations: [],
-    interactions: [
-      // painting1
-    ],
+    interactions: [{ plugin: "painting1" }],
     sounds: [],
     modals: [
       {
@@ -585,19 +583,7 @@ const ALL_NODES: NodeInternal[] = [
         destId: "main_west",
       },
     ],
-    interactions: [
-      // painting2
-      {
-        area: {
-          // currently ignored?  maybe I want to just take this out?  or maybe it's useful?
-          left: -1,
-          right: 1,
-          top: 1,
-          bottom: -1,
-        },
-        plugin: "painting2",
-      },
-    ],
+    interactions: [{ plugin: "painting2" }],
     sounds: [
       // breaker off
       // breaker on

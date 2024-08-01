@@ -48,7 +48,6 @@ export type NavigationInternal = Navigation & {
 };
 
 export type Interaction = {
-  area: ScreenArea;
   plugin: PluginName;
 };
 
