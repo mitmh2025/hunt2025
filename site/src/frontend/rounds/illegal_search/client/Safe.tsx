@@ -4,6 +4,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { styled } from "styled-components";
 import mark from "../assets/safe/safe_dial_draft2_background_zarvox.svg";
 import dial from "../assets/safe/safe_dial_draft2_dial_only_zarvox.svg";
 import highlights from "../assets/safe/safe_dial_draft2_shadows_zarvox.svg";
@@ -24,63 +25,72 @@ const LOCK_HEIGHT = 40.83638;
 const SCALE_FACTOR = 6;
 const LOCK_COLOR = "#3a3a3a";
 
+const DebugWheelBox = styled.div<{ $size: number }>`
+  width: ${(props) => props.$size}px;
+  height: ${(props) => props.$size}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DebugWheelSpinner = styled(DebugWheelBox)`
+  position: absolute;
+  border: 1px solid black;
+  border-radius: ${(props) => props.$size / 2}px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+`;
+
+const DebugWheelTick = styled.div<{ $size: number }>`
+  font-size: ${(props) => props.$size / 2}px;
+`;
+
 // A debug component used during development to visualize the tumbler states.
 const DebugWheel = ({ size, rotation }: { size: number; rotation: number }) => {
-  const sizeStyle = {
-    width: `${size}px`,
-    height: `${size}px`,
-    display: "flex",
-    flexDirection: "row" as const,
-    alignItems: "center",
-    justifyContent: "center",
-  };
-  const style = {
-    ...sizeStyle,
-    position: "absolute" as const,
-    border: `1px solid black`,
-    borderRadius: `${size / 2}px`,
-    transform: `rotate(${rotation}deg)`,
-    display: "flex",
-    flexDirection: "row" as const,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  };
   const roundedRotation = Math.trunc(rotation * 100) / 100;
   return (
-    <div style={sizeStyle}>
-      <div style={style}>
-        <div style={{ fontSize: `${size / 2}px` }}>|</div>
-      </div>
+    <DebugWheelBox $size={size}>
+      <DebugWheelSpinner
+        $size={size}
+        style={{ transform: `rotate(${rotation}deg)` }}
+      >
+        <DebugWheelTick $size={size}>|</DebugWheelTick>
+      </DebugWheelSpinner>
       <div>{roundedRotation}</div>
-    </div>
+    </DebugWheelBox>
   );
 };
 
+const DebugPaneContainer = styled.div`
+  position: absolute;
+  left: 200px;
+  top: 200px;
+  background-color: white;
+  width: 200px;
+  height: 800px;
+`;
+
+const DebugWheelStack = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
 // For visualizing the tumbler states so we can tell if we got the logic right
 const DebugPane = ({ tumblers }: { tumblers: [number, number, number] }) => {
-  const debugDivPlacement = {
-    position: "absolute" as const,
-    left: "200px",
-    top: "200px",
-    backgroundColor: "white",
-    width: "200px",
-    height: "800px",
-  };
-  const debugDivWheelsLayout = {
-    display: "flex",
-    flexDirection: "column" as const,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  };
   return (
-    <div key="debug" style={debugDivPlacement}>
+    <DebugPaneContainer>
       <div>Debug pane: tumbler positions</div>
-      <div style={debugDivWheelsLayout}>
+      <DebugWheelStack>
         <DebugWheel size={200} rotation={tumblers[0]} />
         <DebugWheel size={200} rotation={tumblers[1]} />
         <DebugWheel size={200} rotation={tumblers[2]} />
-      </div>
-    </div>
+      </DebugWheelStack>
+    </DebugPaneContainer>
   );
 };
 
@@ -93,6 +103,43 @@ const ORIGIN = {
 function atan2Degrees(y: number, x: number): number {
   return (Math.atan2(y, x) * 180) / Math.PI;
 }
+
+const DialContainer = styled.div<{ $width: number; $height: number }>`
+  position: relative;
+  width: ${(props) => props.$width}px;
+  height: ${(props) => props.$height}px;
+`;
+
+const DialLayer = styled.div<{ $width: number; $height: number }>`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: ${(props) => props.$width}px;
+  height: ${(props) => props.$height}px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
+
+const DialTickLayer = styled(DialLayer)`
+  background-image: url(${mark});
+`;
+
+const DialWheel = styled(DialLayer)`
+  background-image: url(${dial});
+  background-color: transparent;
+`;
+
+const DialHighlights = styled(DialLayer)`
+  background-image: url(${highlights});
+  background-color: transparent;
+`;
+
+const DialGrip = styled(DialLayer)<{ $dragging: boolean }>`
+  cursor: ${(props) => (props.$dragging ? "grabbing" : "grab")};
+`;
 
 const CombinationLock = ({
   dialRotation,
@@ -111,65 +158,46 @@ const CombinationLock = ({
   onPointerMove: PointerEventHandler<HTMLDivElement>;
   onPointerUp: PointerEventHandler<HTMLDivElement>;
 }) => {
-  const dialContainerStyle = {
-    position: "relative" as const,
-    width: `${width}px`,
-    height: `${height}px`,
-  };
-
-  const lockLayerStyle = {
-    position: "absolute" as const,
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: `${width}px`,
-    height: `${height}px`,
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "contain",
-  };
-
-  const markStyle = {
-    ...lockLayerStyle,
-    backgroundImage: `url(${mark})`,
-  };
-  const highlightStyle = {
-    ...lockLayerStyle,
-    backgroundImage: `url(${highlights})`,
-    backgroundColor: "transparent",
-  };
-  const dialStyle = {
-    ...lockLayerStyle,
-    transform: `rotate(${dialRotation}deg)`,
-    backgroundImage: `url(${dial})`,
-    backgroundColor: "transparent",
-  };
-
-  const gripStyle = {
-    ...lockLayerStyle,
-    cursor: dragging ? "grabbing" : "grab",
-  };
-
   return (
-    <div className="dial-container" style={dialContainerStyle}>
+    <DialContainer $width={width} $height={height}>
       {/* One div for the registration mark, which does not rotate */}
-      <div className="dial-tick" style={markStyle} />
+      <DialTickLayer $width={width} $height={height} />
       {/* One div for the dial, which does rotate */}
-      <div className="dial-wheel" style={dialStyle} />
+      <DialWheel
+        $width={width}
+        $height={height}
+        style={{ transform: `rotate(${dialRotation}deg)` }}
+      />
       {/* One div for the highlights, which do not rotate */}
-      <div className="dial-highlights" style={highlightStyle} />
+      <DialHighlights $width={width} $height={height} />
       {/* One div for the invisible click target, which sits on top, does not rotate, but handles interaction */}
-      <div
-        className="dial-grip"
-        style={gripStyle}
+      <DialGrip
+        $width={width}
+        $height={height}
+        $dragging={dragging}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
       />
-    </div>
+    </DialContainer>
   );
 };
+
+const Wall = styled.div`
+  background-color: ${WALL_BG_COLOR};
+  width: 1920px;
+  height: 1080px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SafeDoor = styled.div`
+  background-color: ${LOCK_COLOR};
+  width: ${LOCK_WIDTH * SCALE_FACTOR}px;
+  height: ${LOCK_HEIGHT * SCALE_FACTOR}px;
+`;
 
 const Safe = ({
   node: _node,
@@ -278,26 +306,9 @@ const Safe = ({
       });
   }, [setNode, tumblers]);
 
-  const style = {
-    backgroundColor: LOCK_COLOR,
-    width: LOCK_WIDTH * SCALE_FACTOR,
-    height: LOCK_HEIGHT * SCALE_FACTOR,
-  };
-
   return (
-    <div
-      className="wall"
-      style={{
-        backgroundColor: WALL_BG_COLOR,
-        width: "1920px",
-        height: "1080px",
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div className="safe-outer" style={style}>
+    <Wall>
+      <SafeDoor>
         <CombinationLock
           dialRotation={tumblers[0]}
           dragging={dragging}
@@ -307,7 +318,7 @@ const Safe = ({
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
         />
-      </div>
+      </SafeDoor>
       <button
         style={{ display: "block", width: "200px", height: "200px" }}
         onClick={tryOpen}
@@ -315,7 +326,7 @@ const Safe = ({
         Try to open
       </button>
       <DebugPane tumblers={tumblers} />
-    </div>
+    </Wall>
   );
 };
 
