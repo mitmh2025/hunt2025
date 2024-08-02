@@ -1,4 +1,5 @@
 import React from "react";
+import { css, styled } from "styled-components";
 import {
   type DevtoolsInteraction,
   type DevtoolsPuzzle,
@@ -26,6 +27,26 @@ function colorForPuzzle(
   }
 }
 
+const PuzzleBoxDiv = styled.div<{
+  $isMeta: boolean;
+  $state: DevtoolsPuzzle["state"];
+}>`
+  display: inline-block;
+  ${({ $isMeta }) =>
+    $isMeta
+      ? css`
+          width: 12px;
+          height: 12px;
+        `
+      : css`
+          width: 8px;
+          height: 8px;
+        `}
+  background-color: ${({ $state }) => colorForPuzzle($state)};
+  border: 1px solid black;
+  margin: 2px;
+`;
+
 const PuzzleBox = ({
   puzzle,
   is_meta,
@@ -34,21 +55,7 @@ const PuzzleBox = ({
   is_meta: boolean;
 }) => {
   const { slot, slug, title, state } = puzzle;
-  const bgcolor = colorForPuzzle(state);
-  const size = is_meta ? "12px" : "8px";
-  const box = (
-    <div
-      style={{
-        display: "inline-block",
-        width: size,
-        height: size,
-        backgroundColor: bgcolor,
-        border: `1px solid black`,
-        margin: "2px",
-      }}
-      title={title}
-    />
-  );
+  const box = <PuzzleBoxDiv $state={state} $isMeta={is_meta} title={title} />;
 
   return (
     <a key={slot} href={`/puzzles/${slug}`}>
@@ -75,27 +82,38 @@ function countByState<T extends string>({
   return counts;
 }
 
-const Round = ({ round }: { round: DevtoolsRound }) => {
-  const bgcolor =
-    round.state === "unlocked"
+const CountsSpan = styled.span`
+  font-size: 12px;
+`;
+
+const DevPaneItemHeader = styled.h4`
+  margin: 0;
+  border-top: 1px solid #888;
+`;
+
+const RoundContainer = styled.div<{ $state: "locked" | "unlocked" }>`
+  background-color: ${({ $state }) =>
+    $state === "unlocked"
       ? `rgba(255,255,255,${bgOpacity})`
-      : `rgba(208, 208, 208, ${bgOpacity})`;
+      : `rgba(208, 208, 208, ${bgOpacity})`};
+`;
+
+const Round = ({ round }: { round: DevtoolsRound }) => {
   const counts = countByState({
     items: [...round.metas, ...round.puzzles],
     keys: ["locked", "unlockable", "unlocked", "solved"],
   });
   return (
-    <div key={round.slug} style={{ backgroundColor: bgcolor }}>
-      <h4 style={{ margin: 0, borderTop: "1px solid #888" }}>
+    <RoundContainer key={round.slug} $state={round.state}>
+      <DevPaneItemHeader>
         <a href={`/rounds/${round.slug}`}>{round.title}</a>{" "}
-        <span
-          style={{ fontSize: "12px" }}
+        <CountsSpan
           title={`${counts.locked} locked\n${counts.unlockable} unlockable\n${counts.unlocked} open\n${counts.solved} solved`}
         >
           {counts.locked}, {counts.unlockable}, {counts.unlocked},{" "}
           {counts.solved}
-        </span>
-      </h4>
+        </CountsSpan>
+      </DevPaneItemHeader>
       <div>
         <>
           {round.metas.map((mp) => (
@@ -106,7 +124,7 @@ const Round = ({ round }: { round: DevtoolsRound }) => {
           ))}
         </>
       </div>
-    </div>
+    </RoundContainer>
   );
 };
 
@@ -116,8 +134,7 @@ const RoundsSection = ({ rounds }: { rounds: DevtoolsRound[] }) => {
   });
 };
 
-function colorForInteraction(interaction: DevtoolsInteraction) {
-  const state = interaction.state;
+function colorForInteractionState(state: DevtoolsInteraction["state"]) {
   if (state === "locked") {
     // If locked: black
     return "black";
@@ -133,20 +150,21 @@ function colorForInteraction(interaction: DevtoolsInteraction) {
   }
 }
 
+const InteractionBox = styled.div<{ $state: DevtoolsInteraction["state"] }>`
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: ${({ $state }) => colorForInteractionState($state)};
+  border: 1px solid black;
+  margin: 2px;
+`;
+
 const Interaction = ({ interaction }: { interaction: DevtoolsInteraction }) => {
-  const bgcolor = colorForInteraction(interaction);
   return (
     <a key={interaction.slug} href={`/interactions/${interaction.slug}`}>
-      <div
+      <InteractionBox
         key={interaction.slug}
-        style={{
-          display: "inline-block",
-          width: "8px",
-          height: "8px",
-          backgroundColor: bgcolor,
-          border: `1px solid black`,
-          margin: "2px",
-        }}
+        $state={interaction.state}
         title={interaction.slug}
       />
     </a>
@@ -164,16 +182,15 @@ const InteractionsSection = ({
   });
   return (
     <>
-      <h4 style={{ margin: 0, borderTop: "1px solid #888" }}>
+      <DevPaneItemHeader>
         Interactions{" "}
-        <span
-          style={{ fontSize: "12px" }}
+        <CountsSpan
           title={`${counts.locked} locked\n${counts.unlocked} unlocked\n${counts.running} running\n${counts.completed} completed`}
         >
           {counts.locked}, {counts.unlocked}, {counts.running},{" "}
           {counts.completed}
-        </span>
-      </h4>
+        </CountsSpan>
+      </DevPaneItemHeader>
       {interactions.map((i) => (
         <Interaction key={i.slug} interaction={i} />
       ))}
@@ -181,18 +198,18 @@ const InteractionsSection = ({
   );
 };
 
+const DevPaneContainer = styled.div`
+  border: 1px solid #888;
+  background-color: rgba(255, 255, 255, ${bgOpacity});
+`;
+
 const DevPane = ({ state }: { state: DevtoolsState | undefined }) => {
   if (!state) {
     return undefined;
   }
 
   return (
-    <div
-      style={{
-        border: "1px solid #888",
-        backgroundColor: `rgba(255,255,255,${bgOpacity})`,
-      }}
-    >
+    <DevPaneContainer>
       <h2 style={{ margin: 0 }}>Devtools</h2>
       <h3 style={{ margin: 0 }}>
         {state.teamName} (team {state.teamId}) - {state.currency} unlock
@@ -206,7 +223,7 @@ const DevPane = ({ state }: { state: DevtoolsState | undefined }) => {
           <a href="/logout">Logout</a>
         </li>
       </ul>
-    </div>
+    </DevPaneContainer>
   );
 };
 

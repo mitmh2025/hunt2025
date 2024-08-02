@@ -1,8 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { styled } from "styled-components";
 import DevPane from "../components/DevPane";
 import { type DevtoolsState } from "../server/devtools";
 import globalDatasetManager from "./DatasetManager";
+
+const DevPaneContainer = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  min-width: 200px;
+`;
+
+const DevPaneToggleButton = styled.button`
+  position: absolute;
+  margin: 4px;
+  right: 0px;
+  top: 0px;
+  width: 24px;
+  height: 24px;
+`;
 
 const DevtoolsManager = () => {
   const [state, setState] = useState<DevtoolsState | undefined>(undefined);
@@ -20,30 +37,12 @@ const DevtoolsManager = () => {
   const buttonLabel = collapsed ? "+" : "-";
   const title = collapsed ? "Show devtools" : "Hide devtools";
   return (
-    <div
-      style={{
-        position: "absolute",
-        right: "10px",
-        top: "10px",
-        minWidth: "200px",
-      }}
-    >
+    <DevPaneContainer>
       {!collapsed ? <DevPane state={state} /> : undefined}
-      <button
-        style={{
-          position: "absolute",
-          margin: "4px",
-          right: "0px",
-          top: "0px",
-          width: "24px",
-          height: "24px",
-        }}
-        title={title}
-        onClick={toggleCollapsed}
-      >
+      <DevPaneToggleButton title={title} onClick={toggleCollapsed}>
         {buttonLabel}
-      </button>
-    </div>
+      </DevPaneToggleButton>
+    </DevPaneContainer>
   );
 };
 
