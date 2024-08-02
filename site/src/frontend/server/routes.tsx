@@ -17,6 +17,7 @@ import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type RedisClient } from "../../app";
 import {
+  comboLockPostHandler,
   fuseboxPostHandler,
   modalPostHandler,
   nodeRequestHandler,
@@ -226,6 +227,10 @@ export async function getUiRouter({
   );
   authRouter.get("/rounds/illegal_search/node/:nodeSlug", nodeRequestHandler);
   authRouter.post("/rounds/illegal_search/modal", modalPostHandler);
+  authRouter.post(
+    "/rounds/illegal_search/locks/painting1",
+    comboLockPostHandler,
+  );
   authRouter.post("/rounds/illegal_search/locks/painting2", fuseboxPostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug",

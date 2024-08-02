@@ -34,7 +34,12 @@ const LOCK_DATA: Record<PluginName, LockDatum> = {
   },
   painting1: {
     // combination lock (safe)
-    answer: "", // TODO: set answer
+    // We accept multiple options for this answer, for reasons that are puzzle-specific.
+    answer: [
+      [12, 25, 24],
+      [24, 12, 25],
+      [25, 12, 24],
+    ],
     gateId: "isg08",
   },
   rug: {

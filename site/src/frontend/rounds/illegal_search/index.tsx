@@ -1,8 +1,13 @@
-import { type RequestHandler } from "express";
+import { type RequestHandler, type Request, type Response } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import {
+  clampAngle,
+  rotateMainTumblerBy,
+  TUMBLER_INITIAL_STATE,
+} from "./combolock";
 import {
   LOCK_DATA,
   MODALS_BY_POSTCODE,
@@ -139,6 +144,45 @@ export function bookcaseState(teamState: TeamState): object {
   return solved ? { books: LOCK_DATA.bookcase.answer } : {};
 }
 
+async function handleCorrectLockSubmission(
+  req: Request,
+  res: Response,
+  teamId: number,
+  gateId: string,
+  nodeId: string,
+) {
+  const result = await req.frontendApi.markTeamGateSatisfied({
+    params: {
+      teamId: `${teamId}`,
+      gateId,
+    },
+  });
+  if (result.status !== 200) {
+    console.error(
+      `Got API request failure when calling markTeamGateSatisfied for team ${teamId} gate ${gateId}: ${result.body}`,
+    );
+    res.status(500).json({
+      status: "error",
+      message: "internal error (API failed)",
+    });
+  } else {
+    // The result of the request to mark the gate satisfied is the post-update
+    // team state.  Use that to compute the new node value, and return that as the reply.
+    const newTeamState = result.body;
+    const node = NODES_BY_ID.get(nodeId);
+    if (!node) {
+      res.status(500).json({
+        status: "error",
+        message: "internal error (bad round definition)",
+      });
+      return;
+    } else {
+      const filtered = filteredForFrontend(node, newTeamState);
+      res.json(filtered);
+    }
+  }
+}
+
 type FuseboxHandlerBody = {
   switches: string;
 };
@@ -166,40 +210,123 @@ export const fuseboxPostHandler: RequestHandler<
   if (answer === switches) {
     // mark isg07 as complete
     const { teamId } = req.teamState;
-    const result = await req.frontendApi.markTeamGateSatisfied({
-      params: {
-        teamId: `${teamId}`,
-        gateId,
-      },
-    });
-    if (result.status !== 200) {
-      console.error(
-        `Got API request failure when calling markTeamGateSatisfied for team ${teamId} gate ${gateId}: ${result.body}`,
-      );
-      res.status(500).json({
-        status: "error",
-        message: "internal error (API failed)",
-      });
-    } else {
-      // The result of the request to mark the gate satisfied is the post-update
-      // team state.  Use that to compute the new node value, and return that as the reply.
-      const newTeamState = result.body;
-      const node = NODES_BY_ID.get("painting2");
-      if (!node) {
-        res.status(500).json({
-          status: "error",
-          message: "internal error (bad round definition)",
-        });
-        return;
-      } else {
-        const filtered = filteredForFrontend(node, newTeamState);
-        res.json(filtered);
-      }
-    }
+    await handleCorrectLockSubmission(req, res, teamId, gateId, "painting2");
   } else {
     res.status(400).json({
       status: "incorrect",
       message: "switch states are incorrect",
+    });
+  }
+});
+
+function isRoughlyEqual(
+  exact: number,
+  test: number,
+  maxDelta: number,
+): boolean {
+  const lowerBound = exact - maxDelta;
+  const upperBound = exact + maxDelta;
+  return lowerBound <= test && test <= upperBound;
+}
+
+function degreesForTick(value: number): number {
+  return clampAngle(((50 - value) * 360) / 50);
+}
+
+// Angle, in positive degrees, between the two tick values on the dial
+function clockwiseAngleBetween(start: number, end: number): number {
+  const startDegs = degreesForTick(start);
+  const endDegs = degreesForTick(end);
+  return endDegs >= startDegs ? endDegs - startDegs : endDegs + 360 - startDegs;
+}
+
+function simulatedTumblerPositions(
+  code: [number, number, number],
+): [number, number, number] {
+  console.log("Simulating tumblers after entering", code);
+  let tumblers = TUMBLER_INITIAL_STATE;
+  // Two full clockwise turns to pick up all three tumblers + turn to the first number
+  let remainingRotation = 360 + 360 + clockwiseAngleBetween(0, code[0]);
+  // We step by small amounts because the logic for the tumbler-binding
+  while (remainingRotation > 0) {
+    const step = Math.min(60, remainingRotation);
+    tumblers = rotateMainTumblerBy(step, tumblers);
+    console.log("step", step, ": tumblers now", tumblers);
+    remainingRotation -= step;
+  }
+
+  // One full counterclockwise turn, then another (360 - the clockwise distance) to get ot the second number
+  remainingRotation = -360 - 360 + clockwiseAngleBetween(code[0], code[1]);
+  while (remainingRotation < 0) {
+    const step = Math.max(-60, remainingRotation);
+    tumblers = rotateMainTumblerBy(step, tumblers);
+    console.log("step", step, ": tumblers now", tumblers);
+    remainingRotation -= step;
+  }
+
+  // Clockwise from the second number to the third number
+  remainingRotation = clockwiseAngleBetween(code[1], code[2]);
+  while (remainingRotation > 0) {
+    const step = Math.max(-60, remainingRotation);
+    tumblers = rotateMainTumblerBy(step, tumblers);
+    console.log("step", step, ": tumblers now", tumblers);
+    remainingRotation -= step;
+  }
+
+  return tumblers;
+}
+
+// How much error do we allow in the tumbler states?  Each tick is 7.2 degrees, so this is "must be
+// actually closest to that number, but no pickier"
+const MAX_TOLERANCE_DEGREES = 3.6;
+
+type ComboLockHandlerBody = {
+  tumblers: [number, number, number];
+};
+export const comboLockPostHandler: RequestHandler<
+  Record<string, never>,
+  unknown,
+  ComboLockHandlerBody,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  if (!req.teamState) {
+    // Shouldn't be possible; middleware should ensure this is populated
+    res.status(500).json({
+      status: "error",
+      message: "user not logged in?  API failed open?",
+    });
+    return;
+  }
+  const tumblers: [number, number, number] = req.body.tumblers;
+
+  // TODO: validate req.body with zod
+  // TODO: rate-limit guesses?
+  const lockData = LOCK_DATA.painting1;
+  const gateId = lockData.gateId;
+  // This lock tolerates the numbers being entered in a couple of orderings
+  const acceptableAnswers = lockData.answer as [number, number, number][];
+  const expectedPositionsForAcceptableAnswers = acceptableAnswers.map(
+    simulatedTumblerPositions,
+  );
+  if (
+    expectedPositionsForAcceptableAnswers.some(
+      (expectedPositions: [number, number, number]) => {
+        return expectedPositions.every((expectedPosition, i) =>
+          isRoughlyEqual(
+            expectedPosition,
+            tumblers[i] ?? 1000, // the ?? will never be taken, but TS doesn't know thatc
+            MAX_TOLERANCE_DEGREES,
+          ),
+        );
+      },
+    )
+  ) {
+    const { teamId } = req.teamState;
+    await handleCorrectLockSubmission(req, res, teamId, gateId, "painting1");
+  } else {
+    res.status(400).json({
+      status: "incorrect",
+      message: "tumbler states are incorrect",
     });
   }
 });
