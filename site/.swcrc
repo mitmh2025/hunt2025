@@ -9,7 +9,17 @@
       "compress": false,
       "mangle": false
     },
-    "externalHelpers": true
+    "externalHelpers": true,
+    "experimental": {
+      "plugins": [
+        [
+          "@swc/plugin-styled-components",
+          {
+            "ssr": true
+          }
+        ]
+      ]
+    }
   },
   "env": {
     "targets": {
