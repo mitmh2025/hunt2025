@@ -1,4 +1,5 @@
-import React, { type ReactNode, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { css, styled } from "styled-components";
 import globalDatasetManager from "../../../client/DatasetManager";
 import switch_off from "../assets/audio/switch_off.mp3";
 import switch_on from "../assets/audio/switch_on.mp3";
@@ -27,6 +28,20 @@ const SWITCH_ROW_BG_COLOR = "#a5a5a5";
 const SWITCH_WIDTH = "83px";
 const SWITCH_HEIGHT = "32px";
 
+const SwitchButton = styled.button<{ $asset: string }>`
+  display: inline-block;
+  background-image: url(${(props) => props.$asset});
+  background-size: contain;
+  background-color: transparent;
+  border: none;
+  background-repeat: no-repeat;
+  margin-top: -6px;
+  margin-left: 4px;
+  margin-right: 4px;
+  width: ${SWITCH_WIDTH};
+  height: ${SWITCH_HEIGHT};
+`;
+
 const Switch = ({
   asset,
   index,
@@ -45,106 +60,91 @@ const Switch = ({
     void audio.play();
   }, [onClick, index, state]);
   // TODO: maybe make this a checkbox instead?
-  const style = {
-    display: "inline-block",
-    backgroundImage: `url(${asset}`,
-    backgroundSize: "contain",
-    backgroundColor: "transparent",
-    border: "none",
-    backgroundRepeat: "no-repeat",
-    marginTop: "-6px",
-    marginLeft: "4px",
-    marginRight: "4px",
-    width: SWITCH_WIDTH,
-    height: SWITCH_HEIGHT,
-  };
   return (
-    <button
-      style={style}
+    <SwitchButton
+      $asset={asset}
       onClick={onButtonClick}
       title={`Flip switch ${index + 1} ${state ? "off" : "on"}`}
     />
   );
 };
 
-const SwitchRow = ({ children }: { children: ReactNode }) => {
-  const style = {
-    backgroundColor: SWITCH_ROW_BG_COLOR,
-    width: "145px",
-    height: "32px",
-    border: "1px solid black",
-    margin: "4px",
-    display: "flex",
-    flexDirection: "row" as const,
-    alignItems: "center",
-    justifyContent: "space-between",
-    userSelect: "none" as const,
-  };
-  return <div style={style}>{children}</div>;
-};
+const SwitchRow = styled.div`
+  background-color: ${SWITCH_ROW_BG_COLOR};
+  width: 145px;
+  height: 32px;
+  border: 1px solid black;
+  margin: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+`;
+
+const SwitchColumnLabelDiv = styled.div<{ $columnIsLeft: boolean }>`
+  color: ${SWITCH_POSITION_LABEL_COLOR};
+  font-family: monospace;
+  font-size: 24px;
+  text-align: ${(props) => (props.$columnIsLeft ? "right" : "left")};
+  align-self: ${(props) => (props.$columnIsLeft ? "flex-end" : "flex-start")};
+  height: 28px;
+  margin-bottom: 8px;
+  margin-left: ${(props) => (props.$columnIsLeft ? undefined : "8px")};
+  margin-right: ${(props) => (props.$columnIsLeft ? "8px" : undefined)};
+`;
 
 const SwitchColumnLabel = ({ columnIsLeft }: { columnIsLeft: boolean }) => {
-  const textAlign = columnIsLeft ? ("right" as const) : ("left" as const);
   const text = columnIsLeft ? "OFF|ON" : "ON|OFF";
-  const sideMargin = "8px";
-  const style = {
-    color: SWITCH_POSITION_LABEL_COLOR,
-    fontFamily: "monospace",
-    fontSize: "24px",
-    textAlign,
-    alignSelf: columnIsLeft ? "flex-end" : "flex-start",
-    height: "28px",
-    marginBottom: "8px",
-    marginLeft: columnIsLeft ? undefined : sideMargin,
-    marginRight: columnIsLeft ? sideMargin : undefined,
-  };
-  return <div style={style}>{text}</div>;
+  return (
+    <SwitchColumnLabelDiv $columnIsLeft={columnIsLeft}>
+      {text}
+    </SwitchColumnLabelDiv>
+  );
 };
 
-const SwitchNumberLabel = ({ switchNumber }: { switchNumber: number }) => {
-  const style = {
-    display: "inline-block",
-    width: "40px",
-    margin: "0px 8px",
-    fontSize: "32px",
-    fontFamily: "monospace",
-    textAlign: "right" as const,
-    userSelect: "none" as const,
-  };
-  return <span style={style}>{switchNumber}</span>;
-};
+const SwitchNumberLabelSpan = styled.span`
+  display: inline-block;
+  width: 40px;
+  margin: 0px 8px;
+  font-size: 32px;
+  font-family: monospace;
+  text-align: right;
+  user-select: none;
+`;
 
-const SwitchColumn = ({
-  columnIsLeft,
-  children,
-}: {
-  columnIsLeft: boolean;
-  children: ReactNode;
-}) => {
-  const sideMargin = "24px";
-  const columnStyle = {
-    display: "flex",
-    flexDirection: "column" as const,
-    alignItems: "center",
-    justifyContent: "space-evenly",
-    marginLeft: columnIsLeft ? undefined : sideMargin,
-    marginRight: columnIsLeft ? sideMargin : undefined,
-  };
-  return <div style={columnStyle}>{children}</div>;
-};
+const SwitchColumn = styled.div<{ $columnIsLeft: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  ${(props) =>
+    props.$columnIsLeft
+      ? css`
+          margin-right: 24px;
+        `
+      : css`
+          margin-left: 24px;
+        `}
+`;
 
-const Cubby = ({ open }: { open: boolean }) => {
-  const bgImage = open ? `url(${cubby_open})` : undefined;
-  const style = {
-    backgroundImage: bgImage,
-    backgroundSize: "contain",
-    backgroundRepeat: "no-repeat",
-    border: open ? undefined : "2px solid black",
-    width: "217px",
-    height: "56px",
-  };
-  return <div style={style} />;
-};
+const Cubby = styled.div<{ $open: boolean }>`
+  ${({ $open }) =>
+    $open &&
+    css`
+      background-image: url(${cubby_open});
+    `}
+  background-size: contain;
+  background-repeat: no-repeat;
+  ${({ $open }) =>
+    $open
+      ? undefined
+      : css`
+          border: 2px solid black;
+        `}
+  width: 217px;
+  height: 56px;
+`;
 
 function printable(data: boolean[]): string {
   return data.map((b) => (b ? "1" : "0")).join("");
@@ -159,6 +159,45 @@ function parse40bools(data: string): boolean[] | undefined {
   }
   return bools;
 }
+
+const Wall = styled.div`
+  background-color: ${WALL_BG_COLOR};
+  width: 1920px;
+  height: 1080px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SwitchBoxOuter = styled.div`
+  background-color: ${BOX_BG_COLOR};
+  margin: auto;
+  width: ${BOX_WIDTH};
+  border: ${BOX_BORDER};
+  height: ${BOX_HEIGHT};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SwitchBoxInner = styled.div`
+  background-color: ${BOX_INNER_BG_COLOR};
+  margin: auto;
+  width: 530px;
+  height: 910px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
+const SwitchBoxColumns = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+`;
 
 const SwitchBox = ({
   node,
@@ -255,7 +294,7 @@ const SwitchBox = ({
       const asset = switchOn ? switch_right : switch_left;
       return (
         <SwitchRow key={switchIndex}>
-          <SwitchNumberLabel switchNumber={switchIndex + 1} />
+          <SwitchNumberLabelSpan>{switchIndex + 1}</SwitchNumberLabelSpan>
           <Switch
             asset={asset}
             index={index}
@@ -279,20 +318,20 @@ const SwitchBox = ({
             state={switchOn}
             onClick={toggleSwitch}
           />
-          <SwitchNumberLabel switchNumber={switchIndex + 1} />
+          <SwitchNumberLabelSpan>{switchIndex + 1}</SwitchNumberLabelSpan>
         </SwitchRow>
       );
     });
 
   const leftColumn = (
-    <SwitchColumn key="left-column" columnIsLeft={true}>
+    <SwitchColumn key="left-column" $columnIsLeft={true}>
       <SwitchColumnLabel columnIsLeft={true} />
       {leftColumnRows}
     </SwitchColumn>
   );
 
   const rightColumn = (
-    <SwitchColumn key="right-column" columnIsLeft={false}>
+    <SwitchColumn key="right-column" $columnIsLeft={false}>
       <SwitchColumnLabel columnIsLeft={false} />
       {rightColumnRows}
     </SwitchColumn>
@@ -314,62 +353,19 @@ const SwitchBox = ({
   });
 
   return (
-    <div
-      className="wall"
-      style={{
-        backgroundColor: WALL_BG_COLOR,
-        width: "1920px",
-        height: "1080px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div
-        className="switchbox-outer"
-        style={{
-          backgroundColor: BOX_BG_COLOR,
-          margin: "auto",
-          width: BOX_WIDTH,
-          border: BOX_BORDER,
-          height: BOX_HEIGHT,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          className="switchbox-inner"
-          style={{
-            backgroundColor: BOX_INNER_BG_COLOR,
-            margin: "auto",
-            width: "530px",
-            height: "910px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <div
-            className="switchbox-columns"
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "flex-start",
-              justifyContent: "center",
-              width: "100%",
-            }}
-          >
+    <Wall>
+      <SwitchBoxOuter>
+        <SwitchBoxInner>
+          <SwitchBoxColumns>
             {leftColumn}
             {rightColumn}
-          </div>
-          <Cubby open={opened} />
+          </SwitchBoxColumns>
+          <Cubby $open={opened} />
           {modalAssets}
           {modals}
-        </div>
-      </div>
-    </div>
+        </SwitchBoxInner>
+      </SwitchBoxOuter>
+    </Wall>
   );
 };
 
