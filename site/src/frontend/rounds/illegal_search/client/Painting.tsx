@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { styled } from "styled-components";
 import heavy_thump from "../assets/audio/heavy_thump.mp3";
 import light_thump from "../assets/audio/light_thump.mp3";
 import medium_thump from "../assets/audio/medium_thump.mp3";
@@ -36,6 +37,20 @@ function audioFileForFallHeight(fallHeight: number): string {
     return very_heavy_thump;
   }
 }
+
+const PaintingDiv = styled.div<{ $imageUrl: string; $dragging: boolean }>`
+  position: absolute;
+  cursor: ${({ $dragging }) => ($dragging ? "grabbing" : "grab")};
+  width: 730px;
+  height: 970px;
+  background-image: ${({ $imageUrl }) => `url(${$imageUrl})`};
+  background-color: rgb(255, 255, 255);
+  border: 8px solid rgb(255, 255, 0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Painting = ({
   initialPosition,
@@ -180,25 +195,16 @@ const Painting = ({
   );
 
   const style = {
-    position: "absolute" as const,
-    cursor: dragging ? "grabbing" : "grab",
-    width: "730px",
-    height: "970px",
-    backgroundImage: `url(${imageUrl})`,
-    backgroundColor: "rgb(255,255,255)",
-    border: "8px solid rgb(255,255,0)",
     left: position.x,
     top: position.y,
-    display: "flex",
-    flexDirection: "row" as const,
-    alignItems: "center",
-    justifyContent: "center",
   };
 
   if (gone) return undefined;
 
   return (
-    <div
+    <PaintingDiv
+      $imageUrl={imageUrl}
+      $dragging={dragging}
       style={style}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
@@ -214,7 +220,7 @@ const Painting = ({
       <div>dragPos: {JSON.stringify(dragPos)}</div>
       <div>dropPos: {JSON.stringify(dropPosRef.current)}</div>
       */}
-    </div>
+    </PaintingDiv>
   );
 };
 
