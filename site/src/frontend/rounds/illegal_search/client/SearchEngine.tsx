@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
+import { styled } from "styled-components";
 import { type TeamState } from "../../../../../lib/api/client";
 import globalDatasetManager from "../../../client/DatasetManager";
 import PuzzleLink from "../../../components/PuzzleLink";
@@ -94,8 +95,8 @@ const Navigation = ({
   return (
     // eslint-disable-next-line jsx-a11y/anchor-has-content -- These are unlikely to have any non-visual content
     <a
-      href={`/rounds/illegal_search?node=${navigation.destId}`}
       style={style}
+      href={`/rounds/illegal_search?node=${navigation.destId}`}
       onClick={onClicked}
     />
   );
@@ -187,6 +188,41 @@ export const ModalTrigger = ({
     </button>
   );
 };
+
+const ModalBackdrop = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  // Dim other things currently visible, maybe animate this later?
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const PuzzleLinkBackdrop = styled.div`
+  background-color: rgb(255, 255, 255, 0.9);
+  width: 600px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SearchEngineSurface = styled.div<{ $backgroundImage: string }>`
+  width: 1920px;
+  height: 1080px;
+  background-color: black;
+  background-image: ${({ $backgroundImage }) => `url('${$backgroundImage}')`};
+  background-size: contain;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+`;
 
 const SearchEngine = ({
   initialNode,
@@ -385,46 +421,17 @@ const SearchEngine = ({
 
   let modalOverlay = undefined;
   if (modalShown) {
-    const style = {
-      position: "absolute" as const,
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0,
-      backgroundColor: "rgba(0,0,0,0.6)", // Dim other things currently visible, maybe animate this later?
-      //backgroundImage: `url('${modalShown.asset}')`,
-      //backgroundRepeat: "no-repeat",
-      //backgroundPosition: "center",
-      //backgroundSize: "contain",
-
-      display: "flex",
-      flexDirection: "column" as const,
-      alignItems: "center",
-      justifyContent: "center",
-    };
     modalOverlay = (
-      // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- prototype
-      <div style={style} onClick={dismissModal}>
+      <ModalBackdrop onClick={dismissModal}>
         <img width={800} height={600} src={modalShown.asset} alt="TODO" />
-        <div
-          style={{
-            backgroundColor: "rgb(255,255,255,0.9)",
-            width: "600px",
-            height: "48px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <PuzzleLinkBackdrop>
           <PuzzleLink
             teamState={teamState}
             title={modalShown.title}
             slug={modalShown.slug}
           />
-        </div>
-        {/* <a href={`/puzzles/${modalShown.slug}`}>{modalShown.title}</a> */}
-      </div>
+        </PuzzleLinkBackdrop>
+      </ModalBackdrop>
     );
   }
 
@@ -471,22 +478,10 @@ const SearchEngine = ({
     }
   }, [cursorX, cursorY, devBox]);
 
-  const canvasStyle = {
-    width: "1920px",
-    height: "1080px",
-    backgroundColor: "black",
-    backgroundImage: `url('${node.background}')`,
-    backgroundSize: "contain",
-    backgroundPosition: "center",
-    position: "relative" as const,
-    overflow: "hidden",
-  };
-
   return (
     <>
-      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- Only used by devtools */}
-      <div
-        style={canvasStyle}
+      <SearchEngineSurface
+        $backgroundImage={node.background}
         onMouseMove={shouldCapture ? mouseMove : undefined}
         onMouseDown={shouldCapture ? mouseDown : undefined}
         onMouseUp={shouldCapture ? mouseUp : undefined}
@@ -497,7 +492,7 @@ const SearchEngine = ({
         {modals}
         {modalOverlay}
         {devtoolsOverlay}
-      </div>
+      </SearchEngineSurface>
       {ENABLE_DEVTOOLS ? <div>{JSON.stringify(node)}</div> : undefined}
       {devtoolsAddendum}
       {ENABLE_DEVTOOLS ? (
