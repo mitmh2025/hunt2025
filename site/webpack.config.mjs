@@ -218,6 +218,7 @@ export default function createConfigs(_env, argv) {
       modules: [path.join(currentDirname, "node_modules")],
     },
     optimization: {
+      runtimeChunk: "single",
       splitChunks: {
         chunks: "all",
       },
