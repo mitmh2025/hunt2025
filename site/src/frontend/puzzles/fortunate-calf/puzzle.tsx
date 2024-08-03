@@ -1,4 +1,5 @@
 import React from "react";
+import { styled } from "styled-components";
 import casino1 from "./casino1.png";
 import casino2 from "./casino2.png";
 import casino3 from "./casino3.png";
@@ -7,14 +8,14 @@ import casino5 from "./casino5.png";
 import casino6 from "./casino6.png";
 import casino7 from "./casino7.png";
 
+const SizedImage = styled.img`
+  width: 800px;
+  height: 450px;
+`;
+
 const PuzzleContent = () => {
   const altText =
     "An illustration of a round of poker. There are markings visible in the dealer's glasses.";
-  const imgStyle = {
-    width: "800px",
-    height: "450px",
-  };
-
   return (
     <>
       <div className="flavor">
@@ -34,25 +35,25 @@ const PuzzleContent = () => {
         }}
       >
         <div>
-          <img src={casino1} alt={altText} style={imgStyle} />
+          <SizedImage src={casino1} alt={altText} />
         </div>
         <div>
-          <img src={casino2} alt={altText} style={imgStyle} />
+          <SizedImage src={casino2} alt={altText} />
         </div>
         <div>
-          <img src={casino3} alt={altText} style={imgStyle} />
+          <SizedImage src={casino3} alt={altText} />
         </div>
         <div>
-          <img src={casino4} alt={altText} style={imgStyle} />
+          <SizedImage src={casino4} alt={altText} />
         </div>
         <div>
-          <img src={casino5} alt={altText} style={imgStyle} />
+          <SizedImage src={casino5} alt={altText} />
         </div>
         <div>
-          <img src={casino6} alt={altText} style={imgStyle} />
+          <SizedImage src={casino6} alt={altText} />
         </div>
         <div>
-          <img src={casino7} alt={altText} style={imgStyle} />
+          <SizedImage src={casino7} alt={altText} />
         </div>
       </div>
     </>

@@ -1,10 +1,15 @@
 import React from "react";
+import { styled } from "styled-components";
+
+const MonospaceTable = styled.table`
+  font-family: monospace;
+`;
+
+const CSpan = styled.span<{ $color: "red" | "blue" }>`
+  color: ${({ $color }) => $color};
+`;
 
 const Solution = () => {
-  const blue = { color: "blue" };
-  const red = { color: "red" };
-  const mono = { fontFamily: "monospace" };
-
   return (
     <div>
       <p>
@@ -38,7 +43,7 @@ const Solution = () => {
         52-card deck:
       </p>
 
-      <table style={mono}>
+      <MonospaceTable>
         <thead>
           <tr>
             <th>Feeder Answer</th>
@@ -48,49 +53,55 @@ const Solution = () => {
         <tbody>
           <tr>
             <td>
-              <span style={blue}>C</span>A<span style={red}>NINE</span>PARTNER
+              <CSpan $color="blue">C</CSpan>A<CSpan $color="red">NINE</CSpan>
+              PARTNER
             </td>
             <td>9♣</td>
           </tr>
           <tr>
             <td>
-              <span style={blue}>C</span>HEE<span style={red}>SEVEN</span>DORS
+              <CSpan $color="blue">C</CSpan>HEE<CSpan $color="red">SEVEN</CSpan>
+              DORS
             </td>
             <td>7♣</td>
           </tr>
           <tr>
             <td>
-              <span style={blue}>C</span>HO<span style={red}>KING</span>HAZARD
+              <CSpan $color="blue">C</CSpan>HO<CSpan $color="red">KING</CSpan>
+              HAZARD
             </td>
             <td>K♣</td>
           </tr>
           <tr>
             <td>
-              <span style={blue}>H</span>ARDDISKSP<span style={red}>ACE</span>
+              <CSpan $color="blue">H</CSpan>ARDDISKSP
+              <CSpan $color="red">ACE</CSpan>
             </td>
             <td>A♥</td>
           </tr>
           <tr>
             <td>
-              <span style={blue}>S</span>L<span style={red}>EIGHT</span>OFHAND
+              <CSpan $color="blue">S</CSpan>L<CSpan $color="red">EIGHT</CSpan>
+              OFHAND
             </td>
             <td>8♠</td>
           </tr>
           <tr>
             <td>
-              <span style={blue}>S</span>P<span style={red}>ACE</span>WARSHIPS
+              <CSpan $color="blue">S</CSpan>P<CSpan $color="red">ACE</CSpan>
+              WARSHIPS
             </td>
             <td>A♠</td>
           </tr>
           <tr>
             <td>
-              <span style={blue}>S</span>
-              <span style={red}>TEN</span>OGRAPHERS
+              <CSpan $color="blue">S</CSpan>
+              <CSpan $color="red">TEN</CSpan>OGRAPHERS
             </td>
             <td>10♠</td>
           </tr>
         </tbody>
-      </table>
+      </MonospaceTable>
 
       <p>
         These cards represent the pool of cards you have hidden up your sleeves.
@@ -101,7 +112,7 @@ const Solution = () => {
         provides confirmation of the correct assignment.
       </p>
 
-      <table style={mono}>
+      <MonospaceTable>
         <thead>
           <tr>
             <th>Round</th>
@@ -244,7 +255,7 @@ const Solution = () => {
             </td>
           </tr>
         </tbody>
-      </table>
+      </MonospaceTable>
 
       <p>
         The 13-letter feeders, alongside the numbers for the card ranks,
@@ -259,7 +270,7 @@ const Solution = () => {
         produces the answer <code>FACECARDSHARKS</code>.
       </p>
 
-      <table style={mono}>
+      <MonospaceTable>
         <thead>
           <tr>
             <th>Hole Cards</th>
@@ -274,14 +285,14 @@ const Solution = () => {
             <td rowSpan={2}>8♠,9♣</td>
             <td rowSpan={2}>Low</td>
             <td>
-              SLEIGHTO<span style={red}>F</span>HAND
+              SLEIGHTO<CSpan $color="red">F</CSpan>HAND
             </td>
             <td>9</td>
             <td>F</td>
           </tr>
           <tr>
             <td>
-              CANINEP<span style={red}>A</span>RTNER
+              CANINEP<CSpan $color="red">A</CSpan>RTNER
             </td>
             <td>8</td>
             <td>A</td>
@@ -290,14 +301,14 @@ const Solution = () => {
             <td rowSpan={2}>A♥,K♣</td>
             <td rowSpan={2}>High</td>
             <td>
-              <span style={red}>C</span>HOKINGHAZARD
+              <CSpan $color="red">C</CSpan>HOKINGHAZARD
             </td>
             <td>1</td>
             <td>C</td>
           </tr>
           <tr>
             <td>
-              HARDDISKSPAC<span style={red}>E</span>
+              HARDDISKSPAC<CSpan $color="red">E</CSpan>
             </td>
             <td>13</td>
             <td>E</td>
@@ -306,14 +317,14 @@ const Solution = () => {
             <td rowSpan={2}>7♣,A♠</td>
             <td rowSpan={2}>High</td>
             <td>
-              <span style={red}>C</span>HEESEVENDORS
+              <CSpan $color="red">C</CSpan>HEESEVENDORS
             </td>
             <td>1</td>
             <td>C</td>
           </tr>
           <tr>
             <td>
-              SPACEW<span style={red}>A</span>RSHIPS
+              SPACEW<CSpan $color="red">A</CSpan>RSHIPS
             </td>
             <td>7</td>
             <td>A</td>
@@ -322,14 +333,14 @@ const Solution = () => {
             <td rowSpan={2}>7♣,10♠</td>
             <td rowSpan={2}>High</td>
             <td>
-              STENOG<span style={red}>R</span>APHERS
+              STENOG<CSpan $color="red">R</CSpan>APHERS
             </td>
             <td>7</td>
             <td>R</td>
           </tr>
           <tr>
             <td>
-              CHEESEVEN<span style={red}>D</span>ORS
+              CHEESEVEN<CSpan $color="red">D</CSpan>ORS
             </td>
             <td>10</td>
             <td>D</td>
@@ -338,14 +349,14 @@ const Solution = () => {
             <td rowSpan={2}>A♠,10♠</td>
             <td rowSpan={2}>High</td>
             <td>
-              <span style={red}>S</span>TENOGRAPHERS
+              <CSpan $color="red">S</CSpan>TENOGRAPHERS
             </td>
             <td>1</td>
             <td>S</td>
           </tr>
           <tr>
             <td>
-              SPACEWARS<span style={red}>H</span>IPS
+              SPACEWARS<CSpan $color="red">H</CSpan>IPS
             </td>
             <td>10</td>
             <td>H</td>
@@ -354,14 +365,14 @@ const Solution = () => {
             <td rowSpan={2}>9♣,K♣</td>
             <td rowSpan={2}>High</td>
             <td>
-              CHOKINGH<span style={red}>A</span>ZARD
+              CHOKINGH<CSpan $color="red">A</CSpan>ZARD
             </td>
             <td>9</td>
             <td>A</td>
           </tr>
           <tr>
             <td>
-              CANINEPA<span style={red}>R</span>TNER
+              CANINEPA<CSpan $color="red">R</CSpan>TNER
             </td>
             <td>13</td>
             <td>R</td>
@@ -370,20 +381,20 @@ const Solution = () => {
             <td rowSpan={2}>A♥,8♠</td>
             <td rowSpan={2}>Low</td>
             <td>
-              HARDDIS<span style={red}>K</span>SPACE
+              HARDDIS<CSpan $color="red">K</CSpan>SPACE
             </td>
             <td>8</td>
             <td>K</td>
           </tr>
           <tr>
             <td>
-              <span style={red}>S</span>LEIGHTOFHAND
+              <CSpan $color="red">S</CSpan>LEIGHTOFHAND
             </td>
             <td>1</td>
             <td>S</td>
           </tr>
         </tbody>
-      </table>
+      </MonospaceTable>
     </div>
   );
 };
