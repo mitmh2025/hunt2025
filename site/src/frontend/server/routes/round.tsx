@@ -1,6 +1,5 @@
 import { type Request } from "express";
 import React from "react";
-import Layout from "../../components/Layout";
 import { ROUND_PAGE_MAP } from "../../rounds";
 import { lookupScripts, lookupStylesheets } from "../assets";
 
@@ -35,10 +34,10 @@ export const roundHandler = (
     ? lookupStylesheets(content.entrypoint)
     : undefined;
 
-  // TODO: pass props about current unlock state to Component
-  return (
-    <Layout scripts={scripts} stylesheets={stylesheets} teamState={teamState}>
-      <Component teamState={teamState} node={req.query.node} />
-    </Layout>
-  );
+  // TODO: add page title
+  return {
+    node: <Component teamState={teamState} node={req.query.node} />,
+    scripts,
+    stylesheets,
+  };
 };

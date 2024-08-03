@@ -1,8 +1,8 @@
-import React, { type ReactNode } from "react";
+import React from "react";
 import type { TeamState } from "../../../lib/api/client.js";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
 
-function dedupedOrderedScripts(scripts: string[]): string[] {
+function dedupedOrderedItems(scripts: string[]): string[] {
   // Dedupe included scripts.  We only need to load each chunk once.
   const deduped: string[] = [];
   const seen = new Set<string>();
@@ -16,15 +16,17 @@ function dedupedOrderedScripts(scripts: string[]): string[] {
 }
 
 const Layout = ({
-  children,
+  innerHTML,
   scripts,
   stylesheets,
+  styleElements,
   title,
   teamState,
 }: {
-  children: ReactNode;
+  innerHTML: string;
   scripts?: string[];
   stylesheets?: string[];
+  styleElements?: React.JSX.Element[];
   title?: string;
   teamState?: TeamState;
 }) => {
@@ -42,13 +44,14 @@ const Layout = ({
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
-        {allStyles.map((s) => (
+        {dedupedOrderedItems(allStyles).map((s) => (
           <link key={s} rel="stylesheet" href={s} />
         ))}
+        {styleElements}
       </head>
       <body>
-        <div id="root">{children}</div>
-        {dedupedOrderedScripts(allScripts).map((s) => (
+        <div id="root" dangerouslySetInnerHTML={{ __html: innerHTML }} />
+        {dedupedOrderedItems(allScripts).map((s) => (
           <script key={s} type="text/javascript" src={s} />
         ))}
       </body>

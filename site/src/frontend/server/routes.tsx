@@ -11,11 +11,13 @@ import type { ParamsDictionary } from "express-serve-static-core";
 import multer from "multer";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
+import { ServerStyleSheet } from "styled-components";
 import { Router } from "websocket-express";
 import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type RedisClient } from "../../app";
+import Layout from "../components/Layout";
 import {
   comboLockPostHandler,
   fuseboxPostHandler,
@@ -126,6 +128,69 @@ const render500 = (
   const html = doctype + renderToString(reactRoot) + "\n";
   res.status(500).send(html);
 };
+
+const oneDay = String(60 * 60 * 24);
+
+export type RenderedPage =
+  | {
+      node: React.ReactNode; // The element to be placed under the root div
+      title?: string; // The desired page <title>
+      scripts?: string[]; // Additional script tags to include (placed after node in the <body>)
+      stylesheets?: string[]; // Additional stylesheet tags to include (placed in the <head>)
+    }
+  | undefined;
+export type PageRenderer<Params extends ParamsDictionary> = (
+  req: Request<Params>,
+) => Promise<RenderedPage> | RenderedPage;
+
+async function renderApp<Params extends ParamsDictionary>(
+  renderer: PageRenderer<Params>,
+  req: Request<Params>,
+  res: Response,
+  _next: NextFunction,
+) {
+  const result = await renderer(req);
+  if (!result) {
+    render404(req, res);
+    return;
+  }
+  const reactRoot = result.node;
+  const sheet = new ServerStyleSheet();
+  let styleElements;
+  let innerHTML;
+  try {
+    innerHTML = renderToString(sheet.collectStyles(reactRoot));
+    styleElements = sheet.getStyleElement();
+  } catch (error) {
+    console.log(error);
+    render500(res, false, 0, "");
+    return;
+  } finally {
+    sheet.seal();
+  }
+
+  const doctype = "<!DOCTYPE html>";
+  const html =
+    doctype +
+    renderToString(
+      <Layout
+        scripts={result.scripts}
+        stylesheets={result.stylesheets}
+        title={result.title}
+        teamState={req.teamState}
+        styleElements={styleElements}
+        innerHTML={innerHTML}
+      />,
+    ) +
+    "\n";
+  res.set({
+    "Content-Type": "text/html; charset=utf-8",
+    // TODO: determine if this Cache-Control is appropriate
+    "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
+  });
+  res.status(200);
+  res.send(html);
+}
 
 export async function getUiRouter({
   apiUrl,
@@ -261,28 +326,4 @@ export async function getUiRouter({
   router.use(authRouter);
 
   return router;
-}
-
-const oneDay = String(60 * 60 * 24);
-
-async function renderApp<Params extends ParamsDictionary>(
-  handler: (req: Request<Params>) => React.ReactNode,
-  req: Request<Params>,
-  res: Response,
-  _next: NextFunction,
-) {
-  const reactRoot = await handler(req);
-  if (reactRoot === undefined) {
-    render404(req, res);
-    return;
-  }
-
-  const doctype = "<!DOCTYPE html>";
-  const html = doctype + renderToString(reactRoot) + "\n";
-  res.set({
-    "Content-Type": `text/html; charset=utf-8`,
-    "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
-  });
-  res.status(200);
-  res.send(html);
 }

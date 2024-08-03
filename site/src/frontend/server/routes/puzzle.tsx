@@ -1,7 +1,6 @@
 import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
-import Layout from "../../components/Layout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import { PUZZLES } from "../../puzzles";
 import { lookupScripts, lookupStylesheets } from "../assets";
@@ -48,12 +47,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   if (puzzle === undefined) {
     if (process.env.NODE_ENV === "development") {
       // This should only be reachable in dev mode.
-      return (
-        <Layout
-          teamState={req.teamState}
-          scripts={allPuzzlesScripts}
-          stylesheets={allPuzzlesStylesheets}
-        >
+      const node = (
+        <div>
           <h1>Puzzle not assigned (devmode-only page)</h1>
           <p>
             The puzzle you requested (<code>{slug}</code>) exists as a stub, as
@@ -95,8 +90,13 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           <div id="puzzle-content" className="puzzle-content">
             Puzzle content would go here.
           </div>
-        </Layout>
+        </div>
       );
+      return {
+        node,
+        scripts: allPuzzlesScripts,
+        stylesheets: allPuzzlesStylesheets,
+      };
     } else {
       return undefined;
     }
@@ -118,20 +118,23 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const stylesheets = [...allPuzzlesStylesheets, ...puzzleStylesheets];
   const title = puzzle.title;
 
-  return (
-    <Layout
-      scripts={scripts}
-      stylesheets={stylesheets}
-      teamState={req.teamState}
-    >
+  const node = (
+    <div>
       <h1>{title}</h1>
       {/* TODO: add guess form, history, errata, etc. */}
       {guessFrag}
       <div id="puzzle-content" className="puzzle-content">
         <ContentComponent />
       </div>
-    </Layout>
+    </div>
   );
+
+  // TODO: include title
+  return {
+    node,
+    scripts,
+    stylesheets,
+  };
 }
 
 type PuzzleGuessReqBody = {
@@ -216,15 +219,16 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const slug = req.params.puzzleSlug;
   const puzzle = PUZZLES[slug];
   if (puzzle === undefined) {
-    return (
-      <Layout teamState={req.teamState}>
+    const node = (
+      <div>
         <h1>Puzzle not found</h1>
         <p>
           The puzzle you requested a solution for (<code>{slug}</code>) exists,
           but we can&rsquo;t seem to find it.
         </p>
-      </Layout>
+      </div>
     );
+    return { node };
   }
 
   // TODO: look up round-specific solution page layout if applicable.
@@ -235,16 +239,20 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     ? lookupStylesheets(content.entrypoint)
     : [];
   const title = puzzle.title;
-  return (
-    <Layout
-      scripts={scripts}
-      stylesheets={stylesheets}
-      teamState={req.teamState}
-    >
+
+  const node = (
+    <div>
       <h1>Solution to {title}</h1>
       <div id="solution-content" className="solution-content">
         <SolutionComponent />
       </div>
-    </Layout>
+    </div>
   );
+
+  // TODO: include an appropriate title?
+  return {
+    node,
+    scripts,
+    stylesheets,
+  };
 }

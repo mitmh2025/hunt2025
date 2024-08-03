@@ -1,7 +1,17 @@
 import { type Request } from "express";
 import React from "react";
-import Layout from "../../components/Layout";
+import { css, styled } from "styled-components";
 import { PUZZLES } from "../../puzzles";
+
+const PuzzleRow = styled.tr<{ $isMeta: boolean }>`
+  ${({ $isMeta }) =>
+    $isMeta
+      ? css`
+          font-weight: bold;
+        `
+      : undefined}
+  font-size: ${({ $isMeta }) => ($isMeta ? "16px" : "14px")}
+`;
 
 export function allPuzzlesHandler(req: Request) {
   const teamState = req.teamState;
@@ -16,19 +26,15 @@ export function allPuzzlesHandler(req: Request) {
         const puzzle = PUZZLES[slug];
         const title = puzzle?.title ?? `Stub puzzle for slot ${slot}`;
         const answer = teamState.puzzles[slug]?.answer;
-        const style = {
-          fontWeight: is_meta ? "bold" : undefined,
-          fontSize: is_meta ? "16px" : "14px",
-        };
         return (
-          <tr key={slot} style={style}>
+          <PuzzleRow key={slot} $isMeta={is_meta ?? false}>
             <td key="puzzle">
               <a href={`/puzzles/${slug}`}>{title}</a>
             </td>
             <td key="answer">
               <code>{answer ? answer : undefined}</code>
             </td>
-          </tr>
+          </PuzzleRow>
         );
       };
       const renderedMetaRows = Object.entries(round.slots)
@@ -60,12 +66,16 @@ export function allPuzzlesHandler(req: Request) {
       );
     },
   );
-  return (
-    <Layout teamState={req.teamState}>
-      <div>
-        <h1>All puzzles</h1>
-        {renderedRounds}
-      </div>
-    </Layout>
+
+  const node = (
+    <div>
+      <h1>All puzzles</h1>
+      {renderedRounds}
+    </div>
   );
+
+  return {
+    node,
+    title: "All puzzles",
+  };
 }
