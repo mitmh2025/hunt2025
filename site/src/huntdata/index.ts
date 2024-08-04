@@ -207,7 +207,7 @@ const HUNT: Hunt = {
         { id: "ptp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
         { id: "ptp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
         { id: "ptm01", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 1
-        { id: "ptm02", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 2
+        { id: "ptm02", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_2" }, // meta 2
         { id: "ptm03", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 3
         { id: "ptm04", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 4
         { id: "ptm05", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 5

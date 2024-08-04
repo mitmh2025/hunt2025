@@ -6,7 +6,8 @@ import type { Entrypoint } from "../server/assets";
 
 export type Hint = {
   order: number;
-  keywords: string[];
+  description: string;
+  keywords?: string[];
   nudge: string;
 };
 
