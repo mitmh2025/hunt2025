@@ -13,7 +13,18 @@ import img_10 from "./assets/10.jpg";
 import img_11 from "./assets/11.jpg";
 import img_12 from "./assets/12.jpg";
 import img_13 from "./assets/13.jpg";
-import { Math, MFrac, MI, MN, MO, MRoot, MRow, MSqrt, MSub, MSup } from "./mathml";
+import {
+  Math,
+  MFrac,
+  MI,
+  MN,
+  MO,
+  MRoot,
+  MRow,
+  MSqrt,
+  MSub,
+  MSup,
+} from "./mathml";
 
 const SpacedBlock = styled.div`
   margin: 32px 0px;
@@ -818,7 +829,6 @@ const PuzzleContent = () => {
 
         <hr />
 
-        {/* eslint-disable jsx-a11y/alt-text -- describing the images would be difficult to do without spoiling content */}
         <VCenteredDiv>
           <BoundedImg src={img_01} />
         </VCenteredDiv>
@@ -907,7 +917,6 @@ const PuzzleContent = () => {
             </MSup>
           </Formula>
         </VCenteredDiv>
-        {/* eslint-enable jsx-a11y/alt-text -- end of exceptions */}
       </div>
     </>
   );

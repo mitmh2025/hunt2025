@@ -3,12 +3,13 @@ import { styled } from "styled-components";
 import { Math, MFrac, MI, MN, MO, MSub } from "./mathml";
 
 const CenteredTable = styled.table`
-  th, td {
+  th,
+  td {
     text-align: center;
     vertical-align: middle;
     border: 1px solid black;
     border-collapse: collapse;
-  } 
+  }
 
   border: 1px solid black;
   border-collapse: collapse;
@@ -20,33 +21,90 @@ const UniformTable = styled(CenteredTable)`
     min-width: 4em;
     padding: 4px;
   }
-`
+`;
 
 const Solution = () => {
   return (
     <div>
       <p>
-        This metapuzzle has two feeders, one made up of the <Math display="inline"><MI>x</MI></Math> variables and one made up of
-        the <Math display="inline"><MI>y</MI></Math> variables.  These feeders, MILLIMETERS and SLIVERS, are made up of letters
-        that can be interpreted as Roman numerals or &ldquo;leetspeak&rdquo; numbers, except for one
-        letter each, as clued by the flavortext (&ldquo;ignore a letter from each file&rdquo;).
+        This metapuzzle has two feeders, one made up of the{" "}
+        <Math display="inline">
+          <MI>x</MI>
+        </Math>{" "}
+        variables and one made up of the{" "}
+        <Math display="inline">
+          <MI>y</MI>
+        </Math>{" "}
+        variables. These feeders, MILLIMETERS and SLIVERS, are made up of
+        letters that can be interpreted as Roman numerals or
+        &ldquo;leetspeak&rdquo; numbers, except for one letter each, as clued by
+        the flavortext (&ldquo;ignore a letter from each file&rdquo;).
       </p>
       <p>
-        The inequalities give confirmation that solvers have split the feeders into component
-        variables correctly.  The variables are:
+        The inequalities give confirmation that solvers have split the feeders
+        into component variables correctly. The variables are:
       </p>
 
       <UniformTable>
         <tbody>
           <tr>
-            <td><Math><MSub><MI>x</MI><MN>1</MN></MSub></Math></td>
-            <td><Math><MSub><MI>x</MI><MN>2</MN></MSub></Math></td>
-            <td><Math><MSub><MI>x</MI><MN>3</MN></MSub></Math></td>
-            <td><Math><MSub><MI>x</MI><MN>4</MN></MSub></Math></td>
-            <td><Math><MSub><MI>x</MI><MN>5</MN></MSub></Math></td>
-            <td><Math><MSub><MI>x</MI><MN>6</MN></MSub></Math></td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>x</MI>
+                  <MN>1</MN>
+                </MSub>
+              </Math>
+            </td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>x</MI>
+                  <MN>2</MN>
+                </MSub>
+              </Math>
+            </td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>x</MI>
+                  <MN>3</MN>
+                </MSub>
+              </Math>
+            </td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>x</MI>
+                  <MN>4</MN>
+                </MSub>
+              </Math>
+            </td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>x</MI>
+                  <MN>5</MN>
+                </MSub>
+              </Math>
+            </td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>x</MI>
+                  <MN>6</MN>
+                </MSub>
+              </Math>
+            </td>
             <td>-</td>
-            <td><Math><MSub><MI>x</MI><MN>7</MN></MSub></Math></td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>x</MI>
+                  <MN>7</MN>
+                </MSub>
+              </Math>
+            </td>
           </tr>
           <tr>
             <td>MI</td>
@@ -74,11 +132,39 @@ const Solution = () => {
       <UniformTable>
         <tbody>
           <tr>
-            <td><Math><MSub><MI>y</MI><MN>1</MN></MSub></Math></td>
-            <td><Math><MSub><MI>y</MI><MN>2</MN></MSub></Math></td>
-            <td><Math><MSub><MI>y</MI><MN>3</MN></MSub></Math></td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>y</MI>
+                  <MN>1</MN>
+                </MSub>
+              </Math>
+            </td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>y</MI>
+                  <MN>2</MN>
+                </MSub>
+              </Math>
+            </td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>y</MI>
+                  <MN>3</MN>
+                </MSub>
+              </Math>
+            </td>
             <td>-</td>
-            <td><Math><MSub><MI>y</MI><MN>4</MN></MSub></Math></td>
+            <td>
+              <Math>
+                <MSub>
+                  <MI>y</MI>
+                  <MN>4</MN>
+                </MSub>
+              </Math>
+            </td>
           </tr>
           <tr>
             <td>SL</td>
@@ -98,14 +184,16 @@ const Solution = () => {
       </UniformTable>
 
       <p>
-        Evaluating each expression, solvers find that they are not quite in numerical order.
-        However, each has a discrepancy from a well-known constant (with powers of 10 omitted), and
-        the expressions are in order by the true value.  These constants are clued by the images below,
-        along with the accompanying powers of 10.  Taking the difference between the true value
-        truncated to the hundredths place and the calculated expression (as per the flavortext:
-        &ldquo;They keep track of the dollars and cents, but they&rsquo;re apt to just cut things off there&rdquo;)
-        and interpreting these two decimal digits as letters with 0.01=A, 0.02=B, etc. gives the
-        answer ROUNDING ERROR.
+        Evaluating each expression, solvers find that they are not quite in
+        numerical order. However, each has a discrepancy from a well-known
+        constant (with powers of 10 omitted), and the expressions are in order
+        by the true value. These constants are clued by the images below, along
+        with the accompanying powers of 10. Taking the difference between the
+        true value truncated to the hundredths place and the calculated
+        expression (as per the flavortext: &ldquo;They keep track of the dollars
+        and cents, but they&rsquo;re apt to just cut things off there&rdquo;)
+        and interpreting these two decimal digits as letters with 0.01=A,
+        0.02=B, etc. gives the answer ROUNDING ERROR.
       </p>
 
       <CenteredTable>
@@ -168,7 +256,24 @@ const Solution = () => {
           </tr>
           <tr>
             <td>e</td>
-            <td>Integral of <Math display="inline"><MI>f</MI><MO stretchy={true} symmetric={true}>(</MO><MI>x</MI><MO stretchy={true} symmetric={true}>)</MO><MO>=</MO><MFrac><MN>1</MN><MI>x</MI></MFrac></Math></td>
+            <td>
+              Integral of{" "}
+              <Math display="inline">
+                <MI>f</MI>
+                <MO stretchy={true} symmetric={true}>
+                  (
+                </MO>
+                <MI>x</MI>
+                <MO stretchy={true} symmetric={true}>
+                  )
+                </MO>
+                <MO>=</MO>
+                <MFrac>
+                  <MN>1</MN>
+                  <MI>x</MI>
+                </MFrac>
+              </Math>
+            </td>
             <td>2.71</td>
             <td>5</td>
             <td>2.8</td>
