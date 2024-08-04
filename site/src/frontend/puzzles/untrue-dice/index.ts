@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Shell Corporation 2: Triple A Accounting Inc.",
+  title: "Shell Corporation 2: Triple A Accounting, LLC",
   slug: "shell_corporation_2",
   authors: ["Li-Mei Lim"],
   content: {
