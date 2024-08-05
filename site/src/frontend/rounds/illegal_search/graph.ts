@@ -1,9 +1,9 @@
 import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.svg";
-import main_east_bg from "./assets/main_east.png";
+import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.jpg";
-import main_west_bg from "./assets/main_west.png";
+import main_west_bg from "./assets/main_west.jpg";
 import secret_bg from "./assets/secret.jpg";
 import type {
   Modal,
