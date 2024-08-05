@@ -231,7 +231,8 @@ const HUNT: Hunt = {
               "ptm07",
               "ptm08",
             ],
-          }
+          },
+          slug: "the_shell_game",
         },
       ],
       unlock_if: [
