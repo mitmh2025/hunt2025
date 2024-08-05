@@ -3,7 +3,7 @@ import type { TeamState } from "../../../lib/api/client";
 import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
 import IllegalSearchRoundPage from "./illegal_search";
-import PapertrailRoundPage from "./papertrail";
+import PapertrailRoundPage from "./paper_trail";
 import ShadowDiamondRoundPage from "./shadow_diamond";
 import StakeoutRoundPage from "./stakeout";
 import DeadThiefRoundPage from "./the_dead_thief";
@@ -30,6 +30,7 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   },
   paper_trail: {
     component: PapertrailRoundPage,
+    entrypoint: "paper_trail",
   },
   illegal_search: {
     component: IllegalSearchRoundPage,

@@ -182,6 +182,7 @@ export default function createConfigs(_env, argv) {
       dev: "./src/frontend/client/dev.tsx",
       illegal_search: "./src/frontend/rounds/illegal_search/client.tsx",
       main: "./src/frontend/client/main.tsx",
+      paper_trail: "./src/frontend/rounds/paper_trail/client.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
       shadow_diamond: "./src/frontend/rounds/shadow_diamond/client.tsx",
       stakeout: "./src/frontend/rounds/stakeout/client.tsx",

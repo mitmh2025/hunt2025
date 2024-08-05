@@ -7,6 +7,7 @@ const RPCBase = z.object({
 
 export const DatasetSchema = z.enum([
   "team_state",
+  "paper_trail",
   "stakeout",
   "illegal_search_painting2",
   "illegal_search_rug",

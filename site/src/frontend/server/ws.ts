@@ -16,6 +16,7 @@ import {
   painting2State,
   rugState,
 } from "../rounds/illegal_search";
+import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { devtoolsState } from "./devtools";
 
@@ -26,6 +27,7 @@ type SubscriptionHandler<T> = {
 
 const DATASET_REGISTRY: Record<Dataset, (teamState: TeamState) => object> = {
   dev: devtoolsState,
+  paper_trail: paperTrailState,
   stakeout: stakeoutState,
   team_state: (teamState: TeamState) => {
     return teamState;
