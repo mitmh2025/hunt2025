@@ -9,10 +9,12 @@ import {
   isTerminalNode,
 } from "./types";
 
-function checkAllNodeIdsUnique<T, R>(graph: InteractionGraph<T, R>) {
+function checkAllNodeIdsUnique<T, R, S extends string>(
+  graph: InteractionGraph<T, R, S>,
+) {
   const seen = new Map<
     string,
-    { node: InteractionGraphNode<T, R>; position: number }
+    { node: InteractionGraphNode<T, R, S>; position: number }
   >();
   const errors: string[] = [];
   graph.nodes.forEach((node, i) => {
@@ -32,37 +34,9 @@ function checkAllNodeIdsUnique<T, R>(graph: InteractionGraph<T, R>) {
   }
 }
 
-function checkAllCharacterReferencesPresent<T, R>(
-  graph: InteractionGraph<T, R>,
-) {
-  const states = new Set(Object.keys(graph.character_states));
-  const errors: string[] = [];
-  graph.nodes.forEach((node) => {
-    if (node.char_left !== null && node.char_left !== undefined) {
-      if (!states.has(node.char_left)) {
-        errors.push(
-          `Node id ${node.id} has char_left "${node.char_left}" but no such character state is known`,
-        );
-      }
-    }
-    if (node.char_right !== null && node.char_right !== undefined) {
-      if (!states.has(node.char_right)) {
-        errors.push(
-          `Node id ${node.id} has char_right "${node.char_right}" but no such character state is known`,
-        );
-      }
-    }
-  });
-  if (errors.length > 0) {
-    throw new Error(
-      `${errors.length} error${errors.length > 1 ? "s" : ""}:\n${errors.join("\n")}`,
-    );
-  }
-}
-
-function checkStartingNodePresent<T, R>(
-  graph: InteractionGraph<T, R>,
-  indexedNodes: Map<string, InteractionGraphNode<T, R>>,
+function checkStartingNodePresent<T, R, S extends string>(
+  graph: InteractionGraph<T, R, S>,
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
 ) {
   if (!indexedNodes.has(graph.starting_node)) {
     throw new Error(
@@ -82,9 +56,9 @@ type Path<R> = {
   result: R;
 };
 
-function allPaths<T, R>(
-  graph: InteractionGraph<T, R>,
-  indexedNodes: Map<string, InteractionGraphNode<T, R>>,
+function allPaths<T, R, S extends string>(
+  graph: InteractionGraph<T, R, S>,
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
 ): Path<R>[] {
   const start = {
     current: graph.starting_node,
@@ -148,8 +122,8 @@ function allPaths<T, R>(
   return paths;
 }
 
-function checkAllNodesReachable<T, R>(
-  graph: InteractionGraph<T, R>,
+function checkAllNodesReachable<T, R, S extends string>(
+  graph: InteractionGraph<T, R, S>,
   paths: Path<R>[],
 ) {
   const reachable = new Set();
@@ -170,8 +144,8 @@ function checkAllNodesReachable<T, R>(
   }
 }
 
-function expectedTime<T, R>(
-  indexedNodes: Map<string, InteractionGraphNode<T, R>>,
+function expectedTime<T, R, S extends string>(
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
   path: Path<R>,
 ): number {
   // Compute the total of the timeout_msec for all the nodes visited along `path`
@@ -186,8 +160,8 @@ function expectedTime<T, R>(
   return sum;
 }
 
-function printMinAndMaxRuntimes<T, R>(
-  indexedNodes: Map<string, InteractionGraphNode<T, R>>,
+function printMinAndMaxRuntimes<T, R, S extends string>(
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
   paths: Path<R>[],
 ) {
   const pathsWithTimes: [number, Path<R>][] = paths.map((path) => {
@@ -206,13 +180,12 @@ function printMinAndMaxRuntimes<T, R>(
   console.log(`Longest path: ${longest[0] / 1000} seconds, path:`, longest[1]);
 }
 
-function checkGraph<T, R>(graph: InteractionGraph<T, R>) {
-  const indexedNodes = new Map<string, InteractionGraphNode<T, R>>();
+function checkGraph<T, R, S extends string>(graph: InteractionGraph<T, R, S>) {
+  const indexedNodes = new Map<string, InteractionGraphNode<T, R, S>>();
   graph.nodes.forEach((node) => {
     indexedNodes.set(node.id, node);
   });
   checkAllNodeIdsUnique(graph);
-  checkAllCharacterReferencesPresent(graph);
   checkStartingNodePresent(graph, indexedNodes);
   const paths = allPaths(graph, indexedNodes);
   console.log("Total paths: ", paths.length);

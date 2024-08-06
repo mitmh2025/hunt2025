@@ -29,18 +29,17 @@ export type InteractionCharacterState = {
   image: string;
 };
 
-export type InteractionGraphNodeShared = {
+export type InteractionGraphNodeShared<S> = {
   id: NodeId;
 
-  // If present, the id of the matching InteractionCharacterState to present on
-  // the left side of the UI until the next node which sets this value.
-  char_left?: string | null;
-  // If present, the id of the matching InteractionCharacterState to present on
-  // the right side of the UI until the next node which sets this value.
-  char_right?: string | null;
+  // Which InteractionChacterState key are we setting the current overlay to?
+  overlay?: string | null;
+  // TODO: determine if we need additional overlay positioning logic
 
-  // Which of the characters is speaking this particular line?
-  speaker: "left" | "right";
+  // Which of the characters is speaking this particular line?  Must be a key in the graph's speaker_states.
+  speaker: S;
+
+  // TODO: maybe add speakerImage to control what picture is shown to the left of the dialog
 
   // The text to display being spoken (or thought) by the specified speaker
   text: string;
@@ -57,50 +56,53 @@ export type InteractionGraphNodeShared = {
   timeout_msec: number;
 };
 
-export type InteractionGraphNodeWithNext<T> = InteractionGraphNodeShared & {
-  // If present, when this node has been active for its timeout, what node
-  // should become the next current node?
-  next: NodeId | StatefulDestinationSelector<T>;
-};
-export type InteractionGraphNodeWithChoices<T> = InteractionGraphNodeShared & {
-  // If present, when this node is active, a vote between the choices offered
-  // will be taken, and the winner's "next" will be the next current node.
-  choices:
-    | InteractionGraphNodeChoice<T>[]
-    | ((state: T) => InteractionGraphNodeChoice<T>[]);
-};
-export type InteractionGraphNodeTerminal<T, R> = InteractionGraphNodeShared & {
-  // If present, this node is a final state in the state graph.  When
-  // completed, this function will be called with the state of the interaction,
-  // and the result returned will be delivered as the final state back to the
-  // API backend.
-  finalState: (state: T) => R;
-};
+export type InteractionGraphNodeWithNext<T, S> =
+  InteractionGraphNodeShared<S> & {
+    // If present, when this node has been active for its timeout, what node
+    // should become the next current node?
+    next: NodeId | StatefulDestinationSelector<T>;
+  };
+export type InteractionGraphNodeWithChoices<T, S> =
+  InteractionGraphNodeShared<S> & {
+    // If present, when this node is active, a vote between the choices offered
+    // will be taken, and the winner's "next" will be the next current node.
+    choices:
+      | InteractionGraphNodeChoice<T>[]
+      | ((state: T) => InteractionGraphNodeChoice<T>[]);
+  };
+export type InteractionGraphNodeTerminal<T, R, S> =
+  InteractionGraphNodeShared<S> & {
+    // If present, this node is a final state in the state graph.  When
+    // completed, this function will be called with the state of the interaction,
+    // and the result returned will be delivered as the final state back to the
+    // API backend.
+    finalState: (state: T) => R;
+  };
 
-export type InteractionGraphNode<T, R> =
-  | InteractionGraphNodeWithNext<T>
-  | InteractionGraphNodeWithChoices<T>
-  | InteractionGraphNodeTerminal<T, R>;
+export type InteractionGraphNode<T, R, S> =
+  | InteractionGraphNodeWithNext<T, S>
+  | InteractionGraphNodeWithChoices<T, S>
+  | InteractionGraphNodeTerminal<T, R, S>;
 
-export function isNextNode<T, R>(
-  node: InteractionGraphNode<T, R>,
-): node is InteractionGraphNodeWithNext<T> {
+export function isNextNode<T, R, S>(
+  node: InteractionGraphNode<T, R, S>,
+): node is InteractionGraphNodeWithNext<T, S> {
   return Object.prototype.hasOwnProperty.call(node, "next");
 }
-export function isChoiceNode<T, R>(
-  node: InteractionGraphNode<T, R>,
-): node is InteractionGraphNodeWithChoices<T> {
+export function isChoiceNode<T, R, S>(
+  node: InteractionGraphNode<T, R, S>,
+): node is InteractionGraphNodeWithChoices<T, S> {
   return Object.prototype.hasOwnProperty.call(node, "choices");
 }
-export function isTerminalNode<T, R>(
-  node: InteractionGraphNode<T, R>,
-): node is InteractionGraphNodeTerminal<T, R> {
+export function isTerminalNode<T, R, S>(
+  node: InteractionGraphNode<T, R, S>,
+): node is InteractionGraphNodeTerminal<T, R, S> {
   return Object.prototype.hasOwnProperty.call(node, "finalState");
 }
 
-export type InteractionGraph<T, R> = {
+export type InteractionGraph<T, R, S extends string> = {
   // The universe of nodes that are reachable within this graph.
-  nodes: InteractionGraphNode<T, R>[];
+  nodes: InteractionGraphNode<T, R, S>[];
 
   // The id of the node at which this interaction starts.
   starting_node: NodeId;
@@ -110,7 +112,7 @@ export type InteractionGraph<T, R> = {
 
   // A map from character state id to image asset for all character state ids
   // referenced by this interaction.
-  character_states: Record<string, InteractionCharacterState>;
+  speaker_states: Record<S, InteractionCharacterState>;
 
   // The asset path of the background image for this interaction.
   background: string;
