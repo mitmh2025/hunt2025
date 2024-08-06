@@ -1,5 +1,6 @@
 import { test } from "@jest/globals";
 import ArtGalleryInteractionGraph from "./interview_at_the_art_gallery/graph";
+import JewelryStoreInteractionGraph from "./interview_at_the_jewelry_store/graph";
 import {
   type InteractionGraph,
   type InteractionGraphNode,
@@ -196,4 +197,8 @@ function checkGraph<T, R, S extends string>(graph: InteractionGraph<T, R, S>) {
 
 test("art gallery", () => {
   checkGraph(ArtGalleryInteractionGraph);
+});
+
+test("jewelry store", () => {
+  checkGraph(JewelryStoreInteractionGraph);
 });
