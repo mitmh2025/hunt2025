@@ -300,24 +300,24 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "2a-p1",
       speaker: "judith_stern",
-      text: "You don't know the first thing about art, do you?",
+      text: "You don’t know the first thing about art, do you?",
       sound: audio_2a_p1,
       timeout_msec: 3500 + 10000, // 3.5 seconds audio, 10 more seconds voting (it's quick)
       choices: [
         {
-          text: "I know a guy named Art, does that count?  He and his buddy Paul won't shut up about a bridge.",
+          text: "I know a guy named Art, does that count?  He and his buddy Paul won’t shut up about a bridge.",
           next: "3a",
         },
         {
-          text: "I know that art is subjective, and so I can't be wrong.",
+          text: "I know that art is subjective, and so I can’t be wrong.",
           next: "3b",
         },
         {
-          text: "I know that my finest artwork still hangs on my mother's fridge.  She moved, so I'm a little worried why the new tenant kept it, but it's there.",
+          text: "I know that my finest artwork still hangs on my mother’s fridge.  She moved, so I’m a little worried why the new tenant kept it, but it’s there.",
           next: "3c",
         },
         {
-          text: "I know enough to know when I'm beat.",
+          text: "I know enough to know when I’m beat.",
           next: "3d",
         },
       ],
@@ -325,7 +325,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3a",
       speaker: "billie",
-      text: "I know a guy named Art, does that count?  He and his buddy Paul won't shut up about a bridge.",
+      text: "I know a guy named Art, does that count?  He and his buddy Paul won’t shut up about a bridge.",
       sound: audio_3a,
       timeout_msec: 6250,
       next: "3-p1",
@@ -333,7 +333,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3b",
       speaker: "billie",
-      text: "I know that art is subjective, and so I can't be wrong.",
+      text: "I know that art is subjective, and so I can’t be wrong.",
       sound: audio_3b,
       timeout_msec: 4250,
       next: "3-p1",
@@ -341,7 +341,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3c",
       speaker: "billie",
-      text: "I know that my finest artwork still hangs on my mother's fridge.  She moved, so I'm a little worried why the new tenant kept it, but it's there.",
+      text: "I know that my finest artwork still hangs on my mother’s fridge.  She moved, so I’m a little worried why the new tenant kept it, but it’s there.",
       sound: audio_3c,
       timeout_msec: 7800,
       next: "3-p1",
@@ -349,7 +349,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3d",
       speaker: "billie",
-      text: "I know enough to know when I'm beat.",
+      text: "I know enough to know when I’m beat.",
       sound: audio_3d,
       timeout_msec: 3250,
       next: "3-p1",
@@ -362,19 +362,19 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       timeout_msec: 5750 + 10000, // 5.75 clip + 10 more seconds voting
       choices: [
         {
-          text: "Billie O'Ryan.  I own a detective agency.",
+          text: "Billie O’Ryan.  I own a detective agency.",
           next: "4a",
         },
         {
-          text: "Billie O'Ryan.  I own a second trenchcoat to this one.",
+          text: "Billie O’Ryan.  I own a second trenchcoat to this one.",
           next: "4b",
         },
         {
-          text: "Billie O'Ryan.  I own a healthy suspicion.",
+          text: "Billie O’Ryan.  I own a healthy suspicion.",
           next: "4c",
         },
         {
-          text: "Billie O'Ryan.  I own.",
+          text: "Billie O’Ryan.  I own.",
           next: "4d",
         },
       ],
@@ -382,7 +382,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4a",
       speaker: "billie",
-      text: "Billie O'Ryan.  I own a detective agency.",
+      text: "Billie O’Ryan.  I own a detective agency.",
       sound: audio_4a,
       timeout_msec: 3700,
       next: "4a-p1",
@@ -398,7 +398,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4a-p2",
       speaker: "billie",
-      text: "Careful with that intuition, ma'am.  That's my job.",
+      text: "Careful with that intuition, ma’am.  That’s my job.",
       sound: audio_4a_p2,
       timeout_msec: 4100,
       next: "7",
@@ -406,7 +406,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4b",
       speaker: "billie",
-      text: "Billie O'Ryan.  I own a second trenchcoat to this one.",
+      text: "Billie O’Ryan.  I own a second trenchcoat to this one.",
       sound: audio_4b,
       timeout_msec: 3900,
       next: "4b-p1",
@@ -422,7 +422,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4b-p2",
       speaker: "billie",
-      text: "I'm not here to swap sartorial stories, actually.  I'm here about the diamond.",
+      text: "I’m not here to swap sartorial stories, actually.  I’m here about the diamond.",
       sound: audio_4b_p2,
       timeout_msec: 5600,
       next: "7",
@@ -430,7 +430,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4c",
       speaker: "billie",
-      text: "Billie O'Ryan.  I own a healthy suspicion.",
+      text: "Billie O’Ryan.  I own a healthy suspicion.",
       sound: audio_4c,
       timeout_msec: 3500,
       next: "4c-p1",
@@ -446,7 +446,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4d",
       speaker: "billie",
-      text: "Billie O'Ryan.  I own.",
+      text: "Billie O’Ryan.  I own.",
       sound: audio_4d,
       timeout_msec: 3100,
       next: "4d-p1",
@@ -462,7 +462,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4d-p2",
       speaker: "billie",
-      text: "Own... generally.  Dominate.  I'm trying to get some new slang going here.  Is it not working?",
+      text: "Own... generally.  Dominate.  I’m trying to get some new slang going here.  Is it not working?",
       sound: audio_4d_p2,
       timeout_msec: 7000,
       next: "4d-p3",
@@ -478,7 +478,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4d-p4",
       speaker: "billie",
-      text: "Well, I'll have to fall back on my day job of hunting down that diamond, then.",
+      text: "Well, I’ll have to fall back on my day job of hunting down that diamond, then.",
       sound: audio_4d_p4,
       timeout_msec: 5250,
       next: "7",
@@ -486,24 +486,24 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5",
       speaker: "judith_slight_smile_unintroduced",
-      text: "Well, I can see puffery won't work on you, then, will it?",
+      text: "Well, I can see puffery won’t work on you, then, will it?",
       sound: audio_5,
       timeout_msec: 15000, // 4.5 sec audio + ~10 seconds voting
       choices: [
         {
-          text: "I don't know.  It depends on how much huffery you put before it.",
+          text: "I don’t know.  It depends on how much huffery you put before it.",
           next: "5a",
         },
         {
-          text: "I don't know.  I have a feeling that a sales pitch might be on its way.",
+          text: "I don’t know.  I have a feeling that a sales pitch might be on its way.",
           next: "5b",
         },
         {
-          text: "I don't know.  It might still be nice to hear the routine.",
+          text: "I don’t know.  It might still be nice to hear the routine.",
           next: "5c",
         },
         {
-          text: "I don't know.  They're cute, but I prefer penguins.",
+          text: "I don’t know.  They’re cute, but I prefer penguins.",
           next: "5d",
         },
       ],
@@ -511,7 +511,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5a",
       speaker: "billie",
-      text: "I don't know.  It depends on how much huffery you put before it.",
+      text: "I don’t know.  It depends on how much huffery you put before it.",
       sound: audio_5a,
       timeout_msec: 4250,
       next: "6",
@@ -519,7 +519,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5b",
       speaker: "billie",
-      text: "I don't know.  I have a feeling that a sales pitch might be on its way.",
+      text: "I don’t know.  I have a feeling that a sales pitch might be on its way.",
       sound: audio_5b,
       timeout_msec: 4500,
       next: "6",
@@ -527,7 +527,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5c",
       speaker: "billie",
-      text: "I don't know.  It might still be nice to hear the routine.",
+      text: "I don’t know.  It might still be nice to hear the routine.",
       sound: audio_5c,
       timeout_msec: 4000,
       next: "6",
@@ -535,7 +535,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5d",
       speaker: "billie",
-      text: "I don't know.  They're cute, but I prefer penguins.",
+      text: "I don’t know.  They’re cute, but I prefer penguins.",
       sound: audio_5d,
       timeout_msec: 3750,
       next: "6",
@@ -548,19 +548,19 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       timeout_msec: 4750 + 10000, // 4.75 sec clip + 10 seconds more to vote
       choices: [
         {
-          text: "Billie O'Ryan, of the O'Ryan Detective Agency.",
+          text: "Billie O’Ryan, of the O’Ryan Detective Agency.",
           next: "6a",
         },
         {
-          text: "Billie O'Ryan, of the O'Ryan Exhibition Center.",
+          text: "Billie O’Ryan, of the O’Ryan Exhibition Center.",
           next: "6b",
         },
         {
-          text: "Billie O'Ryan, of the O'Ryan Shoe Company.",
+          text: "Billie O’Ryan, of the O’Ryan Shoe Company.",
           next: "6c",
         },
         {
-          text: "Billie O'Ryan, of the O'Ryans.",
+          text: "Billie O’Ryan, of the O’Ryans.",
           next: "6d",
         },
       ],
@@ -568,7 +568,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6a",
       speaker: "billie",
-      text: "Billie O'Ryan, of the O'Ryan Detective Agency.",
+      text: "Billie O’Ryan, of the O’Ryan Detective Agency.",
       sound: audio_6a,
       timeout_msec: 3750,
       next: "6a-p1",
@@ -584,7 +584,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6a-p2",
       speaker: "billie",
-      text: "I suppose I might be for as long as it takes to find the diamond, ma'am.",
+      text: "I suppose I might be for as long as it takes to find the diamond, ma’am.",
       sound: audio_6a_p2,
       timeout_msec: 4800,
       next: "7",
@@ -593,7 +593,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6b",
       speaker: "billie",
-      text: "Billie O'Ryan, of the O'Ryan Exhibition Center.",
+      text: "Billie O’Ryan, of the O’Ryan Exhibition Center.",
       sound: audio_6b,
       timeout_msec: 4000,
       next: "6b-p1",
@@ -601,7 +601,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6b-p1",
       speaker: "judith_flat",
-      text: "Exhibition Center? I haven't heard of that one.  What do you exhibit?",
+      text: "Exhibition Center? I haven’t heard of that one.  What do you exhibit?",
       sound: audio_6b_p1,
       timeout_msec: 4500,
       next: "6b-p2",
@@ -618,7 +618,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6c",
       speaker: "billie",
-      text: "Billie O'Ryan, of the O'Ryan Shoe Company.",
+      text: "Billie O’Ryan, of the O’Ryan Shoe Company.",
       sound: audio_6c,
       timeout_msec: 3500,
       next: "6c-p1",
@@ -626,7 +626,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6c-p1",
       speaker: "judith_flat",
-      text: "Shoe Company?  I didn't take you for a cobbler.",
+      text: "Shoe Company?  I didn’t take you for a cobbler.",
       sound: audio_6c_p1,
       timeout_msec: 3800,
       next: "6c-p2",
@@ -634,7 +634,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6c-p2",
       speaker: "billie",
-      text: "Well, I've been going all over town investigating the diamond.  I'm burning through loafers.  At this rate I may as well buy the company and save some time.",
+      text: "Well, I’ve been going all over town investigating the diamond.  I’m burning through loafers.  At this rate I may as well buy the company and save some time.",
       sound: audio_6c_p2,
       timeout_msec: 8000,
       next: "7",
@@ -642,7 +642,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6d",
       speaker: "billie",
-      text: "Billie O'Ryan, of the O'Ryans.",
+      text: "Billie O’Ryan, of the O’Ryans.",
       sound: audio_6d,
       timeout_msec: 3000,
       next: "6d-p1",
@@ -650,7 +650,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6d-p1",
       speaker: "judith_flat",
-      text: "The O'Ryans? I don't believe I've heard your name in socialite circles.",
+      text: "The O’Ryans? I don’t believe I’ve heard your name in socialite circles.",
       sound: audio_6d_p1,
       timeout_msec: 5300,
       next: "6d-p2",
@@ -658,7 +658,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6d-p2",
       speaker: "billie",
-      text: "Well, it's not there yet.  That might change once I hunt down the diamond.",
+      text: "Well, it’s not there yet.  That might change once I hunt down the diamond.",
       sound: audio_6d_p2,
       timeout_msec: 5200,
       next: "7",
@@ -675,24 +675,24 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7-p1",
       speaker: "judith_slight_smile",
-      text: "I'm sure it will be the talk of the town for gallery openings and artist retrospectives for months to come.",
+      text: "I’m sure it will be the talk of the town for gallery openings and artist retrospectives for months to come.",
       sound: audio_7_p1,
       timeout_msec: 7000 + 10000, // 7 second clip, 10 seconds voting
       choices: [
         {
-          text: "And when that talk happens, you wouldn't happen to be adding any exclusive knowledge to those conversations, would you?",
+          text: "And when that talk happens, you wouldn’t happen to be adding any exclusive knowledge to those conversations, would you?",
           next: "7a",
         },
         {
-          text: "I'm hoping it could be the talk of this gallery for minutes to come.",
+          text: "I’m hoping it could be the talk of this gallery for minutes to come.",
           next: "7b",
         },
         {
-          text: "Any chance I could get a sneak preview of that talk?  I'm so rusty at cocktail chatter.",
+          text: "Any chance I could get a sneak preview of that talk?  I’m so rusty at cocktail chatter.",
           next: "7c",
         },
         {
-          text: "I doubt I'll be invited to those unless I solve the case.  Any chance you can help guide me closer by telling me what you know, ma'am?",
+          text: "I doubt I’ll be invited to those unless I solve the case.  Any chance you can help guide me closer by telling me what you know, ma’am?",
           next: "7d",
         },
       ],
@@ -700,7 +700,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7a",
       speaker: "billie",
-      text: "And when that talk happens, you wouldn't happen to be adding any exclusive knowledge to those conversations, would you?",
+      text: "And when that talk happens, you wouldn’t happen to be adding any exclusive knowledge to those conversations, would you?",
       sound: audio_7a,
       timeout_msec: 7500,
       next: "8",
@@ -708,7 +708,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7b",
       speaker: "billie",
-      text: "I'm hoping it could be the talk of this gallery for minutes to come.",
+      text: "I’m hoping it could be the talk of this gallery for minutes to come.",
       sound: audio_7b,
       timeout_msec: 4800,
       next: "8",
@@ -716,7 +716,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7c",
       speaker: "billie",
-      text: "Any chance I could get a sneak preview of that talk?  I'm so rusty at cocktail chatter.",
+      text: "Any chance I could get a sneak preview of that talk?  I’m so rusty at cocktail chatter.",
       sound: audio_7c,
       timeout_msec: 5750,
       next: "8",
@@ -724,7 +724,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7d",
       speaker: "billie",
-      text: "I doubt I'll be invited to those unless I solve the case.  Any chance you can help guide me closer by telling me what you know, ma'am?",
+      text: "I doubt I’ll be invited to those unless I solve the case.  Any chance you can help guide me closer by telling me what you know, ma’am?",
       sound: audio_7d,
       timeout_msec: 7500,
       next: "8",
@@ -733,7 +733,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "8",
       speaker: "judith_slight_smile",
-      text: "Oh goodness.  The art world is such an insular place, Detective.  And there's a certain level of discretion that develops in business relationships.  You understand, surely.",
+      text: "Oh goodness.  The art world is such an insular place, Detective.  And there’s a certain level of discretion that develops in business relationships.  You understand, surely.",
       sound: audio_8,
       timeout_msec: 12250,
       next: "8-p1",
@@ -757,7 +757,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "9-p1",
       speaker: "judith_slight_smile",
-      text: "But it's strictly for the art world.",
+      text: "But it’s strictly for the art world.",
       sound: audio_9_p1,
       timeout_msec: 4600,
       next: "9-p2",
@@ -783,12 +783,12 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       id: "10-p1",
       speaker: "billie",
       textBubbleType: "thought",
-      text: "Hm.  I DO have an open expense account on this job.  And I've paid less subtle bribes than this before.",
+      text: "Hm.  I DO have an open expense account on this job.  And I’ve paid less subtle bribes than this before.",
       sound: audio_10_p1,
       timeout_msec: 7500 + 10000, // 7.5 sec clip + 10 seconds voting
       choices: [
         {
-          text: "Then I suppose I'll take the Kieftenbeld.",
+          text: "Then I suppose I’ll take the Kieftenbeld.",
           next: "11a",
           stateEffect(state: ArtGalleryState) {
             return {
@@ -798,7 +798,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
           },
         },
         {
-          text: "Then I suppose I'll take the LeMahieu.",
+          text: "Then I suppose I’ll take the LeMahieu.",
           next: "11b",
           stateEffect(state: ArtGalleryState) {
             return {
@@ -808,7 +808,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
           },
         },
         {
-          text: "Then I suppose I'll take the Kieftenbeld. ...'s postcard.",
+          text: "Then I suppose I’ll take the Kieftenbeld. ...’s postcard.",
           next: "11c",
           stateEffect(state: ArtGalleryState) {
             return {
@@ -818,7 +818,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
           },
         },
         {
-          text: "Then I suppose I'll take the LeMahieu. ...'s postcard.",
+          text: "Then I suppose I’ll take the LeMahieu. ...’s postcard.",
           next: "11d",
           stateEffect(state: ArtGalleryState) {
             return {
@@ -832,7 +832,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11a",
       speaker: "billie",
-      text: "Then I suppose I'll take the Kieftenbeld.",
+      text: "Then I suppose I’ll take the Kieftenbeld.",
       sound: audio_11a,
       timeout_msec: 3000,
       next: (state: ArtGalleryState) => {
@@ -846,7 +846,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11b",
       speaker: "billie",
-      text: "Then I suppose I'll take the LeMahieu.",
+      text: "Then I suppose I’ll take the LeMahieu.",
       sound: audio_11b,
       timeout_msec: 3000,
       next: (state: ArtGalleryState) => {
@@ -860,7 +860,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11c",
       speaker: "billie",
-      text: "Then I suppose I'll take the Kieftenbeld. ...'s postcard.",
+      text: "Then I suppose I’ll take the Kieftenbeld. ...’s postcard.",
       sound: audio_11c,
       timeout_msec: 4250,
       next: (state: ArtGalleryState) => {
@@ -874,7 +874,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11d",
       speaker: "billie",
-      text: "Then I suppose I'll take the LeMahieu. ...'s postcard.",
+      text: "Then I suppose I’ll take the LeMahieu. ...’s postcard.",
       sound: audio_11d,
       timeout_msec: 4000,
       next: (state: ArtGalleryState) => {
@@ -896,7 +896,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "12a-p1",
       speaker: "judith_slight_smile",
-      text: "You know, this reminds me. I heard the most fascinating thing when I was hanging this painting up. An older gentleman and a younger lady raised such a ruckus! She came in shouting about how ‘she knew his secret,’ and he stammered and sputtered– ‘o-o-oh what secret, I don’t have any secrets, what do you mean?’ Oh, I’m not getting the voices right, you must excuse me. Just sign there, please.",
+      text: "You know, this reminds me. I heard the most fascinating thing when I was hanging this painting up. An older gentleman and a younger lady raised such a ruckus! She came in shouting about how “she knew his secret,” and he stammered and sputtered– “o-o-oh what secret, I don’t have any secrets, what do you mean?” Oh, I’m not getting the voices right, you must excuse me. Just sign there, please.",
       sound: audio_12a_p1,
       timeout_msec: 26750,
       next: "12a-p2",
@@ -1030,7 +1030,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       overlay: null,
       speaker: "billie",
       textBubbleType: "thought",
-      text: "Being an art connoisseur is fun when someone else is picking up the tab. The ‘older gentleman’ and ‘younger lady’ must be Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",
+      text: "Being an art connoisseur is fun when someone else is picking up the tab. The “older gentleman” and “younger lady” must be Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",
       sound: audio_13,
       timeout_msec: 18600 + 5000, // 18.6 second line, 5 seconds add'l voting time
       choices: remainingLocationOptions,
