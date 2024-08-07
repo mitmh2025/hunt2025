@@ -211,9 +211,9 @@ const HUNT: Hunt = {
         { id: "ptm03", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 3
         { id: "ptm04", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 4
         { id: "ptm05", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 5
-        { id: "ptm06", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 6 dir: "profitable-trunk"
-        { id: "ptm07", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 7 dir: "green-princess"
-        { id: "ptm08", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 8 dir: "bountiful-maple"
+        { id: "ptm06", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_6" }, // meta 6
+        { id: "ptm07", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 7
+        { id: "ptm08", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" } }, // meta 8
         {
           id: "ptm09", // supermeta
           is_meta: true,

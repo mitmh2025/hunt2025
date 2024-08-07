@@ -1,0 +1,84 @@
+import type { PuzzleDefinition } from "../types";
+import Puzzle from "./puzzle";
+import Solution from "./solution";
+
+const puzzle: PuzzleDefinition = {
+  title: "Shell Corporation 6 - The MITropolis Times",
+  slug: "shell_corporation_6",
+  authors: ["Leland Aldridge"],
+  content: {
+    component: Puzzle,
+  },
+  solution: {
+    component: Solution,
+  },
+  answer: "MILLIMETERS",
+  hints: [
+    {
+      order: 0,
+      description: "Solvers have no idea how to approach the puzzle.",
+      keywords: ["lost", "beginning"],
+      nudge:
+        "The flavor text has a particular cadence that doesn’t sound quite like natural English. The title of the puzzle indicates that this is themed around a newspaper called the Times. How might these things be related?",
+    },
+    {
+      order: 5,
+      description:
+        "Solvers still have no idea how to approach the puzzle after the first hint and have not made the connection to cryptics.",
+      keywords: ["headline"],
+      nudge:
+        "This is a puzzle based on the form of cryptic crosswords. The flavor text is a cryptic clue explaining something about the rest of the puzzle.",
+    },
+    {
+      order: 15,
+      description:
+        "Solvers know that the puzzle is based on cryptics but do not know what their goal is.",
+      keywords: ["cryptic", "purpose", "why"],
+      nudge:
+        "Each item in the section under the flavor text, when its blanks are filled in, form a particular style of cryptic clue. The flavor text, when interpreted, explains what this style of clue is. The 16 numbered words with enumeration which fill in the blanks are original to this puzzle.",
+    },
+    {
+      order: 25,
+      description:
+        "Solvers need more help with the structure of the puzzle, do not know how feeders factor in.",
+      keywords: ["feeders"],
+      nudge:
+        "Each cryptic clue that you make by filling in the blanks will resolve to an answer. Your task is to find a consistent set of 16 words where all seven cryptic clues properly resolve to a feeder’s answer.",
+    },
+    {
+      order: 50,
+      description:
+        "Solvers are filling in words to make cryptic clues but are having a hard time. They have not recognized that the two lists are both alphabetized.",
+      keywords: ["some", "blanks", "know"],
+      nudge:
+        "It may help to know that the list of cryptic clues is alphabetical by answer and the list of blank-filling words is also alphabetical. The parenthesized numbers in the list of blank-filling words are enumerations.",
+    },
+    {
+      order: 75,
+      description:
+        "Solvers are part way through assigning words and have some functional cryptic clues, but are stuck.",
+      keywords: ["rest", "remainder", "cryptic"],
+      nudge:
+        "[Look at solution document and confirm/deny the words and interpretations supplied by the solvers. If there are alphabetization problems, point out that the lists should be alphabetical.]",
+    },
+    {
+      order: 90,
+      description:
+        "Solvers have all but one of the PENROSEs, protest that there are no options that fit alphabetically.",
+      keywords: ["alphabetical", "nothing fits"],
+      nudge:
+        "You are correct that the list of answers is alphabetical, but you may need to consider a more permissive definition of that than you have been using.",
+    },
+    {
+      order: 100,
+      description:
+        "Solvers have mostly solved the clues and identified the blank-filling words and are trying to extract.",
+      keywords: ["extraction", "final clue"],
+      nudge:
+        "The string of blanks at the bottom of the puzzle, when filled in, form one final cryptic clue. Remember that punctuation in a cryptic clue is usually only for the surface reading.",
+    },
+  ],
+  canned_responses: [],
+};
+
+export default puzzle;
