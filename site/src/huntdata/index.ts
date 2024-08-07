@@ -135,7 +135,7 @@ const HUNT: Hunt = {
       title: "Stakeout",
       puzzles: [
         // 42 feeders, 1 meta
-        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1 },
+        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "an_exchange_of_vows" }, // TODO: this slug may not go in this spot
         { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1 },
         { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1 },
         { id: "sop04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
