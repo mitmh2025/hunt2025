@@ -11,12 +11,12 @@ import {
   isTerminalNode,
 } from "./types";
 
-function checkAllNodeIdsUnique<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
+function checkAllNodeIdsUnique<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
 ) {
   const seen = new Map<
     string,
-    { node: InteractionGraphNode<T, R, S>; position: number }
+    { node: InteractionGraphNode<T, R, S, P>; position: number }
   >();
   const errors: string[] = [];
   graph.nodes.forEach((node, i) => {
@@ -36,9 +36,9 @@ function checkAllNodeIdsUnique<T, R, S extends string>(
   }
 }
 
-function checkStartingNodePresent<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function checkStartingNodePresent<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
 ) {
   if (!indexedNodes.has(graph.starting_node)) {
     throw new Error(
@@ -58,9 +58,9 @@ type Path<R> = {
   result: R;
 };
 
-function allPaths<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function allPaths<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
 ): Path<R>[] {
   const start = {
     current: graph.starting_node,
@@ -124,8 +124,8 @@ function allPaths<T, R, S extends string>(
   return paths;
 }
 
-function checkAllNodesReachable<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
+function checkAllNodesReachable<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
   paths: Path<R>[],
 ) {
   const reachable = new Set();
@@ -146,8 +146,8 @@ function checkAllNodesReachable<T, R, S extends string>(
   }
 }
 
-function expectedTime<T, R, S extends string>(
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function expectedTime<T, R, S extends string, P>(
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
   path: Path<R>,
 ): number {
   // Compute the total of the timeout_msec for all the nodes visited along `path`
@@ -162,8 +162,8 @@ function expectedTime<T, R, S extends string>(
   return sum;
 }
 
-function printMinAndMaxRuntimes<T, R, S extends string>(
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function printMinAndMaxRuntimes<T, R, S extends string, P>(
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
   paths: Path<R>[],
 ) {
   const pathsWithTimes: [number, Path<R>][] = paths.map((path) => {
@@ -182,8 +182,8 @@ function printMinAndMaxRuntimes<T, R, S extends string>(
   console.log(`Longest path: ${longest[0] / 1000} seconds, path:`, longest[1]);
 }
 
-function checkGraph<T, R, S extends string>(graph: InteractionGraph<T, R, S>) {
-  const indexedNodes = new Map<string, InteractionGraphNode<T, R, S>>();
+function checkGraph<T, R, S extends string, P>(graph: InteractionGraph<T, R, S, P>) {
+  const indexedNodes = new Map<string, InteractionGraphNode<T, R, S, P>>();
   graph.nodes.forEach((node) => {
     indexedNodes.set(node.id, node);
   });
