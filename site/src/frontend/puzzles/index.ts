@@ -4,6 +4,7 @@ import ShellCorporationOne from "./gullible-tooth";
 import AnExchangeOfVows from "./lanky-robot";
 import ShellCorporationSix from "./mild-octopus";
 import ShellCorporationFive from "./profitable-trunk";
+import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import ShellCorporationTwo from "./untrue-dice";
 
@@ -14,4 +15,5 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   shell_corporation_2: ShellCorporationTwo,
   shell_corporation_5: ShellCorporationFive,
   shell_corporation_6: ShellCorporationSix,
+  shell_corporation_7: ShellCorporationSeven,
 };
