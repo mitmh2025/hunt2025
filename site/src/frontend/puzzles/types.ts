@@ -32,10 +32,16 @@ export type Content = {
   entrypoint?: Entrypoint;
 };
 
+export type AdditionalCredit = {
+  for_what: string;
+  who: string[];
+};
+
 export type PuzzleDefinition = {
   title: string;
   slug: string;
   authors: string[];
+  additional_credits: AdditionalCredit[];
   submit_constraints?: Condition[][]; // Parallel array to answers
   content: Content;
   solution: Content;

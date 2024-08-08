@@ -6,6 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "An Exchange of Vows",
   slug: "an_exchange_of_vows",
   authors: ["Hubert Hwang"],
+  additional_credits: [],
   content: {
     component: Puzzle,
   },

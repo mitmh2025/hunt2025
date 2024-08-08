@@ -6,6 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 5: Stellar Public Relations",
   slug: "shell_corporation_5",
   authors: ["Li-Mei Lim"],
+  additional_credits: [],
   content: {
     component: Puzzle,
   },

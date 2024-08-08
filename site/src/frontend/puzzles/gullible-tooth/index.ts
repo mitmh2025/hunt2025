@@ -7,6 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "shell_corporation_1",
   authors: ["Li-Mei Lim", "James Douberley"],
   answer: "SLIVERS",
+  additional_credits: [],
   content: {
     component: Puzzle,
   },

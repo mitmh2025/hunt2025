@@ -6,6 +6,12 @@ const puzzle: PuzzleDefinition = {
   title: "The Casino",
   slug: "the_casino",
   authors: ["Elan Blaustein"],
+  additional_credits: [
+    {
+      for_what: "Art",
+      who: ["Nine Morch"],
+    },
+  ],
   content: {
     component: Puzzle,
   },

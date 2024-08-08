@@ -6,6 +6,12 @@ const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 2: Triple A Accounting, LLC",
   slug: "shell_corporation_2",
   authors: ["Li-Mei Lim"],
+  additional_credits: [
+    {
+      for_what: "Art",
+      who: ["Keri Ashton Fullwood"],
+    },
+  ],
   content: {
     component: Puzzle,
   },
