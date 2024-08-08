@@ -10,7 +10,7 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [
     {
       for_what: "Art",
-      who: [],
+      who: ["Simone Agha"],
     },
   ],
   content: {
