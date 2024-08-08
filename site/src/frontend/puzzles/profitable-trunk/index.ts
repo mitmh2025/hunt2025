@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Shell Corporation 5 - Stellar Public Relations",
+  title: "Shell Corporation 5: Stellar Public Relations",
   slug: "shell_corporation_5",
   authors: ["Li-Mei Lim"],
   content: {

@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Shell Corporation 6 - The MITropolis Times",
+  title: "Shell Corporation 6: The MITropolis Times",
   slug: "shell_corporation_6",
   authors: ["Leland Aldridge"],
   content: {

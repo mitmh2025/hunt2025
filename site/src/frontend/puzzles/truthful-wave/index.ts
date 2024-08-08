@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Shell Corporation 7 - Shingles, Ltd",
+  title: "Shell Corporation 7: Shingles, Ltd.",
   slug: "shell_corporation_7",
   authors: ["James Douberley"],
   answer: "PENROSE",
