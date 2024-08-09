@@ -3,6 +3,7 @@ import ShellCorporationFour from "./bountiful-maple";
 import Casino from "./fortunate-calf";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
+import ShellCorporationEight from "./insignificant-thief";
 import AnExchangeOfVows from "./lanky-robot";
 import ShellCorporationSix from "./mild-octopus";
 import ShellCorporationFive from "./profitable-trunk";
@@ -20,4 +21,5 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   shell_corporation_5: ShellCorporationFive,
   shell_corporation_6: ShellCorporationSix,
   shell_corporation_7: ShellCorporationSeven,
+  shell_corporation_8: ShellCorporationEight,
 };
