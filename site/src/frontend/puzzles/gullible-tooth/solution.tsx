@@ -147,7 +147,7 @@ const Solution = () => {
                 later), and also cut the same number of letters from the end
                 (discard those).
               </td>
-              <td>CUSO</td>
+              <td>MARCUSODAY - MAR (save) → CUSODAY - DAY → CUSO</td>
             </tr>
             <tr>
               <td>2</td>
@@ -510,7 +510,7 @@ const Solution = () => {
                 waste in this kitchen! Grab those three letters to use in this
                 recipe.
               </td>
-              <td>SCA</td>
+              <td>SCA (from recipe #5 step 2)</td>
             </tr>
             <tr>
               <td>2</td>

@@ -61,9 +61,16 @@ const Puzzle = () => {
             abbreviation for later – you’ll need it again. Take the last letter
             from the abbreviation.
           </li>
-          <li></li>
-          <li></li>
-          <li></li>
+          <li>
+            Spice things up by sandwiching the zest between two copies of this
+            letter. Add a different letter to make a new word.
+          </li>
+          <li>
+            Take the last two letters of the non-abbreviated version of the
+            abbreviation you saved, and add that to the end to make another new
+            word.
+          </li>
+          <li>Remove a chemical element, and enjoy!</li>
         </ol>
       </Recipe>
 
