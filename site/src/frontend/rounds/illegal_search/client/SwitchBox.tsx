@@ -23,7 +23,6 @@ const BOX_BG_COLOR = "#717e7e";
 
 const BOX_INNER_BG_COLOR = "#272727";
 
-const SWITCH_POSITION_LABEL_COLOR = "#cfcfcf";
 const SWITCH_ROW_BG_COLOR = "#a5a5a5";
 const SWITCH_WIDTH = "83px";
 const SWITCH_HEIGHT = "32px";
@@ -80,10 +79,11 @@ const SwitchRow = styled.div`
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  color: var(--black);
 `;
 
 const SwitchColumnLabelDiv = styled.div<{ $columnIsLeft: boolean }>`
-  color: ${SWITCH_POSITION_LABEL_COLOR};
+  color: var(--gray-200);
   font-family: monospace;
   font-size: 24px;
   text-align: ${(props) => (props.$columnIsLeft ? "right" : "left")};

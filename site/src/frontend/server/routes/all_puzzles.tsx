@@ -1,6 +1,7 @@
 import { type Request } from "express";
 import React from "react";
 import { css, styled } from "styled-components";
+import NavBar from "../../components/NavBar";
 import { PUZZLES } from "../../puzzles";
 
 const PuzzleRow = styled.tr<{ $isMeta: boolean }>`
@@ -69,6 +70,7 @@ export function allPuzzlesHandler(req: Request) {
 
   const node = (
     <div>
+      <NavBar />
       <h1>All puzzles</h1>
       {renderedRounds}
     </div>

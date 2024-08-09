@@ -1,0 +1,327 @@
+import React from "react";
+import { styled } from "styled-components";
+import diamondIcon from "../../assets/diamond.svg";
+import { deviceMin, deviceMax } from "../utils/breakpoints";
+import AudioControls from "./AudioControls";
+
+const Nav = styled.nav`
+  height: 3rem;
+  width: 100%;
+  background-color: var(--nav-bar-bg);
+`;
+
+const NavItems = styled.ul`
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 100%;
+  width: 900px;
+  max-width: 100%;
+  list-style: none;
+
+  display: flex;
+  align-items: center;
+  font-family: var(--headline-font);
+
+  > li {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  > li:first-child {
+    margin-left: -1rem;
+
+    a {
+      padding: 0 1rem;
+    }
+  }
+
+  > li:last-child {
+    margin-right: -1rem;
+
+    a {
+      padding-right: 1rem;
+    }
+  }
+
+  #home-sm {
+    display: none;
+  }
+
+  @media ${deviceMin.lg} {
+    width: calc(1080px - 1rem);
+    padding: 0 2rem;
+
+    a {
+      padding: 0 1rem;
+    }
+
+    > li:first-child {
+      margin-left: -2rem;
+
+      a {
+        padding: 0 2rem;
+      }
+    }
+
+    > li:last-child {
+      margin-right: -2rem;
+
+      a {
+        padding-right: 2rem;
+      }
+    }
+  }
+
+  @media ${deviceMax.sm} {
+    #home-md {
+      display: none;
+    }
+
+    #home-sm {
+      display: block;
+    }
+  }
+`;
+
+const NavLink = styled.a`
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.25rem;
+  border: none;
+  fill: var(--gray-100);
+  color: var(--gray-100);
+  text-shadow: none;
+  inline-size: min-content;
+  text-wrap: nowrap;
+  min-height: 3rem;
+
+  max-width: calc(280px - 3rem);
+
+  @media ${deviceMax.md} {
+    max-width: calc(320px - 3rem);
+  }
+
+  @media ${deviceMax.sm} {
+    max-width: 144px;
+  }
+
+  > span {
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
+
+const TeamNameNavLink = styled(NavLink)`
+  text-align: right;
+  justify-content: flex-end;
+  max-width: calc(280px - 3rem);
+
+  @media ${deviceMax.md} {
+    max-width: calc(320px - 3rem);
+  }
+
+  @media ${deviceMax.sm} {
+    max-width: 144px;
+  }
+
+  > span {
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
+
+const Dropdown = styled.li<{ alignRight?: boolean }>`
+  position: relative;
+
+  > a {
+    height: 100%;
+    cursor: pointer;
+  }
+
+  > ul {
+    display: none;
+    background-color: #000000dd;
+    position: absolute;
+    top: 3rem;
+    left: ${(props) => (props.alignRight ? "auto" : 0)};
+    right: ${(props) => (props.alignRight ? 0 : "auto")};
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    align-items: stretch;
+
+    > li {
+      display: flex;
+      align-items: center;
+      justify-content: ${(props) =>
+        props.alignRight ? "flex-end" : "flex-start"};
+    }
+
+    > li > a {
+      height: 3rem;
+      text-align: ${(props) => (props.alignRight ? "right" : "left")};
+      width: 100%;
+      align-items: center;
+      justify-content: ${(props) =>
+        props.alignRight ? "flex-end" : "flex-start"};
+    }
+  }
+
+  &:hover {
+    > ul {
+      display: flex;
+      min-width: 100%;
+    }
+  }
+
+  @media (${deviceMax.sm}) {
+    position: static;
+    > ul {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      right: 0;
+    }
+  }
+`;
+
+const TopLevelDropdown = styled(Dropdown)`
+  @media ${deviceMin.lg} {
+    > a {
+      display: none;
+    }
+
+    > ul {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      position: relative;
+      top: auto;
+      left: auto;
+    }
+  }
+`;
+
+const SubDropdown = styled(Dropdown)`
+  > ul {
+    background-color: #000000cc;
+  }
+  @media ${deviceMax.md} {
+    &:hover > ul {
+      top: 0;
+      left: 100%;
+    }
+  }
+
+  @media (${deviceMax.sm}) {
+    &:hover > ul {
+      left: 50%;
+      max-width: 50vw;
+      width: 50vw;
+
+      > li > a {
+        max-width: 50vw;
+        width: 50vw;
+      }
+    }
+  }
+`;
+
+const Spacer = styled.div`
+  flex: 1;
+`;
+
+const Currency = styled.div`
+  margin: 0 0.25rem;
+  text-wrap: nowrap;
+  inline-size: min-content;
+  font-family: var(--body-font);
+  font-size: 0.85rem;
+`;
+
+const NavBar = () => {
+  return (
+    <Nav>
+      <NavItems>
+        <li>
+          <NavLink href="/" id="home-md">
+            <img
+              className="photo"
+              src={diamondIcon}
+              alt="The Case of the Shadow Diamond: Home"
+              title="Home"
+            />
+          </NavLink>
+        </li>
+        <TopLevelDropdown>
+          <NavLink id="menu-md">Menu</NavLink>
+          <ul>
+            <li id="home-sm">
+              <NavLink href="/">Home</NavLink>
+            </li>
+            <SubDropdown>
+              <NavLink>Rounds</NavLink>
+              <ul>
+                <li>
+                  <NavLink href="/">The Jewelry Store</NavLink>
+                </li>
+                <li>
+                  <NavLink href="/">The Boardwalk</NavLink>
+                </li>
+                <li>
+                  <NavLink href="/">The Casino</NavLink>
+                </li>
+                <li>
+                  <NavLink href="/">The Art Gallery</NavLink>
+                </li>
+              </ul>
+            </SubDropdown>
+            <li>
+              <NavLink href="/all_puzzles">All Puzzles</NavLink>
+            </li>
+            <li>
+              <NavLink href="/story">Story So Far</NavLink>
+            </li>
+            <li>
+              <NavLink href="/log">Activity Log</NavLink>
+            </li>
+          </ul>
+        </TopLevelDropdown>
+        <Spacer />
+        <AudioControls />
+        <Currency title="Grease: 0 (For Hints)">🤌 99+</Currency>
+        <Currency title="Gravy: 0 (For Puzzle Unlocks)">🍗 99+</Currency>
+        <Dropdown alignRight>
+          <TeamNameNavLink>
+            <span>
+              ✈✈✈ This is the Team Name That Never Ends, It Just Goes On and
+              On My Friends ✈✈✈
+            </span>
+          </TeamNameNavLink>
+          <ul>
+            <li>
+              <NavLink href="/team">Manage Team</NavLink>
+            </li>
+            <li>
+              <NavLink href="/contact">Contact HQ</NavLink>
+            </li>
+            <li>
+              <NavLink href="/logout">Log Out</NavLink>
+            </li>
+          </ul>
+        </Dropdown>
+      </NavItems>
+    </Nav>
+  );
+};
+
+export default NavBar;

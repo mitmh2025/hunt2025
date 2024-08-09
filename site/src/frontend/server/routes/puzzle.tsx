@@ -1,7 +1,14 @@
 import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
+import NavBar from "../../components/NavBar";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
+import {
+  PuzzleHeader,
+  PuzzleTitle,
+  PuzzleWrapper,
+  PuzzleMain,
+} from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
 import { lookupScripts, lookupStylesheets } from "../assets";
@@ -126,14 +133,19 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const title = puzzle.title;
 
   const node = (
-    <div>
-      <h1>{title}</h1>
-      {/* TODO: add guess form, history, errata, etc. */}
-      {guessFrag}
-      <div id="puzzle-content" className="puzzle-content">
-        <ContentComponent />
-      </div>
-    </div>
+    <>
+      <NavBar />
+      <PuzzleWrapper>
+        <PuzzleHeader>
+          <PuzzleTitle>{title}</PuzzleTitle>
+          {/* TODO: add guess form, history, errata, etc. */}
+          {guessFrag}
+        </PuzzleHeader>
+        <PuzzleMain id="puzzle-content" className="puzzle-content">
+          <ContentComponent />
+        </PuzzleMain>
+      </PuzzleWrapper>
+    </>
   );
 
   // TODO: include title
@@ -241,7 +253,14 @@ export function solutionHandler(req: Request<PuzzleParams>) {
         </p>
       </div>
     );
-    return { node };
+    return {
+      node: (
+        <>
+          <NavBar />
+          {{ node }}
+        </>
+      ),
+    };
   }
 
   // TODO: look up round-specific solution page layout if applicable.

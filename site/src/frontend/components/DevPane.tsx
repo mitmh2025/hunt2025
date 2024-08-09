@@ -43,7 +43,7 @@ const PuzzleBoxDiv = styled.div<{
           height: 8px;
         `}
   background-color: ${({ $state }) => colorForPuzzle($state)};
-  border: 1px solid black;
+  border: 1px solid var(--black);
   margin: 2px;
 `;
 
@@ -199,8 +199,19 @@ const InteractionsSection = ({
 };
 
 const DevPaneContainer = styled.div`
-  border: 1px solid #888;
+  border: 1px solid var(--gray-400);
   background-color: rgba(255, 255, 255, ${bgOpacity});
+  color: var(--black);
+
+  a {
+    color: var(--gray-800);
+    border: none;
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--true-black);
+    }
+  }
 `;
 
 const DevPane = ({ state }: { state: DevtoolsState | undefined }) => {
