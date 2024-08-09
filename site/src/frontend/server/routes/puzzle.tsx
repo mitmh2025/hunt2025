@@ -102,6 +102,12 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     }
   }
 
+  // If this puzzle is not unlocked, 404.  Ideally we'd do this check as soon as we get the API
+  // result, but devmode wants to render an unlock/info page even when the puzzle is locked.
+  if (result.body.locked !== "unlocked") {
+    return undefined;
+  }
+
   // TODO: Use round-specific puzzle page layout for result.body.round.  For
   // outlands puzzles, the layout may depend on round and puzzle visibility.
 
