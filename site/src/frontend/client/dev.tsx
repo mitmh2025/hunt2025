@@ -53,4 +53,6 @@ if (elem) {
   elem.appendChild(devRoot);
   const reactRoot = createRoot(devRoot);
   reactRoot.render(<DevtoolsManager />);
+} else {
+  console.log("Could not mount devtools because #root is nowhere to be found");
 }

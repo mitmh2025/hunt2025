@@ -17,4 +17,8 @@ const elem = document.getElementById("shadow-diamond-root");
 if (elem) {
   const root = createRoot(elem);
   root.render(<RoundSpecificClientComponent />);
+} else {
+  console.error(
+    "Could not mount ShadowDiamond because #shadow-diamond-root is nowhere to be found",
+  );
 }

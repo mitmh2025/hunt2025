@@ -17,4 +17,8 @@ if (elem) {
       initialTeamState={initialTeamState}
     />,
   );
+} else {
+  console.error(
+    "Could not mount SearchEngine because #illegal-search-root was nowhere to be found",
+  );
 }

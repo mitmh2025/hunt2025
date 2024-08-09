@@ -23,4 +23,8 @@ if (guessSectionElem) {
       solved={!!initialPuzzleData.answer}
     />,
   );
+} else {
+  console.error(
+    "Couldn't mount PuzzleGuessSection because #puzzle-guesses was nowhere to be found",
+  );
 }

@@ -42,4 +42,8 @@ if (elem) {
   root.render(
     <StakeoutManager initialState={state} initialTeamState={teamState} />,
   );
+} else {
+  console.error(
+    "Could not mount StakeoutManager because #stakeout-root is nowhere to be found",
+  );
 }

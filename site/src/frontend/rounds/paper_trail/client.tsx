@@ -42,4 +42,8 @@ if (elem) {
   root.render(
     <PaperTrailManager initialState={state} initialTeamState={teamState} />,
   );
+} else {
+  console.error(
+    "Could not mount PaperTrailManager because #paper-trail-root was nowhere to be found",
+  );
 }
