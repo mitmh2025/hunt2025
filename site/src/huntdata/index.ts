@@ -45,6 +45,7 @@ const HUNT: Hunt = {
         {
           // Boardwalk (meta)
           id: "sdm01",
+          slug: "the_boardwalk",
           is_meta: true,
           unlocked_if: {
             puzzles_unlocked: 5,

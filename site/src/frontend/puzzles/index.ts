@@ -1,5 +1,6 @@
 // import Boardwalk from './dental-shark';
 import ShellCorporationFour from "./bountiful-maple";
+import TheBoardwalk from "./dental-shark";
 import Casino from "./fortunate-calf";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
@@ -14,6 +15,7 @@ import ShellCorporationTwo from "./untrue-dice";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_exchange_of_vows: AnExchangeOfVows,
+  the_boardwalk: TheBoardwalk,
   the_casino: Casino,
   shell_corporation_1: ShellCorporationOne,
   shell_corporation_2: ShellCorporationTwo,
