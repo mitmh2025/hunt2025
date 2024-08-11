@@ -81,6 +81,11 @@ const GridTable = styled.table`
   }
 `;
 
+const Y = styled.span`
+  background-color: #ffff00;
+  text-decoration: underline;
+`;
+
 const Solution = () => {
   return (
     <>
@@ -153,19 +158,19 @@ const Solution = () => {
 
       <MonoUL>
         <li>
-          O<u>PA</u>L
+          O<Y>PA</Y>L
         </li>
         <li>
-          ACRY<u>LA</u>TE
+          ACRY<Y>LA</Y>TE
         </li>
         <li>
-          ABO<u>UT</u>
+          ABO<Y>UT</Y>
         </li>
         <li>
-          MILLI<u>ME</u>TERS
+          MILLI<Y>ME</Y>TERS
         </li>
         <li>
-          ROUNDING ERR<u>OR</u>
+          ROUNDING ERR<Y>OR</Y>
         </li>
       </MonoUL>
 
