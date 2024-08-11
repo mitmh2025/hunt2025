@@ -6,6 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 4: Crystal-Clear Refinery",
   slug: "shell_corporation_4",
   authors: ["David Greenspan"],
+  editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [],
   answer: "ACRYLATE",
   content: {

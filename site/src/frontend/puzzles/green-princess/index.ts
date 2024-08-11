@@ -7,6 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "shell_corporation_3",
   answer: "ST PETERS BASILICA",
   authors: ["David Greenspan"],
+  editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
       for_what: "Art",

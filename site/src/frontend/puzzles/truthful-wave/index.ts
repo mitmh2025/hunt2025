@@ -6,6 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 7: Shingles, Ltd.",
   slug: "shell_corporation_7",
   authors: ["James Douberley"],
+  editors: ["Li-Mei Lim", "Robin Deits"],
   additional_credits: [],
   answer: "PENROSE",
   content: {

@@ -41,6 +41,7 @@ export type PuzzleDefinition = {
   title: string;
   slug: string;
   authors: string[];
+  editors: string[];
   additional_credits: AdditionalCredit[];
   submit_constraints?: Condition[][]; // Parallel array to answers
   content: Content;

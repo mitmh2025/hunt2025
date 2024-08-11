@@ -6,6 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 1: Tasty Food Processors",
   slug: "shell_corporation_1",
   authors: ["Li-Mei Lim", "James Douberley"],
+  editors: ["James Douberley", "Robin Deits"],
   answer: "SLIVERS",
   additional_credits: [],
   content: {

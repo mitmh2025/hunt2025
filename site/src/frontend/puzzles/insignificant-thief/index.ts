@@ -6,6 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 8: Zoological Garden",
   slug: "shell_corporation_8",
   authors: ["Leland Aldridge", "James Douberley"],
+  editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
       for_what: "Art",

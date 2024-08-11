@@ -11,6 +11,7 @@ const puzzle: PuzzleDefinition = {
     "Li-Mei Lim",
     "Leland Aldridge",
   ],
+  editors: ["Drew Fisher", "Henry Wong", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [],
   content: {
     component: Puzzle,

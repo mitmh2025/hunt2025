@@ -6,6 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "The Casino",
   slug: "the_casino",
   authors: ["Elan Blaustein"],
+  editors: ["James Douberley", "Henry Wong", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
       for_what: "Art",
