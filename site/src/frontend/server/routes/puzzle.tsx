@@ -2,6 +2,7 @@ import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
+import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
 import { lookupScripts, lookupStylesheets } from "../assets";
 
@@ -215,6 +216,13 @@ export const puzzleUnlockPostHandler: RequestHandler<
   }
 });
 
+function formatList(things: string[]): string {
+  if (things.length === 2) return things.join(" and ");
+  if (things.length > 2)
+    return `${things.slice(0, -1).join(", ")}, and ${things[things.length - 1]}`;
+  return things[0] ?? "";
+}
+
 export function solutionHandler(req: Request<PuzzleParams>) {
   // Only show solutions if we're in dev mode
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- !SHOW_SOLUTIONS always falsy
@@ -245,10 +253,32 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     ? lookupStylesheets(content.entrypoint)
     : [];
   const title = puzzle.title;
+  const authors = formatList(puzzle.authors);
+  const editors = formatList(puzzle.editors);
+  const acknowledgements = puzzle.additional_credits.map((credit) => (
+    <h3 key={credit.for_what}>
+      {credit.for_what} by {formatList(credit.who)}
+    </h3>
+  ));
+
+  const answers =
+    "answer" in puzzle
+      ? [puzzle.answer]
+      : puzzle.answers.map((ansObject) => ansObject.answer);
+  const answerLabel = answers.length > 1 ? "Answers" : "Answer";
 
   const node = (
     <div>
       <h1>Solution to {title}</h1>
+      <h2>
+        {answerLabel}:{" "}
+        {answers.map((answer, i) => (
+          <Spoiler key={i}>{answer}</Spoiler>
+        ))}
+      </h2>
+      <h3>By {authors}</h3>
+      <h3>Edited by {editors}</h3>
+      {acknowledgements}
       <div id="solution-content" className="solution-content">
         <SolutionComponent />
       </div>
