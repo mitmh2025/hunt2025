@@ -6,7 +6,7 @@ import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
 import { lookupScripts, lookupStylesheets } from "../assets";
 
-const SHOW_SOLUTIONS = true;
+const SHOW_SOLUTIONS = true as boolean;
 
 // URL parameters
 export type PuzzleParams = {
@@ -224,8 +224,7 @@ function formatList(things: string[]): string {
 }
 
 export function solutionHandler(req: Request<PuzzleParams>) {
-  // Only show solutions if we're in dev mode
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- !SHOW_SOLUTIONS always falsy
+  // Only show solutions if we're in dev mode and showing solutions is enabled
   if (process.env.NODE_ENV !== "development" || !SHOW_SOLUTIONS) {
     return undefined;
   }
