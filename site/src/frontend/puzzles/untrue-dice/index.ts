@@ -10,7 +10,7 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [
     {
       for_what: "Art",
-      who: ["Keri Ashton Fullwood"],
+      who: ["Li-Mei Lim", "Keri Ashton Fullwood"],
     },
   ],
   content: {
