@@ -2,7 +2,6 @@ import { type Request } from "express";
 import React from "react";
 import ContentWithNavBar from "../../components/ContentWithNavBar";
 import { ROUND_PAGE_MAP } from "../../rounds";
-import { lookupScripts, lookupStylesheets } from "../assets";
 
 export type RoundParams = {
   roundSlug: string;
@@ -28,12 +27,6 @@ export const roundHandler = (
     return undefined;
   }
   const Component = content.component;
-  const scripts = content.entrypoint
-    ? lookupScripts(content.entrypoint)
-    : undefined;
-  const stylesheets = content.entrypoint
-    ? lookupStylesheets(content.entrypoint)
-    : undefined;
 
   // TODO: add page title
   return {
@@ -42,7 +35,6 @@ export const roundHandler = (
         <Component teamState={teamState} node={req.query.node} />
       </ContentWithNavBar>
     ),
-    scripts,
-    stylesheets,
+    entrypoints: content.entrypoint ? [content.entrypoint] : undefined,
   };
 };

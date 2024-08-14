@@ -24,6 +24,7 @@ import {
   modalPostHandler,
   nodeRequestHandler,
 } from "../rounds/illegal_search";
+import { type Entrypoint, lookupScripts, lookupStylesheets } from "./assets";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import { hackLoginGetHandler } from "./routes/login";
 import {
@@ -135,8 +136,7 @@ export type RenderedPage =
   | {
       node: React.ReactNode; // The element to be placed under the root div
       title?: string; // The desired page <title>
-      scripts?: string[]; // Additional script tags to include (placed after node in the <body>)
-      stylesheets?: string[]; // Additional stylesheet tags to include (placed in the <head>)
+      entrypoints?: Entrypoint[]; // Additional script/stylesheets to include
     }
   | undefined;
 export type PageRenderer<Params extends ParamsDictionary> = (
@@ -169,13 +169,20 @@ async function renderApp<Params extends ParamsDictionary>(
     sheet.seal();
   }
 
+  const scripts = (result.entrypoints ?? []).flatMap((entrypoint) => {
+    return lookupScripts(entrypoint);
+  });
+  const stylesheets = (result.entrypoints ?? []).flatMap((entrypoint) => {
+    return lookupStylesheets(entrypoint);
+  });
+
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +
     renderToString(
       <Layout
-        scripts={result.scripts}
-        stylesheets={result.stylesheets}
+        scripts={scripts}
+        stylesheets={stylesheets}
         title={result.title}
         teamState={req.teamState}
         styleElements={styleElements}

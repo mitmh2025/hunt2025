@@ -11,7 +11,6 @@ import {
 } from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
-import { lookupScripts, lookupStylesheets } from "../assets";
 
 const SHOW_SOLUTIONS = true as boolean;
 
@@ -53,8 +52,6 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   // Look up puzzle by slug.  If none exists, 404.
   const puzzle = PUZZLES[slug];
-  const allPuzzlesScripts = lookupScripts("puzzle");
-  const allPuzzlesStylesheets = lookupStylesheets("puzzle");
   if (puzzle === undefined) {
     if (process.env.NODE_ENV === "development") {
       // This should only be reachable in dev mode.
@@ -107,8 +104,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       );
       return {
         node,
-        scripts: allPuzzlesScripts,
-        stylesheets: allPuzzlesStylesheets,
+        entrypoints: ["puzzle" as const],
       };
     } else {
       return undefined;
@@ -127,14 +123,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   // Select content component.
   const content = puzzle.content;
   const ContentComponent = content.component;
-  const puzzleScripts = content.entrypoint
-    ? lookupScripts(content.entrypoint)
-    : [];
-  const puzzleStylesheets = content.entrypoint
-    ? lookupStylesheets(content.entrypoint)
-    : [];
-  const scripts = [...allPuzzlesScripts, ...puzzleScripts];
-  const stylesheets = [...allPuzzlesStylesheets, ...puzzleStylesheets];
+  const entrypoints = ["puzzle" as const, ...(content.entrypoint ? [content.entrypoint] : [])];
   const title = puzzle.title;
 
   const node = (
@@ -157,8 +146,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   // TODO: include title
   return {
     node,
-    scripts,
-    stylesheets,
+    entrypoints,
   };
 }
 
@@ -270,10 +258,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   // TODO: look up round-specific solution page layout if applicable.
   const content = puzzle.solution;
   const SolutionComponent = content.component;
-  const scripts = content.entrypoint ? lookupScripts(content.entrypoint) : [];
-  const stylesheets = content.entrypoint
-    ? lookupStylesheets(content.entrypoint)
-    : [];
+  const entrypoints = content.entrypoint ? [content.entrypoint] : [];
   const title = puzzle.title;
   const authors = formatList(puzzle.authors);
   const editors = formatList(puzzle.editors);
@@ -312,7 +297,6 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   // TODO: include an appropriate title?
   return {
     node,
-    scripts,
-    stylesheets,
+    entrypoints,
   };
 }
