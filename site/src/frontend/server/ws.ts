@@ -10,6 +10,7 @@ import {
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
 import { type RedisClient } from "../../app";
+import { navBarState } from "../components/ContentWithNavBar";
 import {
   bookcaseState,
   cryptexState,
@@ -27,6 +28,7 @@ type SubscriptionHandler<T> = {
 
 const DATASET_REGISTRY: Record<Dataset, (teamState: TeamState) => object> = {
   dev: devtoolsState,
+  navbar: navBarState,
   paper_trail: paperTrailState,
   stakeout: stakeoutState,
   team_state: (teamState: TeamState) => {

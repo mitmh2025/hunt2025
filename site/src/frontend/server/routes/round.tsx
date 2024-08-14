@@ -1,6 +1,6 @@
 import { type Request } from "express";
 import React from "react";
-import ContentWithNavBar from "../../components/ContentWithNavBar";
+import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { ROUND_PAGE_MAP } from "../../rounds";
 
 export type RoundParams = {
@@ -29,12 +29,11 @@ export const roundHandler = (
   const Component = content.component;
 
   // TODO: add page title
-  return {
-    node: (
-      <ContentWithNavBar teamState={teamState}>
-        <Component teamState={teamState} node={req.query.node} />
-      </ContentWithNavBar>
-    ),
-    entrypoints: content.entrypoint ? [content.entrypoint] : undefined,
-  };
+  return wrapContentWithNavBar(
+    {
+      node: <Component teamState={teamState} node={req.query.node} />,
+      entrypoints: content.entrypoint ? [content.entrypoint] : undefined,
+    },
+    teamState,
+  );
 };

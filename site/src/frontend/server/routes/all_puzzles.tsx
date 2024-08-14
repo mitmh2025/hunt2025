@@ -1,7 +1,7 @@
 import { type Request } from "express";
 import React from "react";
 import { css, styled } from "styled-components";
-import ContentWithNavBar from "../../components/ContentWithNavBar";
+import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { PUZZLES } from "../../puzzles";
 
 const PuzzleRow = styled.tr<{ $isMeta: boolean }>`
@@ -69,16 +69,17 @@ export function allPuzzlesHandler(req: Request) {
   );
 
   const node = (
-    <div>
-      <ContentWithNavBar teamState={teamState}>
-        <h1>All puzzles</h1>
-        {renderedRounds}
-      </ContentWithNavBar>
-    </div>
+    <>
+      <h1>All puzzles</h1>
+      {renderedRounds}
+    </>
   );
 
-  return {
-    node,
-    title: "All puzzles",
-  };
+  return wrapContentWithNavBar(
+    {
+      node,
+      title: "All puzzles",
+    },
+    teamState,
+  );
 }

@@ -1,7 +1,7 @@
 import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
-import ContentWithNavBar from "../../components/ContentWithNavBar";
+import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import {
   PuzzleHeader,
@@ -56,56 +56,57 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     if (process.env.NODE_ENV === "development") {
       // This should only be reachable in dev mode.
       const node = (
-        <ContentWithNavBar teamState={req.teamState}>
-          <div>
-            <h1>Puzzle not assigned (devmode-only page)</h1>
-            <p>
-              The puzzle you requested (<code>{slug}</code>) exists as a stub,
-              as it has no typeset content defined in{" "}
-              <code>src/frontend/puzzles/index.ts</code>. This page would 404 in
-              production, but for development we will pretend there is some
-              content here so that we can test unlock mechanics.
-            </p>
-            {result.body.locked === "locked" ? (
-              <p>This puzzle is currently locked.</p>
-            ) : undefined}
-            {result.body.locked === "unlockable" ? (
+        <div>
+          <h1>Puzzle not assigned (devmode-only page)</h1>
+          <p>
+            The puzzle you requested (<code>{slug}</code>) exists as a stub, as
+            it has no typeset content defined in{" "}
+            <code>src/frontend/puzzles/index.ts</code>. This page would 404 in
+            production, but for development we will pretend there is some
+            content here so that we can test unlock mechanics.
+          </p>
+          {result.body.locked === "locked" ? (
+            <p>This puzzle is currently locked.</p>
+          ) : undefined}
+          {result.body.locked === "unlockable" ? (
+            <>
+              <p>
+                This puzzle is currently locked so guess submissions will 404,
+                but it can be unlocked by spending unlock currency.
+              </p>
+              <form method="POST" action={`/puzzles/${slug}/unlock`}>
+                <button type="submit">Unlock puzzle</button>
+              </form>
+            </>
+          ) : undefined}
+          {result.body.locked === "unlocked" ? (
+            result.body.answer !== undefined ? (
+              <>
+                <p>This puzzle is solved.</p>
+                {guessFrag}
+              </>
+            ) : (
               <>
                 <p>
-                  This puzzle is currently locked so guess submissions will 404,
-                  but it can be unlocked by spending unlock currency.
+                  This puzzle is unlocked. The backend will accept the answer{" "}
+                  <code>PLACEHOLDER ANSWER</code> as correct.
                 </p>
-                <form method="POST" action={`/puzzles/${slug}/unlock`}>
-                  <button type="submit">Unlock puzzle</button>
-                </form>
+                {guessFrag}
               </>
-            ) : undefined}
-            {result.body.locked === "unlocked" ? (
-              result.body.answer !== undefined ? (
-                <>
-                  <p>This puzzle is solved.</p>
-                  {guessFrag}
-                </>
-              ) : (
-                <>
-                  <p>
-                    This puzzle is unlocked. The backend will accept the answer{" "}
-                    <code>PLACEHOLDER ANSWER</code> as correct.
-                  </p>
-                  {guessFrag}
-                </>
-              )
-            ) : undefined}
-            <div id="puzzle-content" className="puzzle-content">
-              Puzzle content would go here.
-            </div>
+            )
+          ) : undefined}
+          <div id="puzzle-content" className="puzzle-content">
+            Puzzle content would go here.
           </div>
-        </ContentWithNavBar>
+        </div>
       );
-      return {
-        node,
-        entrypoints: ["puzzle" as const],
-      };
+      return wrapContentWithNavBar(
+        {
+          node,
+          entrypoints: ["puzzle" as const],
+        },
+        req.teamState,
+      );
     } else {
       return undefined;
     }
@@ -123,31 +124,35 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   // Select content component.
   const content = puzzle.content;
   const ContentComponent = content.component;
-  const entrypoints = ["puzzle" as const, ...(content.entrypoint ? [content.entrypoint] : [])];
+  const entrypoints = [
+    "puzzle" as const,
+    ...(content.entrypoint ? [content.entrypoint] : []),
+  ];
   const title = puzzle.title;
 
   const node = (
     <>
-      <ContentWithNavBar teamState={req.teamState}>
-        <PuzzleWrapper>
-          <PuzzleHeader>
-            <PuzzleTitle>{title}</PuzzleTitle>
-            {/* TODO: add guess form, history, errata, etc. */}
-            {guessFrag}
-          </PuzzleHeader>
-          <PuzzleMain id="puzzle-content" className="puzzle-content">
-            <ContentComponent />
-          </PuzzleMain>
-        </PuzzleWrapper>
-      </ContentWithNavBar>
+      <PuzzleWrapper>
+        <PuzzleHeader>
+          <PuzzleTitle>{title}</PuzzleTitle>
+          {/* TODO: add guess form, history, errata, etc. */}
+          {guessFrag}
+        </PuzzleHeader>
+        <PuzzleMain id="puzzle-content" className="puzzle-content">
+          <ContentComponent />
+        </PuzzleMain>
+      </PuzzleWrapper>
     </>
   );
 
   // TODO: include title
-  return {
-    node,
-    entrypoints,
-  };
+  return wrapContentWithNavBar(
+    {
+      node,
+      entrypoints,
+    },
+    req.teamState,
+  );
 }
 
 type PuzzleGuessReqBody = {
@@ -242,17 +247,15 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const puzzle = PUZZLES[slug];
   if (puzzle === undefined) {
     const node = (
-      <ContentWithNavBar teamState={req.teamState}>
-        <div>
-          <h1>Puzzle not found</h1>
-          <p>
-            The puzzle you requested a solution for (<code>{slug}</code>)
-            exists, but we can&rsquo;t seem to find it.
-          </p>
-        </div>
-      </ContentWithNavBar>
+      <div>
+        <h1>Puzzle not found</h1>
+        <p>
+          The puzzle you requested a solution for (<code>{slug}</code>) exists,
+          but we can&rsquo;t seem to find it.
+        </p>
+      </div>
     );
-    return { node };
+    return wrapContentWithNavBar({ node }, req.teamState);
   }
 
   // TODO: look up round-specific solution page layout if applicable.
@@ -275,28 +278,29 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const answerLabel = answers.length > 1 ? "Answers" : "Answer";
 
   const node = (
-    <ContentWithNavBar teamState={req.teamState}>
-      <div>
-        <h1>Solution to {title}</h1>
-        <h2>
-          {answerLabel}:{" "}
-          {answers.map((answer, i) => (
-            <Spoiler key={i}>{answer}</Spoiler>
-          ))}
-        </h2>
-        <h3>By {authors}</h3>
-        <h3>Edited by {editors}</h3>
-        {acknowledgements}
-        <div id="solution-content" className="solution-content">
-          <SolutionComponent />
-        </div>
+    <div>
+      <h1>Solution to {title}</h1>
+      <h2>
+        {answerLabel}:{" "}
+        {answers.map((answer, i) => (
+          <Spoiler key={i}>{answer}</Spoiler>
+        ))}
+      </h2>
+      <h3>By {authors}</h3>
+      <h3>Edited by {editors}</h3>
+      {acknowledgements}
+      <div id="solution-content" className="solution-content">
+        <SolutionComponent />
       </div>
-    </ContentWithNavBar>
+    </div>
   );
 
   // TODO: include an appropriate title?
-  return {
-    node,
-    entrypoints,
-  };
+  return wrapContentWithNavBar(
+    {
+      node,
+      entrypoints,
+    },
+    req.teamState,
+  );
 }
