@@ -1,7 +1,7 @@
 import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
-import NavBar from "../../components/NavBar";
+import ContentWithNavBar from "../../components/ContentWithNavBar";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import {
   PuzzleHeader,
@@ -134,17 +134,18 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   const node = (
     <>
-      <NavBar />
-      <PuzzleWrapper>
-        <PuzzleHeader>
-          <PuzzleTitle>{title}</PuzzleTitle>
-          {/* TODO: add guess form, history, errata, etc. */}
-          {guessFrag}
-        </PuzzleHeader>
-        <PuzzleMain id="puzzle-content" className="puzzle-content">
-          <ContentComponent />
-        </PuzzleMain>
-      </PuzzleWrapper>
+      <ContentWithNavBar>
+        <PuzzleWrapper>
+          <PuzzleHeader>
+            <PuzzleTitle>{title}</PuzzleTitle>
+            {/* TODO: add guess form, history, errata, etc. */}
+            {guessFrag}
+          </PuzzleHeader>
+          <PuzzleMain id="puzzle-content" className="puzzle-content">
+            <ContentComponent />
+          </PuzzleMain>
+        </PuzzleWrapper>
+      </ContentWithNavBar>
     </>
   );
 
@@ -245,22 +246,17 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const puzzle = PUZZLES[slug];
   if (puzzle === undefined) {
     const node = (
-      <div>
-        <h1>Puzzle not found</h1>
-        <p>
-          The puzzle you requested a solution for (<code>{slug}</code>) exists,
-          but we can&rsquo;t seem to find it.
-        </p>
-      </div>
+      <ContentWithNavBar>
+        <div>
+          <h1>Puzzle not found</h1>
+          <p>
+            The puzzle you requested a solution for (<code>{slug}</code>)
+            exists, but we can&rsquo;t seem to find it.
+          </p>
+        </div>
+      </ContentWithNavBar>
     );
-    return {
-      node: (
-        <>
-          <NavBar />
-          {{ node }}
-        </>
-      ),
-    };
+    return { node };
   }
 
   // TODO: look up round-specific solution page layout if applicable.
@@ -286,21 +282,23 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const answerLabel = answers.length > 1 ? "Answers" : "Answer";
 
   const node = (
-    <div>
-      <h1>Solution to {title}</h1>
-      <h2>
-        {answerLabel}:{" "}
-        {answers.map((answer, i) => (
-          <Spoiler key={i}>{answer}</Spoiler>
-        ))}
-      </h2>
-      <h3>By {authors}</h3>
-      <h3>Edited by {editors}</h3>
-      {acknowledgements}
-      <div id="solution-content" className="solution-content">
-        <SolutionComponent />
+    <ContentWithNavBar>
+      <div>
+        <h1>Solution to {title}</h1>
+        <h2>
+          {answerLabel}:{" "}
+          {answers.map((answer, i) => (
+            <Spoiler key={i}>{answer}</Spoiler>
+          ))}
+        </h2>
+        <h3>By {authors}</h3>
+        <h3>Edited by {editors}</h3>
+        {acknowledgements}
+        <div id="solution-content" className="solution-content">
+          <SolutionComponent />
+        </div>
       </div>
-    </div>
+    </ContentWithNavBar>
   );
 
   // TODO: include an appropriate title?

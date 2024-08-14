@@ -1,6 +1,6 @@
 import { type Request } from "express";
 import React from "react";
-import NavBar from "../../components/NavBar";
+import ContentWithNavBar from "../../components/ContentWithNavBar";
 import { ROUND_PAGE_MAP } from "../../rounds";
 import { lookupScripts, lookupStylesheets } from "../assets";
 
@@ -38,10 +38,9 @@ export const roundHandler = (
   // TODO: add page title
   return {
     node: (
-      <>
-        <NavBar />
+      <ContentWithNavBar>
         <Component teamState={teamState} node={req.query.node} />
-      </>
+      </ContentWithNavBar>
     ),
     scripts,
     stylesheets,
