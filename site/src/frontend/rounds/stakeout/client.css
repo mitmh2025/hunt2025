@@ -11,3 +11,42 @@
   font-weight: 400;
   font-style: normal;
 }
+
+#stakeout-root a {
+  color: var(--gray-800);
+  text-decoration: none;
+  position: relative;
+}
+
+#stakeout-root a:hover {
+  color: var(--true-black);
+  border-color: var(--true-black);
+  text-shadow: none;
+  text-decoration: underline dotted var(--gray-800);
+}
+
+#stakeout-root a.highlighter:hover {
+  text-decoration: none;
+}
+
+#stakeout-root a.highlighter:hover::before {
+  width: 102%;
+  height: 0.8em;
+  background-color: #b1ff3c66;
+  content: " ";
+  position: absolute;
+  top: -0.125em;
+  right: 0;
+  transform: rotate(3deg);
+}
+
+#stakeout-root a.highlighter:hover::after {
+  width: 95%;
+  height: 0.8em;
+  background-color: #b1ff3c66;
+  content: " ";
+  position: absolute;
+  top: 0.125em;
+  right: 0;
+  transform: rotate(-1deg);
+}

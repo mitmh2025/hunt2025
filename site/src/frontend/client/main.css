@@ -1,3 +1,56 @@
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-display: swap;
+  src: url("../../assets/HankenGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: italic;
+  font-display: swap;
+  src: url("../../assets/HankenGrotesk-Italic-VariableFont_wght.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Belanosima";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../../assets/Belanosima-Regular.ttf") format("truetype");
+}
+
+/* Colors */
+:root {
+  --true-white: #ffffff;
+  --gray-000: #f8f8f6;
+  --gray-100: #eaeae0;
+  --gray-200: #c7c7bb;
+  --gray-300: #b4b4a7;
+  --gray-400: #98988e;
+  --gray-500: #797871;
+  --gray-600: #6e6d68;
+  --gray-700: #575652;
+  --gray-800: #43423f;
+  --gray-900: #1b1a18;
+  --nav-bar-bg: #060606;
+  --true-black: #000000;
+
+  --white: var(--gray-000);
+  --black: var(--gray-900);
+
+  --gold-400: #d9c066;
+  --gold-500: #e1be41;
+  --gold-700: #a08730;
+
+  --body-font: "Hanken Grotesk", "Inter", Verdana, Helvetica, sans-serif;
+  --headline-font: "Belanosima", "Gill Sans", "Futura", Helvetica, sans-serif;
+
+  --default-font-size: 16px;
+}
+
 /* CSS reset */
 html {
   width: 100%;
@@ -10,10 +63,38 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
+  background-color: var(--black);
+  color: var(--white);
+  font-size: var(--default-font-size);
+  line-height: 1.51;
+  font-family: var(--body-font);
+  font-weight: 400;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: inherit;
+}
+
+*:focus-visible {
+  outline: 0.25rem double var(--gold-500);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--headline-font);
+  font-weight: 400;
+}
+
+a {
+  color: var(--gray-100);
+  text-decoration: underline dotted var(--gray-100);
+}
+
+a:hover {
+  color: var(--true-white);
+  border-color: var(--true-white);
+  text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.7);
 }

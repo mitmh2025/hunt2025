@@ -17,13 +17,14 @@ const DevPaneToggleButton = styled.button`
   margin: 4px;
   right: 0px;
   top: 0px;
-  width: 24px;
-  height: 24px;
+  width: 3rem;
+  font-size: 1.5rem;
+  font-weight: 600;
 `;
 
 const DevtoolsManager = () => {
   const [state, setState] = useState<DevtoolsState | undefined>(undefined);
-  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [collapsed, setCollapsed] = useState<boolean>(true);
   const toggleCollapsed = useCallback(() => {
     setCollapsed((prevState) => !prevState);
   }, []);

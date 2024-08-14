@@ -105,7 +105,7 @@ const StakeoutPhoto = ({
     position: "absolute" as const,
     left: `${scaled(8)}px`,
     top: `${scaled(8)}px`,
-    backgroundColor: "#333",
+    backgroundColor: "var(--gray-800)",
     backgroundImage: `url(${asset})`, // TODO: use different assets when zoomed-in?
     backgroundSize: "contain",
     ...transitionProperties,

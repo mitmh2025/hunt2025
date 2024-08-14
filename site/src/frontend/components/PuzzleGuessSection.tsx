@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from "react";
+import { styled } from "styled-components";
 import { type z } from "zod";
 import { newClient } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
+import { deviceMax } from "../utils/breakpoints";
+import { Button, TextInput } from "./StyledUI";
 
 type GetPuzzleStateResponse = z.infer<
   (typeof publicContract.getPuzzleState.responses)["200"]
@@ -9,6 +12,29 @@ type GetPuzzleStateResponse = z.infer<
 type Guesses = GetPuzzleStateResponse["guesses"];
 
 type FormState = "idle" | "submitting" | "error";
+
+const GuessSectionWrapper = styled.section`
+  background-color: var(--gray-200);
+  color: var(--black);
+  padding: 1rem 0.5rem;
+  grid-column: 1 / 2;
+
+  @media ${deviceMax.md} {
+    grid-column: 1 / 3;
+  }
+`;
+
+const GuessTable = styled.table`
+  text-align: left;
+
+  td {
+    padding: 0.125rem 1rem 0.125rem 0;
+
+    &.answer-attempt {
+      font-weight: 900;
+    }
+  }
+`;
 
 const PuzzleGuessForm = ({
   slug,
@@ -69,7 +95,7 @@ const PuzzleGuessForm = ({
     <form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
       {formError ? <div>Error: {formError}</div> : undefined}
       <label htmlFor="guess-input">Submit guess</label>
-      <input
+      <TextInput
         id="guess-input"
         name="guess"
         type="text"
@@ -78,22 +104,39 @@ const PuzzleGuessForm = ({
         value={guessInput}
         onChange={onInputChanged}
       />
-      <button type="submit" disabled={formDisabled}>
+      <Button type="submit" disabled={formDisabled}>
         Submit
-      </button>
+      </Button>
     </form>
   );
 };
+
+function formatGuessTimestamp(t: string) {
+  const weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const d = new Date(t);
+  const dayOfWeek = weekday[d.getDay()];
+  const hours = d.getHours();
+  const minutes = d.getMinutes();
+  return `${dayOfWeek} ${hours}:${minutes}`;
+}
 
 const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
   if (guesses.length === 0) {
     return undefined;
   }
   return (
-    <table id="guess-history">
+    <GuessTable id="guess-history">
       <thead>
         <tr>
-          <th>Guesses</th>
+          <th>Guess</th>
           <th>Response</th>
           <th>Time</th>
         </tr>
@@ -102,14 +145,14 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
         {guesses.map((g) => {
           return (
             <tr key={g.canonicalInput}>
-              <td>{g.canonicalInput}</td>
+              <td className="answer-attempt">{g.canonicalInput}</td>
               <td>{g.response}</td>
-              <td>{g.timestamp}</td>
+              <td>{formatGuessTimestamp(g.timestamp)}</td>
             </tr>
           );
         })}
       </tbody>
-    </table>
+    </GuessTable>
   );
 };
 
@@ -125,12 +168,12 @@ const PuzzleGuessSection = ({
   const [guesses, setGuesses] = useState<Guesses>(initialGuesses);
 
   return (
-    <section id="puzzle-guess-section">
+    <GuessSectionWrapper id="puzzle-guess-section">
       {solved ? undefined : (
         <PuzzleGuessForm slug={slug} onGuessesUpdate={setGuesses} />
       )}
       <PuzzleGuessHistoryTable guesses={guesses} />
-    </section>
+    </GuessSectionWrapper>
   );
 };
 

@@ -163,7 +163,7 @@ const PuzzleLink = ({
         <PuzzleIcon puzzleState={puzzleState} size={size} />
       ) : undefined}
       {puzzleState.locked === "unlocked" ? (
-        <a className="puzzle-link-title" href={`/puzzles/${slug}`}>
+        <a className="puzzle-link-title highlighter" href={`/puzzles/${slug}`}>
           {title}
         </a>
       ) : (
