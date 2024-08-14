@@ -138,7 +138,7 @@ const TeamNameNavLink = styled(NavLink)`
   }
 `;
 
-const Dropdown = styled.li<{ alignRight?: boolean }>`
+const Dropdown = styled.li<{ $alignRight?: boolean }>`
   position: relative;
 
   > a {
@@ -151,8 +151,8 @@ const Dropdown = styled.li<{ alignRight?: boolean }>`
     background-color: #000000dd;
     position: absolute;
     top: 3rem;
-    left: ${(props) => (props.alignRight ? "auto" : 0)};
-    right: ${(props) => (props.alignRight ? 0 : "auto")};
+    left: ${(props) => (props.$alignRight ? "auto" : 0)};
+    right: ${(props) => (props.$alignRight ? 0 : "auto")};
     list-style: none;
     margin: 0;
     padding: 0;
@@ -163,16 +163,16 @@ const Dropdown = styled.li<{ alignRight?: boolean }>`
       display: flex;
       align-items: center;
       justify-content: ${(props) =>
-        props.alignRight ? "flex-end" : "flex-start"};
+        props.$alignRight ? "flex-end" : "flex-start"};
     }
 
     > li > a {
       height: 3rem;
-      text-align: ${(props) => (props.alignRight ? "right" : "left")};
+      text-align: ${(props) => (props.$alignRight ? "right" : "left")};
       width: 100%;
       align-items: center;
       justify-content: ${(props) =>
-        props.alignRight ? "flex-end" : "flex-start"};
+        props.$alignRight ? "flex-end" : "flex-start"};
     }
   }
 
@@ -307,7 +307,7 @@ const NavBar = ({ state }: { state: NavBarState }) => {
         <Currency title={`Gravy: ${currency} (For Puzzle Unlocks)`}>
           🍗 {currency}
         </Currency>
-        <Dropdown alignRight>
+        <Dropdown $alignRight>
           <TeamNameNavLink>
             <span>{teamName}</span>
           </TeamNameNavLink>
