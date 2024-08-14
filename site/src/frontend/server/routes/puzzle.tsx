@@ -21,6 +21,9 @@ export type PuzzleParams = {
 };
 
 export async function puzzleHandler(req: Request<PuzzleParams>) {
+  if (!req.teamState) {
+    return undefined;
+  }
   const slug = req.params.puzzleSlug;
   const result = await req.api.getPuzzleState({
     params: { slug: slug },
@@ -56,49 +59,51 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     if (process.env.NODE_ENV === "development") {
       // This should only be reachable in dev mode.
       const node = (
-        <div>
-          <h1>Puzzle not assigned (devmode-only page)</h1>
-          <p>
-            The puzzle you requested (<code>{slug}</code>) exists as a stub, as
-            it has no typeset content defined in{" "}
-            <code>src/frontend/puzzles/index.ts</code>. This page would 404 in
-            production, but for development we will pretend there is some
-            content here so that we can test unlock mechanics.
-          </p>
-          {result.body.locked === "locked" ? (
-            <p>This puzzle is currently locked.</p>
-          ) : undefined}
-          {result.body.locked === "unlockable" ? (
-            <>
-              <p>
-                This puzzle is currently locked so guess submissions will 404,
-                but it can be unlocked by spending unlock currency.
-              </p>
-              <form method="POST" action={`/puzzles/${slug}/unlock`}>
-                <button type="submit">Unlock puzzle</button>
-              </form>
-            </>
-          ) : undefined}
-          {result.body.locked === "unlocked" ? (
-            result.body.answer !== undefined ? (
-              <>
-                <p>This puzzle is solved.</p>
-                {guessFrag}
-              </>
-            ) : (
+        <ContentWithNavBar teamState={req.teamState}>
+          <div>
+            <h1>Puzzle not assigned (devmode-only page)</h1>
+            <p>
+              The puzzle you requested (<code>{slug}</code>) exists as a stub,
+              as it has no typeset content defined in{" "}
+              <code>src/frontend/puzzles/index.ts</code>. This page would 404 in
+              production, but for development we will pretend there is some
+              content here so that we can test unlock mechanics.
+            </p>
+            {result.body.locked === "locked" ? (
+              <p>This puzzle is currently locked.</p>
+            ) : undefined}
+            {result.body.locked === "unlockable" ? (
               <>
                 <p>
-                  This puzzle is unlocked. The backend will accept the answer{" "}
-                  <code>PLACEHOLDER ANSWER</code> as correct.
+                  This puzzle is currently locked so guess submissions will 404,
+                  but it can be unlocked by spending unlock currency.
                 </p>
-                {guessFrag}
+                <form method="POST" action={`/puzzles/${slug}/unlock`}>
+                  <button type="submit">Unlock puzzle</button>
+                </form>
               </>
-            )
-          ) : undefined}
-          <div id="puzzle-content" className="puzzle-content">
-            Puzzle content would go here.
+            ) : undefined}
+            {result.body.locked === "unlocked" ? (
+              result.body.answer !== undefined ? (
+                <>
+                  <p>This puzzle is solved.</p>
+                  {guessFrag}
+                </>
+              ) : (
+                <>
+                  <p>
+                    This puzzle is unlocked. The backend will accept the answer{" "}
+                    <code>PLACEHOLDER ANSWER</code> as correct.
+                  </p>
+                  {guessFrag}
+                </>
+              )
+            ) : undefined}
+            <div id="puzzle-content" className="puzzle-content">
+              Puzzle content would go here.
+            </div>
           </div>
-        </div>
+        </ContentWithNavBar>
       );
       return {
         node,
@@ -134,7 +139,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   const node = (
     <>
-      <ContentWithNavBar>
+      <ContentWithNavBar teamState={req.teamState}>
         <PuzzleWrapper>
           <PuzzleHeader>
             <PuzzleTitle>{title}</PuzzleTitle>
@@ -237,6 +242,9 @@ function formatList(things: string[]): string {
 }
 
 export function solutionHandler(req: Request<PuzzleParams>) {
+  if (!req.teamState) {
+    return undefined;
+  }
   // Only show solutions if we're in dev mode and showing solutions is enabled
   if (process.env.NODE_ENV !== "development" || !SHOW_SOLUTIONS) {
     return undefined;
@@ -246,7 +254,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const puzzle = PUZZLES[slug];
   if (puzzle === undefined) {
     const node = (
-      <ContentWithNavBar>
+      <ContentWithNavBar teamState={req.teamState}>
         <div>
           <h1>Puzzle not found</h1>
           <p>
@@ -282,7 +290,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const answerLabel = answers.length > 1 ? "Answers" : "Answer";
 
   const node = (
-    <ContentWithNavBar>
+    <ContentWithNavBar teamState={req.teamState}>
       <div>
         <h1>Solution to {title}</h1>
         <h2>

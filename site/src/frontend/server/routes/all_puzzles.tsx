@@ -70,7 +70,7 @@ export function allPuzzlesHandler(req: Request) {
 
   const node = (
     <div>
-      <ContentWithNavBar>
+      <ContentWithNavBar teamState={teamState}>
         <h1>All puzzles</h1>
         {renderedRounds}
       </ContentWithNavBar>

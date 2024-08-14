@@ -248,7 +248,19 @@ const Currency = styled.div`
   font-size: 0.85rem;
 `;
 
-const NavBar = () => {
+export type NavBarRoundData = {
+  title: string;
+  href: string;
+};
+
+export type NavBarState = {
+  teamName: string;
+  rounds: NavBarRoundData[];
+  currency: number;
+};
+
+const NavBar = ({ state }: { state: NavBarState }) => {
+  const { teamName, rounds, currency } = state;
   return (
     <Nav>
       <NavItems>
@@ -271,18 +283,11 @@ const NavBar = () => {
             <SubDropdown>
               <NavLink>Rounds</NavLink>
               <ul>
-                <li>
-                  <NavLink href="/">The Jewelry Store</NavLink>
-                </li>
-                <li>
-                  <NavLink href="/">The Boardwalk</NavLink>
-                </li>
-                <li>
-                  <NavLink href="/">The Casino</NavLink>
-                </li>
-                <li>
-                  <NavLink href="/">The Art Gallery</NavLink>
-                </li>
+                {rounds.map((round) => (
+                  <li key={round.href}>
+                    <NavLink href={round.href}>{round.title}</NavLink>
+                  </li>
+                ))}
               </ul>
             </SubDropdown>
             <li>
@@ -299,13 +304,12 @@ const NavBar = () => {
         <Spacer />
         <AudioControls />
         <Currency title="Grease: 0 (For Hints)">🤌 99+</Currency>
-        <Currency title="Gravy: 0 (For Puzzle Unlocks)">🍗 99+</Currency>
+        <Currency title={`Gravy: ${currency} (For Puzzle Unlocks)`}>
+          🍗 {currency}
+        </Currency>
         <Dropdown alignRight>
           <TeamNameNavLink>
-            <span>
-              ✈✈✈ This is the Team Name That Never Ends, It Just Goes On and
-              On My Friends ✈✈✈
-            </span>
+            <span>{teamName}</span>
           </TeamNameNavLink>
           <ul>
             <li>

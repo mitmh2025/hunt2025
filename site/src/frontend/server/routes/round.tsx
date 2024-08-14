@@ -38,7 +38,7 @@ export const roundHandler = (
   // TODO: add page title
   return {
     node: (
-      <ContentWithNavBar>
+      <ContentWithNavBar teamState={teamState}>
         <Component teamState={teamState} node={req.query.node} />
       </ContentWithNavBar>
     ),
