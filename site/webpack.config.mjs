@@ -162,7 +162,7 @@ export default function createConfigs(_env, argv) {
     ]),
     plugins: [
       new MiniCssExtractPlugin({
-        filename: `[contenthash].css`,
+        filename: "[contenthash].css",
         runtime: false,
       }),
     ],
@@ -170,7 +170,7 @@ export default function createConfigs(_env, argv) {
       outputModule: true,
       layers: true,
     },
-    devtool: dev ? "source-map" : `source-map`,
+    devtool: dev ? "source-map" : "source-map",
     mode,
     stats: {
       errorDetails: true,
@@ -275,7 +275,7 @@ export default function createConfigs(_env, argv) {
         fileName: assetManifestFilename,
         publicPath: ASSET_PATH,
         filter: (file) =>
-          !file.path.endsWith(`.js`) && !file.path.endsWith(".css"),
+          !file.path.endsWith(".js") && !file.path.endsWith(".css"),
       }),
     ],
     experiments: {
