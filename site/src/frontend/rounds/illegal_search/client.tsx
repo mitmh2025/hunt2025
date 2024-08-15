@@ -11,6 +11,9 @@ if (elem) {
   const initialTeamState = (
     window as unknown as { initialTeamState: TeamState }
   ).initialTeamState;
+  // We don't bother with hydrateRoot here because the round demands more
+  // interactivity than is viable with just SSR, so we don't even bother
+  // rendering SearchEngine serverside.
   root.render(
     <SearchEngine
       initialNode={initialNode}

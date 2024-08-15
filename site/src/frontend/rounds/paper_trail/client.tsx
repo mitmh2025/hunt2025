@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
+import { hydrateRoot } from "react-dom/client";
 import { type TeamState } from "../../../../lib/api/client";
 import globalDatasetManager from "../../client/DatasetManager";
 import PaperTrailBody from "./PaperTrailBody";
@@ -38,8 +38,8 @@ if (elem) {
   ).initialPaperTrailState;
   const teamState = (window as unknown as { initialTeamState: TeamState })
     .initialTeamState;
-  const root = createRoot(elem);
-  root.render(
+  hydrateRoot(
+    elem,
     <PaperTrailManager initialState={state} initialTeamState={teamState} />,
   );
 } else {

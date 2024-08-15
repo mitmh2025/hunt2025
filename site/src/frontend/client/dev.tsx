@@ -52,6 +52,8 @@ if (elem) {
   const devRoot = document.createElement("div");
   devRoot.id = "dev-root";
   elem.appendChild(devRoot);
+  // Note: the devtools are designed to simply not exist in the page unless
+  // this script was injected, so there's no SSR'd root to hydrate.
   const reactRoot = createRoot(devRoot);
   reactRoot.render(<DevtoolsManager />);
 } else {

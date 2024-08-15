@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
+import { hydrateRoot } from "react-dom/client";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import globalDatasetManager from "./DatasetManager";
 
@@ -21,8 +21,7 @@ if (navbarElem) {
   const initialNavbarState = (
     window as unknown as { initialNavBarState: NavBarState }
   ).initialNavBarState;
-  const navbarRoot = createRoot(navbarElem);
-  navbarRoot.render(<NavBarManager initialState={initialNavbarState} />);
+  hydrateRoot(navbarElem, <NavBarManager initialState={initialNavbarState} />);
 } else {
   console.error(
     "Couldn't mount NavBar because #navbar was nowhere to be found",

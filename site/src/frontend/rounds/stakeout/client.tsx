@@ -38,6 +38,10 @@ if (elem) {
     .initialStakeoutState;
   const teamState = (window as unknown as { initialTeamState: TeamState })
     .initialTeamState;
+  // Note: we avoid hydration here because we save photo locations in
+  // localStorage, which won't match the SSR'd DOM, and because we use
+  // transitions on photo locations, which means they'll animate from their
+  // initial positions to their saved positions on page load
   const root = createRoot(elem);
   root.render(
     <StakeoutManager initialState={state} initialTeamState={teamState} />,
