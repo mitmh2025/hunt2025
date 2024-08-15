@@ -16,7 +16,7 @@ const config: Record<string, Knex.Config> = {
     connection: {
       filename: "./dev.sqlite3",
     },
-    debug: true,
+    debug: false,
   },
 
   staging: {

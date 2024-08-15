@@ -358,9 +358,9 @@ export async function recalculateTeamState(
         .groupBy("slug")
     ).map(({ slug, count }) => [slug, Number(count ?? 0)]),
   );
-  console.log(interactions_completed);
-  console.log(puzzles_unlocked);
-  console.log(puzzle_solution_count);
+  //console.log(interactions_completed);
+  //console.log(puzzles_unlocked);
+  //console.log(puzzle_solution_count);
   const old = await getTeamState(team_id, trx);
   const next = calculateTeamState({
     hunt,
@@ -369,7 +369,7 @@ export async function recalculateTeamState(
     puzzles_unlocked,
     puzzle_solution_count,
   });
-  console.log(next);
+  //console.log(next);
   for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
     await appendActivityLog(
       {

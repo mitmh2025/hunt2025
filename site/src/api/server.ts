@@ -103,7 +103,7 @@ export function getRouter({
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
     const data = await dbGetTeamState(team_id, trx);
-    console.log(data);
+    //console.log(data);
     const rounds = Object.fromEntries(
       hunt.rounds
         .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
