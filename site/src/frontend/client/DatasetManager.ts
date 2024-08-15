@@ -132,7 +132,7 @@ class SharedWorkerDatasetManager {
 
   watch(dataset: Dataset, onUpdate: (value: object) => void): () => void {
     const watchId = genId();
-    console.log(`starting watch ${watchId}`);
+    console.log(`starting watch ${watchId} for ${dataset}`);
     const watch = {
       id: watchId,
       dataset,
