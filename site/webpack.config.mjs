@@ -7,6 +7,7 @@ import nodeExternals from "webpack-node-externals";
 const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
 const outputDirname = path.join(currentDirname, "dist");
 const outputManifestDirname = outputDirname;
+const staticAssetOutputDirname = path.join(outputDirname, "static");
 
 const jsManifestFilename = path.join(outputManifestDirname, "js-manifest.json");
 const cssManifestFilename = path.join(
@@ -21,6 +22,8 @@ const workerManifestFilename = path.join(
   outputManifestDirname,
   "worker-manifest.json",
 );
+
+const ASSET_PATH = process.env.ASSET_PATH || "/static/";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Used by mfng, if we add it back in
 class LogValue {
@@ -63,32 +66,32 @@ export default function createConfigs(_env, argv) {
     ],
   };
 
-  const imageRule = (publicPath) => ({
+  const imageRule = (outputPathPrefix) => ({
     test: /\.(jpg|png|svg)$/,
     type: "asset/resource",
     generator: {
-      outputPath: "assets/",
-      publicPath: `${publicPath}/assets/`,
+      outputPath: `${outputPathPrefix}`,
+      publicPath: ASSET_PATH,
       filename: "[hash][ext][query]",
     },
   });
 
-  const mp3Rule = (publicPath) => ({
+  const mp3Rule = (outputPathPrefix) => ({
     test: /\.mp3$/,
     type: "asset/resource",
     generator: {
-      outputPath: "assets/",
-      publicPath: `${publicPath}/assets/`,
+      outputPath: `${outputPathPrefix}`,
+      publicPath: ASSET_PATH,
       filename: "[hash][ext][query]",
     },
   });
 
-  const fontRule = (publicPath) => ({
+  const fontRule = (outputPathPrefix) => ({
     test: /\.ttf$/,
     type: "asset/resource",
     generator: {
-      outputPath: "assets/",
-      publicPath: `${publicPath}/assets/`,
+      outputPath: `${outputPathPrefix}`,
+      publicPath: ASSET_PATH,
       filename: "[hash][ext][query]",
     },
   });
@@ -112,7 +115,7 @@ export default function createConfigs(_env, argv) {
       // If we hook assets up to a CDN:
       // publicPath: 'https://cdn.example.com/assets/[fullhash]/',
       filename: "[name]-bundle.js",
-      publicPath: "/assets/",
+      publicPath: ASSET_PATH,
       libraryTarget: "module",
       chunkFormat: "module",
       devtoolModuleFilenameTemplate: (
@@ -133,9 +136,9 @@ export default function createConfigs(_env, argv) {
         cssRule,
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
-        imageRule(""),
-        mp3Rule(""),
-        fontRule(""),
+        imageRule("static/"),
+        mp3Rule("static/"),
+        fontRule("static/"),
       ],
       // Add modules as appropriate
     },
@@ -175,7 +178,6 @@ export default function createConfigs(_env, argv) {
     },
   };
 
-  const clientOutputDirname = path.join(outputDirname, `static/client`);
   const clientConfig = {
     name: "client",
     entry: {
@@ -193,9 +195,8 @@ export default function createConfigs(_env, argv) {
     target: "web",
     output: {
       filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
-      path: clientOutputDirname,
-      clean: !dev,
-      publicPath: "/client/",
+      path: staticAssetOutputDirname,
+      publicPath: ASSET_PATH,
     },
     devtool: "source-map",
     module: {
@@ -206,9 +207,9 @@ export default function createConfigs(_env, argv) {
           use: ["swc-loader"],
         },
         cssRule,
-        imageRule("/client"),
-        mp3Rule("/client"),
-        fontRule("/client"),
+        imageRule(""),
+        mp3Rule(""),
+        fontRule(""),
       ],
     },
     resolve: {
@@ -232,7 +233,7 @@ export default function createConfigs(_env, argv) {
       }),
       new WebpackManifestPlugin({
         fileName: cssManifestFilename,
-        publicPath: "/client/",
+        publicPath: ASSET_PATH,
         filter: (file) => file.path.endsWith(".css"),
       }),
       new WebpackManifestPlugin({
@@ -260,19 +261,19 @@ export default function createConfigs(_env, argv) {
             entry.chunks.forEach((chunk) => {
               files = [...files, ...chunk.files];
             });
-            acc[name] = files.map((file) => `/client/${file}`);
+            acc[name] = files.map((file) => `${ASSET_PATH}${file}`);
           });
           return acc;
         },
       }),
       new WebpackManifestPlugin({
         fileName: jsManifestFilename,
-        publicPath: "/client/",
+        publicPath: ASSET_PATH,
         filter: (file) => file.path.endsWith(".js"),
       }),
       new WebpackManifestPlugin({
         fileName: assetManifestFilename,
-        publicPath: "/client",
+        publicPath: ASSET_PATH,
         filter: (file) =>
           !file.path.endsWith(`.js`) && !file.path.endsWith(".css"),
       }),
@@ -284,7 +285,6 @@ export default function createConfigs(_env, argv) {
     // ...
   };
 
-  const workerOutputDirname = path.join(outputDirname, `static/worker`);
   const workerConfig = {
     name: "worker",
     entry: {
@@ -293,9 +293,8 @@ export default function createConfigs(_env, argv) {
     target: "webworker",
     output: {
       filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
-      path: workerOutputDirname,
-      clean: !dev,
-      publicPath: "/worker/",
+      path: staticAssetOutputDirname,
+      publicPath: ASSET_PATH,
     },
     module: {
       rules: [
@@ -317,10 +316,10 @@ export default function createConfigs(_env, argv) {
     plugins: [
       new WebpackManifestPlugin({
         fileName: workerManifestFilename,
-        publicPath: "/worker/",
+        publicPath: ASSET_PATH,
       }),
     ],
   };
 
-  return [serverConfig, clientConfig, workerConfig];
+  return [workerConfig, clientConfig, serverConfig];
 }

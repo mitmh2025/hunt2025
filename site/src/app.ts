@@ -56,8 +56,8 @@ export default async function ({
   });
   app.use("/api", apiRouter);
 
-  // Serve assets from the bundle without auth
-  app.use("/assets", express.static(path.join(__dirname, "assets")));
+  // Serve static assets from the bundle without auth
+  app.use("/static", express.static(path.join(__dirname, "static")));
 
   // Forward all other requests to the UI router, which we expect to
   // handle most user requests.

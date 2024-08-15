@@ -1,4 +1,3 @@
-import path from "path";
 import cookieParser from "cookie-parser";
 import express, {
   type Request,
@@ -214,9 +213,6 @@ export async function getUiRouter({
   router.use(express.json());
   router.use(multer().none()); // Don't handle file uploads
   router.use(express.text());
-
-  router.use("/client", express.static(path.join(__dirname, "static/client")));
-  router.use("/worker", express.static(path.join(__dirname, "static/worker")));
 
   router.use((req: Request, _res: Response, next: NextFunction) => {
     req.authApi = newAuthClient(apiUrl);
