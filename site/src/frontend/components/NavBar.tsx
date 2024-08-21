@@ -183,7 +183,8 @@ const Dropdown = styled.li<{ $alignRight?: boolean }>`
     }
   }
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     > ul {
       display: flex;
       min-width: 100%;
@@ -223,18 +224,21 @@ const SubDropdown = styled(Dropdown)`
     background-color: #000000cc;
   }
   @media ${deviceMax.md} {
-    &:hover > ul {
+    &:hover > ul,
+    &:focus-within > ul {
       top: 0;
       left: 100%;
     }
   }
 
   @media (${deviceMax.sm}) {
-    &:hover > ul {
+    &:hover > ul,
+    &:focus-within > ul {
       left: 50%;
       max-width: 50vw;
       width: 50vw;
 
+      > li,
       > li > a {
         max-width: 50vw;
         width: 50vw;
@@ -287,13 +291,15 @@ const NavBar = ({
           </NavLink>
         </li>
         <TopLevelDropdown>
-          <NavLink id="menu-md">Menu</NavLink>
+          <NavLink id="menu-md" tabIndex={0}>
+            Menu
+          </NavLink>
           <ul>
             <li id="home-sm">
               <NavLink href="/">Home</NavLink>
             </li>
             <SubDropdown>
-              <NavLink>Rounds</NavLink>
+              <NavLink tabIndex={0}>Rounds</NavLink>
               <ul>
                 {rounds.map((round) => (
                   <li key={round.href}>
@@ -316,7 +322,7 @@ const NavBar = ({
           💰 {currency}
         </Currency>
         <Dropdown $alignRight>
-          <TeamNameNavLink>
+          <TeamNameNavLink tabIndex={0}>
             <span>{teamName}</span>
           </TeamNameNavLink>
           <ul>
