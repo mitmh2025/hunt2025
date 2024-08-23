@@ -369,6 +369,7 @@ export async function recalculateTeamState(
   team_id: number,
   trx: Knex.Knex.Transaction,
 ) {
+  const start = Date.now();
   const interactions_completed = new Set(
     (await trx("activity_log")
       .where("team_id", team_id)
@@ -398,10 +399,12 @@ export async function recalculateTeamState(
         .groupBy("slug")
     ).map(({ slug, count }) => [slug, Number(count ?? 0)]),
   );
+  const canonical_queries_done = Date.now();
   //console.log(interactions_completed);
   //console.log(puzzles_unlocked);
   //console.log(puzzle_solution_count);
   const old = await getTeamState(team_id, trx);
+  const denormed_queries_done = Date.now();
   const next = calculateTeamState({
     hunt,
     gates_satisfied,
@@ -409,6 +412,7 @@ export async function recalculateTeamState(
     puzzles_unlocked,
     puzzle_solution_count,
   });
+  const calculate_team_state_done = Date.now();
   //console.log(next);
   for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
     await appendActivityLog(
@@ -430,6 +434,7 @@ export async function recalculateTeamState(
         unlocked: true,
       });
   }
+  const unlock_rounds_done = Date.now();
   const old_interactions = new Set(Object.keys(old.interactions));
   const diff = {
     visible_puzzles: next.visible_puzzles.difference(old.visible_puzzles),
@@ -443,6 +448,7 @@ export async function recalculateTeamState(
   const diff_puzzles = diff.visible_puzzles
     .union(diff.unlockable_puzzles)
     .union(diff.unlocked_puzzles);
+  const diff_done = Date.now();
   for (const slug of diff_puzzles) {
     const record: Partial<TeamPuzzle> = {};
     if (diff.visible_puzzles.has(slug)) {
@@ -475,6 +481,7 @@ export async function recalculateTeamState(
       .onConflict(["team_id", "slug"])
       .merge(record);
   }
+  const puzzles_unlock_done = Date.now();
   for (const id of diff.unlocked_interactions) {
     await appendActivityLog(
       {
@@ -485,4 +492,13 @@ export async function recalculateTeamState(
       trx,
     );
   }
+  const interactions_unlock_done = Date.now();
+  console.log(`recalculateTeamState for team ${team_id}: ${interactions_unlock_done - start} msec
+  * canonical queries:   ${canonical_queries_done - start} msec
+  * denormed queries:    ${denormed_queries_done - canonical_queries_done} msec
+  * calculateTeamState:  ${calculate_team_state_done - denormed_queries_done} msec
+  * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
+  * compute diffs:       ${diff_done - unlock_rounds_done} msec
+  * unlock puzzles:      ${puzzles_unlock_done - diff_done} msec
+  * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec`);
 }
