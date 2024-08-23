@@ -85,6 +85,9 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ActivityLogEntryBaseSchema.merge(
     z.object({ type: z.literal("interaction_completed"), slug: z.string() }),
   ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("gate_completed"), slug: z.string() }),
+  ),
 ]);
 
 const ActivityLogSchema = z.array(ActivityLogEntrySchema);

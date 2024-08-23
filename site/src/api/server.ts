@@ -570,10 +570,26 @@ export function getRouter({
         handler: async ({ params: { teamId, gateId } }) => {
           return await knex.transaction(async (trx) => {
             const team_id = parseInt(teamId, 10);
-            await trx("team_gate_completions")
-              .insert({ team_id, gate: gateId })
-              .onConflict(["team_id", "gate"])
-              .ignore();
+            // Check if already satisfied.
+            const existing = await trx("activity_log")
+              .where("team_id", team_id)
+              .where("type", "gate_completed")
+              .where("slug", gateId)
+              .select("id")
+              .first();
+            // If not, insert gate completion.
+            // If already present, no change
+            if (!existing) {
+              await appendActivityLog(
+                {
+                  team_id,
+                  type: "gate_completed",
+                  slug: gateId,
+                },
+                trx,
+              );
+            }
+            // return the team state object regardless
             const newState = await refreshTeamState(hunt, team_id, trx);
             return {
               status: 200,

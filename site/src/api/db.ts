@@ -117,11 +117,6 @@ declare module "knex/types/tables" {
     result?: string;
   };
 
-  type TeamGateCompletions = {
-    team_id: number;
-    gate: string;
-  };
-
   type InsertActivityLogEntry = {
     team_id?: number;
     currency_delta?: number;
@@ -155,6 +150,10 @@ declare module "knex/types/tables" {
         type: "interaction_completed";
         slug: string;
       }
+    | {
+        type: "gate_completed";
+        slug: string; // the id of the gate
+      }
   );
 
   type ActivityLogEntry = {
@@ -172,7 +171,6 @@ declare module "knex/types/tables" {
     team_rounds: TeamRound;
     team_puzzles: TeamPuzzle;
     team_puzzle_guesses: TeamPuzzleGuess;
-    team_gate_completions: TeamGateCompletions;
     team_interactions: TeamInteraction;
     activity_log: Knex.Knex.CompositeTableType<
       ActivityLogEntry,
@@ -223,9 +221,10 @@ export async function getTeamState(
     slug: string;
     answer: string;
   }[]; /* I can't tell how to tell TypeScript that answer is a string without forcing it here. */
-  const satisfied_gates = await trx("team_gate_completions")
+  const satisfied_gates = (await trx("activity_log")
     .where("team_id", team_id)
-    .pluck("gate");
+    .where("type", "gate_completed")
+    .pluck("slug")) as string[];
   const interactions = await trx("team_interactions")
     .where("team_id", team_id)
     .select("id", "started_at", "completed_at", "result");
@@ -346,8 +345,12 @@ export async function recalculateTeamState(
       .pluck("slug"),
   );
   const gates_satisfied = new Set(
-    await trx("team_gate_completions").where("team_id", team_id).pluck("gate"),
+    (await trx("activity_log")
+      .where("team_id", team_id)
+      .where("type", "gate_completed")
+      .pluck("slug")) as string[],
   );
+
   const puzzle_solution_count = Object.fromEntries(
     (
       await trx("team_puzzle_guesses")
