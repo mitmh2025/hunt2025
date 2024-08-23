@@ -30,6 +30,7 @@ import {
   type GuessLogEntry,
 } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
+import { allPuzzlesState } from "./routes/all_puzzles";
 
 type DatasetHandler =
   | {
@@ -46,6 +47,10 @@ type DatasetHandler =
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
     type: "activity_log",
+  },
+  all_puzzles: {
+    type: "team_state",
+    callback: allPuzzlesState,
   },
   dev: {
     type: "team_state",

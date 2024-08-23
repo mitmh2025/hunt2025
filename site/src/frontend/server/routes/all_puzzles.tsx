@@ -1,83 +1,87 @@
 import { type Request } from "express";
 import React from "react";
-import { css, styled } from "styled-components";
+import { type TeamState } from "../../../../lib/api/client";
+import {
+  type AllPuzzlesState,
+  type AllPuzzlesRound,
+} from "../../client/all_puzzles_types";
+import AllPuzzlesList from "../../components/AllPuzzlesList";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
+import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 
-const PuzzleRow = styled.tr<{ $isMeta: boolean }>`
-  ${({ $isMeta }) =>
-    $isMeta
-      ? css`
-          font-weight: bold;
-        `
-      : undefined}
-  font-size: ${({ $isMeta }) => ($isMeta ? "16px" : "14px")}
-`;
+export function allPuzzlesState(teamState: TeamState): AllPuzzlesState {
+  const rounds = Object.entries(teamState.rounds).map(([roundKey, round]) => {
+    const metas = Object.entries(round.slots).filter(([_slot, { is_meta }]) => {
+      return !!is_meta;
+    });
+    const nonMetas = Object.entries(round.slots).filter(
+      ([_slot, { is_meta }]) => {
+        return !is_meta;
+      },
+    );
+    const puzzles = [...metas, ...nonMetas].map(([slot, { slug, is_meta }]) => {
+      const puzzle = PUZZLES[slug];
+      const title = puzzle?.title ?? `Stub puzzle for slot ${slot}`;
+      const lockState = teamState.puzzles[slug]?.locked;
+      const answer = teamState.puzzles[slug]?.answer;
+      return {
+        slug,
+        title,
+        is_meta,
+        state: lockState,
+        answer,
+      };
+    });
+    const renderedRound: AllPuzzlesRound = {
+      slug: roundKey,
+      title: round.title,
+      puzzles,
+    };
+    if (round.interactions) {
+      const interactions = Object.entries(round.interactions).map(
+        ([interactionSlug, interactionState]) => {
+          const intDefinition =
+            INTERACTIONS[interactionSlug as keyof typeof INTERACTIONS];
+          return {
+            slug: interactionSlug,
+            title: intDefinition.title,
+            state: interactionState.state,
+            result: interactionState.result,
+          };
+        },
+      );
+      renderedRound.interactions = interactions;
+    }
+    return renderedRound;
+  });
+  return {
+    rounds,
+    currency: teamState.currency,
+  };
+}
 
 export function allPuzzlesHandler(req: Request) {
   const teamState = req.teamState;
   if (teamState === undefined) return undefined;
 
-  const renderedRounds = Object.entries(teamState.rounds).map(
-    ([roundKey, round]) => {
-      const renderPuzzle = (
-        slot: string,
-        { slug, is_meta }: { slug: string; is_meta?: boolean },
-      ) => {
-        const puzzle = PUZZLES[slug];
-        const title = puzzle?.title ?? `Stub puzzle for slot ${slot}`;
-        const answer = teamState.puzzles[slug]?.answer;
-        return (
-          <PuzzleRow key={slot} $isMeta={is_meta ?? false}>
-            <td key="puzzle">
-              <a href={`/puzzles/${slug}`}>{title}</a>
-            </td>
-            <td key="answer">
-              <code>{answer ? answer : undefined}</code>
-            </td>
-          </PuzzleRow>
-        );
-      };
-      const renderedMetaRows = Object.entries(round.slots)
-        .filter(([_slot, { is_meta }]) => {
-          return !!is_meta;
-        })
-        .map(([slot, slotObj]) => {
-          return renderPuzzle(slot, slotObj);
-        });
-      const renderedNonMetaRows = Object.entries(round.slots)
-        .filter(([_slot, { is_meta }]) => {
-          return !is_meta;
-        })
-        .map(([slot, slotObj]) => {
-          return renderPuzzle(slot, slotObj);
-        });
-      return (
-        <div key={roundKey}>
-          <h3>{round.title}</h3>
-          <table>
-            <tbody>
-              <>
-                {renderedMetaRows}
-                {renderedNonMetaRows}
-              </>
-            </tbody>
-          </table>
-        </div>
-      );
-    },
-  );
+  const state = allPuzzlesState(teamState);
+  const inlineScript = `window.initialAllPuzzlesState = ${JSON.stringify(state)}`;
 
   const node = (
     <>
       <h1>All puzzles</h1>
-      {renderedRounds}
+      <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+      <div id="all-puzzles-root">
+        <AllPuzzlesList state={state} />
+      </div>
     </>
   );
 
   return wrapContentWithNavBar(
     {
       node,
+      entrypoints: ["all_puzzles" as const],
       title: "All puzzles",
     },
     teamState,
