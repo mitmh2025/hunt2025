@@ -83,7 +83,14 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({ type: z.literal("interaction_unlocked"), slug: z.string() }),
   ),
   ActivityLogEntryBaseSchema.merge(
-    z.object({ type: z.literal("interaction_completed"), slug: z.string() }),
+    z.object({ type: z.literal("interaction_started"), slug: z.string() }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("interaction_completed"),
+      slug: z.string(),
+      result: z.string(),
+    }),
   ),
   ActivityLogEntryBaseSchema.merge(
     z.object({ type: z.literal("gate_completed"), slug: z.string() }),

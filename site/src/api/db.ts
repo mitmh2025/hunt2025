@@ -1,6 +1,7 @@
 import path from "path";
 import Knex from "knex";
 import {
+  type ActivityLogEntry,
   type InsertActivityLogEntry,
   type TeamPuzzle,
 } from "knex/types/tables";
@@ -109,14 +110,6 @@ declare module "knex/types/tables" {
     response?: string;
   };
 
-  type TeamInteraction = {
-    team_id: number;
-    id: string;
-    started_at?: Date;
-    completed_at?: Date;
-    result?: string;
-  };
-
   type InsertActivityLogEntry = {
     team_id?: number;
     currency_delta?: number;
@@ -147,8 +140,15 @@ declare module "knex/types/tables" {
         slug: string;
       }
     | {
+        type: "interaction_started";
+        slug: string;
+      }
+    | {
         type: "interaction_completed";
         slug: string;
+        data: {
+          result: string;
+        };
       }
     | {
         type: "gate_completed";
@@ -156,10 +156,21 @@ declare module "knex/types/tables" {
       }
   );
 
+  // We specify some more general field types here even though InsertActivityLogEntry has narrower
+  // constraints to make working with Pick types more pleasant.
   type ActivityLogEntry = {
     id: number;
     timestamp: Date;
     currency_delta: number;
+    type: string;
+    slug?: string;
+    data?:
+      | {
+          answer: string;
+        }
+      | {
+          result: string;
+        };
   } & InsertActivityLogEntry;
 
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
@@ -171,7 +182,6 @@ declare module "knex/types/tables" {
     team_rounds: TeamRound;
     team_puzzles: TeamPuzzle;
     team_puzzle_guesses: TeamPuzzleGuess;
-    team_interactions: TeamInteraction;
     activity_log: Knex.Knex.CompositeTableType<
       ActivityLogEntry,
       InsertActivityLogEntry
@@ -225,9 +235,45 @@ export async function getTeamState(
     .where("team_id", team_id)
     .where("type", "gate_completed")
     .pluck("slug")) as string[];
-  const interactions = await trx("team_interactions")
+
+  const interaction_events = (await trx("activity_log")
     .where("team_id", team_id)
-    .select("id", "started_at", "completed_at", "result");
+    .whereIn("type", [
+      "interaction_unlocked",
+      "interaction_started",
+      "interaction_completed",
+    ])
+    .orderBy("id")
+    .select("type", "slug", "data")) as Pick<
+    ActivityLogEntry,
+    "type" | "slug" | "data"
+  >[];
+  const interactions: Record<
+    string,
+    { state: "unlocked" | "running" | "completed"; result?: string }
+  > = interaction_events.reduce((acc, entry) => {
+    if (entry.slug) {
+      // guaranteed to be nonnull in practice, but hard to prove to the typechecker
+      switch (entry.type) {
+        case "interaction_unlocked":
+          return { ...acc, [entry.slug]: { state: "unlocked" } };
+        case "interaction_started":
+          return { ...acc, [entry.slug]: { state: "running" } };
+        case "interaction_completed":
+          return {
+            ...acc,
+            [entry.slug]: {
+              state: "completed",
+              ...("data" in entry &&
+                entry.data &&
+                "result" in entry.data && { result: entry.data.result }),
+            },
+          };
+      }
+    }
+    return acc;
+  }, {});
+
   const available_currency = Number(
     (
       await trx("activity_log")
@@ -258,16 +304,7 @@ export async function getTeamState(
       correct_answers.map(({ slug, answer }) => [slug, answer]),
     ),
     satisfied_gates: new Set(satisfied_gates),
-    interactions: Object.fromEntries(
-      interactions.map(({ id, started_at, completed_at, result }) => {
-        const state = completed_at
-          ? ("completed" as const)
-          : started_at
-            ? ("running" as const)
-            : ("unlocked" as const);
-        return [id, { state, ...(result && { result }) }];
-      }),
-    ),
+    interactions,
   };
 }
 
@@ -333,16 +370,16 @@ export async function recalculateTeamState(
   trx: Knex.Knex.Transaction,
 ) {
   const interactions_completed = new Set(
-    await trx("team_interactions")
+    (await trx("activity_log")
       .where("team_id", team_id)
-      .whereNotNull("completed_at")
-      .pluck("id"),
+      .where("type", "interaction_completed")
+      .pluck("slug")) as string[],
   );
   const puzzles_unlocked = new Set(
-    await trx("team_puzzles")
+    (await trx("activity_log")
       .where("team_id", team_id)
-      .where("unlocked", true)
-      .pluck("slug"),
+      .where("type", "puzzle_unlocked")
+      .pluck("slug")) as string[],
   );
   const gates_satisfied = new Set(
     (await trx("activity_log")
@@ -447,12 +484,5 @@ export async function recalculateTeamState(
       },
       trx,
     );
-    await trx("team_interactions")
-      .insert({
-        team_id,
-        id,
-      })
-      .onConflict(["team_id", "id"])
-      .ignore();
   }
 }

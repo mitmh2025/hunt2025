@@ -138,25 +138,21 @@ export function getRouter({
         ]),
       ),
     );
-    const interaction_kvs: [
-      string,
-      {
-        state: "running" | "completed" | "unlocked";
-        record?: string | undefined;
-      },
-    ][] = hunt.interactions.flatMap((interaction) => {
-      const { id } = interaction;
-      if (id) {
-        const interaction = data.interactions[id];
-        if (interaction) {
-          return [[id, interaction]];
+    // Narrow to only interactions declared in the hunt object
+    const interactionData = Object.fromEntries(
+      hunt.interactions.flatMap((interaction) => {
+        if ("interactions" in data) {
+          const v = data.interactions[interaction.id];
+          if (v) {
+            return [[interaction.id, v]];
+          }
         }
-      }
-      return [];
-    });
+        return [];
+      }),
+    );
     const interactions =
-      interaction_kvs.length > 0
-        ? { interactions: Object.fromEntries(interaction_kvs) }
+      Object.keys(interactionData).length > 0
+        ? { interactions: interactionData }
         : {};
     return {
       teamId: team_id,
@@ -357,7 +353,10 @@ export function getRouter({
           const entries = (await knex("activity_log")
             .where("team_id", team_id)
             .select("timestamp", "type", "slug", "currency_delta", "data")
-            .orderBy("timestamp", "desc")) as ActivityLogEntry[];
+            .orderBy("timestamp", "desc")) as Pick<
+            ActivityLogEntry,
+            "timestamp" | "type" | "slug" | "currency_delta" | "data"
+          >[];
           const body = entries.map((e) => {
             // TODO: Is there a type-safe way to do this that doesn't involve a switch on e.type?
             let entry: Partial<ActivityLog[number]> = {
@@ -365,7 +364,7 @@ export function getRouter({
               currency_delta: e.currency_delta,
               type: e.type,
             };
-            if ("slug" in e) {
+            if ("slug" in e && e.slug) {
               (entry as { slug: string }).slug = e.slug;
             }
             if ("data" in e) {

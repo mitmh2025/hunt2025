@@ -43,20 +43,6 @@ export async function up(knex: Knex): Promise<void> {
       table.boolean("correct").notNullable().defaultTo(false);
       table.text("response");
     })
-    .createTable("team_interactions", function (table) {
-      table
-        .integer("team_id")
-        .notNullable()
-        .references("teams.id")
-        .onDelete("CASCADE")
-        .onUpdate("CASCADE");
-      table.string("id", 255).notNullable();
-      table.primary(["team_id", "id"]);
-      // Interaction unlock is implied by presence in the table
-      table.datetime("started_at"); // The interaction can only be started once.
-      table.datetime("completed_at"); // The interaction can only be completed once.
-      table.string("result", 255); // optional
-    })
     .createTable("activity_log", function (table) {
       table.increments("id");
       table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
@@ -67,6 +53,7 @@ export async function up(knex: Knex): Promise<void> {
         "puzzle_unlocked",
         "puzzle_solved",
         "interaction_unlocked",
+        "interaction_started",
         "interaction_completed",
         "gate_completed",
       ]);
@@ -84,6 +71,5 @@ export async function down(knex: Knex): Promise<void> {
     .dropTable("team_rounds")
     .dropTable("team_puzzles")
     .dropTable("team_puzzle_guesses")
-    .dropTable("team_interactions")
     .dropTable("activity_log");
 }
