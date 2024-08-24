@@ -9,8 +9,7 @@ import cubby_open from "../assets/fuse_box/fusebox_draft6_cubby_open_zarvox.svg"
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { Asset, ModalTrigger } from "./SearchEngine";
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- node/SSR does not have Storage
-const HAS_STORAGE = (typeof Storage !== "undefined") as boolean;
+const HAS_STORAGE = typeof Storage !== "undefined";
 
 // 40 switches
 const ALL_OFF: boolean[] = Array(40).fill(false) as boolean[];

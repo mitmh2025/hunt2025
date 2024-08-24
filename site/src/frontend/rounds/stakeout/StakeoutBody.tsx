@@ -14,8 +14,7 @@ export type Position = Coord & {
   r: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- node/SSR does not have Storage
-const HAS_STORAGE = (typeof Storage !== "undefined") as boolean;
+const HAS_STORAGE = typeof Storage !== "undefined";
 
 const DEFAULT_POSITIONS: Record<StakeoutSlot, Coord> = {
   // Exact starting positions are not puzzle content, just decorative.
