@@ -22,12 +22,28 @@ const DevPaneToggleButton = styled.button`
   font-weight: 600;
 `;
 
+const HAS_STORAGE = typeof Storage !== "undefined";
+const COLLAPSED_KEY = "devtools_collapsed";
+
 const DevtoolsManager = () => {
   const [state, setState] = useState<DevtoolsState | undefined>(undefined);
-  const [collapsed, setCollapsed] = useState<boolean>(true);
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    if (HAS_STORAGE) {
+      const value = localStorage.getItem(COLLAPSED_KEY);
+      if (value !== null) {
+        return value === "true" ? true : false;
+      }
+    }
+    return true;
+  });
   const toggleCollapsed = useCallback(() => {
     setCollapsed((prevState) => !prevState);
   }, []);
+  useEffect(() => {
+    if (HAS_STORAGE) {
+      localStorage.setItem(COLLAPSED_KEY, collapsed ? "true" : "false");
+    }
+  }, [collapsed]);
   useEffect(() => {
     const stop = globalDatasetManager.watch("dev", (value: object) => {
       setState(value as DevtoolsState);
