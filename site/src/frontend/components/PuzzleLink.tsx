@@ -48,6 +48,7 @@ const PuzzleUnlockModal = ({
     <div
       style={{
         position: "absolute",
+        zIndex: 1,
         inset: 0,
         backgroundColor: "#eee",
       }}

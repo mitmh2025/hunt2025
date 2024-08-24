@@ -7,6 +7,8 @@ import AudioControls from "./AudioControls";
 const Nav = styled.nav`
   height: 3rem;
   width: 100%;
+  position: relative; // Needed for z-index to do anything
+  z-index: 1;
   background-color: var(--nav-bar-bg);
 `;
 

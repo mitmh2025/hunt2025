@@ -10,6 +10,7 @@ const DevPaneContainer = styled.div`
   right: 10px;
   top: 10px;
   min-width: 200px;
+  z-index: 2;
 `;
 
 const DevPaneToggleButton = styled.button`
