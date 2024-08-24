@@ -597,6 +597,101 @@ export function getRouter({
           });
         },
       },
+      startInteraction: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId, interactionId } }) => {
+          return await knex.transaction(async (trx) => {
+            const team_id = parseInt(teamId, 10);
+            const existing = (await trx("activity_log")
+              .where("team_id", team_id)
+              .whereIn("type", ["interaction_unlocked", "interaction_started"])
+              .where("slug", interactionId)
+              .select("type")) as Partial<ActivityLogEntry>[];
+            const is_unlocked = existing.some(
+              (entry) => entry.type === "interaction_unlocked",
+            );
+            if (!is_unlocked) {
+              return {
+                status: 404,
+                body: null,
+              };
+            }
+            const is_started = existing.some(
+              (entry) => entry.type === "interaction_started",
+            );
+            if (!is_started) {
+              await appendActivityLog(
+                {
+                  team_id,
+                  type: "interaction_started",
+                  slug: interactionId,
+                },
+                trx,
+              );
+            }
+
+            const newState = await refreshTeamState(hunt, team_id, trx);
+            return {
+              status: 200,
+              body: newState,
+            };
+          });
+        },
+      },
+      completeInteraction: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId, interactionId }, body }) => {
+          return await knex.transaction(async (trx) => {
+            const team_id = parseInt(teamId, 10);
+            const existing = (await trx("activity_log")
+              .where("team_id", team_id)
+              .whereIn("type", [
+                "interaction_unlocked",
+                "interaction_started",
+                "interaction_completed",
+              ])
+              .where("slug", interactionId)
+              .select("type")) as Partial<ActivityLogEntry>[];
+            const is_unlocked = existing.some(
+              (entry) => entry.type === "interaction_unlocked",
+            );
+            const is_started = existing.some(
+              (entry) => entry.type === "interaction_started",
+            );
+            const is_completed = existing.some(
+              (entry) => entry.type === "interaction_completed",
+            );
+            console.log("is_unlocked", is_unlocked);
+            console.log("is_started", is_started);
+            console.log("is_completed", is_completed);
+            if (!is_unlocked || !is_started) {
+              return {
+                status: 404,
+                body: null,
+              };
+            }
+            if (!is_completed) {
+              await appendActivityLog(
+                {
+                  team_id,
+                  type: "interaction_completed",
+                  slug: interactionId,
+                  data: {
+                    result: body.result,
+                  },
+                },
+                trx,
+              );
+            }
+
+            const newState = await refreshTeamState(hunt, team_id, trx);
+            return {
+              status: 200,
+              body: newState,
+            };
+          });
+        },
+      },
     },
   });
 

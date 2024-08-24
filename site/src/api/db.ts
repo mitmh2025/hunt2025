@@ -259,16 +259,21 @@ export async function getTeamState(
           return { ...acc, [entry.slug]: { state: "unlocked" } };
         case "interaction_started":
           return { ...acc, [entry.slug]: { state: "running" } };
-        case "interaction_completed":
+        case "interaction_completed": {
+          let result = "";
+          if ("data" in entry) {
+            result = (
+              fixData(entry.data as unknown as string) as { result: string }
+            ).result;
+          }
           return {
             ...acc,
             [entry.slug]: {
               state: "completed",
-              ...("data" in entry &&
-                entry.data &&
-                "result" in entry.data && { result: entry.data.result }),
+              result,
             },
           };
+        }
       }
     }
     return acc;
@@ -319,6 +324,14 @@ export function fixTimestamp(value: string | Date): Date {
   if (typeof value === "string") {
     // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
     return new Date(value + "Z");
+  }
+  return value;
+}
+
+export function fixData(value: string | object): object {
+  // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
+  if (typeof value === "string") {
+    return JSON.parse(value) as object;
   }
   return value;
 }

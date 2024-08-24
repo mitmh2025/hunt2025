@@ -39,7 +39,7 @@ const RoundStateSchema = z.object({
   gates: z.array(z.string()).optional(),
 });
 
-const InteractionStateSchema = z.object({
+export const InteractionStateSchema = z.object({
   state: z.enum(["unlocked", "running", "completed"]),
   result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
 });

@@ -25,6 +25,12 @@ import {
 } from "../rounds/illegal_search";
 import { type Entrypoint, lookupScripts, lookupStylesheets } from "./assets";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
+import {
+  interactionCompletePostHandler,
+  type InteractionParams,
+  interactionRequestHandler,
+  interactionStartPostHandler,
+} from "./routes/interaction";
 import { hackLoginGetHandler } from "./routes/login";
 import {
   puzzleHandler,
@@ -318,6 +324,28 @@ export async function getUiRouter({
       },
     ),
   );
+
+  authRouter.get(
+    "/interactions/:slug",
+    asyncHandler(
+      async (
+        req: Request<InteractionParams>,
+        res: Response,
+        next: NextFunction,
+      ) => {
+        await renderApp(interactionRequestHandler, req, res, next);
+      },
+    ),
+  );
+  // These two POST handlers for interactions are currently only used for devtools to allow
+  // synthesizing starting and completing the interaction.  In practice, the backend would determine
+  // when the interaction has completed and with what result.
+  authRouter.post("/interactions/:slug/start", interactionStartPostHandler);
+  authRouter.post(
+    "/interactions/:slug/complete",
+    interactionCompletePostHandler,
+  );
+
   authRouter.get(
     "/all_puzzles",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
