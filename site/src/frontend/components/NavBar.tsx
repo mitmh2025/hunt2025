@@ -303,7 +303,6 @@ const NavBar = ({ state }: { state: NavBarState }) => {
         </TopLevelDropdown>
         <Spacer />
         <AudioControls />
-        <Currency title="Grease: 0 (For Hints)">🤌 99+</Currency>
         <Currency title={`Gravy: ${currency} (For Puzzle Unlocks)`}>
           🍗 {currency}
         </Currency>
