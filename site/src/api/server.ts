@@ -251,7 +251,10 @@ export function getRouter({
   const frontendAuthMiddleware: RequestHandler = (req, res, next) => {
     const authHeader = Buffer.from(req.headers.authorization ?? "", "utf8");
     const expected = Buffer.from("frontend-auth " + frontendApiSecret, "utf8");
-    if (timingSafeEqual(expected, authHeader)) {
+    if (
+      authHeader.length === expected.length &&
+      timingSafeEqual(expected, authHeader)
+    ) {
       next();
       return;
     } else {
