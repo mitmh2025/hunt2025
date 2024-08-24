@@ -58,6 +58,7 @@ const SubmitGuessSchema = z.object({
 });
 
 const ActivityLogEntryBaseSchema = z.object({
+  id: z.number(),
   timestamp: z.string().datetime(),
   currency_delta: z.number(),
 });

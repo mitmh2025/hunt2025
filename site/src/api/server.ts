@@ -355,14 +355,15 @@ export function getRouter({
           const team_id = req.user as number;
           const entries = (await knex("activity_log")
             .where("team_id", team_id)
-            .select("timestamp", "type", "slug", "currency_delta", "data")
-            .orderBy("timestamp", "desc")) as Pick<
+            .select("id", "timestamp", "type", "slug", "currency_delta", "data")
+            .orderBy("id", "desc")) as Pick<
             ActivityLogEntry,
-            "timestamp" | "type" | "slug" | "currency_delta" | "data"
+            "id" | "timestamp" | "type" | "slug" | "currency_delta" | "data"
           >[];
           const body = entries.map((e) => {
             // TODO: Is there a type-safe way to do this that doesn't involve a switch on e.type?
             let entry: Partial<ActivityLog[number]> = {
+              id: e.id,
               timestamp: fixTimestamp(e.timestamp).toISOString(),
               currency_delta: e.currency_delta,
               type: e.type,
