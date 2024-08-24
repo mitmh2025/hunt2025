@@ -355,6 +355,7 @@ export function getRouter({
           const team_id = req.user as number;
           const entries = (await knex("activity_log")
             .where("team_id", team_id)
+            .orWhereNull("team_id")
             .select("id", "timestamp", "type", "slug", "currency_delta", "data")
             .orderBy("id", "desc")) as Pick<
             ActivityLogEntry,
