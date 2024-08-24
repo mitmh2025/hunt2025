@@ -5,7 +5,13 @@ import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { type Request, type RequestHandler, Router } from "express";
+import {
+  type NextFunction,
+  type Request,
+  type RequestHandler,
+  type Response,
+  Router,
+} from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import { type ActivityLogEntry } from "knex/types/tables";
@@ -248,7 +254,22 @@ export function getRouter({
     session: false,
   }) as RequestHandler;
 
-  const frontendAuthMiddleware: RequestHandler = (req, res, next) => {
+  type Query = Record<
+    string,
+    | undefined
+    | string
+    | string[]
+    | qs.ParsedQs
+    | qs.ParsedQs[]
+    | number
+    | number[]
+  >;
+  const frontendAuthMiddleware = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- want to override 4th type parameter to Request and the 2nd and 3rd default to any and I don't want to constrain them in middleware if I can avoid it
+    req: Request<unknown, any, any, Query>,
+    res: Response,
+    next: NextFunction,
+  ) => {
     const authHeader = Buffer.from(req.headers.authorization ?? "", "utf8");
     const expected = Buffer.from("frontend-auth " + frontendApiSecret, "utf8");
     if (
@@ -693,6 +714,62 @@ export function getRouter({
             return {
               status: 200,
               body: newState,
+            };
+          });
+        },
+      },
+      getFullActivityLog: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ query: { since } }) => {
+          let effectiveSince = undefined;
+          if (since) {
+            const sinceParsed = Number(since);
+            if (sinceParsed > 0) {
+              effectiveSince = sinceParsed;
+            }
+          }
+
+          return await knex.transaction(async (trx) => {
+            let q = trx("activity_log");
+            if (effectiveSince !== undefined) {
+              q = q.where("id", ">", effectiveSince);
+            }
+            q = q.select(
+              "id",
+              "team_id",
+              "type",
+              "currency_delta",
+              "slug",
+              "timestamp",
+              "data",
+            );
+            const entries = await q;
+            const body = entries.map((e) => {
+              // TODO: Is there a type-safe way to do this that doesn't involve a switch on e.type?
+              let entry: Partial<ActivityLog[number]> = {
+                id: e.id,
+                team_id: e.team_id,
+                timestamp: fixTimestamp(e.timestamp).toISOString(),
+                currency_delta: e.currency_delta,
+                type: e.type,
+              };
+              if ("slug" in e && e.slug) {
+                (entry as { slug: string }).slug = e.slug;
+              }
+              if ("data" in e) {
+                // SQLite doesn't parse JSON automatically
+                const data =
+                  typeof e.data === "string"
+                    ? (JSON.parse(e.data as string) as typeof e.data)
+                    : e.data;
+                entry = Object.assign(entry, data);
+              }
+              return entry as ActivityLog[number];
+            });
+
+            return {
+              status: 200,
+              body,
             };
           });
         },

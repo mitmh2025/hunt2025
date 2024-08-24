@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { c, TeamStateSchema } from "./contract";
+import { ActivityLogSchema, c, TeamStateSchema } from "./contract";
 
 export const frontendContract = c.router({
   markTeamGateSatisfied: {
@@ -29,6 +29,17 @@ export const frontendContract = c.router({
     responses: {
       200: TeamStateSchema,
       404: z.null(),
+    },
+  },
+  getFullActivityLog: {
+    method: "GET",
+    path: "/fulllog",
+    query: z.object({
+      since: z.number().optional(),
+    }),
+    responses: {
+      200: ActivityLogSchema,
+      401: z.null(),
     },
   },
 });

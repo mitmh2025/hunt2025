@@ -59,6 +59,7 @@ const SubmitGuessSchema = z.object({
 
 const ActivityLogEntryBaseSchema = z.object({
   id: z.number(),
+  team_id: z.number().optional(),
   timestamp: z.string().datetime(),
   currency_delta: z.number(),
 });
@@ -98,7 +99,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
 ]);
 
-const ActivityLogSchema = z.array(ActivityLogEntrySchema);
+export const ActivityLogSchema = z.array(ActivityLogEntrySchema);
 
 const LoginRequestSchema = z.object({
   username: z.string(),
