@@ -181,6 +181,9 @@ class ConnHandler {
 export async function getWsHandler(redisClient?: RedisClient) {
   const subscriber = redisClient && redisClient.duplicate();
   if (subscriber) {
+    subscriber.on("error", (err) => {
+      console.error("ws redis error:", err);
+    });
     await subscriber.connect();
   }
   const connections = new Map<string, ConnHandler>();

@@ -3,8 +3,10 @@ import express from "express";
 import morgan from "morgan";
 import { createClient as redisCreateClient } from "redis";
 import { WebSocketExpress } from "websocket-express";
+import { newFrontendClient } from "../lib/api/frontend_client";
 import { connect } from "./api/db";
 import { getRouter } from "./api/server";
+import { newActivityLogTailer } from "./frontend/server/dataset_tailer";
 import { getUiRouter } from "./frontend/server/routes";
 import HUNT from "./huntdata";
 
@@ -67,6 +69,20 @@ export default async function ({
     redisClient,
   });
   app.use("/", uiRouter);
+
+  if (redisClient) {
+    //
+    const globalActivityLogTailer = newActivityLogTailer({
+      redisClient,
+      frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
+    });
+    globalActivityLogTailer.watchLog((items) => {
+      // items.forEach((item) => {
+      //   console.log("activity log entry", item);
+      // });
+      console.log(`activity log update: ${items.length} new items`);
+    });
+  }
 
   return app;
 }

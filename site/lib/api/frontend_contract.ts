@@ -1,3 +1,4 @@
+import { type ClientInferResponseBody } from "@ts-rest/core";
 import { z } from "zod";
 import { ActivityLogSchema, c, TeamStateSchema } from "./contract";
 
@@ -43,3 +44,8 @@ export const frontendContract = c.router({
     },
   },
 });
+
+export type FullActivityLog = ClientInferResponseBody<
+  typeof frontendContract.getFullActivityLog,
+  200
+>;
