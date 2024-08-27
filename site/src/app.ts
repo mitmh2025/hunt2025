@@ -6,7 +6,10 @@ import { WebSocketExpress } from "websocket-express";
 import { newFrontendClient } from "../lib/api/frontend_client";
 import { connect } from "./api/db";
 import { getRouter } from "./api/server";
-import { newActivityLogTailer } from "./frontend/server/dataset_tailer";
+import {
+  newActivityLogTailer,
+  newGuessLogTailer,
+} from "./frontend/server/dataset_tailer";
 import { getUiRouter } from "./frontend/server/routes";
 import HUNT from "./huntdata";
 
@@ -76,13 +79,22 @@ export default async function ({
   app.use("/", uiRouter);
 
   if (redisClient) {
+    const frontendApiClient = newFrontendClient(apiUrl, frontendApiSecret);
     // Example
     const globalActivityLogTailer = newActivityLogTailer({
       redisClient,
-      frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
+      frontendApiClient,
     });
     globalActivityLogTailer.watchLog((items) => {
       console.log(`activity log update: ${items.length} new items`);
+    });
+
+    const globalGuessLogTailer = newGuessLogTailer({
+      redisClient,
+      frontendApiClient,
+    });
+    globalGuessLogTailer.watchLog((items) => {
+      console.log(`guess log update: ${items.length} new items`);
     });
   }
 

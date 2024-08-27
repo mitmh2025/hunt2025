@@ -304,11 +304,14 @@ export function getRouter({
     const result: PuzzleState = {
       round,
       locked,
-      guesses: guesses.map(({ canonical_input, response, timestamp }) => ({
-        canonicalInput: canonical_input,
-        response: response ?? "",
-        timestamp: timestamp.toISOString(),
-      })),
+      guesses: guesses.map(
+        ({ canonical_input, status, response, timestamp }) => ({
+          canonicalInput: canonical_input,
+          status,
+          response: response ?? "",
+          timestamp: timestamp.toISOString(),
+        }),
+      ),
     };
     if (answer) {
       result.answer = answer;
@@ -958,6 +961,46 @@ export function getRouter({
               return entry as ActivityLog[number];
             });
 
+            return {
+              status: 200,
+              body,
+            };
+          });
+        },
+      },
+      getFullGuessHistory: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ query: { since } }) => {
+          let effectiveSince = undefined;
+          if (since) {
+            const sinceParsed = Number(since);
+            if (sinceParsed > 0) {
+              effectiveSince = sinceParsed;
+            }
+          }
+
+          return await knex.transaction(async (trx) => {
+            let q = trx("team_puzzle_guesses");
+            if (effectiveSince !== undefined) {
+              q = q.where("id", ">", effectiveSince);
+            }
+            q = q.select(
+              "id",
+              "team_id",
+              "slug",
+              "canonical_input",
+              "status",
+              "response",
+              "timestamp",
+            );
+            const entries = await q;
+            const body = entries.map((e) => {
+              return {
+                ...e,
+                response: e.response ? e.response : undefined,
+                timestamp: fixTimestamp(e.timestamp).toISOString(),
+              };
+            });
             return {
               status: 200,
               body,

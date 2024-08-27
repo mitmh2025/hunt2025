@@ -1,9 +1,10 @@
 import { type FrontendClient } from "../../../lib/api/frontend_client";
-import { type FullActivityLog } from "../../../lib/api/frontend_contract";
+import {
+  type FullGuessHistory,
+  type FullActivityLog,
+} from "../../../lib/api/frontend_contract";
 import { genId } from "../../../lib/id";
 import { type RedisClient } from "../../app";
-
-type ActivityLogEntry = FullActivityLog[number];
 
 type Listener<T> = {
   id: string;
@@ -390,6 +391,7 @@ export class DatasetTailer<T extends { id: number }> {
   }
 }
 
+type ActivityLogEntry = FullActivityLog[number];
 export function newActivityLogTailer({
   redisClient,
   frontendApiClient,
@@ -417,6 +419,37 @@ export function newActivityLogTailer({
     redisClient,
     fetcher,
     topic: "global/activity_log",
+  });
+  return tailer;
+}
+
+type GuessLogEntry = FullGuessHistory[number];
+export function newGuessLogTailer({
+  redisClient,
+  frontendApiClient,
+}: {
+  redisClient: RedisClient;
+  frontendApiClient: FrontendClient;
+}) {
+  const fetcher = (since?: number) => {
+    return frontendApiClient
+      .getFullGuessHistory({
+        query: {
+          since,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.body;
+        } else {
+          throw new Error("Fetch failed");
+        }
+      });
+  };
+  const tailer = new DatasetTailer<GuessLogEntry>({
+    redisClient,
+    fetcher,
+    topic: "global/guess_log",
   });
   return tailer;
 }

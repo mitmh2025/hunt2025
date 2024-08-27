@@ -7,8 +7,10 @@ export const c = initContract();
 
 const slug = z.string();
 
-const GuessSchema = z.object({
+export const GuessStatus = z.enum(["correct", "incorrect", "other"]);
+export const GuessSchema = z.object({
   canonicalInput: z.string(),
+  status: GuessStatus,
   response: z.string(),
   timestamp: z.string().datetime(),
 });
