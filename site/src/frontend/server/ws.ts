@@ -19,6 +19,7 @@ import {
   rugState,
 } from "../rounds/illegal_search";
 import { paperTrailState } from "../rounds/paper_trail";
+import { shadowDiamondState } from "../rounds/shadow_diamond";
 import { stakeoutState } from "../rounds/stakeout";
 import { devtoolsState } from "./devtools";
 
@@ -31,6 +32,7 @@ const DATASET_REGISTRY: Record<Dataset, (teamState: TeamState) => object> = {
   dev: devtoolsState,
   navbar: navBarState,
   paper_trail: paperTrailState,
+  shadow_diamond: shadowDiamondState,
   stakeout: stakeoutState,
   team_state: (teamState: TeamState) => {
     return teamState;

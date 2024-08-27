@@ -1,24 +1,52 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import "./shadow_diamond.css";
+import React, { useEffect, useState } from "react";
+import { hydrateRoot } from "react-dom/client";
+import { type TeamState } from "../../../../lib/api/client";
+import globalDatasetManager from "../../client/DatasetManager";
+import ShadowDiamondBody from "./ShadowDiamondBody";
+import { type ShadowDiamondState } from "./types";
 
-const RoundSpecificClientComponent = () => {
-  return (
-    <div>
-      <p>This portion of the page was rendered by browser code.</p>
-      <p className="shadow-diamond-demo">
-        This is styled by round-specific CSS.
-      </p>
-    </div>
-  );
+const ShadowDiamondManager = ({
+  initialState,
+  initialTeamState,
+}: {
+  initialState: ShadowDiamondState;
+  initialTeamState: TeamState;
+}) => {
+  const [state, setState] = useState<ShadowDiamondState>(initialState);
+  const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
+
+  useEffect(() => {
+    const stop = globalDatasetManager.watch(
+      "shadow_diamond",
+      (value: object) => {
+        setState(value as ShadowDiamondState);
+      },
+    );
+    return stop;
+  }, []);
+  useEffect(() => {
+    const stop = globalDatasetManager.watch("team_state", (value: object) => {
+      setTeamState(value as TeamState);
+    });
+    return stop;
+  }, []);
+
+  return <ShadowDiamondBody state={state} teamState={teamState} />;
 };
 
 const elem = document.getElementById("shadow-diamond-root");
 if (elem) {
-  const root = createRoot(elem);
-  root.render(<RoundSpecificClientComponent />);
+  const state = (
+    window as unknown as { initialShadowDiamondState: ShadowDiamondState }
+  ).initialShadowDiamondState;
+  const teamState = (window as unknown as { initialTeamState: TeamState })
+    .initialTeamState;
+  hydrateRoot(
+    elem,
+    <ShadowDiamondManager initialState={state} initialTeamState={teamState} />,
+  );
 } else {
   console.error(
-    "Could not mount ShadowDiamond because #shadow-diamond-root is nowhere to be found",
+    "Could not mount ShadowDiamondManager because #shadow-diamond-root was nowhere to be found",
   );
 }
