@@ -14,7 +14,11 @@ import {
 } from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
-import { type GuessStatus, type ActivityLogEntry } from "knex/types/tables";
+import {
+  type GuessStatus,
+  type ActivityLogEntry,
+  type TeamPuzzleGuess,
+} from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
@@ -81,21 +85,88 @@ function canonicalizeInput(input: string) {
   return input.replaceAll(/\s+/g, "").toUpperCase();
 }
 
-type DeferredPublications = {
-  activityLog: ActivityLogEntry[];
-  teamState?: TeamState;
-};
+class DeferredPublications {
+  private activityLog?: ActivityLogEntry[];
+  private guessLog?: TeamPuzzleGuess[];
+  private teamState?: TeamState[];
 
-function concatDeferredPublications(
-  a: DeferredPublications,
-  b: DeferredPublications,
-): DeferredPublications {
-  const activityLog = a.activityLog.concat(b.activityLog);
-  const teamState = b.teamState ?? a.teamState;
-  return {
+  constructor({
     activityLog,
+    guessLog,
     teamState,
-  };
+  }: {
+    activityLog?: ActivityLogEntry[];
+    guessLog?: TeamPuzzleGuess[];
+    teamState?: TeamState[];
+  }) {
+    this.activityLog = activityLog;
+    this.guessLog = guessLog;
+    this.teamState = teamState;
+  }
+
+  addActivityLogEntries(entries: ActivityLogEntry[]) {
+    this.activityLog = (this.activityLog ?? []).concat(entries);
+  }
+
+  addGuessLogEntries(guesses: TeamPuzzleGuess[]) {
+    this.guessLog = (this.guessLog ?? []).concat(guesses);
+  }
+
+  addTeamState(teamStates: TeamState[]) {
+    this.teamState = (this.teamState ?? []).concat(teamStates);
+  }
+
+  concat(other: DeferredPublications) {
+    const activityLog = this.activityLog
+      ? this.activityLog.concat(other.activityLog ?? [])
+      : other.activityLog;
+    const teamState = this.teamState
+      ? this.teamState.concat(other.teamState ?? [])
+      : other.teamState;
+    const guessLog = this.guessLog
+      ? this.guessLog.concat(other.guessLog ?? [])
+      : other.guessLog;
+    return new DeferredPublications({
+      activityLog,
+      guessLog,
+      teamState,
+    });
+  }
+
+  async publish(redisClient?: RedisClient) {
+    if (redisClient) {
+      try {
+        if (this.activityLog) {
+          for (const entry of this.activityLog) {
+            await redisClient.publish(
+              "global/activity_log",
+              JSON.stringify(entry),
+            );
+          }
+        }
+        if (this.teamState) {
+          for (const state of this.teamState) {
+            const team_id = state.teamId;
+            const topic = `team_state.${team_id}`;
+            await redisClient.publish(topic, JSON.stringify(state));
+          }
+        }
+        if (this.guessLog) {
+          for (const guess of this.guessLog) {
+            await redisClient.publish(
+              "global/guess_log",
+              JSON.stringify(guess),
+            );
+          }
+        }
+      } catch (e: unknown) {
+        // Graceful fallback if Redis can't be reached.
+        // It's okay if we drop activity log entries on pubsub; tailers will detect the missing id
+        // and hit the API to get any missing entries
+        console.error("redis publish error", e);
+      }
+    }
+  }
 }
 
 export function getRouter({
@@ -254,31 +325,11 @@ export function getRouter({
     const teamState = await getTeamState(team_id, trx);
     return [
       teamState,
-      { activityLog: activityLogWrites, teamState: teamState },
+      new DeferredPublications({
+        activityLog: activityLogWrites,
+        teamState: [teamState],
+      }),
     ];
-  };
-
-  const tryPublishDeferredContent = async (contents: DeferredPublications) => {
-    if (redisClient) {
-      try {
-        for (const entry of contents.activityLog) {
-          await redisClient.publish(
-            "global/activity_log",
-            JSON.stringify(entry),
-          );
-        }
-        if (contents.teamState) {
-          const team_id = contents.teamState.teamId;
-          const topic = `team_state.${team_id}`;
-          await redisClient.publish(topic, JSON.stringify(contents.teamState));
-        }
-      } catch (e: unknown) {
-        // Graceful fallback if Redis can't be reached.
-        // It's okay if we drop activity log entries on pubsub; tailers will detect the missing id
-        // and hit the API to get any missing entries
-        console.error("redis publish error", e);
-      }
-    }
   };
 
   const authMiddleware = passport.authenticate("jwt", {
@@ -461,9 +512,8 @@ export function getRouter({
 
           const [response, deferred] = await knex.transaction(
             async function (trx) {
-              const deferredPublications: DeferredPublications = {
-                activityLog: [],
-              };
+              const deferredPublications = new DeferredPublications({});
+              // Check that the puzzle is unlocked before allowing guess submission.
               const result = await trx("team_puzzles")
                 .where("team_id", team_id)
                 .where("slug", slug)
@@ -496,10 +546,10 @@ export function getRouter({
                   },
                   trx,
                 );
-                deferredPublications.activityLog = [entry];
+                deferredPublications.addActivityLogEntries([entry]);
               }
               // TODO: Recognize partial answers
-              await trx("team_puzzle_guesses")
+              const inserted = await trx("team_puzzle_guesses")
                 .insert({
                   team_id,
                   slug,
@@ -508,21 +558,55 @@ export function getRouter({
                   response: responseText,
                 })
                 .onConflict(["team_id", "slug", "canonical_input"])
-                .ignore();
-              const [_, newWrites] = await refreshTeamState(hunt, team_id, trx);
-              // TODO: Invalidate caches
-              return [
-                {
-                  status: 200 as const,
-                  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                   * We know the puzzle state exists because we checked the db above. */
-                  body: (await getPuzzleState(team_id, slug, trx))!,
-                },
-                concatDeferredPublications(deferredPublications, newWrites),
-              ];
+                .ignore()
+                .returning(["id", "timestamp"])
+                .then((objs) => {
+                  return objs.map(({ id, timestamp }) => {
+                    return {
+                      id,
+                      team_id,
+                      slug,
+                      canonical_input,
+                      status,
+                      response: responseText,
+                      timestamp: fixTimestamp(timestamp),
+                    };
+                  });
+                });
+              deferredPublications.addGuessLogEntries(inserted);
+
+              if (inserted.length > 0) {
+                const [_, newWrites] = await refreshTeamState(
+                  hunt,
+                  team_id,
+                  trx,
+                );
+                // TODO: Invalidate caches
+
+                return [
+                  {
+                    status: 200 as const,
+                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+                     * We know the puzzle state exists because we checked the db above. */
+                    body: (await getPuzzleState(team_id, slug, trx))!,
+                  },
+                  deferredPublications.concat(newWrites),
+                ];
+              } else {
+                // That guess had already been submitted; nothing to do.  Just return the body
+                return [
+                  {
+                    status: 200 as const,
+                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+                     * We know the puzzle state exists because we checked the db above. */
+                    body: (await getPuzzleState(team_id, slug, trx))!,
+                  },
+                  deferredPublications,
+                ];
+              }
             },
           );
-          await tryPublishDeferredContent(deferred);
+          await deferred.publish(redisClient);
           return response;
         },
       },
@@ -533,9 +617,7 @@ export function getRouter({
           // TODO: Make sure that we retry/wait for conflicts.
           const [response, deferred] = await knex.transaction(
             async function (trx) {
-              const deferredPublications: DeferredPublications = {
-                activityLog: [],
-              };
+              const deferredPublications = new DeferredPublications({});
               const data = await dbGetTeamState(team_id, trx);
               const slot = hunt.rounds
                 .filter(({ slug }) => data.unlocked_rounds.has(slug))
@@ -563,7 +645,7 @@ export function getRouter({
                   },
                   trx,
                 );
-                deferredPublications.activityLog.push(entry);
+                deferredPublications.addActivityLogEntries([entry]);
                 const [_, newWrites] = await refreshTeamState(
                   hunt,
                   team_id,
@@ -577,7 +659,7 @@ export function getRouter({
                      * We know the puzzle state exists because we checked the db above. */
                     body: (await getPuzzleState(team_id, slug, trx))!,
                   },
-                  concatDeferredPublications(deferredPublications, newWrites),
+                  deferredPublications.concat(newWrites),
                 ];
               }
               return [
@@ -589,7 +671,7 @@ export function getRouter({
               ];
             },
           );
-          await tryPublishDeferredContent(deferred);
+          await deferred.publish(redisClient);
           return response;
         },
       },
@@ -654,7 +736,7 @@ export function getRouter({
               newWrites,
             ];
           });
-          await tryPublishDeferredContent(deferred);
+          await deferred.publish(redisClient);
           return response;
         },
       },
@@ -663,48 +745,44 @@ export function getRouter({
       markTeamGateSatisfied: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, gateId } }) => {
-          const [response, deferredPublications] = await knex.transaction(
-            async (trx) => {
-              const deferredPublications: DeferredPublications = {
-                activityLog: [],
-              };
-              const team_id = parseInt(teamId, 10);
-              // Check if already satisfied.
-              const existing = await trx("activity_log")
-                .where("team_id", team_id)
-                .where("type", "gate_completed")
-                .where("slug", gateId)
-                .select("id")
-                .first();
-              // If not, insert gate completion.
-              // If already present, no change
-              if (!existing) {
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "gate_completed",
-                    slug: gateId,
-                  },
-                  trx,
-                );
-                deferredPublications.activityLog.push(entry);
-              }
-              // return the team state object regardless
-              const [newState, newWrites] = await refreshTeamState(
-                hunt,
-                team_id,
+          const [response, deferred] = await knex.transaction(async (trx) => {
+            const deferredPublications = new DeferredPublications({});
+            const team_id = parseInt(teamId, 10);
+            // Check if already satisfied.
+            const existing = await trx("activity_log")
+              .where("team_id", team_id)
+              .where("type", "gate_completed")
+              .where("slug", gateId)
+              .select("id")
+              .first();
+            // If not, insert gate completion.
+            // If already present, no change
+            if (!existing) {
+              const entry = await appendActivityLog(
+                {
+                  team_id,
+                  type: "gate_completed",
+                  slug: gateId,
+                },
                 trx,
               );
-              return [
-                {
-                  status: 200 as const,
-                  body: newState,
-                },
-                concatDeferredPublications(deferredPublications, newWrites),
-              ];
-            },
-          );
-          await tryPublishDeferredContent(deferredPublications);
+              deferredPublications.addActivityLogEntries([entry]);
+            }
+            // return the team state object regardless
+            const [newState, newWrites] = await refreshTeamState(
+              hunt,
+              team_id,
+              trx,
+            );
+            return [
+              {
+                status: 200 as const,
+                body: newState,
+              },
+              deferredPublications.concat(newWrites),
+            ];
+          });
+          await deferred.publish(redisClient);
           return response;
         },
       },
@@ -712,9 +790,7 @@ export function getRouter({
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, interactionId } }) => {
           const [response, deferred] = await knex.transaction(async (trx) => {
-            const deferredPublications: DeferredPublications = {
-              activityLog: [],
-            };
+            const deferredPublications = new DeferredPublications({});
             const team_id = parseInt(teamId, 10);
             const existing = (await trx("activity_log")
               .where("team_id", team_id)
@@ -745,7 +821,7 @@ export function getRouter({
                 },
                 trx,
               );
-              deferredPublications.activityLog.push(entry);
+              deferredPublications.addActivityLogEntries([entry]);
             }
 
             const [newState, newWrites] = await refreshTeamState(
@@ -758,10 +834,10 @@ export function getRouter({
                 status: 200 as const,
                 body: newState,
               },
-              concatDeferredPublications(deferredPublications, newWrites),
+              deferredPublications.concat(newWrites),
             ];
           });
-          await tryPublishDeferredContent(deferred);
+          await deferred.publish(redisClient);
           return response;
         },
       },
@@ -769,9 +845,7 @@ export function getRouter({
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, interactionId }, body }) => {
           const [response, deferred] = await knex.transaction(async (trx) => {
-            const deferredPublications: DeferredPublications = {
-              activityLog: [],
-            };
+            const deferredPublications = new DeferredPublications({});
             const team_id = parseInt(teamId, 10);
             const existing = (await trx("activity_log")
               .where("team_id", team_id)
@@ -815,7 +889,7 @@ export function getRouter({
                 },
                 trx,
               );
-              deferredPublications.activityLog.push(entry);
+              deferredPublications.addActivityLogEntries([entry]);
             }
 
             const [newState, newWrites] = await refreshTeamState(
@@ -828,10 +902,10 @@ export function getRouter({
                 status: 200 as const,
                 body: newState,
               },
-              concatDeferredPublications(deferredPublications, newWrites),
+              deferredPublications.concat(newWrites),
             ];
           });
-          await tryPublishDeferredContent(deferred);
+          await deferred.publish(redisClient);
           return response;
         },
       },
