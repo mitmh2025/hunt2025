@@ -29,6 +29,7 @@ export async function up(knex: Knex): Promise<void> {
       // TODO: Track solve time?
     })
     .createTable("team_puzzle_guesses", function (table) {
+      table.increments("id");
       table
         .integer("team_id")
         .notNullable()
@@ -37,11 +38,11 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate("CASCADE");
       table.string("slug", 255).notNullable();
       table.string("canonical_input", 255).notNullable();
-      table.primary(["team_id", "slug", "canonical_input"]);
       table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
-      // TODO: Enum for wrong/partial/correct?
-      table.boolean("correct").notNullable().defaultTo(false);
+      table.enu("status", ["incorrect", "correct", "other"]);
       table.text("response");
+
+      table.unique(["team_id", "slug", "canonical_input"]);
     })
     .createTable("activity_log", function (table) {
       table.increments("id");

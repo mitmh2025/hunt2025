@@ -101,12 +101,18 @@ declare module "knex/types/tables" {
     solved: boolean;
   };
 
+  // "correct" means the puzzle is solved and no longer allows new answer submissions
+  // "incorrect" guesses count towards rate limits
+  // "other" is used for canned responses (which we don't want to count towards incorrect-answer rate limits)
+  type GuessStatus = "correct" | "incorrect" | "other";
+
   type TeamPuzzleGuess = {
+    id: number;
     team_id: number;
     slug: string;
     canonical_input: string;
     timestamp: Date;
-    correct: boolean;
+    status: GuessStatus;
     response?: string;
   };
 
@@ -225,7 +231,7 @@ export async function getTeamState(
     .select("slug", "visible", "unlockable", "unlocked");
   const correct_answers = (await trx("team_puzzle_guesses")
     .where("team_id", team_id)
-    .where("correct", true)
+    .where("status", "correct")
     .select("slug", { answer: string_agg(trx, "canonical_input", ", ") })
     .groupBy("slug")) as {
     slug: string;
@@ -381,7 +387,7 @@ export async function getPuzzleState(
   )
     .where("team_id", team_id)
     .where("slug", slug)
-    .where("correct", true)
+    .where("status", "correct")
     .select({ answer: string_agg(trx, "canonical_input", ", ") })
     .first();
   const guesses = (
@@ -432,7 +438,7 @@ export async function recalculateTeamState(
       await trx("team_puzzle_guesses")
         .select("slug")
         .where("team_id", team_id)
-        .where("correct", true)
+        .where("status", "correct")
         .count("*", { as: "count" })
         .groupBy("slug")
     ).map(({ slug, count }) => [slug, Number(count ?? 0)]),

@@ -57,7 +57,7 @@ export async function seed(knex: Knex): Promise<void> {
         team_id: usernameToTeamId.get("solved"),
         slug,
         canonical_input: answer.answer,
-        correct: true,
+        status: "correct",
       }));
     }),
   );

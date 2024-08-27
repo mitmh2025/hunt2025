@@ -14,7 +14,7 @@ import {
 } from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
-import { type ActivityLogEntry } from "knex/types/tables";
+import { type GuessStatus, type ActivityLogEntry } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
@@ -479,9 +479,11 @@ export function getRouter({
                 ];
               }
               let responseText = "Incorrect";
+              let status: GuessStatus = "incorrect";
               if (correct_answer) {
                 canonical_input = correct_answer.answer;
                 responseText = "Correct!";
+                status = "correct";
                 const entry = await appendActivityLog(
                   {
                     team_id,
@@ -502,7 +504,7 @@ export function getRouter({
                   team_id,
                   slug,
                   canonical_input,
-                  correct: !!correct_answer,
+                  status,
                   response: responseText,
                 })
                 .onConflict(["team_id", "slug", "canonical_input"])
