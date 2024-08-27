@@ -316,8 +316,32 @@ export async function getTeamState(
 export async function appendActivityLog(
   entry: InsertActivityLogEntry,
   trx: Knex.Knex.Transaction,
-) {
-  await trx("activity_log").insert(entry);
+): Promise<ActivityLogEntry> {
+  return await trx("activity_log")
+    .insert(entry)
+    .returning([
+      "id",
+      "team_id",
+      "type",
+      "slug",
+      "data",
+      "currency_delta",
+      "timestamp",
+    ])
+    .then((objs) => {
+      const insertedEntry = objs[0] as ActivityLogEntry;
+      const fixedEntry = {
+        id: insertedEntry.id,
+        team_id: insertedEntry.team_id,
+        type: insertedEntry.type,
+        slug: insertedEntry.slug,
+        data: insertedEntry.data ? fixData(insertedEntry.data) : undefined,
+        currency_delta: insertedEntry.currency_delta,
+        timestamp: fixTimestamp(insertedEntry.timestamp),
+      } as ActivityLogEntry;
+      // console.log("inserted", fixedEntry);
+      return fixedEntry;
+    });
 }
 
 export function fixTimestamp(value: string | Date): Date {
@@ -381,7 +405,8 @@ export async function recalculateTeamState(
   hunt: Hunt,
   team_id: number,
   trx: Knex.Knex.Transaction,
-) {
+): Promise<ActivityLogEntry[]> {
+  const activityLogWrites: ActivityLogEntry[] = [];
   const start = Date.now();
   const interactions_completed = new Set(
     (await trx("activity_log")
@@ -428,13 +453,15 @@ export async function recalculateTeamState(
   const calculate_team_state_done = Date.now();
   //console.log(next);
   for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
-    await appendActivityLog(
-      {
-        team_id,
-        type: "round_unlocked",
-        slug,
-      },
-      trx,
+    activityLogWrites.push(
+      await appendActivityLog(
+        {
+          team_id,
+          type: "round_unlocked",
+          slug,
+        },
+        trx,
+      ),
     );
     await trx("team_rounds")
       .insert({
@@ -472,13 +499,15 @@ export async function recalculateTeamState(
     }
     if (diff.unlocked_puzzles.has(slug)) {
       record.unlocked = true;
-      await appendActivityLog(
-        {
-          team_id,
-          type: "puzzle_unlocked",
-          slug,
-        },
-        trx,
+      activityLogWrites.push(
+        await appendActivityLog(
+          {
+            team_id,
+            type: "puzzle_unlocked",
+            slug,
+          },
+          trx,
+        ),
       );
     }
     await trx("team_puzzles")
@@ -496,13 +525,15 @@ export async function recalculateTeamState(
   }
   const puzzles_unlock_done = Date.now();
   for (const id of diff.unlocked_interactions) {
-    await appendActivityLog(
-      {
-        team_id,
-        type: "interaction_unlocked",
-        slug: id,
-      },
-      trx,
+    activityLogWrites.push(
+      await appendActivityLog(
+        {
+          team_id,
+          type: "interaction_unlocked",
+          slug: id,
+        },
+        trx,
+      ),
     );
   }
   const interactions_unlock_done = Date.now();
@@ -514,4 +545,5 @@ export async function recalculateTeamState(
   * compute diffs:       ${diff_done - unlock_rounds_done} msec
   * unlock puzzles:      ${puzzles_unlock_done - diff_done} msec
   * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec`);
+  return activityLogWrites;
 }

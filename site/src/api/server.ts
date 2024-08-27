@@ -81,6 +81,23 @@ function canonicalizeInput(input: string) {
   return input.replaceAll(/\s+/g, "").toUpperCase();
 }
 
+type DeferredPublications = {
+  activityLog: ActivityLogEntry[];
+  teamState?: TeamState;
+};
+
+function concatDeferredPublications(
+  a: DeferredPublications,
+  b: DeferredPublications,
+): DeferredPublications {
+  const activityLog = a.activityLog.concat(b.activityLog);
+  const teamState = b.teamState ?? a.teamState;
+  return {
+    activityLog,
+    teamState,
+  };
+}
+
 export function getRouter({
   jwtSecret,
   frontendApiSecret,
@@ -232,22 +249,36 @@ export function getRouter({
     hunt: Hunt,
     team_id: number,
     trx: Knex.Transaction,
-  ) => {
-    await recalculateTeamState(hunt, team_id, trx);
+  ): Promise<[TeamState, DeferredPublications]> => {
+    const activityLogWrites = await recalculateTeamState(hunt, team_id, trx);
     const teamState = await getTeamState(team_id, trx);
+    return [
+      teamState,
+      { activityLog: activityLogWrites, teamState: teamState },
+    ];
+  };
+
+  const tryPublishDeferredContent = async (contents: DeferredPublications) => {
     if (redisClient) {
-      // TODO: What if the transaction fails?
       try {
-        await redisClient.publish(
-          `team_state.${team_id}`,
-          JSON.stringify(teamState),
-        );
-      } catch (e) {
+        for (const entry of contents.activityLog) {
+          await redisClient.publish(
+            "global/activity_log",
+            JSON.stringify(entry),
+          );
+        }
+        if (contents.teamState) {
+          const team_id = contents.teamState.teamId;
+          const topic = `team_state.${team_id}`;
+          await redisClient.publish(topic, JSON.stringify(contents.teamState));
+        }
+      } catch (e: unknown) {
         // Graceful fallback if Redis can't be reached.
-        console.error(e);
+        // It's okay if we drop activity log entries on pubsub; tailers will detect the missing id
+        // and hit the API to get any missing entries
+        console.error("redis publish error", e);
       }
     }
-    return teamState;
   };
 
   const authMiddleware = passport.authenticate("jwt", {
@@ -427,55 +458,70 @@ export function getRouter({
             ({ answer }) => canonicalizeInput(answer) === canonical_input,
           );
           // TODO: Make sure that we retry/wait for conflicts.
-          return await knex.transaction(async function (trx) {
-            const result = await trx("team_puzzles")
-              .where("team_id", team_id)
-              .where("slug", slug)
-              .select("unlocked")
-              .first();
-            if (!result?.unlocked) {
-              return {
-                status: 404,
-                body: null,
+
+          const [response, deferred] = await knex.transaction(
+            async function (trx) {
+              const deferredPublications: DeferredPublications = {
+                activityLog: [],
               };
-            }
-            let response = "Incorrect";
-            if (correct_answer) {
-              canonical_input = correct_answer.answer;
-              response = "Correct!";
-              await appendActivityLog(
-                {
+              const result = await trx("team_puzzles")
+                .where("team_id", team_id)
+                .where("slug", slug)
+                .select("unlocked")
+                .first();
+              if (!result?.unlocked) {
+                return [
+                  {
+                    status: 404 as const,
+                    body: null,
+                  },
+                  deferredPublications,
+                ];
+              }
+              let responseText = "Incorrect";
+              if (correct_answer) {
+                canonical_input = correct_answer.answer;
+                responseText = "Correct!";
+                const entry = await appendActivityLog(
+                  {
+                    team_id,
+                    slug,
+                    type: "puzzle_solved",
+                    currency_delta: correct_answer.prize ?? 0,
+                    data: {
+                      answer: canonical_input,
+                    },
+                  },
+                  trx,
+                );
+                deferredPublications.activityLog = [entry];
+              }
+              // TODO: Recognize partial answers
+              await trx("team_puzzle_guesses")
+                .insert({
                   team_id,
                   slug,
-                  type: "puzzle_solved",
-                  currency_delta: correct_answer.prize ?? 0,
-                  data: {
-                    answer: canonical_input,
-                  },
+                  canonical_input,
+                  correct: !!correct_answer,
+                  response: responseText,
+                })
+                .onConflict(["team_id", "slug", "canonical_input"])
+                .ignore();
+              const [_, newWrites] = await refreshTeamState(hunt, team_id, trx);
+              // TODO: Invalidate caches
+              return [
+                {
+                  status: 200 as const,
+                  /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+                   * We know the puzzle state exists because we checked the db above. */
+                  body: (await getPuzzleState(team_id, slug, trx))!,
                 },
-                trx,
-              );
-            }
-            // TODO: Recognize partial answers
-            await trx("team_puzzle_guesses")
-              .insert({
-                team_id,
-                slug,
-                canonical_input,
-                correct: !!correct_answer,
-                response,
-              })
-              .onConflict(["team_id", "slug", "canonical_input"])
-              .ignore();
-            await refreshTeamState(hunt, team_id, trx);
-            // TODO: Invalidate caches
-            return {
-              status: 200,
-              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-               * We know the puzzle state exists because we checked the db above. */
-              body: (await getPuzzleState(team_id, slug, trx))!,
-            };
-          });
+                concatDeferredPublications(deferredPublications, newWrites),
+              ];
+            },
+          );
+          await tryPublishDeferredContent(deferred);
+          return response;
         },
       },
       unlockPuzzle: {
@@ -483,49 +529,66 @@ export function getRouter({
         handler: async ({ params: { slug }, req }) => {
           const team_id = req.user as number;
           // TODO: Make sure that we retry/wait for conflicts.
-          return await knex.transaction(async function (trx) {
-            const data = await dbGetTeamState(team_id, trx);
-            const slot = hunt.rounds
-              .filter(({ slug }) => data.unlocked_rounds.has(slug))
-              .flatMap(({ puzzles }) =>
-                puzzles.flatMap((slot) =>
-                  getSlotSlug(slot) === slug ? [slot] : [],
-                ),
-              )[0];
-            const unlock_cost = slot?.unlock_cost;
-            if (
-              data.unlockable_puzzles.has(slug) &&
-              unlock_cost &&
-              data.available_currency >= unlock_cost
-            ) {
-              await trx("team_puzzles")
-                .where("team_id", team_id)
-                .where("slug", slug)
-                .update({ unlocked: true });
-              await appendActivityLog(
-                {
-                  team_id,
-                  type: "puzzle_unlocked",
-                  slug,
-                  currency_delta: -unlock_cost,
-                },
-                trx,
-              );
-
-              await refreshTeamState(hunt, team_id, trx);
-              // TODO: Invalidate caches
-              return {
-                status: 200,
-                /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                 * We know the puzzle state exists because we checked the db above. */
-                body: (await getPuzzleState(team_id, slug, trx))!,
+          const [response, deferred] = await knex.transaction(
+            async function (trx) {
+              const deferredPublications: DeferredPublications = {
+                activityLog: [],
               };
-            }
-            return {
-              status: 404,
-              body: null,
-            };
-          });
+              const data = await dbGetTeamState(team_id, trx);
+              const slot = hunt.rounds
+                .filter(({ slug }) => data.unlocked_rounds.has(slug))
+                .flatMap(({ puzzles }) =>
+                  puzzles.flatMap((slot) =>
+                    getSlotSlug(slot) === slug ? [slot] : [],
+                  ),
+                )[0];
+              const unlock_cost = slot?.unlock_cost;
+              if (
+                data.unlockable_puzzles.has(slug) &&
+                unlock_cost &&
+                data.available_currency >= unlock_cost
+              ) {
+                await trx("team_puzzles")
+                  .where("team_id", team_id)
+                  .where("slug", slug)
+                  .update({ unlocked: true });
+                const entry = await appendActivityLog(
+                  {
+                    team_id,
+                    type: "puzzle_unlocked",
+                    slug,
+                    currency_delta: -unlock_cost,
+                  },
+                  trx,
+                );
+                deferredPublications.activityLog.push(entry);
+                const [_, newWrites] = await refreshTeamState(
+                  hunt,
+                  team_id,
+                  trx,
+                );
+                // TODO: Invalidate caches
+                return [
+                  {
+                    status: 200 as const,
+                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+                     * We know the puzzle state exists because we checked the db above. */
+                    body: (await getPuzzleState(team_id, slug, trx))!,
+                  },
+                  concatDeferredPublications(deferredPublications, newWrites),
+                ];
+              }
+              return [
+                {
+                  status: 404 as const,
+                  body: null,
+                },
+                deferredPublications,
+              ];
+            },
+          );
+          await tryPublishDeferredContent(deferred);
+          return response;
         },
       },
     },
@@ -563,7 +626,7 @@ export function getRouter({
       forcePuzzleState: {
         middleware: adminAuthMiddlewares,
         handler: async ({ params: { teamId, slug }, body }) => {
-          return await knex.transaction(async (trx) => {
+          const [response, deferred] = await knex.transaction(async (trx) => {
             const team_id = parseInt(teamId, 10);
             await trx("team_puzzles")
               .insert(
@@ -577,15 +640,20 @@ export function getRouter({
               )
               .onConflict(["team_id", "slug"])
               .merge(body);
-            await refreshTeamState(hunt, team_id, trx);
+            const [_, newWrites] = await refreshTeamState(hunt, team_id, trx);
             // TODO: Invalidate caches
-            return {
-              status: 200,
-              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-               * We know the puzzle state exists because we checked the db above. */
-              body: (await getPuzzleState(team_id, slug, trx))!,
-            };
+            return [
+              {
+                status: 200 as const,
+                /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+                 * We know the puzzle state exists because we checked the db above. */
+                body: (await getPuzzleState(team_id, slug, trx))!,
+              },
+              newWrites,
+            ];
           });
+          await tryPublishDeferredContent(deferred);
+          return response;
         },
       },
     },
@@ -593,40 +661,58 @@ export function getRouter({
       markTeamGateSatisfied: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, gateId } }) => {
-          return await knex.transaction(async (trx) => {
-            const team_id = parseInt(teamId, 10);
-            // Check if already satisfied.
-            const existing = await trx("activity_log")
-              .where("team_id", team_id)
-              .where("type", "gate_completed")
-              .where("slug", gateId)
-              .select("id")
-              .first();
-            // If not, insert gate completion.
-            // If already present, no change
-            if (!existing) {
-              await appendActivityLog(
-                {
-                  team_id,
-                  type: "gate_completed",
-                  slug: gateId,
-                },
+          const [response, deferredPublications] = await knex.transaction(
+            async (trx) => {
+              const deferredPublications: DeferredPublications = {
+                activityLog: [],
+              };
+              const team_id = parseInt(teamId, 10);
+              // Check if already satisfied.
+              const existing = await trx("activity_log")
+                .where("team_id", team_id)
+                .where("type", "gate_completed")
+                .where("slug", gateId)
+                .select("id")
+                .first();
+              // If not, insert gate completion.
+              // If already present, no change
+              if (!existing) {
+                const entry = await appendActivityLog(
+                  {
+                    team_id,
+                    type: "gate_completed",
+                    slug: gateId,
+                  },
+                  trx,
+                );
+                deferredPublications.activityLog.push(entry);
+              }
+              // return the team state object regardless
+              const [newState, newWrites] = await refreshTeamState(
+                hunt,
+                team_id,
                 trx,
               );
-            }
-            // return the team state object regardless
-            const newState = await refreshTeamState(hunt, team_id, trx);
-            return {
-              status: 200,
-              body: newState,
-            };
-          });
+              return [
+                {
+                  status: 200 as const,
+                  body: newState,
+                },
+                concatDeferredPublications(deferredPublications, newWrites),
+              ];
+            },
+          );
+          await tryPublishDeferredContent(deferredPublications);
+          return response;
         },
       },
       startInteraction: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, interactionId } }) => {
-          return await knex.transaction(async (trx) => {
+          const [response, deferred] = await knex.transaction(async (trx) => {
+            const deferredPublications: DeferredPublications = {
+              activityLog: [],
+            };
             const team_id = parseInt(teamId, 10);
             const existing = (await trx("activity_log")
               .where("team_id", team_id)
@@ -637,16 +723,19 @@ export function getRouter({
               (entry) => entry.type === "interaction_unlocked",
             );
             if (!is_unlocked) {
-              return {
-                status: 404,
-                body: null,
-              };
+              return [
+                {
+                  status: 404 as const,
+                  body: null,
+                },
+                deferredPublications,
+              ];
             }
             const is_started = existing.some(
               (entry) => entry.type === "interaction_started",
             );
             if (!is_started) {
-              await appendActivityLog(
+              const entry = await appendActivityLog(
                 {
                   team_id,
                   type: "interaction_started",
@@ -654,20 +743,33 @@ export function getRouter({
                 },
                 trx,
               );
+              deferredPublications.activityLog.push(entry);
             }
 
-            const newState = await refreshTeamState(hunt, team_id, trx);
-            return {
-              status: 200,
-              body: newState,
-            };
+            const [newState, newWrites] = await refreshTeamState(
+              hunt,
+              team_id,
+              trx,
+            );
+            return [
+              {
+                status: 200 as const,
+                body: newState,
+              },
+              concatDeferredPublications(deferredPublications, newWrites),
+            ];
           });
+          await tryPublishDeferredContent(deferred);
+          return response;
         },
       },
       completeInteraction: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, interactionId }, body }) => {
-          return await knex.transaction(async (trx) => {
+          const [response, deferred] = await knex.transaction(async (trx) => {
+            const deferredPublications: DeferredPublications = {
+              activityLog: [],
+            };
             const team_id = parseInt(teamId, 10);
             const existing = (await trx("activity_log")
               .where("team_id", team_id)
@@ -691,13 +793,16 @@ export function getRouter({
             console.log("is_started", is_started);
             console.log("is_completed", is_completed);
             if (!is_unlocked || !is_started) {
-              return {
-                status: 404,
-                body: null,
-              };
+              return [
+                {
+                  status: 404 as const,
+                  body: null,
+                },
+                deferredPublications,
+              ];
             }
             if (!is_completed) {
-              await appendActivityLog(
+              const entry = await appendActivityLog(
                 {
                   team_id,
                   type: "interaction_completed",
@@ -708,14 +813,24 @@ export function getRouter({
                 },
                 trx,
               );
+              deferredPublications.activityLog.push(entry);
             }
 
-            const newState = await refreshTeamState(hunt, team_id, trx);
-            return {
-              status: 200,
-              body: newState,
-            };
+            const [newState, newWrites] = await refreshTeamState(
+              hunt,
+              team_id,
+              trx,
+            );
+            return [
+              {
+                status: 200 as const,
+                body: newState,
+              },
+              concatDeferredPublications(deferredPublications, newWrites),
+            ];
           });
+          await tryPublishDeferredContent(deferred);
+          return response;
         },
       },
       getFullActivityLog: {

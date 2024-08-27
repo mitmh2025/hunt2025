@@ -19,6 +19,11 @@ async function createRedisClient(redisUrl: string) {
     ? { socket: { path: redisUrl.replace("unix://", "") } }
     : { url: redisUrl };
   const client = redisCreateClient(options);
+  // We must set an error handler, or the whole process will get terminated if our connection to
+  // redis ever fails!
+  client.on("error", (err) => {
+    console.log("redis error", err);
+  });
   await client.connect();
   return client;
 }
@@ -71,15 +76,12 @@ export default async function ({
   app.use("/", uiRouter);
 
   if (redisClient) {
-    //
+    // Example
     const globalActivityLogTailer = newActivityLogTailer({
       redisClient,
       frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
     });
     globalActivityLogTailer.watchLog((items) => {
-      // items.forEach((item) => {
-      //   console.log("activity log entry", item);
-      // });
       console.log(`activity log update: ${items.length} new items`);
     });
   }
