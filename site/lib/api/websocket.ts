@@ -14,6 +14,7 @@ export const DatasetSchema = z.enum([
   "illegal_search_rug",
   "illegal_search_cryptex",
   "illegal_search_bookcase",
+  "background_check",
   "dev",
 ]);
 export type Dataset = z.infer<typeof DatasetSchema>;

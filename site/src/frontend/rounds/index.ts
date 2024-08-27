@@ -38,6 +38,7 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   },
   background_check: {
     component: BackgroundCheckRoundPage,
+    entrypoint: "background_check",
   },
   the_dead_thief: {
     component: DeadThiefRoundPage,

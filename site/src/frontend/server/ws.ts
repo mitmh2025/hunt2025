@@ -11,6 +11,7 @@ import {
 import { genId } from "../../../lib/id";
 import { type RedisClient } from "../../app";
 import { navBarState } from "../components/ContentWithNavBar";
+import { backgroundCheckState } from "../rounds/background_check";
 import {
   bookcaseState,
   cryptexState,
@@ -38,6 +39,7 @@ const DATASET_REGISTRY: Record<Dataset, (teamState: TeamState) => object> = {
   illegal_search_rug: rugState,
   illegal_search_cryptex: cryptexState,
   illegal_search_bookcase: bookcaseState,
+  background_check: backgroundCheckState,
 };
 
 class ConnHandler {
