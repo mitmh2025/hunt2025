@@ -1,15 +1,11 @@
 import { type ClientInferResponseBody } from "@ts-rest/core";
 import { z } from "zod";
-import { ActivityLogSchema, c, TeamStateSchema, GuessStatus } from "./contract";
+import { ActivityLogSchema, c, TeamStateSchema, GuessSchema } from "./contract";
 
-const FullGuessSchema = z.object({
+const FullGuessSchema = GuessSchema.extend({
   id: z.number(),
   team_id: z.number(),
   slug: z.string(),
-  canonical_input: z.string(),
-  status: GuessStatus,
-  response: z.string().optional(),
-  timestamp: z.string().datetime(),
 });
 
 const FullGuessHistorySchema = z.array(FullGuessSchema);

@@ -144,8 +144,8 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
       <tbody>
         {guesses.map((g) => {
           return (
-            <tr key={g.canonicalInput}>
-              <td className="answer-attempt">{g.canonicalInput}</td>
+            <tr key={g.canonical_input}>
+              <td className="answer-attempt">{g.canonical_input}</td>
               <td>{g.response}</td>
               <td>{formatGuessTimestamp(g.timestamp)}</td>
             </tr>

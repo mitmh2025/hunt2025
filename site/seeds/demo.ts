@@ -58,6 +58,7 @@ export async function seed(knex: Knex): Promise<void> {
         slug,
         canonical_input: answer.answer,
         status: "correct",
+        response: "Correct!",
       }));
     }),
   );

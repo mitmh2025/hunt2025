@@ -113,7 +113,7 @@ declare module "knex/types/tables" {
     canonical_input: string;
     timestamp: Date;
     status: GuessStatus;
-    response?: string;
+    response: string;
   };
 
   type InsertActivityLogEntry = {

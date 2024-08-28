@@ -306,9 +306,9 @@ export function getRouter({
       locked,
       guesses: guesses.map(
         ({ canonical_input, status, response, timestamp }) => ({
-          canonicalInput: canonical_input,
+          canonical_input,
           status,
-          response: response ?? "",
+          response,
           timestamp: timestamp.toISOString(),
         }),
       ),
@@ -994,13 +994,27 @@ export function getRouter({
               "timestamp",
             );
             const entries = await q;
-            const body = entries.map((e) => {
-              return {
-                ...e,
-                response: e.response ? e.response : undefined,
-                timestamp: fixTimestamp(e.timestamp).toISOString(),
-              };
-            });
+            const body = entries.map(
+              ({
+                id,
+                team_id,
+                slug,
+                canonical_input,
+                status,
+                response,
+                timestamp,
+              }) => {
+                return {
+                  id,
+                  team_id,
+                  slug,
+                  canonical_input,
+                  status,
+                  response,
+                  timestamp: fixTimestamp(timestamp).toISOString(),
+                };
+              },
+            );
             return {
               status: 200,
               body,

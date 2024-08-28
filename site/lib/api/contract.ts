@@ -9,7 +9,7 @@ const slug = z.string();
 
 export const GuessStatus = z.enum(["correct", "incorrect", "other"]);
 export const GuessSchema = z.object({
-  canonicalInput: z.string(),
+  canonical_input: z.string(),
   status: GuessStatus,
   response: z.string(),
   timestamp: z.string().datetime(),
