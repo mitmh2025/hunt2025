@@ -17,15 +17,23 @@ const StakeoutManager = ({
   const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
 
   useEffect(() => {
-    const stop = globalDatasetManager.watch("stakeout", (value: object) => {
-      setState(value as StakeoutState);
-    });
+    const stop = globalDatasetManager.watch(
+      "stakeout",
+      undefined,
+      (value: object) => {
+        setState(value as StakeoutState);
+      },
+    );
     return stop;
   }, []);
   useEffect(() => {
-    const stop = globalDatasetManager.watch("team_state", (value: object) => {
-      setTeamState(value as TeamState);
-    });
+    const stop = globalDatasetManager.watch(
+      "team_state",
+      undefined,
+      (value: object) => {
+        setTeamState(value as TeamState);
+      },
+    );
     return stop;
   }, []);
 

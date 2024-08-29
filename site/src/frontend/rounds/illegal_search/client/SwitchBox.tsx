@@ -276,6 +276,7 @@ const SwitchBox = ({
   useEffect(() => {
     const stop = globalDatasetManager.watch(
       "illegal_search_painting2",
+      undefined,
       (value: object) => {
         const castvalue = value as { switches?: string };
         if (castvalue.switches) {

@@ -4,6 +4,7 @@ import {
   type MessageFromWorker,
   type MessageToWorker,
   type Dataset,
+  type DatasetParams,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
 
@@ -13,14 +14,19 @@ class DirectDatasetManager {
     this.socketManager = new SocketManager();
   }
 
-  watch(dataset: Dataset, onUpdate: (value: object) => void): () => void {
-    return this.socketManager.watch(dataset, onUpdate);
+  watch(
+    dataset: Dataset,
+    params: DatasetParams,
+    onUpdate: (value: object) => void,
+  ): () => void {
+    return this.socketManager.watch(dataset, params, onUpdate);
   }
 }
 
 type Watch = {
   id: string;
   dataset: Dataset;
+  params: DatasetParams;
   callback: (value: object) => void;
 };
 
@@ -120,22 +126,30 @@ class SharedWorkerDatasetManager {
     }
     // * re-post the watch requests, so the new worker will establish them
     this.watches.forEach((watch) => {
-      const { id, dataset } = watch;
+      const { id, dataset, params } = watch;
       const subMessage: MessageToWorker = {
         type: "sub",
         subId: id,
         dataset,
+        params,
       };
       this.sharedWorker.port.postMessage(subMessage);
     });
   }
 
-  watch(dataset: Dataset, onUpdate: (value: object) => void): () => void {
+  watch(
+    dataset: Dataset,
+    params: DatasetParams,
+    onUpdate: (value: object) => void,
+  ): () => void {
     const watchId = genId();
-    console.log(`starting watch ${watchId} for ${dataset}`);
+    console.log(
+      `starting watch ${watchId} for ${dataset}:${JSON.stringify(params)}`,
+    );
     const watch = {
       id: watchId,
       dataset,
+      params,
       callback: onUpdate,
     };
     this.watches.set(watchId, watch);
@@ -143,6 +157,7 @@ class SharedWorkerDatasetManager {
       type: "sub",
       subId: watchId,
       dataset,
+      params,
     };
     this.sharedWorker.port.postMessage(subMessage);
     return () => {

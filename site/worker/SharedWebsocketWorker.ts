@@ -1,12 +1,13 @@
 import { SocketManager } from "../lib/SocketManager";
 import {
+  type Dataset,
   type MessageFromWorker,
   type MessageToWorker,
 } from "../lib/api/websocket";
 
 type Watch = {
   subId: string;
-  dataset: string;
+  dataset: Dataset;
   port: MessagePort;
   stop: () => void;
 };
@@ -152,8 +153,8 @@ function notifyScriptUrlsIfNeeded() {
             notifyScriptUrlsIfNeeded();
           }
         } else if (ev.data.type === "sub") {
-          const { dataset, subId } = ev.data;
-          const stop = socketManager.watch(dataset, (value: object) => {
+          const { dataset, subId, params } = ev.data;
+          const stop = socketManager.watch(dataset, params, (value: object) => {
             if (DEBUG) {
               console.log("got update for sub", subId, value);
               port.postMessage({

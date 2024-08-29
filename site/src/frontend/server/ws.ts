@@ -41,7 +41,6 @@ type DatasetHandler =
     }
   | {
       type: "guess_log";
-      // TODO: fill out implementation
     };
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
@@ -51,6 +50,9 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   dev: {
     type: "team_state",
     callback: devtoolsState,
+  },
+  guess_log: {
+    type: "guess_log",
   },
   navbar: {
     type: "team_state",

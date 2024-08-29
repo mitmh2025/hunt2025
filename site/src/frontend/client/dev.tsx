@@ -46,9 +46,13 @@ const DevtoolsManager = () => {
     }
   }, [collapsed]);
   useEffect(() => {
-    const stop = globalDatasetManager.watch("dev", (value: object) => {
-      setState(value as DevtoolsState);
-    });
+    const stop = globalDatasetManager.watch(
+      "dev",
+      undefined,
+      (value: object) => {
+        setState(value as DevtoolsState);
+      },
+    );
     return stop;
   }, []);
 

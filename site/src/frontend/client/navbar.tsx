@@ -7,17 +7,25 @@ const NavBarManager = ({ initialState }: { initialState: NavBarState }) => {
   const [state, setState] = useState<NavBarState>(initialState);
 
   useEffect(() => {
-    const stop = globalDatasetManager.watch("navbar", (value: object) => {
-      setState(value as NavBarState);
-    });
+    const stop = globalDatasetManager.watch(
+      "navbar",
+      undefined,
+      (value: object) => {
+        setState(value as NavBarState);
+      },
+    );
     return stop;
   }, []);
 
   useEffect(() => {
-    const stop = globalDatasetManager.watch("activity_log", (value: object) => {
-      // TODO: append each value to a log, and pick which (if any) to display as notifications
-      console.log("activity log", value);
-    });
+    const stop = globalDatasetManager.watch(
+      "activity_log",
+      undefined,
+      (value: object) => {
+        // TODO: append each value to a log, and pick which (if any) to display as notifications
+        console.log("activity log", value);
+      },
+    );
     return stop;
   }, []);
 

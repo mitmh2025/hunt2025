@@ -16,15 +16,23 @@ const PaperTrailManager = ({
   const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
 
   useEffect(() => {
-    const stop = globalDatasetManager.watch("paper_trail", (value: object) => {
-      setState(value as PaperTrailState);
-    });
+    const stop = globalDatasetManager.watch(
+      "paper_trail",
+      undefined,
+      (value: object) => {
+        setState(value as PaperTrailState);
+      },
+    );
     return stop;
   }, []);
   useEffect(() => {
-    const stop = globalDatasetManager.watch("team_state", (value: object) => {
-      setTeamState(value as TeamState);
-    });
+    const stop = globalDatasetManager.watch(
+      "team_state",
+      undefined,
+      (value: object) => {
+        setTeamState(value as TeamState);
+      },
+    );
     return stop;
   }, []);
 

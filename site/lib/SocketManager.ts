@@ -1,8 +1,10 @@
 import {
+  type DatasetParams,
   type Dataset,
   type MessageFromClient,
   type MessageToClient,
 } from "./api/websocket";
+import { type Branded } from "./brand";
 import { genId } from "./id";
 
 type Watcher = {
@@ -20,8 +22,21 @@ function actionForDataset(dataset: Dataset) {
   return "replace";
 }
 
+type DatasetKey = Branded<string, "DatasetKey">;
+
+function deriveDatasetKey(dataset: Dataset, params: DatasetParams): DatasetKey {
+  return `${dataset}:${JSON.stringify(params)}` as DatasetKey;
+}
+
 type SubscriptionState = {
+  // Key of this subscription state, along which we dedupe subscriptions.
+  // string which is "${dataset}:${JSON.stringify(params)}"
+  datasetKey: DatasetKey;
+
+  // The dataset we wish to request
   dataset: Dataset;
+  // The params, if any, we wish to pass on to the server along with this dataset request
+  params: DatasetParams;
 
   // When we get an update, should we replace the lastValue, or should we push it to lastValue?
   action: "replace" | "append";
@@ -63,7 +78,7 @@ export class SocketManager {
   private connId: string | undefined;
 
   // Map from dataset to subscription state
-  private subsByDataset: Map<Dataset, SubscriptionState>;
+  private subsByDataset: Map<DatasetKey, SubscriptionState>;
   private subsBySubId: Map<string, SubscriptionState>;
 
   // RPCs sent but for which we have not yet received a reply.  Cleared on reconnection, as we're abandoning those RPCs.
@@ -86,7 +101,7 @@ export class SocketManager {
   private debug: boolean;
 
   constructor(debug = true) {
-    this.subsByDataset = new Map<Dataset, SubscriptionState>();
+    this.subsByDataset = new Map<DatasetKey, SubscriptionState>();
     this.subsBySubId = new Map<string, SubscriptionState>();
     this.pendingRPCs = new Map<number, MessageFromClient>();
 
@@ -171,7 +186,12 @@ export class SocketManager {
             const { subId, value } = data;
             const sub = this.subsBySubId.get(subId);
             if (sub) {
-              this.log("Got update for sub", subId, "to dataset", sub.dataset);
+              this.log(
+                "Got update for sub",
+                subId,
+                "to dataset",
+                sub.datasetKey,
+              );
               // update the cached data for the corresponding sub
               if (sub.action === "append") {
                 (sub.lastValue as object[]).push(value as object);
@@ -197,7 +217,7 @@ export class SocketManager {
             // if the sub's state is requesting, mark the sub as active.
             if (sub) {
               if (sub.state === "requesting") {
-                this.log("Sub", subId, "for dataset", sub.dataset, "active");
+                this.log("Sub", subId, "for dataset", sub.datasetKey, "active");
                 sub.state = "active";
               }
             }
@@ -207,7 +227,7 @@ export class SocketManager {
             const { rpc, subId } = data;
             const sub = this.subsBySubId.get(subId);
             if (sub) {
-              this.subsByDataset.delete(sub.dataset);
+              this.subsByDataset.delete(sub.datasetKey);
             }
             // This sub is fully terminated.
             this.subsBySubId.delete(subId);
@@ -263,7 +283,7 @@ export class SocketManager {
       }
     });
     subsToDrop.forEach((subState) => {
-      this.subsByDataset.delete(subState.dataset);
+      this.subsByDataset.delete(subState.datasetKey);
       this.subsBySubId.delete(subState.subId);
     });
 
@@ -288,10 +308,10 @@ export class SocketManager {
     if (this.sockState === "connected") {
       // For each subscription in the map, if the subscription has state "awaiting-socket",
       // send the request and update the state to requesting by calling requestSub
-      this.subsByDataset.forEach((subState, dataset) => {
-        const subId = subState.subId;
+      this.subsByDataset.forEach((subState) => {
+        const { subId, dataset, params } = subState;
         if (subState.state === "awaiting-socket") {
-          this.requestSub(dataset, subId);
+          this.requestSub(dataset, params, subId);
           subState.state = "requesting";
         }
       });
@@ -304,13 +324,14 @@ export class SocketManager {
     return retval;
   }
 
-  requestSub(dataset: Dataset, subId: string) {
+  requestSub(dataset: Dataset, params: DatasetParams, subId: string) {
     const rpcId = this.getNextRpcId();
     const request = {
       rpc: rpcId,
       method: "sub" as const,
       subId,
       dataset,
+      params,
     };
     this.sendRpc(request);
   }
@@ -330,20 +351,23 @@ export class SocketManager {
     this.sock.send(JSON.stringify(request));
   }
 
-  addWatcher(dataset: Dataset, watcher: Watcher) {
-    let sub = this.subsByDataset.get(dataset);
+  addWatcher(dataset: Dataset, params: DatasetParams, watcher: Watcher) {
+    const datasetKey = deriveDatasetKey(dataset, params);
+    let sub = this.subsByDataset.get(datasetKey);
     if (!sub || sub.state === "stopping" || sub.state === "error") {
       const subId = genId();
       const action = actionForDataset(dataset);
       sub = {
+        datasetKey,
         dataset,
+        params,
         action,
         subId,
         state: "awaiting-socket",
         lastValue: action === "append" ? [] : undefined,
         watchers: [],
       };
-      this.subsByDataset.set(dataset, sub);
+      this.subsByDataset.set(datasetKey, sub);
       this.subsBySubId.set(subId, sub);
       this.tryDispatchPendingSubRequests();
     }
@@ -367,8 +391,9 @@ export class SocketManager {
     }
   }
 
-  dropWatcher(dataset: Dataset, watchId: string) {
-    const sub = this.subsByDataset.get(dataset);
+  dropWatcher(dataset: Dataset, params: DatasetParams, watchId: string) {
+    const datasetKey = deriveDatasetKey(dataset, params);
+    const sub = this.subsByDataset.get(datasetKey);
     if (sub) {
       sub.watchers = sub.watchers.filter((w) => {
         return w.id !== watchId;
@@ -376,30 +401,41 @@ export class SocketManager {
       if (sub.watchers.length === 0) {
         // we're no longer using this subscription; tell the backend we can cancel it
         if (this.sockState === "connected") {
-          this.log("Stopping sub", sub.subId, "for dataset", sub.dataset);
+          this.log("Stopping sub", sub.subId, "for dataset", sub.datasetKey);
           sub.state = "stopping";
           this.cancelSub(sub.subId);
         } else {
           // If the socket is not connected, there's no way the sub is active,
           // so we can just delete it from the sub maps.
-          this.subsByDataset.delete(sub.dataset);
+          this.subsByDataset.delete(sub.datasetKey);
           this.subsBySubId.delete(sub.subId);
         }
       }
     }
   }
 
-  watch(dataset: Dataset, onUpdate: (value: object) => void): () => void {
+  watch(
+    dataset: Dataset,
+    params: DatasetParams,
+    onUpdate: (value: object) => void,
+  ): () => void {
     const watchId = genId();
     const watcher = {
       id: watchId,
       callback: onUpdate,
     };
-    this.log("watch(", dataset, ") => assigned watchId", watchId);
-    this.addWatcher(dataset, watcher);
+    this.log(
+      "watch(",
+      dataset,
+      ",",
+      JSON.stringify(params),
+      ") => assigned watchId",
+      watchId,
+    );
+    this.addWatcher(dataset, params, watcher);
     return () => {
       this.log("stop(", watchId, ") for dataset", dataset);
-      this.dropWatcher(dataset, watchId);
+      this.dropWatcher(dataset, params, watchId);
     };
   }
 

@@ -7,6 +7,7 @@ const RPCBase = z.object({
 
 export const DatasetSchema = z.enum([
   "activity_log",
+  "guess_log",
   "navbar",
   "team_state",
   "paper_trail",
@@ -21,6 +22,13 @@ export const DatasetSchema = z.enum([
 ]);
 export type Dataset = z.infer<typeof DatasetSchema>;
 
+export const DatasetParamsSchema = z
+  .object({
+    slug: z.string(),
+  })
+  .optional();
+export type DatasetParams = z.infer<typeof DatasetParamsSchema>;
+
 export const MessageFromClientSchema = z.discriminatedUnion("method", [
   // Request future updates push down the associated dataset.
   RPCBase.merge(
@@ -28,6 +36,7 @@ export const MessageFromClientSchema = z.discriminatedUnion("method", [
       method: z.literal("sub"),
       subId: z.string().length(16), // client picks the sub name
       dataset: DatasetSchema,
+      params: DatasetParamsSchema,
     }),
   ),
   // Cease sending updates for the specified dataset.
@@ -71,6 +80,7 @@ export type MessageToWorker =
       type: "sub";
       subId: string;
       dataset: Dataset;
+      params: DatasetParams;
     }
   | {
       type: "unsub";

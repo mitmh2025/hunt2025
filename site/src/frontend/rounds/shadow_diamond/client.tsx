@@ -18,6 +18,7 @@ const ShadowDiamondManager = ({
   useEffect(() => {
     const stop = globalDatasetManager.watch(
       "shadow_diamond",
+      undefined,
       (value: object) => {
         setState(value as ShadowDiamondState);
       },
@@ -25,9 +26,13 @@ const ShadowDiamondManager = ({
     return stop;
   }, []);
   useEffect(() => {
-    const stop = globalDatasetManager.watch("team_state", (value: object) => {
-      setTeamState(value as TeamState);
-    });
+    const stop = globalDatasetManager.watch(
+      "team_state",
+      undefined,
+      (value: object) => {
+        setTeamState(value as TeamState);
+      },
+    );
     return stop;
   }, []);
 
