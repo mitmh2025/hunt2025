@@ -40,7 +40,7 @@ import {
   puzzleUnlockPostHandler,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
-import { getWsHandler } from "./ws";
+import { WebsocketManager } from "./ws";
 
 // Type parameters to RequestHandler are:
 // 1. Params
@@ -275,7 +275,15 @@ export async function getUiRouter({
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
 
-  authRouter.ws("/ws", await getWsHandler(redisClient));
+  if (redisClient) {
+    const wsManager = new WebsocketManager({
+      redisClient,
+      frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
+    });
+    await wsManager.connectToRedis();
+    const wsHandler = wsManager.requestHandler.bind(wsManager);
+    authRouter.ws("/ws", wsHandler);
+  }
 
   authRouter.get(
     "/",

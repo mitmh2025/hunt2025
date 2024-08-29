@@ -6,6 +6,7 @@ const RPCBase = z.object({
 });
 
 export const DatasetSchema = z.enum([
+  "activity_log",
   "navbar",
   "team_state",
   "paper_trail",

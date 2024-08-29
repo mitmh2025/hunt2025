@@ -25,12 +25,22 @@ if (!frontendApiSecret) {
   throw new Error("$FRONTEND_API_SECRET not defined in production");
 }
 
+const redisUrl = process.env.REDIS_URL;
+if (!redisUrl) {
+  console.error(
+    "$REDIS_URL was not configured -- WEBSOCKET/DEVTOOLS WILL BE BROKEN!",
+  );
+  console.error(
+    "Please set up redis and set REDIS_URL to redis://localhost/ or similar",
+  );
+}
+
 app({
   dbEnvironment,
   jwtSecret,
   frontendApiSecret,
   apiUrl,
-  redisUrl: process.env.REDIS_URL,
+  redisUrl,
 })
   .then((app) =>
     app.listen(port, () => {

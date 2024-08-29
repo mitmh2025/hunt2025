@@ -13,6 +13,14 @@ const NavBarManager = ({ initialState }: { initialState: NavBarState }) => {
     return stop;
   }, []);
 
+  useEffect(() => {
+    const stop = globalDatasetManager.watch("activity_log", (value: object) => {
+      // TODO: append each value to a log, and pick which (if any) to display as notifications
+      console.log("activity log", value);
+    });
+    return stop;
+  }, []);
+
   return <NavBar state={state} />;
 };
 

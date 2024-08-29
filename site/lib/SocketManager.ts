@@ -12,8 +12,19 @@ type Watcher = {
   callback: (value: object) => void;
 };
 
+function actionForDataset(dataset: Dataset) {
+  // TODO: also support appending to guess log
+  if (dataset === "activity_log" /*|| dataset === "guess_log"*/) {
+    return "append";
+  }
+  return "replace";
+}
+
 type SubscriptionState = {
   dataset: Dataset;
+
+  // When we get an update, should we replace the lastValue, or should we push it to lastValue?
+  action: "replace" | "append";
 
   // A unique client-chosen 16-character string, echoed by the server in
   // updates, and used as the identifier to request subscription cancelation.
@@ -29,7 +40,7 @@ type SubscriptionState = {
   state: "awaiting-socket" | "requesting" | "active" | "stopping" | "error";
 
   // The last-known value of the subscription as provided by the server.
-  lastValue: object | undefined;
+  lastValue: object | object[] | undefined;
 
   // A list of watchers of the data for this dataset.
   watchers: Watcher[];
@@ -162,7 +173,11 @@ export class SocketManager {
             if (sub) {
               this.log("Got update for sub", subId, "to dataset", sub.dataset);
               // update the cached data for the corresponding sub
-              sub.lastValue = value as object;
+              if (sub.action === "append") {
+                (sub.lastValue as object[]).push(value as object);
+              } /* if (sub.action === "replace") */ else {
+                sub.lastValue = value as object;
+              }
               // notify watchers, if not stopping or failed
               if (
                 value &&
@@ -319,11 +334,13 @@ export class SocketManager {
     let sub = this.subsByDataset.get(dataset);
     if (!sub || sub.state === "stopping" || sub.state === "error") {
       const subId = genId();
+      const action = actionForDataset(dataset);
       sub = {
         dataset,
+        action,
         subId,
         state: "awaiting-socket",
-        lastValue: undefined,
+        lastValue: action === "append" ? [] : undefined,
         watchers: [],
       };
       this.subsByDataset.set(dataset, sub);
@@ -331,17 +348,22 @@ export class SocketManager {
       this.tryDispatchPendingSubRequests();
     }
     sub.watchers.push(watcher);
-    // Synthesize an event to deliver the last-known value to the observer, if we know one already.
-    // This is particularly relevant for the case where another tab already has
-    // a watch on the same dataset, because the inital update will have already
-    // been delivered by the server, and because we dedupe identical
-    // subscriptions on the client, we would otherwise not trigger this callback
-    // until state changes and the server pushes down an update.
+    // Synthesize an event (or events) to deliver the last-known value to the observer, if we know
+    // one already.  This is particularly relevant for the case where another tab already has a
+    // watch on the same dataset, because the inital update will have already been delivered by the
+    // server, and because we dedupe identical subscriptions on the client, we would otherwise not
+    // trigger this callback until state changes and the server pushes down an update.
     if (
       (sub.state === "requesting" || sub.state === "active") &&
       sub.lastValue
     ) {
-      watcher.callback(sub.lastValue);
+      if (sub.action === "append") {
+        (sub.lastValue as object[]).forEach((entry) => {
+          watcher.callback(entry);
+        });
+      } /* if sub.action === "replace" */ else {
+        watcher.callback(sub.lastValue);
+      }
     }
   }
 

@@ -381,6 +381,7 @@ export class DatasetTailer<T extends { id: number }> {
     this.listeners.set(id, listener);
     // Deliver initial state
     if (this.entries.length > 0) {
+      console.log("synthesizing initial entries delivery");
       onItems(this.entries);
     }
     return this.stopWatch.bind(this, id);
@@ -391,7 +392,7 @@ export class DatasetTailer<T extends { id: number }> {
   }
 }
 
-type ActivityLogEntry = FullActivityLog[number];
+export type ActivityLogEntry = FullActivityLog[number];
 export function newActivityLogTailer({
   redisClient,
   frontendApiClient,
@@ -423,7 +424,7 @@ export function newActivityLogTailer({
   return tailer;
 }
 
-type GuessLogEntry = FullGuessHistory[number];
+export type GuessLogEntry = FullGuessHistory[number];
 export function newGuessLogTailer({
   redisClient,
   frontendApiClient,
