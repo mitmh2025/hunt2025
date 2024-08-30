@@ -26,8 +26,8 @@ import {
   type DatasetTailer,
   type ActivityLogEntry,
   newActivityLogTailer,
-  // newGuessLogTailer,
-  // type GuessLogEntry,
+  newGuessLogTailer,
+  type GuessLogEntry,
 } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
 
@@ -111,9 +111,17 @@ type ActivityLogSubscriptionHandler = {
   stop: () => void;
 };
 
+type GuessLogSubscriptionHandler = {
+  type: "guess_log";
+  dataset: Dataset;
+  slug: string;
+  stop: () => void;
+};
+
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
-  | ActivityLogSubscriptionHandler;
+  | ActivityLogSubscriptionHandler
+  | GuessLogSubscriptionHandler;
 
 function isTeamStateSubscription<T>(
   sub: SubscriptionHandler<T>,
@@ -125,6 +133,12 @@ function isActivityLogSubscription<T>(
   sub: SubscriptionHandler<T>,
 ): sub is ActivityLogSubscriptionHandler {
   return sub.type === "activity_log";
+}
+
+function isGuessLogSubscription<T>(
+  sub: SubscriptionHandler<T>,
+): sub is GuessLogSubscriptionHandler {
+  return sub.type === "guess_log";
 }
 
 type TeamStateObserverProvider = {
@@ -140,11 +154,18 @@ type ActivityLogObserverProvider = {
     subId: string,
     conn: ConnHandler,
   ): () => void;
+  activityLogReadyPromise(): Promise<void>;
 };
 
-//type GuessLogObserverProvider = {
-//  observeGuessLog(teamId: number, conn: ConnHandler): Promise<() => Promise<void>>;
-//}
+type GuessLogObserverProvider = {
+  observeGuessLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): () => void;
+  guessLogReadyPromise(): Promise<void>;
+};
 
 class ConnHandler {
   public connId: string;
@@ -153,6 +174,7 @@ class ConnHandler {
   private onClose: (connId: string) => void;
   private teamStateObserverProvider: TeamStateObserverProvider;
   private activityLogObserverProvider: ActivityLogObserverProvider;
+  private guessLogObserverProvider: GuessLogObserverProvider;
 
   // TODO: cache this in response to
   private lastTeamState: TeamState;
@@ -167,12 +189,14 @@ class ConnHandler {
     onClose,
     teamStateObserverProvider,
     activityLogObserverProvider,
+    guessLogObserverProvider,
   }: {
     sock: WebSocket;
     initialTeamState: TeamState;
     onClose: (connId: string) => void;
     teamStateObserverProvider: TeamStateObserverProvider;
     activityLogObserverProvider: ActivityLogObserverProvider;
+    guessLogObserverProvider: GuessLogObserverProvider;
   }) {
     this.sock = sock;
     this.teamId = initialTeamState.teamId;
@@ -180,6 +204,7 @@ class ConnHandler {
     this.onClose = onClose;
     this.teamStateObserverProvider = teamStateObserverProvider;
     this.activityLogObserverProvider = activityLogObserverProvider;
+    this.guessLogObserverProvider = guessLogObserverProvider;
 
     this.connId = genId();
     this.subs = new Map();
@@ -262,14 +287,26 @@ class ConnHandler {
   appendActivityLogEntry(subId: string, entry: ActivityLogEntry) {
     const sub = this.subs.get(subId);
     if (sub && isActivityLogSubscription(sub)) {
-      console.log("forwarding activity log entry", entry);
       this.send({ subId, type: "update", value: entry });
+    }
+  }
+
+  appendGuessLogEntry(subId: string, entry: GuessLogEntry) {
+    const sub = this.subs.get(subId);
+    if (sub && isGuessLogSubscription(sub)) {
+      // Unpack only the desired fields
+      const { status, canonical_input, response, timestamp } = entry;
+      this.send({
+        subId,
+        type: "update",
+        value: { status, canonical_input, response, timestamp },
+      });
     }
   }
 
   handle(message: MessageFromClient, _e: MessageEvent): void {
     if (message.method === "sub") {
-      const { rpc, subId, dataset } = message;
+      const { rpc, subId, dataset, params } = message;
 
       // Guard dev dataset
       if (dataset === "dev" && process.env.NODE_ENV !== "development") {
@@ -329,12 +366,57 @@ class ConnHandler {
             this,
           );
           // Reply that we're ready
-          this.send({ rpc, type: "sub" as const, subId });
+          this.activityLogObserverProvider
+            .activityLogReadyPromise()
+            .then(() => {
+              this.send({ rpc, type: "sub" as const, subId });
+            })
+            .catch(() => {
+              this.send({
+                rpc,
+                type: "fail" as const,
+                error: "activity log ready promise rejected",
+              });
+            });
           break;
         }
-
-        //case "guess_log":
-        //  break;
+        case "guess_log": {
+          if (!params?.slug) {
+            this.send({
+              rpc,
+              type: "fail" as const,
+              error: `No slug provided to sub to ${dataset}`,
+            });
+            return;
+          }
+          const subHandler: SubscriptionHandler<object> = {
+            type: "guess_log",
+            dataset,
+            slug: params.slug,
+            stop: () => {
+              /* stub */
+            },
+          };
+          this.subs.set(subId, subHandler);
+          subHandler.stop = this.guessLogObserverProvider.observeGuessLog(
+            this.teamId,
+            params.slug,
+            subId,
+            this,
+          );
+          this.guessLogObserverProvider
+            .guessLogReadyPromise()
+            .then(() => {
+              this.send({ rpc, type: "sub" as const, subId });
+            })
+            .catch(() => {
+              this.send({
+                rpc,
+                type: "fail" as const,
+                error: "guess log ready promise rejected",
+              });
+            });
+        }
       }
 
       return;
@@ -375,7 +457,10 @@ type TeamStateSubState = {
 };
 
 export class WebsocketManager
-  implements TeamStateObserverProvider, ActivityLogObserverProvider
+  implements
+    TeamStateObserverProvider,
+    ActivityLogObserverProvider,
+    GuessLogObserverProvider
 {
   private redisClient: RedisClient;
 
@@ -387,7 +472,7 @@ export class WebsocketManager
 
   private activityLogTailer: DatasetTailer<ActivityLogEntry>;
 
-  // private guessLogTailer: DatasetTailer<GuessLogEntry>;
+  private guessLogTailer: DatasetTailer<GuessLogEntry>;
 
   constructor({
     redisClient,
@@ -406,7 +491,7 @@ export class WebsocketManager
       redisClient,
       frontendApiClient,
     });
-    // this.guessLogTailer = newGuessLogTailer({ redisClient, frontendApiClient });
+    this.guessLogTailer = newGuessLogTailer({ redisClient, frontendApiClient });
   }
 
   async connectToRedis() {
@@ -480,6 +565,31 @@ export class WebsocketManager
     return stop;
   }
 
+  activityLogReadyPromise(): Promise<void> {
+    return this.activityLogTailer.readyPromise();
+  }
+
+  observeGuessLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): () => void {
+    const stop = this.guessLogTailer.watchLog((entries: GuessLogEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.team_id === teamId && entry.slug === slug) {
+          conn.appendGuessLogEntry(subId, entry);
+        }
+      });
+    });
+
+    return stop;
+  }
+
+  guessLogReadyPromise(): Promise<void> {
+    return this.guessLogTailer.readyPromise();
+  }
+
   async requestHandler(req: Request, res: WSResponse, next: NextFunction) {
     if (!req.teamState) {
       // Client is not logged in.
@@ -495,6 +605,7 @@ export class WebsocketManager
       },
       teamStateObserverProvider: this,
       activityLogObserverProvider: this,
+      guessLogObserverProvider: this,
     });
     this.connections.set(connHandler.connId, connHandler);
     const helloMessage: MessageToClient = {

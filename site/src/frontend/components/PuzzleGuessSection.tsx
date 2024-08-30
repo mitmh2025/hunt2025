@@ -158,19 +158,19 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
 
 const PuzzleGuessSection = ({
   slug,
-  solved,
-  initialGuesses,
+  guesses,
+  onGuessesUpdate,
 }: {
   slug: string;
-  solved: boolean;
-  initialGuesses: Guesses;
+  guesses: Guesses;
+  onGuessesUpdate: (guesses: Guesses) => void;
 }) => {
-  const [guesses, setGuesses] = useState<Guesses>(initialGuesses);
+  const solved = guesses.some((g) => g.status === "correct");
 
   return (
     <GuessSectionWrapper id="puzzle-guess-section">
       {solved ? undefined : (
-        <PuzzleGuessForm slug={slug} onGuessesUpdate={setGuesses} />
+        <PuzzleGuessForm slug={slug} onGuessesUpdate={onGuessesUpdate} />
       )}
       <PuzzleGuessHistoryTable guesses={guesses} />
     </GuessSectionWrapper>

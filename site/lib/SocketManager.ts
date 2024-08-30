@@ -15,8 +15,7 @@ type Watcher = {
 };
 
 function actionForDataset(dataset: Dataset) {
-  // TODO: also support appending to guess log
-  if (dataset === "activity_log" /*|| dataset === "guess_log"*/) {
+  if (dataset === "activity_log" || dataset === "guess_log") {
     return "append";
   }
   return "replace";

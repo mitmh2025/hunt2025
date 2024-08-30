@@ -32,8 +32,11 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     return undefined;
   }
   const guesses = result.body.guesses;
-  const initialPuzzleData = JSON.stringify(result.body);
-  const inlineScript = `window.initialPuzzleData = ${initialPuzzleData}; window.puzzleSlug = "${slug}";`;
+  const initialGuesses = JSON.stringify(result.body.guesses);
+  const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}";`;
+  const noopOnGuessesUpdate = () => {
+    /* no-op, this is noninteractive in SSR */
+  };
   const guessFrag = (
     <>
       <script
@@ -43,8 +46,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       <div id="puzzle-guesses">
         <PuzzleGuessSection
           slug={slug}
-          initialGuesses={guesses}
-          solved={!!result.body.answer}
+          guesses={guesses}
+          onGuessesUpdate={noopOnGuessesUpdate}
         />
       </div>
     </>

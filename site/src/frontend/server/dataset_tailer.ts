@@ -88,6 +88,12 @@ export class DatasetTailer<T extends { id: number }> {
   // If defined, the handle for the setTimeout that will trigger fetch retry
   private fetchBackoffHandle: NodeJS.Timeout | undefined;
 
+  // Promise which fulfills once we have successfully set up pubsub listening and performed an initial backfill
+  private ready: Promise<void>;
+
+  // Callback thunk we call when the ready promise should resolve
+  private fulfillReady: (() => void) | undefined;
+
   constructor({
     redisClient,
     fetcher,
@@ -118,6 +124,9 @@ export class DatasetTailer<T extends { id: number }> {
     this.idleTimeoutMsec = idleTimeoutMsec ?? 60000;
     this.fetchFailureCount = 0;
     this.fetchBackoffHandle = undefined;
+    this.ready = new Promise((resolve) => {
+      this.fulfillReady = resolve;
+    });
     this.start();
   }
 
@@ -171,6 +180,7 @@ export class DatasetTailer<T extends { id: number }> {
 
   onFetch(entries: T[]) {
     this.state = "ready";
+    this.fulfillReady?.();
     this.fetchFailureCount = 0;
     this.log(`fetch got ${entries.length} entries`);
     const lastKnown = this.lastKnownId();
@@ -372,6 +382,10 @@ export class DatasetTailer<T extends { id: number }> {
   }
 
   // Public API
+  readyPromise(): Promise<void> {
+    return this.ready;
+  }
+
   watchLog(onItems: (items: T[]) => void): () => void {
     const id = genId();
     const listener = {
@@ -381,7 +395,6 @@ export class DatasetTailer<T extends { id: number }> {
     this.listeners.set(id, listener);
     // Deliver initial state
     if (this.entries.length > 0) {
-      console.log("synthesizing initial entries delivery");
       onItems(this.entries);
     }
     return this.stopWatch.bind(this, id);
