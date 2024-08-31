@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.1",
   "description": "HTTP frontend for the 2025 MIT Mystery Hunt website",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "webpack --mode=production --config ./webpack.config.mjs",
     "build-dev": "webpack --mode=development --config ./webpack.config.mjs",
