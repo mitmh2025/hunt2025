@@ -25,9 +25,9 @@ Our system is currently assembled out of several components:
 - The hunter's browser
 
 I've omitted a few of our more niche bits like the audio streaming server
-(`[mediamtx](https://github.com/bluenviron/mediamtx)`, or the IoT
+([`mediamtx`](https://github.com/bluenviron/mediamtx), or the IoT
 command-and-control system we use for managing the radios
-(`[thingsboard](https://thingsboard.io/)`) since I'm trying to focus on what's
+([`thingsboard`](https://thingsboard.io/)) since I'm trying to focus on what's
 most relevant to the website and this codebase right now.
 
 The overall architecture of our system is:

@@ -17,7 +17,7 @@ A puzzle definition can, in theory, be bound to any slot.
 
 Puzzle definitions are where the actual puzzle **contents** are defined. Each
 puzzle is defined by exporting a `PuzzleDefinition`, as defined in
-`[src/frontend/puzzles/types.ts](../src/frontend/puzzles/types.ts)`. This
+[`src/frontend/puzzles/types.ts`](../src/frontend/puzzles/types.ts). This
 includes the puzzle's `title`, the `slug` at which it should appear
 (`/puzzles/$slug`), credits information, the puzzle's canonical `answer`,
 `hints` provided by the authors, `canned_responses` for particular guess
@@ -43,7 +43,7 @@ why we try to decouple puzzle definition from its structural function.
 
 ## Hunt
 
-We define a Hunt in `[src/huntdata/types.ts](../src/huntdata/types.ts)`
+We define a Hunt in [`src/huntdata/types.ts`](../src/huntdata/types.ts)
 primarily as a collection of rounds, where each round has a collection of
 puzzle slots which are canonically part of that round. (Interactions are
 currently also included at the top level of the hunt, but I suspect their
