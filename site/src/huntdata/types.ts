@@ -4,19 +4,11 @@
 export type Condition =
   | ({
       answer_count?: number; // If present, the required number of (unique) solves for this puzzle for this condition to be met.
-    } & (
-      | {
-          slot_solved: string; // The puzzle in this slot must be solved.
-        }
-      | {
-          slug_solved: string; // The puzzle with this slug must be solved.
-        }
-    ))
+    } & {
+      slot_solved: string; // The puzzle in this slot must be solved.
+    })
   | {
       slot_unlocked: string; // The puzzle in this slot must be unlocked.
-    }
-  | {
-      slug_unlocked: string; // The puzzle with this slug must be unlocked.
     }
   | {
       interaction_completed: string; // The id of the interaction which must be marked as completed before this condition is satisfied.

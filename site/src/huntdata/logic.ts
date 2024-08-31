@@ -37,7 +37,7 @@ function evaluateCondition(
     const { slot_unlocked } = condition;
     const slug = slug_by_slot[slot_unlocked];
     if (slug) {
-      return evaluateCondition({ slug_unlocked: slug }, condition_state);
+      return puzzles_unlocked.has(slug);
     }
     return false;
   }
@@ -45,20 +45,9 @@ function evaluateCondition(
     const { slot_solved, answer_count } = condition;
     const slug = slug_by_slot[slot_solved];
     if (slug) {
-      return evaluateCondition(
-        { slug_solved: slug, answer_count },
-        condition_state,
-      );
+      return (puzzle_solution_count[slug] ?? 0) >= (answer_count ?? 1);
     }
     return false;
-  }
-  if ("slug_unlocked" in condition) {
-    const { slug_unlocked } = condition;
-    return puzzles_unlocked.has(slug_unlocked);
-  }
-  if ("slug_solved" in condition) {
-    const { slug_solved, answer_count } = condition;
-    return (puzzle_solution_count[slug_solved] ?? 0) >= (answer_count ?? 1);
   }
   if ("puzzles_unlocked" in condition) {
     const { puzzles_unlocked } = condition;
