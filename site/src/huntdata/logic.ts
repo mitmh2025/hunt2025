@@ -206,24 +206,14 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
           }
         }
       });
-    });
-    hunt.interactions.forEach((interaction) => {
-      const interaction_condition_state = Object.assign(
-        {
-          unlocked_rounds,
-          default_slots: undefined,
-          slug_by_slot,
-        },
-        condition_state,
-      );
-      if (
-        evaluateCondition(interaction.unlock_if, interaction_condition_state)
-      ) {
-        if (!unlocked_interactions.has(interaction.id)) {
-          unlocked_interactions.add(interaction.id);
-          updated = true;
+      round.interactions?.forEach((interaction) => {
+        if (roundEvaluateCondition(interaction.unlock_if)) {
+          if (!unlocked_interactions.has(interaction.id)) {
+            unlocked_interactions.add(interaction.id);
+            updated = true;
+          }
         }
-      }
+      });
     });
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for some reason, eslint believes this condition is always falsy
   } while (updated);

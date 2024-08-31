@@ -22,9 +22,15 @@ import {
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
+import { type z } from "zod";
 import { adminContract } from "../../lib/api/admin_contract";
 import { type TeamState } from "../../lib/api/client";
-import { c, authContract, publicContract } from "../../lib/api/contract";
+import {
+  c,
+  authContract,
+  publicContract,
+  type InteractionStateSchema,
+} from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
 import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
@@ -47,6 +53,8 @@ type ActivityLog = ServerInferResponseBody<
   typeof publicContract.getActivityLog,
   200
 >;
+
+type InteractionState = z.infer<typeof InteractionStateSchema>;
 
 type JWTPayload = {
   user: string;
@@ -201,28 +209,51 @@ export function getRouter({
     const rounds = Object.fromEntries(
       hunt.rounds
         .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
-        .map(({ slug, title, puzzles, gates }) => [
-          slug,
-          {
-            title,
-            slots: Object.fromEntries(
-              puzzles.flatMap((slot) => {
-                const slug = getSlotSlug(slot);
-                if (slug && data.visible_puzzles.has(slug)) {
-                  const obj = { slug, is_meta: slot.is_meta };
-                  return [[slot.id, obj]];
+        .map(({ slug, title, puzzles, gates, interactions }) => {
+          const interactionsData: [string, InteractionState][] = (
+            interactions ?? []
+          ).flatMap((interaction) => {
+            if ("interactions" in data) {
+              const v = data.interactions[interaction.id];
+              if (v) {
+                return [[interaction.id, v]];
+              }
+            }
+            return [];
+          });
+          const interactionsMap =
+            interactionsData.length > 0
+              ? Object.fromEntries(interactionsData)
+              : undefined;
+          const interactionsMixin =
+            interactionsMap !== undefined
+              ? { interactions: interactionsMap }
+              : {};
+          return [
+            slug,
+            {
+              title,
+              slots: Object.fromEntries(
+                puzzles.flatMap((slot) => {
+                  const slug = getSlotSlug(slot);
+                  if (slug && data.visible_puzzles.has(slug)) {
+                    const obj = { slug, is_meta: slot.is_meta };
+                    return [[slot.id, obj]];
+                  }
+                  return [];
+                }),
+              ),
+              gates: gates?.flatMap((gate) => {
+                if (gate.id && data.satisfied_gates.has(gate.id)) {
+                  return [gate.id];
                 }
                 return [];
               }),
-            ),
-            gates: gates?.flatMap((gate) => {
-              if (gate.id && data.satisfied_gates.has(gate.id)) {
-                return [gate.id];
-              }
-              return [];
-            }),
-          },
-        ]),
+              // Don't include interactions until one has been reached
+              ...interactionsMixin,
+            },
+          ];
+        }),
     );
     const puzzleRounds = Object.fromEntries(
       Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
@@ -232,22 +263,6 @@ export function getRouter({
         ]),
       ),
     );
-    // Narrow to only interactions declared in the hunt object
-    const interactionData = Object.fromEntries(
-      hunt.interactions.flatMap((interaction) => {
-        if ("interactions" in data) {
-          const v = data.interactions[interaction.id];
-          if (v) {
-            return [[interaction.id, v]];
-          }
-        }
-        return [];
-      }),
-    );
-    const interactions =
-      Object.keys(interactionData).length > 0
-        ? { interactions: interactionData }
-        : {};
     return {
       teamId: team_id,
       teamName: data.team_name,
@@ -267,8 +282,6 @@ export function getRouter({
           },
         ]),
       ),
-      // Don't include interactions until one has been reached
-      ...interactions,
     };
   };
 

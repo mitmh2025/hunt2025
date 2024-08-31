@@ -2,6 +2,7 @@ import { type RequestHandler, type Request } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
 import { type z } from "zod";
+import { type TeamState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 
@@ -42,6 +43,20 @@ function stubInteractionState(slug: string, interaction: Interaction) {
   }
 }
 
+function lookupInteraction(
+  teamState: TeamState,
+  slug: string,
+): Interaction | undefined {
+  // Look in each round of teamState for an interaction with id matching slug
+  for (const round of Object.values(teamState.rounds)) {
+    if ("interactions" in round) {
+      const interaction = round.interactions?.[slug];
+      if (interaction !== undefined) return interaction;
+    }
+  }
+  return undefined;
+}
+
 export type InteractionParams = {
   slug: string;
 };
@@ -50,7 +65,7 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
     return undefined;
   }
   const slug = req.params.slug;
-  const interaction = req.teamState.interactions?.[slug];
+  const interaction = lookupInteraction(req.teamState, slug);
   if (!interaction) return undefined;
 
   if (process.env.NODE_ENV === "development") {

@@ -121,6 +121,42 @@ const HUNT: Hunt = {
           },
         }, // Where is the Diamond? (super)
       ],
+      interactions: [
+        // These four interviews are the MATE-style in-site interactions which
+        // become available after each of the four metas which open a side
+        // investigation.  Each should become immediately available to teams upon
+        // solving the corresponding metapuzzle.
+        {
+          id: "interview_at_the_boardwalk",
+          unlock_if: [{ slot_solved: "sdm01" }],
+        },
+        {
+          id: "interview_at_the_jewelry_store",
+          unlock_if: [{ slot_solved: "sdm02" }],
+        },
+        {
+          id: "interview_at_the_casino",
+          unlock_if: [{ slot_solved: "sdm03" }],
+        },
+        {
+          id: "interview_at_the_art_gallery",
+          unlock_if: [{ slot_solved: "sdm04" }],
+        },
+
+        {
+          // This is a brief in-person interaction which is expected to happen
+          // after teams solve the Shadow Diamond super but before they go on the
+          // funaround.
+          id: "meet_billie",
+          unlock_if: [{ slot_solved: "sdm05" }],
+        },
+        {
+          // This is a longer in-person interaction which is expected to happen
+          // after teams complete the funaround.
+          id: "catch_the_thief",
+          unlock_if: [{ interaction_completed: "meet_billie" }],
+        },
+      ],
       unlock_if: [
         // These are the conditions for the /round/ page being visible.
         // The initial round should be open from the start, with maybe a
@@ -180,6 +216,17 @@ const HUNT: Hunt = {
         { id: "sop42", unlockable_if: { puzzles_unlocked: 39 }, unlock_cost: 1 },
         { id: "som01", is_meta: true, unlocked_if: { puzzles_unlocked: 30 } }, // (meta)
       ],
+      interactions: [
+        {
+          // This is a live interaction, not an in-site interaction, but we might
+          // have prerecorded video for remote solvers/folks missing at the time,
+          // so it might need a URL anyway.
+          id: "meet_katrina",
+          unlock_if: [
+            { slot_solved: "som01" }, // stakeout meta
+          ],
+        },
+      ],
       unlock_if: [
         { slot_solved: "sdm01" },
         { interaction_completed: "interview_at_the_boardwalk" },
@@ -236,6 +283,17 @@ const HUNT: Hunt = {
           slug: "the_shell_game",
         },
       ],
+      interactions: [
+        {
+          // This is a live interaction, not an in-site interaction, but we might
+          // have prerecorded video for remote solvers/folks missing at the time,
+          // so it might need a URL anyway.
+          id: "meet_gladys",
+          unlock_if: [
+            { slot_solved: "ptm09" }, // papertrail super
+          ],
+        },
+      ],
       unlock_if: [
         { slot_solved: "sdm02" },
         { interaction_completed: "interview_at_the_jewelry_store" },
@@ -267,6 +325,17 @@ const HUNT: Hunt = {
         { id: "bgm02", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 2
         { id: "bgm03", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 3
         { id: "bgm04", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // supermeta
+      ],
+      interactions: [
+        {
+          // This is a live interaction, not an in-site interaction, but we might
+          // have prerecorded video for remote solvers/folks missing at the time,
+          // so it might need a URL anyway.
+          id: "meet_carter",
+          unlock_if: [
+            { slot_solved: "bgm04" }, // background check super
+          ],
+        },
       ],
       unlock_if: [
         { slot_solved: "sdm03" },
@@ -336,6 +405,17 @@ const HUNT: Hunt = {
         { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
         { id: "isg26" }, // obtain the blacklight
       ],
+      interactions: [
+        {
+          // This is a live interaction, not an in-site interaction, but we might
+          // have prerecorded video for remote solvers/folks missing at the time,
+          // so it might need a URL anyway.
+          id: "meet_papa",
+          unlock_if: [
+            { slot_solved: "ism01", answer_count: 2 },
+          ],
+        },
+      ],
       unlock_if: [
         { slot_solved: "sdm04" },
         { interaction_completed: "interview_at_the_art_gallery" },
@@ -372,6 +452,14 @@ const HUNT: Hunt = {
         { id: "dtp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
         { id: "dtm01", unlocked_if: { puzzles_unlocked: 16 } }, // TODO: figure out when this should actually release
       ],
+      interactions: [
+        {
+          id: "unmask_the_killer",
+          unlock_if: [
+            { slot_solved: "dtm01" }, // Dead Thief supermeta
+          ],
+        },
+      ],
       unlock_if: [
         { interaction_completed: "meet_billie" },
         { interaction_completed: "catch_the_thief" },
@@ -383,87 +471,18 @@ const HUNT: Hunt = {
       puzzles: [
         // TODO: single piece of endgame?
       ],
-      unlock_if: [
-        { interaction_completed: "meet_katrina" },
-        { interaction_completed: "meet_gladys" },
-        { interaction_completed: "meet_carter" },
-        { interaction_completed: "meet_papa" },
-        { interaction_completed: "unmask_the_killer" },
+      interactions: [
+        {
+          id: "find_the_diamond",
+          unlock_if: [
+            { interaction_completed: "meet_katrina" },
+            { interaction_completed: "meet_gladys" },
+            { interaction_completed: "meet_carter" },
+            { interaction_completed: "meet_papa" },
+            { interaction_completed: "unmask_the_killer" },
+          ],
+        },
       ],
-    },
-  ],
-  interactions: [
-    // These four interviews are the MATE-style in-site interactions which
-    // become available after each of the four metas which open a side
-    // investigation.  Each should become immediately available to teams upon
-    // solving the corresponding metapuzzle.
-    {
-      id: "interview_at_the_boardwalk",
-      unlock_if: [{ slot_solved: "sdm01" }],
-    },
-    {
-      id: "interview_at_the_jewelry_store",
-      unlock_if: [{ slot_solved: "sdm02" }],
-    },
-    {
-      id: "interview_at_the_casino",
-      unlock_if: [{ slot_solved: "sdm03" }],
-    },
-    {
-      id: "interview_at_the_art_gallery",
-      unlock_if: [{ slot_solved: "sdm04" }],
-    },
-
-    {
-      // This is a brief in-person interaction which is expected to happen
-      // after teams solve the Shadow Diamond super but before they go on the
-      // funaround.
-      id: "meet_billie",
-      unlock_if: [{ slot_solved: "sdm05" }],
-    },
-    {
-      // This is a longer in-person interaction which is expected to happen
-      // after teams complete the funaround.
-      id: "catch_the_thief",
-      unlock_if: [{ interaction_completed: "meet_billie" }],
-    },
-
-    // The four interactions at the ends of each side investigation are live
-    // interactions, not in-site interactions, but we might have
-    // prerecorded video for remote solvers/folks missing at the time, so
-    // they might need URLs anyway
-    {
-      id: "meet_katrina",
-      unlock_if: [
-        { slot_solved: "som01" }, // stakeout meta
-      ],
-    },
-    {
-      id: "meet_gladys",
-      unlock_if: [
-        { slot_solved: "ptm09" }, // papertrail super
-      ],
-    },
-    {
-      id: "meet_carter",
-      unlock_if: [
-        { slot_solved: "bgm04" }, // background check super
-      ],
-    },
-    {
-      id: "meet_papa",
-      unlock_if: [
-        { slot_solved: "ism01", answer_count: 2 },
-      ],
-    },
-    {
-      id: "unmask_the_killer",
-      unlock_if: [
-        { oneOf: [] }, // TODO: replace slot with The Dead Thief supermeta, once we know the final slot id
-      ],
-    },
-    {
-      id: "find_the_diamond",
       unlock_if: [
         { interaction_completed: "meet_katrina" },
         { interaction_completed: "meet_gladys" },

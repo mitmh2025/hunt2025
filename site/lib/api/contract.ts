@@ -35,15 +35,16 @@ const PuzzleSlotSchema = z.object({
   is_meta: z.boolean().optional(),
 });
 
+export const InteractionStateSchema = z.object({
+  state: z.enum(["unlocked", "running", "completed"]),
+  result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
+});
+
 const RoundStateSchema = z.object({
   title: z.string(),
   slots: z.record(z.string(), PuzzleSlotSchema),
   gates: z.array(z.string()).optional(),
-});
-
-export const InteractionStateSchema = z.object({
-  state: z.enum(["unlocked", "running", "completed"]),
-  result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
+  interactions: z.record(slug, InteractionStateSchema).optional(),
 });
 
 export const TeamStateSchema = z.object({
@@ -52,7 +53,6 @@ export const TeamStateSchema = z.object({
   currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
-  interactions: z.record(slug, InteractionStateSchema).optional(),
 });
 
 const SubmitGuessSchema = z.object({

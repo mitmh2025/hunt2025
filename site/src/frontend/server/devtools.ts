@@ -15,18 +15,19 @@ export type DevtoolsGate = {
   open: boolean;
 };
 
+export type DevtoolsInteraction = {
+  slug: string;
+  state: "locked" | "unlocked" | "running" | "completed";
+};
+
 export type DevtoolsRound = {
   slug: string;
   title: string;
   metas: DevtoolsPuzzle[];
   puzzles: DevtoolsPuzzle[];
   gates: DevtoolsGate[];
+  interactions: DevtoolsInteraction[];
   state: "locked" | "unlocked";
-};
-
-export type DevtoolsInteraction = {
-  slug: string;
-  state: "locked" | "unlocked" | "running" | "completed";
 };
 
 export type DevtoolsState = {
@@ -34,7 +35,6 @@ export type DevtoolsState = {
   teamName: string;
   currency: number;
   rounds: DevtoolsRound[];
-  interactions: DevtoolsInteraction[];
 };
 
 function devtoolsPuzzleForSlot(
@@ -86,15 +86,16 @@ export function devtoolsState(teamState: TeamState) {
               open: !!teamState.rounds[round.slug]?.gates?.includes(gate.id),
             };
           }),
+          interactions: (round.interactions ?? []).map((interaction) => {
+            const state =
+              teamState.rounds[round.slug]?.interactions?.[interaction.id]
+                ?.state ?? "locked";
+            return {
+              slug: interaction.id,
+              state,
+            };
+          }),
           state: round.slug in teamState.rounds ? "unlocked" : "locked",
-        };
-      }),
-      interactions: HUNT.interactions.map((interaction) => {
-        const state =
-          teamState.interactions?.[interaction.id]?.state ?? "locked";
-        return {
-          slug: interaction.id,
-          state,
         };
       }),
     };

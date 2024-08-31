@@ -68,6 +68,8 @@ export type Round = {
 
   gates?: Gate[]; // A set of gates which are owned by this round
 
+  interactions?: Interaction[];
+
   // Notes on expected Round unlock_if behaviors:
   // * The first round will be unlocked by default.
   // * Each side investigation will be unlocked when a particular meta is
@@ -86,5 +88,4 @@ export type Interaction = {
 // A full description of a hunt.
 export type Hunt = {
   rounds: Round[];
-  interactions: Interaction[];
 };

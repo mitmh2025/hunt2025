@@ -1,6 +1,7 @@
 import React from "react";
 import { css, styled } from "styled-components";
 import {
+  type DevtoolsGate,
   type DevtoolsInteraction,
   type DevtoolsPuzzle,
   type DevtoolsRound,
@@ -64,6 +65,36 @@ const PuzzleBox = ({
   );
 };
 
+const GateBox = styled.div<{ $open: DevtoolsGate["open"] }>`
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: ${({ $open }) => ($open ? "green" : "black")};
+  border: 1px solid black;
+  margin: 2px;
+`;
+
+const InteractionBox = styled.div<{ $state: DevtoolsInteraction["state"] }>`
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: ${({ $state }) => colorForInteractionState($state)};
+  border: 1px solid black;
+  margin: 2px;
+`;
+
+const Interaction = ({ interaction }: { interaction: DevtoolsInteraction }) => {
+  return (
+    <a key={interaction.slug} href={`/interactions/${interaction.slug}`}>
+      <InteractionBox
+        key={interaction.slug}
+        $state={interaction.state}
+        title={interaction.slug}
+      />
+    </a>
+  );
+};
+
 function countByState<T extends string>({
   items,
   keys,
@@ -98,6 +129,26 @@ const RoundContainer = styled.div<{ $state: "locked" | "unlocked" }>`
       : `rgba(208, 208, 208, ${bgOpacity})`};
 `;
 
+const GatesRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const GatesLabel = styled.span`
+  font-size: 12px;
+`;
+const Gates = ({ gates }: { gates: DevtoolsGate[] }) => {
+  return (
+    <GatesRow>
+      <GatesLabel>Gates:</GatesLabel>
+      {gates.map((g) => (
+        <GateBox key={g.id} $open={g.open} />
+      ))}
+    </GatesRow>
+  );
+};
+
 const Round = ({ round }: { round: DevtoolsRound }) => {
   const counts = countByState({
     items: [...round.metas, ...round.puzzles],
@@ -116,14 +167,18 @@ const Round = ({ round }: { round: DevtoolsRound }) => {
       </DevPaneItemHeader>
       <div>
         <>
-          {round.metas.map((mp) => (
-            <PuzzleBox key={mp.slot} puzzle={mp} is_meta={true} />
-          ))}
           {round.puzzles.map((p) => (
             <PuzzleBox key={p.slot} puzzle={p} is_meta={false} />
           ))}
+          {round.metas.map((mp) => (
+            <PuzzleBox key={mp.slot} puzzle={mp} is_meta={true} />
+          ))}
+          {round.interactions.map((i) => (
+            <Interaction key={i.slug} interaction={i} />
+          ))}
         </>
       </div>
+      {round.gates.length > 0 ? <Gates gates={round.gates} /> : undefined}
     </RoundContainer>
   );
 };
@@ -149,54 +204,6 @@ function colorForInteractionState(state: DevtoolsInteraction["state"]) {
     return "yellow";
   }
 }
-
-const InteractionBox = styled.div<{ $state: DevtoolsInteraction["state"] }>`
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: ${({ $state }) => colorForInteractionState($state)};
-  border: 1px solid black;
-  margin: 2px;
-`;
-
-const Interaction = ({ interaction }: { interaction: DevtoolsInteraction }) => {
-  return (
-    <a key={interaction.slug} href={`/interactions/${interaction.slug}`}>
-      <InteractionBox
-        key={interaction.slug}
-        $state={interaction.state}
-        title={interaction.slug}
-      />
-    </a>
-  );
-};
-
-const InteractionsSection = ({
-  interactions,
-}: {
-  interactions: DevtoolsInteraction[];
-}) => {
-  const counts = countByState({
-    items: interactions,
-    keys: ["locked", "unlocked", "running", "completed"],
-  });
-  return (
-    <>
-      <DevPaneItemHeader>
-        Interactions{" "}
-        <CountsSpan
-          title={`${counts.locked} locked\n${counts.unlocked} unlocked\n${counts.running} running\n${counts.completed} completed`}
-        >
-          {counts.locked}, {counts.unlocked}, {counts.running},{" "}
-          {counts.completed}
-        </CountsSpan>
-      </DevPaneItemHeader>
-      {interactions.map((i) => (
-        <Interaction key={i.slug} interaction={i} />
-      ))}
-    </>
-  );
-};
 
 const DevPaneContainer = styled.div`
   border: 1px solid var(--gray-400);
@@ -227,7 +234,6 @@ const DevPane = ({ state }: { state: DevtoolsState | undefined }) => {
         currency
       </h3>
       <RoundsSection rounds={state.rounds} />
-      <InteractionsSection interactions={state.interactions} />
       <h3 style={{ margin: 0, borderTop: "1px solid #888" }}>Actions</h3>
       <ul style={{ margin: 0 }}>
         <li>
