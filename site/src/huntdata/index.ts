@@ -1,6 +1,6 @@
 // This is the canonical description of the structure of our hunt, with a full
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
-import type { Hunt } from "./types";
+import { type Hunt, type PuzzleSlot } from "./types";
 
 // prettier-ignore
 const HUNT: Hunt = {
@@ -493,5 +493,28 @@ const HUNT: Hunt = {
     },
   ],
 };
+
+type SlotLookup = {
+  roundSlug: string;
+  slot: PuzzleSlot;
+};
+
+// For quickly looking up where a particular slug is used in HUNT.
+export function generateSlugToSlotMap(hunt: Hunt): Map<string, SlotLookup> {
+  const slugToSlot = new Map<string, SlotLookup>();
+  hunt.rounds.forEach((round) => {
+    round.puzzles.forEach((slot) => {
+      const slug = slot.slug ?? slot.id;
+      const existing = slugToSlot.get(slug);
+      if (existing) {
+        throw new Error(
+          `puzzle slug ${slug} used in both slot ${existing.slot.id} and ${slot.id}`,
+        );
+      }
+      slugToSlot.set(slug, { roundSlug: round.slug, slot });
+    });
+  });
+  return slugToSlot;
+}
 
 export default HUNT;

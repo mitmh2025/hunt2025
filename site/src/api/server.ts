@@ -34,6 +34,7 @@ import {
 import { frontendContract } from "../../lib/api/frontend_contract";
 import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
+import { generateSlugToSlotMap } from "../huntdata";
 import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -200,6 +201,7 @@ export function getRouter({
 
   const s = initServer();
 
+  const slugToSlotMap = generateSlugToSlotMap(hunt);
   const getTeamState = async (
     team_id: number,
     trx: Knex.Transaction,
@@ -512,17 +514,28 @@ export function getRouter({
         handler: async ({ params: { slug }, body: { guess }, req }) => {
           const team_id = req.user as number;
           const puzzle = PUZZLES[slug];
+          const slot = slugToSlotMap.get(slug);
+          if (slot === undefined) {
+            // If a puzzle is not assigned to a slot in the hunt, you should not be able to submit
+            // guesses to it nor receive prizes for correct answers, even if the slug happens to be
+            // typeset/exist.
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+
+          const defaultPrize = slot.slot.is_meta ? 0 : 1;
+          const prize = slot.slot.prize ?? defaultPrize;
           let canonical_input = canonicalizeInput(guess);
           const answers = puzzle
-            ? "answer" in puzzle
-              ? [{ answer: puzzle.answer, prize: puzzle.prize, submit_if: [] }]
-              : puzzle.answers
+            ? [puzzle.answer]
             : process.env.NODE_ENV === "development"
-              ? [{ answer: "PLACEHOLDER ANSWER", prize: 1, submit_if: [] }]
+              ? ["PLACEHOLDER ANSWER"]
               : [];
-          // TODO: Figure out the semantics of a correct answer with false submit_if
+
           const correct_answer = answers.find(
-            ({ answer }) => canonicalizeInput(answer) === canonical_input,
+            (answer) => canonicalizeInput(answer) === canonical_input,
           );
           // TODO: Make sure that we retry/wait for conflicts.
 
@@ -547,7 +560,7 @@ export function getRouter({
               let responseText = "Incorrect";
               let status: GuessStatus = "incorrect";
               if (correct_answer) {
-                canonical_input = correct_answer.answer;
+                canonical_input = correct_answer;
                 responseText = "Correct!";
                 status = "correct";
                 const entry = await appendActivityLog(
@@ -555,7 +568,7 @@ export function getRouter({
                     team_id,
                     slug,
                     type: "puzzle_solved",
-                    currency_delta: correct_answer.prize ?? 0,
+                    currency_delta: prize,
                     data: {
                       answer: canonical_input,
                     },

@@ -48,18 +48,14 @@ export async function seed(knex: Knex): Promise<void> {
   await knex("team_puzzle_guesses").insert(
     Array.from(slugs).flatMap((slug) => {
       const puzzle = PUZZLES[slug];
-      const answers = puzzle
-        ? "answer" in puzzle
-          ? [{ answer: puzzle.answer, submit_if: [] }]
-          : puzzle.answers
-        : [{ answer: "PLACEHOLDER ANSWER", submit_if: [] }];
-      return answers.map((answer) => ({
+      const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
+      return {
         team_id: usernameToTeamId.get("solved"),
         slug,
-        canonical_input: answer.answer,
+        canonical_input: answer,
         status: "correct",
         response: "Correct!",
-      }));
+      };
     }),
   );
 

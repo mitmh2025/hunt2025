@@ -274,20 +274,12 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     </h3>
   ));
 
-  const answers =
-    "answer" in puzzle
-      ? [puzzle.answer]
-      : puzzle.answers.map((ansObject) => ansObject.answer);
-  const answerLabel = answers.length > 1 ? "Answers" : "Answer";
-
+  const answer = puzzle.answer;
   const node = (
     <div>
       <h1>Solution to {title}</h1>
       <h2>
-        {answerLabel}:{" "}
-        {answers.map((answer, i) => (
-          <Spoiler key={i}>{answer}</Spoiler>
-        ))}
+        Answer: <Spoiler>{answer}</Spoiler>
       </h2>
       <h3>By {authors}</h3>
       <h3>Edited by {editors}</h3>
