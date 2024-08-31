@@ -1,8 +1,6 @@
 import type { FunctionComponent } from "react";
 // Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
-import type { Condition } from "../../huntdata/types";
 import type { Entrypoint } from "../server/assets";
-// An expression indicating the nature of a dependency.
 
 export type Hint = {
   order: number;
@@ -38,7 +36,6 @@ export type PuzzleDefinition = {
   authors: string[];
   editors: string[];
   additional_credits: AdditionalCredit[];
-  submit_constraints?: Condition[][]; // Parallel array to answers
   content: Content;
   solution: Content;
   hints: Hint[];
