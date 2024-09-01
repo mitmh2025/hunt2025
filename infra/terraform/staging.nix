@@ -61,6 +61,15 @@ in {
           "80" # HTTP
           "443" # HTTPS
           "8883" # MQTTs
+          "8889" # MediaMTX WebRTC
+        ];
+      }
+      {
+        protocol = "udp";
+        ports = [
+          "8000" # MediaMTX RTP
+          "8001" # MediaMTX RTCP
+          "8189" # MediaMTX WebRTC
         ];
       }
     ];
