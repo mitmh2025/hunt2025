@@ -4,6 +4,7 @@ let
     "auth"
     "things"
     "tix"
+    "radio"
   ];
 in {
   resource.google_service_account.staging = {
@@ -61,7 +62,6 @@ in {
           "80" # HTTP
           "443" # HTTPS
           "8883" # MQTTs
-          "8889" # MediaMTX WebRTC
         ];
       }
       {
