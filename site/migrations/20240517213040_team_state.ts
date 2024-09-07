@@ -1,4 +1,5 @@
 import type { Knex } from "knex";
+import { generatedPrimaryKey } from "../lib/migration_helper";
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema
@@ -29,7 +30,7 @@ export async function up(knex: Knex): Promise<void> {
       // TODO: Track solve time?
     })
     .createTable("team_puzzle_guesses", function (table) {
-      table.increments("id");
+      generatedPrimaryKey(knex, table, "id");
       table
         .integer("team_id")
         .notNullable()
