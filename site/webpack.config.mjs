@@ -86,6 +86,16 @@ export default function createConfigs(_env, argv) {
     },
   });
 
+  const opusRule = (outputPathPrefix) => ({
+    test: /\.opus$/,
+    type: "asset/resource",
+    generator: {
+      outputPath: `${outputPathPrefix}`,
+      publicPath: ASSET_PATH,
+      filename: "[hash][ext][query]",
+    },
+  });
+
   const fontRule = (outputPathPrefix) => ({
     test: /\.ttf$/,
     type: "asset/resource",
@@ -138,6 +148,9 @@ export default function createConfigs(_env, argv) {
         // the results of the browser build bundles
         imageRule("static/"),
         mp3Rule("static/"),
+        // Opus files should only be used by the radio and thus should never be
+        // imported by browser entrypoints, only server entrypoints.
+        opusRule("static/"),
         fontRule("static/"),
       ],
       // Add modules as appropriate
