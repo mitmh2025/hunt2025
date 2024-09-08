@@ -1,5 +1,10 @@
 import { type InteractionGraph } from "../types";
 
+const stubSoundFileset = {
+  mp3: "",
+  opus: "",
+};
+
 type CasinoState = {
   points: number;
 };
@@ -158,7 +163,7 @@ const CasinoInteractionGraph: InteractionGraph<
       speaker: "billie",
       text: "I find the card sharks at the back of the casino.  WIth players like these, you have two choices – you can take a risk and try to bluff them, or just play it straight.",
       textBubbleType: "thought",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "1",
     },
@@ -166,7 +171,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "1",
       speaker: "shark_one",
       text: "The manager tells us you’re interested in talking with us. We haven’t seen you at this fine establishment before.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 4000,
       next: "1-p1",
     },
@@ -174,7 +179,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "1-p1",
       speaker: "shark_two",
       text: "We’re taking a break from the baccarat table. Happy to have a chinwag … if you play your cards right.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 5000,
       choices: [
         {
@@ -193,7 +198,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "2a",
       speaker: "billie",
       text: line_2a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "2a-p1",
     },
@@ -201,7 +206,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "2a-p1",
       speaker: "shark_one",
       text: "Not THE Billie Diamond, the notorious Rakish Rogue of the Rio Rancho?",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "2a-p2",
     },
@@ -209,7 +214,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "2a-p2",
       speaker: "shark_two",
       text: "I heard you broke the Casino de Monte Carlo!",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "2a-p3",
     },
@@ -217,7 +222,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "2a-p3",
       speaker: "shark_one",
       text: "Oh, yes, you would enjoy playing with Carter.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3500,
       choices: [
         {
@@ -237,7 +242,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "3a",
       speaker: "billie",
       text: line_3a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 7000,
       next: "3a-p1",
     },
@@ -245,7 +250,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "3a-p1",
       speaker: "shark_one",
       text: "Ever since he’s been back, Carter has been gambling up a storm. He’s a regular at this casino, and he’ll play the ponies. He’s not one to turn up a good wager. Are you looking to go head to head with Ferdie?",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 15000,
       choices: choices_4,
     },
@@ -254,7 +259,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "3b",
       speaker: "billie",
       text: line_3b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       next: "3b-p1",
     },
@@ -262,7 +267,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "3b-p1",
       speaker: "shark_one",
       text: "You can drop the act. But I’ll give you this – I bought your bluff at first. Buy us a round and we can discuss your real interest in Carter.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "3b-p2",
     },
@@ -271,7 +276,7 @@ const CasinoInteractionGraph: InteractionGraph<
       speaker: "billie",
       text: "Should have stuck with it.  Oh well.  It’s going to cost Papa a few drinks.  I can live with that.",
       textBubbleType: "thought",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       choices: choices_4,
     },
@@ -280,7 +285,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "4a",
       speaker: "billie",
       text: line_4a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "4a-p1",
     },
@@ -288,7 +293,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "4a-p1",
       speaker: "shark_two",
       text: "You’re persistent, I’ll give you that",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       next: "4a-p2",
     },
@@ -296,7 +301,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "4a-p2",
       speaker: "shark_one",
       text: "Hmm, I wonder.  Maybe it’s not Carter’s gambling you’re really interested in.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 7000,
       choices: choices_5,
     },
@@ -305,7 +310,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "4b",
       speaker: "billie",
       text: line_4b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "4b-p1",
     },
@@ -313,7 +318,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "4b-p1",
       speaker: "shark_two",
       text: "You’d be talking about the gem, then.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       next: "4b-p2",
     },
@@ -321,7 +326,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "4b-p2",
       speaker: "shark_one",
       text: "You’d be talking about the gem, then.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       choices: choices_5,
     },
@@ -330,7 +335,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "5a",
       speaker: "billie",
       text: line_5a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5a-p1",
     },
@@ -338,7 +343,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "5a-p1",
       speaker: "shark_two",
       text: "Hmm, I smell a bluff.  Bluffs make me thirsty.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 5000,
       next: "5a-p2",
     },
@@ -346,7 +351,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "5a-p2",
       speaker: "shark_one",
       text: "Yes, I’m also feeling a bit parched. I see your drink is dry too.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 6000,
       choices: choices_6,
     },
@@ -355,7 +360,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "5b",
       speaker: "billie",
       text: line_5b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5b-p1",
     },
@@ -363,7 +368,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "5b-p1",
       speaker: "shark_two",
       text: "Acquiring the Shadow Diamond was quite the coup for Carter.  I can see why the Finster woman wants to tie the knot with him.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 13000,
       next: "5b-p2",
     },
@@ -371,7 +376,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "5b-p2",
       speaker: "shark_one",
       text: "It was a gamble that paid off for him, that’s for sure. Hmm… I’m feeling a bit parched. I see your drink is dry too.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 13000,
       choices: choices_6,
     },
@@ -380,7 +385,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "6a",
       speaker: "billie",
       text: line_6a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "6a-p1",
     },
@@ -388,7 +393,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "6a-p1",
       speaker: "shark_two",
       text: "Thanks, pardner. We appreciate the offer, but it’s unnecessary.  We already have it covered.  But as an expression of good will, drinks are on us.  And we’ll give you this – when Carter was here earlier, it was to see the Casino owner.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 15000,
       next: "11",
     },
@@ -397,7 +402,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "6b",
       speaker: "billie",
       text: line_6b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "6b-p1",
     },
@@ -405,7 +410,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "6b-p1",
       speaker: "shark_two",
       text: "Thanks.  We’ll take you up on that offer.  We never turn down a free drink.  And we hate to see a gambler tilt, so we’ll give you this – when Carter was here earlier, it was to see the Casino owner.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 15000,
       next: "11",
     },
@@ -414,7 +419,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "2b",
       speaker: "billie",
       text: line_2b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 15000,
       next: "2b-p1",
     },
@@ -422,7 +427,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "2b-p1",
       speaker: "shark_one",
       text: "We don’t have much time for dicks, especially ones who haven’t bought us a drink.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 6000,
       choices: [
         {
@@ -442,7 +447,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "7a",
       speaker: "billie",
       text: line_7a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 7000,
       next: "7a-p1",
     },
@@ -450,7 +455,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "7a-p1",
       speaker: "shark_two",
       text: "I like a person who plays a strong hand.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       next: "7a-p2",
     },
@@ -458,7 +463,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "7a-p2",
       speaker: "shark_one",
       text: "I’ve heard of you.  Word is you’re a straight shooter.  If the cards fall your way, maybe we can do business.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       choices: choices_8,
     },
@@ -467,7 +472,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "7b",
       speaker: "billie",
       text: line_7b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 6000,
       next: "7b-p1",
     },
@@ -475,7 +480,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "7b-p1",
       speaker: "shark_two",
       text: "A real gambler never shows weakness",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       next: "7b-p2",
     },
@@ -483,7 +488,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "7b-p2",
       speaker: "shark_one",
       text: "Now we know it’s worth something to you.  Big mistake, chum.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 4500,
       choices: choices_8,
     },
@@ -492,7 +497,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "8a",
       speaker: "billie",
       text: line_8a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "8a-p1",
     },
@@ -500,7 +505,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "8a-p1",
       speaker: "shark_one",
       text: "Nice play.  Ever since he’s been back, Carter has been gambling up a storm.  He’s a regular at this casino, and he’ll play the ponies.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       choices: choices_9,
     },
@@ -509,7 +514,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "8b",
       speaker: "billie",
       text: line_8b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "8b-p1",
     },
@@ -517,7 +522,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "8b-p1",
       speaker: "shark_one",
       text: "Even better.  Nothing better than taking money from someone who doesn’t care if they lose it.  I’ll say Carter is a regular around here.  Buy us another round and maybe we can tell you more.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 12000,
       choices: choices_9,
     },
@@ -526,7 +531,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "9a",
       speaker: "billie",
       text: line_9a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "9a-p1",
     },
@@ -534,7 +539,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "9a-p1",
       speaker: "shark_two",
       text: "Yeah, acquiring the Shadow Diamond was quite the coup for Carter. I can see why the Finster woman wants to tie the knot with him.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "9a-p2",
     },
@@ -542,7 +547,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "9a-p2",
       speaker: "shark_one",
       text: "That diamond opened many doors for him, that’s for sure. Hmm… I’m feeling a bit parched. I see your drink is dry too.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       choices: choices_10,
     },
@@ -551,7 +556,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "9b",
       speaker: "billie",
       text: line_9b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "9b-p1",
     },
@@ -559,7 +564,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "9b-p1",
       speaker: "shark_two",
       text: "You would think so.  But thinking makes me thirsty.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3500,
       next: "9b-p2",
     },
@@ -567,7 +572,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "9b-p2",
       speaker: "shark_one",
       text: "Hmm… I’m also feeling a bit parched. I see your drink is dry too.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 6000,
       choices: choices_10,
     },
@@ -576,7 +581,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "10a",
       speaker: "billie",
       text: line_10a,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "10a-p1",
     },
@@ -584,7 +589,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "10a-p1",
       speaker: "shark_one",
       text: "Ha!  In that case, it would be our pleasure.  And you’d probably want to know that when Carter was here earlier, it was to see the Casino owner.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "11",
     },
@@ -593,7 +598,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "10b",
       speaker: "billie",
       text: line_10b,
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "10b-p1",
     },
@@ -601,7 +606,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "10b-p1",
       speaker: "shark_two",
       text: "I’ll be sure to thank him.  And to thank you, I’ll tell you that Carter met with the Casino owner earlier today.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "11",
     },
@@ -611,7 +616,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11",
       speaker: "billie",
       text: "Why did Carter meet with the Casino owner?",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       next(state: CasinoState) {
         if (state.points === 5) {
@@ -629,7 +634,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-weak",
       speaker: "shark_two",
       text: "That’s going to cost you.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 2500,
       next: "11-weak-p1",
     },
@@ -637,7 +642,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-weak-p1",
       speaker: "billie",
       text: "Whatever it takes. You can thank Papa for the expense account.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 6000,
       next: "11-weak-p2",
     },
@@ -645,7 +650,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-weak-p2",
       speaker: "shark_one",
       text: "You’re not ready for games with high stakes.  But since you’ve bought our next round of drinks, I’ll feed you this crumb: Ferdinand, like you, is in over his head.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 13000,
       next: "11-weak-p3",
     },
@@ -653,7 +658,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-weak-p3",
       speaker: "shark_two",
       text: "I’ve heard he’s racked up some major IOUs.  You should leave the casino before you get in similar trouble.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "11-weak-p4",
     },
@@ -661,7 +666,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-weak-p4",
       speaker: "shark_one",
       text: "Here, keep this souvenir as a reminder.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "final",
     },
@@ -671,7 +676,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-strong",
       speaker: "shark_one",
       text: "You’re no minnow, I’ll give you that.  Let’s just say that even when he was young, Ferdinand had a streak of the gambler in him.  He must have picked up some bad habits on his years of travel across the Atlantic.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 15000,
       next: "11-strong-p1",
     },
@@ -679,7 +684,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-strong-p1",
       speaker: "shark_two",
       text: "He doubles down on bad beats.  He plays loose and I’ve heard he’s racked up some major IOUs.  Flashed the Shadow Diamond to the owner to show he’s good for it.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 12000,
       next: "11-strong-p2",
     },
@@ -687,7 +692,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-strong-p2",
       speaker: "shark_one",
       text: "Here’s my card — from one shark to another.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 5000,
       next: "final",
     },
@@ -697,7 +702,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-perfect",
       speaker: "shark_one",
       text: "I can tell you don’t play games when you’re playing games, so I’ll lay my cards on the table.  Even when he was young, Ferdinand had a streak of the gambler in him.  Before he went on his years of travel across the Atlantic, he had it under control.  Moreover, he seemed to have the devil’s own luck.  But when he returned, he was a changed man – at least, a changed gambler.  Carter isn’t the man he used to be.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 24000,
       next: "11-perfect-p1",
     },
@@ -705,7 +710,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-perfect-p1",
       speaker: "shark_two",
       text: "He doubles down on bad beats.  His lucky streaks run drier than the Sahara.  He plays loose and I’ve heard he’s in over his head with debt.  When he was here earlier, I heard he was flashing the Shadow Diamond to show the owner he was good for it.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 14000,
       next: "11-perfect-p2",
     },
@@ -713,7 +718,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-perfect-p2",
       speaker: "billie",
       text: "Thanks.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 2000,
       next: "11-perfect-p3",
     },
@@ -721,7 +726,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-perfect-p3",
       speaker: "shark_one",
       text: "Here’s my card — from one shark to another.",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 2000,
       next: "final",
     },
@@ -731,7 +736,7 @@ const CasinoInteractionGraph: InteractionGraph<
       speaker: "billie",
       text: "Hmm… This makes me wonder if the Carter & Bros. edifice is a house of cards. I think a background check of Mr. Ferdinand Carter is in order. We should see what he was up to in Europe before he returned to the States.",
       textBubbleType: "thought",
-      sound: "", // TODO: audio
+      sound: stubSoundFileset, // TODO: audio
       timeout_msec: 15000,
       finalState(state: CasinoState) {
         if (state.points === 5) {

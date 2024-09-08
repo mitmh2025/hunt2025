@@ -3,6 +3,25 @@ export type NodeId = string;
 // Custom presentation of the text for the given line.
 export type TextEffect = "span"; // Take all horizontal space available.
 
+// The asset paths of the sound clip that should be played while this node is
+// active.
+export type SoundFileset = {
+  // The file at `mp3` should be encoded at 48k samplerate, 128kbps bitrate.  We
+  // use mp3 in all browser clients for maximum compatibility, since it's the
+  // only lossy audio codec that is supported without caveats in all browsers.
+  // (To wit: Safari supports Opus only in a WebM container, and we're not doing
+  // video.  Safari also supports Vorbis, but not the Ogg container format.
+  // Firefox supports AAC only if you have a platform codec installed, and only
+  // in mp4 files.  FLAC is widely supported but lossless.  WAV is widely
+  // supported but uncompressed.)
+  mp3: string;
+
+  // The file at `opus` should be encoded at 24k samplerate and automatic bitrate.
+  // This file will be cached on (limited!) local storage by the radio, which is why we aggressively
+  // optimize for size.
+  opus: string;
+};
+
 // Function which can decide which node to proceed to based on
 export type StatefulDestinationSelector<T> = (state: T) => NodeId;
 
@@ -48,9 +67,8 @@ export type InteractionGraphNodeShared<S> = {
   // If present, an additional presentation effect for the text
   textEffect?: TextEffect;
 
-  // If present, the asset path of the sound clip that should be played while
-  // this node is active.
-  sound: string;
+  // What sound file(s) should be played as this node is presented?
+  sound: SoundFileset;
 
   // The amount of time, in milliseconds, allotted for this particular view
   timeout_msec: number;
