@@ -10,9 +10,9 @@ import { calculateTeamState } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 
 class WebpackMigrationSource {
-  context: webpack.Context;
+  context: Rspack.Context;
 
-  constructor(context: webpack.Context) {
+  constructor(context: Rspack.Context) {
     this.context = context;
   }
 
@@ -30,9 +30,9 @@ class WebpackMigrationSource {
 }
 
 class WebpackSeedSource {
-  context: webpack.Context;
+  context: Rspack.Context;
 
-  constructor(context: webpack.Context) {
+  constructor(context: Rspack.Context) {
     this.context = context;
   }
 

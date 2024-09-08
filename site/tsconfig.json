@@ -11,7 +11,7 @@
       "node",
       "react/experimental",
       "react-dom/experimental",
-      "webpack/module"
+      "@rspack/core/module"
     ]
   },
   "exclude": ["./worker/**/*"]

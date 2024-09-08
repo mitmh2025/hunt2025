@@ -72,8 +72,8 @@ export default tseslint.config(
   },
   prettierConfig,
   {
-    // Webpack configs run under node and can use globals like console
-    files: ["*webpack.config.mjs"],
+    // Rspack configs run under node and can use globals like console
+    files: ["rspack.config.mjs"],
     languageOptions: {
       globals: {
         ...globals.node,
@@ -89,7 +89,7 @@ export default tseslint.config(
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/restrict-template-expressions": ["off"], // This rule is more annoying than useful
-      // Either TypeScript or Webpack seem to be smoothing over the distinction
+      // Either TypeScript or Rspack seem to be smoothing over the distinction
       // between objects under default imports and named imports.
       "import/no-named-as-default-member": ["off"],
       // This rule does not seem to work with eslint 9 and TypeScript will validate it anyway

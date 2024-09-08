@@ -1,13 +1,11 @@
 import path from "path";
 import url from "url";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import { WebpackManifestPlugin } from "webpack-manifest-plugin";
-import nodeExternals from "webpack-node-externals";
+import rspack from "@rspack/core";
+import { RspackManifestPlugin } from "rspack-manifest-plugin";
 
 const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
 const outputDirname = path.join(currentDirname, "dist");
 const outputManifestDirname = outputDirname;
-const staticAssetOutputDirname = path.join(outputDirname, "static");
 
 const jsManifestFilename = path.join(outputManifestDirname, "js-manifest.json");
 const cssManifestFilename = path.join(
@@ -23,7 +21,7 @@ const workerManifestFilename = path.join(
   "worker-manifest.json",
 );
 
-const ASSET_PATH = process.env.ASSET_PATH || "/static/";
+const ASSET_PATH = process.env.ASSET_PATH || "/";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Used by mfng, if we add it back in
 class LogValue {
@@ -40,8 +38,8 @@ class LogValue {
 
 /**
  * @param {unknown} _env
- * @param {{readonly mode?: import('webpack').Configuration['mode']}} argv
- * @return {import('webpack').Configuration[]}
+ * @param {{readonly mode?: import('@rspack/core').Configuration['mode']}} argv
+ * @return {import('@rspack/core').Configuration[]}
  */
 export default function createConfigs(_env, argv) {
   const { mode } = argv;
@@ -50,7 +48,7 @@ export default function createConfigs(_env, argv) {
   const cssRule = {
     test: /\.css$/,
     use: [
-      MiniCssExtractPlugin.loader,
+      rspack.CssExtractRspackPlugin.loader,
       {
         loader: "css-loader",
         options: {
@@ -66,45 +64,25 @@ export default function createConfigs(_env, argv) {
     ],
   };
 
-  const imageRule = (outputPathPrefix) => ({
+  const imageRule = {
     test: /\.(jpg|png|svg)$/,
     type: "asset/resource",
-    generator: {
-      outputPath: `${outputPathPrefix}`,
-      publicPath: ASSET_PATH,
-      filename: "[hash][ext][query]",
-    },
-  });
+  };
 
-  const mp3Rule = (outputPathPrefix) => ({
+  const mp3Rule = {
     test: /\.mp3$/,
     type: "asset/resource",
-    generator: {
-      outputPath: `${outputPathPrefix}`,
-      publicPath: ASSET_PATH,
-      filename: "[hash][ext][query]",
-    },
-  });
+  };
 
-  const opusRule = (outputPathPrefix) => ({
+  const opusRule = {
     test: /\.opus$/,
     type: "asset/resource",
-    generator: {
-      outputPath: `${outputPathPrefix}`,
-      publicPath: ASSET_PATH,
-      filename: "[hash][ext][query]",
-    },
-  });
+  };
 
-  const fontRule = (outputPathPrefix) => ({
+  const fontRule = {
     test: /\.ttf$/,
     type: "asset/resource",
-    generator: {
-      outputPath: `${outputPathPrefix}`,
-      publicPath: ASSET_PATH,
-      filename: "[hash][ext][query]",
-    },
-  });
+  };
 
   const serverSwcLoader = {
     // .swcrc can be used to configure swc
@@ -125,6 +103,8 @@ export default function createConfigs(_env, argv) {
       // If we hook assets up to a CDN:
       // publicPath: 'https://cdn.example.com/assets/[fullhash]/',
       filename: "[name]-bundle.js",
+      assetModuleFilename: "static/[hash][ext][query]",
+      cssFilename: "static/[hash][ext][query]",
       publicPath: ASSET_PATH,
       libraryTarget: "module",
       chunkFormat: "module",
@@ -133,6 +113,12 @@ export default function createConfigs(_env, argv) {
       ) => info.absoluteResourcePath,
     },
     module: {
+      generator: {
+        "asset/resource": {
+          filename: "static/[hash][ext][query]",
+          publicPath: ASSET_PATH,
+        },
+      },
       rules: [
         {
           // Work around bug in websocket-express
@@ -146,12 +132,12 @@ export default function createConfigs(_env, argv) {
         cssRule,
         // TODO: support importing other kinds of assets, and aliases for
         // the results of the browser build bundles
-        imageRule("static/"),
-        mp3Rule("static/"),
+        imageRule,
+        mp3Rule,
         // Opus files should only be used by the radio and thus should never be
         // imported by browser entrypoints, only server entrypoints.
-        opusRule("static/"),
-        fontRule("static/"),
+        opusRule,
+        fontRule,
       ],
       // Add modules as appropriate
     },
@@ -163,8 +149,7 @@ export default function createConfigs(_env, argv) {
       },
     },
     externalsPresets: { node: true },
-    // FIXME: Requires conditions
-    externals: (dev ? [nodeExternals({ importType: "module" })] : []).concat([
+    externals: [
       "express",
       "websocket-express",
       "better-sqlite3",
@@ -172,10 +157,10 @@ export default function createConfigs(_env, argv) {
       "knex",
       "swagger-ui-express",
       "redis",
-    ]),
+    ],
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: "[contenthash].css",
+      new rspack.CssExtractRspackPlugin({
+        filename: "static/[contenthash].css",
         runtime: false,
       }),
     ],
@@ -208,8 +193,12 @@ export default function createConfigs(_env, argv) {
     dependencies: ["worker"],
     target: "web",
     output: {
-      filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
-      path: staticAssetOutputDirname,
+      filename: dev
+        ? "static/[name].[contenthash:16].js"
+        : "static/[contenthash:16].js",
+      assetModuleFilename: "static/[hash][ext][query]",
+      cssFilename: "static/[hash][ext][query]",
+      path: outputDirname,
       publicPath: ASSET_PATH,
     },
     devtool: "source-map",
@@ -221,9 +210,9 @@ export default function createConfigs(_env, argv) {
           use: ["swc-loader"],
         },
         cssRule,
-        imageRule(""),
-        mp3Rule(""),
-        fontRule(""),
+        imageRule,
+        mp3Rule,
+        fontRule,
       ],
     },
     resolve: {
@@ -241,51 +230,40 @@ export default function createConfigs(_env, argv) {
       },
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: dev ? "[name].[contenthash:16].css" : "[contenthash:16].css",
+      new rspack.CssExtractRspackPlugin({
+        filename: dev
+          ? "static/[name].[contenthash:16].css"
+          : "static/[contenthash:16].css",
         runtime: false,
       }),
-      new WebpackManifestPlugin({
+      new RspackManifestPlugin({
         fileName: cssManifestFilename,
         publicPath: ASSET_PATH,
         filter: (file) => file.path.endsWith(".css"),
       }),
-      new WebpackManifestPlugin({
+      new RspackManifestPlugin({
         fileName: path.join(
           outputManifestDirname,
           "js-manifest-with-chunks.json",
         ),
-        generate: (seed, files) => {
-          // Walk over the universe of output files, and collect and dedupe the
-          // universe of entrypoints known to any of them
-          const entrypoints = new Set();
-          files.forEach((file) => {
-            file.chunk?._groups?.forEach((group) => {
-              entrypoints.add(group);
-            });
-          });
-          const entries = [...entrypoints];
-
+        generate: (seed, files, entries) => {
+          // console.log(entries);
+          // console.log("entrypoints:", Object.keys(entries));
           // For each named entrypoint, collect the files referenced by the
           // chunks needed by that entrypoint.
-          const acc = {};
-          entries.forEach((entry) => {
-            const name = entry.options?.name ?? entry.runtimeChunk?.name;
-            let files = [];
-            entry.chunks.forEach((chunk) => {
-              files = [...files, ...chunk.files];
-            });
-            acc[name] = files.map((file) => `${ASSET_PATH}${file}`);
-          });
-          return acc;
+          return Object.fromEntries(
+            Object.entries(entries).map(([entrypoint, files]) => {
+              return [entrypoint, files.map((file) => `${ASSET_PATH}${file}`)];
+            }),
+          );
         },
       }),
-      new WebpackManifestPlugin({
+      new RspackManifestPlugin({
         fileName: jsManifestFilename,
         publicPath: ASSET_PATH,
         filter: (file) => file.path.endsWith(".js"),
       }),
-      new WebpackManifestPlugin({
+      new RspackManifestPlugin({
         fileName: assetManifestFilename,
         publicPath: ASSET_PATH,
         filter: (file) =>
@@ -306,8 +284,10 @@ export default function createConfigs(_env, argv) {
     },
     target: "webworker",
     output: {
-      filename: dev ? "[name].[contenthash:16].js" : "[contenthash:16].js",
-      path: staticAssetOutputDirname,
+      filename: dev
+        ? "static/[name].[contenthash:16].js"
+        : "static/[contenthash:16].js",
+      path: outputDirname,
       publicPath: ASSET_PATH,
     },
     module: {
@@ -325,10 +305,9 @@ export default function createConfigs(_env, argv) {
         ".js": [".ts", ".js"],
         ".mjs": [".mts", ".mjs"],
       },
-      //modules: [path.join(currentDirname, "node_modules")],
     },
     plugins: [
-      new WebpackManifestPlugin({
+      new RspackManifestPlugin({
         fileName: workerManifestFilename,
         publicPath: ASSET_PATH,
       }),
