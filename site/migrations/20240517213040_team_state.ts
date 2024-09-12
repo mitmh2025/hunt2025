@@ -53,6 +53,7 @@ export async function up(knex: Knex): Promise<void> {
         "currency_adjusted",
         "round_unlocked",
         "puzzle_unlocked",
+        "puzzle_partially_solved",
         "puzzle_solved",
         "interaction_unlocked",
         "interaction_started",

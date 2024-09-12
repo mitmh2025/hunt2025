@@ -12,6 +12,12 @@ export type Hint = {
 export type CannedResponse = {
   guess: string[]; // list of canonicalized guess values that will match to this reply
   reply: string;
+
+  // If true, matching this canned response should provide the solve reward (and getting the actual
+  // answer providing the solve reward.
+  // On objects where this is set to true, `guess` should be a single-item array, to avoid allowing
+  // multiple canned responses to provide the solve reward.
+  providesSolveReward?: boolean;
 };
 
 export type Content = {

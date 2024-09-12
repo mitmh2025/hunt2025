@@ -526,8 +526,13 @@ export function getRouter({
             };
           }
 
+          const cannedResponseProvidesPrize =
+            puzzle?.canned_responses.some(
+              (cr) => cr.providesSolveReward === true,
+            ) ?? false;
           const defaultPrize = slot.slot.is_meta ? 0 : 1;
           const prize = slot.slot.prize ?? defaultPrize;
+
           let canonical_input = canonicalizeInput(guess);
           const answers = puzzle
             ? [puzzle.answer]
@@ -537,6 +542,11 @@ export function getRouter({
 
           const correct_answer = answers.find(
             (answer) => canonicalizeInput(answer) === canonical_input,
+          );
+          const correct_canned_response = puzzle?.canned_responses.find((cr) =>
+            cr.guess.some(
+              (guess) => canonicalizeInput(guess) === canonical_input,
+            ),
           );
           // TODO: Make sure that we retry/wait for conflicts.
 
@@ -606,27 +616,25 @@ export function getRouter({
                 ];
               }
 
+              // Determine our disposition on this submission.
               let responseText = "Incorrect";
               let status: GuessStatus = "incorrect";
               if (correct_answer) {
                 canonical_input = correct_answer;
                 responseText = "Correct!";
                 status = "correct";
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    slug,
-                    type: "puzzle_solved",
-                    currency_delta: prize,
-                    data: {
-                      answer: canonical_input,
-                    },
-                  },
-                  trx,
+              } else if (correct_canned_response) {
+                const matching_input = correct_canned_response.guess.find(
+                  (g) => canonicalizeInput(g) === canonical_input,
                 );
-                deferredPublications.addActivityLogEntries([entry]);
+                canonical_input = matching_input ?? canonical_input;
+                responseText = correct_canned_response.reply;
+                status = "other";
               }
-              // TODO: Recognize partial answers
+
+              // Attempt to insert a new guess.  If this guess's input matches some other canonical
+              // input, inserted should be empty thanks to the unique index and
+              // onConflict()/ignore().
               const inserted = await trx("team_puzzle_guesses")
                 .insert({
                   team_id,
@@ -653,7 +661,44 @@ export function getRouter({
                 });
               deferredPublications.addGuessLogEntries(inserted);
 
+              // Only add relevant entries to the activity log if the guess was novel and inserted
+              // a record.  Otherwise, we might grant double rewards for the same guess.
               if (inserted.length > 0) {
+                // This was a new guess.
+                if (correct_answer) {
+                  // It was right and the puzzle is now solved.
+                  const entry = await appendActivityLog(
+                    {
+                      team_id,
+                      slug,
+                      type: "puzzle_solved",
+                      currency_delta: cannedResponseProvidesPrize ? 0 : prize,
+                      data: {
+                        answer: canonical_input,
+                      },
+                    },
+                    trx,
+                  );
+                  deferredPublications.addActivityLogEntries([entry]);
+                } else if (correct_canned_response?.providesSolveReward) {
+                  // The guess matched an intermediate for which we provide the solve reward.  We
+                  // need to issue a prize for this particular canned response, which means we need
+                  // an activity log entry for it.
+                  const entry = await appendActivityLog(
+                    {
+                      team_id,
+                      slug,
+                      type: "puzzle_partially_solved",
+                      currency_delta: prize,
+                      data: {
+                        partial: canonical_input,
+                      },
+                    },
+                    trx,
+                  );
+                  deferredPublications.addActivityLogEntries([entry]);
+                }
+
                 const [_, newWrites] = await refreshTeamState(
                   hunt,
                   team_id,

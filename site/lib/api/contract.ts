@@ -82,6 +82,13 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryBaseSchema.merge(
     z.object({
+      type: z.literal("puzzle_partially_solved"),
+      slug: z.string(),
+      partial: z.string(),
+    }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({
       type: z.literal("puzzle_solved"),
       slug: z.string(),
       answer: z.string(),

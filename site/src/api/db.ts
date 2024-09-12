@@ -135,6 +135,13 @@ declare module "knex/types/tables" {
         slug: string;
       }
     | {
+        type: "puzzle_partially_solved";
+        slug: string;
+        data: {
+          partial: string;
+        };
+      }
+    | {
         type: "puzzle_solved";
         slug: string;
         data: {
@@ -177,6 +184,9 @@ declare module "knex/types/tables" {
     data?:
       | {
           answer: string;
+        }
+      | {
+          partial: string;
         }
       | {
           result: string;
