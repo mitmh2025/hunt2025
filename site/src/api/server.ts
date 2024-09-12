@@ -573,7 +573,6 @@ export function getRouter({
                   .orderBy("timestamp")
                   .pluck("timestamp")
               ).map(fixTimestamp);
-              console.log(previous_guess_times);
               const allowAfter =
                 nextAcceptableSubmissionTime(previous_guess_times);
               const now = Date.now();
