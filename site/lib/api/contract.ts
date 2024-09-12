@@ -15,6 +15,10 @@ export const GuessSchema = z.object({
   timestamp: z.string().datetime(),
 });
 
+export const RateLimitStateSchema = z.object({
+  retryAfter: z.string().datetime(),
+});
+
 const PuzzleLockEnum = z
   .enum(["locked", "unlockable", "unlocked"])
   .default("locked");
@@ -157,6 +161,7 @@ export const publicContract = c.router({
     body: SubmitGuessSchema,
     responses: {
       200: PuzzleStateSchema,
+      429: RateLimitStateSchema,
       404: z.null(),
     },
   },

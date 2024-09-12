@@ -32,6 +32,7 @@ import {
   type InteractionStateSchema,
 } from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
+import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
@@ -557,6 +558,37 @@ export function getRouter({
                   deferredPublications,
                 ];
               }
+
+              // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
+              // n^2 minutes "correct" and "other" guesses do not count towards rate-limits.
+              // In the fullness of time, we may want to be able to override this in some way -- the
+              // mechanism that first occurs to me is some per-team & per-puzzle way to grant
+              // additional guesses up to a certain number total -- perhaps a new activity log type
+              // "guess_ratelimit_override" with data: { maximum_guesses: number }?
+              const previous_guess_times = (
+                await trx("team_puzzle_guesses")
+                  .where("team_id", team_id)
+                  .where("slug", slug)
+                  .where("status", "incorrect")
+                  .orderBy("timestamp")
+                  .pluck("timestamp")
+              ).map(fixTimestamp);
+              console.log(previous_guess_times);
+              const allowAfter =
+                nextAcceptableSubmissionTime(previous_guess_times);
+              const now = Date.now();
+              if (now < allowAfter.getTime()) {
+                return [
+                  {
+                    status: 429 as const,
+                    body: {
+                      retryAfter: allowAfter.toISOString(),
+                    },
+                  },
+                  deferredPublications,
+                ];
+              }
+
               let responseText = "Incorrect";
               let status: GuessStatus = "incorrect";
               if (correct_answer) {

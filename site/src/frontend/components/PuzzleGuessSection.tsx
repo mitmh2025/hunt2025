@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { type z } from "zod";
 import { newClient } from "../../../lib/api/client";
@@ -44,8 +44,23 @@ const PuzzleGuessForm = ({
   onGuessesUpdate: (guesses: Guesses) => void;
 }) => {
   const [guessInput, setGuessInput] = useState<string>("");
+  const [rateLimitedUntil, setRateLimitedUntil] = useState<Date | undefined>(
+    undefined,
+  );
+  // If you want to access something from a setTimeout callback, it has to be via a ref, because
+  // otherwise you're accessing the immutable old version of the variable, rather than the current
+  // value.  Write to this ref any time you call `setRateLimitedUntil`.
+  const rateLimitedUntilRef = useRef<Date | undefined>(undefined);
   const [formState, setFormState] = useState<FormState>("idle");
   const [formError, setFormError] = useState<string | undefined>(undefined);
+  const checkClearRateLimit = useCallback(() => {
+    const now = new Date();
+    const until = rateLimitedUntilRef.current;
+    if (until !== undefined && until < now) {
+      rateLimitedUntilRef.current = undefined;
+      setRateLimitedUntil(undefined);
+    }
+  }, []);
   const onInputChanged = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setGuessInput(e.target.value);
@@ -81,6 +96,16 @@ const PuzzleGuessForm = ({
           setFormError(undefined);
           setFormState("idle");
           onGuessesUpdate(parsedResult.guesses);
+        } else if (result.status === 429) {
+          const then = new Date(result.body.retryAfter);
+          const now = new Date();
+          setRateLimitedUntil(then);
+          rateLimitedUntilRef.current = then;
+          setTimeout(
+            checkClearRateLimit,
+            then.getTime() - now.getTime() + 1000,
+          );
+          setFormState("idle");
         } else {
           // TODO: Handle other errors (rate-limit hit?)
           setFormError(`Server returned status ${result.status}`);
@@ -88,12 +113,20 @@ const PuzzleGuessForm = ({
         }
       })();
     },
-    [guessInput, slug, onGuessesUpdate],
+    [guessInput, slug, checkClearRateLimit, onGuessesUpdate],
   );
+
   const formDisabled = formState === "submitting";
+  const submitDisabled = formDisabled || rateLimitedUntil !== undefined;
   return (
     <form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
       {formError ? <div>Error: {formError}</div> : undefined}
+      {rateLimitedUntil ? (
+        <div>
+          Your submissions are being rate-limited and will be rejected until{" "}
+          {rateLimitedUntil.toLocaleTimeString()}
+        </div>
+      ) : undefined}
       <label htmlFor="guess-input">Submit guess</label>
       <TextInput
         id="guess-input"
@@ -104,7 +137,7 @@ const PuzzleGuessForm = ({
         value={guessInput}
         onChange={onInputChanged}
       />
-      <Button type="submit" disabled={formDisabled}>
+      <Button type="submit" disabled={submitDisabled}>
         Submit
       </Button>
     </form>
