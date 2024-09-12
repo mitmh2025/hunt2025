@@ -160,6 +160,10 @@ declare module "knex/types/tables" {
         type: "gate_completed";
         slug: string; // the id of the gate
       }
+    | {
+        type: "rate_limits_reset";
+        slug: string; // the puzzle which is having its rate limit reset
+      }
   );
 
   // We specify some more general field types here even though InsertActivityLogEntry has narrower

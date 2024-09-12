@@ -561,10 +561,23 @@ export function getRouter({
 
               // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
               // n^2 minutes "correct" and "other" guesses do not count towards rate-limits.
-              // In the fullness of time, we may want to be able to override this in some way -- the
-              // mechanism that first occurs to me is some per-team & per-puzzle way to grant
-              // additional guesses up to a certain number total -- perhaps a new activity log type
-              // "guess_ratelimit_override" with data: { maximum_guesses: number }?
+              // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
+              // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
+              // for the purposes of rate-limiting.
+              const last_reset_time_record = await trx<ActivityLogEntry>(
+                "activity_log",
+              )
+                .where("type", "rate_limits_reset")
+                .where("slug", slug)
+                .where((builder) => {
+                  void builder.where("team_id", team_id).orWhereNull("team_id");
+                })
+                .orderBy("id", "desc")
+                .select("timestamp")
+                .first();
+              const last_reset_time = last_reset_time_record
+                ? fixTimestamp(last_reset_time_record.timestamp)
+                : undefined;
               const previous_guess_times = (
                 await trx("team_puzzle_guesses")
                   .where("team_id", team_id)
@@ -573,8 +586,13 @@ export function getRouter({
                   .orderBy("timestamp")
                   .pluck("timestamp")
               ).map(fixTimestamp);
-              const allowAfter =
-                nextAcceptableSubmissionTime(previous_guess_times);
+              const effective_previous_guess_times =
+                last_reset_time !== undefined
+                  ? previous_guess_times.filter((t) => t > last_reset_time)
+                  : previous_guess_times;
+              const allowAfter = nextAcceptableSubmissionTime(
+                effective_previous_guess_times,
+              );
               const now = Date.now();
               if (now < allowAfter.getTime()) {
                 return [
@@ -852,11 +870,11 @@ export function getRouter({
           const [response, deferred] = await knex.transaction(async (trx) => {
             const deferredPublications = new DeferredPublications({});
             const team_id = parseInt(teamId, 10);
-            const existing = (await trx("activity_log")
+            const existing = await trx("activity_log")
               .where("team_id", team_id)
               .whereIn("type", ["interaction_unlocked", "interaction_started"])
               .where("slug", interactionId)
-              .select("type")) as Partial<ActivityLogEntry>[];
+              .select("type");
             const is_unlocked = existing.some(
               (entry) => entry.type === "interaction_unlocked",
             );

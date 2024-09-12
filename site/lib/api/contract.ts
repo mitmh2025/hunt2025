@@ -103,6 +103,9 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ActivityLogEntryBaseSchema.merge(
     z.object({ type: z.literal("gate_completed"), slug: z.string() }),
   ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("rate_limits_reset"), slug: z.string() }),
+  ),
 ]);
 
 export const ActivityLogSchema = z.array(ActivityLogEntrySchema);

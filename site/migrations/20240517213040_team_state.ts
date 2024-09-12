@@ -58,6 +58,7 @@ export async function up(knex: Knex): Promise<void> {
         "interaction_started",
         "interaction_completed",
         "gate_completed",
+        "rate_limits_reset",
       ]);
       table.string("slug", 255);
       table.integer("currency_delta").notNullable().defaultTo(0);
