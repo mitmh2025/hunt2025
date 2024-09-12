@@ -4,7 +4,7 @@ import { ActivityLogSchema, c, TeamStateSchema, GuessSchema } from "./contract";
 
 const FullGuessSchema = GuessSchema.extend({
   id: z.number(),
-  team_id: z.number(),
+  team_id: z.number().optional(),
   slug: z.string(),
 });
 
