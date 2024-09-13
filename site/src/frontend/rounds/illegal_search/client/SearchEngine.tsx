@@ -425,12 +425,15 @@ const SearchEngine = ({
 
   let modalOverlay = undefined;
   if (modalShown) {
+    const puzzleState = teamState.puzzles[modalShown.slug];
     modalOverlay = (
       <ModalBackdrop onClick={dismissModal}>
         <img width={800} height={600} src={modalShown.asset} alt="TODO" />
         <PuzzleLinkBackdrop>
           <PuzzleLink
-            teamState={teamState}
+            lockState={puzzleState?.locked ?? "locked"}
+            answer={puzzleState?.answer}
+            currency={teamState.currency}
             title={modalShown.title}
             slug={modalShown.slug}
           />

@@ -13,10 +13,14 @@ const BackgroundCheckBody = ({
   const items = (
     <ul>
       {state.items.map((item) => {
+        const slug = item.slug;
+        const puzzleState = teamState.puzzles[slug];
         return (
           <li key={item.slug}>
             <PuzzleLink
-              teamState={teamState}
+              lockState={puzzleState?.locked ?? "locked"}
+              answer={puzzleState?.answer}
+              currency={teamState.currency}
               title={item.title}
               slug={item.slug}
             />

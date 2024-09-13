@@ -13,10 +13,13 @@ const ShadowDiamondBody = ({
   const items = (
     <ul>
       {state.items.map((item) => {
+        const puzzleState = teamState.puzzles[item.slug];
         return (
           <li key={item.slug}>
             <PuzzleLink
-              teamState={teamState}
+              lockState={puzzleState?.locked ?? "locked"}
+              answer={puzzleState?.answer}
+              currency={teamState.currency}
               title={item.title}
               slug={item.slug}
             />

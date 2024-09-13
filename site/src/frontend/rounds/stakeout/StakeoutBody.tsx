@@ -300,39 +300,45 @@ const StakeoutBody = ({
     zIndex: 0,
   };
 
-  const overlay = state.overlay ? (
-    <div
-      style={{
-        position: "absolute",
-        right: state.overlay.right,
-        bottom: state.overlay.bottom,
-        width: "448px",
-        height: "431px",
-        backgroundImage: `url(${state.overlay.asset})`,
-        filter: "drop-shadow(0 0 4px black)",
-        userSelect: "none" as const,
-        fontSize: "24px",
-      }}
-    >
+  let overlay;
+  if (state.overlay) {
+    const puzzleState = teamState.puzzles[state.overlay.slug];
+    overlay = (
       <div
         style={{
-          position: "relative",
-          transform: state.overlay.transform,
-          left: state.overlay.left,
-          top: state.overlay.top,
-          display: "block",
-          textAlign: "center",
-          width: "240px",
+          position: "absolute",
+          right: state.overlay.right,
+          bottom: state.overlay.bottom,
+          width: "448px",
+          height: "431px",
+          backgroundImage: `url(${state.overlay.asset})`,
+          filter: "drop-shadow(0 0 4px black)",
+          userSelect: "none" as const,
+          fontSize: "24px",
         }}
       >
-        <PuzzleLink
-          teamState={teamState}
-          slug={state.overlay.slug}
-          title={state.overlay.label}
-        />
+        <div
+          style={{
+            position: "relative",
+            transform: state.overlay.transform,
+            left: state.overlay.left,
+            top: state.overlay.top,
+            display: "block",
+            textAlign: "center",
+            width: "240px",
+          }}
+        >
+          <PuzzleLink
+            lockState={puzzleState?.locked ?? "locked"}
+            answer={puzzleState?.answer}
+            currency={teamState.currency}
+            slug={state.overlay.slug}
+            title={state.overlay.label}
+          />
+        </div>
       </div>
-    </div>
-  ) : undefined;
+    );
+  }
   return (
     <div
       className="just-another-hand"

@@ -23,8 +23,17 @@ const RoundPuzzleList = ({
     // const _is_meta = slotObj?.is_meta ?? false;
     const puzzleDefinition = slug ? PUZZLES[slug] : undefined;
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slot}`;
+    const lockState =
+      (slug ? teamState.puzzles[slug]?.locked : undefined) ?? "locked";
+    const answer = slug ? teamState.puzzles[slug]?.answer : undefined;
     const item = slug ? (
-      <PuzzleLink teamState={teamState} title={title} slug={slug} />
+      <PuzzleLink
+        lockState={lockState}
+        answer={answer}
+        currency={teamState.currency}
+        title={title}
+        slug={slug}
+      />
     ) : undefined;
     if (item) {
       return (
