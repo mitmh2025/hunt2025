@@ -16,9 +16,10 @@ export type SoundFileset = {
   // supported but uncompressed.)
   mp3: string;
 
-  // The file at `opus` should be encoded at 24k samplerate and automatic bitrate.
-  // This file will be cached on (limited!) local storage by the radio, which is why we aggressively
-  // optimize for size.
+  // The file at `opus` should be encoded at 48k samplerate and 24k bitrate.
+  // This file will be cached on (limited!) local storage by the radio, which
+  // is why we aggressively optimize for size.  Since the spoken lines are mono
+  // speech, the low bitrate still generally sounds fine.
   opus: string;
 };
 
