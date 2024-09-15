@@ -24,6 +24,7 @@ import {
   nodeRequestHandler,
 } from "../rounds/illegal_search";
 import { type Entrypoint, lookupScripts, lookupStylesheets } from "./assets";
+import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import {
   interactionCompletePostHandler,
@@ -358,6 +359,13 @@ export async function getUiRouter({
     "/all_puzzles",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(allPuzzlesHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/activity_log",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(activityLogHandler, req, res, next);
     }),
   );
 
