@@ -18,4 +18,9 @@ export type TeamState = ClientInferResponseBody<
   200
 >;
 
+export type ActivityLogEntry = ClientInferResponseBody<
+  typeof publicContract.getActivityLog,
+  200
+>[number];
+
 export type Client = ReturnType<typeof newClient>;

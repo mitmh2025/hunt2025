@@ -34,6 +34,7 @@ import {
 import { frontendContract } from "../../lib/api/frontend_contract";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import type { RedisClient } from "../app";
+import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { getSlotSlug } from "../huntdata/logic";
@@ -395,6 +396,81 @@ export function getRouter({
     },
   ];
 
+  const fixupActivityLogEntry = (
+    e: Pick<
+      ActivityLogEntry,
+      | "id"
+      | "type"
+      | "timestamp"
+      | "currency_delta"
+      | "team_id"
+      | "slug"
+      | "data"
+    >,
+  ) => {
+    let entry: Partial<ActivityLog[number]> = {
+      id: e.id,
+      timestamp: fixTimestamp(e.timestamp).toISOString(),
+      currency_delta: e.currency_delta,
+      type: e.type,
+    };
+    if ("team_id" in e && e.team_id) {
+      (entry as { team_id: number }).team_id = e.team_id;
+    }
+    if ("slug" in e && e.slug) {
+      (entry as { slug: string }).slug = e.slug;
+      switch (entry.type) {
+        case "currency_adjusted":
+          break;
+        case "round_unlocked":
+          {
+            const round = hunt.rounds.find((round) => round.slug === e.slug);
+            if (round) {
+              entry = Object.assign(entry, { title: round.title });
+            }
+          }
+          break;
+        case "rate_limits_reset":
+        case "puzzle_unlocked":
+        case "puzzle_partially_solved":
+        case "puzzle_solved":
+          {
+            const puzzle = PUZZLES[e.slug];
+            entry = Object.assign(entry, {
+              title: puzzle?.title ?? `Stub puzzle for slot ${e.slug}`,
+            });
+          }
+          break;
+        case "interaction_unlocked":
+        case "interaction_started":
+        case "interaction_completed":
+          {
+            const interaction = INTERACTIONS[
+              e.slug as keyof typeof INTERACTIONS
+            ] as undefined | (typeof INTERACTIONS)[keyof typeof INTERACTIONS];
+            entry = Object.assign(entry, {
+              title: interaction?.title ?? `Untitled interaction ${e.slug}`,
+            });
+          }
+          break;
+        case "gate_completed":
+          {
+            // TODO: add gate descriptions for activity log in the definition?
+          }
+          break;
+      }
+    }
+    if ("data" in e) {
+      // SQLite doesn't parse JSON automatically
+      const data =
+        typeof e.data === "string"
+          ? (JSON.parse(e.data as string) as typeof e.data)
+          : e.data;
+      entry = Object.assign(entry, data);
+    }
+    return entry as ActivityLog[number];
+  };
+
   // We merge contracts here so that we can implement additional contracts
   // without having to export them to the client since there's no value in
   // exposing schemas we don't intend to be public.
@@ -475,34 +551,13 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          const entries = (await knex("activity_log")
+          const entries = await knex("activity_log")
             .where("team_id", team_id)
             .orWhereNull("team_id")
             .select("id", "timestamp", "type", "slug", "currency_delta", "data")
-            .orderBy("id")) as Pick<
-            ActivityLogEntry,
-            "id" | "timestamp" | "type" | "slug" | "currency_delta" | "data"
-          >[];
+            .orderBy("id");
           const body = entries.map((e) => {
-            // TODO: Is there a type-safe way to do this that doesn't involve a switch on e.type?
-            let entry: Partial<ActivityLog[number]> = {
-              id: e.id,
-              timestamp: fixTimestamp(e.timestamp).toISOString(),
-              currency_delta: e.currency_delta,
-              type: e.type,
-            };
-            if ("slug" in e && e.slug) {
-              (entry as { slug: string }).slug = e.slug;
-            }
-            if ("data" in e) {
-              // SQLite doesn't parse JSON automatically
-              const data =
-                typeof e.data === "string"
-                  ? (JSON.parse(e.data as string) as typeof e.data)
-                  : e.data;
-              entry = Object.assign(entry, data);
-            }
-            return entry as ActivityLog[number];
+            return fixupActivityLogEntry(e);
           });
           return {
             status: 200,
@@ -1059,28 +1114,8 @@ export function getRouter({
             );
             const entries = await q;
             const body = entries.map((e) => {
-              // TODO: Is there a type-safe way to do this that doesn't involve a switch on e.type?
-              let entry: Partial<ActivityLog[number]> = {
-                id: e.id,
-                team_id: e.team_id,
-                timestamp: fixTimestamp(e.timestamp).toISOString(),
-                currency_delta: e.currency_delta,
-                type: e.type,
-              };
-              if ("slug" in e && e.slug) {
-                (entry as { slug: string }).slug = e.slug;
-              }
-              if ("data" in e) {
-                // SQLite doesn't parse JSON automatically
-                const data =
-                  typeof e.data === "string"
-                    ? (JSON.parse(e.data as string) as typeof e.data)
-                    : e.data;
-                entry = Object.assign(entry, data);
-              }
-              return entry as ActivityLog[number];
+              return fixupActivityLogEntry(e);
             });
-
             return {
               status: 200,
               body,

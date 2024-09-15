@@ -70,48 +70,57 @@ const ActivityLogEntryBaseSchema = z.object({
   currency_delta: z.number(),
 });
 
+const ActivityLogEntryWithSlugAndTitle = ActivityLogEntryBaseSchema.merge(
+  z.object({ slug: z.string(), title: z.string() }),
+);
+
+// Though they are not materialized in the DB, we include the title of rounds, puzzles, and
+// interactions in the API-level activity log entries, because we're going to need them anyway to
+// visualize the activity log or edge-triggered notifications driven by activity log entries.
 const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ActivityLogEntryBaseSchema.merge(
     z.object({ type: z.literal("currency_adjusted") }),
   ),
-  ActivityLogEntryBaseSchema.merge(
-    z.object({ type: z.literal("round_unlocked"), slug: z.string() }),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({ type: z.literal("round_unlocked") }),
   ),
-  ActivityLogEntryBaseSchema.merge(
-    z.object({ type: z.literal("puzzle_unlocked"), slug: z.string() }),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({ type: z.literal("puzzle_unlocked") }),
   ),
-  ActivityLogEntryBaseSchema.merge(
+  ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
       type: z.literal("puzzle_partially_solved"),
-      slug: z.string(),
       partial: z.string(),
     }),
   ),
-  ActivityLogEntryBaseSchema.merge(
+  ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
       type: z.literal("puzzle_solved"),
-      slug: z.string(),
       answer: z.string(),
     }),
   ),
-  ActivityLogEntryBaseSchema.merge(
-    z.object({ type: z.literal("interaction_unlocked"), slug: z.string() }),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({ type: z.literal("interaction_unlocked") }),
   ),
-  ActivityLogEntryBaseSchema.merge(
-    z.object({ type: z.literal("interaction_started"), slug: z.string() }),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({ type: z.literal("interaction_started") }),
   ),
-  ActivityLogEntryBaseSchema.merge(
+  ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
       type: z.literal("interaction_completed"),
-      slug: z.string(),
       result: z.string(),
     }),
   ),
   ActivityLogEntryBaseSchema.merge(
-    z.object({ type: z.literal("gate_completed"), slug: z.string() }),
+    // Note: title is optional on gates; not all gates have a publicly-exposed label
+    z.object({
+      type: z.literal("gate_completed"),
+      slug: z.string(),
+      title: z.string().optional(),
+    }),
   ),
-  ActivityLogEntryBaseSchema.merge(
-    z.object({ type: z.literal("rate_limits_reset"), slug: z.string() }),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({ type: z.literal("rate_limits_reset") }),
   ),
 ]);
 
