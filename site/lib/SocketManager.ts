@@ -27,6 +27,11 @@ function deriveDatasetKey(dataset: Dataset, params: DatasetParams): DatasetKey {
   return `${dataset}:${JSON.stringify(params)}` as DatasetKey;
 }
 
+// Used for "append"-style datasets.
+type ObjectWithId = {
+  id: number;
+};
+
 type SubscriptionState = {
   // Key of this subscription state, along which we dedupe subscriptions.
   // string which is "${dataset}:${JSON.stringify(params)}"
@@ -54,7 +59,7 @@ type SubscriptionState = {
   state: "awaiting-socket" | "requesting" | "active" | "stopping" | "error";
 
   // The last-known value of the subscription as provided by the server.
-  lastValue: object | object[] | undefined;
+  lastValue: object | ObjectWithId[] | undefined;
 
   // A list of watchers of the data for this dataset.
   watchers: Watcher[];
@@ -192,16 +197,31 @@ export class SocketManager {
                 sub.datasetKey,
               );
               // update the cached data for the corresponding sub
-              if (sub.action === "append") {
-                (sub.lastValue as object[]).push(value as object);
-              } /* if (sub.action === "replace") */ else {
-                sub.lastValue = value as object;
+              let shouldDispatch =
+                sub.state === "requesting" || sub.state === "active";
+              switch (sub.action) {
+                case "append":
+                  {
+                    const valueWithId = value as ObjectWithId;
+                    if (
+                      (sub.lastValue as ObjectWithId[]).findIndex(
+                        (item: ObjectWithId) => item.id === valueWithId.id,
+                      ) === -1
+                    ) {
+                      (sub.lastValue as ObjectWithId[]).push(valueWithId);
+                    } else {
+                      // Not new, don't dispatch.
+                      shouldDispatch = false;
+                    }
+                  }
+                  break;
+                case "replace": {
+                  sub.lastValue = value as object;
+                }
               }
+
               // notify watchers, if not stopping or failed
-              if (
-                value &&
-                (sub.state === "requesting" || sub.state === "active")
-              ) {
+              if (value && shouldDispatch) {
                 this.log("Dispatching to", sub.watchers.length, "watchers");
                 sub.watchers.forEach((watcher) => {
                   watcher.callback(value);
