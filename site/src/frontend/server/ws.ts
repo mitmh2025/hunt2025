@@ -119,6 +119,7 @@ type ActivityLogSubscriptionHandler = {
 type GuessLogSubscriptionHandler = {
   type: "guess_log";
   dataset: Dataset;
+  updatesSent: number;
   slug: string;
   stop: () => void;
 };
@@ -301,11 +302,19 @@ class ConnHandler {
     if (sub && isGuessLogSubscription(sub)) {
       // Unpack only the desired fields
       const { status, canonical_input, response, timestamp } = entry;
+      // Synthesize an id field, which is just the index into this puzzle's guess history
       this.send({
         subId,
         type: "update",
-        value: { status, canonical_input, response, timestamp },
+        value: {
+          id: sub.updatesSent,
+          status,
+          canonical_input,
+          response,
+          timestamp,
+        },
       });
+      sub.updatesSent += 1;
     }
   }
 
@@ -397,6 +406,7 @@ class ConnHandler {
           const subHandler: SubscriptionHandler<object> = {
             type: "guess_log",
             dataset,
+            updatesSent: 0,
             slug: params.slug,
             stop: () => {
               /* stub */
