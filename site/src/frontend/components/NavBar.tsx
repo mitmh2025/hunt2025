@@ -299,7 +299,7 @@ const NavBar = ({ state }: { state: NavBarState }) => {
               <NavLink href="/story">Story So Far</NavLink>
             </li>
             <li>
-              <NavLink href="/log">Activity Log</NavLink>
+              <NavLink href="/activity_log">Activity Log</NavLink>
             </li>
           </ul>
         </TopLevelDropdown>
