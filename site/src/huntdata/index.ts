@@ -377,23 +377,23 @@ const HUNT: Hunt = {
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final
-        { id: "isg00" }, // examine the bookcase (meta)
+        { id: "isg00", title: "Examined the bookcase" }, // examine the bookcase (meta)
         { id: "isg01" }, // find the first object in the first room (great wave painting)
         { id: "isg02" }, // find the second object in the first room (globe)
         { id: "isg03" }, // find the third object in the first room (family portrait)
         { id: "isg04" }, // find the fourth object in the first room (typewriter)
         { id: "isg05" }, // find the last object in the first room (desk lamp)
-        { id: "isg06" }, // complete the directional lock (desk drawer)
-        { id: "isg07" }, // complete the binary switches (fuse box)
-        { id: "isg08" }, // complete the combination lock (safe)
-        { id: "isg09" }, // complete the numeric lock (rug)
-        { id: "isg10" }, // complete the word lock (cryptex)
+        { id: "isg06", title: "Unlocked the desk drawer" }, // complete the directional lock (desk drawer)
+        { id: "isg07", title: "Unlocked the breaker box" }, // complete the binary switches (fuse box)
+        { id: "isg08", title: "Unlocked the safe" }, // complete the combination lock (safe)
+        { id: "isg09", title: "Unlocked the numeric lock" }, // complete the numeric lock (rug)
+        { id: "isg10", title: "Unlocked the cryptex" }, // complete the word lock (cryptex)
         { id: "isg11" }, // find the object behind the directional lock
         { id: "isg12" }, // find the object behind the binary switch lock
         { id: "isg13" }, // find the object behind the combination lock
         { id: "isg14" }, // find the object behind the numeric lock
         { id: "isg15" }, // find the object behind the word lock
-        { id: "isg16" }, // complete the bookcase/unlock door in wall
+        { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase" }, // complete the bookcase/unlock door in wall
         { id: "isg17" }, // find the star pattern in the second room (meta)
         { id: "isg18" }, // find the first object in the second room (birth certificate)
         { id: "isg19" }, // find the second object in the second room (newspaper clipping)
@@ -403,7 +403,7 @@ const HUNT: Hunt = {
         { id: "isg23" }, // find the sixth object in the second room (rare stamp)
         { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
         { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
-        { id: "isg26" }, // obtain the blacklight
+        { id: "isg26", title: "Obtained the blacklight" }, // obtain the blacklight
       ],
       interactions: [
         {

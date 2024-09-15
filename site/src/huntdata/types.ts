@@ -63,6 +63,7 @@ export type PuzzleSlot = {
 
 export type Gate = {
   id: string; // unique id for this gate
+  title?: string; // Description of what the user did to satisfy this gate
 };
 
 export type Round = {
