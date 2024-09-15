@@ -21,4 +21,25 @@ export const INTERACTIONS = {
     title: "Interview at the Jewelry Store",
     graph: JewelryStoreInteractionGraph,
   },
+  meet_billie: {
+    title: "Meet Billie",
+  },
+  meet_carter: {
+    title: "Meet Carter",
+  },
+  meet_gladys: {
+    title: "Meet Gladys",
+  },
+  meet_katrina: {
+    title: "Meet Katrina",
+  },
+  meet_papa: {
+    title: "Meet Papa",
+  },
+  unmask_the_killer: {
+    title: "Unmask the Killer",
+  },
+  find_the_diamond: {
+    title: "Find the Diamond",
+  },
 };
