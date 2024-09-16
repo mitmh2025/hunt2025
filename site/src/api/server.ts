@@ -32,6 +32,7 @@ import {
   type InteractionStateSchema,
 } from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
+import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import type { RedisClient } from "../app";
 import { INTERACTIONS } from "../frontend/interactions";
@@ -62,6 +63,7 @@ type InteractionState = z.infer<typeof InteractionStateSchema>;
 type JWTPayload = {
   user: string;
   team_id: number;
+  sess_id: string;
   adminUser?: string;
 };
 
@@ -84,7 +86,24 @@ function newPassport(jwtSecret: string | Buffer) {
         //audience: 'mitmh2025.com',
       },
       function (jwtPayload: JWTPayload, done) {
-        done(null, jwtPayload.team_id, { adminUser: jwtPayload.adminUser });
+        if (!jwtPayload.team_id) {
+          console.warn(
+            "JWT valid but missing team_id; treating as unauthorized",
+            jwtPayload,
+          );
+          done(null, false);
+        }
+        if (!jwtPayload.sess_id) {
+          console.warn(
+            "JWT valid but missing sess_id; treating as unauthorized",
+            jwtPayload,
+          );
+          done(null, false);
+        }
+        done(null, jwtPayload.team_id, {
+          sess_id: jwtPayload.sess_id,
+          adminUser: jwtPayload.adminUser,
+        });
       },
     ),
   );
@@ -510,6 +529,7 @@ export function getRouter({
             {
               user: team.username,
               team_id: team.id,
+              sess_id: genId(),
             },
             jwtSecret,
             {},
