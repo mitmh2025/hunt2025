@@ -12,6 +12,10 @@
   ];
   config = lib.mkMerge [
     {
+      # Enable compressed RAM
+      boot.kernelParams = ["zswap.enabled=1"];
+    }
+    {
       sops.defaultSopsFile = ./../secrets/staging.yaml;
 
       security.acme.acceptTerms = true;
