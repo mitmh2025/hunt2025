@@ -56,12 +56,25 @@ class OpusManifestPlugin {
     } else {
       // Collect the relevant fields from opus files
       if (asset.name.endsWith(".opus")) {
-        files.push({
-          name: asset.name,
-          size: asset.size,
-          hash: asset.info.fullhash[0],
-          url: `${ASSET_PATH}${asset.name}`,
-        });
+        const src = asset.info.sourceFilename;
+        const re = /src\/frontend\/interactions\/([^\/]+)\/audio\/opus\/([^.]+).opus/;
+        const res = re.exec(src);
+        let interaction;
+        let line;
+        if (res && res.length === 3) {
+          interaction = res[1];
+          line = res[2];
+          files.push({
+            name: `${interaction}/${line}.opus`,
+            size: asset.size,
+            hash: asset.info.fullhash[0],
+            url: `${ASSET_PATH}${asset.name}`,
+            src, // will be something like "src/frontend/interactions/interview_at_the_art_gallery/audio/opus/2b.opus"
+            assetName: asset.name,
+            interaction,
+            line,
+          });
+        }
       }
       //console.log("leaf asset", asset);
       //console.log("name", asset.name);
