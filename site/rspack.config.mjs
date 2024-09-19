@@ -1,6 +1,7 @@
 import path from "path";
 import url from "url";
 import rspack from "@rspack/core";
+import { SyncWaterfallHook } from "@rspack/lite-tapable";
 import { RspackManifestPlugin } from "rspack-manifest-plugin";
 
 const currentDirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -23,15 +24,130 @@ const workerManifestFilename = path.join(
 
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Used by mfng, if we add it back in
-class LogValue {
-  constructor(name, m) {
-    this.name = name;
-    this.m = m;
+class OpusManifestPlugin {
+  constructor(opts) {
+    if (!opts.fileName) {
+      throw new Error(
+        "OpusManifestPlugin requires fileName be set in options to constructor",
+      );
+    }
+    this.fileName = opts.fileName;
+    this.emitCount = 0;
+    this.moduleAssets = {};
+    this.hooks = undefined;
   }
+
+  getCompilerHooks() {
+    if (this.hooks === undefined) {
+      this.hooks = {
+        afterEmit: new SyncWaterfallHook(["manifest"]),
+        beforeEmit: new SyncWaterfallHook(["manifest"]),
+      };
+    }
+    return this.hooks;
+  }
+
+  processAsset(asset, files) {
+    if (asset.children?.length > 0) {
+      // If this asset is not a leaf, recurse into its children.
+      asset.children.forEach((child) => {
+        this.processAsset(child, files);
+      });
+    } else {
+      // Collect the relevant fields from opus files
+      if (asset.name.endsWith(".opus")) {
+        files.push({
+          name: asset.name,
+          size: asset.size,
+          hash: asset.info.fullhash[0],
+          url: `${ASSET_PATH}${asset.name}`,
+        });
+      }
+      //console.log("leaf asset", asset);
+      //console.log("name", asset.name);
+      //console.log("sourceFilename", asset.info?.sourceFilename);
+      //console.log("size", asset.size);
+    }
+  }
+
+  // args: (Compiler, Function)
+  beforeRunHook(_, callback) {
+    // Increment our counter of how many times we expect to see emit called, so
+    // we'll know when we're done observing other assets getting emitted.
+    this.emitCount += 1;
+    if (callback) {
+      callback();
+    }
+  }
+
+  processAssetsHook({ compiler, compilation, manifestAssetId }) {
+    // All assets pulled in as modules are not actually available directly from
+    // `compilation.chunks`, so we get at them via stats.
+    const stats = compilation.getStats().toJson({
+      all: true,
+      assets: true,
+      cachedAssets: true,
+      ids: true,
+      publicPath: true,
+    });
+    const files = [];
+    stats.assets.forEach((asset) => {
+      this.processAsset(asset, files);
+    });
+
+    this.emitCount -= 1;
+
+    // Sort entries in manifest to promote stability of final result
+    files.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    let manifest = { files };
+    const isLastEmit = this.emitCount === 0;
+
+    manifest = this.getCompilerHooks().beforeEmit.call(manifest);
+
+    if (isLastEmit) {
+      // Actually emit the asset.
+      const output = JSON.stringify(manifest, undefined, 2);
+      compilation.emitAsset(
+        manifestAssetId,
+        new compiler.webpack.sources.RawSource(output),
+      );
+    }
+
+    this.getCompilerHooks(compiler).afterEmit.call(manifest);
+  }
+
   apply(compiler) {
-    compiler.hooks.emit.tap("LogValue", () => {
-      console.log(this.name, this.m);
+    const hookOptions = {
+      name: "OpusManifestPlugin",
+      stage: Infinity,
+    };
+    const manifestFileName = path.resolve(
+      compiler.options.output?.path || "./",
+      this.fileName,
+    );
+    const manifestAssetId = path.relative(
+      compiler.options.output?.path || "./",
+      manifestFileName,
+    );
+
+    // Set up our before-run hook so we can track when we hit the final emit call
+    compiler.hooks.run.tapAsync(hookOptions, this.beforeRunHook.bind(this));
+    // TODO: make this work with watch(), someday, maybe?
+    // compiler.hooks.watchRun.tapAsync(hookOptions, this.beforeRunHook.bind(this));
+
+    // And then set up our asset-processing hook
+    compiler.hooks.thisCompilation.tap(hookOptions, (compilation) => {
+      compilation.hooks.processAssets.tap(hookOptions, () => {
+        this.processAssetsHook({ compiler, compilation, manifestAssetId });
+      });
     });
   }
 }
@@ -113,12 +229,6 @@ export default function createConfigs(_env, argv) {
       ) => info.absoluteResourcePath,
     },
     module: {
-      generator: {
-        "asset/resource": {
-          filename: "static/[hash][ext][query]",
-          publicPath: ASSET_PATH,
-        },
-      },
       rules: [
         {
           // Work around bug in websocket-express
@@ -162,6 +272,9 @@ export default function createConfigs(_env, argv) {
       new rspack.CssExtractRspackPlugin({
         filename: "static/[contenthash].css",
         runtime: false,
+      }),
+      new OpusManifestPlugin({
+        fileName: path.join(outputManifestDirname, "radio-manifest.json"),
       }),
     ],
     experiments: {
