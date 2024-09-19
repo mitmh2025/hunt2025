@@ -38,125 +38,150 @@ export async function seed(knex: Knex): Promise<void> {
     .whereIn("username", CUSTOM_BEHAVIOR_TEAMS)
     .select("id")
     .pluck("id");
-  await knex.transaction(async (trx) => {
-    for (const team_id of custom_team_ids) {
-      await trx("activity_log").where("team_id", team_id).del();
-      await trx("team_puzzle_guesses").where("team_id", team_id).del();
-    }
-  });
+  await knex.transaction(
+    async (trx) => {
+      for (const team_id of custom_team_ids) {
+        await trx("activity_log").where("team_id", team_id).del();
+        await trx("team_puzzle_guesses").where("team_id", team_id).del();
+      }
+    },
+    {
+      isolationLevel: "serializable",
+    },
+  );
 
   // For the "unlockable" team: unlock all rounds, then mark all puzzles as unlockable
-  await knex.transaction(async (trx) => {
-    await trx("activity_log").insert(
-      HUNT.rounds.map((round) => {
-        return {
-          team_id: usernameToTeamId.get("unlockable"),
-          type: "round_unlocked",
-          slug: round.slug,
-        };
-      }),
-    );
-    // TODO: create puzzle_unlockable activity log entries, once that's a type that exists
-  });
+  await knex.transaction(
+    async (trx) => {
+      await trx("activity_log").insert(
+        HUNT.rounds.map((round) => {
+          return {
+            team_id: usernameToTeamId.get("unlockable"),
+            type: "round_unlocked",
+            slug: round.slug,
+          };
+        }),
+      );
+      // TODO: create puzzle_unlockable activity log entries, once that's a type that exists
+    },
+    {
+      isolationLevel: "serializable",
+    },
+  );
 
   // For the "unlocked" team: create puzzle_unlocked entries for all rounds & puzzles
-  await knex.transaction(async (trx) => {
-    await trx("activity_log").insert(
-      HUNT.rounds.map((round) => {
-        return {
-          team_id: usernameToTeamId.get("unlocked"),
-          type: "round_unlocked",
-          slug: round.slug,
-        };
-      }),
-    );
-    await trx("activity_log").insert(
-      Array.from(slugs).flatMap((slug) => {
-        return {
-          team_id: usernameToTeamId.get("unlocked"),
-          type: "puzzle_unlocked",
-          slug,
-        };
-      }),
-    );
-    await trx("activity_log").insert(
-      Array.from(gates).flatMap((gate) => {
-        return {
-          team_id: usernameToTeamId.get("unlocked"),
-          type: "gate_completed",
-          slug: gate,
-        };
-      }),
-    );
-  });
+  await knex.transaction(
+    async (trx) => {
+      await trx("activity_log").insert(
+        HUNT.rounds.map((round) => {
+          return {
+            team_id: usernameToTeamId.get("unlocked"),
+            type: "round_unlocked",
+            slug: round.slug,
+          };
+        }),
+      );
+      await trx("activity_log").insert(
+        Array.from(slugs).flatMap((slug) => {
+          return {
+            team_id: usernameToTeamId.get("unlocked"),
+            type: "puzzle_unlocked",
+            slug,
+          };
+        }),
+      );
+      await trx("activity_log").insert(
+        Array.from(gates).flatMap((gate) => {
+          return {
+            team_id: usernameToTeamId.get("unlocked"),
+            type: "gate_completed",
+            slug: gate,
+          };
+        }),
+      );
+    },
+    {
+      isolationLevel: "serializable",
+    },
+  );
 
   // For the "solved" team:
-  await knex.transaction(async (trx) => {
-    // unlock all rounds and puzzles
-    await trx("activity_log").insert(
-      HUNT.rounds.map((round) => {
-        return {
-          team_id: usernameToTeamId.get("solved"),
-          type: "round_unlocked",
-          slug: round.slug,
-        };
-      }),
-    );
-    await trx("activity_log").insert(
-      Array.from(slugs).flatMap((slug) => {
-        return {
-          team_id: usernameToTeamId.get("solved"),
-          type: "puzzle_unlocked",
-          slug,
-        };
-      }),
-    );
-    // satisfy all gates
-    await trx("activity_log").insert(
-      Array.from(gates).flatMap((gate) => {
-        return {
-          team_id: usernameToTeamId.get("solved"),
-          type: "gate_completed",
-          slug: gate,
-        };
-      }),
-    );
-    // create correct guesses
-    await trx("team_puzzle_guesses").insert(
-      Array.from(slugs).flatMap((slug) => {
+  await knex.transaction(
+    async (trx) => {
+      // unlock all rounds and puzzles
+      await trx("activity_log").insert(
+        HUNT.rounds.map((round) => {
+          return {
+            team_id: usernameToTeamId.get("solved"),
+            type: "round_unlocked",
+            slug: round.slug,
+          };
+        }),
+      );
+      await trx("activity_log").insert(
+        Array.from(slugs).flatMap((slug) => {
+          return {
+            team_id: usernameToTeamId.get("solved"),
+            type: "puzzle_unlocked",
+            slug,
+          };
+        }),
+      );
+      // satisfy all gates
+      await trx("activity_log").insert(
+        Array.from(gates).flatMap((gate) => {
+          return {
+            team_id: usernameToTeamId.get("solved"),
+            type: "gate_completed",
+            slug: gate,
+          };
+        }),
+      );
+      // create correct guesses
+      await trx("team_puzzle_guesses").insert(
+        Array.from(slugs).flatMap((slug) => {
+          const puzzle = PUZZLES[slug];
+          const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
+          return {
+            team_id: usernameToTeamId.get("solved"),
+            slug,
+            canonical_input: answer,
+            status: "correct",
+            response: "Correct!",
+          };
+        }),
+      );
+      // mark all puzzles as solved
+      // SQLite doesn't play nice with bulk inserts with json columns, so fall back
+      // to row-by-row here
+      for (const slug of slugs) {
         const puzzle = PUZZLES[slug];
         const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
-        return {
+        await trx("activity_log").insert({
           team_id: usernameToTeamId.get("solved"),
+          type: "puzzle_solved",
           slug,
-          canonical_input: answer,
-          status: "correct",
-          response: "Correct!",
-        };
-      }),
-    );
-    // mark all puzzles as solved
-    // SQLite doesn't play nice with bulk inserts with json columns, so fall back
-    // to row-by-row here
-    for (const slug of slugs) {
-      const puzzle = PUZZLES[slug];
-      const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
-      await trx("activity_log").insert({
-        team_id: usernameToTeamId.get("solved"),
-        type: "puzzle_solved",
-        slug,
-        data: {
-          answer,
-        },
-      });
-    }
-  });
+          data: {
+            answer,
+          },
+        });
+      }
+    },
+    {
+      isolationLevel: "serializable",
+    },
+  );
 
   // Ensure we trigger any triggerable unlocks
   const all_team_ids = await knex("teams").select("id").pluck("id");
-  await knex.transaction(async (trx) => {
-    for (const team_id of all_team_ids) {
-      await recalculateTeamState(HUNT, team_id, trx);
-    }
-  });
+  await knex.transaction(
+    async (trx) => {
+      for (const team_id of all_team_ids) {
+        await recalculateTeamState(HUNT, team_id, trx);
+      }
+    },
+    {
+      isolationLevel: "serializable",
+    },
+  );
 }
