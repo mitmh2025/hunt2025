@@ -57,7 +57,8 @@ class OpusManifestPlugin {
       // Collect the relevant fields from opus files
       if (asset.name.endsWith(".opus")) {
         const src = asset.info.sourceFilename;
-        const re = /src\/frontend\/interactions\/([^\/]+)\/audio\/opus\/([^.]+).opus/;
+        const re =
+          /src\/frontend\/interactions\/([^\/]+)\/audio\/opus\/([^.]+).opus/;
         const res = re.exec(src);
         let interaction;
         let line;
