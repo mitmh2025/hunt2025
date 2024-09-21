@@ -373,7 +373,8 @@ const HUNT: Hunt = {
         { id: "isp18", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
 
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }] }, // Bookcase
-        { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01", answer_count: 1 }, { gate_satisfied: "isg16" }] },
+        { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg16" }] },
+        { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg26" }] },
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final
@@ -412,7 +413,7 @@ const HUNT: Hunt = {
           // so it might need a URL anyway.
           id: "meet_papa",
           unlock_if: [
-            { slot_solved: "ism01", answer_count: 2 },
+            { slot_solved: "ism03" },
           ],
         },
       ],

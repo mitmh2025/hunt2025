@@ -2,11 +2,9 @@
 
 // An expression indicating the nature of a dependency.
 export type Condition =
-  | ({
-      answer_count?: number; // If present, the required number of (unique) solves for this puzzle for this condition to be met.
-    } & {
+  | {
       slot_solved: string; // The puzzle in this slot must be solved.
-    })
+    }
   | {
       slot_unlocked: string; // The puzzle in this slot must be unlocked.
     }

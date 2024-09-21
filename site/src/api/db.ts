@@ -446,21 +446,16 @@ export async function recalculateTeamState(
       .where("type", "gate_completed")
       .pluck("slug")) as string[],
   );
-
-  const puzzle_solution_count = Object.fromEntries(
-    (
-      await trx("team_puzzle_guesses")
-        .select("slug")
-        .where("team_id", team_id)
-        .where("status", "correct")
-        .count("*", { as: "count" })
-        .groupBy("slug")
-    ).map(({ slug, count }) => [slug, Number(count ?? 0)]),
+  const puzzles_solved = new Set(
+    (await trx("team_puzzle_guesses")
+      .where("team_id", team_id)
+      .where("status", "correct")
+      .pluck("slug")) as string[],
   );
   const canonical_queries_done = Date.now();
   //console.log(interactions_completed);
   //console.log(puzzles_unlocked);
-  //console.log(puzzle_solution_count);
+  //console.log(puzzles_solved);
   const old = await getTeamState(team_id, trx);
   const denormed_queries_done = Date.now();
   const next = calculateTeamState({
@@ -468,7 +463,7 @@ export async function recalculateTeamState(
     gates_satisfied,
     interactions_completed,
     puzzles_unlocked,
-    puzzle_solution_count,
+    puzzles_solved,
   });
   const calculate_team_state_done = Date.now();
   //console.log(next);

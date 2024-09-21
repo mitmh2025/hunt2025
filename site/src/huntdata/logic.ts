@@ -5,7 +5,7 @@ type ConditionState = {
   gates_satisfied: Set<string>;
   interactions_completed: Set<string>;
   puzzles_unlocked: Set<string>;
-  puzzle_solution_count: Record<string, number>;
+  puzzles_solved: Set<string>;
 };
 
 type ConditionStateInternal = {
@@ -23,7 +23,7 @@ function evaluateCondition(
     gates_satisfied,
     interactions_completed,
     puzzles_unlocked,
-    puzzle_solution_count,
+    puzzles_solved,
     slug_by_slot,
     unlocked_rounds,
   } = condition_state;
@@ -42,10 +42,10 @@ function evaluateCondition(
     return false;
   }
   if ("slot_solved" in condition) {
-    const { slot_solved, answer_count } = condition;
+    const { slot_solved } = condition;
     const slug = slug_by_slot[slot_solved];
     if (slug) {
-      return (puzzle_solution_count[slug] ?? 0) >= (answer_count ?? 1);
+      return puzzles_solved.has(slug);
     }
     return false;
   }

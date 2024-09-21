@@ -40,9 +40,7 @@ it("unlocks if solved", () => {
       gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlocked: new Set(["p11"]),
-      puzzle_solution_count: {
-        p11: 1,
-      },
+      puzzles_solved: new Set(["p11"]),
     }),
   ).toStrictEqual({
     unlocked_rounds: new Set(["round"]),
@@ -75,7 +73,7 @@ it("becomes visible if unlocked", () => {
       gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlocked: new Set(),
-      puzzle_solution_count: {},
+      puzzles_solved: new Set(),
     }),
   ).toStrictEqual({
     unlocked_rounds: new Set(["round"]),
@@ -106,7 +104,7 @@ it("handles gate conditions", () => {
       gates_satisfied: new Set(["g1"]),
       interactions_completed: new Set(),
       puzzles_unlocked: new Set(),
-      puzzle_solution_count: {},
+      puzzles_solved: new Set(),
     }),
   ).toStrictEqual({
     unlocked_rounds: new Set(["round"]),
@@ -146,7 +144,7 @@ it("handles round unlock conditions", () => {
       gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlocked: new Set(["p1"]),
-      puzzle_solution_count: { p1: 1 },
+      puzzles_solved: new Set(["p1"]),
     }),
   ).toStrictEqual({
     unlocked_rounds: new Set(["round1", "round2"]),
