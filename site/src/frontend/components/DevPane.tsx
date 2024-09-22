@@ -31,6 +31,7 @@ function colorForPuzzle(
 const PuzzleBoxDiv = styled.div<{
   $isMeta: boolean;
   $state: DevtoolsPuzzle["state"];
+  $isPostprodded: boolean;
 }>`
   display: inline-block;
   ${({ $isMeta }) =>
@@ -45,6 +46,11 @@ const PuzzleBoxDiv = styled.div<{
         `}
   background-color: ${({ $state }) => colorForPuzzle($state)};
   border: 1px solid var(--black);
+  ${({ $isPostprodded }) =>
+    $isPostprodded &&
+    css`
+      box-shadow: 0px 0px 0px 2px #dbae2e99;
+    `}
   margin: 2px;
 `;
 
@@ -56,7 +62,14 @@ const PuzzleBox = ({
   is_meta: boolean;
 }) => {
   const { slot, slug, title, state } = puzzle;
-  const box = <PuzzleBoxDiv $state={state} $isMeta={is_meta} title={title} />;
+  const box = (
+    <PuzzleBoxDiv
+      $state={state}
+      $isMeta={is_meta}
+      $isPostprodded={slot !== slug}
+      title={title}
+    />
+  );
 
   return (
     <a key={slot} href={`/puzzles/${slug}`}>
