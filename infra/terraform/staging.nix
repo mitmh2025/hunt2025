@@ -14,7 +14,9 @@ in {
 
   resource.google_compute_instance.staging = {
     name = "staging";
-    machine_type = "e2-medium"; # 1 vCPU, 4 GB RAM
+    machine_type = "e2-custom-medium-5120"; # 1 vCPU, 5 GB RAM
+
+    desired_status = "RUNNING";
 
     boot_disk.initialize_params = {
       image = lib.tfRef "google_compute_image.nixos.id";
