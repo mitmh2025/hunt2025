@@ -8,6 +8,17 @@ const PuzzleWrapper = styled.div`
   max-width: 100%;
   color: var(--black);
 
+  a {
+    color: var(--black);
+    text-decoration-color: var(--black);
+
+    &:hover {
+      text-shadow: none;
+      color: var(--gold-700);
+      text-decoration-color: var(--gold-700);
+    }
+  }
+
   @media ${deviceMin.lg} {
     width: calc(1080px - 1rem);
   }

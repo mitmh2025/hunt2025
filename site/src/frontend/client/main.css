@@ -95,6 +95,5 @@ a {
 
 a:hover {
   color: var(--true-white);
-  border-color: var(--true-white);
   text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.7);
 }
