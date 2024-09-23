@@ -31,14 +31,17 @@ in {
     };
     users.groups.hunt2025 = {};
 
-    systemd.services.hunt2025 = {
-      description = "Hunt 2025 Frontend";
-
-      wantedBy = ["multi-user.target"];
-      wants = [
+    systemd.services.hunt2025 = let
+      deps = [
         "postgresql.service"
         "${config.services.redis.servers.hunt2025.user}.service"
       ];
+    in {
+      description = "Hunt 2025 Frontend";
+
+      wantedBy = ["multi-user.target"];
+      wants = deps;
+      after = deps;
 
       environment.DB_ENV = cfg.db_env;
       environment.PORT = cfg.port;
