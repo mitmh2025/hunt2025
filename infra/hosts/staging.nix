@@ -14,6 +14,14 @@
     {
       # Enable compressed RAM
       boot.kernelParams = ["zswap.enabled=1"];
+
+      # Allow serial console login
+      systemd.services."serial-getty@ttyS0" = {
+        # Undo what nixos/modules/profiles/headless.nix did
+        enable = true;
+        serviceConfig = config.systemd.services."serial-getty@".serviceConfig;
+        overrideStrategy = "asDropin";
+      };
     }
     {
       sops.defaultSopsFile = ./../secrets/staging.yaml;

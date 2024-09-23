@@ -40,6 +40,8 @@ in {
 
     metadata.enable-oslogin = "FALSE"; # Doesn't work with non-@mit.edu accounts.
 
+    metadata.serial-port-enable = "TRUE"; # Allow ssh to access the instance's serial console.
+
     service_account = {
       email = lib.tfRef "google_service_account.staging.email";
       scopes = ["cloud-platform"];
