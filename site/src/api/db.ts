@@ -3,11 +3,10 @@ import Knex from "knex";
 import {
   type ActivityLogEntry,
   type InsertActivityLogEntry,
-  type TeamPuzzle,
 } from "knex/types/tables";
 import connections from "../../knexfile";
-import { calculateTeamState } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
+import { fixData, fixTimestamp, reducerDeriveTeamState } from "./logic";
 
 class WebpackMigrationSource {
   context: Rspack.Context;
@@ -84,21 +83,6 @@ declare module "knex/types/tables" {
     id: number;
     username: string;
     password?: string;
-  };
-
-  type TeamRound = {
-    team_id: number;
-    slug: string;
-    unlocked: boolean;
-  };
-
-  type TeamPuzzle = {
-    team_id: number;
-    slug: string;
-    visible: boolean;
-    unlockable: boolean;
-    unlocked: boolean;
-    solved: boolean;
   };
 
   // "correct" means the puzzle is solved and no longer allows new answer submissions
@@ -199,8 +183,6 @@ declare module "knex/types/tables" {
    */
   interface Tables {
     teams: Team;
-    team_rounds: TeamRound;
-    team_puzzles: TeamPuzzle;
     team_puzzle_guesses: TeamPuzzleGuess;
     activity_log: Knex.Knex.CompositeTableType<
       ActivityLogEntry,
@@ -231,6 +213,7 @@ function string_agg(knex: Knex.Knex, field: string, delimeter: string) {
   ]);
 }
 
+// TODO: rename to loadCanonicalTeamStateInputs or something like that
 export async function getTeamState(
   team_id: number,
   trx: Knex.Knex.Transaction,
@@ -240,96 +223,23 @@ export async function getTeamState(
     .select("username")
     .first();
   if (!team) throw new Error(`No team found for team_id ${team_id}`);
-  const puzzle_status = await trx("team_puzzles")
-    .where("team_id", team_id)
-    .select("slug", "visible", "unlockable", "unlocked");
-  const correct_answers = (await trx("team_puzzle_guesses")
-    .where("team_id", team_id)
-    .where("status", "correct")
-    .select("slug", { answer: string_agg(trx, "canonical_input", ", ") })
-    .groupBy("slug")) as {
-    slug: string;
-    answer: string;
-  }[]; /* I can't tell how to tell TypeScript that answer is a string without forcing it here. */
-  const satisfied_gates = (await trx("activity_log")
-    .where("team_id", team_id)
-    .where("type", "gate_completed")
-    .pluck("slug")) as string[];
 
-  const interaction_events = (await trx("activity_log")
+  const activity_log = await trx<ActivityLogEntry>("activity_log")
     .where("team_id", team_id)
-    .whereIn("type", [
-      "interaction_unlocked",
-      "interaction_started",
-      "interaction_completed",
-    ])
-    .orderBy("id")
-    .select("type", "slug", "data")) as Pick<
-    ActivityLogEntry,
-    "type" | "slug" | "data"
-  >[];
-  const interactions: Record<
-    string,
-    { state: "unlocked" | "running" | "completed"; result?: string }
-  > = interaction_events.reduce((acc, entry) => {
-    if (entry.slug) {
-      // guaranteed to be nonnull in practice, but hard to prove to the typechecker
-      switch (entry.type) {
-        case "interaction_unlocked":
-          return { ...acc, [entry.slug]: { state: "unlocked" } };
-        case "interaction_started":
-          return { ...acc, [entry.slug]: { state: "running" } };
-        case "interaction_completed": {
-          let result = "";
-          if ("data" in entry) {
-            result = (
-              fixData(entry.data as unknown as string) as { result: string }
-            ).result;
-          }
-          return {
-            ...acc,
-            [entry.slug]: {
-              state: "completed",
-              result,
-            },
-          };
-        }
-      }
+    .orWhereNull("team_id")
+    .orderBy("id");
+
+  const fixedActivityLog = activity_log.map((e) => {
+    e.timestamp = fixTimestamp(e.timestamp);
+    if (e.data) {
+      e.data = fixData(e.data);
     }
-    return acc;
-  }, {});
+    return e;
+  });
 
-  const available_currency = Number(
-    (
-      await trx("activity_log")
-        .where("team_id", team_id)
-        .orWhere("team_id", null)
-        .sum({ sum: "currency_delta" })
-        .first()
-    )?.sum ?? 0,
-  );
   return {
     team_name: team.username,
-    available_currency,
-    unlocked_rounds: new Set(
-      await trx("team_rounds").where("team_id", team_id).pluck("slug"),
-    ),
-    visible_puzzles: new Set(
-      puzzle_status.flatMap(({ slug, visible }) => (visible ? [slug] : [])),
-    ),
-    unlockable_puzzles: new Set(
-      puzzle_status.flatMap(({ slug, unlockable }) =>
-        unlockable ? [slug] : [],
-      ),
-    ),
-    unlocked_puzzles: new Set(
-      puzzle_status.flatMap(({ slug, unlocked }) => (unlocked ? [slug] : [])),
-    ),
-    correct_answers: Object.fromEntries(
-      correct_answers.map(({ slug, answer }) => [slug, answer]),
-    ),
-    satisfied_gates: new Set(satisfied_gates),
-    interactions,
+    activity_log: fixedActivityLog,
   };
 }
 
@@ -364,38 +274,11 @@ export async function appendActivityLog(
     });
 }
 
-export function fixTimestamp(value: string | Date): Date {
-  if (typeof value === "string") {
-    // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
-    return new Date(value + "Z");
-  }
-  return value;
-}
-
-export function fixData(value: string | object): object {
-  // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
-  if (typeof value === "string") {
-    return JSON.parse(value) as object;
-  }
-  return value;
-}
-
 export async function getPuzzleState(
   team_id: number,
   slug: string,
   trx: Knex.Knex.Transaction,
 ) {
-  const unlocked_rounds = new Set(
-    await trx("team_rounds")
-      .where("team_id", team_id)
-      .where("unlocked", true)
-      .pluck("slug"),
-  );
-  const puzzle_status = await trx("team_puzzles")
-    .where("team_id", team_id)
-    .where("slug", slug)
-    .select("slug", "visible", "unlockable", "unlocked")
-    .first();
   const correct_answers: { answer: string } | undefined = await trx(
     "team_puzzle_guesses",
   )
@@ -414,8 +297,6 @@ export async function getPuzzleState(
     return row;
   });
   return {
-    unlocked_rounds,
-    puzzle_status,
     guesses,
     answer: correct_answers?.answer,
   };
@@ -427,46 +308,48 @@ export async function recalculateTeamState(
   trx: Knex.Knex.Transaction,
 ): Promise<ActivityLogEntry[]> {
   const activityLogWrites: ActivityLogEntry[] = [];
-  const start = Date.now();
-  const interactions_completed = new Set(
-    (await trx("activity_log")
-      .where("team_id", team_id)
-      .where("type", "interaction_completed")
-      .pluck("slug")) as string[],
-  );
-  const puzzles_unlocked = new Set(
-    (await trx("activity_log")
-      .where("team_id", team_id)
-      .where("type", "puzzle_unlocked")
-      .pluck("slug")) as string[],
-  );
-  const gates_satisfied = new Set(
-    (await trx("activity_log")
-      .where("team_id", team_id)
-      .where("type", "gate_completed")
-      .pluck("slug")) as string[],
-  );
-  const puzzles_solved = new Set(
-    (await trx("team_puzzle_guesses")
-      .where("team_id", team_id)
-      .where("status", "correct")
-      .pluck("slug")) as string[],
-  );
-  const canonical_queries_done = Date.now();
-  //console.log(interactions_completed);
-  //console.log(puzzles_unlocked);
-  //console.log(puzzles_solved);
-  const old = await getTeamState(team_id, trx);
-  const denormed_queries_done = Date.now();
-  const next = calculateTeamState({
-    hunt,
-    gates_satisfied,
-    interactions_completed,
-    puzzles_unlocked,
-    puzzles_solved,
-  });
-  const calculate_team_state_done = Date.now();
-  //console.log(next);
+  const start = performance.now();
+  const { team_name, activity_log } = await getTeamState(team_id, trx);
+  const canonical_queries_done = performance.now();
+
+  // What is already present in the activity log?
+  // TODO: consider doing this in a single pass instead
+  const old = {
+    unlocked_rounds: new Set(
+      activity_log
+        .filter((e) => e.type === "round_unlocked")
+        .map((e) => e.slug),
+    ),
+    unlocked_puzzles: new Set(
+      activity_log
+        .filter((e) => e.type === "puzzle_unlocked")
+        .map((e) => e.slug),
+    ),
+    interactions_unlocked: new Set(
+      activity_log
+        .filter((e) => e.type === "interaction_unlocked")
+        .map((e) => e.slug),
+    ),
+    interactions_completed: new Set(
+      activity_log
+        .filter((e) => e.type === "interaction_completed")
+        .map((e) => e.slug),
+    ),
+    gates_satisfied: new Set(
+      activity_log
+        .filter((e) => e.type === "gate_completed")
+        .map((e) => e.slug),
+    ),
+    solved_puzzles: new Set(
+      activity_log.filter((e) => e.type === "puzzle_solved").map((e) => e.slug),
+    ),
+  };
+
+  // What /should/ be in the activity log, based on the hunt description?
+  const next = reducerDeriveTeamState(team_name, hunt, activity_log);
+  const calculate_team_state_done = performance.now();
+
+  // Compute the differences, and generate the requisite inserts.
   for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
     activityLogWrites.push(
       await appendActivityLog(
@@ -478,67 +361,32 @@ export async function recalculateTeamState(
         trx,
       ),
     );
-    await trx("team_rounds")
-      .insert({
-        team_id,
-        slug,
-        unlocked: true,
-      })
-      .onConflict(["team_id", "slug"])
-      .merge({
-        unlocked: true,
-      });
   }
-  const unlock_rounds_done = Date.now();
-  const old_interactions = new Set(Object.keys(old.interactions));
+  const unlock_rounds_done = performance.now();
   const diff = {
-    visible_puzzles: next.visible_puzzles.difference(old.visible_puzzles),
-    unlockable_puzzles: next.unlockable_puzzles.difference(
-      old.unlockable_puzzles,
-    ),
+    // visible_puzzles: next.visible_puzzles.difference(old.visible_puzzles),
+    // unlockable_puzzles: next.unlockable_puzzles.difference(
+    //   old.unlockable_puzzles,
+    // ),
     unlocked_puzzles: next.unlocked_puzzles.difference(old.unlocked_puzzles),
-    unlocked_interactions:
-      next.unlocked_interactions.difference(old_interactions),
+    unlocked_interactions: new Set(Object.keys(next.interactions)).difference(
+      old.interactions_unlocked,
+    ),
   };
-  const diff_puzzles = diff.visible_puzzles
-    .union(diff.unlockable_puzzles)
-    .union(diff.unlocked_puzzles);
-  const diff_done = Date.now();
-  for (const slug of diff_puzzles) {
-    const record: Partial<TeamPuzzle> = {};
-    if (diff.visible_puzzles.has(slug)) {
-      record.visible = true;
-    }
-    if (diff.unlockable_puzzles.has(slug)) {
-      record.unlockable = true;
-    }
-    if (diff.unlocked_puzzles.has(slug)) {
-      record.unlocked = true;
-      activityLogWrites.push(
-        await appendActivityLog(
-          {
-            team_id,
-            type: "puzzle_unlocked",
-            slug,
-          },
-          trx,
-        ),
-      );
-    }
-    await trx("team_puzzles")
-      .insert(
-        Object.assign(
-          {
-            team_id,
-            slug,
-          },
-          record,
-        ),
-      )
-      .onConflict(["team_id", "slug"])
-      .merge(record);
+  const diff_done = performance.now();
+  for (const slug of diff.unlocked_puzzles) {
+    activityLogWrites.push(
+      await appendActivityLog(
+        {
+          team_id,
+          type: "puzzle_unlocked",
+          slug,
+        },
+        trx,
+      ),
+    );
   }
-  const puzzles_unlock_done = Date.now();
+  const puzzles_unlock_done = performance.now();
   for (const id of diff.unlocked_interactions) {
     activityLogWrites.push(
       await appendActivityLog(
@@ -551,11 +399,10 @@ export async function recalculateTeamState(
       ),
     );
   }
-  const interactions_unlock_done = Date.now();
+  const interactions_unlock_done = performance.now();
   console.log(`recalculateTeamState for team ${team_id}: ${interactions_unlock_done - start} msec
   * canonical queries:   ${canonical_queries_done - start} msec
-  * denormed queries:    ${denormed_queries_done - canonical_queries_done} msec
-  * calculateTeamState:  ${calculate_team_state_done - denormed_queries_done} msec
+  * calculateTeamState:  ${calculate_team_state_done - canonical_queries_done} msec
   * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
   * compute diffs:       ${diff_done - unlock_rounds_done} msec
   * unlock puzzles:      ${puzzles_unlock_done - diff_done} msec

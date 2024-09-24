@@ -43,9 +43,9 @@ import {
   getTeamState as dbGetTeamState,
   getPuzzleState as dbGetPuzzleState,
   recalculateTeamState,
-  fixTimestamp,
   appendActivityLog,
 } from "./db";
+import { fixData, fixTimestamp, reducerDeriveTeamState } from "./logic";
 
 type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
@@ -208,7 +208,8 @@ export function getRouter({
     team_id: number,
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
-    const data = await dbGetTeamState(team_id, trx);
+    const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
+    const data = reducerDeriveTeamState(team_name, hunt, activity_log);
     //console.log(data);
     const rounds = Object.fromEntries(
       hunt.rounds
@@ -294,30 +295,43 @@ export function getRouter({
     slug: string,
     trx: Knex.Transaction,
   ): Promise<PuzzleState | undefined> => {
-    const { unlocked_rounds, puzzle_status, answer, guesses } =
-      await dbGetPuzzleState(team_id, slug, trx);
-    if (!puzzle_status) {
+    // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
+    // puzzle state for it.
+    const slotEntry = slugToSlotMap.get(slug);
+    if (!slotEntry) {
       return undefined;
     }
-    let round: string | undefined;
-    hunt.rounds.forEach(({ slug: roundSlug, puzzles }) => {
-      if (!unlocked_rounds.has(roundSlug)) {
-        return;
-      }
-      puzzles.forEach((slot) => {
-        if (slug === getSlotSlug(slot)) {
-          round = roundSlug;
-        }
-      });
-    });
-    if (!round) {
-      round = "outlands"; // TODO: Configurable?
+
+    // The slot entry contains the round slug for the round that canonically contains this puzzle slug.
+    let round = slotEntry.roundSlug;
+
+    // TODO: in the fullness of time, we should materialize puzzle_unlockable in activity_log so we can do purely point loads
+    //       and not have to derive team state here at all.
+    const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
+    const data = reducerDeriveTeamState(team_name, hunt, activity_log);
+    const round_unlocked = data.unlocked_rounds.has(round);
+    // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "outlands" round.
+    if (!round_unlocked) {
+      round = "outlands"; // TODO: configurable?
     }
-    const locked: "locked" | "unlockable" | "unlocked" = puzzle_status.unlocked
-      ? "unlocked"
-      : puzzle_status.unlockable
-        ? "unlockable"
-        : "locked";
+
+    // The puzzle must be either unlockable or unlocked.
+    if (
+      !data.unlockable_puzzles.has(slug) &&
+      !data.unlocked_puzzles.has(slug)
+    ) {
+      return undefined;
+    }
+
+    // TODO: Fetch relevant puzzle state from the DB -- puzzle status, answer, guesses, is the round it belongs to unlocked
+    const { answer, guesses } = await dbGetPuzzleState(team_id, slug, trx);
+
+    const locked: "locked" | "unlockable" | "unlocked" =
+      data.unlocked_puzzles.has(slug)
+        ? "unlocked"
+        : data.unlockable_puzzles.has(slug)
+          ? "unlockable"
+          : "locked";
     const result: PuzzleState = {
       round,
       locked,
@@ -460,12 +474,9 @@ export function getRouter({
           break;
       }
     }
-    if ("data" in e) {
+    if ("data" in e && e.data) {
       // SQLite doesn't parse JSON automatically
-      const data =
-        typeof e.data === "string"
-          ? (JSON.parse(e.data as string) as typeof e.data)
-          : e.data;
+      const data = fixData(e.data);
       entry = Object.assign(entry, data);
     }
     return entry as ActivityLog[number];
@@ -609,12 +620,15 @@ export function getRouter({
             async function (trx) {
               const deferredPublications = new DeferredPublications({});
               // Check that the puzzle is unlocked before allowing guess submission.
-              const result = await trx("team_puzzles")
+              const unlocked = await trx<
+                ActivityLogEntry & { type: "puzzle_unlocked" }
+              >("activity_log")
                 .where("team_id", team_id)
+                .where("type", "puzzle_unlocked")
                 .where("slug", slug)
-                .select("unlocked")
+                .select("slug")
                 .first();
-              if (!result?.unlocked) {
+              if (unlocked === undefined) {
                 return [
                   {
                     status: 404 as const,
@@ -796,7 +810,15 @@ export function getRouter({
           const [response, deferred] = await knex.transaction(
             async function (trx) {
               const deferredPublications = new DeferredPublications({});
-              const data = await dbGetTeamState(team_id, trx);
+              const { team_name, activity_log } = await dbGetTeamState(
+                team_id,
+                trx,
+              );
+              const data = reducerDeriveTeamState(
+                team_name,
+                hunt,
+                activity_log,
+              );
               const slot = hunt.rounds
                 .filter(({ slug }) => data.unlocked_rounds.has(slug))
                 .flatMap(({ puzzles }) =>
@@ -810,10 +832,6 @@ export function getRouter({
                 unlock_cost &&
                 data.available_currency >= unlock_cost
               ) {
-                await trx("team_puzzles")
-                  .where("team_id", team_id)
-                  .where("slug", slug)
-                  .update({ unlocked: true });
                 const entry = await appendActivityLog(
                   {
                     team_id,

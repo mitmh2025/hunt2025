@@ -19,6 +19,8 @@ export const RateLimitStateSchema = z.object({
   retryAfter: z.string().datetime(),
 });
 
+// Still unsure if we need to be able to return any information about puzzles in the "locked" state.
+// We broadly do not care to service requests for puzzles that are neither unlockable nor unlocked.
 const PuzzleLockEnum = z
   .enum(["locked", "unlockable", "unlocked"])
   .default("locked");
