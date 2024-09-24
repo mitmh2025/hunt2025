@@ -2,6 +2,7 @@ import type { Hunt, Condition, PuzzleSlot } from "./types";
 
 type ConditionState = {
   hunt: Hunt;
+  unlocked_rounds: Set<string>;
   gates_satisfied: Set<string>;
   interactions_completed: Set<string>;
   puzzles_unlocked: Set<string>;
@@ -9,7 +10,6 @@ type ConditionState = {
 };
 
 type ConditionStateInternal = {
-  unlocked_rounds: Set<string>;
   default_slots: string[] | undefined;
   slug_by_slot: Record<string, string>;
 } & ConditionState;
@@ -118,15 +118,33 @@ export function getSlugsBySlot(hunt: Hunt) {
 }
 
 export function calculateTeamState(initial_condition_state: ConditionState) {
-  const { hunt, puzzles_unlocked } = initial_condition_state;
+  const {
+    // These four are immutable
+    hunt,
+    gates_satisfied,
+    interactions_completed,
+    puzzles_solved,
+    // These two are mutable
+    unlocked_rounds: initial_unlocked_rounds,
+    puzzles_unlocked: initial_puzzles_unlocked,
+  } = initial_condition_state;
 
-  const unlocked_rounds = new Set<string>();
-  const visible_puzzles = new Set<string>();
+  // in-out
+  const unlocked_rounds = new Set<string>(initial_unlocked_rounds);
+  const unlocked_puzzles = new Set<string>(initial_puzzles_unlocked);
+  const visible_puzzles = new Set<string>(initial_puzzles_unlocked);
+  // strict outputs
   const unlockable_puzzles = new Set<string>();
-  const unlocked_puzzles = new Set<string>(puzzles_unlocked);
   const unlocked_interactions = new Set<string>();
 
-  const condition_state = { ...initial_condition_state };
+  const condition_state: ConditionState = {
+    hunt,
+    unlocked_rounds,
+    gates_satisfied,
+    interactions_completed,
+    puzzles_unlocked: unlocked_puzzles,
+    puzzles_solved,
+  };
   const slug_by_slot = getSlugsBySlot(hunt);
 
   // We want to be able to specify unlockable_if with conditions based on
@@ -145,7 +163,6 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
         .map((p) => p.id);
       const round_condition_state = Object.assign(
         {
-          unlocked_rounds,
           default_slots,
           slug_by_slot,
         },

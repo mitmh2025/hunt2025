@@ -3,32 +3,6 @@ import { generatedPrimaryKey } from "../lib/migration_helper";
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema
-    .createTable("team_rounds", function (table) {
-      table
-        .integer("team_id")
-        .notNullable()
-        .references("teams.id")
-        .onDelete("CASCADE")
-        .onUpdate("CASCADE");
-      table.string("slug", 255).notNullable();
-      table.primary(["team_id", "slug"]);
-      table.boolean("unlocked").notNullable().defaultTo(false);
-    })
-    .createTable("team_puzzles", function (table) {
-      table
-        .integer("team_id")
-        .notNullable()
-        .references("teams.id")
-        .onDelete("CASCADE")
-        .onUpdate("CASCADE");
-      table.string("slug", 255).notNullable();
-      table.primary(["team_id", "slug"]);
-      table.boolean("visible").notNullable().defaultTo(false);
-      table.boolean("unlockable").notNullable().defaultTo(false);
-      table.boolean("unlocked").notNullable().defaultTo(false);
-      table.boolean("solved").notNullable().defaultTo(false);
-      // TODO: Track solve time?
-    })
     .createTable("team_puzzle_guesses", function (table) {
       generatedPrimaryKey(knex, table, "id");
       table
@@ -71,9 +45,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema
-    .dropTable("team_rounds")
-    .dropTable("team_puzzles")
-    .dropTable("team_puzzle_guesses")
-    .dropTable("activity_log");
+  await knex.schema.dropTable("team_puzzle_guesses").dropTable("activity_log");
 }
