@@ -24,6 +24,9 @@ export const INTERACTIONS = {
   meet_billie: {
     title: "Meet Billie",
   },
+  catch_the_thief: {
+    title: "Catch the Thief",
+  },
   meet_carter: {
     title: "Meet Carter",
   },
