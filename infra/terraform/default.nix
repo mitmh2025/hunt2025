@@ -14,16 +14,28 @@
     zone = "us-east5-a";
   };
 
-  provider.aws = {
-    allowed_account_ids = [891377012427];
-    region = "us-east-1";
-  };
+  provider.aws = [
+    {
+      alias = "puzzup";
+      allowed_account_ids = [891377012427];
+      region = "us-east-1";
+      profile = "mitmh2025-puzzup";
+    }
+    {
+      # default
+      allowed_account_ids = [767398012733];
+      region = "us-east-1";
+      profile = "mitmh2025-staging";
+    }
+  ];
 
   imports = [
+    ./modules/route53.nix
     ./base-image.nix
     ./state.nix
     ./staging.nix
     ./mail.nix
+    ./staticsite.nix
   ];
 
   resource.google_project_service = lib.genAttrs [
@@ -35,8 +47,9 @@
     disable_on_destroy = false;
   });
 
-  data.aws_route53_zone.mitmh2025 = {
-    name = "mitmh2025.com.";
+  route53.mitmh2025 = {
+    provider = "puzzup";
+    domain = "mitmh2025.com";
   };
 
   # $ gcloud kms keyrings create sops --location global

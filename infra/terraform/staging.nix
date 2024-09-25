@@ -104,10 +104,8 @@ in {
     };
   };
 
-  resource.aws_route53_record = {
+  route53.mitmh2025.rr = {
     staging = {
-      zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
-      name = "staging";
       type = "A";
       ttl = "300";
       records = [
@@ -115,8 +113,6 @@ in {
       ];
     };
   } // (lib.genAttrs stagingAliases (name: {
-    zone_id = lib.tfRef "data.aws_route53_zone.mitmh2025.zone_id";
-    inherit name;
     type = "CNAME";
     ttl = "300";
     records = [
