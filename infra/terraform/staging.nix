@@ -4,7 +4,7 @@ let
     "auth"
     "things"
     "tix"
-    "radio"
+    "media"
   ];
 in {
   resource.google_service_account.staging = {

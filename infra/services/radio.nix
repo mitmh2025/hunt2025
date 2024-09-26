@@ -8,7 +8,7 @@
         webrtcIPsFromInterfaces = false;
         # Just use a domain name to talk to us.
         webrtcAdditionalHosts = [
-          "radio.mitmh2025.com"
+          "media.mitmh2025.com"
         ];
         webrtcTrustedProxies = [
           "127.0.0.1"
@@ -29,9 +29,10 @@
     services.nginx = {
       upstreams.mediamtx.servers."127.0.0.1:8889" = {};
       virtualHosts = {
-        "radio.mitmh2025.com" = {
+        "media.mitmh2025.com" = {
           forceSSL = true;
           enableACME = true;
+          locations."= /".return = 404; # Don't proxy / itself
           locations."/" = {
             proxyPass = "http://mediamtx";
             proxyWebsockets = true;
