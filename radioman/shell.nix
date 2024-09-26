@@ -1,6 +1,8 @@
 { mkShell
 , icecast
 , liquidsoap
+, piper-tts
+, piper-voices
 , janus-gateway
 , gst_all_1
 , linkFarm
@@ -18,6 +20,7 @@ in mkShell {
   buildInputs = [
     icecast
     liquidsoap
+    piper-tts
     janus-gateway
     janus-gateway.doc
 
@@ -34,5 +37,6 @@ in mkShell {
   shellHook = ''
     export JANUS_CONFIG_DIR=${janusConfigDir}
     export JANUS_DOC=${janus-gateway.doc}
+    export PIPER_VOICES=${piper-voices}
   '';
 }

@@ -4,6 +4,8 @@ final: prev: {
 
   hunt2025-vm-test = final.callPackage ../test.nix {};
 
+  piper-voices = final.callPackage ./piper-voices.nix {};
+
   liquidsoap = if final.stdenv.isDarwin then (prev.liquidsoap.override (old: {
     # Remove optional dependencies that don't build on Darwin.
     runtimePackages = with final; [
