@@ -48,3 +48,33 @@ def fade.on_skip(
 
     fade.scale(id=id, apply, s).{skip=skip}
 end
+
+def pred_or_skip(
+    ~id="pred_or_skip",
+    p,
+    s,
+) =
+    last_p = ref(false)
+    skipping = ref(false)
+    def check() =
+        new_p = p()
+        if new_p != last_p() then
+            last_p := new_p
+            if not new_p then
+                skipping := true
+                s.skip()
+            end
+        end
+        res = new_p or skipping()
+        res
+    end
+    def stop_skipping(t) =
+        skipping := false
+    end
+
+    s = source.on_track((s : source), stop_skipping)
+
+    switch(id=id, track_sensitive=false, [
+        (check, s),
+    ])
+end
