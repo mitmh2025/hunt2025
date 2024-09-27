@@ -1,12 +1,12 @@
 PIPER_VOICES = environment.get("PIPER_VOICES")
 if PIPER_VOICES != "" then
-    def piper_protocol(~rlog,~maxtime,arg) =
+    def piper_protocol(~rlog=_,~maxtime=_,arg) =
         [process.uri(extname="wav","echo #{process.quote(arg)} | piper -m $PIPER_VOICES/en/en_US/norman/medium/en_US-norman-medium.onnx -f $(output)")]
     end
     protocol.add("speak",piper_protocol,doc="Generate speech from text")
 else
     # Use the built-in say: protocol if piper is unavailable
-    protocol.add("speak",fun (~rlog,~maxtime,arg) -> ["say:#{arg}"])
+    protocol.add("speak",fun (~rlog=_,~maxtime=_,arg) -> ["say:#{arg}"])
 end
 
 # Fade out when skip() is called
@@ -15,7 +15,7 @@ end
 def fade.on_skip(
     ~id="fade.on_skip",
     ~duration = 5.,
-    s
+    (s : source_methods),
 ) =
     def log(x) =
         log(label=source.id(s), level=4, x)
@@ -40,7 +40,7 @@ def fade.on_skip(
             stop=0.,
             type="exp",
             s,
-            on_done={source.skip(s)},
+            on_done=s.skip,
         )
     end
 
@@ -49,6 +49,8 @@ def fade.on_skip(
     fade.scale(id=id, apply, s).{skip=skip}
 end
 
+# Like source.available(), but instead of immediately making the source unavailable, it will call s.skip() and wait for the current track to finish when the predicate becomes false.
+# @param ~id Force the value of the source ID.
 def pred_or_skip(
     ~id="pred_or_skip",
     p,
@@ -68,7 +70,7 @@ def pred_or_skip(
         res = new_p or skipping()
         res
     end
-    def stop_skipping(t) =
+    def stop_skipping(_) =
         skipping := false
     end
 
