@@ -80,3 +80,29 @@ def pred_or_skip(
         (check, s),
     ])
 end
+
+# Will call the fn and play the returned list as a sequence until all the sources are unavailable
+def sequence.dynamic(
+    ~id="sequence.dynamic",
+    fn,
+) =
+    ready = ref(false)
+    src = ref(source.fail())
+
+    def next() =
+        if not ready() then
+            srcs = fn()
+            src := fallback([
+                sequence(srcs),
+                source.available(blank(), {ready := false; not list.is_empty(srcs)}),
+            ])
+            ready := true
+        end
+        src()
+    end
+
+    source.dynamic(id=id, track_sensitive=false, next).{
+        is_ready = {ready() and source.is_ready(src())},
+        reset = {ready := false; src := source.fail();}
+    }
+end
