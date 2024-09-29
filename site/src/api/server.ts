@@ -885,39 +885,6 @@ export function getRouter({
           };
         },
       },
-      forcePuzzleState: {
-        middleware: adminAuthMiddlewares,
-        handler: async ({ params: { teamId, slug }, body }) => {
-          const [response, deferred] = await knex.transaction(async (trx) => {
-            const team_id = parseInt(teamId, 10);
-            await trx("team_puzzles")
-              .insert(
-                Object.assign(
-                  {
-                    team_id,
-                    slug,
-                  },
-                  body,
-                ),
-              )
-              .onConflict(["team_id", "slug"])
-              .merge(body);
-            const [_, newWrites] = await refreshTeamState(hunt, team_id, trx);
-            // TODO: Invalidate caches
-            return [
-              {
-                status: 200 as const,
-                /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                 * We know the puzzle state exists because we checked the db above. */
-                body: (await getPuzzleState(team_id, slug, trx))!,
-              },
-              newWrites,
-            ];
-          });
-          await deferred.publish(redisClient);
-          return response;
-        },
-      },
     },
     frontend: {
       markTeamGateSatisfied: {
