@@ -53,7 +53,6 @@ export type PuzzleSlot = {
   //   feeders.  Teams should simply observe the discovery and unlock of a
   //   metapuzzle when they unlock a sufficient set of feeders.
 
-  visible_if?: Condition; // Conditions under which the puzzle is visible. If unset, the puzzle is visible if it is unlocked or unlockable.
   unlockable_if?: Condition; // Conditions under which the puzzle is unlockable. If unset, the puzzle is not unlockable.
   unlock_cost?: number; // If the puzzle is unlockable, how much it should cost to unlock. Defaults to 1.
   unlocked_if?: Condition; // Conditions under which the puzzle is unlocked.

@@ -167,15 +167,6 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
           return;
         }
         if (
-          slot.visible_if !== undefined &&
-          roundEvaluateCondition(slot.visible_if)
-        ) {
-          if (!visible_puzzles.has(puzzleSlug)) {
-            visible_puzzles.add(puzzleSlug);
-            updated = true;
-          }
-        }
-        if (
           slot.unlockable_if !== undefined &&
           roundEvaluateCondition(slot.unlockable_if)
         ) {
