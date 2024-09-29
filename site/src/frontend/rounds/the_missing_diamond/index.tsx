@@ -1083,7 +1083,7 @@ function genInteractions(
 
     return [
       {
-        alt: interaction.title,
+        alt: interaction?.title ?? "unknown interaction",
         pos: spec.pos,
         asset: spec.asset,
         slug: interactionId,

@@ -12,6 +12,8 @@ import {
   type InternalActivityLogEntry,
   type DehydratedPuzzleStateLogEntry,
   type PuzzleStateLogEntry,
+  type DehydratedTeamInteractionStateLogEntry,
+  type TeamInteractionStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { hydrateLogEntry } from "./logic";
 
@@ -76,6 +78,11 @@ return count
           return [key, ...entries.flatMap((m) => [m.id, m.entry])];
         },
       }),
+      // TODO: implement a castVote script which:
+      // 1. calls HSET <key> <sess_id> <choice>
+      // 2. calls HGETALL and counts the votes into a map of choice -> vote count
+      // 3. emits a pubsub message with the tallied votes to <key>
+      // and then replace the castVote implementation in src/api/server.ts with a call to this script
     },
   };
   const client = redisCreateClient(options);
@@ -359,6 +366,20 @@ export class PuzzleStateLog extends Log<
 }
 
 export const puzzleStateLog = new PuzzleStateLog();
+
+export class TeamInteractionStateLog extends Log<
+  DehydratedTeamInteractionStateLogEntry,
+  TeamInteractionStateLogEntry
+> {
+  constructor() {
+    super("team_interaction_state_log");
+  }
+  protected hydrateEntry(entry: DehydratedTeamInteractionStateLogEntry) {
+    return hydrateLogEntry(entry);
+  }
+}
+
+export const teamInteractionStateLog = new TeamInteractionStateLog();
 
 // Publish a new state to a "stream", if it is newer, and trim older states.
 async function publishState(

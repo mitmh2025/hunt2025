@@ -58,6 +58,11 @@ import {
   type FermitQuestion,
   ALL_QUESTIONS,
 } from "../../ops/src/opsdata/desertedNinjaQuestions";
+import { INTERACTIONS } from "../frontend/interactions";
+import {
+  countVotes,
+  type VirtualInteractionHandler,
+} from "../frontend/interactions/virtual_interaction_handler";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import {
@@ -66,12 +71,15 @@ import {
 } from "../frontend/puzzles/quixotic-shoe";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
+import { fixData } from "../utils/fixData";
+import { fixTimestamp } from "../utils/fixTimestamp";
 import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
   puzzleStateLog,
   registerTeam,
+  teamInteractionStateLog,
   teamRegistrationLog,
   getFermitSession,
   getFermitSessions,
@@ -92,6 +100,10 @@ import {
   cleanupTeamRegistrationLogEntryFromDB,
   cleanupPuzzleStateLogEntryFromDB,
   getCurrentTeamName,
+  cleanupTeamInteractionStateLogEntryFromDB,
+  getTeamInteractionStateLog,
+  getLastTeamInteractionStateLogEntry,
+  appendTeamInteractionStateLog,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -1678,6 +1690,51 @@ export async function getRouter({
           };
         },
       },
+      castVote: {
+        middleware: [authMiddleware],
+        handler: async ({
+          params: { slug, pollId },
+          body: { choice },
+          req,
+        }) => {
+          const team_id = req.user as number;
+          const sess_id = req.authInfo?.sessId;
+          if (!sess_id) {
+            // Must have a session id
+            return {
+              status: 400 as const,
+              body: null,
+            };
+          }
+
+          if (!redisClient) {
+            console.error(
+              "Cannot implement castVote without valid redis connection",
+            );
+            return {
+              status: 500 as const,
+              body: null,
+            };
+          }
+
+          // TODO: maybe do all this from a redis script instead to avoid any chance of
+          // set/read/publish interleavings confusing order?  But honestly it doesn't really matter
+          const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
+          // Update our vote
+          await redisClient.hSet(redisKey, sess_id, choice);
+          // Read back the votes
+          const votes = await redisClient.hGetAll(redisKey);
+          // Count votes
+          const results = countVotes(votes);
+          // Publish updated tally
+          await redisClient.publish(redisKey, JSON.stringify(votes));
+
+          return {
+            status: 200 as const,
+            body: results,
+          };
+        },
+      },
     },
     admin: {
       getTeamState: {
@@ -2766,73 +2823,285 @@ export async function getRouter({
       },
       startInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: ({ params: { teamId, interactionId } }) =>
-          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            const existing = mutator.log.filter(
-              (e) =>
-                (e.team_id === team_id || e.team_id === undefined) &&
-                (e.type === "interaction_unlocked" ||
-                  e.type === "interaction_started") &&
-                e.slug === interactionId,
+        handler: async ({ params: { teamId, interactionId } }) => {
+          const result = await executeTeamStateHandler(
+            teamId,
+            async (trx, mutator, team_id) => {
+              const existing = mutator.log.filter(
+                (e) =>
+                  (e.team_id === team_id || e.team_id === undefined) &&
+                  (e.type === "interaction_unlocked" ||
+                    e.type === "interaction_started") &&
+                  e.slug === interactionId,
+              );
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              if (!is_unlocked) {
+                return false;
+              }
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+
+              const interaction = INTERACTIONS[interactionId];
+
+              if (!is_started) {
+                // TODO: if interaction is virtual, ensure that no other incomplete virtual
+                // interaction was unlocked before this one (if one exists, it should be completed
+                // before we let this one proceed)
+
+                await mutator.appendLog({
+                  team_id,
+                  type: "interaction_started",
+                  slug: interactionId,
+                });
+                // Also insert the initial node into team_interaction_states
+                if (interaction?.type === "virtual") {
+                  const { node, state } = (
+                    interaction.handler as VirtualInteractionHandler<
+                      object,
+                      unknown,
+                      string,
+                      unknown
+                    >
+                  ).startState();
+                  await appendTeamInteractionStateLog(
+                    {
+                      team_id,
+                      slug: interactionId,
+                      node,
+                      // no predecessor, we're starting here!
+                      graph_state: state,
+                    },
+                    trx,
+                  );
+                }
+              }
+              return true;
+            },
+          );
+          if (result.status === 200 && redisClient) {
+            // Also refresh the redis state for teamInteractionStateLog, since we also inserted into that DB table
+            await teamInteractionStateLog.refreshRedisLog(redisClient, knex);
+          }
+          return result;
+        },
+      },
+      advanceInteraction: {
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId, interactionId, fromNode } }) => {
+          const team_id = parseInt(teamId, 10);
+          const interaction = INTERACTIONS[interactionId];
+          if (interaction?.type !== "virtual") {
+            console.log(`${interactionId} is not a valid virtual interaction`);
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+          if (!redisClient) {
+            return {
+              status: 500 as const,
+              body: "Cannot reliably advance interactions without a valid redis client",
+            };
+          }
+
+          // We should do as much work as we safely can *before* opening the DB transaction.
+          const node = interaction.handler.lookupNode(fromNode);
+          if (!node) {
+            console.log(
+              `Interaction node ${fromNode} for team ${teamId} not known to interaction graph ${interactionId}`,
             );
-            const is_unlocked = existing.some(
-              (entry) => entry.type === "interaction_unlocked",
+            return {
+              status: 400 as const,
+              body: null,
+            };
+          }
+          if ("finalState" in node) {
+            console.log(
+              `Cannot advance team ${teamId}'s interaction ${interactionId} past final state`,
             );
-            if (!is_unlocked) {
-              return false;
-            }
-            const is_started = existing.some(
-              (entry) => entry.type === "interaction_started",
-            );
-            if (!is_started) {
-              await mutator.appendLog({
-                team_id,
-                type: "interaction_started",
-                slug: interactionId,
-              });
-            }
-            return true;
-          }),
+            return {
+              status: 400 as const,
+              body: null,
+            };
+          }
+
+          // The vote closing is inherently racy.  Votes live in redis.  We can tally the raw
+          // results before opening a DB transaction, so we're not holding the DB transaction open
+          // while we talk to redis over the network some more.
+          const maybeVoteCounts = await interaction.handler.voteCountsForNode(
+            team_id,
+            node,
+            redisClient,
+          );
+
+          // Okay now we have to see if this is still the current node, and what the interaction
+          // graph state for this team is at that node, which does require looking at the DB.
+
+          const { result } = await teamInteractionStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async (_, mutator) => {
+              // Look up the most recent entry in the log for this interaction.
+              const interactionLog = mutator.log.filter(
+                (e) => e.slug === interactionId,
+              );
+              const latest = interactionLog.at(-1);
+              if (!latest) {
+                console.log(
+                  `no latest node for team ${teamId} slug ${interactionId}`,
+                );
+                // No log?  Can't advance.
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
+              }
+              if (latest.node !== fromNode) {
+                // Interaction is not currently at fromNode.
+                console.log(
+                  `latest node is not fromNode: ${latest.node} vs ${fromNode}`,
+                );
+                return {
+                  status: 400 as const,
+                  body: null,
+                };
+              }
+              const now = Date.now();
+              const ts = fixTimestamp(latest.timestamp);
+              const nodeEntered = ts.getTime();
+              const advanceAfter = interaction.handler.advanceAfterTime(
+                fromNode,
+                nodeEntered,
+              );
+              if (advanceAfter === undefined) {
+                return {
+                  status: 500 as const,
+                  body: `Unable to determine time at which to advance ${interactionId} for team ${teamId} from ${fromNode}`,
+                };
+              }
+              const FUDGE_FACTOR = 500;
+              if (now >= advanceAfter - FUDGE_FACTOR) {
+                // Okay we can actually do the work now.
+
+                // Compute the next node & next state
+                const maybeNext = await interaction.handler.computeNext({
+                  teamId: team_id,
+                  currentNode: node,
+                  state: fixData(latest.graph_state),
+                  maybeVoteCounts,
+                  redisClient,
+                });
+                if (!maybeNext) {
+                  // We couldn't figure out where we go next.
+                  return {
+                    status: 500 as const,
+                    body: `Unable to determine next node for team ${teamId} in interaction ${interactionId} at ${fromNode}`,
+                  };
+                }
+                // I don't actually know how to parameterize these over the various flavors of interaction graph so
+                // here we are casting things around
+                const { nextNode, nextState } = maybeNext as {
+                  nextNode: { id: string };
+                  nextState: object;
+                };
+                await mutator.appendLog({
+                  team_id,
+                  slug: interactionId,
+                  predecessor: fromNode,
+                  node: nextNode.id,
+                  graph_state: nextState,
+                });
+                return {
+                  status: 200 as const,
+                  body: {},
+                };
+              } else {
+                return {
+                  status: 429 as const,
+                  body: null,
+                };
+              }
+            },
+          );
+          return result;
+        },
       },
       completeInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: ({ params: { teamId, interactionId }, body }) =>
-          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            const existing = mutator.log.filter(
-              (e) =>
-                (e.team_id === team_id || e.team_id === undefined) &&
-                (e.type === "interaction_unlocked" ||
-                  e.type === "interaction_started" ||
-                  e.type === "interaction_completed") &&
-                e.slug === interactionId,
-            );
-            const is_unlocked = existing.some(
-              (entry) => entry.type === "interaction_unlocked",
-            );
-            const is_started = existing.some(
-              (entry) => entry.type === "interaction_started",
-            );
-            const is_completed = existing.some(
-              (entry) => entry.type === "interaction_completed",
-            );
-            console.log("is_unlocked", is_unlocked);
-            console.log("is_started", is_started);
-            console.log("is_completed", is_completed);
-            if (!is_unlocked || !is_started) {
-              return false;
-            }
-            if (!is_completed) {
-              await mutator.appendLog({
-                team_id,
-                type: "interaction_completed",
-                slug: interactionId,
-                data: {
-                  result: body.result,
-                },
-              });
-            }
-            return true;
-          }),
+        handler: async ({ params: { teamId, interactionId } }) => {
+          const interaction = INTERACTIONS[interactionId];
+          if (!interaction) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+
+          return executeTeamStateHandler(
+            teamId,
+            async (trx, mutator, team_id) => {
+              const existing = mutator.log.filter(
+                (e) =>
+                  (e.team_id === team_id || e.team_id === undefined) &&
+                  (e.type === "interaction_unlocked" ||
+                    e.type === "interaction_started" ||
+                    e.type === "interaction_completed") &&
+                  e.slug === interactionId,
+              );
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+              const is_completed = existing.some(
+                (entry) => entry.type === "interaction_completed",
+              );
+              console.log("is_unlocked", is_unlocked);
+              console.log("is_started", is_started);
+              console.log("is_completed", is_completed);
+              if (!is_unlocked || !is_started) {
+                return false;
+              }
+              if (!is_completed) {
+                let interactionResult = "";
+                if (interaction.type === "virtual") {
+                  // Then we need to compute the result from the team.  Get the last log entry that
+                  // applies to this interaction; we expect it to be a final node.
+                  const finalNode = await getLastTeamInteractionStateLogEntry(
+                    team_id,
+                    interactionId,
+                    trx,
+                  );
+                  if (!finalNode) return false;
+                  const result = interaction.handler.finalState({
+                    nodeId: finalNode.node,
+                    state: finalNode.graph_state,
+                  }) as string | undefined;
+                  if (result === undefined) {
+                    // No final result recorded for this interaction in the DB yet.  Finish the interaction.
+                    return false;
+                  }
+                  interactionResult = result;
+                }
+
+                await mutator.appendLog({
+                  team_id,
+                  type: "interaction_completed",
+                  slug: interactionId,
+                  data: {
+                    result: interactionResult,
+                  },
+                });
+              }
+              return true;
+            },
+          );
+        },
       },
       getFullActivityLog: {
         middleware: [frontendAuthMiddleware],
@@ -2959,6 +3228,66 @@ export async function getRouter({
           return {
             status: 200,
             body,
+          };
+        },
+      },
+      getFullTeamInteractionStateLog: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ query: { since, team_id, slug } }) => {
+          let effectiveSince = undefined;
+          if (since) {
+            const sinceParsed = Number(since);
+            if (sinceParsed > 0) {
+              effectiveSince = sinceParsed;
+            }
+          }
+          let effectiveTeamId = undefined;
+          if (team_id) {
+            const teamIdParsed = Number(team_id);
+            if (teamIdParsed > 0) {
+              effectiveTeamId = teamIdParsed;
+            }
+          }
+          const entries = await knex.transaction(
+            async (trx) => {
+              return getTeamInteractionStateLog(
+                effectiveTeamId,
+                effectiveSince,
+                slug,
+                trx,
+              );
+            },
+            { readOnly: true },
+          );
+          const body = entries.map((e) => {
+            const entry = cleanupTeamInteractionStateLogEntryFromDB(e);
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
+          });
+          return {
+            status: 200,
+            body,
+          };
+        },
+      },
+      getVotes: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId, slug, pollId } }) => {
+          const team_id = parseInt(teamId, 10);
+          if (!redisClient) {
+            return {
+              status: 500,
+              body: null,
+            };
+          }
+          const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
+          const votes = await redisClient.hGetAll(redisKey);
+          const results = countVotes(votes);
+          return {
+            status: 200,
+            body: results,
           };
         },
       },
