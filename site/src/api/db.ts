@@ -7,6 +7,7 @@ import {
   type InsertTeamRegistrationLogEntry,
   type PuzzleStateLogEntryRow,
   type InsertPuzzleStateLogEntry,
+  type TeamInteractionStateLogEntryRow,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
@@ -15,6 +16,7 @@ import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
   type PuzzleStateLogEntry,
+  type TeamInteractionStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
 import { type CannedResponseLink } from "../frontend/puzzles/types";
@@ -23,6 +25,7 @@ export {
   type ActivityLogEntryRow,
   type TeamRegistrationLogEntryRow,
   type PuzzleStateLogEntryRow,
+  type TeamInteractionStateLogEntryRow,
 };
 
 class WebpackMigrationSource {
@@ -281,6 +284,18 @@ declare module "knex/types/tables" {
     "team_id" | "slug" | "data"
   >;
 
+  // Unique index on (team_id, slug, predecessor) guarantees unique graph transition
+  type TeamInteractionStateLogEntryRow = {
+    id: number;
+    team_id: number;
+    slug: string;
+    node: string;
+    predecessor?: string;
+    timestamp: Date;
+    graph_state?: string | object | null; // Should actually be one of ArtGalleryState | BoardwalkInteractionState | CasinoState | JewelryStoreState;
+  };
+  type InsertTeamInteractionStateLogEntry = Pick<TeamInteractionStateLogEntryRow, "team_id" | "slug" | "predecessor" | "node" | "graph_state">;
+
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
    * knex
@@ -298,6 +313,10 @@ declare module "knex/types/tables" {
     puzzle_state_log: Knex.Knex.CompositeTableType<
       PuzzleStateLogEntryRow,
       InsertPuzzleStateLogEntry
+    >;
+    team_interaction_state_log: Knex.Knex.CompositeTableType<
+      TeamInteractionStateLogEntryRow,
+      InsertTeamInteractionStateLogEntry
     >;
   }
 }
@@ -384,6 +403,25 @@ export function cleanupPuzzleStateLogEntryFromDB(
     );
   }
   return res as PuzzleStateLogEntry;
+}
+
+export function cleanupTeamInteractionStateLogEntryFromDB(
+  dbEntry: TeamInteractionStateLogEntryRow,
+): TeamInteractionStateLogEntry {
+  const res: Partial<TeamInteractionStateLogEntry> = {
+    id: dbEntry.id,
+    team_id: dbEntry.team_id,
+    slug: dbEntry.slug,
+    node: dbEntry.node,
+    timestamp: fixTimestamp(dbEntry.timestamp),
+  };
+  if (dbEntry.predecessor) {
+    (res as TeamInteractionStateLogEntry & { predecessor?: string }).predecessor = dbEntry.predecessor;
+  }
+  if (dbEntry.graph_state) {
+    (res as TeamInteractionStateLogEntry | { graph_state?: object }).graph_state = fixData(dbEntry.graph_state);
+  }
+  return res as TeamInteractionStateLogEntry;
 }
 
 export async function getTeamIds(
@@ -572,4 +610,17 @@ export async function appendPuzzleStateLog(
       const fixedEntry = cleanupPuzzleStateLogEntryFromDB(insertedEntry);
       return fixedEntry;
     });
+}
+
+export async function getTeamInteractionStateLog(
+  team_id: number,
+  slug: string,
+  trx: Knex.Knex,
+) {
+  const q = trx<TeamInteractionStateLogEntryRow>("team_interaction_states")
+    .where("team_id", team_id)
+    .andWhere("slug", slug)
+    .orderBy("id", "asc");
+  const interaction_state_log = await q;
+  return interaction_state_log.map(cleanupTeamInteractionStateLogEntryFromDB);
 }

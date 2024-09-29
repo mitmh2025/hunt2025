@@ -128,7 +128,7 @@ import audio_opus_9b from "./audio/opus/9b.opus";
 import audio_opus_final from "./audio/opus/final.opus";
 import audio_opus_start from "./audio/opus/start.opus";
 
-type CasinoState = {
+export type CasinoState = {
   points: number;
 };
 export type CasinoResult = "ace-of-spades" | "ace-of-diamonds" | "joker";

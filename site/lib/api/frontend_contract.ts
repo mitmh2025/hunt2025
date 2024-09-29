@@ -174,7 +174,21 @@ export type PuzzleStateLogEntry = z.output<typeof PuzzleStateLogEntrySchema>;
 export type DehydratedPuzzleStateLogEntry = z.input<
   typeof PuzzleStateLogEntrySchema
 >;
-export const PuzzleStateLog = z.array(PuzzleStateLogEntrySchema);
+export const PuzzleStateLogSchema = z.array(PuzzleStateLogEntrySchema);
+
+export const TeamInteractionStateLogEntrySchema = z.object({
+  id: z.number(),
+  team_id: z.number(),
+  slug: z.string(),
+  node: z.string(),
+  predecessor: z.string().optional(),
+  timestamp: z.string().datetime().pipe(z.coerce.date()),
+  graph_state: z.object({}).passthrough(),
+})
+export type TeamInteractionStateLogEntry = z.output<
+  typeof TeamInteractionStateLogEntrySchema
+>;
+export const TeamInteractionStateLogSchema = z.array(TeamInteractionStateLogEntrySchema);
 
 export const frontendContract = c.router({
   markTeamGateSatisfied: {
@@ -237,7 +251,20 @@ export const frontendContract = c.router({
       slug: z.string().optional(),
     }),
     responses: {
-      200: PuzzleStateLog,
+      200: PuzzleStateLogSchema,
+      401: z.null(),
+    },
+  },
+  getFullTeamInteractionStateLog: {
+    method: "GET",
+    path: "/frontend/log/interaction",
+    query: z.object({
+      since: z.number().optional(),
+      team_id: z.number().optional(),
+      slug: z.string().optional(),
+    }),
+    responses: {
+      200: TeamInteractionStateLogSchema,
       401: z.null(),
     },
   },
@@ -254,7 +281,7 @@ export const frontendContract = c.router({
     path: "/teams/:teamId/puzzles/new-ketchup/speak",
     body: z.object({}),
     responses: {
-      200: PuzzleStateLog,
+      200: PuzzleStateLogSchema,
       401: z.null(),
     },
   },
