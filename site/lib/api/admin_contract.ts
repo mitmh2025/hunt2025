@@ -1,12 +1,6 @@
 import { z } from "zod";
 import { c, PuzzleStateSchema, TeamStateSchema } from "./contract";
 
-const ForcePuzzleStateSchema = z.object({
-  visible: z.boolean().optional(),
-  unlockable: z.boolean().optional(),
-  unlocked: z.boolean().optional(),
-});
-
 export const adminContract = c.router({
   getTeamState: {
     method: "GET",
@@ -25,14 +19,5 @@ export const adminContract = c.router({
       404: z.null(),
     },
     summary: "Get the state of one puzzle",
-  },
-  forcePuzzleState: {
-    method: "PATCH",
-    path: `/teams/:teamId/puzzle/:slug`,
-    body: ForcePuzzleStateSchema,
-    responses: {
-      200: PuzzleStateSchema,
-    },
-    summary: "Force the state of one puzzle",
   },
 });
