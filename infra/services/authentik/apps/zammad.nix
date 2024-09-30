@@ -66,7 +66,7 @@
         v3xtI+h7DYaXQVvlDPj1Qpa0hrY8NmY=
       '';
       name_identifier_format = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
-      ssl_verify = true;
+      ssl_verify = false; # TODO: SSL verification is broken https://github.com/zammad/zammad/issues/5106
       # idp_cert_fingerprint = "";
       # uid_attribute = "";
       # security = "off";
