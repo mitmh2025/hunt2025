@@ -1,4 +1,48 @@
-final: prev: {
+final: prev: let
+  ocamlPackagesOverlay = ocaml-final: ocaml-prev: {
+    ffmpeg-base = rec {
+      version = "1.2.0";
+
+      src = final.fetchFromGitHub {
+        owner = "savonet";
+        repo = "ocaml-ffmpeg";
+        rev = "refs/tags/v${version}";
+        sha256 = "a5Wvk1LT8gcdlC1KLBtOIyvammvjH7uA8g2x8mCd0RU=";
+      };
+
+      inherit (prev.ocamlPackages.ffmpeg) meta;
+    };
+    saturn_lockfree = ocaml-prev.saturn_lockfree.overrideAttrs (old: let
+      version = "0.4.1";
+    in {
+      inherit version;
+      src = final.fetchurl {
+        url = "https://github.com/ocaml-multicore/saturn/releases/download/${version}/saturn-${version}.tbz";
+        hash = "sha256-tO1aqRGocuogHtE6MYPAMxv5jxbkYjCpttHRxUUpDr0=";
+      };
+      propagatedBuildInputs = with ocaml-final; [ domain_shims ];
+    });
+    mem_usage = ocaml-final.callPackage ({ lib, buildDunePackage, fetchFromGitHub }: buildDunePackage rec {
+      pname = "mem_usage";
+      version = "0.1.1";
+      src = fetchFromGitHub {
+        owner = "savonet";
+        repo = "ocaml-mem_usage";
+        rev = "v${version}";
+        hash = "sha256-Ig0MZdCt0JTcCxp15E69K2SsoPd7cKr5XocTo25CCzs=";
+      };
+
+      minimalOCamlVersion = "4.08";
+
+      meta = with lib; {
+        homepage = "https://github.com/savonet/ocaml-mem_usage";
+        description = "Cross-platform stats about memory usage";
+        license = licenses.mit;
+        maintainers = with maintainers; [ quentin ];
+      };
+    }) {};
+  };
+in {
   hunt2025 = final.callPackage ../../site {};
   thingsboard = final.callPackage ./thingsboard {};
 
@@ -9,7 +53,23 @@ final: prev: {
   # Newer than nixpkgs
   zammad = final.callPackage ./zammad {};
 
-  liquidsoap = if final.stdenv.isDarwin then (prev.liquidsoap.override (old: {
+  liquidsoap = let
+    version = "2.3.0-rc1";
+    ocamlPackages = final.ocaml-ng.ocamlPackages_4_14.overrideScope ocamlPackagesOverlay;
+    liquidsoap = (prev.liquidsoap.override (old: {
+      ocamlPackages = old.ocamlPackages.overrideScope ocamlPackagesOverlay;
+    })).overrideAttrs (old: {
+      inherit version;
+      src = old.src.override ({
+        rev = "refs/tags/v${version}";
+        hash = "sha256-Th37Eai1AKmUkHGIj9oyQVvi+3T77DZuKfkPBRjD1aw=";
+      });
+      buildInputs = with ocamlPackages; old.buildInputs ++  [
+        saturn_lockfree
+        mem_usage
+      ];
+    });
+  in if final.stdenv.isDarwin then (liquidsoap.override (old: {
     # Remove optional dependencies that don't build on Darwin.
     runtimePackages = with final; [
       curl
@@ -35,5 +95,5 @@ final: prev: {
       # Needs `codesign` to build on Darwin.
       darwin.sigtool
     ];
-  }) else prev.liquidsoap;
+  }) else liquidsoap;
 }
