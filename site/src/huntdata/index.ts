@@ -15,7 +15,7 @@ const HUNT: Hunt = {
         // unlockable, and some amount of starting currency (to teach people
         // how to use the mechanism from the get-go).
         { id: "mdp01", unlocked_if: [] }, // unlocked by default
-        { id: "mdp02", unlocked_if: [] },
+        { id: "mdp02", unlocked_if: [], slug: "they_might_be_grad_students_but_theyve_got_your_number" },
         { id: "mdp03", unlocked_if: [] },
         { id: "mdp04", unlocked_if: [], slug: "downright_backwards" },
         { id: "mdp05", unlocked_if: [] },

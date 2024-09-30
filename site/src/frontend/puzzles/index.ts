@@ -21,11 +21,14 @@ import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import ShellCorporationTwo from "./untrue-dice";
+import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   downright_backwards: DownrightBackwards,
   educational_rite_of_passage: EducationalRiteOfPassage,
+  they_might_be_grad_students_but_theyve_got_your_number:
+    TheyMightBeGradStudentsButTheyveGotYourNumber,
 
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
