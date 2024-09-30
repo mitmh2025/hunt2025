@@ -6,6 +6,9 @@ final: prev: {
 
   piper-voices = final.callPackage ./piper-voices.nix {};
 
+  # Newer than nixpkgs
+  zammad = final.callPackage ./zammad {};
+
   liquidsoap = if final.stdenv.isDarwin then (prev.liquidsoap.override (old: {
     # Remove optional dependencies that don't build on Darwin.
     runtimePackages = with final; [
