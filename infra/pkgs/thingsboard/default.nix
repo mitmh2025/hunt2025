@@ -90,7 +90,7 @@ let
       ui-ngx/pom.xml
   '';
   jdk = jdk17;
-  mavenWithJdk = maven.override { inherit jdk; };
+  mavenWithJdk = maven.override { jdk_headless = jdk; };
   projectList = [
     "-msa"
     "-msa/js-executor"
@@ -114,7 +114,7 @@ in mavenWithJdk.buildMavenPackage rec {
 
   mvnParameters = "-DskipTests -Dskip.installyarn -Dskip.yarn -Dpkg.installFolder=$out/share/thingsboard -P'!yarn-build' -pl ${lib.concatStringsSep "," projectList}";
 
-  mvnHash = "sha256-qbBnZjwuq/UymxBLISstGBByPx/FQDW5cQZ+fQqGlhQ=";
+  mvnHash = "sha256-33j/g6TR65X/PtrHrBagXpA9M++90Yr0GF/jMCyts+c=";
 
   mvnFetchExtraArgs = {
     preConfigure = defineMvnWrapper;
