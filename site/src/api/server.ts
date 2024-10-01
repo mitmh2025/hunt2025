@@ -14,11 +14,7 @@ import {
 } from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
-import {
-  type GuessStatus,
-  type ActivityLogEntry,
-  type TeamPuzzleGuess,
-} from "knex/types/tables";
+import { type GuessStatus, type ActivityLogEntry } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
@@ -32,10 +28,12 @@ import {
   type InteractionStateSchema,
 } from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
+import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import type { RedisClient } from "../app";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
+import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
 import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
@@ -62,6 +60,7 @@ type InteractionState = z.infer<typeof InteractionStateSchema>;
 type JWTPayload = {
   user: string;
   team_id: number;
+  sess_id: string;
   adminUser?: string;
 };
 
@@ -84,7 +83,24 @@ function newPassport(jwtSecret: string | Buffer) {
         //audience: 'mitmh2025.com',
       },
       function (jwtPayload: JWTPayload, done) {
-        done(null, jwtPayload.team_id, { adminUser: jwtPayload.adminUser });
+        if (!jwtPayload.team_id) {
+          console.warn(
+            "JWT valid but missing team_id; treating as unauthorized",
+            jwtPayload,
+          );
+          done(null, false);
+        }
+        if (!jwtPayload.sess_id) {
+          console.warn(
+            "JWT valid but missing sess_id; treating as unauthorized",
+            jwtPayload,
+          );
+          done(null, false);
+        }
+        done(null, jwtPayload.team_id, {
+          sess_id: jwtPayload.sess_id,
+          adminUser: jwtPayload.adminUser,
+        });
       },
     ),
   );
@@ -94,90 +110,6 @@ function newPassport(jwtSecret: string | Buffer) {
 function canonicalizeInput(input: string) {
   // TODO: Make sure puzzles agrees with this definition.
   return input.replaceAll(/\s+/g, "").toUpperCase();
-}
-
-class DeferredPublications {
-  private activityLog?: ActivityLogEntry[];
-  private guessLog?: TeamPuzzleGuess[];
-  private teamState?: TeamState[];
-
-  constructor({
-    activityLog,
-    guessLog,
-    teamState,
-  }: {
-    activityLog?: ActivityLogEntry[];
-    guessLog?: TeamPuzzleGuess[];
-    teamState?: TeamState[];
-  }) {
-    this.activityLog = activityLog;
-    this.guessLog = guessLog;
-    this.teamState = teamState;
-  }
-
-  addActivityLogEntries(entries: ActivityLogEntry[]) {
-    this.activityLog = (this.activityLog ?? []).concat(entries);
-  }
-
-  addGuessLogEntries(guesses: TeamPuzzleGuess[]) {
-    this.guessLog = (this.guessLog ?? []).concat(guesses);
-  }
-
-  addTeamState(teamStates: TeamState[]) {
-    this.teamState = (this.teamState ?? []).concat(teamStates);
-  }
-
-  concat(other: DeferredPublications) {
-    const activityLog = this.activityLog
-      ? this.activityLog.concat(other.activityLog ?? [])
-      : other.activityLog;
-    const teamState = this.teamState
-      ? this.teamState.concat(other.teamState ?? [])
-      : other.teamState;
-    const guessLog = this.guessLog
-      ? this.guessLog.concat(other.guessLog ?? [])
-      : other.guessLog;
-    return new DeferredPublications({
-      activityLog,
-      guessLog,
-      teamState,
-    });
-  }
-
-  async publish(redisClient?: RedisClient) {
-    if (redisClient) {
-      try {
-        if (this.activityLog) {
-          for (const entry of this.activityLog) {
-            await redisClient.publish(
-              "global/activity_log",
-              JSON.stringify(entry),
-            );
-          }
-        }
-        if (this.teamState) {
-          for (const state of this.teamState) {
-            const team_id = state.teamId;
-            const topic = `team_state.${team_id}`;
-            await redisClient.publish(topic, JSON.stringify(state));
-          }
-        }
-        if (this.guessLog) {
-          for (const guess of this.guessLog) {
-            await redisClient.publish(
-              "global/guess_log",
-              JSON.stringify(guess),
-            );
-          }
-        }
-      } catch (e: unknown) {
-        // Graceful fallback if Redis can't be reached.
-        // It's okay if we drop activity log entries on pubsub; tailers will detect the missing id
-        // and hit the API to get any missing entries
-        console.error("redis publish error", e);
-      }
-    }
-  }
 }
 
 export function getRouter({
@@ -510,6 +442,7 @@ export function getRouter({
             {
               user: team.username,
               team_id: team.id,
+              sess_id: genId(),
             },
             jwtSecret,
             {},
@@ -535,7 +468,9 @@ export function getRouter({
           const team_id = req.user as number;
           return {
             status: 200,
-            body: await knex.transaction(getTeamState.bind(null, team_id)),
+            body: await knex.transaction(getTeamState.bind(null, team_id), {
+              readOnly: true,
+            }),
           };
         },
       },
@@ -545,6 +480,7 @@ export function getRouter({
           const team_id = req.user as number;
           const state = await knex.transaction(
             getPuzzleState.bind(null, team_id, slug),
+            { readOnly: true },
           );
           if (!state) {
             return {
@@ -797,6 +733,9 @@ export function getRouter({
                 ];
               }
             },
+            {
+              isolationLevel: "serializable",
+            },
           );
           await deferred.publish(redisClient);
           return response;
@@ -866,6 +805,7 @@ export function getRouter({
                 deferredPublications,
               ];
             },
+            { isolationLevel: "serializable" },
           );
           await deferred.publish(redisClient);
           return response;
@@ -877,9 +817,10 @@ export function getRouter({
         middleware: adminAuthMiddlewares,
         handler: async ({ params: { teamId } }) => {
           return {
-            status: 200,
+            status: 200 as const,
             body: await knex.transaction(
               getTeamState.bind(null, parseInt(teamId, 10)),
+              { readOnly: true },
             ),
           };
         },
@@ -890,15 +831,16 @@ export function getRouter({
           const team_id = parseInt(teamId, 10);
           const state = await knex.transaction(
             getPuzzleState.bind(null, team_id, slug),
+            { readOnly: true },
           );
           if (!state) {
             return {
-              status: 404,
+              status: 404 as const,
               body: null,
             };
           }
           return {
-            status: 200,
+            status: 200 as const,
             body: state,
           };
         },
@@ -908,43 +850,48 @@ export function getRouter({
       markTeamGateSatisfied: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, gateId } }) => {
-          const [response, deferred] = await knex.transaction(async (trx) => {
-            const deferredPublications = new DeferredPublications({});
-            const team_id = parseInt(teamId, 10);
-            // Check if already satisfied.
-            const existing = await trx("activity_log")
-              .where("team_id", team_id)
-              .where("type", "gate_completed")
-              .where("slug", gateId)
-              .select("id")
-              .first();
-            // If not, insert gate completion.
-            // If already present, no change
-            if (!existing) {
-              const entry = await appendActivityLog(
-                {
-                  team_id,
-                  type: "gate_completed",
-                  slug: gateId,
-                },
+          const [response, deferred] = await knex.transaction(
+            async (trx) => {
+              const deferredPublications = new DeferredPublications({});
+              const team_id = parseInt(teamId, 10);
+              // Check if already satisfied.
+              const existing = await trx("activity_log")
+                .where("team_id", team_id)
+                .where("type", "gate_completed")
+                .where("slug", gateId)
+                .select("id")
+                .first();
+              // If not, insert gate completion.
+              // If already present, no change
+              if (!existing) {
+                const entry = await appendActivityLog(
+                  {
+                    team_id,
+                    type: "gate_completed",
+                    slug: gateId,
+                  },
+                  trx,
+                );
+                deferredPublications.addActivityLogEntries([entry]);
+              }
+              // return the team state object regardless
+              const [newState, newWrites] = await refreshTeamState(
+                hunt,
+                team_id,
                 trx,
               );
-              deferredPublications.addActivityLogEntries([entry]);
-            }
-            // return the team state object regardless
-            const [newState, newWrites] = await refreshTeamState(
-              hunt,
-              team_id,
-              trx,
-            );
-            return [
-              {
-                status: 200 as const,
-                body: newState,
-              },
-              deferredPublications.concat(newWrites),
-            ];
-          });
+              return [
+                {
+                  status: 200 as const,
+                  body: newState,
+                },
+                deferredPublications.concat(newWrites),
+              ];
+            },
+            {
+              isolationLevel: "serializable",
+            },
+          );
           await deferred.publish(redisClient);
           return response;
         },
@@ -952,54 +899,62 @@ export function getRouter({
       startInteraction: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, interactionId } }) => {
-          const [response, deferred] = await knex.transaction(async (trx) => {
-            const deferredPublications = new DeferredPublications({});
-            const team_id = parseInt(teamId, 10);
-            const existing = await trx("activity_log")
-              .where("team_id", team_id)
-              .whereIn("type", ["interaction_unlocked", "interaction_started"])
-              .where("slug", interactionId)
-              .select("type");
-            const is_unlocked = existing.some(
-              (entry) => entry.type === "interaction_unlocked",
-            );
-            if (!is_unlocked) {
-              return [
-                {
-                  status: 404 as const,
-                  body: null,
-                },
-                deferredPublications,
-              ];
-            }
-            const is_started = existing.some(
-              (entry) => entry.type === "interaction_started",
-            );
-            if (!is_started) {
-              const entry = await appendActivityLog(
-                {
-                  team_id,
-                  type: "interaction_started",
-                  slug: interactionId,
-                },
+          const [response, deferred] = await knex.transaction(
+            async (trx) => {
+              const deferredPublications = new DeferredPublications({});
+              const team_id = parseInt(teamId, 10);
+              const existing = await trx("activity_log")
+                .where("team_id", team_id)
+                .whereIn("type", [
+                  "interaction_unlocked",
+                  "interaction_started",
+                ])
+                .where("slug", interactionId)
+                .select("type");
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              if (!is_unlocked) {
+                return [
+                  {
+                    status: 404 as const,
+                    body: null,
+                  },
+                  deferredPublications,
+                ];
+              }
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+              if (!is_started) {
+                const entry = await appendActivityLog(
+                  {
+                    team_id,
+                    type: "interaction_started",
+                    slug: interactionId,
+                  },
+                  trx,
+                );
+                deferredPublications.addActivityLogEntries([entry]);
+              }
+
+              const [newState, newWrites] = await refreshTeamState(
+                hunt,
+                team_id,
                 trx,
               );
-              deferredPublications.addActivityLogEntries([entry]);
-            }
-
-            const [newState, newWrites] = await refreshTeamState(
-              hunt,
-              team_id,
-              trx,
-            );
-            return [
-              {
-                status: 200 as const,
-                body: newState,
-              },
-              deferredPublications.concat(newWrites),
-            ];
-          });
+              return [
+                {
+                  status: 200 as const,
+                  body: newState,
+                },
+                deferredPublications.concat(newWrites),
+              ];
+            },
+            {
+              isolationLevel: "serializable",
+            },
+          );
           await deferred.publish(redisClient);
           return response;
         },
@@ -1007,67 +962,72 @@ export function getRouter({
       completeInteraction: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ params: { teamId, interactionId }, body }) => {
-          const [response, deferred] = await knex.transaction(async (trx) => {
-            const deferredPublications = new DeferredPublications({});
-            const team_id = parseInt(teamId, 10);
-            const existing = (await trx("activity_log")
-              .where("team_id", team_id)
-              .whereIn("type", [
-                "interaction_unlocked",
-                "interaction_started",
-                "interaction_completed",
-              ])
-              .where("slug", interactionId)
-              .select("type")) as Partial<ActivityLogEntry>[];
-            const is_unlocked = existing.some(
-              (entry) => entry.type === "interaction_unlocked",
-            );
-            const is_started = existing.some(
-              (entry) => entry.type === "interaction_started",
-            );
-            const is_completed = existing.some(
-              (entry) => entry.type === "interaction_completed",
-            );
-            console.log("is_unlocked", is_unlocked);
-            console.log("is_started", is_started);
-            console.log("is_completed", is_completed);
-            if (!is_unlocked || !is_started) {
-              return [
-                {
-                  status: 404 as const,
-                  body: null,
-                },
-                deferredPublications,
-              ];
-            }
-            if (!is_completed) {
-              const entry = await appendActivityLog(
-                {
-                  team_id,
-                  type: "interaction_completed",
-                  slug: interactionId,
-                  data: {
-                    result: body.result,
+          const [response, deferred] = await knex.transaction(
+            async (trx) => {
+              const deferredPublications = new DeferredPublications({});
+              const team_id = parseInt(teamId, 10);
+              const existing = (await trx("activity_log")
+                .where("team_id", team_id)
+                .whereIn("type", [
+                  "interaction_unlocked",
+                  "interaction_started",
+                  "interaction_completed",
+                ])
+                .where("slug", interactionId)
+                .select("type")) as Partial<ActivityLogEntry>[];
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+              const is_completed = existing.some(
+                (entry) => entry.type === "interaction_completed",
+              );
+              console.log("is_unlocked", is_unlocked);
+              console.log("is_started", is_started);
+              console.log("is_completed", is_completed);
+              if (!is_unlocked || !is_started) {
+                return [
+                  {
+                    status: 404 as const,
+                    body: null,
                   },
-                },
+                  deferredPublications,
+                ];
+              }
+              if (!is_completed) {
+                const entry = await appendActivityLog(
+                  {
+                    team_id,
+                    type: "interaction_completed",
+                    slug: interactionId,
+                    data: {
+                      result: body.result,
+                    },
+                  },
+                  trx,
+                );
+                deferredPublications.addActivityLogEntries([entry]);
+              }
+
+              const [newState, newWrites] = await refreshTeamState(
+                hunt,
+                team_id,
                 trx,
               );
-              deferredPublications.addActivityLogEntries([entry]);
-            }
-
-            const [newState, newWrites] = await refreshTeamState(
-              hunt,
-              team_id,
-              trx,
-            );
-            return [
-              {
-                status: 200 as const,
-                body: newState,
-              },
-              deferredPublications.concat(newWrites),
-            ];
-          });
+              return [
+                {
+                  status: 200 as const,
+                  body: newState,
+                },
+                deferredPublications.concat(newWrites),
+              ];
+            },
+            {
+              isolationLevel: "serializable",
+            },
+          );
           await deferred.publish(redisClient);
           return response;
         },
@@ -1083,29 +1043,32 @@ export function getRouter({
             }
           }
 
-          return await knex.transaction(async (trx) => {
-            let q = trx("activity_log");
-            if (effectiveSince !== undefined) {
-              q = q.where("id", ">", effectiveSince);
-            }
-            q = q.select(
-              "id",
-              "team_id",
-              "type",
-              "currency_delta",
-              "slug",
-              "timestamp",
-              "data",
-            );
-            const entries = await q;
-            const body = entries.map((e) => {
-              return fixupActivityLogEntry(e);
-            });
-            return {
-              status: 200,
-              body,
-            };
+          const entries = await knex.transaction(
+            async (trx) => {
+              let q = trx("activity_log");
+              if (effectiveSince !== undefined) {
+                q = q.where("id", ">", effectiveSince);
+              }
+              q = q.select(
+                "id",
+                "team_id",
+                "type",
+                "currency_delta",
+                "slug",
+                "timestamp",
+                "data",
+              );
+              return q;
+            },
+            { readOnly: true },
+          );
+          const body = entries.map((e) => {
+            return fixupActivityLogEntry(e);
           });
+          return {
+            status: 200,
+            body,
+          };
         },
       },
       getFullGuessHistory: {
@@ -1118,48 +1081,50 @@ export function getRouter({
               effectiveSince = sinceParsed;
             }
           }
-
-          return await knex.transaction(async (trx) => {
-            let q = trx("team_puzzle_guesses");
-            if (effectiveSince !== undefined) {
-              q = q.where("id", ">", effectiveSince);
-            }
-            q = q.select(
-              "id",
-              "team_id",
-              "slug",
-              "canonical_input",
-              "status",
-              "response",
-              "timestamp",
-            );
-            const entries = await q;
-            const body = entries.map(
-              ({
+          const entries = await knex.transaction(
+            async (trx) => {
+              let q = trx("team_puzzle_guesses");
+              if (effectiveSince !== undefined) {
+                q = q.where("id", ">", effectiveSince);
+              }
+              q = q.select(
+                "id",
+                "team_id",
+                "slug",
+                "canonical_input",
+                "status",
+                "response",
+                "timestamp",
+              );
+              return q;
+            },
+            { readOnly: true },
+          );
+          const body = entries.map(
+            ({
+              id,
+              team_id,
+              slug,
+              canonical_input,
+              status,
+              response,
+              timestamp,
+            }) => {
+              return {
                 id,
                 team_id,
                 slug,
                 canonical_input,
                 status,
                 response,
-                timestamp,
-              }) => {
-                return {
-                  id,
-                  team_id,
-                  slug,
-                  canonical_input,
-                  status,
-                  response,
-                  timestamp: fixTimestamp(timestamp).toISOString(),
-                };
-              },
-            );
-            return {
-              status: 200,
-              body,
-            };
-          });
+                timestamp: fixTimestamp(timestamp).toISOString(),
+              };
+            },
+          );
+          return {
+            status: 200,
+            body,
+          };
         },
       },
     },

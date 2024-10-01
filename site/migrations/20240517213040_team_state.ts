@@ -20,7 +20,7 @@ export async function up(knex: Knex): Promise<void> {
       table.unique(["team_id", "slug", "canonical_input"]);
     })
     .createTable("activity_log", function (table) {
-      table.increments("id");
+      generatedPrimaryKey(knex, table, "id");
       table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
       table.integer("team_id"); // if null, action should apply to all teams
       table.enu("type", [
