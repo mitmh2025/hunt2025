@@ -40,7 +40,7 @@ body {
   background-color: var(--white);
   color: var(--black);
   font-size: var(--default-font-size);
-  line-height: 1.51;
+  line-height: 1.5;
   font-family: var(--default-font);
   font-weight: 400;
   font-optical-sizing: auto;
@@ -82,9 +82,6 @@ a:hover {
   margin: 0 auto;
   width: 900px;
   max-width: 100%;
-
-  display: flex;
-  flex-direction: column;
 }
 
 header {
@@ -99,6 +96,22 @@ header h1 {
 header h4 {
   margin: 0.25rem 0 0 0;
   font-weight: 300;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-text {
+  padding: 0 1rem;
+}
+
+header img {
+  max-height: 120px;
+  padding: 0 1rem;
 }
 
 main {
@@ -149,6 +162,11 @@ button:disabled {
 
 #registration-button button {
   font-size: 2.5rem;
+}
+
+.help {
+  color: var(--gray-700);
+  margin-top: 1rem;
 }
 
 table {
