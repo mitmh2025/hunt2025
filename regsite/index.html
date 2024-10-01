@@ -467,5 +467,18 @@
         Brought to you by Death &amp; Mayhem. This website is not a puzzle. &lt;3
       </div>
     </footer>
+    <script type="text/javascript">
+      document.querySelectorAll('.question').forEach(function (question) {
+        question.addEventListener('click', function () {
+          question.classList.toggle('expanded');
+          var answer = question.querySelector('.answer');
+          if (answer.style.maxHeight) {
+            answer.style.maxHeight = null;
+          } else {
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+          }
+        });
+      });
+    </script>
   </body>
 </html>
