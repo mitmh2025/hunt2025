@@ -1,15 +1,472 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>MIT Mystery Hunt 2025</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <p>More information about the 2025 MIT Mystery Hunt is coming soon!</p>
-  </div>
-</body>
+  <head>
+    <title>MIT Mystery Hunt 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="shortcut icon" type="image/jpg" href="favicon.svg" />
+  </head>
+  <body>
+    <header>
+      <div class="container header-container">
+        <img src="sparkle1.svg" />
+        <div class="header-text">
+          <h1>MIT Mystery Hunt 2025</h1>
+          <h4>Massachusetts Institute of Technology</h4>
+          <h4>January 17 &ndash; 20</h4>
+        </div>
+        <img src="sparkle2.svg" />
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <section id="registration-button">
+          <button disabled>Register your team</button>
+          <p class="help">
+            Registration will open in <strong>early December</strong>. Join the
+            <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters"
+              >puzzle-hunters mailing list</a
+            >
+            to get the official announcement!
+          </p>
+        </section>
+        <section id="updates">
+          <h2>Latest Updates</h2>
+          <p><strong>2024.09.29 &mdash; </strong>We'll update this page as we
+          have more information to share. Major updates will also go to the <a
+          href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">puzzle-hunters
+          mailing list</a>. Watch this space!</p>
+        </section>
+        <section id="faq">
+          <h2>Frequently Asked Questions</h2>
+          <details class="question">
+            <summary><h3>What is this?</h3></summary>
+            <div class="answer">
+              <p>
+                The MIT Mystery Hunt is a puzzlehunt competition that takes
+                place on the MIT campus every year during Martin Luther King,
+                Jr. Day weekend, a student tradition dating back more than 40
+                years. Teams of intrepid adventurers solve puzzles all weekend
+                long in a race to find a coin hidden on campus. To learn more
+                about the tradition and see previous events, check out
+                <a href="https://puzzles.mit.edu/"
+                  >the MIT Puzzle Club's website</a
+                >.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>When is MIT Mystery Hunt 2025?</h3></summary>
+            <div class="answer">
+              <p>
+                The Hunt will begin with a
+                <strong >live Kickoff event at 12:00 PM on Friday, January
+                17th</strong >. Kickoff will <strong>not</strong> be in Kresge
+                Auditorium this year due to construction; the exact location(s)
+                of kickoff will be published at a later date. Puzzles will be
+                released at 1:00 PM.
+              </p>
+              <p>
+                Hunt Headquarters will remain open through the evening of
+                Sunday, January 19th. There will be a
+                <strong
+                  >wrap-up presentation on Monday, January 20 at 12:00 PM</strong
+                >. The location of wrap-up will be published at a later date.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>When is campus open? When is Hunt HQ open?</h3></summary>
+            <div class="answer">
+              <p>
+                <strong
+                  >Campus is closed from 1:00 AM &ndash; 6:00 AM each day.</strong
+                >
+                Teams who have been assigned space on campus for their HQs must
+                vacate during that time, but teams operating out of their living
+                group are of course welcome to continue. During campus closure
+                times you can continue solving puzzles, but non-students cannot
+                be on campus.
+              </p>
+              <p>
+                <strong
+                  >Our Hunt HQ will also be closed during these overnight
+                  hours.</strong
+                >
+                We will continue to operate the Hunt website for solving,
+                including answering hint requests, but solvers should not count on
+                any events, live interactions, or physical puzzle pickups during
+                this time.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>How do I sign up?</h3></summary>
+            <div class="answer">
+              <p>
+                Hunt registration for teams will open in <strong>early
+                December</strong>. The official announcement will be sent to the
+                <a
+                  href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters"
+                  >puzzle-hunters mailing list</a
+                >. Check back for more details later.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>I'm not part of a team. Can I still participate?</h3></summary>
+            <div class="answer">
+              <p>
+                Yes you can! You can always start your own team, but if you’re
+                looking to join an existing team we make an effort to match new
+                hunters. When Hunt registration opens in early December, there
+                will also be an opportunity for unattached hunters to register.
+                We will do our best to help match you to a team. Check back
+                later. If you are a student, please reach out to
+                <a
+                href="mailto:puzzle-club-exec@mit.edu">puzzle-club-exec@mit.edu</a>
+                for help getting matched to a team.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>Will there be any pre-Hunt puzzles this year?</h3></summary>
+            <div class="answer">
+              <p>
+                Yes there will! <strong>The Providence Crime Syndication has
+                graciously written a pre-Hunt round of puzzles.</strong>
+                The MIT Puzzle Club is running this as a live event for current
+                students in October. Students who are interested should join the
+                Puzzle Club Discord server (which you can find via the <a
+                href="https://discord.com/student-hubs">MIT Discord
+                Hub</a>) for more information. These puzzles are expected to
+                be on the easier side and are a great opportunity to recruit
+                your friends, hallmates, and labmates into the Hunt community.
+              </p>
+              <p>
+                For the rest of the MIT Mystery Hunt community, The Providence
+                Crime Syndication will make the pre-Hunt round available online
+                in the fall at some point following the Puzzle Club event.
+              </p>
+              <p>
+                The pre-Hunt round will tie directly into the story of this
+                year's MIT Mystery Hunt. However, none of the puzzle content or
+                answers will be used in Hunt, and solving the pre-Hunt will not
+                be necessary or helpful toward solving the MIT Mystery Hunt
+                itself.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>Can I participate remotely? Should I?</h3></summary>
+            <div class="answer">
+              <p>
+                The MIT Mystery Hunt is at its core an on-campus event for the
+                MIT community, and we believe our Hunt in particular will be
+                best experienced in person. While we expect there to be many
+                puzzles that are accessible to remote solvers, there will also
+                be many physical puzzles, on-campus puzzles, interactions, and
+                activities that can only be done in person. If you’re on the
+                fence about participating in this year’s Hunt in person,
+                <strong>we think this is a good year to show up</strong>!
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>Can my team participate remotely?</h3></summary>
+              <div class="answer">
+              <p>
+                Remote teams are welcome to sign up and participate in the MIT
+                Mystery Hunt. However, there will be many puzzles and
+                interactions that fully remote teams cannot complete, and
+                because figuring out that a puzzle requires MIT knowledge or
+                campus presence is part of the puzzle, they will not usually be
+                labeled as such.
+                <strong
+                  >We expect that fully-remote teams will not be able to finish
+                  the Hunt.</strong
+                >
+              </p>
+              <p>
+                We are still excited to share the Hunt with the rest of the
+                global puzzling community. After the live event ends,
+                post-solvable versions of all puzzles will become available
+                &mdash; with photographs, maps, data tables, and whatever else a
+                fully remote team would need to complete the Hunt.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>
+              Can teams with no students still win the Hunt?
+            </h3></summary>
+            <div class="answer">
+              <p>
+                In order to win the MIT Mystery Hunt and write next year's,
+                <strong>you must have at least 1 current MIT student</strong> on
+                your team (although we recommend having more for logistical
+                reasons). If your team has a concern about this requirement,
+                please reach out to
+                <a
+                href="mailto:puzzle-club-exec@mit.edu">puzzle-club-exec@mit.edu</a>
+                and we can help facilitate communication with MIT students.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>
+              Can my team use on-campus space as a headquarters during Hunt?
+            </h3></summary>
+            <div class="answer">
+              <p>
+                If you would like to use classroom space for your HQ during
+                Hunt, there will be a place to indicate this in your general
+                registration which will open in early December. You can expect
+                confirmation about your assigned space from us in early January.
+                Please do not contact the Schedules Office directly for space
+                during the MIT Mystery Hunt, as we've already worked with them to
+                reserve rooms.
+              </p>
+              <p>
+                As always, reservable space on campus can get tight and more and
+                more spaces have become department-only. If your team is able to
+                hunt out of non-reservable spaces like living group lounges or
+                restricted department spaces, that's even better!
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>How will campus access work for non-student team members this year?</h3></summary>
+            <div class="answer">
+              <p>
+                Campus access for guests has been a moving target since 2020,
+                and MIT is actively rolling out a new system to replace Tim
+                Tickets, so we're not yet exactly sure what procedures will be
+                involved this year. We'll update as we learn more from MIT.
+              </p>
+              <p>
+                We will also follow MIT's guidelines for COVID and respiratory
+                virus prevention, and will have more detail on what these entail
+                soon.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>Where can I stay to be near campus during Hunt?</h3></summary>
+            <div class="answer">
+              <p>
+                We have arranged for hotel blocks at three hotels near campus.
+                See below for details about each option and instructions for
+                reserving within each block.
+              </p>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Hotel</th>
+                    <th scope="col">Room block name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row">
+                      <a
+                        href="https://www.marriott.com/events/start.mi?id=1710512158880&key=GRP"
+                        >Boston Marriott Cambridge</a
+                      >
+                    </td>
+                    <td>
+                      <code>MIT Mystery Hunt-Puzzle Club Room Block</code>
+                    </td>
+                    <td>$155 + 15.95% taxes per night</td>
+                    <td>
+                      <p>
+                        Reserve by calling Marriott Central Reservations at
+                        1-800-228-9290 no later than Friday, December 27th,
+                        2024, to receive the discounted rate, or use
+                        <a
+                          href="https://www.marriott.com/events/start.mi?id=1710512158880&key=GRP"
+                          >the link</a
+                        >.
+                      </p>
+                      <p>
+                        Guests will be asked for a credit card when making the
+                        reservations. They will also need to present one upon
+                        check-in. If guests are Marriott Rewards members, please
+                        have them put their account number on their reservation.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="row">
+                      <a
+                        href="https://www.marriott.com/events/start.mi?id=1709830893589&key=GRP"
+                        >Le Meridien</a
+                      >
+                    </td>
+                    <td><code>MIT Mystery Hunt Puzzle Club</code></td>
+                    <td>
+                      $129 per night + 15.95% taxes per night. Additional $10
+                      fee per person per night above double occupancy
+                    </td>
+                    <td>
+                      <p>Last Day to Book: Monday, December 16, 2024</p>
+                      <p>
+                        Use
+                        <a
+                          href="https://www.marriott.com/events/start.mi?id=1709830893589&key=GRP"
+                          >the link</a
+                        >
+                        or call 1-800-543-4300 and ask for the MIT Mystery Hunt
+                        Puzzle Club 2025 Group rate.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="row">
+                      <a
+                        href="https://www.hyatt.com/en-US/group-booking/BOSRC/G-M7H5"
+                        >Hyatt Regency Boston/Cambridge</a
+                      >
+                    </td>
+                    <td></td>
+                    <td>
+                      <ul>
+                        <li>Single/Double Occupancy: $179</li>
+                        <li>Triple Occupancy: $199</li>
+                        <li>Quad Occupancy: $219</li>
+                      </ul>
+                    </td>
+                    <td>
+                      <ul>
+                        <li>Start Date: Thursday, January 16, 2025</li>
+                        <li>End Date: Sunday, January 19, 2025</li>
+                        <li>Last Day to Book: Thursday, December 26, 2024</li>
+                        <li>
+                          Discounted overnight self-parking $30 per car per
+                          night (regularly $45)
+                        </li>
+                        <li>
+                          Complimentary standard wireless internet in guest
+                          rooms
+                        </li>
+                        <li>
+                          Waived $20 destination fee per room nightly plus
+                          applicable taxes
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>What's the recommended team size?</h3></summary>
+            <div class="answer">
+              <p>
+                There is no official team size recommendation, and this question
+                is very difficult to answer as it depends entirely on your taste
+                and style.
+              </p>
+              <p>
+                For newer and smaller teams, you should know that the MIT
+                Mystery Hunt is larger than other puzzle hunts that occur
+                throughout the year. We're proud to have designed the Hunt to be
+                exciting for teams of all sizes and experience levels, and will
+                work with teams throughout the weekend to make sure they are
+                having a fun and satisfying experience. However, very small
+                teams should understand that they are unlikely to see all of the
+                puzzles. Teams which complete the Hunt will likely have 30 or
+                more solvers working intensely throughout the weekend. If you’re
+                debating inviting friends and hallmates to hunt with you, you
+                probably should.
+              </p>
+              <p>
+                For larger teams, you have a sense of your style and how you
+                like to solve. We expect that teams will initially have around
+                10 puzzles available simultaneously, increasing to around 20
+                over the course of the Hunt. We also expect that the total
+                number of puzzles will be in line with MIT Mystery Hunts of the
+                last decade. We don't intend to release any additional
+                information about the Hunt structure in advance, so we encourage
+                you to use this information to decide how you want to approach
+                team structure and recruiting for this year.
+              </p>
+              <p>
+                If you have additional questions about team size, shoot us an
+                email at
+                <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>How can I support the MIT Mystery Hunt?</h3></summary>
+            <div class="answer">
+              <p>
+                If you are a current student, the best way to help the Hunt is
+                to <strong>join the MIT Puzzle Club</strong> and recruit more
+                friends to participate both in Puzzle Club and Hunt. (You can
+                start by joining the Puzzle Club Discord server via the <a
+                href="https://discord.com/student-hubs">MIT Discord Hub</a>).
+                There could be no MIT Mystery Hunt without the participation of
+                the MIT community; growing that community ensures its future.
+              </p>
+              <p>
+                For anyone else who is able to contribute, we would greatly
+                appreciate your financial support. It does not cost anything to
+                sign up and participate in the MIT Mystery Hunt. The organizers
+                are not getting paid, but the event does still cost real money
+                to produce and run&mdash;around $10 per person. Aside from a few
+                valued corporate sponsors, the MIT Mystery Hunt and the MIT
+                Puzzle Club are primarily funded by a large number of small
+                donations. If you are in a position to do so, your
+                <a href="https://giving.mit.edu/form?fundId=2720842"
+                  >tax-deductible donations designated to the MIT Puzzle Club</a
+                >
+                make this event possible.
+              </p>
+            </div>
+          </details>
+
+          <details class="question">
+            <summary><h3>I have another question!?</h3></summary>
+            <div class="answer">
+              <p>
+                That's not a question! But we're still excited to answer. If you
+                have any additional questions about this year's event, please
+                email
+                <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
+              </p>
+              <p>This FAQ will grow as the event gets closer.</p>
+            </div>
+          </details>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        Brought to you by the MIT Puzzle Club and Death &amp; Mayhem. <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>. This website is not a puzzle. &lt;3
+      </div>
+    </footer>
+  </body>
 </html>
