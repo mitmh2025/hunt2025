@@ -73,6 +73,16 @@
         };
         devShells.hunt2025 = pkgs.callPackage ./site/shell.nix {};
         devShells.radioman = pkgs.callPackage ./radioman/shell.nix {};
+        # nix run ".#plan"
+        apps.plan = {
+          type = "app";
+          program = toString (pkgs.writers.writeBash "plan" ''
+            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
+            cp ${terraformConfiguration} config.tf.json \
+              && ${terraformBin} init \
+              && ${terraformBin} plan "$@"
+          '');
+        };
         # nix run ".#apply"
         apps.apply = {
           type = "app";
