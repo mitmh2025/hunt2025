@@ -1,2 +1,4 @@
 nixos.qcow2
 **/.vscode/settings.json
+config.tf.json
+.terraform
