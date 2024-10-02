@@ -43,6 +43,7 @@
     "cloudkms"
     "secretmanager"
     "cloudbuild"
+    "artifactregistry"
   ] (svc: {
     service = "${svc}.googleapis.com";
 
