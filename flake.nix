@@ -57,6 +57,9 @@
         terraformBin = "${terraform}/bin/tofu";
         terraformConfiguration = terranix.lib.terranixConfiguration {
           inherit system;
+          pkgs = pkgs // {
+            lib = pkgs.lib.extend (import ./infra/terraform/helpers.nix pkgs);
+          };
           modules = [ ./infra/terraform ];
           extraArgs = {
             inherit self;
