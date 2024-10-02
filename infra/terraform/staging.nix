@@ -7,9 +7,8 @@ let
     "media"
   ];
 in {
-  resource.google_service_account.staging = {
-    account_id = "staging-vm";
-    display_name = "Used by the staging VM";
+  gcp.serviceAccount.staging-vm = {
+    displayName = "Used by the staging VM";
   };
 
   resource.google_compute_instance.staging = {
@@ -43,7 +42,7 @@ in {
     metadata.serial-port-enable = "TRUE"; # Allow ssh to access the instance's serial console.
 
     service_account = {
-      email = lib.tfRef "google_service_account.staging.email";
+      email = lib.tfRef "google_service_account.staging-vm.email";
       scopes = ["cloud-platform"];
     };
 

@@ -60,7 +60,7 @@
           pkgs = pkgs // {
             lib = pkgs.lib.extend (import ./infra/terraform/helpers.nix pkgs);
           };
-          modules = [ ./infra/terraform ];
+          modules = (builtins.attrValues self.terranixModules) ++ [ ./infra/terraform ];
           extraArgs = {
             inherit self;
           };
@@ -108,6 +108,7 @@
         };
       }) // {
         inherit self;
+        terranixModules = builtins.listToAttrs (findModules ./infra/terraform/modules);
         nixosModules = builtins.listToAttrs (findModules ./infra/modules);
         nixosConfigurations = nixpkgs.lib.genAttrs [
           "gce-image"

@@ -30,7 +30,6 @@
   ];
 
   imports = [
-    ./modules/route53.nix
     ./base-image.nix
     ./state.nix
     ./staging.nix
@@ -67,7 +66,7 @@
   data.google_iam_policy.sops-staging-key = {
     binding.role = "roles/cloudkms.cryptoKeyDecrypter";
     binding.members = [
-      (lib.tfRef "resource.google_service_account.staging.member")
+      (lib.tfRef "google_service_account.staging-vm.member")
     ];
   };
 
