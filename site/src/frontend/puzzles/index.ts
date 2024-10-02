@@ -8,6 +8,7 @@ import ShellCorporationEight from "./insignificant-thief";
 import AnExchangeOfVows from "./lanky-robot";
 import ShellCorporationSix from "./mild-octopus";
 import ShellCorporationFive from "./profitable-trunk";
+import TheJewelryStore from "./reliable-night";
 import TheShellGame from "./subdued-jet";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
@@ -17,6 +18,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_exchange_of_vows: AnExchangeOfVows,
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
+  the_jewelry_store: TheJewelryStore,
   shell_corporation_1: ShellCorporationOne,
   shell_corporation_2: ShellCorporationTwo,
   shell_corporation_3: ShellCorporationThree,

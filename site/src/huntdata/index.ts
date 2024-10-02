@@ -63,6 +63,7 @@ const HUNT: Hunt = {
         {
           // Jewelry Store (meta)
           id: "sdm02",
+          slug: "the_jewelry_store",
           is_meta: true,
           unlocked_if: {
             puzzles_unlocked: 5,
