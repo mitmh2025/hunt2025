@@ -104,6 +104,7 @@ in {
       _AWS_ACCESS_KEY_ID_SECRET = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-id.name";
       _AWS_SECRET_ACCESS_KEY_SECRET = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-secret.name";
       _CACHE_BUCKET = lib.tfRef "google_storage_bucket.nix-cache.name";
+      _LOGS_BUCKET = "gs://${lib.tfRef "google_storage_bucket.nix-cache.name"}/ci-logs";
     };
 
     service_account = lib.tfRef "google_service_account.cloud-build.id";

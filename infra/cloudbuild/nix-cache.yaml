@@ -8,3 +8,4 @@ availableSecrets:
     env: AWS_ACCESS_KEY_ID
   - versionName: $_AWS_SECRET_ACCESS_KEY_SECRET
     env: AWS_SECRET_ACCESS_KEY
+logsBucket: $_LOGS_BUCKET
