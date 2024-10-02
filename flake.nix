@@ -53,6 +53,17 @@
             vendorHash = "sha256-nVXzFE4iBHiqVusryteoqoJ5h2EheQpIISLjAXAsaNw=";
             provider-source-address = "registry.terraform.io/krostar/nix";
           })
+          ((mkProvider rec {
+            owner = "bsquare-corp";
+            repo = "terraform-provider-skopeo2";
+            rev = "v${version}";
+            version = "1.1.1";
+            hash = "sha256-vpX3C+pXGG3w+OeK+LUpeiG8rD4HWU7b3KSOa6WUeQg=";
+            vendorHash = "sha256-uvj7Ann2dh4ZgiThesY8A3Vshsjxn0cJVCqg+bXTYag=";
+            provider-source-address = "registry.terraform.io/bsquare-corp/skopeo2";
+          }).overrideAttrs {
+            tags = [ "containers_image_openpgp" ];
+          })
         ]);
         terraformBin = "${terraform}/bin/tofu";
         terraformConfiguration = terranix.lib.terranixConfiguration {

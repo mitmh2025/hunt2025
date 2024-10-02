@@ -1,13 +1,15 @@
 { pkgs, lib, self, ... }:
 # Inspired by https://fzakaria.com/2021/06/22/setting-up-a-nix-google-cloud-storage-gcs-binary-cache.html
 let
-  cacheBucket = "rb8tcjeo-nix-cache";
-  repoUrl = "${lib.tfRef "google_artifact_registry_repository.images.location"}-docker.pkg.dev/${lib.tfRef "google_artifact_registry_repository.images.project"}/${lib.tfRef "google_artifact_registry_repository.images.name"}";
+  registry = "${lib.tfRef "google_artifact_registry_repository.images.location"}-docker.pkg.dev";
+  repoUrl = "${registry}/${lib.tfRef "google_artifact_registry_repository.images.project"}/${lib.tfRef "google_artifact_registry_repository.images.name"}";
+  cacheBucket = lib.tfRef "google_storage_bucket.nix-cache.name";
+  s3Url = "s3://${cacheBucket}?endpoint=https://storage.googleapis.com";
 in {
   # Create a bucket to cache Nix artifacts.
 
   resource.google_storage_bucket.nix-cache = {
-    name          = cacheBucket;
+    name          = "rb8tcjeo-nix-cache";
     force_destroy = false;
     location      = "US"; # Multi-region bucket
     storage_class = "STANDARD";
@@ -117,35 +119,35 @@ in {
     policy_data = lib.tfRef "data.google_iam_policy.ar-images.policy_data";
   };
 
-  # Make sure you have run `gcloud auth configure-docker us-docker.pkg.dev`
-
-  resource.terraform_data.nix-cache-image = let
+  # Make sure you have run
+  # `gcloud auth configure-docker us-docker.pkg.dev`
+  # or
+  # `docker-credential-gcr configure-docker --registries=us-docker.pkg.dev`
+  resource.skopeo2_copy.nix-cache-image = let
     image = pkgs.dockerTools.buildLayeredImage {
       name = "nix-cache";
       tag = "latest";
       maxLayers = 120;
       contents = with pkgs; [
         dockerTools.binSh
+        nix
         nix-fast-build
+        (pkgs.writeTextDir "etc/nix/nix.conf" ''
+          extra-experimental-features = nix-command flakes
+          substituters = ${s3Url} https://cache.nixos.org/
+          require-sigs = false
+        '')
       ];
     };
-    imageTar = pkgs.runCommand "${image.name}-tar" {} ''gunzip -c ${image} > $out'';
   in {
-    depends_on = ["google_artifact_registry_repository.images"];
-    # I can't find a provider that can push a Docker image?!
-    # (There's `docker_image` in the official Docker provider, but that can't push a tarball and only works if you have a running Docker daemon.)
-    provisioner.local-exec.command = ''
-      ${pkgs.crane}/bin/crane push ${imageTar} ${repoUrl}/nix-cache
-    '';
+    source_image = "docker-archive:${image}";
+    destination_image = "docker://${repoUrl}/nix-cache";
   };
 
   # Cloud Build trigger
-  resource.google_cloudbuild_trigger.nix-cache-trigger = let
-    cacheBucket = lib.tfRef "google_storage_bucket.nix-cache.name";
-    s3Url = "s3://${cacheBucket}?endpoint=https://storage.googleapis.com";
-  in {
+  resource.google_cloudbuild_trigger.nix-cache-trigger = {
     depends_on = [
-      "terraform_data.nix-cache-image"
+      "skopeo2_copy.nix-cache-image"
     ];
     name = "nix-cache-trigger";
     location = "us-east5";

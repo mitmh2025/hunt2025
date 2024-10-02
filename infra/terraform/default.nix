@@ -6,6 +6,7 @@
     google.source = "registry.terraform.io/hashicorp/google";
     local.source = "registry.terraform.io/hashicorp/local";
     nix.source = "registry.terraform.io/krostar/nix";
+    skopeo2.source = "registry.terraform.io/bsquare-corp/skopeo2";
   };
 
   provider.google = {
