@@ -32,6 +32,12 @@ in {
 
   data.google_iam_policy.nix-cache.binding = [
     {
+      role = "roles/storage.legacyBucketOwner";
+      members = [
+        "projectOwner:${lib.tfRef "data.google_project.this.project_id"}"
+      ];
+    }
+    {
       role = "roles/storage.objectUser";
       members = [
         (lib.tfRef "google_service_account.cloud-build.member")
@@ -105,6 +111,12 @@ in {
 
   data.google_iam_policy.ar-images.binding = [
     {
+      role = "roles/artifactregistry.admin";
+      members = [
+        "projectOwner:${lib.tfRef "data.google_project.this.project_id"}"
+      ];
+    }
+    {
       role = "roles/artifactregistry.writer";
       members = [
         (lib.tfRef "google_service_account.cloud-build.member")
@@ -136,6 +148,7 @@ in {
           extra-experimental-features = nix-command flakes
           substituters = ${s3Url} https://cache.nixos.org/
           require-sigs = false
+          build-users-group =
         '')
       ];
     };
@@ -155,6 +168,8 @@ in {
     github.owner = "mitmh2025";
     github.name = "hunt2025";
     github.push.branch = "^main$";
+
+    approval_config.approval_required = false;
 
     build.step = [{
       name = "${repoUrl}/nix-cache";
