@@ -25,12 +25,14 @@
     };
   };
   config = {
+    data.google_project.this = {};
     resource.google_service_account = lib.mapAttrs (_: account: {
       account_id = account.name;
       display_name = account.displayName;
     }) config.gcp.serviceAccount;
     resource.google_project_iam_member = lib.filterAttrs (_: v: v.for_each != {}) (lib.mapAttrs (accountName: account: {
       for_each = lib.genAttrs account.iamRoles (role: "roles/${role}");
+      project = lib.tfRef "data.google_project.this.project_id";
       role = lib.tfRef "each.value";
       member = lib.tfRef "google_service_account.${accountName}.member";
     }) config.gcp.serviceAccount);

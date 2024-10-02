@@ -31,6 +31,7 @@
 
   imports = [
     ./base-image.nix
+    ./ci.nix
     ./state.nix
     ./staging.nix
     ./mail.nix
@@ -40,6 +41,8 @@
   resource.google_project_service = lib.genAttrs [
     "compute"
     "cloudkms"
+    "secretmanager"
+    "cloudbuild"
   ] (svc: {
     service = "${svc}.googleapis.com";
 
