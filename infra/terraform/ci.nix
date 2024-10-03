@@ -1,8 +1,9 @@
-{ pkgs, lib, self, ... }:
+{ pkgs, config, lib, self, ... }:
 # Inspired by https://fzakaria.com/2021/06/22/setting-up-a-nix-google-cloud-storage-gcs-binary-cache.html
 let
-  registry = "${lib.tfRef "google_artifact_registry_repository.images.location"}-docker.pkg.dev";
-  repoUrl = "${registry}/${lib.tfRef "google_artifact_registry_repository.images.project"}/${lib.tfRef "google_artifact_registry_repository.images.name"}";
+  project = "mitmh2025-staging-gcp"; # TODO: Pull this from somewhere else.
+  registry = "${config.resource.google_artifact_registry_repository.images.location}-docker.pkg.dev";
+  repoUrl = "${registry}/${project}/${config.resource.google_artifact_registry_repository.images.repository_id}";
   cacheBucket = lib.tfRef "google_storage_bucket.nix-cache.name";
   s3Url = "s3://${cacheBucket}?endpoint=https://storage.googleapis.com";
 in {
@@ -136,6 +137,7 @@ in {
       maxLayers = 120;
       contents = with pkgs; [
         dockerTools.binSh
+        dockerTools.caCertificates
         nix
         nix-fast-build
         (pkgs.writeTextDir "etc/nix/nix.conf" ''
