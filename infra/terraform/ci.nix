@@ -138,6 +138,7 @@ in {
       contents = with pkgs; [
         dockerTools.binSh
         dockerTools.caCertificates
+        git
         nix
         nix-fast-build
         (pkgs.writeTextDir "etc/nix/nix.conf" ''
@@ -147,6 +148,10 @@ in {
           build-users-group =
         '')
       ];
+      extraCommands = ''
+        mkdir -p nix/var/nix/gcroots
+        ln -sf /nix/var/nix/profiles nix/var/nix/gcroots/profiles
+      '';
     };
   in {
     source_image = "docker-archive:${image}";
