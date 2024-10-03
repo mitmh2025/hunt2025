@@ -1,11 +1,9 @@
 { pkgs, config, lib, self, ... }:
 # Inspired by https://fzakaria.com/2021/06/22/setting-up-a-nix-google-cloud-storage-gcs-binary-cache.html
 let
-  project = "mitmh2025-staging-gcp"; # TODO: Pull this from somewhere else.
-  registry = "${config.resource.google_artifact_registry_repository.images.location}-docker.pkg.dev";
-  repoUrl = "${registry}/${project}/${config.resource.google_artifact_registry_repository.images.repository_id}";
-  cacheBucket = lib.tfRef "google_storage_bucket.nix-cache.name";
-  s3Url = "s3://${cacheBucket}?endpoint=https://storage.googleapis.com";
+  registry = "${lib.tfRef "google_artifact_registry_repository.images.location"}-docker.pkg.dev";
+  repoUrl = "${registry}/${lib.tfRef "google_artifact_registry_repository.images.project"}/${lib.tfRef "google_artifact_registry_repository.images.name"}";
+  s3Url = "s3://${config.resource.google_storage_bucket.nix-cache.name}?endpoint=https://storage.googleapis.com";
 in {
   # Create a bucket to cache Nix artifacts.
 
@@ -175,7 +173,7 @@ in {
     build.step = [{
       name = "${repoUrl}/nix-cache";
       script = ''
-        nix-fast-build -f .#apps.x86_64-linux.apply.program --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --copy-to ${s3Url}
+        nix-fast-build -f .#apps.x86_64-linux.apply.program --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
       '';
       secret_env = [
         "AWS_ACCESS_KEY_ID"
