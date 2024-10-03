@@ -111,12 +111,6 @@ in {
 
   data.google_iam_policy.ar-images.binding = [
     {
-      role = "roles/artifactregistry.admin";
-      members = [
-        "projectOwner:${lib.tfRef "data.google_project.this.project_id"}"
-      ];
-    }
-    {
       role = "roles/artifactregistry.writer";
       members = [
         (lib.tfRef "google_service_account.cloud-build.member")
