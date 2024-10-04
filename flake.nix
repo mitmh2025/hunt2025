@@ -117,6 +117,14 @@
           type = "app";
           program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-nixos-vm";
         };
+        dockerImages.nix-cache = import ./infra/lib/docker-image.nix {
+          name = "nix-cache";
+          inherit pkgs;
+          modules = (builtins.attrValues self.nixosModules) ++ [
+            sops-nix.nixosModules.sops
+            ./infra/containers/nix-cache.nix
+          ];
+        };
       }) // {
         inherit self;
         terranixModules = builtins.listToAttrs (findModules ./infra/terraform/modules);
