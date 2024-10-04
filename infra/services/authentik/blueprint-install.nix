@@ -24,6 +24,7 @@ in {
       };
       samlPropertyMappings = mkOption {
         type = with types; attrsOf format.type;
+        default = {};
       };
       apps = mkOption {
         default = {};
@@ -109,8 +110,8 @@ in {
                 attrs = common.attrs // {
                   inherit (config) redirect_uris;
 
-                  client_id = sopsPlaceholder."authentik/apps/${config.slug}/client_id";
-                  client_secret = sopsPlaceholder."authentik/apps/${config.slug}/client_secret";
+                  client_id = lib.mkIf (sopsPlaceholder ? "authentik/apps/${config.slug}/client_id") sopsPlaceholder."authentik/apps/${config.slug}/client_id";
+                  client_secret = lib.mkIf (sopsPlaceholder ? "authentik/apps/${config.slug}/client_secret") sopsPlaceholder."authentik/apps/${config.slug}/client_secret";
                   client_type = "confidential";
 
                   include_claims_in_id_token = true;
@@ -154,69 +155,72 @@ in {
       };
     };
   };
-  config = {
-    users.groups.authentik-blueprint = {};
-    sops.templates."blueprint.yaml" = {
-      group = "authentik-blueprint";
-      mode = "0440";
-      file = blueprintFile;
-    };
+  config = lib.mkMerge [
+    (lib.mkIf (cfg.blueprint != null) {
+      users.groups.authentik-blueprint = {};
+      sops.templates."blueprint.yaml" = {
+        group = "authentik-blueprint";
+        mode = "0440";
+        file = blueprintFile;
+      };
 
-    services.authentik.settings.blueprints_dir = "/run/authentik/blueprints-rw";
+      services.authentik.settings.blueprints_dir = "/run/authentik/blueprints-rw";
 
-    systemd.services.authentik-worker.serviceConfig.SupplementaryGroups = ["authentik-blueprint"];
-    systemd.services.authentik-worker.preStart = ''
-      mkdir -p /run/authentik/blueprints-rw
-      cp -aL ${config.services.authentik.authentikComponents.staticWorkdirDeps}/blueprints/* /run/authentik/blueprints-rw/
-      cp -aL ${config.sops.templates."blueprint.yaml".path} /run/authentik/blueprints-rw/blueprint.yaml
-    '';
-    systemd.services.authentik-worker.restartTriggers = [blueprintFile];
+      systemd.services.authentik-worker.serviceConfig.SupplementaryGroups = ["authentik-blueprint"];
+      systemd.services.authentik-worker.preStart = ''
+        mkdir -p /run/authentik/blueprints-rw
+        cp -aL ${config.services.authentik.authentikComponents.staticWorkdirDeps}/blueprints/* /run/authentik/blueprints-rw/
+        cp -aL ${config.sops.templates."blueprint.yaml".path} /run/authentik/blueprints-rw/blueprint.yaml
+      '';
+      systemd.services.authentik-worker.restartTriggers = [blueprintFile];
+    })
+    {
+      services.nginx.virtualHosts = builtins.listToAttrs (
+        builtins.map
+          (app: lib.nameValuePair
+            app.host
+            {
+              locations."/".extraConfig = ''
+                auth_request     /outpost.goauthentik.io/auth/nginx;
+                error_page       401 = @goauthentik_proxy_signin;
+                auth_request_set $auth_cookie $upstream_http_set_cookie;
+                add_header       Set-Cookie $auth_cookie;
 
-    services.nginx.virtualHosts = builtins.listToAttrs (
-      builtins.map
-        (app: lib.nameValuePair
-          app.host
-          {
-            locations."/".extraConfig = ''
-              auth_request     /outpost.goauthentik.io/auth/nginx;
-              error_page       401 = @goauthentik_proxy_signin;
-              auth_request_set $auth_cookie $upstream_http_set_cookie;
-              add_header       Set-Cookie $auth_cookie;
+                # translate headers from the outposts back to the actual upstream
+                auth_request_set $authentik_username $upstream_http_x_authentik_username;
+                auth_request_set $authentik_groups $upstream_http_x_authentik_groups;
+                auth_request_set $authentik_email $upstream_http_x_authentik_email;
+                auth_request_set $authentik_name $upstream_http_x_authentik_name;
+                auth_request_set $authentik_uid $upstream_http_x_authentik_uid;
 
-              # translate headers from the outposts back to the actual upstream
-              auth_request_set $authentik_username $upstream_http_x_authentik_username;
-              auth_request_set $authentik_groups $upstream_http_x_authentik_groups;
-              auth_request_set $authentik_email $upstream_http_x_authentik_email;
-              auth_request_set $authentik_name $upstream_http_x_authentik_name;
-              auth_request_set $authentik_uid $upstream_http_x_authentik_uid;
-
-              proxy_set_header X-authentik-username $authentik_username;
-              proxy_set_header X-authentik-groups $authentik_groups;
-              proxy_set_header X-authentik-email $authentik_email;
-              proxy_set_header X-authentik-name $authentik_name;
-              proxy_set_header X-authentik-uid $authentik_uid;
-            '';
-            locations."/outpost.goauthentik.io" = {
-              inherit (config.services.nginx.virtualHosts."${config.services.authentik.nginx.host}".locations."/") proxyPass;
-              extraConfig = ''
-                proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
-                add_header              Set-Cookie $auth_cookie;
-                auth_request_set        $auth_cookie $upstream_http_set_cookie;
-                proxy_pass_request_body off;
-                proxy_set_header        Content-Length "";
+                proxy_set_header X-authentik-username $authentik_username;
+                proxy_set_header X-authentik-groups $authentik_groups;
+                proxy_set_header X-authentik-email $authentik_email;
+                proxy_set_header X-authentik-name $authentik_name;
+                proxy_set_header X-authentik-uid $authentik_uid;
               '';
-            };
-            locations."@goauthentik_proxy_signin".extraConfig = ''
-              internal;
-              add_header Set-Cookie $auth_cookie;
-              return 302 /outpost.goauthentik.io/start?rd=$request_uri;
-            '';
-          }
-        )
-        (builtins.filter
-          (app: app.type == "proxy" && app.nginx)
-          (lib.attrValues cfg.apps)
-        )
-    );
-  };
+              locations."/outpost.goauthentik.io" = {
+                inherit (config.services.nginx.virtualHosts."${config.services.authentik.nginx.host}".locations."/") proxyPass;
+                extraConfig = ''
+                  proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
+                  add_header              Set-Cookie $auth_cookie;
+                  auth_request_set        $auth_cookie $upstream_http_set_cookie;
+                  proxy_pass_request_body off;
+                  proxy_set_header        Content-Length "";
+                '';
+              };
+              locations."@goauthentik_proxy_signin".extraConfig = ''
+                internal;
+                add_header Set-Cookie $auth_cookie;
+                return 302 /outpost.goauthentik.io/start?rd=$request_uri;
+              '';
+            }
+          )
+          (builtins.filter
+            (app: app.type == "proxy" && app.nginx)
+            (lib.attrValues cfg.apps)
+          )
+      );
+    }
+  ];
 }
