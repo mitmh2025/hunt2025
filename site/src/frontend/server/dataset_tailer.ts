@@ -1,7 +1,7 @@
 import { type FrontendClient } from "../../../lib/api/frontend_client";
 import {
   type FullGuessHistory,
-  type FullActivityLog,
+  type InternalActivityLogEntry,
 } from "../../../lib/api/frontend_contract";
 import { genId } from "../../../lib/id";
 import { type RedisClient } from "../../app";
@@ -405,7 +405,6 @@ export class DatasetTailer<T extends { id: number }> {
   }
 }
 
-export type ActivityLogEntry = FullActivityLog[number];
 export function newActivityLogTailer({
   redisClient,
   frontendApiClient,
@@ -429,7 +428,7 @@ export function newActivityLogTailer({
       });
   };
 
-  const tailer = new DatasetTailer<ActivityLogEntry>({
+  const tailer = new DatasetTailer<InternalActivityLogEntry>({
     redisClient,
     fetcher,
     topic: "global/activity_log",

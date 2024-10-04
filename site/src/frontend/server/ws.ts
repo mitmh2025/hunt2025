@@ -1,8 +1,9 @@
 import type { NextFunction, Request } from "express";
 import type { WSResponse } from "websocket-express";
 import workersManifest from "../../../dist/worker-manifest.json";
-import { type TeamState } from "../../../lib/api/client";
+import { type ActivityLogEntry, type TeamState } from "../../../lib/api/client";
 import { type FrontendClient } from "../../../lib/api/frontend_client";
+import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
 import {
   type MessageFromClient,
   type MessageToClient,
@@ -10,6 +11,10 @@ import {
   MessageFromClientSchema,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
+import {
+  parseInternalActivityLogEntry,
+  formatActivityLogEntryForApi,
+} from "../../api/logic";
 import { type RedisClient } from "../../app";
 import { navBarState } from "../components/ContentWithNavBar";
 import { backgroundCheckState } from "../rounds/background_check";
@@ -24,7 +29,6 @@ import { shadowDiamondState } from "../rounds/shadow_diamond";
 import { stakeoutState } from "../rounds/stakeout";
 import {
   type DatasetTailer,
-  type ActivityLogEntry,
   newActivityLogTailer,
   newGuessLogTailer,
   type GuessLogEntry,
@@ -485,7 +489,7 @@ export class WebsocketManager
   // key: team_id
   private teamStateSubs: Map<number, TeamStateSubState>;
 
-  private activityLogTailer: DatasetTailer<ActivityLogEntry>;
+  private activityLogTailer: DatasetTailer<InternalActivityLogEntry>;
 
   private guessLogTailer: DatasetTailer<GuessLogEntry>;
 
@@ -568,10 +572,13 @@ export class WebsocketManager
     conn: ConnHandler,
   ): () => void {
     const stop = this.activityLogTailer.watchLog(
-      (entries: ActivityLogEntry[]) => {
-        entries.forEach((entry) => {
+      (entries: InternalActivityLogEntry[]) => {
+        entries.forEach((internalEntry) => {
+          // Convert serialized InternalActivityLogEntry to working format
+          const entry = parseInternalActivityLogEntry(internalEntry);
           if (entry.team_id === teamId || entry.team_id === undefined) {
-            conn.appendActivityLogEntry(subId, entry);
+            const apiEntry = formatActivityLogEntryForApi(entry);
+            conn.appendActivityLogEntry(subId, apiEntry);
           }
         });
       },

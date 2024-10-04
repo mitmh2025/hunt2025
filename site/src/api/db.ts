@@ -6,7 +6,11 @@ import {
 } from "knex/types/tables";
 import connections from "../../knexfile";
 import { type Hunt } from "../huntdata/types";
-import { fixData, fixTimestamp, reducerDeriveTeamState } from "./logic";
+import {
+  cleanupActivityLogEntryFromDB,
+  fixTimestamp,
+  reducerDeriveTeamState,
+} from "./logic";
 
 class WebpackMigrationSource {
   context: Rspack.Context;
@@ -229,14 +233,7 @@ export async function getTeamState(
     .orWhereNull("team_id")
     .orderBy("id");
 
-  const fixedActivityLog = activity_log.map((e) => {
-    e.timestamp = fixTimestamp(e.timestamp);
-    if (e.data) {
-      e.data = fixData(e.data);
-    }
-    return e;
-  });
-
+  const fixedActivityLog = activity_log.map(cleanupActivityLogEntryFromDB);
   return {
     team_name: team.username,
     activity_log: fixedActivityLog,
@@ -255,20 +252,13 @@ export async function appendActivityLog(
       "type",
       "slug",
       "data",
+      "internal_data",
       "currency_delta",
       "timestamp",
     ])
     .then((objs) => {
       const insertedEntry = objs[0] as ActivityLogEntry;
-      const fixedEntry = {
-        id: insertedEntry.id,
-        team_id: insertedEntry.team_id,
-        type: insertedEntry.type,
-        slug: insertedEntry.slug,
-        data: insertedEntry.data ? fixData(insertedEntry.data) : undefined,
-        currency_delta: insertedEntry.currency_delta,
-        timestamp: fixTimestamp(insertedEntry.timestamp),
-      } as ActivityLogEntry;
+      const fixedEntry = cleanupActivityLogEntryFromDB(insertedEntry);
       // console.log("inserted", fixedEntry);
       return fixedEntry;
     });

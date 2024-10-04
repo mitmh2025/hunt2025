@@ -31,7 +31,6 @@ import { frontendContract } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import type { RedisClient } from "../app";
-import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
 import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
@@ -43,15 +42,15 @@ import {
   recalculateTeamState,
   appendActivityLog,
 } from "./db";
-import { fixData, fixTimestamp, reducerDeriveTeamState } from "./logic";
+import {
+  formatActivityLogEntryForApi,
+  fixTimestamp,
+  reducerDeriveTeamState,
+  cleanupActivityLogEntryFromDB,
+} from "./logic";
 
 type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
-  200
->;
-
-type ActivityLog = ServerInferResponseBody<
-  typeof publicContract.getActivityLog,
   200
 >;
 
@@ -342,78 +341,6 @@ export function getRouter({
     },
   ];
 
-  const fixupActivityLogEntry = (
-    e: Pick<
-      ActivityLogEntry,
-      | "id"
-      | "type"
-      | "timestamp"
-      | "currency_delta"
-      | "team_id"
-      | "slug"
-      | "data"
-    >,
-  ) => {
-    let entry: Partial<ActivityLog[number]> = {
-      id: e.id,
-      timestamp: fixTimestamp(e.timestamp).toISOString(),
-      currency_delta: e.currency_delta,
-      type: e.type,
-    };
-    if ("team_id" in e && e.team_id) {
-      (entry as { team_id: number }).team_id = e.team_id;
-    }
-    if ("slug" in e && e.slug) {
-      (entry as { slug: string }).slug = e.slug;
-      switch (entry.type) {
-        case "currency_adjusted":
-          break;
-        case "round_unlocked":
-          {
-            const round = hunt.rounds.find((round) => round.slug === e.slug);
-            if (round) {
-              entry = Object.assign(entry, { title: round.title });
-            }
-          }
-          break;
-        case "rate_limits_reset":
-        case "puzzle_unlocked":
-        case "puzzle_partially_solved":
-        case "puzzle_solved":
-          {
-            const puzzle = PUZZLES[e.slug];
-            entry = Object.assign(entry, {
-              title: puzzle?.title ?? `Stub puzzle for slot ${e.slug}`,
-            });
-          }
-          break;
-        case "interaction_unlocked":
-        case "interaction_started":
-        case "interaction_completed":
-          {
-            const interaction = INTERACTIONS[
-              e.slug as keyof typeof INTERACTIONS
-            ] as undefined | (typeof INTERACTIONS)[keyof typeof INTERACTIONS];
-            entry = Object.assign(entry, {
-              title: interaction?.title ?? `Untitled interaction ${e.slug}`,
-            });
-          }
-          break;
-        case "gate_completed":
-          {
-            // TODO: add gate descriptions for activity log in the definition?
-          }
-          break;
-      }
-    }
-    if ("data" in e && e.data) {
-      // SQLite doesn't parse JSON automatically
-      const data = fixData(e.data);
-      entry = Object.assign(entry, data);
-    }
-    return entry as ActivityLog[number];
-  };
-
   // We merge contracts here so that we can implement additional contracts
   // without having to export them to the client since there's no value in
   // exposing schemas we don't intend to be public.
@@ -504,7 +431,8 @@ export function getRouter({
             .select("id", "timestamp", "type", "slug", "currency_delta", "data")
             .orderBy("id");
           const body = entries.map((e) => {
-            return fixupActivityLogEntry(e);
+            const parsedEntry = cleanupActivityLogEntryFromDB(e);
+            return formatActivityLogEntryForApi(parsedEntry);
           });
           return {
             status: 200,
@@ -1057,13 +985,18 @@ export function getRouter({
                 "slug",
                 "timestamp",
                 "data",
+                "internal_data",
               );
               return q;
             },
             { readOnly: true },
           );
           const body = entries.map((e) => {
-            return fixupActivityLogEntry(e);
+            const entry = cleanupActivityLogEntryFromDB(e);
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
           });
           return {
             status: 200,

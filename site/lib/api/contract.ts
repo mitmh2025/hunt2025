@@ -65,7 +65,7 @@ const SubmitGuessSchema = z.object({
   guess: z.string(),
 });
 
-const ActivityLogEntryBaseSchema = z.object({
+export const ActivityLogEntryBaseSchema = z.object({
   id: z.number(),
   team_id: z.number().optional(),
   timestamp: z.string().datetime(),

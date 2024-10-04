@@ -1,6 +1,11 @@
 import { type ClientInferResponseBody } from "@ts-rest/core";
 import { z } from "zod";
-import { ActivityLogSchema, c, TeamStateSchema, GuessSchema } from "./contract";
+import {
+  c,
+  TeamStateSchema,
+  GuessSchema,
+  ActivityLogEntryBaseSchema,
+} from "./contract";
 
 const FullGuessSchema = GuessSchema.extend({
   id: z.number(),
@@ -9,6 +14,69 @@ const FullGuessSchema = GuessSchema.extend({
 });
 
 const FullGuessHistorySchema = z.array(FullGuessSchema);
+
+const InternalActivityLogEntryBaseSchema = ActivityLogEntryBaseSchema.merge(
+  z.object({
+    internal_data: z
+      .object({
+        operator: z.string().optional(),
+      })
+      .optional(),
+  }),
+);
+
+export const InternalActivityLogEntryWithSlug =
+  InternalActivityLogEntryBaseSchema.merge(z.object({ slug: z.string() }));
+
+// A represenatation of what is actually stored in the DB, since that's what we need to use for the
+// DB tailer since that's what will be put into the pubsub channel.
+export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
+  InternalActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("currency_adjusted") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({ type: z.literal("round_unlocked") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({ type: z.literal("puzzle_unlocked") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("puzzle_partially_solved"),
+      data: z.object({ partial: z.string() }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("puzzle_solved"),
+      data: z.object({ answer: z.string() }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({ type: z.literal("interaction_unlocked") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({ type: z.literal("interaction_started") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("interaction_completed"),
+      data: z.object({ result: z.string() }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({ type: z.literal("gate_completed") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({ type: z.literal("rate_limits_reset") }),
+  ),
+]);
+export type InternalActivityLogEntry = z.infer<
+  typeof InternalActivityLogEntrySchema
+>;
+export const InternalActivityLogSchema = z.array(
+  InternalActivityLogEntrySchema,
+);
 
 export const frontendContract = c.router({
   markTeamGateSatisfied: {
@@ -47,7 +115,7 @@ export const frontendContract = c.router({
       since: z.number().optional(),
     }),
     responses: {
-      200: ActivityLogSchema,
+      200: InternalActivityLogSchema,
       401: z.null(),
     },
   },
