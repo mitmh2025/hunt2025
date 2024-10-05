@@ -28,7 +28,7 @@ export async function activityLogHandler(req: Request) {
     {
       node,
       entrypoints: ["activity_log" as const],
-      title: "All puzzles",
+      title: "Activity log",
     },
     teamState,
   );
