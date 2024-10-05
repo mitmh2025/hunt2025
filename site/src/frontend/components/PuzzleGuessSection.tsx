@@ -18,6 +18,7 @@ const GuessSectionWrapper = styled.section`
   color: var(--black);
   padding: 1rem 0.5rem;
   grid-column: 1 / 2;
+  text-align: center;
 
   @media ${deviceMax.md} {
     grid-column: 1 / 3;
@@ -34,6 +35,10 @@ const GuessTable = styled.table`
       font-weight: 900;
     }
   }
+`;
+
+const Label = styled.label`
+  margin-right: 4px;
 `;
 
 const PuzzleGuessForm = ({
@@ -127,7 +132,7 @@ const PuzzleGuessForm = ({
           {rateLimitedUntil.toLocaleTimeString()}
         </div>
       ) : undefined}
-      <label htmlFor="guess-input">Submit guess</label>
+      <Label htmlFor="guess-input">Submit guess</Label>
       <TextInput
         id="guess-input"
         name="guess"
