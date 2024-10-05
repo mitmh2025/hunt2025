@@ -27,6 +27,9 @@ const ActivityLogItem = ({
         </td>
       );
       break;
+    case "puzzle_unlockable":
+      description = <td>Discovered puzzle {entry.title}</td>;
+      break;
     case "puzzle_unlocked":
       description = (
         <td>

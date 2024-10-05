@@ -87,6 +87,9 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({ type: z.literal("round_unlocked") }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({ type: z.literal("puzzle_unlockable") }),
+  ),
+  ActivityLogEntryWithSlugAndTitle.merge(
     z.object({ type: z.literal("puzzle_unlocked") }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(

@@ -5,6 +5,7 @@ type ConditionState = {
   unlocked_rounds: Set<string>;
   gates_satisfied: Set<string>;
   interactions_completed: Set<string>;
+  puzzles_unlockable: Set<string>;
   puzzles_unlocked: Set<string>;
   puzzles_solved: Set<string>;
 };
@@ -127,14 +128,15 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
     // These two are mutable
     unlocked_rounds: initial_unlocked_rounds,
     puzzles_unlocked: initial_puzzles_unlocked,
+    puzzles_unlockable: initial_puzzles_unlockable,
   } = initial_condition_state;
 
   // in-out
   const unlocked_rounds = new Set<string>(initial_unlocked_rounds);
   const unlocked_puzzles = new Set<string>(initial_puzzles_unlocked);
   const visible_puzzles = new Set<string>(initial_puzzles_unlocked);
+  const unlockable_puzzles = new Set<string>(initial_puzzles_unlockable);
   // strict outputs
-  const unlockable_puzzles = new Set<string>();
   const unlocked_interactions = new Set<string>();
 
   const condition_state: ConditionState = {
@@ -143,6 +145,7 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
     gates_satisfied,
     interactions_completed,
     puzzles_unlocked: unlocked_puzzles,
+    puzzles_unlockable: unlockable_puzzles,
     puzzles_solved,
   };
   const slug_by_slot = getSlugsBySlot(hunt);

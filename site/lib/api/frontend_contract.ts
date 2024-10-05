@@ -38,6 +38,9 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({ type: z.literal("round_unlocked") }),
   ),
   InternalActivityLogEntryWithSlug.merge(
+    z.object({ type: z.literal("puzzle_unlockable") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
     z.object({ type: z.literal("puzzle_unlocked") }),
   ),
   InternalActivityLogEntryWithSlug.merge(

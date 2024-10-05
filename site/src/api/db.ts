@@ -119,6 +119,10 @@ declare module "knex/types/tables" {
         slug: string;
       }
     | {
+        type: "puzzle_unlockable";
+        slug: string;
+      }
+    | {
         type: "puzzle_unlocked";
         slug: string;
       }
@@ -303,11 +307,17 @@ export async function recalculateTeamState(
   const canonical_queries_done = performance.now();
 
   // What is already present in the activity log?
-  // TODO: consider doing this in a single pass instead
+  // Somewhat surprisingly, this is faster than the equivalent single-pass for-of loop with an
+  // if-else chain to mutate six Sets.
   const old = {
     unlocked_rounds: new Set(
       activity_log
         .filter((e) => e.type === "round_unlocked")
+        .map((e) => e.slug),
+    ),
+    unlockable_puzzles: new Set(
+      activity_log
+        .filter((e) => e.type === "puzzle_unlockable")
         .map((e) => e.slug),
     ),
     unlocked_puzzles: new Set(
@@ -355,15 +365,28 @@ export async function recalculateTeamState(
   const unlock_rounds_done = performance.now();
   const diff = {
     // visible_puzzles: next.visible_puzzles.difference(old.visible_puzzles),
-    // unlockable_puzzles: next.unlockable_puzzles.difference(
-    //   old.unlockable_puzzles,
-    // ),
+    unlockable_puzzles: next.unlockable_puzzles.difference(
+      old.unlockable_puzzles,
+    ),
     unlocked_puzzles: next.unlocked_puzzles.difference(old.unlocked_puzzles),
     unlocked_interactions: new Set(Object.keys(next.interactions)).difference(
       old.interactions_unlocked,
     ),
   };
   const diff_done = performance.now();
+  for (const slug of diff.unlockable_puzzles) {
+    activityLogWrites.push(
+      await appendActivityLog(
+        {
+          team_id,
+          type: "puzzle_unlockable",
+          slug,
+        },
+        trx,
+      ),
+    );
+  }
+  const puzzles_unlockable_done = performance.now();
   for (const slug of diff.unlocked_puzzles) {
     activityLogWrites.push(
       await appendActivityLog(
@@ -395,7 +418,8 @@ export async function recalculateTeamState(
   * calculateTeamState:  ${calculate_team_state_done - canonical_queries_done} msec
   * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
   * compute diffs:       ${diff_done - unlock_rounds_done} msec
-  * unlock puzzles:      ${puzzles_unlock_done - diff_done} msec
+  * unlockable puzzles:  ${puzzles_unlockable_done - diff_done} msec
+  * unlock puzzles:      ${puzzles_unlock_done - puzzles_unlockable_done} msec
   * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec`);
   return activityLogWrites;
 }

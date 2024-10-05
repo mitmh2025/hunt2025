@@ -26,6 +26,7 @@ export async function up(knex: Knex): Promise<void> {
       table.enu("type", [
         "currency_adjusted",
         "round_unlocked",
+        "puzzle_unlockable",
         "puzzle_unlocked",
         "puzzle_partially_solved",
         "puzzle_solved",

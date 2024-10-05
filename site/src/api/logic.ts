@@ -41,6 +41,7 @@ export function fixInternalData(
 
 export type TeamStateIntermediate = {
   rounds_unlocked: Set<string>;
+  puzzles_unlockable: Set<string>;
   puzzles_unlocked: Set<string>;
   puzzles_solved: Set<string>;
   gates_satisfied: Set<string>;
@@ -66,6 +67,9 @@ export function teamStateReducer(
       break;
     case "gate_completed":
       acc.gates_satisfied.add(entry.slug);
+      break;
+    case "puzzle_unlockable":
+      acc.puzzles_unlockable.add(entry.slug);
       break;
     case "puzzle_unlocked":
       acc.puzzles_unlocked.add(entry.slug);
@@ -109,6 +113,7 @@ export function reducerDeriveTeamState(
 ) {
   const initialState: TeamStateIntermediate = {
     rounds_unlocked: new Set(),
+    puzzles_unlockable: new Set(),
     puzzles_unlocked: new Set(),
     puzzles_solved: new Set(),
     gates_satisfied: new Set(),
@@ -126,6 +131,7 @@ export function reducerDeriveTeamState(
     unlocked_rounds: intermediate.rounds_unlocked,
     gates_satisfied: intermediate.gates_satisfied,
     interactions_completed: intermediate.interactions_completed,
+    puzzles_unlockable: intermediate.puzzles_unlockable,
     puzzles_unlocked: intermediate.puzzles_unlocked,
     puzzles_solved: intermediate.puzzles_solved,
   });
@@ -195,6 +201,7 @@ export function parseInternalActivityLogEntry(
       };
     case "round_unlocked":
     case "gate_completed":
+    case "puzzle_unlockable":
     case "puzzle_unlocked":
     case "interaction_started":
     case "interaction_unlocked":
@@ -280,6 +287,7 @@ export function formatActivityLogEntryForApi(
         }
         break;
       case "rate_limits_reset":
+      case "puzzle_unlockable":
       case "puzzle_unlocked":
       case "puzzle_partially_solved":
       case "puzzle_solved":

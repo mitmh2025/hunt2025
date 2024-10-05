@@ -673,10 +673,20 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ params: { slug }, req }) => {
           const team_id = req.user as number;
+          // The slot for the requested slug must exist in the hunt definition.
+          // If it doesn't, we can bail without touching the DB.
+          const slot = slugToSlotMap.get(slug)?.slot;
+          if (!slot) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
           // TODO: Make sure that we retry/wait for conflicts.
           const [response, deferred] = await knex.transaction(
             async function (trx) {
               const deferredPublications = new DeferredPublications({});
+              // Verify puzzle is currently unlockable.
               const { team_name, activity_log } = await dbGetTeamState(
                 team_id,
                 trx,
@@ -686,19 +696,13 @@ export function getRouter({
                 hunt,
                 activity_log,
               );
-              const slot = hunt.rounds
-                .filter(({ slug }) => data.unlocked_rounds.has(slug))
-                .flatMap(({ puzzles }) =>
-                  puzzles.flatMap((slot) =>
-                    getSlotSlug(slot) === slug ? [slot] : [],
-                  ),
-                )[0];
-              const unlock_cost = slot?.unlock_cost;
+              const unlock_cost = slot.unlock_cost;
               if (
                 data.unlockable_puzzles.has(slug) &&
                 unlock_cost &&
                 data.available_currency >= unlock_cost
               ) {
+                // Unlock puzzle.
                 const entry = await appendActivityLog(
                   {
                     team_id,
@@ -709,6 +713,7 @@ export function getRouter({
                   trx,
                 );
                 deferredPublications.addActivityLogEntries([entry]);
+                // Apply any downstream effects of unlocking the puzzle.
                 const [_, newWrites] = await refreshTeamState(
                   hunt,
                   team_id,
