@@ -114,12 +114,21 @@ const HUNT: Hunt = {
           },
         },
         {
+          // We want the super (which involves a live interaction with Billie and kicking off the
+          // funaround) to become available only once the four metas are solved.  However, because
+          // each meta solve unlocks a dialogue tree interaction, and we don't want to have new
+          // content competing for solvers' attention, we schedule this meta to release once all
+          // four dialogue-tree interactions are completed.  This also potentially gives us the
+          // duration of the final dialogue tree interaction to gather any relevant actors for the
+          // kickoff of the funaround.
           id: "sdm05",
           is_meta: true,
-          unlocked_if: {
-            puzzles_unlocked: 2,
-            slots: ["sdm01", "sdm02", "sdm03", "sdm04"],
-          },
+          unlocked_if: [
+            { interaction_completed: "interview_at_the_boardwalk" },
+            { interaction_completed: "interview_at_the_jewelry_store" },
+            { interaction_completed: "interview_at_the_casino" },
+            { interaction_completed: "interview_at_the_art_gallery" },
+          ],
         }, // Where is the Diamond? (super)
       ],
       interactions: [
