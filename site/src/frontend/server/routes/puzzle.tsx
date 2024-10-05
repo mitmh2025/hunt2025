@@ -14,6 +14,27 @@ import { PUZZLES } from "../../puzzles";
 
 const SHOW_SOLUTIONS = true as boolean;
 
+type RoundSpecificComponentManifest = {
+  wrapper?: React.JSXElementConstructor<unknown>;
+  header?: React.JSXElementConstructor<unknown>;
+  title?: React.JSXElementConstructor<unknown>;
+  main?: React.JSXElementConstructor<unknown>;
+};
+
+// Add round-specific component overrides here
+const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
+  string,
+  RoundSpecificComponentManifest
+> = {
+  shadow_diamond: {},
+  stakeout: {},
+  illegal_search: {},
+  paper_trail: {},
+  background_check: {},
+  the_dead_thief: {},
+  outlands: {},
+};
+
 // URL parameters
 export type PuzzleParams = {
   puzzleSlug: string;
@@ -117,6 +138,13 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   // If this puzzle is not unlocked, 404.  Ideally we'd do this check as soon as we get the API
   // result, but devmode wants to render an unlock/info page even when the puzzle is locked.
+  const puzzleState = req.teamState.puzzles[slug];
+  if (!puzzleState) {
+    return undefined;
+  }
+
+  // If this puzzle is not unlocked, 404.  Ideally we'd do this check as soon as we get the API
+  // result, but devmode wants to render an unlock/info page even when the puzzle is locked.
   if (result.body.locked !== "unlocked") {
     return undefined;
   }
@@ -133,18 +161,26 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   ];
   const title = puzzle.title;
 
+  // Use the components for the relevant round.
+  const roundSpecificManifest =
+    ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round];
+  const PuzzleWrapperComponent =
+    roundSpecificManifest?.wrapper ?? PuzzleWrapper;
+  const PuzzleHeaderComponent = roundSpecificManifest?.header ?? PuzzleHeader;
+  const PuzzleTitleComponent = roundSpecificManifest?.title ?? PuzzleTitle;
+  const PuzzleMainComponent = roundSpecificManifest?.title ?? PuzzleMain;
   const node = (
     <>
-      <PuzzleWrapper>
-        <PuzzleHeader>
-          <PuzzleTitle>{title}</PuzzleTitle>
+      <PuzzleWrapperComponent>
+        <PuzzleHeaderComponent>
+          <PuzzleTitleComponent>{title}</PuzzleTitleComponent>
           {/* TODO: add guess form, history, errata, etc. */}
           {guessFrag}
-        </PuzzleHeader>
-        <PuzzleMain id="puzzle-content" className="puzzle-content">
+        </PuzzleHeaderComponent>
+        <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
           <ContentComponent />
-        </PuzzleMain>
-      </PuzzleWrapper>
+        </PuzzleMainComponent>
+      </PuzzleWrapperComponent>
     </>
   );
 
