@@ -1,12 +1,19 @@
+def protocol_return(u) =
+%ifversion >= 2.3
+    u
+%else
+    [u]
+%endif
+end
 PIPER_VOICES = environment.get("PIPER_VOICES")
 if PIPER_VOICES != "" then
     def piper_protocol(~rlog=_,~maxtime=_,arg) =
-        [process.uri(extname="wav","echo #{process.quote(arg)} | piper -m $PIPER_VOICES/en/en_US/norman/medium/en_US-norman-medium.onnx -f $(output)")]
+        protocol_return(process.uri(extname="wav","echo #{process.quote(arg)} | piper -m $PIPER_VOICES/en/en_US/norman/medium/en_US-norman-medium.onnx -f $(output)"))
     end
     protocol.add("speak",piper_protocol,doc="Generate speech from text")
 else
     # Use the built-in say: protocol if piper is unavailable
-    protocol.add("speak",fun (~rlog=_,~maxtime=_,arg) -> ["say:#{arg}"])
+    protocol.add("speak",fun (~rlog=_,~maxtime=_,arg) -> protocol_return("say:#{arg}"))
 end
 
 # Fade out when skip() is called
