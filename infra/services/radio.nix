@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, radio-media, ... }:
 {
   config = {
     services.mediamtx = {
@@ -21,6 +21,18 @@
         paths.music = {
           runOnInit = ''
             ${lib.getExe pkgs.ffmpeg} -re -stream_loop -1 -i ${./../../radioman/spy-suite.mp3} -vn -c:a libopus -ar 48000 -b:a 128k -packet_loss 1 -fec true -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+          '';
+          runOnInitRestart = true;
+        };
+        paths.ads = {
+          runOnInit = ''
+            ${lib.getExe pkgs.ffmpeg} -re -stream_loop -1 -i ${"${radio-media}/quixotic-shoe/ads.mp3"} -vn -c:a libopus -ar 48000 -b:a 128k -packet_loss 1 -fec true -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+          '';
+          runOnInitRestart = true;
+        };
+        paths.weather = {
+          runOnInit = ''
+            env MUSIC_DIR=${radio-media}/music/ BREAK_DIR=${radio-media}/icy-box/ OUTPUT_URL=rtsp://localhost:$RTSP_PORT/$MTX_PATH ${lib.getExe pkgs.liquidsoap} ${../../radioman/station-break-test.liq}
           '';
           runOnInitRestart = true;
         };

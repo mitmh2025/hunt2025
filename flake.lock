@@ -254,12 +254,29 @@
         "type": "github"
       }
     },
+    "radio-media": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1728150076,
+        "narHash": "sha256-nTn8h2UsA/U0r8IgBkdfB5TynAFaK9wXFzDTHFB4jhs=",
+        "ref": "refs/heads/main",
+        "rev": "1f4253dbc684a631e6b0ce9fc0a273d441cf8ae8",
+        "revCount": 3,
+        "type": "git",
+        "url": "ssh://git@github.com/mitmh2025/radio-media"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/mitmh2025/radio-media"
+      }
+    },
     "root": {
       "inputs": {
         "authentik": "authentik",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
+        "radio-media": "radio-media",
         "sops-nix": "sops-nix",
         "terranix": "terranix"
       }

@@ -17,9 +17,11 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
+    radio-media.url = "git+ssh://git@github.com/mitmh2025/radio-media";
+    radio-media.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, terranix, authentik, sops-nix, ... }:
+  outputs = { self, nixpkgs, flake-utils, terranix, authentik, sops-nix, radio-media, ... }:
     let
       findModules = dir:
         builtins.concatLists (builtins.attrValues (builtins.mapAttrs
@@ -137,7 +139,7 @@
         ] (name: nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit authentik;
+            inherit authentik radio-media;
           };
           modules = (builtins.attrValues self.nixosModules) ++ [
             {
