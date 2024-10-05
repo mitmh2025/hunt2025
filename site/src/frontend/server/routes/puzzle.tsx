@@ -11,6 +11,7 @@ import {
 } from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
+import { type Entrypoint } from "../assets";
 
 const SHOW_SOLUTIONS = true as boolean;
 
@@ -19,6 +20,7 @@ type RoundSpecificComponentManifest = {
   header?: React.JSXElementConstructor<unknown>;
   title?: React.JSXElementConstructor<unknown>;
   main?: React.JSXElementConstructor<unknown>;
+  entrypoint?: Entrypoint;
 };
 
 // Add round-specific component overrides here
@@ -155,20 +157,26 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   // Select content component.
   const content = puzzle.content;
   const ContentComponent = content.component;
-  const entrypoints = [
-    "puzzle" as const,
-    ...(content.entrypoint ? [content.entrypoint] : []),
-  ];
   const title = puzzle.title;
 
   // Use the components for the relevant round.
   const roundSpecificManifest =
     ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round];
+
+  const entrypoints = [
+    "puzzle" as const,
+    ...(roundSpecificManifest?.entrypoint
+      ? [roundSpecificManifest.entrypoint]
+      : []),
+    ...(content.entrypoint ? [content.entrypoint] : []),
+  ];
+
   const PuzzleWrapperComponent =
     roundSpecificManifest?.wrapper ?? PuzzleWrapper;
   const PuzzleHeaderComponent = roundSpecificManifest?.header ?? PuzzleHeader;
   const PuzzleTitleComponent = roundSpecificManifest?.title ?? PuzzleTitle;
   const PuzzleMainComponent = roundSpecificManifest?.title ?? PuzzleMain;
+
   const node = (
     <>
       <PuzzleWrapperComponent>
@@ -300,7 +308,19 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   // TODO: look up round-specific solution page layout if applicable.
   const content = puzzle.solution;
   const SolutionComponent = content.component;
-  const entrypoints = content.entrypoint ? [content.entrypoint] : [];
+
+  // Use the entrypoint for pages in the relevant round.
+  const puzzleState = req.teamState.puzzles[slug];
+  const roundSpecificManifest = puzzleState
+    ? ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round]
+    : undefined;
+  const entrypoints = [
+    ...(content.entrypoint ? [content.entrypoint] : []),
+    ...(roundSpecificManifest?.entrypoint
+      ? [roundSpecificManifest.entrypoint]
+      : []),
+  ];
+
   const title = puzzle.title;
   const authors = formatList(puzzle.authors);
   const editors = formatList(puzzle.editors);
