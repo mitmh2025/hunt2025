@@ -11,6 +11,11 @@ import {
 } from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
+import {
+  BGCheckWrapper,
+  BGCheckMain,
+  BGCheckHeader,
+} from "../../components/BGCheckPuzzleLayout";
 import { type Entrypoint } from "../assets";
 
 const SHOW_SOLUTIONS = true as boolean;
@@ -32,7 +37,11 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   stakeout: {},
   illegal_search: {},
   paper_trail: {},
-  background_check: {},
+  background_check: {
+    main: BGCheckMain,
+    header: BGCheckHeader,
+    wrapper: BGCheckWrapper,
+  },
   the_dead_thief: {},
   outlands: {},
 };
@@ -175,7 +184,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     roundSpecificManifest?.wrapper ?? PuzzleWrapper;
   const PuzzleHeaderComponent = roundSpecificManifest?.header ?? PuzzleHeader;
   const PuzzleTitleComponent = roundSpecificManifest?.title ?? PuzzleTitle;
-  const PuzzleMainComponent = roundSpecificManifest?.title ?? PuzzleMain;
+  const PuzzleMainComponent = roundSpecificManifest?.main ?? PuzzleMain;
 
   const node = (
     <>

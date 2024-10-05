@@ -36,7 +36,7 @@ export const TextInput = styled.input`
     font-family: var(--body-font);
     color: var(--black);
     font-size: 1rem;
-    margin: 0.25rem;
+    margin: 0.5rem;
     background: var(--gray-000);
 
     &:focus {
