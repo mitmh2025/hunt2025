@@ -31,6 +31,7 @@ export type DevtoolsRound = {
 };
 
 export type DevtoolsState = {
+  epoch: number;
   teamId: number;
   teamName: string;
   currency: number;
@@ -63,6 +64,7 @@ function devtoolsPuzzleForSlot(
 export function devtoolsState(teamState: TeamState) {
   if (process.env.NODE_ENV === "development") {
     return {
+      epoch: teamState.epoch,
       teamId: teamState.teamId,
       teamName: teamState.teamName,
       currency: teamState.currency,

@@ -15,13 +15,15 @@ import { type Entrypoint } from "../assets";
 
 const SHOW_SOLUTIONS = true as boolean;
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- I'm not clever enough to name the types for this, but we're not bothering with props so they shouldn't matter */
 type RoundSpecificComponentManifest = {
-  wrapper?: React.JSXElementConstructor<unknown>;
-  header?: React.JSXElementConstructor<unknown>;
-  title?: React.JSXElementConstructor<unknown>;
-  main?: React.JSXElementConstructor<unknown>;
+  wrapper?: React.ComponentType<any>;
+  header?: React.ComponentType<any>;
+  title?: React.ComponentType<any>;
+  main?: React.ComponentType<any>;
   entrypoint?: Entrypoint;
 };
+/* eslint-enable @typescript-eslint/no-explicit-any -- End of round-specific component manifest exceptions */
 
 // Add round-specific component overrides here
 const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<

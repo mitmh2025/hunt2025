@@ -54,6 +54,7 @@ const RoundStateSchema = z.object({
 });
 
 export const TeamStateSchema = z.object({
+  epoch: z.number(), // The largest value of `id` of the activity_log entries which were processed to produce this TeamState
   teamId: z.number(),
   teamName: z.string(),
   currency: z.number(),

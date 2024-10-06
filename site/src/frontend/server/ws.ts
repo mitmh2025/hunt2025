@@ -273,25 +273,29 @@ class ConnHandler {
   }
 
   updateTeamState(teamState: TeamState) {
-    // Save the new team state.
-    this.lastTeamState = teamState;
-    // for each sub in subs:
-    this.subs.forEach((sub, subId) => {
-      if (isTeamStateSubscription(sub)) {
-        // compute the new resulting value
-        const newValue = sub.computeFromTeamState(teamState);
+    // Ensure we discard updates that do not increase the epoch, so we never backslide, even if the
+    // backend is giving us stale results, or if pubsub gets events out-of-order.
+    if (this.lastTeamState.epoch < teamState.epoch) {
+      // Save the new team state.
+      this.lastTeamState = teamState;
+      // for each sub in subs:
+      this.subs.forEach((sub, subId) => {
+        if (isTeamStateSubscription(sub)) {
+          // compute the new resulting value
+          const newValue = sub.computeFromTeamState(teamState);
 
-        // if the result differs, generate an update message for that sub
-        const newValueJSON = JSON.stringify(newValue);
-        const oldValueJSON = JSON.stringify(sub.cachedValue);
-        if (newValueJSON !== oldValueJSON) {
-          // save the new cached value
-          sub.cachedValue = newValue;
-          // send the update message
-          this.send({ subId, type: "update", value: newValue });
+          // if the result differs, generate an update message for that sub
+          const newValueJSON = JSON.stringify(newValue);
+          const oldValueJSON = JSON.stringify(sub.cachedValue);
+          if (newValueJSON !== oldValueJSON) {
+            // save the new cached value
+            sub.cachedValue = newValue;
+            // send the update message
+            this.send({ subId, type: "update", value: newValue });
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   appendActivityLogEntry(subId: string, entry: ActivityLogEntry) {

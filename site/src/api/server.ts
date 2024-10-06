@@ -200,6 +200,7 @@ export function getRouter({
       ),
     );
     return {
+      epoch: data.epoch,
       teamId: team_id,
       teamName: data.team_name,
       rounds,

@@ -40,6 +40,7 @@ export function fixInternalData(
 }
 
 export type TeamStateIntermediate = {
+  epoch: number; // The largest value of `id` that was processed/relevant
   rounds_unlocked: Set<string>;
   puzzles_unlockable: Set<string>;
   puzzles_unlocked: Set<string>;
@@ -59,6 +60,10 @@ export function teamStateReducer(
   entry: ActivityLogEntry,
 ) {
   acc.available_currency += entry.currency_delta;
+  // Update the max known epoch if this entry is newer
+  if (entry.id > acc.epoch) {
+    acc.epoch = entry.id;
+  }
   switch (entry.type) {
     case "currency_adjusted":
       break;
@@ -112,6 +117,7 @@ export function reducerDeriveTeamState(
   teamActivityLogEntries: ActivityLogEntry[],
 ) {
   const initialState: TeamStateIntermediate = {
+    epoch: -1,
     rounds_unlocked: new Set(),
     puzzles_unlockable: new Set(),
     puzzles_unlocked: new Set(),
@@ -146,6 +152,7 @@ export function reducerDeriveTeamState(
   Object.assign(interactions, intermediate.interactions);
 
   return {
+    epoch: intermediate.epoch,
     team_name: teamName,
     available_currency: intermediate.available_currency,
     unlocked_rounds: derivedState.unlocked_rounds,

@@ -244,7 +244,7 @@ const DevPane = ({ state }: { state: DevtoolsState | undefined }) => {
       <h2 style={{ margin: 0 }}>Devtools</h2>
       <h3 style={{ margin: 0 }}>
         {state.teamName} (team {state.teamId}) - {state.currency} unlock
-        currency
+        currency - epoch {state.epoch}
       </h3>
       <RoundsSection rounds={state.rounds} />
       <h3 style={{ margin: 0, borderTop: "1px solid #888" }}>Actions</h3>
