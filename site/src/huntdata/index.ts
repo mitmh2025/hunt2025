@@ -155,7 +155,7 @@ const HUNT: Hunt = {
 
         {
           // This is a brief in-person interaction which is expected to happen
-          // after teams solve the Shadow Diamond super but before they go on the
+          // after teams solve the Missing Diamond super but before they go on the
           // funaround.
           id: "meet_billie",
           unlock_if: [{ slot_solved: "sdm05" }],

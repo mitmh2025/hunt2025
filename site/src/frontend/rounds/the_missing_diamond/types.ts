@@ -1,8 +1,8 @@
-export type ShadowDiamondItem = {
+export type MissingDiamondItem = {
   title: string;
   slug: string;
 };
 
-export type ShadowDiamondState = {
-  items: ShadowDiamondItem[];
+export type MissingDiamondState = {
+  items: MissingDiamondItem[];
 };

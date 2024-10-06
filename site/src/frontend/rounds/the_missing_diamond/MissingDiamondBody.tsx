@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
 import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
-import { type ShadowDiamondState } from "./types";
+import { type MissingDiamondState } from "./types";
 
 const MissingDiamondBody = ({
   state,
   teamState,
 }: {
-  state: ShadowDiamondState;
+  state: MissingDiamondState;
   teamState: TeamState;
 }) => {
   const items = (

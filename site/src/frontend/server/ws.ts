@@ -25,8 +25,8 @@ import {
   rugState,
 } from "../rounds/illegal_search";
 import { paperTrailState } from "../rounds/paper_trail";
-import { shadowDiamondState } from "../rounds/the_missing_diamond";
 import { stakeoutState } from "../rounds/stakeout";
+import { missingDiamondState } from "../rounds/the_missing_diamond";
 import {
   type DatasetTailer,
   newActivityLogTailer,
@@ -73,7 +73,7 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   },
   the_missing_diamond: {
     type: "team_state",
-    callback: shadowDiamondState,
+    callback: missingDiamondState,
   },
   stakeout: {
     type: "team_state",

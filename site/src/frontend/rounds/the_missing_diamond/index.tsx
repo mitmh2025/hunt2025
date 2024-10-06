@@ -1,8 +1,8 @@
 import React from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
-import ShadowDiamondBody from "./ShadowDiamondBody";
-import { type ShadowDiamondState, type ShadowDiamondItem } from "./types";
+import MissingDiamondBody from "./MissingDiamondBody";
+import { type MissingDiamondState, type MissingDiamondItem } from "./types";
 
 const SLOTS = [
   "sdm01",
@@ -49,7 +49,7 @@ function lookupSlug(slot: string, teamState: TeamState): string | undefined {
 function itemForSlot(
   slot: string,
   teamState: TeamState,
-): ShadowDiamondItem | [] {
+): MissingDiamondItem | [] {
   const slug = lookupSlug(slot, teamState);
   if (!slug) return [];
 
@@ -67,22 +67,22 @@ function itemForSlot(
   };
 }
 
-export function shadowDiamondState(teamState: TeamState): ShadowDiamondState {
+export function missingDiamondState(teamState: TeamState): MissingDiamondState {
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
   return { items };
 }
 
-const ShadowDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
-  const state = shadowDiamondState(teamState);
-  const inlineScript = `window.initialShadowDiamondState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)}`;
+const MissingDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
+  const state = missingDiamondState(teamState);
+  const inlineScript = `window.initialMissingDiamondState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)}`;
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="shadow-diamond-root">
-        <ShadowDiamondBody state={state} teamState={teamState} />
+      <div id="missing-diamond-root">
+        <MissingDiamondBody state={state} teamState={teamState} />
       </div>
     </>
   );
 };
 
-export default ShadowDiamondRoundPage;
+export default MissingDiamondRoundPage;

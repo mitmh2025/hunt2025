@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type TeamState } from "../../../../lib/api/client";
 import globalDatasetManager from "../../client/DatasetManager";
-import ShadowDiamondBody from "./ShadowDiamondBody";
-import { type ShadowDiamondState } from "./types";
+import MissingDiamondBody from "./MissingDiamondBody";
+import { type MissingDiamondState } from "./types";
 
-const ShadowDiamondManager = ({
+const MissingDiamondManager = ({
   initialState,
   initialTeamState,
 }: {
-  initialState: ShadowDiamondState;
+  initialState: MissingDiamondState;
   initialTeamState: TeamState;
 }) => {
-  const [state, setState] = useState<ShadowDiamondState>(initialState);
+  const [state, setState] = useState<MissingDiamondState>(initialState);
   const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const ShadowDiamondManager = ({
       "the_missing_diamond",
       undefined,
       (value: object) => {
-        setState(value as ShadowDiamondState);
+        setState(value as MissingDiamondState);
       },
     );
     return stop;
@@ -36,22 +36,22 @@ const ShadowDiamondManager = ({
     return stop;
   }, []);
 
-  return <ShadowDiamondBody state={state} teamState={teamState} />;
+  return <MissingDiamondBody state={state} teamState={teamState} />;
 };
 
-const elem = document.getElementById("shadow-diamond-root");
+const elem = document.getElementById("missing-diamond-root");
 if (elem) {
   const state = (
-    window as unknown as { initialShadowDiamondState: ShadowDiamondState }
-  ).initialShadowDiamondState;
+    window as unknown as { initialMissingDiamondState: MissingDiamondState }
+  ).initialMissingDiamondState;
   const teamState = (window as unknown as { initialTeamState: TeamState })
     .initialTeamState;
   hydrateRoot(
     elem,
-    <ShadowDiamondManager initialState={state} initialTeamState={teamState} />,
+    <MissingDiamondManager initialState={state} initialTeamState={teamState} />,
   );
 } else {
   console.error(
-    "Could not mount ShadowDiamondManager because #shadow-diamond-root was nowhere to be found",
+    "Could not mount MissingDiamondManager because #missing-diamond-root was nowhere to be found",
   );
 }

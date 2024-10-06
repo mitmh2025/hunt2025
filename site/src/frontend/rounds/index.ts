@@ -4,8 +4,8 @@ import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
 import IllegalSearchRoundPage from "./illegal_search";
 import PapertrailRoundPage from "./paper_trail";
-import MissingDiamondRoundPage from "./the_missing_diamond";
 import StakeoutRoundPage from "./stakeout";
+import MissingDiamondRoundPage from "./the_missing_diamond";
 import MurderRoundPage from "./the_murder";
 import VaultRoundPage from "./the_vault";
 
