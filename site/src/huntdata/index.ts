@@ -6,110 +6,110 @@ import { type Hunt, type PuzzleSlot } from "./types";
 const HUNT: Hunt = {
   rounds: [
     {
-      slug: "shadow_diamond", // mounted at root
-      title: "The Shadow Diamond",
+      slug: "the_missing_diamond", // mounted at root
+      title: "The Missing Diamond",
       puzzles: [
         // slots (28 feeders, 4 metas, 1 super)
         // TODO: determine if we should start with 8-10 puzzles unlocked & no
         // unlock currency, or with nothing unlocked, a few puzzles
         // unlockable, and some amount of starting currency (to teach people
         // how to use the mechanism from the get-go).
-        { id: "sdp01", unlocked_if: [] }, // unlocked by default
-        { id: "sdp02", unlocked_if: [] },
-        { id: "sdp03", unlocked_if: [] },
-        { id: "sdp04", unlocked_if: [] },
-        { id: "sdp05", unlocked_if: [] },
-        { id: "sdp06", unlocked_if: [] },
-        { id: "sdp07", unlocked_if: [] },
-        { id: "sdp08", unlocked_if: [] },
-        { id: "sdp09", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
-        { id: "sdp10", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
-        { id: "sdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
-        { id: "sdp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
-        { id: "sdp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
-        { id: "sdp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        { id: "sdp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
-        { id: "sdp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
-        { id: "sdp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
-        { id: "sdp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
-        { id: "sdp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
-        { id: "sdp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
-        { id: "sdp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
-        { id: "sdp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
-        { id: "sdp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
-        { id: "sdp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
-        { id: "sdp25", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
-        { id: "sdp26", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
-        { id: "sdp27", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
-        { id: "sdp28", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
+        { id: "mdp01", unlocked_if: [] }, // unlocked by default
+        { id: "mdp02", unlocked_if: [] },
+        { id: "mdp03", unlocked_if: [] },
+        { id: "mdp04", unlocked_if: [] },
+        { id: "mdp05", unlocked_if: [] },
+        { id: "mdp06", unlocked_if: [] },
+        { id: "mdp07", unlocked_if: [] },
+        { id: "mdp08", unlocked_if: [] },
+        { id: "mdp09", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
+        { id: "mdp10", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
+        { id: "mdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
+        { id: "mdp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "mdp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "mdp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "mdp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+        { id: "mdp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "mdp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+        { id: "mdp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+        { id: "mdp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+        { id: "mdp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+        { id: "mdp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+        { id: "mdp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+        { id: "mdp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+        { id: "mdp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+        { id: "mdp25", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
+        { id: "mdp26", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
+        { id: "mdp27", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
+        { id: "mdp28", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
         {
           // Boardwalk (meta)
-          id: "sdm01",
+          id: "mdm01",
           slug: "the_boardwalk",
           is_meta: true,
           unlocked_if: {
             puzzles_unlocked: 5,
             slots: [
-              "sdp01",
-              "sdp05",
-              "sdp09",
-              "sdp13",
-              "sdp17",
-              "sdp21",
-              "sdp25",
+              "mdp01",
+              "mdp05",
+              "mdp09",
+              "mdp13",
+              "mdp17",
+              "mdp21",
+              "mdp25",
             ],
           },
         },
         {
           // Jewelry Store (meta)
-          id: "sdm02",
+          id: "mdm02",
           slug: "the_jewelry_store",
           is_meta: true,
           unlocked_if: {
             puzzles_unlocked: 5,
             slots: [
-              "sdp02",
-              "sdp06",
-              "sdp10",
-              "sdp14",
-              "sdp18",
-              "sdp22",
-              "sdp26",
+              "mdp02",
+              "mdp06",
+              "mdp10",
+              "mdp14",
+              "mdp18",
+              "mdp22",
+              "mdp26",
             ],
           },
         },
         {
           // Casino (meta)
-          id: "sdm03",
+          id: "mdm03",
           slug: "the_casino",
           is_meta: true,
           unlocked_if: {
             puzzles_unlocked: 5,
             slots: [
-              "sdp03",
-              "sdp07",
-              "sdp11",
-              "sdp15",
-              "sdp19",
-              "sdp23",
-              "sdp27",
+              "mdp03",
+              "mdp07",
+              "mdp11",
+              "mdp15",
+              "mdp19",
+              "mdp23",
+              "mdp27",
             ],
           },
         },
         {
           // Art Gallery (meta)
-          id: "sdm04",
+          id: "mdm04",
           is_meta: true,
           unlocked_if: {
             puzzles_unlocked: 5,
             slots: [
-              "sdp04",
-              "sdp08",
-              "sdp12",
-              "sdp16",
-              "sdp20",
-              "sdp24",
-              "sdp28",
+              "mdp04",
+              "mdp08",
+              "mdp12",
+              "mdp16",
+              "mdp20",
+              "mdp24",
+              "mdp28",
             ],
           },
         },
@@ -121,7 +121,7 @@ const HUNT: Hunt = {
           // four dialogue-tree interactions are completed.  This also potentially gives us the
           // duration of the final dialogue tree interaction to gather any relevant actors for the
           // kickoff of the funaround.
-          id: "sdm05",
+          id: "mdm05",
           is_meta: true,
           unlocked_if: [
             { interaction_completed: "interview_at_the_boardwalk" },
@@ -138,27 +138,27 @@ const HUNT: Hunt = {
         // solving the corresponding metapuzzle.
         {
           id: "interview_at_the_boardwalk",
-          unlock_if: [{ slot_solved: "sdm01" }],
+          unlock_if: [{ slot_solved: "mdm01" }],
         },
         {
           id: "interview_at_the_jewelry_store",
-          unlock_if: [{ slot_solved: "sdm02" }],
+          unlock_if: [{ slot_solved: "mdm02" }],
         },
         {
           id: "interview_at_the_casino",
-          unlock_if: [{ slot_solved: "sdm03" }],
+          unlock_if: [{ slot_solved: "mdm03" }],
         },
         {
           id: "interview_at_the_art_gallery",
-          unlock_if: [{ slot_solved: "sdm04" }],
+          unlock_if: [{ slot_solved: "mdm04" }],
         },
 
         {
           // This is a brief in-person interaction which is expected to happen
-          // after teams solve the Shadow Diamond super but before they go on the
+          // after teams solve the Missing Diamond super but before they go on the
           // funaround.
           id: "meet_billie",
-          unlock_if: [{ slot_solved: "sdm05" }],
+          unlock_if: [{ slot_solved: "mdm05" }],
         },
         {
           // This is a longer in-person interaction which is expected to happen
@@ -238,7 +238,7 @@ const HUNT: Hunt = {
         },
       ],
       unlock_if: [
-        { slot_solved: "sdm01" },
+        { slot_solved: "mdm01" },
         { interaction_completed: "interview_at_the_boardwalk" },
       ],
     },
@@ -305,7 +305,7 @@ const HUNT: Hunt = {
         },
       ],
       unlock_if: [
-        { slot_solved: "sdm02" },
+        { slot_solved: "mdm02" },
         { interaction_completed: "interview_at_the_jewelry_store" },
       ],
     },
@@ -348,7 +348,7 @@ const HUNT: Hunt = {
         },
       ],
       unlock_if: [
-        { slot_solved: "sdm03" },
+        { slot_solved: "mdm03" },
         { interaction_completed: "interview_at_the_casino" },
       ],
     },
@@ -428,46 +428,46 @@ const HUNT: Hunt = {
         },
       ],
       unlock_if: [
-        { slot_solved: "sdm04" },
+        { slot_solved: "mdm04" },
         { interaction_completed: "interview_at_the_art_gallery" },
       ],
     },
     {
-      slug: "the_dead_thief",
-      title: "The Dead Thief",
+      slug: "the_murder",
+      title: "The Murder",
       puzzles: [
         // 24 feeders + 1 meta
-        { id: "dtp01", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
-        { id: "dtp02", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
-        { id: "dtp03", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
-        { id: "dtp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
-        { id: "dtp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
-        { id: "dtp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
-        { id: "dtp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
-        { id: "dtp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
-        { id: "dtp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
-        { id: "dtp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
-        { id: "dtp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
-        { id: "dtp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
-        { id: "dtp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
-        { id: "dtp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        { id: "dtp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
-        { id: "dtp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
-        { id: "dtp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
-        { id: "dtp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
-        { id: "dtp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
-        { id: "dtp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
-        { id: "dtp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
-        { id: "dtp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
-        { id: "dtp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
-        { id: "dtp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
-        { id: "dtm01", unlocked_if: { puzzles_unlocked: 16 } }, // TODO: figure out when this should actually release
+        { id: "tmp01", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+        { id: "tmp02", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+        { id: "tmp03", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+        { id: "tmp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+        { id: "tmp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+        { id: "tmp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+        { id: "tmp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+        { id: "tmp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+        { id: "tmp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+        { id: "tmp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+        { id: "tmp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+        { id: "tmp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+        { id: "tmp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+        { id: "tmp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+        { id: "tmp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+        { id: "tmp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+        { id: "tmp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+        { id: "tmp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+        { id: "tmp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+        { id: "tmp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+        { id: "tmp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+        { id: "tmp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+        { id: "tmp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+        { id: "tmp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+        { id: "tmm01", unlocked_if: { puzzles_unlocked: 16 } }, // TODO: figure out when this should actually release
       ],
       interactions: [
         {
           id: "unmask_the_killer",
           unlock_if: [
-            { slot_solved: "dtm01" }, // Dead Thief supermeta
+            { slot_solved: "tmm01" }, // The Murder supermeta
           ],
         },
       ],
@@ -477,14 +477,14 @@ const HUNT: Hunt = {
       ],
     },
     {
-      slug: "the_real_diamond",
-      title: "The Real Diamond",
+      slug: "the_vault",
+      title: "The Vault",
       puzzles: [
         // TODO: single piece of endgame?
       ],
       interactions: [
         {
-          id: "find_the_diamond",
+          id: "the_vault",
           unlock_if: [
             { interaction_completed: "meet_katrina" },
             { interaction_completed: "meet_gladys" },

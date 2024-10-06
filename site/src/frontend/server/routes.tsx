@@ -295,7 +295,7 @@ export async function getUiRouter({
         next: NextFunction,
       ) => {
         // Root page should be shadow diamond round page
-        req.params.roundSlug = "shadow_diamond";
+        req.params.roundSlug = "the_missing_diamond";
         await renderApp(roundHandler, req as Request<RoundParams>, res, next);
       },
     ),

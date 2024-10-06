@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
 import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
-import { type ShadowDiamondState } from "./types";
+import { type MissingDiamondState } from "./types";
 
-const ShadowDiamondBody = ({
+const MissingDiamondBody = ({
   state,
   teamState,
 }: {
-  state: ShadowDiamondState;
+  state: MissingDiamondState;
   teamState: TeamState;
 }) => {
   const items = (
@@ -30,10 +30,10 @@ const ShadowDiamondBody = ({
   );
   return (
     <Fragment key="shadow-diamond">
-      <h1>Shadow Diamond investigation</h1>
+      <h1>The Missing Diamond</h1>
       {items}
     </Fragment>
   );
 };
 
-export default ShadowDiamondBody;
+export default MissingDiamondBody;

@@ -218,7 +218,7 @@ export default function createConfigs(_env, argv) {
         import: "./src/client.tsx",
         layer: "main",
       },
-      shadow_diamond: "./src/client/shadow_diamond.tsx",
+      the_missing_diamond: "./src/client/the_missing_diamond.tsx",
     },
     target: "web",
     output: {

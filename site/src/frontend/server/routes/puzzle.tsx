@@ -30,12 +30,12 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   string,
   RoundSpecificComponentManifest
 > = {
-  shadow_diamond: {},
+  the_missing_diamond: {},
   stakeout: {},
   illegal_search: {},
   paper_trail: {},
   background_check: {},
-  the_dead_thief: {},
+  the_murder: {},
   outlands: {},
 };
 
