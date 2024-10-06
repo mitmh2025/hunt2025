@@ -12,10 +12,10 @@ import {
 import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
 import {
-  BGCheckWrapper,
-  BGCheckMain,
-  BGCheckHeader,
-} from "../../components/BGCheckPuzzleLayout";
+  BackgroundCheckWrapper,
+  BackgroundCheckMain,
+  BackgroundCheckHeader,
+} from "../../components/BackgroundCheckPuzzleLayout";
 import { type Entrypoint } from "../assets";
 
 const SHOW_SOLUTIONS = true as boolean;
@@ -40,9 +40,9 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   illegal_search: {},
   paper_trail: {},
   background_check: {
-    main: BGCheckMain,
-    header: BGCheckHeader,
-    wrapper: BGCheckWrapper,
+    main: BackgroundCheckMain,
+    header: BackgroundCheckHeader,
+    wrapper: BackgroundCheckWrapper,
   },
   the_murder: {},
   outlands: {},

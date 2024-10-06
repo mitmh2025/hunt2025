@@ -3,6 +3,7 @@ import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import BackgroundCheckBody from "./BackgroundCheckBody";
 import { type BackgroundCheckItem, type BackgroundCheckState } from "./types";
+import { Background } from "./Layout";
 
 const SLOTS = [
   "bgm01",
@@ -65,9 +66,9 @@ const BackgroundCheckRoundPage = ({ teamState }: { teamState: TeamState }) => {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="background-check-root">
+      <Background id="background-check-root">
         <BackgroundCheckBody state={state} teamState={teamState} />
-      </div>
+      </Background>
     </>
   );
 };

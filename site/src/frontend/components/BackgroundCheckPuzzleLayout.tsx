@@ -1,23 +1,27 @@
 import { styled } from "styled-components";
 import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
 
-export const BGCheckWrapper = styled(PuzzleWrapper)`
-  background: #251214;
-  color: #251214;
+export const BgColor = "#251214";
+export const FridgeColor = "#a4b9b9";
+export const MagnetColor = "#db5f00";
+
+export const BackgroundCheckWrapper = styled(PuzzleWrapper)`
+  background: ${BgColor};
+  color: ${BgColor};
 
   a {
-    color: #db5f00;
-    text-decoration: underline dotted #db5f00;
+    color: ${MagnetColor};
+    text-decoration: underline dotted ${MagnetColor};
 
     &:hover {
-      color: rgb(229, 108, 15);
-      text-decoration-color: rgb(229, 108, 15);
+      color: #e56c0f;
+      text-decoration-color: #e56c0f;
     }
   }
 `;
 
-export const BGCheckHeader = styled(PuzzleHeader)`
-  background-color: #a4b9b9;
+export const BackgroundCheckHeader = styled(PuzzleHeader)`
+  background-color: ${FridgeColor};
   font-family: "Marcellus", "Perpetua", "Times New Roman", "Times", serif;
 
   h1 {
@@ -74,7 +78,7 @@ export const BGCheckHeader = styled(PuzzleHeader)`
   }
 `;
 
-export const BGCheckMain = styled(PuzzleMain)`
+export const BackgroundCheckMain = styled(PuzzleMain)`
   background-color: #cdd6d5;
   font-family: "Times New Roman", "Times", "Garamond", serif;
 `;

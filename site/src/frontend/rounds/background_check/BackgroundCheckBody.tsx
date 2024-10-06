@@ -1,7 +1,8 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { type BackgroundCheckState } from "./types";
+import { Fridge } from "./Layout";
 
 const BackgroundCheckBody = ({
   state,
@@ -30,10 +31,10 @@ const BackgroundCheckBody = ({
     </ul>
   );
   return (
-    <Fragment key="background-check">
+    <Fridge key="background-check">
       <h1>The Background Check</h1>
       {items}
-    </Fragment>
+    </Fridge>
   );
 };
 
