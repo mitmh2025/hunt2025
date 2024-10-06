@@ -17,7 +17,7 @@ const ShadowDiamondManager = ({
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(
-      "shadow_diamond",
+      "the_missing_diamond",
       undefined,
       (value: object) => {
         setState(value as ShadowDiamondState);

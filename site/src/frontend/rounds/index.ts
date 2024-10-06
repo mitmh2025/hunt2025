@@ -4,10 +4,10 @@ import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
 import IllegalSearchRoundPage from "./illegal_search";
 import PapertrailRoundPage from "./paper_trail";
-import ShadowDiamondRoundPage from "./shadow_diamond";
+import MissingDiamondRoundPage from "./the_missing_diamond";
 import StakeoutRoundPage from "./stakeout";
-import DeadThiefRoundPage from "./the_dead_thief";
-import RealDiamondRoundPage from "./the_real_diamond";
+import MurderRoundPage from "./the_murder";
+import VaultRoundPage from "./the_vault";
 
 // This file is intended to include non-structural data that is only relevant
 // to the frontend concerning rounds.
@@ -20,9 +20,9 @@ type RoundDefinition = {
 };
 
 export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
-  shadow_diamond: {
-    component: ShadowDiamondRoundPage,
-    entrypoint: "shadow_diamond",
+  the_missing_diamond: {
+    component: MissingDiamondRoundPage,
+    entrypoint: "the_missing_diamond",
   },
   stakeout: {
     component: StakeoutRoundPage,
@@ -40,10 +40,10 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
     component: BackgroundCheckRoundPage,
     entrypoint: "background_check",
   },
-  the_dead_thief: {
-    component: DeadThiefRoundPage,
+  the_murder: {
+    component: MurderRoundPage,
   },
-  the_real_diamond: {
-    component: RealDiamondRoundPage,
+  the_vault: {
+    component: VaultRoundPage,
   },
 };

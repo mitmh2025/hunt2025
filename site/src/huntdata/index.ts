@@ -6,8 +6,8 @@ import { type Hunt, type PuzzleSlot } from "./types";
 const HUNT: Hunt = {
   rounds: [
     {
-      slug: "shadow_diamond", // mounted at root
-      title: "The Shadow Diamond",
+      slug: "the_missing_diamond", // mounted at root
+      title: "The Missing Diamond",
       puzzles: [
         // slots (28 feeders, 4 metas, 1 super)
         // TODO: determine if we should start with 8-10 puzzles unlocked & no
@@ -433,13 +433,13 @@ const HUNT: Hunt = {
       ],
     },
     {
-      slug: "the_dead_thief",
-      title: "The Dead Thief",
+      slug: "the_murder",
+      title: "The Murder",
       puzzles: [
         // 24 feeders + 1 meta
-        { id: "dtp01", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
-        { id: "dtp02", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
-        { id: "dtp03", unlockable_if: { round_unlocked: "the_dead_thief" }, unlock_cost: 1 },
+        { id: "dtp01", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+        { id: "dtp02", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+        { id: "dtp03", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
         { id: "dtp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
         { id: "dtp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
         { id: "dtp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
@@ -477,8 +477,8 @@ const HUNT: Hunt = {
       ],
     },
     {
-      slug: "the_real_diamond",
-      title: "The Real Diamond",
+      slug: "the_vault",
+      title: "The Vault",
       puzzles: [
         // TODO: single piece of endgame?
       ],

@@ -41,7 +41,7 @@ const SLOTS = [
 ];
 
 function lookupSlug(slot: string, teamState: TeamState): string | undefined {
-  const round = teamState.rounds.shadow_diamond;
+  const round = teamState.rounds.the_missing_diamond;
   const slotObj = round ? round.slots[slot] : undefined;
   return slotObj?.slug;
 }

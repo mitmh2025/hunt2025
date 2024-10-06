@@ -1,9 +1,9 @@
 import React from "react";
 
-const RealDiamondRoundPage = () => {
+const VaultRoundPage = () => {
   return (
     <div>
-      <h1>The Real Diamond round page</h1>
+      <h1>The Vault round page</h1>
       <p>
         Unclear if this is a single puzzle, or a round, or something else; need
         Puzzles and Experience team input.
@@ -13,4 +13,4 @@ const RealDiamondRoundPage = () => {
   );
 };
 
-export default RealDiamondRoundPage;
+export default VaultRoundPage;

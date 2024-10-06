@@ -12,7 +12,7 @@ export const DatasetSchema = z.enum([
   "navbar",
   "team_state",
   "paper_trail",
-  "shadow_diamond",
+  "the_missing_diamond",
   "stakeout",
   "illegal_search_painting2",
   "illegal_search_rug",
