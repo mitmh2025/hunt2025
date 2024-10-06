@@ -10,5 +10,5 @@ test("can log in", async ({ page }) => {
   await expect(page.locator("h1")).toHaveText("The Missing Diamond");
 
   // Puzzle stubs are not shown outside of dev mode, but the tests run in prod mode,
-  //await expect(page.getByText("Stub puzzle for slot sdp01")).toBeVisible();
+  //await expect(page.getByText("Stub puzzle for slot mdp01")).toBeVisible();
 });
