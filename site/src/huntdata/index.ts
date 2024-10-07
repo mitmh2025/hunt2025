@@ -264,20 +264,20 @@ const HUNT: Hunt = {
         { id: "ptp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
         { id: "ptp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
         { id: "ptp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
-        { id: "ptm01", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_1" }, // meta 1
-        { id: "ptm02", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_2" }, // meta 2
-        { id: "ptm03", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_3" }, // meta 3
-        { id: "ptm04", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_4" }, // meta 4
-        { id: "ptm05", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_5" }, // meta 5
-        { id: "ptm06", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_6" }, // meta 6
-        { id: "ptm07", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_7" }, // meta 7
-        { id: "ptm08", is_meta: true, unlocked_if: { round_unlocked: "paper_trail" }, slug: "shell_corporation_8" }, // meta 8
+        // Drop all 8 metas together once ~70% of the feeders are solved.
+        { id: "ptm01", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_1" }, // meta 1
+        { id: "ptm02", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_2" }, // meta 2
+        { id: "ptm03", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_3" }, // meta 3
+        { id: "ptm04", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_4" }, // meta 4
+        { id: "ptm05", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_5" }, // meta 5
+        { id: "ptm06", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_6" }, // meta 6
+        { id: "ptm07", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_7" }, // meta 7
+        { id: "ptm08", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_8" }, // meta 8
         {
           id: "ptm09", // supermeta
           is_meta: true,
           unlocked_if: {
-            // As written, this unlocks when all 8 metas are solved.
-            // TODO: determine if we want to release the super on some other condition?
+            // Unlock only once all 8 shell corporation metas are solved.
             puzzles_solved: 8,
             slots: [
               "ptm01",
