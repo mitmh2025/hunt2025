@@ -1,8 +1,8 @@
+import { styled } from "styled-components";
 import {
   BgColor,
   FridgeColor,
 } from "../../components/BackgroundCheckPuzzleLayout";
-import { styled } from "styled-components";
 
 export const Background = styled.div`
   background-color: ${BgColor};

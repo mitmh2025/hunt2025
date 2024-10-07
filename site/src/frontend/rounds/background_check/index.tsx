@@ -2,8 +2,8 @@ import React from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import BackgroundCheckBody from "./BackgroundCheckBody";
-import { type BackgroundCheckItem, type BackgroundCheckState } from "./types";
 import { Background } from "./Layout";
+import { type BackgroundCheckItem, type BackgroundCheckState } from "./types";
 
 const SLOTS = [
   "bgm01",

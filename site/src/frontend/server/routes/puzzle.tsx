@@ -1,6 +1,11 @@
 import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
+import {
+  BackgroundCheckWrapper,
+  BackgroundCheckMain,
+  BackgroundCheckHeader,
+} from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import {
@@ -11,11 +16,6 @@ import {
 } from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
 import { PUZZLES } from "../../puzzles";
-import {
-  BackgroundCheckWrapper,
-  BackgroundCheckMain,
-  BackgroundCheckHeader,
-} from "../../components/BackgroundCheckPuzzleLayout";
 import { type Entrypoint } from "../assets";
 
 const SHOW_SOLUTIONS = true as boolean;

@@ -1,8 +1,8 @@
 import React from "react";
 import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
-import { type BackgroundCheckState } from "./types";
 import { Fridge } from "./Layout";
+import { type BackgroundCheckState } from "./types";
 
 const BackgroundCheckBody = ({
   state,
