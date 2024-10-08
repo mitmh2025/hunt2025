@@ -488,7 +488,9 @@ export function getRouter({
               const unlocked = await trx<
                 ActivityLogEntry & { type: "puzzle_unlocked" }
               >("activity_log")
-                .where("team_id", team_id)
+                .where((builder) => {
+                  void builder.where("team_id", team_id).orWhereNull("team_id");
+                })
                 .where("type", "puzzle_unlocked")
                 .where("slug", slug)
                 .select("slug")
@@ -511,11 +513,11 @@ export function getRouter({
               const last_reset_time_record = await trx<ActivityLogEntry>(
                 "activity_log",
               )
-                .where("type", "rate_limits_reset")
-                .where("slug", slug)
                 .where((builder) => {
                   void builder.where("team_id", team_id).orWhereNull("team_id");
                 })
+                .where("type", "rate_limits_reset")
+                .where("slug", slug)
                 .orderBy("id", "desc")
                 .select("timestamp")
                 .first();
@@ -790,7 +792,9 @@ export function getRouter({
               const team_id = parseInt(teamId, 10);
               // Check if already satisfied.
               const existing = await trx("activity_log")
-                .where("team_id", team_id)
+                .where((builder) => {
+                  void builder.where("team_id", team_id).orWhereNull("team_id");
+                })
                 .where("type", "gate_completed")
                 .where("slug", gateId)
                 .select("id")
@@ -838,7 +842,9 @@ export function getRouter({
               const deferredPublications = new DeferredPublications({});
               const team_id = parseInt(teamId, 10);
               const existing = await trx("activity_log")
-                .where("team_id", team_id)
+                .where((builder) => {
+                  void builder.where("team_id", team_id).orWhereNull("team_id");
+                })
                 .whereIn("type", [
                   "interaction_unlocked",
                   "interaction_started",
@@ -901,7 +907,9 @@ export function getRouter({
               const deferredPublications = new DeferredPublications({});
               const team_id = parseInt(teamId, 10);
               const existing = (await trx("activity_log")
-                .where("team_id", team_id)
+                .where((builder) => {
+                  void builder.where("team_id", team_id).orWhereNull("team_id");
+                })
                 .whereIn("type", [
                   "interaction_unlocked",
                   "interaction_started",
