@@ -41,7 +41,8 @@ export async function up(knex: Knex): Promise<void> {
       table.jsonb("data");
       table.jsonb("internal_data");
 
-      table.index(["team_id", "type"]);
+      table.index(["team_id", "type", "slug"]);
+      table.index(["team_id", "slug", "type"]);
     });
 }
 
