@@ -183,6 +183,7 @@ in {
       contents = with pkgs; [
         dockerTools.binSh
         dockerTools.caCertificates
+        dockerTools.fakeNss
         git
         nix
         nix-fast-build
@@ -252,6 +253,7 @@ in {
     build.step = [{
       name = "${repoUrl}/nix-cache";
       script = ''
+        set
         write-deploy-keys
         nix-fast-build -f .#apps.x86_64-linux.apply.program --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
       '';
