@@ -181,13 +181,6 @@ in {
       tag = "latest";
       maxLayers = 120;
       contents = with pkgs; [
-        dockerTools.binSh
-        dockerTools.caCertificates
-        dockerTools.fakeNss
-        git
-        nix
-        nix-fast-build
-        openssh
         (pkgs.writeTextDir "etc/nix/nix.conf" ''
           extra-experimental-features = nix-command flakes
           substituters = ${s3Url} https://cache.nixos.org/
@@ -214,16 +207,19 @@ in {
             ''
           ) deployKeys)
         ))
-        (pkgs.writeShellApplication {
-          name = "write-deploy-keys";
-          text = ''
-            mkdir -p /keys
-            for var in ''${!DEPLOY_KEY_*}; do
-              repo=''${var#DEPLOY_KEY_}
-              echo "''${!var}" > "/keys/''${repo}_deploy_key"
-            done
-          '';
-        })
+        (pkgs.writeTextDir "etc/ssh/ssh_known_hosts" ''
+          github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+          github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+          github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+        '')
+        dockerTools.binSh
+        dockerTools.caCertificates
+        dockerTools.fakeNss
+        git
+        nix
+        nix-fast-build
+        openssh
+        coreutils
       ];
       extraCommands = ''
         mkdir -p nix/var/nix/gcroots
@@ -252,15 +248,19 @@ in {
 
     build.step = [{
       name = "${repoUrl}/nix-cache";
-      script = ''
+      script = let
+        writeKey = i: repo: ''echo "$''${DEPLOY_KEY_${toString i}}" > "/keys/${repo}_deploy_key"'';
+        writeKeys = lib.concatImapStringsSep "\n" writeKey deployKeyNames;
+      in ''
         set
-        write-deploy-keys
+        mkdir -p /keys
+        ${writeKeys}
         nix-fast-build -f .#apps.x86_64-linux.apply.program --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
       '';
       secret_env = [
         "AWS_ACCESS_KEY_ID"
         "AWS_SECRET_ACCESS_KEY"
-      ] ++ (lib.map (repo: "DEPLOY_KEY_${repo}") deployKeyNames);
+      ] ++ (lib.imap (i: repo: "DEPLOY_KEY_${toString i}") deployKeyNames);
     }];
 
     build.available_secrets.secret_manager = [
@@ -272,8 +272,8 @@ in {
         env = "AWS_SECRET_ACCESS_KEY";
         version_name = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-secret.name";
       }
-    ] ++ (lib.map (repo: {
-      env = "DEPLOY_KEY_${repo}";
+    ] ++ (lib.imap (i: repo: {
+      env = "DEPLOY_KEY_${toString i}";
       version_name = lib.tfRef "google_secret_manager_secret_version.github_deploy_key[\"${repo}\"].id";
     }) deployKeyNames);
 
