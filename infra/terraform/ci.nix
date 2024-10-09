@@ -253,8 +253,11 @@ in {
         writeKeys = lib.concatImapStringsSep "\n" writeKey deployKeyNames;
       in ''
         set
-        mkdir -p /keys
-        ${writeKeys}
+        (
+          umask 0077
+          mkdir -p /keys
+          ${writeKeys}
+        )
         nix-fast-build -f .#apps.x86_64-linux.apply.program --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
       '';
       secret_env = [
