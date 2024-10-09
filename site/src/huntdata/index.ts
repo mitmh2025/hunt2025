@@ -17,7 +17,7 @@ const HUNT: Hunt = {
         { id: "mdp01", unlocked_if: [] }, // unlocked by default
         { id: "mdp02", unlocked_if: [] },
         { id: "mdp03", unlocked_if: [] },
-        { id: "mdp04", unlocked_if: [] },
+        { id: "mdp04", unlocked_if: [], slug: "downright_backwards" },
         { id: "mdp05", unlocked_if: [] },
         { id: "mdp06", unlocked_if: [] },
         { id: "mdp07", unlocked_if: [] },

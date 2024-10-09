@@ -1,4 +1,4 @@
-// import Boardwalk from './dental-shark';
+import DownrightBackwards from "./able-worm";
 import ShellCorporationFour from "./bountiful-maple";
 import TheBoardwalk from "./dental-shark";
 import Casino from "./fortunate-calf";
@@ -15,6 +15,7 @@ import type { PuzzleDefinition } from "./types";
 import ShellCorporationTwo from "./untrue-dice";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
+  downright_backwards: DownrightBackwards,
   an_exchange_of_vows: AnExchangeOfVows,
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
