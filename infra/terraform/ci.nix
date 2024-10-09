@@ -4,7 +4,53 @@ let
   registry = "${lib.tfRef "google_artifact_registry_repository.images.location"}-docker.pkg.dev";
   repoUrl = "${registry}/${lib.tfRef "google_artifact_registry_repository.images.project"}/${lib.tfRef "google_artifact_registry_repository.images.name"}";
   s3Url = "s3://${config.resource.google_storage_bucket.nix-cache.name}?endpoint=https://storage.googleapis.com";
+  deployKeys = {
+    radio-media = {};
+  };
+  deployKeyNames = builtins.attrNames deployKeys;
 in {
+  # Create a deploy key for GitHub repo access.
+
+  resource.tls_private_key.github_deploy_key = {
+    for_each = deployKeys;
+    algorithm = "ED25519";
+  };
+
+  resource.github_repository_deploy_key.gcp = {
+    for_each = deployKeys;
+    title = "GCP - ${lib.tfRef "data.google_project.this.project_id"}";
+    repository = lib.tfRef "each.key";
+    key = lib.tfRef "tls_private_key.github_deploy_key[each.key].public_key_openssh";
+    read_only = true;
+  };
+
+  resource.google_secret_manager_secret.github_deploy_key = {
+    for_each = deployKeys;
+    secret_id = "github-deploy-key-${lib.tfRef "each.key"}";
+    replication.auto = {};
+  };
+
+  resource.google_secret_manager_secret_version.github_deploy_key = {
+    for_each = deployKeys;
+    secret = lib.tfRef "google_secret_manager_secret.github_deploy_key[each.key].id";
+    secret_data = lib.tfRef "tls_private_key.github_deploy_key[each.key].private_key_pem";
+  };
+
+  data.google_iam_policy.github_deploy_key_secret.binding = [
+    {
+      role = "roles/secretmanager.secretAccessor";
+      members = [
+        (lib.tfRef "google_service_account.cloud-build.member")
+      ];
+    }
+  ];
+
+  resource.google_secret_manager_secret_iam_policy.github_deploy_key = {
+    for_each = deployKeys;
+    secret_id = lib.tfRef "google_secret_manager_secret.github_deploy_key[each.key].secret_id";
+    policy_data = lib.tfRef "data.google_iam_policy.github_deploy_key_secret.policy_data";
+  };
+
   # Create a bucket to cache Nix artifacts.
 
   resource.google_storage_bucket.nix-cache = {
@@ -101,6 +147,7 @@ in {
   };
 
   # Artifact Registry
+
   resource.google_artifact_registry_repository.images = {
     repository_id = "rb8tcjeo-images";
     location = "us"; # Free egress to us-*
@@ -139,12 +186,43 @@ in {
         git
         nix
         nix-fast-build
+        openssh
         (pkgs.writeTextDir "etc/nix/nix.conf" ''
           extra-experimental-features = nix-command flakes
           substituters = ${s3Url} https://cache.nixos.org/
           require-sigs = false
           build-users-group =
         '')
+        (pkgs.writeTextDir "etc/gitconfig" (lib.generators.toGitINI {
+          url = lib.mapAttrs' (
+            repo: args:
+            lib.nameValuePair
+              "ssh://git@github-${repo}/mitmh2025/${repo}"
+              {
+                insteadOf = "ssh://git@github.com/mitmh2025/${repo}";
+              }
+          ) deployKeys;
+        }))
+        (pkgs.writeTextDir "etc/ssh/ssh_config" (
+          lib.concatStringsSep "\n" (lib.mapAttrsToList (
+            repo: args:
+            ''
+              Host github-${repo}
+                Hostname github.com
+                IdentityFile /keys/${repo}_deploy_key
+            ''
+          ) deployKeys)
+        ))
+        (pkgs.writeShellApplication {
+          name = "write-deploy-keys";
+          text = ''
+            mkdir -p /keys
+            for var in ''${!DEPLOY_KEY_*}; do
+              repo=''${var#DEPLOY_KEY_}
+              echo "''${!var}" > "/keys/''${repo}_deploy_key"
+            done
+          '';
+        })
       ];
       extraCommands = ''
         mkdir -p nix/var/nix/gcroots
@@ -157,6 +235,7 @@ in {
   };
 
   # Cloud Build trigger
+
   resource.google_cloudbuild_trigger.nix-cache-trigger = {
     depends_on = [
       "skopeo2_copy.nix-cache-image"
@@ -173,12 +252,13 @@ in {
     build.step = [{
       name = "${repoUrl}/nix-cache";
       script = ''
+        write-deploy-keys
         nix-fast-build -f .#apps.x86_64-linux.apply.program --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
       '';
       secret_env = [
         "AWS_ACCESS_KEY_ID"
         "AWS_SECRET_ACCESS_KEY"
-      ];
+      ] ++ (lib.map (repo: "DEPLOY_KEY_${repo}") deployKeyNames);
     }];
 
     build.available_secrets.secret_manager = [
@@ -190,7 +270,10 @@ in {
         env = "AWS_SECRET_ACCESS_KEY";
         version_name = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-secret.name";
       }
-    ];
+    ] ++ (lib.map (repo: {
+      env = "DEPLOY_KEY_${repo}";
+      version_name = lib.tfRef "google_secret_manager_secret_version.github_deploy_key[\"${repo}\"].id";
+    }) deployKeyNames);
 
     build.logs_bucket = "gs://${lib.tfRef "google_storage_bucket.nix-cache.name"}/ci-logs";
 

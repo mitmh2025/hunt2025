@@ -7,6 +7,8 @@
     local.source = "registry.terraform.io/hashicorp/local";
     nix.source = "registry.terraform.io/krostar/nix";
     skopeo2.source = "registry.terraform.io/bsquare-corp/skopeo2";
+    tls.source = "registry.terraform.io/hashicorp/tls";
+    github.source = "registry.terraform.io/integrations/github";
   };
 
   provider.google = {
@@ -29,6 +31,10 @@
       profile = "mitmh2025-staging";
     }
   ];
+
+  provider.github = {
+    owner = "mitmh2025";
+  };
 
   imports = [
     ./base-image.nix

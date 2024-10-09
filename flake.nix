@@ -46,6 +46,8 @@
           aws
           google
           local
+          tls
+          github
           (mkProvider rec {
             owner = "krostar";
             repo = "terraform-provider-nix";
