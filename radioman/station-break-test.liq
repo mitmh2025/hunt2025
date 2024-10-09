@@ -8,17 +8,23 @@ background_music = replaygain(playlist(
     mode = "randomize", # Shuffle list every time it loops
 ))
 
-break_content = playlist(
-    id="break",
-    environment.get("BREAK_DIR"),
-    loop = true,
-    mode = "normal", # Play in order
-)
+final = background_music
 
-final = rotate([
-    background_music,
-    break_content,
-])
+break_dir = environment.get("BREAK_DIR")
+
+if break_dir != "" then
+    break_content = playlist(
+        id="break",
+        environment.get("BREAK_DIR"),
+        loop = true,
+        mode = "normal", # Play in order
+    )
+
+    final = rotate([
+        background_music,
+        break_content,
+    ])
+end
 
 output_url=environment.get("OUTPUT_URL")
 if output_url == "" then
