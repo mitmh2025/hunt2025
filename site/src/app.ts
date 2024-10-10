@@ -67,6 +67,7 @@ export default async function ({
   // Forward all other requests to the UI router, which we expect to
   // handle most user requests.
   const uiRouter = await getUiRouter({
+    hunt,
     apiUrl,
     frontendApiSecret,
     redisClient,

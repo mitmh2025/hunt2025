@@ -16,7 +16,9 @@ import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type RedisClient } from "../../app";
+import { type Hunt } from "../../huntdata/types";
 import Layout from "../components/Layout";
+import { PUZZLES } from "../puzzles";
 import {
   comboLockPostHandler,
   fuseboxPostHandler,
@@ -206,10 +208,12 @@ async function renderApp<Params extends ParamsDictionary>(
 }
 
 export async function getUiRouter({
+  hunt,
   apiUrl,
   frontendApiSecret,
   redisClient,
 }: {
+  hunt: Hunt;
   apiUrl: string;
   frontendApiSecret: string;
   redisClient?: RedisClient;
@@ -368,6 +372,24 @@ export async function getUiRouter({
       await renderApp(activityLogHandler, req, res, next);
     }),
   );
+
+  // Mount any puzzle-specific routes
+  hunt.rounds.forEach((round) => {
+    round.puzzles.forEach((puzzle) => {
+      const slug = puzzle.slug;
+      if (slug) {
+        const puzzleDefinition = PUZZLES[slug];
+        if (puzzleDefinition && "router" in puzzleDefinition) {
+          const puzzleRouter = puzzleDefinition.router;
+          if (puzzleRouter) {
+            const base = `/puzzles/${slug}`;
+            //console.log("Mounting handler at", base);
+            authRouter.use(base, puzzleRouter);
+          }
+        }
+      }
+    });
+  });
 
   router.use(unauthRouter);
   router.use(authRouter);

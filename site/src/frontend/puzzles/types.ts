@@ -1,4 +1,5 @@
 import type { FunctionComponent } from "react";
+import type { Router } from "websocket-express";
 // Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
 import type { Entrypoint } from "../server/assets";
 
@@ -81,4 +82,8 @@ export type PuzzleDefinition = {
   // In the future, we may add additional canned response features for e.g. accepting file uploads,
   // or coordinating times for visiting a particular room.
   canned_responses: CannedResponse[];
+
+  // If provided, an additional websocket-express Router that should be mounted at `/puzzles/<slug>/`
+  // to allow for additional puzzle-specific server behavior.
+  router?: Router;
 };
