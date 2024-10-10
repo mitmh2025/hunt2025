@@ -318,6 +318,7 @@ export default function createConfigs(_env, argv) {
       the_missing_diamond:
         "./src/frontend/rounds/the_missing_diamond/client.tsx",
       stakeout: "./src/frontend/rounds/stakeout/client.tsx",
+      puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
     },
     // Client code needs to reference the webworker bundle by URL.
     dependencies: ["worker"],

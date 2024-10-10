@@ -9,6 +9,7 @@ import AnExchangeOfVows from "./lanky-robot";
 import ShellCorporationSix from "./mild-octopus";
 import ShellCorporationFive from "./profitable-trunk";
 import TheJewelryStore from "./reliable-night";
+import FollowTheRules from "./right-palm";
 import TheShellGame from "./subdued-jet";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
@@ -20,6 +21,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
   the_jewelry_store: TheJewelryStore,
+
+  // Paper Trail
+  follow_the_rules: FollowTheRules,
   shell_corporation_1: ShellCorporationOne,
   shell_corporation_2: ShellCorporationTwo,
   shell_corporation_3: ShellCorporationThree,
