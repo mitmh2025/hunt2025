@@ -86,7 +86,7 @@
     is_ipv6_enabled = true;
     default_root_object = "index.html";
 
-    aliases = ["www.mitmh2025.com" "mitmh2025.com"];
+    aliases = ["www.mitmh2025.com"];
 
     default_cache_behavior = {
       allowed_methods  = ["GET" "HEAD" "OPTIONS"];
@@ -107,7 +107,64 @@
     viewer_certificate.ssl_support_method = "sni-only";
   };
 
+  # root -> www redirect
+
+  resource.aws_cloudfront_distribution.publicsite-apex = let
+    origin_id = lib.tfRef "aws_s3_bucket.publicsite.id";
+  in {
+    # Even though the origin is unused, AWS still requires an origin.
+    origin = {
+      domain_name = lib.tfRef "aws_s3_bucket.publicsite.bucket_regional_domain_name";
+      origin_access_control_id = lib.tfRef "aws_cloudfront_origin_access_control.publicsite.id";
+      inherit origin_id;
+    };
+    enabled = true;
+    is_ipv6_enabled = true;
+
+    aliases = ["mitmh2025.com"];
+
+    default_cache_behavior = {
+      allowed_methods  = ["GET" "HEAD" "OPTIONS"];
+      cached_methods   = ["GET" "HEAD"];
+      target_origin_id = origin_id;
+
+      cache_policy_id = lib.tfRef "aws_cloudfront_cache_policy.publicsite.id";
+      function_association = {
+        event_type = "viewer-request";
+        function_arn = lib.tfRef "aws_cloudfront_function.redirect-apex.arn";
+      };
+      viewer_protocol_policy = "allow-all";
+    };
+
+    price_class = "PriceClass_200";
+
+    restrictions.geo_restriction.restriction_type = "none";
+
+    tags.Environment = "production";
+
+    viewer_certificate.acm_certificate_arn = lib.tfRef "aws_acm_certificate_validation.www.certificate_arn";
+    viewer_certificate.ssl_support_method = "sni-only";
+  };
+
+  resource.aws_cloudfront_function.redirect-apex = {
+    name = "redirect-apex";
+    runtime = "cloudfront-js-2.0";
+    code = ''
+      function handler(event) {
+        var response = {
+          statusCode: 302,
+          statusDescription: 'Found',
+          headers: {
+            'location': { value: 'https://www.mitmh2025.com' + event.request.uri }
+          }
+        };
+        return response;
+      }
+    '';
+  };
+
   # SSL
+
   resource.aws_acm_certificate.www = let
     # N.B. We can't use `aws_route53_record.www.fqdn` here because the route53 record depends on cloudfront depends on this certificate.
     domain = lib.tfRef "data.aws_route53_zone.mitmh2025.name";
@@ -145,8 +202,8 @@
   route53.mitmh2025.rr.root = {
     name = lib.tfRef "data.aws_route53_zone.mitmh2025.name";
     type = "A";
-    alias.name = lib.tfRef "aws_cloudfront_distribution.publicsite.domain_name";
-    alias.zone_id = lib.tfRef "aws_cloudfront_distribution.publicsite.hosted_zone_id";
+    alias.name = lib.tfRef "aws_cloudfront_distribution.publicsite-apex.domain_name";
+    alias.zone_id = lib.tfRef "aws_cloudfront_distribution.publicsite-apex.hosted_zone_id";
     alias.evaluate_target_health = true;
   };
 }
