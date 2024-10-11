@@ -8,7 +8,7 @@ import globalDatasetManager from "./DatasetManager";
 const DevPaneContainer = styled.div`
   position: absolute;
   right: 10px;
-  top: 10px;
+  top: 58px;
   min-width: 200px;
   z-index: 2;
 `;
