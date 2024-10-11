@@ -137,6 +137,7 @@ import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition, SubpuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import MazeOfLies from "./unfit-tower";
+import Flatland from "./unhealthy-mint";
 import GardenAnecdotes from "./unimportant-lock";
 import TheMark from "./unique-australia";
 import AnArgument from "./unsung-bomb";
@@ -327,6 +328,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   papas_bookcase_blacklight: PapasBookcaseBlacklight,
 
   // The Background Check
+  _land: Flatland,
   celestial_rope: CelestialRope,
   deepfrost: Deepfrost,
   formula_won: FormulaWon,
