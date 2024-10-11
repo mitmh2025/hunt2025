@@ -113,6 +113,11 @@ const ActivityLogTable = styled.table`
   padding: 32px;
   border: 1px solid white;
   border-collapse: collapse;
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: var(--black);
+  }
   th,
   td {
     padding: 8px;
