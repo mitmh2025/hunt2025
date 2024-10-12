@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import path from "path";
 import url from "url";
 import rspack from "@rspack/core";
@@ -26,12 +27,13 @@ const ASSET_PATH = process.env.ASSET_PATH || "/";
 
 class OpusManifestPlugin {
   constructor(opts) {
-    if (!opts.fileName) {
+    if (!opts.fileName || !opts.staticOutputPath) {
       throw new Error(
-        "OpusManifestPlugin requires fileName be set in options to constructor",
+        "OpusManifestPlugin requires fileName and staticOutputPath be set in options to constructor",
       );
     }
     this.fileName = opts.fileName;
+    this.staticOutputPath = opts.staticOutputPath;
     this.emitCount = 0;
     this.moduleAssets = {};
     this.hooks = undefined;
@@ -94,7 +96,7 @@ class OpusManifestPlugin {
     }
   }
 
-  processAssetsHook({ compiler, compilation, manifestAssetId }) {
+  processAssetsHook({ compiler, compilation, outputPath }) {
     // All assets pulled in as modules are not actually available directly from
     // `compilation.chunks`, so we get at them via stats.
     const stats = compilation.getStats().toJson({
@@ -127,11 +129,39 @@ class OpusManifestPlugin {
     manifest = this.getCompilerHooks().beforeEmit.call(manifest);
 
     if (isLastEmit) {
-      // Actually emit the asset.
+      // Actually emit the asset.  This is done with two outputs:
+      // 1) a content-hashed output under the statics folder
+      // 2) a one-key JSON manifest at the path passed in by whoever configured the plugin
+
+      // Content-hashed asset
       const output = JSON.stringify(manifest, undefined, 2);
+      const hash = createHash("sha256");
+      hash.update(output);
+      const contentHash = hash.digest("hex");
+      const manifestFilename = `static/${contentHash}.json`;
+      const contentAddressedOutputPath = path.join(
+        outputPath,
+        manifestFilename,
+      );
+      console.log(contentAddressedOutputPath);
       compilation.emitAsset(
-        manifestAssetId,
+        contentAddressedOutputPath,
         new compiler.webpack.sources.RawSource(output),
+      );
+
+      // Specified-path asset
+      const fixedPathManifest = {
+        current_radio_manifest: `${ASSET_PATH}${manifestFilename}`,
+      };
+      const fixedManifestContents = JSON.stringify(
+        fixedPathManifest,
+        undefined,
+        2,
+      );
+      const fixedManifestAssetId = path.relative(outputPath, this.fileName);
+      compilation.emitAsset(
+        fixedManifestAssetId,
+        new compiler.webpack.sources.RawSource(fixedManifestContents),
       );
     }
 
@@ -143,14 +173,8 @@ class OpusManifestPlugin {
       name: "OpusManifestPlugin",
       stage: Infinity,
     };
-    const manifestFileName = path.resolve(
-      compiler.options.output?.path || "./",
-      this.fileName,
-    );
-    const manifestAssetId = path.relative(
-      compiler.options.output?.path || "./",
-      manifestFileName,
-    );
+
+    const outputPath = compiler.options.output?.path || "./";
 
     // Set up our before-run hook so we can track when we hit the final emit call
     compiler.hooks.run.tapAsync(hookOptions, this.beforeRunHook.bind(this));
@@ -160,7 +184,7 @@ class OpusManifestPlugin {
     // And then set up our asset-processing hook
     compiler.hooks.thisCompilation.tap(hookOptions, (compilation) => {
       compilation.hooks.processAssets.tap(hookOptions, () => {
-        this.processAssetsHook({ compiler, compilation, manifestAssetId });
+        this.processAssetsHook({ compiler, compilation, outputPath });
       });
     });
   }
@@ -289,6 +313,7 @@ export default function createConfigs(_env, argv) {
       }),
       new OpusManifestPlugin({
         fileName: path.join(outputManifestDirname, "radio-manifest.json"),
+        staticOutputPath: path.join(outputDirname, "static"),
       }),
     ],
     experiments: {
