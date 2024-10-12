@@ -14,5 +14,6 @@
       "@rspack/core/module"
     ]
   },
-  "exclude": ["./worker/**/*"]
+  "exclude": ["./worker/**/*"],
+  "noErrorTruncation": true
 }
