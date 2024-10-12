@@ -6,3 +6,5 @@ src/frontend/puzzles/fortunate-calf/solution.mdx
 dist
 # Ignore types from @mfng
 types/mfng/*.ts
+# Ignore qcow images
+*.qcow2
