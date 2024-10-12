@@ -1,5 +1,6 @@
 { hunt2025
 , playwright-driver
+, redis
 , mkShell
 }:
 
@@ -10,6 +11,10 @@ mkShell {
 
   nativeBuildInputs = [
     playwright-driver.browsers
+  ];
+
+  buildInputs = [
+    redis
   ];
 
   shellHook = ''

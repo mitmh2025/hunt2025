@@ -5,7 +5,6 @@
     ./base.nix
     ../services/postgres.nix
     ../services/redis.nix
-    ../services/radio.nix
   ];
   config = {
     system.stateVersion = "24.05";
