@@ -1,5 +1,7 @@
-import { type InternalActivityLogEntry } from "lib/api/frontend_contract";
-import { type RedisClient } from "src/app";
+import { ErrorReply } from "redis";
+import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
+import { type RedisClient } from "../app";
+import { parseInternalActivityLogEntry } from "./logic";
 
 // Summary of Redis streams:
 // stream global/activity_log - all activity log entries
@@ -59,8 +61,10 @@ export async function getActivityLog(redisClient: RedisClient, since?: number) {
   return {
     highWaterMark: getHighWaterMark(messages),
     entries: messages
-      .filter((m) => m.idNumber > (since ?? 0) && m.entry)
-      .map((m) => m.entry),
+      .filter((m) => m.idNumber > (since ?? 0))
+      .map((m) => m.entry)
+      .filter((m): m is InternalActivityLogEntry => !!m)
+      .map(parseInternalActivityLogEntry),
   };
 }
 
@@ -119,8 +123,10 @@ export async function getTeamActivityLog(
     highWaterMark: newHighWaterMark,
     entries: activityLogMessages
       .concat(newActivityLogMessages)
-      .filter((m) => m.idNumber > (since ?? 0) && m.entry)
-      .map((m) => m.entry),
+      .filter((m) => m.idNumber > (since ?? 0))
+      .map((m) => m.entry)
+      .filter((m): m is InternalActivityLogEntry => !!m)
+      .map(parseInternalActivityLogEntry),
   };
 }
 
@@ -136,9 +142,15 @@ export async function appendTeamActivityLog(
       message.id,
       message.message,
     );
-  } catch (err) {
-    // "The ID specified in XADD is equal or smaller than the target stream top item"
-    // ignore duplicate keys
-    // FIXME: check if the error is what we expect
+  } catch (e) {
+    // Ignore duplicate keys
+    if (
+      e instanceof ErrorReply &&
+      e.message ===
+        "ERR The ID specified in XADD is equal or smaller than the target stream top item"
+    ) {
+      return;
+    }
+    throw e;
   }
 }

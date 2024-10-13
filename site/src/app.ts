@@ -12,7 +12,7 @@ const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
 const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
-async function createRedisClient(redisUrl: string) {
+export async function createRedisClient(redisUrl: string) {
   const options = redisUrl.startsWith("unix://")
     ? { socket: { path: redisUrl.replace("unix://", "") } }
     : { url: redisUrl };

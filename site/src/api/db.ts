@@ -4,6 +4,7 @@ import {
   type ActivityLogEntry,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
+import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -80,6 +81,33 @@ export async function connect(environment: string) {
     });
   }
   return knex;
+}
+
+export async function retryOnAbort<T>(
+  knex: Knex.Knex,
+  fn: (trx: Knex.Knex.Transaction) => Promise<T>,
+): Promise<T> {
+  return await pRetry(
+    async () =>
+      await knex.transaction(fn, {
+        isolationLevel: "serializable",
+      }),
+    {
+      shouldRetry: (error) =>
+        "code" in error &&
+        // https://www.postgresql.org/docs/current/errcodes-appendix.html
+        (error.code === "40002" || // transaction_integrity_constraint_violation
+          error.code === "40001" || // serialization_failure
+          error.code === "40003" || // statement_completion_unknown
+          error.code === "40P01"), // deadlock_detected
+      onFailedAttempt: (err) => {
+        console.error("transaction failed:", err);
+      },
+      retries: 5,
+      minTimeout: 0,
+      factor: 1, // No need for exponential backoff
+    },
+  );
 }
 
 declare module "knex/types/tables" {
@@ -231,17 +259,26 @@ export async function getTeamState(
     .select("username")
     .first();
   if (!team) throw new Error(`No team found for team_id ${team_id}`);
-
-  const activity_log = await trx<ActivityLogEntry>("activity_log")
-    .where("team_id", team_id)
-    .orWhereNull("team_id")
-    .orderBy("id");
-
-  const fixedActivityLog = activity_log.map(cleanupActivityLogEntryFromDB);
   return {
     team_name: team.username,
-    activity_log: fixedActivityLog,
+    activity_log: await getTeamActivityLog(team_id, undefined, trx),
   };
+}
+
+export async function getTeamActivityLog(
+  team_id: number,
+  since: number | undefined,
+  trx: Knex.Knex.Transaction,
+) {
+  let query = trx<ActivityLogEntry>("activity_log")
+    .where("team_id", team_id)
+    .orWhereNull("team_id");
+  if (since !== undefined) {
+    query = query.andWhere("id", ">", since);
+  }
+  const activity_log = await query.orderBy("id");
+
+  return activity_log.map(cleanupActivityLogEntryFromDB);
 }
 
 export async function appendActivityLog(
