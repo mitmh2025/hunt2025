@@ -14,7 +14,11 @@ import {
 } from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
-import { type GuessStatus, type ActivityLogEntry, TeamPuzzleGuess } from "knex/types/tables";
+import {
+  type GuessStatus,
+  type ActivityLogEntry,
+  TeamPuzzleGuess,
+} from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
@@ -226,7 +230,7 @@ export function getRouter({
   const formatPuzzleState = (
     slug: string,
     activity_log: ActivityLogEntry[],
-    { answer, guesses }: { answer?: string, guesses: TeamPuzzleGuess[] },
+    { answer, guesses }: { answer?: string; guesses: TeamPuzzleGuess[] },
   ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
@@ -288,7 +292,7 @@ export function getRouter({
     // TODO: Fetch relevant puzzle state from the DB -- puzzle status, answer, guesses, is the round it belongs to unlocked
     const { answer, guesses } = await dbGetPuzzleState(team_id, slug, trx);
     return formatPuzzleState(slug, activity_log, { answer, guesses });
-  }
+  };
 
   const refreshTeamState = async (
     hunt: Hunt,
@@ -705,29 +709,31 @@ export function getRouter({
 
               if (
                 data.unlockable_puzzles.has(slug) &&
+                !data.unlocked_puzzles.has(slug) &&
                 unlock_cost &&
                 data.available_currency >= unlock_cost
               ) {
                 // Unlock puzzle.
-                await mutator.appendActivityLog(
-                  {
-                    team_id,
-                    type: "puzzle_unlocked",
-                    slug,
-                    currency_delta: -unlock_cost,
-                  },
-                );
+                await mutator.appendActivityLog({
+                  team_id,
+                  type: "puzzle_unlocked",
+                  slug,
+                  currency_delta: -unlock_cost,
+                });
                 return true;
               }
               return false;
             },
           );
           if (result) {
-            const { answer, guesses } = await knex.transaction(trx => dbGetPuzzleState(team_id, slug, trx), { readOnly: true });
+            const { answer, guesses } = await knex.transaction(
+              (trx) => dbGetPuzzleState(team_id, slug, trx),
+              { readOnly: true },
+            );
             return {
               status: 200 as const,
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                * We know the puzzle state exists because we checked the db above. */
+               * We know the puzzle state exists because we checked the db above. */
               body: formatPuzzleState(slug, activityLog, { answer, guesses })!,
             };
           }

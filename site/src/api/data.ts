@@ -1,8 +1,20 @@
 import type Knex from "knex";
-import { type TeamPuzzleGuess, type ActivityLogEntry, InsertActivityLogEntry } from "knex/types/tables";
+import {
+  type TeamPuzzleGuess,
+  type ActivityLogEntry,
+  InsertActivityLogEntry,
+} from "knex/types/tables";
 import { type RedisClient } from "../app";
-import { appendActivityLog as dbAppendActivityLog, getTeamActivityLog as dbGetTeamActivityLog, retryOnAbort } from "./db";
-import { getTeamActivityLog as redisGetTeamActivityLog } from "./redis";
+import {
+  appendActivityLog as dbAppendActivityLog,
+  getActivityLog as dbGetActivityLog,
+  retryOnAbort,
+} from "./db";
+import {
+  appendActivityLog,
+  getGlobalHighWaterMark,
+  getTeamActivityLog as redisGetTeamActivityLog,
+} from "./redis";
 import { type Hunt } from "../huntdata/types";
 import { reducerDeriveTeamState } from "./logic";
 
@@ -10,7 +22,7 @@ export class Mutator {
   private _trx: Knex.Knex.Transaction;
   private _activityLog: ActivityLogEntry[];
   private _guessLog?: TeamPuzzleGuess[];
-  private _affectedTeams: Set<number | undefined>;
+  private _affectedTeams: Set<number> | undefined;
 
   constructor(trx: Knex.Knex.Transaction, activityLog: ActivityLogEntry[]) {
     this._trx = trx;
@@ -19,27 +31,46 @@ export class Mutator {
   }
 
   async appendActivityLog(entry: InsertActivityLogEntry) {
-    const inserted_entry = await dbAppendActivityLog(entry, this._trx)
+    const inserted_entry = await dbAppendActivityLog(entry, this._trx);
     this._activityLog = (this._activityLog ?? []).concat([inserted_entry]);
-    this._affectedTeams.add(inserted_entry.team_id);
+    if (inserted_entry.team_id === undefined) {
+      this._affectedTeams = undefined; // We don't know yet
+    } else if (this._affectedTeams !== undefined) {
+      this._affectedTeams.add(inserted_entry.team_id);
+    }
     return inserted_entry;
   }
 
   // Refresh the state for every team that was affected.
   // We assume that this.activityLog contains the full activity log for all affected teams.
   async recalculateState(hunt: Hunt) {
-    if (this._affectedTeams.has(undefined)) {
-      this._affectedTeams = new Set(this.activityLog.map(e => e.team_id));
-    }
-    for (const team_id of this._affectedTeams) {
+    for (const team_id of this.affectedTeams) {
       if (team_id != undefined) {
-        await recalculateTeamState(hunt, team_id, this.activityLog.filter(e => e.team_id == team_id || e.team_id === undefined), this);
+        await recalculateTeamState(
+          hunt,
+          team_id,
+          this.activityLog.filter(
+            (e) => e.team_id == team_id || e.team_id === undefined,
+          ),
+          this,
+        );
       }
     }
   }
 
   get activityLog() {
     return this._activityLog;
+  }
+
+  get affectedTeams() {
+    if (this._affectedTeams === undefined) {
+      return new Set(
+        this.activityLog
+          .map((e) => e.team_id)
+          .filter((t) => typeof t == "number"),
+      );
+    }
+    return this._affectedTeams;
   }
 }
 export async function recalculateTeamState(
@@ -177,10 +208,10 @@ export async function executeMutation<T>(
       console.error("failed to query redis:", err);
     }
   }
-  const { result, activityLog } = await retryOnAbort(
+  const { result, activityLog, affectedTeams } = await retryOnAbort(
     knex,
     async function (trx: Knex.Knex.Transaction) {
-      const new_log = await dbGetTeamActivityLog(
+      const new_log = await dbGetActivityLog(
         team_id,
         cached_log.highWaterMark,
         trx,
@@ -192,9 +223,29 @@ export async function executeMutation<T>(
       return {
         result,
         activityLog: mutator.activityLog,
+        affectedTeams: mutator.affectedTeams,
       };
     },
   );
-  // FIXME: Trigger an activity log refresh.
+  if (redisClient && affectedTeams) {
+    // TODO: Do this in the background?
+    await refreshActivityLog(redisClient, knex);
+    // FIXME: Regenerate and publish modified team state
+  }
   return { result, activityLog };
+}
+
+async function refreshActivityLog(redisClient: RedisClient, knex: Knex.Knex) {
+  // Read the latest activity log entry we already have in Redis.
+  const latest = await getGlobalHighWaterMark(redisClient);
+  // Find any newer entries in the DB
+  const entries = await knex.transaction(
+    (trx) => dbGetActivityLog(undefined, latest, trx),
+    { readOnly: true },
+  );
+  // Publish them!
+  // TODO: Use Redis pipelining to make this faster
+  for (const e of entries) {
+    await appendActivityLog(redisClient, e);
+  }
 }

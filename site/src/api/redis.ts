@@ -2,6 +2,7 @@ import { ErrorReply } from "redis";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { type RedisClient } from "../app";
 import { parseInternalActivityLogEntry } from "./logic";
+import { ActivityLogEntry } from "knex/types/tables";
 
 // Summary of Redis streams:
 // stream global/activity_log - all activity log entries
@@ -49,6 +50,18 @@ async function readStream<T>(
   });
   const messages = (results ?? [])[0]?.messages ?? [];
   return messages.map(parseStreamMessage<T>);
+}
+
+export async function getGlobalHighWaterMark(redisClient: RedisClient) {
+  const messages = await redisClient.xRevRange(
+    "global/activity_log",
+    "+",
+    "-",
+    { COUNT: 1 },
+  );
+  return getHighWaterMark(
+    messages.map(parseStreamMessage<InternalActivityLogEntry>),
+  );
 }
 
 // Read the global activity log, starting from the beginning or from AFTER since.
@@ -130,18 +143,13 @@ export async function getTeamActivityLog(
   };
 }
 
-// Append an entry to a team's activity log.
-export async function appendTeamActivityLog(
+async function appendStream(
   redisClient: RedisClient,
-  teamId: number,
+  key: string,
   message: { id: string; message: Record<string, string> },
 ) {
   try {
-    await redisClient.xAdd(
-      `activity_log/${teamId}`,
-      message.id,
-      message.message,
-    );
+    await redisClient.xAdd(key, message.id, message.message);
   } catch (e) {
     // Ignore duplicate keys
     if (
@@ -153,4 +161,27 @@ export async function appendTeamActivityLog(
     }
     throw e;
   }
+}
+
+// Append an entry to a team's activity log.
+async function appendTeamActivityLog(
+  redisClient: RedisClient,
+  teamId: number,
+  message: { id: string; message: Record<string, string> },
+) {
+  await appendStream(redisClient, `activity_log/${teamId}`, message);
+}
+
+// Append an activity log entry to the global log.
+// For use only by data.refreshActivityLog.
+export async function appendActivityLog(
+  redisClient: RedisClient,
+  entry: ActivityLogEntry,
+) {
+  await appendStream(redisClient, `global/activity_log`, {
+    id: `0-${entry.id}`,
+    message: {
+      entry: JSON.stringify(entry),
+    },
+  });
 }

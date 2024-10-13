@@ -261,18 +261,19 @@ export async function getTeamState(
   if (!team) throw new Error(`No team found for team_id ${team_id}`);
   return {
     team_name: team.username,
-    activity_log: await getTeamActivityLog(team_id, undefined, trx),
+    activity_log: await getActivityLog(team_id, undefined, trx),
   };
 }
 
-export async function getTeamActivityLog(
-  team_id: number,
+export async function getActivityLog(
+  team_id: number | undefined,
   since: number | undefined,
   trx: Knex.Knex.Transaction,
 ) {
-  let query = trx<ActivityLogEntry>("activity_log")
-    .where("team_id", team_id)
-    .orWhereNull("team_id");
+  let query = trx<ActivityLogEntry>("activity_log");
+  if (team_id !== undefined) {
+    query = query.where("team_id", team_id).orWhereNull("team_id");
+  }
   if (since !== undefined) {
     query = query.andWhere("id", ">", since);
   }
