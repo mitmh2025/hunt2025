@@ -314,9 +314,6 @@ const HUNT: Hunt = {
       title: "Background Check",
       puzzles: [
         // 14 feeders, 3 metas, 1 super
-        // TODO: figure out exactly when the metas/super should actually be
-        // released, since dropping the metas immediately would reveal story
-        // that the puzzle solves are supposed to reward solvers with
         { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
         { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
         { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
@@ -331,10 +328,11 @@ const HUNT: Hunt = {
         { id: "bgp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
         { id: "bgp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
         { id: "bgp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        { id: "bgm01", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 1
-        { id: "bgm02", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 2
-        { id: "bgm03", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // meta 3
-        { id: "bgm04", is_meta: true, unlocked_if: { round_unlocked: "background_check" } }, // supermeta
+        // Metas (and the super) release after 10 feeder solves, which is ~70% of the round.
+        { id: "bgm01", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 1
+        { id: "bgm02", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 2
+        { id: "bgm03", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 3
+        { id: "bgm04", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // supermeta
       ],
       interactions: [
         {
