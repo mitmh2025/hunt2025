@@ -1,4 +1,5 @@
 import DownrightBackwards from "./able-worm";
+import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import TheBoardwalk from "./dental-shark";
 import Casino from "./fortunate-calf";
@@ -37,4 +38,5 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // Illegal Search
   kotei_no_ango: KoteiNoAngo,
+  cross_spread: CrossSpread,
 };
