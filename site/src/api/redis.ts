@@ -1,8 +1,29 @@
-import { ErrorReply } from "redis";
+import { ErrorReply, createClient as redisCreateClient } from "redis";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
-import { type RedisClient } from "../app";
 import { parseInternalActivityLogEntry } from "./logic";
 import { ActivityLogEntry } from "knex/types/tables";
+
+export async function connect(redisUrl: string) {
+  const options = redisUrl.startsWith("unix://")
+    ? { socket: { path: redisUrl.replace("unix://", "") } }
+    : { url: redisUrl };
+  const client = redisCreateClient(options);
+  // We must set an error handler, or the whole process will get terminated if our connection to
+  // redis ever fails!
+  client.on("error", (err) => {
+    console.log("redis error", err);
+  });
+  await client.connect();
+  if (process.env.NODE_ENV === "development") {
+    // Wipe data every time we start in development, since the database might have regressed.
+    for await (const stream of client.scanIterator({ TYPE: "stream" })) {
+      await client.del(stream);
+    }
+  }
+  return client;
+}
+
+export type RedisClient = Awaited<ReturnType<typeof connect>>;
 
 // Summary of Redis streams:
 // stream global/activity_log - all activity log entries

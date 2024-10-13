@@ -4,13 +4,13 @@ import {
   type ActivityLogEntry,
   InsertActivityLogEntry,
 } from "knex/types/tables";
-import { type RedisClient } from "../app";
 import {
   appendActivityLog as dbAppendActivityLog,
   getActivityLog as dbGetActivityLog,
   retryOnAbort,
 } from "./db";
 import {
+  type RedisClient,
   appendActivityLog,
   getGlobalHighWaterMark,
   getTeamActivityLog as redisGetTeamActivityLog,
@@ -186,7 +186,6 @@ export async function executeMutation<T>(
   knex: Knex.Knex,
   fn: (
     trx: Knex.Knex.Transaction,
-    activity_log: ActivityLogEntry[],
     mutator: Mutator,
   ) => Promise<T>,
 ) {
@@ -218,7 +217,7 @@ export async function executeMutation<T>(
       );
       const combined_log = cached_log.entries.concat(new_log);
       const mutator = new Mutator(trx, combined_log);
-      const result = await fn(trx, combined_log, mutator);
+      const result = await fn(trx, mutator);
       await mutator.recalculateState(hunt);
       return {
         result,

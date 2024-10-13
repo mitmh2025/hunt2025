@@ -1,6 +1,6 @@
 import { type ActivityLogEntry, type TeamPuzzleGuess } from "knex/types/tables";
 import { type TeamState } from "../../../lib/api/client";
-import { type RedisClient } from "../../app";
+import { type RedisClient } from "../../api/redis";
 
 export class DeferredPublications {
   private activityLog?: ActivityLogEntry[];

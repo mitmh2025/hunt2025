@@ -15,7 +15,7 @@ import {
   parseInternalActivityLogEntry,
   formatActivityLogEntryForApi,
 } from "../../api/logic";
-import { type RedisClient } from "../../app";
+import { type RedisClient } from "../../api/redis";
 import { navBarState } from "../components/ContentWithNavBar";
 import { backgroundCheckState } from "../rounds/background_check";
 import {

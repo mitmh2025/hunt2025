@@ -4,7 +4,7 @@ import {
   type InternalActivityLogEntry,
 } from "../../../lib/api/frontend_contract";
 import { genId } from "../../../lib/id";
-import { type RedisClient } from "../../app";
+import { type RedisClient } from "../../api/redis";
 
 type Listener<T> = {
   id: string;

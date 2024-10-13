@@ -34,7 +34,7 @@ import {
 import { frontendContract } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
-import type { RedisClient } from "../app";
+import type { RedisClient } from "./redis";
 import { PUZZLES } from "../frontend/puzzles";
 import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
@@ -702,9 +702,9 @@ export function getRouter({
             team_id,
             redisClient,
             knex,
-            async function (_, activity_log, mutator) {
+            async function (_, mutator) {
               // Verify puzzle is currently unlockable.
-              const data = reducerDeriveTeamState(hunt, activity_log);
+              const data = reducerDeriveTeamState(hunt, mutator.activityLog);
               const unlock_cost = slot.unlock_cost;
 
               if (
