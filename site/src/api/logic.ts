@@ -112,7 +112,6 @@ export function teamStateReducer(
 }
 
 export function reducerDeriveTeamState(
-  teamName: string,
   hunt: Hunt,
   teamActivityLogEntries: ActivityLogEntry[],
 ) {
@@ -153,7 +152,6 @@ export function reducerDeriveTeamState(
 
   return {
     epoch: intermediate.epoch,
-    team_name: teamName,
     available_currency: intermediate.available_currency,
     unlocked_rounds: derivedState.unlocked_rounds,
     visible_puzzles: derivedState.visible_puzzles,

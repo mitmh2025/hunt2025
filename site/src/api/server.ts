@@ -14,7 +14,7 @@ import {
 } from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
-import { type GuessStatus, type ActivityLogEntry } from "knex/types/tables";
+import { type GuessStatus, type ActivityLogEntry, TeamPuzzleGuess } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
@@ -36,6 +36,7 @@ import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
 import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
+import { executeMutation } from "./data";
 import {
   getTeamState as dbGetTeamState,
   getPuzzleState as dbGetPuzzleState,
@@ -140,7 +141,7 @@ export function getRouter({
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
     const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    const data = reducerDeriveTeamState(team_name, hunt, activity_log);
+    const data = reducerDeriveTeamState(hunt, activity_log);
     //console.log(data);
     const rounds = Object.fromEntries(
       hunt.rounds
@@ -202,7 +203,7 @@ export function getRouter({
     return {
       epoch: data.epoch,
       teamId: team_id,
-      teamName: data.team_name,
+      teamName: team_name,
       rounds,
       currency: data.available_currency,
       puzzles: Object.fromEntries(
@@ -222,11 +223,11 @@ export function getRouter({
     };
   };
 
-  const getPuzzleState = async (
-    team_id: number,
+  const formatPuzzleState = (
     slug: string,
-    trx: Knex.Transaction,
-  ): Promise<PuzzleState | undefined> => {
+    activity_log: ActivityLogEntry[],
+    { answer, guesses }: { answer?: string, guesses: TeamPuzzleGuess[] },
+  ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
     const slotEntry = slugToSlotMap.get(slug);
@@ -239,8 +240,7 @@ export function getRouter({
 
     // TODO: in the fullness of time, we should materialize puzzle_unlockable in activity_log so we can do purely point loads
     //       and not have to derive team state here at all.
-    const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    const data = reducerDeriveTeamState(team_name, hunt, activity_log);
+    const data = reducerDeriveTeamState(hunt, activity_log);
     const round_unlocked = data.unlocked_rounds.has(round);
     // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "outlands" round.
     if (!round_unlocked) {
@@ -254,9 +254,6 @@ export function getRouter({
     ) {
       return undefined;
     }
-
-    // TODO: Fetch relevant puzzle state from the DB -- puzzle status, answer, guesses, is the round it belongs to unlocked
-    const { answer, guesses } = await dbGetPuzzleState(team_id, slug, trx);
 
     const locked: "locked" | "unlockable" | "unlocked" =
       data.unlocked_puzzles.has(slug)
@@ -281,6 +278,17 @@ export function getRouter({
     }
     return result;
   };
+
+  const getPuzzleState = async (
+    team_id: number,
+    slug: string,
+    trx: Knex.Transaction,
+  ): Promise<PuzzleState | undefined> => {
+    const { activity_log } = await dbGetTeamState(team_id, trx);
+    // TODO: Fetch relevant puzzle state from the DB -- puzzle status, answer, guesses, is the round it belongs to unlocked
+    const { answer, guesses } = await dbGetPuzzleState(team_id, slug, trx);
+    return formatPuzzleState(slug, activity_log, { answer, guesses });
+  }
 
   const refreshTeamState = async (
     hunt: Hunt,
@@ -685,66 +693,48 @@ export function getRouter({
               body: null,
             };
           }
-          // TODO: Make sure that we retry/wait for conflicts.
-          const [response, deferred] = await knex.transaction(
-            async function (trx) {
-              const deferredPublications = new DeferredPublications({});
+          const { result, activityLog } = await executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async function (_, activity_log, mutator) {
               // Verify puzzle is currently unlockable.
-              const { team_name, activity_log } = await dbGetTeamState(
-                team_id,
-                trx,
-              );
-              const data = reducerDeriveTeamState(
-                team_name,
-                hunt,
-                activity_log,
-              );
+              const data = reducerDeriveTeamState(hunt, activity_log);
               const unlock_cost = slot.unlock_cost;
+
               if (
                 data.unlockable_puzzles.has(slug) &&
                 unlock_cost &&
                 data.available_currency >= unlock_cost
               ) {
                 // Unlock puzzle.
-                const entry = await appendActivityLog(
+                await mutator.appendActivityLog(
                   {
                     team_id,
                     type: "puzzle_unlocked",
                     slug,
                     currency_delta: -unlock_cost,
                   },
-                  trx,
                 );
-                deferredPublications.addActivityLogEntries([entry]);
-                // Apply any downstream effects of unlocking the puzzle.
-                const [_, newWrites] = await refreshTeamState(
-                  hunt,
-                  team_id,
-                  trx,
-                );
-                // TODO: Invalidate caches
-                return [
-                  {
-                    status: 200 as const,
-                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                     * We know the puzzle state exists because we checked the db above. */
-                    body: (await getPuzzleState(team_id, slug, trx))!,
-                  },
-                  deferredPublications.concat(newWrites),
-                ];
+                return true;
               }
-              return [
-                {
-                  status: 404 as const,
-                  body: null,
-                },
-                deferredPublications,
-              ];
+              return false;
             },
-            { isolationLevel: "serializable" },
           );
-          await deferred.publish(redisClient);
-          return response;
+          if (result) {
+            const { answer, guesses } = await knex.transaction(trx => dbGetPuzzleState(team_id, slug, trx), { readOnly: true });
+            return {
+              status: 200 as const,
+              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+                * We know the puzzle state exists because we checked the db above. */
+              body: formatPuzzleState(slug, activityLog, { answer, guesses })!,
+            };
+          }
+          return {
+            status: 404 as const,
+            body: null,
+          };
         },
       },
     },

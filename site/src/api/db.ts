@@ -340,7 +340,7 @@ export async function recalculateTeamState(
 ): Promise<ActivityLogEntry[]> {
   const activityLogWrites: ActivityLogEntry[] = [];
   const start = performance.now();
-  const { team_name, activity_log } = await getTeamState(team_id, trx);
+  const { activity_log } = await getTeamState(team_id, trx);
   const canonical_queries_done = performance.now();
 
   // What is already present in the activity log?
@@ -383,7 +383,7 @@ export async function recalculateTeamState(
   };
 
   // What /should/ be in the activity log, based on the hunt description?
-  const next = reducerDeriveTeamState(team_name, hunt, activity_log);
+  const next = reducerDeriveTeamState(hunt, activity_log);
   const calculate_team_state_done = performance.now();
 
   // Compute the differences, and generate the requisite inserts.

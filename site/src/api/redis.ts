@@ -45,7 +45,7 @@ async function readStream<T>(
 ) {
   const results = await redisClient.xRead({
     key,
-    id: since ? `0-${since}` : "-",
+    id: since ? `0-${since}` : "0-0",
   });
   const messages = (results ?? [])[0]?.messages ?? [];
   return messages.map(parseStreamMessage<T>);
