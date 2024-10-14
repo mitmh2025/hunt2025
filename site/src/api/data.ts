@@ -2,14 +2,20 @@ import type Knex from "knex";
 import {
   //type TeamPuzzleGuess,
   type ActivityLogEntry,
-  InsertActivityLogEntry,
+  type InsertActivityLogEntry,
 } from "knex/types/tables";
+import { type z } from "zod";
+import { type TeamState } from "../../lib/api/client";
+import { type InteractionStateSchema } from "../../lib/api/contract";
+import { getSlotSlug } from "../huntdata/logic";
+import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
   getActivityLog as dbGetActivityLog,
   getTeamNames,
   retryOnAbort,
 } from "./db";
+import { reducerDeriveTeamState } from "./logic";
 import {
   type RedisClient,
   appendActivityLog,
@@ -17,12 +23,6 @@ import {
   publishTeamState,
   getTeamActivityLog as redisGetTeamActivityLog,
 } from "./redis";
-import { getSlotSlug } from "../huntdata/logic";
-import { type Hunt } from "../huntdata/types";
-import { reducerDeriveTeamState } from "./logic";
-import { TeamState } from "../../lib/api/client";
-import { type InteractionStateSchema } from "../../lib/api/contract";
-import { type z } from "zod";
 
 export class Mutator {
   private _trx: Knex.Knex.Transaction;
@@ -38,7 +38,7 @@ export class Mutator {
 
   async appendActivityLog(entry: InsertActivityLogEntry) {
     const inserted_entry = await dbAppendActivityLog(entry, this._trx);
-    this._activityLog = (this._activityLog ?? []).concat([inserted_entry]);
+    this._activityLog = this._activityLog.concat([inserted_entry]);
     if (inserted_entry.team_id === undefined) {
       this._affectedTeams = undefined; // We don't know yet
     } else if (this._affectedTeams !== undefined) {
@@ -51,16 +51,14 @@ export class Mutator {
   // We assume that this.activityLog contains the full activity log for all affected teams.
   async recalculateState(hunt: Hunt) {
     for (const team_id of this.affectedTeams) {
-      if (team_id != undefined) {
-        await recalculateTeamState(
-          hunt,
-          team_id,
-          this.activityLog.filter(
-            (e) => e.team_id == team_id || e.team_id === undefined,
-          ),
-          this,
-        );
-      }
+      await recalculateTeamState(
+        hunt,
+        team_id,
+        this.activityLog.filter(
+          (e) => e.team_id === team_id || e.team_id === undefined,
+        ),
+        this,
+      );
     }
   }
 
@@ -75,7 +73,7 @@ export class Mutator {
     return new Set(
       this.activityLog
         .map((e) => e.team_id)
-        .filter((t): t is number => typeof t == "number"),
+        .filter((t): t is number => typeof t === "number"),
     );
   }
 
@@ -236,7 +234,7 @@ export async function executeMutation<T>(
         teamNames,
       };
     });
-  if (redisClient && affectedTeams) {
+  if (redisClient && affectedTeams.size > 0) {
     // TODO: Do this in the background?
     await refreshActivityLog(redisClient, knex);
   }

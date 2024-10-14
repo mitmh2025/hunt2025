@@ -1,8 +1,8 @@
+import { type ActivityLogEntry } from "knex/types/tables";
 import { ErrorReply, createClient as redisCreateClient } from "redis";
-import { TeamState } from "../../lib/api/client";
+import { type TeamState } from "../../lib/api/client";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { parseInternalActivityLogEntry } from "./logic";
-import { ActivityLogEntry } from "knex/types/tables";
 
 export async function connect(redisUrl: string) {
   const options = redisUrl.startsWith("unix://")

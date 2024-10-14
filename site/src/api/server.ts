@@ -17,7 +17,7 @@ import { type Knex } from "knex";
 import {
   type GuessStatus,
   type ActivityLogEntry,
-  TeamPuzzleGuess,
+  type TeamPuzzleGuess,
 } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
@@ -28,12 +28,11 @@ import { c, authContract, publicContract } from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
-import type { RedisClient } from "./redis";
 import { PUZZLES } from "../frontend/puzzles";
 import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { executeMutation, formatTeamState, Mutator } from "./data";
+import { executeMutation, formatTeamState, type Mutator } from "./data";
 import {
   getTeamState as dbGetTeamState,
   getPuzzleState as dbGetPuzzleState,
@@ -46,6 +45,7 @@ import {
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
 } from "./logic";
+import type { RedisClient } from "./redis";
 
 type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
@@ -728,8 +728,8 @@ export function getRouter({
             const existing = mutator.activityLog.some(
               (e) =>
                 (e.team_id === team_id || e.team_id === undefined) &&
-                e.type == "gate_completed" &&
-                e.slug == gateId,
+                e.type === "gate_completed" &&
+                e.slug === gateId,
             );
             // If not, insert gate completion.
             // If already present, no change
@@ -751,8 +751,8 @@ export function getRouter({
               (e) =>
                 (e.team_id === team_id || e.team_id === undefined) &&
                 (e.type === "interaction_unlocked" ||
-                  e.type == "interaction_started") &&
-                e.slug == interactionId,
+                  e.type === "interaction_started") &&
+                e.slug === interactionId,
             );
             const is_unlocked = existing.some(
               (entry) => entry.type === "interaction_unlocked",
@@ -781,9 +781,9 @@ export function getRouter({
               (e) =>
                 (e.team_id === team_id || e.team_id === undefined) &&
                 (e.type === "interaction_unlocked" ||
-                  e.type == "interaction_started" ||
-                  e.type == "interaction_completed") &&
-                e.slug == interactionId,
+                  e.type === "interaction_started" ||
+                  e.type === "interaction_completed") &&
+                e.slug === interactionId,
             );
             const is_unlocked = existing.some(
               (entry) => entry.type === "interaction_unlocked",
