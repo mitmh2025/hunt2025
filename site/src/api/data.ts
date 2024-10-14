@@ -7,16 +7,22 @@ import {
 import {
   appendActivityLog as dbAppendActivityLog,
   getActivityLog as dbGetActivityLog,
+  getTeamNames,
   retryOnAbort,
 } from "./db";
 import {
   type RedisClient,
   appendActivityLog,
   getGlobalHighWaterMark,
+  publishTeamState,
   getTeamActivityLog as redisGetTeamActivityLog,
 } from "./redis";
+import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import { reducerDeriveTeamState } from "./logic";
+import { TeamState } from "../../lib/api/client";
+import { type InteractionStateSchema } from "../../lib/api/contract";
+import { type z } from "zod";
 
 export class Mutator {
   private _trx: Knex.Knex.Transaction;
@@ -58,16 +64,19 @@ export class Mutator {
     }
   }
 
+  // Get the complete activity log so far (both the starting log and any added entries)
+  // Call recalculateState first if you want to also see the consequences of the added entries.
   get activityLog() {
     return this._activityLog;
   }
 
-  get affectedTeams() {
+  // Get the list of teams affected by activity log entries pushed on this Mutator.
+  get affectedTeams(): Set<number> {
     if (this._affectedTeams === undefined) {
       return new Set(
         this.activityLog
           .map((e) => e.team_id)
-          .filter((t) => typeof t == "number"),
+          .filter((t): t is number => typeof t == "number"),
       );
     }
     return this._affectedTeams;
@@ -184,10 +193,7 @@ export async function executeMutation<T>(
   team_id: number,
   redisClient: RedisClient | undefined,
   knex: Knex.Knex,
-  fn: (
-    trx: Knex.Knex.Transaction,
-    mutator: Mutator,
-  ) => Promise<T>,
+  fn: (trx: Knex.Knex.Transaction, mutator: Mutator) => Promise<T>,
 ) {
   // All mutations need to follow a similar pattern for correctness:
   // 1. read the current activity log from cache if possible
@@ -207,7 +213,7 @@ export async function executeMutation<T>(
       console.error("failed to query redis:", err);
     }
   }
-  const { result, activityLog, affectedTeams } = await retryOnAbort(
+  const { result, activityLog, affectedTeams, teamNames } = await retryOnAbort(
     knex,
     async function (trx: Knex.Knex.Transaction) {
       const new_log = await dbGetActivityLog(
@@ -223,13 +229,19 @@ export async function executeMutation<T>(
         result,
         activityLog: mutator.activityLog,
         affectedTeams: mutator.affectedTeams,
+        teamNames: await getTeamNames(mutator.affectedTeams, trx),
       };
     },
   );
   if (redisClient && affectedTeams) {
     // TODO: Do this in the background?
     await refreshActivityLog(redisClient, knex);
-    // FIXME: Regenerate and publish modified team state
+    for (const team_id of affectedTeams) {
+      const team_activity_log = activityLog.filter(e => e.team_id === undefined || e.team_id === team_id);
+      const state = formatTeamState(hunt, team_id, teamNames[team_id] ?? "", team_activity_log);
+      console.log("affected team", team_id, "new state", state);
+      await publishTeamState(redisClient, team_id, state);
+    }
   }
   return { result, activityLog };
 }
@@ -247,4 +259,94 @@ async function refreshActivityLog(redisClient: RedisClient, knex: Knex.Knex) {
   for (const e of entries) {
     await appendActivityLog(redisClient, e);
   }
+}
+
+type InteractionState = z.infer<typeof InteractionStateSchema>;
+
+export function formatTeamState(
+  hunt: Hunt,
+  team_id: number,
+  team_name: string,
+  activity_log: ActivityLogEntry[],
+): TeamState {
+  const data = reducerDeriveTeamState(hunt, activity_log);
+  //console.log(data);
+  const rounds = Object.fromEntries(
+    hunt.rounds
+      .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
+      .map(({ slug, title, puzzles, gates, interactions }) => {
+        const interactionsData: [string, InteractionState][] = (
+          interactions ?? []
+        ).flatMap((interaction) => {
+          if ("interactions" in data) {
+            const v = data.interactions[interaction.id];
+            if (v) {
+              return [[interaction.id, v]];
+            }
+          }
+          return [];
+        });
+        const interactionsMap =
+          interactionsData.length > 0
+            ? Object.fromEntries(interactionsData)
+            : undefined;
+        const interactionsMixin =
+          interactionsMap !== undefined
+            ? { interactions: interactionsMap }
+            : {};
+        return [
+          slug,
+          {
+            title,
+            slots: Object.fromEntries(
+              puzzles.flatMap((slot) => {
+                const slug = getSlotSlug(slot);
+                if (slug && data.visible_puzzles.has(slug)) {
+                  const obj = { slug, is_meta: slot.is_meta };
+                  return [[slot.id, obj]];
+                }
+                return [];
+              }),
+            ),
+            gates: gates?.flatMap((gate) => {
+              if (gate.id && data.satisfied_gates.has(gate.id)) {
+                return [gate.id];
+              }
+              return [];
+            }),
+            // Don't include interactions until one has been reached
+            ...interactionsMixin,
+          },
+        ];
+      }),
+  );
+  const puzzleRounds = Object.fromEntries(
+    Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
+      Object.entries(slots).map(([_id, { slug: puzzleSlug }]) => [
+        puzzleSlug,
+        roundSlug,
+      ]),
+    ),
+  );
+  return {
+    epoch: data.epoch,
+    teamId: team_id,
+    teamName: team_name,
+    rounds,
+    currency: data.available_currency,
+    puzzles: Object.fromEntries(
+      [...data.visible_puzzles].map((slug) => [
+        slug,
+        {
+          round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
+          locked: data.unlocked_puzzles.has(slug)
+            ? "unlocked"
+            : data.unlockable_puzzles.has(slug)
+              ? "unlockable"
+              : "locked",
+          answer: data.correct_answers[slug],
+        },
+      ]),
+    ),
+  };
 }

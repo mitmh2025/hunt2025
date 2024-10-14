@@ -249,6 +249,17 @@ function string_agg(knex: Knex.Knex, field: string, delimeter: string) {
   ]);
 }
 
+export async function getTeamNames(
+  team_ids: Iterable<number>,
+  trx: Knex.Knex.Transaction,
+): Promise<Record<number, string>> {
+  return Object.fromEntries(
+    (
+      await trx("teams").where("id", "in", Array.from(team_ids)).select("id", "username")
+    ).map(({ id, username }) => [id, username]),
+  );
+}
+
 // TODO: rename to loadCanonicalTeamStateInputs or something like that
 export async function getTeamState(
   team_id: number,

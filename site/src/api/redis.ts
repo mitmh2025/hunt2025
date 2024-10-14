@@ -1,4 +1,5 @@
 import { ErrorReply, createClient as redisCreateClient } from "redis";
+import { TeamState } from "../../lib/api/client";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { parseInternalActivityLogEntry } from "./logic";
 import { ActivityLogEntry } from "knex/types/tables";
@@ -73,6 +74,7 @@ async function readStream<T>(
   return messages.map(parseStreamMessage<T>);
 }
 
+// Get the id of the last processed activity log entry.
 export async function getGlobalHighWaterMark(redisClient: RedisClient) {
   const messages = await redisClient.xRevRange(
     "global/activity_log",
@@ -203,6 +205,44 @@ export async function appendActivityLog(
     id: `0-${entry.id}`,
     message: {
       entry: JSON.stringify(entry),
+    },
+  });
+}
+
+async function publishState(
+  redisClient: RedisClient,
+  key: string,
+  message: { id: string; message: Record<string, string> },
+) {
+  try {
+    await redisClient.xAdd(key, message.id, message.message, {
+      TRIM: {
+        strategy: "MAXLEN",
+        threshold: 1,
+      },
+    });
+  } catch (e) {
+    // Ignore duplicate keys
+    if (
+      e instanceof ErrorReply &&
+      e.message ===
+        "ERR The ID specified in XADD is equal or smaller than the target stream top item"
+    ) {
+      return;
+    }
+    throw e;
+  }
+}
+
+export async function publishTeamState(
+  redisClient: RedisClient,
+  teamId: number,
+  state: TeamState,
+) {
+  await publishState(redisClient, `team_state/${teamId}`, {
+    id: `0-${state.epoch}`,
+    message: {
+      entry: JSON.stringify(state),
     },
   });
 }

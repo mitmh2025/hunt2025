@@ -22,14 +22,12 @@ import {
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
-import { type z } from "zod";
 import { adminContract } from "../../lib/api/admin_contract";
 import { type TeamState } from "../../lib/api/client";
 import {
   c,
   authContract,
   publicContract,
-  type InteractionStateSchema,
 } from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
@@ -38,9 +36,8 @@ import type { RedisClient } from "./redis";
 import { PUZZLES } from "../frontend/puzzles";
 import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
-import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
-import { executeMutation } from "./data";
+import { executeMutation, formatTeamState } from "./data";
 import {
   getTeamState as dbGetTeamState,
   getPuzzleState as dbGetPuzzleState,
@@ -58,8 +55,6 @@ type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
   200
 >;
-
-type InteractionState = z.infer<typeof InteractionStateSchema>;
 
 type JWTPayload = {
   user: string;
@@ -145,86 +140,7 @@ export function getRouter({
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
     const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    const data = reducerDeriveTeamState(hunt, activity_log);
-    //console.log(data);
-    const rounds = Object.fromEntries(
-      hunt.rounds
-        .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
-        .map(({ slug, title, puzzles, gates, interactions }) => {
-          const interactionsData: [string, InteractionState][] = (
-            interactions ?? []
-          ).flatMap((interaction) => {
-            if ("interactions" in data) {
-              const v = data.interactions[interaction.id];
-              if (v) {
-                return [[interaction.id, v]];
-              }
-            }
-            return [];
-          });
-          const interactionsMap =
-            interactionsData.length > 0
-              ? Object.fromEntries(interactionsData)
-              : undefined;
-          const interactionsMixin =
-            interactionsMap !== undefined
-              ? { interactions: interactionsMap }
-              : {};
-          return [
-            slug,
-            {
-              title,
-              slots: Object.fromEntries(
-                puzzles.flatMap((slot) => {
-                  const slug = getSlotSlug(slot);
-                  if (slug && data.visible_puzzles.has(slug)) {
-                    const obj = { slug, is_meta: slot.is_meta };
-                    return [[slot.id, obj]];
-                  }
-                  return [];
-                }),
-              ),
-              gates: gates?.flatMap((gate) => {
-                if (gate.id && data.satisfied_gates.has(gate.id)) {
-                  return [gate.id];
-                }
-                return [];
-              }),
-              // Don't include interactions until one has been reached
-              ...interactionsMixin,
-            },
-          ];
-        }),
-    );
-    const puzzleRounds = Object.fromEntries(
-      Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
-        Object.entries(slots).map(([_id, { slug: puzzleSlug }]) => [
-          puzzleSlug,
-          roundSlug,
-        ]),
-      ),
-    );
-    return {
-      epoch: data.epoch,
-      teamId: team_id,
-      teamName: team_name,
-      rounds,
-      currency: data.available_currency,
-      puzzles: Object.fromEntries(
-        [...data.visible_puzzles].map((slug) => [
-          slug,
-          {
-            round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
-            locked: data.unlocked_puzzles.has(slug)
-              ? "unlocked"
-              : data.unlockable_puzzles.has(slug)
-                ? "unlockable"
-                : "locked",
-            answer: data.correct_answers[slug],
-          },
-        ]),
-      ),
-    };
+    return formatTeamState(hunt, team_id, team_name, activity_log);
   };
 
   const formatPuzzleState = (
