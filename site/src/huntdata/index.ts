@@ -99,6 +99,7 @@ const HUNT: Hunt = {
         {
           // Art Gallery (meta)
           id: "mdm04",
+          slug: "the_art_gallery",
           is_meta: true,
           unlocked_if: {
             puzzles_unlocked: 5,

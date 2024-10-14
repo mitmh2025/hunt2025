@@ -6,6 +6,7 @@ import Casino from "./fortunate-calf";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import ShellCorporationEight from "./insignificant-thief";
+import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
 import ShellCorporationSix from "./mild-octopus";
 import ShellCorporationFive from "./profitable-trunk";
@@ -23,6 +24,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
   the_jewelry_store: TheJewelryStore,
+  the_art_gallery: TheArtGallery,
 
   // Paper Trail
   follow_the_rules: FollowTheRules,
