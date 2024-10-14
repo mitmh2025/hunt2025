@@ -17,6 +17,7 @@ import { type Knex } from "knex";
 import {
   type GuessStatus,
   type ActivityLogEntry,
+  type InsertActivityLogEntry,
   type TeamPuzzleGuess,
 } from "knex/types/tables";
 import { Passport } from "passport";
@@ -210,7 +211,7 @@ export function getRouter({
     teamId: string,
     fn: (
       trx: Knex.Transaction,
-      mutator: Mutator,
+      mutator: Mutator<ActivityLogEntry, InsertActivityLogEntry>,
       team_id: number,
     ) => Promise<boolean>,
   ) => {
@@ -645,7 +646,7 @@ export function getRouter({
             knex,
             async function (_, mutator) {
               // Verify puzzle is currently unlockable.
-              const data = reducerDeriveTeamState(hunt, mutator.activityLog);
+              const data = reducerDeriveTeamState(hunt, mutator.log);
               const unlock_cost = slot.unlock_cost;
 
               if (
@@ -655,7 +656,7 @@ export function getRouter({
                 data.available_currency >= unlock_cost
               ) {
                 // Unlock puzzle.
-                await mutator.appendActivityLog({
+                await mutator.appendLog({
                   team_id,
                   type: "puzzle_unlocked",
                   slug,
@@ -725,7 +726,7 @@ export function getRouter({
         handler: ({ params: { teamId, gateId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             // Check if already satisfied.
-            const existing = mutator.activityLog.some(
+            const existing = mutator.log.some(
               (e) =>
                 (e.team_id === team_id || e.team_id === undefined) &&
                 e.type === "gate_completed" &&
@@ -734,7 +735,7 @@ export function getRouter({
             // If not, insert gate completion.
             // If already present, no change
             if (!existing) {
-              await mutator.appendActivityLog({
+              await mutator.appendLog({
                 team_id,
                 type: "gate_completed",
                 slug: gateId,
@@ -747,7 +748,7 @@ export function getRouter({
         middleware: [frontendAuthMiddleware],
         handler: ({ params: { teamId, interactionId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            const existing = mutator.activityLog.filter(
+            const existing = mutator.log.filter(
               (e) =>
                 (e.team_id === team_id || e.team_id === undefined) &&
                 (e.type === "interaction_unlocked" ||
@@ -764,7 +765,7 @@ export function getRouter({
               (entry) => entry.type === "interaction_started",
             );
             if (!is_started) {
-              await mutator.appendActivityLog({
+              await mutator.appendLog({
                 team_id,
                 type: "interaction_started",
                 slug: interactionId,
@@ -777,7 +778,7 @@ export function getRouter({
         middleware: [frontendAuthMiddleware],
         handler: ({ params: { teamId, interactionId }, body }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            const existing = mutator.activityLog.filter(
+            const existing = mutator.log.filter(
               (e) =>
                 (e.team_id === team_id || e.team_id === undefined) &&
                 (e.type === "interaction_unlocked" ||
@@ -801,7 +802,7 @@ export function getRouter({
               return false;
             }
             if (!is_completed) {
-              await mutator.appendActivityLog({
+              await mutator.appendLog({
                 team_id,
                 type: "interaction_completed",
                 slug: interactionId,

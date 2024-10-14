@@ -22,27 +22,60 @@ import {
   publishTeamState,
 } from "./redis";
 
-export class Mutator {
+export class Mutator<T extends { id: number; team_id?: number }, I> {
   private _trx: Knex.Knex.Transaction;
-  private _activityLog: ActivityLogEntry[];
-  //private _guessLog?: TeamPuzzleGuess[];
+  private _log: T[];
   private _affectedTeams: Set<number> | undefined;
+  private _dbAppendLog: (entry: I, trx: Knex.Knex.Transaction) => Promise<T>;
 
-  constructor(trx: Knex.Knex.Transaction, activityLog: ActivityLogEntry[]) {
+  constructor(
+    trx: Knex.Knex.Transaction,
+    log: T[],
+    dbAppendLog: (entry: I, trx: Knex.Knex.Transaction) => Promise<T>,
+  ) {
     this._trx = trx;
-    this._activityLog = activityLog;
+    this._log = log;
     this._affectedTeams = new Set();
+    this._dbAppendLog = dbAppendLog;
   }
 
-  async appendActivityLog(entry: InsertActivityLogEntry) {
-    const inserted_entry = await dbAppendActivityLog(entry, this._trx);
-    this._activityLog = this._activityLog.concat([inserted_entry]);
+  async appendLog(entry: I) {
+    const inserted_entry = await this._dbAppendLog(entry, this._trx);
+    this._log = this._log.concat([inserted_entry]);
     if (inserted_entry.team_id === undefined) {
       this._affectedTeams = undefined; // We don't know yet
     } else if (this._affectedTeams !== undefined) {
       this._affectedTeams.add(inserted_entry.team_id);
     }
     return inserted_entry;
+  }
+
+  // Get the complete log so far (both the starting log and any added entries)
+  get log() {
+    return this._log;
+  }
+
+  // Get the list of teams contained in the log entries.
+  get allTeams(): Set<number> {
+    return new Set(
+      this.log
+        .map((e) => e.team_id)
+        .filter((t): t is number => typeof t === "number"),
+    );
+  }
+
+  // Get the list of teams affected by log entries pushed on this Mutator.
+  get affectedTeams(): Set<number> {
+    return this._affectedTeams ?? this.allTeams;
+  }
+}
+
+class ActivityLogMutator extends Mutator<
+  ActivityLogEntry,
+  InsertActivityLogEntry
+> {
+  constructor(trx: Knex.Knex.Transaction, log: ActivityLogEntry[]) {
+    super(trx, log, dbAppendActivityLog);
   }
 
   // Refresh the state for every team that was affected.
@@ -52,39 +85,20 @@ export class Mutator {
       await recalculateTeamState(
         hunt,
         team_id,
-        this.activityLog.filter(
+        this.log.filter(
           (e) => e.team_id === team_id || e.team_id === undefined,
         ),
         this,
       );
     }
   }
-
-  // Get the complete activity log so far (both the starting log and any added entries)
-  // Call recalculateState first if you want to also see the consequences of the added entries.
-  get activityLog() {
-    return this._activityLog;
-  }
-
-  // Get the list of teams contained in the activity log entries.
-  get allTeams(): Set<number> {
-    return new Set(
-      this.activityLog
-        .map((e) => e.team_id)
-        .filter((t): t is number => typeof t === "number"),
-    );
-  }
-
-  // Get the list of teams affected by activity log entries pushed on this Mutator.
-  get affectedTeams(): Set<number> {
-    return this._affectedTeams ?? this.allTeams;
-  }
 }
+
 export async function recalculateTeamState(
   hunt: Hunt,
   team_id: number,
   activity_log: ActivityLogEntry[],
-  mutator: Mutator,
+  mutator: Mutator<ActivityLogEntry, InsertActivityLogEntry>,
 ) {
   const start = performance.now();
 
@@ -133,7 +147,7 @@ export async function recalculateTeamState(
 
   // Compute the differences, and generate the requisite inserts.
   for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
-    await mutator.appendActivityLog({
+    await mutator.appendLog({
       team_id,
       type: "round_unlocked",
       slug,
@@ -152,7 +166,7 @@ export async function recalculateTeamState(
   };
   const diff_done = performance.now();
   for (const slug of diff.unlockable_puzzles) {
-    await mutator.appendActivityLog({
+    await mutator.appendLog({
       team_id,
       type: "puzzle_unlockable",
       slug,
@@ -160,7 +174,7 @@ export async function recalculateTeamState(
   }
   const puzzles_unlockable_done = performance.now();
   for (const slug of diff.unlocked_puzzles) {
-    await mutator.appendActivityLog({
+    await mutator.appendLog({
       team_id,
       type: "puzzle_unlocked",
       slug,
@@ -168,7 +182,7 @@ export async function recalculateTeamState(
   }
   const puzzles_unlock_done = performance.now();
   for (const id of diff.unlocked_interactions) {
-    await mutator.appendActivityLog({
+    await mutator.appendLog({
       team_id,
       type: "interaction_unlocked",
       slug: id,
@@ -191,7 +205,7 @@ export async function executeMutation<T>(
   team_id: number,
   redisClient: RedisClient | undefined,
   knex: Knex.Knex,
-  fn: (trx: Knex.Knex.Transaction, mutator: Mutator) => Promise<T>,
+  fn: (trx: Knex.Knex.Transaction, mutator: ActivityLogMutator) => Promise<T>,
 ) {
   // All mutations need to follow a similar pattern for correctness:
   // 1. read the current activity log from cache if possible
@@ -220,13 +234,13 @@ export async function executeMutation<T>(
         trx,
       );
       const combined_log = cached_log.entries.concat(new_log);
-      const mutator = new Mutator(trx, combined_log);
+      const mutator = new ActivityLogMutator(trx, combined_log);
       const result = await fn(trx, mutator);
       await mutator.recalculateState(hunt);
       const teamNames = await getTeamNames(mutator.allTeams, trx);
       return {
         result,
-        activityLog: mutator.activityLog,
+        activityLog: mutator.log,
         allTeams: mutator.allTeams,
         affectedTeams: mutator.affectedTeams,
         teamNames,
