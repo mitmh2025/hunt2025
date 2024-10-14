@@ -24,11 +24,7 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { adminContract } from "../../lib/api/admin_contract";
 import { type TeamState } from "../../lib/api/client";
-import {
-  c,
-  authContract,
-  publicContract,
-} from "../../lib/api/contract";
+import { c, authContract, publicContract } from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
@@ -37,7 +33,7 @@ import { PUZZLES } from "../frontend/puzzles";
 import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { executeMutation, formatTeamState } from "./data";
+import { executeMutation, formatTeamState, Mutator } from "./data";
 import {
   getTeamState as dbGetTeamState,
   getPuzzleState as dbGetPuzzleState,
@@ -208,6 +204,35 @@ export function getRouter({
     // TODO: Fetch relevant puzzle state from the DB -- puzzle status, answer, guesses, is the round it belongs to unlocked
     const { answer, guesses } = await dbGetPuzzleState(team_id, slug, trx);
     return formatPuzzleState(slug, activity_log, { answer, guesses });
+  };
+
+  const executeTeamStateHandler = async (
+    teamId: string,
+    fn: (
+      trx: Knex.Transaction,
+      mutator: Mutator,
+      team_id: number,
+    ) => Promise<boolean>,
+  ) => {
+    const team_id = parseInt(teamId, 10);
+    const { result, teamStates } = await executeMutation(
+      hunt,
+      team_id,
+      redisClient,
+      knex,
+      (trx, mutator) => fn(trx, mutator, team_id),
+    );
+    const newState = teamStates[team_id];
+    if (result && newState !== undefined) {
+      return {
+        status: 200 as const,
+        body: newState,
+      };
+    }
+    return {
+      status: 404 as const,
+      body: null,
+    };
   };
 
   const refreshTeamState = async (
@@ -697,194 +722,96 @@ export function getRouter({
     frontend: {
       markTeamGateSatisfied: {
         middleware: [frontendAuthMiddleware],
-        handler: async ({ params: { teamId, gateId } }) => {
-          const [response, deferred] = await knex.transaction(
-            async (trx) => {
-              const deferredPublications = new DeferredPublications({});
-              const team_id = parseInt(teamId, 10);
-              // Check if already satisfied.
-              const existing = await trx("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .where("type", "gate_completed")
-                .where("slug", gateId)
-                .select("id")
-                .first();
-              // If not, insert gate completion.
-              // If already present, no change
-              if (!existing) {
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "gate_completed",
-                    slug: gateId,
-                  },
-                  trx,
-                );
-                deferredPublications.addActivityLogEntries([entry]);
-              }
-              // return the team state object regardless
-              const [newState, newWrites] = await refreshTeamState(
-                hunt,
+        handler: ({ params: { teamId, gateId } }) =>
+          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            // Check if already satisfied.
+            const existing = mutator.activityLog.some(
+              (e) =>
+                (e.team_id === team_id || e.team_id === undefined) &&
+                e.type == "gate_completed" &&
+                e.slug == gateId,
+            );
+            // If not, insert gate completion.
+            // If already present, no change
+            if (!existing) {
+              await mutator.appendActivityLog({
                 team_id,
-                trx,
-              );
-              return [
-                {
-                  status: 200 as const,
-                  body: newState,
-                },
-                deferredPublications.concat(newWrites),
-              ];
-            },
-            {
-              isolationLevel: "serializable",
-            },
-          );
-          await deferred.publish(redisClient);
-          return response;
-        },
+                type: "gate_completed",
+                slug: gateId,
+              });
+            }
+            return true;
+          }),
       },
       startInteraction: {
         middleware: [frontendAuthMiddleware],
-        handler: async ({ params: { teamId, interactionId } }) => {
-          const [response, deferred] = await knex.transaction(
-            async (trx) => {
-              const deferredPublications = new DeferredPublications({});
-              const team_id = parseInt(teamId, 10);
-              const existing = await trx("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .whereIn("type", [
-                  "interaction_unlocked",
-                  "interaction_started",
-                ])
-                .where("slug", interactionId)
-                .select("type");
-              const is_unlocked = existing.some(
-                (entry) => entry.type === "interaction_unlocked",
-              );
-              if (!is_unlocked) {
-                return [
-                  {
-                    status: 404 as const,
-                    body: null,
-                  },
-                  deferredPublications,
-                ];
-              }
-              const is_started = existing.some(
-                (entry) => entry.type === "interaction_started",
-              );
-              if (!is_started) {
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "interaction_started",
-                    slug: interactionId,
-                  },
-                  trx,
-                );
-                deferredPublications.addActivityLogEntries([entry]);
-              }
-
-              const [newState, newWrites] = await refreshTeamState(
-                hunt,
+        handler: ({ params: { teamId, interactionId } }) =>
+          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            const existing = mutator.activityLog.filter(
+              (e) =>
+                (e.team_id === team_id || e.team_id === undefined) &&
+                (e.type === "interaction_unlocked" ||
+                  e.type == "interaction_started") &&
+                e.slug == interactionId,
+            );
+            const is_unlocked = existing.some(
+              (entry) => entry.type === "interaction_unlocked",
+            );
+            if (!is_unlocked) {
+              return false;
+            }
+            const is_started = existing.some(
+              (entry) => entry.type === "interaction_started",
+            );
+            if (!is_started) {
+              await mutator.appendActivityLog({
                 team_id,
-                trx,
-              );
-              return [
-                {
-                  status: 200 as const,
-                  body: newState,
-                },
-                deferredPublications.concat(newWrites),
-              ];
-            },
-            {
-              isolationLevel: "serializable",
-            },
-          );
-          await deferred.publish(redisClient);
-          return response;
-        },
+                type: "interaction_started",
+                slug: interactionId,
+              });
+            }
+            return true;
+          }),
       },
       completeInteraction: {
         middleware: [frontendAuthMiddleware],
-        handler: async ({ params: { teamId, interactionId }, body }) => {
-          const [response, deferred] = await knex.transaction(
-            async (trx) => {
-              const deferredPublications = new DeferredPublications({});
-              const team_id = parseInt(teamId, 10);
-              const existing = (await trx("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .whereIn("type", [
-                  "interaction_unlocked",
-                  "interaction_started",
-                  "interaction_completed",
-                ])
-                .where("slug", interactionId)
-                .select("type")) as Partial<ActivityLogEntry>[];
-              const is_unlocked = existing.some(
-                (entry) => entry.type === "interaction_unlocked",
-              );
-              const is_started = existing.some(
-                (entry) => entry.type === "interaction_started",
-              );
-              const is_completed = existing.some(
-                (entry) => entry.type === "interaction_completed",
-              );
-              console.log("is_unlocked", is_unlocked);
-              console.log("is_started", is_started);
-              console.log("is_completed", is_completed);
-              if (!is_unlocked || !is_started) {
-                return [
-                  {
-                    status: 404 as const,
-                    body: null,
-                  },
-                  deferredPublications,
-                ];
-              }
-              if (!is_completed) {
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "interaction_completed",
-                    slug: interactionId,
-                    data: {
-                      result: body.result,
-                    },
-                  },
-                  trx,
-                );
-                deferredPublications.addActivityLogEntries([entry]);
-              }
-
-              const [newState, newWrites] = await refreshTeamState(
-                hunt,
+        handler: ({ params: { teamId, interactionId }, body }) =>
+          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            const existing = mutator.activityLog.filter(
+              (e) =>
+                (e.team_id === team_id || e.team_id === undefined) &&
+                (e.type === "interaction_unlocked" ||
+                  e.type == "interaction_started" ||
+                  e.type == "interaction_completed") &&
+                e.slug == interactionId,
+            );
+            const is_unlocked = existing.some(
+              (entry) => entry.type === "interaction_unlocked",
+            );
+            const is_started = existing.some(
+              (entry) => entry.type === "interaction_started",
+            );
+            const is_completed = existing.some(
+              (entry) => entry.type === "interaction_completed",
+            );
+            console.log("is_unlocked", is_unlocked);
+            console.log("is_started", is_started);
+            console.log("is_completed", is_completed);
+            if (!is_unlocked || !is_started) {
+              return false;
+            }
+            if (!is_completed) {
+              await mutator.appendActivityLog({
                 team_id,
-                trx,
-              );
-              return [
-                {
-                  status: 200 as const,
-                  body: newState,
+                type: "interaction_completed",
+                slug: interactionId,
+                data: {
+                  result: body.result,
                 },
-                deferredPublications.concat(newWrites),
-              ];
-            },
-            {
-              isolationLevel: "serializable",
-            },
-          );
-          await deferred.publish(redisClient);
-          return response;
-        },
+              });
+            }
+            return true;
+          }),
       },
       getFullActivityLog: {
         middleware: [frontendAuthMiddleware],

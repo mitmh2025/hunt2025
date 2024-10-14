@@ -255,7 +255,9 @@ export async function getTeamNames(
 ): Promise<Record<number, string>> {
   return Object.fromEntries(
     (
-      await trx("teams").where("id", "in", Array.from(team_ids)).select("id", "username")
+      await trx("teams")
+        .where("id", "in", Array.from(team_ids))
+        .select("id", "username")
     ).map(({ id, username }) => [id, username]),
   );
 }

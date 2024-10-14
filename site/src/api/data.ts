@@ -1,6 +1,6 @@
 import type Knex from "knex";
 import {
-  type TeamPuzzleGuess,
+  //type TeamPuzzleGuess,
   type ActivityLogEntry,
   InsertActivityLogEntry,
 } from "knex/types/tables";
@@ -27,7 +27,7 @@ import { type z } from "zod";
 export class Mutator {
   private _trx: Knex.Knex.Transaction;
   private _activityLog: ActivityLogEntry[];
-  private _guessLog?: TeamPuzzleGuess[];
+  //private _guessLog?: TeamPuzzleGuess[];
   private _affectedTeams: Set<number> | undefined;
 
   constructor(trx: Knex.Knex.Transaction, activityLog: ActivityLogEntry[]) {
@@ -70,16 +70,18 @@ export class Mutator {
     return this._activityLog;
   }
 
+  // Get the list of teams contained in the activity log entries.
+  get allTeams(): Set<number> {
+    return new Set(
+      this.activityLog
+        .map((e) => e.team_id)
+        .filter((t): t is number => typeof t == "number"),
+    );
+  }
+
   // Get the list of teams affected by activity log entries pushed on this Mutator.
   get affectedTeams(): Set<number> {
-    if (this._affectedTeams === undefined) {
-      return new Set(
-        this.activityLog
-          .map((e) => e.team_id)
-          .filter((t): t is number => typeof t == "number"),
-      );
-    }
-    return this._affectedTeams;
+    return this._affectedTeams ?? this.allTeams;
   }
 }
 export async function recalculateTeamState(
@@ -206,6 +208,7 @@ export async function executeMutation<T>(
     highWaterMark: undefined,
     entries: [],
   };
+  // TODO: Generalize this function to support operations against all teams.
   if (redisClient) {
     try {
       cached_log = await redisGetTeamActivityLog(redisClient, team_id);
@@ -213,9 +216,8 @@ export async function executeMutation<T>(
       console.error("failed to query redis:", err);
     }
   }
-  const { result, activityLog, affectedTeams, teamNames } = await retryOnAbort(
-    knex,
-    async function (trx: Knex.Knex.Transaction) {
+  const { result, activityLog, allTeams, affectedTeams, teamNames } =
+    await retryOnAbort(knex, async function (trx: Knex.Knex.Transaction) {
       const new_log = await dbGetActivityLog(
         team_id,
         cached_log.highWaterMark,
@@ -225,25 +227,36 @@ export async function executeMutation<T>(
       const mutator = new Mutator(trx, combined_log);
       const result = await fn(trx, mutator);
       await mutator.recalculateState(hunt);
+      const teamNames = await getTeamNames(mutator.allTeams, trx);
       return {
         result,
         activityLog: mutator.activityLog,
+        allTeams: mutator.allTeams,
         affectedTeams: mutator.affectedTeams,
-        teamNames: await getTeamNames(mutator.affectedTeams, trx),
+        teamNames,
       };
-    },
-  );
+    });
   if (redisClient && affectedTeams) {
     // TODO: Do this in the background?
     await refreshActivityLog(redisClient, knex);
-    for (const team_id of affectedTeams) {
-      const team_activity_log = activityLog.filter(e => e.team_id === undefined || e.team_id === team_id);
-      const state = formatTeamState(hunt, team_id, teamNames[team_id] ?? "", team_activity_log);
-      console.log("affected team", team_id, "new state", state);
+  }
+  const teamStates: Record<number, TeamState> = {};
+  for (const team_id of allTeams) {
+    const team_activity_log = activityLog.filter(
+      (e) => e.team_id === undefined || e.team_id === team_id,
+    );
+    const state = formatTeamState(
+      hunt,
+      team_id,
+      teamNames[team_id] ?? "",
+      team_activity_log,
+    );
+    teamStates[team_id] = state;
+    if (redisClient && affectedTeams.has(team_id)) {
       await publishTeamState(redisClient, team_id, state);
     }
   }
-  return { result, activityLog };
+  return { result, activityLog, teamStates };
 }
 
 async function refreshActivityLog(redisClient: RedisClient, knex: Knex.Knex) {
