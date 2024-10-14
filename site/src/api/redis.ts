@@ -60,112 +60,137 @@ function parseStreamMessage<T>({
   };
 }
 
-// Read a Redis stream formatted with our schema.
-async function readStream<T>(
-  redisClient: RedisClient,
-  key: string,
-  since?: number,
-) {
-  const results = await redisClient.xRead({
-    key,
-    id: since ? `0-${since}` : "0-0",
-  });
-  const messages = (results ?? [])[0]?.messages ?? [];
-  return messages.map(parseStreamMessage<T>);
-}
+class Log<
+  I extends { id: number; team_id?: number },
+  E extends { id: number },
+> {
+  private _key: string;
+  private _convert: (entry: I) => E;
 
-// Get the id of the last processed activity log entry.
-export async function getGlobalHighWaterMark(redisClient: RedisClient) {
-  const messages = await redisClient.xRevRange(
-    "global/activity_log",
-    "+",
-    "-",
-    { COUNT: 1 },
-  );
-  return getHighWaterMark(
-    messages.map(parseStreamMessage<InternalActivityLogEntry>),
-  );
-}
-
-// Read the global activity log, starting from the beginning or from AFTER since.
-export async function getActivityLog(redisClient: RedisClient, since?: number) {
-  const messages = await readStream<InternalActivityLogEntry>(
-    redisClient,
-    `global/activity_log`,
-    since,
-  );
-  return {
-    highWaterMark: getHighWaterMark(messages),
-    entries: messages
-      .filter((m) => m.idNumber > (since ?? 0))
-      .map((m) => m.entry)
-      .filter((m): m is InternalActivityLogEntry => !!m)
-      .map(parseInternalActivityLogEntry),
-  };
-}
-
-// Read the activity log for a team, starting from the beginning or from AFTER since.
-export async function getTeamActivityLog(
-  redisClient: RedisClient,
-  teamId: number,
-  since?: number,
-) {
-  // Check the previous high water mark first, to make sure we don't miss anything.
-  const prevHighWaterMark =
-    (await redisClient.zScore("activity_log", `${teamId}`)) ?? 0;
-
-  // Read the team's existing activity log (may include items higher than prevHighWaterMark).
-  const activityLogMessages = await readStream<InternalActivityLogEntry>(
-    redisClient,
-    `activity_log/${teamId}`,
-    since,
-  );
-  const teamHighWaterMark =
-    getHighWaterMark(activityLogMessages) ?? prevHighWaterMark;
-  // Read the global activity log from the team high water mark.
-  // We can't filter with `since`, because otherwise we might miss some team entries.
-  const globalActivityLogMessages = await readStream<InternalActivityLogEntry>(
-    redisClient,
-    `global/activity_log`,
-    teamHighWaterMark,
-  );
-  const newHighWaterMark =
-    getHighWaterMark(globalActivityLogMessages) ?? prevHighWaterMark;
-  const newActivityLogMessages = globalActivityLogMessages.filter(
-    ({ entry }) =>
-      entry?.team_id === teamId || (entry && entry.team_id === undefined),
-  );
-
-  // If we saw any new activity log entries, make sure we write them out
-  for (const message of newActivityLogMessages) {
-    await appendTeamActivityLog(redisClient, teamId, message);
+  constructor(key: string, converter: (entry: I) => E) {
+    this._key = key;
+    this._convert = converter;
   }
 
-  // If we saw any new activity log entries (whether or not they were for us), update the high water mark
-  if (newHighWaterMark > prevHighWaterMark) {
-    await redisClient.zAdd(
-      "activity_log",
-      {
-        value: `${teamId}`,
-        score: newHighWaterMark,
-      },
-      {
-        GT: true,
-        CH: true,
-      },
+  // Read a Redis stream formatted with our schema.
+  private async readStream(
+    redisClient: RedisClient,
+    key: string,
+    since?: number,
+  ) {
+    const results = await redisClient.xRead({
+      key,
+      id: since ? `0-${since}` : "0-0",
+    });
+    const messages = (results ?? [])[0]?.messages ?? [];
+    return messages.map(parseStreamMessage<I>);
+  }
+
+  // Read the global log, starting from the beginning or from AFTER since.
+  async getGlobalLog(redisClient: RedisClient, since?: number) {
+    const messages = await this.readStream(
+      redisClient,
+      `global/${this._key}`,
+      since,
     );
+    return {
+      highWaterMark: getHighWaterMark(messages),
+      entries: messages
+        .filter((m) => m.idNumber > (since ?? 0))
+        .map((m) => m.entry)
+        .filter((m): m is I => !!m)
+        .map(this._convert),
+    };
   }
-  return {
-    highWaterMark: newHighWaterMark,
-    entries: activityLogMessages
-      .concat(newActivityLogMessages)
-      .filter((m) => m.idNumber > (since ?? 0))
-      .map((m) => m.entry)
-      .filter((m): m is InternalActivityLogEntry => !!m)
-      .map(parseInternalActivityLogEntry),
-  };
+  // Read the log for a team, starting from the beginning or from AFTER since.
+  async getTeamLog(redisClient: RedisClient, teamId: number, since?: number) {
+    // Check the previous high water mark first, to make sure we don't miss anything.
+    const prevHighWaterMark =
+      (await redisClient.zScore(this._key, `${teamId}`)) ?? 0;
+
+    // Read the team's existing log (may include items higher than prevHighWaterMark).
+    const logMessages = await this.readStream(
+      redisClient,
+      `${this._key}/${teamId}`,
+      since,
+    );
+    const teamHighWaterMark =
+      getHighWaterMark(logMessages) ?? prevHighWaterMark;
+    // Read the global log from the team high water mark.
+    // We can't filter with `since`, because otherwise we might miss some team entries.
+    const globalLogMessages = await this.readStream(
+      redisClient,
+      `global/${this._key}`,
+      teamHighWaterMark,
+    );
+    const newHighWaterMark =
+      getHighWaterMark(globalLogMessages) ?? prevHighWaterMark;
+    const newLogMessages = globalLogMessages.filter(
+      ({ entry }) =>
+        entry?.team_id === teamId || (entry && entry.team_id === undefined),
+    );
+
+    // If we saw any new log entries, make sure we write them out
+    for (const message of newLogMessages) {
+      await this.appendTeamLog(redisClient, teamId, message);
+    }
+
+    // If we saw any new log entries (whether or not they were for us), update the high water mark
+    if (newHighWaterMark > prevHighWaterMark) {
+      await redisClient.zAdd(
+        this._key,
+        {
+          value: `${teamId}`,
+          score: newHighWaterMark,
+        },
+        {
+          GT: true,
+          CH: true,
+        },
+      );
+    }
+    return {
+      highWaterMark: newHighWaterMark,
+      entries: logMessages
+        .concat(newLogMessages)
+        .filter((m) => m.idNumber > (since ?? 0))
+        .map((m) => m.entry)
+        .filter((m): m is I => !!m)
+        .map(this._convert),
+    };
+  }
+  // Get the id of the last processed log entry.
+  async getGlobalHighWaterMark(redisClient: RedisClient) {
+    const messages = await redisClient.xRevRange(
+      `global/${this._key}`,
+      "+",
+      "-",
+      { COUNT: 1 },
+    );
+    return getHighWaterMark(messages.map(parseStreamMessage<I>));
+  }
+  // Append an entry to a team's log.
+  private async appendTeamLog(
+    redisClient: RedisClient,
+    teamId: number,
+    message: { id: string; message: Record<string, string> },
+  ) {
+    await appendStream(redisClient, `${this._key}/${teamId}`, message);
+  }
+
+  // Append a log entry to the global log.
+  // For use only by data.refreshActivityLog.
+  async append(redisClient: RedisClient, entry: E) {
+    await appendStream(redisClient, `global/${this._key}`, {
+      id: `0-${entry.id}`,
+      message: {
+        entry: JSON.stringify(entry),
+      },
+    });
+  }
 }
 
+// Append a message to a stream, ignoring duplicate or stale IDs.
 async function appendStream(
   redisClient: RedisClient,
   key: string,
@@ -186,29 +211,12 @@ async function appendStream(
   }
 }
 
-// Append an entry to a team's activity log.
-async function appendTeamActivityLog(
-  redisClient: RedisClient,
-  teamId: number,
-  message: { id: string; message: Record<string, string> },
-) {
-  await appendStream(redisClient, `activity_log/${teamId}`, message);
-}
+export const activityLog = new Log<InternalActivityLogEntry, ActivityLogEntry>(
+  "activity_log",
+  parseInternalActivityLogEntry,
+);
 
-// Append an activity log entry to the global log.
-// For use only by data.refreshActivityLog.
-export async function appendActivityLog(
-  redisClient: RedisClient,
-  entry: ActivityLogEntry,
-) {
-  await appendStream(redisClient, `global/activity_log`, {
-    id: `0-${entry.id}`,
-    message: {
-      entry: JSON.stringify(entry),
-    },
-  });
-}
-
+// Publish a new state to a "stream", if it is newer, and trim older states.
 async function publishState(
   redisClient: RedisClient,
   key: string,
@@ -246,3 +254,13 @@ export async function publishTeamState(
     },
   });
 }
+
+// export async function getTeamState(
+//   redisClient: RedisClient | undefined,
+//   knex: Knex,
+//   teamId: number,
+// ) {
+//   if (redisClient !== undefined) {
+//     const state = await redisClient.xRevRange(`team_state/${teamId}`, )
+//   }
+// }

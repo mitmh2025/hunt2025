@@ -18,10 +18,8 @@ import {
 import { reducerDeriveTeamState } from "./logic";
 import {
   type RedisClient,
-  appendActivityLog,
-  getGlobalHighWaterMark,
+  activityLog as redisActivityLog,
   publishTeamState,
-  getTeamActivityLog as redisGetTeamActivityLog,
 } from "./redis";
 
 export class Mutator {
@@ -209,7 +207,7 @@ export async function executeMutation<T>(
   // TODO: Generalize this function to support operations against all teams.
   if (redisClient) {
     try {
-      cached_log = await redisGetTeamActivityLog(redisClient, team_id);
+      cached_log = await redisActivityLog.getTeamLog(redisClient, team_id);
     } catch (err) {
       console.error("failed to query redis:", err);
     }
@@ -259,7 +257,7 @@ export async function executeMutation<T>(
 
 async function refreshActivityLog(redisClient: RedisClient, knex: Knex.Knex) {
   // Read the latest activity log entry we already have in Redis.
-  const latest = await getGlobalHighWaterMark(redisClient);
+  const latest = await redisActivityLog.getGlobalHighWaterMark(redisClient);
   // Find any newer entries in the DB
   const entries = await knex.transaction(
     (trx) => dbGetActivityLog(undefined, latest, trx),
@@ -268,7 +266,7 @@ async function refreshActivityLog(redisClient: RedisClient, knex: Knex.Knex) {
   // Publish them!
   // TODO: Use Redis pipelining to make this faster
   for (const e of entries) {
-    await appendActivityLog(redisClient, e);
+    await redisActivityLog.append(redisClient, e);
   }
 }
 
