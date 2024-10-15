@@ -2,6 +2,7 @@ import path from "path";
 import express from "express";
 import morgan from "morgan";
 import { WebSocketExpress } from "websocket-express";
+import { refreshActivityLog } from "./api/data";
 import { connect as dbConnect } from "./api/db";
 import { connect as redisConnect } from "./api/redis";
 import { getRouter } from "./api/server";
@@ -28,6 +29,11 @@ export default async function ({
   const knex = await dbConnect(dbEnvironment);
 
   const redisClient = redisUrl ? await redisConnect(redisUrl) : undefined;
+
+  if (redisClient !== undefined) {
+    // Make sure Redis is up to date
+    await refreshActivityLog(redisClient, knex);
+  }
 
   const hunt = HUNT;
 

@@ -282,7 +282,10 @@ export async function executeMutation<T>(
   return { result, activityLog, teamStates };
 }
 
-async function refreshActivityLog(redisClient: RedisClient, knex: Knex.Knex) {
+export async function refreshActivityLog(
+  redisClient: RedisClient,
+  knex: Knex.Knex,
+) {
   // Read the latest activity log entry we already have in Redis.
   const latest = await redisActivityLog.getGlobalHighWaterMark(redisClient);
   // Find any newer entries in the DB
