@@ -291,10 +291,7 @@ async function refreshActivityLog(redisClient: RedisClient, knex: Knex.Knex) {
     { readOnly: true },
   );
   // Publish them!
-  // TODO: Use Redis pipelining to make this faster
-  for (const e of entries) {
-    await redisActivityLog.append(redisClient, e);
-  }
+  await redisActivityLog.extend(redisClient, entries);
 }
 
 type InteractionState = z.infer<typeof InteractionStateSchema>;

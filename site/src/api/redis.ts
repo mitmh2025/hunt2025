@@ -1,11 +1,46 @@
-import { ErrorReply, createClient as redisCreateClient } from "redis";
+import {
+  ErrorReply,
+  createClient as redisCreateClient,
+  defineScript,
+} from "redis";
 import { type TeamState } from "../../lib/api/client";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 
 export async function connect(redisUrl: string) {
-  const options = redisUrl.startsWith("unix://")
+  const connectOptions = redisUrl.startsWith("unix://")
     ? { socket: { path: redisUrl.replace("unix://", "") } }
     : { url: redisUrl };
+  const options = {
+    ...connectOptions,
+    scripts: {
+      extendLog: defineScript({
+        SCRIPT: `
+local key = KEYS[1]
+local count = 0
+for i=1,table.maxn(ARGV),2 do
+  local id = ARGV[i]
+  local entry = ARGV[i+1]
+  local reply = redis.pcall('XADD', KEYS[1], id, 'entry', entry)
+  if reply['err'] == 'ERR The ID specified in XADD is equal or smaller than the target stream top item' then
+  elseif reply['err'] ~= nil then
+    return reply
+  else
+    count = count + 1
+  end
+end
+return count
+`,
+        NUMBER_OF_KEYS: 1,
+        FIRST_KEY_INDEX: 1,
+        transformArguments(
+          key: string,
+          entries: { id: string; entry: string }[],
+        ): string[] {
+          return [key, ...entries.flatMap((m) => [m.id, m.entry])];
+        },
+      }),
+    },
+  };
   const client = redisCreateClient(options);
   // We must set an error handler, or the whole process will get terminated if our connection to
   // redis ever fails!
@@ -132,9 +167,7 @@ export class Log<T extends { id: number; team_id?: number }> {
     );
 
     // If we saw any new log entries, make sure we write them out
-    for (const message of newLogMessages) {
-      await this.appendTeamLog(redisClient, teamId, message);
-    }
+    await this.extendTeamLog(redisClient, teamId, newLogMessages);
 
     // If we saw any new log entries (whether or not they were for us), update the high water mark
     if (newHighWaterMark > prevHighWaterMark) {
@@ -169,45 +202,41 @@ export class Log<T extends { id: number; team_id?: number }> {
     );
     return getHighWaterMark(messages.map(parseStreamMessage<T>));
   }
-  // Append an entry to a team's log.
-  private async appendTeamLog(
+  // Append one or more entries to a team's log.
+  private async extendTeamLog(
     redisClient: RedisClient,
     teamId: number,
-    message: { id: string; message: Record<string, string> },
+    messages: { id: string; message: Record<string, string> }[],
   ) {
-    await appendStream(redisClient, `${this._key}/${teamId}`, message);
+    await redisClient.extendLog(
+      `${this._key}/${teamId}`,
+      messages.flatMap((m) =>
+        m.message.entry
+          ? [
+              {
+                id: m.id,
+                entry: m.message.entry,
+              },
+            ]
+          : [],
+      ),
+    );
   }
 
-  // Append a log entry to the global log.
+  // Append one or more log entries to the global log.
   // For use only by data.refreshActivityLog.
-  async append<E extends { id: number }>(redisClient: RedisClient, entry: E) {
-    await appendStream(redisClient, `global/${this._key}`, {
-      id: `0-${entry.id}`,
-      message: {
+  async extend<E extends { id: number }>(
+    redisClient: RedisClient,
+    entries: E[],
+  ) {
+    // TODO: Consider batching?
+    await redisClient.extendLog(
+      `global/${this._key}`,
+      entries.map((entry) => ({
+        id: `0-${entry.id}`,
         entry: JSON.stringify(entry),
-      },
-    });
-  }
-}
-
-// Append a message to a stream, ignoring duplicate or stale IDs.
-async function appendStream(
-  redisClient: RedisClient,
-  key: string,
-  message: { id: string; message: Record<string, string> },
-) {
-  try {
-    await redisClient.xAdd(key, message.id, message.message);
-  } catch (e) {
-    // Ignore duplicate keys
-    if (
-      e instanceof ErrorReply &&
-      e.message ===
-        "ERR The ID specified in XADD is equal or smaller than the target stream top item"
-    ) {
-      return;
-    }
-    throw e;
+      })),
+    );
   }
 }
 
