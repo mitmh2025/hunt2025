@@ -25,11 +25,11 @@ const workerManifestFilename = path.join(
 
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 
-class OpusManifestPlugin {
+class RadioManifestPlugin {
   constructor(opts) {
     if (!opts.fileName || !opts.staticOutputPath) {
       throw new Error(
-        "OpusManifestPlugin requires fileName and staticOutputPath be set in options to constructor",
+        "RadioManifestPlugin requires fileName and staticOutputPath be set in options to constructor",
       );
     }
     this.fileName = opts.fileName;
@@ -78,6 +78,19 @@ class OpusManifestPlugin {
             line,
           });
         }
+      } else if (asset.info.sourceFilename?.startsWith("src/assets/radio/")) {
+        // Collect the relevant fields from other assets
+        const src = asset.info.sourceFilename;
+        // strip the src/assets/radio/ prefix
+        const name = src.slice("src/assets/radio/".length);
+        files.push({
+          name,
+          size: asset.size,
+          hash: asset.info.fullhash[0],
+          url: `${ASSET_PATH}${asset.name}`,
+          src,
+          assetName: asset.name,
+        });
       }
       //console.log("leaf asset", asset);
       //console.log("name", asset.name);
@@ -170,7 +183,7 @@ class OpusManifestPlugin {
 
   apply(compiler) {
     const hookOptions = {
-      name: "OpusManifestPlugin",
+      name: "RadioManifestPlugin",
       stage: Infinity,
     };
 
@@ -228,6 +241,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const wavRule = {
+    test: /\.wav$/,
+    type: "asset/resource",
+  };
+
   const opusRule = {
     test: /\.opus$/,
     type: "asset/resource",
@@ -282,8 +300,9 @@ export default function createConfigs(_env, argv) {
         // the results of the browser build bundles
         imageRule,
         mp3Rule,
-        // Opus files should only be used by the radio and thus should never be
-        // imported by browser entrypoints, only server entrypoints.
+        wavRule,
+        // Opus files should only be used by the radio and thus should
+        // never be imported by browser entrypoints, only server entrypoints.
         opusRule,
         fontRule,
       ],
@@ -311,7 +330,7 @@ export default function createConfigs(_env, argv) {
         filename: "static/[contenthash].css",
         runtime: false,
       }),
-      new OpusManifestPlugin({
+      new RadioManifestPlugin({
         fileName: path.join(outputManifestDirname, "radio-manifest.json"),
         staticOutputPath: path.join(outputDirname, "static"),
       }),
@@ -368,6 +387,7 @@ export default function createConfigs(_env, argv) {
         cssRule,
         imageRule,
         mp3Rule,
+        wavRule,
         fontRule,
       ],
     },

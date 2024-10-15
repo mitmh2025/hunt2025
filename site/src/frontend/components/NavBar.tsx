@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import diamondIcon from "../../assets/diamond.svg";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
 import AudioControls from "./AudioControls";
+import "../../assets/radio/celebration.wav";
 
 const Nav = styled.nav`
   height: 3rem;
