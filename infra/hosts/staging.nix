@@ -85,6 +85,7 @@
           pem.key_file = "${certDir}/key.pem";
         };
       in {
+        server.forward_headers_strategy = "NATIVE";
         device.connectivity = {
           mqtts.enabled = true;
           coaps.enabled = true;
