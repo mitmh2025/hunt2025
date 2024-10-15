@@ -6,6 +6,7 @@ import {
 import { type z } from "zod";
 import { type TeamState } from "../../lib/api/client";
 import { type InteractionStateSchema } from "../../lib/api/contract";
+import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -14,7 +15,7 @@ import {
   getTeamNames,
   retryOnAbort,
 } from "./db";
-import { reducerDeriveTeamState } from "./logic";
+import { parseInternalActivityLogEntry, reducerDeriveTeamState } from "./logic";
 import {
   type RedisClient,
   activityLog as redisActivityLog,
@@ -221,7 +222,10 @@ export async function executeMutation<T>(
   //   2b. execute mutation, tracking the added activity log entries with their ids
   //   2c. commit transaction
   // 3. compute team/puzzle state using the combined activity log, with the last added activity log id as the epoch
-  let cached_log: { highWaterMark?: number; entries: ActivityLogEntry[] } = {
+  let cached_log: {
+    highWaterMark?: number;
+    entries: InternalActivityLogEntry[];
+  } = {
     highWaterMark: undefined,
     entries: [],
   };
@@ -240,7 +244,9 @@ export async function executeMutation<T>(
         cached_log.highWaterMark,
         trx,
       );
-      const combined_log = cached_log.entries.concat(new_log);
+      const combined_log = cached_log.entries
+        .map(parseInternalActivityLogEntry)
+        .concat(new_log);
       const mutator = new ActivityLogMutator(trx, combined_log);
       const result = await fn(trx, mutator);
       await mutator.recalculateState(hunt);

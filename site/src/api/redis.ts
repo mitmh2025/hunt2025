@@ -1,8 +1,6 @@
-import { type ActivityLogEntry } from "knex/types/tables";
 import { ErrorReply, createClient as redisCreateClient } from "redis";
 import { type TeamState } from "../../lib/api/client";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
-import { parseInternalActivityLogEntry } from "./logic";
 
 export async function connect(redisUrl: string) {
   const options = redisUrl.startsWith("unix://")
@@ -60,16 +58,11 @@ function parseStreamMessage<T>({
   };
 }
 
-class Log<
-  I extends { id: number; team_id?: number },
-  E extends { id: number },
-> {
+export class Log<T extends { id: number; team_id?: number }> {
   private _key: string;
-  private _convert: (entry: I) => E;
 
-  constructor(key: string, converter: (entry: I) => E) {
+  constructor(key: string) {
     this._key = key;
-    this._convert = converter;
   }
 
   // Read a Redis stream formatted with our schema.
@@ -77,29 +70,37 @@ class Log<
     redisClient: RedisClient,
     key: string,
     since?: number,
+    options?: { BLOCK?: number },
   ) {
-    const results = await redisClient.xRead({
-      key,
-      id: since ? `0-${since}` : "0-0",
-    });
+    const results = await redisClient.xRead(
+      {
+        key,
+        id: since ? `0-${since}` : "0-0",
+      },
+      options,
+    );
     const messages = (results ?? [])[0]?.messages ?? [];
-    return messages.map(parseStreamMessage<I>);
+    return messages.map(parseStreamMessage<T>);
   }
 
   // Read the global log, starting from the beginning or from AFTER since.
-  async getGlobalLog(redisClient: RedisClient, since?: number) {
+  async getGlobalLog(
+    redisClient: RedisClient,
+    since?: number,
+    options?: { BLOCK?: number },
+  ) {
     const messages = await this.readStream(
       redisClient,
       `global/${this._key}`,
       since,
+      options,
     );
     return {
       highWaterMark: getHighWaterMark(messages),
       entries: messages
         .filter((m) => m.idNumber > (since ?? 0))
         .map((m) => m.entry)
-        .filter((m): m is I => !!m)
-        .map(this._convert),
+        .filter((m): m is T => !!m),
     };
   }
   // Read the log for a team, starting from the beginning or from AFTER since.
@@ -155,8 +156,7 @@ class Log<
         .concat(newLogMessages)
         .filter((m) => m.idNumber > (since ?? 0))
         .map((m) => m.entry)
-        .filter((m): m is I => !!m)
-        .map(this._convert),
+        .filter((m): m is T => !!m),
     };
   }
   // Get the id of the last processed log entry.
@@ -167,7 +167,7 @@ class Log<
       "-",
       { COUNT: 1 },
     );
-    return getHighWaterMark(messages.map(parseStreamMessage<I>));
+    return getHighWaterMark(messages.map(parseStreamMessage<T>));
   }
   // Append an entry to a team's log.
   private async appendTeamLog(
@@ -180,7 +180,7 @@ class Log<
 
   // Append a log entry to the global log.
   // For use only by data.refreshActivityLog.
-  async append(redisClient: RedisClient, entry: E) {
+  async append<E extends { id: number }>(redisClient: RedisClient, entry: E) {
     await appendStream(redisClient, `global/${this._key}`, {
       id: `0-${entry.id}`,
       message: {
@@ -211,10 +211,7 @@ async function appendStream(
   }
 }
 
-export const activityLog = new Log<InternalActivityLogEntry, ActivityLogEntry>(
-  "activity_log",
-  parseInternalActivityLogEntry,
-);
+export const activityLog = new Log<InternalActivityLogEntry>("activity_log");
 
 // Publish a new state to a "stream", if it is newer, and trim older states.
 async function publishState(
