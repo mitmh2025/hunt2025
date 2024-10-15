@@ -88,8 +88,8 @@ export class ActivityLogMutator extends Mutator<
 
   // Refresh the state for every team that was affected.
   // We assume that this.activityLog contains the full activity log for all affected teams.
-  async recalculateState(hunt: Hunt) {
-    for (const team_id of this.affectedTeams) {
+  async recalculateState(hunt: Hunt, all?: boolean) {
+    for (const team_id of all ? this.allTeams : this.affectedTeams) {
       await recalculateTeamState(
         hunt,
         team_id,
@@ -102,7 +102,7 @@ export class ActivityLogMutator extends Mutator<
   }
 }
 
-export async function recalculateTeamState(
+async function recalculateTeamState(
   hunt: Hunt,
   team_id: number,
   activity_log: ActivityLogEntry[],
