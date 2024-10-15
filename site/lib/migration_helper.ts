@@ -25,3 +25,20 @@ export function generatedPrimaryKey(
   }
   return table;
 }
+
+export function jsonPathValue(knex: Knex, column: string, path: string[]) {
+  const driverName = (knex.client as Knex.Client).driverName;
+  switch (driverName) {
+    case "sqlite3":
+    case "better-sqlite3":
+    case "pg":
+    case "pgnative":
+      return knex.raw(
+        `??${path.slice(0, -1).map((p) => ` -> '${p}'`)} ->> '${path.at(-1)}'`,
+        [column],
+      );
+      break;
+    default:
+      throw new Error(`${driverName} does not have a string_agg function`);
+  }
+}

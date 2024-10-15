@@ -1,4 +1,4 @@
-import type { NextFunction, Request } from "express";
+import { type NextFunction, type Request } from "express";
 import type { WSResponse } from "websocket-express";
 import workersManifest from "../../../dist/worker-manifest.json";
 import { type ActivityLogEntry, type TeamState } from "../../../lib/api/client";
@@ -27,12 +27,7 @@ import {
 import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
-import {
-  type DatasetTailer,
-  newActivityLogTailer,
-  newGuessLogTailer,
-  type GuessLogEntry,
-} from "./dataset_tailer";
+import { type DatasetTailer, newActivityLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
 import { allPuzzlesState } from "./routes/all_puzzles";
 
@@ -123,7 +118,6 @@ type ActivityLogSubscriptionHandler = {
 type GuessLogSubscriptionHandler = {
   type: "guess_log";
   dataset: Dataset;
-  updatesSent: number;
   slug: string;
   stop: () => void;
 };
@@ -305,24 +299,23 @@ class ConnHandler {
     }
   }
 
-  appendGuessLogEntry(subId: string, entry: GuessLogEntry) {
+  appendGuessLogEntry(
+    subId: string,
+    entry: InternalActivityLogEntry & { type: "puzzle_guess_submitted" },
+  ) {
     const sub = this.subs.get(subId);
     if (sub && isGuessLogSubscription(sub)) {
-      // Unpack only the desired fields
-      const { status, canonical_input, response, timestamp } = entry;
-      // Synthesize an id field, which is just the index into this puzzle's guess history
       this.send({
         subId,
         type: "update",
         value: {
-          id: sub.updatesSent,
-          status,
-          canonical_input,
-          response,
-          timestamp,
+          id: entry.id,
+          status: entry.data.status,
+          canonical_input: entry.data.canonical_input,
+          response: entry.data.response,
+          timestamp: entry.timestamp,
         },
       });
-      sub.updatesSent += 1;
     }
   }
 
@@ -414,7 +407,6 @@ class ConnHandler {
           const subHandler: SubscriptionHandler<object> = {
             type: "guess_log",
             dataset,
-            updatesSent: 0,
             slug: params.slug,
             stop: () => {
               /* stub */
@@ -495,8 +487,6 @@ export class WebsocketManager
 
   private activityLogTailer: DatasetTailer<InternalActivityLogEntry>;
 
-  private guessLogTailer: DatasetTailer<GuessLogEntry>;
-
   constructor({
     redisClient,
     frontendApiClient,
@@ -514,7 +504,6 @@ export class WebsocketManager
       redisClient,
       frontendApiClient,
     });
-    this.guessLogTailer = newGuessLogTailer({ redisClient, frontendApiClient });
   }
 
   async connectToRedis() {
@@ -582,7 +571,9 @@ export class WebsocketManager
           const entry = parseInternalActivityLogEntry(internalEntry);
           if (entry.team_id === teamId || entry.team_id === undefined) {
             const apiEntry = formatActivityLogEntryForApi(entry);
-            conn.appendActivityLogEntry(subId, apiEntry);
+            if (apiEntry !== undefined) {
+              conn.appendActivityLogEntry(subId, apiEntry);
+            }
           }
         });
       },
@@ -601,19 +592,25 @@ export class WebsocketManager
     subId: string,
     conn: ConnHandler,
   ): () => void {
-    const stop = this.guessLogTailer.watchLog((entries: GuessLogEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.team_id === teamId && entry.slug === slug) {
-          conn.appendGuessLogEntry(subId, entry);
-        }
-      });
-    });
+    const stop = this.activityLogTailer.watchLog(
+      (entries: InternalActivityLogEntry[]) => {
+        entries.forEach((entry) => {
+          if (
+            entry.team_id === teamId &&
+            entry.type === "puzzle_guess_submitted" &&
+            entry.slug === slug
+          ) {
+            conn.appendGuessLogEntry(subId, entry);
+          }
+        });
+      },
+    );
 
     return stop;
   }
 
   guessLogReadyPromise(): Promise<void> {
-    return this.guessLogTailer.readyPromise();
+    return this.activityLogTailer.readyPromise();
   }
 
   async requestHandler(req: Request, res: WSResponse, next: NextFunction) {

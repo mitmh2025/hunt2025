@@ -18,7 +18,6 @@ import {
   type GuessStatus,
   type ActivityLogEntry,
   type InsertActivityLogEntry,
-  type TeamPuzzleGuess,
 } from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
@@ -30,19 +29,12 @@ import { frontendContract } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
-import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
 import { executeMutation, formatTeamState, type Mutator } from "./data";
-import {
-  getTeamState as dbGetTeamState,
-  getPuzzleState as dbGetPuzzleState,
-  recalculateTeamState,
-  appendActivityLog,
-} from "./db";
+import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
-  fixTimestamp,
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
 } from "./logic";
@@ -143,7 +135,6 @@ export function getRouter({
   const formatPuzzleState = (
     slug: string,
     activity_log: ActivityLogEntry[],
-    { answer, guesses }: { answer?: string; guesses: TeamPuzzleGuess[] },
   ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
@@ -178,11 +169,21 @@ export function getRouter({
         : data.unlockable_puzzles.has(slug)
           ? "unlockable"
           : "locked";
+
+    const guesses = activity_log.filter(
+      (e): e is ActivityLogEntry & { type: "puzzle_guess_submitted" } =>
+        e.type === "puzzle_guess_submitted" && e.slug === slug,
+    );
+    const correct_answers = guesses
+      .filter((e) => e.data.status === "correct")
+      .map((e) => e.data.canonical_input)
+      .sort();
+
     const result: PuzzleState = {
       round,
       locked,
       guesses: guesses.map(
-        ({ canonical_input, status, response, timestamp }) => ({
+        ({ data: { canonical_input, status, response }, timestamp }) => ({
           canonical_input,
           status,
           response,
@@ -190,8 +191,8 @@ export function getRouter({
         }),
       ),
     };
-    if (answer) {
-      result.answer = answer;
+    if (correct_answers.length > 0) {
+      result.answer = correct_answers.join(", ");
     }
     return result;
   };
@@ -202,9 +203,7 @@ export function getRouter({
     trx: Knex.Transaction,
   ): Promise<PuzzleState | undefined> => {
     const { activity_log } = await dbGetTeamState(team_id, trx);
-    // TODO: Fetch relevant puzzle state from the DB -- puzzle status, answer, guesses, is the round it belongs to unlocked
-    const { answer, guesses } = await dbGetPuzzleState(team_id, slug, trx);
-    return formatPuzzleState(slug, activity_log, { answer, guesses });
+    return formatPuzzleState(slug, activity_log);
   };
 
   const executeTeamStateHandler = async (
@@ -234,22 +233,6 @@ export function getRouter({
       status: 404 as const,
       body: null,
     };
-  };
-
-  const refreshTeamState = async (
-    hunt: Hunt,
-    team_id: number,
-    trx: Knex.Transaction,
-  ): Promise<[TeamState, DeferredPublications]> => {
-    const activityLogWrites = await recalculateTeamState(hunt, team_id, trx);
-    const teamState = await getTeamState(team_id, trx);
-    return [
-      teamState,
-      new DeferredPublications({
-        activityLog: activityLogWrites,
-        teamState: [teamState],
-      }),
-    ];
   };
 
   const authMiddleware = passport.authenticate("jwt", {
@@ -385,9 +368,10 @@ export function getRouter({
             .orWhereNull("team_id")
             .select("id", "timestamp", "type", "slug", "currency_delta", "data")
             .orderBy("id");
-          const body = entries.map((e) => {
+          const body = entries.flatMap((e) => {
             const parsedEntry = cleanupActivityLogEntryFromDB(e);
-            return formatActivityLogEntryForApi(parsedEntry);
+            const apiEntry = formatActivityLogEntryForApi(parsedEntry);
+            return apiEntry !== undefined ? [apiEntry] : [];
           });
           return {
             status: 200,
@@ -433,30 +417,23 @@ export function getRouter({
               (guess) => canonicalizeInput(guess) === canonical_input,
             ),
           );
-          // TODO: Make sure that we retry/wait for conflicts.
 
-          const [response, deferred] = await knex.transaction(
-            async function (trx) {
-              const deferredPublications = new DeferredPublications({});
+          const { result, activityLog } = await executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              const puzzle_log = mutator.log.filter((e) => e.slug === slug);
               // Check that the puzzle is unlocked before allowing guess submission.
-              const unlocked = await trx<
-                ActivityLogEntry & { type: "puzzle_unlocked" }
-              >("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .where("type", "puzzle_unlocked")
-                .where("slug", slug)
-                .select("slug")
-                .first();
-              if (unlocked === undefined) {
-                return [
-                  {
-                    status: 404 as const,
-                    body: null,
-                  },
-                  deferredPublications,
-                ];
+              const unlocked = puzzle_log.some(
+                (e) => e.type === "puzzle_unlocked",
+              );
+              if (!unlocked) {
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
               }
 
               // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
@@ -464,28 +441,17 @@ export function getRouter({
               // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
               // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
               // for the purposes of rate-limiting.
-              const last_reset_time_record = await trx<ActivityLogEntry>(
-                "activity_log",
-              )
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .where("type", "rate_limits_reset")
-                .where("slug", slug)
-                .orderBy("id", "desc")
-                .select("timestamp")
-                .first();
-              const last_reset_time = last_reset_time_record
-                ? fixTimestamp(last_reset_time_record.timestamp)
-                : undefined;
-              const previous_guess_times = (
-                await trx("team_puzzle_guesses")
-                  .where("team_id", team_id)
-                  .where("slug", slug)
-                  .where("status", "incorrect")
-                  .orderBy("timestamp")
-                  .pluck("timestamp")
-              ).map(fixTimestamp);
+              const last_reset_time_record = puzzle_log.findLast(
+                (e) => e.type === "rate_limits_reset",
+              );
+              const last_reset_time = last_reset_time_record?.timestamp;
+              const previous_guess_times = puzzle_log
+                .filter(
+                  (e) =>
+                    e.type === "puzzle_guess_submitted" &&
+                    e.data.status === "incorrect",
+                )
+                .map((e) => e.timestamp);
               const effective_previous_guess_times =
                 last_reset_time !== undefined
                   ? previous_guess_times.filter((t) => t > last_reset_time)
@@ -495,15 +461,12 @@ export function getRouter({
               );
               const now = Date.now();
               if (now < allowAfter.getTime()) {
-                return [
-                  {
-                    status: 429 as const,
-                    body: {
-                      retryAfter: allowAfter.toISOString(),
-                    },
+                return {
+                  status: 429 as const,
+                  body: {
+                    retryAfter: allowAfter.toISOString(),
                   },
-                  deferredPublications,
-                ];
+                };
               }
 
               // Determine our disposition on this submission.
@@ -525,105 +488,59 @@ export function getRouter({
               // Attempt to insert a new guess.  If this guess's input matches some other canonical
               // input, inserted should be empty thanks to the unique index and
               // onConflict()/ignore().
-              const inserted = await trx("team_puzzle_guesses")
-                .insert({
-                  team_id,
-                  slug,
+              const inserted = await mutator.appendLog({
+                team_id,
+                slug,
+                type: "puzzle_guess_submitted",
+                data: {
                   canonical_input,
                   status,
                   response: responseText,
-                })
-                .onConflict(["team_id", "slug", "canonical_input"])
-                .ignore()
-                .returning(["id", "timestamp"])
-                .then((objs) => {
-                  return objs.map(({ id, timestamp }) => {
-                    return {
-                      id,
-                      team_id,
-                      slug,
-                      canonical_input,
-                      status,
-                      response: responseText,
-                      timestamp: fixTimestamp(timestamp),
-                    };
-                  });
-                });
-              deferredPublications.addGuessLogEntries(inserted);
+                },
+              });
 
               // Only add relevant entries to the activity log if the guess was novel and inserted
               // a record.  Otherwise, we might grant double rewards for the same guess.
-              if (inserted.length > 0) {
+              if (inserted !== undefined) {
                 // This was a new guess.
                 if (correct_answer) {
                   // It was right and the puzzle is now solved.
-                  const entry = await appendActivityLog(
-                    {
-                      team_id,
-                      slug,
-                      type: "puzzle_solved",
-                      currency_delta: cannedResponseProvidesPrize ? 0 : prize,
-                      data: {
-                        answer: canonical_input,
-                      },
+                  await mutator.appendLog({
+                    team_id,
+                    slug,
+                    type: "puzzle_solved",
+                    currency_delta: cannedResponseProvidesPrize ? 0 : prize,
+                    data: {
+                      answer: canonical_input,
                     },
-                    trx,
-                  );
-                  deferredPublications.addActivityLogEntries([entry]);
+                  });
                 } else if (correct_canned_response?.providesSolveReward) {
                   // The guess matched an intermediate for which we provide the solve reward.  We
                   // need to issue a prize for this particular canned response, which means we need
                   // an activity log entry for it.
-                  const entry = await appendActivityLog(
-                    {
-                      team_id,
-                      slug,
-                      type: "puzzle_partially_solved",
-                      currency_delta: prize,
-                      data: {
-                        partial: canonical_input,
-                      },
+                  await mutator.appendLog({
+                    team_id,
+                    slug,
+                    type: "puzzle_partially_solved",
+                    currency_delta: prize,
+                    data: {
+                      partial: canonical_input,
                     },
-                    trx,
-                  );
-                  deferredPublications.addActivityLogEntries([entry]);
+                  });
                 }
-
-                const [_, newWrites] = await refreshTeamState(
-                  hunt,
-                  team_id,
-                  trx,
-                );
-                // TODO: Invalidate caches
-
-                return [
-                  {
-                    status: 200 as const,
-                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                     * We know the puzzle state exists because we checked the db above. */
-                    body: (await getPuzzleState(team_id, slug, trx))!,
-                  },
-                  deferredPublications.concat(newWrites),
-                ];
-              } else {
-                // That guess had already been submitted; nothing to do.  Just return the body
-                return [
-                  {
-                    status: 200 as const,
-                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                     * We know the puzzle state exists because we checked the db above. */
-                    body: (await getPuzzleState(team_id, slug, trx))!,
-                  },
-                  deferredPublications,
-                ];
               }
-            },
-            {
-              isolationLevel: "serializable",
+              return { status: 200 as const };
             },
           );
-          await deferred.publish(redisClient);
-          return response;
+          if (result.status === 200) {
+            return {
+              status: 200 as const,
+              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+               * We know the puzzle state exists because we checked the db above. */
+              body: formatPuzzleState(slug, activityLog)!,
+            };
+          }
+          return result;
         },
       },
       unlockPuzzle: {
@@ -668,15 +585,11 @@ export function getRouter({
             },
           );
           if (result) {
-            const { answer, guesses } = await knex.transaction(
-              (trx) => dbGetPuzzleState(team_id, slug, trx),
-              { readOnly: true },
-            );
             return {
               status: 200 as const,
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, activityLog, { answer, guesses })!,
+              body: formatPuzzleState(slug, activityLog)!,
             };
           }
           return {
@@ -852,62 +765,6 @@ export function getRouter({
               timestamp: entry.timestamp.toISOString(),
             };
           });
-          return {
-            status: 200,
-            body,
-          };
-        },
-      },
-      getFullGuessHistory: {
-        middleware: [frontendAuthMiddleware],
-        handler: async ({ query: { since } }) => {
-          let effectiveSince = undefined;
-          if (since) {
-            const sinceParsed = Number(since);
-            if (sinceParsed > 0) {
-              effectiveSince = sinceParsed;
-            }
-          }
-          const entries = await knex.transaction(
-            async (trx) => {
-              let q = trx("team_puzzle_guesses");
-              if (effectiveSince !== undefined) {
-                q = q.where("id", ">", effectiveSince);
-              }
-              q = q.select(
-                "id",
-                "team_id",
-                "slug",
-                "canonical_input",
-                "status",
-                "response",
-                "timestamp",
-              );
-              return q;
-            },
-            { readOnly: true },
-          );
-          const body = entries.map(
-            ({
-              id,
-              team_id,
-              slug,
-              canonical_input,
-              status,
-              response,
-              timestamp,
-            }) => {
-              return {
-                id,
-                team_id,
-                slug,
-                canonical_input,
-                status,
-                response,
-                timestamp: fixTimestamp(timestamp).toISOString(),
-              };
-            },
-          );
           return {
             status: 200,
             body,

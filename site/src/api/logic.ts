@@ -231,6 +231,17 @@ export function parseInternalActivityLogEntry(
         data: ie.data,
         internal_data: ie.internal_data,
       };
+    case "puzzle_guess_submitted":
+      return {
+        id: ie.id,
+        team_id: ie.team_id,
+        timestamp: ts,
+        currency_delta: ie.currency_delta,
+        type: ie.type,
+        slug: ie.slug,
+        data: ie.data,
+        internal_data: ie.internal_data,
+      };
     case "puzzle_partially_solved":
       return {
         id: ie.id,
@@ -268,7 +279,11 @@ export function formatActivityLogEntryForApi(
     | "data"
     | "internal_data"
   >,
-): ActivityLog[number] {
+): ActivityLog[number] | undefined {
+  switch (e.type) {
+    case "puzzle_guess_submitted":
+      return undefined;
+  }
   let entry: Partial<ActivityLog[number]> = {
     id: e.id,
     timestamp: e.timestamp.toISOString(),

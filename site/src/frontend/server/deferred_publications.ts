@@ -1,32 +1,24 @@
-import { type ActivityLogEntry, type TeamPuzzleGuess } from "knex/types/tables";
+import { type ActivityLogEntry } from "knex/types/tables";
 import { type TeamState } from "../../../lib/api/client";
 import { type RedisClient } from "../../api/redis";
 
 export class DeferredPublications {
   private activityLog?: ActivityLogEntry[];
-  private guessLog?: TeamPuzzleGuess[];
   private teamState?: TeamState[];
 
   constructor({
     activityLog,
-    guessLog,
     teamState,
   }: {
     activityLog?: ActivityLogEntry[];
-    guessLog?: TeamPuzzleGuess[];
     teamState?: TeamState[];
   }) {
     this.activityLog = activityLog;
-    this.guessLog = guessLog;
     this.teamState = teamState;
   }
 
   addActivityLogEntries(entries: ActivityLogEntry[]) {
     this.activityLog = (this.activityLog ?? []).concat(entries);
-  }
-
-  addGuessLogEntries(guesses: TeamPuzzleGuess[]) {
-    this.guessLog = (this.guessLog ?? []).concat(guesses);
   }
 
   addTeamState(teamStates: TeamState[]) {
@@ -40,12 +32,8 @@ export class DeferredPublications {
     const teamState = this.teamState
       ? this.teamState.concat(other.teamState ?? [])
       : other.teamState;
-    const guessLog = this.guessLog
-      ? this.guessLog.concat(other.guessLog ?? [])
-      : other.guessLog;
     return new DeferredPublications({
       activityLog,
-      guessLog,
       teamState,
     });
   }
@@ -66,14 +54,6 @@ export class DeferredPublications {
             const team_id = state.teamId;
             const topic = `team_state.${team_id}`;
             await redisClient.publish(topic, JSON.stringify(state));
-          }
-        }
-        if (this.guessLog) {
-          for (const guess of this.guessLog) {
-            await redisClient.publish(
-              "global/guess_log",
-              JSON.stringify(guess),
-            );
           }
         }
       } catch (e: unknown) {

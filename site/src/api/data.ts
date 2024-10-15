@@ -1,6 +1,5 @@
 import type Knex from "knex";
 import {
-  //type TeamPuzzleGuess,
   type ActivityLogEntry,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
@@ -26,12 +25,18 @@ export class Mutator<T extends { id: number; team_id?: number }, I> {
   private _trx: Knex.Knex.Transaction;
   private _log: T[];
   private _affectedTeams: Set<number> | undefined;
-  private _dbAppendLog: (entry: I, trx: Knex.Knex.Transaction) => Promise<T>;
+  private _dbAppendLog: (
+    entry: I,
+    trx: Knex.Knex.Transaction,
+  ) => Promise<T | undefined>;
 
   constructor(
     trx: Knex.Knex.Transaction,
     log: T[],
-    dbAppendLog: (entry: I, trx: Knex.Knex.Transaction) => Promise<T>,
+    dbAppendLog: (
+      entry: I,
+      trx: Knex.Knex.Transaction,
+    ) => Promise<T | undefined>,
   ) {
     this._trx = trx;
     this._log = log;
@@ -41,11 +46,13 @@ export class Mutator<T extends { id: number; team_id?: number }, I> {
 
   async appendLog(entry: I) {
     const inserted_entry = await this._dbAppendLog(entry, this._trx);
-    this._log = this._log.concat([inserted_entry]);
-    if (inserted_entry.team_id === undefined) {
-      this._affectedTeams = undefined; // We don't know yet
-    } else if (this._affectedTeams !== undefined) {
-      this._affectedTeams.add(inserted_entry.team_id);
+    if (inserted_entry !== undefined) {
+      this._log = this._log.concat([inserted_entry]);
+      if (inserted_entry.team_id === undefined) {
+        this._affectedTeams = undefined; // We don't know yet
+      } else if (this._affectedTeams !== undefined) {
+        this._affectedTeams.add(inserted_entry.team_id);
+      }
     }
     return inserted_entry;
   }
@@ -70,7 +77,7 @@ export class Mutator<T extends { id: number; team_id?: number }, I> {
   }
 }
 
-class ActivityLogMutator extends Mutator<
+export class ActivityLogMutator extends Mutator<
   ActivityLogEntry,
   InsertActivityLogEntry
 > {
