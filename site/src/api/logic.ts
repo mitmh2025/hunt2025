@@ -141,6 +141,28 @@ export type FormattableTeamState = {
   >;
 };
 
+export function teamStateFromReducedIntermediate(
+  intermediate: TeamStateIntermediate,
+): FormattableTeamState {
+  // This is intended only for read-only codepaths, where we expect all relevant state to already be
+  // reified into the activity log.  Unlike reducerDeriveTeamState, which will run calculateTeamState
+  // again, we consider here only what the intermediate already knows.
+
+  return {
+    epoch: intermediate.epoch,
+    available_currency: intermediate.available_currency,
+    unlocked_rounds: intermediate.rounds_unlocked,
+    visible_puzzles: intermediate.puzzles_unlockable.union(
+      intermediate.puzzles_unlocked,
+    ),
+    unlockable_puzzles: intermediate.puzzles_unlockable,
+    unlocked_puzzles: intermediate.puzzles_unlocked,
+    correct_answers: intermediate.correct_answers,
+    satisfied_gates: intermediate.gates_satisfied,
+    interactions: intermediate.interactions,
+  };
+}
+
 export function reducerDeriveTeamState(
   hunt: Hunt,
   teamActivityLogEntries: ActivityLogEntry[],
