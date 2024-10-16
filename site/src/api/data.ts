@@ -25,6 +25,7 @@ import {
 export class Mutator<T extends { id: number; team_id?: number }, I> {
   private _trx: Knex.Knex.Transaction;
   private _log: T[];
+  private _allTeams: Set<number>;
   private _affectedTeams: Set<number> | undefined;
   private _dbAppendLog: (
     entry: I,
@@ -34,6 +35,7 @@ export class Mutator<T extends { id: number; team_id?: number }, I> {
   constructor(
     trx: Knex.Knex.Transaction,
     log: T[],
+    allTeams: Set<number>,
     dbAppendLog: (
       entry: I,
       trx: Knex.Knex.Transaction,
@@ -42,6 +44,7 @@ export class Mutator<T extends { id: number; team_id?: number }, I> {
     this._trx = trx;
     this._log = log;
     this._affectedTeams = new Set();
+    this._allTeams = allTeams;
     this._dbAppendLog = dbAppendLog;
   }
 
@@ -65,11 +68,7 @@ export class Mutator<T extends { id: number; team_id?: number }, I> {
 
   // Get the list of teams contained in the log entries.
   get allTeams(): Set<number> {
-    return new Set(
-      this.log
-        .map((e) => e.team_id)
-        .filter((t): t is number => typeof t === "number"),
-    );
+    return this._allTeams;
   }
 
   // Get the list of teams affected by log entries pushed on this Mutator.
@@ -82,8 +81,8 @@ export class ActivityLogMutator extends Mutator<
   ActivityLogEntry,
   InsertActivityLogEntry
 > {
-  constructor(trx: Knex.Knex.Transaction, log: ActivityLogEntry[]) {
-    super(trx, log, dbAppendActivityLog);
+  constructor(trx: Knex.Knex.Transaction, log: ActivityLogEntry[], allTeams: Set<number>) {
+    super(trx, log, allTeams, dbAppendActivityLog);
   }
 
   // Refresh the state for every team that was affected.
@@ -247,7 +246,7 @@ export async function executeMutation<T>(
       const combined_log = cached_log.entries
         .map(parseInternalActivityLogEntry)
         .concat(new_log);
-      const mutator = new ActivityLogMutator(trx, combined_log);
+      const mutator = new ActivityLogMutator(trx, combined_log, new Set([team_id]));
       const result = await fn(trx, mutator);
       await mutator.recalculateState(hunt);
       const teamNames = await getTeamNames(mutator.allTeams, trx);
