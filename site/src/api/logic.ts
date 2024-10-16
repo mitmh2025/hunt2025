@@ -55,6 +55,21 @@ export type TeamStateIntermediate = {
   >;
 };
 
+export function emptyTeamStateIntermediate(): TeamStateIntermediate {
+  return {
+    epoch: -1,
+    rounds_unlocked: new Set(),
+    puzzles_unlockable: new Set(),
+    puzzles_unlocked: new Set(),
+    puzzles_solved: new Set(),
+    gates_satisfied: new Set(),
+    interactions_completed: new Set(),
+    available_currency: 0,
+    correct_answers: {},
+    interactions: {},
+  };
+}
+
 export function teamStateReducer(
   acc: TeamStateIntermediate,
   entry: ActivityLogEntry,
@@ -115,21 +130,9 @@ export function reducerDeriveTeamState(
   hunt: Hunt,
   teamActivityLogEntries: ActivityLogEntry[],
 ) {
-  const initialState: TeamStateIntermediate = {
-    epoch: -1,
-    rounds_unlocked: new Set(),
-    puzzles_unlockable: new Set(),
-    puzzles_unlocked: new Set(),
-    puzzles_solved: new Set(),
-    gates_satisfied: new Set(),
-    interactions_completed: new Set(),
-    available_currency: 0,
-    correct_answers: {},
-    interactions: {},
-  };
   const intermediate = teamActivityLogEntries.reduce(
     teamStateReducer,
-    initialState,
+    emptyTeamStateIntermediate(),
   );
   const derivedState = calculateTeamState({
     hunt,
