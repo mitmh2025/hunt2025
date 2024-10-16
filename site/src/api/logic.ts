@@ -55,6 +55,21 @@ export type TeamStateIntermediate = {
   >;
 };
 
+export function emptyTeamStateIntermediate(): TeamStateIntermediate {
+  return {
+    epoch: -1,
+    rounds_unlocked: new Set(),
+    puzzles_unlockable: new Set(),
+    puzzles_unlocked: new Set(),
+    puzzles_solved: new Set(),
+    gates_satisfied: new Set(),
+    interactions_completed: new Set(),
+    available_currency: 0,
+    correct_answers: {},
+    interactions: {},
+  };
+}
+
 export function teamStateReducer(
   acc: TeamStateIntermediate,
   entry: ActivityLogEntry,
@@ -111,26 +126,50 @@ export function teamStateReducer(
   return acc;
 }
 
+export type FormattableTeamState = {
+  epoch: number; // The largest value of `id` that was processed/relevant
+  available_currency: number;
+  unlocked_rounds: Set<string>;
+  visible_puzzles: Set<string>;
+  unlockable_puzzles: Set<string>;
+  unlocked_puzzles: Set<string>;
+  correct_answers: Record<string, string>;
+  satisfied_gates: Set<string>;
+  interactions: Record<
+    string,
+    { state: "unlocked" | "running" | "completed"; result?: string }
+  >;
+};
+
+export function teamStateFromReducedIntermediate(
+  intermediate: TeamStateIntermediate,
+): FormattableTeamState {
+  // This is intended only for read-only codepaths, where we expect all relevant state to already be
+  // reified into the activity log.  Unlike reducerDeriveTeamState, which will run calculateTeamState
+  // again, we consider here only what the intermediate already knows.
+
+  return {
+    epoch: intermediate.epoch,
+    available_currency: intermediate.available_currency,
+    unlocked_rounds: intermediate.rounds_unlocked,
+    visible_puzzles: intermediate.puzzles_unlockable.union(
+      intermediate.puzzles_unlocked,
+    ),
+    unlockable_puzzles: intermediate.puzzles_unlockable,
+    unlocked_puzzles: intermediate.puzzles_unlocked,
+    correct_answers: intermediate.correct_answers,
+    satisfied_gates: intermediate.gates_satisfied,
+    interactions: intermediate.interactions,
+  };
+}
+
 export function reducerDeriveTeamState(
-  teamName: string,
   hunt: Hunt,
   teamActivityLogEntries: ActivityLogEntry[],
-) {
-  const initialState: TeamStateIntermediate = {
-    epoch: -1,
-    rounds_unlocked: new Set(),
-    puzzles_unlockable: new Set(),
-    puzzles_unlocked: new Set(),
-    puzzles_solved: new Set(),
-    gates_satisfied: new Set(),
-    interactions_completed: new Set(),
-    available_currency: 0,
-    correct_answers: {},
-    interactions: {},
-  };
+): FormattableTeamState {
   const intermediate = teamActivityLogEntries.reduce(
     teamStateReducer,
-    initialState,
+    emptyTeamStateIntermediate(),
   );
   const derivedState = calculateTeamState({
     hunt,
@@ -153,7 +192,6 @@ export function reducerDeriveTeamState(
 
   return {
     epoch: intermediate.epoch,
-    team_name: teamName,
     available_currency: intermediate.available_currency,
     unlocked_rounds: derivedState.unlocked_rounds,
     visible_puzzles: derivedState.visible_puzzles,
@@ -233,6 +271,17 @@ export function parseInternalActivityLogEntry(
         data: ie.data,
         internal_data: ie.internal_data,
       };
+    case "puzzle_guess_submitted":
+      return {
+        id: ie.id,
+        team_id: ie.team_id,
+        timestamp: ts,
+        currency_delta: ie.currency_delta,
+        type: ie.type,
+        slug: ie.slug,
+        data: ie.data,
+        internal_data: ie.internal_data,
+      };
     case "puzzle_partially_solved":
       return {
         id: ie.id,
@@ -270,7 +319,11 @@ export function formatActivityLogEntryForApi(
     | "data"
     | "internal_data"
   >,
-): ActivityLog[number] {
+): ActivityLog[number] | undefined {
+  switch (e.type) {
+    case "puzzle_guess_submitted":
+      return undefined;
+  }
   let entry: Partial<ActivityLog[number]> = {
     id: e.id,
     timestamp: e.timestamp.toISOString(),

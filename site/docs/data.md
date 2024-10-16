@@ -17,7 +17,6 @@ Canonical tables:
 
 - `knex_migrations` and `knex_migrations_lock` are used internally for implementing migrations
 - `teams` is the canonical users table.
-- `team_puzzle_guesses` is the canonical guess history table.
 - `activity_log` is the canonical structured event log.
 
 Derived tables:
@@ -38,10 +37,9 @@ with polling or in response to user action, we think it's magical to have the
 page update in real-time whenever the content that would feed it changes.
 
 To that end, our pages have JS code to connect to a websocket server and
-subscribe to particular datasets for changes. We broadcast changes to team
-state, the global activity log, and the global puzzle guess log, and the
-websocket servers watch these channels for updates which they will propagate to
-subscribed browsers as appropriate.
+subscribe to particular datasets for changes. We broadcast changes to the
+global activity log, and the websocket servers watch these channels for
+updates which they will propagate to subscribed browsers as appropriate.
 
 Since the pubsub system is separate from the database, it may fail separately
 from primary writes. When we do writes to the database, we wait for the

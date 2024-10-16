@@ -14,47 +14,36 @@ import {
 } from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
-import { type GuessStatus, type ActivityLogEntry } from "knex/types/tables";
+import {
+  type GuessStatus,
+  type ActivityLogEntry,
+  type InsertActivityLogEntry,
+} from "knex/types/tables";
 import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
-import { type z } from "zod";
 import { adminContract } from "../../lib/api/admin_contract";
 import { type TeamState } from "../../lib/api/client";
-import {
-  c,
-  authContract,
-  publicContract,
-  type InteractionStateSchema,
-} from "../../lib/api/contract";
+import { c, authContract, publicContract } from "../../lib/api/contract";
 import { frontendContract } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
-import type { RedisClient } from "../app";
 import { PUZZLES } from "../frontend/puzzles";
-import { DeferredPublications } from "../frontend/server/deferred_publications";
 import { generateSlugToSlotMap } from "../huntdata";
-import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
-import {
-  getTeamState as dbGetTeamState,
-  getPuzzleState as dbGetPuzzleState,
-  recalculateTeamState,
-  appendActivityLog,
-} from "./db";
+import { executeMutation, formatTeamState, type Mutator } from "./data";
+import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
-  fixTimestamp,
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
 } from "./logic";
+import type { RedisClient } from "./redis";
 
 type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
   200
 >;
-
-type InteractionState = z.infer<typeof InteractionStateSchema>;
 
 type JWTPayload = {
   user: string;
@@ -140,93 +129,13 @@ export function getRouter({
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
     const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    const data = reducerDeriveTeamState(team_name, hunt, activity_log);
-    //console.log(data);
-    const rounds = Object.fromEntries(
-      hunt.rounds
-        .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
-        .map(({ slug, title, puzzles, gates, interactions }) => {
-          const interactionsData: [string, InteractionState][] = (
-            interactions ?? []
-          ).flatMap((interaction) => {
-            if ("interactions" in data) {
-              const v = data.interactions[interaction.id];
-              if (v) {
-                return [[interaction.id, v]];
-              }
-            }
-            return [];
-          });
-          const interactionsMap =
-            interactionsData.length > 0
-              ? Object.fromEntries(interactionsData)
-              : undefined;
-          const interactionsMixin =
-            interactionsMap !== undefined
-              ? { interactions: interactionsMap }
-              : {};
-          return [
-            slug,
-            {
-              title,
-              slots: Object.fromEntries(
-                puzzles.flatMap((slot) => {
-                  const slug = getSlotSlug(slot);
-                  if (slug && data.visible_puzzles.has(slug)) {
-                    const obj = { slug, is_meta: slot.is_meta };
-                    return [[slot.id, obj]];
-                  }
-                  return [];
-                }),
-              ),
-              gates: gates?.flatMap((gate) => {
-                if (gate.id && data.satisfied_gates.has(gate.id)) {
-                  return [gate.id];
-                }
-                return [];
-              }),
-              // Don't include interactions until one has been reached
-              ...interactionsMixin,
-            },
-          ];
-        }),
-    );
-    const puzzleRounds = Object.fromEntries(
-      Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
-        Object.entries(slots).map(([_id, { slug: puzzleSlug }]) => [
-          puzzleSlug,
-          roundSlug,
-        ]),
-      ),
-    );
-    return {
-      epoch: data.epoch,
-      teamId: team_id,
-      teamName: data.team_name,
-      rounds,
-      currency: data.available_currency,
-      puzzles: Object.fromEntries(
-        [...data.visible_puzzles].map((slug) => [
-          slug,
-          {
-            round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
-            locked: data.unlocked_puzzles.has(slug)
-              ? "unlocked"
-              : data.unlockable_puzzles.has(slug)
-                ? "unlockable"
-                : "locked",
-            answer: data.correct_answers[slug],
-          },
-        ]),
-      ),
-    };
+    return formatTeamState(hunt, team_id, team_name, activity_log);
   };
 
-  const getPuzzleState = async (
-    team_id: number,
+  const formatPuzzleState = (
     slug: string,
-    trx: Knex.Transaction,
-  ): Promise<PuzzleState | undefined> => {
+    activity_log: ActivityLogEntry[],
+  ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
     const slotEntry = slugToSlotMap.get(slug);
@@ -239,8 +148,7 @@ export function getRouter({
 
     // TODO: in the fullness of time, we should materialize puzzle_unlockable in activity_log so we can do purely point loads
     //       and not have to derive team state here at all.
-    const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    const data = reducerDeriveTeamState(team_name, hunt, activity_log);
+    const data = reducerDeriveTeamState(hunt, activity_log);
     const round_unlocked = data.unlocked_rounds.has(round);
     // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "outlands" round.
     if (!round_unlocked) {
@@ -255,20 +163,27 @@ export function getRouter({
       return undefined;
     }
 
-    // TODO: Fetch relevant puzzle state from the DB -- puzzle status, answer, guesses, is the round it belongs to unlocked
-    const { answer, guesses } = await dbGetPuzzleState(team_id, slug, trx);
-
     const locked: "locked" | "unlockable" | "unlocked" =
       data.unlocked_puzzles.has(slug)
         ? "unlocked"
         : data.unlockable_puzzles.has(slug)
           ? "unlockable"
           : "locked";
+
+    const guesses = activity_log.filter(
+      (e): e is ActivityLogEntry & { type: "puzzle_guess_submitted" } =>
+        e.type === "puzzle_guess_submitted" && e.slug === slug,
+    );
+    const correct_answers = guesses
+      .filter((e) => e.data.status === "correct")
+      .map((e) => e.data.canonical_input)
+      .sort();
+
     const result: PuzzleState = {
       round,
       locked,
       guesses: guesses.map(
-        ({ canonical_input, status, response, timestamp }) => ({
+        ({ data: { canonical_input, status, response }, timestamp }) => ({
           canonical_input,
           status,
           response,
@@ -276,26 +191,48 @@ export function getRouter({
         }),
       ),
     };
-    if (answer) {
-      result.answer = answer;
+    if (correct_answers.length > 0) {
+      result.answer = correct_answers.join(", ");
     }
     return result;
   };
 
-  const refreshTeamState = async (
-    hunt: Hunt,
+  const getPuzzleState = async (
     team_id: number,
+    slug: string,
     trx: Knex.Transaction,
-  ): Promise<[TeamState, DeferredPublications]> => {
-    const activityLogWrites = await recalculateTeamState(hunt, team_id, trx);
-    const teamState = await getTeamState(team_id, trx);
-    return [
-      teamState,
-      new DeferredPublications({
-        activityLog: activityLogWrites,
-        teamState: [teamState],
-      }),
-    ];
+  ): Promise<PuzzleState | undefined> => {
+    const { activity_log } = await dbGetTeamState(team_id, trx);
+    return formatPuzzleState(slug, activity_log);
+  };
+
+  const executeTeamStateHandler = async (
+    teamId: string,
+    fn: (
+      trx: Knex.Transaction,
+      mutator: Mutator<ActivityLogEntry, InsertActivityLogEntry>,
+      team_id: number,
+    ) => Promise<boolean>,
+  ) => {
+    const team_id = parseInt(teamId, 10);
+    const { result, teamStates } = await executeMutation(
+      hunt,
+      team_id,
+      redisClient,
+      knex,
+      (trx, mutator) => fn(trx, mutator, team_id),
+    );
+    const newState = teamStates[team_id];
+    if (result && newState !== undefined) {
+      return {
+        status: 200 as const,
+        body: newState,
+      };
+    }
+    return {
+      status: 404 as const,
+      body: null,
+    };
   };
 
   const authMiddleware = passport.authenticate("jwt", {
@@ -431,9 +368,10 @@ export function getRouter({
             .orWhereNull("team_id")
             .select("id", "timestamp", "type", "slug", "currency_delta", "data")
             .orderBy("id");
-          const body = entries.map((e) => {
+          const body = entries.flatMap((e) => {
             const parsedEntry = cleanupActivityLogEntryFromDB(e);
-            return formatActivityLogEntryForApi(parsedEntry);
+            const apiEntry = formatActivityLogEntryForApi(parsedEntry);
+            return apiEntry !== undefined ? [apiEntry] : [];
           });
           return {
             status: 200,
@@ -479,30 +417,23 @@ export function getRouter({
               (guess) => canonicalizeInput(guess) === canonical_input,
             ),
           );
-          // TODO: Make sure that we retry/wait for conflicts.
 
-          const [response, deferred] = await knex.transaction(
-            async function (trx) {
-              const deferredPublications = new DeferredPublications({});
+          const { result, activityLog } = await executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              const puzzle_log = mutator.log.filter((e) => e.slug === slug);
               // Check that the puzzle is unlocked before allowing guess submission.
-              const unlocked = await trx<
-                ActivityLogEntry & { type: "puzzle_unlocked" }
-              >("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .where("type", "puzzle_unlocked")
-                .where("slug", slug)
-                .select("slug")
-                .first();
-              if (unlocked === undefined) {
-                return [
-                  {
-                    status: 404 as const,
-                    body: null,
-                  },
-                  deferredPublications,
-                ];
+              const unlocked = puzzle_log.some(
+                (e) => e.type === "puzzle_unlocked",
+              );
+              if (!unlocked) {
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
               }
 
               // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
@@ -510,28 +441,17 @@ export function getRouter({
               // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
               // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
               // for the purposes of rate-limiting.
-              const last_reset_time_record = await trx<ActivityLogEntry>(
-                "activity_log",
-              )
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .where("type", "rate_limits_reset")
-                .where("slug", slug)
-                .orderBy("id", "desc")
-                .select("timestamp")
-                .first();
-              const last_reset_time = last_reset_time_record
-                ? fixTimestamp(last_reset_time_record.timestamp)
-                : undefined;
-              const previous_guess_times = (
-                await trx("team_puzzle_guesses")
-                  .where("team_id", team_id)
-                  .where("slug", slug)
-                  .where("status", "incorrect")
-                  .orderBy("timestamp")
-                  .pluck("timestamp")
-              ).map(fixTimestamp);
+              const last_reset_time_record = puzzle_log.findLast(
+                (e) => e.type === "rate_limits_reset",
+              );
+              const last_reset_time = last_reset_time_record?.timestamp;
+              const previous_guess_times = puzzle_log
+                .filter(
+                  (e) =>
+                    e.type === "puzzle_guess_submitted" &&
+                    e.data.status === "incorrect",
+                )
+                .map((e) => e.timestamp);
               const effective_previous_guess_times =
                 last_reset_time !== undefined
                   ? previous_guess_times.filter((t) => t > last_reset_time)
@@ -541,15 +461,12 @@ export function getRouter({
               );
               const now = Date.now();
               if (now < allowAfter.getTime()) {
-                return [
-                  {
-                    status: 429 as const,
-                    body: {
-                      retryAfter: allowAfter.toISOString(),
-                    },
+                return {
+                  status: 429 as const,
+                  body: {
+                    retryAfter: allowAfter.toISOString(),
                   },
-                  deferredPublications,
-                ];
+                };
               }
 
               // Determine our disposition on this submission.
@@ -571,105 +488,59 @@ export function getRouter({
               // Attempt to insert a new guess.  If this guess's input matches some other canonical
               // input, inserted should be empty thanks to the unique index and
               // onConflict()/ignore().
-              const inserted = await trx("team_puzzle_guesses")
-                .insert({
-                  team_id,
-                  slug,
+              const inserted = await mutator.appendLog({
+                team_id,
+                slug,
+                type: "puzzle_guess_submitted",
+                data: {
                   canonical_input,
                   status,
                   response: responseText,
-                })
-                .onConflict(["team_id", "slug", "canonical_input"])
-                .ignore()
-                .returning(["id", "timestamp"])
-                .then((objs) => {
-                  return objs.map(({ id, timestamp }) => {
-                    return {
-                      id,
-                      team_id,
-                      slug,
-                      canonical_input,
-                      status,
-                      response: responseText,
-                      timestamp: fixTimestamp(timestamp),
-                    };
-                  });
-                });
-              deferredPublications.addGuessLogEntries(inserted);
+                },
+              });
 
               // Only add relevant entries to the activity log if the guess was novel and inserted
               // a record.  Otherwise, we might grant double rewards for the same guess.
-              if (inserted.length > 0) {
+              if (inserted !== undefined) {
                 // This was a new guess.
                 if (correct_answer) {
                   // It was right and the puzzle is now solved.
-                  const entry = await appendActivityLog(
-                    {
-                      team_id,
-                      slug,
-                      type: "puzzle_solved",
-                      currency_delta: cannedResponseProvidesPrize ? 0 : prize,
-                      data: {
-                        answer: canonical_input,
-                      },
+                  await mutator.appendLog({
+                    team_id,
+                    slug,
+                    type: "puzzle_solved",
+                    currency_delta: cannedResponseProvidesPrize ? 0 : prize,
+                    data: {
+                      answer: canonical_input,
                     },
-                    trx,
-                  );
-                  deferredPublications.addActivityLogEntries([entry]);
+                  });
                 } else if (correct_canned_response?.providesSolveReward) {
                   // The guess matched an intermediate for which we provide the solve reward.  We
                   // need to issue a prize for this particular canned response, which means we need
                   // an activity log entry for it.
-                  const entry = await appendActivityLog(
-                    {
-                      team_id,
-                      slug,
-                      type: "puzzle_partially_solved",
-                      currency_delta: prize,
-                      data: {
-                        partial: canonical_input,
-                      },
+                  await mutator.appendLog({
+                    team_id,
+                    slug,
+                    type: "puzzle_partially_solved",
+                    currency_delta: prize,
+                    data: {
+                      partial: canonical_input,
                     },
-                    trx,
-                  );
-                  deferredPublications.addActivityLogEntries([entry]);
+                  });
                 }
-
-                const [_, newWrites] = await refreshTeamState(
-                  hunt,
-                  team_id,
-                  trx,
-                );
-                // TODO: Invalidate caches
-
-                return [
-                  {
-                    status: 200 as const,
-                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                     * We know the puzzle state exists because we checked the db above. */
-                    body: (await getPuzzleState(team_id, slug, trx))!,
-                  },
-                  deferredPublications.concat(newWrites),
-                ];
-              } else {
-                // That guess had already been submitted; nothing to do.  Just return the body
-                return [
-                  {
-                    status: 200 as const,
-                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                     * We know the puzzle state exists because we checked the db above. */
-                    body: (await getPuzzleState(team_id, slug, trx))!,
-                  },
-                  deferredPublications,
-                ];
               }
-            },
-            {
-              isolationLevel: "serializable",
+              return { status: 200 as const };
             },
           );
-          await deferred.publish(redisClient);
-          return response;
+          if (result.status === 200) {
+            return {
+              status: 200 as const,
+              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+               * We know the puzzle state exists because we checked the db above. */
+              body: formatPuzzleState(slug, activityLog)!,
+            };
+          }
+          return result;
         },
       },
       unlockPuzzle: {
@@ -685,66 +556,46 @@ export function getRouter({
               body: null,
             };
           }
-          // TODO: Make sure that we retry/wait for conflicts.
-          const [response, deferred] = await knex.transaction(
-            async function (trx) {
-              const deferredPublications = new DeferredPublications({});
+          const { result, activityLog } = await executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
               // Verify puzzle is currently unlockable.
-              const { team_name, activity_log } = await dbGetTeamState(
-                team_id,
-                trx,
-              );
-              const data = reducerDeriveTeamState(
-                team_name,
-                hunt,
-                activity_log,
-              );
+              const data = reducerDeriveTeamState(hunt, mutator.log);
               const unlock_cost = slot.unlock_cost;
+
               if (
                 data.unlockable_puzzles.has(slug) &&
+                !data.unlocked_puzzles.has(slug) &&
                 unlock_cost &&
                 data.available_currency >= unlock_cost
               ) {
                 // Unlock puzzle.
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "puzzle_unlocked",
-                    slug,
-                    currency_delta: -unlock_cost,
-                  },
-                  trx,
-                );
-                deferredPublications.addActivityLogEntries([entry]);
-                // Apply any downstream effects of unlocking the puzzle.
-                const [_, newWrites] = await refreshTeamState(
-                  hunt,
+                await mutator.appendLog({
                   team_id,
-                  trx,
-                );
-                // TODO: Invalidate caches
-                return [
-                  {
-                    status: 200 as const,
-                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-                     * We know the puzzle state exists because we checked the db above. */
-                    body: (await getPuzzleState(team_id, slug, trx))!,
-                  },
-                  deferredPublications.concat(newWrites),
-                ];
+                  type: "puzzle_unlocked",
+                  slug,
+                  currency_delta: -unlock_cost,
+                });
+                return true;
               }
-              return [
-                {
-                  status: 404 as const,
-                  body: null,
-                },
-                deferredPublications,
-              ];
+              return false;
             },
-            { isolationLevel: "serializable" },
           );
-          await deferred.publish(redisClient);
-          return response;
+          if (result) {
+            return {
+              status: 200 as const,
+              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+               * We know the puzzle state exists because we checked the db above. */
+              body: formatPuzzleState(slug, activityLog)!,
+            };
+          }
+          return {
+            status: 404 as const,
+            body: null,
+          };
         },
       },
     },
@@ -785,194 +636,96 @@ export function getRouter({
     frontend: {
       markTeamGateSatisfied: {
         middleware: [frontendAuthMiddleware],
-        handler: async ({ params: { teamId, gateId } }) => {
-          const [response, deferred] = await knex.transaction(
-            async (trx) => {
-              const deferredPublications = new DeferredPublications({});
-              const team_id = parseInt(teamId, 10);
-              // Check if already satisfied.
-              const existing = await trx("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .where("type", "gate_completed")
-                .where("slug", gateId)
-                .select("id")
-                .first();
-              // If not, insert gate completion.
-              // If already present, no change
-              if (!existing) {
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "gate_completed",
-                    slug: gateId,
-                  },
-                  trx,
-                );
-                deferredPublications.addActivityLogEntries([entry]);
-              }
-              // return the team state object regardless
-              const [newState, newWrites] = await refreshTeamState(
-                hunt,
+        handler: ({ params: { teamId, gateId } }) =>
+          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            // Check if already satisfied.
+            const existing = mutator.log.some(
+              (e) =>
+                (e.team_id === team_id || e.team_id === undefined) &&
+                e.type === "gate_completed" &&
+                e.slug === gateId,
+            );
+            // If not, insert gate completion.
+            // If already present, no change
+            if (!existing) {
+              await mutator.appendLog({
                 team_id,
-                trx,
-              );
-              return [
-                {
-                  status: 200 as const,
-                  body: newState,
-                },
-                deferredPublications.concat(newWrites),
-              ];
-            },
-            {
-              isolationLevel: "serializable",
-            },
-          );
-          await deferred.publish(redisClient);
-          return response;
-        },
+                type: "gate_completed",
+                slug: gateId,
+              });
+            }
+            return true;
+          }),
       },
       startInteraction: {
         middleware: [frontendAuthMiddleware],
-        handler: async ({ params: { teamId, interactionId } }) => {
-          const [response, deferred] = await knex.transaction(
-            async (trx) => {
-              const deferredPublications = new DeferredPublications({});
-              const team_id = parseInt(teamId, 10);
-              const existing = await trx("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .whereIn("type", [
-                  "interaction_unlocked",
-                  "interaction_started",
-                ])
-                .where("slug", interactionId)
-                .select("type");
-              const is_unlocked = existing.some(
-                (entry) => entry.type === "interaction_unlocked",
-              );
-              if (!is_unlocked) {
-                return [
-                  {
-                    status: 404 as const,
-                    body: null,
-                  },
-                  deferredPublications,
-                ];
-              }
-              const is_started = existing.some(
-                (entry) => entry.type === "interaction_started",
-              );
-              if (!is_started) {
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "interaction_started",
-                    slug: interactionId,
-                  },
-                  trx,
-                );
-                deferredPublications.addActivityLogEntries([entry]);
-              }
-
-              const [newState, newWrites] = await refreshTeamState(
-                hunt,
+        handler: ({ params: { teamId, interactionId } }) =>
+          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            const existing = mutator.log.filter(
+              (e) =>
+                (e.team_id === team_id || e.team_id === undefined) &&
+                (e.type === "interaction_unlocked" ||
+                  e.type === "interaction_started") &&
+                e.slug === interactionId,
+            );
+            const is_unlocked = existing.some(
+              (entry) => entry.type === "interaction_unlocked",
+            );
+            if (!is_unlocked) {
+              return false;
+            }
+            const is_started = existing.some(
+              (entry) => entry.type === "interaction_started",
+            );
+            if (!is_started) {
+              await mutator.appendLog({
                 team_id,
-                trx,
-              );
-              return [
-                {
-                  status: 200 as const,
-                  body: newState,
-                },
-                deferredPublications.concat(newWrites),
-              ];
-            },
-            {
-              isolationLevel: "serializable",
-            },
-          );
-          await deferred.publish(redisClient);
-          return response;
-        },
+                type: "interaction_started",
+                slug: interactionId,
+              });
+            }
+            return true;
+          }),
       },
       completeInteraction: {
         middleware: [frontendAuthMiddleware],
-        handler: async ({ params: { teamId, interactionId }, body }) => {
-          const [response, deferred] = await knex.transaction(
-            async (trx) => {
-              const deferredPublications = new DeferredPublications({});
-              const team_id = parseInt(teamId, 10);
-              const existing = (await trx("activity_log")
-                .where((builder) => {
-                  void builder.where("team_id", team_id).orWhereNull("team_id");
-                })
-                .whereIn("type", [
-                  "interaction_unlocked",
-                  "interaction_started",
-                  "interaction_completed",
-                ])
-                .where("slug", interactionId)
-                .select("type")) as Partial<ActivityLogEntry>[];
-              const is_unlocked = existing.some(
-                (entry) => entry.type === "interaction_unlocked",
-              );
-              const is_started = existing.some(
-                (entry) => entry.type === "interaction_started",
-              );
-              const is_completed = existing.some(
-                (entry) => entry.type === "interaction_completed",
-              );
-              console.log("is_unlocked", is_unlocked);
-              console.log("is_started", is_started);
-              console.log("is_completed", is_completed);
-              if (!is_unlocked || !is_started) {
-                return [
-                  {
-                    status: 404 as const,
-                    body: null,
-                  },
-                  deferredPublications,
-                ];
-              }
-              if (!is_completed) {
-                const entry = await appendActivityLog(
-                  {
-                    team_id,
-                    type: "interaction_completed",
-                    slug: interactionId,
-                    data: {
-                      result: body.result,
-                    },
-                  },
-                  trx,
-                );
-                deferredPublications.addActivityLogEntries([entry]);
-              }
-
-              const [newState, newWrites] = await refreshTeamState(
-                hunt,
+        handler: ({ params: { teamId, interactionId }, body }) =>
+          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            const existing = mutator.log.filter(
+              (e) =>
+                (e.team_id === team_id || e.team_id === undefined) &&
+                (e.type === "interaction_unlocked" ||
+                  e.type === "interaction_started" ||
+                  e.type === "interaction_completed") &&
+                e.slug === interactionId,
+            );
+            const is_unlocked = existing.some(
+              (entry) => entry.type === "interaction_unlocked",
+            );
+            const is_started = existing.some(
+              (entry) => entry.type === "interaction_started",
+            );
+            const is_completed = existing.some(
+              (entry) => entry.type === "interaction_completed",
+            );
+            console.log("is_unlocked", is_unlocked);
+            console.log("is_started", is_started);
+            console.log("is_completed", is_completed);
+            if (!is_unlocked || !is_started) {
+              return false;
+            }
+            if (!is_completed) {
+              await mutator.appendLog({
                 team_id,
-                trx,
-              );
-              return [
-                {
-                  status: 200 as const,
-                  body: newState,
+                type: "interaction_completed",
+                slug: interactionId,
+                data: {
+                  result: body.result,
                 },
-                deferredPublications.concat(newWrites),
-              ];
-            },
-            {
-              isolationLevel: "serializable",
-            },
-          );
-          await deferred.publish(redisClient);
-          return response;
-        },
+              });
+            }
+            return true;
+          }),
       },
       getFullActivityLog: {
         middleware: [frontendAuthMiddleware],
@@ -1012,62 +765,6 @@ export function getRouter({
               timestamp: entry.timestamp.toISOString(),
             };
           });
-          return {
-            status: 200,
-            body,
-          };
-        },
-      },
-      getFullGuessHistory: {
-        middleware: [frontendAuthMiddleware],
-        handler: async ({ query: { since } }) => {
-          let effectiveSince = undefined;
-          if (since) {
-            const sinceParsed = Number(since);
-            if (sinceParsed > 0) {
-              effectiveSince = sinceParsed;
-            }
-          }
-          const entries = await knex.transaction(
-            async (trx) => {
-              let q = trx("team_puzzle_guesses");
-              if (effectiveSince !== undefined) {
-                q = q.where("id", ">", effectiveSince);
-              }
-              q = q.select(
-                "id",
-                "team_id",
-                "slug",
-                "canonical_input",
-                "status",
-                "response",
-                "timestamp",
-              );
-              return q;
-            },
-            { readOnly: true },
-          );
-          const body = entries.map(
-            ({
-              id,
-              team_id,
-              slug,
-              canonical_input,
-              status,
-              response,
-              timestamp,
-            }) => {
-              return {
-                id,
-                team_id,
-                slug,
-                canonical_input,
-                status,
-                response,
-                timestamp: fixTimestamp(timestamp).toISOString(),
-              };
-            },
-          );
           return {
             status: 200,
             body,

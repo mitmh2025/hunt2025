@@ -15,7 +15,7 @@ import { Router } from "websocket-express";
 import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
-import { type RedisClient } from "../../app";
+import { type RedisClient } from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
 import Layout from "../components/Layout";
 import { PUZZLES } from "../puzzles";
@@ -282,6 +282,7 @@ export async function getUiRouter({
 
   if (redisClient) {
     const wsManager = new WebsocketManager({
+      hunt,
       redisClient,
       frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
     });

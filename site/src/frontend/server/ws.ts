@@ -1,4 +1,4 @@
-import type { NextFunction, Request } from "express";
+import { type NextFunction, type Request } from "express";
 import type { WSResponse } from "websocket-express";
 import workersManifest from "../../../dist/worker-manifest.json";
 import { type ActivityLogEntry, type TeamState } from "../../../lib/api/client";
@@ -11,11 +11,16 @@ import {
   MessageFromClientSchema,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
+import { formatTeamStateFromFormattable } from "../../api/data";
 import {
   parseInternalActivityLogEntry,
   formatActivityLogEntryForApi,
+  emptyTeamStateIntermediate,
+  teamStateReducer,
+  teamStateFromReducedIntermediate,
 } from "../../api/logic";
-import { type RedisClient } from "../../app";
+import { type RedisClient } from "../../api/redis";
+import { type Hunt } from "../../huntdata/types";
 import { navBarState } from "../components/ContentWithNavBar";
 import { backgroundCheckState } from "../rounds/background_check";
 import {
@@ -27,12 +32,7 @@ import {
 import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
-import {
-  type DatasetTailer,
-  newActivityLogTailer,
-  newGuessLogTailer,
-  type GuessLogEntry,
-} from "./dataset_tailer";
+import { type DatasetTailer, newActivityLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
 import { allPuzzlesState } from "./routes/all_puzzles";
 
@@ -123,7 +123,6 @@ type ActivityLogSubscriptionHandler = {
 type GuessLogSubscriptionHandler = {
   type: "guess_log";
   dataset: Dataset;
-  updatesSent: number;
   slug: string;
   stop: () => void;
 };
@@ -152,10 +151,7 @@ function isGuessLogSubscription<T>(
 }
 
 type TeamStateObserverProvider = {
-  observeTeamState(
-    teamId: number,
-    conn: ConnHandler,
-  ): Promise<() => Promise<void>>;
+  observeTeamState(teamId: number, conn: ConnHandler): () => void;
 };
 
 type ActivityLogObserverProvider = {
@@ -178,20 +174,27 @@ type GuessLogObserverProvider = {
 };
 
 class ConnHandler {
-  public connId: string;
-  private teamId: number;
+  // A unique id for this particular client connection.  One-to-one with WebSocket.
+  private _connId: string;
+
+  // The team id that is associated with this particular client connection.  Ultimately, the `id` field from the `Team` object in the `teams` table in the DB.
+  private _teamId: number;
+
+  // The last-known team state for this team.  This may be stale if there are no subs that rely on
+  // teamState.  This is initially populated with req.teamState and currently primarily serves as a
+  // place to yank teamName back out of, since the activity log doesn't give us any team name
+  // information.
+  private _lastTeamState: TeamState;
+
   private sock: WebSocket;
   private onClose: (connId: string) => void;
   private teamStateObserverProvider: TeamStateObserverProvider;
   private activityLogObserverProvider: ActivityLogObserverProvider;
   private guessLogObserverProvider: GuessLogObserverProvider;
 
-  // TODO: cache this in response to
-  private lastTeamState: TeamState;
-
   // key: subId
   private subs: Map<string, SubscriptionHandler<object>>;
-  private teamStateObserverHandlePromise?: Promise<() => void>;
+  private teamStateObserverStopHandle?: () => void;
 
   constructor({
     sock,
@@ -209,14 +212,14 @@ class ConnHandler {
     guessLogObserverProvider: GuessLogObserverProvider;
   }) {
     this.sock = sock;
-    this.teamId = initialTeamState.teamId;
-    this.lastTeamState = initialTeamState;
+    this._teamId = initialTeamState.teamId;
+    this._lastTeamState = initialTeamState;
     this.onClose = onClose;
     this.teamStateObserverProvider = teamStateObserverProvider;
     this.activityLogObserverProvider = activityLogObserverProvider;
     this.guessLogObserverProvider = guessLogObserverProvider;
 
-    this.connId = genId();
+    this._connId = genId();
     this.subs = new Map();
     this.sock.addEventListener("message", (e) => {
       // Dispatch inbound message from client
@@ -260,24 +263,55 @@ class ConnHandler {
     });
     this.sock.addEventListener("close", () => {
       this.log("closed");
+      // Stop any outstanding subscriptions
+      this.subs.forEach((sub) => {
+        switch (sub.type) {
+          case "activity_log":
+            sub.stop();
+            break;
+          case "guess_log":
+            sub.stop();
+            break;
+        }
+      });
+      if (this.teamStateObserverStopHandle) {
+        this.teamStateObserverStopHandle();
+        this.teamStateObserverStopHandle = undefined;
+      }
       this.onClose(this.connId);
     });
   }
 
-  log(...args: unknown[]): void {
+  get connId() {
+    return this._connId;
+  }
+
+  get teamId() {
+    return this._teamId;
+  }
+
+  get teamName() {
+    return this._lastTeamState.teamName;
+  }
+
+  get lastTeamState() {
+    return this._lastTeamState;
+  }
+
+  private log(...args: unknown[]): void {
     console.log(`ws ${this.connId}:`, ...args);
   }
 
-  send(message: MessageToClient): void {
+  public send(message: MessageToClient): void {
     this.sock.send(JSON.stringify(message));
   }
 
-  updateTeamState(teamState: TeamState) {
+  public updateTeamState(teamState: TeamState) {
     // Ensure we discard updates that do not increase the epoch, so we never backslide, even if the
     // backend is giving us stale results, or if pubsub gets events out-of-order.
-    if (this.lastTeamState.epoch < teamState.epoch) {
+    if (this._lastTeamState.epoch < teamState.epoch) {
       // Save the new team state.
-      this.lastTeamState = teamState;
+      this._lastTeamState = teamState;
       // for each sub in subs:
       this.subs.forEach((sub, subId) => {
         if (isTeamStateSubscription(sub)) {
@@ -298,35 +332,34 @@ class ConnHandler {
     }
   }
 
-  appendActivityLogEntry(subId: string, entry: ActivityLogEntry) {
+  public appendActivityLogEntry(subId: string, entry: ActivityLogEntry) {
     const sub = this.subs.get(subId);
     if (sub && isActivityLogSubscription(sub)) {
       this.send({ subId, type: "update", value: entry });
     }
   }
 
-  appendGuessLogEntry(subId: string, entry: GuessLogEntry) {
+  public appendGuessLogEntry(
+    subId: string,
+    entry: InternalActivityLogEntry & { type: "puzzle_guess_submitted" },
+  ) {
     const sub = this.subs.get(subId);
     if (sub && isGuessLogSubscription(sub)) {
-      // Unpack only the desired fields
-      const { status, canonical_input, response, timestamp } = entry;
-      // Synthesize an id field, which is just the index into this puzzle's guess history
       this.send({
         subId,
         type: "update",
         value: {
-          id: sub.updatesSent,
-          status,
-          canonical_input,
-          response,
-          timestamp,
+          id: entry.id,
+          status: entry.data.status,
+          canonical_input: entry.data.canonical_input,
+          response: entry.data.response,
+          timestamp: entry.timestamp,
         },
       });
-      sub.updatesSent += 1;
     }
   }
 
-  handle(message: MessageFromClient, _e: MessageEvent): void {
+  private handle(message: MessageFromClient, _e: MessageEvent): void {
     if (message.method === "sub") {
       const { rpc, subId, dataset, params } = message;
 
@@ -346,7 +379,7 @@ class ConnHandler {
         case "team_state": {
           const handler = datasetHandler.callback;
           // compute the initial value
-          const value = handler(this.lastTeamState);
+          const value = handler(this._lastTeamState);
           const subHandler: SubscriptionHandler<object> = {
             type: "team_state",
             dataset,
@@ -354,21 +387,19 @@ class ConnHandler {
             cachedValue: value,
           };
           this.subs.set(subId, subHandler);
-          if (this.teamStateObserverHandlePromise === undefined) {
+          if (this.teamStateObserverStopHandle === undefined) {
             // If we're not already watching for team state updates, start up monitoring
-            this.teamStateObserverHandlePromise =
+            this.teamStateObserverStopHandle =
               this.teamStateObserverProvider.observeTeamState(
                 this.teamId,
                 this,
               );
           }
           // Once the pubsub watch is set up, send an initial update and that the sub is ready
-          void this.teamStateObserverHandlePromise.then(() => {
-            // push down the initial state as an update
-            this.send({ subId, type: "update" as const, value });
-            // reply with an ack of the sub ID, indicating successful completion of the RPC
-            this.send({ rpc, type: "sub" as const, subId });
-          });
+          // push down the initial state as an update
+          this.send({ subId, type: "update" as const, value });
+          // reply with an ack of the sub ID, indicating successful completion of the RPC
+          this.send({ rpc, type: "sub" as const, subId });
           break;
         }
         case "activity_log": {
@@ -414,7 +445,6 @@ class ConnHandler {
           const subHandler: SubscriptionHandler<object> = {
             type: "guess_log",
             dataset,
-            updatesSent: 0,
             slug: params.slug,
             stop: () => {
               /* stub */
@@ -454,11 +484,8 @@ class ConnHandler {
           this.subs.delete(subId);
           // If the map of subs is empty, stop observing teamState
           if (this.subs.size === 0) {
-            const promise = this.teamStateObserverHandlePromise;
-            this.teamStateObserverHandlePromise = undefined;
-            void promise?.then((stop) => {
-              stop();
-            });
+            this.teamStateObserverStopHandle?.();
+            this.teamStateObserverStopHandle = undefined;
           }
         } else if (isActivityLogSubscription(sub)) {
           this.subs.delete(subId);
@@ -473,10 +500,10 @@ class ConnHandler {
 }
 
 type TeamStateSubState = {
-  // The listener we registered with redis, so we can unsubscribe it when connSubMap goes empty
-  listener: (message: string, channel: string) => void;
   // Map from connId to ConnHandler
   connSubMap: Map<string, ConnHandler>;
+  // A function which, when called, will stop the teamState observation.
+  stopHandle: () => void;
 };
 
 export class WebsocketManager
@@ -495,15 +522,18 @@ export class WebsocketManager
 
   private activityLogTailer: DatasetTailer<InternalActivityLogEntry>;
 
-  private guessLogTailer: DatasetTailer<GuessLogEntry>;
+  private hunt: Hunt;
 
   constructor({
+    hunt,
     redisClient,
     frontendApiClient,
   }: {
+    hunt: Hunt;
     redisClient: RedisClient;
     frontendApiClient: FrontendClient;
   }) {
+    this.hunt = hunt;
     this.redisClient = redisClient.duplicate();
     this.redisClient.on("error", (err) => {
       console.error("ws redis error:", err);
@@ -514,63 +544,89 @@ export class WebsocketManager
       redisClient,
       frontendApiClient,
     });
-    this.guessLogTailer = newGuessLogTailer({ redisClient, frontendApiClient });
   }
 
-  async connectToRedis() {
+  public async connectToRedis() {
     await this.redisClient.connect();
   }
 
-  dispatchTeamStateUpdate(teamId: number, message: string, _channel: string) {
-    try {
-      const data = JSON.parse(message) as TeamState;
-      const connHandlerMap = this.teamStateSubs.get(teamId);
-      if (connHandlerMap) {
-        for (const connHandler of connHandlerMap.connSubMap.values()) {
-          connHandler.updateTeamState(data);
-        }
-      }
-    } catch (e) {
-      if (e instanceof SyntaxError) {
-        console.error(
-          "received unparseable JSON from Redis",
-          `team_state.${teamId}`,
-          message,
-        );
+  private dispatchTeamStateUpdate(teamId: number, teamState: TeamState) {
+    // console.log(`dispatchTeamStateUpdate for team ${teamId}: epoch ${teamState.epoch}`);
+    const connHandlerMap = this.teamStateSubs.get(teamId);
+    if (connHandlerMap) {
+      for (const connHandler of connHandlerMap.connSubMap.values()) {
+        connHandler.updateTeamState(teamState);
       }
     }
   }
 
-  async observeTeamState(
-    teamId: number,
-    conn: ConnHandler,
-  ): Promise<() => Promise<void>> {
+  public observeTeamState(teamId: number, conn: ConnHandler): () => void {
     let teamStateSubState = this.teamStateSubs.get(teamId);
-    const existed = teamStateSubState !== undefined;
     if (!teamStateSubState) {
-      const listener = this.dispatchTeamStateUpdate.bind(this, teamId);
+      // No conns were observing this team's teamState yet.  Set up an observer to be shared by all
+      // conns that want to observe teamState for this team.
+      // console.log(`Starting teamState observer for team ${teamId}`);
       const connSubMap = new Map<string, ConnHandler>();
-      teamStateSubState = { listener, connSubMap };
+      let intermediate = emptyTeamStateIntermediate();
+      let latestTeamState = conn.lastTeamState;
+      // Avoid dispatching teamState updates while processing the initial backlog
+      let ready = false;
+      const stopHandle = this.activityLogTailer.watchLog(
+        (entries: InternalActivityLogEntry[]) => {
+          intermediate = entries
+            .map(parseInternalActivityLogEntry)
+            .filter((e) => e.team_id === teamId || e.team_id === undefined)
+            .reduce(teamStateReducer, intermediate);
+          const data = teamStateFromReducedIntermediate(intermediate);
+          // TODO: figure out how to deal with teamName changing?
+          const teamName = conn.teamName;
+          latestTeamState = formatTeamStateFromFormattable(
+            this.hunt,
+            teamId,
+            teamName,
+            data,
+          );
+          if (ready) {
+            this.dispatchTeamStateUpdate(teamId, latestTeamState);
+          }
+        },
+      );
+      // The initial backlog should be processed by now, so set up to dispatch future updates
+      ready = true;
+      // We didn't dispatch a teamStateUpdate yet, because teamStateSubState wasn't truthy yet, to
+      // avoid initial startup of the watcher generating a bunch of older teamStates.
+      // But now we're ready, so let's dispatch the latest state if the watchLog callback triggered
+      // at least once and thus latestTeamState differs from what we started with.
+      if (latestTeamState !== conn.lastTeamState) {
+        this.dispatchTeamStateUpdate(teamId, latestTeamState);
+      }
+      // Save the sub state.
+      teamStateSubState = { connSubMap, stopHandle };
       this.teamStateSubs.set(teamId, teamStateSubState);
     }
+
+    // Add this connection to the collection of connections subscribed to teamState updates for this team.
     teamStateSubState.connSubMap.set(conn.connId, conn);
+    // console.log(`Added conn ${conn.connId} to teamState observer map for team ${teamId} (total observers now ${teamStateSubState.connSubMap.size})`);
 
-    const channel = `team_state.${teamId}`;
-    if (!existed) {
-      // Do async work *after* we've updated the sub maps.
-      await this.redisClient.subscribe(channel, teamStateSubState.listener);
-    }
-
-    return async () => {
-      teamStateSubState.connSubMap.delete(conn.connId);
-      if (teamStateSubState.connSubMap.size === 0) {
-        this.teamStateSubs.delete(teamId);
-        await this.redisClient.unsubscribe(channel, teamStateSubState.listener);
+    const stop = () => {
+      const subState = this.teamStateSubs.get(teamId);
+      if (subState) {
+        // Drop this conn from the map of conns watching this team's team state
+        subState.connSubMap.delete(conn.connId);
+        // console.log(`Removed conn ${conn.connId} from teamState observer map for team ${teamId} (total observers now ${subState.connSubMap.size})`);
+        // If no more conns are watching this team's teamState, drop the whole observer too.
+        if (subState.connSubMap.size === 0) {
+          // console.log(`Stopping teamState observer for team ${teamId}`);
+          subState.stopHandle();
+          this.teamStateSubs.delete(teamId);
+        }
       }
     };
+    return stop;
   }
 
-  observeActivityLog(
+  public observeActivityLog(
     teamId: number,
     subId: string,
     conn: ConnHandler,
@@ -582,7 +638,9 @@ export class WebsocketManager
           const entry = parseInternalActivityLogEntry(internalEntry);
           if (entry.team_id === teamId || entry.team_id === undefined) {
             const apiEntry = formatActivityLogEntryForApi(entry);
-            conn.appendActivityLogEntry(subId, apiEntry);
+            if (apiEntry !== undefined) {
+              conn.appendActivityLogEntry(subId, apiEntry);
+            }
           }
         });
       },
@@ -591,32 +649,42 @@ export class WebsocketManager
     return stop;
   }
 
-  activityLogReadyPromise(): Promise<void> {
+  public activityLogReadyPromise(): Promise<void> {
     return this.activityLogTailer.readyPromise();
   }
 
-  observeGuessLog(
+  public observeGuessLog(
     teamId: number,
     slug: string,
     subId: string,
     conn: ConnHandler,
   ): () => void {
-    const stop = this.guessLogTailer.watchLog((entries: GuessLogEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.team_id === teamId && entry.slug === slug) {
-          conn.appendGuessLogEntry(subId, entry);
-        }
-      });
-    });
+    const stop = this.activityLogTailer.watchLog(
+      (entries: InternalActivityLogEntry[]) => {
+        entries.forEach((entry) => {
+          if (
+            entry.team_id === teamId &&
+            entry.type === "puzzle_guess_submitted" &&
+            entry.slug === slug
+          ) {
+            conn.appendGuessLogEntry(subId, entry);
+          }
+        });
+      },
+    );
 
     return stop;
   }
 
-  guessLogReadyPromise(): Promise<void> {
-    return this.guessLogTailer.readyPromise();
+  public guessLogReadyPromise(): Promise<void> {
+    return this.activityLogTailer.readyPromise();
   }
 
-  async requestHandler(req: Request, res: WSResponse, next: NextFunction) {
+  public async requestHandler(
+    req: Request,
+    res: WSResponse,
+    next: NextFunction,
+  ) {
     if (!req.teamState) {
       // Client is not logged in.
       next();
@@ -640,27 +708,5 @@ export class WebsocketManager
       scriptUrl: workersManifest["websocket_worker.js"],
     };
     connHandler.send(helloMessage);
-
-    // TODO: make this be something the ConnHandler initiates when it gets a sub, rather than automatically started
-    const teamId = req.teamState.teamId;
-    const channel = `team_state.${teamId}`;
-    const listener = (message: string, _channel: string) => {
-      try {
-        const data = JSON.parse(message) as TeamState;
-        connHandler.updateTeamState(data);
-      } catch (e) {
-        if (e instanceof SyntaxError) {
-          console.error(
-            "received unparseable JSON from Redis",
-            channel,
-            message,
-          );
-        }
-      }
-    };
-    await this.redisClient.subscribe(channel, listener);
-    ws.addEventListener("close", () => {
-      void this.redisClient.unsubscribe(channel, listener);
-    });
   }
 }

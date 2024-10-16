@@ -3,17 +3,9 @@ import { z } from "zod";
 import {
   c,
   TeamStateSchema,
-  GuessSchema,
   ActivityLogEntryBaseSchema,
+  GuessStatus,
 } from "./contract";
-
-const FullGuessSchema = GuessSchema.extend({
-  id: z.number(),
-  team_id: z.number().optional(),
-  slug: z.string(),
-});
-
-const FullGuessHistorySchema = z.array(FullGuessSchema);
 
 const InternalActivityLogEntryBaseSchema = ActivityLogEntryBaseSchema.merge(
   z.object({
@@ -73,6 +65,17 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
   InternalActivityLogEntryWithSlug.merge(
     z.object({ type: z.literal("rate_limits_reset") }),
   ),
+  // Entry types below this point do not appear in the team-visible activity log.
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("puzzle_guess_submitted"),
+      data: z.object({
+        canonical_input: z.string(),
+        status: GuessStatus,
+        response: z.string(),
+      }),
+    }),
+  ),
 ]);
 export type InternalActivityLogEntry = z.infer<
   typeof InternalActivityLogEntrySchema
@@ -122,25 +125,9 @@ export const frontendContract = c.router({
       401: z.null(),
     },
   },
-  getFullGuessHistory: {
-    method: "GET",
-    path: "/guesslog",
-    query: z.object({
-      since: z.number().optional(),
-    }),
-    responses: {
-      200: FullGuessHistorySchema,
-      401: z.null(),
-    },
-  },
 });
 
 export type FullActivityLog = ClientInferResponseBody<
   typeof frontendContract.getFullActivityLog,
-  200
->;
-
-export type FullGuessHistory = ClientInferResponseBody<
-  typeof frontendContract.getFullGuessHistory,
   200
 >;
