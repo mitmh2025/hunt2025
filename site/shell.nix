@@ -2,9 +2,10 @@
 , playwright-driver
 , redis
 , mkShell
+, lib
 }:
 
-mkShell {
+mkShell rec {
   inputsFrom = [
     hunt2025
   ];
@@ -17,8 +18,10 @@ mkShell {
     redis
   ];
 
-  shellHook = ''
-    export PLAYWRIGHT_BROWSERS_PATH=${playwright-driver.browsers}
-    export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true
-  '';
+  passthru.shellEnv = {
+    PLAYWRIGHT_BROWSERS_PATH = "${playwright-driver.browsers}";
+    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+  };
+
+  shellHook = lib.concatStringsSep "\n" (lib.mapAttrsToList (k: v: "export ${k}=${v}") passthru.shellEnv);
 }
