@@ -126,10 +126,25 @@ export function teamStateReducer(
   return acc;
 }
 
+export type FormattableTeamState = {
+  epoch: number; // The largest value of `id` that was processed/relevant
+  available_currency: number;
+  unlocked_rounds: Set<string>;
+  visible_puzzles: Set<string>;
+  unlockable_puzzles: Set<string>;
+  unlocked_puzzles: Set<string>;
+  correct_answers: Record<string, string>;
+  satisfied_gates: Set<string>;
+  interactions: Record<
+    string,
+    { state: "unlocked" | "running" | "completed"; result?: string }
+  >;
+};
+
 export function reducerDeriveTeamState(
   hunt: Hunt,
   teamActivityLogEntries: ActivityLogEntry[],
-) {
+): FormattableTeamState {
   const intermediate = teamActivityLogEntries.reduce(
     teamStateReducer,
     emptyTeamStateIntermediate(),
