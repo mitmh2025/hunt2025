@@ -15,7 +15,11 @@ import {
   getTeamNames,
   retryOnAbort,
 } from "./db";
-import { parseInternalActivityLogEntry, reducerDeriveTeamState } from "./logic";
+import {
+  type FormattableTeamState,
+  parseInternalActivityLogEntry,
+  reducerDeriveTeamState,
+} from "./logic";
 import {
   type RedisClient,
   activityLog as redisActivityLog,
@@ -306,14 +310,12 @@ export async function refreshActivityLog(
 
 type InteractionState = z.infer<typeof InteractionStateSchema>;
 
-export function formatTeamState(
+export function formatTeamStateFromFormattable(
   hunt: Hunt,
   team_id: number,
   team_name: string,
-  activity_log: ActivityLogEntry[],
-): TeamState {
-  const data = reducerDeriveTeamState(hunt, activity_log);
-  //console.log(data);
+  data: FormattableTeamState,
+) {
   const rounds = Object.fromEntries(
     hunt.rounds
       .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
@@ -383,13 +385,24 @@ export function formatTeamState(
         {
           round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
           locked: data.unlocked_puzzles.has(slug)
-            ? "unlocked"
+            ? ("unlocked" as const)
             : data.unlockable_puzzles.has(slug)
-              ? "unlockable"
-              : "locked",
+              ? ("unlockable" as const)
+              : ("locked" as const),
           answer: data.correct_answers[slug],
         },
       ]),
     ),
   };
+}
+
+export function formatTeamState(
+  hunt: Hunt,
+  team_id: number,
+  team_name: string,
+  activity_log: ActivityLogEntry[],
+): TeamState {
+  const data = reducerDeriveTeamState(hunt, activity_log);
+  //console.log(data);
+  return formatTeamStateFromFormattable(hunt, team_id, team_name, data);
 }
