@@ -50,8 +50,8 @@ return count
   await client.connect();
   if (process.env.NODE_ENV === "development") {
     // Wipe data every time we start in development, since the database might have regressed.
-    for await (const stream of client.scanIterator({ TYPE: "stream" })) {
-      await client.del(stream);
+    for await (const key of client.scanIterator()) {
+      await client.del(key);
     }
   }
   return client;
