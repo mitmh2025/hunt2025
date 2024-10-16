@@ -92,7 +92,7 @@ const PuzzleUnlockModal = React.forwardRef(function PuzzleUnlockModalInner(
   );
 });
 
-const PuzzleIcon = ({
+export const PuzzleIcon = ({
   lockState,
   answer,
   size,
@@ -124,6 +124,8 @@ const PuzzleIcon = ({
         backgroundImage: `url(${bgImage})`,
         transitionProperty: "width height font-size",
         transitionDuration: "0.5s",
+        backgroundRepeat: "no-repeat",
+        flex: "0 0 auto",
       }}
     />
   );

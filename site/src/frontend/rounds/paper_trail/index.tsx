@@ -1,6 +1,7 @@
 import React from "react";
 import type { TeamState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import { Root } from "./Layout";
 import PaperTrailBody from "./PaperTrailBody";
 import { type PaperTrailState, type PaperTrailItem } from "./types";
 
@@ -101,9 +102,9 @@ const PapertrailRoundPage = ({ teamState }: { teamState: TeamState }) => {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="paper-trail-root">
+      <Root id="paper-trail-root">
         <PaperTrailBody state={state} teamState={teamState} />
-      </div>
+      </Root>
     </>
   );
 };
