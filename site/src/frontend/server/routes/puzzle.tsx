@@ -15,6 +15,11 @@ import {
   PuzzleMain,
 } from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
+import {
+  StakeoutHeader,
+  StakeoutMain,
+  StakeoutWrapper,
+} from "../../components/StakeoutPuzzleLayout";
 import { PUZZLES } from "../../puzzles";
 import { type Entrypoint } from "../assets";
 
@@ -36,7 +41,11 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   RoundSpecificComponentManifest
 > = {
   the_missing_diamond: {},
-  stakeout: {},
+  stakeout: {
+    header: StakeoutHeader,
+    main: StakeoutMain,
+    wrapper: StakeoutWrapper,
+  },
   illegal_search: {},
   paper_trail: {},
   background_check: {
