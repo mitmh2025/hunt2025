@@ -282,6 +282,7 @@ export async function getUiRouter({
 
   if (redisClient) {
     const wsManager = new WebsocketManager({
+      hunt,
       redisClient,
       frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
     });
