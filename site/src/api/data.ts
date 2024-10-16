@@ -81,7 +81,11 @@ export class ActivityLogMutator extends Mutator<
   ActivityLogEntry,
   InsertActivityLogEntry
 > {
-  constructor(trx: Knex.Knex.Transaction, log: ActivityLogEntry[], allTeams: Set<number>) {
+  constructor(
+    trx: Knex.Knex.Transaction,
+    log: ActivityLogEntry[],
+    allTeams: Set<number>,
+  ) {
     super(trx, log, allTeams, dbAppendActivityLog);
   }
 
@@ -246,7 +250,11 @@ export async function executeMutation<T>(
       const combined_log = cached_log.entries
         .map(parseInternalActivityLogEntry)
         .concat(new_log);
-      const mutator = new ActivityLogMutator(trx, combined_log, new Set([team_id]));
+      const mutator = new ActivityLogMutator(
+        trx,
+        combined_log,
+        new Set([team_id]),
+      );
       const result = await fn(trx, mutator);
       await mutator.recalculateState(hunt);
       const teamNames = await getTeamNames(mutator.allTeams, trx);
