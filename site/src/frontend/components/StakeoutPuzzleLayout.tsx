@@ -1,6 +1,4 @@
-import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { StakeoutFonts } from "../rounds/stakeout/StakeoutFonts";
 import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
 import Bg from "./stakeoutAssets/envelope-bg.png";
 
@@ -8,7 +6,7 @@ export const StakeoutWrapper = styled(PuzzleWrapper)`
   background-color: transparent;
 `;
 
-const StakeoutHeaderInner = styled(PuzzleHeader)`
+export const StakeoutHeader = styled(PuzzleHeader)`
   background-color: var(--white);
   background-image: url("${Bg}");
   background-repeat: repeat;
@@ -44,16 +42,6 @@ const StakeoutHeaderInner = styled(PuzzleHeader)`
     padding-bottom: 2rem;
   }
 `;
-
-export const StakeoutHeader = (props: { children: ReactNode }) => {
-  const { children, ...rest } = props;
-  return (
-    <StakeoutHeaderInner {...rest}>
-      <StakeoutFonts />
-      {children}
-    </StakeoutHeaderInner>
-  );
-};
 
 export const StakeoutMain = styled(PuzzleMain)`
   border: 1.85rem solid var(--white);
