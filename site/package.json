@@ -16,6 +16,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.50.2",
     "@ts-rest/core": "^3.45.2",
     "@ts-rest/express": "^3.45.2",
     "@ts-rest/open-api": "^3.45.2",
