@@ -262,7 +262,9 @@ export async function getActivityLog(
 ) {
   let query = trx<ActivityLogEntry>("activity_log");
   if (team_id !== undefined) {
-    query = query.where("team_id", team_id).orWhereNull("team_id");
+    query = query.where((builder) => {
+      void builder.where("team_id", team_id).orWhereNull("team_id");
+    });
   }
   if (since !== undefined) {
     query = query.andWhere("id", ">", since);
