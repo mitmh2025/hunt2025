@@ -24,6 +24,11 @@
       enable = true;
     };
 
+    services.postgresql = {
+      enableTCPIP = true;
+      authentication = "host all all all md5";
+    };
+
     services.thingsboard = {
       enable = true;
       logback.loggers = {
@@ -40,6 +45,8 @@
       virtualisation.forwardPorts = [
         # Redis
         { from = "host"; host.port = 6379; guest.port = 6379; }
+        # Postgres
+        { from = "host"; host.port = 5432; guest.port = 5432; }
         # ThingsBoard
         { from = "host"; host.port = 8080; guest.port = 8080; }
       ];

@@ -34,7 +34,7 @@ export function jsonPathValue(knex: Knex, column: string, path: string[]) {
     case "pg":
     case "pgnative":
       return knex.raw(
-        `??${path.slice(0, -1).map((p) => ` -> '${p}'`)} ->> '${path.at(-1)}'`,
+        `(??${path.slice(0, -1).map((p) => ` -> '${p}'`)} ->> '${path.at(-1)}')`,
         [column],
       );
       break;
