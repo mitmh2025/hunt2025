@@ -25,6 +25,13 @@ const workerManifestFilename = path.join(
 
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 
+// A list of assets for which we wish to preserve the original filename.
+// To continue to support cache-busting, we place such assets inside a
+// directory named with their hash.
+const PRESERVE_FILENAME_ASSET_PATHS = [
+  "src/frontend/puzzles/shoddy-table/assets/10000sheets.xlsx",
+];
+
 class RadioManifestPlugin {
   constructor(opts) {
     if (!opts.fileName || !opts.staticOutputPath) {
@@ -256,6 +263,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const xlsxRule = {
+    test: /\.xlsx$/,
+    type: "asset/resource",
+  };
+
   const serverSwcLoader = {
     // .swcrc can be used to configure swc
     loader: "swc-loader",
@@ -285,6 +297,22 @@ export default function createConfigs(_env, argv) {
       ) => info.absoluteResourcePath,
     },
     module: {
+      generator: {
+        "asset/resource": {
+          filename: (pathData, _assetInfo) => {
+            // console.log("pathData", pathData);
+            // console.log("assetInfo", assetInfo);
+            if (
+              PRESERVE_FILENAME_ASSET_PATHS.indexOf(pathData.filename) !== -1
+            ) {
+              const basename = path.basename(pathData.filename);
+              return `static/${pathData.hash}/${basename}`;
+            }
+            const ext = path.extname(pathData.filename);
+            return `static/${pathData.hash}${ext}`;
+          },
+        },
+      },
       rules: [
         {
           // Work around bug in websocket-express
@@ -305,6 +333,7 @@ export default function createConfigs(_env, argv) {
         // never be imported by browser entrypoints, only server entrypoints.
         opusRule,
         fontRule,
+        xlsxRule,
       ],
       // Add modules as appropriate
     },

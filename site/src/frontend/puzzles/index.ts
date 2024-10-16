@@ -12,6 +12,7 @@ import ShellCorporationSix from "./mild-octopus";
 import ShellCorporationFive from "./profitable-trunk";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import The10000SheetExcelFile from "./shoddy-table";
 import TheShellGame from "./subdued-jet";
 import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
@@ -19,15 +20,20 @@ import type { PuzzleDefinition } from "./types";
 import ShellCorporationTwo from "./untrue-dice";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
+  // The Missing Diamond
   downright_backwards: DownrightBackwards,
-  an_exchange_of_vows: AnExchangeOfVows,
+
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
   the_jewelry_store: TheJewelryStore,
   the_art_gallery: TheArtGallery,
 
+  // Stakeout
+  an_exchange_of_vows: AnExchangeOfVows,
+
   // Paper Trail
   follow_the_rules: FollowTheRules,
+
   shell_corporation_1: ShellCorporationOne,
   shell_corporation_2: ShellCorporationTwo,
   shell_corporation_3: ShellCorporationThree,
@@ -41,4 +47,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // Illegal Search
   kotei_no_ango: KoteiNoAngo,
   cross_spread: CrossSpread,
+
+  // Background Check
+  the_10000_sheet_excel_file: The10000SheetExcelFile,
 };

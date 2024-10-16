@@ -315,7 +315,7 @@ const HUNT: Hunt = {
       title: "Background Check",
       puzzles: [
         // 14 feeders, 3 metas, 1 super
-        { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+        { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "the_10000_sheet_excel_file" },
         { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
         { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
         { id: "bgp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
