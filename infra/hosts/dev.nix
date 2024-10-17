@@ -51,6 +51,8 @@
               proxyPass = "http://hunt2025";
               proxyWebsockets = true;
             };
+            authentik.enable = true;
+            authentik.url = "https://staging.us-east5-a.c.mitmh2025-staging-gcp.internal:9443";
           };
           "localhost" = {
             # Expose plain HTTP on localhost for use by the frontend
