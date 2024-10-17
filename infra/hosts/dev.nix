@@ -11,6 +11,11 @@
       sops.defaultSopsFile = ./../secrets/staging.yaml;
     }
     {
+      nixpkgs.overlays = [(final: prev: {
+        hunt2025 = prev.hunt2025.overrideAttrs {
+          npmBuildScript = "build-dev";
+        };
+      })];
       hunt2025.site = {
         enable = true;
         db_env = "ci";  # N.B. We use "ci" to trigger a database reseed on startup.

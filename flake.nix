@@ -158,12 +158,12 @@
           specialArgs = {
             inherit authentik radio-media;
           };
-          modules = self.baseNixosModules ++ [
+          modules = [
             ./infra/hosts/${name}.nix
             {
               system.name = name;
             }
-          ];
+          ] ++ self.baseNixosModules;
         });
         overlays.default = import ./infra/pkgs/all-packages.nix { inherit self; };
         ciBuildTargets = {
