@@ -167,7 +167,7 @@
         });
         overlays.default = import ./infra/pkgs/all-packages.nix { inherit self; };
         ciBuildTargets = {
-          staging-apply = self.apps.x86_64-linux.staging.apply.program;
+          inherit (self.packages.x86_64-linux) terraformConfigurations;
           staging = self.nixosConfigurations.staging.config.system.build.toplevel;
           dev = self.nixosConfigurations.dev.config.system.build.toplevel;
         };
