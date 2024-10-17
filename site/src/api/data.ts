@@ -121,17 +121,17 @@ async function recalculateTeamState(
   // Somewhat surprisingly, this is faster than the equivalent single-pass for-of loop with an
   // if-else chain to mutate six Sets.
   const old = {
-    unlocked_rounds: new Set(
+    rounds_unlocked: new Set(
       activity_log
         .filter((e) => e.type === "round_unlocked")
         .map((e) => e.slug),
     ),
-    unlockable_puzzles: new Set(
+    puzzles_unlockable: new Set(
       activity_log
         .filter((e) => e.type === "puzzle_unlockable")
         .map((e) => e.slug),
     ),
-    unlocked_puzzles: new Set(
+    puzzles_unlocked: new Set(
       activity_log
         .filter((e) => e.type === "puzzle_unlocked")
         .map((e) => e.slug),
@@ -161,7 +161,7 @@ async function recalculateTeamState(
   const calculate_team_state_done = performance.now();
 
   // Compute the differences, and generate the requisite inserts.
-  for (const slug of next.unlocked_rounds.difference(old.unlocked_rounds)) {
+  for (const slug of next.rounds_unlocked.difference(old.rounds_unlocked)) {
     await mutator.appendLog({
       team_id,
       type: "round_unlocked",
@@ -170,17 +170,17 @@ async function recalculateTeamState(
   }
   const unlock_rounds_done = performance.now();
   const diff = {
-    // visible_puzzles: next.visible_puzzles.difference(old.visible_puzzles),
-    unlockable_puzzles: next.unlockable_puzzles.difference(
-      old.unlockable_puzzles,
+    // puzzles_visible: next.puzzles_visible.difference(old.puzzles_visible),
+    puzzles_unlockable: next.puzzles_unlockable.difference(
+      old.puzzles_unlockable,
     ),
-    unlocked_puzzles: next.unlocked_puzzles.difference(old.unlocked_puzzles),
-    unlocked_interactions: new Set(Object.keys(next.interactions)).difference(
+    puzzles_unlocked: next.puzzles_unlocked.difference(old.puzzles_unlocked),
+    interactions_unlocked: new Set(Object.keys(next.interactions)).difference(
       old.interactions_unlocked,
     ),
   };
   const diff_done = performance.now();
-  for (const slug of diff.unlockable_puzzles) {
+  for (const slug of diff.puzzles_unlockable) {
     await mutator.appendLog({
       team_id,
       type: "puzzle_unlockable",
@@ -188,7 +188,7 @@ async function recalculateTeamState(
     });
   }
   const puzzles_unlockable_done = performance.now();
-  for (const slug of diff.unlocked_puzzles) {
+  for (const slug of diff.puzzles_unlocked) {
     await mutator.appendLog({
       team_id,
       type: "puzzle_unlocked",
@@ -196,7 +196,7 @@ async function recalculateTeamState(
     });
   }
   const puzzles_unlock_done = performance.now();
-  for (const id of diff.unlocked_interactions) {
+  for (const id of diff.interactions_unlocked) {
     await mutator.appendLog({
       team_id,
       type: "interaction_unlocked",
@@ -318,7 +318,7 @@ export function formatTeamStateFromFormattable(
 ) {
   const rounds = Object.fromEntries(
     hunt.rounds
-      .filter(({ slug: roundSlug }) => data.unlocked_rounds.has(roundSlug))
+      .filter(({ slug: roundSlug }) => data.rounds_unlocked.has(roundSlug))
       .map(({ slug, title, puzzles, gates, interactions }) => {
         const interactionsData: [string, InteractionState][] = (
           interactions ?? []
@@ -346,7 +346,7 @@ export function formatTeamStateFromFormattable(
             slots: Object.fromEntries(
               puzzles.flatMap((slot) => {
                 const slug = getSlotSlug(slot);
-                if (slug && data.visible_puzzles.has(slug)) {
+                if (slug && data.puzzles_visible.has(slug)) {
                   const obj = { slug, is_meta: slot.is_meta };
                   return [[slot.id, obj]];
                 }
@@ -380,13 +380,13 @@ export function formatTeamStateFromFormattable(
     rounds,
     currency: data.available_currency,
     puzzles: Object.fromEntries(
-      [...data.visible_puzzles].map((slug) => [
+      [...data.puzzles_visible].map((slug) => [
         slug,
         {
           round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
-          locked: data.unlocked_puzzles.has(slug)
+          locked: data.puzzles_unlocked.has(slug)
             ? ("unlocked" as const)
-            : data.unlockable_puzzles.has(slug)
+            : data.puzzles_unlockable.has(slug)
               ? ("unlockable" as const)
               : ("locked" as const),
           answer: data.correct_answers[slug],

@@ -15,8 +15,7 @@ import { formatTeamStateFromFormattable } from "../../api/data";
 import {
   parseInternalActivityLogEntry,
   formatActivityLogEntryForApi,
-  emptyTeamStateIntermediate,
-  teamStateReducer,
+  TeamStateIntermediate,
   teamStateFromReducedIntermediate,
 } from "../../api/logic";
 import { type RedisClient } from "../../api/redis";
@@ -572,7 +571,7 @@ export class WebsocketManager
       // conns that want to observe teamState for this team.
       // console.log(`Starting teamState observer for team ${teamId}`);
       const connSubMap = new Map<string, ConnHandler>();
-      let intermediate = emptyTeamStateIntermediate();
+      let intermediate = new TeamStateIntermediate();
       let latestTeamState = conn.lastTeamState;
       // Avoid dispatching teamState updates while processing the initial backlog
       let ready = false;
@@ -581,7 +580,7 @@ export class WebsocketManager
           intermediate = entries
             .map(parseInternalActivityLogEntry)
             .filter((e) => e.team_id === teamId || e.team_id === undefined)
-            .reduce(teamStateReducer, intermediate);
+            .reduce((acc, entry) => acc.reduce(entry), intermediate);
           const data = teamStateFromReducedIntermediate(intermediate);
           // TODO: figure out how to deal with teamName changing?
           const teamName = conn.teamName;

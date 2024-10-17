@@ -2,7 +2,7 @@ import type { Hunt, Condition, PuzzleSlot } from "./types";
 
 type ConditionState = {
   hunt: Hunt;
-  unlocked_rounds: Set<string>;
+  rounds_unlocked: Set<string>;
   gates_satisfied: Set<string>;
   interactions_completed: Set<string>;
   puzzles_unlockable: Set<string>;
@@ -26,7 +26,7 @@ function evaluateCondition(
     puzzles_unlocked,
     puzzles_solved,
     slug_by_slot,
-    unlocked_rounds,
+    rounds_unlocked,
   } = condition_state;
   if (Array.isArray(condition)) {
     return condition.every((c) => evaluateCondition(c, condition_state));
@@ -87,7 +87,7 @@ function evaluateCondition(
     return gates_satisfied.has(condition.gate_satisfied);
   }
   if ("round_unlocked" in condition) {
-    return unlocked_rounds.has(condition.round_unlocked);
+    return rounds_unlocked.has(condition.round_unlocked);
   }
   // TODO: Can TypeScript prove this is unreachable?
   throw new Error("unknown condition");
@@ -126,26 +126,26 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
     interactions_completed,
     puzzles_solved,
     // These two are mutable
-    unlocked_rounds: initial_unlocked_rounds,
+    rounds_unlocked: initial_rounds_unlocked,
     puzzles_unlocked: initial_puzzles_unlocked,
     puzzles_unlockable: initial_puzzles_unlockable,
   } = initial_condition_state;
 
   // in-out
-  const unlocked_rounds = new Set<string>(initial_unlocked_rounds);
-  const unlocked_puzzles = new Set<string>(initial_puzzles_unlocked);
-  const visible_puzzles = new Set<string>(initial_puzzles_unlocked);
-  const unlockable_puzzles = new Set<string>(initial_puzzles_unlockable);
+  const rounds_unlocked = new Set<string>(initial_rounds_unlocked);
+  const puzzles_unlocked = new Set<string>(initial_puzzles_unlocked);
+  const puzzles_visible = new Set<string>(initial_puzzles_unlocked);
+  const puzzles_unlockable = new Set<string>(initial_puzzles_unlockable);
   // strict outputs
-  const unlocked_interactions = new Set<string>();
+  const interactions_unlocked = new Set<string>();
 
   const condition_state: ConditionState = {
     hunt,
-    unlocked_rounds,
+    rounds_unlocked,
     gates_satisfied,
     interactions_completed,
-    puzzles_unlocked: unlocked_puzzles,
-    puzzles_unlockable: unlockable_puzzles,
+    puzzles_unlocked,
+    puzzles_unlockable,
     puzzles_solved,
   };
   const slug_by_slot = getSlugsBySlot(hunt);
@@ -174,8 +174,8 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
       const roundEvaluateCondition = (condition: Condition) =>
         evaluateCondition(condition, round_condition_state);
       if (roundEvaluateCondition(round.unlock_if)) {
-        if (!unlocked_rounds.has(round.slug)) {
-          unlocked_rounds.add(round.slug);
+        if (!rounds_unlocked.has(round.slug)) {
+          rounds_unlocked.add(round.slug);
           updated = true;
         }
       }
@@ -190,12 +190,12 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
           slot.unlockable_if !== undefined &&
           roundEvaluateCondition(slot.unlockable_if)
         ) {
-          if (!visible_puzzles.has(puzzleSlug)) {
-            visible_puzzles.add(puzzleSlug);
+          if (!puzzles_visible.has(puzzleSlug)) {
+            puzzles_visible.add(puzzleSlug);
             updated = true;
           }
-          if (!unlockable_puzzles.has(puzzleSlug)) {
-            unlockable_puzzles.add(puzzleSlug);
+          if (!puzzles_unlockable.has(puzzleSlug)) {
+            puzzles_unlockable.add(puzzleSlug);
             updated = true;
           }
         }
@@ -203,12 +203,12 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
           slot.unlocked_if !== undefined &&
           roundEvaluateCondition(slot.unlocked_if)
         ) {
-          if (!visible_puzzles.has(puzzleSlug)) {
-            visible_puzzles.add(puzzleSlug);
+          if (!puzzles_visible.has(puzzleSlug)) {
+            puzzles_visible.add(puzzleSlug);
             updated = true;
           }
-          if (!unlocked_puzzles.has(puzzleSlug)) {
-            unlocked_puzzles.add(puzzleSlug);
+          if (!puzzles_unlocked.has(puzzleSlug)) {
+            puzzles_unlocked.add(puzzleSlug);
             // Also ensure we're updating the condition state to reflect the
             // now-unlocked puzzle, in case there's a chain reaction resulting
             // from this condition being newly satisfied.
@@ -219,8 +219,8 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
       });
       round.interactions?.forEach((interaction) => {
         if (roundEvaluateCondition(interaction.unlock_if)) {
-          if (!unlocked_interactions.has(interaction.id)) {
-            unlocked_interactions.add(interaction.id);
+          if (!interactions_unlocked.has(interaction.id)) {
+            interactions_unlocked.add(interaction.id);
             updated = true;
           }
         }
@@ -230,10 +230,10 @@ export function calculateTeamState(initial_condition_state: ConditionState) {
   } while (updated);
 
   return {
-    unlocked_rounds,
-    visible_puzzles,
-    unlockable_puzzles,
-    unlocked_puzzles,
-    unlocked_interactions,
+    rounds_unlocked,
+    puzzles_visible,
+    puzzles_unlockable,
+    puzzles_unlocked,
+    interactions_unlocked,
   };
 }

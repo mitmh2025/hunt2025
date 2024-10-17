@@ -39,9 +39,10 @@ export function fixInternalData(
   return value as ActivityLogEntry["internal_data"];
 }
 
-export type TeamStateIntermediate = {
+export class TeamStateIntermediate {
   epoch: number; // The largest value of `id` that was processed/relevant
   rounds_unlocked: Set<string>;
+  puzzles_visible: Set<string>;
   puzzles_unlockable: Set<string>;
   puzzles_unlocked: Set<string>;
   puzzles_solved: Set<string>;
@@ -53,86 +54,88 @@ export type TeamStateIntermediate = {
     string,
     { state: "unlocked" | "running" | "completed"; result?: string }
   >;
-};
 
-export function emptyTeamStateIntermediate(): TeamStateIntermediate {
-  return {
-    epoch: -1,
-    rounds_unlocked: new Set(),
-    puzzles_unlockable: new Set(),
-    puzzles_unlocked: new Set(),
-    puzzles_solved: new Set(),
-    gates_satisfied: new Set(),
-    interactions_completed: new Set(),
-    available_currency: 0,
-    correct_answers: {},
-    interactions: {},
-  };
-}
+  constructor() {
+    this.epoch = -1;
+    this.rounds_unlocked = new Set();
+    this.puzzles_visible = new Set();
+    this.puzzles_unlockable = new Set();
+    this.puzzles_unlocked = new Set();
+    this.puzzles_solved = new Set();
+    this.gates_satisfied = new Set();
+    this.interactions_completed = new Set();
+    this.available_currency = 0;
+    this.correct_answers = {};
+    this.interactions = {};
+  }
 
-export function teamStateReducer(
-  acc: TeamStateIntermediate,
-  entry: ActivityLogEntry,
-) {
-  acc.available_currency += entry.currency_delta;
-  // Update the max known epoch if this entry is newer
-  if (entry.id > acc.epoch) {
-    acc.epoch = entry.id;
-  }
-  switch (entry.type) {
-    case "currency_adjusted":
-      break;
-    case "round_unlocked":
-      acc.rounds_unlocked.add(entry.slug);
-      break;
-    case "gate_completed":
-      acc.gates_satisfied.add(entry.slug);
-      break;
-    case "puzzle_unlockable":
-      acc.puzzles_unlockable.add(entry.slug);
-      break;
-    case "puzzle_unlocked":
-      acc.puzzles_unlocked.add(entry.slug);
-      break;
-    case "puzzle_solved":
-      acc.puzzles_solved.add(entry.slug);
-      acc.correct_answers[entry.slug] = entry.data.answer;
-      break;
-    case "interaction_unlocked":
-      {
-        const interaction = { state: "unlocked" as const };
-        acc.interactions[entry.slug] = interaction;
-      }
-      break;
-    case "interaction_started":
-      {
-        const interaction = acc.interactions[entry.slug];
-        if (interaction) {
-          interaction.state = "running";
+  reduce(entry: ActivityLogEntry) {
+    this.available_currency += entry.currency_delta;
+    // Update the max known epoch if this entry is newer
+    if (entry.id > this.epoch) {
+      this.epoch = entry.id;
+    } else {
+      throw new Error(
+        `Attempting to reduce activity log entry ${entry.id} on top of team state that already includes ${this.epoch}`,
+      );
+    }
+    switch (entry.type) {
+      case "currency_adjusted":
+        break;
+      case "round_unlocked":
+        this.rounds_unlocked.add(entry.slug);
+        break;
+      case "gate_completed":
+        this.gates_satisfied.add(entry.slug);
+        break;
+      case "puzzle_solved":
+        this.puzzles_solved.add(entry.slug);
+        this.correct_answers[entry.slug] = entry.data.answer;
+      // fallthrough
+      case "puzzle_unlocked":
+        this.puzzles_unlocked.add(entry.slug);
+      // fallthrough
+      case "puzzle_unlockable":
+        this.puzzles_unlockable.add(entry.slug);
+        // Visible is currently the same as unlockable
+        this.puzzles_visible.add(entry.slug);
+        break;
+      case "interaction_unlocked":
+        {
+          const interaction = { state: "unlocked" as const };
+          this.interactions[entry.slug] = interaction;
         }
-      }
-      break;
-    case "interaction_completed":
-      {
-        acc.interactions_completed.add(entry.slug);
-        const interaction = acc.interactions[entry.slug];
-        if (interaction) {
-          interaction.state = "completed";
-          interaction.result = entry.data.result;
+        break;
+      case "interaction_started":
+        {
+          const interaction = this.interactions[entry.slug];
+          if (interaction) {
+            interaction.state = "running";
+          }
         }
-      }
-      break;
+        break;
+      case "interaction_completed":
+        {
+          this.interactions_completed.add(entry.slug);
+          const interaction = this.interactions[entry.slug];
+          if (interaction) {
+            interaction.state = "completed";
+            interaction.result = entry.data.result;
+          }
+        }
+        break;
+    }
+    return this;
   }
-  return acc;
 }
 
 export type FormattableTeamState = {
   epoch: number; // The largest value of `id` that was processed/relevant
   available_currency: number;
-  unlocked_rounds: Set<string>;
-  visible_puzzles: Set<string>;
-  unlockable_puzzles: Set<string>;
-  unlocked_puzzles: Set<string>;
+  rounds_unlocked: Set<string>;
+  puzzles_visible: Set<string>;
+  puzzles_unlockable: Set<string>;
+  puzzles_unlocked: Set<string>;
   correct_answers: Record<string, string>;
   satisfied_gates: Set<string>;
   interactions: Record<
@@ -151,12 +154,10 @@ export function teamStateFromReducedIntermediate(
   return {
     epoch: intermediate.epoch,
     available_currency: intermediate.available_currency,
-    unlocked_rounds: intermediate.rounds_unlocked,
-    visible_puzzles: intermediate.puzzles_unlockable.union(
-      intermediate.puzzles_unlocked,
-    ),
-    unlockable_puzzles: intermediate.puzzles_unlockable,
-    unlocked_puzzles: intermediate.puzzles_unlocked,
+    rounds_unlocked: intermediate.rounds_unlocked,
+    puzzles_visible: intermediate.puzzles_visible,
+    puzzles_unlockable: intermediate.puzzles_unlockable,
+    puzzles_unlocked: intermediate.puzzles_unlocked,
     correct_answers: intermediate.correct_answers,
     satisfied_gates: intermediate.gates_satisfied,
     interactions: intermediate.interactions,
@@ -168,12 +169,12 @@ export function reducerDeriveTeamState(
   teamActivityLogEntries: ActivityLogEntry[],
 ): FormattableTeamState {
   const intermediate = teamActivityLogEntries.reduce(
-    teamStateReducer,
-    emptyTeamStateIntermediate(),
+    (acc, entry) => acc.reduce(entry),
+    new TeamStateIntermediate(),
   );
   const derivedState = calculateTeamState({
     hunt,
-    unlocked_rounds: intermediate.rounds_unlocked,
+    rounds_unlocked: intermediate.rounds_unlocked,
     gates_satisfied: intermediate.gates_satisfied,
     interactions_completed: intermediate.interactions_completed,
     puzzles_unlockable: intermediate.puzzles_unlockable,
@@ -185,7 +186,7 @@ export function reducerDeriveTeamState(
     string,
     { state: "unlocked" | "running" | "completed"; result?: string }
   > = {};
-  for (const unlocked of derivedState.unlocked_interactions.keys()) {
+  for (const unlocked of derivedState.interactions_unlocked.keys()) {
     interactions[unlocked] = { state: "unlocked" as const };
   }
   Object.assign(interactions, intermediate.interactions);
@@ -193,10 +194,10 @@ export function reducerDeriveTeamState(
   return {
     epoch: intermediate.epoch,
     available_currency: intermediate.available_currency,
-    unlocked_rounds: derivedState.unlocked_rounds,
-    visible_puzzles: derivedState.visible_puzzles,
-    unlockable_puzzles: derivedState.unlockable_puzzles,
-    unlocked_puzzles: derivedState.unlocked_puzzles,
+    rounds_unlocked: derivedState.rounds_unlocked,
+    puzzles_visible: derivedState.puzzles_visible,
+    puzzles_unlockable: derivedState.puzzles_unlockable,
+    puzzles_unlocked: derivedState.puzzles_unlocked,
     correct_answers: intermediate.correct_answers,
     satisfied_gates: intermediate.gates_satisfied,
     interactions,

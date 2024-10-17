@@ -37,7 +37,7 @@ it("unlocks if solved", () => {
           },
         ],
       },
-      unlocked_rounds: new Set(),
+      rounds_unlocked: new Set(),
       gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlockable: new Set(),
@@ -45,11 +45,11 @@ it("unlocks if solved", () => {
       puzzles_solved: new Set(["p11"]),
     }),
   ).toStrictEqual({
-    unlocked_rounds: new Set(["round"]),
-    visible_puzzles: new Set(["p11", "p12"]),
-    unlockable_puzzles: new Set([]),
-    unlocked_puzzles: new Set(["p11", "p12"]),
-    unlocked_interactions: new Set(),
+    rounds_unlocked: new Set(["round"]),
+    puzzles_visible: new Set(["p11", "p12"]),
+    puzzles_unlockable: new Set([]),
+    puzzles_unlocked: new Set(["p11", "p12"]),
+    interactions_unlocked: new Set(),
   });
 });
 
@@ -72,7 +72,7 @@ it("becomes visible if unlocked", () => {
           },
         ],
       },
-      unlocked_rounds: new Set(),
+      rounds_unlocked: new Set(),
       gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlockable: new Set(),
@@ -80,11 +80,11 @@ it("becomes visible if unlocked", () => {
       puzzles_solved: new Set(),
     }),
   ).toStrictEqual({
-    unlocked_rounds: new Set(["round"]),
-    visible_puzzles: new Set(["p1", "p2", "p3", "p4"]),
-    unlockable_puzzles: new Set(["p3", "p4"]),
-    unlocked_puzzles: new Set(["p1", "p2"]),
-    unlocked_interactions: new Set(),
+    rounds_unlocked: new Set(["round"]),
+    puzzles_visible: new Set(["p1", "p2", "p3", "p4"]),
+    puzzles_unlockable: new Set(["p3", "p4"]),
+    puzzles_unlocked: new Set(["p1", "p2"]),
+    interactions_unlocked: new Set(),
   });
 });
 
@@ -105,7 +105,7 @@ it("handles gate conditions", () => {
           },
         ],
       },
-      unlocked_rounds: new Set(),
+      rounds_unlocked: new Set(),
       gates_satisfied: new Set(["g1"]),
       interactions_completed: new Set(),
       puzzles_unlockable: new Set(),
@@ -113,11 +113,11 @@ it("handles gate conditions", () => {
       puzzles_solved: new Set(),
     }),
   ).toStrictEqual({
-    unlocked_rounds: new Set(["round"]),
-    visible_puzzles: new Set(["p1", "p2"]),
-    unlockable_puzzles: new Set(["p2"]),
-    unlocked_puzzles: new Set(["p1"]),
-    unlocked_interactions: new Set(),
+    rounds_unlocked: new Set(["round"]),
+    puzzles_visible: new Set(["p1", "p2"]),
+    puzzles_unlockable: new Set(["p2"]),
+    puzzles_unlocked: new Set(["p1"]),
+    interactions_unlocked: new Set(),
   });
 });
 
@@ -147,7 +147,7 @@ it("handles round unlock conditions", () => {
           },
         ],
       },
-      unlocked_rounds: new Set(),
+      rounds_unlocked: new Set(),
       gates_satisfied: new Set(),
       interactions_completed: new Set(),
       puzzles_unlockable: new Set(),
@@ -155,10 +155,10 @@ it("handles round unlock conditions", () => {
       puzzles_solved: new Set(["p1"]),
     }),
   ).toStrictEqual({
-    unlocked_rounds: new Set(["round1", "round2"]),
-    visible_puzzles: new Set(["p1", "p2", "p3"]),
-    unlockable_puzzles: new Set(["p3"]),
-    unlocked_puzzles: new Set(["p1", "p2"]),
-    unlocked_interactions: new Set(),
+    rounds_unlocked: new Set(["round1", "round2"]),
+    puzzles_visible: new Set(["p1", "p2", "p3"]),
+    puzzles_unlockable: new Set(["p3"]),
+    puzzles_unlocked: new Set(["p1", "p2"]),
+    interactions_unlocked: new Set(),
   });
 });

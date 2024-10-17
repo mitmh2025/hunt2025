@@ -149,7 +149,7 @@ export function getRouter({
     // TODO: in the fullness of time, we should materialize puzzle_unlockable in activity_log so we can do purely point loads
     //       and not have to derive team state here at all.
     const data = reducerDeriveTeamState(hunt, activity_log);
-    const round_unlocked = data.unlocked_rounds.has(round);
+    const round_unlocked = data.rounds_unlocked.has(round);
     // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "outlands" round.
     if (!round_unlocked) {
       round = "outlands"; // TODO: configurable?
@@ -157,16 +157,16 @@ export function getRouter({
 
     // The puzzle must be either unlockable or unlocked.
     if (
-      !data.unlockable_puzzles.has(slug) &&
-      !data.unlocked_puzzles.has(slug)
+      !data.puzzles_unlockable.has(slug) &&
+      !data.puzzles_unlocked.has(slug)
     ) {
       return undefined;
     }
 
     const locked: "locked" | "unlockable" | "unlocked" =
-      data.unlocked_puzzles.has(slug)
+      data.puzzles_unlocked.has(slug)
         ? "unlocked"
-        : data.unlockable_puzzles.has(slug)
+        : data.puzzles_unlockable.has(slug)
           ? "unlockable"
           : "locked";
 
@@ -567,8 +567,8 @@ export function getRouter({
               const unlock_cost = slot.unlock_cost;
 
               if (
-                data.unlockable_puzzles.has(slug) &&
-                !data.unlocked_puzzles.has(slug) &&
+                data.puzzles_unlockable.has(slug) &&
+                !data.puzzles_unlocked.has(slug) &&
                 unlock_cost &&
                 data.available_currency >= unlock_cost
               ) {
