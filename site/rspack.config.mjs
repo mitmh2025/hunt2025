@@ -66,24 +66,44 @@ class RadioManifestPlugin {
       // Collect the relevant fields from opus files
       if (asset.name.endsWith(".opus")) {
         const src = asset.info.sourceFilename;
-        const re =
-          /src\/frontend\/interactions\/([^/]+)\/audio\/opus\/([^.]+).opus/;
-        const res = re.exec(src);
-        let interaction;
-        let line;
-        if (res && res.length === 3) {
-          interaction = res[1];
-          line = res[2];
-          files.push({
-            name: `${interaction}/${line}.opus`,
-            size: asset.size,
-            hash: asset.info.fullhash[0],
-            url: `${ASSET_PATH}${asset.name}`,
-            src, // will be something like "src/frontend/interactions/interview_at_the_art_gallery/audio/opus/2b.opus"
-            assetName: asset.name,
-            interaction,
-            line,
-          });
+        if (src.startsWith("src/frontend/interactions/")) {
+          const re =
+            /src\/frontend\/interactions\/([^/]+)\/audio\/opus\/([^.]+).opus/;
+          const res = re.exec(src);
+          let interaction;
+          let line;
+          if (res && res.length === 3) {
+            interaction = res[1];
+            line = res[2];
+            files.push({
+              name: `${interaction}/${line}.opus`,
+              size: asset.size,
+              hash: asset.info.fullhash[0],
+              url: `${ASSET_PATH}${asset.name}`,
+              src, // will be something like "src/frontend/interactions/interview_at_the_art_gallery/audio/opus/2b.opus"
+              assetName: asset.name,
+              interaction,
+              line,
+            });
+          }
+        } else if (src.startsWith("src/frontend/puzzles/")) {
+          const re = /src\/frontend\/puzzles\/([^/]+)\/assets\/([^.]+).opus/;
+          const res = re.exec(src);
+          let puzzle;
+          let name;
+          if (res && res.length === 3) {
+            puzzle = res[1];
+            name = res[2];
+            files.push({
+              name: `${puzzle}/${name}.opus`,
+              size: asset.size,
+              hash: asset.info.fullhash[0],
+              url: `${ASSET_PATH}${asset.name}`,
+              src, // will be something like "src/frontend/puzzles/right-palm/assets/2b.opus"
+              assetName: asset.name,
+              puzzle,
+            });
+          }
         }
       } else if (asset.info.sourceFilename?.startsWith("src/assets/radio/")) {
         // Collect the relevant fields from other assets
