@@ -145,6 +145,7 @@
           "dev-vm-base"
           "dev-vm"
           "staging"
+          "dev"
         ] (name: nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {

@@ -9,4 +9,10 @@
     host = "staging.mitmh2025.com";
     nginx = true;
   };
+
+  services.authentik.apps.dev = {
+    name = "Dev Autopush";
+    type = "proxy";
+    host = "dev.mitmh2025.com";
+  };
 }

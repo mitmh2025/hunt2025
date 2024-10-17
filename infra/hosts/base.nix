@@ -14,6 +14,10 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFQClsG3/sl09J6dFHLUqXDEdFzXiL6DYFEasA6oNYE4 zarvox@github/3"
     ];
 
+    # Allow ACME certificates
+    security.acme.acceptTerms = true;
+    security.acme.defaults.email = "hunt2025-tech@googlegroups.com";
+
     # Don't build documentation
     documentation.nixos.enable = false;
 
