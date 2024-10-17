@@ -11,12 +11,11 @@ import {
   MessageFromClientSchema,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
-import { formatTeamStateFromFormattable } from "../../api/data";
+import { formatTeamState } from "../../api/data";
 import {
   parseInternalActivityLogEntry,
   formatActivityLogEntryForApi,
   TeamStateIntermediate,
-  teamStateFromReducedIntermediate,
 } from "../../api/logic";
 import { type RedisClient } from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
@@ -581,14 +580,14 @@ export class WebsocketManager
             .map(parseInternalActivityLogEntry)
             .filter((e) => e.team_id === teamId || e.team_id === undefined)
             .reduce((acc, entry) => acc.reduce(entry), intermediate);
-          const data = teamStateFromReducedIntermediate(intermediate);
           // TODO: figure out how to deal with teamName changing?
           const teamName = conn.teamName;
-          latestTeamState = formatTeamStateFromFormattable(
+          latestTeamState = formatTeamState(
             this.hunt,
             teamId,
+            intermediate.epoch,
             teamName,
-            data,
+            intermediate,
           );
           if (ready) {
             this.dispatchTeamStateUpdate(teamId, latestTeamState);

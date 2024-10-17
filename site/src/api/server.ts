@@ -31,7 +31,7 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { executeMutation, formatTeamState, type Mutator } from "./data";
+import { executeMutation, formatTeamStateFromLog, type Mutator } from "./data";
 import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
@@ -129,7 +129,7 @@ export function getRouter({
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
     const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    return formatTeamState(hunt, team_id, team_name, activity_log);
+    return formatTeamStateFromLog(hunt, team_id, team_name, activity_log);
   };
 
   const formatPuzzleState = (

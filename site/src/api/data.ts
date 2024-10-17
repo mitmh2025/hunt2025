@@ -7,7 +7,7 @@ import { type z } from "zod";
 import { type TeamState } from "../../lib/api/client";
 import { type InteractionStateSchema } from "../../lib/api/contract";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
-import { getSlotSlug } from "../huntdata/logic";
+import { getSlotSlug, TeamState as LogicTeamState } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
@@ -15,16 +15,8 @@ import {
   getTeamNames,
   retryOnAbort,
 } from "./db";
-import {
-  type FormattableTeamState,
-  parseInternalActivityLogEntry,
-  reducerDeriveTeamState,
-} from "./logic";
-import {
-  type RedisClient,
-  activityLog as redisActivityLog,
-  publishTeamState,
-} from "./redis";
+import { parseInternalActivityLogEntry, reducerDeriveTeamState } from "./logic";
+import { type RedisClient, activityLog as redisActivityLog } from "./redis";
 
 export class Mutator<T extends { id: number; team_id?: number }, I> {
   private _trx: Knex.Knex.Transaction;
@@ -169,15 +161,18 @@ async function recalculateTeamState(
     });
   }
   const unlock_rounds_done = performance.now();
+  // These diff against the next state to make sure we don't insert an activity log entry out-of-order.
   const diff = {
     // puzzles_visible: next.puzzles_visible.difference(old.puzzles_visible),
-    puzzles_unlockable: next.puzzles_unlockable.difference(
-      old.puzzles_unlockable,
-    ),
-    puzzles_unlocked: next.puzzles_unlocked.difference(old.puzzles_unlocked),
-    interactions_unlocked: new Set(Object.keys(next.interactions)).difference(
-      old.interactions_unlocked,
-    ),
+    puzzles_unlockable: next.puzzles_unlockable
+      .difference(old.puzzles_unlockable)
+      .difference(next.puzzles_unlocked),
+    puzzles_unlocked: next.puzzles_unlocked
+      .difference(old.puzzles_unlocked)
+      .difference(next.puzzles_solved),
+    interactions_unlocked: next.interactions_unlocked
+      .difference(old.interactions_unlocked)
+      .difference(next.interactions_started),
   };
   const diff_done = performance.now();
   for (const slug of diff.puzzles_unlockable) {
@@ -279,16 +274,13 @@ export async function executeMutation<T>(
     const team_activity_log = activityLog.filter(
       (e) => e.team_id === undefined || e.team_id === team_id,
     );
-    const state = formatTeamState(
+    const state = formatTeamStateFromLog(
       hunt,
       team_id,
       teamNames[team_id] ?? "",
       team_activity_log,
     );
     teamStates[team_id] = state;
-    if (redisClient && affectedTeams.has(team_id)) {
-      await publishTeamState(redisClient, team_id, state);
-    }
   }
   return { result, activityLog, teamStates };
 }
@@ -310,11 +302,12 @@ export async function refreshActivityLog(
 
 type InteractionState = z.infer<typeof InteractionStateSchema>;
 
-export function formatTeamStateFromFormattable(
+export function formatTeamState(
   hunt: Hunt,
   team_id: number,
+  epoch: number,
   team_name: string,
-  data: FormattableTeamState,
+  data: LogicTeamState,
 ) {
   const rounds = Object.fromEntries(
     hunt.rounds
@@ -323,11 +316,20 @@ export function formatTeamStateFromFormattable(
         const interactionsData: [string, InteractionState][] = (
           interactions ?? []
         ).flatMap((interaction) => {
-          if ("interactions" in data) {
-            const v = data.interactions[interaction.id];
-            if (v) {
-              return [[interaction.id, v]];
-            }
+          if (data.interactions_unlocked.has(interaction.id)) {
+            return [
+              [
+                interaction.id,
+                data.interactions_completed.has(interaction.id)
+                  ? {
+                      state: "completed" as const,
+                      result: data.interactions_completed.get(interaction.id),
+                    }
+                  : data.interactions_started.has(interaction.id)
+                    ? { state: "running" as const }
+                    : { state: "unlocked" as const },
+              ],
+            ];
           }
           return [];
         });
@@ -354,7 +356,7 @@ export function formatTeamStateFromFormattable(
               }),
             ),
             gates: gates?.flatMap((gate) => {
-              if (gate.id && data.satisfied_gates.has(gate.id)) {
+              if (gate.id && data.gates_satisfied.has(gate.id)) {
                 return [gate.id];
               }
               return [];
@@ -374,7 +376,7 @@ export function formatTeamStateFromFormattable(
     ),
   );
   return {
-    epoch: data.epoch,
+    epoch: epoch,
     teamId: team_id,
     teamName: team_name,
     rounds,
@@ -396,7 +398,7 @@ export function formatTeamStateFromFormattable(
   };
 }
 
-export function formatTeamState(
+export function formatTeamStateFromLog(
   hunt: Hunt,
   team_id: number,
   team_name: string,
@@ -404,5 +406,7 @@ export function formatTeamState(
 ): TeamState {
   const data = reducerDeriveTeamState(hunt, activity_log);
   //console.log(data);
-  return formatTeamStateFromFormattable(hunt, team_id, team_name, data);
+  // TODO: Get epoch from reduced TeamState
+  const epoch = activity_log.at(-1)?.id;
+  return formatTeamState(hunt, team_id, epoch ?? 0, team_name, data);
 }

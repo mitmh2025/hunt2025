@@ -5,7 +5,7 @@ import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
 import HUNT from "../huntdata";
-import { calculateTeamState } from "../huntdata/logic";
+import { TeamState as LogicTeamState } from "../huntdata/logic";
 import type { Hunt } from "../huntdata/types";
 
 export function fixTimestamp(value: string | Date): Date {
@@ -39,34 +39,12 @@ export function fixInternalData(
   return value as ActivityLogEntry["internal_data"];
 }
 
-export class TeamStateIntermediate {
+export class TeamStateIntermediate extends LogicTeamState {
   epoch: number; // The largest value of `id` that was processed/relevant
-  rounds_unlocked: Set<string>;
-  puzzles_visible: Set<string>;
-  puzzles_unlockable: Set<string>;
-  puzzles_unlocked: Set<string>;
-  puzzles_solved: Set<string>;
-  gates_satisfied: Set<string>;
-  interactions_completed: Set<string>;
-  available_currency: number;
-  correct_answers: Record<string, string>;
-  interactions: Record<
-    string,
-    { state: "unlocked" | "running" | "completed"; result?: string }
-  >;
 
-  constructor() {
+  constructor(initial?: Partial<TeamStateIntermediate>) {
+    super(initial);
     this.epoch = -1;
-    this.rounds_unlocked = new Set();
-    this.puzzles_visible = new Set();
-    this.puzzles_unlockable = new Set();
-    this.puzzles_unlocked = new Set();
-    this.puzzles_solved = new Set();
-    this.gates_satisfied = new Set();
-    this.interactions_completed = new Set();
-    this.available_currency = 0;
-    this.correct_answers = {};
-    this.interactions = {};
   }
 
   reduce(entry: ActivityLogEntry) {
@@ -91,117 +69,37 @@ export class TeamStateIntermediate {
       case "puzzle_solved":
         this.puzzles_solved.add(entry.slug);
         this.correct_answers[entry.slug] = entry.data.answer;
-      // fallthrough
+      // fallthrough - solved implies unlocked
       case "puzzle_unlocked":
         this.puzzles_unlocked.add(entry.slug);
-      // fallthrough
+        break;
       case "puzzle_unlockable":
         this.puzzles_unlockable.add(entry.slug);
-        // Visible is currently the same as unlockable
-        this.puzzles_visible.add(entry.slug);
-        break;
-      case "interaction_unlocked":
-        {
-          const interaction = { state: "unlocked" as const };
-          this.interactions[entry.slug] = interaction;
-        }
-        break;
-      case "interaction_started":
-        {
-          const interaction = this.interactions[entry.slug];
-          if (interaction) {
-            interaction.state = "running";
-          }
-        }
         break;
       case "interaction_completed":
-        {
-          this.interactions_completed.add(entry.slug);
-          const interaction = this.interactions[entry.slug];
-          if (interaction) {
-            interaction.state = "completed";
-            interaction.result = entry.data.result;
-          }
-        }
+        this.interactions_completed.set(entry.slug, entry.data.result);
+      // fallthrough - completed implies started
+      case "interaction_started":
+        this.interactions_started.add(entry.slug);
+      // fallthrough - started implies unlocked
+      case "interaction_unlocked":
+        this.interactions_unlocked.add(entry.slug);
         break;
     }
     return this;
   }
 }
 
-export type FormattableTeamState = {
-  epoch: number; // The largest value of `id` that was processed/relevant
-  available_currency: number;
-  rounds_unlocked: Set<string>;
-  puzzles_visible: Set<string>;
-  puzzles_unlockable: Set<string>;
-  puzzles_unlocked: Set<string>;
-  correct_answers: Record<string, string>;
-  satisfied_gates: Set<string>;
-  interactions: Record<
-    string,
-    { state: "unlocked" | "running" | "completed"; result?: string }
-  >;
-};
-
-export function teamStateFromReducedIntermediate(
-  intermediate: TeamStateIntermediate,
-): FormattableTeamState {
-  // This is intended only for read-only codepaths, where we expect all relevant state to already be
-  // reified into the activity log.  Unlike reducerDeriveTeamState, which will run calculateTeamState
-  // again, we consider here only what the intermediate already knows.
-
-  return {
-    epoch: intermediate.epoch,
-    available_currency: intermediate.available_currency,
-    rounds_unlocked: intermediate.rounds_unlocked,
-    puzzles_visible: intermediate.puzzles_visible,
-    puzzles_unlockable: intermediate.puzzles_unlockable,
-    puzzles_unlocked: intermediate.puzzles_unlocked,
-    correct_answers: intermediate.correct_answers,
-    satisfied_gates: intermediate.gates_satisfied,
-    interactions: intermediate.interactions,
-  };
-}
-
 export function reducerDeriveTeamState(
   hunt: Hunt,
   teamActivityLogEntries: ActivityLogEntry[],
-): FormattableTeamState {
+): LogicTeamState {
   const intermediate = teamActivityLogEntries.reduce(
     (acc, entry) => acc.reduce(entry),
     new TeamStateIntermediate(),
   );
-  const derivedState = calculateTeamState({
-    hunt,
-    rounds_unlocked: intermediate.rounds_unlocked,
-    gates_satisfied: intermediate.gates_satisfied,
-    interactions_completed: intermediate.interactions_completed,
-    puzzles_unlockable: intermediate.puzzles_unlockable,
-    puzzles_unlocked: intermediate.puzzles_unlocked,
-    puzzles_solved: intermediate.puzzles_solved,
-  });
-
-  const interactions: Record<
-    string,
-    { state: "unlocked" | "running" | "completed"; result?: string }
-  > = {};
-  for (const unlocked of derivedState.interactions_unlocked.keys()) {
-    interactions[unlocked] = { state: "unlocked" as const };
-  }
-  Object.assign(interactions, intermediate.interactions);
-
-  return {
-    epoch: intermediate.epoch,
-    available_currency: intermediate.available_currency,
-    rounds_unlocked: derivedState.rounds_unlocked,
-    puzzles_visible: derivedState.puzzles_visible,
-    puzzles_unlockable: derivedState.puzzles_unlockable,
-    puzzles_unlocked: derivedState.puzzles_unlocked,
-    correct_answers: intermediate.correct_answers,
-    satisfied_gates: intermediate.gates_satisfied,
-    interactions,
-  };
+  // Return the LogicTeamState because the recalculated team state no longer represents a committed epoch.
+  return intermediate.recalculateTeamState(hunt);
 }
 
 type ActivityLog = ServerInferResponseBody<

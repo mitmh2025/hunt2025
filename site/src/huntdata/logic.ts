@@ -118,122 +118,120 @@ export function getSlugsBySlot(hunt: Hunt) {
   return slug_by_slot;
 }
 
-export function calculateTeamState(initial_condition_state: ConditionState) {
-  const {
-    // These four are immutable
-    hunt,
-    gates_satisfied,
-    interactions_completed,
-    puzzles_solved,
-    // These two are mutable
-    rounds_unlocked: initial_rounds_unlocked,
-    puzzles_unlocked: initial_puzzles_unlocked,
-    puzzles_unlockable: initial_puzzles_unlockable,
-  } = initial_condition_state;
+export class TeamState {
+  rounds_unlocked: Set<string>;
+  puzzles_unlockable: Set<string>;
+  puzzles_unlocked: Set<string>;
+  puzzles_solved: Set<string>;
+  gates_satisfied: Set<string>;
+  interactions_unlocked: Set<string>;
+  interactions_started: Set<string>;
+  interactions_completed: Map<string, string>;
+  available_currency: number;
+  correct_answers: Record<string, string>;
 
-  // in-out
-  const rounds_unlocked = new Set<string>(initial_rounds_unlocked);
-  const puzzles_unlocked = new Set<string>(initial_puzzles_unlocked);
-  const puzzles_visible = new Set<string>(initial_puzzles_unlocked);
-  const puzzles_unlockable = new Set<string>(initial_puzzles_unlockable);
-  // strict outputs
-  const interactions_unlocked = new Set<string>();
+  constructor(initial?: Partial<TeamState>) {
+    this.rounds_unlocked = new Set(initial?.rounds_unlocked ?? []);
+    this.puzzles_unlockable = new Set(initial?.puzzles_unlockable ?? []);
+    this.puzzles_unlocked = new Set(initial?.puzzles_unlocked ?? []);
+    this.puzzles_solved = new Set(initial?.puzzles_solved ?? []);
+    this.gates_satisfied = new Set(initial?.gates_satisfied ?? []);
+    this.interactions_unlocked = new Set(initial?.interactions_unlocked ?? []);
+    this.interactions_started = new Set(initial?.interactions_started ?? []);
+    this.interactions_completed = new Map(
+      initial?.interactions_completed ?? [],
+    );
+    this.available_currency = initial?.available_currency ?? 0;
+    this.correct_answers = {};
+  }
 
-  const condition_state: ConditionState = {
-    hunt,
-    rounds_unlocked,
-    gates_satisfied,
-    interactions_completed,
-    puzzles_unlocked,
-    puzzles_unlockable,
-    puzzles_solved,
-  };
-  const slug_by_slot = getSlugsBySlot(hunt);
+  get puzzles_visible() {
+    // The current definition of "visible" is that a puzzle is either unlocked or unlockable.
+    return this.puzzles_unlocked.union(this.puzzles_unlockable);
+  }
 
-  // We want to be able to specify unlockable_if with conditions based on
-  // puzzles_unlocked.  In practice with our current understanding of the hunt
-  // structure, we should never really need to run more than two iterations of
-  // this loop, but for simplicity and theoretical correctness we'll keep
-  // iterating until we reach a fix-point.
-  let updated = false;
-  do {
-    updated = false;
-    hunt.rounds.forEach((round) => {
-      // Default set of slots to consider when evaluating puzzles_unlocked or
-      // puzzles_solved conditions
-      const default_slots = round.puzzles
-        .filter((p) => !p.is_meta)
-        .map((p) => p.id);
-      const round_condition_state = Object.assign(
-        {
-          default_slots,
-          slug_by_slot,
-        },
-        condition_state,
-      );
-      const roundEvaluateCondition = (condition: Condition) =>
-        evaluateCondition(condition, round_condition_state);
-      if (roundEvaluateCondition(round.unlock_if)) {
-        if (!rounds_unlocked.has(round.slug)) {
-          rounds_unlocked.add(round.slug);
-          updated = true;
-        }
-      }
-      round.puzzles.forEach((slot) => {
-        const puzzleSlug = getSlotSlug(slot);
-        if (!puzzleSlug) {
-          // In dev, empty slugs are treated as fake puzzles with slug === slot.
-          // In prod, empty slugs are invisible.
-          return;
-        }
-        if (
-          slot.unlockable_if !== undefined &&
-          roundEvaluateCondition(slot.unlockable_if)
-        ) {
-          if (!puzzles_visible.has(puzzleSlug)) {
-            puzzles_visible.add(puzzleSlug);
-            updated = true;
-          }
-          if (!puzzles_unlockable.has(puzzleSlug)) {
-            puzzles_unlockable.add(puzzleSlug);
+  // recalculateTeamState uses `hunt` to decide what a team is now eligible for.
+  recalculateTeamState(hunt: Hunt) {
+    const next = new TeamState(this);
+    const condition_state: ConditionState = {
+      // These four are immutable
+      hunt,
+      gates_satisfied: next.gates_satisfied,
+      interactions_completed: new Set(next.interactions_completed.keys()),
+      puzzles_solved: next.puzzles_solved,
+      // The rest are mutable
+      rounds_unlocked: next.rounds_unlocked,
+      puzzles_unlocked: next.puzzles_unlocked,
+      puzzles_unlockable: next.puzzles_unlockable,
+    };
+    const slug_by_slot = getSlugsBySlot(hunt);
+
+    // We want to be able to specify unlockable_if with conditions based on
+    // puzzles_unlocked.  In practice with our current understanding of the hunt
+    // structure, we should never really need to run more than two iterations of
+    // this loop, but for simplicity and theoretical correctness we'll keep
+    // iterating until we reach a fix-point.
+    let updated = false;
+    do {
+      updated = false;
+      hunt.rounds.forEach((round) => {
+        // Default set of slots to consider when evaluating puzzles_unlocked or
+        // puzzles_solved conditions
+        const default_slots = round.puzzles
+          .filter((p) => !p.is_meta)
+          .map((p) => p.id);
+        const round_condition_state = Object.assign(
+          {
+            default_slots,
+            slug_by_slot,
+          },
+          condition_state,
+        );
+        const roundEvaluateCondition = (condition: Condition) =>
+          evaluateCondition(condition, round_condition_state);
+        if (roundEvaluateCondition(round.unlock_if)) {
+          if (!next.rounds_unlocked.has(round.slug)) {
+            next.rounds_unlocked.add(round.slug);
             updated = true;
           }
         }
-        if (
-          slot.unlocked_if !== undefined &&
-          roundEvaluateCondition(slot.unlocked_if)
-        ) {
-          if (!puzzles_visible.has(puzzleSlug)) {
-            puzzles_visible.add(puzzleSlug);
-            updated = true;
+        round.puzzles.forEach((slot) => {
+          const puzzleSlug = getSlotSlug(slot);
+          if (!puzzleSlug) {
+            // In dev, empty slugs are treated as fake puzzles with slug === slot.
+            // In prod, empty slugs are invisible.
+            return;
           }
-          if (!puzzles_unlocked.has(puzzleSlug)) {
-            puzzles_unlocked.add(puzzleSlug);
-            // Also ensure we're updating the condition state to reflect the
-            // now-unlocked puzzle, in case there's a chain reaction resulting
-            // from this condition being newly satisfied.
-            condition_state.puzzles_unlocked.add(puzzleSlug);
-            updated = true;
+          if (
+            slot.unlockable_if !== undefined &&
+            roundEvaluateCondition(slot.unlockable_if)
+          ) {
+            if (!next.puzzles_unlockable.has(puzzleSlug)) {
+              next.puzzles_unlockable.add(puzzleSlug);
+              updated = true;
+            }
           }
-        }
+          if (
+            slot.unlocked_if !== undefined &&
+            roundEvaluateCondition(slot.unlocked_if)
+          ) {
+            if (!next.puzzles_unlocked.has(puzzleSlug)) {
+              next.puzzles_unlocked.add(puzzleSlug);
+              updated = true;
+            }
+          }
+        });
+        round.interactions?.forEach((interaction) => {
+          if (roundEvaluateCondition(interaction.unlock_if)) {
+            if (!next.interactions_unlocked.has(interaction.id)) {
+              next.interactions_unlocked.add(interaction.id);
+              updated = true;
+            }
+          }
+        });
       });
-      round.interactions?.forEach((interaction) => {
-        if (roundEvaluateCondition(interaction.unlock_if)) {
-          if (!interactions_unlocked.has(interaction.id)) {
-            interactions_unlocked.add(interaction.id);
-            updated = true;
-          }
-        }
-      });
-    });
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for some reason, eslint believes this condition is always falsy
-  } while (updated);
-
-  return {
-    rounds_unlocked,
-    puzzles_visible,
-    puzzles_unlockable,
-    puzzles_unlocked,
-    interactions_unlocked,
-  };
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- for some reason, eslint believes this condition is always falsy
+    } while (updated);
+    return next;
+  }
 }
