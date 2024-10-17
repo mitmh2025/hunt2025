@@ -211,6 +211,12 @@ in {
           attrs.policy = keyOf "source-enrollment-if-invitation-policy";
           attrs.target = keyOf "default-source-enrollment-flow";
         }
+        {
+          model = "authentik_stages_user_write.userwritestage";
+          identifiers.name = "default-source-enrollment-write";
+          attrs.user_creation_mode = "always_create";
+          attrs.user_type = "internal";
+        }
         # OAuth2 sources
         {
           model = "authentik_sources_oauth.oauthsource";
