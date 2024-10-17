@@ -147,6 +147,7 @@ in {
           identifiers.name = "enrollment-invitation-write";
           id = "enrollment-invitation-stage-3";
           attrs.user_creation_mode = "always_create";
+          attrs.user_type = "internal";
         }
         {
           model = "authentik_flows.flowstagebinding";
