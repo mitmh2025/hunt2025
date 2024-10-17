@@ -218,6 +218,7 @@ in {
         git
         nix
         nix-fast-build
+        nixos-rebuild
         openssh
         coreutils
       ];
@@ -256,12 +257,16 @@ in {
           umask 0077
           mkdir -p /keys
           ${writeKeys}
+          echo "$''${AUTOPUSH_KEY}" > /keys/autopush_key
         )
         nix-fast-build -f .#ciBuildTargets --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
+        # Deploy to dev
+        NIX_SSHOPTS="-i /keys/autopush_key" nixos-rebuild switch --flake .#dev --fast --target-host root@dev.mitmh2025.com
       '';
       secret_env = [
         "AWS_ACCESS_KEY_ID"
         "AWS_SECRET_ACCESS_KEY"
+        "AUTOPUSH_KEY"
       ] ++ (lib.imap (i: repo: "DEPLOY_KEY_${toString i}") deployKeyNames);
     }];
 
@@ -273,6 +278,10 @@ in {
       {
         env = "AWS_SECRET_ACCESS_KEY";
         version_name = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-secret.name";
+      }
+      {
+        env = "AUTOPUSH_KEY";
+        version_name = lib.tfRef "google_secret_manager_secret_version.autopush_key.id";
       }
     ] ++ (lib.imap (i: repo: {
       env = "DEPLOY_KEY_${toString i}";
