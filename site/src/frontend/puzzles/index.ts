@@ -9,6 +9,7 @@ import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
 import ShellCorporationSix from "./mild-octopus";
+import PracticalFighter from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
@@ -50,4 +51,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // Background Check
   the_10000_sheet_excel_file: The10000SheetExcelFile,
+
+  practical_fighter: PracticalFighter,
 };
