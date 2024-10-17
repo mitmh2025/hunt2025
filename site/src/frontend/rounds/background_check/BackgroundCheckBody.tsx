@@ -1,6 +1,7 @@
 import React from "react";
 import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
+import { BackgroundCheckFonts } from "./BackgroundCheckFonts";
 import { Fridge } from "./Layout";
 import { type BackgroundCheckState } from "./types";
 
@@ -32,6 +33,7 @@ const BackgroundCheckBody = ({
   );
   return (
     <Fridge key="background-check">
+      <BackgroundCheckFonts />
       <h1>The Background Check</h1>
       {items}
     </Fridge>

@@ -28,6 +28,7 @@ import {
   StakeoutWrapper,
 } from "../../components/StakeoutPuzzleLayout";
 import { PUZZLES } from "../../puzzles";
+import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
 import { type Entrypoint } from "../assets";
@@ -70,6 +71,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     main: BackgroundCheckMain,
     header: BackgroundCheckHeader,
     wrapper: BackgroundCheckWrapper,
+    fonts: BackgroundCheckFonts,
   },
   the_murder: {},
   outlands: {},
