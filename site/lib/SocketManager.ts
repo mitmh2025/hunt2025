@@ -66,7 +66,7 @@ type SubscriptionState = {
 };
 
 const getWsUrl = () =>
-  `${location.protocol === "https" ? "wss" : "ws"}://${location.host}/ws`;
+  `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`;
 
 export class SocketManager {
   private sockState:
