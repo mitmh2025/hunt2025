@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { styled } from "styled-components";
 import { type TeamState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
+import { StakeoutFonts } from "./StakeoutFonts";
 import StakeoutPhoto from "./StakeoutPhoto";
 import roundBackground from "./assets/background.png";
 import { type StakeoutSlot, type StakeoutState } from "./types";
@@ -85,6 +87,65 @@ type LocalStoragePosition = {
   slot: StakeoutSlot;
   pos: Position;
 };
+
+const StakeoutBodyMainDiv = styled.div`
+  width: 1920px;
+  height: 1080px;
+  background-image: url("${roundBackground}");
+  background-size: contain;
+
+  // We want to place other objects relatively within the scene
+  position: relative;
+  overflow: hidden;
+
+  // Establish a new stacking context for the photos to stack within without
+  // causing them to leak over other overlays
+  z-index: 0;
+
+  font-family: "Just Another Hand", cursive;
+  font-weight: 400;
+  font-style: normal;
+
+  a,
+  .puzzle-link {
+    color: var(--gray-800);
+    text-decoration: none;
+    position: relative;
+  }
+
+  a:hover {
+    color: var(--true-black);
+    border-color: var(--true-black);
+    text-shadow: none;
+    text-decoration: underline dotted var(--gray-800);
+  }
+
+  a.highlighter:hover {
+    text-decoration: none;
+  }
+
+  a.highlighter:hover::before {
+    width: 102%;
+    height: 0.8em;
+    background-color: var(--highlighter);
+    content: " ";
+    position: absolute;
+    top: -0.125em;
+    right: 0;
+    transform: rotate(3deg);
+  }
+
+  a.highlighter:hover::after {
+    width: 95%;
+    height: 0.8em;
+    background-color: var(--highlighter);
+    content: " ";
+    position: absolute;
+    top: 0.125em;
+    right: 0;
+    transform: rotate(-1deg);
+  }
+`;
 
 const StakeoutBody = ({
   state,
@@ -288,18 +349,6 @@ const StakeoutBody = ({
     );
   });
 
-  const pageStyle = {
-    width: "1920px",
-    height: "1080px",
-    backgroundImage: `url(${roundBackground})`,
-    backgroundSize: "contain",
-    position: "relative" as const, // We want to place other objects relatively within the scene
-    overflow: "hidden",
-    // Establish a new stacking context for the photos to stack within without causing them to leak
-    // over other overlays
-    zIndex: 0,
-  };
-
   let overlay;
   if (state.overlay) {
     const puzzleState = teamState.puzzles[state.overlay.slug];
@@ -340,17 +389,16 @@ const StakeoutBody = ({
     );
   }
   return (
-    <div
-      className="just-another-hand"
-      style={pageStyle}
+    <StakeoutBodyMainDiv
       onPointerDown={onBackgroundPointerDown}
       onPointerLeave={endDrag}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
     >
+      <StakeoutFonts />
       {overlay}
       {photos}
-    </div>
+    </StakeoutBodyMainDiv>
   );
 };
 

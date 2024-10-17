@@ -4,7 +4,6 @@ import { type TeamState } from "../../../../lib/api/client";
 import globalDatasetManager from "../../client/DatasetManager";
 import StakeoutBody from "./StakeoutBody";
 import { type StakeoutState } from "./types";
-import "./client.css";
 
 const StakeoutManager = ({
   initialState,
