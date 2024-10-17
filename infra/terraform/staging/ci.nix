@@ -247,7 +247,7 @@ in {
 
     approval_config.approval_required = false;
 
-    build.timeout = "1200s";
+    build.timeout = "3600s";
 
     build.step = [{
       name = "${repoUrl}/nix-cache";
