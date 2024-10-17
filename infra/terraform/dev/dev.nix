@@ -1,9 +1,5 @@
 { lib, self, ... }:
 {
-  gcp.serviceAccount.dev-vm = {
-    displayName = "Used by the dev VM";
-  };
-
   gce.instance.dev = {
     machineType = "e2-micro"; # 1 vCPU, 1 GB RAM
     firewall.allowedTCPPorts = [

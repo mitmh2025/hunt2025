@@ -27,14 +27,15 @@
 
   imports = [
     ./dev.nix
-  ]
+  ];
 
   route53.mitmh2025 = {
     provider = "puzzup";
     domain = "mitmh2025.com";
   };
 
-  data.google_compute_network.default = {
-    name = "default";
+  terraform.backend.gcs = {
+    bucket = stateBucket;
+    prefix = "terraform/state";
   };
 }

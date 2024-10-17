@@ -114,7 +114,10 @@ in {
       }));
     };
   };
-  config = {
+  config = lib.mkIf (cfg != {}) {
+    data.google_compute_network.default = {
+      name = "default";
+    };
     gcp.serviceAccount = lib.mapAttrs' (
       key: value:
       lib.nameValuePair

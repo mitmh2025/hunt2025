@@ -160,8 +160,16 @@
           };
           modules = self.baseNixosModules ++ [
             ./infra/hosts/${name}.nix
+            {
+              system.name = name;
+            }
           ];
         });
         overlays.default = import ./infra/pkgs/all-packages.nix { inherit self; };
+        ciBuildTargets = {
+          staging-apply = self.apps.x86_64-linux.staging.apply.program;
+          staging = self.nixosConfigurations.staging.config.system.build.toplevel;
+          dev = self.nixosConfigurations.dev.config.system.build.toplevel;
+        };
       };
 }
