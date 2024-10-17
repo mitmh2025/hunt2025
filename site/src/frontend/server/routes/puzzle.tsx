@@ -7,12 +7,19 @@ import {
   BackgroundCheckHeader,
 } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
+import {
+  PaperTrailWrapper,
+  PaperTrailMain,
+  PaperTrailHeader,
+  PaperTrailFooter,
+} from "../../components/PaperTrailPuzzleLayout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import {
   PuzzleHeader,
   PuzzleTitle,
   PuzzleWrapper,
   PuzzleMain,
+  PuzzleFooter,
 } from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
 import {
@@ -21,6 +28,8 @@ import {
   StakeoutWrapper,
 } from "../../components/StakeoutPuzzleLayout";
 import { PUZZLES } from "../../puzzles";
+import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
+import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
 import { type Entrypoint } from "../assets";
 
 const SHOW_SOLUTIONS = true as boolean;
@@ -31,6 +40,8 @@ type RoundSpecificComponentManifest = {
   header?: React.ComponentType<any>;
   title?: React.ComponentType<any>;
   main?: React.ComponentType<any>;
+  footer?: React.ComponentType<any>;
+  fonts?: React.ComponentType<any>; // if present, a createGlobalStyle that includes any fonts needed by any of the other components
   entrypoint?: Entrypoint;
 };
 /* eslint-enable @typescript-eslint/no-explicit-any -- End of round-specific component manifest exceptions */
@@ -45,9 +56,16 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     header: StakeoutHeader,
     main: StakeoutMain,
     wrapper: StakeoutWrapper,
+    fonts: StakeoutFonts,
   },
   illegal_search: {},
-  paper_trail: {},
+  paper_trail: {
+    main: PaperTrailMain,
+    header: PaperTrailHeader,
+    wrapper: PaperTrailWrapper,
+    footer: PaperTrailFooter,
+    fonts: PaperTrailFonts,
+  },
   background_check: {
     main: BackgroundCheckMain,
     header: BackgroundCheckHeader,
@@ -196,9 +214,12 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const PuzzleHeaderComponent = roundSpecificManifest?.header ?? PuzzleHeader;
   const PuzzleTitleComponent = roundSpecificManifest?.title ?? PuzzleTitle;
   const PuzzleMainComponent = roundSpecificManifest?.main ?? PuzzleMain;
+  const PuzzleFooterComponent = roundSpecificManifest?.footer ?? PuzzleFooter;
+  const PuzzleFontsComponent = roundSpecificManifest?.fonts ?? undefined;
 
   const node = (
     <>
+      {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
       <PuzzleWrapperComponent>
         <PuzzleHeaderComponent>
           <PuzzleTitleComponent>{title}</PuzzleTitleComponent>
@@ -208,6 +229,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
         <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
           <ContentComponent />
         </PuzzleMainComponent>
+        <PuzzleFooterComponent />
       </PuzzleWrapperComponent>
     </>
   );

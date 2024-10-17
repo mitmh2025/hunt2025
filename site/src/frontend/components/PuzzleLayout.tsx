@@ -66,4 +66,6 @@ const PuzzleMain = styled.main`
   }
 `;
 
-export { PuzzleHeader, PuzzleMain, PuzzleWrapper, PuzzleTitle };
+const PuzzleFooter = styled.footer``;
+
+export { PuzzleHeader, PuzzleMain, PuzzleFooter, PuzzleWrapper, PuzzleTitle };
