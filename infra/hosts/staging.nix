@@ -6,7 +6,6 @@
     ../services/postgres.nix
     ../services/redis.nix
     ../services/authentik
-    ../services/hunt2025.nix
     ../services/zammad.nix
     ../services/radio.nix
   ];
@@ -45,6 +44,7 @@
     }
     {
       hunt2025.site = {
+        enable = true;
         db_env = "ci";  # N.B. We use "ci" to trigger a database reseed on startup.
         port = "%t/hunt2025/hunt2025.sock";
         apiBaseUrl = "http://localhost/api";

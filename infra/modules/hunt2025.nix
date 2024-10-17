@@ -4,6 +4,7 @@ let
 in {
   options = with lib; {
     hunt2025.site = {
+      enable = mkEnableOption "Hunt site";
       db_env = mkOption {
         type = types.str;
         default = "production";
@@ -21,7 +22,7 @@ in {
       };
     };
   };
-  config = {
+  config = lib.mkIf cfg.enable {
     users.users.hunt2025 = {
       isSystemUser = true;
       group = "hunt2025";

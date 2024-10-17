@@ -1,3 +1,4 @@
+{ self }:
 final: prev: let
   ocamlPackagesOverlay = ocaml-final: ocaml-prev: {
     ffmpeg-base = rec {
@@ -46,7 +47,7 @@ in {
   hunt2025 = final.callPackage ../../site {};
   thingsboard = final.callPackage ./thingsboard {};
 
-  hunt2025-vm-test = final.callPackage ../test.nix {};
+  hunt2025-vm-test = final.callPackage ../test.nix { inherit self; };
 
   piper-voices = final.callPackage ./piper-voices.nix {};
 

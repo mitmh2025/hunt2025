@@ -124,8 +124,7 @@
         dockerImages.nix-cache = import ./infra/lib/docker-image.nix {
           name = "nix-cache";
           inherit pkgs;
-          modules = (builtins.attrValues self.nixosModules) ++ [
-            sops-nix.nixosModules.sops
+          modules = self.baseNixosModules ++ [
             ./infra/containers/nix-cache.nix
           ];
         };
@@ -133,6 +132,14 @@
         inherit self;
         terranixModules = builtins.listToAttrs (findModules ./infra/terraform/modules);
         nixosModules = builtins.listToAttrs (findModules ./infra/modules);
+        baseNixosModules = (builtins.attrValues self.nixosModules) ++ [
+          {
+            nixpkgs.overlays = [
+              self.overlays.default
+            ];
+          }
+          sops-nix.nixosModules.sops
+        ];
         nixosConfigurations = nixpkgs.lib.genAttrs [
           "gce-image"
           "dev-vm-base"
@@ -143,16 +150,10 @@
           specialArgs = {
             inherit authentik radio-media;
           };
-          modules = (builtins.attrValues self.nixosModules) ++ [
-            {
-              nixpkgs.overlays = [
-                self.overlays.default
-              ];
-            }
-            sops-nix.nixosModules.sops
+          modules = self.baseNixosModules ++ [
             ./infra/hosts/${name}.nix
           ];
         });
-        overlays.default = import ./infra/pkgs/all-packages.nix;
+        overlays.default = import ./infra/pkgs/all-packages.nix { inherit self; };
       };
 }

@@ -1,20 +1,23 @@
 { nixosTest
+, self
 }:
 
 nixosTest {
   name = "hunt2025-vm-test";
   nodes.server = { config, pkgs, lib, ... }: {
-    imports = [
+    imports = self.baseNixosModules ++ [
       ./services/postgres.nix
       ./services/redis.nix
-      ./services/hunt2025.nix
     ];
     nixpkgs.overlays = [(final: prev: {
       hunt2025 = prev.hunt2025.override {
         withDevDeps = true;
       };
     })];
-    systemd.services.hunt2025.environment.DB_ENV = lib.mkForce "ci";
+    hunt2025.site = {
+      enable = true;
+      db_env = "ci";
+    };
     environment.systemPackages = [
       pkgs.nodejs_22
       (pkgs.writeShellScriptBin "hunt2025-playwright" ''
