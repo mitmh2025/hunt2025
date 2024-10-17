@@ -31,10 +31,18 @@ in {
       version = 1;
       metadata.name = "Hunt 2025";
       entries = [
+        (applyBlueprint "Default - Brand")
         (applyBlueprint "Default - Authentication flow")
         (applyBlueprint "Default - Source authentication flow")
         (applyBlueprint "Default - Source enrollment flow")
         (applyBlueprint "Default - Provider authorization flow (implicit consent)")
+        # Brand
+        {
+          model = "authentik_brands.brand";
+          identifiers.domain = "authentik-default";
+          attrs.branding_title = "Hunt 2025";
+          attrs.web_certificate = find "authentik_crypto.certificatekeypair" "name" "auth.mitmh2025.com";
+        }
         # Login flows
         {
           model = "authentik_flows.flow";

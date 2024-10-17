@@ -143,6 +143,7 @@ in {
                 attrs = common.attrs // {
                   property_mappings = map findSAMLPropertyMapping config.properties;
                   signing_kp = signing_key;
+                  sign_assertion = true;
                 };
               };
             in lib.mkMerge [
