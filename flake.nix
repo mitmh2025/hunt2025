@@ -42,6 +42,7 @@
           inherit system;
           overlays = [ self.overlays.default ];
         };
+        inherit (pkgs) lib;
         terraform = pkgs.opentofu.withPlugins (p: with p; [
           aws
           google
@@ -70,12 +71,12 @@
           })
         ]);
         terraformBin = "${terraform}/bin/tofu";
-        terraformConfiguration = terranix.lib.terranixConfiguration {
+        mkTFConfig = name: terranix.lib.terranixConfiguration {
           inherit system;
           pkgs = pkgs // {
             lib = pkgs.lib.extend (import ./infra/terraform/helpers.nix pkgs);
           };
-          modules = (builtins.attrValues self.terranixModules) ++ [ ./infra/terraform ];
+          modules = (builtins.attrValues self.terranixModules) ++ [ ./infra/terraform/${name} ];
           extraArgs = {
             inherit self;
           };
@@ -83,7 +84,10 @@
       in {
         legacyPackages = pkgs;
         packages = {
-          inherit terraformConfiguration;
+          terraformConfigurations = lib.genAttrs [
+            "staging"
+            "dev"
+          ] mkTFConfig;
         };
         # nix develop
         devShells.infra = pkgs.callPackage ./infra/shell.nix {
@@ -91,35 +95,38 @@
         };
         devShells.hunt2025 = pkgs.callPackage ./site/shell.nix {};
         devShells.radioman = pkgs.callPackage ./radioman/shell.nix {};
-        # nix run ".#apply"
-        apps.apply = {
-          type = "app";
-          program = toString (pkgs.writers.writeBash "apply" ''
-            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
-            cp ${terraformConfiguration} config.tf.json \
-              && ${terraformBin} init \
-              && ${terraformBin} apply "$@"
-          '');
-        };
-        # nix run ".#destroy"
-        apps.destroy = {
-          type = "app";
-          program = toString (pkgs.writers.writeBash "destroy" ''
-            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
-            cp ${terraformConfiguration} config.tf.json \
-              && ${terraformBin} init \
-              && ${terraformBin} destroy
-          '');
-        };
-        # nix run
-        # TODO: use ${system} to allow running from macOS
-        apps.default = {
-          type = "app";
-          program = "${self.nixosConfigurations.dev-vm.config.system.build.vm}/bin/run-nixos-vm";
-        };
-        apps.dev-vm-base = {
-          type = "app";
-          program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-nixos-vm";
+        apps = (lib.mapAttrs (_: terraformConfiguration: {
+          # nix run ".#staging.apply"
+          apply = {
+            type = "app";
+            program = toString (pkgs.writers.writeBash "apply" ''
+              if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
+              cp ${terraformConfiguration} config.tf.json \
+                && ${terraformBin} init \
+                && ${terraformBin} apply "$@"
+            '');
+          };
+          # nix run ".#staging.destroy"
+          destroy = {
+            type = "app";
+            program = toString (pkgs.writers.writeBash "destroy" ''
+              if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
+              cp ${terraformConfiguration} config.tf.json \
+                && ${terraformBin} init \
+                && ${terraformBin} destroy
+            '');
+          };
+        }) self.packages.${system}.terraformConfigurations) // {
+          # nix run
+          # TODO: use ${system} to allow running from macOS
+          default = {
+            type = "app";
+            program = "${self.nixosConfigurations.dev-vm.config.system.build.vm}/bin/run-nixos-vm";
+          };
+          dev-vm-base = {
+            type = "app";
+            program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-nixos-vm";
+          };
         };
         dockerImages.nix-cache = import ./infra/lib/docker-image.nix {
           name = "nix-cache";

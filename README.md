@@ -2,9 +2,9 @@
 
 This repo should contain all binaries/configuration/deployment tooling for MH 2025. Currently it contains:
 
-* Terraform configuration in `infra/config.nix`
-  * `nix run ".#apply"` run `terraform apply`
-  * `nix run ".#destroy"` run `terraform destroy`
+* Terraform configuration in `infra/terraform/`
+  * `nix run ".#staging.apply"` run `terraform apply`
+  * `nix run ".#staging.destroy"` run `terraform destroy`
 * Nix packages to build and run various bits of software
   * `nix run .#hunt2025 -L` to build and run the production site
   * `nix build .#hunt2025-vm-test -L` to run Playwright tests in an isolated VM with the production build of the site (leaving Playwright reports in `./result`)

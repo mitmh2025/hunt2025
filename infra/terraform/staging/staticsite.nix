@@ -35,7 +35,7 @@
 
   module.publicsite_files = {
     source = "hashicorp/dir/template";
-    base_dir = "${./../../regsite}";
+    base_dir = "${./../../../regsite}";
   };
 
   resource.aws_s3_object.publicsite_files = {
