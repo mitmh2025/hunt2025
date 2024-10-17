@@ -259,6 +259,7 @@ in {
           ${writeKeys}
           echo "$''${AUTOPUSH_KEY}" > /keys/autopush_key
         )
+        mkdir -p /tmp
         nix-fast-build -f .#ciBuildTargets --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
         # Deploy to dev
         NIX_SSHOPTS="-i /keys/autopush_key" nixos-rebuild switch --flake .#dev --fast --target-host root@dev.mitmh2025.com
