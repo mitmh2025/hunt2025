@@ -247,6 +247,8 @@ in {
 
     approval_config.approval_required = false;
 
+    build.timeout = "900s";
+
     build.step = [{
       name = "${repoUrl}/nix-cache";
       script = let
@@ -262,7 +264,7 @@ in {
         mkdir -p /tmp
         nix-fast-build -f .#ciBuildTargets --option extra-substituters ${s3Url} --option require-sigs false --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${s3Url}
         # Deploy to dev
-        NIX_SSHOPTS="-i /keys/autopush_key" nixos-rebuild switch --flake .#dev --fast --target-host root@dev.mitmh2025.com
+        NIX_SSHOPTS="-i /keys/autopush_key -o StrictHostKeyChecking=no" nixos-rebuild switch --flake .#dev --fast --target-host root@dev.mitmh2025.com
       '';
       secret_env = [
         "AWS_ACCESS_KEY_ID"
