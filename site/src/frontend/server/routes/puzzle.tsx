@@ -229,7 +229,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           {guessFrag}
         </PuzzleHeaderComponent>
         <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
-          <ContentComponent />
+          <ContentComponent teamState={req.teamState} />
         </PuzzleMainComponent>
         <PuzzleFooterComponent />
       </PuzzleWrapperComponent>
@@ -385,7 +385,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
       <h3>Edited by {editors}</h3>
       {acknowledgements}
       <div id="solution-content" className="solution-content">
-        <SolutionComponent />
+        <SolutionComponent teamState={req.teamState} />
       </div>
     </div>
   );

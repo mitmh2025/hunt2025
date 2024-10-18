@@ -21,7 +21,7 @@ const HUNT: Hunt = {
         { id: "mdp05", unlocked_if: [] },
         { id: "mdp06", unlocked_if: [] },
         { id: "mdp07", unlocked_if: [] },
-        { id: "mdp08", unlocked_if: [] },
+        { id: "mdp08", unlocked_if: [], slug: "educational_rite_of_passage" },
         { id: "mdp09", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
         { id: "mdp10", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
         { id: "mdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
@@ -131,6 +131,9 @@ const HUNT: Hunt = {
             { interaction_completed: "interview_at_the_art_gallery" },
           ],
         }, // Where is the Diamond? (super)
+      ],
+      gates: [
+        { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which

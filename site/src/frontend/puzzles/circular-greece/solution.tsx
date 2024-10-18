@@ -1,0 +1,304 @@
+import React from "react";
+import { styled } from "styled-components";
+import pdf_motifs from "./assets/motifs.pdf";
+import png_rod_sticker_single from "./assets/rod-sticker-one.png";
+
+const TopTable = styled.table`
+  tbody tr td:nth-child(1) {
+    text-align: right;
+  }
+  tbody tr td:nth-child(2) {
+    text-align: center;
+  }
+`;
+
+const BottomTable = styled.table`
+  tbody tr td:nth-child(1) {
+    text-align: right;
+  }
+  tbody tr td:nth-child(2) {
+    text-align: right;
+  }
+`;
+
+const Solution = () => {
+  return (
+    <>
+      <p>
+        This puzzle consists of 45 3D printed pieces and a 12 inch wooden dowel
+        with a sticker.
+      </p>
+
+      <p>
+        The pieces can be assembled into 15 Brass Rats, each of which contains
+        two band pieces and one bezel piece. The band pieces are uniquely
+        matched via the geometric jigsaw pattern on the back. Correct assembly
+        of two band pieces is confirmed when a valid word is spelled on the back
+        of the band.
+      </p>
+
+      <p>
+        Each ring must now be completed by adding the correct bezel piece. Every
+        completed band has a symbol which has been traced from either the seal
+        shank or class shank of one of the 15 most recent Brass Rats, and must
+        be matched with a bezel piece containing a symbol traced from that
+        year’s bezel.{" "}
+        <a href="https://brassrat.mit.edu/archive">
+          https://brassrat.mit.edu/archive
+        </a>{" "}
+        is a helpful resource in identifying these! The pictograms for each ring
+        are shown here: <a href={pdf_motifs}>motifs.pdf</a>.
+      </p>
+
+      <p>
+        When the correctly assembled rings are lined up on the provided rod
+        (with the oldest ring at the top and the newest ring on the bottom), the
+        center letter of each band word spells <code>SPIN RINGS PER ROD</code>.
+      </p>
+
+      <img
+        src={png_rod_sticker_single}
+        alt="A text label PAST, a series of 13 arrows pointing either left or right from a central point, with length of either 1 unit or 2 in that direction, a text label PRESENT, 2 more arrows, and a text label FUTURE"
+      />
+
+      <p>
+        The arrows on the rod indicate the direction and number of letters each
+        ring must be spun, revealing a new message down the center. (For
+        example, the word <code>MASON</code> must be spun two places to the
+        right, so that the “center” position which had previously been “S” is
+        now “M.”) Now the center letters spell “<code>MOVEBEZELSUPTGR</code>.”
+        Clearly something is going on with the last two rings.
+      </p>
+
+      <p>
+        The word <code>PRESENT</code> on the rod should remind solvers that the
+        most recent two rings are currently being worn by MIT undergrads. Per
+        MIT lore, classes that have not yet graduated wear a Brass Rat “upside
+        down” relative to already-graduated classes, and flip their rings over
+        during Commencement (as an Educational Rite of Passage).
+      </p>
+
+      <p>
+        Therefore, the rings from 2025 and 2026 must be flipped upside down
+        before applying the transformation shifts from the rod. (These words are
+        indicated with a * on the table below.) Note that when flipped, the{" "}
+        <code>M</code> in <code>GLOOM</code> becomes a <code>W</code>.
+      </p>
+
+      <TopTable>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Word</th>
+            <th>Middle</th>
+            <th>Rod cue</th>
+            <th>2nd step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2012</td>
+            <td>MASON</td>
+            <td>S</td>
+            <td>→ →</td>
+            <td>M</td>
+          </tr>
+          <tr>
+            <td>2013</td>
+            <td>HIPPO</td>
+            <td>P</td>
+            <td>← ←</td>
+            <td>O</td>
+          </tr>
+          <tr>
+            <td>2014</td>
+            <td>ALIVE</td>
+            <td>I</td>
+            <td>←</td>
+            <td>V</td>
+          </tr>
+          <tr>
+            <td>2015</td>
+            <td>TONER</td>
+            <td>N</td>
+            <td>←</td>
+            <td>E</td>
+          </tr>
+          <tr>
+            <td>2016</td>
+            <td>CAROB</td>
+            <td>R</td>
+            <td>← ←</td>
+            <td>B</td>
+          </tr>
+          <tr>
+            <td>2017</td>
+            <td>WEIRD</td>
+            <td>I</td>
+            <td>→</td>
+            <td>E</td>
+          </tr>
+          <tr>
+            <td>2018</td>
+            <td>ZONES</td>
+            <td>N</td>
+            <td>→ →</td>
+            <td>Z</td>
+          </tr>
+          <tr>
+            <td>2019</td>
+            <td>ANGER</td>
+            <td>G</td>
+            <td>←</td>
+            <td>E</td>
+          </tr>
+          <tr>
+            <td>2020</td>
+            <td>LASER</td>
+            <td>S</td>
+            <td>→ →</td>
+            <td>L</td>
+          </tr>
+          <tr>
+            <td>2021</td>
+            <td>SUPER</td>
+            <td>P</td>
+            <td>→ →</td>
+            <td>S</td>
+          </tr>
+          <tr>
+            <td>2022</td>
+            <td>GUESS</td>
+            <td>E</td>
+            <td>→</td>
+            <td>U</td>
+          </tr>
+          <tr>
+            <td>2023</td>
+            <td>PARTY</td>
+            <td>R</td>
+            <td>→ →</td>
+            <td>P</td>
+          </tr>
+          <tr>
+            <td>2024</td>
+            <td>STRIP</td>
+            <td>R</td>
+            <td>→</td>
+            <td>T</td>
+          </tr>
+          <tr>
+            <td>2025</td>
+            <td>GLOOM*</td>
+            <td>O</td>
+            <td>→ →</td>
+            <td>W</td>
+          </tr>
+          <tr>
+            <td>2026</td>
+            <td>ORDER*</td>
+            <td>D</td>
+            <td>← ←</td>
+            <td>O</td>
+          </tr>
+        </tbody>
+      </TopTable>
+
+      <p>
+        The new message reads <code>MOVE BEZELS UP TWO</code>. After bezels have
+        been moved, solvers must apply the numerical transformation on the band
+        to the letter on the reverse side of the bezel, as indicated in the
+        table below to get the puzzle answer, <code>RAW ANTIQUE BRASS</code>.
+      </p>
+
+      <BottomTable>
+        <thead>
+          <tr>
+            <th>Letter on bezel</th>
+            <th>Shift</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>S</td>
+            <td>-1</td>
+            <td>R</td>
+          </tr>
+          <tr>
+            <td>R</td>
+            <td>9</td>
+            <td>A</td>
+          </tr>
+          <tr>
+            <td>J</td>
+            <td>-13</td>
+            <td>W</td>
+          </tr>
+          <tr>
+            <td>L</td>
+            <td>-11</td>
+            <td>A</td>
+          </tr>
+          <tr>
+            <td>U</td>
+            <td>-7</td>
+            <td>N</td>
+          </tr>
+          <tr>
+            <td>Y</td>
+            <td>-5</td>
+            <td>T</td>
+          </tr>
+          <tr>
+            <td>M</td>
+            <td>-4</td>
+            <td>I</td>
+          </tr>
+          <tr>
+            <td>C</td>
+            <td>-12</td>
+            <td>Q</td>
+          </tr>
+          <tr>
+            <td>T</td>
+            <td>1</td>
+            <td>U</td>
+          </tr>
+          <tr>
+            <td>F</td>
+            <td>-1</td>
+            <td>E</td>
+          </tr>
+          <tr>
+            <td>Z</td>
+            <td>2</td>
+            <td>B</td>
+          </tr>
+          <tr>
+            <td>P</td>
+            <td>2</td>
+            <td>R</td>
+          </tr>
+          <tr>
+            <td>Y</td>
+            <td>2</td>
+            <td>A</td>
+          </tr>
+          <tr>
+            <td>N</td>
+            <td>5</td>
+            <td>S</td>
+          </tr>
+          <tr>
+            <td>R</td>
+            <td>1</td>
+            <td>S</td>
+          </tr>
+        </tbody>
+      </BottomTable>
+    </>
+  );
+};
+
+export default Solution;

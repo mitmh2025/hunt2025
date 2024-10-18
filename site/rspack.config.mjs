@@ -288,6 +288,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const pdfRule = {
+    test: /\.pdf$/,
+    type: "asset/resource",
+  };
+
   const xlsxRule = {
     test: /\.xlsx$/,
     type: "asset/resource",
@@ -365,6 +370,7 @@ export default function createConfigs(_env, argv) {
         // never be imported by browser entrypoints, only server entrypoints.
         opusRule,
         fontRule,
+        pdfRule,
         xlsxRule,
       ],
       // Add modules as appropriate

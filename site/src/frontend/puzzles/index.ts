@@ -1,6 +1,7 @@
 import DownrightBackwards from "./able-worm";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
+import EducationalRiteOfPassage from "./circular-greece";
 import TheBoardwalk from "./dental-shark";
 import Casino from "./fortunate-calf";
 import ShellCorporationThree from "./green-princess";
@@ -24,6 +25,7 @@ import ShellCorporationTwo from "./untrue-dice";
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   downright_backwards: DownrightBackwards,
+  educational_rite_of_passage: EducationalRiteOfPassage,
 
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,

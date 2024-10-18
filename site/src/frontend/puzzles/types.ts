@@ -1,7 +1,9 @@
 import type { FunctionComponent } from "react";
 import type { Router } from "websocket-express";
-// Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
+import { type TeamState } from "../../../lib/api/client";
 import type { Entrypoint } from "../server/assets";
+
+// Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
 
 export type Hint = {
   order: number;
@@ -23,7 +25,7 @@ export type CannedResponse = {
 
 export type Content = {
   // TODO: figure out what props get passed to this FunctionComponent
-  component: FunctionComponent;
+  component: FunctionComponent<{ teamState: TeamState }>;
 
   // If present, the scripts and stylesheets produced by the webpack entrypoint
   // of the given name will be injected into the page's <body> and <head>
