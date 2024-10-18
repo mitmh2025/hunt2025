@@ -10,17 +10,13 @@ import {
 } from "./PuzzleLayout";
 
 export const bg = "#403A36";
-// export const contentBg = "#cebebb";
-export const contentBg = "#DCD1CF";
+export const contentBg = "#E0D6D5";
 
 export const PaperTrailWrapper = styled(PuzzleWrapper)`
   background-color: ${contentBg};
   background-image: url(${Bg}), url(${BottomBg});
   background-size: 100% auto;
   background-repeat: repeat-y, no-repeat;
-  background-position:
-    left 168px right 91px,
-    bottom;
   font-family: "Kiwi Maru";
 `;
 
@@ -38,7 +34,7 @@ export const PaperTrailHeader = styled(PuzzleHeader)`
   }
 
   #puzzle-guess-section {
-    background-color: #65413ad0; /*#002e3ddb;*/
+    background-color: #65413ad0;
     margin-top: -8px;
     margin-left: 42px;
     color: var(--white);
