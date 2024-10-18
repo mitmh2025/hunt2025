@@ -34,6 +34,10 @@ const ASSET_PATH = process.env.ASSET_PATH || "/";
 // To continue to support cache-busting, we place such assets inside a
 // directory named with their hash.
 const PRESERVE_FILENAME_ASSET_PATHS = [
+  "src/frontend/puzzles/circular-greece/assets/motifs.pdf",
+  "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.3mf",
+  "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.stl",
+  "src/frontend/puzzles/circular-greece/assets/rod-sticker.pdf",
   "src/frontend/puzzles/shoddy-table/assets/10000sheets.xlsx",
 ];
 
@@ -293,6 +297,14 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const stlRule = {
+    test: /\.stl$/,
+    type: "asset/resource",
+  };
+  const threemfRule = {
+    test: /\.3mf$/,
+    type: "asset/resource",
+  };
   const xlsxRule = {
     test: /\.xlsx$/,
     type: "asset/resource",
@@ -371,6 +383,8 @@ export default function createConfigs(_env, argv) {
         opusRule,
         fontRule,
         pdfRule,
+        stlRule,
+        threemfRule,
         xlsxRule,
       ],
       // Add modules as appropriate

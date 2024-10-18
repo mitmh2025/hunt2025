@@ -1,7 +1,6 @@
 import React from "react";
 import { type TeamState } from "../../../../lib/api/client";
 
-// TODO: track if we believe that the team has picked up their copy of this puzzle?
 const Puzzle = ({ teamState }: { teamState: TeamState }) => {
   const pickupCompleted =
     "mdg01" in (teamState.rounds.missing_diamond?.gates ?? []);

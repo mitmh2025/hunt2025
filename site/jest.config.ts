@@ -14,7 +14,7 @@ const config: Config = {
     // reaches some other asset, then we need to provide a transformer to avoid
     // trying to interpret the asset as JS code, which goes poorly for most
     // file formats.
-    "^.+\\.(css|jpg|mp3|opus|pdf|png|wav|xlsx)$": "jest-transform-stub",
+    "^.+\\.(3mf|css|jpg|mp3|opus|pdf|png|stl|wav|xlsx)$": "jest-transform-stub",
   },
   extensionsToTreatAsEsm: [".ts", ".tsx", ".jsx"],
 };
