@@ -1,4 +1,5 @@
 import { createHash } from "crypto";
+import fs from "fs";
 import path from "path";
 import url from "url";
 import rspack from "@rspack/core";
@@ -21,6 +22,10 @@ const assetManifestFilename = path.join(
 const workerManifestFilename = path.join(
   outputManifestDirname,
   "worker-manifest.json",
+);
+
+const swcConfig = JSON.parse(
+  fs.readFileSync(path.join(currentDirname, ".swcrc"), "utf-8"),
 );
 
 const ASSET_PATH = process.env.ASSET_PATH || "/";
@@ -288,9 +293,16 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
-  const serverSwcLoader = {
+  // Disable displayName classes on styled-components when not in dev mode.
+  const styledComponentsPluginConfig = swcConfig.jsc.experimental.plugins.find(
+    (plugin) => plugin[0] === "@swc/plugin-styled-components",
+  );
+  styledComponentsPluginConfig[1].displayName =
+    mode === "development" ? true : false;
+  const swcLoader = {
     // .swcrc can be used to configure swc
     loader: "swc-loader",
+    options: swcConfig,
   };
 
   const serverConfig = {
@@ -341,7 +353,7 @@ export default function createConfigs(_env, argv) {
         },
         {
           test: /\.m?[jt]sx?$/,
-          use: serverSwcLoader,
+          use: swcLoader,
         },
         cssRule,
         // TODO: support importing other kinds of assets, and aliases for
@@ -431,7 +443,7 @@ export default function createConfigs(_env, argv) {
         {
           test: /\.m?tsx?$/,
           exclude: /(node_modules)/,
-          use: ["swc-loader"],
+          use: [swcLoader],
         },
         cssRule,
         imageRule,
@@ -520,7 +532,7 @@ export default function createConfigs(_env, argv) {
         {
           test: /\.m?tsx?$/,
           exclude: /(node_modules)/,
-          use: ["swc-loader"],
+          use: [swcLoader],
         },
       ],
     },
