@@ -31,12 +31,13 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { executeMutation, formatTeamStateFromLog, type Mutator } from "./data";
+import { executeMutation, formatTeamState, type Mutator } from "./data";
 import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
+  TeamStateIntermediate,
 } from "./logic";
 import type { RedisClient } from "./redis";
 
@@ -129,7 +130,11 @@ export function getRouter({
     trx: Knex.Transaction,
   ): Promise<TeamState> => {
     const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    return formatTeamStateFromLog(hunt, team_id, team_name, activity_log);
+    const team_state = activity_log.reduce(
+      (acc, entry) => acc.reduce(entry),
+      new TeamStateIntermediate(),
+    );
+    return formatTeamState(hunt, team_id, team_name, team_state);
   };
 
   const formatPuzzleState = (
@@ -215,7 +220,7 @@ export function getRouter({
     ) => Promise<boolean>,
   ) => {
     const team_id = parseInt(teamId, 10);
-    const { result, teamStates } = await executeMutation(
+    const { result, teamNames, teamStates } = await executeMutation(
       hunt,
       team_id,
       redisClient,
@@ -226,7 +231,12 @@ export function getRouter({
     if (result && newState !== undefined) {
       return {
         status: 200 as const,
-        body: newState,
+        body: formatTeamState(
+          hunt,
+          team_id,
+          teamNames[team_id] ?? "",
+          newState,
+        ),
       };
     }
     return {
@@ -424,12 +434,13 @@ export function getRouter({
             redisClient,
             knex,
             async function (_, mutator) {
+              const teamState = await mutator.recalculateTeamState(
+                hunt,
+                team_id,
+              );
               const puzzle_log = mutator.log.filter((e) => e.slug === slug);
               // Check that the puzzle is unlocked before allowing guess submission.
-              const unlocked = puzzle_log.some(
-                (e) => e.type === "puzzle_unlocked",
-              );
-              if (!unlocked) {
+              if (!teamState.puzzles_unlocked.has(slug)) {
                 return {
                   status: 404 as const,
                   body: null,
@@ -563,7 +574,7 @@ export function getRouter({
             knex,
             async function (_, mutator) {
               // Verify puzzle is currently unlockable.
-              const data = reducerDeriveTeamState(hunt, mutator.log);
+              const data = await mutator.recalculateTeamState(hunt, team_id);
               const unlock_cost = slot.unlock_cost;
 
               if (

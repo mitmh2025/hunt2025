@@ -142,7 +142,7 @@ export async function seed(knex: Knex): Promise<void> {
       undefined,
       knex,
       async (_, mutator) => {
-        await mutator.recalculateState(HUNT, true);
+        await mutator.recalculateTeamState(HUNT, team_id);
       },
     );
   }

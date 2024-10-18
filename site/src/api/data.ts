@@ -4,10 +4,9 @@ import {
   type InsertActivityLogEntry,
 } from "knex/types/tables";
 import { type z } from "zod";
-import { type TeamState } from "../../lib/api/client";
 import { type InteractionStateSchema } from "../../lib/api/contract";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
-import { getSlotSlug, type LogicTeamState } from "../huntdata/logic";
+import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
@@ -15,7 +14,7 @@ import {
   getTeamNames,
   retryOnAbort,
 } from "./db";
-import { parseInternalActivityLogEntry, reducerDeriveTeamState } from "./logic";
+import { parseInternalActivityLogEntry, TeamStateIntermediate } from "./logic";
 import { type RedisClient, activityLog as redisActivityLog } from "./redis";
 
 export class Mutator<T extends { id: number; team_id?: number }, I> {
@@ -77,79 +76,61 @@ export class ActivityLogMutator extends Mutator<
   ActivityLogEntry,
   InsertActivityLogEntry
 > {
+  private _teamStates: Map<
+    number,
+    { entryCount: number; state: TeamStateIntermediate }
+  >;
+
   constructor(
     trx: Knex.Knex.Transaction,
     log: ActivityLogEntry[],
     allTeams: Set<number>,
   ) {
     super(trx, log, allTeams, dbAppendActivityLog);
+    this._teamStates = new Map();
   }
 
-  // Refresh the state for every team that was affected.
-  // We assume that this.activityLog contains the full activity log for all affected teams.
-  async recalculateState(hunt: Hunt, all?: boolean) {
-    for (const team_id of all ? this.allTeams : this.affectedTeams) {
-      await recalculateTeamState(
-        hunt,
-        team_id,
-        this.log.filter(
-          (e) => e.team_id === team_id || e.team_id === undefined,
-        ),
-        this,
-      );
+  // Get the team state as represented by all known activity logs for the team.
+  getTeamState(teamId: number) {
+    if (!this.allTeams.has(teamId)) {
+      throw new Error(`Mutator does not contain state for team ${teamId}`);
     }
+    const state = this._teamStates.get(teamId) ?? {
+      entryCount: 0,
+      state: new TeamStateIntermediate(),
+    };
+    const allNewEntries = this.log.slice(state.entryCount);
+    if (allNewEntries.length > 0) {
+      state.entryCount += allNewEntries.length;
+      state.state = allNewEntries
+        .filter((e) => e.team_id === teamId || e.team_id === undefined)
+        .reduce((acc, entry) => acc.reduce(entry), state.state);
+    }
+    return state.state;
+  }
+
+  async recalculateTeamState(hunt: Hunt, teamId: number) {
+    if (!this.allTeams.has(teamId)) {
+      throw new Error(`Mutator does not contain state for team ${teamId}`);
+    }
+    // TODO: Skip recalculation if there are no new entries since the last time we recalculated.
+    await recalculateTeamState(hunt, teamId, this);
+    return this.getTeamState(teamId);
   }
 }
 
 async function recalculateTeamState(
   hunt: Hunt,
   team_id: number,
-  activity_log: ActivityLogEntry[],
-  mutator: Mutator<ActivityLogEntry, InsertActivityLogEntry>,
+  mutator: ActivityLogMutator,
 ) {
   const start = performance.now();
 
   // What is already present in the activity log?
-  // Somewhat surprisingly, this is faster than the equivalent single-pass for-of loop with an
-  // if-else chain to mutate six Sets.
-  const old = {
-    rounds_unlocked: new Set(
-      activity_log
-        .filter((e) => e.type === "round_unlocked")
-        .map((e) => e.slug),
-    ),
-    puzzles_unlockable: new Set(
-      activity_log
-        .filter((e) => e.type === "puzzle_unlockable")
-        .map((e) => e.slug),
-    ),
-    puzzles_unlocked: new Set(
-      activity_log
-        .filter((e) => e.type === "puzzle_unlocked")
-        .map((e) => e.slug),
-    ),
-    interactions_unlocked: new Set(
-      activity_log
-        .filter((e) => e.type === "interaction_unlocked")
-        .map((e) => e.slug),
-    ),
-    interactions_completed: new Set(
-      activity_log
-        .filter((e) => e.type === "interaction_completed")
-        .map((e) => e.slug),
-    ),
-    gates_satisfied: new Set(
-      activity_log
-        .filter((e) => e.type === "gate_completed")
-        .map((e) => e.slug),
-    ),
-    solved_puzzles: new Set(
-      activity_log.filter((e) => e.type === "puzzle_solved").map((e) => e.slug),
-    ),
-  };
+  const old = mutator.getTeamState(team_id);
 
   // What /should/ be in the activity log, based on the hunt description?
-  const next = reducerDeriveTeamState(hunt, activity_log);
+  const next = old.recalculateTeamState(hunt);
   const calculate_team_state_done = performance.now();
 
   // Compute the differences, and generate the requisite inserts.
@@ -239,7 +220,7 @@ export async function executeMutation<T>(
       console.error("failed to query redis:", err);
     }
   }
-  const { result, activityLog, allTeams, affectedTeams, teamNames } =
+  const { result, activityLog, affectedTeams, teamNames, teamStates } =
     await retryOnAbort(knex, async function (trx: Knex.Knex.Transaction) {
       const new_log = await dbGetActivityLog(
         team_id,
@@ -255,34 +236,30 @@ export async function executeMutation<T>(
         new Set([team_id]),
       );
       const result = await fn(trx, mutator);
-      await mutator.recalculateState(hunt);
+      const teamStates: Record<number, TeamStateIntermediate> = {};
+      for (const teamId of mutator.affectedTeams) {
+        teamStates[teamId] = await mutator.recalculateTeamState(hunt, teamId);
+      }
+      for (const teamId of mutator.allTeams) {
+        // TODO: Only do this work if the caller needs it?
+        if (teamStates[teamId] === undefined) {
+          teamStates[teamId] = mutator.getTeamState(teamId);
+        }
+      }
       const teamNames = await getTeamNames(mutator.allTeams, trx);
       return {
         result,
         activityLog: mutator.log,
-        allTeams: mutator.allTeams,
         affectedTeams: mutator.affectedTeams,
         teamNames,
+        teamStates,
       };
     });
   if (redisClient && affectedTeams.size > 0) {
     // TODO: Do this in the background?
     await refreshActivityLog(redisClient, knex);
   }
-  const teamStates: Record<number, TeamState> = {};
-  for (const team_id of allTeams) {
-    const team_activity_log = activityLog.filter(
-      (e) => e.team_id === undefined || e.team_id === team_id,
-    );
-    const state = formatTeamStateFromLog(
-      hunt,
-      team_id,
-      teamNames[team_id] ?? "",
-      team_activity_log,
-    );
-    teamStates[team_id] = state;
-  }
-  return { result, activityLog, teamStates };
+  return { result, activityLog, teamNames, teamStates };
 }
 
 export async function refreshActivityLog(
@@ -305,9 +282,8 @@ type InteractionState = z.infer<typeof InteractionStateSchema>;
 export function formatTeamState(
   hunt: Hunt,
   team_id: number,
-  epoch: number,
   team_name: string,
-  data: LogicTeamState,
+  data: TeamStateIntermediate,
 ) {
   const rounds = Object.fromEntries(
     hunt.rounds
@@ -376,7 +352,7 @@ export function formatTeamState(
     ),
   );
   return {
-    epoch: epoch,
+    epoch: data.epoch,
     teamId: team_id,
     teamName: team_name,
     rounds,
@@ -396,17 +372,4 @@ export function formatTeamState(
       ]),
     ),
   };
-}
-
-export function formatTeamStateFromLog(
-  hunt: Hunt,
-  team_id: number,
-  team_name: string,
-  activity_log: ActivityLogEntry[],
-): TeamState {
-  const data = reducerDeriveTeamState(hunt, activity_log);
-  //console.log(data);
-  // TODO: Get epoch from reduced TeamState
-  const epoch = activity_log.at(-1)?.id;
-  return formatTeamState(hunt, team_id, epoch ?? 0, team_name, data);
 }

@@ -585,7 +585,6 @@ export class WebsocketManager
           latestTeamState = formatTeamState(
             this.hunt,
             teamId,
-            intermediate.epoch,
             teamName,
             intermediate,
           );
