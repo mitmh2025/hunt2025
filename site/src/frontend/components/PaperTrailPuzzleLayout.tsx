@@ -7,6 +7,8 @@ import {
   PuzzleMain,
   PuzzleWrapper,
   PuzzleFooter,
+  SolutionAnswer,
+  SolutionAcknowledgementBlock,
 } from "./PuzzleLayout";
 
 export const bg = "#403A36";
@@ -65,4 +67,14 @@ export const PaperTrailFooter = styled(PuzzleFooter)`
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: bottom;
+`;
+
+export const PaperTrailAnswer = styled(SolutionAnswer)`
+  margin-left: 40px;
+`;
+
+export const PaperTrailAcknowledgementBlock = styled(
+  SolutionAcknowledgementBlock,
+)`
+  margin-left: 40px;
 `;

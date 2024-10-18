@@ -28,7 +28,7 @@ const PuzzleHeader = styled.header`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   background-color: var(--gray-100);
-  gap: 2rem;
+  gap: 1rem;
   padding: 2rem;
 
   @media ${deviceMax.md} {
@@ -44,11 +44,6 @@ const PuzzleHeader = styled.header`
 
 const PuzzleTitle = styled.h1`
   grid-column: 1 / 3;
-  margin: 0.5em 0;
-
-  @media ${deviceMax.md} {
-    margin: 0.33em 0;
-  }
 `;
 
 const PuzzleMain = styled.main`
@@ -68,4 +63,26 @@ const PuzzleMain = styled.main`
 
 const PuzzleFooter = styled.footer``;
 
-export { PuzzleHeader, PuzzleMain, PuzzleFooter, PuzzleWrapper, PuzzleTitle };
+const SolutionAnswer = styled.h2`
+  padding: 0;
+  grid-column: 1 / 3;
+`;
+
+const SolutionAcknowledgementBlock = styled.div`
+  grid-column: 1 / 3;
+`;
+
+const SolutionAcknowledgement = styled.h3`
+  padding: 0;
+`;
+
+export {
+  PuzzleHeader,
+  PuzzleMain,
+  PuzzleFooter,
+  PuzzleWrapper,
+  PuzzleTitle,
+  SolutionAnswer,
+  SolutionAcknowledgementBlock,
+  SolutionAcknowledgement,
+};

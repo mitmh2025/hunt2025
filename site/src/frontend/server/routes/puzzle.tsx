@@ -12,6 +12,8 @@ import {
   PaperTrailMain,
   PaperTrailHeader,
   PaperTrailFooter,
+  PaperTrailAnswer,
+  PaperTrailAcknowledgementBlock,
 } from "../../components/PaperTrailPuzzleLayout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import {
@@ -20,6 +22,9 @@ import {
   PuzzleWrapper,
   PuzzleMain,
   PuzzleFooter,
+  SolutionAnswer,
+  SolutionAcknowledgement,
+  SolutionAcknowledgementBlock,
 } from "../../components/PuzzleLayout";
 import Spoiler from "../../components/Spoiler";
 import {
@@ -44,6 +49,9 @@ type RoundSpecificComponentManifest = {
   footer?: React.ComponentType<any>;
   fonts?: React.ComponentType<any>; // if present, a createGlobalStyle that includes any fonts needed by any of the other components
   entrypoint?: Entrypoint;
+  answer?: React.ComponentType<any>;
+  acknowledgementBlock?: React.ComponentType<any>;
+  acknowledgement?: React.ComponentType<any>;
 };
 /* eslint-enable @typescript-eslint/no-explicit-any -- End of round-specific component manifest exceptions */
 
@@ -66,6 +74,8 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: PaperTrailWrapper,
     footer: PaperTrailFooter,
     fonts: PaperTrailFonts,
+    answer: PaperTrailAnswer,
+    acknowledgementBlock: PaperTrailAcknowledgementBlock,
   },
   background_check: {
     main: BackgroundCheckMain,
@@ -365,29 +375,58 @@ export function solutionHandler(req: Request<PuzzleParams>) {
       : []),
   ];
 
+  const SolutionWrapperComponent =
+    roundSpecificManifest?.wrapper ?? PuzzleWrapper;
+  const SolutionHeaderComponent = roundSpecificManifest?.header ?? PuzzleHeader;
+  const SolutionTitleComponent = roundSpecificManifest?.title ?? PuzzleTitle;
+  const SolutionMainComponent = roundSpecificManifest?.main ?? PuzzleMain;
+  const SolutionFooterComponent = roundSpecificManifest?.footer ?? PuzzleFooter;
+  const SolutionFontsComponent = roundSpecificManifest?.fonts ?? undefined;
+  const SolutionAcknowledgementBlockComponent =
+    roundSpecificManifest?.acknowledgementBlock ?? SolutionAcknowledgementBlock;
+  const SolutionAcknowledgementComponent =
+    roundSpecificManifest?.acknowledgement ?? SolutionAcknowledgement;
+  const SolutionAnswerComponent =
+    roundSpecificManifest?.answer ?? SolutionAnswer;
+
   const title = puzzle.title;
   const authors = formatList(puzzle.authors);
   const editors = formatList(puzzle.editors);
   const acknowledgements = puzzle.additional_credits.map((credit) => (
-    <h3 key={credit.for_what}>
+    <SolutionAcknowledgementComponent key={credit.for_what}>
       {credit.for_what} by {formatList(credit.who)}
-    </h3>
+    </SolutionAcknowledgementComponent>
   ));
 
   const answer = puzzle.answer;
   const node = (
-    <div>
-      <h1>Solution to {title}</h1>
-      <h2>
-        Answer: <Spoiler>{answer}</Spoiler>
-      </h2>
-      <h3>By {authors}</h3>
-      <h3>Edited by {editors}</h3>
-      {acknowledgements}
-      <div id="solution-content" className="solution-content">
-        <SolutionComponent teamState={req.teamState} />
-      </div>
-    </div>
+    <>
+      {SolutionFontsComponent ? <SolutionFontsComponent /> : undefined}
+      <SolutionWrapperComponent>
+        <SolutionHeaderComponent>
+          <SolutionTitleComponent>Solution to {title}</SolutionTitleComponent>
+          <SolutionAnswerComponent>
+            Answer: <Spoiler>{answer}</Spoiler>
+          </SolutionAnswerComponent>
+          <SolutionAcknowledgementBlockComponent>
+            <SolutionAcknowledgementComponent>
+              By {authors}
+            </SolutionAcknowledgementComponent>
+            <SolutionAcknowledgementComponent>
+              Edited by {editors}
+            </SolutionAcknowledgementComponent>
+            {acknowledgements}
+          </SolutionAcknowledgementBlockComponent>
+        </SolutionHeaderComponent>
+        <SolutionMainComponent
+          id="solution-content"
+          className="solution-content"
+        >
+          <SolutionComponent teamState={req.teamState} />
+        </SolutionMainComponent>
+        <SolutionFooterComponent />
+      </SolutionWrapperComponent>
+    </>
   );
 
   // TODO: include an appropriate title?
