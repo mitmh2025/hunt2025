@@ -5,7 +5,7 @@ import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
 import HUNT from "../huntdata";
-import { TeamState as LogicTeamState } from "../huntdata/logic";
+import { LogicTeamState } from "../huntdata/logic";
 import type { Hunt } from "../huntdata/types";
 
 export function fixTimestamp(value: string | Date): Date {

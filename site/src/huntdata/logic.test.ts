@@ -1,5 +1,5 @@
 import { test, it, expect } from "@jest/globals";
-import { getSlugsBySlot, TeamState } from "./logic";
+import { getSlugsBySlot, LogicTeamState } from "./logic";
 
 test("getSlugsBySlot", () => {
   expect(
@@ -23,7 +23,7 @@ test("getSlugsBySlot", () => {
 
 it("unlocks if solved", () => {
   expect(
-    new TeamState({
+    new LogicTeamState({
       puzzles_unlocked: new Set(["p11"]),
       puzzles_solved: new Set(["p11"]),
     }).recalculateTeamState({
@@ -40,7 +40,7 @@ it("unlocks if solved", () => {
       ],
     }),
   ).toStrictEqual(
-    new TeamState({
+    new LogicTeamState({
       rounds_unlocked: new Set(["round"]),
       puzzles_visible: new Set(["p11", "p12"]),
       puzzles_unlocked: new Set(["p11", "p12"]),
@@ -51,7 +51,7 @@ it("unlocks if solved", () => {
 
 it("becomes visible if unlocked", () => {
   expect(
-    new TeamState().recalculateTeamState({
+    new LogicTeamState().recalculateTeamState({
       rounds: [
         {
           slug: "round",
@@ -68,7 +68,7 @@ it("becomes visible if unlocked", () => {
       ],
     }),
   ).toStrictEqual(
-    new TeamState({
+    new LogicTeamState({
       rounds_unlocked: new Set(["round"]),
       puzzles_visible: new Set(["p1", "p2", "p3", "p4"]),
       puzzles_unlockable: new Set(["p3", "p4"]),
@@ -79,7 +79,7 @@ it("becomes visible if unlocked", () => {
 
 it("handles gate conditions", () => {
   expect(
-    new TeamState({
+    new LogicTeamState({
       gates_satisfied: new Set(["g1"]),
     }).recalculateTeamState({
       rounds: [
@@ -96,7 +96,7 @@ it("handles gate conditions", () => {
       ],
     }),
   ).toStrictEqual(
-    new TeamState({
+    new LogicTeamState({
       gates_satisfied: new Set(["g1"]),
       rounds_unlocked: new Set(["round"]),
       puzzles_visible: new Set(["p1", "p2"]),
@@ -108,7 +108,7 @@ it("handles gate conditions", () => {
 
 it("handles round unlock conditions", () => {
   expect(
-    new TeamState({
+    new LogicTeamState({
       puzzles_unlocked: new Set(["p1"]),
       puzzles_solved: new Set(["p1"]),
     }).recalculateTeamState({
@@ -135,7 +135,7 @@ it("handles round unlock conditions", () => {
       ],
     }),
   ).toStrictEqual(
-    new TeamState({
+    new LogicTeamState({
       rounds_unlocked: new Set(["round1", "round2"]),
       puzzles_visible: new Set(["p1", "p2", "p3"]),
       puzzles_unlockable: new Set(["p3"]),

@@ -7,7 +7,7 @@ import { type z } from "zod";
 import { type TeamState } from "../../lib/api/client";
 import { type InteractionStateSchema } from "../../lib/api/contract";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
-import { getSlotSlug, TeamState as LogicTeamState } from "../huntdata/logic";
+import { getSlotSlug, type LogicTeamState } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,

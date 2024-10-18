@@ -118,7 +118,7 @@ export function getSlugsBySlot(hunt: Hunt) {
   return slug_by_slot;
 }
 
-export class TeamState {
+export class LogicTeamState {
   rounds_unlocked: Set<string>;
   puzzles_unlockable: Set<string>;
   puzzles_unlocked: Set<string>;
@@ -130,7 +130,7 @@ export class TeamState {
   available_currency: number;
   correct_answers: Record<string, string>;
 
-  constructor(initial?: Partial<TeamState>) {
+  constructor(initial?: Partial<LogicTeamState>) {
     this.rounds_unlocked = new Set(initial?.rounds_unlocked ?? []);
     this.puzzles_unlockable = new Set(initial?.puzzles_unlockable ?? []);
     this.puzzles_unlocked = new Set(initial?.puzzles_unlocked ?? []);
@@ -152,7 +152,7 @@ export class TeamState {
 
   // recalculateTeamState uses `hunt` to decide what a team is now eligible for.
   recalculateTeamState(hunt: Hunt) {
-    const next = new TeamState(this);
+    const next = new LogicTeamState(this);
     const condition_state: ConditionState = {
       // These four are immutable
       hunt,
