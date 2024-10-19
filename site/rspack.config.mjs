@@ -350,15 +350,14 @@ export default function createConfigs(_env, argv) {
         "asset/resource": {
           filename: (pathData, _assetInfo) => {
             // console.log("pathData", pathData);
-            // console.log("assetInfo", assetInfo);
+            // console.log("assetInfo", _assetInfo);
             if (
               PRESERVE_FILENAME_ASSET_PATHS.indexOf(pathData.filename) !== -1
             ) {
               const basename = path.basename(pathData.filename);
-              return `static/${pathData.hash}/${basename}`;
+              return `static/[hash]/${basename}`;
             }
-            const ext = path.extname(pathData.filename);
-            return `static/${pathData.hash}${ext}`;
+            return `static/[hash][ext]`;
           },
         },
       },
