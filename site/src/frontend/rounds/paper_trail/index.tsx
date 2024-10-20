@@ -639,7 +639,7 @@ function genNotes(teamState: TeamState): PaperTrailObject {
     const solveCount = solves.reduce((acc: number, next) => {
       return acc + next;
     }, 0);
-    progress = Math.max(Math.floor(solveCount / 2), 8);
+    progress = Math.min(Math.floor(solveCount / 2), 8);
   }
   const BOOK_IMAGE = [
     book_0,
