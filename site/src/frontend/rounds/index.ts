@@ -42,6 +42,7 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   },
   the_murder: {
     component: MurderRoundPage,
+    entrypoint: "the_murder",
   },
   the_vault: {
     component: VaultRoundPage,

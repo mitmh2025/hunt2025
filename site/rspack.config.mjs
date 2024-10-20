@@ -441,6 +441,7 @@ export default function createConfigs(_env, argv) {
       puzzle: "./src/frontend/client/puzzle.tsx",
       the_missing_diamond:
         "./src/frontend/rounds/the_missing_diamond/client.tsx",
+      the_murder: "./src/frontend/rounds/the_murder/client.tsx",
       stakeout: "./src/frontend/rounds/stakeout/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
     },
