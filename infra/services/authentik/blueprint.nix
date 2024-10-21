@@ -22,6 +22,7 @@ in {
     sops.secrets."authentik/google_oauth/consumer_secret" = {};
     sops.secrets."authentik/discord_oauth/consumer_key" = {};
     sops.secrets."authentik/discord_oauth/consumer_secret" = {};
+    sops.secrets."authentik/discord_oauth/bot_token" = {};
 
     lib.authentik = {
       inherit find findFlow findSource findScope findProvider findPrompt findSAMLPropertyMapping;
@@ -190,11 +191,29 @@ in {
             elif provider_type == "discord":
               # Let users pick their own username
               context["prompt_data"].pop("username", None)
-              discord_username = context.get("oauth_userinfo", {}).get("username")
+              userinfo = context.get("oauth_userinfo", {})
+              discord_username = userinfo.get("username")
               try:
                 return discord_username and Invitation.objects.get(fixed_data__discord_username=discord_username)
               except:
                 pass
+              identifier = userinfo.get("id")
+              if not identifier:
+                return False
+              GUILD_ID = "1196548844394139821"
+              BOT_TOKEN = "${config.sops.placeholder."authentik/discord_oauth/bot_token"}"
+              resp = requests.get(
+                f"https://discord.com/api/guilds/{GUILD_ID}/members/{identifier}",
+                headers= {
+                  "Authorization": f"Bot {BOT_TOKEN}",
+                }
+              )
+              if resp.status_code == 200:
+                guild_member = resp.json()
+                # guild_member["roles"] is the list of numeric role identifiers the user has
+                return True
+              elif resp.status_code == 404:
+                ak_message("User is not a member of the guild")
             return False
           '';
         }
