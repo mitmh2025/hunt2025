@@ -25,6 +25,7 @@ import object_07_locked from "./assets/07/7-locked.png";
 import object_07_solved from "./assets/07/7-solved.png";
 import object_07_unlocked from "./assets/07/7-unlocked.png";
 import object_08_locked from "./assets/08/8-locked.png";
+import object_08_solved_12_solved_too from "./assets/08/8-solved-spill.png";
 import object_08_solved from "./assets/08/8-solved.png";
 import object_08_unlocked from "./assets/08/8-unlocked.png";
 import object_09_locked from "./assets/09/9-locked.png";
@@ -691,7 +692,23 @@ function genImagery(teamState: TeamState): PaperTrailObject[] {
         : unlockState === "unlockable"
           ? ("locked" as const)
           : ("unlocked" as const);
-    const asset = lookupValue(properties.asset, state);
+    let asset = lookupValue(properties.asset, state);
+    if (slotId === "ptp08") {
+      // If the glasses slot and the coffee slot are both solved, use a custom (splashed) image for the glasses
+      const coffeeSlotId = "ptp12";
+      const coffeeSlot = round.slots[coffeeSlotId];
+      if (coffeeSlot) {
+        const coffeeSlug = coffeeSlot.slug;
+        const coffeePuzzleState = teamState.puzzles[coffeeSlug];
+        if (
+          coffeePuzzleState &&
+          coffeePuzzleState.locked === "unlocked" &&
+          coffeePuzzleState.answer
+        ) {
+          asset = object_08_solved_12_solved_too;
+        }
+      }
+    }
     const alt = lookupValue(properties.alt, state);
     const width = lookupValue(properties.width, state);
     const pos = lookupValue(properties.pos, state);
