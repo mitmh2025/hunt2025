@@ -96,7 +96,8 @@ const InputGrid = ({
 };
 
 const Spinner = ({ loading }: { loading: "idle" | "loading" | "error" }) => {
-  return <FlexRow style={{ width: "80px", height: "80px" }}>{loading}</FlexRow>;
+  const label = loading === "idle" ? "" : loading;
+  return <FlexRow style={{ width: "80px", height: "80px" }}>{label}</FlexRow>;
 };
 
 const ProgressCircle = styled.div<{ $state: number }>`
