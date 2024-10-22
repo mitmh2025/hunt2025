@@ -42,76 +42,81 @@ const DialogActions = styled.div`
   }
 `;
 
-const PuzzleUnlockModal = React.forwardRef(function PuzzleUnlockModalInner(
-  {
-    title,
-    slug,
-    onDismiss,
-    cost,
-    currency,
-  }: {
-    title: string;
-    slug: string;
-    onDismiss: () => void;
-    cost: number;
-    currency: number;
-  },
-  ref: Ref<HTMLDialogElement>,
-) {
-  const [fetching, setFetching] = useState<boolean>(false);
-  const stopClickPropagation: MouseEventHandler<HTMLDialogElement> =
-    useCallback((e) => {
-      // We want to avoid propagating click events within the dialog outside of the dialog, so that we
-      // can still have other "dismiss when an unhandled click bubbles up to me" elements in the DOM.
-      e.stopPropagation();
-    }, []);
-  const onUnlock: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
-    // Avoid double-fetching
-    if (fetching) {
-      return;
-    }
-    setFetching(true);
-    fetch(`/puzzles/${slug}/unlock`, {
-      method: "POST",
-    }).then(
-      (result) => {
-        setFetching(false);
-        if (result.ok) {
-          onDismiss();
-        }
-      },
-      () => {
-        setFetching(false);
-      },
+export const PuzzleUnlockModal = React.forwardRef(
+  function PuzzleUnlockModalInner(
+    {
+      title,
+      slug,
+      onDismiss,
+      cost,
+      currency,
+      desc,
+    }: {
+      title: string;
+      slug: string;
+      onDismiss: () => void;
+      cost: number;
+      currency: number;
+      desc?: string;
+    },
+    ref: Ref<HTMLDialogElement>,
+  ) {
+    const [fetching, setFetching] = useState<boolean>(false);
+    const stopClickPropagation: MouseEventHandler<HTMLDialogElement> =
+      useCallback((e) => {
+        // We want to avoid propagating click events within the dialog outside of the dialog, so that we
+        // can still have other "dismiss when an unhandled click bubbles up to me" elements in the DOM.
+        e.stopPropagation();
+      }, []);
+    const onUnlock: MouseEventHandler<HTMLButtonElement> = useCallback(() => {
+      // Avoid double-fetching
+      if (fetching) {
+        return;
+      }
+      setFetching(true);
+      fetch(`/puzzles/${slug}/unlock`, {
+        method: "POST",
+      }).then(
+        (result) => {
+          setFetching(false);
+          if (result.ok) {
+            onDismiss();
+          }
+        },
+        () => {
+          setFetching(false);
+        },
+      );
+    }, [fetching, onDismiss, slug]);
+    return (
+      <StyledDialog ref={ref} onClick={stopClickPropagation}>
+        <div
+          style={{
+            margin: "auto",
+            width: "800px",
+            maxWidth: "72vw",
+            textWrap: "wrap",
+          }}
+        >
+          <h1>Unlock puzzle {title}?</h1>
+          {desc ? <p>{desc}</p> : undefined}
+          <p>
+            Unlocking this puzzle will spend {cost} of your team&rsquo;s{" "}
+            {currency} available currency.
+          </p>
+          <DialogActions>
+            <Button disabled={fetching} onClick={onUnlock}>
+              Unlock
+            </Button>
+            <ButtonSecondary disabled={fetching} onClick={onDismiss}>
+              Cancel
+            </ButtonSecondary>
+          </DialogActions>
+        </div>
+      </StyledDialog>
     );
-  }, [fetching, onDismiss, slug]);
-  return (
-    <StyledDialog ref={ref} onClick={stopClickPropagation}>
-      <div
-        style={{
-          margin: "auto",
-          width: "800px",
-          maxWidth: "72vw",
-          textWrap: "wrap",
-        }}
-      >
-        <h1>Unlock puzzle {title}?</h1>
-        <p>
-          Unlocking this puzzle will spend {cost} of your team&rsquo;s{" "}
-          {currency} available currency.
-        </p>
-        <DialogActions>
-          <Button disabled={fetching} onClick={onUnlock}>
-            Unlock
-          </Button>
-          <ButtonSecondary disabled={fetching} onClick={onDismiss}>
-            Cancel
-          </ButtonSecondary>
-        </DialogActions>
-      </div>
-    </StyledDialog>
-  );
-});
+  },
+);
 
 export const PuzzleIcon = ({
   lockState,
