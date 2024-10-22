@@ -10,5 +10,6 @@
     name = "ThingsBoard";
     type = "oauth2";
     redirect_uris = "https://things.mitmh2025.com/login/oauth2/code/";
+    groups = ["authentik Admins"];
   };
 }

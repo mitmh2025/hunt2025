@@ -51,6 +51,10 @@ in {
             properties = mkOption {
               type = listOf str;
             };
+            groups = mkOption {
+              type = listOf str;
+              default = [];
+            }
             provider = mkOption {
               type = nullOr format.type;
               default = null;
@@ -72,7 +76,12 @@ in {
               type = listOf attrs;
               readOnly = true;
               visible = false;
-              default = lib.optional (config.provider != null) config.provider ++ [config.app];
+              default = lib.optional (config.provider != null) config.provider ++ [config.app] ++ (lib.imap0 i: name: {
+                model = "authentik_policies.policybinding";
+                identifiers.target = findApp config.slug;
+                identifiers.order = i;
+                attrs.group = findApp name;
+              } config.groups);
             };
           };
           config = {
