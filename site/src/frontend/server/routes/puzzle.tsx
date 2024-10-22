@@ -1,10 +1,12 @@
 import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import {
   BackgroundCheckWrapper,
   BackgroundCheckMain,
   BackgroundCheckHeader,
+  getBackgroundCheckManifestOverrides,
 } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import {
@@ -61,25 +63,25 @@ import { type Entrypoint } from "../assets";
 const SHOW_SOLUTIONS = true as boolean;
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- I'm not clever enough to name the types for this, but we're not bothering with props so they shouldn't matter */
-type RoundSpecificComponentManifest = {
-  wrapper?: React.ComponentType<any>;
-  header?: React.ComponentType<any>;
-  title?: React.ComponentType<any>;
-  main?: React.ComponentType<any>;
-  footer?: React.ComponentType<any>;
+type ComponentManifest = {
+  wrapper: React.ComponentType<any>;
+  header: React.ComponentType<any>;
+  title: React.ComponentType<any>;
+  main: React.ComponentType<any>;
+  footer: React.ComponentType<any>;
   fonts?: React.ComponentType<any>; // if present, a createGlobalStyle that includes any fonts needed by any of the other components
   entrypoint?: Entrypoint;
-  answer?: React.ComponentType<any>;
-  spoiler?: React.ComponentType<any>;
-  acknowledgementBlock?: React.ComponentType<any>;
-  acknowledgement?: React.ComponentType<any>;
+  answer: React.ComponentType<any>;
+  spoiler: React.ComponentType<any>;
+  acknowledgementBlock: React.ComponentType<any>;
+  acknowledgement: React.ComponentType<any>;
 };
 /* eslint-enable @typescript-eslint/no-explicit-any -- End of round-specific component manifest exceptions */
 
 // Add round-specific component overrides here
 const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   string,
-  RoundSpecificComponentManifest
+  Partial<ComponentManifest>
 > = {
   the_missing_diamond: {},
   stakeout: {
@@ -121,6 +123,54 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   },
   outlands: {},
 };
+
+const DEFAULT_MANIFEST: ComponentManifest = {
+  wrapper: PuzzleWrapper,
+  header: PuzzleHeader,
+  title: PuzzleTitle,
+  main: PuzzleMain,
+  footer: PuzzleFooter,
+  fonts: undefined,
+  entrypoint: undefined,
+  acknowledgementBlock: SolutionAcknowledgementBlock,
+  acknowledgement: SolutionAcknowledgement,
+  answer: SolutionAnswer,
+  spoiler: Spoiler,
+};
+
+function getComponentManifestForPuzzle(
+  teamState: TeamHuntState,
+  slug: string,
+): ComponentManifest {
+  const puzzleState = teamState.puzzles[slug];
+  if (!puzzleState) {
+    return DEFAULT_MANIFEST;
+  }
+
+  if (puzzleState.round === "background_check") {
+    const matchingSlotEntry = Object.entries(
+      teamState.rounds.background_check?.slots ?? {},
+    ).find(
+      ([_slot, slotObj]: [string, { slug: string; is_meta?: boolean }]) => {
+        return slotObj.slug === slug;
+      },
+    );
+    if (!matchingSlotEntry) {
+      return DEFAULT_MANIFEST; // how did this get here?
+    }
+    const overrides = getBackgroundCheckManifestOverrides(matchingSlotEntry[0]);
+    return Object.assign(
+      {},
+      DEFAULT_MANIFEST,
+      ROUND_PUZZLE_COMPONENT_MANIFESTS.background_check,
+      overrides,
+    );
+  }
+
+  const roundSpecificOverrides =
+    ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round] ?? {};
+  return Object.assign({}, DEFAULT_MANIFEST, roundSpecificOverrides);
+}
 
 // URL parameters
 export type PuzzleParams = {
@@ -245,24 +295,20 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const title = puzzle.title;
 
   // Use the components for the relevant round.
-  const roundSpecificManifest =
-    ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round];
+  const manifest = getComponentManifestForPuzzle(req.teamState.state, slug);
 
   const entrypoints = [
     "puzzle" as const,
-    ...(roundSpecificManifest?.entrypoint
-      ? [roundSpecificManifest.entrypoint]
-      : []),
+    ...(manifest.entrypoint ? [manifest.entrypoint] : []),
     ...(content.entrypoint ? [content.entrypoint] : []),
   ];
 
-  const PuzzleWrapperComponent =
-    roundSpecificManifest?.wrapper ?? PuzzleWrapper;
-  const PuzzleHeaderComponent = roundSpecificManifest?.header ?? PuzzleHeader;
-  const PuzzleTitleComponent = roundSpecificManifest?.title ?? PuzzleTitle;
-  const PuzzleMainComponent = roundSpecificManifest?.main ?? PuzzleMain;
-  const PuzzleFooterComponent = roundSpecificManifest?.footer ?? PuzzleFooter;
-  const PuzzleFontsComponent = roundSpecificManifest?.fonts ?? undefined;
+  const PuzzleWrapperComponent = manifest.wrapper;
+  const PuzzleHeaderComponent = manifest.header;
+  const PuzzleTitleComponent = manifest.title;
+  const PuzzleMainComponent = manifest.main;
+  const PuzzleFooterComponent = manifest.footer;
+  const PuzzleFontsComponent = manifest.fonts;
 
   const node = (
     <>
@@ -399,32 +445,23 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const SolutionComponent = content.component;
 
   // Use the entrypoint for pages in the relevant round.
-  const puzzleState = req.teamState.state.puzzles[slug];
-  const roundSpecificManifest = puzzleState
-    ? ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round]
-    : undefined;
+  const manifest = getComponentManifestForPuzzle(req.teamState.state, slug);
   const entrypoints = [
     "solution" as const,
-    ...(roundSpecificManifest?.entrypoint
-      ? [roundSpecificManifest.entrypoint]
-      : []),
+    ...(manifest.entrypoint ? [manifest.entrypoint] : []),
     ...(content.entrypoint ? [content.entrypoint] : []),
   ];
 
-  const SolutionWrapperComponent =
-    roundSpecificManifest?.wrapper ?? PuzzleWrapper;
-  const SolutionHeaderComponent = roundSpecificManifest?.header ?? PuzzleHeader;
-  const SolutionTitleComponent = roundSpecificManifest?.title ?? PuzzleTitle;
-  const SolutionMainComponent = roundSpecificManifest?.main ?? PuzzleMain;
-  const SolutionFooterComponent = roundSpecificManifest?.footer ?? PuzzleFooter;
-  const SolutionFontsComponent = roundSpecificManifest?.fonts ?? undefined;
-  const SolutionAcknowledgementBlockComponent =
-    roundSpecificManifest?.acknowledgementBlock ?? SolutionAcknowledgementBlock;
-  const SolutionAcknowledgementComponent =
-    roundSpecificManifest?.acknowledgement ?? SolutionAcknowledgement;
-  const SolutionAnswerComponent =
-    roundSpecificManifest?.answer ?? SolutionAnswer;
-  const SolutionSpoilerComponent = roundSpecificManifest?.spoiler ?? Spoiler;
+  const SolutionWrapperComponent = manifest.wrapper;
+  const SolutionHeaderComponent = manifest.header;
+  const SolutionTitleComponent = manifest.title;
+  const SolutionMainComponent = manifest.main;
+  const SolutionFooterComponent = manifest.footer;
+  const SolutionFontsComponent = manifest.fonts;
+  const SolutionAcknowledgementBlockComponent = manifest.acknowledgementBlock;
+  const SolutionAcknowledgementComponent = manifest.acknowledgement;
+  const SolutionAnswerComponent = manifest.answer;
+  const SolutionSpoilerComponent = manifest.spoiler;
 
   const title = puzzle.title;
   const authors = formatList(puzzle.authors);
