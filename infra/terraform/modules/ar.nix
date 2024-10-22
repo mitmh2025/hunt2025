@@ -1,0 +1,61 @@
+{ config, lib, ... }:
+{
+  options = with lib; {
+    gcp.ar = mkOption {
+      type = types.tfAttrsOf (types.submodule ({ name, config, ... }: {
+        options = {
+          repoId = mkOption {
+            type = types.str;
+            default = name;
+          };
+          location = mkOption {
+            type = types.str;
+          };
+          description = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+          };
+          writers = mkOption {
+            type = types.listOf types.str;
+            default = [];
+          };
+          resource = mkOption {
+            type = types.anything;
+            readOnly = true;
+          };
+          data = mkOption {
+            type = types.anything;
+            readOnly = true;
+          };
+        };
+        config = {
+          resource.google_artifact_registry_repository.${name} = {
+            repository_id = config.repoId;
+            inherit (config) location;
+            description = lib.mkIf (config.description != null) config.description;
+            format = "DOCKER";
+          };
+
+          data.google_iam_policy."ar-${name}".binding = [
+            {
+              role = "roles/artifactregistry.writer";
+              members = config.writers;
+            }
+          ];
+
+          resource.google_artifact_registry_repository_iam_policy.${name} = {
+            project = lib.tfRef "google_artifact_registry_repository.${name}.project";
+            location = lib.tfRef "google_artifact_registry_repository.${name}.location";
+            repository = lib.tfRef "google_artifact_registry_repository.${name}.name";
+            policy_data = lib.tfRef "data.google_iam_policy.ar-${name}.policy_data";
+          };
+        };
+      }));
+      default = {};
+    };
+  };
+  config = {
+    resource = lib.mkMerge (lib.mapAttrsToList (_: repo: repo.resource) config.gcp.ar);
+    data = lib.mkMerge (lib.mapAttrsToList (_: repo: repo.data) config.gcp.ar);
+  };
+}
