@@ -25,6 +25,7 @@
       ];
       provider.acs_url = "https://tix.mitmh2025.com/auth/saml/callback";
       provider.name_id_mapping = config.lib.authentik.findSAMLPropertyMapping "auth.mitmh2025.com/zammad/NameID";
+      groups = ["authentik Admins"];
     };
   };
   services.zammad.settings = {
