@@ -47,9 +47,6 @@ export async function seed(knex: Knex): Promise<void> {
   };
 
   await createTeam("team");
-  await createTeam("visible", async () => {
-    /* nothing to do */
-  });
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
       await mutator.appendLog({
