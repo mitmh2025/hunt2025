@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import dome from "./assets/great_dome.png";
+import dome from "./assets/great_dome_transparent.png";
 
 const LETTERS = `P B A S T E N G H Y N G V B A F E B A M
 L B H E H P B Z Z R A P R Z R A L G O A
