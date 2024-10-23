@@ -4,7 +4,7 @@ import { type publicContract } from "../../lib/api/contract";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
-import HUNT from "../huntdata";
+import HUNT, { generateSlugToSlotMap, type SlotLookup } from "../huntdata";
 import { LogicTeamState } from "../huntdata/logic";
 import type { Hunt } from "../huntdata/types";
 
@@ -41,10 +41,12 @@ export function fixInternalData(
 
 export class TeamStateIntermediate extends LogicTeamState {
   epoch: number; // The largest value of `id` that was processed/relevant
+  private slugToSlotMap: Map<string, SlotLookup>;
 
-  constructor(initial?: Partial<TeamStateIntermediate>) {
+  constructor(hunt: Hunt, initial?: Partial<TeamStateIntermediate>) {
     super(initial);
     this.epoch = -1;
+    this.slugToSlotMap = generateSlugToSlotMap(hunt);
   }
 
   reduce(entry: ActivityLogEntry) {
@@ -70,9 +72,17 @@ export class TeamStateIntermediate extends LogicTeamState {
         this.puzzles_solved.add(entry.slug);
         this.correct_answers[entry.slug] = entry.data.answer;
       // fallthrough - solved implies unlocked
-      case "puzzle_unlocked":
+      case "puzzle_unlocked": {
         this.puzzles_unlocked.add(entry.slug);
+        // If this puzzle is not assigned to a round, or if the round to which
+        // it is assigned is not unlocked at the time the puzzle unlocks, then
+        // it will be included henceforth in the puzzle outlands.
+        const slot = this.slugToSlotMap.get(entry.slug);
+        if (!slot || !this.rounds_unlocked.has(slot.roundSlug)) {
+          this.puzzles_stray.add(entry.slug);
+        }
         break;
+      }
       case "puzzle_unlockable":
         this.puzzles_unlockable.add(entry.slug);
         break;
@@ -96,7 +106,7 @@ export function reducerDeriveTeamState(
 ): LogicTeamState {
   const intermediate = teamActivityLogEntries.reduce(
     (acc, entry) => acc.reduce(entry),
-    new TeamStateIntermediate(),
+    new TeamStateIntermediate(hunt),
   );
   // Return the LogicTeamState because the recalculated team state no longer represents a committed epoch.
   return intermediate.recalculateTeamState(hunt);

@@ -91,13 +91,13 @@ export class ActivityLogMutator extends Mutator<
   }
 
   // Get the team state as represented by all known activity logs for the team.
-  getTeamState(teamId: number) {
+  getTeamState(hunt: Hunt, teamId: number) {
     if (!this.allTeams.has(teamId)) {
       throw new Error(`Mutator does not contain state for team ${teamId}`);
     }
     const state = this._teamStates.get(teamId) ?? {
       entryCount: 0,
-      state: new TeamStateIntermediate(),
+      state: new TeamStateIntermediate(hunt),
     };
     const allNewEntries = this.log.slice(state.entryCount);
     if (allNewEntries.length > 0) {
@@ -115,7 +115,7 @@ export class ActivityLogMutator extends Mutator<
     }
     // TODO: Skip recalculation if there are no new entries since the last time we recalculated.
     await recalculateTeamState(hunt, teamId, this);
-    return this.getTeamState(teamId);
+    return this.getTeamState(hunt, teamId);
   }
 }
 
@@ -127,7 +127,7 @@ async function recalculateTeamState(
   const start = performance.now();
 
   // What is already present in the activity log?
-  const old = mutator.getTeamState(team_id);
+  const old = mutator.getTeamState(hunt, team_id);
 
   // What /should/ be in the activity log, based on the hunt description?
   const next = old.recalculateTeamState(hunt);
@@ -243,7 +243,7 @@ export async function executeMutation<T>(
       for (const teamId of mutator.allTeams) {
         // TODO: Only do this work if the caller needs it?
         if (teamStates[teamId] === undefined) {
-          teamStates[teamId] = mutator.getTeamState(teamId);
+          teamStates[teamId] = mutator.getTeamState(hunt, teamId);
         }
       }
       const teamNames = await getTeamNames(mutator.allTeams, trx);
@@ -368,6 +368,7 @@ export function formatTeamState(
               ? ("unlockable" as const)
               : ("locked" as const),
           answer: data.correct_answers[slug],
+          ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
         },
       ]),
     ),

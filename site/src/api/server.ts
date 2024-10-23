@@ -132,7 +132,7 @@ export function getRouter({
     const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
     const team_state = activity_log.reduce(
       (acc, entry) => acc.reduce(entry),
-      new TeamStateIntermediate(),
+      new TeamStateIntermediate(hunt),
     );
     return formatTeamState(hunt, team_id, team_name, team_state);
   };

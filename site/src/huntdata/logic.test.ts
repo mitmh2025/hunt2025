@@ -144,3 +144,23 @@ it("handles round unlock conditions", () => {
     }),
   );
 });
+
+it("unlock before round unlock is stray", () => {
+  expect(
+    new LogicTeamState({}).recalculateTeamState({
+      rounds: [
+        {
+          slug: "locked",
+          title: "locked round",
+          unlock_if: { oneOf: [] }, // never unlocks
+          puzzles: [{ id: "p1", slug: "p1", unlocked_if: [] }], // always unlocked
+        },
+      ],
+    }),
+  ).toStrictEqual(
+    new LogicTeamState({
+      puzzles_stray: new Set(["p1"]),
+      puzzles_unlocked: new Set(["p1"]),
+    }),
+  );
+});

@@ -1,6 +1,6 @@
 import type { TeamState } from "../../../lib/api/client.js";
 import HUNT from "../../huntdata";
-import type { PuzzleSlot, Round } from "../../huntdata/types";
+import type { PuzzleSlot } from "../../huntdata/types";
 import { PUZZLES } from "../puzzles";
 
 export type DevtoolsPuzzle = {
@@ -38,13 +38,8 @@ export type DevtoolsState = {
   rounds: DevtoolsRound[];
 };
 
-function devtoolsPuzzleForSlot(
-  round: Round,
-  puzzleSlot: PuzzleSlot,
-  teamState: TeamState,
-) {
-  const slug =
-    teamState.rounds[round.slug]?.slots[puzzleSlot.id]?.slug ?? puzzleSlot.id;
+function devtoolsPuzzleForSlot(puzzleSlot: PuzzleSlot, teamState: TeamState) {
+  const slug = puzzleSlot.slug ?? puzzleSlot.id;
   const puzzleDefinition = PUZZLES[slug];
   const title =
     puzzleDefinition?.title ?? `stub puzzle for slot ${puzzleSlot.id}`;
@@ -75,12 +70,12 @@ export function devtoolsState(teamState: TeamState) {
           metas: round.puzzles
             .filter((slot) => !!slot.is_meta)
             .map((slot) => {
-              return devtoolsPuzzleForSlot(round, slot, teamState);
+              return devtoolsPuzzleForSlot(slot, teamState);
             }),
           puzzles: round.puzzles
             .filter((slot) => !slot.is_meta)
             .map((slot) => {
-              return devtoolsPuzzleForSlot(round, slot, teamState);
+              return devtoolsPuzzleForSlot(slot, teamState);
             }),
           gates: (round.gates ?? []).map((gate) => {
             return {

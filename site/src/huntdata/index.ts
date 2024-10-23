@@ -507,7 +507,7 @@ const HUNT: Hunt = {
   ],
 };
 
-type SlotLookup = {
+export type SlotLookup = {
   roundSlug: string;
   slot: PuzzleSlot;
 };

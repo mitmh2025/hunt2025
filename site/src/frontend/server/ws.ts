@@ -570,7 +570,7 @@ export class WebsocketManager
       // conns that want to observe teamState for this team.
       // console.log(`Starting teamState observer for team ${teamId}`);
       const connSubMap = new Map<string, ConnHandler>();
-      let intermediate = new TeamStateIntermediate();
+      let intermediate = new TeamStateIntermediate(this.hunt);
       let latestTeamState = conn.lastTeamState;
       // Avoid dispatching teamState updates while processing the initial backlog
       let ready = false;

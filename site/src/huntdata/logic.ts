@@ -122,6 +122,7 @@ export class LogicTeamState {
   rounds_unlocked: Set<string>;
   puzzles_unlockable: Set<string>;
   puzzles_unlocked: Set<string>;
+  puzzles_stray: Set<string>;
   puzzles_solved: Set<string>;
   gates_satisfied: Set<string>;
   interactions_unlocked: Set<string>;
@@ -134,6 +135,7 @@ export class LogicTeamState {
     this.rounds_unlocked = new Set(initial?.rounds_unlocked ?? []);
     this.puzzles_unlockable = new Set(initial?.puzzles_unlockable ?? []);
     this.puzzles_unlocked = new Set(initial?.puzzles_unlocked ?? []);
+    this.puzzles_stray = new Set(initial?.puzzles_stray ?? []);
     this.puzzles_solved = new Set(initial?.puzzles_solved ?? []);
     this.gates_satisfied = new Set(initial?.gates_satisfied ?? []);
     this.interactions_unlocked = new Set(initial?.interactions_unlocked ?? []);
@@ -161,8 +163,8 @@ export class LogicTeamState {
       puzzles_solved: next.puzzles_solved,
       // The rest are mutable
       rounds_unlocked: next.rounds_unlocked,
-      puzzles_unlocked: next.puzzles_unlocked,
       puzzles_unlockable: next.puzzles_unlockable,
+      puzzles_unlocked: next.puzzles_unlocked,
     };
     const slug_by_slot = getSlugsBySlot(hunt);
 
@@ -189,6 +191,9 @@ export class LogicTeamState {
         );
         const roundEvaluateCondition = (condition: Condition) =>
           evaluateCondition(condition, round_condition_state);
+        // Note: it is important to evaluate round unlocks before puzzle
+        // unlocks, so that we can be sure that we don't generate spurious
+        // puzzles_stray memberships.
         if (roundEvaluateCondition(round.unlock_if)) {
           if (!next.rounds_unlocked.has(round.slug)) {
             next.rounds_unlocked.add(round.slug);
@@ -217,6 +222,9 @@ export class LogicTeamState {
           ) {
             if (!next.puzzles_unlocked.has(puzzleSlug)) {
               next.puzzles_unlocked.add(puzzleSlug);
+              if (!next.rounds_unlocked.has(round.slug)) {
+                next.puzzles_stray.add(puzzleSlug);
+              }
               updated = true;
             }
           }
