@@ -1,7 +1,7 @@
 { dockerTools
 , writeTextDir
 , git
-, nix
+, nix-eval-jobs
 , nix-fast-build
 , nixos-rebuild
 , openssh
@@ -54,7 +54,7 @@ dockerTools.buildLayeredImage {
     dockerTools.binSh
     dockerTools.caCertificates
     git
-    nix
+    nix-eval-jobs.nix
     nix-fast-build
     nixos-rebuild
     openssh
@@ -64,5 +64,8 @@ dockerTools.buildLayeredImage {
     mkdir -p nix/var/nix/gcroots
     ln -sf /nix/var/nix/profiles nix/var/nix/gcroots/profiles
     mkdir -m 1777 tmp
+    for f in etc/passwd etc/group etc/nsswitch.conf; do
+      cp --remove-destination "$(readlink $f)" $f
+    done
   '';
 }

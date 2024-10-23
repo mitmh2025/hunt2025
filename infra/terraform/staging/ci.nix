@@ -18,9 +18,19 @@
     repository = "hunt2025";
     script = ''
       nix-fast-build -f .#ciBuildTargets --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${config.ci.nix.cache.s3Url}
+    '';
+  };
+  ci.triggers.autopush = {
+    repository = "hunt2025";
+    script = ''
+      (
+        umask 0077
+        echo "$''${AUTOPUSH_KEY}" > /keys/autopush_key
+      )
       # Deploy to dev
       NIX_SSHOPTS="-i /keys/autopush_key -o StrictHostKeyChecking=no" nixos-rebuild switch --flake .#dev --fast --target-host root@dev.mitmh2025.com
     '';
+    secrets.AUTOPUSH_KEY = lib.tfRef "google_secret_manager_secret_version.autopush_key.id";
   };
 
   # Make sure you have run

@@ -10,11 +10,22 @@ in {
     script = mkOption {
       type = types.str;
     };
+    secrets = mkOption {
+      type = types.attrsOf types.str;
+      default = {};
+    };
     resource = mkOption {
       type = types.anything;
       readOnly = true;
     };
   };
+  config.secrets = {
+    AWS_ACCESS_KEY_ID = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-id.name";
+    AWS_SECRET_ACCESS_KEY = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-secret.name";
+  } // builtins.listToAttrs (lib.imap (i: repo: lib.nameValuePair
+    "DEPLOY_KEY_${toString i}"
+    (lib.tfRef "google_secret_manager_secret_version.github_deploy_key[\"${repo}\"].id")
+  ) deployKeyNames);
   config.resource = {
     depends_on = [
       "skopeo2_copy.nix-cache-image"
@@ -40,34 +51,15 @@ in {
           umask 0077
           mkdir -p /keys
           ${writeKeys}
-          echo "$''${AUTOPUSH_KEY}" > /keys/autopush_key
         )
         ${config.script}
       '';
-      secret_env = [
-        "AWS_ACCESS_KEY_ID"
-        "AWS_SECRET_ACCESS_KEY"
-        "AUTOPUSH_KEY"
-      ] ++ (lib.imap (i: repo: "DEPLOY_KEY_${toString i}") deployKeyNames);
+      secret_env = builtins.attrNames config.secrets;
     }];
 
-    build.available_secrets.secret_manager = [
-      {
-        env = "AWS_ACCESS_KEY_ID";
-        version_name = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-id.name";
-      }
-      {
-        env = "AWS_SECRET_ACCESS_KEY";
-        version_name = lib.tfRef "google_secret_manager_secret_version.cloud-build-hmac-secret.name";
-      }
-      {
-        env = "AUTOPUSH_KEY";
-        version_name = lib.tfRef "google_secret_manager_secret_version.autopush_key.id";
-      }
-    ] ++ (lib.imap (i: repo: {
-      env = "DEPLOY_KEY_${toString i}";
-      version_name = lib.tfRef "google_secret_manager_secret_version.github_deploy_key[\"${repo}\"].id";
-    }) deployKeyNames);
+    build.available_secrets.secret_manager = lib.mapAttrsToList (env: version_name: {
+      inherit env version_name;
+    }) config.secrets;
 
     build.logs_bucket = "gs://${lib.tfRef "google_storage_bucket.nix-cache.name"}/ci-logs";
 
