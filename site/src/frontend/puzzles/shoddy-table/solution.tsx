@@ -4,7 +4,11 @@ import Spoiler from "../../components/Spoiler";
 import step1 from "./assets/step1.png";
 
 const PreCode = styled.code`
+  background-color: white;
+  display: block;
   white-space: pre;
+  max-width: 100%;
+  overflow-x: scroll;
 `;
 
 const Solution = () => {
