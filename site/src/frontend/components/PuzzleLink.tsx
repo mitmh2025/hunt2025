@@ -118,7 +118,6 @@ export const PuzzleIcon = ({
         display: "inline-block",
         width: `${size}px`,
         height: `${size}px`,
-        margin: "2px",
         verticalAlign: "middle",
         backgroundSize: "contain",
         backgroundImage: `url(${bgImage})`,
@@ -173,18 +172,21 @@ const PuzzleLink = ({
   const buttonDisabled = currency <= 0;
   return (
     <span
-      className="puzzle-link"
+      className={`puzzle-link ${answer ? "solved" : "unsolved"} ${lockState}`}
       style={{
         transitionProperty: "font-size",
         transitionDuration: "0.5s",
         fontSize: `${size}px`,
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
       }}
     >
       {showIcon ? (
         <PuzzleIcon lockState={lockState} answer={answer} size={size} />
       ) : undefined}
       {lockState === "unlocked" ? (
-        <a className="puzzle-link-title highlighter" href={`/puzzles/${slug}`}>
+        <a className="puzzle-link-title" href={`/puzzles/${slug}`}>
           {title}
         </a>
       ) : (

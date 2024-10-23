@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { deviceMin } from "../utils/breakpoints";
 
 export const Button = styled.button`
   cursor: pointer;
@@ -42,5 +43,15 @@ export const TextInput = styled.input`
     &:focus {
       box-shadow: 0 0 0 0.25rem var(--black);
     }
+  }
+`;
+
+export const Wrapper = styled.div`
+  margin: 0 auto;
+  width: 900px;
+  max-width: 100%;
+
+  @media ${deviceMin.lg} {
+    width: calc(1080px - 1rem);
   }
 `;

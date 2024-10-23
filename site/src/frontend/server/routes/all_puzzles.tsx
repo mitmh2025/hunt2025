@@ -7,6 +7,7 @@ import {
 } from "../../client/all_puzzles_types";
 import AllPuzzlesList from "../../components/AllPuzzlesList";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
+import { Wrapper } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 
@@ -69,13 +70,13 @@ export function allPuzzlesHandler(req: Request) {
   const inlineScript = `window.initialAllPuzzlesState = ${JSON.stringify(state)}`;
 
   const node = (
-    <>
+    <Wrapper>
       <h1>All puzzles</h1>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
       <div id="all-puzzles-root">
         <AllPuzzlesList state={state} />
       </div>
-    </>
+    </Wrapper>
   );
 
   return wrapContentWithNavBar(

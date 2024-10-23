@@ -106,42 +106,49 @@ const StakeoutBodyMainDiv = styled.div`
   font-weight: 400;
   font-style: normal;
 
-  a,
-  .puzzle-link {
+  .puzzle-link.solved,
+  .puzzle-link.unsolved {
     color: var(--gray-800);
     text-decoration: none;
     position: relative;
+
+    a {
+      color: var(--gray-800);
+      text-decoration: none;
+      position: relative;
+
+      &:hover {
+        text-decoration: none;
+        color: var(--true-black);
+        text-shadow: none;
+      }
+    }
   }
 
   a:hover {
     color: var(--true-black);
-    border-color: var(--true-black);
     text-shadow: none;
     text-decoration: underline dotted var(--gray-800);
   }
 
-  a.highlighter:hover {
-    text-decoration: none;
-  }
-
-  a.highlighter:hover::before {
-    width: 102%;
+  a.puzzle-link-title:hover::before {
+    width: 104%;
     height: 0.8em;
     background-color: var(--highlighter);
     content: " ";
     position: absolute;
-    top: -0.125em;
+    top: 0em;
     right: 0;
     transform: rotate(3deg);
   }
 
-  a.highlighter:hover::after {
+  a.puzzle-link-title:hover::after {
     width: 95%;
     height: 0.8em;
     background-color: var(--highlighter);
     content: " ";
     position: absolute;
-    top: 0.125em;
+    top: 0.25em;
     right: 0;
     transform: rotate(-1deg);
   }

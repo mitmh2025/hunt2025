@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
+import { Wrapper } from "./StyledUI";
 
-const PuzzleWrapper = styled.div`
+const PuzzleWrapper = styled(Wrapper)`
   background-color: var(--white);
   margin: 0 auto;
   width: 900px;

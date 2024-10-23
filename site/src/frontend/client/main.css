@@ -41,9 +41,16 @@
   --white: var(--gray-000);
   --black: var(--gray-900);
 
+  --gold-000: #fffcf0;
+  --gold-100: #fff6d3;
+  --gold-200: #f9e8ad;
+  --gold-300: #eed783;
   --gold-400: #d9c066;
   --gold-500: #e1be41;
+  --gold-600: #be9d29;
   --gold-700: #a08730;
+  --gold-800: #665415;
+  --gold-900: #483a0c;
 
   --highlighter: #efff3c66;
 
@@ -93,11 +100,25 @@ h3 {
 }
 
 a {
-  color: var(--gray-100);
-  text-decoration: underline dotted var(--gray-100);
+  color: var(--gray-000);
+  text-decoration: underline dotted var(--gray-200);
 }
 
 a:hover {
   color: var(--true-white);
-  text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.7);
+  text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.4);
+}
+
+.puzzle-link {
+  font-weight: 300;
+}
+
+.puzzle-link.unsolved a {
+  color: var(--gray-200);
+  text-decoration-color: var(--gray-300);
+}
+
+.puzzle-link.unsolved a:hover {
+  color: var(--gray-100);
+  text-decoration-color: var(--gray-200);
 }

@@ -11,9 +11,31 @@ const StyledRow = styled.tr<{ $bolded: boolean }>`
     $bolded
       ? css`
           font-weight: bold;
+          color: var(--gold-500);
+
+          a.puzzle-link-title {
+            font-weight: bold;
+            color: var(--gold-300);
+            text-decoration-color: var(--gold-200);
+
+            &:hover {
+              color: var(--gold-400);
+              text-decoration-color: var(--gold-300);
+            }
+          }
+
+          .solved a.puzzle-link-title {
+            color: var(--gold-500);
+            text-decoration-color: var(--gold-400);
+
+            &:hover {
+              color: var(--gold-500);
+              text-decoration-color: var(--gold-500);
+            }
+          }
         `
       : undefined}
-  font-size: 24px;
+  font-size: 1.5rem;
 
   td:nth-child(1) {
     min-width: 400px;
@@ -24,7 +46,7 @@ const StyledRow = styled.tr<{ $bolded: boolean }>`
 `;
 
 const RoundHeader = styled.h3`
-  font-size: 32px;
+  font-size: 2rem;
 `;
 
 const AllPuzzlesRound = ({
@@ -39,13 +61,13 @@ const AllPuzzlesRound = ({
       <RoundHeader key={round.slug}>
         <a href={`/rounds/${round.slug}`}>{round.title}</a>
       </RoundHeader>
-      <table>
+      <table style={{ borderCollapse: "collapse" }}>
         <tbody>
           <>
             {round.puzzles.map((puz) => {
               return (
                 <StyledRow key={puz.slug} $bolded={puz.is_meta ?? false}>
-                  <td key="puzzle">
+                  <td key="puzzle" style={{ paddingRight: "1rem" }}>
                     <PuzzleLink
                       lockState={puz.state ?? "locked"}
                       answer={puz.answer}
@@ -55,7 +77,9 @@ const AllPuzzlesRound = ({
                     />
                   </td>
                   <td key="answer">
-                    <code>{puz.answer ? puz.answer : undefined}</code>
+                    <code style={{ fontWeight: "bold" }}>
+                      {puz.answer ? puz.answer : undefined}
+                    </code>
                   </td>
                 </StyledRow>
               );
