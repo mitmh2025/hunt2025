@@ -279,6 +279,8 @@ const Solution = () => {
           outputs={[1, 2, 2, 2, 1, 2, 2, 2, 0]}
           labels={["", "?", "?", "?", "", "?", "?", "?", ""]}
         />
+      </CenteredDivRow>
+      <CenteredDivRow>
         <CustomLabeledDisplay
           outputs={[1, 2, 2, 2, 1, 2, 2, 2, 2]}
           labels={["", "?", "?", "?", "", "?", "?", "?", ""]}
