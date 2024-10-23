@@ -15,12 +15,15 @@ const Blue = styled.span`
 `;
 
 const RedTD = styled.td`
+  color: white;
   background-color: red;
 `;
 const GreenTD = styled.td`
+  color: white;
   background-color: green;
 `;
 const BlueTD = styled.td`
+  color: white;
   background-color: blue;
 `;
 
