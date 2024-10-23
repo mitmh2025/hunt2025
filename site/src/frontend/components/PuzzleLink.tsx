@@ -8,8 +8,10 @@ import React, {
 } from "react";
 import { styled } from "styled-components";
 import icon_solved from "../../assets/solved_status.svg";
+import icon_unlock from "../../assets/unlock-icon.svg";
 import icon_unlocked from "../../assets/unlocked_status.svg";
 import icon_unlockable from "../../assets/visible_status.svg";
+import { Button } from "./StyledUI";
 
 const StyledDialog = styled.dialog`
   font-size: 24px;
@@ -202,19 +204,35 @@ const PuzzleLink = ({
             cost={1}
             currency={currency}
           />
-          <button
+          <Button
             className="puzzle-unlock-button"
             disabled={buttonDisabled}
             onClick={showModal}
             style={{
               verticalAlign: "middle",
-              height: `${size}px`,
+              height: `${size + 4}px`,
               fontSize: `${size / 2}px`,
               transitionProperty: "height font-size",
+              gap: `${size / 8}px`,
             }}
           >
-            Unlock
-          </button>
+            <span
+              className="puzzle-link-status-icon"
+              style={{
+                display: "inline-block",
+                width: `${size / 2}px`,
+                height: `${size / 2}px`,
+                verticalAlign: "middle",
+                backgroundSize: "contain",
+                backgroundImage: `url(${icon_unlock})`,
+                transitionProperty: "width height font-size",
+                transitionDuration: "0.5s",
+                backgroundRepeat: "no-repeat",
+                flex: "0 0 auto",
+              }}
+            />
+            <span>Unlock</span>
+          </Button>
         </>
       ) : undefined}
     </span>

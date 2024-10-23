@@ -4,16 +4,18 @@ import { deviceMin } from "../utils/breakpoints";
 export const Button = styled.button`
   cursor: pointer;
   background-color: var(--gold-400);
-  border-radius: 0.5rem;
+  border-radius: 0.5em;
   border: 1px solid var(--black);
   box-shadow:
     0 0 0 1px var(--gold-400),
     0px 1px 3px hsl(from var(--black) h s l / 0.8);
-  padding: 0.5rem;
+  padding: 0.5em;
   color: var(--black);
   font-size: 1rem;
   font-family: var(--body-font);
   margin: 4px;
+  display: inline-flex;
+  align-items: center;
 
   &:hover {
     background-color: var(--gold-500);
