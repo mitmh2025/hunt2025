@@ -14,17 +14,17 @@ const HUNT: Hunt = {
         // unlock currency, or with nothing unlocked, a few puzzles
         // unlockable, and some amount of starting currency (to teach people
         // how to use the mechanism from the get-go).
-        { id: "mdp01", unlocked_if: [] }, // unlocked by default
-        { id: "mdp02", unlocked_if: [], slug: "they_might_be_grad_students_but_theyve_got_your_number" },
-        { id: "mdp03", unlocked_if: [] },
-        { id: "mdp04", unlocked_if: [], slug: "downright_backwards" },
-        { id: "mdp05", unlocked_if: [] },
-        { id: "mdp06", unlocked_if: [], slug: "mastering_the_art_of_conch_frocking" },
-        { id: "mdp07", unlocked_if: [] },
-        { id: "mdp08", unlocked_if: [], slug: "educational_rite_of_passage" },
-        { id: "mdp09", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
-        { id: "mdp10", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
-        { id: "mdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
+        { id: "mdp01", unlockable_if: [], unlock_cost: 1 }, // unlockable by default
+        { id: "mdp02", unlockable_if: [], unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
+        { id: "mdp03", unlockable_if: [], unlock_cost: 1 },
+        { id: "mdp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug: "downright_backwards" },
+        { id: "mdp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+        { id: "mdp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
+        { id: "mdp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+        { id: "mdp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1, slug: "educational_rite_of_passage" },
+        { id: "mdp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+        { id: "mdp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+        { id: "mdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
         { id: "mdp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
         { id: "mdp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
         { id: "mdp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
