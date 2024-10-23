@@ -8,6 +8,7 @@ import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
   getActivityLog as dbGetActivityLog,
+  getTeamIds,
   getTeamNames,
   retryOnAbort,
 } from "./db";
@@ -231,9 +232,10 @@ abstract class Log<
     };
   }
 
-  // Execute a mutation on a team. Note that fn must not have any side effects; if the transaction aborts, it may be called multiple times.
+  // Execute a mutation, either on a specific team, or potentially against all teams.  Note that fn
+  // must not have any side effects; if the transaction aborts, it may be called multiple times.
   protected async executeRawMutation<R>(
-    team_id: number,
+    team_id: number | undefined,
     redisClient: RedisClient | undefined,
     knex: Knex.Knex,
     fn: (trx: Knex.Knex.Transaction, mutator: M) => Promise<R>,
@@ -252,10 +254,13 @@ abstract class Log<
       highWaterMark: undefined,
       entries: [],
     };
-    // TODO: Generalize this function to support operations against all teams.
     if (redisClient) {
       try {
-        cached_log = await this._redisLog.getTeamLog(redisClient, team_id);
+        if (team_id === undefined) {
+          cached_log = await this._redisLog.getGlobalLog(redisClient);
+        } else {
+          cached_log = await this._redisLog.getTeamLog(redisClient, team_id);
+        }
       } catch (err) {
         console.error("failed to query redis:", err);
       }
@@ -269,10 +274,13 @@ abstract class Log<
           cached_log.highWaterMark,
         );
         const combined_log = cached_log.entries.concat(new_log);
+        const relevant_teams = new Set(
+          team_id !== undefined ? [team_id] : await getTeamIds(trx),
+        );
         const mutator = new this._mutatorClass(
           trx,
           combined_log,
-          new Set([team_id]),
+          relevant_teams,
         );
         const result = await fn(trx, mutator);
         return {
@@ -321,7 +329,7 @@ export class ActivityLog extends Log<
 
   async executeMutation<R>(
     hunt: Hunt,
-    team_id: number,
+    team_id: number | undefined,
     redisClient: RedisClient | undefined,
     knex: Knex.Knex,
     fn: (trx: Knex.Knex.Transaction, mutator: ActivityLogMutator) => Promise<R>,

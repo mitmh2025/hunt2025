@@ -227,6 +227,12 @@ declare module "knex/types/tables" {
   }
 }
 
+export async function getTeamIds(
+  trx: Knex.Knex.Transaction,
+): Promise<number[]> {
+  return trx("teams").pluck("id");
+}
+
 export async function getTeamNames(
   team_ids: Iterable<number>,
   trx: Knex.Knex.Transaction,
