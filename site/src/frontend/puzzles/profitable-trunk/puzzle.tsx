@@ -11,6 +11,7 @@ const Cell = styled.td`
   height: 40px;
   border: 1px solid black;
   border-collapse: collapse;
+  background-color: #fff;
 `;
 
 const MarginDiv = styled.div`

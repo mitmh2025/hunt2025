@@ -84,8 +84,14 @@ export type MOProps = MathMLProps & {
   symmetric?: boolean;
 };
 export const MO = (props: MOProps) => {
-  const { children, ...rest } = props;
-  return React.createElement("mo", rest, children);
+  const { children, stretchy, symmetric, separator, ...rest } = props;
+  const domProps = {
+    stretchy: stretchy ? "true" : undefined,
+    symmetric: symmetric ? "true" : undefined,
+    separator: separator ? "true" : undefined,
+    ...rest,
+  };
+  return React.createElement("mo", domProps, children);
 };
 
 export type MSProps = MathMLProps & {

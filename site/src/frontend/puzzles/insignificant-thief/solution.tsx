@@ -33,10 +33,13 @@ const Cell = styled.td<{
   height: 64px;
   border: 1px solid black;
   ${({ $color }) =>
-    $color &&
-    css`
-      background-color: ${COLORS[$color]};
-    `}
+    $color
+      ? css`
+          background-color: ${COLORS[$color]};
+        `
+      : css`
+          background-color: var(--white);
+        `}
   ${({ $walls }) =>
     ($walls === "right" || $walls === "both") &&
     css`
@@ -78,6 +81,7 @@ const GridTable = styled.table`
     height: 32px;
     border: 1px solid black;
     border-collapse: collapse;
+    background-color: var(--white);
   }
 `;
 

@@ -24,6 +24,7 @@ const Cell = styled.td`
   border-collapse: collapse;
   text-align: center;
   vertical-align: center;
+  background-color: #fff;
 `;
 
 const MarginDiv = styled.div`

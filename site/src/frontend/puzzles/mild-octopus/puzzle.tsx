@@ -15,13 +15,17 @@ const Row = styled.div`
   margin: 8px 0px;
 `;
 
+const Separator = styled.hr`
+  border: 1px solid var(--black);
+`;
+
 const Puzzle = () => {
   return (
     <>
       <p className="puzzle-flavor">
         Fed up with half info, it’s taking charge of what’s missing below.
       </p>
-      <hr />
+      <Separator />
       <Row>
         <Box>12</Box> estate <Box>2</Box> has <Box>7</Box> <Box>14</Box>{" "}
         <Box>1</Box> <Box>6</Box> <Box>4</Box> sign
@@ -46,7 +50,7 @@ const Puzzle = () => {
       <Row>
         <Box>9</Box> <Box>11</Box>
       </Row>
-      <hr />
+      <Separator />
       <ol>
         <li>(3)</li>
         <li>(4)</li>
@@ -65,7 +69,7 @@ const Puzzle = () => {
         <li>(5)</li>
         <li>(5)</li>
       </ol>
-      <hr />
+      <Separator />
       <Box>3</Box>, <Box>3</Box>, <Box>10</Box> <Box>6</Box> <Box>1</Box>{" "}
       <Box>13</Box>. <Box>5</Box>: <Box>16</Box>. <Box>4</Box> <Box>12</Box>{" "}
       <Box>15</Box> <Box>11</Box>.

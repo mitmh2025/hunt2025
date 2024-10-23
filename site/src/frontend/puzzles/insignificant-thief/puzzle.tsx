@@ -21,6 +21,7 @@ const PenTable = styled.table`
 const Cell = styled.td`
   width: 64px;
   height: 64px;
+  background-color: var(--white);
 `;
 
 const AnimalCellTd = styled(Cell)`
@@ -50,6 +51,7 @@ const GridTable = styled.table`
     height: 32px;
     border: 1px solid black;
     border-collapse: collapse;
+    background-color: var(--white);
   }
 `;
 
