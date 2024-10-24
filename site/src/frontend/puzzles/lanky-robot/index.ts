@@ -19,13 +19,15 @@ const puzzle: PuzzleDefinition = {
     {
       order: 0,
       description: "Solvers are having trouble getting started.",
-      nudge: `Each clue can be answered by a word or phrase that fits the first enumeration. For example, the clue "musical nembur written about ballpoint pens (3 4 ⇒ 6)" has an answer that is two words long -- first word three letters, second word four letters.`,
+      nudge:
+        "Each clue can be answered by a word or phrase that fits the first enumeration. For example, the clue “musical nembur written about ballpoint pens (3 4 ⇒ 6)” has an answer that is two words long – first word three letters, second word four letters.",
     },
     {
       order: 50,
       description:
         "Solvers have some number of clues answered but are not sure about the second enumerations.",
-      nudge: `There's one misspelled word in each clue. Consider exactly *how* it is misspelled and what that has to do with the title of the puzzle. Then, you might be able to figure out how to thematically alter your answers to the original clues to fit the second enumerations.`,
+      nudge:
+        "There’s one misspelled word in each clue. Consider exactly *how* it is misspelled and what that has to do with the title of the puzzle. Then, you might be able to figure out how to thematically alter your answers to the original clues to fit the second enumerations.",
     },
     {
       order: 80,
