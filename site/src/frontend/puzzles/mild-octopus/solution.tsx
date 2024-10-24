@@ -100,7 +100,7 @@ const Solution = () => {
         <code>--</code> is M in morse code. One, in roman numerals, is I. Large
         simply becomes L. We echo the MIL in reverse for “and retreating”. The
         remaining five letters are the first letters of the five words preceding
-        “openers” -- the opener of each word.
+        “openers” – the opener of each word.
       </p>
       <p>For reference, the list of blank-filling words is:</p>
       <ol>
