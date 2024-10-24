@@ -75,9 +75,9 @@ const Solution = () => {
       <p>
         Keeping in mind the flavortext (
         <em>
-          “This public relations firm wants to make a<strong>sea</strong> change
-          by <strong>phasing</strong> in a <strong>quick map</strong>ping of the
-          right names.”
+          “This public relations firm wants to make a <strong>sea</strong>{" "}
+          change by <strong>phasing</strong> in a <strong>quick map</strong>ping
+          of the right names.”
         </em>
         ), solvers find that the words here are the (English) names of seas,
         bays, lakes, and marshes on the moon (see{" "}
