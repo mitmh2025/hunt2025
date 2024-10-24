@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import AllPuzzlesList from "../components/AllPuzzlesList";
+import { PuzzleIcon } from "../components/PuzzleLink";
 import globalDatasetManager from "./DatasetManager";
 import { type AllPuzzlesState } from "./all_puzzles_types";
 
@@ -70,6 +71,7 @@ const AllPuzzlesManager = ({
             checked={showUnlockable}
             onChange={toggleShowUnlockable}
           />
+          <PuzzleIcon lockState="unlockable" size={24} />
           unlockable
         </label>
         <label>
@@ -78,6 +80,7 @@ const AllPuzzlesManager = ({
             checked={showUnlocked}
             onChange={toggleShowUnlocked}
           />
+          <PuzzleIcon lockState="unlocked" size={24} />
           unlocked
         </label>
         <label>
@@ -86,6 +89,7 @@ const AllPuzzlesManager = ({
             checked={showSolved}
             onChange={toggleShowSolved}
           />
+          <PuzzleIcon lockState="unlocked" answer="dummy" size={24} />
           solved
         </label>
       </div>
