@@ -8,13 +8,25 @@ export function hackLoginGetHandler(_req: Request) {
       <form method="post">
         <div>
           <label>
-            Username: <input type="text" name="username" />
+            Username:{" "}
+            <select name="username">
+              <option value="">Select...</option>
+              <option value="team">team (no magic)</option>
+              <option value="unlockable">
+                unlockable (all puzzles unlockable)
+              </option>
+              <option value="unlocked">
+                unlocked (all puzzles unlocked, recommended for validating
+                postprod)
+              </option>
+              <option value="solved">
+                solved (all puzzles already solved; beware spoilers!)
+              </option>
+            </select>
           </label>
         </div>
         <div>
-          <label>
-            Password: <input type="password" name="password" />
-          </label>
+          <input type="hidden" name="password" value="password" />
         </div>
         <div>
           <button type="submit">Log in</button>
