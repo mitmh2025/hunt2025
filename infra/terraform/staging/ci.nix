@@ -17,7 +17,7 @@
   ci.triggers.nix-cache-trigger = {
     repository = "hunt2025";
     script = ''
-      nix-fast-build -f .#ciBuildTargets --no-nom --skip-cached --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${config.ci.nix.cache.s3Url}
+      nix-fast-build -f .#ciBuildTargets -j 1 --no-nom --skip-cached --debug --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${config.ci.nix.cache.s3Url}
     '';
   };
   ci.triggers.autopush = {
@@ -29,6 +29,7 @@
       )
       # Deploy to dev
       NIX_SSHOPTS="-i /keys/autopush_key -o StrictHostKeyChecking=no" nixos-rebuild switch --flake .#dev --fast --target-host root@dev.mitmh2025.com
+      nix copy .#nixosConfigurations.dev.config.system.build.toplevel --to ${config.ci.nix.cache.s3Url}
     '';
     secrets.AUTOPUSH_KEY = lib.tfRef "google_secret_manager_secret_version.autopush_key.id";
   };
