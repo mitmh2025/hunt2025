@@ -229,8 +229,7 @@ const Solution = () => {
         0 to 26, the same number of letters as the alphabet. Reading each row in
         the self-reproducing grids as a 3-digit ternary number and interpreting
         these as letters, the five grids read <code>CAL LIN MAT CHB OOK</code>,
-        instructing the solver to call in the answer
-        <code>MATCHBOOK</code>.
+        instructing the solver to call in the answer <code>MATCHBOOK</code>.
       </p>
 
       <p>Example deduction of the first grid:</p>
