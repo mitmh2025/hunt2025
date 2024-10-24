@@ -47,6 +47,7 @@ in {
         writeKey = i: repo: ''echo "$''${DEPLOY_KEY_${toString i}}" > "/keys/${repo}_deploy_key"'';
         writeKeys = lib.concatImapStringsSep "\n" writeKey deployKeyNames;
       in ''
+        set -ex
         (
           umask 0077
           mkdir -p /keys

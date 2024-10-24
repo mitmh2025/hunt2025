@@ -1,6 +1,6 @@
 { dockerTools
 , writeTextDir
-, git
+, gitMinimal
 , nix-eval-jobs
 , nix-fast-build
 , nixos-rebuild
@@ -54,10 +54,12 @@ dockerTools.buildLayeredImage {
     '')
     dockerTools.binSh
     dockerTools.caCertificates
-    git
+    gitMinimal
     nix-eval-jobs.nix
     nix-fast-build
-    nixos-rebuild
+    (nixos-rebuild.override {
+      inherit (nix-eval-jobs) nix;
+    })
     openssh
     coreutils
   ];
