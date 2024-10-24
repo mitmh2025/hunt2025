@@ -4,7 +4,7 @@ import spreadsheet from "./assets/10000sheets.xlsx";
 const Puzzle = () => {
   return (
     <>
-      <div className="puzzle-flavor">Start with what you can see.</div>
+      <p className="puzzle-flavor">Start with what you can see.</p>
 
       <p>
         <a href={spreadsheet}>10000sheets.xlsx</a> (size: <code>13366337</code>{" "}

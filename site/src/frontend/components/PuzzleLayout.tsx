@@ -60,6 +60,10 @@ const PuzzleMain = styled.main`
     padding: 0.5rem;
     padding-bottom: 1rem;
   }
+
+  .puzzle-flavor {
+    font-style: italic;
+  }
 `;
 
 const PuzzleFooter = styled.footer``;
