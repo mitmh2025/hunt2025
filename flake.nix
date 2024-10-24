@@ -169,7 +169,6 @@
         ciBuildTargets = {
           inherit (self.packages.x86_64-linux) terraformConfigurations;
           staging = self.nixosConfigurations.staging.config.system.build.toplevel;
-          dev = self.nixosConfigurations.dev.config.system.build.toplevel;
         };
       };
 }
