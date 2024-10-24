@@ -25,6 +25,7 @@ dockerTools.buildLayeredImage {
       extra-experimental-features = nix-command flakes
       substituters = ${s3Url} https://cache.nixos.org/
       require-sigs = false
+      always-allow-substitutes = true
     '')
     (writeTextDir "etc/gitconfig" (lib.generators.toGitINI {
       url = lib.mapAttrs' (
