@@ -2,7 +2,10 @@ import type Knex from "knex";
 import { type InsertActivityLogEntry } from "knex/types/tables";
 import { type z } from "zod";
 import { type InteractionStateSchema } from "../../lib/api/contract";
-import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
+import {
+  type DehydratedInternalActivityLogEntry,
+  type InternalActivityLogEntry,
+} from "../../lib/api/frontend_contract";
 import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -12,7 +15,11 @@ import {
   retryOnAbort,
 } from "./db";
 import { TeamStateIntermediate } from "./logic";
-import { type RedisClient, activityLog as redisActivityLog } from "./redis";
+import {
+  type RedisClient,
+  activityLog as redisActivityLog,
+  type Log as RedisLog,
+} from "./redis";
 
 export class Mutator<T extends { id: number; team_id?: number }, I> {
   private _trx: Knex.Knex.Transaction;
@@ -252,7 +259,11 @@ export async function executeMutation<T>(
     });
   if (redisClient && affectedTeams.size > 0) {
     // TODO: Do this in the background?
-    await refreshActivityLog(redisClient, knex);
+    try {
+      await refreshActivityLog(redisClient, knex);
+    } catch (err) {
+      console.error("failed to refresh redis:", err);
+    }
   }
   return { result, activityLog, teamNames, teamStates };
 }
@@ -369,3 +380,49 @@ export function formatTeamState(
     ),
   };
 }
+
+abstract class Log<S, T extends { id: number; team_id?: number }> {
+  private _redisLog: RedisLog<S, T>;
+  constructor(redisLog: RedisLog<S, T>) {
+    this._redisLog = redisLog;
+  }
+
+  protected abstract dbGetTeamLog(
+    knex: Knex.Knex,
+    teamId: number,
+  ): Promise<InternalActivityLogEntry[]>;
+
+  async getCachedTeamLog(
+    knex: Knex.Knex,
+    redisClient: RedisClient | undefined,
+    teamId: number,
+  ) {
+    if (redisClient) {
+      try {
+        return await this._redisLog.getTeamLog(redisClient, teamId);
+      } catch (err) {
+        console.error("failed to read activity log from redis:", err);
+      }
+    }
+    const entries = await this.dbGetTeamLog(knex, teamId);
+    return {
+      highWaterMark: entries.at(-1)?.id ?? 0,
+      entries,
+    };
+  }
+}
+
+export class ActivityLog extends Log<
+  DehydratedInternalActivityLogEntry,
+  InternalActivityLogEntry
+> {
+  constructor() {
+    super(redisActivityLog);
+  }
+
+  protected dbGetTeamLog(knex: Knex.Knex, teamId: number) {
+    return dbGetActivityLog(teamId, undefined, knex);
+  }
+}
+
+export const activityLog = new ActivityLog();

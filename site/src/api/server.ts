@@ -33,11 +33,13 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { executeMutation, formatTeamState, type Mutator } from "./data";
 import {
-  getTeamState as dbGetTeamState,
-  getActivityLog as dbGetActivityLog,
-} from "./db";
+  activityLog,
+  executeMutation,
+  formatTeamState,
+  type Mutator,
+} from "./data";
+import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
   reducerDeriveTeamState,
@@ -378,7 +380,11 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          const entries = await dbGetActivityLog(team_id, undefined, knex);
+          const { entries } = await activityLog.getCachedTeamLog(
+            knex,
+            redisClient,
+            team_id,
+          );
           const body = entries.flatMap((e) => {
             const apiEntry = formatActivityLogEntryForApi(e);
             return apiEntry !== undefined ? [apiEntry] : [];

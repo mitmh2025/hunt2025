@@ -335,7 +335,10 @@ class ConnHandler {
     }
   }
 
-  public appendActivityLogEntry(subId: string, entry: DehydratedActivityLogEntry) {
+  public appendActivityLogEntry(
+    subId: string,
+    entry: DehydratedActivityLogEntry,
+  ) {
     const sub = this.subs.get(subId);
     if (sub && isActivityLogSubscription(sub)) {
       this.send({ subId, type: "update", value: entry });
