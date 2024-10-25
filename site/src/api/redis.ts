@@ -16,6 +16,8 @@ export async function connect(redisUrl: string) {
     : { url: redisUrl };
   const options = {
     ...connectOptions,
+    // Fail fast when we're not connected.
+    disableOfflineQueue: true,
     scripts: {
       extendLog: defineScript({
         SCRIPT: `
@@ -51,11 +53,26 @@ return count
   client.on("error", (err) => {
     console.log("redis error", err);
   });
-  await client.connect();
+  // Only wait 5s for a connection, so we can still come up if Redis is down.
+  const connected = client.connect();
+  if (
+    (await Promise.race([
+      connected,
+      new Promise((r) => setTimeout(r, 5000)),
+    ])) === undefined
+  ) {
+    console.warn(
+      "Failed to connect to Redis after 5s; will continue trying in the background",
+    );
+  }
   if (process.env.NODE_ENV === "development") {
-    // Wipe data every time we start in development, since the database might have regressed.
-    for await (const key of client.scanIterator()) {
-      await client.del(key);
+    try {
+      // Wipe data every time we start in development, since the database might have regressed.
+      for await (const key of client.scanIterator()) {
+        await client.del(key);
+      }
+    } catch (err) {
+      console.error("failed to wipe redis:", err);
     }
   }
   return client;
