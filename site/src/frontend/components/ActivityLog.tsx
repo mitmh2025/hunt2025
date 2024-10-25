@@ -1,6 +1,19 @@
 import React from "react";
 import { styled } from "styled-components";
 import { type ActivityLogEntry } from "../../../lib/api/client";
+import { PuzzleIcon } from "./PuzzleLink";
+import logoIcon from "../../assets/logo-simple.svg";
+
+const HuntIcon = styled.span`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  background-size: contain;
+  background-image: url(${logoIcon});
+  background-repeat: no-repeat;
+  flex: 0 0 auto;
+`;
 
 const ActivityLogItem = ({
   entry,
@@ -22,76 +35,124 @@ const ActivityLogItem = ({
       break;
     case "round_unlocked":
       description = (
-        <td>
-          Unlocked round <a href={`/rounds/${entry.slug}`}>{entry.title}</a>
-        </td>
+        <>
+          <td>
+            <HuntIcon />
+          </td>
+          <td>
+            Unlocked round <a href={`/rounds/${entry.slug}`}>{entry.title}</a>
+          </td>
+        </>
       );
       break;
     case "puzzle_unlockable":
-      description = <td>Discovered puzzle {entry.title}</td>;
+      description = (
+        <>
+          <td>
+            <PuzzleIcon lockState="unlockable" />
+          </td>
+          <td>Discovered puzzle {entry.title}</td>
+        </>
+      );
       break;
     case "puzzle_unlocked":
       description = (
-        <td>
-          Unlocked puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
-        </td>
+        <>
+          <td>
+            <PuzzleIcon lockState="unlocked" />
+          </td>
+          <td>
+            Unlocked puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+          </td>
+        </>
       );
       break;
     case "puzzle_partially_solved":
       description = (
-        <td>
-          Partially solved puzzle{" "}
-          <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> (partial answer{" "}
-          <code>{entry.partial}</code>)
-        </td>
+        <>
+          <td></td>
+          <td>
+            Partially solved puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> (partial answer{" "}
+            <code>{entry.partial}</code>)
+          </td>
+        </>
       );
       break;
     case "puzzle_solved":
       description = (
-        <td>
-          Solved puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
-          (answer <code>{entry.answer}</code>)
-        </td>
+        <>
+          <td>
+            <PuzzleIcon lockState="unlocked" answer={entry.answer} />
+          </td>
+          <td>
+            Solved puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
+            (answer <code>{entry.answer}</code>)
+          </td>
+        </>
       );
       break;
     case "interaction_unlocked":
       description = (
-        <td>
-          Unlocked interaction{" "}
-          <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
-        </td>
+        <>
+          <td>
+            <HuntIcon />
+          </td>
+          <td>
+            Unlocked interaction{" "}
+            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+          </td>
+        </>
       );
       break;
     case "interaction_started":
       description = (
-        <td>
-          Started interaction{" "}
-          <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
-        </td>
+        <>
+          <td>
+            <HuntIcon />
+          </td>
+          <td>
+            Started interaction{" "}
+            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+          </td>
+        </>
       );
       break;
     case "interaction_completed":
       description = (
-        <td>
-          Completed interaction{" "}
-          <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
-        </td>
+        <>
+          <td>
+            <HuntIcon />
+          </td>
+          <td>
+            Completed interaction{" "}
+            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+          </td>
+        </>
       );
       break;
     case "gate_completed":
       // Only a subset of gates will assign a title.
       if (entry.title) {
-        description = <td>{entry.title}</td>;
+        description = (
+          <>
+            <td />
+            <td>{entry.title}</td>
+          </>
+        );
       } else {
         return undefined;
       }
       break;
     case "rate_limits_reset":
       description = (
-        <td>
-          Rate limits reset for puzzle{" "}
-          <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
-        </td>
+        <>
+          <td>⏰</td>
+          <td>
+            Rate limits reset for puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+          </td>
+        </>
       );
       break;
   }
@@ -100,7 +161,7 @@ const ActivityLogItem = ({
   const formattedTimestamp = timestamp.toLocaleString();
 
   return (
-    <tr>
+    <tr className={entry.type}>
       <td>{formattedTimestamp}</td>
       {description}
       <td>{maybeCurrencyText}</td>
@@ -129,9 +190,25 @@ const ActivityLogTable = styled.table`
     background-color: #333;
   }
 
-  tbody tr td:nth-child(3),
-  tbody tr td:nth-child(4) {
+  tbody tr td:nth-child(4),
+  tbody tr td:nth-child(5) {
     text-align: right;
+  }
+
+  .round_unlocked {
+    background-color: #03585f;
+  }
+
+  .puzzle_unlocked {
+    background-color: #113135;
+  }
+
+  .puzzle_solved {
+    background-color: var(--gold-700);
+  }
+
+  .puzzle_partially_solved {
+    background-color: var(--gold-900);
   }
 `;
 
@@ -153,7 +230,7 @@ const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
       <thead>
         <tr>
           <th>Time</th>
-          <th>Event</th>
+          <th colSpan={2}>Event</th>
           <th>🍗 change</th>
           <th>🍗 total</th>
         </tr>

@@ -97,7 +97,7 @@ const PuzzleUnlockModal = React.forwardRef(function PuzzleUnlockModalInner(
 export const PuzzleIcon = ({
   lockState,
   answer,
-  size,
+  size = 24,
 }: {
   lockState: "unlockable" | "unlocked" | "locked";
   answer?: string;

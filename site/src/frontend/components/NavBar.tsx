@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import diamondIcon from "../../assets/diamond.svg";
+import diamondIcon from "../../assets/logo.svg";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
 import AudioControls from "./AudioControls";
 import "../../assets/radio/celebration.wav";
@@ -117,6 +117,10 @@ const NavLink = styled.a`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  img {
+    height: 2.5rem;
   }
 `;
 

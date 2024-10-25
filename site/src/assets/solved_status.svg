@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 67 67" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g transform="matrix(4.2627,0,0,4.12422,-2107.19,272.053)">
+    <g transform="matrix(1.19921,0,0,1.32262,-0.737918,-21.6154)">
+        <path d="M35.995,36.537L35.995,65.397L34.226,67L2.384,67L0.615,65.397L0.615,36.537L2.384,34.933L34.226,34.933L35.995,36.537Z" style="fill:rgb(62,48,68);"/>
+        <path d="M35.995,36.537L35.995,65.397L34.226,67L2.384,67L0.615,65.397L0.615,36.537L2.384,34.933L34.226,34.933L35.995,36.537ZM34.744,37.007L33.708,36.068L2.902,36.068L1.866,37.007L1.866,64.927L2.902,65.866L33.708,65.866L34.744,64.927L34.744,37.007Z" style="fill:rgb(25,7,33);fill-opacity:0.91;"/>
+    </g>
+    <g transform="matrix(4.50561,0,0,4.35924,-2227.27,283.738)">
         <g id="Solved-status" serif:id="Solved status">
             <g>
                 <g transform="matrix(19.6,0,0,19.6,492.818,-50.604)">
