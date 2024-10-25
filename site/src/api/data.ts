@@ -1,8 +1,5 @@
 import type Knex from "knex";
-import {
-  type ActivityLogEntry,
-  type InsertActivityLogEntry,
-} from "knex/types/tables";
+import { type InsertActivityLogEntry } from "knex/types/tables";
 import { type z } from "zod";
 import { type InteractionStateSchema } from "../../lib/api/contract";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
@@ -14,7 +11,7 @@ import {
   getTeamNames,
   retryOnAbort,
 } from "./db";
-import { parseInternalActivityLogEntry, TeamStateIntermediate } from "./logic";
+import { TeamStateIntermediate } from "./logic";
 import { type RedisClient, activityLog as redisActivityLog } from "./redis";
 
 export class Mutator<T extends { id: number; team_id?: number }, I> {
@@ -73,7 +70,7 @@ export class Mutator<T extends { id: number; team_id?: number }, I> {
 }
 
 export class ActivityLogMutator extends Mutator<
-  ActivityLogEntry,
+  InternalActivityLogEntry,
   InsertActivityLogEntry
 > {
   private _teamStates: Map<
@@ -83,7 +80,7 @@ export class ActivityLogMutator extends Mutator<
 
   constructor(
     trx: Knex.Knex.Transaction,
-    log: ActivityLogEntry[],
+    log: InternalActivityLogEntry[],
     allTeams: Set<number>,
   ) {
     super(trx, log, allTeams, dbAppendActivityLog);
@@ -227,9 +224,7 @@ export async function executeMutation<T>(
         cached_log.highWaterMark,
         trx,
       );
-      const combined_log = cached_log.entries
-        .map(parseInternalActivityLogEntry)
-        .concat(new_log);
+      const combined_log = cached_log.entries.concat(new_log);
       const mutator = new ActivityLogMutator(
         trx,
         combined_log,

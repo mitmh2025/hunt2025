@@ -1,7 +1,8 @@
 import { type NextFunction, type Request } from "express";
 import type { WSResponse } from "websocket-express";
 import workersManifest from "../../../dist/worker-manifest.json";
-import { type ActivityLogEntry, type TeamState } from "../../../lib/api/client";
+import { type TeamState } from "../../../lib/api/client";
+import { type DehydratedActivityLogEntry } from "../../../lib/api/contract";
 import { type FrontendClient } from "../../../lib/api/frontend_client";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
 import {
@@ -13,7 +14,6 @@ import {
 import { genId } from "../../../lib/id";
 import { formatTeamState } from "../../api/data";
 import {
-  parseInternalActivityLogEntry,
   formatActivityLogEntryForApi,
   TeamStateIntermediate,
 } from "../../api/logic";
@@ -335,7 +335,7 @@ class ConnHandler {
     }
   }
 
-  public appendActivityLogEntry(subId: string, entry: ActivityLogEntry) {
+  public appendActivityLogEntry(subId: string, entry: DehydratedActivityLogEntry) {
     const sub = this.subs.get(subId);
     if (sub && isActivityLogSubscription(sub)) {
       this.send({ subId, type: "update", value: entry });
@@ -577,7 +577,6 @@ export class WebsocketManager
       const stopHandle = this.activityLogTailer.watchLog(
         (entries: InternalActivityLogEntry[]) => {
           intermediate = entries
-            .map(parseInternalActivityLogEntry)
             .filter((e) => e.team_id === teamId || e.team_id === undefined)
             .reduce((acc, entry) => acc.reduce(entry), intermediate);
           // TODO: figure out how to deal with teamName changing?
@@ -635,9 +634,8 @@ export class WebsocketManager
   ): () => void {
     const stop = this.activityLogTailer.watchLog(
       (entries: InternalActivityLogEntry[]) => {
-        entries.forEach((internalEntry) => {
+        entries.forEach((entry) => {
           // Convert serialized InternalActivityLogEntry to working format
-          const entry = parseInternalActivityLogEntry(internalEntry);
           if (entry.team_id === teamId || entry.team_id === undefined) {
             const apiEntry = formatActivityLogEntryForApi(entry);
             if (apiEntry !== undefined) {

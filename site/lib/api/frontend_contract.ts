@@ -77,7 +77,10 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
     }),
   ),
 ]);
-export type InternalActivityLogEntry = z.infer<
+export type InternalActivityLogEntry = z.output<
+  typeof InternalActivityLogEntrySchema
+>;
+export type DehydratedInternalActivityLogEntry = z.input<
   typeof InternalActivityLogEntrySchema
 >;
 export const InternalActivityLogSchema = z.array(
