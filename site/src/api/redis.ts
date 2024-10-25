@@ -4,7 +4,11 @@ import {
   defineScript,
 } from "redis";
 import { type TeamState } from "../../lib/api/client";
-import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
+import {
+  type DehydratedInternalActivityLogEntry,
+  type InternalActivityLogEntry,
+} from "../../lib/api/frontend_contract";
+import { parseInternalActivityLogEntry } from "./logic";
 
 export async function connect(redisUrl: string) {
   const connectOptions = redisUrl.startsWith("unix://")
@@ -77,14 +81,19 @@ function getHighWaterMark(messages?: { idNumber: number }[]) {
 
 // Parse a redis StreamMessageReply into a given type.
 // If the parse fails, `entry` will be undefined.
-function parseStreamMessage<T>({
-  id,
-  message,
-}: {
-  id: string;
-  message: Record<string, string>;
-}) {
-  const entry = message.entry ? (JSON.parse(message.entry) as T) : undefined;
+function parseStreamMessage<S, T>(
+  hydrate: (entry: S) => T,
+  {
+    id,
+    message,
+  }: {
+    id: string;
+    message: Record<string, string>;
+  },
+) {
+  const entry = message.entry
+    ? hydrate(JSON.parse(message.entry) as S)
+    : undefined;
   return {
     id,
     idNumber: parseInt(id.slice(2), 10),
@@ -93,11 +102,19 @@ function parseStreamMessage<T>({
   };
 }
 
-export class Log<T extends { id: number; team_id?: number }> {
+export abstract class Log<S, T extends { id: number; team_id?: number }> {
   private _key: string;
 
   constructor(key: string) {
     this._key = key;
+  }
+
+  protected abstract hydrateEntry(this: void, entry: S): T;
+
+  private parseStreamMessage(
+    message: Parameters<typeof parseStreamMessage<S, T>>[1],
+  ): ReturnType<typeof parseStreamMessage<S, T>> {
+    return parseStreamMessage(this.hydrateEntry, message);
   }
 
   // Read a Redis stream formatted with our schema.
@@ -115,7 +132,7 @@ export class Log<T extends { id: number; team_id?: number }> {
       options,
     );
     const messages = (results ?? [])[0]?.messages ?? [];
-    return messages.map(parseStreamMessage<T>);
+    return messages.map((m) => this.parseStreamMessage(m));
   }
 
   // Read the global log, starting from the beginning or from AFTER since.
@@ -200,7 +217,7 @@ export class Log<T extends { id: number; team_id?: number }> {
       "-",
       { COUNT: 1 },
     );
-    return getHighWaterMark(messages.map(parseStreamMessage<T>));
+    return getHighWaterMark(messages.map((m) => this.parseStreamMessage(m)));
   }
   // Append one or more entries to a team's log.
   private async extendTeamLog(
@@ -240,7 +257,19 @@ export class Log<T extends { id: number; team_id?: number }> {
   }
 }
 
-export const activityLog = new Log<InternalActivityLogEntry>("activity_log");
+export class ActivityLog extends Log<
+  DehydratedInternalActivityLogEntry,
+  InternalActivityLogEntry
+> {
+  constructor() {
+    super("activity_log");
+  }
+  protected hydrateEntry(entry: DehydratedInternalActivityLogEntry) {
+    return parseInternalActivityLogEntry(entry);
+  }
+}
+
+export const activityLog = new ActivityLog();
 
 // Publish a new state to a "stream", if it is newer, and trim older states.
 async function publishState(

@@ -70,7 +70,7 @@ const SubmitGuessSchema = z.object({
 export const ActivityLogEntryBaseSchema = z.object({
   id: z.number(),
   team_id: z.number().optional(),
-  timestamp: z.string().datetime(),
+  timestamp: z.string().datetime().pipe(z.coerce.date()),
   currency_delta: z.number(),
 });
 
@@ -130,6 +130,8 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({ type: z.literal("rate_limits_reset") }),
   ),
 ]);
+
+export type DehydratedActivityLogEntry = z.input<typeof ActivityLogEntrySchema>;
 
 export const ActivityLogSchema = z.array(ActivityLogEntrySchema);
 

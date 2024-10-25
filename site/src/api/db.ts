@@ -1,11 +1,12 @@
 import path from "path";
 import Knex from "knex";
 import {
-  type ActivityLogEntry,
+  type ActivityLogEntryRow,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
+import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
 import { cleanupActivityLogEntryFromDB } from "./logic";
 
@@ -188,30 +189,19 @@ declare module "knex/types/tables" {
       }
   );
 
-  // We specify some more general field types here even though InsertActivityLogEntry has narrower
-  // constraints to make working with Pick types more pleasant.
-  type ActivityLogEntry = {
+  // ActivityLogEntryRow is the type as returned by the various database engines.
+  type ActivityLogEntryRow = {
     id: number;
-    timestamp: Date;
-    currency_delta: number;
+    // SQLite returns timestamps as strings.
+    timestamp: Date | string;
+    team_id: number | null;
     type: string;
-    slug?: string;
-    data?:
-      | {
-          answer: string;
-        }
-      | {
-          partial: string;
-        }
-      | {
-          result: string;
-        }
-      | {
-          status: GuessStatus;
-          canonical_input: string;
-          response: string;
-        };
-  } & InsertActivityLogEntry;
+    slug: string | null;
+    currency_delta: number;
+    // SQLite returns JSON fields as strings.
+    data: string | object | null;
+    internal_data: string | object | null;
+  };
 
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
@@ -220,7 +210,7 @@ declare module "knex/types/tables" {
   interface Tables {
     teams: Team;
     activity_log: Knex.Knex.CompositeTableType<
-      ActivityLogEntry,
+      ActivityLogEntryRow,
       InsertActivityLogEntry
     >;
   }
@@ -240,10 +230,7 @@ export async function getTeamNames(
 }
 
 // TODO: rename to loadCanonicalTeamStateInputs or something like that
-export async function getTeamState(
-  team_id: number,
-  trx: Knex.Knex.Transaction,
-) {
+export async function getTeamState(team_id: number, trx: Knex.Knex) {
   const team = await trx("teams")
     .where("id", team_id)
     .select("username")
@@ -258,9 +245,9 @@ export async function getTeamState(
 export async function getActivityLog(
   team_id: number | undefined,
   since: number | undefined,
-  trx: Knex.Knex.Transaction,
+  trx: Knex.Knex,
 ) {
-  let query = trx<ActivityLogEntry>("activity_log");
+  let query = trx<ActivityLogEntryRow>("activity_log");
   if (team_id !== undefined) {
     query = query.where((builder) => {
       void builder.where("team_id", team_id).orWhereNull("team_id");
@@ -277,7 +264,7 @@ export async function getActivityLog(
 export async function appendActivityLog(
   entry: InsertActivityLogEntry,
   trx: Knex.Knex.Transaction,
-): Promise<ActivityLogEntry | undefined> {
+): Promise<InternalActivityLogEntry | undefined> {
   return await trx("activity_log")
     .insert(entry)
     // You need to specify the exact columns and predicate on the index, and sqlite doesn't allow ? placeholders.
@@ -304,7 +291,7 @@ export async function appendActivityLog(
       if (objs.length === 0) {
         return undefined;
       }
-      const insertedEntry = objs[0] as ActivityLogEntry;
+      const insertedEntry = objs[0] as ActivityLogEntryRow;
       const fixedEntry = cleanupActivityLogEntryFromDB(insertedEntry);
       // console.log("inserted", fixedEntry);
       return fixedEntry;

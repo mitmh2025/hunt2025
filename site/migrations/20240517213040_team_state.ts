@@ -6,20 +6,22 @@ export async function up(knex: Knex): Promise<void> {
     generatedPrimaryKey(knex, table, "id");
     table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
     table.integer("team_id"); // if null, action should apply to all teams
-    table.enu("type", [
-      "currency_adjusted",
-      "round_unlocked",
-      "puzzle_unlockable",
-      "puzzle_unlocked",
-      "puzzle_guess_submitted",
-      "puzzle_partially_solved",
-      "puzzle_solved",
-      "interaction_unlocked",
-      "interaction_started",
-      "interaction_completed",
-      "gate_completed",
-      "rate_limits_reset",
-    ]);
+    table
+      .enu("type", [
+        "currency_adjusted",
+        "round_unlocked",
+        "puzzle_unlockable",
+        "puzzle_unlocked",
+        "puzzle_guess_submitted",
+        "puzzle_partially_solved",
+        "puzzle_solved",
+        "interaction_unlocked",
+        "interaction_started",
+        "interaction_completed",
+        "gate_completed",
+        "rate_limits_reset",
+      ])
+      .notNullable();
     table.string("slug", 255);
     table.integer("currency_delta").notNullable().defaultTo(0);
     table.jsonb("data");

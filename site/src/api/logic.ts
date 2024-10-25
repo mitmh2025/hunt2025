@@ -1,14 +1,17 @@
-import { type ServerInferResponseBody } from "@ts-rest/core";
-import type { ActivityLogEntry } from "knex/types/tables";
-import { type publicContract } from "../../lib/api/contract";
-import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
+import type { ActivityLogEntryRow } from "knex/types/tables";
+import { type DehydratedActivityLogEntry } from "../../lib/api/contract";
+import {
+  type DehydratedInternalActivityLogEntry,
+  type InternalActivityLogEntry,
+} from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
 import HUNT, { generateSlugToSlotMap, type SlotLookup } from "../huntdata";
 import { LogicTeamState } from "../huntdata/logic";
 import type { Hunt } from "../huntdata/types";
 
-export function fixTimestamp(value: string | Date): Date {
+// Fix a timestamp that has come from the database.
+function fixTimestamp(value: string | Date): Date {
   if (typeof value === "string") {
     if (!value.endsWith("Z")) {
       // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
@@ -21,22 +24,13 @@ export function fixTimestamp(value: string | Date): Date {
   return value;
 }
 
-export function fixData(value: string | object): ActivityLogEntry["data"] {
+// Fix a JSON field that has come from the database.
+function fixData(value: string | object): object {
   // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
   if (typeof value === "string") {
-    return JSON.parse(value) as ActivityLogEntry["data"];
+    return JSON.parse(value) as object;
   }
-  return value as ActivityLogEntry["data"];
-}
-
-export function fixInternalData(
-  value: string | object,
-): ActivityLogEntry["internal_data"] {
-  // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
-  if (typeof value === "string") {
-    return JSON.parse(value) as ActivityLogEntry["internal_data"];
-  }
-  return value as ActivityLogEntry["internal_data"];
+  return value;
 }
 
 export class TeamStateIntermediate extends LogicTeamState {
@@ -49,7 +43,7 @@ export class TeamStateIntermediate extends LogicTeamState {
     this.slugToSlotMap = generateSlugToSlotMap(hunt);
   }
 
-  reduce(entry: ActivityLogEntry) {
+  reduce(entry: InternalActivityLogEntry) {
     this.available_currency += entry.currency_delta;
     // Update the max known epoch if this entry is newer
     if (entry.id > this.epoch) {
@@ -102,7 +96,7 @@ export class TeamStateIntermediate extends LogicTeamState {
 
 export function reducerDeriveTeamState(
   hunt: Hunt,
-  teamActivityLogEntries: ActivityLogEntry[],
+  teamActivityLogEntries: InternalActivityLogEntry[],
 ): LogicTeamState {
   const intermediate = teamActivityLogEntries.reduce(
     (acc, entry) => acc.reduce(entry),
@@ -112,128 +106,48 @@ export function reducerDeriveTeamState(
   return intermediate.recalculateTeamState(hunt);
 }
 
-type ActivityLog = ServerInferResponseBody<
-  typeof publicContract.getActivityLog,
-  200
->;
-
+// Fix the various inconsistencies in queried data across Postgres and SQLite.
 export function cleanupActivityLogEntryFromDB(
-  dbEntry: ActivityLogEntry,
-): ActivityLogEntry {
-  const res: Partial<ActivityLogEntry> = {
+  dbEntry: ActivityLogEntryRow,
+): InternalActivityLogEntry {
+  const res: Partial<InternalActivityLogEntry> = {
     id: dbEntry.id,
-    team_id: dbEntry.team_id,
+    team_id: dbEntry.team_id ?? undefined,
     timestamp: fixTimestamp(dbEntry.timestamp),
     currency_delta: dbEntry.currency_delta,
-    type: dbEntry.type,
-    slug: dbEntry.slug,
+    type: dbEntry.type as InternalActivityLogEntry["type"],
   };
+  if (dbEntry.slug) {
+    (res as InternalActivityLogEntry & { slug?: string }).slug = dbEntry.slug;
+  }
   if (dbEntry.data) {
-    res.data = fixData(dbEntry.data);
+    (res as InternalActivityLogEntry & { data?: object }).data = fixData(
+      dbEntry.data,
+    );
   }
   if (dbEntry.internal_data) {
-    res.internal_data = fixInternalData(dbEntry.internal_data);
+    res.internal_data = fixData(dbEntry.internal_data);
   }
-  return res as ActivityLogEntry;
+  return res as InternalActivityLogEntry;
 }
 
 // Converts from the serialized activity log entry (which e.g. has a string for timestamp)
 // into the in-memory representation (which e.g. has a Date object).
 export function parseInternalActivityLogEntry(
-  ie: InternalActivityLogEntry,
-): ActivityLogEntry {
+  ie: DehydratedInternalActivityLogEntry,
+): InternalActivityLogEntry {
   const ts = new Date(ie.timestamp);
-  switch (ie.type) {
-    case "currency_adjusted":
-      return {
-        id: ie.id,
-        team_id: ie.team_id,
-        timestamp: ts,
-        currency_delta: ie.currency_delta,
-        type: ie.type,
-        internal_data: ie.internal_data,
-      };
-    case "round_unlocked":
-    case "gate_completed":
-    case "puzzle_unlockable":
-    case "puzzle_unlocked":
-    case "interaction_started":
-    case "interaction_unlocked":
-    case "rate_limits_reset":
-      return {
-        id: ie.id,
-        team_id: ie.team_id,
-        timestamp: ts,
-        currency_delta: ie.currency_delta,
-        type: ie.type,
-        slug: ie.slug,
-        internal_data: ie.internal_data,
-      };
-    case "interaction_completed":
-      return {
-        id: ie.id,
-        team_id: ie.team_id,
-        timestamp: ts,
-        currency_delta: ie.currency_delta,
-        type: ie.type,
-        slug: ie.slug,
-        data: ie.data,
-        internal_data: ie.internal_data,
-      };
-    case "puzzle_guess_submitted":
-      return {
-        id: ie.id,
-        team_id: ie.team_id,
-        timestamp: ts,
-        currency_delta: ie.currency_delta,
-        type: ie.type,
-        slug: ie.slug,
-        data: ie.data,
-        internal_data: ie.internal_data,
-      };
-    case "puzzle_partially_solved":
-      return {
-        id: ie.id,
-        team_id: ie.team_id,
-        timestamp: ts,
-        currency_delta: ie.currency_delta,
-        type: ie.type,
-        slug: ie.slug,
-        data: ie.data,
-        internal_data: ie.internal_data,
-      };
-    case "puzzle_solved":
-      return {
-        id: ie.id,
-        team_id: ie.team_id,
-        timestamp: ts,
-        currency_delta: ie.currency_delta,
-        type: ie.type,
-        slug: ie.slug,
-        data: ie.data,
-        internal_data: ie.internal_data,
-      };
-  }
+  return { ...ie, timestamp: ts };
 }
 
 export function formatActivityLogEntryForApi(
-  e: Pick<
-    ActivityLogEntry,
-    | "id"
-    | "type"
-    | "timestamp"
-    | "currency_delta"
-    | "team_id"
-    | "slug"
-    | "data"
-    | "internal_data"
-  >,
-): ActivityLog[number] | undefined {
+  e: InternalActivityLogEntry,
+): DehydratedActivityLogEntry | undefined {
   switch (e.type) {
     case "puzzle_guess_submitted":
       return undefined;
   }
-  let entry: Partial<ActivityLog[number]> = {
+  let entry: Partial<DehydratedActivityLogEntry> = {
     id: e.id,
     timestamp: e.timestamp.toISOString(),
     currency_delta: e.currency_delta,
@@ -288,11 +202,11 @@ export function formatActivityLogEntryForApi(
   }
   // Note: API objects flatten `data` into the object.
   // We do not expose anything from `internal_data` in the public API.
-  if ("data" in e && e.data) {
+  if ("data" in e) {
     // SQLite doesn't parse JSON automatically
     const data = fixData(e.data);
     entry = Object.assign(entry, data);
   }
 
-  return entry as ActivityLog[number];
+  return entry as DehydratedActivityLogEntry;
 }

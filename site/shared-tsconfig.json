@@ -4,6 +4,7 @@
     "module": "es2020",
     "jsx": "preserve",
     "noEmit": true,
+    "noErrorTruncation": true,
 
     /* Strict Type-Checking Options */
     "strict": true,

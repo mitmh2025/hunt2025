@@ -32,7 +32,7 @@ export class StreamDatasetTailer<T extends { id: number }> {
   private fetcher: (since?: number) => Promise<T[]>;
 
   // The log we are subscribing to
-  private redisLog: Log<T>;
+  private redisLog: Pick<Log<T, T>, "getGlobalLog">;
 
   // The full, sorted-by-id history of all confirmed events, which we have already emitted to all listeners
   private entries: T[];
@@ -66,7 +66,7 @@ export class StreamDatasetTailer<T extends { id: number }> {
   }: {
     redisClient: RedisClient;
     fetcher: (since?: number) => Promise<T[]>;
-    log: Log<T>;
+    log: StreamDatasetTailer<T>["redisLog"];
     idleTimeoutMsec?: number;
   }) {
     this.redisClient = redisClient;

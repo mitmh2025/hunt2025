@@ -82,6 +82,11 @@ export default tseslint.config(
   },
   {
     rules: {
+      // Allow `this: void` to indicate a method doesn't use the `this` context.
+      "@typescript-eslint/no-invalid-void-type": [
+        "error",
+        { allowAsThisParameter: true },
+      ],
       // Allow suppressing unused var warnings by prefixing the variable name
       // with an underscore.
       "@typescript-eslint/no-unused-vars": [

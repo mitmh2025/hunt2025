@@ -16,7 +16,6 @@ import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import {
   type GuessStatus,
-  type ActivityLogEntry,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
 import { Passport } from "passport";
@@ -25,13 +24,21 @@ import * as swaggerUi from "swagger-ui-express";
 import { adminContract } from "../../lib/api/admin_contract";
 import { type TeamState } from "../../lib/api/client";
 import { c, authContract, publicContract } from "../../lib/api/contract";
-import { frontendContract } from "../../lib/api/frontend_contract";
+import {
+  type InternalActivityLogEntry,
+  frontendContract,
+} from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { executeMutation, formatTeamState, type Mutator } from "./data";
+import {
+  activityLog,
+  executeMutation,
+  formatTeamState,
+  type Mutator,
+} from "./data";
 import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
@@ -139,7 +146,7 @@ export function getRouter({
 
   const formatPuzzleState = (
     slug: string,
-    activity_log: ActivityLogEntry[],
+    activity_log: InternalActivityLogEntry[],
   ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
@@ -176,7 +183,7 @@ export function getRouter({
           : "locked";
 
     const guesses = activity_log.filter(
-      (e): e is ActivityLogEntry & { type: "puzzle_guess_submitted" } =>
+      (e): e is InternalActivityLogEntry & { type: "puzzle_guess_submitted" } =>
         e.type === "puzzle_guess_submitted" && e.slug === slug,
     );
     const correct_answers = guesses
@@ -215,7 +222,7 @@ export function getRouter({
     teamId: string,
     fn: (
       trx: Knex.Transaction,
-      mutator: Mutator<ActivityLogEntry, InsertActivityLogEntry>,
+      mutator: Mutator<InternalActivityLogEntry, InsertActivityLogEntry>,
       team_id: number,
     ) => Promise<boolean>,
   ) => {
@@ -373,14 +380,13 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          const entries = await knex("activity_log")
-            .where("team_id", team_id)
-            .orWhereNull("team_id")
-            .select("id", "timestamp", "type", "slug", "currency_delta", "data")
-            .orderBy("id");
+          const { entries } = await activityLog.getCachedTeamLog(
+            knex,
+            redisClient,
+            team_id,
+          );
           const body = entries.flatMap((e) => {
-            const parsedEntry = cleanupActivityLogEntryFromDB(e);
-            const apiEntry = formatActivityLogEntryForApi(parsedEntry);
+            const apiEntry = formatActivityLogEntryForApi(e);
             return apiEntry !== undefined ? [apiEntry] : [];
           });
           return {
@@ -438,7 +444,9 @@ export function getRouter({
                 hunt,
                 team_id,
               );
-              const puzzle_log = mutator.log.filter((e) => e.slug === slug);
+              const puzzle_log = mutator.log.filter(
+                (e) => "slug" in e && e.slug === slug,
+              );
               // Check that the puzzle is unlocked before allowing guess submission.
               if (!teamState.puzzles_unlocked.has(slug)) {
                 return {
