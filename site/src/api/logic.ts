@@ -114,7 +114,7 @@ export function cleanupActivityLogEntryFromDB(
     id: dbEntry.id,
     team_id: dbEntry.team_id ?? undefined,
     timestamp: fixTimestamp(dbEntry.timestamp),
-    currency_delta: dbEntry.currency_delta ?? undefined,
+    currency_delta: dbEntry.currency_delta,
     type: dbEntry.type as InternalActivityLogEntry["type"],
   };
   if (dbEntry.slug) {

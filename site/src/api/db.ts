@@ -197,7 +197,7 @@ declare module "knex/types/tables" {
     team_id: number | null;
     type: string;
     slug: string | null;
-    currency_delta: number | null;
+    currency_delta: number;
     // SQLite returns JSON fields as strings.
     data: string | object | null;
     internal_data: string | object | null;
