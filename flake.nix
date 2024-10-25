@@ -121,11 +121,11 @@
           # TODO: use ${system} to allow running from macOS
           default = {
             type = "app";
-            program = "${self.nixosConfigurations.dev-vm.config.system.build.vm}/bin/run-nixos-vm";
+            program = "${self.nixosConfigurations.dev-vm.config.system.build.vm}/bin/run-dev-vm-vm";
           };
           dev-vm-base = {
             type = "app";
-            program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-nixos-vm";
+            program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-dev-vm-base-vm";
           };
         };
         dockerImages.nix-cache = import ./infra/lib/docker-image.nix {
