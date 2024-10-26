@@ -39,6 +39,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const FullAccessButton = styled.span`
+  font-family: var(--body-font);
   background-color: #cfe2f3;
   border: 1px solid black;
   border-radius: 8px;

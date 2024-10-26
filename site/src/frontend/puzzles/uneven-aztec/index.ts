@@ -3,9 +3,9 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "They Might Be Grad Students, But They've Got Your Number",
+  title: "They Might Be Grad Students, But They’ve Got Your Number",
   slug: "they_might_be_grad_students_but_theyve_got_your_number",
-  authors: ["Eric Marion", "Erin Price", "Ariel Schwartz"],
+  authors: ["Erin Price", "Eric Marion", "Ariel Schwartz"],
   editors: ["Steve Banzaert", "Sid Creutz", "Jonathan Lay"],
   additional_credits: [],
   content: {
@@ -49,7 +49,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 100.0,
       description:
-        "The solvers have found the correct lyrics but do not know how to 'match.'",
+        "The solvers have found the correct lyrics but do not know how to ‘match.’",
       keywords: ["extraction"],
       nudge:
         "Align the abstract and the lyrics word-by-word. You can do this in a spreadsheet with the SPLIT function. Several words appear at the same position in the abstract and in the song. Read the first letters of those words in order.",
