@@ -184,24 +184,22 @@ export class StreamDatasetTailer<T extends { id: number }> {
   protected async redisThread() {
     for (;;) {
       try {
+        // N.B. executeIsolated will block until it has a usable client, using the backoff options passed to the client constructor.
         await this.redisClient.executeIsolated(async (redisClient) => {
-          try {
-            for (;;) {
-              const lastKnown = this.lastKnownId();
-              const results = await this.redisLog.getGlobalLog(
-                redisClient,
-                lastKnown,
-                { BLOCK: 0 },
-              );
-              this.log(`Got ${results.entries.length} stream messages`);
-              this.dispatch(results.entries);
-            }
-          } catch (e: unknown) {
-            this.log("getGlobalLog failed:", e);
+          for (;;) {
+            const lastKnown = this.lastKnownId();
+            this.log(`getGlobalLog(${lastKnown})`);
+            const results = await this.redisLog.getGlobalLog(
+              redisClient,
+              lastKnown,
+              { BLOCK: 0 },
+            );
+            this.log(`Got ${results.entries.length} stream messages`);
+            this.dispatch(results.entries);
           }
         });
       } catch (e: unknown) {
-        this.log("redis executeIsolated failed:", e);
+        console.warn("redis executeIsolated failed:", e);
       }
     }
   }

@@ -9,11 +9,22 @@ import {
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
 import { parseInternalActivityLogEntry } from "./logic";
+import { createTimeout } from "retry";
 
 export async function connect(redisUrl: string) {
+  const reconnectStrategy = (retries: number) => {
+    const timeout = createTimeout(retries, {
+      factor: 2,
+      minTimeout: 250,
+      maxTimeout: 32000,
+      randomize: true,
+    });
+    console.log("reconnecting to redis on attempt", retries, "after", timeout, "ms");
+    return timeout;
+  };
   const connectOptions = redisUrl.startsWith("unix://")
-    ? { socket: { path: redisUrl.replace("unix://", "") } }
-    : { url: redisUrl };
+    ? { socket: { path: redisUrl.replace("unix://", ""), reconnectStrategy } }
+    : { url: redisUrl, socket: { reconnectStrategy } };
   const options = {
     ...connectOptions,
     // Fail fast when we're not connected.
