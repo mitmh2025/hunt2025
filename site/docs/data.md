@@ -6,29 +6,27 @@ We store canonical data in a SQL database. In production, this is PostgreSQL;
 in development we allow the use of SQLite to make the developer environment
 easier to set up.
 
-Some tables within this database are considered primary sources of truth, and
-other tables are treated as effectively materialized views over that primary
-source-of-truth which may take into account hunt structure or optimize for
-certain access patterns. To wit, the `team_puzzle_guesses` table is considered
-the source-of-truth for submitted guesses on puzzles, and the `activity_log` table
-is considered the source-of-truth for most other data relevant to hunt progress.
+Nearly all team-state-related data is stored as an ordered log of events in the
+`activity_log` table. This includes:
 
-Canonical tables:
+- currency grants
+- round unlocks
+- puzzle visibility
+- puzzle unlocks
+- guess submissions
+- puzzle solves
+- interaction unlocks
+- gate completions
+- rate limit resets
+
+Our set of tables is:
 
 - `knex_migrations` and `knex_migrations_lock` are used internally for implementing migrations
 - `teams` is the canonical users table.
 - `activity_log` is the canonical structured event log.
 
-Derived tables:
-
-- `team_rounds` represents which rounds are expected to be visible to a team.
-- `team_puzzles` represents which puzzles are visible, unlockable, or unlocked for a team.
-
 We use the [knex](https://knexjs.org/) library for accessing the database. It
-has some TypeScript integration, via `knex/types/tables`, but tends to have a
-rough time with sum types or tagged enums, since struct fields wind up getting
-split as you select only a subset of columns from the DB, so the lowest DB
-layers often have more typecasting than we're really comfortable with.
+has some TypeScript integration, via `knex/types/tables`.
 
 ## Pubsub
 
@@ -50,3 +48,24 @@ system can theoretically miss writes, if the backend fails to publish a
 committed write for any reason. To ensure eventual recovery from missed
 writes, the websocket servers periodically poll the API endpoints providing the
 log from the source-of-truth for updates.
+
+## Cache layer
+
+We use `redis` to store a replica of the activity log, as well as team-specific
+indexes and derived state. This data is non-canonical, can be dropped entirely
+at any time, and we endeavor to give responses consistent with the current
+state of the database whenever possible.
+
+The data in the cache layer is, at the time of this writing:
+
+- A stream `global/activity_log` with id 0-0 which contains a dense replica of
+  all `activity_log` entries, in increasing order by id.
+- A stream `activity_log/${teamId}` (e.g. for the team with id 1 in the `users`
+  table, `activity_log/1`) with id 0-0 which contains a dense replica of all
+  `activity_log` entries that are relevant to team id `teamId` -- that is, all
+  the entries in `activity_log/1` will either have `team_id: null` or `team_id: 1`.
+- A sorted set `activity_log` with `team_id`s as keys and scores of the highest
+  global activity log entry that has been processed (and copied into the
+  `activity_log/${teamId}` stream, if appropriate) for that team.
+
+Inside each stream, messages have an id of `0-${epoch}` and a body of `{entry: JSON.stringify(entry)}`.
