@@ -1,8 +1,8 @@
 import React from "react";
 import { styled } from "styled-components";
 import { type ActivityLogEntry } from "../../../lib/api/client";
-import { PuzzleIcon } from "./PuzzleLink";
 import logoIcon from "../../assets/logo-simple.svg";
+import { PuzzleIcon } from "./PuzzleLink";
 
 const HuntIcon = styled.span`
   display: inline-block;
