@@ -125,9 +125,12 @@ const Solution = () => {
           <a href="#footnote-1">1</a>
         </sup>{" "}
         respectively, and the incidents described are fights that occurred
-        during the games. The name of the puzzle is a clue to this: a fechtbuch
-        is a late Medieval manuscript describing a martial art. The ‘author’ is
-        a reference to George Parros, a former NHL enforcer
+        during the games. The name of the puzzle is a clue to this: a{" "}
+        <a href="https://en.wikipedia.org/wiki/Fechtbüch">fechtbüch</a> is a
+        late Medieval manuscript describing a martial art. The ‘author’ is a
+        reference to{" "}
+        <a href="https://en.wikipedia.org/wiki/George_Parros">George Parros</a>,
+        a former NHL enforcer
         <sup>
           <a href="#footnote-2">2</a>
         </sup>{" "}
