@@ -361,7 +361,7 @@ const HUNT: Hunt = {
         // The first 5 puzzles are unlockable once they are discovered in the UI.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "kotei_no_ango" },
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "cross_spread" },
-        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 },
+        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "fechtbuch" },
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 },
         { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1 },
         // The next 5 puzzles are unlockable once they are discovered in the
