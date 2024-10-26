@@ -5,6 +5,8 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "They Might Be Grad Students, But They’ve Got Your Number",
   slug: "they_might_be_grad_students_but_theyve_got_your_number",
+  initial_description: "An abstract of an academic paper with references.",
+  answer: "RAP OFF KEY",
   authors: ["Erin Price", "Ariel Schwartz", "Eric Marion"],
   editors: ["Jonathan Lay", "Sid Creutz", "Steve Banzaert"],
   additional_credits: [],
@@ -14,7 +16,6 @@ const puzzle: PuzzleDefinition = {
   solution: {
     component: Solution,
   },
-  answer: "RAP OFF KEY",
   hints: [
     {
       order: 0.0,
