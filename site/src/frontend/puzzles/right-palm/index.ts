@@ -11,7 +11,7 @@ const puzzle: PuzzleDefinition = {
   answer: "MATCHBOOK",
   authors: ["Leland Aldridge"],
   editors: [
-    "Allen Blaumann",
+    "Elan Blaustein",
     "Michele Pratusevich",
     "Robin Deits",
     "Tanya Khovanova",

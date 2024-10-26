@@ -8,8 +8,8 @@ const puzzle: PuzzleDefinition = {
   initial_description:
     "45 small 3D printed pieces with images embossed on them, and a cylinder with arrows on it.",
   answer: "RAW ANTIQUE BRASS",
-  authors: ["Laura Nicholson", "Arcturus Wang", 'Robert "Fro" Myers'],
-  editors: ["Allen Blaumann", "Michele Pratusevich", "Nathan Fung"],
+  authors: ["Laura Nicholson", "Arcturus Wang", "Robert “Fro” Myers"],
+  editors: ["Elan Blaustein", "Michele Pratusevich", "Nathan Fung"],
   additional_credits: [],
   content: {
     component: Puzzle,
