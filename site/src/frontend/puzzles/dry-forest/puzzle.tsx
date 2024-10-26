@@ -1,6 +1,5 @@
 import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
-
+import { createGlobalStyle, styled } from "styled-components";
 import Deutsch from "./assets/Deutsch.ttf";
 import Ink from "./assets/ink.png";
 
