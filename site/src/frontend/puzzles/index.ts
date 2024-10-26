@@ -20,8 +20,8 @@ import TheShellGame from "./subdued-jet";
 import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
-import ShellCorporationTwo from "./untrue-dice";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
+import ShellCorporationTwo from "./untrue-dice";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond

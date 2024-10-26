@@ -48,7 +48,7 @@ const Puzzle = (): JSX.Element => {
         the mill academics are embittered by the proliferation of unnecessary
         scientific journal paywalls. This will have catastrophic ramifications
         on the forward progress of science if the money grab is left unchecked;
-        one journal CEO simply replied "Pay up, you [expletive] cheapskates!"
+        one journal CEO simply replied “Pay up, you [expletive] cheapskates!”
         when asked to comment.
       </p>
       <ButtonWrapper>

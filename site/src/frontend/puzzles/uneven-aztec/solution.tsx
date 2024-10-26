@@ -32,17 +32,17 @@ const Table = ({
     <table>
       <thead>
         <tr>
-          {headers.map((header) => (
-            <StyledTh>{header}</StyledTh>
+          {headers.map((header, i) => (
+            <StyledTh key={`header-cell-${i}`}>{header}</StyledTh>
           ))}
         </tr>
       </thead>
       <tbody>
-        {rows.map((row, i) => (
-          <tr key={i}>
-            {row.map((cell, j) => (
-              <StyledTd key={j}>
-                {j === 2 ? <Mono>{cell}</Mono> : cell}
+        {rows.map((row, j) => (
+          <tr key={`table-row-${j}`}>
+            {row.map((cell, k) => (
+              <StyledTd key={`table-row-${j}-cell-${k}`}>
+                {k === 2 ? <Mono>{cell}</Mono> : cell}
               </StyledTd>
             ))}
           </tr>

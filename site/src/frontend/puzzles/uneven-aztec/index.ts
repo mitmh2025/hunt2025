@@ -1,4 +1,4 @@
-import { PuzzleDefinition } from "../types";
+import type { PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
