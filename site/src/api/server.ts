@@ -208,10 +208,9 @@ export function getRouter({
   const getPuzzleState = async (
     team_id: number,
     slug: string,
-    trx: Knex.Transaction,
+    knex: Knex,
   ): Promise<PuzzleState | undefined> => {
-    const { activity_log } = await dbGetTeamState(team_id, trx);
-    return formatPuzzleState(slug, activity_log);
+    return formatPuzzleState(slug, (await activityLog.getCachedTeamLog(knex, redisClient, team_id)).entries);
   };
 
   const executeTeamStateHandler = async (
@@ -356,10 +355,7 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ params: { slug }, req }) => {
           const team_id = req.user as number;
-          const state = await knex.transaction(
-            getPuzzleState.bind(null, team_id, slug),
-            { readOnly: true },
-          );
+          const state = await getPuzzleState(team_id, slug, knex);
           if (!state) {
             return {
               status: 404,
@@ -633,10 +629,7 @@ export function getRouter({
         middleware: adminAuthMiddlewares,
         handler: async ({ params: { teamId, slug } }) => {
           const team_id = parseInt(teamId, 10);
-          const state = await knex.transaction(
-            getPuzzleState.bind(null, team_id, slug),
-            { readOnly: true },
-          );
+          const state = await getPuzzleState(team_id, slug, knex);
           if (!state) {
             return {
               status: 404 as const,

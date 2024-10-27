@@ -259,19 +259,21 @@ export abstract class Log<S, T extends { id: number; team_id?: number }> {
     teamId: number,
     messages: { id: string; message: Record<string, string> }[],
   ) {
-    await redisClient.extendLog(
-      `${this._key}/${teamId}`,
-      messages.flatMap((m) =>
-        m.message.entry
-          ? [
-              {
-                id: m.id,
-                entry: m.message.entry,
-              },
-            ]
-          : [],
-      ),
-    );
+    if (messages.length > 0) {
+      await redisClient.extendLog(
+        `${this._key}/${teamId}`,
+        messages.flatMap((m) =>
+          m.message.entry
+            ? [
+                {
+                  id: m.id,
+                  entry: m.message.entry,
+                },
+              ]
+            : [],
+        ),
+      );
+    }
   }
 
   // Append one or more log entries to the global log.
@@ -281,13 +283,15 @@ export abstract class Log<S, T extends { id: number; team_id?: number }> {
     entries: E[],
   ) {
     // TODO: Consider batching?
-    await redisClient.extendLog(
-      `global/${this._key}`,
-      entries.map((entry) => ({
-        id: `0-${entry.id}`,
-        entry: JSON.stringify(entry),
-      })),
-    );
+    if (entries.length > 0) {
+      await redisClient.extendLog(
+        `global/${this._key}`,
+        entries.map((entry) => ({
+          id: `0-${entry.id}`,
+          entry: JSON.stringify(entry),
+        })),
+      );
+    }
   }
 }
 
