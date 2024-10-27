@@ -2,6 +2,8 @@ import type { Knex } from "knex";
 
 // Update with your config settings.
 
+const asyncStackTraces = process.env.NODE_ENV === "development";
+
 const config: Record<string, Knex.Config> = {
   memory: {
     client: "better-sqlite3",
@@ -9,6 +11,7 @@ const config: Record<string, Knex.Config> = {
       filename: ":memory:",
     },
     debug: true,
+    asyncStackTraces,
   },
 
   development: {
@@ -17,10 +20,11 @@ const config: Record<string, Knex.Config> = {
       filename: "./dev.sqlite3",
     },
     debug: false,
+    asyncStackTraces,
   },
 
   staging: {
-    client: "pgnative",
+    client: "pg",
     connection:
       process.env.DB_URI ?? "postgresql:///hunt2025?host=/run/postgresql",
     pool: {
@@ -30,11 +34,12 @@ const config: Record<string, Knex.Config> = {
   },
 
   ci: {
-    client: "pgnative",
+    client: "pg",
     // N.B. pg has a very different idea of a "connection string" than libpq :(
     // Refer to the source: https://github.com/brianc/node-postgres/blob/master/packages/pg-connection-string/index.js
     connection:
       process.env.DB_URI ?? "postgresql:///hunt2025?host=/run/postgresql",
+    asyncStackTraces,
     pool: {
       min: 2,
       max: 10,
@@ -42,7 +47,7 @@ const config: Record<string, Knex.Config> = {
   },
 
   production: {
-    client: "pgnative",
+    client: "pg",
     // N.B. pg has a very different idea of a "connection string" than libpq :(
     // Refer to the source: https://github.com/brianc/node-postgres/blob/master/packages/pg-connection-string/index.js
     connection:
