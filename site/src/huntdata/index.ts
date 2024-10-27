@@ -19,7 +19,7 @@ const HUNT: Hunt = {
         { id: "mdp03", unlocked_if: [] },
         { id: "mdp04", unlocked_if: [], slug: "downright_backwards" },
         { id: "mdp05", unlocked_if: [] },
-        { id: "mdp06", unlocked_if: [] },
+        { id: "mdp06", unlocked_if: [], slug: "mastering_the_art_of_conch_frocking" },
         { id: "mdp07", unlocked_if: [] },
         { id: "mdp08", unlocked_if: [], slug: "educational_rite_of_passage" },
         { id: "mdp09", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 }, // initially visible
