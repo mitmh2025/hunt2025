@@ -132,6 +132,10 @@ const Table = ({
   );
 };
 
+const makeAltText = (length: string, highlighted: string, solution: string) => {
+  return `A drawing of a black, vinyl record overlaid with ${length} crossword-style, black-outlined white squares. The ${highlighted} square is highlighted yellow. In counterclockwise order, the squares read ${solution}.`;
+};
+
 const Solution = () => {
   return (
     <>
@@ -160,46 +164,88 @@ const Solution = () => {
       <Table headers={HEADERS} rows={ROWS} />
       <FlexWrapper>
         <a href={img15} target="_blank" rel="noreferrer">
-          <img src={img15} />
+          <img
+            src={img15}
+            alt={makeAltText("nine", "seventh", "BYE BYE BYE")}
+          />
         </a>
         <a href={img16} target="_blank" rel="noreferrer">
-          <img src={img16} />
+          <img
+            src={img16}
+            alt={makeAltText("eighteen", "thirteenth", "INDICATOR INDICATOR")}
+          />
         </a>
         <a href={img17} target="_blank" rel="noreferrer">
-          <img src={img17} />
+          <img
+            src={img17}
+            alt={makeAltText("fifteen", "fourteenth", "GIRLS GIRLS GIRLS")}
+          />
         </a>
         <a href={img18} target="_blank" rel="noreferrer">
-          <img src={img18} />
+          <img
+            src={img18}
+            alt={makeAltText("twelve", "twelfth", "WELL WELL WELL")}
+          />
         </a>
         <a href={img19} target="_blank" rel="noreferrer">
-          <img src={img19} />
+          <img
+            src={img19}
+            alt={makeAltText("sixteen", "fourteenth", "PROMISES PROMISES")}
+          />
         </a>
         <a href={img20} target="_blank" rel="noreferrer">
-          <img src={img20} />
+          <img
+            src={img20}
+            alt={makeAltText(
+              "thirty-three",
+              "twenty-ninth",
+              "BEETLEJUICE BEETLEJUICE BEETLEJUICE",
+            )}
+          />
         </a>
         <a href={img21} target="_blank" rel="noreferrer">
-          <img src={img21} />
+          <img
+            src={img21}
+            alt={makeAltText(
+              "fifty-six",
+              "fifty-first",
+              "BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFLO",
+            )}
+          />
         </a>
         <a href={img22} target="_blank" rel="noreferrer">
-          <img src={img22} />
+          <img src={img22} alt={makeAltText("six", "sixth", "POM POM")} />
         </a>
         <a href={img23} target="_blank" rel="noreferrer">
-          <img src={img23} />
+          <img src={img23} alt={makeAltText("eight", "fifth", "PUTT PUTT")} />
         </a>
         <a href={img24} target="_blank" rel="noreferrer">
-          <img src={img24} />
+          <img src={img24} alt={makeAltText("ten", "seventh", "FIFTY FIFTY")} />
         </a>
         <a href={img25} target="_blank" rel="noreferrer">
-          <img src={img25} />
+          <img
+            src={img25}
+            alt={makeAltText("fourteen", "ninth", "ANDANTE ANDANTE")}
+          />
         </a>
         <a href={img26} target="_blank" rel="noreferrer">
-          <img src={img26} />
+          <img
+            src={img26}
+            alt={makeAltText(
+              "twenty-four",
+              "twenty-fourth",
+              "LOCATION LOCATION LOCATION",
+            )}
+          />
         </a>
         <a href={img27} target="_blank" rel="noreferrer">
-          <img src={img27} />
+          <img src={img27} alt={makeAltText("four", "fourth", "SO SO")} />
         </a>
         <a href={img28} target="_blank" rel="noreferrer">
-          <img src={img28} />
+          <img
+            src={img28}
+            alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long. In counterclockwise order, the squares read BILLS BILLS BILLS, then JUMPIN JUMPIN, then NO NO NO."
+          />
         </a>
       </FlexWrapper>
     </>

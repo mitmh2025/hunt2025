@@ -21,6 +21,10 @@ const FlexWrapper = styled.div`
   gap: 16px;
 `;
 
+const makeAltText = (length: string, highlighted: string) => {
+  return `A drawing of a black, vinyl record overlaid with ${length} crossword-style, black-outlined white squares. The ${highlighted} square is highlighted yellow.`;
+};
+
 const Puzzle = () => {
   return (
     <>
@@ -41,46 +45,49 @@ const Puzzle = () => {
       </ul>
       <FlexWrapper>
         <a href={img01} target="_blank" rel="noreferrer">
-          <img src={img01} />
+          <img src={img01} alt={makeAltText("nine", "seventh")} />
         </a>
         <a href={img02} target="_blank" rel="noreferrer">
-          <img src={img02} />
+          <img src={img02} alt={makeAltText("eighteen", "thirteenth")} />
         </a>
         <a href={img03} target="_blank" rel="noreferrer">
-          <img src={img03} />
+          <img src={img03} alt={makeAltText("fifteen", "fourteenth")} />
         </a>
         <a href={img04} target="_blank" rel="noreferrer">
-          <img src={img04} />
+          <img src={img04} alt={makeAltText("twelve", "twelfth")} />
         </a>
         <a href={img05} target="_blank" rel="noreferrer">
-          <img src={img05} />
+          <img src={img05} alt={makeAltText("sixteen", "fourteenth")} />
         </a>
         <a href={img06} target="_blank" rel="noreferrer">
-          <img src={img06} />
+          <img src={img06} alt={makeAltText("thirty-three", "twenty-ninth")} />
         </a>
         <a href={img07} target="_blank" rel="noreferrer">
-          <img src={img07} />
+          <img src={img07} alt={makeAltText("fifty-six", "fifty-first")} />
         </a>
         <a href={img08} target="_blank" rel="noreferrer">
-          <img src={img08} />
+          <img src={img08} alt={makeAltText("six", "six")} />
         </a>
         <a href={img09} target="_blank" rel="noreferrer">
-          <img src={img09} />
+          <img src={img09} alt={makeAltText("eight", "fifth")} />
         </a>
         <a href={img10} target="_blank" rel="noreferrer">
-          <img src={img10} />
+          <img src={img10} alt={makeAltText("ten", "seventh")} />
         </a>
         <a href={img11} target="_blank" rel="noreferrer">
-          <img src={img11} />
+          <img src={img11} alt={makeAltText("fourteen", "ninth")} />
         </a>
         <a href={img12} target="_blank" rel="noreferrer">
-          <img src={img12} />
+          <img src={img12} alt={makeAltText("twenty-four", "twenty-fourth")} />
         </a>
         <a href={img13} target="_blank" rel="noreferrer">
-          <img src={img13} />
+          <img src={img13} alt={makeAltText("four", "fourth")} />
         </a>
         <a href={img14} target="_blank" rel="noreferrer">
-          <img src={img14} />
+          <img
+            src={img14}
+            alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long."
+          />
         </a>
       </FlexWrapper>
     </>
