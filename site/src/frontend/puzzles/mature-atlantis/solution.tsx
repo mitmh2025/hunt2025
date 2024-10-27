@@ -3,28 +3,78 @@ import { styled } from "styled-components";
 
 const HEADERS = ["Order", "Before", "After", "Extraction"];
 
-const ROWS = [
-  ["1", "TOP KNOT", "KNOB TAT", "BA"],
-  ["2", "SPACE RACE", "RAKE SPICE", "KI"],
-  ["3", "KICK LINE", "LINK KING", "NG"],
-  ["4", "PANCAKES", "CAR PUKES", "RU"],
-  ["5", "SAILBOAT", "BALL SEAT", "LE"],
-  ["6", "WEDDING RING", "RENDING WINE", "NE"],
-  ["7", "LIGHTSABER", "SIGHS LATER", "ST"],
-  ["8", "WOODPECKER", "POOL WICKER", "LI"],
-  ["9", "COTTON BOLL", "BOTTOM CELL", "ME"],
-];
+type Row = {
+  order: string;
+  before: string;
+  after: string;
+  extraction: string;
+  highlights: [number, number];
+};
 
-const HIGHLIGHTS: Array<[number, number]> = [
-  [3, 6],
-  [2, 7],
-  [2, 8],
-  [2, 6],
-  [2, 7],
-  [2, 11],
-  [4, 8],
-  [3, 6],
-  [5, 8],
+const ROWS: Row[] = [
+  {
+    order: "1",
+    before: "TOP KNOT",
+    after: "KNOB TAT",
+    extraction: "BA",
+    highlights: [3, 6],
+  },
+  {
+    order: "2",
+    before: "SPACE RACE",
+    after: "RAKE SPICE",
+    extraction: "KI",
+    highlights: [2, 7],
+  },
+  {
+    order: "3",
+    before: "KICK LINE",
+    after: "LINK KING",
+    extraction: "NG",
+    highlights: [2, 8],
+  },
+  {
+    order: "4",
+    before: "PANCAKES",
+    after: "CAR PUKES",
+    extraction: "RU",
+    highlights: [2, 6],
+  },
+  {
+    order: "5",
+    before: "SAILBOAT",
+    after: "BALL SEAT",
+    extraction: "LE",
+    highlights: [2, 7],
+  },
+  {
+    order: "6",
+    before: "WEDDING RING",
+    after: "RENDING WINE",
+    extraction: "NE",
+    highlights: [2, 11],
+  },
+  {
+    order: "7",
+    before: "LIGHTSABER",
+    after: "SIGHS LATER",
+    extraction: "ST",
+    highlights: [4, 8],
+  },
+  {
+    order: "8",
+    before: "WOODPECKER",
+    after: "POOL WICKER",
+    extraction: "LI",
+    highlights: [3, 6],
+  },
+  {
+    order: "9",
+    before: "COTTON BOLL",
+    after: "BOTTOM CELL",
+    extraction: "ME",
+    highlights: [5, 8],
+  },
 ];
 
 const Bold = styled.span`
@@ -48,7 +98,7 @@ const Table = ({
   rows,
 }: {
   headers: string[];
-  rows: string[][];
+  rows: Row[];
 }): JSX.Element => {
   return (
     <table>
@@ -60,43 +110,41 @@ const Table = ({
         </tr>
       </thead>
       <tbody>
-        {rows.map((row, j) => (
-          <tr key={`table-row-${j}`}>
-            {row.map((cell, k) => {
-              let cellContent: string | JSX.Element = cell;
-              if (k === 0) {
-                cellContent = cell;
-              } else if (k === 2) {
-                const highlights = HIGHLIGHTS[j]!;
-                const pre = cell.slice(0, highlights[0]);
-                const highlight1 = (
-                  <Bold>{cell.slice(highlights[0], highlights[0] + 1)}</Bold>
-                );
-                const mid = cell.slice(highlights[0] + 1, highlights[1]);
-                const highlight2 = (
-                  <Bold>{cell.slice(highlights[1], highlights[1] + 1)}</Bold>
-                );
-                const post = cell.slice(highlights[1] + 1);
-                cellContent = (
-                  <Mono>
-                    {pre}
-                    {highlight1}
-                    {mid}
-                    {highlight2}
-                    {post}
-                  </Mono>
-                );
-              } else {
-                cellContent = <Mono>{cell}</Mono>;
-              }
-              return (
-                <StyledTd key={`table-row-${j}-cell-${k}`}>
-                  {cellContent}
-                </StyledTd>
-              );
-            })}
-          </tr>
-        ))}
+        {rows.map((row, j) => {
+          const { order, before, after, extraction, highlights } = row;
+          const pre = after.slice(0, highlights[0]);
+          const highlight1 = (
+            <Bold>{after.slice(highlights[0], highlights[0] + 1)}</Bold>
+          );
+          const mid = after.slice(highlights[0] + 1, highlights[1]);
+          const highlight2 = (
+            <Bold>{after.slice(highlights[1], highlights[1] + 1)}</Bold>
+          );
+          const post = after.slice(highlights[1] + 1);
+          const afterCell = (
+            <Mono>
+              {pre}
+              {highlight1}
+              {mid}
+              {highlight2}
+              {post}
+            </Mono>
+          );
+          return (
+            <tr key={`table-row-${j}`}>
+              <StyledTd key={`table-row-${j}-order`}>{order}</StyledTd>
+              <StyledTd key={`table-row-${j}-order`}>
+                <Mono>{before}</Mono>
+              </StyledTd>
+              <StyledTd key={`table-row-${j}-order`}>
+                <Mono>{afterCell}</Mono>
+              </StyledTd>
+              <StyledTd key={`table-row-${j}-order`}>
+                <Mono>{extraction}</Mono>
+              </StyledTd>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
