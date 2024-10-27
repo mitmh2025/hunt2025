@@ -37,10 +37,16 @@ import mp3_9 from "./assets/canary9.mp3";
 import img_notes from "./assets/notes.png";
 import img_pause from "./assets/pause.svg";
 import img_play from "./assets/play.svg";
+import { deviceMax } from "../../utils/breakpoints";
 
 const StaveContainerSection = styled.section`
   display: flex;
   background-color: white;
+  padding: 2rem 3rem;
+
+  @media (${deviceMax.md}) {
+    padding: 1rem 1rem 1rem 0;
+  }
 
   .button-container {
     flex: 0;
@@ -84,6 +90,7 @@ const Stave = styled.div`
   max-width: 100%;
   overflow-x: scroll;
   overflow-y: visible;
+  border: 1px solid var(--black);
 
   img {
     height: calc(24px * 12);
