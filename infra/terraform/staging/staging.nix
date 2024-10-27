@@ -17,9 +17,9 @@ in {
       8883 # MQTTs
     ];
     firewall.allowedUDPPorts = [
-      8000 # MediaMTX RTP
-      8001 # MediaMTX RTCP
-      8189 # MediaMTX WebRTC
+      50000 # MediaMTX RTP
+      50001 # MediaMTX RTCP
+      50189 # MediaMTX WebRTC
     ];
   };
 

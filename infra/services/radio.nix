@@ -18,6 +18,10 @@
             url = "stun:stun.l.google.com:19302";
           }
         ];
+        # Use MIT GUEST-compatible ports.
+        rtpAddress = ":50000";
+        rtcpAddress = ":50001";
+        webrtcLocalUDPAddress = ":50189";
         paths.music = {
           runOnInit = ''
             env MUSIC_DIR=${radio-media}/music/ OUTPUT_URL=rtsp://localhost:$RTSP_PORT/$MTX_PATH ${lib.getExe pkgs.liquidsoap} ${../../radioman/station-break-test.liq}
