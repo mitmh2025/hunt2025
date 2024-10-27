@@ -47,6 +47,8 @@ export const InteractionStateSchema = z.object({
   result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
 });
 
+export type InteractionState = z.infer<typeof InteractionStateSchema>;
+
 const RoundStateSchema = z.object({
   title: z.string(),
   slots: z.record(z.string(), PuzzleSlotSchema),

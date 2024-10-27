@@ -1,12 +1,9 @@
 import type Knex from "knex";
 import { type InsertActivityLogEntry } from "knex/types/tables";
-import { type z } from "zod";
-import { type InteractionStateSchema } from "../../lib/api/contract";
 import {
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
-import { getSlotSlug } from "../huntdata/logic";
 import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
@@ -281,104 +278,6 @@ export async function refreshActivityLog(
   );
   // Publish them!
   await redisActivityLog.extend(redisClient, entries);
-}
-
-type InteractionState = z.infer<typeof InteractionStateSchema>;
-
-export function formatTeamState(
-  hunt: Hunt,
-  team_id: number,
-  team_name: string,
-  data: TeamStateIntermediate,
-) {
-  const rounds = Object.fromEntries(
-    hunt.rounds
-      .filter(({ slug: roundSlug }) => data.rounds_unlocked.has(roundSlug))
-      .map(({ slug, title, puzzles, gates, interactions }) => {
-        const interactionsData: [string, InteractionState][] = (
-          interactions ?? []
-        ).flatMap((interaction) => {
-          if (data.interactions_unlocked.has(interaction.id)) {
-            return [
-              [
-                interaction.id,
-                data.interactions_completed.has(interaction.id)
-                  ? {
-                      state: "completed" as const,
-                      result: data.interactions_completed.get(interaction.id),
-                    }
-                  : data.interactions_started.has(interaction.id)
-                    ? { state: "running" as const }
-                    : { state: "unlocked" as const },
-              ],
-            ];
-          }
-          return [];
-        });
-        const interactionsMap =
-          interactionsData.length > 0
-            ? Object.fromEntries(interactionsData)
-            : undefined;
-        const interactionsMixin =
-          interactionsMap !== undefined
-            ? { interactions: interactionsMap }
-            : {};
-        return [
-          slug,
-          {
-            title,
-            slots: Object.fromEntries(
-              puzzles.flatMap((slot) => {
-                const slug = getSlotSlug(slot);
-                if (slug && data.puzzles_visible.has(slug)) {
-                  const obj = { slug, is_meta: slot.is_meta };
-                  return [[slot.id, obj]];
-                }
-                return [];
-              }),
-            ),
-            gates: gates?.flatMap((gate) => {
-              if (gate.id && data.gates_satisfied.has(gate.id)) {
-                return [gate.id];
-              }
-              return [];
-            }),
-            // Don't include interactions until one has been reached
-            ...interactionsMixin,
-          },
-        ];
-      }),
-  );
-  const puzzleRounds = Object.fromEntries(
-    Object.entries(rounds).flatMap(([roundSlug, { slots }]) =>
-      Object.entries(slots).map(([_id, { slug: puzzleSlug }]) => [
-        puzzleSlug,
-        roundSlug,
-      ]),
-    ),
-  );
-  return {
-    epoch: data.epoch,
-    teamId: team_id,
-    teamName: team_name,
-    rounds,
-    currency: data.available_currency,
-    puzzles: Object.fromEntries(
-      [...data.puzzles_visible].map((slug) => [
-        slug,
-        {
-          round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
-          locked: data.puzzles_unlocked.has(slug)
-            ? ("unlocked" as const)
-            : data.puzzles_unlockable.has(slug)
-              ? ("unlockable" as const)
-              : ("locked" as const),
-          answer: data.correct_answers[slug],
-          ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
-        },
-      ]),
-    ),
-  };
 }
 
 abstract class Log<S, T extends { id: number; team_id?: number }> {

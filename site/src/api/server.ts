@@ -33,15 +33,11 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import {
-  activityLog,
-  executeMutation,
-  formatTeamState,
-  type Mutator,
-} from "./data";
+import { activityLog, executeMutation, type Mutator } from "./data";
 import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
+  formatTeamState,
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
   TeamStateIntermediate,

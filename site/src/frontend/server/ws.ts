@@ -12,9 +12,9 @@ import {
   MessageFromClientSchema,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
-import { formatTeamState } from "../../api/data";
 import {
   formatActivityLogEntryForApi,
+  formatTeamState,
   TeamStateIntermediate,
 } from "../../api/logic";
 import { type RedisClient } from "../../api/redis";
