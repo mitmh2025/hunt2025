@@ -18,30 +18,21 @@ import {
   type Log as RedisLog,
 } from "./redis";
 
-export class Mutator<T extends { id: number; team_id?: number }, I> {
+export abstract class Mutator<T extends { id: number; team_id?: number }, I> {
   private _trx: Knex.Knex.Transaction;
   private _log: T[];
   private _allTeams: Set<number>;
   private _affectedTeams: Set<number> | undefined;
-  private _dbAppendLog: (
+  protected abstract _dbAppendLog(
     entry: I,
     trx: Knex.Knex.Transaction,
-  ) => Promise<T | undefined>;
+  ): Promise<T | undefined>;
 
-  constructor(
-    trx: Knex.Knex.Transaction,
-    log: T[],
-    allTeams: Set<number>,
-    dbAppendLog: (
-      entry: I,
-      trx: Knex.Knex.Transaction,
-    ) => Promise<T | undefined>,
-  ) {
+  constructor(trx: Knex.Knex.Transaction, log: T[], allTeams: Set<number>) {
     this._trx = trx;
     this._log = log;
     this._affectedTeams = new Set();
     this._allTeams = allTeams;
-    this._dbAppendLog = dbAppendLog;
   }
 
   async appendLog(entry: I) {
@@ -81,13 +72,14 @@ export class ActivityLogMutator extends Mutator<
     number,
     { entryCount: number; state: TeamStateIntermediate }
   >;
+  _dbAppendLog = dbAppendActivityLog;
 
   constructor(
     trx: Knex.Knex.Transaction,
     log: InternalActivityLogEntry[],
     allTeams: Set<number>,
   ) {
-    super(trx, log, allTeams, dbAppendActivityLog);
+    super(trx, log, allTeams);
     this._teamStates = new Map();
   }
 
@@ -191,105 +183,34 @@ async function recalculateTeamState(
   return next;
 }
 
-// Execute a mutation on a team. Note that fn must not have any side effects; if the transaction aborts, it may be called multiple times.
-export async function executeMutation<T>(
-  hunt: Hunt,
-  team_id: number,
-  redisClient: RedisClient | undefined,
-  knex: Knex.Knex,
-  fn: (trx: Knex.Knex.Transaction, mutator: ActivityLogMutator) => Promise<T>,
-) {
-  // All mutations need to follow a similar pattern for correctness:
-  // 1. read the current activity log from cache if possible
-  // 2. start transaction
-  //   2a. select * from activity_log where (team_id is null or team_id is ?) and id > ?
-  //   2b. execute mutation, tracking the added activity log entries with their ids
-  //   2c. commit transaction
-  // 3. compute team/puzzle state using the combined activity log, with the last added activity log id as the epoch
-  let cached_log: {
-    highWaterMark?: number;
-    entries: InternalActivityLogEntry[];
-  } = {
-    highWaterMark: undefined,
-    entries: [],
-  };
-  // TODO: Generalize this function to support operations against all teams.
-  if (redisClient) {
-    try {
-      cached_log = await redisActivityLog.getTeamLog(redisClient, team_id);
-    } catch (err) {
-      console.error("failed to query redis:", err);
-    }
-  }
-  const { result, activityLog, affectedTeams, teamNames, teamStates } =
-    await retryOnAbort(knex, async function (trx: Knex.Knex.Transaction) {
-      const new_log = await dbGetActivityLog(
-        team_id,
-        cached_log.highWaterMark,
-        trx,
-      );
-      const combined_log = cached_log.entries.concat(new_log);
-      const mutator = new ActivityLogMutator(
-        trx,
-        combined_log,
-        new Set([team_id]),
-      );
-      const result = await fn(trx, mutator);
-      const teamStates: Record<number, TeamStateIntermediate> = {};
-      for (const teamId of mutator.affectedTeams) {
-        teamStates[teamId] = await mutator.recalculateTeamState(hunt, teamId);
-      }
-      for (const teamId of mutator.allTeams) {
-        // TODO: Only do this work if the caller needs it?
-        if (teamStates[teamId] === undefined) {
-          teamStates[teamId] = mutator.getTeamState(hunt, teamId);
-        }
-      }
-      const teamNames = await getTeamNames(mutator.allTeams, trx);
-      return {
-        result,
-        activityLog: mutator.log,
-        affectedTeams: mutator.affectedTeams,
-        teamNames,
-        teamStates,
-      };
-    });
-  if (redisClient && affectedTeams.size > 0) {
-    // TODO: Do this in the background?
-    try {
-      await refreshActivityLog(redisClient, knex);
-    } catch (err) {
-      console.error("failed to refresh redis:", err);
-    }
-  }
-  return { result, activityLog, teamNames, teamStates };
-}
-
-export async function refreshActivityLog(
-  redisClient: RedisClient,
-  knex: Knex.Knex,
-) {
-  // Read the latest activity log entry we already have in Redis.
-  const latest = await redisActivityLog.getGlobalHighWaterMark(redisClient);
-  // Find any newer entries in the DB
-  const entries = await knex.transaction(
-    (trx) => dbGetActivityLog(undefined, latest, trx),
-    { readOnly: true },
-  );
-  // Publish them!
-  await redisActivityLog.extend(redisClient, entries);
-}
-
-abstract class Log<S, T extends { id: number; team_id?: number }> {
-  private _redisLog: RedisLog<S, T>;
-  constructor(redisLog: RedisLog<S, T>) {
+abstract class Log<
+  I,
+  T extends { id: number; team_id?: number },
+  M extends Mutator<T, I>,
+> {
+  private _redisLog: RedisLog<I, T>;
+  private _mutatorClass: new (
+    trx: Knex.Knex.Transaction,
+    log: T[],
+    allTeams: Set<number>,
+  ) => M;
+  constructor(
+    redisLog: RedisLog<I, T>,
+    mutatorClass: new (
+      trx: Knex.Knex.Transaction,
+      log: T[],
+      allTeams: Set<number>,
+    ) => M,
+  ) {
     this._redisLog = redisLog;
+    this._mutatorClass = mutatorClass;
   }
 
-  protected abstract dbGetTeamLog(
+  protected abstract dbGetLog(
     knex: Knex.Knex,
-    teamId: number,
-  ): Promise<InternalActivityLogEntry[]>;
+    teamId?: number,
+    since?: number,
+  ): Promise<T[]>;
 
   async getCachedTeamLog(
     knex: Knex.Knex,
@@ -303,24 +224,132 @@ abstract class Log<S, T extends { id: number; team_id?: number }> {
         console.error("failed to read activity log from redis:", err);
       }
     }
-    const entries = await this.dbGetTeamLog(knex, teamId);
+    const entries = await this.dbGetLog(knex, teamId);
     return {
       highWaterMark: entries.at(-1)?.id ?? 0,
       entries,
     };
   }
+
+  // Execute a mutation on a team. Note that fn must not have any side effects; if the transaction aborts, it may be called multiple times.
+  protected async executeRawMutation<R>(
+    team_id: number,
+    redisClient: RedisClient | undefined,
+    knex: Knex.Knex,
+    fn: (trx: Knex.Knex.Transaction, mutator: M) => Promise<R>,
+  ) {
+    // All mutations need to follow a similar pattern for correctness:
+    // 1. read the current log from cache if possible
+    // 2. start transaction
+    //   2a. select * from log where (team_id is null or team_id is ?) and id > ?
+    //   2b. execute mutation, tracking the added log entries with their ids
+    //   2c. commit transaction
+    // 3. compute new state using the combined log, with the last added log id as the epoch
+    let cached_log: {
+      highWaterMark?: number;
+      entries: T[];
+    } = {
+      highWaterMark: undefined,
+      entries: [],
+    };
+    // TODO: Generalize this function to support operations against all teams.
+    if (redisClient) {
+      try {
+        cached_log = await this._redisLog.getTeamLog(redisClient, team_id);
+      } catch (err) {
+        console.error("failed to query redis:", err);
+      }
+    }
+    const { result, activityLogEntries, affectedTeams } = await retryOnAbort(
+      knex,
+      async (trx: Knex.Knex.Transaction) => {
+        const new_log = await this.dbGetLog(
+          trx,
+          team_id,
+          cached_log.highWaterMark,
+        );
+        const combined_log = cached_log.entries.concat(new_log);
+        const mutator = new this._mutatorClass(
+          trx,
+          combined_log,
+          new Set([team_id]),
+        );
+        const result = await fn(trx, mutator);
+        return {
+          result,
+          activityLogEntries: mutator.log,
+          affectedTeams: mutator.affectedTeams,
+        };
+      },
+    );
+    if (redisClient && affectedTeams.size > 0) {
+      // TODO: Do this in the background?
+      try {
+        await this.refreshRedisLog(redisClient, knex);
+      } catch (err) {
+        console.error("failed to refresh redis:", err);
+      }
+    }
+    return { result, activityLogEntries };
+  }
+
+  async refreshRedisLog(redisClient: RedisClient, knex: Knex.Knex) {
+    // Read the latest activity log entry we already have in Redis.
+    const latest = await this._redisLog.getGlobalHighWaterMark(redisClient);
+    // Find any newer entries in the DB
+    const entries = await knex.transaction(
+      (trx) => this.dbGetLog(trx, undefined, latest),
+      { readOnly: true },
+    );
+    // Publish them!
+    await this._redisLog.extend(redisClient, entries);
+  }
 }
 
 export class ActivityLog extends Log<
   DehydratedInternalActivityLogEntry,
-  InternalActivityLogEntry
+  InternalActivityLogEntry,
+  ActivityLogMutator
 > {
   constructor() {
-    super(redisActivityLog);
+    super(redisActivityLog, ActivityLogMutator);
   }
 
-  protected dbGetTeamLog(knex: Knex.Knex, teamId: number) {
-    return dbGetActivityLog(teamId, undefined, knex);
+  protected dbGetLog(knex: Knex.Knex, teamId?: number, since?: number) {
+    return dbGetActivityLog(teamId, since, knex);
+  }
+
+  async executeMutation<R>(
+    hunt: Hunt,
+    team_id: number,
+    redisClient: RedisClient | undefined,
+    knex: Knex.Knex,
+    fn: (trx: Knex.Knex.Transaction, mutator: ActivityLogMutator) => Promise<R>,
+  ) {
+    const result = await super.executeRawMutation(
+      team_id,
+      redisClient,
+      knex,
+      async (trx: Knex.Knex.Transaction, mutator: ActivityLogMutator) => {
+        const result = await fn(trx, mutator);
+        const teamStates: Record<number, TeamStateIntermediate> = {};
+        for (const teamId of mutator.affectedTeams) {
+          teamStates[teamId] = await mutator.recalculateTeamState(hunt, teamId);
+        }
+        for (const teamId of mutator.allTeams) {
+          // TODO: Only do this work if the caller needs it?
+          if (teamStates[teamId] === undefined) {
+            teamStates[teamId] = mutator.getTeamState(hunt, teamId);
+          }
+        }
+        const teamNames = await getTeamNames(mutator.allTeams, trx);
+        return { result, teamStates, teamNames };
+      },
+    );
+    return {
+      ...result,
+      ...result.result,
+    };
   }
 }
 

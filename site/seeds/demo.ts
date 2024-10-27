@@ -1,5 +1,5 @@
 import { type Knex } from "knex";
-import { type ActivityLogMutator, executeMutation } from "../src/api/data";
+import { type ActivityLogMutator, activityLog } from "../src/api/data";
 import { PUZZLES } from "../src/frontend/puzzles";
 import HUNT from "../src/huntdata";
 import { getSlugsBySlot } from "../src/huntdata/logic";
@@ -34,7 +34,7 @@ export async function seed(knex: Knex): Promise<void> {
           isolationLevel: "serializable",
         },
       );
-      await executeMutation(
+      await activityLog.executeMutation(
         HUNT,
         team_id,
         undefined,
@@ -136,7 +136,7 @@ export async function seed(knex: Knex): Promise<void> {
   const all_team_ids = await knex("teams").select("id").pluck("id");
   for (const team_id of all_team_ids) {
     // TODO: Do all of this in one mutation.
-    await executeMutation(
+    await activityLog.executeMutation(
       HUNT,
       team_id,
       undefined,
