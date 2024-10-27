@@ -1,4 +1,5 @@
 import DownrightBackwards from "./able-worm";
+import JustPlaneWrong from "./artistic-aztec";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import EducationalRiteOfPassage from "./circular-greece";
@@ -43,6 +44,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_exchange_of_vows: AnExchangeOfVows,
   sing_like_a_canary: SingLikeACanary,
   broken_record: BrokenRecord,
+  just_plane_wrong: JustPlaneWrong,
 
   // Paper Trail
   follow_the_rules: FollowTheRules,
