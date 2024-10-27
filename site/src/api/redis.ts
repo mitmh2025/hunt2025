@@ -3,13 +3,13 @@ import {
   createClient as redisCreateClient,
   defineScript,
 } from "redis";
+import { createTimeout } from "retry";
 import { type TeamState } from "../../lib/api/client";
 import {
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
 import { parseInternalActivityLogEntry } from "./logic";
-import { createTimeout } from "retry";
 
 export async function connect(redisUrl: string) {
   const reconnectStrategy = (retries: number) => {
@@ -19,7 +19,13 @@ export async function connect(redisUrl: string) {
       maxTimeout: 32000,
       randomize: true,
     });
-    console.log("reconnecting to redis on attempt", retries, "after", timeout, "ms");
+    console.log(
+      "reconnecting to redis on attempt",
+      retries,
+      "after",
+      timeout,
+      "ms",
+    );
     return timeout;
   };
   const connectOptions = redisUrl.startsWith("unix://")
