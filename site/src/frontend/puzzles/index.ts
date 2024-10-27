@@ -3,6 +3,7 @@ import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import EducationalRiteOfPassage from "./circular-greece";
 import TheBoardwalk from "./dental-shark";
+import Fechtbuch from "./dry-forest";
 import Casino from "./fortunate-calf";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
@@ -55,6 +56,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // Illegal Search
   kotei_no_ango: KoteiNoAngo,
   cross_spread: CrossSpread,
+  fechtbuch: Fechtbuch,
 
   // Background Check
   the_10000_sheet_excel_file: The10000SheetExcelFile,
