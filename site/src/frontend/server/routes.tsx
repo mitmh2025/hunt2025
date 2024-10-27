@@ -207,7 +207,7 @@ async function renderApp<Params extends ParamsDictionary>(
   res.send(html);
 }
 
-export async function getUiRouter({
+export function getUiRouter({
   hunt,
   apiUrl,
   frontendApiSecret,
@@ -286,7 +286,6 @@ export async function getUiRouter({
       redisClient,
       frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
     });
-    await wsManager.connectToRedis();
     const wsHandler = wsManager.requestHandler.bind(wsManager);
     authRouter.ws("/ws", wsHandler);
   }

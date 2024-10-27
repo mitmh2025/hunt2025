@@ -518,8 +518,6 @@ export class WebsocketManager
     ActivityLogObserverProvider,
     GuessLogObserverProvider
 {
-  private redisClient: RedisClient;
-
   // key: connId
   private connections: Map<string, ConnHandler>;
 
@@ -540,20 +538,12 @@ export class WebsocketManager
     frontendApiClient: FrontendClient;
   }) {
     this.hunt = hunt;
-    this.redisClient = redisClient.duplicate();
-    this.redisClient.on("error", (err) => {
-      console.error("ws redis error:", err);
-    });
     this.connections = new Map<string, ConnHandler>();
     this.teamStateSubs = new Map<number, TeamStateSubState>();
     this.activityLogTailer = newActivityLogTailer({
       redisClient,
       frontendApiClient,
     });
-  }
-
-  public async connectToRedis() {
-    await this.redisClient.connect();
   }
 
   private dispatchTeamStateUpdate(teamId: number, teamState: TeamState) {

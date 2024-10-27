@@ -16,7 +16,7 @@ export async function connect(redisUrl: string) {
     const timeout = createTimeout(retries, {
       factor: 2,
       minTimeout: 250,
-      maxTimeout: 32000,
+      maxTimeout: 8000,
       randomize: true,
     });
     console.log(
@@ -67,8 +67,8 @@ return count
   const client = redisCreateClient(options);
   // We must set an error handler, or the whole process will get terminated if our connection to
   // redis ever fails!
-  client.on("error", (err) => {
-    console.log("redis error", err);
+  client.on("error", (err: Error) => {
+    console.log("redis error", err.message);
   });
   // Only wait 5s for a connection, so we can still come up if Redis is down.
   const connected = client.connect();
