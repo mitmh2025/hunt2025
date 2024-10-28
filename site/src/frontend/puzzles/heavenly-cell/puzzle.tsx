@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { deviceMax } from "../../utils/breakpoints";
 import img_1_1 from "./assets/1-1.png";
 import img_1_2 from "./assets/1-2.png";
 import img_2_1 from "./assets/2-1.png";
@@ -37,7 +38,6 @@ import mp3_9 from "./assets/canary9.mp3";
 import img_notes from "./assets/notes.png";
 import img_pause from "./assets/pause.svg";
 import img_play from "./assets/play.svg";
-import { deviceMax } from "../../utils/breakpoints";
 
 const StaveContainerSection = styled.section`
   display: flex;
