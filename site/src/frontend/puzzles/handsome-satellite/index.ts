@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Broken Record",
   slug: "broken_record",
   initial_description:
-    "A list of crossword-style clues and images of several records. (Stakeout round)",
+    "A list of crossword-style clues and images of several records.",
   answer: "DESTINYS CHILD",
   authors: ["Erin Price", "Alex St Claire", "Anna Brunner"],
   editors: ["Hubert Hwang", "James Douberley"],

@@ -25,14 +25,6 @@ const Mono = styled.span`
   font-family: monospace;
 `;
 
-const Bold = styled.span`
-  font-weight: 700;
-`;
-
-const StyledTh = styled.th`
-  font-weight: 700;
-`;
-
 const StyledTd = styled.td`
   padding: 0px 8px;
 `;
@@ -92,7 +84,7 @@ const ROWS = [
     "N",
   ],
   ["8", "You are here", "LOCATION LOCATION LOCATION", "24", "24", "12", "N"],
-  ["12", "Partner (abbr.)", "SO SO", "4", "4", "13", "O"],
+  ["12", "Romantic partner (abbr.)", "SO SO", "4", "4", "13", "O"],
 ];
 
 const Table = ({
@@ -107,7 +99,7 @@ const Table = ({
       <thead>
         <tr>
           {headers.map((header, i) => (
-            <StyledTh key={`header-cell-${i}`}>{header}</StyledTh>
+            <th key={`header-cell-${i}`}>{header}</th>
           ))}
         </tr>
       </thead>
@@ -157,7 +149,7 @@ const Solution = () => {
         which can be reduplicated to form the name of a Destiny’s Child song
         that fits the entry slots of the final record, leading to an answer of{" "}
         <Mono>
-          <Bold>DESTINYS CHILD</Bold>
+          <strong>DESTINYS CHILD</strong>
         </Mono>
         .
       </p>
