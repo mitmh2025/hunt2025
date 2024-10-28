@@ -75,7 +75,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "start",
       speaker: "billie",
-      text: "I decided to head over to the Jaded Jeweler’s after hours to figure otu what Gladys Finster was doing frequenting a competitor’s store.  I’m old pals with the owner since he appraised some broad’s inheritance for a case of mine.  May have browsed a bit myself, bit I’m sure not a regular customer.",
+      text: "I decided to head over to the Jaded Jeweler’s to figure otu what Gladys Finster was doing frequenting a competitor’s store.  I’m old pals with the owner since he appraised some broad’s inheritance for a case of mine.  May have browsed a bit myself, bit I’m sure not a regular customer.",
       textBubbleType: "thought",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
@@ -146,15 +146,15 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       timeout_msec: 5000 + 15000,
       choices: [
         {
-          text: "Yeah, I’m tracking down a woman who came in here a few days ago.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
+          text: "Yeah, I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
           next: "3a",
         },
         {
-          text: "Yeah, I’m tracking down a dame who came in here a few days ago. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+          text: "Yeah, I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
           next: "3b",
         },
         {
-          text: "Yeah, I’m tracking down a woman who came in here a few days ago.  Someon who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+          text: "Yeah, I’m tracking down a woman who came in here.  Someon who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
           next: "3c",
         },
       ],
@@ -167,15 +167,15 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       timeout_msec: 5000 + 15000,
       choices: [
         {
-          text: "I’m tracking down a woman who came in here a few days ago.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
+          text: "I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
           next: "4a",
         },
         {
-          text: "I’m tracking down a dame who came in here a few days ago. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+          text: "I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
           next: "4b",
         },
         {
-          text: "I’m tracking down a woman who came in here a few days ago.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+          text: "I’m tracking down a woman who came in here.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
           next: "4c",
         },
       ],
@@ -184,7 +184,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "3a",
       speaker: "billie",
-      text: "Yeah, I’m tracking down a woman who came in here a few days ago.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
+      text: "Yeah, I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -192,7 +192,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "3b",
       speaker: "billie",
-      text: "Yeah, I’m tracking down a dame who came in here a few days ago. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+      text: "Yeah, I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -200,7 +200,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "3c",
       speaker: "billie",
-      text: "Yeah, I’m tracking down a womman who came in here a few days ago.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+      text: "Yeah, I’m tracking down a woman who came in here.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -208,7 +208,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "4a",
       speaker: "billie",
-      text: "I’m tracking down a woman who came in here a few days ago.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
+      text: "I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -216,7 +216,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "4b",
       speaker: "billie",
-      text: "I’m tracking down a dame who came in here a few days ago. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+      text: "I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -224,7 +224,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "4c",
       speaker: "billie",
-      text: "I’m tracking down a womman who came in here a few days ago.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+      text: "I’m tracking down a woman who came in here.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
