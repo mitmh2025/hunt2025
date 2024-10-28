@@ -77,16 +77,8 @@ const ROWS: Row[] = [
   },
 ];
 
-const Bold = styled.span`
-  font-weight: 700;
-`;
-
 const Mono = styled.span`
   font-family: monospace;
-`;
-
-const StyledTh = styled.th`
-  font-weight: 700;
 `;
 
 const StyledTd = styled.td`
@@ -105,7 +97,7 @@ const Table = ({
       <thead>
         <tr>
           {headers.map((header, i) => (
-            <StyledTh key={`header-cell-${i}`}>{header}</StyledTh>
+            <th key={`header-cell-${i}`}>{header}</th>
           ))}
         </tr>
       </thead>
@@ -114,11 +106,11 @@ const Table = ({
           const { order, before, after, extraction, highlights } = row;
           const pre = after.slice(0, highlights[0]);
           const highlight1 = (
-            <Bold>{after.slice(highlights[0], highlights[0] + 1)}</Bold>
+            <strong>{after.slice(highlights[0], highlights[0] + 1)}</strong>
           );
           const mid = after.slice(highlights[0] + 1, highlights[1]);
           const highlight2 = (
-            <Bold>{after.slice(highlights[1], highlights[1] + 1)}</Bold>
+            <strong>{after.slice(highlights[1], highlights[1] + 1)}</strong>
           );
           const post = after.slice(highlights[1] + 1);
           const afterCell = (
@@ -179,7 +171,7 @@ const Solution = () => {
         letter in each to get <Mono>RAGING BULL LAST NAME</Mono>, which is a
         clue to the final answer:{" "}
         <Mono>
-          <Bold>LAMOTTA</Bold>
+          <strong>LAMOTTA</strong>
         </Mono>
         .
       </p>
