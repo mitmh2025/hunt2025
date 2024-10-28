@@ -90,6 +90,12 @@
               proxyPass = "http://hunt2025";
               proxyWebsockets = true;
             };
+            locations."= /radio-manifest.json" = {
+              alias = "${pkgs.hunt2025}/lib/hunt2025/dist/radio-manifest.json";
+              # Copy Authentik configuration
+              extraConfig = config.services.nginx.virtualHosts."staging.mitmh2025.com".locations."/".extraConfig;
+            };
+            locations."/static/".alias = "${pkgs.hunt2025}/lib/hunt2025/dist/static/";
           };
           "things.mitmh2025.com" = {
             forceSSL = true;
