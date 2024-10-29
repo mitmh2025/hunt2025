@@ -34,12 +34,12 @@
   --gray-600: #6e6d68;
   --gray-700: #575652;
   --gray-800: #43423f;
-  --gray-900: #1b1a18;
+  --gray-900: #2c2b29;
   --nav-bar-bg: #060606;
   --true-black: #000000;
 
   --white: var(--gray-000);
-  --black: var(--gray-900);
+  --black: #1b1a18;
 
   --gold-000: #fffcf0;
   --gold-100: #fff6d3;
@@ -107,6 +107,14 @@ a {
 a:hover {
   color: var(--true-white);
   text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.4);
+}
+
+p {
+  margin-top: 0;
+}
+
+p + p {
+  margin-top: 1em;
 }
 
 .puzzle-link {
