@@ -17,7 +17,7 @@ import {
   formatTeamState,
   TeamStateIntermediate,
 } from "../../api/logic";
-import { type RedisClient } from "../../api/redis";
+import { type RedisClient, activityLog } from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
 import { navBarState } from "../components/ContentWithNavBar";
 import { backgroundCheckState } from "../rounds/background_check";
@@ -31,7 +31,7 @@ import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
 import { murderState } from "../rounds/the_murder";
-import { type DatasetTailer, newActivityLogTailer } from "./dataset_tailer";
+import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
 import { allPuzzlesState } from "./routes/all_puzzles";
 
@@ -540,9 +540,10 @@ export class WebsocketManager
     this.hunt = hunt;
     this.connections = new Map<string, ConnHandler>();
     this.teamStateSubs = new Map<number, TeamStateSubState>();
-    this.activityLogTailer = newActivityLogTailer({
+    this.activityLogTailer = newLogTailer({
       redisClient,
-      frontendApiClient,
+      fetchMethod: frontendApiClient.getFullActivityLog.bind(frontendApiClient),
+      log: activityLog,
     });
   }
 

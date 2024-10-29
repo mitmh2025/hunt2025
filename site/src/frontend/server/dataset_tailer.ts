@@ -1,7 +1,6 @@
-import { type FrontendClient } from "../../../lib/api/frontend_client";
-import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
+import { type HTTPStatusCode } from "@ts-rest/core";
 import { genId } from "../../../lib/id";
-import { activityLog, type Log, type RedisClient } from "../../api/redis";
+import { type Log, type RedisClient } from "../../api/redis";
 
 type Listener<T> = {
   id: string;
@@ -244,33 +243,39 @@ export class StreamDatasetTailer<T extends { id: number }> {
   }
 }
 
-export function newActivityLogTailer({
+export function newLogTailer<
+  T extends { id: number; team_id?: number | undefined },
+>({
   redisClient,
-  frontendApiClient,
+  fetchMethod,
+  log,
 }: {
   redisClient: RedisClient;
-  frontendApiClient: FrontendClient;
+  fetchMethod: (arg: {
+    query: { since?: number };
+  }) => Promise<
+    { status: 200; body: T[] } | { status: Exclude<HTTPStatusCode, 200> }
+  >;
+  log: StreamDatasetTailer<T>["redisLog"];
 }) {
   const fetcher = (since?: number) => {
-    return frontendApiClient
-      .getFullActivityLog({
-        query: {
-          since,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.body;
-        } else {
-          throw new Error("Fetch failed");
-        }
-      });
+    return fetchMethod({
+      query: {
+        since,
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        return response.body;
+      } else {
+        throw new Error("Fetch failed");
+      }
+    });
   };
 
-  const tailer = new StreamDatasetTailer<InternalActivityLogEntry>({
+  const tailer = new StreamDatasetTailer<T>({
     redisClient,
     fetcher,
-    log: activityLog,
+    log,
   });
   return tailer;
 }
