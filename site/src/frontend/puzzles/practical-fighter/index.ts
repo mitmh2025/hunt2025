@@ -3,8 +3,8 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Placeholder Title",
-  slug: "practical_fighter",
+  title: "On the Radio",
+  slug: "on_the_radio",
   answer: "",
   authors: [],
   editors: [],
