@@ -251,8 +251,7 @@ const Currency = styled.div`
   margin: 0 0.25rem;
   text-wrap: nowrap;
   inline-size: min-content;
-  font-family: var(--body-font);
-  font-size: 0.85rem;
+  font-size: 1.25rem;
 `;
 
 export type NavBarRoundData = {
@@ -303,15 +302,12 @@ const NavBar = ({ state }: { state: NavBarState }) => {
             <li>
               <NavLink href="/story">Story So Far</NavLink>
             </li>
-            <li>
-              <NavLink href="/activity_log">Activity Log</NavLink>
-            </li>
           </ul>
         </TopLevelDropdown>
         <Spacer />
         <AudioControls />
-        <Currency title={`Gravy: ${currency} (For Puzzle Unlocks)`}>
-          🍗 {currency}
+        <Currency title={`Unlock currency: ${currency}`}>
+          💰 {currency}
         </Currency>
         <Dropdown $alignRight>
           <TeamNameNavLink>
@@ -320,6 +316,9 @@ const NavBar = ({ state }: { state: NavBarState }) => {
           <ul>
             <li>
               <NavLink href="/team">Manage Team</NavLink>
+            </li>
+            <li>
+              <NavLink href="/activity_log">Activity Log</NavLink>
             </li>
             <li>
               <NavLink href="/contact">Contact HQ</NavLink>
