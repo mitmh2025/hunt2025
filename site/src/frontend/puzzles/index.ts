@@ -7,6 +7,7 @@ import Fechtbuch from "./dry-forest";
 import Casino from "./fortunate-calf";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
+import BrokenRecord from "./handsome-satellite";
 import SingLikeACanary from "./heavenly-cell";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
@@ -41,6 +42,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // Stakeout
   an_exchange_of_vows: AnExchangeOfVows,
   sing_like_a_canary: SingLikeACanary,
+  broken_record: BrokenRecord,
 
   // Paper Trail
   follow_the_rules: FollowTheRules,
