@@ -15,6 +15,11 @@ import {
   PaperTrailAnswer,
   PaperTrailAcknowledgementBlock,
 } from "../../components/PaperTrailPuzzleLayout";
+import {
+  IllegalSearchHeader,
+  IllegalSearchMain,
+  IllegalSearchWrapper,
+} from "../../components/IllegalSearchPuzzleLayout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import {
   PuzzleHeader,
@@ -37,6 +42,7 @@ import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCh
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
 import { type Entrypoint } from "../assets";
+import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
 
 const SHOW_SOLUTIONS = true as boolean;
 
@@ -67,7 +73,12 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: StakeoutWrapper,
     fonts: StakeoutFonts,
   },
-  illegal_search: {},
+  illegal_search: {
+    header: IllegalSearchHeader,
+    main: IllegalSearchMain,
+    wrapper: IllegalSearchWrapper,
+    fonts: IllegalSearchFonts,
+  },
   paper_trail: {
     main: PaperTrailMain,
     header: PaperTrailHeader,

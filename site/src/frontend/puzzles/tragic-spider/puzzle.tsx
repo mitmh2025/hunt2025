@@ -81,7 +81,7 @@ const Switch = styled.label`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #ccc;
+    background-color: var(--gray-300);
     transition: 0.4s;
     border-radius: 34px;
   }
@@ -99,7 +99,7 @@ const Switch = styled.label`
     object-fit: fill;
   }
   input:checked + .slider {
-    background-color: #ccc;
+    background-color: var(--gray-300);
   }
   input:checked + .slider:before {
     transform: translateX(26px);
