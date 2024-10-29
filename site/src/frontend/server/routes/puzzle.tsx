@@ -8,6 +8,11 @@ import {
 } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import {
+  IllegalSearchHeader,
+  IllegalSearchMain,
+  IllegalSearchWrapper,
+} from "../../components/IllegalSearchPuzzleLayout";
+import {
   PaperTrailWrapper,
   PaperTrailMain,
   PaperTrailHeader,
@@ -15,11 +20,6 @@ import {
   PaperTrailAnswer,
   PaperTrailAcknowledgementBlock,
 } from "../../components/PaperTrailPuzzleLayout";
-import {
-  IllegalSearchHeader,
-  IllegalSearchMain,
-  IllegalSearchWrapper,
-} from "../../components/IllegalSearchPuzzleLayout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
 import {
   PuzzleHeader,
@@ -39,10 +39,10 @@ import {
 } from "../../components/StakeoutPuzzleLayout";
 import { PUZZLES } from "../../puzzles";
 import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
+import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
 import { type Entrypoint } from "../assets";
-import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
 
 const SHOW_SOLUTIONS = true as boolean;
 

@@ -11,7 +11,7 @@
     "build-dev": "rspack --mode=development --config ./rspack.config.mjs",
     "start": "npm run build && node ./dist/server-bundle.js",
     "check": "tsc && tsc -p worker/tsconfig.json && prettier . --check && eslint .",
-    "format": "prettier . --write",
+    "format": "prettier . --write && eslint . --fix",
     "knex": "node --import tsx/esm ./node_modules/.bin/knex",
     "test": "jest"
   },

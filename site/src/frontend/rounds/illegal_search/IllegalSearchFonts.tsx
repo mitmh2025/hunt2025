@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
-import AlegreyaSCRegular from "./assets/fonts/AlegreyaSC-Regular.ttf";
-import AlegreyaSCItalic from "./assets/fonts/AlegreyaSC-Italic.ttf";
 import AlegreyaSCBold from "./assets/fonts/AlegreyaSC-Bold.ttf";
+import AlegreyaSCItalic from "./assets/fonts/AlegreyaSC-Italic.ttf";
+import AlegreyaSCRegular from "./assets/fonts/AlegreyaSC-Regular.ttf";
 
 export const IllegalSearchFonts = createGlobalStyle`
   @font-face {
