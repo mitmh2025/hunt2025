@@ -56,110 +56,110 @@ const Solution = () => {
         you get a 3D model of a <Mono>FIRE EXTINGUISHER</Mono>.
       </p>
       <FlexFullWidth>
-        <a href={img01} target="_blank">
+        <a href={img01} target="_blank" rel="noreferrer">
           <SizedImage src={img01} />
         </a>
-        <a href={img14} target="_blank">
+        <a href={img14} target="_blank" rel="noreferrer">
           <SizedImage src={img14} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img02} target="_blank">
+        <a href={img02} target="_blank" rel="noreferrer">
           <SizedImage src={img02} />
         </a>
-        <a href={img15} target="_blank">
+        <a href={img15} target="_blank" rel="noreferrer">
           <SizedImage src={img15} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img03} target="_blank">
+        <a href={img03} target="_blank" rel="noreferrer">
           <SizedImage src={img03} />
         </a>
-        <a href={img16} target="_blank">
+        <a href={img16} target="_blank" rel="noreferrer">
           <SizedImage src={img16} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img04} target="_blank">
+        <a href={img04} target="_blank" rel="noreferrer">
           <SizedImage src={img04} />
         </a>
-        <a href={img17} target="_blank">
+        <a href={img17} target="_blank" rel="noreferrer">
           <SizedImage src={img17} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img05} target="_blank">
+        <a href={img05} target="_blank" rel="noreferrer">
           <SizedImage src={img05} />
         </a>
-        <a href={img18} target="_blank">
+        <a href={img18} target="_blank" rel="noreferrer">
           <SizedImage src={img18} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img06} target="_blank">
+        <a href={img06} target="_blank" rel="noreferrer">
           <SizedImage src={img06} />
         </a>
-        <a href={img19} target="_blank">
+        <a href={img19} target="_blank" rel="noreferrer">
           <SizedImage src={img19} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img07} target="_blank">
+        <a href={img07} target="_blank" rel="noreferrer">
           <SizedImage src={img07} />
         </a>
-        <a href={img20} target="_blank">
+        <a href={img20} target="_blank" rel="noreferrer">
           <SizedImage src={img20} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img08} target="_blank">
+        <a href={img08} target="_blank" rel="noreferrer">
           <SizedImage src={img08} />
         </a>
-        <a href={img21} target="_blank">
+        <a href={img21} target="_blank" rel="noreferrer">
           <SizedImage src={img21} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img09} target="_blank">
+        <a href={img09} target="_blank" rel="noreferrer">
           <SizedImage src={img09} />
         </a>
-        <a href={img22} target="_blank">
+        <a href={img22} target="_blank" rel="noreferrer">
           <SizedImage src={img22} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img10} target="_blank">
+        <a href={img10} target="_blank" rel="noreferrer">
           <SizedImage src={img10} />
         </a>
-        <a href={img23} target="_blank">
+        <a href={img23} target="_blank" rel="noreferrer">
           <SizedImage src={img23} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img11} target="_blank">
+        <a href={img11} target="_blank" rel="noreferrer">
           <SizedImage src={img11} />
         </a>
-        <a href={img24} target="_blank">
+        <a href={img24} target="_blank" rel="noreferrer">
           <SizedImage src={img24} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img12} target="_blank">
+        <a href={img12} target="_blank" rel="noreferrer">
           <SizedImage src={img12} />
         </a>
-        <a href={img25} target="_blank">
+        <a href={img25} target="_blank" rel="noreferrer">
           <SizedImage src={img25} />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img13} target="_blank">
+        <a href={img13} target="_blank" rel="noreferrer">
           <SizedImage src={img13} />
         </a>
-        <a href={img26} target="_blank">
+        <a href={img26} target="_blank" rel="noreferrer">
           <SizedImage src={img26} />
         </a>
       </FlexFullWidth>
-      <a href={img27} target="_blank">
+      <a href={img27} target="_blank" rel="noreferrer">
         <SizedImage src={img27} />
       </a>
     </>

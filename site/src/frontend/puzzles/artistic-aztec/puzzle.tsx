@@ -21,43 +21,43 @@ const SizedImage = styled.img`
 const Puzzle = () => {
   return (
     <>
-      <a href={img01} target="_blank">
+      <a href={img01} target="_blank" rel="noreferrer">
         <SizedImage src={img01} />
       </a>
-      <a href={img02} target="_blank">
+      <a href={img02} target="_blank" rel="noreferrer">
         <SizedImage src={img02} />
       </a>
-      <a href={img03} target="_blank">
+      <a href={img03} target="_blank" rel="noreferrer">
         <SizedImage src={img03} />
       </a>
-      <a href={img04} target="_blank">
+      <a href={img04} target="_blank" rel="noreferrer">
         <SizedImage src={img04} />
       </a>
-      <a href={img05} target="_blank">
+      <a href={img05} target="_blank" rel="noreferrer">
         <SizedImage src={img05} />
       </a>
-      <a href={img06} target="_blank">
+      <a href={img06} target="_blank" rel="noreferrer">
         <SizedImage src={img06} />
       </a>
-      <a href={img07} target="_blank">
+      <a href={img07} target="_blank" rel="noreferrer">
         <SizedImage src={img07} />
       </a>
-      <a href={img08} target="_blank">
+      <a href={img08} target="_blank" rel="noreferrer">
         <SizedImage src={img08} />
       </a>
-      <a href={img09} target="_blank">
+      <a href={img09} target="_blank" rel="noreferrer">
         <SizedImage src={img09} />
       </a>
-      <a href={img10} target="_blank">
+      <a href={img10} target="_blank" rel="noreferrer">
         <SizedImage src={img10} />
       </a>
-      <a href={img11} target="_blank">
+      <a href={img11} target="_blank" rel="noreferrer">
         <SizedImage src={img11} />
       </a>
-      <a href={img12} target="_blank">
+      <a href={img12} target="_blank" rel="noreferrer">
         <SizedImage src={img12} />
       </a>
-      <a href={img13} target="_blank">
+      <a href={img13} target="_blank" rel="noreferrer">
         <SizedImage src={img13} />
       </a>
     </>
