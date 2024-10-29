@@ -8,6 +8,11 @@ import {
 } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import {
+  IllegalSearchHeader,
+  IllegalSearchMain,
+  IllegalSearchWrapper,
+} from "../../components/IllegalSearchPuzzleLayout";
+import {
   PaperTrailWrapper,
   PaperTrailMain,
   PaperTrailHeader,
@@ -34,6 +39,7 @@ import {
 } from "../../components/StakeoutPuzzleLayout";
 import { PUZZLES } from "../../puzzles";
 import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
+import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
 import { type Entrypoint } from "../assets";
@@ -67,7 +73,12 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: StakeoutWrapper,
     fonts: StakeoutFonts,
   },
-  illegal_search: {},
+  illegal_search: {
+    header: IllegalSearchHeader,
+    main: IllegalSearchMain,
+    wrapper: IllegalSearchWrapper,
+    fonts: IllegalSearchFonts,
+  },
   paper_trail: {
     main: PaperTrailMain,
     header: PaperTrailHeader,
