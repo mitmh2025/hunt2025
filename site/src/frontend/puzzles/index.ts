@@ -11,6 +11,7 @@ import SingLikeACanary from "./heavenly-cell";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
+import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ShellCorporationSix from "./mild-octopus";
 import PracticalFighter from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
@@ -30,6 +31,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   educational_rite_of_passage: EducationalRiteOfPassage,
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
+  mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
 
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
