@@ -60,7 +60,10 @@ const Solution = () => {
           <SizedImage src={img01} />
         </a>
         <a href={img14} target="_blank" rel="noreferrer">
-          <SizedImage src={img14} />
+          <SizedImage
+            src={img14}
+            alt="A 3D rendering of the handle of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -68,7 +71,10 @@ const Solution = () => {
           <SizedImage src={img02} />
         </a>
         <a href={img15} target="_blank" rel="noreferrer">
-          <SizedImage src={img15} />
+          <SizedImage
+            src={img15}
+            alt="A 3D rendering of the hose of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -76,7 +82,10 @@ const Solution = () => {
           <SizedImage src={img03} />
         </a>
         <a href={img16} target="_blank" rel="noreferrer">
-          <SizedImage src={img16} />
+          <SizedImage
+            src={img16}
+            alt="A 3D rendering of part of the operating lever of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -84,7 +93,10 @@ const Solution = () => {
           <SizedImage src={img04} />
         </a>
         <a href={img17} target="_blank" rel="noreferrer">
-          <SizedImage src={img17} />
+          <SizedImage
+            src={img17}
+            alt="A 3D rendering of a cuboid slice of the top half of the tank of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -92,7 +104,10 @@ const Solution = () => {
           <SizedImage src={img05} />
         </a>
         <a href={img18} target="_blank" rel="noreferrer">
-          <SizedImage src={img18} />
+          <SizedImage
+            src={img18}
+            alt="A 3D rendering of a cuboid slice of the bottom half of the tank of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -100,7 +115,10 @@ const Solution = () => {
           <SizedImage src={img06} />
         </a>
         <a href={img19} target="_blank" rel="noreferrer">
-          <SizedImage src={img19} />
+          <SizedImage
+            src={img19}
+            alt="A 3D rendering of the hemispherical top of a fire extinguisher, including part of the valve, and with a cuboid slice taken out."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -108,7 +126,10 @@ const Solution = () => {
           <SizedImage src={img07} />
         </a>
         <a href={img20} target="_blank" rel="noreferrer">
-          <SizedImage src={img20} />
+          <SizedImage
+            src={img20}
+            alt="A 3D rendering of part of the valve of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -116,7 +137,10 @@ const Solution = () => {
           <SizedImage src={img08} />
         </a>
         <a href={img21} target="_blank" rel="noreferrer">
-          <SizedImage src={img21} />
+          <SizedImage
+            src={img21}
+            alt="A 3D rendering of part of the operating lever of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -124,7 +148,10 @@ const Solution = () => {
           <SizedImage src={img09} />
         </a>
         <a href={img22} target="_blank" rel="noreferrer">
-          <SizedImage src={img22} />
+          <SizedImage
+            src={img22}
+            alt="A 3D rendering of the pin of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -132,7 +159,10 @@ const Solution = () => {
           <SizedImage src={img10} />
         </a>
         <a href={img23} target="_blank" rel="noreferrer">
-          <SizedImage src={img23} />
+          <SizedImage
+            src={img23}
+            alt="A 3D rendering of the part of the tank of a fire extinguisher with a cuboid slice taken out."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -140,7 +170,10 @@ const Solution = () => {
           <SizedImage src={img11} />
         </a>
         <a href={img24} target="_blank" rel="noreferrer">
-          <SizedImage src={img24} />
+          <SizedImage
+            src={img24}
+            alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -148,7 +181,10 @@ const Solution = () => {
           <SizedImage src={img12} />
         </a>
         <a href={img25} target="_blank" rel="noreferrer">
-          <SizedImage src={img25} />
+          <SizedImage
+            src={img25}
+            alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
+          />
         </a>
       </FlexFullWidth>
       <FlexFullWidth>
@@ -156,7 +192,10 @@ const Solution = () => {
           <SizedImage src={img13} />
         </a>
         <a href={img26} target="_blank" rel="noreferrer">
-          <SizedImage src={img26} />
+          <SizedImage
+            src={img26}
+            alt="A 3D rendering of the nozzle of a fire extinguisher."
+          />
         </a>
       </FlexFullWidth>
       <a href={img27} target="_blank" rel="noreferrer">
