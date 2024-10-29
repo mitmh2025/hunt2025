@@ -1,10 +1,13 @@
-import type { ActivityLogEntryRow } from "knex/types/tables";
+import type {
+  ActivityLogEntryRow,
+  TeamRegistrationLogEntryRow,
+} from "knex/types/tables";
 import {
   type InteractionState,
   type DehydratedActivityLogEntry,
 } from "../../lib/api/contract";
 import {
-  type DehydratedInternalActivityLogEntry,
+  type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
@@ -136,9 +139,9 @@ export function cleanupActivityLogEntryFromDB(
 
 // Converts from the serialized activity log entry (which e.g. has a string for timestamp)
 // into the in-memory representation (which e.g. has a Date object).
-export function parseInternalActivityLogEntry(
-  ie: DehydratedInternalActivityLogEntry,
-): InternalActivityLogEntry {
+export function hydrateLogEntry<D extends { timestamp: string }>(
+  ie: D,
+): D & { timestamp: Date } {
   const ts = new Date(ie.timestamp);
   return { ...ie, timestamp: ts };
 }
@@ -308,4 +311,22 @@ export function formatTeamState(
       ]),
     ),
   };
+}
+
+// Fix the various inconsistencies in queried data across Postgres and SQLite.
+export function cleanupTeamRegistrationLogEntryFromDB(
+  dbEntry: TeamRegistrationLogEntryRow,
+): TeamRegistrationLogEntry {
+  const res: Partial<TeamRegistrationLogEntry> = {
+    id: dbEntry.id,
+    team_id: dbEntry.team_id,
+    timestamp: fixTimestamp(dbEntry.timestamp),
+    type: dbEntry.type as TeamRegistrationLogEntry["type"],
+  };
+  if (dbEntry.data) {
+    (res as TeamRegistrationLogEntry | { data?: object }).data = fixData(
+      dbEntry.data,
+    );
+  }
+  return res as TeamRegistrationLogEntry;
 }

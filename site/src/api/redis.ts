@@ -6,10 +6,12 @@ import {
 import { createTimeout } from "retry";
 import { type TeamState } from "../../lib/api/client";
 import {
+  type DehydratedTeamRegistrationLogEntry,
+  type TeamRegistrationLogEntry,
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
-import { parseInternalActivityLogEntry } from "./logic";
+import { hydrateLogEntry } from "./logic";
 
 export async function connect(redisUrl: string) {
   const reconnectStrategy = (retries: number) => {
@@ -303,11 +305,23 @@ export class ActivityLog extends Log<
     super("activity_log");
   }
   protected hydrateEntry(entry: DehydratedInternalActivityLogEntry) {
-    return parseInternalActivityLogEntry(entry);
+    return hydrateLogEntry(entry);
   }
 }
 
 export const activityLog = new ActivityLog();
+
+export class TeamRegistrationLog extends Log<
+  DehydratedTeamRegistrationLogEntry,
+  TeamRegistrationLogEntry
+> {
+  constructor() {
+    super("team_registration_log");
+  }
+  protected hydrateEntry(entry: DehydratedTeamRegistrationLogEntry) {
+    return hydrateLogEntry(entry);
+  }
+}
 
 // Publish a new state to a "stream", if it is newer, and trim older states.
 async function publishState(

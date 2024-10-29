@@ -1,4 +1,3 @@
-import { type ClientInferResponseBody } from "@ts-rest/core";
 import { z } from "zod";
 import {
   c,
@@ -87,6 +86,43 @@ export const InternalActivityLogSchema = z.array(
   InternalActivityLogEntrySchema,
 );
 
+const TeamRegistrationLogEntryBaseSchema = z.object({
+  id: z.number(),
+  team_id: z.number(),
+  timestamp: z.string().datetime().pipe(z.coerce.date()),
+});
+
+export const TeamRegistrationLogEntrySchema = z.discriminatedUnion("type", [
+  TeamRegistrationLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("team_registered"),
+      data: z.object({
+        username: z.string(),
+        password: z.string(),
+        name: z.string(),
+      }),
+    }),
+  ),
+  TeamRegistrationLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("team_name_changed"),
+      data: z.object({
+        name: z.string(),
+      }),
+    }),
+  ),
+]);
+
+export type TeamRegistrationLogEntry = z.output<
+  typeof TeamRegistrationLogEntrySchema
+>;
+export type DehydratedTeamRegistrationLogEntry = z.input<
+  typeof TeamRegistrationLogEntrySchema
+>;
+export const TeamRegistrationLogSchema = z.array(
+  TeamRegistrationLogEntrySchema,
+);
+
 export const frontendContract = c.router({
   markTeamGateSatisfied: {
     method: "POST",
@@ -119,7 +155,7 @@ export const frontendContract = c.router({
   },
   getFullActivityLog: {
     method: "GET",
-    path: "/fulllog",
+    path: "/frontend/log/activity",
     query: z.object({
       since: z.number().optional(),
     }),
@@ -128,9 +164,15 @@ export const frontendContract = c.router({
       401: z.null(),
     },
   },
+  getFullTeamRegistrationLog: {
+    method: "GET",
+    path: "/frontend/log/team",
+    query: z.object({
+      since: z.number().optional(),
+    }),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      401: z.null(),
+    },
+  },
 });
-
-export type FullActivityLog = ClientInferResponseBody<
-  typeof frontendContract.getFullActivityLog,
-  200
->;

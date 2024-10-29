@@ -41,6 +41,7 @@ import {
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
   TeamStateIntermediate,
+  cleanupTeamRegistrationLogEntryFromDB,
 } from "./logic";
 import type { RedisClient } from "./redis";
 
@@ -210,7 +211,10 @@ export function getRouter({
     slug: string,
     knex: Knex,
   ): Promise<PuzzleState | undefined> => {
-    return formatPuzzleState(slug, (await activityLog.getCachedTeamLog(knex, redisClient, team_id)).entries);
+    return formatPuzzleState(
+      slug,
+      (await activityLog.getCachedTeamLog(knex, redisClient, team_id)).entries,
+    );
   };
 
   const executeTeamStateHandler = async (
@@ -770,6 +774,41 @@ export function getRouter({
           );
           const body = entries.map((e) => {
             const entry = cleanupActivityLogEntryFromDB(e);
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
+          });
+          return {
+            status: 200,
+            body,
+          };
+        },
+      },
+      getFullTeamRegistrationLog: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ query: { since } }) => {
+          let effectiveSince = undefined;
+          if (since) {
+            const sinceParsed = Number(since);
+            if (sinceParsed > 0) {
+              effectiveSince = sinceParsed;
+            }
+          }
+
+          const entries = await knex.transaction(
+            async (trx) => {
+              let q = trx("team_registration_log");
+              if (effectiveSince !== undefined) {
+                q = q.where("id", ">", effectiveSince);
+              }
+              q = q.select("id", "team_id", "type", "data");
+              return q;
+            },
+            { readOnly: true },
+          );
+          const body = entries.map((e) => {
+            const entry = cleanupTeamRegistrationLogEntryFromDB(e);
             return {
               ...entry,
               timestamp: entry.timestamp.toISOString(),
