@@ -46,6 +46,9 @@ const SizedImage = styled.img`
   width: 100%;
 `;
 
+const PUZZLE_IMAGE_ALT_TEXT =
+  "An orthographic projection of a 3-dimensional object. The projection is outlined in blue, with dotted lines indicating shape on the underside of the object. In the bottom right of the image is text 'Just Plane Wrong', and a logo for 'The MITropolis Design Group.'";
+
 const Solution = () => {
   return (
     <>
@@ -57,7 +60,7 @@ const Solution = () => {
       </p>
       <FlexFullWidth>
         <a href={img01} target="_blank" rel="noreferrer">
-          <SizedImage src={img01} />
+          <SizedImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img14} target="_blank" rel="noreferrer">
           <SizedImage
@@ -68,7 +71,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img02} target="_blank" rel="noreferrer">
-          <SizedImage src={img02} />
+          <SizedImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img15} target="_blank" rel="noreferrer">
           <SizedImage
@@ -79,7 +82,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img03} target="_blank" rel="noreferrer">
-          <SizedImage src={img03} />
+          <SizedImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img16} target="_blank" rel="noreferrer">
           <SizedImage
@@ -90,7 +93,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img04} target="_blank" rel="noreferrer">
-          <SizedImage src={img04} />
+          <SizedImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img17} target="_blank" rel="noreferrer">
           <SizedImage
@@ -101,7 +104,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img05} target="_blank" rel="noreferrer">
-          <SizedImage src={img05} />
+          <SizedImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img18} target="_blank" rel="noreferrer">
           <SizedImage
@@ -112,7 +115,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img06} target="_blank" rel="noreferrer">
-          <SizedImage src={img06} />
+          <SizedImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img19} target="_blank" rel="noreferrer">
           <SizedImage
@@ -123,7 +126,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img07} target="_blank" rel="noreferrer">
-          <SizedImage src={img07} />
+          <SizedImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img20} target="_blank" rel="noreferrer">
           <SizedImage
@@ -134,7 +137,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img08} target="_blank" rel="noreferrer">
-          <SizedImage src={img08} />
+          <SizedImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img21} target="_blank" rel="noreferrer">
           <SizedImage
@@ -145,7 +148,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img09} target="_blank" rel="noreferrer">
-          <SizedImage src={img09} />
+          <SizedImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img22} target="_blank" rel="noreferrer">
           <SizedImage
@@ -156,7 +159,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img10} target="_blank" rel="noreferrer">
-          <SizedImage src={img10} />
+          <SizedImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img23} target="_blank" rel="noreferrer">
           <SizedImage
@@ -167,7 +170,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img11} target="_blank" rel="noreferrer">
-          <SizedImage src={img11} />
+          <SizedImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img24} target="_blank" rel="noreferrer">
           <SizedImage
@@ -178,7 +181,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img12} target="_blank" rel="noreferrer">
-          <SizedImage src={img12} />
+          <SizedImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img25} target="_blank" rel="noreferrer">
           <SizedImage
@@ -189,7 +192,7 @@ const Solution = () => {
       </FlexFullWidth>
       <FlexFullWidth>
         <a href={img13} target="_blank" rel="noreferrer">
-          <SizedImage src={img13} />
+          <SizedImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
         </a>
         <a href={img26} target="_blank" rel="noreferrer">
           <SizedImage
@@ -199,7 +202,10 @@ const Solution = () => {
         </a>
       </FlexFullWidth>
       <a href={img27} target="_blank" rel="noreferrer">
-        <SizedImage src={img27} />
+        <SizedImage
+          src={img27}
+          alt="A 3D rendering of a fire extinguisher, assembled from the 3D renderings above."
+        />
       </a>
     </>
   );
