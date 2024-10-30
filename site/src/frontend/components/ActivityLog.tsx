@@ -231,8 +231,8 @@ const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
         <tr>
           <th>Time</th>
           <th colSpan={2}>Event</th>
-          <th>🍗 change</th>
-          <th>🍗 total</th>
+          <th>💰 change</th>
+          <th>💰 total</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>
