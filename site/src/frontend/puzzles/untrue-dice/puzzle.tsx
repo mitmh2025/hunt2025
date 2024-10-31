@@ -151,7 +151,7 @@ const PuzzleContent = () => {
                 <MI>x</MI>
                 <MN>7</MN>
               </MSub>
-              <MO>&#x226A;</MO>
+              <MO>&lt;&lt;</MO>
               <MSub>
                 <MI>x</MI>
                 <MN>5</MN>
@@ -195,7 +195,7 @@ const PuzzleContent = () => {
                 <MI>y</MI>
                 <MN>4</MN>
               </MSub>
-              <MO>&#x226A;</MO>
+              <MO>&lt;&lt;</MO>
               <MSub>
                 <MI>y</MI>
                 <MN>1</MN>
