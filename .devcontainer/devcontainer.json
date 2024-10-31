@@ -11,7 +11,9 @@
 	"privileged": true,
 	"mounts": [
     "source=${env:HOME}${env:USERPROFILE}/.aws,target=/root/.aws,type=bind",
-		"source=${env:HOME}${env:USERPROFILE}/.config/gcloud,target=/root/.config/gcloud,type=bind"
+		"source=${env:HOME}${env:USERPROFILE}/.config/gcloud,target=/root/.config/gcloud,type=bind",
+		"source=${env:HOME}${env:USERPROFILE}/.docker/config.json,target=/root/.docker/config.json,type=bind",
+		"source=${env:HOME}${env:USERPROFILE}/.config/gh/,target=/root/.config/gh/,type=bind"
 	]
 
 }
