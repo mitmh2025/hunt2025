@@ -8,8 +8,16 @@ export async function up(knex: Knex): Promise<void> {
     table.string("password", 255);
     table.unique("username");
   });
+  await knex.schema.createTable("team_registration_log", function (table) {
+    generatedPrimaryKey(knex, table, "id");
+    table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
+    table.integer("team_id").notNullable();
+    table.enu("type", ["team_registered", "team_name_changed"]).notNullable();
+    table.jsonb("data");
+    table.index(["team_id", "type"]);
+  });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTable("teams");
+  await knex.schema.dropTable("teams").dropTable("team_registration_log");
 }

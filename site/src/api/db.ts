@@ -203,6 +203,16 @@ declare module "knex/types/tables" {
     internal_data: string | object | null;
   };
 
+  type TeamRegistrationLogEntryRow = {
+    id: number;
+    // SQLite returns timestamps as strings.
+    timestamp: Date | string;
+    team_id: number;
+    type: string;
+    // SQLite returns JSON fields as strings.
+    data: string | object | null;
+  };
+
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
    * knex
@@ -213,6 +223,7 @@ declare module "knex/types/tables" {
       ActivityLogEntryRow,
       InsertActivityLogEntry
     >;
+    team_registration_log: Knex.Knex.CompositeTableType<TeamRegistrationLogEntryRow>;
   }
 }
 
