@@ -7,6 +7,7 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   gap: 16px;
+  align-items: center;
 `;
 
 const Score = styled.span`
