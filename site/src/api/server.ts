@@ -33,7 +33,7 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { activityLog, type Mutator } from "./data";
+import { activityLog, type Mutator, registerTeam } from "./data";
 import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
@@ -339,6 +339,24 @@ export function getRouter({
         return {
           status: 403,
           body: {},
+        };
+      },
+      register: async ({ body }) => {
+        const team_id = await registerTeam(hunt, redisClient, knex, body);
+        const token = jwt.sign(
+          {
+            user: body.username,
+            team_id,
+            sess_id: genId(),
+          },
+          jwtSecret,
+          {},
+        );
+        return {
+          status: 200,
+          body: {
+            token,
+          },
         };
       },
     },

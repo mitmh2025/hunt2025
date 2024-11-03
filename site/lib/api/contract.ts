@@ -1,6 +1,7 @@
 // contract.ts
 
 import { initContract } from "@ts-rest/core";
+import { parsePhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
 export const c = initContract();
@@ -146,6 +147,67 @@ const LoginResponseSchema = z.object({
   token: z.string(),
 });
 
+// Roughly based on 2024 registration form
+// MutableTeamRegistrationSchema are the fields we allow to be changed after registration.
+export const MutableTeamRegistrationSchema = z.object({
+  // Team name must be 5-255 utf-8 characters
+  name: z.string().min(5).max(255),
+  teamEmail: z.string().email().optional(),
+  // TOOD: Team bio?
+
+  // Primary contact
+  contactName: z.string().min(1).max(255),
+  contactPronouns: z.string().max(127).optional(),
+  contactEmail: z.string().email(),
+  contactPhone: z.string().transform((val, ctx) => {
+    const parsed = parsePhoneNumber(val, {
+      defaultCountry: "US",
+      extract: false,
+    });
+    if (!parsed.isValid()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Not a valid phone number",
+      });
+      return z.NEVER;
+    }
+    return parsed.number.toString();
+  }),
+
+  // Team background
+  // TODO
+
+  // Team base
+  // TODO
+
+  // Team composition
+  peopleTotal: z.number(),
+  peopleOnCampus: z.number(),
+  peopleLastYear: z.number(),
+  peopleUndergrad: z.number(),
+  peopleGrad: z.number(),
+  peopleAlum: z.number(),
+  peopleStaff: z.number(),
+  peopleVisitor: z.number(),
+  peopleMinor: z.number(),
+
+  // Other information
+  // TODO
+});
+
+export const TeamRegistrationSchema = MutableTeamRegistrationSchema.merge(
+  z.object({
+    // Username must be 5-32 printable ASCII characters
+    username: z
+      .string()
+      .regex(/^[\x20-\x7e]+$/, { message: "Must be printable ASCII" })
+      .min(5)
+      .max(32),
+    // Password must be 8-255 utf-8 charaters
+    password: z.string().min(8).max(255),
+  }),
+);
+
 export const authContract = c.router({
   login: {
     method: "POST",
@@ -156,6 +218,14 @@ export const authContract = c.router({
       401: z.object({}),
     },
     summary: "Login to a team",
+  },
+  register: {
+    method: "POST",
+    path: `/register`,
+    body: TeamRegistrationSchema,
+    responses: {
+      200: LoginResponseSchema,
+    },
   },
 });
 

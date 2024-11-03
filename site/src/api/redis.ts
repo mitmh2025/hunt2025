@@ -323,6 +323,8 @@ export class TeamRegistrationLog extends Log<
   }
 }
 
+export const teamRegistrationLog = new TeamRegistrationLog();
+
 // Publish a new state to a "stream", if it is newer, and trim older states.
 async function publishState(
   redisClient: RedisClient,

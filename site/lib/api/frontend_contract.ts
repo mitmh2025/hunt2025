@@ -4,6 +4,7 @@ import {
   TeamStateSchema,
   ActivityLogEntryBaseSchema,
   GuessStatus,
+  TeamRegistrationSchema,
 } from "./contract";
 
 const InternalActivityLogEntryBaseSchema = ActivityLogEntryBaseSchema.merge(
@@ -96,19 +97,13 @@ export const TeamRegistrationLogEntrySchema = z.discriminatedUnion("type", [
   TeamRegistrationLogEntryBaseSchema.merge(
     z.object({
       type: z.literal("team_registered"),
-      data: z.object({
-        username: z.string(),
-        password: z.string(),
-        name: z.string(),
-      }),
+      data: TeamRegistrationSchema,
     }),
   ),
   TeamRegistrationLogEntryBaseSchema.merge(
     z.object({
       type: z.literal("team_name_changed"),
-      data: z.object({
-        name: z.string(),
-      }),
+      data: TeamRegistrationSchema.pick({ name: true }),
     }),
   ),
 ]);
@@ -122,6 +117,8 @@ export type DehydratedTeamRegistrationLogEntry = z.input<
 export const TeamRegistrationLogSchema = z.array(
   TeamRegistrationLogEntrySchema,
 );
+
+export type TeamRegistration = z.output<typeof TeamRegistrationSchema>;
 
 export const frontendContract = c.router({
   markTeamGateSatisfied: {

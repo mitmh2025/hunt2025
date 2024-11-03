@@ -1,6 +1,12 @@
 import type Knex from "knex";
-import { type InsertActivityLogEntry } from "knex/types/tables";
 import {
+  type InsertTeamRegistrationLogEntry,
+  type InsertActivityLogEntry,
+} from "knex/types/tables";
+import {
+  type DehydratedTeamRegistrationLogEntry,
+  type TeamRegistration,
+  type TeamRegistrationLogEntry,
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
@@ -8,6 +14,9 @@ import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
   getActivityLog as dbGetActivityLog,
+  appendTeamRegistrationLog as dbAppendTeamRegistrationLog,
+  getTeamRegistrationLog as dbGetTeamRegistrationLog,
+  registerTeam as dbRegisterTeam,
   getTeamNames,
   retryOnAbort,
 } from "./db";
@@ -15,11 +24,12 @@ import { TeamStateIntermediate } from "./logic";
 import {
   type RedisClient,
   activityLog as redisActivityLog,
+  teamRegistrationLog as redisTeamRegistrationLog,
   type Log as RedisLog,
 } from "./redis";
 
 export abstract class Mutator<T extends { id: number; team_id?: number }, I> {
-  private _trx: Knex.Knex.Transaction;
+  protected _trx: Knex.Knex.Transaction;
   private _log: T[];
   private _allTeams: Set<number>;
   private _affectedTeams: Set<number> | undefined;
@@ -39,13 +49,18 @@ export abstract class Mutator<T extends { id: number; team_id?: number }, I> {
     const inserted_entry = await this._dbAppendLog(entry, this._trx);
     if (inserted_entry !== undefined) {
       this._log = this._log.concat([inserted_entry]);
-      if (inserted_entry.team_id === undefined) {
-        this._affectedTeams = undefined; // We don't know yet
-      } else if (this._affectedTeams !== undefined) {
-        this._affectedTeams.add(inserted_entry.team_id);
-      }
+      this.dirtyTeam(inserted_entry.team_id);
     }
     return inserted_entry;
+  }
+
+  // Mark a team as dirty
+  dirtyTeam(teamId?: number) {
+    if (teamId === undefined) {
+      this._affectedTeams = undefined; // We don't know yet
+    } else if (this._affectedTeams !== undefined) {
+      this._affectedTeams.add(teamId);
+    }
   }
 
   // Get the complete log so far (both the starting log and any added entries)
@@ -354,3 +369,70 @@ export class ActivityLog extends Log<
 }
 
 export const activityLog = new ActivityLog();
+
+export class TeamRegistrationLogMutator extends Mutator<
+  TeamRegistrationLogEntry,
+  InsertTeamRegistrationLogEntry
+> {
+  _dbAppendLog = dbAppendTeamRegistrationLog;
+}
+
+export class TeamRegistrationLog extends Log<
+  DehydratedTeamRegistrationLogEntry,
+  TeamRegistrationLogEntry,
+  TeamRegistrationLogMutator
+> {
+  constructor() {
+    super(redisTeamRegistrationLog, TeamRegistrationLogMutator);
+  }
+  protected dbGetLog(knex: Knex.Knex, teamId?: number, since?: number) {
+    return dbGetTeamRegistrationLog(teamId, since, knex);
+  }
+  async executeMutation<R>(
+    team_id: number,
+    redisClient: RedisClient | undefined,
+    knex: Knex.Knex,
+    fn: (
+      trx: Knex.Knex.Transaction,
+      mutator: TeamRegistrationLogMutator,
+    ) => Promise<R>,
+  ) {
+    return await this.executeRawMutation(team_id, redisClient, knex, fn);
+  }
+}
+
+export const teamRegistrationLog = new TeamRegistrationLog();
+
+export async function registerTeam(
+  hunt: Hunt,
+  redisClient: RedisClient | undefined,
+  knex: Knex.Knex,
+  data: TeamRegistration,
+) {
+  return await knex.transaction(async (trx) => {
+    const team_id = await dbRegisterTeam(trx, data);
+    await teamRegistrationLog.executeMutation(
+      team_id,
+      redisClient,
+      trx,
+      async (_, mutator) => {
+        await mutator.appendLog({
+          type: "team_registered",
+          team_id,
+          data,
+        });
+      },
+    );
+    await activityLog.executeMutation(
+      hunt,
+      team_id,
+      redisClient,
+      trx,
+      async (_, mutator) => {
+        mutator.dirtyTeam(team_id);
+        await Promise.resolve();
+      },
+    );
+    return team_id;
+  });
+}

@@ -1,14 +1,23 @@
 import path from "path";
 import Knex from "knex";
 import {
+  type TeamRegistrationLogEntryRow,
   type ActivityLogEntryRow,
   type InsertActivityLogEntry,
+  type InsertTeamRegistrationLogEntry,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
-import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
+import {
+  type TeamRegistration,
+  type TeamRegistrationLogEntry,
+  type InternalActivityLogEntry,
+} from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
-import { cleanupActivityLogEntryFromDB } from "./logic";
+import {
+  cleanupActivityLogEntryFromDB,
+  cleanupTeamRegistrationLogEntryFromDB,
+} from "./logic";
 
 class WebpackMigrationSource {
   context: Rspack.Context;
@@ -213,6 +222,11 @@ declare module "knex/types/tables" {
     data: string | object | null;
   };
 
+  type InsertTeamRegistrationLogEntry = Pick<
+    TeamRegistrationLogEntry,
+    "team_id" | "type" | "data"
+  >;
+
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
    * knex
@@ -223,7 +237,10 @@ declare module "knex/types/tables" {
       ActivityLogEntryRow,
       InsertActivityLogEntry
     >;
-    team_registration_log: Knex.Knex.CompositeTableType<TeamRegistrationLogEntryRow>;
+    team_registration_log: Knex.Knex.CompositeTableType<
+      TeamRegistrationLogEntryRow,
+      InsertTeamRegistrationLogEntry
+    >;
   }
 }
 
@@ -304,6 +321,58 @@ export async function appendActivityLog(
       }
       const insertedEntry = objs[0] as ActivityLogEntryRow;
       const fixedEntry = cleanupActivityLogEntryFromDB(insertedEntry);
+      // console.log("inserted", fixedEntry);
+      return fixedEntry;
+    });
+}
+
+export async function registerTeam(
+  trx: Knex.Knex.Transaction,
+  data: TeamRegistration,
+) {
+  const team = (
+    await trx("teams")
+      .insert([{ username: data.username, password: data.password }])
+      .returning(["id"])
+  )[0];
+  if (team === undefined) {
+    throw new Error("failed to insert team");
+  }
+  return team.id;
+}
+
+export async function getTeamRegistrationLog(
+  team_id: number | undefined,
+  since: number | undefined,
+  trx: Knex.Knex,
+) {
+  let query = trx<TeamRegistrationLogEntryRow>("team_registration_log");
+  if (team_id !== undefined) {
+    query = query.where((builder) => {
+      void builder.where("team_id", team_id).orWhereNull("team_id");
+    });
+  }
+  if (since !== undefined) {
+    query = query.andWhere("id", ">", since);
+  }
+  const activity_log = await query.orderBy("id");
+
+  return activity_log.map(cleanupTeamRegistrationLogEntryFromDB);
+}
+
+export async function appendTeamRegistrationLog(
+  entry: InsertTeamRegistrationLogEntry,
+  trx: Knex.Knex.Transaction,
+): Promise<TeamRegistrationLogEntry | undefined> {
+  return await trx("team_registration_log")
+    .insert(entry)
+    .returning(["id", "team_id", "type", "data", "timestamp"])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedEntry = objs[0] as TeamRegistrationLogEntryRow;
+      const fixedEntry = cleanupTeamRegistrationLogEntryFromDB(insertedEntry);
       // console.log("inserted", fixedEntry);
       return fixedEntry;
     });
