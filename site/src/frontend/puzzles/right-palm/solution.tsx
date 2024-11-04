@@ -135,7 +135,9 @@ const Solution = () => {
         and output grids identical.
       </p>
       <p>There is exactly one input grid which accomplishes this:</p>
-      <Display outputs={[0, 1, 0, 0, 0, 1, 1, 1, 0]} />
+      <CenteredDivRow>
+        <Display outputs={[0, 1, 0, 0, 0, 1, 1, 1, 0]} />
+      </CenteredDivRow>
       <p>
         When solvers manipulate the input grid to this state, the output grid is
         the same, and the nine indicator lights are lit.
