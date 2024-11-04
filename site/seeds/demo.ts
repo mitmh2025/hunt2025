@@ -69,9 +69,6 @@ export async function seed(knex: Knex): Promise<void> {
   };
 
   await createTeam("team");
-  await createTeam("visible", async () => {
-    /* nothing to do */
-  });
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
       await mutator.appendLog({
@@ -153,6 +150,28 @@ export async function seed(knex: Knex): Promise<void> {
       });
     }
   });
+
+  await activityLog.executeMutation(
+    HUNT,
+    undefined,
+    undefined,
+    knex,
+    async (_, mutator) => {
+      // Do an initial currency grant of 8 unlocks, if we haven't given such a
+      // grant out yet.
+      if (
+        !mutator.log.some(
+          (e) => e.type === "currency_adjusted" && e.team_id === undefined,
+        )
+      ) {
+        await mutator.appendLog({
+          // Give the initial currency grant to all teams.
+          type: "currency_adjusted",
+          currency_delta: 8,
+        });
+      }
+    },
+  );
 
   // Ensure that we trigger any triggerable unlocks
   const all_team_ids = await knex("teams").select("id").pluck("id");
