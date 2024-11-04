@@ -408,8 +408,9 @@ export async function registerTeam(
   redisClient: RedisClient | undefined,
   knex: Knex.Knex,
   data: TeamRegistration,
+  extraSetup?: (team_id: number, mutator: ActivityLogMutator) => Promise<void>,
 ) {
-  return await knex.transaction(async (trx) => {
+  return await retryOnAbort(knex, async (trx) => {
     const team_id = await dbRegisterTeam(trx, data);
     await teamRegistrationLog.executeMutation(
       team_id,
@@ -430,7 +431,9 @@ export async function registerTeam(
       trx,
       async (_, mutator) => {
         mutator.dirtyTeam(team_id);
-        await Promise.resolve();
+        if (extraSetup !== undefined) {
+          await extraSetup(team_id, mutator);
+        }
       },
     );
     return team_id;

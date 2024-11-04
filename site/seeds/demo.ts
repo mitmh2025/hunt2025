@@ -1,5 +1,10 @@
 import { type Knex } from "knex";
-import { type ActivityLogMutator, activityLog } from "../src/api/data";
+import {
+  type ActivityLogMutator,
+  activityLog,
+  registerTeam,
+} from "../src/api/data";
+import { retryOnAbort } from "../src/api/db";
 import { PUZZLES } from "../src/frontend/puzzles";
 import HUNT from "../src/huntdata";
 import { getSlugsBySlot } from "../src/huntdata/logic";
@@ -15,35 +20,52 @@ export async function seed(knex: Knex): Promise<void> {
     username: string,
     populator?: (team_id: number, mutator: ActivityLogMutator) => Promise<void>,
   ) => {
-    await knex("teams")
-      .insert([{ username, password: "password" }])
-      .onConflict("username")
-      .ignore();
-    const team = await knex("teams")
-      .where("username", username)
-      .select("id")
-      .first();
-    if (!team) return; // guaranteed to be truthy because we just inserted the row above
-    const team_id = team.id;
-    if (populator) {
-      await knex.transaction(
-        async (trx) => {
-          await trx("activity_log").where("team_id", team_id).del();
-        },
-        {
-          isolationLevel: "serializable",
-        },
-      );
-      await activityLog.executeMutation(
-        HUNT,
-        team_id,
-        undefined,
-        knex,
-        async (_, mutator) => {
-          await populator(team_id, mutator);
-        },
-      );
+    if (
+      await retryOnAbort(knex, async (trx) => {
+        const existing_id = (
+          await trx("teams").where("username", username).select("id").first()
+        )?.id;
+
+        if (existing_id) {
+          if (populator === undefined) {
+            return true;
+          }
+          await trx("team_registration_log")
+            .where("team_id", existing_id)
+            .del();
+          await trx("activity_log").where("team_id", existing_id).del();
+          await trx("teams").where("id", existing_id).del();
+        }
+        return false;
+      })
+    ) {
+      // Team already exists and doesn't need to be repopulated.
+      return;
     }
+
+    await registerTeam(
+      HUNT,
+      undefined,
+      knex,
+      {
+        username,
+        password: "password",
+        name: username,
+        contactName: "Jack Florey",
+        contactEmail: "jack@example.com",
+        contactPhone: "+16172531000",
+        peopleTotal: 1,
+        peopleOnCampus: 1,
+        peopleLastYear: 0,
+        peopleUndergrad: 0,
+        peopleGrad: 0,
+        peopleAlum: 0,
+        peopleStaff: 0,
+        peopleVisitor: 1,
+        peopleMinor: 0,
+      },
+      populator,
+    );
   };
 
   await createTeam("team");
