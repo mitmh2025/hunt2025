@@ -22,6 +22,7 @@ import ShellCorporationFive from "./profitable-trunk";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import The10000SheetExcelFile from "./shoddy-table";
+import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
@@ -46,6 +47,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
   broken_record: BrokenRecord,
+  fight_night_at_mos: FightNightAtMos,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
   sing_like_a_canary: SingLikeACanary,
