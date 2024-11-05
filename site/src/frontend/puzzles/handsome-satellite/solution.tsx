@@ -64,7 +64,7 @@ const ROWS = [
   ],
   [
     "3",
-    "Often confused with bison",
+    "It's often confused with bison",
     "BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO",
     "56",
     "51",
@@ -83,7 +83,7 @@ const ROWS = [
     "11",
     "N",
   ],
-  ["8", "You are here", "LOCATION LOCATION LOCATION", "24", "24", "12", "N"],
+  ["8", "Whereabouts", "LOCATION LOCATION LOCATION", "24", "24", "12", "N"],
   ["12", "Romantic partner (abbr.)", "SO SO", "4", "4", "13", "O"],
 ];
 
