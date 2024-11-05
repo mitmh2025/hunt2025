@@ -200,7 +200,9 @@ export const TeamRegistrationSchema = MutableTeamRegistrationSchema.merge(
     // Username must be 5-32 printable ASCII characters
     username: z
       .string()
-      .regex(/^(?=[\x21-\x7e])[\x20-\x7e]+(?<=[\x21-\x7e])$/, { message: "Must be printable ASCII and not start or end with space" })
+      .regex(/^(?=[\x21-\x7e])[\x20-\x7e]+(?<=[\x21-\x7e])$/, {
+        message: "Must be printable ASCII and not start or end with space",
+      })
       .min(5)
       .max(32),
     // Password must be 8-255 utf-8 charaters
