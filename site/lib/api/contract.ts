@@ -150,8 +150,8 @@ const LoginResponseSchema = z.object({
 // Roughly based on 2024 registration form
 // MutableTeamRegistrationSchema are the fields we allow to be changed after registration.
 export const MutableTeamRegistrationSchema = z.object({
-  // Team name must be 5-255 utf-8 characters
-  name: z.string().min(5).max(255),
+  // Team name must be 1-255 utf-8 characters
+  name: z.string().min(1).max(255),
   teamEmail: z.string().email().optional(),
   // TOOD: Team bio?
 
@@ -200,7 +200,7 @@ export const TeamRegistrationSchema = MutableTeamRegistrationSchema.merge(
     // Username must be 5-32 printable ASCII characters
     username: z
       .string()
-      .regex(/^[\x20-\x7e]+$/, { message: "Must be printable ASCII" })
+      .regex(/^(?=[\x21-\x7e])[\x20-\x7e]+(?<=[\x21-\x7e])$/, { message: "Must be printable ASCII and not start or end with space" })
       .min(5)
       .max(32),
     // Password must be 8-255 utf-8 charaters
