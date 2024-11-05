@@ -190,10 +190,10 @@ const HUNT: Hunt = {
         { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "sing_like_a_canary" }, // TODO: this slug may not go in this spot
         { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "just_plane_wrong" }, // TODO: this slug may not go in this spot
         { id: "sop04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug: "broken_record" }, // TODO: this slug may not go in this spot
-        { id: "sop05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1, slug: 'lab_scrabble' }, // TODO: this slug may not go in this spot
-        { id: "sop06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1, slug: 'a_math_quiz' }, // TODO: this slug may not go in this spot
+        { id: "sop05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1, slug: "lab_scrabble" }, // TODO: this slug may not go in this spot
+        { id: "sop06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1, slug: "a_math_quiz" }, // TODO: this slug may not go in this spot
         { id: "sop07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1, slug: "fight_night_at_mos" }, // TODO: this slug may not go in this spot
-        { id: "sop08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+        { id: "sop08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1, slug: "dear_diary" }, // TODO: this slug may not go in this spot
         { id: "sop09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
         { id: "sop10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
         { id: "sop11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
