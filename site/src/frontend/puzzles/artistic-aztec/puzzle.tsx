@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/PuzzleImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -26,43 +26,43 @@ const Puzzle = () => {
   return (
     <>
       <SizedWrapper>
-        <PuzzleImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
       <SizedWrapper>
-        <PuzzleImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
       </SizedWrapper>
     </>
   );

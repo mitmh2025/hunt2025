@@ -20,6 +20,7 @@ import AMathQuiz from "./new-pin";
 import DearDiary from "./overlooked-compound";
 import OnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
+import ThisIsJustATest from "./radiant-snow";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import The10000SheetExcelFile from "./shoddy-table";
@@ -68,9 +69,10 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_shell_game: TheShellGame,
 
   // Illegal Search
-  kotei_no_ango: KoteiNoAngo,
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
+  kotei_no_ango: KoteiNoAngo,
+  this_is_just_a_test: ThisIsJustATest,
 
   // Background Check
   the_10000_sheet_excel_file: The10000SheetExcelFile,

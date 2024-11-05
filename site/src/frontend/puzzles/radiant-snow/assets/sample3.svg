@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="113.33333"
+   height="113.33333"
+   viewBox="0 0 113.33333 113.33333"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g1">
+    <path
+       id="path1"
+       d="M 20,20 H 820 M 20,420 H 820 M 20,820 h 800"
+       style="fill:none;stroke:#000000;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <path
+       id="path2"
+       d="M 20,20 V 820 M 420,20 V 820 M 820,20 v 800"
+       style="fill:none;stroke:#000000;stroke-width:12;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <path
+       id="path3"
+       d="M 20,20 H 820 M 20,220 H 820 M 20,420 H 820 M 20,620 H 820 M 20,820 h 800"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <path
+       id="path4"
+       d="M 20,20 V 820 M 220,20 V 820 M 420,20 V 820 M 620,20 V 820 M 820,20 v 800"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <text
+       id="text4"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,4.4427067,12)"><tspan
+         style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0 60"
+         y="0"
+         id="tspan4">98</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="20"
+         y="20"
+         id="tspan5">5</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:6px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="20"
+         y="40"
+         id="tspan6">7</tspan></text>
+    <path
+       id="path6"
+       d="M 70,800 H 400 V 640 H 200 V 440 H 40 v 310 m 630,50 H 800 V 240 H 640 V 750 M 270,600 H 600 V 440 H 240 V 550 M 270,400 H 600 V 240 H 400 V 40 H 240 v 310"
+       style="fill:none;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:20, 14;stroke-dashoffset:200;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <text
+       id="text6"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,11.55208,22.666667)"><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0 20.00004 40.00008 60.000118"
+         y="0"
+         id="tspan7">4321</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0 20.00004 40.00008 60.000118"
+         y="20"
+         id="tspan8">2143</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0 20.00004 40.00008 60.000118"
+         y="40"
+         id="tspan9">3214</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0 20.00004 40.00008 60.000118"
+         y="60"
+         id="tspan10">1432</tspan></text>
+  </g>
+</svg>

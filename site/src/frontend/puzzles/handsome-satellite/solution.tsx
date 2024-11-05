@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/PuzzleImage";
 import img15 from "./assets/img15.png";
 import img16 from "./assets/img16.png";
 import img17 from "./assets/img17.png";
@@ -156,27 +156,27 @@ const Solution = () => {
       </p>
       <Table headers={HEADERS} rows={ROWS} />
       <FlexWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={img15}
           alt={makeAltText("nine", "seventh", "BYE BYE BYE")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img16}
           alt={makeAltText("eighteen", "thirteenth", "INDICATOR INDICATOR")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img17}
           alt={makeAltText("fifteen", "fourteenth", "GIRLS GIRLS GIRLS")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img18}
           alt={makeAltText("twelve", "twelfth", "WELL WELL WELL")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img19}
           alt={makeAltText("sixteen", "fourteenth", "PROMISES PROMISES")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img20}
           alt={makeAltText(
             "thirty-three",
@@ -184,7 +184,7 @@ const Solution = () => {
             "BEETLEJUICE BEETLEJUICE BEETLEJUICE",
           )}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img21}
           alt={makeAltText(
             "fifty-six",
@@ -192,20 +192,20 @@ const Solution = () => {
             "BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFLO",
           )}
         />
-        <PuzzleImage src={img22} alt={makeAltText("six", "sixth", "POM POM")} />
-        <PuzzleImage
+        <LinkedImage src={img22} alt={makeAltText("six", "sixth", "POM POM")} />
+        <LinkedImage
           src={img23}
           alt={makeAltText("eight", "fifth", "PUTT PUTT")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img24}
           alt={makeAltText("ten", "seventh", "FIFTY FIFTY")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img25}
           alt={makeAltText("fourteen", "ninth", "ANDANTE ANDANTE")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img26}
           alt={makeAltText(
             "twenty-four",
@@ -213,8 +213,8 @@ const Solution = () => {
             "LOCATION LOCATION LOCATION",
           )}
         />
-        <PuzzleImage src={img27} alt={makeAltText("four", "fourth", "SO SO")} />
-        <PuzzleImage
+        <LinkedImage src={img27} alt={makeAltText("four", "fourth", "SO SO")} />
+        <LinkedImage
           src={img28}
           alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long. In counterclockwise order, the squares read BILLS BILLS BILLS, then JUMPIN JUMPIN, then NO NO NO."
         />
