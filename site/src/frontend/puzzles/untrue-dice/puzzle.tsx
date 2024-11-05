@@ -24,7 +24,7 @@ import {
   MSqrt,
   MSub,
   MSup,
-} from "./mathml";
+} from "../../components/MathML";
 
 const SpacedBlock = styled.div`
   margin: 32px 0px;
