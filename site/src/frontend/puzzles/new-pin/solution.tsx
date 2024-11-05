@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Math, MI, MN, MO } from "../../components/MathML";
 
 const Solution = (): JSX.Element => {
