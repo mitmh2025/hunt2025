@@ -46,7 +46,6 @@ export const StakeoutHeader = styled(PuzzleHeader)`
 export const StakeoutMain = styled(PuzzleMain)`
   border: 1.85rem solid var(--white);
   border-bottom-width: 5.85rem;
-  padding: 0.15rem;
   border-radius: 0.5rem;
   background-color: #f8f8f6dd;
   background: linear-gradient(
