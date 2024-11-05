@@ -17,6 +17,7 @@ import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ShellCorporationSix from "./mild-octopus";
 import AMathQuiz from "./new-pin";
+import DearDiary from "./overlooked-compound";
 import OnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import TheJewelryStore from "./reliable-night";
@@ -47,6 +48,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
   broken_record: BrokenRecord,
+  dear_diary: DearDiary,
   fight_night_at_mos: FightNightAtMos,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
