@@ -208,7 +208,7 @@ const Puzzle = () => {
           engrailed within which tenné all charged with the name of the noble
           house azure, in base three bars argent, tenné, and argent.
         </i>{" "}
-        That of the defenders was ostentatious:
+        That of the defenders was ostentatious:{" "}
         <i>
           Azure, a star argent debruised with a crescent gules two bars argent
           with a gyron sinister azure semy of estoiles itself with a roundel
