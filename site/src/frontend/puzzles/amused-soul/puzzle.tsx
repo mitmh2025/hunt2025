@@ -5,7 +5,7 @@ import img2 from "./assets/img2.png";
 
 const FlexWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   gap: 16px;
   align-items: center;
 `;
