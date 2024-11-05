@@ -1,5 +1,17 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  Math,
+  MFrac,
+  MI,
+  MN,
+  MO,
+  MRoot,
+  MRow,
+  MSqrt,
+  MSub,
+  MSup,
+} from "../../components/MathML";
 import img_01 from "./assets/01.jpg";
 import img_02 from "./assets/02.jpg";
 import img_03 from "./assets/03.jpg";
@@ -13,18 +25,6 @@ import img_10 from "./assets/10.jpg";
 import img_11 from "./assets/11.jpg";
 import img_12 from "./assets/12.jpg";
 import img_13 from "./assets/13.jpg";
-import {
-  Math,
-  MFrac,
-  MI,
-  MN,
-  MO,
-  MRoot,
-  MRow,
-  MSqrt,
-  MSub,
-  MSup,
-} from "./mathml";
 
 const SpacedBlock = styled.div`
   margin: 32px 0px;

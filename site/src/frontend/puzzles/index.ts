@@ -16,6 +16,7 @@ import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ShellCorporationSix from "./mild-octopus";
+import AMathQuiz from "./new-pin";
 import OnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import TheJewelryStore from "./reliable-night";
@@ -42,6 +43,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_art_gallery: TheArtGallery,
 
   // Stakeout
+  a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
   broken_record: BrokenRecord,
   just_plane_wrong: JustPlaneWrong,

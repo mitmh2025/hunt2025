@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Math, MFrac, MI, MN, MO, MSub } from "./mathml";
+import { Math, MFrac, MI, MN, MO, MSub } from "../../components/MathML";
 
 const CenteredTable = styled.table`
   th,
