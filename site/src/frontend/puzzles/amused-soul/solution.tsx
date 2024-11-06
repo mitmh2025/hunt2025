@@ -22,6 +22,8 @@ const Tile = styled.div`
 const Rack = styled.div`
   display: inline-flex;
   margin-right: 16px;
+  margin-bottom: 8px;
+  gap: 8px;
 `;
 
 const RACKS: { tiles: string[]; score: number }[] = [
