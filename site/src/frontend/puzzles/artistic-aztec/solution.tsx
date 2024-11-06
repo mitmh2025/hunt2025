@@ -27,6 +27,7 @@ import img24 from "./assets/img24.png";
 import img25 from "./assets/img25.png";
 import img26 from "./assets/img26.png";
 import img27 from "./assets/img27.png";
+import PuzzleImage from "../../components/PuzzleImage";
 
 const Mono = styled.span`
   font-family: monospace;
@@ -42,7 +43,7 @@ const FlexFullWidth = styled.div`
   }
 `;
 
-const SizedImage = styled.img`
+const SizedWrapper = styled.div`
   width: 100%;
 `;
 
@@ -59,154 +60,102 @@ const Solution = () => {
         you get a 3D model of a <Mono>FIRE EXTINGUISHER</Mono>.
       </p>
       <FlexFullWidth>
-        <a href={img01} target="_blank" rel="noreferrer">
-          <SizedImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img14} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img14}
-            alt="A 3D rendering of the handle of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img14}
+          alt="A 3D rendering of the handle of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img02} target="_blank" rel="noreferrer">
-          <SizedImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img15} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img15}
-            alt="A 3D rendering of the hose of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img15}
+          alt="A 3D rendering of the hose of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img03} target="_blank" rel="noreferrer">
-          <SizedImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img16} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img16}
-            alt="A 3D rendering of part of the operating lever of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img16}
+          alt="A 3D rendering of part of the operating lever of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img04} target="_blank" rel="noreferrer">
-          <SizedImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img17} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img17}
-            alt="A 3D rendering of a cuboid slice of the top half of the tank of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img17}
+          alt="A 3D rendering of a cuboid slice of the top half of the tank of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img05} target="_blank" rel="noreferrer">
-          <SizedImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img18} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img18}
-            alt="A 3D rendering of a cuboid slice of the bottom half of the tank of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img18}
+          alt="A 3D rendering of a cuboid slice of the bottom half of the tank of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img06} target="_blank" rel="noreferrer">
-          <SizedImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img19} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img19}
-            alt="A 3D rendering of the hemispherical top of a fire extinguisher, including part of the valve, and with a cuboid slice taken out."
-          />
-        </a>
+        <PuzzleImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img19}
+          alt="A 3D rendering of the hemispherical top of a fire extinguisher, including part of the valve, and with a cuboid slice taken out."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img07} target="_blank" rel="noreferrer">
-          <SizedImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img20} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img20}
-            alt="A 3D rendering of part of the valve of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img20}
+          alt="A 3D rendering of part of the valve of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img08} target="_blank" rel="noreferrer">
-          <SizedImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img21} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img21}
-            alt="A 3D rendering of part of the operating lever of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img21}
+          alt="A 3D rendering of part of the operating lever of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img09} target="_blank" rel="noreferrer">
-          <SizedImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img22} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img22}
-            alt="A 3D rendering of the pin of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img22}
+          alt="A 3D rendering of the pin of a fire extinguisher."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img10} target="_blank" rel="noreferrer">
-          <SizedImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img23} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img23}
-            alt="A 3D rendering of the part of the tank of a fire extinguisher with a cuboid slice taken out."
-          />
-        </a>
+        <PuzzleImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img23}
+          alt="A 3D rendering of the part of the tank of a fire extinguisher with a cuboid slice taken out."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img11} target="_blank" rel="noreferrer">
-          <SizedImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img24} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img24}
-            alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
-          />
-        </a>
+        <PuzzleImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img24}
+          alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img12} target="_blank" rel="noreferrer">
-          <SizedImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img25} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img25}
-            alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
-          />
-        </a>
+        <PuzzleImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img25}
+          alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
+        />
       </FlexFullWidth>
       <FlexFullWidth>
-        <a href={img13} target="_blank" rel="noreferrer">
-          <SizedImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        </a>
-        <a href={img26} target="_blank" rel="noreferrer">
-          <SizedImage
-            src={img26}
-            alt="A 3D rendering of the nozzle of a fire extinguisher."
-          />
-        </a>
+        <PuzzleImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <PuzzleImage
+          src={img26}
+          alt="A 3D rendering of the nozzle of a fire extinguisher."
+        />
       </FlexFullWidth>
-      <a href={img27} target="_blank" rel="noreferrer">
-        <SizedImage
+      <SizedWrapper>
+        <PuzzleImage
           src={img27}
           alt="A 3D rendering of a fire extinguisher, assembled from the 3D renderings above."
         />
-      </a>
+      </SizedWrapper>
     </>
   );
 };
