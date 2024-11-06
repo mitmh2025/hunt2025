@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -14,7 +15,7 @@ import img11 from "./assets/img11.png";
 import img12 from "./assets/img12.png";
 import img13 from "./assets/img13.png";
 
-const SizedImage = styled.img`
+const SizedWrapper = styled.div`
   width: 100%;
 `;
 
@@ -24,45 +25,45 @@ const PUZZLE_IMAGE_ALT_TEXT =
 const Puzzle = () => {
   return (
     <>
-      <a href={img01} target="_blank" rel="noreferrer">
-        <SizedImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img02} target="_blank" rel="noreferrer">
-        <SizedImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img03} target="_blank" rel="noreferrer">
-        <SizedImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img04} target="_blank" rel="noreferrer">
-        <SizedImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img05} target="_blank" rel="noreferrer">
-        <SizedImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img06} target="_blank" rel="noreferrer">
-        <SizedImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img07} target="_blank" rel="noreferrer">
-        <SizedImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img08} target="_blank" rel="noreferrer">
-        <SizedImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img09} target="_blank" rel="noreferrer">
-        <SizedImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img10} target="_blank" rel="noreferrer">
-        <SizedImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img11} target="_blank" rel="noreferrer">
-        <SizedImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img12} target="_blank" rel="noreferrer">
-        <SizedImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
-      <a href={img13} target="_blank" rel="noreferrer">
-        <SizedImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
-      </a>
+      <SizedWrapper>
+        <PuzzleImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
+      <SizedWrapper>
+        <PuzzleImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
+      </SizedWrapper>
     </>
   );
 };
