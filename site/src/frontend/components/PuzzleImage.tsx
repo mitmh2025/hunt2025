@@ -5,10 +5,10 @@ const StyledImg = styled.img`
   width: 100%;
 `;
 
-interface PuzzleImageProps {
+type PuzzleImageProps = {
   alt: string;
   src: string;
-}
+};
 
 /**
  * Convenience wrapper for an image embedded in a puzzle that should open a full-size version of itself in a new tab when clicked.

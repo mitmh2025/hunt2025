@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import img15 from "./assets/img15.png";
 import img16 from "./assets/img16.png";
 import img17 from "./assets/img17.png";
@@ -14,7 +15,6 @@ import img25 from "./assets/img25.png";
 import img26 from "./assets/img26.png";
 import img27 from "./assets/img27.png";
 import img28 from "./assets/img28.png";
-import PuzzleImage from "../../components/PuzzleImage";
 
 const FlexWrapper = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import image from "./assets/img.png";
 import PuzzleImage from "../../components/PuzzleImage";
+import image from "./assets/img.png";
 
 const StyledImageWrapper = styled.div`
   width: 100%;

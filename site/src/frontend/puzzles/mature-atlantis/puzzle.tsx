@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -18,7 +19,6 @@ import img15 from "./assets/img15.png";
 import img16 from "./assets/img16.png";
 import img17 from "./assets/img17.png";
 import img18 from "./assets/img18.png";
-import PuzzleImage from "../../components/PuzzleImage";
 
 const StyledImageWrapper = styled.div`
   width: 400px;

@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -27,7 +28,6 @@ import img24 from "./assets/img24.png";
 import img25 from "./assets/img25.png";
 import img26 from "./assets/img26.png";
 import img27 from "./assets/img27.png";
-import PuzzleImage from "../../components/PuzzleImage";
 
 const Mono = styled.span`
   font-family: monospace;
