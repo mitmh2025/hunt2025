@@ -9,6 +9,10 @@ const StyledP = styled.p`
   margin-left: 16px;
 `;
 
+const StyledTable = styled.table`
+  margin-bottom: 1em;
+`;
+
 const StyledTd = styled.td`
   padding: 0px 8px;
 `;
@@ -65,7 +69,7 @@ const Solution = (): JSX.Element => {
         new word (which disambiguates which letters should be added to form a
         new word).
       </p>
-      <table>
+      <StyledTable>
         <tr>
           <th>Silent Letter</th>
           <th>Hidden Word</th>
@@ -118,7 +122,7 @@ const Solution = (): JSX.Element => {
           <StyledTd>H</StyledTd>
           <StyledTd>g[h]ost</StyledTd>
         </tr>
-      </table>
+      </StyledTable>
       <p>
         The extraction is the silent letters themselves, instructing the solver
         to <Mono>ANSWER SPEECH</Mono>, giving the final answer:{" "}
@@ -138,11 +142,25 @@ const Solution = (): JSX.Element => {
           This puzzle started out as a much longer detective story based on the
           phrase “it was quiet, a little too quiet.” When it was simplified and
           then the answer SPEECH was assigned, I still had that in mind and
-          immediately thought about the Summation Gathering trope. I find that
-          trope both ridiculous and yet satisfying. If you also enjoy it, I
-          recommend the Bernie Rhodenbarr books by Lawrence Block, in which the
-          protagonist is actually a burglar who continually ends up having to
-          solve murder mysteries.
+          immediately thought about the{" "}
+          <a
+            href="https://tvtropes.org/pmwiki/pmwiki.php/Main/SummationGathering"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Summation Gathering trope
+          </a>
+          . I find that trope both ridiculous and yet satisfying. If you also
+          enjoy it, I recommend the{" "}
+          <a
+            href="https://lawrenceblock.com/series/bernie/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Bernie Rhodenbarr books
+          </a>{" "}
+          by Lawrence Block, in which the protagonist is actually a burglar who
+          continually ends up having to solve murder mysteries.
         </div>
       </p>
     </>

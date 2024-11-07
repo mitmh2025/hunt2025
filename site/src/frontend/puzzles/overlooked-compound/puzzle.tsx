@@ -13,7 +13,7 @@ const Fonts = createGlobalStyle`
 
 const FontParagraph = styled.p`
   font-family: "Caveat";
-  font-size: 18px;
+  font-size: 20px;
 `;
 
 const Puzzle = (): JSX.Element => {
