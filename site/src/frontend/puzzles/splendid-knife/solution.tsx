@@ -5,6 +5,10 @@ const Mono = styled.span`
   font-family: monospace;
 `;
 
+const StyledTable = styled.table`
+  margin-bottom: 1em;
+`;
+
 const StyledTd = styled.td`
   padding: 0px 8px;
 `;
@@ -13,7 +17,7 @@ const Solution = (): JSX.Element => {
   return (
     <>
       <p>
-        This puzzle is about the Mohs hardness scale as hinted at in “Moe’s” and
+        This puzzle is about the Mohs hardness scale as hinted at in “Mo’s” and
         “too soft.”
       </p>
       <p>
@@ -24,7 +28,7 @@ const Solution = (): JSX.Element => {
         the alphabet letter extraction (A-Z =1-26). ?s represent the order for
         the extracted letters. From top to bottom in bracket:
       </p>
-      <table>
+      <StyledTable>
         <tr>
           <th>Description</th>
           <th>Wordplay</th>
@@ -119,7 +123,7 @@ const Solution = (): JSX.Element => {
           <StyledTd></StyledTd>
           <StyledTd>-</StyledTd>
         </tr>
-      </table>
+      </StyledTable>
       The final answer is{" "}
       <Mono>
         <strong>JADE</strong>

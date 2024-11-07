@@ -88,7 +88,7 @@ const Solution = () => {
       </p>
       <p>
         Answering that question gives the interim answer <Mono>AU</Mono> (one
-        astronomical unit.)
+        astronomical unit).
       </p>
       <p>
         Converting that back to its element name gives the actual answer:{" "}
