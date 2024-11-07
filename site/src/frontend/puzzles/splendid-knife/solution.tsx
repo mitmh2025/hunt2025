@@ -85,7 +85,7 @@ const Solution = (): JSX.Element => {
           <StyledTd>-</StyledTd>
         </tr>
         <tr>
-          <StyledTd>Two images of jib sales added together</StyledTd>
+          <StyledTd>Two images of jib sails added together</StyledTd>
           <StyledTd>Jib Sum</StyledTd>
           <StyledTd>Gypsum</StyledTd>
           <StyledTd>2</StyledTd>
