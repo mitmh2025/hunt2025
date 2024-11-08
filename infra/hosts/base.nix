@@ -1,6 +1,11 @@
+{ lib, ... }:
 {
   config = {
     system.stateVersion = "24.05";
+
+    # Don't keep old generations around
+    nix.gc.automatic = lib.mkDefault true;
+    nix.gc.options = lib.mkDefault "-d";
 
     # Allow console login with no password
     users.users.root.hashedPassword = "";

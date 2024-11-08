@@ -11,11 +11,6 @@
       sops.defaultSopsFile = ../../secrets/staging.yaml;
     }
     {
-      nix.gc.automatic = true;
-      # Only keep the most recent generation
-      nix.gc.options = "-d";
-    }
-    {
       nixpkgs.overlays = [(final: prev: {
         hunt2025 = prev.hunt2025.overrideAttrs {
           npmBuildScript = "build-dev";
