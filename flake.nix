@@ -121,11 +121,11 @@
           # TODO: use ${system} to allow running from macOS
           default = {
             type = "app";
-            program = "${self.nixosConfigurations.dev-vm.config.system.build.vm}/bin/run-dev-vm-vm";
+            program = "${self.nixosConfigurations.local.dev-vm.config.system.build.vm}/bin/run-dev-vm-vm";
           };
           dev-vm-base = {
             type = "app";
-            program = "${self.nixosConfigurations.dev-vm-base.config.system.build.vm}/bin/run-dev-vm-base-vm";
+            program = "${self.nixosConfigurations.local.dev-vm-base.config.system.build.vm}/bin/run-dev-vm-base-vm";
           };
         };
         dockerImages.nix-cache = import ./infra/lib/docker-image.nix {
@@ -147,13 +147,20 @@
           }
           sops-nix.nixosModules.sops
         ];
-        nixosConfigurations = nixpkgs.lib.genAttrs [
-          "gce-image"
-          "dev-vm-base"
-          "dev-vm"
-          "staging"
-          "dev"
-        ] (name: nixpkgs.lib.nixosSystem {
+        nixosConfigurations = let
+          genAttrsByPath = paths: fn: nixpkgs.lib.updateManyAttrsByPath (map (path: {
+            inherit path;
+            update = _: (fn path);
+          }) paths) {};
+        in genAttrsByPath [
+          ["gce-image"]
+          ["local" "dev-vm-base"]
+          ["local" "dev-vm"]
+          ["staging" "staging"]
+          ["staging" "dev"]
+        ] (path: let
+          name = nixpkgs.lib.path.subpath.join path;
+        in nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
             inherit authentik radio-media;
@@ -161,14 +168,14 @@
           modules = [
             ./infra/hosts/${name}.nix
             {
-              system.name = name;
+              system.name = nixpkgs.lib.last path;
             }
           ] ++ self.baseNixosModules;
         });
         overlays.default = import ./infra/pkgs/all-packages.nix { inherit self; };
         ciBuildTargets = {
           inherit (self.packages.x86_64-linux) terraformConfigurations;
-          staging = self.nixosConfigurations.staging.config.system.build.toplevel;
+          staging = self.nixosConfigurations.staging.staging.config.system.build.toplevel;
         };
       };
 }

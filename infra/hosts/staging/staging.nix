@@ -1,17 +1,17 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ../services/gce-vm.nix
-    ./base.nix
-    ../services/postgres.nix
-    ../services/redis.nix
-    ../services/authentik
-    ../services/zammad.nix
-    ../services/radio.nix
+    ../../services/gce-vm.nix
+    ../base.nix
+    ../../services/postgres.nix
+    ../../services/redis.nix
+    ../../services/authentik
+    ../../services/zammad.nix
+    ../../services/radio.nix
   ];
   config = lib.mkMerge [
     {
-      sops.defaultSopsFile = ./../secrets/staging.yaml;
+      sops.defaultSopsFile = ../../secrets/staging.yaml;
     }
     {
       hunt2025.site = {

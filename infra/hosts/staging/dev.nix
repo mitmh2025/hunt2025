@@ -1,14 +1,14 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ../services/gce-vm.nix
-    ./base.nix
-    ../services/postgres.nix
-    ../services/redis.nix
+    ../../services/gce-vm.nix
+    ../base.nix
+    ../../services/postgres.nix
+    ../../services/redis.nix
   ];
   config = lib.mkMerge [
     {
-      sops.defaultSopsFile = ./../secrets/staging.yaml;
+      sops.defaultSopsFile = ../../secrets/staging.yaml;
     }
     {
       nix.gc.automatic = true;
