@@ -22,7 +22,6 @@ import { Passport } from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { adminContract } from "../../lib/api/admin_contract";
-import { type TeamState } from "../../lib/api/client";
 import { c, authContract, publicContract } from "../../lib/api/contract";
 import {
   type InternalActivityLogEntry,
@@ -33,8 +32,12 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
-import { activityLog, type Mutator, registerTeam } from "./data";
-import { getTeamState as dbGetTeamState } from "./db";
+import {
+  activityLog,
+  type Mutator,
+  registerTeam,
+  teamRegistrationLog,
+} from "./data";
 import {
   formatActivityLogEntryForApi,
   formatTeamHuntState,
@@ -42,8 +45,9 @@ import {
   cleanupActivityLogEntryFromDB,
   TeamStateIntermediate,
   cleanupTeamRegistrationLogEntryFromDB,
+  TeamInfoIntermediate,
 } from "./logic";
-import type { RedisClient } from "./redis";
+import { type RedisClient } from "./redis";
 
 type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
@@ -129,22 +133,34 @@ export function getRouter({
   const s = initServer();
 
   const slugToSlotMap = generateSlugToSlotMap(hunt);
-  const getTeamState = async (
-    team_id: number,
-    trx: Knex.Transaction,
-  ): Promise<TeamState> => {
-    const { team_name, activity_log } = await dbGetTeamState(team_id, trx);
-    const team_state = activity_log.reduce(
+  const getTeamState = async (team_id: number) => {
+    const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
+      knex,
+      redisClient,
+      team_id,
+    );
+    const info = team_registration_log.entries
+      .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
+      .formatTeamInfo();
+    if (info === undefined) {
+      return {
+        status: 404 as const,
+        body: null,
+      };
+    }
+    const team_state = (
+      await activityLog.getCachedTeamLog(knex, redisClient, team_id)
+    ).entries.reduce(
       (acc, entry) => acc.reduce(entry),
       new TeamStateIntermediate(hunt),
     );
     return {
-      teamId: team_id,
-      info: {
-        epoch: 1,
-        teamName: team_name,
+      status: 200 as const,
+      body: {
+        teamId: team_id,
+        info,
+        state: formatTeamHuntState(hunt, team_state),
       },
-      state: formatTeamHuntState(hunt, team_state),
     };
   };
 
@@ -367,12 +383,7 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          return {
-            status: 200,
-            body: await knex.transaction(getTeamState.bind(null, team_id), {
-              readOnly: true,
-            }),
-          };
+          return await getTeamState(team_id);
         },
       },
       getPuzzleState: {
@@ -640,13 +651,7 @@ export function getRouter({
       getTeamState: {
         middleware: adminAuthMiddlewares,
         handler: async ({ params: { teamId } }) => {
-          return {
-            status: 200 as const,
-            body: await knex.transaction(
-              getTeamState.bind(null, parseInt(teamId, 10)),
-              { readOnly: true },
-            ),
-          };
+          return await getTeamState(parseInt(teamId, 10));
         },
       },
       getPuzzleState: {
