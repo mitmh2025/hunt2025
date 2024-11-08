@@ -89,6 +89,10 @@ export type InteractionGraphNodeWithChoices<T, S> =
       | InteractionGraphNodeChoice<T>[]
       | ((state: T) => InteractionGraphNodeChoice<T>[]);
   };
+export type InteractionGraphNodeWithPlugin<S, P> =
+  InteractionGraphNodeShared<S> & {
+    plugin: P;
+  };
 export type InteractionGraphNodeTerminal<T, R, S> =
   InteractionGraphNodeShared<S> & {
     // If present, this node is a final state in the state graph.  When
@@ -98,30 +102,36 @@ export type InteractionGraphNodeTerminal<T, R, S> =
     finalState: (state: T) => R;
   };
 
-export type InteractionGraphNode<T, R, S> =
+export type InteractionGraphNode<T, R, S, P> =
   | InteractionGraphNodeWithNext<T, S>
   | InteractionGraphNodeWithChoices<T, S>
+  | InteractionGraphNodeWithPlugin<S, P>
   | InteractionGraphNodeTerminal<T, R, S>;
 
-export function isNextNode<T, R, S>(
-  node: InteractionGraphNode<T, R, S>,
+export function isNextNode<T, R, S, P>(
+  node: InteractionGraphNode<T, R, S, P>,
 ): node is InteractionGraphNodeWithNext<T, S> {
   return Object.prototype.hasOwnProperty.call(node, "next");
 }
-export function isChoiceNode<T, R, S>(
-  node: InteractionGraphNode<T, R, S>,
+export function isChoiceNode<T, R, S, P>(
+  node: InteractionGraphNode<T, R, S, P>,
 ): node is InteractionGraphNodeWithChoices<T, S> {
   return Object.prototype.hasOwnProperty.call(node, "choices");
 }
-export function isTerminalNode<T, R, S>(
-  node: InteractionGraphNode<T, R, S>,
+export function isPluginNode<T, R, S, P>(
+  node: InteractionGraphNode<T, R, S, P>,
+): node is InteractionGraphNodeWithPlugin<S, P> {
+  return Object.prototype.hasOwnProperty.call(node, "plugin");
+}
+export function isTerminalNode<T, R, S, P>(
+  node: InteractionGraphNode<T, R, S, P>,
 ): node is InteractionGraphNodeTerminal<T, R, S> {
   return Object.prototype.hasOwnProperty.call(node, "finalState");
 }
 
-export type InteractionGraph<T, R, S extends string> = {
+export type InteractionGraph<T, R, S extends string, P = never> = {
   // The universe of nodes that are reachable within this graph.
-  nodes: InteractionGraphNode<T, R, S>[];
+  nodes: InteractionGraphNode<T, R, S, P>[];
 
   // The id of the node at which this interaction starts.
   starting_node: NodeId;

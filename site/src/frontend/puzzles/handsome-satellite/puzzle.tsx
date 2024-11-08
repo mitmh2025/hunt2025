@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -44,51 +45,32 @@ const Puzzle = () => {
         <li>Hole to get water</li>
       </ul>
       <FlexWrapper>
-        <a href={img01} target="_blank" rel="noreferrer">
-          <img src={img01} alt={makeAltText("nine", "seventh")} />
-        </a>
-        <a href={img02} target="_blank" rel="noreferrer">
-          <img src={img02} alt={makeAltText("eighteen", "thirteenth")} />
-        </a>
-        <a href={img03} target="_blank" rel="noreferrer">
-          <img src={img03} alt={makeAltText("fifteen", "fourteenth")} />
-        </a>
-        <a href={img04} target="_blank" rel="noreferrer">
-          <img src={img04} alt={makeAltText("twelve", "twelfth")} />
-        </a>
-        <a href={img05} target="_blank" rel="noreferrer">
-          <img src={img05} alt={makeAltText("sixteen", "fourteenth")} />
-        </a>
-        <a href={img06} target="_blank" rel="noreferrer">
-          <img src={img06} alt={makeAltText("thirty-three", "twenty-ninth")} />
-        </a>
-        <a href={img07} target="_blank" rel="noreferrer">
-          <img src={img07} alt={makeAltText("fifty-six", "fifty-first")} />
-        </a>
-        <a href={img08} target="_blank" rel="noreferrer">
-          <img src={img08} alt={makeAltText("six", "six")} />
-        </a>
-        <a href={img09} target="_blank" rel="noreferrer">
-          <img src={img09} alt={makeAltText("eight", "fifth")} />
-        </a>
-        <a href={img10} target="_blank" rel="noreferrer">
-          <img src={img10} alt={makeAltText("ten", "seventh")} />
-        </a>
-        <a href={img11} target="_blank" rel="noreferrer">
-          <img src={img11} alt={makeAltText("fourteen", "ninth")} />
-        </a>
-        <a href={img12} target="_blank" rel="noreferrer">
-          <img src={img12} alt={makeAltText("twenty-four", "twenty-fourth")} />
-        </a>
-        <a href={img13} target="_blank" rel="noreferrer">
-          <img src={img13} alt={makeAltText("four", "fourth")} />
-        </a>
-        <a href={img14} target="_blank" rel="noreferrer">
-          <img
-            src={img14}
-            alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long."
-          />
-        </a>
+        <PuzzleImage src={img01} alt={makeAltText("nine", "seventh")} />
+        <PuzzleImage src={img02} alt={makeAltText("eighteen", "thirteenth")} />
+        <PuzzleImage src={img03} alt={makeAltText("fifteen", "fourteenth")} />
+        <PuzzleImage src={img04} alt={makeAltText("twelve", "twelfth")} />
+        <PuzzleImage src={img05} alt={makeAltText("sixteen", "fourteenth")} />
+        <PuzzleImage
+          src={img06}
+          alt={makeAltText("thirty-three", "twenty-ninth")}
+        />
+        <PuzzleImage
+          src={img07}
+          alt={makeAltText("fifty-six", "fifty-first")}
+        />
+        <PuzzleImage src={img08} alt={makeAltText("six", "six")} />
+        <PuzzleImage src={img09} alt={makeAltText("eight", "fifth")} />
+        <PuzzleImage src={img10} alt={makeAltText("ten", "seventh")} />
+        <PuzzleImage src={img11} alt={makeAltText("fourteen", "ninth")} />
+        <PuzzleImage
+          src={img12}
+          alt={makeAltText("twenty-four", "twenty-fourth")}
+        />
+        <PuzzleImage src={img13} alt={makeAltText("four", "fourth")} />
+        <PuzzleImage
+          src={img14}
+          alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long."
+        />
       </FlexWrapper>
     </>
   );

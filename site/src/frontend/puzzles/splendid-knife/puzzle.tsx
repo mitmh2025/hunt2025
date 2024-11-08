@@ -1,8 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import image from "./assets/img.png";
 
-const StyledImg = styled.img`
+const StyledImageWrapper = styled.div`
   width: 100%;
 `;
 
@@ -15,9 +16,9 @@ const Puzzle = (): JSX.Element => {
       <p className="puzzle-flavor">
         Some of these fighters are too soft to make it.
       </p>
-      <a href={image} target="_blank" rel="noreferrer">
-        <StyledImg src={image} alt={ALT_TEXT} />
-      </a>
+      <StyledImageWrapper>
+        <PuzzleImage src={image} alt={ALT_TEXT} />
+      </StyledImageWrapper>
     </>
   );
 };

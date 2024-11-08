@@ -13,7 +13,7 @@ const Fonts = createGlobalStyle`
 
 const FontParagraph = styled.p`
   font-family: "Caveat";
-  font-size: 18px;
+  font-size: 20px;
 `;
 
 const Puzzle = (): JSX.Element => {
@@ -45,7 +45,7 @@ const Puzzle = (): JSX.Element => {
         given the vase and the stipulated ransom. One day perhaps we’ll look
         back at that ridiculous scene and the ensuing sandal and laugh together
         over a pint. Restitution might be necessary first, though, as rather
-        than tanks, I earned the entire royal family’s animus. Lessons learned:
+        than tanks, I earned the entire royal family’s animus. Lesson learned:
         not every case can have a sensational revel and a spectacular ending.
         Ostentatious explanations are just my nature I suppose, but I must keep
         tying to retrain myself and review my notes to find everything that is

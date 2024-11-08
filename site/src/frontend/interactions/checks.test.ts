@@ -1,5 +1,8 @@
 import { test } from "@jest/globals";
 import ArtGalleryInteractionGraph from "./interview_at_the_art_gallery/graph";
+import BoardwalkInteractionGraph, {
+  type BoardwalkInteractionState,
+} from "./interview_at_the_boardwalk/graph";
 import CasinoInteractionGraph from "./interview_at_the_casino/graph";
 import JewelryStoreInteractionGraph from "./interview_at_the_jewelry_store/graph";
 import {
@@ -8,15 +11,16 @@ import {
   type NodeId,
   isNextNode,
   isChoiceNode,
+  isPluginNode,
   isTerminalNode,
 } from "./types";
 
-function checkAllNodeIdsUnique<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
+function checkAllNodeIdsUnique<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
 ) {
   const seen = new Map<
     string,
-    { node: InteractionGraphNode<T, R, S>; position: number }
+    { node: InteractionGraphNode<T, R, S, P>; position: number }
   >();
   const errors: string[] = [];
   graph.nodes.forEach((node, i) => {
@@ -36,9 +40,9 @@ function checkAllNodeIdsUnique<T, R, S extends string>(
   }
 }
 
-function checkStartingNodePresent<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function checkStartingNodePresent<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
 ) {
   if (!indexedNodes.has(graph.starting_node)) {
     throw new Error(
@@ -58,9 +62,9 @@ type Path<R> = {
   result: R;
 };
 
-function allPaths<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function allPaths<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
 ): Path<R>[] {
   const start = {
     current: graph.starting_node,
@@ -117,6 +121,47 @@ function allPaths<T, R, S extends string>(
         path: [...path, current],
         result: currentNode.finalState(state),
       });
+    } else if (isPluginNode(currentNode)) {
+      // A pseudo implementation of what the plugin nodes are expected to do,
+      // which is (maybe) increment state.wins and then jump to the
+      // appropriate node for the Nth win or loss
+      const biState = state as BoardwalkInteractionState;
+      const played =
+        (biState.played_skeeball ? 1 : 0) +
+        (biState.played_lucky_duck ? 1 : 0) +
+        (biState.played_pop_the_balloon ? 1 : 0);
+
+      // Consider the branch where this visit wins, and the one where this visit loses
+      // First, the win:
+      const winState = {
+        ...biState,
+        wins: biState.wins + 1,
+      };
+      const winNode =
+        winState.wins === 3
+          ? "third-win"
+          : winState.wins === 2
+            ? "second-win"
+            : "first-win";
+      queue.push({
+        current: winNode,
+        state: winState as T,
+        path: [...path, current],
+      });
+
+      // Then, the loss.  The loss state is unchanged from the current state.
+      const losses = played - biState.wins;
+      const lossNode =
+        losses === 3
+          ? "third-loss"
+          : losses === 2
+            ? "second-loss"
+            : "first-loss";
+      queue.push({
+        current: lossNode,
+        state,
+        path: [...path, current],
+      });
     } else {
       throw new Error("unreachable");
     }
@@ -124,8 +169,8 @@ function allPaths<T, R, S extends string>(
   return paths;
 }
 
-function checkAllNodesReachable<T, R, S extends string>(
-  graph: InteractionGraph<T, R, S>,
+function checkAllNodesReachable<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
   paths: Path<R>[],
 ) {
   const reachable = new Set();
@@ -146,8 +191,8 @@ function checkAllNodesReachable<T, R, S extends string>(
   }
 }
 
-function expectedTime<T, R, S extends string>(
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function expectedTime<T, R, S extends string, P>(
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
   path: Path<R>,
 ): number {
   // Compute the total of the timeout_msec for all the nodes visited along `path`
@@ -162,8 +207,8 @@ function expectedTime<T, R, S extends string>(
   return sum;
 }
 
-function printMinAndMaxRuntimes<T, R, S extends string>(
-  indexedNodes: Map<string, InteractionGraphNode<T, R, S>>,
+function printMinAndMaxRuntimes<T, R, S extends string, P>(
+  indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
   paths: Path<R>[],
 ) {
   const pathsWithTimes: [number, Path<R>][] = paths.map((path) => {
@@ -182,8 +227,10 @@ function printMinAndMaxRuntimes<T, R, S extends string>(
   console.log(`Longest path: ${longest[0] / 1000} seconds, path:`, longest[1]);
 }
 
-function checkGraph<T, R, S extends string>(graph: InteractionGraph<T, R, S>) {
-  const indexedNodes = new Map<string, InteractionGraphNode<T, R, S>>();
+function checkGraph<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
+) {
+  const indexedNodes = new Map<string, InteractionGraphNode<T, R, S, P>>();
   graph.nodes.forEach((node) => {
     indexedNodes.set(node.id, node);
   });
@@ -198,6 +245,10 @@ function checkGraph<T, R, S extends string>(graph: InteractionGraph<T, R, S>) {
 
 test("art gallery", () => {
   checkGraph(ArtGalleryInteractionGraph);
+});
+
+test("boardwalk", () => {
+  checkGraph(BoardwalkInteractionGraph);
 });
 
 test("casino", () => {

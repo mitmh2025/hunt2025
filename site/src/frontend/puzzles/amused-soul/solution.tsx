@@ -22,6 +22,8 @@ const Tile = styled.div`
 const Rack = styled.div`
   display: inline-flex;
   margin-right: 16px;
+  margin-bottom: 8px;
+  gap: 8px;
 `;
 
 const RACKS: { tiles: string[]; score: number }[] = [
@@ -86,7 +88,7 @@ const Solution = () => {
       </p>
       <p>
         Answering that question gives the interim answer <Mono>AU</Mono> (one
-        astronomical unit)
+        astronomical unit).
       </p>
       <p>
         Converting that back to its element name gives the actual answer:{" "}
