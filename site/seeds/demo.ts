@@ -20,34 +20,19 @@ export async function seed(knex: Knex): Promise<void> {
     username: string,
     populator?: (team_id: number, mutator: ActivityLogMutator) => Promise<void>,
   ) => {
-    if (
-      await retryOnAbort(knex, async (trx) => {
-        const existing_id = (
-          await trx("teams").where("username", username).select("id").first()
-        )?.id;
+    let team_id = await retryOnAbort(knex, async (trx) => {
+      const existing_id = (
+        await trx("teams").where("username", username).select("id").first()
+      )?.id;
 
-        if (existing_id) {
-          if (populator === undefined) {
-            return true;
-          }
-          await trx("team_registration_log")
-            .where("team_id", existing_id)
-            .del();
-          await trx("activity_log").where("team_id", existing_id).del();
-          await trx("teams").where("id", existing_id).del();
-        }
-        return false;
-      })
-    ) {
-      // Team already exists and doesn't need to be repopulated.
-      return;
-    }
+      if (populator !== undefined && existing_id !== undefined) {
+        await trx("activity_log").where("team_id", existing_id).del();
+      }
+      return existing_id;
+    });
 
-    await registerTeam(
-      HUNT,
-      undefined,
-      knex,
-      {
+    if (team_id === undefined) {
+      team_id = await registerTeam(undefined, knex, {
         username,
         password: "password",
         name: username,
@@ -63,23 +48,34 @@ export async function seed(knex: Knex): Promise<void> {
         peopleStaff: 0,
         peopleVisitor: 1,
         peopleMinor: 0,
-      },
-      populator,
-    );
+      });
+    }
+
+    if (populator !== undefined) {
+      await activityLog.executeMutation(
+        HUNT,
+        team_id,
+        undefined,
+        knex,
+        async (_, mutator) => {
+          await populator(team_id, mutator);
+        },
+      );
+    }
   };
 
   await createTeam("team");
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "round_unlocked",
         slug: round.slug,
       });
     }
     for (const slug of slugs) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "puzzle_unlockable",
         slug,
       });
@@ -89,21 +85,21 @@ export async function seed(knex: Knex): Promise<void> {
     // For the "unlocked" team: create puzzle_unlocked entries for all rounds & puzzles
     for (const round of HUNT.rounds) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "round_unlocked",
         slug: round.slug,
       });
     }
     for (const slug of slugs) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "puzzle_unlocked",
         slug,
       });
     }
     for (const gate of gates) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "gate_completed",
         slug: gate,
       });
@@ -114,14 +110,14 @@ export async function seed(knex: Knex): Promise<void> {
     // unlock all rounds and puzzles
     for (const round of HUNT.rounds) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "round_unlocked",
         slug: round.slug,
       });
     }
     for (const slug of slugs) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "puzzle_unlocked",
         slug,
       });
@@ -129,7 +125,7 @@ export async function seed(knex: Knex): Promise<void> {
     // satisfy all gates
     for (const gate of gates) {
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "gate_completed",
         slug: gate,
       });
@@ -141,7 +137,7 @@ export async function seed(knex: Knex): Promise<void> {
       const puzzle = PUZZLES[slug];
       const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
       await mutator.appendLog({
-        team_id: team_id,
+        team_id,
         type: "puzzle_solved",
         slug,
         data: {

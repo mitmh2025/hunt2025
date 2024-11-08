@@ -410,11 +410,9 @@ export class TeamRegistrationLog extends Log<
 export const teamRegistrationLog = new TeamRegistrationLog();
 
 export async function registerTeam(
-  hunt: Hunt,
   redisClient: RedisClient | undefined,
   knex: Knex.Knex,
   data: TeamRegistration,
-  extraSetup?: (team_id: number, mutator: ActivityLogMutator) => Promise<void>,
 ) {
   return await retryOnAbort(knex, async (trx) => {
     const team_id = await dbRegisterTeam(trx, data);
@@ -428,18 +426,6 @@ export async function registerTeam(
           team_id,
           data,
         });
-      },
-    );
-    await activityLog.executeMutation(
-      hunt,
-      team_id,
-      redisClient,
-      trx,
-      async (_, mutator) => {
-        mutator.dirtyTeam(team_id);
-        if (extraSetup !== undefined) {
-          await extraSetup(team_id, mutator);
-        }
       },
     );
     return team_id;
