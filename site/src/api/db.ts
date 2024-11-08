@@ -250,32 +250,6 @@ export async function getTeamIds(
   return trx("teams").pluck("id");
 }
 
-export async function getTeamNames(
-  team_ids: Iterable<number>,
-  trx: Knex.Knex.Transaction,
-): Promise<Record<number, string>> {
-  return Object.fromEntries(
-    (
-      await trx("teams")
-        .where("id", "in", Array.from(team_ids))
-        .select("id", "username")
-    ).map(({ id, username }) => [id, username]),
-  );
-}
-
-// TODO: rename to loadCanonicalTeamStateInputs or something like that
-export async function getTeamState(team_id: number, trx: Knex.Knex) {
-  const team = await trx("teams")
-    .where("id", team_id)
-    .select("username")
-    .first();
-  if (!team) throw new Error(`No team found for team_id ${team_id}`);
-  return {
-    team_name: team.username,
-    activity_log: await getActivityLog(team_id, undefined, trx),
-  };
-}
-
 export async function getActivityLog(
   team_id: number | undefined,
   since: number | undefined,
