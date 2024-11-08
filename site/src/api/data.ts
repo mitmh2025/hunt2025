@@ -252,7 +252,7 @@ abstract class Log<
     team_id: number | undefined,
     redisClient: RedisClient | undefined,
     knex: Knex.Knex,
-    fn: (trx: Knex.Knex.Transaction, mutator: M) => Promise<R>,
+    fn: (trx: Knex.Knex.Transaction, mutator: M) => R | PromiseLike<R>,
   ) {
     // All mutations need to follow a similar pattern for correctness:
     // 1. read the current log from cache if possible
@@ -346,7 +346,10 @@ export class ActivityLog extends Log<
     team_id: number | undefined,
     redisClient: RedisClient | undefined,
     knex: Knex.Knex,
-    fn: (trx: Knex.Knex.Transaction, mutator: ActivityLogMutator) => Promise<R>,
+    fn: (
+      trx: Knex.Knex.Transaction,
+      mutator: ActivityLogMutator,
+    ) => R | PromiseLike<R>,
   ) {
     const result = await super.executeRawMutation(
       team_id,
@@ -401,7 +404,7 @@ export class TeamRegistrationLog extends Log<
     fn: (
       trx: Knex.Knex.Transaction,
       mutator: TeamRegistrationLogMutator,
-    ) => Promise<R>,
+    ) => R | PromiseLike<R>,
   ) {
     return await this.executeRawMutation(team_id, redisClient, knex, fn);
   }
@@ -434,8 +437,7 @@ export async function registerTeam(
       team_id,
       redisClient,
       trx,
-      // eslint-disable-next-line @typescript-eslint/require-await -- the interface wants a promise but we have no async work to await in this case
-      async (_, mutator) => {
+      (_, mutator) => {
         // Force an initial recalculateTeamState for this new user
         mutator.dirtyTeam(team_id);
       },
