@@ -410,6 +410,7 @@ export class TeamRegistrationLog extends Log<
 export const teamRegistrationLog = new TeamRegistrationLog();
 
 export async function registerTeam(
+  hunt: Hunt,
   redisClient: RedisClient | undefined,
   knex: Knex.Knex,
   data: TeamRegistration,
@@ -426,6 +427,17 @@ export async function registerTeam(
           team_id,
           data,
         });
+      },
+    );
+    await activityLog.executeMutation(
+      hunt,
+      team_id,
+      redisClient,
+      trx,
+      // eslint-disable-next-line @typescript-eslint/require-await -- the interface wants a promise but we have no async work to await in this case
+      async (_, mutator) => {
+        // Force an initial recalculateTeamState for this new user
+        mutator.dirtyTeam(team_id);
       },
     );
     return team_id;

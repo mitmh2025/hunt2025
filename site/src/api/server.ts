@@ -360,7 +360,7 @@ export function getRouter({
         };
       },
       register: async ({ body }) => {
-        const team_id = await registerTeam(redisClient, knex, body);
+        const team_id = await registerTeam(hunt, redisClient, knex, body);
         const token = jwt.sign(
           {
             user: body.username,
