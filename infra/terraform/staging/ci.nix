@@ -24,12 +24,13 @@
     repository = "hunt2025";
     script = ''
       (
+        set +x
         umask 0077
         echo "$''${AUTOPUSH_KEY}" > /keys/autopush_key
       )
       # Deploy to dev
-      NIX_SSHOPTS="-i /keys/autopush_key -o StrictHostKeyChecking=no" nixos-rebuild switch --flake .#staging.dev --fast --target-host root@dev.mitmh2025.com
-      nix copy .#nixosConfigurations.staging.dev.config.system.build.toplevel --to ${config.ci.nix.cache.s3Url}
+      NIX_SSHOPTS="-i /keys/autopush_key -o StrictHostKeyChecking=no" nixos-rebuild switch --flake .#staging/dev --fast --target-host root@dev.mitmh2025.com
+      nix copy '.#nixosConfigurations."staging/dev".config.system.build.toplevel' --to ${config.ci.nix.cache.s3Url}
     '';
     secrets.AUTOPUSH_KEY = lib.tfRef "google_secret_manager_secret_version.autopush_key.id";
   };

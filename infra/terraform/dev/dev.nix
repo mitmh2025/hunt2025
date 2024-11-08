@@ -1,7 +1,7 @@
 { lib, self, ... }:
 {
   resource.nix_store_path_copy.dev_nixos = {
-    store_path = "${self.nixosConfigurations.staging.dev.config.system.build.toplevel}";
+    store_path = "${self.nixosConfigurations."staging/dev".config.system.build.toplevel}";
     to = "ssh-ng://root@dev.mitmh2025.com";
     check_sigs = false;
 
@@ -15,7 +15,7 @@
         host = "dev.mitmh2025.com";
       };
       inline = [
-        "${self.nixosConfigurations.dev.config.system.build.toplevel}/bin/switch-to-configuration switch"
+        "${self.nixosConfigurations."staging/dev".config.system.build.toplevel}/bin/switch-to-configuration switch"
       ];
     };
   };

@@ -49,6 +49,7 @@ in {
       in ''
         set -ex
         (
+          set +x
           umask 0077
           mkdir -p /keys
           ${writeKeys}

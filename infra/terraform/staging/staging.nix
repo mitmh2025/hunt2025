@@ -27,7 +27,7 @@ in {
     depends_on = [
       "google_compute_firewall.staging"
     ] ++ (builtins.map (n: "aws_route53_record.${n}") stagingAliases);
-    store_path = "${self.nixosConfigurations.staging.staging.config.system.build.toplevel}";
+    store_path = "${self.nixosConfigurations."staging/staging".config.system.build.toplevel}";
     to = "ssh-ng://root@\${aws_route53_record.staging.fqdn}";
     check_sigs = false;
 
@@ -41,7 +41,7 @@ in {
         host = lib.tfRef "aws_route53_record.staging.fqdn";
       };
       inline = [
-        "${self.nixosConfigurations.staging.staging.config.system.build.toplevel}/bin/switch-to-configuration switch"
+        "${self.nixosConfigurations."staging/staging".config.system.build.toplevel}/bin/switch-to-configuration switch"
       ];
     };
   };
