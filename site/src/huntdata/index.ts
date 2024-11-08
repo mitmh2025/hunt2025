@@ -361,14 +361,14 @@ const HUNT: Hunt = {
         // The first 5 puzzles are unlockable once they are discovered in the UI.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "kotei_no_ango" },
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "cross_spread" },
-        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "fechtbuch" },
+        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 },
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1, slug: "this_is_just_a_test" },
         { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1 },
         // The next 5 puzzles are unlockable once they are discovered in the
         // UI, but will not be discoverable until the corresponding lock is
         // satisfied.
-        { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1 },
-        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1 },
+        { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "bermuda_triangle" },
+        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "fechtbuch" },
         { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1 },
         { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1 },
         { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1 },

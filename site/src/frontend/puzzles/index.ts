@@ -23,6 +23,7 @@ import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import BermudaTriangle from "./selfish-king";
 import The10000SheetExcelFile from "./shoddy-table";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
@@ -69,6 +70,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_shell_game: TheShellGame,
 
   // Illegal Search
+  bermuda_triangle: BermudaTriangle,
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
   kotei_no_ango: KoteiNoAngo,
