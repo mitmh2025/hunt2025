@@ -37,7 +37,7 @@ import { activityLog, type Mutator, registerTeam } from "./data";
 import { getTeamState as dbGetTeamState } from "./db";
 import {
   formatActivityLogEntryForApi,
-  formatTeamState,
+  formatTeamHuntState,
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
   TeamStateIntermediate,
@@ -138,7 +138,14 @@ export function getRouter({
       (acc, entry) => acc.reduce(entry),
       new TeamStateIntermediate(hunt),
     );
-    return formatTeamState(hunt, team_id, team_name, team_state);
+    return {
+      teamId: team_id,
+      info: {
+        epoch: 1,
+        teamName: team_name,
+      },
+      state: formatTeamHuntState(hunt, team_state),
+    };
   };
 
   const formatPuzzleState = (
@@ -226,7 +233,7 @@ export function getRouter({
     ) => Promise<boolean>,
   ) => {
     const team_id = parseInt(teamId, 10);
-    const { result, teamNames, teamStates } = await activityLog.executeMutation(
+    const { result, teamStates } = await activityLog.executeMutation(
       hunt,
       team_id,
       redisClient,
@@ -237,12 +244,7 @@ export function getRouter({
     if (result && newState !== undefined) {
       return {
         status: 200 as const,
-        body: formatTeamState(
-          hunt,
-          team_id,
-          teamNames[team_id] ?? "",
-          newState,
-        ),
+        body: formatTeamHuntState(hunt, newState),
       };
     }
     return {

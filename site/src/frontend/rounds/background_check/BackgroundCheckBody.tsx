@@ -1,5 +1,5 @@
 import React from "react";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { BackgroundCheckFonts } from "./BackgroundCheckFonts";
 import { Fridge } from "./Layout";
@@ -10,7 +10,7 @@ const BackgroundCheckBody = ({
   teamState,
 }: {
   state: BackgroundCheckState;
-  teamState: TeamState;
+  teamState: TeamHuntState;
 }) => {
   const items = (
     <ul>

@@ -1,5 +1,5 @@
 import React from "react";
-import type { TeamState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import MissingDiamondBody from "./MissingDiamondBody";
 import { type MissingDiamondState, type MissingDiamondItem } from "./types";
@@ -40,7 +40,10 @@ const SLOTS = [
   "mdp28",
 ];
 
-function lookupSlug(slot: string, teamState: TeamState): string | undefined {
+function lookupSlug(
+  slot: string,
+  teamState: TeamHuntState,
+): string | undefined {
   const round = teamState.rounds.the_missing_diamond;
   const slotObj = round ? round.slots[slot] : undefined;
   return slotObj?.slug;
@@ -48,7 +51,7 @@ function lookupSlug(slot: string, teamState: TeamState): string | undefined {
 
 function itemForSlot(
   slot: string,
-  teamState: TeamState,
+  teamState: TeamHuntState,
 ): MissingDiamondItem | [] {
   const slug = lookupSlug(slot, teamState);
   if (!slug) return [];
@@ -67,12 +70,18 @@ function itemForSlot(
   };
 }
 
-export function missingDiamondState(teamState: TeamState): MissingDiamondState {
+export function missingDiamondState(
+  teamState: TeamHuntState,
+): MissingDiamondState {
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
   return { items };
 }
 
-const MissingDiamondRoundPage = ({ teamState }: { teamState: TeamState }) => {
+const MissingDiamondRoundPage = ({
+  teamState,
+}: {
+  teamState: TeamHuntState;
+}) => {
   const state = missingDiamondState(teamState);
   const inlineScript = `window.initialMissingDiamondState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)}`;
   return (

@@ -18,7 +18,6 @@ import {
   getTeamRegistrationLog as dbGetTeamRegistrationLog,
   registerTeam as dbRegisterTeam,
   getTeamIds,
-  getTeamNames,
   retryOnAbort,
 } from "./db";
 import { TeamStateIntermediate } from "./logic";
@@ -365,8 +364,7 @@ export class ActivityLog extends Log<
             teamStates[teamId] = mutator.getTeamState(hunt, teamId);
           }
         }
-        const teamNames = await getTeamNames(mutator.allTeams, trx);
-        return { result, teamStates, teamNames };
+        return { result, teamStates };
       },
     );
     return {

@@ -10,6 +10,7 @@ export const DatasetSchema = z.enum([
   "all_puzzles",
   "guess_log",
   "navbar",
+  "team_info",
   "team_state",
   "paper_trail",
   "the_missing_diamond",

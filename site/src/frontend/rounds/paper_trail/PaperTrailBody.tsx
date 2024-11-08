@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink, { PuzzleIcon } from "../../components/PuzzleLink";
 import { Desk, DeskItem } from "./Layout";
 import { PaperTrailFonts } from "./PaperTrailFonts";
@@ -10,7 +10,7 @@ const PaperTrailBody = ({
   teamState,
 }: {
   state: PaperTrailState;
-  teamState: TeamState;
+  teamState: TeamHuntState;
 }) => {
   const sections = state.groups.map((group) => {
     return (

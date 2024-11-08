@@ -1,5 +1,5 @@
 import React, { type PointerEventHandler, useCallback, useMemo } from "react";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { clamp, type Position } from "./StakeoutBody";
 import polaroid_bg from "./assets/polaroid_blank_no_shadow.png";
@@ -17,7 +17,7 @@ const StakeoutPhoto = ({
   photoOrder,
   onPointerDown,
 }: {
-  teamState: TeamState;
+  teamState: TeamHuntState;
   slot: StakeoutSlot;
   slug?: string;
   title?: string;

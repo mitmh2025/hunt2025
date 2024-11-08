@@ -1,4 +1,4 @@
-import type { TeamState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.svg";
 import main_east_bg from "./assets/main_east.jpg";
@@ -121,7 +121,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         cursor: "n-resize",
         destId: "secret",
-        includeIf: (_teamState: TeamState) => {
+        includeIf: (_teamState: TeamHuntState) => {
           // TODO: currently stubbed for easier testing; replace with comment when ready
           // return teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.bookcase.gateId) ?? false;
           return true;
@@ -395,7 +395,7 @@ const ALL_NODES: NodeInternal[] = [
     ],
     modals: [
       {
-        includeIf: (teamState: TeamState) => {
+        includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
               LOCK_DATA.rug.gateId,
@@ -450,7 +450,7 @@ const ALL_NODES: NodeInternal[] = [
     modals: [
       // candies
       {
-        includeIf: (teamState: TeamState) => {
+        includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
               LOCK_DATA.deskdrawer.gateId,
@@ -505,7 +505,7 @@ const ALL_NODES: NodeInternal[] = [
     ],
     modals: [
       {
-        includeIf: (teamState: TeamState) => {
+        includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
               LOCK_DATA.cryptex.gateId,
@@ -538,7 +538,7 @@ const ALL_NODES: NodeInternal[] = [
     sounds: [],
     modals: [
       {
-        includeIf: (teamState: TeamState) => {
+        includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
               LOCK_DATA.painting1.gateId,
@@ -595,7 +595,7 @@ const ALL_NODES: NodeInternal[] = [
     ],
     modals: [
       {
-        includeIf: (teamState: TeamState) => {
+        includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
               LOCK_DATA.painting2.gateId,
@@ -800,7 +800,7 @@ ALL_NODES.forEach((node) => {
 
 function modalFromModalInternal(
   modalInternal: ModalInternal,
-  teamState: TeamState,
+  teamState: TeamHuntState,
 ): [Modal, boolean] | undefined {
   const {
     includeIf,
@@ -842,7 +842,10 @@ function modalFromModalInternal(
   }
 }
 
-function filteredForFrontend(node: NodeInternal, teamState: TeamState): Node {
+function filteredForFrontend(
+  node: NodeInternal,
+  teamState: TeamHuntState,
+): Node {
   // Evaluates the predicates and fills out team state and puzzle information
   const keptNavigations = node.navigations.flatMap((nav) => {
     const { includeIf, ...rest } = nav;

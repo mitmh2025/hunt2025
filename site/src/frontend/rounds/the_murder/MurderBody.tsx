@@ -1,5 +1,5 @@
 import React from "react";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { type MurderState } from "./types";
 
@@ -8,7 +8,7 @@ const MurderBody = ({
   teamState,
 }: {
   state: MurderState;
-  teamState: TeamState;
+  teamState: TeamHuntState;
 }) => {
   const items = (
     <ul>

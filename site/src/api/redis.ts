@@ -4,7 +4,7 @@ import {
   defineScript,
 } from "redis";
 import { createTimeout } from "retry";
-import { type TeamState } from "../../lib/api/client";
+import { type TeamHuntState } from "../../lib/api/client";
 import {
   type DehydratedTeamRegistrationLogEntry,
   type TeamRegistrationLogEntry,
@@ -354,7 +354,7 @@ async function publishState(
 export async function publishTeamState(
   redisClient: RedisClient,
   teamId: number,
-  state: TeamState,
+  state: TeamHuntState,
 ) {
   await publishState(redisClient, `team_state/${teamId}`, {
     id: `0-${state.epoch}`,

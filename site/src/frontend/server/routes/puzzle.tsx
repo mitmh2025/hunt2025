@@ -201,7 +201,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   // If this puzzle is not unlocked, 404.  Ideally we'd do this check as soon as we get the API
   // result, but devmode wants to render an unlock/info page even when the puzzle is locked.
-  const puzzleState = req.teamState.puzzles[slug];
+  const puzzleState = req.teamState.state.puzzles[slug];
   if (!puzzleState) {
     return undefined;
   }
@@ -250,7 +250,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           {guessFrag}
         </PuzzleHeaderComponent>
         <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
-          <ContentComponent teamState={req.teamState} />
+          <ContentComponent teamState={req.teamState.state} />
         </PuzzleMainComponent>
         <PuzzleFooterComponent />
       </PuzzleWrapperComponent>
@@ -375,7 +375,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const SolutionComponent = content.component;
 
   // Use the entrypoint for pages in the relevant round.
-  const puzzleState = req.teamState.puzzles[slug];
+  const puzzleState = req.teamState.state.puzzles[slug];
   const roundSpecificManifest = puzzleState
     ? ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round]
     : undefined;
@@ -433,7 +433,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
           id="solution-content"
           className="solution-content"
         >
-          <SolutionComponent teamState={req.teamState} />
+          <SolutionComponent teamState={req.teamState.state} />
         </SolutionMainComponent>
         <SolutionFooterComponent />
       </SolutionWrapperComponent>

@@ -1,6 +1,6 @@
 import { type Request } from "express";
 import React from "react";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import {
   type AllPuzzlesState,
   type AllPuzzlesRound,
@@ -11,7 +11,7 @@ import { Wrapper } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 
-export function allPuzzlesState(teamState: TeamState): AllPuzzlesState {
+export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
   const rounds = Object.entries(teamState.rounds).map(([roundKey, round]) => {
     const metas = Object.entries(round.slots).filter(([_slot, { is_meta }]) => {
       return !!is_meta;
@@ -66,7 +66,7 @@ export function allPuzzlesHandler(req: Request) {
   const teamState = req.teamState;
   if (teamState === undefined) return undefined;
 
-  const state = allPuzzlesState(teamState);
+  const state = allPuzzlesState(teamState.state);
   const inlineScript = `window.initialAllPuzzlesState = ${JSON.stringify(state)}`;
 
   const node = (

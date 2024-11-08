@@ -1,5 +1,5 @@
 import type { FunctionComponent } from "react";
-import type { TeamState } from "../../../lib/api/client";
+import type { TeamHuntState } from "../../../lib/api/client";
 import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
 import IllegalSearchRoundPage from "./illegal_search";
@@ -15,7 +15,7 @@ import VaultRoundPage from "./the_vault";
 // Map from round `key` to component that should be rendered for that round.
 // TODO: figure out the props we want to pass to the round pages
 type RoundDefinition = {
-  component: FunctionComponent<{ teamState: TeamState; node?: string }>;
+  component: FunctionComponent<{ teamState: TeamHuntState; node?: string }>;
   entrypoint?: Entrypoint;
 };
 

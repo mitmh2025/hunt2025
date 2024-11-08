@@ -1,7 +1,7 @@
 import { type RequestHandler, type Request, type Response } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
-import type { TeamState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import {
   clampAngle,
@@ -32,17 +32,17 @@ export const nodeRequestHandler: RequestHandler<
     return;
   }
   // Verify that the illegal search round is unlocked for this team.
-  if (!req.teamState.rounds.illegal_search) {
+  if (!req.teamState.state.rounds.illegal_search) {
     res.status(404).json({
       status: "error",
-      message: `round still locked for team ${req.teamState.teamName}`,
+      message: `round still locked for team ${req.teamState.info.teamName}`,
     });
     return;
   }
   const nodeId = req.params.nodeSlug;
   const node = NODES_BY_ID.get(nodeId);
   if (node) {
-    res.json(filteredForFrontend(node, req.teamState));
+    res.json(filteredForFrontend(node, req.teamState.state));
   } else {
     res.status(404).json({
       status: "error",
@@ -113,7 +113,7 @@ export const modalPostHandler: RequestHandler<
   }
 });
 
-export function painting2State(teamState: TeamState): object {
+export function painting2State(teamState: TeamHuntState): object {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(
       LOCK_DATA.painting2.gateId,
@@ -121,14 +121,14 @@ export function painting2State(teamState: TeamState): object {
   return solved ? { switches: LOCK_DATA.painting2.answer } : {};
 }
 
-export function rugState(teamState: TeamState): object {
+export function rugState(teamState: TeamHuntState): object {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.rug.gateId) ??
     false;
   return solved ? { value: LOCK_DATA.rug.answer } : {};
 }
 
-export function cryptexState(teamState: TeamState): object {
+export function cryptexState(teamState: TeamHuntState): object {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(
       LOCK_DATA.cryptex.gateId,
@@ -136,7 +136,7 @@ export function cryptexState(teamState: TeamState): object {
   return solved ? { text: LOCK_DATA.cryptex.answer } : {};
 }
 
-export function bookcaseState(teamState: TeamState): object {
+export function bookcaseState(teamState: TeamHuntState): object {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(
       LOCK_DATA.bookcase.gateId,
@@ -335,7 +335,7 @@ const IllegalSearchRoundPage = ({
   teamState,
   node,
 }: {
-  teamState: TeamState;
+  teamState: TeamHuntState;
   node?: string;
 }) => {
   // TODO: This should look up via some opaque mapping to node IDs instead of

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import globalDatasetManager from "../../client/DatasetManager";
 import MurderBody from "./MurderBody";
 import { type MurderState } from "./types";
@@ -10,10 +10,10 @@ const MurderManager = ({
   initialTeamState,
 }: {
   initialState: MurderState;
-  initialTeamState: TeamState;
+  initialTeamState: TeamHuntState;
 }) => {
   const [state, setState] = useState<MurderState>(initialState);
-  const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
+  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(
@@ -30,7 +30,7 @@ const MurderManager = ({
       "team_state",
       undefined,
       (value: object) => {
-        setTeamState(value as TeamState);
+        setTeamState(value as TeamHuntState);
       },
     );
     return stop;
@@ -43,7 +43,7 @@ const elem = document.getElementById("the-murder-root");
 if (elem) {
   const state = (window as unknown as { initialMurderState: MurderState })
     .initialMurderState;
-  const teamState = (window as unknown as { initialTeamState: TeamState })
+  const teamState = (window as unknown as { initialTeamState: TeamHuntState })
     .initialTeamState;
   hydrateRoot(
     elem,

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import {
   c,
-  TeamStateSchema,
+  TeamHuntStateSchema,
   ActivityLogEntryBaseSchema,
   GuessStatus,
   TeamRegistrationSchema,
@@ -126,7 +126,7 @@ export const frontendContract = c.router({
     path: `/teams/:teamId/:gateId`,
     body: z.object({}),
     responses: {
-      200: TeamStateSchema,
+      200: TeamHuntStateSchema,
       404: z.null(),
     },
   },
@@ -135,7 +135,7 @@ export const frontendContract = c.router({
     path: `/teams/:teamId/interactions/:interactionId/start`,
     body: z.object({}),
     responses: {
-      200: TeamStateSchema,
+      200: TeamHuntStateSchema,
       404: z.null(),
     },
   },
@@ -146,7 +146,7 @@ export const frontendContract = c.router({
       result: z.string(),
     }),
     responses: {
-      200: TeamStateSchema,
+      200: TeamHuntStateSchema,
       404: z.null(),
     },
   },
