@@ -1,6 +1,6 @@
 import React from "react";
-import PuzzleImage from "../../components/PuzzleImage";
 import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import day1solved from "./assets/day1-solved.svg";
 import day2solved from "./assets/day2-solved.svg";
 import day3solved from "./assets/day3-solved.svg";

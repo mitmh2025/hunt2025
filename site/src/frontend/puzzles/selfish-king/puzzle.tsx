@@ -1,14 +1,14 @@
 import React from "react";
+import { styled } from "styled-components";
+import PuzzleImage from "../../components/PuzzleImage";
 import spreadsheet from "./assets/bermuda-triangle-spreadsheet.xlsx";
-import example1 from "./assets/example1.svg";
-import example2 from "./assets/example2.svg";
 import day1 from "./assets/day1.svg";
 import day2 from "./assets/day2.svg";
 import day3 from "./assets/day3.svg";
 import day4 from "./assets/day4.svg";
 import day5 from "./assets/day5.svg";
-import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import example1 from "./assets/example1.svg";
+import example2 from "./assets/example2.svg";
 
 const Italics = styled.span`
   font-style: "italic";
