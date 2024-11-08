@@ -1,5 +1,5 @@
 import React from "react";
-import type { TeamState } from "../../../lib/api/client";
+import type { TeamHuntState } from "../../../lib/api/client";
 import { PUZZLES } from "../puzzles";
 import PuzzleLink from "./PuzzleLink";
 
@@ -7,7 +7,7 @@ const RoundPuzzleList = ({
   teamState,
   round,
 }: {
-  teamState: TeamState;
+  teamState: TeamHuntState;
   round: string;
 }) => {
   const rounds = teamState.rounds;

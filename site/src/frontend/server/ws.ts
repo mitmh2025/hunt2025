@@ -1,10 +1,17 @@
 import { type NextFunction, type Request } from "express";
 import type { WSResponse } from "websocket-express";
 import workersManifest from "../../../dist/worker-manifest.json";
-import { type TeamState } from "../../../lib/api/client";
+import {
+  type TeamState,
+  type TeamHuntState,
+  type TeamInfo,
+} from "../../../lib/api/client";
 import { type DehydratedActivityLogEntry } from "../../../lib/api/contract";
 import { type FrontendClient } from "../../../lib/api/frontend_client";
-import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
+import {
+  type TeamRegistrationLogEntry,
+  type InternalActivityLogEntry,
+} from "../../../lib/api/frontend_contract";
 import {
   type MessageFromClient,
   type MessageToClient,
@@ -14,10 +21,15 @@ import {
 import { genId } from "../../../lib/id";
 import {
   formatActivityLogEntryForApi,
-  formatTeamState,
+  formatTeamHuntState,
+  TeamInfoIntermediate,
   TeamStateIntermediate,
 } from "../../api/logic";
-import { type RedisClient, activityLog } from "../../api/redis";
+import {
+  type RedisClient,
+  activityLog,
+  teamRegistrationLog,
+} from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
 import { navBarState } from "../components/ContentWithNavBar";
 import { backgroundCheckState } from "../rounds/background_check";
@@ -38,13 +50,16 @@ import { allPuzzlesState } from "./routes/all_puzzles";
 type DatasetHandler =
   | {
       type: "team_state";
-      callback: (teamState: TeamState) => object;
+      callback: (teamState: TeamHuntState) => object;
     }
   | {
       type: "activity_log";
     }
   | {
       type: "guess_log";
+    }
+  | {
+      type: "team_info";
     };
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
@@ -78,9 +93,12 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
     type: "team_state",
     callback: stakeoutState,
   },
+  team_info: {
+    type: "team_info",
+  },
   team_state: {
     type: "team_state",
-    callback: (teamState: TeamState) => {
+    callback: (teamState: TeamHuntState) => {
       return teamState;
     },
   },
@@ -113,7 +131,7 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
 type TeamStateSubscriptionHandler<T> = {
   type: "team_state";
   dataset: Dataset;
-  computeFromTeamState: (teamState: TeamState) => T;
+  computeFromTeamState: (teamState: TeamHuntState) => T;
   cachedValue: T;
 };
 
@@ -130,10 +148,17 @@ type GuessLogSubscriptionHandler = {
   stop: () => void;
 };
 
+type TeamInfoSubscriptionHandler = {
+  type: "team_info";
+  dataset: Dataset;
+  stop: () => void;
+};
+
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
   | ActivityLogSubscriptionHandler
-  | GuessLogSubscriptionHandler;
+  | GuessLogSubscriptionHandler
+  | TeamInfoSubscriptionHandler;
 
 function isTeamStateSubscription<T>(
   sub: SubscriptionHandler<T>,
@@ -153,20 +178,18 @@ function isGuessLogSubscription<T>(
   return sub.type === "guess_log";
 }
 
-type TeamStateObserverProvider = {
+type ObserverProvider = {
   observeTeamState(teamId: number, conn: ConnHandler): () => void;
-};
 
-type ActivityLogObserverProvider = {
+  observeTeamInfo(teamId: number, subId: string, conn: ConnHandler): () => void;
+
   observeActivityLog(
     teamId: number,
     subId: string,
     conn: ConnHandler,
   ): () => void;
   activityLogReadyPromise(): Promise<void>;
-};
 
-type GuessLogObserverProvider = {
   observeGuessLog(
     teamId: number,
     slug: string,
@@ -184,16 +207,13 @@ class ConnHandler {
   private _teamId: number;
 
   // The last-known team state for this team.  This may be stale if there are no subs that rely on
-  // teamState.  This is initially populated with req.teamState and currently primarily serves as a
-  // place to yank teamName back out of, since the activity log doesn't give us any team name
-  // information.
-  private _lastTeamState: TeamState;
+  // teamState.  This is initially populated with req.teamState.
+  private _lastTeamState: TeamHuntState;
+  private _lastTeamInfo: TeamInfo;
 
   private sock: WebSocket;
   private onClose: (connId: string) => void;
-  private teamStateObserverProvider: TeamStateObserverProvider;
-  private activityLogObserverProvider: ActivityLogObserverProvider;
-  private guessLogObserverProvider: GuessLogObserverProvider;
+  private observerProvider: ObserverProvider;
 
   // key: subId
   private subs: Map<string, SubscriptionHandler<object>>;
@@ -203,24 +223,19 @@ class ConnHandler {
     sock,
     initialTeamState,
     onClose,
-    teamStateObserverProvider,
-    activityLogObserverProvider,
-    guessLogObserverProvider,
+    observerProvider,
   }: {
     sock: WebSocket;
     initialTeamState: TeamState;
     onClose: (connId: string) => void;
-    teamStateObserverProvider: TeamStateObserverProvider;
-    activityLogObserverProvider: ActivityLogObserverProvider;
-    guessLogObserverProvider: GuessLogObserverProvider;
+    observerProvider: ObserverProvider;
   }) {
     this.sock = sock;
     this._teamId = initialTeamState.teamId;
-    this._lastTeamState = initialTeamState;
+    this._lastTeamInfo = initialTeamState.info;
+    this._lastTeamState = initialTeamState.state;
     this.onClose = onClose;
-    this.teamStateObserverProvider = teamStateObserverProvider;
-    this.activityLogObserverProvider = activityLogObserverProvider;
-    this.guessLogObserverProvider = guessLogObserverProvider;
+    this.observerProvider = observerProvider;
 
     this._connId = genId();
     this.subs = new Map();
@@ -293,10 +308,6 @@ class ConnHandler {
     return this._teamId;
   }
 
-  get teamName() {
-    return this._lastTeamState.teamName;
-  }
-
   get lastTeamState() {
     return this._lastTeamState;
   }
@@ -309,7 +320,7 @@ class ConnHandler {
     this.sock.send(JSON.stringify(message));
   }
 
-  public updateTeamState(teamState: TeamState) {
+  public updateTeamState(teamState: TeamHuntState) {
     // Ensure we discard updates that do not increase the epoch, so we never backslide, even if the
     // backend is giving us stale results, or if pubsub gets events out-of-order.
     if (this._lastTeamState.epoch < teamState.epoch) {
@@ -332,6 +343,13 @@ class ConnHandler {
           }
         }
       });
+    }
+  }
+
+  public updateTeamInfo(subId: string, teamInfo: TeamInfo) {
+    const sub = this.subs.get(subId);
+    if (sub) {
+      this.send({ subId, type: "update", value: teamInfo });
     }
   }
 
@@ -382,6 +400,28 @@ class ConnHandler {
       // Look up what dataset we need to observe.  Ask for it if we don't have it.
       const datasetHandler = DATASET_REGISTRY[dataset];
       switch (datasetHandler.type) {
+        case "team_info": {
+          const value = this._lastTeamInfo;
+          const subHandler: SubscriptionHandler<object> = {
+            type: "team_info",
+            dataset,
+            stop: () => {
+              /* stub */
+            },
+          };
+          this.subs.set(subId, subHandler);
+          subHandler.stop = this.observerProvider.observeTeamInfo(
+            this.teamId,
+            subId,
+            this,
+          );
+          // Once the pubsub watch is set up, send an initial update and that the sub is ready
+          // push down the initial state as an update
+          this.send({ subId, type: "update" as const, value });
+          // reply with an ack of the sub ID, indicating successful completion of the RPC
+          this.send({ rpc, type: "sub" as const, subId });
+          break;
+        }
         case "team_state": {
           const handler = datasetHandler.callback;
           // compute the initial value
@@ -396,10 +436,7 @@ class ConnHandler {
           if (this.teamStateObserverStopHandle === undefined) {
             // If we're not already watching for team state updates, start up monitoring
             this.teamStateObserverStopHandle =
-              this.teamStateObserverProvider.observeTeamState(
-                this.teamId,
-                this,
-              );
+              this.observerProvider.observeTeamState(this.teamId, this);
           }
           // Once the pubsub watch is set up, send an initial update and that the sub is ready
           // push down the initial state as an update
@@ -419,13 +456,13 @@ class ConnHandler {
             },
           };
           this.subs.set(subId, subHandler);
-          subHandler.stop = this.activityLogObserverProvider.observeActivityLog(
+          subHandler.stop = this.observerProvider.observeActivityLog(
             this.teamId,
             subId,
             this,
           );
           // Reply that we're ready
-          this.activityLogObserverProvider
+          this.observerProvider
             .activityLogReadyPromise()
             .then(() => {
               this.send({ rpc, type: "sub" as const, subId });
@@ -457,13 +494,13 @@ class ConnHandler {
             },
           };
           this.subs.set(subId, subHandler);
-          subHandler.stop = this.guessLogObserverProvider.observeGuessLog(
+          subHandler.stop = this.observerProvider.observeGuessLog(
             this.teamId,
             params.slug,
             subId,
             this,
           );
-          this.guessLogObserverProvider
+          this.observerProvider
             .guessLogReadyPromise()
             .then(() => {
               this.send({ rpc, type: "sub" as const, subId });
@@ -512,12 +549,7 @@ type TeamStateSubState = {
   stopHandle: () => void;
 };
 
-export class WebsocketManager
-  implements
-    TeamStateObserverProvider,
-    ActivityLogObserverProvider,
-    GuessLogObserverProvider
-{
+export class WebsocketManager implements ObserverProvider {
   // key: connId
   private connections: Map<string, ConnHandler>;
 
@@ -525,6 +557,7 @@ export class WebsocketManager
   private teamStateSubs: Map<number, TeamStateSubState>;
 
   private activityLogTailer: DatasetTailer<InternalActivityLogEntry>;
+  private teamRegistrationLogTailer: DatasetTailer<TeamRegistrationLogEntry>;
 
   private hunt: Hunt;
 
@@ -545,9 +578,15 @@ export class WebsocketManager
       fetchMethod: frontendApiClient.getFullActivityLog.bind(frontendApiClient),
       log: activityLog,
     });
+    this.teamRegistrationLogTailer = newLogTailer({
+      redisClient,
+      fetchMethod:
+        frontendApiClient.getFullTeamRegistrationLog.bind(frontendApiClient),
+      log: teamRegistrationLog,
+    });
   }
 
-  private dispatchTeamStateUpdate(teamId: number, teamState: TeamState) {
+  private dispatchTeamStateUpdate(teamId: number, teamState: TeamHuntState) {
     // console.log(`dispatchTeamStateUpdate for team ${teamId}: epoch ${teamState.epoch}`);
     const connHandlerMap = this.teamStateSubs.get(teamId);
     if (connHandlerMap) {
@@ -573,14 +612,7 @@ export class WebsocketManager
           intermediate = entries
             .filter((e) => e.team_id === teamId || e.team_id === undefined)
             .reduce((acc, entry) => acc.reduce(entry), intermediate);
-          // TODO: figure out how to deal with teamName changing?
-          const teamName = conn.teamName;
-          latestTeamState = formatTeamState(
-            this.hunt,
-            teamId,
-            teamName,
-            intermediate,
-          );
+          latestTeamState = formatTeamHuntState(this.hunt, intermediate);
           if (ready) {
             this.dispatchTeamStateUpdate(teamId, latestTeamState);
           }
@@ -618,6 +650,28 @@ export class WebsocketManager
         }
       }
     };
+    return stop;
+  }
+
+  public observeTeamInfo(
+    teamId: number,
+    subId: string,
+    conn: ConnHandler,
+  ): () => void {
+    let teamInfoIntermediate = new TeamInfoIntermediate();
+    const stop = this.teamRegistrationLogTailer.watchLog(
+      (entries: TeamRegistrationLogEntry[]) => {
+        entries.forEach((entry) => {
+          if (entry.team_id === teamId) {
+            teamInfoIntermediate = teamInfoIntermediate.reduce(entry);
+            const apiTeamInfo = teamInfoIntermediate.formatTeamInfo();
+            if (apiTeamInfo !== undefined) {
+              conn.updateTeamInfo(subId, apiTeamInfo);
+            }
+          }
+        });
+      },
+    );
     return stop;
   }
 
@@ -691,9 +745,7 @@ export class WebsocketManager
       onClose: (connId: string) => {
         this.connections.delete(connId);
       },
-      teamStateObserverProvider: this,
-      activityLogObserverProvider: this,
-      guessLogObserverProvider: this,
+      observerProvider: this,
     });
     this.connections.set(connHandler.connId, connHandler);
     const helloMessage: MessageToClient = {

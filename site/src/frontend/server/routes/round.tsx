@@ -19,7 +19,7 @@ export const roundHandler = (
     return undefined;
   }
   const { roundSlug } = req.params;
-  if (teamState.rounds[roundSlug] === undefined) {
+  if (teamState.state.rounds[roundSlug] === undefined) {
     return undefined;
   }
   const content = ROUND_PAGE_MAP[roundSlug];
@@ -31,7 +31,7 @@ export const roundHandler = (
   // TODO: add page title
   return wrapContentWithNavBar(
     {
-      node: <Component teamState={teamState} node={req.query.node} />,
+      node: <Component teamState={teamState.state} node={req.query.node} />,
       entrypoints: content.entrypoint ? [content.entrypoint] : undefined,
     },
     teamState,

@@ -1,5 +1,5 @@
 import React from "react";
-import type { TeamState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import BackgroundCheckBody from "./BackgroundCheckBody";
 import { Background } from "./Layout";
@@ -26,7 +26,10 @@ const SLOTS = [
   "bgp14",
 ];
 
-function lookupSlug(slot: string, teamState: TeamState): string | undefined {
+function lookupSlug(
+  slot: string,
+  teamState: TeamHuntState,
+): string | undefined {
   const round = teamState.rounds.background_check;
   const slotObj = round ? round.slots[slot] : undefined;
   return slotObj?.slug;
@@ -34,7 +37,7 @@ function lookupSlug(slot: string, teamState: TeamState): string | undefined {
 
 function itemForSlot(
   slot: string,
-  teamState: TeamState,
+  teamState: TeamHuntState,
 ): BackgroundCheckItem | [] {
   const slug = lookupSlug(slot, teamState);
   if (!slug) return [];
@@ -54,13 +57,17 @@ function itemForSlot(
 }
 
 export function backgroundCheckState(
-  teamState: TeamState,
+  teamState: TeamHuntState,
 ): BackgroundCheckState {
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
   return { items };
 }
 
-const BackgroundCheckRoundPage = ({ teamState }: { teamState: TeamState }) => {
+const BackgroundCheckRoundPage = ({
+  teamState,
+}: {
+  teamState: TeamHuntState;
+}) => {
   const state = backgroundCheckState(teamState);
   const inlineScript = `window.initialBackgroundCheckState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)}`;
   return (

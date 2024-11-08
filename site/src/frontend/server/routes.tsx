@@ -192,7 +192,7 @@ async function renderApp<Params extends ParamsDictionary>(
         scripts={scripts}
         stylesheets={stylesheets}
         title={result.title}
-        teamState={req.teamState}
+        teamState={req.teamState?.state}
         styleElements={styleElements}
         innerHTML={innerHTML}
       />,

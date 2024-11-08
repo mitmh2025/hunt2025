@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { StakeoutFonts } from "./StakeoutFonts";
 import StakeoutPhoto from "./StakeoutPhoto";
@@ -159,7 +159,7 @@ const StakeoutBody = ({
   teamState,
 }: {
   state: StakeoutState;
-  teamState: TeamState;
+  teamState: TeamHuntState;
 }) => {
   // Stacking order; first is on bottom; last is on top (like DOM elements would be)
   const [stackOrder, setStackOrder] = useState<StakeoutSlot[]>(() => {

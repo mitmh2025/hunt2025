@@ -1,5 +1,5 @@
 import React from "react";
-import type { TeamState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import { Root } from "./Layout";
 import PaperTrailBody from "./PaperTrailBody";
@@ -120,7 +120,10 @@ const SHELL_SLOTS = [
   "ptm08",
 ];
 
-function lookupSlug(slot: string, teamState: TeamState): string | undefined {
+function lookupSlug(
+  slot: string,
+  teamState: TeamHuntState,
+): string | undefined {
   const round = teamState.rounds.paper_trail;
   const slotObj = round ? round.slots[slot] : undefined;
   return slotObj?.slug;
@@ -128,7 +131,7 @@ function lookupSlug(slot: string, teamState: TeamState): string | undefined {
 
 function oldItemForSlot(
   slot: string,
-  teamState: TeamState,
+  teamState: TeamHuntState,
 ): PaperTrailItem | [] {
   const slug = lookupSlug(slot, teamState);
   if (!slug) return [];
@@ -621,7 +624,7 @@ const STACK_ORDER = [
   "ptp15", // 15: old fashioned
 ] as const;
 
-function genNotes(teamState: TeamState): PaperTrailObject {
+function genNotes(teamState: TeamHuntState): PaperTrailObject {
   const round = teamState.rounds.paper_trail;
   let progress = 0;
   if (round) {
@@ -666,7 +669,7 @@ function genNotes(teamState: TeamState): PaperTrailObject {
   };
 }
 
-function genImagery(teamState: TeamState): PaperTrailObject[] {
+function genImagery(teamState: TeamHuntState): PaperTrailObject[] {
   const round = teamState.rounds.paper_trail;
   if (!round) return [];
 
@@ -736,7 +739,7 @@ function genImagery(teamState: TeamState): PaperTrailObject[] {
   return imagery;
 }
 
-export function paperTrailState(teamState: TeamState): PaperTrailState {
+export function paperTrailState(teamState: TeamHuntState): PaperTrailState {
   const subsidiaryItems = SUBSIDIARY_SLOTS.flatMap((slot: string) =>
     oldItemForSlot(slot, teamState),
   );
@@ -774,7 +777,7 @@ export function paperTrailState(teamState: TeamState): PaperTrailState {
   };
 }
 
-const PapertrailRoundPage = ({ teamState }: { teamState: TeamState }) => {
+const PapertrailRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {
   const state = paperTrailState(teamState);
   const inlineScript = `window.initialPaperTrailState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)};`;
   return (

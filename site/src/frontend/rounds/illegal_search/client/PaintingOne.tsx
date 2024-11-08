@@ -1,5 +1,5 @@
 import React from "react";
-import { type TeamState } from "../../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../../lib/api/client";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import Painting from "./Painting";
 import Safe from "./Safe";
@@ -13,7 +13,7 @@ const PaintingTwo = ({
   node: Node;
   setNode: (node: Node) => void;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
-  teamState: TeamState;
+  teamState: TeamHuntState;
 }) => {
   const gateOpen =
     teamState.rounds.illegal_search?.gates?.includes("isg06") ?? false;

@@ -57,13 +57,20 @@ const RoundStateSchema = z.object({
   interactions: z.record(slug, InteractionStateSchema).optional(),
 });
 
-export const TeamStateSchema = z.object({
+export const TeamHuntStateSchema = z.object({
   epoch: z.number(), // The largest value of `id` of the activity_log entries which were processed to produce this TeamState
-  teamId: z.number(),
-  teamName: z.string(),
   currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
+});
+
+export const TeamStateSchema = z.object({
+  teamId: z.number(),
+  info: z.object({
+    epoch: z.number(),
+    teamName: z.string(),
+  }),
+  state: TeamHuntStateSchema,
 });
 
 const SubmitGuessSchema = z.object({

@@ -1,7 +1,7 @@
 import React from "react";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 
-const Puzzle = ({ teamState }: { teamState: TeamState }) => {
+const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   const pickupCompleted =
     "mdg01" in (teamState.rounds.missing_diamond?.gates ?? []);
 

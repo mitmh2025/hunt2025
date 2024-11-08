@@ -1,10 +1,9 @@
 import React, { type ReactNode } from "react";
-import { type TeamState } from "../../../lib/api/client";
+import { type TeamState, type TeamHuntState } from "../../../lib/api/client";
 import { type RenderedPage } from "../server/routes";
 import NavBar, { type NavBarState } from "./NavBar";
 
-export function navBarState(teamState: TeamState): NavBarState {
-  const teamName = teamState.teamName;
+export function navBarState(teamState: TeamHuntState): NavBarState {
   const rounds = Object.entries(teamState.rounds).map(([slug, roundObj]) => {
     return {
       href: `/rounds/${slug}`,
@@ -13,7 +12,6 @@ export function navBarState(teamState: TeamState): NavBarState {
   });
   const currency = teamState.currency;
   return {
-    teamName,
     rounds,
     currency,
   };
@@ -27,9 +25,10 @@ const ContentWithNavBar = ({
   teamState: TeamState;
   children: ReactNode;
 }) => {
-  const navbarState = navBarState(teamState);
+  const teamInfo = teamState.info;
+  const navbarState = navBarState(teamState.state);
   const navbarStateJSON = JSON.stringify(navbarState);
-  const inlineScript = `window.initialNavBarState = ${navbarStateJSON};`;
+  const inlineScript = `window.initialTeamInfo = ${JSON.stringify(teamInfo)}; window.initialNavBarState = ${navbarStateJSON};`;
   return (
     <>
       <script
@@ -37,7 +36,7 @@ const ContentWithNavBar = ({
         dangerouslySetInnerHTML={{ __html: inlineScript }}
       />
       <div id="navbar">
-        <NavBar state={navbarState} />
+        <NavBar info={teamState.info} state={navbarState} />
       </div>
       {children}
     </>

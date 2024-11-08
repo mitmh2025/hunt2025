@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import globalDatasetManager from "../../client/DatasetManager";
 import BackgroundCheckBody from "./BackgroundCheckBody";
 import { type BackgroundCheckState } from "./types";
@@ -10,10 +10,10 @@ const BackgroundCheckManager = ({
   initialTeamState,
 }: {
   initialState: BackgroundCheckState;
-  initialTeamState: TeamState;
+  initialTeamState: TeamHuntState;
 }) => {
   const [state, setState] = useState<BackgroundCheckState>(initialState);
-  const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
+  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(
@@ -30,7 +30,7 @@ const BackgroundCheckManager = ({
       "team_state",
       undefined,
       (value: object) => {
-        setTeamState(value as TeamState);
+        setTeamState(value as TeamHuntState);
       },
     );
     return stop;
@@ -44,7 +44,7 @@ if (elem) {
   const state = (
     window as unknown as { initialBackgroundCheckState: BackgroundCheckState }
   ).initialBackgroundCheckState;
-  const teamState = (window as unknown as { initialTeamState: TeamState })
+  const teamState = (window as unknown as { initialTeamState: TeamHuntState })
     .initialTeamState;
   hydrateRoot(
     elem,

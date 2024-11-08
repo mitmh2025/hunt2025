@@ -260,13 +260,19 @@ export type NavBarRoundData = {
 };
 
 export type NavBarState = {
-  teamName: string;
   rounds: NavBarRoundData[];
   currency: number;
 };
 
-const NavBar = ({ state }: { state: NavBarState }) => {
-  const { teamName, rounds, currency } = state;
+const NavBar = ({
+  info,
+  state,
+}: {
+  info: { teamName: string };
+  state: NavBarState;
+}) => {
+  const { teamName } = info;
+  const { rounds, currency } = state;
   return (
     <Nav>
       <NavItems>

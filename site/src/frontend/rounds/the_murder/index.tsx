@@ -1,5 +1,5 @@
 import React from "react";
-import type { TeamState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
 import { type MurderState } from "./types";
@@ -32,7 +32,7 @@ const MURDER_SLOTS = [
   "tmm01",
 ] as const;
 
-export function murderState(teamState: TeamState): MurderState {
+export function murderState(teamState: TeamHuntState): MurderState {
   const round = teamState.rounds.the_murder;
   if (!round) return { items: [] };
 
@@ -50,7 +50,7 @@ export function murderState(teamState: TeamState): MurderState {
   return { items };
 }
 
-const MurderRoundPage = ({ teamState }: { teamState: TeamState }) => {
+const MurderRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {
   const state = murderState(teamState);
   const inlineScript = `window.initialMurderState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)};`;
   return (

@@ -1,5 +1,5 @@
 //import type { FunctionComponent } from "react";
-import type { TeamState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 
 // An id unique within this graph of views.
 export type NodeId = string;
@@ -44,7 +44,7 @@ export type NavigationInternal = Navigation & {
   // should not publish that to client code.
 
   // If present, only enable the navigation when condition (evaluated on the node's state) returns true
-  includeIf?: (teamState: TeamState) => boolean;
+  includeIf?: (teamState: TeamHuntState) => boolean;
 };
 
 export type Interaction = {
@@ -59,7 +59,7 @@ export type ModalBase = {
 export type ModalInternal = ModalBase & {
   // If present: only include this Modal in state served to the client if the
   // condition evaluates to true.
-  includeIf?: (teamState: TeamState) => boolean;
+  includeIf?: (teamState: TeamHuntState) => boolean;
 
   // If present and true: include in interactionModals instead of modals
   ownedByInteraction?: boolean;

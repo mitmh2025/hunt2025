@@ -18,6 +18,9 @@ export type TeamState = ClientInferResponseBody<
   200
 >;
 
+export type TeamInfo = TeamState["info"];
+export type TeamHuntState = TeamState["state"];
+
 export type ActivityLogEntry = ClientInferResponseBody<
   typeof publicContract.getActivityLog,
   200

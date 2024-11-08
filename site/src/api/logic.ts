@@ -2,6 +2,7 @@ import type {
   ActivityLogEntryRow,
   TeamRegistrationLogEntryRow,
 } from "knex/types/tables";
+import { type TeamInfo } from "../../lib/api/client";
 import {
   type InteractionState,
   type DehydratedActivityLogEntry,
@@ -9,6 +10,7 @@ import {
 import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
+  type TeamRegistration,
 } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
@@ -217,12 +219,7 @@ export function formatActivityLogEntryForApi(
   return entry as DehydratedActivityLogEntry;
 }
 
-export function formatTeamState(
-  hunt: Hunt,
-  team_id: number,
-  team_name: string,
-  data: TeamStateIntermediate,
-) {
+export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
   const rounds = Object.fromEntries(
     hunt.rounds
       .filter(({ slug: roundSlug }) => data.rounds_unlocked.has(roundSlug))
@@ -291,8 +288,6 @@ export function formatTeamState(
   );
   return {
     epoch: data.epoch,
-    teamId: team_id,
-    teamName: team_name,
     rounds,
     currency: data.available_currency,
     puzzles: Object.fromEntries(
@@ -329,4 +324,53 @@ export function cleanupTeamRegistrationLogEntryFromDB(
     );
   }
   return res as TeamRegistrationLogEntry;
+}
+
+export class TeamInfoIntermediate {
+  epoch: number; // The largest value of `id` that was processed/relevant
+  registration?: TeamRegistration;
+
+  constructor(initial?: Partial<TeamInfoIntermediate>) {
+    this.epoch = initial?.epoch ?? -1;
+    this.registration = initial?.registration;
+  }
+
+  reduce(entry: TeamRegistrationLogEntry) {
+    // Update the max known epoch if this entry is newer
+    if (entry.id > this.epoch) {
+      this.epoch = entry.id;
+    } else {
+      throw new Error(
+        `Attempting to reduce team registration log entry ${entry.id} on top of team state that already includes ${this.epoch}`,
+      );
+    }
+    if (entry.type === "team_registered") {
+      if (this.registration !== undefined) {
+        throw new Error(`Duplicate team registration entry ${entry.id}`);
+      }
+      this.registration = entry.data;
+    } else {
+      if (this.registration === undefined) {
+        throw new Error(
+          `Team registration log entry ${entry.id} predates the team_registered entry`,
+        );
+      }
+      switch (entry.type) {
+        case "team_name_changed":
+          this.registration.name = entry.data.name;
+          break;
+      }
+    }
+    return this;
+  }
+
+  formatTeamInfo(): TeamInfo | undefined {
+    if (this.registration === undefined) {
+      return undefined;
+    }
+    return {
+      epoch: this.epoch,
+      teamName: this.registration.name,
+    };
+  }
 }

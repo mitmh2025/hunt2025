@@ -2,7 +2,7 @@ import { type RequestHandler, type Request } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
 import { type z } from "zod";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 
@@ -44,7 +44,7 @@ function stubInteractionState(slug: string, interaction: Interaction) {
 }
 
 function lookupInteraction(
-  teamState: TeamState,
+  teamState: TeamHuntState,
   slug: string,
 ): Interaction | undefined {
   // Look in each round of teamState for an interaction with id matching slug
@@ -65,7 +65,7 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
     return undefined;
   }
   const slug = req.params.slug;
-  const interaction = lookupInteraction(req.teamState, slug);
+  const interaction = lookupInteraction(req.teamState.state, slug);
   if (!interaction) return undefined;
 
   if (process.env.NODE_ENV === "development") {

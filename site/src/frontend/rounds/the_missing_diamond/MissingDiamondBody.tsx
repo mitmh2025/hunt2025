@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { type MissingDiamondState } from "./types";
 
@@ -8,7 +8,7 @@ const MissingDiamondBody = ({
   teamState,
 }: {
   state: MissingDiamondState;
-  teamState: TeamState;
+  teamState: TeamHuntState;
 }) => {
   const items = (
     <ul>

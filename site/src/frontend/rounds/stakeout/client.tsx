@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { type TeamState } from "../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import globalDatasetManager from "../../client/DatasetManager";
 import StakeoutBody from "./StakeoutBody";
 import { type StakeoutState } from "./types";
@@ -10,10 +10,10 @@ const StakeoutManager = ({
   initialTeamState,
 }: {
   initialState: StakeoutState;
-  initialTeamState: TeamState;
+  initialTeamState: TeamHuntState;
 }) => {
   const [state, setState] = useState<StakeoutState>(initialState);
-  const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
+  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(
@@ -30,7 +30,7 @@ const StakeoutManager = ({
       "team_state",
       undefined,
       (value: object) => {
-        setTeamState(value as TeamState);
+        setTeamState(value as TeamHuntState);
       },
     );
     return stop;
@@ -43,7 +43,7 @@ const elem = document.getElementById("stakeout-root");
 if (elem) {
   const state = (window as unknown as { initialStakeoutState: StakeoutState })
     .initialStakeoutState;
-  const teamState = (window as unknown as { initialTeamState: TeamState })
+  const teamState = (window as unknown as { initialTeamState: TeamHuntState })
     .initialTeamState;
   // Note: we avoid hydration here because we save photo locations in
   // localStorage, which won't match the SSR'd DOM, and because we use

@@ -1,5 +1,5 @@
 import React from "react";
-import type { TeamState } from "../../../lib/api/client.js";
+import type { TeamHuntState } from "../../../lib/api/client.js";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
 
 function dedupedOrderedItems(scripts: string[]): string[] {
@@ -28,7 +28,7 @@ const Layout = ({
   stylesheets?: string[];
   styleElements?: React.JSX.Element[];
   title?: string;
-  teamState?: TeamState;
+  teamState?: TeamHuntState;
 }) => {
   const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
   const devScripts = injectDevScript ? lookupScripts("dev") : [];

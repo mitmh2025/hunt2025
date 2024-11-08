@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import { styled } from "styled-components";
-import { type TeamState } from "../../../../../lib/api/client";
+import { type TeamHuntState } from "../../../../../lib/api/client";
 import globalDatasetManager from "../../../client/DatasetManager";
 import PuzzleLink from "../../../components/PuzzleLink";
 import {
@@ -229,9 +229,9 @@ const SearchEngine = ({
   initialTeamState,
 }: {
   initialNode: Node;
-  initialTeamState: TeamState;
+  initialTeamState: TeamHuntState;
 }) => {
-  const [teamState, setTeamState] = useState<TeamState>(initialTeamState);
+  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
   const [node, setNode] = useState<Node>(initialNode);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalShown, setModalShown] = useState<
@@ -355,7 +355,7 @@ const SearchEngine = ({
       "team_state",
       undefined,
       (value: object) => {
-        setTeamState(value as TeamState);
+        setTeamState(value as TeamHuntState);
       },
     );
     return stop;

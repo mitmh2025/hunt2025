@@ -1,4 +1,4 @@
-import type { TeamState } from "../../../lib/api/client.js";
+import type { TeamHuntState } from "../../../lib/api/client.js";
 import HUNT from "../../huntdata";
 import type { PuzzleSlot } from "../../huntdata/types";
 import { PUZZLES } from "../puzzles";
@@ -38,7 +38,10 @@ export type DevtoolsState = {
   rounds: DevtoolsRound[];
 };
 
-function devtoolsPuzzleForSlot(puzzleSlot: PuzzleSlot, teamState: TeamState) {
+function devtoolsPuzzleForSlot(
+  puzzleSlot: PuzzleSlot,
+  teamState: TeamHuntState,
+) {
   const slug = puzzleSlot.slug ?? puzzleSlot.id;
   const puzzleDefinition = PUZZLES[slug];
   const title =
@@ -56,12 +59,10 @@ function devtoolsPuzzleForSlot(puzzleSlot: PuzzleSlot, teamState: TeamState) {
   };
 }
 
-export function devtoolsState(teamState: TeamState) {
+export function devtoolsState(teamState: TeamHuntState) {
   if (process.env.NODE_ENV === "development") {
     return {
       epoch: teamState.epoch,
-      teamId: teamState.teamId,
-      teamName: teamState.teamName,
       currency: teamState.currency,
       rounds: HUNT.rounds.map((round) => {
         return {
