@@ -1,0 +1,13 @@
+version: 3
+projects:
+- name: prod
+  dir: infra/terraform/prod
+  autoplan:
+    enabled: false
+    when_modified:
+    - '../../**/*.nix'
+- name: staging
+  dir: infra/terraform/staging
+  autoplan:
+    when_modified:
+    - '../../**/*.nix'

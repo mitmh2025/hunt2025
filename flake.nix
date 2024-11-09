@@ -88,6 +88,7 @@
             "staging"
             "dev"
           ] mkTFConfig;
+          inherit terraform;
         };
         # nix develop
         devShells.infra = pkgs.callPackage ./infra/shell.nix {
@@ -153,10 +154,11 @@
           "local/dev-vm"
           "staging/staging"
           "staging/dev"
+          "prod/deploy"
         ] (name: nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit authentik radio-media;
+            inherit self authentik radio-media;
           };
           modules = [
             ./infra/hosts/${name}.nix
