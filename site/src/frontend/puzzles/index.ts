@@ -1,6 +1,7 @@
 import DownrightBackwards from "./able-worm";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
+import DoableDouble from "./austere-sink";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import EducationalRiteOfPassage from "./circular-greece";
@@ -50,6 +51,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_exchange_of_vows: AnExchangeOfVows,
   broken_record: BrokenRecord,
   dear_diary: DearDiary,
+  doable_double: DoableDouble,
   fight_night_at_mos: FightNightAtMos,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
