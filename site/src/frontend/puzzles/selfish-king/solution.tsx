@@ -9,7 +9,6 @@ import day5solved from "./assets/day5-solved.svg";
 import extraction from "./assets/extraction.svg";
 
 const ImageWrapper = styled.div`
-  background-color: white;
   margin-bottom: 1em;
 `;
 

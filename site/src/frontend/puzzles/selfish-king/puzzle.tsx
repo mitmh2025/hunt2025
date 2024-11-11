@@ -11,7 +11,7 @@ import example1 from "./assets/example1.svg";
 import example2 from "./assets/example2.svg";
 
 const Italics = styled.span`
-  font-style: "italic";
+  font-style: italic;
 `;
 
 const ExampleWrapper = styled.div`
@@ -31,7 +31,7 @@ const ExampleHeader = styled.span<{ $basis: number }>`
 
 const ImageWrapper = styled.div`
   flex: 0 0 50%;
-  background-color: white;
+  margin-bottom: 1em;
 `;
 
 const Puzzle = (): JSX.Element => {
