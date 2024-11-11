@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/LinkedImage";
 import day1solved from "./assets/day1-solved.svg";
 import day2solved from "./assets/day2-solved.svg";
 import day3solved from "./assets/day3-solved.svg";
@@ -56,7 +56,7 @@ const Solution = (): JSX.Element => {
         day (N+1)).
       </p>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day1solved}
           alt="Two solved, triangular Battleship puzzles with a darker triangle in the center"
         />
@@ -111,7 +111,7 @@ const Solution = (): JSX.Element => {
         the R top-most due to the “R” clue at the left of the a.m. grid.
       </p>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day2solved}
           alt="Two solved, triangular Battleship puzzles with a darker triangle in the center"
         />
@@ -168,7 +168,7 @@ const Solution = (): JSX.Element => {
         previously.
       </p>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day3solved}
           alt="Two solved, triangular Battleship puzzles with a darker triangle in the center"
         />
@@ -234,7 +234,7 @@ const Solution = (): JSX.Element => {
         and U is pointed at by the “3” clue.
       </p>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day4solved}
           alt="Two solved, triangular Battleship puzzles with a darker triangle in the center"
         />
@@ -299,7 +299,7 @@ const Solution = (): JSX.Element => {
         the a.m. grid as well.
       </p>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day5solved}
           alt="Two solved, triangular Battleship puzzles with a darker triangle in the center"
         />
@@ -340,7 +340,7 @@ const Solution = (): JSX.Element => {
         the 10 grids to make an onverview, we get:
       </p>
       <ExtractionWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={extraction}
           alt="A small triangular hex grid with partial battlships spelling out CARPENTER FISH"
         />

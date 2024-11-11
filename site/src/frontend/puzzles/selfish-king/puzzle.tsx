@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/LinkedImage";
 import spreadsheet from "./assets/bermuda-triangle-spreadsheet.xlsx";
 import day1 from "./assets/day1.svg";
 import day2 from "./assets/day2.svg";
@@ -112,13 +112,13 @@ const Puzzle = (): JSX.Element => {
         </FlexWrapper>
         <FlexWrapper>
           <ImageWrapper>
-            <PuzzleImage
+            <LinkedImage
               src={example1}
               alt="Two hexagonal Battleship puzzles with a darker hexagon in the center."
             />
           </ImageWrapper>
           <ImageWrapper>
-            <PuzzleImage
+            <LinkedImage
               src={example2}
               alt="Two hexagonal Battleship puzzles with a darker hexagon in the center."
             />
@@ -135,31 +135,31 @@ const Puzzle = (): JSX.Element => {
         the vortex is just a simple overview.
       </p>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day1}
           alt="Two triangular Battleship puzzles with a darker triangle in the center."
         />
       </ImageWrapper>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day2}
           alt="Two triangular Battleship puzzles with a darker triangle in the center."
         />
       </ImageWrapper>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day3}
           alt="Two triangular Battleship puzzles with a darker triangle in the center."
         />
       </ImageWrapper>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day4}
           alt="Two triangular Battleship puzzles with a darker triangle in the center."
         />
       </ImageWrapper>
       <ImageWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={day5}
           alt="Two triangular Battleship puzzles with a darker triangle in the center."
         />
