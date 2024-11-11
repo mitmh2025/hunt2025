@@ -26,10 +26,6 @@ const ImageWrapper = styled.div`
   display: flex;
 `;
 
-const StyledImage = styled(LinkedImage)`
-  background-color: white;
-`;
-
 const Mono = styled.span`
   font-family: monospace;
 `;
@@ -77,7 +73,7 @@ const Solution = (): JSX.Element => {
       <h3>Part 1 - solving the grids</h3>
       <h4>1. Kakuro:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution1base10}
           alt="A solved 9x9 Kakuro grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -117,7 +113,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>2. Nonogram:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution2base10}
           alt="A solved 9x9 Kakuro grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -138,7 +134,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>3. Killer Sudoku:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution3base10}
           alt="A solved 9x9 Killer Sudoku grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -179,7 +175,7 @@ const Solution = (): JSX.Element => {
       <p>At this point things become reasonably straightforward.</p>
       <h4>4. Fillomino:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution4base10}
           alt="A solved 10x12 Fillomino grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -197,7 +193,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>5. Average Snake:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution5base10}
           alt="A solved 12x12 Average Snake grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -254,7 +250,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>6. Sum Skyscrapers with Mirrors:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution6base10}
           alt="A solved 7x7 Sum Skyscrapers with Mirrors grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -342,7 +338,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>7. Japanese Sums or Products:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution7base10}
           alt="A solved 8x8 Japanese Sums or Products grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -437,7 +433,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>8. Hungarian Tapa:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution8base10}
           alt="A solved 10x10 Hungarian Tapa grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -545,7 +541,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>9. Doppelblock Sudoku:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution9base10}
           alt="A solved 9x9 Doppelblock Sudoku grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -628,7 +624,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>10. Index Yajilin:</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution10base10}
           alt="A solved 12x12 Index Yajilin grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -699,7 +695,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>1. Kakuro (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution1base12}
           alt="A solved 9x9 Kakuro grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -795,7 +791,7 @@ const Solution = (): JSX.Element => {
       </ul>
       <h4>2. Nonogram (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution2base12}
           alt="A solved 9x9 Kakuro grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -810,7 +806,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>3. Killer Sudoku (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution3base12}
           alt="A solved 9x9 Killer Sudoku grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -892,7 +888,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>4. Fillomino (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution4base12}
           alt="A solved 10x12 Fillomino grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -909,7 +905,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>5. Average Snake (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution5base12}
           alt="A solved 12x12 Average Snake grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -984,7 +980,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>6. Sum Skyscrapers with Mirrors (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution6base12}
           alt="A solved 7x7 Sum Skyscrapers with Mirrors grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -1053,7 +1049,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>7. Japanese Sums or Products (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution7base12}
           alt="A solved 8x8 Japanese Sums or Products grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -1137,7 +1133,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>8. Hungarian Tapa (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution8base12}
           alt="A solved 10x10 Hungarian Tapa grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -1171,7 +1167,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>9. Doppelblock Sudoku (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution9base12}
           alt="A solved 9x9 Doppelblock Sudoku grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
@@ -1246,7 +1242,7 @@ const Solution = (): JSX.Element => {
       </p>
       <h4>10. Index Yajilin (base 12):</h4>
       <ImageWrapper>
-        <StyledImage
+        <img
           src={solution10base12}
           alt="A solved 12x12 Index Yajilin grid in base 12. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
         />
