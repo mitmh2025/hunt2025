@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/PuzzleImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -45,29 +45,29 @@ const Puzzle = () => {
         <li>Hole to get water</li>
       </ul>
       <FlexWrapper>
-        <PuzzleImage src={img01} alt={makeAltText("nine", "seventh")} />
-        <PuzzleImage src={img02} alt={makeAltText("eighteen", "thirteenth")} />
-        <PuzzleImage src={img03} alt={makeAltText("fifteen", "fourteenth")} />
-        <PuzzleImage src={img04} alt={makeAltText("twelve", "twelfth")} />
-        <PuzzleImage src={img05} alt={makeAltText("sixteen", "fourteenth")} />
-        <PuzzleImage
+        <LinkedImage src={img01} alt={makeAltText("nine", "seventh")} />
+        <LinkedImage src={img02} alt={makeAltText("eighteen", "thirteenth")} />
+        <LinkedImage src={img03} alt={makeAltText("fifteen", "fourteenth")} />
+        <LinkedImage src={img04} alt={makeAltText("twelve", "twelfth")} />
+        <LinkedImage src={img05} alt={makeAltText("sixteen", "fourteenth")} />
+        <LinkedImage
           src={img06}
           alt={makeAltText("thirty-three", "twenty-ninth")}
         />
-        <PuzzleImage
+        <LinkedImage
           src={img07}
           alt={makeAltText("fifty-six", "fifty-first")}
         />
-        <PuzzleImage src={img08} alt={makeAltText("six", "six")} />
-        <PuzzleImage src={img09} alt={makeAltText("eight", "fifth")} />
-        <PuzzleImage src={img10} alt={makeAltText("ten", "seventh")} />
-        <PuzzleImage src={img11} alt={makeAltText("fourteen", "ninth")} />
-        <PuzzleImage
+        <LinkedImage src={img08} alt={makeAltText("six", "six")} />
+        <LinkedImage src={img09} alt={makeAltText("eight", "fifth")} />
+        <LinkedImage src={img10} alt={makeAltText("ten", "seventh")} />
+        <LinkedImage src={img11} alt={makeAltText("fourteen", "ninth")} />
+        <LinkedImage
           src={img12}
           alt={makeAltText("twenty-four", "twenty-fourth")}
         />
-        <PuzzleImage src={img13} alt={makeAltText("four", "fourth")} />
-        <PuzzleImage
+        <LinkedImage src={img13} alt={makeAltText("four", "fourth")} />
+        <LinkedImage
           src={img14}
           alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long."
         />

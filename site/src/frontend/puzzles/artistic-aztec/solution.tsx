@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/PuzzleImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -60,98 +60,98 @@ const Solution = () => {
         you get a 3D model of a <Mono>FIRE EXTINGUISHER</Mono>.
       </p>
       <FlexFullWidth>
-        <PuzzleImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img14}
           alt="A 3D rendering of the handle of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img02} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img15}
           alt="A 3D rendering of the hose of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img03} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img16}
           alt="A 3D rendering of part of the operating lever of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img04} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img17}
           alt="A 3D rendering of a cuboid slice of the top half of the tank of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img05} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img18}
           alt="A 3D rendering of a cuboid slice of the bottom half of the tank of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img06} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img19}
           alt="A 3D rendering of the hemispherical top of a fire extinguisher, including part of the valve, and with a cuboid slice taken out."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img07} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img20}
           alt="A 3D rendering of part of the valve of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img08} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img21}
           alt="A 3D rendering of part of the operating lever of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img09} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img22}
           alt="A 3D rendering of the pin of a fire extinguisher."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img10} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img23}
           alt="A 3D rendering of the part of the tank of a fire extinguisher with a cuboid slice taken out."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img11} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img24}
           alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img12} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img25}
           alt="A 3D rendering of part of the tank of a fire extinguisher, with several cuboid slices taken out."
         />
       </FlexFullWidth>
       <FlexFullWidth>
-        <PuzzleImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
-        <PuzzleImage
+        <LinkedImage src={img13} alt={PUZZLE_IMAGE_ALT_TEXT} />
+        <LinkedImage
           src={img26}
           alt="A 3D rendering of the nozzle of a fire extinguisher."
         />
       </FlexFullWidth>
       <SizedWrapper>
-        <PuzzleImage
+        <LinkedImage
           src={img27}
           alt="A 3D rendering of a fire extinguisher, assembled from the 3D renderings above."
         />

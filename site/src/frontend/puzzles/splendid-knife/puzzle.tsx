@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import PuzzleImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/PuzzleImage";
 import image from "./assets/img.png";
 
 const StyledImageWrapper = styled.div`
@@ -17,7 +17,7 @@ const Puzzle = (): JSX.Element => {
         Some of these fighters are too soft to make it.
       </p>
       <StyledImageWrapper>
-        <PuzzleImage src={image} alt={ALT_TEXT} />
+        <LinkedImage src={image} alt={ALT_TEXT} />
       </StyledImageWrapper>
     </>
   );

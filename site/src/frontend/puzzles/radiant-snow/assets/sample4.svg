@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="113.33333"
+   height="113.33333"
+   viewBox="0 0 113.33333 113.33333"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g1">
+    <path
+       id="path1"
+       d="M 20,20 H 820 V 820 H 20 Z"
+       style="fill:none;stroke:#000000;stroke-width:16;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <path
+       id="path2"
+       d="M 20,20 H 820 M 20,220 H 820 M 20,420 H 820 M 20,620 H 820 M 20,820 h 800"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:10, 30, 10, 0;stroke-dashoffset:400;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <path
+       id="path3"
+       d="M 20,20 V 820 M 220,20 V 820 M 420,20 V 820 M 620,20 V 820 M 820,20 v 800"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:10, 30, 10, 0;stroke-dashoffset:400;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+    <text
+       id="text3"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,64.885467,22.666667)"><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0 20.00004"
+         y="0"
+         id="tspan3">45</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-40 -19.99996"
+         y="20"
+         id="tspan4">41</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="20"
+         y="40"
+         id="tspan5">4</tspan></text>
+    <path
+       id="path5"
+       d="M 220,20 V 620 H 620 V 820 M 20,420 H 420 V 620 M 220,220 h 400 v 200 h 200"
+       style="fill:none;stroke:#000000;stroke-width:16;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,113.33333)" />
+  </g>
+</svg>

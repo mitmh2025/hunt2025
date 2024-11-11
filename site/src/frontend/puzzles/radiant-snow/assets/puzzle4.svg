@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="326.66666"
+   height="273.33334"
+   viewBox="0 0 326.66666 273.33334"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g1">
+    <path
+       id="path1"
+       d="M 20,20 H 2420 V 2020 H 20 Z"
+       style="fill:none;stroke:#000000;stroke-width:16;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,273.33333)" />
+    <path
+       id="path2"
+       d="M 20,20 H 2420 M 20,220 H 2420 M 20,420 H 2420 M 20,620 H 2420 M 20,820 H 2420 M 20,1020 H 2420 M 20,1220 H 2420 M 20,1420 H 2420 M 20,1620 H 2420 M 20,1820 H 2420 M 20,2020 h 2400"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:10, 30, 10, 0;stroke-dashoffset:400;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,273.33333)" />
+    <path
+       id="path3"
+       d="M 20,20 V 2020 M 220,20 V 2020 M 420,20 V 2020 M 620,20 V 2020 M 820,20 V 2020 M 1020,20 V 2020 M 1220,20 V 2020 M 1420,20 V 2020 M 1620,20 V 2020 M 1820,20 V 2020 M 2020,20 V 2020 M 2220,20 V 2020 M 2420,20 v 2000"
+       style="fill:none;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:10, 30, 10, 0;stroke-dashoffset:400;stroke-opacity:1"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,273.33333)" />
+    <path
+       id="path4"
+       d="m 2256,1856 h 128 v 128 h -128 z"
+       style="fill:#ff8080;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,273.33333)" />
+    <path
+       id="path5"
+       d="m 2184,1120 c 0,35.34 -28.66,64 -64,64 -35.34,0 -64,-28.66 -64,-64 0,-35.34 28.66,-64 64,-64 35.34,0 64,28.66 64,64"
+       style="fill:#80ff80;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       transform="matrix(0.13333333,0,0,-0.13333333,0,273.33333)" />
+    <text
+       id="text5"
+       xml:space="preserve"
+       transform="matrix(1.3333333,0,0,1.3333333,171.552,22.666667)"><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="0 16.664064 23.336063 99.999985"
+         y="0"
+         id="tspan5">119?</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-80 -43.335918 -36.663921 -19.999989 19.999971"
+         y="20"
+         id="tspan6">63022</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-43.335899 -36.663898 -23.335896 -16.663897 80.000061 100.00011"
+         y="40"
+         id="tspan7">121912</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-3.3359001 3.3361001 16.664104 23.336103 80.000107"
+         y="80"
+         id="tspan8">1510?</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-3.3359001 3.3361001 20.000044"
+         y="100"
+         id="tspan9">102</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-80 76.663597 83.335602"
+         y="120"
+         id="tspan10">610</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-60 39.999962 56.664024 63.336025"
+         y="140"
+         id="tspan11">1215</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="36.664101 43.336102 56.664104 63.336105"
+         y="160"
+         id="tspan12">1912</tspan><tspan
+         style="font-variant:normal;font-weight:normal;font-size:12px;font-family:Arial;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         x="-63.335899 -56.663898"
+         y="180"
+         id="tspan13">30</tspan></text>
+  </g>
+</svg>
