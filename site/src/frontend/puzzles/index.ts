@@ -5,6 +5,7 @@ import DoableDouble from "./austere-sink";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import EducationalRiteOfPassage from "./circular-greece";
+import NetworkingEvent from "./confused-antarctica";
 import TheBoardwalk from "./dental-shark";
 import Fechtbuch from "./dry-forest";
 import Casino from "./fortunate-calf";
@@ -76,6 +77,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
   kotei_no_ango: KoteiNoAngo,
+  networking_event: NetworkingEvent,
   this_is_just_a_test: ThisIsJustATest,
 
   // Background Check
