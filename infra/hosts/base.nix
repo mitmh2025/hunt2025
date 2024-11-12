@@ -6,6 +6,7 @@
     # Don't keep old generations around
     nix.gc.automatic = lib.mkDefault true;
     nix.gc.options = lib.mkDefault "-d";
+    nix.settings.auto-optimise-store = true;
 
     # Allow console login with no password
     users.users.root.hashedPassword = "";
