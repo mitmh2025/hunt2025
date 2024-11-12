@@ -24,6 +24,7 @@ import TheUltimateInsult from "./periodic-dance";
 import OnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
+import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import BermudaTriangle from "./selfish-king";
@@ -54,6 +55,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
   broken_record: BrokenRecord,
+  cruciverbal: Cruciverbal,
   dear_diary: DearDiary,
   doable_double: DoableDouble,
   fight_night_at_mos: FightNightAtMos,
