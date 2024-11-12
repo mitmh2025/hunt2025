@@ -36,10 +36,11 @@
     owner = "mitmh2025";
   };
 
+  state.bucket.name = "rb8tcjeo-tfstate";
+
   imports = [
     ./base-image.nix
     ./ci.nix
-    ./state.nix
     ./staging.nix
     ./mail.nix
     ./staticsite.nix
