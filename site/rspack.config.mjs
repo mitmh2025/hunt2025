@@ -38,6 +38,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.3mf",
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.stl",
   "src/frontend/puzzles/circular-greece/assets/rod-sticker.pdf",
+  "src/frontend/puzzles/confused-antarctica/assets/networking-event.pdf",
   "src/frontend/puzzles/selfish-king/assets/bermuda-triangle-spreadsheet.xlsx",
   "src/frontend/puzzles/shoddy-table/assets/10000sheets.xlsx",
 ];
