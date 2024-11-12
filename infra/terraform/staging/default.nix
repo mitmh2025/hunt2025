@@ -46,17 +46,9 @@
     ./dev.nix
   ];
 
-  resource.google_project_service = lib.genAttrs [
-    "compute"
-    "cloudkms"
-    "secretmanager"
-    "cloudbuild"
-    "artifactregistry"
-  ] (svc: {
-    service = "${svc}.googleapis.com";
-
-    disable_on_destroy = false;
-  });
+  gcp.services = {
+    cloudkms.enable = true;
+  };
 
   route53.mitmh2025 = {
     provider = "puzzup";

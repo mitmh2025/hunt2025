@@ -85,6 +85,7 @@
         };
       }) (lib.filterAttrs (_: v: v.hmacKey.enable) config.gcp.serviceAccount));
     in {
+      gcp.services.secretmanager.enable = lib.mkIf (hmac != []) true;
       # Can't just use a top-level list here because that would create infinite recursion.
       resource = lib.mkMerge (map (v: v.resource) hmac);
       data = lib.mkMerge (map (v: v.data) hmac);

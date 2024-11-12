@@ -115,6 +115,7 @@ in {
     };
   };
   config = lib.mkIf (cfg != {}) {
+    gcp.services.compute.enable = true;
     data.google_compute_network.default = {
       name = "default";
     };

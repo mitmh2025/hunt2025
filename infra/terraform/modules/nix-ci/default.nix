@@ -53,7 +53,9 @@ in {
     };
   };
   config = lib.mkMerge [
-    {
+    (lib.mkIf (cfg.github.repositories != {}) {
+      gcp.services.secretmanager.enable = true;
+
       # Create a deploy key for GitHub repo access.
 
       resource.tls_private_key.github_deploy_key = {
@@ -95,8 +97,10 @@ in {
         secret_id = lib.tfRef "google_secret_manager_secret.github_deploy_key[each.key].secret_id";
         policy_data = lib.tfRef "data.google_iam_policy.github_deploy_key_secret.policy_data";
       };
-    }
+    })
     (lib.mkIf (cfg.nix.cache.bucket != null) {
+      gcp.services.storage-api.enable = true;
+
       # Create a bucket to cache Nix artifacts.
 
       resource.google_storage_bucket.nix-cache = {
@@ -131,6 +135,8 @@ in {
       };
     })
     (lib.mkIf (cfg.triggers != {}) {
+      gcp.services.cloudbuild.enable = true;
+
       # Create a service account for Cloud Build and grant it access to the bucket.
 
       gcp.serviceAccount.cloud-build = {

@@ -55,6 +55,7 @@
     };
   };
   config = {
+    gcp.services.artifactregistry.enable = lib.mkIf (config.gcp.ar != {}) true;
     resource = lib.mkMerge (lib.mapAttrsToList (_: repo: repo.resource) config.gcp.ar);
     data = lib.mkMerge (lib.mapAttrsToList (_: repo: repo.data) config.gcp.ar);
   };
