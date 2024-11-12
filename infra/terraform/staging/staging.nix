@@ -21,6 +21,7 @@ in {
       50001 # MediaMTX RTCP
       50189 # MediaMTX WebRTC
     ];
+    useSops = true;
   };
 
   resource.nix_store_path_copy.staging_nixos = {

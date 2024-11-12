@@ -46,36 +46,8 @@
     ./dev.nix
   ];
 
-  gcp.services = {
-    cloudkms.enable = true;
-  };
-
   route53.mitmh2025 = {
     provider = "puzzup";
     domain = "mitmh2025.com";
-  };
-
-  # $ gcloud kms keyrings create sops --location global
-  resource.google_kms_key_ring.sops = {
-    name = "sops";
-    location = "global";
-  };
-  # $ gcloud kms keys create sops-staging-key --location global --keyring sops --purpose encryption
-  resource.google_kms_crypto_key.sops-staging-key = {
-    name = "sops-staging-key";
-    key_ring = lib.tfRef "google_kms_key_ring.sops.id";
-    purpose = "ENCRYPT_DECRYPT";
-  };
-
-  data.google_iam_policy.sops-staging-key = {
-    binding.role = "roles/cloudkms.cryptoKeyDecrypter";
-    binding.members = [
-      (lib.tfRef "google_service_account.staging-vm.member")
-    ];
-  };
-
-  resource.google_kms_crypto_key_iam_policy.sops-staging-key = {
-    crypto_key_id = lib.tfRef "google_kms_crypto_key.sops-staging-key.id";
-    policy_data = lib.tfRef "data.google_iam_policy.sops-staging-key.policy_data";
   };
 }

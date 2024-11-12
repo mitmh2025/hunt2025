@@ -43,6 +43,7 @@ in {
               apply = canonicalizePortList;
             };
           };
+          useSops = mkEnableOption "Provision a key for sops secrets";
           objects.serviceAccount = mkOption {
             type = types.anything;
           };
@@ -127,5 +128,8 @@ in {
     ) cfg;
     resource.google_compute_instance = lib.mapAttrs (_: value: value.resource.google_compute_instance) cfg;
     resource.google_compute_firewall = lib.mapAttrs (_: value: value.resource.google_compute_firewall) cfg;
+    sops.keys = lib.mapAttrs (name: value: {
+      users = [(lib.tfRef "google_service_account.${name}-vm.member")];
+    }) (lib.filterAttrs (_: value: value.useSops) cfg);
   };
 }
