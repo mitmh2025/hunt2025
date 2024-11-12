@@ -27,6 +27,7 @@ in {
     content_type = "application/tar+gzip";
 
     lifecycle.create_before_destroy = true;
+    lifecycle.ignore_changes = ["detect_md5hash"]; # Ignore non-deterministic tarball builds (actual content changes will include a filename change)
   };
 
   resource.google_compute_image.nixos = {
