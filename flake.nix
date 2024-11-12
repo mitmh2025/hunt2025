@@ -85,6 +85,7 @@
         legacyPackages = pkgs;
         packages = {
           terraformConfigurations = lib.genAttrs [
+            "prod"
             "staging"
             "dev"
           ] mkTFConfig;
