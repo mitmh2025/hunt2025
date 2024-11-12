@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import LinkedImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/LinkedImage";
 import solution from "./assets/solution.png";
 
 const Mono = styled.span`
