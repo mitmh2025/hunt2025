@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import LinkedImage from "../../components/PuzzleImage";
-import LinkedImage11 from "./assets/img11.svg";
+import LinkedImage from "../../components/LinkedImage";
+import img11 from "./assets/img11.svg";
 import puzzle1 from "./assets/puzzle1.svg";
 import puzzle10 from "./assets/puzzle10.svg";
 import puzzle2 from "./assets/puzzle2.svg";
@@ -184,7 +184,7 @@ const Puzzle = (): JSX.Element => {
       </ImageRow>
       <ImageRow>
         <LinkedImage
-          src={LinkedImage11}
+          src={img11}
           alt="A 12x15 grid of letters and numbers. Across the top of the grid are green-highlighted numbers 1, 2, 3, and so on. Across the left side of the grid are red-highlighted numbers 1, 2, 3, and so on."
         />
       </ImageRow>

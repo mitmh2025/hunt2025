@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import LinkedImage from "../../components/PuzzleImage";
+import LinkedImage from "../../components/LinkedImage";
 import solution1base10 from "./assets/solution1-base10.svg";
 import solution1base12 from "./assets/solution1-base12.svg";
 import solution10base10 from "./assets/solution10-base10.svg";
