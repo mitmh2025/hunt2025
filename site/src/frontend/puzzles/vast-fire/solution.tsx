@@ -259,6 +259,7 @@ const Solution = (): JSX.Element => {
           <td>C F B</td>
           <td>E F A B</td>
           <td>1101100</td>
+          <td>l</td>
         </tr>
       </StyledTable>
       <p>This spells the message “Interpret roots as Solresol”.</p>
