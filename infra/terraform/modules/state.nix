@@ -11,6 +11,11 @@
         default = [];
         apply = v: lib.unique (builtins.sort builtins.lessThan v);
       };
+      use = mkOption {
+        type = types.bool;
+        default = config.state.bucket.name != null;
+        description = "Whether to use the generated state bucket (disable at first to create the bucket)";
+      };
     };
   };
   config = lib.mkIf (config.state.bucket.name != null) {
@@ -35,15 +40,15 @@
 
     data.google_iam_policy.tfstate.binding = [
       {
-        role = "roles/storage.legacyBucketOwner";
+        role = "roles/storage.admin";
         members = [
           "projectOwner:${lib.tfRef "data.google_project.this.project_id"}"
         ];
       }
-      {
+      (lib.mkIf (config.state.bucket.users != []) {
         role = "roles/storage.objectUser";
         members = config.state.bucket.users;
-      }
+      })
     ];
 
     resource.google_storage_bucket_iam_policy.tfstate = {
@@ -51,9 +56,11 @@
       policy_data = lib.tfRef "data.google_iam_policy.tfstate.policy_data";
     };
 
-    terraform.backend.gcs = {
-      bucket = config.state.bucket.name;
-      prefix = "terraform/state";
+    terraform.backend = lib.mkIf config.state.bucket.use {
+      gcs = {
+        bucket = config.state.bucket.name;
+        prefix = "terraform/state";
+      };
     };
   };
 }

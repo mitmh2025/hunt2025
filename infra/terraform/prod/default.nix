@@ -30,7 +30,7 @@
     owner = "mitmh2025";
   };
 
-  state.bucket.name = "cVqb2gWr-tfstate";
+  state.bucket.name = "cvqb2gwr-tfstate";
 
   route53.mitmh2025 = {
     provider = "puzzup";
