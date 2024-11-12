@@ -2,6 +2,8 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import jar1 from "./assets/jar1.png";
+import jar10 from "./assets/jar10.png";
+import jar11 from "./assets/jar11.png";
 import jar2 from "./assets/jar2.png";
 import jar3 from "./assets/jar3.png";
 import jar4 from "./assets/jar4.png";
@@ -10,8 +12,6 @@ import jar6 from "./assets/jar6.png";
 import jar7 from "./assets/jar7.png";
 import jar8 from "./assets/jar8.png";
 import jar9 from "./assets/jar9.png";
-import jar10 from "./assets/jar10.png";
-import jar11 from "./assets/jar11.png";
 
 const LeftAlign = styled.div`
   margin-bottom: 1em;
