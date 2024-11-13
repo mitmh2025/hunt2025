@@ -14,6 +14,10 @@ in {
         inherit (configFormat) type;
         default = {};
       };
+      configPath = mkOption {
+        type = types.path;
+        default = configYaml;
+      };
       repos = mkOption {
         type = types.listOf configFormat.type;
         default = [];
@@ -39,7 +43,7 @@ in {
       after = ["network-online.target"];
 
       serviceConfig = {
-        ExecStart = "${lib.getExe pkgs.atlantis} server --config ${configYaml}";
+        ExecStart = "${lib.getExe pkgs.atlantis} server --config ${cfg.configPath}";
         User = "deploy";
         Restart = "always";
         RestartSec = "5s";

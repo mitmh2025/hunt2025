@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }:
+{ config, options, lib, pkgs, self, ... }:
 let
   # Atlantis < 0.30.0 requires that there be a "terraform" binary on the path.
   # Remove when we move to Atlantis 0.30.0.
@@ -16,7 +16,7 @@ in {
   ];
   config = lib.mkMerge [
     {
-      sops.defaultSopsFile = ../../secrets/staging.yaml;
+      sops.defaultSopsFile = ../../secrets/prod/deploy.yaml;
       virtualisation.vmVariant = {
         systemd.services.google-guest-agent.enable = false;
         systemd.services.google-startup-scripts.enable = false;
@@ -31,13 +31,26 @@ in {
       environment.systemPackages = [
         terraformWrapper
         self.packages.${config.nixpkgs.system}.terraform
+        pkgs.git
       ];
       systemd.services.atlantis.path = [
-        terraformWrapper
+        # Give Atlantis a normal user path.
+        "/run/current-system/sw"
       ];
+      sops.secrets."atlantis/gh-app-id" = {};
+      sops.secrets."atlantis/gh-app-slug" = {};
+      sops.secrets."atlantis/gh-app-key-file" = {
+        owner = config.users.users.deploy.name;
+      };
+      sops.secrets."atlantis/gh-webhook-secret" = {};
+      sops.templates."atlantis.yaml" = {
+        file = options.services.atlantis.configPath.default;
+        owner = config.users.users.deploy.name;
+      };
       services.atlantis = {
         enable = true;
         user = "deploy";
+        configPath = config.sops.templates."atlantis.yaml".path;
         config = {
           # https://www.runatlantis.io/docs/access-credentials.html#github-app
           gh-org = "mitmh2025";
@@ -50,15 +63,15 @@ in {
           hide-prev-plan-comments = true;
 
           # Set these to create a new app.
-          gh-user = "fake";
-          gh-token = "fake";
+          #gh-user = "fake";
+          #gh-token = "fake";
 
           # Then set these with your new app's info.
-          # gh-app-id = "<your id>";
-          # gh-app-slug = "<your app slug>";
-          # gh-app-key-file = "atlantis-app-key.pem";
-          # gh-webhook-secret = "<your secret>";
-          # write-git-creds = true;
+          gh-app-id = config.sops.placeholder."atlantis/gh-app-id";
+          gh-app-slug = config.sops.placeholder."atlantis/gh-app-slug";
+          gh-app-key-file = config.sops.secrets."atlantis/gh-app-key-file".path;
+          gh-webhook-secret = config.sops.placeholder."atlantis/gh-webhook-secret";
+          write-git-creds = true;
 
           # Always apply the post-merge config
           checkout-strategy = "merge";

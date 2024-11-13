@@ -43,6 +43,7 @@ in {
     
       # $ gcloud kms keyrings create sops --location global
       resource.google_kms_key_ring.sops = {
+        depends_on = ["google_project_service.cloudkms"];
         name = "sops";
         location = "global";
       };

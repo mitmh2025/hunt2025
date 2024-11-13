@@ -11,7 +11,7 @@
       80 # HTTP
       443 # HTTPS
     ];
-    #useSops = true;
+    useSops = true;
     nixosConfiguration = self.nixosConfigurations."prod/deploy";
   };
 }
