@@ -187,8 +187,8 @@ const HUNT: Hunt = {
       title: "Stakeout",
       puzzles: [
         // 42 feeders, 1 meta
-        { id: "sop02", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_01" }, 
-        { id: "sop01", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_02" }, 
+        { id: "sop01", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_01" }, 
+        { id: "sop02", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_02" }, 
         { id: "sop03", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_03" }, 
         { id: "sop04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug:"placeholder_stakeout_04" }, 
         { id: "sop05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1, slug:"placeholder_stakeout_05" }, 
