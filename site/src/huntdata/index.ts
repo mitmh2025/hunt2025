@@ -247,264 +247,264 @@ const HUNT: Hunt = {
         // { interaction_completed: "interview_at_the_boardwalk" },
       ],
     },
-    {
-      slug: "paper_trail",
-      title: "Paper Trail",
-      puzzles: [
-        // 17 feeders, 8 metas, 1 super
-        { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "follow_the_rules" },
-        { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
-        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
-        { id: "ptp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
-        { id: "ptp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
-        { id: "ptp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
-        { id: "ptp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
-        { id: "ptp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
-        { id: "ptp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
-        { id: "ptp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
-        { id: "ptp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
-        { id: "ptp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
-        { id: "ptp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
-        { id: "ptp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        { id: "ptp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
-        { id: "ptp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
-        { id: "ptp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
-        // Drop all 8 metas together once ~70% of the feeders are solved.
-        { id: "ptm01", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_1" }, // meta 1
-        { id: "ptm02", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_2" }, // meta 2
-        { id: "ptm03", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_3" }, // meta 3
-        { id: "ptm04", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_4" }, // meta 4
-        { id: "ptm05", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_5" }, // meta 5
-        { id: "ptm06", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_6" }, // meta 6
-        { id: "ptm07", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_7" }, // meta 7
-        { id: "ptm08", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_8" }, // meta 8
-        {
-          id: "ptm09", // supermeta
-          is_meta: true,
-          unlocked_if: {
-            // Unlock only once all 8 shell corporation metas are solved.
-            puzzles_solved: 8,
-            slots: [
-              "ptm01",
-              "ptm02",
-              "ptm03",
-              "ptm04",
-              "ptm05",
-              "ptm06",
-              "ptm07",
-              "ptm08",
-            ],
-          },
-          slug: "the_shell_game",
-        },
-      ],
-      interactions: [
-        {
-          // This is a live interaction, not an in-site interaction, but we might
-          // have prerecorded video for remote solvers/folks missing at the time,
-          // so it might need a URL anyway.
-          id: "meet_gladys",
-          unlock_if: [
-            { slot_solved: "ptm09" }, // papertrail super
-          ],
-        },
-      ],
-      unlock_if: [
-        { slot_solved: "mdm02" },
-        { interaction_completed: "interview_at_the_jewelry_store" },
-      ],
-    },
-    {
-      slug: "background_check",
-      title: "Background Check",
-      puzzles: [
-        // 14 feeders, 3 metas, 1 super
-        { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "the_10000_sheet_excel_file" },
-        { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
-        { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
-        { id: "bgp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
-        { id: "bgp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
-        { id: "bgp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
-        { id: "bgp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
-        { id: "bgp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
-        { id: "bgp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
-        { id: "bgp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
-        { id: "bgp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
-        { id: "bgp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
-        { id: "bgp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
-        { id: "bgp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        // Metas (and the super) release after 10 feeder solves, which is ~70% of the round.
-        { id: "bgm01", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 1
-        { id: "bgm02", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 2
-        { id: "bgm03", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 3
-        { id: "bgm04", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // supermeta
-      ],
-      interactions: [
-        {
-          // This is a live interaction, not an in-site interaction, but we might
-          // have prerecorded video for remote solvers/folks missing at the time,
-          // so it might need a URL anyway.
-          id: "meet_carter",
-          unlock_if: [
-            { slot_solved: "bgm04" }, // background check super
-          ],
-        },
-      ],
-      unlock_if: [
-        { slot_solved: "mdm03" },
-        { interaction_completed: "interview_at_the_casino" },
-      ],
-    },
-    {
-      slug: "illegal_search",
-      title: "Illegal Search",
-      puzzles: [
-        // The first 5 puzzles are unlockable once they are discovered in the UI.
-        { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "kotei_no_ango" },
-        { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "cross_spread" },
-        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 },
-        { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1, slug: "this_is_just_a_test" },
-        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "networking_event" },
-        // The next 5 puzzles are unlockable once they are discovered in the
-        // UI, but will not be discoverable until the corresponding lock is
-        // satisfied.
-        { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "bermuda_triangle" },
-        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "fechtbuch" },
-        { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1 },
-        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1 },
-        { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1 },
+    // {
+    //   slug: "paper_trail",
+    //   title: "Paper Trail",
+    //   puzzles: [
+    //     // 17 feeders, 8 metas, 1 super
+    //     { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "follow_the_rules" },
+    //     { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
+    //     { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
+    //     { id: "ptp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+    //     { id: "ptp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+    //     { id: "ptp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+    //     { id: "ptp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+    //     { id: "ptp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+    //     { id: "ptp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+    //     { id: "ptp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+    //     { id: "ptp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+    //     { id: "ptp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+    //     { id: "ptp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+    //     { id: "ptp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+    //     { id: "ptp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+    //     { id: "ptp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+    //     { id: "ptp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+    //     // Drop all 8 metas together once ~70% of the feeders are solved.
+    //     { id: "ptm01", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_1" }, // meta 1
+    //     { id: "ptm02", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_2" }, // meta 2
+    //     { id: "ptm03", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_3" }, // meta 3
+    //     { id: "ptm04", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_4" }, // meta 4
+    //     { id: "ptm05", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_5" }, // meta 5
+    //     { id: "ptm06", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_6" }, // meta 6
+    //     { id: "ptm07", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_7" }, // meta 7
+    //     { id: "ptm08", is_meta: true, unlocked_if: { puzzles_solved: 12 }, slug: "shell_corporation_8" }, // meta 8
+    //     {
+    //       id: "ptm09", // supermeta
+    //       is_meta: true,
+    //       unlocked_if: {
+    //         // Unlock only once all 8 shell corporation metas are solved.
+    //         puzzles_solved: 8,
+    //         slots: [
+    //           "ptm01",
+    //           "ptm02",
+    //           "ptm03",
+    //           "ptm04",
+    //           "ptm05",
+    //           "ptm06",
+    //           "ptm07",
+    //           "ptm08",
+    //         ],
+    //       },
+    //       slug: "the_shell_game",
+    //     },
+    //   ],
+    //   interactions: [
+    //     {
+    //       // This is a live interaction, not an in-site interaction, but we might
+    //       // have prerecorded video for remote solvers/folks missing at the time,
+    //       // so it might need a URL anyway.
+    //       id: "meet_gladys",
+    //       unlock_if: [
+    //         { slot_solved: "ptm09" }, // papertrail super
+    //       ],
+    //     },
+    //   ],
+    //   unlock_if: [
+    //     { slot_solved: "mdm02" },
+    //     { interaction_completed: "interview_at_the_jewelry_store" },
+    //   ],
+    // },
+    // {
+    //   slug: "background_check",
+    //   title: "Background Check",
+    //   puzzles: [
+    //     // 14 feeders, 3 metas, 1 super
+    //     { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "the_10000_sheet_excel_file" },
+    //     { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+    //     { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+    //     { id: "bgp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+    //     { id: "bgp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+    //     { id: "bgp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+    //     { id: "bgp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+    //     { id: "bgp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+    //     { id: "bgp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+    //     { id: "bgp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+    //     { id: "bgp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+    //     { id: "bgp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+    //     { id: "bgp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+    //     { id: "bgp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+    //     // Metas (and the super) release after 10 feeder solves, which is ~70% of the round.
+    //     { id: "bgm01", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 1
+    //     { id: "bgm02", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 2
+    //     { id: "bgm03", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // meta 3
+    //     { id: "bgm04", is_meta: true, unlocked_if: { puzzles_solved: 10 } }, // supermeta
+    //   ],
+    //   interactions: [
+    //     {
+    //       // This is a live interaction, not an in-site interaction, but we might
+    //       // have prerecorded video for remote solvers/folks missing at the time,
+    //       // so it might need a URL anyway.
+    //       id: "meet_carter",
+    //       unlock_if: [
+    //         { slot_solved: "bgm04" }, // background check super
+    //       ],
+    //     },
+    //   ],
+    //   unlock_if: [
+    //     { slot_solved: "mdm03" },
+    //     { interaction_completed: "interview_at_the_casino" },
+    //   ],
+    // },
+    // {
+    //   slug: "illegal_search",
+    //   title: "Illegal Search",
+    //   puzzles: [
+    //     // The first 5 puzzles are unlockable once they are discovered in the UI.
+    //     { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "kotei_no_ango" },
+    //     { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "cross_spread" },
+    //     { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 },
+    //     { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1, slug: "this_is_just_a_test" },
+    //     { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "networking_event" },
+    //     // The next 5 puzzles are unlockable once they are discovered in the
+    //     // UI, but will not be discoverable until the corresponding lock is
+    //     // satisfied.
+    //     { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "bermuda_triangle" },
+    //     { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "fechtbuch" },
+    //     { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1 },
+    //     { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1 },
+    //     { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1 },
 
-        // The next 8 puzzles are only discoverable once the first meta is
-        // solved and they are discovered in the UI.
-        { id: "isp11", unlockable_if: [{ gate_satisfied: "isg17" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp12", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp14", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp15", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp18", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     // The next 8 puzzles are only discoverable once the first meta is
+    //     // solved and they are discovered in the UI.
+    //     { id: "isp11", unlockable_if: [{ gate_satisfied: "isg17" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     { id: "isp12", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     { id: "isp13", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     { id: "isp14", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     { id: "isp15", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     { id: "isp16", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     { id: "isp17", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+    //     { id: "isp18", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
 
-        { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }] }, // Bookcase
-        { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg16" }] },
-        { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg26" }] },
-      ],
-      gates: [
-        // Prototype; these particular gate assignments may not be final
-        { id: "isg00", title: "Examined the bookcase" }, // examine the bookcase (meta)
-        { id: "isg01" }, // find the first object in the first room (great wave painting)
-        { id: "isg02" }, // find the second object in the first room (globe)
-        { id: "isg03" }, // find the third object in the first room (family portrait)
-        { id: "isg04" }, // find the fourth object in the first room (typewriter)
-        { id: "isg05" }, // find the last object in the first room (desk lamp)
-        { id: "isg06", title: "Unlocked the desk drawer" }, // complete the directional lock (desk drawer)
-        { id: "isg07", title: "Unlocked the breaker box" }, // complete the binary switches (fuse box)
-        { id: "isg08", title: "Unlocked the safe" }, // complete the combination lock (safe)
-        { id: "isg09", title: "Unlocked the numeric lock" }, // complete the numeric lock (rug)
-        { id: "isg10", title: "Unlocked the cryptex" }, // complete the word lock (cryptex)
-        { id: "isg11" }, // find the object behind the directional lock
-        { id: "isg12" }, // find the object behind the binary switch lock
-        { id: "isg13" }, // find the object behind the combination lock
-        { id: "isg14" }, // find the object behind the numeric lock
-        { id: "isg15" }, // find the object behind the word lock
-        { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase" }, // complete the bookcase/unlock door in wall
-        { id: "isg17" }, // find the star pattern in the second room (meta)
-        { id: "isg18" }, // find the first object in the second room (birth certificate)
-        { id: "isg19" }, // find the second object in the second room (newspaper clipping)
-        { id: "isg20" }, // find the third object in the second room (letter from prison warden)
-        { id: "isg21" }, // find the fourth object in the second room (photo of the Candys and Baby)
-        { id: "isg22" }, // find the fifth object in the second room (photo of Papa, wife, and Gladys)
-        { id: "isg23" }, // find the sixth object in the second room (rare stamp)
-        { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
-        { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
-        { id: "isg26", title: "Obtained the blacklight" }, // obtain the blacklight
-      ],
-      interactions: [
-        {
-          // This is a live interaction, not an in-site interaction, but we might
-          // have prerecorded video for remote solvers/folks missing at the time,
-          // so it might need a URL anyway.
-          id: "meet_papa",
-          unlock_if: [
-            { slot_solved: "ism03" },
-          ],
-        },
-      ],
-      unlock_if: [
-        { slot_solved: "mdm04" },
-        { interaction_completed: "interview_at_the_art_gallery" },
-      ],
-    },
-    {
-      slug: "the_murder",
-      title: "The Murder",
-      puzzles: [
-        // 24 feeders + 1 meta
-        { id: "tmp01", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
-        { id: "tmp02", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
-        { id: "tmp03", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
-        { id: "tmp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
-        { id: "tmp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
-        { id: "tmp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
-        { id: "tmp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
-        { id: "tmp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
-        { id: "tmp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
-        { id: "tmp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
-        { id: "tmp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
-        { id: "tmp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
-        { id: "tmp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
-        { id: "tmp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        { id: "tmp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
-        { id: "tmp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
-        { id: "tmp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
-        { id: "tmp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
-        { id: "tmp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
-        { id: "tmp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
-        { id: "tmp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
-        { id: "tmp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
-        { id: "tmp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
-        { id: "tmp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
-        { id: "tmm01", unlocked_if: { puzzles_unlocked: 16 } }, // TODO: figure out when this should actually release
-      ],
-      interactions: [
-        {
-          id: "unmask_the_killer",
-          unlock_if: [
-            { slot_solved: "tmm01" }, // The Murder supermeta
-          ],
-        },
-      ],
-      unlock_if: [
-        { interaction_completed: "meet_billie" },
-        { interaction_completed: "catch_the_thief" },
-      ],
-    },
-    {
-      slug: "the_vault",
-      title: "The Vault",
-      puzzles: [
-        // TODO: single piece of endgame?
-      ],
-      interactions: [
-        {
-          id: "the_vault",
-          unlock_if: [
-            { interaction_completed: "meet_katrina" },
-            { interaction_completed: "meet_gladys" },
-            { interaction_completed: "meet_carter" },
-            { interaction_completed: "meet_papa" },
-            { interaction_completed: "unmask_the_killer" },
-          ],
-        },
-      ],
-      unlock_if: [
-        { interaction_completed: "meet_katrina" },
-        { interaction_completed: "meet_gladys" },
-        { interaction_completed: "meet_carter" },
-        { interaction_completed: "meet_papa" },
-        { interaction_completed: "unmask_the_killer" },
-      ],
-    },
+    //     { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }] }, // Bookcase
+    //     { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg16" }] },
+    //     { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg26" }] },
+    //   ],
+    //   gates: [
+    //     // Prototype; these particular gate assignments may not be final
+    //     { id: "isg00", title: "Examined the bookcase" }, // examine the bookcase (meta)
+    //     { id: "isg01" }, // find the first object in the first room (great wave painting)
+    //     { id: "isg02" }, // find the second object in the first room (globe)
+    //     { id: "isg03" }, // find the third object in the first room (family portrait)
+    //     { id: "isg04" }, // find the fourth object in the first room (typewriter)
+    //     { id: "isg05" }, // find the last object in the first room (desk lamp)
+    //     { id: "isg06", title: "Unlocked the desk drawer" }, // complete the directional lock (desk drawer)
+    //     { id: "isg07", title: "Unlocked the breaker box" }, // complete the binary switches (fuse box)
+    //     { id: "isg08", title: "Unlocked the safe" }, // complete the combination lock (safe)
+    //     { id: "isg09", title: "Unlocked the numeric lock" }, // complete the numeric lock (rug)
+    //     { id: "isg10", title: "Unlocked the cryptex" }, // complete the word lock (cryptex)
+    //     { id: "isg11" }, // find the object behind the directional lock
+    //     { id: "isg12" }, // find the object behind the binary switch lock
+    //     { id: "isg13" }, // find the object behind the combination lock
+    //     { id: "isg14" }, // find the object behind the numeric lock
+    //     { id: "isg15" }, // find the object behind the word lock
+    //     { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase" }, // complete the bookcase/unlock door in wall
+    //     { id: "isg17" }, // find the star pattern in the second room (meta)
+    //     { id: "isg18" }, // find the first object in the second room (birth certificate)
+    //     { id: "isg19" }, // find the second object in the second room (newspaper clipping)
+    //     { id: "isg20" }, // find the third object in the second room (letter from prison warden)
+    //     { id: "isg21" }, // find the fourth object in the second room (photo of the Candys and Baby)
+    //     { id: "isg22" }, // find the fifth object in the second room (photo of Papa, wife, and Gladys)
+    //     { id: "isg23" }, // find the sixth object in the second room (rare stamp)
+    //     { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
+    //     { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
+    //     { id: "isg26", title: "Obtained the blacklight" }, // obtain the blacklight
+    //   ],
+    //   interactions: [
+    //     {
+    //       // This is a live interaction, not an in-site interaction, but we might
+    //       // have prerecorded video for remote solvers/folks missing at the time,
+    //       // so it might need a URL anyway.
+    //       id: "meet_papa",
+    //       unlock_if: [
+    //         { slot_solved: "ism03" },
+    //       ],
+    //     },
+    //   ],
+    //   unlock_if: [
+    //     { slot_solved: "mdm04" },
+    //     { interaction_completed: "interview_at_the_art_gallery" },
+    //   ],
+    // },
+    // {
+    //   slug: "the_murder",
+    //   title: "The Murder",
+    //   puzzles: [
+    //     // 24 feeders + 1 meta
+    //     { id: "tmp01", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+    //     { id: "tmp02", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+    //     { id: "tmp03", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+    //     { id: "tmp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+    //     { id: "tmp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+    //     { id: "tmp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
+    //     { id: "tmp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+    //     { id: "tmp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1 },
+    //     { id: "tmp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+    //     { id: "tmp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+    //     { id: "tmp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+    //     { id: "tmp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+    //     { id: "tmp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+    //     { id: "tmp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+    //     { id: "tmp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+    //     { id: "tmp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+    //     { id: "tmp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+    //     { id: "tmp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+    //     { id: "tmp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+    //     { id: "tmp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+    //     { id: "tmp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+    //     { id: "tmp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+    //     { id: "tmp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+    //     { id: "tmp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+    //     { id: "tmm01", unlocked_if: { puzzles_unlocked: 16 } }, // TODO: figure out when this should actually release
+    //   ],
+    //   interactions: [
+    //     {
+    //       id: "unmask_the_killer",
+    //       unlock_if: [
+    //         { slot_solved: "tmm01" }, // The Murder supermeta
+    //       ],
+    //     },
+    //   ],
+    //   unlock_if: [
+    //     { interaction_completed: "meet_billie" },
+    //     { interaction_completed: "catch_the_thief" },
+    //   ],
+    // },
+    // {
+    //   slug: "the_vault",
+    //   title: "The Vault",
+    //   puzzles: [
+    //     // TODO: single piece of endgame?
+    //   ],
+    //   interactions: [
+    //     {
+    //       id: "the_vault",
+    //       unlock_if: [
+    //         { interaction_completed: "meet_katrina" },
+    //         { interaction_completed: "meet_gladys" },
+    //         { interaction_completed: "meet_carter" },
+    //         { interaction_completed: "meet_papa" },
+    //         { interaction_completed: "unmask_the_killer" },
+    //       ],
+    //     },
+    //   ],
+    //   unlock_if: [
+    //     { interaction_completed: "meet_katrina" },
+    //     { interaction_completed: "meet_gladys" },
+    //     { interaction_completed: "meet_carter" },
+    //     { interaction_completed: "meet_papa" },
+    //     { interaction_completed: "unmask_the_killer" },
+    //   ],
+    // },
   ],
 };
 
