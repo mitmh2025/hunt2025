@@ -5,190 +5,191 @@ import { type Hunt, type PuzzleSlot } from "./types";
 // prettier-ignore
 const HUNT: Hunt = {
   rounds: [
-    {
-      slug: "the_missing_diamond", // mounted at root
-      title: "The Missing Diamond",
-      puzzles: [
-        // slots (28 feeders, 4 metas, 1 super)
-        // TODO: determine if we should start with 8-10 puzzles unlocked & no
-        // unlock currency, or with nothing unlocked, a few puzzles
-        // unlockable, and some amount of starting currency (to teach people
-        // how to use the mechanism from the get-go).
-        { id: "mdp01", unlockable_if: [], unlock_cost: 1 }, // unlockable by default
-        { id: "mdp02", unlockable_if: [], unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
-        { id: "mdp03", unlockable_if: [], unlock_cost: 1 },
-        { id: "mdp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug: "downright_backwards" },
-        { id: "mdp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
-        { id: "mdp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
-        { id: "mdp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
-        { id: "mdp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1, slug: "educational_rite_of_passage" },
-        { id: "mdp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
-        { id: "mdp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
-        { id: "mdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
-        { id: "mdp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
-        { id: "mdp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
-        { id: "mdp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
-        { id: "mdp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
-        { id: "mdp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
-        { id: "mdp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
-        { id: "mdp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
-        { id: "mdp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
-        { id: "mdp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
-        { id: "mdp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
-        { id: "mdp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
-        { id: "mdp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
-        { id: "mdp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
-        { id: "mdp25", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
-        { id: "mdp26", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
-        { id: "mdp27", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
-        { id: "mdp28", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
-        {
-          // Boardwalk (meta)
-          id: "mdm01",
-          slug: "the_boardwalk",
-          is_meta: true,
-          unlocked_if: {
-            puzzles_unlocked: 5,
-            slots: [
-              "mdp01",
-              "mdp05",
-              "mdp09",
-              "mdp13",
-              "mdp17",
-              "mdp21",
-              "mdp25",
-            ],
-          },
-        },
-        {
-          // Jewelry Store (meta)
-          id: "mdm02",
-          slug: "the_jewelry_store",
-          is_meta: true,
-          unlocked_if: {
-            puzzles_unlocked: 5,
-            slots: [
-              "mdp02",
-              "mdp06",
-              "mdp10",
-              "mdp14",
-              "mdp18",
-              "mdp22",
-              "mdp26",
-            ],
-          },
-        },
-        {
-          // Casino (meta)
-          id: "mdm03",
-          slug: "the_casino",
-          is_meta: true,
-          unlocked_if: {
-            puzzles_unlocked: 5,
-            slots: [
-              "mdp03",
-              "mdp07",
-              "mdp11",
-              "mdp15",
-              "mdp19",
-              "mdp23",
-              "mdp27",
-            ],
-          },
-        },
-        {
-          // Art Gallery (meta)
-          id: "mdm04",
-          slug: "the_art_gallery",
-          is_meta: true,
-          unlocked_if: {
-            puzzles_unlocked: 5,
-            slots: [
-              "mdp04",
-              "mdp08",
-              "mdp12",
-              "mdp16",
-              "mdp20",
-              "mdp24",
-              "mdp28",
-            ],
-          },
-        },
-        {
-          // We want the super (which involves a live interaction with Billie and kicking off the
-          // funaround) to become available only once the four metas are solved.  However, because
-          // each meta solve unlocks a dialogue tree interaction, and we don't want to have new
-          // content competing for solvers' attention, we schedule this meta to release once all
-          // four dialogue-tree interactions are completed.  This also potentially gives us the
-          // duration of the final dialogue tree interaction to gather any relevant actors for the
-          // kickoff of the funaround.
-          id: "mdm05",
-          is_meta: true,
-          unlocked_if: [
-            { interaction_completed: "interview_at_the_boardwalk" },
-            { interaction_completed: "interview_at_the_jewelry_store" },
-            { interaction_completed: "interview_at_the_casino" },
-            { interaction_completed: "interview_at_the_art_gallery" },
-          ],
-        }, // Where is the Diamond? (super)
-      ],
-      gates: [
-        { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
-      ],
-      interactions: [
-        // These four interviews are the MATE-style in-site interactions which
-        // become available after each of the four metas which open a side
-        // investigation.  Each should become immediately available to teams upon
-        // solving the corresponding metapuzzle.
-        {
-          id: "interview_at_the_boardwalk",
-          unlock_if: [{ slot_solved: "mdm01" }],
-        },
-        {
-          id: "interview_at_the_jewelry_store",
-          unlock_if: [{ slot_solved: "mdm02" }],
-        },
-        {
-          id: "interview_at_the_casino",
-          unlock_if: [{ slot_solved: "mdm03" }],
-        },
-        {
-          id: "interview_at_the_art_gallery",
-          unlock_if: [{ slot_solved: "mdm04" }],
-        },
+    // {
+    //   slug: "the_missing_diamond", // mounted at root
+    //   title: "The Missing Diamond",
+    //   puzzles: [
+    //     // slots (28 feeders, 4 metas, 1 super)
+    //     // TODO: determine if we should start with 8-10 puzzles unlocked & no
+    //     // unlock currency, or with nothing unlocked, a few puzzles
+    //     // unlockable, and some amount of starting currency (to teach people
+    //     // how to use the mechanism from the get-go).
+    //     { id: "mdp01", unlockable_if: [], unlock_cost: 1 }, // unlockable by default
+    //     { id: "mdp02", unlockable_if: [], unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
+    //     { id: "mdp03", unlockable_if: [], unlock_cost: 1 },
+    //     { id: "mdp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug: "downright_backwards" },
+    //     { id: "mdp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
+    //     { id: "mdp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
+    //     { id: "mdp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },
+    //     { id: "mdp08", unlockable_if: { puzzles_unlocked: 5 }, unlock_cost: 1, slug: "educational_rite_of_passage" },
+    //     { id: "mdp09", unlockable_if: { puzzles_unlocked: 6 }, unlock_cost: 1 },
+    //     { id: "mdp10", unlockable_if: { puzzles_unlocked: 7 }, unlock_cost: 1 },
+    //     { id: "mdp11", unlockable_if: { puzzles_unlocked: 8 }, unlock_cost: 1 },
+    //     { id: "mdp12", unlockable_if: { puzzles_unlocked: 9 }, unlock_cost: 1 },
+    //     { id: "mdp13", unlockable_if: { puzzles_unlocked: 10 }, unlock_cost: 1 },
+    //     { id: "mdp14", unlockable_if: { puzzles_unlocked: 11 }, unlock_cost: 1 },
+    //     { id: "mdp15", unlockable_if: { puzzles_unlocked: 12 }, unlock_cost: 1 },
+    //     { id: "mdp16", unlockable_if: { puzzles_unlocked: 13 }, unlock_cost: 1 },
+    //     { id: "mdp17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1 },
+    //     { id: "mdp18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1 },
+    //     { id: "mdp19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1 },
+    //     { id: "mdp20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+    //     { id: "mdp21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+    //     { id: "mdp22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
+    //     { id: "mdp23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
+    //     { id: "mdp24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
+    //     { id: "mdp25", unlockable_if: { puzzles_unlocked: 22 }, unlock_cost: 1 },
+    //     { id: "mdp26", unlockable_if: { puzzles_unlocked: 23 }, unlock_cost: 1 },
+    //     { id: "mdp27", unlockable_if: { puzzles_unlocked: 24 }, unlock_cost: 1 },
+    //     { id: "mdp28", unlockable_if: { puzzles_unlocked: 25 }, unlock_cost: 1 },
+    //     {
+    //       // Boardwalk (meta)
+    //       id: "mdm01",
+    //       slug: "the_boardwalk",
+    //       is_meta: true,
+    //       unlocked_if: {
+    //         puzzles_unlocked: 5,
+    //         slots: [
+    //           "mdp01",
+    //           "mdp05",
+    //           "mdp09",
+    //           "mdp13",
+    //           "mdp17",
+    //           "mdp21",
+    //           "mdp25",
+    //         ],
+    //       },
+    //     },
+    //     {
+    //       // Jewelry Store (meta)
+    //       id: "mdm02",
+    //       slug: "the_jewelry_store",
+    //       is_meta: true,
+    //       unlocked_if: {
+    //         puzzles_unlocked: 5,
+    //         slots: [
+    //           "mdp02",
+    //           "mdp06",
+    //           "mdp10",
+    //           "mdp14",
+    //           "mdp18",
+    //           "mdp22",
+    //           "mdp26",
+    //         ],
+    //       },
+    //     },
+    //     {
+    //       // Casino (meta)
+    //       id: "mdm03",
+    //       slug: "the_casino",
+    //       is_meta: true,
+    //       unlocked_if: {
+    //         puzzles_unlocked: 5,
+    //         slots: [
+    //           "mdp03",
+    //           "mdp07",
+    //           "mdp11",
+    //           "mdp15",
+    //           "mdp19",
+    //           "mdp23",
+    //           "mdp27",
+    //         ],
+    //       },
+    //     },
+    //     {
+    //       // Art Gallery (meta)
+    //       id: "mdm04",
+    //       slug: "the_art_gallery",
+    //       is_meta: true,
+    //       unlocked_if: {
+    //         puzzles_unlocked: 5,
+    //         slots: [
+    //           "mdp04",
+    //           "mdp08",
+    //           "mdp12",
+    //           "mdp16",
+    //           "mdp20",
+    //           "mdp24",
+    //           "mdp28",
+    //         ],
+    //       },
+    //     },
+    //     {
+    //       // We want the super (which involves a live interaction with Billie and kicking off the
+    //       // funaround) to become available only once the four metas are solved.  However, because
+    //       // each meta solve unlocks a dialogue tree interaction, and we don't want to have new
+    //       // content competing for solvers' attention, we schedule this meta to release once all
+    //       // four dialogue-tree interactions are completed.  This also potentially gives us the
+    //       // duration of the final dialogue tree interaction to gather any relevant actors for the
+    //       // kickoff of the funaround.
+    //       id: "mdm05",
+    //       is_meta: true,
+    //       unlocked_if: [
+    //         { interaction_completed: "interview_at_the_boardwalk" },
+    //         { interaction_completed: "interview_at_the_jewelry_store" },
+    //         { interaction_completed: "interview_at_the_casino" },
+    //         { interaction_completed: "interview_at_the_art_gallery" },
+    //       ],
+    //     }, // Where is the Diamond? (super)
+    //   ],
+    //   gates: [
+    //     { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
+    //   ],
+    //   interactions: [
+    //     // These four interviews are the MATE-style in-site interactions which
+    //     // become available after each of the four metas which open a side
+    //     // investigation.  Each should become immediately available to teams upon
+    //     // solving the corresponding metapuzzle.
+    //     {
+    //       id: "interview_at_the_boardwalk",
+    //       unlock_if: [{ slot_solved: "mdm01" }],
+    //     },
+    //     {
+    //       id: "interview_at_the_jewelry_store",
+    //       unlock_if: [{ slot_solved: "mdm02" }],
+    //     },
+    //     {
+    //       id: "interview_at_the_casino",
+    //       unlock_if: [{ slot_solved: "mdm03" }],
+    //     },
+    //     {
+    //       id: "interview_at_the_art_gallery",
+    //       unlock_if: [{ slot_solved: "mdm04" }],
+    //     },
 
-        {
-          // This is a brief in-person interaction which is expected to happen
-          // after teams solve the Missing Diamond super but before they go on the
-          // funaround.
-          id: "meet_billie",
-          unlock_if: [{ slot_solved: "mdm05" }],
-        },
-        {
-          // This is a longer in-person interaction which is expected to happen
-          // after teams complete the funaround.
-          id: "catch_the_thief",
-          unlock_if: [{ interaction_completed: "meet_billie" }],
-        },
-      ],
-      unlock_if: [
-        // These are the conditions for the /round/ page being visible.
-        // The initial round should be open from the start, with maybe a
-        // wall-clock time condition?
-      ],
-      // TODO:
-      // * default reward amount for solving puzzles in this round?
-      // * something describing intended visibility rules to apply?
-      // * default cost of unlocking a visible puzzle in this round?
-    },
+    //     {
+    //       // This is a brief in-person interaction which is expected to happen
+    //       // after teams solve the Missing Diamond super but before they go on the
+    //       // funaround.
+    //       id: "meet_billie",
+    //       unlock_if: [{ slot_solved: "mdm05" }],
+    //     },
+    //     {
+    //       // This is a longer in-person interaction which is expected to happen
+    //       // after teams complete the funaround.
+    //       id: "catch_the_thief",
+    //       unlock_if: [{ interaction_completed: "meet_billie" }],
+    //     },
+    //   ],
+    //   unlock_if: [
+    //     { slot_solved: "mdm01" },
+    //     // These are the conditions for the /round/ page being visible.
+    //     // The initial round should be open from the start, with maybe a
+    //     // wall-clock time condition?
+    //   ],
+    //   // TODO:
+    //   // * default reward amount for solving puzzles in this round?
+    //   // * something describing intended visibility rules to apply?
+    //   // * default cost of unlocking a visible puzzle in this round?
+    // },
     {
       slug: "stakeout",
       title: "Stakeout",
       puzzles: [
         // 42 feeders, 1 meta
-        { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug:"placeholder_stakeout_01" }, 
-        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug:"placeholder_stakeout_02" }, 
-        { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug:"placeholder_stakeout_03" }, 
+        { id: "sop02", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_01" }, 
+        { id: "sop01", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_02" }, 
+        { id: "sop03", unlockable_if: [], unlock_cost: 1, slug:"placeholder_stakeout_03" }, 
         { id: "sop04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug:"placeholder_stakeout_04" }, 
         { id: "sop05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1, slug:"placeholder_stakeout_05" }, 
         { id: "sop06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1, slug:"placeholder_stakeout_06" }, 
@@ -242,8 +243,8 @@ const HUNT: Hunt = {
         },
       ],
       unlock_if: [
-        { slot_solved: "mdm01" },
-        { interaction_completed: "interview_at_the_boardwalk" },
+        // { slot_solved: "mdm01" },
+        // { interaction_completed: "interview_at_the_boardwalk" },
       ],
     },
     {
