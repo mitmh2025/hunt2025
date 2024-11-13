@@ -20,6 +20,7 @@ import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ShellCorporationSix from "./mild-octopus";
 import AMathQuiz from "./new-pin";
+import TasteExplosion from "./next-van";
 import DearDiary from "./overlooked-compound";
 import TheUltimateInsult from "./periodic-dance";
 import OnTheRadio from "./practical-fighter";
@@ -65,6 +66,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
   sing_like_a_canary: SingLikeACanary,
+  taste_explosion: TasteExplosion,
   the_ultimate_insult: TheUltimateInsult,
 
   // Paper Trail
