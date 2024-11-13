@@ -94,6 +94,15 @@ export JWT_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os
 rm -rf dist && time npm run build-dev && REDIS_URL=redis://localhost/ node --enable-source-maps dist/server-bundle.js
 ```
 
+### Arcturus' notes
+
+When wiping the database, make sure to remove the `dev.sqlite3` file AND ALSO the RDB snapshot from the redis instance. For meta testing, run:
+```sh
+export JWT_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os.urandom(16), 'hex').decode('utf-8'))")
+export FRONTEND_API_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os.urandom(16), 'hex').decode('utf-8'))")
+rm -rf dist && time npm run build && REDIS_URL=redis://localhost/ node --enable-source-maps dist/server-bundle.js
+```
+
 ## Typesetting
 
 First, an admonition: avoid poking around in random folders in
