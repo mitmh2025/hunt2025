@@ -472,7 +472,7 @@ const Solution = (): JSX.Element => {
       </p>
       <img
         src={dog}
-        alt="I Have No Idea What I'm Doing image macro with a Laborador retriever wearing safety glasses in front of a bunch of chemistry equipment filled with colored liquids. The dog is pouring a beaker into a coffee mug."
+        alt="I Have No Idea What I'm Doing meme with a Laborador retriever wearing safety glasses in front of a bunch of chemistry equipment filled with colored liquids. The dog is pouring a beaker into a coffee mug."
       />
     </>
   );
