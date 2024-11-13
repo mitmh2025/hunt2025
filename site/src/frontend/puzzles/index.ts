@@ -34,6 +34,7 @@ import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import ShellCorporationTwo from "./untrue-dice";
+import YourePlayingItWrong from "./vast-fire";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
@@ -61,6 +62,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // Paper Trail
   follow_the_rules: FollowTheRules,
+  youre_playing_it_wrong: YourePlayingItWrong,
 
   shell_corporation_1: ShellCorporationOne,
   shell_corporation_2: ShellCorporationTwo,

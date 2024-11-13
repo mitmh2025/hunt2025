@@ -279,6 +279,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const mp4Rule = {
+    test: /\.mp4$/,
+    type: "asset/resource",
+  };
+
   const wavRule = {
     test: /\.wav$/,
     type: "asset/resource",
@@ -303,12 +308,19 @@ export default function createConfigs(_env, argv) {
     test: /\.stl$/,
     type: "asset/resource",
   };
+
   const threemfRule = {
     test: /\.3mf$/,
     type: "asset/resource",
   };
+
   const xlsxRule = {
     test: /\.xlsx$/,
+    type: "asset/resource",
+  };
+
+  const vttRule = {
+    test: /\.vtt$/,
     type: "asset/resource",
   };
 
@@ -379,6 +391,7 @@ export default function createConfigs(_env, argv) {
         imageRule,
         mp3Rule,
         wavRule,
+        mp4Rule,
         // Opus files should only be used by the radio and thus should
         // never be imported by browser entrypoints, only server entrypoints.
         opusRule,
@@ -387,6 +400,7 @@ export default function createConfigs(_env, argv) {
         stlRule,
         threemfRule,
         xlsxRule,
+        vttRule,
       ],
       // Add modules as appropriate
     },
