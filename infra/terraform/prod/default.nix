@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, self, ... }:
 {
   # Nix's OpenTofu packaging uses registry.terraform.io for providers.
   terraform.required_providers = {
@@ -35,5 +35,10 @@
   route53.mitmh2025 = {
     provider = "puzzup";
     domain = "mitmh2025.com";
+  };
+
+  gce.nix.image = {
+    bucket.name = "cvqb2gwr-gce-images";
+    nixosConfiguration = self.nixosConfigurations.gce-image;
   };
 }

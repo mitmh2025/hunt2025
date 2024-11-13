@@ -9,12 +9,15 @@ let
 in {
   options = with lib; {
     gce.instance = mkOption {
-      type = types.tfAttrsOf (types.submodule ({ name, ... }: {
+      type = types.tfAttrsOf (types.submodule ({ config, name, ... }: {
         options = {
           nixosConfiguration = mkOption {
             type = types.nullOr configurationType;
             default = null;
           };
+        };
+        config = {
+          bootDisk.image = lib.mkIf (config.nixosConfiguration != null) (lib.mkDefault (lib.tfRef "google_compute_image.nixos.id"));
         };
       }));
     };

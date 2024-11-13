@@ -10,7 +10,6 @@ in {
   gce.instance.staging = {
     route53.zone = "mitmh2025";
     machineType = "e2-custom-medium-5120"; # 1 vCPU, 5 GB RAM
-    bootDisk.image = lib.tfRef "google_compute_image.nixos.id";
     firewall.allowedTCPPorts = [
       22 # SSH
       80 # HTTP
