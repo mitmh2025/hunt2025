@@ -22,30 +22,12 @@ in {
       50189 # MediaMTX WebRTC
     ];
     useSops = true;
+    nixosConfiguration = self.nixosConfigurations."staging/staging";
   };
 
-  resource.nix_store_path_copy.staging_nixos = {
-    depends_on = [
-      "google_compute_firewall.staging"
-    ] ++ (builtins.map (n: "aws_route53_record.${n}") stagingAliases);
-    store_path = "${self.nixosConfigurations."staging/staging".config.system.build.toplevel}";
-    to = "ssh-ng://root@\${aws_route53_record.staging.fqdn}";
-    check_sigs = false;
-
-    # TODO: Switch to deploy-rs so we get magic rollback?
-
-    provisioner.remote-exec = {
-      connection = {
-        type = "ssh";
-        user = "root";
-        agent = true;
-        host = lib.tfRef "aws_route53_record.staging.fqdn";
-      };
-      inline = [
-        "${self.nixosConfigurations."staging/staging".config.system.build.toplevel}/bin/switch-to-configuration switch"
-      ];
-    };
-  };
+  # Make sure aliases are configured so ACME challenges work.
+  resource.nix_store_path_copy.staging_nixos.depends_on =
+    builtins.map (n: "aws_route53_record.${n}") stagingAliases;
 
   route53.mitmh2025.rr = {
     staging = {
