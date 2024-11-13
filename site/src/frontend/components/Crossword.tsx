@@ -13,6 +13,7 @@ const StyledCell = styled.td`
   padding: 4px;
   width: 40px;
   height: 40px;
+  text-align: left;
   vertical-align: top;
 `;
 
