@@ -37,6 +37,7 @@ import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import ShellCorporationTwo from "./untrue-dice";
+import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
@@ -64,6 +65,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   lab_scrabble: LabScrabble,
   sing_like_a_canary: SingLikeACanary,
   the_ultimate_insult: TheUltimateInsult,
+  commentary: Commentary,
 
   // Paper Trail
   chemicals_are_sexy: ChemicalsAreSexy,
