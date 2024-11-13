@@ -19,6 +19,7 @@ export async function seed(knex: Knex): Promise<void> {
   const createTeam = async (
     username: string,
     populator?: (team_id: number, mutator: ActivityLogMutator) => Promise<void>,
+    password?: string,
   ) => {
     let team_id = await retryOnAbort(knex, async (trx) => {
       const existing_id = (
@@ -34,7 +35,7 @@ export async function seed(knex: Knex): Promise<void> {
     if (team_id === undefined) {
       team_id = await registerTeam(HUNT, undefined, knex, {
         username,
-        password: "PoopyMcGee",
+        password: password === undefined ? "PoopyMcGee" : password,
         name: username,
         contactName: "Jack Florey",
         contactEmail: "jack@example.com",
@@ -64,7 +65,7 @@ export async function seed(knex: Knex): Promise<void> {
     }
   };
 
-  await createTeam("team");
+  await createTeam("team", undefined, "PoopyMcGee");
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
       await mutator.appendLog({
@@ -80,7 +81,7 @@ export async function seed(knex: Knex): Promise<void> {
         slug,
       });
     }
-  });
+  }, "PoopyMcGee2");
   await createTeam("unlocked", async (team_id, mutator) => {
     // For the "unlocked" team: create puzzle_unlocked entries for all rounds & puzzles
     for (const round of HUNT.rounds) {
@@ -104,7 +105,7 @@ export async function seed(knex: Knex): Promise<void> {
         slug: gate,
       });
     }
-  });
+  }, "PoopyMcGee3");
   await createTeam("solved", async (team_id, mutator) => {
     // For the "solved" team:
     // unlock all rounds and puzzles
@@ -145,7 +146,7 @@ export async function seed(knex: Knex): Promise<void> {
         },
       });
     }
-  });
+  }, "PoopyMcGee4");
 
   await activityLog.executeMutation(
     HUNT,
