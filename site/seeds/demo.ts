@@ -34,7 +34,7 @@ export async function seed(knex: Knex): Promise<void> {
     if (team_id === undefined) {
       team_id = await registerTeam(HUNT, undefined, knex, {
         username,
-        password: "password",
+        password: "PoopyMcGee",
         name: username,
         contactName: "Jack Florey",
         contactEmail: "jack@example.com",
