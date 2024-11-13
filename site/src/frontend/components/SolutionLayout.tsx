@@ -1,0 +1,149 @@
+import React, { Fragment, useCallback, useState } from "react";
+import { styled } from "styled-components";
+import { type CannedResponse, type Hint } from "../puzzles/types";
+
+const SolutionAnswer = styled.h2`
+  padding: 0;
+  grid-column: 1 / 3;
+`;
+
+const SolutionAcknowledgementBlock = styled.div`
+  grid-column: 1 / 3;
+`;
+
+const SolutionAcknowledgement = styled.h3`
+  padding: 0;
+`;
+
+const SpacedDetails = styled.details`
+  margin-bottom: 1em;
+`;
+
+const SpoileredRow = styled.tr<{ $revealed: boolean }>`
+  background-color: ${({ $revealed }) =>
+    $revealed ? "transparent" : "var(--black)"};
+  &:hover {
+    background-color: transparent;
+  }
+`;
+
+const CannedResponseTable = styled.table`
+  tbody tr td:nth-child(3) {
+    text-align: right;
+  }
+`;
+
+const SolutionHintTableRow = ({ hint }: { hint: Hint }) => {
+  const [revealed, setReveal] = useState<boolean>(false);
+  const onClick = useCallback(() => {
+    setReveal(true);
+  }, []);
+  return (
+    <SpoileredRow $revealed={revealed} onClick={onClick}>
+      <td>{hint.order}</td>
+      <td>{hint.description}</td>
+      <td>{hint.keywords?.join(", ")}</td>
+      <td>{hint.nudge}</td>
+    </SpoileredRow>
+  );
+};
+
+const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
+  if (hints.length > 0) {
+    return (
+      <SpacedDetails>
+        <summary>Hints</summary>
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Description</th>
+              <th>Keywords</th>
+              <th>Nudge</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hints.map((hint) => {
+              return <SolutionHintTableRow key={hint.order} hint={hint} />;
+            })}
+          </tbody>
+        </table>
+      </SpacedDetails>
+    );
+  } else {
+    return undefined;
+  }
+};
+
+const SolutionCannedResponseRow = ({
+  guess,
+  reply,
+  providesSolveReward,
+}: {
+  guess: string;
+  reply: string;
+  providesSolveReward?: boolean;
+}) => {
+  const [revealed, setRevealed] = useState<boolean>(false);
+  const onClick = useCallback(() => {
+    setRevealed(true);
+  }, []);
+  return (
+    <SpoileredRow key={guess} $revealed={revealed} onClick={onClick}>
+      <td>{guess}</td>
+      <td>{reply}</td>
+      <td>{providesSolveReward ? "yes" : "no"}</td>
+    </SpoileredRow>
+  );
+};
+
+const SolutionCannedResponseTable = ({
+  cannedResponses,
+}: {
+  cannedResponses: CannedResponse[];
+}) => {
+  if (cannedResponses.length > 0) {
+    return (
+      <SpacedDetails>
+        <summary>Canned responses</summary>
+        <CannedResponseTable>
+          <thead>
+            <tr>
+              <th>Guess</th>
+              <th>Reply</th>
+              <th>Provides solve reward?</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cannedResponses.map((cannedResponse) => {
+              return (
+                <Fragment key={cannedResponse.guess.join(",")}>
+                  {cannedResponse.guess.map((guess) => {
+                    return (
+                      <SolutionCannedResponseRow
+                        key={guess}
+                        guess={guess}
+                        reply={cannedResponse.reply}
+                        providesSolveReward={cannedResponse.providesSolveReward}
+                      />
+                    );
+                  })}
+                </Fragment>
+              );
+            })}
+          </tbody>
+        </CannedResponseTable>
+      </SpacedDetails>
+    );
+  } else {
+    return undefined;
+  }
+};
+
+export {
+  SolutionAnswer,
+  SolutionAcknowledgementBlock,
+  SolutionAcknowledgement,
+  SolutionHintTable,
+  SolutionCannedResponseTable,
+};

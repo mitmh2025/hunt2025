@@ -68,26 +68,4 @@ const PuzzleMain = styled.main`
 
 const PuzzleFooter = styled.footer``;
 
-const SolutionAnswer = styled.h2`
-  padding: 0;
-  grid-column: 1 / 3;
-`;
-
-const SolutionAcknowledgementBlock = styled.div`
-  grid-column: 1 / 3;
-`;
-
-const SolutionAcknowledgement = styled.h3`
-  padding: 0;
-`;
-
-export {
-  PuzzleHeader,
-  PuzzleMain,
-  PuzzleFooter,
-  PuzzleWrapper,
-  PuzzleTitle,
-  SolutionAnswer,
-  SolutionAcknowledgementBlock,
-  SolutionAcknowledgement,
-};
+export { PuzzleHeader, PuzzleMain, PuzzleFooter, PuzzleWrapper, PuzzleTitle };

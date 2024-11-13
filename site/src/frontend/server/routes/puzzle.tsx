@@ -27,10 +27,14 @@ import {
   PuzzleWrapper,
   PuzzleMain,
   PuzzleFooter,
+} from "../../components/PuzzleLayout";
+import {
   SolutionAnswer,
   SolutionAcknowledgement,
   SolutionAcknowledgementBlock,
-} from "../../components/PuzzleLayout";
+  SolutionHintTable,
+  SolutionCannedResponseTable,
+} from "../../components/SolutionLayout";
 import Spoiler from "../../components/Spoiler";
 import {
   StakeoutHeader,
@@ -380,10 +384,11 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     ? ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round]
     : undefined;
   const entrypoints = [
-    ...(content.entrypoint ? [content.entrypoint] : []),
+    "solution" as const,
     ...(roundSpecificManifest?.entrypoint
       ? [roundSpecificManifest.entrypoint]
       : []),
+    ...(content.entrypoint ? [content.entrypoint] : []),
   ];
 
   const SolutionWrapperComponent =
@@ -410,6 +415,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   ));
 
   const answer = puzzle.answer;
+  const inlineScript = `window.hints = ${JSON.stringify(puzzle.hints)}; window.cannedResponses = ${JSON.stringify(puzzle.canned_responses)};`;
   const node = (
     <>
       {SolutionFontsComponent ? <SolutionFontsComponent /> : undefined}
@@ -433,6 +439,18 @@ export function solutionHandler(req: Request<PuzzleParams>) {
           id="solution-content"
           className="solution-content"
         >
+          <script
+            type="text/javascript"
+            dangerouslySetInnerHTML={{ __html: inlineScript }}
+          />
+          <div id="solution-hints">
+            <SolutionHintTable hints={puzzle.hints} />
+          </div>
+          <div id="solution-canned-responses">
+            <SolutionCannedResponseTable
+              cannedResponses={puzzle.canned_responses}
+            />
+          </div>
           <SolutionComponent teamState={req.teamState.state} />
         </SolutionMainComponent>
         <SolutionFooterComponent />

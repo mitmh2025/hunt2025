@@ -7,9 +7,8 @@ import {
   PuzzleMain,
   PuzzleWrapper,
   PuzzleFooter,
-  SolutionAnswer,
-  SolutionAcknowledgementBlock,
 } from "./PuzzleLayout";
+import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 
 export const bg = "#403A36";
 export const contentBg = "#E0D6D5";

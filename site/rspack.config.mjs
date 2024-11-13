@@ -446,19 +446,27 @@ export default function createConfigs(_env, argv) {
   const clientConfig = {
     name: "client",
     entry: {
+      // Included on ~all pages
+      main: "./src/frontend/client/main.tsx",
+      dev: "./src/frontend/client/dev.tsx",
+
+      // Included on specific routes
       activity_log: "./src/frontend/client/activity_log.tsx",
       all_puzzles: "./src/frontend/client/all_puzzles.tsx",
-      background_check: "./src/frontend/rounds/background_check/client.tsx",
-      dev: "./src/frontend/client/dev.tsx",
-      illegal_search: "./src/frontend/rounds/illegal_search/client.tsx",
-      main: "./src/frontend/client/main.tsx",
       navbar: "./src/frontend/client/navbar.tsx",
-      paper_trail: "./src/frontend/rounds/paper_trail/client.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
+      solution: "./src/frontend/client/solution.tsx",
+
+      // Included on the round pages
       the_missing_diamond:
         "./src/frontend/rounds/the_missing_diamond/client.tsx",
-      the_murder: "./src/frontend/rounds/the_murder/client.tsx",
       stakeout: "./src/frontend/rounds/stakeout/client.tsx",
+      paper_trail: "./src/frontend/rounds/paper_trail/client.tsx",
+      illegal_search: "./src/frontend/rounds/illegal_search/client.tsx",
+      background_check: "./src/frontend/rounds/background_check/client.tsx",
+      the_murder: "./src/frontend/rounds/the_murder/client.tsx",
+
+      // Included on specific puzzle pages
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
     },
     // Client code needs to reference the webworker bundle by URL.
