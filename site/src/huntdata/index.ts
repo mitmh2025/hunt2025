@@ -253,7 +253,7 @@ const HUNT: Hunt = {
         // 17 feeders, 8 metas, 1 super
         { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "follow_the_rules" },
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
-        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 },
+        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
         { id: "ptp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
         { id: "ptp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
         { id: "ptp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },

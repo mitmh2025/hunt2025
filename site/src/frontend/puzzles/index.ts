@@ -13,6 +13,7 @@ import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
 import SingLikeACanary from "./heavenly-cell";
+import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
@@ -63,6 +64,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_ultimate_insult: TheUltimateInsult,
 
   // Paper Trail
+  chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
   youre_playing_it_wrong: YourePlayingItWrong,
 
