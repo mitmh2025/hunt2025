@@ -287,7 +287,7 @@ const Solution = (): JSX.Element => {
         which has the format of three numbers separated by dashes (for instance,
         ozone is 10028-15-6). These can be looked up most easily from googling
         the chemical, as most are listed on wikipedia pages for the compound or
-        on chemical supplier pages. They can also be looked up at
+        on chemical supplier pages. They can also be looked up at{" "}
         <a
           href="https://commonchemistry.cas.org/"
           target="_blank"
