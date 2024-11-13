@@ -446,7 +446,7 @@ const Solution = (): JSX.Element => {
         </tr>
       </StyledTable>
       <p id="footnote-1">
-        Unfortunately,{" "}
+        <sup>1</sup> Unfortunately,{" "}
         <a
           href="https://commonchemistry.cas.org/detail?cas_rn=865-34-9"
           target="_blank"
@@ -462,8 +462,8 @@ const Solution = (): JSX.Element => {
         available sources.
       </p>
       <p id="footnote-2">
-        Some sources (incorrectly) give the formula for this CAS number as T2O,
-        but this doesn’t affect the final extraction.
+        <sup>2</sup> Some sources (incorrectly) give the formula for this CAS
+        number as T2O, but this doesn’t affect the final extraction.
       </p>
       <p>
         Fun fact: in development, this puzzle was assigned the random codename
