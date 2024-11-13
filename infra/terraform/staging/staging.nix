@@ -8,6 +8,7 @@ let
   ];
 in {
   gce.instance.staging = {
+    route53.zone = "mitmh2025";
     machineType = "e2-custom-medium-5120"; # 1 vCPU, 5 GB RAM
     bootDisk.image = lib.tfRef "google_compute_image.nixos.id";
     firewall.allowedTCPPorts = [
@@ -29,19 +30,11 @@ in {
   resource.nix_store_path_copy.staging_nixos.depends_on =
     builtins.map (n: "aws_route53_record.${n}") stagingAliases;
 
-  route53.mitmh2025.rr = {
-    staging = {
-      type = "A";
-      ttl = "300";
-      records = [
-        (lib.tfRef "resource.google_compute_instance.staging.network_interface.0.access_config.0.nat_ip")
-      ];
-    };
-  } // (lib.genAttrs stagingAliases (name: {
+  route53.mitmh2025.rr = lib.genAttrs stagingAliases (name: {
     type = "CNAME";
     ttl = "300";
     records = [
       (lib.tfRef "aws_route53_record.staging.fqdn")
     ];
-  }));
+  });
 }

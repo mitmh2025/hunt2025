@@ -25,7 +25,7 @@ in {
         "google_compute_firewall.${name}"
       ];
       store_path = "${instance.nixosConfiguration.config.system.build.toplevel}";
-      to = "ssh-ng://root@\${google_compute_instance.${name}.hostname}";
+      to = "ssh-ng://root@\${google_compute_instance.${name}.network_interface.0.access_config.0.nat_ip}";
       check_sigs = false;
 
       # TODO: Switch to deploy-rs so we get magic rollback?
@@ -35,7 +35,7 @@ in {
           type = "ssh";
           user = "root";
           agent = true;
-          host = lib.tfRef "google_compute_instance.${name}.hostname";
+          host = lib.tfRef "google_compute_instance.${name}.network_interface.0.access_config.0.nat_ip";
         };
         inline = [
           "${instance.nixosConfiguration.config.system.build.toplevel}/bin/switch-to-configuration switch"

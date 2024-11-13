@@ -17,8 +17,8 @@ in {
             description = "Machine type";
           };
           hostname = mkOption {
-            type = types.str;
-            default = "${name}.mitmh2025.com";
+            type = types.nullOr types.str;
+            default = null;
           };
           bootDisk.size = mkOption {
             type = types.ints.positive;
@@ -57,7 +57,8 @@ in {
         config = {
           objects.serviceAccount.displayName = "Used by the ${config.name} VM";
           resource.google_compute_instance = {
-            inherit (config) name hostname;
+            inherit (config) name;
+            hostname = lib.mkIf (config.hostname != null) config.hostname;
             machine_type = config.machineType;
 
             desired_status = "RUNNING";
@@ -73,7 +74,7 @@ in {
               network = "default";
               access_config = [{ # Request a public IP
                 # https://cloud.google.com/compute/docs/instances/create-ptr-record
-                public_ptr_domain_name = "${config.hostname}.";
+                public_ptr_domain_name = lib.mkIf (config.hostname != null) "${config.hostname}.";
               }];
             };
 
