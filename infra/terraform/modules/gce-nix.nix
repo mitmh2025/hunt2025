@@ -26,7 +26,8 @@ in {
     resource.nix_store_path_copy = lib.mapAttrs' (name: instance: lib.nameValuePair "${name}_nixos" {
       depends_on = [
         "google_compute_firewall.${name}"
-      ];
+        # Make sure aliases are configured so ACME challenges work.
+      ] ++ builtins.map (n: "aws_route53_record.${n}") instance.route53.aliases;
       store_path = "${instance.nixosConfiguration.config.system.build.toplevel}";
       to = "ssh-ng://root@\${google_compute_instance.${name}.network_interface.0.access_config.0.nat_ip}";
       check_sigs = false;

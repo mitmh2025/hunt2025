@@ -41,4 +41,8 @@
     bucket.name = "cvqb2gwr-gce-images";
     nixosConfiguration = self.nixosConfigurations.gce-image;
   };
+
+  imports = [
+    ./deploy.nix
+  ];
 }
