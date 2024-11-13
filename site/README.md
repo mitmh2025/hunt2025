@@ -96,11 +96,11 @@ rm -rf dist && time npm run build-dev && REDIS_URL=redis://localhost/ node --ena
 
 ### Arcturus' notes
 
-When wiping the database, make sure to remove the `dev.sqlite3` file AND ALSO the RDB snapshot from the redis instance. For meta testing, run:
+For meta testing, run:
 ```sh
 export JWT_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os.urandom(16), 'hex').decode('utf-8'))")
 export FRONTEND_API_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os.urandom(16), 'hex').decode('utf-8'))")
-rm -rf dist && time npm run build && REDIS_URL=redis://localhost/ node --enable-source-maps dist/server-bundle.js
+rm -rf dist && rm dev.sqlite3 && time npm run build && REDIS_URL=redis://localhost/ node --enable-source-maps dist/server-bundle.js
 ```
 
 ## Typesetting
