@@ -5,52 +5,94 @@ import { PUZZLES } from "../../puzzles";
 import StakeoutBody from "./StakeoutBody";
 import metaEnvelope from "./assets/meta_envelope_full.png";
 import polaroidDeveloping from "./assets/polaroid_developing_photo_only.png";
-import polaroidSolvedPlaceholder from "./assets/polaroid_placeholder.png";
+import polaroidSolved01 from "./assets/solved/p1.jpg";
+import polaroidSolved02 from "./assets/solved/p2.jpg";
+import polaroidSolved03 from "./assets/solved/p3.jpg";
+import polaroidSolved04 from "./assets/solved/p4.jpg";
+import polaroidSolved05 from "./assets/solved/p5.jpg";
+import polaroidSolved06 from "./assets/solved/p6.jpg";
+import polaroidSolved07 from "./assets/solved/p7.jpg";
+import polaroidSolved08 from "./assets/solved/p8.jpg";
+import polaroidSolved09 from "./assets/solved/p9.jpg";
+import polaroidSolved10 from "./assets/solved/p10.jpg";
+import polaroidSolved11 from "./assets/solved/p11.jpg";
+import polaroidSolved12 from "./assets/solved/p12.jpg";
+import polaroidSolved13 from "./assets/solved/p13.jpg";
+import polaroidSolved14 from "./assets/solved/p14.jpg";
+import polaroidSolved15 from "./assets/solved/p15.jpg";
+import polaroidSolved16 from "./assets/solved/p16.jpg";
+import polaroidSolved17 from "./assets/solved/p17.jpg";
+import polaroidSolved18 from "./assets/solved/p18.jpg";
+import polaroidSolved19 from "./assets/solved/p19.jpg";
+import polaroidSolved20 from "./assets/solved/p20.jpg";
+import polaroidSolved21 from "./assets/solved/p21.jpg";
+import polaroidSolved22 from "./assets/solved/p22.jpg";
+import polaroidSolved23 from "./assets/solved/p23.jpg";
+import polaroidSolved24 from "./assets/solved/p24.jpg";
+import polaroidSolved25 from "./assets/solved/p25.jpg";
+import polaroidSolved26 from "./assets/solved/p26.jpg";
+import polaroidSolved27 from "./assets/solved/p27.jpg";
+import polaroidSolved28 from "./assets/solved/p28.jpg";
+import polaroidSolved29 from "./assets/solved/p29.jpg";
+import polaroidSolved30 from "./assets/solved/p30.jpg";
+import polaroidSolved31 from "./assets/solved/p31.jpg";
+import polaroidSolved32 from "./assets/solved/p32.jpg";
+import polaroidSolved33 from "./assets/solved/p33.jpg";
+import polaroidSolved34 from "./assets/solved/p34.jpg";
+import polaroidSolved35 from "./assets/solved/p35.jpg";
+import polaroidSolved36 from "./assets/solved/p36.jpg";
+import polaroidSolved37 from "./assets/solved/p37.jpg";
+import polaroidSolved38 from "./assets/solved/p38.jpg";
+import polaroidSolved39 from "./assets/solved/p39.jpg";
+import polaroidSolved40 from "./assets/solved/p40.jpg";
+import polaroidSolved41 from "./assets/solved/p41.jpg";
+import polaroidSolved42 from "./assets/solved/p42.jpg";
+
 import { type StakeoutSlot, type StakeoutState } from "./types";
 
 const DEVELOPED_PHOTO_IMAGES: Record<StakeoutSlot, string> = {
-  sop01: polaroidSolvedPlaceholder, //
-  sop02: polaroidSolvedPlaceholder,
-  sop03: polaroidSolvedPlaceholder,
-  sop04: polaroidSolvedPlaceholder,
-  sop05: polaroidSolvedPlaceholder,
-  sop06: polaroidSolvedPlaceholder,
-  sop07: polaroidSolvedPlaceholder,
-  sop08: polaroidSolvedPlaceholder,
-  sop09: polaroidSolvedPlaceholder,
-  sop10: polaroidSolvedPlaceholder,
-  sop11: polaroidSolvedPlaceholder,
-  sop12: polaroidSolvedPlaceholder,
-  sop13: polaroidSolvedPlaceholder,
-  sop14: polaroidSolvedPlaceholder,
-  sop15: polaroidSolvedPlaceholder,
-  sop16: polaroidSolvedPlaceholder,
-  sop17: polaroidSolvedPlaceholder,
-  sop18: polaroidSolvedPlaceholder,
-  sop19: polaroidSolvedPlaceholder,
-  sop20: polaroidSolvedPlaceholder,
-  sop21: polaroidSolvedPlaceholder,
-  sop22: polaroidSolvedPlaceholder,
-  sop23: polaroidSolvedPlaceholder,
-  sop24: polaroidSolvedPlaceholder,
-  sop25: polaroidSolvedPlaceholder,
-  sop26: polaroidSolvedPlaceholder,
-  sop27: polaroidSolvedPlaceholder,
-  sop28: polaroidSolvedPlaceholder,
-  sop29: polaroidSolvedPlaceholder,
-  sop30: polaroidSolvedPlaceholder,
-  sop31: polaroidSolvedPlaceholder,
-  sop32: polaroidSolvedPlaceholder,
-  sop33: polaroidSolvedPlaceholder,
-  sop34: polaroidSolvedPlaceholder,
-  sop35: polaroidSolvedPlaceholder,
-  sop36: polaroidSolvedPlaceholder,
-  sop37: polaroidSolvedPlaceholder,
-  sop38: polaroidSolvedPlaceholder,
-  sop39: polaroidSolvedPlaceholder,
-  sop40: polaroidSolvedPlaceholder,
-  sop41: polaroidSolvedPlaceholder,
-  sop42: polaroidSolvedPlaceholder,
+  sop01: polaroidSolved01, //
+  sop02: polaroidSolved02,
+  sop03: polaroidSolved03,
+  sop04: polaroidSolved04,
+  sop05: polaroidSolved05,
+  sop06: polaroidSolved06,
+  sop07: polaroidSolved07,
+  sop08: polaroidSolved08,
+  sop09: polaroidSolved09,
+  sop10: polaroidSolved10,
+  sop11: polaroidSolved11,
+  sop12: polaroidSolved12,
+  sop13: polaroidSolved13,
+  sop14: polaroidSolved14,
+  sop15: polaroidSolved15,
+  sop16: polaroidSolved16,
+  sop17: polaroidSolved17,
+  sop18: polaroidSolved18,
+  sop19: polaroidSolved19,
+  sop20: polaroidSolved20,
+  sop21: polaroidSolved21,
+  sop22: polaroidSolved22,
+  sop23: polaroidSolved23,
+  sop24: polaroidSolved24,
+  sop25: polaroidSolved25,
+  sop26: polaroidSolved26,
+  sop27: polaroidSolved27,
+  sop28: polaroidSolved28,
+  sop29: polaroidSolved29,
+  sop30: polaroidSolved30,
+  sop31: polaroidSolved31,
+  sop32: polaroidSolved32,
+  sop33: polaroidSolved33,
+  sop34: polaroidSolved34,
+  sop35: polaroidSolved35,
+  sop36: polaroidSolved36,
+  sop37: polaroidSolved37,
+  sop38: polaroidSolved38,
+  sop39: polaroidSolved39,
+  sop40: polaroidSolved40,
+  sop41: polaroidSolved41,
+  sop42: polaroidSolved42,
   // Mapping from slot id to artwork.
   // TODO: import the 42 photos, once the art is ready.
 };
