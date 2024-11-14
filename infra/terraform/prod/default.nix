@@ -46,6 +46,7 @@
   };
 
   imports = [
+    ../base.nix
     ./deploy.nix
   ];
 }

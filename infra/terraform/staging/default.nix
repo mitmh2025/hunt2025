@@ -48,6 +48,7 @@
   };
 
   imports = [
+    ../base.nix
     ./ci.nix
     ./staging.nix
     ./mail.nix

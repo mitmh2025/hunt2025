@@ -45,24 +45,26 @@
         inherit (pkgs) lib;
         terraform = pkgs.opentofu.withPlugins (p: with p; [
           aws
-          google
+          (google.override {
+            rev = "v6.11.1";
+            hash = "sha256-Gz6jMZFn7HfRVtNrFuRJlBfokMBpW3rjOYyYXSeT7dY=";
+            vendorHash = "sha256-hwWHtrPmzJJT7OUcjiqt7a6Nf1GLvoEcepqIAHv5bsI=";
+          })
           local
           tls
           github
-          (mkProvider rec {
+          (mkProvider {
             owner = "krostar";
             repo = "terraform-provider-nix";
-            rev = "v${version}";
-            version = "0.0.8";
+            rev = "v0.0.8";
             hash = "sha256-E742kf5pO6LK5aTVq5gukF0KqIB87tnweDf+GxvSUF8=";
             vendorHash = "sha256-nVXzFE4iBHiqVusryteoqoJ5h2EheQpIISLjAXAsaNw=";
             provider-source-address = "registry.terraform.io/krostar/nix";
           })
-          ((mkProvider rec {
+          ((mkProvider {
             owner = "bsquare-corp";
             repo = "terraform-provider-skopeo2";
-            rev = "v${version}";
-            version = "1.1.1";
+            rev = "v1.1.1";
             hash = "sha256-vpX3C+pXGG3w+OeK+LUpeiG8rD4HWU7b3KSOa6WUeQg=";
             vendorHash = "sha256-uvj7Ann2dh4ZgiThesY8A3Vshsjxn0cJVCqg+bXTYag=";
             provider-source-address = "registry.terraform.io/bsquare-corp/skopeo2";

@@ -3,6 +3,10 @@ let
   cfg = config.gce.instance;
 in {
   options = with lib; {
+    gce.project.metadata = mkOption {
+      default = {};
+      type = types.attrsOf types.str;
+    };
     gce.instance = mkOption {
       default = {};
       type = types.tfAttrsOf (types.submodule ({ name, config, ... }: {
@@ -125,6 +129,9 @@ in {
   };
   config = lib.mkIf (cfg != {}) {
     gcp.services.compute.enable = true;
+    resource.google_compute_project_metadata.this = lib.mkIf (config.gce.project.metadata != {}) {
+      inherit (config.gce.project) metadata;
+    };
     data.google_compute_network.default = {
       name = "default";
     };
