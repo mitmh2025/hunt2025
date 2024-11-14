@@ -38,7 +38,7 @@ let
     packageJSON = ./package.json;
     offlineCache = fetchYarnDeps {
       yarnLock = src + "/ui-ngx/yarn.lock";
-      hash = "sha256-wA6Xb2TERhwEwDwZcW387wPkjY0hG/HxN+gB0USAmFw=";
+      hash = "sha256-SYlFP/exOKIUrp4praKI3E/hawdZKLH/E6XeDm+UCwk=";
     };
 
     packageResolutions = {
