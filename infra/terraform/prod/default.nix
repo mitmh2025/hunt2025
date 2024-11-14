@@ -31,6 +31,9 @@
   };
 
   state.bucket.name = "cvqb2gwr-tfstate";
+  state.bucket.users = [
+    (lib.tfRef "google_service_account.deploy-vm.member")
+  ];
 
   route53.mitmh2025 = {
     provider = "puzzup";

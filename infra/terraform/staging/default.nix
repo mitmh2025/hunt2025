@@ -37,6 +37,9 @@
   };
 
   state.bucket.name = "rb8tcjeo-tfstate";
+  state.bucket.users = [
+    (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member")
+  ];
   state.remote.buckets.prod = "cvqb2gwr-tfstate";
 
   imports = [
