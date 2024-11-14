@@ -46,7 +46,7 @@ in {
             SERVICE_ACCOUNT=$1
             mkdir -p ~/.aws
             umask 0077
-            if [ ! -r "$HOME/.aws/credentials-$SERVICE_ACCOUNT" ]; then
+            if [ ! -r ~/".aws/credentials-$SERVICE_ACCOUNT" ]; then
               (
                 gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-id latest \
                 && gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-secret latest
@@ -62,9 +62,9 @@ in {
                   Version: 1,
                   AccessKeyId: .id,
                   SecretAccessKey: .secret
-                }' > "$HOME/.aws/credentials-$SERVICE_ACCOUNT"
+                }' > ~/".aws/credentials-$SERVICE_ACCOUNT"
             fi
-            cat "$HOME/.aws/credentials-$SERVICE_ACCOUNT"
+            cat ~/".aws/credentials-$SERVICE_ACCOUNT"
           '';
         });
         awsAuth = lib.getExe (pkgs.writeShellApplication {
