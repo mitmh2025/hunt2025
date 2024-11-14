@@ -83,7 +83,7 @@ in {
 
             jwt_sub=$(jq -R -r 'split(".") | .[1] | @base64d | fromjson | .sub' <<< "$jwt_token")
 
-            aws sts assume-role-with-web-identity --role-arn "$ROLE_ARN" --role-session-name "$jwt_sub" --web-identity-token "$jwt_token" | jq '.Credentials | .Version=1'
+            (unset AWS_PROFILE; aws sts assume-role-with-web-identity --role-arn "$ROLE_ARN" --role-session-name "$jwt_sub" --web-identity-token "$jwt_token" | jq '.Credentials | .Version=1')
           '';
         });
       in (pkgs.formats.ini {}).generate "aws-config" {
