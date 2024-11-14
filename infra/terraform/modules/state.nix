@@ -69,7 +69,7 @@
       };
     })
     {
-      resource.terraform_remote_state = lib.mapAttrs (name: bucket: {
+      data.terraform_remote_state = lib.mapAttrs (name: bucket: {
         backend = "gcs";
         config = {
           inherit bucket;

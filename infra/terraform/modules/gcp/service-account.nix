@@ -38,6 +38,9 @@
         role = lib.tfRef "each.value";
         member = lib.tfRef "google_service_account.${accountName}.member";
       }) config.gcp.serviceAccount);
+      output.google_service_account.value = let
+        account = name: ''"${name}": { "member": google_service_account.${name}.member, "email": google_service_account.${name}.email }'';
+      in lib.tfRef ''{${lib.concatMapStringsSep ", " account (builtins.attrNames config.resource.google_service_account)}}'';
     }
     (let
       hmac = (lib.mapAttrsToList (name: _: {
