@@ -27,7 +27,7 @@ in {
       nix.package = pkgs.nixVersions.latest;
       nix.settings = {
         substituters = [
-          "s3://rb8tcjeo-nix-cache"
+          "s3://rb8tcjeo-nix-cache?endpoint=https://storage.googleapis.com"
           "https://cache.nixos.org/"
         ];
         require-sigs = false;
