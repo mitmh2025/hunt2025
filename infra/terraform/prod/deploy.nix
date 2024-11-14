@@ -15,5 +15,10 @@
     useSops = true;
     nixosConfiguration = self.nixosConfigurations."prod/deploy";
   };
-  gcp.serviceAccount.deploy-vm.hmacKey.enable = true;
+  gcp.serviceAccount.deploy-vm = {
+    hmacKey.enable = true;
+    iamRoles = [
+      "owner"
+    ];
+  };
 }

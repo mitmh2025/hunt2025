@@ -41,6 +41,11 @@
     (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member")
   ];
   state.remote.buckets.prod = "cvqb2gwr-tfstate";
+  resource.google_project_iam_member.deploy-vm-owner = {
+    project = lib.tfRef "data.google_project.this.project_id";
+    role = "roles/owner";
+    member = lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member";
+  };
 
   imports = [
     ./ci.nix
