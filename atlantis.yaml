@@ -4,8 +4,6 @@ projects:
   dir: infra/terraform/prod
   autoplan:
     enabled: false
-    when_modified:
-    - '../../**/*.nix'
 - name: staging
   dir: infra/terraform/staging
   autoplan:
