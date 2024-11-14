@@ -57,6 +57,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
   broken_record: BrokenRecord,
+  commentary: Commentary,
   cruciverbal: Cruciverbal,
   dear_diary: DearDiary,
   doable_double: DoableDouble,
@@ -65,7 +66,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   lab_scrabble: LabScrabble,
   sing_like_a_canary: SingLikeACanary,
   the_ultimate_insult: TheUltimateInsult,
-  commentary: Commentary,
 
   // Paper Trail
   chemicals_are_sexy: ChemicalsAreSexy,

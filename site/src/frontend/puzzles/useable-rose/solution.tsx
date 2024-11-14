@@ -2,23 +2,18 @@ import React from "react";
 import { styled } from "styled-components";
 
 const BorderedTable = styled.table`
-  border: 1px solid black;
-  border-collapse: collapse;
-`;
-
-const BorderedRow = styled.tr`
-  border: 1px solid black;
+  border: 1px solid var(--black);
   border-collapse: collapse;
 `;
 
 const BorderedCell = styled.td`
-  border: 1px solid black;
-  border-collapse: collapse;
+  border: 1px solid var(--black);
+  background-color: transparent;
 `;
 
 const BorderedHeader = styled.th`
-  border: 1px solid black;
-  border-collapse: collapse;
+  border: 1px solid var(--black);
+  background-color: transparent;
 `;
 
 const CenteredBorderedCell = styled(BorderedCell)`
@@ -98,17 +93,17 @@ const Solution = () => {
 
       <BorderedTable>
         <thead>
-          <BorderedRow>
+          <tr>
             <BorderedHeader></BorderedHeader>
             <BorderedHeader>Twisted Clue</BorderedHeader>
             <BorderedHeader>Split Clue</BorderedHeader>
             <BorderedHeader>Answer</BorderedHeader>
             <BorderedHeader>Color</BorderedHeader>
             <BorderedHeader>Letter</BorderedHeader>
-          </BorderedRow>
+          </tr>
         </thead>
         <tbody>
-          <BorderedRow>
+          <tr>
             <BorderedCell rowSpan={2}>1</BorderedCell>
             <BorderedCell rowSpan={2}>
               Ticertltaien shfoorrt oloppowessabtle dinobigitlity
@@ -117,13 +112,13 @@ const Solution = () => {
             <BorderedCell>BARON</BorderedCell>
             <RedBorderedCell>RED</RedBorderedCell>
             <CenteredBorderedCell rowSpan={2}>H</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>certain short opposable digit</BorderedCell>
             <BorderedCell>THUMB</BorderedCell>
             <GreenBorderedCell>GREEN</GreenBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>2</BorderedCell>
             <BorderedCell rowSpan={2}>
               Eammmporoium grofeecerdery oorr perbodiodiegacal
@@ -132,13 +127,13 @@ const Solution = () => {
             <BorderedCell>MARKET</BorderedCell>
             <BlackBorderedCell>BLACK</BlackBorderedCell>
             <CenteredBorderedCell rowSpan={2}>O</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>ammo feeder or periodical</BorderedCell>
             <BorderedCell>MAGAZINE</BorderedCell>
             <SlateBorderedCell>SLATE</SlateBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>3</BorderedCell>
             <BorderedCell rowSpan={2}>
               Licapaftcity fofror chadonginging tworiresk
@@ -147,13 +142,13 @@ const Solution = () => {
             <BorderedCell>JACK</BorderedCell>
             <BlackBorderedCell>BLACK</BlackBorderedCell>
             <CenteredBorderedCell rowSpan={2}>M</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>capacity for doing work</BorderedCell>
             <BorderedCell>ENERGY</BorderedCell>
             <GreenBorderedCell>GREEN</GreenBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>4</BorderedCell>
             <BorderedCell rowSpan={2}>
               Chicwikenpothx vithreus alalterexannaderte hodisnoreasifice
@@ -162,13 +157,13 @@ const Solution = () => {
             <BorderedCell>GREAT</BorderedCell>
             <WhiteBorderedCell>WHITE</WhiteBorderedCell>
             <CenteredBorderedCell rowSpan={2}>E</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>chickenpox virus alternate disease</BorderedCell>
             <BorderedCell>SHINGLES</BorderedCell>
             <SlateBorderedCell>SLATE</SlateBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>5</BorderedCell>
             <BorderedCell rowSpan={2}>
               Omabsergicved rereligasiouser maresscott damry
@@ -177,13 +172,13 @@ const Solution = () => {
             <BorderedCell>SABBATH</BorderedCell>
             <BlackBorderedCell>BLACK</BlackBorderedCell>
             <CenteredBorderedCell rowSpan={2}>O</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>magic eraser mascot mr</BorderedCell>
             <BorderedCell>CLEAN</BorderedCell>
             <SlateBorderedCell>SLATE</SlateBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>6</BorderedCell>
             <BorderedCell rowSpan={2}>
               Chalighinst twinimester furcolongast
@@ -192,26 +187,26 @@ const Solution = () => {
             <BorderedCell>JACKET</BorderedCell>
             <YellowBorderedCell>YELLOW</YellowBorderedCell>
             <CenteredBorderedCell rowSpan={2}>R</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>chains times furlongs</BorderedCell>
             <BorderedCell>ACRES</BorderedCell>
             <GreenBorderedCell>GREEN</GreenBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>7</BorderedCell>
             <BorderedCell rowSpan={2}>Oblofemalnge dosanndkwichey</BorderedCell>
             <BorderedCell>oblong sandwich</BorderedCell>
             <BorderedCell>SUBMARINE</BorderedCell>
             <YellowBorderedCell>YELLOW</YellowBorderedCell>
             <CenteredBorderedCell rowSpan={2}>T</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>female donkey</BorderedCell>
             <BorderedCell>JENNY</BorderedCell>
             <SlateBorderedCell>SLATE</SlateBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>8</BorderedCell>
             <BorderedCell rowSpan={2}>
               Lisqueghtezed Mifruchelobit bliqueerid
@@ -220,13 +215,13 @@ const Solution = () => {
             <BorderedCell>ULTRA</BorderedCell>
             <VioletBorderedCell>VIOLET</VioletBorderedCell>
             <CenteredBorderedCell rowSpan={2}>V</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>squeezed fruit liquid</BorderedCell>
             <BorderedCell>JUICE</BorderedCell>
             <OrangeBorderedCell>ORANGE</OrangeBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>9</BorderedCell>
             <BorderedCell rowSpan={2}>
               Osolfafctotlyry froszensene porecrigpitanation
@@ -235,26 +230,26 @@ const Solution = () => {
             <BorderedCell>SNOW</BorderedCell>
             <WhiteBorderedCell>WHITE</WhiteBorderedCell>
             <CenteredBorderedCell rowSpan={2}>D</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>olfactory sense organ</BorderedCell>
             <BorderedCell>NOSE</BorderedCell>
             <BrownBorderedCell>BROWN</BrownBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>10</BorderedCell>
             <BorderedCell rowSpan={2}>Resploaxrt bwithy paginings</BorderedCell>
             <BorderedCell>relax by aging</BorderedCell>
             <BorderedCell>MELLOW</BorderedCell>
             <YellowBorderedCell>YELLOW</YellowBorderedCell>
             <CenteredBorderedCell rowSpan={2}>R</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>sport with pins</BorderedCell>
             <BorderedCell>BOWLING</BorderedCell>
             <GreenBorderedCell>GREEN</GreenBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>11</BorderedCell>
             <BorderedCell rowSpan={2}>
               Cosilnversever doarfling fafilsesh
@@ -263,13 +258,13 @@ const Solution = () => {
             <BorderedCell>HERRING</BorderedCell>
             <RedBorderedCell>RED</RedBorderedCell>
             <CenteredBorderedCell rowSpan={2}>F</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>converse of false</BorderedCell>
             <BorderedCell>TRUE</BorderedCell>
             <BlueBorderedCell>BLUE</BlueBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>12</BorderedCell>
             <BorderedCell rowSpan={2}>
               Orobobecodipsent flainstster drinaverme
@@ -278,13 +273,13 @@ const Solution = () => {
             <BorderedCell>ROVER</BorderedCell>
             <RedBorderedCell>RED</RedBorderedCell>
             <CenteredBorderedCell rowSpan={2}>I</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>robocops last name</BorderedCell>
             <BorderedCell>MURPHY</BorderedCell>
             <BrownBorderedCell>BROWN</BrownBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>13</BorderedCell>
             <BorderedCell rowSpan={2}>
               Dedescrigeansationing fiorn mustalderture
@@ -293,13 +288,13 @@ const Solution = () => {
             <BorderedCell>SHRINKING</BorderedCell>
             <VioletBorderedCell>VIOLET</VioletBorderedCell>
             <CenteredBorderedCell rowSpan={2}>V</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>designation for Mulder</BorderedCell>
             <BorderedCell>AGENT</BorderedCell>
             <OrangeBorderedCell>ORANGE</OrangeBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell rowSpan={2}>14</BorderedCell>
             <BorderedCell rowSpan={2}>
               Entracertainement pacammunesetitionter ronicknundame
@@ -308,12 +303,12 @@ const Solution = () => {
             <BorderedCell>RABBIT</BorderedCell>
             <WhiteBorderedCell>WHITE</WhiteBorderedCell>
             <CenteredBorderedCell rowSpan={2}>E</CenteredBorderedCell>
-          </BorderedRow>
-          <BorderedRow>
+          </tr>
+          <tr>
             <BorderedCell>entertainment ammunition round</BorderedCell>
             <BorderedCell>BLANK</BorderedCell>
             <SlateBorderedCell>SLATE</SlateBorderedCell>
-          </BorderedRow>
+          </tr>
         </tbody>
       </BorderedTable>
     </>
