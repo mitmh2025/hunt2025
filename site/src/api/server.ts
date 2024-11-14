@@ -105,8 +105,10 @@ function newPassport(jwtSecret: string | Buffer) {
 }
 
 function canonicalizeInput(input: string) {
-  // TODO: Make sure puzzles agrees with this definition.
-  return input.replaceAll(/\s+/g, "").toUpperCase();
+  return input
+    .normalize("NFD")
+    .replaceAll(/[^A-Za-z0-9]/g, "")
+    .toUpperCase();
 }
 
 export function getRouter({
