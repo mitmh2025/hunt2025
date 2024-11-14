@@ -44,22 +44,27 @@ in {
           ];
           text = ''
             SERVICE_ACCOUNT=$1
-            (
-              gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-id latest \
-              && gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-secret latest
-            ) | jq -s '
-              [ .[]
+            mkdir -p ~/.aws
+            umask 0077
+            if [ ! -r "$HOME/.aws/credentials-$SERVICE_ACCOUNT" ]; then
+              (
+                gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-id latest \
+                && gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-secret latest
+              ) | jq -s '
+                [ .[]
+                  | {
+                    key: .name | split("/") | .[3] | split("-") | .[-1],
+                    value: .payload.data | @base64d
+                  }
+                ]
+                | from_entries
                 | {
-                  key: .name | split("/") | .[3] | split("-") | .[-1],
-                  value: .payload.data | @base64d
-                }
-              ]
-              | from_entries
-              | {
-                Version: 1,
-                AccessKeyId: .id,
-                SecretAccessKey: .secret
-              }'
+                  Version: 1,
+                  AccessKeyId: .id,
+                  SecretAccessKey: .secret
+                }' > "$HOME/.aws/credentials-$SERVICE_ACCOUNT"
+            fi
+            cat "$HOME/.aws/credentials-$SERVICE_ACCOUNT"
           '';
         });
         awsAuth = lib.getExe (pkgs.writeShellApplication {
