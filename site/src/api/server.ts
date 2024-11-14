@@ -107,7 +107,7 @@ function newPassport(jwtSecret: string | Buffer) {
 function canonicalizeInput(input: string) {
   return input
     .normalize("NFD")
-    .replaceAll(/[^A-Za-z0-9]/g, "")
+    .replaceAll(/[^\p{L}\p{N}]/gu, "")
     .toUpperCase();
 }
 
