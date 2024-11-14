@@ -27,7 +27,7 @@ in {
       nix.package = pkgs.nixVersions.latest;
       nix.settings = {
         substituters = [
-          "s3://rb8tcjeo-nix-cache?endpoint=https://storage.googleapis.com&profile=gcs"
+          "s3://rb8tcjeo-nix-cache"
           "https://cache.nixos.org/"
         ];
         require-sigs = false;
@@ -92,10 +92,12 @@ in {
       systemd.globalEnvironment = {
         AWS_CONFIG_FILE = "/etc/aws/config";
         AWS_SDK_LOAD_CONFIG = "true";
+        AWS_PROFILE = "gcs";
       };
       environment.sessionVariables = {
         AWS_CONFIG_FILE = "/etc/aws/config";
         AWS_SDK_LOAD_CONFIG = "true";
+        AWS_PROFILE = "gcs";
       };
     }
     {
