@@ -56,9 +56,4 @@
     bucket.name = "rb8tcjeo-gce-images";
     nixosConfiguration = self.nixosConfigurations.gce-image;
   };
-
-  nix.cache.users = [
-    # Give deploy VM access to our Nix cache.
-    (lib.tfRef "data.terraform_remote_state.prod.google_service_account.deploy-vm.member")
-  ];
 }
