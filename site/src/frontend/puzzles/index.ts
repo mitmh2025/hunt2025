@@ -37,6 +37,7 @@ import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import ShellCorporationTwo from "./untrue-dice";
+import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
@@ -56,6 +57,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
   broken_record: BrokenRecord,
+  commentary: Commentary,
   cruciverbal: Cruciverbal,
   dear_diary: DearDiary,
   doable_double: DoableDouble,
