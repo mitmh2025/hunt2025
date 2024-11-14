@@ -24,14 +24,91 @@ in {
       };
     }
     {
+      nix.package = pkgs.nixVersions.latest;
+      nix.settings = {
+        substituters = [
+          "s3://rb8tcjeo-nix-cache?endpoint=https://storage.googleapis.com&profile=gcs"
+          "https://cache.nixos.org/"
+        ];
+        require-sigs = false;
+        always-allow-substitutes = true;
+      };
+    }
+    {
+      environment.etc."aws/config".source = let
+        hmacAuth = lib.getExe (pkgs.writeShellApplication {
+          name = "hmac-credential-process";
+          runtimeInputs = with pkgs; [
+            google-cloud-sdk
+            jq
+          ];
+          text = ''
+            SERVICE_ACCOUNT=$1
+            (
+              gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-id latest \
+              && gcloud secrets versions access --format=json --secret "$SERVICE_ACCOUNT"-hmac-secret latest
+            ) | jq -s '
+              [ .[]
+                | {
+                  key: .name | split("/") | .[3] | split("-") | .[-1],
+                  value: .payload.data | @base64d
+                }
+              ]
+              | from_entries
+              | {
+                Version: 1,
+                AccessKeyId: .id,
+                SecretAccessKey: .secret
+              }'
+          '';
+        });
+        awsAuth = lib.getExe (pkgs.writeShellApplication {
+          name = "aws-credential-process";
+          runtimeInputs = with pkgs; [
+            curl
+            jq
+            awscli2
+          ];
+          text = ''
+            AUDIENCE="aws"
+            ACCOUNT_ID=$1
+            ROLE_ARN="arn:aws:iam::''${ACCOUNT_ID}:role/GCPProdDeploy"
+
+            jwt_token=$(curl -sH "Metadata-Flavor: Google" "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=''${AUDIENCE}&format=full&licenses=FALSE")
+
+            jwt_sub=$(jq -R -r 'split(".") | .[1] | @base64d | fromjson | .sub' <<< "$jwt_token")
+
+            aws sts assume-role-with-web-identity --role-arn "$ROLE_ARN" --role-session-name "$jwt_sub" --web-identity-token "$jwt_token" | jq '.Credentials | .Version=1'
+          '';
+        });
+      in (pkgs.formats.ini {}).generate "aws-config" {
+        "profile gcs" = {
+          endpoint_url = "https://storage.googleapis.com";
+          credential_process = "${hmacAuth} deploy-vm";
+        };
+        "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427";
+        "profile mitmh2025-staging".credential_process = "${awsAuth} 767398012733";
+      };
+      systemd.globalEnvironment = {
+        AWS_CONFIG_FILE = "/etc/aws/config";
+        AWS_SDK_LOAD_CONFIG = "true";
+      };
+      environment.sessionVariables = {
+        AWS_CONFIG_FILE = "/etc/aws/config";
+        AWS_SDK_LOAD_CONFIG = "true";
+      };
+    }
+    {
       users.users.deploy = {
         isNormalUser = true;
         openssh = config.users.users.root.openssh;
       };
-      environment.systemPackages = [
+      environment.systemPackages = with pkgs; [
         terraformWrapper
         self.packages.${config.nixpkgs.system}.terraform
-        pkgs.git
+        git
+        google-cloud-sdk
+        awscli2
       ];
       systemd.services.atlantis.path = [
         # Give Atlantis a normal user path.
