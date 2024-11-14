@@ -47,6 +47,9 @@ in {
         User = "deploy";
         Restart = "always";
         RestartSec = "5s";
+        # Attempt to gracefully stop Atlantis
+        KillMode = "mixed";
+        TimeoutStopSec = "20m";
       };
     };
   };

@@ -37,6 +37,7 @@
   };
 
   state.bucket.name = "rb8tcjeo-tfstate";
+  state.remote.buckets.prod = "cvqb2gwr-tfstate";
 
   imports = [
     ./ci.nix

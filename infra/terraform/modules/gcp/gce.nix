@@ -47,6 +47,9 @@ in {
           objects.serviceAccount = mkOption {
             type = types.anything;
           };
+          resource.google_compute_disk = mkOption {
+            type = types.anything;
+          };
           resource.google_compute_instance = mkOption {
             type = types.anything;
           };
@@ -56,6 +59,13 @@ in {
         };
         config = {
           objects.serviceAccount.displayName = "Used by the ${config.name} VM";
+          resource.google_compute_disk = {
+            inherit (config) name;
+            inherit (config.bootDisk) size image;
+            type = "pd-balanced";
+            # Don't destroy and recreate when the image changes.
+            lifecycle.ignore_changes = ["image"];
+          };
           resource.google_compute_instance = {
             inherit (config) name;
             hostname = lib.mkIf (config.hostname != null) config.hostname;
@@ -63,10 +73,7 @@ in {
 
             desired_status = "RUNNING";
 
-            boot_disk.initialize_params = {
-              inherit (config.bootDisk) size image;
-              type = "pd-balanced";
-            };
+            boot_disk.source = lib.tfRef "google_compute_disk.${config.name}.self_link";
 
             lifecycle.ignore_changes = ["boot_disk[0].initialize_params[0].image"]; # Don't recreate if there's a new base image
 
@@ -127,6 +134,7 @@ in {
       "${key}-vm"
       value.objects.serviceAccount
     ) cfg;
+    resource.google_compute_disk = lib.mapAttrs (_: value: value.resource.google_compute_disk) cfg;
     resource.google_compute_instance = lib.mapAttrs (_: value: value.resource.google_compute_instance) cfg;
     resource.google_compute_firewall = lib.mapAttrs (_: value: value.resource.google_compute_firewall) cfg;
     sops.keys = lib.mapAttrs (name: value: {

@@ -37,6 +37,9 @@ in {
         # Give Atlantis a normal user path.
         "/run/current-system/sw"
       ];
+      systemd.services.atlantis.restartTriggers = [
+        options.services.atlantis.configPath.default
+      ];
       sops.secrets."atlantis/gh-app-id" = {};
       sops.secrets."atlantis/gh-app-slug" = {};
       sops.secrets."atlantis/gh-app-key-file" = {
@@ -58,7 +61,7 @@ in {
           atlantis-url = "https://atlantis.mitmh2025.com";
           gh-team-allowlist = "Tech:plan, Tech:apply, Tech:import";
 
-          emoji-reaction = "thumbsup";
+          emoji-reaction = "+1";
           enable-diff-markdown-format = true;
           hide-prev-plan-comments = true;
 
@@ -75,7 +78,7 @@ in {
 
           # Always apply the post-merge config
           checkout-strategy = "merge";
-          include-git-untracked-files = true;
+          #include-git-untracked-files = true;
 
           tf-distribution = "opentofu";
           tf-download = false;
