@@ -106,7 +106,7 @@
             program = toString (pkgs.writers.writeBash "apply" ''
               if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
               cp ${terraformConfiguration} config.tf.json \
-                && ${terraformBin} init \
+                && ${terraformBin} init -upgrade \
                 && ${terraformBin} apply "$@"
             '');
           };
@@ -116,7 +116,7 @@
             program = toString (pkgs.writers.writeBash "destroy" ''
               if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
               cp ${terraformConfiguration} config.tf.json \
-                && ${terraformBin} init \
+                && ${terraformBin} init -upgrade \
                 && ${terraformBin} destroy
             '');
           };

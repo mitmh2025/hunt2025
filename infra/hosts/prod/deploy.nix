@@ -179,7 +179,7 @@ in {
           plan.steps = [
             { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
             { run = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"''; }
-            { run = ''nix run .#terraform -- init''; }
+            { run = ''nix run .#terraform -- init -upgrade''; }
             { run.command = ''nix run .#terraform -- plan -input=false -out=$PLANFILE''; run.output = "strip_refreshing"; }
           ];
           apply.steps = [
@@ -189,7 +189,7 @@ in {
           import.steps = [
             { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
             { run = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"''; }
-            { run = ''nix run .#terraform -- init''; }
+            { run = ''nix run .#terraform -- init -upgrade''; }
             { run = ''nix run .#terraform -- import -input=false $(printf '%s' $COMMENT_ARGS | sed 's/,/ /' | tr -d '\\')''; }            
           ];
         };
