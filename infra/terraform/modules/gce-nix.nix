@@ -29,16 +29,19 @@ in {
       query_path = "hostkeys/";
     }) cfg;
     resource.nix_store_path_copy = lib.mapAttrs' (name: instance: lib.nameValuePair "${name}_nixos" {
-      depends_on = [
-        "google_compute_firewall.${name}"
-        # Make sure aliases are configured so ACME challenges work.
-      ] ++ builtins.map (n: "aws_route53_record.${n}") instance.route53.aliases;
+      # Make sure aliases are configured so ACME challenges work.
+      depends_on = instance.readyWhen;
+
       store_path = "${instance.nixosConfiguration.config.system.build.toplevel}";
       # Attempt to get the host's SSH key from guest attributes; if it's missing, we'll ust fall back on trusting the first key we see.
-      to = ''ssh-ng://root@''${google_compute_instance.${name}.network_interface.0.access_config.0.nat_ip}%{ if data.google_compute_instance_guest_attributes.${name}_hostkeys.query_value != []}?base64-ssh-public-host-key=''${base64encode(coalesce([for attr in data.google_compute_instance_guest_attributes.${name}_hostkeys.query_value : "''${attr.key} ''${attr.value}"]...))}%{ endif }'';
+      # TODO: Test if `lifecycle.replace_triggered_by = ["...nat_ip"]` will allow the use of an IP instead of a hostname here.
+      to = let
+        hostname = lib.tfRef "aws_route53_record.${name}.fqdn";
+      in ''ssh-ng://root@${hostname}%{ if data.google_compute_instance_guest_attributes.${name}_hostkeys.query_value != []}?base64-ssh-public-host-key=''${base64encode(coalesce([for attr in data.google_compute_instance_guest_attributes.${name}_hostkeys.query_value : "''${attr.key} ''${attr.value}"]...))}%{ endif }'';
       ssh_options = ["-oStrictHostKeyChecking=no"];
       lifecycle.ignore_changes = ["to" "ssh_options"];
       check_sigs = false;
+      substitute_on_destination = true;
 
       # TODO: Switch to deploy-rs so we get magic rollback?
 

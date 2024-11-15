@@ -60,8 +60,17 @@ in {
           resource.google_compute_firewall = mkOption {
             type = types.anything;
           };
+          readyWhen = mkOption {
+            type = types.listOf types.str;
+            default = [];
+            description = "A list of Terraform resource identifiers that must be depended on for this instance to be ready.";
+          };
         };
         config = {
+          readyWhen = [
+            "google_compute_instance.${name}"
+            "google_compute_firewall.${name}"
+          ];
           objects.serviceAccount.displayName = "Used by the ${config.name} VM";
           resource.google_compute_disk = {
             inherit (config) name;
