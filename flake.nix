@@ -55,6 +55,7 @@
           local
           tls
           github
+          kubernetes
           (mkProvider {
             owner = "krostar";
             repo = "terraform-provider-nix";

@@ -8,6 +8,7 @@
     nix.source = "registry.terraform.io/krostar/nix";
     skopeo2.source = "registry.terraform.io/bsquare-corp/skopeo2";
     tls.source = "registry.terraform.io/hashicorp/tls";
+    kubernetes.source = "registry.terraform.io/hashicorp/kubernetes";
   };
 
   provider.google = {
@@ -43,5 +44,6 @@
   imports = [
     ../base.nix
     ./deploy.nix
+    ./gke.nix
   ];
 }
