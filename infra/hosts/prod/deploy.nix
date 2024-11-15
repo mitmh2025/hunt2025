@@ -183,9 +183,9 @@ in {
         };
         repos = [{
           id = "github.com/mitmh2025/hunt2025";
-          plan_requirements = ["mergeable"];
-          apply_requirements = ["mergeable"];
-          import_requirements = ["mergeable"];
+          plan_requirements = [];
+          apply_requirements = [];
+          import_requirements = [];
           workflow = "hunt2025";
         }];
         workflows.hunt2025 = {
