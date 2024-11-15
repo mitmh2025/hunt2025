@@ -31,6 +31,7 @@ import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import BermudaTriangle from "./selfish-king";
 import The10000SheetExcelFile from "./shoddy-table";
+import AHeapOfClards from "./sinful-ivory";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import KoteiNoAngo from "./tragic-spider";
@@ -88,6 +89,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   bermuda_triangle: BermudaTriangle,
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
+  a_heap_of_clards: AHeapOfClards,
   kotei_no_ango: KoteiNoAngo,
   networking_event: NetworkingEvent,
   this_is_just_a_test: ThisIsJustATest,
