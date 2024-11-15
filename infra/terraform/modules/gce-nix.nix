@@ -46,7 +46,8 @@ in {
         connection = {
           type = "ssh";
           user = "root";
-          agent = true;
+          agent = lib.tfRef ''!fileexists("~/.ssh/id_ed25519")'';
+          private_key = lib.tfRef ''fileexists("~/.ssh/id_ed25519") ? file("~/.ssh/id_ed25519") : ""'';
           host = lib.tfRef "google_compute_instance.${name}.network_interface.0.access_config.0.nat_ip";
         };
         inline = [

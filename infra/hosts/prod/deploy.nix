@@ -35,11 +35,17 @@ in {
       };
     }
     {
-      home-manager.users.deploy = {
+      sops.secrets.ssh_key = {
+        owner = config.users.users.deploy.name;
+      };
+      home-manager.users.deploy = let
+        sshKeyPath = config.sops.secrets.ssh_key.path;
+      in { config, ... }: {
         home.stateVersion = "24.11";
         home.file.".docker/config.json".source = (pkgs.formats.json {}).generate "docker-config.json" {
           credHelpers."us-docker.pkg.dev" = "gcloud";
         };
+        home.file.".ssh/id_ed25519".source = config.lib.file.mkOutOfStoreSymlink sshKeyPath;
       };
     }
     {
@@ -228,7 +234,6 @@ in {
             authentik.enable = true;
             authentik.url = "https://auth.mitmh2025.com:9443";
 
-            # TODO: Enable Authentik
             locations."/events" = {
               # Make sure that webhooks can be delivered without Authentik
               proxyPass = "http://atlantis";
