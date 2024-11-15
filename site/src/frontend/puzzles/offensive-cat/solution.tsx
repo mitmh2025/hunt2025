@@ -1,4 +1,12 @@
 import React from "react";
+import { styled } from "styled-components";
+
+const StyledTable = styled.table`
+  th,
+  td {
+    padding: 0px 8px;
+  }
+`;
 
 const Solution = (): JSX.Element => {
   return (
@@ -23,7 +31,7 @@ const Solution = (): JSX.Element => {
         horizontal part of the timeline is our time, and the vertical component
         of the chart is approximate in-universe time setting), and each
         episode/movie is highlighted by in blue with a number to give the
-        extraction order. There is an identical chart on the Star Trek page on
+        extraction order. There is an identical chart on the Star Trek page on{" "}
         <a
           href="https://en.wikipedia.org/wiki/Star_Trek#History_and_production"
           target="_blank"
@@ -33,7 +41,7 @@ const Solution = (): JSX.Element => {
         </a>
         , which the timeline diagram in this puzzle is based off of.
       </p>
-      <table>
+      <StyledTable>
         <tr>
           <th>Given Order</th>
           <th>Original Character</th>
@@ -75,7 +83,7 @@ const Solution = (): JSX.Element => {
           <td>VASH</td>
           <td>ROSS</td>
           <td>S</td>
-          <td>Captain's Holiday</td>
+          <td>Captain’s Holiday</td>
           <td>The Next Generation</td>
           <td>Apr 2 1990</td>
         </tr>
@@ -108,8 +116,8 @@ const Solution = (): JSX.Element => {
         </tr>
         <tr>
           <td>10</td>
-          <td>T'POL</td>
-          <td>T'ANA</td>
+          <td>T’POL</td>
+          <td>T’ANA</td>
           <td>T</td>
           <td>Carpenter Street</td>
           <td>Enterprise</td>
@@ -160,7 +168,7 @@ const Solution = (): JSX.Element => {
           <td>Strange New Worlds</td>
           <td>July 22 2023</td>
         </tr>
-      </table>
+      </StyledTable>
     </>
   );
 };
