@@ -25,6 +25,7 @@ import TasteExplosion from "./next-van";
 import TemporalInvestigations from "./offensive-cat";
 import DearDiary from "./overlooked-compound";
 import TheUltimateInsult from "./periodic-dance";
+import BeMine from "./pleasing-racket";
 import OnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
@@ -59,6 +60,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // Stakeout
   a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
+  be_mine: BeMine,
   broken_record: BrokenRecord,
   commentary: Commentary,
   cruciverbal: Cruciverbal,
