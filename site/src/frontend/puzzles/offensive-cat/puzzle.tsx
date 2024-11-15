@@ -26,9 +26,9 @@ const Puzzle = (): JSX.Element => {
         </li>
         <li>
           Sent hundreds of years in the past to 2024 by Q, Picard talks to his
-          old friend Cretak in her bar – perhaps hoping that she’ll recognize him
-          from the previous time that their paths crossed due to time travel, in
-          1893 – but she doesn’t remember him.
+          old friend Cretak in her bar – perhaps hoping that she’ll recognize
+          him from the previous time that their paths crossed due to time
+          travel, in 1893 – but she doesn’t remember him.
         </li>
         <li>
           With each of the crew of the Protostar fractured into separate phases
