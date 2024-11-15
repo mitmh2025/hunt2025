@@ -225,6 +225,9 @@ in {
               proxyPass = "http://atlantis";
               proxyWebsockets = true;
             };
+            authentik.enable = true;
+            authentik.url = "https://auth.mitmh2025.com:9443";
+
             # TODO: Enable Authentik
             locations."/events" = {
               # Make sure that webhooks can be delivered without Authentik
