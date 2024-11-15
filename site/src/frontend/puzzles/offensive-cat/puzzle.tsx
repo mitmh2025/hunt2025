@@ -26,9 +26,9 @@ const Puzzle = (): JSX.Element => {
         </li>
         <li>
           Sent hundreds of years in the past to 2024 by Q, Picard talks to his
-          old friend Cretak in her bar--perhaps hoping that she’ll recognize him
+          old friend Cretak in her bar – perhaps hoping that she’ll recognize him
           from the previous time that their paths crossed due to time travel, in
-          1893--but she doesn’t remember him.
+          1893 – but she doesn’t remember him.
         </li>
         <li>
           With each of the crew of the Protostar fractured into separate phases
@@ -93,7 +93,7 @@ const Puzzle = (): JSX.Element => {
       </ul>
       <LinkedImage
         src={image}
-        alt="A graph. The x-axis ranges from 1967 to 2025, with tick labels every ten ticks, starting at 1970. THe y-axis ranges from 3100s to 2100s. Short, horizontal black stripes with blue numbers 1 through 13 are scattered across the graph, mostly in order from left to right."
+        alt="A graph. The x-axis ranges from 1967 to 2025, with tick labels every ten ticks, starting at 1970. The y-axis ranges from 3100s to 2100s. Short, horizontal black stripes with blue numbers 1 through 13 are scattered across the graph, mostly in order from left to right."
       />
     </>
   );

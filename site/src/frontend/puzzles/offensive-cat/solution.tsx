@@ -75,7 +75,7 @@ const Solution = (): JSX.Element => {
           <td>HUGH</td>
           <td>U</td>
           <td>The Voyage Home</td>
-          <td>movie (The Original Series)</td>
+          <td>Movie (The Original Series)</td>
           <td>Nov 26 1986</td>
         </tr>
         <tr>
@@ -93,7 +93,7 @@ const Solution = (): JSX.Element => {
           <td>BOOTHBY</td>
           <td>H</td>
           <td>First Contact</td>
-          <td>movie (The Next Generation)</td>
+          <td>Movie (The Next Generation)</td>
           <td>Nov 22 1996</td>
         </tr>
         <tr>
