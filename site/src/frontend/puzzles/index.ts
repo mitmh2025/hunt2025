@@ -6,6 +6,7 @@ import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import EducationalRiteOfPassage from "./circular-greece";
 import NetworkingEvent from "./confused-antarctica";
+import SomeAssemblyRequired from "./cultured-rome";
 import TheBoardwalk from "./dental-shark";
 import Fechtbuch from "./dry-forest";
 import Casino from "./fortunate-calf";
@@ -67,6 +68,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
   sing_like_a_canary: SingLikeACanary,
+  some_assembly_required: SomeAssemblyRequired,
   taste_explosion: TasteExplosion,
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
