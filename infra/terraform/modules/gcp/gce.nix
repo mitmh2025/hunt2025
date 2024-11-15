@@ -3,6 +3,10 @@ let
   cfg = config.gce.instance;
 in {
   options = with lib; {
+    gce.project.metadata = mkOption {
+      default = {};
+      type = types.attrsOf types.str;
+    };
     gce.instance = mkOption {
       default = {};
       type = types.tfAttrsOf (types.submodule ({ name, config, ... }: {
@@ -56,8 +60,17 @@ in {
           resource.google_compute_firewall = mkOption {
             type = types.anything;
           };
+          readyWhen = mkOption {
+            type = types.listOf types.str;
+            default = [];
+            description = "A list of Terraform resource identifiers that must be depended on for this instance to be ready.";
+          };
         };
         config = {
+          readyWhen = [
+            "google_compute_instance.${name}"
+            "google_compute_firewall.${name}"
+          ];
           objects.serviceAccount.displayName = "Used by the ${config.name} VM";
           resource.google_compute_disk = {
             inherit (config) name;
@@ -125,6 +138,9 @@ in {
   };
   config = lib.mkIf (cfg != {}) {
     gcp.services.compute.enable = true;
+    resource.google_compute_project_metadata.this = lib.mkIf (config.gce.project.metadata != {}) {
+      inherit (config.gce.project) metadata;
+    };
     data.google_compute_network.default = {
       name = "default";
     };

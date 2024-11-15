@@ -8,7 +8,6 @@
     nix.source = "registry.terraform.io/krostar/nix";
     skopeo2.source = "registry.terraform.io/bsquare-corp/skopeo2";
     tls.source = "registry.terraform.io/hashicorp/tls";
-    github.source = "registry.terraform.io/integrations/github";
   };
 
   provider.google = {
@@ -26,11 +25,10 @@
     }
   ];
 
-  provider.github = {
-    owner = "mitmh2025";
-  };
-
   state.bucket.name = "cvqb2gwr-tfstate";
+  state.bucket.users = [
+    (lib.tfRef "google_service_account.deploy-vm.member")
+  ];
 
   route53.mitmh2025 = {
     provider = "puzzup";
@@ -43,6 +41,7 @@
   };
 
   imports = [
+    ../base.nix
     ./deploy.nix
   ];
 }

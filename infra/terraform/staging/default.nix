@@ -34,12 +34,22 @@
 
   provider.github = {
     owner = "mitmh2025";
+    token = lib.tfRef ''fileexists("~/.git-credentials") ? regex(":([^:]+)@github.com", file("~/.git-credentials"))[0] : ""'';
   };
 
   state.bucket.name = "rb8tcjeo-tfstate";
+  state.bucket.users = [
+    (lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member")
+  ];
   state.remote.buckets.prod = "cvqb2gwr-tfstate";
+  resource.google_project_iam_member.deploy-vm-owner = {
+    project = lib.tfRef "data.google_project.this.project_id";
+    role = "roles/owner";
+    member = lib.tfRef "data.terraform_remote_state.prod.outputs.google_service_account.deploy-vm.member";
+  };
 
   imports = [
+    ../base.nix
     ./ci.nix
     ./staging.nix
     ./mail.nix

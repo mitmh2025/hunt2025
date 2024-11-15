@@ -27,6 +27,7 @@
   };
   config = lib.mkMerge [
     {
+      gcp.services.cloudresourcemanager.enable = true;
       data.google_project.this = {};
       resource.google_service_account = lib.mapAttrs (_: account: {
         account_id = account.name;

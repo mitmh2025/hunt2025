@@ -14,6 +14,7 @@
       80 # HTTP
       443 # HTTPS
       8883 # MQTTs
+      9443 # Authentik HTTPS
     ];
     firewall.allowedUDPPorts = [
       50000 # MediaMTX RTP
