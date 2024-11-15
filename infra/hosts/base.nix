@@ -31,5 +31,9 @@
       "nix-command"
       "flakes"
     ];
+
+    # Only use one set of packages
+    home-manager.useGlobalPkgs = true;
+    home-manager.useUserPackages = true;
   };
 }

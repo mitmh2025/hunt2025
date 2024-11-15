@@ -17,11 +17,13 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     radio-media.url = "git+ssh://git@github.com/mitmh2025/radio-media";
     radio-media.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, terranix, authentik, sops-nix, radio-media, ... }:
+  outputs = { self, nixpkgs, flake-utils, terranix, authentik, sops-nix, home-manager, radio-media, ... }:
     let
       findModules = dir:
         builtins.concatLists (builtins.attrValues (builtins.mapAttrs
@@ -150,6 +152,7 @@
             ];
           }
           sops-nix.nixosModules.sops
+          home-manager.nixosModules.home-manager
         ];
         nixosConfigurations = nixpkgs.lib.genAttrs [
           "gce-image"

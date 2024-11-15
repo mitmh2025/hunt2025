@@ -35,6 +35,14 @@ in {
       };
     }
     {
+      home-manager.users.deploy = {
+        home.stateVersion = "24.11";
+        home.file.".docker/config.json".source = (pkgs.formats.json {}).generate "docker-config.json" {
+          credHelpers."us-docker.pkg.dev" = "gcloud";
+        };
+      };
+    }
+    {
       environment.etc."aws/config".source = let
         hmacAuth = lib.getExe (pkgs.writeShellApplication {
           name = "hmac-credential-process";
