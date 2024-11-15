@@ -23,7 +23,7 @@ const Solution = (): JSX.Element => {
       <p>The solver is presented with 13 “glitched” baseball cards.</p>
       <p>
         As well as baseball, the title, flavor text and emoji icons point us to
-        the real theme of the puzzle: absurdist online fantasy baseball game,
+        the real theme of the puzzle: absurdist online fantasy baseball game,{" "}
         <a
           href="https://www.blaseball.wiki/w/Main_Page"
           target="_blank"
