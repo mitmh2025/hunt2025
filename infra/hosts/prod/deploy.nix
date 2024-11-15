@@ -178,6 +178,9 @@ in {
           checkout-strategy = "merge";
           #include-git-untracked-files = true;
 
+          auto-merge = true;
+          auto-merge-method = "merge";
+
           tf-distribution = "opentofu";
           tf-download = false;
         };
