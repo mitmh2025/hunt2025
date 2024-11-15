@@ -10,8 +10,8 @@ import day5 from "./assets/day5.svg";
 import example1 from "./assets/example1.svg";
 import example2 from "./assets/example2.svg";
 
-const Italics = styled.span`
-  font-style: italic;
+const AuthorsNote = styled.span`
+  font-size: 14px;
 `;
 
 const ExampleWrapper = styled.div`
@@ -38,15 +38,15 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <p>
-        <Italics>
-          Solving this puzzle in a spreadsheet is not recommended, but if you
+        <AuthorsNote>
+          (Solving this puzzle in a spreadsheet is not recommended, but if you
           really must, click{" "}
           <a href={spreadsheet} download="bermuda-triangle-spreadsheet">
             here
           </a>{" "}
           for the grids in Excel format; these can be imported into Google
-          Sheets.
-        </Italics>
+          Sheets.)
+        </AuthorsNote>
       </p>
       <p>
         On each day of the naval exercises, the given fleet went out to sea in

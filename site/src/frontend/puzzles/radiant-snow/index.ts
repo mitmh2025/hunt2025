@@ -96,7 +96,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["REDOBASE12", "REDO BASE 12"],
+      guess: ["REDO BASE 12"],
       reply: "You’re definitely on the right track. Now go and do it!",
     },
   ],
