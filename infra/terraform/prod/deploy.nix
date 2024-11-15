@@ -8,8 +8,11 @@
     route53.aliases = [
       "atlantis"
     ];
-    machineType = "e2-medium"; # 2 vCPU, 4 GB RAM
-    bootDisk.size = 50;
+    machineType = "e2-custom-medium-8192"; # 2 vCPU (1 shared core), 8 GB RAM
+    # SSD persistent disks have a limit of 30 IOPS and 0.48 MiB/s per GiB of capacity.
+    # https://cloud.google.com/compute/docs/disks/performance#zonal_pd
+    # Even though we don't need 100 GiB of capacity, this will give us 48 MiB/s throughput.
+    bootDisk.size = 100;
     firewall.allowedTCPPorts = [
       22 # SSH
       80 # HTTP
