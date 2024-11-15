@@ -34,6 +34,7 @@
 
   provider.github = {
     owner = "mitmh2025";
+    token = lib.tfRef ''fileexists("~/.git-credentials") ? regex(":([^:]+)@github.com", file("~/.git-credentials"))[0] : ""'';
   };
 
   state.bucket.name = "rb8tcjeo-tfstate";
