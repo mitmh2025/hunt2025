@@ -5,6 +5,12 @@ const Mono = styled.span`
   font-family: monospace;
 `;
 
+const StyledTable = styled.table`
+  td {
+    padding: 1px 8px;
+  }
+`;
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -33,7 +39,7 @@ const Solution = (): JSX.Element => {
         </Mono>
         , which was hiding in plain sight!
       </p>
-      <table>
+      <StyledTable>
         <tr>
           <td>1.</td>
           <td>
@@ -124,7 +130,7 @@ const Solution = (): JSX.Element => {
             <Mono>UNUSUAL COMPUTER NETWORK CONNECTION POINTS</Mono>
           </td>
         </tr>
-      </table>
+      </StyledTable>
     </>
   );
 };
