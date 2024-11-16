@@ -44,6 +44,7 @@
   imports = [
     ../base.nix
     ./deploy.nix
+    ./database.nix
     ./gke.nix
   ];
 }
