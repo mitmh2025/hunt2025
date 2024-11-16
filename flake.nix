@@ -76,16 +76,24 @@
           })
         ]);
         terraformBin = "${terraform}/bin/tofu";
-        mkTFConfig = name: terranix.lib.terranixConfiguration {
+        mkTFConfig = modules: terranix.lib.terranixConfiguration {
           inherit system;
           pkgs = pkgs // {
-            lib = pkgs.lib.extend (import ./infra/terraform/helpers.nix pkgs);
+            lib = (pkgs.lib.extend (import ./infra/terraform/helpers.nix pkgs)).extend (_: _: {
+              inherit mkTFModule;
+            });
           };
-          modules = (builtins.attrValues self.terranixModules) ++ [ ./infra/terraform/${name} ];
+          modules = (builtins.attrValues self.terranixModules) ++ modules;
           extraArgs = {
             inherit self;
           };
         };
+        mkTFModule = modules: let
+          module = pkgs.linkFarm "module" [{
+            name = "config.tf.json";
+            path = mkTFConfig modules;
+          }];
+        in "${module}";
       in {
         legacyPackages = pkgs;
         packages = {
@@ -93,7 +101,7 @@
             "prod"
             "staging"
             "dev"
-          ] mkTFConfig;
+          ] (name: mkTFConfig [ ./infra/terraform/${name} ]);
           inherit terraform;
         };
         # nix develop
