@@ -135,4 +135,29 @@
       )
     '';
   };
+
+  resource.kubernetes_namespace_v1.prod.metadata.name = "prod";
+
+  # Service account for the API to talk to Postgres
+  gcp.serviceAccount.k8s-prod-api = {
+    displayName = "k8s/prod/api";
+  };
+  data.google_iam_policy.k8s-prod-api.binding = {
+    role = "roles/iam.workloadIdentityUser";
+
+    members = [
+      "serviceAccount:${lib.tfRef "data.google_project.this.project_id"}.svc.id.goog[prod/api]"
+    ];
+  };
+  resource.google_service_account_iam_binding.k8s-prod-api = {
+    service_account_id = lib.tfRef "google_service_account.k8s-prod-api.name";
+    policy_data = lib.tfRef "data.google_iam_policy.k8s-prod-api.policy_data";
+  };
+  resource.kubernetes_service_account_v1.k8s-prod-api = {
+    metadata = {
+      name = "api";
+      namespace = lib.tfRef "kubernetes_namespace_v1.prod.metadata.name";
+      annotations."iam.gke.io/gcp-service-account" = lib.tfRef "google_service_account.k8s-prod-api.email";
+    };
+  };
 }
