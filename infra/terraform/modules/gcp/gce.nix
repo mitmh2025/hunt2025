@@ -138,9 +138,9 @@ in {
   };
   config = lib.mkIf (cfg != {}) {
     gcp.services.compute.enable = true;
-    resource.google_compute_project_metadata.this = lib.mkIf (config.gce.project.metadata != {}) {
-      inherit (config.gce.project) metadata;
-    };
+    resource.google_compute_project_metadata_item = lib.mapAttrs (key: value: {
+      inherit key value;
+    }) config.gce.project.metadata;
     data.google_compute_network.default = {
       name = "default";
     };
