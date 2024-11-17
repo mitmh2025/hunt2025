@@ -3,23 +3,8 @@
   gcp.services.servicenetworking.enable = true;
   gcp.services.sqladmin.enable = true;
 
-  resource.google_compute_global_address.google-managed-services-default = {
-    name = "google-managed-services-default";
-    depends_on = [
-      "google_project_service.sqladmin"
-    ];
-    purpose = "VPC_PEERING";
-    address_type = "INTERNAL";
-    prefix_length = 16;
-    network = lib.tfRef "data.google_compute_network.default.id";
-  };
-  resource.google_service_networking_connection.google-managed-services-default = {
-    network = lib.tfRef "google_compute_global_address.google-managed-services-default.network";
-    service = "servicenetworking.googleapis.com";
-    reserved_peering_ranges = [
-      (lib.tfRef "google_compute_global_address.google-managed-services-default.name")
-    ];
-  };
+  gcp.vpc.default.googleManagedServices.enable = true;
+
   resource.google_sql_database_instance.prod = {
     name = "prod";
     database_version = "POSTGRES_16";
