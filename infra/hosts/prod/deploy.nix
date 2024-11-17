@@ -130,6 +130,7 @@ in {
         git
         google-cloud-sdk
         awscli2
+        kubectl
       ];
       systemd.services.atlantis.path = [
         # Give Atlantis a normal user path.

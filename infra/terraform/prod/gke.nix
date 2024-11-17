@@ -123,6 +123,7 @@
   # Defer reading the cluster data until the GKE cluster exists.
   data.google_container_cluster.k8s = {
     name = "k8s";
+    location = config.provider.google.zone;
     depends_on = ["module.gke-cluster"];
   };
 
