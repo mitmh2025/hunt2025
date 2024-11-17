@@ -10,6 +10,19 @@ const StyledTable = styled.table`
   td {
     padding: 0px 8px;
   }
+  td:first-child {
+    padding-left: 0px;
+  }
+`;
+
+const WordBank = styled.table`
+  border-collapse: separate;
+  td {
+    padding: 0px 16px;
+  }
+  td:first-child {
+    padding-left: 0px;
+  }
 `;
 
 const Highlighted = styled.span`
@@ -183,7 +196,7 @@ const Puzzle = (): JSX.Element => {
         </tr>
       </StyledTable>
       <p>Clue Words:</p>
-      <StyledTable>
+      <WordBank>
         <tr>
           <td>
             <Mono>ACROSS</Mono>
@@ -346,7 +359,7 @@ const Puzzle = (): JSX.Element => {
             <Mono>SEA</Mono>
           </td>
         </tr>
-      </StyledTable>
+      </WordBank>
     </>
   );
 };

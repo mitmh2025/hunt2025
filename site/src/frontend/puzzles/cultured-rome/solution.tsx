@@ -9,6 +9,9 @@ const StyledTable = styled.table`
   td {
     padding: 1px 8px;
   }
+  td:nth-child(2) {
+    padding-right: 16px;
+  }
 `;
 
 const Solution = (): JSX.Element => {
