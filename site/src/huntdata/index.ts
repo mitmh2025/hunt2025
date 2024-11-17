@@ -229,7 +229,7 @@ const HUNT: Hunt = {
         { id: "sop40", unlockable_if: { puzzles_unlocked: 37 }, unlock_cost: 1, slug:"placeholder_stakeout_40" },
         { id: "sop41", unlockable_if: { puzzles_unlocked: 38 }, unlock_cost: 1, slug:"placeholder_stakeout_41" },
         { id: "sop42", unlockable_if: { puzzles_unlocked: 39 }, unlock_cost: 1, slug:"placeholder_stakeout_42" },
-        { id: "som01", is_meta: true, unlocked_if: { puzzles_unlocked: 30 }, slug:"chinatown" }, // (meta)
+        { id: "som01", is_meta: true, unlocked_if: { puzzles_unlocked: 32 }, slug:"chinatown" }, // (meta)
       ],
       interactions: [
         {
