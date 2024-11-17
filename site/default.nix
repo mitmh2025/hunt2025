@@ -3,6 +3,7 @@
 , postgresql
 , playwright-driver
 , buildNpmPackage
+, rsync
 , makeWrapper
 , withDevDeps ? false
 }:
@@ -24,6 +25,7 @@ in buildNpmPackage {
 
   nativeBuildInputs = [
     postgresql
+    rsync
     makeWrapper
   ];
 
@@ -33,8 +35,12 @@ in buildNpmPackage {
 
   dontNpmPrune = if withDevDeps then true else null;
 
+  outputs = [ "out" "assets" ];
+
   postInstall = ''
-    cp -R dist $out/lib/node_modules/hunt2025/dist
+    mkdir -p $assets
+    cp -R dist/static $assets/static
+    rsync -r --exclude static/ dist $out/lib/node_modules/hunt2025/
     mv $out/lib/node_modules/hunt2025 $out/lib/hunt2025
     rmdir $out/lib/node_modules
     makeWrapper ${nodejs}/bin/node $out/bin/hunt2025 \

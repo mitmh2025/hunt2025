@@ -8,6 +8,7 @@ import { connect as redisConnect } from "./api/redis";
 import { getRouter } from "./api/server";
 import { getUiRouter } from "./frontend/server/routes";
 import HUNT from "./huntdata";
+import { existsSync } from "fs";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
@@ -52,8 +53,11 @@ export default async function ({
   });
   app.use("/api", apiRouter);
 
-  // Serve static assets from the bundle without auth
-  app.use("/static", express.static(path.join(__dirname, "static")));
+  const staticPath = process.env.STATIC_PATH ?? path.join(__dirname, "static");
+  if (existsSync(staticPath)) {
+    // Serve static assets from the bundle without auth
+    app.use("/static", express.static(staticPath));
+  }
 
   // Forward all other requests to the UI router, which we expect to
   // handle most user requests.

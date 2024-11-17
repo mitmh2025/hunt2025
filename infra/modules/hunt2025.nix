@@ -46,6 +46,7 @@ in {
 
       environment.DB_ENV = cfg.db_env;
       environment.PORT = cfg.port;
+      environment.STATIC_PATH = "${pkgs.hunt2025.assets}/static";
       environment.API_BASE_URL = cfg.apiBaseUrl;
       # FIXME: Use a real key in production.
       environment.JWT_SECRET = "%m";

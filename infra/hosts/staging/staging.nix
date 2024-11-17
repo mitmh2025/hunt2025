@@ -95,7 +95,7 @@
               # Copy Authentik configuration
               extraConfig = config.services.nginx.virtualHosts."staging.mitmh2025.com".locations."/".extraConfig;
             };
-            locations."/static/".alias = "${pkgs.hunt2025}/lib/hunt2025/dist/static/";
+            locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
           };
           "things.mitmh2025.com" = {
             forceSSL = true;
