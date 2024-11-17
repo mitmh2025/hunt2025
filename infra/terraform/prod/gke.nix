@@ -81,7 +81,7 @@
           {
             resource_type = "cpu";
             minimum = 1; # --min-cpu 1
-            maximum = 4; # --max-cpu 4
+            maximum = 6; # --max-cpu 6
           }
           {
             resource_type = "memory";
