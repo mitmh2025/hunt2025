@@ -18,7 +18,7 @@
       # gcloud beta container --project "mitmh2025" clusters create "k8s"
       name = "k8s";
       location = config.provider.google.zone; # --zone "us-east5-a"
-      node_locations = [config.provider.google.zone]; # --node-locations "us-east5-a"
+      node_locations = []; # --node-locations "us-east5-a"
       release_channel.channel = "REGULAR"; # --release-channel "regular"
 
       # Let auto-provisioning handle all node pools.
@@ -142,21 +142,19 @@
   gcp.serviceAccount.k8s-prod-api = {
     displayName = "k8s/prod/api";
   };
-  data.google_iam_policy.k8s-prod-api.binding = {
+  resource.google_service_account_iam_binding.k8s-prod-api = {
+    depends_on = ["module.gke-cluster"];
+    service_account_id = lib.tfRef "google_service_account.k8s-prod-api.name";
     role = "roles/iam.workloadIdentityUser";
 
     members = [
       "serviceAccount:${lib.tfRef "data.google_project.this.project_id"}.svc.id.goog[prod/api]"
     ];
   };
-  resource.google_service_account_iam_binding.k8s-prod-api = {
-    service_account_id = lib.tfRef "google_service_account.k8s-prod-api.name";
-    policy_data = lib.tfRef "data.google_iam_policy.k8s-prod-api.policy_data";
-  };
   resource.kubernetes_service_account_v1.k8s-prod-api = {
     metadata = {
       name = "api";
-      namespace = lib.tfRef "kubernetes_namespace_v1.prod.metadata.name";
+      namespace = lib.tfRef "kubernetes_namespace_v1.prod.metadata[0].name";
       annotations."iam.gke.io/gcp-service-account" = lib.tfRef "google_service_account.k8s-prod-api.email";
     };
   };
