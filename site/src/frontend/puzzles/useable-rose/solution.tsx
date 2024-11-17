@@ -8,6 +8,7 @@ const BorderedTable = styled.table`
 
 const BorderedCell = styled.td`
   border: 1px solid var(--black);
+  padding: 5px;
   background-color: transparent;
 `;
 
@@ -77,7 +78,7 @@ const Solution = () => {
         resolving all of these, solvers should have 14 pairs of colors.
       </p>
       <p>
-        The other aha is that these color pairs are used in the 25-pair code or
+        The other aha is that these color pairs are used in the <a href="https://en.wikipedia.org/wiki/25-pair_color_code">25-pair code</a> code or
         twisted pair color code, which uses pairs of colored wires to encode the
         numbers 1-25. This is hinted via the first letters of the original given
         clues spelling TELCO COLOR CODE. Reading out the pairs of colors in this
