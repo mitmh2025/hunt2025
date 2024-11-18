@@ -3,6 +3,7 @@
 , google-cloud-sdk
 , terraform
 , gh
+, google-cloud-sql-proxy
 , nixVersions
 , terranix
 , kubectl
@@ -13,6 +14,7 @@ mkShell {
     (google-cloud-sdk.withExtraComponents (with google-cloud-sdk.components; [
       gke-gcloud-auth-plugin
     ]))
+    google-cloud-sql-proxy
     awscli2
     terraform
     gh

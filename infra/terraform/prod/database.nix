@@ -37,7 +37,38 @@
         enabled = true;
         point_in_time_recovery_enabled = true;
       };
+      database_flags = lib.attrsToList {
+        "cloudsql.iam_authentication" = "on";
+      };
     };
     lifecycle.ignore_changes = ["settings[0].disk_size"];
+  };
+  resource.google_sql_database.prod-hunt2025 = {
+    name = "hunt2025";
+    instance = lib.tfRef "resource.google_sql_database_instance.prod.name";
+    charset = "UTF8";
+    collation = "en_US.UTF8";
+  };
+  resource.google_sql_user.k8s-prod-api = {
+    # Note: for Postgres only, GCP requires omitting the ".gserviceaccount.com" suffix
+    # from the service account email due to length limits on database usernames.
+    name = lib.tfRef ''trimsuffix(google_service_account.k8s-prod-api.email, ".gserviceaccount.com")'';
+    instance = lib.tfRef "google_sql_database_instance.prod.name";
+    type = "CLOUD_IAM_SERVICE_ACCOUNT";
+  };
+  resource.random_password.sql-prod-terraform = {
+    keepers.name = lib.tfRef "google_sql_database_instance.prod.name";
+    min_lower = 1;
+    min_numeric = 1;
+    min_upper = 1;
+    special = true;
+    min_special = 1;
+    length = 32;
+  };
+  # N.B. Cloud SQL *requires* that permissions be granted by a built-in (non-IAM) user.
+  resource.google_sql_user.terraform = {
+    name = "terraform";
+    password = lib.tfRef "random_password.sql-prod-terraform.result";
+    instance = lib.tfRef "google_sql_database_instance.prod.name";
   };
 }

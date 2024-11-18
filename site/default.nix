@@ -43,6 +43,8 @@ in buildNpmPackage {
     rsync -r --exclude static/ dist $out/lib/node_modules/hunt2025/
     mv $out/lib/node_modules/hunt2025 $out/lib/hunt2025
     rmdir $out/lib/node_modules
+    # Remove intermediate build files which might contain a reference to NodeJS's source code.
+    find $out/lib/hunt2025 \( -name Makefile -or -name "*.d" -or -name "*.mk" -or -name config.gypi \) -delete
     makeWrapper ${nodejs}/bin/node $out/bin/hunt2025 \
       --add-flags --enable-source-maps \
       --add-flags $out/lib/hunt2025/dist/server-bundle.js

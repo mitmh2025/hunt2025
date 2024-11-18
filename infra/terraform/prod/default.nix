@@ -5,6 +5,7 @@
     aws.source = "registry.terraform.io/hashicorp/aws";
     google.source = "registry.terraform.io/hashicorp/google";
     local.source = "registry.terraform.io/hashicorp/local";
+    random.source = "registry.terraform.io/hashicorp/random";
     nix.source = "registry.terraform.io/krostar/nix";
     skopeo2.source = "registry.terraform.io/bsquare-corp/skopeo2";
     tls.source = "registry.terraform.io/hashicorp/tls";
@@ -41,6 +42,11 @@
     nixosConfiguration = self.nixosConfigurations.gce-image;
   };
 
+  gcp.ar.images = {
+    repoId = "cvqb2gwr-images";
+    location = "us";
+  };
+
   imports = [
     ../base.nix
     ./deploy.nix
@@ -48,5 +54,6 @@
     ./gke.nix
     ./gclb.nix
     ./assets.nix
+    ./site.nix
   ];
 }

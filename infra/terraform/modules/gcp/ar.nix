@@ -15,6 +15,10 @@
             type = types.nullOr types.str;
             default = null;
           };
+          readers = mkOption {
+            type = types.listOf types.str;
+            default = [];
+          };
           writers = mkOption {
             type = types.listOf types.str;
             default = [];
@@ -27,6 +31,13 @@
             type = types.anything;
             readOnly = true;
           };
+          url = mkOption {
+            type = types.str;
+            readOnly = true;
+            default = let
+              registry = "${lib.tfRef "google_artifact_registry_repository.${name}.location"}-docker.pkg.dev";
+            in "${registry}/${lib.tfRef "google_artifact_registry_repository.${name}.project"}/${lib.tfRef "google_artifact_registry_repository.${name}.name"}";
+          };
         };
         config = {
           resource.google_artifact_registry_repository.${name} = {
@@ -37,6 +48,10 @@
           };
 
           data.google_iam_policy."ar-${name}".binding = [
+            {
+              role = "roles/artifactregistry.reader";
+              members = config.readers;
+            }
             {
               role = "roles/artifactregistry.writer";
               members = config.writers;

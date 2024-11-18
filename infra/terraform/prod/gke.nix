@@ -87,7 +87,7 @@
           {
             resource_type = "memory";
             minimum = 1; # --min-memory 1
-            maximum = 8; # --max-memory 8
+            maximum = 12; # --max-memory 12
           }
         ];
         auto_provisioning_locations = [
@@ -104,6 +104,10 @@
           };
           upgrade_settings.max_surge = 1; # --autoprovisioning-max-surge-upgrade 1
           upgrade_settings.max_unavailable = 0; # --autoprovisioning-max-unavailable-upgrade 0
+          shielded_instance_config = {
+            enable_integrity_monitoring = true;
+            enable_secure_boot = false;
+          };
         };
         autoscaling_profile = "OPTIMIZE_UTILIZATION"; # --autoscaling-profile optimize-utilization
       };
@@ -113,6 +117,7 @@
       secret_manager_config.enabled = true; # --enable-secret-manager
     };
   }];
+  gcp.ar.images.readers = [(lib.tfRef "module.gke-cluster.google_service_account.gke-k8s-node.member")];
 
   # Configure kubernetes provider with Oauth2 access token.
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config
@@ -143,6 +148,9 @@
   # Service account for the API to talk to Postgres
   gcp.serviceAccount.k8s-prod-api = {
     displayName = "k8s/prod/api";
+    iamRoles = [
+      "cloudsql.client"
+    ];
   };
   resource.google_service_account_iam_binding.k8s-prod-api = {
     depends_on = ["module.gke-cluster"];

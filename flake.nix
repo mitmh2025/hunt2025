@@ -53,6 +53,7 @@
             vendorHash = "sha256-hwWHtrPmzJJT7OUcjiqt7a6Nf1GLvoEcepqIAHv5bsI=";
           })
           local
+          random
           tls
           github
           kubernetes

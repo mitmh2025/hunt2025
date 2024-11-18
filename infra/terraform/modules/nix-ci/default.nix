@@ -33,12 +33,6 @@ in {
           type = types.str;
           default = "s3://${cfg.nix.cache.bucket}?endpoint=https://storage.googleapis.com";
         };
-        arUrl = mkOption {
-          type = types.str;
-          default = let
-            registry = "${lib.tfRef "google_artifact_registry_repository.${cfg.nix.cache.arRepo}.location"}-docker.pkg.dev";
-          in "${registry}/${lib.tfRef "google_artifact_registry_repository.${cfg.nix.cache.arRepo}.project"}/${lib.tfRef "google_artifact_registry_repository.${cfg.nix.cache.arRepo}.name"}";
-        };
       };
       triggers = mkOption {
         type = types.tfAttrsOf (types.submoduleWith {
@@ -163,7 +157,7 @@ in {
         };
       in {
         source_image = "docker-archive:${image}";
-        destination_image = "docker://${cfg.nix.cache.arUrl}/nix-cache";
+        destination_image = "docker://${config.gcp.ar.${cfg.nix.cache.arRepo}.url}/nix-cache";
       };
 
       resource.google_cloudbuild_trigger = lib.mapAttrs (_: v: v.resource) cfg.triggers;
