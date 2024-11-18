@@ -317,7 +317,7 @@ const Solution = () => {
 
       <hr />
 
-      <p>One possible solve path for placing answer in the grid:</p>
+      <p>One possible solve path for placing answers in the grid:</p>
 
       <p>
         Once the answer assignment is known, the grid can be thought of as the

@@ -23,7 +23,7 @@ const puzzle: PuzzleDefinition = {
   hints: [
     {
       order: 0.0,
-      description: "Solvers do not know what to do with the animals",
+      description: "Solvers are at the beginning of the puzzle",
       keywords: ["animals", "meaning"],
       nudge:
         "It is relevant to the puzzle that all of these animals are from a particular geographical range. With that in mind, take a close read of the text with an eye out for double meanings.",
@@ -34,12 +34,12 @@ const puzzle: PuzzleDefinition = {
         "Solvers are concerned that some of these animals are symbols of multiple states",
       keywords: ["multiple", "many", "options", "white-tailed deer"],
       nudge:
-        "The map shows “a state” of each animal. Which one is to be determined - other constraints in the puzzle ensure there is only one possibility for each animal.",
+        'The map shows "a state" of each animal. Which one is to be determined — other constraints in the puzzle ensure there is only one possibility for each animal.',
     },
     {
       order: 25.0,
       description:
-        "Solvers have identified the animals as state symbols, but do not know how to fill in the grid. They have not considered state abbreviations.",
+        "Solvers have identified the animals as state symbols. They are considering how this can be used in the grid.",
       keywords: ["grid", "fill", "write"],
       nudge:
         "Letters must be placed in each cell of the grid along each animal’s path. The animal cells take two letters each.",
@@ -47,7 +47,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 50.0,
       description:
-        "Solvers do not know that each animal’s path is to be filled in with a feeder answer",
+        "Solvers are considering what should be written into the grid and how it relates to the animal’s path.",
       keywords: ["path", "write", "string"],
       nudge:
         "Each animal’s path is made up of a feeder answer. If this appears underconstrained or unsatisfiable, you may wish to return to this puzzle after finding more answers.",
@@ -63,10 +63,10 @@ const puzzle: PuzzleDefinition = {
     {
       order: 90.0,
       description:
-        "The logic puzzle is complete and the first grid filled out. Solvers do not know what to do with the grid of positive and negative numbers.",
+        "The logic puzzle is complete and the first grid filled out.",
       keywords: ["numbers", "shifts", "second grid"],
       nudge:
-        "Note that the two grids are of equal dimensions, and that except for the cells which in the first grid contain animals, the second grid’s numbers are never of magnitude larger than 25. Some of the animal cells have larger numbers, but those cells are also filled differently - what property could those large numbers make sense for?",
+        "Note that the two given grids are of equal dimensions, and that except for the cells which in the first grid contain animals, the second grid’s numbers are never of magnitude larger than 25. Some of the animal cells have larger numbers, but those cells are also filled differently - what property could those large numbers make sense for?",
     },
     {
       order: 100.0,
@@ -82,7 +82,7 @@ const puzzle: PuzzleDefinition = {
         "peace garden",
       ],
       nudge:
-        "The grid of letters you’ve obtained is five elements separated by Xs. If these five elements are not familiar to you, it may be useful to search all of them at once in a search engine.",
+        "The grid of letters you’ve obtained is five strings separated by Xs. If these five strings are not familiar to you, it may be useful to search all of them at once in a search engine.",
     },
   ],
   canned_responses: [],
