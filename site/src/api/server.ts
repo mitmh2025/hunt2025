@@ -855,7 +855,12 @@ export function getRouter({
     responseValidation: true,
   });
 
-  const openApiDocument = generateOpenApi(contract, {
+  const prodContract = c.router({
+    auth: authContract,
+    public: publicContract,
+  });
+
+  const openApiDocument = generateOpenApi(process.env.NODE_ENV === "development" ? contract : prodContract, {
     info: {
       title: "Hunt API",
       version: "2025",
