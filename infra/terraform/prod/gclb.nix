@@ -41,6 +41,9 @@
     url_map = lib.tfRef "google_compute_url_map.default.id";
     certificate_map = "//certificatemanager.googleapis.com/${lib.tfRef "google_certificate_manager_certificate_map.www.id"}";
   };
+  resource.google_compute_global_address.www = {
+    name = "www";
+  };
   gcp.certificate.www = {
     scope = "DEFAULT";
     domains = [
@@ -52,12 +55,37 @@
     "www.mitmh2025.com"
     "prod.mitmh2025.com"
   ];
-  # TODO: A second forwarding rule for port 80 that redirects to 443.
   resource.google_compute_global_forwarding_rule.default = {
     name = "default";
     ip_protocol = "TCP";
     load_balancing_scheme = "EXTERNAL_MANAGED";
     port_range = "443";
     target = lib.tfRef "google_compute_target_https_proxy.default.id";
+    ip_address = lib.tfRef "google_compute_global_address.www.id";
+  };
+  resource.google_compute_url_map.http = {
+    name = "http";
+    default_url_redirect = {
+      https_redirect = true;
+      redirect_response_code = "MOVED_PERMANENTLY_DEFAULT";
+      strip_query = false;
+    };
+  };
+  resource.google_compute_target_http_proxy.default = {
+    name = "default";
+    url_map = lib.tfRef "google_compute_url_map.http.id";
+  };
+  resource.google_compute_global_forwarding_rule.http = {
+    name = "http";
+    ip_protocol = "TCP";
+    load_balancing_scheme = "EXTERNAL_MANAGED";
+    port_range = "80";
+    target = lib.tfRef "google_compute_target_http_proxy.default.id";
+    ip_address = lib.tfRef "google_compute_global_address.www.id";
+  };
+  route53.mitmh2025.rr.prod = {
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.www.address")];
   };
 }
