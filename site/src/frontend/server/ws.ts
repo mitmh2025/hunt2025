@@ -620,13 +620,18 @@ export class WebsocketManager implements ObserverProvider {
       );
       // The initial backlog should be processed by now, so set up to dispatch future updates
       ready = true;
-      // We didn't dispatch a teamStateUpdate yet, because teamStateSubState wasn't truthy yet, to
-      // avoid initial startup of the watcher generating a bunch of older teamStates.
-      // But now we're ready, so let's dispatch the latest state if the watchLog callback triggered
-      // at least once and thus latestTeamState differs from what we started with.
-      if (latestTeamState !== conn.lastTeamState) {
-        this.dispatchTeamStateUpdate(teamId, latestTeamState);
-      }
+
+      // We didn't dispatch a teamStateUpdate yet, because ready wasn't truthy yet, to avoid initial
+      // startup of the watcher generating (and dispatching!) a bunch of older teamStates.
+      // But now we're ready.  We'll deliver future updates, but we should also synthesize
+      // dispatching up-to-date initial state, because this subscribe request may have come from
+      // e.g. a browser that was placed in sleep for a while and has resumed and is now
+      // reconnecting, and we want such clients to pick up any updates that occurred in the interim
+      // In the fullness of time, it's possible we might be able to elide this initial push if state
+      // hasn't changed, but we'll need to thread what the browser thinks the latest state was
+      // through, rather than using what this websocket server thinks the latest state was.
+      this.dispatchTeamStateUpdate(teamId, latestTeamState);
+
       // Save the sub state.
       teamStateSubState = { connSubMap, stopHandle };
       this.teamStateSubs.set(teamId, teamStateSubState);
