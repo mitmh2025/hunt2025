@@ -83,8 +83,7 @@ puzzles as visible or unlocked, or marking interactions as completed.
 
 ### Additional notes
 
-Most markup is server-side rendered. There's no hot reloading. Hit Ctrl-C, do
-another build, and start the server up again. If you set `JWT_SECRET` on the
+Most markup is server-side rendered. If you set `JWT_SECRET` on the
 command-line, you can keep your session cookies so you don't have to log-in
 again. The usual iteration loop is something like the below:
 
@@ -93,6 +92,21 @@ cd hunt2025/site
 export JWT_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os.urandom(16), 'hex').decode('utf-8'))")
 rm -rf dist && time npm run build-dev && REDIS_URL=redis://localhost/ node --enable-source-maps dist/server-bundle.js
 ```
+
+You can also use `start-watch` to set up live-reloading. This will automatically
+rebuild the site, restart the server, and then refresh your browser:
+
+```sh
+cd hunt2025/site
+export JWT_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os.urandom(16), 'hex').decode('utf-8'))")
+rm -rf dist && REDIS_URL=redis://localhost/ npm run start-watch
+```
+
+Note that there is a hard-coded 1000ms delay between when a file changes and
+when your browser refreshes; this should be enough time for the dev server to
+restart but if you're seeing the old version of the side after reload, you
+may need to increase the value of the `livereload -w` flag in the `start-watch`
+script.
 
 ## Typesetting
 
