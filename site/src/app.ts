@@ -1,3 +1,4 @@
+import { existsSync } from "fs";
 import path from "path";
 import express from "express";
 import morgan from "morgan";
@@ -8,7 +9,6 @@ import { connect as redisConnect } from "./api/redis";
 import { getRouter } from "./api/server";
 import { getUiRouter } from "./frontend/server/routes";
 import HUNT from "./huntdata";
-import { existsSync } from "fs";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
