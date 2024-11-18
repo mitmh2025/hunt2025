@@ -37,7 +37,8 @@
       # DEFAULT --network "projects/mitmh2025/global/networks/default"
       # DEFAULT --subnetwork "projects/mitmh2025/regions/us-east5/subnetworks/default"
       enable_intranode_visibility = false; # --no-enable-intra-node-visibility
-      default_max_pods_per_node = 128; # --default-max-pods-per-node "128"
+      # More than 110 pods per node costs ~1 vCPU per node.
+      default_max_pods_per_node = 110; # --default-max-pods-per-node "110"
       # UNNEEDED --enable-autoscaling
       # UNNEEDED --min-nodes "0"
       # UNNEEDED --max-nodes "1"
