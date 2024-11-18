@@ -46,5 +46,7 @@
     ./deploy.nix
     ./database.nix
     ./gke.nix
+    ./gclb.nix
+    ./assets.nix
   ];
 }
