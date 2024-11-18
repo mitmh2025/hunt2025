@@ -150,6 +150,7 @@
     displayName = "k8s/prod/api";
     iamRoles = [
       "cloudsql.client"
+      "cloudsql.instanceUser"
     ];
   };
   resource.google_service_account_iam_binding.k8s-prod-api = {

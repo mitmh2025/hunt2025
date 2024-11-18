@@ -10,6 +10,7 @@
     skopeo2.source = "registry.terraform.io/bsquare-corp/skopeo2";
     tls.source = "registry.terraform.io/hashicorp/tls";
     kubernetes.source = "registry.terraform.io/hashicorp/kubernetes";
+    postgresql.source = "registry.terraform.io/cyrilgdn/postgresql";
   };
 
   provider.google = {

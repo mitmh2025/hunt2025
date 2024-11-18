@@ -57,6 +57,7 @@
           tls
           github
           kubernetes
+          postgresql
           (mkProvider {
             owner = "krostar";
             repo = "terraform-provider-nix";

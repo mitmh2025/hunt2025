@@ -43,12 +43,6 @@
     };
     lifecycle.ignore_changes = ["settings[0].disk_size"];
   };
-  resource.google_sql_database.prod-hunt2025 = {
-    name = "hunt2025";
-    instance = lib.tfRef "resource.google_sql_database_instance.prod.name";
-    charset = "UTF8";
-    collation = "en_US.UTF8";
-  };
   resource.google_sql_user.k8s-prod-api = {
     # Note: for Postgres only, GCP requires omitting the ".gserviceaccount.com" suffix
     # from the service account email due to length limits on database usernames.
@@ -65,10 +59,38 @@
     min_special = 1;
     length = 32;
   };
+  resource.google_sql_user.hunt2025-tech = {
+    name = "hunt2025-tech@googlegroups.com";
+    instance = lib.tfRef "google_sql_database_instance.prod.name";
+    type = "CLOUD_IAM_GROUP";
+  };
   # N.B. Cloud SQL *requires* that permissions be granted by a built-in (non-IAM) user.
   resource.google_sql_user.terraform = {
     name = "terraform";
     password = lib.tfRef "random_password.sql-prod-terraform.result";
     instance = lib.tfRef "google_sql_database_instance.prod.name";
+  };
+  provider.postgresql = [{
+    alias = "prod";
+    scheme = "gcppostgres";
+    host = lib.tfRef "google_sql_database_instance.prod.connection_name";
+    port = 5432;
+    username = lib.tfRef "google_sql_user.terraform.name";
+    password = lib.tfRef "google_sql_user.terraform.password";
+    superuser = false;
+  }];
+  resource.postgresql_database.hunt2025 = {
+    provider = "postgresql.prod";
+    name = "hunt2025";
+    owner = "k8s-prod-api@mitmh2025.iam";
+    encoding = "UTF8";
+    lc_collate = "en_US.UTF8";
+  };
+  resource.postgresql_grant_role.hunt2025-tech-superuser = {
+    depends_on = ["resource.google_sql_user.hunt2025-tech"];
+    provider = "postgresql.prod";
+    role = "hunt2025-tech@googlegroups.com";
+    grant_role = "cloudsqlsuperuser";
+    with_admin_option = true;
   };
 }

@@ -51,7 +51,7 @@ let
             DB_ENV = "production";
             DB_INSTANCE_CONNECTION_NAME = "mitmh2025:us-east5:prod";
             DB_AUTH_TYPE = "IAM";
-            DB_NAME = lib.tfRef "google_sql_database.prod-hunt2025.name";
+            DB_NAME = lib.tfRef "postgresql_database.hunt2025.name";
             DB_USER = lib.tfRef "google_sql_user.k8s-prod-api.name";
             #OTEL_METRICS_EXPORTER=console
             #OTEL_LOGS_EXPORTER=console
