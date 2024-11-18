@@ -48,6 +48,9 @@ const Layout = ({
           <link key={s} rel="stylesheet" href={s} />
         ))}
         {styleElements}
+        {injectDevScript && (
+          <script src="http://localhost:35729/livereload.js?snipver=1" />
+        )}
       </head>
       <body>
         <div id="root" dangerouslySetInnerHTML={{ __html: innerHTML }} />
