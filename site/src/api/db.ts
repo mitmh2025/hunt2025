@@ -78,17 +78,13 @@ export async function connect(environment: string) {
     environment === "development" ||
     environment === "ci"
   ) {
-    if (process.env.NO_RESEED && (await knex("teams").pluck("id")).length > 0) {
-      console.log("Skipping reseed");
-    } else {
-      const seedContext = import.meta.webpackContext("../../seeds", {
-        regExp: /^\.\/.*\.ts$/,
-      });
+    const seedContext = import.meta.webpackContext("../../seeds", {
+      regExp: /^\.\/.*\.ts$/,
+    });
 
-      await knex.seed.run({
-        seedSource: new WebpackSeedSource(seedContext),
-      });
-    }
+    await knex.seed.run({
+      seedSource: new WebpackSeedSource(seedContext),
+    });
   }
   return knex;
 }
