@@ -5,7 +5,7 @@ import Border from "../rounds/murder_in_mitropolis/assets/border.svg";
 import Skyline from "../rounds/murder_in_mitropolis/assets/skyline.svg";
 import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
 
-// This also relies on the PaperTrailFonts component
+// This also relies on the MurderFonts component
 export const MurderHeader = styled(PuzzleHeader)`
   /* background-color: #113135; */
   background-color: #2b1234;
