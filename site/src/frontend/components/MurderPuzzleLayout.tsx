@@ -7,7 +7,6 @@ import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
 
 // This also relies on the MurderFonts component
 export const MurderHeader = styled(PuzzleHeader)`
-  /* background-color: #113135; */
   background-color: #2b1234;
   background-image: url(${Border}), url(${Skyline});
   background-repeat: repeat-x;
