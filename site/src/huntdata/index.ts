@@ -442,7 +442,7 @@ const HUNT: Hunt = {
         { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
         { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
         { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
-        { id: "tmp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
+        { id: "tmp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug: "what_do_they_call_you" },
         { id: "tmp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
         { id: "tmp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },
         { id: "tmp07", unlockable_if: { puzzles_unlocked: 4 }, unlock_cost: 1 },

@@ -12,6 +12,7 @@ import {
   IllegalSearchMain,
   IllegalSearchWrapper,
 } from "../../components/IllegalSearchPuzzleLayout";
+import { MurderHeader, MurderMain } from "../../components/MurderPuzzleLayout";
 import {
   PaperTrailWrapper,
   PaperTrailMain,
@@ -44,6 +45,7 @@ import {
 import { PUZZLES } from "../../puzzles";
 import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
 import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
+import { MurderFonts } from "../../rounds/murder_in_mitropolis/MurderFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
 import { type Entrypoint } from "../assets";
@@ -98,7 +100,11 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: BackgroundCheckWrapper,
     fonts: BackgroundCheckFonts,
   },
-  murder_in_mitropolis: {},
+  murder_in_mitropolis: {
+    main: MurderMain,
+    header: MurderHeader,
+    fonts: MurderFonts,
+  },
   outlands: {},
 };
 
