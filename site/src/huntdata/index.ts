@@ -439,7 +439,7 @@ const HUNT: Hunt = {
       title: "Murder in MITropolis",
       puzzles: [
         // 24 feeders + 1 meta
-        { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
+        { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "do_the_packing" },
         { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
         { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
         { id: "tmp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1, slug: "what_do_they_call_you" },

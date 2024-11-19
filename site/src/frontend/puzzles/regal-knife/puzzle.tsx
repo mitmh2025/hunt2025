@@ -9,7 +9,7 @@ const StyledCrossword = styled(Crossword)`
   margin-bottom: 1em;
 `;
 
-const GRID: string[][] = [
+export const GRID: string[][] = [
   ["1", "2", "3", ".", ".", "4", "5", "6", "7", ".", ".", "8", "9", "10", "."],
   ["11", "", "", "12", ".", "13", "", "", "", "14", ".", "15", "", "", "16"],
   ["17", "", "", "", ".", "18", "", "", "", "", ".", "19", "", "", ""],
@@ -30,7 +30,7 @@ const GRID: string[][] = [
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <StyledCrossword grid={GRID} />
+      <StyledCrossword labels={GRID} />
       <p>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
         <audio controls src={aAudio} />

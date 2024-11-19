@@ -27,6 +27,7 @@ import TasteExplosion from "./next-van";
 import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
 import DearDiary from "./overlooked-compound";
+import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
 import BeMine from "./pleasing-racket";
 import OnTheRadio from "./practical-fighter";
@@ -113,5 +114,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // Background Check
   the_10000_sheet_excel_file: The10000SheetExcelFile,
 
+  // Murder in MITropolis
+  do_the_packing: DoThePacking,
+
+  // work in progress
   on_the_radio: OnTheRadio,
 };
