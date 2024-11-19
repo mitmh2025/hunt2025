@@ -24,6 +24,7 @@ import ShellCorporationSix from "./mild-octopus";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
+import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
 import DearDiary from "./overlooked-compound";
 import TheUltimateInsult from "./periodic-dance";
@@ -76,6 +77,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   fight_night_at_mos: FightNightAtMos,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
+  seating_arrangements: SeatingArrangements,
   sing_like_a_canary: SingLikeACanary,
   some_assembly_required: SomeAssemblyRequired,
   taste_explosion: TasteExplosion,
