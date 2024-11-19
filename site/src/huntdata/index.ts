@@ -435,13 +435,13 @@ const HUNT: Hunt = {
       ],
     },
     {
-      slug: "the_murder",
-      title: "The Murder",
+      slug: "murder_in_mitropolis",
+      title: "Murder in MITropolis",
       puzzles: [
         // 24 feeders + 1 meta
-        { id: "tmp01", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
-        { id: "tmp02", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
-        { id: "tmp03", unlockable_if: { round_unlocked: "the_murder" }, unlock_cost: 1 },
+        { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
+        { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
+        { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
         { id: "tmp04", unlockable_if: { puzzles_unlocked: 1 }, unlock_cost: 1 },
         { id: "tmp05", unlockable_if: { puzzles_unlocked: 2 }, unlock_cost: 1 },
         { id: "tmp06", unlockable_if: { puzzles_unlocked: 3 }, unlock_cost: 1 },

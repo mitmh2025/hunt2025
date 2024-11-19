@@ -3,10 +3,10 @@ import type { TeamHuntState } from "../../../lib/api/client";
 import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
 import IllegalSearchRoundPage from "./illegal_search";
+import MurderRoundPage from "./murder_in_mitropolis";
 import PapertrailRoundPage from "./paper_trail";
 import StakeoutRoundPage from "./stakeout";
 import MissingDiamondRoundPage from "./the_missing_diamond";
-import MurderRoundPage from "./the_murder";
 import VaultRoundPage from "./the_vault";
 
 // This file is intended to include non-structural data that is only relevant
@@ -40,9 +40,9 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
     component: BackgroundCheckRoundPage,
     entrypoint: "background_check",
   },
-  the_murder: {
+  murder_in_mitropolis: {
     component: MurderRoundPage,
-    entrypoint: "the_murder",
+    entrypoint: "murder_in_mitropolis",
   },
   the_vault: {
     component: VaultRoundPage,

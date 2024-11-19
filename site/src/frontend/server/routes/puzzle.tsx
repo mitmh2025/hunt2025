@@ -98,7 +98,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: BackgroundCheckWrapper,
     fonts: BackgroundCheckFonts,
   },
-  the_murder: {},
+  murder_in_mitropolis: {},
   outlands: {},
 };
 

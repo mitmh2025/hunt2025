@@ -464,7 +464,8 @@ export default function createConfigs(_env, argv) {
       paper_trail: "./src/frontend/rounds/paper_trail/client.tsx",
       illegal_search: "./src/frontend/rounds/illegal_search/client.tsx",
       background_check: "./src/frontend/rounds/background_check/client.tsx",
-      the_murder: "./src/frontend/rounds/the_murder/client.tsx",
+      murder_in_mitropolis:
+        "./src/frontend/rounds/murder_in_mitropolis/client.tsx",
 
       // Included on specific puzzle pages
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",

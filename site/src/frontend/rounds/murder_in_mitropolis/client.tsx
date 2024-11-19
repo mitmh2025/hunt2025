@@ -17,7 +17,7 @@ const MurderManager = ({
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(
-      "the_murder",
+      "murder_in_mitropolis",
       undefined,
       (value: object) => {
         setState(value as MurderState);
@@ -39,7 +39,7 @@ const MurderManager = ({
   return <MurderBody state={state} teamState={teamState} />;
 };
 
-const elem = document.getElementById("the-murder-root");
+const elem = document.getElementById("murder-in-mitropolis-root");
 if (elem) {
   const state = (window as unknown as { initialMurderState: MurderState })
     .initialMurderState;
@@ -51,6 +51,6 @@ if (elem) {
   );
 } else {
   console.error(
-    "Could not mount MurderManager because #the-murder-root was nowhere to be found",
+    "Could not mount MurderManager because #murder-in-mitropolis-root was nowhere to be found",
   );
 }

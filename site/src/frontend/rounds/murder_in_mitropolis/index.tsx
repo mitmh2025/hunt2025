@@ -33,7 +33,7 @@ const MURDER_SLOTS = [
 ] as const;
 
 export function murderState(teamState: TeamHuntState): MurderState {
-  const round = teamState.rounds.the_murder;
+  const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return { items: [] };
 
   const items = MURDER_SLOTS.flatMap((slotId) => {
@@ -56,7 +56,7 @@ const MurderRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="the-murder-root">
+      <div id="murder-in-mitropolis-root">
         <MurderBody state={state} teamState={teamState} />
       </div>
     </>

@@ -39,10 +39,10 @@ import {
   painting2State,
   rugState,
 } from "../rounds/illegal_search";
+import { murderState } from "../rounds/murder_in_mitropolis";
 import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
-import { murderState } from "../rounds/the_murder";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
 import { allPuzzlesState } from "./routes/all_puzzles";
@@ -122,7 +122,7 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
     type: "team_state",
     callback: backgroundCheckState,
   },
-  the_murder: {
+  murder_in_mitropolis: {
     type: "team_state",
     callback: murderState,
   },
