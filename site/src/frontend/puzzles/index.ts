@@ -20,6 +20,7 @@ import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ShellCorporationSix from "./mild-octopus";
+import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
 import TemporalInvestigations from "./offensive-cat";
@@ -57,6 +58,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_casino: Casino,
   the_jewelry_store: TheJewelryStore,
   the_art_gallery: TheArtGallery,
+
+  // The Murder in Metropolis
+  what_do_they_call_you: WhatDoTheyCallYou,
 
   // Stakeout
   a_math_quiz: AMathQuiz,

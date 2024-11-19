@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
+import { MurderFonts } from "./MurderFonts";
 import { type MurderState } from "./types";
 
 const MurderBody = ({
@@ -30,10 +31,11 @@ const MurderBody = ({
     </ul>
   );
   return (
-    <>
+    <Fragment key="murder">
+      <MurderFonts />
       <h1>The Murder round page</h1>
       {items}
-    </>
+    </Fragment>
   );
 };
 
