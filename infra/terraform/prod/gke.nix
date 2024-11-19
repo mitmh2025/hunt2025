@@ -111,6 +111,10 @@
         };
         autoscaling_profile = "OPTIMIZE_UTILIZATION"; # --autoscaling-profile optimize-utilization
       };
+      node_pool_auto_config.network_tags.tags = [
+        "gke-k8s"
+        "gke-k8s-node"
+      ];
       monitoring_config.managed_prometheus.enabled = false; # --no-enable-managed-prometheus
       workload_identity_config.workload_pool = "${lib.tfRef "data.google_project.this.project_id"}.svc.id.goog"; # --workload-pool "mitmh2025.svc.id.goog"
       enable_shielded_nodes = true; # --enable-shielded-nodes

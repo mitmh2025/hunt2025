@@ -36,7 +36,6 @@ let
     metadata.labels.app = "api";
     spec = {
       replicas = 1;
-      min_ready_seconds = 30;
       selector.match_labels.app = "api";
       template = {
         metadata.labels.app = "api";
@@ -98,8 +97,11 @@ let
     metadata.namespace = "prod";
     metadata.name = "api";
     metadata.annotations."cloud.google.com/neg" = builtins.toJSON {
-      ingress = true;
-    }; #''{"exposed_ports": {"80":{"name": "NEG_NAME"}}}'';
+      exposed_ports."80".name = "prod-api";
+    };
+    lifecycle.ignore_changes = [
+      ''metadata[0].annotations["cloud.google.com/neg-status"]''
+    ];
     spec = {
       type = "ClusterIP";
       selector.app = "api";
