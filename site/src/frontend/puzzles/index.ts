@@ -40,6 +40,7 @@ import The10000SheetExcelFile from "./shoddy-table";
 import AHeapOfClards from "./sinful-ivory";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
+import RecipeSubstitutions from "./svelte-pitch";
 import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
@@ -77,6 +78,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   fight_night_at_mos: FightNightAtMos,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
+  recipe_substitutions: RecipeSubstitutions,
   seating_arrangements: SeatingArrangements,
   sing_like_a_canary: SingLikeACanary,
   some_assembly_required: SomeAssemblyRequired,
