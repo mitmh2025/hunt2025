@@ -43,7 +43,7 @@ export default async function ({
 
   app.use(morgan(LOG_FORMAT));
 
-  app.use("/healthz", (req, res) => {
+  app.use("/healthz", (_, res) => {
     // TODO: For API servers, check the health of our database connection?
     res.send("ok");
   });
