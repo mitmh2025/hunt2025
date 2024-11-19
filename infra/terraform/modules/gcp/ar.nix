@@ -25,11 +25,9 @@
           };
           resource = mkOption {
             type = types.anything;
-            readOnly = true;
           };
           data = mkOption {
             type = types.anything;
-            readOnly = true;
           };
           url = mkOption {
             type = types.str;

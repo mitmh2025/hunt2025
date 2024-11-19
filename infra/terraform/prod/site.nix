@@ -1,19 +1,12 @@
 { config, lib, pkgs, ... }:
-let
-    image = pkgs.dockerTools.buildLayeredImage {
-      name = "site";
-      contents = with pkgs; [
-        dockerTools.caCertificates
-        hunt2025.out
-      ];
-      config.Cmd = ["hunt2025"];
-    };
-  in {
-  resource.skopeo2_copy.site = {
-    depends_on = ["google_artifact_registry_repository.images"];
-    source_image = "docker-archive:${image}";
-    destination_image = "docker://${config.gcp.ar.images.url}/site:${image.imageTag}";
-    keep_image = true; # Ensure that old replica sets can keep running.
+{
+  gcp.ar.images.images.site.sourceImage = pkgs.dockerTools.buildLayeredImage {
+    name = "site";
+    contents = with pkgs; [
+      dockerTools.caCertificates
+      hunt2025.out
+    ];
+    config.Cmd = ["hunt2025"];
   };
   resource.random_password.jwt_secret = {
     length = 32;
@@ -30,7 +23,6 @@ let
     };
   };
   resource.kubernetes_deployment_v1.api = {
-    depends_on = ["skopeo2_copy.site"];
     metadata.namespace = "prod";
     metadata.name = "api";
     metadata.labels.app = "api";
@@ -42,7 +34,7 @@ let
         spec.service_account_name = lib.tfRef "kubernetes_service_account_v1.k8s-prod-api.metadata[0].name";
         spec.container = [{
           name = "api";
-          image = "${config.gcp.ar.images.url}/site:${image.imageTag}";
+          image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
           env = lib.attrsToList {
             # TODO: Add setting to only run API server.
             PORT = "80";
