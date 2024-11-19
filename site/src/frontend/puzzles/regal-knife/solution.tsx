@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
+import { GRID } from "./puzzle";
 
 const Mono = styled.span`
   font-family: monospace;
@@ -21,7 +22,7 @@ const StyledTable = styled.table`
   }
 `;
 
-const GRID: string[][] = [
+const GRID_FILL: string[][] = [
   ["W", "W", "E", ".", ".", "L", "I", "F", "T", ".", ".", "A", "R", "R", "."],
   ["H", "I", "N", "T", ".", "O", "T", "R", "O", "S", ".", "B", "O", "O", "S"],
   ["E", "S", "T", "A", ".", "A", "S", "A", "N", "A", ".", "S", "T", "A", "Y"],
@@ -57,6 +58,7 @@ const Solution = (): JSX.Element => {
       </p>
       <StyledCrossword
         grid={GRID}
+        fill={GRID_FILL}
         getAdditionalStyles={(row, column) =>
           row === column ? { backgroundColor: "var(--gold-400)" } : {}
         }
