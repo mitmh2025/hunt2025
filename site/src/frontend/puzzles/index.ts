@@ -14,6 +14,7 @@ import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
 import SingLikeACanary from "./heavenly-cell";
+import BigNames from "./important-green";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
@@ -62,6 +63,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_math_quiz: AMathQuiz,
   an_exchange_of_vows: AnExchangeOfVows,
   be_mine: BeMine,
+  big_names: BigNames,
   broken_record: BrokenRecord,
   commentary: Commentary,
   cruciverbal: Cruciverbal,
