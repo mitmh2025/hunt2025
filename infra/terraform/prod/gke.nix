@@ -109,7 +109,8 @@
             enable_secure_boot = false;
           };
         };
-        autoscaling_profile = "OPTIMIZE_UTILIZATION"; # --autoscaling-profile optimize-utilization
+        #autoscaling_profile = "OPTIMIZE_UTILIZATION"; # --autoscaling-profile optimize-utilization
+        autoscaling_profile = "BALANCED";
       };
       node_pool_auto_config.network_tags.tags = [
         "gke-k8s"

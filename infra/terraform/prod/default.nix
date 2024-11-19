@@ -56,5 +56,6 @@
     ./gclb.nix
     ./assets.nix
     ./site.nix
+    ./redis.nix
   ];
 }
