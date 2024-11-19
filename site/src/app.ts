@@ -41,12 +41,13 @@ export default async function ({
 
   const app = new WebSocketExpress();
 
-  app.use(morgan(LOG_FORMAT));
-
+  // Install /healthz before the log handler, so we don't log every health check.
   app.use("/healthz", (_, res) => {
     // TODO: For API servers, check the health of our database connection?
     res.send("ok");
   });
+
+  app.use(morgan(LOG_FORMAT));
 
   // Mount the API router at /api
   const apiRouter = getRouter({
