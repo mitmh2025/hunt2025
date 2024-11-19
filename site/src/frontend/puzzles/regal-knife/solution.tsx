@@ -57,7 +57,7 @@ const Solution = (): JSX.Element => {
         , the answer to the puzzle.
       </p>
       <StyledCrossword
-        grid={GRID}
+        labels={GRID}
         fill={GRID_FILL}
         getAdditionalStyles={(row, column) =>
           row === column ? { backgroundColor: "var(--gold-400)" } : {}

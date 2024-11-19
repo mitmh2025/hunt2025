@@ -28,9 +28,9 @@ const puzzle: PuzzleDefinition = {
     {
       order: 50.0,
       description:
-        "Solvers have most or all of the grid done but still don't have the “extra” identified correctly",
+        "Solvers have most or all of the grid done but still don’t have the “extra” identified correctly",
       nudge:
-        "Just over half of the clues have been “packed” with one extra word.  You'll need to identify those words.",
+        "Just over half of the clues have been “packed” with one extra word.  You’ll need to identify those words.",
     },
     {
       order: 70.0,
@@ -50,7 +50,7 @@ const puzzle: PuzzleDefinition = {
       order: 95.0,
       description:
         "Solvers have the answer showing in the grid but haven’t realized it",
-      nudge: "Check the diagonal - that's it!",
+      nudge: "Check the diagonal—that’s it!",
     },
   ],
   canned_responses: [],

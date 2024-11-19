@@ -241,7 +241,7 @@ const Solution = () => {
       </ClueTable>
 
       <p>This gives the following grid:</p>
-      <StyledCrossword grid={GRID} fill={GRID_FILL_PT1} />
+      <StyledCrossword labels={GRID} fill={GRID_FILL_PT1} />
 
       <p>Each of the extra words is a clue for another answer:</p>
 
@@ -269,7 +269,7 @@ const Solution = () => {
         flavor). Some of the black squares can be used to fit the new answers
         into the grid, giving this grid:
       </p>
-      <StyledCrossword grid={GRID} fill={GRID_FILL_PT2} />
+      <StyledCrossword labels={GRID} fill={GRID_FILL_PT2} />
 
       <p>
         The final puzzle answer is read along the diagonal using the newly

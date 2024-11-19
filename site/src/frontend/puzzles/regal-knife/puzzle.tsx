@@ -30,7 +30,7 @@ export const GRID: string[][] = [
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <StyledCrossword grid={GRID} />
+      <StyledCrossword labels={GRID} />
       <p>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
         <audio controls src={aAudio} />

@@ -29,7 +29,7 @@ const Puzzle = () => {
       <p className="puzzle-flavor">
         We packed some things extra full; now it’s your turn.
       </p>
-      <Crossword grid={GRID} />
+      <Crossword labels={GRID} />
 
       <ClueHead>Across</ClueHead>
       <table>

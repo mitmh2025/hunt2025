@@ -45,7 +45,7 @@ const CellContents = styled.span`
 
 type CrosswordProps = {
   /** List of rows of grid structure and labels. For a blank cell, pass empty string. For a black cell, pass "." */
-  grid: string[][];
+  labels: string[][];
   /** List of rows of full-sized cell contents */
   fill?: string[][];
   /** A function that applies custom styles based on the row and column indices of a cell */
@@ -54,14 +54,14 @@ type CrosswordProps = {
 };
 
 const Crossword = ({
-  grid,
+  labels,
   fill,
   className,
   getAdditionalStyles,
 }: CrosswordProps): JSX.Element => {
   return (
     <Grid className={className}>
-      {grid.map((row, i) => (
+      {labels.map((row, i) => (
         <tr key={i}>
           {row.map((label, j) => {
             const key = `${i}-${j}`;
