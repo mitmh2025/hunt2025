@@ -84,7 +84,7 @@ let
           };
           liveness_probe = {
             http_get = {
-              path = "/";
+              path = "/healthz";
               port = 80;
             };
             initial_delay_seconds = 3;

@@ -860,17 +860,20 @@ export function getRouter({
     public: publicContract,
   });
 
-  const openApiDocument = generateOpenApi(process.env.NODE_ENV === "development" ? contract : prodContract, {
-    info: {
-      title: "Hunt API",
-      version: "2025",
-    },
-    servers: [
-      {
-        url: "/api/",
+  const openApiDocument = generateOpenApi(
+    process.env.NODE_ENV === "development" ? contract : prodContract,
+    {
+      info: {
+        title: "Hunt API",
+        version: "2025",
       },
-    ],
-  });
+      servers: [
+        {
+          url: "/api/",
+        },
+      ],
+    },
+  );
 
   app.use("/", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 

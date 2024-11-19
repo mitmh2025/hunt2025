@@ -43,6 +43,11 @@ export default async function ({
 
   app.use(morgan(LOG_FORMAT));
 
+  app.use("/healthz", (req, res) => {
+    // TODO: For API servers, check the health of our database connection?
+    res.send("ok");
+  });
+
   // Mount the API router at /api
   const apiRouter = getRouter({
     jwtSecret,
