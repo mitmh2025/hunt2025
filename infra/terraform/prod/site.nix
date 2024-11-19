@@ -20,6 +20,7 @@
     data = {
       JWT_SECRET = lib.tfRef "random_password.jwt_secret.result";
       FRONTEND_API_SECRET = lib.tfRef "random_password.frontend_api_secret.result";
+      REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
     };
   };
   resource.kubernetes_deployment_v1.api = {
@@ -38,7 +39,6 @@
           env = lib.attrsToList {
             # TODO: Add setting to only run API server.
             PORT = "80";
-            # TODO: REDIS_URL = "redis://localhost:6379";
             DB_ENV = "production";
             DB_INSTANCE_CONNECTION_NAME = "mitmh2025:us-east5:prod";
             DB_AUTH_TYPE = "IAM";
@@ -48,6 +48,15 @@
             #OTEL_LOGS_EXPORTER=console
             #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
           } ++ [
+            {
+              name = "REDIS_URL";
+              value_from = [{
+                secret_key_ref = [{
+                  key = "REDIS_URL";
+                  name = "api";
+                }];
+              }];
+            }
             {
               name = "JWT_SECRET";
               value_from = [{

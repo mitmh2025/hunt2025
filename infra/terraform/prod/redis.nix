@@ -11,6 +11,7 @@
   };
   resource.random_password.valkey = {
     length = 32;
+    special = false;
   };
   resource.kubernetes_secret_v1.valkey = {
     metadata.namespace = "prod";
