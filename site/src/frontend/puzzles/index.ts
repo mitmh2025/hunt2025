@@ -22,6 +22,7 @@ import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ShellCorporationSix from "./mild-octopus";
+import MysteryOs from "./minty-play";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
@@ -81,6 +82,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
   magic_i: MagicI,
+  mystery_os: MysteryOs,
   recipe_substitutions: RecipeSubstitutions,
   seating_arrangements: SeatingArrangements,
   sing_like_a_canary: SingLikeACanary,

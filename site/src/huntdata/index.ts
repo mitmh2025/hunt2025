@@ -206,7 +206,7 @@ const HUNT: Hunt = {
         { id: "sop18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1, slug: "big_names" }, // TODO: this slug my not go in this spot
         { id: "sop19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1, slug: "seating_arrangements" }, // TODO: this slug my not go in this spot
         { id: "sop20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1, slug: "magic_i" }, // TODO: this slug my not go in this spot
-        { id: "sop21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
+        { id: "sop21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1, slug: "mystery_os" }, // TODO: this slug my not go in this spot
         { id: "sop22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
         { id: "sop23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },
         { id: "sop24", unlockable_if: { puzzles_unlocked: 21 }, unlock_cost: 1 },
@@ -229,6 +229,9 @@ const HUNT: Hunt = {
         { id: "sop41", unlockable_if: { puzzles_unlocked: 38 }, unlock_cost: 1 },
         { id: "sop42", unlockable_if: { puzzles_unlocked: 39 }, unlock_cost: 1 },
         { id: "som01", is_meta: true, unlocked_if: { puzzles_unlocked: 30 } }, // (meta)
+      ],
+      gates: [
+        { id: "sog01" }, // Picked up Mystery O's from Gala
       ],
       interactions: [
         {
