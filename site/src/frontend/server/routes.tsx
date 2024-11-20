@@ -15,7 +15,6 @@ import { Router } from "websocket-express";
 import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
-import { type RedisClient } from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
 import Layout from "../components/Layout";
 import { PUZZLES } from "../puzzles";
@@ -43,7 +42,6 @@ import {
   puzzleUnlockPostHandler,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
-import { WebsocketManager } from "./ws";
 
 // Type parameters to RequestHandler are:
 // 1. Params
@@ -207,16 +205,12 @@ async function renderApp<Params extends ParamsDictionary>(
   res.send(html);
 }
 
-export function getUiRouter({
-  hunt,
+export function getBaseRouter({
   apiUrl,
   frontendApiSecret,
-  redisClient,
 }: {
-  hunt: Hunt;
   apiUrl: string;
   frontendApiSecret: string;
-  redisClient?: RedisClient;
 }) {
   const router = new Router();
   router.use(cookieParser());
@@ -228,11 +222,6 @@ export function getUiRouter({
   router.use((req: Request, _res: Response, next: NextFunction) => {
     req.authApi = newAuthClient(apiUrl);
     req.frontendApi = newFrontendClient(apiUrl, frontendApiSecret);
-    next();
-  });
-
-  const unauthRouter = new Router();
-  unauthRouter.use((req: Request, _res: Response, next: NextFunction) => {
     req.api = newClient(
       apiUrl,
       req.cookies.mitmh2025_auth as string | undefined,
@@ -240,13 +229,13 @@ export function getUiRouter({
     next();
   });
 
+  return router;
+}
+
+export function getAuthRouter() {
   const authRouter = new Router();
   authRouter.use(
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      req.api = newClient(
-        apiUrl,
-        req.cookies.mitmh2025_auth as string | undefined,
-      );
       const teamStateResp = await req.api.getMyTeamState();
       if (teamStateResp.status === 401) {
         // Unauthorized means we should prompt the user to log in
@@ -270,7 +259,18 @@ export function getUiRouter({
       next();
     }),
   );
+  return authRouter;
+}
 
+export function registerUiRoutes({
+  hunt,
+  authRouter,
+  unauthRouter,
+}: {
+  hunt: Hunt;
+  authRouter: Router;
+  unauthRouter: Router;
+}) {
   unauthRouter.get(
     "/login",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -279,16 +279,6 @@ export function getUiRouter({
   );
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
-
-  if (redisClient) {
-    const wsManager = new WebsocketManager({
-      hunt,
-      redisClient,
-      frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
-    });
-    const wsHandler = wsManager.requestHandler.bind(wsManager);
-    authRouter.ws("/ws", wsHandler);
-  }
 
   authRouter.get(
     "/",
@@ -390,9 +380,4 @@ export function getUiRouter({
       }
     });
   });
-
-  router.use(unauthRouter);
-  router.use(authRouter);
-
-  return router;
 }

@@ -37,8 +37,8 @@
           name = "api";
           image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
           env = lib.attrsToList {
-            # TODO: Add setting to only run API server.
             PORT = "80";
+            HUNT_COMPONENTS = "api";
             DB_ENV = "production";
             DB_INSTANCE_CONNECTION_NAME = "mitmh2025:us-east5:prod";
             DB_AUTH_TYPE = "IAM";
