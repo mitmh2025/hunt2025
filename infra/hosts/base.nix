@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   config = {
     system.stateVersion = "24.05";
@@ -36,5 +36,14 @@
     # Only use one set of packages
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
+
+    # Convenience utilities for humans
+    environment.systemPackages = with pkgs; [
+      screen
+      tmux
+      sysstat
+      htop
+      btop
+    ];
   };
 }

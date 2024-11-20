@@ -246,5 +246,19 @@ in {
         };
       };
     }
+    {
+      # Convenience utilities
+      environment.systemPackages = with pkgs; [
+        sops
+        vim
+        ((emacsPackagesFor emacs-nox).emacsWithPackages (
+          epkgs: with epkgs; [
+            nix-mode
+            typescript-mode
+            yaml-mode
+          ]
+        ))
+      ];
+    }
   ];
 }
