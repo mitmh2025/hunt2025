@@ -51,9 +51,6 @@ in {
 
   piper-voices = final.callPackage ./piper-voices.nix {};
 
-  # Newer than nixpkgs
-  zammad = final.callPackage ./zammad {};
-
   liquidsoap = let
     version = "2.3.0-rc1";
     ocamlPackages = final.ocaml-ng.ocamlPackages_4_14.overrideScope ocamlPackagesOverlay;
