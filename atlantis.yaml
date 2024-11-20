@@ -1,4 +1,5 @@
 version: 3
+automerge: yes
 projects:
 - name: prod
   dir: infra/terraform/prod
