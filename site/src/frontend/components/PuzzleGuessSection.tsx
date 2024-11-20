@@ -175,9 +175,9 @@ const PuzzleResponse = ({
   return (
     <td>
       {response}
-      {link != null && (
+      {link !== undefined && (
         <a href={link.href} target="_blank" rel="noreferrer">
-          {link?.display}
+          {link.display}
         </a>
       )}
     </td>

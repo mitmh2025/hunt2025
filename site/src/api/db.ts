@@ -14,11 +14,11 @@ import {
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
+import { type CannedResponseLink } from "../frontend/puzzles/types";
 import {
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
 } from "./logic";
-import { CannedResponseLink } from "../frontend/puzzles/types";
 
 class WebpackMigrationSource {
   context: Rspack.Context;

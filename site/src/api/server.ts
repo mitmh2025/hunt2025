@@ -219,7 +219,7 @@ export function getRouter({
       guesses: guesses.map(
         ({ data: { canonical_input, link, status, response }, timestamp }) => ({
           canonical_input,
-          ...(link != null
+          ...(link !== undefined
             ? { link: { display: link.display, href: link.href } }
             : {}),
           status,
@@ -550,7 +550,7 @@ export function getRouter({
                     canonical_input,
                     status,
                     response: responseText,
-                    ...(link != null ? { link } : {}),
+                    ...(link !== undefined ? { link } : {}),
                   },
                 });
 

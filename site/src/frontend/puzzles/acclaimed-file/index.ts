@@ -1,7 +1,7 @@
 import { type PuzzleDefinition } from "../types";
+import image from "./assets/magic_i.svg";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
-import image from "./assets/magic_i.svg";
 
 export const CANONICALIZED_PARTIALS = [
   "LOOK A LITTLE CLOSER",
