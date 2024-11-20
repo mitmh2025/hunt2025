@@ -46,7 +46,7 @@ let
         owner = "thingsboard";
         repo = "echarts";
         rev = "5.5.0-TB";
-        hash = "sha256-8jGLzpYLgXe0qeEJUZQbd1rFGcenxw4FSbrvxM4NPDQ=";
+        hash = "sha256-UWutDlqMWchiIZXUOOO/vyOiTpo3UkD2GaaOPs9EGvw=";
       };
     };
 
