@@ -52,59 +52,55 @@
     }];
     health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
   };
-  resource.google_compute_url_map.default = {
-    name = "default";
+  gcp.loadBalancer.mitmh2025 = {
+    certificateMapName = "www";
+    urlMap = {
+      host_rule = [{
+        hosts = ["www.mitmh2025.com" "prod.mitmh2025.com"];
+        path_matcher = "www";
+      }];
+      # If a host doesn't match, just redirect to www.
+      default_url_redirect = {
+        https_redirect = true;
+        host_redirect = "www.mitmh2025.com";
+        path_redirect = "/";
+        redirect_response_code = "FOUND";
+        strip_query = true;
+      };
+      path_matcher = [{
+        name = "www";
+        # TODO: Set default_service to the main web server.
+        default_service = lib.tfRef "google_compute_backend_bucket.assets.id";
 
-    host_rule = [{
-      hosts = ["www.mitmh2025.com" "prod.mitmh2025.com"];
-      path_matcher = "www";
-    }];
-    # TODO: Set default_service to the main web server.
-    default_service = lib.tfRef "google_compute_backend_bucket.assets.id";
-    path_matcher = [{
-      name = "www";
-      default_service = lib.tfRef "google_compute_backend_bucket.assets.id";
-
-      path_rule = [
+        path_rule = [
+          {
+            paths = ["/api" "/api/*"];
+            service = lib.tfRef "google_compute_backend_service.api.id";
+          }
+          {
+            paths = ["/static/*"];
+            service = lib.tfRef "google_compute_backend_bucket.assets.id";
+          }
+        ];
+      }];
+      test = [
         {
-          paths = ["/api" "/api/*"];
+          host = "prod.mitmh2025.com";
+          path = "/static/main.js";
+          service = lib.tfRef "google_compute_backend_bucket.assets.id";
+        }
+        {
+          host = "prod.mitmh2025.com";
+          path = "/api";
           service = lib.tfRef "google_compute_backend_service.api.id";
         }
         {
-          paths = ["/static/*"];
-          service = lib.tfRef "google_compute_backend_bucket.assets.id";
+          host = "prod.mitmh2025.com";
+          path = "/api/register";
+          service = lib.tfRef "google_compute_backend_service.api.id";
         }
       ];
-    }];
-    test = [
-      {
-        host = "prod.mitmh2025.com";
-        path = "/static/main.js";
-        service = lib.tfRef "google_compute_backend_bucket.assets.id";
-      }
-      {
-        host = "prod.mitmh2025.com";
-        path = "/api";
-        service = lib.tfRef "google_compute_backend_service.api.id";
-      }
-      {
-        host = "prod.mitmh2025.com";
-        path = "/api/register";
-        service = lib.tfRef "google_compute_backend_service.api.id";
-      }
-    ];
-  };
-  resource.google_compute_target_https_proxy.default = {
-    name = "default";
-    url_map = lib.tfRef "google_compute_url_map.default.id";
-    certificate_map = "//certificatemanager.googleapis.com/${lib.tfRef "google_certificate_manager_certificate_map.www.id"}";
-  };
-  resource.google_compute_global_address.www = {
-    name = "www";
-  };
-  resource.google_compute_global_address.www-v6 = {
-    name = "www-v6";
-    ip_version = "IPV6";
+    };
   };
   gcp.certificate.www = {
     scope = "DEFAULT";
@@ -117,59 +113,15 @@
     "www.mitmh2025.com"
     "prod.mitmh2025.com"
   ];
-  resource.google_compute_global_forwarding_rule.default = {
-    name = "default";
-    ip_protocol = "TCP";
-    load_balancing_scheme = "EXTERNAL_MANAGED";
-    port_range = "443";
-    target = lib.tfRef "google_compute_target_https_proxy.default.id";
-    ip_address = lib.tfRef "google_compute_global_address.www.id";
-  };
-  resource.google_compute_global_forwarding_rule.default-v6 = {
-    name = "default-v6";
-    ip_protocol = "TCP";
-    load_balancing_scheme = "EXTERNAL_MANAGED";
-    port_range = "443";
-    target = lib.tfRef "google_compute_target_https_proxy.default.id";
-    ip_address = lib.tfRef "google_compute_global_address.www-v6.id";
-  };
-  resource.google_compute_url_map.http = {
-    name = "http";
-    default_url_redirect = {
-      https_redirect = true;
-      redirect_response_code = "MOVED_PERMANENTLY_DEFAULT";
-      strip_query = false;
-    };
-  };
-  resource.google_compute_target_http_proxy.default = {
-    name = "default";
-    url_map = lib.tfRef "google_compute_url_map.http.id";
-  };
-  resource.google_compute_global_forwarding_rule.http = {
-    name = "http";
-    ip_protocol = "TCP";
-    load_balancing_scheme = "EXTERNAL_MANAGED";
-    port_range = "80";
-    target = lib.tfRef "google_compute_target_http_proxy.default.id";
-    ip_address = lib.tfRef "google_compute_global_address.www.id";
-  };
-  resource.google_compute_global_forwarding_rule.http-v6 = {
-    name = "http-v6";
-    ip_protocol = "TCP";
-    load_balancing_scheme = "EXTERNAL_MANAGED";
-    port_range = "80";
-    target = lib.tfRef "google_compute_target_http_proxy.default.id";
-    ip_address = lib.tfRef "google_compute_global_address.www-v6.id";
-  };
   route53.mitmh2025.rr.prod = {
     type = "A";
     ttl = "300";
-    records = [(lib.tfRef "google_compute_global_address.www.address")];
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025.address")];
   };
   route53.mitmh2025.rr.prod-v6 = {
     name = "prod";
     type = "AAAA";
     ttl = "300";
-    records = [(lib.tfRef "google_compute_global_address.www-v6.address")];
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];
   };
 }

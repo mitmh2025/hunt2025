@@ -38,6 +38,11 @@
     domain = "mitmh2025.com";
   };
 
+  route53.two-pi-noir = {
+    provider = "puzzup";
+    domain = "two-pi-noir.agency";
+  };
+
   gce.nix.image = {
     bucket.name = "cvqb2gwr-gce-images";
     nixosConfiguration = self.nixosConfigurations.gce-image;
