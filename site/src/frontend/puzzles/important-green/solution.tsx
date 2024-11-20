@@ -142,8 +142,7 @@ const Solution = (): JSX.Element => {
         different frieze.
       </p>
       <p>
-        Match up the answers from each set and order by the given “headliner
-        flavortext “embellish a little bit”. Each of those names appears on a
+        Match up the answers from each set and order by the given “headliner”
         names. Then extract the extra letters:
       </p>
       <StyledTable>
