@@ -8,6 +8,7 @@
             repoName = name;
             repoConfig = config;
           in mkOption {
+            default = {};
             type = types.attrsOf (types.submodule ({ name, config, ... }: {
               options = {
                 sourceImage = mkOption {
