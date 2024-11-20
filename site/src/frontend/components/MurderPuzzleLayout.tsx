@@ -7,7 +7,7 @@ import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
 
 // This also relies on the MurderFonts component
 export const MurderHeader = styled(PuzzleHeader)`
-  background-color: #2b1234;
+  background-color: var(--purple-800);
   background-image: url(${Border}), url(${Skyline});
   background-repeat: repeat-x;
   background-position-y: top, bottom;
@@ -25,9 +25,8 @@ export const MurderHeader = styled(PuzzleHeader)`
   }
 
   #puzzle-guess-section {
-    letter-spacing: 0.25px;
-    color: var(--gray-100);
-    background-color: #16494e;
+    color: var(--gold-400);
+    background-color: var(--teal-600);
     background-image: url(${BorderBottom}), url(${BorderBottom});
     background-repeat: repeat-x;
     background-position-y: top, bottom;
@@ -35,9 +34,16 @@ export const MurderHeader = styled(PuzzleHeader)`
     border-left: 1px solid var(--gold-700);
     border-right: 1px solid var(--gold-700);
     box-shadow: 0.5rem 0.5rem 0px #00000033;
+    font-family: "Eccentric";
+    font-size: 2rem;
 
-    button {
-      font-family: var(--headline-font);
+    label {
+      margin-bottom: -0.5rem;
+    }
+
+    table {
+      font-family: var(--body-font);
+      font-size: 1rem;
     }
   }
 `;

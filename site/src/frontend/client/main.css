@@ -52,6 +52,28 @@
   --gold-800: #665415;
   --gold-900: #483a0c;
 
+  --purple-000: #e9e1ec;
+  --purple-100: #d2c5d6;
+  --purple-200: #bdadc3;
+  --purple-300: #9b8aa2;
+  --purple-400: #79647d;
+  --purple-500: #634a69;
+  --purple-600: #55395e;
+  --purple-700: #421d50;
+  --purple-800: #2b1234;
+  --purple-900: #190721;
+
+  --teal-000: #c5e5e7;
+  --teal-100: #9ac2c5;
+  --teal-200: #74a2a5;
+  --teal-300: #57868a;
+  --teal-400: #316064;
+  --teal-500: #225155;
+  --teal-600: #16494e;
+  --teal-700: #113135;
+  --teal-800: #0c2529;
+  --teal-900: #071314;
+
   --highlighter: #efff3c66;
 
   --body-font: "Hanken Grotesk", "Inter", Verdana, Helvetica, sans-serif;
