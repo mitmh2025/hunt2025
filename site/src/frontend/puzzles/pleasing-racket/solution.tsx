@@ -35,6 +35,13 @@ const Solution = (): JSX.Element => {
       </p>
       <StyledTable>
         <tr>
+          <th>Order</th>
+          <th>Franchise</th>
+          <th>Character</th>
+          <th>Numeral (Index)</th>
+          <th>Extraction</th>
+        </tr>
+        <tr>
           <td>1</td>
           <td>Doug</td>
           <td>Skeeter Valentine</td>
@@ -113,7 +120,7 @@ const Solution = (): JSX.Element => {
         </tr>
         <tr>
           <td>12</td>
-          <td>Final Fantasy Vii</td>
+          <td>Final Fantasy VII</td>
           <td>Vincent Valentine</td>
           <td>5</td>
           <td>E</td>
