@@ -25,8 +25,7 @@ export const MurderHeader = styled(PuzzleHeader)`
   }
 
   #puzzle-guess-section {
-    letter-spacing: 0.25px;
-    color: var(--gray-100);
+    color: #e8e2ea;
     background-color: #16494e;
     background-image: url(${BorderBottom}), url(${BorderBottom});
     background-repeat: repeat-x;
@@ -35,9 +34,16 @@ export const MurderHeader = styled(PuzzleHeader)`
     border-left: 1px solid var(--gold-700);
     border-right: 1px solid var(--gold-700);
     box-shadow: 0.5rem 0.5rem 0px #00000033;
+    font-family: "Eccentric";
+    font-size: 2rem;
 
-    button {
-      font-family: var(--headline-font);
+    label {
+      margin-bottom: -0.5rem;
+    }
+
+    table {
+      font-family: var(--body-font);
+      font-size: 1rem;
     }
   }
 `;

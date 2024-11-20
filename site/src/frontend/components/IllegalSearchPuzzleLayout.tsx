@@ -14,11 +14,29 @@ export const IllegalSearchHeader = styled(PuzzleHeader)`
   }
 
   #puzzle-guess-section {
-    background-color: #ecd89dee;
+    background-color: #461f09;
+    border: 0.5px solid #5b290f;
+    border-top-width: 1px;
+    border-bottom-width: 2px;
+    box-shadow:
+      0 -1px 0 2px #2e1101,
+      0 1px 0 4px #2e1101,
+      -3px 0 0 4px #3e1903,
+      3px 0 0 4px #3e1903,
+      -1px 0 0 6px #4d230d,
+      1px 0 0 6px #4d230d,
+      0 1px 0 6px #5b290f;
     font-family: "Alegreya SC";
+    font-size: 1.25rem;
+    color: var(--gray-100);
+
+    input {
+      background-color: var(--gray-100);
+    }
 
     button {
       font-family: "Alegreya SC";
+      font-size: 1.25rem;
     }
   }
 `;

@@ -19,6 +19,7 @@ const GuessSectionWrapper = styled.section`
   padding: 1rem 0.5rem;
   grid-column: 1 / 2;
   text-align: center;
+  border-radius: 2px;
 
   @media ${deviceMax.md} {
     grid-column: 1 / 3;
@@ -38,7 +39,16 @@ const GuessTable = styled.table`
 `;
 
 const Label = styled.label`
+  line-height: 1;
   margin-right: 4px;
+  display: block;
+`;
+
+const Form = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const PuzzleGuessForm = ({
@@ -124,7 +134,7 @@ const PuzzleGuessForm = ({
   const formDisabled = formState === "submitting";
   const submitDisabled = formDisabled || rateLimitedUntil !== undefined;
   return (
-    <form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
+    <Form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
       {formError ? <div>Error: {formError}</div> : undefined}
       {rateLimitedUntil ? (
         <div>
@@ -145,7 +155,7 @@ const PuzzleGuessForm = ({
       <Button type="submit" disabled={submitDisabled}>
         Submit
       </Button>
-    </form>
+    </Form>
   );
 };
 
