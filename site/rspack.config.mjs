@@ -34,6 +34,7 @@ const ASSET_PATH = process.env.ASSET_PATH || "/";
 // To continue to support cache-busting, we place such assets inside a
 // directory named with their hash.
 const PRESERVE_FILENAME_ASSET_PATHS = [
+  "src/frontend/puzzles/acclaimed-file/assets/magic_i.svg",
   "src/frontend/puzzles/circular-greece/assets/motifs.pdf",
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.3mf",
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.stl",
