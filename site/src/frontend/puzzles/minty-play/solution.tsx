@@ -40,7 +40,7 @@ const Puzzle = (): JSX.Element => {
       <FakeP>
         <div>Chipmunk Maze</div>
         <div>
-          Solving the maze, we see the path forms the shapes of the letters
+          Solving the maze, we see the path forms the shapes of the letters{" "}
           <Mono>CRACKLE</Mono>.
         </div>
       </FakeP>
