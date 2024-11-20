@@ -317,6 +317,7 @@ const Solution = (): JSX.Element => {
             <div>Bird Brain</div>
             <div>?</div>
           </td>
+          <td>Humblebrag</td>
         </tr>
         <tr>
           <td>6</td>
