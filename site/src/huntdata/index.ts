@@ -205,7 +205,7 @@ const HUNT: Hunt = {
         { id: "sop17", unlockable_if: { puzzles_unlocked: 14 }, unlock_cost: 1, slug: "recipe_substitutions" }, // TODO: this slug my not go in this spot
         { id: "sop18", unlockable_if: { puzzles_unlocked: 15 }, unlock_cost: 1, slug: "big_names" }, // TODO: this slug my not go in this spot
         { id: "sop19", unlockable_if: { puzzles_unlocked: 16 }, unlock_cost: 1, slug: "seating_arrangements" }, // TODO: this slug my not go in this spot
-        { id: "sop20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1 },
+        { id: "sop20", unlockable_if: { puzzles_unlocked: 17 }, unlock_cost: 1, slug: "magic_i" }, // TODO: this slug my not go in this spot
         { id: "sop21", unlockable_if: { puzzles_unlocked: 18 }, unlock_cost: 1 },
         { id: "sop22", unlockable_if: { puzzles_unlocked: 19 }, unlock_cost: 1 },
         { id: "sop23", unlockable_if: { puzzles_unlocked: 20 }, unlock_cost: 1 },

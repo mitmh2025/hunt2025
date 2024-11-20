@@ -217,8 +217,11 @@ export function getRouter({
       round,
       locked,
       guesses: guesses.map(
-        ({ data: { canonical_input, status, response }, timestamp }) => ({
+        ({ data: { canonical_input, link, status, response }, timestamp }) => ({
           canonical_input,
+          ...(link !== undefined
+            ? { link: { display: link.display, href: link.href } }
+            : {}),
           status,
           response,
           timestamp: timestamp.toISOString(),
@@ -521,6 +524,7 @@ export function getRouter({
                 // Determine our disposition on this submission.
                 let responseText = "Incorrect";
                 let status: GuessStatus = "incorrect";
+                let link;
                 if (correct_answer) {
                   canonical_input = correct_answer;
                   responseText = "Correct!";
@@ -530,6 +534,7 @@ export function getRouter({
                     (g) => canonicalizeInput(g) === canonical_input,
                   );
                   canonical_input = matching_input ?? canonical_input;
+                  link = correct_canned_response.link;
                   responseText = correct_canned_response.reply;
                   status = "other";
                 }
@@ -545,6 +550,7 @@ export function getRouter({
                     canonical_input,
                     status,
                     response: responseText,
+                    ...(link !== undefined ? { link } : {}),
                   },
                 });
 

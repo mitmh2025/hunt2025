@@ -1,4 +1,5 @@
 import DownrightBackwards from "./able-worm";
+import MagicI from "./acclaimed-file";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
 import DoableDouble from "./austere-sink";
@@ -79,6 +80,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   fight_night_at_mos: FightNightAtMos,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
+  magic_i: MagicI,
   recipe_substitutions: RecipeSubstitutions,
   seating_arrangements: SeatingArrangements,
   sing_like_a_canary: SingLikeACanary,

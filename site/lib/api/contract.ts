@@ -8,9 +8,15 @@ export const c = initContract();
 
 const slug = z.string();
 
+export const CannedResponseLinkSchema = z.object({
+  display: z.string(),
+  href: z.string(),
+});
+
 export const GuessStatus = z.enum(["correct", "incorrect", "other"]);
 export const GuessSchema = z.object({
   canonical_input: z.string(),
+  link: CannedResponseLinkSchema.optional(),
   status: GuessStatus,
   response: z.string(),
   timestamp: z.string().datetime(),

@@ -14,6 +14,7 @@ import {
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
+import { type CannedResponseLink } from "../frontend/puzzles/types";
 import {
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
@@ -157,6 +158,7 @@ declare module "knex/types/tables" {
           status: GuessStatus;
           canonical_input: string;
           response: string;
+          link?: CannedResponseLink;
         };
       }
     | {
