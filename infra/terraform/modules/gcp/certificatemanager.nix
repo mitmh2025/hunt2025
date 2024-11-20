@@ -30,7 +30,7 @@
               matcher = "PRIMARY";
             };
           } // (lib.mapAttrs' (hostname: certName: let
-              certMapName = "${name}-${hostname}";
+              certMapName = "${name}-${lib.tfSanitize hostname}";
             in lib.nameValuePair certMapName {
               name = certMapName;
               map = lib.tfRef "google_certificate_manager_certificate_map.${name}.name";
@@ -48,6 +48,7 @@
         options = {
           scope = mkOption {
             type = types.str;
+            default = "DEFAULT";
           };
           domains = mkOption {
             type = types.listOf types.str;
@@ -81,7 +82,7 @@
       ++ (lib.mapAttrsToList (_: certificate: certificate.resource) config.gcp.certificateMap)
     );
     gcp.certificateMap = lib.mapAttrs (name: _: {
-      defaultCertificateName = name;
+      defaultCertificateName = lib.mkDefault name;
     }) config.gcp.certificate;
   };
 }

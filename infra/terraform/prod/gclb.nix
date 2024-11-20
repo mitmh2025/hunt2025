@@ -103,7 +103,6 @@
     };
   };
   gcp.certificate.www = {
-    scope = "DEFAULT";
     domains = [
       "www.mitmh2025.com"
       "prod.mitmh2025.com"
@@ -123,5 +122,123 @@
     type = "AAAA";
     ttl = "300";
     records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];
+  };
+
+  gcp.certificate.two-pi-noir.domains = [
+    "two-pi-noir.agency"
+  ];
+  gcp.certificate.www-two-pi-noir.domains = [
+    "www.two-pi-noir.agency"
+  ];
+  route53.two-pi-noir.gcp_dns_authorizations = [
+    "two-pi-noir.agency"
+    "www.two-pi-noir.agency"
+  ];
+  gcp.certificateMap.two-pi-noir = {
+    defaultCertificateName = "www-two-pi-noir";
+    host."two-pi-noir.agency" = "two-pi-noir";
+  };
+
+  gcp.loadBalancer.two-pi-noir = {
+    certificateMapName = "two-pi-noir";
+    urlMap = {
+      host_rule = [
+        {
+          hosts = ["www.two-pi-noir.agency"];
+          path_matcher = "www";
+        }
+        {
+          hosts = ["two-pi-noir.agency"];
+          path_matcher = "root";
+        }
+      ];
+      # If a host doesn't match, just redirect to www.
+      default_url_redirect = {
+        https_redirect = true;
+        host_redirect = "www.two-pi-noir.agency";
+        path_redirect = "/";
+        redirect_response_code = "FOUND";
+        strip_query = true;
+      };
+      path_matcher = [
+        {
+          name = "www";
+          # TODO: Set default_service to the main web server.
+          default_service = lib.tfRef "google_compute_backend_bucket.assets.id";
+
+          path_rule = [
+            {
+              paths = ["/api" "/api/*"];
+              service = lib.tfRef "google_compute_backend_service.api.id";
+            }
+            {
+              paths = ["/static/*"];
+              service = lib.tfRef "google_compute_backend_bucket.assets.id";
+            }
+          ];
+        }
+        {
+          name = "root";
+          default_url_redirect = {
+            https_redirect = true;
+            host_redirect = "www.two-pi-noir.agency";
+            redirect_response_code = "MOVED_PERMANENTLY_DEFAULT";
+            strip_query = false;
+          };
+        }
+      ];
+      test = [
+        # The `google` provider doesn't support `expectedOutputUrl` yet.
+        # {
+        #   host = "two-pi-noir.agency";
+        #   path = "/foo";
+        #   expected_output_url = "https://www.two-pi-noir.agency/foo";
+        # }
+        # {
+        #   host = "two-pi-noir.agency";
+        #   path = "/api";
+        #   expected_output_url = "https://www.two-pi-noir.agency/api";
+        # }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/static/main.js";
+          service = lib.tfRef "google_compute_backend_bucket.assets.id";
+        }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/api";
+          service = lib.tfRef "google_compute_backend_service.api.id";
+        }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/api/register";
+          service = lib.tfRef "google_compute_backend_service.api.id";
+        }
+      ];
+    };
+  };
+
+  route53.two-pi-noir.rr.root = {
+    name = lib.tfRef "data.aws_route53_zone.two-pi-noir.name";
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir.address")];
+  };
+  route53.two-pi-noir.rr.root-v6 = {
+    name = lib.tfRef "data.aws_route53_zone.two-pi-noir.name";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir-v6.address")];
+  };
+  route53.two-pi-noir.rr.www = {
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir.address")];
+  };
+  route53.two-pi-noir.rr.www-v6 = {
+    name = "www";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir-v6.address")];
   };
 }
