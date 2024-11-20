@@ -12,9 +12,15 @@ export type Hint = {
   nudge: string;
 };
 
+export type CannedResponseLink = {
+  display: string;
+  href: string;
+};
+
 export type CannedResponse = {
   guess: string[]; // list of canonicalized guess values that will match to this reply
   reply: string;
+  link?: CannedResponseLink;
 
   // If true, matching this canned response should provide the solve reward (and getting the actual
   // answer providing the solve reward.

@@ -18,6 +18,7 @@ import {
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
 } from "./logic";
+import { CannedResponseLink } from "../frontend/puzzles/types";
 
 class WebpackMigrationSource {
   context: Rspack.Context;
@@ -157,6 +158,7 @@ declare module "knex/types/tables" {
           status: GuessStatus;
           canonical_input: string;
           response: string;
+          link?: CannedResponseLink;
         };
       }
     | {

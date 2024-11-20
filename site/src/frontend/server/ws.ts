@@ -376,6 +376,7 @@ class ConnHandler {
           id: entry.id,
           status: entry.data.status,
           canonical_input: entry.data.canonical_input,
+          link: entry.data.link,
           response: entry.data.response,
           timestamp: entry.timestamp,
         },

@@ -11,6 +11,8 @@ type GetPuzzleStateResponse = z.infer<
 >;
 type Guesses = GetPuzzleStateResponse["guesses"];
 
+type Guess = Guesses[number];
+
 type FormState = "idle" | "submitting" | "error";
 
 const GuessSectionWrapper = styled.section`
@@ -166,6 +168,22 @@ function formatGuessTimestamp(t: string) {
   return `${dayOfWeek} ${hours}:${minutes}`;
 }
 
+const PuzzleResponse = ({
+  link,
+  response,
+}: Pick<Guess, "link" | "response">): JSX.Element => {
+  return (
+    <td>
+      {response}
+      {link != null && (
+        <a href={link.href} target="_blank" rel="noreferrer">
+          {link?.display}
+        </a>
+      )}
+    </td>
+  );
+};
+
 const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
   if (guesses.length === 0) {
     return undefined;
@@ -184,7 +202,7 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
           return (
             <tr key={g.canonical_input}>
               <td className="answer-attempt">{g.canonical_input}</td>
-              <td>{g.response}</td>
+              <PuzzleResponse link={g.link} response={g.response} />
               <td>{formatGuessTimestamp(g.timestamp)}</td>
             </tr>
           );

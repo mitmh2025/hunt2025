@@ -5,6 +5,7 @@ import {
   ActivityLogEntryBaseSchema,
   GuessStatus,
   TeamRegistrationSchema,
+  CannedResponseLinkSchema,
 } from "./contract";
 
 const InternalActivityLogEntryBaseSchema = ActivityLogEntryBaseSchema.merge(
@@ -71,6 +72,7 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
       type: z.literal("puzzle_guess_submitted"),
       data: z.object({
         canonical_input: z.string(),
+        link: CannedResponseLinkSchema.optional(),
         status: GuessStatus,
         response: z.string(),
       }),
