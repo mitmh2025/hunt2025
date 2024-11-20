@@ -18,7 +18,7 @@ const Puzzle = (): JSX.Element => {
       </p>
       <StyledIframe src={fakeMike} />
       <p>Video tutorial:</p>
-      <video controls>
+      <video width={440} controls>
         <source src={cobraBow} type="video/mp4" />
         <track
           label="English"

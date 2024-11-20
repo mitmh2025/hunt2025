@@ -118,7 +118,9 @@ const Solution = (): JSX.Element => {
           <td>t</td>
         </tr>
         <tr>
-          <td>Bø7</td>
+          <td>
+            B<sup>ø7</sup>
+          </td>
           <td>B D F A</td>
           <td>D F B</td>
           <td>A</td>
@@ -126,7 +128,9 @@ const Solution = (): JSX.Element => {
           <td>(space)</td>
         </tr>
         <tr>
-          <td>Bo</td>
+          <td>
+            B<sup>o</sup>
+          </td>
           <td>B D F</td>
           <td>F G A</td>
           <td>D G A B</td>
@@ -174,7 +178,9 @@ const Solution = (): JSX.Element => {
           <td>(space)</td>
         </tr>
         <tr>
-          <td>Bo(♭9)</td>
+          <td>
+            B<sup>o</sup>(♭9)
+          </td>
           <td>B D F C</td>
           <td>D F A</td>
           <td>C A B</td>
