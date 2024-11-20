@@ -102,6 +102,10 @@
   resource.google_compute_global_address.www = {
     name = "www";
   };
+  resource.google_compute_global_address.www-v6 = {
+    name = "www-v6";
+    ip_version = "IPV6";
+  };
   gcp.certificate.www = {
     scope = "DEFAULT";
     domains = [
@@ -120,6 +124,14 @@
     port_range = "443";
     target = lib.tfRef "google_compute_target_https_proxy.default.id";
     ip_address = lib.tfRef "google_compute_global_address.www.id";
+  };
+  resource.google_compute_global_forwarding_rule.default-v6 = {
+    name = "default-v6";
+    ip_protocol = "TCP";
+    load_balancing_scheme = "EXTERNAL_MANAGED";
+    port_range = "443";
+    target = lib.tfRef "google_compute_target_https_proxy.default.id";
+    ip_address = lib.tfRef "google_compute_global_address.www-v6.id";
   };
   resource.google_compute_url_map.http = {
     name = "http";
@@ -141,9 +153,23 @@
     target = lib.tfRef "google_compute_target_http_proxy.default.id";
     ip_address = lib.tfRef "google_compute_global_address.www.id";
   };
+  resource.google_compute_global_forwarding_rule.http-v6 = {
+    name = "http-v6";
+    ip_protocol = "TCP";
+    load_balancing_scheme = "EXTERNAL_MANAGED";
+    port_range = "80";
+    target = lib.tfRef "google_compute_target_http_proxy.default.id";
+    ip_address = lib.tfRef "google_compute_global_address.www-v6.id";
+  };
   route53.mitmh2025.rr.prod = {
     type = "A";
     ttl = "300";
     records = [(lib.tfRef "google_compute_global_address.www.address")];
+  };
+  route53.mitmh2025.rr.prod-v6 = {
+    name = "prod";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.www-v6.address")];
   };
 }
