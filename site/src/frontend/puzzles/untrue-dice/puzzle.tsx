@@ -319,7 +319,7 @@ const PuzzleContent = () => {
                 <MO>+</MO>
                 <MSub>
                   <MI>x</MI>
-                  <MN>x</MN>
+                  <MN>2</MN>
                 </MSub>
               </MRow>
               <MRow>
