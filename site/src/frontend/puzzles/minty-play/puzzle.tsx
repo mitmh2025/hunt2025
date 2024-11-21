@@ -2,7 +2,8 @@ import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const pickupCompleted = "sog01" in (teamState.rounds.stakeout?.gates ?? []);
+  const pickupCompleted =
+    teamState.rounds.stakeout?.gates?.includes("sog01") ?? false;
 
   if (pickupCompleted) {
     return (
