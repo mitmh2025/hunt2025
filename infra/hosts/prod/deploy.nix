@@ -260,5 +260,28 @@ in {
         ))
       ];
     }
+    {
+      # Attemp to prevent large builds from OOMing the whole machine
+      systemd = {
+        # Create a separate slice for nix-daemon that is
+        # memory-managed by the userspace systemd-oomd killer
+        slices."nix-daemon".sliceConfig = {
+          ManagedOOMMemoryPressure = "kill";
+          ManagedOOMMemoryPressureLimit = "50%";
+        };
+        services."nix-daemon".serviceConfig.Slice = "nix-daemon.slice";
+
+        # If a kernel-level OOM event does occur anyway,
+        # strongly prefer killing nix-daemon child processes
+        services."nix-daemon".serviceConfig = {
+          # Start throttling memory usage at 50%
+          MemoryHigh = "50%";
+          # OOM-kill a child at 90% usage
+          MemoryMax = "90%";
+          # If the system overall will OOM, strongly prefer to kill a build
+          OOMScoreAdjust = 1000;
+        };
+      };
+    }
   ];
 }
