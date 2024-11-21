@@ -6,7 +6,7 @@ const portStr = process.env.PORT ?? "3000";
 const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
 
 const enabledComponents = new Set(
-  (process.env.HUNT_COMPONENTS ?? "api,ws,ui").split(","),
+  (process.env.HUNT_COMPONENTS ?? "api,ws,ui,reg").split(","),
 );
 
 const regsitePortStr = process.env.PORT ?? "3001";
@@ -67,8 +67,10 @@ app({
     console.error(err);
   });
 
-regsite({
-  apiUrl,
-}).listen(regsitePort, () => {
-  console.log(`Regsite listening on port ${regsitePort}`);
-});
+if (enabledComponents.has("reg") && apiUrl) {
+  regsite({
+    apiUrl,
+  }).listen(regsitePort, () => {
+    console.log(`Regsite listening on port ${regsitePort}`);
+  });
+}

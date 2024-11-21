@@ -1,34 +1,3 @@
-// Shared components:
-//   - EditRegistrationForm (doesn't look like this exists yet? but would eventually be shared with /team on the main site)
-//   - NewRegistrationForm (might end up being the same component or re-use some of EditRegistrationForm)
-
-// New API endpoints:
-//   - GET /api/registration
-//   - PUT /api/registration
-//   - Q: should we rename the existing POST /api/register endpoint to POST /api/registration? or should these be GET /api/register and PUT /api/register? Maybe this doesn't matter.
-
-// Endpoints for the registration site (exposed on a separate port):
-
-// GET /registration/new
-//   Authed -> redirect to /registration
-//   Unauthed -> Render registration form
-
-// POST /registration/new
-//   Authed -> redirect to /registration, ignore body
-//   Unauthed -> Process post body
-//     Valid -> set mitmh2025_auth cookie, redirect to /registration
-//     Invalid -> render registration form with error messages
-
-// GET /registration
-//   Authed -> Render registration form for editing
-//   Unauthed -> redirect to /login
-
-// POST /registration
-//   Authed -> Process post body
-//     Valid -> Render registration form with success message
-//     Invalid -> render registration form with error messages
-//   Unauthed -> ignore body, redirect to /login
-
 import { existsSync } from "fs";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -253,6 +222,18 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       );
     }),
   );
+
+  // TODO
+  // GET /registration/new
+  //   Authed -> redirect to /registration
+  //   Unauthed -> Render registration form
+
+  // TODO
+  // POST /registration/new
+  //   Authed -> redirect to /registration, ignore body
+  //   Unauthed -> Process post body
+  //     Valid -> set mitmh2025_auth cookie, redirect to /registration
+  //     Invalid -> render registration form with error messages
 
   return app;
 }
