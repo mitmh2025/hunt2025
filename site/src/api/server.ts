@@ -37,6 +37,7 @@ import {
   type Mutator,
   registerTeam,
   teamRegistrationLog,
+  updateTeam,
 } from "./data";
 import {
   formatActivityLogEntryForApi,
@@ -163,6 +164,27 @@ export function getRouter({
         info,
         state: formatTeamHuntState(hunt, team_state),
       },
+    };
+  };
+
+  const getTeamRegistration = async (team_id: number) => {
+    const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
+      knex,
+      redisClient,
+      team_id,
+    );
+    const registration = team_registration_log.entries
+      .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
+      .formatTeamRegistration();
+    if (registration === undefined) {
+      return {
+        status: 404 as const,
+        body: null,
+      };
+    }
+    return {
+      status: 200 as const,
+      body: registration,
     };
   };
 
@@ -364,7 +386,7 @@ export function getRouter({
           body: {},
         };
       },
-      register: async ({ body }) => {
+      createRegistration: async ({ body }) => {
         const team_id = await registerTeam(hunt, redisClient, knex, body);
         const token = jwt.sign(
           {
@@ -652,6 +674,21 @@ export function getRouter({
             status: 404 as const,
             body: null,
           };
+        },
+      },
+      updateRegistration: {
+        middleware: [authMiddleware],
+        handler: async ({ body, req }) => {
+          const team_id = req.user as number;
+          await updateTeam(hunt, redisClient, knex, team_id, body);
+          return getTeamRegistration(req.user as number);
+        },
+      },
+      getRegistration: {
+        middleware: [authMiddleware],
+        handler: async ({ req }) => {
+          const team_id = req.user as number;
+          return getTeamRegistration(team_id);
         },
       },
     },

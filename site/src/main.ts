@@ -1,5 +1,6 @@
 import { randomBytes } from "node:crypto";
 import app from "./app";
+import regsite from "./frontend/regsite/app";
 
 const portStr = process.env.PORT ?? "3000";
 const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
@@ -7,6 +8,11 @@ const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
 const enabledComponents = new Set(
   (process.env.HUNT_COMPONENTS ?? "api,ws,ui").split(","),
 );
+
+const regsitePortStr = process.env.PORT ?? "3001";
+const regsitePort = isNaN(parseInt(regsitePortStr))
+  ? regsitePortStr
+  : parseInt(regsitePortStr);
 
 // N.B. process.env.NODE_ENV is compiled by webpack
 const environment = process.env.NODE_ENV ?? "development";
@@ -60,3 +66,9 @@ app({
   .catch((err: unknown) => {
     console.error(err);
   });
+
+regsite({
+  apiUrl,
+}).listen(regsitePort, () => {
+  console.log(`Regsite listening on port ${regsitePort}`);
+});

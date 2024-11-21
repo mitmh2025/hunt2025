@@ -373,4 +373,8 @@ export class TeamInfoIntermediate {
       teamName: this.registration.name,
     };
   }
+
+  formatTeamRegistration(): TeamRegistration | undefined {
+    return this.registration;
+  }
 }

@@ -3,12 +3,13 @@ import {
   type InsertTeamRegistrationLogEntry,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
-import {
-  type DehydratedTeamRegistrationLogEntry,
-  type TeamRegistration,
-  type TeamRegistrationLogEntry,
-  type DehydratedInternalActivityLogEntry,
-  type InternalActivityLogEntry,
+import type {
+  DehydratedTeamRegistrationLogEntry,
+  TeamRegistration,
+  TeamRegistrationLogEntry,
+  DehydratedInternalActivityLogEntry,
+  InternalActivityLogEntry,
+  MutableTeamRegistration,
 } from "../../lib/api/frontend_contract";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -444,4 +445,15 @@ export async function registerTeam(
     );
     return team_id;
   });
+}
+
+export function updateTeam(
+  _hunt: Hunt,
+  _redisClient: RedisClient | undefined,
+  _knex: Knex.Knex,
+  teamId: number,
+  data: MutableTeamRegistration,
+) {
+  console.log("TODO: implement updateTeam", teamId, data);
+  return Promise.resolve(teamId);
 }

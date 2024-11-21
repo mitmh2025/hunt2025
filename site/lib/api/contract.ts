@@ -230,13 +230,13 @@ export const authContract = c.router({
     body: LoginRequestSchema,
     responses: {
       200: LoginResponseSchema,
-      401: z.object({}),
+      403: z.object({}),
     },
     summary: "Login to a team",
   },
-  register: {
-    method: "POST",
-    path: `/register`,
+  createRegistration: {
+    method: "PUT",
+    path: `/registration`,
     body: TeamRegistrationSchema,
     responses: {
       200: LoginResponseSchema,
@@ -287,6 +287,21 @@ export const publicContract = c.router({
     responses: {
       200: PuzzleStateSchema,
       404: z.null(),
+    },
+  },
+  getRegistration: {
+    method: "GET",
+    path: `/registration`,
+    responses: {
+      200: TeamRegistrationSchema,
+    },
+  },
+  updateRegistration: {
+    method: "PATCH",
+    path: `/registration`,
+    body: MutableTeamRegistrationSchema,
+    responses: {
+      200: TeamRegistrationSchema,
     },
   },
 });

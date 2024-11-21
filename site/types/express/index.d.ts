@@ -13,6 +13,7 @@ declare global {
       authApi: AuthClient;
       frontendApi: FrontendClient;
       teamState?: TeamState;
+      authenticated?: boolean;
     }
   }
 }
