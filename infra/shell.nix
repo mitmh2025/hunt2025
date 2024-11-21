@@ -18,7 +18,7 @@ mkShell {
     awscli2
     terraform
     gh
-    (terranix.defaultPackage.${system}.override {
+    (terranix.packages.${system}.default.override {
       nix = nixVersions.latest;
     })
     kubectl
