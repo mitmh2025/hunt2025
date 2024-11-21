@@ -23,6 +23,7 @@ import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ShellCorporationSix from "./mild-octopus";
 import MysteryOs from "./minty-play";
+import AWalkInThePark from "./misguided-revolution";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
@@ -70,6 +71,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // Stakeout
   a_math_quiz: AMathQuiz,
+  a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
   be_mine: BeMine,
   big_names: BigNames,
