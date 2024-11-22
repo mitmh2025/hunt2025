@@ -10,7 +10,7 @@
 , deployKeys
 , lib
 }:
-dockerTools.buildLayeredImage {
+dockerTools.buildLayeredImageWithNixDb {
   name = "nix-cache";
   tag = "latest";
   maxLayers = 120;
