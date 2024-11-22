@@ -9,6 +9,7 @@ import EducationalRiteOfPassage from "./circular-greece";
 import NetworkingEvent from "./confused-antarctica";
 import SomeAssemblyRequired from "./cultured-rome";
 import TheBoardwalk from "./dental-shark";
+import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import Casino from "./fortunate-calf";
 import ShellCorporationThree from "./green-princess";
@@ -84,6 +85,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
   magic_i: MagicI,
+  mens_at_my_nose: MensAtMyNose,
   mystery_os: MysteryOs,
   recipe_substitutions: RecipeSubstitutions,
   seating_arrangements: SeatingArrangements,
