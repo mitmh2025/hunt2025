@@ -6,9 +6,9 @@ const puzzle: PuzzleDefinition = {
   title: "A Walk in the Park",
   slug: "a_walk_in_the_park",
   initial_description:
-    "Lists of common phrases and two large abstract graphics.  Stakeout round.",
+    "Lists of common phrases and two large abstract graphics.",
   answer: "LONG STRIDE",
-  authors: ["Stephanie Murray", "Dan Pappas"],
+  authors: ["Dan Pappas", "Stephanie Murray"],
   editors: [
     "Elan Blaustein",
     "Hubert Hwang",
@@ -34,7 +34,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers have not broken in yet",
       keywords: ["start", "begin", "images"],
       nudge:
-        "Take a look at the images in the puzzle, what do they remind you of?  Don’t forget every part of the puzzle is fair game including the title and flavor text.",
+        "Take a look at the images in the puzzle; what do they remind you of?  Don’t forget every part of the puzzle is fair game including the title and flavor text.",
     },
     {
       order: 10.0,

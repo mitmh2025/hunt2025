@@ -35,6 +35,7 @@ const StyledUl = styled.ul`
 `;
 
 const Checkbox = styled.div`
+  flex: 0 0 16px;
   width: 16px;
   height: 16px;
   border: 1px solid var(--true-black);
@@ -118,7 +119,7 @@ const LISTS_2: [string, string, string][][] = [
   [
     [
       "Energize electric fences",
-      "File down claws on  Blue, Charlie, Delta & Echo",
+      "File down claws on Blue, Charlie, Delta & Echo",
       "Solve",
     ],
     [
