@@ -91,6 +91,7 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>
             “Is this get-together… entirely attended by your former boyfriends?”
+            (2 5)
           </td>
           <td>Ex-party.</td>
           <td>ex parte</td>
