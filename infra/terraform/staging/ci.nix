@@ -21,6 +21,7 @@
   ci.triggers.nix-cache-trigger = {
     repository = "hunt2025";
     script = ''
+      rm ~/.netrc
       nix-fast-build -f .#ciBuildTargets -j 1 --no-nom --skip-cached --debug --eval-workers 1 --eval-max-memory-size 1024  --copy-to ${config.ci.nix.cache.s3Url}
     '';
   };
