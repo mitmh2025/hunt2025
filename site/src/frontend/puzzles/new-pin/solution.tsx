@@ -46,7 +46,7 @@ const Solution = (): JSX.Element => {
           <MO>-</MO>
           <MN>1</MN>
           <MO>)</MO>
-          <MO>-</MO>
+          <MO>=</MO>
           <MN>323</MN>
         </Math>
         . Solving this, there are two options{" "}

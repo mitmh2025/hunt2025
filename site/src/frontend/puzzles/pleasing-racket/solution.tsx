@@ -78,7 +78,7 @@ const Solution = (): JSX.Element => {
         </tr>
         <tr>
           <td>6</td>
-          <td>Eastenders</td>
+          <td>EastEnders</td>
           <td>Aubrey Valentine</td>
           <td>2</td>
           <td>U</td>
@@ -113,7 +113,7 @@ const Solution = (): JSX.Element => {
         </tr>
         <tr>
           <td>11</td>
-          <td>Yugioh</td>
+          <td>Yu-Gi-Oh!</td>
           <td>Mai Valentine</td>
           <td>1</td>
           <td>M</td>

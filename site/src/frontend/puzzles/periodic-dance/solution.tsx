@@ -150,7 +150,7 @@ const Solution = (): JSX.Element => {
           </td>
           <td>Down</td>
           <td>
-            Peach overseas the mu“shroom” kingdom and is always getting
+            Peach oversees the mu“shroom” kingdom and is always getting
             kidnapped by Bowser.
           </td>
           <td>Peach</td>
