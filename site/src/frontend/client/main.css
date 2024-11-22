@@ -123,7 +123,9 @@ h3 {
 
 a {
   color: var(--gray-000);
-  text-decoration: underline dotted var(--gray-200);
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--gray-200);
 }
 
 a:hover {
