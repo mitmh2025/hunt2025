@@ -1,6 +1,6 @@
 import React from "react";
 import LinkedImage from "../../components/LinkedImage";
-import image from "./assets/image.jpg";
+import image from "./assets/image.svg";
 
 const Puzzle = (): JSX.Element => {
   return (
