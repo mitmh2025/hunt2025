@@ -39,14 +39,15 @@ const Puzzle = (): JSX.Element => {
         </li>
         <li>
           Harry Kim and Chakotay return to 2375 from 15 years in the future to
-          disrupt <i>Voyager’s</i> attempted quantum slipstream flight, which
+          disrupt <i>Voyager</i>’s attempted quantum slipstream flight, which
           they alone know will lead to the crash landing and destruction of{" "}
           <i>Voyager</i> if allowed to proceed, bearing out Dolim’s initial
           concerns that the phase variance in the quantum slipstream drive made
           it into what he described as an Edsel, a disaster waiting to happen.
         </li>
         <li>
-          Boimler stumbles through a portal and when he awakes on the Enterprise
+          Boimler stumbles through a portal and when he awakes on the{" "}
+          <i>Enterprise</i>
           he sees Lore, a historical figure to him, and assumes that he’s
           dreaming. But when he pokes him he’s really there and he learns that
           he has traveled back in time about 120 years to stardate 2291.6.
