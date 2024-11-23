@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import puzzle from "./assets/brilliant-center.pdf";
+import puzzle from "./assets/mellow-planet.pdf";
 
 const StyledIframe = styled.iframe`
   width: 100%;
