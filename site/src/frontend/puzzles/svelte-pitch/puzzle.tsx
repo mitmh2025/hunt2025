@@ -58,9 +58,14 @@ const RecipeComment = styled.li`
   margin-bottom: 8px;
 `;
 
+const PreambleWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+`;
+
 const Preamble = styled.p`
   width: 760px;
-  white-space: pre-line;
+  white-space: pre;
 `;
 
 const Recipe = ({
@@ -93,115 +98,117 @@ const Recipe = ({
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <Preamble>
-        Breakfast has always been my favorite meal. It initially stirs memory of
-        holidays past, with my grandfather
-        <br />
-        at his chalet in the Swiss Alps. Winter mornings, starting a day huddled
-        by the fireplace with a cup of hot
-        <br />
-        chocolate. The aroma of blintzes and crepes beginning to emerge from his
-        cast iron pan warming in the
-        <br />
-        oven. To this day, the smell of the honey of wild bees smeared on
-        toasted baguettes triggers these
-        <br />
-        nascent memories of my youth. My grandfather at the kitchen table poring
-        over his first edition copy of
-        <br />
-        Swann’s Way, the rustle of the dog-eared pages mixing with the roar of
-        the fire, was such pleasing music
-        <br />
-        to my ears. It’s in the spirit of these early, halcyon days, that I now
-        present to you my recipe for an
-        <br />
-        excellent mixture of scrumptious ingredients sure to make even the
-        grumpiest Scrooge start turning over
-        <br />
-        a new leaf. The pleasant blend of herbs and spices begin breathing life
-        to this loaf without the need for
-        <br />
-        kneading. Which reminds me of the time my grandfather rose early and
-        over-kneaded his holiday morning
-        <br />
-        buns, and we sat there chewing until it was time for lunch, our jaws too
-        tired to even begin to tear into the
-        <br />
-        roast duck so sumptuously prepared. My grandfather started laughing, an
-        uproarious sound of utter
-        <br />
-        euphoria, the sputtering sound echoing out to snow-capped peaks. Which
-        is why our dish calls for an
-        <br />
-        amazing topping of shaved ice, an honor to those snowed in during the
-        darkest days of the year. Early on,
-        <br />
-        during those days is when we start to realize how important family is to
-        us, our lives, our dreams, and how
-        <br />
-        cooking together binds us together, the happy unity and synergy of our
-        first closest bonds. You will notice
-        <br />
-        a unique binder in the recipe, primarily tying our dough together,
-        giving it a unique crumb, a crumb that
-        <br />
-        lifts our preparation into the rarified air of the finest arts. For my
-        grandfather was also an artist. Early on in
-        <br />
-        Zurich, during the summers of his youth, he would display his works in
-        the little bohemian café, where he
-        <br />
-        one day would meet my grandmother. Sadly, she was taken from us too
-        early, taken by a disease that
-        <br />
-        now would be easily healed. That is progress for you. But we have also
-        started to progress. Now, in the
-        <br />
-        exact area where my grandparents spent so much of their time together,
-        the kitchen. So now we unite the
-        <br />
-        past and present in one dish in honor of their memory. A simple dish,
-        yet one flavored with the nuanced
-        <br />
-        affectations of familial love. But the past is past. We must also look
-        to the future. I now look on my son’s
-        <br />
-        son, the way my grandfather first looked on me as well. I hope to pass
-        on what I have learned, but also try
-        <br />
-        to incorporate the lessons learned by newer generations. So I introduce
-        to the recipe a dash of something
-        <br />
-        a man like my grandfather never would have dreamed of. It adds a certain
-        pizzazz to this otherwise
-        <br />
-        simple dish. In the kitchen at my humble ranch, nestled in the foothills
-        of the Canadian Rockies, there is
-        <br />
-        a picture of me and my grandfather, and another of me and my grandson.
-        Starting the next few weeks,
-        <br />
-        loaves will grace my oven–some prepared in honor of my cherished
-        grandfather, some for my grandson,
-        <br />
-        and some, just for me. Soon, I will share with you one of these recipes.
-        Or will I? I must admit I have my
-        <br />
-        doubts, sharing what has become such a primary, holy experience with
-        you. I jest. But this loaf is holy.
-        <br />
-        That’s why it’s prepared in a bundt pan. The increased surface area
-        results in a more even cooking, thus
-        <br />
-        a delectable crust. Keeping the oven at the right temperature is key. So
-        it might take you a few tries to
-        <br />
-        crack the crust. Each oven is unique so you will have to learn the ways
-        of yours. But I’ve taken up enough
-        <br />
-        of your time with this brief prologue. Come back next week for the
-        actual recipe. Have a wonderful day.
-      </Preamble>
+      <PreambleWrapper>
+        <Preamble>
+          Breakfast has always been my favorite meal. It initially stirs memory
+          of holidays past, with my grandfather
+          <br />
+          at his chalet in the Swiss Alps. Winter mornings, starting a day
+          huddled by the fireplace with a cup of hot
+          <br />
+          chocolate. The aroma of blintzes and crepes beginning to emerge from
+          his cast iron pan warming in the
+          <br />
+          oven. To this day, the smell of the honey of wild bees smeared on
+          toasted baguettes triggers these
+          <br />
+          nascent memories of my youth. My grandfather at the kitchen table
+          poring over his first edition copy of
+          <br />
+          Swann’s Way, the rustle of the dog-eared pages mixing with the roar of
+          the fire, was such pleasing music
+          <br />
+          to my ears. It’s in the spirit of these early, halcyon days, that I
+          now present to you my recipe for an
+          <br />
+          excellent mixture of scrumptious ingredients sure to make even the
+          grumpiest Scrooge start turning over
+          <br />
+          a new leaf. The pleasant blend of herbs and spices begin breathing
+          life to this loaf without the need for
+          <br />
+          kneading. Which reminds me of the time my grandfather rose early and
+          over-kneaded his holiday morning
+          <br />
+          buns, and we sat there chewing until it was time for lunch, our jaws
+          too tired to even begin to tear into the
+          <br />
+          roast duck so sumptuously prepared. My grandfather started laughing,
+          an uproarious sound of utter
+          <br />
+          euphoria, the sputtering sound echoing out to snow-capped peaks. Which
+          is why our dish calls for an
+          <br />
+          amazing topping of shaved ice, an honor to those snowed in during the
+          darkest days of the year. Early on,
+          <br />
+          during those days is when we start to realize how important family is
+          to us, our lives, our dreams, and how
+          <br />
+          cooking together binds us together, the happy unity and synergy of our
+          first closest bonds. You will notice
+          <br />
+          a unique binder in the recipe, primarily tying our dough together,
+          giving it a unique crumb, a crumb that
+          <br />
+          lifts our preparation into the rarified air of the finest arts. For my
+          grandfather was also an artist. Early on in
+          <br />
+          Zurich, during the summers of his youth, he would display his works in
+          the little bohemian café, where he
+          <br />
+          one day would meet my grandmother. Sadly, she was taken from us too
+          early, taken by a disease that
+          <br />
+          now would be easily healed. That is progress for you. But we have also
+          started to progress. Now, in the
+          <br />
+          exact area where my grandparents spent so much of their time together,
+          the kitchen. So now we unite the
+          <br />
+          past and present in one dish in honor of their memory. A simple dish,
+          yet one flavored with the nuanced
+          <br />
+          affectations of familial love. But the past is past. We must also look
+          to the future. I now look on my son’s
+          <br />
+          son, the way my grandfather first looked on me as well. I hope to pass
+          on what I have learned, but also try
+          <br />
+          to incorporate the lessons learned by newer generations. So I
+          introduce to the recipe a dash of something
+          <br />
+          a man like my grandfather never would have dreamed of. It adds a
+          certain pizzazz to this otherwise
+          <br />
+          simple dish. In the kitchen at my humble ranch, nestled in the
+          foothills of the Canadian Rockies, there is
+          <br />
+          a picture of me and my grandfather, and another of me and my grandson.
+          Starting the next few weeks,
+          <br />
+          loaves will grace my oven–some prepared in honor of my cherished
+          grandfather, some for my grandson,
+          <br />
+          and some, just for me. Soon, I will share with you one of these
+          recipes. Or will I? I must admit I have my
+          <br />
+          doubts, sharing what has become such a primary, holy experience with
+          you. I jest. But this loaf is holy.
+          <br />
+          That’s why it’s prepared in a bundt pan. The increased surface area
+          results in a more even cooking, thus
+          <br />
+          a delectable crust. Keeping the oven at the right temperature is key.
+          So it might take you a few tries to
+          <br />
+          crack the crust. Each oven is unique so you will have to learn the
+          ways of yours. But I’ve taken up enough
+          <br />
+          of your time with this brief prologue. Come back next week for the
+          actual recipe. Have a wonderful day.
+        </Preamble>
+      </PreambleWrapper>
       {RECIPES.map((comments, i) => (
         <Recipe key={i} comments={comments} index={i + 1} />
       ))}
