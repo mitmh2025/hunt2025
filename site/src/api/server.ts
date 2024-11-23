@@ -404,6 +404,21 @@ export function getRouter({
           },
         };
       },
+      updateRegistration: {
+        middleware: [authMiddleware],
+        handler: async ({ body, req }) => {
+          const team_id = req.user as number;
+          await updateTeam(hunt, redisClient, knex, team_id, body);
+          return getTeamRegistration(req.user as number);
+        },
+      },
+      getRegistration: {
+        middleware: [authMiddleware],
+        handler: async ({ req }) => {
+          const team_id = req.user as number;
+          return getTeamRegistration(team_id);
+        },
+      },
     },
     public: {
       getMyTeamState: {
@@ -674,21 +689,6 @@ export function getRouter({
             status: 404 as const,
             body: null,
           };
-        },
-      },
-      updateRegistration: {
-        middleware: [authMiddleware],
-        handler: async ({ body, req }) => {
-          const team_id = req.user as number;
-          await updateTeam(hunt, redisClient, knex, team_id, body);
-          return getTeamRegistration(req.user as number);
-        },
-      },
-      getRegistration: {
-        middleware: [authMiddleware],
-        handler: async ({ req }) => {
-          const team_id = req.user as number;
-          return getTeamRegistration(team_id);
         },
       },
     },

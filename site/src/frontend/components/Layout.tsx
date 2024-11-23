@@ -22,6 +22,7 @@ const Layout = ({
   styleElements,
   title,
   teamState,
+  noScripts,
 }: {
   innerHTML: string;
   scripts?: string[];
@@ -29,15 +30,14 @@ const Layout = ({
   styleElements?: React.JSX.Element[];
   title?: string;
   teamState?: TeamHuntState;
+  noScripts?: boolean;
 }) => {
   const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
   const devScripts = injectDevScript ? lookupScripts("dev") : [];
   // Scripts need to be deduped
-  const allScripts = [
-    ...lookupScripts("main"),
-    ...(scripts ?? []),
-    ...devScripts,
-  ];
+  const allScripts = noScripts
+    ? []
+    : [...lookupScripts("main"), ...(scripts ?? []), ...devScripts];
   const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
 
   return (

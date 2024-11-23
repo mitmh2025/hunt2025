@@ -1,6 +1,7 @@
 import type { AuthClient } from "../../lib/api/auth_client";
 import type { Client, TeamState } from "../../lib/api/client";
 import type { FrontendClient } from "../../lib/api/frontend_client";
+import type { TeamRegistration } from "../../lib/api/frontend_contract";
 export {};
 
 declare global {
@@ -13,7 +14,7 @@ declare global {
       authApi: AuthClient;
       frontendApi: FrontendClient;
       teamState?: TeamState;
-      authenticated?: boolean;
+      teamRegistration?: TeamRegistration;
     }
   }
 }

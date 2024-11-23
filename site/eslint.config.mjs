@@ -116,6 +116,9 @@ export default tseslint.config(
       // them
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       eqeqeq: ["error"],
+      // This rule requires use of "!" for coercsion when equivalent to an explicit cast,
+      // but that's forbidden by our rule against "!"
+      "@typescript-eslint/non-nullable-type-assertion-style": ["off"],
     },
   },
   {

@@ -11,12 +11,21 @@ import morgan from "morgan";
 import multer from "multer";
 import React from "react";
 import { newAuthClient } from "../../../lib/api/auth_client";
-import { newClient } from "../../../lib/api/client";
+import { cleanUrlEncodedDataFromRegistrationUpdate } from "../components/UpdateRegistrationFormInputs";
 import renderApp from "../utils/renderApp";
+import {
+  responseIsZodError,
+  responseToZodErrors,
+} from "../utils/zodFieldErrors";
+import RegsiteLayout from "./RegsiteLayout";
 import LogIn from "./routes/LogIn";
+import NewRegistration from "./routes/NewRegistration";
 import RegistrationHome from "./routes/RegistrationHome";
 import UpdateRegistration from "./routes/UpdateRegistration";
-import type { MutableTeamRegistration } from "lib/api/frontend_contract";
+import type {
+  MutableTeamRegistration,
+  TeamRegistration,
+} from "lib/api/frontend_contract";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
@@ -42,23 +51,45 @@ export default function ({ apiUrl }: { apiUrl: string }) {
   app.use(express.urlencoded({ extended: false })); // Avoid nonstandard form nonsense
   app.use(multer().none()); // Don't handle file uploads
 
-  app.use((req: Request, _res: Response, next: NextFunction) => {
-    req.api = newClient(
-      apiUrl,
-      req.cookies.mitmh2025_auth as string | undefined,
-    );
-    req.authApi = newAuthClient(apiUrl);
-    req.authenticated = req.cookies.mitmh2025_auth !== undefined;
-    next();
-  });
+  app.use(
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      req.authApi = newAuthClient(
+        apiUrl,
+        req.cookies.mitmh2025_auth as string | undefined,
+      );
+
+      if (req.cookies.mitmh2025_auth) {
+        const registrationResp = await req.authApi.getRegistration();
+        if (registrationResp.status === 401) {
+          // Clear the cookie if the token is invalid
+          res.clearCookie("mitmh2025_auth");
+          next(new Error("Invalid auth token"));
+          return;
+        } else if (registrationResp.status !== 200) {
+          console.log("Failed to load registration data", registrationResp);
+          next(new Error("Failed to load registration data"));
+          return;
+        }
+
+        req.teamRegistration = registrationResp.body;
+      }
+
+      next();
+    }),
+  );
 
   app.get(
     "/",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(
         () => ({
-          node: <RegistrationHome isAuthed={!!req.authenticated} />,
+          node: (
+            <RegsiteLayout>
+              <RegistrationHome isAuthed={!!req.teamRegistration} />
+            </RegsiteLayout>
+          ),
           title: "Registration",
+          noScripts: true,
         }),
         req,
         res,
@@ -70,15 +101,20 @@ export default function ({ apiUrl }: { apiUrl: string }) {
   app.get(
     "/login",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (req.authenticated) {
+      if (req.teamRegistration) {
         res.redirect("/registration");
         return;
       }
 
       await renderApp(
         () => ({
-          node: <LogIn />,
+          node: (
+            <RegsiteLayout>
+              <LogIn />
+            </RegsiteLayout>
+          ),
           title: "Log In",
+          noScripts: true,
         }),
         req,
         res,
@@ -90,7 +126,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
   app.post(
     "/login",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (req.authenticated) {
+      if (req.teamRegistration) {
         res.redirect("/registration");
         return;
       }
@@ -103,8 +139,13 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       const handleErr = (error: string) =>
         renderApp(
           () => ({
-            node: <LogIn error={error} username={username} />,
+            node: (
+              <RegsiteLayout>
+                <LogIn error={error} username={username} />
+              </RegsiteLayout>
+            ),
             title: "Log In",
+            noScripts: true,
           }),
           req,
           res,
@@ -146,27 +187,29 @@ export default function ({ apiUrl }: { apiUrl: string }) {
   app.get(
     "/registration",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (!req.authenticated) {
+      if (!req.teamRegistration) {
         res.redirect("/login");
         return;
       }
 
-      const registrationResp = await req.api.getRegistration();
-      if (registrationResp.status !== 200) {
-        // TODO: handle auth errors
-        next(new Error("Failed to load registration data"));
-        return;
-      }
+      const registration = req.teamRegistration;
 
       await renderApp(
         () => ({
           node: (
-            <UpdateRegistration
-              registration={registrationResp.body}
-              values={registrationResp.body}
-            />
+            <RegsiteLayout>
+              <UpdateRegistration
+                registration={registration}
+                values={registration}
+                message={
+                  req.query.new ? "Registration created successfully!" : ""
+                }
+                errors={{}}
+              />
+            </RegsiteLayout>
           ),
           title: "Registration",
+          noScripts: true,
         }),
         req,
         res,
@@ -178,43 +221,52 @@ export default function ({ apiUrl }: { apiUrl: string }) {
   app.post(
     "/registration",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (!req.authenticated) {
+      if (!req.teamRegistration) {
         res.redirect("/login");
         return;
       }
 
-      const registrationResp = await req.api.getRegistration();
-      if (registrationResp.status !== 200) {
-        // TODO: handle auth errors
-        next(new Error("Failed to load registration data"));
-        return;
-      }
+      const data = cleanUrlEncodedDataFromRegistrationUpdate(
+        req.body as Record<string, string | string[]>,
+      );
 
-      const updateResp = await req.api.updateRegistration({
-        body: req.body as MutableTeamRegistration,
+      const registration = req.teamRegistration;
+      const updateResp = await req.authApi.updateRegistration({
+        body: data,
       });
 
       let message: string;
       let values: MutableTeamRegistration;
+      let errors: { [K in keyof MutableTeamRegistration]?: string };
       if (updateResp.status === 200) {
         message = "Registration updated successfully!";
         values = updateResp.body;
+        errors = {};
+      } else if (responseIsZodError(updateResp)) {
+        message = "Please fix the errors below";
+        values = data;
+        errors = responseToZodErrors(updateResp);
       } else {
-        console.log("ERROR", JSON.stringify(updateResp, null, 2));
-        message = "Failed to update registration data";
-        values = req.body as MutableTeamRegistration;
+        console.log("Unexpected error updating registration", updateResp);
+        message = "An unknown error occurred";
+        values = data;
+        errors = {};
       }
 
       await renderApp(
         () => ({
           node: (
-            <UpdateRegistration
-              registration={registrationResp.body}
-              values={values}
-              message={message}
-            />
+            <RegsiteLayout>
+              <UpdateRegistration
+                registration={registration}
+                values={values}
+                message={message}
+                errors={errors}
+              />
+            </RegsiteLayout>
           ),
           title: "Registration",
+          noScripts: true,
         }),
         req,
         res,
@@ -223,17 +275,96 @@ export default function ({ apiUrl }: { apiUrl: string }) {
     }),
   );
 
-  // TODO
-  // GET /registration/new
-  //   Authed -> redirect to /registration
-  //   Unauthed -> Render registration form
+  app.get(
+    "/registration/new",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      if (req.teamRegistration) {
+        res.redirect("/registration");
+        return;
+      }
 
-  // TODO
-  // POST /registration/new
-  //   Authed -> redirect to /registration, ignore body
-  //   Unauthed -> Process post body
-  //     Valid -> set mitmh2025_auth cookie, redirect to /registration
-  //     Invalid -> render registration form with error messages
+      await renderApp(
+        () => ({
+          node: (
+            <RegsiteLayout>
+              <NewRegistration values={{}} errors={{}} />
+            </RegsiteLayout>
+          ),
+          title: "Register Your Team",
+          noScripts: true,
+        }),
+        req,
+        res,
+        next,
+      );
+    }),
+  );
+
+  app.post(
+    "/registration/new",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      if (req.teamRegistration) {
+        res.redirect("/registration");
+        return;
+      }
+
+      const body = req.body as Record<string, string | string[]>;
+
+      const data = {
+        username: String(body.username),
+        password: String(body.password),
+        ...cleanUrlEncodedDataFromRegistrationUpdate(
+          req.body as Record<string, string | string[]>,
+        ),
+      };
+
+      const createResp = await req.authApi.createRegistration({
+        body: data,
+      });
+
+      if (createResp.status === 200) {
+        res.cookie("mitmh2025_auth", createResp.body.token, {
+          httpOnly: true,
+          secure: true,
+        });
+        res.redirect("/registration?new=1");
+        return;
+      }
+
+      let message: string;
+      let values: Partial<TeamRegistration>;
+      let errors: { [K in keyof TeamRegistration]?: string };
+      if (responseIsZodError(createResp)) {
+        message = "Please fix the errors below";
+        values = data;
+        errors = responseToZodErrors(createResp);
+      } else {
+        console.log("Unexpected error creating registration", createResp);
+        message = "An unknown error occurred";
+        values = data;
+        errors = {};
+      }
+
+      await renderApp(
+        () => ({
+          node: (
+            <RegsiteLayout>
+              <NewRegistration
+                values={values}
+                message={message}
+                errors={errors}
+              />
+            </RegsiteLayout>
+          ),
+          title: "Register Your Team",
+          noScripts: true,
+        }),
+        req,
+        res,
+        next,
+      );
+    }),
+  );
 
   return app;
 }

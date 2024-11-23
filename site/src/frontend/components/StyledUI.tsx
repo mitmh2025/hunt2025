@@ -1,3 +1,4 @@
+import React from "react";
 import { styled } from "styled-components";
 import { deviceMin } from "../utils/breakpoints";
 
@@ -31,20 +32,34 @@ export const Button = styled.button`
 `;
 
 export const TextInput = styled.input`
-  &[type="text"] {
-    border-radius: 0.5rem;
-    border: 1px solid var(--black);
-    box-shadow: 0 0 0 2px var(--gold-700);
-    padding: 0.5rem;
-    font-family: var(--body-font);
-    color: var(--black);
-    font-size: 1rem;
-    margin: 0.5rem;
-    background: var(--gray-000);
+  border-radius: 0.5rem;
+  border: 1px solid var(--black);
+  box-shadow: 0 0 0 2px var(--gold-700);
+  padding: 0.5rem;
+  font-family: var(--body-font);
+  color: var(--black);
+  font-size: 1rem;
+  margin: 0.5rem;
+  background: var(--gray-000);
 
-    &:focus {
-      box-shadow: 0 0 0 0.25rem var(--black);
-    }
+  &:focus {
+    box-shadow: 0 0 0 0.25rem var(--black);
+  }
+`;
+
+export const TextArea = styled.textarea`
+  border-radius: 0.5rem;
+  border: 1px solid var(--black);
+  box-shadow: 0 0 0 2px var(--gold-700);
+  padding: 0.5rem;
+  font-family: var(--body-font);
+  color: var(--black);
+  font-size: 1rem;
+  margin: 0.5rem;
+  background: var(--gray-000);
+
+  &:focus {
+    box-shadow: 0 0 0 0.25rem var(--black);
   }
 `;
 
@@ -57,3 +72,61 @@ export const Wrapper = styled.div`
     width: calc(1080px - 1rem);
   }
 `;
+
+export const ErrorText = styled.div`
+  color: var(--gold-400);
+`;
+
+export const Alert = styled.div`
+  background-color: var(--gold-100);
+  border: 1px solid var(--gold-400);
+  padding: 1em;
+  margin: 1em 0;
+  color: var(--black);
+`;
+
+export function LabeledInputWithError({
+  label,
+  value,
+  error,
+  ...props
+}: {
+  label: string;
+  value?: string | number;
+  error?: string;
+  multiline?: boolean;
+} & React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <div style={{ marginBottom: "2rem" }}>
+      <label style={{ marginLeft: "0.5rem" }}>
+        {label}
+        <br />
+        <TextInput type="text" defaultValue={value} {...props} />
+      </label>
+      {error && <ErrorText>{error}</ErrorText>}
+    </div>
+  );
+}
+
+export function LabeledTextAreaWithError({
+  label,
+  value,
+  error,
+  ...props
+}: {
+  label: string;
+  value?: string | number;
+  error?: string;
+  multiline?: boolean;
+} & React.InputHTMLAttributes<HTMLTextAreaElement>) {
+  return (
+    <div style={{ marginBottom: "2em" }}>
+      <label>
+        {label}
+        <br />
+        <TextArea defaultValue={value} rows={3} cols={80} {...props} />
+      </label>
+      {error && <ErrorText>{error}</ErrorText>}
+    </div>
+  );
+}
