@@ -5,6 +5,7 @@ import JustPlaneWrong from "./artistic-aztec";
 import DoableDouble from "./austere-sink";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
+import MellowPlanet from "./brilliant-center";
 import EducationalRiteOfPassage from "./circular-greece";
 import NetworkingEvent from "./confused-antarctica";
 import SomeAssemblyRequired from "./cultured-rome";
@@ -86,6 +87,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   lab_scrabble: LabScrabble,
   magic_i: MagicI,
   mens_at_my_nose: MensAtMyNose,
+  mellow_planet: MellowPlanet,
   mystery_os: MysteryOs,
   recipe_substitutions: RecipeSubstitutions,
   seating_arrangements: SeatingArrangements,
