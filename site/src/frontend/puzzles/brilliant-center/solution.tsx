@@ -132,7 +132,7 @@ const Solution = (): JSX.Element => {
           <td>TUXEDO</td>
         </tr>
         <tr>
-          <td>"I’m A Believer" band member, autocorrected</td>
+          <td>“I’m A Believer” band member, autocorrected</td>
           <td>MONKEY</td>
         </tr>
         <tr>
