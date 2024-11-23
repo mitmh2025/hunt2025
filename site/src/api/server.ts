@@ -1,4 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
+import { isDeepStrictEqual } from "util";
 import { type ServerInferResponseBody } from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -25,6 +26,7 @@ import { adminContract } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
 import {
   type InternalActivityLogEntry,
+  type MutableTeamRegistration,
   frontendContract,
 } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
@@ -407,8 +409,65 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ body, req }) => {
           const teamId = req.user as number;
-          console.log("TODO: implement updateTeam", teamId, body);
-          return getTeamRegistration(req.user as number);
+
+          const res = await teamRegistrationLog.executeMutation(
+            teamId,
+            redisClient,
+            knex,
+            async (_, mutator) => {
+              const previousRegistration = mutator.getTeamRegistration(teamId);
+              if (!previousRegistration) {
+                throw new Error("Team registration not found");
+              }
+
+              const nameHasChanged = previousRegistration.name !== body.name;
+              const otherFieldsHaveChanged = Object.keys(body)
+                .filter((k) => k !== "name")
+                .some((k) => {
+                  return !isDeepStrictEqual(
+                    body[k as keyof MutableTeamRegistration],
+                    previousRegistration[k as keyof MutableTeamRegistration],
+                  );
+                });
+
+              if (nameHasChanged) {
+                await mutator.appendLog({
+                  type: "team_name_changed",
+                  team_id: teamId,
+                  data: { name: body.name },
+                });
+              }
+
+              if (otherFieldsHaveChanged) {
+                await mutator.appendLog({
+                  type: "team_registration_updated",
+                  team_id: teamId,
+                  data: {
+                    ...body,
+                    name: undefined,
+                  },
+                });
+              }
+            },
+          );
+
+          const newRegistration = res.activityLogEntries
+            .reduce(
+              (acc, entry) => acc.reduce(entry),
+              new TeamInfoIntermediate(),
+            )
+            .formatTeamRegistration();
+
+          if (!newRegistration) {
+            throw new Error(
+              "Reducing new logs resulted in undefined registration",
+            );
+          }
+
+          return {
+            status: 200,
+            body: newRegistration,
+          };
         },
       },
       getRegistration: {

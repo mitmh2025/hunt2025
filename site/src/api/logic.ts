@@ -359,6 +359,13 @@ export class TeamInfoIntermediate {
         case "team_name_changed":
           this.registration.name = entry.data.name;
           break;
+        case "team_registration_updated":
+          this.registration = {
+            username: this.registration.username,
+            password: this.registration.password,
+            name: this.registration.name,
+            ...entry.data,
+          };
       }
     }
     return this;

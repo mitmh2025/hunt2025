@@ -20,7 +20,7 @@ import {
   getTeamIds,
   retryOnAbort,
 } from "./db";
-import { TeamStateIntermediate } from "./logic";
+import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
 import {
   type RedisClient,
   activityLog as redisActivityLog,
@@ -384,6 +384,14 @@ export class TeamRegistrationLogMutator extends Mutator<
   InsertTeamRegistrationLogEntry
 > {
   _dbAppendLog = dbAppendTeamRegistrationLog;
+
+  // Get the team registration as represented by all known registration logs for the team.
+  getTeamRegistration(teamId: number) {
+    const teamLogs = this.log.filter((e) => e.team_id === teamId);
+    return teamLogs
+      .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
+      .formatTeamRegistration();
+  }
 }
 
 export class TeamRegistrationLog extends Log<
