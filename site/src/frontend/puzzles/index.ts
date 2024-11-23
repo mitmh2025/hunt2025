@@ -23,6 +23,7 @@ import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
 import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
+import ReliefPrinting from "./messy-olive";
 import ShellCorporationSix from "./mild-octopus";
 import MysteryOs from "./minty-play";
 import AWalkInThePark from "./misguided-revolution";
@@ -90,6 +91,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mellow_planet: MellowPlanet,
   mystery_os: MysteryOs,
   recipe_substitutions: RecipeSubstitutions,
+  relief_printing: ReliefPrinting,
   seating_arrangements: SeatingArrangements,
   sing_like_a_canary: SingLikeACanary,
   some_assembly_required: SomeAssemblyRequired,
