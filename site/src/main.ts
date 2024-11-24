@@ -9,7 +9,7 @@ const enabledComponents = new Set(
   (process.env.HUNT_COMPONENTS ?? "api,ws,ui,reg").split(","),
 );
 
-const regsitePortStr = process.env.PORT ?? "3001";
+const regsitePortStr = process.env.REGSITE_PORT ?? "3001";
 const regsitePort = isNaN(parseInt(regsitePortStr))
   ? regsitePortStr
   : parseInt(regsitePortStr);

@@ -478,12 +478,14 @@ export function cleanUrlEncodedDataFromRegistrationUpdate(
   const teamValues = cleanArray(formData.teamValues);
 
   const teamLocationValues: {
-    teamLocation: string;
+    teamLocation: MutableTeamRegistration["teamLocation"];
     teamLocationDetailsRemote?: string;
     teamLocationDetailsRoomRequest?: string;
     teamLocationDetailsNoRoomRequested?: string;
   } = {
-    teamLocation: cleanString(formData.teamLocation),
+    teamLocation: cleanString(
+      formData.teamLocation,
+    ) as MutableTeamRegistration["teamLocation"],
   };
   TEAM_LOCATIONS.forEach(({ value, detailKey }) => {
     if (value === teamLocationValues.teamLocation) {

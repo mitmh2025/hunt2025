@@ -217,7 +217,7 @@ export const MutableTeamRegistrationSchema = z.object({
   teamMemberLocations: z.string().min(1).max(255),
 
   // Team location
-  teamLocation: z.string().min(1).max(255),
+  teamLocation: z.enum(["Fully Remote", "Room Requested", "Room Not Required"]),
   teamLocationDetailsRemote: z.string().max(1024).optional(),
   teamLocationDetailsRoomRequest: z.string().max(1024).optional(),
   teamLocationDetailsNoRoomRequested: z.string().max(1024).optional(),

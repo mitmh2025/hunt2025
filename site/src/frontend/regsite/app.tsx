@@ -1,17 +1,20 @@
-import { existsSync } from "fs";
 import path from "path";
-import cookieParser from "cookie-parser";
 import express, {
   type Request,
   type Response,
   type NextFunction,
 } from "express";
 import asyncHandler from "express-async-handler";
-import morgan from "morgan";
-import multer from "multer";
 import React from "react";
 import { newAuthClient } from "../../../lib/api/auth_client";
+import { BaseLayout } from "../components/Layout";
 import { cleanUrlEncodedDataFromRegistrationUpdate } from "../components/UpdateRegistrationFormInputs";
+import {
+  addParserMiddleware,
+  addStaticMiddleware,
+  healthzHandler,
+  logMiddleware,
+} from "../utils/expressMiddleware";
 import renderApp from "../utils/renderApp";
 import {
   responseIsZodError,
@@ -27,29 +30,20 @@ import type {
   TeamRegistration,
 } from "lib/api/frontend_contract";
 
-const LOG_FORMAT_DEBUG =
-  ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
-const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
-
 export default function ({ apiUrl }: { apiUrl: string }) {
   const app = express();
 
   // Install /healthz before the log handler, so we don't log every health check.
-  app.use("/healthz", (_, res) => {
-    res.send("ok");
+  app.use("/healthz", healthzHandler);
+
+  app.use(logMiddleware);
+
+  addStaticMiddleware(app, path.join(__dirname, "static"));
+
+  addParserMiddleware(app, {
+    cookies: true,
+    urlencoded: true,
   });
-
-  app.use(morgan(LOG_FORMAT));
-
-  const staticPath = process.env.STATIC_PATH ?? path.join(__dirname, "static");
-  if (existsSync(staticPath)) {
-    // Serve static assets from the bundle without auth
-    app.use("/static", express.static(staticPath));
-  }
-
-  app.use(cookieParser());
-  app.use(express.urlencoded({ extended: false })); // Avoid nonstandard form nonsense
-  app.use(multer().none()); // Don't handle file uploads
 
   app.use(
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -60,7 +54,10 @@ export default function ({ apiUrl }: { apiUrl: string }) {
 
       if (req.cookies.mitmh2025_auth) {
         const registrationResp = await req.authApi.getRegistration();
-        if (registrationResp.status === 401) {
+        if (
+          registrationResp.status === 401 ||
+          registrationResp.status === 404
+        ) {
           // Clear the cookie if the token is invalid
           res.clearCookie("mitmh2025_auth");
           next(new Error("Invalid auth token"));
@@ -89,7 +86,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
             </RegsiteLayout>
           ),
           title: "Registration",
-          noScripts: true,
+          layout: BaseLayout,
         }),
         req,
         res,
@@ -114,7 +111,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
             </RegsiteLayout>
           ),
           title: "Log In",
-          noScripts: true,
+          layout: BaseLayout,
         }),
         req,
         res,
@@ -145,7 +142,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
               </RegsiteLayout>
             ),
             title: "Log In",
-            noScripts: true,
+            layout: BaseLayout,
           }),
           req,
           res,
@@ -209,7 +206,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
             </RegsiteLayout>
           ),
           title: "Registration",
-          noScripts: true,
+          layout: BaseLayout,
         }),
         req,
         res,
@@ -266,7 +263,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
             </RegsiteLayout>
           ),
           title: "Registration",
-          noScripts: true,
+          layout: BaseLayout,
         }),
         req,
         res,
@@ -291,7 +288,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
             </RegsiteLayout>
           ),
           title: "Register Your Team",
-          noScripts: true,
+          layout: BaseLayout,
         }),
         req,
         res,
@@ -357,7 +354,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
             </RegsiteLayout>
           ),
           title: "Register Your Team",
-          noScripts: true,
+          layout: BaseLayout,
         }),
         req,
         res,

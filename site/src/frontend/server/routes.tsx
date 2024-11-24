@@ -1,12 +1,10 @@
-import cookieParser from "cookie-parser";
-import express, {
+import {
   type Request,
   type Response,
   type RequestHandler,
   type NextFunction,
 } from "express";
 import asyncHandler from "express-async-handler";
-import multer from "multer";
 import { Router } from "websocket-express";
 import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
@@ -19,6 +17,7 @@ import {
   modalPostHandler,
   nodeRequestHandler,
 } from "../rounds/illegal_search";
+import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render500 } from "../utils/renderApp";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
@@ -109,11 +108,12 @@ export function getBaseRouter({
   frontendApiSecret: string;
 }) {
   const router = new Router();
-  router.use(cookieParser());
-  router.use(express.urlencoded({ extended: false })); // Avoid nonstandard form nonsense
-  router.use(express.json());
-  router.use(multer().none()); // Don't handle file uploads
-  router.use(express.text());
+  addParserMiddleware(router, {
+    cookies: true,
+    urlencoded: true,
+    json: true,
+    text: true,
+  });
 
   router.use((req: Request, _res: Response, next: NextFunction) => {
     req.authApi = newAuthClient(apiUrl);

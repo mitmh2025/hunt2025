@@ -15,29 +15,19 @@ function dedupedOrderedItems(scripts: string[]): string[] {
   return deduped;
 }
 
-const Layout = ({
+export const BaseLayout = ({
   innerHTML,
   scripts,
   stylesheets,
   styleElements,
   title,
-  teamState,
-  noScripts,
 }: {
   innerHTML: string;
   scripts?: string[];
   stylesheets?: string[];
   styleElements?: React.JSX.Element[];
   title?: string;
-  teamState?: TeamHuntState;
-  noScripts?: boolean;
 }) => {
-  const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
-  const devScripts = injectDevScript ? lookupScripts("dev") : [];
-  // Scripts need to be deduped
-  const allScripts = noScripts
-    ? []
-    : [...lookupScripts("main"), ...(scripts ?? []), ...devScripts];
   const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
 
   return (
@@ -48,17 +38,52 @@ const Layout = ({
           <link key={s} rel="stylesheet" href={s} />
         ))}
         {styleElements}
-        {injectDevScript && (
+        {process.env.NODE_ENV === "development" && (
           <script src="http://localhost:35729/livereload.js?snipver=1" />
         )}
       </head>
       <body>
         <div id="root" dangerouslySetInnerHTML={{ __html: innerHTML }} />
-        {dedupedOrderedItems(allScripts).map((s) => (
+        {dedupedOrderedItems(scripts ?? []).map((s) => (
           <script key={s} type="text/javascript" src={s} />
         ))}
       </body>
     </html>
+  );
+};
+
+const Layout = ({
+  innerHTML,
+  scripts,
+  stylesheets,
+  styleElements,
+  title,
+  teamState,
+}: {
+  innerHTML: string;
+  scripts?: string[];
+  stylesheets?: string[];
+  styleElements?: React.JSX.Element[];
+  title?: string;
+  teamState?: TeamHuntState;
+}) => {
+  const injectDevScript = process.env.NODE_ENV === "development" && !!teamState;
+  const devScripts = injectDevScript ? lookupScripts("dev") : [];
+  // Scripts are deduped by BaseLayout
+  const allScripts = [
+    ...lookupScripts("main"),
+    ...(scripts ?? []),
+    ...devScripts,
+  ];
+
+  return (
+    <BaseLayout
+      innerHTML={innerHTML}
+      scripts={allScripts}
+      stylesheets={stylesheets}
+      styleElements={styleElements}
+      title={title}
+    />
   );
 };
 

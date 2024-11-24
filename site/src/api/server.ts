@@ -37,7 +37,6 @@ import {
   type Mutator,
   registerTeam,
   teamRegistrationLog,
-  updateTeam,
 } from "./data";
 import {
   formatActivityLogEntryForApi,
@@ -407,8 +406,8 @@ export function getRouter({
       updateRegistration: {
         middleware: [authMiddleware],
         handler: async ({ body, req }) => {
-          const team_id = req.user as number;
-          await updateTeam(hunt, redisClient, knex, team_id, body);
+          const teamId = req.user as number;
+          console.log("TODO: implement updateTeam", teamId, body);
           return getTeamRegistration(req.user as number);
         },
       },

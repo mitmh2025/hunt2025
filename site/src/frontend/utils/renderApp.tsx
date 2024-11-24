@@ -47,7 +47,7 @@ export type RenderedPage =
       node: React.ReactNode; // The element to be placed under the root div
       title?: string; // The desired page <title>
       entrypoints?: Entrypoint[]; // Additional script/stylesheets to include
-      noScripts?: boolean; // If true, don't include any scripts
+      layout?: typeof Layout; // If true, don't include any scripts
     }
   | undefined;
 export type PageRenderer<Params extends ParamsDictionary> = (
@@ -87,18 +87,19 @@ export default async function renderApp<Params extends ParamsDictionary>(
     return lookupStylesheets(entrypoint);
   });
 
+  const LayoutComponent = result.layout ?? Layout;
+
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +
     renderToString(
-      <Layout
+      <LayoutComponent
         scripts={scripts}
         stylesheets={stylesheets}
         title={result.title}
         teamState={req.teamState?.state}
         styleElements={styleElements}
         innerHTML={innerHTML}
-        noScripts={result.noScripts}
       />,
     ) +
     "\n";

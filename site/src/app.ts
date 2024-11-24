@@ -1,7 +1,4 @@
-import { existsSync } from "fs";
 import path from "path";
-import express from "express";
-import morgan from "morgan";
 import { Router, WebSocketExpress } from "websocket-express";
 import { newFrontendClient } from "../lib/api/frontend_client";
 import { activityLog, teamRegistrationLog } from "./api/data";
@@ -14,11 +11,12 @@ import {
   registerUiRoutes,
 } from "./frontend/server/routes";
 import { WebsocketManager } from "./frontend/server/ws";
+import {
+  addStaticMiddleware,
+  healthzHandler,
+  logMiddleware,
+} from "./frontend/utils/expressMiddleware";
 import HUNT from "./huntdata";
-
-const LOG_FORMAT_DEBUG =
-  ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
-const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
 export default async function ({
   enabledComponents,
@@ -42,12 +40,9 @@ export default async function ({
   const app = new WebSocketExpress();
 
   // Install /healthz before the log handler, so we don't log every health check.
-  app.use("/healthz", (_, res) => {
-    // TODO: For API servers, check the health of our database connection?
-    res.send("ok");
-  });
+  app.use("/healthz", healthzHandler);
 
-  app.use(morgan(LOG_FORMAT));
+  app.use(logMiddleware);
 
   if (enabledComponents.has("api")) {
     if (!dbEnvironment) {
@@ -77,13 +72,9 @@ export default async function ({
   }
 
   if (enabledComponents.has("ui")) {
-    const staticPath =
-      process.env.STATIC_PATH ?? path.join(__dirname, "static");
-    if (existsSync(staticPath)) {
-      // Serve static assets from the bundle without auth
-      app.use("/static", express.static(staticPath));
-    }
+    addStaticMiddleware(app, path.join(__dirname, "static"));
   }
+
   if (enabledComponents.has("ui") || enabledComponents.has("ws")) {
     if (!apiUrl) {
       throw new Error("$API_BASE_URL unset but ui or ws server requested");

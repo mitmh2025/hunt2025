@@ -51,7 +51,7 @@ export async function seed(knex: Knex): Promise<void> {
         peopleOther: 0,
         peopleRemote: 0,
         peopleOnCampus: 1,
-        teamLocation: "MIT",
+        teamLocation: "Room Requested",
         acceptUnattached: true,
         teamGoal: "We’d like to complete the Hunt.",
         teamValues: ["Being in the running to win"],
