@@ -11,7 +11,6 @@ import {
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
 import { type Hunt } from "../huntdata/types";
-import { omit } from "../utils/omit";
 import {
   appendActivityLog as dbAppendActivityLog,
   getActivityLog as dbGetActivityLog,

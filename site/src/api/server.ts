@@ -34,6 +34,7 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
+import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
@@ -410,14 +411,14 @@ export function getRouter({
         handler: async ({ body, req }) => {
           const teamId = req.user as number;
 
-          const res = await teamRegistrationLog.executeMutation(
+          const { result } = await teamRegistrationLog.executeMutation(
             teamId,
             redisClient,
             knex,
             async (_, mutator) => {
               const previousRegistration = mutator.getTeamRegistration(teamId);
               if (!previousRegistration) {
-                throw new Error("Team registration not found");
+                return undefined;
               }
 
               const nameHasChanged = previousRegistration.name !== body.name;
@@ -442,31 +443,24 @@ export function getRouter({
                 await mutator.appendLog({
                   type: "team_registration_updated",
                   team_id: teamId,
-                  data: {
-                    ...body,
-                    name: undefined,
-                  },
+                  data: omit(body, "name"),
                 });
               }
+
+              return mutator.getTeamRegistration(teamId);
             },
           );
 
-          const newRegistration = res.activityLogEntries
-            .reduce(
-              (acc, entry) => acc.reduce(entry),
-              new TeamInfoIntermediate(),
-            )
-            .formatTeamRegistration();
-
-          if (!newRegistration) {
-            throw new Error(
-              "Reducing new logs resulted in undefined registration",
-            );
+          if (!result) {
+            return {
+              status: 404,
+              body: null,
+            };
           }
 
           return {
             status: 200,
-            body: newRegistration,
+            body: result,
           };
         },
       },
