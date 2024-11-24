@@ -20,7 +20,7 @@ in {
           hostname = lib.mkIf (config.route53.zone != null) "${name}.${route53.${config.route53.zone}.domain}";
           readyWhen =
             optional (config.route53.zone != null) "aws_route53_record.${name}"
-            ++ map (a: "aws_route53_record.${a}") config.route53.aliases;
+            ++ map (a: "aws_route53_record.${lib.tfSanitize a}") config.route53.aliases;
         };
       }));
     };
@@ -39,7 +39,8 @@ in {
             ];
           };
         })
-      ] ++ map (alias: lib.nameValuePair alias {
+      ] ++ map (alias: lib.nameValuePair (lib.tfSanitize alias) {
+        name = alias;
         type = "CNAME";
         ttl = "300";
         records = [

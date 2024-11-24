@@ -12,7 +12,7 @@
             default = null;
           };
           rr = mkOption {
-            type = types.attrsOf (types.submodule ({ name, ... }: {
+            type = types.tfAttrsOf (types.submodule ({ name, ... }: {
               freeformType = types.anything; # TODO: Use a better type?
               options = {
                 name = mkOption {

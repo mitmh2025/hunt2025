@@ -106,7 +106,7 @@ in {
       description = "ThingsBoard IOT Platform";
 
       wantedBy = ["multi-user.target"];
-      wants = [
+      wants = lib.mkIf cfg.datasource.createLocally [
         "postgresql.service"
       ];
 

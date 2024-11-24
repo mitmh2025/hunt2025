@@ -4,9 +4,9 @@
     route53.zone = "mitmh2025";
     route53.aliases = [
       "auth"
-      "things"
+      "things.staging"
       "tix"
-      "media"
+      "media.staging"
     ];
     machineType = "e2-custom-medium-5120"; # 1 vCPU, 5 GB RAM
     firewall.allowedTCPPorts = [

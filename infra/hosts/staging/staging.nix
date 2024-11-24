@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, radio-media, ... }:
 {
   imports = [
     ../../services/gce-vm.nix
@@ -7,7 +7,6 @@
     ../../services/redis.nix
     ../../services/authentik
     ../../services/zammad.nix
-    ../../services/radio.nix
   ];
   config = lib.mkMerge [
     {
@@ -40,10 +39,10 @@
       users.groups.acme-thingsboard = {};
       users.users.thingsboard.extraGroups = [ "acme-thingsboard" ];
       users.users."${config.services.nginx.user}".extraGroups = [ "acme-thingsboard" ];
-      security.acme.certs."things.mitmh2025.com".group = "acme-thingsboard";
+      security.acme.certs."things.staging.mitmh2025.com".group = "acme-thingsboard";
 
       services.thingsboard.settings = let
-        certDir = config.security.acme.certs."things.mitmh2025.com".directory;
+        certDir = config.security.acme.certs."things.staging.mitmh2025.com".directory;
         credentials = {
           type = "PEM";
           pem.cert_file = "${certDir}/cert.pem";
@@ -62,6 +61,32 @@
         coap.dtls = {
           enabled = true;
           inherit credentials;
+        };
+      };
+    }
+    {
+      hunt.radio = {
+        enable = true;
+        externalHostname = "media.staging.mitmh2025.com";
+      };
+      services.mediamtx.settings = {
+        paths.music = {
+          runOnInit = ''
+            env MUSIC_DIR=${radio-media}/music/ OUTPUT_URL=rtsp://localhost:$RTSP_PORT/$MTX_PATH ${lib.getExe pkgs.liquidsoap} ${../../../radioman/station-break-test.liq}
+          '';
+          runOnInitRestart = true;
+        };
+        paths.ads = {
+          runOnInit = ''
+            ${lib.getExe pkgs.ffmpeg} -re -stream_loop -1 -i ${"${radio-media}/quixotic-shoe/ads.mp3"} -vn -c:a libopus -ar 48000 -b:a 128k -packet_loss 1 -fec true -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
+          '';
+          runOnInitRestart = true;
+        };
+        paths.weather = {
+          runOnInit = ''
+            env MUSIC_DIR=${radio-media}/music/ BREAK_DIR=${radio-media}/icy-box/ OUTPUT_URL=rtsp://localhost:$RTSP_PORT/$MTX_PATH ${lib.getExe pkgs.liquidsoap} ${../../../radioman/station-break-test.liq}
+          '';
+          runOnInitRestart = true;
         };
       };
     }
@@ -97,7 +122,7 @@
             };
             locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
           };
-          "things.mitmh2025.com" = {
+          "things.staging.mitmh2025.com" = {
             forceSSL = true;
             enableACME = true;
             locations."/" = {
