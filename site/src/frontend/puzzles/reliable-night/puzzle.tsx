@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
 import chain from "./assets/chain.png";
 
 const CenteredDiv = styled.div`
@@ -12,14 +13,12 @@ const CenteredDiv = styled.div`
 const PuzzleContent = () => {
   return (
     <>
-      <div className="flavor">
-        <p>
-          As you watch a jeweler assembling chain bracelets, you contemplate how
-          your investigation of Gladys could start off.
-        </p>
-      </div>
+      <p className="puzzle-flavor">
+        As you watch a jeweler assembling chain bracelets, you contemplate how
+        your investigation of Gladys could start off.
+      </p>
       <CenteredDiv>
-        <img
+        <LinkedImage
           src={chain}
           alt="A chain bracelet of seven interlocking golden rings."
         />

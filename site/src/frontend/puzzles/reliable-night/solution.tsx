@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
 import bracelet from "./assets/bracelet.png";
 
 const MonospacedDiv = styled.div`
@@ -34,7 +35,7 @@ const Solution = () => {
         and together they form a larger loop: thematically a chain-link
         bracelet.
       </p>
-      <img
+      <LinkedImage
         src={bracelet}
         alt="An interconnected chain of answers, with the shared three-letter trigrams highlighted in red and all other letters in blue.  The words, in clockwise order from the top, are CHIFFONIER, CREMECARAMEL, RIGHTTOBEARARMS, LAMOTTA, PIDAKALAWAR, SERENDIPSANCTUARY, and RAPOFFKEY."
       />
