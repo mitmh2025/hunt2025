@@ -26,27 +26,28 @@ const Puzzle = (): JSX.Element => {
         </li>
         <li>
           Sent hundreds of years in the past to 2024 by Q, Picard talks to his
-          old friend Cretak in her bar – perhaps hoping that she’ll recognize
-          him from the previous time that their paths crossed due to time
-          travel, in 1893 – but she doesn’t remember him.
+          old friend Cretak in her bar–perhaps hoping that she’ll recognize him
+          from the previous time that their paths crossed due to time travel, in
+          1893–but she doesn’t remember him.
         </li>
         <li>
-          With each of the crew of the Protostar fractured into separate phases
-          where time is passing at vastly different rates, Rok-Tahk deals with
-          the long loneliness of slowly passing time by snuggling with a small
-          toy version of Chef while she sleeps and learning quantum science and
-          other skills that will help her save the rest of the crew.
+          With each of the crew of the <i>Protostar</i> fractured into separate
+          phases where time is passing at vastly different rates, Rok-Tahk deals
+          with the long loneliness of slowly passing time by snuggling with a
+          small toy version of Chef while she sleeps and learning quantum
+          science and other skills that will help her save the rest of the crew.
         </li>
         <li>
           Harry Kim and Chakotay return to 2375 from 15 years in the future to
-          disrupt Voyager’s attempted quantum slipstream flight, which they
-          alone know will lead to the crash landing and destruction of Voyager
-          if allowed to proceed, bearing out Dolim’s initial concerns that the
-          phase variance in the quantum slipstream drive made it into what he
-          described as an Edsel, a disaster waiting to happen.
+          disrupt <i>Voyager</i>’s attempted quantum slipstream flight, which
+          they alone know will lead to the crash landing and destruction of{" "}
+          <i>Voyager</i> if allowed to proceed, bearing out Dolim’s initial
+          concerns that the phase variance in the quantum slipstream drive made
+          it into what he described as an Edsel, a disaster waiting to happen.
         </li>
         <li>
-          Boimler stumbles through a portal and when he awakes on the Enterprise
+          Boimler stumbles through a portal and when he awakes on the{" "}
+          <i>Enterprise</i>
           he sees Lore, a historical figure to him, and assumes that he’s
           dreaming. But when he pokes him he’s really there and he learns that
           he has traveled back in time about 120 years to stardate 2291.6.
@@ -55,7 +56,7 @@ const Puzzle = (): JSX.Element => {
           As the shuttle that Pike and Tyler are in is being drawn into a
           temporal rift where time does not move along a strictly linear course,
           Khan’s detection of deuterium bursts from their shuttle is what helps
-          the Discovery crew rescue them.
+          the <i>Discovery</i> crew rescue them.
         </li>
         <li>
           In an attempt to fulfill a causality loop and prevent his own death,
@@ -85,9 +86,9 @@ const Puzzle = (): JSX.Element => {
         </li>
         <li>
           In 2374, Winn alerts Sisko about a distress call from Captain Lisa
-          Cusak who is stranded on a planet. The crew of the Defiant talk to her
-          as they travel to her rescue, but when they get there they discover
-          that she’d already died more than 3 years earlier and her
+          Cusak who is stranded on a planet. The crew of the <i>Defiant</i> talk
+          to her as they travel to her rescue, but when they get there they
+          discover that she’d already died more than 3 years earlier and her
           conversations with them had all been time-shifted.
         </li>
       </ul>
