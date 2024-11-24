@@ -1,5 +1,5 @@
-const MIN_CLUEPHRASE = "SKIPZEROESINDX";
-const PUZZLE_ANSWER = "LITTLETOM";
+export const MIN_CLUEPHRASE = "SKIPZEROESINDX";
+export const PUZZLE_ANSWER = "LITTLETOM";
 
 type Person = {
   getName: (s?: PuzzleStatus) => string;
@@ -41,7 +41,7 @@ const Dancer: Person = {
     `You go to the dance studio, which has an ornate green glass door and planetarium-esque star designs on the walls. Walking inside, you meet an instructor named ${name}. She refuses to talk to you. "I\'m only interested in talking to moonwalkers. Shamone!"`,
   replyUnsuccessful:
     '"If a moonwalker walks through that green glass door, I\'ll talk to him. Otherwise, beat it!"',
-  replySuccessful: '"Oh hello, spaceman!"',
+  replySuccessful: '"Oh hellooooo, spaceman!"',
   validAnswers: [
     "BUZZALDRIN",
     "EDGARMITCHELL",
@@ -316,7 +316,7 @@ const Sisko: Person = {
     return {
       dialog:
         "\"Yes, the \"person of interest.\" Chief tells me that he's been tampering with some of our secondary systems, but he doesn't know how or to what end. We don't know if he's Starfleet Intelligence or Section 31 or what but either way, I don't like that he's anywhere near my station. There's an Intelligence agent who owes me a favor. She hangs out at a diner down the street. Try and talk to her and see if he's one of hers.\"",
-      nextPerson: null,
+      nextPerson: DinerAgent,
     };
   },
 };
@@ -344,6 +344,76 @@ const Bureaucrat: Person = {
   getPointer: () => ({
     dialog:
       "\"I'm happy to help. That frightful hooligan who barged into my home that evening didn't steal anything or even say anything to me. He just jumped out the window and into the street! I last saw him turn into the diner at the end of the a-l-l-e-y alley.\"",
+    nextPerson: DinerAgent,
+  }),
+};
+
+const DinerAgent: Person = {
+  getName: (status) => {
+    if (
+      status?.clueLettersCollected === "SKIPZEROESINDX" ||
+      status?.clueLettersCollected === "SKIPZEROESIND"
+    ) {
+      return "EVE";
+    } else if (status?.clueLettersCollected === "SKIPZEROESIN") {
+      return "DEE";
+    } else {
+      throw new Error("invalid name condition");
+    }
+  },
+  getIntro: (name: string) =>
+    `At the diner you find an agent named ${name}, sullenly nursing a cup of coffee. She immediately preempts you: "Hey. I'm a paying customer. Free refills. I'm not going anywhere." You explain that you just want to talk, but she cuts you off. "I'm waiting for my Pokemoniker agent in Avonlea to check in. If that ain't you, bayleef me alone."`,
+  replyUnsuccessful:
+    "\"I'm waiting for my source. She's on her way across the water by ferry. Electabuzz off.\"",
+  replySuccessful:
+    '"Finally, Ms. Cuthbert. I\'ve been waiting for you all night."',
+  validAnswers: ["MARILLACUTHBERT"],
+  getPointer: () => ({
+    dialog:
+      "\"There's a man who's been visiting MITropolis Intelligence buildings. I don't think he's one of ours. I don't know who to trust. I think he's somewhere in the Intelligence safehouse right now. Find him.\"",
+    nextPerson: Computer,
+  }),
+};
+
+const Computer: Person = {
+  getName: (status) => {
+    if (status?.clueLettersCollected === "SKIPZEROESINDE") {
+      return "XI";
+    } else if (status?.clueLettersCollected === "SKIPZEROESINDXE") {
+      return "SEC";
+    } else {
+      throw new Error("invalid name condition");
+    }
+  },
+  getIntro: (name: string) =>
+    `At the door of the MITropolis intelligence safehouse, there is a call box. You press the button and a digitized computer voice answers. "Greetings. I am System ${name}. Error: I only accept commands from HQ to open this door.""
+`,
+  replyUnsuccessful:
+    '"Error: I only accept commands from HQ to open this door."',
+  replySuccessful: '"Command accepted. Door opening."',
+  validAnswers: ["HQ"],
+  getPointer: () => ({
+    dialog:
+      "\"There's a man who's been visiting MITropolis Intelligence buildings. I don't think he's one of ours. I don't know who to trust. I think he's somewhere in the Intelligence safehouse right now. Find him.\"",
+    nextPerson: Ending,
+  }),
+};
+
+const Ending: Person = {
+  getName: () => {
+    return "";
+  },
+  getIntro: () =>
+    `You walk in the door--only to be greeted by a team of burly security guards. They march you down the hall and into a white, windowless room occupied only by an agent, a desk, and a dossier. The agent stands up and smiles as the guards push you in and close the door. "Well well well! You've made it here--congratulations! We've been tracking your snooping for some time. Look--we have a case file of all the aliases and disguises you've used in this little adventure." [Case file with number and list of aliases] "Yes, we at the MITropolis Intelligence Team also have an...interest in Billie's former partner. And we have some relevant data we've collected. But that information is for the eyes of said erstwhile 2 P.I. Noir partner only. No one else. So we'll just have to sit in this little room till we finally draw him in. Do you know his name?"`,
+  replyUnsuccessful: '"The man at the desk smiles coldly but says nothing."',
+  replySuccessful:
+    '"LITTLE TOM, you have finally arrived!" the agent exclaims...and then winks at you.',
+  validAnswers: ["LITTLETOM"],
+  getPointer: () => ({
+    dialog:
+      "\"'Little' Tom Tibbets found a new vocation and was scrubbed from the face of MITropolis, vanished from the world...but as you've discovered there were a few loose ends that might lead back to my new identity here. Now that you are impersonating me, you'll find that those clues lead back to you, instead. I'm not 'Little' Tom Tibbets anymore. I'm a spook that you'll never see again.\" His face curves into a thin smirk. \"I hope that in my past life, I haven't done anything that you might regret.\"",
     nextPerson: null,
   }),
 };
+
+export { Roman as FirstPerson };

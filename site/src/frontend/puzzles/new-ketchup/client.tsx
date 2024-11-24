@@ -29,13 +29,7 @@ const Bottom = styled.div`
   }
 `;
 
-const STEPS = [
-  "You start your search with a Roman aristocrat named IULIA.",
-  'She refuses to talk to you. "I will only speak with Spartacus!"',
-  '"Ah, Spartacus. You seek this person? I do not know where he is now, but I know he took dance lessons at a dance studio nearby."',
-];
-
-export const Puzzle = () => {
+const Puzzle = () => {
   // const [step, setStep] = useState(0);
 
   // const [prevSteps, setPrevSteps] = useState<string[]>([]);
@@ -78,3 +72,5 @@ if (elem) {
     "Could not mount Puzzle because #follow-the-rules-root was nowhere to be found",
   );
 }
+
+export default Puzzle;
