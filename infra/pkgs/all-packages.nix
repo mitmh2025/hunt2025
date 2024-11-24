@@ -51,6 +51,10 @@ in {
 
   piper-voices = final.callPackage ./piper-voices.nix {};
 
+  google-cloud-sdk = prev.google-cloud-sdk.override {
+    python = final.python311;
+  };
+
   liquidsoap = let
     version = "2.3.0-rc1";
     ocamlPackages = final.ocaml-ng.ocamlPackages_4_14.overrideScope ocamlPackagesOverlay;

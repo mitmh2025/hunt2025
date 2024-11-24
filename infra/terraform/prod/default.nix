@@ -62,5 +62,6 @@
     ./assets.nix
     ./site.nix
     ./redis.nix
+    ./media.nix
   ];
 }
