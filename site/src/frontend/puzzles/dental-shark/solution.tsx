@@ -1,4 +1,5 @@
 import React from "react";
+import LinkedImage from "../../components/LinkedImage";
 import board_letters from "./assets/board-letters.png";
 import board_locations from "./assets/board-locations.png";
 
@@ -47,7 +48,7 @@ const Solution = () => {
         They also are each in a unique position on the board, as shown below:
       </p>
 
-      <img
+      <LinkedImage
         src={board_locations}
         alt="Monopoly board showing the six locations where the properties listed are located on the board"
       />
@@ -58,7 +59,7 @@ const Solution = () => {
         has a duplicate letter, take that letter.
       </p>
 
-      <img
+      <LinkedImage
         src={board_letters}
         alt="Monopoly board with addition letters spelling out the feeders starting on the space with those feeders"
       />
