@@ -473,6 +473,7 @@ export default function createConfigs(_env, argv) {
 
       // Included on specific puzzle pages
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
+      puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
 
       // Regsite (css only)
       regsite: "./src/frontend/regsite/regsite.css",

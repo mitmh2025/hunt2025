@@ -12,6 +12,7 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [],
   content: {
     component: Puzzle,
+    entrypoint: "puzzle_new_ketchup",
   },
   solution: {
     component: Solution,
