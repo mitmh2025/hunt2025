@@ -419,7 +419,13 @@ export async function registerTeam(
   data: TeamRegistration,
 ) {
   return await retryOnAbort(knex, async (trx) => {
-    const team_id = await dbRegisterTeam(trx, data);
+    const regResult = await dbRegisterTeam(trx, data);
+    if (!regResult.usernameAvailable) {
+      return { usernameAvailable: false };
+    }
+
+    const team_id = regResult.teamId;
+
     await teamRegistrationLog.executeMutation(
       team_id,
       redisClient,
@@ -442,6 +448,7 @@ export async function registerTeam(
         mutator.dirtyTeam(team_id);
       },
     );
-    return team_id;
+
+    return { usernameAvailable: true, teamId: team_id };
   });
 }

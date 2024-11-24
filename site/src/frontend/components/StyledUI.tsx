@@ -74,7 +74,8 @@ export const Wrapper = styled.div`
 `;
 
 export const ErrorText = styled.div`
-  color: var(--gold-400);
+  color: var(--gold-700);
+  margin-left: 0.5rem;
 `;
 
 export const Alert = styled.div`

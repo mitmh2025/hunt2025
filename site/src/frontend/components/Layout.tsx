@@ -28,13 +28,11 @@ export const BaseLayout = ({
   styleElements?: React.JSX.Element[];
   title?: string;
 }) => {
-  const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
-
   return (
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
-        {dedupedOrderedItems(allStyles).map((s) => (
+        {dedupedOrderedItems(stylesheets ?? []).map((s) => (
           <link key={s} rel="stylesheet" href={s} />
         ))}
         {styleElements}
@@ -76,11 +74,13 @@ const Layout = ({
     ...devScripts,
   ];
 
+  const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
+
   return (
     <BaseLayout
       innerHTML={innerHTML}
       scripts={allScripts}
-      stylesheets={stylesheets}
+      stylesheets={allStyles}
       styleElements={styleElements}
       title={title}
     />

@@ -101,8 +101,8 @@ export default function UpdateRegistrationFormInputs({
           }
         : {
             type: "text",
-            min: required ? 1 : 0,
-            max: maxLength,
+            minLength: required ? 1 : 0,
+            maxLength: maxLength,
           }),
     };
   }
@@ -139,8 +139,8 @@ export default function UpdateRegistrationFormInputs({
       </div>
       <div>
         <LabeledInputWithError
-          label="Contact Mailing Address"
-          {...fieldProps("contactMailingAddress")}
+          label="Contact Mailing Address (required)"
+          {...fieldProps("contactMailingAddress", { required: true })}
         />
       </div>
       <div>

@@ -386,16 +386,26 @@ export function getRouter({
         };
       },
       createRegistration: async ({ body }) => {
-        const team_id = await registerTeam(hunt, redisClient, knex, body);
+        const result = await registerTeam(hunt, redisClient, knex, body);
+        if (!result.usernameAvailable) {
+          return {
+            status: 409,
+            body: {
+              error: "username_taken",
+            },
+          };
+        }
+
         const token = jwt.sign(
           {
             user: body.username,
-            team_id,
+            team_id: result.teamId,
             sess_id: genId(),
           },
           jwtSecret,
           {},
         );
+
         return {
           status: 200,
           body: {

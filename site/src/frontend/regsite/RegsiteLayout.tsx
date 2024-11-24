@@ -1,17 +1,27 @@
 import React from "react";
-import { styled } from "styled-components";
-
-const Wrapper = styled.div`
-  margin: 0 auto;
-  width: 900px;
-  max-width: 100%;
-  padding: 5em 1em;
-`;
+import { BaseLayout } from "../components/Layout";
+import { lookupStylesheets } from "../server/assets";
 
 export default function RegsiteLayout({
-  children,
+  innerHTML,
+  stylesheets,
+  styleElements,
+  title,
 }: {
-  children: React.ReactNode;
+  innerHTML: string;
+  scripts?: string[];
+  stylesheets?: string[];
+  styleElements?: React.JSX.Element[];
+  title?: string;
 }) {
-  return <Wrapper>{children}</Wrapper>;
+  const allStyles = [...lookupStylesheets("regsite"), ...(stylesheets ?? [])];
+
+  return (
+    <BaseLayout
+      innerHTML={innerHTML}
+      stylesheets={allStyles}
+      styleElements={styleElements}
+      title={title}
+    />
+  );
 }

@@ -7,7 +7,6 @@ import express, {
 import asyncHandler from "express-async-handler";
 import React from "react";
 import { newAuthClient } from "../../../lib/api/auth_client";
-import { BaseLayout } from "../components/Layout";
 import { cleanUrlEncodedDataFromRegistrationUpdate } from "../components/UpdateRegistrationFormInputs";
 import {
   addParserMiddleware,
@@ -80,13 +79,9 @@ export default function ({ apiUrl }: { apiUrl: string }) {
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(
         () => ({
-          node: (
-            <RegsiteLayout>
-              <RegistrationHome isAuthed={!!req.teamRegistration} />
-            </RegsiteLayout>
-          ),
+          node: <RegistrationHome isAuthed={!!req.teamRegistration} />,
           title: "Registration",
-          layout: BaseLayout,
+          layout: RegsiteLayout,
         }),
         req,
         res,
@@ -105,13 +100,9 @@ export default function ({ apiUrl }: { apiUrl: string }) {
 
       await renderApp(
         () => ({
-          node: (
-            <RegsiteLayout>
-              <LogIn />
-            </RegsiteLayout>
-          ),
+          node: <LogIn />,
           title: "Log In",
-          layout: BaseLayout,
+          layout: RegsiteLayout,
         }),
         req,
         res,
@@ -136,13 +127,9 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       const handleErr = (error: string) =>
         renderApp(
           () => ({
-            node: (
-              <RegsiteLayout>
-                <LogIn error={error} username={username} />
-              </RegsiteLayout>
-            ),
+            node: <LogIn error={error} username={username} />,
             title: "Log In",
-            layout: BaseLayout,
+            layout: RegsiteLayout,
           }),
           req,
           res,
@@ -194,19 +181,17 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       await renderApp(
         () => ({
           node: (
-            <RegsiteLayout>
-              <UpdateRegistration
-                registration={registration}
-                values={registration}
-                message={
-                  req.query.new ? "Registration created successfully!" : ""
-                }
-                errors={{}}
-              />
-            </RegsiteLayout>
+            <UpdateRegistration
+              registration={registration}
+              values={registration}
+              message={
+                req.query.new ? "Registration created successfully!" : ""
+              }
+              errors={{}}
+            />
           ),
           title: "Registration",
-          layout: BaseLayout,
+          layout: RegsiteLayout,
         }),
         req,
         res,
@@ -253,17 +238,15 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       await renderApp(
         () => ({
           node: (
-            <RegsiteLayout>
-              <UpdateRegistration
-                registration={registration}
-                values={values}
-                message={message}
-                errors={errors}
-              />
-            </RegsiteLayout>
+            <UpdateRegistration
+              registration={registration}
+              values={values}
+              message={message}
+              errors={errors}
+            />
           ),
           title: "Registration",
-          layout: BaseLayout,
+          layout: RegsiteLayout,
         }),
         req,
         res,
@@ -282,13 +265,9 @@ export default function ({ apiUrl }: { apiUrl: string }) {
 
       await renderApp(
         () => ({
-          node: (
-            <RegsiteLayout>
-              <NewRegistration values={{}} errors={{}} />
-            </RegsiteLayout>
-          ),
+          node: <NewRegistration values={{}} errors={{}} />,
           title: "Register Your Team",
-          layout: BaseLayout,
+          layout: RegsiteLayout,
         }),
         req,
         res,
@@ -315,9 +294,11 @@ export default function ({ apiUrl }: { apiUrl: string }) {
         ),
       };
 
+      console.log("AAA");
       const createResp = await req.authApi.createRegistration({
         body: data,
       });
+      console.log("BBB", createResp);
 
       if (createResp.status === 200) {
         res.cookie("mitmh2025_auth", createResp.body.token, {
@@ -331,7 +312,11 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       let message: string;
       let values: Partial<TeamRegistration>;
       let errors: { [K in keyof TeamRegistration]?: string };
-      if (responseIsZodError(createResp)) {
+      if (createResp.status === 409) {
+        message = "Username already taken";
+        values = data;
+        errors = {};
+      } else if (responseIsZodError(createResp)) {
         message = "Please fix the errors below";
         values = data;
         errors = responseToZodErrors(createResp);
@@ -345,16 +330,14 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       await renderApp(
         () => ({
           node: (
-            <RegsiteLayout>
-              <NewRegistration
-                values={values}
-                message={message}
-                errors={errors}
-              />
-            </RegsiteLayout>
+            <NewRegistration
+              values={values}
+              message={message}
+              errors={errors}
+            />
           ),
           title: "Register Your Team",
-          layout: BaseLayout,
+          layout: RegsiteLayout,
         }),
         req,
         res,
