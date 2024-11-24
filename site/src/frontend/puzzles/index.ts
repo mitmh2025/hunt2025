@@ -26,6 +26,7 @@ import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
 import ShellCorporationSix from "./mild-octopus";
+import WhyKantWeBeFriendsToo from "./milky-swing";
 import MysteryOs from "./minty-play";
 import AWalkInThePark from "./misguided-revolution";
 import WhatDoTheyCallYou from "./new-ketchup";
@@ -100,6 +101,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   taste_explosion: TasteExplosion,
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
+  why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 
   // Paper Trail
   chemicals_are_sexy: ChemicalsAreSexy,
