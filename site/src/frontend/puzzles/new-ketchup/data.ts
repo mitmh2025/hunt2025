@@ -17,11 +17,6 @@ export type Person = {
   nextPerson?: Person;
 };
 
-export type PuzzleStatus = {
-  lettersCollected: string;
-  clueLettersCollected: string;
-};
-
 const AGENT_NAME = "Agent";
 const Ending: Person = {
   name: AGENT_NAME,

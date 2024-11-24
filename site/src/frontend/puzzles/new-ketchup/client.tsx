@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { createRoot } from "react-dom/client";
+import React, { useState, useRef, useEffect } from "react";
 import { styled } from "styled-components";
 import { Button } from "../../components/StyledUI";
+import { createRoot } from "react-dom/client";
+
 import {
   FirstPerson,
   Line,
@@ -24,6 +25,7 @@ const DialogBox = styled.div`
   color: var(--white);
   font-family: monospace;
   margin-top: 1rem;
+  position: relative;
 
   hr {
     margin-bottom: 1rem;
@@ -43,6 +45,7 @@ const Bottom = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
+  margin-left: -1rem;
   display: flex;
   justify-content: flex-end;
   padding: 0.25rem 1rem;
@@ -192,5 +195,3 @@ if (elem) {
     "Could not mount Puzzle because #follow-the-rules-root was nowhere to be found",
   );
 }
-
-export default Puzzle;
