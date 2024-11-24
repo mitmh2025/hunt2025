@@ -101,7 +101,7 @@ const Puzzle = (): JSX.Element => {
           alt="A wood-textured rectangle with an engraving and a swatch of gray color."
         />
       </SizedWrapper>
-      <SizedWrapper $widthUnits={5}>
+      <SizedWrapper $widthUnits={4}>
         <LinkedImage
           src={image13}
           alt="A wood-textured rectangle with an engraving and a swatch of yellow color."
