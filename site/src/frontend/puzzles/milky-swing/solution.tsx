@@ -7,6 +7,12 @@ const Mono = styled.span`
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
+  th {
+    text-align: left;
+  }
+  td:nth-child(3) {
+    text-align: center;
+  }
   td,
   th {
     padding: 1px 8px;
@@ -117,15 +123,15 @@ const Solution = (): JSX.Element => {
           </td>
         </tr>
       </StyledTable>
+      <h3>Author’s Note</h3>
       <p>
-        Author’s Note: I wanted to include an outtakes video here, but we mostly
-        deleted the failed shots as they occurred and anyway I think I
-        embarrassed myself enough in the actual finished video. So I’ll just
-        leave this short “Oscar” speech: I’d like to thank my wife Susan for all
-        of her patient and wonderful help with props and filming. I also want to
-        thank my friends and neighbors (who all wished to remain anonymous) for
-        agreeing to be in a video that I couldn’t even tell them about until
-        2025. 🙂
+        I wanted to include an outtakes video here, but we mostly deleted the
+        failed shots as they occurred and anyway I think I embarrassed myself
+        enough in the actual finished video. So I’ll just leave this short
+        “Oscar” speech: I’d like to thank my wife Susan for all of her patient
+        and wonderful help with props and filming. I also want to thank my
+        friends and neighbors (who all wished to remain anonymous) for agreeing
+        to be in a video that I couldn’t even tell them about until 2025. 🙂
       </p>
     </>
   );
