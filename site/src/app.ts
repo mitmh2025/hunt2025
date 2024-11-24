@@ -23,6 +23,7 @@ export default async function ({
   dbEnvironment,
   jwtSecret,
   frontendApiSecret,
+  dataApiSecret,
   apiUrl,
   redisUrl,
 }: {
@@ -30,6 +31,7 @@ export default async function ({
   dbEnvironment: string | undefined;
   jwtSecret: string | Buffer | undefined;
   frontendApiSecret: string;
+  dataApiSecret: string;
   apiUrl: string | undefined;
   redisUrl?: string;
 }) {
@@ -64,6 +66,7 @@ export default async function ({
     const apiRouter = getRouter({
       jwtSecret,
       frontendApiSecret,
+      dataApiSecret,
       knex,
       hunt,
       redisClient,
