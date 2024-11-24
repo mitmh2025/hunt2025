@@ -114,7 +114,7 @@ const Solution = () => {
                 Take that muscle, double a letter, and add that first letter
                 that you previously reserved to form a new word. Pluralize that.
               </td>
-              <td>LAT → LATT → LATTE → LATTES</td>
+              <td>LAT → LATT → LATTE → LATTI</td>
             </tr>
             <tr>
               <td>5</td>
@@ -122,7 +122,7 @@ const Solution = () => {
                 Combine your two components, translate them both to the same
                 language, and enjoy!
               </td>
-              <td>THREE LATTE → TRES LECHES</td>
+              <td>THREE LATTI → TRES LECHES</td>
             </tr>
           </tbody>
         </Table>
