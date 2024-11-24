@@ -6,6 +6,7 @@ import DoableDouble from "./austere-sink";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
+import BorderlinePersonality from "./calculating-square";
 import EducationalRiteOfPassage from "./circular-greece";
 import NetworkingEvent from "./confused-antarctica";
 import SomeAssemblyRequired from "./cultured-rome";
@@ -78,6 +79,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_exchange_of_vows: AnExchangeOfVows,
   be_mine: BeMine,
   big_names: BigNames,
+  borderline_personality: BorderlinePersonality,
   broken_record: BrokenRecord,
   commentary: Commentary,
   cruciverbal: Cruciverbal,
