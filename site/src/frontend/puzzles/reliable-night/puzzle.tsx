@@ -10,6 +10,10 @@ const CenteredDiv = styled.div`
   justify-content: center;
 `;
 
+const SizedLinkedImage = styled(LinkedImage)`
+  max-width: 300px;
+`;
+
 const PuzzleContent = () => {
   return (
     <>
@@ -18,7 +22,7 @@ const PuzzleContent = () => {
         your investigation of Gladys could start off.
       </p>
       <CenteredDiv>
-        <LinkedImage
+        <SizedLinkedImage
           src={chain}
           alt="A chain bracelet of seven interlocking golden rings."
         />
