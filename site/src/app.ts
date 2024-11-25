@@ -31,7 +31,7 @@ export default async function ({
   dbEnvironment: string | undefined;
   jwtSecret: string | Buffer | undefined;
   frontendApiSecret: string;
-  dataApiSecret: string;
+  dataApiSecret: string | undefined;
   apiUrl: string | undefined;
   redisUrl?: string;
 }) {
@@ -52,6 +52,9 @@ export default async function ({
     }
     if (!jwtSecret) {
       throw new Error("$JWT_SECRET not defined in production");
+    }
+    if (!dataApiSecret) {
+      throw new Error("$DATA_API_SECRET not defined in production");
     }
 
     const knex = await dbConnect(dbEnvironment);
