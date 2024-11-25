@@ -1,5 +1,4 @@
 import React from "react";
-import Crossword from "../../components/Crossword";
 import { styled } from "styled-components";
 import Dropquote from "../../components/Dropquote";
 
