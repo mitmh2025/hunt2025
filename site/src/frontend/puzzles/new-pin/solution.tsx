@@ -4,7 +4,11 @@ import { Math, MI, MN, MO } from "../../components/MathML";
 const Solution = (): JSX.Element => {
   return (
     <>
-      <p>First, we solve each puzzle.</p>
+      <p>
+        First, we solve each puzzle. The problems look like they might have a
+        unique answer, and the second answer is easy to miss. The first AHA
+        moment is that each problem has two answers.
+      </p>
       <p>
         <strong>Problem 1.</strong> Denote the number of MIT students as{" "}
         <Math>
@@ -84,10 +88,8 @@ const Solution = (): JSX.Element => {
         to 2.
       </p>
       <p>
-        The problems look like they might have a unique answer, and the second
-        answer is easy to miss. The first AHA moment is that each problem has
-        two answers. After that, the smallest answer is in the set 1,2,3,4 and
-        provides the ordering. The second answer provides the letter.
+        After that, the smallest answer is in the set 1,2,3,4 and provides the
+        ordering. The second answer provides the letter.
       </p>
       <p>We have 1 - 20, 2 - 19, 3 - 5, and 4 - 5. The answer is TREE.</p>
     </>
