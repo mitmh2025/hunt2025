@@ -11,6 +11,7 @@ import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
 import NetworkingEvent from "./confused-antarctica";
 import SomeAssemblyRequired from "./cultured-rome";
+import WhoseSongIsItAnyway from "./delirious-mammoth";
 import TheBoardwalk from "./dental-shark";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
@@ -103,6 +104,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   taste_explosion: TasteExplosion,
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
+  whose_song_is_it_anyway: WhoseSongIsItAnyway,
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 
   // Paper Trail
