@@ -352,9 +352,9 @@ export function makeLabels(grid: string[]): string[][] {
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      {DROPQUOTES.map(({ headers, grid }) => {
+      {DROPQUOTES.map(({ headers, grid }, index) => {
         const labels = [headers, ...makeLabels(grid)];
-        return <StyledDropquote labels={labels} />;
+        return <StyledDropquote key={index} labels={labels} />;
       })}
       <StyledHr />
       <StyledDropquote

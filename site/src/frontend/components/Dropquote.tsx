@@ -1,5 +1,5 @@
 import React from "react";
-import Crossword, { CrosswordProps } from "./Crossword";
+import Crossword, { type CrosswordProps } from "./Crossword";
 
 const Dropquote = ({
   labels,

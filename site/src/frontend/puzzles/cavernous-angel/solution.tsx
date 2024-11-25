@@ -51,7 +51,7 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>1</td>
           <td>5 out of 6</td>
-          <td>I don't win them all but I'd say I take BRINE out of six</td>
+          <td>I don’t win them all but I’d say I take BRINE out of six</td>
           <td>FIVE</td>
           <td>BRINE</td>
           <td>
@@ -89,7 +89,7 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>3</td>
           <td>Dutch</td>
-          <td>I'm pushin' this TOUCH all the way to the coast</td>
+          <td>I’m pushin’ this TOUCH all the way to the coast</td>
           <td>LUCK</td>
           <td>TOUCH</td>
           <td>
@@ -109,11 +109,11 @@ const Solution = (): JSX.Element => {
           <td>4</td>
           <td>Fighting Fish</td>
           <td>
-            VENUS'S Arrow never hits the mark / it's always hanging there over
+            VENUS’S Arrow never hits the mark / it’s always hanging there over
             its shadow
           </td>
           <td>ZENO’S</td>
-          <td>VENUS'S</td>
+          <td>VENUS’S</td>
           <td>
             <Mono>O</Mono>
           </td>
@@ -130,7 +130,7 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>5</td>
           <td>Fire Drills</td>
-          <td>I'm here to file my report as the VIEWER of the wolf pack</td>
+          <td>I’m here to file my report as the VIEWER of the wolf pack</td>
           <td>VIXEN</td>
           <td>VIEWER</td>
           <td>
@@ -172,7 +172,7 @@ const Solution = (): JSX.Element => {
           <td>7</td>
           <td>Grade School Games</td>
           <td>
-            You can't make me BLAME by all new rules / Some kids barely practice
+            You can’t make me BLAME by all new rules / Some kids barely practice
             but I do
           </td>
           <td>PLAY</td>
@@ -212,7 +212,7 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>9</td>
           <td>Momento Mori</td>
-          <td>I'm hopelessly nearsighted / not much for SLAIN gazing</td>
+          <td>I’m hopelessly nearsighted / not much for SLAIN gazing</td>
           <td>STAR</td>
           <td>SLAIN</td>
           <td>
@@ -232,7 +232,7 @@ const Solution = (): JSX.Element => {
           <td>10</td>
           <td>Ride</td>
           <td>
-            Looks like gender's over, race came back / Faith is a hammer with a
+            Looks like gender’s over, race came back / Faith is a hammer with a
             book for a GRANULE
           </td>
           <td>HANDLE</td>
@@ -253,7 +253,7 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>11</td>
           <td>Rothko</td>
-          <td>It's like losing the feeling in a phantom LEMUR</td>
+          <td>It’s like losing the feeling in a phantom LEMUR</td>
           <td>LIMB</td>
           <td>LEMUR</td>
           <td>
@@ -293,7 +293,7 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>13</td>
           <td>Warsaw</td>
-          <td>Man it's murder in the morning but it's good for CHORTLE</td>
+          <td>Man it’s murder in the morning but it’s good for CHORTLE</td>
           <td>MORALE</td>
           <td>CHORTLE</td>
           <td>
