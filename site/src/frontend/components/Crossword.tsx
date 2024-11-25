@@ -48,23 +48,25 @@ export type CrosswordProps = {
   labels: string[][];
   /** List of rows of full-sized cell contents */
   fill?: string[][];
-  /** A function that applies custom styles to a cell based on the row and column indices and the label contents of that cell */
+  /** A function that applies custom styles to a cell based on the row and column indices and the fill of that cell */
   getAdditionalCellStyles?: ({
     row,
     column,
-    label,
+    fill,
   }: {
     row: number;
     column: number;
-    label: string;
+    fill: string;
   }) => CSSProperties;
-  /** A function that applies custom styles to a cell's label based on the row and column indices of that cell */
-  getAdditionalLabelStyles?: ({
+  /** A function that applies custom styles to a cell's fill based on the row and column indices of that cell, as well as the fill itself */
+  getAdditionalCellFillStyles?: ({
     row,
     column,
+    fill,
   }: {
     row: number;
     column: number;
+    fill: string;
   }) => CSSProperties;
   className?: string;
 };
@@ -74,7 +76,7 @@ const Crossword = ({
   fill,
   className,
   getAdditionalCellStyles,
-  getAdditionalLabelStyles,
+  getAdditionalCellFillStyles,
 }: CrosswordProps): JSX.Element => {
   return (
     <Grid className={className}>
@@ -91,15 +93,17 @@ const Crossword = ({
                     getAdditionalCellStyles?.({
                       row: i,
                       column: j,
-                      label: "",
+                      fill: cellFill ?? "",
                     }) ?? {}
                   }
                 >
                   {cellFill && cellFill !== "." ? (
                     <CellContents
-                      style={
-                        getAdditionalLabelStyles?.({ row: i, column: j }) ?? {}
-                      }
+                      style={getAdditionalCellFillStyles?.({
+                        row: i,
+                        column: j,
+                        fill: cellFill,
+                      })}
                     >
                       {cellFill}
                     </CellContents>
@@ -111,21 +115,24 @@ const Crossword = ({
                 <StyledCell
                   key={key}
                   style={
-                    getAdditionalCellStyles?.({ row: i, column: j, label }) ??
-                    {}
+                    getAdditionalCellStyles?.({
+                      row: i,
+                      column: j,
+                      fill: cellFill ?? "",
+                    }) ?? {}
                   }
                 >
-                  {label ? (
-                    <CellLabel
-                      style={
-                        getAdditionalLabelStyles?.({ row: i, column: j }) ?? {}
-                      }
-                    >
-                      {label}
-                    </CellLabel>
-                  ) : undefined}
+                  {label ? <CellLabel>{label}</CellLabel> : undefined}
                   {cellFill ? (
-                    <CellContents>{cellFill}</CellContents>
+                    <CellContents
+                      style={getAdditionalCellFillStyles?.({
+                        row: i,
+                        column: j,
+                        fill: cellFill,
+                      })}
+                    >
+                      {cellFill}
+                    </CellContents>
                   ) : undefined}
                 </StyledCell>
               );

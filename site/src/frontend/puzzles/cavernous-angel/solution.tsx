@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import Dropquote from "../../components/Dropquote";
-import { LAST_DROPQUOTE, makeLabels } from "./puzzle";
+import { LAST_DROPQUOTE, makeFill, makeLabels } from "./puzzle";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -33,8 +33,9 @@ const Solution = (): JSX.Element => {
         modified according to specific rules. The original word has a bigram
         substituted for one letter, and another substituted letter replaces a
         single letter elsewhere in the word. This transformation is mirrored by
-        the title as well: <strong>C</strong>ODE → <strong>QU</strong>OTE. The
-        dropquotes are given in alphabetical order by song title.
+        the title as well: <strong>C</strong>O<strong>D</strong>E →{" "}
+        <strong>QU</strong>O<strong>T</strong>E. The dropquotes are given in
+        alphabetical order by song title.
       </p>
       <StyledTable>
         <tr>
@@ -482,7 +483,8 @@ const Solution = (): JSX.Element => {
         now be swapped with the appropriate substitutions:
       </p>
       <StyledDropquote
-        labels={[LAST_DROPQUOTE.headers, ...makeLabels(LAST_DROPQUOTE.grid)]}
+        labels={makeLabels(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
+        fill={makeFill(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
       />
       <p>Solving the new dropquote yields the cluephrases:</p>
       <p>

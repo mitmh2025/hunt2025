@@ -343,22 +343,37 @@ const StyledHr = styled.hr`
   margin-bottom: 1em;
 `;
 
-export function makeLabels(grid: string[]): string[][] {
-  return grid.map((line) =>
-    line.split("").map((char) => (char === "_" ? "" : char)),
+export function makeLabels(headers: string[], grid: string[]): string[][] {
+  const header = Array(headers.length).fill("");
+  const labels = grid.map((line) =>
+    line.split("").map((char) => (char === "_" || char === "’" ? "" : char)),
   );
+  return [header, ...labels];
+}
+
+export function makeFill(headers: string[], grid: string[]): string[][] {
+  const fill = grid.map((line) =>
+    line.split("").map((char) => (char === "’" ? char : "")),
+  );
+  return [headers, ...fill];
 }
 
 const Puzzle = (): JSX.Element => {
   return (
     <>
       {DROPQUOTES.map(({ headers, grid }, index) => {
-        const labels = [headers, ...makeLabels(grid)];
-        return <StyledDropquote key={index} labels={labels} />;
+        return (
+          <StyledDropquote
+            key={index}
+            labels={makeLabels(headers, grid)}
+            fill={makeFill(headers, grid)}
+          />
+        );
       })}
       <StyledHr />
       <StyledDropquote
-        labels={[LAST_DROPQUOTE.headers, ...makeLabels(LAST_DROPQUOTE.grid)]}
+        labels={makeLabels(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
+        fill={makeFill(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
       />
     </>
   );
