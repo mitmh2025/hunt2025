@@ -103,10 +103,17 @@ export class ActivityLogMutator extends Mutator<
     if (!this.allTeams.has(teamId)) {
       throw new Error(`Mutator does not contain state for team ${teamId}`);
     }
-    const state = this._teamStates.get(teamId) ?? {
-      entryCount: 0,
-      state: new TeamStateIntermediate(hunt),
-    };
+
+    let state = this._teamStates.get(teamId);
+    if (!state) {
+      state = {
+        entryCount: 0,
+        state: new TeamStateIntermediate(hunt),
+      };
+
+      this._teamStates.set(teamId, state);
+    }
+
     const allNewEntries = this.log.slice(state.entryCount);
     if (allNewEntries.length > 0) {
       state.entryCount += allNewEntries.length;
@@ -383,14 +390,42 @@ export class TeamRegistrationLogMutator extends Mutator<
   TeamRegistrationLogEntry,
   InsertTeamRegistrationLogEntry
 > {
+  private _teamInfos: Map<
+    number,
+    { entryCount: number; info: TeamInfoIntermediate }
+  >;
   _dbAppendLog = dbAppendTeamRegistrationLog;
+
+  constructor(
+    trx: Knex.Knex.Transaction,
+    log: TeamRegistrationLogEntry[],
+    allTeams: Set<number>,
+  ) {
+    super(trx, log, allTeams);
+    this._teamInfos = new Map();
+  }
 
   // Get the team registration as represented by all known registration logs for the team.
   getTeamRegistration(teamId: number) {
-    const teamLogs = this.log.filter((e) => e.team_id === teamId);
-    return teamLogs
-      .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamRegistration();
+    let info = this._teamInfos.get(teamId);
+    if (!info) {
+      info = {
+        entryCount: 0,
+        info: new TeamInfoIntermediate(),
+      };
+
+      this._teamInfos.set(teamId, info);
+    }
+
+    const allNewEntries = this.log.slice(info.entryCount);
+    if (allNewEntries.length > 0) {
+      info.entryCount += allNewEntries.length;
+      info.info = allNewEntries
+        .filter((e) => e.team_id === teamId)
+        .reduce((acc, entry) => acc.reduce(entry), info.info);
+    }
+
+    return info.info.formatTeamRegistration();
   }
 }
 
