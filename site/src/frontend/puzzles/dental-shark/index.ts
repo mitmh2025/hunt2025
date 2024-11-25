@@ -19,7 +19,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 0,
       description:
-        "The solvers haven’t figured out that the locations are Monopoly properties.",
+        "The solvers haven’t figured out what these answer shave in common.",
       keywords: ["start"],
       nudge:
         "The title of this puzzle, as well as each of the answers is a specific location. Consider how to make them into properties.",
