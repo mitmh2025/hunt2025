@@ -344,7 +344,7 @@ const StyledHr = styled.hr`
 `;
 
 export function makeLabels(headers: string[], grid: string[]): string[][] {
-  const header = Array(headers.length).fill("");
+  const header = Array<string>(headers.length).fill("");
   const labels = grid.map((line) =>
     line.split("").map((char) => (char === "_" || char === "’" ? "" : char)),
   );
