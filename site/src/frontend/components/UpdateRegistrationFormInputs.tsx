@@ -95,6 +95,7 @@ export default function UpdateRegistrationFormInputs({
       value: String(values[name] ?? ""),
       error: errors[name],
       required,
+      autoComplete: "off",
       ...(numeric
         ? {
             type: "number",
@@ -121,6 +122,7 @@ export default function UpdateRegistrationFormInputs({
         <LabeledInputWithError
           label="Contact Name (required)"
           {...fieldProps("contactName", { required: true })}
+          autoComplete="name"
         />
       </div>
       <div>
@@ -128,6 +130,7 @@ export default function UpdateRegistrationFormInputs({
           label="Contact Email (required)"
           {...fieldProps("contactEmail", { required: true })}
           type="email"
+          autoComplete="email"
         />
       </div>
       <div>
@@ -135,12 +138,16 @@ export default function UpdateRegistrationFormInputs({
           label="Contact Phone (required)"
           {...fieldProps("contactPhone", { required: true })}
           type="tel"
+          autoComplete="tel"
         />
       </div>
       <div>
-        <LabeledInputWithError
+        <LabeledTextAreaWithError
           label="Contact Mailing Address (required)"
           {...fieldProps("contactMailingAddress", { required: true })}
+          autoComplete="street-address"
+          rows={3}
+          cols={40}
         />
       </div>
       <div>
@@ -284,6 +291,8 @@ export default function UpdateRegistrationFormInputs({
                       {...fieldProps(detailKey, {
                         maxLength: 1024,
                       })}
+                      rows={3}
+                      cols={80}
                     />
                   </CheckedDetailsDiv>
                 </div>
@@ -363,24 +372,28 @@ export default function UpdateRegistrationFormInputs({
             Are you wiling to welcome unattached Hunters to your team this year?
           </legend>
           <div>
-            <input
-              type="radio"
-              name="acceptUnattached"
-              id="acceptUnattached-yes"
-              value="yes"
-              defaultChecked={values.acceptUnattached === true}
-              required
-            />
-            <label htmlFor="acceptUnattached-yes">Yes</label>
-            <input
-              type="radio"
-              name="acceptUnattached"
-              id="acceptUnattached-no"
-              value="no"
-              defaultChecked={values.acceptUnattached === false}
-              required
-            />
-            <label htmlFor="acceptUnattached-no">No</label>
+            <div>
+              <input
+                type="radio"
+                name="acceptUnattached"
+                id="acceptUnattached-yes"
+                value="yes"
+                defaultChecked={values.acceptUnattached === true}
+                required
+              />
+              <label htmlFor="acceptUnattached-yes">Yes</label>
+            </div>
+            <div>
+              <input
+                type="radio"
+                name="acceptUnattached"
+                id="acceptUnattached-no"
+                value="no"
+                defaultChecked={values.acceptUnattached === false}
+                required
+              />
+              <label htmlFor="acceptUnattached-no">No</label>
+            </div>
             {errors.acceptUnattached && (
               <ErrorText>{errors.acceptUnattached}</ErrorText>
             )}

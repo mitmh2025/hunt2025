@@ -119,13 +119,13 @@ export function LabeledTextAreaWithError({
   value?: string | number;
   error?: string;
   multiline?: boolean;
-} & React.InputHTMLAttributes<HTMLTextAreaElement>) {
+} & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <div style={{ marginBottom: "2em" }}>
       <label>
         {label}
         <br />
-        <TextArea defaultValue={value} rows={3} cols={80} {...props} />
+        <TextArea defaultValue={value} {...props} />
       </label>
       {error && <ErrorText>{error}</ErrorText>}
     </div>

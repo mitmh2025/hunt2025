@@ -19,9 +19,18 @@ export default function LogIn({
             label="Username"
             name="username"
             value={username}
+            autoCapitalize="none"
+            autoCorrect="off"
+            autoComplete="username"
           />
 
-          <LabeledInputWithError label="Password" name="password" />
+          <LabeledInputWithError
+            label="Password"
+            name="password"
+            autoCapitalize="none"
+            autoCorrect="off"
+            autoComplete="current-password"
+          />
 
           <button type="submit">Log In</button>
         </form>

@@ -28,6 +28,9 @@ export default function NewRegistration({
               required
               minLength={1}
               maxLength={32}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="username"
             />
           </div>
           <div>
@@ -39,6 +42,9 @@ export default function NewRegistration({
               required
               minLength={8}
               maxLength={255}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="new-password"
             />
           </div>
           <UpdateRegistrationFormInputs values={values} errors={errors} />

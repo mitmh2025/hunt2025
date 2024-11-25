@@ -200,12 +200,16 @@ button:disabled, .button:disabled {
   cursor: not-allowed;
 }
 
-#registration-button {
+#registration-button, #unattached-hunter-button {
   text-align: center;
 }
 
 #registration-button .button {
   font-size: 2.5rem;
+}
+
+#unattached-hunter-button {
+  margin-top: 4rem;
 }
 
 #registration-subtitle {
@@ -314,6 +318,10 @@ input[type="text"], input[type="email"], input[type="tel"] {
 input[type="number"] {
   width: calc(100% - 1rem);
   max-width: 100px;
+}
+
+input[type="radio"] {
+  margin-right: 0.5rem;
 }
 
 input:read-only {

@@ -16,6 +16,18 @@ export default function RegistrationHome({ isAuthed }: { isAuthed: boolean }) {
             </a>
           )}
         </section>
+        {!isAuthed && (
+          <section id="unattached-hunter-button">
+            <a
+              className="button"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfBDLTjg8mOhWglnCn05QptQ30pqMRbSTx9RBM7Gyc2s-2Grw/viewform?usp=sf_link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Sign up as an individual
+            </a>
+          </section>
+        )}
         <section id="registration-subtitle">
           {isAuthed ? (
             <p>
@@ -23,7 +35,8 @@ export default function RegistrationHome({ isAuthed }: { isAuthed: boolean }) {
             </p>
           ) : (
             <p>
-              Or <a href="/login">log in</a> to update your registration.
+              Or you can <a href="/login">log in</a> to update your
+              registration.
             </p>
           )}
         </section>
