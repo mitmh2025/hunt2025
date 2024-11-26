@@ -23,6 +23,7 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { adminContract } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
+import { dataContract } from "../../lib/api/data_contract";
 import {
   type InternalActivityLogEntry,
   frontendContract,
@@ -38,6 +39,7 @@ import {
   registerTeam,
   teamRegistrationLog,
 } from "./data";
+import dataContractImplementation from "./dataContractImplementation";
 import {
   formatActivityLogEntryForApi,
   formatTeamHuntState,
@@ -114,12 +116,14 @@ function canonicalizeInput(input: string) {
 export function getRouter({
   jwtSecret,
   frontendApiSecret,
+  dataApiSecret,
   knex,
   hunt,
   redisClient,
 }: {
   jwtSecret: string | Buffer;
   frontendApiSecret: string;
+  dataApiSecret: string;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -347,7 +351,9 @@ export function getRouter({
     public: publicContract,
     admin: adminContract,
     frontend: frontendContract,
+    data: dataContract,
   });
+
   const router = s.router(contract, {
     auth: {
       login: async ({
@@ -890,6 +896,7 @@ export function getRouter({
         },
       },
     },
+    data: dataContractImplementation({ knex, dataApiSecret }),
   });
 
   createExpressEndpoints(contract, router, app, {

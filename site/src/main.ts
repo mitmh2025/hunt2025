@@ -40,6 +40,11 @@ if (!frontendApiSecret) {
   throw new Error("$FRONTEND_API_SECRET not defined in production");
 }
 
+let dataApiSecret: string | undefined = process.env.DATA_API_SECRET;
+if (environment === "development" && !dataApiSecret) {
+  dataApiSecret = randomBytes(16).toString("hex");
+}
+
 const redisUrl = process.env.REDIS_URL;
 if (!redisUrl) {
   console.error(
@@ -55,6 +60,7 @@ app({
   dbEnvironment,
   jwtSecret,
   frontendApiSecret,
+  dataApiSecret,
   apiUrl,
   redisUrl,
 })
