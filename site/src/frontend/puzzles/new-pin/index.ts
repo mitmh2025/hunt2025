@@ -32,7 +32,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 90.0,
-      description: "The solvers are the extraction phase.",
+      description: "The solvers are at the extraction phase.",
       keywords: ["extraction"],
       nudge:
         "Look at the smallest and the largest answers to the puzzles separately.",
