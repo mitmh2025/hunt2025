@@ -56,7 +56,7 @@ const Puzzle = (): JSX.Element => {
         </div>
         <div>
           Disheartened, Gram spilled (gasp) the end of the answer to the
-          ultimate question…<strong>[-4]</strong>
+          ultimate question,…<strong>[-4]</strong>
         </div>
         <div>
           Beginning to fly, first entering Angwin Airport…<strong>[+3]</strong>

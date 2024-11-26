@@ -106,12 +106,16 @@ export const Haiku = styled.p<{ $indent: boolean; $margin?: number }>`
   margin-top: ${({ $margin }) => $margin ?? 1}em;
 `;
 
+const FlavorText = styled.p`
+  margin-bottom: 2em;
+`;
+
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <p className="puzzle-flavor">
+      <FlavorText className="puzzle-flavor">
         underneath Ames Street / hidden artwork captivates / from top to bottom
-      </p>
+      </FlavorText>
       {ALL_HAIKU.map(([line1, line2, line3], index) => (
         <Haiku key={index} $indent={index % 2 === 1}>
           {line1}

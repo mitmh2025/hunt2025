@@ -47,10 +47,10 @@ const Puzzle = (): JSX.Element => {
         </li>
         <li>
           Boimler stumbles through a portal and when he awakes on the{" "}
-          <i>Enterprise</i>
-          he sees Lore, a historical figure to him, and assumes that he’s
-          dreaming. But when he pokes him he’s really there and he learns that
-          he has traveled back in time about 120 years to stardate 2291.6.
+          <i>Enterprise</i> he sees Lore, a historical figure to him, and
+          assumes that he’s dreaming. But when he pokes him he’s really there
+          and he learns that he has traveled back in time about 120 years to
+          stardate 2291.6.
         </li>
         <li>
           As the shuttle that Pike and Tyler are in is being drawn into a
