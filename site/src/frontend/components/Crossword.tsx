@@ -1,4 +1,4 @@
-import React, { type CSSProperties } from "react";
+import React, { type ReactNode, type CSSProperties } from "react";
 import { styled } from "styled-components";
 
 const Grid = styled.table`
@@ -47,26 +47,22 @@ export type CrosswordProps = {
   /** List of rows of grid structure and labels. For a blank cell, pass empty string. For a black cell, pass "." */
   labels: string[][];
   /** List of rows of full-sized cell contents */
-  fill?: string[][];
-  /** A function that applies custom styles to a cell based on the row and column indices and the fill of that cell */
+  fill?: ReactNode[][];
+  /** A function that applies custom styles to a cell based on the row and column indices */
   getAdditionalCellStyles?: ({
     row,
     column,
-    fill,
   }: {
     row: number;
     column: number;
-    fill: string;
   }) => CSSProperties;
-  /** A function that applies custom styles to a cell's fill based on the row and column indices of that cell, as well as the fill itself */
+  /** A function that applies custom styles to a cell's fill based on the row and column indices of that cell */
   getAdditionalCellFillStyles?: ({
     row,
     column,
-    fill,
   }: {
     row: number;
     column: number;
-    fill: string;
   }) => CSSProperties;
   className?: string;
 };
@@ -93,7 +89,6 @@ const Crossword = ({
                     getAdditionalCellStyles?.({
                       row: i,
                       column: j,
-                      fill: cellFill ?? "",
                     }) ?? {}
                   }
                 >
@@ -102,7 +97,6 @@ const Crossword = ({
                       style={getAdditionalCellFillStyles?.({
                         row: i,
                         column: j,
-                        fill: cellFill,
                       })}
                     >
                       {cellFill}
@@ -118,7 +112,6 @@ const Crossword = ({
                     getAdditionalCellStyles?.({
                       row: i,
                       column: j,
-                      fill: cellFill ?? "",
                     }) ?? {}
                   }
                 >
@@ -128,7 +121,6 @@ const Crossword = ({
                       style={getAdditionalCellFillStyles?.({
                         row: i,
                         column: j,
-                        fill: cellFill,
                       })}
                     >
                       {cellFill}

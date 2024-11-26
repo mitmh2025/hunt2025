@@ -343,19 +343,16 @@ const StyledHr = styled.hr`
   margin-bottom: 1em;
 `;
 
-export function makeLabels(headers: string[], grid: string[]): string[][] {
-  const header = Array<string>(headers.length).fill("");
-  const labels = grid.map((line) =>
+export function makeLabels(grid: string[]): string[][] {
+  return grid.map((line) =>
     line.split("").map((char) => (char === "_" || char === "’" ? "" : char)),
   );
-  return [header, ...labels];
 }
 
-export function makeFill(headers: string[], grid: string[]): string[][] {
-  const fill = grid.map((line) =>
+export function makeFill(grid: string[]): string[][] {
+  return grid.map((line) =>
     line.split("").map((char) => (char === "’" ? char : "")),
   );
-  return [headers, ...fill];
 }
 
 const Puzzle = (): JSX.Element => {
@@ -365,15 +362,17 @@ const Puzzle = (): JSX.Element => {
         return (
           <StyledDropquote
             key={index}
-            labels={makeLabels(headers, grid)}
-            fill={makeFill(headers, grid)}
+            letterbanks={headers.map((header) => header.split(""))}
+            labels={makeLabels(grid)}
+            fill={makeFill(grid)}
           />
         );
       })}
       <StyledHr />
       <StyledDropquote
-        labels={makeLabels(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
-        fill={makeFill(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
+        letterbanks={LAST_DROPQUOTE.headers.map((header) => header.split(""))}
+        labels={makeLabels(LAST_DROPQUOTE.grid)}
+        fill={makeFill(LAST_DROPQUOTE.grid)}
       />
     </>
   );

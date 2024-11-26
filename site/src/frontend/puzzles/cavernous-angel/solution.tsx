@@ -19,6 +19,20 @@ const StyledDropquote = styled(Dropquote)`
   margin-bottom: 1em;
 `;
 
+const NEW_HEADERS: string[][] = [
+  ["A", "N", "BL", "ME"],
+  ["O", "A", "N", "BL"],
+  ["T", "AG", "A", "N", "N"],
+  ["K", "H", "A", "A", "N"],
+  ["K", "E", "B", "IN"],
+  ["E", "TO", "R"],
+  ["T", "H", "L"],
+  ["BR", "E", "Q", "L", "A"],
+  ["U", "E", "E", "L", "V"],
+  ["E", "IE", "L", "A"],
+  ["T", "K", "A"],
+];
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -483,8 +497,13 @@ const Solution = (): JSX.Element => {
         now be swapped with the appropriate substitutions:
       </p>
       <StyledDropquote
-        labels={makeLabels(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
-        fill={makeFill(LAST_DROPQUOTE.headers, LAST_DROPQUOTE.grid)}
+        letterbanks={NEW_HEADERS}
+        labels={makeLabels(LAST_DROPQUOTE.grid)}
+        fill={makeFill(LAST_DROPQUOTE.grid)}
+        getAdditionalCellFillStyles={() => ({
+          // Make font a bit smaller to fit two characters side by side
+          fontSize: "20px",
+        })}
       />
       <p>Solving the new dropquote yields the cluephrases:</p>
       <p>
