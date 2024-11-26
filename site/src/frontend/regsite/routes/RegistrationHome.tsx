@@ -1,45 +1,58 @@
 import React from "react";
 import RegsiteWrapper from "../RegsiteWrapper";
 
-export default function RegistrationHome({ isAuthed }: { isAuthed: boolean }) {
+export default function RegistrationHome({
+  isAuthed,
+  registrationOpen,
+}: {
+  isAuthed: boolean;
+  registrationOpen: boolean;
+}) {
   return (
     <RegsiteWrapper>
       <div className="container">
         <section id="registration-button">
-          {isAuthed ? (
+          {isAuthed && registrationOpen ? (
             <a className="button" href="/registration/new">
               Update your registration
             </a>
           ) : (
-            <a className="button" href="/registration/new">
+            <a
+              className={`button ${!registrationOpen ? "disabled" : ""}`}
+              href={registrationOpen ? "/registration/new" : "#"}
+            >
               Register your team
             </a>
           )}
         </section>
-        {!isAuthed && (
-          <section id="unattached-hunter-button">
-            <a
-              className="button"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSfBDLTjg8mOhWglnCn05QptQ30pqMRbSTx9RBM7Gyc2s-2Grw/viewform?usp=sf_link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Sign up as an individual
-            </a>
-          </section>
+        {registrationOpen && (
+          <>
+            {!isAuthed && (
+              <section id="unattached-hunter-button">
+                <a
+                  className="button"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSfBDLTjg8mOhWglnCn05QptQ30pqMRbSTx9RBM7Gyc2s-2Grw/viewform?usp=sf_link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Sign up as an individual
+                </a>
+              </section>
+            )}
+            <section id="registration-subtitle">
+              {isAuthed ? (
+                <p>
+                  Or <a href="/logout">log out</a> to register a new team.
+                </p>
+              ) : (
+                <p>
+                  Or you can <a href="/login">log in</a> to update your
+                  registration.
+                </p>
+              )}
+            </section>
+          </>
         )}
-        <section id="registration-subtitle">
-          {isAuthed ? (
-            <p>
-              Or <a href="/logout">log out</a> to register a new team.
-            </p>
-          ) : (
-            <p>
-              Or you can <a href="/login">log in</a> to update your
-              registration.
-            </p>
-          )}
-        </section>
         <section id="updates">
           <h2>Latest Updates</h2>
           <p>
