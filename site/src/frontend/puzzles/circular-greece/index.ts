@@ -39,7 +39,7 @@ const puzzle: PuzzleDefinition = {
       nudge: "Did you know that every class ring has a unique design?",
     },
     {
-      order: 50.0,
+      order: 40.0,
       description:
         "Solvers have identified years and are unsure what to do next.",
       keywords: ["brass rat", "years", "ordering"],
@@ -47,14 +47,21 @@ const puzzle: PuzzleDefinition = {
         "You may be able to place the rings on the provided timeline in order to figure out what to do next.",
     },
     {
-      order: 51.0,
+      order: 41.0,
       description: "Solvers have placed the rings on the rod.",
       keywords: ["brass rat", "rod", "ordering"],
       nudge:
-        "If you align the rings in the same way, you should be able to read down and find an instruction.",
+        "If you align the rings in the same way, you should be able to read down the lines and find an instruction.",
     },
     {
-      order: 52.0,
+      order: 50.0,
+      description: "Solvers have the phrase “SPIN RINGS PER ROD”",
+      keywords: ["brass rat", "rod", "spin"],
+      nudge:
+        "Spin the ring according to the arrows on the rod, one letter per arrow.",
+    },
+    {
+      order: 51.0,
       description:
         "Solvers have placed the rings on the rod, but the instruction looks incorrect.",
       keywords: ["brass rat", "years", "ordering", "flip"],
