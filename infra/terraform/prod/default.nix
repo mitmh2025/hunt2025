@@ -63,5 +63,6 @@
     ./site.nix
     ./redis.nix
     ./media.nix
+    ./things.nix
   ];
 }

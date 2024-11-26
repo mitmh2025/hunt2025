@@ -93,4 +93,16 @@
     grant_role = "cloudsqlsuperuser";
     with_admin_option = true;
   };
+  resource.google_sql_user.things-vm = {
+    name = lib.tfRef ''trimsuffix(google_service_account.things-vm.email, ".gserviceaccount.com")'';
+    instance = lib.tfRef "google_sql_database_instance.prod.name";
+    type = "CLOUD_IAM_SERVICE_ACCOUNT";
+  };
+  resource.postgresql_database.thingsboard = {
+    provider = "postgresql.prod";
+    name = "thingsboard";
+    owner = lib.tfRef "google_sql_user.things-vm.name";
+    encoding = "UTF8";
+    lc_collate = "en_US.UTF8";
+  };
 }

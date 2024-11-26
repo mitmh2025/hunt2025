@@ -172,6 +172,7 @@
           "staging/dev"
           "prod/deploy"
           "prod/media"
+          "prod/things"
         ] (name: nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {

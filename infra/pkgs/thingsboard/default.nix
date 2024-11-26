@@ -70,18 +70,25 @@ let
       -d '//pom:plugin[./pom:artifactId="gradle-maven-plugin"]' \
       -d '//pom:plugin[./pom:executions/pom:execution/pom:id="install-deb"]' \
       -s '//pom:dependencyManagement/pom:dependencies' -t elem -n dependency \
-      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n groupId -v com.kohlschutter.junixsocket \
-      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n artifactId -v junixsocket-core \
-      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n version -v 2.9.1 \
-      -s '//pom:dependencyManagement/pom:dependencies/dependency' -t elem -n type -v pom \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n groupId -v com.kohlschutter.junixsocket \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n artifactId -v junixsocket-core \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n version -v 2.9.1 \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n type -v pom \
+      -s '//pom:dependencyManagement/pom:dependencies' -t elem -n dependency \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n groupId -v com.google.cloud.sql \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n artifactId -v postgres-socket-factory \
+      -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n version -v 1.21.0 \
       pom.xml
     xmlstarlet ed \
       --inplace \
       -N pom=http://maven.apache.org/POM/4.0.0 \
       -s '//pom:dependencies' -t elem -n dependency \
-      -s '//pom:dependencies/dependency' -t elem -n groupId -v com.kohlschutter.junixsocket \
-      -s '//pom:dependencies/dependency' -t elem -n artifactId -v junixsocket-core \
-      -s '//pom:dependencies/dependency' -t elem -n type -v pom \
+      -s '//pom:dependencies/dependency[last()]' -t elem -n groupId -v com.kohlschutter.junixsocket \
+      -s '//pom:dependencies/dependency[last()]' -t elem -n artifactId -v junixsocket-core \
+      -s '//pom:dependencies/dependency[last()]' -t elem -n type -v pom \
+      -s '//pom:dependencies' -t elem -n dependency \
+      -s '//pom:dependencies/dependency[last()]' -t elem -n groupId -v com.google.cloud.sql \
+      -s '//pom:dependencies/dependency[last()]' -t elem -n artifactId -v postgres-socket-factory \
       dao/pom.xml
     xmlstarlet ed \
       --inplace \
@@ -114,7 +121,7 @@ in mavenWithJdk.buildMavenPackage rec {
 
   mvnParameters = "-DskipTests -Dskip.installyarn -Dskip.yarn -Dpkg.installFolder=$out/share/thingsboard -P'!yarn-build' -pl ${lib.concatStringsSep "," projectList}";
 
-  mvnHash = "sha256-33j/g6TR65X/PtrHrBagXpA9M++90Yr0GF/jMCyts+c=";
+  mvnHash = "sha256-pn7XfdrTDIIK8Q3lgxdXJ0i/+/5X9v1Xne9weJPX9wg=";
 
   mvnFetchExtraArgs = {
     preConfigure = defineMvnWrapper;
