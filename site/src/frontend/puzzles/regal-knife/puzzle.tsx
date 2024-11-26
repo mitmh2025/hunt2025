@@ -9,6 +9,12 @@ const StyledCrossword = styled(Crossword)`
   margin-bottom: 1em;
 `;
 
+const FlexContainer = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+`;
+
 export const GRID: string[][] = [
   ["1", "2", "3", ".", ".", "4", "5", "6", "7", ".", ".", "8", "9", "10", "."],
   ["11", "", "", "12", ".", "13", "", "", "", "14", ".", "15", "", "", "16"],
@@ -32,12 +38,16 @@ const Puzzle = (): JSX.Element => {
     <>
       <StyledCrossword labels={GRID} />
       <p>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
-        <audio controls src={aAudio} />
+        <FlexContainer>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
+          A: <audio controls src={aAudio} />
+        </FlexContainer>
       </p>
       <p>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoiler the puzzle */}
-        <audio controls src={dAudio} />
+        <FlexContainer>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoiler the puzzle */}
+          D: <audio controls src={dAudio} />
+        </FlexContainer>
       </p>
     </>
   );
