@@ -136,7 +136,7 @@ const Puzzle = () => {
         </p>
 
         <ImageBox>
-          <p id="firstToggle">
+          <div id="firstToggle">
             <PaddedImg src={image_01} />
             <PaddedImg src={image_02} />
             <PaddedImg src={image_03} />
@@ -161,8 +161,8 @@ const Puzzle = () => {
             <PaddedImg src={image_22} />
             <PaddedImg src={image_23} />
             <PaddedImg src={image_24} />
-          </p>
-          <p id="secondToggle" className="hidden">
+          </div>
+          <div id="secondToggle" className="hidden">
             <PaddedImg src={image_19} />
             <PaddedImg src={image_23} />
             <PaddedImg src={image_21} />
@@ -187,7 +187,7 @@ const Puzzle = () => {
             <PaddedImg src={image_09} />
             <PaddedImg src={image_15} />
             <PaddedImg src={image_13} />
-          </p>
+          </div>
         </ImageBox>
 
         <CenteredP>
