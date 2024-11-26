@@ -85,7 +85,7 @@ const Puzzle = (): JSX.Element => {
       <Group>
         <Name>PAUL</Name>
         <div>
-          Robbie will be here in a second–he’s texting with a friend outside.
+          Robbie will be here in a second—he’s texting with a friend outside.
           Sometimes I worry that he’ll be staring at that screen while he wastes
           away to nothing.
           <Italic>(His chair suddenly makes a loud creaking noise.)</Italic> I
@@ -114,7 +114,7 @@ const Puzzle = (): JSX.Element => {
         <Name>PAUL</Name>
         <div>
           We brought an extra chair in case the other one is broken too. We have
-          to be careful–you never know when there will be a tremendous quake,
+          to be careful—you never know when there will be a tremendous quake,
           plan around it!
         </div>
       </Group>
@@ -126,7 +126,7 @@ const Puzzle = (): JSX.Element => {
         <div>
           Glad my son decided to join us! Sometimes I feel like he barely pays
           any attention to his family. He’s already spent all day watching
-          Spongebob Squarep–er, am I dallying too long on this rant?{" "}
+          Spongebob Squarep—er, am I dallying too long on this rant?{" "}
           <Italic>
             (He sees Theo walk in and sit at a nearby table by himself.)
           </Italic>{" "}
@@ -143,7 +143,7 @@ const Puzzle = (): JSX.Element => {
         <Name>THEO</Name>
         <div>
           Sorry, I didn’t notice you when I came in. I was busy thinking about a
-          climbing trip I’m leaving for tomorrow–we might rig on Alps, a narrow
+          climbing trip I’m leaving for tomorrow—we might rig on Alps, a narrow
           gorge, or in a cave!{" "}
           <Italic>(He notices Sally still sitting at the other table.)</Italic>{" "}
           Sally, why don’t you come join us!
@@ -157,7 +157,7 @@ const Puzzle = (): JSX.Element => {
         <Name>SALLY</Name>
         <div>
           Victor and I saw an interesting movie about classical musicians last
-          night–it was called String Sextet, rated R, although maybe not for the
+          night—it was called String Sextet, rated R, although maybe not for the
           reasons you’d think! Well, nice chatting, but I probably shouldn’t
           leave the kids alone for too long.
         </div>

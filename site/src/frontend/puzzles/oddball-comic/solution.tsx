@@ -226,7 +226,7 @@ const Solution = (): JSX.Element => {
       <Group>
         <Name>PAUL</Name>
         <div>
-          Robbie will be here in a second–he’s texting with a friend outside.
+          Robbie will be here in a second—he’s texting with a friend outside.
           Sometimes I worry that he’ll be staring at that screen while he wa
           <Highlighted>STES AW</Highlighted>ay to nothing.
           <Italic>(His chair suddenly makes a loud creaking noise.)</Italic> I
@@ -283,7 +283,7 @@ const Solution = (): JSX.Element => {
         <Name>PAUL</Name>
         <div>
           We brought an extra chair in case the other one is broken too. We have
-          to be careful–you never know when there will be a tremendou
+          to be careful—you never know when there will be a tremendou
           <Highlighted>S QUAKE, PLAN AT</Highlighted>ound it!
         </div>
       </Group>
@@ -309,7 +309,7 @@ const Solution = (): JSX.Element => {
         <div>
           Glad my son decided to join us! Sometimes I feel like he barely pays
           any attention to his family. He’s already spent all day watching
-          Spongebob <Highlighted>SQUAREP–ER, AM I DAL</Highlighted>lying too
+          Spongebob <Highlighted>SQUAREP—ER, AM I DAL</Highlighted>lying too
           long on this rant?{" "}
           <Italic>
             (He sees Theo walk in and sit at a nearby table by himself.)
@@ -342,7 +342,7 @@ const Solution = (): JSX.Element => {
         <Name>THEO</Name>
         <div>
           Sorry, I didn’t notice you when I came in. I was busy thinking about a
-          climbing trip I’m leaving for tomorrow–we migh
+          climbing trip I’m leaving for tomorrow—we migh
           <Highlighted>T RIG ON ALPS, A NAR</Highlighted>row gorge, or in a
           cave!{" "}
           <Italic>(He notices Sally still sitting at the other table.)</Italic>{" "}
@@ -370,7 +370,7 @@ const Solution = (): JSX.Element => {
         <Name>SALLY</Name>
         <div>
           Victor and I saw an interesting movie about classical musicians last
-          night–it was called String Sex
+          night—it was called String Sex
           <Highlighted>TET, RATED R, AL</Highlighted>though maybe not for the
           reasons you’d think! Well, nice chatting, but I probably shouldn’t
           leave the kids alone for too long.
