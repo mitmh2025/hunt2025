@@ -12,7 +12,13 @@ export async function up(knex: Knex): Promise<void> {
     generatedPrimaryKey(knex, table, "id");
     table.datetime("timestamp").notNullable().defaultTo(knex.fn.now());
     table.integer("team_id").notNullable();
-    table.enu("type", ["team_registered", "team_name_changed"]).notNullable();
+    table
+      .enu("type", [
+        "team_registered",
+        "team_name_changed",
+        "team_registration_updated",
+      ])
+      .notNullable();
     table.jsonb("data");
     table.index(["team_id", "type"]);
   });
