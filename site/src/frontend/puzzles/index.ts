@@ -7,6 +7,7 @@ import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
 import BorderlinePersonality from "./calculating-square";
+import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
 import NetworkingEvent from "./confused-antarctica";
 import SomeAssemblyRequired from "./cultured-rome";
@@ -75,6 +76,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // Stakeout
+  a_badly_broken_quote: ABadlyBrokenQuote,
   a_math_quiz: AMathQuiz,
   a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
