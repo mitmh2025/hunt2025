@@ -21,7 +21,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 0.0,
       description:
-        "Solvers have not figured out that answers are all five letters",
+        "Solvers are working on answering the clues but are unsure of their answers",
       keywords: ["Clues"],
       nudge:
         "There are constraints on the clue answers that can help you cut out incorrect answers. Is there a feature that many of your solid answers have in common?",
@@ -29,7 +29,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 30.0,
       description:
-        "Solvers have not figured out that the answers should be arranged into five 5x5 grids",
+        "Solvers have answered most of the clues and are trying to determine what to do with these answers",
       keywords: ["Shape", "grid", "crossword"],
       nudge:
         "Consider the total number of letters in all of your Across answers, or in all of your down answers. How is that number related to the length of each answer?",
@@ -37,15 +37,15 @@ const puzzle: PuzzleDefinition = {
     {
       order: 60.0,
       description:
-        "Solvers have correctly constructed all five 5x5 grids but do not know how to put them together",
-      keywords: ["Order", "cube", "arrangement"],
+        "Solvers have constructed some grids but do not know how to put them together",
+      keywords: ["Order", "arrangement"],
       nudge:
-        'The clues "horizontal line" and "vertical line" give answers that fit appropriately into your grid. Look for how that idea can be extended in another direction.',
+        "The clues “horizontal line” and “vertical line” give answers that fit appropriately into your grid. Look for how that idea can be extended in another direction.",
     },
     {
       order: 100.0,
       description:
-        "Solvers do not know which directions in the cube should be considered positive or negative",
+        "Solvers have fully arranged all of their answers and are trying to interpret the final number triplets",
       keywords: ["Coordinates", "positive", "negative", "forward", "backward"],
       nudge:
         "The x and y directions should be taken as they usually would be on a graph. For the z direction, consider the title of the puzzle in light of the writing directions in x and y.",

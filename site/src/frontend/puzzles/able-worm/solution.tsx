@@ -2,14 +2,26 @@ import React from "react";
 import { styled } from "styled-components";
 
 const ClueSolutionTable = styled.table`
+  tbody tr td:first-child {
+    padding-right: 1rem;
+  }
   tbody tr td:nth-child(2) {
     font-family: monospace;
   }
 `;
 
 const FinalGridTable = styled.table`
+  margin-top: 1rem;
+  border-spacing: 0;
+  line-height: 1rem;
+  thead tr th {
+    padding-bottom: 0.5rem;
+  }
   tbody tr td {
+    padding-left: 1rem;
+    padding-right: 1rem;
     font-family: monospace;
+    text-align: center;
   }
 `;
 
