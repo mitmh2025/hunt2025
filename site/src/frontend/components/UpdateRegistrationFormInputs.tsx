@@ -263,6 +263,10 @@ export default function UpdateRegistrationFormInputs({
             during the 2025 MIT Mystery Hunt? (required)
           </legend>
           <div>
+            <p>
+              (Note that if you are requesting space at MIT, you must register{" "}
+              <strong>before December 21st</strong>.)
+            </p>
             {TEAM_LOCATIONS.map(
               ({ value, label, detailLabel, detailKey }, i) => (
                 <div key={i}>
