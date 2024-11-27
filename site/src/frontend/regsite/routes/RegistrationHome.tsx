@@ -101,7 +101,7 @@ export default function RegistrationHome({
                 Jr. Day weekend, a student tradition dating back more than 40
                 years. Teams of intrepid adventurers solve puzzles all weekend
                 long in a race to find a coin hidden on campus. To learn more
-                about the tradition and see previous events, check out
+                about the tradition and see previous events, check out{" "}
                 <a href="https://puzzles.mit.edu/">
                   the MIT Puzzle Club’s website
                 </a>
@@ -171,7 +171,7 @@ export default function RegistrationHome({
               <p>
                 Hunt registration for teams will open in{" "}
                 <strong>early December</strong>. The official announcement will
-                be sent to the
+                be sent to the{" "}
                 <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
                   puzzle-hunters mailing list
                 </a>
@@ -191,10 +191,10 @@ export default function RegistrationHome({
                 hunters. When Hunt registration opens in early December, there
                 will also be an opportunity for unattached hunters to register.
                 We will do our best to help match you to a team. Check back
-                later. If you are a student, please reach out to
+                later. If you are a student, please reach out to{" "}
                 <a href="mailto:puzzle-club-exec@mit.edu">
                   puzzle-club-exec@mit.edu
-                </a>
+                </a>{" "}
                 for help getting matched to a team.
               </p>
             </div>
@@ -215,7 +215,7 @@ export default function RegistrationHome({
                 students in October. (Students who would like more information
                 about Puzzle Club events should join the Puzzle Club Discord
                 server — which you can find via the{" "}
-                <a href="https://discord.com/student-hubs">MIT Discord Hub</a>—
+                <a href="https://discord.com/student-hubs">MIT Discord Hub</a> —
                 for more information.)
               </p>
               <p>
@@ -292,10 +292,10 @@ export default function RegistrationHome({
                 <strong>you must have at least 1 current MIT student</strong> on
                 your team (although we recommend having more for logistical
                 reasons). If your team has a concern about this requirement,
-                please reach out to
+                please reach out to{" "}
                 <a href="mailto:puzzle-club-exec@mit.edu">
                   puzzle-club-exec@mit.edu
-                </a>
+                </a>{" "}
                 and we can help facilitate communication with MIT students.
               </p>
             </div>
@@ -395,7 +395,7 @@ export default function RegistrationHome({
                       <p>
                         Reserve by calling Marriott Central Reservations at
                         1-800-228-9290 no later than Friday, December 27th,
-                        2024, to receive the discounted rate, or use
+                        2024, to receive the discounted rate, or use{" "}
                         <a href="https://www.marriott.com/events/start.mi?id=1710512158880&key=GRP">
                           the link
                         </a>
@@ -428,7 +428,7 @@ export default function RegistrationHome({
                       <p>Last Day to Book: Monday, December 16, 2024</p>
                       <p>
                         We have arranged two separate room rates at Le Meridien.
-                        The
+                        The{" "}
                         <a href="https://www.marriott.com/events/start.mi?id=1709830893589&key=GRP">
                           original rate
                         </a>{" "}
@@ -438,7 +438,7 @@ export default function RegistrationHome({
                         night) at{" "}
                         <a href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1728312478960&key=GRP&guestreslink2=true">
                           this link
-                        </a>
+                        </a>{" "}
                         or call 1-800-543-4300 and ask for the MIT Mystery Hunt
                         Puzzle Club 2025 Group rate.
                       </p>
@@ -529,7 +529,7 @@ export default function RegistrationHome({
               </p>
               <p>
                 If you have additional questions about team size, shoot us an
-                email at
+                email at{" "}
                 <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
               </p>
             </div>
@@ -557,10 +557,10 @@ export default function RegistrationHome({
                 to produce and run—around $10 per person. Aside from a few
                 valued corporate sponsors, the MIT Mystery Hunt and the MIT
                 Puzzle Club are primarily funded by a large number of small
-                donations. If you are in a position to do so, your
+                donations. If you are in a position to do so, your{" "}
                 <a href="https://giving.mit.edu/form?fundId=2720842">
                   tax-deductible donations designated to the MIT Puzzle Club
-                </a>
+                </a>{" "}
                 make this event possible.
               </p>
             </div>
@@ -574,8 +574,8 @@ export default function RegistrationHome({
               <p>
                 That’s not a question! But we’re still excited to answer. If you
                 have any additional questions about this year’s event, please
-                email
-                <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
+                email <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>
+                .
               </p>
               <p>This FAQ will grow as the event gets closer.</p>
             </div>
