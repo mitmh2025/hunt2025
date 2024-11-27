@@ -55,6 +55,8 @@ if (!redisUrl) {
   );
 }
 
+const registrationOpen = !process.env.REGISTRATION_CLOSED;
+
 app({
   enabledComponents,
   dbEnvironment,
@@ -76,6 +78,7 @@ app({
 if (enabledComponents.has("reg") && apiUrl) {
   regsite({
     apiUrl,
+    registrationOpen,
   }).listen(regsitePort, () => {
     console.log(`Regsite listening on port ${regsitePort}`);
   });

@@ -3,8 +3,9 @@ import type {
   MutableTeamRegistration,
   TeamRegistration,
 } from "../../../../lib/api/frontend_contract";
-import { Alert } from "../../components/StyledUI";
+import { Alert, LabeledInputWithError } from "../../components/StyledUI";
 import UpdateRegistrationFormInputs from "../../components/UpdateRegistrationFormInputs";
+import RegsiteWrapper from "../RegsiteWrapper";
 
 export default function UpdateRegistration({
   registration,
@@ -18,22 +19,25 @@ export default function UpdateRegistration({
   errors: { [K in keyof MutableTeamRegistration]?: string };
 }) {
   return (
-    <div>
-      <h1>Update Registration</h1>
-      <p>
-        <a href="/">&laquo; Back</a>
-      </p>
-      {message && <Alert>{message}</Alert>}
-      <p>
-        Username: <strong>{registration.username}</strong>
-      </p>
-      <p>
-        Password: <strong>{registration.password}</strong>
-      </p>
-      <form method="POST">
-        <UpdateRegistrationFormInputs values={values} errors={errors} />
-        <input type="submit" />
-      </form>
-    </div>
+    <RegsiteWrapper>
+      <div className="container">
+        <h1>Update Registration</h1>
+        {message && <Alert>{message}</Alert>}
+        <LabeledInputWithError
+          label="Username (cannot be changed)"
+          value={registration.username}
+          readOnly
+        />
+        <LabeledInputWithError
+          label="Password (cannot be changed)"
+          value={registration.password}
+          readOnly
+        />
+        <form method="POST">
+          <UpdateRegistrationFormInputs values={values} errors={errors} />
+          <button type="submit">Update Registration</button>
+        </form>
+      </div>
+    </RegsiteWrapper>
   );
 }

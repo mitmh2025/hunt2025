@@ -7,7 +7,6 @@ import express, {
 import asyncHandler from "express-async-handler";
 import React from "react";
 import { newAuthClient } from "../../../lib/api/auth_client";
-import { BaseLayout } from "../components/Layout";
 import { cleanUrlEncodedDataFromRegistrationUpdate } from "../components/UpdateRegistrationFormInputs";
 import {
   addParserMiddleware,
@@ -30,7 +29,13 @@ import type {
   TeamRegistration,
 } from "lib/api/frontend_contract";
 
-export default function ({ apiUrl }: { apiUrl: string }) {
+export default function ({
+  apiUrl,
+  registrationOpen,
+}: {
+  apiUrl: string;
+  registrationOpen: boolean;
+}) {
   const app = express();
 
   // Install /healthz before the log handler, so we don't log every health check.
@@ -81,12 +86,13 @@ export default function ({ apiUrl }: { apiUrl: string }) {
       await renderApp(
         () => ({
           node: (
-            <RegsiteLayout>
-              <RegistrationHome isAuthed={!!req.teamRegistration} />
-            </RegsiteLayout>
+            <RegistrationHome
+              isAuthed={!!req.teamRegistration}
+              registrationOpen={registrationOpen}
+            />
           ),
           title: "Registration",
-          layout: BaseLayout,
+          layout: RegsiteLayout,
         }),
         req,
         res,
@@ -95,106 +101,98 @@ export default function ({ apiUrl }: { apiUrl: string }) {
     }),
   );
 
-  app.get(
-    "/login",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (req.teamRegistration) {
-        res.redirect("/registration");
-        return;
-      }
+  if (registrationOpen) {
+    app.get(
+      "/login",
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (req.teamRegistration) {
+          res.redirect("/registration");
+          return;
+        }
 
-      await renderApp(
-        () => ({
-          node: (
-            <RegsiteLayout>
-              <LogIn />
-            </RegsiteLayout>
-          ),
-          title: "Log In",
-          layout: BaseLayout,
-        }),
-        req,
-        res,
-        next,
-      );
-    }),
-  );
-
-  app.post(
-    "/login",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (req.teamRegistration) {
-        res.redirect("/registration");
-        return;
-      }
-
-      const { username, password } = req.body as {
-        username?: string;
-        password?: string;
-      };
-
-      const handleErr = (error: string) =>
-        renderApp(
+        await renderApp(
           () => ({
-            node: (
-              <RegsiteLayout>
-                <LogIn error={error} username={username} />
-              </RegsiteLayout>
-            ),
+            node: <LogIn />,
             title: "Log In",
-            layout: BaseLayout,
+            layout: RegsiteLayout,
           }),
           req,
           res,
           next,
         );
+      }),
+    );
 
-      if (!username || !password) {
-        await handleErr("Username and password are required.");
-        return;
-      }
+    app.post(
+      "/login",
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (req.teamRegistration) {
+          res.redirect("/registration");
+          return;
+        }
 
-      const authResp = await req.authApi.login({
-        body: { username, password },
-      });
+        const { username, password } = req.body as {
+          username?: string;
+          password?: string;
+        };
 
-      if (authResp.status === 200) {
-        res.cookie("mitmh2025_auth", authResp.body.token, {
-          httpOnly: true,
-          secure: true,
+        const handleErr = (error: string) =>
+          renderApp(
+            () => ({
+              node: <LogIn error={error} username={username} />,
+              title: "Log In",
+              layout: RegsiteLayout,
+            }),
+            req,
+            res,
+            next,
+          );
+
+        if (!username || !password) {
+          await handleErr("Username and password are required.");
+          return;
+        }
+
+        const authResp = await req.authApi.login({
+          body: { username, password },
         });
-        res.redirect("/registration");
-        return;
-      }
 
-      if (authResp.status === 403) {
-        await handleErr("Invalid username or password.");
-        return;
-      }
+        if (authResp.status === 200) {
+          res.cookie("mitmh2025_auth", authResp.body.token, {
+            httpOnly: true,
+            secure: true,
+          });
+          res.redirect("/registration");
+          return;
+        }
 
-      await handleErr("An unknown error occurred.");
-    }),
-  );
+        if (authResp.status === 403) {
+          await handleErr("Invalid username or password.");
+          return;
+        }
 
-  app.get("/logout", (_req: Request, res: Response) => {
-    res.clearCookie("mitmh2025_auth");
-    res.redirect("/");
-  });
+        await handleErr("An unknown error occurred.");
+      }),
+    );
 
-  app.get(
-    "/registration",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (!req.teamRegistration) {
-        res.redirect("/login");
-        return;
-      }
+    app.get("/logout", (_req: Request, res: Response) => {
+      res.clearCookie("mitmh2025_auth");
+      res.redirect("/");
+    });
 
-      const registration = req.teamRegistration;
+    app.get(
+      "/registration",
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (!req.teamRegistration) {
+          res.redirect("/login");
+          return;
+        }
 
-      await renderApp(
-        () => ({
-          node: (
-            <RegsiteLayout>
+        const registration = req.teamRegistration;
+
+        await renderApp(
+          () => ({
+            node: (
               <UpdateRegistration
                 registration={registration}
                 values={registration}
@@ -203,165 +201,161 @@ export default function ({ apiUrl }: { apiUrl: string }) {
                 }
                 errors={{}}
               />
-            </RegsiteLayout>
-          ),
-          title: "Registration",
-          layout: BaseLayout,
-        }),
-        req,
-        res,
-        next,
-      );
-    }),
-  );
+            ),
+            title: "Registration",
+            layout: RegsiteLayout,
+          }),
+          req,
+          res,
+          next,
+        );
+      }),
+    );
 
-  app.post(
-    "/registration",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (!req.teamRegistration) {
-        res.redirect("/login");
-        return;
-      }
+    app.post(
+      "/registration",
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (!req.teamRegistration) {
+          res.redirect("/login");
+          return;
+        }
 
-      const data = cleanUrlEncodedDataFromRegistrationUpdate(
-        req.body as Record<string, string | string[]>,
-      );
+        const data = cleanUrlEncodedDataFromRegistrationUpdate(
+          req.body as Record<string, string | string[]>,
+        );
 
-      const registration = req.teamRegistration;
-      const updateResp = await req.authApi.updateRegistration({
-        body: data,
-      });
+        const registration = req.teamRegistration;
+        const updateResp = await req.authApi.updateRegistration({
+          body: data,
+        });
 
-      let message: string;
-      let values: MutableTeamRegistration;
-      let errors: { [K in keyof MutableTeamRegistration]?: string };
-      if (updateResp.status === 200) {
-        message = "Registration updated successfully!";
-        values = updateResp.body;
-        errors = {};
-      } else if (responseIsZodError(updateResp)) {
-        message = "Please fix the errors below";
-        values = data;
-        errors = responseToZodErrors(updateResp);
-      } else {
-        console.log("Unexpected error updating registration", updateResp);
-        message = "An unknown error occurred";
-        values = data;
-        errors = {};
-      }
+        let message: string;
+        let values: MutableTeamRegistration;
+        let errors: { [K in keyof MutableTeamRegistration]?: string };
+        if (updateResp.status === 200) {
+          message = "Registration updated successfully!";
+          values = updateResp.body;
+          errors = {};
+        } else if (responseIsZodError(updateResp)) {
+          message = "Please fix the errors below";
+          values = data;
+          errors = responseToZodErrors(updateResp);
+        } else {
+          console.log("Unexpected error updating registration", updateResp);
+          message = "An unknown error occurred";
+          values = data;
+          errors = {};
+        }
 
-      await renderApp(
-        () => ({
-          node: (
-            <RegsiteLayout>
+        await renderApp(
+          () => ({
+            node: (
               <UpdateRegistration
                 registration={registration}
                 values={values}
                 message={message}
                 errors={errors}
               />
-            </RegsiteLayout>
+            ),
+            title: "Registration",
+            layout: RegsiteLayout,
+          }),
+          req,
+          res,
+          next,
+        );
+      }),
+    );
+
+    app.get(
+      "/registration/new",
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (req.teamRegistration) {
+          res.redirect("/registration");
+          return;
+        }
+
+        await renderApp(
+          () => ({
+            node: <NewRegistration values={{}} errors={{}} />,
+            title: "Register Your Team",
+            layout: RegsiteLayout,
+          }),
+          req,
+          res,
+          next,
+        );
+      }),
+    );
+
+    app.post(
+      "/registration/new",
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (req.teamRegistration) {
+          res.redirect("/registration");
+          return;
+        }
+
+        const body = req.body as Record<string, string | string[]>;
+
+        const data = {
+          username: String(body.username),
+          password: String(body.password),
+          ...cleanUrlEncodedDataFromRegistrationUpdate(
+            req.body as Record<string, string | string[]>,
           ),
-          title: "Registration",
-          layout: BaseLayout,
-        }),
-        req,
-        res,
-        next,
-      );
-    }),
-  );
+        };
 
-  app.get(
-    "/registration/new",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (req.teamRegistration) {
-        res.redirect("/registration");
-        return;
-      }
-
-      await renderApp(
-        () => ({
-          node: (
-            <RegsiteLayout>
-              <NewRegistration values={{}} errors={{}} />
-            </RegsiteLayout>
-          ),
-          title: "Register Your Team",
-          layout: BaseLayout,
-        }),
-        req,
-        res,
-        next,
-      );
-    }),
-  );
-
-  app.post(
-    "/registration/new",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (req.teamRegistration) {
-        res.redirect("/registration");
-        return;
-      }
-
-      const body = req.body as Record<string, string | string[]>;
-
-      const data = {
-        username: String(body.username),
-        password: String(body.password),
-        ...cleanUrlEncodedDataFromRegistrationUpdate(
-          req.body as Record<string, string | string[]>,
-        ),
-      };
-
-      const createResp = await req.authApi.createRegistration({
-        body: data,
-      });
-
-      if (createResp.status === 200) {
-        res.cookie("mitmh2025_auth", createResp.body.token, {
-          httpOnly: true,
-          secure: true,
+        const createResp = await req.authApi.createRegistration({
+          body: data,
         });
-        res.redirect("/registration?new=1");
-        return;
-      }
 
-      let message: string;
-      let values: Partial<TeamRegistration>;
-      let errors: { [K in keyof TeamRegistration]?: string };
-      if (responseIsZodError(createResp)) {
-        message = "Please fix the errors below";
-        values = data;
-        errors = responseToZodErrors(createResp);
-      } else {
-        console.log("Unexpected error creating registration", createResp);
-        message = "An unknown error occurred";
-        values = data;
-        errors = {};
-      }
+        if (createResp.status === 200) {
+          res.cookie("mitmh2025_auth", createResp.body.token, {
+            httpOnly: true,
+            secure: true,
+          });
+          res.redirect("/registration?new=1");
+          return;
+        }
 
-      await renderApp(
-        () => ({
-          node: (
-            <RegsiteLayout>
+        let message: string;
+        let values: Partial<TeamRegistration>;
+        let errors: { [K in keyof TeamRegistration]?: string };
+        if (createResp.status === 409) {
+          message = "Username already taken";
+          values = data;
+          errors = {};
+        } else if (responseIsZodError(createResp)) {
+          message = "Please fix the errors below";
+          values = data;
+          errors = responseToZodErrors(createResp);
+        } else {
+          console.log("Unexpected error creating registration", createResp);
+          message = "An unknown error occurred";
+          values = data;
+          errors = {};
+        }
+
+        await renderApp(
+          () => ({
+            node: (
               <NewRegistration
                 values={values}
                 message={message}
                 errors={errors}
               />
-            </RegsiteLayout>
-          ),
-          title: "Register Your Team",
-          layout: BaseLayout,
-        }),
-        req,
-        res,
-        next,
-      );
-    }),
-  );
+            ),
+            title: "Register Your Team",
+            layout: RegsiteLayout,
+          }),
+          req,
+          res,
+          next,
+        );
+      }),
+    );
+  }
 
   return app;
 }

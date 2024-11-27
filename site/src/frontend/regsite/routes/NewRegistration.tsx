@@ -2,6 +2,7 @@ import React from "react";
 import type { TeamRegistration } from "../../../../lib/api/frontend_contract";
 import { Alert, LabeledInputWithError } from "../../components/StyledUI";
 import UpdateRegistrationFormInputs from "../../components/UpdateRegistrationFormInputs";
+import RegsiteWrapper from "../RegsiteWrapper";
 
 export default function NewRegistration({
   values,
@@ -13,38 +14,43 @@ export default function NewRegistration({
   errors: { [K in keyof TeamRegistration]?: string };
 }) {
   return (
-    <div>
-      <h1>Register Your Team</h1>
-      <p>
-        <a href="/">&laquo; Back</a>
-      </p>
-      {message && <Alert>{message}</Alert>}
-      <form method="POST">
-        <div>
-          <LabeledInputWithError
-            label="Username (cannot be changed later)"
-            name="username"
-            value={values.username}
-            error={errors.username}
-            required
-            min={1}
-            max={32}
-          />
-        </div>
-        <div>
-          <LabeledInputWithError
-            label="Password (cannot be changed later, will be displayed in clear text)"
-            name="password"
-            value={values.password}
-            error={errors.password}
-            required
-            min={8}
-            max={255}
-          />
-        </div>
-        <UpdateRegistrationFormInputs values={values} errors={errors} />
-        <input type="submit" />
-      </form>
-    </div>
+    <RegsiteWrapper>
+      <div className="container">
+        <h2>Register Your Team</h2>
+        {message && <Alert>{message}</Alert>}
+        <form method="POST">
+          <div>
+            <LabeledInputWithError
+              label="Username (cannot be changed later)"
+              name="username"
+              value={values.username}
+              error={errors.username}
+              required
+              minLength={1}
+              maxLength={32}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="username"
+            />
+          </div>
+          <div>
+            <LabeledInputWithError
+              label="Password (cannot be changed later, will be displayed in clear text)"
+              name="password"
+              value={values.password}
+              error={errors.password}
+              required
+              minLength={8}
+              maxLength={255}
+              autoCapitalize="none"
+              autoCorrect="off"
+              autoComplete="new-password"
+            />
+          </div>
+          <UpdateRegistrationFormInputs values={values} errors={errors} />
+          <button type="submit">Register Team</button>
+        </form>
+      </div>
+    </RegsiteWrapper>
   );
 }
