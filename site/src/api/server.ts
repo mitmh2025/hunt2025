@@ -1,4 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
+import { isDeepStrictEqual } from "util";
 import { type ServerInferResponseBody } from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -26,6 +27,7 @@ import { c, authContract, publicContract } from "../../lib/api/contract";
 import { dataContract } from "../../lib/api/data_contract";
 import {
   type InternalActivityLogEntry,
+  type MutableTeamRegistration,
   frontendContract,
 } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
@@ -33,6 +35,7 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
+import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
@@ -413,8 +416,58 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ body, req }) => {
           const teamId = req.user as number;
-          console.log("TODO: implement updateTeam", teamId, body);
-          return getTeamRegistration(req.user as number);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            teamId,
+            redisClient,
+            knex,
+            async (_, mutator) => {
+              const previousRegistration = mutator.getTeamRegistration(teamId);
+              if (!previousRegistration) {
+                return undefined;
+              }
+
+              const nameHasChanged = previousRegistration.name !== body.name;
+              const otherFieldsHaveChanged = Object.keys(body)
+                .filter((k) => k !== "name")
+                .some((k) => {
+                  return !isDeepStrictEqual(
+                    body[k as keyof MutableTeamRegistration],
+                    previousRegistration[k as keyof MutableTeamRegistration],
+                  );
+                });
+
+              if (nameHasChanged) {
+                await mutator.appendLog({
+                  type: "team_name_changed",
+                  team_id: teamId,
+                  data: { name: body.name },
+                });
+              }
+
+              if (otherFieldsHaveChanged) {
+                await mutator.appendLog({
+                  type: "team_registration_updated",
+                  team_id: teamId,
+                  data: omit(body, "name"),
+                });
+              }
+
+              return mutator.getTeamRegistration(teamId);
+            },
+          );
+
+          if (!result) {
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+
+          return {
+            status: 200,
+            body: result,
+          };
         },
       },
       getRegistration: {

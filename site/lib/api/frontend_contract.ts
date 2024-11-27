@@ -6,7 +6,7 @@ import {
   GuessStatus,
   TeamRegistrationSchema,
   CannedResponseLinkSchema,
-  type MutableTeamRegistrationSchema,
+  MutableTeamRegistrationSchema,
 } from "./contract";
 
 const InternalActivityLogEntryBaseSchema = ActivityLogEntryBaseSchema.merge(
@@ -107,6 +107,12 @@ export const TeamRegistrationLogEntrySchema = z.discriminatedUnion("type", [
     z.object({
       type: z.literal("team_name_changed"),
       data: TeamRegistrationSchema.pick({ name: true }),
+    }),
+  ),
+  TeamRegistrationLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("team_registration_updated"),
+      data: MutableTeamRegistrationSchema.omit({ name: true }),
     }),
   ),
 ]);
