@@ -7,14 +7,17 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "rspack --mode=production --config ./rspack.config.mjs",
-    "build-dev": "rspack --mode=development --config ./rspack.config.mjs",
+    "build": "rspack --mode=production --config ./rspack.config.mjs && npm run ops:build",
+    "build-dev": "rspack --mode=development --config ./rspack.config.mjs && npm run ops:build-dev",
     "start": "npm run build && node ./dist/server-bundle.js",
     "start-watch": "npm run build-dev && concurrently --kill-others \"node --watch --enable-source-maps ./dist/server-bundle.js\" \"rspack --mode=development --config ./rspack.config.mjs --watch\" \"livereload ./dist -w 1000\"",
-    "check": "tsc && tsc -p worker/tsconfig.json && prettier . --check && eslint .",
+    "check": "tsc && tsc -p worker/tsconfig.json && tsc -p ops/tsconfig.json && prettier . --check && eslint .",
     "format": "prettier . --write && eslint . --fix",
     "knex": "node --import tsx/esm ./node_modules/.bin/knex",
-    "test": "jest"
+    "test": "jest",
+    "ops:build": "cd ops && tsc -b && vite build",
+    "ops:build-dev": "cd ops && tsc -b && vite build --mode development",
+    "ops:start": "cd ops && vite"
   },
   "dependencies": {
     "@google-cloud/cloud-sql-connector": "^1.4.0",
@@ -98,7 +101,9 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.10.4",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.9.0"
+    "typescript-eslint": "^7.9.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.0"
   },
   "type": "module"
 }

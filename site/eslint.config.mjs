@@ -148,6 +148,13 @@ export default tseslint.config(
     ...tseslint.configs.disableTypeChecked,
   },
   {
+    // ops site / Vite overrides
+    files: ["ops/**/*"],
+    rules: {
+      "react/react-in-jsx-scope": ["off"],
+    },
+  },
+  {
     ignores: [
       // Don't lint generated stuff under dist/
       "dist/*",

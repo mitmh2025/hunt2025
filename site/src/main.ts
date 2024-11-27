@@ -1,18 +1,24 @@
 import { randomBytes } from "node:crypto";
 import app from "./app";
+import opssite from "./frontend/opssite/app";
 import regsite from "./frontend/regsite/app";
 
 const portStr = process.env.PORT ?? "3000";
 const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
 
 const enabledComponents = new Set(
-  (process.env.HUNT_COMPONENTS ?? "api,ws,ui,reg").split(","),
+  (process.env.HUNT_COMPONENTS ?? "api,ws,ui,reg,ops").split(","),
 );
 
 const regsitePortStr = process.env.REGSITE_PORT ?? "3001";
 const regsitePort = isNaN(parseInt(regsitePortStr))
   ? regsitePortStr
   : parseInt(regsitePortStr);
+
+const opssitePortStr = process.env.OPSSITE_PORT ?? "3002";
+const opssitePort = isNaN(parseInt(opssitePortStr))
+  ? opssitePortStr
+  : parseInt(opssitePortStr);
 
 // N.B. process.env.NODE_ENV is compiled by webpack
 const environment = process.env.NODE_ENV ?? "development";
@@ -82,4 +88,22 @@ if (enabledComponents.has("reg") && apiUrl) {
   }).listen(regsitePort, () => {
     console.log(`Regsite listening on port ${regsitePort}`);
   });
+}
+
+if (enabledComponents.has("ops")) {
+  opssite({
+    dbEnvironment,
+    jwtSecret,
+    frontendApiSecret,
+    dataApiSecret,
+    redisUrl,
+  })
+    .then((app) =>
+      app.listen(opssitePort, () => {
+        console.log(`Ops site listening on port ${opssitePort}`);
+      }),
+    )
+    .catch((err: unknown) => {
+      console.error(err);
+    });
 }

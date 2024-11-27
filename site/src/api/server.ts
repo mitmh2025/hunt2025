@@ -123,6 +123,7 @@ export function getRouter({
   knex,
   hunt,
   redisClient,
+  isOpsSite,
 }: {
   jwtSecret: string | Buffer;
   frontendApiSecret: string;
@@ -130,6 +131,7 @@ export function getRouter({
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
+  isOpsSite?: boolean;
 }) {
   const app = Router();
   app.use(cors());
@@ -302,10 +304,6 @@ export function getRouter({
     };
   };
 
-  const authMiddleware = passport.authenticate("jwt", {
-    session: false,
-  }) as RequestHandler;
-
   type Query = Record<
     string,
     | undefined
@@ -316,27 +314,19 @@ export function getRouter({
     | number
     | number[]
   >;
-  const frontendAuthMiddleware = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- want to override 4th type parameter to Request and the 2nd and 3rd default to any and I don't want to constrain them in middleware if I can avoid it
-    req: Request<unknown, any, any, Query>,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    const authHeader = Buffer.from(req.headers.authorization ?? "", "utf8");
-    const expected = Buffer.from("frontend-auth " + frontendApiSecret, "utf8");
-    if (
-      authHeader.length === expected.length &&
-      timingSafeEqual(expected, authHeader)
-    ) {
-      next();
-      return;
-    } else {
-      res.status(403).send("not the frontend");
-    }
-  };
 
-  const adminAuthMiddlewares: RequestHandler[] = [
-    authMiddleware,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- want to override 4th type parameter to Request and the 2nd and 3rd default to any and I don't want to constrain them in middleware if I can avoid it
+  type RequestHandlerWithQuery = RequestHandler<unknown, any, any, Query>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- same
+  type RequestWithQuery = Request<unknown, any, any, Query>;
+
+  const authMiddleware = passport.authenticate("jwt", {
+    session: false,
+  }) as RequestHandlerWithQuery;
+
+  const adminAuthMiddlewares: RequestHandlerWithQuery[] = [
+    // TODO: implement OAuth or Authentik proxy for auth to the /admin
+    // and /frontend endpoints
     (req, res, next) => {
       if (process.env.NODE_ENV === "development" || req.authInfo?.adminUser) {
         next();
@@ -345,6 +335,30 @@ export function getRouter({
       res.status(403).send("not an admin");
     },
   ];
+
+  const frontendAuthMiddlewares = isOpsSite
+    ? adminAuthMiddlewares
+    : [
+        (req: RequestWithQuery, res: Response, next: NextFunction) => {
+          const authHeader = Buffer.from(
+            req.headers.authorization ?? "",
+            "utf8",
+          );
+          const expected = Buffer.from(
+            "frontend-auth " + frontendApiSecret,
+            "utf8",
+          );
+          if (
+            authHeader.length === expected.length &&
+            timingSafeEqual(expected, authHeader)
+          ) {
+            next();
+            return;
+          } else {
+            res.status(403).send("not the frontend");
+          }
+        },
+      ];
 
   // We merge contracts here so that we can implement additional contracts
   // without having to export them to the client since there's no value in
@@ -787,7 +801,7 @@ export function getRouter({
     },
     frontend: {
       markTeamGateSatisfied: {
-        middleware: [frontendAuthMiddleware],
+        middleware: frontendAuthMiddlewares,
         handler: ({ params: { teamId, gateId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             // Check if already satisfied.
@@ -810,7 +824,7 @@ export function getRouter({
           }),
       },
       startInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: frontendAuthMiddlewares,
         handler: ({ params: { teamId, interactionId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(
@@ -840,7 +854,7 @@ export function getRouter({
           }),
       },
       completeInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: frontendAuthMiddlewares,
         handler: ({ params: { teamId, interactionId }, body }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(
@@ -880,7 +894,7 @@ export function getRouter({
           }),
       },
       getFullActivityLog: {
-        middleware: [frontendAuthMiddleware],
+        middleware: frontendAuthMiddlewares,
         handler: async ({ query: { since } }) => {
           let effectiveSince = undefined;
           if (since) {
@@ -924,7 +938,7 @@ export function getRouter({
         },
       },
       getFullTeamRegistrationLog: {
-        middleware: [frontendAuthMiddleware],
+        middleware: frontendAuthMiddlewares,
         handler: async ({ query: { since } }) => {
           let effectiveSince = undefined;
           if (since) {
@@ -940,7 +954,7 @@ export function getRouter({
               if (effectiveSince !== undefined) {
                 q = q.where("id", ">", effectiveSince);
               }
-              q = q.select("id", "team_id", "type", "data");
+              q = q.select("id", "team_id", "type", "data", "timestamp");
               return q;
             },
             { readOnly: true },

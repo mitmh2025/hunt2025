@@ -1,0 +1,9 @@
+{
+  "extends": "../shared-tsconfig.json",
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true
+  },
+  "include": ["./src/**/*", "vite.config.ts"]
+}
