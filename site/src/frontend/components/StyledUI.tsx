@@ -96,7 +96,7 @@ export function LabeledWithError({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ marginBottom: "2rem" }}>
+    <div>
       <label style={{ marginLeft: "0.5rem" }}>
         {label}
         <br />
@@ -129,16 +129,20 @@ export function LabeledTextAreaWithError({
   label,
   value,
   error,
+  rows = 3,
+  cols = 40,
   ...props
 }: {
   label: string;
   value?: string | number;
   error?: string;
+  rows?: number;
+  cols?: number;
   multiline?: boolean;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <LabeledWithError label={label} error={error}>
-      <TextArea defaultValue={value} {...props} />
+      <TextArea defaultValue={value} rows={rows} cols={cols} {...props} />
     </LabeledWithError>
   );
 }

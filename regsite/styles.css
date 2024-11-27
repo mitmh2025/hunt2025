@@ -135,6 +135,7 @@ button {
   font-family: var(--body-font);
   margin: 4px;
   cursor: pointer;
+  display: inline-block;
 }
 
 button:hover {
@@ -201,7 +202,6 @@ ul {
 .question summary::-webkit-details-marker {
   display: none;
 }
-
 
 .question summary {
   list-style: none;
