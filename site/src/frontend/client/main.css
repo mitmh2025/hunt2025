@@ -74,6 +74,17 @@
   --teal-800: #0c2529;
   --teal-900: #071314;
 
+  --red-000: #fff6f0;
+  --red-100: #ffe8db;
+  --red-200: #f7c5ad;
+  --red-300: #eb9d7f;
+  --red-400: #de7754;
+  --red-500: #d1512e;
+  --red-600: #ab371d;
+  --red-700: #852110;
+  --red-800: #5e1107;
+  --red-900: #380803;
+
   --highlighter: #efff3c66;
 
   --body-font: "Hanken Grotesk", "Inter", Verdana, Helvetica, sans-serif;

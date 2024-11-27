@@ -74,13 +74,14 @@ export const Wrapper = styled.div`
 `;
 
 export const ErrorText = styled.div`
-  color: var(--gold-700);
+  color: var(--red6700);
   margin-left: 0.5rem;
 `;
 
 export const Alert = styled.div`
-  background-color: var(--gold-100);
-  border: 1px solid var(--gold-400);
+  background-color: var(--red-200);
+  border: 3px solid var(--red-600);
+  border-radius: 0.25rem;
   padding: 1em;
   margin: 1em 0;
   color: var(--black);

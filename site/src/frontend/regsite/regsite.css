@@ -38,6 +38,9 @@
   --teal-300: #5a8a85;
   --teal-500: #396a64;
 
+  --red-200: #f7c5ad;
+  --red-600: #ab371d;
+
   --default-font-size: 16px;
   --default-font: "Hanken Grotesk", "Futura", Helvetica, sans-serif;
 }
@@ -239,7 +242,6 @@ th {
 
 p {
   margin-top: 0;
-  margin-bottom: 0;
 }
 
 p + p {
@@ -324,7 +326,7 @@ input[type="checkbox"] {
   margin-right: 0.5rem;
 }
 
-input:read-only {
+input:readonly {
   background-color: var(--gray-200);
   cursor: not-allowed;
 }
