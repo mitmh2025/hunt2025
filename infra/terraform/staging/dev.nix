@@ -2,6 +2,9 @@
 {
   gce.instance.dev = {
     route53.zone = "mitmh2025";
+    route53.aliases = [
+      "reg.dev"
+    ];
     machineType = "e2-micro"; # 1 vCPU, 1 GB RAM
     firewall.allowedTCPPorts = [
       22 # SSH

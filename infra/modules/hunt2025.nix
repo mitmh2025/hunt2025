@@ -15,6 +15,11 @@ in {
         default = 3000;
         description = "Port or path to listen on";
       };
+      regsitePort = mkOption {
+        type = with types; coercedTo ints.u16 (n: toString n) str;
+        default = 3001;
+        description = "Port or path to listen on for registration";
+      };
       apiBaseUrl = mkOption {
         type = types.str;
         default = "http://localhost:3000/api";
@@ -46,6 +51,7 @@ in {
 
       environment.DB_ENV = cfg.db_env;
       environment.PORT = cfg.port;
+      environment.REGSITE_PORT = cfg.regsitePort;
       environment.STATIC_PATH = "${pkgs.hunt2025.assets}/static";
       environment.API_BASE_URL = cfg.apiBaseUrl;
       # FIXME: Use a real key in production.

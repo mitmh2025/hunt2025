@@ -17,6 +17,7 @@
         enable = true;
         db_env = "ci";  # N.B. We use "ci" to trigger a database reseed on startup.
         port = "%t/hunt2025/hunt2025.sock";
+        regsitePort = "%t/hunt2025/hunt2025-reg.sock";
         apiBaseUrl = "http://localhost/api";
       };
 
@@ -106,6 +107,7 @@
         recommendedProxySettings = true;
 
         upstreams.hunt2025.servers."unix:/run/hunt2025/hunt2025.sock" = {};
+        upstreams.hunt2025-reg.servers."unix:/run/hunt2025/hunt2025-reg.sock" = {};
         upstreams.thingsboard.servers."127.0.0.1:8080" = {};
         virtualHosts = {
           "staging.mitmh2025.com" = {
@@ -119,6 +121,15 @@
               alias = "${pkgs.hunt2025}/lib/hunt2025/dist/radio-manifest.json";
               # Copy Authentik configuration
               extraConfig = config.services.nginx.virtualHosts."staging.mitmh2025.com".locations."/".extraConfig;
+            };
+            locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
+          };
+          "reg.staging.mitmh2025.com" = {
+            forceSSL = true;
+            enableACME = true;
+            locations."/" = {
+              proxyPass = "http://hunt2025-reg";
+              proxyWebsockets = true;
             };
             locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
           };

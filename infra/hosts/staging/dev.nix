@@ -20,6 +20,7 @@
         enable = true;
         db_env = "ci";  # N.B. We use "ci" to trigger a database reseed on startup.
         port = "%t/hunt2025/hunt2025.sock";
+        regsitePort = "%t/hunt2025/hunt2025-reg.sock";
         apiBaseUrl = "http://localhost/api";
       };
 
@@ -48,12 +49,23 @@
         recommendedProxySettings = true;
 
         upstreams.hunt2025.servers."unix:/run/hunt2025/hunt2025.sock" = {};
+        upstreams.hunt2025-reg.servers."unix:/run/hunt2025/hunt2025-reg.sock" = {};
         virtualHosts = {
           "dev.mitmh2025.com" = {
             forceSSL = true;
             enableACME = true;
             locations."/" = {
               proxyPass = "http://hunt2025";
+              proxyWebsockets = true;
+            };
+            authentik.enable = true;
+            authentik.url = "https://staging.us-east5-a.c.mitmh2025-staging-gcp.internal:9443";
+          };
+          "reg.dev.mitmh2025.com" = {
+            forceSSL = true;
+            enableACME = true;
+            locations."/" = {
+              proxyPass = "http://hunt2025-reg";
               proxyWebsockets = true;
             };
             authentik.enable = true;

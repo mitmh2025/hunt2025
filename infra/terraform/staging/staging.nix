@@ -3,6 +3,7 @@
   gce.instance.staging = {
     route53.zone = "mitmh2025";
     route53.aliases = [
+      "reg.staging"
       "auth"
       "things.staging"
       "tix"
