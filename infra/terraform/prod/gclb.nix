@@ -31,15 +31,15 @@
       serve_while_stale = 86400;
     };
   };
-  data.google_compute_network_endpoint_group.prod-api = {
-    depends_on = ["kubernetes_service_v1.api"];
-    name = "prod-api";
-    inherit (config.provider.google) zone;
-  };
   resource.google_compute_health_check.healthz = {
     name = "healthz";
     http_health_check.port = 80;
     http_health_check.request_path = "/healthz";
+  };
+  data.google_compute_network_endpoint_group.prod-api = {
+    depends_on = ["kubernetes_service_v1.api"];
+    name = "prod-api";
+    inherit (config.provider.google) zone;
   };
   resource.google_compute_backend_service.api = {
     name = "api";
@@ -49,6 +49,23 @@
       # If we had more than one backend, this would be used to belance between them.
       max_rate_per_endpoint = 1;
       group = lib.tfRef "data.google_compute_network_endpoint_group.prod-api.self_link";
+    }];
+    health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
+  };
+  data.google_compute_network_endpoint_group.prod-regsite = {
+    depends_on = ["kubernetes_service_v1.regsite"];
+    name = "prod-regsite";
+    inherit (config.provider.google) zone;
+  };
+  resource.google_compute_backend_service.regsite = {
+    depends_on = ["kubernetes_service_v1.regsite"];
+    name = "regsite";
+    load_balancing_scheme = "EXTERNAL_MANAGED";
+    backend = [{
+      balancing_mode = "RATE";
+      # If we had more than one backend, this would be used to belance between them.
+      max_rate_per_endpoint = 1;
+      group = lib.tfRef "data.google_compute_network_endpoint_group.prod-regsite.self_link";
     }];
     health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
   };
@@ -69,8 +86,7 @@
       };
       path_matcher = [{
         name = "www";
-        # TODO: Set default_service to the main web server.
-        default_service = lib.tfRef "google_compute_backend_bucket.assets.id";
+        default_service = lib.tfRef "google_compute_backend_service.regsite.id";
 
         path_rule = [
           {
@@ -98,6 +114,11 @@
           host = "prod.mitmh2025.com";
           path = "/api/register";
           service = lib.tfRef "google_compute_backend_service.api.id";
+        }
+        {
+          host = "www.mitmh2025.com";
+          path = "/";
+          service = lib.tfRef "google_compute_backend_service.regsite.id";
         }
       ];
     };

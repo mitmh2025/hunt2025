@@ -129,4 +129,75 @@
       ];
     };
   };
+  resource.kubernetes_deployment_v1.regsite = {
+    metadata.namespace = "prod";
+    metadata.name = "regsite";
+    metadata.labels.app = "regsite";
+    spec = {
+      replicas = 1;
+      selector.match_labels.app = "regsite";
+      template = {
+        metadata.labels.app = "regsite";
+        spec.container = [{
+          name = "regsite";
+          image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
+          env = lib.attrsToList {
+            PORT = "81"; # Unused
+            REGSITE_PORT = "80";
+            HUNT_COMPONENTS = "reg";
+            REGISTRATION_CLOSED = "1";
+            API_BASE_URL = "http://api/api";
+            #OTEL_METRICS_EXPORTER=console
+            #OTEL_LOGS_EXPORTER=console
+            #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
+          } ++ [
+            {
+              name = "FRONTEND_API_SECRET";
+              value_from = [{
+                secret_key_ref = [{
+                  key = "FRONTEND_API_SECRET";
+                  name = "api";
+                }];
+              }];
+            }
+          ];
+          resources = {
+            limits.cpu = "1";
+            limits.memory = "512Mi";
+            requests.cpu = "250m";
+            requests.memory = "150Mi";
+          };
+          liveness_probe = {
+            http_get = {
+              path = "/healthz";
+              port = 80;
+            };
+            initial_delay_seconds = 3;
+            period_seconds = 3;
+          };
+        }];
+      };
+    };
+  };
+  resource.kubernetes_service_v1.regsite = {
+    metadata.namespace = "prod";
+    metadata.name = "regsite";
+    metadata.annotations."cloud.google.com/neg" = builtins.toJSON {
+      exposed_ports."80".name = "prod-regsite";
+    };
+    lifecycle.ignore_changes = [
+      ''metadata[0].annotations["cloud.google.com/neg-status"]''
+    ];
+    spec = {
+      type = "ClusterIP";
+      selector.app = "regsite";
+      port = [
+        {
+          port = 80;
+          protocol = "TCP";
+          target_port = 80;
+        }
+      ];
+    };
+  };
 }
