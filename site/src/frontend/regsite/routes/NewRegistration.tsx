@@ -17,6 +17,17 @@ export default function NewRegistration({
   return (
     <RegsiteWrapper>
       <div className="container">
+        <p>
+          Please register your team as early as possible to assist us in
+          planning, even if you have to guess at some of the information. Most
+          fields can be updated at any time before January 17th, and we would
+          appreciate updates as you solidify your team&apos;s plans for the
+          year.
+        </p>
+        <p>
+          If you are requesting team HQ space at MIT, you must register
+          <strong>before December 21st</strong>.
+        </p>
         <PageHeader>Register Your Team</PageHeader>
         <Form method="POST">
           <section>
