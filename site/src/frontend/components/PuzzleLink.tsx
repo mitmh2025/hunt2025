@@ -11,14 +11,34 @@ import icon_solved from "../../assets/solved_status.svg";
 import icon_unlock from "../../assets/unlock-icon.svg";
 import icon_unlocked from "../../assets/unlocked_status.svg";
 import icon_unlockable from "../../assets/visible_status.svg";
-import { Button } from "./StyledUI";
+import { Button, ButtonSecondary } from "./StyledUI";
 
 const StyledDialog = styled.dialog`
   font-size: 24px;
+  font-family: var(--body-font);
+  background-color: var(--white);
+  color: var(--black);
+  border-radius: 0.25rem;
+  padding: 1rem 2rem;
+  text-align: left;
 
   &::backdrop {
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 0.45);
+  }
+`;
+
+const DialogActions = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0.5rem;
+  gap: 0.5rem;
+
+  button {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 `;
 
@@ -67,28 +87,27 @@ const PuzzleUnlockModal = React.forwardRef(function PuzzleUnlockModalInner(
   }, [fetching, onDismiss, slug]);
   return (
     <StyledDialog ref={ref} onClick={stopClickPropagation}>
-      <div style={{ margin: "auto", maxWidth: "800px" }}>
+      <div
+        style={{
+          margin: "auto",
+          width: "800px",
+          maxWidth: "72vw",
+          textWrap: "wrap",
+        }}
+      >
         <h1>Unlock puzzle {title}?</h1>
         <p>
           Unlocking this puzzle will spend {cost} of your team&rsquo;s{" "}
           {currency} available currency.
         </p>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
-            margin: "8px",
-          }}
-        >
-          <button disabled={fetching} onClick={onUnlock}>
+        <DialogActions>
+          <Button disabled={fetching} onClick={onUnlock}>
             Unlock
-          </button>
-          <button disabled={fetching} onClick={onDismiss}>
+          </Button>
+          <ButtonSecondary disabled={fetching} onClick={onDismiss}>
             Cancel
-          </button>
-        </div>
+          </ButtonSecondary>
+        </DialogActions>
       </div>
     </StyledDialog>
   );
@@ -123,14 +142,36 @@ export const PuzzleIcon = ({
         verticalAlign: "middle",
         backgroundSize: "contain",
         backgroundImage: `url(${bgImage})`,
-        transitionProperty: "width height font-size",
-        transitionDuration: "0.5s",
         backgroundRepeat: "no-repeat",
         flex: "0 0 auto",
       }}
     />
   );
 };
+
+const LinkWrapper = styled.span`
+  transition-property: font-size;
+  transition-duration: 0.5s;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+
+  .puzzle-link-status-icon {
+    flex: 0;
+  }
+
+  .puzzle-link-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  button {
+    flex: 0;
+  }
+`;
 
 const PuzzleLink = ({
   lockState,
@@ -139,7 +180,9 @@ const PuzzleLink = ({
   title,
   slug,
   showIcon = true,
+  showLabel = true,
   size = 24,
+  style = {},
 }: {
   lockState: "unlocked" | "unlockable" | "locked";
   answer?: string;
@@ -147,7 +190,9 @@ const PuzzleLink = ({
   title: string;
   slug: string;
   showIcon?: boolean;
+  showLabel?: boolean;
   size?: number;
+  style?: React.CSSProperties;
 }) => {
   const modalRef = useRef<HTMLDialogElement>(null);
   // Avoid including the unlock button (which needs click handlers) in SSR contexts
@@ -173,15 +218,11 @@ const PuzzleLink = ({
 
   const buttonDisabled = currency <= 0;
   return (
-    <span
+    <LinkWrapper
       className={`puzzle-link ${answer ? "solved" : "unsolved"} ${lockState}`}
       style={{
-        transitionProperty: "font-size",
-        transitionDuration: "0.5s",
         fontSize: `${size}px`,
-        display: "flex",
-        alignItems: "center",
-        gap: "0.5rem",
+        ...style,
       }}
     >
       {showIcon ? (
@@ -231,11 +272,13 @@ const PuzzleLink = ({
                 flex: "0 0 auto",
               }}
             />
-            <span>Unlock</span>
+            <span style={{ display: showLabel ? "inline" : "none" }}>
+              Unlock
+            </span>
           </Button>
         </>
       ) : undefined}
-    </span>
+    </LinkWrapper>
   );
 };
 

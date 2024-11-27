@@ -31,6 +31,21 @@ export const Button = styled.button`
   }
 `;
 
+export const ButtonSecondary = styled(Button)`
+  background-color: var(--gray-100);
+  box-shadow:
+    0 0 0 1px var(--gray-100),
+    0px 1px 3px hsl(from var(--black) h s l / 0.8);
+
+  &:hover {
+    background-color: var(--white);
+    box-shadow:
+      0 0 0 1px var(--white),
+      0px 2px 8px hsl(from var(--black) h s l / 0.3);
+    color: var(--true-black);
+  }
+`;
+
 export const TextInput = styled.input`
   border-radius: 0.5rem;
   border: 1px solid var(--black);

@@ -4,6 +4,15 @@ import PuzzleLink from "../../components/PuzzleLink";
 import { clamp, type Position } from "./StakeoutBody";
 import polaroid_bg from "./assets/polaroid_blank_no_shadow.png";
 import { type StakeoutSlot } from "./types";
+import { styled } from "styled-components";
+
+const PhotoLabel = styled.div`
+  .puzzle-link-title {
+    flex: 1 1 auto;
+    text-align: left;
+    margin-bottom: -0.25em;
+  }
+`;
 
 const StakeoutPhoto = ({
   teamState,
@@ -61,8 +70,14 @@ const StakeoutPhoto = ({
           currency={teamState.currency}
           title={title}
           slug={slug}
-          showIcon={false}
+          showIcon={!!focused}
+          showLabel={!!focused}
           size={focused ? 60 : 24}
+          style={{
+            cursor: slug ? "pointer" : undefined,
+            transitionProperty: "width height font-size",
+            transitionDuration: "0.5s",
+          }}
         />
       );
     }
@@ -119,17 +134,19 @@ const StakeoutPhoto = ({
   const labelStyle = {
     position: "absolute" as const,
     display: "block",
-    padding: `4px`,
+    padding: `${scaled(4)}px`,
+    paddingLeft: `${scaled(8) > 8 ? 0 : scaled(8)}px`,
+    paddingRight: `${scaled(4) > 4 ? 0 : scaled(4)}px`,
     height: `${scaled(38)}px`,
-    bottom: "0px",
-    left: "0px",
-    right: "0px",
+    bottom: "0.25em",
+    left: `${scaled(8) > 8 ? scaled(8) : 0}px`,
+    right: `${scaled(8) > 8 ? scaled(8) : 0}px`,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     textAlign: "center" as const,
     fontSize: focused ? "60px" : "24px",
-    cursor: slug ? "pointer" : undefined,
+    width: `calc(100% - ${scaled(8) > 8 ? scaled(8) : 0})`,
     ...transitionProperties,
   };
 
@@ -141,9 +158,9 @@ const StakeoutPhoto = ({
     >
       <div style={polaroidInnerStyle}>
         <div style={imageStyle} />
-        <div style={labelStyle} onPointerDown={labelPointerDownHandler}>
+        <PhotoLabel style={labelStyle} onPointerDown={labelPointerDownHandler}>
           {link}
-        </div>
+        </PhotoLabel>
       </div>
     </div>
   );
