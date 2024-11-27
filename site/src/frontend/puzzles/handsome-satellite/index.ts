@@ -53,12 +53,8 @@ const puzzle: PuzzleDefinition = {
       reply: "What do those three things have in common?",
     },
     {
-      guess: ["BILLS JUMPIN NO", "BILLS JUMPIN' NO"],
+      guess: ["BILLS JUMPIN NO"],
       reply: "Do I need to repeat myself?",
-    },
-    {
-      guess: ["DESTINY'S CHILD"],
-      reply: "No apostrophes please!",
     },
   ],
 };
