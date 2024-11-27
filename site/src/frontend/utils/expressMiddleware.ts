@@ -20,7 +20,11 @@ const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
 export const logMiddleware = morgan(LOG_FORMAT);
 
-export const addStaticMiddleware = (app: Express, staticPath: string) => {
+export const addStaticMiddleware = (
+  app: Express,
+  fallbackStaticPath: string,
+) => {
+  const staticPath = process.env.STATIC_PATH ?? fallbackStaticPath;
   if (existsSync(staticPath)) {
     // Serve static assets from the bundle without auth
     app.use("/static", express.static(staticPath));
