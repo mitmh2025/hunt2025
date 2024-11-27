@@ -1,4 +1,5 @@
 import React from "react";
+import { styled } from "styled-components";
 import type {
   MutableTeamRegistration,
   TeamRegistration,
@@ -6,6 +7,14 @@ import type {
 import { Alert, LabeledInputWithError } from "../../components/StyledUI";
 import UpdateRegistrationFormInputs from "../../components/UpdateRegistrationFormInputs";
 import RegsiteWrapper from "../RegsiteWrapper";
+import { Form, PageHeader } from "./RegsiteUI";
+
+const StaticFields = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+`;
 
 export default function UpdateRegistration({
   registration,
@@ -21,22 +30,24 @@ export default function UpdateRegistration({
   return (
     <RegsiteWrapper>
       <div className="container">
-        <h1>Update Registration</h1>
-        {message && <Alert>{message}</Alert>}
-        <LabeledInputWithError
-          label="Username (cannot be changed)"
-          value={registration.username}
-          readOnly
-        />
-        <LabeledInputWithError
-          label="Password (cannot be changed)"
-          value={registration.password}
-          readOnly
-        />
-        <form method="POST">
+        <PageHeader>Update Registration</PageHeader>
+        <StaticFields>
+          {message && <Alert>{message}</Alert>}
+          <LabeledInputWithError
+            label="Username (cannot be changed)"
+            value={registration.username}
+            readOnly
+          />
+          <LabeledInputWithError
+            label="Password (cannot be changed)"
+            value={registration.password}
+            readOnly
+          />
+        </StaticFields>
+        <Form method="POST">
           <UpdateRegistrationFormInputs values={values} errors={errors} />
           <button type="submit">Update Registration</button>
-        </form>
+        </Form>
       </div>
     </RegsiteWrapper>
   );

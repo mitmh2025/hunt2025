@@ -119,6 +119,10 @@ a:hover {
   width: 300px;
 }
 
+.container-md {
+  width: 532px;
+}
+
 header {
   text-align: center;
   padding: 1.51rem 0;
@@ -173,6 +177,7 @@ button,
   margin: 4px;
   text-decoration: none;
   cursor: pointer;
+  display: inline-block;
 }
 
 button:hover,
@@ -207,14 +212,9 @@ button:disabled,
   font-size: 2.5rem;
 }
 
-#unattached-hunter-button {
-  margin-top: 4rem;
-}
-
 #registration-subtitle {
   font-weight: 300;
   text-align: center;
-  margin-top: 2rem;
 }
 
 .help {
@@ -310,20 +310,25 @@ footer {
 input[type="text"],
 input[type="email"],
 input[type="tel"] {
-  width: calc(100% - 1rem);
+  width: calc(100% - 2rem);
   max-width: 500px;
 }
 
 input[type="number"] {
-  width: calc(100% - 1rem);
+  width: calc(100% - 2rem);
   max-width: 100px;
 }
 
-input[type="radio"] {
+input[type="radio"],
+input[type="checkbox"] {
   margin-right: 0.5rem;
 }
 
 input:read-only {
   background-color: var(--gray-200);
   cursor: not-allowed;
+}
+
+*:focus-visible {
+  outline: 0.25rem double var(--gold-500);
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import type { MutableTeamRegistration } from "../../../lib/api/frontend_contract";
+import { SectionHeader } from "../regsite/routes/RegsiteUI";
 import {
   ErrorText,
   LabeledInputWithError,
@@ -75,10 +76,6 @@ const CheckedDetailsDiv = styled.div`
   }
 `;
 
-const Fieldset = styled.fieldset`
-  margin: 1em 0;
-`;
-
 export default function UpdateRegistrationFormInputs({
   values,
   errors,
@@ -117,73 +114,72 @@ export default function UpdateRegistrationFormInputs({
         />
       </div>
 
-      <h2>Contact Information</h2>
-      <div>
-        <LabeledInputWithError
-          label="Contact Name (required)"
-          {...fieldProps("contactName", { required: true })}
-          autoComplete="name"
-        />
-      </div>
-      <div>
-        <LabeledInputWithError
-          label="Contact Email (required)"
-          {...fieldProps("contactEmail", { required: true })}
-          type="email"
-          autoComplete="email"
-        />
-      </div>
-      <div>
-        <LabeledInputWithError
-          label="Contact Phone (required)"
-          {...fieldProps("contactPhone", { required: true })}
-          type="tel"
-          autoComplete="tel"
-        />
-      </div>
-      <div>
-        <LabeledTextAreaWithError
-          label="Contact Mailing Address (required)"
-          {...fieldProps("contactMailingAddress", { required: true })}
-          autoComplete="street-address"
-          rows={3}
-          cols={40}
-        />
-      </div>
-      <div>
-        <LabeledInputWithError
-          label="Secondary Contact Name"
-          {...fieldProps("secondaryContactName")}
-        />
-      </div>
-      <div>
-        <LabeledInputWithError
-          label="Secondary Contact Email"
-          {...fieldProps("secondaryContactEmail")}
-          type="email"
-        />
-      </div>
-      <div>
-        <LabeledInputWithError
-          label="Secondary Contact Phone"
-          {...fieldProps("secondaryContactPhone")}
-          type="tel"
-        />
-      </div>
+      <section>
+        <SectionHeader>Contact Information</SectionHeader>
+        <div>
+          <LabeledInputWithError
+            label="Contact Name (required)"
+            {...fieldProps("contactName", { required: true })}
+            autoComplete="name"
+          />
+        </div>
+        <div>
+          <LabeledInputWithError
+            label="Contact Email (required)"
+            {...fieldProps("contactEmail", { required: true })}
+            type="email"
+            autoComplete="email"
+          />
+        </div>
+        <div>
+          <LabeledInputWithError
+            label="Contact Phone (required)"
+            {...fieldProps("contactPhone", { required: true })}
+            type="tel"
+            autoComplete="tel"
+          />
+        </div>
+        <div>
+          <LabeledTextAreaWithError
+            label="Contact Mailing Address (required)"
+            {...fieldProps("contactMailingAddress", { required: true })}
+            autoComplete="street-address"
+            rows={3}
+            cols={40}
+          />
+        </div>
+        <div>
+          <LabeledInputWithError
+            label="Secondary Contact Name"
+            {...fieldProps("secondaryContactName")}
+          />
+        </div>
+        <div>
+          <LabeledInputWithError
+            label="Secondary Contact Email"
+            {...fieldProps("secondaryContactEmail")}
+            type="email"
+          />
+        </div>
+        <div>
+          <LabeledInputWithError
+            label="Secondary Contact Phone"
+            {...fieldProps("secondaryContactPhone")}
+            type="tel"
+          />
+        </div>
+      </section>
 
-      <h2>Team Information</h2>
-      <div>
+      <section>
+        <SectionHeader>Team Information</SectionHeader>
         <LabeledInputWithError
-          label="Team-wide Email Adrress (required)"
+          label="Team-wide Email Address (required)"
           {...fieldProps("teamEmail", { required: true })}
           type="email"
         />
-      </div>
-      <div>
-        <Fieldset>
+        <fieldset>
           <legend>
-            What&apos;s your team&apos;s goal for the 2025 Mystery Hunt?
-            (required)
+            What’s your team’s goal for the 2025 Mystery Hunt? (required)
           </legend>
           <div>
             {TEAM_GOALS.map((goal, i) => (
@@ -201,10 +197,9 @@ export default function UpdateRegistrationFormInputs({
             ))}
             {errors.teamGoal && <ErrorText>{errors.teamGoal}</ErrorText>}
           </div>
-        </Fieldset>
-      </div>
-      <div>
-        <Fieldset>
+        </fieldset>
+
+        <fieldset>
           <legend>
             Which parts of the MIT Mystery Hunt experience does your team value
             the most? (choose up to 5)
@@ -240,15 +235,12 @@ export default function UpdateRegistrationFormInputs({
             </div>
             {errors.teamValues && <ErrorText>{errors.teamValues}</ErrorText>}
           </div>
-        </Fieldset>
-      </div>
-      <div>
+        </fieldset>
+
         <LabeledInputWithError
           label="Is your team excited about the prospect of winning? (required)"
           {...fieldProps("teamExcitedAboutWinning", { required: true })}
         />
-      </div>
-      <div>
         <LabeledInputWithError
           label="What year was your team established? (required)"
           {...fieldProps("teamYearEstablished", {
@@ -256,20 +248,18 @@ export default function UpdateRegistrationFormInputs({
             numeric: true,
           })}
         />
-      </div>
-      <div>
         <LabeledInputWithError
           label="Where are your team members primarily located? (required)"
           {...fieldProps("teamMemberLocations", { required: true })}
         />
-      </div>
+      </section>
 
-      <h2>Team Location</h2>
+      <section>
+        <SectionHeader>Team Location</SectionHeader>
 
-      <div>
-        <Fieldset>
+        <fieldset>
           <legend>
-            Which of the following describes your team&apos;s physical location
+            Which of the following describes your team’s physical location
             during the 2025 MIT Mystery Hunt?
           </legend>
           <div>
@@ -302,22 +292,22 @@ export default function UpdateRegistrationFormInputs({
               <ErrorText>{errors.teamLocation}</ErrorText>
             )}
           </div>
-        </Fieldset>
-      </div>
+        </fieldset>
+      </section>
 
-      <h2>Team Composition</h2>
+      <section>
+        <SectionHeader>Team Composition</SectionHeader>
 
-      <div>
         <LabeledInputWithError
           label="Total number of people on your team (required)"
           {...fieldProps("peopleTotal", { required: true, numeric: true })}
         />
-      </div>
 
-      <div>
-        <Fieldset>
+        <fieldset>
           <legend>How many people on your team are:</legend>
-          <div>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+          >
             <LabeledInputWithError
               label="MIT Undergraduates"
               {...fieldProps("peopleUndergrad", { numeric: true })}
@@ -347,11 +337,9 @@ export default function UpdateRegistrationFormInputs({
               {...fieldProps("peopleOther", { numeric: true })}
             />
           </div>
-        </Fieldset>
-      </div>
+        </fieldset>
 
-      <div>
-        <Fieldset>
+        <fieldset>
           <legend>Campus presence:</legend>
           <div>
             <LabeledInputWithError
@@ -363,13 +351,12 @@ export default function UpdateRegistrationFormInputs({
               {...fieldProps("peopleRemote", { numeric: true })}
             />
           </div>
-        </Fieldset>
-      </div>
+        </fieldset>
 
-      <div>
-        <Fieldset>
+        <fieldset>
           <legend>
-            Are you wiling to welcome unattached Hunters to your team this year?
+            Are you willing to welcome unattached Hunters to your team this
+            year?
           </legend>
           <div>
             <div>
@@ -398,12 +385,12 @@ export default function UpdateRegistrationFormInputs({
               <ErrorText>{errors.acceptUnattached}</ErrorText>
             )}
           </div>
-        </Fieldset>
-      </div>
+        </fieldset>
+      </section>
 
-      <h2>Other</h2>
-      <div>
-        <Fieldset>
+      <section>
+        <SectionHeader>Other</SectionHeader>
+        <fieldset>
           <legend>How did you hear about the Mystery Hunt?</legend>
           <div>
             {REFERRERS.map((referrer, i) => (
@@ -437,14 +424,12 @@ export default function UpdateRegistrationFormInputs({
             </div>
             {errors.referrer && <ErrorText>{errors.referrer}</ErrorText>}
           </div>
-        </Fieldset>
-      </div>
-      <div>
-        <LabeledTextAreaWithError
-          label="Anything else you’d like to share with us?"
-          {...fieldProps("otherNotes", { maxLength: 1024 })}
-        />
-      </div>
+        </fieldset>
+      </section>
+      <LabeledTextAreaWithError
+        label="Anything else you’d like to share with us?"
+        {...fieldProps("otherNotes", { maxLength: 1024 })}
+      />
     </>
   );
 }

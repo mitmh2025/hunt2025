@@ -3,6 +3,7 @@ import type { TeamRegistration } from "../../../../lib/api/frontend_contract";
 import { Alert, LabeledInputWithError } from "../../components/StyledUI";
 import UpdateRegistrationFormInputs from "../../components/UpdateRegistrationFormInputs";
 import RegsiteWrapper from "../RegsiteWrapper";
+import { Form, PageHeader } from "./RegsiteUI";
 
 export default function NewRegistration({
   values,
@@ -16,10 +17,10 @@ export default function NewRegistration({
   return (
     <RegsiteWrapper>
       <div className="container">
-        <h2>Register Your Team</h2>
-        {message && <Alert>{message}</Alert>}
-        <form method="POST">
-          <div>
+        <PageHeader>Register Your Team</PageHeader>
+        <Form method="POST">
+          <section>
+            {message && <Alert>{message}</Alert>}
             <LabeledInputWithError
               label="Username (cannot be changed later)"
               name="username"
@@ -32,8 +33,6 @@ export default function NewRegistration({
               autoCorrect="off"
               autoComplete="username"
             />
-          </div>
-          <div>
             <LabeledInputWithError
               label="Password (cannot be changed later, will be displayed in clear text)"
               name="password"
@@ -46,10 +45,10 @@ export default function NewRegistration({
               autoCorrect="off"
               autoComplete="new-password"
             />
-          </div>
+          </section>
           <UpdateRegistrationFormInputs values={values} errors={errors} />
           <button type="submit">Register Team</button>
-        </form>
+        </Form>
       </div>
     </RegsiteWrapper>
   );

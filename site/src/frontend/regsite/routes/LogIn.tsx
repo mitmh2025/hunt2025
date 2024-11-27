@@ -1,6 +1,7 @@
 import React from "react";
 import { LabeledInputWithError } from "../../components/StyledUI";
 import RegsiteWrapper from "../RegsiteWrapper";
+import { Form, SectionHeader } from "./RegsiteUI";
 
 export default function LogIn({
   error,
@@ -11,10 +12,10 @@ export default function LogIn({
 }) {
   return (
     <RegsiteWrapper>
-      <div className="container">
-        <h2>Log Back In</h2>
-        {error && <p>{error}</p>}
-        <form method="post">
+      <div className="container container-md">
+        <Form method="post">
+          <SectionHeader>Log Back In</SectionHeader>
+          {error && <p>{error}</p>}
           <LabeledInputWithError
             label="Username"
             name="username"
@@ -33,7 +34,7 @@ export default function LogIn({
           />
 
           <button type="submit">Log In</button>
-        </form>
+        </Form>
       </div>
     </RegsiteWrapper>
   );
