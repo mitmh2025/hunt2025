@@ -50,6 +50,7 @@ import FollowTheRules from "./right-palm";
 import BermudaTriangle from "./selfish-king";
 import The10000SheetExcelFile from "./shoddy-table";
 import AHeapOfClards from "./sinful-ivory";
+import TheCenterIsInPlainSight from "./sinful-turkey";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import RecipeSubstitutions from "./svelte-pitch";
@@ -131,6 +132,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_heap_of_clards: AHeapOfClards,
   kotei_no_ango: KoteiNoAngo,
   networking_event: NetworkingEvent,
+  the_center_is_in_plain_sight: TheCenterIsInPlainSight,
   this_is_just_a_test: ThisIsJustATest,
 
   // Background Check
