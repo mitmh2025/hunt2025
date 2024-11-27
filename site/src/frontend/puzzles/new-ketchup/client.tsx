@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState /*, { useState }*/ } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { Button } from "../../components/StyledUI";
 import { createRoot } from "react-dom/client";
@@ -109,14 +109,15 @@ const Puzzle = () => {
 
     const pointer = currentPerson.getPointer(puzzleStatus);
     const name = currentPerson.getName(puzzleStatus);
+    const newPuzzleStatus = {
+      ...puzzleStatus,
+    };
     // then we see if it's correct for the current person
     // and update the dialog log accordingly
     if (currentPerson.validAnswers.indexOf(format(teamName)) !== -1) {
       // add acquired clue letter
-      setPuzzleStatus((s) => ({
-        ...s,
-        clueLettersCollected: `${s.clueLettersCollected}${name.slice(0, 1)}`,
-      }));
+      newPuzzleStatus.clueLettersCollected = `${newPuzzleStatus.clueLettersCollected}${name.slice(0, 1)}`;
+      setPuzzleStatus(() => newPuzzleStatus);
       // add the success dialog
       setLog(
         (l) =>
@@ -139,7 +140,7 @@ const Puzzle = () => {
       setCurrentPerson(pointer.nextPerson);
       setLog(
         (l) =>
-          `${l}<br><br>${(pointer.nextPerson as Person).getIntro((pointer.nextPerson as Person).getName(puzzleStatus))}`,
+          `${l}<br><br>${(pointer.nextPerson as Person).getIntro((pointer.nextPerson as Person).getName(newPuzzleStatus))}`,
       );
     }
   };
