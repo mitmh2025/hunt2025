@@ -1,5 +1,5 @@
 import React from "react";
-import { LabeledInputWithError } from "../../components/StyledUI";
+import { Alert, LabeledInputWithError } from "../../components/StyledUI";
 import RegsiteWrapper from "../RegsiteWrapper";
 import { Form, SectionHeader } from "./RegsiteUI";
 
@@ -15,7 +15,7 @@ export default function LogIn({
       <div className="container container-md">
         <Form method="post">
           <SectionHeader>Log Back In</SectionHeader>
-          {error && <p>{error}</p>}
+          {error && <Alert>{error}</Alert>}
           <LabeledInputWithError
             label="Username"
             name="username"
