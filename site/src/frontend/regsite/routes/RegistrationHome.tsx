@@ -24,6 +24,16 @@ export default function RegistrationHome({
               Register your team
             </a>
           )}
+          {!registrationOpen && (
+            <p className="help">
+              Registration will open in <strong>early December</strong>. Join
+              the{" "}
+              <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
+                puzzle-hunters mailing list
+              </a>{" "}
+              to get the official announcement!
+            </p>
+          )}
         </section>
         {registrationOpen && (
           <>
