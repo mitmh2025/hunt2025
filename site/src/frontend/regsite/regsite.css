@@ -14,14 +14,6 @@
     format("truetype");
 }
 
-@font-face {
-  font-family: "Belanosima";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url("../../assets/Belanosima-Regular.ttf") format("truetype");
-}
-
 :root {
   --true-white: #ffffff;
   --gray-000: #f8f8f6;

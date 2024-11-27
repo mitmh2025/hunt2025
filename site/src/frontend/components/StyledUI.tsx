@@ -86,6 +86,27 @@ export const Alert = styled.div`
   color: var(--black);
 `;
 
+export function LabeledWithError({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div style={{ marginBottom: "2rem" }}>
+      <label style={{ marginLeft: "0.5rem" }}>
+        {label}
+        <br />
+        {children}
+      </label>
+      {error && <ErrorText>{error}</ErrorText>}
+    </div>
+  );
+}
+
 export function LabeledInputWithError({
   label,
   value,
@@ -98,14 +119,9 @@ export function LabeledInputWithError({
   multiline?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <div style={{ marginBottom: "2rem" }}>
-      <label style={{ marginLeft: "0.5rem" }}>
-        {label}
-        <br />
-        <TextInput type="text" defaultValue={value} {...props} />
-      </label>
-      {error && <ErrorText>{error}</ErrorText>}
-    </div>
+    <LabeledWithError label={label} error={error}>
+      <TextInput type="text" defaultValue={value} {...props} />
+    </LabeledWithError>
   );
 }
 
@@ -121,13 +137,8 @@ export function LabeledTextAreaWithError({
   multiline?: boolean;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
-    <div style={{ marginBottom: "2em" }}>
-      <label>
-        {label}
-        <br />
-        <TextArea defaultValue={value} {...props} />
-      </label>
-      {error && <ErrorText>{error}</ErrorText>}
-    </div>
+    <LabeledWithError label={label} error={error}>
+      <TextArea defaultValue={value} {...props} />
+    </LabeledWithError>
   );
 }

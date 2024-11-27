@@ -306,11 +306,9 @@ export default function ({
           ),
         };
 
-        console.log("AAA");
         const createResp = await req.authApi.createRegistration({
           body: data,
         });
-        console.log("BBB", createResp);
 
         if (createResp.status === 200) {
           res.cookie("mitmh2025_auth", createResp.body.token, {

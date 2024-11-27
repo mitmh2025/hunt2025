@@ -32,7 +32,7 @@ export async function seed(knex: Knex): Promise<void> {
     });
 
     if (team_id === undefined) {
-      team_id = await registerTeam(HUNT, undefined, knex, {
+      const regResult = await registerTeam(HUNT, undefined, knex, {
         username,
         password: "password",
         name: username,
@@ -60,6 +60,12 @@ export async function seed(knex: Knex): Promise<void> {
         teamMemberLocations: "MIT",
         referrer: "We have Hunted in the past.",
       });
+
+      if (!regResult.usernameAvailable) {
+        throw new Error(`Username ${username} is not available`);
+      }
+
+      team_id = regResult.teamId;
     }
 
     if (populator !== undefined) {

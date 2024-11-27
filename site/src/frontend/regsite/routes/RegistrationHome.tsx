@@ -56,8 +56,8 @@ export default function RegistrationHome({
         <section id="updates">
           <h2>Latest Updates</h2>
           <p>
-            <strong>2024.11.05 &mdash; </strong>The Providence Crime Syndication
-            has graciously written a pre-Hunt round of puzzles, and will be
+            <strong>2024.11.05 — </strong>The Providence Crime Syndication has
+            graciously written a pre-Hunt round of puzzles, and will be
             releasing the{" "}
             <a href="https://mitmysteryheist.com/">MIT Mystery Heist</a> on
             Saturday, November 16th, 2024 at 12:00 PM Eastern Time. These
@@ -67,21 +67,21 @@ export default function RegistrationHome({
             <a href="https://mitmysteryheist.com/">mitmysteryheist.com</a>.
           </p>
           <p>
-            <strong>2024.10.02 &mdash; </strong>We&apos;re seeing a remarkable
-            amount of enthusiasm and interest in the MIT Mystery Hunt hotel
-            blocks (great!), and are working to ensure that we can continue
-            offering discounted rooms to MIT Mystery Hunt attendees. However, we
-            have been advised by the hotels that it may no longer be possible to
-            add rooms at the originally posted rates. We will update this page
-            as we learn of new pricing, but are prioritizing making rooms
-            available as best as we can, even if that is at an increased price.
+            <strong>2024.10.02 — </strong>We’re seeing a remarkable amount of
+            enthusiasm and interest in the MIT Mystery Hunt hotel blocks
+            (great!), and are working to ensure that we can continue offering
+            discounted rooms to MIT Mystery Hunt attendees. However, we have
+            been advised by the hotels that it may no longer be possible to add
+            rooms at the originally posted rates. We will update this page as we
+            learn of new pricing, but are prioritizing making rooms available as
+            best as we can, even if that is at an increased price.
             Alternatively, the hotels are not (as of this writing) fully booked
             out, and so you may be able to book a room directly through the
             hotel at the regular rate.
           </p>
           <p>
-            <strong>2024.10.01 &mdash; </strong>We&apos;ll update this page as
-            we have more information to share. Major updates will also go to the{" "}
+            <strong>2024.10.01 — </strong>We’ll update this page as we have more
+            information to share. Major updates will also go to the{" "}
             <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
               puzzle-hunters mailing list
             </a>
@@ -103,7 +103,7 @@ export default function RegistrationHome({
                 long in a race to find a coin hidden on campus. To learn more
                 about the tradition and see previous events, check out
                 <a href="https://puzzles.mit.edu/">
-                  the MIT Puzzle Club&apos;s website
+                  the MIT Puzzle Club’s website
                 </a>
                 .
               </p>
@@ -182,17 +182,16 @@ export default function RegistrationHome({
 
           <details className="question">
             <summary>
-              <h3>I&apos;m not part of a team. Can I still participate?</h3>
+              <h3>I’m not part of a team. Can I still participate?</h3>
             </summary>
             <div className="answer">
               <p>
-                Yes you can! You can always start your own team, but if
-                you&apos;re looking to join an existing team we make an effort
-                to match new hunters. When Hunt registration opens in early
-                December, there will also be an opportunity for unattached
-                hunters to register. We will do our best to help match you to a
-                team. Check back later. If you are a student, please reach out
-                to
+                Yes you can! You can always start your own team, but if you’re
+                looking to join an existing team we make an effort to match new
+                hunters. When Hunt registration opens in early December, there
+                will also be an opportunity for unattached hunters to register.
+                We will do our best to help match you to a team. Check back
+                later. If you are a student, please reach out to
                 <a href="mailto:puzzle-club-exec@mit.edu">
                   puzzle-club-exec@mit.edu
                 </a>
@@ -215,9 +214,9 @@ export default function RegistrationHome({
                 The MIT Puzzle Club ran this as a live event for current
                 students in October. (Students who would like more information
                 about Puzzle Club events should join the Puzzle Club Discord
-                server &mdash; which you can find via the{" "}
-                <a href="https://discord.com/student-hubs">MIT Discord Hub</a>
-                &mdash; for more information.)
+                server — which you can find via the{" "}
+                <a href="https://discord.com/student-hubs">MIT Discord Hub</a>—
+                for more information.)
               </p>
               <p>
                 For the rest of the MIT Mystery Hunt community, The Providence
@@ -230,11 +229,10 @@ export default function RegistrationHome({
                 labmates into the Hunt community.
               </p>
               <p>
-                The pre-Hunt round ties directly into the story of this
-                year&apos;s MIT Mystery Hunt. However, none of the puzzle
-                content or answers will be used in Hunt, and solving the
-                pre-Hunt will not be necessary or helpful toward solving the MIT
-                Mystery Hunt itself.
+                The pre-Hunt round ties directly into the story of this year’s
+                MIT Mystery Hunt. However, none of the puzzle content or answers
+                will be used in Hunt, and solving the pre-Hunt will not be
+                necessary or helpful toward solving the MIT Mystery Hunt itself.
               </p>
             </div>
           </details>
@@ -250,9 +248,8 @@ export default function RegistrationHome({
                 best experienced in person. While we expect there to be many
                 puzzles that are accessible to remote solvers, there will also
                 be many physical puzzles, on-campus puzzles, interactions, and
-                activities that can only be done in person. If you&apos;re on
-                the fence about participating in this year&apos;s Hunt in
-                person,
+                activities that can only be done in person. If you’re on the
+                fence about participating in this year’s Hunt in person,
                 <strong>we think this is a good year to show up</strong>!
               </p>
             </div>
@@ -278,9 +275,9 @@ export default function RegistrationHome({
               <p>
                 We are still excited to share the Hunt with the rest of the
                 global puzzling community. After the live event ends,
-                post-solvable versions of all puzzles will become available
-                &mdash; with photographs, maps, data tables, and whatever else a
-                fully remote team would need to complete the Hunt.
+                post-solvable versions of all puzzles will become available —
+                with photographs, maps, data tables, and whatever else a fully
+                remote team would need to complete the Hunt.
               </p>
             </div>
           </details>
@@ -291,7 +288,7 @@ export default function RegistrationHome({
             </summary>
             <div className="answer">
               <p>
-                In order to win the MIT Mystery Hunt and write next year&apos;s,
+                In order to win the MIT Mystery Hunt and write next year’s,
                 <strong>you must have at least 1 current MIT student</strong> on
                 your team (although we recommend having more for logistical
                 reasons). If your team has a concern about this requirement,
@@ -317,14 +314,14 @@ export default function RegistrationHome({
                 registration which will open in early December. You can expect
                 confirmation about your assigned space from us in early January.
                 Please do not contact the Schedules Office directly for space
-                during the MIT Mystery Hunt, as we&apos;ve already worked with
-                them to reserve rooms.
+                during the MIT Mystery Hunt, as we’ve already worked with them
+                to reserve rooms.
               </p>
               <p>
                 As always, reservable space on campus can get tight and more and
                 more spaces have become department-only. If your team is able to
                 hunt out of non-reservable spaces like living group lounges or
-                restricted department spaces, that&apos;s even better!
+                restricted department spaces, that’s even better!
               </p>
             </div>
           </details>
@@ -340,14 +337,13 @@ export default function RegistrationHome({
               <p>
                 Campus access for guests has been a moving target since 2020,
                 and MIT is actively rolling out a new system to replace Tim
-                Tickets, so we&apos;re not yet exactly sure what procedures will
-                be involved this year. We&apos;ll update as we learn more from
-                MIT.
+                Tickets, so we’re not yet exactly sure what procedures will be
+                involved this year. We’ll update as we learn more from MIT.
               </p>
               <p>
-                We will also follow MIT&apos;s guidelines for COVID and
-                respiratory virus prevention, and will have more detail on what
-                these entail soon.
+                We will also follow MIT’s guidelines for COVID and respiratory
+                virus prevention, and will have more detail on what these entail
+                soon.
               </p>
             </div>
           </details>
@@ -363,7 +359,7 @@ export default function RegistrationHome({
                 reserving within each block.
               </p>
               <p>
-                <strong>Note</strong>: We&apos;re seeing a remarkable amount of
+                <strong>Note</strong>: We’re seeing a remarkable amount of
                 enthusiasm and interest in these hotel blocks (great!), and are
                 working to ensure that we can continue offering discounted rooms
                 to MIT Mystery Hunt attendees. However, we have been advised by
@@ -413,8 +409,8 @@ export default function RegistrationHome({
                       </p>
                       <p>
                         Marriott has been helpfully expanding the block as it
-                        sells out, so if you don&apos;t see available rooms,
-                        check back later.
+                        sells out, so if you don’t see available rooms, check
+                        back later.
                       </p>
                     </td>
                   </tr>
@@ -499,7 +495,7 @@ export default function RegistrationHome({
 
           <details className="question">
             <summary>
-              <h3>What&apos;s the recommended team size?</h3>
+              <h3>What’s the recommended team size?</h3>
             </summary>
             <div className="answer">
               <p>
@@ -510,15 +506,15 @@ export default function RegistrationHome({
               <p>
                 For newer and smaller teams, you should know that the MIT
                 Mystery Hunt is larger than other puzzle hunts that occur
-                throughout the year. We&apos;re proud to have designed the Hunt
-                to be exciting for teams of all sizes and experience levels, and
-                will work with teams throughout the weekend to make sure they
-                are having a fun and satisfying experience. However, very small
+                throughout the year. We’re proud to have designed the Hunt to be
+                exciting for teams of all sizes and experience levels, and will
+                work with teams throughout the weekend to make sure they are
+                having a fun and satisfying experience. However, very small
                 teams should understand that they are unlikely to see all of the
                 puzzles. Teams which complete the Hunt will likely have 30 or
-                more solvers working intensely throughout the weekend. If
-                you&apos;re debating inviting friends and hallmates to hunt with
-                you, you probably should.
+                more solvers working intensely throughout the weekend. If you’re
+                debating inviting friends and hallmates to hunt with you, you
+                probably should.
               </p>
               <p>
                 For larger teams, you have a sense of your style and how you
@@ -526,7 +522,7 @@ export default function RegistrationHome({
                 10 puzzles available simultaneously, increasing to around 20
                 over the course of the Hunt. We also expect that the total
                 number of puzzles will be in line with MIT Mystery Hunts of the
-                last decade. We don&apos;t intend to release any additional
+                last decade. We don’t intend to release any additional
                 information about the Hunt structure in advance, so we encourage
                 you to use this information to decide how you want to approach
                 team structure and recruiting for this year.
@@ -558,7 +554,7 @@ export default function RegistrationHome({
                 appreciate your financial support. It does not cost anything to
                 sign up and participate in the MIT Mystery Hunt. The organizers
                 are not getting paid, but the event does still cost real money
-                to produce and run&mdash;around $10 per person. Aside from a few
+                to produce and run—around $10 per person. Aside from a few
                 valued corporate sponsors, the MIT Mystery Hunt and the MIT
                 Puzzle Club are primarily funded by a large number of small
                 donations. If you are in a position to do so, your
@@ -576,9 +572,9 @@ export default function RegistrationHome({
             </summary>
             <div className="answer">
               <p>
-                That&apos;s not a question! But we&apos;re still excited to
-                answer. If you have any additional questions about this
-                year&apos;s event, please email
+                That’s not a question! But we’re still excited to answer. If you
+                have any additional questions about this year’s event, please
+                email
                 <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
               </p>
               <p>This FAQ will grow as the event gets closer.</p>

@@ -417,7 +417,9 @@ export async function registerTeam(
   redisClient: RedisClient | undefined,
   knex: Knex.Knex,
   data: TeamRegistration,
-) {
+): Promise<
+  { usernameAvailable: false } | { usernameAvailable: true; teamId: number }
+> {
   return await retryOnAbort(knex, async (trx) => {
     const regResult = await dbRegisterTeam(trx, data);
     if (!regResult.usernameAvailable) {
