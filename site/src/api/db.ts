@@ -315,12 +315,14 @@ export async function registerTeam(
   const team = (
     await trx("teams")
       .insert([{ username: data.username, password: data.password }])
+      .onConflict("username")
+      .ignore()
       .returning(["id"])
   )[0];
   if (team === undefined) {
-    throw new Error("failed to insert team");
+    return { usernameAvailable: false } as const;
   }
-  return team.id;
+  return { usernameAvailable: true, teamId: team.id } as const;
 }
 
 export async function getTeamRegistrationLog(

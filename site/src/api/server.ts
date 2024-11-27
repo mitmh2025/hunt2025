@@ -1,4 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
+import { isDeepStrictEqual } from "util";
 import { type ServerInferResponseBody } from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
@@ -23,8 +24,10 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { adminContract } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
+import { dataContract } from "../../lib/api/data_contract";
 import {
   type InternalActivityLogEntry,
+  type MutableTeamRegistration,
   frontendContract,
 } from "../../lib/api/frontend_contract";
 import { genId } from "../../lib/id";
@@ -32,12 +35,14 @@ import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
+import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
   registerTeam,
   teamRegistrationLog,
 } from "./data";
+import dataContractImplementation from "./dataContractImplementation";
 import {
   formatActivityLogEntryForApi,
   formatTeamHuntState,
@@ -114,12 +119,14 @@ function canonicalizeInput(input: string) {
 export function getRouter({
   jwtSecret,
   frontendApiSecret,
+  dataApiSecret,
   knex,
   hunt,
   redisClient,
 }: {
   jwtSecret: string | Buffer;
   frontendApiSecret: string;
+  dataApiSecret: string;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -163,6 +170,27 @@ export function getRouter({
         info,
         state: formatTeamHuntState(hunt, team_state),
       },
+    };
+  };
+
+  const getTeamRegistration = async (team_id: number) => {
+    const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
+      knex,
+      redisClient,
+      team_id,
+    );
+    const registration = team_registration_log.entries
+      .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
+      .formatTeamRegistration();
+    if (registration === undefined) {
+      return {
+        status: 404 as const,
+        body: null,
+      };
+    }
+    return {
+      status: 200 as const,
+      body: registration,
     };
   };
 
@@ -326,7 +354,9 @@ export function getRouter({
     public: publicContract,
     admin: adminContract,
     frontend: frontendContract,
+    data: dataContract,
   });
+
   const router = s.router(contract, {
     auth: {
       login: async ({
@@ -364,23 +394,98 @@ export function getRouter({
           body: {},
         };
       },
-      register: async ({ body }) => {
-        const team_id = await registerTeam(hunt, redisClient, knex, body);
+      createRegistration: async ({ body }) => {
+        const result = await registerTeam(hunt, redisClient, knex, body);
+        if (!result.usernameAvailable) {
+          return {
+            status: 409,
+            body: {
+              error: "username_taken",
+            },
+          };
+        }
+
         const token = jwt.sign(
           {
             user: body.username,
-            team_id,
+            team_id: result.teamId,
             sess_id: genId(),
           },
           jwtSecret,
           {},
         );
+
         return {
           status: 200,
           body: {
             token,
           },
         };
+      },
+      updateRegistration: {
+        middleware: [authMiddleware],
+        handler: async ({ body, req }) => {
+          const teamId = req.user as number;
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            teamId,
+            redisClient,
+            knex,
+            async (_, mutator) => {
+              const previousRegistration = mutator.getTeamRegistration(teamId);
+              if (!previousRegistration) {
+                return undefined;
+              }
+
+              const nameHasChanged = previousRegistration.name !== body.name;
+              const otherFieldsHaveChanged = Object.keys(body)
+                .filter((k) => k !== "name")
+                .some((k) => {
+                  return !isDeepStrictEqual(
+                    body[k as keyof MutableTeamRegistration],
+                    previousRegistration[k as keyof MutableTeamRegistration],
+                  );
+                });
+
+              if (nameHasChanged) {
+                await mutator.appendLog({
+                  type: "team_name_changed",
+                  team_id: teamId,
+                  data: { name: body.name },
+                });
+              }
+
+              if (otherFieldsHaveChanged) {
+                await mutator.appendLog({
+                  type: "team_registration_updated",
+                  team_id: teamId,
+                  data: omit(body, "name"),
+                });
+              }
+
+              return mutator.getTeamRegistration(teamId);
+            },
+          );
+
+          if (!result) {
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+
+          return {
+            status: 200,
+            body: result,
+          };
+        },
+      },
+      getRegistration: {
+        middleware: [authMiddleware],
+        handler: async ({ req }) => {
+          const team_id = req.user as number;
+          return getTeamRegistration(team_id);
+        },
       },
     },
     public: {
@@ -854,6 +959,7 @@ export function getRouter({
         },
       },
     },
+    data: dataContractImplementation({ knex, dataApiSecret }),
   });
 
   createExpressEndpoints(contract, router, app, {

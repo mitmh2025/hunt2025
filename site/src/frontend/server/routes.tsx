@@ -1,22 +1,15 @@
-import cookieParser from "cookie-parser";
-import express, {
+import {
   type Request,
   type Response,
   type RequestHandler,
   type NextFunction,
 } from "express";
 import asyncHandler from "express-async-handler";
-import type { ParamsDictionary } from "express-serve-static-core";
-import multer from "multer";
-import * as React from "react";
-import { renderToString } from "react-dom/server";
-import { ServerStyleSheet } from "styled-components";
 import { Router } from "websocket-express";
 import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type Hunt } from "../../huntdata/types";
-import Layout from "../components/Layout";
 import { PUZZLES } from "../puzzles";
 import {
   comboLockPostHandler,
@@ -24,7 +17,8 @@ import {
   modalPostHandler,
   nodeRequestHandler,
 } from "../rounds/illegal_search";
-import { type Entrypoint, lookupScripts, lookupStylesheets } from "./assets";
+import { addParserMiddleware } from "../utils/expressMiddleware";
+import renderApp, { render500 } from "../utils/renderApp";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import {
@@ -106,105 +100,6 @@ function logoutHandler(_req: Request, res: Response) {
   res.redirect("/");
 }
 
-const render404 = (_req: Request, res: Response) => {
-  const html =
-    "<!DOCTYPE html><html><body><h1>404 Not Found</h1><p>We didn&apos;t find what you were looking for.</p></body></html>";
-  res.status(404).send(html);
-};
-
-const render500 = (
-  res: Response,
-  showError: boolean,
-  status: number,
-  errorText: string,
-) => {
-  const doctype = "<!DOCTYPE html>";
-  const reactRoot = (
-    <html lang="en">
-      <body>
-        <h1>500 Service Temporarily Unavailable</h1>
-        {showError ? (
-          <>
-            <p>API request returned {status}:</p>
-            <pre>{errorText}</pre>
-          </>
-        ) : undefined}
-      </body>
-    </html>
-  );
-  const html = doctype + renderToString(reactRoot) + "\n";
-  res.status(500).send(html);
-};
-
-const oneDay = String(60 * 60 * 24);
-
-export type RenderedPage =
-  | {
-      node: React.ReactNode; // The element to be placed under the root div
-      title?: string; // The desired page <title>
-      entrypoints?: Entrypoint[]; // Additional script/stylesheets to include
-    }
-  | undefined;
-export type PageRenderer<Params extends ParamsDictionary> = (
-  req: Request<Params>,
-) => Promise<RenderedPage> | RenderedPage;
-
-async function renderApp<Params extends ParamsDictionary>(
-  renderer: PageRenderer<Params>,
-  req: Request<Params>,
-  res: Response,
-  _next: NextFunction,
-) {
-  const result = await renderer(req);
-  if (!result) {
-    render404(req, res);
-    return;
-  }
-  const reactRoot = result.node;
-  const sheet = new ServerStyleSheet();
-  let styleElements;
-  let innerHTML;
-  try {
-    innerHTML = renderToString(sheet.collectStyles(reactRoot));
-    styleElements = sheet.getStyleElement();
-  } catch (error) {
-    console.log(error);
-    render500(res, false, 0, "");
-    return;
-  } finally {
-    sheet.seal();
-  }
-
-  const scripts = (result.entrypoints ?? []).flatMap((entrypoint) => {
-    return lookupScripts(entrypoint);
-  });
-  const stylesheets = (result.entrypoints ?? []).flatMap((entrypoint) => {
-    return lookupStylesheets(entrypoint);
-  });
-
-  const doctype = "<!DOCTYPE html>";
-  const html =
-    doctype +
-    renderToString(
-      <Layout
-        scripts={scripts}
-        stylesheets={stylesheets}
-        title={result.title}
-        teamState={req.teamState?.state}
-        styleElements={styleElements}
-        innerHTML={innerHTML}
-      />,
-    ) +
-    "\n";
-  res.set({
-    "Content-Type": "text/html; charset=utf-8",
-    // TODO: determine if this Cache-Control is appropriate
-    "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
-  });
-  res.status(200);
-  res.send(html);
-}
-
 export function getBaseRouter({
   apiUrl,
   frontendApiSecret,
@@ -213,11 +108,12 @@ export function getBaseRouter({
   frontendApiSecret: string;
 }) {
   const router = new Router();
-  router.use(cookieParser());
-  router.use(express.urlencoded({ extended: false })); // Avoid nonstandard form nonsense
-  router.use(express.json());
-  router.use(multer().none()); // Don't handle file uploads
-  router.use(express.text());
+  addParserMiddleware(router, {
+    cookies: true,
+    urlencoded: true,
+    json: true,
+    text: true,
+  });
 
   router.use((req: Request, _res: Response, next: NextFunction) => {
     req.authApi = newAuthClient(apiUrl);

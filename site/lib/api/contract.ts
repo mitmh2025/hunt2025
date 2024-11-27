@@ -1,7 +1,7 @@
 // contract.ts
 
 import { initContract } from "@ts-rest/core";
-import { parsePhoneNumber } from "libphonenumber-js";
+import { parsePhoneNumber, type PhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
 export const c = initContract();
@@ -160,23 +160,26 @@ const LoginResponseSchema = z.object({
   token: z.string(),
 });
 
-// Roughly based on 2024 registration form
-// MutableTeamRegistrationSchema are the fields we allow to be changed after registration.
-export const MutableTeamRegistrationSchema = z.object({
-  // Team name must be 1-255 utf-8 characters
-  name: z.string().min(1).max(255),
-  teamEmail: z.string().email().optional(),
-  // TOOD: Team bio?
+function zodPhoneNumber() {
+  return z.string().transform((val, ctx) => {
+    if (!val) {
+      return val;
+    }
 
-  // Primary contact
-  contactName: z.string().min(1).max(255),
-  contactPronouns: z.string().max(127).optional(),
-  contactEmail: z.string().email(),
-  contactPhone: z.string().transform((val, ctx) => {
-    const parsed = parsePhoneNumber(val, {
-      defaultCountry: "US",
-      extract: false,
-    });
+    let parsed: PhoneNumber;
+    try {
+      parsed = parsePhoneNumber(val, {
+        defaultCountry: "US",
+        extract: false,
+      });
+    } catch (e) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Not a valid phone number",
+      });
+      return z.NEVER;
+    }
+
     if (!parsed.isValid()) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -185,27 +188,60 @@ export const MutableTeamRegistrationSchema = z.object({
       return z.NEVER;
     }
     return parsed.number.toString();
-  }),
+  });
+}
 
-  // Team background
-  // TODO
+// Roughly based on 2024 registration form
+// MutableTeamRegistrationSchema are the fields we allow to be changed after registration.
+export const MutableTeamRegistrationSchema = z.object({
+  // Team name must be 1-255 utf-8 characters
+  name: z.string().min(1).max(255),
+  teamEmail: z.string().email().min(1).max(255),
 
-  // Team base
-  // TODO
+  // Team contact
+  contactName: z.string().min(1).max(255),
+  contactEmail: z.string().email(),
+  contactPhone: zodPhoneNumber(),
+  contactMailingAddress: z.string().min(1).max(255),
+
+  secondaryContactName: z.string().max(255).optional(),
+  secondaryContactEmail: z.string().email().optional(),
+  secondaryContactPhone: zodPhoneNumber().optional(),
+
+  // Team information
+  teamGoal: z.string().min(1).max(255),
+  teamValues: z.array(z.string().min(1).max(255)).max(5),
+  teamValuesOther: z.string().max(255).optional(),
+  teamExcitedAboutWinning: z.string().min(1).max(255),
+  teamYearEstablished: z.number(),
+  teamMemberLocations: z.string().min(1).max(255),
+
+  // Team location
+  teamLocation: z.enum(["Fully Remote", "Room Requested", "Room Not Required"]),
+  teamLocationDetailsRemote: z.string().max(1024).optional(),
+  teamLocationDetailsRoomRequest: z.string().max(1024).optional(),
+  teamLocationDetailsNoRoomRequested: z.string().max(1024).optional(),
 
   // Team composition
   peopleTotal: z.number(),
-  peopleOnCampus: z.number(),
-  peopleLastYear: z.number(),
+
   peopleUndergrad: z.number(),
   peopleGrad: z.number(),
   peopleAlum: z.number(),
   peopleStaff: z.number(),
-  peopleVisitor: z.number(),
+  peopleAffiliates: z.number(),
   peopleMinor: z.number(),
+  peopleOther: z.number(),
 
-  // Other information
-  // TODO
+  peopleOnCampus: z.number(),
+  peopleRemote: z.number(),
+
+  acceptUnattached: z.boolean(),
+
+  // Other
+  referrer: z.string().min(1).max(255),
+  referrerOther: z.string().max(255).optional(),
+  otherNotes: z.string().max(1024).optional(),
 });
 
 export const TeamRegistrationSchema = MutableTeamRegistrationSchema.merge(
@@ -230,16 +266,31 @@ export const authContract = c.router({
     body: LoginRequestSchema,
     responses: {
       200: LoginResponseSchema,
-      401: z.object({}),
+      403: z.object({}),
     },
     summary: "Login to a team",
   },
-  register: {
-    method: "POST",
-    path: `/register`,
+  createRegistration: {
+    method: "PUT",
+    path: `/registration`,
     body: TeamRegistrationSchema,
     responses: {
       200: LoginResponseSchema,
+    },
+  },
+  getRegistration: {
+    method: "GET",
+    path: `/registration`,
+    responses: {
+      200: TeamRegistrationSchema,
+    },
+  },
+  updateRegistration: {
+    method: "PATCH",
+    path: `/registration`,
+    body: MutableTeamRegistrationSchema,
+    responses: {
+      200: TeamRegistrationSchema,
     },
   },
 });

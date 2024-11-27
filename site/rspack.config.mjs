@@ -473,6 +473,9 @@ export default function createConfigs(_env, argv) {
 
       // Included on specific puzzle pages
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
+
+      // Regsite (css only)
+      regsite: "./src/frontend/regsite/regsite.css",
     },
     // Client code needs to reference the webworker bundle by URL.
     dependencies: ["worker"],

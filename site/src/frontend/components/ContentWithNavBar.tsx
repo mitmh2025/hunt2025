@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react";
 import { type TeamState, type TeamHuntState } from "../../../lib/api/client";
-import { type RenderedPage } from "../server/routes";
+import { type RenderedPage } from "../utils/renderApp";
 import NavBar, { type NavBarState } from "./NavBar";
 
 export function navBarState(teamState: TeamHuntState): NavBarState {

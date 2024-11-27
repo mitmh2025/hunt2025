@@ -28,6 +28,7 @@
     "bufferutil": "^4.0.8",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "csv-stringify": "^6.5.2",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",

@@ -6,6 +6,7 @@ import {
   GuessStatus,
   TeamRegistrationSchema,
   CannedResponseLinkSchema,
+  MutableTeamRegistrationSchema,
 } from "./contract";
 
 const InternalActivityLogEntryBaseSchema = ActivityLogEntryBaseSchema.merge(
@@ -108,6 +109,12 @@ export const TeamRegistrationLogEntrySchema = z.discriminatedUnion("type", [
       data: TeamRegistrationSchema.pick({ name: true }),
     }),
   ),
+  TeamRegistrationLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("team_registration_updated"),
+      data: MutableTeamRegistrationSchema.omit({ name: true }),
+    }),
+  ),
 ]);
 
 export type TeamRegistrationLogEntry = z.output<
@@ -121,6 +128,9 @@ export const TeamRegistrationLogSchema = z.array(
 );
 
 export type TeamRegistration = z.output<typeof TeamRegistrationSchema>;
+export type MutableTeamRegistration = z.output<
+  typeof MutableTeamRegistrationSchema
+>;
 
 export const frontendContract = c.router({
   markTeamGateSatisfied: {

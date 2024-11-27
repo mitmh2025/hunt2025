@@ -32,23 +32,40 @@ export async function seed(knex: Knex): Promise<void> {
     });
 
     if (team_id === undefined) {
-      team_id = await registerTeam(HUNT, undefined, knex, {
+      const regResult = await registerTeam(HUNT, undefined, knex, {
         username,
         password: "password",
         name: username,
+        teamEmail: "team@example.com",
         contactName: "Jack Florey",
         contactEmail: "jack@example.com",
         contactPhone: "+16172531000",
+        contactMailingAddress: "123 Main St, Cambridge, MA 02139",
         peopleTotal: 1,
-        peopleOnCampus: 1,
-        peopleLastYear: 0,
         peopleUndergrad: 0,
         peopleGrad: 0,
         peopleAlum: 0,
         peopleStaff: 0,
-        peopleVisitor: 1,
+        peopleAffiliates: 1,
         peopleMinor: 0,
+        peopleOther: 0,
+        peopleRemote: 0,
+        peopleOnCampus: 1,
+        teamLocation: "Room Requested",
+        acceptUnattached: true,
+        teamGoal: "We’d like to complete the Hunt.",
+        teamValues: ["Being in the running to win"],
+        teamExcitedAboutWinning: "Yes",
+        teamYearEstablished: 2021,
+        teamMemberLocations: "MIT",
+        referrer: "We have Hunted in the past.",
       });
+
+      if (!regResult.usernameAvailable) {
+        throw new Error(`Username ${username} is not available`);
+      }
+
+      team_id = regResult.teamId;
     }
 
     if (populator !== undefined) {
