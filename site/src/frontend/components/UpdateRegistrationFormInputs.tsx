@@ -242,7 +242,7 @@ export default function UpdateRegistrationFormInputs({
           {...fieldProps("teamExcitedAboutWinning", { required: true })}
         />
         <LabeledInputWithError
-          label="What year was your team established? (required)"
+          label="In what year did your team first compete in Mystery Hunt? (required)"
           {...fieldProps("teamYearEstablished", {
             required: true,
             numeric: true,
@@ -260,7 +260,7 @@ export default function UpdateRegistrationFormInputs({
         <fieldset>
           <legend>
             Which of the following describes your team’s physical location
-            during the 2025 MIT Mystery Hunt?
+            during the 2025 MIT Mystery Hunt? (required)
           </legend>
           <div>
             {TEAM_LOCATIONS.map(
@@ -304,37 +304,43 @@ export default function UpdateRegistrationFormInputs({
         />
 
         <fieldset>
-          <legend>How many people on your team are:</legend>
+          <legend>How many people on your team are (all required):</legend>
           <div
             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
           >
             <LabeledInputWithError
               label="MIT Undergraduates"
-              {...fieldProps("peopleUndergrad", { numeric: true })}
+              {...fieldProps("peopleUndergrad", {
+                required: true,
+                numeric: true,
+              })}
             />
             <LabeledInputWithError
               label="MIT Graduate students"
-              {...fieldProps("peopleGrad", { numeric: true })}
+              {...fieldProps("peopleGrad", { required: true, numeric: true })}
             />
             <LabeledInputWithError
               label="MIT Alumni"
-              {...fieldProps("peopleAlum", { numeric: true })}
+              {...fieldProps("peopleAlum", { required: true, numeric: true })}
             />
             <LabeledInputWithError
               label="MIT Faculty and Staff"
-              {...fieldProps("peopleStaff", { numeric: true })}
+              {...fieldProps("peopleStaff", { required: true, numeric: true })}
             />
             <LabeledInputWithError
               label="MIT Affiliates (Lincoln Labs, WHOI, etc.)"
-              {...fieldProps("peopleAffiliates", { numeric: true })}
+              {...fieldProps("peopleAffiliates", {
+                required: true,
+                numeric: true,
+              })}
             />
             <LabeledInputWithError
               label="Minors (team members who will be under 18 during Hunt who are not MIT students)"
-              {...fieldProps("peopleMinor", { numeric: true })}
+              {...fieldProps("peopleMinor", { required: true, numeric: true })}
             />
             <LabeledInputWithError
               label="Other (Not affiliated with MIT and not a minor)"
-              {...fieldProps("peopleOther", { numeric: true })}
+              {...fieldProps("peopleOther", { required: true, numeric: true })}
             />
           </div>
         </fieldset>
@@ -343,8 +349,11 @@ export default function UpdateRegistrationFormInputs({
           <legend>Campus presence:</legend>
           <div>
             <LabeledInputWithError
-              label="Number of team members who will be on or near campus during Hunt"
-              {...fieldProps("peopleOnCampus", { numeric: true })}
+              label="Number of team members who will be on or near campus during Hunt (required)"
+              {...fieldProps("peopleOnCampus", {
+                required: true,
+                numeric: true,
+              })}
             />
             <LabeledInputWithError
               label="Number of team members who will be fully remote during Hunt"
