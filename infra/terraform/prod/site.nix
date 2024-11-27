@@ -11,6 +11,10 @@
   resource.random_password.jwt_secret = {
     length = 32;
   };
+  resource.random_password.data_api_secret = {
+    length = 64;
+    special = false;
+  };
   resource.random_password.frontend_api_secret = {
     length = 64;
   };
@@ -19,6 +23,7 @@
     metadata.name = "api";
     data = {
       JWT_SECRET = lib.tfRef "random_password.jwt_secret.result";
+      DATA_API_SECRET = lib.tfRef "random_password.data_api_secret.result";
       FRONTEND_API_SECRET = lib.tfRef "random_password.frontend_api_secret.result";
       REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
     };
@@ -71,6 +76,15 @@
               value_from = [{
                 secret_key_ref = [{
                   key = "FRONTEND_API_SECRET";
+                  name = "api";
+                }];
+              }];
+            }
+            {
+              name = "DATA_API_SECRET";
+              value_from = [{
+                secret_key_ref = [{
+                  key = "DATA_API_SECRET";
                   name = "api";
                 }];
               }];
