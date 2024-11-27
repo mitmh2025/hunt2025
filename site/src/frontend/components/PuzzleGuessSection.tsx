@@ -18,10 +18,13 @@ type FormState = "idle" | "submitting" | "error";
 const GuessSectionWrapper = styled.section`
   background-color: var(--gray-200);
   color: var(--black);
-  padding: 1rem 0.5rem;
+  padding: 1rem;
   grid-column: 1 / 2;
   text-align: center;
   border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
   @media ${deviceMax.md} {
     grid-column: 1 / 3;
@@ -30,12 +33,19 @@ const GuessSectionWrapper = styled.section`
 
 const GuessTable = styled.table`
   text-align: left;
+  border-collapse: collapse;
 
-  td {
+  th {
+    border-bottom: 1px solid currentColor;
+  }
+
+  td,
+  th {
     padding: 0.125rem 1rem 0.125rem 0;
 
     &.answer-attempt {
       font-weight: 900;
+      font-family: monospace;
     }
   }
 `;
@@ -174,8 +184,8 @@ function formatGuessTimestamp(t: string) {
   const d = new Date(t);
   const dayOfWeek = weekday[d.getDay()];
   const hours = d.getHours();
-  const minutes = d.getMinutes();
-  return `${dayOfWeek} ${hours}:${minutes}`;
+  const minutes = d.getMinutes().toString();
+  return `${dayOfWeek} ${hours}:${minutes.length > 1 ? minutes : `0${minutes}`}`;
 }
 
 const PuzzleResponse = ({
