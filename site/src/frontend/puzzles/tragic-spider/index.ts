@@ -45,7 +45,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have begun to identify English and Japanese words to apply to the images, but feel stuck / do not know what to do with these identifications",
       keywords: ["images", "words", "English", "Japanese"],
       nudge:
-        "It will most likely be necessary to determine the puzzle's mechanic before being able to fully identify every image. Consider the title of the puzzle and the parts of the flavor text that did not point to the Iroha poem. Particularly, try looking up the exact meaning of the first word in the title, and consider what/who that might be referring to.",
+        "It will most likely be necessary to determine the puzzle’s mechanic before being able to fully identify every image. Consider the title of the puzzle and the parts of the flavor text that did not point to the Iroha poem. Particularly, try looking up the exact meaning of the first word in the title, and consider what/who that might be referring to.",
     },
     {
       order: 25.0,
@@ -53,7 +53,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have considered the title and flavor but cannot extract meaning from these",
       keywords: ["Koutei", "kotei", "emperor", "code", "cipher", "shift"],
       nudge:
-        "The title translates to “the emperor's code,” but specifically a non-Japanese emperor. The flavor mentions two shifts. The ideas of a foreign emperor, a code, and shifting are together intended to lead you to a specific puzzle mechanic.",
+        "The title translates to “the emperor’s code,” but specifically a non-Japanese emperor. The flavor mentions two shifts. The ideas of a foreign emperor, a code, and shifting are together intended to lead you to a specific puzzle mechanic.",
     },
     {
       order: 30.0,
@@ -61,7 +61,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers think the general idea of Caesar shifting is important",
       keywords: ["Caesar", "shift"],
       nudge:
-        "You're right, Caesar shifts are important. Try some out on your image identifications!",
+        "You’re right, Caesar shifts are important. Try some out on your image identifications!",
     },
     {
       order: 50.0,
@@ -69,7 +69,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have found some English Caesar shift pairs, but not any Iroha pairs",
       keywords: ["Caesar", "pairs", "English"],
       nudge:
-        "You can expand the idea that you are working with, here. All a Caesar shift needs is a string, and an ordering of all possible characters that could make up that string. There's nothing restricting that idea to just English...",
+        "You can expand the idea that you are working with, here. All a Caesar shift needs is a string, and an ordering of all possible characters that could make up that string. There’s nothing restricting that idea to just English...",
     },
     {
       order: 70.0,
