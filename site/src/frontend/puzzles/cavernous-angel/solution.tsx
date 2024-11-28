@@ -5,6 +5,9 @@ import { LAST_DROPQUOTE, makeFill, makeLabels } from "./puzzle";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
+  td {
+    font-family: monospace;
+  }
   td,
   th {
     padding: 1px 8px;
@@ -69,18 +72,10 @@ const Solution = (): JSX.Element => {
           <td>I don’t win them all but I’d say I take BRINE out of six</td>
           <td>FIVE</td>
           <td>BRINE</td>
-          <td>
-            <Mono>F</Mono>
-          </td>
-          <td>
-            <Mono>BR</Mono>
-          </td>
-          <td>
-            <Mono>V</Mono>
-          </td>
-          <td>
-            <Mono>N</Mono>
-          </td>
+          <td>F</td>
+          <td>BR</td>
+          <td>V</td>
+          <td>N</td>
         </tr>
         <tr>
           <td>2</td>
@@ -88,18 +83,10 @@ const Solution = (): JSX.Element => {
           <td>QUIET tape and time and then you take the turn again</td>
           <td>JUST</td>
           <td>QUIET</td>
-          <td>
-            <Mono>S</Mono>
-          </td>
-          <td>
-            <Mono>IE</Mono>
-          </td>
-          <td>
-            <Mono>J</Mono>
-          </td>
-          <td>
-            <Mono>Q</Mono>
-          </td>
+          <td>S</td>
+          <td>IE</td>
+          <td>J</td>
+          <td>Q</td>
         </tr>
         <tr>
           <td>3</td>
@@ -107,18 +94,10 @@ const Solution = (): JSX.Element => {
           <td>I’m pushin’ this TOUCH all the way to the coast</td>
           <td>LUCK</td>
           <td>TOUCH</td>
-          <td>
-            <Mono>L</Mono>
-          </td>
-          <td>
-            <Mono>TO</Mono>
-          </td>
-          <td>
-            <Mono>K</Mono>
-          </td>
-          <td>
-            <Mono>H</Mono>
-          </td>
+          <td>L</td>
+          <td>TO</td>
+          <td>K</td>
+          <td>H</td>
         </tr>
         <tr>
           <td>4</td>
@@ -129,18 +108,10 @@ const Solution = (): JSX.Element => {
           </td>
           <td>ZENO’S</td>
           <td>VENUS’S</td>
-          <td>
-            <Mono>O</Mono>
-          </td>
-          <td>
-            <Mono>US</Mono>
-          </td>
-          <td>
-            <Mono>Z</Mono>
-          </td>
-          <td>
-            <Mono>V</Mono>
-          </td>
+          <td>O</td>
+          <td>US</td>
+          <td>Z</td>
+          <td>V</td>
         </tr>
         <tr>
           <td>5</td>
@@ -148,18 +119,10 @@ const Solution = (): JSX.Element => {
           <td>I’m here to file my report as the VIEWER of the wolf pack</td>
           <td>VIXEN</td>
           <td>VIEWER</td>
-          <td>
-            <Mono>X</Mono>
-          </td>
-          <td>
-            <Mono>EW</Mono>
-          </td>
-          <td>
-            <Mono>N</Mono>
-          </td>
-          <td>
-            <Mono>R</Mono>
-          </td>
+          <td>X</td>
+          <td>EW</td>
+          <td>N</td>
+          <td>R</td>
         </tr>
         <tr>
           <td>6</td>
@@ -170,18 +133,10 @@ const Solution = (): JSX.Element => {
           </td>
           <td>WINGS</td>
           <td>BLINKS</td>
-          <td>
-            <Mono>W</Mono>
-          </td>
-          <td>
-            <Mono>BL</Mono>
-          </td>
-          <td>
-            <Mono>G</Mono>
-          </td>
-          <td>
-            <Mono>K</Mono>
-          </td>
+          <td>W</td>
+          <td>BL</td>
+          <td>G</td>
+          <td>K</td>
         </tr>
         <tr>
           <td>7</td>
@@ -192,18 +147,10 @@ const Solution = (): JSX.Element => {
           </td>
           <td>PLAY</td>
           <td>BLAME</td>
-          <td>
-            <Mono>Y</Mono>
-          </td>
-          <td>
-            <Mono>ME</Mono>
-          </td>
-          <td>
-            <Mono>P</Mono>
-          </td>
-          <td>
-            <Mono>B</Mono>
-          </td>
+          <td>Y</td>
+          <td>ME</td>
+          <td>P</td>
+          <td>B</td>
         </tr>
         <tr>
           <td>8</td>
@@ -211,18 +158,10 @@ const Solution = (): JSX.Element => {
           <td>Rearview shows a RELOAD of dust / a ghost arisen</td>
           <td>CLOUD</td>
           <td>RELOAD</td>
-          <td>
-            <Mono>C</Mono>
-          </td>
-          <td>
-            <Mono>RE</Mono>
-          </td>
-          <td>
-            <Mono>U</Mono>
-          </td>
-          <td>
-            <Mono>A</Mono>
-          </td>
+          <td>C</td>
+          <td>RE</td>
+          <td>U</td>
+          <td>A</td>
         </tr>
         <tr>
           <td>9</td>
@@ -230,18 +169,10 @@ const Solution = (): JSX.Element => {
           <td>I’m hopelessly nearsighted / not much for SLAIN gazing</td>
           <td>STAR</td>
           <td>SLAIN</td>
-          <td>
-            <Mono>R</Mono>
-          </td>
-          <td>
-            <Mono>IN</Mono>
-          </td>
-          <td>
-            <Mono>T</Mono>
-          </td>
-          <td>
-            <Mono>L</Mono>
-          </td>
+          <td>R</td>
+          <td>IN</td>
+          <td>T</td>
+          <td>L</td>
         </tr>
         <tr>
           <td>10</td>
@@ -252,18 +183,10 @@ const Solution = (): JSX.Element => {
           </td>
           <td>HANDLE</td>
           <td>GRANULE</td>
-          <td>
-            <Mono>H</Mono>
-          </td>
-          <td>
-            <Mono>GR</Mono>
-          </td>
-          <td>
-            <Mono>D</Mono>
-          </td>
-          <td>
-            <Mono>U</Mono>
-          </td>
+          <td>H</td>
+          <td>GR</td>
+          <td>D</td>
+          <td>U</td>
         </tr>
         <tr>
           <td>11</td>
@@ -271,18 +194,10 @@ const Solution = (): JSX.Element => {
           <td>It’s like losing the feeling in a phantom LEMUR</td>
           <td>LIMB</td>
           <td>LEMUR</td>
-          <td>
-            <Mono>B</Mono>
-          </td>
-          <td>
-            <Mono>UR</Mono>
-          </td>
-          <td>
-            <Mono>I</Mono>
-          </td>
-          <td>
-            <Mono>E</Mono>
-          </td>
+          <td>B</td>
+          <td>UR</td>
+          <td>I</td>
+          <td>E</td>
         </tr>
         <tr>
           <td>12</td>
@@ -292,18 +207,10 @@ const Solution = (): JSX.Element => {
           </td>
           <td>SQUARE</td>
           <td>SAGUARO</td>
-          <td>
-            <Mono>Q</Mono>
-          </td>
-          <td>
-            <Mono>AG</Mono>
-          </td>
-          <td>
-            <Mono>E</Mono>
-          </td>
-          <td>
-            <Mono>O</Mono>
-          </td>
+          <td>Q</td>
+          <td>AG</td>
+          <td>E</td>
+          <td>O</td>
         </tr>
         <tr>
           <td>13</td>
@@ -311,18 +218,10 @@ const Solution = (): JSX.Element => {
           <td>Man it’s murder in the morning but it’s good for CHORTLE</td>
           <td>MORALE</td>
           <td>CHORTLE</td>
-          <td>
-            <Mono>M</Mono>
-          </td>
-          <td>
-            <Mono>CH</Mono>
-          </td>
-          <td>
-            <Mono>A</Mono>
-          </td>
-          <td>
-            <Mono>T</Mono>
-          </td>
+          <td>M</td>
+          <td>CH</td>
+          <td>A</td>
+          <td>T</td>
         </tr>
       </StyledTable>
       <p>
@@ -337,159 +236,107 @@ const Solution = (): JSX.Element => {
         </tr>
         <tr>
           <td>A</td>
-          <td>
-            <Mono>T</Mono>
-          </td>
+          <td>T</td>
         </tr>
         <tr>
           <td>B</td>
-          <td>
-            <Mono>UR</Mono>
-          </td>
+          <td>UR</td>
         </tr>
         <tr>
           <td>C</td>
-          <td>
-            <Mono>RE</Mono>
-          </td>
+          <td>RE</td>
         </tr>
         <tr>
           <td>D</td>
-          <td>
-            <Mono>U</Mono>
-          </td>
+          <td>U</td>
         </tr>
         <tr>
           <td>E</td>
-          <td>
-            <Mono>O</Mono>
-          </td>
+          <td>O</td>
         </tr>
         <tr>
           <td>F</td>
-          <td>
-            <Mono>BR</Mono>
-          </td>
+          <td>BR</td>
         </tr>
         <tr>
           <td>G</td>
-          <td>
-            <Mono>K</Mono>
-          </td>
+          <td>K</td>
         </tr>
         <tr>
           <td>H</td>
-          <td>
-            <Mono>GR</Mono>
-          </td>
+          <td>GR</td>
         </tr>
         <tr>
           <td>I</td>
-          <td>
-            <Mono>E</Mono>
-          </td>
+          <td>E</td>
         </tr>
         <tr>
           <td>J</td>
-          <td>
-            <Mono>Q</Mono>
-          </td>
+          <td>Q</td>
         </tr>
         <tr>
           <td>K</td>
-          <td>
-            <Mono>H</Mono>
-          </td>
+          <td>H</td>
         </tr>
         <tr>
           <td>L</td>
-          <td>
-            <Mono>TO</Mono>
-          </td>
+          <td>TO</td>
         </tr>
         <tr>
           <td>M</td>
-          <td>
-            <Mono>CH</Mono>
-          </td>
+          <td>CH</td>
         </tr>
         <tr>
           <td>N</td>
-          <td>
-            <Mono>R</Mono>
-          </td>
+          <td>R</td>
         </tr>
         <tr>
           <td>O</td>
-          <td>
-            <Mono>US</Mono>
-          </td>
+          <td>US</td>
         </tr>
         <tr>
           <td>P</td>
-          <td>
-            <Mono>B</Mono>
-          </td>
+          <td>B</td>
         </tr>
         <tr>
           <td>Q</td>
-          <td>
-            <Mono>AG</Mono>
-          </td>
+          <td>AG</td>
         </tr>
         <tr>
           <td>R</td>
-          <td>
-            <Mono>IN</Mono>
-          </td>
+          <td>IN</td>
         </tr>
         <tr>
           <td>S</td>
-          <td>
-            <Mono>IE</Mono>
-          </td>
+          <td>IE</td>
         </tr>
         <tr>
           <td>T</td>
-          <td>
-            <Mono>L</Mono>
-          </td>
+          <td>L</td>
         </tr>
         <tr>
           <td>U</td>
-          <td>
-            <Mono>A</Mono>
-          </td>
+          <td>A</td>
         </tr>
         <tr>
           <td>V</td>
-          <td>
-            <Mono>N</Mono>
-          </td>
+          <td>N</td>
         </tr>
         <tr>
           <td>W</td>
-          <td>
-            <Mono>BL</Mono>
-          </td>
+          <td>BL</td>
         </tr>
         <tr>
           <td>X</td>
-          <td>
-            <Mono>EW</Mono>
-          </td>
+          <td>EW</td>
         </tr>
         <tr>
           <td>Y</td>
-          <td>
-            <Mono>ME</Mono>
-          </td>
+          <td>ME</td>
         </tr>
         <tr>
           <td>Z</td>
-          <td>
-            <Mono>V</Mono>
-          </td>
+          <td>V</td>
         </tr>
       </StyledTable>
       <p>
