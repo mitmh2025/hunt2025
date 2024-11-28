@@ -118,7 +118,10 @@ export function getBaseRouter({
 
   router.use((req: Request, _res: Response, next: NextFunction) => {
     req.authApi = newAuthClient(apiUrl);
-    req.frontendApi = newFrontendClient(apiUrl, frontendApiSecret);
+    req.frontendApi = newFrontendClient(apiUrl, {
+      type: "frontend",
+      frontendSecret: frontendApiSecret,
+    });
     req.api = newClient(
       apiUrl,
       req.cookies.mitmh2025_auth as string | undefined,

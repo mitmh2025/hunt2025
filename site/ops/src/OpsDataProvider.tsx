@@ -29,9 +29,30 @@ export default function OpsDataProvider({
   useEffect(() => {
     // TODO: Switch to loading data from the service worker + keeping
     // it up to date with websockets
-    const client = newFrontendClient("/api", undefined);
 
     (async () => {
+      const adminTokenResp = await fetch("/admin-token");
+      if (adminTokenResp.status !== 200) {
+        throw new Error(
+          `Failed to load adminToken: [${adminTokenResp.status}] ${await adminTokenResp.text()}`,
+        );
+      }
+
+      const {
+        token,
+        apiUrl,
+        renewAfter: _renewAfter,
+      } = (await adminTokenResp.json()) as {
+        token: string;
+        apiUrl: string;
+        renewAfter: string;
+      };
+
+      const client = newFrontendClient(apiUrl, {
+        type: "admin",
+        adminToken: token,
+      });
+
       const [registrationLog, activityLog] = await Promise.all([
         client.getFullTeamRegistrationLog(),
         client.getFullActivityLog(),

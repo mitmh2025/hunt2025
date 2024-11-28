@@ -41,6 +41,9 @@ if (environment === "development" && !jwtSecret) {
 let frontendApiSecret: string | undefined = process.env.FRONTEND_API_SECRET;
 if (environment === "development" && !frontendApiSecret) {
   frontendApiSecret = randomBytes(16).toString("hex");
+  console.log(
+    `Generated random frontend API secret for development: ${frontendApiSecret}`,
+  );
 }
 if (!frontendApiSecret) {
   throw new Error("$FRONTEND_API_SECRET not defined in production");
@@ -92,18 +95,9 @@ if (enabledComponents.has("reg") && apiUrl) {
 
 if (enabledComponents.has("ops")) {
   opssite({
-    dbEnvironment,
     jwtSecret,
-    frontendApiSecret,
-    dataApiSecret,
-    redisUrl,
-  })
-    .then((app) =>
-      app.listen(opssitePort, () => {
-        console.log(`Ops site listening on port ${opssitePort}`);
-      }),
-    )
-    .catch((err: unknown) => {
-      console.error(err);
-    });
+    apiUrl,
+  }).listen(opssitePort, () => {
+    console.log(`Ops site listening on port ${opssitePort}`);
+  });
 }
