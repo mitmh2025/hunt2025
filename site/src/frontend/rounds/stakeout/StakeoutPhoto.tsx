@@ -1,5 +1,5 @@
 import React, {
-  DragEventHandler,
+  type DragEventHandler,
   type PointerEventHandler,
   useCallback,
   useMemo,
