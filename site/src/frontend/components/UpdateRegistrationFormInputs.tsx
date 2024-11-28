@@ -1,5 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import { ZodNumber, ZodOptional, ZodString } from "zod";
+import { MutableTeamRegistrationSchema } from "../../../lib/api/contract";
 import type { MutableTeamRegistration } from "../../../lib/api/frontend_contract";
 import { SectionHeader } from "../regsite/routes/RegsiteUI";
 import {
@@ -83,66 +85,63 @@ export default function UpdateRegistrationFormInputs({
   values: Partial<MutableTeamRegistration>;
   errors: { [K in keyof MutableTeamRegistration]?: string };
 }) {
-  function fieldProps(
-    name: keyof MutableTeamRegistration,
-    { numeric = false, required = false, maxLength = 255 } = {},
-  ) {
+  function fieldProps(name: keyof MutableTeamRegistration, label: string) {
+    const schema = MutableTeamRegistrationSchema.shape[name];
+    const required = !(schema instanceof ZodOptional);
+    const inner = required ? schema : schema.unwrap();
     return {
+      label: label + (required ? " (required)" : ""),
       name,
       value: String(values[name] ?? ""),
       error: errors[name],
       required,
       autoComplete: "off",
-      ...(numeric
+      ...(inner instanceof ZodNumber
         ? {
             type: "number",
+            min: inner.minValue ?? undefined,
+            max: inner.maxValue ?? undefined,
           }
-        : {
-            type: "text",
-            minLength: required ? 1 : 0,
-            maxLength: maxLength,
-          }),
+        : inner instanceof ZodString
+          ? {
+              type: inner.isEmail ? "email" : "text",
+              minLength: inner.minLength ?? (required ? 1 : 0),
+              maxLength: inner.maxLength ?? 255,
+            }
+          : { type: "text" }),
     };
   }
 
   return (
     <>
       <div>
-        <LabeledInputWithError
-          label="Team Name (required)"
-          {...fieldProps("name", { required: true })}
-        />
+        <LabeledInputWithError {...fieldProps("name", "Team Name")} />
       </div>
 
       <section>
         <SectionHeader>Contact Information</SectionHeader>
         <div>
           <LabeledInputWithError
-            label="Contact Name (required)"
-            {...fieldProps("contactName", { required: true })}
+            {...fieldProps("contactName", "Contact Name")}
             autoComplete="name"
           />
         </div>
         <div>
           <LabeledInputWithError
-            label="Contact Email (required)"
-            {...fieldProps("contactEmail", { required: true })}
-            type="email"
+            {...fieldProps("contactEmail", "Contact Email")}
             autoComplete="email"
           />
         </div>
         <div>
           <LabeledInputWithError
-            label="Contact Phone (required)"
-            {...fieldProps("contactPhone", { required: true })}
+            {...fieldProps("contactPhone", "Contact Phone")}
             type="tel"
             autoComplete="tel"
           />
         </div>
         <div>
           <LabeledTextAreaWithError
-            label="Contact Mailing Address (required)"
-            {...fieldProps("contactMailingAddress", { required: true })}
+            {...fieldProps("contactMailingAddress", "Contact Mailing Address")}
             autoComplete="street-address"
             rows={3}
             cols={40}
@@ -150,21 +149,17 @@ export default function UpdateRegistrationFormInputs({
         </div>
         <div>
           <LabeledInputWithError
-            label="Secondary Contact Name"
-            {...fieldProps("secondaryContactName")}
+            {...fieldProps("secondaryContactName", "Secondary Contact Name")}
           />
         </div>
         <div>
           <LabeledInputWithError
-            label="Secondary Contact Email"
-            {...fieldProps("secondaryContactEmail")}
-            type="email"
+            {...fieldProps("secondaryContactEmail", "Secondary Contact Email")}
           />
         </div>
         <div>
           <LabeledInputWithError
-            label="Secondary Contact Phone"
-            {...fieldProps("secondaryContactPhone")}
+            {...fieldProps("secondaryContactPhone", "Secondary Contact Phone")}
             type="tel"
           />
         </div>
@@ -173,9 +168,7 @@ export default function UpdateRegistrationFormInputs({
       <section>
         <SectionHeader>Team Information</SectionHeader>
         <LabeledInputWithError
-          label="Team-wide Email Address (required)"
-          {...fieldProps("teamEmail", { required: true })}
-          type="email"
+          {...fieldProps("teamEmail", "Team-wide Email Address")}
         />
         <fieldset>
           <legend>
@@ -228,8 +221,7 @@ export default function UpdateRegistrationFormInputs({
               <label htmlFor="teamValuesOtherCheck">Other</label>
               <CheckedDetailsDiv>
                 <LabeledInputWithError
-                  label="Please specify"
-                  {...fieldProps("teamValuesOther")}
+                  {...fieldProps("teamValuesOther", "Please specify")}
                 />
               </CheckedDetailsDiv>
             </div>
@@ -238,19 +230,22 @@ export default function UpdateRegistrationFormInputs({
         </fieldset>
 
         <LabeledInputWithError
-          label="Is your team excited about the prospect of winning? (required)"
-          {...fieldProps("teamExcitedAboutWinning", { required: true })}
+          {...fieldProps(
+            "teamExcitedAboutWinning",
+            "Is your team excited about the prospect of winning?",
+          )}
         />
         <LabeledInputWithError
-          label="In what year did your team first compete in Mystery Hunt? (required)"
-          {...fieldProps("teamYearEstablished", {
-            required: true,
-            numeric: true,
-          })}
+          {...fieldProps(
+            "teamYearEstablished",
+            "In what year did your team first compete in Mystery Hunt?",
+          )}
         />
         <LabeledInputWithError
-          label="Where are your team members primarily located? (required)"
-          {...fieldProps("teamMemberLocations", { required: true })}
+          {...fieldProps(
+            "teamMemberLocations",
+            "Where are your team members primarily located?",
+          )}
         />
       </section>
 
@@ -281,10 +276,7 @@ export default function UpdateRegistrationFormInputs({
                   <label htmlFor={`teamLocation-${i}`}>{label}</label>
                   <CheckedDetailsDiv>
                     <LabeledTextAreaWithError
-                      label={detailLabel}
-                      {...fieldProps(detailKey, {
-                        maxLength: 1024,
-                      })}
+                      {...fieldProps(detailKey, detailLabel)}
                       rows={3}
                       cols={80}
                     />
@@ -303,8 +295,7 @@ export default function UpdateRegistrationFormInputs({
         <SectionHeader>Team Composition</SectionHeader>
 
         <LabeledInputWithError
-          label="Total number of people on your team (required)"
-          {...fieldProps("peopleTotal", { required: true, numeric: true })}
+          {...fieldProps("peopleTotal", "Total number of people on your team")}
         />
 
         <fieldset>
@@ -313,38 +304,34 @@ export default function UpdateRegistrationFormInputs({
             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
           >
             <LabeledInputWithError
-              label="MIT Undergraduates"
-              {...fieldProps("peopleUndergrad", {
-                required: true,
-                numeric: true,
-              })}
+              {...fieldProps("peopleUndergrad", "MIT Undergraduates")}
             />
             <LabeledInputWithError
-              label="MIT Graduate students"
-              {...fieldProps("peopleGrad", { required: true, numeric: true })}
+              {...fieldProps("peopleGrad", "MIT Graduate students")}
             />
             <LabeledInputWithError
-              label="MIT Alumni"
-              {...fieldProps("peopleAlum", { required: true, numeric: true })}
+              {...fieldProps("peopleAlum", "MIT Alumni")}
             />
             <LabeledInputWithError
-              label="MIT Faculty and Staff"
-              {...fieldProps("peopleStaff", { required: true, numeric: true })}
+              {...fieldProps("peopleStaff", "MIT Faculty and Staff")}
             />
             <LabeledInputWithError
-              label="MIT Affiliates (Lincoln Labs, WHOI, etc.)"
-              {...fieldProps("peopleAffiliates", {
-                required: true,
-                numeric: true,
-              })}
+              {...fieldProps(
+                "peopleAffiliates",
+                "MIT Affiliates (Lincoln Labs, WHOI, etc.)",
+              )}
             />
             <LabeledInputWithError
-              label="Minors (team members who will be under 18 during Hunt who are not MIT students)"
-              {...fieldProps("peopleMinor", { required: true, numeric: true })}
+              {...fieldProps(
+                "peopleMinor",
+                "Minors (team members who will be under 18 during Hunt who are not MIT students)",
+              )}
             />
             <LabeledInputWithError
-              label="Other (Not affiliated with MIT and not a minor)"
-              {...fieldProps("peopleOther", { required: true, numeric: true })}
+              {...fieldProps(
+                "peopleOther",
+                "Other (Not affiliated with MIT and not a minor)",
+              )}
             />
           </div>
         </fieldset>
@@ -353,15 +340,16 @@ export default function UpdateRegistrationFormInputs({
           <legend>Campus presence:</legend>
           <div>
             <LabeledInputWithError
-              label="Number of team members who will be on or near campus during Hunt (required)"
-              {...fieldProps("peopleOnCampus", {
-                required: true,
-                numeric: true,
-              })}
+              {...fieldProps(
+                "peopleOnCampus",
+                "Number of team members who will be on or near campus during Hunt",
+              )}
             />
             <LabeledInputWithError
-              label="Number of team members who will be fully remote during Hunt"
-              {...fieldProps("peopleRemote", { numeric: true })}
+              {...fieldProps(
+                "peopleRemote",
+                "Number of team members who will be fully remote during Hunt",
+              )}
             />
           </div>
         </fieldset>
@@ -430,8 +418,7 @@ export default function UpdateRegistrationFormInputs({
               <label htmlFor="referrerOther">Other</label>
               <CheckedDetailsDiv>
                 <LabeledInputWithError
-                  label="Please Specify"
-                  {...fieldProps("referrerOther")}
+                  {...fieldProps("referrerOther", "Please Specify")}
                 />
               </CheckedDetailsDiv>
             </div>
@@ -440,8 +427,10 @@ export default function UpdateRegistrationFormInputs({
         </fieldset>
       </section>
       <LabeledTextAreaWithError
-        label="Anything else you’d like to share with us?"
-        {...fieldProps("otherNotes", { maxLength: 1024 })}
+        {...fieldProps(
+          "otherNotes",
+          "Anything else you’d like to share with us?",
+        )}
       />
     </>
   );
