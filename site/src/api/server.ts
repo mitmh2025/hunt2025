@@ -531,7 +531,6 @@ export function getRouter({
       getMyTeamState: {
         middleware: [authMiddleware],
         handler: async ({ req }) => {
-          console.log("RUNNING HANDLER", req.user);
           const team_id = req.user as number;
           return await getTeamState(team_id);
         },

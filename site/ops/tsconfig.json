@@ -4,6 +4,9 @@
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
+    "paths": {
+      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
+    },
 
     "types": [
       "node",

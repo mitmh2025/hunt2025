@@ -1,36 +1,41 @@
-import { useOpsData } from "./OpsDataProvider";
+import ControlCameraIcon from "@mui/icons-material/ControlCamera";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PuzzleIcon from "@mui/icons-material/Extension";
+import { Box } from "@mui/material";
+import type { Branding, Navigation } from "@toolpad/core";
+import { AppProvider } from "@toolpad/core/react-router-dom";
+import { Outlet } from "react-router-dom";
+import theme from "./theme";
+
+const NAVIGATION: Navigation = [
+  {
+    kind: "header",
+    title: "Dashboard",
+  },
+  {
+    title: "Big Board",
+    icon: <DashboardIcon />,
+  },
+  {
+    segment: "puzzles",
+    title: "Puzzles",
+    icon: <PuzzleIcon />,
+  },
+];
+
+const BRANDING: Branding = {
+  title: "Hunt Ops",
+  logo: (
+    <Box sx={{ mt: 1 }}>
+      <ControlCameraIcon />
+    </Box>
+  ),
+};
 
 export default function App() {
-  const data = useOpsData();
-
   return (
-    <>
-      <h1>Ops</h1>
-      <div>
-        <h1>Teams</h1>
-        {data.teams.map((team) => (
-          <div key={team.teamId}>
-            <h2>{team.name}</h2>
-            <div>Registration: {JSON.stringify(team.registration)}</div>
-            <div>State: {JSON.stringify(team.state)}</div>
-            <div>Formatted State: {JSON.stringify(team.formattedState)}</div>
-          </div>
-        ))}
-
-        <h1>Logs</h1>
-        <h2>Registration Log</h2>
-        <ul>
-          {data.registrationLog.map((entry) => (
-            <li key={entry.id}>{JSON.stringify(entry)}</li>
-          ))}
-        </ul>
-        <h2>Activity Log</h2>
-        <ul>
-          {data.activityLog.map((entry) => (
-            <li key={entry.id}>{JSON.stringify(entry)}</li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <AppProvider navigation={NAVIGATION} branding={BRANDING} theme={theme}>
+      <Outlet />
+    </AppProvider>
   );
 }

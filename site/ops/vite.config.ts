@@ -14,4 +14,9 @@ export default defineConfig({
       "/admin-token": "http://localhost:3002",
     },
   },
+  resolve: {
+    alias: {
+      "@mui/styled-engine": "@mui/styled-engine-sc",
+    },
+  },
 });
