@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useState } from "react";
-import { styled } from "styled-components";
+import { styled, css } from "styled-components";
 import { type CannedResponse, type Hint } from "../puzzles/types";
 
 const SolutionAnswer = styled.h2`
@@ -20,10 +20,23 @@ const SpacedDetails = styled.details`
 `;
 
 const SpoileredRow = styled.tr<{ $revealed: boolean }>`
-  background-color: ${({ $revealed }) =>
-    $revealed ? "transparent" : "var(--black)"};
+  ${({ $revealed }) =>
+    $revealed
+      ? css`
+          color: inherit;
+          background-color: transparent;
+        `
+      : css`
+          color: var(--black);
+          background-color: var(--black);
+        `}
   &:hover {
+    color: inherit;
     background-color: transparent;
+  }
+
+  td {
+    padding: 0.25rem 0.5rem;
   }
 `;
 

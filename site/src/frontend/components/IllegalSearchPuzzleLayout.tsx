@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
+import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 
 export const IllegalSearchHeader = styled(PuzzleHeader)`
   background: #65705699;
@@ -53,4 +54,14 @@ export const IllegalSearchMain = styled(PuzzleMain)`
   hr {
     border-color: #657056;
   }
+`;
+
+export const IllegalSearchAnswer = styled(SolutionAnswer)`
+  color: var(--white);
+`;
+
+export const IllegalSearchAcknowledgementBlock = styled(
+  SolutionAcknowledgementBlock,
+)`
+  color: var(--white);
 `;

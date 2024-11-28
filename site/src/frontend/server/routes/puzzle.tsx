@@ -11,8 +11,16 @@ import {
   IllegalSearchHeader,
   IllegalSearchMain,
   IllegalSearchWrapper,
+  IllegalSearchAnswer,
+  IllegalSearchAcknowledgementBlock,
 } from "../../components/IllegalSearchPuzzleLayout";
-import { MurderHeader, MurderMain } from "../../components/MurderPuzzleLayout";
+import {
+  MurderHeader,
+  MurderMain,
+  MurderAnswer,
+  MurderAcknowledgementBlock,
+  MurderSpoiler,
+} from "../../components/MurderPuzzleLayout";
 import {
   PaperTrailWrapper,
   PaperTrailMain,
@@ -62,6 +70,7 @@ type RoundSpecificComponentManifest = {
   fonts?: React.ComponentType<any>; // if present, a createGlobalStyle that includes any fonts needed by any of the other components
   entrypoint?: Entrypoint;
   answer?: React.ComponentType<any>;
+  spoiler?: React.ComponentType<any>;
   acknowledgementBlock?: React.ComponentType<any>;
   acknowledgement?: React.ComponentType<any>;
 };
@@ -84,6 +93,8 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     main: IllegalSearchMain,
     wrapper: IllegalSearchWrapper,
     fonts: IllegalSearchFonts,
+    answer: IllegalSearchAnswer,
+    acknowledgementBlock: IllegalSearchAcknowledgementBlock,
   },
   paper_trail: {
     main: PaperTrailMain,
@@ -104,6 +115,9 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     main: MurderMain,
     header: MurderHeader,
     fonts: MurderFonts,
+    answer: MurderAnswer,
+    acknowledgementBlock: MurderAcknowledgementBlock,
+    spoiler: MurderSpoiler,
   },
   outlands: {},
 };
@@ -410,6 +424,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     roundSpecificManifest?.acknowledgement ?? SolutionAcknowledgement;
   const SolutionAnswerComponent =
     roundSpecificManifest?.answer ?? SolutionAnswer;
+  const SolutionSpoilerComponent = roundSpecificManifest?.spoiler ?? Spoiler;
 
   const title = puzzle.title;
   const authors = formatList(puzzle.authors);
@@ -429,7 +444,8 @@ export function solutionHandler(req: Request<PuzzleParams>) {
         <SolutionHeaderComponent>
           <SolutionTitleComponent>Solution to {title}</SolutionTitleComponent>
           <SolutionAnswerComponent>
-            Answer: <Spoiler>{answer}</Spoiler>
+            Answer:{" "}
+            <SolutionSpoilerComponent>{answer}</SolutionSpoilerComponent>
           </SolutionAnswerComponent>
           <SolutionAcknowledgementBlockComponent>
             <SolutionAcknowledgementComponent>

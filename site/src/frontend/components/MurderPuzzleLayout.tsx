@@ -1,9 +1,12 @@
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import BorderBottom from "../rounds/murder_in_mitropolis/assets/border-bottom.svg";
 import BorderSide from "../rounds/murder_in_mitropolis/assets/border-side.svg";
 import Border from "../rounds/murder_in_mitropolis/assets/border.svg";
 import Skyline from "../rounds/murder_in_mitropolis/assets/skyline.svg";
 import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
+import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
+import Spoiler from "./Spoiler";
 
 // This also relies on the MurderFonts component
 export const MurderHeader = styled(PuzzleHeader)`
@@ -59,3 +62,15 @@ export const MurderMain = styled(PuzzleMain)`
   border-top: 0.5rem solid var(--gold-700);
   border-bottom: 0.5rem solid var(--gold-700);
 `;
+
+export const MurderAnswer = styled(SolutionAnswer)`
+  color: var(--gold-500);
+`;
+
+export const MurderAcknowledgementBlock = styled(SolutionAcknowledgementBlock)`
+  color: var(--gold-500);
+`;
+
+export const MurderSpoiler = ({ children }: { children: ReactNode }) => {
+  return <Spoiler opaqueColor="var(--gold-500)">{children}</Spoiler>;
+};
