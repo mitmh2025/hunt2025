@@ -223,18 +223,18 @@ export const MutableTeamRegistrationSchema = z.object({
   teamLocationDetailsNoRoomRequested: z.string().max(1024).optional(),
 
   // Team composition
-  peopleTotal: z.number(),
+  peopleTotal: z.number().min(0),
 
-  peopleUndergrad: z.number(),
-  peopleGrad: z.number(),
-  peopleAlum: z.number(),
-  peopleStaff: z.number(),
-  peopleAffiliates: z.number(),
-  peopleMinor: z.number(),
-  peopleOther: z.number(),
+  peopleUndergrad: z.number().min(0),
+  peopleGrad: z.number().min(0),
+  peopleAlum: z.number().min(0),
+  peopleStaff: z.number().min(0),
+  peopleAffiliates: z.number().min(0),
+  peopleMinor: z.number().min(0),
+  peopleOther: z.number().min(0),
 
-  peopleOnCampus: z.number(),
-  peopleRemote: z.number(),
+  peopleOnCampus: z.number().min(0),
+  peopleRemote: z.number().min(0),
 
   acceptUnattached: z.boolean(),
 
