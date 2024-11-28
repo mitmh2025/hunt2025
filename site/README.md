@@ -159,10 +159,3 @@ To typeset a puzzle:
 
 If your puzzle requires client-side interactivity or custom server-side logic,
 additional custom work will be involved. Ping Drew for more details.
-
-## The ops site
-
-To run the ops site:
-
-1. Start running the development server via `build-dev` or `start-watch` as above. This will serve the ops server on localhost:3002 without live reload.
-2. In parallel, run `npm run ops:start` to run the Vite dev server. This will run the Vite dev server on localhost:3003. Requests to /api will be proxied to the development server, and all other requests will be handled by the Vite server with hot reloading.

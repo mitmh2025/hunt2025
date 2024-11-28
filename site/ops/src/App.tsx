@@ -7,6 +7,17 @@ export default function App() {
     <>
       <h1>Ops</h1>
       <div>
+        <h1>Teams</h1>
+        {data.teams.map((team) => (
+          <div key={team.teamId}>
+            <h2>{team.name}</h2>
+            <div>Registration: {JSON.stringify(team.registration)}</div>
+            <div>State: {JSON.stringify(team.state)}</div>
+            <div>Formatted State: {JSON.stringify(team.formattedState)}</div>
+          </div>
+        ))}
+
+        <h1>Logs</h1>
         <h2>Registration Log</h2>
         <ul>
           {data.registrationLog.map((entry) => (

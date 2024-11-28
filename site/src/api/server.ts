@@ -38,8 +38,8 @@ import {
   teamRegistrationLog,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
+import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
 import {
-  formatActivityLogEntryForApi,
   formatTeamHuntState,
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
@@ -822,6 +822,30 @@ export function getRouter({
             status: 200 as const,
             body: state,
           };
+        },
+      },
+      getPuzzleMetadata: {
+        middleware: [adminAuthMiddleware],
+        handler: () => {
+          const metadata = Object.fromEntries(
+            Object.entries(PUZZLES).map(([slug, definition]) => {
+              // If we decide to expose the full metadata, we could do:
+              // const { content, solution, router, ...rest } = definition;
+              // return [slug, rest];
+              return [
+                slug,
+                {
+                  title: definition.title,
+                  slug: definition.slug,
+                },
+              ];
+            }),
+          );
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: metadata,
+          });
         },
       },
     },

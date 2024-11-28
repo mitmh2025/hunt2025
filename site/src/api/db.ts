@@ -20,6 +20,8 @@ import {
   cleanupTeamRegistrationLogEntryFromDB,
 } from "./logic";
 
+export { type ActivityLogEntryRow, type TeamRegistrationLogEntryRow };
+
 class WebpackMigrationSource {
   context: Rspack.Context;
 
