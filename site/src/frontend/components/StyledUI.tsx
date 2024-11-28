@@ -91,6 +91,9 @@ export const Wrapper = styled.div`
 export const ErrorText = styled.div`
   color: var(--red-600);
   margin-left: 0.5rem;
+  &::before {
+    content: "⚠️ ";
+  }
 `;
 
 export const Alert = styled.div`
