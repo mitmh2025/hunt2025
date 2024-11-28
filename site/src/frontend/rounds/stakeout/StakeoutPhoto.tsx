@@ -1,9 +1,18 @@
 import React, { type PointerEventHandler, useCallback, useMemo } from "react";
+import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
 import { clamp, type Position } from "./StakeoutBody";
 import polaroid_bg from "./assets/polaroid_blank_no_shadow.png";
 import { type StakeoutSlot } from "./types";
+
+const PhotoLabel = styled.div`
+  .puzzle-link-title {
+    flex: 1 1 auto;
+    text-align: left;
+    margin-bottom: -0.25em;
+  }
+`;
 
 const StakeoutPhoto = ({
   teamState,
@@ -61,8 +70,22 @@ const StakeoutPhoto = ({
           currency={teamState.currency}
           title={title}
           slug={slug}
-          showIcon={false}
+          showIcon={!!focused}
+          showLabel={!!focused}
           size={focused ? 60 : 24}
+          style={{
+            // When we're space-constrained when unfocused, and only showing
+            // the title and possibly the unlock button, there's little upside
+            // in having a gap, since it likely makes us use ellipsis more
+            // often than needed and the ellipsis themselves will be lighter
+            // enough that it feels not-overly-cramped.  When we're zoomed in,
+            // though, we want the gap between the status icon and link (and
+            // unlock button if applicable).
+            gap: focused ? "0.5rem" : "0",
+            cursor: slug ? "pointer" : undefined,
+            transitionProperty: "width height font-size",
+            transitionDuration: "0.5s",
+          }}
         />
       );
     }
@@ -119,17 +142,19 @@ const StakeoutPhoto = ({
   const labelStyle = {
     position: "absolute" as const,
     display: "block",
-    padding: `4px`,
+    padding: `${scaled(4)}px`,
+    paddingLeft: focused ? "0" : "8px",
+    paddingRight: focused ? "0" : "8px",
     height: `${scaled(38)}px`,
-    bottom: "0px",
-    left: "0px",
-    right: "0px",
+    bottom: "0.25em",
+    left: `${focused ? scaled(8) : 0}px`,
+    right: `${focused ? scaled(8) : 0}px`,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     textAlign: "center" as const,
     fontSize: focused ? "60px" : "24px",
-    cursor: slug ? "pointer" : undefined,
+    width: `calc(100% - ${focused ? 2 * scaled(8) : 0}px)`,
     ...transitionProperties,
   };
 
@@ -141,9 +166,9 @@ const StakeoutPhoto = ({
     >
       <div style={polaroidInnerStyle}>
         <div style={imageStyle} />
-        <div style={labelStyle} onPointerDown={labelPointerDownHandler}>
+        <PhotoLabel style={labelStyle} onPointerDown={labelPointerDownHandler}>
           {link}
-        </div>
+        </PhotoLabel>
       </div>
     </div>
   );

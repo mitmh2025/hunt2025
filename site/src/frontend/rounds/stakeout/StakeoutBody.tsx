@@ -137,8 +137,8 @@ const StakeoutBodyMainDiv = styled.div`
     background-color: var(--highlighter);
     content: " ";
     position: absolute;
-    top: 0em;
-    right: 0;
+    top: 0.33em;
+    left: -0.25em;
     transform: rotate(3deg);
   }
 
@@ -148,9 +148,9 @@ const StakeoutBodyMainDiv = styled.div`
     background-color: var(--highlighter);
     content: " ";
     position: absolute;
-    top: 0.25em;
-    right: 0;
-    transform: rotate(-1deg);
+    top: 0em;
+    left: -0.25em;
+    transform: rotate(-2deg);
   }
 `;
 
