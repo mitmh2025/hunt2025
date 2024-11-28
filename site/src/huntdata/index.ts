@@ -12,16 +12,16 @@ const HUNT: Hunt = {
         // slots (28 feeders, 4 metas, 1 super)
         // Start with 10 puzzles unlockable and 8 unlock currency.
         // Make 1.5 more puzzles (rounded up) unlockable after each solve.
-        { id: "mdp01", unlockable_if: [], unlock_cost: 1 }, // unlockable by default
-        { id: "mdp02", unlockable_if: [], unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
-        { id: "mdp03", unlockable_if: [], unlock_cost: 1 },
-        { id: "mdp04", unlockable_if: [], unlock_cost: 1, slug: "downright_backwards" },
-        { id: "mdp05", unlockable_if: [], unlock_cost: 1 },
-        { id: "mdp06", unlockable_if: [], unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
-        { id: "mdp07", unlockable_if: [], unlock_cost: 1 },
-        { id: "mdp08", unlockable_if: [], unlock_cost: 1, slug: "educational_rite_of_passage" },
-        { id: "mdp09", unlockable_if: [], unlock_cost: 1 },
-        { id: "mdp10", unlockable_if: [], unlock_cost: 1 },
+        { id: "mdp01", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 }, // unlockable by default
+        { id: "mdp02", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
+        { id: "mdp03", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
+        { id: "mdp04", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "downright_backwards" },
+        { id: "mdp05", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
+        { id: "mdp06", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
+        { id: "mdp07", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
+        { id: "mdp08", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "educational_rite_of_passage" },
+        { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
+        { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
         { id: "mdp11", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "mdp13", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
@@ -139,6 +139,7 @@ const HUNT: Hunt = {
         }, // Where is the Diamond? (super)
       ],
       gates: [
+        { id: "mdg00" }, // Hunt started.  Nothing is unlocked until this gate is satisfied.
         { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
       ],
       interactions: [
@@ -179,8 +180,9 @@ const HUNT: Hunt = {
       ],
       unlock_if: [
         // These are the conditions for the /round/ page being visible.
-        // The initial round should be open from the start, with maybe a
-        // wall-clock time condition?
+        // The initial round should be open only once we mark the "hunt
+        // started" gate as satisfied.
+        { gate_satisfied: "mdg00" },
       ],
       // TODO:
       // * default reward amount for solving puzzles in this round?
