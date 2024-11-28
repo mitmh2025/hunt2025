@@ -1,4 +1,9 @@
-import React, { type PointerEventHandler, useCallback, useMemo } from "react";
+import React, {
+  DragEventHandler,
+  type PointerEventHandler,
+  useCallback,
+  useMemo,
+} from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
@@ -59,6 +64,13 @@ const StakeoutPhoto = ({
       },
       [slug, title],
     );
+
+  const imgDragStartHandler: DragEventHandler<HTMLImageElement> = useCallback(
+    (e) => {
+      e.preventDefault();
+    },
+    [],
+  );
 
   const link = useMemo(() => {
     if (title && slug) {
@@ -135,8 +147,6 @@ const StakeoutPhoto = ({
     left: `${scaled(8)}px`,
     top: `${scaled(8)}px`,
     backgroundColor: "var(--gray-800)",
-    backgroundImage: `url(${asset})`, // TODO: use different assets when zoomed-in?
-    backgroundSize: "contain",
     ...transitionProperties,
   };
   const labelStyle = {
@@ -165,7 +175,13 @@ const StakeoutPhoto = ({
       onPointerDown={pointerDownHandler}
     >
       <div style={polaroidInnerStyle}>
-        <div style={imageStyle} />
+        {/* TODO: use different assets when zoomed-in? */}
+        <img
+          style={imageStyle}
+          src={asset}
+          alt="Photograph"
+          onDragStart={imgDragStartHandler}
+        />
         <PhotoLabel style={labelStyle} onPointerDown={labelPointerDownHandler}>
           {link}
         </PhotoLabel>
