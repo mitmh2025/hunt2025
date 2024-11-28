@@ -25,7 +25,7 @@ export default function NewRegistration({
           year.
         </p>
         <p>
-          If you are requesting team HQ space at MIT, you must register
+          If you are requesting team HQ space at MIT, you must register{" "}
           <strong>before December 21st</strong>.
         </p>
         <PageHeader>Register Your Team</PageHeader>
