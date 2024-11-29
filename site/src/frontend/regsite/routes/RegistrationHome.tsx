@@ -191,7 +191,7 @@ export default function RegistrationHome({
             <div className="answer">
               <p>
                 <strong>
-                  Campus is closed from 1:00 AM &ndash; 6:00 AM each day.
+                  Campus is closed from 1:00 AM – 6:00 AM each day.
                 </strong>{" "}
                 Teams who have been assigned space on campus for their HQs must
                 vacate during that time, but teams operating out of their living
