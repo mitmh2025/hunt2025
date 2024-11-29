@@ -213,6 +213,10 @@ const ActivityLogTable = styled.table`
 `;
 
 const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
+  if (log.length === 0) {
+    return <div>No activity yet.</div>;
+  }
+
   let currencyAccumulator = 0;
   const rows = log.map((entry) => {
     currencyAccumulator += entry.currency_delta;

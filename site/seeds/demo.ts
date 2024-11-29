@@ -170,6 +170,22 @@ export async function seed(knex: Knex): Promise<void> {
     undefined,
     knex,
     async (_, mutator) => {
+      // Mark the hunt as started, by marking as completed the gate that
+      // represents that for all teams.
+      if (
+        !mutator.log.some(
+          (e) =>
+            e.type === "gate_completed" &&
+            e.slug === "mdg00" &&
+            e.team_id === undefined,
+        )
+      ) {
+        await mutator.appendLog({
+          type: "gate_completed",
+          slug: "mdg00",
+        });
+      }
+
       // Do an initial currency grant of 8 unlocks, if we haven't given such a
       // grant out yet.
       if (

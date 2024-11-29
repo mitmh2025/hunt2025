@@ -28,6 +28,7 @@ import {
   interactionStartPostHandler,
 } from "./routes/interaction";
 import { hackLoginGetHandler } from "./routes/login";
+import { huntNotStartedHandler } from "./routes/not_started";
 import {
   puzzleHandler,
   type PuzzleParams,
@@ -184,6 +185,12 @@ export function registerUiRoutes({
         res: Response,
         next: NextFunction,
       ) => {
+        // If the hunt has not started yet, render an alternate page.
+        if (req.teamState?.state.rounds.the_missing_diamond === undefined) {
+          await renderApp(huntNotStartedHandler, req as Request, res, next);
+          return;
+        }
+
         // Root page should be shadow diamond round page
         req.params.roundSlug = "the_missing_diamond";
         await renderApp(roundHandler, req as Request<RoundParams>, res, next);
