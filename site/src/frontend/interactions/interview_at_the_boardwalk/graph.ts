@@ -360,7 +360,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4b-second-p1",
       speaker: "roger_baseline",
-      text: "I thought the owner was just being kind when she said I could have a tab open.  But I thought about it later, the way crime is in MITropolis, arcades are the perfect place to launder money!  Lots of cash moving through, lots of tourists and kiddos for cover, you’d never suspsect it!",
+      text: "I thought the owner was just being kind when she said I could have a tab open.  But I thought about it later, the way crime is in MITropolis, arcades are the perfect place to launder money!  Lots of cash moving through, lots of tourists and kiddos for cover, you’d never suspect it!",
       sound: stubSoundFileset, // TODO audio (same as 4b-first-p1)
       timeout_msec: 15000,
       next: "5",
@@ -377,7 +377,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4b-first-p1",
       speaker: "roger_baseline",
-      text: "I thought the owner was just being kind when she said I could have a tab open.  But I thought about it later, the way crime is in MITropolis, arcades are the perfect place to launder money!  Lots of cash moving through, lots of tourists and kiddos for cover, you’d never suspsect it!",
+      text: "I thought the owner was just being kind when she said I could have a tab open.  But I thought about it later, the way crime is in MITropolis, arcades are the perfect place to launder money!  Lots of cash moving through, lots of tourists and kiddos for cover, you’d never suspect it!",
       sound: stubSoundFileset, // TODO audio (same as 4b-second-p1)
       timeout_msec: 15000,
       next: "4a-second",
@@ -410,8 +410,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "5",
       speaker: "billie",
-      // TODO: this line needs a physical description of Katrina
-      text: "I’m here to ask you about a <description> dame who came through here the other night.",
+      text: "I’m here to ask you about a dame who came through here the other night.  Got a brooch with a bird, maybe a hat with some feathers.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "5-p1",
@@ -607,7 +606,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "bigwin-p1",
       speaker: "billie",
-      text: "Actually, what if I left the grand prize with you and we cleared the tab for my friend Roger here?",
+      text: "Er... <camera click> Actually, what if I left the grand prize with you and we cleared the tab for my friend Roger here?",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 12000,
       next: "bigwin-p2",
@@ -732,7 +731,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9b",
       speaker: "billie",
-      text: "I think I’ve lost enough money on this join to effectively make a payment on whatever debt you owe here.",
+      text: "I think I’ve lost enough money on this joint to effectively make a payment on whatever debt you owe here.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "9b-p1",
@@ -784,22 +783,9 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11",
       speaker: "roger_okay",
-      text: "I saw her stop by the arcade late last night.  She played one game of Redhot Racers, put somethin’ under the seat, and then she scrammed.",
+      text: "I saw her stop by the arcade late last night.  She played one game of Redhot Racers and then she scrammed.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
-      next(state: BoardwalkInteractionState) {
-        if (state.paranoia <= -1) {
-          return "11-p1";
-        }
-        return "11-p2";
-      },
-    },
-    {
-      id: "11-p1",
-      speaker: "roger_okay",
-      text: "After I finished my game, I was curious and took a look at what she left. Just a scrap of paper with some gibberish on it. Some people just don’t know how to walk five feet to a trash can, y’know?",
-      sound: stubSoundFileset, // TODO: audio
-      timeout_msec: 15000,
       next: "11-p2",
     },
     {

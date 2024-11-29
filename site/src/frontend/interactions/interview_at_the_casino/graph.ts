@@ -325,7 +325,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "4b-p2",
       speaker: "shark_one",
-      text: "You’d be talking about the gem, then.",
+      text: "Yes, most people are.  Why would you be any different?",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 3000,
       choices: choices_5,

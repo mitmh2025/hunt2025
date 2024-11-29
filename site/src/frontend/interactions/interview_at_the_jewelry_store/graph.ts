@@ -44,7 +44,7 @@ const remainingOptions = (state: JewelryStoreState) => {
     next: "6c",
   });
   remaining_options.push({
-    text: "What would you say if I could take you for a ride in Papa Finster’s slick Duesenberg car?",
+    text: "What would you say if I could take you for a ride in Papa Finster’s slick Duesenberg?",
     next: "6d",
   });
   return remaining_options;
@@ -75,7 +75,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "start",
       speaker: "billie",
-      text: "I decided to head over to the Jaded Jeweler’s to figure otu what Gladys Finster was doing frequenting a competitor’s store.  I’m old pals with the owner since he appraised some broad’s inheritance for a case of mine.  May have browsed a bit myself, bit I’m sure not a regular customer.",
+      text: "I headed over to the Jaded Jeweler’s after hours to figure out what Gladys Finster was doing frequenting a competitor’s store.  I’m old pals with the owner, Micah Flint, since he appraised some broad’s inheritance for a case of mine.  May have browsed a bit myself, but I’m sure not a regular customer.",
       textBubbleType: "thought",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
@@ -150,11 +150,11 @@ const JewelryStoreInteractionGraph: InteractionGraph<
           next: "3a",
         },
         {
-          text: "Yeah, I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+          text: "Yeah, I’m tracking down a dame who came in here earlier today.  She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
           next: "3b",
         },
         {
-          text: "Yeah, I’m tracking down a woman who came in here.  Someon who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+          text: "Yeah, I’m tracking down a woman who came in here earlier today.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
           next: "3c",
         },
       ],
@@ -171,11 +171,11 @@ const JewelryStoreInteractionGraph: InteractionGraph<
           next: "4a",
         },
         {
-          text: "I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+          text: "I’m tracking down a dame who came in here earlier today.  She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
           next: "4b",
         },
         {
-          text: "I’m tracking down a woman who came in here.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+          text: "I’m tracking down a woman who came in here earlier today.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
           next: "4c",
         },
       ],
@@ -192,7 +192,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "3b",
       speaker: "billie",
-      text: "Yeah, I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+      text: "Yeah, I’m tracking down a dame who came in here earlier today.  She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -200,7 +200,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "3c",
       speaker: "billie",
-      text: "Yeah, I’m tracking down a woman who came in here.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+      text: "Yeah, I’m tracking down a woman who came in here earlier today.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -216,7 +216,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "4b",
       speaker: "billie",
-      text: "I’m tracking down a dame who came in here. She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
+      text: "I’m tracking down a dame who came in here earlier today.  She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -224,7 +224,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "4c",
       speaker: "billie",
-      text: "I’m tracking down a woman who came in here.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
+      text: "I’m tracking down a woman who came in here earlier today.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 10000,
       next: "5",
@@ -283,7 +283,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "6d",
       speaker: "billie",
-      text: "What would you say if I could take you for a ride in Papa Finster’s slick Duesenberg car?",
+      text: "What would you say if I could take you for a ride in Papa Finster’s slick Duesenberg?",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 5000,
       next: "6cd-p1",
@@ -292,7 +292,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "6cd-p1",
       speaker: "gemcutter",
-      text: "You know me well, Billie.  I’ll hold you to that date!... I remember that woman now.  A real looker of a lady.  Sleek hair, sharp dress, definitely in the chips.  She slipped in the door quick, then started giving orders.  She was acting like the boss of this place, but she also kept looking around like she didn’t want to be seen.  She wanted men’s rings and I sold her a beaut of a gold band.  18K, dome edge, high polish...",
+      text: "You know me well, Billie.  I’ll hold you to that date!... I remember that woman now.  A real looker of a lady.  Sleek hair, sharp dress, _definitely_ in the chips.  She slipped in the door quick, then started giving orders.  She was acting like the boss of this place, but she also kept looking around like she didn’t want to be seen.  She wanted men’s rings and I sold her a beaut of a gold band.  18K, dome edge, high polish...",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 20000,
       next: "7",
@@ -369,7 +369,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
           next: "10b",
         },
         {
-          text: "I’m not saying that helped.  But I’m not not saying that either.  *Winks* I’ll see you around.",
+          text: "I’m not saying that helped.  But I’m not not saying that either.  I’ll see you around.",
           next: "10c",
         },
       ],
@@ -393,7 +393,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "10c",
       speaker: "billie",
-      text: "I’m not saying that helped.  But I’m not not saying that either.  *Winks* I’ll see you around.",
+      text: "I’m not saying that helped.  But I’m not not saying that either.  I’ll see you around.",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 8000,
       next: "11",
@@ -402,7 +402,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "11",
       speaker: "gemcutter",
-      text: "When your mystery lady is found, I do expect you to come back and take me out on that date you promised! Give me a call when you’re free. *Slips Billie his phone number*  Otherwise I’ll have to play the detective and track you down.  Good luck and keep yourself safe!",
+      text: "When your mystery lady is found, I do expect you to come back and take me out on that date you promised! Give me a call when you’re free.  Otherwise I’ll have to play the detective and track you down.  Good luck and keep yourself safe!",
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 20000,
       next: "12",

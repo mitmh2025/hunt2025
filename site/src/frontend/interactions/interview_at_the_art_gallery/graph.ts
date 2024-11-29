@@ -332,7 +332,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
           },
         },
         {
-          text: "Oh, I appreciate it in its context. My tastes have always run a bit more modern – like the LeMahieu over in the corner, for example. I didn’t think he exhibited outside of Paris these days.",
+          text: "Oh, no, I’m just admiring a rare LeMahieu.  I didn’t think he exhibited outside of Paris these days.",
           next: "2c",
           stateEffect(state: ArtGalleryState) {
             return {
@@ -379,7 +379,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "2c",
       speaker: "billie",
-      text: "Oh, I appreciate it in its context. My tastes have always run a bit more modern – like the LeMahieu over in the corner, for example. I didn’t think he exhibited outside of Paris these days.",
+      text: "Oh, no, I’m just admiring a rare LeMahieu.  I didn’t think he exhibited outside of Paris these days.",
       sound: {
         mp3: mp3_audio_2c,
         opus: opus_audio_2c,
@@ -414,7 +414,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
           next: "3a",
         },
         {
-          text: "I know that art is subjective, and so I can’t be wrong.",
+          text: "I know that art is subjective.  Specifically, my worst subject-ive.  I was always a “recess” sort of student.",
           next: "3b",
         },
         {
@@ -422,7 +422,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
           next: "3c",
         },
         {
-          text: "I know enough to know when I’m beat.",
+          text: "I know that you should’t touch the art.  It took a few docents getting very, very mad at me, but I know that now.",
           next: "3d",
         },
       ],
@@ -441,7 +441,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3b",
       speaker: "billie",
-      text: "I know that art is subjective, and so I can’t be wrong.",
+      text: "I know that art is subjective.  Specifically, my worst subject-ive.  I was always a “recess” sort of student.",
       sound: {
         mp3: mp3_audio_3b,
         opus: opus_audio_3b,
@@ -463,7 +463,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3d",
       speaker: "billie",
-      text: "I know enough to know when I’m beat.",
+      text: "I know that you should’t touch the art.  It took a few docents getting very, very mad at me, but I know that now.",
       sound: {
         mp3: mp3_audio_3d,
         opus: opus_audio_3d,
@@ -756,7 +756,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6a-p1",
       speaker: "judith_flat",
-      text: "Detective Agency, hm? And here I thought you might be part of the art world.",
+      text: "A detective, hm? And here I thought you might be part of the art world.",
       sound: {
         mp3: mp3_audio_6a_p1,
         opus: opus_audio_6a_p1,
@@ -835,7 +835,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6c-p2",
       speaker: "billie",
-      text: "Well, I’ve been going all over town investigating the diamond.  I’m burning through loafers.  At this rate I may as well buy the company and save some time.",
+      text: "Well, I’ve been burning through loafers while I’m going all over town investigating the diamond.  At this rate I may as well buy the company and save some time.",
       sound: {
         mp3: mp3_audio_6c_p2,
         opus: opus_audio_6c_p2,
@@ -857,7 +857,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6d-p1",
       speaker: "judith_flat",
-      text: "The O’Ryans? I don’t believe I’ve heard your name in socialite circles.",
+      text: "The O’Ryans?  The O’Ryans?  I don’t believe I’ve heard your name in socialite circles.",
       sound: {
         mp3: mp3_audio_6d_p1,
         opus: opus_audio_6d_p1,
