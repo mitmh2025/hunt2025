@@ -13,14 +13,7 @@ import {
   formatTeamHuntState,
 } from "../../src/api/logic";
 import HUNT from "../../src/huntdata";
-
-export type TeamData = {
-  teamId: number;
-  name: string;
-  registration: TeamRegistration;
-  state: TeamStateIntermediate;
-  formattedState: ReturnType<typeof formatTeamHuntState>;
-};
+import { type TeamData } from "./opsdata/types";
 
 export type OpsData = {
   state: "loading" | "error" | "loaded";
