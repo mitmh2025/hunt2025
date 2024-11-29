@@ -139,7 +139,7 @@ const HUNT: Hunt = {
         }, // Where is the Diamond? (super)
       ],
       gates: [
-        { id: "mdg00" }, // Hunt started.  Nothing is unlocked until this gate is satisfied.
+        { id: "hunt_started" }, // Hunt started.  Nothing is unlocked until this gate is satisfied.
         { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
       ],
       interactions: [
@@ -182,7 +182,7 @@ const HUNT: Hunt = {
         // These are the conditions for the /round/ page being visible.
         // The initial round should be open only once we mark the "hunt
         // started" gate as satisfied.
-        { gate_satisfied: "mdg00" },
+        { gate_satisfied: "hunt_started" },
       ],
       // TODO:
       // * default reward amount for solving puzzles in this round?

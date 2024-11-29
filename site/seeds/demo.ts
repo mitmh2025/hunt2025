@@ -176,13 +176,13 @@ export async function seed(knex: Knex): Promise<void> {
         !mutator.log.some(
           (e) =>
             e.type === "gate_completed" &&
-            e.slug === "mdg00" &&
+            e.slug === "hunt_started" &&
             e.team_id === undefined,
         )
       ) {
         await mutator.appendLog({
           type: "gate_completed",
-          slug: "mdg00",
+          slug: "hunt_started",
         });
       }
 
