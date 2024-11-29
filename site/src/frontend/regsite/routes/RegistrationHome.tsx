@@ -66,7 +66,7 @@ export default function RegistrationHome({
         <section id="updates">
           <h2>Latest Updates</h2>
           <p>
-            <strong>2024.11.28 — </strong>Happy Thanksgiving! We have a handful
+            <strong>2024.11.29 — </strong>Happy Thanksgiving! We have a handful
             of updates. First, we’ve added details about kickoff, campus access,
             and minors. Additionally, we’ve received a handful of questions
             about remote teams and teams with limited on-campus presence, so we
