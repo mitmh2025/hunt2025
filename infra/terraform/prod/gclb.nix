@@ -70,12 +70,18 @@
     health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
   };
   gcp.loadBalancer.mitmh2025 = {
-    certificateMapName = "www";
+    certificateMapName = "mitmh2025";
     urlMap = {
-      host_rule = [{
-        hosts = ["www.mitmh2025.com" "prod.mitmh2025.com"];
-        path_matcher = "www";
-      }];
+      host_rule = [
+        {
+          hosts = ["www.mitmh2025.com" "prod.mitmh2025.com"];
+          path_matcher = "www";
+        }
+        {
+          hosts = ["mitmh2025.com"];
+          path_matcher = "root";
+        }
+      ];
       # If a host doesn't match, just redirect to www.
       default_url_redirect = {
         https_redirect = true;
@@ -84,21 +90,32 @@
         redirect_response_code = "FOUND";
         strip_query = true;
       };
-      path_matcher = [{
-        name = "www";
-        default_service = lib.tfRef "google_compute_backend_service.regsite.id";
+      path_matcher = [
+        {
+          name = "www";
+          default_service = lib.tfRef "google_compute_backend_service.regsite.id";
 
-        path_rule = [
-          {
-            paths = ["/api" "/api/*"];
-            service = lib.tfRef "google_compute_backend_service.api.id";
-          }
-          {
-            paths = ["/static/*"];
-            service = lib.tfRef "google_compute_backend_bucket.assets.id";
-          }
-        ];
-      }];
+          path_rule = [
+            {
+              paths = ["/api" "/api/*"];
+              service = lib.tfRef "google_compute_backend_service.api.id";
+            }
+            {
+              paths = ["/static/*"];
+              service = lib.tfRef "google_compute_backend_bucket.assets.id";
+            }
+          ];
+        }
+        {
+          name = "root";
+          default_url_redirect = {
+            https_redirect = true;
+            host_redirect = "www.mitmh2025.com";
+            redirect_response_code = "MOVED_PERMANENTLY_DEFAULT";
+            strip_query = false;
+          };
+        }
+      ];
       test = [
         {
           host = "prod.mitmh2025.com";
@@ -129,9 +146,17 @@
       "prod.mitmh2025.com"
     ];
   };
+  gcp.certificate.mitmh2025.domains = [
+    "mitmh2025.com"
+  ];
+  gcp.certificateMap.mitmh2025 = {
+    defaultCertificateName = "www";
+    host."mitmh2025.com" = "mitmh2025";
+  };
   route53.mitmh2025.gcp_dns_authorizations = [
     "www.mitmh2025.com"
     "prod.mitmh2025.com"
+    "mitmh2025.com"
   ];
   route53.mitmh2025.rr.prod = {
     type = "A";
@@ -151,6 +176,18 @@
   };
   route53.mitmh2025.rr.www-v6 = {
     name = "www";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];
+  };
+  route53.mitmh2025.rr.root = {
+    name = lib.tfRef "data.aws_route53_zone.mitmh2025.name";
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025.address")];
+  };
+  route53.mitmh2025.rr.root-v6 = {
+    name = lib.tfRef "data.aws_route53_zone.mitmh2025.name";
     type = "AAAA";
     ttl = "300";
     records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];

@@ -189,14 +189,4 @@
     certificate_arn = lib.tfRef "aws_acm_certificate.www.arn";
     validation_record_fqdns = lib.tfRef ''[for record in aws_route53_record.mitmh2025_www_acm_validation : record.fqdn]'';
   };
-
-  # DNS entries
-
-  route53.mitmh2025.rr.root = {
-    name = lib.tfRef "data.aws_route53_zone.mitmh2025.name";
-    type = "A";
-    alias.name = lib.tfRef "aws_cloudfront_distribution.publicsite-apex.domain_name";
-    alias.zone_id = lib.tfRef "aws_cloudfront_distribution.publicsite-apex.hosted_zone_id";
-    alias.evaluate_target_health = true;
-  };
 }
