@@ -204,9 +204,9 @@ export default function RegistrationHome({
                   Our Hunt HQ will also be closed during these overnight hours.
                 </strong>{" "}
                 We will continue to operate the Hunt website for solving,
-                including answering hint requests, but solvers should not count
-                on any events, live interactions, or physical puzzle pickups
-                during this time.
+                including answering hint requests, but there will not be any
+                events, live interactions, or physical puzzle pickups during
+                this time.
               </p>
             </div>
           </details>
@@ -417,12 +417,12 @@ export default function RegistrationHome({
               </p>
 
               <p>
-                MIT IS&amp;T has{" "}
+                Those who are not MIT alums should follow the{" "}
                 <a href="http://kb.mit.edu/confluence/display/istcontrib/Atlas+-+Visitors+Landing+Page#Atlas-VisitorsLandingPage-ForGuests%3AAcceptingandUsingaVisitororEventInvitation">
-                  published detailed instructions
+                  detailed instructions
                 </a>{" "}
-                for how to set up Atlas and an MIT Guest account for campus
-                access.
+                published by IS&amp;T for how to set up Atlas and an MIT Guest
+                account for campus access.
               </p>
             </div>
           </details>
