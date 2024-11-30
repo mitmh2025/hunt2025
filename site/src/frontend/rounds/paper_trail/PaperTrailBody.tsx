@@ -1,9 +1,27 @@
 import React, { Fragment } from "react";
+import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink, { PuzzleIcon } from "../../components/PuzzleLink";
+import { Wrapper } from "../../components/StyledUI";
 import { Desk, DeskItem } from "./Layout";
 import { PaperTrailFonts } from "./PaperTrailFonts";
+import RoundBg from "./assets/round-bg.png";
 import { type PaperTrailObject, type PaperTrailState } from "./types";
+
+const PaperTrailBg = styled.div`
+  background-image: url(${RoundBg});
+  background-repeat: repeat;
+`;
+
+const PaperTrailWrapper = styled(Wrapper)`
+  font-family: "Kiwi Maru";
+  padding-bottom: 2rem;
+
+  h1,
+  h2 {
+    font-family: "Kiwi Maru";
+  }
+`;
 
 const PaperTrailBody = ({
   state,
@@ -101,8 +119,12 @@ const PaperTrailBody = ({
     <Fragment key="paper-trail">
       <PaperTrailFonts />
       <Desk>{objects}</Desk>
-      <h1>The Paper Trail</h1>
-      {sections}
+      <PaperTrailBg>
+        <PaperTrailWrapper>
+          <h1>The Paper Trail</h1>
+          {sections}
+        </PaperTrailWrapper>
+      </PaperTrailBg>
     </Fragment>
   );
 };
