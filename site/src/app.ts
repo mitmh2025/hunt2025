@@ -97,7 +97,10 @@ export default async function ({
       const wsManager = new WebsocketManager({
         hunt,
         redisClient,
-        frontendApiClient: newFrontendClient(apiUrl, frontendApiSecret),
+        frontendApiClient: newFrontendClient(apiUrl, {
+          type: "frontend",
+          frontendSecret: frontendApiSecret,
+        }),
       });
       const wsHandler = wsManager.requestHandler.bind(wsManager);
       authRouter.ws("/ws", wsHandler);

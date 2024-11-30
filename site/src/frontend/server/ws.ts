@@ -19,8 +19,8 @@ import {
   MessageFromClientSchema,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
+import formatActivityLogEntryForApi from "../../api/formatActivityLogEntryForApi";
 import {
-  formatActivityLogEntryForApi,
   formatTeamHuntState,
   TeamInfoIntermediate,
   TeamStateIntermediate,

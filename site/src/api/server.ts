@@ -6,13 +6,7 @@ import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import {
-  type NextFunction,
-  type Request,
-  type RequestHandler,
-  type Response,
-  Router,
-} from "express";
+import { type Request, type RequestHandler, Router } from "express";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import {
@@ -20,7 +14,8 @@ import {
   type InsertActivityLogEntry,
 } from "knex/types/tables";
 import { Passport } from "passport";
-import { Strategy, ExtractJwt } from "passport-jwt";
+import { Strategy as CustomStrategy } from "passport-custom";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import { adminContract } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
@@ -43,8 +38,8 @@ import {
   teamRegistrationLog,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
+import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
 import {
-  formatActivityLogEntryForApi,
   formatTeamHuntState,
   reducerDeriveTeamState,
   cleanupActivityLogEntryFromDB,
@@ -54,15 +49,18 @@ import {
 } from "./logic";
 import { type RedisClient } from "./redis";
 
+const ADMIN_USER_ID = -1;
+const FRONTEND_USER_ID = -2;
+
 type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
   200
 >;
 
 type JWTPayload = {
-  user: string;
-  team_id: number;
-  sess_id: string;
+  user?: string;
+  team_id?: number;
+  sess_id?: string;
   adminUser?: string;
 };
 
@@ -71,10 +69,17 @@ function cookieExtractor(req: Request) {
   return token ? token : null;
 }
 
-function newPassport(jwtSecret: string | Buffer) {
+function newPassport({
+  jwtSecret,
+  frontendApiSecret,
+}: {
+  jwtSecret: string | Buffer;
+  frontendApiSecret: string;
+}) {
   const passport = new Passport();
   passport.use(
-    new Strategy(
+    "teamJwt",
+    new JwtStrategy(
       {
         jwtFromRequest: ExtractJwt.fromExtractors([
           cookieExtractor,
@@ -91,6 +96,7 @@ function newPassport(jwtSecret: string | Buffer) {
             jwtPayload,
           );
           done(null, false);
+          return;
         }
         if (!jwtPayload.sess_id) {
           console.warn(
@@ -98,6 +104,7 @@ function newPassport(jwtSecret: string | Buffer) {
             jwtPayload,
           );
           done(null, false);
+          return;
         }
         done(null, jwtPayload.team_id, {
           sess_id: jwtPayload.sess_id,
@@ -106,6 +113,53 @@ function newPassport(jwtSecret: string | Buffer) {
       },
     ),
   );
+
+  passport.use(
+    "adminJwt",
+    new JwtStrategy(
+      {
+        jwtFromRequest: ExtractJwt.fromExtractors([
+          ExtractJwt.fromAuthHeaderAsBearerToken(),
+        ]),
+        secretOrKey: jwtSecret,
+      },
+      function (jwtPayload: JWTPayload, done) {
+        if (!jwtPayload.adminUser) {
+          console.warn(
+            "JWT valid but missing adminUser; treating as unauthorized",
+            jwtPayload,
+          );
+          done(null, false);
+          return;
+        }
+
+        done(null, ADMIN_USER_ID, {
+          adminUser: jwtPayload.adminUser,
+        });
+      },
+    ),
+  );
+
+  passport.use(
+    "frontendSecret",
+    new CustomStrategy(function (req, done) {
+      const authHeader = Buffer.from(req.headers.authorization ?? "", "utf8");
+
+      const expected = Buffer.from(
+        "frontend-auth " + frontendApiSecret,
+        "utf8",
+      );
+      if (
+        authHeader.length === expected.length &&
+        timingSafeEqual(expected, authHeader)
+      ) {
+        done(null, FRONTEND_USER_ID);
+      } else {
+        done(null, false);
+      }
+    }),
+  );
+
   return passport;
 }
 
@@ -137,7 +191,7 @@ export function getRouter({
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  const passport = newPassport(jwtSecret);
+  const passport = newPassport({ jwtSecret, frontendApiSecret });
 
   const s = initServer();
 
@@ -306,10 +360,6 @@ export function getRouter({
     };
   };
 
-  const authMiddleware = passport.authenticate("jwt", {
-    session: false,
-  }) as RequestHandler;
-
   type Query = Record<
     string,
     | undefined
@@ -320,35 +370,24 @@ export function getRouter({
     | number
     | number[]
   >;
-  const frontendAuthMiddleware = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- want to override 4th type parameter to Request and the 2nd and 3rd default to any and I don't want to constrain them in middleware if I can avoid it
-    req: Request<unknown, any, any, Query>,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    const authHeader = Buffer.from(req.headers.authorization ?? "", "utf8");
-    const expected = Buffer.from("frontend-auth " + frontendApiSecret, "utf8");
-    if (
-      authHeader.length === expected.length &&
-      timingSafeEqual(expected, authHeader)
-    ) {
-      next();
-      return;
-    } else {
-      res.status(403).send("not the frontend");
-    }
-  };
 
-  const adminAuthMiddlewares: RequestHandler[] = [
-    authMiddleware,
-    (req, res, next) => {
-      if (process.env.NODE_ENV === "development" || req.authInfo?.adminUser) {
-        next();
-        return;
-      }
-      res.status(403).send("not an admin");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- want to override 4th type parameter to Request and the 2nd and 3rd default to any and I don't want to constrain them in middleware if I can avoid it
+  type RequestHandlerWithQuery = RequestHandler<unknown, any, any, Query>;
+
+  const authMiddleware = passport.authenticate("teamJwt", {
+    session: false,
+  }) as RequestHandlerWithQuery;
+
+  const adminAuthMiddleware = passport.authenticate("adminJwt", {
+    session: false,
+  }) as RequestHandlerWithQuery;
+
+  const frontendAuthMiddleware = passport.authenticate(
+    ["adminJwt", "frontendSecret"],
+    {
+      session: false,
     },
-  ];
+  ) as RequestHandlerWithQuery;
 
   // We merge contracts here so that we can implement additional contracts
   // without having to export them to the client since there's no value in
@@ -766,13 +805,13 @@ export function getRouter({
     },
     admin: {
       getTeamState: {
-        middleware: adminAuthMiddlewares,
+        middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId } }) => {
           return await getTeamState(parseInt(teamId, 10));
         },
       },
       getPuzzleState: {
-        middleware: adminAuthMiddlewares,
+        middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId, slug } }) => {
           const team_id = parseInt(teamId, 10);
           const state = await getPuzzleState(team_id, slug, knex);
@@ -786,6 +825,30 @@ export function getRouter({
             status: 200 as const,
             body: state,
           };
+        },
+      },
+      getPuzzleMetadata: {
+        middleware: [adminAuthMiddleware],
+        handler: () => {
+          const metadata = Object.fromEntries(
+            Object.entries(PUZZLES).map(([slug, definition]) => {
+              // If we decide to expose the full metadata, we could do:
+              // const { content, solution, router, ...rest } = definition;
+              // return [slug, rest];
+              return [
+                slug,
+                {
+                  title: definition.title,
+                  slug: definition.slug,
+                },
+              ];
+            }),
+          );
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: metadata,
+          });
         },
       },
     },
@@ -944,7 +1007,7 @@ export function getRouter({
               if (effectiveSince !== undefined) {
                 q = q.where("id", ">", effectiveSince);
               }
-              q = q.select("id", "team_id", "type", "data");
+              q = q.select("id", "team_id", "type", "data", "timestamp");
               return q;
             },
             { readOnly: true },

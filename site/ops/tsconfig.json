@@ -1,0 +1,19 @@
+{
+  "extends": "../shared-tsconfig.json",
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
+    },
+
+    "types": [
+      "node",
+      "react/experimental",
+      "react-dom/experimental",
+      "@rspack/core/module"
+    ]
+  },
+  "include": ["./src/**/*", "vite.config.ts", "../types/**/*"]
+}
