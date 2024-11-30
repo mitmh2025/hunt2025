@@ -26,7 +26,9 @@ export default function NewRegistration({
         <p>
           If you are requesting space at MIT, we ask that you register{" "}
           <strong>before December 21st</strong>. While we will do our best to
-          accommodate requests after that date, we cannot guarantee space.
+          accommodate requests after that date, we cannot guarantee space. All
+          teams hunting in person are strongly encouraged to register by this
+          date as well.
         </p>
         <PageHeader>Register Your Team</PageHeader>
         <Form method="POST">

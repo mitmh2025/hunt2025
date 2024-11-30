@@ -83,10 +83,9 @@ export default function RegistrationHome({
               individual seeking a team. It would help us greatly with planning
               if you can register as soon as possible, especially if you are
               planning to hunt on campus, even if you have to guess at some of
-              the details. Additionally, if you are requesting team HQ space at
-              MIT, please register <strong>before December 21st</strong>. While
-              we will do our best to accommodate requests after that date, we
-              cannot guarantee space.
+              the details. Additionally, if you are hunting in person, please
+              register <strong>before December 21st</strong> (even if you are
+              not requesting space at MIT).
             </p>
           )}
           <p>
@@ -254,17 +253,13 @@ export default function RegistrationHome({
                   </p>
 
                   <p>
-                    To assist us in planning, please register{" "}
-                    <strong>as soon as possible</strong>, even if you have to
-                    guess at some of the information. Most fields can be updated
-                    any time before Hunt starts.
-                  </p>
-
-                  <p>
-                    If you are requesting team HQ space at MIT, please register{" "}
-                    <strong>before December 21st</strong>. While we will do our
-                    best to accommodate requests after that date, we cannot
-                    guarantee space.
+                    If your team will be hunting in person, please register{" "}
+                    <strong>before December 21st</strong>, even if you have to
+                    guess at some of the information, and even if you are not
+                    requesting that we find space for your team. Most fields can
+                    be updated any time before Hunt starts. While we will do our
+                    best to accommodate requests for space after that date, we
+                    cannot make guarantees.
                   </p>
                 </>
               ) : (
