@@ -166,7 +166,7 @@
   # SSL
 
   resource.aws_acm_certificate.www = let
-    # N.B. We can't use `aws_route53_record.www.fqdn` here because the route53 record depends on cloudfront depends on this certificate.
+    # N.B. We can't use `aws_route53_record.mitmh2025_www.fqdn` here because the route53 record depends on cloudfront depends on this certificate.
     domain = lib.tfRef "data.aws_route53_zone.mitmh2025.name";
   in {
     domain_name = "www.${domain}";
@@ -187,17 +187,10 @@
 
   resource.aws_acm_certificate_validation.www = {
     certificate_arn = lib.tfRef "aws_acm_certificate.www.arn";
-    validation_record_fqdns = lib.tfRef ''[for record in aws_route53_record.www_acm_validation : record.fqdn]'';
+    validation_record_fqdns = lib.tfRef ''[for record in aws_route53_record.mitmh2025_www_acm_validation : record.fqdn]'';
   };
 
   # DNS entries
-
-  route53.mitmh2025.rr.www = {
-    type = "A";
-    alias.name = lib.tfRef "aws_cloudfront_distribution.publicsite.domain_name";
-    alias.zone_id = lib.tfRef "aws_cloudfront_distribution.publicsite.hosted_zone_id";
-    alias.evaluate_target_health = true;
-  };
 
   route53.mitmh2025.rr.root = {
     name = lib.tfRef "data.aws_route53_zone.mitmh2025.name";

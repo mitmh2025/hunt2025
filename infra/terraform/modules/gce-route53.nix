@@ -19,8 +19,8 @@ in {
         config = {
           hostname = lib.mkIf (config.route53.zone != null) "${name}.${route53.${config.route53.zone}.domain}";
           readyWhen =
-            optional (config.route53.zone != null) "aws_route53_record.${name}"
-            ++ map (a: "aws_route53_record.${lib.tfSanitize a}") config.route53.aliases;
+            optional (config.route53.zone != null) "aws_route53_record.${config.route53.zone}_${name}"
+            ++ map (a: "aws_route53_record.${config.route53.zone}_${lib.tfSanitize a}") config.route53.aliases;
         };
       }));
     };
@@ -28,7 +28,7 @@ in {
   config = {
     route53 = let
       zones = builtins.groupBy (i: i.value.route53.zone) (lib.attrsToList cfg);
-    in lib.mapAttrs (_: instances: {
+    in lib.mapAttrs (zoneName: instances: {
       rr = lib.listToAttrs (lib.concatMap (i: [
         (i // {
           value = {
@@ -44,7 +44,7 @@ in {
         type = "CNAME";
         ttl = "300";
         records = [
-          (lib.tfRef "aws_route53_record.${i.name}.fqdn")
+          (lib.tfRef "aws_route53_record.${zoneName}_${i.name}.fqdn")
         ];
       }) i.value.route53.aliases) instances);
     }) zones;

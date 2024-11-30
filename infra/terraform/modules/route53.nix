@@ -35,10 +35,14 @@
       name = zone.domain;
     }) config.route53;
     resource.aws_route53_record = let
-      zoneToRecords = zoneName: zone: lib.mapAttrs (rrName: rr: {
-        provider = lib.mkIf (zone.provider != null) "aws.${zone.provider}";
-        zone_id = lib.tfRef "data.aws_route53_zone.${zoneName}.zone_id";
-      } // rr) zone.rr;
+      zoneToRecords = zoneName: zone: lib.mapAttrs' (rrName: rr:
+        lib.nameValuePair
+          "${zoneName}_${rrName}"
+          ({
+            provider = lib.mkIf (zone.provider != null) "aws.${zone.provider}";
+            zone_id = lib.tfRef "data.aws_route53_zone.${zoneName}.zone_id";
+          } // rr)
+      ) zone.rr;
     in lib.mergeAttrsList (
       lib.mapAttrsToList zoneToRecords config.route53
     );

@@ -12,7 +12,7 @@
         config = {
           rr = lib.listToAttrs (map (domain: let
             id = lib.tfSanitize domain;
-          in lib.nameValuePair id {
+          in lib.nameValuePair "acme_${id}" {
             name = lib.tfRef "google_certificate_manager_dns_authorization.${id}.dns_resource_record[0].name";
             type = lib.tfRef "google_certificate_manager_dns_authorization.${id}.dns_resource_record[0].type";
             ttl = "300";

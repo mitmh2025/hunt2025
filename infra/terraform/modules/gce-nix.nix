@@ -36,7 +36,7 @@ in {
       # Attempt to get the host's SSH key from guest attributes; if it's missing, we'll ust fall back on trusting the first key we see.
       # TODO: Test if `lifecycle.replace_triggered_by = ["...nat_ip"]` will allow the use of an IP instead of a hostname here.
       to = let
-        hostname = lib.tfRef "aws_route53_record.${name}.fqdn";
+        hostname = lib.tfRef "aws_route53_record.${instance.route53.zone}_${name}.fqdn";
       in ''ssh-ng://root@${hostname}%{ if data.google_compute_instance_guest_attributes.${name}_hostkeys.query_value != []}?base64-ssh-public-host-key=''${base64encode(coalesce([for attr in data.google_compute_instance_guest_attributes.${name}_hostkeys.query_value : "''${attr.key} ''${attr.value}"]...))}%{ endif }'';
       ssh_options = ["-oStrictHostKeyChecking=no"];
       lifecycle.ignore_changes = ["to" "ssh_options"];

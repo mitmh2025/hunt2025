@@ -144,6 +144,17 @@
     ttl = "300";
     records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];
   };
+  route53.mitmh2025.rr.www = {
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025.address")];
+  };
+  route53.mitmh2025.rr.www-v6 = {
+    name = "www";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];
+  };
 
   gcp.certificate.two-pi-noir.domains = [
     "two-pi-noir.agency"
