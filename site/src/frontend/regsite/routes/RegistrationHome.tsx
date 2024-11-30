@@ -76,6 +76,19 @@ export default function RegistrationHome({
         )}
         <section id="updates">
           <h2>Latest Updates</h2>
+          {registrationOpen && (
+            <p>
+              <strong>2024.12.01 - </strong>Registration is now open! You can
+              find links above to both register your team or to sign up as an
+              individual seeking a team. It would help us greatly with planning
+              if you can register as soon as possible, especially if you are
+              planning to hunt on campus, even if you have to guess at some of
+              the details. Additionally, if you are requesting team HQ space at
+              MIT, please register <strong>before December 21st</strong>. While
+              we will do our best to accommodate requests after that date, we
+              cannot guarantee space.
+            </p>
+          )}
           <p>
             <strong>2024.11.29 — </strong>Happy Thanksgiving! We have a handful
             of updates. First, we’ve added details about kickoff, campus access,
