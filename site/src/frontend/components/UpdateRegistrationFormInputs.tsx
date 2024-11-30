@@ -501,8 +501,7 @@ export function cleanUrlEncodedDataFromRegistrationUpdate(
     contactPhone: cleanString(formData.contactPhone),
     contactMailingAddress: cleanString(formData.contactMailingAddress),
     secondaryContactName: cleanString(formData.secondaryContactName),
-    secondaryContactEmail:
-      cleanString(formData.secondaryContactEmail) || undefined,
+    secondaryContactEmail: cleanString(formData.secondaryContactEmail),
     secondaryContactPhone: cleanString(formData.secondaryContactPhone),
     teamGoal: cleanString(formData.teamGoal),
     teamValues,
