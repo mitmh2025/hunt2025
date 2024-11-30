@@ -1,6 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { isDeepStrictEqual } from "util";
-import { type ServerInferResponseBody } from "@ts-rest/core";
+import { type AppRouter, type ServerInferResponseBody } from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
@@ -142,6 +142,15 @@ export function getRouter({
   const s = initServer();
 
   const slugToSlotMap = generateSlugToSlotMap(hunt);
+  const getTeamStateIntermediate = async (team_id: number) => {
+    const team_state = (
+      await activityLog.getCachedTeamLog(knex, redisClient, team_id)
+    ).entries.reduce(
+      (acc, entry) => acc.reduce(entry),
+      new TeamStateIntermediate(hunt),
+    );
+    return team_state;
+  };
   const getTeamState = async (team_id: number) => {
     const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
       knex,
@@ -157,12 +166,7 @@ export function getRouter({
         body: null,
       };
     }
-    const team_state = (
-      await activityLog.getCachedTeamLog(knex, redisClient, team_id)
-    ).entries.reduce(
-      (acc, entry) => acc.reduce(entry),
-      new TeamStateIntermediate(hunt),
-    );
+    const team_state = await getTeamStateIntermediate(team_id);
     return {
       status: 200 as const,
       body: {
@@ -967,14 +971,8 @@ export function getRouter({
     responseValidation: true,
   });
 
-  const prodContract = c.router({
-    auth: authContract,
-    public: publicContract,
-  });
-
-  const openApiDocument = generateOpenApi(
-    process.env.NODE_ENV === "development" ? contract : prodContract,
-    {
+  const openApiDocumentFor = (c: AppRouter) =>
+    generateOpenApi(c, {
       info: {
         title: "Hunt API",
         version: "2025",
@@ -984,10 +982,45 @@ export function getRouter({
           url: "/api/",
         },
       ],
+    });
+  const prehuntApiDocument = openApiDocumentFor(authContract);
+  const huntApiDocument = openApiDocumentFor(
+    c.router({
+      auth: authContract,
+      public: publicContract,
+    }),
+  );
+  const adminApiDocument = openApiDocumentFor(contract);
+
+  app.use(
+    "/",
+    swaggerUi.serve,
+    (req: Request, res: Response, next: NextFunction) => {
+      (
+        passport.authenticate(
+          "jwt",
+          async (
+            _err: unknown,
+            user?: Express.User | false | null,
+            info?: Express.AuthInfo,
+          ) => {
+            const huntStarted =
+              user &&
+              (
+                await getTeamStateIntermediate(user as number)
+              ).gates_satisfied.has("hunt_started");
+            const apiDoc =
+              process.env.NODE_ENV === "development" || info?.adminUser
+                ? adminApiDocument
+                : huntStarted
+                  ? huntApiDocument
+                  : prehuntApiDocument;
+            swaggerUi.setup(apiDoc)(req, res, next);
+          },
+        ) as RequestHandler
+      )(req, res, next);
     },
   );
-
-  app.use("/", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
   return app;
 }
