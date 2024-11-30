@@ -358,8 +358,8 @@ export default function UpdateRegistrationFormInputs({
 
         <fieldset>
           <legend>
-            Are you willing to welcome unattached Hunters to your team this
-            year?
+            Are you willing to welcome unattached Hunters (hunters with no team
+            affiliation) to your team this year?
           </legend>
           <div>
             <div>
