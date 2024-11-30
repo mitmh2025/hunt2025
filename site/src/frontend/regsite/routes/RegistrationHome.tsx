@@ -66,6 +66,17 @@ export default function RegistrationHome({
         <section id="updates">
           <h2>Latest Updates</h2>
           <p>
+            <strong>2024.11.29 — </strong>Happy Thanksgiving! We have a handful
+            of updates. First, we’ve added details about kickoff, campus access,
+            and minors. Additionally, we’ve received a handful of questions
+            about remote teams and teams with limited on-campus presence, so we
+            have updated the FAQ entries about remote participation and remote
+            teams. To reiterate, approximately 15% of the puzzles in our Hunt
+            will be inaccessible without presence on-campus, and we will not be
+            producing or running alternate forms of these puzzles or other
+            in-person interactions for the exclusive benefit of remote teams.
+          </p>
+          <p>
             <strong>2024.11.05 — </strong>The Providence Crime Syndication has
             graciously written a pre-Hunt round of puzzles, and will be
             releasing the{" "}
@@ -126,22 +137,49 @@ export default function RegistrationHome({
             </summary>
             <div className="answer">
               <p>
-                The Hunt will begin with a
+                The Hunt will begin with a{" "}
                 <strong>
                   live Kickoff event at 12:00 PM on Friday, January 17th
                 </strong>
                 . Kickoff will <strong>not</strong> be in Kresge Auditorium this
-                year due to construction; the exact location(s) of kickoff will
-                be published at a later date. Puzzles will be released at 1:00
-                PM.
+                year due to construction. Puzzles will be released at 1:00 PM.
               </p>
               <p>
                 Hunt Headquarters will remain open through the evening of
-                Sunday, January 19th. There will be a
+                Sunday, January 19th. There will be a{" "}
                 <strong>
-                  wrap-up presentation on Monday, January 20 at 12:00 PM
+                  wrap-up presentation on Monday, January 20 at 12:00 PM in
+                  26-100
                 </strong>
-                . The location of wrap-up will be published at a later date.
+                .
+              </p>
+            </div>
+          </details>
+
+          <details className="question">
+            <summary>
+              <h3>Where will kickoff be held?</h3>
+            </summary>
+            <div className="answer">
+              <p>
+                Kickoff will <strong>not</strong> be in Kresge Auditorium this
+                year due to construction. There will be 3 simultaneous live
+                kickoff events in 10-250, 34-101, and 45-230. Teams can go to
+                any location to receive equivalent kickoff experiences, and we
+                will also be live-streaming kickoff. The combined capacity of
+                these rooms is somewhat less than that of Kresge; for those who
+                enjoy experiencing kickoff in person, we will do our best to
+                support load-balancing the 3 locations. If you would like to
+                watch kickoff from the comfort of your HQ, we can promise that
+                the live-streamed version will be an equally high-quality
+                experience.
+              </p>
+              <p>
+                Team captains (or a team representative) will be required to
+                pick up nametags and other materials for your team. If you are
+                picking up for your team, you should go to kickoff in 34-101 or
+                45-230; material pickup will be in the building 34 first floor
+                lobby immediately after kickoff.
               </p>
             </div>
           </details>
@@ -153,8 +191,8 @@ export default function RegistrationHome({
             <div className="answer">
               <p>
                 <strong>
-                  Campus is closed from 1:00 AM &ndash; 6:00 AM each day.
-                </strong>
+                  Campus is closed from 1:00 AM – 6:00 AM each day.
+                </strong>{" "}
                 Teams who have been assigned space on campus for their HQs must
                 vacate during that time, but teams operating out of their living
                 group are of course welcome to continue. During campus closure
@@ -164,11 +202,11 @@ export default function RegistrationHome({
               <p>
                 <strong>
                   Our Hunt HQ will also be closed during these overnight hours.
-                </strong>
+                </strong>{" "}
                 We will continue to operate the Hunt website for solving,
-                including answering hint requests, but solvers should not count
-                on any events, live interactions, or physical puzzle pickups
-                during this time.
+                including answering hint requests, but there will not be any
+                events, live interactions, or physical puzzle pickups during
+                this time.
               </p>
             </div>
           </details>
@@ -220,7 +258,7 @@ export default function RegistrationHome({
                 <strong>
                   The Providence Crime Syndication has graciously written a
                   pre-Hunt round of puzzles.
-                </strong>
+                </strong>{" "}
                 The MIT Puzzle Club ran this as a live event for current
                 students in October. (Students who would like more information
                 about Puzzle Club events should join the Puzzle Club Discord
@@ -256,10 +294,12 @@ export default function RegistrationHome({
                 The MIT Mystery Hunt is at its core an on-campus event for the
                 MIT community, and we believe our Hunt in particular will be
                 best experienced in person. While we expect there to be many
-                puzzles that are accessible to remote solvers, there will also
-                be many physical puzzles, on-campus puzzles, interactions, and
-                activities that can only be done in person. If you’re on the
-                fence about participating in this year’s Hunt in person,
+                puzzles that are accessible to remote solvers, approximately 15%
+                of the puzzles in this year’s Hunt will be physical, on-campus,
+                interaction-driven, or activities that can only be done in
+                person. We will not be producing or running alternate forms of
+                puzzles during the Hunt. If you’re on the fence about
+                participating in this year’s Hunt in person,{" "}
                 <strong>we think this is a good year to show up</strong>!
               </p>
             </div>
@@ -272,15 +312,20 @@ export default function RegistrationHome({
             <div className="answer">
               <p>
                 Remote teams are welcome to sign up and participate in the MIT
-                Mystery Hunt. However, there will be many puzzles and
-                interactions that fully remote teams cannot complete, and
-                because figuring out that a puzzle requires MIT knowledge or
-                campus presence is part of the puzzle, they will not usually be
-                labeled as such.{" "}
+                Mystery Hunt. However, this is still a student event, and Hunt
+                this year is heavy on puzzles and interactions that fully remote
+                teams cannot complete. Because figuring out that a puzzle
+                requires MIT knowledge or campus presence is often part of the
+                puzzle, they will generally not be labeled as such.
+                Approximately 15% of the puzzles in this year’s Hunt cannot be
+                completed by fully-remote teams.{" "}
                 <strong>
                   We expect that fully-remote teams and teams with fewer than 10
-                  members on-campus will not be able to finish the Hunt.
+                  members on-campus will not be able to finish the hunt
                 </strong>
+                , and we will not be producing or running alternate forms of
+                puzzles or other in-person interactions for the exclusive
+                benefit of remote teams.
               </p>
               <p>
                 We are still excited to share the Hunt with the rest of the
@@ -298,7 +343,7 @@ export default function RegistrationHome({
             </summary>
             <div className="answer">
               <p>
-                In order to win the MIT Mystery Hunt and write next year’s,
+                In order to win the MIT Mystery Hunt and write next year’s,{" "}
                 <strong>you must have at least 1 current MIT student</strong> on
                 your team (although we recommend having more for logistical
                 reasons). If your team has a concern about this requirement,
@@ -345,15 +390,81 @@ export default function RegistrationHome({
             </summary>
             <div className="answer">
               <p>
-                Campus access for guests has been a moving target since 2020,
-                and MIT is actively rolling out a new system to replace Tim
-                Tickets, so we’re not yet exactly sure what procedures will be
-                involved this year. We’ll update as we learn more from MIT.
+                Mystery Hunt attendees who are not affiliated with MIT will use
+                the Atlas mobile app for campus access through an Event link
+                that will be shared to registered teams.{" "}
+                <strong>
+                  Note that this is different from the TIM Tickets system that
+                  was in use last year and will require new setup.
+                </strong>
               </p>
+
               <p>
-                We will also follow MIT’s guidelines for COVID and respiratory
-                virus prevention, and will have more detail on what these entail
-                soon.
+                We strongly recommend installing and registering through the
+                Atlas mobile app prior to arrival on campus, since access will
+                be blocked until your Atlas registration is complete. Your
+                campus access will silently fail without telling you why if you
+                have not completed any of the steps in the linked guides below.
+              </p>
+
+              <p>
+                MIT alumni may use the Atlas mobile app to activate a digital
+                version of the MIT Alumni ID by following{" "}
+                <a href="https://alum.mit.edu/about/alumni-benefits-and-offerings/mit-id-alumni">
+                  these instructions from the MIT Alumni Association
+                </a>
+                .
+              </p>
+
+              <p>
+                Those who are not MIT alums should follow the{" "}
+                <a href="http://kb.mit.edu/confluence/display/istcontrib/Atlas+-+Visitors+Landing+Page#Atlas-VisitorsLandingPage-ForGuests%3AAcceptingandUsingaVisitororEventInvitation">
+                  detailed instructions
+                </a>{" "}
+                published by IS&amp;T for how to set up Atlas and an MIT Guest
+                account for campus access.
+              </p>
+            </div>
+          </details>
+
+          <details className="question">
+            <summary>
+              <h3>Can minors participate?</h3>
+            </summary>
+            <div className="answer">
+              <p>
+                Minors participating on campus at Mystery Hunt must be
+                accompanied by their parent or guardian at all times.
+              </p>
+            </div>
+          </details>
+
+          <details className="question">
+            <summary>
+              <h3>
+                Are there any specific MIT policies around respiratory viruses?
+              </h3>
+            </summary>
+            <div className="answer">
+              <p>
+                MIT has removed its specific COVID and Flu guidelines, and is
+                deferring to the{" "}
+                <a href="https://www.cdc.gov/respiratory-viruses/guidance/index.html">
+                  CDC guidelines around respiratory viruses
+                </a>
+                .
+              </p>
+
+              <p>
+                The CDC guidelines strongly recommend getting vaccinated for
+                COVID and Flu, and above all else, staying home if you believe
+                you might be sick. Wearing masks is an additional precaution
+                that you can consider depending on circumstance.
+              </p>
+
+              <p>
+                This is a big event, and we are excited to interact with you all
+                frequently throughout the weekend — please don’t get us sick!
               </p>
             </div>
           </details>
