@@ -259,10 +259,12 @@ export default function UpdateRegistrationFormInputs({
           </legend>
           <div>
             <p>
-              (Note that if you are requesting space at MIT, you must register{" "}
-              <strong>before December 21st</strong>. Please{" "}
-              <strong>do not</strong> contact the Schedules Office directly for
-              space as we have already worked with them to reserve rooms.)
+              (Note that if you are requesting space at MIT, we ask that you
+              register <strong>before December 21st</strong>. While we will do
+              our best to accommodate requests after that date, we cannot
+              guarantee space. Please <strong>do not</strong> contact the
+              Schedules Office directly for space as we have already worked with
+              them to reserve rooms.)
             </p>
             {TEAM_LOCATIONS.map(
               ({ value, label, detailLabel, detailKey }, i) => (

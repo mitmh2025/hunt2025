@@ -24,8 +24,9 @@ export default function NewRegistration({
           appreciate updates as you solidify your team’s plans for the year.
         </p>
         <p>
-          If you are requesting team HQ space at MIT, you must register{" "}
-          <strong>before December 21st</strong>.
+          If you are requesting space at MIT, we ask that you register{" "}
+          <strong>before December 21st</strong>. While we will do our best to
+          accommodate requests after that date, we cannot guarantee space.
         </p>
         <PageHeader>Register Your Team</PageHeader>
         <Form method="POST">
