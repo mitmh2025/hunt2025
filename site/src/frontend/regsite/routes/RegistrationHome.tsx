@@ -41,7 +41,7 @@ export default function RegistrationHome({
               <section id="unattached-hunter-button">
                 <a
                   className="button"
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfBDLTjg8mOhWglnCn05QptQ30pqMRbSTx9RBM7Gyc2s-2Grw/viewform?usp=sf_link"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSc-XXPdMMwl52uAcNIa30mLe4OfihuqB4IdshfvEnbzfprYwQ/viewform?usp=sf_link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
