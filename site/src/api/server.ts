@@ -1067,7 +1067,7 @@ export function getRouter({
     (req: Request, res: Response, next: NextFunction) => {
       (
         passport.authenticate(
-          "jwt",
+          ["teamJwt", "adminJwt"],
           async (
             _err: unknown,
             user?: Express.User | false | null,
@@ -1075,6 +1075,7 @@ export function getRouter({
           ) => {
             const huntStarted =
               user &&
+              (user as number) > 0 &&
               (
                 await getTeamStateIntermediate(user as number)
               ).gates_satisfied.has("hunt_started");
