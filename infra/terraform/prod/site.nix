@@ -5,6 +5,8 @@
     contents = with pkgs; [
       dockerTools.caCertificates
       hunt2025.out
+      aws-credential-process
+      dockerTools.binSh
     ];
     config.Cmd = ["hunt2025"];
   };
@@ -28,6 +30,13 @@
       REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
     };
   };
+  resource.kubernetes_config_map_v1.api = {
+    metadata.namespace = "prod";
+    metadata.name = "api";
+    data."aws-config" = lib.generators.toINI {} {
+      "profile mitmh2025-puzzup".credential_process = "/bin/aws-credential-process 891377012427 K8sProdAPI";
+    };
+  };
   resource.kubernetes_deployment_v1.api = {
     metadata.namespace = "prod";
     metadata.name = "api";
@@ -38,9 +47,17 @@
       template = {
         metadata.labels.app = "api";
         spec.service_account_name = lib.tfRef "kubernetes_service_account_v1.k8s-prod-api.metadata[0].name";
+        spec.volume = [{
+          name = "config";
+          config_map.name = lib.tfRef "kubernetes_config_map_v1.api.metadata[0].name";
+        }];
         spec.container = [{
           name = "api";
           image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
+          volume_mount = [{
+            name = "config";
+            mount_path = "/config";
+          }];
           env = lib.attrsToList {
             PORT = "80";
             HUNT_COMPONENTS = "api";
@@ -49,6 +66,8 @@
             DB_AUTH_TYPE = "IAM";
             DB_NAME = lib.tfRef "postgresql_database.hunt2025.name";
             DB_USER = lib.tfRef "google_sql_user.k8s-prod-api.name";
+            AWS_CONFIG_FILE = "/config/aws-config";
+            AWS_PROFILE = "mitmh2025-puzzup";
             #OTEL_METRICS_EXPORTER=console
             #OTEL_LOGS_EXPORTER=console
             #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
