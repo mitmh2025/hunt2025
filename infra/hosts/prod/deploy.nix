@@ -81,32 +81,14 @@ in {
             cat ~/".aws/credentials-$SERVICE_ACCOUNT"
           '';
         });
-        awsAuth = lib.getExe (pkgs.writeShellApplication {
-          name = "aws-credential-process";
-          runtimeInputs = with pkgs; [
-            curl
-            jq
-            awscli2
-          ];
-          text = ''
-            AUDIENCE="aws"
-            ACCOUNT_ID=$1
-            ROLE_ARN="arn:aws:iam::''${ACCOUNT_ID}:role/GCPProdDeploy"
-
-            jwt_token=$(curl -sH "Metadata-Flavor: Google" "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=''${AUDIENCE}&format=full&licenses=FALSE")
-
-            jwt_sub=$(jq -R -r 'split(".") | .[1] | @base64d | fromjson | .sub' <<< "$jwt_token")
-
-            (unset AWS_PROFILE; aws sts assume-role-with-web-identity --role-arn "$ROLE_ARN" --role-session-name "$jwt_sub" --web-identity-token "$jwt_token" | jq '.Credentials | .Version=1')
-          '';
-        });
+        awsAuth = lib.getExe pkgs.aws-credential-process;
       in (pkgs.formats.ini {}).generate "aws-config" {
         "profile gcs" = {
           endpoint_url = "https://storage.googleapis.com";
           credential_process = "${hmacAuth} deploy-vm";
         };
-        "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427";
-        "profile mitmh2025-staging".credential_process = "${awsAuth} 767398012733";
+        "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427 GCPProdDeploy";
+        "profile mitmh2025-staging".credential_process = "${awsAuth} 767398012733 GCPProdDeploy";
       };
       systemd.globalEnvironment = {
         AWS_CONFIG_FILE = "/etc/aws/config";

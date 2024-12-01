@@ -108,4 +108,5 @@ in {
       darwin.sigtool
     ];
   }) else liquidsoap;
+  aws-credential-process = final.callPackage ./aws-credential-process.nix {};
 }
