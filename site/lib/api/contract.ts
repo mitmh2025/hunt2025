@@ -204,9 +204,9 @@ export const MutableTeamRegistrationSchema = z.object({
   contactPhone: zodPhoneNumber(),
   contactMailingAddress: z.string().min(1).max(255),
 
-  secondaryContactName: z.string().max(255).optional(),
-  secondaryContactEmail: z.string().email().optional(),
-  secondaryContactPhone: zodPhoneNumber().optional(),
+  secondaryContactName: z.string().max(255),
+  secondaryContactEmail: z.string().email(),
+  secondaryContactPhone: zodPhoneNumber(),
 
   // Team information
   teamGoal: z.string().min(1).max(255),

@@ -259,8 +259,12 @@ export default function UpdateRegistrationFormInputs({
           </legend>
           <div>
             <p>
-              (Note that if you are requesting space at MIT, you must register{" "}
-              <strong>before December 21st</strong>.)
+              (Note that if you are requesting space at MIT, we ask that you
+              register <strong>before December 21st</strong>. While we will do
+              our best to accommodate requests after that date, we cannot
+              guarantee space. Please <strong>do not</strong> contact the
+              Schedules Office directly for space as we have already worked with
+              them to reserve rooms.)
             </p>
             {TEAM_LOCATIONS.map(
               ({ value, label, detailLabel, detailKey }, i) => (
@@ -356,8 +360,8 @@ export default function UpdateRegistrationFormInputs({
 
         <fieldset>
           <legend>
-            Are you willing to welcome unattached Hunters to your team this
-            year?
+            Are you willing to welcome unattached Hunters (hunters with no team
+            affiliation) to your team this year?
           </legend>
           <div>
             <div>
@@ -501,8 +505,7 @@ export function cleanUrlEncodedDataFromRegistrationUpdate(
     contactPhone: cleanString(formData.contactPhone),
     contactMailingAddress: cleanString(formData.contactMailingAddress),
     secondaryContactName: cleanString(formData.secondaryContactName),
-    secondaryContactEmail:
-      cleanString(formData.secondaryContactEmail) || undefined,
+    secondaryContactEmail: cleanString(formData.secondaryContactEmail),
     secondaryContactPhone: cleanString(formData.secondaryContactPhone),
     teamGoal: cleanString(formData.teamGoal),
     teamValues,
