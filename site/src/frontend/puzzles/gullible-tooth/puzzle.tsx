@@ -190,8 +190,8 @@ const Puzzle = () => {
           </li>
           <li>
             Slice off the left-most end of your dough to use, and discard the
-            rest. Run time backwards to get a younger version of this
-            ingredient, and enjoy!
+            rest. Run time backwards to get a younger version of this creation,
+            and enjoy!
           </li>
         </ol>
       </Recipe>

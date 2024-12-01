@@ -450,7 +450,7 @@ const Solution = () => {
               <td>
                 Slice off the left-most end of your dough to use, and discard
                 the rest. Run time backwards to get a younger version of this
-                ingredient, and enjoy!
+                creation, and enjoy!
               </td>
               <td>MOTH → CATERPILLAR</td>
             </tr>
