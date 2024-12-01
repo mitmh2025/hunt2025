@@ -44,6 +44,7 @@ import {
   teamRegistrationLog,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
+import sendEmail, { confirmationEmailTemplate } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
 import {
   formatTeamHuntState,
@@ -452,6 +453,20 @@ export function getRouter({
               error: "username_taken",
             },
           };
+        }
+
+        try {
+          await sendEmail({
+            to: body.contactEmail,
+            subject: "MIT Mystery Hunt 2025 Registration Confirmation",
+            plainText: confirmationEmailTemplate({
+              registration: body,
+            }),
+          });
+        } catch (e) {
+          // Don't fail if sending email fails; just log the error and
+          // return the auth token to the user.
+          console.error("Error sending confirmation email", e);
         }
 
         const token = jwt.sign(
