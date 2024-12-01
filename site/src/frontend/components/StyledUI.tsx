@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from "styled-components";
+import { css, styled } from "styled-components";
 import { deviceMin } from "../utils/breakpoints";
 
 export const Button = styled.button`
@@ -96,13 +96,27 @@ export const ErrorText = styled.div`
   }
 `;
 
-export const Alert = styled.div`
-  background-color: var(--red-200);
-  border: 3px solid var(--red-600);
+export const Alert = styled.div<{ $variant?: "success" | "error" }>`
+  border: 3px solid;
   border-radius: 0.25rem;
   padding: 1em;
   margin: 1em 0;
   color: var(--black);
+  ${({ $variant }) => {
+    switch ($variant) {
+      case "success":
+        return css`
+          background-color: var(--gold-400);
+          border-color: var(--gold-700);
+        `;
+      case "error":
+      default:
+        return css`
+          background-color: var(--red-200);
+          border-color: var(--red-600);
+        `;
+    }
+  }}
 `;
 
 export function LabeledWithError({

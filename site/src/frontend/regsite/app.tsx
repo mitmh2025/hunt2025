@@ -196,9 +196,7 @@ export default function ({
               <UpdateRegistration
                 registration={registration}
                 values={registration}
-                message={
-                  req.query.new ? "Registration created successfully!" : ""
-                }
+                showSuccessBanner={!!req.query.new}
                 errors={{}}
               />
             ),
