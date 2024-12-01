@@ -98,6 +98,19 @@
       };
     }
     {
+      environment.etc."aws/config".source = let
+        awsAuth = lib.getExe pkgs.aws-credential-process;
+      in (pkgs.formats.ini {}).generate "aws-config" {
+        "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427 GCPStagingStaging";
+      };
+      systemd.services.hunt2025.environment = {
+        EMAIL_FROM = "info@mitmh2025.com";
+        AWS_CONFIG_FILE = "/etc/aws/config";
+        AWS_SDK_LOAD_CONFIG = "true";
+        AWS_PROFILE = "mitmh2025-puzzup";
+      };
+    }
+    {
       services.nginx = {
         enable = true;
 

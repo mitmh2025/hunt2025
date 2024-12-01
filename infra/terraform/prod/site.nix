@@ -67,7 +67,9 @@
             DB_NAME = lib.tfRef "postgresql_database.hunt2025.name";
             DB_USER = lib.tfRef "google_sql_user.k8s-prod-api.name";
             AWS_CONFIG_FILE = "/config/aws-config";
+            AWS_SDK_LOAD_CONFIG = "true";
             AWS_PROFILE = "mitmh2025-puzzup";
+            EMAIL_FROM = "info@mitmh2025.com";
             #OTEL_METRICS_EXPORTER=console
             #OTEL_LOGS_EXPORTER=console
             #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
