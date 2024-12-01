@@ -44,7 +44,7 @@ import {
   teamRegistrationLog,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
-import sendEmail, { confirmationEmailTemplate } from "./email";
+import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
 import {
   formatTeamHuntState,
@@ -184,6 +184,7 @@ export function getRouter({
   knex,
   hunt,
   redisClient,
+  mailer,
 }: {
   jwtSecret: string | Buffer;
   frontendApiSecret: string;
@@ -191,6 +192,7 @@ export function getRouter({
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
+  mailer: Mailer;
 }) {
   const app = Router();
   app.use(cors());
@@ -456,7 +458,7 @@ export function getRouter({
         }
 
         try {
-          await sendEmail({
+          await mailer.sendEmail({
             to: body.contactEmail,
             subject: "MIT Mystery Hunt 2025 Registration Confirmation",
             plainText: confirmationEmailTemplate({
