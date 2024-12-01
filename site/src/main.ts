@@ -66,6 +66,8 @@ if (!redisUrl) {
 
 const registrationOpen = !process.env.REGISTRATION_CLOSED;
 
+const emailFrom = process.env.EMAIL_FROM;
+
 app({
   enabledComponents,
   dbEnvironment,
@@ -74,6 +76,7 @@ app({
   dataApiSecret,
   apiUrl,
   redisUrl,
+  emailFrom,
 })
   .then((app) =>
     app.listen(port, () => {

@@ -3,44 +3,73 @@ import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import nodemailer from "nodemailer";
 import { type TeamRegistration } from "../../lib/api/frontend_contract";
 
-const EMAIL_FROM = process.env.EMAIL_FROM;
+export type Mailer = {
+  sendEmail({
+    to,
+    subject,
+    plainText,
+  }: {
+    to: string | string[];
+    subject: string;
+    plainText: string;
+  }): void | PromiseLike<void>;
+};
 
-if (process.env.NODE_ENV !== "development" && !EMAIL_FROM) {
-  throw new Error("SMTP configuration is missing in production");
-}
-
-const ses = new aws.SES({
-  apiVersion: "2010-12-01",
-  region: "us-east-1",
-  credentials: defaultProvider(),
-});
-
-const transporter = nodemailer.createTransport({
-  SES: { ses, aws },
-});
-
-export default async function sendEmail({
-  to,
-  subject,
-  plainText,
-}: {
-  to: string | string[];
-  subject: string;
-  plainText: string;
-}) {
-  if (!EMAIL_FROM) {
+class MockMailer {
+  sendEmail({
+    to,
+    subject,
+    plainText,
+  }: {
+    to: string | string[];
+    subject: string;
+    plainText: string;
+  }) {
     console.log("Email would be sent to", to);
     console.log("Subject:", subject);
     console.log("Text:\n", plainText);
-    return;
+  }
+}
+
+class RealMailer {
+  private emailFrom: string;
+  private transporter: nodemailer.Transporter;
+
+  constructor({ emailFrom }: { emailFrom: string }) {
+    this.emailFrom = emailFrom;
+    const ses = new aws.SES({
+      apiVersion: "2010-12-01",
+      region: "us-east-1",
+      credentials: defaultProvider(),
+    });
+    this.transporter = nodemailer.createTransport({
+      SES: { ses, aws },
+    });
   }
 
-  await transporter.sendMail({
-    from: EMAIL_FROM,
+  async sendEmail({
     to,
     subject,
-    text: plainText,
-  });
+    plainText,
+  }: {
+    to: string | string[];
+    subject: string;
+    plainText: string;
+  }) {
+    await this.transporter.sendMail({
+      from: this.emailFrom,
+      to,
+      subject,
+      text: plainText,
+    });
+  }
+}
+
+export function getMailer({ emailFrom }: { emailFrom?: string }) {
+  if (emailFrom) {
+    return new RealMailer({ emailFrom });
+  }
+  return new MockMailer();
 }
 
 export function confirmationEmailTemplate({

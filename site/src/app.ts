@@ -3,6 +3,7 @@ import { Router, WebSocketExpress } from "websocket-express";
 import { newFrontendClient } from "../lib/api/frontend_client";
 import { activityLog, teamRegistrationLog } from "./api/data";
 import { connect as dbConnect } from "./api/db";
+import { getMailer } from "./api/email";
 import { connect as redisConnect } from "./api/redis";
 import { getRouter } from "./api/server";
 import {
@@ -26,6 +27,7 @@ export default async function ({
   dataApiSecret,
   apiUrl,
   redisUrl,
+  emailFrom,
 }: {
   enabledComponents: Set<string>;
   dbEnvironment: string | undefined;
@@ -34,6 +36,7 @@ export default async function ({
   dataApiSecret: string | undefined;
   apiUrl: string | undefined;
   redisUrl?: string;
+  emailFrom?: string;
 }) {
   const redisClient = redisUrl ? await redisConnect(redisUrl) : undefined;
 
@@ -56,6 +59,9 @@ export default async function ({
     if (!dataApiSecret) {
       throw new Error("$DATA_API_SECRET not defined in production");
     }
+    if (process.env.NODE_ENV !== "development" && !emailFrom) {
+      throw new Error("$EMAIL_FROM not defined in production");
+    }
 
     const knex = await dbConnect(dbEnvironment);
 
@@ -65,6 +71,8 @@ export default async function ({
       await teamRegistrationLog.refreshRedisLog(redisClient, knex);
     }
 
+    const mailer = getMailer({ emailFrom });
+
     // Mount the API router at /api
     const apiRouter = getRouter({
       jwtSecret,
@@ -73,6 +81,7 @@ export default async function ({
       knex,
       hunt,
       redisClient,
+      mailer,
     });
     app.use("/api", apiRouter);
   }
