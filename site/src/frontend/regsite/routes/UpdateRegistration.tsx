@@ -19,11 +19,13 @@ const StaticFields = styled.div`
 export default function UpdateRegistration({
   registration,
   values,
+  showSuccessBanner,
   message,
   errors,
 }: {
   registration: TeamRegistration;
   values: MutableTeamRegistration;
+  showSuccessBanner?: boolean;
   message?: string;
   errors: { [K in keyof MutableTeamRegistration]?: string };
 }) {
@@ -32,6 +34,9 @@ export default function UpdateRegistration({
       <div className="container">
         <PageHeader>Update Registration</PageHeader>
         <StaticFields>
+          {showSuccessBanner && (
+            <Alert $variant="success">Registration created successfully!</Alert>
+          )}
           {message && <Alert>{message}</Alert>}
           <LabeledInputWithError
             label="Username (cannot be changed)"
