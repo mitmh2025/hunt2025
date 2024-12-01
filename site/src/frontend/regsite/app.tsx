@@ -15,7 +15,6 @@ import {
   logMiddleware,
 } from "../utils/expressMiddleware";
 import renderApp from "../utils/renderApp";
-import sendEmail from "../utils/sendEmail";
 import {
   responseIsZodError,
   responseToZodErrors,
@@ -29,28 +28,6 @@ import type {
   MutableTeamRegistration,
   TeamRegistration,
 } from "lib/api/frontend_contract";
-
-function confirmationEmailTemplate({
-  registration,
-}: {
-  registration: TeamRegistration;
-}) {
-  return `
-Hi ${registration.contactName},
-
-Thank you for registering your team, ${registration.name}, for the 2025 Mystery Hunt!
-
-Your team username is: ${registration.username}
-Your team password is: ${registration.password}
-
-You can log in at https://www.mitmh2025.com/login to view and update your
-registration details. Please keep your registration up-to-date if any of your
-information changes.
-
-If you have any other questions, please refer to the FAQ at https://www.mitmh2025.com
-or email info@mitmh2025.com.
-`;
-}
 
 export default function ({
   apiUrl,
@@ -334,20 +311,6 @@ export default function ({
         });
 
         if (createResp.status === 200) {
-          try {
-            await sendEmail({
-              to: data.contactEmail,
-              subject: "MIT Mystery Hunt 2025 Registration Confirmation",
-              plainText: confirmationEmailTemplate({
-                registration: data,
-              }),
-            });
-          } catch (e) {
-            // Don't fail if sending email fails; just log the error and
-            // return the auth token to the user.
-            console.error("Error sending confirmation email", e);
-          }
-
           res.cookie("mitmh2025_auth", createResp.body.token, {
             httpOnly: true,
             secure: true,
