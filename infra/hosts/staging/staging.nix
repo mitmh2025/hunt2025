@@ -29,6 +29,12 @@
           ${config.services.postgresql.package}/bin/psql hunt2025 -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
         '';
       };
+      services.redis.servers.hunt2025 = {
+        save = []; # Don't persist any state
+        appendOnly = false;
+      };
+      # Restart Redis whenever the site is restarted (to clear the state).
+      systemd.services.redis-hunt2025.partOf = ["hunt2025.service"];
     }
     {
       services.thingsboard = {
