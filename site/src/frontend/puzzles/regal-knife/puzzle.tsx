@@ -9,6 +9,12 @@ const StyledCrossword = styled(Crossword)`
   margin-bottom: 1em;
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const FlexContainer = styled.span`
   display: inline-flex;
   align-items: center;
@@ -36,19 +42,21 @@ export const GRID: string[][] = [
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <StyledCrossword labels={GRID} />
-      <p>
-        <FlexContainer>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
-          A: <audio controls src={aAudio} />
-        </FlexContainer>
-      </p>
-      <p>
-        <FlexContainer>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoiler the puzzle */}
-          D: <audio controls src={dAudio} />
-        </FlexContainer>
-      </p>
+      <FlexWrapper>
+        <StyledCrossword labels={GRID} />
+        <p>
+          <FlexContainer>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
+            A: <audio controls src={aAudio} />
+          </FlexContainer>
+        </p>
+        <p>
+          <FlexContainer>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
+            D: <audio controls src={dAudio} />
+          </FlexContainer>
+        </p>
+      </FlexWrapper>
     </>
   );
 };
