@@ -166,7 +166,6 @@
             PORT = "81"; # Unused
             REGSITE_PORT = "80";
             HUNT_COMPONENTS = "reg";
-            REGISTRATION_CLOSED = "1";
             API_BASE_URL = "http://api/api";
             #OTEL_METRICS_EXPORTER=console
             #OTEL_LOGS_EXPORTER=console
