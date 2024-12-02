@@ -75,6 +75,7 @@
           }).overrideAttrs {
             tags = [ "containers_image_openpgp" ];
           })
+          sops
         ]);
         terraformBin = "${terraform}/bin/tofu";
         mkTFConfig = modules: terranix.lib.terranixConfiguration {
