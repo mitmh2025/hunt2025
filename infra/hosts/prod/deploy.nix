@@ -140,7 +140,7 @@ in {
           gh-org = "mitmh2025";
           repo-allowlist = "github.com/mitmh2025/*";
           atlantis-url = "https://atlantis.mitmh2025.com";
-          gh-team-allowlist = "Tech:plan, Tech:apply, Tech:import";
+          gh-team-allowlist = "Tech:plan, Tech:apply, Tech:import, Tech:unlock";
 
           emoji-reaction = "+1";
           enable-diff-markdown-format = true;
