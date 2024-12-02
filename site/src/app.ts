@@ -59,7 +59,7 @@ export default async function ({
     if (!dataApiSecret) {
       throw new Error("$DATA_API_SECRET not defined in production");
     }
-    if (process.env.NODE_ENV !== "development" && !emailFrom) {
+    if (process.env.NODE_ENV !== "development" && emailFrom === undefined) {
       throw new Error("$EMAIL_FROM not defined in production");
     }
 

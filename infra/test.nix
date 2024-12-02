@@ -18,6 +18,8 @@ nixosTest {
       enable = true;
       db_env = "ci";
     };
+    # Explicitly disable e-mails.
+    systemd.services.hunt2025.environment.EMAIL_FROM = "";
     environment.systemPackages = [
       pkgs.nodejs_22
       (pkgs.writeShellScriptBin "hunt2025-playwright" ''
