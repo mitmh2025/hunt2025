@@ -56,7 +56,7 @@ in {
   };
 
   liquidsoap = let
-    version = "2.3.0-rc1";
+    version = "2.3.0";
     ocamlPackages = final.ocaml-ng.ocamlPackages_4_14.overrideScope ocamlPackagesOverlay;
     liquidsoap = (prev.liquidsoap.override (old: {
       ocamlPackages = old.ocamlPackages.overrideScope ocamlPackagesOverlay;
@@ -64,18 +64,8 @@ in {
       inherit version;
       src = old.src.override ({
         rev = "refs/tags/v${version}";
-        hash = "sha256-Th37Eai1AKmUkHGIj9oyQVvi+3T77DZuKfkPBRjD1aw=";
+        hash = "sha256-wNOENkIQw8LWfceI24aa8Ja3ZkePgTIGdIpGgqs/3Ss=";
       });
-      patches = (old.patches or []) ++ [
-        (final.fetchpatch2 {
-          url = "https://github.com/savonet/liquidsoap/pull/4152.patch";
-          hash = "sha256-1Bt6dBeIS4ARKogzrymFSJfcjdaLT2oxXOTKONOnilE=";
-        })
-        (final.fetchpatch2 {
-          url = "https://github.com/savonet/liquidsoap/pull/4156.patch";
-          hash = "sha256-pzGmhMjTQoqoZV3GeV9VF9bWLL7L0cprBkNwAmIk+gg=";
-        })
-      ];
       buildInputs = with ocamlPackages; old.buildInputs ++  [
         saturn_lockfree
         mem_usage
