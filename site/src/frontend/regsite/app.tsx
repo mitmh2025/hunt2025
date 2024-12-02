@@ -196,7 +196,9 @@ export default function ({
               <UpdateRegistration
                 registration={registration}
                 values={registration}
-                showSuccessBanner={!!req.query.new}
+                successBanner={
+                  req.query.new && "Registration created successfully!"
+                }
                 errors={{}}
               />
             ),
@@ -227,11 +229,12 @@ export default function ({
           body: data,
         });
 
-        let message: string;
+        let successBanner: string | undefined;
+        let message: string | undefined;
         let values: MutableTeamRegistration;
         let errors: { [K in keyof MutableTeamRegistration]?: string };
         if (updateResp.status === 200) {
-          message = "Registration updated successfully!";
+          successBanner = "Registration updated successfully!";
           values = updateResp.body;
           errors = {};
         } else if (responseIsZodError(updateResp)) {
@@ -251,6 +254,7 @@ export default function ({
               <UpdateRegistration
                 registration={registration}
                 values={values}
+                successBanner={successBanner}
                 message={message}
                 errors={errors}
               />
