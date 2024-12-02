@@ -37,6 +37,10 @@
       systemd.services.redis-hunt2025.partOf = ["hunt2025.service"];
     }
     {
+      systemd.services.hunt2025.serviceConfig.EnvironmentFile = [config.sops.secrets."site/environment".path];
+      systemd.services.hunt2025.environment.EMAIL_TRANSPORT = "postmark";
+    }
+    {
       services.thingsboard = {
         enable = true;
         datasource.createLocally = true;

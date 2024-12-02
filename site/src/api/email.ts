@@ -1,6 +1,8 @@
 import * as aws from "@aws-sdk/client-ses";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import nodemailer from "nodemailer";
+// eslint-disable-next-line import/default -- eslint can't parse the CommonJS module
+import postmarkTransport from "nodemailer-postmark-transport";
 import { type TeamRegistration } from "../../lib/api/frontend_contract";
 
 export type Mailer = {
@@ -32,19 +34,45 @@ class MockMailer {
 }
 
 class RealMailer {
-  private emailFrom: string;
+  private sendDefaults: {
+    from?: string;
+    messageStream?: string;
+  };
   private transporter: nodemailer.Transporter;
 
   constructor({ emailFrom }: { emailFrom: string }) {
-    this.emailFrom = emailFrom;
-    const ses = new aws.SES({
-      apiVersion: "2010-12-01",
-      region: "us-east-1",
-      credentials: defaultProvider(),
-    });
-    this.transporter = nodemailer.createTransport({
-      SES: { ses, aws },
-    });
+    this.sendDefaults = {
+      from: emailFrom,
+    };
+    if (process.env.EMAIL_TRANSPORT === "postmark") {
+      const token = process.env.EMAIL_POSTMARK_TOKEN;
+      if (!token) {
+        throw new Error(
+          "postmark transport requested without $EMAIL_POSTMARK_TOKEN",
+        );
+      }
+      this.transporter = nodemailer.createTransport(
+        postmarkTransport({
+          auth: {
+            apiKey: token,
+          },
+        }),
+      );
+      const stream = process.env.EMAIL_POSTMARK_STREAM;
+      if (stream) {
+        this.sendDefaults.messageStream = stream;
+      }
+    } else {
+      // SES is the default transport
+      const ses = new aws.SES({
+        apiVersion: "2010-12-01",
+        region: "us-east-1",
+        credentials: defaultProvider(),
+      });
+      this.transporter = nodemailer.createTransport({
+        SES: { ses, aws },
+      });
+    }
   }
 
   async sendEmail({
@@ -57,7 +85,7 @@ class RealMailer {
     plainText: string;
   }) {
     await this.transporter.sendMail({
-      from: this.emailFrom,
+      ...this.sendDefaults,
       to,
       subject,
       text: plainText,
