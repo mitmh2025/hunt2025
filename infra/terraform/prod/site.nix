@@ -11,6 +11,7 @@
     config.Cmd = ["hunt2025"];
   };
   sops.keys.site = {};
+  data.sops_file.site.source_file = "${../../secrets/prod/site.yaml}";
   resource.random_password.jwt_secret = {
     length = 32;
   };
@@ -29,6 +30,8 @@
       DATA_API_SECRET = lib.tfRef "random_password.data_api_secret.result";
       FRONTEND_API_SECRET = lib.tfRef "random_password.frontend_api_secret.result";
       REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
+      EMAIL_POSTMARK_TOKEN = lib.tfRef ''data.sops_file.site.data["postmark.token"]'';
+      EMAIL_POSTMARK_STREAM = lib.tfRef ''data.sops_file.site.data["postmark.stream"]'';
     };
   };
   resource.kubernetes_config_map_v1.api = {
@@ -71,6 +74,7 @@
             AWS_SDK_LOAD_CONFIG = "true";
             AWS_PROFILE = "mitmh2025-puzzup";
             EMAIL_FROM = "info@mitmh2025.com";
+            EMAIL_TRANSPORT = "postmark";
             #OTEL_METRICS_EXPORTER=console
             #OTEL_LOGS_EXPORTER=console
             #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
@@ -107,6 +111,24 @@
               value_from = [{
                 secret_key_ref = [{
                   key = "DATA_API_SECRET";
+                  name = "api";
+                }];
+              }];
+            }
+            {
+              name = "EMAIL_POSTMARK_TOKEN";
+              value_from = [{
+                secret_key_ref = [{
+                  key = "EMAIL_POSTMARK_TOKEN";
+                  name = "api";
+                }];
+              }];
+            }
+            {
+              name = "EMAIL_POSTMARK_STREAM";
+              value_from = [{
+                secret_key_ref = [{
+                  key = "EMAIL_POSTMARK_STREAM";
                   name = "api";
                 }];
               }];

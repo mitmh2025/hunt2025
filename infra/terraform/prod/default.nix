@@ -11,6 +11,7 @@
     tls.source = "registry.terraform.io/hashicorp/tls";
     kubernetes.source = "registry.terraform.io/hashicorp/kubernetes";
     postgresql.source = "registry.terraform.io/cyrilgdn/postgresql";
+    sops.source = "registry.terraform.io/carlpett/sops";
   };
 
   provider.google = {
@@ -27,6 +28,8 @@
       profile = "mitmh2025-puzzup";
     }
   ];
+
+  provider.sops = {};
 
   state.bucket.name = "cvqb2gwr-tfstate";
   state.bucket.users = [
