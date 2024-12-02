@@ -10,6 +10,7 @@
     ];
     config.Cmd = ["hunt2025"];
   };
+  sops.keys.site = {};
   resource.random_password.jwt_secret = {
     length = 32;
   };

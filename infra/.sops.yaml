@@ -26,3 +26,9 @@ creation_rules:
     gcp_kms:
     - resource_id: projects/mitmh2025-staging-gcp/locations/global/keyRings/sops/cryptoKeys/sops-staging-key
     - resource_id: projects/mitmh2025/locations/global/keyRings/sops/cryptoKeys/sops-things-key
+- path_regex: secrets/prod/site\.yaml$
+  key_groups:
+  - pgp:
+    - *admin_quentin_gpg
+    gcp_kms:
+    - resource_id: projects/mitmh2025/locations/global/keyRings/sops/cryptoKeys/sops-site-key
