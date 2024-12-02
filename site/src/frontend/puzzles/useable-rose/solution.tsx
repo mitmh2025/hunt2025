@@ -83,16 +83,17 @@ const Solution = () => {
         <a href="https://en.wikipedia.org/wiki/25-pair_color_code">
           25-pair code
         </a>{" "}
-        code or twisted pair color code, which uses pairs of colored wires to
-        encode the numbers 1-25. This is hinted via the first letters of the
-        original given clues spelling TELCO COLOR CODE. Reading out the pairs of
-        colors in this code and treating those numbers as letters with A=1,
-        spells out a cluephrase: HOME OR TV DR FIVE.
+        or twisted pair color code, which uses pairs of colored wires to encode
+        the numbers 1-25. This is hinted via the first letters of the original
+        given clues spelling TELCO COLOR CODE. Reading out the pairs of colors
+        in this code and treating those numbers as letters with A=1, spells out
+        a cluephrase: HOME OR TV DR FIVE.
       </p>
       <p>
         This resolves to HOUSE, but in a reapplication of the mechanic, and per
-        the instruction that the final answer is two words, you need to add a
-        color to get WHITE HOUSE.
+        the instruction that the final answer is two words (the untangled hint
+        at the bottom of the puzzle), you need to add a color to get WHITE
+        HOUSE.
       </p>
       <p>The full clue and answer list is below:</p>
 
