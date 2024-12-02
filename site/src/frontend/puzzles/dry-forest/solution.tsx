@@ -148,7 +148,10 @@ const Solution = () => {
         description, which indicates which game of the season series between the
         two teams is being described (e.g. ‘the second battle in the war between
         two noble houses’ = the second game these two teams were having this
-        season.)
+        season.) As an additional checksum, the score of the game just before
+        the fight is indicated in each description (e.g. ‘The invaders had the
+        clear advantage, having outflanked the bedraggled defenders twice’
+        indicating a score of 2-0).
       </p>
       <p>
         The descriptions describe a fight between two ‘knights’ in detail. As

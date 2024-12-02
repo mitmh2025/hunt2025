@@ -53,11 +53,11 @@ const Solution = (): JSX.Element => {
         thought, given the vase and the stipulated ransom. One day perhaps we’ll
         look back at that ridiculous scene and the ensuing s[c]andal and laugh
         together over a pint. Restitution might be necessary first, though, as
-        rather than t[h]anks, I earned the entire royal family’s animus. Lesson
-        learned: not every case can have a sensational reve[a]l and a
-        spectacular ending. Ostentatious explanations are just my nature I
-        suppose, but I must keep t[r]ying to re[s]train myself and review my
-        notes to find everything that is missing!
+        rather than t[h]anks, I earned the entire royal family’s animus. Lest
+        that happen again, I’ll have to learn that not every case can have a
+        sensational reve[a]l and a spectacular ending. Ostentatious explanations
+        are just my nature I suppose, but I must keep t[r]ying to re[s]train
+        myself and review my notes to find everything that is missing!
       </StyledP>
       <p>
         Taken together, the inserted letters spell PERIODS HIDE SILENT CHARS.

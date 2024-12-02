@@ -100,9 +100,10 @@ const Puzzle = () => {
         ground. The invader sprung back to his feet, and the two knights engaged
         again. Each struck at the other in turn, the invader hewing at his
         opponent’s armored ribs, the defender thrusting at his opponent’s face,
-        stymied by his visor. The defender, vigorously dodging, lost his sallet;
-        he in turn struck a high blow against the invader, but lost his footing
-        and collapsed on top of him, both falling to the battlefield. After
+        stymied by his visor. The invader then swung wildly at the defender’s
+        armored head. The defender, vigorously dodging, lost his sallet; he in
+        turn struck a high blow against the invader, but lost his footing and
+        collapsed on top of him, both falling to the battlefield. After
         extricating themselves from the flanges of each other’s armor, the
         knights returned to their own ranks, their soldiers emboldened.
       </FontParagraph>
@@ -126,7 +127,7 @@ const Puzzle = () => {
             </>
           }{" "}
           cottised argent and sable debrused with letter {<InkBlotch />}, at
-          chief a bar argent.
+          chief a barrulet sable and a bar argent.
         </i>{" "}
         The armies seemed evenly matched, with the defenders pushing the
         invading soldiers back and in turn being made to retreat. At one point,
@@ -146,9 +147,9 @@ const Puzzle = () => {
         </i>{" "}
         The defenders displayed their own:{" "}
         <i>
-          Azure, a letter {<InkBlotch />} celeste voided with pile nowy issuing
-          from the base in bend dexter in chief of which a lozenge gules, in
-          base a bar celeste cottised gules.
+          Azure, a letter {<InkBlotch />} celeste voided with pile itself per
+          bend invected issuing from the base in bend dexter in chief of which a
+          lozenge gules, in base a bar celeste cottised gules.
         </i>{" "}
         The defenders were gaining the upper hand, having routed two bands of
         enemy soldiers. A knight strode forth from the ranks of the invaders and
@@ -189,8 +190,8 @@ const Puzzle = () => {
               <InkBlotch />
             </>
           }{" "}
-          argent charged with a lion’s head erased Or with eye gules, in chief a
-          barrulet azure.
+          argent charged with a lion’s head erased Or with eye gules, in chief
+          and in base a barrulet azure.
         </i>{" "}
         The invaders had the clear advantage, having outflanked the bedraggled
         defenders twice. A knight from each army took offense with each other,
@@ -204,9 +205,9 @@ const Puzzle = () => {
         An account of the second battle in the war between two noble houses. The
         invaders had a distasteful coat of arms:{" "}
         <i>
-          Azure, a chief tenné cottised argent, an annulet azure in chief once
+          Argent, a chief azure cottised tenné, an annulet azure in chief once
           engrailed within which tenné all charged with the name of the noble
-          house azure, in base three bars argent, tenné, and argent.
+          house azure, in base three bars azure, tenné, and azure.
         </i>{" "}
         That of the defenders was ostentatious:{" "}
         <i>
@@ -232,7 +233,7 @@ const Puzzle = () => {
         invaders had a simple standard:{" "}
         <i>
           Argent, a lion’s head erased to sinister argent, the chief and base Or
-          cottised sable.
+          cottised azure.
         </i>{" "}
         The defenders had a much more detailed blazon:{" "}
         <i>
@@ -254,7 +255,8 @@ const Puzzle = () => {
         An account of the third battle in the war between two noble houses. The
         invaders bore peculiar heraldry:{" "}
         <i>
-          Argent, the base gules cottised azure, charged with the word{" "}
+          Argent, the base gules cottised azure, charged with three mullets
+          gules, the word{" "}
           {
             <>
               <InkBlotch />

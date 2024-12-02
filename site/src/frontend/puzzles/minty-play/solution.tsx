@@ -52,7 +52,7 @@ const Puzzle = (): JSX.Element => {
         </div>
       </FakeP>
       <FakeP>
-        <div>Expose Every Expression</div>
+        <div>Expose Every Expression!</div>
         <div>
           Each given word in the word search can be found as the middle of a
           three word clue, with all words in a clue nearby and going in the same

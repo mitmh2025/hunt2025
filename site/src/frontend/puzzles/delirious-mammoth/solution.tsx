@@ -95,100 +95,118 @@ const Solution = (): JSX.Element => {
         <tr>
           <th>Order</th>
           <th>Show</th>
-          <th>Song</th>
+          <th>(Tune) Song</th>
           <th>Show</th>
-          <th>Song</th>
+          <th>(Lyrics) Song</th>
           <th>Contrast</th>
         </tr>
         <tr>
           <td>1</td>
           <td>
+            <i>Aladdin</i>
+          </td>
+          <td>Friend Like Me</td>
+          <td>
             <i>Six</i>
           </td>
           <td>Don’t Lose Ur Head</td>
-          <td>Aladdin</td>
-          <td>Friend Like Me</td>
-          <td>Bad friend vs. good friend</td>
+          <td>Good friend vs. bad friend</td>
         </tr>
         <tr>
           <td>2</td>
           <td>
+            <i>Cats</i>
+          </td>
+          <td>Memory</td>
+          <td>
             <i>Annie</i>
           </td>
           <td>Tomorrow</td>
-          <td>Cats</td>
-          <td>Memory</td>
-          <td>Thinking of the future vs. the past</td>
+          <td>Thinking of the past vs. the future</td>
         </tr>
         <tr>
           <td>3</td>
           <td>
+            <i>Hello, Dolly!</i>
+          </td>
+          <td>Hello, Dolly!</td>
+          <td>
             <i>Evita</i>
           </td>
           <td>Don’t Cry for Me Argentina</td>
-          <td>Hello, Dolly!</td>
-          <td>Hello, Dolly!</td>
-          <td>Saying goodbye vs. hello</td>
+          <td>Saying hello vs. goodbye</td>
         </tr>
         <tr>
           <td>4</td>
           <td>
+            <i>Les Misérables</i>
+          </td>
+          <td>One Day More</td>
+          <td>
             <i>Chess</i>
           </td>
           <td>One Night In Bangkok</td>
-          <td>Les Misérables</td>
-          <td>One Day More</td>
-          <td>Night vs. Day</td>
+          <td>Day vs. night</td>
         </tr>
         <tr>
           <td>5</td>
           <td>
+            <i>Fiddler on the Roof</i>
+          </td>
+          <td>If I Were a Rich Man</td>
+          <td>
             <i>Rent</i>
           </td>
           <td>Rent</td>
-          <td>Fiddler on the Roof</td>
-          <td>If I Were a Rich Man</td>
-          <td>Reality of poverty vs. imagination of wealth</td>
+          <td>Imagination of wealth vs. Reality of poverty</td>
         </tr>
         <tr>
           <td>6</td>
           <td>
+            <i>Wicked</i>
+          </td>
+          <td>Defying Gravity</td>
+          <td>
             <i>Peter Pan</i>
           </td>
           <td>I Won’t Grow Up</td>
-          <td>Wicked</td>
-          <td>Defying Gravity</td>
-          <td>Staying as you are vs. growing up</td>
+          <td>Growing up vs. staying as you are</td>
         </tr>
         <tr>
           <td>7</td>
           <td>
+            <i>Jagged Little Pill</i>
+          </td>
+          <td>Ironic</td>
+          <td>
             <i>Guys and Dolls</i>
           </td>
           <td>Luck be a Lady</td>
-          <td>Jagged Little Pill</td>
-          <td>Ironic</td>
           <td>Is it ironic or just bad luck?</td>
         </tr>
         <tr>
           <td>8</td>
           <td>
+            <i>Phantom of the Opera</i>
+          </td>
+          <td>Music of the Night</td>
+          <td>
             <i>Hairspray</i>
           </td>
           <td>You Can’t Stop The Beat</td>
-          <td>Phantom of the Opera</td>
-          <td>Music of the Night</td>
-          <td>Inevitability of music to bring us into light vs. dark</td>
+          <td>Inevitability of music to bring us into dark vs. light</td>
         </tr>
         <tr>
           <td>9</td>
           <td>
+            <i>Meet Me In St. Louis</i>
+          </td>
+          <td>Have Yourself a Merry Little Christmas</td>
+          <td>
             <i>Prologue: Into the Woods</i>
           </td>
           <td>Into the Woods</td>
-          <td>Meet Me In St. Louis</td>
-          <td>Have Yourself a Merry Little Christmas</td>
-          <td>Cursing vs. blessing</td>
+          <td>Blessing vs. cursing</td>
         </tr>
       </StyledTable>
     </>

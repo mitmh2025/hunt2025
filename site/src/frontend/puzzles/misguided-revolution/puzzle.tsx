@@ -128,7 +128,7 @@ const LISTS_2: [string, string, string][][] = [
       "Iron red uniforms",
     ],
     [
-      "Get things under control",
+      "Get Things under control",
       "Paint stripes on headgear",
       "Balance fishbowl on umbrella",
     ],
@@ -263,7 +263,13 @@ const Puzzle = (): JSX.Element => {
                 {sublist.map((item, k) => (
                   <li key={`item-${i}-${j}-${k}`}>
                     <Checkbox />
-                    {item}
+                    {item === "Refill the O2H bottles" ? (
+                      <span>
+                        Refill the O<sub>2</sub>H bottles
+                      </span>
+                    ) : (
+                      item
+                    )}
                   </li>
                 ))}
               </StyledUl>

@@ -231,7 +231,7 @@ const UNIVERSAL_DATA: ParkDatum[] = [
       {
         name: "The Cat in the Hat",
         clues: [
-          "Get things under control",
+          "Get Things under control",
           "Paint stripes on headgear",
           "Balance fishbowl on umbrella",
         ],
@@ -457,7 +457,16 @@ const Solution = (): JSX.Element => {
               <td>
                 <ul>
                   {clues.map((clue, j) => (
-                    <li key={`magic-kingdom-row-${i}-clue-${j}`}>{clue}</li>
+                    <li key={`magic-kingdom-row-${i}-clue-${j}`}>
+                      {" "}
+                      {clue === "Refill the O2H bottles" ? (
+                        <span>
+                          Refill the O<sub>2</sub>H bottles
+                        </span>
+                      ) : (
+                        clue
+                      )}
+                    </li>
                   ))}
                 </ul>
               </td>
