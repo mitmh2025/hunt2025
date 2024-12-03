@@ -118,10 +118,10 @@ const Solution = (): JSX.Element => {
           <td>
             I added some rambutan to the recipe but I don’t know if I’d do that
             again, it stained the pan I was cooking in. I took out the eggplant
-            and added celery instead. It sort of follows that it didn’t work
-            well, although I guess my cat walking over the top and leaving
-            footprints while it was cooling also probably didn’t help. 1 out of
-            6.
+            and added celery instead, and replaced the salt with sugar because
+            it looks the same. It sort of follows that it didn’t work well,
+            although I guess my cat walking over the top and leaving footprints
+            while it was cooling also probably didn’t help. 1 out of 6.
           </td>
           <td>steak</td>
           <td>streak</td>
