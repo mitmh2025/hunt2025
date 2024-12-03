@@ -20,6 +20,7 @@ import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
 import SingLikeACanary from "./heavenly-cell";
+import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
@@ -111,6 +112,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 
   // Paper Trail
+  a_weathered_note: AWeatheredNote,
   chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
   the_eras_puzzle: TheErasPuzzle,
