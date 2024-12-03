@@ -1,6 +1,6 @@
 import React from "react";
 import { styled, createGlobalStyle } from "styled-components";
-import Caveat from "./assets/Caveat-Regular.ttf";
+import Caveat from "../../assets/Caveat-Regular.ttf";
 
 const Fonts = createGlobalStyle`
   @font-face {
