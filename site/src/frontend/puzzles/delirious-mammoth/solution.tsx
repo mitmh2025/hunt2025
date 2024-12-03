@@ -203,9 +203,9 @@ const Solution = (): JSX.Element => {
           </td>
           <td>Have Yourself a Merry Little Christmas</td>
           <td>
-            <i>Prologue: Into the Woods</i>
+            <i>Into the Woods</i>
           </td>
-          <td>Into the Woods</td>
+          <td>Prologue: Into the Woods</td>
           <td>Blessing vs. cursing</td>
         </tr>
       </StyledTable>
