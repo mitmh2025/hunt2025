@@ -165,7 +165,8 @@ export default function RegistrationHome({
                   live Kickoff event at 12:00 PM on Friday, January 17th
                 </strong>
                 . Kickoff will <strong>not</strong> be in Kresge Auditorium this
-                year due to construction. Puzzles will be released at 1:00 PM.
+                year due to planned construction. Puzzles will be released at
+                1:00 PM.
               </p>
               <p>
                 Hunt Headquarters will remain open through the evening of
@@ -186,10 +187,10 @@ export default function RegistrationHome({
             <div className="answer">
               <p>
                 Kickoff will <strong>not</strong> be in Kresge Auditorium this
-                year due to construction. There will be 3 simultaneous live
-                kickoff events in 10-250, 34-101, and 45-230. Teams can go to
-                any location to receive equivalent kickoff experiences, and we
-                will also be live-streaming kickoff. The combined capacity of
+                year due to planned construction. There will be 3 simultaneous
+                live kickoff events in 10-250, 34-101, and 45-230. Teams can go
+                to any location to receive equivalent kickoff experiences, and
+                we will also be live-streaming kickoff. The combined capacity of
                 these rooms is somewhat less than that of Kresge; for those who
                 enjoy experiencing kickoff in person, we will do our best to
                 support load-balancing the 3 locations. If you would like to
