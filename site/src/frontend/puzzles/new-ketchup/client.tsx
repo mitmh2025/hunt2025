@@ -2,16 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { Button } from "../../components/StyledUI";
 import { createRoot } from "react-dom/client";
-import { FirstPerson, Person, PUZZLE_ANSWER, PuzzleStatus } from "./data";
+import {
+  Agent,
+  FirstPerson,
+  getNameSpan,
+  Person,
+  PUZZLE_ANSWER,
+  PuzzleStatus,
+} from "./data";
 
 const DialogBoxWrapper = styled.div`
   position: relative;
-  height: 20rem;
+  height: 30rem;
 `;
 
 const DialogBox = styled.div`
   overflow-y: scroll;
-  height: 20rem;
+  height: 30rem;
   padding: 0.25rem 1rem;
   padding-bottom: 3.5rem;
   background-color: var(--black);
@@ -21,7 +28,15 @@ const DialogBox = styled.div`
 
   .name {
     color: var(--gold-500);
-    padding-right: 1rem;
+    padding-right: 0.5rem;
+  }
+
+  .you .name {
+    color: var(--teal-200);
+  }
+
+  hr {
+    margin-bottom: 1rem;
   }
 `;
 
@@ -46,7 +61,7 @@ function format(s: string): string {
 const Puzzle = () => {
   const chatEndRef = useRef<HTMLSpanElement | null>(null);
   // current state:
-  const [currentPerson, setCurrentPerson] = useState<Person>({
+  const [currentPerson, setCurrentPerson] = useState<Person | Agent>({
     ...FirstPerson,
   });
   const [teamName, setTeamName] = useState<string>("Death and Mayhem");
@@ -68,29 +83,24 @@ const Puzzle = () => {
       const name = currentPerson.getName(puzzleStatus);
       const intro = currentPerson.getIntro(name);
       setLog(intro);
-      updateCaseNumber();
     }
   });
 
-  const updateCaseNumber = () => {
+  useEffect(() => {
     const nextLetter =
       PUZZLE_ANSWER.split("")[puzzleStatus.lettersCollected.length];
     const teamSlice = format(teamName).slice(0, 9);
     console.log(puzzleStatus);
-    console.log(
-      nextLetter,
-      teamSlice,
-      `${puzzleStatus.lettersCollected}${nextLetter}`,
-    );
+    console.log(nextLetter, teamSlice);
     if (nextLetter) {
       const i = teamSlice.split("").indexOf(nextLetter);
-      console.log("i", i);
+      console.log("i", format(teamName), teamSlice.split(""), i);
       if (i !== -1) {
         console.log("wtf");
         setCaseNumber((n) => `${n}${i + 1}`);
         setPuzzleStatus((s) => ({
           ...s,
-          lettersCollected: `${s.lettersCollected}${nextLetter}`,
+          lettersCollected: format(`${s.lettersCollected}${nextLetter}`),
         }));
       } else {
         setCaseNumber((n) => `${n}0`);
@@ -98,38 +108,48 @@ const Puzzle = () => {
     } else {
       setCaseNumber((n) => `${n}0`);
     }
+  }, [nameLog]);
+
+  const devHandleTalk = () => {
+    setTeamName(currentPerson.validAnswers[0] || "");
+    handleTalk();
   };
 
   const handleTalk = () => {
-    // wrong or right, we collect the name if it's new and see if we get answer stuff out of it
+    // first we say hello
+    setLog((l) => `${l}<p class="you">${getNameSpan("You")}Hello.</p>`);
+    // wrong or right, we collect the name if it's new and so we can see if we get answer stuff out of it
     if (nameLog.indexOf(format(teamName)) === -1) {
       setNameLog((names) => [...names, format(teamName)]);
-      updateCaseNumber();
     }
-
-    const pointer = currentPerson.getPointer(puzzleStatus);
-    const name = currentPerson.getName(puzzleStatus);
-    const newPuzzleStatus = {
-      ...puzzleStatus,
-    };
     // then we see if it's correct for the current person
     // and update the dialog log accordingly
+    const pointer = currentPerson.getPointer(puzzleStatus);
+    const name = currentPerson.getName(puzzleStatus);
+    let newPuzzleStatus = {
+      ...puzzleStatus,
+    };
     if (currentPerson.validAnswers.indexOf(format(teamName)) !== -1) {
       // add acquired clue letter
-      newPuzzleStatus.clueLettersCollected = `${newPuzzleStatus.clueLettersCollected}${name.slice(0, 1)}`;
-      setPuzzleStatus(() => newPuzzleStatus);
+      setPuzzleStatus((s: PuzzleStatus): PuzzleStatus => {
+        newPuzzleStatus = {
+          ...s,
+          clueLettersCollected: `${s.clueLettersCollected}${name.slice(0, 1)}`,
+        };
+        return newPuzzleStatus;
+      });
       // add the success dialog
       setLog(
         (l) =>
-          `${l}<br>${currentPerson.getReplySuccessful(name)}<br>${pointer.getDialog(name)}`,
+          `${l}${currentPerson.getReplySuccessful(name)}${pointer.getDialog(name)}<hr />`,
       );
     } else if (
       currentPerson.almostAnswers &&
       currentPerson.almostAnswers?.indexOf(format(teamName)) !== -1
     ) {
-      setLog((l) => `${l}<br><i>Not quite...</i>`);
+      setLog((l) => `${l}<p><i>Not quite...</i></p>`);
     } else {
-      setLog((l) => `${l}<br>${currentPerson.getReplyUnsuccessful(name)}`);
+      setLog((l) => `${l}${currentPerson.getReplyUnsuccessful(name)}`);
     }
     // move to the next person
     if (
@@ -137,11 +157,17 @@ const Puzzle = () => {
       pointer &&
       pointer.nextPerson
     ) {
-      setCurrentPerson(pointer.nextPerson);
-      setLog(
-        (l) =>
-          `${l}<br><br>${(pointer.nextPerson as Person).getIntro((pointer.nextPerson as Person).getName(newPuzzleStatus))}`,
-      );
+      if (pointer.nextPerson) {
+        setCurrentPerson(pointer.nextPerson);
+        console.log("about to intro, status: ", newPuzzleStatus);
+        setLog((l) => {
+          if (pointer.nextPerson?.getName() === "Agent") {
+            return `${l}${(pointer.nextPerson as Agent).getIntro((pointer.nextPerson as Agent).getName(newPuzzleStatus), caseNumber, nameLog)}`;
+          } else {
+            return `${l}${(pointer.nextPerson as Person).getIntro((pointer.nextPerson as Person).getName(newPuzzleStatus))}`;
+          }
+        });
+      }
     }
   };
 
@@ -160,11 +186,12 @@ const Puzzle = () => {
       </p>
       <DialogBoxWrapper>
         <DialogBox>
-          <p dangerouslySetInnerHTML={{ __html: log }} />
+          <div dangerouslySetInnerHTML={{ __html: log }} />
           <span ref={chatEndRef} />
         </DialogBox>
         <Bottom>
           <Button onClick={handleTalk}>Talk</Button>
+          <Button onClick={devHandleTalk}>Devmode Talk</Button>
         </Bottom>
       </DialogBoxWrapper>
 
