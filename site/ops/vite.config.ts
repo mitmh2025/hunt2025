@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   assetsInclude: ["**/*.xlsx", "**/*.stl", "**/*.3mf"],
   build: {
-    outDir: "../dist/ops-static",
+    outDir: "../dist-ops/static",
   },
   server: {
     port: 3003,

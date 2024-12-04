@@ -4,16 +4,15 @@
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
     "paths": {
       "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
     },
 
     "types": [
-      "node",
       "react/experimental",
-      "react-dom/experimental",
-      "@rspack/core/module"
-    ]
+      "react-dom/experimental"
+    ],
   },
-  "include": ["./src/**/*", "vite.config.ts", "../types/**/*"]
+  "include": ["./src/**/*", "./server/**/*", "vite.config.ts", "../types/**/*"]
 }
