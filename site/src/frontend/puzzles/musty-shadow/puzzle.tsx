@@ -34,6 +34,7 @@ export const FlexWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: monospace;
+  margin-bottom: 1em;
 `;
 
 const Blanks = styled.table`
@@ -43,6 +44,20 @@ const Blanks = styled.table`
 // This seemed an appropriately thematic name
 const Red = styled.td`
   background-color: red;
+`;
+
+const ImageWrapper = styled.div`
+  margin-bottom: 2em;
+`;
+
+const StyledImage = styled.img`
+  margin-bottom: 1em;
+  width: 200px;
+`;
+
+const ScaledImage = styled.img`
+  margin-bottom: 4em;
+  transform: scale(0.5);
 `;
 
 const BLANKS: { characters: string; redIndex: number }[] = [
@@ -101,54 +116,79 @@ const Puzzle = (): JSX.Element => {
         “We’re in our puzzle hunting era! (MIT’s Version)”
       </p>
       <hr />
-      <LinkedImage
-        src={image1}
-        alt="Eleven squares, each a different color, in a row. From left to right, colors are: teal, yellow, purple, red, light blue, black, pimk, gray, brown, dark blue, and off-white."
-      />
-      <LinkedImage
-        src={image2}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a soap emoji, and its rightmost node contains half of a piano emoji.`}
-      />
-      <LinkedImage
-        src={image3}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a sparkle emoji and a plane emoji, and its rightmost node contains a piano emoji.`}
-      />
-      <LinkedImage
-        src={image4}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a clock emoji, a confetti ball emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
-      />
-      <LinkedImage
-        src={image5}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains two wave emoji and a baby emoji, and its rightmost node contains half of a guitar emoji.`}
-      />
-      <LinkedImage
-        src={image6}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a one emoji, a four emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
-      />
-      <LinkedImage
-        src={image7}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a star emoji and a bulb emoji, and its rightmost node contains half of a piano emoji.`}
-      />
-      <LinkedImage
-        src={image8}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a purple square emoji and a cloud emoji, and its rightmost node contains a guitar emoij.`}
-      />
-      <LinkedImage
-        src={image9}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains two crying emoji and a guitar emoji, and its rightmost node contains half of a guitar emoji.`}
-      />
-      <LinkedImage
-        src={image10}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a V sign emoji, and its rightmost node contains half of a guitar emoji.`}
-      />
-      <LinkedImage
-        src={image11}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a princess emoji, a Statue of Liberty emoji, a plus emoji, a broken heart emji, and a prince emoji, and its rightmost node contains a piano emoji.`}
-      />
-      <LinkedImage
-        src={image12}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a first place medal emoji and a dash emoji, and the rightmost node contains a piano emoji.`}
-      />
+      <ImageWrapper>
+        <LinkedImage
+          src={image1}
+          alt="Eleven squares, each a different color, in a row. From left to right, colors are: teal, yellow, purple, red, light blue, black, pimk, gray, brown, dark blue, and off-white."
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image2}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a soap emoji, and its rightmost node contains half of a piano emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image3}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a sparkle emoji and a plane emoji, and its rightmost node contains a piano emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image4}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a clock emoji, a confetti ball emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image5}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains two wave emoji and a baby emoji, and its rightmost node contains half of a guitar emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image6}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a one emoji, a four emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image7}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a star emoji and a bulb emoji, and its rightmost node contains half of a piano emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image8}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a purple square emoji and a cloud emoji, and its rightmost node contains a guitar emoij.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        {" "}
+        <LinkedImage
+          src={image9}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains two crying emoji and a guitar emoji, and its rightmost node contains half of a guitar emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image10}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a V sign emoji, and its rightmost node contains half of a guitar emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image11}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a princess emoji, a Statue of Liberty emoji, a plus emoji, a broken heart emji, and a prince emoji, and its rightmost node contains a piano emoji.`}
+        />
+      </ImageWrapper>
+      <ImageWrapper>
+        <LinkedImage
+          src={image12}
+          alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a first place medal emoji and a dash emoji, and the rightmost node contains a piano emoji.`}
+        />
+      </ImageWrapper>
       <FlexWrapper>
         {BLANKS.map(({ characters, redIndex }, i) => (
           <Blanks key={`row-${i}`}>
@@ -170,26 +210,32 @@ const Puzzle = (): JSX.Element => {
       </FlexWrapper>
       <hr />
       <FlexWrapper>
-        <img src={image13} alt="A sleeveless orange dress" />
-        <img src={image14} alt="Two musical notes" />
-        <img
+        <StyledImage src={image13} alt="A sleeveless orange dress" />
+        <ScaledImage src={image14} alt="Two musical notes" />
+        <StyledImage
           src={image15}
           alt="A burgundy dress with off-the-shoulder sleeves"
         />
-        <img src={image14} alt="Two musical notes" />
-        <img src={image16} alt="A sleeveless royal blue dress" />
-        <img src={image17} alt="One musical note" />
-        <img src={image18} alt="A yellow dress with off-the-shoulder sleeves" />
-        <img src={image19} alt="Eleven musical notes" />
-        <img
+        <ScaledImage src={image14} alt="Two musical notes" />
+        <StyledImage src={image16} alt="A sleeveless royal blue dress" />
+        <ScaledImage src={image17} alt="One musical note" />
+        <StyledImage
+          src={image18}
+          alt="A yellow dress with off-the-shoulder sleeves"
+        />
+        <ScaledImage src={image19} alt="Eleven musical notes" />
+        <StyledImage
           src={image20}
           alt="A navy blue dress with off-the-shoulder sleeves"
         />
-        <img src={image14} alt="Two musical notes" />
-        <img src={image21} alt="A green dress with off-the-shoulder sleeves" />
-        <img src={image22} alt="Six musical notes" />
-        <img src={image23} alt="A sleeveless pink dress" />
-        <img src={image24} alt="Five musical notes" />
+        <ScaledImage src={image14} alt="Two musical notes" />
+        <StyledImage
+          src={image21}
+          alt="A green dress with off-the-shoulder sleeves"
+        />
+        <ScaledImage src={image22} alt="Six musical notes" />
+        <StyledImage src={image23} alt="A sleeveless pink dress" />
+        <ScaledImage src={image24} alt="Five musical notes" />
       </FlexWrapper>
     </>
   );
