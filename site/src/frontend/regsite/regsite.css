@@ -334,3 +334,17 @@ input:readonly {
 *:focus-visible {
   outline: 0.25rem double var(--gold-500);
 }
+
+@media (max-width: 479px) {
+  h1 {
+    font-size: 9vw;
+  }
+
+  h4 {
+    font-size: 5vw;
+  }
+
+  #registration-button .button {
+    font-size: 9vw;
+  }
+}
