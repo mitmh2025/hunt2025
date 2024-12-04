@@ -267,7 +267,7 @@ const HUNT: Hunt = {
         { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "follow_the_rules" },
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
         { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
-        { id: "ptp04", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "ptp04", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "the_eras_puzzle" },
         { id: "ptp05", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "ptp06", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
         { id: "ptp07", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },

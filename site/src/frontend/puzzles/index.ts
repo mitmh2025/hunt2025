@@ -31,6 +31,7 @@ import ShellCorporationSix from "./mild-octopus";
 import WhyKantWeBeFriendsToo from "./milky-swing";
 import MysteryOs from "./minty-play";
 import AWalkInThePark from "./misguided-revolution";
+import TheErasPuzzle from "./musty-shadow";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
@@ -110,6 +111,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // Paper Trail
   chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
+  the_eras_puzzle: TheErasPuzzle,
   youre_playing_it_wrong: YourePlayingItWrong,
 
   shell_corporation_1: ShellCorporationOne,
