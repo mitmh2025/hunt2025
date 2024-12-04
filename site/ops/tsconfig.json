@@ -13,7 +13,7 @@
       "react/experimental",
       "react-dom/experimental",
       "@rspack/core/module"
-    ],
+    ]
   },
   "include": ["./src/**/*", "vite.config.ts", "../types/**/*"]
 }
