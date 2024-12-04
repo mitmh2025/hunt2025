@@ -274,7 +274,7 @@ export default function createConfigs(_env, argv) {
   };
 
   const imageRule = {
-    test: /\.(jpg|png|svg)$/,
+    test: /\.(jpg|png|svg|ico)$/,
     type: "asset/resource",
   };
 

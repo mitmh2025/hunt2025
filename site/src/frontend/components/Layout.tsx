@@ -1,5 +1,8 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import type { TeamHuntState } from "../../../lib/api/client.js";
+import AppleTouchIcon from "../../assets/apple-touch-icon.png";
+import FaviconIco from "../../assets/favicon.ico";
+import Favicon from "../../assets/favicon.svg";
 import { lookupScripts, lookupStylesheets } from "../server/assets";
 
 function dedupedOrderedItems(scripts: string[]): string[] {
@@ -21,17 +24,20 @@ export const BaseLayout = ({
   stylesheets,
   styleElements,
   title,
+  headElements,
 }: {
   innerHTML: string;
   scripts?: string[];
   stylesheets?: string[];
   styleElements?: React.JSX.Element[];
+  headElements?: ReactNode[];
   title?: string;
 }) => {
   return (
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
+        {headElements}
         {dedupedOrderedItems(stylesheets ?? []).map((s) => (
           <link key={s} rel="stylesheet" href={s} />
         ))}
@@ -76,12 +82,25 @@ const Layout = ({
 
   const allStyles = [...lookupStylesheets("main"), ...(stylesheets ?? [])];
 
+  const headElements: ReactNode[] = [
+    <link key="favicon-ico" rel="icon" href={FaviconIco} sizes="48x48" />,
+    <link
+      key="favicon-svg"
+      rel="icon"
+      href={Favicon}
+      sizes="any"
+      type="image/svg+xml"
+    />,
+    <link key="favicon-apple" rel="apple-touch-icon" href={AppleTouchIcon} />,
+  ];
+
   return (
     <BaseLayout
       innerHTML={innerHTML}
       scripts={allScripts}
       stylesheets={allStyles}
       styleElements={styleElements}
+      headElements={headElements}
       title={title}
     />
   );
