@@ -1,0 +1,16 @@
+{
+  "extends": "../../shared-tsconfig.json",
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+
+    "types": [
+      "node"
+    ],
+
+    "outDir": "../../dist-ops/server",
+    "noEmit": false
+  },
+  "include": ["main.ts"]
+}
