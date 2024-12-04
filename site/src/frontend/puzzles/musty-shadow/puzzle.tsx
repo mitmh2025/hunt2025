@@ -115,7 +115,7 @@ const Puzzle = (): JSX.Element => {
       />
       <LinkedImage
         src={image4}
-        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a clock emoji, a be emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
+        alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a clock emoji, a confetti ball emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
       />
       <LinkedImage
         src={image5}

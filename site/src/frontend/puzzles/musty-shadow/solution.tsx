@@ -32,13 +32,13 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   th {
     background-color: #65413a;
-    border: 1px solid #65413a;
     color: var(--true-white);
   }
   th,
   td {
     padding: 1px 8px;
     text-align: center;
+    border: 1px solid #65413a;
   }
 `;
 
