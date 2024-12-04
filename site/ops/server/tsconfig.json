@@ -5,9 +5,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
 
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
 
     "outDir": "../../dist-ops/server",
     "noEmit": false
