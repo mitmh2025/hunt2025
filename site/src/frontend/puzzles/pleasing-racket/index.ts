@@ -84,7 +84,13 @@ const puzzle: PuzzleDefinition = {
         "Using the number traced out by the series’ path, index into the first name of the corresponding Valentine character from that series. Order the extracted letters by the color order in which the blank hearts at the bottom of the page appear.",
     },
   ],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["MAY YOU LOSE ME", "MAY YOU LOVE ME", "SAY YOU LOSE ME"],
+      reply:
+        "Almost there! Make sure to use the name each character is most commonly known by.",
+    },
+  ],
 };
 
 export default puzzle;
