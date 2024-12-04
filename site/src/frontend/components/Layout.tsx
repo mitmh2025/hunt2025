@@ -39,6 +39,7 @@ export const BaseLayout = ({
         {process.env.NODE_ENV === "development" && (
           <script src="http://localhost:35729/livereload.js?snipver=1" />
         )}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
         <div id="root" dangerouslySetInnerHTML={{ __html: innerHTML }} />
