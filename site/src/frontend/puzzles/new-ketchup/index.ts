@@ -1,5 +1,5 @@
 import { type PuzzleDefinition } from "../types";
-import Puzzle from "./client";
+import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
