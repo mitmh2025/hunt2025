@@ -11,8 +11,9 @@
 
     "types": [
       "react/experimental",
-      "react-dom/experimental"
+      "react-dom/experimental",
+      "@rspack/core/module"
     ],
   },
-  "include": ["./src/**/*", "./server/**/*", "vite.config.ts", "../types/**/*"]
+  "include": ["./src/**/*", "vite.config.ts", "../types/**/*"]
 }
