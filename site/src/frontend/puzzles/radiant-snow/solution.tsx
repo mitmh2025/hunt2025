@@ -586,7 +586,7 @@ const Solution = (): JSX.Element => {
         there is also a 6 in row 7 column 8 or 9.
       </p>
       <p>
-        There is a black cell in R7C5 or R7C5; therefore R8C6 contains a digit,
+        There is a black cell in R7C5 or R8C5; therefore R8C6 contains a digit,
         and necessarily R6C6 is black, while R7-8C6 are 1 and 4 in either order.
         It then follows that R9C5 is 5 (it is at most 5 due to the column 5
         clue, but at least 4 by the row 9 clue, and can’t be 4), and that R8C5

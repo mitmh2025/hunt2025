@@ -228,7 +228,7 @@ const Solution = (): JSX.Element => {
         <div>
           Robbie will be here in a second—he’s texting with a friend outside.
           Sometimes I worry that he’ll be staring at that screen while he wa
-          <Highlighted>STES AW</Highlighted>ay to nothing.
+          <Highlighted>STES AW</Highlighted>ay to nothing.{" "}
           <Italic>(His chair suddenly makes a loud creaking noise.)</Italic> I
           think this chair is broken, I’ll take it to the manager.
         </div>
