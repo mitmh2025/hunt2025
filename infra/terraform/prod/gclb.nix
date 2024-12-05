@@ -51,6 +51,7 @@
       group = lib.tfRef "data.google_compute_network_endpoint_group.prod-api.self_link";
     }];
     health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
+    log_config.enable = true;
   };
   data.google_compute_network_endpoint_group.prod-regsite = {
     depends_on = ["kubernetes_service_v1.regsite"];
@@ -68,6 +69,7 @@
       group = lib.tfRef "data.google_compute_network_endpoint_group.prod-regsite.self_link";
     }];
     health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
+    log_config.enable = true;
   };
   gcp.loadBalancer.mitmh2025 = {
     certificateMapName = "mitmh2025";
