@@ -11,7 +11,10 @@ const LOG_FORMAT = LOG_FORMAT_DEBUG; //"tiny";
 
 export const logMiddleware = morgan(LOG_FORMAT);
 
-const environment = process.env.NODE_ENV ?? "development";
+const environment = process.env.NODE_ENV;
+if (environment !== "development" && environment !== "production") {
+  throw new Error("$NODE_ENV not set to development or production");
+}
 
 function buildApp({
   jwtSecret,
