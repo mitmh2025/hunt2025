@@ -34,7 +34,8 @@ export const FlexWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: monospace;
-  margin-bottom: 1em;
+  margin-top: 2em;
+  margin-bottom: 2em;
 `;
 
 const Blanks = styled.table`
@@ -50,9 +51,17 @@ const ImageWrapper = styled.div`
   margin-bottom: 2em;
 `;
 
-const StyledImage = styled.img`
+const SizedLinkedImage = styled(LinkedImage)<{ $width: number }>`
+  display: inline-flex;
+  justify-content: space-around;
+  img {
+    width: ${({ $width }) => $width}%;
+  }
+`;
+
+const StyledImage = styled.img<{ $width: number }>`
   margin-bottom: 1em;
-  width: 200px;
+  width: ${({ $width }) => $width}px;
 `;
 
 const ScaledImage = styled.img`
@@ -123,68 +132,78 @@ const Puzzle = (): JSX.Element => {
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={66.7}
           src={image2}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a soap emoji, and its rightmost node contains half of a piano emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={62.9}
           src={image3}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a sparkle emoji and a plane emoji, and its rightmost node contains a piano emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={78.7}
           src={image4}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a clock emoji, a confetti ball emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={75.2}
           src={image5}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains two wave emoji and a baby emoji, and its rightmost node contains half of a guitar emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={90.6}
           src={image6}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a one emoji, a four emoji, and a calendar emoji, and its rightmost node contains a guitar emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={84.7}
           src={image7}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a star emoji and a bulb emoji, and its rightmost node contains half of a piano emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={66.5}
           src={image8}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a purple square emoji and a cloud emoji, and its rightmost node contains a guitar emoij.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        {" "}
-        <LinkedImage
+        <SizedLinkedImage
+          $width={72.8}
           src={image9}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains two crying emoji and a guitar emoji, and its rightmost node contains half of a guitar emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={71.9}
           src={image10}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a V sign emoji, and its rightmost node contains half of a guitar emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={82.1}
           src={image11}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a princess emoji, a Statue of Liberty emoji, a plus emoji, a broken heart emji, and a prince emoji, and its rightmost node contains a piano emoji.`}
         />
       </ImageWrapper>
       <ImageWrapper>
-        <LinkedImage
+        <SizedLinkedImage
+          $width={66.4}
           src={image12}
           alt={`${GRAPH_ALT_TEXT} The graph’s leftmost node contains a first place medal emoji and a dash emoji, and the rightmost node contains a piano emoji.`}
         />
@@ -210,31 +229,43 @@ const Puzzle = (): JSX.Element => {
       </FlexWrapper>
       <hr />
       <FlexWrapper>
-        <StyledImage src={image13} alt="A sleeveless orange dress" />
+        <StyledImage
+          $width={184}
+          src={image13}
+          alt="A sleeveless orange dress"
+        />
         <ScaledImage src={image14} alt="Two musical notes" />
         <StyledImage
+          $width={130}
           src={image15}
           alt="A burgundy dress with off-the-shoulder sleeves"
         />
         <ScaledImage src={image14} alt="Two musical notes" />
-        <StyledImage src={image16} alt="A sleeveless royal blue dress" />
+        <StyledImage
+          $width={184}
+          src={image16}
+          alt="A sleeveless royal blue dress"
+        />
         <ScaledImage src={image17} alt="One musical note" />
         <StyledImage
+          $width={130}
           src={image18}
           alt="A yellow dress with off-the-shoulder sleeves"
         />
         <ScaledImage src={image19} alt="Eleven musical notes" />
         <StyledImage
+          $width={130}
           src={image20}
           alt="A navy blue dress with off-the-shoulder sleeves"
         />
         <ScaledImage src={image14} alt="Two musical notes" />
         <StyledImage
+          $width={130}
           src={image21}
           alt="A green dress with off-the-shoulder sleeves"
         />
         <ScaledImage src={image22} alt="Six musical notes" />
-        <StyledImage src={image23} alt="A sleeveless pink dress" />
+        <StyledImage $width={184} src={image23} alt="A sleeveless pink dress" />
         <ScaledImage src={image24} alt="Five musical notes" />
       </FlexWrapper>
     </>
