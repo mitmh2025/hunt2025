@@ -115,7 +115,7 @@ For development:
 - `export JWT_SECRET=$(python3 -c "import os; import codecs; print(codecs.encode(os.urandom(16), 'hex').decode('utf-8'))")` so you get a fixed JWT secret
 - Run the main site as above
 - Run the ops site wth `npm run ops:start` (you must have the same `JWT_SECRET` for both the main site and the ops site)
-- Now, you should have the ops site dev server running at http://localhost:3002.
+- Now, you should have the ops site dev server running at http://localhost:3003.
 
 For production:
 
