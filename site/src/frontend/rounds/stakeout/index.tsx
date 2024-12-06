@@ -85,6 +85,7 @@ function stakeoutOverlay(teamState: TeamHuntState): StakeoutState["overlay"] {
 
 export function stakeoutState(teamState: TeamHuntState): StakeoutState {
   return {
+    epoch: teamState.epoch,
     photos: Object.entries(DEVELOPED_PHOTO_IMAGES).map((record) => {
       const slot = record[0] as StakeoutSlot;
       const solvedAsset = record[1];

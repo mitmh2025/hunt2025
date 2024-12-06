@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import globalDatasetManager from "../../client/DatasetManager";
+import useDataset from "../../client/useDataset";
 import StakeoutBody from "./StakeoutBody";
 import { type StakeoutState } from "./types";
 
@@ -12,30 +12,8 @@ const StakeoutManager = ({
   initialState: StakeoutState;
   initialTeamState: TeamHuntState;
 }) => {
-  const [state, setState] = useState<StakeoutState>(initialState);
-  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
-
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "stakeout",
-      undefined,
-      (value: object) => {
-        setState(value as StakeoutState);
-      },
-    );
-    return stop;
-  }, []);
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "team_state",
-      undefined,
-      (value: object) => {
-        setTeamState(value as TeamHuntState);
-      },
-    );
-    return stop;
-  }, []);
-
+  const state = useDataset("stakeout", undefined, initialState);
+  const teamState = useDataset("team_state", undefined, initialTeamState);
   return <StakeoutBody state={state} teamState={teamState} />;
 };
 

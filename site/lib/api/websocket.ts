@@ -32,6 +32,24 @@ export const DatasetParamsSchema = z
   .optional();
 export type DatasetParams = z.infer<typeof DatasetParamsSchema>;
 
+export const ObjectWithIdSchema = z
+  .object({
+    id: z.number(),
+  })
+  .passthrough();
+export type ObjectWithId = z.infer<typeof ObjectWithIdSchema>;
+export const ObjectWithEpochSchema = z
+  .object({
+    epoch: z.number(),
+  })
+  .passthrough();
+export type ObjectWithEpoch = z.infer<typeof ObjectWithEpochSchema>;
+export const DatasetValueSchema = z.union([
+  ObjectWithEpochSchema,
+  z.array(ObjectWithIdSchema),
+]);
+export type DatasetValue = z.infer<typeof DatasetValueSchema>;
+
 export const MessageFromClientSchema = z.discriminatedUnion("method", [
   // Request future updates push down the associated dataset.
   RPCBase.merge(
@@ -84,6 +102,7 @@ export type MessageToWorker =
       subId: string;
       dataset: Dataset;
       params: DatasetParams;
+      initialValue: DatasetValue;
     }
   | {
       type: "unsub";

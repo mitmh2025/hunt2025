@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type TeamInfo } from "../../../lib/api/client";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import globalDatasetManager from "./DatasetManager";
+import useDataset from "./useDataset";
 
 const NavBarManager = ({
   initialTeamInfo,
@@ -11,35 +12,14 @@ const NavBarManager = ({
   initialTeamInfo: TeamInfo;
   initialState: NavBarState;
 }) => {
-  const [info, setInfo] = useState<TeamInfo>(initialTeamInfo);
-  const [state, setState] = useState<NavBarState>(initialState);
-
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "team_info",
-      undefined,
-      (value: object) => {
-        setInfo(value as TeamInfo);
-      },
-    );
-    return stop;
-  }, []);
-
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "navbar",
-      undefined,
-      (value: object) => {
-        setState(value as NavBarState);
-      },
-    );
-    return stop;
-  }, []);
+  const info = useDataset("team_info", undefined, initialTeamInfo);
+  const state = useDataset("navbar", undefined, initialState);
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(
       "activity_log",
       undefined,
+      [],
       (value: object) => {
         // TODO: append each value to a log, and pick which (if any) to display as notifications
         console.log("activity log", value);

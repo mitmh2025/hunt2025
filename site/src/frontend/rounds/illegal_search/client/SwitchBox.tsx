@@ -277,6 +277,7 @@ const SwitchBox = ({
     const stop = globalDatasetManager.watch(
       "illegal_search_painting2",
       undefined,
+      { epoch: -1 },
       (value: object) => {
         const castvalue = value as { switches?: string };
         if (castvalue.switches) {

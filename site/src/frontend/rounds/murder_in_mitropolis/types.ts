@@ -5,5 +5,6 @@ export type MurderItem = {
 };
 
 export type MurderState = {
+  epoch: number;
   items: MurderItem[];
 };

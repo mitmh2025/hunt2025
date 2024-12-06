@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import AllPuzzlesList from "../components/AllPuzzlesList";
 import { PuzzleIcon } from "../components/PuzzleLink";
-import globalDatasetManager from "./DatasetManager";
 import { type AllPuzzlesState } from "./all_puzzles_types";
+import useDataset from "./useDataset";
 
 const AllPuzzlesManager = ({
   initialState,
 }: {
   initialState: AllPuzzlesState;
 }) => {
-  const [state, setState] = useState<AllPuzzlesState>(initialState);
   const [showUnlockable, setShowUnlockable] = useState<boolean>(true);
   const [showUnlocked, setShowUnlocked] = useState<boolean>(true);
   const [showSolved, setShowSolved] = useState<boolean>(true);
@@ -25,16 +24,7 @@ const AllPuzzlesManager = ({
     setShowSolved((prevState) => !prevState);
   }, []);
 
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "all_puzzles",
-      undefined,
-      (value: object) => {
-        setState(value as AllPuzzlesState);
-      },
-    );
-    return stop;
-  }, []);
+  const state = useDataset("all_puzzles", undefined, initialState);
 
   const filteredState = useMemo(() => {
     const rounds = state.rounds.flatMap((round) => {

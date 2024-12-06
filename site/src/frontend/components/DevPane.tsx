@@ -234,18 +234,18 @@ const DevPaneContainer = styled.div`
   }
 `;
 
-const DevPane = ({ state }: { state: DevtoolsState | undefined }) => {
-  if (!state) {
+const DevPane = ({ state }: { state: DevtoolsState }) => {
+  if (!state.state) {
     return undefined;
   }
 
   return (
     <DevPaneContainer>
-      <h2 style={{ margin: 0 }}>Devtools</h2>
-      <h3 style={{ margin: 0 }}>
-        {state.currency} unlock currency - epoch {state.epoch}
+      <h2 style={{ margin: 0, padding: 0 }}>Devtools</h2>
+      <h3 style={{ margin: 0, padding: 0 }}>
+        {state.state.currency} unlock currency - epoch {state.epoch}
       </h3>
-      <RoundsSection rounds={state.rounds} />
+      <RoundsSection rounds={state.state.rounds} />
       <h3 style={{ margin: 0, borderTop: "1px solid #888" }}>Actions</h3>
       <ul style={{ margin: 0 }}>
         <li>

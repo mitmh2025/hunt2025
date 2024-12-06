@@ -218,7 +218,7 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
         </tr>
       </thead>
       <tbody>
-        {guesses.map((g) => {
+        {guesses.toReversed().map((g) => {
           return (
             <tr key={g.canonical_input}>
               <td className="answer-attempt">{g.canonical_input}</td>

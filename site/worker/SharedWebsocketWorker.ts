@@ -153,18 +153,27 @@ function notifyScriptUrlsIfNeeded() {
             notifyScriptUrlsIfNeeded();
           }
         } else if (ev.data.type === "sub") {
-          const { dataset, subId, params } = ev.data;
-          const stop = socketManager.watch(dataset, params, (value: object) => {
-            if (DEBUG) {
-              console.log("got update for sub", subId, value);
-              port.postMessage({
-                type: "debug",
-                value: `got update for sub ${subId}`,
-              });
-            }
-            const update: MessageFromWorker = { type: "update", subId, value };
-            port.postMessage(update);
-          });
+          const { dataset, subId, params, initialValue } = ev.data;
+          const stop = socketManager.watch(
+            dataset,
+            params,
+            initialValue,
+            (value: object) => {
+              if (DEBUG) {
+                console.log("got update for sub", subId, value);
+                port.postMessage({
+                  type: "debug",
+                  value: `got update for sub ${subId}`,
+                });
+              }
+              const update: MessageFromWorker = {
+                type: "update",
+                subId,
+                value,
+              };
+              port.postMessage(update);
+            },
+          );
           const watch = {
             subId,
             dataset,

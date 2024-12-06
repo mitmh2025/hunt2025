@@ -1,8 +1,11 @@
 import {
   type DatasetParams,
   type Dataset,
+  type DatasetValue,
   type MessageFromClient,
   type MessageToClient,
+  type ObjectWithId,
+  type ObjectWithEpoch,
 } from "./api/websocket";
 import { type Branded } from "./brand";
 import { genId } from "./id";
@@ -14,7 +17,7 @@ type Watcher = {
   callback: (value: object) => void;
 };
 
-function actionForDataset(dataset: Dataset) {
+export function actionForDataset(dataset: Dataset) {
   if (dataset === "activity_log" || dataset === "guess_log") {
     return "append";
   }
@@ -26,11 +29,6 @@ type DatasetKey = Branded<string, "DatasetKey">;
 function deriveDatasetKey(dataset: Dataset, params: DatasetParams): DatasetKey {
   return `${dataset}:${JSON.stringify(params)}` as DatasetKey;
 }
-
-// Used for "append"-style datasets.
-type ObjectWithId = {
-  id: number;
-};
 
 type SubscriptionState = {
   // Key of this subscription state, along which we dedupe subscriptions.
@@ -58,8 +56,8 @@ type SubscriptionState = {
   //   human should probably figure out why
   state: "awaiting-socket" | "requesting" | "active" | "stopping" | "error";
 
-  // The last-known value of the subscription as provided by the server.
-  lastValue: object | ObjectWithId[] | undefined;
+  // The last-known value of the subscription as provided by the server or the client.
+  lastValue: DatasetValue;
 
   // A list of watchers of the data for this dataset.
   watchers: Watcher[];
@@ -216,7 +214,16 @@ export class SocketManager {
                   }
                   break;
                 case "replace": {
-                  sub.lastValue = value as object;
+                  const valueWithEpoch = value as ObjectWithEpoch;
+                  if (
+                    (sub.lastValue as ObjectWithEpoch).epoch <
+                    valueWithEpoch.epoch
+                  ) {
+                    sub.lastValue = valueWithEpoch;
+                  } else {
+                    // Not newer than last-known, don't dispatch.
+                    shouldDispatch = false;
+                  }
                 }
               }
 
@@ -370,12 +377,24 @@ export class SocketManager {
     this.sock.send(JSON.stringify(request));
   }
 
-  addWatcher(dataset: Dataset, params: DatasetParams, watcher: Watcher) {
+  addWatcher(
+    dataset: Dataset,
+    params: DatasetParams,
+    initialValue: DatasetValue,
+    watcher: Watcher,
+  ) {
     const datasetKey = deriveDatasetKey(dataset, params);
     let sub = this.subsByDataset.get(datasetKey);
     if (!sub || sub.state === "stopping" || sub.state === "error") {
       const subId = genId();
       const action = actionForDataset(dataset);
+      // For append-type data sources, clone initialValue so that as we append to sub.lastValue
+      // in-place, we're not modifying the initial value passed in in a way that might be surprising
+      // to the caller.
+      const lastValue =
+        action === "append"
+          ? [...(initialValue as ObjectWithId[])]
+          : initialValue;
       sub = {
         datasetKey,
         dataset,
@@ -383,29 +402,86 @@ export class SocketManager {
         action,
         subId,
         state: "awaiting-socket",
-        lastValue: action === "append" ? [] : undefined,
+        lastValue,
         watchers: [],
       };
       this.subsByDataset.set(datasetKey, sub);
       this.subsBySubId.set(subId, sub);
       this.tryDispatchPendingSubRequests();
     }
+
+    // If this client's initialValue is newer (or for append datasets: has any newer entries),
+    // update (or merge them into) sub.lastValue, and dispatch the update to all other watchers.
+    // Note that we do this *before* adding the requesting client to the list of watchers, so we
+    // don't update it with its own data.
+    //
+    // Note that this works to dispatch updates to all tabs from other tabs, even if the websocket
+    // is completely broken!
+    switch (sub.action) {
+      case "append": {
+        const initialValueArray = initialValue as ObjectWithId[];
+        const lastKnownId = (sub.lastValue as ObjectWithId[])
+          .map((entry) => entry.id)
+          .reduce((a, b) => (a > b ? a : b), -1);
+        initialValueArray.forEach((entry) => {
+          if (entry.id > lastKnownId) {
+            this.log(
+              `sub ${sub.subId} watcher initialValue entry ${entry.id} exceeds last known id ${lastKnownId}, dispatching to ${sub.watchers.length} watchers`,
+            );
+            (sub.lastValue as ObjectWithId[]).push(entry);
+            sub.watchers.forEach((w) => {
+              w.callback(entry);
+            });
+          }
+        });
+        break;
+      }
+      case "replace": {
+        const initialValueWithEpoch = initialValue as ObjectWithEpoch;
+        if (
+          initialValueWithEpoch.epoch > (sub.lastValue as ObjectWithEpoch).epoch
+        ) {
+          sub.lastValue = initialValueWithEpoch;
+          sub.watchers.forEach((w) => {
+            w.callback(sub.lastValue);
+          });
+        }
+        break;
+      }
+    }
+
+    // Now that we've updated any existing watchers with anything newly learned from our
+    // initialValue, we add this new client to the list of watchers, so we get future updates.
     sub.watchers.push(watcher);
-    // Synthesize an event (or events) to deliver the last-known value to the observer, if we know
-    // one already.  This is particularly relevant for the case where another tab already has a
-    // watch on the same dataset, because the inital update will have already been delivered by the
-    // server, and because we dedupe identical subscriptions on the client, we would otherwise not
-    // trigger this callback until state changes and the server pushes down an update.
+
+    // Synthesize an event (or events) to deliver the last-known value to this new watcher, if it
+    // differs from the initial value they passed in.  This is particularly relevant for the case
+    // where another tab already has a watch on the same dataset, because the inital update will
+    // have already been delivered by the server, and because we dedupe identical subscriptions on
+    // the client, we would otherwise not trigger this callback until state changes and the server
+    // pushes down an update.
     if (
       (sub.state === "requesting" || sub.state === "active") &&
-      sub.lastValue
+      sub.lastValue !== initialValue
     ) {
-      if (sub.action === "append") {
-        (sub.lastValue as object[]).forEach((entry) => {
-          watcher.callback(entry);
-        });
-      } /* if sub.action === "replace" */ else {
-        watcher.callback(sub.lastValue);
+      switch (sub.action) {
+        case "append": {
+          // Dispatch events for any entry with an id exceeding that provided in initialValue.
+          const initialValueArray = initialValue as ObjectWithId[];
+          const watcherLastDispatchedId = initialValueArray
+            .map((entry) => entry.id)
+            .reduce((a, b) => (a > b ? a : b), -1);
+          (sub.lastValue as ObjectWithId[]).forEach((entry) => {
+            if (entry.id > watcherLastDispatchedId) {
+              watcher.callback(entry);
+            }
+          });
+          // Now the new watcher should be caught up to what we have in `sub`.
+          break;
+        }
+        case "replace": {
+          watcher.callback(sub.lastValue);
+        }
       }
     }
   }
@@ -436,6 +512,7 @@ export class SocketManager {
   watch(
     dataset: Dataset,
     params: DatasetParams,
+    initialValue: DatasetValue,
     onUpdate: (value: object) => void,
   ): () => void {
     const watchId = genId();
@@ -451,7 +528,7 @@ export class SocketManager {
       ") => assigned watchId",
       watchId,
     );
-    this.addWatcher(dataset, params, watcher);
+    this.addWatcher(dataset, params, initialValue, watcher);
     return () => {
       this.log("stop(", watchId, ") for dataset", dataset);
       this.dropWatcher(dataset, params, watchId);

@@ -16,6 +16,7 @@ import {
   type MessageFromClient,
   type MessageToClient,
   type Dataset,
+  type ObjectWithEpoch,
   MessageFromClientSchema,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
@@ -50,7 +51,7 @@ import { allPuzzlesState } from "./routes/all_puzzles";
 type DatasetHandler =
   | {
       type: "team_state";
-      callback: (teamState: TeamHuntState) => object;
+      callback: (teamState: TeamHuntState) => ObjectWithEpoch;
     }
   | {
       type: "activity_log";
@@ -216,7 +217,7 @@ class ConnHandler {
   private observerProvider: ObserverProvider;
 
   // key: subId
-  private subs: Map<string, SubscriptionHandler<object>>;
+  private subs: Map<string, SubscriptionHandler<ObjectWithEpoch>>;
   private teamStateObserverStopHandle?: () => void;
 
   constructor({
@@ -332,9 +333,12 @@ class ConnHandler {
           // compute the new resulting value
           const newValue = sub.computeFromTeamState(teamState);
 
-          // if the result differs, generate an update message for that sub
-          const newValueJSON = JSON.stringify(newValue);
-          const oldValueJSON = JSON.stringify(sub.cachedValue);
+          const { epoch: _cachedEpoch, ...cachedLessEpoch } = sub.cachedValue;
+          const { epoch: _newEpoch, ...newValueLessEpoch } = newValue;
+
+          // if the result differs, in a field other than epoch, generate an update message for that sub
+          const newValueJSON = JSON.stringify(newValueLessEpoch);
+          const oldValueJSON = JSON.stringify(cachedLessEpoch);
           if (newValueJSON !== oldValueJSON) {
             // save the new cached value
             sub.cachedValue = newValue;
@@ -427,7 +431,7 @@ class ConnHandler {
           const handler = datasetHandler.callback;
           // compute the initial value
           const value = handler(this._lastTeamState);
-          const subHandler: SubscriptionHandler<object> = {
+          const subHandler: SubscriptionHandler<ObjectWithEpoch> = {
             type: "team_state",
             dataset,
             computeFromTeamState: handler,

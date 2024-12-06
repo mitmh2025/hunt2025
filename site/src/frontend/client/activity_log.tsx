@@ -1,38 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type ActivityLogEntry } from "../../../lib/api/client";
 import ActivityLog from "../components/ActivityLog";
-import globalDatasetManager from "./DatasetManager";
+import useAppendDataset from "./useAppendDataset";
 
 const ActivityLogManager = ({
   initialState,
 }: {
   initialState: ActivityLogEntry[];
 }) => {
-  const [state, setState] = useState<ActivityLogEntry[]>(initialState);
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "activity_log",
-      undefined,
-      (value: object) => {
-        setState((prevState: ActivityLogEntry[]) => {
-          // Append if not already known
-          if (
-            prevState.findIndex(
-              (entry) => entry.id === (value as ActivityLogEntry).id,
-            ) === -1
-          ) {
-            const newState = [...prevState, value as ActivityLogEntry];
-            console.log("log is now", newState);
-            return newState;
-          } else {
-            return prevState;
-          }
-        });
-      },
-    );
-    return stop;
-  }, []);
+  const state = useAppendDataset("activity_log", undefined, initialState);
   return <ActivityLog log={state} />;
 };
 
