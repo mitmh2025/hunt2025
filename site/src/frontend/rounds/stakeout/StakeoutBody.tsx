@@ -346,6 +346,7 @@ const StakeoutBody = ({
         slot={photo.slot}
         slug={photo.slug}
         title={photo.title}
+        desc={photo.desc}
         asset={photo.asset}
         dragging={dragging === photo.slot}
         focused={focused === photo.slot}

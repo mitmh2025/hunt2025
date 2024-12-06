@@ -44,6 +44,7 @@ export function murderState(teamState: TeamHuntState): MurderState {
     return {
       title: puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`,
       slug,
+      desc: puzzleDefinition?.initial_description,
     };
   });
 

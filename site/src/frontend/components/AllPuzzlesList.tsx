@@ -74,6 +74,7 @@ const AllPuzzlesRound = ({
                       currency={currency}
                       title={puz.title}
                       slug={puz.slug}
+                      desc={puz.desc}
                     />
                   </td>
                   <td key="answer">

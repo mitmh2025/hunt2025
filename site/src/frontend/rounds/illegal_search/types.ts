@@ -89,6 +89,7 @@ export type PostcodeResponse = {
   // The fields we expect the response from posting the postCode from a ModalWithPostcode to the backend.
   title: string;
   slug: string;
+  desc?: string;
 };
 export type ModalWithPuzzleFields = ModalBase & PostcodeResponse;
 

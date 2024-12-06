@@ -1,6 +1,7 @@
 export type PaperTrailItem = {
   title: string;
   slug: string;
+  desc?: string;
 };
 
 export type PaperTrailGroup = {
@@ -32,6 +33,7 @@ export type PaperTrailPuzzleObject = PaperTrailObjectBase & {
   slug: string;
   state: "unlockable" | "unlocked" | "solved";
   answer?: string;
+  desc?: string;
 };
 
 export type PaperTrailNotesObject = PaperTrailObjectBase & {

@@ -26,9 +26,11 @@ export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
       const title = puzzle?.title ?? `Stub puzzle for slot ${slot}`;
       const lockState = teamState.puzzles[slug]?.locked;
       const answer = teamState.puzzles[slug]?.answer;
+      const desc = puzzle?.initial_description;
       return {
         slug,
         title,
+        desc,
         is_meta,
         state: lockState,
         answer,

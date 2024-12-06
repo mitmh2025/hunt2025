@@ -823,7 +823,8 @@ function modalFromModalInternal(
   if (slug) {
     const puzzle = PUZZLES[slug];
     const title = puzzle?.title ?? `Stub puzzle for slot ${slotId}`;
-    mixin = { title, slug };
+    const desc = puzzle?.initial_description;
+    mixin = { title, slug, desc };
   } else {
     mixin = { postCode };
   }

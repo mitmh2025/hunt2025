@@ -99,6 +99,7 @@ export function stakeoutState(teamState: TeamHuntState): StakeoutState {
       const puzzleDefinition = PUZZLES[slug];
       const puzzleState = teamState.puzzles[slug];
       const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slot}`;
+      const desc = puzzleDefinition?.initial_description;
       if (!puzzleState) {
         // This should theoretically never happen but it's easier to write
         // the case out to prove it to the typechecker.
@@ -123,6 +124,7 @@ export function stakeoutState(teamState: TeamHuntState): StakeoutState {
         slug,
         title,
         asset: "", // white fill
+        desc,
       };
     }),
     overlay: stakeoutOverlay(teamState),

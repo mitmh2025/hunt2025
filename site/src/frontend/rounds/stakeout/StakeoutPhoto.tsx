@@ -24,6 +24,7 @@ const StakeoutPhoto = ({
   slot,
   slug,
   title,
+  desc,
   asset,
   dragging,
   focused,
@@ -35,6 +36,7 @@ const StakeoutPhoto = ({
   slot: StakeoutSlot;
   slug?: string;
   title?: string;
+  desc?: string;
   asset: string;
   dragging: boolean;
   focused: boolean;
@@ -82,6 +84,7 @@ const StakeoutPhoto = ({
           currency={teamState.currency}
           title={title}
           slug={slug}
+          desc={desc}
           showIcon={!!focused}
           showLabel={!!focused}
           size={focused ? 60 : 24}
@@ -102,7 +105,7 @@ const StakeoutPhoto = ({
       );
     }
     return undefined;
-  }, [title, slug, teamState, focused]);
+  }, [title, slug, desc, teamState, focused]);
 
   const shadowX = (4 * (position.x - 920)) / 1920;
 
