@@ -312,7 +312,12 @@ export function getRouter({
       round,
       locked,
       guesses: guesses.map(
-        ({ data: { canonical_input, link, status, response }, timestamp }) => ({
+        ({
+          data: { canonical_input, link, status, response },
+          id,
+          timestamp,
+        }) => ({
+          id,
           canonical_input,
           ...(link !== undefined
             ? { link: { display: link.display, href: link.href } }

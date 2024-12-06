@@ -5,5 +5,6 @@ export type MissingDiamondItem = {
 };
 
 export type MissingDiamondState = {
+  epoch: number;
   items: MissingDiamondItem[];
 };

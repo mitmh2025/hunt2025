@@ -565,9 +565,10 @@ function genObjects(teamState: TeamHuntState): BackgroundCheckState["imagery"] {
 export function backgroundCheckState(
   teamState: TeamHuntState,
 ): BackgroundCheckState {
+  const epoch = teamState.epoch;
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
   const imagery = genObjects(teamState);
-  return { items, imagery };
+  return { epoch, items, imagery };
 }
 
 const BackgroundCheckRoundPage = ({

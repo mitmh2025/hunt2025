@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import globalDatasetManager from "../../client/DatasetManager";
+import useDataset from "../../client/useDataset";
 import BackgroundCheckBody from "./BackgroundCheckBody";
 import { type BackgroundCheckState } from "./types";
 
@@ -12,30 +12,8 @@ const BackgroundCheckManager = ({
   initialState: BackgroundCheckState;
   initialTeamState: TeamHuntState;
 }) => {
-  const [state, setState] = useState<BackgroundCheckState>(initialState);
-  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
-
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "background_check",
-      undefined,
-      (value: object) => {
-        setState(value as BackgroundCheckState);
-      },
-    );
-    return stop;
-  }, []);
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "team_state",
-      undefined,
-      (value: object) => {
-        setTeamState(value as TeamHuntState);
-      },
-    );
-    return stop;
-  }, []);
-
+  const state = useDataset("background_check", undefined, initialState);
+  const teamState = useDataset("team_state", undefined, initialTeamState);
   return <BackgroundCheckBody state={state} teamState={teamState} />;
 };
 

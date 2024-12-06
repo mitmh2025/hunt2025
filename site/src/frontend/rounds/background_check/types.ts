@@ -23,6 +23,7 @@ export type BackgroundCheckObject = {
 };
 
 export type BackgroundCheckState = {
+  epoch: number;
   items: BackgroundCheckItem[];
   imagery: {
     objects: BackgroundCheckObject[];

@@ -44,6 +44,7 @@ export type PaperTrailNotesObject = PaperTrailObjectBase & {
 export type PaperTrailObject = PaperTrailPuzzleObject | PaperTrailNotesObject;
 
 export type PaperTrailState = {
+  epoch: number;
   groups: PaperTrailGroup[];
   imagery: PaperTrailObject[];
 };

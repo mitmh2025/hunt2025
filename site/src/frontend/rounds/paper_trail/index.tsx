@@ -774,6 +774,7 @@ export function paperTrailState(teamState: TeamHuntState): PaperTrailState {
 
   const imagery: PaperTrailObject[] = genImagery(teamState);
   return {
+    epoch: teamState.epoch,
     groups,
     imagery,
   };

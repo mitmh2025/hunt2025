@@ -50,6 +50,7 @@ export type StakeoutPhotoState = {
 };
 
 export type StakeoutState = {
+  epoch: number;
   photos: StakeoutPhotoState[];
   overlay?: {
     slug: string;

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import globalDatasetManager from "../../client/DatasetManager";
+import useDataset from "../../client/useDataset";
 import MissingDiamondBody from "./MissingDiamondBody";
 import { type MissingDiamondState } from "./types";
 
@@ -12,30 +12,8 @@ const MissingDiamondManager = ({
   initialState: MissingDiamondState;
   initialTeamState: TeamHuntState;
 }) => {
-  const [state, setState] = useState<MissingDiamondState>(initialState);
-  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
-
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "the_missing_diamond",
-      undefined,
-      (value: object) => {
-        setState(value as MissingDiamondState);
-      },
-    );
-    return stop;
-  }, []);
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "team_state",
-      undefined,
-      (value: object) => {
-        setTeamState(value as TeamHuntState);
-      },
-    );
-    return stop;
-  }, []);
-
+  const state = useDataset("the_missing_diamond", undefined, initialState);
+  const teamState = useDataset("team_state", undefined, initialTeamState);
   return <MissingDiamondBody state={state} teamState={teamState} />;
 };
 
