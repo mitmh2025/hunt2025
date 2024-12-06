@@ -76,7 +76,7 @@
     urlMap = {
       host_rule = [
         {
-          hosts = ["www.mitmh2025.com" "prod.mitmh2025.com"];
+          hosts = ["www.mitmh2025.com"];
           path_matcher = "www";
         }
         {
@@ -120,17 +120,17 @@
       ];
       test = [
         {
-          host = "prod.mitmh2025.com";
+          host = "www.mitmh2025.com";
           path = "/static/main.js";
           service = lib.tfRef "google_compute_backend_bucket.assets.id";
         }
         {
-          host = "prod.mitmh2025.com";
+          host = "www.mitmh2025.com";
           path = "/api";
           service = lib.tfRef "google_compute_backend_service.api.id";
         }
         {
-          host = "prod.mitmh2025.com";
+          host = "www.mitmh2025.com";
           path = "/api/register";
           service = lib.tfRef "google_compute_backend_service.api.id";
         }
@@ -145,7 +145,6 @@
   gcp.certificate.www = {
     domains = [
       "www.mitmh2025.com"
-      "prod.mitmh2025.com"
     ];
   };
   gcp.certificate.mitmh2025.domains = [
@@ -157,20 +156,8 @@
   };
   route53.mitmh2025.gcp_dns_authorizations = [
     "www.mitmh2025.com"
-    "prod.mitmh2025.com"
     "mitmh2025.com"
   ];
-  route53.mitmh2025.rr.prod = {
-    type = "A";
-    ttl = "300";
-    records = [(lib.tfRef "google_compute_global_address.mitmh2025.address")];
-  };
-  route53.mitmh2025.rr.prod-v6 = {
-    name = "prod";
-    type = "AAAA";
-    ttl = "300";
-    records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];
-  };
   route53.mitmh2025.rr.www = {
     type = "A";
     ttl = "300";
