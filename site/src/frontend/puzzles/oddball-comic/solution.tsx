@@ -284,7 +284,7 @@ const Solution = (): JSX.Element => {
         <div>
           We brought an extra chair in case the other one is broken too. We have
           to be careful—you never know when there will be a tremendou
-          <Highlighted>S QUAKE, PLAN AT</Highlighted>ound it!
+          <Highlighted>S QUAKE, PLAN AR</Highlighted>ound it!
         </div>
       </Group>
       <Indented>

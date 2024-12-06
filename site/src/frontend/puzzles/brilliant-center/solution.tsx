@@ -91,12 +91,14 @@ const Solution = (): JSX.Element => {
           <td>FROZEN</td>
         </tr>
         <tr>
-          <td>_ On Elm Street, where Freddy is found</td>
-          <td>NIGHTMARE</td>
-        </tr>
-        <tr>
           <td>Pre-workout motion</td>
           <td>STRETCH</td>
+        </tr>
+        <tr>
+          <td>
+            Slasher flick <i>A _ On Elm Street</i>, where Freddy is found
+          </td>
+          <td>NIGHTMARE</td>
         </tr>
         <tr>
           <td>Wardenclyffe Tower creator</td>

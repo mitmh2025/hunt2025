@@ -39,7 +39,7 @@ const puzzle: PuzzleDefinition = {
       keywords: ["connected", "arrows", "transformations"],
       nudge:
         // Unicode symbols here are musical notes.
-        "How can “I keep my side of the street \ud83c\udfb5 Clean \ud83c\udfb5”, when “all I think about is \ud83c\udfb5 Karma \ud83c\udfb5”? \ud83c\udfb5 Look What You Made Me Do \ud83c\udfb5! If you are struggling to find connections, this tool may also assist: https://shaynak.github.io/taylor-swift/ . Some of the gradient colored nodes reference songs that appear either on multiple albums, appear between eras, or are on movie soundtracks.",
+        "How can “I keep my side of the street 𝅘𝅥𝅮Clean𝅘𝅥𝅮”, when “all I think about is 𝅘𝅥𝅮Karma𝅘𝅥𝅮”? 𝅘𝅥𝅮Look What You Made Me Do𝅘𝅥𝅮! If you are struggling to find connections, this tool may also assist: https://shaynak.github.io/taylor-swift/ . Some of the gradient colored nodes reference songs that appear either on multiple albums, appear between eras, or are on movie soundtracks.",
     },
     {
       order: 60.0,
