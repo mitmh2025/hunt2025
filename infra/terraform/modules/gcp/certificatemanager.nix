@@ -81,8 +81,5 @@
       (lib.mapAttrsToList (_: certificate: certificate.resource) config.gcp.certificate)
       ++ (lib.mapAttrsToList (_: certificate: certificate.resource) config.gcp.certificateMap)
     );
-    gcp.certificateMap = lib.mapAttrs (name: _: {
-      defaultCertificateName = lib.mkDefault name;
-    }) config.gcp.certificate;
   };
 }
