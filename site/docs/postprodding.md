@@ -81,10 +81,6 @@ puzzle's title) that lives in the puzzle's URL (puzzles are rendered at
 
 1. Select the puzzle that you want to postprod from the "Puzzles that need a
    postprodder" list in Puzzup: https://puzzup.letswriteahunt.com/postprod .
-   At the time of writing, Stakeout and Paper Trail puzzles are best because we
-   have the puzzle-specific art designs for those basically done, whereas the
-   other rounds are still subject to change, so we don't want to ask authors to
-   review something and then massively change the appearance later.
 2. Spoil yourself on that puzzle, if you haven't already.
 3. Set yourself as the postprodder for that puzzle. You can do this by going
    to the puzzle page, clicking the "Edit" button next to the "People" header
