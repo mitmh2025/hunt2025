@@ -46,6 +46,7 @@ export type StakeoutPhotoState = {
   slug?: string;
   title?: string;
   asset: string;
+  desc?: string;
 };
 
 export type StakeoutState = {

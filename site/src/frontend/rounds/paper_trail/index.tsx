@@ -139,6 +139,7 @@ function oldItemForSlot(
   const puzzleDefinition = PUZZLES[slug];
   const puzzleState = teamState.puzzles[slug];
   const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slot}`;
+  const desc = puzzleDefinition?.initial_description;
   if (!puzzleState) {
     // This should not happen, but hard to prove to the typechecker.
     return [];
@@ -147,6 +148,7 @@ function oldItemForSlot(
   return {
     title,
     slug,
+    desc,
   };
 }
 

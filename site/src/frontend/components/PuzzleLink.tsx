@@ -184,6 +184,7 @@ const PuzzleLink = ({
   currency,
   title,
   slug,
+  desc,
   showIcon = true,
   showLabel = true,
   size = 24,
@@ -194,6 +195,7 @@ const PuzzleLink = ({
   currency: number;
   title: string;
   slug: string;
+  desc?: string;
   showIcon?: boolean;
   showLabel?: boolean;
   size?: number;
@@ -249,6 +251,7 @@ const PuzzleLink = ({
             onDismiss={dismissModal}
             cost={1}
             currency={currency}
+            desc={desc}
           />
           <Button
             className="puzzle-unlock-button"

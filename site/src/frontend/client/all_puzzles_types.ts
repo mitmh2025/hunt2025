@@ -4,6 +4,7 @@ export type AllPuzzlesPuzzle = {
   is_meta?: boolean;
   state?: "unlocked" | "unlockable" | "locked";
   answer?: string;
+  desc?: string;
 };
 
 export type AllPuzzlesInteraction = {

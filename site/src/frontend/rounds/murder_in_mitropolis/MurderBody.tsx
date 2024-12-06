@@ -24,6 +24,7 @@ const MurderBody = ({
               currency={teamState.currency}
               title={item.title}
               slug={item.slug}
+              desc={item.desc}
             />
           </li>
         );

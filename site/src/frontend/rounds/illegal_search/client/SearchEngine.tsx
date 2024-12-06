@@ -114,8 +114,10 @@ export const ModalTrigger = ({
   const [loading, setLoading] = useState<boolean>(false);
   const initialTitle = hasPuzzleFields(modal) ? modal.title : undefined;
   const initialSlug = hasPuzzleFields(modal) ? modal.slug : undefined;
+  const initialDesc = hasPuzzleFields(modal) ? modal.desc : undefined;
   const [title, setTitle] = useState<string | undefined>(initialTitle);
   const [slug, setSlug] = useState<string | undefined>(initialSlug);
+  const [desc, setDesc] = useState<string | undefined>(initialDesc);
   const postCode = hasPostCode(modal) ? modal.postCode : undefined;
 
   const onAreaClicked: MouseEventHandler<HTMLButtonElement> = useCallback(
@@ -145,12 +147,15 @@ export const ModalTrigger = ({
             // Save the title and slug returned in case the modal is displayed again
             setTitle(json.title);
             setSlug(json.slug);
+            setDesc(json.desc);
+
             const { area, asset } = modal;
             const modalWithPuzzleFields = {
               area,
               asset,
               title: json.title,
               slug: json.slug,
+              desc: json.desc,
             };
             showModal({ modal: modalWithPuzzleFields });
           })
@@ -164,13 +169,14 @@ export const ModalTrigger = ({
           asset: modal.asset,
           title,
           slug,
+          desc,
         } as ModalWithPuzzleFields;
         showModal({ modal: modalWithPuzzleFields });
       }
 
       // If we already have the title and slug, no need to POST again; we can immediately show the popover.
     },
-    [loading, modal, postCode, showModal, slug, title],
+    [loading, modal, postCode, showModal, slug, title, desc],
   );
 
   const style = {
@@ -436,6 +442,7 @@ const SearchEngine = ({
             currency={teamState.currency}
             title={modalShown.title}
             slug={modalShown.slug}
+            desc={modalShown.desc}
           />
         </PuzzleLinkBackdrop>
       </ModalBackdrop>
