@@ -73,9 +73,9 @@ const Dancer: Person = {
 const Manicurist: Person = {
   getName: () => "IRENE",
   getIntro: (name: string) =>
-    `<p>The salon's waiting area is packed. The busy manicurist glances at you, nametag reading ${name}. She takes one earbud out of her ear, music blasting.</p><p>${getNameSpan(name)}Oh, a P.I.? Sorry, but it sounds like I can't talk till I finish this After Dark.</p>`,
+    `<p>The salon's waiting area is packed. The busy manicurist glances at you, nametag reading ${name}. She takes one earbud out of her ear.</p><p>${getNameSpan(name)}Oh, a P.I.? Sorry, but it sounds like I can't talk till I finish this After Dark.</p>`,
   getReplyUnsuccessful: (name) =>
-    `<p>${getNameSpan(name)}Oh, P.I., you\'re still here? Try After Dark, y'hear me?</p>`,
+    `<p>You can still hear ${name}'s music blasting even with her earbuds in.</p><p>${getNameSpan(name)}Oh, P.I., you\'re still here? Try After Dark, y'hear me?</p>`,
   getReplySuccessful: (name) =>
     `<p>${name} drops her emery board.</p><p>${getNameSpan(name)}Oh, my, heavens. Mike Shinoda???<br>`,
   validAnswers: ["LINKINPARK"],
@@ -188,6 +188,7 @@ const Bar: Person = {
 
 const CatLady: Person = {
   getName: (status) => {
+    console.log("checking letters", status?.clueLettersCollected);
     if (status?.clueLettersCollected === "SKIPZERO") {
       return "EVANGELINE";
     } else if (status?.clueLettersCollected === "SKIPZER") {

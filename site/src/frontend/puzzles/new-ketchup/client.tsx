@@ -84,7 +84,7 @@ const Puzzle = () => {
       const intro = currentPerson.getIntro(name);
       setLog(intro);
     }
-  });
+  }, [log]);
 
   useEffect(() => {
     const nextLetter =
@@ -128,15 +128,15 @@ const Puzzle = () => {
     const name = currentPerson.getName(puzzleStatus);
     let newPuzzleStatus = {
       ...puzzleStatus,
+      clueLettersCollected: `${puzzleStatus.clueLettersCollected}${name.slice(0, 1)}`,
     };
     if (currentPerson.validAnswers.indexOf(format(teamName)) !== -1) {
       // add acquired clue letter
       setPuzzleStatus((s: PuzzleStatus): PuzzleStatus => {
-        newPuzzleStatus = {
+        return {
           ...s,
           clueLettersCollected: `${s.clueLettersCollected}${name.slice(0, 1)}`,
         };
-        return newPuzzleStatus;
       });
       // add the success dialog
       setLog(
@@ -196,7 +196,7 @@ const Puzzle = () => {
       </DialogBoxWrapper>
 
       <input value={teamName} onChange={(e) => setTeamName(e.target.value)} />
-      <ul>
+      {/* <ul>
         {nameLog.map((name, i) => (
           <li key={`teamname-${i}-${name}`}>{name}</li>
         ))}
@@ -210,7 +210,7 @@ const Puzzle = () => {
       </p>
       <p>
         <b>{caseNumber}</b>
-      </p>
+      </p> */}
     </>
   );
 };
