@@ -47,6 +47,7 @@ import ThisIsJustATest from "./radiant-snow";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
 import The10000SheetExcelFile from "./shoddy-table";
 import AHeapOfClards from "./sinful-ivory";
@@ -136,6 +137,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   this_is_just_a_test: ThisIsJustATest,
 
   // Background Check
+  where_am_i: WhereAmI,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
 
   // Murder in MITropolis
