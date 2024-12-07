@@ -124,6 +124,8 @@ const Puzzle = () => {
               <InkBlotch />
               <InkBlotch />
               <InkBlotch />
+              <InkBlotch />
+              <InkBlotch />
             </>
           }{" "}
           cottised argent and sable debrused with letter {<InkBlotch />}, at
@@ -211,8 +213,8 @@ const Puzzle = () => {
         </i>{" "}
         That of the defenders was ostentatious:{" "}
         <i>
-          Azure, a star argent debruised with a crescent gules two bars argent
-          with a gyron sinister azure semy of estoiles itself with a roundel
+          Azure, a mullet argent debruised with a crescent gules two bars argent
+          with a gyron sinister azure semy of mullets itself with a roundel
           gules cottised argent, the chief cottised gules and argent, the base
           cottised argent and gules.
         </i>{" "}
