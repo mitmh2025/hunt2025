@@ -333,7 +333,7 @@ const HUNT: Hunt = {
         // 14 feeders, 3 metas, 1 super
         // Start with 3 unlockable.  Add 1.5 (rounding up) for each solve.
         { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "the_10000_sheet_excel_file" },
-        { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+        { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "where_am_i" },
         { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
         { id: "bgp04", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "bgp05", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
