@@ -40,7 +40,7 @@ export default function formatActivityLogEntryForApi(
       case "puzzle_partially_solved":
       case "puzzle_solved":
         {
-          const title = PUZZLES[e.slug] as undefined | string;
+          const title = PUZZLES[e.slug]?.title;
           entry = Object.assign(entry, {
             title: title ?? `Stub puzzle for slot ${e.slug}`,
           });
