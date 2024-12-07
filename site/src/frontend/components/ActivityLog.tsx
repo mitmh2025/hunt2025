@@ -31,7 +31,12 @@ const ActivityLogItem = ({
   let description = <td />;
   switch (entry.type) {
     case "currency_adjusted":
-      description = <td>{entry.currency_delta} currency was granted</td>;
+      description = (
+        <>
+          <td>💰</td>
+          <td>{entry.currency_delta} currency was granted</td>;
+        </>
+      );
       break;
     case "round_unlocked":
       description = (
