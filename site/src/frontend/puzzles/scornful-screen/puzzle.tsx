@@ -2,21 +2,24 @@ import React from "react";
 import { styled } from "styled-components";
 
 const StyledIframe = styled.iframe`
-  margin-bottom: 1em;
+  margin: 0 auto 1em;
+  display: block;
 `;
 
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <StyledIframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/d8-BQXHspfg?si=pg-fDSIswkCKf7iT"
-        title="Where Am I?"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerPolicy="strict-origin-when-cross-origin"
-        allowFullScreen
-      />
+      <div>
+        <StyledIframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/d8-BQXHspfg?si=pg-fDSIswkCKf7iT"
+          title="Where Am I?"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      </div>
       <details>
         <summary>Transcript</summary>
         <p>

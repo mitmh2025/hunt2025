@@ -513,8 +513,8 @@ const Solution = (): JSX.Element => {
         <li>
           The Infinite Corridor’s solar system model has several boards across
           from the Sun and the inner planets, with the{" "}
-          <Mono>INFINITE SUN BOARD</Mono>
-          positioned directly across from the Sun model.
+          <Mono>INFINITE SUN BOARD</Mono> positioned directly across from the
+          Sun model.
         </li>
       </ul>
       <p>
