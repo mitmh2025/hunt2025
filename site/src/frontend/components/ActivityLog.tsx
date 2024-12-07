@@ -34,7 +34,7 @@ const ActivityLogItem = ({
       description = (
         <>
           <td>💰</td>
-          <td>{entry.currency_delta} currency was granted</td>;
+          <td>{entry.currency_delta} currency was granted</td>
         </>
       );
       break;
