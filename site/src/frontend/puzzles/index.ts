@@ -54,6 +54,7 @@ import TheCenterIsInPlainSight from "./sinful-turkey";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import RecipeSubstitutions from "./svelte-pitch";
+import ARecipeForSuccess from "./tame-chick";
 import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
@@ -81,6 +82,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // Stakeout
   a_badly_broken_quote: ABadlyBrokenQuote,
   a_math_quiz: AMathQuiz,
+  a_recipe_for_success: ARecipeForSuccess,
   a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
   be_mine: BeMine,
@@ -104,6 +106,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   sing_like_a_canary: SingLikeACanary,
   some_assembly_required: SomeAssemblyRequired,
   taste_explosion: TasteExplosion,
+
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
