@@ -1,0 +1,2235 @@
+{
+  "130": {
+    "depth": "4",
+    "TrueX": "-640",
+    "TrueZ": "1904",
+    "x": "155",
+    "y": "305",
+    "roomDescription": "The platform you are on raises you slightly above a blanket of fog that dominates the area. All you can really tell from this platform is that you are in the southwest of the city. Above you, out of reach, is the hole that you jumped through to reach this floor. Looks like you're stuck here for the time being, hopefully you have found a map to make your way through.",
+    "moveDescriptions": "There is a path south and west.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "132",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "131",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "131": {
+    "depth": "4",
+    "TrueX": "-648",
+    "TrueZ": "1902",
+    "x": "168",
+    "y": "249",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, south, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "133",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "130",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "132",
+        "moveDescription": "The fog is thick, you cannot see where you are going. You feel the heat from some lava as you are passing by."
+      },
+      {
+        "direction": "NW",
+        "destination": "133",
+        "moveDescription": "The fog is thick, you cannot see where you are going. You feel the heat from some lava as you are passing by."
+      }
+    ]
+  },
+  "132": {
+    "depth": "4",
+    "TrueX": "-636",
+    "TrueZ": "1911",
+    "x": "108",
+    "y": "341",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "136",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "140",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "131",
+        "moveDescription": "The fog is thick, you cannot see where you are going. You feel the heat from some lava as you are passing by."
+      },
+      {
+        "direction": "NW",
+        "destination": "130",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "133": {
+    "depth": "4",
+    "TrueX": "-648",
+    "TrueZ": "1890",
+    "x": "262",
+    "y": "249",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path southeast, southwest, and northwest.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "131",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "131",
+        "moveDescription": "The fog is thick, you cannot see where you are going. You feel the heat from some lava as you are passing by."
+      },
+      {
+        "direction": "NW",
+        "destination": "134",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "134": {
+    "depth": "4",
+    "TrueX": "-648",
+    "TrueZ": "1881",
+    "x": "329",
+    "y": "258",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path east, southeast, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "139",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "135",
+        "moveDescription": "The fog is thick, you cannot see where you are going.blue"
+      },
+      {
+        "direction": "WW",
+        "destination": "133",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "135": {
+    "depth": "4",
+    "TrueX": "-641",
+    "TrueZ": "1890",
+    "x": "265",
+    "y": "299",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "134",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NE",
+        "destination": "137",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "136",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "136": {
+    "depth": "4",
+    "TrueX": "-637",
+    "TrueZ": "1896",
+    "x": "215",
+    "y": "336",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "143",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "132",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "135",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "137": {
+    "depth": "4",
+    "TrueX": "-634",
+    "TrueZ": "1885",
+    "x": "301",
+    "y": "340",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path east, southeast and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "145",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "143",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "135",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "138": {
+    "depth": "4",
+    "TrueX": "-600",
+    "TrueZ": "1911",
+    "x": "263",
+    "y": "340",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "161",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "162",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "157",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "139": {
+    "depth": "4",
+    "TrueX": "-631",
+    "TrueZ": "1881",
+    "x": "329",
+    "y": "377",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path north, east, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "181",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "147",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "145",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "134",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "140": {
+    "depth": "4",
+    "TrueX": "-627",
+    "TrueZ": "1911",
+    "x": "110",
+    "y": "397",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "149",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "142",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "132",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "141",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "141": {
+    "depth": "4",
+    "TrueX": "-629",
+    "TrueZ": "1900",
+    "x": "186",
+    "y": "380",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, east, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "143",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "149",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "140",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "142": {
+    "depth": "4",
+    "TrueX": "-619",
+    "TrueZ": "1905",
+    "x": "153",
+    "y": "468",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, east, southeast, south, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "148",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "158",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "140",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "192",
+        "moveDescription": "Climbing up the vine has you break out of the cover of the fog seeing several buildings that have done the same."
+      },
+      {
+        "direction": "NW",
+        "destination": "148",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "143": {
+    "depth": "4",
+    "TrueX": "-630",
+    "TrueZ": "1893",
+    "x": "246",
+    "y": "381",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, southeast, south, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "145",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "144",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "149",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "141",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "136",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NW",
+        "destination": "137",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "144": {
+    "depth": "4",
+    "TrueX": "-623",
+    "TrueZ": "1892",
+    "x": "258",
+    "y": "447",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, south, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "146",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "148",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "143",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "145",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "145": {
+    "depth": "4",
+    "TrueX": "-628",
+    "TrueZ": "1887",
+    "x": "282",
+    "y": "390",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, southeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "146",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "144",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "143",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "137",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "139",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "146": {
+    "depth": "4",
+    "TrueX": "-618",
+    "TrueZ": "1884",
+    "x": "299",
+    "y": "472",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, southeast, south, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "147",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "150",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "148",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "144",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "145",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "147": {
+    "depth": "4",
+    "TrueX": "-616",
+    "TrueZ": "1881",
+    "x": "329",
+    "y": "494",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path northeast, east, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "186",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "165",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "146",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "139",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "183",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "148": {
+    "depth": "4",
+    "TrueX": "-619",
+    "TrueZ": "1896",
+    "x": "215",
+    "y": "467",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, south, southwest, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "146",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NE",
+        "destination": "150",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "142",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "142",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NW",
+        "destination": "144",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "149": {
+    "depth": "4",
+    "TrueX": "-625",
+    "TrueZ": "1900",
+    "x": "189",
+    "y": "420",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "SW",
+        "destination": "140",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "141",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "143",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "150": {
+    "depth": "4",
+    "TrueX": "-613",
+    "TrueZ": "1892",
+    "x": "255",
+    "y": "518",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, southeast, south, southwest, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "151",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "153",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "154",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "148",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NW",
+        "destination": "146",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "151": {
+    "depth": "4",
+    "TrueX": "-607",
+    "TrueZ": "1886",
+    "x": "300",
+    "y": "550",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path east, southeast, south, and southwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "160",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "152",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "153",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "150",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "152": {
+    "depth": "4",
+    "TrueX": "-600",
+    "TrueZ": "1888",
+    "x": "274",
+    "y": "596",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path west.",
+    "moves": [
+      {
+        "direction": "WW",
+        "destination": "151",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "153": {
+    "depth": "4",
+    "TrueX": "-603",
+    "TrueZ": "1894",
+    "x": "239",
+    "y": "576",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path east, southeast, south, southwest, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "156",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "157",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "155",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "150",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "151",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "154": {
+    "depth": "4",
+    "TrueX": "-613",
+    "TrueZ": "1901",
+    "x": "187",
+    "y": "506",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, east, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "150",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "155",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "158",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "155": {
+    "depth": "4",
+    "TrueX": "-608",
+    "TrueZ": "1901",
+    "x": "187",
+    "y": "540",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, southeast, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "153",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SE",
+        "destination": "157",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "158",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "154",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "156": {
+    "depth": "4",
+    "TrueX": "-600",
+    "TrueZ": "1894",
+    "x": "231",
+    "y": "606",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path west.",
+    "moves": [
+      {
+        "direction": "WW",
+        "destination": "153",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "157": {
+    "depth": "4",
+    "TrueX": "-602",
+    "TrueZ": "1904",
+    "x": "153",
+    "y": "587",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, east, southeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "153",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NE",
+        "destination": "161",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "162",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "138",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "158",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NW",
+        "destination": "155",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "158": {
+    "depth": "4",
+    "TrueX": "-612",
+    "TrueZ": "1905",
+    "x": "144",
+    "y": "511",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, east, southeast, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "154",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NE",
+        "destination": "155",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "157",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SE",
+        "destination": "159",
+        "moveDescription": "The fog dissipates as you walk into the tower."
+      },
+      {
+        "direction": "WW",
+        "destination": "142",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "159": {
+    "depth": "4",
+    "TrueX": "-605",
+    "TrueZ": "1910",
+    "x": "111",
+    "y": "563",
+    "roomDescription": "The fog that has dominated your sight seems to have been lifted while you’re within this tower. Climbing to the top of it you can look around the area you are in. It seems as if there are four other towers than this one, and you’re currently in the southern one.",
+    "moveDescriptions": "There is a path northwest.",
+    "moves": [
+      {
+        "direction": "NW",
+        "destination": "158",
+        "moveDescription": "As you leave the tower the fog surrounds you once more."
+      }
+    ]
+  },
+  "160": {
+    "depth": "4",
+    "TrueX": "-597",
+    "TrueZ": "1885",
+    "x": "299",
+    "y": "621",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, south, and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "164",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "161",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "151",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "161": {
+    "depth": "4",
+    "TrueX": "-597",
+    "TrueZ": "1898",
+    "x": "198",
+    "y": "616",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, southeast, south, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "160",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "163",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SE",
+        "destination": "162",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "138",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "157",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "162": {
+    "depth": "4",
+    "TrueX": "-593",
+    "TrueZ": "1907",
+    "x": "138",
+    "y": "658",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path north, southeast, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "163",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "194",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "138",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "157",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "161",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "163": {
+    "depth": "4",
+    "TrueX": "-593",
+    "TrueZ": "1896",
+    "x": "232",
+    "y": "659",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path north, northeast, east, southeast, south, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "164",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "201",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "199",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "194",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "162",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "161",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "164": {
+    "depth": "4",
+    "TrueX": "-593",
+    "TrueZ": "1881",
+    "x": "328",
+    "y": "658",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path north, south, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "166",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "163",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "160",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "165",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "165": {
+    "depth": "4",
+    "TrueX": "-602",
+    "TrueZ": "1881",
+    "x": "329",
+    "y": "590",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path north, east, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "190",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "164",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "147",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "166": {
+    "depth": "4",
+    "TrueX": "-593",
+    "TrueZ": "1872",
+    "x": "403",
+    "y": "659",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path north, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "167",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "164",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "189",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "167": {
+    "depth": "4",
+    "TrueX": "-593",
+    "TrueZ": "1861",
+    "x": "493",
+    "y": "658",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path north, east, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "168",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "206",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "166",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "168": {
+    "depth": "4",
+    "TrueX": "-593",
+    "TrueZ": "1848",
+    "x": "577",
+    "y": "658",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. Below you is what seems to be a disarmed lava trap. You can feel that you are in some sort of enclosed hallway.",
+    "moveDescriptions": "There is a path south, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "167",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "171",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "170",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NW",
+        "destination": "169",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "169": {
+    "depth": "4",
+    "TrueX": "-597",
+    "TrueZ": "1843",
+    "x": "617",
+    "y": "627",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path southeast.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "168",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "170": {
+    "depth": "4",
+    "TrueX": "-604",
+    "TrueZ": "1848",
+    "x": "577",
+    "y": "583",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path east, southeast, and southwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "168",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SE",
+        "destination": "171",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "173",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "171": {
+    "depth": "4",
+    "TrueX": "-600",
+    "TrueZ": "1854",
+    "x": "534",
+    "y": "614",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, southeast, south, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "168",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SE",
+        "destination": "189",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "188",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "187",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "172",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "170",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "172": {
+    "depth": "4",
+    "TrueX": "-605",
+    "TrueZ": "1856",
+    "x": "517",
+    "y": "563",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path east, south, southwest, and northwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "171",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "187",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "193",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "173",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "173": {
+    "depth": "4",
+    "TrueX": "-612",
+    "TrueZ": "1852",
+    "x": "550",
+    "y": "514",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, southeast, south, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "174",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "170",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "172",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "186",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "185",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "180",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "174": {
+    "depth": "4",
+    "TrueX": "-612",
+    "TrueZ": "1844",
+    "x": "608",
+    "y": "516",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. You can however feel the dense foliage that you have been passing through that dominates the area.",
+    "moveDescriptions": "There is a path east, south, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "175",
+        "moveDescription": "The fog dissipates as you enter the tower."
+      },
+      {
+        "direction": "SS",
+        "destination": "173",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "176",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "175": {
+    "depth": "4",
+    "TrueX": "-602",
+    "TrueZ": "1843",
+    "x": "618",
+    "y": "587",
+    "roomDescription": "The tower you are in offers refuge from the fog. Climbing to the top you can spot four other towers above the fog, with you being in the northern tower.",
+    "moveDescriptions": "There is a path west.",
+    "moves": [
+      {
+        "direction": "WW",
+        "destination": "174",
+        "moveDescription": "As you exit the tower the fog surrounds you once more."
+      }
+    ]
+  },
+  "176": {
+    "depth": "4",
+    "TrueX": "-627",
+    "TrueZ": "1845",
+    "x": "597",
+    "y": "389",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path east, southeast, south, and southwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "174",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "180",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "179",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "177",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "177": {
+    "depth": "4",
+    "TrueX": "-641",
+    "TrueZ": "1852",
+    "x": "536",
+    "y": "300",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. You can however feel the heat of the lava lake that dominates this section of the maze.",
+    "moveDescriptions": "There is a path northeast and south.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "176",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "178",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "178": {
+    "depth": "4",
+    "TrueX": "-646",
+    "TrueZ": "1872",
+    "x": "415",
+    "y": "277",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "177",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "179": {
+    "depth": "4",
+    "TrueX": "-630",
+    "TrueZ": "1864",
+    "x": "458",
+    "y": "385",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, southeast, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "176",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "180",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "184",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "181",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "180": {
+    "depth": "4",
+    "TrueX": "-627",
+    "TrueZ": "1858",
+    "x": "515",
+    "y": "408",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, southeast, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "176",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NE",
+        "destination": "173",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SE",
+        "destination": "185",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "179",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "181": {
+    "depth": "4",
+    "TrueX": "-630",
+    "TrueZ": "1874",
+    "x": "387",
+    "y": "379",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, east, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "179",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "183",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "139",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "182",
+        "moveDescription": "The fog dissipates as you enter the tower."
+      }
+    ]
+  },
+  "182": {
+    "depth": "4",
+    "TrueX": "-635",
+    "TrueZ": "1872",
+    "x": "397",
+    "y": "348",
+    "roomDescription": "The fog doesn’t seem to pass into the tower, allowing you some time to breathe and recollect yourself. Going to the top of the tower allows you to view four other towers, with you being in the western tower.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "181",
+        "moveDescription": "As you exit the tower, the fog surrounds you once more."
+      }
+    ]
+  },
+  "183": {
+    "depth": "4",
+    "TrueX": "-621",
+    "TrueZ": "1875",
+    "x": "380",
+    "y": "423",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, southeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "185",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "147",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "181",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "184",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "184": {
+    "depth": "4",
+    "TrueX": "-622",
+    "TrueZ": "1868",
+    "x": "443",
+    "y": "440",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "185",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "183",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "179",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "185": {
+    "depth": "4",
+    "TrueX": "-619",
+    "TrueZ": "1859",
+    "x": "503",
+    "y": "450",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, southeast, south, and southwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "173",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "186",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "183",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "184",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "180",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "186": {
+    "depth": "4",
+    "TrueX": "-614",
+    "TrueZ": "1861",
+    "x": "476",
+    "y": "499",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, south, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "173",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "147",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "185",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "187": {
+    "depth": "4",
+    "TrueX": "-605",
+    "TrueZ": "1863",
+    "x": "463",
+    "y": "570",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, south, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "172",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NE",
+        "destination": "171",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "188",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "193",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "188": {
+    "depth": "4",
+    "TrueX": "-603",
+    "TrueZ": "1868",
+    "x": "423",
+    "y": "589",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, east, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "187",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "171",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "189",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "190",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "189": {
+    "depth": "4",
+    "TrueX": "-598",
+    "TrueZ": "1870",
+    "x": "411",
+    "y": "623",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, east,and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "171",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "166",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "188",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "190": {
+    "depth": "4",
+    "TrueX": "-604",
+    "TrueZ": "1875",
+    "x": "371",
+    "y": "570",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, southeast, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "188",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "191",
+        "moveDescription": "The fog dissipates as you enter the tower."
+      },
+      {
+        "direction": "SE",
+        "destination": "165",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NW",
+        "destination": "193",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "191": {
+    "depth": "4",
+    "TrueX": "-598",
+    "TrueZ": "1876",
+    "x": "368",
+    "y": "616",
+    "roomDescription": "The tower allows for a breath of fresh air from the fog, along with a small lookout of the surrounding area. Sticking above the fog you spot 4 other towers, with you being in the central one.",
+    "moveDescriptions": "There is a path west.",
+    "moves": [
+      {
+        "direction": "WW",
+        "destination": "190",
+        "moveDescription": "As you exit the tower, the fog surrounds you once more."
+      }
+    ]
+  },
+  "192": {
+    "depth": "4",
+    "TrueX": "-654",
+    "TrueZ": "1904",
+    "x": "366",
+    "y": "516",
+    "roomDescription": "The vine you climbed up on reaches towards the ceiling allowing you to get a glimpse of where you currently are. In the distance you see five towers, one in the north, one in the south, one in the west, one in the south east, and a central tower. You are in the southwest of the area.",
+    "moveDescriptions": "There is a path north and southeast.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "112",
+        "moveDescription": "Going into the vine brings you into a sort of water column, shooting you up into the mines above."
+      },
+      {
+        "direction": "SE",
+        "destination": "142",
+        "moveDescription": "Walking down the corrupted vine, the fog swallows you once again."
+      }
+    ]
+  },
+  "193": {
+    "depth": "4",
+    "TrueX": "-608",
+    "TrueZ": "1868",
+    "x": "431",
+    "y": "541",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "172",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "187",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "190",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "194": {
+    "depth": "4",
+    "TrueX": "-587",
+    "TrueZ": "1909",
+    "x": "111",
+    "y": "697",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "163",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "NE",
+        "destination": "195",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "162",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "195": {
+    "depth": "4",
+    "TrueX": "-576",
+    "TrueZ": "1902",
+    "x": "172",
+    "y": "781",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "198",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "197",
+        "moveDescription": "The fog dissipates as you enter the tower."
+      },
+      {
+        "direction": "SW",
+        "destination": "196",
+        "moveDescription": "The fog dissipates as you enter the house."
+      },
+      {
+        "direction": "WW",
+        "destination": "194",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "199",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "196": {
+    "depth": "4",
+    "TrueX": "-580",
+    "TrueZ": "1909",
+    "x": "106",
+    "y": "749",
+    "roomDescription": "The house keeps the fog out, however there really isn’t much here, nor does it give you any idea where you are in the area.",
+    "moveDescriptions": "There is a path north.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "195",
+        "moveDescription": "As you exit the house, the fog surrounds you once more."
+      }
+    ]
+  },
+  "197": {
+    "depth": "4",
+    "TrueX": "-568",
+    "TrueZ": "1908",
+    "x": "127",
+    "y": "849",
+    "roomDescription": "The tower rises above the fog allowing you some sight into the area around you. Four other towers stick above the fog, with the southeastern tower you’re in making up the fifth.",
+    "moveDescriptions": "There is a path north.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "195",
+        "moveDescription": "As you exit the tower, the fog surrounds you once more."
+      }
+    ]
+  },
+  "198": {
+    "depth": "4",
+    "TrueX": "-571",
+    "TrueZ": "1895",
+    "x": "227",
+    "y": "834",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "200",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "195",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "199",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "199": {
+    "depth": "4",
+    "TrueX": "-581",
+    "TrueZ": "1895",
+    "x": "228",
+    "y": "744",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, south, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "202",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "198",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SS",
+        "destination": "195",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "163",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "201",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "200": {
+    "depth": "4",
+    "TrueX": "-570",
+    "TrueZ": "1880",
+    "x": "326",
+    "y": "831",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you. The dense rock around you makes it even harder to move.",
+    "moveDescriptions": "There is a path south and northwest.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "198",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "203",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "201": {
+    "depth": "4",
+    "TrueX": "-587",
+    "TrueZ": "1887",
+    "x": "274",
+    "y": "704",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, northeast, east, southeast, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "204",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NE",
+        "destination": "205",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "EE",
+        "destination": "202",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "199",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "163",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "202": {
+    "depth": "4",
+    "TrueX": "-578",
+    "TrueZ": "1887",
+    "x": "279",
+    "y": "776",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path north, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "203",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "199",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "201",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "205",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "203": {
+    "depth": "4",
+    "TrueX": "-578",
+    "TrueZ": "1871",
+    "x": "405",
+    "y": "774",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path southeast, south, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "200",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "202",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "205",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "WW",
+        "destination": "204",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "206",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      }
+    ]
+  },
+  "204": {
+    "depth": "4",
+    "TrueX": "-587",
+    "TrueZ": "1871",
+    "x": "406",
+    "y": "692",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, east, southeast, and south.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "206",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "EE",
+        "destination": "203",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "205",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SS",
+        "destination": "201",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "205": {
+    "depth": "4",
+    "TrueX": "-584",
+    "TrueZ": "1877",
+    "x": "328",
+    "y": "733",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, southeast, southwest, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "203",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "202",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SW",
+        "destination": "201",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "NW",
+        "destination": "204",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "206": {
+    "depth": "4",
+    "TrueX": "-585",
+    "TrueZ": "1863",
+    "x": "473",
+    "y": "728",
+    "roomDescription": "The fog is thick, you can hardly see anything in front of you.",
+    "moveDescriptions": "There is a path northeast, southeast, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "207",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      },
+      {
+        "direction": "SE",
+        "destination": "203",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "SW",
+        "destination": "204",
+        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
+      },
+      {
+        "direction": "WW",
+        "destination": "167",
+        "moveDescription": "The fog is thick, you cannot see where you are going."
+      }
+    ]
+  },
+  "207": {
+    "depth": "4",
+    "TrueX": "-570",
+    "TrueZ": "1856",
+    "x": "564",
+    "y": "771",
+    "roomDescription": "Setting foot on this platform seems to lower the fog in the area allowing you to see the massive bestial humanoid statues to either side of a large circular entrance. The entrance itself seems to have been sealed shut, and there seems to be no slot for a key of any kind.",
+    "moveDescriptions": "There is a path south.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "206",
+        "moveDescription": "Stepping away from the platform seemingly gives signal to the fog to rush back in. Sadly it seems like traversal of the area is going to continue being difficult."
+      }
+    ]
+  }
+}

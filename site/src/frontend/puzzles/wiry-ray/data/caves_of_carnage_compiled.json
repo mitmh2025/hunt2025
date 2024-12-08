@@ -1,0 +1,826 @@
+{
+  "46": {
+    "depth": "2",
+     "TrueX": "-453",
+    "TrueZ": "2027",
+    "x": "210",
+    "y": "864",
+    "roomDescription": "Darkened stone dominates the space, only eclipsed by the solitary pillar slick with water that stands as a centerpiece of this area. Looking at a map, you would be in the southeast corner.",
+    "moveDescriptions": "There is a path north, south, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "47",
+        "moveDescription": "Walking north has you in a lava dominated area. Blackened stone offers safe steps to get to a more central location of the area."
+      },
+      {
+        "direction": "SS",
+        "destination": "45",
+        "moveDescription": "Heading back up the stairs towards the crypt really only gives you a breath of safety from the dungeon’s elements."
+      },
+      {
+        "direction": "WW",
+        "destination": "49",
+        "moveDescription": "Walking down the sloped surface brings you to the start of a small forest of mushrooms."
+      },
+      {
+        "direction": "NW",
+        "destination": "77",
+        "moveDescription": "Going up towards the long path up you pass by increasingly more common webs. Walking through a large web blocking the main room shows you why as several spiders skitter around their nest."
+      }
+    ]
+  },
+  "47": {
+    "depth": "2",
+     "TrueX": "-453",
+    "TrueZ": "1984",
+    "x": "383",
+    "y": "866",
+    "roomDescription": "Large pockets of lava sprout from the floor here, making it rather hazardous to traverse. Charred remains of beasts litter the floor, clearly unable to navigate the terrain.",
+    "moveDescriptions": "There is a path north, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "48",
+        "moveDescription": "Going deeper into the active lava area you hop past several charred maps and compasses, hopefully you won’t add to their count."
+      },
+      {
+        "direction": "SS",
+        "destination": "46",
+        "moveDescription": "Walking out of the lava area you reach a colder blackened stone with an entrance towards the higher levels. On your way to the center of the area you spot some webs hanging in one of the pathways out."
+      },
+      {
+        "direction": "WW",
+        "destination": "74",
+        "moveDescription": "Heading away from the lava area you pass by a clearly unused trap, with several arrows primed to set off, but with no way for them to be triggered."
+      }
+    ]
+  },
+  "48": {
+    "depth": "2",
+     "TrueX": "-453",
+    "TrueZ": "1959",
+    "x": "543",
+    "y": "864",
+    "roomDescription": "A small river of lava runs through this section of the cave, although more pockets can be seen in the distance. A small charred column is positioned just southwest of you, hiding a large path. Looking at a map, you would be in the northeast corner.",
+    "moveDescriptions": "There is a path north, south, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "45",
+        "moveDescription": "Heading up the stairs back to the crypt you feel a sense of safety from anything that could be lurking in the shadows."
+      },
+      {
+        "direction": "SS",
+        "destination": "47",
+        "moveDescription": "Going south you walk by some active spiders spinning some webs on the ceiling. Perhaps there is a nest nearby."
+      },
+      {
+        "direction": "SW",
+        "destination": "68",
+        "moveDescription": "A small corridor ends up being a little longer than you expected as it opens up into a larger room. A small sparkle to your right leads you to investigate an egg painted like one of the few enjoyers of a Chicago sports team. Continuing down you pass over a stable enough bridge to finally reach a new room."
+      },
+      {
+        "direction": "WW",
+        "destination": "75",
+        "moveDescription": "Going west you reach a small hole in the floor with several heated rocks and burning stones. The only way across that you can see is a small iron chain stretching the length of the pit."
+      }
+    ]
+  },
+  "49": {
+    "depth": "2",
+     "TrueX": "-479",
+    "TrueZ": "2025",
+    "x": "202",
+    "y": "739",
+    "roomDescription": "Large mushrooms sprout around you, accompanied by spore covered dirt. A small river starts from a nearby wall creating a surprisingly forestry scene.",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "46",
+        "moveDescription": "Heading up the flow of water you reach a new area devoid of mushrooms. Spiders seem to be more active in the area as several webs are holding up some rocks in the ceiling."
+      },
+      {
+        "direction": "WW",
+        "destination": "50",
+        "moveDescription": "Going deeper into the mushroom forest you leave the smaller blue mushrooms and reach an area with large red capped mushrooms towering to the roof of the cave."
+      }
+    ]
+  },
+  "50": {
+    "depth": "2",
+     "TrueX": "-522",
+    "TrueZ": "2023",
+    "x": "218",
+    "y": "554",
+    "roomDescription": "You find yourself in a rather dense mushroom forest, packed full of spores and mycelium. A river starts to flatten out here, leaving large pools of water throughout.",
+    "moveDescriptions": "There is a path north, northeast, east, south, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "72",
+        "moveDescription": "Stepping over the river you walk into a rather pleasant sight of a few axolotls swimming around."
+      },
+      {
+        "direction": "NE",
+        "destination": "76",
+        "moveDescription": "Heading towards the blue mushrooms you take a slight turn towards a side cave."
+      },
+      {
+        "direction": "EE",
+        "destination": "49",
+        "moveDescription": "You walk upstream towards a group of smaller blue mushrooms. Some spiders have spread out to the tops of the mushrooms, spinning small webs."
+      },
+      {
+        "direction": "SS",
+        "destination": "52",
+        "moveDescription": "A sense of dread fills your mind as you walk into a rather spooky section of the cave. Walking further in you feel relief as you can tell that the skulls seem to only be decorations."
+      },
+      {
+        "direction": "WW",
+        "destination": "51",
+        "moveDescription": "Following a portion of the river you walk into a large geode cracked down the middle."
+      },
+      {
+        "direction": "NW",
+        "destination": "53",
+        "moveDescription": "Walking out of the forest you reach a large pit with few foot holds on the side. Several large leaves seem strong enough to jump from as well giving you a few options to traverse to the other side."
+      }
+    ]
+  },
+  "51": {
+    "depth": "2",
+     "TrueX": "-553",
+    "TrueZ": "2030",
+    "x": "178",
+    "y": "378",
+    "roomDescription": "Sharp edges of gem stab at you from inside an extremely large geode. A stream of water cuts through the center of the amethyst and into a small opening to the west.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "50",
+        "moveDescription": "Stepping away from the geode you decide to head back into the mushroom forest."
+      }
+    ]
+  },
+  "52": {
+    "depth": "2",
+     "TrueX": "-521",
+    "TrueZ": "2048",
+    "x": "98",
+    "y": "529",
+    "roomDescription": "A patch of pumpkins surrounds a small run down dwelling. Silk is strung, seemingly more as decoration than through age.",
+    "moveDescriptions": "There is a path north.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "50",
+        "moveDescription": "The small abode, while interesting, seems to offer little in what you are looking for. You walk back into the mushroom forest."
+      }
+    ]
+  },
+  "53": {
+    "depth": "2",
+     "TrueX": "-552",
+    "TrueZ": "2015",
+    "x": "272",
+    "y": "393",
+    "roomDescription": "You have little foot room at the edge of this giant underground lake. Small lights shimmer in the murky water, seemingly taunting you to jump in.",
+    "moveDescriptions": "There is a path north, southeast, southwest, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "54",
+        "moveDescription": "A small trip across the water leads you to the same coastline, although just a a bit further north."
+      },
+      {
+        "direction": "SE",
+        "destination": "50",
+        "moveDescription": "Heading across a large pit through some help of some sturdy leaves you reach a realitively large mushroom forest."
+      },
+      {
+        "direction": "SW",
+        "destination": "55",
+        "moveDescription": "Following the southern wall, you end up at a small cove."
+      },
+      {
+        "direction": "NW",
+        "destination": "64",
+        "moveDescription": "You head out towards a large ship centered in the lake. Getting on board on this side is quite easy, as an old ladder, covered in some webs, allows you to quickly get on deck."
+      }
+    ]
+  },
+  "54": {
+    "depth": "2",
+     "TrueX": "-541",
+    "TrueZ": "1987",
+    "x": "360",
+    "y": "398",
+    "roomDescription": "The water’s edge is calmer here than other places around the lake. A little further down the bank you spot some tridents starting to rust over from lack of care. Above you, you spot a small spark of light. Jumping onto the ledge you find a small opening containing an egg painted to look like rolling mounds of coffee.",
+    "moveDescriptions": "There is a path northeast, south, and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "70",
+        "moveDescription": "The parkour here seems much tougher than elsewhere in the cave, and although they weren't a part of the parkour the spiders seem to have made it their mission to add webs to stop you from advancing."
+      },
+      {
+        "direction": "SS",
+        "destination": "53",
+        "moveDescription": "Moving across the lake you reach a new point of exit along the southern wall."
+      },
+      {
+        "direction": "WW",
+        "destination": "64",
+        "moveDescription": "You decide to swim towards the ship marooned in the lake. Getting on board is a simple task as a large ladder allows you to reach the web infested deck."
+      }
+    ]
+  },
+  "55": {
+    "depth": "2",
+     "TrueX": "-583",
+    "TrueZ": "2031",
+    "x": "178",
+    "y": "224",
+    "roomDescription": "This secluded part of the lake has a couple of small fish swimming around. It seems time still hasn’t removed all the animals from this place, only the harmful ones.",
+    "moveDescriptions": "There is a path north, northeast, and east.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "64",
+        "moveDescription": "Leaving the small cove you decide to go to the ship centered on the lake. From this direction you can tell the age of the ship as several webs are strewn about the stern."
+      },
+      {
+        "direction": "NE",
+        "destination": "53",
+        "moveDescription": "Following the southern wall you reach a section that leads away from the lake."
+      },
+      {
+        "direction": "EE",
+        "destination": "56",
+        "moveDescription": "Walking further down the cove you enter a more secluded section."
+      }
+    ]
+  },
+  "56": {
+    "depth": "2",
+     "TrueX": "-569",
+    "TrueZ": "2027",
+    "x": "197",
+    "y": "296",
+    "roomDescription": "Even cooped up here you can hear the light splashing of the lake around you amplified by the smooth walls of this nook.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "55",
+        "moveDescription": "Decided to leave the secluded area you walk back to the water."
+      }
+    ]
+  },
+  "57": {
+    "depth": "2",
+     "TrueX": "-595",
+    "TrueZ": "2019",
+    "x": "236",
+    "y": "163",
+    "roomDescription": "Wading in the water you find several pieces of gold somehow floating on the surface. Avoiding these strange coins seems to be rather difficult though, as they seem to be pulled towards you whenever you get somewhat close.",
+    "moveDescriptions": "There is a path north, northeast, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "59",
+        "moveDescription": "Going north is a quick swim before reaching a dry stretch of cave."
+      },
+      {
+        "direction": "NE",
+        "destination": "64",
+        "moveDescription": "Going back to the ship from this side is quite the task as there is nothing but webs "
+      },
+      {
+        "direction": "SS",
+        "destination": "58",
+        "moveDescription": "Going south you reach a small stretch of land to rest your legs from swimming."
+      }
+    ]
+  },
+  "58": {
+    "depth": "2",
+     "TrueX": "-597",
+    "TrueZ": "2032",
+    "x": "182",
+    "y": "163",
+    "roomDescription": "The inlet stops just before a small stone platform bare of anything notable. A glint of light shines beneath the water here, and after following a short underwater tunnel, you find an egg colored in a black and white swirl pattern.",
+    "moveDescriptions": "There is a path north.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "57",
+        "moveDescription": "Deciding you have found what you need, you dive back into the water and head towards the main part of the lake."
+      }
+    ]
+  },
+  "59": {
+    "depth": "2",
+     "TrueX": "-597",
+    "TrueZ": "2010",
+    "x": "286",
+    "y": "163",
+    "roomDescription": "The inlet here has a small stone platform with some fairly shallow water. Some lichen glows here, giving off some light in the otherwise dark corner.",
+    "moveDescriptions": "There is a path south.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "57",
+        "moveDescription": "Having rested your legs, you jump back into the water."
+      }
+    ]
+  },
+  "60": {
+    "depth": "2",
+     "TrueX": "-598",
+    "TrueZ": "1998",
+    "x": "359",
+    "y": "168",
+    "roomDescription": "Some vines are hanging here, almost reaching the water. At the back of the area the stone shores up into a small piece of dry land.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "64",
+        "moveDescription": "Leaving the stretch of land and heading back to the ship you come across some spiders at the bow spinning some webs."
+      }
+    ]
+  },
+  "61": {
+    "depth": "2",
+     "TrueX": "-585",
+    "TrueZ": "1978",
+    "x": "442",
+    "y": "213",
+    "roomDescription": "You are at a larger shore of the lake, with paths on land leading away. A small room can be seen to the north, although it is completely blocked by an iron grate.",
+    "moveDescriptions": "There is a path southeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "64",
+        "moveDescription": "The webs along the bow of the ship seem more plentiful than you have noticed before, although you do see several more spiders to the north anyway."
+      },
+      {
+        "direction": "WW",
+        "destination": "65",
+        "moveDescription": "Heading away from the lake you take a quick turn left and find a small nook"
+      },
+      {
+        "direction": "NW",
+        "destination": "66",
+        "moveDescription": "Going directly away from the lake leads you down a small pathway towards the next room."
+      }
+    ]
+  },
+  "62": {
+    "depth": "2",
+     "TrueX": "-543",
+    "TrueZ": "1971",
+    "x": "470",
+    "y": "408",
+    "roomDescription": "Although the lake is out of sight from this corner, the sounds of the lake still reverberate around you. The corner is relatively clear of interesting points, but a glint of light catches your eye at the back of the hook. Climbing through the small opening, you spot an egg colored to look like a surgeon with a singular letter on the nametag.",
+    "moveDescriptions": "There is a path southwest.",
+    "moves": [
+      {
+        "direction": "SW",
+        "destination": "64",
+        "moveDescription": "Moving back towards the ship you have to push your way through some webs as several spiders nearby have made a small home while you were searching."
+      }
+    ]
+  },
+  "63": {
+    "depth": "2",
+     "TrueX": "-546",
+    "TrueZ": "1955",
+    "x": "556",
+    "y": "416",
+    "roomDescription": "This large room seems to mostly be an intersection to be used to reach other areas. Any defining features seem like nothing when looking past it into the other rooms. ",
+    "moveDescriptions": "There is a path east, southeast, south, southwest, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "69",
+        "moveDescription": "Heading down the path you come across several cracks in the floor leading to pits of lava before making your way to a large tomb."
+      },
+      {
+        "direction": "SE",
+        "destination": "77",
+        "moveDescription": "Going upwards leads you directly through several webs as spiders skitter furiously around you. Reaching up the vines you grab on to even more webs before you make your way into the main nest."
+      },
+      {
+        "direction": "SS",
+        "destination": "70",
+        "moveDescription": "Making your way over you find small foot holds over a pool of lava. With some shaky footing you manage to make your way across"
+      },
+      {
+        "direction": "SW",
+        "destination": "64",
+        "moveDescription": "Walking down to the lake, you decide to take a swim towards the ship that has moored on the rocks."
+      },
+      {
+        "direction": "WW",
+        "destination": "67",
+        "moveDescription": "Stepping away from the spiders you walk towards a large room of rock and magma."
+      }
+    ]
+  },
+  "64": {
+    "depth": "2",
+     "TrueX": "-572",
+    "TrueZ": "2000",
+    "x": "340",
+    "y": "275",
+    "roomDescription": "You don’t know how this ship got here, it really shouldn’t be possible considering its size relative to the rest of the cave. The feeling of confusion passes quickly as exploring the rest of the ship results in riches galore. Coins and crowns are scattered throughout the deck. You also find some small blue motes of light around, though without knowing what they are, you think that keeping your distance is the best course of action here.",
+    "moveDescriptions": "There is a path north, northeast, east, southeast, south, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "63",
+        "moveDescription": "The webs of the spiders seem to get denser as you make your way to the northern shore."
+      },
+      {
+        "direction": "NE",
+        "destination": "62",
+        "moveDescription": "As you're about to dive off of the ship you notice a large rock that you would have dived into. Climbing down the ladder gives you a bit more safety in getting into the water."
+      },
+      {
+        "direction": "EE",
+        "destination": "54",
+        "moveDescription": "Getting your way to the eastern shore is a quick task."
+      },
+      {
+        "direction": "SE",
+        "destination": "53",
+        "moveDescription": "As you're swimming to the next intersection you notice a stream of water falling from the ceiling, likely being the lake's source of water."
+      },
+      {
+        "direction": "SS",
+        "destination": "55",
+        "moveDescription": "Diving off of the stern of the ship you head to the closest section of dry land."
+      },
+      {
+        "direction": "SW",
+        "destination": "57",
+        "moveDescription": "Jumping off of the western side of the ship you head towards the thinner section of the lake."
+      },
+      {
+        "direction": "WW",
+        "destination": "60",
+        "moveDescription": "Diving off of the western side you find a larger cove and decide to explore."
+      },
+      {
+        "direction": "NW",
+        "destination": "61",
+        "moveDescription": "Jumping off of the bow you spot a small caged off area and head in that direction."
+      }
+    ]
+  },
+  "65": {
+    "depth": "2",
+     "TrueX": "-590",
+    "TrueZ": "1989",
+    "x": "386",
+    "y": "199",
+    "roomDescription": "A dead end in these caves seems to be commonplace, and sadly another one has come upon you here too. There’s not really anything noteworthy here either.",
+    "moveDescriptions": "There is a path northwest.",
+    "moves": [
+      {
+        "direction": "NW",
+        "destination": "61",
+        "moveDescription": "Deciding that you have had enough rest in this area you start to head back to the lake."
+      }
+    ]
+  },
+  "66": {
+    "depth": "2",
+     "TrueX": "-593",
+    "TrueZ": "1952",
+    "x": "573",
+    "y": "177",
+    "roomDescription": "A large copper door stands tall in the corner, with several danger signs posted around. A small box stands to the side with a key hole as clear as day. A small sign stands tall nearby \"Crosses, Keys\".",
+    "moveDescriptions": "There is a path north, east, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "80",
+        "moveDescription": "With the door open you make your way down the stairs. The eerie echo of every move you take makes you slowly quiet your steps."
+      },
+      {
+        "direction": "EE",
+        "destination": "67",
+        "moveDescription": "Heading east you come across a large room of rock and magma. Surprisingly the spiders have tried to inhabit the area as you can see multiple webs strung about."
+      },
+      {
+        "direction": "SS",
+        "destination": "61",
+        "moveDescription": "Walking away from the door you come across a path to a large lake."
+      }
+    ]
+  },
+  "67": {
+    "depth": "2",
+     "TrueX": "-568",
+    "TrueZ": "1954",
+    "x": "574",
+    "y": "302",
+    "roomDescription": "Waves of heat radiate from the chasms below, unfettered by the amount of dripstone surrounding you. Navigation around the room seems next to impossible, as any step you take could end with you being stabbed by the razor sharp spikes or tumbling into the lava below. A small section of the area seems to allow for a breif respite from the heat, but that is all it allows. A glint of light shines bright at a secluded corner. Following a short path leads you to an egg painted like the newest Apple slime.",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "63",
+        "moveDescription": "Moving away from all of the heat, you find yourself closer to the spiders that have been"
+      },
+      {
+        "direction": "WW",
+        "destination": "66",
+        "moveDescription": "Heading west you find a small walkway towards an imposing door."
+      }
+    ]
+  },
+  "68": {
+    "depth": "2",
+     "TrueX": "-509",
+    "TrueZ": "1974",
+    "x": "476",
+    "y": "571",
+    "roomDescription": "Stopping right next to the bridge you notice a shimmer in the wall. Crawling into a small tunnel you spot an egg painted like one of the few enjoyers of a Chicago sports team.",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "48",
+        "moveDescription": "Deciding to go back to the main room, you walk through some webs that several spider have tried to establish in the cave."
+      },
+      {
+        "direction": "WW",
+        "destination": "78",
+        "moveDescription": "Deciding to go back to the main room, you walk through some webs that several spider have tried to establish in the cave."
+      }
+    ]
+  },
+  "69": {
+    "depth": "2",
+     "TrueX": "-535",
+    "TrueZ": "1943",
+    "x": "596",
+    "y": "519",
+    "roomDescription": "Though we’re far from the crypts up above an extravagant tomb lies before you. Riches galore are off to one side of the larger room, with what seems to be a small switch that has broken down with age. Following the line to a broken down door you find an egg! It is painted like a fully built first gen Scion.",
+    "moveDescriptions": "There is a path southwest and west.",
+    "moves": [
+      {
+        "direction": "SW",
+        "destination": "70",
+        "moveDescription": "Jumping over the crevices of the room you make it to a small intersection."
+      },
+      {
+        "direction": "WW",
+        "destination": "63",
+        "moveDescription": "Heading upwards towards several webs, you encounter several spiders skittering around a new intersection."
+      }
+    ]
+  },
+  "70": {
+    "depth": "2",
+     "TrueX": "-532",
+    "TrueZ": "1976",
+    "x": "456",
+    "y": "488",
+    "roomDescription": "The room here is much more of a true intersection, as there is very little in the way of interesting features. To your south a sort of parkour section seems like a particular challenge to get across, while to your north a large tomb sits among a slew of lava.",
+    "moveDescriptions": "There is a path north, southeast, southwest, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "69",
+        "moveDescription": "Moving towards the tomb you have to hop over several pits of lava before you are on stable ground."
+      },
+      {
+        "direction": "SE",
+        "destination": "71",
+        "moveDescription": "Seeing a bridge in the distance, you head towards a large and open room."
+      },
+      {
+        "direction": "SW",
+        "destination": "54",
+        "moveDescription": "A small section of harmful flowers makes you extremely careful as you make your way across the small corridor."
+      },
+      {
+        "direction": "NW",
+        "destination": "63",
+        "moveDescription": "Moving up to a small pool of lava, you make your way across before being greeted by several webs in the next intersection."
+      }
+    ]
+  },
+  "71": {
+    "depth": "2",
+     "TrueX": "-513",
+    "TrueZ": "1981",
+    "x": "402",
+    "y": "560",
+    "roomDescription": "The large mostly empty room seems to be a central room of this level, due to the wear from every footstep that has crossed the floor. A bridge towers above you connecting a path above you, but you see no way to reach it from where you are standing.",
+    "moveDescriptions": "There is a path northeast, east, south, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "75",
+        "moveDescription": "You feel some heat eminating from the northeastern passage, and decide to investigate it."
+      },
+      {
+        "direction": "EE",
+        "destination": "74",
+        "moveDescription": "Heading into another wide open area you don't really notice anything out of the ordinary."
+      },
+      {
+        "direction": "SS",
+        "destination": "72",
+        "moveDescription": "Seeing some life in the form of some moss you walk over to see what is around the corner."
+      },
+      {
+        "direction": "NW",
+        "destination": "70",
+        "moveDescription": "A small intersection sprawling with webs peak your interest and you decide to investigate."
+      }
+    ]
+  },
+  "72": {
+    "depth": "2",
+     "TrueX": "-512",
+    "TrueZ": "1997",
+    "x": "336",
+    "y": "590",
+    "roomDescription": "A small patch of green in the cave is an unusual but welcome sight, as moss and small spots of brush are growing near a small pond. Several axolotls call this room their home, but are friendly to you, allowing you to take a small soak in the warm waters.",
+    "moveDescriptions": "There is a path southeast, south, and west.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "73",
+        "moveDescription": "As you start to move towards the end of a small cave you start to cough and gag as the scent of rotting meat is extremely noticable."
+      },
+      {
+        "direction": "SS",
+        "destination": "50",
+        "moveDescription": "Saying goodbye to the axolotls you make your way towards a large mushroom forest."
+      },
+      {
+        "direction": "WW",
+        "destination": "71",
+        "moveDescription": "Stepping around a corner you spot a bridge amidst a large room."
+      }
+    ]
+  },
+  "73": {
+    "depth": "2",
+     "TrueX": "-480",
+    "TrueZ": "2008",
+    "x": "288",
+    "y": "713",
+    "roomDescription": "The scene of rot and decay is immediately apparent as several large beasts and a few of its children have succumbed to something, likely starvation. This would explain the lack of any animals in these caves, and without any new explorers their resources likely ran out a while ago.",
+    "moveDescriptions": "There is a path west.",
+    "moves": [
+      {
+        "direction": "WW",
+        "destination": "72",
+        "moveDescription": "Having enough of the scene and scent you decide that you want to spend more time with the axolotls from before."
+      }
+    ]
+  },
+  "74": {
+    "depth": "2",
+     "TrueX": "-493",
+    "TrueZ": "1991",
+    "x": "365",
+    "y": "667",
+    "roomDescription": "The room has very few interesting features, with a singular pillar in the center only serving as a way to break up the emptiness. To the southeast is the only splash of color with the dark brown of a fenced in overlook coming into view.",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "47",
+        "moveDescription": "Moving towards a scene of heat, you pass by several traps that seem to have been unused. Among these traps several spiders have spun some webs."
+      },
+      {
+        "direction": "WW",
+        "destination": "71",
+        "moveDescription": "You spot a large room to the west and make your way over."
+      }
+    ]
+  },
+  "75": {
+    "depth": "2",
+     "TrueX": "-504",
+    "TrueZ": "1953",
+    "x": "578",
+    "y": "614",
+    "roomDescription": "The waves of heat from the nearby lava pools pound against your face. Next to you a chain hovers dangerously above a pit of fire. You see a couple of ledges that connect to adjacent rooms that are just barely too high to reach. It looks like you’ll have to go the long way around. ",
+    "moveDescriptions": "There is a path east and south.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "48",
+        "moveDescription": "A small chain hanging above a pit of hot rocks is your only way across, luckly the chain is fairly stable as you step on top of it."
+      },
+      {
+        "direction": "SS",
+        "destination": "71",
+        "moveDescription": "Moving away from the heat and steam you come across a large bridge above you."
+      }
+    ]
+  },
+  "76": {
+    "depth": "2",
+     "TrueX": "-482",
+    "TrueZ": "2004",
+    "x": "306",
+    "y": "728",
+    "roomDescription": "The room overlooks a rather sparse section of the caves below. With only a decrepit fence preventing you from going down, you realize that it wouldn’t take much to get over it.",
+    "moveDescriptions": "There is a path southeast and northwest.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "50",
+        "moveDescription": "Deciding to go back to the mushroom forest you turn back to where you came from."
+      },
+      {
+        "direction": "NW",
+        "destination": "74",
+        "moveDescription": "Jumping the fence really wasn't all that hard, although now you must figure out where you are."
+      }
+    ]
+  },
+  "77": {
+    "depth": "2",
+     "TrueX": "-492",
+    "TrueZ": "1970",
+    "x": "476",
+    "y": "671",
+    "roomDescription": "The denseness of the silk here is beyond what anyone could have expected. Several larger cocoons suggest the smaller spiders you have seen around before are not the only kind in these caves. Hearing the scuttering of more spiders around you, it might be best to get out of here quickly.",
+    "moveDescriptions": "There is a path southeast and northwest.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "46",
+        "moveDescription": "The spiders seem pleased to be left alone and don't follow you down towards the stairs to the crypt."
+      },
+      {
+        "direction": "NW",
+        "destination": "63",
+        "moveDescription": "Jumping from the nest you catch a vine before decending back to the cave floor. Several spiders watch you as you leave their nest."
+      }
+    ]
+  },
+  "78": {
+    "depth": "2",
+     "TrueX": "-535",
+    "TrueZ": "2005",
+    "x": "330",
+    "y": "489",
+    "roomDescription": "Looking around you realize how great of a vantage point this raised section of this cave is. Several overlooks, one into the mushroom forest, the area below the bridge you went across earlier, a small lab below you with a ladder to the south, and an underground lake exist. Besides the one to the lake, the overlooks are fairly unprotected, allowing you to quickly descend to the different areas. A small passage to the southwest gleams towards you. Going into it you spot an egg painted to look like some finely aged steak.",
+    "moveDescriptions": "There is a path north, northeast, southeast, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "68",
+        "moveDescription": "Heading back over the bridge that you walked here on you ignore the egg that you already found and quickly make it back to the lava area near the stairs."
+      },
+      {
+        "direction": "NE",
+        "destination": "71",
+        "moveDescription": "You decide that jumping off of the bridge to the cave system below."
+      },
+      {
+        "direction": "SE",
+        "destination": "50",
+        "moveDescription": "Jumping off of the ledge you make your way to the center of the mushroom forest."
+      },
+      {
+        "direction": "SS",
+        "destination": "79",
+        "moveDescription": "Decending down the ladder you hear a slight rumble of metal before you reach the bottom."
+      }
+    ]
+  },
+  "79": {
+    "depth": "2",
+     "TrueX": "-527",
+    "TrueZ": "2004",
+    "x": "279",
+    "y": "492",
+    "roomDescription": "The lab is incredibly disorganized, with several different scenes taking place all at once. Towards the west are several thousand books frantically shoved into bookcases and scattered around the large library of the place. To the south is a large pool of lava, clearly being used as a forge for the large iron body being constructed. Finally to the east you see the fruits of the lab, as several metal constructs look at you from within their cages.",
+    "moveDescriptions": "There is a path north up a ladder.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "78",
+        "moveDescription": "Climbing back up the ladder you came down on you find yourself with a new decision to make."
+      }
+    ]
+  }
+}

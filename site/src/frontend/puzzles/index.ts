@@ -64,6 +64,7 @@ import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
+import Deepfrost from "./wiry-ray";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
@@ -140,6 +141,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   this_is_just_a_test: ThisIsJustATest,
 
   // Background Check
+  deepfrost: Deepfrost,
   knights_of_the_square_table: KnightsOfTheSquareTable,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
   where_am_i: WhereAmI,
