@@ -87,7 +87,7 @@
           };
           modules = (builtins.attrValues self.terranixModules) ++ modules;
           extraArgs = {
-            inherit self;
+            inherit self radio-media;
           };
         };
         mkTFModule = modules: let
