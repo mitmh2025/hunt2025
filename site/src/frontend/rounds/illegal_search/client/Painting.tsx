@@ -10,21 +10,12 @@ import heavy_thump from "../assets/audio/heavy_thump.mp3";
 import light_thump from "../assets/audio/light_thump.mp3";
 import medium_thump from "../assets/audio/medium_thump.mp3";
 import very_heavy_thump from "../assets/audio/very_heavy_thump.mp3";
+import clamp from "./clamp";
 
 type Pos = {
   x: number;
   y: number;
 };
-
-function clamp(value: number, min: number, max: number): number {
-  if (value < min) {
-    return min;
-  }
-  if (value > max) {
-    return max;
-  }
-  return value;
-}
 
 function audioFileForFallHeight(fallHeight: number): string {
   if (fallHeight < 300) {

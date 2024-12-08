@@ -4,6 +4,7 @@ import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.
 import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.jpg";
 import main_west_bg from "./assets/main_west.jpg";
+import rug_bg from "./assets/rug/rug_bg.svg";
 import secret_bg from "./assets/secret.jpg";
 import type {
   Modal,
@@ -372,7 +373,7 @@ const ALL_NODES: NodeInternal[] = [
 
   {
     id: "rug",
-    background: "", // TODO: background
+    background: rug_bg, // TODO: background
     placedAssets: [],
     navigations: [
       {
@@ -380,16 +381,14 @@ const ALL_NODES: NodeInternal[] = [
           left: -1,
           right: 1,
           top: 1,
-          bottom: 0.1,
+          bottom: 0.8,
         },
         cursor: "n-resize",
         destId: "main_east",
       },
       // back up to main_east
     ],
-    interactions: [
-      // rug
-    ],
+    interactions: [{ plugin: "rug" }],
     sounds: [
       // pulling rug back
     ],

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="91.999878"
+   height="101.99988"
+   viewBox="0 0 91.999878 101.99988"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="swatch151">
+      <stop
+         style="stop-color:#210c00;stop-opacity:1;"
+         offset="0"
+         id="stop151" />
+    </linearGradient>
+  </defs>
+  <g
+     id="layer4"
+     style="display:inline"
+     transform="translate(-808,-566)">
+    <g
+       id="g1515"
+       style="display:inline">
+      <path
+         style="display:inline;opacity:1;fill:#473d37;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+         d="m 885.99986,568.00001 12,12 v 85.99987 l -12,-12 z"
+         id="path1515" />
+      <path
+         style="display:inline;opacity:1;fill:#605148;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+         d="m 809.99998,653.99988 12,12 h 75.99988 l -12,-12 z"
+         id="path1514" />
+      <rect
+         style="display:inline;fill:#554d48;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect1515"
+         width="75.999886"
+         height="85.999886"
+         x="808.75134"
+         y="765.30579"
+         transform="matrix(1,0,0,-1,1.248638,1419.3057)" />
+    </g>
+  </g>
+</svg>
