@@ -337,7 +337,7 @@ export default function FloorSafe({
   }, [opened]);
 
   const modalAssets = node.interactionModals?.map((modal) => {
-    const { area, asset } = modal;
+    const { area, asset } = modal.placedAsset ?? modal;
     const placedAsset = { area, asset };
     return <Asset key={modal.asset} placedAsset={placedAsset} />;
   });
@@ -354,6 +354,8 @@ export default function FloorSafe({
   return (
     <FloorSafeWrapper>
       <FullImg src={numberlock_box} />
+      {modalAssets}
+      {modals}
       <NumberLockPadWrapper $opened={opened}>
         <Display code={code} />
         <KeyPad
@@ -396,8 +398,6 @@ export default function FloorSafe({
           }}
         />
       </NumberLockPadWrapper>
-      {modalAssets}
-      {modals}
     </FloorSafeWrapper>
   );
 }

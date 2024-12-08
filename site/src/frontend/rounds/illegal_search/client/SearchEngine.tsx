@@ -503,8 +503,8 @@ const SearchEngine = ({
         onMouseUp={shouldCapture ? mouseUp : undefined}
       >
         {assets}
-        {navigations}
         {interactions}
+        {navigations}
         {modals}
         {modalOverlay}
         {devtoolsOverlay}

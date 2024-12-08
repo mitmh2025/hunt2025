@@ -10,7 +10,7 @@
     "build": "rspack --mode=production --config ./rspack.config.mjs",
     "build-dev": "rspack --mode=development --config ./rspack.config.mjs",
     "start": "npm run build && node ./dist/server-bundle.js",
-    "start-watch": "npm run build-dev && concurrently --kill-others \"node --watch --enable-source-maps ./dist/server-bundle.js\" \"rspack --mode=development --config ./rspack.config.mjs --watch\" \"livereload ./dist -w 1000\"",
+    "start-watch": "npm run build-dev && concurrently --kill-others \"node --watch --enable-source-maps ./dist/server-bundle.js\" \"rspack --mode=development --config ./rspack.config.mjs --watch\" \"livereload ./dist -w 3000\"",
     "check": "tsc && tsc -p worker/tsconfig.json && tsc -p ops/tsconfig.json && tsc -p ops/server/tsconfig.json && prettier . --check && eslint .",
     "format": "prettier . --write && eslint . --fix",
     "knex": "node --import tsx/esm ./node_modules/.bin/knex",
