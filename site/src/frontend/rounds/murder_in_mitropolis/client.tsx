@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import globalDatasetManager from "../../client/DatasetManager";
+import useDataset from "../../client/useDataset";
 import MurderBody from "./MurderBody";
 import { type MurderState } from "./types";
 
@@ -12,29 +12,8 @@ const MurderManager = ({
   initialState: MurderState;
   initialTeamState: TeamHuntState;
 }) => {
-  const [state, setState] = useState<MurderState>(initialState);
-  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
-
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "murder_in_mitropolis",
-      undefined,
-      (value: object) => {
-        setState(value as MurderState);
-      },
-    );
-    return stop;
-  }, []);
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "team_state",
-      undefined,
-      (value: object) => {
-        setTeamState(value as TeamHuntState);
-      },
-    );
-    return stop;
-  }, []);
+  const state = useDataset("murder_in_mitropolis", undefined, initialState);
+  const teamState = useDataset("team_state", undefined, initialTeamState);
 
   return <MurderBody state={state} teamState={teamState} />;
 };

@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
-import globalDatasetManager from "../../../client/DatasetManager";
+import useDataset from "../../../client/useDataset";
 import PuzzleLink from "../../../components/PuzzleLink";
 import {
   type ScreenArea,
@@ -237,7 +237,6 @@ const SearchEngine = ({
   initialNode: Node;
   initialTeamState: TeamHuntState;
 }) => {
-  const [teamState, setTeamState] = useState<TeamHuntState>(initialTeamState);
   const [node, setNode] = useState<Node>(initialNode);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalShown, setModalShown] = useState<
@@ -356,16 +355,7 @@ const SearchEngine = ({
     };
   }, [node, onGoBack]);
 
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "team_state",
-      undefined,
-      (value: object) => {
-        setTeamState(value as TeamHuntState);
-      },
-    );
-    return stop;
-  }, []);
+  const teamState = useDataset("team_state", undefined, initialTeamState);
 
   const assets = node.placedAssets.map((placedAsset) => {
     return (

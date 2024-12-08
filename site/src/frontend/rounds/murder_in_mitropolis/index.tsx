@@ -33,8 +33,9 @@ const MURDER_SLOTS = [
 ] as const;
 
 export function murderState(teamState: TeamHuntState): MurderState {
+  const epoch = teamState.epoch;
   const round = teamState.rounds.murder_in_mitropolis;
-  if (!round) return { items: [] };
+  if (!round) return { epoch, items: [] };
 
   const items = MURDER_SLOTS.flatMap((slotId) => {
     const slot = round.slots[slotId];
@@ -48,7 +49,7 @@ export function murderState(teamState: TeamHuntState): MurderState {
     };
   });
 
-  return { items };
+  return { epoch, items };
 }
 
 const MurderRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {

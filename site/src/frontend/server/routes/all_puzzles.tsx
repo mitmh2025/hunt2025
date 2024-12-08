@@ -59,6 +59,7 @@ export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
     return renderedRound;
   });
   return {
+    epoch: teamState.epoch,
     rounds,
     currency: teamState.currency,
   };

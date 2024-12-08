@@ -76,7 +76,7 @@ export function missingDiamondState(
   teamState: TeamHuntState,
 ): MissingDiamondState {
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
-  return { items };
+  return { epoch: teamState.epoch, items };
 }
 
 const MissingDiamondRoundPage = ({

@@ -15,6 +15,7 @@ export const CannedResponseLinkSchema = z.object({
 
 export const GuessStatus = z.enum(["correct", "incorrect", "other"]);
 export const GuessSchema = z.object({
+  id: z.number(),
   canonical_input: z.string(),
   link: CannedResponseLinkSchema.optional(),
   status: GuessStatus,

@@ -12,6 +12,7 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
   });
   const currency = teamState.currency;
   return {
+    epoch: teamState.epoch,
     rounds,
     currency,
   };

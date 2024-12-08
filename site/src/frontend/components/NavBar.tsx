@@ -264,6 +264,7 @@ export type NavBarRoundData = {
 };
 
 export type NavBarState = {
+  epoch: number;
   rounds: NavBarRoundData[];
   currency: number;
 };

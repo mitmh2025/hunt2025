@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import DevPane from "../components/DevPane";
 import { type DevtoolsState } from "../server/devtools";
-import globalDatasetManager from "./DatasetManager";
+import useDataset from "./useDataset";
 
 const DevPaneContainer = styled.div`
   position: absolute;
@@ -26,8 +26,8 @@ const DevPaneToggleButton = styled.button`
 const HAS_STORAGE = typeof Storage !== "undefined";
 const COLLAPSED_KEY = "devtools_collapsed";
 
+const initialState: DevtoolsState = { epoch: -1 };
 const DevtoolsManager = () => {
-  const [state, setState] = useState<DevtoolsState | undefined>(undefined);
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     if (HAS_STORAGE) {
       const value = localStorage.getItem(COLLAPSED_KEY);
@@ -45,17 +45,8 @@ const DevtoolsManager = () => {
       localStorage.setItem(COLLAPSED_KEY, collapsed ? "true" : "false");
     }
   }, [collapsed]);
-  useEffect(() => {
-    const stop = globalDatasetManager.watch(
-      "dev",
-      undefined,
-      (value: object) => {
-        setState(value as DevtoolsState);
-      },
-    );
-    return stop;
-  }, []);
 
+  const state = useDataset("dev", undefined, initialState);
   const buttonLabel = collapsed ? "+" : "-";
   const title = collapsed ? "Show devtools" : "Hide devtools";
   return (

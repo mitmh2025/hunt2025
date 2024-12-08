@@ -113,35 +113,55 @@ export const modalPostHandler: RequestHandler<
   }
 });
 
-export function painting2State(teamState: TeamHuntState): object {
+export function painting2State(teamState: TeamHuntState): {
+  epoch: number;
+  switches?: unknown;
+} {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(
       LOCK_DATA.painting2.gateId,
     ) ?? false;
-  return solved ? { switches: LOCK_DATA.painting2.answer } : {};
+  return solved
+    ? { epoch: teamState.epoch, switches: LOCK_DATA.painting2.answer }
+    : { epoch: teamState.epoch };
 }
 
-export function rugState(teamState: TeamHuntState): object {
+export function rugState(teamState: TeamHuntState): {
+  epoch: number;
+  value?: unknown;
+} {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.rug.gateId) ??
     false;
-  return solved ? { value: LOCK_DATA.rug.answer } : {};
+  return solved
+    ? { epoch: teamState.epoch, value: LOCK_DATA.rug.answer }
+    : { epoch: teamState.epoch };
 }
 
-export function cryptexState(teamState: TeamHuntState): object {
+export function cryptexState(teamState: TeamHuntState): {
+  epoch: number;
+  text?: unknown;
+} {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(
       LOCK_DATA.cryptex.gateId,
     ) ?? false;
-  return solved ? { text: LOCK_DATA.cryptex.answer } : {};
+  return solved
+    ? { epoch: teamState.epoch, text: LOCK_DATA.cryptex.answer }
+    : { epoch: teamState.epoch };
 }
 
-export function bookcaseState(teamState: TeamHuntState): object {
+export function bookcaseState(teamState: TeamHuntState): {
+  epoch: number;
+  books?: unknown;
+} {
   const solved =
     teamState.rounds.illegal_search?.gates?.includes(
       LOCK_DATA.bookcase.gateId,
     ) ?? false;
-  return solved ? { books: LOCK_DATA.bookcase.answer } : {};
+  return solved
+    ? { epoch: teamState.epoch, books: LOCK_DATA.bookcase.answer }
+    : { epoch: teamState.epoch };
 }
 
 async function handleCorrectLockSubmission(

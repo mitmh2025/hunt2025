@@ -25,9 +25,6 @@ export async function seed(knex: Knex): Promise<void> {
         await trx("teams").where("username", username).select("id").first()
       )?.id;
 
-      if (populator !== undefined && existing_id !== undefined) {
-        await trx("activity_log").where("team_id", existing_id).del();
-      }
       return existing_id;
     });
 
@@ -84,71 +81,81 @@ export async function seed(knex: Knex): Promise<void> {
     }
   };
 
+  const ensureActivityLogEntry = async (
+    mutator: ActivityLogMutator,
+    team_id: number,
+    type:
+      | "round_unlocked"
+      | "puzzle_unlockable"
+      | "puzzle_unlocked"
+      | "gate_completed",
+    slug: string,
+  ) => {
+    if (
+      !mutator.log.some(
+        (entry) =>
+          (entry.team_id === team_id || entry.team_id === undefined) &&
+          entry.type === type &&
+          "slug" in entry &&
+          entry.slug === slug,
+      )
+    ) {
+      await mutator.appendLog({
+        team_id,
+        type,
+        slug,
+      });
+    }
+  };
+
   await createTeam("team");
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
-      await mutator.appendLog({
+      await ensureActivityLogEntry(
+        mutator,
         team_id,
-        type: "round_unlocked",
-        slug: round.slug,
-      });
+        "round_unlocked" as const,
+        round.slug,
+      );
     }
     for (const slug of slugs) {
-      await mutator.appendLog({
-        team_id,
-        type: "puzzle_unlockable",
-        slug,
-      });
+      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlockable", slug);
     }
   });
   await createTeam("unlocked", async (team_id, mutator) => {
     // For the "unlocked" team: create puzzle_unlocked entries for all rounds & puzzles
     for (const round of HUNT.rounds) {
-      await mutator.appendLog({
+      await ensureActivityLogEntry(
+        mutator,
         team_id,
-        type: "round_unlocked",
-        slug: round.slug,
-      });
+        "round_unlocked",
+        round.slug,
+      );
     }
     for (const slug of slugs) {
-      await mutator.appendLog({
-        team_id,
-        type: "puzzle_unlocked",
-        slug,
-      });
+      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
     }
     for (const gate of gates) {
-      await mutator.appendLog({
-        team_id,
-        type: "gate_completed",
-        slug: gate,
-      });
+      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
     }
   });
   await createTeam("solved", async (team_id, mutator) => {
     // For the "solved" team:
     // unlock all rounds and puzzles
     for (const round of HUNT.rounds) {
-      await mutator.appendLog({
+      await ensureActivityLogEntry(
+        mutator,
         team_id,
-        type: "round_unlocked",
-        slug: round.slug,
-      });
+        "round_unlocked",
+        round.slug,
+      );
     }
     for (const slug of slugs) {
-      await mutator.appendLog({
-        team_id,
-        type: "puzzle_unlocked",
-        slug,
-      });
+      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
     }
     // satisfy all gates
     for (const gate of gates) {
-      await mutator.appendLog({
-        team_id,
-        type: "gate_completed",
-        slug: gate,
-      });
+      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
     }
     // mark all puzzles as solved
     // SQLite doesn't play nice with bulk inserts with json columns, so fall back
@@ -156,14 +163,23 @@ export async function seed(knex: Knex): Promise<void> {
     for (const slug of slugs) {
       const puzzle = PUZZLES[slug];
       const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
-      await mutator.appendLog({
-        team_id,
-        type: "puzzle_solved",
-        slug,
-        data: {
-          answer,
-        },
-      });
+      if (
+        !mutator.log.some(
+          (entry) =>
+            (entry.team_id === team_id || entry.team_id === undefined) &&
+            entry.type === "puzzle_solved" &&
+            entry.slug === slug,
+        )
+      ) {
+        await mutator.appendLog({
+          team_id,
+          type: "puzzle_solved",
+          slug,
+          data: {
+            answer,
+          },
+        });
+      }
     }
   });
 

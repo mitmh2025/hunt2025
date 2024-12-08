@@ -32,10 +32,10 @@ export type DevtoolsRound = {
 
 export type DevtoolsState = {
   epoch: number;
-  teamId: number;
-  teamName: string;
-  currency: number;
-  rounds: DevtoolsRound[];
+  state?: {
+    currency: number;
+    rounds: DevtoolsRound[];
+  };
 };
 
 function devtoolsPuzzleForSlot(
@@ -49,8 +49,8 @@ function devtoolsPuzzleForSlot(
   const puzzleState = teamState.puzzles[slug];
   const state =
     puzzleState?.locked === "unlocked" && !!puzzleState.answer
-      ? "solved"
-      : puzzleState?.locked ?? "locked";
+      ? ("solved" as const)
+      : puzzleState?.locked ?? ("locked" as const);
   return {
     slot: puzzleSlot.id,
     slug,
@@ -59,45 +59,53 @@ function devtoolsPuzzleForSlot(
   };
 }
 
-export function devtoolsState(teamState: TeamHuntState) {
+export function devtoolsState(teamState: TeamHuntState): DevtoolsState {
   if (process.env.NODE_ENV === "development") {
     return {
       epoch: teamState.epoch,
-      currency: teamState.currency,
-      rounds: HUNT.rounds.map((round) => {
-        return {
-          slug: round.slug,
-          title: round.title,
-          metas: round.puzzles
-            .filter((slot) => !!slot.is_meta)
-            .map((slot) => {
-              return devtoolsPuzzleForSlot(slot, teamState);
+      state: {
+        currency: teamState.currency,
+        rounds: HUNT.rounds.map((round) => {
+          return {
+            slug: round.slug,
+            title: round.title,
+            metas: round.puzzles
+              .filter((slot) => !!slot.is_meta)
+              .map((slot) => {
+                return devtoolsPuzzleForSlot(slot, teamState);
+              }),
+            puzzles: round.puzzles
+              .filter((slot) => !slot.is_meta)
+              .map((slot) => {
+                return devtoolsPuzzleForSlot(slot, teamState);
+              }),
+            gates: (round.gates ?? []).map((gate) => {
+              return {
+                id: gate.id,
+                open: !!teamState.rounds[round.slug]?.gates?.includes(gate.id),
+              };
             }),
-          puzzles: round.puzzles
-            .filter((slot) => !slot.is_meta)
-            .map((slot) => {
-              return devtoolsPuzzleForSlot(slot, teamState);
+            interactions: (round.interactions ?? []).map((interaction) => {
+              const state =
+                teamState.rounds[round.slug]?.interactions?.[interaction.id]
+                  ?.state ?? ("locked" as const);
+              return {
+                slug: interaction.id,
+                state,
+              };
             }),
-          gates: (round.gates ?? []).map((gate) => {
-            return {
-              id: gate.id,
-              open: !!teamState.rounds[round.slug]?.gates?.includes(gate.id),
-            };
-          }),
-          interactions: (round.interactions ?? []).map((interaction) => {
-            const state =
-              teamState.rounds[round.slug]?.interactions?.[interaction.id]
-                ?.state ?? "locked";
-            return {
-              slug: interaction.id,
-              state,
-            };
-          }),
-          state: round.slug in teamState.rounds ? "unlocked" : "locked",
-        };
-      }),
+            state:
+              round.slug in teamState.rounds
+                ? ("unlocked" as const)
+                : ("locked" as const),
+          };
+        }),
+      },
     };
   } else {
-    return {};
+    // Don't give anything away if not in development.
+    return {
+      epoch: -1,
+    };
   }
 }
