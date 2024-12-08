@@ -52,6 +52,7 @@ import BermudaTriangle from "./selfish-king";
 import The10000SheetExcelFile from "./shoddy-table";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
+import KnightsOfTheSquareTable from "./sore-ketchup";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import RecipeSubstitutions from "./svelte-pitch";
@@ -137,8 +138,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   this_is_just_a_test: ThisIsJustATest,
 
   // Background Check
-  where_am_i: WhereAmI,
+  knights_of_the_square_table: KnightsOfTheSquareTable,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
+  where_am_i: WhereAmI,
 
   // Murder in MITropolis
   do_the_packing: DoThePacking,
