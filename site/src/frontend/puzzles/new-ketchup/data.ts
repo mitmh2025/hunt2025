@@ -1,7 +1,7 @@
 export const MIN_CLUEPHRASE = "SKIPZEROESINDX";
 export const PUZZLE_ANSWER = "LITTLETOM";
 
-interface PuzzlePerson {
+type PuzzlePerson = {
   getName: (s?: PuzzleStatus) => string;
   getReplyUnsuccessful: (name: string) => string;
   getReplySuccessful: (name: string) => string;
@@ -10,13 +10,13 @@ interface PuzzlePerson {
   getPointer: (s?: PuzzleStatus) => Pointer;
 }
 
-export interface Person extends PuzzlePerson {
+export type Person = {
   getIntro: (name: string) => string;
-}
+} & PuzzlePerson
 
-export interface Agent extends PuzzlePerson {
+export type Agent = {
   getIntro: (name: string, caseNumber?: string, nameLog?: string[]) => string;
-}
+} & PuzzlePerson
 
 export type Pointer = {
   getDialog: (name: string) => string;
@@ -334,7 +334,7 @@ const Sisko: Person = {
   getPointer: (status) => {
     if (
       !status?.lettersCollected.startsWith("LITTLETO") ||
-      !status?.clueLettersCollected.startsWith("SKIPZEROESIN")
+      !status.clueLettersCollected.startsWith("SKIPZEROESIN")
     ) {
       return {
         getDialog: () =>

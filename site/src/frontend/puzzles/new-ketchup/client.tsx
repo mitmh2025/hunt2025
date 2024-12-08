@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { Button } from "../../components/StyledUI";
-import { createRoot } from "react-dom/client";
 import {
-  Agent,
+  type Agent,
   FirstPerson,
   getNameSpan,
-  Person,
+  type Person,
   PUZZLE_ANSWER,
-  PuzzleStatus,
+  type PuzzleStatus,
 } from "./data";
 
 const DialogBoxWrapper = styled.div`
@@ -119,18 +119,18 @@ const Puzzle = () => {
     // first we say hello
     setLog((l) => `${l}<p class="you">${getNameSpan("You")}Hello.</p>`);
     // wrong or right, we collect the name if it's new and so we can see if we get answer stuff out of it
-    if (nameLog.indexOf(format(teamName)) === -1) {
+    if (!nameLog.includes(format(teamName))) {
       setNameLog((names) => [...names, format(teamName)]);
     }
     // then we see if it's correct for the current person
     // and update the dialog log accordingly
     const pointer = currentPerson.getPointer(puzzleStatus);
     const name = currentPerson.getName(puzzleStatus);
-    let newPuzzleStatus = {
+    const newPuzzleStatus = {
       ...puzzleStatus,
       clueLettersCollected: `${puzzleStatus.clueLettersCollected}${name.slice(0, 1)}`,
     };
-    if (currentPerson.validAnswers.indexOf(format(teamName)) !== -1) {
+    if (currentPerson.validAnswers.includes(format(teamName))) {
       // add acquired clue letter
       setPuzzleStatus((s: PuzzleStatus): PuzzleStatus => {
         return {
@@ -144,8 +144,7 @@ const Puzzle = () => {
           `${l}${currentPerson.getReplySuccessful(name)}${pointer.getDialog(name)}<hr />`,
       );
     } else if (
-      currentPerson.almostAnswers &&
-      currentPerson.almostAnswers?.indexOf(format(teamName)) !== -1
+      currentPerson.almostAnswers?.includes(format(teamName))
     ) {
       setLog((l) => `${l}<p><i>Not quite...</i></p>`);
     } else {
@@ -153,7 +152,7 @@ const Puzzle = () => {
     }
     // move to the next person
     if (
-      currentPerson.validAnswers.indexOf(format(teamName)) !== -1 &&
+      currentPerson.validAnswers.includes(format(teamName)) &&
       pointer &&
       pointer.nextPerson
     ) {
@@ -195,7 +194,7 @@ const Puzzle = () => {
         </Bottom>
       </DialogBoxWrapper>
 
-      <input value={teamName} onChange={(e) => setTeamName(e.target.value)} />
+      <input value={teamName} onChange={(e) => { setTeamName(e.target.value); }} />
       {/* <ul>
         {nameLog.map((name, i) => (
           <li key={`teamname-${i}-${name}`}>{name}</li>

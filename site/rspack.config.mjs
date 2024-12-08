@@ -460,6 +460,7 @@ export default function createConfigs(_env, argv) {
       navbar: "./src/frontend/client/navbar.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
       solution: "./src/frontend/client/solution.tsx",
+      team: "./src/frontend/client/manage_team.tsx",
 
       // Included on the round pages
       the_missing_diamond:
