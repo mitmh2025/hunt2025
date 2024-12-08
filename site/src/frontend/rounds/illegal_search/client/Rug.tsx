@@ -101,16 +101,16 @@ export default function Rug({
   node,
   setNode,
   showModal,
-  teamState: _teamState,
+  teamState,
 }: {
   node: Node;
   setNode: (node: Node) => void;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   teamState: TeamHuntState;
 }) {
-  // const gateOpen =
-  //   teamState.rounds.illegal_search?.gates?.includes("isg09") ?? false;
-  const [gateOpen, setGateOpen] = useState(false);
+  const [gateOpen, setGateOpen] = useState(() => {
+    return teamState.rounds.illegal_search?.gates?.includes("isg09") ?? false;
+  });
 
   return (
     <>

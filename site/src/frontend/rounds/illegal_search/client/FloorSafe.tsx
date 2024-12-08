@@ -10,10 +10,10 @@ import digit_v_off from "../assets/rug/digit_v_off.svg";
 import digit_v_on from "../assets/rug/digit_v_on.svg";
 import fail from "../assets/rug/fail.mp3";
 import numberlock_box from "../assets/rug/numberlock_box.svg";
-import numberlock_box_ledger from "../assets/rug/numberlock_box_ledger.svg";
 import numberlock_pad from "../assets/rug/numberlock_pad.svg";
 import slide from "../assets/rug/slide.mp3";
 import { type ModalWithPuzzleFields, type Node } from "../types";
+import { Asset, ModalTrigger } from "./SearchEngine";
 import playSound from "./playSound";
 
 const FloorSafeWrapper = styled.div`
@@ -314,9 +314,9 @@ function Display({ code }: { code: string }) {
 }
 
 export default function FloorSafe({
-  node: _node,
-  showModal: _showModal,
-  setNode: _setNode,
+  node,
+  showModal,
+  setNode,
   opened,
   setOpened,
 }: {
@@ -336,10 +336,24 @@ export default function FloorSafe({
     wasOpened.current = opened;
   }, [opened]);
 
+  const modalAssets = node.interactionModals?.map((modal) => {
+    const { area, asset } = modal;
+    const placedAsset = { area, asset };
+    return <Asset key={modal.asset} placedAsset={placedAsset} />;
+  });
+  const modals = node.interactionModals?.map((modal) => {
+    return (
+      <ModalTrigger
+        key={`interaction-modal-${modal.asset}`}
+        modal={modal}
+        showModal={showModal}
+      />
+    );
+  });
+
   return (
     <FloorSafeWrapper>
       <FullImg src={numberlock_box} />
-      {opened && <FullImg src={numberlock_box_ledger} />}
       <NumberLockPadWrapper $opened={opened}>
         <Display code={code} />
         <KeyPad
@@ -354,20 +368,36 @@ export default function FloorSafe({
             setCode("");
           }}
           onClickEnter={() => {
-            if (code === "12345678") {
-              playSound(correct);
-
-              // Slight delay before opening the safe
-              setTimeout(() => {
-                setOpened(true);
-              }, 500);
-            } else {
-              playSound(fail);
-              setCode("");
-            }
+            fetch("/rounds/illegal_search/locks/rug", {
+              method: "POST",
+              body: JSON.stringify({ code }),
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            })
+              .then(async (result) => {
+                if (result.ok) {
+                  const json = (await result.json()) as Node;
+                  console.log("okay", json);
+                  setNode(json);
+                  playSound(correct);
+                  setTimeout(() => {
+                    setOpened(true);
+                  }, 500);
+                } else {
+                  playSound(fail);
+                  setCode("");
+                }
+              })
+              .catch(() => {
+                console.log("network error");
+              });
           }}
         />
       </NumberLockPadWrapper>
+      {modalAssets}
+      {modals}
     </FloorSafeWrapper>
   );
 }

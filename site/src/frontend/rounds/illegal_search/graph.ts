@@ -4,6 +4,7 @@ import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.
 import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.jpg";
 import main_west_bg from "./assets/main_west.jpg";
+import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
 import rug_bg from "./assets/rug/rug_bg.svg";
 import secret_bg from "./assets/secret.jpg";
 import type {
@@ -45,7 +46,7 @@ const LOCK_DATA: Record<PluginName, LockDatum> = {
   },
   rug: {
     // numeric (seven-segment display) lock
-    answer: "", // TODO: set answer
+    answer: "37047734",
     gateId: "isg09",
   },
   cryptex: {
@@ -406,10 +407,10 @@ const ALL_NODES: NodeInternal[] = [
           // adjust area once assets exist
           left: -1,
           right: 1,
-          top: -1,
-          bottom: 1,
+          top: 1,
+          bottom: -1,
         },
-        asset: "", // TODO: whatever's in the number lock
+        asset: numberlock_box_ledger,
         slotId: "isp09",
         gateId: "isg14",
         postCode: "1K4T5XyjlogRERACrMXXbg==",

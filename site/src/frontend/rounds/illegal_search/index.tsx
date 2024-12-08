@@ -351,6 +351,43 @@ export const comboLockPostHandler: RequestHandler<
   }
 });
 
+type NumericLockHandlerBody = {
+  code: string;
+};
+export const numericLockPostHandler: RequestHandler<
+  Record<string, never>,
+  unknown,
+  NumericLockHandlerBody,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  if (!req.teamState) {
+    // Shouldn't be possible; middleware should ensure this is populated
+    res.status(500).json({
+      status: "error",
+      message: "user not logged in?  API failed open?",
+    });
+    return;
+  }
+  const code: string = req.body.code;
+
+  // TODO: validate req.body with zod
+  // TODO: rate-limit guesses
+  const lockData = LOCK_DATA.rug;
+  const gateId = lockData.gateId;
+  const answer = lockData.answer as string;
+
+  if (answer === code) {
+    // mark isg09 as complete
+    const { teamId } = req.teamState;
+    await handleCorrectLockSubmission(req, res, teamId, gateId, "rug");
+  } else {
+    res.status(400).json({
+      status: "incorrect",
+      message: "code is incorrect",
+    });
+  }
+});
+
 const IllegalSearchRoundPage = ({
   teamState,
   node,
