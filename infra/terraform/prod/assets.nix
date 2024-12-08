@@ -1,6 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, radio-media, ... }:
 let
   assetBucketName = "cvqb2gwr-assets";
+  giantSwitch = pkgs.mkRadioManifest {
+    name = "giant-switch";
+    src = radio-media + "/giant-switch";
+    baseUrl = "/giant-switch";
+  };
 in {
   resource.google_storage_bucket.assets = {
     name = assetBucketName;
@@ -40,6 +45,21 @@ in {
     ];
     provisioner.local-exec = {
       command = "${pkgs.google-cloud-sdk}/bin/gsutil -m rsync -r ${pkgs.hunt2025.assets} gs://${lib.tfRef "google_storage_bucket.assets.name"}";
+    };
+  };
+
+  module.giant_switch_files = {
+    source = "hashicorp/dir/template";
+    base_dir = "${giantSwitch}";
+  };
+
+  resource.terraform_data.giant-switch = {
+    triggers_replace = [
+      (lib.tfRef "google_storage_bucket.assets.name")
+      (lib.tfRef "{for path, value in module.giant_switch_files.files : path => value.digests.sha256}")
+    ];
+    provisioner.local-exec = {
+      command = "${pkgs.google-cloud-sdk}/bin/gsutil -m rsync -r ${giantSwitch} gs://${lib.tfRef "google_storage_bucket.assets.name"}/giant-switch";
     };
   };
 }
