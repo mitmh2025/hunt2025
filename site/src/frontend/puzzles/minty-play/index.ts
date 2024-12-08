@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Mystery O's",
   slug: "mystery_os",
-  initial_description:
-    "You are given a mini cereal box with two crayons inside.",
+  initial_description: "A mini cereal box with crayons inside.",
   answer: "RICE UNIVERSITY",
   authors: [
     "Arcturus Wang",
