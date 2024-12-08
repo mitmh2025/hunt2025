@@ -476,6 +476,7 @@ export default function createConfigs(_env, argv) {
       puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
+      puzzle_wiry_ray: "./src/frontend/puzzles/wiry-ray/client.tsx",
 
       // Regsite (css only)
       regsite: "./src/frontend/regsite/regsite.css",
