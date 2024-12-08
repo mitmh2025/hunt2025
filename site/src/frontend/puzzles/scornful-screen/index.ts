@@ -16,7 +16,8 @@ const puzzle: PuzzleDefinition = {
   ],
   additional_credits: [
     {
-      for_what: "performing Evan",
+      // Will appear in-app as 'Evan performed by'
+      for_what: "Evan performed",
       who: [
         "Amanda Giermann",
         "Anisa Schardl",
