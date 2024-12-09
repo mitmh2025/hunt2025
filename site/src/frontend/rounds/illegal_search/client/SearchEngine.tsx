@@ -494,6 +494,8 @@ const SearchEngine = ({
     }
   }, [cursorX, cursorY, devBox]);
 
+  // We stack navigations atop interactions because the rug view has overlap,
+  // and we want to ensure the navigation is always accessible at the top.
   return (
     <>
       <SearchEngineSurface
