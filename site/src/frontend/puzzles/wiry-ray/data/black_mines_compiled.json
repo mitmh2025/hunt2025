@@ -1,0 +1,1182 @@
+{
+  "80": {
+    "depth": "3(Upper)",
+    "TrueX": "-583",
+    "TrueZ": "1925",
+    "x": "235",
+    "y": "722",
+    "roomDescription": "The entrance to the mine brings you panic as the reason for its condemnation immediately becomes clear. A spread of infection has started to creep around the area, spreading throughout the stone and rock, seemingly searching for new resources. Looking at a map, you would be in the southeast corner.",
+    "moveDescriptions": "There is a path north, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "81",
+        "moveDescription": "Going across a small crack of water you pass by small spots of dried blood before reaching a large intersection of track."
+      },
+      {
+        "direction": "SS",
+        "destination": "66",
+        "moveDescription": "Having enough of the corrupted stone you make your way back up the stairs towards the caves above."
+      },
+      {
+        "direction": "WW",
+        "destination": "84",
+        "moveDescription": "Going through a small tool shed you come across a small lip of corrupted rock. Jumping down you realize this was a one way trip."
+      }
+    ]
+  },
+  "81": {
+    "depth": "3(Upper)",
+    "TrueX": "-590",
+    "TrueZ": "1904",
+    "x": "381",
+    "y": "685",
+    "roomDescription": "The many crossroads of this mine system seems confusing at a glance. Each minetrack path seems to divert almost at random, likely due to the workers finding new veins of ore.",
+    "moveDescriptions": "There is a path northeast, southeast, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "82",
+        "moveDescription": "Following the main track you take a small turn towards a storage room."
+      },
+      {
+        "direction": "SE",
+        "destination": "80",
+        "moveDescription": "Leaving the tracks you walk towards the entrance of the mines."
+      },
+      {
+        "direction": "SW",
+        "destination": "107",
+        "moveDescription": "The southern track seems to go deeper than any of the other tracks as you start walking down it. Just before you make the turn to the bottom floor however you have a new choice to make."
+      },
+      {
+        "direction": "WW",
+        "destination": "83",
+        "moveDescription": "The cramped sections of the tracks open up to a massive hall before reaching another crossroad"
+      },
+      {
+        "direction": "NW",
+        "destination": "94",
+        "moveDescription": "Heading down the northern track you walk to another crossroads one level down."
+      }
+    ]
+  },
+  "82": {
+    "depth": "3(Upper)",
+    "TrueX": "-584",
+    "TrueZ": "1887",
+    "x": "487",
+    "y": "725",
+    "roomDescription": "The ore storage room is almost pristine in appearance, likely due to being cut off from the outside when the mine was condemned. Coal, gold, and several blue gems are stockpiled up here, waiting in vain to be raised to the world above.",
+    "moveDescriptions": "There is a path north and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "109",
+        "moveDescription": "To the northern side there is a ladder down to a lower level."
+      },
+      {
+        "direction": "SS",
+        "destination": "81",
+        "moveDescription": "Following the tracks you make it to an intersection of rail."
+      }
+    ]
+  },
+  "83": {
+    "depth": "3(Upper)",
+    "TrueX": "-606",
+    "TrueZ": "1904",
+    "x": "383",
+    "y": "561",
+    "roomDescription": "The large center room allows you to see most of the mine, as the two layers of tracks below bring you curiosity of what the rest of the mines look like. Looking further west down the line you see a second crossroads of track and what seems to be a drop further below.",
+    "moveDescriptions": "There is a path east, southeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "81",
+        "moveDescription": "Walking away from the main hall you reach a crossroads of track."
+      },
+      {
+        "direction": "SE",
+        "destination": "84",
+        "moveDescription": "Taking the more southern track you pass by a spill of lava coming out from a nearby wall."
+      },
+      {
+        "direction": "WW",
+        "destination": "86",
+        "moveDescription": "Moving down the rail you walk to a new intersection in the main hall."
+      },
+      {
+        "direction": "NW",
+        "destination": "85",
+        "moveDescription": "Moving north you quickly pass by a small well before reaching the middle of the room."
+      }
+    ]
+  },
+  "84": {
+    "depth": "3(Upper)",
+    "TrueX": "-602",
+    "TrueZ": "1924",
+    "x": "244",
+    "y": "594",
+    "roomDescription": "The corruption seems to be spreading here a little faster than elsewhere in the mines, although for unknown reasons. The stone in the area is rich in iron, as large chunks of the wall look to be very dense in the ore.",
+    "moveDescriptions": "There is a path northwest.",
+    "moves": [
+      {
+        "direction": "NW",
+        "destination": "83",
+        "moveDescription": "Although there is a small path out east, it is too far up to reach so you decide to walk towards the main hall."
+      }
+    ]
+  },
+  "85": {
+    "depth": "3(Upper)",
+    "TrueX": "-609",
+    "TrueZ": "1886",
+    "x": "497",
+    "y": "568",
+    "roomDescription": "Those who prospected here had small living quarters so they could stay down here for extended periods considering the high yield you have seen thus far. There is what seems to be a small well, although looking down it you see that in reality it falls into more mines below. Behind the well is a small nook containing an egg that is painted to look like a nice dinner with a disney villain.",
+    "moveDescriptions": "There is a path southwest and northwest.",
+    "moves": [
+      {
+        "direction": "SW",
+        "destination": "83",
+        "moveDescription": "You pass by the well on your way back to the main hall."
+      },
+      {
+        "direction": "NW",
+        "destination": "95",
+        "moveDescription": "You decide to jump down the well and fall to the floor below."
+      }
+    ]
+  },
+  "86": {
+    "depth": "3(Upper)",
+    "TrueX": "-622",
+    "TrueZ": "1904",
+    "x": "383",
+    "y": "441",
+    "roomDescription": "Being in the center of the main hall allows you to fully take in your surroundings. On the walls several dents were carved out by the corrupted stone, creating some sort of listening device with the ores that exist. In addition, the seemingly living sections are communicating your actions to each other, almost as if you are walking into a trap by being here.",
+    "moveDescriptions": "There is a path east, southeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "83",
+        "moveDescription": "Staying within the main hall you make your way to another intersection."
+      },
+      {
+        "direction": "SE",
+        "destination": "88",
+        "moveDescription": "Moving into the sides of the mines you quickly realize the lack of light in the area besides the lava in the main area."
+      },
+      {
+        "direction": "WW",
+        "destination": "87",
+        "moveDescription": "Reaching a large vertical tunnel you spot a large chunk of skulk pulsating on a tower below you."
+      },
+      {
+        "direction": "NW",
+        "destination": "92",
+        "moveDescription": "Moving north you reach an intersection withing the mineshafts."
+      }
+    ]
+  },
+  "87": {
+    "depth": "3(Upper)",
+    "TrueX": "-637",
+    "TrueZ": "1904",
+    "x": "383",
+    "y": "349",
+    "roomDescription": "Looking down what seems to be a boring tunnel you spot several other entrances on the lower levels. A small chest to the north seems to be requesting a key to go deeper into the heavily corrupted abyss below. To the side, a note is stapled \"Crosses, Keys, Lower\"",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "86",
+        "moveDescription": "Moving away from the mineshaft you make your way back to the crossroads you were at before."
+      },
+      {
+        "direction": "WW",
+        "destination": "130",
+        "moveDescription": "Falling through the recently opened hole you slowly start to panic as the corruption seems to have fully engulfed the area you are falling into. The panic turns to relief as you see that the southwest platform you are falling onto is covered in a soft moss. Looking across the maze-like city that you have landed into, a low powerful roar echoes across the buildings, and a dark mist falls around you. Your eyes seem to be useless in the fog, as you can barely see where your feet are stepping to allow you to move around."
+      }
+    ]
+  },
+  "88": {
+    "depth": "3(Upper)",
+    "TrueX": "-623",
+    "TrueZ": "1914",
+    "x": "315",
+    "y": "430",
+    "roomDescription": "The mine system has a fairly windy configuration, only allowing for fairly short lines of sight while away from the larger main hall. The main saving point of these branches is the few intersections like the one you are standing at now, allowing for a quick search path.",
+    "moveDescriptions": "There is a path east, south, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "86",
+        "moveDescription": "Moving back to the main hall you come to a crossroads to choose from."
+      },
+      {
+        "direction": "SS",
+        "destination": "89",
+        "moveDescription": "Just a couple of steps away you reach the next room."
+      },
+      {
+        "direction": "WW",
+        "destination": "90",
+        "moveDescription": "Walking down the path you reach a fairly heavily infected section of the mines."
+      }
+    ]
+  },
+  "89": {
+    "depth": "3(Upper)",
+    "TrueX": "-630",
+    "TrueZ": "1922",
+    "x": "241",
+    "y": "448",
+    "roomDescription": "The room here seemed to have been an active mining room before the corruption spread to the area. Several large veins of iron sprawl through the walls, with a particularly large clump directly in front of a derelict drill. Below a cauldron at the west end of the room is a small egg painted to look like a risen queen of Egypt.",
+    "moveDescriptions": "There is a path north and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "88",
+        "moveDescription": "Going out to the main track line you get a new choice in which direction to go."
+      },
+      {
+        "direction": "SW",
+        "destination": "101",
+        "moveDescription": "You head down the stairs to the next room."
+      }
+    ]
+  },
+  "90": {
+    "depth": "3(Upper)",
+    "TrueX": "-654",
+    "TrueZ": "1913",
+    "x": "253",
+    "y": "250",
+    "roomDescription": "The corner of track you find yourself at seems to have been a breeding ground for the corruption spreading throughout the rest of the mine. Very little stone is breaking through the large patches, and even fewer ores can be seen within. Behind a supporting beam, sitting among a large patch of corruption is an egg painted to look like the lack of backwards songs.",
+    "moveDescriptions": "There is a path north and east.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "91",
+        "moveDescription": "While staying in this back passage, you walk to the opposite end of the mine."
+      },
+      {
+        "direction": "EE",
+        "destination": "88",
+        "moveDescription": "Deciding that the area is a bit too corrupted you begin to head back towards the main hall before reaching an intersection right before it."
+      }
+    ]
+  },
+  "91": {
+    "depth": "3(Upper)",
+    "TrueX": "-651",
+    "TrueZ": "1894",
+    "x": "468",
+    "y": "233",
+    "roomDescription": "The corruption has had a very strong effect in this corner of the mines, as several pockets are breaking out through the stone. There seems to be few gems in the walls, likely to have been harvested early in the mine’s opening. ",
+    "moveDescriptions": "There is a path east and south.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "92",
+        "moveDescription": "Heading away from the infection seems to be a good idea for the time being, so you make your way to the main hall but stop at an intersection directly before it."
+      },
+      {
+        "direction": "SS",
+        "destination": "90",
+        "moveDescription": "You head to the other end of this long stretch of cave."
+      }
+    ]
+  },
+  "92": {
+    "depth": "3(Upper)",
+    "TrueX": "-636",
+    "TrueZ": "1892",
+    "x": "474",
+    "y": "344",
+    "roomDescription": "Although missing several tracks, you find yourself at an intersection that splits into a copper mine. Nothing else here really sticks out at you as the corruption seems to have left this intersection alone for the time being.",
+    "moveDescriptions": "There is a path north, east, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "93",
+        "moveDescription": "Walking away from the main hall you reach a small copper mine."
+      },
+      {
+        "direction": "EE",
+        "destination": "86",
+        "moveDescription": "You decide to head to the main hall and stop at a crossroads in the middle of it."
+      },
+      {
+        "direction": "WW",
+        "destination": "91",
+        "moveDescription": "Heading west you reach a heavily infected part of the cave with some blue gems shining through."
+      }
+    ]
+  },
+  "93": {
+    "depth": "3(Upper)",
+    "TrueX": "-629",
+    "TrueZ": "1886",
+    "x": "516",
+    "y": "385",
+    "roomDescription": "This small room is almost bursting at the seams with the amount of copper available to extract. A couple of piles of copper have been created to be hauled out, oxidized by the amount of time since its removal from the walls.",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "95",
+        "moveDescription": "Heading down the stairs you notice a small stream of water trickling to a puddle."
+      },
+      {
+        "direction": "WW",
+        "destination": "92",
+        "moveDescription": "Walking out of the ore room you reach a small intersection almost immediately."
+      }
+    ]
+  },
+  "94": {
+    "depth": "3(Middle)",
+    "TrueX": "-612",
+    "TrueZ": "1896",
+    "x": "452",
+    "y": "518",
+    "roomDescription": "There isn’t much to differentiate this section from others you have seen before. It is a fairly normal crossroads of 4 tracks running through the mines.",
+    "moveDescriptions": "There is a path north, east, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "95",
+        "moveDescription": "Stepping into the nearby room gives little time for noticing much on your walk over."
+      },
+      {
+        "direction": "EE",
+        "destination": "81",
+        "moveDescription": "Heading back upstairs you reach an intersection of track."
+      },
+      {
+        "direction": "SS",
+        "destination": "105",
+        "moveDescription": "Heading into the main hall you reach a split in the tracks."
+      },
+      {
+        "direction": "WW",
+        "destination": "96",
+        "moveDescription": "Just a few steps west you reach yet another intersection."
+      }
+    ]
+  },
+  "95": {
+    "depth": "3(Middle)",
+    "TrueX": "-609",
+    "TrueZ": "1889",
+    "x": "516",
+    "y": "541",
+    "roomDescription": "The dark blue gems around this section of the mine are plentiful, although most were already removed from the walls and put into a cart in the middle of the room. A small stream of water has broken through a crack in the wall, and for some reason seems to be actively repelling the corruption.",
+    "moveDescriptions": "There is a path south and northwest.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "94",
+        "moveDescription": "Stepping out of the room you immediately walk into a crossroad of rail."
+      },
+      {
+        "direction": "NW",
+        "destination": "93",
+        "moveDescription": "Heading up the stairs you quickly reach the next room."
+      }
+    ]
+  },
+  "96": {
+    "depth": "3(Middle)",
+    "TrueX": "-622",
+    "TrueZ": "1896",
+    "x": "452",
+    "y": "441",
+    "roomDescription": "The track runs into a crossroads, and without much to differentiate your surroundings from the rest of the mines, you’ll just have to figure out where you are from the surrounding rooms.",
+    "moveDescriptions": "There is a path north, east, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "111",
+        "moveDescription": "Moving into the mossy room leaves little to describe on your walk over."
+      },
+      {
+        "direction": "EE",
+        "destination": "94",
+        "moveDescription": "Leaving one crossroads and walking into another."
+      },
+      {
+        "direction": "SS",
+        "destination": "102",
+        "moveDescription": "You take quite a walk across the main hall to the other side before you reach a section of track that splits off into a couple of rooms."
+      },
+      {
+        "direction": "WW",
+        "destination": "97",
+        "moveDescription": "Heading west you reach a smaller section of track that can lead to a couple of different rooms."
+      }
+    ]
+  },
+  "97": {
+    "depth": "3(Middle)",
+    "TrueX": "-636",
+    "TrueZ": "1895",
+    "x": "452",
+    "y": "337",
+    "roomDescription": "Although not distinctly a crossroad in the track, there are several paths the tracks take to lead you elsewhere in the mine.",
+    "moveDescriptions": "There is a path east, southeast, southwest, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "96",
+        "moveDescription": "Although where you were wasn't quite a crossroad, this one definitely is."
+      },
+      {
+        "direction": "SE",
+        "destination": "101",
+        "moveDescription": "Walking across the main hall bridge you soon reach the room you were moving to."
+      },
+      {
+        "direction": "SW",
+        "destination": "99",
+        "moveDescription": "Making your way towards a large vertical bore hole you can spot a large chunk of skulk seemingly move on the nearby tower."
+      },
+      {
+        "direction": "WW",
+        "destination": "98",
+        "moveDescription": "Moving west, you quickly find yourself in a large open room."
+      }
+    ]
+  },
+  "98": {
+    "depth": "3(Middle)",
+    "TrueX": "-649",
+    "TrueZ": "1891",
+    "x": "499",
+    "y": "259",
+    "roomDescription": "The large room seems to have been stripped of all of the ores and was starting to be used for storage or as a small break room. Several chests and small rest spots are scattered around the edges of the room, allowing for easy passage through in case anyone needed to go deeper into the mine.",
+    "moveDescriptions": "There is a path north and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "112",
+        "moveDescription": "Heading down the stairs you almost trip as a step seems to have broken off at some point."
+      },
+      {
+        "direction": "SS",
+        "destination": "97",
+        "moveDescription": "Going towards the main hall you find yourself at a branching path in the tracks."
+      }
+    ]
+  },
+  "99": {
+    "depth": "3(Middle)",
+    "TrueX": "-640",
+    "TrueZ": "1900",
+    "x": "421",
+    "y": "304",
+    "roomDescription": "The room has a large boring tunnel going straight down. Looking around you see other platforms surrounding the tunnel above as well as a small lockbox enticing you to insert a key. To the side, a note is stapled \"Crosses, Keys, Lower\"",
+    "moveDescriptions": "There is a path northeast, south and southwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "97",
+        "moveDescription": "Stepping away from the bore hole you make your way back to the intersection you previously came from."
+      },
+      {
+        "direction": "SS",
+        "destination": "130",
+        "moveDescription": "Falling through the recently opened hole you slowly start to panic as the corruption seems to have fully engulfed the area you are falling into. The panic turns to relief as you see that the southwest platform you are falling onto is covered in a soft moss. Looking across the maze-like city that you have landed into, a low powerful roar echoes across the buildings, and a dark mist falls around you. Your eyes seem to be useless in the fog, as you can barely see where your feet are stepping to allow you to move around."
+      },
+      {
+        "direction": "SW",
+        "destination": "100",
+        "moveDescription": "Enticed by the skulk mass you walk over to the nearby tower."
+      }
+    ]
+  },
+  "100": {
+    "depth": "3(Middle)",
+    "TrueX": "-652",
+    "TrueZ": "1904",
+    "x": "386",
+    "y": "217",
+    "roomDescription": "A small tower was constructed here, likely as a way for the foreman to keep an eye out on the miners below. Now, however, it gives you a vantage point to look at the mines below. While looking around you see what looks to be the foreman’s remains corrupted by the skulk that has been consuming the mines.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "99",
+        "moveDescription": "Having confirmed the mass of skulk you head back to the bore hole."
+      }
+    ]
+  },
+  "101": {
+    "depth": "3(Middle)",
+    "TrueX": "-638",
+    "TrueZ": "1922",
+    "x": "256",
+    "y": "324",
+    "roomDescription": "This room was very clearly used to store equipment and other such necessities. The equipment, however, to no one’s surprise is completely broken down from the lack of maintenance. A small sparkle just outside the window makes you investigate a small egg. This one, unlike every other egg, is just a solid egg of gold, instead of being painted to resemble something else.",
+    "moveDescriptions": "There is a path north and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "97",
+        "moveDescription": "Heading towards the main hall you pass by a nearby bore hole and several fires lighting up the area. Eventually you make your way to an intersection."
+      },
+      {
+        "direction": "SS",
+        "destination": "89",
+        "moveDescription": "Heading upstairs you find yourself in a large room with plenty of ore."
+      }
+    ]
+  },
+  "102": {
+    "depth": "3(Middle)",
+    "TrueX": "-616",
+    "TrueZ": "1913",
+    "x": "316",
+    "y": "488",
+    "roomDescription": "The paths of the mines are fairly simple to follow, after all every turn you have come across has been 90 degrees down here on the tracks as opposed to the twists and turns of the caves up above. The intersection here is no different than the rest of the mines allowing several long sight lines as the tracks straighten out.",
+    "moveDescriptions": "There is a path northeast, southeast, southwest, and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "105",
+        "moveDescription": "Making your way to the main hall you stop midway at a branch in the tracks."
+      },
+      {
+        "direction": "SE",
+        "destination": "104",
+        "moveDescription": "A short walk into a room shows you very little compared to what you could see before."
+      },
+      {
+        "direction": "SW",
+        "destination": "103",
+        "moveDescription": "The room you could clearly see from the tracks catches your attention and drags you in."
+      },
+      {
+        "direction": "WW",
+        "destination": "96",
+        "moveDescription": "Heading through the main hall you make your way to the other side before reaching a crossroad."
+      }
+    ]
+  },
+  "103": {
+    "depth": "3(Middle)",
+    "TrueX": "-620",
+    "TrueZ": "1927",
+    "x": "259",
+    "y": "459",
+    "roomDescription": "The furnace and conveyors of the room have long since broken down, but the gold that it produced has kept its shine and luster. Even though the area was clearly used for the processing of gold, several veins of the ore are scattered throughout the walls. A small glimmer behind the furnace catches your attention and after squeezing onto the conveyor you spot an egg painted to look like an iridescent satellite.",
+    "moveDescriptions": "There is a path north and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "102",
+        "moveDescription": "Leaving the room you quickly realize the several paths that can be taken in the area."
+      },
+      {
+        "direction": "SW",
+        "destination": "118",
+        "moveDescription": "Heading downstairs you pass over the conveyer but decide that you don't have time to take the pieces of gold left on it."
+      }
+    ]
+  },
+  "104": {
+    "depth": "3(Middle)",
+    "TrueX": "-604",
+    "TrueZ": "1918",
+    "x": "275",
+    "y": "562",
+    "roomDescription": "A large drill lays dormant in the middle of the room primed to dig at more gold on the northern end of the room. The conveyors leading to a nearby room sit still yearning to collect more riches from the mines.",
+    "moveDescriptions": "There is a path west.",
+    "moves": [
+      {
+        "direction": "WW",
+        "destination": "102",
+        "moveDescription": "Having seen enough in the gold mine, you walk back out to the intersection."
+      }
+    ]
+  },
+  "105": {
+    "depth": "3(Middle)",
+    "TrueX": "-612",
+    "TrueZ": "1904",
+    "x": "385",
+    "y": "518",
+    "roomDescription": "The height of the track suspended over the floor below seems just barely out of jumping distance. Even so, the eerie silence surrounding you makes you hesitate from making any rash decisions such as that.",
+    "moveDescriptions": "There is a path north, east, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "94",
+        "moveDescription": "Heading away from the main hall you encounter a crossroad."
+      },
+      {
+        "direction": "EE",
+        "destination": "106",
+        "moveDescription": "Walking towards the end of the hall you reach a elevated platform in a large cave."
+      },
+      {
+        "direction": "SS",
+        "destination": "102",
+        "moveDescription": "Leaving the main hall you reach a set of branching tracks."
+      }
+    ]
+  },
+  "106": {
+    "depth": "3(Middle)",
+    "TrueX": "-596",
+    "TrueZ": "1904",
+    "x": "385",
+    "y": "635",
+    "roomDescription": "Although a track seems to end here, the elevated platform seems to be a small gathering place for ores on this side of the cave. A sizable crane hovers over the platform, poised to deliver ores to carts that made their way here.",
+    "moveDescriptions": "There is a path south and west.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "125",
+        "moveDescription": "You walk down the stairs to the main section of the cave."
+      },
+      {
+        "direction": "WW",
+        "destination": "105",
+        "moveDescription": "Moving to the main hall you reach a split in the rails."
+      }
+    ]
+  },
+  "107": {
+    "depth": "3(Middle)",
+    "TrueX": "-593",
+    "TrueZ": "1924",
+    "x": "247",
+    "y": "661",
+    "roomDescription": "The track line seems to be one of necessity to connect the upper and lower floors, although this became a clear spot for the foreman to make an office as it connects to a larger swath of the mines.",
+    "moveDescriptions": "There is a path north, east, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "81",
+        "moveDescription": "Heading upstairs you reach a larger intersection."
+      },
+      {
+        "direction": "EE",
+        "destination": "108",
+        "moveDescription": "You walk into the foreman's office."
+      },
+      {
+        "direction": "WW",
+        "destination": "122",
+        "moveDescription": "Going down the stairs you trip over some loose rocks covering the tracks. Luckily you manage to catch yourself before falling all the way to the bottom."
+      }
+    ]
+  },
+  "108": {
+    "depth": "3(Middle)",
+    "TrueX": "-585",
+    "TrueZ": "1919",
+    "x": "267",
+    "y": "719",
+    "roomDescription": "The foreman’s office has seen better days, whatever hasn’t been corrupted or withered away has been thrown about the room seemingly in a mad craze. Several keepsakes can be seen here on the desk, and a large poster hangs proudly on the wall nearby.",
+    "moveDescriptions": "There is a path southwest.",
+    "moves": [
+      {
+        "direction": "SW",
+        "destination": "107",
+        "moveDescription": "Leaving the room you walk back to the small intersection the office sits at."
+      }
+    ]
+  },
+  "109": {
+    "depth": "3(Middle)",
+    "TrueX": "-584",
+    "TrueZ": "1886",
+    "x": "527",
+    "y": "734",
+    "roomDescription": "This area seems to have been mined out relatively early, as there are low amounts of ore around and a ladder leading straight up towards the higher floor. Off to the side a small platform was constructed, although not much can be seen from where you are standing here.",
+    "moveDescriptions": "There is a path north and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "82",
+        "moveDescription": "Heading up the ladder you reach the upper floor."
+      },
+      {
+        "direction": "SS",
+        "destination": "110",
+        "moveDescription": "Walking down the hill you reach a small crane before looking around."
+      }
+    ]
+  },
+  "110": {
+    "depth": "3(Middle)",
+    "TrueX": "-578",
+    "TrueZ": "1904",
+    "x": "371",
+    "y": "746",
+    "roomDescription": "A crane was assembled here, likely used to lift the ores from the main part of the cave to the elevated platform located right next to it. Nearby is a small storage area of chests and barrels, although all emptied out of anything precious. A small glimmer of light catches your eye above you on a ledge. Climbing up you find an egg painted to look like the irish sun.",
+    "moveDescriptions": "There is a path north and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "109",
+        "moveDescription": "Walking up the hill you reach a spot beneath several ladders, one of which reaches up to the floor above."
+      },
+      {
+        "direction": "SW",
+        "destination": "125",
+        "moveDescription": "Going down into the cave below you feel like this is now the lowest floor you can be on."
+      }
+    ]
+  },
+  "111": {
+    "depth": "3(Middle)",
+    "TrueX": "-628",
+    "TrueZ": "1887",
+    "x": "515",
+    "y": "395",
+    "roomDescription": "The mossy floor here seems to signify a decent amount of water has collected nearby. Although none can be seen here, it seems a large deposit of water blue gems have been found here and were being mined out before the mines were abandoned.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "96",
+        "moveDescription": "Leaving the room you walk back to the intersection you entered here from."
+      }
+    ]
+  },
+  "112": {
+    "depth": "3(Lower)",
+    "TrueX": "-652",
+    "TrueZ": "1904",
+    "x": "384",
+    "y": "224",
+    "roomDescription": "Sitting below the tower at the west end of the mines you hear the soft gurgle of a pillar of water below you. The corruption seems to have a stronger presence here than other places around the mines and the lava pools around here seem to have little effect at stopping it.",
+    "moveDescriptions": "There is a path north, northeast, southeast, and south.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "98",
+        "moveDescription": "You head up the stairs to a rather empty room."
+      },
+      {
+        "direction": "NE",
+        "destination": "114",
+        "moveDescription": "Heading down a passage you accidentally fall into a pit of blue fire. Surprisingly it doesn't burn you as you pick yourself up."
+      },
+      {
+        "direction": "SE",
+        "destination": "116",
+        "moveDescription": "Going down a nearby mineshaft leads you to a split in the tracks."
+      },
+      {
+        "direction": "SS",
+        "destination": "117",
+        "moveDescription": "You move to the southern end of the cave you are in."
+      }
+    ]
+  },
+  "113": {
+    "depth": "3(Lower)",
+    "TrueX": "-639",
+    "TrueZ": "1889",
+    "x": "497",
+    "y": "302",
+    "roomDescription": "Being so deep into the mines, the workers had to have someplace to store ores and other belongings while away from the entrance. Sifting through their stuff you find several blue gems, although the corruption sadly found it before you.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "114",
+        "moveDescription": "Leaving the small storage shed you find yourself back on the tracks you were at before."
+      }
+    ]
+  },
+  "114": {
+    "depth": "3(Lower)",
+    "TrueX": "-634",
+    "TrueZ": "1889",
+    "x": "499",
+    "y": "351",
+    "roomDescription": "The tracks give little information to where you are. The fire trap nearby however gives some direction to if you have been here before.",
+    "moveDescriptions": "There is a path southeast, southwest, west, and northwest.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "115",
+        "moveDescription": "Moving away from the storage area you reach a new intersection of tracks"
+      },
+      {
+        "direction": "SW",
+        "destination": "128",
+        "moveDescription": "Getting to a large bore hole you spot a skulk mass above you on top of a nearby tower."
+      },
+      {
+        "direction": "WW",
+        "destination": "113",
+        "moveDescription": "You walk into the storage area next to you."
+      },
+      {
+        "direction": "NW",
+        "destination": "112",
+        "moveDescription": "Walking through the fire trap seemed to be a bad idea, but for some reason the blue fire doesn't seem to hurt."
+      }
+    ]
+  },
+  "115": {
+    "depth": "3(Lower)",
+    "TrueX": "-627",
+    "TrueZ": "1894",
+    "x": "456",
+    "y": "410",
+    "roomDescription": "Who would have thought that the repetitive black rock and the lack of any identifying features in these hallways would prevent you from recognizing where you are in these mines.",
+    "moveDescriptions": "There is a path east, south, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "119",
+        "moveDescription": "You walk from one branching set of tracks to another."
+      },
+      {
+        "direction": "SS",
+        "destination": "129",
+        "moveDescription": "Walking out into the main hall the heat from the lava below you is palpable."
+      },
+      {
+        "direction": "WW",
+        "destination": "114",
+        "moveDescription": "You head towards a nearby section of split track."
+      }
+    ]
+  },
+  "116": {
+    "depth": "3(Lower)",
+    "TrueX": "-636",
+    "TrueZ": "1913",
+    "x": "317",
+    "y": "354",
+    "roomDescription": "More tracks and cobbled stone surrounds you, with any sense of direction to where you are lost.",
+    "moveDescriptions": "There is a path east, southwest, and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "129",
+        "moveDescription": "Moving to the main hall the heat from the bubbling lava below you is almost unbearable."
+      },
+      {
+        "direction": "SW",
+        "destination": "118",
+        "moveDescription": "A nearby room catches your attention, and as you spot the gems in the walls you can see what drew you in."
+      },
+      {
+        "direction": "WW",
+        "destination": "112",
+        "moveDescription": "Walking out to a large cave system you find a large tower and decide to sit below it."
+      }
+    ]
+  },
+  "117": {
+    "depth": "3(Lower)",
+    "TrueX": "-650",
+    "TrueZ": "1923",
+    "x": "263",
+    "y": "228",
+    "roomDescription": "Several lava pockets are nearby giving an uneasy warmth to this section of the cave. Above you sit some scaffolding to a bit of gold although several patches of corruption threaten to consume it.",
+    "moveDescriptions": "There is a path north.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "112",
+        "moveDescription": "Having spent enough time in the area you walk back to the tower you were at before."
+      }
+    ]
+  },
+  "118": {
+    "depth": "3(Lower)",
+    "TrueX": "-638",
+    "TrueZ": "1924",
+    "x": "240",
+    "y": "331",
+    "roomDescription": "The sheer amount of gems in this section of the cave may seem surprising at first to why it wasn’t mined out, but the number of lava pockets around make it fairly obvious that this was saved for later. Although it seems as if some adventurous miners went here to grab some gems and caved in the center of the room separating it into two chambers.",
+    "moveDescriptions": "There is a path north and southeast.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "116",
+        "moveDescription": "Leaving the cave you start to follow some tracks before finding that they split into two more directions"
+      },
+      {
+        "direction": "SE",
+        "destination": "103",
+        "moveDescription": "Having enough of the heat of this level you start walking up the stairs."
+      }
+    ]
+  },
+  "119": {
+    "depth": "3(Lower)",
+    "TrueX": "-611",
+    "TrueZ": "1897",
+    "x": "457",
+    "y": "501",
+    "roomDescription": "The tracks and black stone do little in landmarking where you are. Even worse there seems to be nothing else around besides the nearby rooms that allow you to figure out where you are.",
+    "moveDescriptions": "There is a path east, southeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "121",
+        "moveDescription": "Walking east you reach the start of a large cave, although this section seems to have started to be used as storage."
+      },
+      {
+        "direction": "SE",
+        "destination": "122",
+        "moveDescription": "Walking across a bridge in the main hall you can feel the heat of the lava beneath you and smoke rising from the burning infection below."
+      },
+      {
+        "direction": "WW",
+        "destination": "115",
+        "moveDescription": "Heading away from one intersection only to run into another."
+      },
+      {
+        "direction": "NW",
+        "destination": "120",
+        "moveDescription": "Ducking into a nearby room you find several red gems."
+      }
+    ]
+  },
+  "120": {
+    "depth": "3(Lower)",
+    "TrueX": "-619",
+    "TrueZ": "1886",
+    "x": "517",
+    "y": "449",
+    "roomDescription": "It seems like a valuable mineral was found here, as where a large chunk of rock and material was a small pocket of lava formed below the drill. Several other veins of ore are scattered around the chamber, so it seems like whoever wanted more of the red dust could collect.",
+    "moveDescriptions": "There is a path southeast.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "119",
+        "moveDescription": "Leaving the room you walk back to the intersection you were at before."
+      }
+    ]
+  },
+  "121": {
+    "depth": "3(Lower)",
+    "TrueX": "-596",
+    "TrueZ": "1886",
+    "x": "516",
+    "y": "591",
+    "roomDescription": "A small rest area seems to have been made out of this corner of the cave, as there aren’t enough chests to label it as a place for storage, and no ores in sight. There’s a small cubby in the rock on the western side of the room, although going back there doesn’t lead to anything notable.",
+    "moveDescriptions": "There is a path east, southeast, south and southwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "127",
+        "moveDescription": "Going towards the further cave you reach the end of it before sitting down"
+      },
+      {
+        "direction": "SE",
+        "destination": "126",
+        "moveDescription": "Going towards the further cave you reach the end of it before sitting down"
+      },
+      {
+        "direction": "SS",
+        "destination": "125",
+        "moveDescription": "The closer cave shows promise but you decide to stop right before it."
+      },
+      {
+        "direction": "SW",
+        "destination": "119",
+        "moveDescription": "Walking towards the main hall you reach a set of crossroads."
+      }
+    ]
+  },
+  "122": {
+    "depth": "3(Lower)",
+    "TrueX": "-615",
+    "TrueZ": "1913",
+    "x": "317",
+    "y": "498",
+    "roomDescription": "More tracks, more stone. There really isn’t much more to this intersection of the mine.",
+    "moveDescriptions": "There is a path north, east, southeast, south, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "119",
+        "moveDescription": "Moving across the main hall at this level is almost akin to torture with how hot it is with the lava mere feet below you. You do make it across and are greeted by yet another intersection."
+      },
+      {
+        "direction": "EE",
+        "destination": "125",
+        "moveDescription": "Heading out into a larger cave, you are surprised when some blue fire you passed through seems to be cool to the touch, making it all but harmless to you."
+      },
+      {
+        "direction": "SE",
+        "destination": "123",
+        "moveDescription": "Stepping into the nearby storage room, you almost get jumpscared by a nearby fright."
+      },
+      {
+        "direction": "SS",
+        "destination": "107",
+        "moveDescription": "Heading upstairs you reach a small sublevel area that you decide to stop at."
+      },
+      {
+        "direction": "SW",
+        "destination": "124",
+        "moveDescription": "Ducking into a nearby cave gives you quite the sight as bright blue gems shine back at you."
+      }
+    ]
+  },
+  "123": {
+    "depth": "3(Lower)",
+    "TrueX": "-613",
+    "TrueZ": "1921",
+    "x": "281",
+    "y": "536",
+    "roomDescription": "A storage room, although doubtfully the only one here. Several chests lay stacked on top of each other with a few oddities scattered around the room.",
+    "moveDescriptions": "There is a path northwest.",
+    "moves": [
+      {
+        "direction": "NW",
+        "destination": "122",
+        "moveDescription": "Moving on from the storage room, you walk back to the intersection you found it at."
+      }
+    ]
+  },
+  "124": {
+    "depth": "3(Lower)",
+    "TrueX": "-622",
+    "TrueZ": "1919",
+    "x": "273",
+    "y": "430",
+    "roomDescription": "Lava and fire are spread throughout the room, seemingly protecting the valuable gems scattered about the room. It would even seem as if the cave itself is protecting the minerals as you spot a previous cave in, splitting the cavern in twain.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "122",
+        "moveDescription": "With no other path to take, you walk back to the intersection you came from."
+      }
+    ]
+  },
+  "125": {
+    "depth": "3(Lower)",
+    "TrueX": "-590",
+    "TrueZ": "1920",
+    "x": "264",
+    "y": "662",
+    "roomDescription": "Although spacious, this section of the cave seems to have been stripped clean of any ores and minerals. A nearby cart full of coal more or less confirms that whoever was mining here was getting the final scraps out of the walls before moving on to the nearby sections.",
+    "moveDescriptions": "There is a path north, northeast, west, and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "121",
+        "moveDescription": "Heading to the other side of the cave you pass by a small ramp up to a ladder, as well as some stairs up to the level above."
+      },
+      {
+        "direction": "NE",
+        "destination": "110",
+        "moveDescription": "Walking up the small incline you stop pretty quickly at a crane."
+      },
+      {
+        "direction": "WW",
+        "destination": "122",
+        "moveDescription": "Heading back into the mineshafts you are surprised that the blue fires seem to be harmless to the touch, and actually quite cold."
+      },
+      {
+        "direction": "NW",
+        "destination": "106",
+        "moveDescription": "Going up the stairs to the middle level seems to be a better vantage point for finding things in the cave."
+      }
+    ]
+  },
+  "126": {
+    "depth": "3(Lower)",
+    "TrueX": "-584",
+    "TrueZ": "1894",
+    "x": "435",
+    "y": "651",
+    "roomDescription": "The mine dips down a bit here, having quite the slope going down to the bottom of the small gold ore vein.",
+    "moveDescriptions": "There is a path northwest",
+    "moves": [
+      {
+        "direction": "NW",
+        "destination": "121",
+        "moveDescription": "Heading away from the cavern you find a small storage area in the midst of being set up."
+      }
+    ]
+  },
+  "127": {
+    "depth": "3(Lower)",
+    "TrueX": "-580",
+    "TrueZ": "1891",
+    "x": "467",
+    "y": "740",
+    "roomDescription": "It seems like a diligent worker was finishing up a vein of iron over here before the mines were closed off as only a few chunks of it remain in the walls here. A small barrel sits nearby, likely as a way to rest between veins of ore.",
+    "moveDescriptions": "There is a path north",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "121",
+        "moveDescription": "Leaving the cave you walk towards a large but mostly empty storage area."
+      }
+    ]
+  },
+  "128": {
+    "depth": "3(Lower)",
+    "TrueX": "-638",
+    "TrueZ": "1902",
+    "x": "399",
+    "y": "318",
+    "roomDescription": "A large bore hole was created here, but has seemingly been closed off with a makeshift floor of stone. A nearby crate looks to be a receptacle for a key to go down deeper into the mine. To the side, a note is stapled \"Crosses, Keys, Lower\"",
+    "moveDescriptions": "There is a path north, east, and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "114",
+        "moveDescription": "Deciding you had enough of the heat of the main hall you walk away and to a nearby intersection."
+      },
+      {
+        "direction": "EE",
+        "destination": "129",
+        "moveDescription": "Walking east keeps your options open of whether you want to go north or south from the main hall."
+      },
+      {
+        "direction": "SW",
+        "destination": "130",
+        "moveDescription": "Falling through the recently opened hole you slowly start to panic as the corruption seems to have fully engulfed the area you are falling into. The panic turns to relief as you see that the southwest platform you are falling onto is covered in a soft moss. Looking across the maze-like city that you have landed into, a low powerful roar echoes across the buildings, and a dark mist falls around you. Your eyes seem to be useless in the fog, as you can barely see where your feet are stepping to allow you to move around."
+      }
+    ]
+  },
+  "129": {
+    "depth": "3(Lower)",
+    "TrueX": "-628",
+    "TrueZ": "1904",
+    "x": "382",
+    "y": "398",
+    "roomDescription": "The heat from the fire and lava below you is excruciating on your sides, although the black rock seems to be blocking most of it, allowing you to walk around safely on the small catwalk. The main hall of the mines seems extremely large from below, so much so that you can hardly believe you came from the top level.",
+    "moveDescriptions": "There is a path north, south, and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "115",
+        "moveDescription": "Going north leads you to a small intersection that seems to lead to the eastern side of the cave."
+      },
+      {
+        "direction": "SS",
+        "destination": "116",
+        "moveDescription": "Going south you find an intersection connected to a nearby gem mine."
+      },
+      {
+        "direction": "WW",
+        "destination": "128",
+        "moveDescription": "Upon heading to the bore hole you spot a mass of skulk slumped over atop the nearby tower."
+      }
+    ]
+  }
+}

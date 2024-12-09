@@ -1,0 +1,20 @@
+{
+  "1": {
+    "location": "33",
+    "compassPasscode": "115",
+    "findMessage": "The compass wasn't pointing anywhere on this floor but having it set to this number seems to have drawn out a nearby key. You have collected a key!",
+    "nearbyMessage": "You can sense something nearby but you don't know where it is. Maybe the compass and the artifacts that led you here could help?"
+  },
+  "2": {
+    "location": "79",
+    "compassPasscode": "99",
+    "findMessage" : "You have found a key!",
+    "nearbyMessage": "You can sense something nearby but you don't know where it is. Maybe the compass and the artifacts that led you here could help?"
+  },
+  "3": {
+    "location": "126",
+    "compassPasscode": "53",
+    "findMessage" : "You have found a key!",
+    "nearbyMessage": "You can sense something nearby but you don't know where it is. Maybe the compass and the artifacts that led you here could help?"
+  }
+}

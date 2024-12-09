@@ -1,0 +1,1227 @@
+{
+  "1": {
+    "depth": "1",
+    "TrueX": "-618",
+    "TrueZ": "1965",
+    "x": "518",
+    "y": "146",
+    "roomDescription": "There is a stone platform with some ornate doors beyond it. They seem to have been sealed shut. Nearby the exit to the dungeon has been cut off by some loose debris, it looks like you're stuck here. Looking at a map, this platform would be in the northwest corner.",
+    "moveDescriptions": "There is a path east and a path south.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "3",
+        "moveDescription": "The caves twist and turn as you try to navigate them. The walls here seem fairly stable, though from the sounds echoing through the caves, you don't know how much longer that will last."
+      },
+      {
+        "direction": "SS",
+        "destination": "2",
+        "moveDescription": "Moving through the ice caves you notice a small opening in the western wall. This seems to have been an exit in days past, but has since frozen over. Besides the cave in and several blue flamed lanterns, nothing but freezing air and ice is your company."
+      }
+    ]
+  },
+  "2": {
+    "depth": "1",
+    "TrueX": "-610",
+    "TrueZ": "1972",
+    "x": "454",
+    "y": "204",
+    "roomDescription": "Ice stretches as far as you can see, with powder white rock adorning every wall. Nothing besides the cold is notable, and even that is starting to become normal.",
+    "moveDescriptions": "There is a path east, south and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "3",
+        "moveDescription": "You only take a couple steps east before you see a new path open up to the south."
+      },
+      {
+        "direction": "SS",
+        "destination": "7",
+        "moveDescription": "You push onwards up an icy slope as you come across a rather chilly section of the caves. There seems to be a small breeze permeating through here and a drift starts to build up on a small section of a wall. Perhaps you should hurry, you don't want the caves closing up on you before you can get out."
+      },
+      {
+        "direction": "WW",
+        "destination": "1",
+        "moveDescription": "Going west, you pass through a rather fragile overhang and meet up with what seems to be an old exit to this place covered in ice. Continuing on, you meet up with a stone platform with some doors shut tight. You have returned to the start of this frozen tomb."
+      }
+    ]
+  },
+  "3": {
+    "depth": "1",
+    "TrueX": "-603",
+    "TrueZ": "1972",
+    "x": "459",
+    "y": "238",
+    "roomDescription": "A small lantern sits next to you, shining a dim blue light onto the icy surroundings. Other that that lantern, the only thing accompanying you here is the slow drips of water running to the south.",
+    "moveDescriptions": "There is a path northeast, south and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "1",
+        "moveDescription": "This winding path seems adamant on making you lose your sense of direction. The blue flames flicker as you walk by. Although offering no warmth, they allow you to see, to your disappointment, a set of stone doors sealed shut marking the entrance that you have gone through before."
+      },
+      {
+        "direction": "SS",
+        "destination": "4",
+        "moveDescription": "Following the path to the south you come across a forked path. Within the more southeastern path you see some running water coming from the wall. You think you hear some soft moans of the dead coming from the otherwise normal looking water."
+      },
+      {
+        "direction": "WW",
+        "destination": "2",
+        "moveDescription": "Just a few moments after you set off west, a new path emerges to the south."
+      }
+    ]
+  },
+  "4": {
+    "depth": "1",
+    "TrueX": "-605",
+    "TrueZ": "1983",
+    "x": "409",
+    "y": "232",
+    "roomDescription": "Besides water pooling southeast of you there isn't much to this intersection.",
+    "moveDescriptions": "There is a path north, southeast and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "3",
+        "moveDescription": "You head away from the pool, making your way towards a more open intersection several meters away from where you left from."
+      },
+      {
+        "direction": "SE",
+        "destination": "6",
+        "moveDescription": "Deciding to wade through the water you happen to spot some stalagmites poking out of the water. Perhaps if needed you could jump across them for a quicker way across. Although some pain would surely come with that method."
+      },
+      {
+        "direction": "SW",
+        "destination": "5",
+        "moveDescription": "Heading just right of the pool you spot another way through the caves, though with a slight incline to it. You pass through a narrow corridor and find yourself at a new choice."
+      }
+    ]
+  },
+  "5": {
+    "depth": "1",
+    "TrueX": "-610",
+    "TrueZ": "1992",
+    "x": "359",
+    "y": "208",
+    "roomDescription": "The intersection is tight to squeeze through with several paths that seem even tighter to navigate surrounding you.",
+    "moveDescriptions": "There is a path north, southeast and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "4",
+        "moveDescription": "Moving north the thin intersection becomes almost suffocating, as if the caves themselves are barring your movement. Managing to squeeze by you find yourself at a lantern lit pool of water."
+      },
+      {
+        "direction": "SE",
+        "destination": "6",
+        "moveDescription": "Following the sounds of dripping you happen across a small pool of water on your left. Although you spot a bit more of an open path to your right."
+      },
+      {
+        "direction": "SW",
+        "destination": "7",
+        "moveDescription": "You get only a second's breath from the thin intersection before a skinnier section of cave presents itself before you. Popping out the otherside, a large swath of paths unveil before you."
+      }
+    ]
+  },
+  "6": {
+    "depth": "1",
+    "TrueX": "-603",
+    "TrueZ": "2000",
+    "x": "320",
+    "y": "239",
+    "roomDescription": "There is a small pool of water forming to your north, but otherwise there are no noticeable features in this part of the cave.",
+    "moveDescriptions": "There is a path north, south, west and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "4",
+        "moveDescription": "You decide that the dripstone sticking out of the pool is a quicker (and warmer) way across. You take a heart of damage but you quickly shrug it off. Upon crossing you find yourself at a new intersection."
+      },
+      {
+        "direction": "SS",
+        "destination": "10",
+        "moveDescription": "Through a small corridor lies a large circular room. The ice seems to be more compact here than before, likely through extensive usage previously."
+      },
+      {
+        "direction": "WW",
+        "destination": "7",
+        "moveDescription": "Taking the turn you pass by a few smaller corridors but end at a rather connected intersection."
+      },
+      {
+        "direction": "NW",
+        "destination": "5",
+        "moveDescription": "A few steps up you find yourself at a tight intersection with a couple of choices."
+      }
+    ]
+  },
+  "7": {
+    "depth": "1",
+    "TrueX": "-621",
+    "TrueZ": "2000",
+    "x": "324",
+    "y": "171",
+    "roomDescription": "Although the intersection is larger than the rest you have encountered, you don't notice much here besides a wall that seems softer than the rest. Pushing through the powder you find an egg colored like a protector of a midwestern congregation founded in 1850.",
+    "moveDescriptions": "There is a path north, northeast, east, southeast and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "2",
+        "moveDescription": "A rather long stretch of ice allows you some time to think about what you're even doing here. Is it for the fun of exploring the dungeon or for the accomplishment of beating it? Before you come to a conclusion, you arrive at another intersection."
+      },
+      {
+        "direction": "NE",
+        "destination": "5",
+        "moveDescription": "You squeeze through a hole in the wall and immediately find yourself with a couple of paths to choose from."
+      },
+      {
+        "direction": "EE",
+        "destination": "6",
+        "moveDescription": "You pass by some smaller cave paths to get here but you find a relatively open intersection to stop at."
+      },
+      {
+        "direction": "SE",
+        "destination": "10",
+        "moveDescription": "Hugging the right hand wall you go through a smaller opening in the wall to a much larger circular room (or as close as you can get with cubes) than you have seen before."
+      },
+      {
+        "direction": "SW",
+        "destination": "8",
+        "moveDescription": "Walking down the path you don't notice much more than ice and frozen stone lining the ground and walls. Surprisingly the cold doesn't seem to bother you all that much."
+      }
+    ]
+  },
+  "8": {
+    "depth": "1",
+    "TrueX": "-621",
+    "TrueZ": "2017",
+    "x": "237",
+    "y": "150",
+    "roomDescription": "Besides the bright light coming from the northeast, there isn't anything interesting about this small intersection.",
+    "moveDescriptions": "There is a path north, northeast, east, south and southwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "7",
+        "moveDescription": "Passing by a camp you only manage a few more meters before finding yourself with more paths to choose from."
+      },
+      {
+        "direction": "NE",
+        "destination": "9",
+        "moveDescription": "The path to the camp is fairly short, and nothing noticeable stands out to you on the way there."
+      },
+      {
+        "direction": "EE",
+        "destination": "10",
+        "moveDescription": "The small opening contrasts heavily with the size of the room past it. Clearly this is where the caves start to deviate from each other."
+      },
+      {
+        "direction": "SS",
+        "destination": "11",
+        "moveDescription": "Two paths open up south and deciding to take the more direct path you come across some worn down tracks in the ground. Whatever made them has long since moved on from here."
+      },
+      {
+        "direction": "SW",
+        "destination": "11",
+        "moveDescription": "A couple paths open up to the south, passing by another path you notice that both paths lead to the same intersection."
+      }
+    ]
+  },
+  "9": {
+    "depth": "1",
+    "TrueX": "-614",
+    "TrueZ": "2006",
+    "x": "285",
+    "y": "179",
+    "roomDescription": "It looks like a hermit set up camp here to combat the cold in these caves. The campfire has long since died but the berry bush next to it surprisingly has been flourishing in the cold allowing you some much needed food for your hunger.",
+    "moveDescriptions": "There is a path southwest.",
+    "moves": [
+      {
+        "direction": "SW",
+        "destination": "8",
+        "moveDescription": "Deciding that you found enough at the camp you turn back to the previous intersection."
+      }
+    ]
+  },
+  "10": {
+    "depth": "1",
+    "TrueX": "-609",
+    "TrueZ": "2018",
+    "x": "235",
+    "y": "214",
+    "roomDescription": "You're in a large circular room. It seems like this room was used quite a bit by the sheer number of tracks in the ground. Perhaps these crossroads were needed to get through to the rest of this dungeon.",
+    "moveDescriptions": "There is a path northeast, east, south, west and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "6",
+        "moveDescription": "Pushing through an opening to the north you find yourself next to a small pool of water and a couple of other paths within the ice caves."
+      },
+      {
+        "direction": "EE",
+        "destination": "12",
+        "moveDescription": "Besides the small trickle of water from the ceiling on the way out nothing stands out too much on your way to the next clearing. The room you come into only has a snow covered rock to call itself home, although its size is comparable to the circular room you just left."
+      },
+      {
+        "direction": "SS",
+        "destination": "11",
+        "moveDescription": "Leaving to the south you immediately come across an intersection through more caves."
+      },
+      {
+        "direction": "WW",
+        "destination": "8",
+        "moveDescription": "The small passage through the ice leaves much to be imagined at this point, but another set of paths opens up to you on the other side."
+      },
+      {
+        "direction": "NW",
+        "destination": "7",
+        "moveDescription": "The small opening to the north branches once you get through. Taking the western path passes by a few more paths but at least leads you to a more open intersection."
+      }
+    ]
+  },
+  "11": {
+    "depth": "1",
+    "TrueX": "-608",
+    "TrueZ": "2032",
+    "x": "164",
+    "y": "211",
+    "roomDescription": "You step into a small corridor, small droplets of water drip down next to you, creating a small puddle at your feet. Not much more is here besides the ice and slush.",
+    "moveDescriptions": "There is a path north, southeast, southwest and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "10",
+        "moveDescription": "Heading north, you pass through the narrow opening. The pathway is lined with smooth ice, glistening in the faint light as you move forward."
+      },
+      {
+        "direction": "SE",
+        "destination": "13",
+        "moveDescription": "Moving east, you navigate a more rocky and uneven passage. The air becomes slightly cooler as you approach the smaller, rockier chamber."
+      },
+      {
+        "direction": "SW",
+        "destination": "8",
+        "moveDescription": "Taking the more southerly westward path, you encounter a series of twists and turns in the icy corridor before stopping at a more open junction."
+      },
+      {
+        "direction": "WW",
+        "destination": "8",
+        "moveDescription": "Following the more westward path, you traverse a slightly wider and more straightforward route compared to what was seen in the southwestern path. The way is smoother, with fewer obstacles, making for an easier journey through the ice caves."
+      }
+    ]
+  },
+  "12": {
+    "depth": "1",
+    "TrueX": "-595",
+    "TrueZ": "2018",
+    "x": "245",
+    "y": "272",
+    "roomDescription": "You step into a medium-sized chamber dominated by the icy expanse of its walls and floor. The ceiling arches high above, shimmering with frost and tiny ice crystals that catch and reflect the light. In the center stands a large, imposing rock, covered in a thin layer of frost.",
+    "moveDescriptions": "There is a path northeast, east, southeast, south and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "20",
+        "moveDescription": "Snow crunches underfoot as you go up a short slope. A light shines in front of you as you sneak a peek into the next room. Snow covering the frozen landscape, you begin to wonder if you managed to make it outside, before realizing the night sky you thought was above you is just a trick of the eyes."
+      },
+      {
+        "direction": "EE",
+        "destination": "16",
+        "moveDescription": "The path to the next room is short, with little in the way of interest considering how much ice and snow you've seen thus far."
+      },
+      {
+        "direction": "SE",
+        "destination": "14",
+        "moveDescription": "Jumping into the water below, so as to not take damage, you quickly realize that you don't seem affected by the freezing cold water."
+      },
+      {
+        "direction": "SS",
+        "destination": "13",
+        "moveDescription": "For such a short walk the texture around you changed a fair amount. Now instead of just ice and slush, hard stone and gravel mixes into your surroundings."
+      },
+      {
+        "direction": "WW",
+        "destination": "10",
+        "moveDescription": "A couple of steps west and you find yourself looking into a wide open room."
+      }
+    ]
+  },
+  "13": {
+    "depth": "1",
+    "TrueX": "-600",
+    "TrueZ": "2035",
+    "x": "152",
+    "y": "253",
+    "roomDescription": "You enter a small chamber that feels different from the rest of the ice caves. The walls and floor here are more rugged, with rocky protrusions breaking through the smooth ice surface. You can see into a nearby room that has a deep pool of water.",
+    "moveDescriptions": "There is a path north, east and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "12",
+        "moveDescription": "Walking north you leave the rocky surroundings for more ice and snow."
+      },
+      {
+        "direction": "EE",
+        "destination": "14",
+        "moveDescription": "Deciding to go east, you stumble down a rocky slope into a smaller room."
+      },
+      {
+        "direction": "WW",
+        "destination": "11",
+        "moveDescription": "Going westward, you pass by a puddle of water slowly getting larger as more drips land into it from the ceiling."
+      }
+    ]
+  },
+  "14": {
+    "depth": "1",
+    "TrueX": "-593",
+    "TrueZ": "2030",
+    "x": "185",
+    "y": "293",
+    "roomDescription": "The centerpiece of this room is a deep pool of water, its surface beginning to freeze over near a massive pillar of stone. The water is so clear that you can see all the way to the bottom, where a chest lies, shimmering faintly under the icy surface. The ice pillar beside it glows with a soft, ethereal light, casting a mesmerizing glow throughout the chamber.",
+    "moveDescriptions": "There is a path north, east and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "12",
+        "moveDescription": "Going up a steep slope you quickly come into a new room centered by a large snow covered rock."
+      },
+      {
+        "direction": "EE",
+        "destination": "15",
+        "moveDescription": "Behind the pillar you find a gentle slope into a rather plain room. Nothing about this path is particularly noteworthy."
+      },
+      {
+        "direction": "WW",
+        "destination": "13",
+        "moveDescription": "The slope to the next room is steep enough that you have to jump, rather than walk, up each block. This has the added consequence that the path between is short enough to be able to see your initial room from where you ended up."
+      }
+    ]
+  },
+  "15": {
+    "depth": "1",
+    "TrueX": "-580",
+    "TrueZ": "2033",
+    "x": "155",
+    "y": "355",
+    "roomDescription": "You step into a vast, empty chamber that feels almost cavernous compared to the previous rooms. The walls and floor are uniformly smooth ice, giving the room a stark, pristine appearance. The only notable feature is a large rock ramp that ascends gently, leading toward another room.",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "16",
+        "moveDescription": "Even though the path up is rather plain, being only a singular slab of stone, the snow covered walls tell you that the rocky parts of the cave are starting to fall behind you."
+      },
+      {
+        "direction": "WW",
+        "destination": "14",
+        "moveDescription": "Even though you spot a small slope to your left, you find a quicker route to the next room by jumping off a short cliff into a small water hole."
+      }
+    ]
+  },
+  "16": {
+    "depth": "1",
+    "TrueX": "-572",
+    "TrueZ": "2022",
+    "x": "195",
+    "y": "412",
+    "roomDescription": "A stream meanders through the chamber, starting from the southeast corner and winding its way to the northwest, where it disappears into a wall of ice. The stream's movement has smoothed the ice along its banks, creating a serene, almost magical atmosphere.",
+    "moveDescriptions": "There is a path north, east, southeast, south and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "20",
+        "moveDescription": "A small passageway of rock and ice seems to have been carved out by previous explorers. A small lantern sits by the path, bright as day but seemingly cold enough to allow snow to pile up around it. The passage itself seems sturdy enough, although a rather narrow section seems ready to bar someone's passage if it happens to move."
+      },
+      {
+        "direction": "EE",
+        "destination": "17",
+        "moveDescription": "The path here, although narrow, feels relatively safe. There isn't much of a curve, allowing you to see further down into the cave system and into the next area."
+      },
+      {
+        "direction": "SE",
+        "destination": "17",
+        "moveDescription": "The wide path starts to follow the emerging stream before veering left into the ice."
+      },
+      {
+        "direction": "SS",
+        "destination": "15",
+        "moveDescription": "At the head of the stream you turn right down a large slab of rock, an interesting path compared to the ice and slush you have been moving on before."
+      },
+      {
+        "direction": "WW",
+        "destination": "12",
+        "moveDescription": "Following the stream you spot a path into another room. Stumbling down a few blocks you manage to stop yourself before flying face first into the rock in the center of the room."
+      }
+    ]
+  },
+  "17": {
+    "depth": "1",
+    "TrueX": "-544",
+    "TrueZ": "2028",
+    "x": "179",
+    "y": "530",
+    "roomDescription": "You arrive at an intersection where two hallways cross, creating a small chamber within the ice caves. The walls here are less distinct, blending seamlessly into the passages. A soft spot in the wall catches your eye. Thinking to push through the cold you find yourself in a small room with an egg colored like a rather anxious pink rathian.",
+    "moveDescriptions": "There is a path northeast, southeast, southwest and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "18",
+        "moveDescription": "Although rather unremarkable, the tunnel is long enough that it takes some time to get to the next room."
+      },
+      {
+        "direction": "SE",
+        "destination": "18",
+        "moveDescription": "The passageway to the next room just consists of flat ice and glistening rock, there really isn’t any more to say about it."
+      },
+      {
+        "direction": "SW",
+        "destination": "16",
+        "moveDescription": "The rock and snow covering the walls jut out just enough that it’s hard to see into the next room from a distance, although rounding the corner allows for a much clearer view."
+      },
+      {
+        "direction": "NW",
+        "destination": "16",
+        "moveDescription": "The icy floor makes it hard to keep your footing. The snow covered walls do little to aid in this aspect as well."
+      }
+    ]
+  },
+  "18": {
+    "depth": "1",
+    "TrueX": "-517",
+    "TrueZ": "2029",
+    "x": "173",
+    "y": "654",
+    "roomDescription": "You step into a medium-sized chamber where the ground is blanketed in a thick, white layer, crunching softly beneath your feet. In the back corner, a berry bush seems to have given into the elements, its leaves all but frozen in time. The air is crisp and cold, and your breath forms small clouds as you move. The room feels quiet and secluded, a peaceful respite within the expansive ice cave system.",
+    "moveDescriptions": "There is a path northeast, southwest and northwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "19",
+        "moveDescription": "The short passage up is mostly ice, although the few rocky footings allow you some breathing room from slipping around."
+      },
+      {
+        "direction": "SW",
+        "destination": "17",
+        "moveDescription": "The passage, although long, is fairly straightforward until you come across an intersection."
+      },
+      {
+        "direction": "NW",
+        "destination": "17",
+        "moveDescription": "The tunnel lacks any sort of foot holds to keep you from falling on the ice, though without any danger present you’re able to take your time to reach the next intersection."
+      }
+    ]
+  },
+  "19": {
+    "depth": "1",
+    "TrueX": "-495",
+    "TrueZ": "2015",
+    "x": "244",
+    "y": "780",
+    "roomDescription": "You enter a spacious chamber where the floor is a complex web of intersecting chasms, each one descending into darkness. You spot a glint at the bottom of the chasm. Jumping down you find an egg colored faintly like Beeblebrox but scrambled.",
+    "moveDescriptions": "There is a path northeast and southwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "44",
+        "moveDescription": "Moving northeast you find a large gap in the wall of what looks to be a cathedral of sorts. Stepping in you’re relieved with the grip of the stone on your feet, although the cold hasn’t diminished from the previous caves."
+      },
+      {
+        "direction": "SW",
+        "destination": "18",
+        "moveDescription": "The short path down to the next room has several rocks jutting out from the ice. Surprisingly this is more helpful than harmful since the smaller rocks allow for some semblance of grip while traveling."
+      }
+    ]
+  },
+  "20": {
+    "depth": "1",
+    "TrueX": "-587",
+    "TrueZ": "1987",
+    "x": "363",
+    "y": "329",
+    "roomDescription": "You step into an expansive chamber with a river flowing from the south, branching north and west in the center. Frozen solid trees stand tall, their icy forms resembling sculptures more than wood. The ceiling mimics the night sky, with twinkling lights embedded in the ice, creating a surreal, starlit ambiance.",
+    "moveDescriptions": "There is a path northeast, east, southeast and southwest.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "21",
+        "moveDescription": "Trudging through the slush along the river you pass a broken down iron bridge before reaching a low arch of ice. Passing through you arrive at the next room."
+      },
+      {
+        "direction": "EE",
+        "destination": "30",
+        "moveDescription": "The brightness from the snow and ice make the dark stone outline of the crypt stand out. Walking towards the entrance you notice that the frosty winds easily permeate into the crypt allowing for several ice formations."
+      },
+      {
+        "direction": "SE",
+        "destination": "16",
+        "moveDescription": "A small passage seems to have broken through the rock and ice more recently than the rest of the caves you have seen thus far. Passing through you make note of the tight squeeze towards the center of the passage."
+      },
+      {
+        "direction": "SW",
+        "destination": "12",
+        "moveDescription": "Along the southern wall you find a rocky slope down to a room made more of rock and ice than the wintry landscape you came from."
+      }
+    ]
+  },
+  "21": {
+    "depth": "1",
+    "TrueX": "-573",
+    "TrueZ": "1964",
+    "x": "501",
+    "y": "361",
+    "roomDescription": "You enter a spacious chamber where a river flows in from the south, pooling into a small pond in the center. A wooden dock surrounds the pond, and a crane holds a bundle of TNT over the water. Off to the side, a small cart loaded with more TNT sits precariously.",
+    "moveDescriptions": "There is a path northeast, east, southeast, south and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "26",
+        "moveDescription": "Passing by some snow filled crates and gunpowder you find a small rocky passage. Walking down the path the rushing water from behind you seems to have given way to splashes as a few stalactites fall into a pool ahead."
+      },
+      {
+        "direction": "EE",
+        "destination": "24",
+        "moveDescription": "Walking towards the snow covered ice arch you spot a small walkway carved above. It seems like it has mostly been filled, barring any movement even if you did find a way into the passage."
+      },
+      {
+        "direction": "SE",
+        "destination": "23",
+        "moveDescription": "Even though it is a short walk, you find a small side route upwards on your way to the next room. Sadly the passage it leads to seems to have caved in recently."
+      },
+      {
+        "direction": "SS",
+        "destination": "20",
+        "moveDescription": "Following the river towards its source, you pass under a small archway into a mystical forest scene. The trees have long since frozen in place, without a single leaf daring to stir."
+      },
+      {
+        "direction": "WW",
+        "destination": "22",
+        "moveDescription": "Walking along the dock you spot a small crane in the back. Poking around to find anything interesting a small crevasse shows itself in the wall behind you."
+      }
+    ]
+  },
+  "22": {
+    "depth": "1",
+    "TrueX": "-593",
+    "TrueZ": "1968",
+    "x": "480",
+    "y": "285",
+    "roomDescription": "You squeeze through a hidden passageway and enter an exceptionally small chamber, barely wide enough for two players. The walls are rough and unpolished ice, and the ceiling hangs low. The dim light casts long shadows, creating an eerie ambiance in this secluded nook.",
+    "moveDescriptions": "There is a path east.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "21",
+        "moveDescription": "Stepping back out into the light of the dock and snow blinds you for a second. Taking some time to recover you walk off of the dock and towards the center of the room."
+      }
+    ]
+  },
+  "23": {
+    "depth": "1",
+    "TrueX": "-564",
+    "TrueZ": "1971",
+    "x": "468",
+    "y": "442",
+    "roomDescription": "You find yourself in a wide hallway with smooth, reflective walls and an even floor. Several offshoots lead into smaller passages, and the main corridor extends onward, its end not immediately visible. The space feels open yet enclosed, inviting further exploration.",
+    "moveDescriptions": "There is a path north, northeast and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "24",
+        "moveDescription": "A smaller opening beside the main tunnel opens up to the north. Squeezing through the snow covered walls pops you out into a new room."
+      },
+      {
+        "direction": "NE",
+        "destination": "25",
+        "moveDescription": "Walking down the short trail you trip over a small bump in the snow. Kneeling down to brush away the powder, a small defunct trap sits before you."
+      },
+      {
+        "direction": "WW",
+        "destination": "21",
+        "moveDescription": "The sound of rushing water draws you towards a small pond."
+      }
+    ]
+  },
+  "24": {
+    "depth": "1",
+    "TrueX": "-562",
+    "TrueZ": "1957",
+    "x": "556",
+    "y": "455",
+    "roomDescription": "You are in a medium-sized chamber with a thin pillar of ice rising from floor to ceiling in the center. The ground and walls are covered in a thick, white layer that crunches softly beneath your feet. Light reflects through the pillar, casting shimmering patterns throughout the room, creating a serene and magical atmosphere.",
+    "moveDescriptions": "There is a path east, south and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "27",
+        "moveDescription": "Slipping on the ice you land face first into the snow. Getting back on your feet you notice a trap, a small stone gate under the slush, set mere inches from where you landed."
+      },
+      {
+        "direction": "SS",
+        "destination": "23",
+        "moveDescription": "Looking along the arch you spot a small passageway towards another part of the cave."
+      },
+      {
+        "direction": "WW",
+        "destination": "21",
+        "moveDescription": "A small archway of ice gives way to a large room centered by a dock-surrounded pond."
+      }
+    ]
+  },
+  "25": {
+    "depth": "1",
+    "TrueX": "-551",
+    "TrueZ": "1963",
+    "x": "508",
+    "y": "495",
+    "roomDescription": "You find yourself in a wide hallway with smooth, reflective walls and an even floor. A couple of offshoots branch out into smaller passages, and the hallway extends onward, its end visible in the distance. The space feels open yet enclosed, inviting further exploration.",
+    "moveDescriptions": "There is a path east, southeast, south and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "27",
+        "moveDescription": "The walk to the next room is fairly plain, with how much snow there has been thus far."
+      },
+      {
+        "direction": "SE",
+        "destination": "29",
+        "moveDescription": "Stepping into the little cave offshoot you take a left turn into a spiky ice tunnel."
+      },
+      {
+        "direction": "SS",
+        "destination": "28",
+        "moveDescription": "The small offshoot seems intriguing, and taking a right brings you to a small room."
+      },
+      {
+        "direction": "WW",
+        "destination": "23",
+        "moveDescription": "Hearing some water to the west you start to head towards it when you stumble over a small hidden trap. Luckily it broke down long ago due to time."
+      }
+    ]
+  },
+  "26": {
+    "depth": "1",
+    "TrueX": "-548",
+    "TrueZ": "1944",
+    "x": "590",
+    "y": "522",
+    "roomDescription": "You step into a chamber dominated by a shallow pool of water, with jagged dripstone formations rising from the pool and hanging from the ceiling. A small edge to one side allows you to cross without going into the water.",
+    "moveDescriptions": "There is a path east and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "27",
+        "moveDescription": "The path to the next room was surprisingly warm to the touch, leading to a lack of snow on the stone floor."
+      },
+      {
+        "direction": "WW",
+        "destination": "21",
+        "moveDescription": "Walking west leads to a small tunnel with a stone floor. Surprisingly the floor is warmer here, leading to a small trickle of water towards the pool."
+      }
+    ]
+  },
+  "27": {
+    "depth": "1",
+    "TrueX": "-524",
+    "TrueZ": "1960",
+    "x": "537",
+    "y": "612",
+    "roomDescription": "You step into a spacious but mostly empty chamber. Numerous offshoots lead to different parts of the cave system. A notable offshoot features a blackstone staircase descending into the depths, flanked by dark walls that stand in stark contrast to the surrounding ice. A soft spot in the wall catches your eye, and pushing through you find an egg. The coloring of the egg suggests someone tried to copy one side to the other but something seems off about it.",
+    "moveDescriptions": "There is a path southeast, south, southwest, west and northwest.",
+    "moves": [
+      {
+        "direction": "SE",
+        "destination": "33",
+        "moveDescription": "Going down the staircase you open up a wardrobe door to a large room with floating lights and a swirl of snow pointing towards the center of the room. In addition several piles of snow have gathered at the corners of the room adding to the frosty feel of the room."
+      },
+      {
+        "direction": "SS",
+        "destination": "29",
+        "moveDescription": "Off to the southwest you go into a small spiky tunnel of ice."
+      },
+      {
+        "direction": "SW",
+        "destination": "25",
+        "moveDescription": "Walking towards the tunnels you take a slight left towards the less icy path until you reach another intersection."
+      },
+      {
+        "direction": "WW",
+        "destination": "24",
+        "moveDescription": "The slushy tunnels lead to a slightly icier area. Walking in you spot a small trap and avoid it, making your way towards the center of the room."
+      },
+      {
+        "direction": "NW",
+        "destination": "26",
+        "moveDescription": "The rocky pathway to the water is warmer than you expected, although the water not freezing should’ve been enough of a clue of that."
+      }
+    ]
+  },
+  "28": {
+    "depth": "1",
+    "TrueX": "-556",
+    "TrueZ": "1976",
+    "x": "448",
+    "y": "472",
+    "roomDescription": "You enter a small, quiet chamber. The walls and floor are uniformly icy, casting a cool glow. In the southwestern corner, a single berry bush stands out, its bright red berries providing the only color in the otherwise monochromatic space.",
+    "moveDescriptions": "There is a path north and northeast.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "25",
+        "moveDescription": "Heading out of the icy room you notice a side path into a larger snow covered tunnel and decide to head over."
+      },
+      {
+        "direction": "NE",
+        "destination": "29",
+        "moveDescription": "Continuing down the icy tunnel you find yourself going towards a tunnel devoid of snow on the walls, instead replacing it with icy rocks and stone jutting out to the side."
+      }
+    ]
+  },
+  "29": {
+    "depth": "1",
+    "TrueX": "-531",
+    "TrueZ": "1974",
+    "x": "484",
+    "y": "552",
+    "roomDescription": "You find yourself in a narrow hallway with rugged walls where stones protrude at irregular intervals, creating numerous small crevices. The floor is uneven, with patches of rough stone interrupting the smooth surface. The myriad of small crevices adds a sense of mystery to the confined space. You spot two glints here in the wall. The first glint is coming from a powdered section of the wall. Pushing through you find an egg painted to look like a spelled out ghost sound. The second glint you find by crawling into a small crevice. Here you find an egg colored like frozen swedish water.",
+    "moveDescriptions": "There is a path east, southwest and northwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "27",
+        "moveDescription": "Going east pops you out of the icy cave into a larger room covered in snow."
+      },
+      {
+        "direction": "SW",
+        "destination": "28",
+        "moveDescription": "Going down the ice tunnel leads you to a rather small room acting more or less as a dead end."
+      },
+      {
+        "direction": "NW",
+        "destination": "25",
+        "moveDescription": "While going down the icy tunnel you find a small side entrance to a larger tunnel and decide to check it out."
+      }
+    ]
+  },
+  "30": {
+    "depth": "1",
+    "TrueX": "-565",
+    "TrueZ": "1991",
+    "x": "362",
+    "y": "434",
+    "roomDescription": "The room is vast, with high ceilings and four staircases at each corner leading deeper into the crypt. Large patches of ice cover sections of the floor and walls, adding an eerie glow to the dark stone architecture. The space is both grand and foreboding, a threshold between the natural ice and the ancient crypt.",
+    "moveDescriptions": "There is a path north, northeast, southeast, south and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "35",
+        "moveDescription": "Going up the northern stairs you are immediately met with a large icicle threatening to block the entire path. Luckily enough someone carved through the ice to allow for passage."
+      },
+      {
+        "direction": "NE",
+        "destination": "32",
+        "moveDescription": "Heading downstairs through the northern staircase you can’t help but notice the small piles of snow gathering around the entrance to the next room."
+      },
+      {
+        "direction": "SE",
+        "destination": "31",
+        "moveDescription": "Going towards the southern downstairs entrance the snow seems to almost follow you, as if it’s pushing you to go down."
+      },
+      {
+        "direction": "SS",
+        "destination": "34",
+        "moveDescription": "Heading up the southern staircase you pass by a large chunk of ice that holds an unlucky adventurer. You also pass by a room on your way to the south-eastern corner of the balcony."
+      },
+      {
+        "direction": "WW",
+        "destination": "20",
+        "moveDescription": "Having enough of the crypt you decide to step outside into a mystical forest scene."
+      }
+    ]
+  },
+  "31": {
+    "depth": "1",
+    "TrueX": "-545",
+    "TrueZ": "2005",
+    "x": "298",
+    "y": "528",
+    "roomDescription": "You enter a small chamber within the crypt, dominated by two solemn stone tombs in the center. Carved with intricate symbols, the tombs stand as silent sentinels of the past. Smooth stone walls and a softly echoing floor complete the sparse, sacred ambiance of this crypt chamber. Under the staircase into the library you spot an egg. The egg is colored like a junior drum and bugle corp named without too much thought.",
+    "moveDescriptions": "There is a path north and east.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "30",
+        "moveDescription": "Heading up the stairs you enter the large foyer of the crypt."
+      },
+      {
+        "direction": "EE",
+        "destination": "33",
+        "moveDescription": "Trudging through some snow to go downstairs you enter what seems to be the library, although the books have seen better days due to the immense amount of snow in the area."
+      }
+    ]
+  },
+  "32": {
+    "depth": "1",
+    "TrueX": "-545",
+    "TrueZ": "1982",
+    "x": "405",
+    "y": "528",
+    "roomDescription": "You enter a smaller chamber within the crypt, its walls lined with two recessed stone tombs. Carved with intricate symbols, the tombs add a solemn and reverent atmosphere to the room. Smooth stone walls and a cool, echoing floor complete the quiet, contemplative ambiance of this crypt chamber.",
+    "moveDescriptions": "There is a path east and south.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "33",
+        "moveDescription": "Passing by some snow to go downstairs, you spot a large table adorned with floating lights and swirls of snow and ice."
+      },
+      {
+        "direction": "SS",
+        "destination": "30",
+        "moveDescription": "Going upstairs you enter a large foyer dominated by ice and powder."
+      }
+    ]
+  },
+  "33": {
+    "depth": "1",
+    "TrueX": "-524",
+    "TrueZ": "1986",
+    "x": "357",
+    "y": "621",
+    "roomDescription": "You enter a massive chamber that resembles a library more than a crypt. A large table dominates the center of the room, surrounded by towering bookcases filled with ancient tomes and scrolls. One of the bookcases has swung open, revealing a hidden staircase leading back into the caves. The atmosphere is scholarly and mysterious, with the air thick with the scent of aged parchment and dust. Smooth stone walls and a tiled floor add to the grand yet quiet ambiance of this expansive library-like chamber within the crypt.",
+    "moveDescriptions": "There is a path north, southwest and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "27",
+        "moveDescription": "Passing through the bookcase and heading up the stairs you return to the ice caves at a medium sized chamber."
+      },
+      {
+        "direction": "SW",
+        "destination": "31",
+        "moveDescription": "You don’t particularly notice anything special going up the southern staircase."
+      },
+      {
+        "direction": "NW",
+        "destination": "32",
+        "moveDescription": "Nothing all that special is noticeable traveling up the northern staircase."
+      }
+    ]
+  },
+  "34": {
+    "depth": "1",
+    "TrueX": "-545",
+    "TrueZ": "1998",
+    "x": "329",
+    "y": "528",
+    "roomDescription": "Located on a southeast balcony, this room overlooks a vast entrance hall below. A small patch of ice slowly forms in one corner, contrasting with the stone walls and tiled floor. The balcony offers a serene vantage point, blending the cold beauty of the ice with the grandeur of the surrounding crypt architecture.",
+    "moveDescriptions": "There is a path north, northeast, southwest and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "35",
+        "moveDescription": "Heading across the balcony you pass by a few doorways before reaching a more obstructed corner."
+      },
+      {
+        "direction": "NE",
+        "destination": "39",
+        "moveDescription": "There isn’t much between this room and the next."
+      },
+      {
+        "direction": "SW",
+        "destination": "36",
+        "moveDescription": "Heading towards the stairs you step into a side room."
+      },
+      {
+        "direction": "WW",
+        "destination": "30",
+        "moveDescription": "Going down the stairs you pass by several snow piles before reaching the cold foyer of the crypt."
+      }
+    ]
+  },
+  "35": {
+    "depth": "1",
+    "TrueX": "-545",
+    "TrueZ": "1983",
+    "x": "400",
+    "y": "528",
+    "roomDescription": "Located in the northeast corner of a balcony overlooking the vast entrance hall below, this area features minimal ice. However, a large chunk of ice in the corner threatens to block passage down the stairs leading into the entrance hall of the crypt. The room offers a serene view of the grandeur of the crypt architecture, juxtaposed with the potential obstruction posed by the ice chunk.",
+    "moveDescriptions": "There is a path north, southeast, south and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "37",
+        "moveDescription": "Moving to the next room is just a quick step to the north."
+      },
+      {
+        "direction": "SE",
+        "destination": "39",
+        "moveDescription": "Moving towards the center of the crypt does not help with the cold, although the rooms are much closer together now."
+      },
+      {
+        "direction": "SS",
+        "destination": "34",
+        "moveDescription": "Going across the balcony doesn’t change what you can see throughout the room, but it does get away from the large ice chunk threatening to block your path."
+      },
+      {
+        "direction": "WW",
+        "destination": "30",
+        "moveDescription": "Pushing by the ice and snow at the top of the stairs leads you towards the frozen entrance to this tomb."
+      }
+    ]
+  },
+  "36": {
+    "depth": "1",
+    "TrueX": "-554",
+    "TrueZ": "2007",
+    "x": "282",
+    "y": "483",
+    "roomDescription": "In this small chamber, four tombs are inset into the walls, adorned with intricate carvings. The eastern wall shows signs of being breached and reshaped by encroaching ice, posing a threat to the rest of the room. Beyond this icy barrier, small pools of lava emit a faint glow and warmth, contrasting sharply with the cold, icy atmosphere within the chamber.",
+    "moveDescriptions": "There is a path northeast.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "34",
+        "moveDescription": "Heading out of the room leads you back to the snow and ice on the balcony of the foyer."
+      }
+    ]
+  },
+  "37": {
+    "depth": "1",
+    "TrueX": "-548",
+    "TrueZ": "1974",
+    "x": "447",
+    "y": "509",
+    "roomDescription": "This chamber is adorned with four tombs set into the walls, each intricately carved with symbols and motifs. In one corner, a small patch of ice is beginning to melt, dripping water onto the smooth stone floor below.",
+    "moveDescriptions": "There is a path east and south.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "38",
+        "moveDescription": "You start walking down a hallway before seeing that there are several paths out of the area."
+      },
+      {
+        "direction": "SS",
+        "destination": "35",
+        "moveDescription": "Walking out of the room you immediately run into a large chunk of ice and snow almost blocking your path."
+      }
+    ]
+  },
+  "38": {
+    "depth": "1",
+    "TrueX": "-530",
+    "TrueZ": "1976",
+    "x": "436",
+    "y": "598",
+    "roomDescription": "You are in a narrow hallway adorned with two larger tombs set into the northern wall. The tombs are grand and imposing, intricately carved with elaborate designs. The hallway itself feels confined yet significant, with smooth stone walls and a tiled floor that echo softly underfoot.",
+    "moveDescriptions": "There is a path east, southeast, southwest and west.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "43",
+        "moveDescription": "Continuing down the hallway you round the corner towards a heavily adorned tomb room."
+      },
+      {
+        "direction": "SE",
+        "destination": "42",
+        "moveDescription": "After passing the eastern sarcophagus you turn into a new room towards the center of the crypt."
+      },
+      {
+        "direction": "SW",
+        "destination": "39",
+        "moveDescription": "Although you’re deep into the crypt, small swirls of snow surround you as you walk into this central tomb room."
+      },
+      {
+        "direction": "WW",
+        "destination": "37",
+        "moveDescription": "Walking into the next room you spot a large chunk of ice and snow slowly melting into a puddle."
+      }
+    ]
+  },
+  "39": {
+    "depth": "1",
+    "TrueX": "-534",
+    "TrueZ": "1990",
+    "x": "362",
+    "y": "580",
+    "roomDescription": "This small, centrally located chamber features a single tomb placed in the center of the room. The tomb is intricately carved, its presence commanding the space.",
+    "moveDescriptions": "There is a path north, east, south, southwest and northwest.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "38",
+        "moveDescription": "The northern path is quite short and although it is clearly a hallway, the number of paths out of it gives you more decisions."
+      },
+      {
+        "direction": "EE",
+        "destination": "42",
+        "moveDescription": "Moving east is a small passage into a dark room."
+      },
+      {
+        "direction": "SS",
+        "destination": "40",
+        "moveDescription": "As soon as you go into the passage to the next room a wave of heat washes over you."
+      },
+      {
+        "direction": "SW",
+        "destination": "34",
+        "moveDescription": "Walking out into the foyer allows for swirls of snow to reach you even though you’re on the balcony."
+      },
+      {
+        "direction": "NW",
+        "destination": "35",
+        "moveDescription": "Going out the northwestern door leads you towards a balcony overlooking the foyer. Nearby a large chunk of ice and snow almost blocks out a path down to the balcony."
+      }
+    ]
+  },
+  "40": {
+    "depth": "1",
+    "TrueX": "-538",
+    "TrueZ": "2003",
+    "x": "285",
+    "y": "562",
+    "roomDescription": "This larger chamber features two tombs set into the walls. In the center of the room, two small pools of lava are inlaid into the floor, casting a warm glow that contrasts with the cold stone surroundings.",
+    "moveDescriptions": "There is a path north and east.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "39",
+        "moveDescription": "Leaving the warmth of the lava immediately becomes apparent as you walk into a central room swirling with snow."
+      },
+      {
+        "direction": "EE",
+        "destination": "41",
+        "moveDescription": "Heading east you walk into a small room."
+      }
+    ]
+  },
+  "41": {
+    "depth": "1",
+    "TrueX": "-523",
+    "TrueZ": "2005",
+    "x": "293",
+    "y": "640",
+    "roomDescription": "This very small chamber is just large enough to comfortably hold one player. Two smaller tombs are set in the corner, their presence adding a solemn touch to the confined space.",
+    "moveDescriptions": "There is a path north and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "42",
+        "moveDescription": "The passage into the next room is short and fairly unmemorable."
+      },
+      {
+        "direction": "WW",
+        "destination": "40",
+        "moveDescription": "Heading into the next room you are instantly greeted by a wave of warmth."
+      }
+    ]
+  },
+  "42": {
+    "depth": "1",
+    "TrueX": "-521",
+    "TrueZ": "1990",
+    "x": "367",
+    "y": "630",
+    "roomDescription": "This medium-sized room is empty except for a central altar with a set of books hovering above it. Surrounding the altar, glowing runes float in the air, pulsing with a mysterious power.",
+    "moveDescriptions": "There is a path north, northeast, southeast, south and west.",
+    "moves": [
+      {
+        "direction": "NN",
+        "destination": "38",
+        "moveDescription": "Walking into the hallway you realize that the number of paths out is too many to quickly check out giving you a new decision to make."
+      },
+      {
+        "direction": "NE",
+        "destination": "44",
+        "moveDescription": "Walking out into the next room you sense a small instability in the doorway, leading you to believe it could collapse at any point."
+      },
+      {
+        "direction": "SE",
+        "destination": "44",
+        "moveDescription": "Going into the next room you feel a couple of drops of water falling onto your head as you pass through the doorway."
+      },
+      {
+        "direction": "SS",
+        "destination": "41",
+        "moveDescription": "Heading south you feel a small tinge of heat radiating from the western room."
+      },
+      {
+        "direction": "WW",
+        "destination": "39",
+        "moveDescription": "Taking the few steps it takes to go into the next room doesn’t radically change your surroundings save for a few swirls of snow catching your attention."
+      }
+    ]
+  },
+  "43": {
+    "depth": "1",
+    "TrueX": "-510",
+    "TrueZ": "1958",
+    "x": "485",
+    "y": "702",
+    "roomDescription": "This medium-sized room is lightly decorated, featuring a central tomb as its focal point. In one corner, a berry bush adds a touch of natural color and life to the otherwise solemn space.",
+    "moveDescriptions": "There is a path south.",
+    "moves": [
+      {
+        "direction": "SS",
+        "destination": "38",
+        "moveDescription": "Leaving the room leads to a large hallway connecting to much of the rest of the crypt."
+      }
+    ]
+  },
+  "44": {
+    "depth": "1",
+    "TrueX": "-500",
+    "TrueZ": "1990",
+    "x": "366",
+    "y": "732",
+    "roomDescription": "This large room resembles a cathedral hall, with high ceilings and a grand, open space. In the center, a large but shallow pool stretches toward a statue stationed at the far end of the room.",
+    "moveDescriptions": "There is a path east, southeast, southwest and northwest.",
+    "moves": [
+      {
+        "direction": "EE",
+        "destination": "45",
+        "moveDescription": "Stepping up onto the platform doesn’t change any of your surroundings."
+      },
+      {
+        "direction": "SE",
+        "destination": "19",
+        "moveDescription": "A small opening in the wall opens up to create a passage back into the ice caves."
+      },
+      {
+        "direction": "SW",
+        "destination": "42",
+        "moveDescription": "Leaving the main hall brings you to through a small leak in the ceiling."
+      },
+      {
+        "direction": "NW",
+        "destination": "42",
+        "moveDescription": "Going out the main hall through the northern passage doesn’t really have any noticeable sections."
+      }
+    ]
+  },
+  "45": {
+    "depth": "1",
+    "TrueX": "-487",
+    "TrueZ": "1991",
+    "x": "366",
+    "y": "806",
+    "roomDescription": "This raised section of the grand hall features a statue at its center. The statue appears to be reaching out, as if expecting to receive something. A description below the statue reads, \"Cross the artifacts. Find the key.\" Beneath the description it looks as if someone scrawled a reminder that checking your coordinates can help with navigation... if only you could remember what the command was.",
+    "moveDescriptions": "There is a path northeast, southeast and west.",
+    "moves": [
+      {
+        "direction": "NE",
+        "destination": "48",
+        "moveDescription": "The stairs down warm you up as you pass down them. You feel a sense of safety during the passage down."
+      },
+      {
+        "direction": "SE",
+        "destination": "46",
+        "moveDescription": "The stairs down give a sense of safety from the elements that you were used to."
+      },
+      {
+        "direction": "WW",
+        "destination": "44",
+        "moveDescription": "You walk off of the imposing platform of the main hall."
+      }
+    ]
+  }
+}
