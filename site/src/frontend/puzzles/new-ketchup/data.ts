@@ -8,15 +8,15 @@ type PuzzlePerson = {
   validAnswers: string[];
   almostAnswers?: string[];
   getPointer: (s?: PuzzleStatus) => Pointer;
-}
+};
 
 export type Person = {
   getIntro: (name: string) => string;
-} & PuzzlePerson
+} & PuzzlePerson;
 
 export type Agent = {
   getIntro: (name: string, caseNumber?: string, nameLog?: string[]) => string;
-} & PuzzlePerson
+} & PuzzlePerson;
 
 export type Pointer = {
   getDialog: (name: string) => string;
@@ -344,7 +344,7 @@ const Sisko: Person = {
     }
     return {
       getDialog: () =>
-        `${getNameSpan("Commander")}Yes, the "person of interest." Chief tells me that he's been tampering with some of our secondary systems, but he doesn't know how or to what end.<br>${getNameSpan("Commander")}We don't know if he's Starfleet Intelligence or Section 31 or what but either way, I don't like that he's anywhere near my station.<br>${getNameSpan("Commander")}There's an Intelligence agent who owes me a favor. She hangs out at a diner down the street. Try and talk to her and see if he's one of hers.</p>`,
+        `${getNameSpan("Commander")}Yes, the "person of interest." Chief tells me that he's been tampering with some of our secondary systems, but he doesn't know how or to what end.<br>${getNameSpan("Commander")}We don't know if he's Starfleet Intelligence or Section 31 or what but either way, I don't like that he's anywhere near my station.<br>${getNameSpan("Commander")}There's an Intelligence operative who owes me a favor. She hangs out at a diner down the street. Try and talk to her and see if he's one of hers.</p>`,
       nextPerson: DinerAgent,
     };
   },
@@ -391,7 +391,7 @@ const DinerAgent: Person = {
     }
   },
   getIntro: (name: string) =>
-    `<p>At the diner you find an agent named ${name}, sullenly nursing a cup of coffee. She immediately preempts you:</p><p>${getNameSpan(name)}Hey. I'm a paying customer. Free refills. I'm not going anywhere.</p><p>You explain that you just want to talk, but she cuts you off.</p><p>${getNameSpan(name)}I'm waiting for my Pokemoniker agent in Avonlea to check in. If that ain't you, bayleef me alone.</p>`,
+    `<p>At the diner you find an operative named ${name}, sullenly nursing a cup of coffee. She immediately preempts you:</p><p>${getNameSpan(name)}Hey. I'm a paying customer. Free refills. I'm not going anywhere.</p><p>You explain that you just want to talk, but she cuts you off.</p><p>${getNameSpan(name)}I'm waiting for my Pokemoniker agent in Avonlea to check in. If that ain't you, bayleef me alone.</p>`,
   getReplyUnsuccessful: (name) =>
     `<p>${getNameSpan(name)}I'm waiting for my source. She's on her way across the water by ferry. Electabuzz off.</p>`,
   getReplySuccessful: (name) =>
