@@ -158,6 +158,7 @@ export default tseslint.config(
     ignores: [
       // Don't lint generated stuff under dist/
       "dist/*",
+      "dist-ops/*",
       // nor the unused config
       "node-webpack.config.mjs",
     ],

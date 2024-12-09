@@ -1,4 +1,5 @@
 dist
+dist-ops
 node_modules
 /dev.sqlite3
 /test-results/

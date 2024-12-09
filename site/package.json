@@ -7,17 +7,17 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "rspack --mode=production --config ./rspack.config.mjs && npm run ops:build",
-    "build-dev": "rspack --mode=development --config ./rspack.config.mjs && npm run ops:build-dev",
+    "build": "rspack --mode=production --config ./rspack.config.mjs",
+    "build-dev": "rspack --mode=development --config ./rspack.config.mjs",
     "start": "npm run build && node ./dist/server-bundle.js",
     "start-watch": "npm run build-dev && concurrently --kill-others \"node --watch --enable-source-maps ./dist/server-bundle.js\" \"rspack --mode=development --config ./rspack.config.mjs --watch\" \"livereload ./dist -w 1000\"",
-    "check": "tsc && tsc -p worker/tsconfig.json && tsc -p ops/tsconfig.json && prettier . --check && eslint .",
+    "check": "tsc && tsc -p worker/tsconfig.json && tsc -p ops/tsconfig.json && tsc -p ops/server/tsconfig.json && prettier . --check && eslint .",
     "format": "prettier . --write && eslint . --fix",
     "knex": "node --import tsx/esm ./node_modules/.bin/knex",
     "test": "jest",
-    "ops:build": "cd ops && tsc -b && vite build",
-    "ops:build-dev": "cd ops && tsc -b && vite build --mode development",
-    "ops:start": "cd ops && vite"
+    "ops:build": "cd ops && rm -rf ../dist-ops && tsc -p ./server/tsconfig.json && vite build",
+    "ops:dev-server": "cd ops && NODE_ENV=development node --watch --import tsx/esm ./server/main.ts",
+    "ops:start": "cd ops && concurrently --kill-others vite \"npm run ops:dev-server\""
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.699.0",
