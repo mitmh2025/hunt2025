@@ -4,6 +4,9 @@ import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.
 import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.jpg";
 import main_west_bg from "./assets/main_west.jpg";
+import ledger from "./assets/rug/ledger.svg";
+import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
+import rug_bg from "./assets/rug/rug_bg.svg";
 import secret_bg from "./assets/secret.jpg";
 import type {
   Modal,
@@ -44,7 +47,7 @@ const LOCK_DATA: Record<PluginName, LockDatum> = {
   },
   rug: {
     // numeric (seven-segment display) lock
-    answer: "", // TODO: set answer
+    answer: "37047734",
     gateId: "isg09",
   },
   cryptex: {
@@ -372,7 +375,7 @@ const ALL_NODES: NodeInternal[] = [
 
   {
     id: "rug",
-    background: "", // TODO: background
+    background: rug_bg,
     placedAssets: [],
     navigations: [
       {
@@ -380,19 +383,15 @@ const ALL_NODES: NodeInternal[] = [
           left: -1,
           right: 1,
           top: 1,
-          bottom: 0.1,
+          bottom: 0.8,
         },
         cursor: "n-resize",
         destId: "main_east",
       },
       // back up to main_east
     ],
-    interactions: [
-      // rug
-    ],
-    sounds: [
-      // pulling rug back
-    ],
+    interactions: [{ plugin: "rug" }],
+    sounds: [],
     modals: [
       {
         includeIf: (teamState: TeamHuntState) => {
@@ -404,13 +403,21 @@ const ALL_NODES: NodeInternal[] = [
         },
         ownedByInteraction: true,
         area: {
-          // adjust area once assets exist
-          left: -1,
-          right: 1,
-          top: -1,
-          bottom: 1,
+          left: -0.49,
+          right: 0.52,
+          top: 0,
+          bottom: -0.81,
         },
-        asset: "", // TODO: whatever's in the number lock
+        asset: ledger,
+        placedAsset: {
+          area: {
+            left: -1,
+            right: 1,
+            top: 1,
+            bottom: -1,
+          },
+          asset: numberlock_box_ledger,
+        },
         slotId: "isp09",
         gateId: "isg14",
         postCode: "1K4T5XyjlogRERACrMXXbg==",

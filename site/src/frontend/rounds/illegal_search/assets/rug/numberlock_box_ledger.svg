@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1920"
+   height="1080"
+   viewBox="0 0 1920 1080"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="swatch151">
+      <stop
+         style="stop-color:#210c00;stop-opacity:1;"
+         offset="0"
+         id="stop151" />
+    </linearGradient>
+    <rect
+       x="697.09448"
+       y="735.09741"
+       width="731.61108"
+       height="177.49025"
+       id="rect110" />
+  </defs>
+  <g
+     id="layer3"
+     style="display:inline">
+    <g
+       id="g148"
+       style="display:inline">
+      <path
+         id="rect112"
+         style="fill:#41250a;fill-opacity:1;stroke:#71571d;stroke-width:5;stroke-linejoin:round;stroke-opacity:1"
+         d="m 1486.4768,1014.7666 -3e-4,-473.355 -937.41168,2e-4 3.6e-4,515.17"
+         transform="rotate(2.5541032)" />
+      <path
+         id="rect105"
+         style="fill:#41250a;fill-opacity:1;stroke:#866622;stroke-width:5;stroke-linejoin:round;stroke-opacity:1"
+         d="m 1469.601,1015.5194 2e-4,-493.37493 -937.41174,2.1e-4 -7e-5,535.18982"
+         transform="rotate(2.5541032)" />
+      <path
+         style="fill:#381209;fill-opacity:1;stroke:#866622;stroke-width:5;stroke-linejoin:round;stroke-opacity:1"
+         d="m 1198.3695,576.11988 232.3386,328.52971 14.1642,-317.53394 z"
+         id="path106" />
+      <path
+         id="path107"
+         style="fill:#381209;fill-opacity:1;stroke:#856421;stroke-width:5;stroke-linejoin:round;stroke-opacity:1"
+         d="M 690.54688,1080 713.98828,554.51367 508.39258,545.3418 484.54297,1080" />
+      <path
+         id="path108"
+         style="fill:#2b0d06;fill-opacity:1;stroke:#866622;stroke-width:5;stroke-linejoin:round;stroke-opacity:1"
+         d="M 526.57227,1080 550.33789,547.21289 508.39258,545.3418 484.54297,1080" />
+      <text
+         xml:space="preserve"
+         id="text109"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:100px;line-height:0px;font-family:Optima;-inkscape-font-specification:'Optima, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;white-space:pre;shape-inside:url(#rect110);display:inline;fill:#887151;fill-opacity:1;stroke:#d2aa2e;stroke-width:3;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         transform="rotate(2.5541032,-1103.4241,-376.8817)"><tspan
+           x="792.09949"
+           y="762.32455"
+           id="tspan1">ACCOUNTS</tspan></text>
+    </g>
+  </g>
+</svg>

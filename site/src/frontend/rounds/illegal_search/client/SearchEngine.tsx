@@ -21,6 +21,7 @@ import {
 } from "../types";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
+import Rug from "./Rug";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
 const ENABLE_DEVTOOLS = true as boolean; // type loosened to avoid always-truthy lints firing
@@ -402,6 +403,17 @@ const SearchEngine = ({
         />
       );
     }
+    if (interaction.plugin === "rug") {
+      return (
+        <Rug
+          key={`interaction-${interaction.plugin}`}
+          node={node}
+          showModal={showModal}
+          setNode={setNode}
+          teamState={teamState}
+        />
+      );
+    }
     // TODO: do something with interaction.plugin
     return (
       <div key={`interaction-${interaction.plugin}`}>{interaction.plugin}</div>
@@ -482,6 +494,8 @@ const SearchEngine = ({
     }
   }, [cursorX, cursorY, devBox]);
 
+  // We stack navigations atop interactions because the rug view has overlap,
+  // and we want to ensure the navigation is always accessible at the top.
   return (
     <>
       <SearchEngineSurface
@@ -491,8 +505,8 @@ const SearchEngine = ({
         onMouseUp={shouldCapture ? mouseUp : undefined}
       >
         {assets}
-        {navigations}
         {interactions}
+        {navigations}
         {modals}
         {modalOverlay}
         {devtoolsOverlay}

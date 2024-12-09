@@ -54,6 +54,12 @@ export type Interaction = {
 export type ModalBase = {
   area: ScreenArea; // what area of the screen should be clickable to trigger showing this modal?
   asset: string; // what image should be shown when the modal is blown up large? (not initially visible, that should be in placedAssets)
+
+  // By default the asset is shown in the clickable area to trigger the modal. If you
+  // want some other behavior (a larger asset that is only partially clickable, for example)
+  // you can override what gets shown and where when the modal is available, separate
+  // from what area is clickable and what is shown in the modal
+  placedAsset?: PlacedAsset;
 };
 
 export type ModalInternal = ModalBase & {

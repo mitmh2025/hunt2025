@@ -16,6 +16,7 @@ import {
   fuseboxPostHandler,
   modalPostHandler,
   nodeRequestHandler,
+  numericLockPostHandler,
 } from "../rounds/illegal_search";
 import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render500 } from "../utils/renderApp";
@@ -215,6 +216,7 @@ export function registerUiRoutes({
     comboLockPostHandler,
   );
   authRouter.post("/rounds/illegal_search/locks/painting2", fuseboxPostHandler);
+  authRouter.post("/rounds/illegal_search/locks/rug", numericLockPostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug",
     asyncHandler(
