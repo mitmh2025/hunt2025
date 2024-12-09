@@ -466,11 +466,17 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const title = puzzle.title;
   const authors = formatList(puzzle.authors);
   const editors = formatList(puzzle.editors);
-  const acknowledgements = puzzle.additional_credits.map((credit) => (
-    <SolutionAcknowledgementComponent key={credit.for_what}>
-      {credit.for_what} by {formatList(credit.who)}
-    </SolutionAcknowledgementComponent>
-  ));
+  const acknowledgements = puzzle.additional_credits.map((credit) =>
+    "freeform" in credit ? (
+      <SolutionAcknowledgementComponent key={credit.freeform}>
+        {credit.freeform}
+      </SolutionAcknowledgementComponent>
+    ) : (
+      <SolutionAcknowledgementComponent key={credit.for_what}>
+        {credit.for_what} by {formatList(credit.who)}
+      </SolutionAcknowledgementComponent>
+    ),
+  );
 
   const answer = puzzle.answer;
   const inlineScript = `window.hints = ${JSON.stringify(puzzle.hints)}; window.cannedResponses = ${JSON.stringify(puzzle.canned_responses)};`;
