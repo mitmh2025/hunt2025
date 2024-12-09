@@ -1,4 +1,5 @@
 import React, {
+  type DragEventHandler,
   type PointerEventHandler,
   useCallback,
   useRef,
@@ -78,6 +79,10 @@ function MovableRug({
     setDragging(false);
   }, []);
 
+  const inhibitDrag: DragEventHandler<HTMLImageElement> = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
   const style = {
     left: position.x,
     top: position.y,
@@ -90,6 +95,7 @@ function MovableRug({
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
+      onDragStart={inhibitDrag}
       src={flat_rug}
       width={2136}
       alt="A bearskin rug"
