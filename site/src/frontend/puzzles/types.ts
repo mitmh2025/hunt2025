@@ -50,10 +50,13 @@ export type Content = {
   entrypoint?: Entrypoint;
 };
 
-export const AdditionalCreditSchema = z.object({
-  for_what: z.string(),
-  who: z.array(z.string()),
-});
+export const AdditionalCreditSchema = z.union([
+  z.object({
+    for_what: z.string(),
+    who: z.array(z.string()),
+  }),
+  z.object({ freeform: z.string() }),
+]);
 
 export type AdditionalCredit = z.infer<typeof AdditionalCreditSchema>;
 
