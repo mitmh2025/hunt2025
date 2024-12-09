@@ -125,8 +125,6 @@ const Puzzle = (): JSX.Element => {
         <Arrow />
         <Blank />
         <Arrow />
-        <Blank />
-        <Arrow />
         <StyledDiv>45</StyledDiv>
       </Row>
       <Row>
