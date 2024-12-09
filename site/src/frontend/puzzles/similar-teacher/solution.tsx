@@ -405,11 +405,11 @@ const Solution = (): JSX.Element => {
         clue, indicating those words are extraneous.
       </p>
       <p>
-        The second thing solvers may notice is that while ingredients are mostly
-        standardized, there can be some differences. However, all of these
-        cocktails (including the more obscure) are represented on the mixology
-        website “Kindred Cocktails”, which the puzzle title also alludes to.
-        This acts as a canonical data-set for ingredients.
+        The second thing solvers may notice is that there can be variation in
+        the recipes for these cocktails across various sources. However, all of
+        these cocktails (including the more obscure) are represented on the
+        mixology website “Kindred Cocktails”, which the puzzle title also
+        alludes to. This acts as a canonical data-set for ingredients.
       </p>
       <p>
         The next thing to notice are the ladders below, each of which has two
