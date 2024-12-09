@@ -18,7 +18,7 @@ const Solution = (): JSX.Element => {
     <>
       <p>
         The note presented on the webpage will indicate several clues pointing
-        to news articles about an antique dress and a hidden note with a code
+        to news articles about an antique dress and a hidden note with a code.
         The clues to find this article include:
       </p>
       <ul>
