@@ -6,7 +6,7 @@ on:
     branches: [ main, master ]
 jobs:
   test:
-    timeout-minutes: 5
+    timeout-minutes: 7
     runs-on: ubuntu-latest
     defaults:
       run:
