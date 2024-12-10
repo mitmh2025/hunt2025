@@ -53,6 +53,7 @@ type InternalizedStateType = {
   coordinates: boolean;
   commandSequence: string[];
   error?: string;
+  roomAtReset?: Room;
 };
 
 const validateKey = (
@@ -177,12 +178,20 @@ const externalizeState = (
     ...(internalState.coordinates ? { showCoordinates: true } : {}),
     ...(internalState.key
       ? {
-          foundRoom: internalState.key.foundIn.save,
-          compass: internalState.key.foundIn.key?.compass ?? 0,
-          usedRoom: internalState.key.usedIn?.save,
+          key: {
+            foundRoom: internalState.key.foundIn.save,
+            compass: internalState.key.foundIn.key?.compass ?? 0,
+            usedRoom: internalState.key.usedIn?.save,
+          },
         }
       : {}),
   };
+};
+
+const renderSave = (room: Room) => {
+  return room.number === 1
+    ? "This is the starting room. Reset the puzzle to return here."
+    : room.save;
 };
 
 const generateCompassMessage = (
@@ -374,6 +383,7 @@ const handler = (req: Request, res: Response) => {
           commandSequence: [...state.commandSequence, command],
           currentRoom: room,
           key: undefined,
+          roomAtReset: state.currentRoom,
         };
       }
       case "F3":
@@ -444,12 +454,13 @@ const handler = (req: Request, res: Response) => {
         responseComponents.push("You've unlocked the next floor!");
         break;
       case "RS":
+        // Make the typechecker happy but this should always be true
+        if (endState.roomAtReset) {
+          responseComponents.push(renderSave(endState.roomAtReset));
+        }
+        break;
       case "SV":
-        responseComponents.push(
-          endState.currentRoom.number === 1
-            ? "This is the starting room. Reset the puzzle to return here."
-            : endState.currentRoom.save,
-        );
+        responseComponents.push(renderSave(endState.currentRoom));
         break;
       default:
         responseComponents.push(
