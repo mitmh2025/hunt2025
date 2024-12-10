@@ -159,6 +159,7 @@ export default tseslint.config(
       // Don't lint generated stuff under dist/
       "dist/*",
       "dist-ops/*",
+      "radioman/dist/*",
       // nor the unused config
       "node-webpack.config.mjs",
     ],
