@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { type DragEventHandler, useCallback, useState } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
 import drawer_open from "../assets/desk_drawer/drawer-open.mp3";
@@ -38,6 +38,10 @@ export default function DeskDrawer({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerAsset = node.interactionModals?.[0]?.placedAsset?.asset;
 
+  const inhibitDrag: DragEventHandler<HTMLImageElement> = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
   const modals = node.interactionModals?.map((modal) => {
     return (
       <ModalTrigger
@@ -56,9 +60,12 @@ export default function DeskDrawer({
             src={drawerAsset}
             $open={drawerOpen}
             onLoad={() => {
+              // we do this on load so that on initial solve, we wait for
+              // the asset to load before we animate it open
               setDrawerOpen(true);
               playSound(drawer_open);
             }}
+            onDragStart={inhibitDrag}
           />
         ) : (
           <DirectionalLock setNode={setNode} />

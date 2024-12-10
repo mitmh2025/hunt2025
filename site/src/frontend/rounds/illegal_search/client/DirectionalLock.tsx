@@ -1,4 +1,5 @@
 import React, {
+  type DragEventHandler,
   type PointerEventHandler,
   useCallback,
   useRef,
@@ -204,6 +205,10 @@ export default function DirectionalLock({
     }
   }
 
+  const inhibitDrag: DragEventHandler<HTMLImageElement> = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
   return (
     <img
       src={knob}
@@ -211,6 +216,7 @@ export default function DirectionalLock({
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
+      onDragStart={inhibitDrag}
       style={{
         position: "absolute",
         ...computeKnobLeftTop(),
