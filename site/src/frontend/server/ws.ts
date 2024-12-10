@@ -7,6 +7,7 @@ import { type FrontendClient } from "../../../lib/api/frontend_client";
 import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
+  type PuzzleStateLogEntry,
 } from "../../../lib/api/frontend_contract";
 import {
   type MessageFromClient,
@@ -25,6 +26,7 @@ import {
 import {
   type RedisClient,
   activityLog,
+  puzzleStateLog,
   teamRegistrationLog,
 } from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
@@ -58,7 +60,13 @@ type DatasetHandler =
   | {
       type: "team_registration";
       callback: (teamInfoIntermediate: TeamInfoIntermediate) => ObjectWithEpoch;
+    }
+  | {
+      type: "puzzle_state_log";
     };
+
+// An allowlist of slugs that we should permit puzzle_state_log to be subscribed to for.
+const PUZZLE_SLUGS_WITH_STATE_LOG = ["what_do_they_call_you"];
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
@@ -137,6 +145,9 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
     type: "team_state",
     callback: murderState,
   },
+  puzzle_state_log: {
+    type: "puzzle_state_log",
+  },
 };
 
 type TeamStateSubscriptionHandler<T> = {
@@ -169,11 +180,19 @@ type TeamRegistrationSubscriptionHandler<T> = {
   stop: () => void;
 };
 
+type PuzzleStateLogSubscriptionHandler = {
+  type: "puzzle_state_log";
+  dataset: Dataset;
+  slug: string;
+  stop: () => void;
+};
+
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
   | ActivityLogSubscriptionHandler
   | GuessLogSubscriptionHandler
-  | TeamRegistrationSubscriptionHandler<T>;
+  | TeamRegistrationSubscriptionHandler<T>
+  | PuzzleStateLogSubscriptionHandler;
 
 function isTeamStateSubscription<T>(
   sub: SubscriptionHandler<T>,
@@ -197,6 +216,12 @@ function isTeamRegistrationSubscription<T>(
   sub: SubscriptionHandler<T>,
 ): sub is TeamRegistrationSubscriptionHandler<T> {
   return sub.type === "team_registration";
+}
+
+function isPuzzleStateLogSubscription<T>(
+  sub: SubscriptionHandler<T>,
+): sub is PuzzleStateLogSubscriptionHandler {
+  return sub.type === "puzzle_state_log";
 }
 
 type ObserverProvider = {
@@ -223,6 +248,14 @@ type ObserverProvider = {
     conn: ConnHandler,
   ): () => void;
   guessLogReadyPromise(): Promise<void>;
+
+  observePuzzleStateLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): () => void;
+  puzzleStateLogReadyPromise(): Promise<void>;
 };
 
 class ConnHandler {
@@ -315,6 +348,9 @@ class ConnHandler {
             sub.stop();
             break;
           case "guess_log":
+            sub.stop();
+            break;
+          case "puzzle_state_log":
             sub.stop();
             break;
         }
@@ -427,6 +463,13 @@ class ConnHandler {
           timestamp: entry.timestamp,
         },
       });
+    }
+  }
+
+  public appendPuzzleStateLogEntry(subId: string, entry: PuzzleStateLogEntry) {
+    const sub = this.subs.get(subId);
+    if (sub && isPuzzleStateLogSubscription(sub)) {
+      this.send({ subId, type: "update", value: entry });
     }
   }
 
@@ -571,6 +614,53 @@ class ConnHandler {
                 error: "guess log ready promise rejected",
               });
             });
+          break;
+        }
+        case "puzzle_state_log": {
+          if (!params?.slug) {
+            this.send({
+              rpc,
+              type: "fail" as const,
+              error: `No slug provided to sub to ${dataset}`,
+            });
+            return;
+          }
+          if (!PUZZLE_SLUGS_WITH_STATE_LOG.includes(params.slug)) {
+            this.send({
+              rpc,
+              type: "fail" as const,
+              error: `puzzle_state_log not available for slug ${params.slug}`,
+            });
+            return;
+          }
+          const subHandler: SubscriptionHandler<object> = {
+            type: "puzzle_state_log",
+            dataset,
+            slug: params.slug,
+            stop: () => {
+              /* stub */
+            },
+          };
+          this.subs.set(subId, subHandler);
+          subHandler.stop = this.observerProvider.observePuzzleStateLog(
+            this.teamId,
+            params.slug,
+            subId,
+            this,
+          );
+          this.observerProvider
+            .puzzleStateLogReadyPromise()
+            .then(() => {
+              this.send({ rpc, type: "sub" as const, subId });
+            })
+            .catch(() => {
+              this.send({
+                rpc,
+                type: "fail" as const,
+                error: "puzzle state log ready promise rejected",
+              });
+            });
+          break;
         }
       }
 
@@ -617,6 +707,7 @@ export class WebsocketManager implements ObserverProvider {
 
   private activityLogTailer: DatasetTailer<InternalActivityLogEntry>;
   private teamRegistrationLogTailer: DatasetTailer<TeamRegistrationLogEntry>;
+  private puzzleStateLogTailer: DatasetTailer<PuzzleStateLogEntry>;
 
   private hunt: Hunt;
 
@@ -642,6 +733,12 @@ export class WebsocketManager implements ObserverProvider {
       fetchMethod:
         frontendApiClient.getFullTeamRegistrationLog.bind(frontendApiClient),
       log: teamRegistrationLog,
+    });
+    this.puzzleStateLogTailer = newLogTailer({
+      redisClient,
+      fetchMethod:
+        frontendApiClient.getFullPuzzleStateLog.bind(frontendApiClient),
+      log: puzzleStateLog,
     });
   }
 
@@ -798,6 +895,29 @@ export class WebsocketManager implements ObserverProvider {
 
   public guessLogReadyPromise(): Promise<void> {
     return this.activityLogTailer.readyPromise();
+  }
+
+  public observePuzzleStateLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): () => void {
+    const stop = this.puzzleStateLogTailer.watchLog(
+      (entries: PuzzleStateLogEntry[]) => {
+        entries.forEach((entry) => {
+          if (entry.team_id === teamId && entry.slug === slug) {
+            conn.appendPuzzleStateLogEntry(subId, entry);
+          }
+        });
+      },
+    );
+
+    return stop;
+  }
+
+  public puzzleStateLogReadyPromise(): Promise<void> {
+    return this.puzzleStateLogTailer.readyPromise();
   }
 
   public async requestHandler(
