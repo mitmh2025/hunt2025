@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 
-export const HighlightedSpot = styled.span`
+export const Highlight = styled.span`
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0),
@@ -16,6 +16,12 @@ export const HighlightedSpot = styled.span`
 const Spacer = styled.div`
   margin-top: 48px;
 `;
+
+export const WordBlock = styled.span`
+  margin: 0 12px 0 0;
+`;
+
+const Innuendo = styled.span``;
 
 const Puzzle = () => {
   return (
@@ -64,39 +70,140 @@ const Puzzle = () => {
         ...you seem like you could use a strip of chicken.
         <br />
       </p>
-
       <Spacer />
 
-      <p>
-        Sure, I'll help you B _ _ _ Y _ _ _ M _ _{" "}
-        <HighlightedSpot>_</HighlightedSpot>
-        <br />I can B _ _ <HighlightedSpot>_</HighlightedSpot> a T _ _ _ _<br />
-        B _ _ _ _ _ _ or T _ _ _ <HighlightedSpot>_</HighlightedSpot> _?
-        <br />I never turn down a C _ _ <HighlightedSpot>_</HighlightedSpot> _ P
-        _ _<br />
-        You know I like it D _ _ <HighlightedSpot>_</HighlightedSpot> _<br />
-        Yeah, give me a F _ _ _ _ <HighlightedSpot>_</HighlightedSpot>
-        <br />I spend a lot of time G <HighlightedSpot>_</HighlightedSpot> _ _ _
-        _ _ _<br />I do love a good J <HighlightedSpot>_</HighlightedSpot> _ _
+      <Innuendo>
+        Sure, I’ll help you <WordBlock>B _ _ _</WordBlock>
+        <WordBlock>Y _ _ _</WordBlock>
+        <WordBlock>
+          M _ _ <Highlight>_</Highlight>
+        </WordBlock>
         <br />
-        I'll put a M _ _ _ _ _ on your C <HighlightedSpot>_</HighlightedSpot> _
-        _ _ _ _ _ _ _<br />
-        I'll take it in my M _ _ _ _ <HighlightedSpot>_</HighlightedSpot>
+      </Innuendo>
+      <Innuendo>
+        I can{" "}
+        <WordBlock>
+          B _ _ <Highlight>_</Highlight>
+        </WordBlock>
+        a <WordBlock>T _ _ _ _</WordBlock>
         <br />
-        Yeah, I like a R _ _ J _ <HighlightedSpot>_</HighlightedSpot>
+      </Innuendo>
+      <Innuendo>
+        <WordBlock>B _ _ _ _ _ _</WordBlock>or{" "}
+        <WordBlock>
+          T _ _ _ <Highlight>_</Highlight> _?
+        </WordBlock>
         <br />
-        I've always wanted to try S _ <HighlightedSpot>_</HighlightedSpot> _ _ _
-        _ _ _ _<br />
-        I'm down to S _ _ _ _ B _ _ <HighlightedSpot>_</HighlightedSpot> _<br />
-        I'll show you my S _ _ _ _ B _ <HighlightedSpot>_</HighlightedSpot> _ _
-        _<br />
-        We'll have to S _ <HighlightedSpot>_</HighlightedSpot> _ _ _ T _ _ L _ _
-        _<br />
-        Give them a S _ _ <HighlightedSpot>_</HighlightedSpot> _ _ _<br />
-        I'll give you a S _ _ _ <HighlightedSpot>_</HighlightedSpot> P _ _ _
+      </Innuendo>
+      <Innuendo>
+        I never turn down a{" "}
+        <WordBlock>
+          C _ _ <Highlight>_</Highlight> _
+        </WordBlock>
+        <WordBlock>P _ _</WordBlock>
         <br />
-        Only if it's U _ _ <HighlightedSpot>_</HighlightedSpot> _ _ _ _ _<br />
-      </p>
+      </Innuendo>
+      <Innuendo>
+        You know I like it{" "}
+        <WordBlock>
+          D _ _ <Highlight>_</Highlight> _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        Yeah, give me a{" "}
+        <WordBlock>
+          F _ _ _ _ <Highlight>_</Highlight>
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I spend a lot of time{" "}
+        <WordBlock>
+          G <Highlight>_</Highlight> _ _ _ _ _ _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I do love a good{" "}
+        <WordBlock>
+          J <Highlight>_</Highlight> _ _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I’ll put a <WordBlock>M _ _ _ _ _</WordBlock>on your{" "}
+        <WordBlock>
+          C <Highlight>_</Highlight> _ _ _ _ _ _ _ _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I’ll take it in my{" "}
+        <WordBlock>
+          M _ _ _ _ <Highlight>_</Highlight>
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        Yeah, I like a <WordBlock>R _ _</WordBlock>
+        <WordBlock>
+          J _ <Highlight>_</Highlight>
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I’ve always wanted to try{" "}
+        <WordBlock>
+          S _ <Highlight>_</Highlight> _ _ _ _ _ _ _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I’m down to <WordBlock>S _ _ _ _</WordBlock>
+        <WordBlock>
+          B _ _ <Highlight>_</Highlight> _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I’ll show you my <WordBlock>S _ _ _ _</WordBlock>
+        <WordBlock>
+          B _ <Highlight>_</Highlight> _ _ _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        We’ll have to{" "}
+        <WordBlock>
+          S _ <Highlight>_</Highlight> _ _ _
+        </WordBlock>
+        <WordBlock>T _ _</WordBlock>
+        <WordBlock>L _ _ _</WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        Give them a{" "}
+        <WordBlock>
+          S _ _ <Highlight>_</Highlight> _ _ _
+        </WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        I’ll give you a{" "}
+        <WordBlock>
+          S _ _ _ <Highlight>_</Highlight>
+        </WordBlock>
+        <WordBlock>P _ _ _</WordBlock>
+        <br />
+      </Innuendo>
+      <Innuendo>
+        Only if it’s{" "}
+        <WordBlock>
+          U _ _ <Highlight>_</Highlight> _ _ _ _ _
+        </WordBlock>
+        <br />
+      </Innuendo>
     </>
   );
 };
