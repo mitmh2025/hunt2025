@@ -22,7 +22,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["FLIRT WITH BARTENDER"],
       reply:
-        "Great idea! Check in with the Gala bar staff and let them know you'd like to hit on one of their co-workers. I hear bartenders love that. In the meantime, prep your best food-themed pickup line.",
+        "Great idea! Check in with the Gala bar staff and let them know you’d like to hit on one of their co-workers. I hear bartenders love that. In the meantime, prep your best food-themed pickup line.",
       providesSolveReward: true,
     },
   ],
