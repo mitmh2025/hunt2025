@@ -131,6 +131,19 @@ export type MutableTeamRegistration = z.output<
   typeof MutableTeamRegistrationSchema
 >;
 
+export const PuzzleStateLogEntrySchema = z.object({
+  id: z.number(),
+  timestamp: z.string().datetime().pipe(z.coerce.date()),
+  team_id: z.number(),
+  slug: z.string(),
+  data: z.object({}).passthrough(),
+});
+export type PuzzleStateLogEntry = z.output<typeof PuzzleStateLogEntrySchema>;
+export type DehydratedPuzzleStateLogEntry = z.input<
+  typeof PuzzleStateLogEntrySchema
+>;
+export const PuzzleStateLog = z.array(PuzzleStateLogEntrySchema);
+
 export const frontendContract = c.router({
   markTeamGateSatisfied: {
     method: "POST",
@@ -180,6 +193,19 @@ export const frontendContract = c.router({
     }),
     responses: {
       200: TeamRegistrationLogSchema,
+      401: z.null(),
+    },
+  },
+  getFullPuzzleStateLog: {
+    method: "GET",
+    path: "/frontend/log/puzzle",
+    query: z.object({
+      since: z.number().optional(),
+      team_id: z.number().optional(),
+      slug: z.string().optional(),
+    }),
+    responses: {
+      200: PuzzleStateLog,
       401: z.null(),
     },
   },
