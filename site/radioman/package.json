@@ -1,0 +1,20 @@
+{
+  "name": "radioman",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "engines": {
+    "node": ">=22"
+  },
+  "module": "esnext",
+  "scripts": {
+    "build": "tsc",
+    "watch": "node --watch --import tsx/esm ./main.ts",
+    "check": "tsc && prettier . --check && eslint ."
+  },
+  "author": "",
+  "description": "",
+  "dependencies": {
+    "hunt2025": "^0.0.1"
+  },
+  "type": "module"
+}
