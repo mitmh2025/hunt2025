@@ -18,7 +18,11 @@ type Watcher = {
 };
 
 export function actionForDataset(dataset: Dataset) {
-  if (dataset === "activity_log" || dataset === "guess_log") {
+  if (
+    dataset === "activity_log" ||
+    dataset === "guess_log" ||
+    dataset === "puzzle_state_log"
+  ) {
     return "append";
   }
   return "replace";

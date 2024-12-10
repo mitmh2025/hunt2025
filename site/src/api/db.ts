@@ -5,6 +5,8 @@ import {
   type ActivityLogEntryRow,
   type InsertActivityLogEntry,
   type InsertTeamRegistrationLogEntry,
+  type PuzzleStateLogEntryRow,
+  type InsertPuzzleStateLogEntry,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
@@ -12,11 +14,16 @@ import { type TeamRegistration } from "../../lib/api/contract";
 import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
+  type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
 import { type CannedResponseLink } from "../frontend/puzzles/types";
 
-export { type ActivityLogEntryRow, type TeamRegistrationLogEntryRow };
+export {
+  type ActivityLogEntryRow,
+  type TeamRegistrationLogEntryRow,
+  type PuzzleStateLogEntryRow,
+};
 
 class WebpackMigrationSource {
   context: Rspack.Context;
@@ -232,6 +239,21 @@ declare module "knex/types/tables" {
     "team_id" | "type" | "data"
   >;
 
+  type PuzzleStateLogEntryRow = {
+    id: number;
+    // SQLite returns timestamps as strings.
+    timestamp: Date | string;
+    team_id: number;
+    slug: string;
+    // SQLite returns JSON fields as strings.
+    data: string | object;
+  };
+
+  type InsertPuzzleStateLogEntry = Pick<
+    PuzzleStateLogEntryRow,
+    "team_id" | "slug" | "data"
+  >;
+
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
    * knex
@@ -245,6 +267,10 @@ declare module "knex/types/tables" {
     team_registration_log: Knex.Knex.CompositeTableType<
       TeamRegistrationLogEntryRow,
       InsertTeamRegistrationLogEntry
+    >;
+    puzzle_state_log: Knex.Knex.CompositeTableType<
+      PuzzleStateLogEntryRow,
+      InsertPuzzleStateLogEntry
     >;
   }
 }
@@ -313,6 +339,23 @@ export function cleanupTeamRegistrationLogEntryFromDB(
     );
   }
   return res as TeamRegistrationLogEntry;
+}
+
+export function cleanupPuzzleStateLogEntryFromDB(
+  dbEntry: PuzzleStateLogEntryRow,
+): PuzzleStateLogEntry {
+  const res: Partial<PuzzleStateLogEntry> = {
+    id: dbEntry.id,
+    team_id: dbEntry.team_id,
+    timestamp: fixTimestamp(dbEntry.timestamp),
+    slug: dbEntry.slug,
+  };
+  if (dbEntry.data) {
+    (res as PuzzleStateLogEntry | { data?: object }).data = fixData(
+      dbEntry.data,
+    );
+  }
+  return res as PuzzleStateLogEntry;
 }
 
 export async function getTeamIds(
@@ -445,4 +488,37 @@ export async function changeTeamPassword(
   trx: Knex.Knex.Transaction,
 ) {
   await trx("teams").where("id", team_id).update({ password });
+}
+
+export async function getPuzzleStateLog(
+  team_id: number | undefined,
+  since: number | undefined,
+  trx: Knex.Knex,
+) {
+  let query = trx<PuzzleStateLogEntryRow>("puzzle_state_log");
+  if (team_id !== undefined) {
+    query = query.where("team_id", team_id);
+  }
+  if (since !== undefined) {
+    query = query.andWhere("id", ">", since);
+  }
+  const puzzle_state_log = await query.orderBy("id");
+  return puzzle_state_log.map(cleanupPuzzleStateLogEntryFromDB);
+}
+
+export async function appendPuzzleStateLog(
+  entry: InsertPuzzleStateLogEntry,
+  trx: Knex.Knex.Transaction,
+): Promise<PuzzleStateLogEntry | undefined> {
+  return await trx("puzzle_state_log")
+    .insert(entry)
+    .returning(["id", "team_id", "slug", "data", "timestamp"])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedEntry = objs[0] as PuzzleStateLogEntryRow;
+      const fixedEntry = cleanupPuzzleStateLogEntryFromDB(insertedEntry);
+      return fixedEntry;
+    });
 }

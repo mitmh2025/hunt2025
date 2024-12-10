@@ -25,6 +25,7 @@ export const DatasetSchema = z.enum([
   "murder_in_mitropolis",
   "stray_leads",
   "dev",
+  "puzzle_state_log",
 ]);
 export type Dataset = z.infer<typeof DatasetSchema>;
 

@@ -1,7 +1,7 @@
 import path from "path";
 import { Router, WebSocketExpress } from "websocket-express";
 import { newFrontendClient } from "../lib/api/frontend_client";
-import { activityLog, teamRegistrationLog } from "./api/data";
+import { activityLog, teamRegistrationLog, puzzleStateLog } from "./api/data";
 import { connect as dbConnect } from "./api/db";
 import { getMailer } from "./api/email";
 import { connect as redisConnect } from "./api/redis";
@@ -71,6 +71,7 @@ export default async function ({
       // Make sure Redis is up to date
       await activityLog.refreshRedisLog(redisClient, knex);
       await teamRegistrationLog.refreshRedisLog(redisClient, knex);
+      await puzzleStateLog.refreshRedisLog(redisClient, knex);
     }
 
     const mailer = getMailer({ emailFrom });
