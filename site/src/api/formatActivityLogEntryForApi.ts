@@ -3,7 +3,7 @@ import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
 import HUNT from "../huntdata";
-import { fixData } from "./logic";
+import { fixData } from "./db";
 
 export default function formatActivityLogEntryForApi(
   e: InternalActivityLogEntry,
