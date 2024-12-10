@@ -1,5 +1,8 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import drawer_bg from "./assets/desk_drawer/bg.png";
+import candy from "./assets/desk_drawer/candy.svg";
+import drawer_with_candy from "./assets/desk_drawer/drawer.png";
 import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.svg";
 import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.jpg";
@@ -26,7 +29,7 @@ type LockDatum = {
 const LOCK_DATA: Record<PluginName, LockDatum> = {
   deskdrawer: {
     // directional lock
-    answer: "", // TODO: set answer
+    answer: "udlr", // TODO: set answer
     gateId: "isg06",
   },
   painting2: {
@@ -427,35 +430,27 @@ const ALL_NODES: NodeInternal[] = [
 
   {
     id: "desk_drawer",
-    background: "", // TODO: background
+    background: drawer_bg, // TODO: background
     placedAssets: [],
     navigations: [
-      // back up to main_north
+      {
+        area: {
+          left: -1,
+          right: 1,
+          top: 1,
+          bottom: 0.6,
+        },
+        cursor: "n-resize",
+        destId: "main_north",
+      },
     ],
-    interactions: [
-      // directional lock
-    ],
+    interactions: [{ plugin: "deskdrawer" }],
     sounds: [
       // directional lock slide
       // directional lock unlock
       // drawer slide
     ],
-    modals: [],
-  },
-
-  {
-    id: "desk_drawer_open",
-    background: "", // TODO: background
-    placedAssets: [],
-    navigations: [
-      // zoom out back to main_north
-    ],
-    interactions: [],
-    sounds: [
-      // desk drawer shut
-    ],
     modals: [
-      // candies
       {
         includeIf: (teamState: TeamHuntState) => {
           return (
@@ -465,20 +460,31 @@ const ALL_NODES: NodeInternal[] = [
           );
         },
         area: {
-          // adjust area once assets exist
-          left: -1,
-          right: 1,
-          top: -1,
-          bottom: 1,
+          left: -0.3,
+          right: 0.31,
+          top: 0.43,
+          bottom: -0.09,
         },
-        asset: "", // TODO: candies
+        ownedByInteraction: true,
+        placedAsset: {
+          area: {
+            // Note: this placement is ignored by the frontend;
+            // the placement is pretty complicated to produce the
+            // drawer-opening effect.
+            left: -1,
+            right: 1,
+            top: 1,
+            bottom: -1,
+          },
+          asset: drawer_with_candy,
+        },
+        asset: candy,
         slotId: "isp06",
         gateId: "isg11",
         postCode: "lxRFwDNndXOrzDkGdBQukA==",
       },
     ],
   },
-
   {
     id: "bookcase",
     background: "", // TODO: background
@@ -907,16 +913,8 @@ export { NODES_BY_ID, MODALS_BY_POSTCODE, LOCK_DATA, filteredForFrontend };
 //     directional lock slide
 //     directional lock unlock
 //     drawer slide
-//
-// node: "desk_drawer_open"
-//   assets:
-//     desk drawer open
 //   modals:
 //     candies
-//   navigations:
-//     "main_north"
-//   sounds:
-//     desk drawer shut
 //
 // node: "cryptex"
 //   assets:

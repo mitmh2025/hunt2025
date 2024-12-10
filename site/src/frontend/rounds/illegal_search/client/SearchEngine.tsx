@@ -19,6 +19,7 @@ import {
   type PlacedAsset,
   type PostcodeResponse,
 } from "../types";
+import DeskDrawer from "./DeskDrawer";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 import Rug from "./Rug";
@@ -184,7 +185,7 @@ export const ModalTrigger = ({
     position: "absolute" as const,
     cursor: "zoom-in",
     ...boundsForArea(modal.area),
-    border: 0,
+    border: "none",
     padding: 0,
     backgroundColor: backgroundColor ?? "transparent",
   };
@@ -414,6 +415,18 @@ const SearchEngine = ({
         />
       );
     }
+    if (interaction.plugin === "deskdrawer") {
+      return (
+        <DeskDrawer
+          key={`interaction-${interaction.plugin}`}
+          node={node}
+          showModal={showModal}
+          setNode={setNode}
+          teamState={teamState}
+        />
+      );
+    }
+
     // TODO: do something with interaction.plugin
     return (
       <div key={`interaction-${interaction.plugin}`}>{interaction.plugin}</div>

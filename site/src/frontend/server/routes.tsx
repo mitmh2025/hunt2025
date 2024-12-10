@@ -13,6 +13,7 @@ import { type Hunt } from "../../huntdata/types";
 import { PUZZLES } from "../puzzles";
 import {
   comboLockPostHandler,
+  directionalLockPostHandler,
   fuseboxPostHandler,
   modalPostHandler,
   nodeRequestHandler,
@@ -217,6 +218,10 @@ export function registerUiRoutes({
   );
   authRouter.post("/rounds/illegal_search/locks/painting2", fuseboxPostHandler);
   authRouter.post("/rounds/illegal_search/locks/rug", numericLockPostHandler);
+  authRouter.post(
+    "/rounds/illegal_search/locks/deskdrawer",
+    directionalLockPostHandler,
+  );
   authRouter.get(
     "/puzzles/:puzzleSlug",
     asyncHandler(
