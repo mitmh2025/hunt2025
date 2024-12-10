@@ -29,22 +29,21 @@ type LockDatum = {
 const LOCK_DATA: Record<PluginName, LockDatum> = {
   deskdrawer: {
     // directional lock
-    answer: "udlr", // TODO: set answer
+    answer: "DLRDDRR",
     gateId: "isg06",
   },
   painting2: {
     // Fuse box/switches lock
-    // TODO: replace with actual answer, not this stub that is just switch 13 for testing purposes
-    answer: "0000000000001000000000000000000000000000",
+    answer: "1010101110101101110111101100101011011110",
     gateId: "isg07",
   },
   painting1: {
     // combination lock (safe)
     // We accept multiple options for this answer, for reasons that are puzzle-specific.
     answer: [
-      [12, 25, 24],
-      [24, 12, 25],
-      [25, 12, 24],
+      [4, 30, 19],
+      [19, 4, 30],
+      [30, 4, 19],
     ],
     gateId: "isg08",
   },
@@ -54,7 +53,7 @@ const LOCK_DATA: Record<PluginName, LockDatum> = {
     gateId: "isg09",
   },
   cryptex: {
-    answer: "", // TODO: set answer
+    answer: "REUNITED",
     gateId: "isg10",
   },
   bookcase: {
