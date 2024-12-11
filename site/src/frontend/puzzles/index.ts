@@ -62,6 +62,7 @@ import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
+import TheMark from "./unique-australia";
 import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
@@ -148,6 +149,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   knights_of_the_square_table: KnightsOfTheSquareTable,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
   where_am_i: WhereAmI,
+
+  the_mark: TheMark,
 
   // Murder in MITropolis
   do_the_packing: DoThePacking,
