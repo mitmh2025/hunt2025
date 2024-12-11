@@ -76,6 +76,14 @@ export default function RegistrationHome({
         )}
         <section id="updates">
           <h2>Latest Updates</h2>
+          <p>
+            <strong>2024.12.13 - </strong>This website previously indicated that
+            its contents were not a puzzle. However, while this statement was
+            true, we have since realized that it was inconsistent with our
+            internal guidelines for communication and have therefore removed
+            that guidance. No other changes have been made along with this
+            removal.
+          </p>
           {registrationOpen && (
             <p>
               <strong>2024.12.01 - </strong>Registration is now open! You can
