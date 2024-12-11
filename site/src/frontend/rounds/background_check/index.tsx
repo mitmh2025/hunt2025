@@ -251,7 +251,7 @@ const objectProperties: Record<BackgroundCheckSlot, ObjectDescriptor> = {
     },
     magnet: magnet_puzzle,
     width: 600,
-    requiredHeight: 2,
+    requiredHeight: 1,
   },
   bgp06: {
     asset: {
@@ -271,7 +271,7 @@ const objectProperties: Record<BackgroundCheckSlot, ObjectDescriptor> = {
     },
     magnet: magnet_puzzle,
     width: 600,
-    requiredHeight: 2,
+    requiredHeight: 1,
   },
   bgp07: {
     asset: {
@@ -291,7 +291,7 @@ const objectProperties: Record<BackgroundCheckSlot, ObjectDescriptor> = {
     },
     magnet: magnet_puzzle,
     width: 600,
-    requiredHeight: 3,
+    requiredHeight: 2,
   },
   bgp08: {
     asset: {
@@ -311,7 +311,7 @@ const objectProperties: Record<BackgroundCheckSlot, ObjectDescriptor> = {
     },
     magnet: magnet_puzzle,
     width: 600,
-    requiredHeight: 3,
+    requiredHeight: 2,
   },
   bgp09: {
     asset: {
@@ -445,7 +445,7 @@ const objectProperties: Record<BackgroundCheckSlot, ObjectDescriptor> = {
     },
     magnet: magnet_submeta,
     width: 550,
-    requiredHeight: 4,
+    requiredHeight: 5,
   },
   bgm02: {
     asset: {
@@ -480,7 +480,7 @@ const objectProperties: Record<BackgroundCheckSlot, ObjectDescriptor> = {
       unlocked: postcard_04_unlocked,
       solved: postcard_04_solved,
     },
-    alt: "A postcard reading “Alias”",
+    alt: "A calling card reading “Alias”",
     pos: {
       right: 290,
       top: 6800,
