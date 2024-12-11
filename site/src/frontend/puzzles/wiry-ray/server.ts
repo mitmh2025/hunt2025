@@ -82,7 +82,7 @@ const validateKey = (
       return { valid: false };
     }
 
-    const usedRoom = rooms.get(usedRoomNumber);
+    usedRoom = rooms.get(usedRoomNumber);
     if (!usedRoom || !canUseKey(level, usedRoom)) {
       return { valid: false };
     }
