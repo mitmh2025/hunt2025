@@ -3,6 +3,7 @@
 , postgresql
 , playwright-driver
 , buildNpmPackage
+, importNpmLock
 , rsync
 , makeWrapper
 , withDevDeps ? false
@@ -15,7 +16,10 @@ in buildNpmPackage {
   inherit (package) version;
 
   src = ./.;
-  npmDepsHash = "sha256-Ofqq80dGDWYG0zqEbs3eKQZF9xZpc+KWqpwodsFOkwI=";
+  npmDeps = importNpmLock {
+    npmRoot = ./.;
+  };
+  npmConfigHook = importNpmLock.npmConfigHook;
 
   inherit nodejs;
 
