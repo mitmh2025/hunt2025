@@ -29,7 +29,7 @@ type LockDatum = {
 const LOCK_DATA: Record<PluginName, LockDatum> = {
   deskdrawer: {
     // directional lock
-    answer: "DLRDDRR",
+    answer: "dlrddrr",
     gateId: "isg06",
   },
   painting2: {
