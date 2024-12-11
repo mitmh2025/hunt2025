@@ -2,6 +2,23 @@
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
 import { type Hunt, type PuzzleSlot } from "./types";
 
+const BGCHECK_FEEDER_SLOTS = {
+  the_mark: ["bgp01", "bgp04", "bgp05", "bgp07", "bgp14"], // The Rio Times
+  the_grand_illusion: ["bgp03", "bgp06", "bgp09", "bgp11"], // Le Monde
+  the_oversight: ["bgp02", "bgp08", "bgp10", "bgp12", "bgp13"], // The Egyptian Gazette
+};
+
+// In the background check round, metas become unlocked when all of the
+// following conditions are met:
+// * At least 7 feeders in the round are solved
+// * At least 2 feeders associated with each meta are solved.
+const BGCHECK_META_UNLOCK_CONDITION = [
+  { puzzles_solved: 7 },
+  { puzzles_solved: 2, slots: BGCHECK_FEEDER_SLOTS.the_mark },
+  { puzzles_solved: 2, slots: BGCHECK_FEEDER_SLOTS.the_grand_illusion },
+  { puzzles_solved: 2, slots: BGCHECK_FEEDER_SLOTS.the_oversight },
+];
+
 // prettier-ignore
 const HUNT: Hunt = {
   rounds: [
@@ -10,8 +27,8 @@ const HUNT: Hunt = {
       title: "The Missing Diamond",
       puzzles: [
         // slots (28 feeders, 4 metas, 1 super)
-        // Start with 10 puzzles unlockable and 8 unlock currency.
-        // Make 1.5 more puzzles (rounded up) unlockable after each solve.
+        // Start with 11 puzzles unlockable and 9 unlock currency.
+        // Make 2 more puzzles unlockable after each solve.
         { id: "mdp01", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 }, // unlockable by default
         { id: "mdp02", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
         { id: "mdp03", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
@@ -22,23 +39,23 @@ const HUNT: Hunt = {
         { id: "mdp08", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "educational_rite_of_passage" },
         { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
         { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
-        { id: "mdp11", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
         { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
-        { id: "mdp13", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
+        { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
-        { id: "mdp15", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
         { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "mdp17", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
         { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
-        { id: "mdp19", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
         { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "mdp21", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
-        { id: "mdp23", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
         { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "mdp25", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
+        { id: "mdp25", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "mdp26", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
-        { id: "mdp27", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
+        { id: "mdp27", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
         { id: "mdp28", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
         {
           // Boardwalk (meta)
@@ -67,7 +84,7 @@ const HUNT: Hunt = {
           unlocked_if: {
             // Unlocks when 5 of 7 feeders solved
             // TODO: correct specific slots
-            puzzles_unlocked: 5,
+            puzzles_solved: 5,
             slots: [
               "mdp02",
               "mdp06",
@@ -87,7 +104,7 @@ const HUNT: Hunt = {
           unlocked_if: {
             // Unlocks when 5 of 7 feeders solved
             // TODO: correct specific slots
-            puzzles_unlocked: 5,
+            puzzles_solved: 5,
             slots: [
               "mdp03",
               "mdp07",
@@ -105,9 +122,9 @@ const HUNT: Hunt = {
           slug: "the_art_gallery",
           is_meta: true,
           unlocked_if: {
-            // Unlocks when 6 of 8 feeders solved
+            // Unlocks when 5 of 8 feeders solved
             // TODO: correct specific slots
-            puzzles_unlocked: 6,
+            puzzles_solved: 5,
             slots: [
               "mdp04",
               "mdp08",
@@ -194,49 +211,49 @@ const HUNT: Hunt = {
       title: "Stakeout",
       puzzles: [
         // 42 feeders, 1 meta
-        // Start with 3 unlockable, make 1.5 (rounding up) more unlockable after each solve.
+        // Start with 5 unlockable, make 1.5 (rounding up) more unlockable after each solve.
         { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "an_exchange_of_vows" }, // TODO: this slug may not go in this spot
         { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "sing_like_a_canary" }, // TODO: this slug may not go in this spot
         { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "just_plane_wrong" }, // TODO: this slug may not go in this spot
-        { id: "sop04", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "broken_record" }, // TODO: this slug may not go in this spot
-        { id: "sop05", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "lab_scrabble" }, // TODO: this slug may not go in this spot
-        { id: "sop06", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "a_math_quiz" }, // TODO: this slug may not go in this spot
-        { id: "sop07", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "fight_night_at_mos" }, // TODO: this slug may not go in this spot
-        { id: "sop08", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "dear_diary" }, // TODO: this slug may not go in this spot
-        { id: "sop09", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "doable_double" }, // TODO: this slug may not go in this spot
-        { id: "sop10", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "the_ultimate_insult" }, // TODO: this slug may not go in this spot
-        { id: "sop11", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "cruciverbal" }, // TODO: this slug may not go in this spot
-        { id: "sop12", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "commentary" },  // TODO: this slug may not go in this spot
-        { id: "sop13", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "taste_explosion" }, // TODO: this slug may not go in this spot
-        { id: "sop14", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "temporal_investigations" }, // TODO: this slug may not go in this spot
-        { id: "sop15", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "some_assembly_required" }, // TODO: this slug may not go in this spot
-        { id: "sop16", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "be_mine" }, // TODO: this slug my not go in this spot
-        { id: "sop17", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "recipe_substitutions" }, // TODO: this slug my not go in this spot
-        { id: "sop18", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "big_names" }, // TODO: this slug my not go in this spot
-        { id: "sop19", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "seating_arrangements" }, // TODO: this slug my not go in this spot
-        { id: "sop20", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "magic_i" }, // TODO: this slug my not go in this spot
-        { id: "sop21", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "mystery_os" }, // TODO: this slug my not go in this spot
-        { id: "sop22", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "a_walk_in_the_park" }, // TODO: this slug my not go in this spot
-        { id: "sop23", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "mens_at_my_nose" }, // TODO: this slug my not go in this spot
-        { id: "sop24", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1, slug: "mellow_planet" }, // TODO: this slug my not go in this spot
-        { id: "sop25", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "relief_printing" }, // TODO: this slug my not go in this spot
-        { id: "sop26", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "borderline_personality" }, // TODO: this slug my not go in this spot
-        { id: "sop27", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "why_kant_we_be_friends_too" }, // TODO: this slug my not go in this spot
-        { id: "sop28", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "a_badly_broken_quote" }, // TODO: this slug my not go in this spot
-        { id: "sop29", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" }, // TODO: this slug my not go in this spot
-        { id: "sop30", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_recipe_for_success"} , // TODO: this slug my not go in this spot
-        { id: "sop31", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 },
-        { id: "sop32", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 },
-        { id: "sop33", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1 },
-        { id: "sop34", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 },
-        { id: "sop35", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 },
-        { id: "sop36", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1 },
-        { id: "sop37", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
-        { id: "sop38", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
-        { id: "sop39", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1 },
-        { id: "sop40", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1 },
-        { id: "sop41", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1 },
-        { id: "sop42", unlockable_if: { puzzles_solved: 26 }, unlock_cost: 1 },
+        { id: "sop04", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "broken_record" }, // TODO: this slug may not go in this spot
+        { id: "sop05", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "lab_scrabble" }, // TODO: this slug may not go in this spot
+        { id: "sop06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "a_math_quiz" }, // TODO: this slug may not go in this spot
+        { id: "sop07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "fight_night_at_mos" }, // TODO: this slug may not go in this spot
+        { id: "sop08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "dear_diary" }, // TODO: this slug may not go in this spot
+        { id: "sop09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "doable_double" }, // TODO: this slug may not go in this spot
+        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_ultimate_insult" }, // TODO: this slug may not go in this spot
+        { id: "sop11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "cruciverbal" }, // TODO: this slug may not go in this spot
+        { id: "sop12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "commentary" },  // TODO: this slug may not go in this spot
+        { id: "sop13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "taste_explosion" }, // TODO: this slug may not go in this spot
+        { id: "sop14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "temporal_investigations" }, // TODO: this slug may not go in this spot
+        { id: "sop15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "some_assembly_required" }, // TODO: this slug may not go in this spot
+        { id: "sop16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "be_mine" }, // TODO: this slug my not go in this spot
+        { id: "sop17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "recipe_substitutions" }, // TODO: this slug my not go in this spot
+        { id: "sop18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "big_names" }, // TODO: this slug my not go in this spot
+        { id: "sop19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "seating_arrangements" }, // TODO: this slug my not go in this spot
+        { id: "sop20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "magic_i" }, // TODO: this slug my not go in this spot
+        { id: "sop21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "mystery_os" }, // TODO: this slug my not go in this spot
+        { id: "sop22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "a_walk_in_the_park" }, // TODO: this slug my not go in this spot
+        { id: "sop23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "mens_at_my_nose" }, // TODO: this slug my not go in this spot
+        { id: "sop24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "mellow_planet" }, // TODO: this slug my not go in this spot
+        { id: "sop25", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "relief_printing" }, // TODO: this slug my not go in this spot
+        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1, slug: "borderline_personality" }, // TODO: this slug my not go in this spot
+        { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "why_kant_we_be_friends_too" }, // TODO: this slug my not go in this spot
+        { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "a_badly_broken_quote" }, // TODO: this slug my not go in this spot
+        { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" }, // TODO: this slug my not go in this spot
+        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "a_recipe_for_success"} , // TODO: this slug my not go in this spot
+        { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1 },
+        { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1 },
+        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 },
+        { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 },
+        { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1 },
+        { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 },
+        { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 },
+        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1 },
+        { id: "sop39", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
+        { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
+        { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1 },
+        { id: "sop42", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1 },
         { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 } }, // (meta)
       ],
       gates: [
@@ -263,24 +280,24 @@ const HUNT: Hunt = {
       title: "Paper Trail",
       puzzles: [
         // 17 feeders, 8 metas, 1 super
-        // Start with 3 unlockable, and make 1.5 (rounding up) more unlockable after each solve
+        // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
         { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "follow_the_rules" },
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
         { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
-        { id: "ptp04", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "the_eras_puzzle" },
-        { id: "ptp05", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "a_weathered_note" },
-        { id: "ptp06", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
-        { id: "ptp07", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "ptp08", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "ptp09", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
-        { id: "ptp10", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "ptp11", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "ptp12", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
-        { id: "ptp13", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "ptp14", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "ptp15", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
-        { id: "ptp16", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
-        { id: "ptp17", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
+        { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "the_eras_puzzle" },
+        { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "a_weathered_note" },
+        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
+        { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
         // Drop all 8 metas together once ~70% of the feeders are solved.
         { id: "ptm01", is_meta: true, unlocked_if: { puzzles_solved: 13 }, slug: "shell_corporation_1" }, // meta 1
         { id: "ptm02", is_meta: true, unlocked_if: { puzzles_solved: 13 }, slug: "shell_corporation_2" }, // meta 2
@@ -331,28 +348,29 @@ const HUNT: Hunt = {
       title: "Background Check",
       puzzles: [
         // 14 feeders, 3 metas, 1 super
-        // Start with 3 unlockable.  Add 1.5 (rounding up) for each solve.
+        // Start with 5 unlockable.  Add 1.5 (rounding up) for each solve.
         { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "the_10000_sheet_excel_file" },
         { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "where_am_i" },
         { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "knights_of_the_square_table" },
-        { id: "bgp04", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "deepfrost" },
-        { id: "bgp05", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
-        { id: "bgp06", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
-        { id: "bgp07", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "bgp08", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "bgp09", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
-        { id: "bgp10", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "bgp11", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "bgp12", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
-        { id: "bgp13", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "bgp14", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        // Metas unlock after a sufficient fraction (3 of 5 or 2 of 4) of their feeders are solved.
-        // TODO: match the metas and feeders correctly
-        { id: "bgm01", is_meta: true, unlocked_if: { puzzles_solved: 3, slots: ["bgp01", "bgp04", "bgp07", "bgp12", "bgp14"] } }, // meta 1
-        { id: "bgm02", is_meta: true, unlocked_if: { puzzles_solved: 2, slots: ["bgp02", "bgp03", "bgp08", "bgp11"] } }, // meta 2
-        { id: "bgm03", is_meta: true, unlocked_if: { puzzles_solved: 3, slots: ["bgp05", "bgp06", "bgp09", "bgp10", "bgp13"] } }, // meta 3
+        { id: "bgp04", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "deepfrost" },
+        { id: "bgp05", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+        { id: "bgp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "bgp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
+        { id: "bgp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "bgp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        // Metas become unlocked when both of the following conditions are met:
+        // * At least 7 feeders in the round are solved
+        // * At least 2 feeders associated with each meta are solved.
+        { id: "bgm01", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION }, // meta 1
+        { id: "bgm02", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION }, // meta 2
+        { id: "bgm03", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION }, // meta 3
         // Super unlocks once two metas are solved.
-        { id: "bgm04", is_meta: true, unlocked_if: { puzzles_solved: 2, slots: ["bgm01", "bgm02", "bgm03"] } }, // supermeta
+        { id: "bgm04", is_meta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] } }, // supermeta
       ],
       interactions: [
         {
@@ -458,28 +476,28 @@ const HUNT: Hunt = {
         { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "do_the_packing" },
         { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
         { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
-        { id: "tmp04", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "what_do_they_call_you" },
-        { id: "tmp05", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
-        { id: "tmp06", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
-        { id: "tmp07", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "tmp08", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "tmp09", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
-        { id: "tmp10", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "tmp11", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "tmp12", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
-        { id: "tmp13", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "tmp14", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "tmp15", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
-        { id: "tmp16", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
-        { id: "tmp17", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
-        { id: "tmp18", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1 },
-        { id: "tmp19", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
-        { id: "tmp20", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
-        { id: "tmp21", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1 },
-        { id: "tmp22", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 },
-        { id: "tmp23", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 },
-        { id: "tmp24", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1 },
-        { id: "tmm01", unlocked_if: { puzzles_solved: 16 } },
+        { id: "tmp04", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "what_do_they_call_you" },
+        { id: "tmp05", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
+        { id: "tmp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "tmp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "tmp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
+        { id: "tmp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
+        { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
+        { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
+        { id: "tmp20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1 },
+        { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
+        { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
+        { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1 },
+        { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 },
+        { id: "tmm01", is_meta: true, unlocked_if: { puzzles_solved: 16 } },
       ],
       interactions: [
         {
