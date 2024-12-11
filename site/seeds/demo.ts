@@ -205,7 +205,7 @@ export async function seed(knex: Knex): Promise<void> {
         });
       }
 
-      // Do an initial currency grant of 8 unlocks, if we haven't given such a
+      // Do an initial currency grant of 9 unlocks, if we haven't given such a
       // grant out yet.
       if (
         !mutator.log.some(
@@ -215,7 +215,7 @@ export async function seed(knex: Knex): Promise<void> {
         await mutator.appendLog({
           // Give the initial currency grant to all teams.
           type: "currency_adjusted",
-          currency_delta: 8,
+          currency_delta: 9,
         });
       }
     },
