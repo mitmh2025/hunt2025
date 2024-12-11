@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import the_mark_bg from "../puzzles/unique-australia/assets/The-Mark-bg.svg";
 import fridge_middle from "../rounds/background_check/assets/fridge_middle.png";
 import magnet_nonmeta from "../rounds/background_check/assets/magnet_puzzle.png";
 import magnet_meta from "../rounds/background_check/assets/magnet_submeta.png";
@@ -106,6 +107,36 @@ export const BackgroundCheckHeader = styled(PuzzleHeader)`
   }
 `;
 
+const BackgroundCheckMetaWrapperInner = styled(BackgroundCheckWrapperInner)<{
+  $background_image: string;
+}>`
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    background-image: url(${({ $background_image }) => $background_image});
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 400px;
+    opacity: 4%;
+  }
+`;
+
+const TheMarkWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <BackgroundCheckWrapperOuter>
+      <BackgroundCheckMetaWrapperInner $background_image={the_mark_bg}>
+        {children}
+      </BackgroundCheckMetaWrapperInner>
+    </BackgroundCheckWrapperOuter>
+  );
+};
+
 const magnet_width = 100;
 const Magnet = styled.img`
   position: absolute;
@@ -130,6 +161,9 @@ export const getBackgroundCheckManifestOverrides = (slot: string) => {
         );
       },
       title: BackgroundCheckMetaTitleStub,
+      wrapper: ({ children }: { children: ReactNode }) => {
+        return <TheMarkWrapper>{children}</TheMarkWrapper>;
+      },
     };
   } else if (slot === "bgm02") {
     return {

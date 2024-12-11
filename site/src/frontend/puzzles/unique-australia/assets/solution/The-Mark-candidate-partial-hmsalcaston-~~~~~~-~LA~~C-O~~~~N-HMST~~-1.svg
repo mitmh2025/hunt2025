@@ -1,0 +1,141 @@
+<svg width="279.0" height="337.0" viewBox="-222.6384387633 -288.5 279.0 337.0" preserveAspectRatio="xMinYMin meet" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="cifrao" viewBox="0 0 500 600">
+    <path stroke-width="55" d="m119,312c4,70 58,111 130,110c78,1 129,-34 125,-101c-11,-61 -78,-69 -122,-79c-48,-16 -118,-16 -117,-89c-1,-53 59,-84 117,-78c60,1 111,32 112,96" />
+    <path stroke-width="40" d="m221,17l0,464m63,0l0,-464" />
+  </symbol>
+  <defs>
+    <g id="chip2">
+      <circle fill="#DE5650" stroke="none" cx="0" cy="0" r="48.0" />
+      <text fill="black" font-family="Garamond, serif" font-size="34.56" font-weight="bold" dominant-baseline="central" text-anchor="end" x="7.05024" y="0">25</text>
+      <use href="#cifrao" height="34.56" width="28.8" x="3.24864" y="-15.2064" stroke="black" fill="none" />
+      <g font-family="Arial, sans-serif" font-size="13.44" font-weight="bold" text-anchor="middle">
+        <g transform="rotate(30)">
+          <path fill="#F1DEC4" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(90)">
+          <path fill="#F1DEC4" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">L</text>
+        </g>
+        <g transform="rotate(150)">
+          <path fill="#F1DEC4" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">A</text>
+        </g>
+        <g transform="rotate(210)">
+          <path fill="#F1DEC4" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(270)">
+          <path fill="#F1DEC4" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(330)">
+          <path fill="#F1DEC4" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">C</text>
+        </g>
+      </g>
+      <circle cx="0" cy="39.6" r="2.4" fill="black" />
+    </g>
+    <g id="chip3">
+      <circle fill="#5F6399" stroke="none" cx="0" cy="0" r="48.0" />
+      <text fill="black" font-family="Garamond, serif" font-size="34.56" font-weight="bold" dominant-baseline="central" text-anchor="end" x="7.05024" y="0">26</text>
+      <use href="#cifrao" height="34.56" width="28.8" x="3.24864" y="-15.2064" stroke="black" fill="none" />
+      <g font-family="Arial, sans-serif" font-size="13.44" font-weight="bold" text-anchor="middle">
+        <g transform="rotate(30)">
+          <path fill="#DE5650" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">O</text>
+        </g>
+        <g transform="rotate(90)">
+          <path fill="#DE5650" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(150)">
+          <path fill="#DE5650" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(210)">
+          <path fill="#DE5650" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(270)">
+          <path fill="#DE5650" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(330)">
+          <path fill="#DE5650" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">N</text>
+        </g>
+      </g>
+      <circle cx="0" cy="39.6" r="2.4" fill="black" />
+    </g>
+    <g id="chip4">
+      <circle fill="#558964" stroke="none" cx="0" cy="0" r="48.0" />
+      <text fill="black" font-family="Garamond, serif" font-size="34.56" font-weight="bold" dominant-baseline="central" text-anchor="end" x="7.05024" y="0">28</text>
+      <use href="#cifrao" height="34.56" width="28.8" x="3.24864" y="-15.2064" stroke="black" fill="none" />
+      <g font-family="Arial, sans-serif" font-size="13.44" font-weight="bold" text-anchor="middle">
+        <g transform="rotate(30)">
+          <path fill="#5F6399" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">H</text>
+        </g>
+        <g transform="rotate(90)">
+          <path fill="#5F6399" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">M</text>
+        </g>
+        <g transform="rotate(150)">
+          <path fill="#5F6399" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">S</text>
+        </g>
+        <g transform="rotate(210)">
+          <path fill="#5F6399" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central">T</text>
+        </g>
+        <g transform="rotate(270)">
+          <path fill="#5F6399" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+        <g transform="rotate(330)">
+          <path fill="#5F6399" stroke="none" d="M 8.52 31.2 A 2.4 2.4 0 0 1 10.92 33.6V 46.7413478625 A 48.0 48.0 0 0 1 -10.92 46.7413478625 V 33.6 A 2.4 2.4 0 0 1 -8.52 31.2Z" />
+          <text y="39.6" fill="black" dominant-baseline="central" />
+        </g>
+      </g>
+      <circle cx="0" cy="39.6" r="2.4" fill="black" />
+    </g>
+  </defs>
+  <polygon fill="white" points="-55.4256258422, 0.0 -27.7128129211, 48.0 27.7128129211, 48.0 55.4256258422, 0.0 27.7128129211, -48.0 55.4256258422, -96.0 27.7128129211, -144.0 -27.7128129211, -144.0 -55.4256258422, -192.0 -27.7128129211, -240.0 -55.4256258422, -288.0 -110.8512516844, -288.0 -138.5640646055, -240.0 -193.9896904477, -240.0 -221.7025033688, -192.0 -193.9896904477, -144.0 -138.5640646055, -144.0 -110.8512516844, -96.0 -138.5640646055, -48.0 -110.8512516844, 0.0" />
+  <g stroke="#c0c0c0" stroke-width="1.0" stroke-linecap="round">
+    <line x1="-110.8512516844" y1="-96.0" x2="-55.4256258422" y2="-96.0" />
+    <line x1="-221.7025033688" y1="-192.0" x2="-193.9896904477" y2="-240.0" />
+    <line x1="-110.8512516844" y1="0.0" x2="-55.4256258422" y2="0.0" />
+    <line x1="-55.4256258422" y1="-192.0" x2="-27.7128129211" y2="-240.0" />
+    <line x1="-27.7128129211" y1="-144.0" x2="27.7128129211" y2="-144.0" />
+    <line x1="27.7128129211" y1="-144.0" x2="55.4256258422" y2="-96.0" />
+    <line x1="-138.5640646055" y1="-240.0" x2="-110.8512516844" y2="-192.0" />
+    <line x1="-138.5640646055" y1="-144.0" x2="-110.8512516844" y2="-192.0" />
+    <line x1="27.7128129211" y1="-48.0" x2="55.4256258422" y2="-96.0" />
+    <line x1="-193.9896904477" y1="-240.0" x2="-138.5640646055" y2="-240.0" />
+    <line x1="27.7128129211" y1="48.0" x2="55.4256258422" y2="0.0" />
+    <line x1="-138.5640646055" y1="-48.0" x2="-110.8512516844" y2="-96.0" />
+    <line x1="-27.7128129211" y1="48.0" x2="27.7128129211" y2="48.0" />
+    <line x1="-55.4256258422" y1="-96.0" x2="-27.7128129211" y2="-48.0" />
+    <line x1="-221.7025033688" y1="-192.0" x2="-193.9896904477" y2="-144.0" />
+    <line x1="-55.4256258422" y1="-288.0" x2="-27.7128129211" y2="-240.0" />
+    <line x1="-55.4256258422" y1="-192.0" x2="-27.7128129211" y2="-144.0" />
+    <line x1="-110.8512516844" y1="-288.0" x2="-55.4256258422" y2="-288.0" />
+    <line x1="-138.5640646055" y1="-144.0" x2="-110.8512516844" y2="-96.0" />
+    <line x1="-110.8512516844" y1="-192.0" x2="-55.4256258422" y2="-192.0" />
+    <line x1="27.7128129211" y1="-48.0" x2="55.4256258422" y2="0.0" />
+    <line x1="-55.4256258422" y1="-96.0" x2="-27.7128129211" y2="-144.0" />
+    <line x1="-138.5640646055" y1="-48.0" x2="-110.8512516844" y2="0.0" />
+    <line x1="-193.9896904477" y1="-144.0" x2="-138.5640646055" y2="-144.0" />
+    <line x1="-55.4256258422" y1="0.0" x2="-27.7128129211" y2="-48.0" />
+    <line x1="-27.7128129211" y1="-48.0" x2="27.7128129211" y2="-48.0" />
+    <line x1="-138.5640646055" y1="-240.0" x2="-110.8512516844" y2="-288.0" />
+    <line x1="-55.4256258422" y1="0.0" x2="-27.7128129211" y2="48.0" />
+  </g>
+  <use href="#chip4" transform="translate(0.0 0.0) rotate(150)" />
+  <use href="#chip4" transform="translate(0.0 -96.0) rotate(270)" />
+  <use href="#chip2" transform="translate(-83.1384387633 -48.0) rotate(90)" />
+  <use href="#chip2" transform="translate(-83.1384387633 -144.0) rotate(30)" />
+  <use href="#chip4" transform="translate(-83.1384387633 -240.0) rotate(210)" />
+  <use href="#chip3" transform="translate(-166.2768775266 -192.0) rotate(210)" />
+</svg>
