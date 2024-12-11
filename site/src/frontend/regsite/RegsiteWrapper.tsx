@@ -28,8 +28,7 @@ export default function RegsiteWrapper({
       <footer>
         <div className="container">
           Brought to you by the MIT Puzzle Club and Death &amp; Mayhem.{" "}
-          <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>. This
-          website is not a puzzle. &lt;3
+          <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>. &lt;3
         </div>
       </footer>
     </>
