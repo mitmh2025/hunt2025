@@ -122,7 +122,7 @@ const Solution = (): JSX.Element => {
       <p>
         This is a standard Nonogram (aka Paint it Black) puzzle, except ‘?’
         stands for one block of shaded cells (of unknown length), and ‘*’ stands
-        for any number of blocks of shaded cells (including none) – as should be
+        for any number of blocks of shaded cells (including none)—as should be
         apparent from the provided example.
       </p>
       <p>
@@ -350,8 +350,8 @@ const Solution = (): JSX.Element => {
         Kakuro, in Japanese Sums the digits within a row or column must be all
         distinct). As in the Nonogram puzzle, ‘?’ stands for one block of
         occupied cells (of unknown sum/product), and ‘*’ stands for any number
-        of blocks of occupied cells (including none) – as should be apparent
-        from the provided example.
+        of blocks of occupied cells (including none)—as should be apparent from
+        the provided example.
       </p>
       <p>
         A possible starting point is to look at “packed” rows/columns, such as
@@ -485,7 +485,7 @@ const Solution = (): JSX.Element => {
       <p>
         R1C9 can’t be occupied (R2C9 would then have to be empty), and so the
         occupied cells in column 9 must be one of R2C9/R3C9, R5C9, and R8-10C9.
-        R10C7 is therefore empty, R9C7 contains 4, and R9-10C9 contain 5+3 – in
+        R10C7 is therefore empty, R9C7 contains 4, and R9-10C9 contain 5+3—in
         this order since the 3’s in rows 7 and 9 must be in columns 2 and 4.
         Thus R5C9 contains 4, and 1 is in R2C9 or R3C9.
       </p>
@@ -510,7 +510,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         The rest of column 4 is now empty, while R5-6C3 are occupied.
-        Connectivity then forces R3C5, R7C5 and R5C8 to be occupied.{" "}
+        Connectivity then forces R3C5, R7C5 and R5C8 to be occupied.
       </p>
       <p>
         In column 5, we now know that R5C5, R6C5 and R8C5 are empty; for
@@ -605,7 +605,7 @@ const Solution = (): JSX.Element => {
         and R2C4 is black. Thus R1C2-3 contain 5 and 7 in some order; there is a
         3 in R1C4; and R1C8-9 contain 1 and 4 in some order. This is impossible,
         since R1C9 and R9C9 must add up to 8. Hence the assumption was incorrect
-        – we have a 1 in R3C3, with black cells in R3C2, R3C4, R2C3, and R4C3.
+        —we have a 1 in R3C3, with black cells in R3C2, R3C4, R2C3, and R4C3.
       </p>
       <p>
         Since R7C3 can’t be black, the sum 11 in row 7 is achieved over columns
@@ -675,16 +675,16 @@ const Solution = (): JSX.Element => {
         grids, the value 12 can also be found by considering the constraint that
         every grid should admit a solution in the new base. The valid base
         cannot be less than 10 (as is clear from the fact that, in the Kakuro, a
-        sum of length 6 can produce “22” – or from the many digits “9” used in
-        the grids), nor more than 12 (otherwise the row “4 2 10” in Nonogram
-        doesn’t fit, and “23” can’t be achieved as a sum in Doppelblock Sudoku).
-        Base 11 is problematic for the Japanese Sums or Products: for example
-        “54” and “56” in base 11 (i.e., 59 and 61) cannot be expressed as sums
-        or products of distinct digits. It is also incompatible with the
-        Fillomino (the two “12” clues still can’t be in the same region if
-        interpreted in base 11, so they represent two distinct areas, but then
-        the sum of the given clues is more than the total area of the grid.)
-        This leaves 12 as the only possibility besides 10.
+        sum of length 6 can produce “22”—or from the many digits “9” used in the
+        grids), nor more than 12 (otherwise the row “4 2 10” in Nonogram doesn’t
+        fit, and “23” can’t be achieved as a sum in Doppelblock Sudoku). Base 11
+        is problematic for the Japanese Sums or Products: for example “54” and
+        “56” in base 11 (i.e., 59 and 61) cannot be expressed as sums or
+        products of distinct digits. It is also incompatible with the Fillomino
+        (the two “12” clues still can’t be in the same region if interpreted in
+        base 11, so they represent two distinct areas, but then the sum of the
+        given clues is more than the total area of the grid.) This leaves 12 as
+        the only possibility besides 10.
       </p>
       <h3>Part 2 - solving the grids again, in base 12.</h3>
       <p>
@@ -712,7 +712,7 @@ const Solution = (): JSX.Element => {
           Top-right corner, “21” (25) down: the intersections with the 9 across
           clues must be at most 6 and 8 respectively, so the intersection with
           the 45 is at least “B” (11). Thus, we place B68 (+ complete the two 9
-          across clues, and the 7 across clue at the top).{" "}
+          across clues, and the 7 across clue at the top).
         </li>
         <li>
           Bottom-left corner, “20” (24) across: similarly, due to the
@@ -749,12 +749,12 @@ const Solution = (): JSX.Element => {
         <li>
           The remaining digits to place in column 2 are 1,2,3,4. Their positions
           are uniquely determined by what has already been placed in the
-          respective rows.{" "}
+          respective rows.
         </li>
         <li>
           Bottom-right corner, 6 down must be 51. We can now conclude that the
           “45” across sum in the next-to-last row uses all digits except 6 and
-          7; digits 8,9,A,B remain to be placed.{" "}
+          7; digits 8,9,A,B remain to be placed.
         </li>
         <li>
           In the “10” (12) down clue at center-bottom, the second cell is at
@@ -798,11 +798,11 @@ const Solution = (): JSX.Element => {
       </ImageWrapper>
       <p>R8C3 = ‘B’</p>
       <p>
-        Same general strategies as for the base 10 version – start with the
+        Same general strategies as for the base 10 version—start with the
         rows/columns with large clues. This version of the grid is significantly
-        more constrained, as the large clues are now larger – for example the
-        row 12 with clues “4 2 10” is uniquely determined, and row 4 with “2 11
-        2” is very constrained.
+        more constrained, as the large clues are now larger—for example the row
+        12 with clues “4 2 10” is uniquely determined, and row 4 with “2 11 2”
+        is very constrained.
       </p>
       <h4>3. Killer Sudoku (base 12):</h4>
       <ImageWrapper>
@@ -813,7 +813,7 @@ const Solution = (): JSX.Element => {
       </ImageWrapper>
       <p>R12C7 = ‘A’</p>
       <p>
-        Since this is a sudoku, the digits are still 1-9 – however the sums are
+        Since this is a sudoku, the digits are still 1-9—however the sums are
         now in base 12.
       </p>
       <p>To get started:</p>
@@ -834,7 +834,7 @@ const Solution = (): JSX.Element => {
         <li>
           Now we have that R1C4-7 contain 1-4 in some order, R1C8 must be 6, and
           R1C1-2 must be 5 and 8 in some order. Thus, R3C3 is 9 and R4C3 is 8.
-          The “12” (14) box in R4C5-6 must then be 6+8 in some order, and in the
+          The “12” (14) box in R3C5-6 must then be 6+8 in some order, and in the
           other “12” (14) box next to it, R3C7 is 5 and R4C7 is 9.
         </li>
         <li>
@@ -867,7 +867,7 @@ const Solution = (): JSX.Element => {
           that order).
         </li>
         <li>
-          The 5 in column 2 must be in one of rows 4-6; hence the 5 in column 5
+          The 5 in column 2 must be in one of rows 4-6; hence the 5 in column 3
           is in row 8 or 9, and the sum “10” (12) in columns 3-4 can’t be
           5+4+2+1, hence it is 6+3+2+1, with the 6 necessarily in R7C4. We can
           now place another 6 in R8C1.
@@ -916,7 +916,7 @@ const Solution = (): JSX.Element => {
         can only be achieved by “41-42-43”; and the “41” average in column 2
         must be “44”, “40”, and “3B”. Thus we place the snake cells from “3A” to
         “44” uniquely. Moreover we must reach the bottom-most row by “31” at the
-        latest; this forces the snake to pass below the given gray square – we
+        latest; this forces the snake to pass below the given gray square—we
         place “37-38-39”.
       </p>
       <p>
@@ -940,11 +940,11 @@ const Solution = (): JSX.Element => {
         Hence, we can’t have 3 such cells in the row (those would be at most 29,
         30, 31, bringing the average below 40). We can’t have a single such cell
         either, since it’d need to be one of 16, 14, or 13 (24, 26 or 27 below
-        40) – which isn’t possible due to insufficient space in the last 4 rows
-        of the grid. So row 8 must contain exactly two cells numbered less than
-        40, these must be consecutive, and by parity they must add up to 27
-        below. Hence: besides the four already placed cells, row 8 contains
-        “36”, “35”, “23” and “22” (42, 41, 27 and 26).
+        40)—which isn’t possible due to insufficient space in the last 4 rows of
+        the grid. So row 8 must contain exactly two cells numbered less than 40,
+        these must be consecutive, and by parity they must add up to 27 below.
+        Hence: besides the four already placed cells, row 8 contains “36”, “35”,
+        “23” and “22” (42, 41, 27 and 26).
       </p>
       <p>
         This allows us to continue drawing the snake up to the cell numbered
@@ -964,14 +964,14 @@ const Solution = (): JSX.Element => {
         of these options doesn’t allow the snake to reach the top row on the way
         from the given end “1” to the right-most column; the last one doesn’t
         allow for a sufficiently long path from “14” (16) to “21” (25); thus the
-        values used must be 11-12-13-14, i.e. “B-10-11-12”.{" "}
+        values used must be 11-12-13-14, i.e. “B-10-11-12”.
       </p>
       <p>
         Since the snake must reach through the top row on the way from “1” to
         “B”, “B” must actually be in the top-right corner, and we can place the
         cells from “9” to “13”. In fact “14” must also be in row 4 (no
         sufficiently long path to “21” if it were in row 5), which in turn
-        forces 6-7-8 to be in row 1.{" "}
+        forces 6-7-8 to be in row 1.
       </p>
       <p>
         Achieving the average “19” (21) in column 10 then forces “15” to be in
@@ -1035,7 +1035,7 @@ const Solution = (): JSX.Element => {
         path, and the 5 in R7C3 isn’t visible from the top of column 3, the 6 in
         column 3 must also be shielded by the mirror; hence we place 6 in R6C3,
         and the last two mirrors are in R5C3 and R6C4 (orientations to be
-        determined shortly).{" "}
+        determined shortly).
       </p>
       <p>
         The last two 6’s are in R4-5 C1-2; the sum 6 at left forces them to be
@@ -1105,7 +1105,7 @@ const Solution = (): JSX.Element => {
         can’t be in R3C3 (the clue “12” (14) in row 3 would then require a 2 in
         R3C4, but there is already a 2 in R3C7), nor in R4C3 (there is a 7 in
         R4C7), so 7 is in R5C3. We then place 1 in R4C3 and 6 in R3C3, as well
-        as 8 in R3C4 to achieve the sum “12” (14) in row 3.{" "}
+        as 8 in R3C4 to achieve the sum “12” (14) in row 3.
       </p>
       <p>
         R8C3 can’t be 6, so the sum “21” (25) in row 8 must occupy columns 1-4,
@@ -1117,7 +1117,7 @@ const Solution = (): JSX.Element => {
       <p>
         The two missing digits in the sum “21” (25) in column 7 (2,7,6,4 already
         placed) must add up to 6, hence R5C7 and R7C7 are 1 and 5 in either
-        order.{" "}
+        order.
       </p>
       <p>
         In row 5, the sum “32” (38) occupies columns 3-8. If R5C7 is 5, then
@@ -1141,7 +1141,7 @@ const Solution = (): JSX.Element => {
       <p>R9C5 = ‘A’</p>
       <p>
         The whole process of determining which cells are occupied or not is
-        exactly as in the base 10 version – follow along the solution for that
+        exactly as in the base 10 version—follow along the solution for that
         grid, up to the sentence “At this point it is easy to determine the
         remaining occupied cells; it remains to assign their values.” Only that
         final part of the solution differs. At this point you should have
@@ -1156,8 +1156,8 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         The “20” (24) sum in R4C9 forces the partial sums by row to be as large
-        as possible – 12 in R5C8-10, 9 in R4C8-10, and 3 in R3C10. Thus we place
-        3 in R3C10, 3+4+5 in R5C8-10, and 5+4 in R4C8-10.
+        as possible—12 in R5C8-10, 9 in R4C8-10, and 3 in R3C10. Thus we place 3
+        in R3C10, 3+4+5 in R5C8-10, and 5+4 in R4C8-10.
       </p>
       <p>
         At this point we easily place the remaining digits in columns 1 and 10
