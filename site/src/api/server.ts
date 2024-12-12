@@ -44,14 +44,16 @@ import {
   teamRegistrationLog,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
+import {
+  cleanupActivityLogEntryFromDB,
+  cleanupTeamRegistrationLogEntryFromDB,
+} from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
 import {
   formatTeamHuntState,
   reducerDeriveTeamState,
-  cleanupActivityLogEntryFromDB,
   TeamStateIntermediate,
-  cleanupTeamRegistrationLogEntryFromDB,
   TeamInfoIntermediate,
 } from "./logic";
 import { type RedisClient } from "./redis";

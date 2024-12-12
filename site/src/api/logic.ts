@@ -8,33 +8,6 @@ import {
 import { generateSlugToSlotMap, type SlotLookup } from "../huntdata";
 import { getSlotSlug, LogicTeamState } from "../huntdata/logic";
 import type { Hunt } from "../huntdata/types";
-import {
-  type ActivityLogEntryRow,
-  type TeamRegistrationLogEntryRow,
-} from "./db";
-
-// Fix a timestamp that has come from the database.
-function fixTimestamp(value: string | Date): Date {
-  if (typeof value === "string") {
-    if (!value.endsWith("Z")) {
-      // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
-      return new Date(value + "Z");
-    }
-    // We may also have gotten a fixed-up string from the pubsub channel, where we also serialize
-    // dates as strings.
-    return new Date(value);
-  }
-  return value;
-}
-
-// Fix a JSON field that has come from the database.
-export function fixData(value: string | object): object {
-  // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
-  if (typeof value === "string") {
-    return JSON.parse(value) as object;
-  }
-  return value;
-}
 
 export class TeamStateIntermediate extends LogicTeamState {
   epoch: number; // The largest value of `id` that was processed/relevant
@@ -107,31 +80,6 @@ export function reducerDeriveTeamState(
   );
   // Return the LogicTeamState because the recalculated team state no longer represents a committed epoch.
   return intermediate.recalculateTeamState(hunt);
-}
-
-// Fix the various inconsistencies in queried data across Postgres and SQLite.
-export function cleanupActivityLogEntryFromDB(
-  dbEntry: ActivityLogEntryRow,
-): InternalActivityLogEntry {
-  const res: Partial<InternalActivityLogEntry> = {
-    id: dbEntry.id,
-    team_id: dbEntry.team_id ?? undefined,
-    timestamp: fixTimestamp(dbEntry.timestamp),
-    currency_delta: dbEntry.currency_delta,
-    type: dbEntry.type as InternalActivityLogEntry["type"],
-  };
-  if (dbEntry.slug) {
-    (res as InternalActivityLogEntry & { slug?: string }).slug = dbEntry.slug;
-  }
-  if (dbEntry.data) {
-    (res as InternalActivityLogEntry & { data?: object }).data = fixData(
-      dbEntry.data,
-    );
-  }
-  if (dbEntry.internal_data) {
-    res.internal_data = fixData(dbEntry.internal_data);
-  }
-  return res as InternalActivityLogEntry;
 }
 
 // Converts from the serialized activity log entry (which e.g. has a string for timestamp)
@@ -230,24 +178,6 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
       ]),
     ),
   };
-}
-
-// Fix the various inconsistencies in queried data across Postgres and SQLite.
-export function cleanupTeamRegistrationLogEntryFromDB(
-  dbEntry: TeamRegistrationLogEntryRow,
-): TeamRegistrationLogEntry {
-  const res: Partial<TeamRegistrationLogEntry> = {
-    id: dbEntry.id,
-    team_id: dbEntry.team_id,
-    timestamp: fixTimestamp(dbEntry.timestamp),
-    type: dbEntry.type as TeamRegistrationLogEntry["type"],
-  };
-  if (dbEntry.data) {
-    (res as TeamRegistrationLogEntry | { data?: object }).data = fixData(
-      dbEntry.data,
-    );
-  }
-  return res as TeamRegistrationLogEntry;
 }
 
 export class TeamInfoIntermediate {
