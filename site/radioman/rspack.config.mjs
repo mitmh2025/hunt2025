@@ -1,24 +1,24 @@
-import { defineConfig } from '@rspack/cli';
+import { defineConfig } from "@rspack/cli";
 
 const config = defineConfig({
   entry: {
-    main: './main.ts',
+    main: "./main.ts",
   },
-  target: 'node22',
+  target: "node22",
   module: {
     rules: [
       {
         test: /\.ts$/,
         //exclude: [/node_modules/],
-        loader: 'builtin:swc-loader',
+        loader: "builtin:swc-loader",
         options: {
           jsc: {
             parser: {
-              syntax: 'typescript',
+              syntax: "typescript",
             },
           },
         },
-        type: 'javascript/auto',
+        type: "javascript/auto",
       },
     ],
   },
