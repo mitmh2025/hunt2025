@@ -45,6 +45,7 @@ final: prev: let
   };
 in {
   hunt2025 = final.callPackage ../../site {};
+  radioman = final.callPackage ../../site/radioman {};
   thingsboard = final.callPackage ./thingsboard {};
 
   hunt2025-vm-test = final.callPackage ../test.nix { inherit self; };
