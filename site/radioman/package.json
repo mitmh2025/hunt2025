@@ -7,7 +7,8 @@
   },
   "module": "esnext",
   "scripts": {
-    "build": "tsc",
+    "build": "rspack --mode=production",
+    "build-dev": "rspack --mode=development",
     "watch": "node --watch --import tsx/esm ./main.ts",
     "check": "tsc && prettier . --check && eslint ."
   },

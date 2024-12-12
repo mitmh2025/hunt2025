@@ -31,18 +31,11 @@ in buildNpmPackage {
     makeWrapper
   ];
 
-  dontNpmPrune = true; # Need esbuild at runtime.
-
-  postInstall = ''
-    # Work around https://github.com/NixOS/nixpkgs/pull/333759
-    rm -rf $out/lib/node_modules/hunt2025/node_modules/hunt2025
-    cp -rH node_modules/hunt2025 $out/lib/node_modules/hunt2025/node_modules/
-    rm -r $out/lib/node_modules/hunt2025/node_modules/hunt2025/node_modules
-    ln -s hunt2025/node_modules/hunt2025/shared-tsconfig.json $out/lib/node_modules/
+  installPhase = ''
+    mkdir -p $out/lib
+    cp -r radioman/dist/ $out/lib/radioman
     makeWrapper ${nodejs}/bin/node $out/bin/radioman \
-      --chdir $out/lib/node_modules/hunt2025 \
       --add-flags --enable-source-maps \
-      --add-flags "--import tsx/esm" \
-      --add-flags $out/lib/node_modules/hunt2025/main.ts
+      --add-flags $out/lib/radioman/main.mjs
   '';
 }
