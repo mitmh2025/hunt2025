@@ -36,7 +36,7 @@
         "org.thingsboard.server.actors.TbActorMailbox" = "INFO";
         "org.thingsboard.server.actors.service.ContextAwareActor" = "INFO";
       };
-      logback.rootLevel = "DEBUG";
+      logback.rootLevel = "INFO";
       datasource.createLocally = true;
     };
 
