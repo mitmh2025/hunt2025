@@ -32,6 +32,7 @@ import ShellCorporationSix from "./mild-octopus";
 import WhyKantWeBeFriendsToo from "./milky-swing";
 import MysteryOs from "./minty-play";
 import AWalkInThePark from "./misguided-revolution";
+import TheGrandIllusion from "./monstrous-shadow";
 import TheErasPuzzle from "./musty-shadow";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
@@ -151,6 +152,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   where_am_i: WhereAmI,
 
   the_mark: TheMark,
+  the_grand_illusion: TheGrandIllusion,
 
   // Murder in MITropolis
   do_the_packing: DoThePacking,
