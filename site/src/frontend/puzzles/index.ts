@@ -57,6 +57,7 @@ import TheCenterIsInPlainSight from "./sinful-turkey";
 import KnightsOfTheSquareTable from "./sore-ketchup";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
+import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
 import ARecipeForSuccess from "./tame-chick";
 import KoteiNoAngo from "./tragic-spider";
@@ -153,6 +154,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   the_mark: TheMark,
   the_grand_illusion: TheGrandIllusion,
+  the_oversight: TheOversight,
 
   // Murder in MITropolis
   do_the_packing: DoThePacking,

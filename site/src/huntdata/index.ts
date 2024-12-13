@@ -368,7 +368,7 @@ const HUNT: Hunt = {
         // * At least 2 feeders associated with each meta are solved.
         { id: "bgm01", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION, slug: "the_mark" }, // meta 1
         { id: "bgm02", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION, slug: "the_grand_illusion" }, // meta 2
-        { id: "bgm03", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION }, // meta 3
+        { id: "bgm03", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION, slug: "the_oversight" }, // meta 3
         // Super unlocks once two metas are solved.
         { id: "bgm04", is_meta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] } }, // supermeta
       ],

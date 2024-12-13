@@ -1,6 +1,7 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import the_grand_illusion_bg from "../puzzles/monstrous-shadow/assets/The-Grand-Illusion-bg.svg";
+import the_oversight_bg from "../puzzles/svelte-conductor/assets/The-Oversight-bg.svg";
 import the_mark_bg from "../puzzles/unique-australia/assets/The-Mark-bg.svg";
 import fridge_middle from "../rounds/background_check/assets/fridge_middle.png";
 import magnet_nonmeta from "../rounds/background_check/assets/magnet_puzzle.png";
@@ -150,6 +151,16 @@ const TheGrandIllusionWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const TheOversightWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <BackgroundCheckWrapperOuter>
+      <BackgroundCheckMetaWrapperInner $background_image={the_oversight_bg}>
+        {children}
+      </BackgroundCheckMetaWrapperInner>
+    </BackgroundCheckWrapperOuter>
+  );
+};
+
 const magnet_width = 100;
 const Magnet = styled.img`
   position: absolute;
@@ -210,6 +221,9 @@ export const getBackgroundCheckManifestOverrides = (slot: string) => {
         );
       },
       title: BackgroundCheckMetaTitleStub,
+      wrapper: ({ children }: { children: ReactNode }) => {
+        return <TheOversightWrapper>{children}</TheOversightWrapper>;
+      },
     };
   } else if (slot === "bgm04") {
     return {
