@@ -104,20 +104,31 @@ type ExtractionTableDataRow = [
   string,
   string,
   string,
+  string,
 ];
 
 const EXTRACTION_TABLE_DATA: ExtractionTableDataRow[] = [
-  ["1", "51°09′10″N 14°59′14″E", "Görlitz", "P", "P", "W", "P"],
-  ["2", "49°50′33″N 24°01′56″E", "Lviv", "O", "E", "A", "A"],
-  ["3", "47°55′20″N 18°38′33″E", "Bíňa", "*S", "R", "*T", "L"],
-  ["4", "50°08′35″N 14°06′19″E", "Kladno", "*A", "*R", "*S", "*I"],
-  ["5", "48°12′30″N 16°22′21″E", "Vienna", "N", "A", "O", "S"],
-  ["6", "50°13′50″N 12°52′21″E", "Karlovy Vary", "*G", "L", "*N", "*A"],
-  ["7", "50°26′16″N 16°39′10″E", "Kłodzko", "A", "L", "I", "D"],
-  ["8", "49°17′36″N 21°16′34″E", "Bardejov", "*R", "*E", "*A", "E"],
+  ["var(--black)", "1", "51°09′10″N 14°59′14″E", "Görlitz", "P", "P", "W", "P"],
+  ["var(--black)", "2", "49°50′33″N 24°01′56″E", "Lviv", "O", "E", "A", "A"],
+  ["#3c78d8", "3", "47°55′20″N 18°38′33″E", "Bíňa", "*S", "R", "*T", "L"],
+  ["#cc0000", "4", "50°08′35″N 14°06′19″E", "Kladno", "*A", "*R", "*S", "*I"],
+  ["var(--black)", "5", "48°12′30″N 16°22′21″E", "Vienna", "N", "A", "O", "S"],
+  [
+    "#f1c232",
+    "6",
+    "50°13′50″N 12°52′21″E",
+    "Karlovy Vary",
+    "*G",
+    "L",
+    "*N",
+    "*A",
+  ],
+  ["var(--black)", "7", "50°26′16″N 16°39′10″E", "Kłodzko", "A", "L", "I", "D"],
+  ["#6aa84f", "8", "49°17′36″N 21°16′34″E", "Bardejov", "*R", "*E", "*A", "E"],
 ];
 
-const ExtractionCell = ({ s }: { s: string }) => {
+// Reused by solution for Alias
+export const ExtractionCell = ({ s }: { s: string }) => {
   if (s.startsWith("*")) {
     return <td className="emph">{s.slice(1)}</td>;
   } else {
@@ -378,12 +389,12 @@ const Solution = () => {
         </thead>
         <tbody>
           {EXTRACTION_TABLE_DATA.map((row: ExtractionTableDataRow) => {
-            const [idx, coords, city, col1, col2, col3, col4] = row;
+            const [color, idx, coords, city, col1, col2, col3, col4] = row;
             return (
               <tr key={idx}>
                 <td>{idx}</td>
-                <td>{coords}</td>
-                <td>{city}</td>
+                <td style={{ color }}>{coords}</td>
+                <td style={{ color }}>{city}</td>
                 <ExtractionCell s={col1} />
                 <ExtractionCell s={col2} />
                 <ExtractionCell s={col3} />

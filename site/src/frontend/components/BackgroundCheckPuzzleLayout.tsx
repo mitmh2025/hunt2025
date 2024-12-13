@@ -15,7 +15,7 @@ import super_paper_middle from "../rounds/background_check/assets/metas/supermet
 import super_paper_top from "../rounds/background_check/assets/metas/supermeta_alias_puzzle_page_card_bkgd_top.png";
 import title_image_alias from "../rounds/background_check/assets/metas/supermeta_alias_puzzle_page_title.png";
 import paper from "../rounds/background_check/assets/puzzle_bkgd.png";
-import { deviceMin } from "../utils/breakpoints";
+import { deviceMax, deviceMin } from "../utils/breakpoints";
 import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
 
 export const BgColor = "#251214";
@@ -238,6 +238,7 @@ export const getBackgroundCheckManifestOverrides = (slot: string) => {
           </BackgroundCheckMetaHead>
         );
       },
+      main: BackgroundCheckSuperMain,
       title: BackgroundCheckMetaTitleStub,
       wrapper: BackgroundCheckSuperWrapper,
     };
@@ -265,6 +266,16 @@ const BackgroundCheckMetaTitleStub = () => {
 
 const BackgroundCheckMetaHeader = styled(PuzzleHeader)`
   background-color: transparent;
+  @media ${deviceMax.md} {
+    gap: 2rem;
+    padding: 2rem;
+    padding-top: 1rem;
+  }
+
+  @media ${deviceMax.sm} {
+    gap: 1rem;
+    padding: 1rem;
+  }
 `;
 
 export const BackgroundCheckMetaHead = ({
@@ -343,4 +354,13 @@ export const BackgroundCheckSuperWrapperInner = styled.div`
 export const BackgroundCheckSuperMain = styled(BackgroundCheckMain)`
   padding: 2rem;
   padding-bottom: 4rem;
+  @media ${deviceMax.lg} {
+    padding: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  @media ${deviceMax.sm} {
+    padding: 2rem;
+    padding-bottom: 1rem;
+  }
 `;
