@@ -32,27 +32,7 @@ const IdSchema = <T extends string>(type: T) =>
     entityType: z.enum([type]).default(type),
   });
 
-const CustomerSchema = z.object({
-  id: IdSchema("CUSTOMER").optional(),
-  createdTime: z.number(), // milliseconds, readOnly
-  country: z.string().optional(),
-  state: z.string().optional(),
-  city: z.string().optional(),
-  address: z.string().optional(),
-  address2: z.string().optional(),
-  zip: z.string().optional(),
-  phone: z.string().optional(),
-  email: z.string().email(),
-  title: z.string(),
-  tenantId: IdSchema("TENANT").optional(),
-  version: z.number(),
-  name: z.string().optional(), // readOnly
-  additionalInfo: z.any(),
-});
-
-const BaseTenantSchema = z.object({
-  id: IdSchema("TENANT").optional(),
-  version: z.number().nullable().optional(),
+const ContactBasedSchema = z.object({
   country: z.string().nullable().optional(),
   state: z.string().nullable().optional(),
   city: z.string().nullable().optional(),
@@ -61,6 +41,21 @@ const BaseTenantSchema = z.object({
   zip: z.string().nullable().optional(),
   phone: z.string().nullable().optional(),
   email: z.string().email().nullable().optional(),
+});
+
+const CustomerSchema = ContactBasedSchema.extend({
+  id: IdSchema("CUSTOMER").optional(),
+  createdTime: z.number(), // milliseconds, readOnly
+  title: z.string(),
+  tenantId: IdSchema("TENANT").optional(),
+  version: z.number(),
+  name: z.string().optional(), // readOnly
+  additionalInfo: z.any(),
+});
+
+const BaseTenantSchema = ContactBasedSchema.extend({
+  id: IdSchema("TENANT").optional(),
+  version: z.number().nullable().optional(),
   title: z.string(),
   region: z.string().nullable().optional(),
   tenantProfileId: IdSchema("TENANT_PROFILE").optional(),
@@ -73,6 +68,33 @@ const GetTenantSchema = BaseTenantSchema.required({
 }).extend({
   createdTime: z.number(), // milliseconds, readOnly
   name: z.string().optional(), // readOnly, copy of title
+});
+
+const BaseUserSchema = z.object({
+  id: IdSchema("USER").optional(),
+  email: z.string().email(),
+  authority: z.enum([
+    "SYS_ADMIN",
+    "TENANT_ADMIN",
+    "CUSTOMER_ADMIN",
+    "REFRESH_TOKEN",
+    "PRE_VERIFICATION_TOKEN",
+  ]),
+  firstName: z.string().nullable().optional(),
+  lastName: z.string().nullable().optional(),
+  phone: z.string().nullable().optional(),
+  version: z.number().nullable().optional(),
+  tenantId: IdSchema("TENANT").optional(),
+  customerId: IdSchema("CUSTOMER").optional(),
+});
+
+const GetUserSchema = BaseUserSchema.required({
+  id: true,
+  tenantId: true,
+  customerId: true,
+}).extend({
+  name: z.string().optional(), // readOnly, copy of email
+  additionalInfo: z.any(),
 });
 
 const errorResponses = {
@@ -105,6 +127,123 @@ const loginContract = c.router({
         errorCode: z.literal(15),
         resetToken: z.string(),
       }).or(ThingsboardErrorResponseSchema),
+    },
+    strictStatusCodes: true,
+  },
+  activateUser: {
+    method: "POST",
+    path: `/api/noauth/activate`,
+    query: z.object({
+      sendActivationMail: z.enum(["true", "false"]),
+    }),
+    body: z.object({
+      activateToken: z.string(),
+      password: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        token: z.string(),
+        refreshToken: z.string(),
+        scope: z.string(),
+      }),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+});
+
+const authContract = c.router({
+  getUser: {
+    method: "GET",
+    path: `/api/auth/user`,
+    responses: {
+      200: GetUserSchema,
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+});
+
+const userContract = c.router({
+  list: {
+    method: "GET",
+    path: `/api/users`,
+    query: z.object({
+      pageSize: z.number(),
+      page: z.number(),
+      textSearch: z.string().optional(),
+      sortProperty: z
+        .enum(["createdTime", "firstName", "lastName", "email"])
+        .optional(),
+      sortOrder: z.enum(["ASC", "DESC"]).optional(),
+    }),
+    responses: {
+      200: PageDataSchema(GetUserSchema),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  listByTenant: {
+    method: "GET",
+    path: `/api/tenant/:tenantId/users`,
+    pathParams: z.object({
+      tenantId: z.string().uuid(),
+    }),
+    query: z.object({
+      pageSize: z.number(),
+      page: z.number(),
+      textSearch: z.string().optional(),
+      sortProperty: z
+        .enum(["createdTime", "firstName", "lastName", "email"])
+        .optional(),
+      sortOrder: z.enum(["ASC", "DESC"]).optional(),
+    }),
+    responses: {
+      200: PageDataSchema(GetUserSchema),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  save: {
+    method: "POST",
+    path: `/api/user`,
+    query: z.object({
+      sendActivationMail: z.enum(["true", "false"]),
+    }),
+    body: BaseUserSchema,
+    responses: {
+      200: GetUserSchema,
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  getActivationLink: {
+    method: "GET",
+    path: `/api/user/:userId/activationLink`,
+    pathParams: z.object({
+      userId: z.string().uuid(),
+    }),
+    responses: {
+      200: c.otherResponse({
+        contentType: "text/plain",
+        body: z.string(),
+      }),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  getActivationLinkInfo: {
+    method: "GET",
+    path: `/api/user/:userId/activationLinkInfo`,
+    pathParams: z.object({
+      userId: z.string().uuid(),
+    }),
+    responses: {
+      200: z.object({
+        value: z.string(),
+        ttlMs: z.number(),
+      }),
+      ...errorResponses,
     },
     strictStatusCodes: true,
   },
@@ -225,7 +364,9 @@ const customerContract = c.router({
     strictStatusCodes: true,
   },
 });
-export const authContract = c.router({
+export const contract = c.router({
+  auth: authContract,
+  user: userContract,
   tenant: tenantContract,
   customer: customerContract,
 });
@@ -236,8 +377,10 @@ function newLoginClient(baseUrl: string) {
   });
 }
 
-type PagedQuery<F> = F extends ({ query }: { query: infer Q }) => unknown
-  ? Omit<Q, "pageSize" | "page">
+type PagedQuery<F> = F extends (request: infer R) => unknown
+  ? R extends { query: infer Q }
+    ? Omit<Q, "pageSize" | "page">
+    : never
   : never;
 
 async function getAllPages<I, Q extends { pageSize: number; page: number }>(
@@ -271,7 +414,7 @@ async function getAllPages<I, Q extends { pageSize: number; page: number }>(
 }
 
 type LoginClient = InitClientReturn<typeof loginContract, InitClientArgs>;
-type APIClient = InitClientReturn<typeof authContract, InitClientArgs>;
+type APIClient = InitClientReturn<typeof contract, InitClientArgs>;
 
 type APIResponse<T> = { status: 200; body: T } | ErrorResponses;
 
@@ -286,7 +429,7 @@ export async function check<T>(
 }
 
 export class Client {
-  private _loginClient: LoginClient;
+  loginClient: LoginClient;
   client: APIClient;
   protected _token: string | undefined;
 
@@ -299,8 +442,8 @@ export class Client {
     username: string;
     password: string;
   }) {
-    this._loginClient = newLoginClient(baseUrl);
-    this.client = initClient(authContract, {
+    this.loginClient = newLoginClient(baseUrl);
+    this.client = initClient(contract, {
       baseUrl,
       validateResponse: true,
       api: async (args: ApiFetcherArgs) => {
@@ -317,7 +460,7 @@ export class Client {
               return response;
             }
           }
-          const response = await this._loginClient.login({
+          const response = await this.loginClient.login({
             body: { username, password },
           });
           if (response.status === 200) {
@@ -337,6 +480,21 @@ export class Client {
   listCustomers(query: PagedQuery<APIClient["customer"]["list"]> = {}) {
     return getAllPages(
       this.client.customer.list.bind(this.client.customer),
+      query,
+    );
+  }
+
+  listUsers(query: PagedQuery<APIClient["user"]["list"]> = {}) {
+    return getAllPages(this.client.user.list.bind(this.client.user), query);
+  }
+
+  listTenantUsers(
+    tenantId: string,
+    query: PagedQuery<APIClient["user"]["listByTenant"]> = {},
+  ) {
+    return getAllPages(
+      ({ query }) =>
+        this.client.user.listByTenant({ params: { tenantId }, query }),
       query,
     );
   }

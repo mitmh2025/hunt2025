@@ -4,6 +4,7 @@ import {
   teamRegistrationLog,
 } from "hunt2025/src/api/redis";
 import { newLogTailer } from "hunt2025/src/frontend/server/dataset_tailer";
+import { Client } from "./tbapi";
 
 let apiUrl = process.env.API_BASE_URL;
 if (process.env.NODE_ENV === "development" && !apiUrl) {
@@ -22,6 +23,20 @@ const redisUrl = process.env.REDIS_URL;
 if (!redisUrl) {
   throw new Error("$REDIS_URL was not configured");
 }
+const tbArgs = {
+  baseUrl: process.env.TB_BASE_URL ?? "",
+  username: process.env.TB_USERNAME ?? "",
+  password: process.env.TB_PASSWORD ?? "",
+};
+if (!tbArgs.baseUrl) {
+  throw new Error("$TB_BASE_URL was not configured");
+}
+if (!tbArgs.username) {
+  throw new Error("$TB_USERNAME was not configured");
+}
+if (!tbArgs.password) {
+  throw new Error("$TB_PASSWORD was not configured");
+}
 
 async function main({
   redisUrl,
@@ -32,6 +47,8 @@ async function main({
   apiUrl: string;
   frontendApiSecret: string;
 }) {
+  const tbClient = new Client(tbArgs);
+
   const redisClient = await redisConnect(redisUrl);
 
   const frontendApiClient = newFrontendClient(apiUrl, {
@@ -53,6 +70,9 @@ async function main({
   await teamRegistrationLogTailer.readyPromise();
 
   console.log("radioman running");
+
+  const customers = await tbClient.listCustomers();
+  console.log("customers", customers);
 }
 main({ redisUrl, apiUrl, frontendApiSecret }).catch((err: unknown) => {
   console.error(err);
