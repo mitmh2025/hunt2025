@@ -5,6 +5,7 @@ import {
 } from "hunt2025/src/api/redis";
 import { newLogTailer } from "hunt2025/src/frontend/server/dataset_tailer";
 import { Client } from "./tbapi";
+import { TeamInfoIntermediate } from "hunt2025/src/api/logic";
 
 let apiUrl = process.env.API_BASE_URL;
 if (process.env.NODE_ENV === "development" && !apiUrl) {
@@ -63,16 +64,22 @@ async function main({
     log: teamRegistrationLog,
   });
 
+  const customers = await tbClient.listCustomers();
+  console.log("customers", customers);
+
+  const teamInfos: Map<number, TeamInfoIntermediate> = new Map();
+
   teamRegistrationLogTailer.watchLog((items) => {
-    console.log("got batch", items);
+    for (const entry of items) {
+      const teamInfo = teamInfos.get(entry.team_id) ?? new TeamInfoIntermediate();
+      teamInfos.set(entry.team_id, teamInfo.reduce(entry));
+    }
+    console.log("After batch teams", teamInfos);
   });
 
   await teamRegistrationLogTailer.readyPromise();
 
   console.log("radioman running");
-
-  const customers = await tbClient.listCustomers();
-  console.log("customers", customers);
 }
 main({ redisUrl, apiUrl, frontendApiSecret }).catch((err: unknown) => {
   console.error(err);
