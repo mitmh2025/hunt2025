@@ -2,7 +2,7 @@ import { defineConfig } from "@rspack/cli";
 
 const config = defineConfig({
   entry: {
-    main: "./main.ts",
+    sync2tb: "./sync2tb.ts",
     tbprovision: "./tbprovision.ts",
   },
   target: "node22",
