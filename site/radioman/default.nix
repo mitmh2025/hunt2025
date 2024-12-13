@@ -37,5 +37,8 @@ in buildNpmPackage {
     makeWrapper ${nodejs}/bin/node $out/bin/radioman \
       --add-flags --enable-source-maps \
       --add-flags $out/lib/radioman/main.mjs
+    makeWrapper ${nodejs}/bin/node $out/bin/tbprovision \
+      --add-flags --enable-source-maps \
+      --add-flags $out/lib/radioman/tbprovision.mjs
   '';
 }

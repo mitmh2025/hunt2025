@@ -12,11 +12,13 @@ import { z } from "zod";
 const c = initContract();
 
 export const ThingsboardErrorResponseSchema = z.object({
-  status: z.number().optional(),
-  message: z.string().optional(),
-  errorCode: z.number().optional(),
-  timestamp: z.number().optional(),
+  status: z.number(),
+  message: z.string(),
+  errorCode: z.number(),
+  timestamp: z.number(),
 });
+
+type ThingsboardErrorResponse = z.output<typeof ThingsboardErrorResponseSchema>;
 
 const PageDataSchema = <S extends z.ZodTypeAny>(itemSchema: S) =>
   z.object({
@@ -158,6 +160,23 @@ const authContract = c.router({
     path: `/api/auth/user`,
     responses: {
       200: GetUserSchema,
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  changePassword: {
+    method: "POST",
+    path: `/api/auth/changePassword`,
+    body: z.object({
+      currentPassword: z.string(),
+      newPassword: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        token: z.string(),
+        refreshToken: z.string(),
+        scope: z.string().optional(),
+      }),
       ...errorResponses,
     },
     strictStatusCodes: true,
@@ -393,22 +412,18 @@ async function getAllPages<I, Q extends { pageSize: number; page: number }>(
 ): Promise<I[]> {
   const result: I[] = [];
   for (let page = 0; ; page++) {
-    const response = await getPage({
+    const body = await getPage({
       query: {
         ...query,
         pageSize: 100,
         page,
       },
-    });
-    if (response.status === 200) {
-      if (response.body.data) {
-        result.push(...response.body.data);
-      }
-      if (response.body.hasNext === false || !response.body.data) {
-        return result;
-      }
-    } else {
-      throw new Error(`failed to list: ${response.body.message}`);
+    }).then(check);
+    if (body.data) {
+      result.push(...body.data);
+    }
+    if (body.hasNext === false || !body.data) {
+      return result;
     }
   }
 }
@@ -418,6 +433,19 @@ type APIClient = InitClientReturn<typeof contract, InitClientArgs>;
 
 type APIResponse<T> = { status: 200; body: T } | ErrorResponses;
 
+export class ThingsboardError extends Error {
+  status: number;
+  errorCode: number;
+  timestamp: number;
+
+  constructor(response: ThingsboardErrorResponse) {
+    super(response.message);
+    this.status = response.status;
+    this.errorCode = response.errorCode;
+    this.timestamp = response.timestamp;
+  }
+}
+
 export async function check<T>(
   p: PromiseLike<APIResponse<T>> | APIResponse<T>,
 ): Promise<T> {
@@ -425,7 +453,7 @@ export async function check<T>(
   if (response.status === 200) {
     return response.body;
   }
-  throw new Error(`API call failed: ${response.body.message}`);
+  throw new ThingsboardError(response.body);
 }
 
 export class Client {
@@ -460,14 +488,13 @@ export class Client {
               return response;
             }
           }
-          const response = await this.loginClient.login({
-            body: { username, password },
-          });
-          if (response.status === 200) {
-            this._token = response.body.token;
-          } else {
-            throw new Error(response.body.message);
-          }
+          this._token = (
+            await this.loginClient
+              .login({
+                body: { username, password },
+              })
+              .then(check)
+          ).token;
         }
       },
     });
