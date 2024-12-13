@@ -383,11 +383,127 @@ const customerContract = c.router({
     strictStatusCodes: true,
   },
 });
+
+const BaseDeviceProfileSchema = z.object({
+  id: IdSchema("DEVICE_PROFILE").optional(),
+  name: z.string(),
+  description: z.string().nullable().optional(),
+  image: z.string().url().nullable().optional(),
+  type: z.enum(["DEFAULT"]).default("DEFAULT"),
+  transportType: z
+    .enum(["DEFAULT", "MQTT", "COAP", "LWM2M", "SNMP"])
+    .default("DEFAULT"),
+  provisionType: z
+    .enum([
+      "DISABLED",
+      "ALLOW_CREATE_NEW_DEVICES",
+      "CHECK_PRE_PROVISIONED_DEVICES",
+      "X509_CERTIFICATE_CHAIN",
+    ])
+    .optional(),
+  defaultRuleChainId: IdSchema("RULE_CHAIN").nullable().optional(),
+  defaultDashboardId: IdSchema("DASHBOARD").nullable().optional(),
+  defaultQueueName: z.string().nullable().optional(),
+  provisionDeviceKey: z.string().nullable().optional(),
+  firmwareId: IdSchema("OTA_PACKAGE").nullable().optional(),
+  softwareId: IdSchema("OTA_PACKAGE").nullable().optional(),
+  defaultEdgeRuleChainId: IdSchema("RULE_CHAIN").nullable().optional(),
+  default: z.boolean().nullable().optional(),
+  profileData: z.object({
+    configuration: z
+      .object({
+        type: z.literal("DEFAULT"),
+      })
+      .nullable()
+      .optional(),
+    transportConfiguration: z.object({
+      type: z.literal("DEFAULT"),
+    }),
+    provisionConfiguration: z.any(),
+    alarms: z.any(),
+  }),
+  version: z.number().nullable().optional(),
+});
+
+const GetDeviceProfileSchema = BaseDeviceProfileSchema.required({
+  id: true,
+}).extend({
+  tenantId: IdSchema("TENANT"),
+  createdTime: z.number(), // milliseconds, readOnly
+});
+
+const deviceProfileContract = c.router({
+  list: {
+    method: "GET",
+    path: `/api/deviceProfiles`,
+    query: z.object({
+      pageSize: z.number(),
+      page: z.number(),
+      textSearch: z.string().optional(),
+      sortProperty: z
+        .enum([
+          "createdTime",
+          "name",
+          "type",
+          "transportType",
+          "description",
+          "isDefault",
+        ])
+        .optional(),
+      sortOrder: z.enum(["ASC", "DESC"]).optional(),
+    }),
+    responses: {
+      200: PageDataSchema(GetDeviceProfileSchema),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  getById: {
+    method: "GET",
+    path: `/api/deviceProfile/:deviceProfileId`,
+    pathParams: z.object({
+      deviceProfileId: z.string().uuid(),
+    }),
+    query: z.object({
+      inlineImages: z.enum(["true", "false"]).optional(),
+    }),
+    responses: {
+      200: GetDeviceProfileSchema,
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  save: {
+    method: "POST",
+    path: `/api/deviceProfile`,
+    body: BaseDeviceProfileSchema,
+    responses: {
+      200: GetDeviceProfileSchema,
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  delete: {
+    method: "DELETE",
+    path: `/api/deviceProfile/:deviceProfileId`,
+    pathParams: z.object({
+      deviceProfileId: z.string().uuid(),
+    }),
+    body: z.undefined(),
+    responses: {
+      200: z.undefined(),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+});
+
 export const contract = c.router({
   auth: authContract,
   user: userContract,
   tenant: tenantContract,
   customer: customerContract,
+  deviceProfile: deviceProfileContract,
 });
 
 function newLoginClient(baseUrl: string) {
@@ -522,6 +638,15 @@ export class Client {
     return getAllPages(
       ({ query }) =>
         this.client.user.listByTenant({ params: { tenantId }, query }),
+      query,
+    );
+  }
+
+  listDeviceProfiles(
+    query: PagedQuery<APIClient["deviceProfile"]["list"]> = {},
+  ) {
+    return getAllPages(
+      this.client.deviceProfile.list.bind(this.client.deviceProfile),
       query,
     );
   }

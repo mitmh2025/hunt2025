@@ -115,6 +115,33 @@ async function createTenantAdmin(
   }
 }
 
+async function createDeviceProfiles(client: Client) {
+  const existing = await client.listDeviceProfiles();
+  const existingByName = new Map(existing.map((d) => [d.name, d]));
+  console.log("Existing device profiles", existingByName);
+  for (const name of ["radio", "giant-switch"]) {
+    if (!existingByName.has(name)) {
+      await client.client.deviceProfile
+        .save({
+          body: {
+            name,
+            type: "DEFAULT",
+            transportType: "DEFAULT",
+            profileData: {
+              configuration: {
+                type: "DEFAULT",
+              },
+              transportConfiguration: {
+                type: "DEFAULT",
+              },
+            },
+          },
+        })
+        .then(check);
+    }
+  }
+}
+
 async function main() {
   // Set sysadmin's password
   const sysadminClient = await createSysadminClient({
@@ -136,7 +163,7 @@ async function main() {
     username: tenantUsername,
     password: tenantPassword,
   });
-  console.log(await client.listCustomers());
+  await createDeviceProfiles(client);
 }
 main().catch((err: unknown) => {
   console.error(err);
