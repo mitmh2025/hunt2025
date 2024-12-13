@@ -16,6 +16,7 @@ import TheBoardwalk from "./dental-shark";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import Casino from "./fortunate-calf";
+import Alias from "./frilly-whip";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
@@ -155,6 +156,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_mark: TheMark,
   the_grand_illusion: TheGrandIllusion,
   the_oversight: TheOversight,
+  alias: Alias,
 
   // Murder in MITropolis
   do_the_packing: DoThePacking,

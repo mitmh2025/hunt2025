@@ -22,12 +22,13 @@ const Mono = styled.span`
   font-family: monospace;
 `;
 
-type Board = {
+// Reused in Alias solution
+export type Board = {
   image: string;
   alt: string;
 };
 
-type Blunder = {
+export type Blunder = {
   feeder: string;
   board0: Board;
   board1: Board;
@@ -138,7 +139,7 @@ const BlunderTable = styled.table`
   }
 `;
 
-const BlundersTable = ({ blunders }: { blunders: Blunder[] }) => {
+export const BlundersTable = ({ blunders }: { blunders: Blunder[] }) => {
   return (
     <BlunderTable>
       <tbody>

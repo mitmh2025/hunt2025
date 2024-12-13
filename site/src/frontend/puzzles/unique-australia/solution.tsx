@@ -10,7 +10,8 @@ import answer_chips_jugalbone from "./assets/solution/The-Mark-candidate-partial
 import answer_chips_morthond from "./assets/solution/The-Mark-candidate-partial-morthond-~~~D~~-~~~~~~-OR~~~N-HM~T~~-1.svg";
 import checks_bg from "./assets/solution/The-Mark-shell.svg";
 
-const Aside = styled.aside`
+// Reused by supermeta solution
+export const Aside = styled.aside`
   background-color: #e3eef8;
   margin: 1em 0;
   padding: 0 1em 1em 1em;
@@ -228,7 +229,7 @@ const Solution = () => {
         <div style={{ width: "600px", maxWidth: "100%" }}>
           <LinkedImage
             src={checks_bg}
-            alt="Four cheques (casino chips).  Each cheque has a registration mark at the bottom of the chip.  The border contains six evenly-spaced segments around the edge, each with a single letter or number.
+            alt="Four cheques (casino chips).  Each cheque has a registration mark at the bottom of the chip.  The border of each checque contains six evenly-spaced segments around the edge, each with a single letter or number.
         The top-left cheque is primarily white, valued at 14$, and its markings clockwise from the registration mark are 2, 5, 3, 1, U, and 4.
         The top-right cheque is primarily red, valued at 25$, and its markings clockwise from the registration mark are 4, 3, 1, 6, Y, and 2.
         The bottom-left cheque is primarily blue, valued at 26$, and its markings clockwise from the registration mark are 5, 6, 1, 2, J, and 4.
