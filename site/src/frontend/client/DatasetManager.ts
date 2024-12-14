@@ -158,11 +158,17 @@ class SharedWorkerDatasetManager {
     console.log(
       `starting watch ${watchId} for ${dataset}:${JSON.stringify(params)}`,
     );
+    // If this is an append dataset, detach from initialValue lest we inadvertently modify it
+    // in-place in a manner surprising to the caller when we get updates.
+    const value =
+      actionForDataset(dataset) === "append"
+        ? [...(initialValue as ObjectWithId[])]
+        : initialValue;
     const watch = {
       id: watchId,
       dataset,
       params,
-      value: initialValue,
+      value,
       callback: onUpdate,
     };
     this.watches.set(watchId, watch);

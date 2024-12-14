@@ -11,7 +11,7 @@ function useAppendDataset<T extends ObjectWithId>(
   params: DatasetParams,
   initialValue: T[],
 ): T[] {
-  const [state, setState] = useState<T[]>(initialValue);
+  const [state, setState] = useState<T[]>(() => [...initialValue]);
   useEffect(() => {
     const stop = globalDatasetManager.watch(
       dataset,
