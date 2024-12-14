@@ -37,6 +37,16 @@ export async function connect(redisUrl: string) {
     ...connectOptions,
     // Fail fast when we're not connected.
     disableOfflineQueue: true,
+    isolationPoolOptions: {
+      // We expect to use multiple dataset tailers, and each one uses a separate connection from the
+      // isolation pool, which defaults to a maximum size of 1 (!).  This needs to be at least as
+      // large as the number of concurrent connections tailing datasets.
+      max: 100,
+      // We would like to get some sort of backpressure in the form of errors if we're blocking
+      // while trying to get an isolated client from the pool rather than waiting indefinitely for a
+      // resource that won't come.
+      acquireTimeoutMillis: 1000,
+    },
     scripts: {
       extendLog: defineScript({
         SCRIPT: `
