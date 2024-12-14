@@ -31,7 +31,7 @@ export class StreamDatasetTailer<T extends { id: number }> {
   private fetcher: (since?: number) => Promise<T[]>;
 
   // The log we are subscribing to
-  private redisLog: Pick<Log<T, T>, "getGlobalLog">;
+  private redisLog: Pick<Log<T, T>, "getGlobalLog" | "key">;
 
   // The full, sorted-by-id history of all confirmed events, which we have already emitted to all listeners
   private entries: T[];
@@ -85,7 +85,10 @@ export class StreamDatasetTailer<T extends { id: number }> {
 
   protected log(...args: unknown[]) {
     if (DEBUG_TAILER) {
-      console.log(`DatasetTailer(${this.state})`, ...args);
+      console.log(
+        `DatasetTailer(${this.redisLog.key}, ${this.state})`,
+        ...args,
+      );
     }
   }
 
