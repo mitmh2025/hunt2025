@@ -155,6 +155,10 @@ export abstract class Log<S, T extends { id: number; team_id?: number }> {
     this._key = key;
   }
 
+  get key() {
+    return this._key;
+  }
+
   protected abstract hydrateEntry(this: void, entry: S): T;
 
   private parseStreamMessage(
