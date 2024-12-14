@@ -23,10 +23,8 @@ const puzzle: PuzzleDefinition = {
   editors: ["Anna Brunner", "Nathan Fung", "Teddy McArthur"],
   additional_credits: [
     {
-      for_what: "Other",
-      who: [
+      freeform:
         "Thanks to Dan Chadwich, Chief Swizzlestick of Kindred Cocktails, for providing the data for this puzzle",
-      ],
     },
   ],
   content: {
