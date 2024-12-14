@@ -45,15 +45,23 @@ const ContactBasedSchema = z.object({
   email: z.string().email().nullable().optional(),
 });
 
-const CustomerSchema = ContactBasedSchema.extend({
+const BaseCustomerSchema = ContactBasedSchema.extend({
   id: IdSchema("CUSTOMER").optional(),
-  createdTime: z.number(), // milliseconds, readOnly
   title: z.string(),
   tenantId: IdSchema("TENANT").optional(),
-  version: z.number(),
-  name: z.string().optional(), // readOnly
+  version: z.number().nullable().optional(),
   additionalInfo: z.any(),
 });
+
+const GetCustomerSchema = BaseCustomerSchema.required({
+  id: true,
+}).extend({
+  createdTime: z.number(), // milliseconds, readOnly
+  name: z.string().optional(), // readOnly
+});
+
+export type BaseCustomer = z.input<typeof BaseCustomerSchema>;
+export type Customer = z.input<typeof GetCustomerSchema>;
 
 const BaseTenantSchema = ContactBasedSchema.extend({
   id: IdSchema("TENANT").optional(),
@@ -342,7 +350,7 @@ const customerContract = c.router({
       sortOrder: z.enum(["ASC", "DESC"]).optional(),
     }),
     responses: {
-      200: PageDataSchema(CustomerSchema),
+      200: PageDataSchema(GetCustomerSchema),
       ...errorResponses,
     },
     strictStatusCodes: true,
@@ -354,7 +362,7 @@ const customerContract = c.router({
       customerId: z.string().uuid(),
     }),
     responses: {
-      200: CustomerSchema,
+      200: GetCustomerSchema,
       ...errorResponses,
     },
     strictStatusCodes: true,
@@ -362,9 +370,9 @@ const customerContract = c.router({
   save: {
     method: "POST",
     path: `/api/customer`,
-    body: CustomerSchema,
+    body: BaseCustomerSchema,
     responses: {
-      200: CustomerSchema,
+      200: GetCustomerSchema,
       ...errorResponses,
     },
     strictStatusCodes: true,
