@@ -353,7 +353,7 @@ const HUNT: Hunt = {
         { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "where_am_i" },
         { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "knights_of_the_square_table" },
         { id: "bgp04", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "deepfrost" },
-        { id: "bgp05", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1 },
+        { id: "bgp05", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "kindred_spirits" },
         { id: "bgp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "bgp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },

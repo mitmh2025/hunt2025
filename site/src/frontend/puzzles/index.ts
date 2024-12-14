@@ -54,6 +54,7 @@ import FollowTheRules from "./right-palm";
 import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
 import The10000SheetExcelFile from "./shoddy-table";
+import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
 import KnightsOfTheSquareTable from "./sore-ketchup";
@@ -150,6 +151,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // Background Check
   deepfrost: Deepfrost,
+  kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
   where_am_i: WhereAmI,
