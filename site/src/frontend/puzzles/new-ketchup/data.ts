@@ -1,26 +1,19 @@
 export const MIN_CLUEPHRASE = "SKIPZEROESINDX";
 export const PUZZLE_ANSWER = "LITTLETOM";
 
-type PuzzlePerson = {
-  getName: (s?: PuzzleStatus) => string;
-  getReplyUnsuccessful: (name: string) => string;
-  getReplySuccessful: (name: string) => string;
-  validAnswers: string[];
-  almostAnswers?: string[];
-  getPointer: (s?: PuzzleStatus) => Pointer;
+type Line = {
+  line: string;
+  speaker?: string;
 };
 
-export type Person = {
-  getIntro: (name: string) => string;
-} & PuzzlePerson;
-
-export type Agent = {
-  getIntro: (name: string, caseNumber?: string, nameLog?: string[]) => string;
-} & PuzzlePerson;
-
-export type Pointer = {
-  getDialog: (name: string) => string;
-  nextPerson: Person | Agent | null;
+type Person = {
+  name: string;
+  intro: Line[];
+  replyUnsuccessful: Line[];
+  replySuccessful: Line[];
+  validAnswers: string[];
+  almostAnswers?: string[];
+  nextPerson?: Person;
 };
 
 export type PuzzleStatus = {
@@ -28,34 +21,67 @@ export type PuzzleStatus = {
   clueLettersCollected: string;
 };
 
-export const getNameSpan = (n: string) => {
-  return `<span class='name'>${n}:</span>`;
-};
+// export const getNameSpan = (n: string) => {
+//   return `<span class='name'>${n}:</span>`;
+// };
 
+const ROMAN_NAME = "IULIA";
 const Roman: Person = {
-  getName: () => "SEPTIMA",
-  getIntro: (name: string) =>
-    `<p>You start your search with a Roman aristocrat named ${name}. She refuses to talk to you.</p><p>${getNameSpan(name)}I will only speak with Spartacus!</p>`,
-  getReplyUnsuccessful: (name) =>
-    `<p>${getNameSpan(name)}Go away. I will only speak with Spartacus!</p>`,
-  getReplySuccessful: (name) =>
-    `<p>${getNameSpan(name)}Ah, yes, Spartacus. I am glad to have found you.<br>`,
+  name: ROMAN_NAME,
+  intro: [
+    {
+      line: `You start your search with a Roman aristocrat named IULIA. She refuses to talk to you.`,
+    },
+    {
+      line: "I will only speak with Spartacus!",
+      speaker: ROMAN_NAME,
+    },
+  ],
+  replyUnsuccessful: [
+    {
+      line: "Go away. I will only speak with Spartacus!",
+      speaker: ROMAN_NAME,
+    },
+  ],
+  replySuccessful: [
+    {
+      line: "Ah, Spartacus. I am glad to have found you.",
+      speaker: ROMAN_NAME,
+    },
+    {
+      line: "You seek this person? I do not know where he is now, but I know he took dance lessons at a dance studio nearby.",
+      speaker: ROMAN_NAME,
+    },
+  ],
   validAnswers: ["SPARTACUS"],
-  getPointer: () => ({
-    getDialog: (name) =>
-      `${getNameSpan(name)}You seek this person? I do not know where he is now, but I know he took dance lessons at a dance studio nearby.</p>`,
-    nextPerson: Dancer,
-  }),
+  nextPerson: Dancer,
 };
 
+const DANCER_NAME = "NINA";
 const Dancer: Person = {
-  getName: () => "KELLY",
-  getIntro: (name: string) =>
-    `<p>You go to the dance studio, which has an ornate green glass door and planetarium-esque star designs on the walls. Walking inside, you meet an instructor named ${name}. She refuses to talk to you.</p><p>${getNameSpan(name)}I\'m only interested in moonwalkers. Shamone!</p>`,
-  getReplyUnsuccessful: (name) =>
-    `<p>${getNameSpan(name)}If a moonwalker walks through that green glass door, I\'ll talk to him. Otherwise, beat it!</p>`,
-  getReplySuccessful: (name) =>
-    `<p>${getNameSpan(name)}Oh he<i>llooooo</i>, spaceman!<br>`,
+  name: DANCER_NAME,
+  intro: [
+    {
+      line: "You go to the dance studio, which has an ornate green glass door and planetarium-esque star designs on the walls. Walking inside, you meet an instructor named NINA. She refuses to talk to you.",
+    },
+    {
+      line: "I'm only interested in moonwalkers. Shamone!",
+      speaker: DANCER_NAME,
+    },
+  ],
+  replyUnsuccessful: [
+    {
+      line: "If a moonwalker walks through that green glass door, I'll talk to him. Otherwise, beat it!",
+      speaker: DANCER_NAME,
+    },
+  ],
+  replySuccessful: [
+    { line: "Why he<i>llooooo</i>, spaceman!", speaker: DANCER_NAME },
+    {
+      line: "You looking for one of my old students? Last I saw him, he was getting his nails did at the salon across the way.",
+      speaker: DANCER_NAME,
+    },
+  ],
   validAnswers: [
     "BUZZALDRIN",
     "EDGARMITCHELL",
@@ -63,44 +89,119 @@ const Dancer: Person = {
     "HARRISONSCHMITT",
   ],
   almostAnswers: ["ALDRIN", "MITCHELL", "SCOTT", "SCHMITT"],
-  getPointer: () => ({
-    getDialog: (name) =>
-      `${getNameSpan(name)}You looking for one of my old students? Last I saw him, he was getting his nails did at the salon across the way.</p>`,
-    nextPerson: Manicurist,
-  }),
+  nextPerson: Manicurist,
 };
 
+const MANICURIST_NAME = "DARLENE";
 const Manicurist: Person = {
-  getName: () => "IRENE",
-  getIntro: (name: string) =>
-    `<p>The salon's waiting area is packed. The busy manicurist glances at you, nametag reading ${name}. She takes one earbud out of her ear.</p><p>${getNameSpan(name)}Oh, a P.I.? Sorry, but it sounds like I can't talk till I finish this After Dark.</p>`,
-  getReplyUnsuccessful: (name) =>
-    `<p>You can still hear ${name}'s music blasting even with her earbuds in.</p><p>${getNameSpan(name)}Oh, P.I., you\'re still here? Try After Dark, y'hear me?</p>`,
-  getReplySuccessful: (name) =>
-    `<p>${name} drops her emery board.</p><p>${getNameSpan(name)}Oh, my, heavens. Mike Shinoda???<br>`,
+  name: MANICURIST_NAME,
+  intro: [
+    {
+      line: "The salon's waiting area is packed. The busy manicurist glances at you, nametag reading DARLENE. She takes one earbud out of her ear, music blasting.",
+    },
+    {
+      line: "Oh, a P.I.? Sorry, but I'm busy applying this polish. It sounds like I can't chat till After Dark.",
+    },
+  ],
+  replyUnsuccessful: [
+    {
+      line: `You can still hear ${MANICURIST_NAME}'s music blasting even with her earbuds in.`,
+    },
+    {
+      line: "Oh, P.I., you're still here? Try After Dark, y'hear me?",
+      speaker: MANICURIST_NAME,
+    },
+  ],
+  replySuccessful: [
+    {
+      line: "The manicurist drops her emery board.",
+    },
+    {
+      line: "Oh, my, heavens. Mike Shinoda???",
+      speaker: MANICURIST_NAME,
+    },
+    {
+      line: "Oh, you're looking for one of my old customers? He got a mani-pedi--said he was about to perform at a choir concert. Here's the flyer!",
+      speaker: MANICURIST_NAME,
+    },
+  ],
   validAnswers: ["LINKINPARK"],
-  getPointer: () => ({
-    getDialog: (name) =>
-      `${getNameSpan(name)}Oh, you're looking for one of my old customers? He got a mani-pedi--said he had a date at the ice rink.</p>`,
-    nextPerson: Snowman,
-  }),
+  nextPerson: Sailor,
 };
 
+const SAILOR_NAME = "ERIATARA";
+const Sailor: Person = {
+  name: SAILOR_NAME,
+  intro: [
+    {
+      line: `You find the choir singing sea shanties outside a shop that sells sweets, tea, and liquor. One of the baritones, ${SAILOR_NAME}, turns out to be a bona fide sailor. He refuses to talk to you.`,
+    },
+    {
+      line: "Gods, some of these lyrics are a tonguin' to sing. Oh well. Once the concert is done, all I want to do is to find me ship!",
+      speaker: SAILOR_NAME,
+    },
+  ],
+  replyUnsuccessful: [
+    {
+      line: "Go away. The only 'person' I want to meet is my whaling ship.",
+      speaker: SAILOR_NAME,
+    },
+  ],
+  replySuccessful: [
+    {
+      line: "Ah! Me blessed ship, of which so many have sung praises! Alas, I can't bring that fellow aboard. He hasn't been to choir practice in a while. Last time I saw him he left early, said he had a hot date at the ice rink.",
+      speaker: SAILOR_NAME,
+    },
+  ],
+  validAnswers: ["BILLYOTEA"],
+  nextPerson: Snowman,
+};
+
+const SNOWMAN_NAME = "XENO";
 const Snowman: Person = {
-  getName: () => "PIX",
-  getIntro: (name: string) =>
-    `<p>The ice rink is deserted. Bored, you turn to a snowman next to the rink and ask it for help. The snowman, named ${name}, turns its back to you with a sniff.</p><p>${getNameSpan(name)}Forgive my frostiness, but I'm a snowman. I'm not supposed to talk at all. Though I might make an exception for a skater or two with the most medallions.</p>`,
-  getReplyUnsuccessful: () =>
-    "<p>The snowman pretends to not be a talking snowman.</p>",
-  getReplySuccessful: (name) =>
-    `<p>The snowman fangasms.</p><p>${getNameSpan(name)}<i>Okay, be cool, be cool.</i> How can I help you?<br>`,
+  name: SNOWMAN_NAME,
+  intro: [
+    {
+      line: `The ice rink is deserted. Bored, you turn to a snowman next to the rink and ask it for help. The snowman, named ${SNOWMAN_NAME}, turns its back to you with a sniff.`,
+    },
+    {
+      line: "Forgive my frostiness, but I'm a snowman. I'm not supposed to talk at all. Though I might make an exception for a skater or two with the most medallions.",
+      speaker: SNOWMAN_NAME,
+    },
+  ],
+  replyUnsuccessful: [
+    {
+      line: "The snowman pretends to not be a talking snowman.",
+    },
+  ],
+  replySuccessful: [
+    {
+      line: "The snowman fangasms.",
+    },
+    {
+      line: "<i>Okay, be cool, be cool.</i> How can I help you?",
+      speaker: SNOWMAN_NAME,
+    },
+    {
+      line: "Someone who skated here on a date... I think I know the one you mean.",
+      speaker: SNOWMAN_NAME,
+    },
+    {
+      line: "I don't know where he's from, but I can give you his date's number.",
+      speaker: SNOWMAN_NAME,
+    },
+    {
+      line: "...",
+      speaker: SNOWMAN_NAME,
+    },
+    {
+      line: "OH my GAWD I LOVED your Moulin Rouge routine--",
+      speaker: SNOWMAN_NAME,
+    },
+  ],
   validAnswers: ["TESSAVIRTUE", "SCOTTMOIR"],
   almostAnswers: ["VIRTUE", "MOIR"],
-  getPointer: () => ({
-    getDialog: (name) =>
-      `${getNameSpan(name)}Someone who skated here on a date... I think I know the one you mean.<br>${getNameSpan(name)}I don't know where he went, but I can give you his date's number. ... OH my GAWD I LOVED your Moulin Rouge routine--</p>`,
-    nextPerson: Fiance,
-  }),
+  nextPerson: Fiance,
 };
 
 const Fiance: Person = {

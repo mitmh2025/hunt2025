@@ -2,14 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { Button } from "../../components/StyledUI";
-import {
-  type Agent,
-  FirstPerson,
-  getNameSpan,
-  type Person,
-  PUZZLE_ANSWER,
-  type PuzzleStatus,
-} from "./data";
+import { FirstPerson, PUZZLE_ANSWER, type PuzzleStatus } from "./data";
 
 const DialogBoxWrapper = styled.div`
   position: relative;
@@ -143,9 +136,7 @@ const Puzzle = () => {
         (l) =>
           `${l}${currentPerson.getReplySuccessful(name)}${pointer.getDialog(name)}<hr />`,
       );
-    } else if (
-      currentPerson.almostAnswers?.includes(format(teamName))
-    ) {
+    } else if (currentPerson.almostAnswers?.includes(format(teamName))) {
       setLog((l) => `${l}<p><i>Not quite...</i></p>`);
     } else {
       setLog((l) => `${l}${currentPerson.getReplyUnsuccessful(name)}`);
@@ -194,7 +185,12 @@ const Puzzle = () => {
         </Bottom>
       </DialogBoxWrapper>
 
-      <input value={teamName} onChange={(e) => { setTeamName(e.target.value); }} />
+      <input
+        value={teamName}
+        onChange={(e) => {
+          setTeamName(e.target.value);
+        }}
+      />
       {/* <ul>
         {nameLog.map((name, i) => (
           <li key={`teamname-${i}-${name}`}>{name}</li>
