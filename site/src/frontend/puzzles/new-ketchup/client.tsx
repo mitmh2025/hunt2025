@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { Button } from "../../components/StyledUI";
-import { FirstPerson, PUZZLE_ANSWER, type PuzzleStatus } from "./data";
+import {
+  FirstPerson,
+  Line,
+  Person,
+  PUZZLE_ANSWER,
+  RESERVED_NAMES,
+} from "./data";
 
 const DialogBoxWrapper = styled.div`
   position: relative;
@@ -19,18 +25,18 @@ const DialogBox = styled.div`
   font-family: monospace;
   margin-top: 1rem;
 
-  .name {
-    color: var(--gold-500);
-    padding-right: 0.5rem;
-  }
-
-  .you .name {
-    color: var(--teal-200);
-  }
-
   hr {
     margin-bottom: 1rem;
   }
+`;
+
+const Speaker = styled.span`
+  color: var(--gold-500);
+  padding-right: 0.5rem;
+`;
+
+const SpeakerYou = styled(Speaker)`
+  color: var(--teal-200);
 `;
 
 const Bottom = styled.div`
@@ -51,119 +57,82 @@ function format(s: string): string {
   return s.toUpperCase().replace(/\s/g, "");
 }
 
+function getCaseNumber(names: string[]): string {
+  let caseNumber = "";
+  const answerLetters = PUZZLE_ANSWER.split("");
+  names.forEach((name) => {
+    const nameSlice = name.slice(0, 9).split("");
+    for (let i = 0; i < nameSlice.length; i++) {
+      // if this letter matches the next answer letter
+      if (nameSlice[i] === answerLetters[0]) {
+        // add index in this name to case number
+        caseNumber += `${i + 1}`;
+        // advance next answer letter
+        answerLetters.shift();
+        break;
+      } else {
+        caseNumber += "0";
+      }
+    }
+  });
+  return caseNumber;
+}
+const DEFAULT_TEAM_NAME = "Death and Mayhem";
+
 const Puzzle = () => {
   const chatEndRef = useRef<HTMLSpanElement | null>(null);
+
   // current state:
-  const [currentPerson, setCurrentPerson] = useState<Person | Agent>({
+  const [currentPerson, setCurrentPerson] = useState<Person>({
     ...FirstPerson,
   });
-  const [teamName, setTeamName] = useState<string>("Death and Mayhem");
+  const [teamName, setTeamName] = useState<string>(DEFAULT_TEAM_NAME);
 
   // accumulated state:
-  const [log, setLog] = useState<string>("");
-  const [nameLog, setNameLog] = useState<string[]>([
-    format("Death and Mayhem"),
-  ]);
-  const [puzzleStatus, setPuzzleStatus] = useState<PuzzleStatus>({
-    lettersCollected: "",
-    clueLettersCollected: "",
-  });
-  const [caseNumber, setCaseNumber] = useState<string>("");
+  const [chatLog, setChatLog] = useState<Line[]>(FirstPerson.intro);
+  const [nameLog, setNameLog] = useState<string[]>([format(DEFAULT_TEAM_NAME)]);
 
   useEffect(() => {
-    if (log.length === 0) {
-      // initialize log with the intro of the first person we meet
-      const name = currentPerson.getName(puzzleStatus);
-      const intro = currentPerson.getIntro(name);
-      setLog(intro);
+    setChatLog((l) => [...l, ...currentPerson.intro]);
+  }, [currentPerson]);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatLog]);
+
+  const handleTalk = () => {
+    // first we say hello
+    setChatLog((l) => [...l, { line: "Hello.", speaker: "You" }]);
+    const formattedTeamName = format(teamName);
+    // wrong or right, we collect the name if it's:
+    // 1) new to the log and
+    // 2) not needed as an answer (unless it's the answer right now, of course)
+    if (
+      !nameLog.includes(formattedTeamName) &&
+      (!RESERVED_NAMES.includes(formattedTeamName) ||
+        currentPerson.validAnswers.includes(formattedTeamName))
+    ) {
+      setNameLog((names) => [...names, format(teamName)]);
     }
-  }, [log]);
-
-  useEffect(() => {
-    const nextLetter =
-      PUZZLE_ANSWER.split("")[puzzleStatus.lettersCollected.length];
-    const teamSlice = format(teamName).slice(0, 9);
-    console.log(puzzleStatus);
-    console.log(nextLetter, teamSlice);
-    if (nextLetter) {
-      const i = teamSlice.split("").indexOf(nextLetter);
-      console.log("i", format(teamName), teamSlice.split(""), i);
-      if (i !== -1) {
-        console.log("wtf");
-        setCaseNumber((n) => `${n}${i + 1}`);
-        setPuzzleStatus((s) => ({
-          ...s,
-          lettersCollected: format(`${s.lettersCollected}${nextLetter}`),
-        }));
-      } else {
-        setCaseNumber((n) => `${n}0`);
+    // then we see if it's correct for the current person
+    // and update the dialog log accordingly
+    if (currentPerson.validAnswers.includes(formattedTeamName)) {
+      // say the success condition and add a blank line
+      setChatLog((l) => [...l, ...currentPerson.replySuccessful, { line: "" }]);
+      // move to the next person
+      if (currentPerson.nextPerson) {
+        setCurrentPerson(currentPerson.nextPerson);
       }
+    } else if (currentPerson.almostAnswers?.includes(formattedTeamName)) {
     } else {
-      setCaseNumber((n) => `${n}0`);
+      setChatLog((l) => [...l, ...currentPerson.replyUnsuccessful]);
     }
-  }, [nameLog]);
+  };
 
   const devHandleTalk = () => {
     setTeamName(currentPerson.validAnswers[0] || "");
     handleTalk();
   };
-
-  const handleTalk = () => {
-    // first we say hello
-    setLog((l) => `${l}<p class="you">${getNameSpan("You")}Hello.</p>`);
-    // wrong or right, we collect the name if it's new and so we can see if we get answer stuff out of it
-    if (!nameLog.includes(format(teamName))) {
-      setNameLog((names) => [...names, format(teamName)]);
-    }
-    // then we see if it's correct for the current person
-    // and update the dialog log accordingly
-    const pointer = currentPerson.getPointer(puzzleStatus);
-    const name = currentPerson.getName(puzzleStatus);
-    const newPuzzleStatus = {
-      ...puzzleStatus,
-      clueLettersCollected: `${puzzleStatus.clueLettersCollected}${name.slice(0, 1)}`,
-    };
-    if (currentPerson.validAnswers.includes(format(teamName))) {
-      // add acquired clue letter
-      setPuzzleStatus((s: PuzzleStatus): PuzzleStatus => {
-        return {
-          ...s,
-          clueLettersCollected: `${s.clueLettersCollected}${name.slice(0, 1)}`,
-        };
-      });
-      // add the success dialog
-      setLog(
-        (l) =>
-          `${l}${currentPerson.getReplySuccessful(name)}${pointer.getDialog(name)}<hr />`,
-      );
-    } else if (currentPerson.almostAnswers?.includes(format(teamName))) {
-      setLog((l) => `${l}<p><i>Not quite...</i></p>`);
-    } else {
-      setLog((l) => `${l}${currentPerson.getReplyUnsuccessful(name)}`);
-    }
-    // move to the next person
-    if (
-      currentPerson.validAnswers.includes(format(teamName)) &&
-      pointer &&
-      pointer.nextPerson
-    ) {
-      if (pointer.nextPerson) {
-        setCurrentPerson(pointer.nextPerson);
-        console.log("about to intro, status: ", newPuzzleStatus);
-        setLog((l) => {
-          if (pointer.nextPerson?.getName() === "Agent") {
-            return `${l}${(pointer.nextPerson as Agent).getIntro((pointer.nextPerson as Agent).getName(newPuzzleStatus), caseNumber, nameLog)}`;
-          } else {
-            return `${l}${(pointer.nextPerson as Person).getIntro((pointer.nextPerson as Person).getName(newPuzzleStatus))}`;
-          }
-        });
-      }
-    }
-  };
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [log]);
 
   return (
     <>
@@ -176,7 +145,18 @@ const Puzzle = () => {
       </p>
       <DialogBoxWrapper>
         <DialogBox>
-          <div dangerouslySetInnerHTML={{ __html: log }} />
+          {chatLog.map((line, i) => (
+            <p key={`line-${line.line.replace(/[^a-zA-Z0-9]/g, "")}-${i}`}>
+              {line.speaker === "you" ? (
+                <SpeakerYou>{line.speaker}:</SpeakerYou>
+              ) : line.speaker ? (
+                <Speaker>{line.speaker}:</Speaker>
+              ) : (
+                ""
+              )}
+              <span dangerouslySetInnerHTML={{ __html: line.line }} />
+            </p>
+          ))}
           <span ref={chatEndRef} />
         </DialogBox>
         <Bottom>
@@ -191,21 +171,14 @@ const Puzzle = () => {
           setTeamName(e.target.value);
         }}
       />
-      {/* <ul>
+      <ul>
         {nameLog.map((name, i) => (
           <li key={`teamname-${i}-${name}`}>{name}</li>
         ))}
       </ul>
-
       <p>
-        <b>{puzzleStatus.clueLettersCollected}</b>
+        <b>{getCaseNumber(nameLog)}</b>
       </p>
-      <p>
-        <b>{puzzleStatus.lettersCollected}</b>
-      </p>
-      <p>
-        <b>{caseNumber}</b>
-      </p> */}
     </>
   );
 };
