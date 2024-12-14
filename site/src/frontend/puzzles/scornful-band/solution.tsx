@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
@@ -9,7 +10,6 @@ import image6 from "./assets/image6.png";
 import image7 from "./assets/image7.png";
 import image8 from "./assets/image8.png";
 import image9 from "./assets/image9.png";
-import LinkedImage from "../../components/LinkedImage";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
