@@ -53,6 +53,7 @@ import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
+import AnythingIsPopsicle from "./shameful-duck";
 import The10000SheetExcelFile from "./shoddy-table";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
@@ -95,6 +96,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_recipe_for_success: ARecipeForSuccess,
   a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
+  anything_is_popsicle: AnythingIsPopsicle,
   be_mine: BeMine,
   big_names: BigNames,
   borderline_personality: BorderlinePersonality,
