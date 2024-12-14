@@ -52,6 +52,7 @@ import ThisIsJustATest from "./radiant-snow";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
 import AnythingIsPopsicle from "./shameful-duck";
@@ -108,6 +109,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   doable_double: DoableDouble,
   fight_night_at_mos: FightNightAtMos,
   its_not_clear: ItsNotClear,
+  just_fing_behave: JustFingBehave,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
   magic_i: MagicI,
