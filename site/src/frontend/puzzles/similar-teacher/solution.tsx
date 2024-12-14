@@ -470,32 +470,51 @@ const Solution = (): JSX.Element => {
       <h3>Drinks in the Flight</h3>
       <StyledTable>
         <tr>
-          <td></td>
           <td>Elderberry, Lime Juice, Fig Jam</td>
           <td>ELF</td>
         </tr>
         <tr>
-          <td>F→Y</td>
+          <td colSpan={2}>
+            <strong>F</strong>ig Jam→Yogurt
+          </td>
+        </tr>
+        <tr>
           <td>Lime Juice, Yogurt, Elderberry</td>
           <td>LYE</td>
         </tr>
         <tr>
-          <td>L→R</td>
+          <td colSpan={2}>
+            <strong>L</strong>ime Juice→Apple Juice
+          </td>
+        </tr>
+        <tr>
           <td>Apple Juice, Yogurt, Elderberry</td>
           <td>AYE</td>
         </tr>
         <tr>
-          <td>Y→W</td>
+          <td colSpan={2}>
+            <strong>Y</strong>ogurt→Rose Water
+          </td>
+        </tr>
+        <tr>
           <td>Elderberry, Apple Juice, Rose Water</td>
           <td>EAR</td>
         </tr>
         <tr>
-          <td>E→D</td>
+          <td colSpan={2}>
+            <strong>E</strong>lderberry→Instant Coffee
+          </td>
+        </tr>
+        <tr>
           <td>Apple Juice, Instant Coffee, Rose Water</td>
           <td>AIR</td>
         </tr>
         <tr>
-          <td>R→N</td>
+          <td colSpan={2}>
+            <strong>R</strong>ose Water→Dill
+          </td>
+        </tr>
+        <tr>
           <td>Apple Juice, Instant Coffee, Dill</td>
           <td>AID</td>
         </tr>
