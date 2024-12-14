@@ -17,6 +17,7 @@ import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
+import GivenUp from "./giant-switch";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
@@ -162,5 +163,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   do_the_packing: DoThePacking,
 
   // work in progress
+  given_up: GivenUp,
   on_the_radio: OnTheRadio,
 };
