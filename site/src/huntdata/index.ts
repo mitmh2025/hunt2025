@@ -243,7 +243,7 @@ const HUNT: Hunt = {
         { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" }, // TODO: this slug my not go in this spot
         { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "a_recipe_for_success"} , // TODO: this slug my not go in this spot
         { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1 },
-        { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1 },
+        { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "anything_is_popsicle" }, // TODO: this slug my not go in this spot
         { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 },
         { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 },
         { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1 },
@@ -258,6 +258,7 @@ const HUNT: Hunt = {
       ],
       gates: [
         { id: "sog01" }, // Picked up Mystery O's from Gala
+        { id: "sog03" }, // Picked up Anything Is Popsicle from Gala
       ],
       interactions: [
         {
