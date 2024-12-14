@@ -27,6 +27,7 @@ import BigNames from "./important-green";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
+import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
@@ -106,6 +107,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   dear_diary: DearDiary,
   doable_double: DoableDouble,
   fight_night_at_mos: FightNightAtMos,
+  its_not_clear: ItsNotClear,
   just_plane_wrong: JustPlaneWrong,
   lab_scrabble: LabScrabble,
   magic_i: MagicI,
