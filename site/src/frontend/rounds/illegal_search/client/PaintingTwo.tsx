@@ -1,5 +1,6 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../../lib/api/client";
+import fusebox_frame_west from "../assets/study/fusebox_frame_west.svg";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import Painting from "./Painting";
 import SwitchBox from "./SwitchBox";
@@ -25,7 +26,10 @@ const PaintingTwo = ({
         setNode={setNode}
         opened={gateOpen}
       />
-      <Painting initialPosition={{ x: 594, y: 60 }} imageUrl="" />
+      <Painting
+        initialPosition={{ x: 594, y: 60 }}
+        imageUrl={fusebox_frame_west}
+      />
     </>
   );
 };

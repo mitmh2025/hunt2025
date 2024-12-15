@@ -264,18 +264,31 @@ const SearchEngine = ({
       return !prevState;
     });
   }, []);
+
+  function getMouseCoords(e: React.MouseEvent): { x: number; y: number } {
+    const offsetY = e.pageY - 48;
+    const offsetX = e.pageX;
+    return {
+      x: ((offsetX - RASTER_WIDTH / 2) / RASTER_WIDTH) * 2,
+      y: ((RASTER_HEIGHT / 2 - offsetY) / RASTER_HEIGHT) * 2,
+    };
+  }
+
   const mouseDown: MouseEventHandler<HTMLDivElement> = useCallback((e) => {
     e.preventDefault();
     setDragging(true);
-    const x = ((e.clientX - RASTER_WIDTH / 2) / RASTER_WIDTH) * 2;
-    const y = ((RASTER_HEIGHT / 2 - e.clientY) / RASTER_HEIGHT) * 2;
+    console.log("start", e.clientX, e.clientY, getMouseCoords(e));
+    const { x, y } = getMouseCoords(e);
     setStartPoint({ x, y });
+    setDragPoint({ x, y });
   }, []);
   const mouseMove: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       e.preventDefault();
-      const x = ((e.clientX - RASTER_WIDTH / 2) / RASTER_WIDTH) * 2;
-      const y = ((RASTER_HEIGHT / 2 - e.clientY) / RASTER_HEIGHT) * 2;
+      console.log("start", e.clientX, e.clientY, getMouseCoords(e));
+
+      const { x, y } = getMouseCoords(e);
+
       setCursorX(x);
       setCursorY(y);
       if (dragging) {
@@ -360,15 +373,22 @@ const SearchEngine = ({
 
   const teamState = useDataset("team_state", undefined, initialTeamState);
 
-  const assets = node.placedAssets.map((placedAsset) => {
-    return (
-      <Asset
-        key={`asset-${placedAsset.asset}`}
-        placedAsset={placedAsset}
-        backgroundColor={ENABLE_DEVTOOLS ? "rgba(255,0,0,0.3)" : undefined}
-      />
+  const assets = node.placedAssets
+    .map((placedAsset) => {
+      return (
+        <Asset key={`asset-${placedAsset.asset}`} placedAsset={placedAsset} />
+      );
+    })
+    .concat(
+      node.modals.map((modal) => {
+        return (
+          <Asset
+            key={`modal-${modal.asset}`}
+            placedAsset={modal.placedAsset ?? modal}
+          />
+        );
+      }),
     );
-  });
 
   const navigations = node.navigations.map((navigation) => {
     return (
@@ -451,7 +471,9 @@ const SearchEngine = ({
         key={`modal-${i}`}
         modal={modal}
         showModal={showModal}
-        backgroundColor={ENABLE_DEVTOOLS ? "rgba(0,0,255,0.3)" : undefined}
+        backgroundColor={
+          ENABLE_DEVTOOLS && !modal.asset ? "rgba(0,0,255,0.3)" : undefined
+        }
       />
     );
   });
