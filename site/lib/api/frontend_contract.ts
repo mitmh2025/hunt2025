@@ -127,7 +127,6 @@ export const TeamRegistrationLogSchema = z.array(
   TeamRegistrationLogEntrySchema,
 );
 
-export type TeamRegistration = z.output<typeof TeamRegistrationSchema>;
 export type MutableTeamRegistration = z.output<
   typeof MutableTeamRegistrationSchema
 >;

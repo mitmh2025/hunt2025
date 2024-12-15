@@ -3,9 +3,9 @@ import {
   type InsertTeamRegistrationLogEntry,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
+import { type TeamRegistration } from "../../lib/api/contract";
 import {
   type DehydratedTeamRegistrationLogEntry,
-  type TeamRegistration,
   type TeamRegistrationLogEntry,
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
@@ -425,7 +425,7 @@ export class TeamRegistrationLogMutator extends Mutator<
         .reduce((acc, entry) => acc.reduce(entry), info.info);
     }
 
-    return info.info.formatTeamRegistration();
+    return info.info.formatTeamRegistrationState();
   }
 }
 

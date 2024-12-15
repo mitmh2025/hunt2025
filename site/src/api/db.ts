@@ -8,8 +8,8 @@ import {
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
+import { type TeamRegistration } from "../../lib/api/contract";
 import {
-  type TeamRegistration,
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";

@@ -1,9 +1,12 @@
 import { type TeamInfo } from "../../lib/api/client";
-import { type InteractionState } from "../../lib/api/contract";
+import {
+  type InteractionState,
+  type TeamRegistration,
+  type TeamRegistrationState,
+} from "../../lib/api/contract";
 import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
-  type TeamRegistration,
 } from "../../lib/api/frontend_contract";
 import { generateSlugToSlotMap, type SlotLookup } from "../huntdata";
 import { getSlotSlug, LogicTeamState } from "../huntdata/logic";
@@ -237,5 +240,15 @@ export class TeamInfoIntermediate {
 
   formatTeamRegistration(): TeamRegistration | undefined {
     return this.registration;
+  }
+
+  formatTeamRegistrationState(): TeamRegistrationState | undefined {
+    if (this.registration === undefined) {
+      return undefined;
+    }
+    return {
+      epoch: this.epoch,
+      ...this.registration,
+    };
   }
 }
