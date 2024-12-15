@@ -202,7 +202,7 @@ button:disabled,
   background-color: var(--gray-100);
   box-shadow: 0 0 0 1px var(--gray-300);
   border-color: var(--gray-400);
-  color: var(--gray-300);
+  color: var(--gray-500);
   cursor: not-allowed;
 }
 

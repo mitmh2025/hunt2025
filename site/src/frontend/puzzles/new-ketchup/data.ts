@@ -128,11 +128,12 @@ const DinerAgent: Person = {
   replyUnsuccessful: [
     {
       line: "I′m waiting for my source. She′s on her way across the water by ferry. Electabuzz off.",
+      speaker: DINERAGENT_NAME,
     },
   ],
   replySuccessful: [
     {
-      line: "<i>Finally</i>, Ms. Cuthbert. I′ve been waiting for you all day! There′s a man who′s been visiting MITropolis Intelligence buildings. I don′t think he′s one of ours. I don′t know who to trust. I think he′s somewhere in the Intelligence safehouse right now. Find him.",
+      line: "<i>Finally</i>, Miss Cuthbert. I′ve been waiting for you all day! There′s a man who′s been visiting MITropolis Intelligence buildings. I don′t think he′s one of ours. I don′t know who to trust. I think he′s somewhere in the Intelligence safehouse right now. Find him.",
       speaker: DINERAGENT_NAME,
     },
   ],

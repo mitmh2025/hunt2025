@@ -29,6 +29,14 @@ export const Button = styled.button`
   &:focus-visible {
     box-shadow: 0 0 0 0.25rem var(--black);
   }
+
+  &:disabled {
+    background-color: var(--gray-100);
+    box-shadow: 0 0 0 2px var(--gray-100);
+    border-color: var(--gray-400);
+    color: var(--gray-500);
+    cursor: not-allowed;
+  }
 `;
 
 export const ButtonSecondary = styled(Button)`

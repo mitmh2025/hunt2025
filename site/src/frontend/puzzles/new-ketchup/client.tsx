@@ -35,10 +35,18 @@ const DialogBox = styled.div`
     color: var(--gray-200);
   }
 
+  .the-end {
+    display: block;
+    text-align: center;
+    margin: 0 2rem;
+  }
+
   #what-do-they-call-you-dossier {
     margin: 0 auto;
     max-width: fit-content;
     font-family: "Courier New", "Courier", monospace;
+    border: 1px solid var(--gray-800);
+    padding: 0 3rem;
 
     h4 {
       text-align: center;
@@ -49,6 +57,7 @@ const DialogBox = styled.div`
 const Speaker = styled.span`
   color: var(--gold-500);
   padding-right: 0.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 const SpeakerYou = styled(Speaker)`
@@ -106,6 +115,7 @@ const Puzzle = () => {
     ...FirstPerson,
   });
   const [teamName, setTeamName] = useState<string>(DEFAULT_TEAM_NAME);
+  const [isDone, setIsDone] = useState<boolean>(false);
 
   // accumulated state:
   const [chatLog, setChatLog] = useState<Line[]>([]);
@@ -158,11 +168,20 @@ const Puzzle = () => {
     // and update the dialog log accordingly
     if (currentPerson.validAnswers.includes(formattedTeamName)) {
       // say the success condition and add a blank line
-      setChatLog((l) => [
-        ...l,
-        ...currentPerson.replySuccessful,
-        { line: "<hr />" },
-      ]);
+
+      let addition = [];
+
+      if (currentPerson.nextPerson) {
+        addition = [...currentPerson.replySuccessful, { line: "<hr />" }];
+      } else {
+        // at the very end, we append an ending message
+        addition = [
+          ...currentPerson.replySuccessful,
+          { line: "<hr /><i class='the-end'>~ fin ~</i><hr />" },
+        ];
+        setIsDone(true);
+      }
+      setChatLog((l) => [...l, ...addition]);
       // move to the next person
       if (currentPerson.nextPerson) {
         setCurrentPerson(currentPerson.nextPerson);
@@ -208,8 +227,12 @@ const Puzzle = () => {
           <span ref={chatEndRef} />
         </DialogBox>
         <Bottom>
-          <Button onClick={handleTalk}>Talk</Button>
-          <Button onClick={devHandleTalk}>Devmode Talk</Button>
+          <Button onClick={handleTalk} disabled={isDone}>
+            Talk
+          </Button>
+          <Button onClick={devHandleTalk} disabled={isDone}>
+            Devmode Talk
+          </Button>
         </Bottom>
       </DialogBoxWrapper>
 
