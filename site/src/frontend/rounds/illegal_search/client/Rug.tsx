@@ -28,12 +28,14 @@ function MovableRug({
   maxX,
   minY,
   maxY,
+  onLoad,
 }: {
   initialPosition: Pos;
   minX: number;
   maxX: number;
   minY: number;
   maxY: number;
+  onLoad?: () => void;
 }) {
   // Is the rug being dragged?
   const [dragging, setDragging] = useState<boolean>(false);
@@ -99,6 +101,7 @@ function MovableRug({
       src={flat_rug}
       width={2136}
       alt="A bearskin rug"
+      onLoad={onLoad}
     />
   );
 }
@@ -118,23 +121,30 @@ export default function Rug({
     return teamState.rounds.illegal_search?.gates?.includes("isg09") ?? false;
   });
 
+  const [rugLoaded, setRugLoaded] = useState(false);
+
   return (
     <>
-      <FloorSafe
-        node={node}
-        showModal={showModal}
-        setNode={setNode}
-        opened={gateOpen}
-        setOpened={(newVal) => {
-          setGateOpen(newVal);
-        }}
-      />
+      {rugLoaded && (
+        <FloorSafe
+          node={node}
+          showModal={showModal}
+          setNode={setNode}
+          opened={gateOpen}
+          setOpened={(newVal) => {
+            setGateOpen(newVal);
+          }}
+        />
+      )}
       <MovableRug
         initialPosition={{ x: -200, y: -540 }}
         minY={-556}
         maxY={800}
         minX={-216}
         maxX={1518}
+        onLoad={() => {
+          setRugLoaded(true);
+        }}
       />
     </>
   );
