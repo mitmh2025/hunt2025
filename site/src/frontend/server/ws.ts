@@ -60,7 +60,8 @@ type DatasetHandler =
       type: "guess_log";
     }
   | {
-      type: "team_info";
+      type: "team_registration";
+      callback: (teamInfoIntermediate: TeamInfoIntermediate) => ObjectWithEpoch;
     };
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
@@ -95,7 +96,20 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
     callback: stakeoutState,
   },
   team_info: {
-    type: "team_info",
+    type: "team_registration",
+    callback: (teamInfoIntermediate: TeamInfoIntermediate) => {
+      const result = teamInfoIntermediate.formatTeamInfo();
+      if (result) return result;
+      return { epoch: -1 };
+    },
+  },
+  team_registration: {
+    type: "team_registration",
+    callback: (teamInfoIntermediate: TeamInfoIntermediate) => {
+      const result = teamInfoIntermediate.formatTeamRegistrationState();
+      if (result) return result;
+      return { epoch: -1 };
+    },
   },
   team_state: {
     type: "team_state",
@@ -149,9 +163,13 @@ type GuessLogSubscriptionHandler = {
   stop: () => void;
 };
 
-type TeamInfoSubscriptionHandler = {
-  type: "team_info";
+type TeamRegistrationSubscriptionHandler<T> = {
+  type: "team_registration";
   dataset: Dataset;
+  computeFromTeamRegistrationIntermediate: (
+    teamInfoIntermediate: TeamInfoIntermediate,
+  ) => T;
+  cachedValue: T | undefined;
   stop: () => void;
 };
 
@@ -159,7 +177,7 @@ type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
   | ActivityLogSubscriptionHandler
   | GuessLogSubscriptionHandler
-  | TeamInfoSubscriptionHandler;
+  | TeamRegistrationSubscriptionHandler<T>;
 
 function isTeamStateSubscription<T>(
   sub: SubscriptionHandler<T>,
@@ -179,10 +197,21 @@ function isGuessLogSubscription<T>(
   return sub.type === "guess_log";
 }
 
+function isTeamRegistrationSubscription<T>(
+  sub: SubscriptionHandler<T>,
+): sub is TeamRegistrationSubscriptionHandler<T> {
+  return sub.type === "team_registration";
+}
+
 type ObserverProvider = {
   observeTeamState(teamId: number, conn: ConnHandler): () => void;
 
-  observeTeamInfo(teamId: number, subId: string, conn: ConnHandler): () => void;
+  observeTeamRegistration(
+    teamId: number,
+    subId: string,
+    conn: ConnHandler,
+  ): () => void;
+  teamRegistrationLogReadyPromise(): Promise<void>;
 
   observeActivityLog(
     teamId: number,
@@ -285,6 +314,9 @@ class ConnHandler {
       // Stop any outstanding subscriptions
       this.subs.forEach((sub) => {
         switch (sub.type) {
+          case "team_registration":
+            sub.stop();
+            break;
           case "activity_log":
             sub.stop();
             break;
@@ -350,10 +382,26 @@ class ConnHandler {
     }
   }
 
-  public updateTeamInfo(subId: string, teamInfo: TeamInfo) {
+  public updateTeamInfo(subId: string, teamInfo: TeamInfoIntermediate) {
     const sub = this.subs.get(subId);
-    if (sub) {
-      this.send({ subId, type: "update", value: teamInfo });
+    if (sub && isTeamRegistrationSubscription(sub)) {
+      const newValue = sub.computeFromTeamRegistrationIntermediate(teamInfo);
+      let needUpdate = false;
+      if (sub.cachedValue === undefined) {
+        needUpdate = true;
+      } else {
+        const { epoch: _cachedEpoch, ...cachedLessEpoch } = sub.cachedValue;
+        const { epoch: _newEpoch, ...newValueLessEpoch } = newValue;
+        const newValueJSON = JSON.stringify(newValueLessEpoch);
+        const oldValueJSON = JSON.stringify(cachedLessEpoch);
+        if (newValueJSON !== oldValueJSON) {
+          needUpdate = true;
+        }
+      }
+      if (needUpdate) {
+        sub.cachedValue = newValue;
+        this.send({ subId, type: "update", value: newValue });
+      }
     }
   }
 
@@ -405,26 +453,46 @@ class ConnHandler {
       // Look up what dataset we need to observe.  Ask for it if we don't have it.
       const datasetHandler = DATASET_REGISTRY[dataset];
       switch (datasetHandler.type) {
-        case "team_info": {
-          const value = this._lastTeamInfo;
-          const subHandler: SubscriptionHandler<object> = {
-            type: "team_info",
+        case "team_registration": {
+          const initialValue =
+            dataset === "team_info" ? this._lastTeamInfo : undefined;
+          const subHandler: SubscriptionHandler<ObjectWithEpoch> = {
+            type: "team_registration",
             dataset,
+            computeFromTeamRegistrationIntermediate: datasetHandler.callback,
+            cachedValue: initialValue,
             stop: () => {
               /* stub */
             },
           };
           this.subs.set(subId, subHandler);
-          subHandler.stop = this.observerProvider.observeTeamInfo(
+          subHandler.stop = this.observerProvider.observeTeamRegistration(
             this.teamId,
             subId,
             this,
           );
-          // Once the pubsub watch is set up, send an initial update and that the sub is ready
-          // push down the initial state as an update
-          this.send({ subId, type: "update" as const, value });
-          // reply with an ack of the sub ID, indicating successful completion of the RPC
-          this.send({ rpc, type: "sub" as const, subId });
+
+          if (initialValue !== undefined) {
+            // For team_info, which just cares about team name and which we have from the auth request when establishing the websocket,
+            // synthesize an initial value immediately.
+            this.send({ subId, type: "update" as const, value: initialValue });
+          }
+
+          // Upon successful establishment of the registration log watcher, reply with an ack of the
+          // sub ID, indicating successful completion of the RPC
+          this.observerProvider
+            .teamRegistrationLogReadyPromise()
+            .then(() => {
+              this.send({ rpc, type: "sub" as const, subId });
+            })
+            .catch(() => {
+              this.send({
+                rpc,
+                type: "fail" as const,
+                error: "registration log ready promise rejected",
+              });
+            });
+
           break;
         }
         case "team_state": {
@@ -663,26 +731,34 @@ export class WebsocketManager implements ObserverProvider {
     return stop;
   }
 
-  public observeTeamInfo(
+  public observeTeamRegistration(
     teamId: number,
     subId: string,
     conn: ConnHandler,
   ): () => void {
     let teamInfoIntermediate = new TeamInfoIntermediate();
+    let ready = false;
     const stop = this.teamRegistrationLogTailer.watchLog(
       (entries: TeamRegistrationLogEntry[]) => {
         entries.forEach((entry) => {
           if (entry.team_id === teamId) {
             teamInfoIntermediate = teamInfoIntermediate.reduce(entry);
-            const apiTeamInfo = teamInfoIntermediate.formatTeamInfo();
-            if (apiTeamInfo !== undefined) {
-              conn.updateTeamInfo(subId, apiTeamInfo);
-            }
           }
         });
+        if (ready) {
+          conn.updateTeamInfo(subId, teamInfoIntermediate);
+        }
       },
     );
+    // The initial backlog should be processed now; dispatch subsequent updates.
+    ready = true;
+    // And synthesize one, like in observeTeamState.
+    conn.updateTeamInfo(subId, teamInfoIntermediate);
     return stop;
+  }
+
+  public teamRegistrationLogReadyPromise(): Promise<void> {
+    return this.teamRegistrationLogTailer.readyPromise();
   }
 
   public observeActivityLog(
