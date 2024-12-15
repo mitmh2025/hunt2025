@@ -31,6 +31,11 @@ const FlexWrapper = styled.div`
   width: 1000px;
 `;
 
+const StyledDiv = styled.div`
+  width: 800px;
+  height: 800px;
+`;
+
 const BackgroundImage = styled.img`
   width: 800px;
 `;
@@ -89,7 +94,7 @@ const Box = ({ id }: { id: string }): JSX.Element => {
   }, [id]);
 
   return (
-    <div id={id}>
+    <StyledDiv id={id}>
       <BackgroundImage
         src={background}
         alt="A wood-grain box with eight inset slots, and words carved around the edges. Clockwise, these words read: EXPO, EXTRUDED, EYES, SHOT, SURVEYOR, SCUM, WOLF, WHOMEVER, WARD, NICE, NONPOLAR, NOIR"
@@ -155,7 +160,7 @@ const Box = ({ id }: { id: string }): JSX.Element => {
         src={image8}
         alt="An abacus, split into three side-by-side segments, with six rows of rainbow-colored beads, one color per row. Below the abacus are a series of math equations: sixty four divided by eight equals fourteen, nine times two equals sixteen, ten divided by two equals seven, ten minus five equals thirteen, two to the power of nine equals two, eight times six equals twelve, fifty four divided by six equals one, ten to the power of nine equals eight, sixty one plus forty equals three, twenty nine times four equals fifteen, zero plus seven equals nine, thirty six plus thirty three equals five, twelve minus two equals seventeen, ten to the power of ten equals ten, twenty seven times three equals eleven, sixty divided by five equals six, twenty minus twenty equals four"
       />
-    </div>
+    </StyledDiv>
   );
 };
 

@@ -70,7 +70,7 @@ const Solution = (): JSX.Element => {
         puzzles layer over themselves. This scene heavily foreshadows the themes
         of the movie, including the characters’ motivations, perspectives, and
         attitudes towards the puzzle sender. This attitude is heavily juxtaposed
-        as one the puzzle box recipients refuses to play along with the game,
+        as one of the puzzle box recipients refuses to play along with the game,
         instead opting to smash the puzzle box in with a hammer.
       </p>
       <p>
