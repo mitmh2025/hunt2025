@@ -9,7 +9,12 @@ const puzzle: PuzzleDefinition = {
   answer: "ABOUT",
   authors: ["Matt Scanlan"],
   editors: ["James Douberley", "Joanna Murray", "Rad Z", "Teddy McArthur"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Voice acting",
+      who: ["Drew Fisher"],
+    },
+  ],
   content: {
     component: Puzzle,
   },
