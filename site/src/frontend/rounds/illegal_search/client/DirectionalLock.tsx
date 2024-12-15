@@ -123,8 +123,8 @@ export default function DirectionalLock({
       }
       if (dragging) {
         setKnobPosition((oldPosition) => {
-          const dx = e.pageX - dragPos.current.x;
-          const dy = e.pageY - dragPos.current.y;
+          const dx = (e.pageX - dragPos.current.x) * 0.5;
+          const dy = (e.pageY - dragPos.current.y) * 0.5;
 
           // Are we close enough to the center to switch axes?
           let axis = knobAxis;
