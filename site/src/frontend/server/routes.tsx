@@ -31,6 +31,7 @@ import {
   interactionStartPostHandler,
 } from "./routes/interaction";
 import { hackLoginGetHandler } from "./routes/login";
+import { manageTeamHandler } from "./routes/manage_team";
 import { huntNotStartedHandler } from "./routes/not_started";
 import {
   puzzleHandler,
@@ -278,6 +279,13 @@ export function registerUiRoutes({
     "/activity_log",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(activityLogHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/team",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(manageTeamHandler, req, res, next);
     }),
   );
 

@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { type z } from "zod";
 import { newClient } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
+import apiUrl from "../utils/apiUrl";
 import { deviceMax } from "../utils/breakpoints";
 import { Button, TextInput } from "./StyledUI";
 
@@ -102,7 +103,7 @@ const PuzzleGuessForm = ({
       void (async () => {
         let result;
         try {
-          const apiClient = newClient(location.origin + "/api", undefined);
+          const apiClient = newClient(apiUrl(), undefined);
           result = await apiClient.submitGuess({
             body: {
               guess: guessInput,

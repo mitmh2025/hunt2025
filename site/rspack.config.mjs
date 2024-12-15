@@ -457,6 +457,7 @@ export default function createConfigs(_env, argv) {
       // Included on specific routes
       activity_log: "./src/frontend/client/activity_log.tsx",
       all_puzzles: "./src/frontend/client/all_puzzles.tsx",
+      manage_team: "./src/frontend/client/manage_team.tsx",
       navbar: "./src/frontend/client/navbar.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
       solution: "./src/frontend/client/solution.tsx",
