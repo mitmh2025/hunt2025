@@ -4,6 +4,7 @@ import BorderBottom from "../rounds/murder_in_mitropolis/assets/border-bottom.sv
 import BorderSide from "../rounds/murder_in_mitropolis/assets/border-side.svg";
 import Border from "../rounds/murder_in_mitropolis/assets/border.svg";
 import Skyline from "../rounds/murder_in_mitropolis/assets/skyline.svg";
+import { deviceMax } from "../utils/breakpoints";
 import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 import Spoiler from "./Spoiler";
@@ -20,6 +21,12 @@ export const MurderHeader = styled(PuzzleHeader)`
   background-size:
     1.75rem auto,
     auto 11rem;
+
+  @media ${deviceMax.sm} {
+    background-size:
+      1.25rem auto,
+      auto 9rem;
+  }
 
   h1 {
     font-family: "Eccentric";
