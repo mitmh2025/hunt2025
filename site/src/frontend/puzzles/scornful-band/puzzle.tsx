@@ -28,56 +28,80 @@ const Puzzle = (): JSX.Element => {
       </Poem>
       <Poem>
         <div>Rather than fussing, you’re stoic;</div>
-        <div>It’s a mystery how you endure.</div>
+        <div>
+          It’s a mystery how you <em>endure</em>.
+        </div>
         <div>But please God next time just tell me</div>
         <div>When your pants are full of manure.</div>
       </Poem>
       <Poem>
-        <div>You love to play follow the leader;</div>
+        <div>
+          You love to play <em>follow</em> the leader;
+        </div>
         <div>We’re like a mother and her baby geese.</div>
-        <div>But do you have to do it incessantly?</div>
+        <div>
+          But do you have to do it <em>incessantly</em>?
+        </div>
         <div>Just give me a damn moment’s peace!</div>
       </Poem>
       <Poem>
         <div>Next time we’re out shopping together</div>
-        <div>And you playfully drop out of view,</div>
+        <div>
+          And you playfully <em>drop out of view</em>,
+        </div>
         <div>You get three seconds to stand up</div>
         <div>Or I’ll just fucking leave without you.</div>
       </Poem>
       <Poem>
         <div>I love that you’re proud of your drawings,</div>
         <div>And you add your name and the date!</div>
-        <div>But, seriously, don’t brag so loudly.</div>
+        <div>
+          But, seriously, don’t <em>brag so loudly</em>.
+        </div>
         <div>(They’re really not even that great.)</div>
       </Poem>
       <Poem>
-        <div>It’s kinda cute when you shrink back</div>
-        <div>And peek through your fingers in fright</div>
+        <div>
+          It’s kinda cute when you <em>shrink back</em>
+        </div>
+        <div>
+          And peek through your fingers <em>in fright</em>
+        </div>
         <div>But PLEASE just take the damn medicine</div>
         <div>So you can go down for the night.</div>
       </Poem>
       <Poem>
         <div>And our kitty and puppy don’t like it</div>
-        <div>When you take a swat at their tail.</div>
+        <div>
+          When you <em>take a swat</em> at their tail.
+        </div>
         <div>If you keep that shit up I won’t help you</div>
         <div>When they bite you and you start to wail.</div>
       </Poem>
       <Poem>
         <div>You look so cute in your outfits,</div>
         <div>But dressing’s the same tired drill.</div>
-        <div>So stop with the damn jump and twist act</div>
+        <div>
+          So stop with the damn <em>jump and twist</em> act
+        </div>
         <div>And please just fucking sit still.</div>
       </Poem>
       <Poem>
         <div>I love that you’re so very active</div>
-        <div>As you charge so madly about.</div>
-        <div>But the next time you headbutt my kneecap,</div>
+        <div>
+          As you <em>charge</em> so madly about.
+        </div>
+        <div>
+          But the next time you <em>headbutt</em> my kneecap,
+        </div>
         <div>I’ll give you a reason to pout.</div>
       </Poem>
       <Poem>
         <div>By the way, the restaurant high chair</div>
         <div>Is NOT your elite soldier’s nest</div>
-        <div>So don’t shoot your peas or anything else</div>
+        <div>
+          So don’t <em>shoot</em> your peas or anything else
+        </div>
         <div>At every last fucking guest.</div>
       </Poem>
       <Poem>

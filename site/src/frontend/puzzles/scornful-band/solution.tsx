@@ -13,9 +13,12 @@ import image9 from "./assets/image9.png";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
+  th {
+    text-align: left;
+  }
   th,
   td {
-    padding: 1px 8px;
+    padding: 1px 16px;
   }
 `;
 
