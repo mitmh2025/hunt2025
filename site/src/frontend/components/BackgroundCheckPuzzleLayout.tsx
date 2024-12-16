@@ -112,6 +112,7 @@ export const BackgroundCheckHeader = styled(PuzzleHeader)`
 const BackgroundCheckMetaWrapperInner = styled(BackgroundCheckWrapperInner)<{
   $background_image: string;
 }>`
+  position: relative;
   &::after {
     content: "";
     display: block;
