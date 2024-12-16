@@ -34,6 +34,7 @@ const PaintingDiv = styled.div<{ $imageUrl: string; $dragging: boolean }>`
   cursor: ${({ $dragging }) => ($dragging ? "grabbing" : "grab")};
   width: 730px;
   height: 970px;
+  background-color: black;
   background-image: ${({ $imageUrl }) => `url(${$imageUrl})`};
   background-size: contain;
   background-repeat: no-repeat;
