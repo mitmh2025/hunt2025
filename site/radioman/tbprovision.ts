@@ -1,4 +1,5 @@
-import { check, Client, type Tenant, ThingsboardError } from "./tbapi";
+import { check, Client, type Tenant } from "./tbapi";
+import { ThingsboardError } from "./tbtypes";
 
 const baseUrl = process.env.TB_BASE_URL ?? "http://localhost:8080";
 const sysadminUsername = "sysadmin@thingsboard.org";

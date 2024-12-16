@@ -89,6 +89,24 @@ async function main({
     }
   }
 
+  const ws = await tbClient.connectWS();
+  console.log(
+    "result",
+    await ws.sendCommand({
+      type: "ENTITY_DATA" as const,
+      query: {
+        entityFilter: {
+          type: "entityType",
+          entityType: "CUSTOMER",
+        },
+        pageLink: {
+          pageSize: 1000,
+          page: 0,
+        },
+      },
+    }),
+  );
+
   const teamInfos = new Map<number, TeamInfoIntermediate>();
 
   const processTeamInfo = async (teamId: number) => {
@@ -124,6 +142,11 @@ async function main({
       .then(check);
     customersByTeamId.set(teamId, newCustomer);
   };
+
+  // en_knocks should be set to true when practical-fighter is unlocked (and remain true). Prior to that it can be unset or false, the radio treats them the same
+  // en_funaround should be set to true when dimpled-star is unlocked. (Same deal)
+  // en_rickroll should be set to true when the blacklight mode for giant-switch is unlocked
+  // en_numbers should be set to true when diligent-spy is unlocked
 
   teamRegistrationLogTailer.watchLog((items) => {
     const modified = new Set<number>();

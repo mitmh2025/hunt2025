@@ -7,26 +7,24 @@ import {
   tsRestFetchApi,
   type ClientInferResponseBody,
 } from "@ts-rest/core";
+import { type ErrorEvent, WebSocket } from "ws";
 import { z } from "zod";
+import {
+  PageDataSchema,
+  PageLinkSchema,
+  ThingsboardError,
+  ThingsboardErrorResponseSchema,
+} from "./tbtypes";
+import { SubscriptionClient } from "./tbws";
 
 const c = initContract();
 
-export const ThingsboardErrorResponseSchema = z.object({
-  status: z.number(),
-  message: z.string(),
-  errorCode: z.number(),
-  timestamp: z.number(),
-});
-
-type ThingsboardErrorResponse = z.output<typeof ThingsboardErrorResponseSchema>;
-
-const PageDataSchema = <S extends z.ZodTypeAny>(itemSchema: S) =>
-  z.object({
-    data: z.array(itemSchema).optional(),
-    totalPages: z.number().optional(),
-    totalElements: z.number().optional(),
-    hasNext: z.boolean().optional(),
-  });
+// type PageData<T> = Omit<
+//   z.infer<ReturnType<typeof PageDataSchema<z.ZodTypeAny>>>,
+//   "data"
+// > & {
+//   data?: T[];
+// };
 
 const IdSchema = <T extends string>(type: T) =>
   z.object({
@@ -195,14 +193,10 @@ const userContract = c.router({
   list: {
     method: "GET",
     path: `/api/users`,
-    query: z.object({
-      pageSize: z.number(),
-      page: z.number(),
-      textSearch: z.string().optional(),
+    query: PageLinkSchema.extend({
       sortProperty: z
         .enum(["createdTime", "firstName", "lastName", "email"])
         .optional(),
-      sortOrder: z.enum(["ASC", "DESC"]).optional(),
     }),
     responses: {
       200: PageDataSchema(GetUserSchema),
@@ -216,14 +210,10 @@ const userContract = c.router({
     pathParams: z.object({
       tenantId: z.string().uuid(),
     }),
-    query: z.object({
-      pageSize: z.number(),
-      page: z.number(),
-      textSearch: z.string().optional(),
+    query: PageLinkSchema.extend({
       sortProperty: z
         .enum(["createdTime", "firstName", "lastName", "email"])
         .optional(),
-      sortOrder: z.enum(["ASC", "DESC"]).optional(),
     }),
     responses: {
       200: PageDataSchema(GetUserSchema),
@@ -280,10 +270,7 @@ const tenantContract = c.router({
   list: {
     method: "GET",
     path: `/api/tenants`,
-    query: z.object({
-      pageSize: z.number(),
-      page: z.number(),
-      textSearch: z.string().optional(),
+    query: PageLinkSchema.extend({
       sortProperty: z
         .enum([
           "createdTime",
@@ -299,7 +286,6 @@ const tenantContract = c.router({
           "email",
         ])
         .optional(),
-      sortOrder: z.enum(["ASC", "DESC"]).optional(),
     }),
     responses: {
       200: PageDataSchema(GetTenantSchema),
@@ -340,14 +326,10 @@ const customerContract = c.router({
   list: {
     method: "GET",
     path: `/api/customers`,
-    query: z.object({
-      pageSize: z.number(),
-      page: z.number(),
-      textSearch: z.string().optional(),
+    query: PageLinkSchema.extend({
       sortProperty: z
         .enum(["createdTime", "title", "email", "country", "city"])
         .optional(),
-      sortOrder: z.enum(["ASC", "DESC"]).optional(),
     }),
     responses: {
       200: PageDataSchema(GetCustomerSchema),
@@ -444,10 +426,7 @@ const deviceProfileContract = c.router({
   list: {
     method: "GET",
     path: `/api/deviceProfiles`,
-    query: z.object({
-      pageSize: z.number(),
-      page: z.number(),
-      textSearch: z.string().optional(),
+    query: PageLinkSchema.extend({
       sortProperty: z
         .enum([
           "createdTime",
@@ -458,7 +437,6 @@ const deviceProfileContract = c.router({
           "isDefault",
         ])
         .optional(),
-      sortOrder: z.enum(["ASC", "DESC"]).optional(),
     }),
     responses: {
       200: PageDataSchema(GetDeviceProfileSchema),
@@ -557,19 +535,6 @@ type APIClient = InitClientReturn<typeof contract, InitClientArgs>;
 
 type APIResponse<T> = { status: 200; body: T } | ErrorResponses;
 
-export class ThingsboardError extends Error {
-  status: number;
-  errorCode: number;
-  timestamp: number;
-
-  constructor(response: ThingsboardErrorResponse) {
-    super(response.message);
-    this.status = response.status;
-    this.errorCode = response.errorCode;
-    this.timestamp = response.timestamp;
-  }
-}
-
 export async function check<T>(
   p: PromiseLike<APIResponse<T>> | APIResponse<T>,
 ): Promise<T> {
@@ -584,6 +549,9 @@ export class Client {
   loginClient: LoginClient;
   client: APIClient;
   protected _token: string | undefined;
+  private _baseUrl: string;
+  private _username: string;
+  private _password: string;
 
   constructor({
     baseUrl,
@@ -594,6 +562,9 @@ export class Client {
     username: string;
     password: string;
   }) {
+    this._baseUrl = baseUrl;
+    this._username = username;
+    this._password = password;
     this.loginClient = newLoginClient(baseUrl);
     this.client = initClient(contract, {
       baseUrl,
@@ -612,16 +583,62 @@ export class Client {
               return response;
             }
           }
-          this._token = (
-            await this.loginClient
-              .login({
-                body: { username, password },
-              })
-              .then(check)
-          ).token;
+          await this.refreshToken();
         }
       },
     });
+  }
+
+  private async refreshToken() {
+    this._token = (
+      await this.loginClient
+        .login({
+          body: {
+            username: this._username,
+            password: this._password,
+          },
+        })
+        .then(check)
+    ).token;
+  }
+
+  async connectWS() {
+    const url = new URL(this._baseUrl);
+    url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
+    url.pathname = "/api/ws";
+    await this.refreshToken();
+    const ws = new WebSocket(url.href);
+    await new Promise<void>((resolve, reject) => {
+      const err = new Error("timeout waiting for command responses");
+      const timer = setTimeout(reject, 10000, err);
+
+      const onOpen = () => {
+        clearTimeout(timer);
+        ws.removeEventListener("open", onOpen);
+        ws.removeEventListener("error", onError);
+        resolve();
+      };
+      const onError = (err: ErrorEvent) => {
+        clearTimeout(timer);
+        ws.removeEventListener("open", onOpen);
+        ws.removeEventListener("error", onError);
+        reject(err); // eslint-disable-line @typescript-eslint/prefer-promise-reject-errors -- we get what we get from WebSocket
+      };
+      ws.addEventListener("open", onOpen);
+      ws.addEventListener("error", onError);
+    });
+    ws.on("message", (msg) => {
+      console.log("received", msg);
+    });
+    ws.send(
+      JSON.stringify({
+        authCmd: {
+          cmdId: 0,
+          token: this._token,
+        },
+      }),
+    );
+    return new SubscriptionClient(ws);
   }
 
   listTenants(query: PagedQuery<APIClient["tenant"]["list"]> = {}) {
