@@ -67,6 +67,7 @@ import TheShellGame from "./subdued-jet";
 import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
 import ARecipeForSuccess from "./tame-chick";
+import ReuseAndRecyclability from "./tinted-stream";
 import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
@@ -153,6 +154,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_heap_of_clards: AHeapOfClards,
   kotei_no_ango: KoteiNoAngo,
   networking_event: NetworkingEvent,
+  reuse_and_recyclability: ReuseAndRecyclability,
   the_center_is_in_plain_sight: TheCenterIsInPlainSight,
   this_is_just_a_test: ThisIsJustATest,
 
