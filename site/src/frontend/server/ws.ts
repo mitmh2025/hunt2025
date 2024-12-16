@@ -1,11 +1,7 @@
 import { type NextFunction, type Request } from "express";
 import type { WSResponse } from "websocket-express";
 import workersManifest from "../../../dist/worker-manifest.json";
-import {
-  type TeamState,
-  type TeamHuntState,
-  type TeamInfo,
-} from "../../../lib/api/client";
+import { type TeamState, type TeamHuntState } from "../../../lib/api/client";
 import { type DehydratedActivityLogEntry } from "../../../lib/api/contract";
 import { type FrontendClient } from "../../../lib/api/frontend_client";
 import {
@@ -239,7 +235,6 @@ class ConnHandler {
   // The last-known team state for this team.  This may be stale if there are no subs that rely on
   // teamState.  This is initially populated with req.teamState.
   private _lastTeamState: TeamHuntState;
-  private _lastTeamInfo: TeamInfo;
 
   private sock: WebSocket;
   private onClose: (connId: string) => void;
@@ -262,7 +257,6 @@ class ConnHandler {
   }) {
     this.sock = sock;
     this._teamId = initialTeamState.teamId;
-    this._lastTeamInfo = initialTeamState.info;
     this._lastTeamState = initialTeamState.state;
     this.onClose = onClose;
     this.observerProvider = observerProvider;
@@ -454,13 +448,11 @@ class ConnHandler {
       const datasetHandler = DATASET_REGISTRY[dataset];
       switch (datasetHandler.type) {
         case "team_registration": {
-          const initialValue =
-            dataset === "team_info" ? this._lastTeamInfo : undefined;
           const subHandler: SubscriptionHandler<ObjectWithEpoch> = {
             type: "team_registration",
             dataset,
             computeFromTeamRegistrationIntermediate: datasetHandler.callback,
-            cachedValue: initialValue,
+            cachedValue: undefined,
             stop: () => {
               /* stub */
             },
@@ -471,12 +463,6 @@ class ConnHandler {
             subId,
             this,
           );
-
-          if (initialValue !== undefined) {
-            // For team_info, which just cares about team name and which we have from the auth request when establishing the websocket,
-            // synthesize an initial value immediately.
-            this.send({ subId, type: "update" as const, value: initialValue });
-          }
 
           // Upon successful establishment of the registration log watcher, reply with an ack of the
           // sub ID, indicating successful completion of the RPC
