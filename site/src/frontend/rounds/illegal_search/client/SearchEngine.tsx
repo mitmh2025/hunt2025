@@ -277,7 +277,6 @@ const SearchEngine = ({
   const mouseDown: MouseEventHandler<HTMLDivElement> = useCallback((e) => {
     e.preventDefault();
     setDragging(true);
-    console.log("start", e.clientX, e.clientY, getMouseCoords(e));
     const { x, y } = getMouseCoords(e);
     setStartPoint({ x, y });
     setDragPoint({ x, y });
@@ -285,7 +284,6 @@ const SearchEngine = ({
   const mouseMove: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       e.preventDefault();
-      console.log("start", e.clientX, e.clientY, getMouseCoords(e));
 
       const { x, y } = getMouseCoords(e);
 
