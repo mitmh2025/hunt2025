@@ -347,7 +347,7 @@ export default function InteractiveCryptex({
         return newLetters;
       });
     },
-    [setLetters, setNode],
+    [setLetters, setNode, setGateOpen],
   );
 
   return (
