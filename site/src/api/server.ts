@@ -250,7 +250,7 @@ export function getRouter({
     );
     const registration = team_registration_log.entries
       .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamRegistration();
+      .formatTeamRegistrationState();
     if (registration === undefined) {
       return {
         status: 404 as const,

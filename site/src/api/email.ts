@@ -3,7 +3,7 @@ import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import nodemailer from "nodemailer";
 // eslint-disable-next-line import/default -- eslint can't parse the CommonJS module
 import postmarkTransport from "nodemailer-postmark-transport";
-import { type TeamRegistration } from "../../lib/api/frontend_contract";
+import { type TeamRegistration } from "../../lib/api/contract";
 
 export type Mailer = {
   sendEmail({

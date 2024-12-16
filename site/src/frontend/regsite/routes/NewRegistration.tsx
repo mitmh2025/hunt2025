@@ -1,5 +1,5 @@
 import React from "react";
-import type { TeamRegistration } from "../../../../lib/api/frontend_contract";
+import { type TeamRegistration } from "../../../../lib/api/contract";
 import { Alert, LabeledInputWithError } from "../../components/StyledUI";
 import UpdateRegistrationFormInputs from "../../components/UpdateRegistrationFormInputs";
 import RegsiteWrapper from "../RegsiteWrapper";

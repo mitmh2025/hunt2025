@@ -7,6 +7,8 @@ import express, {
 import asyncHandler from "express-async-handler";
 import React from "react";
 import { newAuthClient } from "../../../lib/api/auth_client";
+import { type TeamRegistration } from "../../../lib/api/contract";
+import { type MutableTeamRegistration } from "../../../lib/api/frontend_contract";
 import { cleanUrlEncodedDataFromRegistrationUpdate } from "../components/UpdateRegistrationFormInputs";
 import {
   addParserMiddleware,
@@ -24,10 +26,6 @@ import LogIn from "./routes/LogIn";
 import NewRegistration from "./routes/NewRegistration";
 import RegistrationHome from "./routes/RegistrationHome";
 import UpdateRegistration from "./routes/UpdateRegistration";
-import type {
-  MutableTeamRegistration,
-  TeamRegistration,
-} from "lib/api/frontend_contract";
 
 export default function ({
   apiUrl,

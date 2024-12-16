@@ -1,7 +1,7 @@
 import type { AuthClient } from "../../lib/api/auth_client";
 import type { Client, TeamState } from "../../lib/api/client";
+import type { TeamRegistration } from "../../lib/api/contract";
 import type { FrontendClient } from "../../lib/api/frontend_client";
-import type { TeamRegistration } from "../../lib/api/frontend_contract";
 export {};
 
 declare global {

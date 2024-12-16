@@ -1,9 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import type {
-  MutableTeamRegistration,
-  TeamRegistration,
-} from "../../../../lib/api/frontend_contract";
+import { type TeamRegistration } from "../../../../lib/api/contract";
+import { type MutableTeamRegistration } from "../../../../lib/api/frontend_contract";
 import { Alert, LabeledInputWithError } from "../../components/StyledUI";
 import UpdateRegistrationFormInputs from "../../components/UpdateRegistrationFormInputs";
 import RegsiteWrapper from "../RegsiteWrapper";

@@ -259,6 +259,16 @@ export const TeamRegistrationSchema = MutableTeamRegistrationSchema.merge(
     password: z.string().min(8).max(255),
   }),
 );
+export type TeamRegistration = z.output<typeof TeamRegistrationSchema>;
+
+export const TeamRegistrationStateSchema = TeamRegistrationSchema.merge(
+  z.object({
+    epoch: z.number(),
+  }),
+);
+export type TeamRegistrationState = z.output<
+  typeof TeamRegistrationStateSchema
+>;
 
 export const authContract = c.router({
   login: {
@@ -283,7 +293,7 @@ export const authContract = c.router({
     method: "GET",
     path: `/registration`,
     responses: {
-      200: TeamRegistrationSchema,
+      200: TeamRegistrationStateSchema,
     },
   },
   updateRegistration: {
@@ -291,7 +301,7 @@ export const authContract = c.router({
     path: `/registration`,
     body: MutableTeamRegistrationSchema,
     responses: {
-      200: TeamRegistrationSchema,
+      200: TeamRegistrationStateSchema,
     },
   },
 });
