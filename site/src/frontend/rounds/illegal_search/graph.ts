@@ -15,11 +15,15 @@ import rug_bg from "./assets/rug/rug_bg.svg";
 import secret_bg from "./assets/secret.jpg";
 import cryptex_on_desk from "./assets/study/cryptex.svg";
 import cryptex_note_on_desk from "./assets/study/cryptex_note.svg";
+import family_frame_east from "./assets/study/family_frame_east.png";
+import family_frame_north from "./assets/study/family_frame_north.png";
 import fusebox_frame from "./assets/study/fusebox_frame.svg";
 import fusebox_frame_west from "./assets/study/fusebox_frame_west.svg";
 import lamp from "./assets/study/lamp.svg";
+import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.svg";
+import telephone from "./assets/study/telephone.svg";
 import typewriter from "./assets/study/typewriter.svg";
 import type {
   Modal,
@@ -106,6 +110,7 @@ const ALL_NODES: NodeInternal[] = [
         asset: rug_north,
       },
       {
+        // Cryptex
         area: {
           left: -0.28,
           right: -0.152,
@@ -115,6 +120,7 @@ const ALL_NODES: NodeInternal[] = [
         asset: cryptex_on_desk,
       },
       {
+        // Note (for opened cryptex)
         area: {
           left: -0.194,
           right: -0.161,
@@ -131,6 +137,7 @@ const ALL_NODES: NodeInternal[] = [
         },
       },
       {
+        // Fuse box painting
         area: {
           left: -0.95,
           right: -0.64,
@@ -140,6 +147,7 @@ const ALL_NODES: NodeInternal[] = [
         asset: fusebox_frame,
       },
       {
+        // Safe painting
         area: {
           left: 0.29,
           right: 0.51,
@@ -148,12 +156,6 @@ const ALL_NODES: NodeInternal[] = [
         },
         asset: safe_frame,
       },
-      // desk
-      // bookshelf
-      // safe painting (mostly head-on)
-      // family portrait (skewed)
-      // rug (lengthwise)
-      // sliding door (open or closed?)
     ],
     navigations: [
       {
@@ -278,10 +280,19 @@ const ALL_NODES: NodeInternal[] = [
           right: 0.89,
           bottom: 0.06,
         },
-        asset: "", // TODO: big family portrait
+        asset: family_frame_east,
         slotId: "isp03",
         gateId: "isg03",
         postCode: "PXz9UrF1GfwL9IAMFukA5Q==",
+        placedAsset: {
+          area: {
+            left: 0.61,
+            top: 0.82,
+            right: 0.89,
+            bottom: 0.06,
+          },
+          asset: family_frame_north,
+        },
       },
       {
         // typewriter
@@ -315,7 +326,26 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "main_east",
     background: main_east_bg,
-    placedAssets: [],
+    placedAssets: [
+      {
+        area: {
+          left: -0.14,
+          right: 0.05,
+          top: 0.37,
+          bottom: -0.33,
+        },
+        asset: telephone,
+      },
+      {
+        area: {
+          left: -0.51,
+          top: -0.84,
+          right: 0.51,
+          bottom: -1,
+        },
+        asset: rug_east,
+      },
+    ],
     navigations: [
       {
         // left edge: pan back to "main_north",
@@ -365,7 +395,7 @@ const ALL_NODES: NodeInternal[] = [
           right: -0.43,
           bottom: -0.24,
         },
-        asset: "", // TODO: big family portrait
+        asset: family_frame_east,
         slotId: "isp03",
         gateId: "isg03",
         postCode: "PXz9UrF1GfwL9IAMFukA5Q==",

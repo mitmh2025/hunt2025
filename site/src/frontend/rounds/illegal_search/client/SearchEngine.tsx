@@ -483,7 +483,13 @@ const SearchEngine = ({
     const puzzleState = teamState.puzzles[modalShown.slug];
     modalOverlay = (
       <ModalBackdrop onClick={dismissModal}>
-        <img width={800} height={600} src={modalShown.asset} alt="TODO" />
+        <img
+          width={800}
+          height={600}
+          src={modalShown.asset}
+          style={{ objectFit: "contain" }}
+          alt="TODO"
+        />
         <PuzzleLinkBackdrop>
           <PuzzleLink
             lockState={puzzleState?.locked ?? "locked"}

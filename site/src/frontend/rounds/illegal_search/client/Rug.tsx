@@ -5,9 +5,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
-import flat_rug from "../assets/rug/flat_rug.png";
+import FlatRug from "../assets/rug/flat_rug";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import FloorSafe from "./FloorSafe";
 import clamp from "./clamp";
@@ -17,25 +16,18 @@ type Pos = {
   y: number;
 };
 
-const RugImg = styled.img<{ $dragging: boolean }>`
-  position: absolute;
-  cursor: ${({ $dragging }) => ($dragging ? "grabbing" : "grab")};
-`;
-
 function MovableRug({
   initialPosition,
   minX,
   maxX,
   minY,
   maxY,
-  onLoad,
 }: {
   initialPosition: Pos;
   minX: number;
   maxX: number;
   minY: number;
   maxY: number;
-  onLoad?: () => void;
 }) {
   // Is the rug being dragged?
   const [dragging, setDragging] = useState<boolean>(false);
@@ -44,20 +36,17 @@ function MovableRug({
   // What was the last coordinates (pageX/pageY) of the mouse?
   const dragPos = useRef<Pos>({ x: 0, y: 0 });
 
-  const onPointerDown: PointerEventHandler<HTMLDivElement> = useCallback(
-    (e) => {
-      e.preventDefault();
-      e.currentTarget.setPointerCapture(e.pointerId);
-      setDragging(true);
-      dragPos.current = {
-        x: e.pageX,
-        y: e.pageY,
-      };
-    },
-    [],
-  );
+  const onPointerDown: PointerEventHandler<SVGSVGElement> = useCallback((e) => {
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setDragging(true);
+    dragPos.current = {
+      x: e.pageX,
+      y: e.pageY,
+    };
+  }, []);
 
-  const onPointerMove: PointerEventHandler<HTMLDivElement> = useCallback(
+  const onPointerMove: PointerEventHandler<SVGSVGElement> = useCallback(
     (e) => {
       if (dragging) {
         const dx = e.pageX - dragPos.current.x;
@@ -77,31 +66,30 @@ function MovableRug({
     [dragging, minX, maxX, minY, maxY],
   );
 
-  const onPointerUp: PointerEventHandler<HTMLDivElement> = useCallback(() => {
+  const onPointerUp: PointerEventHandler<SVGSVGElement> = useCallback(() => {
     setDragging(false);
   }, []);
 
-  const inhibitDrag: DragEventHandler<HTMLImageElement> = useCallback((e) => {
+  const inhibitDrag: DragEventHandler<SVGSVGElement> = useCallback((e) => {
     e.preventDefault();
   }, []);
 
   const style = {
+    cursor: dragging ? "grabbing" : "grab",
     left: position.x,
     top: position.y,
-  };
+    width: "2136px",
+    position: "absolute",
+  } as const;
 
   return (
-    <RugImg
-      $dragging={dragging}
+    <FlatRug
       style={style}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onDragStart={inhibitDrag}
-      src={flat_rug}
       width={2136}
-      alt="A bearskin rug"
-      onLoad={onLoad}
     />
   );
 }
@@ -121,30 +109,23 @@ export default function Rug({
     return teamState.rounds.illegal_search?.gates?.includes("isg09") ?? false;
   });
 
-  const [rugLoaded, setRugLoaded] = useState(false);
-
   return (
     <>
-      {rugLoaded && (
-        <FloorSafe
-          node={node}
-          showModal={showModal}
-          setNode={setNode}
-          opened={gateOpen}
-          setOpened={(newVal) => {
-            setGateOpen(newVal);
-          }}
-        />
-      )}
+      <FloorSafe
+        node={node}
+        showModal={showModal}
+        setNode={setNode}
+        opened={gateOpen}
+        setOpened={(newVal) => {
+          setGateOpen(newVal);
+        }}
+      />
       <MovableRug
         initialPosition={{ x: -200, y: -540 }}
         minY={-556}
         maxY={800}
         minX={-216}
         maxX={1518}
-        onLoad={() => {
-          setRugLoaded(true);
-        }}
       />
     </>
   );

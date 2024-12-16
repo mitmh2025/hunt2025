@@ -1,6 +1,6 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../../lib/api/client";
-import fusebox_frame_west from "../assets/study/fusebox_frame_west.svg";
+import safe_frame from "../assets/study/safe_frame.svg";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import Painting from "./Painting";
 import Safe from "./Safe";
@@ -26,10 +26,7 @@ const PaintingTwo = ({
         setNode={setNode}
         opened={gateOpen}
       />
-      <Painting
-        initialPosition={{ x: 594, y: 60 }}
-        imageUrl={fusebox_frame_west}
-      />
+      <Painting initialPosition={{ x: 594, y: 60 }} imageUrl={safe_frame} />
     </>
   );
 };

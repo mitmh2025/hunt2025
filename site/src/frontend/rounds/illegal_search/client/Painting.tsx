@@ -36,6 +36,8 @@ const PaintingDiv = styled.div<{ $imageUrl: string; $dragging: boolean }>`
   height: 970px;
   background-image: ${({ $imageUrl }) => `url(${$imageUrl})`};
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   display: flex;
   flex-direction: row;
   align-items: center;
