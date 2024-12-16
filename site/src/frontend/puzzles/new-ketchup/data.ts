@@ -29,17 +29,17 @@ const Ending: Person = {
       line: "The agent stands up and smiles as the guards push you in and close the door.",
     },
     {
-      line: "Well well well! You′ve made it here--congratulations! We′ve been tracking your snooping this whole time. Look--we have a case file of all the aliases and disguises you′ve used in this little adventure:",
+      line: "Well well well! You’ve made it here--congratulations! We’ve been tracking your snooping this whole time. Look--we have a case file of all the aliases and disguises you’ve used in this little adventure:",
       speaker: AGENT_NAME,
     },
   ],
   postCaseFile: [
     {
-      line: "Yes, we at the MITropolis Intelligence Team also have an...interest in Billie′s former partner. And we have some relevant data we′ve collected. But that information is for the eyes of said erstwhile 2 P.I. Noir partner only. No one else.",
+      line: "Yes, we at the MITropolis Intelligence Team also have an...interest in Billie’s former partner. And we have some relevant data we’ve collected. But that information is for the eyes of said erstwhile 2 P.I. Noir partner only. No one else.",
       speaker: AGENT_NAME,
     },
     {
-      line: "So we′ll just have to sit in this little room till he finally arrives. Do you know his name?",
+      line: "So, we’ll just have to sit in this little room till he finally arrives. Do you know his name?",
       speaker: AGENT_NAME,
     },
   ],
@@ -60,18 +60,18 @@ const Ending: Person = {
       line: "Then the agent...winks at you?",
     },
     {
-      line: "′Little′ Tom Tibbets found a new vocation and was scrubbed from the face of MITropolis, vanished from the world...but as you′ve discovered there were a few loose ends that might lead back to my new identity here.",
+      line: "‘Little’ Tom Tibbets found a new vocation and was scrubbed from the face of MITropolis, vanished from the world...but as you’ve discovered there were a few loose ends that might lead back to my new identity here.",
       speaker: AGENT_NAME,
     },
     {
-      line: "Now that you are impersonating me, you′ll find that those clues lead back to you instead. I′m not ′Little′ Tom Tibbets anymore. I′m a spook that you′ll never see again.",
+      line: "Now that you are impersonating me, you’ll find that those clues lead back to you instead. I’m not ‘Little’ Tom Tibbets anymore. I’m a spook that you’ll never see again.",
       speaker: AGENT_NAME,
     },
     {
       line: "His face curves into a thin smirk.",
     },
     {
-      line: "I hope that in my past life, I haven′t done anything that you might regret.",
+      line: "I hope that in my past life, I haven’t done anything that you might regret.",
       speaker: AGENT_NAME,
     },
   ],
@@ -83,10 +83,10 @@ const Computer: Person = {
   name: COMPUTER_NAME,
   intro: [
     {
-      line: "At the door of the MITropolis intelligence safehouse, there is a call box. You press the button and a digitized computer voice answers.",
+      line: "At the door of the MITropolis Intelligence safehouse, there is a call box. You press the button and a digitized computer voice answers.",
     },
     {
-      line: "Greetings. I am System SECURITY. Error: I only accept commands from HQ to open this door.",
+      line: "Greetings. I am System SECURITY.",
       speaker: COMPUTER_NAME,
     },
   ],
@@ -114,26 +114,26 @@ const DinerAgent: Person = {
       line: "At the diner you find an operative named EVE, sullenly nursing a cup of coffee. She immediately preempts you:",
     },
     {
-      line: "Listen. I′m a paying customer. Free refills. I don′t gotta go nowhere.",
+      line: "Listen. I’m a paying customer. Free refills. I don’t gotta go nowhere.",
       speaker: DINERAGENT_NAME,
     },
     {
       line: "You explain that you just want to talk, but she cuts you off.",
     },
     {
-      line: "I′m waiting for my Pokemoniker agent in Avonlea to check in. If that ain′t you, bayleef me alone.",
+      line: "I’m waiting for my Pokemoniker agent in Avonlea to check in. If that ain’t you, bayleef me alone.",
       speaker: DINERAGENT_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: "I′m waiting for my source. She′s on her way across the water by ferry. Electabuzz off.",
+      line: "I’m waiting for my source. She’s on her way across the water by ferry. Electabuzz off.",
       speaker: DINERAGENT_NAME,
     },
   ],
   replySuccessful: [
     {
-      line: "<i>Finally</i>, Miss Cuthbert. I′ve been waiting for you all day! There′s a man who′s been visiting MITropolis Intelligence buildings. I don′t think he′s one of ours. I don′t know who to trust. I think he′s somewhere in the Intelligence safehouse right now. Find him.",
+      line: "<i>Finally</i>, Miss Cuthbert. I’ve been waiting for you all day! There’s a man who’s been visiting MITropolis Intelligence buildings. I don’t think he’s one of ours. I don’t know who to trust. I think he’s somewhere in the Intelligence safehouse right now. Find him.",
       speaker: DINERAGENT_NAME,
     },
   ],
@@ -152,7 +152,7 @@ const Bureaucrat: Person = {
   ],
   replyUnsuccessful: [
     {
-      line: "Are you the president of MITropolis education? Then <i>mind</i> your own business, or I′ll have to throw <i>hands</i>!",
+      line: "Are you the president of MITropolis education? Then <i>mind</i> your own business, or I’ll have to throw <i>hands</i>!",
       speaker: BUREAUCRAT_NAME,
     },
     {
@@ -161,7 +161,7 @@ const Bureaucrat: Person = {
   ],
   replySuccessful: [
     {
-      line: "Oh! Madame President! What a pleasure. I′m happy to help. That frightful hooligan who barged into my office that evening didn′t steal anything or even say anything to me. He just jumped out the window and into the street! I last saw him run by that diner at the end of the alley.",
+      line: "Oh! Madame President! What a pleasure. I’m happy to help. That frightful hooligan who barged into my office that evening didn’t steal anything or even say anything to me. He just jumped out the window and into the street! I last saw him run by that diner at the end of the alley.",
       speaker: BUREAUCRAT_NAME,
     },
   ],
@@ -178,14 +178,14 @@ const Detective: Person = {
       line: `Standing in front of the smoldering wreck of a MITropolis music venue, you meet a police detective called ${DETECTIVE_NAME} absent-mindedly eating an ice cream cone.`,
     },
     {
-      line: "Hello, rookie. As you can hopefully tell, this is an official arson case under investigation. Everyone is a suspect right now. Unless you′re a musician and you didn′t start the fire, I′m afraid I can′t talk to you.",
+      line: "Hello, rookie. As you can hopefully tell, this is an official arson case under investigation. Everyone is a suspect right now. Unless you’re a musician and you didn’t start the fire, I’m afraid I can’t talk to you.",
       speaker: DETECTIVE_NAME,
     },
     {
       line: "She finishes her cone.",
     },
     {
-      line: "Or if you′ll sell me more ice cream.",
+      line: "Or if you’ll sell me more ice cream.",
       speaker: DETECTIVE_NAME,
     },
   ],
@@ -196,11 +196,11 @@ const Detective: Person = {
   ],
   replySuccessful: [
     {
-      line: "Good day, Maestro Toscanini. I love your ice cream. I don′t suppose you have any on you... It melted? Rats.",
+      line: "Good day, Maestro Toscanini. I love your ice cream. I don’t suppose you have any on you... It melted? Rats.",
       speaker: DETECTIVE_NAME,
     },
     {
-      line: "Yes, I′ve heard about that suspicious character. He was seen at a local education official′s office late one night. Go ahead and interview her if you want.",
+      line: "Yes, I’ve heard about that suspicious character. He was seen at a local education official’s office late one night. Go ahead and interview her if you want.",
       speaker: DETECTIVE_NAME,
     },
   ],
@@ -216,7 +216,7 @@ const PowerpuffGirl: Person = {
       line: `Waiting at the ${CORNER_NAME} trolley stop is a tiny redheaded girl with gigantic eyes wearing a red bow. When you try to talk to her, she replies:`,
     },
     {
-      line: "Sorry, my two sisters keep telling me that I shouldn′t talk to people outside my family.",
+      line: "Sorry, my two sisters keep telling me that I shouldn’t talk to people outside my family.",
       speaker: "Little girl",
     },
   ],
@@ -247,7 +247,7 @@ const Sailor: Person = {
       line: `You find the choir singing sea shanties outside a shop that sells sweets, tea, and liquor. One of the baritones, ${SAILOR_NAME}, turns out to be a bona fide sailor. He refuses to talk to you.`,
     },
     {
-      line: "Gods, some of these lyrics are a tonguin′ to sing. Oh well. Once the concert is done, all I want to do is to find me ship!",
+      line: "Gods, some of these lyrics are a tonguin’ to sing. Oh well. Once the concert is done, all I want to do is to find me ship!",
       speaker: SAILOR_NAME,
     },
   ],
@@ -259,7 +259,7 @@ const Sailor: Person = {
   ],
   replySuccessful: [
     {
-      line: "Ah! Me blessed ship, of which so many have sung praises! Alas, I can′t bring that fellow aboard for ya. But the landlubber always came to practice by streetcar. His usual line is over there.",
+      line: "Ah! Me blessed ship, of which so many have sung praises! Alas, I can’t bring that fellow aboard for ya. But the landlubber always came to practice by streetcar. His usual line is over there.",
       speaker: SAILOR_NAME,
     },
   ],
@@ -277,17 +277,17 @@ const DungeonMaster: Person = {
   ],
   replyUnsuccessful: [
     {
-      line: "I′m busy, one of my players keeps rolling clutch nat 20s and wrecking my plans. I have to rework my entire campaign plotline!",
+      line: "I’m busy, one of my players keeps rolling clutch nat 20s and wrecking my plans. I have to rework my entire campaign plotline!",
       speaker: DUNGEONMASTER_NAME,
     },
   ],
   replySuccessful: [
     {
-      line: "HeLLLOOOO one and all and welcome to another episode of-- what, you don′t want the whole intro? <i>FINE.</i>",
+      line: "HeLLLOOOO one and all and welcome to another episode of-- what, you don’t want the whole intro? <i>FINE.</i>",
       speaker: DUNGEONMASTER_NAME,
     },
     {
-      line: "You′re looking for one of the old side quest members? I know he also performs in a local choir. Here′s a flyer he gave me with their upcoming concerts.",
+      line: "You’re looking for one of the old side quest members? I know he also performs in a local choir. Here’s a flyer he gave me with their upcoming concerts.",
       speaker: DUNGEONMASTER_NAME,
     },
   ],
@@ -310,7 +310,7 @@ const Critic: Person = {
   name: CRITIC_NAME,
   intro: [
     {
-      line: "Across town, you walk up to a fine brownstone manse belonging to venerated literary critic IAN IGGENFORD. His butler informs you that he is expecting to interview a rising star of an American author who wrote a great novel a few years back--a double-amputee′s memoir or something. Otherwise, he is not taking visitors.",
+      line: "Across town, you walk up to a fine brownstone manse belonging to venerated literary critic IAN IGGENFORD. His butler informs you that he is expecting to interview a rising star of an American author who wrote a great novel a few years back--a double-amputee’s memoir or something. Otherwise, he is not taking visitors.",
     },
   ],
   replyUnsuccessful: [
@@ -323,7 +323,7 @@ const Critic: Person = {
       line: "The butler leads you in.",
     },
     {
-      line: "Welcome, welcome, Mr. Hemingway! I′m anxious to discuss your marvelous <i>A Farewell to Arms</i>...",
+      line: "Welcome, welcome, Mr. Hemingway! I’m anxious to discuss your marvelous <i>A Farewell to Arms</i>...",
       speaker: CRITIC_NAME,
     },
     {
@@ -345,16 +345,16 @@ const Fiance: Person = {
   name: FIANCE_NAME,
   intro: [
     {
-      line: "You ring the bloke--a fellow named KARL that your target went on a date with a while back. It seems that he′s seeing someone else now, and quite seriously.",
+      line: "You ring the bloke--a fellow named KARL that your target went on a date with a while back. It seems that he’s seeing someone else now, and quite seriously.",
     },
     {
-      line: "I need a crystal gem for my sweetheart′s engagement ring. Otherwise, I′m not interested!",
+      line: "I need a crystal gem for my sweetheart’s engagement ring. Otherwise, I’m not interested!",
       speaker: FIANCE_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: "A crystal gem will save my day, but that′s not you!",
+      line: "A crystal gem will save my day, but that’s not you!",
       speaker: FIANCE_NAME,
     },
   ],
@@ -380,7 +380,7 @@ const Snowman: Person = {
       line: `The ice rink is deserted. Bored, you turn to a snowman next to the rink and ask it for help. The snowman, named ${SNOWMAN_NAME}, turns its back to you with a sniff.`,
     },
     {
-      line: "Forgive my frostiness, but I′m a snowman. I′m not supposed to talk at all. Though I might make an exception for a skater or two with the most medallions.",
+      line: "Forgive my frostiness, but I’m a snowman. I’m not supposed to talk at all. Though I might make an exception for a skater or two with the most medallions.",
       speaker: SNOWMAN_NAME,
     },
   ],
@@ -402,7 +402,7 @@ const Snowman: Person = {
       speaker: SNOWMAN_NAME,
     },
     {
-      line: "I don′t know where he′s from, but I can give you his date′s number.",
+      line: "I don’t know where he’s from, but I can give you his date’s number.",
       speaker: SNOWMAN_NAME,
     },
     {
@@ -441,11 +441,11 @@ const CatLady: Person = {
   ],
   replySuccessful: [
     {
-      line: "Willow! My little baby! You′re the last kitty for my collection! Come in, come in!",
+      line: "Willow! My little baby! You’re the last kitty for my collection! Come in, come in!",
       speaker: CATLADY_NAME,
     },
     {
-      line: "...Oh, yes, my son. He hasn′t called or written lately, the cheeky boy. Last I heard he had a new beau--they had a date scheduled at the local ice rink!",
+      line: "...Oh, yes, my son. He hasn’t called or written lately, the cheeky boy. Last I heard he had a new beau--they had a date scheduled at the local ice rink!",
       speaker: CATLADY_NAME,
     },
   ],
@@ -458,19 +458,19 @@ const Manicurist: Person = {
   name: MANICURIST_NAME,
   intro: [
     {
-      line: "The nail salon′s waiting area is packed. The busy manicurist glances at you, nametag reading DARLENE. She takes one earbud out of her ear.",
+      line: "The nail salon’s waiting area is packed. The busy manicurist glances at you, nametag reading DARLENE. She takes one earbud out of her ear.",
     },
     {
-      line: "Oh, a P.I.? Sorry, but I′m busy applying this polish. It <i>sounds like</i> I can′t chat till I finish serving all these people After Dark.",
+      line: "Oh, a P.I.? Sorry, but I’m busy applying this polish. It <i>sounds like</i> I can’t chat till I finish serving all these people After Dark.",
       speaker: MANICURIST_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: `You can still hear ${MANICURIST_NAME}′s rap metal music blasting, even with her earbuds in.`,
+      line: `You can still hear ${MANICURIST_NAME}’s rap metal music blasting, even with her earbuds in.`,
     },
     {
-      line: "<i>Oh, P.I.,</i> you′re still here? Try After Dark, y′hear me?",
+      line: "<i>Oh, P.I.,</i> you’re still here? Try After Dark, y’hear me?",
       speaker: MANICURIST_NAME,
     },
   ],
@@ -483,7 +483,7 @@ const Manicurist: Person = {
       speaker: MANICURIST_NAME,
     },
     {
-      line: "Oh, you′re looking for one of my old customers?",
+      line: "Oh, you’re looking for one of my old customers?",
       speaker: MANICURIST_NAME,
     },
     {
