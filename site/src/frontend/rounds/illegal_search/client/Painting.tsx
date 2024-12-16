@@ -29,11 +29,16 @@ function audioFileForFallHeight(fallHeight: number): string {
   }
 }
 
-const PaintingDiv = styled.div<{ $imageUrl: string; $dragging: boolean }>`
+const PaintingDiv = styled.div<{
+  $imageUrl: string;
+  $dragging: boolean;
+  $width: number;
+  $height: number;
+}>`
   position: absolute;
   cursor: ${({ $dragging }) => ($dragging ? "grabbing" : "grab")};
-  width: 730px;
-  height: 970px;
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
   background-color: black;
   background-image: ${({ $imageUrl }) => `url(${$imageUrl})`};
   background-size: contain;
@@ -48,9 +53,13 @@ const PaintingDiv = styled.div<{ $imageUrl: string; $dragging: boolean }>`
 const Painting = ({
   initialPosition,
   imageUrl,
+  width = 730,
+  height = 970,
 }: {
   initialPosition: Pos;
   imageUrl: string;
+  width?: number;
+  height?: number;
 }) => {
   // Is the painting being dragged?
   const [dragging, setDragging] = useState<boolean>(false);
@@ -198,6 +207,8 @@ const Painting = ({
     <PaintingDiv
       $imageUrl={imageUrl}
       $dragging={dragging}
+      $width={width}
+      $height={height}
       style={style}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}

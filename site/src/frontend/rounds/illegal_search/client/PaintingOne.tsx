@@ -26,7 +26,11 @@ const PaintingTwo = ({
         setNode={setNode}
         opened={gateOpen}
       />
-      <Painting initialPosition={{ x: 594, y: 60 }} imageUrl={safe_frame} />
+      <Painting
+        initialPosition={{ x: 594, y: 60 }}
+        width={700}
+        imageUrl={safe_frame}
+      />
     </>
   );
 };
