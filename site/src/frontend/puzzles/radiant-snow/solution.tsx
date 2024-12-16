@@ -633,7 +633,8 @@ const Solution = (): JSX.Element => {
       <p>
         This variant of Yajilin has appeared in WPC round 7 of the 2021 WSPC:
         the clues give the sum of the distances to the black cells encountered
-        in the direction of the arrow.
+        in the direction of the arrow. Also, the path cannot cross the x-ed
+        border in the next-to-last row.
       </p>
       <p>
         Recall that black cells can’t touch by an edge; thus the sum 3 in row 3
@@ -649,9 +650,10 @@ const Solution = (): JSX.Element => {
         and right edges of the grid can already be drawn.
       </p>
       <p>
-        Since the loop occupies the last 3 cells of row 1 and of column 1, the
-        sum 10 in column 1 must be 7+3, and the sum 11 in row 1 must be 7+4.
-        This gives more portions of the loop along the top and left edges.
+        Since the loop occupies the last three empty cells of row 1 and of
+        column 1, the sum 10 in column 1 must be 7+3, and the sum 11 in row 1
+        must be 7+4. This gives more portions of the loop along the top and left
+        edges.
       </p>
       <p>
         The sum 9 in R8C6 must be 1+3+5, with portions of the loop passing in
@@ -1216,23 +1218,24 @@ const Solution = (): JSX.Element => {
           and R7C6.
         </p>
         <p>
-          The sum “11” (13) in row 7 requires a 1, which must be in R7C2. On the
-          other hand, the 3 in row 7 must be in column 4 or 5, so the sum is
-          1+2+3+7 in some order, while R7C7-9 contain 4,5,6 in some order.
-        </p>
-        <p>
-          Completing box 9, we must have 1 and 2 in R8C8-9 (in either order),
-          and 7 in R9C8. We then place 6 in R9C3, while R9C5/7 are 4 and 5 in
-          either order; R7C4-5 are 2 and 3 in either order; R7C3 and R8C6 are
-          both 7.
-        </p>
-        <p>
           The sum 5 in column 6 must be 1+4, while the sum 6 in row 6 must be
           1+2+3. We place those digits uniquely, as well as the 1 and 3 in box
           4.
         </p>
         <p>
-          Next we can place 1 in row 5 (R5C7), and 4 in box 6 must be in R4C8.
+          The sum “11” (13) in row 7 requires a 1, which must be in R7C2.
+          Moreover, the 3 in row 7 must be in R7C4. We can now also place the 1
+          and 3 in box 4 (R4C1-2), and the 1 and 4 in box 6 (R5C7 and R4C8); we
+          then get 4 in R7C7.
+        </p>
+        <p>
+          It now follows that the sum “11” (13) in row 7 is 1+7+3+2, while
+          R7C8-9 contain 5 and 6 in some order.
+        </p>
+        <p>
+          Completing box 9, we must have 1 and 2 in R8C8-9 (in either order),
+          and 7 in R9C8. We then place 6 in R9C3, while R9C5/7 are 4 and 5, and
+          R8C6 is 7.
         </p>
       </ul>
       <p>
