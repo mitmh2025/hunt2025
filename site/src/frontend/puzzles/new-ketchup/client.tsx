@@ -177,7 +177,7 @@ const Puzzle = () => {
         // at the very end, we append an ending message
         addition = [
           ...currentPerson.replySuccessful,
-          { line: "<hr /><i class='the-end'>~ fin ~</i><hr />" },
+          { line: "<br><hr /><i class='the-end'>~ fin ~</i><hr /><br>" },
         ];
         setIsDone(true);
       }

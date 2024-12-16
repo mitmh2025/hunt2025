@@ -71,7 +71,7 @@ const Ending: Person = {
       line: "His face curves into a thin smirk.",
     },
     {
-      line: "I hope that in my past life, I haven’t done anything that you might regret.",
+      line: "I hope that in my past life, I haven’t done anything that <i>you</i> might regret.",
       speaker: AGENT_NAME,
     },
   ],
