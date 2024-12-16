@@ -753,7 +753,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1,
         },
         cursor: "zoom-out",
-        destId: "main_west",
+        destId: "main_north",
       },
     ],
     interactions: [{ plugin: "painting2" }],
