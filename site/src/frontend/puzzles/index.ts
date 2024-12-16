@@ -10,6 +10,7 @@ import BorderlinePersonality from "./calculating-square";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
 import NetworkingEvent from "./confused-antarctica";
+import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
 import WhoseSongIsItAnyway from "./delirious-mammoth";
 import TheBoardwalk from "./dental-shark";
@@ -159,6 +160,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   deepfrost: Deepfrost,
   kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
+  story_vision_contest: StoryVisionContest,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
   where_am_i: WhereAmI,
 
