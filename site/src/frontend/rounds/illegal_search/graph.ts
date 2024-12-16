@@ -19,7 +19,10 @@ import family_frame_east from "./assets/study/family_frame_east.png";
 import family_frame_north from "./assets/study/family_frame_north.png";
 import fusebox_frame from "./assets/study/fusebox_frame.svg";
 import fusebox_frame_west from "./assets/study/fusebox_frame_west.svg";
+import globe from "./assets/study/globe.svg";
+import greatwave_frame from "./assets/study/greatwave_frame.svg";
 import lamp from "./assets/study/lamp.svg";
+import open_door from "./assets/study/open_door.png";
 import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.svg";
@@ -155,6 +158,21 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.21,
         },
         asset: safe_frame,
+      },
+      {
+        // sliding door, if open
+        area: {
+          left: -1,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        asset: open_door,
+        includeIf: (_teamState: TeamHuntState) => {
+          // TODO: currently stubbed for easier testing; replace with comment when ready
+          // return teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.bookcase.gateId) ?? false;
+          return true;
+        },
       },
     ],
     navigations: [
@@ -450,12 +468,12 @@ const ALL_NODES: NodeInternal[] = [
       {
         // great wave painting
         area: {
-          left: -0.52,
-          top: 0.52,
-          right: -0.18,
-          bottom: 0.07,
+          left: -0.675,
+          top: 0.842,
+          right: 0,
+          bottom: 0,
         },
-        asset: "", // TODO: add asset of big great wave painting
+        asset: greatwave_frame,
         slotId: "isp01", // TODO: confirm puzzle-item mapping
         gateId: "isg01",
         postCode: "TiEz0QxOHbM+Iy91lq8xLA==",
@@ -463,12 +481,12 @@ const ALL_NODES: NodeInternal[] = [
       {
         // globe
         area: {
-          left: -0.46,
-          right: -0.25,
-          top: -0.03,
-          bottom: -0.37,
+          left: -0.555,
+          right: -0.123,
+          top: -0.093,
+          bottom: -1.1,
         },
-        asset: "", // TODO: add asset of big globe
+        asset: globe,
         slotId: "isp02", // TODO: confirm puzzle-item mapping
         gateId: "isg02",
         postCode: "fWTr5MCGd9lNSy1WuJzjXA==",

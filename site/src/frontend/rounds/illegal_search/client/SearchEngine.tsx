@@ -395,7 +395,6 @@ const SearchEngine = ({
       <Navigation
         key={`nav-${navigation.destId}-${navigation.area.left}-${navigation.area.top}`}
         navigation={navigation}
-        backgroundColor={ENABLE_DEVTOOLS ? "rgba(0,255,0,0.3)" : undefined}
         onClick={handleNavClick}
       />
     );
