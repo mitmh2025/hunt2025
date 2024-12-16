@@ -30,6 +30,11 @@ export type PlacedAsset = {
   asset: string;
 };
 
+export type PlacedAssetInternal = PlacedAsset & {
+  // If present, only include the asset when condition (evaluated on the node's state) returns true
+  includeIf?: (teamState: TeamHuntState) => boolean;
+};
+
 export type Navigation = {
   // Client-visible navigation information.
 
@@ -123,7 +128,6 @@ export type NodeShared = {
 
   id: NodeId;
   background: string; // Imported asset that is presented as the full-screen background for this view.
-  placedAssets: PlacedAsset[];
   // navigations added in subclass
   interactions: Interaction[];
   // modals added in subclass
@@ -133,6 +137,7 @@ export type NodeShared = {
 export type NodeInternal = NodeShared & {
   navigations: NavigationInternal[];
   modals: ModalInternal[];
+  placedAssets: PlacedAssetInternal[];
   //scripts: string[]; // Additional script tags to inject into the page, I guess?  Or maybe that's implied by PluginName for interactions
 };
 
@@ -140,4 +145,5 @@ export type Node = NodeShared & {
   navigations: Navigation[];
   modals: Modal[];
   interactionModals?: Modal[];
+  placedAssets: PlacedAsset[];
 };

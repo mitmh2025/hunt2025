@@ -13,6 +13,21 @@ import ledger from "./assets/rug/ledger.svg";
 import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
 import rug_bg from "./assets/rug/rug_bg.svg";
 import secret_bg from "./assets/secret.jpg";
+import cryptex_on_desk from "./assets/study/cryptex.svg";
+import cryptex_note_on_desk from "./assets/study/cryptex_note.svg";
+import family_frame_east from "./assets/study/family_frame_east.png";
+import family_frame_north from "./assets/study/family_frame_north.png";
+import fusebox_frame from "./assets/study/fusebox_frame.svg";
+import fusebox_frame_west from "./assets/study/fusebox_frame_west.svg";
+import globe from "./assets/study/globe.svg";
+import greatwave_frame from "./assets/study/greatwave_frame.svg";
+import lamp from "./assets/study/lamp.svg";
+import open_door from "./assets/study/open_door.png";
+import rug_east from "./assets/study/rug_east.svg";
+import rug_north from "./assets/study/rug_north.svg";
+import safe_frame from "./assets/study/safe_frame.svg";
+import telephone from "./assets/study/telephone.svg";
+import typewriter from "./assets/study/typewriter.svg";
 import type {
   Modal,
   ModalInternal,
@@ -87,13 +102,78 @@ const ALL_NODES: NodeInternal[] = [
     id: "main_north",
     background: main_north_bg,
     placedAssets: [
-      // desk
-      // fuse box painting (skewed)
-      // bookshelf
-      // safe painting (mostly head-on)
-      // family portrait (skewed)
-      // rug (lengthwise)
-      // sliding door (open or closed?)
+      {
+        // Rug
+        area: {
+          left: 0.398,
+          right: 0.9,
+          top: -0.096,
+          bottom: -1.2,
+        },
+        asset: rug_north,
+      },
+      {
+        // Cryptex
+        area: {
+          left: -0.28,
+          right: -0.152,
+          top: 0.013,
+          bottom: -0.1,
+        },
+        asset: cryptex_on_desk,
+      },
+      {
+        // Note (for opened cryptex)
+        area: {
+          left: -0.194,
+          right: -0.161,
+          top: -0.054,
+          bottom: -0.113,
+        },
+        asset: cryptex_note_on_desk,
+        includeIf: (teamState: TeamHuntState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.cryptex.gateId,
+            ) ?? false
+          );
+        },
+      },
+      {
+        // Fuse box painting
+        area: {
+          left: -0.95,
+          right: -0.64,
+          top: 0.84,
+          bottom: 0.03,
+        },
+        asset: fusebox_frame,
+      },
+      {
+        // Safe painting
+        area: {
+          left: 0.29,
+          right: 0.51,
+          top: 0.75,
+          bottom: 0.21,
+        },
+        asset: safe_frame,
+      },
+      {
+        // sliding door, if open
+        area: {
+          left: -1,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        asset: open_door,
+        includeIf: (_teamState: TeamHuntState) => {
+          // TODO: currently stubbed for easier testing; replace with comment when ready
+          // return teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.bookcase.gateId) ?? false;
+          return true;
+        },
+      },
     ],
     navigations: [
       {
@@ -176,7 +256,7 @@ const ALL_NODES: NodeInternal[] = [
           top: -0.33,
         },
         cursor: "zoom-in",
-        destId: "desk_drawer", // TODO: Or desk_drawer_open if directional lock completed
+        destId: "desk_drawer",
       },
       {
         // cryptex + mirror
@@ -192,10 +272,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // rug
         area: {
-          left: 0.43,
-          right: 0.69,
-          top: -0.2,
-          bottom: -0.81,
+          left: 0.434375,
+          right: 0.7979166666666667,
+          top: -0.26296296296296295,
+          bottom: -0.9907407407407407,
         },
         cursor: "zoom-in",
         destId: "rug",
@@ -218,10 +298,19 @@ const ALL_NODES: NodeInternal[] = [
           right: 0.89,
           bottom: 0.06,
         },
-        asset: "", // TODO: big family portrait
+        asset: family_frame_east,
         slotId: "isp03",
         gateId: "isg03",
         postCode: "PXz9UrF1GfwL9IAMFukA5Q==",
+        placedAsset: {
+          area: {
+            left: 0.61,
+            top: 0.82,
+            right: 0.89,
+            bottom: 0.06,
+          },
+          asset: family_frame_north,
+        },
       },
       {
         // typewriter
@@ -231,7 +320,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.11,
           bottom: -0.15,
         },
-        asset: "", // TODO: big typewriter
+        asset: typewriter,
         slotId: "isp04",
         gateId: "isg04",
         postCode: "IQN/w3pMLLmF/B4xpqomvA==",
@@ -244,7 +333,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.21,
           bottom: -0.13,
         },
-        asset: "", // TODO: big desk lamp
+        asset: lamp,
         slotId: "isp05",
         gateId: "isg05",
         postCode: "9xkLSNSDtS8+0Aee26ApAg==",
@@ -255,7 +344,26 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "main_east",
     background: main_east_bg,
-    placedAssets: [],
+    placedAssets: [
+      {
+        area: {
+          left: -0.14,
+          right: 0.05,
+          top: 0.37,
+          bottom: -0.33,
+        },
+        asset: telephone,
+      },
+      {
+        area: {
+          left: -0.51,
+          top: -0.84,
+          right: 0.51,
+          bottom: -1,
+        },
+        asset: rug_east,
+      },
+    ],
     navigations: [
       {
         // left edge: pan back to "main_north",
@@ -305,7 +413,7 @@ const ALL_NODES: NodeInternal[] = [
           right: -0.43,
           bottom: -0.24,
         },
-        asset: "", // TODO: big family portrait
+        asset: family_frame_east,
         slotId: "isp03",
         gateId: "isg03",
         postCode: "PXz9UrF1GfwL9IAMFukA5Q==",
@@ -317,6 +425,15 @@ const ALL_NODES: NodeInternal[] = [
     id: "main_west",
     background: main_west_bg,
     placedAssets: [
+      {
+        area: {
+          left: 0.38,
+          right: 0.79,
+          top: 0.55,
+          bottom: -0.28,
+        },
+        asset: fusebox_frame_west,
+      },
       // if not flattened into the background image:
       // - globe
       // - great wave painting
@@ -351,12 +468,12 @@ const ALL_NODES: NodeInternal[] = [
       {
         // great wave painting
         area: {
-          left: -0.52,
-          top: 0.52,
-          right: -0.18,
-          bottom: 0.07,
+          left: -0.675,
+          top: 0.842,
+          right: 0,
+          bottom: 0,
         },
-        asset: "", // TODO: add asset of big great wave painting
+        asset: greatwave_frame,
         slotId: "isp01", // TODO: confirm puzzle-item mapping
         gateId: "isg01",
         postCode: "TiEz0QxOHbM+Iy91lq8xLA==",
@@ -364,12 +481,12 @@ const ALL_NODES: NodeInternal[] = [
       {
         // globe
         area: {
-          left: -0.46,
-          right: -0.25,
-          top: -0.03,
-          bottom: -0.37,
+          left: -0.555,
+          right: -0.123,
+          top: -0.093,
+          bottom: -1.1,
         },
-        asset: "", // TODO: add asset of big globe
+        asset: globe,
         slotId: "isp02", // TODO: confirm puzzle-item mapping
         gateId: "isg02",
         postCode: "fWTr5MCGd9lNSy1WuJzjXA==",
@@ -563,7 +680,28 @@ const ALL_NODES: NodeInternal[] = [
     id: "painting1",
     background: "", // TODO: background
     placedAssets: [],
-    navigations: [],
+    navigations: [
+      {
+        area: {
+          left: -1,
+          right: -0.6,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: "zoom-out",
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: 0.6,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: "zoom-out",
+        destId: "main_north",
+      },
+    ],
     interactions: [{ plugin: "painting1" }],
     sounds: [],
     modals: [
@@ -615,7 +753,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1,
         },
         cursor: "zoom-out",
-        destId: "main_west",
+        destId: "main_north",
       },
     ],
     interactions: [{ plugin: "painting2" }],
@@ -892,6 +1030,22 @@ function filteredForFrontend(
       }
     }
   });
+
+  const keptPlacedAssets = node.placedAssets.flatMap((asset) => {
+    const { includeIf, ...rest } = asset;
+    if (includeIf === undefined) {
+      // No condition means always include
+      return [rest];
+    } else {
+      const keep = includeIf(teamState);
+      if (keep) {
+        return [rest];
+      } else {
+        return [];
+      }
+    }
+  });
+
   const modals: Modal[] = [];
   const interactionModals: Modal[] = [];
   node.modals.forEach((modal) => {
@@ -909,7 +1063,7 @@ function filteredForFrontend(
   return {
     id: node.id,
     background: node.background,
-    placedAssets: node.placedAssets,
+    placedAssets: keptPlacedAssets,
     navigations: keptNavigations,
     interactions: node.interactions,
     sounds: node.sounds,

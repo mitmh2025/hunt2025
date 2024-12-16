@@ -29,14 +29,21 @@ function audioFileForFallHeight(fallHeight: number): string {
   }
 }
 
-const PaintingDiv = styled.div<{ $imageUrl: string; $dragging: boolean }>`
+const PaintingDiv = styled.div<{
+  $imageUrl: string;
+  $dragging: boolean;
+  $width: number;
+  $height: number;
+}>`
   position: absolute;
   cursor: ${({ $dragging }) => ($dragging ? "grabbing" : "grab")};
-  width: 730px;
-  height: 970px;
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
+  background-color: black;
   background-image: ${({ $imageUrl }) => `url(${$imageUrl})`};
-  background-color: rgb(255, 255, 255);
-  border: 8px solid rgb(255, 255, 0);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -46,9 +53,13 @@ const PaintingDiv = styled.div<{ $imageUrl: string; $dragging: boolean }>`
 const Painting = ({
   initialPosition,
   imageUrl,
+  width = 730,
+  height = 970,
 }: {
   initialPosition: Pos;
   imageUrl: string;
+  width?: number;
+  height?: number;
 }) => {
   // Is the painting being dragged?
   const [dragging, setDragging] = useState<boolean>(false);
@@ -196,22 +207,13 @@ const Painting = ({
     <PaintingDiv
       $imageUrl={imageUrl}
       $dragging={dragging}
+      $width={width}
+      $height={height}
       style={style}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
-    >
-      This is a stub for a painting; it will be replaced with the actual art
-      later.
-      {/* Some additional data originally used when debugging drag behavior
-      <div>Hooked: {hookedRef.current ? "true" : "false"}</div>
-      <div>Dragging: {dragging ? "true" : "false"}</div>
-      <div>position: {JSON.stringify(position)}</div>
-      <div>dragAnchor: {JSON.stringify(dragAnchor)}</div>
-      <div>dragPos: {JSON.stringify(dragPos)}</div>
-      <div>dropPos: {JSON.stringify(dropPosRef.current)}</div>
-      */}
-    </PaintingDiv>
+    />
   );
 };
 
