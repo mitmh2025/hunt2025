@@ -425,6 +425,43 @@ export const directionalLockPostHandler: RequestHandler<
   }
 });
 
+type CryptexHandlerBody = {
+  code: string;
+};
+export const cryptexPostHandler: RequestHandler<
+  Record<string, never>,
+  unknown,
+  CryptexHandlerBody,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  if (!req.teamState) {
+    // Shouldn't be possible; middleware should ensure this is populated
+    res.status(500).json({
+      status: "error",
+      message: "user not logged in?  API failed open?",
+    });
+    return;
+  }
+  const code: string = req.body.code;
+
+  // TODO: validate req.body with zod
+  // TODO: rate-limit guesses
+  const lockData = LOCK_DATA.cryptex;
+  const gateId = lockData.gateId;
+  const answer = lockData.answer as string;
+
+  if (code === answer) {
+    // mark isg10 as complete
+    const { teamId } = req.teamState;
+    await handleCorrectLockSubmission(req, res, teamId, gateId, "cryptex");
+  } else {
+    res.status(400).json({
+      status: "incorrect",
+      message: "code is incorrect",
+    });
+  }
+});
+
 const IllegalSearchRoundPage = ({
   teamState,
   node,

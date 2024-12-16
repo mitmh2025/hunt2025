@@ -19,6 +19,7 @@ import {
   type PlacedAsset,
   type PostcodeResponse,
 } from "../types";
+import Cryptex from "./Cryptex";
 import DeskDrawer from "./DeskDrawer";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
@@ -418,6 +419,17 @@ const SearchEngine = ({
     if (interaction.plugin === "deskdrawer") {
       return (
         <DeskDrawer
+          key={`interaction-${interaction.plugin}`}
+          node={node}
+          showModal={showModal}
+          setNode={setNode}
+          teamState={teamState}
+        />
+      );
+    }
+    if (interaction.plugin === "cryptex") {
+      return (
+        <Cryptex
           key={`interaction-${interaction.plugin}`}
           node={node}
           showModal={showModal}

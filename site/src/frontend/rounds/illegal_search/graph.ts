@@ -1,5 +1,7 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import cryptex_note from "./assets/cryptex/cryptex_note.svg";
+import cryptex_open from "./assets/cryptex/cryptex_open.png";
 import drawer_bg from "./assets/desk_drawer/bg.png";
 import candy from "./assets/desk_drawer/candy.svg";
 import drawer_with_candy from "./assets/desk_drawer/drawer.png";
@@ -507,11 +509,18 @@ const ALL_NODES: NodeInternal[] = [
     background: "", // TODO: background
     placedAssets: [],
     navigations: [
-      // zoom back out to main_north
+      {
+        area: {
+          left: -1,
+          right: 1,
+          top: 1,
+          bottom: 0.8,
+        },
+        cursor: "n-resize",
+        destId: "main_north",
+      },
     ],
-    interactions: [
-      // cryptex wheels
-    ],
+    interactions: [{ plugin: "cryptex" }],
     sounds: [
       // cryptex wheel tick
     ],
@@ -527,12 +536,21 @@ const ALL_NODES: NodeInternal[] = [
         ownedByInteraction: true,
         area: {
           // adjust area once assets exist
-          left: -1,
-          right: 1,
-          top: -1,
-          bottom: 1,
+          left: -0.15,
+          right: 0.73,
+          top: 0.48,
+          bottom: -0.79,
         },
-        asset: "", // TODO: note asset
+        placedAsset: {
+          area: {
+            left: -1,
+            right: 1,
+            top: 1,
+            bottom: -1,
+          },
+          asset: cryptex_open,
+        },
+        asset: cryptex_note,
         slotId: "isp10",
         gateId: "isg15",
         postCode: "YXEwRKy4tAGrLZaycOe85Q==",
