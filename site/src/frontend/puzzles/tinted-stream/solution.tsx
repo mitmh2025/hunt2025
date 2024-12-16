@@ -123,59 +123,59 @@ const Solution = (): JSX.Element => {
       <FlexWrapper>
         <img
           src={grid1}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out ALLAN WOODCOURT"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ALLAN WOODCOURT"
         />
         <img
           src={grid2}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out ANN DOBBIN"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ANN DOBBIN"
         />
         <img
           src={grid3}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out ANNABELLA MILBANKE"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ANNABELLA MILBANKE"
         />
         <img
           src={grid4}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out ARABELLA STRANGE"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ARABELLA STRANGE"
         />
         <img
           src={grid5}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out CLARA COPPERFIELD"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out CLARA COPPERFIELD"
         />
         <img
           src={grid6}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out HARRIET WANTAGE"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out HARRIET WANTAGE"
         />
         <img
           src={grid7}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out JOHANNA GAUSS"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out JOHANNA GAUSS"
         />
         <img
           src={grid8}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out LADY GRESHAM"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out LADY GRESHAM"
         />
         <img
           src={grid9}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out LADY JUDITH MILBANKE"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out LADY JUDITH MILBANKE"
         />
         <img
           src={grid10}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out MADAME THENARDIER"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out MADAME THENARDIER"
         />
         <img
           src={grid11}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out MARIANA"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out MARIANA"
         />
         <img
           src={grid12}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out MRS PRIESTLY"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out MRS PRIESTLY"
         />
         <img
           src={grid13}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out SELINA"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out SELINA"
         />
         <img
           src={grid14}
-          alt="Cropped photo of a fabric garment, with a grid overlaid spelling out ZEPHINE"
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ZEPHINE"
         />
         <img
           src={grid15}

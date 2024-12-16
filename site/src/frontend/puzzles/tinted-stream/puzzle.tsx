@@ -45,6 +45,7 @@ const Puzzle = (): JSX.Element => {
         <LinkedImage src={genogram1} alt="A genogram" />
       </ImageWrapper>
       <ImageWrapper>
+        f
         <LinkedImage src={genogram2} alt="A genogram" />
       </ImageWrapper>
       <ImageWrapper>
@@ -63,59 +64,59 @@ const Puzzle = (): JSX.Element => {
       <FlexWrapper>
         <img
           src={grid1}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid2}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid3}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid4}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid5}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid6}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid7}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid8}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid9}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid10}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid11}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid12}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid13}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid14}
-          alt="Cropped photo of a fabric garment, with a grid overlaid."
+          alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
         <img
           src={grid15}
