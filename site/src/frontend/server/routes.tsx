@@ -12,6 +12,7 @@ import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type Hunt } from "../../huntdata/types";
 import { PUZZLES } from "../puzzles";
 import {
+  bookcasePostHandler,
   comboLockPostHandler,
   cryptexPostHandler,
   directionalLockPostHandler,
@@ -228,6 +229,7 @@ export function registerUiRoutes({
     directionalLockPostHandler,
   );
   authRouter.post("/rounds/illegal_search/locks/cryptex", cryptexPostHandler);
+  authRouter.post("/rounds/illegal_search/locks/bookcase", bookcasePostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug",
     asyncHandler(

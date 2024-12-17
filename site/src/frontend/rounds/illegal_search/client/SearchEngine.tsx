@@ -19,6 +19,7 @@ import {
   type PlacedAsset,
   type PostcodeResponse,
 } from "../types";
+import Bookcase from "./Bookcase";
 import Cryptex from "./Cryptex";
 import DeskDrawer from "./DeskDrawer";
 import PaintingOne from "./PaintingOne";
@@ -205,6 +206,7 @@ const ModalBackdrop = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
+  z-index: 100;
   // Dim other things currently visible, maybe animate this later?
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
@@ -475,6 +477,20 @@ const SearchEngine = ({
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- might add more plugins later
+    if (interaction.plugin === "bookcase") {
+      return (
+        <Bookcase
+          key={`interaction-${interaction.plugin}`}
+          setNode={setNode}
+          teamState={teamState}
+          navigate={(dest) => {
+            handleNavClick({ destId: dest });
+          }}
+        />
+      );
+    }
+
     // TODO: do something with interaction.plugin
     return (
       <div key={`interaction-${interaction.plugin}`}>{interaction.plugin}</div>
@@ -484,7 +500,7 @@ const SearchEngine = ({
   const modals = node.modals.map((modal, i) => {
     return (
       <ModalTrigger
-        key={`modal-${i}`}
+        key={`${node.id}-modal-${i}-${modal.asset}`}
         modal={modal}
         showModal={showModal}
         backgroundColor={
