@@ -1,15 +1,6 @@
 import React from "react";
 import { styled, createGlobalStyle } from "styled-components";
-import Caveat from "../../assets/Caveat-Regular.ttf";
-
-const Fonts = createGlobalStyle`
-  @font-face {
-    font-family: "Caveat";
-    src: url(${Caveat});
-    font-weight: normal;
-    font-style: normal;
-  }
-`;
+import { CaveatFont } from "../../assets/SharedFonts";
 
 const FontParagraph = styled.p`
   font-family: "Caveat";
@@ -19,7 +10,7 @@ const FontParagraph = styled.p`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <Fonts />
+      <CaveatFont />
       <FontParagraph>
         Once again I have soiled my chance to put a father in my cap, so my
         steak continues and my mood is quite sombre. These days British

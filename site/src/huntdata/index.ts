@@ -477,7 +477,7 @@ const HUNT: Hunt = {
         // 24 feeders + 1 meta
         { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "do_the_packing" },
         { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "cacciando_trio_misterioso" },
-        { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
+        { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "garden_anecdotes" },
         { id: "tmp04", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "what_do_they_call_you" },
         { id: "tmp05", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1 },
         { id: "tmp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },

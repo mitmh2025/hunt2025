@@ -74,6 +74,7 @@ import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import TheMark from "./unique-australia";
+import GardenAnecdotes from "./unimportant-lock";
 import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
@@ -177,6 +178,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   do_the_packing: DoThePacking,
 
   // work in progress
+  garden_anecdotes: GardenAnecdotes,
   given_up: GivenUp,
   on_the_radio: OnTheRadio,
 };
