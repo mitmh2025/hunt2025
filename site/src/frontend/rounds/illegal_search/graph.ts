@@ -555,7 +555,7 @@ const ALL_NODES: NodeInternal[] = [
 
   {
     id: "desk_drawer",
-    background: drawer_bg, // TODO: background
+    background: drawer_bg,
     placedAssets: [],
     navigations: [
       {
@@ -612,7 +612,7 @@ const ALL_NODES: NodeInternal[] = [
   },
   {
     id: "bookcase",
-    background: "", // TODO: background
+    background: "__wallpaper__",
     placedAssets: [],
     navigations: [
       // zoom out back to main_north
@@ -685,7 +685,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     // This is the one to the right of the bookcase, obscuring the safe
     id: "painting1",
-    background: "", // TODO: background
+    background: "__wallpaper__",
     placedAssets: [],
     navigations: [
       {
@@ -739,7 +739,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     // This is the one on the west wall, obscuring the fuse box
     id: "painting2",
-    background: "", // TODO: background
+    background: "__wallpaper__",
     placedAssets: [],
     navigations: [
       {
@@ -795,7 +795,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     // Close-up of telephone.  Interaction (after solving the second meta) should play the morse code audio.
     id: "telephone",
-    background: "", // TODO: background
+    background: "__wallpaper__",
     placedAssets: [],
     navigations: [
       {
