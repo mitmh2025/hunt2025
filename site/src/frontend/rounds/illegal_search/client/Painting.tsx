@@ -11,6 +11,7 @@ import light_thump from "../assets/audio/light_thump.mp3";
 import medium_thump from "../assets/audio/medium_thump.mp3";
 import very_heavy_thump from "../assets/audio/very_heavy_thump.mp3";
 import clamp from "./clamp";
+import { draggable_cursor, dragging_cursor } from "./cursors";
 
 type Pos = {
   x: number;
@@ -36,7 +37,8 @@ const PaintingDiv = styled.div<{
   $height: number;
 }>`
   position: absolute;
-  cursor: ${({ $dragging }) => ($dragging ? "grabbing" : "grab")};
+  cursor: ${({ $dragging }) =>
+    $dragging ? dragging_cursor : draggable_cursor};
   width: ${({ $width }) => `${$width}px`};
   height: ${({ $height }) => `${$height}px`};
   background-color: black;

@@ -24,6 +24,7 @@ import DeskDrawer from "./DeskDrawer";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 import Rug from "./Rug";
+import { default_cursor, zoom_cursor } from "./cursors";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
 const ENABLE_DEVTOOLS = true as boolean; // type loosened to avoid always-truthy lints firing
@@ -184,7 +185,7 @@ export const ModalTrigger = ({
 
   const style = {
     position: "absolute" as const,
-    cursor: "zoom-in",
+    cursor: zoom_cursor,
     ...boundsForArea(modal.area),
     border: "none",
     padding: 0,
@@ -231,6 +232,7 @@ const SearchEngineSurface = styled.div<{ $backgroundImage: string }>`
   background-position: center;
   position: relative;
   overflow: hidden;
+  cursor: ${default_cursor};
 `;
 
 const SearchEngine = ({

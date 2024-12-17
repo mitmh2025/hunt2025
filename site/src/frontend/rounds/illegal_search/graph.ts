@@ -28,6 +28,13 @@ import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.svg";
 import telephone from "./assets/study/telephone.svg";
 import typewriter from "./assets/study/typewriter.svg";
+import {
+  move_down_cursor,
+  move_left_cursor,
+  move_right_cursor,
+  move_up_cursor,
+  zoom_cursor,
+} from "./client/cursors";
 import type {
   Modal,
   ModalInternal,
@@ -184,7 +191,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "w-resize",
+        cursor: move_left_cursor,
         destId: "main_west",
       },
       {
@@ -195,7 +202,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "e-resize",
+        cursor: move_right_cursor,
         destId: "main_east",
       },
       {
@@ -206,7 +213,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.9,
           bottom: -0.19,
         },
-        cursor: "n-resize",
+        cursor: move_up_cursor,
         destId: "secret",
         includeIf: (_teamState: TeamHuntState) => {
           // TODO: currently stubbed for easier testing; replace with comment when ready
@@ -222,7 +229,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.84,
           bottom: 0.03,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "painting2",
       },
       {
@@ -233,7 +240,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.75,
           bottom: 0.21,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "painting1",
       },
       {
@@ -244,7 +251,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.03,
           top: 0.78,
         },
-        cursor: "n-resize",
+        cursor: zoom_cursor,
         destId: "bookcase",
       },
       {
@@ -255,7 +262,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.46,
           top: -0.33,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "desk_drawer",
       },
       {
@@ -266,7 +273,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.06,
           bottom: -0.16,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "cryptex",
       },
       {
@@ -277,7 +284,7 @@ const ALL_NODES: NodeInternal[] = [
           top: -0.26296296296296295,
           bottom: -0.9907407407407407,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "rug",
       },
     ],
@@ -373,7 +380,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "w-resize",
+        cursor: move_left_cursor,
         destId: "main_north",
       },
       {
@@ -383,7 +390,7 @@ const ALL_NODES: NodeInternal[] = [
           right: 0.51,
           bottom: -1,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "rug",
       },
       {
@@ -393,7 +400,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.37,
           bottom: -0.33,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "telephone",
       },
     ],
@@ -447,7 +454,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "e-resize",
+        cursor: move_right_cursor,
         destId: "main_north",
       },
       {
@@ -458,7 +465,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.55,
           bottom: -0.28,
         },
-        cursor: "zoom-in",
+        cursor: zoom_cursor,
         destId: "painting2",
       },
     ],
@@ -506,7 +513,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: 0.8,
         },
-        cursor: "n-resize",
+        cursor: move_up_cursor,
         destId: "main_east",
       },
       // back up to main_east
@@ -558,7 +565,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: 0.6,
         },
-        cursor: "n-resize",
+        cursor: move_up_cursor,
         destId: "main_north",
       },
     ],
@@ -633,7 +640,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: 0.8,
         },
-        cursor: "n-resize",
+        cursor: move_up_cursor,
         destId: "main_north",
       },
     ],
@@ -688,7 +695,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "zoom-out",
+        cursor: move_left_cursor,
         destId: "main_north",
       },
       {
@@ -698,7 +705,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "zoom-out",
+        cursor: move_right_cursor,
         destId: "main_north",
       },
     ],
@@ -742,7 +749,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "zoom-out",
+        cursor: move_left_cursor,
         destId: "main_west",
       },
       {
@@ -752,7 +759,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "zoom-out",
+        cursor: move_right_cursor,
         destId: "main_north",
       },
     ],
@@ -798,7 +805,7 @@ const ALL_NODES: NodeInternal[] = [
           top: -0.7,
           bottom: -1,
         },
-        cursor: "zoom-out",
+        cursor: move_down_cursor,
         destId: "main_east",
       },
     ],
@@ -824,7 +831,7 @@ const ALL_NODES: NodeInternal[] = [
           top: -0.76,
           bottom: -1,
         },
-        cursor: "s-resize",
+        cursor: move_down_cursor,
         destId: "main_north",
       },
     ],

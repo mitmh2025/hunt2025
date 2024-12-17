@@ -10,6 +10,7 @@ import knob from "../assets/desk_drawer/knob.svg";
 import unlock from "../assets/desk_drawer/unlock.mp3";
 import { type Node } from "../types";
 import clamp from "./clamp";
+import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
 // Position of the knob when it is not being moved, in pixels
@@ -221,7 +222,7 @@ export default function DirectionalLock({
         position: "absolute",
         ...computeKnobLeftTop(),
         transition: dragging ? "none" : "left 0.1s linear, top 0.1s linear",
-        cursor: dragging && !solved ? "none" : "grab",
+        cursor: dragging && !solved ? "none" : draggable_cursor,
         width: KNOB_SIZE,
         height: KNOB_SIZE,
       }}
