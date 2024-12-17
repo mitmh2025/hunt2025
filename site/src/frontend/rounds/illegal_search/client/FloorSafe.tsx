@@ -14,6 +14,7 @@ import numberlock_pad from "../assets/rug/numberlock_pad.svg";
 import slide from "../assets/rug/slide.mp3";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { Asset, ModalTrigger } from "./SearchEngine";
+import { default_cursor } from "./cursors";
 import playSound from "./playSound";
 
 const FloorSafeWrapper = styled.div`
@@ -52,7 +53,7 @@ const NumberButton = styled.button`
   font-weight: 900;
   padding: 0 12px 12px 0;
 
-  cursor: pointer;
+  cursor: ${default_cursor};
 
   &:active {
     width: 80px;

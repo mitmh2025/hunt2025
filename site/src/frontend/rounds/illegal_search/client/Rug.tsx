@@ -10,6 +10,7 @@ import FlatRug from "../assets/rug/flat_rug";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import FloorSafe from "./FloorSafe";
 import clamp from "./clamp";
+import { draggable_cursor, dragging_cursor } from "./cursors";
 
 type Pos = {
   x: number;
@@ -75,7 +76,7 @@ function MovableRug({
   }, []);
 
   const style = {
-    cursor: dragging ? "grabbing" : "grab",
+    cursor: dragging ? dragging_cursor : draggable_cursor,
     left: position.x,
     top: position.y,
     width: "2136px",

@@ -8,6 +8,7 @@ import switch_right from "../assets/fuse_box/fusebox_draft5_switch_pressed_right
 import cubby_open from "../assets/fuse_box/fusebox_draft6_cubby_open_zarvox.svg";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { Asset, ModalTrigger } from "./SearchEngine";
+import { default_cursor } from "./cursors";
 
 const HAS_STORAGE = typeof Storage !== "undefined";
 
@@ -28,6 +29,7 @@ const SWITCH_HEIGHT = "32px";
 
 const SwitchButton = styled.button<{ $asset: string }>`
   display: inline-block;
+  cursor: ${default_cursor};
   background-image: url(${(props) => props.$asset});
   background-size: contain;
   background-color: transparent;

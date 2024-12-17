@@ -9,6 +9,7 @@ import click from "../assets/cryptex/click.mp3";
 import cryptex_base from "../assets/cryptex/cryptex_base.svg";
 import unlock from "../assets/cryptex/unlock.mp3";
 import { type Node } from "../types";
+import { draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
 
 function mod(n: number, m: number): number {
@@ -90,7 +91,8 @@ const DialDiv = styled.div<{
   position: absolute;
   width: 0;
   transform-style: preserve-3d;
-  cursor: ${({ $dragging }) => ($dragging ? "grabbing" : "grab")};
+  cursor: ${({ $dragging }) =>
+    $dragging ? dragging_cursor : draggable_cursor};
   top: 538px;
   left: ${({ $offset }) => $offset}px;
   transition: ${({ $dragging }) => ($dragging ? "none" : "transform 0.2s")};

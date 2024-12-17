@@ -14,6 +14,7 @@ import {
   TUMBLER_INITIAL_STATE,
 } from "../combolock";
 import { type ModalWithPuzzleFields, type Node } from "../types";
+import { default_cursor, draggable_cursor, dragging_cursor } from "./cursors";
 
 const WALL_BG_COLOR = "#4a241e";
 
@@ -138,7 +139,7 @@ const DialHighlights = styled(DialLayer)`
 `;
 
 const DialGrip = styled(DialLayer)<{ $dragging: boolean }>`
-  cursor: ${(props) => (props.$dragging ? "grabbing" : "grab")};
+  cursor: ${(props) => (props.$dragging ? dragging_cursor : draggable_cursor)};
 `;
 
 const CombinationLock = ({
@@ -320,7 +321,12 @@ const Safe = ({
         />
       </SafeDoor>
       <button
-        style={{ display: "block", width: "200px", height: "200px" }}
+        style={{
+          display: "block",
+          width: "200px",
+          height: "200px",
+          cursor: default_cursor,
+        }}
         onClick={tryOpen}
       >
         Try to open
