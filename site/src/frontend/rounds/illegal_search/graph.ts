@@ -624,7 +624,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "zoom-out",
+        cursor: move_left_cursor,
         destId: "main_north",
       },
       {
@@ -634,7 +634,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 1,
           bottom: -1,
         },
-        cursor: "zoom-out",
+        cursor: move_right_cursor,
         destId: "main_north",
       },
     ],

@@ -488,7 +488,7 @@ export const bookcasePostHandler: RequestHandler<
   const answer = lockData.answer as string;
 
   if (code === answer) {
-    // mark isg10 as complete
+    // mark isg16 as complete
     const { teamId } = req.teamState;
     await handleCorrectLockSubmission(req, res, teamId, gateId, "bookcase");
   } else {

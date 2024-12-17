@@ -8,6 +8,7 @@ import leather_texture from "../assets/bookcase/leather_texture.png";
 import unlock from "../assets/bookcase/unlock.mp3";
 import { type Node } from "../types";
 import bookcaseData from "./bookcaseData";
+import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
 const BookcaseContainer = styled.div`
@@ -54,81 +55,63 @@ const Book = styled.div<{
   border: 3px inset rgba(0, 0, 0, 0.5);
   background-image: url(${leather_texture});
   background-blend-mode: multiply;
+  background-color: ${({ $color }) => $color};
 
   ${(props) => {
     if (props.$direction === "horizontal") {
       return `
-        width: 140px;
-        height: 62px;
-        padding: 0 5px;
-        justify-content: left;
-        text-align: left;
-        border-style: outset;
-      `;
+      width: 140px;
+      height: 62px;
+      padding: 0 5px;
+      justify-content: left;
+      text-align: left;
+      border-style: outset;
+    `;
     } else {
       return `
-        writing-mode: vertical-rl;
-        transition: all 0.2s ease-in-out;
-        transform: rotate(180deg) scale(1);
-        height: 140px;
-        width: 62px;
-      `;
+      writing-mode: vertical-rl;
+      transition: all 0.2s ease-in-out;
+      transform: rotate(180deg) scale(1);
+      height: 140px;
+      width: 62px;
+    `;
     }
   }}
 
   ${(props) => {
     if (props.$pulled) {
       return `
-        transition: all 0.2s ease-in-out;
-        transform: rotate(180deg) scale(1.1); /* Standard */
-        border-radius: 1px;
-        z-index: 10;
+      transition: all 0.2s ease-in-out;
+      transform: rotate(180deg) scale(1.1); /* Standard */
+      border-radius: 1px;
+      z-index: 10;
 
 
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          box-shadow: 0px 17px 16px -11px #fff, 0px -16px 16px -11px #fff;
-        }
-      `;
-    }
-    return null;
-  }}
-
-${(props) => {
-    if (props.$interactive && props.$direction !== "horizontal") {
-      return `
-         &:hover {
-          cursor: pointer;
-          z-index: 9;
-        }
-      `;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        box-shadow: 0px 17px 16px -11px #fff, 0px -16px 16px -11px #fff;
+      }
+    `;
     }
     return null;
   }}
 
   ${(props) => {
-    if (props.$color === "R") {
-      return `background-color: #740029;`;
-    } else if (props.$color === "O") {
-      return `background-color: #A25600;`;
-    } else if (props.$color === "Y") {
-      return `background-color: #AC950F;`;
-    } else if (props.$color === "G") {
-      return `background-color: #306B00;`;
-    } else if (props.$color === "B") {
-      return `background-color: #233E6C;`;
-    } else if (props.$color === "I") {
-      return `background-color: #452486;`;
-    } else if (props.$color === "V") {
-      return `background-color: #7A217A;`;
+    if (props.$interactive && props.$direction !== "horizontal") {
+      return `
+        &:hover {
+          cursor: ${draggable_cursor};
+          z-index: 9;
+        }
+    `;
     }
     return null;
-  }}
+  }};
 `;
 
 const BookcaseShelfExtras = styled.div`
