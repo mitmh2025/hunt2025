@@ -1,51 +1,34 @@
-import React /*, { useState }*/ from "react";
-import { styled } from "styled-components";
-import { Button } from "../../components/StyledUI";
+import React from "react";
+import { createGlobalStyle } from "styled-components";
+import RobotoMonoBold from "../../../assets/RobotoMono-Bold.ttf";
+import RobotoMonoLight from "../../../assets/RobotoMono-Light.ttf";
+import RobotoMonoLightItalic from "../../../assets/RobotoMono-LightItalic.ttf";
 
-const Wrapper = styled.div`
-  background-color: var(--black);
-  color: var(--white);
-  font-family: "Roboto Mono", monospace;
-  margin-top: 1rem;
-
-  button {
-    font-family: "Roboto Mono", monospace;
+const Fonts = createGlobalStyle`
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(${RobotoMonoLight});
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(${RobotoMonoLightItalic});
+    font-weight: 300;
+    font-style: italic;
+  }
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(${RobotoMonoBold});
+    font-weight: bold;
+    font-style: normal;
   }
 `;
 
-const DialogBox = styled.div`
-  overflow-y: scroll;
-  height: 20rem;
-  padding: 0.25rem 1rem;
-`;
-
-const Bottom = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.25rem 1rem;
-  background-color: var(--gray-900);
-`;
-
-// const STEPS = [
-//   "You start your search with a Roman aristocrat named IULIA.",
-//   'She refuses to talk to you. "I will only speak with Spartacus!"',
-//   '"Ah, Spartacus. You seek this person? I do not know where he is now, but I know he took dance lessons at a dance studio nearby."',
-// ];
-
 const Puzzle = () => {
-  // const [step, setStep] = useState(0);
-
-  // const [prevSteps, setPrevSteps] = useState<string[]>([]);
-
-  const handleTalk = () => {
-    // if (STEPS[step] && STEPS[step + 1]) {
-    //   setPrevSteps([...prevSteps, STEPS[step]]);
-    //   setStep(step + 1);
-    // }
-  };
-
   return (
     <>
+      <Fonts />
       <p className="puzzle-flavor">
         Who <strong>is</strong> your new employer, anyway? Billie clearly used
         to have a partner, or the agency wouldn′t be called <strong>2</strong>{" "}
@@ -53,17 +36,9 @@ const Puzzle = () => {
         what became of them. But to do that, you′re going to have to convince a
         lot of tight-lipped characters to talk to you.
       </p>
-      <Wrapper>
-        <DialogBox>
-          {/* {prevSteps.map((s) => (
-            <p>{s}</p>
-          ))} */}
-          <p>Hello world</p>
-        </DialogBox>
-        <Bottom>
-          <Button onClick={handleTalk}>Talk</Button>
-        </Bottom>
-      </Wrapper>
+
+      <noscript>This puzzle requires Javascript.</noscript>
+      <div id="what-do-they-call-you-root" />
     </>
   );
 };

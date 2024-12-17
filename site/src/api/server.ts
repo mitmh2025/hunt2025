@@ -49,12 +49,14 @@ import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
+import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
 import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
+  puzzleStateLog,
   registerTeam,
   teamRegistrationLog,
 } from "./data";
@@ -65,6 +67,7 @@ import {
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
   cleanupPuzzleStateLogEntryFromDB,
+  getCurrentTeamName,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -262,7 +265,7 @@ async function newPassport({
   };
 }
 
-function canonicalizeInput(input: string) {
+export function canonicalizeInput(input: string) {
   return input
     .normalize("NFD")
     .replaceAll(/[^\p{L}\p{N}]/gu, "")
@@ -1731,6 +1734,59 @@ export async function getRouter({
           });
           return {
             status: 200,
+            body,
+          };
+        },
+      },
+      speakNewKetchup: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+          const { result } = await puzzleStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async (trx, mutator) => {
+              // Rate-limiting: quietly ignore a request that comes in within 5 seconds of the previous request.
+              const lastWriteTime =
+                mutator.log.length > 0
+                  ? mutator.log[mutator.log.length - 1]?.timestamp.getTime() ??
+                    0
+                  : 0;
+              const now = Date.now();
+              if (now - lastWriteTime < 5000) {
+                return [];
+              }
+
+              // We need to read the team name from the DB, not cache.
+              const teamName = await getCurrentTeamName(team_id, trx);
+              if (teamName) {
+                // Do whatever puzzle logic is involved
+                const newEntries = generateLogEntries(teamName, mutator.log);
+                for (const entry of newEntries) {
+                  await mutator.appendLog({
+                    team_id,
+                    slug: "what_do_they_call_you",
+                    data: entry,
+                  });
+                }
+              }
+
+              return mutator.log.filter(
+                (entry) =>
+                  entry.slug === "what_do_they_call_you" &&
+                  entry.team_id === team_id,
+              );
+            },
+          );
+          const body = result.map((entry) => {
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
+          });
+          return {
+            status: 200 as const,
             body,
           };
         },
