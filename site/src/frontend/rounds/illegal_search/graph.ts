@@ -1,5 +1,6 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import bookcase_note from "./assets/bookcase/note.svg";
 import cryptex_note from "./assets/cryptex/cryptex_note.svg";
 import cryptex_open from "./assets/cryptex/cryptex_open.png";
 import drawer_bg from "./assets/desk_drawer/bg.png";
@@ -81,7 +82,8 @@ const LOCK_DATA: Record<PluginName, LockDatum> = {
     gateId: "isg10",
   },
   bookcase: {
-    answer: [], // TODO: set answer
+    answer:
+      "111000000000000000000000000000000000000000000000000000000000000000", // TODO: set answer
     gateId: "isg16",
   },
 };
@@ -615,16 +617,44 @@ const ALL_NODES: NodeInternal[] = [
     background: "__wallpaper__",
     placedAssets: [],
     navigations: [
-      // zoom out back to main_north
+      {
+        area: {
+          left: -1,
+          right: -0.8,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_left_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: 0.8,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_right_cursor,
+        destId: "main_north",
+      },
     ],
-    interactions: [
-      // bookcase
-    ],
+    interactions: [{ plugin: "bookcase" }],
     sounds: [
       // book slides out or back
     ],
     modals: [
-      // note which links to metapuzzle
+      {
+        area: {
+          left: -0.784,
+          right: -0.505,
+          top: 0.522,
+          bottom: 0.272,
+        },
+        asset: bookcase_note,
+        slotId: "ism01",
+        gateId: "isg00",
+        postCode: "pswcZO3Z7JF9z1JzQfoIDQ==",
+      },
     ],
   },
 
