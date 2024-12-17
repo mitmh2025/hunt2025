@@ -6,13 +6,15 @@ import Courier from "./assets/CourierPrime-Regular.ttf";
 const PostItWrapper = styled.div`
   padding: 32px;
   display: flex;
-  height: 325px;
+  flex-wrap: wrap;
+  min-height: 325px;
 `;
 
 const PostIt = styled.div<{ $rotate: number }>`
   font-family: "Caveat";
   background: linear-gradient(to bottom, #fef5d9, #f6ce5b);
   border: 1px solid black;
+  flex: 0 0 200px;
   width: 200px;
   height: 200px;
   padding: 1em;
@@ -36,13 +38,14 @@ const PrinterPaperWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  height: 550px;
+  min-height: 550px;
 `;
 
 const RotateWrapper = styled.div<{ $rotate: number }>`
   transform: rotate(${({ $rotate }) => $rotate}deg);
   background: linear-gradient(to bottom, #fcfcfc, #b4b4b4);
   display: flex;
+  flex: 0 0 calc((2 * 32px) + 26ch);
 `;
 
 const PrinterPaperEdge = styled.div`
