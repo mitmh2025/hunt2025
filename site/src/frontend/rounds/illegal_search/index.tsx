@@ -263,7 +263,7 @@ function clockwiseAngleBetween(start: number, end: number): number {
 function simulatedTumblerPositions(
   code: [number, number, number],
 ): [number, number, number] {
-  console.log("Simulating tumblers after entering", code);
+  // console.log("Simulating tumblers after entering", code);
   let tumblers = TUMBLER_INITIAL_STATE;
   // Two full clockwise turns to pick up all three tumblers + turn to the first number
   let remainingRotation = 360 + 360 + clockwiseAngleBetween(0, code[0]);
@@ -271,7 +271,7 @@ function simulatedTumblerPositions(
   while (remainingRotation > 0) {
     const step = Math.min(60, remainingRotation);
     tumblers = rotateMainTumblerBy(step, tumblers);
-    console.log("step", step, ": tumblers now", tumblers);
+    // console.log("step", step, ": tumblers now", tumblers);
     remainingRotation -= step;
   }
 
@@ -280,7 +280,7 @@ function simulatedTumblerPositions(
   while (remainingRotation < 0) {
     const step = Math.max(-60, remainingRotation);
     tumblers = rotateMainTumblerBy(step, tumblers);
-    console.log("step", step, ": tumblers now", tumblers);
+    // console.log("step", step, ": tumblers now", tumblers);
     remainingRotation -= step;
   }
 
@@ -289,7 +289,7 @@ function simulatedTumblerPositions(
   while (remainingRotation > 0) {
     const step = Math.max(-60, remainingRotation);
     tumblers = rotateMainTumblerBy(step, tumblers);
-    console.log("step", step, ": tumblers now", tumblers);
+    // console.log("step", step, ": tumblers now", tumblers);
     remainingRotation -= step;
   }
 
