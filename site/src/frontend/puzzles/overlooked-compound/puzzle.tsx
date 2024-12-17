@@ -1,5 +1,5 @@
 import React from "react";
-import { styled, createGlobalStyle } from "styled-components";
+import { styled } from "styled-components";
 import { CaveatFont } from "../../assets/SharedFonts";
 
 const FontParagraph = styled.p`
