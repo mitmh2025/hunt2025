@@ -492,7 +492,7 @@ export default function createConfigs(_env, argv) {
       path: outputDirname,
       publicPath: ASSET_PATH,
     },
-    devtool: "source-map",
+    devtool: dev ? "source-map" : false,
     module: {
       rules: [
         {
@@ -582,6 +582,7 @@ export default function createConfigs(_env, argv) {
       path: outputDirname,
       publicPath: ASSET_PATH,
     },
+    devtool: dev ? "source-map" : false,
     module: {
       rules: [
         {
