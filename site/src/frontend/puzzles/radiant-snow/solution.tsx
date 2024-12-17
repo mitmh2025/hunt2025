@@ -1219,8 +1219,7 @@ const Solution = (): JSX.Element => {
         </p>
         <p>
           The sum 5 in column 6 must be 1+4, while the sum 6 in row 6 must be
-          1+2+3. We place those digits uniquely, as well as the 1 and 3 in box
-          4.
+          1+2+3. We place those digits uniquely.
         </p>
         <p>
           The sum “11” (13) in row 7 requires a 1, which must be in R7C2.
