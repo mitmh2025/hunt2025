@@ -110,7 +110,7 @@ const Solution = (): JSX.Element => {
       <ImageWrapper>
         <LinkedImage
           src={genogram5}
-          alt="The genogram for Pride and Prejudice1"
+          alt="The genogram for Pride and Prejudice"
         />
       </ImageWrapper>
       <ImageWrapper>
