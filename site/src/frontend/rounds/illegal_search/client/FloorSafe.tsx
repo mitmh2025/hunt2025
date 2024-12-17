@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { type DragEventHandler, useEffect } from "react";
 import { styled } from "styled-components";
 import beep from "../assets/rug/beep.mp3";
 import button_down from "../assets/rug/button_down.svg";
@@ -32,6 +32,7 @@ const NumberLockPadWrapper = styled.div<{ $opened: boolean }>`
   top: ${({ $opened }) => ($opened ? 650 : 0)}px;
   pointer-events: ${({ $opened }) => ($opened ? "none" : "auto")};
   transition: top 1s;
+  user-select: none;
 `;
 
 const FullImg = styled.img`
@@ -52,6 +53,7 @@ const NumberButton = styled.button`
   -webkit-text-stroke: 2px black;
   font-weight: 900;
   padding: 0 12px 12px 0;
+  user-select: none;
 
   cursor: ${default_cursor};
 
@@ -61,6 +63,11 @@ const NumberButton = styled.button`
     padding: 0 0px 0px 0;
     background-image: url(${button_down});
   }
+`;
+
+const SegmentImg = styled.img`
+  user-select: none;
+  position: absolute;
 `;
 
 function KeyPad({
@@ -201,6 +208,25 @@ const DIGIT_SEGMENTS = {
   },
 };
 
+const NTH = [
+  "first",
+  "second",
+  "third",
+  "fourth",
+  "fifth",
+  "sixth",
+  "seventh",
+  "eighth",
+];
+
+function makeAltText(segment: string, lit: boolean, index: number) {
+  return `The ${lit ? "lit" : "unlit"} ${segment} segment of the ${NTH[index]} digit of a series of eight 7-segment displays`;
+}
+
+const ignoreDrag: DragEventHandler<HTMLImageElement> = (e) => {
+  e.preventDefault();
+};
+
 function Display({ code }: { code: string }) {
   return (
     <>
@@ -230,82 +256,82 @@ function Display({ code }: { code: string }) {
 
         return (
           <>
-            <img
+            <SegmentImg
               src={segments.top ? digit_h_on : digit_h_off}
               style={{
-                position: "absolute",
                 left: xOffset + 8,
                 top: 377,
                 width: 40,
                 height: 14,
               }}
-              alt=""
+              alt={makeAltText("top", segments.top, index)}
+              onDragStart={ignoreDrag}
             />
-            <img
+            <SegmentImg
               src={segments.middle ? digit_h_on : digit_h_off}
               style={{
-                position: "absolute",
                 left: xOffset + 9,
                 top: 444,
                 width: 38,
                 height: 11,
               }}
-              alt=""
+              alt={makeAltText("middle", segments.middle, index)}
+              onDragStart={ignoreDrag}
             />
-            <img
+            <SegmentImg
               src={segments.bottom ? digit_h_on : digit_h_off}
               style={{
-                position: "absolute",
                 left: xOffset + 8,
                 top: 508,
                 width: 40,
                 height: 14,
               }}
-              alt=""
+              alt={makeAltText("bottom", segments.bottom, index)}
+              onDragStart={ignoreDrag}
             />
-            <img
+            <SegmentImg
               src={segments.topLeft ? digit_v_on : digit_v_off}
               style={{
-                position: "absolute",
                 left: xOffset,
                 top: 386,
                 width: 13,
                 height: 63,
               }}
-              alt=""
+              alt={makeAltText("top-left", segments.topLeft, index)}
+              onDragStart={ignoreDrag}
             />
-            <img
+            <SegmentImg
               src={segments.topRight ? digit_v_on : digit_v_off}
               style={{
-                position: "absolute",
                 left: xOffset + 43,
                 top: 386,
                 width: 13,
                 height: 63,
               }}
-              alt=""
+              alt={makeAltText("top-right", segments.topRight, index)}
+              onDragStart={ignoreDrag}
             />
-            <img
+            <SegmentImg
               src={segments.bottomLeft ? digit_v_on : digit_v_off}
               style={{
-                position: "absolute",
                 left: xOffset,
                 top: 450,
                 width: 13,
                 height: 63,
               }}
-              alt=""
+              alt={makeAltText("bottom-left", segments.bottomLeft, index)}
+              onDragStart={ignoreDrag}
             />
-            <img
+            <SegmentImg
               src={segments.bottomRight ? digit_v_on : digit_v_off}
               style={{
-                position: "absolute",
                 left: xOffset + 43,
                 top: 450,
                 width: 13,
                 height: 63,
               }}
-              alt=""
+              alt={makeAltText("bottom-right", segments.bottomRight, index)}
+              onDragStart={ignoreDrag}
             />
           </>
         );
