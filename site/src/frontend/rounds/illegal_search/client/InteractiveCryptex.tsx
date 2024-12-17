@@ -96,6 +96,7 @@ const DialDiv = styled.div<{
   top: 538px;
   left: ${({ $offset }) => $offset}px;
   transition: ${({ $dragging }) => ($dragging ? "none" : "transform 0.2s")};
+  user-select: none;
 `;
 
 const TileWrapper = styled.div`
