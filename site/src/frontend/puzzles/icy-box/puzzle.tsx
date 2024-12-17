@@ -1,12 +1,12 @@
 import React from "react";
 import { styled } from "styled-components";
+import { CaveatFont } from "../../assets/SharedFonts";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
 import image4 from "./assets/image4.png";
 import image5 from "./assets/image5.png";
 import paper from "./assets/paper.jpg";
-import { CaveatFont } from "../../assets/SharedFonts";
 
 const FontWrapper = styled.div`
   font-family: "Caveat";
