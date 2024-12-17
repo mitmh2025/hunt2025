@@ -469,6 +469,28 @@ export async function appendTeamRegistrationLog(
     });
 }
 
+export async function getCurrentTeamName(
+  team_id: number,
+  trx: Knex.Knex,
+): Promise<string | undefined> {
+  let query = trx<TeamRegistrationLogEntryRow & { data: { name: string } }>(
+    "team_registration_log",
+  ).where("team_id", team_id);
+  query = query.where((builder) => {
+    void builder
+      .where("type", "team_registered")
+      .orWhere("type", "team_name_changed");
+  });
+
+  const rows = await query.orderBy("id", "desc").limit(1);
+  const parsedRows = rows.map(cleanupTeamRegistrationLogEntryFromDB);
+  const first = parsedRows[0];
+  if (first) {
+    return (first as { data: { name: string } }).data.name;
+  }
+  throw new Error(`No team name found for team ${team_id}`);
+}
+
 export async function getPuzzleStateLog(
   team_id: number | undefined,
   since: number | undefined,

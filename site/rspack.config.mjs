@@ -474,6 +474,7 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/rounds/murder_in_mitropolis/client.tsx",
 
       // Included on specific puzzle pages
+      puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
       puzzle_wiry_ray: "./src/frontend/puzzles/wiry-ray/client.tsx",
