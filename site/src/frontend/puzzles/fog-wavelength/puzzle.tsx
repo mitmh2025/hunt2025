@@ -1,7 +1,7 @@
 import React from "react";
+import { styled } from "styled-components";
 import image from "./assets/image.png";
 import puzzle from "./assets/puzzle.mp3";
-import { styled } from "styled-components";
 
 // Match color of score
 const Letter = styled.div`
