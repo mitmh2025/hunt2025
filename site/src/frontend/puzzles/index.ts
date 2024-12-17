@@ -16,6 +16,7 @@ import WhoseSongIsItAnyway from "./delirious-mammoth";
 import TheBoardwalk from "./dental-shark";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
+import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
 import GivenUp from "./giant-switch";
@@ -172,6 +173,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   alias: Alias,
 
   // Murder in MITropolis
+  cacciando_trio_misterioso: CacciandoTrioMisterioso,
   do_the_packing: DoThePacking,
 
   // work in progress
