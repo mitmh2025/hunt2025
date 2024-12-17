@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
 import genogram1 from "./assets/solution-genogram1.png";
 import genogram2 from "./assets/solution-genogram2.png";
 import genogram3 from "./assets/solution-genogram3.png";
@@ -21,7 +22,6 @@ import grid6 from "./assets/solution-grid6.png";
 import grid7 from "./assets/solution-grid7.png";
 import grid8 from "./assets/solution-grid8.png";
 import grid9 from "./assets/solution-grid9.png";
-import LinkedImage from "../../components/LinkedImage";
 
 const Mono = styled.span`
   font-family: monospace;
