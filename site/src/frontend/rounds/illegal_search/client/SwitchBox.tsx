@@ -15,7 +15,6 @@ const HAS_STORAGE = typeof Storage !== "undefined";
 // 40 switches
 const ALL_OFF: boolean[] = Array(40).fill(false) as boolean[];
 
-const WALL_BG_COLOR = "#4a241e";
 const BOX_WIDTH = 700;
 const BOX_HEIGHT = 950;
 const BOX_BORDER = "2px solid black";
@@ -162,7 +161,6 @@ function parse40bools(data: string): boolean[] | undefined {
 }
 
 const Wall = styled.div`
-  background-color: ${WALL_BG_COLOR};
   width: 1920px;
   height: 1080px;
   display: flex;

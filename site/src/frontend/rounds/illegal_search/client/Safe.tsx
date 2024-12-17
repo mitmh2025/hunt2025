@@ -16,8 +16,6 @@ import {
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { default_cursor, draggable_cursor, dragging_cursor } from "./cursors";
 
-const WALL_BG_COLOR = "#4a241e";
-
 // TODO: once the assets get updated, adjust this to match the viewBox exactly
 // 50?
 const LOCK_WIDTH = 49.851883;
@@ -185,7 +183,6 @@ const CombinationLock = ({
 };
 
 const Wall = styled.div`
-  background-color: ${WALL_BG_COLOR};
   width: 1920px;
   height: 1080px;
   display: flex;
