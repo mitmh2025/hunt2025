@@ -1,6 +1,6 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../../lib/api/client";
-import safe_frame from "../assets/study/safe_frame.svg";
+import safe_frame_modal from "../assets/study/safe_frame_modal.png";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import Painting from "./Painting";
 import Safe from "./Safe";
@@ -29,7 +29,7 @@ const PaintingTwo = ({
       <Painting
         initialPosition={{ x: 594, y: 60 }}
         width={700}
-        imageUrl={safe_frame}
+        imageUrl={safe_frame_modal}
       />
     </>
   );
