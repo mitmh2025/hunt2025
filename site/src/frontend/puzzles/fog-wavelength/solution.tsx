@@ -1,10 +1,8 @@
 import React from "react";
 import { styled } from "styled-components";
-import LinkedImage from "../../components/LinkedImage";
-import flute from "./assets/flute.png";
-import piano1 from "./assets/piano1.png";
-import piano2 from "./assets/piano2.png";
-import tuba from "./assets/tuba.png";
+import flute from "./assets/CacciandoTrio-Flute.pdf";
+import piano from "./assets/CacciandoTrio-Piano.pdf";
+import tuba from "./assets/CacciandoTrio-Tuba.pdf";
 
 const Mono = styled.span`
   font-family: monospace;
@@ -19,6 +17,11 @@ const StyledTable = styled.table`
   td {
     padding: 1px 8px;
   }
+`;
+
+const StyledIframe = styled.iframe`
+  width: 100%;
+  aspect-ratio: 8.5/11;
 `;
 
 const TUNING_DATA: { name: string; usualNote: string; frequency: string }[] = [
@@ -185,24 +188,11 @@ const Solution = (): JSX.Element => {
         composition.
       </p>
       <h4>Flute</h4>
-      <LinkedImage
-        src={flute}
-        alt="A score for flute. Letters below each note spell out THE CHORDS MAKE BRAILLE ANSWER PART ONE CHOPIN WROTE MANY OF THESE INCLUDING A MINUTE ONE"
-      />
+      <StyledIframe src={flute} />
       <h4>Tuba</h4>
-      <LinkedImage
-        src={tuba}
-        alt="A score for tuba. Letters below each measure spell out THE FLUTE 26EDO NOTES MAKE LETTERS A TO Z ANSWER PART 1 AND ANSWER PART 2 LENGTHS SEVEN THREE SEVEN"
-      />
+      <StyledIframe src={tuba} />
       <h4>Piano</h4>
-      <LinkedImage
-        src={piano1}
-        alt="A score for piano. Letters below each chord spell out THE BASS LINE IS MORSE CODE ANSWE"
-      />
-      <LinkedImage
-        src={piano2}
-        alt="A score for piano. Letters below each chord spell out R PART TWO THIRD MONTH OR MILITARY WALKS"
-      />
+      <StyledIframe src={piano} />
     </>
   );
 };
