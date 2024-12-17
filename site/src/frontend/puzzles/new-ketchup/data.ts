@@ -208,7 +208,7 @@ const Detective: Person = {
   nextPerson: Bureaucrat,
 };
 
-const CORNER_NAME = "EOWER/EUFF";
+const CORNER_NAME = "ZOWER/ZUFF";
 const PowerpuffGirl: Person = {
   name: "Little girl",
   intro: [
@@ -239,7 +239,7 @@ const PowerpuffGirl: Person = {
   nextPerson: Detective,
 };
 
-const SAILOR_NAME = "ERIATARA";
+const SAILOR_NAME = "PAORA";
 const Sailor: Person = {
   name: SAILOR_NAME,
   intro: [
@@ -263,11 +263,11 @@ const Sailor: Person = {
       speaker: SAILOR_NAME,
     },
   ],
-  validAnswers: ["BILLYOTEA"],
+  validAnswers: ["BILLYOTEA", "BILLYOFTEA"],
   nextPerson: PowerpuffGirl,
 };
 
-const DUNGEONMASTER_NAME = "PENNAN";
+const DUNGEONMASTER_NAME = "INNAN";
 const DungeonMaster: Person = {
   name: DUNGEONMASTER_NAME,
   intro: [
@@ -305,12 +305,12 @@ const DungeonMaster: Person = {
   nextPerson: Sailor,
 };
 
-const CRITIC_NAME = "IAN IGGENFORD";
+const CRITIC_NAME = "KIMBALL KINGSFORD";
 const Critic: Person = {
   name: CRITIC_NAME,
   intro: [
     {
-      line: "Across town, you walk up to a fine brownstone manse belonging to venerated literary critic IAN IGGENFORD. His butler informs you that he is expecting to interview a rising star of an American author who wrote a great novel a few years back--a double-amputee’s memoir or something. Otherwise, he is not taking visitors.",
+      line: `Across town, you walk up to a fine brownstone manse belonging to venerated literary critic ${CRITIC_NAME}. His butler informs you that he is expecting to interview a rising star of an American author who wrote a great novel a few years back--a double-amputee’s memoir or something. Otherwise, he is not taking visitors.`,
     },
   ],
   replyUnsuccessful: [
@@ -340,12 +340,12 @@ const Critic: Person = {
   nextPerson: DungeonMaster,
 };
 
-const FIANCE_NAME = "KARL";
+const FIANCE_NAME = "SANDY";
 const Fiance: Person = {
   name: FIANCE_NAME,
   intro: [
     {
-      line: "You ring the bloke--a fellow named KARL that your target went on a date with a while back. It seems that he’s seeing someone else now, and quite seriously.",
+      line: `You ring the bloke--a fellow named ${FIANCE_NAME} that your target went on a date with a while back. It seems that he’s seeing someone else now, and quite seriously.`,
     },
     {
       line: "I need a crystal gem for my sweetheart’s engagement ring. Otherwise, I’m not interested!",
@@ -372,7 +372,7 @@ const Fiance: Person = {
   nextPerson: Critic,
 };
 
-const SNOWMAN_NAME = "SALTY";
+const SNOWMAN_NAME = "XENO";
 const Snowman: Person = {
   name: SNOWMAN_NAME,
   intro: [
@@ -419,7 +419,7 @@ const Snowman: Person = {
   nextPerson: Fiance,
 };
 
-const CATLADY_NAME = "XIMENA";
+const CATLADY_NAME = "ELENA";
 const CatLady: Person = {
   name: CATLADY_NAME,
   intro: [
@@ -495,6 +495,43 @@ const Manicurist: Person = {
   nextPerson: CatLady,
 };
 
+const DANCER_NAME = "NINA";
+const Dancer: Person = {
+  name: DANCER_NAME,
+  intro: [
+    {
+      line: `You go to the dance studio, which has an ornate green glass door and planetarium-esque star designs on the walls. Walking inside, you meet an instructor named ${DANCER_NAME}.`,
+    },
+    {
+      line: "I'm only interested in talking to moonwalkers. Shamone!",
+      speaker: DANCER_NAME,
+    },
+  ],
+  replyUnsuccessful: [
+    {
+      line: "If a moonwalker walks through that green glass door, I'll talk to him. Otherwise, beat it!",
+      speaker: DANCER_NAME,
+    },
+  ],
+  replySuccessful: [
+    {
+      line: "Ah, Spartacus. I am glad to have found you.",
+      speaker: DANCER_NAME,
+    },
+    {
+      line: "Oh hel<i>lo</i>, spaceman! You looking for one of my old students? Last I saw him, he was getting his nails did at the salon across the way.",
+      speaker: DANCER_NAME,
+    },
+  ],
+  validAnswers: [
+    "BUZZALDRIN",
+    "EDGARMITCHELL",
+    "DAVIDSCOTT",
+    "HARRISONSCHMITT",
+  ],
+  nextPerson: Manicurist,
+};
+
 const ROMAN_NAME = "IALLIUS";
 const Roman: Person = {
   name: ROMAN_NAME,
@@ -519,12 +556,12 @@ const Roman: Person = {
       speaker: ROMAN_NAME,
     },
     {
-      line: "You seek this person? I do not know where he is now, but I know he frequented a <i>cosmeta</i> nearby.",
+      line: "You seek this person? I do not know where he is now, but I know he took lessons at a dance studio nearby.",
       speaker: ROMAN_NAME,
     },
   ],
   validAnswers: ["SPARTACUS"],
-  nextPerson: Manicurist,
+  nextPerson: Dancer,
 };
 
 const FirstPerson = Roman;
