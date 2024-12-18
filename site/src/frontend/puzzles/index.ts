@@ -93,10 +93,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_jewelry_store: TheJewelryStore,
   the_art_gallery: TheArtGallery,
 
-  // The Murder in Metropolis
-  what_do_they_call_you: WhatDoTheyCallYou,
-
-  // Stakeout
+  // The Stakeout
   a_badly_broken_quote: ABadlyBrokenQuote,
   a_math_quiz: AMathQuiz,
   a_recipe_for_success: ARecipeForSuccess,
@@ -132,7 +129,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 
-  // Paper Trail
+  // The Paper Trail
   a_weathered_note: AWeatheredNote,
   chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
@@ -149,7 +146,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   shell_corporation_8: ShellCorporationEight,
   the_shell_game: TheShellGame,
 
-  // Illegal Search
+  // The Illegal Search
   bermuda_triangle: BermudaTriangle,
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
@@ -160,7 +157,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_center_is_in_plain_sight: TheCenterIsInPlainSight,
   this_is_just_a_test: ThisIsJustATest,
 
-  // Background Check
+  // The Background Check
   deepfrost: Deepfrost,
   kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
@@ -173,9 +170,10 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_oversight: TheOversight,
   alias: Alias,
 
-  // Murder in MITropolis
+  // The Murder in MITropolis
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   do_the_packing: DoThePacking,
+  what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
   garden_anecdotes: GardenAnecdotes,

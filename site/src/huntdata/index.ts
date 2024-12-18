@@ -208,7 +208,7 @@ const HUNT: Hunt = {
     },
     {
       slug: "stakeout",
-      title: "Stakeout",
+      title: "The Stakeout",
       puzzles: [
         // 42 feeders, 1 meta
         // Start with 5 unlockable, make 1.5 (rounding up) more unlockable after each solve.
@@ -279,7 +279,7 @@ const HUNT: Hunt = {
     },
     {
       slug: "paper_trail",
-      title: "Paper Trail",
+      title: "The Paper Trail",
       puzzles: [
         // 17 feeders, 8 metas, 1 super
         // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
@@ -347,7 +347,7 @@ const HUNT: Hunt = {
     },
     {
       slug: "background_check",
-      title: "Background Check",
+      title: "The Background Check",
       puzzles: [
         // 14 feeders, 3 metas, 1 super
         // Start with 5 unlockable.  Add 1.5 (rounding up) for each solve.
@@ -392,7 +392,7 @@ const HUNT: Hunt = {
     },
     {
       slug: "illegal_search",
-      title: "Illegal Search",
+      title: "The Illegal Search",
       puzzles: [
         // The first 5 puzzles are unlockable once they are discovered in the UI.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "kotei_no_ango" },
@@ -472,7 +472,7 @@ const HUNT: Hunt = {
     },
     {
       slug: "murder_in_mitropolis",
-      title: "Murder in MITropolis",
+      title: "The Murder in MITropolis",
       puzzles: [
         // 24 feeders + 1 meta
         { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "do_the_packing" },
