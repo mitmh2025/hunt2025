@@ -86,6 +86,11 @@ export type ModalInternal = ModalBase & {
   // POSTed back from the browser.  This should match the unlockable_if
   // gate_satisfied requirement on the puzzle with slot id `slotId`.
   gateId: string;
+
+  solvedAssets?: {
+    modalAsset?: string;
+    placedAsset?: string;
+  };
 };
 
 export type ModalWithPostcode = ModalBase & {

@@ -8,11 +8,37 @@ import candy from "./assets/desk_drawer/candy.svg";
 import drawer_with_candy from "./assets/desk_drawer/drawer.png";
 import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.svg";
 import main_east_bg from "./assets/main_east.jpg";
-import main_north_bg from "./assets/main_north.jpg";
+import main_north_bg from "./assets/main_north.png";
 import main_west_bg from "./assets/main_west.jpg";
 import ledger from "./assets/rug/ledger.svg";
 import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
 import rug_bg from "./assets/rug/rug_bg.svg";
+import birth_certificate from "./assets/secret/birth_certificate.svg";
+import birth_certificate_modal_solved from "./assets/secret/birth_certificate_modal_solved.png";
+import birth_certificate_modal_unsolved from "./assets/secret/birth_certificate_modal_unsolved.png";
+import candys_frame_modal_solved from "./assets/secret/candys_frame_modal_solved.png";
+import candys_frame_modal_unsolved from "./assets/secret/candys_frame_modal_unsolved.png";
+import candys_frame_solved from "./assets/secret/candys_frame_solved.png";
+import candys_frame_unsolved from "./assets/secret/candys_frame_unsolved.png";
+import secret_drawing_in_situ from "./assets/secret/drawing_in_situ.png";
+import finsters_frame_modal_solved from "./assets/secret/finsters_frame_modal_solved.png";
+import finsters_frame_modal_unsolved from "./assets/secret/finsters_frame_modal_unsolved.png";
+import finsters_frame_solved from "./assets/secret/finsters_frame_solved.png";
+import finsters_frame_unsolved from "./assets/secret/finsters_frame_unsolved.png";
+import letter from "./assets/secret/letter.svg";
+import letter_modal_solved from "./assets/secret/letter_modal_solved.png";
+import letter_modal_unsolved from "./assets/secret/letter_modal_unsolved.png";
+import magazine_solved from "./assets/secret/magazine_solved.png";
+import magazine_solved_modal from "./assets/secret/magazine_solved_modal.png";
+import magazine_unsolved from "./assets/secret/magazine_unsolved.png";
+import newspaper from "./assets/secret/newspaper.svg";
+import newspaper_modal_solved from "./assets/secret/newspaper_modal_solved.png";
+import newspaper_modal_unsolved from "./assets/secret/newspaper_modal_unsolved.png";
+import poster from "./assets/secret/poster.png";
+import poster_modal from "./assets/secret/poster_modal.svg";
+import stamp from "./assets/secret/stamp.svg";
+import stamp_modal from "./assets/secret/stamp_modal.svg";
+import teddybear from "./assets/secret/teddybear.svg";
 import secret_bg from "./assets/secret.jpg";
 import cryptex_on_desk from "./assets/study/cryptex.svg";
 import cryptex_note_on_desk from "./assets/study/cryptex_note.svg";
@@ -21,12 +47,12 @@ import family_frame_north from "./assets/study/family_frame_north.png";
 import fusebox_frame from "./assets/study/fusebox_frame.svg";
 import fusebox_frame_west from "./assets/study/fusebox_frame_west.svg";
 import globe from "./assets/study/globe.svg";
-import greatwave_frame from "./assets/study/greatwave_frame.svg";
+import greatwave_frame from "./assets/study/greatwave_frame.png";
 import lamp from "./assets/study/lamp.svg";
 import open_door from "./assets/study/open_door.png";
 import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
-import safe_frame from "./assets/study/safe_frame.svg";
+import safe_frame from "./assets/study/safe_frame.png";
 import telephone from "./assets/study/telephone.svg";
 import typewriter from "./assets/study/typewriter.svg";
 import {
@@ -151,20 +177,20 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Fuse box painting
         area: {
-          left: -0.95,
-          right: -0.64,
-          top: 0.84,
-          bottom: 0.03,
+          left: -0.982,
+          right: -0.645,
+          top: 0.898,
+          bottom: 0.033,
         },
         asset: fusebox_frame,
       },
       {
         // Safe painting
         area: {
-          left: 0.29,
-          right: 0.51,
-          top: 0.75,
-          bottom: 0.21,
+          left: 0.291,
+          right: 0.518,
+          top: 0.831,
+          bottom: 0.33,
         },
         asset: safe_frame,
       },
@@ -259,10 +285,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // desk drawer: "desk_drawer"
         area: {
-          left: 0.21,
-          right: 0.37,
-          bottom: -0.46,
-          top: -0.33,
+          left: 0.201,
+          right: 0.403,
+          top: -0.18,
+          bottom: -0.272,
         },
         cursor: zoom_cursor,
         destId: "desk_drawer",
@@ -302,10 +328,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // family portrait (skewed)
         area: {
-          left: 0.61,
-          top: 0.82,
-          right: 0.89,
-          bottom: 0.06,
+          left: 0.681,
+          right: 0.991,
+          top: 0.915,
+          bottom: 0.006,
         },
         asset: family_frame_east,
         slotId: "isp03",
@@ -313,10 +339,10 @@ const ALL_NODES: NodeInternal[] = [
         postCode: "PXz9UrF1GfwL9IAMFukA5Q==",
         placedAsset: {
           area: {
-            left: 0.61,
-            top: 0.82,
-            right: 0.89,
-            bottom: 0.06,
+            left: 0.67,
+            right: 0.991,
+            top: 0.915,
+            bottom: -0.01,
           },
           asset: family_frame_north,
         },
@@ -417,10 +443,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // family portrait (non-skewed)
         area: {
-          left: -0.85,
-          top: 0.57,
-          right: -0.43,
-          bottom: -0.24,
+          left: -0.68,
+          right: -0.197,
+          top: 0.693,
+          bottom: -0.23,
         },
         asset: family_frame_east,
         slotId: "isp03",
@@ -436,10 +462,10 @@ const ALL_NODES: NodeInternal[] = [
     placedAssets: [
       {
         area: {
-          left: 0.38,
-          right: 0.79,
-          top: 0.55,
-          bottom: -0.28,
+          left: 0.249,
+          right: 0.706,
+          top: 0.763,
+          bottom: -0.213,
         },
         asset: fusebox_frame_west,
       },
@@ -462,10 +488,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // fuse box: painting2
         area: {
-          left: 0.38,
-          right: 0.79,
-          top: 0.55,
-          bottom: -0.28,
+          left: 0.249,
+          right: 0.706,
+          top: 0.763,
+          bottom: -0.213,
         },
         cursor: zoom_cursor,
         destId: "painting2",
@@ -852,7 +878,17 @@ const ALL_NODES: NodeInternal[] = [
     // Secret room
     id: "secret",
     background: secret_bg,
-    placedAssets: [],
+    placedAssets: [
+      {
+        area: {
+          left: -0.93,
+          right: -0.61,
+          top: 0.85,
+          bottom: -0.33,
+        },
+        asset: secret_drawing_in_situ,
+      },
+    ],
     navigations: [
       {
         area: {
@@ -870,14 +906,26 @@ const ALL_NODES: NodeInternal[] = [
     modals: [
       // there's like 8 or something in here?  wow
       {
-        // Baby's birth certificate (on desk)
+        // Letter
         area: {
           left: -0.5,
           right: -0.37,
           top: -0.16,
           bottom: -0.29,
         },
-        asset: "", // TODO
+        asset: letter_modal_unsolved,
+        placedAsset: {
+          area: {
+            left: -0.5,
+            right: -0.37,
+            top: -0.16,
+            bottom: -0.29,
+          },
+          asset: letter,
+        },
+        solvedAssets: {
+          modalAsset: letter_modal_solved,
+        },
         slotId: "isp11",
         gateId: "isg18",
         postCode: "lopyihUSAPmlZa5dOEBH/w==",
@@ -890,20 +938,44 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.23,
           bottom: 0.02,
         },
-        asset: "", // TODO
+        asset: newspaper_modal_unsolved,
+        placedAsset: {
+          area: {
+            left: -0.45,
+            right: -0.33,
+            top: 0.23,
+            bottom: 0.02,
+          },
+          asset: newspaper,
+        },
+        solvedAssets: {
+          modalAsset: newspaper_modal_solved,
+        },
         slotId: "isp12",
         gateId: "isg19",
         postCode: "3LdOYbqNPGHYrvH7KKaMaA==",
       },
       {
-        // Letter from prison warden
+        // Birth certificate
         area: {
           left: -0.33,
           right: -0.22,
           top: -0.13,
           bottom: -0.29,
         },
-        asset: "", // TODO
+        asset: birth_certificate_modal_unsolved,
+        placedAsset: {
+          area: {
+            left: -0.33,
+            right: -0.22,
+            top: -0.13,
+            bottom: -0.29,
+          },
+          asset: birth_certificate,
+        },
+        solvedAssets: {
+          modalAsset: birth_certificate_modal_solved,
+        },
         slotId: "isp13",
         gateId: "isg20",
         postCode: "AWmzimAkS8G0wLH7WatJlw==",
@@ -916,7 +988,20 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.21,
           bottom: 0.03,
         },
-        asset: "", // TODO
+        asset: finsters_frame_modal_unsolved,
+        placedAsset: {
+          area: {
+            left: -0.24,
+            right: -0.14,
+            top: 0.21,
+            bottom: 0.03,
+          },
+          asset: finsters_frame_unsolved,
+        },
+        solvedAssets: {
+          modalAsset: finsters_frame_modal_solved,
+          placedAsset: finsters_frame_solved,
+        },
         slotId: "isp14",
         gateId: "isg21",
         postCode: "XUu27ZhwbTcOJg2l4Yohsw==",
@@ -929,7 +1014,20 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.38,
           bottom: 0.16,
         },
-        asset: "", // TODO
+        asset: candys_frame_modal_unsolved,
+        placedAsset: {
+          area: {
+            left: -0.11,
+            right: 0.02,
+            top: 0.38,
+            bottom: 0.16,
+          },
+          asset: candys_frame_unsolved,
+        },
+        solvedAssets: {
+          modalAsset: candys_frame_modal_solved,
+          placedAsset: candys_frame_solved,
+        },
         slotId: "isp15",
         gateId: "isg22",
         postCode: "ThjWDlBYS112vfoCFdYqxQ==",
@@ -937,12 +1035,21 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Rare stamp
         area: {
-          left: 0.18,
-          right: 0.35,
-          top: 0.34,
-          bottom: 0.08,
+          left: 0.228,
+          right: 0.348,
+          top: 0.296,
+          bottom: 0.078,
         },
-        asset: "", // TODO
+        asset: stamp_modal,
+        placedAsset: {
+          area: {
+            left: 0.18,
+            right: 0.348,
+            top: 0.26,
+            bottom: 0.078,
+          },
+          asset: stamp,
+        },
         slotId: "isp16",
         gateId: "isg23",
         postCode: "bIUXEt8RlHayfrW/4qSQyw==",
@@ -955,7 +1062,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.76,
           bottom: 0.47,
         },
-        asset: "", // TODO
+        asset: teddybear,
         slotId: "isp17",
         gateId: "isg24",
         postCode: "liZx1HnT5Bxo/tIbUfRlWg==",
@@ -968,23 +1075,36 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.8,
           bottom: -0.38,
         },
-        asset: "", // TODO
+        asset: poster_modal,
+        placedAsset: {
+          area: {
+            left: 0.69,
+            right: 0.95,
+            top: 0.8,
+            bottom: -0.38,
+          },
+          asset: poster,
+        },
         slotId: "isp18",
         gateId: "isg25",
         postCode: "fv6Vuq1GktlO5DdXGVuBNQ==",
       },
       {
-        // Meta wall image
+        // Magazines
         area: {
-          left: -0.93,
-          right: -0.61,
-          top: 0.85,
-          bottom: -0.33,
+          left: -0.2,
+          right: 0.05,
+          top: -0.05,
+          bottom: -0.35,
         },
-        asset: "", // TODO
+        asset: magazine_unsolved,
         slotId: "ism02",
         gateId: "isg17",
         postCode: "9eUWKfZBfQZgWQ0wn5RPHA==",
+        solvedAssets: {
+          modalAsset: magazine_solved_modal,
+          placedAsset: magazine_solved,
+        },
       },
     ],
   },
@@ -1013,6 +1133,7 @@ function modalFromModalInternal(
     slotId,
     postCode,
     gateId: _gateId,
+    solvedAssets,
     ...rest
   } = modalInternal;
   // Look up the puzzle slug for the named slotId in this round.  We know
@@ -1034,6 +1155,27 @@ function modalFromModalInternal(
     mixin = { postCode };
   }
   const obj = { ...rest, ...mixin };
+
+  if (solvedAssets && slug) {
+    const isSolved = !!teamState.puzzles[slug]?.answer;
+    if (isSolved) {
+      if (solvedAssets.modalAsset) {
+        obj.asset = solvedAssets.modalAsset;
+      }
+
+      if (solvedAssets.placedAsset) {
+        if (obj.placedAsset) {
+          obj.placedAsset = {
+            ...obj.placedAsset,
+            asset: solvedAssets.placedAsset,
+          };
+        } else {
+          obj.placedAsset = { asset: solvedAssets.placedAsset, area: obj.area };
+        }
+      }
+    }
+  }
+
   const forInteraction = ownedByInteraction ?? false;
   if (includeIf === undefined) {
     // No condition means always include
