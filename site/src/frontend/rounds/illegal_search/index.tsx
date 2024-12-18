@@ -526,7 +526,10 @@ const IllegalSearchRoundPage = ({
 
   return (
     <div>
-      <div id="illegal-search-root" />
+      <div
+        style={{ height: "calc(100vh - 48px)", width: "100vw" }}
+        id="illegal-search-root"
+      />
       <script
         type="text/javascript"
         dangerouslySetInnerHTML={{ __html: inlineScript }}

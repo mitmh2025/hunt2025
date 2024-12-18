@@ -1,6 +1,7 @@
 import React, {
   type PointerEventHandler,
   useCallback,
+  useContext,
   useRef,
   useState,
 } from "react";
@@ -9,6 +10,7 @@ import click from "../assets/cryptex/click.mp3";
 import cryptex_base from "../assets/cryptex/cryptex_base.svg";
 import unlock from "../assets/cryptex/unlock.mp3";
 import { type Node } from "../types";
+import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
 
@@ -214,6 +216,7 @@ function CryptexDial({
 
   const dialRef = useRef(null);
   const lastMouseY = useRef(0);
+  const scaleFactor = useContext(ScreenScaleFactor);
 
   const onPointerDown: PointerEventHandler<HTMLDivElement> = useCallback(
     (e) => {
@@ -222,17 +225,17 @@ function CryptexDial({
         return;
       }
       e.currentTarget.setPointerCapture(e.pointerId);
-      lastMouseY.current = e.pageY;
+      lastMouseY.current = e.pageY / scaleFactor;
       setDragging(true);
       setDragRotation(letterToRotation(letter));
     },
-    [letter, solved],
+    [letter, scaleFactor, solved],
   );
 
   const onPointerMove: PointerEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       if (dragging) {
-        const dy = lastMouseY.current - e.pageY;
+        const dy = lastMouseY.current - e.pageY / scaleFactor;
         setDragRotation((oldRotation) => {
           const newRotation = mod(oldRotation + dy * 0.22, 360);
 
@@ -243,10 +246,10 @@ function CryptexDial({
           return newRotation;
         });
 
-        lastMouseY.current = e.pageY;
+        lastMouseY.current = e.pageY / scaleFactor;
       }
     },
-    [dragging],
+    [dragging, scaleFactor],
   );
 
   const onPointerUp: PointerEventHandler<HTMLDivElement> = useCallback(() => {

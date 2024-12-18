@@ -2,6 +2,7 @@ import React, {
   type DragEventHandler,
   type PointerEventHandler,
   useCallback,
+  useContext,
   useRef,
   useState,
 } from "react";
@@ -9,6 +10,7 @@ import { type TeamHuntState } from "../../../../../lib/api/client";
 import FlatRug from "../assets/rug/flat_rug";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import FloorSafe from "./FloorSafe";
+import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import clamp from "./clamp";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 
@@ -37,6 +39,8 @@ function MovableRug({
   // What was the last coordinates (pageX/pageY) of the mouse?
   const dragPos = useRef<Pos>({ x: 0, y: 0 });
 
+  const scaleFactor = useContext(ScreenScaleFactor);
+
   const onPointerDown: PointerEventHandler<SVGSVGElement> = useCallback((e) => {
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -50,8 +54,8 @@ function MovableRug({
   const onPointerMove: PointerEventHandler<SVGSVGElement> = useCallback(
     (e) => {
       if (dragging) {
-        const dx = e.pageX - dragPos.current.x;
-        const dy = e.pageY - dragPos.current.y;
+        const dx = (e.pageX - dragPos.current.x) / scaleFactor;
+        const dy = (e.pageY - dragPos.current.y) / scaleFactor;
 
         setPosition((oldPosition) => ({
           x: clamp(oldPosition.x + dx, minX, maxX),
@@ -64,7 +68,7 @@ function MovableRug({
         };
       }
     },
-    [dragging, minX, maxX, minY, maxY],
+    [dragging, scaleFactor, minX, maxX, minY, maxY],
   );
 
   const onPointerUp: PointerEventHandler<SVGSVGElement> = useCallback(() => {
