@@ -1,4 +1,5 @@
 //import type { FunctionComponent } from "react";
+import { createContext } from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
 
 // An id unique within this graph of views.
@@ -24,6 +25,8 @@ export type ScreenArea = {
   top: number; // number between -1 (farthest bottom) and 1 (farthest top)
   bottom: number;
 };
+
+export const ScreenScaleFactor = createContext<number>(1);
 
 export type PlacedAsset = {
   area: ScreenArea;

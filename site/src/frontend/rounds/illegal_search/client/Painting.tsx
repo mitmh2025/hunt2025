@@ -1,6 +1,7 @@
 import React, {
   type PointerEventHandler,
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -10,6 +11,7 @@ import heavy_thump from "../assets/audio/heavy_thump.mp3";
 import light_thump from "../assets/audio/light_thump.mp3";
 import medium_thump from "../assets/audio/medium_thump.mp3";
 import very_heavy_thump from "../assets/audio/very_heavy_thump.mp3";
+import { ScreenScaleFactor } from "../types";
 import clamp from "./clamp";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 
@@ -86,6 +88,8 @@ const Painting = ({
   // what was position, at the time of the drop?
   const dropPosRef = useRef<Pos>({ x: 0, y: 0 });
 
+  const scaleFactor = useContext(ScreenScaleFactor);
+
   const animationFrameCb: FrameRequestCallback = useCallback((time) => {
     if (fallingRef.current) {
       if (!dropTimeRef.current) {
@@ -129,12 +133,15 @@ const Painting = ({
     };
   }, [animationFrameCb, dragging]);
 
-  function getPointerPos(e: React.PointerEvent): Pos {
-    return {
-      x: e.pageX,
-      y: e.pageY - 48, // account for the header
-    };
-  }
+  const getPointerPos = useCallback(
+    (e: React.PointerEvent): Pos => {
+      return {
+        x: e.pageX / scaleFactor,
+        y: (e.pageY - 48) / scaleFactor, // account for the header
+      };
+    },
+    [scaleFactor],
+  );
 
   const onPointerDown: PointerEventHandler<HTMLDivElement> = useCallback(
     (e) => {
@@ -146,7 +153,7 @@ const Painting = ({
         y: e.nativeEvent.offsetY,
       });
     },
-    [],
+    [getPointerPos],
   );
 
   const onPointerMove: PointerEventHandler<HTMLDivElement> = useCallback(
@@ -184,7 +191,7 @@ const Painting = ({
         });
       }
     },
-    [dragging, dragPos, dragAnchor],
+    [dragging, getPointerPos, dragPos, dragAnchor],
   );
 
   const onPointerUp: PointerEventHandler<HTMLDivElement> = useCallback(
@@ -202,7 +209,7 @@ const Painting = ({
         y: evtPos.y - dragAnchor.y,
       };
     },
-    [dragAnchor, initialPosition],
+    [dragAnchor, getPointerPos, initialPosition],
   );
 
   const style = {

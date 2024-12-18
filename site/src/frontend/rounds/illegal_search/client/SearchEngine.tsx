@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useMemo,
+  useLayoutEffect,
 } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
@@ -18,6 +19,7 @@ import {
   type ModalWithPuzzleFields,
   type PlacedAsset,
   type PostcodeResponse,
+  ScreenScaleFactor,
 } from "../types";
 import Bookcase from "./Bookcase";
 import Cryptex from "./Cryptex";
@@ -28,7 +30,7 @@ import Rug from "./Rug";
 import { default_cursor, zoom_cursor } from "./cursors";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
-const ENABLE_DEVTOOLS = true as boolean; // type loosened to avoid always-truthy lints firing
+const ENABLE_DEVTOOLS = false as boolean; // type loosened to avoid always-truthy lints firing
 
 // Dimensions of the space we're working with
 const RASTER_WIDTH = 1920;
@@ -225,9 +227,14 @@ const PuzzleLinkBackdrop = styled.div`
   justify-content: center;
 `;
 
-const SearchEngineSurface = styled.div<{ $backgroundImage: string }>`
+const SearchEngineSurface = styled.div<{
+  $backgroundImage: string;
+  $scaleFactor: number;
+}>`
   width: 1920px;
   height: 1080px;
+  transform-origin: top left;
+  transform: scale(${({ $scaleFactor }) => $scaleFactor});
 
   position: relative;
   overflow: hidden;
@@ -266,6 +273,27 @@ const SearchEngine = ({
   const [modalShown, setModalShown] = useState<
     ModalWithPuzzleFields | undefined
   >(undefined);
+
+  const [scaleFactor, setScaleFactor] = useState<number>(1);
+  useLayoutEffect(() => {
+    const updateScale = () => {
+      setScaleFactor(
+        Math.min(
+          (document.documentElement.clientHeight - 48) / RASTER_HEIGHT, // account for navbar
+          document.documentElement.clientWidth / RASTER_WIDTH,
+        ),
+      );
+    };
+    (window.visualViewport ?? window).addEventListener("resize", updateScale);
+    updateScale();
+
+    return () => {
+      (window.visualViewport ?? window).removeEventListener(
+        "resize",
+        updateScale,
+      );
+    };
+  }, []);
 
   // A bunch of stuff that should only happen in devtools mode for making page measurements easier
   const [shouldCapture, setShouldCapture] = useState<boolean>(false);
@@ -582,8 +610,9 @@ const SearchEngine = ({
   // We stack navigations atop interactions because the rug view has overlap,
   // and we want to ensure the navigation is always accessible at the top.
   return (
-    <>
+    <ScreenScaleFactor.Provider value={scaleFactor}>
       <SearchEngineSurface
+        $scaleFactor={scaleFactor}
         $backgroundImage={node.background}
         onMouseMove={shouldCapture ? mouseMove : undefined}
         onMouseDown={shouldCapture ? mouseDown : undefined}
@@ -603,7 +632,7 @@ const SearchEngine = ({
           {shouldCapture ? "Stop measuring" : "Measure"}
         </button>
       ) : undefined}
-    </>
+    </ScreenScaleFactor.Provider>
   );
 };
 
