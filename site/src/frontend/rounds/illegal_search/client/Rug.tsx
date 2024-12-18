@@ -8,12 +8,9 @@ import React, {
 } from "react";
 import { type TeamHuntState } from "../../../../../lib/api/client";
 import FlatRug from "../assets/rug/flat_rug";
-import {
-  ScreenScaleFactor,
-  type ModalWithPuzzleFields,
-  type Node,
-} from "../types";
+import { type ModalWithPuzzleFields, type Node } from "../types";
 import FloorSafe from "./FloorSafe";
+import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import clamp from "./clamp";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 

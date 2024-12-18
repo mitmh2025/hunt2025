@@ -9,7 +9,8 @@ import { styled } from "styled-components";
 import click from "../assets/cryptex/click.mp3";
 import cryptex_base from "../assets/cryptex/cryptex_base.svg";
 import unlock from "../assets/cryptex/unlock.mp3";
-import { ScreenScaleFactor, type Node } from "../types";
+import { type Node } from "../types";
+import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
 

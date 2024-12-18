@@ -11,7 +11,7 @@ import heavy_thump from "../assets/audio/heavy_thump.mp3";
 import light_thump from "../assets/audio/light_thump.mp3";
 import medium_thump from "../assets/audio/medium_thump.mp3";
 import very_heavy_thump from "../assets/audio/very_heavy_thump.mp3";
-import { ScreenScaleFactor } from "../types";
+import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import clamp from "./clamp";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 

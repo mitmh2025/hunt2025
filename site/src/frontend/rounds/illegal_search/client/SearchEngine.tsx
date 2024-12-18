@@ -19,7 +19,6 @@ import {
   type ModalWithPuzzleFields,
   type PlacedAsset,
   type PostcodeResponse,
-  ScreenScaleFactor,
 } from "../types";
 import Bookcase from "./Bookcase";
 import Cryptex from "./Cryptex";
@@ -27,6 +26,7 @@ import DeskDrawer from "./DeskDrawer";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 import Rug from "./Rug";
+import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import { default_cursor, zoom_cursor } from "./cursors";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
