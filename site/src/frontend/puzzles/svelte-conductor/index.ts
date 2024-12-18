@@ -19,14 +19,14 @@ const puzzle: PuzzleDefinition = {
   hints: [
     {
       order: 0.0,
-      description: "Solvers haven’t found the background shell and are stuck",
+      description: "Solvers haven’t found any additional content and are stuck",
       keywords: ["Stuck", "beginning"],
       nudge: "Have you performed a background check?",
     },
     {
       order: 10.0,
       description:
-        "Solvers have the chess boards but don’t know what to do with the question marks",
+        "Solvers have a chess board but don’t know what to do with the question marks",
       keywords: ["Boards", "question"],
       nudge: "Have you noticed any common letters in your answers?",
     },

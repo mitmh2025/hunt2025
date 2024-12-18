@@ -19,7 +19,7 @@ const puzzle: PuzzleDefinition = {
   hints: [
     {
       order: 0.0,
-      description: "Solvers haven’t found the background shell and are stuck",
+      description: "Solvers haven’t found any additional content and are stuck",
       keywords: ["Stuck", "beginning"],
       nudge: "Have you performed a background check?",
     },
@@ -50,7 +50,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers have a map of Czechia",
       keywords: ["Czech", "map"],
       nudge:
-        "What\u2019s changing in this area around those dates. Does the title tell you anything?",
+        "What’s changing in this area around those dates? Does the title tell you anything?",
     },
     {
       order: 100.0,

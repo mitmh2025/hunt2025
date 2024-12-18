@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Aside } from "../unique-australia/solution";
 import kengrexal_0 from "./assets/solution/The-Oversight-reflexmate-kengrexal-0.svg";
 import kengrexal_1 from "./assets/solution/The-Oversight-reflexmate-kengrexal-1.svg";
 import kengrexal_2 from "./assets/solution/The-Oversight-reflexmate-kengrexal-2.svg";
@@ -273,6 +274,14 @@ const Solution = () => {
         the spaces to which the black pieces move to deliver checkmate spells
         the answer <Mono>NOMAD</Mono>.
       </p>
+
+      <Aside>
+        <h3>A brief aside: Special thanks</h3>
+        <p>
+          The author would like to extend a special thanks to Evan Broder for
+          scripting a validator for this puzzle.
+        </p>
+      </Aside>
     </>
   );
 };

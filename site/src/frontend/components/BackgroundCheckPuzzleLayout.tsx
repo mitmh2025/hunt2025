@@ -171,7 +171,12 @@ const Magnet = styled.img`
   margin: 0 auto;
 `;
 
-export const getBackgroundCheckManifestOverrides = (slot: string) => {
+export type Setting = "puzzle" | "solution";
+
+export const getBackgroundCheckManifestOverrides = (
+  slot: string,
+  setting: Setting,
+) => {
   if (slot === "bgm01") {
     return {
       header: ({ children }: { children: ReactNode }) => {
@@ -186,9 +191,12 @@ export const getBackgroundCheckManifestOverrides = (slot: string) => {
         );
       },
       title: BackgroundCheckMetaTitleStub,
-      wrapper: ({ children }: { children: ReactNode }) => {
-        return <TheMarkWrapper>{children}</TheMarkWrapper>;
-      },
+      wrapper:
+        setting === "puzzle"
+          ? ({ children }: { children: ReactNode }) => {
+              return <TheMarkWrapper>{children}</TheMarkWrapper>;
+            }
+          : BackgroundCheckWrapper,
     };
   } else if (slot === "bgm02") {
     return {
@@ -204,9 +212,14 @@ export const getBackgroundCheckManifestOverrides = (slot: string) => {
         );
       },
       title: BackgroundCheckMetaTitleStub,
-      wrapper: ({ children }: { children: ReactNode }) => {
-        return <TheGrandIllusionWrapper>{children}</TheGrandIllusionWrapper>;
-      },
+      wrapper:
+        setting === "puzzle"
+          ? ({ children }: { children: ReactNode }) => {
+              return (
+                <TheGrandIllusionWrapper>{children}</TheGrandIllusionWrapper>
+              );
+            }
+          : BackgroundCheckWrapper,
     };
   } else if (slot === "bgm03") {
     return {
@@ -222,9 +235,12 @@ export const getBackgroundCheckManifestOverrides = (slot: string) => {
         );
       },
       title: BackgroundCheckMetaTitleStub,
-      wrapper: ({ children }: { children: ReactNode }) => {
-        return <TheOversightWrapper>{children}</TheOversightWrapper>;
-      },
+      wrapper:
+        setting === "puzzle"
+          ? ({ children }: { children: ReactNode }) => {
+              return <TheOversightWrapper>{children}</TheOversightWrapper>;
+            }
+          : BackgroundCheckWrapper,
     };
   } else if (slot === "bgm04") {
     return {

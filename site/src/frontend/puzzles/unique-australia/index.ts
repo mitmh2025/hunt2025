@@ -21,21 +21,21 @@ const puzzle: PuzzleDefinition = {
       order: 0.0,
       description:
         "Solvers have not found the pieces mentioned in the instructions",
-      keywords: ["stuck", "beginning"],
+      keywords: ["Stuck", "beginning"],
       nudge: "Have you performed a background check?",
     },
     {
       order: 10.0,
       description:
-        "Solvers have found the background cheques, but are stumped filling in the missing letters",
-      keywords: ["unknowns"],
+        "Solvers have found the pieces, but are stumped filling in the missing letters",
+      keywords: ["Unknowns"],
       nudge:
         "As a word snakes though the chips, what letters come from the same chip?",
     },
     {
       order: 100.0,
       description: "Solvers are stuck on extraction",
-      keywords: ["extraction"],
+      keywords: ["Extraction"],
       nudge:
         "Have you used all of the information in the puzzle? Reread the last instruction.",
     },

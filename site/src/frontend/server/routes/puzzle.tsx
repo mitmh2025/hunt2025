@@ -141,6 +141,7 @@ const DEFAULT_MANIFEST: ComponentManifest = {
 function getComponentManifestForPuzzle(
   teamState: TeamHuntState,
   slug: string,
+  usage: "puzzle" | "solution",
 ): ComponentManifest {
   const puzzleState = teamState.puzzles[slug];
   if (!puzzleState) {
@@ -158,7 +159,10 @@ function getComponentManifestForPuzzle(
     if (!matchingSlotEntry) {
       return DEFAULT_MANIFEST; // how did this get here?
     }
-    const overrides = getBackgroundCheckManifestOverrides(matchingSlotEntry[0]);
+    const overrides = getBackgroundCheckManifestOverrides(
+      matchingSlotEntry[0],
+      usage,
+    );
     return Object.assign(
       {},
       DEFAULT_MANIFEST,
@@ -295,7 +299,11 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const title = puzzle.title;
 
   // Use the components for the relevant round.
-  const manifest = getComponentManifestForPuzzle(req.teamState.state, slug);
+  const manifest = getComponentManifestForPuzzle(
+    req.teamState.state,
+    slug,
+    "puzzle",
+  );
 
   const entrypoints = [
     "puzzle" as const,
@@ -445,7 +453,11 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const SolutionComponent = content.component;
 
   // Use the entrypoint for pages in the relevant round.
-  const manifest = getComponentManifestForPuzzle(req.teamState.state, slug);
+  const manifest = getComponentManifestForPuzzle(
+    req.teamState.state,
+    slug,
+    "solution",
+  );
   const entrypoints = [
     "solution" as const,
     ...(manifest.entrypoint ? [manifest.entrypoint] : []),

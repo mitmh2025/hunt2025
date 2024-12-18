@@ -251,7 +251,7 @@ const Solution = () => {
         Solvers should first identify the shell graphic, which they may describe
         as resembling a map (an argument perhaps buoyed by the use of the word
         “country” in the call to action and the puzzles’ association with{" "}
-        <i>Le Monde</i>). It is in fact a map of the Czechia, as solvers might
+        <i>Le Monde</i>). It is in fact a map of Czechia, as solvers might
         discover in a number of ways:
       </p>
       <ul>
@@ -291,7 +291,7 @@ const Solution = () => {
 
       <LinkedImage
         src={background_overlay}
-        alt="An OpenStreetMap map of Chechia overlaid with the background image described earlier.  The asterisk lines up with Prague."
+        alt="An OpenStreetMap map of Czechia overlaid with the background image described earlier.  The asterisk lines up with Prague."
       />
       <CenteredDiv>
         <a href="http://openstreetmap.org/copyright">OpenStreetMap</a>
