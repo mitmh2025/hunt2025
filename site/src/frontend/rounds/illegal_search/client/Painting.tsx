@@ -129,14 +129,18 @@ const Painting = ({
     };
   }, [animationFrameCb, dragging]);
 
+  function getPointerPos(e: React.PointerEvent): Pos {
+    return {
+      x: e.pageX,
+      y: e.pageY - 48, // account for the header
+    };
+  }
+
   const onPointerDown: PointerEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       e.currentTarget.setPointerCapture(e.pointerId);
       setDragging(true);
-      setDragPos({
-        x: e.pageX,
-        y: e.pageY,
-      });
+      setDragPos(getPointerPos(e));
       setDragAnchor({
         x: e.nativeEvent.offsetX,
         y: e.nativeEvent.offsetY,
@@ -151,8 +155,9 @@ const Painting = ({
         // Determine
         //const x = e.pageX;
         //const y = e.pageY;
-        let dx = e.pageX - dragPos.x;
-        let dy = e.pageY - dragPos.y;
+        const evtPos = getPointerPos(e);
+        let dx = evtPos.x - dragPos.x;
+        let dy = evtPos.y - dragPos.y;
         if (hookedRef.current) {
           // Confine motion.  We're sorta imitating the effect of pulling on the string the frame is hanging from,
           // so you have to lift it first.  You can move horizontally only as much as you have lifted it vertically.
@@ -190,9 +195,11 @@ const Painting = ({
       } else {
         setPosition(initialPosition);
       }
+
+      const evtPos = getPointerPos(e);
       dropPosRef.current = {
-        x: e.pageX - dragAnchor.x,
-        y: e.pageY - dragAnchor.y,
+        x: evtPos.x - dragAnchor.x,
+        y: evtPos.y - dragAnchor.y,
       };
     },
     [dragAnchor, initialPosition],
