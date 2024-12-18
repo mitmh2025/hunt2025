@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import image1 from "./assets/image1.png";
 import image10 from "./assets/image10.png";
 import image11 from "./assets/image11.png";
-import image12 from "./assets/image12.jpg";
+import image12 from "./assets/image12.png";
 import image13 from "./assets/image13.png";
 import image14 from "./assets/image14.png";
 import image15 from "./assets/image15.png";
@@ -11,7 +11,7 @@ import image16 from "./assets/image16.png";
 import image17 from "./assets/image17.png";
 import image18 from "./assets/image18.png";
 import image2 from "./assets/image2.png";
-import image3 from "./assets/image3.jpg";
+import image3 from "./assets/image3.png";
 import image4 from "./assets/image4.png";
 import image5 from "./assets/image5.png";
 import image6 from "./assets/image6.png";
@@ -31,9 +31,14 @@ const StyledTable = styled.table`
     img {
       display: block;
       margin: 16px auto;
-      max-height: 130px;
+      max-height: 100px;
     }
   }
+`;
+
+const StyledP = styled.p`
+  display: flex;
+  justify-content: space-around;
 `;
 
 const DATA: { image: string; score: number }[] = [
@@ -157,6 +162,7 @@ const Puzzle = (): JSX.Element => {
           </tr>
         ))}
       </StyledTable>
+      <StyledP>_ _ _ _ _ _ _ _</StyledP>
     </>
   );
 };

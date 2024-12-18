@@ -22,7 +22,7 @@ const FlexWrapper = styled(Paragraph)`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption -- audio contains words */}
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption -- audio contains no words */}
       <audio controls src={puzzle} />
       <Letter>
         <Paragraph>Dear Editors of the MITropolis Times:</Paragraph>

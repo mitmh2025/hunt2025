@@ -360,10 +360,10 @@ const Solution = (): JSX.Element => {
           Once upon a time there was{" "}
           <i>a leopard who was tied up in a bag and thrown into the sea</i>,{" "}
           <strong>an inexplicable gorilla appeared</strong>,{" "}
-          <i>and then he floated to shore and found a note</i>.
+          <i>and then he floated to shore and found a mate</i>.
         </div>
         <div>
-          <strong>Ocidentali’s Karma, Francesco Gabbani, Italy, 2017</strong>
+          <strong>Occidentali’s Karma, Francesco Gabbani, Italy, 2017</strong>
         </div>
         <div>
           <i>
@@ -456,8 +456,8 @@ const Solution = (): JSX.Element => {
       <Answer>
         <div>
           Once upon a time there were{" "}
-          <strong>five touch military men wearing punk dresses</strong>{" "}
-          <i>who were driven insane by</i>
+          <strong>five tough military men wearing punk dresses</strong>{" "}
+          <i>who were driven insane by</i>{" "}
           <strong>a rocket-wielding autocrat</strong> who <i>kept them awake</i>
           .
         </div>

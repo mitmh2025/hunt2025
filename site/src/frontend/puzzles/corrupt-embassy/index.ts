@@ -8,7 +8,7 @@ const puzzle: PuzzleDefinition = {
   initial_description:
     "17 strange, very short, stories. 17 flags and associated numbers.",
   answer: "PERRALLE",
-  authors: ["Joanna Murray", "Tom Cochrane", "Tom Rackham", "Will Day"],
+  authors: ["Joanna Murray", "Will Day"],
   editors: ["Anna Brunner", "Melanie Matchett Wood", "Michele Pratusevich"],
   additional_credits: [],
   content: {
