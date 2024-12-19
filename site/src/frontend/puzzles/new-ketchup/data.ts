@@ -133,7 +133,7 @@ const DinerAgent: Person = {
     },
   ],
   validAnswers: ["MARILLACUTHBERT"],
-  almostAnswers: ["MARILLA"],
+  almostAnswers: ["MARILLA", "MARILL"],
   nextPerson: Computer,
 };
 
@@ -454,7 +454,7 @@ const Snowman: Person = {
       speaker: SNOWMAN_NAME,
     },
   ],
-  validAnswers: ["TESSAVIRTUE", "SCOTTMOIR"],
+  validAnswers: ["TESSAVIRTUE", "SCOTTMOIR", "TESSAVIRTUESCOTTMOIR", "SCOTTMOIRTESSAVIRTUE", "TESSAVIRTUEANDSCOTTMOIR", "SCOTTMOIRANDTESSAVIRTUE"],
   almostAnswers: ["VIRTUE", "MOIR"],
   nextPerson: Fiance,
 };
@@ -464,7 +464,7 @@ const CatLady: Person = {
   name: CATLADY_NAME,
   intro: [
     {
-      line: "You can hear the mewing from down the block. The apartment has a catio full of cat toys, furniture, and food and is inhabited by dozens of cats with many different colors, patterns, power levels, and personalities.",
+      line: "You can hear the mewing from down the block. The apartment has a catio full of cat toys, furniture, and food and is inhabited by dozens of cats with many different colors, patterns, mementos, and personalities.",
     },
     {
       line: "You can also hear a collection of recordings of the popular radio show <i>Bouffina, Slayer of Vampyres</i> playing in the drawing room.",
@@ -501,7 +501,7 @@ const Manicurist: Person = {
       line: "The nail salon’s waiting area is packed. The busy manicurist glances at you, nametag reading DARLENE.",
     },
     {
-      line: "<i>Oh, a P.I.?</i> I don't need this right now, I've got the blues. I need some <i>crème</i>-of-the-crop clients who pay well. And maybe some sandwiches.",
+      line: "<i>Oh! P.I.?</i> I don't need this right now, I've got the blues. I need some <i>crème</i>-of-the-crop clients who pay well. And maybe some sandwiches.",
       speaker: MANICURIST_NAME,
     },
   ],
@@ -524,7 +524,7 @@ const Manicurist: Person = {
       speaker: MANICURIST_NAME,
     },
   ],
-  validAnswers: ["RICHGIRLSANDPOBOYS"],
+  validAnswers: ["RICHGIRLSANDPOBOYS", "RICHGIRLSPOBOYS"],
   nextPerson: CatLady,
 };
 
