@@ -23,7 +23,7 @@ function useDataset<T extends ObjectWithEpoch>(
     );
     return stop;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- We explicitly exclude `state` from the dependency set since we don't want to re-establish the watch on every update.
-  }, [dataset, params]);
+  }, [dataset, JSON.stringify(params)]);
   return state;
 }
 
