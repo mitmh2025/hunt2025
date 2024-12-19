@@ -14,6 +14,12 @@ const BaseIllegalSearchHeader = styled(PuzzleHeader)`
     font-family: "Alegreya SC";
   }
 
+  .solved-stamp {
+    color: var(--red-300);
+    fill: var(--red-300);
+    opacity: 0.8;
+  }
+
   #puzzle-guess-section {
     background-color: #461f09;
     border: 0.5px solid #5b290f;

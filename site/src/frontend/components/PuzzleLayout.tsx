@@ -45,6 +45,11 @@ const PuzzleHeader = styled.header`
 
 const PuzzleTitle = styled.h1`
   grid-column: 1 / 3;
+  overflow-x: clip;
+
+  .puzzle-title-span {
+    position: relative;
+  }
 `;
 
 const PuzzleMain = styled.main`

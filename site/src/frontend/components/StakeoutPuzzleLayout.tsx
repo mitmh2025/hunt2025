@@ -36,6 +36,10 @@ export const StakeoutHeader = styled(PuzzleHeader)`
     transform: rotate(-3deg);
   }
 
+  .solved-stamp {
+    transform: rotate(8deg);
+  }
+
   #puzzle-guess-section {
     background-color: rgba(248, 248, 246, 0.85);
     transform: rotate(1deg) translateX(2rem);
