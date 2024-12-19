@@ -178,9 +178,15 @@ in {
           # https://www.runatlantis.io/blog/2024/integrating-atlantis-with-opentofu
           plan.steps = [
             { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
-            { run = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"''; }
+            {
+              run.command = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"'';
+              run.output = "hide";
+            }
             { run = ''nix run .#terraform -- init -upgrade''; }
-            { run.command = ''nix run .#terraform -- plan -input=false -out=$PLANFILE''; run.output = "strip_refreshing"; }
+            {
+              run.command = ''nix run .#terraform -- plan -input=false -out=$PLANFILE'';
+              run.output = "strip_refreshing";
+            }
           ];
           apply.steps = [
             { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
@@ -188,7 +194,10 @@ in {
           ];
           import.steps = [
             { env.name = "TF_IN_AUTOMATION"; env.value = "true"; }
-            { run = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"''; }
+            {
+              run.command = ''nix build -o config.tf.json ".#terraformConfigurations.$PROJECT_NAME"'';
+              run.output = "hide";
+            }
             { run = ''nix run .#terraform -- init -upgrade''; }
             { run = ''nix run .#terraform -- import -input=false $(printf '%s' $COMMENT_ARGS | sed 's/,/ /' | tr -d '\\')''; }            
           ];
