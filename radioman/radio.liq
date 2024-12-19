@@ -8,7 +8,7 @@ ICY_BOX_INTERVAL = 300.
 
 # Tier 1 - Background Music
 # Shuffle music files, ensure track has not repeated in the last N hours.
-# TODO: Use playlog(persistency="./playlog") and check_next to ensure traks are not repeated.
+# TODO: Use playlog(persistency="./playlog") and check_next to ensure tracks are not repeated.
 # music/*
 # background_music = replaygain(playlist.list(
 #     [
@@ -20,7 +20,7 @@ ICY_BOX_INTERVAL = 300.
 #     mode = "randomize", # Shuffle list every time it loops
 # ))
 background_music = playlist.list(
-    file.ls("./win3.0midi/", pattern="*.mp3", absolute=true),
+    file.ls(environment.get("MUSIC_DIR"), pattern="*.mp3", absolute=true),
     loop = true,
     mode = "randomize", # Shuffle list every time it loops
 )
