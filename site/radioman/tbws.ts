@@ -1,46 +1,12 @@
 import { type RawData, type WebSocket } from "ws";
 import { z } from "zod";
-import { PageDataSchema, PageLinkSchema, ThingsboardError } from "./tbtypes";
-
-const EntityTypeSchema = z.enum([
-  "TENANT",
-  "TENANT_PROFILE",
-  "CUSTOMER",
-  "USER",
-  "DASHBOARD",
-  "ASSET",
-  "DEVICE",
-  "DEVICE_PROFILE",
-  "ASSET_PROFILE",
-  "ALARM",
-  "RULE_CHAIN",
-  "RULE_NODE",
-  "EDGE",
-  "ENTITY_VIEW",
-  "WIDGETS_BUNDLE",
-  "WIDGET_TYPE",
-  "API_USAGE_STATE",
-  "TB_RESOURCE",
-  "OTA_PACKAGE",
-  "RPC",
-  "QUEUE",
-  "QUEUE_STATS",
-  "NOTIFICATION",
-  "NOTIFICATION_REQUEST",
-  "NOTIFICATION_RULE",
-  "NOTIFICATION_TARGET",
-  "NOTIFICATION_TEMPLATE",
-  "OAUTH2_CLIENT",
-  "DOMAIN",
-  "MOBILE_APP_BUNDLE",
-  "MOBILE_APP",
-]);
-
-const AttributeScopeSchema = z.enum([
-  "CLIENT_SCOPE",
-  "SERVER_SCOPE",
-  "SHARED_SCOPE",
-]);
+import {
+  AttributeScopeSchema,
+  EntityTypeSchema,
+  PageDataSchema,
+  PageLinkSchema,
+  ThingsboardError,
+} from "./tbtypes";
 
 const AggregationTypeSchema = z.enum([
   "MIN",

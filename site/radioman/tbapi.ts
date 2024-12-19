@@ -10,6 +10,8 @@ import {
 import { type ErrorEvent, WebSocket } from "ws";
 import { z } from "zod";
 import {
+  AttributeScopeSchema,
+  EntityTypeSchema,
   PageDataSchema,
   PageLinkSchema,
   ThingsboardError,
@@ -478,6 +480,61 @@ const deviceProfileContract = c.router({
     body: z.undefined(),
     responses: {
       200: z.undefined(),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+});
+
+export const telemetryContract = c.router({
+  saveEntityAttributes: {
+    method: "POST",
+    path: `/api/plugins/telemetry/:entityType/:entityId/attributes/:scope`,
+    pathParams: z.discriminatedUnion("entityType", [
+      z.object({
+        entityType: z.literal("DEVICE"),
+        entityId: z.string().uuid(),
+        scope: z.enum(["SERVER_SCOPE", "SHARED_SCOPE"]),
+      }),
+      z.object({
+        entityType: EntityTypeSchema.exclude(["DEVICE"]),
+        entityId: z.string().uuid(),
+        scope: z.literal("SERVER_SCOPE"),
+      }),
+    ]),
+    body: z.record(z.string(), z.any()),
+    responses: {
+      200: c.noBody(),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  getAttributesByScope: {
+    method: "GET",
+    path: `/api/plugins/telemetry/:entityType/:entityId/values/attributes/:scope`,
+    pathParams: z.discriminatedUnion("entityType", [
+      z.object({
+        entityType: z.literal("DEVICE"),
+        entityId: z.string().uuid(),
+        scope: AttributeScopeSchema,
+      }),
+      z.object({
+        entityType: EntityTypeSchema.exclude(["DEVICE"]),
+        entityId: z.string().uuid(),
+        scope: z.literal("SERVER_SCOPE"),
+      }),
+    ]),
+    query: z.object({
+      keys: z.array(z.string()).optional(),
+    }),
+    responses: {
+      200: z.array(
+        z.object({
+          key: z.string(),
+          value: z.any(),
+          lastUpdateTs: z.number(), // millis
+        }),
+      ),
       ...errorResponses,
     },
     strictStatusCodes: true,
