@@ -156,12 +156,12 @@ export class LogicTeamState {
   recalculateTeamState(hunt: Hunt) {
     const next = new LogicTeamState(this);
     const condition_state: ConditionState = {
-      // These four are immutable
+      // These three are immutable
       hunt,
-      gates_satisfied: next.gates_satisfied,
       interactions_completed: new Set(next.interactions_completed.keys()),
       puzzles_solved: next.puzzles_solved,
       // The rest are mutable
+      gates_satisfied: next.gates_satisfied,
       rounds_unlocked: next.rounds_unlocked,
       puzzles_unlockable: next.puzzles_unlockable,
       puzzles_unlocked: next.puzzles_unlocked,
@@ -233,6 +233,17 @@ export class LogicTeamState {
           if (roundEvaluateCondition(interaction.unlock_if)) {
             if (!next.interactions_unlocked.has(interaction.id)) {
               next.interactions_unlocked.add(interaction.id);
+              updated = true;
+            }
+          }
+        });
+        round.gates?.forEach((gate) => {
+          if (
+            gate.satisfied_if !== undefined &&
+            roundEvaluateCondition(gate.satisfied_if)
+          ) {
+            if (!next.gates_satisfied.has(gate.id)) {
+              next.gates_satisfied.add(gate.id);
               updated = true;
             }
           }

@@ -164,3 +164,24 @@ it("unlock before round unlock is stray", () => {
     }),
   );
 });
+
+it("satisfies gate with satisfied_if conditions met", () => {
+  expect(
+    new LogicTeamState({}).recalculateTeamState({
+      rounds: [
+        {
+          slug: "round",
+          title: "Round",
+          unlock_if: [],
+          puzzles: [],
+          gates: [{ id: "g1", satisfied_if: [] }],
+        },
+      ],
+    }),
+  ).toStrictEqual(
+    new LogicTeamState({
+      rounds_unlocked: new Set(["round"]),
+      gates_satisfied: new Set(["g1"]),
+    }),
+  );
+});

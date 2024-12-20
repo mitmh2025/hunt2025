@@ -61,6 +61,11 @@ export type PuzzleSlot = {
 export type Gate = {
   id: string; // unique id for this gate
   title?: string; // Description of what the user did to satisfy this gate
+
+  // If present, conditions under which the gate is automatically marked as satisfied.
+  // If absent, equivalent to the gate will only be marked satisfied via an
+  // explicit API call (equivalent to { oneOf: [] }).
+  satisfied_if?: Condition;
 };
 
 export type Round = {

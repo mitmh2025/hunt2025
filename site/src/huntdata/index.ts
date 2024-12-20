@@ -452,7 +452,7 @@ const HUNT: Hunt = {
         { id: "isg23" }, // find the sixth object in the second room (rare stamp)
         { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
         { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
-        { id: "isg26", title: "Obtained the blacklight" }, // obtain the blacklight
+        { id: "isg26", title: "Obtained the blacklight", satisfied_if: { slot_solved: "ism02" } }, // obtain the blacklight
       ],
       interactions: [
         {

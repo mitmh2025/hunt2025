@@ -169,6 +169,7 @@ async function recalculateTeamState(
     interactions_unlocked: next.interactions_unlocked
       .difference(old.interactions_unlocked)
       .difference(next.interactions_started),
+    gates_satisfied: next.gates_satisfied.difference(old.gates_satisfied),
   };
   const diff_done = performance.now();
   for (const slug of diff.puzzles_unlockable) {
@@ -195,13 +196,22 @@ async function recalculateTeamState(
     });
   }
   const interactions_unlock_done = performance.now();
+  for (const id of diff.gates_satisfied) {
+    await mutator.appendLog({
+      team_id,
+      type: "gate_completed",
+      slug: id,
+    });
+  }
+  const gates_completed_done = performance.now();
   console.log(`recalculateTeamState for team ${team_id}: ${interactions_unlock_done - start} msec
   * calculateTeamState:  ${calculate_team_state_done - start} msec
   * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
   * compute diffs:       ${diff_done - unlock_rounds_done} msec
   * unlockable puzzles:  ${puzzles_unlockable_done - diff_done} msec
   * unlock puzzles:      ${puzzles_unlock_done - puzzles_unlockable_done} msec
-  * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec`);
+  * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec
+  * complete gates:      ${gates_completed_done - interactions_unlock_done} msec`);
   return next;
 }
 
