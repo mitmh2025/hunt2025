@@ -60,6 +60,7 @@ import BermudaTriangle from "./selfish-king";
 import PapasBookcase from "./serene-africa";
 import AnythingIsPopsicle from "./shameful-duck";
 import The10000SheetExcelFile from "./shoddy-table";
+import PapasStash from "./shy-embassy";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
@@ -159,6 +160,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   this_is_just_a_test: ThisIsJustATest,
 
   papas_bookcase: PapasBookcase,
+  papas_stash: PapasStash,
 
   // The Background Check
   deepfrost: Deepfrost,
