@@ -398,7 +398,7 @@ const HUNT: Hunt = {
     },
     {
       slug: "illegal_search",
-      title: "Illegal Search",
+      title: "The Illegal Search",
       final_puzzle_slot: 'ism03',
       puzzles: [
         // The first 5 puzzles are unlockable once they are discovered in the UI.
