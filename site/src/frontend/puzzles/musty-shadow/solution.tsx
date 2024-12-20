@@ -18,7 +18,12 @@ import image37 from "./assets/image37.png";
 import image38 from "./assets/image38.png";
 import image39 from "./assets/image39.png";
 import image40 from "./assets/image40.png";
-import { FlexWrapper, GRAPH_ALT_TEXT } from "./puzzle";
+import {
+  FlexWrapper,
+  GRAPH_ALT_TEXT,
+  ImageWrapper,
+  SizedLinkedImage,
+} from "./puzzle";
 
 const Red = styled.span`
   background-color: red;
@@ -126,6 +131,7 @@ const MORE_GRAPH_ALT_TEXT =
 
 const IMAGE_ROWS = [
   {
+    width: 66.7,
     src: image29,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Clean",
@@ -141,6 +147,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 62.9,
     src: image30,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Sparks Fly",
@@ -155,6 +162,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 78.7,
     src: image31,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "New Year’s Day",
@@ -173,6 +181,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 75.2,
     src: image32,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Bye Bye Baby",
@@ -191,6 +200,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 90.6,
     src: image33,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Fortnight",
@@ -208,6 +218,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 84.7,
     src: image34,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Starlight",
@@ -227,6 +238,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 66.5,
     src: image35,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Lavender Haze",
@@ -241,6 +253,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 72.8,
     src: image36,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Teardrops on My Guitar",
@@ -254,6 +267,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 71.9,
     src: image37,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "peace",
@@ -270,6 +284,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 82.1,
     src: image38,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "Miss Americana & the Heartbreak Prince",
@@ -290,6 +305,7 @@ const IMAGE_ROWS = [
     ].join(", ")}`,
   },
   {
+    width: 66.4,
     src: image39,
     alt: `${GRAPH_ALT_TEXT} ${MORE_GRAPH_ALT_TEXT} ${[
       "gold rush",
@@ -804,8 +820,10 @@ const Solution = (): JSX.Element => {
           <td>R</td>
         </tr>
       </StyledTable>
-      {IMAGE_ROWS.map(({ src, alt }, i) => (
-        <LinkedImage key={`solution-graph-${i}`} src={src} alt={alt} />
+      {IMAGE_ROWS.map(({ width, src, alt }, i) => (
+        <ImageWrapper key={`solution-graph-${i}`}>
+          <SizedLinkedImage $width={width} src={src} alt={alt} />
+        </ImageWrapper>
       ))}
       <p>
         Here’s a large graph example with most connections which helped me to

@@ -47,11 +47,11 @@ const Red = styled.td`
   background-color: red;
 `;
 
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
   margin-bottom: 2em;
 `;
 
-const SizedLinkedImage = styled(LinkedImage)<{ $width: number }>`
+export const SizedLinkedImage = styled(LinkedImage)<{ $width: number }>`
   display: inline-flex;
   justify-content: space-around;
   img {
