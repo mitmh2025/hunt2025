@@ -31,7 +31,7 @@ const HUNT: Hunt = {
         // Make 2 more puzzles unlockable after each solve.
         { id: "mdp01", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 }, // unlockable by default
         { id: "mdp02", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
-        { id: "mdp03", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
+        { id: "mdp03", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "songs_on_the_radio" },
         { id: "mdp04", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "downright_backwards" },
         { id: "mdp05", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
         { id: "mdp06", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
