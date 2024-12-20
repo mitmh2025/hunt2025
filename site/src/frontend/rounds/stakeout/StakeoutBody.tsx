@@ -96,12 +96,11 @@ type LocalStoragePosition = {
 const NATIVE_WIDTH = 1920;
 const NATIVE_HEIGHT = 1080;
 
-const StakeoutBodyMainDiv = styled.div<{ $screenScaleFactor: number }>`
+const StakeoutBodyMainDiv = styled.div`
   width: ${NATIVE_WIDTH}px;
   height: ${NATIVE_HEIGHT}px;
   background-image: url("${roundBackground}");
   background-size: contain;
-  transform: scale(${(props) => props.$screenScaleFactor});
   transform-origin: top left;
 
   // We want to place other objects relatively within the scene
@@ -429,7 +428,7 @@ const StakeoutBody = ({
   }
   return (
     <StakeoutBodyMainDiv
-      $screenScaleFactor={screenScaleFactor}
+      style={{ transform: `scale(${screenScaleFactor})` }}
       onPointerDown={onBackgroundPointerDown}
       onPointerLeave={endDrag}
       onPointerMove={onPointerMove}
