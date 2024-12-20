@@ -257,10 +257,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // safe painting: "painting1"
         area: {
-          left: 0.29,
-          right: 0.51,
-          top: 0.75,
-          bottom: 0.21,
+          left: 0.287,
+          right: 0.537,
+          top: 0.849,
+          bottom: 0.254,
         },
         cursor: zoom_cursor,
         destId: "painting1",
