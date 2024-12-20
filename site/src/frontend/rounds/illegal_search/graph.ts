@@ -157,10 +157,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Cryptex
         area: {
-          left: -0.28,
-          right: -0.152,
-          top: 0.013,
-          bottom: -0.1,
+          left: -0.29,
+          right: -0.167,
+          top: 0.0705,
+          bottom: -0.12,
         },
         asset: cryptex_on_desk,
       },
@@ -177,10 +177,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Safe painting
         area: {
-          left: 0.291,
-          right: 0.518,
-          top: 0.831,
-          bottom: 0.33,
+          left: 0.275,
+          right: 0.517,
+          top: 0.837,
+          bottom: 0.319,
         },
         asset: safe_frame,
       },
@@ -257,10 +257,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // safe painting: "painting1"
         area: {
-          left: 0.287,
-          right: 0.537,
-          top: 0.849,
-          bottom: 0.254,
+          left: 0.275,
+          right: 0.517,
+          top: 0.837,
+          bottom: 0.319,
         },
         cursor: zoom_cursor,
         destId: "painting1",
@@ -288,12 +288,12 @@ const ALL_NODES: NodeInternal[] = [
         destId: "desk_drawer",
       },
       {
-        // cryptex + mirror
+        // cryptex
         area: {
-          left: -0.3,
-          right: -0.14,
-          top: 0.06,
-          bottom: -0.16,
+          left: -0.29,
+          right: -0.167,
+          top: 0.0705,
+          bottom: -0.12,
         },
         cursor: zoom_cursor,
         destId: "cryptex",
@@ -344,10 +344,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // typewriter
         area: {
-          left: -0.11,
-          right: 0.12,
-          top: 0.11,
-          bottom: -0.15,
+          left: -0.115,
+          right: 0.118,
+          top: 0.212,
+          bottom: -0.095,
         },
         asset: typewriter,
         slotId: "isp04",
@@ -357,10 +357,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // desk lamp
         area: {
-          left: 0.21,
-          right: 0.36,
-          top: 0.21,
-          bottom: -0.13,
+          left: 0.19585849870578093,
+          right: 0.34253666954270917,
+          top: 0.3097497842968076,
+          bottom: -0.08599367270635601,
         },
         asset: lamp,
         slotId: "isp05",
