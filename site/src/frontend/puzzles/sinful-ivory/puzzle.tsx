@@ -56,7 +56,7 @@ const Puzzle = (): JSX.Element => {
         />
         <SizedImage
           src={img5}
-          alt={`${SHARED_ALT_TEXT} The card reads: TCG tribe caption. Rib and rib. ?. This 1964 All-Star leftfielder was selected from the Orioles in the 1960 MLB expansion draft.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: TCG tribe captions. Rib and rib. ?. This 1964 All-Star leftfielder was selected from the Orioles in the 1960 MLB expansion draft.`}
         />
         <SizedImage
           src={img6}
@@ -72,7 +72,7 @@ const Puzzle = (): JSX.Element => {
         />
         <SizedImage
           src={img9}
-          alt={`${SHARED_ALT_TEXT} The card reads: Unforgettable albino nubbins. Beninese buffalo bottled. Space reinfected. ?. Able newcomer’s pelt. 22 pagans’ chaos eon. Holt unbefitting bobtail. This pitcher closed a 7-inning combined no-hitter in 2021, not officially recorded as a no-hitter due to its truncated length.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: Unforgettable albino nubbins. Beninese buffalo bottled. Space reinfected. Holt unbefitting bobtail. ?. Able newcomer’s pelt. 22 pagans’ chaos eon. This pitcher closed a 7-inning combined no-hitter in 2021, not officially recorded as a no-hitter due to its truncated length.`}
         />
         <SizedImage
           src={img10}
