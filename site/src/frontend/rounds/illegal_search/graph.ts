@@ -271,7 +271,7 @@ const ALL_NODES: NodeInternal[] = [
           left: -0.22,
           right: 0.23,
           bottom: 0.03,
-          top: 0.78,
+          top: 0.98,
         },
         cursor: zoom_cursor,
         destId: "bookcase",
@@ -484,7 +484,7 @@ const ALL_NODES: NodeInternal[] = [
         area: {
           left: 0.249,
           right: 0.706,
-          top: 0.763,
+          top: 0.902,
           bottom: -0.213,
         },
         cursor: zoom_cursor,
@@ -564,7 +564,7 @@ const ALL_NODES: NodeInternal[] = [
         area: {
           left: -1,
           right: 1,
-          top: -0.8,
+          top: -0.87,
           bottom: -1,
         },
         cursor: move_down_cursor,
