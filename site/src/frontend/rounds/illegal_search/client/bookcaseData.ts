@@ -6,7 +6,21 @@ const c5 = "#233E6C";
 const c6 = "#452486";
 const c7 = "#7A217A";
 
-export default {
+type BookShape = {
+  title: string;
+  author: string;
+  color:
+    | "#740029"
+    | "#A25600"
+    | "#AC950F"
+    | "#306B00"
+    | "#233E6C"
+    | "#452486"
+    | "#7A217A";
+  size?: string;
+};
+
+const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
   rows: [
     [
       {
@@ -137,6 +151,7 @@ export default {
         title: "A Portrait of the Artist as a Young Man",
         author: "James Joyce",
         color: c2,
+        size: "12px",
       },
       {
         title: "The Art of Eating",
@@ -393,3 +408,5 @@ export default {
     ],
   ],
 };
+
+export default data;

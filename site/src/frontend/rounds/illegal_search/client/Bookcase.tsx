@@ -45,8 +45,10 @@ const Book = styled.td<{
 }>`
   position: relative;
   padding: 10px 5px;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -99,6 +101,14 @@ const Book = styled.td<{
     }
     return null;
   }};
+
+  span {
+    display: block;
+    &.author {
+      font-size: 12px;
+      margin-right: 6px;
+    }
+  }
 `;
 
 const BookcaseShelfExtras = styled.td`
@@ -114,11 +124,13 @@ const HorizontalBook = styled.div<{
 }>`
   position: relative;
   padding: 10px 5px;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1;
   display: inline-flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   font-family: Garamond, serif;
   color: #ffeaca;
   text-shadow:
@@ -132,9 +144,15 @@ const HorizontalBook = styled.div<{
   width: 140px;
   height: 62px;
   padding: 0 5px;
-  justify-content: left;
-  text-align: left;
   border-style: outset;
+
+  span {
+    display: block;
+    &.author {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+  }
 `;
 
 export function BookcaseInteraction({
@@ -155,10 +173,11 @@ export function BookcaseInteraction({
           <BookcaseShelf key={i}>
             {shelf.map((book, j) => {
               const bookState = state[i]?.[j] ?? false;
-
+              const style = { fontSize: book.size };
               return (
                 <Book
                   key={j}
+                  style={style}
                   $color={book.color}
                   $pulled={bookState}
                   $interactive={interactive}
@@ -166,9 +185,11 @@ export function BookcaseInteraction({
                     handleClick(i, j);
                   }}
                 >
-                  {book.title}
-                  <br />
-                  {book.author}
+                  <span className="title">
+                    {book.title}
+                    <br />
+                  </span>
+                  <span className="author">{book.author}</span>
                 </Book>
               );
             })}
@@ -177,11 +198,14 @@ export function BookcaseInteraction({
                 <td style={{ width: "0px", display: "inline-flex" }} />
                 <BookcaseShelfExtras>
                   {bookcaseData.extraRows[i]?.map((book, j) => {
+                    const style = { fontSize: book.size };
                     return (
-                      <HorizontalBook key={j} $color={book.color}>
-                        {book.title}
-                        <br />
-                        {book.author}
+                      <HorizontalBook key={j} style={style} $color={book.color}>
+                        <span className="title">
+                          {book.title}
+                          <br />
+                        </span>
+                        <span className="author">{book.author}</span>
                       </HorizontalBook>
                     );
                   })}
