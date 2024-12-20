@@ -1,4 +1,4 @@
-import { type TeamRegistration } from "../../../lib/api/frontend_contract";
+import { type TeamRegistration } from "../../../lib/api/contract";
 import {
   type formatTeamHuntState,
   type TeamStateIntermediate,
