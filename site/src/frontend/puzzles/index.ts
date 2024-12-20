@@ -48,7 +48,7 @@ import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
 import BeMine from "./pleasing-racket";
-import OnTheRadio from "./practical-fighter";
+import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
 import Cruciverbal from "./regal-knife";
@@ -86,9 +86,10 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   downright_backwards: DownrightBackwards,
   educational_rite_of_passage: EducationalRiteOfPassage,
+  mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
+  songs_on_the_radio: SongsOnTheRadio,
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
-  mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
 
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
@@ -183,5 +184,4 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // work in progress
   garden_anecdotes: GardenAnecdotes,
   given_up: GivenUp,
-  on_the_radio: OnTheRadio,
 };
