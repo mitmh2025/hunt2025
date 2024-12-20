@@ -70,6 +70,7 @@ import TheShellGame from "./subdued-jet";
 import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
 import ARecipeForSuccess from "./tame-chick";
+import EngagementsAndOtherCrimes from "./timely-head";
 import ReuseAndRecyclability from "./tinted-stream";
 import KoteiNoAngo from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
@@ -179,6 +180,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Murder in MITropolis
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   do_the_packing: DoThePacking,
+  engagements_and_other_crimes: EngagementsAndOtherCrimes,
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
