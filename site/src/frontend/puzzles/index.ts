@@ -57,6 +57,7 @@ import FollowTheRules from "./right-palm";
 import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
+import PapasBookcase from "./serene-africa";
 import AnythingIsPopsicle from "./shameful-duck";
 import The10000SheetExcelFile from "./shoddy-table";
 import KindredSpirits from "./similar-teacher";
@@ -156,6 +157,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   reuse_and_recyclability: ReuseAndRecyclability,
   the_center_is_in_plain_sight: TheCenterIsInPlainSight,
   this_is_just_a_test: ThisIsJustATest,
+
+  papas_bookcase: PapasBookcase,
 
   // The Background Check
   deepfrost: Deepfrost,

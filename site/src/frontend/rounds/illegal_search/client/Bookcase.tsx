@@ -11,7 +11,7 @@ import bookcaseData from "./bookcaseData";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
-const BookcaseContainer = styled.div`
+const BookcaseContainer = styled.table`
   width: 840px;
   background-image: url(${dark_wood_texture});
   padding: 20px;
@@ -19,22 +19,25 @@ const BookcaseContainer = styled.div`
   background-color: white;
   position: absolute;
   left: 600px;
+  display: block;
 `;
 
-const BookcaseShelf = styled.div`
+const BookcaseShelf = styled.tr`
   position: relative;
   padding-top: 1em;
   background-blend-mode: darken;
   background-color: rgba(0, 0, 0, 0.4);
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px inset;
   margin-bottom: 10px;
+  display: block;
+  width: 800px;
 
   &:last-child {
     border-bottom: none;
   }
 `;
 
-const Book = styled.div<{
+const Book = styled.td<{
   $color: string;
   $direction?: string;
   $pulled?: boolean;
@@ -57,26 +60,11 @@ const Book = styled.div<{
   background-blend-mode: multiply;
   background-color: ${({ $color }) => $color};
 
-  ${(props) => {
-    if (props.$direction === "horizontal") {
-      return `
-      width: 140px;
-      height: 62px;
-      padding: 0 5px;
-      justify-content: left;
-      text-align: left;
-      border-style: outset;
-    `;
-    } else {
-      return `
-      writing-mode: vertical-rl;
-      transition: all 0.2s ease-in-out;
-      transform: rotate(180deg) scale(1);
-      height: 140px;
-      width: 62px;
-    `;
-    }
-  }}
+  writing-mode: vertical-rl;
+  transition: all 0.2s ease-in-out;
+  transform: rotate(180deg) scale(1);
+  height: 140px;
+  width: 62px;
 
   ${(props) => {
     if (props.$pulled) {
@@ -85,7 +73,6 @@ const Book = styled.div<{
       transform: rotate(180deg) scale(1.1); /* Standard */
       border-radius: 1px;
       z-index: 10;
-
 
       &::before {
         content: "";
@@ -114,24 +101,55 @@ const Book = styled.div<{
   }};
 `;
 
-const BookcaseShelfExtras = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 150px;
+const BookcaseShelfExtras = styled.td`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: -10px;
+  margin-left: 36px;
 `;
 
-function BookcaseInteraction({
+const HorizontalBook = styled.div<{
+  $color: string;
+}>`
+  position: relative;
+  padding: 10px 5px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: Garamond, serif;
+  color: #ffeaca;
+  text-shadow:
+    -0.5px -0.5px rgba(255, 255, 255, 0.3),
+    0.5px 0.5px rgba(0, 0, 0, 0.8);
+  border: 3px inset rgba(0, 0, 0, 0.5);
+  background-image: url(${leather_texture});
+  background-blend-mode: multiply;
+  background-color: ${({ $color }) => $color};
+
+  width: 140px;
+  height: 62px;
+  padding: 0 5px;
+  justify-content: left;
+  text-align: left;
+  border-style: outset;
+`;
+
+export function BookcaseInteraction({
   state,
   handleClick,
   interactive,
+  style = {},
 }: {
   state: boolean[][];
   handleClick: (i: number, j: number) => void;
   interactive: boolean;
+  style?: React.CSSProperties;
 }) {
   return (
-    <BookcaseContainer>
+    <BookcaseContainer style={style}>
       {bookcaseData.rows.map((shelf, i) => {
         return (
           <BookcaseShelf key={i}>
@@ -154,17 +172,22 @@ function BookcaseInteraction({
                 </Book>
               );
             })}
-            <BookcaseShelfExtras>
-              {bookcaseData.extraRows[i]?.map((book, j) => {
-                return (
-                  <Book key={j} $color={book.color} $direction="horizontal">
-                    {book.title}
-                    <br />
-                    {book.author}
-                  </Book>
-                );
-              })}
-            </BookcaseShelfExtras>
+            {bookcaseData.extraRows[i] && (
+              <>
+                <td style={{ width: "0px", display: "inline-flex" }} />
+                <BookcaseShelfExtras>
+                  {bookcaseData.extraRows[i]?.map((book, j) => {
+                    return (
+                      <HorizontalBook key={j} $color={book.color}>
+                        {book.title}
+                        <br />
+                        {book.author}
+                      </HorizontalBook>
+                    );
+                  })}
+                </BookcaseShelfExtras>
+              </>
+            )}
           </BookcaseShelf>
         );
       })}
