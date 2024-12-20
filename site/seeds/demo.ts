@@ -7,7 +7,7 @@ import {
 import { retryOnAbort } from "../src/api/db";
 import { PUZZLES } from "../src/frontend/puzzles";
 import HUNT from "../src/huntdata";
-import { getSlugsBySlot } from "../src/huntdata/logic";
+import { getSlotSlug, getSlugsBySlot } from "../src/huntdata/logic";
 
 export async function seed(knex: Knex): Promise<void> {
   const slotsToSlug = getSlugsBySlot(HUNT);
@@ -108,6 +108,32 @@ export async function seed(knex: Knex): Promise<void> {
     }
   };
 
+  const ensurePuzzleSolved = async (
+    mutator: ActivityLogMutator,
+    team_id: number,
+    slug: string,
+  ) => {
+    const puzzle = PUZZLES[slug];
+    const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
+    if (
+      !mutator.log.some(
+        (entry) =>
+          (entry.team_id === team_id || entry.team_id === undefined) &&
+          entry.type === "puzzle_solved" &&
+          entry.slug === slug,
+      )
+    ) {
+      await mutator.appendLog({
+        team_id,
+        type: "puzzle_solved",
+        slug,
+        data: {
+          answer,
+        },
+      });
+    }
+  };
+
   await createTeam("team");
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
@@ -161,26 +187,81 @@ export async function seed(knex: Knex): Promise<void> {
     // SQLite doesn't play nice with bulk inserts with json columns, so fall back
     // to row-by-row here
     for (const slug of slugs) {
-      const puzzle = PUZZLES[slug];
-      const answer = puzzle ? puzzle.answer : "PLACEHOLDER ANSWER";
-      if (
-        !mutator.log.some(
-          (entry) =>
-            (entry.team_id === team_id || entry.team_id === undefined) &&
-            entry.type === "puzzle_solved" &&
-            entry.slug === slug,
-        )
-      ) {
-        await mutator.appendLog({
-          team_id,
-          type: "puzzle_solved",
-          slug,
-          data: {
-            answer,
-          },
-        });
-      }
+      await ensurePuzzleSolved(mutator, team_id, slug);
     }
+  });
+
+  await createTeam("is1", async (team_id, mutator) => {
+    // Unlock the illegal_search round
+    await ensureActivityLogEntry(
+      mutator,
+      team_id,
+      "round_unlocked" as const,
+      "illegal_search",
+    );
+  });
+
+  const isRound = HUNT.rounds.find((round) => round.slug === "illegal_search");
+  if (isRound === undefined) {
+    throw new Error("Round illegal_search not found");
+  }
+
+  const isPart1Slugs = isRound.puzzles
+    .slice(0, 10)
+    .map((p) => getSlotSlug(p))
+    .filter((slug): slug is string => slug !== false);
+
+  const isPart1Gates = isRound.gates?.slice(0, 17).map((g) => g.id) ?? [];
+
+  await createTeam("is2", async (team_id, mutator) => {
+    // Unlock the illegal_search round
+    await ensureActivityLogEntry(
+      mutator,
+      team_id,
+      "round_unlocked" as const,
+      "illegal_search",
+    );
+
+    // unlock, solve, and complete gates for everything in the main room
+    for (const slug of isPart1Slugs) {
+      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
+      await ensurePuzzleSolved(mutator, team_id, slug);
+    }
+
+    for (const gate of isPart1Gates) {
+      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
+    }
+
+    await ensurePuzzleSolved(mutator, team_id, "ism01");
+  });
+
+  const isPart2Slugs = isRound.puzzles
+    .slice(10, 18)
+    .map((p) => getSlotSlug(p))
+    .filter((slug): slug is string => slug !== false);
+
+  const isPart2Gates = isRound.gates?.slice(17, 27).map((g) => g.id) ?? [];
+
+  await createTeam("is3", async (team_id, mutator) => {
+    await ensureActivityLogEntry(
+      mutator,
+      team_id,
+      "round_unlocked" as const,
+      "illegal_search",
+    );
+
+    for (const slug of [...isPart1Slugs, ...isPart2Slugs]) {
+      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
+      await ensurePuzzleSolved(mutator, team_id, slug);
+    }
+
+    // satisfy all gates
+    for (const gate of [...isPart1Gates, ...isPart2Gates]) {
+      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
+    }
+
+    await ensurePuzzleSolved(mutator, team_id, "ism01");
+    await ensurePuzzleSolved(mutator, team_id, "ism02");
   });
 
   await activityLog.executeMutation(

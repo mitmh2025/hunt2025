@@ -22,6 +22,9 @@ export function hackLoginGetHandler(_req: Request) {
               <option value="solved">
                 solved (all puzzles already solved; beware spoilers!)
               </option>
+              <option value="is1">Illegal Search (Stage 1)</option>
+              <option value="is2">Illegal Search (Stage 2)</option>
+              <option value="is3">Illegal Search (Stage 3)</option>
             </select>
           </label>
         </div>
