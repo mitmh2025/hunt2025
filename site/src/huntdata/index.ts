@@ -411,14 +411,14 @@ const HUNT: Hunt = {
 
         // The next 8 puzzles are only discoverable once the first meta is
         // solved and they are discovered in the UI.
-        { id: "isp11", unlockable_if: [{ gate_satisfied: "isg17" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp12", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp14", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp15", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp18", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp11", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp12", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp14", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp15", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp18", unlockable_if: [{ gate_satisfied: "isg25" }, { slot_solved: "ism01" }], unlock_cost: 1 },
 
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }] }, // Bookcase
         { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg16" }] },
@@ -443,7 +443,7 @@ const HUNT: Hunt = {
         { id: "isg14" }, // find the object behind the numeric lock
         { id: "isg15" }, // find the object behind the word lock
         { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase" }, // complete the bookcase/unlock door in wall
-        { id: "isg17" }, // find the star pattern in the second room (meta)
+        { id: "isg17" }, // find the magazines the second room (meta)
         { id: "isg18" }, // find the first object in the second room (birth certificate)
         { id: "isg19" }, // find the second object in the second room (newspaper clipping)
         { id: "isg20" }, // find the third object in the second room (letter from prison warden)

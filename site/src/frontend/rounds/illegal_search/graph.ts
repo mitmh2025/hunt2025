@@ -845,16 +845,36 @@ const ALL_NODES: NodeInternal[] = [
     // Close-up of telephone.  Interaction (after solving the second meta) should play the morse code audio.
     id: "telephone",
     background: "__wallpaper__",
-    placedAssets: [],
+    placedAssets: [
+      {
+        area: {
+          left: -0.6,
+          right: 0.6,
+          top: 0.8,
+          bottom: -0.8,
+        },
+        asset: telephone,
+      },
+    ],
     navigations: [
       {
         area: {
           left: -1,
-          right: 1,
-          top: -0.7,
+          right: -0.6,
+          top: 1,
           bottom: -1,
         },
-        cursor: move_down_cursor,
+        cursor: move_left_cursor,
+        destId: "main_east",
+      },
+      {
+        area: {
+          left: 0.6,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_right_cursor,
         destId: "main_east",
       },
     ],

@@ -94,6 +94,7 @@ export const modalPostHandler: RequestHandler<
       // `modal.slotId`
       const newTeamState = result.body;
       const slug = newTeamState.rounds.illegal_search?.slots[slotId]?.slug;
+      console.log("slug", newTeamState.rounds.illegal_search, slotId);
       if (!slug) {
         res.status(500).json({
           status: "error",
