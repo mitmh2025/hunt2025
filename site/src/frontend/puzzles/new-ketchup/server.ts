@@ -54,13 +54,16 @@ export function generateLogEntries(
     canonicalizedTeamName,
   );
 
+  let replies = successful
+    ? unsatisfiedPerson.replySuccessful
+    : unsatisfiedPerson.replyUnsuccessful;
+
   if (!successful) {
-    // See if any of the "almost" answers match.  If so, add an "Almost..."
-    // from the aether.
+    // See if any of the "almost" answers match.  If so, don't bother with the
+    // default unsuccessful response; just give an "almost" from the aether.
     const candidates = unsatisfiedPerson.almostAnswers ?? [];
     if (candidates.includes(canonicalizedTeamName)) {
-      lines = [
-        ...lines,
+      replies = [
         {
           line: "<i>Almost...</i>",
           isYou: false as const,
@@ -68,10 +71,6 @@ export function generateLogEntries(
       ];
     }
   }
-
-  const replies = successful
-    ? unsatisfiedPerson.replySuccessful
-    : unsatisfiedPerson.replyUnsuccessful;
 
   // emit the appropriate lines
   lines = [
