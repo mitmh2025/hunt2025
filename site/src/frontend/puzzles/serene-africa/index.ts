@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Papa's Bookcase",
+  title: "Papa’s Bookcase",
   slug: "papas_bookcase",
   answer: "FEEL GOOD FICTION",
   authors: ["Hubert Hwang", "Alex St Claire", "Mike Mannis"],
