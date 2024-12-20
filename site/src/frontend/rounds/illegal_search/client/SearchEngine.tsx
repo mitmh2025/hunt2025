@@ -230,12 +230,10 @@ const PuzzleLinkBackdrop = styled.div`
 
 const SearchEngineSurface = styled.div<{
   $backgroundImage: string;
-  $scaleFactor: number;
 }>`
   width: 1920px;
   height: 1080px;
   transform-origin: top left;
-  transform: scale(${({ $scaleFactor }) => $scaleFactor});
 
   position: relative;
   overflow: hidden;
@@ -619,7 +617,13 @@ const SearchEngine = ({
   return (
     <ScreenScaleFactor.Provider value={scaleFactor}>
       <SearchEngineSurface
-        $scaleFactor={scaleFactor}
+        style={{
+          // Performance: we use inline styles instead of styled-components for
+          // properties that can change frequently (e.g. during window resize)
+          // or to values from a very large domain of possibilities (many
+          // possible floating point values for scaleFactor)
+          transform: `scale(${scaleFactor})`,
+        }}
         $backgroundImage={node.background}
         onMouseMove={shouldCapture ? mouseMove : undefined}
         onMouseDown={shouldCapture ? mouseDown : undefined}

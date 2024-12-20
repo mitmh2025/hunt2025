@@ -87,7 +87,6 @@ const Wrapper = styled.div`
 
 const DialDiv = styled.div<{
   $dragging: boolean;
-  $rotation: number;
   $offset: number;
 }>`
   position: absolute;
@@ -105,7 +104,7 @@ const TileWrapper = styled.div`
   transform-style: preserve-3d;
 `;
 
-const Tile = styled.div<{ $rotation: number }>`
+const Tile = styled.div`
   position: absolute;
   border: 4px solid black;
   height: 64px;
@@ -118,8 +117,6 @@ const Tile = styled.div<{ $rotation: number }>`
   font-weight: bold;
   font-size: 40px;
   left: -38px;
-  transform: rotateX(180deg) rotateY(${({ $rotation }) => $rotation}deg)
-    translateZ(298px);
 `;
 
 const TileLetter = styled.div`
@@ -265,7 +262,6 @@ function CryptexDial({
       onPointerUp={onPointerUp}
       ref={dialRef}
       $dragging={dragging}
-      $rotation={rotation}
       $offset={offset}
       style={{
         // Performance: we use inline styles instead of styled-components
@@ -283,15 +279,16 @@ function CryptexDial({
             const { color1, color2, mixPct } = colorForLetter(l, rotation);
             color = mixColors(color1, color2, mixPct * 100);
           }
+          const rotationY = mod(letterToRotation(l) - 90, 360);
 
           return (
             <Tile
               key={l}
-              $rotation={mod(letterToRotation(l) - 90, 360)}
               style={{
                 // Performance: we use inline styles instead of styled-components
                 // for properties that change frequently (during dragging).
                 background: color,
+                transform: `rotateX(180deg) rotateY(${rotationY}deg) translateZ(298px)`,
               }}
             >
               <TileLetter>{l}</TileLetter>
