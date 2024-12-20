@@ -218,13 +218,14 @@ const ModalBackdrop = styled.div`
 `;
 
 const PuzzleLinkBackdrop = styled.div`
-  background-color: rgb(255, 255, 255, 0.9);
+  background-color: rgba(101, 112, 86, 0.8);
   width: 600px;
   height: 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 24px;
 `;
 
 const SearchEngineSurface = styled.div<{
