@@ -315,27 +315,33 @@ const SearchEngine = ({
     });
   }, []);
 
-  function getMouseCoords(e: React.MouseEvent): { x: number; y: number } {
-    const offsetY = e.pageY - 48;
-    const offsetX = e.pageX;
+  function getMouseCoords(
+    scaleFactor: number,
+    e: React.MouseEvent,
+  ): { x: number; y: number } {
+    const offsetY = (e.pageY - 48) / scaleFactor;
+    const offsetX = e.pageX / scaleFactor;
     return {
       x: ((offsetX - RASTER_WIDTH / 2) / RASTER_WIDTH) * 2,
       y: ((RASTER_HEIGHT / 2 - offsetY) / RASTER_HEIGHT) * 2,
     };
   }
 
-  const mouseDown: MouseEventHandler<HTMLDivElement> = useCallback((e) => {
-    e.preventDefault();
-    setDragging(true);
-    const { x, y } = getMouseCoords(e);
-    setStartPoint({ x, y });
-    setDragPoint({ x, y });
-  }, []);
+  const mouseDown: MouseEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
+      e.preventDefault();
+      setDragging(true);
+      const { x, y } = getMouseCoords(scaleFactor, e);
+      setStartPoint({ x, y });
+      setDragPoint({ x, y });
+    },
+    [scaleFactor],
+  );
   const mouseMove: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       e.preventDefault();
 
-      const { x, y } = getMouseCoords(e);
+      const { x, y } = getMouseCoords(scaleFactor, e);
 
       setCursorX(x);
       setCursorY(y);
@@ -343,7 +349,7 @@ const SearchEngine = ({
         setDragPoint({ x, y });
       }
     },
-    [dragging],
+    [dragging, scaleFactor],
   );
   const mouseUp: MouseEventHandler<HTMLDivElement> = useCallback((e) => {
     e.preventDefault();

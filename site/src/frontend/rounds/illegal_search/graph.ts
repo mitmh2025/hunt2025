@@ -1,8 +1,9 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import bookcase_note from "./assets/bookcase/note.svg";
+import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
 import cryptex_note from "./assets/cryptex/cryptex_note.svg";
-import cryptex_open from "./assets/cryptex/cryptex_open.png";
+import cryptex_open from "./assets/cryptex/cryptex_open.svg";
 import drawer_bg from "./assets/desk_drawer/bg.png";
 import candy from "./assets/desk_drawer/candy.svg";
 import drawer_with_candy from "./assets/desk_drawer/drawer.png";
@@ -41,7 +42,6 @@ import stamp_modal from "./assets/secret/stamp_modal.svg";
 import teddybear from "./assets/secret/teddybear.svg";
 import secret_bg from "./assets/secret.jpg";
 import cryptex_on_desk from "./assets/study/cryptex.svg";
-import cryptex_note_on_desk from "./assets/study/cryptex_note.svg";
 import family_frame_east from "./assets/study/family_frame_east.png";
 import family_frame_north from "./assets/study/family_frame_north.png";
 import fusebox_frame from "./assets/study/fusebox_frame.svg";
@@ -165,23 +165,6 @@ const ALL_NODES: NodeInternal[] = [
         asset: cryptex_on_desk,
       },
       {
-        // Note (for opened cryptex)
-        area: {
-          left: -0.194,
-          right: -0.161,
-          top: -0.054,
-          bottom: -0.113,
-        },
-        asset: cryptex_note_on_desk,
-        includeIf: (teamState: TeamHuntState) => {
-          return (
-            teamState.rounds.illegal_search?.gates?.includes(
-              LOCK_DATA.cryptex.gateId,
-            ) ?? false
-          );
-        },
-      },
-      {
         // Fuse box painting
         area: {
           left: -0.982,
@@ -210,10 +193,12 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1,
         },
         asset: open_door,
-        includeIf: (_teamState: TeamHuntState) => {
-          // TODO: currently stubbed for easier testing; replace with comment when ready
-          // return teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.bookcase.gateId) ?? false;
-          return true;
+        includeIf: (teamState: TeamHuntState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.bookcase.gateId,
+            ) ?? false
+          );
         },
       },
     ],
@@ -250,10 +235,12 @@ const ALL_NODES: NodeInternal[] = [
         },
         cursor: move_up_cursor,
         destId: "secret",
-        includeIf: (_teamState: TeamHuntState) => {
-          // TODO: currently stubbed for easier testing; replace with comment when ready
-          // return teamState.rounds.illegal_search?.gates?.includes(LOCK_DATA.bookcase.gateId) ?? false;
-          return true;
+        includeIf: (teamState: TeamHuntState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes(
+              LOCK_DATA.bookcase.gateId,
+            ) ?? false
+          );
         },
       },
       {
@@ -693,7 +680,7 @@ const ALL_NODES: NodeInternal[] = [
 
   {
     id: "cryptex",
-    background: "", // TODO: background
+    background: cryptex_bg,
     placedAssets: [],
     navigations: [
       {
@@ -722,18 +709,17 @@ const ALL_NODES: NodeInternal[] = [
         },
         ownedByInteraction: true,
         area: {
-          // adjust area once assets exist
-          left: -0.15,
-          right: 0.73,
-          top: 0.48,
-          bottom: -0.79,
+          left: 0.437,
+          right: 0.628,
+          top: 0.311,
+          bottom: -0.003,
         },
         placedAsset: {
           area: {
-            left: -1,
-            right: 1,
-            top: 1,
-            bottom: -1,
+            left: 0.258,
+            right: 0.636,
+            top: 0.364,
+            bottom: -0.037,
           },
           asset: cryptex_open,
         },
