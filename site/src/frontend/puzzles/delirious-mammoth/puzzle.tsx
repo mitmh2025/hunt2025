@@ -55,7 +55,7 @@ const SizedImage = styled(LinkedImage)<{
   $paddingTop?: number;
   $paddingBottom?: number;
 }>`
-  flex-basis 75%;
+  flex-basis: 75%;
   padding-top: ${({ $paddingTop }) => $paddingTop ?? 16}px;
   padding-bottom: ${({ $paddingBottom }) => $paddingBottom ?? 16}px;
   background-color: white;
