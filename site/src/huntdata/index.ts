@@ -25,6 +25,7 @@ const HUNT: Hunt = {
     {
       slug: "the_missing_diamond", // mounted at root
       title: "The Missing Diamond",
+      final_puzzle_slot: 'mdm05',
       puzzles: [
         // slots (28 feeders, 4 metas, 1 super)
         // Start with 11 puzzles unlockable and 9 unlock currency.
@@ -147,6 +148,7 @@ const HUNT: Hunt = {
           // kickoff of the funaround.
           id: "mdm05",
           is_meta: true,
+          is_supermeta: true,
           unlocked_if: [
             { interaction_completed: "interview_at_the_boardwalk" },
             { interaction_completed: "interview_at_the_jewelry_store" },
@@ -209,6 +211,7 @@ const HUNT: Hunt = {
     {
       slug: "stakeout",
       title: "The Stakeout",
+      final_puzzle_slot: 'som01',
       puzzles: [
         // 42 feeders, 1 meta
         // Start with 5 unlockable, make 1.5 (rounding up) more unlockable after each solve.
@@ -280,6 +283,7 @@ const HUNT: Hunt = {
     {
       slug: "paper_trail",
       title: "The Paper Trail",
+      final_puzzle_slot: 'ptm09',
       puzzles: [
         // 17 feeders, 8 metas, 1 super
         // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
@@ -312,6 +316,7 @@ const HUNT: Hunt = {
         {
           id: "ptm09", // supermeta
           is_meta: true,
+          is_supermeta: true,
           unlocked_if: {
             // Unlock only once all 8 shell corporation metas are solved.
             puzzles_solved: 8,
@@ -348,6 +353,7 @@ const HUNT: Hunt = {
     {
       slug: "background_check",
       title: "The Background Check",
+      final_puzzle_slot: 'bgm04',
       puzzles: [
         // 14 feeders, 3 metas, 1 super
         // Start with 5 unlockable.  Add 1.5 (rounding up) for each solve.
@@ -372,7 +378,7 @@ const HUNT: Hunt = {
         { id: "bgm02", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION, slug: "the_grand_illusion" }, // meta 2
         { id: "bgm03", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION, slug: "the_oversight" }, // meta 3
         // Super unlocks once any one meta is solved.
-        { id: "bgm04", is_meta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] }, slug: "alias" }, // supermeta
+        { id: "bgm04", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] }, slug: "alias" }, // supermeta
       ],
       interactions: [
         {
@@ -393,6 +399,7 @@ const HUNT: Hunt = {
     {
       slug: "illegal_search",
       title: "The Illegal Search",
+      final_puzzle_slot: 'ism03',
       puzzles: [
         // The first 5 puzzles are unlockable once they are discovered in the UI.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "kotei_no_ango" },
@@ -473,6 +480,7 @@ const HUNT: Hunt = {
     {
       slug: "murder_in_mitropolis",
       title: "The Murder in MITropolis",
+      final_puzzle_slot: 'tmm01',
       puzzles: [
         // 24 feeders + 1 meta
         { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "do_the_packing" },
@@ -499,7 +507,7 @@ const HUNT: Hunt = {
         { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
         { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1 },
         { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 },
-        { id: "tmm01", is_meta: true, unlocked_if: { puzzles_solved: 16 } },
+        { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
       ],
       interactions: [
         {
@@ -517,6 +525,7 @@ const HUNT: Hunt = {
     {
       slug: "the_vault",
       title: "The Vault",
+      final_puzzle_slot: '',
       puzzles: [
         // TODO: single piece of endgame?
       ],

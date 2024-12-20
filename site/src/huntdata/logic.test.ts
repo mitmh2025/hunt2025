@@ -8,10 +8,17 @@ test("getSlugsBySlot", () => {
         {
           slug: "one",
           title: "One",
+          final_puzzle_slot: "11",
           unlock_if: [],
           puzzles: [{ id: "11", slug: "p11" }, { id: "12" }],
         },
-        { slug: "two", title: "Two", unlock_if: [], puzzles: [{ id: "22" }] },
+        {
+          slug: "two",
+          title: "Two",
+          final_puzzle_slot: "22",
+          unlock_if: [],
+          puzzles: [{ id: "22" }],
+        },
       ],
     }),
   ).toStrictEqual({
@@ -31,6 +38,7 @@ it("unlocks if solved", () => {
         {
           slug: "round",
           title: "Round",
+          final_puzzle_slot: "11",
           unlock_if: [],
           puzzles: [
             { id: "11", slug: "p11", unlocked_if: [] },
@@ -56,6 +64,7 @@ it("becomes visible if unlocked", () => {
         {
           slug: "round",
           title: "Round",
+          final_puzzle_slot: "p1",
           unlock_if: [],
           puzzles: [
             { id: "p1", slug: "p1", unlocked_if: [] },
@@ -86,6 +95,7 @@ it("handles gate conditions", () => {
         {
           slug: "round",
           title: "Round",
+          final_puzzle_slot: "p1",
           unlock_if: [],
           puzzles: [
             { id: "p1", slug: "p1", unlocked_if: [] },
@@ -116,12 +126,14 @@ it("handles round unlock conditions", () => {
         {
           slug: "round1",
           title: "Round",
+          final_puzzle_slot: "p1",
           unlock_if: [],
           puzzles: [{ id: "p1", slug: "p1", unlocked_if: [] }],
         },
         {
           slug: "round2",
           title: "Round 2",
+          final_puzzle_slot: "p2",
           unlock_if: { slot_solved: "p1" },
           puzzles: [
             {
@@ -152,6 +164,7 @@ it("unlock before round unlock is stray", () => {
         {
           slug: "locked",
           title: "locked round",
+          final_puzzle_slot: "p1",
           unlock_if: { oneOf: [] }, // never unlocks
           puzzles: [{ id: "p1", slug: "p1", unlocked_if: [] }], // always unlocked
         },
@@ -172,6 +185,7 @@ it("satisfies gate with satisfied_if conditions met", () => {
         {
           slug: "round",
           title: "Round",
+          final_puzzle_slot: "p1",
           unlock_if: [],
           puzzles: [],
           gates: [{ id: "g1", satisfied_if: [] }],

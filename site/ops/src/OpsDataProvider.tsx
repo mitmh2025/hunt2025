@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { newAdminClient } from "../../lib/api/admin_client";
 import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
-import { type TeamRegistration } from "../../lib/api/contract";
 import { newFrontendClient } from "../../lib/api/frontend_client";
 import {
   type InternalActivityLogEntry,
@@ -13,14 +12,7 @@ import {
   formatTeamHuntState,
 } from "../../src/api/logic";
 import HUNT from "../../src/huntdata";
-
-export type TeamData = {
-  teamId: number;
-  name: string;
-  registration: TeamRegistration;
-  state: TeamStateIntermediate;
-  formattedState: ReturnType<typeof formatTeamHuntState>;
-};
+import { type TeamData } from "./opsdata/types";
 
 export type OpsData = {
   state: "loading" | "error" | "loaded";
