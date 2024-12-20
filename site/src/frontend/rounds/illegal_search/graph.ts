@@ -528,6 +528,17 @@ const ALL_NODES: NodeInternal[] = [
     background: rug_bg,
     placedAssets: [],
     navigations: [
+      // top and right edge: pan to main_east
+      {
+        area: {
+          left: 0.8,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_right_cursor,
+        destId: "main_east",
+      },
       {
         area: {
           left: -1,
@@ -538,7 +549,27 @@ const ALL_NODES: NodeInternal[] = [
         cursor: move_up_cursor,
         destId: "main_east",
       },
-      // back up to main_east
+      // all other edges go to main_north
+      {
+        area: {
+          left: -1,
+          right: -0.8,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_left_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: -1,
+          right: 1,
+          top: -0.8,
+          bottom: -1,
+        },
+        cursor: move_down_cursor,
+        destId: "main_north",
+      },
     ],
     interactions: [{ plugin: "rug" }],
     sounds: [],
@@ -588,6 +619,36 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.6,
         },
         cursor: move_up_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: 0.8,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_right_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: -1,
+          right: -0.8,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_left_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: -1,
+          right: 1,
+          top: -0.8,
+          bottom: -1,
+        },
+        cursor: move_down_cursor,
         destId: "main_north",
       },
     ],
@@ -691,6 +752,36 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.8,
         },
         cursor: move_up_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: 0.8,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_right_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: -1,
+          right: -0.8,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_left_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: -1,
+          right: 1,
+          top: -0.8,
+          bottom: -1,
+        },
+        cursor: move_down_cursor,
         destId: "main_north",
       },
     ],
@@ -911,6 +1002,26 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1,
         },
         cursor: move_down_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: 0.8,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_right_cursor,
+        destId: "main_north",
+      },
+      {
+        area: {
+          left: -1,
+          right: -0.8,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_left_cursor,
         destId: "main_north",
       },
     ],
