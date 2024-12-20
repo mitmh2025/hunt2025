@@ -111,7 +111,7 @@ in {
       ];
 
       environment = {
-        LOADER_PATH = configDir;
+        LOADER_PATH = "${configDir},${pkgs.hunt-thingsboard}/share/thingsboard/extensions";
       };
 
       # TODO: Provision OAuth2 client

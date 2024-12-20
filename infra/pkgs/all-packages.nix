@@ -101,4 +101,5 @@ in {
   }) else liquidsoap;
   aws-credential-process = final.callPackage ./aws-credential-process.nix {};
   mkRadioManifest = final.callPackage ./mk-radio-manifest.nix {};
+  hunt-thingsboard = final.callPackage ../../thingsboard {};
 }
