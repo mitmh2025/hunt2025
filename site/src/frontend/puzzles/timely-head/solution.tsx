@@ -27,9 +27,8 @@ const Solution = (): JSX.Element => {
     <>
       <p>
         The invitation was mailed to teams with a US address a few weeks before
-        Mystery Hunt and an answer checker was hidden on the website. The puzzle
-        was fully solvable, though no indication was given that the invitation
-        was a puzzle and flavor text was not provided.
+        Mystery Hunt. The puzzle was fully solvable, though no indication was
+        given that the invitation was a puzzle and flavor text was not provided.
       </p>
       <p>The puzzle is presented as a double-sided square invitation.</p>
       <FlexWrapper>
