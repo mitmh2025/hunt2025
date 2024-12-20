@@ -11,6 +11,10 @@ const Columns = styled.div`
   font-family: monospace;
 `;
 
+const PreformattedDiv = styled.div`
+  white-space: pre;
+`;
+
 const StyledCrossword = styled(Crossword)`
   margin-bottom: 1em;
 `;
@@ -164,12 +168,24 @@ const Solution = (): JSX.Element => {
         positions we’ve found:
       </p>
       <Columns>
-        <div>THE SCE REF</div>
-        <div>ASA AFT RTH</div>
-        <div>ADB EPA IME</div>
-        <div>SDO HEN PPL</div>
-        <div>TBU ITE YEA</div>
-        <div>XTX SXX XXX</div>
+        <PreformattedDiv>
+          THE{"   "}SCE{"   "}REF
+        </PreformattedDiv>
+        <PreformattedDiv>
+          ASA{"   "}AFT{"   "}RTH
+        </PreformattedDiv>
+        <PreformattedDiv>
+          ADB{"   "}EPA{"   "}IME
+        </PreformattedDiv>
+        <PreformattedDiv>
+          SDO{"   "}HEN{"   "}PPL
+        </PreformattedDiv>
+        <PreformattedDiv>
+          TBU{"   "}ITE{"   "}YEA
+        </PreformattedDiv>
+        <PreformattedDiv>
+          XTX{"   "}SXX{"   "}XXX
+        </PreformattedDiv>
       </Columns>
       <p>
         At this point we might notice that we have sections of words from
@@ -235,6 +251,30 @@ const Solution = (): JSX.Element => {
       <StyledCrossword
         labels={[HOUSE_KEY_EMPTY, ...HOUSE_EMPTY]}
         fill={[HOUSE_KEY, ...HOUSE_4]}
+      />
+      <StyledCrossword
+        labels={[HOUSE_KEY_EMPTY, HOUSE_KEY_EMPTY]}
+        fill={[
+          "LITTLEGREENHOUSE".split(""),
+          [
+            "7",
+            "6",
+            "13",
+            "14",
+            "8",
+            "0",
+            "4",
+            "11",
+            "1",
+            "2",
+            "9",
+            "5",
+            "10",
+            "15",
+            "12",
+            "3",
+          ],
+        ]}
       />
     </>
   );
