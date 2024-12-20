@@ -1,5 +1,4 @@
 import React from "react";
-
 import pdf from "./assets/engagements-and-other-crimes.pdf";
 
 const Puzzle = (): JSX.Element => {
