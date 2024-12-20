@@ -30,7 +30,7 @@ import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import { default_cursor, zoom_cursor } from "./cursors";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
-const ENABLE_DEVTOOLS = false as boolean; // type loosened to avoid always-truthy lints firing
+const ENABLE_DEVTOOLS = true as boolean; // type loosened to avoid always-truthy lints firing
 
 // Dimensions of the space we're working with
 const RASTER_WIDTH = 1920;
@@ -361,6 +361,7 @@ const SearchEngine = ({
 
       // Disable other interactive elements while loading progresses.
       setLoading(true);
+      setModalShown(undefined);
 
       // start playing sound, if requested
       if (sound !== undefined) {
@@ -402,6 +403,7 @@ const SearchEngine = ({
     const prevState = e.state as { node: Node };
     const prevNode = prevState.node;
     setNode(prevNode);
+    setModalShown(undefined);
   }, []);
 
   const showModal = useCallback(
