@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
@@ -88,11 +93,15 @@ type LocalStoragePosition = {
   pos: Position;
 };
 
+const NATIVE_WIDTH = 1920;
+const NATIVE_HEIGHT = 1080;
+
 const StakeoutBodyMainDiv = styled.div`
-  width: 1920px;
-  height: 1080px;
+  width: ${NATIVE_WIDTH}px;
+  height: ${NATIVE_HEIGHT}px;
   background-image: url("${roundBackground}");
   background-size: contain;
+  transform-origin: top left;
 
   // We want to place other objects relatively within the scene
   position: relative;
@@ -161,6 +170,27 @@ const StakeoutBody = ({
   state: StakeoutState;
   teamState: TeamHuntState;
 }) => {
+  const [screenScaleFactor, setScreenScaleFactor] = useState<number>(1);
+  useLayoutEffect(() => {
+    const updateScale = () => {
+      setScreenScaleFactor(
+        Math.min(
+          (document.documentElement.clientHeight - 48) / NATIVE_HEIGHT, // account for navbar
+          document.documentElement.clientWidth / NATIVE_WIDTH,
+        ),
+      );
+    };
+    (window.visualViewport ?? window).addEventListener("resize", updateScale);
+    updateScale();
+
+    return () => {
+      (window.visualViewport ?? window).removeEventListener(
+        "resize",
+        updateScale,
+      );
+    };
+  }, []);
+
   // Stacking order; first is on bottom; last is on top (like DOM elements would be)
   const [stackOrder, setStackOrder] = useState<StakeoutSlot[]>(() => {
     if (HAS_STORAGE) {
@@ -275,10 +305,10 @@ const StakeoutBody = ({
       if (dragging) {
         setPositions((prevPositions) => {
           const prevPosition = prevPositions[dragging];
-          const newX = prevPosition.x + e.movementX;
+          const newX = prevPosition.x + e.movementX / screenScaleFactor;
           const newPosition = {
             x: newX,
-            y: prevPosition.y + e.movementY,
+            y: prevPosition.y + e.movementY / screenScaleFactor,
             r: rotationForX(newX), // While moving, align perfectly
           };
           return {
@@ -288,7 +318,7 @@ const StakeoutBody = ({
         });
       }
     },
-    [dragging],
+    [dragging, screenScaleFactor],
   );
   const endDrag = useCallback(
     (e: React.PointerEvent<HTMLDivElement>, focusOnTrivialMovement = false) => {
@@ -398,6 +428,7 @@ const StakeoutBody = ({
   }
   return (
     <StakeoutBodyMainDiv
+      style={{ transform: `scale(${screenScaleFactor})` }}
       onPointerDown={onBackgroundPointerDown}
       onPointerLeave={endDrag}
       onPointerMove={onPointerMove}
