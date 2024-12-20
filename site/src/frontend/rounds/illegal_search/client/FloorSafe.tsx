@@ -71,10 +71,12 @@ const SegmentImg = styled.img`
 `;
 
 function KeyPad({
+  opened,
   onClickDigit,
   onClickClear,
   onClickEnter,
 }: {
+  opened: boolean;
   onClickDigit: (digit: string) => void;
   onClickClear: () => void;
   onClickEnter: () => void;
@@ -97,6 +99,7 @@ function KeyPad({
       ].map(({ x, y, digit }) => (
         <NumberButton
           key={digit}
+          disabled={opened}
           style={{ right: 1920 - 92 - x, bottom: 1080 - 102 - y }}
           onClick={() => {
             if (digit === "X") {
@@ -255,7 +258,7 @@ function Display({ code }: { code: string }) {
               };
 
         return (
-          <>
+          <React.Fragment key={index}>
             <SegmentImg
               src={segments.top ? digit_h_on : digit_h_off}
               style={{
@@ -333,7 +336,7 @@ function Display({ code }: { code: string }) {
               alt={makeAltText("bottom-right", segments.bottomRight, index)}
               onDragStart={ignoreDrag}
             />
-          </>
+          </React.Fragment>
         );
       })}
     </>
@@ -386,6 +389,7 @@ export default function FloorSafe({
       <NumberLockPadWrapper $opened={opened}>
         <Display code={code} />
         <KeyPad
+          opened={opened}
           onClickDigit={(digit) => {
             if (code.length < 8) {
               playSound(beep);
