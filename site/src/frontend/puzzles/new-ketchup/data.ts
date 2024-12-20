@@ -62,14 +62,14 @@ const Ending: Person = {
       speaker: AGENT_NAME,
     },
     {
-      line: "Now that you are impersonating me, you’ll find that those clues lead back to you instead. I’m not ‘Little’ Tom Tibbets anymore. I’m a spook that you’ll never see again.",
+      line: "Now that you are impersonating me, you’ll find that those clues lead back to <em>you</em> instead. I’m not ‘Little’ Tom Tibbets anymore. I’m a spook that you’ll never see again.",
       speaker: AGENT_NAME,
     },
     {
       line: "His face curves into a thin smirk.",
     },
     {
-      line: "I hope that in my past life, I haven’t done anything that <i>you</i> might regret.",
+      line: "I hope that in my past life, I haven’t done anything that you might regret.",
       speaker: AGENT_NAME,
     },
     {

@@ -68,18 +68,6 @@ const DialogBox = styled.div`
     text-align: center;
     margin: 0 2rem;
   }
-
-  #what-do-they-call-you-dossier {
-    margin: 0 auto;
-    max-width: fit-content;
-    font-family: "Courier New", "Courier", monospace;
-    border: 1px solid var(--gray-800);
-    padding: 0 3rem;
-
-    h4 {
-      text-align: center;
-    }
-  }
 `;
 
 type LogEntry = {
