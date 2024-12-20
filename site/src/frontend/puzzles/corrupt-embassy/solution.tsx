@@ -367,7 +367,7 @@ const Solution = (): JSX.Element => {
         </div>
         <div>
           <i>
-            N228: Leopard tied in bag in water floats to shore and finds a note
+            N228: Leopard tied in bag in water floats to shore and finds a mate
           </i>
         </div>
       </Answer>
