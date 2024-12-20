@@ -378,14 +378,15 @@ const Solution = (): JSX.Element => {
         and 11 albums).
       </p>
       <p>
-        Some nodes have a combination of colors, these are songs either between
-        eras or unofficially part of an era.
+        Some nodes have a combination of colors. These are songs that arguably
+        belong to more than one era, or are unofficially part of an era or eras.
       </p>
       <p>
         Within some nodes of each graph, there are songs/nodes with a red
-        border. These can be alphabetically filled into the list at the end.
-        These can be then read vertically down within each graph to form a
-        subset.
+        border. These can be alphabetically filled into the list of blanks after
+        the graphs, and a letter, marked in red, can be extracted from each.
+        These letters can be then read vertically down within each graph to form
+        a string of extracted letters.
       </p>
       <p>
         There is also a final song in each graph - represented by either a
@@ -634,14 +635,14 @@ const Solution = (): JSX.Element => {
         Eras Tour.
       </p>
       <p>
-        The dresses at the end of the puzzle help us to order each night, there
-        are 7 unique dresses worn for the acoustic set in the Eras Tour, and it
-        so happens that for each of our extracted nights, there is a unique
-        dress.
+        The dresses at the end of the puzzle help us to order each night. These
+        dresses represent 7 unique dresses worn for the acoustic set in the Eras
+        Tour, and it so happens that for each of our extracted nights, Taylor
+        wears a unique one of these 7 dresses.
       </p>
       <p>
-        The music notes can then be used to extract the final solution from the
-        missing surprise song, which gives us{" "}
+        The music notes can then be used to index into the missing surprise
+        songs and extract the final solution,{" "}
         <Mono>
           <strong>LUCKIER</strong>
         </Mono>
