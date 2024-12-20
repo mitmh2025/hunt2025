@@ -547,6 +547,7 @@ export const contract = c.router({
   tenant: tenantContract,
   customer: customerContract,
   deviceProfile: deviceProfileContract,
+  telemetry: telemetryContract,
 });
 
 function newLoginClient(baseUrl: string) {

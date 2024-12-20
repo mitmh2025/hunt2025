@@ -1,10 +1,16 @@
 import { newFrontendClient } from "hunt2025/lib/api/frontend_client";
-import { TeamInfoIntermediate } from "hunt2025/src/api/logic";
+import {
+  TeamInfoIntermediate,
+  TeamStateIntermediate,
+} from "hunt2025/src/api/logic";
 import {
   connect as redisConnect,
+  activityLog,
   teamRegistrationLog,
 } from "hunt2025/src/api/redis";
 import { newLogTailer } from "hunt2025/src/frontend/server/dataset_tailer";
+import HUNT from "hunt2025/src/huntdata";
+import { Queue } from "modern-async";
 import { z } from "zod";
 import { type BaseCustomer, check, Client, type Customer } from "./tbapi";
 
@@ -12,6 +18,7 @@ const AdditionalInfoSchema = z
   .object({
     teamId: z.number().optional(),
     teamInfoEpoch: z.number().optional(),
+    teamStateEpoch: z.number().optional(),
   })
   .passthrough();
 
@@ -65,6 +72,12 @@ async function main({
     frontendSecret: frontendApiSecret,
   });
 
+  const activityLogTailer = newLogTailer({
+    redisClient,
+    fetchMethod: frontendApiClient.getFullActivityLog.bind(frontendApiClient),
+    log: activityLog,
+  });
+
   const teamRegistrationLogTailer = newLogTailer({
     redisClient,
     fetchMethod:
@@ -108,45 +121,91 @@ async function main({
   );
 
   const teamInfos = new Map<number, TeamInfoIntermediate>();
+  const teamStates = new Map<number, TeamStateIntermediate>();
+  let emptyTeamState = new TeamStateIntermediate(HUNT);
 
-  const processTeamInfo = async (teamId: number) => {
+  const syncQueue = new Queue(1);
+
+  const processTeam = async (teamId: number) => {
     const team = teamInfos.get(teamId);
     if (!team) {
-      throw new Error("missing TeamInfoIntermediate");
+      console.warn(`Team ${teamId} doesn't have registration info yet`);
+      return;
     }
     const { registration } = team;
     if (!registration) {
       console.warn(`Team ${teamId} doesn't have registration info yet`);
       return;
     }
-    const customer: BaseCustomer = customersByTeamId.get(teamId) ?? {
+    const baseCustomer: BaseCustomer | Customer = customersByTeamId.get(
+      teamId,
+    ) ?? {
       title: "",
       additionalInfo: {
         teamId,
       },
     };
-    const additionalInfo = AdditionalInfoSchema.parse(customer.additionalInfo);
-    if ((additionalInfo.teamInfoEpoch ?? 0) >= team.epoch) {
-      console.warn(
-        `Team ${teamId} already has epoch ${additionalInfo.teamInfoEpoch}; ignoring stale epoch ${team.epoch}`,
-      );
-      return;
+    let modified = false;
+    const additionalInfo = AdditionalInfoSchema.parse(
+      baseCustomer.additionalInfo,
+    );
+    if ((additionalInfo.teamInfoEpoch ?? 0) < team.epoch) {
+      baseCustomer.title = `${registration.name} (${registration.username})`;
+      additionalInfo.teamInfoEpoch = team.epoch;
+      baseCustomer.additionalInfo = additionalInfo;
+      modified = true;
     }
-    customer.title = `${registration.name} (${registration.username})`;
-    additionalInfo.teamInfoEpoch = team.epoch;
-    customer.additionalInfo = additionalInfo;
-    const newCustomer = await tbClient.client.customer
-      .save({
-        body: customer,
-      })
-      .then(check);
-    customersByTeamId.set(teamId, newCustomer);
+    let customer: Customer;
+    if (!baseCustomer.id?.id || !("createdTime" in baseCustomer)) {
+      customer = await tbClient.client.customer
+        .save({
+          body: baseCustomer,
+        })
+        .then(check);
+      customersByTeamId.set(teamId, customer);
+      modified = false;
+    } else {
+      customer = baseCustomer;
+    }
+    const teamState = teamStates.get(teamId);
+    if (teamState && (additionalInfo.teamStateEpoch ?? 0) < teamState.epoch) {
+      // en_knocks should be set to true when practical-fighter is unlocked (and remain true). Prior to that it can be unset or false, the radio treats them the same
+      // en_funaround should be set to true when dimpled-star is unlocked. (Same deal)
+      // en_rickroll should be set to true when the blacklight mode for giant-switch is unlocked
+      // en_numbers should be set to true when diligent-spy is unlocked
+      const device_attributes = {
+        en_knocks: teamState.puzzles_unlocked.has("on_the_radio"),
+        en_funaround: teamState.puzzles_unlocked.has("dimpled-star"),
+        en_rickroll: teamState.puzzles_unlocked.has("giant-switch_bl"),
+        en_numbers: teamState.puzzles_unlocked.has("diligent-spy"),
+      };
+      await tbClient.client.telemetry
+        .saveEntityAttributes({
+          params: {
+            entityType: "CUSTOMER",
+            entityId: customer.id.id,
+            scope: "SERVER_SCOPE",
+          },
+          body: {
+            device_attributes,
+          },
+        })
+        .then(check);
+      modified = true;
+      additionalInfo.teamStateEpoch = teamState.epoch;
+      customer.additionalInfo = additionalInfo;
+    }
+    if (modified) {
+      customer = await tbClient.client.customer
+        .save({
+          body: customer,
+        })
+        .then(check);
+      customersByTeamId.set(teamId, customer);
+    }
   };
 
-  // en_knocks should be set to true when practical-fighter is unlocked (and remain true). Prior to that it can be unset or false, the radio treats them the same
-  // en_funaround should be set to true when dimpled-star is unlocked. (Same deal)
-  // en_rickroll should be set to true when the blacklight mode for giant-switch is unlocked
-  // en_numbers should be set to true when diligent-spy is unlocked
+  debugger;
 
   teamRegistrationLogTailer.watchLog((items) => {
     const modified = new Set<number>();
@@ -157,16 +216,49 @@ async function main({
       modified.add(entry.team_id);
     }
     console.log("After batch teams", teamInfos);
-    (async () => {
-      for (const teamId of modified) {
-        await processTeamInfo(teamId);
-      }
-    })().catch((err: unknown) => {
-      console.warn(err);
-    });
+    for (const teamId of modified) {
+      syncQueue
+        .exec(() => processTeam(teamId))
+        .catch((err: unknown) => {
+          console.warn(err);
+        });
+    }
   });
 
   await teamRegistrationLogTailer.readyPromise();
+
+  activityLogTailer.watchLog((items) => {
+    const modified = new Set<number>();
+    for (const entry of items) {
+      const teamId = entry.team_id;
+      const teamIds = new Set<number>();
+      if (teamId === undefined) {
+        emptyTeamState = emptyTeamState.reduce(entry);
+        for (const teamId of teamStates.keys()) {
+          teamIds.add(teamId);
+        }
+      } else {
+        teamIds.add(teamId);
+      }
+      for (const teamId of teamIds) {
+        const teamState =
+          teamStates.get(teamId) ??
+          new TeamStateIntermediate(HUNT, emptyTeamState);
+        teamStates.set(teamId, teamState.reduce(entry));
+        modified.add(teamId);
+      }
+    }
+    console.log("After batch teams", teamStates);
+    for (const teamId of modified) {
+      syncQueue
+        .exec(() => processTeam(teamId))
+        .catch((err: unknown) => {
+          console.warn(err);
+        });
+    }
+  });
+
+  await activityLogTailer.readyPromise();
 
   console.log("radioman running");
 }
