@@ -56,11 +56,11 @@ const Puzzle = (): JSX.Element => {
         />
         <SizedImage
           src={img5}
-          alt={`${SHARED_ALT_TEXT} The card reads: TCG tribe captions. Rib and rib. ?. This 1964 All-Star leftfielder was selected from the Orioles in the 1960 MLB expansion draft.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: TCG tribe captions. Rib and rib. ?. This 1964 All-Star left fielder was selected from the Orioles in the 1960 MLB expansion draft.`}
         />
         <SizedImage
           src={img6}
-          alt={`${SHARED_ALT_TEXT} The card reads: ?. Feud rip. Lily tibia. Antenatal tourist retort. Long bebops. This rightfielder made his major league debut in 1996 and was a runner-up in the 2013 World Baseball Classic.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: ?. Feud rip. Lily tibia. Antenatal tourist retort. Long bebops. This Puerto Rican right fielder made his major league debut for the Cubs in 1996.`}
         />
         <SizedImage
           src={img7}
@@ -68,7 +68,7 @@ const Puzzle = (): JSX.Element => {
         />
         <SizedImage
           src={img8}
-          alt={`${SHARED_ALT_TEXT} The card reads: Unforgettable albino nubbins. Beninese buffalo bottled. Holt unbefitting bobtail. ?. DNS wrist pin. Hex on prom. This leftfielder represented the Phillies in the 2013 All-Star game.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: Unforgettable albino nubbins. Beninese buffalo bottled. Holt unbefitting bobtail. ?. DNS wrist pin. Hex on prom. This left fielder represented the Phillies in the 2013 All-Star game.`}
         />
         <SizedImage
           src={img9}
@@ -76,7 +76,7 @@ const Puzzle = (): JSX.Element => {
         />
         <SizedImage
           src={img10}
-          alt={`${SHARED_ALT_TEXT} The card reads: ?. This leftfielder drew controversy for appearing to lean in to get hit by a pitch by Max Scherzer, denying him a perfect game with two out in the ninth inning.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: ?. This left fielder drew controversy for appearing to lean in to get hit by a pitch by Max Scherzer, denying him a perfect game with two out in the ninth inning.`}
         />
         <SizedImage
           src={img11}
@@ -84,7 +84,7 @@ const Puzzle = (): JSX.Element => {
         />
         <SizedImage
           src={img12}
-          alt={`${SHARED_ALT_TEXT} The card reads: Feud rip. ?. Violet agent detour. 13 Bostonians abet billion Gus theft. This player held the record for most games pitched by a Mexican-born player until he was overtaken in 2019.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: Feud rip. ?. Violet agent detour. 13 Bostonians abet billion Gu theft. This player held the record for most games pitched by a Mexican-born player until he was overtaken in 2019.`}
         />
         <SizedImage
           src={img13}
