@@ -445,7 +445,7 @@ const SearchEngine = ({
   const navigations = node.navigations.map((navigation) => {
     return (
       <Navigation
-        key={`nav-${navigation.destId}-${navigation.area.left}-${navigation.area.top}`}
+        key={`nav-${navigation.destId}-${navigation.area.left}-${navigation.area.top}-${navigation.area.right}-${navigation.area.bottom}`}
         navigation={navigation}
         onClick={handleNavClick}
       />
