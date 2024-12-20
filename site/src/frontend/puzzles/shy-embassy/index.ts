@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Papa's Stash",
+  title: "Papa’s Stash",
   slug: "papas_stash",
   initial_description: "Second submeta for Illegal Search",
   answer: "ACCESS INVISIBLE INK",
