@@ -48,6 +48,7 @@ import MysteryOs from "./minty-play";
 import AWalkInThePark from "./misguided-revolution";
 import TheGrandIllusion from "./monstrous-shadow";
 import TheErasPuzzle from "./musty-shadow";
+import MissingConnections from "./naive-agent";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
@@ -137,6 +138,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   magic_i: MagicI,
   mens_at_my_nose: MensAtMyNose,
   mellow_planet: MellowPlanet,
+  missing_connections: MissingConnections,
   mystery_os: MysteryOs,
   recipe_substitutions: RecipeSubstitutions,
   relief_printing: ReliefPrinting,
