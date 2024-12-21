@@ -294,8 +294,8 @@ export function BookcaseInteraction({
                   {bookcaseData.extraRows[i]?.map((book, j) => {
                     const style = { fontSize: book.size };
                     return (
-                      <HorizontalBook key={j} style={style} $color={book.color}>
-                        <span className="spine">
+                      <HorizontalBook key={j} $color={book.color}>
+                        <span className="spine" style={style}>
                           <span className="title">
                             {book.title}
                             <br />
