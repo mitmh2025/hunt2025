@@ -386,9 +386,9 @@ const ALL_NODES: NodeInternal[] = [
       },
       {
         area: {
-          left: -0.51,
-          top: -0.84,
-          right: 0.51,
+          left: -0.8208333333,
+          top: -0.8111111111,
+          right: -0.09583333333,
           bottom: -1,
         },
         asset: rug_east,
@@ -408,9 +408,9 @@ const ALL_NODES: NodeInternal[] = [
       },
       {
         area: {
-          left: -0.51,
-          top: -0.84,
-          right: 0.51,
+          left: -0.8208333333,
+          top: -0.8092592593,
+          right: -0.09583333333,
           bottom: -1,
         },
         cursor: zoom_cursor,
