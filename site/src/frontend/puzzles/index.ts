@@ -2,6 +2,7 @@ import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
+import AbsolutelyNotBalderdash from "./ashamed-tail";
 import DoableDouble from "./austere-sink";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
@@ -182,6 +183,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   alias: Alias,
 
   // The Murder in MITropolis
+  absolutely_not_balderdash: AbsolutelyNotBalderdash,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
