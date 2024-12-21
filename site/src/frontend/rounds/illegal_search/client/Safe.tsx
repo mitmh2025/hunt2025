@@ -24,6 +24,7 @@ const LOCK_HEIGHT = 40.83638;
 const SCALE_FACTOR = 6;
 const LOCK_COLOR = "#3a3a3a";
 
+/*
 const DebugWheelBox = styled.div<{ $size: number }>`
   width: ${(props) => props.$size}px;
   height: ${(props) => props.$size}px;
@@ -92,6 +93,7 @@ const DebugPane = ({ tumblers }: { tumblers: [number, number, number] }) => {
     </DebugPaneContainer>
   );
 };
+*/
 
 // Where is the center of the dial, in offset coordinates?
 const ORIGIN = {
@@ -328,7 +330,7 @@ const Safe = ({
       >
         Try to open
       </button>
-      <DebugPane tumblers={tumblers} />
+      {/* <DebugPane tumblers={tumblers} /> */}
     </Wall>
   );
 };
