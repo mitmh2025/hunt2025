@@ -88,13 +88,13 @@ const Computer: Person = {
       line: "At the door of the MITropolis Intelligence safehouse, there is a call box. You press the button and a digitized computer voice answers.",
     },
     {
-      line: "Greetings. I am System SECURITY. Error: <i>I only accept commands from HQ to open this door.</i>",
+      line: "Greetings. I am System SECURITY. Error: I only accept commands from HQ to open this door.",
       speaker: COMPUTER_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: "Error: <i>I only accept commands from HQ to open this door.</i>",
+      line: "Error: I only accept commands from HQ to open this door.",
       speaker: COMPUTER_NAME,
     },
   ],
@@ -116,13 +116,13 @@ const DinerAgent: Person = {
       line: `At the cafe of green tables you find an operative named ${DINERAGENT_NAME}, sullenly sipping a cup of coffee. You try to talk to her, but she cuts you off:`,
     },
     {
-      line: "I’m waiting for my Pokemoniker agent in Avonlea to check in. If that ain’t you, bayleef me alone.",
+      line: "I’m waiting for my agent from Avonlea to check in. If that ain’t you, bayleef me alone.",
       speaker: DINERAGENT_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: "I’m waiting for my source. She’s on her way across the water by ferry. Electabuzz off.",
+      line: "I’m waiting for my source. She’s on her way across the <b>water</b> by <b>ferry</b>. Electabuzz off.",
       speaker: DINERAGENT_NAME,
     },
   ],
@@ -147,7 +147,7 @@ const Bureaucrat: Person = {
   ],
   replyUnsuccessful: [
     {
-      line: "Are you the president of MITropolis? Then <i>mind</i> your own business, or I’ll have to throw <i>hands</i>!",
+      line: "Are you the president of MITropolis? Then <b>mind</b> your own business, or I’ll have to throw <b>hands</b>!",
       speaker: BUREAUCRAT_NAME,
     },
     {
@@ -173,7 +173,7 @@ const Detective: Person = {
       line: `Standing in front of the smoldering wreck of a MITropolis concert hall, you meet police detective ${DETECTIVE_NAME} absent-mindedly eating an ice cream cone.`,
     },
     {
-      line: "Hello, rookie. As you can hopefully tell, this is an official arson case under investigation. Everyone is a suspect right now. I'm afraid I can only talk to musicians on the list of people who <i>didn’t start the fire.</i>",
+      line: "Hello, rookie. As you can <i>hopefully</i> tell, this is an official arson case under investigation. Everyone is a suspect right now. I’m afraid I can only talk to musicians on the list of people who <b>didn’t start the fire.</b>",
       speaker: DETECTIVE_NAME,
     },
     {
@@ -203,18 +203,18 @@ const Detective: Person = {
   nextPerson: Bureaucrat,
 };
 
-const WIKIPEDIAN_NAME = "EDIA";
+const WIKIPEDIAN_NAME = "EDITH";
 const Wikipedian: Person = {
   name: WIKIPEDIAN_NAME,
   intro: [
     {
-      line: `The library card turns out to be for a <i>wickid</i> huge archive of information authored and curated mostly by volunteers and founded by...<i>whales?</i>`,
+      line: `The library card turns out to be for a <b>wickid</b> huge archive of information authored and curated mostly by volunteers and founded by...<b>whales?</b>`,
     },
     {
-      line: `In the atrium one particular book is on display; it appears to be part of a daily rotating exhibit. You try to talk to one of the curators, ${WIKIPEDIAN_NAME}, but she is too frantic to answer your questions.`,
+      line: `You try to talk to one of the curators, ${WIKIPEDIAN_NAME}, but she is too frantic to answer your questions.`,
     },
     {
-      line: "We keep meticulous records of all of our changes, but it seems our system didn't account for <i>leap days</i>--some of the items we've <i>featured</i> are missing!!",
+      line: "We keep meticulous records of all of our changes, but it seems our system didn’t account for <b>leap days</b>--some of the items we’ve <b>featured</b> in our daily rotating exhibit in the atrium are missing!!",
       speaker: WIKIPEDIAN_NAME,
     },
   ],
@@ -223,13 +223,13 @@ const Wikipedian: Person = {
       line: "The curator is too distracted to respond to you.",
     },
     {
-      line: "People will Talk: What can we do??",
+      line: "People will <b>Talk:</b> What can we do??",
       speaker: WIKIPEDIAN_NAME,
     },
   ],
   replySuccessful: [
     {
-      line: "There's one of the missing items! Thank heavens, let's put you back where you belong...",
+      line: "Here’s one of the missing items! I am so relieved that they were not all erased...",
       speaker: WIKIPEDIAN_NAME,
     },
     {
@@ -253,10 +253,10 @@ const PowerpuffGirl: Person = {
   name: "Little girl",
   intro: [
     {
-      line: `Waiting at the trolley stop at the corner of ${CORNER_NAME} is a tiny redheaded girl with gigantic eyes wearing a red bow. When you try to talk to her, she replies:`,
+      line: `Waiting at the trolley stop at the corner of ${CORNER_NAME} is a tiny redheaded girl with gigantic eyes wearing a red bow. When you try to talk to her, she says:`,
     },
     {
-      line: "Sorry, my two sisters keep telling me that I shouldn’t talk to people outside my family.",
+      line: "Sorry, my <b>two sisters</b> keep telling me that I shouldn’t talk to people outside my family.",
       speaker: "Little girl",
     },
   ],
@@ -267,7 +267,7 @@ const PowerpuffGirl: Person = {
   ],
   replySuccessful: [
     {
-      line: "Thanks for keeping me company! I really wanted to have someone to talk to.",
+      line: "Hi! Thanks for keeping me company! I really wanted to have someone to talk to.",
       speaker: "Little girl",
     },
     {
@@ -287,13 +287,13 @@ const Sailor: Person = {
       line: `You find the choir singing sea shanties outside a shop that sells sweets, tea, and liquor. One of the baritones, ${SAILOR_NAME}, turns out to be a bona fide sailor. He refuses to talk to you.`,
     },
     {
-      line: "Gods, some of these lyrics are a <i>tonguin’</i> to sing! Oh well. Once the concert is done, all I want to do is to find me ship!",
+      line: "Gods, some of these lyrics are a <b>tonguin’</b> to sing! Oh well. Once the concert is done, all I want to do is to find me ship!",
       speaker: SAILOR_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: `Go away. The only "person" I want to meet is my whaling ship.`,
+      line: `Go away. The only “person” I want to meet is my whaling ship.`,
       speaker: SAILOR_NAME,
     },
   ],
@@ -350,7 +350,7 @@ const Critic: Person = {
   name: CRITIC_NAME,
   intro: [
     {
-      line: `Across town, you walk up to a fine brownstone manse belonging to venerated literary critic ${CRITIC_NAME}. His butler informs you that he soon is expecting to interview a rising star of an American author who wrote a great novel in the '20s--a double-amputee's memoir or something? Otherwise, he is not taking visitors.`,
+      line: `Across town, you walk up to a fine brownstone manse belonging to venerated literary critic ${CRITIC_NAME}. His butler informs you that he is expecting to interview a rising star of an American author who wrote a great novel in the ‘20s--a double-amputee’s memoir or something? Otherwise, he is not taking visitors.`,
     },
   ],
   replyUnsuccessful: [
@@ -388,13 +388,13 @@ const Fiance: Person = {
       line: `You ring the bloke--a fellow named ${FIANCE_NAME} that your target went on a date with a while back. It seems that he’s seeing someone else now, and quite seriously.`,
     },
     {
-      line: "I need a crystal gem for my sweetheart’s engagement ring. Otherwise, I’m not interested!",
+      line: "I need a crystal gem to help me make my sweetheart’s engagement ring. Otherwise, I’m not interested!",
       speaker: FIANCE_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: "A crystal gem will save my day, but that’s not you!",
+      line: "A <b>crystal gem</b> will <b>save my day</b>, but that’s not you!",
       speaker: FIANCE_NAME,
     },
   ],
@@ -417,10 +417,10 @@ const Snowman: Person = {
   name: SNOWMAN_NAME,
   intro: [
     {
-      line: `The ice rink is deserted. Bored, you turn to an old, limp, icicle-covered snowman next to the rink and ask it for help. The snowman, named ${SNOWMAN_NAME}, turns its back to you with a sniff.`,
+      line: `The ice rink is deserted. All you see is a old, limp, icicle-covered snowman next to the rink. When you ask it for help, the snowman, named ${SNOWMAN_NAME}, turns its back to you with a sniff.`,
     },
     {
-      line: "Forgive my frostiness, but I’m a snowman. I’m not supposed to talk at all. Though I figure in any event I might make an exception for a skater or two with the most medallions.",
+      line: "Forgive my frostiness, but I’m a snowman. I’m not supposed to talk at <i>all</i>. Though in any event I’d make an exception for a skater or two with the most medallions,  I <b>figure</b>.",
       speaker: SNOWMAN_NAME,
     },
   ],
@@ -454,7 +454,16 @@ const Snowman: Person = {
       speaker: SNOWMAN_NAME,
     },
   ],
-  validAnswers: ["TESSAVIRTUE", "SCOTTMOIR"],
+  validAnswers: [
+    "TESSAVIRTUE",
+    "SCOTTMOIR",
+    "TESSAVIRTUESCOTTMOIR",
+    "SCOTTMOIRTESSAVIRTUE",
+    "TESSAVIRTUE&SCOTTMOIR",
+    "TESSAVIRTUEANDSCOTTMOIR",
+    "SCOTTMOIR&TESSAVIRTUE",
+    "SCOTTMOIRANDTESSAVIRTUE",
+  ],
   almostAnswers: ["VIRTUE", "MOIR"],
   nextPerson: Fiance,
 };
@@ -464,10 +473,10 @@ const CatLady: Person = {
   name: CATLADY_NAME,
   intro: [
     {
-      line: "You can hear the mewing from down the block. The apartment has a catio full of cat toys, furniture, and food and is inhabited by dozens of cats with many different colors, patterns, power levels, and personalities.",
+      line: "You can hear the mewing from down the block. The rowhouse has a catio full of cat toys, furniture, and food and is inhabited by dozens of cats with many different colors, patterns, mementos, and personalities.",
     },
     {
-      line: "You can also hear a collection of recordings of the popular radio show <i>Bouffina, Slayer of Vampyres</i> playing in the drawing room.",
+      line: "You can also hear the popular radio show Bouffina, Slayer of Vampires playing in the drawing room.",
     },
     {
       line: `The owner, ${CATLADY_NAME}, refuses to open the door for fear that some of the cats might escape. But there might be one cat she would open up for...`,
@@ -493,38 +502,38 @@ const CatLady: Person = {
   nextPerson: Snowman,
 };
 
-const MANICURIST_NAME = "DARLENE";
+const MANICURIST_NAME = "DINA";
 const Manicurist: Person = {
   name: MANICURIST_NAME,
   intro: [
     {
-      line: "The nail salon’s waiting area is packed. The busy manicurist glances at you, nametag reading DARLENE.",
+      line: "At the salon, the nail technician DINA coolly evaluates you.",
     },
     {
-      line: "<i>Oh, a P.I.?</i> I don't need this right now, I've got the blues. I need some <i>crème</i>-of-the-crop clients who pay well. And maybe some sandwiches.",
+      line: "<b>Oh, P.I.</b>--orange you a little out of your element here? Most salon operations are <i>soooooo</i> 19th century, but here the cuticles are on the bleeding edge--I need a colorful, crème-de-la-crème tech expert who can really polish up my business. Not some old-fashioned gumshoe slacquer.",
       speaker: MANICURIST_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: `The manicurist sighs.`,
+      line: `You accidentally bump into a nail station.`,
     },
     {
-      line: "If only my coworker wasn't such a slacquer, then I might get to go order lunch...perhaps a polish?",
+      line: "Jeez, You’ve Got Nail primer all over your trenchcoat! How did you even <i>do</i> that? Orange you leaving now?",
       speaker: MANICURIST_NAME,
     },
   ],
   replySuccessful: [
     {
-      line: "Welcome! Sit down, sit down. Oh, a former client? Yes, I know the one.",
+      line: "Welcome! Hey, listen to my pitch. An <i>Initial Pedicure Offering</i>: we’ll use a mechanical turk to paint monograms on people’s toes. Genius, right?",
       speaker: MANICURIST_NAME,
     },
     {
-      line: "Sometimes he came in with his mother--a total homebody. I guess that was his way of getting her out of the house. I can give you her address.",
+      line: "Oh, a former customer? Yes, I know the one. Sometimes he came in with his mother--a total homebody. I guess that was his way of getting her out of the house. I can give you her address.",
       speaker: MANICURIST_NAME,
     },
   ],
-  validAnswers: ["RICHGIRLSANDPOBOYS"],
+  validAnswers: ["SILICONVALLEYGIRL"],
   nextPerson: CatLady,
 };
 
@@ -536,13 +545,13 @@ const Dancer: Person = {
       line: `You go to the dance studio, which has an ornate green glass door and planetarium-esque star designs on the walls. Walking inside, you meet an instructor named ${DANCER_NAME}.`,
     },
     {
-      line: "I'm only interested in talking to moonwalkers. Shamone!",
+      line: "I’m only interested in talking to moonwalkers. Shamone!",
       speaker: DANCER_NAME,
     },
   ],
   replyUnsuccessful: [
     {
-      line: "If a moonwalker walks through that <i>green glass door</i>, I'll talk to him. Otherwise, beat it!",
+      line: "If a moonwalker walks through that <b>green glass door</b>, I’ll talk to him. Otherwise, beat it!",
       speaker: DANCER_NAME,
     },
   ],
