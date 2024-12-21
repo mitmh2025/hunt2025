@@ -94,15 +94,14 @@ return count
       "Failed to connect to Redis after 5s; will continue trying in the background",
     );
   }
-  if (process.env.NODE_ENV === "development") {
-    try {
-      // Wipe data every time we start in development, since the database might have regressed.
-      for await (const key of client.scanIterator()) {
-        await client.del(key);
-      }
-    } catch (err) {
-      console.error("failed to wipe redis:", err);
+  try {
+    // For playtesting, always wipe redis on startup.  We'll run prod builds
+    // for info leakage, but we still want to be able to iterate fast.
+    for await (const key of client.scanIterator()) {
+      await client.del(key);
     }
+  } catch (err) {
+    console.error("failed to wipe redis:", err);
   }
   return client;
 }
