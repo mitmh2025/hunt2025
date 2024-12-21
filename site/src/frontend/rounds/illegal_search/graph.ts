@@ -14,6 +14,7 @@ import main_west_bg from "./assets/main_west.jpg";
 import ledger from "./assets/rug/ledger.svg";
 import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
 import rug_bg from "./assets/rug/rug_bg.svg";
+import money from "./assets/safe/safe_money_closeup_draft2.png";
 import birth_certificate from "./assets/secret/birth_certificate.svg";
 import birth_certificate_modal_solved from "./assets/secret/birth_certificate_modal_solved.png";
 import birth_certificate_modal_unsolved from "./assets/secret/birth_certificate_modal_unsolved.png";
@@ -863,12 +864,12 @@ const ALL_NODES: NodeInternal[] = [
         ownedByInteraction: true,
         area: {
           // adjust area once assets exist
-          left: -1,
-          right: 1,
-          top: -1,
-          bottom: 1,
+          left: -0.113,
+          right: 0.1,
+          top: -0.025,
+          bottom: -0.331,
         },
-        asset: "", // TODO: asset
+        asset: money,
         slotId: "isp08",
         gateId: "isg13",
         postCode: "Ba+T1nVoh2GFJTIXnh7H8A==",

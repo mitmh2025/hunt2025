@@ -5,16 +5,24 @@ import React, {
   useState,
 } from "react";
 import { styled } from "styled-components";
+import whole_thing from "../assets/safe/safe_closed_static_draft2.svg";
 import mark from "../assets/safe/safe_dial_draft2_background_zarvox.svg";
 import dial from "../assets/safe/safe_dial_draft2_dial_only_zarvox.svg";
 import highlights from "../assets/safe/safe_dial_draft2_shadows_zarvox.svg";
+import handle_img from "../assets/safe/safe_handle_draft2.png";
+import whole_thing_open from "../assets/safe/safe_open_static_draft2.svg";
+import squeak from "../assets/safe/squeak.mp3";
+import stuck from "../assets/safe/stuck.mp3";
+import tick from "../assets/safe/tick.mp3";
 import {
   angularDelta,
   rotateMainTumblerBy,
   TUMBLER_INITIAL_STATE,
 } from "../combolock";
 import { type ModalWithPuzzleFields, type Node } from "../types";
+import { Asset, ModalTrigger } from "./SearchEngine";
 import { default_cursor, draggable_cursor, dragging_cursor } from "./cursors";
+import playSound from "./playSound";
 
 // TODO: once the assets get updated, adjust this to match the viewBox exactly
 // 50?
@@ -22,8 +30,8 @@ const LOCK_WIDTH = 49.851883;
 // 41?
 const LOCK_HEIGHT = 40.83638;
 const SCALE_FACTOR = 6;
-const LOCK_COLOR = "#3a3a3a";
 
+const DEGREES_PER_TICK = 360 / 50;
 /*
 const DebugWheelBox = styled.div<{ $size: number }>`
   width: ${(props) => props.$size}px;
@@ -193,23 +201,34 @@ const Wall = styled.div`
   justify-content: center;
 `;
 
-const SafeDoor = styled.div`
-  background-color: ${LOCK_COLOR};
-  width: ${LOCK_WIDTH * SCALE_FACTOR}px;
-  height: ${LOCK_HEIGHT * SCALE_FACTOR}px;
+const SafeBox = styled.div<{ $opened: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 1040px;
+  height: 800px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: ${({ $opened }) =>
+    $opened ? `url(${whole_thing_open})` : `url(${whole_thing})`};
 `;
 
 const Safe = ({
-  node: _node,
-  showModal: _showModal,
+  node,
+  showModal,
   setNode,
-  opened: _opened,
+  opened,
 }: {
   node: Node;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   setNode: (node: Node) => void;
   opened: boolean;
 }) => {
+  const [doorOpen, setDoorOpen] = useState<boolean>(false);
+
   // rotations, in degrees clockwise?
   const [tumblers, setTumblers] = useState<[number, number, number]>(
     TUMBLER_INITIAL_STATE,
@@ -217,15 +236,31 @@ const Safe = ({
   const [dragging, setDragging] = useState<boolean>(false);
 
   const lastMouseAngle = useRef<number>(0);
+  const lastTickPlayedAngle = useRef<number>(0);
 
   const rotateKnobBy = useCallback((deltaDegrees: number) => {
     setTumblers(([prevTumbler0, prevTumbler1, prevTumbler2]) => {
-      return rotateMainTumblerBy(deltaDegrees, [
+      const nextTumblers = rotateMainTumblerBy(deltaDegrees, [
         prevTumbler0,
         prevTumbler1,
         prevTumbler2,
       ]);
+      if (
+        Math.abs(nextTumblers[0] - lastTickPlayedAngle.current) >=
+        DEGREES_PER_TICK
+      ) {
+        const tickAlignedAngle =
+          Math.round(nextTumblers[0] / DEGREES_PER_TICK) * DEGREES_PER_TICK;
+        lastTickPlayedAngle.current = tickAlignedAngle;
+        playSound(tick);
+      }
+      return nextTumblers;
     });
+  }, []);
+
+  const openDoor = useCallback(() => {
+    setDoorOpen(true);
+    playSound(squeak);
   }, []);
 
   const onPointerDown: PointerEventHandler<HTMLDivElement> = useCallback(
@@ -282,54 +317,94 @@ const Safe = ({
   }, []);
 
   const tryOpen = useCallback(() => {
-    fetch("/rounds/illegal_search/locks/painting1", {
-      method: "POST",
-      body: JSON.stringify({ tumblers }),
-      headers: {
-        "Content-Type": "application/json", // This body is JSON
-        Accept: "application/json", // Indicate that we want to receive JSON back
-      },
-    })
-      .then(async (result) => {
-        if (result.ok) {
-          console.log("Correct:", tumblers);
-          const json = (await result.json()) as Node;
-          console.log("Response:", json);
-          setNode(json);
-        } else {
-          console.log("Incorrect:", tumblers);
-        }
+    if (opened) {
+      // just do it
+      openDoor();
+    } else {
+      fetch("/rounds/illegal_search/locks/painting1", {
+        method: "POST",
+        body: JSON.stringify({ tumblers }),
+        headers: {
+          "Content-Type": "application/json", // This body is JSON
+          Accept: "application/json", // Indicate that we want to receive JSON back
+        },
       })
-      .catch(() => {
-        // Quietly ignore HTTP failures
-        console.log("Network error");
-      });
-  }, [setNode, tumblers]);
+        .then(async (result) => {
+          if (result.ok) {
+            console.log("Correct:", tumblers);
+            const json = (await result.json()) as Node;
+            console.log("Response:", json);
+            setNode(json);
+            openDoor();
+          } else {
+            console.log("Incorrect:", tumblers);
+            playSound(stuck);
+          }
+        })
+        .catch(() => {
+          // Quietly ignore HTTP failures
+          console.log("Network error");
+        });
+    }
+  }, [opened, setNode, tumblers, openDoor]);
+
+  const modalAssets = node.interactionModals?.map((modal) => {
+    const { area, asset } = modal;
+    const placedAsset = { area, asset };
+    return <Asset key={modal.asset} placedAsset={placedAsset} />;
+  });
+  const modals = node.interactionModals?.map((modal) => {
+    return (
+      <ModalTrigger
+        key={`interaction-modal-${modal.asset}`}
+        modal={modal}
+        showModal={showModal}
+      />
+    );
+  });
 
   return (
     <Wall>
-      <SafeDoor>
-        <CombinationLock
-          dialRotation={tumblers[0]}
-          dragging={dragging}
-          width={LOCK_WIDTH * SCALE_FACTOR}
-          height={LOCK_HEIGHT * SCALE_FACTOR}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-        />
-      </SafeDoor>
-      <button
-        style={{
-          display: "block",
-          width: "200px",
-          height: "200px",
-          cursor: default_cursor,
-        }}
-        onClick={tryOpen}
-      >
-        Try to open
-      </button>
+      {doorOpen ? (
+        <>
+          <SafeBox $opened={doorOpen} />
+          {modalAssets}
+          {modals}
+        </>
+      ) : (
+        <SafeBox $opened={doorOpen}>
+          {/* handle (absolute positioned) */}
+          <button
+            style={{
+              display: "block",
+              position: "absolute",
+              left: "272px",
+              top: "360px",
+              width: "94px",
+              height: "193px",
+              border: "none",
+              padding: "none",
+              backgroundColor: "transparent",
+              backgroundImage: `url(${handle_img})`,
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              cursor: default_cursor,
+            }}
+            onClick={tryOpen}
+          />
+          {/* dial (relative to bounding SafeBox) */}
+          <CombinationLock
+            dialRotation={tumblers[0]}
+            dragging={dragging}
+            width={LOCK_WIDTH * SCALE_FACTOR}
+            height={LOCK_HEIGHT * SCALE_FACTOR}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+          />
+        </SafeBox>
+      )}
       {/* <DebugPane tumblers={tumblers} /> */}
     </Wall>
   );
