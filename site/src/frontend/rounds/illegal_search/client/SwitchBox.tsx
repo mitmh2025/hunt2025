@@ -13,7 +13,7 @@ import { default_cursor } from "./cursors";
 const HAS_STORAGE = typeof Storage !== "undefined";
 
 // 40 switches
-const ALL_OFF: boolean[] = Array(40).fill(false) as boolean[];
+const ALL_ON: boolean[] = Array(40).fill(true) as boolean[];
 
 const BOX_WIDTH = 700;
 const BOX_HEIGHT = 950;
@@ -219,7 +219,7 @@ const SwitchBox = ({
         }
       }
     }
-    return ALL_OFF;
+    return ALL_ON;
   });
 
   const setSwitchesFromString = useCallback((state: string) => {
