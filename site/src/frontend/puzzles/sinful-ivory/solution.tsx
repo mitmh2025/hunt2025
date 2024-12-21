@@ -517,7 +517,7 @@ const Solution = (): JSX.Element => {
         <sup>
           <a href="#antifootnote">1</a>
         </sup>{" "}
-        Author's note: On some occasions, Blaseball players could play for other
+        Author’s note: On some occasions, Blaseball players could play for other
         teams (and accrue stats for them) while never being officially rostered
         to that team. Tiana Wheeler played half a game for the Baltimore Crabs
         thanks to their{" "}
