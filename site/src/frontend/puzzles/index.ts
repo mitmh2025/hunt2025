@@ -33,6 +33,7 @@ import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
+import ಕಾಬವದೋೀ್ from "./limited-marble";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
 import ShellCorporationSix from "./mild-octopus";
@@ -136,6 +137,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 
   // The Paper Trail
+  ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
   a_weathered_note: AWeatheredNote,
   chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
