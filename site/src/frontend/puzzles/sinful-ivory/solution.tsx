@@ -38,8 +38,12 @@ const Solution = (): JSX.Element => {
       <p>The baseball player clues are mechanically straightforward.</p>
       <p>
         For the Blaseball players, each clock indicates a player’s team
-        allegiance through the history of Blaseball read like a clock (starting
-        at 12 o’clock and proceeding clockwise around back to the top). Teams in
+        allegiance
+        <sup id="antifootnote">
+          <a href="#footnote">1</a>
+        </sup>{" "}
+        through the history of Blaseball read like a clock (starting at 12
+        o’clock and proceeding clockwise around back to the top). Teams in
         Blaseball have a canonical emoji and background color that are unique to
         them, and the notches indicate the 26 total seasons of Blaseball. Gaps
         indicate periods when that player was not affiliated with any team - or
@@ -508,6 +512,34 @@ const Solution = (): JSX.Element => {
           <strong>BASEBALL MOUND</strong>
         </Mono>
         .
+      </p>
+      <p id="footnote">
+        <sup>
+          <a href="#antifootnote">1</a>
+        </sup>{" "}
+        Author's note: On some occasions, Blaseball players could play for other
+        teams (and accrue stats for them) while never being officially rostered
+        to that team. Tiana Wheeler played half a game for the Baltimore Crabs
+        thanks to their{" "}
+        <a
+          href="https://www.blaseball.wiki/w/Carcinization"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Carcinization
+        </a>{" "}
+        modification that could briefly steal an opponent’s best player, and
+        Combs Estes made several posthumous appearances by{" "}
+        <a
+          href="https://www.blaseball.wiki/w/Inhabitation"
+          target="_blank"
+          rel="noreferrer"
+        >
+          inhabiting
+        </a>{" "}
+        Haunted players. It was a matter of judgement as to when the player was
+        actually rostered to which team so I hope these incidents which I chose
+        to ignore didn’t cause confusion while solving.
       </p>
     </>
   );
