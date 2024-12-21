@@ -27,6 +27,18 @@
       };
     }
     {
+      sops.templates."tbprovision/env" = {
+        owner = "thingsboard";
+        content = ''
+          TB_SYSADMIN_PASSWORD=${config.sops.placeholder."thingsboard/sysadmin/password"}
+          TB_PASSWORD=${config.sops.placeholder."radioman/password"}
+        '';
+      };
+      systemd.services.thingsboard.serviceConfig.EnvironmentFile = [
+        config.sops.templates."tbprovision/env".path
+      ];
+    }
+    {
       users.groups.acme-thingsboard = {};
       users.users.thingsboard.extraGroups = [ "acme-thingsboard" ];
       users.users."${config.services.nginx.user}".extraGroups = [ "acme-thingsboard" ];
