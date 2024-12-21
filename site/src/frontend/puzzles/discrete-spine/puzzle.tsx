@@ -13,7 +13,7 @@ export const StyledDiv = styled.div`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <p className="puzzle-flavor">A change of perspective isn't automatic.</p>
+      <p className="puzzle-flavor">A change of perspective isn’t automatic.</p>
       <LinkedImage
         src={image}
         alt="A handbound notebook with angular glyphs written on it with thick black lines. Some regions of the notebook are circled in blue pen. On the right-hand page of the notebook, an 8-item ordered list is scribbled using the same sort of angular glyph."
