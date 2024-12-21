@@ -61,6 +61,7 @@ import PapasBookcase from "./serene-africa";
 import AnythingIsPopsicle from "./shameful-duck";
 import The10000SheetExcelFile from "./shoddy-table";
 import PapasStash from "./shy-embassy";
+import IntroductionToDecryption from "./silky-ninja";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
@@ -96,6 +97,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_casino: Casino,
   the_jewelry_store: TheJewelryStore,
   the_art_gallery: TheArtGallery,
+  introduction_to_decryption: IntroductionToDecryption,
 
   // The Stakeout
   a_badly_broken_quote: ABadlyBrokenQuote,
