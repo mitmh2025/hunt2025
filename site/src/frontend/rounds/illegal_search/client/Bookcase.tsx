@@ -10,7 +10,7 @@ import bookcaseData from "./bookcaseData";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
-const BookcaseContainer = styled.div`
+const BookcaseContainer = styled.table`
   width: 840px;
   background-image: url(${dark_wood_texture});
   padding: 20px;
@@ -22,7 +22,7 @@ const BookcaseContainer = styled.div`
   display: block;
 `;
 
-const BookcaseShelf = styled.div`
+const BookcaseShelf = styled.tr`
   display: flex;
   align-items: flex-end;
   position: relative;
@@ -38,7 +38,7 @@ const BookcaseShelf = styled.div`
   }
 `;
 
-const Book = styled.div<{
+const Book = styled.td<{
   $color: string;
   $direction?: string;
   $pulled?: boolean;
@@ -84,7 +84,6 @@ const Book = styled.div<{
       0.5px -0.5px rgba(0, 0, 0, 0.8);
     border: 3px solid black;
 
-    background-color: ${({ $color }) => $color};
     background: linear-gradient(
         to top,
         rgba(0, 0, 0, 0) 17%,
@@ -106,6 +105,11 @@ const Book = styled.div<{
         ${({ $color }) => $color} 0%,
         ${({ $color }) => $color} 100%
       );
+
+    // Note: This background-color rule must come *after* the more stylized
+    // background rule above for copy-paste into Google Sheets. Sheets uses
+    // the last rule to determine styling, and can't handle gradients.
+    background-color: ${({ $color }) => $color};
 
     writing-mode: vertical-rl;
     transform: rotate(180deg);
@@ -133,6 +137,7 @@ const Book = styled.div<{
   }
 
   & .top {
+    display: block;
     position: absolute;
     background: white;
     background-image: linear-gradient(90deg, white 90%, gray 10%);
@@ -147,6 +152,7 @@ const Book = styled.div<{
   }
 
   & .cover {
+    display: block;
     background: ${({ $color }) => $color};
     width: 14px;
     height: 140px;
@@ -159,7 +165,7 @@ const Book = styled.div<{
   }
 `;
 
-const BookcaseShelfExtras = styled.div`
+const BookcaseShelfExtras = styled.td`
   align-self: stretch;
   display: inline-flex;
   flex-direction: column;
@@ -169,7 +175,7 @@ const BookcaseShelfExtras = styled.div`
   overflow: hidden;
 `;
 
-const HorizontalBook = styled.div<{
+const HorizontalBook = styled.span<{
   $color: string;
 }>`
   & .spine {
@@ -188,7 +194,6 @@ const HorizontalBook = styled.div<{
       0.5px 0.5px rgba(255, 255, 255, 0.3),
       -0.5px -0.5px rgba(0, 0, 0, 0.8);
     border: 3px solid black;
-    background-color: ${({ $color }) => $color};
     background: linear-gradient(
         to right,
         rgba(0, 0, 0, 0) 17%,
@@ -210,6 +215,8 @@ const HorizontalBook = styled.div<{
         ${({ $color }) => $color} 0%,
         ${({ $color }) => $color} 100%
       );
+    // See above about Google Sheets
+    background-color: ${({ $color }) => $color};
     z-index: 1;
 
     width: 140px;
@@ -226,6 +233,7 @@ const HorizontalBook = styled.div<{
   }
 
   & .cover {
+    display: block;
     position: absolute;
     width: 140px;
     height: 14px;
@@ -267,34 +275,34 @@ export function BookcaseInteraction({
                     handleClick(i, j);
                   }}
                 >
-                  <div className="spine" style={style}>
+                  <span className="spine" style={style}>
                     <span className="title">
                       {book.title}
                       <br />
                     </span>
                     <span className="author">{book.author}</span>
-                  </div>
-                  <div className="top" />
-                  <div className="cover" />
+                  </span>
+                  <span className="top" />
+                  <span className="cover" />
                 </Book>
               );
             })}
-            {bookcaseData.extraRows[i] && (
+            {(bookcaseData.extraRows[i] ?? []).length > 0 && (
               <>
-                <div style={{ flexGrow: 1 }} />
+                <td style={{ flexGrow: 1 }} />
                 <BookcaseShelfExtras>
                   {bookcaseData.extraRows[i]?.map((book, j) => {
                     const style = { fontSize: book.size };
                     return (
                       <HorizontalBook key={j} style={style} $color={book.color}>
-                        <div className="spine">
+                        <span className="spine">
                           <span className="title">
                             {book.title}
                             <br />
                           </span>
                           <span className="author">{book.author}</span>
-                        </div>
-                        <div className="cover" />
+                        </span>
+                        <span className="cover" />
                       </HorizontalBook>
                     );
                   })}
