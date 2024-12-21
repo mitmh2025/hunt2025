@@ -77,7 +77,7 @@ type LogEntry = {
 
 type State = "idle" | "speaking" | "error" | "backoff";
 
-const ROMAN_NAME = "IALLIUS";
+const ROMAN_NAME = "IULIUS";
 const INTRO: LogEntry[] = [
   {
     id: -2,
