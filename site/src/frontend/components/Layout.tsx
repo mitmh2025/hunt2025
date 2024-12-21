@@ -101,7 +101,7 @@ const Layout = ({
       scripts={allScripts}
       stylesheets={allStyles}
       styleElements={styleElements}
-      headElements={headElements}
+      headElements={[]}
       title={title}
     />
   );
