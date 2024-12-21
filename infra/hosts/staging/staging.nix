@@ -42,6 +42,18 @@
       systemd.services.hunt2025.environment.EMAIL_TRANSPORT = "postmark";
     }
     {
+      sops.templates."tbprovision/env" = {
+        owner = "thingsboard";
+        content = ''
+          TB_SYSADMIN_PASSWORD=${config.sops.placeholder."thingsboard/sysadmin/password"}
+          TB_PASSWORD=${config.sops.placeholder."radioman/password"}
+        '';
+      };
+      systemd.services.thingsboard.serviceConfig.EnvironmentFile = [
+        config.sops.templates."tbprovision/env".path
+      ];
+    }
+    {
       services.thingsboard = {
         enable = true;
         datasource.createLocally = true;

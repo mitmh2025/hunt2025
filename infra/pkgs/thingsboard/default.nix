@@ -1,7 +1,7 @@
 { lib
 , fetchFromGitHub
 , jdk17
-, jre_headless
+, jre
 , makeWrapper
 , proot
 , stdenv
@@ -142,14 +142,14 @@ in mavenWithJdk.buildMavenPackage rec {
     cp -r application/target/{conf,data} $out/share/thingsboard/
     rm $out/share/thingsboard/conf/logback.xml
 
-    makeWrapper ${jre_headless}/bin/java $out/bin/thingsboard-install \
+    makeWrapper ${jre}/bin/java $out/bin/thingsboard-install \
       --add-flags "-cp $out/share/thingsboard/thingsboard.jar \
         -Dloader.main=org.thingsboard.server.ThingsboardInstallApplication \
         -Dinstall.data_dir=$out/share/thingsboard/data \
         -Dspring.jpa.hibernate.ddl-auto=none \
         -Dinstall.upgrade=false" \
       --append-flags "org.springframework.boot.loader.launch.PropertiesLauncher"
-    makeWrapper ${jre_headless}/bin/java $out/bin/thingsboard-server \
+    makeWrapper ${jre}/bin/java $out/bin/thingsboard-server \
       --add-flags "-Djna.platform.library.path=${libPath} \
         -Dinstall.data_dir=$out/share/thingsboard/data" \
       --suffix LOADER_PATH , $out/share/thingsboard/conf,$out/share/thingsboard/extensions \

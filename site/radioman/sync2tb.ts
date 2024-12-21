@@ -205,9 +205,6 @@ async function main({
     }
   };
 
-  // eslint-disable-next-line no-debugger -- this was checked into main and is failing lints
-  debugger;
-
   teamRegistrationLogTailer.watchLog((items) => {
     const modified = new Set<number>();
     for (const entry of items) {

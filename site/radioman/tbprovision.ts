@@ -1,3 +1,4 @@
+import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import { check, Client, type Tenant } from "./tbapi";
 import { ThingsboardError } from "./tbtypes";
 
@@ -5,7 +6,7 @@ const baseUrl = process.env.TB_BASE_URL ?? "http://localhost:8080";
 const sysadminUsername = "sysadmin@thingsboard.org";
 const defaultSysadminPassword = "sysadmin";
 const sysadminPassword = process.env.TB_SYSADMIN_PASSWORD ?? "sysadmin";
-const tenantUsername = process.env.TB_USERNAME ?? "radioman@hunt";
+const tenantUsername = process.env.TB_USERNAME ?? "radioman@mitmh2025.com";
 const tenantPassword = process.env.TB_PASSWORD ?? "radioman";
 
 async function createSysadminClient({
@@ -144,6 +145,24 @@ async function createDeviceProfiles(client: Client) {
 }
 
 async function main() {
+  await pRetry(
+    async () => {
+      const health = (await fetch(`${baseUrl}/actuator/health`).then((r) =>
+        r.json(),
+      )) as { status?: string };
+      if (health.status !== "UP") {
+        throw new Error(`unexpected health ${JSON.stringify(health)}`);
+      }
+    },
+    {
+      maxRetryTime: 300000,
+      minTimeout: 500,
+      maxTimeout: 10000,
+      onFailedAttempt(error) {
+        console.log("ThingsBoard is not ready yet", error);
+      },
+    },
+  );
   // Set sysadmin's password
   const sysadminClient = await createSysadminClient({
     baseUrl,

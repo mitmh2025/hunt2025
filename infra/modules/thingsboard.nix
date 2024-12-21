@@ -68,65 +68,78 @@ in {
       datasource.createLocally = mkEnableOption "Use local Postgres database";
     };
   };
-  config = lib.mkIf cfg.enable {
-    services.thingsboard.logback.loggers = lib.mapAttrs (_: lib.mkDefault) {
-      "org.thingsboard.server" = "INFO";
-      "org.apache.kafka.common.utils.AppInfoParser" = "WARN";
-      "org.apache.kafka.clients" = "WARN";
-      "com.microsoft.azure.servicebus.primitives.CoreMessageReceiver" = "OFF";
-    };
-    services.postgresql = lib.mkIf cfg.datasource.createLocally {
-      ensureDatabases = [
-        "thingsboard"
-      ];
-      ensureUsers = [
-        {
-          name = "thingsboard";
-          ensureDBOwnership = true;
-        }
-      ];
-    };
-
-    services.thingsboard.settings.spring.datasource = lib.mkIf cfg.datasource.createLocally {
-      url = "jdbc:postgresql:thingsboard?socketFactory=org.newsclub.net.unix.AFUNIXSocketFactory$FactoryArg&socketFactoryArg=/run/postgresql/.s.PGSQL.5432";
-      username = "thingsboard";
-    };
-
-    users.users.thingsboard = {
-      isSystemUser = true;
-      group = "thingsboard";
-    };
-    users.groups.thingsboard = {};
-
-    environment.systemPackages = with pkgs; [
-      thingsboard
-    ];
-
-    systemd.services.thingsboard = {
-      description = "ThingsBoard IOT Platform";
-
-      wantedBy = ["multi-user.target"];
-      wants = lib.mkIf cfg.datasource.createLocally [
-        "postgresql.service"
-      ];
-
-      environment = {
-        LOADER_PATH = "${configDir},${pkgs.hunt-thingsboard}/share/thingsboard/extensions";
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      services.thingsboard.logback.loggers = lib.mapAttrs (_: lib.mkDefault) {
+        "org.thingsboard.server" = "INFO";
+        "org.apache.kafka.common.utils.AppInfoParser" = "WARN";
+        "org.apache.kafka.clients" = "WARN";
+        "com.microsoft.azure.servicebus.primitives.CoreMessageReceiver" = "OFF";
       };
 
-      # TODO: Provision OAuth2 client
-      # https://thingsboard.io/docs/user-guide/oauth-2-support/#oauth-20-configuration-parameters
-
-      # TODO: Set sysadmin password
-
-      serviceConfig = {
-        #ExecStartPre = "${pkgs.thingsboard}/bin/thingsboard-install";
-        ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -XX:+IgnoreUnrecognizedVMOptions -XX:+HeapDumpOnOutOfMemoryError -XX:-UseBiasedLocking -XX:+UseTLAB -XX:+ResizeTLAB -XX:+PerfDisableSharedMem -XX:+UseCondCardMark -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -XX:+UseStringDeduplication -XX:+ParallelRefProcEnabled -XX:MaxTenuringThreshold=10 -Xms256m -Xmx512m -Djna.debug_load=true -Dspring.profiles.active=local";
-        Restart = "always";
-        RestartSec = "5s";
-        User = "thingsboard";
-        Group = "thingsboard";
+      services.thingsboard.settings.management = {
+        endpoint.health.enabled = true;
+        endpoints.web.exposure.include = "info,health,prometheus";
       };
-    };
-  };
+
+      users.users.thingsboard = {
+        isSystemUser = true;
+        group = "thingsboard";
+      };
+      users.groups.thingsboard = {};
+
+      environment.systemPackages = with pkgs; [
+        thingsboard
+      ];
+
+      systemd.services.thingsboard = {
+        description = "ThingsBoard IOT Platform";
+
+        wantedBy = ["multi-user.target"];
+
+        environment = {
+          LOADER_PATH = "${configDir},${pkgs.hunt-thingsboard}/share/thingsboard/extensions";
+        };
+
+        # TODO: Provision OAuth2 client
+        # https://thingsboard.io/docs/user-guide/oauth-2-support/#oauth-20-configuration-parameters
+
+        serviceConfig = {
+          ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -XX:+IgnoreUnrecognizedVMOptions -XX:+HeapDumpOnOutOfMemoryError -XX:-UseBiasedLocking -XX:+UseTLAB -XX:+ResizeTLAB -XX:+PerfDisableSharedMem -XX:+UseCondCardMark -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -XX:+UseStringDeduplication -XX:+ParallelRefProcEnabled -XX:MaxTenuringThreshold=10 -Xms256m -Xmx512m -Djna.debug_load=true -Dspring.profiles.active=local";
+          ExecStartPost = "-${pkgs.radioman}/bin/tbprovision";
+          TimeoutStartSec = "15min";
+          Restart = "always";
+          RestartSec = "5s";
+          User = "thingsboard";
+          Group = "thingsboard";
+        };
+      };
+    })
+    (lib.mkIf cfg.datasource.createLocally {
+      services.postgresql = {
+        ensureDatabases = [
+          "thingsboard"
+        ];
+        ensureUsers = [
+          {
+            name = "thingsboard";
+            ensureDBOwnership = true;
+          }
+        ];
+      };
+
+      services.thingsboard.settings.spring.datasource = {
+        url = "jdbc:postgresql:thingsboard?socketFactory=org.newsclub.net.unix.AFUNIXSocketFactory$FactoryArg&socketFactoryArg=/run/postgresql/.s.PGSQL.5432";
+        username = "thingsboard";
+      };
+
+      systemd.services.thingsboard = {
+        wants = ["postgresql.service"];
+        after = ["postgresql.service"];
+        preStart = ''
+          ${config.services.postgresql.package}/bin/psql thingsboard -c 'select 1 from admin_settings limit 1' > /dev/null || ${pkgs.thingsboard}/bin/thingsboard-install -Dspring.profiles.active=local
+        '';
+      };
+    })
+  ];
 }
