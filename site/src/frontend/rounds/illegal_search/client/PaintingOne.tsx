@@ -17,7 +17,7 @@ const PaintingTwo = ({
   teamState: TeamHuntState;
 }) => {
   const gateOpen =
-    teamState.rounds.illegal_search?.gates?.includes("isg06") ?? false;
+    teamState.rounds.illegal_search?.gates?.includes("isg08") ?? false;
   return (
     <>
       <Safe
