@@ -42,6 +42,8 @@
       systemd.services.hunt2025.environment.EMAIL_TRANSPORT = "postmark";
     }
     {
+      sops.secrets."thingsboard/sysadmin/password" = {};
+      sops.secrets."radioman/password" = {};
       sops.templates."tbprovision/env" = {
         owner = "thingsboard";
         content = ''

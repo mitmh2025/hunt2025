@@ -27,6 +27,8 @@
       };
     }
     {
+      sops.secrets."thingsboard/sysadmin/password" = {};
+      sops.secrets."radioman/password" = {};
       sops.templates."tbprovision/env" = {
         owner = "thingsboard";
         content = ''

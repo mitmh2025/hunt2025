@@ -155,6 +155,7 @@ async function main() {
       }
     },
     {
+      retries: 100,
       maxRetryTime: 300000,
       minTimeout: 500,
       maxTimeout: 10000,
