@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 
 const Mono = styled.span`
@@ -149,7 +149,9 @@ const Solution = (): JSX.Element => {
       {GROUPS.map(({ blanks, cluesAndAnswers }, i) => (
         <StyledTable key={`group-${i}`}>
           <tr>
+            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is a hard coded array that definitely has at least one element */}
             <td>{cluesAndAnswers[0]!.clue}</td>
+            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is a hard coded array that definitely has at least one element */}
             <td>{cluesAndAnswers[0]!.answer}</td>
             <td colSpan={cluesAndAnswers.length}>{blanks}</td>
           </tr>

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import styled from "styled-components";
 
 const Group = styled.div`
