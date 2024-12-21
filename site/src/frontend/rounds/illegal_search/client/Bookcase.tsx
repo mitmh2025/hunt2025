@@ -10,7 +10,7 @@ import bookcaseData from "./bookcaseData";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
-const BookcaseContainer = styled.div`
+const BookcaseContainer = styled.table`
   width: 840px;
   background-image: url(${dark_wood_texture});
   padding: 20px;
@@ -22,7 +22,7 @@ const BookcaseContainer = styled.div`
   display: block;
 `;
 
-const BookcaseShelf = styled.div`
+const BookcaseShelf = styled.tr`
   display: flex;
   align-items: flex-end;
   position: relative;
@@ -38,7 +38,7 @@ const BookcaseShelf = styled.div`
   }
 `;
 
-const Book = styled.div<{
+const Book = styled.td<{
   $color: string;
   $direction?: string;
   $pulled?: boolean;
@@ -84,7 +84,8 @@ const Book = styled.div<{
       0.5px -0.5px rgba(0, 0, 0, 0.8);
     border: 3px solid black;
 
-    background-color: ${({ $color }) => $color};
+    // Note: background needs to come *before* background-color because Sheets
+    // considers the last style rule to win
     background: linear-gradient(
         to top,
         rgba(0, 0, 0, 0) 17%,
@@ -106,6 +107,7 @@ const Book = styled.div<{
         ${({ $color }) => $color} 0%,
         ${({ $color }) => $color} 100%
       );
+    background-color: ${({ $color }) => $color};
 
     writing-mode: vertical-rl;
     transform: rotate(180deg);
@@ -133,12 +135,14 @@ const Book = styled.div<{
   }
 
   & .top {
+    display: block;
     position: absolute;
     background: white;
     background-image: linear-gradient(90deg, white 90%, gray 10%);
     background-size: 5px 5px;
     width: 62px;
-    height: 8px;
+    height: ${({ $pulled }) => $pulled ? 18 : 8}px;
+    transition: all 0.2s ease-in-out;
     transform-origin: bottom;
     transform: translate(0, -140px) skewX(-60deg);
     border-color: black;
@@ -147,8 +151,10 @@ const Book = styled.div<{
   }
 
   & .cover {
+    display: block;
     background: ${({ $color }) => $color};
-    width: 14px;
+    width: ${({ $pulled }) => $pulled ? 24 : 14}px;
+    transition: all 0.2s ease-in-out;
     height: 140px;
     position: absolute;
     transform-origin: left;
@@ -169,7 +175,7 @@ const BookcaseShelfExtras = styled.div`
   overflow: hidden;
 `;
 
-const HorizontalBook = styled.div<{
+const HorizontalBook = styled.td<{
   $color: string;
 }>`
   & .spine {
@@ -188,7 +194,8 @@ const HorizontalBook = styled.div<{
       0.5px 0.5px rgba(255, 255, 255, 0.3),
       -0.5px -0.5px rgba(0, 0, 0, 0.8);
     border: 3px solid black;
-    background-color: ${({ $color }) => $color};
+    // Note: background needs to come *before* background-color because Sheets
+    // considers the last style rule to win
     background: linear-gradient(
         to right,
         rgba(0, 0, 0, 0) 17%,
@@ -210,6 +217,7 @@ const HorizontalBook = styled.div<{
         ${({ $color }) => $color} 0%,
         ${({ $color }) => $color} 100%
       );
+    background-color: ${({ $color }) => $color};
     z-index: 1;
 
     width: 140px;
@@ -267,15 +275,15 @@ export function BookcaseInteraction({
                     handleClick(i, j);
                   }}
                 >
-                  <div className="spine" style={style}>
+                  <span className="spine" style={style}>
                     <span className="title">
                       {book.title}
                       <br />
                     </span>
                     <span className="author">{book.author}</span>
-                  </div>
-                  <div className="top" />
-                  <div className="cover" />
+                  </span>
+                  <span className="top" />
+                  <span className="cover" />
                 </Book>
               );
             })}
@@ -287,14 +295,14 @@ export function BookcaseInteraction({
                     const style = { fontSize: book.size };
                     return (
                       <HorizontalBook key={j} style={style} $color={book.color}>
-                        <div className="spine">
+                        <span className="spine">
                           <span className="title">
                             {book.title}
                             <br />
                           </span>
                           <span className="author">{book.author}</span>
-                        </div>
-                        <div className="cover" />
+                        </span>
+                        <span className="cover" />
                       </HorizontalBook>
                     );
                   })}
