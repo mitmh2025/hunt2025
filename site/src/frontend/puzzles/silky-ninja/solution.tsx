@@ -8,36 +8,24 @@ const StyledTable = styled.table`
   margin-right: auto;
   th,
   td {
-    padding: 0px 8px;
-    border-right-style: solid;
-    padding: 5pt 5pt 5pt 5pt;
-    border-bottom-color: #000000;
-    border-top-width: 1pt;
-    border-right-width: 1pt;
-    border-left-color: #000000;
+    padding: 6px;
+    border: 1px solid var(--black);
     vertical-align: top;
-    border-right-color: #000000;
-    border-left-width: 1pt;
-    border-top-style: solid;
-    border-left-style: solid;
-    border-bottom-width: 1pt;
-    border-top-color: #000000;
-    border-bottom-style: solid;
   }
 `;
 
 const LetterTable = styled(StyledTable)`
   td {
-    width: 200pt;
+    width: 266px;
   }
 `;
 
 const AnswerTable = styled(StyledTable)`
   tr {
-    height: 15.8pt;
+    height: 21px;
   }
   td {
-    width: 90pt;
+    width: 120px;
   }
 `;
 

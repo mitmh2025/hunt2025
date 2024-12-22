@@ -94,7 +94,6 @@ const DroidDitto = styled(Droid)`
 const Puzzle = () => {
   return (
     <>
-      <h1>Introduction to Decryption</h1>
       <div className="puzzle-flavor">
         We’ve received these cryptic messages from our rebel spies. Fortunately,
         our decryption droids are lined up to assist.
@@ -107,8 +106,8 @@ const Puzzle = () => {
           https://s.wsj.net/blogs/html/wsjcrypticguide.pdf
         </a>{" "}
         or{" "}
-        <a href="http://www.puzzledpint.com/files/3613/8170/3749/CrypticsGuide.pdf">
-          http://www.puzzledpint.com/files/3613/8170/3749/CrypticsGuide.pdf
+        <a href="https://www.puzzledpint.com/files/3613/8170/3749/CrypticsGuide.pdf">
+          https://www.puzzledpint.com/files/3613/8170/3749/CrypticsGuide.pdf
         </a>
         , but note that every cryptic is different, and these guides are not
         canonical.
