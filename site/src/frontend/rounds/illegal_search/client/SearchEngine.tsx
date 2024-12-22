@@ -23,6 +23,8 @@ import {
 import Bookcase from "./Bookcase";
 import Cryptex from "./Cryptex";
 import DeskDrawer from "./DeskDrawer";
+import Extra from "./Extra";
+import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 import Rug from "./Rug";
@@ -36,7 +38,7 @@ const ENABLE_DEVTOOLS = false as boolean; // type loosened to avoid always-truth
 const RASTER_WIDTH = 1920;
 const RASTER_HEIGHT = 1080;
 
-function boundsForArea(area: ScreenArea): {
+export function boundsForArea(area: ScreenArea): {
   left: string;
   right: string;
   top: string;
@@ -202,7 +204,7 @@ export const ModalTrigger = ({
   );
 };
 
-const ModalBackdrop = styled.div`
+export const ModalBackdrop = styled.div`
   position: absolute;
   left: 0;
   right: 0;
@@ -217,7 +219,7 @@ const ModalBackdrop = styled.div`
   justify-content: center;
 `;
 
-const PuzzleLinkBackdrop = styled.div`
+export const PuzzleLinkBackdrop = styled.div`
   background-color: rgba(101, 112, 86, 0.8);
   width: 600px;
   height: 48px;
@@ -512,7 +514,6 @@ const SearchEngine = ({
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- might add more plugins later
     if (interaction.plugin === "bookcase") {
       return (
         <Bookcase
@@ -526,10 +527,22 @@ const SearchEngine = ({
       );
     }
 
-    // TODO: do something with interaction.plugin
-    return (
-      <div key={`interaction-${interaction.plugin}`}>{interaction.plugin}</div>
-    );
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- might add more plugins later
+    if (interaction.plugin === "extra") {
+      return null;
+    }
+
+    return null;
+  });
+
+  const overlayInteractions = node.interactions.map((interaction) => {
+    if (interaction.plugin === "extra") {
+      return (
+        <Extra key={interaction.plugin} node={node} teamState={teamState} />
+      );
+    }
+
+    return null;
   });
 
   const modals = node.modals.map((modal, i) => {
@@ -618,33 +631,36 @@ const SearchEngine = ({
   // and we want to ensure the navigation is always accessible at the top.
   return (
     <ScreenScaleFactor.Provider value={scaleFactor}>
-      <SearchEngineSurface
-        style={{
-          // Performance: we use inline styles instead of styled-components for
-          // properties that can change frequently (e.g. during window resize)
-          // or to values from a very large domain of possibilities (many
-          // possible floating point values for scaleFactor)
-          transform: `scale(${scaleFactor})`,
-        }}
-        $backgroundImage={node.background}
-        onMouseMove={shouldCapture ? mouseMove : undefined}
-        onMouseDown={shouldCapture ? mouseDown : undefined}
-        onMouseUp={shouldCapture ? mouseUp : undefined}
-      >
-        {assets}
-        {interactions}
-        {navigations}
-        {modals}
-        {modalOverlay}
-        {devtoolsOverlay}
-      </SearchEngineSurface>
-      {ENABLE_DEVTOOLS ? <div>{JSON.stringify(node)}</div> : undefined}
-      {devtoolsAddendum}
-      {ENABLE_DEVTOOLS ? (
-        <button onClick={toggleCapture}>
-          {shouldCapture ? "Stop measuring" : "Measure"}
-        </button>
-      ) : undefined}
+      <ExtraModalRendererProvider>
+        <SearchEngineSurface
+          style={{
+            // Performance: we use inline styles instead of styled-components for
+            // properties that can change frequently (e.g. during window resize)
+            // or to values from a very large domain of possibilities (many
+            // possible floating point values for scaleFactor)
+            transform: `scale(${scaleFactor})`,
+          }}
+          $backgroundImage={node.background}
+          onMouseMove={shouldCapture ? mouseMove : undefined}
+          onMouseDown={shouldCapture ? mouseDown : undefined}
+          onMouseUp={shouldCapture ? mouseUp : undefined}
+        >
+          {assets}
+          {interactions}
+          {navigations}
+          {modals}
+          {overlayInteractions}
+          {modalOverlay}
+          {devtoolsOverlay}
+        </SearchEngineSurface>
+        {ENABLE_DEVTOOLS ? <div>{JSON.stringify(node)}</div> : undefined}
+        {devtoolsAddendum}
+        {ENABLE_DEVTOOLS ? (
+          <button onClick={toggleCapture}>
+            {shouldCapture ? "Stop measuring" : "Measure"}
+          </button>
+        ) : undefined}
+      </ExtraModalRendererProvider>
     </ScreenScaleFactor.Provider>
   );
 };

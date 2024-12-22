@@ -12,7 +12,9 @@ import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.png";
 import main_west_bg from "./assets/main_west.jpg";
 import ledger from "./assets/rug/ledger.svg";
+import ledger_blacklight from "./assets/rug/ledger_modal_blacklight.svg";
 import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
+import numberlock_box_ledger_blacklight from "./assets/rug/numberlock_box_ledger_blacklight.png";
 import rug_bg from "./assets/rug/rug_bg.svg";
 import money from "./assets/safe/safe_money_closeup_draft2.png";
 import birth_certificate from "./assets/secret/birth_certificate.svg";
@@ -78,7 +80,7 @@ type LockDatum = {
   gateId: string; // The gate which we will unlock when you submit the correct lock answer
 };
 // Map from which plugin does the check to the data relevant to that check
-const LOCK_DATA: Record<PluginName, LockDatum> = {
+const LOCK_DATA: Record<Exclude<PluginName, "extra">, LockDatum> = {
   deskdrawer: {
     // directional lock
     answer: "dlrddrr",
@@ -599,6 +601,13 @@ const ALL_NODES: NodeInternal[] = [
             bottom: -1,
           },
           asset: numberlock_box_ledger,
+          extraAsset: numberlock_box_ledger_blacklight,
+        },
+        extra: {
+          asset: ledger_blacklight,
+          gateId: "isg30",
+          postCode: "7V7KoGrLaYKd3c1JHZGFiw==",
+          slotId: "isp22",
         },
         slotId: "isp09",
         gateId: "isg14",
@@ -1248,6 +1257,15 @@ ALL_NODES.forEach((node) => {
   });
 });
 
+const MODALS_BY_EXTRA_POSTCODE = new Map<string, ModalInternal>();
+ALL_NODES.forEach((node) => {
+  node.modals.forEach((modal) => {
+    if (modal.extra?.postCode) {
+      MODALS_BY_EXTRA_POSTCODE.set(modal.extra.postCode, modal);
+    }
+  });
+});
+
 function modalFromModalInternal(
   modalInternal: ModalInternal,
   teamState: TeamHuntState,
@@ -1259,6 +1277,7 @@ function modalFromModalInternal(
     postCode,
     gateId: _gateId,
     solvedAssets,
+    extra,
     ...rest
   } = modalInternal;
   // Look up the puzzle slug for the named slotId in this round.  We know
@@ -1279,7 +1298,7 @@ function modalFromModalInternal(
   } else {
     mixin = { postCode };
   }
-  const obj = { ...rest, ...mixin };
+  const obj: Modal = { ...rest, ...mixin };
 
   if (solvedAssets && slug) {
     const isSolved = !!teamState.puzzles[slug]?.answer;
@@ -1299,6 +1318,29 @@ function modalFromModalInternal(
         }
       }
     }
+  }
+
+  if (teamState.rounds.illegal_search?.gates?.includes("isg26") && extra) {
+    const extraSlotObj = teamState.rounds.illegal_search.slots[extra.slotId];
+    const extraSlug = extraSlotObj?.slug;
+    // If slug is undefined, then lookup the random slot id => POST code mapping and include that
+    // otherwise, lookup (or stub) puzzle title & URL based on the slug from the puzzle data map
+    if (extraSlug) {
+      const extraPuzzle = PUZZLES[extraSlug];
+      const extraTitle =
+        extraPuzzle?.title ?? `Stub puzzle for slot ${extra.slotId}`;
+      const extraDesc = extraPuzzle?.initial_description;
+      obj.extra = {
+        asset: extra.asset,
+        title: extraTitle,
+        slug: extraSlug,
+        desc: extraDesc,
+      };
+    } else {
+      obj.extra = { asset: extra.asset, postCode: extra.postCode };
+    }
+  } else {
+    delete obj.placedAsset?.extraAsset;
   }
 
   const forInteraction = ownedByInteraction ?? false;
@@ -1337,6 +1379,11 @@ function filteredForFrontend(
 
   const keptPlacedAssets = node.placedAssets.flatMap((asset) => {
     const { includeIf, ...rest } = asset;
+
+    if (!teamState.rounds.illegal_search?.gates?.includes("isg26")) {
+      delete rest.extraAsset;
+    }
+
     if (includeIf === undefined) {
       // No condition means always include
       return [rest];
@@ -1364,12 +1411,19 @@ function filteredForFrontend(
     }
   });
 
+  const fullInteractions = [...node.interactions];
+  if (teamState.rounds.illegal_search?.gates?.includes("isg26")) {
+    fullInteractions.push({
+      plugin: "extra",
+    });
+  }
+
   return {
     id: node.id,
     background: node.background,
     placedAssets: keptPlacedAssets,
     navigations: keptNavigations,
-    interactions: node.interactions,
+    interactions: fullInteractions,
     sounds: node.sounds,
     modals,
     interactionModals:
@@ -1377,7 +1431,13 @@ function filteredForFrontend(
   };
 }
 
-export { NODES_BY_ID, MODALS_BY_POSTCODE, LOCK_DATA, filteredForFrontend };
+export {
+  NODES_BY_ID,
+  MODALS_BY_EXTRA_POSTCODE,
+  MODALS_BY_POSTCODE,
+  LOCK_DATA,
+  filteredForFrontend,
+};
 
 // node: "desk_drawer"
 //   assets:

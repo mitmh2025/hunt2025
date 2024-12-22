@@ -427,6 +427,13 @@ const HUNT: Hunt = {
         { id: "isp17", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
         { id: "isp18", unlockable_if: [{ gate_satisfied: "isg25" }, { slot_solved: "ism01" }], unlock_cost: 1 },
 
+        // The next 5 puzzles are the blacklight versions of 6-10
+        { id: "isp19", unlocked_if: { gate_satisfied: "isg27" } },
+        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" } },
+        { id: "isp21", unlocked_if: { gate_satisfied: "isg29" } },
+        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" } },
+        { id: "isp23", unlocked_if: { gate_satisfied: "isg31" } },
+
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }], slug: "papas_bookcase" }, // Bookcase
         { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg17" }], slug: "papas_stash" },
         { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg26" }] },
@@ -460,6 +467,11 @@ const HUNT: Hunt = {
         { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
         { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
         { id: "isg26", title: "Obtained the blacklight", satisfied_if: { slot_solved: "ism02" } }, // obtain the blacklight
+        { id: "isg27" }, // find the blacklight object behind the directional lock
+        { id: "isg28" }, // find the blacklight object behind the binary switch lock
+        { id: "isg29" }, // find the blacklight object behind the combination lock
+        { id: "isg30" }, // find the blacklight object behind the numeric lock
+        { id: "isg31" }, // find the blacklight object behind the word lock
       ],
       interactions: [
         {
