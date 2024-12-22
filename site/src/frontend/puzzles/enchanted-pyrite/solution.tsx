@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import solution1 from "./assets/solution1.svg";
 import solution10 from "./assets/solution10.svg";
