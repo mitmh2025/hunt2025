@@ -57,6 +57,16 @@ const DialogBox = styled.div`
     margin: 0.5rem 0;
   }
 
+  b,
+  strong {
+    font-weight: bold;
+  }
+
+  i,
+  em {
+    font-style: italic;
+  }
+
   .what-do-they-call-you-link {
     color: var(--gold-500);
   }
