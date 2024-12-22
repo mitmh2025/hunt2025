@@ -38,6 +38,7 @@
       };
       logback.rootLevel = "INFO";
       datasource.createLocally = true;
+      provision.ruleChainsFile = ../../../thingsboard/rulechains.json;
     };
 
     virtualisation.vmVariant = {

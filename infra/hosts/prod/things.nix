@@ -36,11 +36,9 @@
           TB_PASSWORD=${config.sops.placeholder."radioman/password"}
         '';
       };
-      systemd.services.thingsboard = {
-        environment.TB_RULE_CHAINS = ../../../thingsboard/rulechains.json;
-        serviceConfig.EnvironmentFile = [
-          config.sops.templates."tbprovision/env".path
-        ];
+      services.thingsboard.provision = {
+        ruleChainsFile = ../../../thingsboard/rulechains.json;
+        environmentFile = config.sops.templates."tbprovision/env".path;
       };
     }
     {

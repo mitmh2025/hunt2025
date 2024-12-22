@@ -106,7 +106,6 @@ in {
 
         serviceConfig = {
           ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -XX:+IgnoreUnrecognizedVMOptions -XX:+HeapDumpOnOutOfMemoryError -XX:-UseBiasedLocking -XX:+UseTLAB -XX:+ResizeTLAB -XX:+PerfDisableSharedMem -XX:+UseCondCardMark -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -XX:+UseStringDeduplication -XX:+ParallelRefProcEnabled -XX:MaxTenuringThreshold=10 -Xms256m -Xmx512m -Djna.debug_load=true -Dspring.profiles.active=local";
-          ExecStartPost = "-${pkgs.radioman}/bin/tbprovision";
           TimeoutStartSec = "15min";
           Restart = "always";
           RestartSec = "5s";
