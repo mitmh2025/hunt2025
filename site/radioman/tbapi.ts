@@ -541,6 +541,76 @@ export const telemetryContract = c.router({
   },
 });
 
+const RuleChainSchema = z.object({
+  id: IdSchema("RULE_CHAIN"),
+  createdTime: z.number(), // milliseconds, readOnly
+  name: z.string(),
+  type: z.enum(["CORE", "EDGE"]),
+  firstRuleNodeId: IdSchema("RULE_NODE"),
+  root: z.boolean(),
+  debugMode: z.boolean(),
+  configuration: z.any(),
+  additionalInfo: z.any(),
+  version: z.number().optional(),
+  externalId: IdSchema("RULE_CHAIN").nullable(),
+  tenantId: IdSchema("TENANT").nullable(),
+});
+
+const RuleChainMetadataSchema = z.object({
+  ruleChainId: IdSchema("RULE_CHAIN"),
+  version: z.number().optional(),
+  firstNodeIndex: z.number(),
+  nodes: z.array(z.any()),
+  connections: z.array(
+    z.object({
+      fromIndex: z.number(),
+      toIndex: z.number(),
+      type: z.string(),
+    }),
+  ),
+  ruleChainConnections: z.array(z.any()).nullable(),
+});
+
+export const RuleChainDataSchema = z.object({
+  ruleChains: z.array(RuleChainSchema),
+  metadata: z.array(RuleChainMetadataSchema),
+});
+
+export const ruleChainContract = c.router({
+  import: {
+    method: "POST",
+    path: `/api/ruleChains/import`,
+    query: z.object({
+      overwrite: z.boolean().optional(),
+    }),
+    body: RuleChainDataSchema,
+    responses: {
+      200: z.array(
+        z.object({
+          ruleChainId: IdSchema("RULE_CHAIN"),
+          ruleChainName: z.string(),
+          updated: z.boolean().optional(),
+          error: z.string().optional(),
+        }),
+      ),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  export: {
+    method: "GET",
+    path: `/api/ruleChains/export`,
+    query: z.object({
+      limit: z.number(),
+    }),
+    responses: {
+      200: RuleChainDataSchema,
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+});
+
 export const contract = c.router({
   auth: authContract,
   user: userContract,
@@ -548,6 +618,7 @@ export const contract = c.router({
   customer: customerContract,
   deviceProfile: deviceProfileContract,
   telemetry: telemetryContract,
+  ruleChain: ruleChainContract,
 });
 
 function newLoginClient(baseUrl: string) {
