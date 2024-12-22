@@ -99,10 +99,25 @@
     instance = lib.tfRef "google_sql_database_instance.prod.name";
     type = "CLOUD_IAM_SERVICE_ACCOUNT";
   };
+  resource.postgresql_role.thingsboard = {
+    provider = "postgresql.prod";
+    name = "thingsboard";
+  };
+  resource.postgresql_grant_role.thingsboard = {
+    provider = "postgresql.prod";
+    role = lib.tfRef "google_sql_user.things-vm.name";
+    grant_role = lib.tfRef "postgresql_role.thingsboard.name";
+  };
+  resource.postgresql_grant_role.hunt2025-tech-thingsboard = {
+    provider = "postgresql.prod";
+    role = lib.tfRef "google_sql_user.hunt2025-tech.name";
+    grant_role = lib.tfRef "postgresql_role.thingsboard.name";
+    with_admin_option = true;
+  };
   resource.postgresql_database.thingsboard = {
     provider = "postgresql.prod";
     name = "thingsboard";
-    owner = lib.tfRef "google_sql_user.things-vm.name";
+    owner = lib.tfRef "postgresql_role.thingsboard.name";
     encoding = "UTF8";
     lc_collate = "en_US.UTF8";
   };
