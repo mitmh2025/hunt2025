@@ -72,7 +72,7 @@ import RecipeSubstitutions from "./svelte-pitch";
 import ARecipeForSuccess from "./tame-chick";
 import EngagementsAndOtherCrimes from "./timely-head";
 import ReuseAndRecyclability from "./tinted-stream";
-import KoteiNoAngo from "./tragic-spider";
+import 皇帝の暗号 from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
@@ -155,7 +155,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
   a_heap_of_clards: AHeapOfClards,
-  kotei_no_ango: KoteiNoAngo,
+  皇帝の暗号: 皇帝の暗号,
   networking_event: NetworkingEvent,
   reuse_and_recyclability: ReuseAndRecyclability,
   the_center_is_in_plain_sight: TheCenterIsInPlainSight,

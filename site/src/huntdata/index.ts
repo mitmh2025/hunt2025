@@ -402,7 +402,7 @@ const HUNT: Hunt = {
       final_puzzle_slot: 'ism03',
       puzzles: [
         // The first 5 puzzles are unlockable once they are discovered in the UI.
-        { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "kotei_no_ango" },
+        { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "皇帝の暗号" },
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "cross_spread" },
         { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 },
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1, slug: "this_is_just_a_test" },

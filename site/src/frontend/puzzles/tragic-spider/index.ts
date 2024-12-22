@@ -4,7 +4,7 @@ import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "\u7687\u5e1d\u306e\u6697\u53f7",
-  slug: "kotei_no_ango",
+  slug: "\u7687\u5e1d\u306e\u6697\u53f7",
   initial_description:
     "Flavor text, a switch labeled in English and Japanese, and a series of images",
   answer: "THE END OF THE HEISEI ERA",
