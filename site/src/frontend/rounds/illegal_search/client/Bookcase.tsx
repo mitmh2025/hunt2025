@@ -12,6 +12,7 @@ import playSound from "./playSound";
 
 const BookcaseContainer = styled.div`
   width: 840px;
+  min-width: 840px;
   background-image: url(${dark_wood_texture});
   padding: 20px;
   border-radius: 5px;
