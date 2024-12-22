@@ -1,8 +1,34 @@
 import React from "react";
+import { createGlobalStyle } from "styled-components";
+import RobotoMonoBold from "./assets/RobotoMono-Bold.ttf";
+import RobotoMonoLight from "./assets/RobotoMono-Light.ttf";
+import RobotoMonoLightItalic from "./assets/RobotoMono-LightItalic.ttf";
+
+const Fonts = createGlobalStyle`
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(${RobotoMonoLight});
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(${RobotoMonoLightItalic});
+    font-weight: 300;
+    font-style: italic;
+  }
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(${RobotoMonoBold});
+    font-weight: bold;
+    font-style: normal;
+  }
+`;
 
 const Puzzle = () => {
   return (
     <>
+      <Fonts />
       <p className="puzzle-flavor">
         Who <strong>is</strong> your new employer, anyway? Billie clearly used
         to have a partner, or the agency wouldn′t be called <strong>2</strong>{" "}

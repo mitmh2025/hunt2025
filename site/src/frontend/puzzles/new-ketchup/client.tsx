@@ -31,7 +31,8 @@ const Bottom = styled.div`
   background-color: var(--gray-900);
 
   button {
-    font-family: monospace;
+    font-family: "Roboto Mono", monospace;
+    font-weight: 300;
   }
 `;
 
@@ -47,7 +48,8 @@ const DialogBox = styled.div`
   padding-bottom: 3.5rem;
   background-color: var(--black);
   color: var(--white);
-  font-family: monospace;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 300;
   margin-top: 1rem;
   position: relative;
 
