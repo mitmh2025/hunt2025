@@ -14,6 +14,7 @@ import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
 import WhoseSongIsItAnyway from "./delirious-mammoth";
 import TheBoardwalk from "./dental-shark";
+import FindOtherWaysOfSeeing from "./discrete-spine";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
@@ -182,6 +183,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
+  find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   what_do_they_call_you: WhatDoTheyCallYou,
