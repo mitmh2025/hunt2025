@@ -2,16 +2,6 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import audio1 from "./assets/1.mp3";
-import audio2 from "./assets/2.mp3";
-import audio3a from "./assets/3a.mp3";
-import audio3b from "./assets/3b.mp3";
-import audio4 from "./assets/4.mp3";
-import audio5 from "./assets/5.mp3";
-import audio6a from "./assets/6a.mp3";
-import audio6b from "./assets/6b.mp3";
-import audio7 from "./assets/7.mp3";
-import audio8 from "./assets/8.mp3";
-import audio9 from "./assets/9.mp3";
 import audio10a from "./assets/10a.mp3";
 import audio10b from "./assets/10b.mp3";
 import audio11 from "./assets/11.mp3";
@@ -23,6 +13,16 @@ import audio16 from "./assets/16.mp3";
 import audio17a from "./assets/17a.mp3";
 import audio17b from "./assets/17b.mp3";
 import audio18 from "./assets/18.mp3";
+import audio2 from "./assets/2.mp3";
+import audio3a from "./assets/3a.mp3";
+import audio3b from "./assets/3b.mp3";
+import audio4 from "./assets/4.mp3";
+import audio5 from "./assets/5.mp3";
+import audio6a from "./assets/6a.mp3";
+import audio6b from "./assets/6b.mp3";
+import audio7 from "./assets/7.mp3";
+import audio8 from "./assets/8.mp3";
+import audio9 from "./assets/9.mp3";
 import image from "./assets/image.png";
 
 const StyledTable = styled.table`
@@ -86,9 +86,9 @@ const Puzzle = (): JSX.Element => {
       />
       <StyledTable>
         {DATA.map((row, i) => (
-          <tr key={i}>
-            {row.map(({ audio, ipa }) => (
-              <td colSpan={row.length === 1 ? 2 : 1}>
+          <tr key={`row-${i}`}>
+            {row.map(({ audio, ipa }, j) => (
+              <td key={`cell-${i}-${j}`} colSpan={row.length === 1 ? 2 : 1}>
                 <span>
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption -- transcript provided inline */}
                   <audio controls src={audio} />
