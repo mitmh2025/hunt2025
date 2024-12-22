@@ -34,7 +34,7 @@ const HUNT: Hunt = {
         { id: "mdp02", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
         { id: "mdp03", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "songs_on_the_radio" },
         { id: "mdp04", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "downright_backwards" },
-        { id: "mdp05", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
+        { id: "mdp05", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "introduction_to_decryption" },
         { id: "mdp06", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
         { id: "mdp07", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 },
         { id: "mdp08", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "educational_rite_of_passage" },
