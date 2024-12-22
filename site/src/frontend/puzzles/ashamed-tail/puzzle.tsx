@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 const Group = styled.div`
   margin: 1em 0;
