@@ -150,7 +150,7 @@ const Book = styled.td<{
     left: 0;
     bottom: 0;
     width: 62px;
-    height: ${({ $pulled }) => $pulled ? 18 : 8}px;
+    height: ${({ $pulled }) => ($pulled ? 18 : 8)}px;
     transform-origin: bottom;
     transform: translate(0, -140px) skewX(-60deg);
     background: white;
@@ -166,7 +166,7 @@ const Book = styled.td<{
     position: absolute;
     left: 0;
     bottom: 0;
-    width: ${({ $pulled }) => $pulled ? 31 : 14}px;
+    width: ${({ $pulled }) => ($pulled ? 31 : 14)}px;
     height: 140px;
     transform-origin: left;
     transform: translate(62px, 0) skewY(-30deg);
@@ -301,7 +301,12 @@ export function BookcaseInteraction({
                 {extraBooks.slice(0, 1).map((book, j) => {
                   const style = { fontSize: book.size };
                   return (
-                    <HorizontalBook colSpan={3} key={j} $color={book.color} style={{ zIndex: 1 }}>
+                    <HorizontalBook
+                      colSpan={3}
+                      key={j}
+                      $color={book.color}
+                      style={{ zIndex: 1 }}
+                    >
                       <span className="spine" style={style}>
                         <span className="title">
                           {book.title}
