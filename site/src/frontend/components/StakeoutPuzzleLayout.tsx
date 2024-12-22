@@ -37,6 +37,7 @@ export const StakeoutHeader = styled(PuzzleHeader)`
   }
 
   .solved-stamp {
+    top: 1em;
     transform: rotate(8deg);
   }
 

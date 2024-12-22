@@ -31,6 +31,7 @@ const PuzzleHeader = styled.header`
   background-color: var(--gray-100);
   gap: 1rem;
   padding: 2rem;
+  position: relative;
 
   @media ${deviceMax.md} {
     gap: 2rem;
@@ -46,10 +47,6 @@ const PuzzleHeader = styled.header`
 const PuzzleTitle = styled.h1`
   grid-column: 1 / 3;
   overflow-x: clip;
-
-  .puzzle-title-span {
-    position: relative;
-  }
 `;
 
 const PuzzleMain = styled.main`

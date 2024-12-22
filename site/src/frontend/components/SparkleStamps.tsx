@@ -4,8 +4,8 @@ import { styled } from "styled-components";
 const StampWrapper = styled.span`
   font-size: 3rem;
   position: absolute;
-  bottom: -0.8em;
-  right: -3.8em;
+  top: 0.7em;
+  right: 1em;
   font-family: "Permanent Marker";
   transform: rotate(6deg);
   color: var(--red-700);

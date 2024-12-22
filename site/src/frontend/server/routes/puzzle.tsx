@@ -324,12 +324,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
       <PuzzleWrapperComponent>
         <PuzzleHeaderComponent>
-          <PuzzleTitleComponent>
-            <span className="puzzle-title-span">
-              {puzzleState.answer && <Stamp />}
-              {title}
-            </span>
-          </PuzzleTitleComponent>
+          {puzzleState.answer && <Stamp />}
+          <PuzzleTitleComponent>{title}</PuzzleTitleComponent>
           {/* TODO: add guess form, history, errata, etc. */}
           {guessFrag}
         </PuzzleHeaderComponent>
