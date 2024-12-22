@@ -326,13 +326,13 @@ const Solution = (): JSX.Element => {
         Sounding out each clue in its entirety, one can contextually figure out
         a “correct” sounding pronunciation, preserving the consonants and
         ignoring the vowels, that forms an enumerated clue. For example, the
-        clue that sounds like “true vee leng grupp sah van” can be corrected to
+        clue that sounds like "true vey lang gropp soo vonn" can be corrected to
         “traveling group seven”, which clues CARAVAN.
       </p>
       <p>
-        However, some clues are far too ambiguous to solve without additional
-        constraints. For example, the clues sounding like “glue far” and “foked
-        fauv” have many possible answers.
+        However, some clues are too ambiguous to solve without additional
+        constraints. For example, the clue sounding like “dah loash oss fahv”
+        has many possible answers.
       </p>
       <p>
         Returning to the beer theme, every clue points to an IPA-style beer
