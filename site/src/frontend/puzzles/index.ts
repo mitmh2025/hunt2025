@@ -16,6 +16,7 @@ import WhoseSongIsItAnyway from "./delirious-mammoth";
 import TheBoardwalk from "./dental-shark";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
+import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
@@ -181,6 +182,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
+  good_fences_make_good_otherwise_incompatible_neighbors:
+    GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress

@@ -488,7 +488,7 @@ const HUNT: Hunt = {
         { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "garden_anecdotes" },
         { id: "tmp04", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "what_do_they_call_you" },
         { id: "tmp05", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "engagements_and_other_crimes" },
-        { id: "tmp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "tmp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "good_fences_make_good_otherwise_incompatible_neighbors" },
         { id: "tmp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "tmp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
         { id: "tmp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
