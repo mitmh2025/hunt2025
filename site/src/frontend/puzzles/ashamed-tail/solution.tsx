@@ -148,17 +148,13 @@ const Solution = (): JSX.Element => {
       </p>
       {GROUPS.map(({ blanks, cluesAndAnswers }, i) => (
         <StyledTable key={`group-${i}`}>
-          <tr>
-            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is a hard coded array that definitely has at least one element */}
-            <td>{cluesAndAnswers[0]!.clue}</td>
-            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is a hard coded array that definitely has at least one element */}
-            <td>{cluesAndAnswers[0]!.answer}</td>
-            <td colSpan={cluesAndAnswers.length}>{blanks}</td>
-          </tr>
-          {cluesAndAnswers.slice(1).map(({ clue, answer }, j) => (
-            <tr key={`item-${i}-${j + 1}`}>
+          {cluesAndAnswers.map(({ clue, answer }, j) => (
+            <tr key={`group-${i}-row-${j}`}>
               <td>{clue}</td>
               <td>{answer}</td>
+              {j === 0 ? (
+                <td colSpan={cluesAndAnswers.length}>{blanks}</td>
+              ) : undefined}
             </tr>
           ))}
         </StyledTable>
