@@ -23,13 +23,13 @@ const Ending: Person = {
   name: AGENT_NAME,
   intro: [
     {
-      line: "You walk in the door—only to be greeted by a team of burly security guards! They march you down the hall and into a white, windowless room occupied only by an agent, a desk, and a dossier.",
+      line: "You walk in the door -- only to be greeted by a team of burly security guards! They march you down the hall and into a white, windowless room occupied only by an agent, a desk, and a dossier.",
     },
     {
       line: "The agent stands up and smiles as the guards push you in and close the door.",
     },
     {
-      line: "Well well well! You’ve made it here—congratulations! We’ve been tracking your snooping this whole time. Look—we have a case file of all the aliases and disguises you’ve used in this little adventure: <a class='what-do-they-call-you-link' href='/puzzles/what_do_they_call_you/case_file.txt'>case_file.txt</a>",
+      line: "Well well well! You’ve made it here -- congratulations! We’ve been tracking your snooping this whole time. Look -- we have a case file of all the aliases and disguises you’ve used in this little adventure: <a class='what-do-they-call-you-link' href='/puzzles/what_do_they_call_you/case_file.txt'>case_file.txt</a>",
       speaker: AGENT_NAME,
     },
     {
@@ -214,7 +214,7 @@ const Wikipedian: Person = {
       line: `You try to talk to one of the curators, ${WIKIPEDIAN_NAME}, but she is too frantic to answer your questions.`,
     },
     {
-      line: "We keep meticulous records of all of our changes, but it seems our system didn’t account for <strong>leap days</strong>—some of the items we’ve <strong>featured</strong> in our daily rotating exhibit in the atrium are missing!!",
+      line: "We keep meticulous records of all of our changes, but it seems our system didn’t account for <strong>leap days</strong> -- some of the items we’ve <strong>featured</strong> in our daily rotating exhibit in the atrium are missing!!",
       speaker: WIKIPEDIAN_NAME,
     },
   ],
@@ -272,7 +272,7 @@ const PowerpuffGirl: Person = {
       speaker: LITTLE_GIRL_NAME,
     },
     {
-      line: "Yes, that guy used to take this bus all the time! He dropped his library card last time I saw him—if you see him, can you give it back?",
+      line: "Yes, that guy used to take this bus all the time! He dropped his library card last time I saw him -- if you see him, can you give it back?",
       speaker: LITTLE_GIRL_NAME,
     },
   ],
@@ -324,7 +324,7 @@ const DungeonMaster: Person = {
   ],
   replySuccessful: [
     {
-      line: "HeLLLOOOO one and all and welcome to another episode of— what, you don’t want the whole intro? <em>FINE.</em>",
+      line: "HeLLLOOOO one and all and welcome to another episode of -- what, you don’t want the whole intro? <em>FINE.</em>",
       speaker: DUNGEONMASTER_NAME,
     },
     {
@@ -351,7 +351,7 @@ const Critic: Person = {
   name: CRITIC_NAME,
   intro: [
     {
-      line: `Across town, you walk up to a fine brownstone manse belonging to venerated literary critic ${CRITIC_NAME}. His butler informs you that he is expecting to interview a rising star of an American author who wrote a great novel in the ‘20s—a double-amputee’s memoir or something? Otherwise, he is not taking visitors.`,
+      line: `Across town, you walk up to a fine brownstone manse belonging to venerated literary critic ${CRITIC_NAME}. His butler informs you that he is expecting to interview a rising star of an American author who wrote a great novel in the ‘20s -- a double-amputee’s memoir or something? Otherwise, he is not taking visitors.`,
     },
   ],
   replyUnsuccessful: [
@@ -372,7 +372,7 @@ const Critic: Person = {
       speaker: CRITIC_NAME,
     },
     {
-      line: "Hmm... he used to attend some sort of book club meeting—lowbrow, you know, very droll. His compatriots there might know more.",
+      line: "Hmm... he used to attend some sort of book club meeting -- lowbrow, you know, very droll. His compatriots there might know more.",
       speaker: CRITIC_NAME,
     },
   ],
@@ -386,7 +386,7 @@ const Fiance: Person = {
   name: FIANCE_NAME,
   intro: [
     {
-      line: `You ring the bloke—a fellow named ${FIANCE_NAME} that your target went on a date with a while back. It seems that he’s seeing someone else now, and quite seriously.`,
+      line: `You ring the bloke -- a fellow named ${FIANCE_NAME} that your target went on a date with a while back. It seems that he’s seeing someone else now, and quite seriously.`,
     },
     {
       line: "I need a crystal gem to help me make my sweetheart’s engagement ring. Otherwise, I’m not interested!",
@@ -451,7 +451,7 @@ const Snowman: Person = {
       speaker: SNOWMAN_NAME,
     },
     {
-      line: "OH my GAWD I LOVED your Moulin Rouge routine—",
+      line: "OH my GAWD I LOVED your Moulin Rouge routine -- ",
       speaker: SNOWMAN_NAME,
     },
   ],
@@ -493,7 +493,7 @@ const CatLady: Person = {
       speaker: CATLADY_NAME,
     },
     {
-      line: "...Oh, yes, my son. He hasn’t called or written lately, the cheeky boy. Last I heard he had a new beau—they had a date together scheduled at the local ice rink!",
+      line: "...Oh, yes, my son. He hasn’t called or written lately, the cheeky boy. Last I heard he had a new beau -- they had a date together scheduled at the local ice rink!",
       speaker: CATLADY_NAME,
     },
   ],
@@ -509,7 +509,7 @@ const Manicurist: Person = {
       line: `At the salon, the nail technician ${MANICURIST_NAME} coolly evaluates you.`,
     },
     {
-      line: "<strong>Oh, P.I.</strong>—orange you a little out of your element here? Most salon operations are <em>soooooo</em> 19th century, but here the cuticles are on the bleeding edge—I need a colorful, crème-de-la-crème tech expert who can really polish up my business. Not some old-fashioned gumshoe slacquer.",
+      line: "<strong>Oh, P.I.</strong> -- orange you a little out of your element here? Most salon operations are <em>soooooo</em> 19th century, but here the cuticles are on the bleeding edge -- I need a colorful, crème-de-la-crème tech expert who can really polish up my business. Not some old-fashioned gumshoe slacquer.",
       speaker: MANICURIST_NAME,
     },
   ],
@@ -528,7 +528,7 @@ const Manicurist: Person = {
       speaker: MANICURIST_NAME,
     },
     {
-      line: "Oh, a former customer? Yes, I know the one. Sometimes he came in with his mother—a total homebody. I guess that was his way of getting her out of the house. I can give you her address.",
+      line: "Oh, a former customer? Yes, I know the one. Sometimes he came in with his mother -- a total homebody. I guess that was his way of getting her out of the house. I can give you her address.",
       speaker: MANICURIST_NAME,
     },
   ],
