@@ -326,7 +326,7 @@ const Solution = (): JSX.Element => {
         Sounding out each clue in its entirety, one can contextually figure out
         a “correct” sounding pronunciation, preserving the consonants and
         ignoring the vowels, that forms an enumerated clue. For example, the
-        clue that sounds like "true vey lang gropp soo vonn" can be corrected to
+        clue that sounds like “true vey lang gropp soo vonn” can be corrected to
         “traveling group seven”, which clues CARAVAN.
       </p>
       <p>
