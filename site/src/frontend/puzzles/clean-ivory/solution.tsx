@@ -1,8 +1,5 @@
 import React from "react";
-import LinkedImage from "../../components/LinkedImage";
-import image1 from "./assets/image1.png";
-import image2 from "./assets/image2.png";
-import image3 from "./assets/image3.png";
+import { styled } from "styled-components";
 import {
   Math,
   MFrac,
@@ -14,7 +11,10 @@ import {
   MSub,
   MSup,
 } from "../../components/MathML";
-import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
+import image1 from "./assets/image1.png";
+import image2 from "./assets/image2.png";
+import image3 from "./assets/image3.png";
 
 const SizedImage = styled(LinkedImage)`
   display: block;
@@ -316,7 +316,7 @@ const Solution = (): JSX.Element => {
               <MN>0</MN>
             </MSub>
           </MSup>
-          <MO>-</MO>
+          <MO>&#x2212;</MO>
           <MSup>
             <MSub>
               <MI>a</MI>
@@ -335,7 +335,7 @@ const Solution = (): JSX.Element => {
               <MN>2</MN>
             </MSub>
           </MSup>
-          <MO>-</MO>
+          <MO>&#x2212;</MO>
           <MN>3</MN>
           <MSup>
             <MSub>
@@ -345,7 +345,7 @@ const Solution = (): JSX.Element => {
               <MN>3</MN>
             </MSub>
           </MSup>
-          <MO>-</MO>
+          <MO>&#x2212;</MO>
           <MN>2</MN>
           <MSup>
             <MSub>
@@ -355,7 +355,7 @@ const Solution = (): JSX.Element => {
               <MN>4</MN>
             </MSub>
           </MSup>
-          <MO>-</MO>
+          <MO>&#x2212;</MO>
           <MN>2</MN>
           <MSup>
             <MSub>
@@ -382,13 +382,17 @@ const Solution = (): JSX.Element => {
       <Math>
         <MSqrt>
           <MN>3</MN>
-          <MO>(</MO>
+          <MO stretchy={true} symmetric={true}>
+            (
+          </MO>
           <MN>26</MN>
           <MO>+</MO>
           <MSqrt>
             <MN>3</MN>
           </MSqrt>
-          <MO>)</MO>
+          <MO stretchy={true} symmetric={true}>
+            )
+          </MO>
         </MSqrt>{" "}
         <MO>=</MO>{" "}
         <MSqrt>
@@ -498,7 +502,7 @@ const Solution = (): JSX.Element => {
               </MRow>
             </MFrac>
             <MO separator={true}>,</MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MN>1</MN>
@@ -527,7 +531,7 @@ const Solution = (): JSX.Element => {
               </MRow>
             </MFrac>
             <MO separator={true}>,</MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MSqrt>
@@ -551,7 +555,7 @@ const Solution = (): JSX.Element => {
             </MO>
             <MN>0</MN>
             <MO separator={true}>,</MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MN>1</MN>
             <MO stretchy={true} symmetric={true}>
               )
@@ -564,7 +568,7 @@ const Solution = (): JSX.Element => {
             <MO stretchy={true} symmetric={true}>
               (
             </MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MN>1</MN>
@@ -574,7 +578,7 @@ const Solution = (): JSX.Element => {
               </MRow>
             </MFrac>
             <MO separator={true}>,</MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MSqrt>
@@ -596,7 +600,7 @@ const Solution = (): JSX.Element => {
             <MO stretchy={true} symmetric={true}>
               (
             </MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MSqrt>
@@ -608,7 +612,7 @@ const Solution = (): JSX.Element => {
               </MRow>
             </MFrac>
             <MO separator={true}>,</MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MN>1</MN>
@@ -628,7 +632,7 @@ const Solution = (): JSX.Element => {
             <MO stretchy={true} symmetric={true}>
               (
             </MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MN>1</MN>
             <MO separator={true}>,</MO>
             <MN>0</MN>
@@ -643,7 +647,7 @@ const Solution = (): JSX.Element => {
             <MO stretchy={true} symmetric={true}>
               (
             </MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MSqrt>
@@ -674,7 +678,7 @@ const Solution = (): JSX.Element => {
             <MO stretchy={true} symmetric={true}>
               (
             </MO>
-            <MO>-</MO>
+            <MO>&#x2212;</MO>
             <MFrac>
               <MRow>
                 <MN>1</MN>
