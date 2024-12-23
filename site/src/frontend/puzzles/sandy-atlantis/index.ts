@@ -4,7 +4,7 @@ import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "🔎🧊",
-  slug: "magnifying_glass_ice",
+  slug: "🔎🧊",
   initial_description: "A bunch of emojis.",
   answer: "CHIFFONIER",
   authors: ["Alex St Claire"],
