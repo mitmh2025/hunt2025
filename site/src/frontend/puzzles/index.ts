@@ -51,6 +51,7 @@ import TemporalInvestigations from "./offensive-cat";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
+import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
 import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
@@ -118,6 +119,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cruciverbal: Cruciverbal,
   dear_diary: DearDiary,
   doable_double: DoableDouble,
+  editors_solemnity: EditorsSolemnity,
   fight_night_at_mos: FightNightAtMos,
   its_not_clear: ItsNotClear,
   just_fing_behave: JustFingBehave,
@@ -133,7 +135,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   sing_like_a_canary: SingLikeACanary,
   some_assembly_required: SomeAssemblyRequired,
   taste_explosion: TasteExplosion,
-
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
