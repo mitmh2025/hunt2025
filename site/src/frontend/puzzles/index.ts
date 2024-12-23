@@ -10,6 +10,7 @@ import MellowPlanet from "./brilliant-center";
 import BorderlinePersonality from "./calculating-square";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
+import HalfBaked from "./classic-link";
 import TheInspectre from "./clean-ivory";
 import NetworkingEvent from "./confused-antarctica";
 import StoryVisionContest from "./corrupt-embassy";
@@ -170,6 +171,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   bermuda_triangle: BermudaTriangle,
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
+  half_baked: HalfBaked,
   a_heap_of_clards: AHeapOfClards,
   皇帝の暗号: 皇帝の暗号,
   networking_event: NetworkingEvent,
