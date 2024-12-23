@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "The Inspectre",
   slug: "the_inspectre",
   initial_description:
-    "You have a bag full of clear acrylic pieces and a sheet of paper with lines on it.  Note: This is a physical puzzle so test solving will be done on campus during work sessions or by in-person testers in the Boston area (contact @arcturus to coordinate).  This is a late-round puzzle.",
+    "A bag full of clear acrylic pieces and a sheet of paper with lines on it.",
   answer: "TILECUTTER",
   authors: ["Andrew Russell"],
   editors: ["Joel Fried", "Melanie Matchett Wood", "Sid Creutz"],
