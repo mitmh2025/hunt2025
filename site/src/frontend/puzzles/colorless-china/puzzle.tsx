@@ -11,25 +11,13 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
 
   return (
     <>
+      <p className="puzzle-flavor">
+        To solve the case, narrow down to only the fraudulent receipts.
+      </p>
       {pickupCompleted ? (
         <>
-          <p className="puzzle-flavor">
-            To solve the case, narrow down to only the fraudulent receipts.
-          </p>
           <p>Our records show you have picked up your copy of this puzzle.</p>
           <p>You should have received a stack of 58 receipts.</p>
-          <LinkedImage
-            src={image1}
-            alt="A handwritten list of sets of blanks on ruled paper, labeled SUSPECTS."
-          />
-          <LinkedImage
-            src={image2}
-            alt="A handwritten list of sets of blanks on ruled paper, labeled VICTIMS."
-          />
-          <LinkedImage
-            src={image3}
-            alt="A Venn diagram. The sides are empty. The center contains comma-separated numbers."
-          />
         </>
       ) : (
         <>
@@ -37,6 +25,18 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>You should receive a stack of 58 receipts.</p>
         </>
       )}
+      <LinkedImage
+        src={image1}
+        alt="A handwritten list of sets of blanks on ruled paper, labeled SUSPECTS."
+      />
+      <LinkedImage
+        src={image2}
+        alt="A handwritten list of sets of blanks on ruled paper, labeled VICTIMS."
+      />
+      <LinkedImage
+        src={image3}
+        alt="A Venn diagram. The sides are empty. The center contains comma-separated numbers."
+      />
     </>
   );
 };
