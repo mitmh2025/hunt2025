@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import imgA from "./assets/A.png";
 import imgB from "./assets/B.png";
 import imgC from "./assets/C.png";
@@ -33,11 +34,6 @@ const PuzzleRow = styled.div`
 const PuzzleRowGray = styled(PuzzleRow)`
   background-color: #ddd;
   padding: 20px;
-`;
-
-const EditorsNote = styled.div`
-  padding: 30px;
-  font-style: italic;
 `;
 
 const PuzzleList = styled.div`
@@ -94,11 +90,11 @@ const DroidDitto = styled(Droid)`
 const Puzzle = () => {
   return (
     <>
-      <div className="puzzle-flavor">
+      <p className="puzzle-flavor">
         We’ve received these cryptic messages from our rebel spies. Fortunately,
         our decryption droids are lined up to assist.
-      </div>
-      <EditorsNote>
+      </p>
+      <AuthorsNote>
         Editors’ Note: These are cryptic crossword clues, a common type in
         puzzlehunts involving both crossword definitions and wordplay. If you’ve
         never seen them before, check out{" "}
@@ -111,7 +107,7 @@ const Puzzle = () => {
         </a>
         , but note that every cryptic is different, and these guides are not
         canonical.
-      </EditorsNote>
+      </AuthorsNote>
       <PuzzleList>
         <PuzzleRow>
           <Clue>Cannibalism acknowledged secret buffet (5).</Clue>

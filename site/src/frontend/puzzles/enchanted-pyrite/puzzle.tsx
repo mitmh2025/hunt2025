@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import image1 from "./assets/image1.svg";
 import image2 from "./assets/image2.svg";
 import image3 from "./assets/image3.svg";
@@ -9,10 +10,6 @@ import image5 from "./assets/image5.svg";
 
 const GreenSpan = styled.span`
   color: #6aa84f;
-`;
-
-const AuthorsNote = styled.p`
-  font-size: 14px;
 `;
 
 const PrintImage = styled(LinkedImage)<{ $width: number }>`
