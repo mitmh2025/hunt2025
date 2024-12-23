@@ -34,6 +34,10 @@ export const PaperTrailHeader = styled(PuzzleHeader)`
     font-weight: 500;
   }
 
+  .solved-stamp {
+    opacity: 0.5;
+  }
+
   #puzzle-guess-section {
     background-color: #65413ad0;
     margin-top: -8px;

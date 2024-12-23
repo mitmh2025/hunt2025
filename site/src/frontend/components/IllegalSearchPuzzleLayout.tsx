@@ -14,6 +14,12 @@ const BaseIllegalSearchHeader = styled(PuzzleHeader)`
     font-family: "Alegreya SC";
   }
 
+  .solved-stamp {
+    color: var(--red-800);
+    fill: var(--red-800);
+    opacity: 0.8;
+  }
+
   #puzzle-guess-section {
     background-color: #461f09;
     border: 0.5px solid #5b290f;
@@ -60,6 +66,14 @@ export const BlacklightIllegalSearchHeader = styled(BaseIllegalSearchHeader)`
       0 0 0.5em #e993ff,
       0 0 0.75em #ffffff88,
       0 0 1em black;
+  }
+
+  .blacklight-solved-stamp {
+    color: #e993ff;
+    fill: #e993ff;
+    transform: rotate(-9deg);
+    top: 1.2em;
+    right: 1.5em;
   }
 
   #second-puzzle-guess-section {

@@ -46,6 +46,7 @@ import {
   SolutionHintTable,
   SolutionCannedResponseTable,
 } from "../../components/SolutionLayout";
+import Stamp from "../../components/SparkleStamps";
 import Spoiler from "../../components/Spoiler";
 import {
   StakeoutHeader,
@@ -323,6 +324,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
       <PuzzleWrapperComponent>
         <PuzzleHeaderComponent>
+          {puzzleState.answer && <Stamp />}
           <PuzzleTitleComponent>{title}</PuzzleTitleComponent>
           {/* TODO: add guess form, history, errata, etc. */}
           {guessFrag}

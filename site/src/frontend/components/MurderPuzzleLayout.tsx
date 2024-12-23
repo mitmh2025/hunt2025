@@ -34,6 +34,12 @@ export const MurderHeader = styled(PuzzleHeader)`
     color: var(--gold-500);
   }
 
+  .solved-stamp {
+    color: var(--red-500);
+    fill: var(--red-500);
+    opacity: 0.6;
+  }
+
   #puzzle-guess-section {
     color: var(--gold-400);
     background-color: var(--teal-600);
