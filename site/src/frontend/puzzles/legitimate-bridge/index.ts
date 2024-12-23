@@ -8,7 +8,7 @@ const puzzle: PuzzleDefinition = {
   slug: "jargon",
   initial_description:
     "A series of clickable colored squares, each leading to a series of prompts with text boxes",
-  answer: "LIFEFORCE, PHILOLOGY",
+  answer: "LIFEFORCE", // TODO: implement re-solve mechanic for PHILOLOGY
   authors: ["Ariel Schwartz"],
   editors: ["Alex Churchill", "Jesse Moeller", "Steve Banzaert"],
   additional_credits: [
