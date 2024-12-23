@@ -1,5 +1,6 @@
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
+import Superlatives from "./acute-ski";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
@@ -139,6 +140,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   seating_arrangements: SeatingArrangements,
   sing_like_a_canary: SingLikeACanary,
   some_assembly_required: SomeAssemblyRequired,
+  superlatives: Superlatives,
   taste_explosion: TasteExplosion,
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
