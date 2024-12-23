@@ -9,7 +9,7 @@ const puzzle: PuzzleDefinition = {
     "A series of hexagonal grids with some numbers and symbols in them, plus some instructions.",
   answer: "SUFFOLK EWES",
   authors: ["Denis Auroux"],
-  editors: ["James Douberley", "jarsyl", "Li-Mei Lim"],
+  editors: ["James Douberley", "Henry Wong", "Li-Mei Lim"],
   additional_credits: [],
   content: {
     component: Puzzle,

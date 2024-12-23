@@ -9,7 +9,7 @@ const puzzle: PuzzleDefinition = {
   authors: ["Mike Mannis", "Alex St Claire"],
   editors: [
     "James Douberley",
-    "jarsyl",
+    "Henry Wong",
     "Melanie Matchett Wood",
     "Robin Deits",
   ],
