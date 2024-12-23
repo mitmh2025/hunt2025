@@ -39,7 +39,7 @@ function getSquareStyles({
   selected: boolean;
   selectionSides: SquareSide[];
 }): React.CSSProperties {
-  let styles: React.CSSProperties = {
+  const styles: React.CSSProperties = {
     backgroundColor: COLOR_TO_HEX[color],
   };
   if (selected) {
