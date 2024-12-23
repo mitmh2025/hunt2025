@@ -7,7 +7,8 @@ import image from "./assets/image.png";
 
 export const StyledDiv = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Puzzle = (): JSX.Element => {
@@ -28,6 +29,10 @@ const Puzzle = (): JSX.Element => {
             default
           />
         </audio>
+        <details>
+          <summary>Audio transcript</summary>
+          <StyledDiv>ɹiʧaɪleɪ zeɪpu lənɔr vɜr</StyledDiv>
+        </details>
       </StyledDiv>
     </>
   );
