@@ -294,7 +294,7 @@ const HUNT: Hunt = {
         { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "a_weathered_note" },
         { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "ಕಾಬವದೋೀ್" },
         { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "bar_talk" },
-        { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
+        { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "the_inspectre" },
         { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
         { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
         { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
@@ -333,6 +333,9 @@ const HUNT: Hunt = {
           },
           slug: "the_shell_game",
         },
+      ],
+      gates: [
+        {id: "ptg02" }, // Picked up The Inspectre from Gala
       ],
       interactions: [
         {
