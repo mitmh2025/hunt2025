@@ -295,7 +295,7 @@ const HUNT: Hunt = {
         { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "ಕಾಬವದೋೀ್" },
         { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "bar_talk" },
         { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "the_inspectre" },
-        { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
         { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
         { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
         { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
@@ -335,7 +335,8 @@ const HUNT: Hunt = {
         },
       ],
       gates: [
-        {id: "ptg02" }, // Picked up The Inspectre from Gala
+        { id: "ptg01" }, // Picked up Eponymous Forensic Accountant from Gala
+        { id: "ptg02" }, // Picked up The Inspectre from Gala
       ],
       interactions: [
         {
