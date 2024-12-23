@@ -1,6 +1,6 @@
 import React from "react";
-import { css, styled } from "styled-components";
-import { type Color, COLOR_TO_CSS } from "./Typedefs";
+import { styled } from "styled-components";
+import { type Color, COLOR_TO_HEX } from "./Typedefs";
 
 export enum SquareSide {
   ALL = "ALL",
@@ -18,31 +18,7 @@ type SquareProps = {
   selectionSides?: SquareSide[];
 };
 
-const allBorder = css`
-  border-width: 8px;
-`;
-
-const topBorder = css`
-  border-top-width: 8px;
-`;
-
-const leftBorder = css`
-  border-left-width: 8px;
-`;
-
-const bottomBorder = css`
-  border-bottom-width: 8px;
-`;
-
-const rightBorder = css`
-  border-right-width: 8px;
-`;
-
-const StyledSquare = styled.div<{
-  $color: Color;
-  $selected: boolean;
-  $selectionSides: SquareSide[];
-}>`
+const StyledSquare = styled.div`
   height: 96px;
   width: 96px;
   cursor: pointer;
@@ -52,23 +28,40 @@ const StyledSquare = styled.div<{
   justify-content: center;
   border: 0px solid gray;
   flex: 0 0 96px;
-  ${({ $color, $selectionSides, $selected }) => {
-    return css`
-      ${COLOR_TO_CSS[$color]}
-      ${$selected && $selectionSides.includes(SquareSide.ALL) ? allBorder : {}}
-      ${$selected && $selectionSides.includes(SquareSide.TOP) ? topBorder : {}}
-      ${$selected && $selectionSides.includes(SquareSide.LEFT)
-        ? leftBorder
-        : {}}
-      ${$selected && $selectionSides.includes(SquareSide.BOTTOM)
-        ? bottomBorder
-        : {}}
-      ${$selected && $selectionSides.includes(SquareSide.RIGHT)
-        ? rightBorder
-        : {}}
-    `;
-  }}
 `;
+
+function getSquareStyles({
+  color,
+  selected,
+  selectionSides,
+}: {
+  color: Color;
+  selected: boolean;
+  selectionSides: SquareSide[];
+}): React.CSSProperties {
+  let styles: React.CSSProperties = {
+    backgroundColor: COLOR_TO_HEX[color],
+  };
+  if (selected) {
+    if (selectionSides.includes(SquareSide.ALL)) {
+      styles.borderWidth = "8px";
+    } else {
+      if (selectionSides.includes(SquareSide.TOP)) {
+        styles.borderTopWidth = "8px";
+      }
+      if (selectionSides.includes(SquareSide.LEFT)) {
+        styles.borderLeftWidth = "8px";
+      }
+      if (selectionSides.includes(SquareSide.BOTTOM)) {
+        styles.borderBottomWidth = "8px";
+      }
+      if (selectionSides.includes(SquareSide.RIGHT)) {
+        styles.borderRightWidth = "8px";
+      }
+    }
+  }
+  return styles;
+}
 
 export default function Square({
   color,
@@ -79,9 +72,7 @@ export default function Square({
 }: SquareProps): JSX.Element {
   return (
     <StyledSquare
-      $color={color}
-      $selected={selected}
-      $selectionSides={selectionSides}
+      style={getSquareStyles({ color, selected, selectionSides })}
       onClick={() => {
         onClick();
       }}

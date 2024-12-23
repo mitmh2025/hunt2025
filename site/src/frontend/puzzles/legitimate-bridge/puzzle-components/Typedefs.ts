@@ -49,6 +49,18 @@ export const COLOR_TO_CSS: {
   `,
 };
 
+export const COLOR_TO_HEX: Record<Color, string> = {
+  [PuzzleColor.WHITE]: "white",
+  [PuzzleColor.BLACK]: "black",
+  [PuzzleColor.RED]: "#aa1919",
+  [PuzzleColor.BLUE]: "#094a89",
+  [PuzzleColor.YELLOW]: "yellow",
+  [PuzzleColor.PURPLE]: "#8a19aa",
+  [PuzzleColor.ORANGE]: "#ff8900",
+  [PuzzleColor.CREAM]: "#f3d793",
+  [NonPuzzleColor.GRAY]: "#b1b1b1",
+};
+
 export enum Height {
   HIGH = "HIGH",
   MIDDLE = "MIDDLE",

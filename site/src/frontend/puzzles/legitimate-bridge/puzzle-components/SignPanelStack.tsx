@@ -1,14 +1,13 @@
 import React from "react";
 import { styled } from "styled-components";
 import EmptyPanel from "./EmptyPanel";
-import { COLOR_TO_CSS, Height, type PuzzleColor } from "./Typedefs";
+import { COLOR_TO_HEX, Height, type PuzzleColor } from "./Typedefs";
 
-const StyledWrapper = styled.div<{ $color: PuzzleColor }>`
+const StyledWrapper = styled.div`
   height: 132px;
   width: 132px;
   padding: 8px;
   font-size: 2em;
-  ${({ $color }) => COLOR_TO_CSS[$color]}
 `;
 
 const StyledSignPanel = styled.div`
@@ -21,11 +20,10 @@ const StyledSignPanel = styled.div`
   align-items: center;
 `;
 
-const SignText = styled.div<{ $fontSize: number }>`
+const SignText = styled.div`
   width: 100px;
   flex: 0 0 auto;
   text-align: center;
-  font-size: ${({ $fontSize }) => $fontSize}%;
 `;
 
 type SignPanelProps = {
@@ -36,9 +34,9 @@ type SignPanelProps = {
 
 function SignPanel({ color, fontSize, text }: SignPanelProps): JSX.Element {
   return (
-    <StyledWrapper $color={color}>
+    <StyledWrapper style={{ backgroundColor: COLOR_TO_HEX[color] }}>
       <StyledSignPanel>
-        <SignText $fontSize={fontSize}>{text}</SignText>
+        <SignText style={{ fontSize: `${fontSize}%` }}>{text}</SignText>
       </StyledSignPanel>
     </StyledWrapper>
   );

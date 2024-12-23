@@ -3,21 +3,18 @@ import { styled } from "styled-components";
 import success from "../assets/success.wav";
 import { CLEANSTRING_REGEX } from "./PuzzleConstants";
 import {
-  COLOR_TO_CSS,
+  COLOR_TO_HEX,
   isCreamPuzzle,
   isSolvedPuzzle,
   type MinimalPuzzle,
   type Puzzle,
-  type PuzzleColor,
 } from "./Typedefs";
 
-const PanelOuterWrapper = styled.div<{ $color: PuzzleColor; $solved: boolean }>`
+const PanelOuterWrapper = styled.div`
   height: 132px;
   width: 132px;
   padding: 8px;
   font-size: 2em;
-  cursor: ${({ $solved }) => ($solved ? "default" : "pointer")};
-  ${({ $color }) => COLOR_TO_CSS[$color]}
 `;
 
 const PanelInnerWrapper = styled.div`
@@ -33,27 +30,22 @@ const PuzzlePromptWrapper = styled.div`
   align-items: center;
 `;
 
-const PuzzlePrompt = styled.div<{ $fontSize: number }>`
+const PuzzlePrompt = styled.div`
   color: white;
   margin: 8px;
   width: 100px;
   flex: 0 0 auto;
   text-align: center;
-  font-size: ${({ $fontSize }) => $fontSize}%;
 `;
 
-const PuzzleAnswerInputWrapper = styled.div<{ $solved: boolean }>`
+const PuzzleAnswerInputWrapper = styled.div`
   height: 50%;
   padding: 8px;
   display: flex;
   justify-content: center;
-  align-items: ${({ $solved }) => ($solved ? "center" : "normal")};
 `;
 
-const PuzzleAnswerInput = styled.input<{
-  $fontSize: number;
-  $invalid: boolean;
-}>`
+const PuzzleAnswerInput = styled.input`
   background-color: #999;
   flex: 1 0 auto;
   border-radius: 8px;
@@ -64,23 +56,20 @@ const PuzzleAnswerInput = styled.input<{
   text-align: center;
   width: 100px;
   font-family: "Jargon";
-  font-size: ${({ $fontSize }) => $fontSize}%;
   &:hover {
     background-color: white;
     color: gray;
   }
   &:focus {
     background-color: white;
-    color: ${({ $invalid }) => ($invalid ? "red" : "gray")};
   }
 `;
 
-const PuzzleAnswer = styled.div<{ $fontSize: number }>`
+const PuzzleAnswer = styled.div`
   color: #00ff00;
   width: 100px;
   flex: 0 0 auto;
   text-align: center;
-  font-size: ${({ $fontSize }) => $fontSize}%;
 `;
 
 type PanelProps = {
@@ -108,6 +97,7 @@ export default function PuzzlePanel({
 }: PanelProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string | undefined>(undefined);
   const [isInvalidInput, setIsInvalidInput] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const solved = isSolvedPuzzle(puzzle);
 
   function correctCallback(): void {
@@ -149,25 +139,36 @@ export default function PuzzlePanel({
   }
 
   return (
-    <PanelOuterWrapper $color={puzzle.color} $solved={solved}>
+    <PanelOuterWrapper
+      style={{
+        backgroundColor: COLOR_TO_HEX[puzzle.color],
+        cursor: solved ? "default" : "pointer",
+      }}
+    >
       <PanelInnerWrapper>
         <PuzzlePromptWrapper>
           <PuzzlePrompt
-            $fontSize={isCreamPuzzle(puzzle) ? 100 : puzzle.fontSize}
+            style={{
+              fontSize: isCreamPuzzle(puzzle) ? "100%" : `${puzzle.fontSize}%`,
+            }}
           >
             {puzzle.prompt}
           </PuzzlePrompt>
         </PuzzlePromptWrapper>
-        <PuzzleAnswerInputWrapper $solved={solved}>
+        <PuzzleAnswerInputWrapper
+          style={{ alignItems: solved ? "center" : "normal" }}
+        >
           {solved && (
-            <PuzzleAnswer $fontSize={puzzle.solutionFontSize}>
+            <PuzzleAnswer style={{ fontSize: `${puzzle.solutionFontSize}%` }}>
               {puzzle.solution}
             </PuzzleAnswer>
           )}
           {!solved && (
             <PuzzleAnswerInput
-              $fontSize={puzzle.solutionFontSize}
-              $invalid={isInvalidInput}
+              style={{
+                fontSize: `${puzzle.solutionFontSize}%`,
+                color: isFocused ? (isInvalidInput ? "red" : "gray") : "black",
+              }}
               ref={(el: HTMLInputElement) => {
                 inputRefCallback(el);
               }}
@@ -175,8 +176,10 @@ export default function PuzzlePanel({
               onInput={onInput}
               onFocus={() => {
                 setInputValue("");
+                setIsFocused(true);
               }}
               onBlur={() => {
+                setIsFocused(false);
                 setInputValue(undefined);
                 setIsInvalidInput(false);
               }}
