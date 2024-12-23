@@ -8,7 +8,7 @@ const puzzle: PuzzleDefinition = {
   initial_description: "Crossword clues and pictures of droids",
   answer: "JABBAS BOILER ROOM",
   authors: ["Robin Deits"],
-  editors: ["James Douberley", "jarsyl", "Li-Mei Lim"],
+  editors: ["James Douberley", "Henry Wong", "Li-Mei Lim"],
   additional_credits: [],
   content: {
     component: Puzzle,
