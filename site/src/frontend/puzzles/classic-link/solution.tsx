@@ -17,10 +17,55 @@ const Red = styled.span`
   color: red;
 `;
 
-const DATA = [
+const PRODUCT_DATA = [
   {
     product: "Baker’s Unsweetened Chocolate Premium Baking Bar",
     productEnumeration: "(5’1 11 9 7 6 3)",
+  },
+  {
+    product: "Domino Granulated Sugar",
+    productEnumeration: "(6 10 5)",
+  },
+  {
+    product: "Duncan Hines Comstock More Fruit Cherry Pie Filling & Topping",
+    productEnumeration: "(6 5 8 4 5 6 3 7 & 7)",
+  },
+  {
+    product: "Gold Medal All Purpose Flour",
+    productEnumeration: "(4 5 3 7 5)",
+  },
+  {
+    product: "Grandma’s Molasses",
+    productEnumeration: "(7’1 8)",
+  },
+  {
+    product: "King Arthur Unbleached Bread Flour",
+    productEnumeration: "(4 6 10 5 5)",
+  },
+  {
+    product: "Nabisco Grahams",
+    productEnumeration: "(7 7)",
+  },
+  {
+    product: "Nestle Toll House Semi-Sweet Morsels",
+    productEnumeration: "(6 4 5 4-5 7)",
+  },
+  {
+    product: "Original Bisquick Pancake & Baking Mix",
+    productEnumeration: "(8 8 7 & 6 3)",
+  },
+  {
+    product: "Quaker Oats",
+    productEnumeration: "(6 4)",
+  },
+  {
+    product: "Swans Down Cake Flour",
+    productEnumeration: "(5 4 4 5)",
+  },
+];
+
+const RECIPE_DATA = [
+  {
     recipe: "Molasses Crinkle Cookies",
     recipeEnumeration: "(8 7 7)",
     quantity: "1/4 C",
@@ -28,8 +73,6 @@ const DATA = [
     letter: "G",
   },
   {
-    product: "Domino Granulated Sugar",
-    productEnumeration: "(6 10 5)",
     recipe: "Absolutely No-Knead Crusty Chewy Bread",
     recipeEnumeration: "(10 2-5 6 5 5)",
     quantity: "1/4 t",
@@ -37,8 +80,6 @@ const DATA = [
     letter: "I",
   },
   {
-    product: "Duncan Hines Comstock More Fruit Cherry Pie Filling & Topping",
-    productEnumeration: "(6 5 8 4 5 6 3 7 & 7)",
     recipe: "Nestle Toll House Famous Fudge",
     recipeEnumeration: "(6 4 5 6 5)",
     quantity: "1 t",
@@ -46,8 +87,6 @@ const DATA = [
     letter: "V",
   },
   {
-    product: "Gold Medal All Purpose Flour",
-    productEnumeration: "(4 5 3 7 5)",
     recipe: "Peanut Butter Cheesecake Brownies",
     recipeEnumeration: "(6 6 10 8)",
     quantity: "5",
@@ -55,8 +94,6 @@ const DATA = [
     letter: "E",
   },
   {
-    product: "Grandma’s Molasses",
-    productEnumeration: "(7’1 8)",
     recipe: "Simple Chocolate Cake",
     recipeEnumeration: "(6 9 4)",
     quantity: "3 oz",
@@ -64,8 +101,6 @@ const DATA = [
     letter: "U",
   },
   {
-    product: "King Arthur Unbleached Bread Flour",
-    productEnumeration: "(4 6 10 5 5)",
     recipe: "Vanishing Oatmeal Raisin Cookies",
     recipeEnumeration: "(9 7 6 7)",
     quantity: "1/2 t (optional)",
@@ -73,8 +108,6 @@ const DATA = [
     letter: "S",
   },
   {
-    product: "Nabisco Grahams",
-    productEnumeration: "(7 7)",
     recipe: "Carrot Cake Cupcakes",
     recipeEnumeration: "(6 4 8)",
     quantity: "1 1/2 C",
@@ -82,8 +115,6 @@ const DATA = [
     letter: "D",
   },
   {
-    product: "Nestle Toll House Semi-Sweet Morsels",
-    productEnumeration: "(6 4 5 4-5 7)",
     recipe: "Cheese-Garlic Biscuits",
     recipeEnumeration: "(6-6 8)",
     quantity: "2 C",
@@ -91,8 +122,6 @@ const DATA = [
     letter: "O",
   },
   {
-    product: "Original Bisquick Pancake & Baking Mix",
-    productEnumeration: "(8 8 7 & 6 3)",
     recipe: "Cherry Streusel Pie",
     recipeEnumeration: "(6 8 3)",
     quantity: "1/2 C",
@@ -100,8 +129,6 @@ const DATA = [
     letter: "U",
   },
   {
-    product: "Quaker Oats",
-    productEnumeration: "(6 4)",
     recipe: "Banana Bread",
     recipeEnumeration: "(6 5)",
     quantity: "2 1/2 C",
@@ -109,8 +136,6 @@ const DATA = [
     letter: "G",
   },
   {
-    product: "Swans Down Cake Flour",
-    productEnumeration: "(5 4 4 5)",
     recipe: "Banana-Nut Graham Muffins",
     recipeEnumeration: "(6-3 6 7)",
     quantity: "2 T",
@@ -150,32 +175,31 @@ const Solution = (): JSX.Element => {
         .
       </p>
       <h3>Full data set</h3>
+      <p>In presentational order:</p>
       <StyledTable>
         <tr>
-          <th>Product</th>
+          <th>Product (Missing From Ingredient Photos)</th>
           <th>Product Enumeration</th>
+        </tr>
+        {PRODUCT_DATA.map(({ product, productEnumeration }, i) => (
+          <tr key={`product-${i}`}>
+            <td>{product}</td>
+            <td>{productEnumeration}</td>
+          </tr>
+        ))}
+      </StyledTable>
+      <p>In extraction order:</p>
+      <StyledTable>
+        <tr>
           <th>Recipe</th>
           <th>Recipe Enumeration</th>
           <th>Quantity</th>
           <th>Missing Ingredient</th>
           <th>Letter</th>
         </tr>
-        {DATA.map(
-          (
-            {
-              product,
-              productEnumeration,
-              recipe,
-              recipeEnumeration,
-              quantity,
-              ingredient,
-              letter,
-            },
-            i,
-          ) => (
-            <tr key={i}>
-              <td>{product}</td>
-              <td>{productEnumeration}</td>
+        {RECIPE_DATA.map(
+          ({ recipe, recipeEnumeration, quantity, ingredient, letter }, j) => (
+            <tr key={`recipe-${j}`}>
               <td>{recipe}</td>
               <td>{recipeEnumeration}</td>
               <td>{quantity}</td>

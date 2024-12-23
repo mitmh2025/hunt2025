@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Half Baked",
   slug: "half_baked",
   initial_description: "Photos of ingredients and baked goods",
-  answer: "GIVEUSDOUGH, BANANA BREAD",
+  answer: "BANANA BREAD",
   authors: ["Sue Broder", "Eric Broder"],
   editors: ["Amanda Giermann", "J. Heléne Andersson", "James Douberley"],
   additional_credits: [],
@@ -61,7 +61,13 @@ const puzzle: PuzzleDefinition = {
         "Once you have identified all the baked goods and recipes and used the measurements to pick specific ingredients from those recipes, read the first letters of those ingredients (full names). The left column is alphabetized, so you’ll want to read in the order of the right column.",
     },
   ],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["GIVE US DOUGH"],
+      reply:
+        "TODO, awaiting author input",
+    },
+  ],
 };
 
 export default puzzle;
