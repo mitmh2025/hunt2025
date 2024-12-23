@@ -56,8 +56,9 @@ import open_door from "./assets/study/open_door.png";
 import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.png";
-import telephone from "./assets/study/telephone.svg";
 import typewriter from "./assets/study/typewriter.svg";
+import telephone from "./assets/telephone/telephone.svg";
+import telephone_blacklight from "./assets/telephone/telephone_unpushed_blacklight.svg";
 import {
   move_down_cursor,
   move_left_cursor,
@@ -385,6 +386,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.33,
         },
         asset: telephone,
+        extraAsset: telephone_blacklight,
       },
       {
         area: {

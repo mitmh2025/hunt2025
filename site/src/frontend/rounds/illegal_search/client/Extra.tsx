@@ -27,6 +27,7 @@ import {
   type Pos,
   ScreenScaleFactor,
   useGetPointerPos,
+  useTrackPointerPos,
 } from "./ScreenScaleFactor";
 import {
   Asset,
@@ -36,6 +37,8 @@ import {
 } from "./SearchEngine";
 import { zoom_cursor } from "./cursors";
 
+// This is a copy of ModalTrigger, but using the "extra" fields that return
+// the blacklight assets
 function ExtraModalTrigger({
   modal,
   showModal,
@@ -144,31 +147,22 @@ function ExtraModalTrigger({
   );
 }
 
-function InteractionLayer({ children }: { children: ReactNode }) {
+// InteractionLayer wraps the blacklight assets and selectively reveals only
+// the portion around the mouse.
+function InteractionLayer({
+  children,
+  styles = {},
+}: {
+  children: ReactNode;
+  styles?: React.CSSProperties;
+}) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(
-    null,
-  );
 
-  const getPointerPos = useGetPointerPos({
+  const mousePos = useTrackPointerPos({
     offset: {
       x: wrapperRef.current?.getBoundingClientRect().left ?? 0,
       y: wrapperRef.current?.getBoundingClientRect().top ?? 0,
     },
-  });
-
-  const onPointerMove = useCallback(
-    (e: PointerEvent) => {
-      setMousePos(getPointerPos(e));
-    },
-    [getPointerPos],
-  );
-
-  useEffect(() => {
-    window.addEventListener("pointermove", onPointerMove);
-    return () => {
-      window.removeEventListener("pointermove", onPointerMove);
-    };
   });
 
   if (!mousePos) {
@@ -195,6 +189,7 @@ function InteractionLayer({ children }: { children: ReactNode }) {
       height: "100%",
       background: "rgba(0, 0, 0, 0.5)",
     },
+    ...styles,
   } as const;
   return (
     <div style={wrapperStyles} ref={wrapperRef}>
@@ -203,6 +198,7 @@ function InteractionLayer({ children }: { children: ReactNode }) {
   );
 }
 
+// Pointer overlay: display a radial flashlight effect around the pointer
 const PointerEl = styled.div`
   position: fixed;
   width: 300px;
@@ -246,16 +242,8 @@ const ToggleOn = styled.button`
   border: none;
 `;
 
-const ToggleOff = styled.button`
-  position: absolute;
-  bottom: 10px;
-  right: 200px;
+const ToggleOff = styled(ToggleOn)`
   background: url(${blacklight_off});
-  background-repeat: no-repeat;
-  width: 64px;
-  height: 150px;
-  user-select: none;
-  border: none;
 `;
 
 export default function Extra({
@@ -265,29 +253,36 @@ export default function Extra({
   node: Node;
   teamState: TeamHuntState;
 }) {
-  const [mousePos, setMousePos] = useState<Pos | null>(null);
-
-  const onPointerMove = useCallback((e: PointerEvent) => {
-    setMousePos({ x: e.pageX, y: e.pageY });
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("pointermove", onPointerMove);
-    return () => {
-      window.removeEventListener("pointermove", onPointerMove);
-    };
+  // Track page pointer position to render the mouse overlay (we do this without
+  // applying the scale factor, since the mouse overlay is rendered via Portal
+  // into the document body rather than the scaled SearchEngineContainer)
+  const mousePos = useTrackPointerPos({
+    skipScaleFactor: true,
+    offset: { x: 0, y: 0 },
   });
 
+  // Modal state for blacklight modals
   const [modalShown, setModalShown] = useState<
     ModalWithExtraPuzzleFields | undefined
   >(undefined);
 
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(
+    localStorage.getItem("flashlightOn") === "true",
+  );
+  const toggleActive = useCallback(() => {
+    setActive((active) => {
+      localStorage.setItem("flashlightOn", (!active).toString());
+      return !active;
+    });
+  }, []);
 
   const dismissModal = useCallback(() => {
     setModalShown(undefined);
   }, []);
 
+  // Provide an "extra modal renderer" to the ExtraModalRendererProvider.
+  // Interactions that use modals will call this function to render their
+  // extra / blacklight modals.
   const modalRenderer = useCallback(
     (modals: Modal[]) => {
       if (!active) {
@@ -341,6 +336,7 @@ export default function Extra({
 
   useExtraModalRenderer(modalRenderer);
 
+  // Render placedAssets from the main scene
   const extraAssets = node.placedAssets.map((asset) => {
     if (!asset.extraAsset) {
       return null;
@@ -357,6 +353,7 @@ export default function Extra({
     );
   });
 
+  // Render blacklight modal if it's been triggered
   let modalOverlay = undefined;
   if (modalShown && modalShown.extra) {
     const puzzleState = teamState.puzzles[modalShown.extra.slug];
@@ -399,19 +396,15 @@ export default function Extra({
 
   return (
     <>
-      {active ? extraAssets : null}
       {active ? (
-        <ToggleOn
-          onClick={() => {
-            setActive(false);
-          }}
-        />
+        <InteractionLayer styles={{ pointerEvents: "none" }}>
+          {extraAssets}
+        </InteractionLayer>
+      ) : null}
+      {active ? (
+        <ToggleOn onClick={toggleActive} />
       ) : (
-        <ToggleOff
-          onClick={() => {
-            setActive(true);
-          }}
-        />
+        <ToggleOff onClick={toggleActive} />
       )}
       {modalOverlay}
       {active && mousePos ? <Pointer pos={mousePos} /> : null}
