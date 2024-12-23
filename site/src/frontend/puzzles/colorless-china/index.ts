@@ -58,7 +58,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["NOW FIND THE EPONYM FRAUD"],
+      guess: ["NOW FIND THE FRAUDULENT EPONYMS"],
       reply: "That’s right, now find the fraudulent eponyms!",
     },
     {
