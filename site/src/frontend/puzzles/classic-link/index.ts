@@ -64,8 +64,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["GIVE US DOUGH"],
-      reply:
-        "TODO, awaiting author input",
+      reply: "TODO, awaiting author input",
     },
   ],
 };
