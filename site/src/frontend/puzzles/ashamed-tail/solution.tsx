@@ -123,16 +123,16 @@ const Solution = (): JSX.Element => {
   return (
     <>
       <p>
-        Each block of clues is a{" "}
+        Each block of clues is a Scrabblegram, which, as described in{" "}
         <a
           href="https://www.theguardian.com/science/2024/jan/22/can-you-solve-it-the-greatest-wordplay-puzzle-of-all-time"
           target="_blank"
           rel="noreferrer"
         >
-          Scrabblegram
+          this article
         </a>
-        , “a form of constrained writing in which you must write a piece of text
-        that uses all 100 tiles in an English Scrabble set, and no other
+        , is “a form of constrained writing in which you must write a piece of
+        text that uses all 100 tiles in an English Scrabble set, and no other
         letters. The blank tiles must be used, and as per the rules can be any
         letter.”
       </p>

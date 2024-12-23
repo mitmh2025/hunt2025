@@ -56,7 +56,7 @@ const Puzzle = (): JSX.Element => {
         />
         <SizedImage
           src={img5}
-          alt={`${SHARED_ALT_TEXT} The card reads: TCG tribe captions. Rib and rib. ?. This 1964 All-Star left fielder was selected from the Orioles in the 1960 MLB expansion draft.`}
+          alt={`${SHARED_ALT_TEXT} The card reads: TCG tribe captain. Rib and rib. ?. This 1964 All-Star left fielder was selected from the Orioles in the 1960 MLB expansion draft.`}
         />
         <SizedImage
           src={img6}
