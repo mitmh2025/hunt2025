@@ -85,6 +85,7 @@ import 皇帝の暗号 from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
+import MazeOfLies from "./unfit-tower";
 import GardenAnecdotes from "./unimportant-lock";
 import TheMark from "./unique-australia";
 import ShellCorporationTwo from "./untrue-dice";
@@ -150,6 +151,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   bar_talk: BarTalk,
   chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
+  maze_of_lies: MazeOfLies,
   the_eras_puzzle: TheErasPuzzle,
   the_inspectre: TheInspectre,
   youre_playing_it_wrong: YourePlayingItWrong,

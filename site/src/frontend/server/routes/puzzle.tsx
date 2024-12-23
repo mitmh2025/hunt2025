@@ -328,7 +328,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           {guessFrag}
         </PuzzleHeaderComponent>
         <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
-          <ContentComponent teamState={req.teamState.state} />
+          <ContentComponent teamState={req.teamState.state} query={req.query} />
         </PuzzleMainComponent>
         <PuzzleFooterComponent />
       </PuzzleWrapperComponent>
@@ -528,7 +528,10 @@ export function solutionHandler(req: Request<PuzzleParams>) {
               cannedResponses={puzzle.canned_responses}
             />
           </div>
-          <SolutionComponent teamState={req.teamState.state} />
+          <SolutionComponent
+            teamState={req.teamState.state}
+            query={req.query}
+          />
         </SolutionMainComponent>
         <SolutionFooterComponent />
       </SolutionWrapperComponent>
