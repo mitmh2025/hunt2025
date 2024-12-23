@@ -81,15 +81,24 @@ const Solution = (): JSX.Element => {
         This is a phonetic representation of English, with each glyph giving at
         most one consonant sound and at most one vowel sound. Consonants are
         encoded by the inner segments of each glyph, and vowels by the outer
-        segments. There are a number of{" "}
+        segments. There are a number of fan-made references for how the writing
+        system works, including{" "}
+        <a
+          href="https://tunic.fandom.com/wiki/Tunic_Script"
+          target="_blank"
+          rel="noreferrer"
+        >
+          this fan wiki
+        </a>{" "}
+        and{" "}
         <a
           href="https://steamuserimages-a.akamaihd.net/ugc/2527155798048137885/458A241CBEDAD1B7DE658B6F499E1F388605A1CF/"
           target="_blank"
           rel="noreferrer"
         >
-          fan-made references
-        </a>{" "}
-        for how the writing system works.
+          this Steam guide
+        </a>
+        .
       </p>
       <p>
         The printed lines are clues and enumerations. These clues and their
@@ -211,7 +220,7 @@ const Solution = (): JSX.Element => {
         </tr>
         <tr>
           <td>
-            RUGEr <img src={ruger} alt={ALT_TEXT} />
+            RUGER <img src={ruger} alt={ALT_TEXT} />
           </td>
           <td>Y Z′</td>
           <td>
@@ -347,8 +356,7 @@ const Solution = (): JSX.Element => {
           src={extraction1}
           alt="A series of angular glyphs written in thich black lines."
         />
-      </StyledDiv>
-      <StyledDiv>
+        <div>↓</div>
         <img
           src={extraction2}
           alt="A series of angular glyphs written in thich black lines."
