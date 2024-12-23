@@ -21,8 +21,8 @@ export function useGetPointerPos({
   return useCallback(
     (e: PointerEvent | ReactPointerEvent): Pos => {
       return {
-        x: (e.pageX - offset.x) / scaleFactor,
-        y: (e.pageY - offset.y) / scaleFactor, // account for the header
+        x: (e.clientX - offset.x) / scaleFactor,
+        y: (e.clientY - offset.y) / scaleFactor, // account for the header
       };
     },
     [scaleFactor, offset.x, offset.y],
@@ -42,11 +42,11 @@ export function useTrackPointerPos({
   const onPointerMove = useCallback(
     (e: PointerEvent) => {
       if (skipScaleFactor) {
-        setMousePos({ x: e.pageX - offset.x, y: e.pageY - offset.y });
+        setMousePos({ x: e.clientX - offset.x, y: e.clientY - offset.y });
       } else {
         setMousePos({
-          x: (e.pageX - offset.x) / scaleFactor,
-          y: (e.pageY - offset.y) / scaleFactor,
+          x: (e.clientX - offset.x) / scaleFactor,
+          y: (e.clientY - offset.y) / scaleFactor,
         });
       }
     },

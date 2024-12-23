@@ -3,7 +3,6 @@ import React, {
   type MouseEventHandler,
   useCallback,
   type ReactNode,
-  useEffect,
   useRef,
   useContext,
 } from "react";
@@ -26,7 +25,6 @@ import { useExtraModalRenderer } from "./ExtraModalRenderer";
 import {
   type Pos,
   ScreenScaleFactor,
-  useGetPointerPos,
   useTrackPointerPos,
 } from "./ScreenScaleFactor";
 import {
@@ -35,7 +33,7 @@ import {
   ModalBackdrop,
   PuzzleLinkBackdrop,
 } from "./SearchEngine";
-import { zoom_cursor } from "./cursors";
+import { zoom_cursor, default_cursor } from "./cursors";
 
 // This is a copy of ModalTrigger, but using the "extra" fields that return
 // the blacklight assets
@@ -240,6 +238,7 @@ const ToggleOn = styled.button`
   height: 150px;
   user-select: none;
   border: none;
+  cursor: ${default_cursor};
 `;
 
 const ToggleOff = styled(ToggleOn)`
