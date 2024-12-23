@@ -11,6 +11,7 @@ import BorderlinePersonality from "./calculating-square";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
 import TheInspectre from "./clean-ivory";
+import EponymousForensicAccountant from "./colorless-china";
 import NetworkingEvent from "./confused-antarctica";
 import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
@@ -150,6 +151,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_weathered_note: AWeatheredNote,
   bar_talk: BarTalk,
   chemicals_are_sexy: ChemicalsAreSexy,
+  eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
   maze_of_lies: MazeOfLies,
   the_eras_puzzle: TheErasPuzzle,
