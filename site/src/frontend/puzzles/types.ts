@@ -1,3 +1,4 @@
+import { type ParsedQs } from "qs";
 import type { FunctionComponent } from "react";
 import type { Router } from "websocket-express";
 import { z } from "zod";
@@ -42,7 +43,7 @@ export type CannedResponse = z.infer<typeof CannedResponseSchema>;
 
 export type Content = {
   // TODO: figure out what props get passed to this FunctionComponent
-  component: FunctionComponent<{ teamState: TeamHuntState }>;
+  component: FunctionComponent<{ teamState: TeamHuntState; query: ParsedQs }>;
 
   // If present, the scripts and stylesheets produced by the webpack entrypoint
   // of the given name will be injected into the page's <body> and <head>
