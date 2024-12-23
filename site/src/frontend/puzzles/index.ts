@@ -58,6 +58,7 @@ import ThisIsJustATest from "./radiant-snow";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import MagnifyingGlassIce from "./sandy-atlantis";
 import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
@@ -92,6 +93,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   downright_backwards: DownrightBackwards,
   educational_rite_of_passage: EducationalRiteOfPassage,
+  magnifying_glass_ice: MagnifyingGlassIce,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
   songs_on_the_radio: SongsOnTheRadio,
   they_might_be_grad_students_but_theyve_got_your_number:
