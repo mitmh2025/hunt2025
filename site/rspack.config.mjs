@@ -40,6 +40,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.3mf",
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.stl",
   "src/frontend/puzzles/circular-greece/assets/rod-sticker.pdf",
+  "src/frontend/puzzles/clean-ivory/assets/the-inspectre.pdf",
   "src/frontend/puzzles/confused-antarctica/assets/networking-event.pdf",
   "src/frontend/puzzles/regal-knife/assets/a.mp3",
   "src/frontend/puzzles/regal-knife/assets/d.mp3",

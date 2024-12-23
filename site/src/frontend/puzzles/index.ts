@@ -10,6 +10,7 @@ import MellowPlanet from "./brilliant-center";
 import BorderlinePersonality from "./calculating-square";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
+import TheInspectre from "./clean-ivory";
 import NetworkingEvent from "./confused-antarctica";
 import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
@@ -150,6 +151,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
   the_eras_puzzle: TheErasPuzzle,
+  the_inspectre: TheInspectre,
   youre_playing_it_wrong: YourePlayingItWrong,
 
   shell_corporation_1: ShellCorporationOne,
