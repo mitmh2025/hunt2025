@@ -51,6 +51,7 @@ import TemporalInvestigations from "./offensive-cat";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
+import BarTalk from "./personal-chocolate";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
 import SongsOnTheRadio from "./practical-fighter";
@@ -145,6 +146,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Paper Trail
   ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
   a_weathered_note: AWeatheredNote,
+  bar_talk: BarTalk,
   chemicals_are_sexy: ChemicalsAreSexy,
   follow_the_rules: FollowTheRules,
   the_eras_puzzle: TheErasPuzzle,
