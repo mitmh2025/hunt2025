@@ -1160,10 +1160,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Rare stamp
         area: {
-          left: 0.228,
-          right: 0.348,
-          top: 0.296,
-          bottom: 0.078,
+          left: 0.19446536144578322,
+          right: 0.3283132530120483,
+          top: 0.29518072289156627,
+          bottom: 0.05120481927710835,
         },
         asset: stamp_modal,
         placedAsset: {
@@ -1195,10 +1195,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Radio drama poster
         area: {
-          left: 0.69,
-          right: 0.95,
-          top: 0.8,
-          bottom: -0.38,
+          left: 0.6904326630103594,
+          right: 0.9463741620962826,
+          top: 0.6771616223170154,
+          bottom: -0.2783533076037646,
         },
         asset: poster_modal,
         placedAsset: {
