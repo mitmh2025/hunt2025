@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { deviceMax } from "../utils/breakpoints";
 import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
 import Bg from "./stakeoutAssets/envelope-bg.png";
 
@@ -52,6 +53,12 @@ export const StakeoutMain = styled(PuzzleMain)`
   border: 1.85rem solid var(--white);
   border-bottom-width: 5.85rem;
   border-radius: 0.5rem;
+
+  @media (${deviceMax.sm}) {
+    border-left-width: 0.25rem;
+    border-right-width: 0.25rem;
+  }
+
   background-color: #f8f8f6dd;
   background: linear-gradient(
     25deg,
