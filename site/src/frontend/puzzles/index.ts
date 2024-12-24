@@ -86,6 +86,7 @@ import ARecipeForSuccess from "./tame-chick";
 import EngagementsAndOtherCrimes from "./timely-head";
 import ReuseAndRecyclability from "./tinted-stream";
 import 皇帝の暗号 from "./tragic-spider";
+import BeyondAShadowOfADoubt from "./total-part";
 import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
@@ -201,6 +202,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Murder in MITropolis
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
+  beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
