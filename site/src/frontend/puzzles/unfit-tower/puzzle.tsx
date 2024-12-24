@@ -26,8 +26,9 @@ const Room = styled.div`
 
   display: flex;
   flex-direction: column;
-  width: 800px;
-  height: 600px;
+  width: 100%;
+  max-width: 800px;
+  min-height: 600px;
   background-color: #000;
   color: #80ff80;
   font-family: Courier, monospace;
@@ -83,6 +84,7 @@ const List = ({
           </>
         );
       })}
+      .
     </p>
   );
 };

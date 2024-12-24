@@ -186,9 +186,17 @@ const App = () => {
     [],
   );
 
+  const onCommandFocus = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      e.target.focus({ preventScroll: true });
+    },
+    [],
+  );
+
   const inputRef = React.useRef<HTMLInputElement>(null);
   useEffect(() => {
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventScroll: true });
   }, []);
 
   return (
@@ -201,6 +209,7 @@ const App = () => {
           value={command}
           onChange={onCommandChange}
           onKeyDown={onCommandKeyDown}
+          onFocus={onCommandFocus}
         />
       </CommandLine>
     </AppContainer>
