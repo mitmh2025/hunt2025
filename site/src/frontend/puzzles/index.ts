@@ -38,7 +38,7 @@ import BigNames from "./important-green";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
-import TOttPy from "./kind-ship";
+import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
@@ -200,7 +200,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   knights_of_the_square_table: KnightsOfTheSquareTable,
   story_vision_contest: StoryVisionContest,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
-  t_ott_p_y: TOttPy,
+  t____ott___p__y: T____ott___P__y,
   where_am_i: WhereAmI,
 
   the_mark: TheMark,

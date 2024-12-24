@@ -4,7 +4,7 @@ import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "T____OTT___P__Y",
-  slug: "t_ott_p_y",
+  slug: "t____ott___p__y",
   initial_description: "A series of plaid tiles.",
   answer: "CHIVIPANE",
   authors: ["Karen Rustad Tolva", "Drew Fisher"],
