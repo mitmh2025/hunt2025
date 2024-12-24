@@ -17,7 +17,6 @@ import image9 from "./assets/image9.png";
 
 const Header = styled.div`
   margin-bottom: 1em;
-  max-width: 450px;
   display: flex;
   gap: 16px;
 `;
