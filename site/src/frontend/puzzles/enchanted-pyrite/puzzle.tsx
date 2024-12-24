@@ -46,9 +46,9 @@ const Puzzle = (): JSX.Element => {
         can also be in cells that contain numbers, or in empty cells.)
       </p>
       <AuthorsNote>
-        (Links to Penpa versions of the grids are provided in case you find that
+        Links to Penpa versions of the grids are provided in case you find that
         interface helpful; but you may find it more efficient to use drawing
-        software, a tablet note-taking app, or just solve on paper.)
+        software, a tablet note-taking app, or just solve on paper.
       </AuthorsNote>
       <p>
         On the first day, the wolves are all standing at the edge of the

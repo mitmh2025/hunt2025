@@ -95,9 +95,9 @@ const Puzzle = () => {
         our decryption droids are lined up to assist.
       </p>
       <AuthorsNote>
-        Editors’ Note: These are cryptic crossword clues, a common type in
-        puzzlehunts involving both crossword definitions and wordplay. If you’ve
-        never seen them before, check out{" "}
+        These are cryptic crossword clues, a common type in puzzlehunts
+        involving both crossword definitions and wordplay. If you’ve never seen
+        them before, check out{" "}
         <a href="https://s.wsj.net/blogs/html/wsjcrypticguide.pdf">
           https://s.wsj.net/blogs/html/wsjcrypticguide.pdf
         </a>{" "}

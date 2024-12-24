@@ -35,13 +35,12 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <AuthorsNote>
-        (Solving this puzzle in a spreadsheet is not recommended, but if you
+        Solving this puzzle in a spreadsheet is not recommended, but if you
         really must, click{" "}
         <a href={spreadsheet} download="bermuda-triangle-spreadsheet">
           here
         </a>{" "}
-        for the grids in Excel format; these can be imported into Google
-        Sheets.)
+        for the grids in Excel format; these can be imported into Google Sheets.
       </AuthorsNote>
       <p>
         On each day of the naval exercises, the given fleet went out to sea in
