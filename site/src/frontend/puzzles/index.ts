@@ -18,6 +18,8 @@ import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
 import WhoseSongIsItAnyway from "./delirious-mammoth";
 import TheBoardwalk from "./dental-shark";
+import CanDoTransmissions from "./diligent-spy";
+import TheThief from "./dimpled-star";
 import FindOtherWaysOfSeeing from "./discrete-spine";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
@@ -97,9 +99,10 @@ import Deepfrost from "./wiry-ray";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
+  "🔎🧊": MagnifyingGlassIce,
   downright_backwards: DownrightBackwards,
   educational_rite_of_passage: EducationalRiteOfPassage,
-  "🔎🧊": MagnifyingGlassIce,
+  introduction_to_decryption: IntroductionToDecryption,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
   songs_on_the_radio: SongsOnTheRadio,
   they_might_be_grad_students_but_theyve_got_your_number:
@@ -109,7 +112,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_casino: Casino,
   the_jewelry_store: TheJewelryStore,
   the_art_gallery: TheArtGallery,
-  introduction_to_decryption: IntroductionToDecryption,
 
   // The Stakeout
   a_badly_broken_quote: ABadlyBrokenQuote,
@@ -208,6 +210,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
+  can_do_transmissions: CanDoTransmissions,
   garden_anecdotes: GardenAnecdotes,
   given_up: GivenUp,
+  the_thief: TheThief,
 };
