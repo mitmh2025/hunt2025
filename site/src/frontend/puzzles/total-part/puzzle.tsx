@@ -2,8 +2,14 @@ import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
 import Crossword, { type CrosswordProps } from "../../components/Crossword";
 
+export const ScrollWrapper = styled.div`
+  width: 100%;
+  overflow: auto;
+`;
+
 export const StyledCrossword = styled(Crossword)`
   margin: 1em auto;
+  min-width: 900px;
 `;
 
 // Yellow, Red, Gray, Green, Blue, Pink, white, black
@@ -342,15 +348,17 @@ export const ColoredDropquote = ({
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      {DROPQUOTES.map(({ labels, fill, colors, divider }, i) => (
-        <ColoredDropquote
-          key={i}
-          labels={labels}
-          fill={fill}
-          colors={colors}
-          divider={divider}
-        />
-      ))}
+      <ScrollWrapper>
+        {DROPQUOTES.map(({ labels, fill, colors, divider }, i) => (
+          <ColoredDropquote
+            key={i}
+            labels={labels}
+            fill={fill}
+            colors={colors}
+            divider={divider}
+          />
+        ))}
+      </ScrollWrapper>
     </>
   );
 };

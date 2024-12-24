@@ -1,5 +1,6 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
+import Crossword from "../../components/Crossword";
 import {
   ColoredDropquote,
   DROPQUOTE_1_COLORS,
@@ -16,11 +17,15 @@ import {
   DROPQUOTE_6_LABELS,
   makeGrid,
   mapShorthandToColor,
-  StyledCrossword,
+  ScrollWrapper,
 } from "./puzzle";
 
 const Mono = styled.span`
   font-family: monospace;
+`;
+
+export const FinalGrid = styled(Crossword)`
+  margin: 1em auto;
 `;
 
 const DROPQUOTE_1_FILL: string[][] = makeGrid([
@@ -319,29 +324,31 @@ const Solution = (): JSX.Element => {
         </Mono>
         .
       </p>
-      {DROPQUOTES.map(({ labels, fill, colors, divider, highlights }, i) => (
-        <ColoredDropquote
-          key={i}
-          labels={labels}
-          fill={fill}
-          colors={colors}
-          divider={divider}
-          getAdditionalCellFillStyles={({ row, column }) => {
-            if (highlights) {
-              for (const cell of highlights) {
-                if (row === cell.row && column === cell.column) {
-                  return {
-                    fontWeight: "bold",
-                    color: "white",
-                  };
+      <ScrollWrapper>
+        {DROPQUOTES.map(({ labels, fill, colors, divider, highlights }, i) => (
+          <ColoredDropquote
+            key={i}
+            labels={labels}
+            fill={fill}
+            colors={colors}
+            divider={divider}
+            getAdditionalCellFillStyles={({ row, column }) => {
+              if (highlights) {
+                for (const cell of highlights) {
+                  if (row === cell.row && column === cell.column) {
+                    return {
+                      fontWeight: "bold",
+                      color: "white",
+                    };
+                  }
                 }
               }
-            }
-            return {};
-          }}
-        />
-      ))}
-      <StyledCrossword
+              return {};
+            }}
+          />
+        ))}
+      </ScrollWrapper>
+      <FinalGrid
         labels={FINAL_GRID_LABELS}
         fill={FINAL_GRID_FILL}
         getAdditionalCellFillStyles={() => ({ fontSize: "12px" })}
