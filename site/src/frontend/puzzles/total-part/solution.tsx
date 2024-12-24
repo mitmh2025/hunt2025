@@ -1,7 +1,6 @@
-import React, { CSSProperties } from "react";
+import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
 import {
-  COLOR_TO_HEX,
   ColoredDropquote,
   DROPQUOTE_1_COLORS,
   DROPQUOTE_1_LABELS,
@@ -179,7 +178,7 @@ const DROPQUOTE_6_FULL_COLORS: string[][] = [
     "YYBYBB.YBY.YYBYYPB.YY.YPYY_.YPY.PPYBBYY.YPBYY",
     "B.BYYP.PPB.PYP.PYPBY.BPYBBYP.BYYB.PYP.BPBYPY_",
     ".PYBPYPBYBP.BBYP.PBY.BYP.YYY.BYBPYB.YPP.BYYPB",
-    "_._YBPYY.PY_BP_.BPY_P_BYPB_PBYP_BYP_PYB__....",
+    "_._YBPYY.PY_BP_.BPY.P.BYPB.PBYP.BYP.PYB__....",
   ]),
 ];
 const DROPQUOTE_6_HIGHLIGHTS: { row: number; column: number }[] = [
@@ -350,7 +349,8 @@ const Solution = (): JSX.Element => {
           const styles: CSSProperties = {
             width: "20px",
             height: "20px",
-            backgroundColor: (FINAL_GRID_COLORS[row] as string[])[column],
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- hard-coded arrays
+            backgroundColor: FINAL_GRID_COLORS[row]![column],
           };
           if (column === 0) {
             styles.fontWeight = "bold";

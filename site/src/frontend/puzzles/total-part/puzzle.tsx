@@ -1,6 +1,6 @@
-import React, { CSSProperties } from "react";
-import Crossword, { CrosswordProps } from "../../components/Crossword";
+import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
+import Crossword, { type CrosswordProps } from "../../components/Crossword";
 
 export const StyledCrossword = styled(Crossword)`
   margin: 1em auto;
@@ -61,7 +61,7 @@ const DROPQUOTE_1_FILL: string[][] = makeGrid([
   "____________________________________________.",
 ]);
 export const DROPQUOTE_1_COLORS: string[][] = DROPQUOTE_1_FILL.slice(0, 6).map(
-  (row) => row.map((cell) => (cell === "" ? "inherit" : COLOR_TO_HEX["Y"])),
+  (row) => row.map((cell) => (cell === "" ? "inherit" : COLOR_TO_HEX.Y)),
 );
 
 export const DROPQUOTE_2_LABELS: string[][] = makeGrid([
@@ -94,7 +94,7 @@ const DROPQUOTE_2_FILL: string[][] = makeGrid([
 ]);
 export const DROPQUOTE_2_COLORS: string[][] = [
   ...DROPQUOTE_2_FILL.slice(0, 4).map((row) =>
-    row.map((cell) => (cell === "" ? "inherit" : COLOR_TO_HEX["Y"])),
+    row.map((cell) => (cell === "" ? "inherit" : COLOR_TO_HEX.Y)),
   ),
   ...mapShorthandToColor([
     "YRYYRYYYRYYYYRYYYYYRYYYYRYYRYRYRRYYYYYYYYRYYY",
@@ -132,7 +132,7 @@ const DROPQUOTE_3_FILL: string[][] = makeGrid([
 ]);
 export const DROPQUOTE_3_COLORS: string[][] = [
   ...DROPQUOTE_3_FILL.slice(0, 4).map((row) =>
-    row.map((cell) => (cell === "" ? "transparent" : COLOR_TO_HEX["Y"])),
+    row.map((cell) => (cell === "" ? "transparent" : COLOR_TO_HEX.Y)),
   ),
   ...mapShorthandToColor([
     "YYYGYRYGYYRGYYYRYGYYYYYYGYGYYRYGGYYYRYYYYYYYR",
@@ -170,7 +170,7 @@ const DROPQUOTE_4_FILL: string[][] = makeGrid([
 ]);
 export const DROPQUOTE_4_COLORS: string[][] = [
   ...DROPQUOTE_4_FILL.slice(0, 4).map((row) =>
-    row.map((cell) => (cell === "" ? "transparent" : COLOR_TO_HEX["Y"])),
+    row.map((cell) => (cell === "" ? "transparent" : COLOR_TO_HEX.Y)),
   ),
   ...mapShorthandToColor([
     "RYYYGYYGYYYYYRYYYRYYYYGYY_YYYGYYRYYGYRYYYYYYG",
@@ -327,7 +327,8 @@ export const ColoredDropquote = ({
           height: "20px",
         };
         if (row < colors.length) {
-          styles.backgroundColor = (colors[row] as string[])[column];
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- hard-coded arrays
+          styles.backgroundColor = colors[row]![column];
         }
         if (row === divider) {
           styles.borderBottomWidth = "2px";
