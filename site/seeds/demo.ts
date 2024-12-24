@@ -232,7 +232,7 @@ export async function seed(knex: Knex): Promise<void> {
       await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
     }
 
-    await ensurePuzzleSolved(mutator, team_id, "ism01");
+    await ensurePuzzleSolved(mutator, team_id, "papas_bookcase");
   });
 
   const isPart2Slugs = isRound.puzzles
@@ -260,8 +260,8 @@ export async function seed(knex: Knex): Promise<void> {
       await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
     }
 
-    await ensurePuzzleSolved(mutator, team_id, "ism01");
-    await ensurePuzzleSolved(mutator, team_id, "ism02");
+    await ensurePuzzleSolved(mutator, team_id, "papas_bookcase");
+    await ensurePuzzleSolved(mutator, team_id, "papas_stash");
   });
 
   await activityLog.executeMutation(

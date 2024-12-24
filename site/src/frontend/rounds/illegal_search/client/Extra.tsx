@@ -187,6 +187,10 @@ function InteractionLayer({
       height: "100%",
       background: "rgba(0, 0, 0, 0.5)",
     },
+    pointerEvents: "none",
+    "& *": {
+      pointerEvents: "default",
+    },
     ...styles,
   } as const;
   return (
@@ -294,7 +298,7 @@ export default function Extra({
         }
 
         let area: ScreenArea;
-        let asset: string;
+        let asset: string | null;
         if (modal.placedAsset) {
           area = modal.placedAsset.area;
           asset = modal.placedAsset.extraAsset ?? modal.placedAsset.asset;
@@ -334,6 +338,8 @@ export default function Extra({
   );
 
   useExtraModalRenderer(modalRenderer);
+
+  const nonInteractionModalTriggers = modalRenderer(node.modals);
 
   // Render placedAssets from the main scene
   const extraAssets = node.placedAssets.map((asset) => {
@@ -400,6 +406,7 @@ export default function Extra({
           {extraAssets}
         </InteractionLayer>
       ) : null}
+      {nonInteractionModalTriggers}
       {active ? (
         <ToggleOn onClick={toggleActive} />
       ) : (

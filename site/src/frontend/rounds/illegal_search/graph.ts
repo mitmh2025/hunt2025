@@ -1,6 +1,8 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
+import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.png";
 import bookcase_note from "./assets/bookcase/note.svg";
+import bookcase_note_blacklight from "./assets/bookcase/note_blacklight.svg";
 import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
 import cryptex_note from "./assets/cryptex/cryptex_note.svg";
 import cryptex_open from "./assets/cryptex/cryptex_open.svg";
@@ -44,6 +46,7 @@ import stamp from "./assets/secret/stamp.svg";
 import stamp_modal from "./assets/secret/stamp_modal.svg";
 import teddybear from "./assets/secret/teddybear.svg";
 import secret_bg from "./assets/secret.jpg";
+import blacklight_books from "./assets/study/blacklight_books.svg";
 import cryptex_on_desk from "./assets/study/cryptex.svg";
 import family_frame_east from "./assets/study/family_frame_east.png";
 import family_frame_north from "./assets/study/family_frame_north.png";
@@ -189,7 +192,7 @@ const ALL_NODES: NodeInternal[] = [
         asset: safe_frame,
       },
       {
-        // sliding door, if open
+        // overlays: open door (if bookcase is open) + blacklight books
         area: {
           left: -1,
           right: 1,
@@ -197,6 +200,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1,
         },
         asset: open_door,
+        extraAsset: blacklight_books,
         includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
@@ -353,6 +357,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.212,
           bottom: -0.095,
         },
+        zIndex: 1,
         asset: typewriter,
         slotId: "isp04",
         gateId: "isg04",
@@ -708,7 +713,18 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "bookcase",
     background: "__wallpaper__",
-    placedAssets: [],
+    placedAssets: [
+      {
+        area: {
+          left: -0.375,
+          right: 0.5,
+          top: 0.918,
+          bottom: -1,
+        },
+        asset: null,
+        extraAsset: bookcase_blacklight,
+      },
+    ],
     navigations: [
       {
         area: {
@@ -744,6 +760,12 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.272,
         },
         asset: bookcase_note,
+        extra: {
+          asset: bookcase_note_blacklight,
+          gateId: "isg32",
+          postCode: "SHqjcRam7FKcuKgOkwziig==",
+          slotId: "ism03",
+        },
         slotId: "ism01",
         gateId: "isg00",
         postCode: "pswcZO3Z7JF9z1JzQfoIDQ==",
@@ -1384,6 +1406,11 @@ function filteredForFrontend(
 
     if (!teamState.rounds.illegal_search?.gates?.includes("isg26")) {
       delete rest.extraAsset;
+
+      if (rest.asset === null) {
+        // blacklight-only asset
+        return [];
+      }
     }
 
     if (includeIf === undefined) {

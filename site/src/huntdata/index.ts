@@ -436,7 +436,7 @@ const HUNT: Hunt = {
 
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }], slug: "papas_bookcase" }, // Bookcase
         { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg17" }], slug: "papas_stash" },
-        { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg26" }] },
+        { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg32" }] },
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final
@@ -472,6 +472,7 @@ const HUNT: Hunt = {
         { id: "isg29" }, // find the blacklight object behind the combination lock
         { id: "isg30" }, // find the blacklight object behind the numeric lock
         { id: "isg31" }, // find the blacklight object behind the word lock
+        { id: "isg32" }, // find the blacklight version of the bookshelf note (meta)
       ],
       interactions: [
         {

@@ -28,7 +28,7 @@ export type ScreenArea = {
 
 export type PlacedAsset = {
   area: ScreenArea;
-  asset: string;
+  asset: string | null;
   extraAsset?: string; // blacklight overlay
 };
 
@@ -60,6 +60,7 @@ export type Interaction = {
 
 export type ModalBase = {
   area: ScreenArea; // what area of the screen should be clickable to trigger showing this modal?
+  zIndex?: number; // what z-index should this modal be shown at?
   asset: string; // what image should be shown when the modal is blown up large?
 
   // By default the asset is shown in the clickable area to trigger the modal. If you

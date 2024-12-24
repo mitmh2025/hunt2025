@@ -60,10 +60,16 @@ export function boundsForArea(area: ScreenArea): {
 export const Asset = ({
   placedAsset,
   backgroundColor,
+  zIndex,
 }: {
   placedAsset: PlacedAsset;
   backgroundColor?: string;
+  zIndex?: number;
 }) => {
+  if (placedAsset.asset === null) {
+    return null;
+  }
+
   const { area, asset } = placedAsset;
   const areaStyle = {
     position: "absolute" as const,
@@ -75,6 +81,8 @@ export const Asset = ({
     backgroundSize: "contain",
 
     backgroundColor,
+
+    zIndex: zIndex,
   };
   return <div key={asset} style={areaStyle} />;
 };
@@ -196,6 +204,7 @@ export const ModalTrigger = ({
     border: "none",
     padding: 0,
     backgroundColor: backgroundColor ?? "transparent",
+    zIndex: modal.zIndex,
   };
 
   return (
@@ -430,6 +439,7 @@ const SearchEngine = ({
 
   const teamState = useDataset("team_state", undefined, initialTeamState);
 
+  console.log("XXX", node);
   const assets = node.placedAssets
     .map((placedAsset) => {
       return (
@@ -442,6 +452,7 @@ const SearchEngine = ({
           <Asset
             key={`modal-${modal.asset}`}
             placedAsset={modal.placedAsset ?? modal}
+            zIndex={modal.zIndex}
           />
         );
       }),

@@ -114,9 +114,7 @@ export const modalPostHandler: RequestHandler<
       // team state.  Use that teamState to look up the slug for the
       // `modal.slotId`
       const newTeamState = result.body;
-      console.log(newTeamState.rounds.illegal_search);
       const slug = newTeamState.rounds.illegal_search?.slots[slotId]?.slug;
-      console.log("slug", newTeamState.rounds.illegal_search, slotId);
       if (!slug) {
         res.status(500).json({
           status: "error",
