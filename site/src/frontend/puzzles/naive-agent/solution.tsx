@@ -270,27 +270,29 @@ const Solution = (): JSX.Element => {
         in the grid are connected. Identify those city pairs and the cables
         connecting them:
       </p>
-      <p>1. Haql, Saudi Arabia to Duba, Saudi Arabia - Saudi Vision</p>
-      <p>2. Haramous, Djibouti to Monaco, Monaco - Europe India Gateway</p>
-      <p>3. Praia, Cape Verde to Casablanca, Morocco - EllaLink</p>
-      <p>
-        4. Alexandria, NSW, Australia to Hermosa Beach, CA, USA - Southern Cross
-        NEXT
-      </p>
-      <p>5. Algiers, Algeria to Valencia, Spain - Oran-Valencia</p>
-      <p>
-        6. Los Realejos, Canary Islands, Spain to Santa Cruz de la Palma, Canary
-        Islands, Spain - Tenerife-La Palma
-      </p>
-      <p>7. Punta Salinas, PR to Guantanamo Bay, Cuba - GTMO-PR</p>
-      <p>8. Cienfuegos, Cuba to Schœlcher, Martinique - ARIMAO</p>
-      <p>9. Rio de Janeiro, Brazil to Virginia Beach, VA, USA - BRUSA</p>
-      <p>10. Portrane, Ireland to Southport, UK - Rockabill</p>
-      <p>11. Bari, Italy to Durres, Albania - Italy-Albania</p>
-      <p>
-        12. Paddington, NSW, Australia to Keawaula, HI, USA - Telstra Endeavour
-      </p>
-      <p>13. Larvik, Norway to Hirtshals, Denmark - Skagenfiber West</p>
+      <ol>
+        <li>Haql, Saudi Arabia to Duba, Saudi Arabia - Saudi Vision</li>
+        <li>Haramous, Djibouti to Monaco, Monaco - Europe India Gateway</li>
+        <li>Praia, Cape Verde to Casablanca, Morocco - EllaLink</li>
+        <li>
+          Alexandria, NSW, Australia to Hermosa Beach, CA, USA - Southern Cross
+          NEXT
+        </li>
+        <li>Algiers, Algeria to Valencia, Spain - Oran-Valencia</li>
+        <li>
+          Los Realejos, Canary Islands, Spain to Santa Cruz de la Palma, Canary
+          Islands, Spain - Tenerife-La Palma
+        </li>
+        <li>Punta Salinas, PR to Guantanamo Bay, Cuba - GTMO-PR</li>
+        <li>Cienfuegos, Cuba to Schœlcher, Martinique - ARIMAO</li>
+        <li>Rio de Janeiro, Brazil to Virginia Beach, VA, USA - BRUSA</li>
+        <li>Portrane, Ireland to Southport, UK - Rockabill</li>
+        <li>Bari, Italy to Durres, Albania - Italy-Albania</li>
+        <li>
+          Paddington, NSW, Australia to Keawaula, HI, USA - Telstra Endeavour
+        </li>
+        <li>Larvik, Norway to Hirtshals, Denmark - Skagenfiber West</li>
+      </ol>
       <p>
         Knowing the pairs of cities, it is now possible to solve this as a
         Numberlink puzzle (each pair of cities/numbers are linked; paths cannot
