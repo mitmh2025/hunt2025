@@ -408,9 +408,37 @@ const BaseDeviceProfileSchema = z.object({
       })
       .nullable()
       .optional(),
-    transportConfiguration: z.object({
-      type: z.literal("DEFAULT"),
-    }),
+    transportConfiguration: z.discriminatedUnion("type", [
+      z.object({
+        type: z.literal("DEFAULT"),
+      }),
+      z.object({
+        type: z.literal("MQTT"),
+        deviceTelemetryTopic: z.string(),
+        deviceAttributesTopic: z.string(),
+        deviceAttributesSubscribeTopic: z.string(),
+        transportPayloadTypeConfiguration: z.discriminatedUnion(
+          "transportPayloadType",
+          [
+            z.object({
+              transportPayloadType: z.literal("JSON"),
+            }),
+            z.object({
+              transportPayloadType: z.literal("PROTOBUF"),
+              deviceTelemetryProtoSchema: z.string(),
+              deviceAttributesProtoSchema: z.string(),
+              deviceRpcRequestProtoSchema: z.string(),
+              deviceRpcResponseProtoSchema: z.string(),
+              enableCompatibilityWithJsonPayloadFormat: z.boolean(),
+              useJsonPayloadFormatForDefaultDownlinkTopics: z.boolean(),
+            }),
+          ],
+        ),
+        sparkplug: z.boolean(),
+        sparkplugAttributesMetricNames: z.array(z.string()),
+        sendAckOnValidationException: z.boolean(),
+      }),
+    ]),
     provisionConfiguration: z.any(),
     alarms: z.any(),
   }),
