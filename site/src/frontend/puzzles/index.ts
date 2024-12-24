@@ -32,6 +32,7 @@ import GivenUp from "./giant-switch";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
+import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
 import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
@@ -106,6 +107,7 @@ import Deepfrost from "./wiry-ray";
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   "🔎🧊": MagnifyingGlassIce,
+  be_kind_rewind: BeKindRewind,
   downright_backwards: DownrightBackwards,
   educational_rite_of_passage: EducationalRiteOfPassage,
   introduction_to_decryption: IntroductionToDecryption,
