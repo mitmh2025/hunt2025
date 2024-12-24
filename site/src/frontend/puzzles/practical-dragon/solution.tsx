@@ -40,15 +40,14 @@ const Solution = () => {
     <>
       <p>
         All of the rebuses are puns/parodies of famous songs as clued by puzzle
-        title &ldquo;Zing it Again&rdquo; (Zing sounds like Sing and is also a
-        reference towards &ldquo;Zingers&rdquo;). Each of these puns/parodies is
-        from a specific source as indicated by the three sets of initials BB,
-        HM, and WA in final image. &nbsp;Colors added to solution document for
-        easier tracking. These three sources are:
+        title “Zing it Again” (Zing sounds like Sing and is also a reference
+        towards “Zingers”). Each of these puns/parodies is from a specific
+        source as indicated by the three sets of initials BB, HM, and WA in
+        final image. These three sources are:
       </p>
       <ul>
         <li>
-          <BBspan>BB: Bob&rsquo;s Burgers daily special puns</BBspan>
+          <BBspan>BB: Bob’s Burgers daily special puns</BBspan>
         </li>
         <li>
           <HMspan>HM: Hannah Montana episode title puns</HMspan>
@@ -193,10 +192,10 @@ const Solution = () => {
         <tr>
           <td>10</td>
           <HMtd>
-            <p>DON&#39;T GO BREAKING MY TOOTH</p>
+            <p>DON’T GO BREAKING MY TOOTH</p>
           </HMtd>
           <td>
-            <p>DON&#39;T GO BREAKING MY HEART</p>
+            <p>DON’T GO BREAKING MY HEART</p>
           </td>
           <td>
             <p>ELTON JOHN AND KIKI DEE</p>
@@ -229,10 +228,10 @@ const Solution = () => {
         <tr>
           <td>13</td>
           <BBtd>
-            <p>SWEET CHILI O&#39; MINE</p>
+            <p>SWEET CHILI O’ MINE</p>
           </BBtd>
           <td>
-            <p>SWEET CHILD O&#39; MINE</p>
+            <p>SWEET CHILD O’ MINE</p>
           </td>
           <td>
             <p>GUNS N ROSES</p>
@@ -265,10 +264,10 @@ const Solution = () => {
         <tr>
           <td>16</td>
           <HMtd>
-            <p>IT&#39;S A MANNEQUIN&#39;S WORLD</p>
+            <p>IT’S A MANNEQUIN’S WORLD</p>
           </HMtd>
           <td>
-            <p>IT&#39;S A MAN&#39;S MAN&#39;S MAN&#39;S WORLD</p>
+            <p>IT’S A MAN’S MAN’S MAN’S WORLD</p>
           </td>
           <td>
             <p>JAMES BROWN</p>
@@ -361,10 +360,10 @@ const Solution = () => {
         <tr>
           <td>24</td>
           <HMtd>
-            <p>DON&#39;T STOP &#39;TIL YOU GET THE PHONE</p>
+            <p>DON’T STOP ’TIL YOU GET THE PHONE</p>
           </HMtd>
           <td>
-            <p>DON&#39;T STOP &#39;TIL YOU GET ENOUGH</p>
+            <p>DON’T STOP ’TIL YOU GET ENOUGH</p>
           </td>
           <td>
             <p>MICHAEL JACKSON</p>
@@ -505,7 +504,7 @@ const Solution = () => {
         <tr>
           <td>36</td>
           <HMtd>
-            <p>DE-DO-DO-DO DA-DON&#39;T-DON&#39;T, DON&#39;T, TELL MY SECRET</p>
+            <p>DE-DO-DO-DO DA-DON’T-DON’T, DON’T, TELL MY SECRET</p>
           </HMtd>
           <td>
             <p>DE-DO-DO-DO, DE-DA-DA-DA IS ALL I WANT TO SAY TO YOU</p>
@@ -541,12 +540,12 @@ const Solution = () => {
       </table>
       <p>
         You need to next group them into their respective source category. The
-        sort is provided through the image at the bottom (e.g. &ldquo;four
-        seasons&rdquo; for Bob&rsquo;s Burger means sort by seasons). Sorting
-        and indexing into the band names will produce another song pun/parody
-        from the respective source.
+        sort is provided through the image at the bottom (e.g. “four seasons”
+        for Bob’s Burger means sort by seasons). Sorting and indexing into the
+        band names will produce another song pun/parody from the respective
+        source.
       </p>
-      <h3>Bob&rsquo;s Burgers (BB)</h3>
+      <h3>Bob’s Burgers (BB)</h3>
       <p>Sort = Seasons</p>
       <table>
         <tr>
@@ -634,13 +633,13 @@ const Solution = () => {
             <p>5</p>
           </td>
           <BBtd>
-            <p>SWEET CHILI O&#39; MINE</p>
+            <p>SWEET CHILI O’ MINE</p>
           </BBtd>
           <td>
-            <p>SWEET CHILD O&#39; MINE</p>
+            <p>SWEET CHILD O’ MINE</p>
           </td>
           <td>
-            <p>GUNS N&#39; ROSES</p>
+            <p>GUNS N’ ROSES</p>
           </td>
           <td>
             <p>4</p>
@@ -796,7 +795,7 @@ const Solution = () => {
       <h3>Hannah Montana (HM)</h3>
       <p>
         Sort = Punny Titles (note both episode and actual song titles will work
-        if you interpret it as &ldquo;title&rdquo;)
+        if you interpret it as “title”)
       </p>
       <table>
         <tr>
@@ -872,7 +871,7 @@ const Solution = () => {
             <p>4</p>
           </td>
           <HMtd>
-            <p>DE-DO-DO-DO DA-DON&#39;T-DON&#39;T, DON&#39;T, TELL MY SECRET</p>
+            <p>DE-DO-DO-DO DA-DON’T-DON’T, DON’T, TELL MY SECRET</p>
           </HMtd>
           <td>
             <p>DE-DO-DO-DO, DE-DA-DA-DA IS ALL I WANT TO SAY TO YOU</p>
@@ -888,10 +887,10 @@ const Solution = () => {
             <p>5</p>
           </td>
           <HMtd>
-            <p>DON&#39;T STOP &#39;TIL YOU GET THE PHONE</p>
+            <p>DON’T STOP ’TIL YOU GET THE PHONE</p>
           </HMtd>
           <td>
-            <p>DON&#39;T STOP &#39;TIL YOU GET ENOUGH</p>
+            <p>DON’T STOP ’TIL YOU GET ENOUGH</p>
           </td>
           <td>
             <p>MICHAEL JACKSON</p>
@@ -936,10 +935,10 @@ const Solution = () => {
             <p>8</p>
           </td>
           <HMtd>
-            <p>IT&#39;S A MANNEQUIN&#39;S WORLD</p>
+            <p>IT’S A MANNEQUIN’S WORLD</p>
           </HMtd>
           <td>
-            <p>IT&#39;S A MAN&#39;S MAN&#39;S MAN&#39;S WORLD</p>
+            <p>IT’S A MAN’S MAN’S MAN’S WORLD</p>
           </td>
           <td>
             <p>JAMES BROWN</p>
@@ -1246,11 +1245,11 @@ const Solution = () => {
       <p>Extracts to THE SAGA BEGINS</p>
       <p>
         For the final acrostic, if you try to index into the above three
-        intermediate solutions, you won&rsquo;t be able to. Notably the Hannah
-        Montana extraction has very large indexes which won&rsquo;t work. You
-        instead need to repeat the mechanic a second time (&ldquo;Zing it
-        again&rdquo;) and convert the songs to the respective band names. Doing
-        so with the three intermediate solutions:
+        intermediate solutions, you won’t be able to. Notably the Hannah Montana
+        extraction has very large indexes which won’t work. You instead need to
+        repeat the mechanic a second time (“Zing it again”) and convert the
+        songs to the respective band names. Doing so with the three intermediate
+        solutions:
       </p>
       <table>
         <tr>
@@ -1319,10 +1318,9 @@ const Solution = () => {
       </p>
       <p>
         The acrostic spells out HEAR COMES THE PUN. This is a pun on the Beatles
-        song title &quot;HERE COMES THE SUN&quot;. It is also a joke setup for
-        the final answer. Repeat the mechanic of Song pun -&gt; Band a third
-        time (&ldquo;Zing it again&rdquo;) and get the final answer THE BEATLES
-        (which is also a pun).
+        song title “HERE COMES THE SUN”. It is also a joke setup for the final
+        answer. Repeat the mechanic of Song pun → Band a third time (“Zing it
+        again”) and get the final answer THE BEATLES (which is also a pun).
       </p>
     </>
   );
