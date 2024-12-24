@@ -90,7 +90,10 @@ export const BackgroundCheckHeader = styled(PuzzleHeader)`
   h1 {
     font-family: "Georgia", serif;
     text-align: center;
-    text-decoration: underline;
+
+    > span {
+      border-bottom: 2px solid black;
+    }
   }
 
   #puzzle-guess-section {
