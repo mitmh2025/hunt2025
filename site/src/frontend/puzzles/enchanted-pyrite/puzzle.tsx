@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import image1 from "./assets/image1.svg";
 import image2 from "./assets/image2.svg";
 import image3 from "./assets/image3.svg";
@@ -9,10 +10,6 @@ import image5 from "./assets/image5.svg";
 
 const GreenSpan = styled.span`
   color: #6aa84f;
-`;
-
-const AuthorsNote = styled.p`
-  font-size: 14px;
 `;
 
 const PrintImage = styled(LinkedImage)<{ $width: number }>`
@@ -49,9 +46,9 @@ const Puzzle = (): JSX.Element => {
         can also be in cells that contain numbers, or in empty cells.)
       </p>
       <AuthorsNote>
-        (Links to Penpa versions of the grids are provided in case you find that
+        Links to Penpa versions of the grids are provided in case you find that
         interface helpful; but you may find it more efficient to use drawing
-        software, a tablet note-taking app, or just solve on paper.)
+        software, a tablet note-taking app, or just solve on paper.
       </AuthorsNote>
       <p>
         On the first day, the wolves are all standing at the edge of the
