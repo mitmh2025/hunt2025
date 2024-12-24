@@ -28,7 +28,7 @@ const PuzzleRow = styled.div`
   display: flex;
   flex-wrap: nowrap;
   margin: 30px;
-  overflow: scroll;
+  overflow: auto;
 `;
 
 const PuzzleRowGray = styled(PuzzleRow)`
