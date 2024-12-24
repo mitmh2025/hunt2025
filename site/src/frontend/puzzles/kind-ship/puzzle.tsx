@@ -17,7 +17,7 @@ import image9 from "./assets/image9.png";
 
 const Header = styled.div`
   margin-bottom: 1em;
-  width: 450px;
+  max-width: 450px;
   display: flex;
   gap: 16px;
 `;
@@ -32,6 +32,7 @@ const FlexWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  overflow-x: auto;
 `;
 
 const ALT_TEXT = "A swatch of multicolor woven fabric.";
