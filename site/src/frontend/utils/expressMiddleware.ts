@@ -27,7 +27,10 @@ export const addStaticMiddleware = (
   const staticPath = process.env.STATIC_PATH ?? fallbackStaticPath;
   if (existsSync(staticPath)) {
     // Serve static assets from the bundle without auth
-    app.use("/static", express.static(staticPath));
+    app.use(
+      "/static",
+      express.static(staticPath, { immutable: true, maxAge: "1y" }),
+    );
   }
 };
 
