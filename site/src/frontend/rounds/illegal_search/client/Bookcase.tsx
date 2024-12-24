@@ -284,6 +284,7 @@ export function BookcaseInteraction({
                       onClick={() => {
                         handleClick(i, j);
                       }}
+                      data-title={book.title}
                     >
                       <span className="spine" style={style}>
                         <span className="title">
@@ -306,6 +307,7 @@ export function BookcaseInteraction({
                       key={j}
                       $color={book.color}
                       style={{ zIndex: 1 }}
+                      data-title={book.title}
                     >
                       <span className="spine" style={style}>
                         <span className="title">

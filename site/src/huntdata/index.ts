@@ -436,7 +436,7 @@ const HUNT: Hunt = {
 
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }], slug: "papas_bookcase" }, // Bookcase
         { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg17" }], slug: "papas_stash" },
-        { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg32" }] },
+        { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg32" }], slug: "papas_bookcase_blacklight" },
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final

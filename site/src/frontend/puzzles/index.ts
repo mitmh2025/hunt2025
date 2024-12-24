@@ -65,6 +65,7 @@ import PapasBookcase from "./serene-africa";
 import AnythingIsPopsicle from "./shameful-duck";
 import The10000SheetExcelFile from "./shoddy-table";
 import PapasStash from "./shy-embassy";
+import PapasBookcaseBlacklight from "./sick-crown";
 import IntroductionToDecryption from "./silky-ninja";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
@@ -170,6 +171,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   papas_bookcase: PapasBookcase,
   papas_stash: PapasStash,
+  papas_bookcase_blacklight: PapasBookcaseBlacklight,
 
   // The Background Check
   deepfrost: Deepfrost,
