@@ -7,8 +7,8 @@ const puzzle: PuzzleDefinition = {
   title: "Jargon",
   slug: "jargon",
   initial_description:
-    "A series of clickable colored squares, each leading to a series of prompts with text boxes",
-  answer: "LIFEFORCE", // TODO: implement re-solve mechanic for PHILOLOGY
+    "A series of clickable colored squares, each leading to a series of prompts with text boxes.",
+  answer: "PHILOLOGY", // TODO: implement re-solve mechanic for LIFEFORCE
   authors: ["Ariel Schwartz"],
   editors: ["Alex Churchill", "Jesse Moeller", "Steve Banzaert"],
   additional_credits: [
