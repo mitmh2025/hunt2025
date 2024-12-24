@@ -476,6 +476,8 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/rounds/murder_in_mitropolis/client.tsx",
 
       // Included on specific puzzle pages
+      puzzle_legitimate_bridge:
+        "./src/frontend/puzzles/legitimate-bridge/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
       puzzle_unfit_tower: "./src/frontend/puzzles/unfit-tower/client.tsx",

@@ -418,7 +418,7 @@ const HUNT: Hunt = {
         { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "fechtbuch" },
         { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1, slug: "a_heap_of_clards" },
         { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "the_center_is_in_plain_sight" },
-        { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1 },
+        { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1, slug: "jargon" },
 
         // The next 8 puzzles are only discoverable once the first meta is
         // solved and they are discovered in the UI.

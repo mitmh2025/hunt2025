@@ -41,6 +41,7 @@ import TheArtGallery from "./intentional-limousine";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
+import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
@@ -186,6 +187,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   half_baked: HalfBaked,
   a_heap_of_clards: AHeapOfClards,
   皇帝の暗号: 皇帝の暗号,
+  jargon: Jargon,
   networking_event: NetworkingEvent,
   reuse_and_recyclability: ReuseAndRecyclability,
   the_center_is_in_plain_sight: TheCenterIsInPlainSight,
