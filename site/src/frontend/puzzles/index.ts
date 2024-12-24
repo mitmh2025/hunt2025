@@ -60,6 +60,7 @@ import TheUltimateInsult from "./periodic-dance";
 import BarTalk from "./personal-chocolate";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
+import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
@@ -108,6 +109,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   songs_on_the_radio: SongsOnTheRadio,
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
+  zing_it_again: ZingItAgain,
 
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,
