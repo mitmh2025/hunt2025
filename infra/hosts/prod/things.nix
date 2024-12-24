@@ -37,6 +37,7 @@
         '';
       };
       services.thingsboard.provision = {
+        enable = true;
         ruleChainsFile = ../../../thingsboard/rulechains.json;
         environmentFile = config.sops.templates."tbprovision/env".path;
       };

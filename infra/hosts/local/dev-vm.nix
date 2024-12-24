@@ -8,6 +8,7 @@
       enable = true;
       db_env = "ci";
     };
+    services.thingsboard.provision.enable = true;
     virtualisation.vmVariant = {
       virtualisation.forwardPorts = [
         # hunt2025

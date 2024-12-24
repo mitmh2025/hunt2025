@@ -4,6 +4,7 @@ let
 in {
   options = with lib; {
     services.thingsboard.provision = {
+      enable = mkEnableOption "Provision ThingsBoard";
       environmentFile = mkOption {
         type = types.nullOr types.path;
         default = null;
@@ -14,7 +15,7 @@ in {
       };
     };
   };
-  config = lib.mkIf config.services.thingsboard.enable {
+  config = lib.mkIf cfg.enable {
     systemd.services.thingsboard-provision = {
       description = "Provision ThingsBoard IOT Platform";
 
