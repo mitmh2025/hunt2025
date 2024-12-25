@@ -1,3 +1,8 @@
+import cryptex_note_blacklight from "../../frontend/rounds/illegal_search/assets/cryptex/cryptex_note_blacklight.png";
+import candy_modal_blacklight from "../../frontend/rounds/illegal_search/assets/desk_drawer/candy_modal_blacklight.png";
+import rings_modal_blacklight from "../../frontend/rounds/illegal_search/assets/fuse_box/rings_modal_blacklight.png";
+import ledger_blacklight from "../../frontend/rounds/illegal_search/assets/rug/numberlock_box_ledger_blacklight.png";
+import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/safe/money_modal_blacklight.png";
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
 import Superlatives from "./acute-ski";
@@ -5,6 +10,7 @@ import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
 import DoableDouble from "./austere-sink";
+import { blacklightPuzzle } from "./blacklight";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
@@ -185,15 +191,43 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Illegal Search
   bermuda_triangle: BermudaTriangle,
+  bermuda_triangle_blacklight: blacklightPuzzle(BermudaTriangle, {
+    answer: "LIFEFORCE",
+    asset: candy_modal_blacklight,
+    assetAlt: "TODO",
+  }),
   cross_spread: CrossSpread,
   fechtbuch: Fechtbuch,
+  fechtbuch_blacklight: blacklightPuzzle(Fechtbuch, {
+    answer: "VOYAGERS",
+    asset: rings_modal_blacklight,
+    assetAlt: "TODO",
+  }),
   half_baked: HalfBaked,
   a_heap_of_clards: AHeapOfClards,
+  a_heap_of_clards_blacklight: blacklightPuzzle(AHeapOfClards, {
+    answer: "SPARE PARTS",
+    asset: money_modal_blacklight,
+    assetAlt: "TODO",
+  }),
   皇帝の暗号: 皇帝の暗号,
   jargon: Jargon,
+  jargon_blacklight: blacklightPuzzle(Jargon, {
+    answer: "BRAZIL",
+    asset: cryptex_note_blacklight,
+    assetAlt: "TODO",
+  }),
   networking_event: NetworkingEvent,
   reuse_and_recyclability: ReuseAndRecyclability,
   the_center_is_in_plain_sight: TheCenterIsInPlainSight,
+  the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
+    TheCenterIsInPlainSight,
+    {
+      answer: "BROADCAST NEWS",
+      asset: ledger_blacklight,
+      assetAlt: "TODO",
+    },
+  ),
   this_is_just_a_test: ThisIsJustATest,
 
   papas_bookcase: PapasBookcase,

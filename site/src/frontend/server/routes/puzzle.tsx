@@ -15,6 +15,9 @@ import {
   IllegalSearchWrapper,
   IllegalSearchAnswer,
   IllegalSearchAcknowledgementBlock,
+  BlacklightIllegalSearchHeader,
+  BlacklightIllegalSearchMain,
+  BlacklightIllegalSearchWrapper,
 } from "../../components/IllegalSearchPuzzleLayout";
 import {
   MurderHeader,
@@ -99,6 +102,14 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     answer: IllegalSearchAnswer,
     acknowledgementBlock: IllegalSearchAcknowledgementBlock,
   },
+  illegal_search_blacklight: {
+    header: BlacklightIllegalSearchHeader,
+    main: BlacklightIllegalSearchMain,
+    wrapper: BlacklightIllegalSearchWrapper,
+    fonts: IllegalSearchFonts,
+    answer: IllegalSearchAnswer,
+    acknowledgementBlock: IllegalSearchAcknowledgementBlock,
+  },
   paper_trail: {
     main: PaperTrailMain,
     header: PaperTrailHeader,
@@ -170,6 +181,29 @@ function getComponentManifestForPuzzle(
       ROUND_PUZZLE_COMPONENT_MANIFESTS.background_check,
       overrides,
     );
+  }
+
+  if (puzzleState.round === "illegal_search") {
+    const illegalSearchEntry = Object.entries(
+      teamState.rounds.illegal_search?.slots ?? {},
+    ).find(
+      ([_slot, slotObj]: [string, { slug: string; is_meta?: boolean }]) => {
+        return slotObj.slug === slug;
+      },
+    );
+
+    if (!illegalSearchEntry) {
+      return DEFAULT_MANIFEST; // how did this get here?
+    }
+
+    const slot = illegalSearchEntry[0];
+    if (["isp19", "isp20", "isp21", "isp22", "isp23", "ism03"].includes(slot)) {
+      return Object.assign(
+        {},
+        DEFAULT_MANIFEST,
+        ROUND_PUZZLE_COMPONENT_MANIFESTS.illegal_search_blacklight,
+      );
+    }
   }
 
   const roundSpecificOverrides =
