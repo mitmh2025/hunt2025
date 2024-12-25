@@ -19,7 +19,7 @@ import rooks from "./assets/rooks.png";
 import ruger from "./assets/ruger.png";
 import whey from "./assets/whey.png";
 import worm from "./assets/worm.png";
-import { StyledDiv } from "./puzzle";
+import { FlexWrapper } from "./puzzle";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -351,7 +351,7 @@ const Solution = (): JSX.Element => {
         Tunic glyphs, and each can be rotated using the ordered list of
         rotations previously, one rotation per glyph.
       </p>
-      <StyledDiv>
+      <FlexWrapper>
         <img
           src={extraction1}
           alt="A series of angular glyphs written in thich black lines."
@@ -361,7 +361,7 @@ const Solution = (): JSX.Element => {
           src={extraction2}
           alt="A series of angular glyphs written in thich black lines."
         />
-      </StyledDiv>
+      </FlexWrapper>
       <p>
         This transforms the glyphs into a meaningful sequence saying “carmine
         obi three four,” which clues the final answer of the puzzle,{" "}
