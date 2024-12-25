@@ -419,7 +419,7 @@ const HUNT: Hunt = {
         // blacklight version of the asset to give the right set of
         // instructions for that puzzle.
         { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "placeholder_isp06" }, // candy, in desk drawer/behind directional lock
-        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "cahfee_regulah_stub" }, // rings, behind binary switches
+        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "cahfee_regulah" }, // rings, behind binary switches
         { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1, slug: "placeholder_isp08" }, // money, inside safe/combination lock
         { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "the_center_is_in_plain_sight" }, // ledger, behind numeric lock/rug
         { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1, slug: "jargon" }, // note, inside cryptex
@@ -438,7 +438,7 @@ const HUNT: Hunt = {
         // The next 5 puzzles are the blacklight versions of 6-10.
         // Slugs must correspond to the _blacklight version of the slug of the corresponding slot isp06-isp10
         { id: "isp19", unlocked_if: { gate_satisfied: "isg27" }, prize: 0, slug: "placeholder_isp06_blacklight" }, // blacklight version of isp06, behind directional lock
-        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "cahfee_regulah_stub_blacklight" }, // blacklight version of isp07, behind binary switch lock
+        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "cahfee_regulah_blacklight" }, // blacklight version of isp07, behind binary switch lock
         { id: "isp21", unlocked_if: { gate_satisfied: "isg29" }, prize: 0, slug: "placeholder_isp08_blacklight" }, // blacklight version of isp08, behind combination lock
         { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "the_center_is_in_plain_sight_blacklight" }, // blacklight version of isp09, behind numeric lock
         { id: "isp23", unlocked_if: { gate_satisfied: "isg31" }, prize: 0, slug: "jargon_blacklight" }, // blacklight version of isp10, behind word lock
