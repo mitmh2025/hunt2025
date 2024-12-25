@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Cahfee, Regulah",
   slug: "cahfee_regulah",
   initial_description: "Dunk konundrum.",
-  answer: "VOYAGERS",
+  answer: "FOOD COURT",
   authors: ["Ariel Schwartz", "Sarah Leadbeater"],
   editors: ["Anna Brunner", "Laura Nicholson", "Nathan Fung"],
   additional_credits: [],
@@ -106,14 +106,7 @@ const puzzle: PuzzleDefinition = {
         "Remember to apply Rule TUMMYACHE. It is the inevitable result of buying all of those donuts.",
     },
   ],
-  canned_responses: [
-    // TODO: implement re-solve mechanics
-    // {
-    //   guess: ["FOODCOURT"],
-    //   reply:
-    //     "Correct! You receive two additional Special Instructions. Rule ROTARY: You haven’t lived here long, have you? No one calls them “roundabouts” or “traffic circles”. In any case, add a donut to your purchase for each one you drove on. Rule TUMMYACHE: If you do not have enough donuts to fulfill your team’s request, do not extract any letters. Instead, feel shame.",
-    // },
-  ],
+  canned_responses: [],
 };
 
 export default puzzle;
