@@ -30,6 +30,7 @@ import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 import Rug from "./Rug";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
+import Telephone from "./Telephone";
 import { default_cursor, zoom_cursor } from "./cursors";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
@@ -439,7 +440,6 @@ const SearchEngine = ({
 
   const teamState = useDataset("team_state", undefined, initialTeamState);
 
-  console.log("XXX", node);
   const assets = node.placedAssets
     .map((placedAsset) => {
       return (
@@ -537,6 +537,10 @@ const SearchEngine = ({
           }}
         />
       );
+    }
+
+    if (interaction.plugin === "telephone") {
+      return <Telephone key={`interaction-${interaction.plugin}`} />;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- might add more plugins later

@@ -95,7 +95,10 @@ type LockDatum = {
   gateId: string; // The gate which we will unlock when you submit the correct lock answer
 };
 // Map from which plugin does the check to the data relevant to that check
-const LOCK_DATA: Record<Exclude<PluginName, "extra">, LockDatum> = {
+const LOCK_DATA: Record<
+  Exclude<PluginName, "extra" | "telephone">,
+  LockDatum
+> = {
   deskdrawer: {
     // directional lock
     answer: "dlrddrr",
@@ -1035,6 +1038,11 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.8,
         },
         asset: telephone,
+        includeIf: (teamState: TeamHuntState) => {
+          return !(
+            teamState.rounds.illegal_search?.gates?.includes("isg26") ?? false
+          );
+        },
       },
     ],
     navigations: [
@@ -1060,7 +1068,14 @@ const ALL_NODES: NodeInternal[] = [
       },
     ],
     interactions: [
-      // telephone
+      {
+        plugin: "telephone",
+        includeIf: (teamState: TeamHuntState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes("isg26") ?? false
+          );
+        },
+      },
     ],
     sounds: [
       // morse code mp3?
@@ -1496,9 +1511,23 @@ function filteredForFrontend(
     }
   });
 
-  const fullInteractions = [...node.interactions];
+  const keptInteractions = node.interactions.flatMap((interaction) => {
+    const { includeIf, ...rest } = interaction;
+    if (includeIf === undefined) {
+      // No condition means always include
+      return [rest];
+    } else {
+      const keep = includeIf(teamState);
+      if (keep) {
+        return [rest];
+      } else {
+        return [];
+      }
+    }
+  });
+
   if (teamState.rounds.illegal_search?.gates?.includes("isg26")) {
-    fullInteractions.push({
+    keptInteractions.push({
       plugin: "extra",
     });
   }
@@ -1508,7 +1537,7 @@ function filteredForFrontend(
     background: node.background,
     placedAssets: keptPlacedAssets,
     navigations: keptNavigations,
-    interactions: fullInteractions,
+    interactions: keptInteractions,
     sounds: node.sounds,
     modals,
     interactionModals:

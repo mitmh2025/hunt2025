@@ -6,9 +6,12 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
-import { type Modal } from "../types";
+import { type PlacedAsset, type Modal } from "../types";
 
-type ExtraModalRenderer = (modals: Modal[]) => ReactNode;
+type ExtraModalRenderer = (
+  modals: Modal[],
+  otherPlacedAssets?: PlacedAsset[],
+) => ReactNode;
 
 type ExtraModalRendererContextValue = {
   renderer: ExtraModalRenderer;
@@ -28,10 +31,13 @@ export const ExtraModalRendererContext =
     noopExtraModalRendererContextValue,
   );
 
-export function useRenderModalExtras(modals: Modal[]) {
+export function useRenderModalExtras(
+  modals: Modal[],
+  otherPlacedAssets: PlacedAsset[] = [],
+) {
   const ctx = useContext(ExtraModalRendererContext);
 
-  return ctx.renderer(modals);
+  return ctx.renderer(modals, otherPlacedAssets);
 }
 
 export function useExtraModalRenderer(renderer: ExtraModalRenderer) {

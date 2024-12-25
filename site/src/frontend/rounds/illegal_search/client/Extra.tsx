@@ -21,6 +21,7 @@ import {
   type Node,
   type ModalWithExtraPuzzleFields,
   type ScreenArea,
+  type PlacedAsset,
 } from "../types";
 import { useExtraModalRenderer } from "./ExtraModalRenderer";
 import {
@@ -312,29 +313,51 @@ export default function Extra({
   // Interactions that use modals will call this function to render their
   // extra / blacklight modals.
   const modalRenderer = useCallback(
-    (modals: Modal[]) => {
-      if (!active || modals.length === 0) {
+    (modals: Modal[], otherPlacedAssets: PlacedAsset[] = []) => {
+      if (!active) {
         return null;
       }
 
-      const modalAssets = modals.map((modal) => {
-        if (!modal.extra) {
-          return null;
-        }
+      const allAssets = otherPlacedAssets
+        .map((asset) => {
+          if (!asset.extraAsset) {
+            return null;
+          }
 
-        let area: ScreenArea;
-        let asset: string | null;
-        if (modal.placedAsset) {
-          area = modal.placedAsset.area;
-          asset = modal.placedAsset.extraAsset ?? modal.placedAsset.asset;
-        } else {
-          area = modal.area;
-          asset = modal.extra.asset;
-        }
+          return (
+            <Asset
+              key={asset.asset}
+              placedAsset={{
+                area: asset.area,
+                asset: asset.extraAsset,
+              }}
+            />
+          );
+        })
+        .concat(
+          modals.map((modal) => {
+            if (!modal.extra) {
+              return null;
+            }
 
-        const placedAsset = { area, asset };
-        return <Asset key={modal.asset} placedAsset={placedAsset} />;
-      });
+            let area: ScreenArea;
+            let asset: string | null;
+            if (modal.placedAsset) {
+              area = modal.placedAsset.area;
+              asset = modal.placedAsset.extraAsset ?? modal.placedAsset.asset;
+            } else {
+              area = modal.area;
+              asset = modal.extra.asset;
+            }
+
+            const placedAsset = { area, asset };
+            return <Asset key={modal.asset} placedAsset={placedAsset} />;
+          }),
+        );
+
+      if (allAssets.length === 0) {
+        return null;
+      }
 
       const modalTriggers = modals.map((modal) => {
         if (!modal.extra) {
@@ -354,7 +377,7 @@ export default function Extra({
 
       return (
         <>
-          <InteractionLayer>{modalAssets}</InteractionLayer>
+          <InteractionLayer>{allAssets}</InteractionLayer>
           {modalTriggers}
         </>
       );
@@ -364,24 +387,10 @@ export default function Extra({
 
   useExtraModalRenderer(modalRenderer);
 
-  const nonInteractionModalTriggers = modalRenderer(node.modals);
-
-  // Render placedAssets from the main scene
-  const extraAssets = node.placedAssets.map((asset) => {
-    if (!asset.extraAsset) {
-      return null;
-    }
-
-    return (
-      <Asset
-        key={asset.asset}
-        placedAsset={{
-          area: asset.area,
-          asset: asset.extraAsset,
-        }}
-      />
-    );
-  });
+  const nonInteractionModalTriggers = modalRenderer(
+    node.modals,
+    node.placedAssets,
+  );
 
   // Render blacklight modal if it's been triggered
   let modalOverlay = undefined;
@@ -426,11 +435,6 @@ export default function Extra({
 
   return (
     <>
-      {active && extraAssets.length > 0 ? (
-        <InteractionLayer styles={{ pointerEvents: "none" }}>
-          {extraAssets}
-        </InteractionLayer>
-      ) : null}
       {nonInteractionModalTriggers}
       {active ? (
         <ToggleOn onClick={toggleActive} />
