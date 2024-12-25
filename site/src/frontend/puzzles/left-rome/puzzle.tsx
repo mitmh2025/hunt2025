@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import styled from "styled-components";
+import React, { type ReactNode } from "react";
+import { styled } from "styled-components";
 import dunkin1 from "./assets/dunkin1.png";
 import dunkin2 from "./assets/dunkin2.png";
 import dunkin3 from "./assets/dunkin3.png";

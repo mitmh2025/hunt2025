@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Centered, StyledOl } from "./puzzle";
 
 const DONUT_CARD_1: { quantity: number; flavor: string; extraction: string }[] =
