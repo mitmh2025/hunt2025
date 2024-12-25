@@ -33,6 +33,11 @@ export type PuzzleSlot = {
   slug?: string; // slug of the puzzle currently assigned to this slot
   // TODO: in the fullness of time, we should lint for unassigned slots, and make slug a required field, but not now
 
+  // If present, this puzzle has one or more unlisted subpuzzles associated with
+  // it. Subpuzzles have their own routes and they may affect gates, but they do
+  // not have their own answers and they do not affect unlock state.
+  subpuzzle_slugs?: string[];
+
   // Is this puzzle a meta?  Metapuzzles are excluded by default from the set
   // of slots satisfying puzzles_solved and puzzles_unlocked, and they may be
   // presented at the top of puzzle lists.

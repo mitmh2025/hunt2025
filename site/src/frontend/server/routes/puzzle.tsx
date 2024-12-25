@@ -56,7 +56,7 @@ import {
   StakeoutMain,
   StakeoutWrapper,
 } from "../../components/StakeoutPuzzleLayout";
-import { PUZZLES } from "../../puzzles";
+import { PUZZLES, SUBPUZZLES } from "../../puzzles";
 import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
 import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
 import { MurderFonts } from "../../rounds/murder_in_mitropolis/MurderFonts";
@@ -228,30 +228,35 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     // Puzzle doesn't exist or team doesn't have access.
     return undefined;
   }
+
   const guesses = result.body.guesses;
   const initialGuesses = JSON.stringify(result.body.guesses);
   const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}";`;
   const noopOnGuessesUpdate = () => {
     /* no-op, this is noninteractive in SSR */
   };
+
+  // Look up puzzle by slug. If it exists and has an answer, include the section to submit guesses.
+  const puzzle = PUZZLES[slug] ?? SUBPUZZLES[slug];
   const guessFrag = (
     <>
       <script
         type="text/javascript"
         dangerouslySetInnerHTML={{ __html: inlineScript }}
       />
-      <div id="puzzle-guesses">
-        <PuzzleGuessSection
-          slug={slug}
-          guesses={guesses}
-          onGuessesUpdate={noopOnGuessesUpdate}
-        />
-      </div>
+      {puzzle && puzzle.answer && (
+        <div id="puzzle-guesses">
+          <PuzzleGuessSection
+            slug={slug}
+            guesses={guesses}
+            onGuessesUpdate={noopOnGuessesUpdate}
+          />
+        </div>
+      )}
     </>
   );
 
-  // Look up puzzle by slug.  If none exists, 404.
-  const puzzle = PUZZLES[slug];
+  // If puzzle does not exist, 404.
   if (puzzle === undefined) {
     if (process.env.NODE_ENV === "development") {
       // This should only be reachable in dev mode.
@@ -314,7 +319,9 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
 
   // If this puzzle is not unlocked, 404.  Ideally we'd do this check as soon as we get the API
   // result, but devmode wants to render an unlock/info page even when the puzzle is locked.
-  const puzzleState = req.teamState.state.puzzles[slug];
+  // For subpuzzles, use the unlock structure, round assignment, etc. of the parent puzzle.
+  const parentSlug = "parent_slug" in puzzle ? puzzle.parent_slug : null;
+  const puzzleState = req.teamState.state.puzzles[parentSlug ?? slug];
   if (!puzzleState) {
     return undefined;
   }
@@ -336,7 +343,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   // Use the components for the relevant round.
   const manifest = getComponentManifestForPuzzle(
     req.teamState.state,
-    slug,
+    parentSlug ?? slug,
     "puzzle",
   );
 

@@ -515,7 +515,7 @@ const HUNT: Hunt = {
         { id: "tmp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "find_other_ways_of_seeing" },
         { id: "tmp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "absolutely_not_balderdash" },
         { id: "tmp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "beyond_a_shadow_of_a_doubt" },
-        { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "weirdo_threaded_doodads", subpuzzle_slugs: ["i_kid_ewe_knot", "stitchy_situation"] },
         { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
         { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
@@ -531,6 +531,10 @@ const HUNT: Hunt = {
         { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1 },
         { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 },
         { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
+      ],
+      gates: [
+        { id: "tmg01" }, // Opened I Kid Ewe Knot (Weirdo Threaded Doodads)
+        { id: "tmg02" }, // Opened Stitchy Situation (Weirdo Threaded Doodads)
       ],
       interactions: [
         {
@@ -593,6 +597,11 @@ export function generateSlugToSlotMap(hunt: Hunt): Map<string, SlotLookup> {
         );
       }
       slugToSlot.set(slug, { roundSlug: round.slug, slot });
+      if (slot.subpuzzle_slugs) {
+        for (const subpuzzle_slug of slot.subpuzzle_slugs) {
+          slugToSlot.set(subpuzzle_slug, { roundSlug: round.slug, slot });
+        }
+      }
     });
   });
   return slugToSlot;

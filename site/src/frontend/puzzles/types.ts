@@ -117,4 +117,16 @@ export type PuzzleDefinition = PuzzleDefinitionMetadata & {
   // If provided, an additional websocket-express Router that should be mounted at `/puzzles/<slug>/`
   // to allow for additional puzzle-specific server behavior.
   router?: Router;
+
+  // Slugs for any subpuzzle pages associated with this puzzle. Subpuzzles do not have individual answers,
+  // but they may update hunt state when accessed.
+  subpuzzle_slugs?: string[];
+};
+
+export type SubpuzzleDefinition = Pick<
+  PuzzleDefinition,
+  "title" | "slug" | "content"
+> & {
+  parent_slug: string;
+  answer?: string;
 };

@@ -287,23 +287,24 @@ export function getRouter({
     }
 
     // The puzzle must be either unlockable or unlocked.
+    const { slot } = slotEntry;
     if (
-      !data.puzzles_unlockable.has(slug) &&
-      !data.puzzles_unlocked.has(slug)
+      !data.puzzles_unlockable.has(slot.slug ?? slug) &&
+      !data.puzzles_unlocked.has(slot.slug ?? slug)
     ) {
       return undefined;
     }
 
     const locked: "locked" | "unlockable" | "unlocked" =
-      data.puzzles_unlocked.has(slug)
+      data.puzzles_unlocked.has(slot.slug ?? slug)
         ? "unlocked"
-        : data.puzzles_unlockable.has(slug)
+        : data.puzzles_unlockable.has(slot.slug ?? slug)
           ? "unlockable"
           : "locked";
 
     const guesses = activity_log.filter(
       (e): e is InternalActivityLogEntry & { type: "puzzle_guess_submitted" } =>
-        e.type === "puzzle_guess_submitted" && e.slug === slug,
+        e.type === "puzzle_guess_submitted" && e.slug === (slot.slug ?? slug),
     );
     const correct_answers = guesses
       .filter((e) => e.data.status === "correct")

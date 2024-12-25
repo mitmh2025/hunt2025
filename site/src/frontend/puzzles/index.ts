@@ -49,7 +49,6 @@ import TheArtGallery from "./intentional-limousine";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
-import CahfeeRegulah from "./left-rome";
 import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
@@ -73,6 +72,9 @@ import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
 import BarTalk from "./personal-chocolate";
 import { makePlaceholder } from "./placeholder";
+import WeirdoThreadedDoodads from "./plain-roulette";
+import IKidEweKnot from "./plain-roulette/i-kid-ewe-knot";
+import StitchySituation from "./plain-roulette/stitchy-situation";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
 import ZingItAgain from "./practical-dragon";
@@ -89,7 +91,6 @@ import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
 import PapasBookcase from "./serene-africa";
-import InADifferentDirection from "./shallow-marble";
 import AnythingIsPopsicle from "./shameful-duck";
 import The10000SheetExcelFile from "./shoddy-table";
 import PapasStash from "./shy-embassy";
@@ -110,7 +111,7 @@ import ReuseAndRecyclability from "./tinted-stream";
 import BeyondAShadowOfADoubt from "./total-part";
 import 皇帝の暗号 from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
-import type { PuzzleDefinition } from "./types";
+import type { PuzzleDefinition, SubpuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import MazeOfLies from "./unfit-tower";
 import GardenAnecdotes from "./unimportant-lock";
@@ -147,7 +148,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   dropping_the_ball: DroppingTheBall,
   drunkens_and_flagons: DrunkensAndFlagons,
   educational_rite_of_passage: EducationalRiteOfPassage,
-  in_a_different_direction: InADifferentDirection,
   introduction_to_decryption: IntroductionToDecryption,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
   shrinkage: Shrinkage,
@@ -232,7 +232,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // TODO: isp05 desk lamp
 
   placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
-  cahfee_regulah: CahfeeRegulah, // rings, behind binary switches
+  cahfee_regulah_stub: CahfeeRegularStub, // rings, behind binary switches
   placeholder_isp08: PlaceholderISP08, // money, behind safe/combination lock
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // ledger, behind numeric lock/rug
   jargon: Jargon, // note, inside cryptex
@@ -256,7 +256,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     asset: candy_modal_blacklight,
     assetAlt: "TODO",
   }),
-  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegularStub, {
+  cahfee_regulah_stub_blacklight: blacklightPuzzle(CahfeeRegularStub, {
     answer: "VOYAGERS",
     asset: rings_modal_blacklight,
     assetAlt: "TODO",
@@ -308,6 +308,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
+  weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
@@ -315,4 +316,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   garden_anecdotes: GardenAnecdotes,
   given_up: GivenUp,
   the_thief: TheThief,
+};
+
+export const SUBPUZZLES: Record<string, SubpuzzleDefinition> = {
+  i_kid_ewe_knot: IKidEweKnot,
+  stitchy_situation: StitchySituation,
 };

@@ -246,6 +246,42 @@ export function registerUiRoutes({
     ),
   );
 
+  /* Routes for 'unlisted' puzzles. */
+  authRouter.get(
+    "/i_kid_ewe_knot",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await req.frontendApi.markTeamGateSatisfied({
+        params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg01" },
+      });
+      await renderApp(
+        puzzleHandler,
+        {
+          ...req,
+          params: { puzzleSlug: "i_kid_ewe_knot" },
+        } as Request<PuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
+  authRouter.get(
+    "/stitchy_situation",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await req.frontendApi.markTeamGateSatisfied({
+        params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg02" },
+      });
+      await renderApp(
+        puzzleHandler,
+        {
+          ...req,
+          params: { puzzleSlug: "stitchy_situation" },
+        } as Request<PuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
+
   authRouter.get(
     "/interactions/:slug",
     asyncHandler(
