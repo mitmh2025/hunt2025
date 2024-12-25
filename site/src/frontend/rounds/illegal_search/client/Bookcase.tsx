@@ -42,6 +42,7 @@ const BookcaseShelf = styled.tbody`
 
   & tr:first-child td {
     padding-top: 1em;
+    width: 62px;
   }
 
   &:last-child tr {
