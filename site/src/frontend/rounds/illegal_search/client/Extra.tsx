@@ -5,6 +5,7 @@ import React, {
   type ReactNode,
   useRef,
   useContext,
+  useEffect,
 } from "react";
 import { createPortal } from "react-dom";
 import { styled } from "styled-components";
@@ -163,6 +164,30 @@ function InteractionLayer({
     },
   });
 
+  useEffect(() => {
+    // Instead of updating the mask on every render, we use requestAnimationFrame
+    // to throttle the updates. Mask updates are expensive, so we only want to
+    // apply them as quicky as the browser can handle.
+    function render() {
+      if (!wrapperRef.current || !mousePos) {
+        return;
+      }
+
+      const mask = `radial-gradient(
+        circle at ${mousePos.x}px ${mousePos.y}px,
+        black 100px,
+        transparent 150px
+      )`;
+
+      wrapperRef.current.style.mask = mask;
+    }
+
+    const handle = requestAnimationFrame(render);
+    return () => {
+      cancelAnimationFrame(handle);
+    };
+  }, [mousePos]);
+
   if (!mousePos) {
     return null;
   }
@@ -174,7 +199,7 @@ function InteractionLayer({
     width: "100%",
     height: "100%",
     mask: `radial-gradient(
-      circle at ${mousePos.x}px ${mousePos.y}px,
+      circle at -1000px -1000px,
       black 100px,
       transparent 150px
     )`,
