@@ -240,7 +240,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     asset: candy_modal_blacklight,
     assetAlt: "TODO",
   }),
-  cahfee_regulah_stub_blacklight: blacklightPuzzle(CahfeeRegularStub, {
+  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegularStub, {
     answer: "VOYAGERS",
     asset: rings_modal_blacklight,
     assetAlt: "TODO",

@@ -438,7 +438,7 @@ const HUNT: Hunt = {
         // The next 5 puzzles are the blacklight versions of 6-10.
         // Slugs must correspond to the _blacklight version of the slug of the corresponding slot isp06-isp10
         { id: "isp19", unlocked_if: { gate_satisfied: "isg27" }, prize: 0, slug: "placeholder_isp06_blacklight" }, // blacklight version of isp06, behind directional lock
-        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "cahfee_regulah_stub_blacklight" }, // blacklight version of isp07, behind binary switch lock
+        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "cahfee_regulah_blacklight" }, // blacklight version of isp07, behind binary switch lock
         { id: "isp21", unlocked_if: { gate_satisfied: "isg29" }, prize: 0, slug: "placeholder_isp08_blacklight" }, // blacklight version of isp08, behind combination lock
         { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "the_center_is_in_plain_sight_blacklight" }, // blacklight version of isp09, behind numeric lock
         { id: "isp23", unlocked_if: { gate_satisfied: "isg31" }, prize: 0, slug: "jargon_blacklight" }, // blacklight version of isp10, behind word lock
