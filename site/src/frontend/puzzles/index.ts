@@ -69,6 +69,7 @@ import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
 import BarTalk from "./personal-chocolate";
+import { makePlaceholder } from "./placeholder";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
 import ZingItAgain from "./practical-dragon";
@@ -111,6 +112,22 @@ import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
 import Deepfrost from "./wiry-ray";
+
+const PlaceholderISP06 = makePlaceholder(
+  "placeholder_isp06",
+  "Placeholder 06",
+  "ATHLETIC CLUB",
+);
+const CahfeeRegularStub = makePlaceholder(
+  "cahfee_regulah",
+  "Cahfee, Regulah",
+  "FOOD COURT",
+);
+const PlaceholderISP08 = makePlaceholder(
+  "placeholder_isp08",
+  "Placeholder 08",
+  "MANUEL ORIBE",
+);
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
@@ -191,36 +208,52 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_shell_game: TheShellGame,
 
   // The Illegal Search
+  皇帝の暗号: 皇帝の暗号, // great wave painting
+  cross_spread: CrossSpread, // globe
+  // TODO: isp03 family portrait
+  this_is_just_a_test: ThisIsJustATest, // typewriter
+  // TODO: isp05 desk lamp
+
+  placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
+  cahfee_regulah_stub: CahfeeRegularStub, // rings, behind binary switches
+  placeholder_isp08: PlaceholderISP08, // money, behind safe/combination lock
+  the_center_is_in_plain_sight: TheCenterIsInPlainSight, // ledger, behind numeric lock/rug
+  jargon: Jargon, // note, inside cryptex
+
+  a_heap_of_clards: AHeapOfClards,
   bermuda_triangle: BermudaTriangle,
-  bermuda_triangle_blacklight: blacklightPuzzle(BermudaTriangle, {
+  fechtbuch: Fechtbuch,
+  half_baked: HalfBaked,
+  networking_event: NetworkingEvent,
+  reuse_and_recyclability: ReuseAndRecyclability,
+
+  // Note: these blacklight answer assignments are all wrong, but that's the
+  // set of graphical assets that we got for the playtest, so we're going to
+  // live with it for now.  Eventually:
+  // * SPARE PARTS should go to the_center_is_in_plain_sight_blacklight
+  // * LIFEFORCE should go to jargon_blacklight
+  // * VOYAGERS should go to cahfee_regulah_blacklight
+  // * the other two have not reached postprod yet
+  placeholder_isp06_blacklight: blacklightPuzzle(PlaceholderISP06, {
     answer: "LIFEFORCE",
     asset: candy_modal_blacklight,
     assetAlt: "TODO",
   }),
-  cross_spread: CrossSpread,
-  fechtbuch: Fechtbuch,
-  fechtbuch_blacklight: blacklightPuzzle(Fechtbuch, {
+  cahfee_regulah_stub_blacklight: blacklightPuzzle(CahfeeRegularStub, {
     answer: "VOYAGERS",
     asset: rings_modal_blacklight,
     assetAlt: "TODO",
   }),
-  half_baked: HalfBaked,
-  a_heap_of_clards: AHeapOfClards,
-  a_heap_of_clards_blacklight: blacklightPuzzle(AHeapOfClards, {
+  placeholder_isp08_blacklight: blacklightPuzzle(PlaceholderISP08, {
     answer: "SPARE PARTS",
     asset: money_modal_blacklight,
     assetAlt: "TODO",
   }),
-  皇帝の暗号: 皇帝の暗号,
-  jargon: Jargon,
   jargon_blacklight: blacklightPuzzle(Jargon, {
     answer: "BRAZIL",
     asset: cryptex_note_blacklight,
     assetAlt: "TODO",
   }),
-  networking_event: NetworkingEvent,
-  reuse_and_recyclability: ReuseAndRecyclability,
-  the_center_is_in_plain_sight: TheCenterIsInPlainSight,
   the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
     TheCenterIsInPlainSight,
     {
@@ -229,7 +262,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
       assetAlt: "TODO",
     },
   ),
-  this_is_just_a_test: ThisIsJustATest,
 
   papas_bookcase: PapasBookcase,
   papas_stash: PapasStash,
