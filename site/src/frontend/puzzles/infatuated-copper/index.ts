@@ -32,7 +32,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have found the specific episodes referenced by the clips, but have not figured how to sort them.",
       keywords: ["sort"],
       nudge:
-        "The flavortext makes multiple references to another episodic horror franchise. Try googling some of the phrases therein that seem oddly specific or otherwise incongruent to the rest of the text's tone.",
+        "The flavortext makes multiple references to another episodic horror franchise. Try googling some of the phrases therein that seem oddly specific or otherwise incongruent to the rest of the text’s tone.",
     },
     {
       order: 60.0,
@@ -45,7 +45,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 70.0,
       description:
-        "Solvers have determined the specific event in The Magnus Archives referenced by the flavortext, but still can't figure out how to sort the episode titles.",
+        "Solvers have determined the specific event in The Magnus Archives referenced by the flavortext, but still can’t figure out how to sort the episode titles.",
       keywords: ["sort"],
       nudge:
         "The text of the Mass Ritual contains a sort order. The bulk of this ordering looks like “crawls and chokes and blinds and […]”. Use this ordering as a sort for your data set.",
@@ -53,22 +53,22 @@ const puzzle: PuzzleDefinition = {
     {
       order: 75.0,
       description:
-        "Solvers have attempted to use the Mass Ritual's text as a sort, but are still having difficulty getting the episode titles sorted properly.",
+        "Solvers have attempted to use the Mass Ritual’s text as a sort, but are still having difficulty getting the episode titles sorted properly.",
       keywords: ["sort"],
       nudge:
-        "The Mass Ritual's incantation begins with a reference to The Eye (“You who watch…”) and then refers to each of the other entities with a single verb in the list that comes after the words “the awful dread”. Match these up with the provided content warnings to get an ordering.",
+        "The Mass Ritual’s incantation begins with a reference to The Eye (“You who watch…”) and then refers to each of the other entities with a single verb in the list that comes after the words “the awful dread”. Match these up with the provided content warnings to get an ordering.",
     },
     {
       order: 80.0,
       description:
-        "Solvers have sorted the identified episodes by the Mass Ritual order, but don't know what to do next.",
+        "Solvers have sorted the identified episodes by the Mass Ritual order, but don’t know what to do next.",
       keywords: ["extraction"],
       nudge: "Try entering the sorted episode titles into the provided grid.",
     },
     {
       order: 90.0,
       description:
-        "Solvers have entered the sorted titles into the provided grid, but don't know what to do next.",
+        "Solvers have entered the sorted titles into the provided grid, but don’t know what to do next.",
       keywords: ["extraction"],
       nudge:
         "The content warnings for each of the clips, properly sorted, contain a clue as to what to look for next.",
@@ -76,7 +76,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 100.0,
       description:
-        "Solvers have found the clue embedded in the content warnings, but don't know what to do next.",
+        "Solvers have found the clue embedded in the content warnings, but don’t know what to do next.",
       keywords: ["extraction"],
       nudge:
         "Look for TRIGRAM OVERLAPs (partially overlapping groupings of three letters which span adjacent grid rows) in your completed grid.",

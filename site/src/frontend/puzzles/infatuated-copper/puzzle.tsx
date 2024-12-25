@@ -64,7 +64,7 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Interment and suffocation</div>
         <Indent>
-          {/* eslint-disable-next-line @jsx-a11y/media-has-track -- provided inline below */}
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={intermentAndSuffocation} />
           <details>
             <summary>Transcript: Interment and suffocation</summary>
@@ -141,7 +141,7 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Rapid descents</div>
         <Indent>
-          {/* eslint-disable-next-line @jsx-a11y/media-has-track -- provided inline below */}
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={rapidDescents} />
           <details>
             <summary>Transcript: Rapid descents</summary>
@@ -186,7 +186,7 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Technological surveillance</div>
         <Indent>
-          {/* eslint-disable-next-line @jsx-a11y/media-has-track -- provided inline below */}
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={technologicalSurveillance} />
           <details>
             <summary>Transcript: Technological surveillance</summary>
@@ -210,7 +210,7 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Gouging of eyes</div>
         <Indent>
-          {/* eslint-disable-next-line @jsx-a11y/media-has-track -- provided inline below */}
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={gougingOfEyes} />
           <details>
             <summary>Transcript: Gouging of eyes</summary>
@@ -219,7 +219,7 @@ const Puzzle = (): JSX.Element => {
             contains incredible power, and that this power can be transferred to
             others. Rather than extinguishing that power, death can often be the
             key that unlocks its fullest potential. All you need is a human
-            corpse, a pressing need, and a very strong stomach. I'm the
+            corpse, a pressing need, and a very strong stomach. I’m the
             narrator, and this... [long pause] ...is a podcast.
           </details>
         </Indent>
