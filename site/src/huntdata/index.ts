@@ -432,11 +432,11 @@ const HUNT: Hunt = {
         { id: "isp18", unlockable_if: [{ gate_satisfied: "isg25" }, { slot_solved: "ism01" }], unlock_cost: 1 },
 
         // The next 5 puzzles are the blacklight versions of 6-10
-        { id: "isp19", unlocked_if: { gate_satisfied: "isg27" } },
-        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" } },
-        { id: "isp21", unlocked_if: { gate_satisfied: "isg29" } },
-        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" } },
-        { id: "isp23", unlocked_if: { gate_satisfied: "isg31" } },
+        { id: "isp19", unlocked_if: { gate_satisfied: "isg27" } }, // blacklight version of isp06, behind directional lock
+        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" } }, // blacklight version of isp07, behind binary switch lock
+        { id: "isp21", unlocked_if: { gate_satisfied: "isg29" } }, // blacklight version of isp08, behind combination lock
+        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" } }, // blacklight version of isp09, behind numeric lock
+        { id: "isp23", unlocked_if: { gate_satisfied: "isg31" } }, // blacklight version of isp10, behind word lock
 
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }], slug: "papas_bookcase" }, // Bookcase
         { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg17" }], slug: "papas_stash" },

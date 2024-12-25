@@ -4,6 +4,7 @@ import { type TeamHuntState } from "../../../../../lib/api/client";
 import drawer_open from "../assets/desk_drawer/drawer-open.mp3";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import DirectionalLock from "./DirectionalLock";
+import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { ModalTrigger } from "./SearchEngine";
 import playSound from "./playSound";
 
@@ -36,6 +37,7 @@ export default function DeskDrawer({
   teamState: TeamHuntState;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [animationComplete, setAnimationComplete] = useState(false);
   const drawerAsset = node.interactionModals?.[0]?.placedAsset?.asset;
 
   const inhibitDrag: DragEventHandler<HTMLImageElement> = useCallback((e) => {
@@ -51,6 +53,7 @@ export default function DeskDrawer({
       />
     );
   });
+  const modalExtras = useRenderModalExtras(node.interactionModals ?? []);
 
   return (
     <>
@@ -64,6 +67,9 @@ export default function DeskDrawer({
               // the asset to load before we animate it open
               setDrawerOpen(true);
               playSound(drawer_open);
+              setTimeout(() => {
+                setAnimationComplete(true);
+              }, 1000);
             }}
             onDragStart={inhibitDrag}
           />
@@ -72,6 +78,7 @@ export default function DeskDrawer({
         )}
       </Wrapper>
       {modals}
+      {animationComplete && modalExtras}
     </>
   );
 }

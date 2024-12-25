@@ -288,7 +288,7 @@ export default function Extra({
   // extra / blacklight modals.
   const modalRenderer = useCallback(
     (modals: Modal[]) => {
-      if (!active) {
+      if (!active || modals.length === 0) {
         return null;
       }
 
@@ -401,7 +401,7 @@ export default function Extra({
 
   return (
     <>
-      {active ? (
+      {active && extraAssets.length > 0 ? (
         <InteractionLayer styles={{ pointerEvents: "none" }}>
           {extraAssets}
         </InteractionLayer>
