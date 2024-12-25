@@ -11,6 +11,7 @@ import {
 import {
   LOCK_DATA,
   MODALS_BY_POSTCODE,
+  MODALS_BY_EXTRA_POSTCODE,
   NODES_BY_ID,
   filteredForFrontend,
 } from "./graph";
@@ -70,9 +71,29 @@ export const modalPostHandler: RequestHandler<
     });
     return;
   }
-  const modal = MODALS_BY_POSTCODE.get(postCode);
-  if (modal) {
-    const { slotId, gateId } = modal;
+
+  let match: { slotId: string; gateId: string } | undefined;
+  const postcodeMatch = MODALS_BY_POSTCODE.get(postCode);
+  const extraMatch = MODALS_BY_EXTRA_POSTCODE.get(postCode);
+  if (postcodeMatch) {
+    const { slotId, gateId } = postcodeMatch;
+    match = { slotId, gateId };
+  } else if (extraMatch) {
+    const extra = extraMatch.extra;
+    if (!extra) {
+      res.status(500).json({
+        status: "error",
+        message: "internal error (bad hunt definition)",
+      });
+      return;
+    }
+
+    const { slotId, gateId } = extra;
+    match = { slotId, gateId };
+  }
+
+  if (match) {
+    const { slotId, gateId } = match;
     const { teamId } = req.teamState;
     const result = await req.frontendApi.markTeamGateSatisfied({
       params: {
@@ -93,9 +114,7 @@ export const modalPostHandler: RequestHandler<
       // team state.  Use that teamState to look up the slug for the
       // `modal.slotId`
       const newTeamState = result.body;
-      console.log(newTeamState.rounds.illegal_search);
       const slug = newTeamState.rounds.illegal_search?.slots[slotId]?.slug;
-      console.log("slug", newTeamState.rounds.illegal_search, slotId);
       if (!slug) {
         res.status(500).json({
           status: "error",

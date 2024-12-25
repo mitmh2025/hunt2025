@@ -1,6 +1,9 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { omit } from "../../../utils/omit";
 import { PUZZLES } from "../../puzzles";
+import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.png";
 import bookcase_note from "./assets/bookcase/note.svg";
+import bookcase_note_blacklight from "./assets/bookcase/note_blacklight.svg";
 import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
 import cryptex_note from "./assets/cryptex/cryptex_note.svg";
 import cryptex_open from "./assets/cryptex/cryptex_open.svg";
@@ -12,7 +15,9 @@ import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.png";
 import main_west_bg from "./assets/main_west.jpg";
 import ledger from "./assets/rug/ledger.svg";
+import ledger_blacklight from "./assets/rug/ledger_modal_blacklight.svg";
 import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
+import numberlock_box_ledger_blacklight from "./assets/rug/numberlock_box_ledger_blacklight.png";
 import rug_bg from "./assets/rug/rug_bg.svg";
 import money from "./assets/safe/safe_money_closeup_draft2.png";
 import birth_certificate from "./assets/secret/birth_certificate.svg";
@@ -42,6 +47,7 @@ import stamp from "./assets/secret/stamp.svg";
 import stamp_modal from "./assets/secret/stamp_modal.svg";
 import teddybear from "./assets/secret/teddybear.svg";
 import secret_bg from "./assets/secret.jpg";
+import blacklight_books from "./assets/study/blacklight_books.svg";
 import cryptex_on_desk from "./assets/study/cryptex.svg";
 import family_frame_east from "./assets/study/family_frame_east.png";
 import family_frame_north from "./assets/study/family_frame_north.png";
@@ -54,8 +60,9 @@ import open_door from "./assets/study/open_door.png";
 import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.png";
-import telephone from "./assets/study/telephone.svg";
 import typewriter from "./assets/study/typewriter.svg";
+import telephone from "./assets/telephone/telephone.svg";
+import telephone_blacklight from "./assets/telephone/telephone_unpushed_blacklight.svg";
 import {
   move_down_cursor,
   move_left_cursor,
@@ -78,7 +85,7 @@ type LockDatum = {
   gateId: string; // The gate which we will unlock when you submit the correct lock answer
 };
 // Map from which plugin does the check to the data relevant to that check
-const LOCK_DATA: Record<PluginName, LockDatum> = {
+const LOCK_DATA: Record<Exclude<PluginName, "extra">, LockDatum> = {
   deskdrawer: {
     // directional lock
     answer: "dlrddrr",
@@ -186,7 +193,7 @@ const ALL_NODES: NodeInternal[] = [
         asset: safe_frame,
       },
       {
-        // sliding door, if open
+        // overlays: open door (if bookcase is open) + blacklight books
         area: {
           left: -1,
           right: 1,
@@ -194,6 +201,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1,
         },
         asset: open_door,
+        extraAsset: blacklight_books,
         includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
@@ -350,6 +358,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.212,
           bottom: -0.095,
         },
+        zIndex: 1,
         asset: typewriter,
         slotId: "isp04",
         gateId: "isg04",
@@ -383,6 +392,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.33,
         },
         asset: telephone,
+        extraAsset: telephone_blacklight,
       },
       {
         area: {
@@ -599,6 +609,13 @@ const ALL_NODES: NodeInternal[] = [
             bottom: -1,
           },
           asset: numberlock_box_ledger,
+          extraAsset: numberlock_box_ledger_blacklight,
+        },
+        extra: {
+          asset: ledger_blacklight,
+          gateId: "isg30",
+          postCode: "7V7KoGrLaYKd3c1JHZGFiw==",
+          slotId: "isp22",
         },
         slotId: "isp09",
         gateId: "isg14",
@@ -697,7 +714,18 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "bookcase",
     background: "__wallpaper__",
-    placedAssets: [],
+    placedAssets: [
+      {
+        area: {
+          left: -0.375,
+          right: 0.5,
+          top: 0.918,
+          bottom: -1,
+        },
+        asset: null,
+        extraAsset: bookcase_blacklight,
+      },
+    ],
     navigations: [
       {
         area: {
@@ -733,6 +761,12 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.272,
         },
         asset: bookcase_note,
+        extra: {
+          asset: bookcase_note_blacklight,
+          gateId: "isg32",
+          postCode: "SHqjcRam7FKcuKgOkwziig==",
+          slotId: "ism03",
+        },
         slotId: "ism01",
         gateId: "isg00",
         postCode: "pswcZO3Z7JF9z1JzQfoIDQ==",
@@ -1248,6 +1282,15 @@ ALL_NODES.forEach((node) => {
   });
 });
 
+const MODALS_BY_EXTRA_POSTCODE = new Map<string, ModalInternal>();
+ALL_NODES.forEach((node) => {
+  node.modals.forEach((modal) => {
+    if (modal.extra?.postCode) {
+      MODALS_BY_EXTRA_POSTCODE.set(modal.extra.postCode, modal);
+    }
+  });
+});
+
 function modalFromModalInternal(
   modalInternal: ModalInternal,
   teamState: TeamHuntState,
@@ -1259,6 +1302,7 @@ function modalFromModalInternal(
     postCode,
     gateId: _gateId,
     solvedAssets,
+    extra,
     ...rest
   } = modalInternal;
   // Look up the puzzle slug for the named slotId in this round.  We know
@@ -1279,7 +1323,7 @@ function modalFromModalInternal(
   } else {
     mixin = { postCode };
   }
-  const obj = { ...rest, ...mixin };
+  const obj: Modal = { ...rest, ...mixin };
 
   if (solvedAssets && slug) {
     const isSolved = !!teamState.puzzles[slug]?.answer;
@@ -1299,6 +1343,29 @@ function modalFromModalInternal(
         }
       }
     }
+  }
+
+  if (teamState.rounds.illegal_search?.gates?.includes("isg26") && extra) {
+    const extraSlotObj = teamState.rounds.illegal_search.slots[extra.slotId];
+    const extraSlug = extraSlotObj?.slug;
+    // If slug is undefined, then lookup the random slot id => POST code mapping and include that
+    // otherwise, lookup (or stub) puzzle title & URL based on the slug from the puzzle data map
+    if (extraSlug) {
+      const extraPuzzle = PUZZLES[extraSlug];
+      const extraTitle =
+        extraPuzzle?.title ?? `Stub puzzle for slot ${extra.slotId}`;
+      const extraDesc = extraPuzzle?.initial_description;
+      obj.extra = {
+        asset: extra.asset,
+        title: extraTitle,
+        slug: extraSlug,
+        desc: extraDesc,
+      };
+    } else {
+      obj.extra = { asset: extra.asset, postCode: extra.postCode };
+    }
+  } else if (obj.placedAsset) {
+    obj.placedAsset = omit(obj.placedAsset, "extraAsset");
   }
 
   const forInteraction = ownedByInteraction ?? false;
@@ -1337,6 +1404,16 @@ function filteredForFrontend(
 
   const keptPlacedAssets = node.placedAssets.flatMap((asset) => {
     const { includeIf, ...rest } = asset;
+
+    if (!teamState.rounds.illegal_search?.gates?.includes("isg26")) {
+      delete rest.extraAsset;
+
+      if (rest.asset === null) {
+        // blacklight-only asset
+        return [];
+      }
+    }
+
     if (includeIf === undefined) {
       // No condition means always include
       return [rest];
@@ -1364,12 +1441,19 @@ function filteredForFrontend(
     }
   });
 
+  const fullInteractions = [...node.interactions];
+  if (teamState.rounds.illegal_search?.gates?.includes("isg26")) {
+    fullInteractions.push({
+      plugin: "extra",
+    });
+  }
+
   return {
     id: node.id,
     background: node.background,
     placedAssets: keptPlacedAssets,
     navigations: keptNavigations,
-    interactions: node.interactions,
+    interactions: fullInteractions,
     sounds: node.sounds,
     modals,
     interactionModals:
@@ -1377,7 +1461,13 @@ function filteredForFrontend(
   };
 }
 
-export { NODES_BY_ID, MODALS_BY_POSTCODE, LOCK_DATA, filteredForFrontend };
+export {
+  NODES_BY_ID,
+  MODALS_BY_EXTRA_POSTCODE,
+  MODALS_BY_POSTCODE,
+  LOCK_DATA,
+  filteredForFrontend,
+};
 
 // node: "desk_drawer"
 //   assets:
