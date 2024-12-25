@@ -84,6 +84,7 @@ import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
 import BermudaTriangle from "./selfish-king";
 import PapasBookcase from "./serene-africa";
+import InADifferentDirection from "./shallow-marble";
 import AnythingIsPopsicle from "./shameful-duck";
 import The10000SheetExcelFile from "./shoddy-table";
 import PapasStash from "./shy-embassy";
@@ -135,6 +136,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   be_kind_rewind: BeKindRewind,
   downright_backwards: DownrightBackwards,
   educational_rite_of_passage: EducationalRiteOfPassage,
+  in_a_different_direction: InADifferentDirection,
   introduction_to_decryption: IntroductionToDecryption,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
   songs_on_the_radio: SongsOnTheRadio,
