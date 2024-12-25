@@ -95,7 +95,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers have received the post-solve message",
       keywords: ["re-solve", "why are you like this"],
       nudge:
-        "You kept track of what Special Instructions applied where, right? Isn’t there one about... well, whatever you call them in your own idiolect?",
+        "You kept track of what Special Instructions applied where, right? Isn’t there one about…well, whatever you call them in your own idiolect?",
     },
     {
       order: 2.99,

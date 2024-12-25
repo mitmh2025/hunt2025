@@ -2415,7 +2415,7 @@ const Solution = (): JSX.Element => {
         This spells out the initial answer, <Mono>FOOD COURT</Mono>.
       </p>
       <p>
-        After solving Meta To Be Named later, solvers receive two additionals
+        After solving Papa’s Stash, solvers receive two additionals
         Special Instructions:
       </p>
       <StyledOl>

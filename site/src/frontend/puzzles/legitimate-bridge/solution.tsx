@@ -156,7 +156,7 @@ const Solution = (): JSX.Element => {
         answer, <Mono>PHILOLOGY</Mono>.
       </p>
       <p>
-        After solving Meta To Be Named Later, solvers receive the instruction{" "}
+        After solving Papa’s Stash, solvers receive the instruction{" "}
         <Mono>SHIFT BY DIFFERENCE FROM 8V</Mono>. The difference in voltage
         between the original sink voltage and 8V can be applied to the initial
         answer, letter-by-letter, as a Caesar shift, producing{" "}
