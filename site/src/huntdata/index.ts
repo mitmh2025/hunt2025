@@ -370,7 +370,7 @@ const HUNT: Hunt = {
         { id: "bgp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "reuse_and_recyclability" },
         { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "bgp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "t_ott_p_y" },
-        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_tunnels_beneath_the_institute" },
         { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
         { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },

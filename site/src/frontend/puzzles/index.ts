@@ -36,6 +36,7 @@ import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
 import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
+import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
@@ -207,6 +208,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   story_vision_contest: StoryVisionContest,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
   t____ott___p__y: T____ott___P__y,
+  the_tunnels_beneath_the_institute: TheTunnelsBeneathTheInstitute,
   where_am_i: WhereAmI,
 
   the_mark: TheMark,
