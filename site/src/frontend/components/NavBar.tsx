@@ -3,7 +3,27 @@ import { styled } from "styled-components";
 import diamondIcon from "../../assets/logo.svg";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
 import AudioControls from "./AudioControls";
+import "../../assets/radio/battery-low.opus";
 import "../../assets/radio/celebration.wav";
+import "../../assets/radio/firmware-update.opus";
+import "../../assets/radio/hex-1.opus";
+import "../../assets/radio/hex-2.opus";
+import "../../assets/radio/hex-3.opus";
+import "../../assets/radio/hex-4.opus";
+import "../../assets/radio/hex-5.opus";
+import "../../assets/radio/hex-6.opus";
+import "../../assets/radio/hex-7.opus";
+import "../../assets/radio/hex-8.opus";
+import "../../assets/radio/hex-9.opus";
+import "../../assets/radio/hex-a.opus";
+import "../../assets/radio/hex-b.opus";
+import "../../assets/radio/hex-c.opus";
+import "../../assets/radio/hex-d.opus";
+import "../../assets/radio/hex-e.opus";
+import "../../assets/radio/hex-f.opus";
+import "../../assets/radio/wifi-config-first.opus";
+import "../../assets/radio/wifi-config-second.opus";
+import "../../assets/radio/wifi-not-connected.opus";
 
 const Nav = styled.nav`
   height: 3rem;
