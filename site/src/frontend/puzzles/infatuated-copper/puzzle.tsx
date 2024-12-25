@@ -1,8 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import LinkedImage from "../../components/LinkedImage";
 import gougingOfEyes from "./assets/gouging-of-eyes.mp3";
-import image from "./assets/image.png";
 import intermentAndSuffocation from "./assets/interment-and-suffocation.mp3";
 import rapidDescents from "./assets/rapid-descents.mp3";
 import technologicalSurveillance from "./assets/technological-surveillance.mp3";
@@ -14,6 +12,25 @@ const Block = styled.div`
 const Indent = styled.div`
   margin-left: 32px;
 `;
+
+const ScrollWrapper = styled.div`
+  max-width: 100%;
+  overflow-x: auto;
+`;
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 1093px;
+  td {
+    border: 1px solid black;
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+export const TABLE_WIDTH = 52;
+export const INDICES = [1, 18, 22, 22, 18, 13, 14, 9, 23, 23, 30, 20, 31, 30];
 
 const Puzzle = (): JSX.Element => {
   return (
@@ -160,7 +177,7 @@ const Puzzle = (): JSX.Element => {
         </Indent>
       </Block>
       <Block>
-        <div>Content Warning: Abyssa labyrinths</div>
+        <div>Content Warning: Abyssal labyrinths</div>
         <Indent>
           <a
             href="https://youtu.be/wTKMKd_8FoU"
@@ -237,10 +254,17 @@ const Puzzle = (): JSX.Element => {
         </Indent>
       </Block>
       <hr />
-      <LinkedImage
-        src={image}
-        alt="A large rectangular grid with rows numbered 1 through 14."
-      />
+      <ScrollWrapper>
+        <StyledTable>
+          {INDICES.map((index, i) => (
+            <tr key={`row-${i}`}>
+              {[...Array(TABLE_WIDTH).keys()].map((j) => (
+                <td key={`cell-${i}-${j}`}>{index === j ? `${i + 1}.` : ""}</td>
+              ))}
+            </tr>
+          ))}
+        </StyledTable>
+      </ScrollWrapper>
     </>
   );
 };
