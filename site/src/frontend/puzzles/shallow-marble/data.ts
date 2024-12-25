@@ -7,7 +7,7 @@ export const UpClues: [number: number, clue: string, answer: string][] = [
   [21, "Hebrew day", "YOM"],
   [22, "Cheese variety", "EDAM"],
   [23, "IRS 1040 calculation", "AGI"],
-  [24, "London has a giant one on the Thame", "EYE"],
+  [24, "London has a giant one on the Thames", "EYE"],
   [25, "Famous Carrie role", "LEIA"],
   [28, "Russian autocrat", "TSAR"],
   [29, "Wrap", "SHAWL"],
