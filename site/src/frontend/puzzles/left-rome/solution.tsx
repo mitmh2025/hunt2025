@@ -2339,6 +2339,10 @@ const Mono = styled.span`
 const RouteTable = styled(StyledTable)`
   width: 100%;
   table-layout: fixed;
+  border-collapse: collapse;
+  tr:not(:last-child) {
+    border-bottom: 1px solid var(--black);
+  }
   th:first-child,
   th:nth-child(2) {
     width: 32px;
@@ -2415,7 +2419,7 @@ const Solution = (): JSX.Element => {
         This spells out the initial answer, <Mono>FOOD COURT</Mono>.
       </p>
       <p>
-        After solving Papa’s Stash, solvers receive two additionals Special
+        After solving Papa’s Stash, solvers receive two additional Special
         Instructions:
       </p>
       <StyledOl>
