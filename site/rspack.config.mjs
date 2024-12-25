@@ -122,7 +122,8 @@ class RadioManifestPlugin {
             });
           }
         }
-      } else if (asset.info.sourceFilename?.startsWith("src/assets/radio/")) {
+      }
+      if (asset.info.sourceFilename?.startsWith("src/assets/radio/")) {
         // Collect the relevant fields from other assets
         const src = asset.info.sourceFilename;
         // strip the src/assets/radio/ prefix
