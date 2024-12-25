@@ -1,3 +1,4 @@
+import jsManifest from "../../../../dist/js-manifest.json";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { omit } from "../../../utils/omit";
 import { PUZZLES } from "../../puzzles";
@@ -87,6 +88,44 @@ import type {
   NodeInternal,
   PluginName,
 } from "./types";
+
+const scriptSrcs: Record<
+  PluginName,
+  { scriptSrc: string; modulePath: string }
+> = {
+  bookcase: {
+    scriptSrc: jsManifest["illegal_search_bookcase.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/Bookcase.tsx",
+  },
+  cryptex: {
+    scriptSrc: jsManifest["illegal_search_cryptex.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/Cryptex.tsx",
+  },
+  deskdrawer: {
+    scriptSrc: jsManifest["illegal_search_deskdrawer.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/DeskDrawer.tsx",
+  },
+  extra: {
+    scriptSrc: jsManifest["illegal_search_extra.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/Extra.tsx",
+  },
+  painting1: {
+    scriptSrc: jsManifest["illegal_search_painting1.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/PaintingOne.tsx",
+  },
+  painting2: {
+    scriptSrc: jsManifest["illegal_search_painting2.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/PaintingTwo.tsx",
+  },
+  rug: {
+    scriptSrc: jsManifest["illegal_search_rug.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/Rug.tsx",
+  },
+  telephone: {
+    scriptSrc: jsManifest["illegal_search_telephone.js"],
+    modulePath: "./src/frontend/rounds/illegal_search/client/Telephone.tsx",
+  },
+};
 
 // The locks themselves correspond to gates.
 type LockDatum = {
@@ -1513,13 +1552,15 @@ function filteredForFrontend(
 
   const keptInteractions = node.interactions.flatMap((interaction) => {
     const { includeIf, ...rest } = interaction;
+    const publicInteraction = { ...rest, ...scriptSrcs[rest.plugin] };
+
     if (includeIf === undefined) {
       // No condition means always include
-      return [rest];
+      return [publicInteraction];
     } else {
       const keep = includeIf(teamState);
       if (keep) {
-        return [rest];
+        return [publicInteraction];
       } else {
         return [];
       }
@@ -1529,6 +1570,8 @@ function filteredForFrontend(
   if (teamState.rounds.illegal_search?.gates?.includes("isg26")) {
     keptInteractions.push({
       plugin: "extra",
+      overlay: true,
+      ...scriptSrcs.extra,
     });
   }
 

@@ -21,17 +21,16 @@ import {
   type PlacedAsset,
   type PostcodeResponse,
 } from "../types";
-import Bookcase from "./Bookcase";
-import Cryptex from "./Cryptex";
-import DeskDrawer from "./DeskDrawer";
-import Extra from "./Extra";
 import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
-import PaintingOne from "./PaintingOne";
-import PaintingTwo from "./PaintingTwo";
-import Rug from "./Rug";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
-import Telephone from "./Telephone";
 import { default_cursor, zoom_cursor } from "./cursors";
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- augmenting global type
+  interface Window {
+    __webpack_module_cache__: Record<string, { exports: unknown }>;
+  }
+}
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
 const ENABLE_DEVTOOLS = false as boolean; // type loosened to avoid always-truthy lints firing
@@ -273,6 +272,73 @@ const SearchEngineSurface = styled.div<{
   }}
 `;
 
+type InteractionModule = {
+  default: (props: {
+    node: Node;
+    showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
+    setNode: (node: Node) => void;
+    teamState: TeamHuntState;
+    navigate: (destId: string) => void;
+  }) => JSX.Element;
+};
+
+const Interaction = ({
+  scriptSrc,
+  modulePath,
+  node,
+  showModal,
+  setNode,
+  teamState,
+  navigate,
+}: {
+  scriptSrc: string;
+  modulePath: string;
+  node: Node;
+  showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
+  setNode: (node: Node) => void;
+  teamState: TeamHuntState;
+  navigate: (destId: string) => void;
+}) => {
+  const [module, setModule] = useState<InteractionModule | null>(null);
+
+  useEffect(() => {
+    setModule(null);
+
+    const script = document.createElement("script");
+    script.src = scriptSrc;
+    script.async = true;
+    script.onload = () => {
+      const module = window.__webpack_module_cache__[modulePath];
+      if (!module) {
+        console.error(`Module ${modulePath} not found in cache`);
+        return;
+      }
+
+      setModule(module.exports as InteractionModule);
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [scriptSrc, modulePath]);
+
+  if (!module) {
+    return null;
+  }
+
+  const Component = module.default;
+  return (
+    <Component
+      node={node}
+      showModal={showModal}
+      setNode={setNode}
+      teamState={teamState}
+      navigate={navigate}
+    />
+  );
+};
+
 const SearchEngine = ({
   initialNode,
   initialTeamState,
@@ -468,97 +534,30 @@ const SearchEngine = ({
     );
   });
 
-  const interactions = node.interactions.map((interaction) => {
-    // Modals need to show interactions, but often on the other side of the lock, so we pass that callback down.
-    if (interaction.plugin === "painting1") {
-      return (
-        <PaintingOne
-          key={`interaction-${interaction.plugin}`}
-          node={node}
-          showModal={showModal}
-          setNode={setNode}
-          teamState={teamState}
-        />
-      );
-    }
-    if (interaction.plugin === "painting2") {
-      return (
-        <PaintingTwo
-          key={`interaction-${interaction.plugin}`}
-          node={node}
-          showModal={showModal}
-          setNode={setNode}
-          teamState={teamState}
-        />
-      );
-    }
-    if (interaction.plugin === "rug") {
-      return (
-        <Rug
-          key={`interaction-${interaction.plugin}`}
-          node={node}
-          showModal={showModal}
-          setNode={setNode}
-          teamState={teamState}
-        />
-      );
-    }
-    if (interaction.plugin === "deskdrawer") {
-      return (
-        <DeskDrawer
-          key={`interaction-${interaction.plugin}`}
-          node={node}
-          showModal={showModal}
-          setNode={setNode}
-          teamState={teamState}
-        />
-      );
-    }
-    if (interaction.plugin === "cryptex") {
-      return (
-        <Cryptex
-          key={`interaction-${interaction.plugin}`}
-          node={node}
-          showModal={showModal}
-          setNode={setNode}
-          teamState={teamState}
-        />
-      );
-    }
+  const interactions: JSX.Element[] = [];
+  const overlayInteractions: JSX.Element[] = [];
 
-    if (interaction.plugin === "bookcase") {
-      return (
-        <Bookcase
-          key={`interaction-${interaction.plugin}`}
-          setNode={setNode}
-          teamState={teamState}
-          navigate={(dest) => {
-            handleNavClick({ destId: dest });
-          }}
-        />
-      );
+  node.interactions.forEach((interaction) => {
+    const jsx = (
+      <Interaction
+        scriptSrc={interaction.scriptSrc}
+        modulePath={interaction.modulePath}
+        key={`interaction-${interaction.plugin}`}
+        node={node}
+        showModal={showModal}
+        setNode={setNode}
+        teamState={teamState}
+        navigate={(dest) => {
+          handleNavClick({ destId: dest });
+        }}
+      />
+    );
+
+    if (interaction.overlay) {
+      overlayInteractions.push(jsx);
+    } else {
+      interactions.push(jsx);
     }
-
-    if (interaction.plugin === "telephone") {
-      return <Telephone key={`interaction-${interaction.plugin}`} />;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- might add more plugins later
-    if (interaction.plugin === "extra") {
-      return null;
-    }
-
-    return null;
-  });
-
-  const overlayInteractions = node.interactions.map((interaction) => {
-    if (interaction.plugin === "extra") {
-      return (
-        <Extra key={interaction.plugin} node={node} teamState={teamState} />
-      );
-    }
-
-    return null;
   });
 
   const modals = node.modals.map((modal, i) => {
