@@ -41,6 +41,8 @@ import {
   solutionHandler,
   puzzleGuessPostHandler,
   puzzleUnlockPostHandler,
+  subpuzzleHandler,
+  type SubpuzzleParams,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
 
@@ -244,6 +246,54 @@ export function registerUiRoutes({
         await renderApp(solutionHandler, req, res, next);
       },
     ),
+  );
+
+  /* Routes for 'unlisted' puzzles. */
+  authRouter.get(
+    "/i_kid_ewe_knot",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      if (
+        !(
+          req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
+        ).includes("tmg01")
+      ) {
+        await req.frontendApi.markTeamGateSatisfied({
+          params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg01" },
+        });
+      }
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "i_kid_ewe_knot" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
+  authRouter.get(
+    "/stitchy_situation",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      if (
+        !(
+          req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
+        ).includes("tmg02")
+      ) {
+        await req.frontendApi.markTeamGateSatisfied({
+          params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg02" },
+        });
+      }
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "stitchy_situation" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
   );
 
   authRouter.get(

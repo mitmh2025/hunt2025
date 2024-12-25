@@ -73,6 +73,7 @@ import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
 import BarTalk from "./personal-chocolate";
 import { makePlaceholder } from "./placeholder";
+import WeirdoThreadedDoodads from "./plain-roulette";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
 import ZingItAgain from "./practical-dragon";
@@ -110,7 +111,7 @@ import ReuseAndRecyclability from "./tinted-stream";
 import BeyondAShadowOfADoubt from "./total-part";
 import 皇帝の暗号 from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
-import type { PuzzleDefinition } from "./types";
+import type { PuzzleDefinition, SubpuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import MazeOfLies from "./unfit-tower";
 import GardenAnecdotes from "./unimportant-lock";
@@ -310,6 +311,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
+  weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
@@ -318,3 +320,20 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   given_up: GivenUp,
   the_thief: TheThief,
 };
+
+// Generate the SUBPUZZLES index from PUZZLES
+type FullSubpuzzleDefinition = SubpuzzleDefinition & { parent_slug: string };
+export const SUBPUZZLES: Record<string, FullSubpuzzleDefinition> =
+  Object.fromEntries(
+    Object.entries(PUZZLES).flatMap(([slug, puzzleDef]) => {
+      return (puzzleDef.subpuzzles ?? []).map((subpuzzleDef) => {
+        return [
+          subpuzzleDef.slug,
+          {
+            ...subpuzzleDef,
+            parent_slug: slug,
+          },
+        ];
+      });
+    }),
+  ) as Record<string, FullSubpuzzleDefinition>;

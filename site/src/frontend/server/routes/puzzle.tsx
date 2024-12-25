@@ -56,7 +56,7 @@ import {
   StakeoutMain,
   StakeoutWrapper,
 } from "../../components/StakeoutPuzzleLayout";
-import { PUZZLES } from "../../puzzles";
+import { PUZZLES, SUBPUZZLES } from "../../puzzles";
 import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
 import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
 import { MurderFonts } from "../../rounds/murder_in_mitropolis/MurderFonts";
@@ -209,6 +209,70 @@ function getComponentManifestForPuzzle(
   const roundSpecificOverrides =
     ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round] ?? {};
   return Object.assign({}, DEFAULT_MANIFEST, roundSpecificOverrides);
+}
+
+export type SubpuzzleParams = {
+  subpuzzleSlug: string;
+};
+
+export function subpuzzleHandler(req: Request<SubpuzzleParams>) {
+  const teamState = req.teamState;
+  if (!teamState) {
+    return undefined;
+  }
+
+  const subpuzzle = SUBPUZZLES[req.params.subpuzzleSlug];
+  if (!subpuzzle) {
+    return undefined;
+  }
+
+  // Select content component.
+  const content = subpuzzle.content;
+  const ContentComponent = content.component;
+  const title = subpuzzle.title;
+
+  const manifest = getComponentManifestForPuzzle(
+    teamState.state,
+    subpuzzle.parent_slug,
+    "puzzle",
+  );
+  const entrypoints = [
+    ...(manifest.entrypoint ? [manifest.entrypoint] : []),
+    ...(content.entrypoint ? [content.entrypoint] : []),
+  ];
+
+  const PuzzleWrapperComponent = manifest.wrapper;
+  const PuzzleHeaderComponent = manifest.header;
+  const PuzzleTitleComponent = manifest.title;
+  const PuzzleMainComponent = manifest.main;
+  const PuzzleFooterComponent = manifest.footer;
+  const PuzzleFontsComponent = manifest.fonts;
+
+  const node = (
+    <>
+      {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
+      <PuzzleWrapperComponent>
+        <PuzzleHeaderComponent>
+          <PuzzleTitleComponent>
+            <span>{title}</span>
+          </PuzzleTitleComponent>
+        </PuzzleHeaderComponent>
+        <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
+          <ContentComponent teamState={teamState.state} query={req.query} />
+        </PuzzleMainComponent>
+        <PuzzleFooterComponent />
+      </PuzzleWrapperComponent>
+    </>
+  );
+
+  // TODO: include title
+  return wrapContentWithNavBar(
+    {
+      node,
+      entrypoints,
+    },
+    teamState,
+  );
 }
 
 // URL parameters
