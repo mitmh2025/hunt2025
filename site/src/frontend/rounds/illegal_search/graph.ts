@@ -6,11 +6,18 @@ import bookcase_note from "./assets/bookcase/note.svg";
 import bookcase_note_blacklight from "./assets/bookcase/note_blacklight.svg";
 import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
 import cryptex_note from "./assets/cryptex/cryptex_note.svg";
+import cryptex_note_blacklight from "./assets/cryptex/cryptex_note_blacklight.png";
 import cryptex_open from "./assets/cryptex/cryptex_open.svg";
+import cryptex_open_blacklight from "./assets/cryptex/cryptex_open_blacklight.svg";
 import drawer_bg from "./assets/desk_drawer/bg.png";
 import candy from "./assets/desk_drawer/candy.svg";
+import candy_blacklight from "./assets/desk_drawer/candy_modal_blacklight.png";
 import drawer_with_candy from "./assets/desk_drawer/drawer.png";
+import drawer_with_candy_blacklight from "./assets/desk_drawer/drawer_blacklight.png";
 import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.svg";
+import rings from "./assets/fuse_box/rings.svg";
+import rings_blacklight from "./assets/fuse_box/rings_blacklight.svg";
+import rings_modal_blacklight from "./assets/fuse_box/rings_modal_blacklight.png";
 import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.png";
 import main_west_bg from "./assets/main_west.jpg";
@@ -19,7 +26,10 @@ import ledger_blacklight from "./assets/rug/ledger_modal_blacklight.svg";
 import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
 import numberlock_box_ledger_blacklight from "./assets/rug/numberlock_box_ledger_blacklight.png";
 import rug_bg from "./assets/rug/rug_bg.svg";
-import money from "./assets/safe/safe_money_closeup_draft2.png";
+import money from "./assets/safe/money.svg";
+import money_blacklight from "./assets/safe/money_blacklight.svg";
+import money_modal from "./assets/safe/money_modal.svg";
+import money_modal_blacklight from "./assets/safe/money_modal_blacklight.png";
 import birth_certificate from "./assets/secret/birth_certificate.svg";
 import birth_certificate_modal_solved from "./assets/secret/birth_certificate_modal_solved.png";
 import birth_certificate_modal_unsolved from "./assets/secret/birth_certificate_modal_unsolved.png";
@@ -703,11 +713,18 @@ const ALL_NODES: NodeInternal[] = [
             bottom: -1,
           },
           asset: drawer_with_candy,
+          extraAsset: drawer_with_candy_blacklight,
         },
         asset: candy,
         slotId: "isp06",
         gateId: "isg11",
         postCode: "lxRFwDNndXOrzDkGdBQukA==",
+        extra: {
+          asset: candy_blacklight,
+          slotId: "isp19",
+          gateId: "isg27",
+          postCode: "yPVAOzrL1cwh/baI4hgeyw==",
+        },
       },
     ],
   },
@@ -842,14 +859,21 @@ const ALL_NODES: NodeInternal[] = [
         },
         placedAsset: {
           area: {
-            left: 0.106,
-            right: 0.75,
-            top: 0.61,
-            bottom: -0.095,
+            left: -1,
+            right: 1,
+            top: 1,
+            bottom: -1,
           },
           asset: cryptex_open,
+          extraAsset: cryptex_open_blacklight,
         },
         asset: cryptex_note,
+        extra: {
+          asset: cryptex_note_blacklight,
+          gateId: "isg31",
+          postCode: "+TGXj5wKyr+u9CsD4Xrs5w==",
+          slotId: "isp23",
+        },
         slotId: "isp10",
         gateId: "isg15",
         postCode: "YXEwRKy4tAGrLZaycOe85Q==",
@@ -897,16 +921,31 @@ const ALL_NODES: NodeInternal[] = [
         },
         ownedByInteraction: true,
         area: {
-          // adjust area once assets exist
           left: -0.113,
           right: 0.1,
           top: -0.025,
           bottom: -0.331,
         },
-        asset: money,
+        asset: money_modal,
+        placedAsset: {
+          area: {
+            left: -0.113,
+            right: 0.1,
+            top: -0.025,
+            bottom: -0.331,
+          },
+          asset: money,
+          extraAsset: money_blacklight,
+        },
         slotId: "isp08",
         gateId: "isg13",
         postCode: "Ba+T1nVoh2GFJTIXnh7H8A==",
+        extra: {
+          asset: money_modal_blacklight,
+          gateId: "isg29",
+          postCode: "eHSQ6CPL9HB7ar5WzTxngA==",
+          slotId: "isp21",
+        },
       },
     ],
   },
@@ -960,6 +999,22 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.826,
         },
         asset: rings_closeup,
+        extra: {
+          asset: rings_modal_blacklight,
+          gateId: "isg28",
+          postCode: "iBRwyAWgSpy2zO+QnZzPKg==",
+          slotId: "isp20",
+        },
+        placedAsset: {
+          area: {
+            left: -0.06,
+            right: 0.06,
+            top: -0.724,
+            bottom: -0.846,
+          },
+          asset: rings,
+          extraAsset: rings_blacklight,
+        },
         slotId: "isp07",
         gateId: "isg12",
         postCode: "Q1ouYm0ptTarIZ9GPmqwjQ==",

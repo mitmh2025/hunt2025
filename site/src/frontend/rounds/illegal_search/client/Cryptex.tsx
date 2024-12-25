@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { type TeamHuntState } from "../../../../../lib/api/client";
 import { type ModalWithPuzzleFields, type Node } from "../types";
+import { useRenderModalExtras } from "./ExtraModalRenderer";
 import InteractiveCryptex from "./InteractiveCryptex";
 import { Asset, ModalTrigger } from "./SearchEngine";
 
@@ -33,6 +34,7 @@ export default function Cryptex({
       />
     );
   });
+  const modalExtras = useRenderModalExtras(node.interactionModals ?? []);
 
   return (
     <>
@@ -41,6 +43,7 @@ export default function Cryptex({
       )}
       {modalAssets}
       {modals}
+      {modalExtras}
     </>
   );
 }
