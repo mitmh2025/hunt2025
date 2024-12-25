@@ -49,6 +49,7 @@ import TheArtGallery from "./intentional-limousine";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
+import CahfeeRegulah from "./left-rome";
 import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
@@ -215,7 +216,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // TODO: isp05 desk lamp
 
   placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
-  cahfee_regulah_stub: CahfeeRegularStub, // rings, behind binary switches
+  cahfee_regulah: CahfeeRegulah, // rings, behind binary switches
   placeholder_isp08: PlaceholderISP08, // money, behind safe/combination lock
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // ledger, behind numeric lock/rug
   jargon: Jargon, // note, inside cryptex

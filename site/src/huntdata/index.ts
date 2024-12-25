@@ -419,7 +419,7 @@ const HUNT: Hunt = {
         // blacklight version of the asset to give the right set of
         // instructions for that puzzle.
         { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "placeholder_isp06" }, // candy, in desk drawer/behind directional lock
-        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "cahfee_regulah_stub" }, // rings, behind binary switches
+        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "cahfee_regulah" }, // rings, behind binary switches
         { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1, slug: "placeholder_isp08" }, // money, inside safe/combination lock
         { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "the_center_is_in_plain_sight" }, // ledger, behind numeric lock/rug
         { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1, slug: "jargon" }, // note, inside cryptex
