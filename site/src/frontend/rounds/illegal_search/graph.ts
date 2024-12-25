@@ -1,4 +1,5 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { omit } from "../../../utils/omit";
 import { PUZZLES } from "../../puzzles";
 import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.png";
 import bookcase_note from "./assets/bookcase/note.svg";
@@ -1363,8 +1364,8 @@ function modalFromModalInternal(
     } else {
       obj.extra = { asset: extra.asset, postCode: extra.postCode };
     }
-  } else {
-    delete obj.placedAsset?.extraAsset;
+  } else if (obj.placedAsset) {
+    obj.placedAsset = omit(obj.placedAsset, "extraAsset");
   }
 
   const forInteraction = ownedByInteraction ?? false;
