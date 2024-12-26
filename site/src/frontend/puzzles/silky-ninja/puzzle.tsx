@@ -163,7 +163,7 @@ const Puzzle = () => {
           <Blanks>_______</Blanks>
           <Blanks>_____</Blanks>
           <Blanks>____</Blanks>
-          <VCentered>(5)</VCentered>
+          <VCentered>(5).</VCentered>
           <Droid src={imgC} alt="R2-D2 with the letter C on its body" />
           <Droid src={imgA} alt="R2-D2 with the letter A on its body" />
           <Droid src={imgA} alt="R2-D2 with the letter A on its body" />
@@ -215,7 +215,7 @@ const Puzzle = () => {
           <Blanks>_</Blanks>
           <Blanks>_________</Blanks>
           <Blanks>______</Blanks>
-          <VCentered>(6)</VCentered>
+          <VCentered>(6).</VCentered>
           <Droid src={imgC} alt="R2-D2 with the letter C on its body" />
           <Droid src={imgK} alt="R2-D2 with the letter K on its body" />
           <Droid src={imgA} alt="R2-D2 with the letter A on its body" />
@@ -251,7 +251,7 @@ const Puzzle = () => {
           <Blanks>_____</Blanks>
           <Blanks>________</Blanks>
           <Blanks>____</Blanks>
-          <VCentered>(9)</VCentered>
+          <VCentered>(9).</VCentered>
           <Droid src={imgD3} alt="R2-D2 with “D(3)” on its body" />
           <Droid src={imgD6} alt="R2-D2 with “D(6)” on its body" />
           <Droid src={imgC} alt="R2-D2 with the letter C on its body" />
@@ -299,7 +299,7 @@ const Puzzle = () => {
           <Blanks>___</Blanks>
           <Blanks>_______</Blanks>
           <Blanks>____</Blanks>
-          <VCentered>(2)</VCentered>
+          <VCentered>(2).</VCentered>
           <Droid src={imgC} alt="R2-D2 with the letter C on its body" />
           <Droid src={imgK} alt="R2-D2 with the letter K on its body" />
           <Droid src={imgC} alt="R2-D2 with the letter C on its body" />
@@ -367,7 +367,7 @@ const Puzzle = () => {
           <Blanks>______</Blanks>
           <Blanks>___</Blanks>
           <Blanks>_______</Blanks>
-          <VCentered>(5)</VCentered>
+          <VCentered>(5).</VCentered>
           <Droid src={imgC} alt="R2-D2 with the letter C on its body" />
           <Droid src={imgN} alt="R2-D2 with the letter N on its body" />
           <Droid src={imgA} alt="R2-D2 with the letter A on its body" />
@@ -419,7 +419,7 @@ const Puzzle = () => {
           <Blanks>____</Blanks>
           <Blanks>__</Blanks>
           <Blanks>______</Blanks>
-          <VCentered>(4)</VCentered>
+          <VCentered>(4).</VCentered>
           <Droid src={imgC} alt="R2-D2 with the letter C on its body" />
           <Droid src={imgA} alt="R2-D2 with the letter A on its body" />
           <DroidDitto src={imgA} alt="R2-D2 with the letter A on its body" />
@@ -461,7 +461,7 @@ const Puzzle = () => {
           <Blanks>_____</Blanks>
           <Blanks>______</Blanks>
           <Blanks>____</Blanks>
-          <VCentered>(4)</VCentered>
+          <VCentered>(4).</VCentered>
           <Droid src={imgA} alt="R2-D2 with the letter A on its body" />
           <DroidDitto src={imgA} alt="R2-D2 with the letter A on its body" />
           <Droid src={imgB} alt="R2-D2 with the letter A on its body" />
@@ -472,7 +472,7 @@ const Puzzle = () => {
         <PuzzleRowGray>
           <ClueBlanks>
             _____ ______ REDACTED _________ REDACTED REDACTED __ _____ REDACTED
-            ____ REDACTED ____ REDACTED for answer
+            ____ REDACTED ____ REDACTED for answer.
           </ClueBlanks>
           <Droid src={imgD3} alt="R2-D2 with “D(3)” on its body" />
           <Droid src={imgA} alt="R2-D2 with the letter A on its body" />
