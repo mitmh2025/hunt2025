@@ -1,11 +1,13 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import solution from "./assets/solution.png";
+import solution1 from "./assets/solution1.png";
+import solution2 from "./assets/solution2.png";
 
 const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 16px;
 `;
 
 const Mono = styled.span`
@@ -15,6 +17,9 @@ const Mono = styled.span`
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin: 1em 0;
+  tr:not(:first-child) {
+    border-top: 1px solid var(--gold-800);
+  }
   tr:nth-child(4n),
   tr:nth-child(4n + 1) {
     background-color: var(--gold-200);
@@ -139,29 +144,35 @@ const Solution = (): JSX.Element => {
             </Mono>
             , the answer, which matches the enumeration at the bottom.
           </p>
-        </div>
-        <LinkedImage
-          src={solution}
-          alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line. Lines are drawn between pairs of clipart items on either side of the center red line."
-        />
-      </FlexWrapper>
-      <StyledTable>
-        <tr>
-          <th>Combined Clue</th>
-          <th>Clue</th>
-          <th>Answer</th>
-          <th>Match Word</th>
-          <th>Antonym</th>
-          <th>Symbol</th>
-        </tr>
-        {DATA.map((datum, i) => (
-          <tr key={i}>
-            {datum.map((cell, j) => (
-              <td key={`${i}-${j}`}>{cell}</td>
+          <StyledTable>
+            <tr>
+              <th>Combined Clue</th>
+              <th>Clue</th>
+              <th>Answer</th>
+              <th>Match Word</th>
+              <th>Antonym</th>
+              <th>Symbol</th>
+            </tr>
+            {DATA.map((datum, i) => (
+              <tr key={i}>
+                {datum.map((cell, j) => (
+                  <td key={`${i}-${j}`}>{cell}</td>
+                ))}
+              </tr>
             ))}
-          </tr>
-        ))}
-      </StyledTable>
+          </StyledTable>
+        </div>
+        <div>
+          <LinkedImage
+            src={solution1}
+            alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line. Lines are drawn between pairs of clipart items on either side of the center red line."
+          />
+          <LinkedImage
+            src={solution2}
+            alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line."
+          />
+        </div>
+      </FlexWrapper>
     </>
   );
 };
