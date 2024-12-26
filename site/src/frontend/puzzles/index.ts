@@ -103,6 +103,7 @@ import TheShellGame from "./subdued-jet";
 import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
 import ARecipeForSuccess from "./tame-chick";
+import DrunkensAndFlagons from "./thorough-arm";
 import EngagementsAndOtherCrimes from "./timely-head";
 import ReuseAndRecyclability from "./tinted-stream";
 import BeyondAShadowOfADoubt from "./total-part";
@@ -142,6 +143,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   be_kind_rewind: BeKindRewind,
   downright_backwards: DownrightBackwards,
+  drunkens_and_flagons: DrunkensAndFlagons,
   educational_rite_of_passage: EducationalRiteOfPassage,
   in_a_different_direction: InADifferentDirection,
   introduction_to_decryption: IntroductionToDecryption,
