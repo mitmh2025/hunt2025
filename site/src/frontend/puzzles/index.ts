@@ -116,6 +116,7 @@ import AnArgument from "./unsung-bomb";
 import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
+import XOXO from "./weighty-horseshoe";
 import Deepfrost from "./wiry-ray";
 
 const PlaceholderISP06 = makePlaceholder(
@@ -148,6 +149,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   songs_on_the_radio: SongsOnTheRadio,
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
+  xoxo: XOXO,
   zing_it_again: ZingItAgain,
   zulu_lima: ZuluLima,
 

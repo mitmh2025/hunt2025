@@ -30,7 +30,7 @@ const HUNT: Hunt = {
         // slots (28 feeders, 4 metas, 1 super)
         // Start with 11 puzzles unlockable and 9 unlock currency.
         // Make 2 more puzzles unlockable after each solve.
-        { id: "mdp01", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 }, // unlockable by default
+        { id: "mdp01", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "xoxo" }, // unlockable by default
         { id: "mdp02", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
         { id: "mdp03", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "songs_on_the_radio" },
         { id: "mdp04", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "downright_backwards" },
