@@ -41,7 +41,7 @@ const HUNT: Hunt = {
         { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "missing_connections" },
         { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "be_kind_rewind" },
         { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "in_a_different_direction" },
-        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
+        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "shrinkage" },
         { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "zing_it_again" },
         { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },

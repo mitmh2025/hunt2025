@@ -59,6 +59,7 @@ import WhyKantWeBeFriendsToo from "./milky-swing";
 import MysteryOs from "./minty-play";
 import AWalkInThePark from "./misguided-revolution";
 import TheGrandIllusion from "./monstrous-shadow";
+import Shrinkage from "./monstrous-spring";
 import TheErasPuzzle from "./musty-shadow";
 import MissingConnections from "./naive-agent";
 import WhatDoTheyCallYou from "./new-ketchup";
@@ -140,6 +141,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   in_a_different_direction: InADifferentDirection,
   introduction_to_decryption: IntroductionToDecryption,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
+  shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
