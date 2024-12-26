@@ -14,7 +14,7 @@ const Puzzle = (): JSX.Element => {
       <p className="puzzle-flavor">We can’t seem to agree on anything.</p>
       <LinkedImage
         src={image}
-        alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a verdical red line."
+        alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line."
       />
       <ul>
         <li>Dangerous job</li>
