@@ -12,7 +12,7 @@ export const FlexWrapper = styled.div`
   margin: 1em 0;
 `;
 
-export const StyledSudoku = styled.table`
+export const StyledTable = styled.table`
   border-collapse: collapse;
   flex: 0 0 auto;
   td {
@@ -22,26 +22,35 @@ export const StyledSudoku = styled.table`
     padding: 0;
   }
   tr:first-child {
-    td:not(:first-child):not(:last-child) {
+    td:nth-child(7n + 2),
+    td:nth-child(7n + 3),
+    td:nth-child(7n + 4),
+    td:nth-child(7n + 5) {
       background-color: var(--gray-400);
       clip-path: polygon(4% 4%, 96% 4%, 96% 75%, 50% 96%, 4% 75%);
     }
   }
   tr:not(:first-child):not(:last-child) {
-    td:first-child {
+    td:nth-child(7n + 1) {
       background-color: var(--gray-400);
       clip-path: polygon(4% 4%, 75% 4%, 96% 50%, 75% 96%, 4% 96%);
     }
-    td:not(:first-child):not(:last-child) {
+    td:nth-child(7n + 2),
+    td:nth-child(7n + 3),
+    td:nth-child(7n + 4),
+    td:nth-child(7n + 5) {
       border: 1px solid black;
     }
-    td:last-child {
+    td:nth-child(7n + 6) {
       background-color: var(--gray-400);
       clip-path: polygon(96% 4%, 96% 96%, 25% 96%, 4% 50%, 25% 4%);
     }
   }
   tr:last-child {
-    td:not(:first-child):not(:last-child) {
+    td:nth-child(7n + 2),
+    td:nth-child(7n + 3),
+    td:nth-child(7n + 4),
+    td:nth-child(7n + 5) {
       background-color: var(--gray-400);
       clip-path: polygon(4% 96%, 4% 25%, 50% 4%, 96% 25%, 96% 96%);
     }
@@ -56,69 +65,66 @@ const BigFont = styled.span`
   font-size: 24px;
 `;
 
-export function makeCells(tables: string[][]): string[][][] {
-  return tables.map((table) =>
-    table.map((row) => row.split("").map((cell) => cell)),
-  );
+export function makeCells(rows: string[]): string[][] {
+  return rows.map((row) => row.split("").map((cell) => cell));
 }
 
 const SUDOKUS_1_1 = makeCells([
-  ["      ", "21 2  ", "    1 ", "    2 ", "      ", " 3    "],
-  ["   1  ", "     2", "  2   ", "2     ", "     3", " 1 2  "],
-  [" 2 32 ", "      ", "    1 ", " 3    ", "      ", " 3 1  "],
-  ["      ", "  3  3", "     3", "      ", "3  3  ", "  3   "],
+  "          1    2 32        ",
+  "21 2        2          3  3",
+  "    1    2        1       3",
+  "    2  2       3           ",
+  "            3        3  3  ",
+  " 3      1 2    3 1     3   ",
 ]);
 
 const SUDOKUS_1_2 = makeCells([
-  ["      ", " 2   1", "2   2 ", "     3", "      ", "   3  "],
-  ["    2 ", "      ", "3 3   ", "2   2 ", "     2", "   3  "],
-  ["  2   ", "     2", "      ", "2    2", "     2", "  2 2 "],
-  ["    2 ", "   3 3", "      ", "     2", "      ", " 4 2  "],
-  ["  4   ", "      ", "     3", "3    2", "     2", " 2    "],
-  ["  222 ", "      ", "      ", "     2", "3  4  ", "      "],
-  ["      ", "    1 ", "2     ", " 1   2", "      ", " 232  "],
+  "           2    2        2    4      222        ",
+  " 2   1             2    3 3                   1 ",
+  "2   2  3 3                       3        2     ",
+  "     3 2   2  2    2      2 3    2      2  1   2",
+  "            2      2             2 3  4         ",
+  "   3      3     2 2   4 2    2             232  ",
 ]);
 
 const SUDOKUS_2 = makeCells([
-  ["      ", "     3", " 2    ", "  1   ", "   2  ", "   21 "],
-  ["   42 ", "      ", "  3   ", "      ", "2     ", "  2   "],
-  [" 2 1  ", "      ", "      ", "4     ", " 3   3", "      "],
-  ["    3 ", "      ", " 2    ", " 3    ", "      ", "  21  "],
-  [" 3    ", "3 1   ", "     2", "      ", "3     ", "   1  "],
-  [" 231  ", "  2   ", " 1 2  ", "     3", "      ", "      "],
-  ["      ", "3     ", "  1  1", "  2  3", "2     ", "    2 "],
+  "          42   2 1       3   3      231         ",
+  "     3                      3 1      2    3     ",
+  " 2       3            2          2  1 2     1  1",
+  "  1           4       3                 3   2  3",
+  "   2   2       3   3        3             2     ",
+  "   21    2             21      1              2 ",
 ]);
 
 const SUDOKUS_3_1 = makeCells([
-  ["   33 ", "2     ", "  3   ", "3    2", "3     ", "      "],
-  ["      ", "     2", " 3    ", "3     ", "3    1", " 3    "],
-  [" 2 3  ", "     2", "  3   ", "      ", "    1 ", "    2 "],
-  [" 3    ", "3     ", "      ", "     1", "  3  3", "  2   "],
-  ["      ", "2   4 ", " 1  22", "      ", "      ", " 122  "],
-  ["   2  ", " 1    ", "   1  ", "2     ", "3 3   ", "  2   "],
-  [" 2    ", "      ", "3     ", "     2", "2 1  2", "      "],
-  ["  213 ", "      ", "      ", "3  1  ", "  1  2", "      "],
+  "   33          2 3    3               2    2       213 ",
+  "2           2      2 3      2   4   1                  ",
+  "  3     3       3            1  22    1   3            ",
+  "3    2 3                  1        2           2 3  1  ",
+  "3      3    1     1    3  3        3 3    2 1  2   1  2",
+  "        3         2    2     122     2                 ",
 ]);
 
 const SUDOKUS_3_2 = makeCells([
-  ["  2   ", "      ", "1     ", "      ", "3     ", "    2 "],
-  ["  223 ", "      ", "2   3 ", "    2 ", "2     ", "  23  "],
-  [" 2    ", "2     ", "     3", "  12  ", "    22", "    3 "],
-  ["   2  ", "2  2  ", "    2 ", "      ", "22    ", "    2 "],
-  [" 1  3 ", "      ", "     3", "3   3 ", "2     ", "      "],
+  "  2      223   2        2    1  3 ",
+  "              2      2  2         ",
+  "1      2   3       3     2       3",
+  "           2    12          3   3 ",
+  "3      2          22 22     2     ",
+  "    2    23       3      2        ",
 ]);
 
-export const Sudoku = ({ sudoku }: { sudoku: string[][] }): JSX.Element => {
+export const SudokuLine = ({ rows }: { rows: string[][] }): JSX.Element => {
   return (
-    <StyledSudoku>
-      {sudoku.map((row: string[], j: number) => (
-        <tr key={`sudoku-row-${j}`}>
-          {row.map((cell, k) => (
-            <td key={`sudoku-row-${j}-cell-${k}`}>{cell}</td>
+    <StyledTable>
+      {rows.map((row, i) => (
+        <tr key={i}>
+          {row.map((cell, j) => (
+            <td key={`${i}-${j}`}>{cell}</td>
           ))}
         </tr>
       ))}
-    </StyledSudoku>
+    </StyledTable>
   );
 };
 
@@ -134,14 +140,10 @@ const Puzzle = (): JSX.Element => {
       </p>
       <ScrollWrapper>
         <FlexWrapper>
-          {SUDOKUS_1_1.map((sudoku: string[][], i: number) => (
-            <Sudoku key={`sudoku-row-1-${i}`} sudoku={sudoku} />
-          ))}
+          <SudokuLine rows={SUDOKUS_1_1} />
         </FlexWrapper>
         <FlexWrapper>
-          {SUDOKUS_1_2.map((sudoku: string[][], i: number) => (
-            <Sudoku key={`sudoku-row-2-${i}`} sudoku={sudoku} />
-          ))}
+          <SudokuLine rows={SUDOKUS_1_2} />
         </FlexWrapper>
       </ScrollWrapper>
       <p>
@@ -153,9 +155,7 @@ const Puzzle = (): JSX.Element => {
       </p>
       <ScrollWrapper>
         <FlexWrapper>
-          {SUDOKUS_2.map((sudoku: string[][], i: number) => (
-            <Sudoku key={`sudoku-row-3-${i}`} sudoku={sudoku} />
-          ))}
+          <SudokuLine rows={SUDOKUS_2} />
         </FlexWrapper>
       </ScrollWrapper>
       <p>
@@ -167,14 +167,10 @@ const Puzzle = (): JSX.Element => {
       </p>
       <ScrollWrapper>
         <FlexWrapper>
-          {SUDOKUS_3_1.map((sudoku: string[][], i: number) => (
-            <Sudoku key={`sudoku-row-4-${i}`} sudoku={sudoku} />
-          ))}
+          <SudokuLine rows={SUDOKUS_3_1} />
         </FlexWrapper>
         <FlexWrapper>
-          {SUDOKUS_3_2.map((sudoku: string[][], i: number) => (
-            <Sudoku key={`sudoku-row-5-${i}`} sudoku={sudoku} />
-          ))}
+          <SudokuLine rows={SUDOKUS_3_2} />
         </FlexWrapper>
       </ScrollWrapper>
       <p>

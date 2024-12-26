@@ -55,7 +55,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers don’t know what to make of the tuples in each trophy section",
       keywords: ["tuples"],
       nudge:
-        "The numbers in the tuples run from 1 to 13. What are there be 3 of in the 1st section, 3 of in the 2nd section, and 5 of in the 3rd section?",
+        "The numbers in the tuples run from 1 to 13. What are there 3 of in the 1st section, 3 of in the 2nd section, and 5 of in the 3rd section?",
     },
     {
       order: 80.0,
