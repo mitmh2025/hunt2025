@@ -162,7 +162,10 @@
               # Copy Authentik configuration
               extraConfig = config.services.nginx.virtualHosts."staging.mitmh2025.com".locations."/".extraConfig;
             };
-            locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
+            locations."/static/" = {
+              alias = "${pkgs.hunt2025.assets}/static/";
+              extraConfig = "expires max;";
+            };
           };
           "reg.staging.mitmh2025.com" = {
             forceSSL = true;
