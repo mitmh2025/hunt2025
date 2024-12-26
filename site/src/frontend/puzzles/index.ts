@@ -77,6 +77,7 @@ import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
+import ASudoku from "./recent-ship";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
@@ -154,6 +155,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_badly_broken_quote: ABadlyBrokenQuote,
   a_math_quiz: AMathQuiz,
   a_recipe_for_success: ARecipeForSuccess,
+  a_sudoku: ASudoku,
   a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
   anything_is_popsicle: AnythingIsPopsicle,
