@@ -51,10 +51,20 @@
           TB_PASSWORD=${config.sops.placeholder."radioman/password"}
         '';
       };
+      sops.templates."sync2tb/env" = {
+        owner = "sync2tb";
+        content = ''
+          TB_PASSWORD=${config.sops.placeholder."radioman/password"}
+        '';
+      };
       services.thingsboard.provision = {
         enable = true;
         ruleChainsFile = ../../../thingsboard/rulechains.json;
         environmentFile = config.sops.templates."tbprovision/env".path;
+      };
+      services.sync2tb = {
+        enable = true;
+        environmentFile = config.sops.templates."sync2tb/env".path;
       };
     }
     {
