@@ -13,7 +13,8 @@ export type PluginName =
   | "cryptex"
   | "deskdrawer"
   | "bookcase"
-  | "extra";
+  | "extra"
+  | "telephone";
 
 export type ScreenArea = {
   // I'm doing scale-invariant coordinates for now, but maybe it will make more
@@ -56,6 +57,11 @@ export type NavigationInternal = Navigation & {
 
 export type Interaction = {
   plugin: PluginName;
+};
+
+export type InteractionInternal = Interaction & {
+  // If present, only include the interaction when condition (evaluated on the node's state) returns true
+  includeIf?: (teamState: TeamHuntState) => boolean;
 };
 
 export type ModalBase = {
@@ -170,7 +176,7 @@ export type NodeShared = {
   id: NodeId;
   background: string; // Imported asset that is presented as the full-screen background for this view.
   // navigations added in subclass
-  interactions: Interaction[];
+  // interactions added in subclass
   // modals added in subclass
   sounds: string[]; // Mostly for prefetching, presumed to be used by one of the interactives or on navigation
 };
@@ -179,12 +185,14 @@ export type NodeInternal = NodeShared & {
   navigations: NavigationInternal[];
   modals: ModalInternal[];
   placedAssets: PlacedAssetInternal[];
+  interactions: InteractionInternal[];
   //scripts: string[]; // Additional script tags to inject into the page, I guess?  Or maybe that's implied by PluginName for interactions
 };
 
 export type Node = NodeShared & {
   navigations: Navigation[];
   modals: Modal[];
+  interactions: Interaction[];
   interactionModals?: Modal[];
   placedAssets: PlacedAsset[];
 };
