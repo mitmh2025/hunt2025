@@ -12,7 +12,9 @@ export type PluginName =
   | "rug"
   | "cryptex"
   | "deskdrawer"
-  | "bookcase";
+  | "bookcase"
+  | "extra"
+  | "telephone";
 
 export type ScreenArea = {
   // I'm doing scale-invariant coordinates for now, but maybe it will make more
@@ -27,7 +29,8 @@ export type ScreenArea = {
 
 export type PlacedAsset = {
   area: ScreenArea;
-  asset: string;
+  asset: string | null;
+  extraAsset?: string; // blacklight overlay
 };
 
 export type PlacedAssetInternal = PlacedAsset & {
@@ -56,9 +59,15 @@ export type Interaction = {
   plugin: PluginName;
 };
 
+export type InteractionInternal = Interaction & {
+  // If present, only include the interaction when condition (evaluated on the node's state) returns true
+  includeIf?: (teamState: TeamHuntState) => boolean;
+};
+
 export type ModalBase = {
   area: ScreenArea; // what area of the screen should be clickable to trigger showing this modal?
-  asset: string; // what image should be shown when the modal is blown up large? (not initially visible, that should be in placedAssets)
+  zIndex?: number; // what z-index should this modal be shown at?
+  asset: string; // what image should be shown when the modal is blown up large?
 
   // By default the asset is shown in the clickable area to trigger the modal. If you
   // want some other behavior (a larger asset that is only partially clickable, for example)
@@ -91,9 +100,17 @@ export type ModalInternal = ModalBase & {
     modalAsset?: string;
     placedAsset?: string;
   };
+
+  extra?: {
+    // blacklight overlay
+    asset: string;
+    slotId: string;
+    postCode: string;
+    gateId: string;
+  };
 };
 
-export type ModalWithPostcode = ModalBase & {
+export type PostcodeInitial = {
   // If we have not yet unlocked the target puzzle, we can't know its title or slug yet.
   // Instead, we pass the client the postCode which it will POST back to us
   // when the user requests for the modal to be displayed, and in response we'll
@@ -101,20 +118,45 @@ export type ModalWithPostcode = ModalBase & {
   // 2) return the relevant puzzle title & slug.
   postCode: string;
 };
+
 export type PostcodeResponse = {
   // The fields we expect the response from posting the postCode from a ModalWithPostcode to the backend.
   title: string;
   slug: string;
   desc?: string;
 };
-export type ModalWithPuzzleFields = ModalBase & PostcodeResponse;
 
-export type Modal = ModalWithPostcode | ModalWithPuzzleFields;
+export type ExtraPostcodeInitial = {
+  extra?: { asset: string } & PostcodeInitial;
+};
+
+export type ExtraPostcodeResponse = {
+  extra?: { asset: string } & PostcodeResponse;
+};
+
+export type ModalWithPostcode = ModalBase & PostcodeInitial;
+export type ModalWithPuzzleFields = ModalBase & PostcodeResponse;
+export type ModalWithExtraPostcode = ModalBase & ExtraPostcodeInitial;
+export type ModalWithExtraPuzzleFields = ModalBase & ExtraPostcodeResponse;
+
+export type Modal = (ModalWithPostcode | ModalWithPuzzleFields) &
+  (ModalWithExtraPostcode | ModalWithExtraPuzzleFields);
+
 export function hasPostCode(modal: Modal): modal is ModalWithPostcode {
   return Object.prototype.hasOwnProperty.call(modal, "postCode");
 }
 export function hasPuzzleFields(modal: Modal): modal is ModalWithPuzzleFields {
   return Object.prototype.hasOwnProperty.call(modal, "title");
+}
+export function hasExtraPostCode(
+  modal: ModalBase & (ModalWithExtraPostcode | ModalWithExtraPuzzleFields),
+): modal is ModalWithExtraPostcode {
+  return Object.prototype.hasOwnProperty.call(modal.extra, "postCode");
+}
+export function hasExtraPuzzleFields(
+  modal: ModalBase & (ModalWithExtraPostcode | ModalWithExtraPuzzleFields),
+): modal is ModalWithExtraPuzzleFields {
+  return Object.prototype.hasOwnProperty.call(modal.extra, "title");
 }
 
 export type NodeShared = {
@@ -134,7 +176,7 @@ export type NodeShared = {
   id: NodeId;
   background: string; // Imported asset that is presented as the full-screen background for this view.
   // navigations added in subclass
-  interactions: Interaction[];
+  // interactions added in subclass
   // modals added in subclass
   sounds: string[]; // Mostly for prefetching, presumed to be used by one of the interactives or on navigation
 };
@@ -143,12 +185,14 @@ export type NodeInternal = NodeShared & {
   navigations: NavigationInternal[];
   modals: ModalInternal[];
   placedAssets: PlacedAssetInternal[];
+  interactions: InteractionInternal[];
   //scripts: string[]; // Additional script tags to inject into the page, I guess?  Or maybe that's implied by PluginName for interactions
 };
 
 export type Node = NodeShared & {
   navigations: Navigation[];
   modals: Modal[];
+  interactions: Interaction[];
   interactionModals?: Modal[];
   placedAssets: PlacedAsset[];
 };

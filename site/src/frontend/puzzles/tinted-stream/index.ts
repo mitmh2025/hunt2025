@@ -8,7 +8,7 @@ const puzzle: PuzzleDefinition = {
   initial_description: "A set of six genograms and several images below.",
   answer: "WATSONIA",
   authors: ["Erin Price", "Kevin Hwang", "Simone Agha"],
-  editors: ["James Douberley", "jarsyl", "Robin Deits"],
+  editors: ["James Douberley", "Henry Wong", "Robin Deits"],
   additional_credits: [],
   content: {
     component: Puzzle,

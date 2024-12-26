@@ -20,6 +20,7 @@ import {
   TUMBLER_INITIAL_STATE,
 } from "../combolock";
 import { type ModalWithPuzzleFields, type Node } from "../types";
+import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
 import { default_cursor, draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
@@ -349,7 +350,7 @@ const Safe = ({
   }, [opened, setNode, tumblers, openDoor]);
 
   const modalAssets = node.interactionModals?.map((modal) => {
-    const { area, asset } = modal;
+    const { area, asset } = modal.placedAsset ?? modal;
     const placedAsset = { area, asset };
     return <Asset key={modal.asset} placedAsset={placedAsset} />;
   });
@@ -362,6 +363,7 @@ const Safe = ({
       />
     );
   });
+  const modalExtras = useRenderModalExtras(node.interactionModals ?? []);
 
   return (
     <Wall>
@@ -370,6 +372,7 @@ const Safe = ({
           <SafeBox $opened={doorOpen} />
           {modalAssets}
           {modals}
+          {modalExtras}
         </>
       ) : (
         <SafeBox $opened={doorOpen}>

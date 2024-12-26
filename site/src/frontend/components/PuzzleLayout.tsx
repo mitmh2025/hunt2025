@@ -31,6 +31,7 @@ const PuzzleHeader = styled.header`
   background-color: var(--gray-100);
   gap: 1rem;
   padding: 2rem;
+  position: relative;
 
   @media ${deviceMax.md} {
     gap: 2rem;
@@ -45,6 +46,7 @@ const PuzzleHeader = styled.header`
 
 const PuzzleTitle = styled.h1`
   grid-column: 1 / 3;
+  overflow-x: clip;
 `;
 
 const PuzzleMain = styled.main`
@@ -68,4 +70,22 @@ const PuzzleMain = styled.main`
 
 const PuzzleFooter = styled.footer``;
 
-export { PuzzleHeader, PuzzleMain, PuzzleFooter, PuzzleWrapper, PuzzleTitle };
+const AuthorsNote = styled.p`
+  font-size: 14px;
+  border: 1px solid var(--gold-700);
+  color: var(--gold-800);
+  padding: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  background-color: var(--gold-200);
+  border-radius: 2px;
+`;
+
+export {
+  PuzzleHeader,
+  PuzzleMain,
+  PuzzleFooter,
+  PuzzleWrapper,
+  PuzzleTitle,
+  AuthorsNote,
+};

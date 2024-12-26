@@ -27,6 +27,8 @@
       };
     }
     {
+      sops.secrets."thingsboard/sysadmin/password" = {};
+      sops.secrets."radioman/password" = {};
       sops.templates."tbprovision/env" = {
         owner = "thingsboard";
         content = ''
@@ -34,9 +36,11 @@
           TB_PASSWORD=${config.sops.placeholder."radioman/password"}
         '';
       };
-      systemd.services.thingsboard.serviceConfig.EnvironmentFile = [
-        config.sops.templates."tbprovision/env".path
-      ];
+      services.thingsboard.provision = {
+        enable = true;
+        ruleChainsFile = ../../../thingsboard/rulechains.json;
+        environmentFile = config.sops.templates."tbprovision/env".path;
+      };
     }
     {
       users.groups.acme-thingsboard = {};

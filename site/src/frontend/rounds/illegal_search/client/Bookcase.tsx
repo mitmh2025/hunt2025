@@ -10,8 +10,9 @@ import bookcaseData from "./bookcaseData";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
 
-const BookcaseContainer = styled.table`
+const BookcaseContainer = styled.div`
   width: 840px;
+  min-width: 840px;
   background-image: url(${dark_wood_texture});
   padding: 20px;
   border-radius: 5px;
@@ -19,63 +20,76 @@ const BookcaseContainer = styled.table`
   position: absolute;
   left: 600px;
   bottom: 0;
-  display: block;
 `;
 
-const BookcaseShelf = styled.tr`
-  display: flex;
-  align-items: flex-end;
-  position: relative;
-  padding-top: 1em;
-  background-blend-mode: darken;
-  background-color: rgba(0, 0, 0, 0.4);
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px inset;
-  margin-bottom: 10px;
-  width: 800px;
+const BookcaseTable = styled.table`
+  border-collapse: collapse;
+  width: 100%;
 
-  &:last-child {
+  & td {
+    padding: 0;
+    line-height: 0;
+  }
+`;
+
+const BookcaseShelf = styled.tbody`
+  background-blend-mode: darken;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px inset;
+
+  // Two backgrounds: one for web and one for Google Sheets
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0% 100%);
+  background-color: transparent;
+
+  & tr:first-child td {
+    padding-top: 1em;
+    width: 62px;
+  }
+
+  &:last-child tr {
     border-bottom: none;
   }
 `;
 
+const BookcaseShelfRow = styled.tr`
+  background-color: transparent;
+  height: 10px;
+`;
+
+const BookcaseRow = styled.tr`
+  width: 800px;
+  height: 94px;
+`;
+
+const BookcaseExtraBookRow = styled(BookcaseRow)`
+  height: 62px;
+`;
+
+const BookcaseSpacer = styled.td`
+  width: 100%;
+`;
+
 const Book = styled.td<{
   $color: string;
-  $direction?: string;
   $pulled?: boolean;
   $interactive?: boolean;
 }>`
-  display: flex;
-  flex-direction: column-reverse;
   position: relative;
 
   transition: all 0.2s ease-in-out;
   ${({ $pulled }) =>
     $pulled &&
     `
-    transform: translate(-10px, 10px);
+    transform: translate(-16px, 10px);
+    filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.5));
   `}
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transition: all 0.2s ease-in-out;
-    box-shadow: ${({ $pulled }) =>
-      $pulled ? "0px 17px 16px -11px #fff, 0px -16px 16px -11px #fff" : "none"};
-  }
-
   & .spine {
-    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 10px 5px;
     font-size: 14px;
     line-height: 1;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     text-align: center;
     font-family: Garamond, serif;
     color: ${({ $color }) => ($color === "#AC950F" ? "#3e2d0c" : "#ffeaca")};
@@ -116,19 +130,15 @@ const Book = styled.td<{
     height: 140px;
     width: 62px;
 
-    ${(props) => {
-      if (props.$interactive && props.$direction !== "horizontal") {
-        return `
-        &:hover {
-          cursor: ${draggable_cursor};
-        }
-    `;
+    ${({ $interactive }) =>
+      $interactive &&
+      `
+      &:hover {
+        cursor: ${draggable_cursor};
       }
-      return null;
-    }};
+    `}
 
     span {
-      display: block;
       &.author {
         font-size: 12px;
         margin-right: 6px;
@@ -137,56 +147,53 @@ const Book = styled.td<{
   }
 
   & .top {
-    display: block;
     position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 62px;
+    height: ${({ $pulled }) => ($pulled ? 18 : 8)}px;
+    transform-origin: bottom;
+    transform: translate(0, -140px) skewX(-60deg);
     background: white;
     background-image: linear-gradient(90deg, white 90%, gray 10%);
     background-size: 5px 5px;
-    width: 62px;
-    height: 8px;
-    transform-origin: bottom;
-    transform: translate(0, -140px) skewX(-60deg);
     border-color: black;
     border-style: solid;
-    border-width: 3px 3px 0 3px;
+    border-width: 0 3px;
+    transition: all 0.2s ease-in-out;
   }
 
   & .cover {
-    display: block;
-    background: ${({ $color }) => $color};
-    width: 14px;
-    height: 140px;
     position: absolute;
+    left: 0;
+    bottom: 0;
+    width: ${({ $pulled }) => ($pulled ? 31 : 14)}px;
+    height: 140px;
     transform-origin: left;
     transform: translate(62px, 0) skewY(-30deg);
+    background: ${({ $color }) => $color};
     border-color: black;
     border-style: solid;
-    border-width: 3px 3px 3px 0;
+    border-width: 3px 0;
+    transition: all 0.2s ease-in-out;
   }
 `;
 
-const BookcaseShelfExtras = styled.td`
-  align-self: stretch;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-  position: relative;
-  overflow: hidden;
-`;
-
-const HorizontalBook = styled.span<{
+const HorizontalBook = styled.td<{
   $color: string;
 }>`
+  text-align: right;
+  vertical-align: bottom;
+  position: relative;
+  overflow: hidden;
+
   & .spine {
-    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 10px 5px;
     font-size: 14px;
     line-height: 1;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
     text-align: left;
     font-family: Garamond, serif;
     color: #ffeaca;
@@ -221,10 +228,8 @@ const HorizontalBook = styled.span<{
 
     width: 140px;
     height: 62px;
-    padding: 0 5px;
 
     span {
-      display: block;
       &.author {
         font-size: 12px;
         margin-top: 6px;
@@ -233,13 +238,14 @@ const HorizontalBook = styled.span<{
   }
 
   & .cover {
-    display: block;
     position: absolute;
+    right: 0;
+    bottom: 0;
     width: 140px;
     height: 14px;
-    background-color: ${({ $color }) => $color};
     transform-origin: bottom;
-    transform: translate(0, -76px) skewX(-60deg);
+    transform: translate(0, -62px) skewX(-60deg);
+    background-color: ${({ $color }) => $color};
     border-color: black;
     border-style: solid;
     border-width: 3px 3px 0 3px;
@@ -259,59 +265,85 @@ export function BookcaseInteraction({
 }) {
   return (
     <BookcaseContainer style={style}>
-      {bookcaseData.rows.map((shelf, i) => {
-        return (
-          <BookcaseShelf key={i}>
-            {shelf.map((book, j) => {
-              const bookState = state[i]?.[j] ?? false;
-              const style = { fontSize: book.size };
-              return (
-                <Book
-                  key={j}
-                  $color={book.color}
-                  $pulled={bookState}
-                  $interactive={interactive}
-                  onClick={() => {
-                    handleClick(i, j);
-                  }}
-                >
-                  <span className="spine" style={style}>
-                    <span className="title">
-                      {book.title}
-                      <br />
-                    </span>
-                    <span className="author">{book.author}</span>
-                  </span>
-                  <span className="top" />
-                  <span className="cover" />
-                </Book>
-              );
-            })}
-            {(bookcaseData.extraRows[i] ?? []).length > 0 && (
-              <>
-                <td style={{ flexGrow: 1 }} />
-                <BookcaseShelfExtras>
-                  {bookcaseData.extraRows[i]?.map((book, j) => {
-                    const style = { fontSize: book.size };
-                    return (
-                      <HorizontalBook key={j} style={style} $color={book.color}>
-                        <span className="spine">
-                          <span className="title">
-                            {book.title}
-                            <br />
-                          </span>
-                          <span className="author">{book.author}</span>
+      <BookcaseTable>
+        {bookcaseData.rows.map((shelf, i) => {
+          const extraBooks = bookcaseData.extraRows[i] ?? [];
+          const rowSpan = extraBooks.length > 0 ? extraBooks.length : 1;
+          return (
+            <BookcaseShelf key={i}>
+              <BookcaseRow>
+                {shelf.map((book, j) => {
+                  const bookState = state[i]?.[j] ?? false;
+                  const style = { fontSize: book.size };
+                  return (
+                    <Book
+                      key={j}
+                      rowSpan={rowSpan}
+                      $color={book.color}
+                      $pulled={bookState}
+                      $interactive={interactive}
+                      onClick={() => {
+                        handleClick(i, j);
+                      }}
+                      data-title={book.title}
+                    >
+                      <span className="spine" style={style}>
+                        <span className="title">
+                          {book.title}
+                          <br />
                         </span>
-                        <span className="cover" />
-                      </HorizontalBook>
-                    );
-                  })}
-                </BookcaseShelfExtras>
-              </>
-            )}
-          </BookcaseShelf>
-        );
-      })}
+                        <span className="author">{book.author}</span>
+                      </span>
+                      <span className="top" />
+                      <span className="cover" />
+                    </Book>
+                  );
+                })}
+                {extraBooks.length === 0 && <BookcaseSpacer />}
+                {extraBooks.slice(0, 1).map((book, j) => {
+                  const style = { fontSize: book.size };
+                  return (
+                    <HorizontalBook
+                      colSpan={3}
+                      key={j}
+                      $color={book.color}
+                      style={{ zIndex: 1 }}
+                      data-title={book.title}
+                    >
+                      <span className="spine" style={style}>
+                        <span className="title">
+                          {book.title}
+                          <br />
+                        </span>
+                        <span className="author">{book.author}</span>
+                      </span>
+                      <span className="cover" />
+                    </HorizontalBook>
+                  );
+                })}
+              </BookcaseRow>
+              {extraBooks.slice(1).map((book, j) => {
+                const style = { fontSize: book.size };
+                return (
+                  <BookcaseExtraBookRow key={j}>
+                    <HorizontalBook colSpan={3} $color={book.color}>
+                      <span className="spine" style={style}>
+                        <span className="title">
+                          {book.title}
+                          <br />
+                        </span>
+                        <span className="author">{book.author}</span>
+                      </span>
+                      <span className="cover" />
+                    </HorizontalBook>
+                  </BookcaseExtraBookRow>
+                );
+              })}
+              <BookcaseShelfRow />
+            </BookcaseShelf>
+          );
+        })}
+      </BookcaseTable>
     </BookcaseContainer>
   );
 }

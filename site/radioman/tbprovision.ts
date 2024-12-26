@@ -1,5 +1,6 @@
+import { readFile } from "fs/promises";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
-import { check, Client, type Tenant } from "./tbapi";
+import { check, Client, RuleChainDataSchema, type Tenant } from "./tbapi";
 import { ThingsboardError } from "./tbtypes";
 
 const baseUrl = process.env.TB_BASE_URL ?? "http://localhost:8080";
@@ -8,6 +9,7 @@ const defaultSysadminPassword = "sysadmin";
 const sysadminPassword = process.env.TB_SYSADMIN_PASSWORD ?? "sysadmin";
 const tenantUsername = process.env.TB_USERNAME ?? "radioman@mitmh2025.com";
 const tenantPassword = process.env.TB_PASSWORD ?? "radioman";
+const ruleChainsPath = process.env.TB_RULE_CHAINS;
 
 async function createSysadminClient({
   baseUrl,
@@ -144,6 +146,21 @@ async function createDeviceProfiles(client: Client) {
   }
 }
 
+async function importRuleChains(client: Client, path: string) {
+  const ruleChainData = RuleChainDataSchema.parse(
+    JSON.parse(await readFile(path, "utf-8")),
+  );
+  const result = await client.client.ruleChain
+    .import({
+      body: ruleChainData,
+      query: {
+        overwrite: true,
+      },
+    })
+    .then(check);
+  console.log("Imported rule chains", result);
+}
+
 async function main() {
   await pRetry(
     async () => {
@@ -155,6 +172,7 @@ async function main() {
       }
     },
     {
+      retries: 100,
       maxRetryTime: 300000,
       minTimeout: 500,
       maxTimeout: 10000,
@@ -184,6 +202,9 @@ async function main() {
     password: tenantPassword,
   });
   await createDeviceProfiles(client);
+  if (ruleChainsPath !== undefined) {
+    await importRuleChains(client, ruleChainsPath);
+  }
 }
 main().catch((err: unknown) => {
   console.error(err);

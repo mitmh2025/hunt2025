@@ -1,13 +1,16 @@
 import React from "react";
 
 const Puzzle = (answer: string) => {
-  return () => {
+  const PuzzleContentStub = () => {
     return (
       <>
-        <p>Please submit <code>{answer}</code> as the answer to this puzzle.</p>
+        <p>
+          Please submit <code>{answer}</code> as the answer to this puzzle.
+        </p>
       </>
     );
-  }
+  };
+  return PuzzleContentStub;
 };
 
 const Solution = () => {
@@ -22,7 +25,7 @@ export function makePlaceholder(slug: string, title: string, answer: string) {
   return {
     title,
     slug,
-    initial_description: "A puzzle",
+    initial_description: "A stub puzzle",
     answer,
     authors: [],
     editors: [],

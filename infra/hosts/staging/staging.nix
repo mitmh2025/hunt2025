@@ -42,6 +42,8 @@
       systemd.services.hunt2025.environment.EMAIL_TRANSPORT = "postmark";
     }
     {
+      sops.secrets."thingsboard/sysadmin/password" = {};
+      sops.secrets."radioman/password" = {};
       sops.templates."tbprovision/env" = {
         owner = "thingsboard";
         content = ''
@@ -49,9 +51,21 @@
           TB_PASSWORD=${config.sops.placeholder."radioman/password"}
         '';
       };
-      systemd.services.thingsboard.serviceConfig.EnvironmentFile = [
-        config.sops.templates."tbprovision/env".path
-      ];
+      sops.templates."sync2tb/env" = {
+        owner = "sync2tb";
+        content = ''
+          TB_PASSWORD=${config.sops.placeholder."radioman/password"}
+        '';
+      };
+      services.thingsboard.provision = {
+        enable = true;
+        ruleChainsFile = ../../../thingsboard/rulechains.json;
+        environmentFile = config.sops.templates."tbprovision/env".path;
+      };
+      services.sync2tb = {
+        enable = true;
+        environmentFile = config.sops.templates."sync2tb/env".path;
+      };
     }
     {
       services.thingsboard = {
@@ -158,7 +172,10 @@
               # Copy Authentik configuration
               extraConfig = config.services.nginx.virtualHosts."staging.mitmh2025.com".locations."/".extraConfig;
             };
-            locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
+            locations."/static/" = {
+              alias = "${pkgs.hunt2025.assets}/static/";
+              extraConfig = "expires max;";
+            };
           };
           "reg.staging.mitmh2025.com" = {
             forceSSL = true;

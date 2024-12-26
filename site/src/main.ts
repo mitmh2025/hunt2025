@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import app from "./app";
 import regsite from "./frontend/regsite/app";
+import "./frontend/server/radio-assets";
 
 const portStr = process.env.PORT ?? "3000";
 const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);

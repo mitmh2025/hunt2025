@@ -7,6 +7,7 @@ import switch_left from "../assets/fuse_box/fusebox_draft5_switch_pressed_left.s
 import switch_right from "../assets/fuse_box/fusebox_draft5_switch_pressed_right.svg";
 import cubby_open from "../assets/fuse_box/fusebox_draft6_cubby_open_zarvox.svg";
 import { type ModalWithPuzzleFields, type Node } from "../types";
+import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
 import { default_cursor } from "./cursors";
 
@@ -339,7 +340,7 @@ const SwitchBox = ({
   );
 
   const modalAssets = node.interactionModals?.map((modal) => {
-    const { area, asset } = modal;
+    const { area, asset } = modal.placedAsset ?? modal;
     const placedAsset = { area, asset };
     return <Asset key={modal.asset} placedAsset={placedAsset} />;
   });
@@ -352,6 +353,7 @@ const SwitchBox = ({
       />
     );
   });
+  const modalExtras = useRenderModalExtras(node.interactionModals ?? []);
 
   return (
     <Wall>
@@ -364,6 +366,7 @@ const SwitchBox = ({
           <Cubby $open={opened} />
           {modalAssets}
           {modals}
+          {modalExtras}
         </SwitchBoxInner>
       </SwitchBoxOuter>
     </Wall>

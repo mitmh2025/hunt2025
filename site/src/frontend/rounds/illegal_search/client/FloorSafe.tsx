@@ -13,6 +13,7 @@ import numberlock_box from "../assets/rug/numberlock_box.svg";
 import numberlock_pad from "../assets/rug/numberlock_pad.svg";
 import slide from "../assets/rug/slide.mp3";
 import { type ModalWithPuzzleFields, type Node } from "../types";
+import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
 import { default_cursor } from "./cursors";
 import playSound from "./playSound";
@@ -381,11 +382,14 @@ export default function FloorSafe({
     );
   });
 
+  const extras = useRenderModalExtras(node.interactionModals ?? []);
+
   return (
     <FloorSafeWrapper>
       <FullImg src={numberlock_box} />
       {modalAssets}
       {modals}
+      {extras}
       <NumberLockPadWrapper $opened={opened}>
         <Display code={code} />
         <KeyPad

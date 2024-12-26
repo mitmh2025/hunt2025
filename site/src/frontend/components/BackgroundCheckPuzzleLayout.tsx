@@ -38,8 +38,10 @@ export const BackgroundCheckWrapper = ({
 // because we want separate outer (fridge) and inner (paper background) divs.
 const BackgroundCheckWrapperOuter = styled.div`
   background-image: url("${fridge_middle}");
+  background-position: center;
   background-repeat: repeat-y;
   background-size: 100% auto;
+
   width: 100%;
   margin: 0;
   padding-top: 4rem;
@@ -47,6 +49,12 @@ const BackgroundCheckWrapperOuter = styled.div`
   padding-left: 14%;
   padding-right: 14%;
   min-height: calc(100vh - 80px);
+
+  @media (${deviceMax.sm}) {
+    background-size: 125% auto;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 
   color: ${BgColor};
 
@@ -82,7 +90,10 @@ export const BackgroundCheckHeader = styled(PuzzleHeader)`
   h1 {
     font-family: "Georgia", serif;
     text-align: center;
-    text-decoration: underline;
+
+    > span {
+      border-bottom: 2px solid black;
+    }
   }
 
   #puzzle-guess-section {

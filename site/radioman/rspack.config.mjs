@@ -4,6 +4,7 @@ const config = defineConfig({
   entry: {
     sync2tb: "./sync2tb.ts",
     tbprovision: "./tbprovision.ts",
+    tbutil: "./tbutil.ts",
   },
   target: "node22",
   module: {

@@ -34,7 +34,7 @@ in buildNpmPackage {
   installPhase = ''
     mkdir -p $out/lib
     cp -r radioman/dist/ $out/lib/radioman
-    for i in sync2tb tbprovision; do
+    for i in sync2tb tbprovision tbutil; do
       makeWrapper ${nodejs}/bin/node $out/bin/$i \
         --add-flags --enable-source-maps \
         --add-flags $out/lib/radioman/$i.mjs

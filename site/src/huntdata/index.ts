@@ -71,9 +71,18 @@ const HUNT: Hunt = {
         { id: "isp17", unlockable_if: [{ gate_satisfied: "isg24" }], unlock_cost: 1, slug: "isp17" },
         { id: "isp18", unlockable_if: [{ gate_satisfied: "isg25" }], unlock_cost: 1, slug: "isp18" },
 
+        // The next 5 puzzles are the blacklight versions of 6-10.
+        // Slugs must correspond to the _blacklight version of the slug of the corresponding slot isp06-isp10
+        { id: "isp19", unlocked_if: { gate_satisfied: "isg27" }, prize: 0, slug: "jargon_blacklight" }, // blacklight version of isp06, behind directional lock
+        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "cahfee_regular_blacklight" }, // blacklight version of isp07, behind binary switch lock
+        { id: "isp21", unlocked_if: { gate_satisfied: "isg29" }, prize: 0, slug: "the_center_is_in_plain_sight_blacklight" }, // blacklight version of isp08, behind combination lock
+        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "no_accounting_for_taste_blacklight" }, // blacklight version of isp09, behind numeric lock
+        { id: "isp23", unlocked_if: { gate_satisfied: "isg31" }, prize: 0, slug: "south_americant_blacklight" }, // blacklight version of isp10, behind word lock
+
+        // Metas.
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }], slug: "papas_bookcase" }, // Bookcase
         { id: "ism02", is_meta: true, unlocked_if: [{ slot_solved: "ism01" }, { gate_satisfied: "isg17" }], slug: "papas_stash" },
-        //{ id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg26" }] },
+        { id: "ism03", is_meta: true, unlocked_if: [{ slot_solved: "ism02" }, { gate_satisfied: "isg32" }], slug: "papas_bookcase_blacklight" },
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final
@@ -104,6 +113,12 @@ const HUNT: Hunt = {
         { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
         { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
         { id: "isg26", title: "Obtained the blacklight", satisfied_if: { slot_solved: "ism02" } }, // obtain the blacklight
+        { id: "isg27" }, // find the blacklight object behind the directional lock
+        { id: "isg28" }, // find the blacklight object behind the binary switch lock
+        { id: "isg29" }, // find the blacklight object behind the combination lock
+        { id: "isg30" }, // find the blacklight object behind the numeric lock
+        { id: "isg31" }, // find the blacklight object behind the word lock
+        { id: "isg32" }, // find the blacklight version of the bookshelf note (meta)
       ],
       interactions: [],
       unlock_if: [],

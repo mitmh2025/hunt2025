@@ -10,6 +10,7 @@ import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
 import useDataset from "../../../client/useDataset";
 import PuzzleLink from "../../../components/PuzzleLink";
+import round_title from "../assets/study/round_title.svg";
 import {
   type ScreenArea,
   type Node,
@@ -23,10 +24,13 @@ import {
 import Bookcase from "./Bookcase";
 import Cryptex from "./Cryptex";
 import DeskDrawer from "./DeskDrawer";
+import Extra from "./Extra";
+import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 import Rug from "./Rug";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
+import Telephone from "./Telephone";
 import { default_cursor, zoom_cursor } from "./cursors";
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
@@ -36,7 +40,7 @@ const ENABLE_DEVTOOLS = false as boolean; // type loosened to avoid always-truth
 const RASTER_WIDTH = 1920;
 const RASTER_HEIGHT = 1080;
 
-function boundsForArea(area: ScreenArea): {
+export function boundsForArea(area: ScreenArea): {
   left: string;
   right: string;
   top: string;
@@ -57,10 +61,16 @@ function boundsForArea(area: ScreenArea): {
 export const Asset = ({
   placedAsset,
   backgroundColor,
+  zIndex,
 }: {
   placedAsset: PlacedAsset;
   backgroundColor?: string;
+  zIndex?: number;
 }) => {
+  if (placedAsset.asset === null) {
+    return null;
+  }
+
   const { area, asset } = placedAsset;
   const areaStyle = {
     position: "absolute" as const,
@@ -72,6 +82,8 @@ export const Asset = ({
     backgroundSize: "contain",
 
     backgroundColor,
+
+    zIndex: zIndex,
   };
   return <div key={asset} style={areaStyle} />;
 };
@@ -193,6 +205,7 @@ export const ModalTrigger = ({
     border: "none",
     padding: 0,
     backgroundColor: backgroundColor ?? "transparent",
+    zIndex: modal.zIndex,
   };
 
   return (
@@ -202,7 +215,7 @@ export const ModalTrigger = ({
   );
 };
 
-const ModalBackdrop = styled.div`
+export const ModalBackdrop = styled.div`
   position: absolute;
   left: 0;
   right: 0;
@@ -217,7 +230,7 @@ const ModalBackdrop = styled.div`
   justify-content: center;
 `;
 
-const PuzzleLinkBackdrop = styled.div`
+export const PuzzleLinkBackdrop = styled.div`
   background-color: rgba(101, 112, 86, 0.8);
   width: 600px;
   height: 48px;
@@ -242,8 +255,8 @@ const SearchEngineSurface = styled.div<{
   ${({ $backgroundImage }) => {
     if ($backgroundImage === "__wallpaper__") {
       return `
-        background-color: #657056;
-        background-image: url("data:image/svg+xml,%3Csvg width='80' height='88' viewBox='0 0 80 88' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 21.91V26h-2c-9.94 0-18 8.06-18 18 0 9.943 8.058 18 18 18h2v4.09c8.012.722 14.785 5.738 18 12.73 3.212-6.99 9.983-12.008 18-12.73V62h2c9.94 0 18-8.06 18-18 0-9.943-8.058-18-18-18h-2v-4.09c-8.012-.722-14.785-5.738-18-12.73-3.212 6.99-9.983 12.008-18 12.73zM54 58v4.696c-5.574 1.316-10.455 4.428-14 8.69-3.545-4.262-8.426-7.374-14-8.69V58h-5.993C12.27 58 6 51.734 6 44c0-7.732 6.275-14 14.007-14H26v-4.696c5.574-1.316 10.455-4.428 14-8.69 3.545 4.262 8.426 7.374 14 8.69V30h5.993C67.73 30 74 36.266 74 44c0 7.732-6.275 14-14.007 14H54zM42 88c0-9.94 8.06-18 18-18h2v-4.09c8.016-.722 14.787-5.738 18-12.73v7.434c-3.545 4.262-8.426 7.374-14 8.69V74h-5.993C52.275 74 46 80.268 46 88h-4zm-4 0c0-9.943-8.058-18-18-18h-2v-4.09c-8.012-.722-14.785-5.738-18-12.73v7.434c3.545 4.262 8.426 7.374 14 8.69V74h5.993C27.73 74 34 80.266 34 88h4zm4-88c0 9.943 8.058 18 18 18h2v4.09c8.012.722 14.785 5.738 18 12.73v-7.434c-3.545-4.262-8.426-7.374-14-8.69V14h-5.993C52.27 14 46 7.734 46 0h-4zM0 34.82c3.213-6.992 9.984-12.008 18-12.73V18h2c9.94 0 18-8.06 18-18h-4c0 7.732-6.275 14-14.007 14H14v4.696c-5.574 1.316-10.455 4.428-14 8.69v7.433z' fill='%23ffd65d' fill-opacity='0.48' fill-rule='evenodd'/%3E%3C/svg%3E");
+        background-color: #4a431e;
+        background-image: url("data:image/svg+xml,%3Csvg width='80' height='88' viewBox='0 0 80 88' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 21.91V26h-2c-9.94 0-18 8.06-18 18 0 9.943 8.058 18 18 18h2v4.09c8.012.722 14.785 5.738 18 12.73 3.212-6.99 9.983-12.008 18-12.73V62h2c9.94 0 18-8.06 18-18 0-9.943-8.058-18-18-18h-2v-4.09c-8.012-.722-14.785-5.738-18-12.73-3.212 6.99-9.983 12.008-18 12.73zM54 58v4.696c-5.574 1.316-10.455 4.428-14 8.69-3.545-4.262-8.426-7.374-14-8.69V58h-5.993C12.27 58 6 51.734 6 44c0-7.732 6.275-14 14.007-14H26v-4.696c5.574-1.316 10.455-4.428 14-8.69 3.545 4.262 8.426 7.374 14 8.69V30h5.993C67.73 30 74 36.266 74 44c0 7.732-6.275 14-14.007 14H54zM42 88c0-9.94 8.06-18 18-18h2v-4.09c8.016-.722 14.787-5.738 18-12.73v7.434c-3.545 4.262-8.426 7.374-14 8.69V74h-5.993C52.275 74 46 80.268 46 88h-4zm-4 0c0-9.943-8.058-18-18-18h-2v-4.09c-8.012-.722-14.785-5.738-18-12.73v7.434c3.545 4.262 8.426 7.374 14 8.69V74h5.993C27.73 74 34 80.266 34 88h4zm4-88c0 9.943 8.058 18 18 18h2v4.09c8.012.722 14.785 5.738 18 12.73v-7.434c-3.545-4.262-8.426-7.374-14-8.69V14h-5.993C52.27 14 46 7.734 46 0h-4zM0 34.82c3.213-6.992 9.984-12.008 18-12.73V18h2c9.94 0 18-8.06 18-18h-4c0 7.732-6.275 14-14.007 14H14v4.696c-5.574 1.316-10.455 4.428-14 8.69v7.433z' fill='%23765d2f' fill-opacity='0.48' fill-rule='evenodd'/%3E%3C/svg%3E");
       `;
     } else if ($backgroundImage === "") {
       return `
@@ -439,6 +452,7 @@ const SearchEngine = ({
           <Asset
             key={`modal-${modal.asset}`}
             placedAsset={modal.placedAsset ?? modal}
+            zIndex={modal.zIndex}
           />
         );
       }),
@@ -512,7 +526,6 @@ const SearchEngine = ({
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- might add more plugins later
     if (interaction.plugin === "bookcase") {
       return (
         <Bookcase
@@ -526,10 +539,26 @@ const SearchEngine = ({
       );
     }
 
-    // TODO: do something with interaction.plugin
-    return (
-      <div key={`interaction-${interaction.plugin}`}>{interaction.plugin}</div>
-    );
+    if (interaction.plugin === "telephone") {
+      return <Telephone key={`interaction-${interaction.plugin}`} />;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- might add more plugins later
+    if (interaction.plugin === "extra") {
+      return null;
+    }
+
+    return null;
+  });
+
+  const overlayInteractions = node.interactions.map((interaction) => {
+    if (interaction.plugin === "extra") {
+      return (
+        <Extra key={interaction.plugin} node={node} teamState={teamState} />
+      );
+    }
+
+    return null;
   });
 
   const modals = node.modals.map((modal, i) => {
@@ -618,33 +647,48 @@ const SearchEngine = ({
   // and we want to ensure the navigation is always accessible at the top.
   return (
     <ScreenScaleFactor.Provider value={scaleFactor}>
-      <SearchEngineSurface
-        style={{
-          // Performance: we use inline styles instead of styled-components for
-          // properties that can change frequently (e.g. during window resize)
-          // or to values from a very large domain of possibilities (many
-          // possible floating point values for scaleFactor)
-          transform: `scale(${scaleFactor})`,
-        }}
-        $backgroundImage={node.background}
-        onMouseMove={shouldCapture ? mouseMove : undefined}
-        onMouseDown={shouldCapture ? mouseDown : undefined}
-        onMouseUp={shouldCapture ? mouseUp : undefined}
-      >
-        {assets}
-        {interactions}
-        {navigations}
-        {modals}
-        {modalOverlay}
-        {devtoolsOverlay}
-      </SearchEngineSurface>
-      {ENABLE_DEVTOOLS ? <div>{JSON.stringify(node)}</div> : undefined}
-      {devtoolsAddendum}
-      {ENABLE_DEVTOOLS ? (
-        <button onClick={toggleCapture}>
-          {shouldCapture ? "Stop measuring" : "Measure"}
-        </button>
-      ) : undefined}
+      <ExtraModalRendererProvider>
+        <SearchEngineSurface
+          style={{
+            // Performance: we use inline styles instead of styled-components for
+            // properties that can change frequently (e.g. during window resize)
+            // or to values from a very large domain of possibilities (many
+            // possible floating point values for scaleFactor)
+            transform: `scale(${scaleFactor})`,
+          }}
+          $backgroundImage={node.background}
+          onMouseMove={shouldCapture ? mouseMove : undefined}
+          onMouseDown={shouldCapture ? mouseDown : undefined}
+          onMouseUp={shouldCapture ? mouseUp : undefined}
+        >
+          {assets}
+          {interactions}
+          <Asset
+            key="round_title"
+            placedAsset={{
+              area: {
+                left: 0.76,
+                right: 1,
+                top: -0.8,
+                bottom: -0.965,
+              },
+              asset: round_title,
+            }}
+          />
+          {navigations}
+          {modals}
+          {overlayInteractions}
+          {modalOverlay}
+          {devtoolsOverlay}
+        </SearchEngineSurface>
+        {ENABLE_DEVTOOLS ? <div>{JSON.stringify(node)}</div> : undefined}
+        {devtoolsAddendum}
+        {ENABLE_DEVTOOLS ? (
+          <button onClick={toggleCapture}>
+            {shouldCapture ? "Stop measuring" : "Measure"}
+          </button>
+        ) : undefined}
+      </ExtraModalRendererProvider>
     </ScreenScaleFactor.Provider>
   );
 };

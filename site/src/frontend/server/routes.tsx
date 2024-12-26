@@ -25,6 +25,7 @@ import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render500 } from "../utils/renderApp";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
+import { hubHandler } from "./routes/hub";
 import {
   interactionCompletePostHandler,
   type InteractionParams,
@@ -190,23 +191,19 @@ export function registerUiRoutes({
 
   authRouter.get(
     "/",
-    asyncHandler(
-      async (
-        req: Request<{ roundSlug: string | undefined }>,
-        res: Response,
-        next: NextFunction,
-      ) => {
-        // If the hunt has not started yet, render an alternate page.
-        if (req.teamState?.state.rounds.the_missing_diamond === undefined) {
-          await renderApp(huntNotStartedHandler, req as Request, res, next);
-          return;
-        }
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      // If the hunt has not started yet, render an alternate page.
+      if (
+        !(
+          req.teamState?.state.rounds.the_missing_diamond?.gates ?? []
+        ).includes("hunt_started")
+      ) {
+        await renderApp(huntNotStartedHandler, req, res, next);
+        return;
+      }
 
-        // Root page should be shadow diamond round page
-        req.params.roundSlug = "the_missing_diamond";
-        await renderApp(roundHandler, req as Request<RoundParams>, res, next);
-      },
-    ),
+      await renderApp(hubHandler, req, res, next);
+    }),
   );
   authRouter.get(
     "/rounds/:roundSlug",

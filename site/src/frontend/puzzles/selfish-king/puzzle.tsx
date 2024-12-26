@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import spreadsheet from "./assets/bermuda-triangle-spreadsheet.xlsx";
 import day1 from "./assets/day1.svg";
 import day2 from "./assets/day2.svg";
@@ -9,10 +10,6 @@ import day4 from "./assets/day4.svg";
 import day5 from "./assets/day5.svg";
 import example1 from "./assets/example1.svg";
 import example2 from "./assets/example2.svg";
-
-const AuthorsNote = styled.span`
-  font-size: 14px;
-`;
 
 const ExampleWrapper = styled.div`
   border: 1px solid black;
@@ -37,17 +34,14 @@ const ImageWrapper = styled.div`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <p>
-        <AuthorsNote>
-          (Solving this puzzle in a spreadsheet is not recommended, but if you
-          really must, click{" "}
-          <a href={spreadsheet} download="bermuda-triangle-spreadsheet">
-            here
-          </a>{" "}
-          for the grids in Excel format; these can be imported into Google
-          Sheets.)
-        </AuthorsNote>
-      </p>
+      <AuthorsNote>
+        Solving this puzzle in a spreadsheet is not recommended, but if you
+        really must, click{" "}
+        <a href={spreadsheet} download="bermuda-triangle-spreadsheet">
+          here
+        </a>{" "}
+        for the grids in Excel format; these can be imported into Google Sheets.
+      </AuthorsNote>
       <p>
         On each day of the naval exercises, the given fleet went out to sea in
         the early morning, and every ship got into position. The planned

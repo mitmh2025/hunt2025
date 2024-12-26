@@ -1,20 +1,35 @@
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { omit } from "../../../utils/omit";
 import { PUZZLES } from "../../puzzles";
+import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.png";
 import bookcase_note from "./assets/bookcase/note.svg";
+import bookcase_note_blacklight from "./assets/bookcase/note_blacklight.svg";
 import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
 import cryptex_note from "./assets/cryptex/cryptex_note.svg";
+import cryptex_note_blacklight from "./assets/cryptex/cryptex_note_blacklight.png";
 import cryptex_open from "./assets/cryptex/cryptex_open.svg";
+import cryptex_open_blacklight from "./assets/cryptex/cryptex_open_blacklight.svg";
 import drawer_bg from "./assets/desk_drawer/bg.png";
 import candy from "./assets/desk_drawer/candy.svg";
+import candy_blacklight from "./assets/desk_drawer/candy_modal_blacklight.png";
 import drawer_with_candy from "./assets/desk_drawer/drawer.png";
+import drawer_with_candy_blacklight from "./assets/desk_drawer/drawer_blacklight.png";
 import rings_closeup from "./assets/fuse_box/fusebox_draft6_rings_asset_closeup.svg";
+import rings from "./assets/fuse_box/rings.svg";
+import rings_blacklight from "./assets/fuse_box/rings_blacklight.svg";
+import rings_modal_blacklight from "./assets/fuse_box/rings_modal_blacklight.png";
 import main_east_bg from "./assets/main_east.jpg";
 import main_north_bg from "./assets/main_north.png";
 import main_west_bg from "./assets/main_west.jpg";
 import ledger from "./assets/rug/ledger.svg";
+import ledger_blacklight from "./assets/rug/ledger_modal_blacklight.svg";
 import numberlock_box_ledger from "./assets/rug/numberlock_box_ledger.svg";
+import numberlock_box_ledger_blacklight from "./assets/rug/numberlock_box_ledger_blacklight.png";
 import rug_bg from "./assets/rug/rug_bg.svg";
-import money from "./assets/safe/safe_money_closeup_draft2.png";
+import money from "./assets/safe/money.svg";
+import money_blacklight from "./assets/safe/money_blacklight.svg";
+import money_modal from "./assets/safe/money_modal.svg";
+import money_modal_blacklight from "./assets/safe/money_modal_blacklight.png";
 import birth_certificate from "./assets/secret/birth_certificate.svg";
 import birth_certificate_modal_solved from "./assets/secret/birth_certificate_modal_solved.png";
 import birth_certificate_modal_unsolved from "./assets/secret/birth_certificate_modal_unsolved.png";
@@ -42,6 +57,7 @@ import stamp from "./assets/secret/stamp.svg";
 import stamp_modal from "./assets/secret/stamp_modal.svg";
 import teddybear from "./assets/secret/teddybear.svg";
 import secret_bg from "./assets/secret.jpg";
+import blacklight_books from "./assets/study/blacklight_books.svg";
 import cryptex_on_desk from "./assets/study/cryptex.svg";
 import family_frame_east from "./assets/study/family_frame_east.png";
 import family_frame_north from "./assets/study/family_frame_north.png";
@@ -54,8 +70,9 @@ import open_door from "./assets/study/open_door.png";
 import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.png";
-import telephone from "./assets/study/telephone.svg";
 import typewriter from "./assets/study/typewriter.svg";
+import telephone from "./assets/telephone/telephone.svg";
+import telephone_blacklight from "./assets/telephone/telephone_unpushed_blacklight.svg";
 import {
   move_down_cursor,
   move_left_cursor,
@@ -78,7 +95,10 @@ type LockDatum = {
   gateId: string; // The gate which we will unlock when you submit the correct lock answer
 };
 // Map from which plugin does the check to the data relevant to that check
-const LOCK_DATA: Record<PluginName, LockDatum> = {
+const LOCK_DATA: Record<
+  Exclude<PluginName, "extra" | "telephone">,
+  LockDatum
+> = {
   deskdrawer: {
     // directional lock
     answer: "dlrddrr",
@@ -186,7 +206,7 @@ const ALL_NODES: NodeInternal[] = [
         asset: safe_frame,
       },
       {
-        // sliding door, if open
+        // overlays: open door (if bookcase is open) + blacklight books
         area: {
           left: -1,
           right: 1,
@@ -194,6 +214,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1,
         },
         asset: open_door,
+        extraAsset: blacklight_books,
         includeIf: (teamState: TeamHuntState) => {
           return (
             teamState.rounds.illegal_search?.gates?.includes(
@@ -350,6 +371,7 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.212,
           bottom: -0.095,
         },
+        zIndex: 1,
         asset: typewriter,
         slotId: "isp04",
         gateId: "isg04",
@@ -383,6 +405,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.33,
         },
         asset: telephone,
+        extraAsset: telephone_blacklight,
       },
       {
         area: {
@@ -599,6 +622,13 @@ const ALL_NODES: NodeInternal[] = [
             bottom: -1,
           },
           asset: numberlock_box_ledger,
+          extraAsset: numberlock_box_ledger_blacklight,
+        },
+        extra: {
+          asset: ledger_blacklight,
+          gateId: "isg30",
+          postCode: "7V7KoGrLaYKd3c1JHZGFiw==",
+          slotId: "isp22",
         },
         slotId: "isp09",
         gateId: "isg14",
@@ -686,18 +716,36 @@ const ALL_NODES: NodeInternal[] = [
             bottom: -1,
           },
           asset: drawer_with_candy,
+          extraAsset: drawer_with_candy_blacklight,
         },
         asset: candy,
         slotId: "isp06",
         gateId: "isg11",
         postCode: "lxRFwDNndXOrzDkGdBQukA==",
+        extra: {
+          asset: candy_blacklight,
+          slotId: "isp19",
+          gateId: "isg27",
+          postCode: "yPVAOzrL1cwh/baI4hgeyw==",
+        },
       },
     ],
   },
   {
     id: "bookcase",
     background: "__wallpaper__",
-    placedAssets: [],
+    placedAssets: [
+      {
+        area: {
+          left: -0.375,
+          right: 0.5,
+          top: 0.918,
+          bottom: -1,
+        },
+        asset: null,
+        extraAsset: bookcase_blacklight,
+      },
+    ],
     navigations: [
       {
         area: {
@@ -733,6 +781,12 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.272,
         },
         asset: bookcase_note,
+        extra: {
+          asset: bookcase_note_blacklight,
+          gateId: "isg32",
+          postCode: "SHqjcRam7FKcuKgOkwziig==",
+          slotId: "ism03",
+        },
         slotId: "ism01",
         gateId: "isg00",
         postCode: "pswcZO3Z7JF9z1JzQfoIDQ==",
@@ -808,14 +862,21 @@ const ALL_NODES: NodeInternal[] = [
         },
         placedAsset: {
           area: {
-            left: 0.106,
-            right: 0.75,
-            top: 0.61,
-            bottom: -0.095,
+            left: -1,
+            right: 1,
+            top: 1,
+            bottom: -1,
           },
           asset: cryptex_open,
+          extraAsset: cryptex_open_blacklight,
         },
         asset: cryptex_note,
+        extra: {
+          asset: cryptex_note_blacklight,
+          gateId: "isg31",
+          postCode: "+TGXj5wKyr+u9CsD4Xrs5w==",
+          slotId: "isp23",
+        },
         slotId: "isp10",
         gateId: "isg15",
         postCode: "YXEwRKy4tAGrLZaycOe85Q==",
@@ -863,16 +924,31 @@ const ALL_NODES: NodeInternal[] = [
         },
         ownedByInteraction: true,
         area: {
-          // adjust area once assets exist
           left: -0.113,
           right: 0.1,
           top: -0.025,
           bottom: -0.331,
         },
-        asset: money,
+        asset: money_modal,
+        placedAsset: {
+          area: {
+            left: -0.113,
+            right: 0.1,
+            top: -0.025,
+            bottom: -0.331,
+          },
+          asset: money,
+          extraAsset: money_blacklight,
+        },
         slotId: "isp08",
         gateId: "isg13",
         postCode: "Ba+T1nVoh2GFJTIXnh7H8A==",
+        extra: {
+          asset: money_modal_blacklight,
+          gateId: "isg29",
+          postCode: "eHSQ6CPL9HB7ar5WzTxngA==",
+          slotId: "isp21",
+        },
       },
     ],
   },
@@ -926,6 +1002,22 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.826,
         },
         asset: rings_closeup,
+        extra: {
+          asset: rings_modal_blacklight,
+          gateId: "isg28",
+          postCode: "iBRwyAWgSpy2zO+QnZzPKg==",
+          slotId: "isp20",
+        },
+        placedAsset: {
+          area: {
+            left: -0.06,
+            right: 0.06,
+            top: -0.724,
+            bottom: -0.846,
+          },
+          asset: rings,
+          extraAsset: rings_blacklight,
+        },
         slotId: "isp07",
         gateId: "isg12",
         postCode: "Q1ouYm0ptTarIZ9GPmqwjQ==",
@@ -946,6 +1038,11 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.8,
         },
         asset: telephone,
+        includeIf: (teamState: TeamHuntState) => {
+          return !(
+            teamState.rounds.illegal_search?.gates?.includes("isg26") ?? false
+          );
+        },
       },
     ],
     navigations: [
@@ -971,7 +1068,14 @@ const ALL_NODES: NodeInternal[] = [
       },
     ],
     interactions: [
-      // telephone
+      {
+        plugin: "telephone",
+        includeIf: (teamState: TeamHuntState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes("isg26") ?? false
+          );
+        },
+      },
     ],
     sounds: [
       // morse code mp3?
@@ -1160,10 +1264,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Rare stamp
         area: {
-          left: 0.228,
-          right: 0.348,
-          top: 0.296,
-          bottom: 0.078,
+          left: 0.19446536144578322,
+          right: 0.3283132530120483,
+          top: 0.29518072289156627,
+          bottom: 0.05120481927710835,
         },
         asset: stamp_modal,
         placedAsset: {
@@ -1195,10 +1299,10 @@ const ALL_NODES: NodeInternal[] = [
       {
         // Radio drama poster
         area: {
-          left: 0.69,
-          right: 0.95,
-          top: 0.8,
-          bottom: -0.38,
+          left: 0.6904326630103594,
+          right: 0.9463741620962826,
+          top: 0.6771616223170154,
+          bottom: -0.2783533076037646,
         },
         asset: poster_modal,
         placedAsset: {
@@ -1248,6 +1352,15 @@ ALL_NODES.forEach((node) => {
   });
 });
 
+const MODALS_BY_EXTRA_POSTCODE = new Map<string, ModalInternal>();
+ALL_NODES.forEach((node) => {
+  node.modals.forEach((modal) => {
+    if (modal.extra?.postCode) {
+      MODALS_BY_EXTRA_POSTCODE.set(modal.extra.postCode, modal);
+    }
+  });
+});
+
 function modalFromModalInternal(
   modalInternal: ModalInternal,
   teamState: TeamHuntState,
@@ -1259,6 +1372,7 @@ function modalFromModalInternal(
     postCode,
     gateId: _gateId,
     solvedAssets,
+    extra,
     ...rest
   } = modalInternal;
   // Look up the puzzle slug for the named slotId in this round.  We know
@@ -1279,7 +1393,7 @@ function modalFromModalInternal(
   } else {
     mixin = { postCode };
   }
-  const obj = { ...rest, ...mixin };
+  const obj: Modal = { ...rest, ...mixin };
 
   if (solvedAssets && slug) {
     const isSolved = !!teamState.puzzles[slug]?.answer;
@@ -1299,6 +1413,29 @@ function modalFromModalInternal(
         }
       }
     }
+  }
+
+  if (teamState.rounds.illegal_search?.gates?.includes("isg26") && extra) {
+    const extraSlotObj = teamState.rounds.illegal_search.slots[extra.slotId];
+    const extraSlug = extraSlotObj?.slug;
+    // If slug is undefined, then lookup the random slot id => POST code mapping and include that
+    // otherwise, lookup (or stub) puzzle title & URL based on the slug from the puzzle data map
+    if (extraSlug) {
+      const extraPuzzle = PUZZLES[extraSlug];
+      const extraTitle =
+        extraPuzzle?.title ?? `Stub puzzle for slot ${extra.slotId}`;
+      const extraDesc = extraPuzzle?.initial_description;
+      obj.extra = {
+        asset: extra.asset,
+        title: extraTitle,
+        slug: extraSlug,
+        desc: extraDesc,
+      };
+    } else {
+      obj.extra = { asset: extra.asset, postCode: extra.postCode };
+    }
+  } else if (obj.placedAsset) {
+    obj.placedAsset = omit(obj.placedAsset, "extraAsset");
   }
 
   const forInteraction = ownedByInteraction ?? false;
@@ -1337,6 +1474,16 @@ function filteredForFrontend(
 
   const keptPlacedAssets = node.placedAssets.flatMap((asset) => {
     const { includeIf, ...rest } = asset;
+
+    if (!teamState.rounds.illegal_search?.gates?.includes("isg26")) {
+      delete rest.extraAsset;
+
+      if (rest.asset === null) {
+        // blacklight-only asset
+        return [];
+      }
+    }
+
     if (includeIf === undefined) {
       // No condition means always include
       return [rest];
@@ -1364,12 +1511,33 @@ function filteredForFrontend(
     }
   });
 
+  const keptInteractions = node.interactions.flatMap((interaction) => {
+    const { includeIf, ...rest } = interaction;
+    if (includeIf === undefined) {
+      // No condition means always include
+      return [rest];
+    } else {
+      const keep = includeIf(teamState);
+      if (keep) {
+        return [rest];
+      } else {
+        return [];
+      }
+    }
+  });
+
+  if (teamState.rounds.illegal_search?.gates?.includes("isg26")) {
+    keptInteractions.push({
+      plugin: "extra",
+    });
+  }
+
   return {
     id: node.id,
     background: node.background,
     placedAssets: keptPlacedAssets,
     navigations: keptNavigations,
-    interactions: node.interactions,
+    interactions: keptInteractions,
     sounds: node.sounds,
     modals,
     interactionModals:
@@ -1377,7 +1545,13 @@ function filteredForFrontend(
   };
 }
 
-export { NODES_BY_ID, MODALS_BY_POSTCODE, LOCK_DATA, filteredForFrontend };
+export {
+  NODES_BY_ID,
+  MODALS_BY_EXTRA_POSTCODE,
+  MODALS_BY_POSTCODE,
+  LOCK_DATA,
+  filteredForFrontend,
+};
 
 // node: "desk_drawer"
 //   assets:

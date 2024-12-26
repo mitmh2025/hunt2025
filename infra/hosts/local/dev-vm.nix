@@ -8,6 +8,8 @@
       enable = true;
       db_env = "ci";
     };
+    services.thingsboard.provision.enable = true;
+    services.sync2tb.enable = true;
     virtualisation.vmVariant = {
       virtualisation.forwardPorts = [
         # hunt2025

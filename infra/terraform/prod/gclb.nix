@@ -24,10 +24,10 @@
     enable_cdn = true;
     cdn_policy = {
       cache_mode = "CACHE_ALL_STATIC";
-      client_ttl = 3600;
-      default_ttl = 3600;
-      max_ttl = 86400;
-      negative_caching = true;
+      client_ttl = 31536000;
+      default_ttl = 31536000;
+      max_ttl = 31536000;
+      negative_caching = false;
       serve_while_stale = 86400;
     };
   };

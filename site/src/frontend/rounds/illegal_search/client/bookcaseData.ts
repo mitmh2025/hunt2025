@@ -375,6 +375,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         title: "Introducing Nietzsche",
         author: "Laurence Gane",
         color: c4,
+        size: "13px",
       },
       {
         title: "Nate Saint",
@@ -392,6 +393,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         title: "Exercise Endocrinology",
         author: "Katarina Borer",
         color: c2,
+        size: "12px",
       },
     ],
     [

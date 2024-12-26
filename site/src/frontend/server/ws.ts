@@ -29,6 +29,7 @@ import {
 } from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
 import { navBarState } from "../components/ContentWithNavBar";
+import { hubState } from "../hub";
 import { backgroundCheckState } from "../rounds/background_check";
 import {
   bookcaseState,
@@ -74,6 +75,10 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   },
   guess_log: {
     type: "guess_log",
+  },
+  hub: {
+    type: "team_state",
+    callback: hubState,
   },
   navbar: {
     type: "team_state",

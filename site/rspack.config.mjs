@@ -40,6 +40,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.3mf",
   "src/frontend/puzzles/circular-greece/assets/rings-with-detentes-postsolve.stl",
   "src/frontend/puzzles/circular-greece/assets/rod-sticker.pdf",
+  "src/frontend/puzzles/clean-ivory/assets/the-inspectre.pdf",
   "src/frontend/puzzles/confused-antarctica/assets/networking-event.pdf",
   "src/frontend/puzzles/regal-knife/assets/a.mp3",
   "src/frontend/puzzles/regal-knife/assets/d.mp3",
@@ -121,7 +122,8 @@ class RadioManifestPlugin {
             });
           }
         }
-      } else if (asset.info.sourceFilename?.startsWith("src/assets/radio/")) {
+      }
+      if (asset.info.sourceFilename?.startsWith("src/assets/radio/")) {
         // Collect the relevant fields from other assets
         const src = asset.info.sourceFilename;
         // strip the src/assets/radio/ prefix
@@ -458,6 +460,7 @@ export default function createConfigs(_env, argv) {
       // Included on specific routes
       activity_log: "./src/frontend/client/activity_log.tsx",
       all_puzzles: "./src/frontend/client/all_puzzles.tsx",
+      hub: "./src/frontend/client/hub.tsx",
       manage_team: "./src/frontend/client/manage_team.tsx",
       navbar: "./src/frontend/client/navbar.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
@@ -474,8 +477,11 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/rounds/murder_in_mitropolis/client.tsx",
 
       // Included on specific puzzle pages
+      puzzle_legitimate_bridge:
+        "./src/frontend/puzzles/legitimate-bridge/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
+      puzzle_unfit_tower: "./src/frontend/puzzles/unfit-tower/client.tsx",
       puzzle_wiry_ray: "./src/frontend/puzzles/wiry-ray/client.tsx",
 
       // Regsite (css only)

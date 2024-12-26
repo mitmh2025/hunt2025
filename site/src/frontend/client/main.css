@@ -22,6 +22,14 @@
   src: url("../../assets/Belanosima-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "Permanent Marker";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../../assets/PermanentMarker.ttf") format("truetype");
+}
+
 /* Colors */
 :root {
   --true-white: #ffffff;
