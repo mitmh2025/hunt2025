@@ -43,7 +43,7 @@ const HUNT: Hunt = {
         { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "in_a_different_direction" },
         { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 },
         { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "zing_it_again" },
-        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
+        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "an_argument" },
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
         { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
         { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
