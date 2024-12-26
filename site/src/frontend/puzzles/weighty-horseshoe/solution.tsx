@@ -12,12 +12,10 @@ const EqualTable = styled.table`
 
 const SolutionTH = styled.th`
   border: 1px solid black;
-  border-collapse: collapse;
 `;
 
 const SolutionTD = styled(StyledTD)`
   border: 1px solid black;
-  border-collapse: collapse;
 `;
 
 const PoemMovieData = [
