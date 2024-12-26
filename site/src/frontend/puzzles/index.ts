@@ -67,6 +67,7 @@ import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
 import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
+import ZuluLima from "./opulent-fair";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
 import TheUltimateInsult from "./periodic-dance";
@@ -148,6 +149,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
   zing_it_again: ZingItAgain,
+  zulu_lima: ZuluLima,
 
   the_boardwalk: TheBoardwalk,
   the_casino: Casino,

@@ -47,7 +47,7 @@ const HUNT: Hunt = {
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 },
         { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
         { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "zulu_lima" },
         { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
         { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
