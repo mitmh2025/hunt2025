@@ -110,6 +110,7 @@ import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import MazeOfLies from "./unfit-tower";
 import GardenAnecdotes from "./unimportant-lock";
 import TheMark from "./unique-australia";
+import AnArgument from "./unsung-bomb";
 import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import YourePlayingItWrong from "./vast-fire";
@@ -134,6 +135,7 @@ const PlaceholderISP08 = makePlaceholder(
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   "🔎🧊": MagnifyingGlassIce,
+  an_argument: AnArgument,
   be_kind_rewind: BeKindRewind,
   downright_backwards: DownrightBackwards,
   educational_rite_of_passage: EducationalRiteOfPassage,
