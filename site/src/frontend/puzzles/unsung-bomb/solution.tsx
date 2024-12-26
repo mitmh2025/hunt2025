@@ -142,7 +142,7 @@ const Solution = (): JSX.Element => {
         </div>
         <LinkedImage
           src={solution}
-          alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a verdical red line. Lines are drawn between pairs of clipart items on either side of the center red line."
+          alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line. Lines are drawn between pairs of clipart items on either side of the center red line."
         />
       </FlexWrapper>
       <StyledTable>
