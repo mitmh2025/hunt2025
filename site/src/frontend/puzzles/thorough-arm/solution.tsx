@@ -370,11 +370,19 @@ const Solution = (): JSX.Element => {
           target="_blank"
           rel="noreferrer"
         >
-          Granny Weatherwax’s
-        </a>{" "}
-        own granny. Yaron is a{" "}
+          Granny Weatherwax
+        </a>
+        ’s{" "}
         <a
           href="https://en.wikipedia.org/wiki/Witches_(Discworld)#Alison_%22Nana%22_Weatherwax"
+          target="_blank"
+          rel="noreferrer"
+        >
+          own granny
+        </a>
+        . Yaron is a{" "}
+        <a
+          href="https://en.wikipedia.org/wiki/Yaron"
           target="_blank"
           rel="noreferrer"
         >

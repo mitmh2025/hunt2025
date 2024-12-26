@@ -32,7 +32,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["GO PAY TAB"],
       reply:
-        "The bartender is glaring daggers at you. You'd better go to the Gala and pay up. Send someone who can cat appropriately contrite.",
+        "The bartender is glaring daggers at you. You’d better go to the Gala and pay up. Send someone who can act appropriately contrite.",
     },
   ],
 };

@@ -44,7 +44,7 @@ const Puzzle = (): JSX.Element => {
       </p>
       <p>
         <strong>Fighter:</strong> Tabitha did have fewer than ten drinks, but I
-        know she didn’t have exactly eight - that was someone else.
+        know she didn’t have exactly eight—that was someone else.
       </p>
       <p>
         <strong>Monk:</strong> Well, that’s not many drinks, now is it? Tabitha
@@ -77,8 +77,8 @@ const Puzzle = (): JSX.Element => {
       <p>
         <strong>Paladin:</strong> Well then! You had the least to drink, comrade
         Sorcerer, everyone else had already surpassed your total of five drinks
-        when you passed out. You’re usually so self-reflective - perhaps it’s
-        time to do some thinking about whether you can keep up.
+        when you passed out. You’re usually so self-reflective—perhaps it’s time
+        to do some thinking about whether you can keep up.
       </p>
       <p>
         <strong>Artificer:</strong> I heartily agree with that, my Paladin
