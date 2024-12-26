@@ -5,10 +5,19 @@ import audio from "./assets/audio.mp3";
 import captions from "./assets/captions.vtt";
 import image from "./assets/image.png";
 
-export const StyledDiv = styled.div`
+export const FlexWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const TallFlexWrapper = styled(FlexWrapper)`
+  height: 150px;
+`;
+
+const FixedSizeDiv = styled.div`
+  width: 160px;
+  flex: 0 0;
 `;
 
 const Puzzle = (): JSX.Element => {
@@ -19,7 +28,7 @@ const Puzzle = (): JSX.Element => {
         src={image}
         alt="A handbound notebook with angular glyphs written on it with thick black lines. Some regions of the notebook are circled in blue pen. On the right-hand page of the notebook, an 8-item ordered list is scribbled using the same sort of angular glyph."
       />
-      <StyledDiv>
+      <TallFlexWrapper>
         <audio controls src={audio}>
           <track
             label="English"
@@ -29,11 +38,13 @@ const Puzzle = (): JSX.Element => {
             default
           />
         </audio>
-        <details>
-          <summary>Audio transcript</summary>
-          <StyledDiv>ɹiʧaɪleɪ zeɪpu lənɔr vɜr</StyledDiv>
-        </details>
-      </StyledDiv>
+        <FixedSizeDiv>
+          <details>
+            <summary>Audio transcript</summary>
+            <FlexWrapper>ɹiʧaɪleɪ zeɪpu lənɔr vɜr</FlexWrapper>
+          </details>
+        </FixedSizeDiv>
+      </TallFlexWrapper>
     </>
   );
 };
