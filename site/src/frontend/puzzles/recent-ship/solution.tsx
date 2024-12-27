@@ -25,7 +25,7 @@ const SUDOKUS_1_1 = makeCells([
   "21423   23412  2413   43123",
   " 4231   3214   4231   34213",
   " 3242  21423   3124   1243 ",
-  " 2314   41323  3124  32134 ",
+  " 2314   41323  1342  32134 ",
   " 3      1 2    3 1     3   ",
 ]);
 
@@ -33,7 +33,7 @@ const SUDOKUS_1_2 = makeCells([
   "           2    2        2    4      222        ",
   " 23141  3241   23412  41323  3124   4231   4231 ",
   "23142  32314   1234   3214   42313  3124  22431 ",
-  " 42313 21422  234122  23412 313422  24132  13422",
+  " 42313 21432  234122  23412 313422  24132  13422",
   " 1423   41232  41232  1423   24132 31342   3124 ",
   "   3      3     2 2   4 2    2             232  ",
 ]);
@@ -52,7 +52,7 @@ const SUDOKUS_3_1 = makeCells([
   "23412   42132  14232 31243  23124   1432   2431   3241 ",
   " 4321   3421   4312   3421   13422  4213  31342   1432 ",
   "312432 31342   2134   21341  2413  23124   42132 32314 ",
-  "32134  321341  3241   21343  4231  32341  231422  41232",
+  "32134  321341  3241   43123  4231  32341  231422  41232",
   "        3         2    2     122     2                 ",
 ]);
 
@@ -74,44 +74,45 @@ const SudokuButMoreLines = ({
 }): JSX.Element => {
   return (
     <StyledTable>
-      {rows.map((row: string[], j: number) => (
-        <tr key={`sudoku-row-${j}`}>
-          {row.map((cell, k) => {
-            // There is a space between each sudoku, but no space at the end of the row.
-            const numSudokus = (row.length + 1) / 7;
-            const sudokuIndex = Math.floor(k / numSudokus);
-            const indexWithinSudoku = k % numSudokus;
+      {rows.map((row: string[], j: number) => {
+        console.error("Row index", j);
+        return (
+          <tr key={`sudoku-row-${j}`}>
+            {row.map((cell, k) => {
+              const sudokuIndex = Math.floor(k / 7);
+              const indexWithinSudoku = k % 7;
 
-            const styles: CSSProperties = {};
-            if (moreLinesIndices.includes(sudokuIndex)) {
-              const isInnerColumn =
-                indexWithinSudoku > 0 && indexWithinSudoku < 6;
-              if (j === 1 && isInnerColumn) {
-                styles.borderTopWidth = "2px";
-              }
-              if ((j === 2 || j === 4) && isInnerColumn) {
-                styles.borderBottomWidth = "2px";
-              }
+              const styles: CSSProperties = {};
+              if (moreLinesIndices.includes(sudokuIndex)) {
+                const isInnerColumn =
+                  indexWithinSudoku > 0 && indexWithinSudoku < 6;
+                if (j === 1 && isInnerColumn) {
+                  styles.borderTopWidth = "2px";
+                }
+                if ((j === 2 || j === 4) && isInnerColumn) {
+                  styles.borderBottomWidth = "2px";
+                }
 
-              const isInnerRow = j > 0 && j < 6;
-              if (indexWithinSudoku === 1 && isInnerRow) {
-                styles.borderLeftWidth = "2px";
+                const isInnerRow = j > 0 && j < 6;
+                if (indexWithinSudoku === 1 && isInnerRow) {
+                  styles.borderLeftWidth = "2px";
+                }
+                if (
+                  (indexWithinSudoku === 2 || indexWithinSudoku === 4) &&
+                  isInnerRow
+                ) {
+                  styles.borderRightWidth = "2px";
+                }
               }
-              if (
-                (indexWithinSudoku === 2 || indexWithinSudoku === 4) &&
-                isInnerRow
-              ) {
-                styles.borderRightWidth = "2px";
-              }
-            }
-            return (
-              <td key={`sudoku-row-${j}-cell-${k}`} style={styles}>
-                {cell}
-              </td>
-            );
-          })}
-        </tr>
-      ))}
+              return (
+                <td key={`sudoku-row-${j}-cell-${k}`} style={styles}>
+                  {cell}
+                </td>
+              );
+            })}
+          </tr>
+        );
+      })}
     </StyledTable>
   );
 };
