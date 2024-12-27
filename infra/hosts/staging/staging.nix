@@ -201,5 +201,15 @@
         };
       };
     }
+    {
+      services.k3s = {
+        enable = true;
+        role = "server";
+        gracefulNodeShutdown.enable = true;
+        images = [
+          config.services.k3s.package.airgapImages
+        ];
+      };
+    }
   ];
 }
