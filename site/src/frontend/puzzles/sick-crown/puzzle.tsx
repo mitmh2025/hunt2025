@@ -23,6 +23,9 @@ const SideBySideWithBookHighlights = styled.div`
       0 0 25px white,
       0 0 30px white,
       0 0 35px white;
+    border-color: rgb(230 213 248);
+    outline: 3px solid black;
+    outline-offset: -3px;
   }
 `;
 
