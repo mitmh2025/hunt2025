@@ -45,7 +45,7 @@ const HUNT: Hunt = {
         { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "zing_it_again" },
         { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "an_argument" },
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "drunkens_and_flagons" },
-        { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "unreal_islands" },
         { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "dropping_the_ball" },
         { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "zulu_lima" },
         { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
