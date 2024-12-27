@@ -87,21 +87,21 @@ const SudokuButMoreLines = ({
                 const isInnerColumn =
                   indexWithinSudoku > 0 && indexWithinSudoku < 6;
                 if (j === 1 && isInnerColumn) {
-                  styles.borderTopWidth = "2px";
+                  styles.borderTopWidth = "3px";
                 }
                 if ((j === 2 || j === 4) && isInnerColumn) {
-                  styles.borderBottomWidth = "2px";
+                  styles.borderBottomWidth = "3px";
                 }
 
                 const isInnerRow = j > 0 && j < 6;
                 if (indexWithinSudoku === 1 && isInnerRow) {
-                  styles.borderLeftWidth = "2px";
+                  styles.borderLeftWidth = "3px";
                 }
                 if (
                   (indexWithinSudoku === 2 || indexWithinSudoku === 4) &&
                   isInnerRow
                 ) {
-                  styles.borderRightWidth = "2px";
+                  styles.borderRightWidth = "3px";
                 }
               }
               return (
