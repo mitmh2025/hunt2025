@@ -8,6 +8,7 @@ export type NodeId = string;
 // We'll do...something to dynamically import their entrypoints?  Big TODO for the behaviors there.
 export type PluginName =
   | "painting1"
+  | "safe"
   | "painting2"
   | "rug"
   | "cryptex"

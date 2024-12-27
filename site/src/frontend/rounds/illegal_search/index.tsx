@@ -363,7 +363,7 @@ export const comboLockPostHandler: RequestHandler<
     )
   ) {
     const { teamId } = req.teamState;
-    await handleCorrectLockSubmission(req, res, teamId, gateId, "painting1");
+    await handleCorrectLockSubmission(req, res, teamId, gateId, "safe");
   } else {
     res.status(400).json({
       status: "incorrect",

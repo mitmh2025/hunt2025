@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import bookcase_blacklight_single from "../../rounds/illegal_search/assets/bookcase/bookcase_blacklight_single.svg";
 import note_blacklight from "../../rounds/illegal_search/assets/bookcase/note_blacklight.svg";
 import { BookcaseInteraction } from "../../rounds/illegal_search/client/Bookcase";
 
@@ -10,22 +11,25 @@ const SideBySideWithBookHighlights = styled.div`
   align-items: flex-start;
   justify-content: space-evenly;
 
-  & td[data-title="Great Expectations"] .spine,
-  & td[data-title="A Streetcar Named Desire"] .spine,
-  & td[data-title="Drawing in Perspective"] .spine,
-  & td[data-title="The Men Who Stare at Goats"] .spine {
-    color: rgb(230 213 248);
-    text-shadow:
-      0 0 5px rgb(121 66 122),
-      0 0 10px rgb(121 66 122),
-      0 0 15px white,
-      0 0 20px white,
-      0 0 25px white,
-      0 0 30px white,
-      0 0 35px white;
-    border-color: rgb(230 213 248);
-    outline: 3px solid black;
-    outline-offset: -3px;
+  & td[data-title="Great Expectations"],
+  & td[data-title="A Streetcar Named Desire"],
+  & td[data-title="Drawing in Perspective"],
+  & td[data-title="The Men Who Stare at Goats"] {
+    &::after {
+      content: "";
+      background: url(${bookcase_blacklight_single});
+      position: absolute;
+      top: 11px;
+      left: -2px;
+      bottom: 0;
+      right: 0;
+    }
+
+    & .spine {
+      border-color: rgb(230 213 248);
+      outline: 3px solid black;
+      outline-offset: -3px;
+    }
   }
 `;
 

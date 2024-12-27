@@ -133,6 +133,7 @@ const Book = styled.td<{
     ${({ $interactive }) =>
       $interactive &&
       `
+      user-select: none;
       &:hover {
         cursor: ${draggable_cursor};
       }
@@ -181,6 +182,7 @@ const Book = styled.td<{
 
 const HorizontalBook = styled.td<{
   $color: string;
+  $interactive?: boolean;
 }>`
   text-align: right;
   vertical-align: bottom;
@@ -235,6 +237,12 @@ const HorizontalBook = styled.td<{
         margin-top: 6px;
       }
     }
+
+    ${({ $interactive }) =>
+      $interactive &&
+      `
+      user-select: none;
+    `}
   }
 
   & .cover {
@@ -307,6 +315,7 @@ export function BookcaseInteraction({
                       colSpan={3}
                       key={j}
                       $color={book.color}
+                      $interactive={interactive}
                       style={{ zIndex: 1 }}
                       data-title={book.title}
                     >

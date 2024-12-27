@@ -1,31 +1,40 @@
 import React from "react";
-import { type TeamHuntState } from "../../../../../lib/api/client";
+import safe_complete from "../assets/safe/safe_complete.svg";
 import safe_frame_modal from "../assets/study/safe_frame_modal.png";
-import { type ModalWithPuzzleFields, type Node } from "../types";
 import Painting from "./Painting";
-import Safe from "./Safe";
+import { Asset, Navigation } from "./SearchEngine";
+import { zoom_cursor } from "./cursors";
 
-const PaintingOne = ({
-  node,
-  setNode,
-  showModal,
-  teamState,
-}: {
-  node: Node;
-  setNode: (node: Node) => void;
-  showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
-  teamState: TeamHuntState;
-}) => {
-  const gateOpen =
-    teamState.rounds.illegal_search?.gates?.includes("isg08") ?? false;
+const PaintingOne = ({ navigate }: { navigate: (destId: string) => void }) => {
   return (
     <>
-      <Safe
-        node={node}
-        showModal={showModal}
-        setNode={setNode}
-        opened={gateOpen}
+      <Asset
+        placedAsset={{
+          area: {
+            left: -1,
+            right: 1,
+            top: 1,
+            bottom: -1,
+          },
+          asset: safe_complete,
+        }}
       />
+      <Navigation
+        navigation={{
+          area: {
+            left: -0.236,
+            right: 0.239,
+            top: 0.321,
+            bottom: -0.321,
+          },
+          destId: "safe",
+          cursor: zoom_cursor,
+        }}
+        onClick={({ destId }) => {
+          navigate(destId);
+        }}
+      />
+
       <Painting
         initialPosition={{ x: 610, y: 60 }}
         width={700}
