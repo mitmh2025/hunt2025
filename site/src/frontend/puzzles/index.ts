@@ -31,6 +31,7 @@ import FindOtherWaysOfSeeing from "./discrete-spine";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
+import NeatlyDrawn from "./exotic-pirate";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
@@ -154,6 +155,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   in_a_different_direction: InADifferentDirection,
   introduction_to_decryption: IntroductionToDecryption,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
+  neatly_drawn: NeatlyDrawn,
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
