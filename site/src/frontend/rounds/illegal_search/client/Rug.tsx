@@ -135,3 +135,7 @@ export default function Rug({
     </>
   );
 }
+
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.rug = Rug;
+}

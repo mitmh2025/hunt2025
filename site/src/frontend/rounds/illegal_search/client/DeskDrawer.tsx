@@ -82,3 +82,5 @@ export default function DeskDrawer({
     </>
   );
 }
+
+window.illegalSearchInteractions.deskdrawer = DeskDrawer;

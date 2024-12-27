@@ -47,3 +47,6 @@ export default function Cryptex({
     </>
   );
 }
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.cryptex = Cryptex;
+}

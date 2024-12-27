@@ -427,3 +427,7 @@ export default function Bookcase({
     </>
   );
 }
+
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.bookcase = Bookcase;
+}

@@ -446,3 +446,7 @@ export default function Extra({
     </>
   );
 }
+
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.extra = Extra;
+}

@@ -322,3 +322,7 @@ export default function Telephone() {
     </>
   );
 }
+
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.telephone = Telephone;
+}

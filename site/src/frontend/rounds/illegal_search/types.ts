@@ -61,8 +61,7 @@ type InteractionBase = {
 };
 
 export type Interaction = InteractionBase & {
-  scriptSrc: string;
-  modulePath: string;
+  scriptSrc: string[];
 };
 
 export type InteractionInternal = InteractionBase & {
@@ -202,3 +201,18 @@ export type Node = NodeShared & {
   interactionModals?: Modal[];
   placedAssets: PlacedAsset[];
 };
+
+export type InteractionComponent = (props: {
+  node: Node;
+  showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
+  setNode: (node: Node) => void;
+  teamState: TeamHuntState;
+  navigate: (destId: string) => void;
+}) => JSX.Element;
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- augmenting global type
+  interface Window {
+    illegalSearchInteractions: Record<string, InteractionComponent>;
+  }
+}

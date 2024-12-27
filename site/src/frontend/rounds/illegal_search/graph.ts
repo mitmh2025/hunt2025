@@ -1,4 +1,4 @@
-import jsManifest from "../../../../dist/js-manifest.json";
+import jsManifest from "../../../../dist/js-manifest-with-chunks.json";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { omit } from "../../../utils/omit";
 import { PUZZLES } from "../../puzzles";
@@ -89,41 +89,30 @@ import type {
   PluginName,
 } from "./types";
 
-const scriptSrcs: Record<
-  PluginName,
-  { scriptSrc: string; modulePath: string }
-> = {
+const scriptSrcs: Record<PluginName, { scriptSrc: string[] }> = {
   bookcase: {
-    scriptSrc: jsManifest["illegal_search_bookcase.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/Bookcase.tsx",
+    scriptSrc: jsManifest.illegal_search_bookcase,
   },
   cryptex: {
-    scriptSrc: jsManifest["illegal_search_cryptex.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/Cryptex.tsx",
+    scriptSrc: jsManifest.illegal_search_cryptex,
   },
   deskdrawer: {
-    scriptSrc: jsManifest["illegal_search_deskdrawer.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/DeskDrawer.tsx",
+    scriptSrc: jsManifest.illegal_search_deskdrawer,
   },
   extra: {
-    scriptSrc: jsManifest["illegal_search_extra.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/Extra.tsx",
+    scriptSrc: jsManifest.illegal_search_extra,
   },
   painting1: {
-    scriptSrc: jsManifest["illegal_search_painting1.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/PaintingOne.tsx",
+    scriptSrc: jsManifest.illegal_search_painting1,
   },
   painting2: {
-    scriptSrc: jsManifest["illegal_search_painting2.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/PaintingTwo.tsx",
+    scriptSrc: jsManifest.illegal_search_painting2,
   },
   rug: {
-    scriptSrc: jsManifest["illegal_search_rug.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/Rug.tsx",
+    scriptSrc: jsManifest.illegal_search_rug,
   },
   telephone: {
-    scriptSrc: jsManifest["illegal_search_telephone.js"],
-    modulePath: "./src/frontend/rounds/illegal_search/client/Telephone.tsx",
+    scriptSrc: jsManifest.illegal_search_telephone,
   },
 };
 

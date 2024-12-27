@@ -35,3 +35,7 @@ const PaintingTwo = ({
 };
 
 export default PaintingTwo;
+
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.painting2 = PaintingTwo;
+}

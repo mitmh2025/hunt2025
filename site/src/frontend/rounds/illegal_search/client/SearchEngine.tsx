@@ -20,16 +20,14 @@ import {
   type ModalWithPuzzleFields,
   type PlacedAsset,
   type PostcodeResponse,
+  type InteractionComponent,
 } from "../types";
 import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import { default_cursor, zoom_cursor } from "./cursors";
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- augmenting global type
-  interface Window {
-    __webpack_module_cache__: Record<string, { exports: unknown }>;
-  }
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions = {};
 }
 
 // TODO: remove this (or extract to some other component that isn't used by default) once positions are more set
@@ -272,62 +270,68 @@ const SearchEngineSurface = styled.div<{
   }}
 `;
 
-type InteractionModule = {
-  default: (props: {
-    node: Node;
-    showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
-    setNode: (node: Node) => void;
-    teamState: TeamHuntState;
-    navigate: (destId: string) => void;
-  }) => JSX.Element;
-};
-
 const Interaction = ({
   scriptSrc,
-  modulePath,
+  pluginName,
   node,
   showModal,
   setNode,
   teamState,
   navigate,
 }: {
-  scriptSrc: string;
-  modulePath: string;
+  scriptSrc: string[];
+  pluginName: string;
   node: Node;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   setNode: (node: Node) => void;
   teamState: TeamHuntState;
   navigate: (destId: string) => void;
 }) => {
-  const [module, setModule] = useState<InteractionModule | null>(null);
+  const [component, setComponent] = useState<{
+    component: InteractionComponent;
+  } | null>(null);
 
   useEffect(() => {
-    setModule(null);
-
-    const script = document.createElement("script");
-    script.src = scriptSrc;
-    script.async = true;
-    script.onload = () => {
-      const module = window.__webpack_module_cache__[modulePath];
-      if (!module) {
-        console.error(`Module ${modulePath} not found in cache`);
-        return;
+    function loadScript(src: string): Promise<void> {
+      const existingScript = document.querySelector(`script[src="${src}"]`);
+      if (existingScript) {
+        return Promise.resolve();
       }
 
-      setModule(module.exports as InteractionModule);
-    };
-    document.body.appendChild(script);
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.onload = () => {
+          resolve();
+        };
+        script.onerror = reject;
+        document.body.appendChild(script);
+      });
+    }
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [scriptSrc, modulePath]);
+    setComponent(null);
 
-  if (!module) {
+    Promise.all(scriptSrc.map(loadScript))
+      .then(() => {
+        const component = window.illegalSearchInteractions[pluginName];
+        if (!component) {
+          console.error(`Plugin ${pluginName} not found in global scope`);
+          return;
+        }
+
+        setComponent({ component });
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+      });
+  }, [scriptSrc, pluginName]);
+
+  if (!component) {
     return null;
   }
 
-  const Component = module.default;
+  const Component = component.component;
   return (
     <Component
       node={node}
@@ -458,7 +462,6 @@ const SearchEngine = ({
       })
         .then(async (result) => {
           const json = (await result.json()) as Node;
-          console.log(json);
           history.pushState(
             { node },
             "",
@@ -541,7 +544,7 @@ const SearchEngine = ({
     const jsx = (
       <Interaction
         scriptSrc={interaction.scriptSrc}
-        modulePath={interaction.modulePath}
+        pluginName={interaction.plugin}
         key={`interaction-${interaction.plugin}`}
         node={node}
         showModal={showModal}

@@ -5,7 +5,7 @@ import { type ModalWithPuzzleFields, type Node } from "../types";
 import Painting from "./Painting";
 import Safe from "./Safe";
 
-const PaintingTwo = ({
+const PaintingOne = ({
   node,
   setNode,
   showModal,
@@ -35,4 +35,8 @@ const PaintingTwo = ({
   );
 };
 
-export default PaintingTwo;
+export default PaintingOne;
+
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.painting1 = PaintingOne;
+}
