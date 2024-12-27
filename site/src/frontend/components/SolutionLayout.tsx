@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useState } from "react";
 import { styled, css } from "styled-components";
-import { type CannedResponse, type Hint } from "../puzzles/types";
+import type { CannedResponse, Hint } from "../puzzles/types";
 
 const SolutionAnswer = styled.h2`
   padding: 0;

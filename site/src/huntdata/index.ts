@@ -43,7 +43,7 @@ const HUNT: Hunt = {
         { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "missing_connections" },
         { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "xoxo" },
         { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "an_argument" },
-        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // 📑🍝
+        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "📑🍝" }, // 📑🍝
         { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion" },
         { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "on_the_corner" },
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "drunkens_and_flagons" },
@@ -164,6 +164,15 @@ const HUNT: Hunt = {
         { id: "hunt_started", internal_description: 'Hunt Started' }, // Nothing is unlocked until this gate is satisfied.
         { id: "mdg01", internal_description: 'Picked up Educational Rite of Passage from Gala' },
         { id: "mdg02", internal_description: 'Picked up Synthetic Tagsonomy from Gala' },
+        { id: "mdg03", internal_description: '📑🍝: Assigned Rickroll copypasta' }, 
+        { id: "mdg04", internal_description: '📑🍝: Assigned Eat Hot Chip and Lie copypasta' }, 
+        { id: "mdg05", internal_description: '📑🍝: Assigned The Bee Movie copypasta' }, 
+        { id: "mdg06", internal_description: '📑🍝: Assigned IQ Rick and Morty copypasta' }, 
+        { id: "mdg07", internal_description: '📑🍝: Assigned Nick Castellanos copypasta' }, 
+        { id: "mdg08", internal_description: '📑🍝: Assigned Mesothelioma copypasta' }, 
+        { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' }, 
+        { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' }, 
+        { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' }, 
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which

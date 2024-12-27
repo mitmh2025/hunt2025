@@ -996,10 +996,46 @@ export async function getRouter({
             team_id,
             redisClient,
             knex,
-            async function (_, mutator) {
+            async function (trx, mutator) {
               // Verify puzzle is currently unlockable.
               const data = await mutator.recalculateTeamState(hunt, team_id);
               const unlock_cost = slot.unlock_cost;
+
+              // Special case for blank-rose. One of nine gates must be unlocked
+              // for a team upon its unlock, in a round-robin pattern.
+              console.error("\n\nUnlocking ", slug);
+              if (slug === "📑🍝") {
+                console.error("Copypasta unlocked!");
+                // Which gate for this puzzle has the fewest teams assigned?
+                const leastUsedGate = await trx("activity_log")
+                  .select("id", "type", "slug")
+                  .count("id", { as: "gateCount" })
+                  .where("type", "=", "gate_completed")
+                  .whereIn("slug", [
+                    "mdg03",
+                    "mdg04",
+                    "mdg05",
+                    "mdg06",
+                    "mdg07",
+                    "mdg08",
+                    "mdg09",
+                    "mdg10",
+                    "mdg11",
+                  ])
+                  .groupBy("slug")
+                  .orderBy("gateCount", "asc")
+                  .orderBy("slug", "asc")
+                  .first();
+                console.error("Least used gate: ", leastUsedGate);
+                // Unlock that gate, defaulting to the first gate for the first team to
+                // unlock the puzzle.
+                const slug = leastUsedGate?.slug ?? "mdg02";
+                await mutator.appendLog({
+                  team_id,
+                  type: "gate_completed",
+                  slug,
+                });
+              }
 
               if (
                 data.puzzles_unlockable.has(slug) &&
@@ -1295,6 +1331,71 @@ export async function getRouter({
 
                   teamIdsToUnlock.delete(entry.team_id);
                 }
+              }
+
+              // Special case for blank-rose. One of the nine gates must be
+              // unlocked for a team upon unlocking this puzzle, in a round-
+              // robin fashion.
+              if (slug === "📑🍝") {
+                // How many teams have each version of the puzzle?
+                const leastUsedGates = await _trx("activity_log")
+                  .select("id", "type", "slug")
+                  .count("id", { as: "gateCount" })
+                  .where("type", "=", "gate_completed")
+                  .whereIn("slug", [
+                    "mdg03",
+                    "mdg04",
+                    "mdg05",
+                    "mdg06",
+                    "mdg07",
+                    "mdg08",
+                    "mdg09",
+                    "mdg10",
+                    "mdg11",
+                  ])
+                  .groupBy("slug")
+                  .orderBy("gateCount", "asc")
+                  .orderBy("slug", "asc");
+                // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                let slugsAndCounts = leastUsedGates.map<{
+                  slug: string;
+                  gateCount: number;
+                }>(({ slug, gateCount }) => ({
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- slug has already been filtered for
+                  slug: slug!,
+                  gateCount:
+                    typeof gateCount === "string"
+                      ? parseInt(gateCount, 10)
+                      : gateCount,
+                }));
+                // Iterate through the gates in order, assigning to the gate with the fewest unlocks each time.
+                const teamsAndGates: { teamId: number; slug: string }[] = [];
+                for (const teamId of teamIdsToUnlock) {
+                  // If for some reason we're bulk unlocking despite none of these gates being unlocked yet,
+                  // default to the first gate.
+                  const slugForTeam = slugsAndCounts[0]?.slug ?? "mdg02";
+                  const teamAndGate = { teamId, slug: slugForTeam };
+                  teamsAndGates.push(teamAndGate);
+                  slugsAndCounts = slugsAndCounts.map(
+                    ({ slug, gateCount }) => ({
+                      slug,
+                      gateCount:
+                        slug === slugForTeam ? gateCount + 1 : gateCount,
+                    }),
+                  );
+                  slugsAndCounts.sort((a, b) => a.gateCount - b.gateCount);
+                }
+                const promises = [];
+                for (const { teamId, slug } of teamsAndGates) {
+                  promises.push(
+                    mutator.appendLog({
+                      team_id: teamId,
+                      type: "gate_completed",
+                      slug,
+                    }),
+                  );
+                }
+                await Promise.all(promises);
               }
 
               if (
