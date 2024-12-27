@@ -83,6 +83,7 @@ import ASudoku from "./recent-ship";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import DroppingTheBall from "./rundown-spot";
 import MagnifyingGlassIce from "./sandy-atlantis";
 import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
@@ -143,6 +144,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   be_kind_rewind: BeKindRewind,
   downright_backwards: DownrightBackwards,
+  dropping_the_ball: DroppingTheBall,
   drunkens_and_flagons: DrunkensAndFlagons,
   educational_rite_of_passage: EducationalRiteOfPassage,
   in_a_different_direction: InADifferentDirection,
