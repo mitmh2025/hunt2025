@@ -62,7 +62,7 @@ const Solution = () => {
         Each word in the islands is the name of a phantom island but is missing
         one letter that has been replaced with the number. The “missing”
         letters, taken in reading order, spell out the answer:{" "}
-        <code>BATH BRICK</code>
+        <code>BATH BRICK</code>.
       </p>
 
       <SolutionTable>
