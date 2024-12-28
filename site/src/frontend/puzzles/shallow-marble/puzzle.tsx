@@ -33,34 +33,28 @@ const Puzzle = () => {
       <Clues>
         <ClueGroup>
           <h3>???</h3>
-          <table>
-            <tbody>
-              {UpClues.map(([num, clue, _]) => {
-                return (
-                  <tr key={num}>
-                    <td>{num}.</td>
-                    <td>{clue}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <ol>
+            {UpClues.map(([num, clue, _]) => {
+              return (
+                <li key={num} value={num}>
+                  {clue}
+                </li>
+              );
+            })}
+          </ol>
         </ClueGroup>
 
         <ClueGroup>
           <h3>???</h3>
-          <table>
-            <tbody>
-              {DownRightClues.map(([num, clue, _]) => {
-                return (
-                  <tr key={num}>
-                    <td>{num}.</td>
-                    <td>{clue}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <ol>
+            {DownRightClues.map(([num, clue, _]) => {
+              return (
+                <li key={num} value={num}>
+                  {clue}
+                </li>
+              );
+            })}
+          </ol>
         </ClueGroup>
       </Clues>
     </>
