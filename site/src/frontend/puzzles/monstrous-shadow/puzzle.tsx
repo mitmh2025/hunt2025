@@ -1,12 +1,22 @@
 import React from "react";
 import { styled } from "styled-components";
+import { deviceMax } from "../../utils/breakpoints";
 
-const StyledTable = styled.table`
+const FlexContainer = styled.div`
   width: 100%;
-  td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 0 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-evenly;
+
+  > div {
+    padding: 0 1rem;
+  }
+
+  @media ${deviceMax.lg} {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 `;
 
@@ -14,16 +24,12 @@ const Puzzle = () => {
   return (
     <>
       <p className="puzzle-flavor">How did Ferdinand get out of the country?</p>
-      <StyledTable>
-        <tbody>
-          <tr>
-            <td>January 1, 1921</td>
-            <td>January 1, 1939</td>
-            <td>January 1, 1946</td>
-            <td>January 1, 1993</td>
-          </tr>
-        </tbody>
-      </StyledTable>
+      <FlexContainer>
+        <div>January 1, 1921</div>
+        <div>January 1, 1939</div>
+        <div>January 1, 1946</div>
+        <div>January 1, 1993</div>
+      </FlexContainer>
     </>
   );
 };
