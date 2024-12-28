@@ -15,51 +15,52 @@ const Emoji = styled.div`
   font-size: 2rem; /* Size of the emoji */
 `;
 
-const HR = styled.hr``;
-
 const Puzzle = () => {
-  const emojis = [
-    "🧽",
-    "♋",
-    "👘",
-    "🪞",
-    "🇵🇱",
-    "🧄",
-    "🏜️",
-    "🍇",
-    "⛪",
-    "👙",
-    "🦐",
-    "🍊",
-    "🇧🇿",
-    "🦫",
-    "🪟",
-    "🐉",
-    "🚽",
-    "⚰️",
-    "🧇",
-    "👺",
-    "🍪",
-    "🍌",
-    "🇸🇪",
-    "🏫",
-    "🎻",
-    "👕",
-    "🇷🇺",
-    "🧮",
-    "🌵",
-    "📜",
-    "🪲",
-    "🚀",
-    "🐒",
-    "🎸",
-    "🥕",
-    "💻",
-  ];
+  // const emojis = [
+  //   "🧽",
+  //   "♋",
+  //   "👘",
+  //   "🪞",
+  //   "🇵🇱",
+  //   "🧄",
+  //   "🏜️",
+  //   "🍇",
+  //   "⛪",
+  //   "👙",
+  //   "🦐",
+  //   "🍊",
+  //   "🇧🇿",
+  //   "🦫",
+  //   "🪟",
+  //   "🐉",
+  //   "🚽",
+  //   "⚰️",
+  //   "🧇",
+  //   "👺",
+  //   "🍪",
+  //   "🍌",
+  //   "🇸🇪",
+  //   "🏫",
+  //   "🎻",
+  //   "👕",
+  //   "🇷🇺",
+  //   "🧮",
+  //   "🌵",
+  //   "📜",
+  //   "🪲",
+  //   "🚀",
+  //   "🐒",
+  //   "🎸",
+  //   "🥕",
+  //   "💻",
+  // ];
+
+  const tableImageUrls = Array.from({ length: 36 }, (_, i) => `${i + 1}.png`);
+  const columnImageUrls = Array.from({ length: 13 }, (_, i) => `${i + 37}.png`);
 
   const rows = [];
-  for (let i = 0; i < emojis.length; i += 6) {
-    rows.push(emojis.slice(i, i + 6));
+  for (let i = 0; i < tableImageUrls.length; i += 6) {
+    rows.push(tableImageUrls.slice(i, i + 6));
   }
 
   return (
@@ -71,16 +72,31 @@ const Puzzle = () => {
         <tbody>
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {row.map((emoji, colIndex) => (
-                <EmojiCell key={colIndex}>{emoji}</EmojiCell>
+              {row.map((imageUrl, colIndex) => (
+                <EmojiCell key={colIndex}>
+                  <img
+                    src={imageUrl}
+                    alt={`Image ${rowIndex * 6 + colIndex + 1}`}
+                    style={{ width: "90px", height: "90px" }}
+                  />
+                </EmojiCell>
               ))}
             </tr>
           ))}
         </tbody>
       </EmojiTable>
-      <HR />
+      <hr />
       <p>
-        <Emoji>🐗</Emoji>
+        {columnImageUrls.map((imageUrl, index) => (
+          <EmojiCell key={index}>
+            <img
+              src={imageUrl}
+              alt={`Image ${index + 1}`}
+              style={{ width: "90px", height: "90px" }}
+            />
+          </EmojiCell>
+        ))}
+        {/* <Emoji>🐗</Emoji>
         <Emoji>🦴</Emoji>
         <Emoji>🇹🇩</Emoji>
         <Emoji>🪸</Emoji>
@@ -92,7 +108,7 @@ const Puzzle = () => {
         <Emoji>🤳</Emoji>
         <Emoji>🚢</Emoji>
         <Emoji>🍣</Emoji>
-        <Emoji>🐺</Emoji>
+        <Emoji>🐺</Emoji> */}
       </p>
     </>
   );
