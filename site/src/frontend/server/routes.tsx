@@ -215,10 +215,7 @@ export function registerUiRoutes({
   );
   authRouter.get("/rounds/illegal_search/node/:nodeSlug", nodeRequestHandler);
   authRouter.post("/rounds/illegal_search/modal", modalPostHandler);
-  authRouter.post(
-    "/rounds/illegal_search/locks/painting1",
-    comboLockPostHandler,
-  );
+  authRouter.post("/rounds/illegal_search/locks/safe", comboLockPostHandler);
   authRouter.post("/rounds/illegal_search/locks/painting2", fuseboxPostHandler);
   authRouter.post("/rounds/illegal_search/locks/rug", numericLockPostHandler);
   authRouter.post(

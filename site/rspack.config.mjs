@@ -490,6 +490,8 @@ export default function createConfigs(_env, argv) {
       illegal_search_painting2:
         "./src/frontend/rounds/illegal_search/client/PaintingTwo.tsx",
       illegal_search_rug: "./src/frontend/rounds/illegal_search/client/Rug.tsx",
+      illegal_search_safe:
+        "./src/frontend/rounds/illegal_search/client/Safe.tsx",
       illegal_search_telephone:
         "./src/frontend/rounds/illegal_search/client/Telephone.tsx",
 
