@@ -93,6 +93,24 @@ const StanzaData = [
     Of dog fighting with rooster
     In the jet stream
     5/8/2022`,
+
+  `Love on the beach
+    is running to tune
+    Sunlight shines on the staff
+    With a foot hewn
+    8/7/1981`,
+
+  `Love’s just a game
+    The theory is told
+    By songs in Montmartre
+    With red sails to behold
+    9/6/2001`,
+
+  `Love just one man
+    It’s enough I would ken
+    His love for the bombshell
+    Becomes Death in the end
+    6/11/2023`,
 ];
 
 const StanzaLine = styled.p`
