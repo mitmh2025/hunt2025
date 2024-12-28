@@ -37,7 +37,7 @@ const Puzzle = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          https://www.google.com/maps/d/viewer?mid=1JHAxaoI2EjrkO8UkNswbSWVH1-fLJbE
+          Map
         </a>
       </p>
     </>
