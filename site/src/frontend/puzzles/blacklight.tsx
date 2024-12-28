@@ -1,4 +1,6 @@
 import React from "react";
+import { styled } from "styled-components";
+import LinkedImage from "../components/LinkedImage";
 import { type PuzzleDefinition } from "./types";
 
 type BlacklightOpts = {
@@ -6,6 +8,12 @@ type BlacklightOpts = {
   asset: string;
   assetAlt: string;
 };
+
+const StyledLinkedImage = styled(LinkedImage)`
+  max-width: 600px;
+  margin: 24px auto;
+  display: block;
+`;
 
 export function blacklightPuzzle(
   base: PuzzleDefinition,
@@ -23,15 +31,7 @@ export function blacklightPuzzle(
       component: function BlacklightPuzzle(props) {
         return (
           <>
-            <img
-              src={opts.asset}
-              style={{
-                maxWidth: "600px",
-                margin: "24px auto",
-                display: "block",
-              }}
-              alt={opts.assetAlt}
-            />
+            <StyledLinkedImage src={opts.asset} alt={opts.assetAlt} />
             <Puzzle {...props} />
           </>
         );
