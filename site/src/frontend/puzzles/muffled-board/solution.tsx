@@ -21,6 +21,9 @@ const TableCell = styled.td`
 `;
 
 const Solution = () => {
+  const altText =
+    "a diagram of a keyboard with some keys highlighted green and yellow";
+
   return (
     <>
       <p>
@@ -154,130 +157,91 @@ const Solution = () => {
             <tr>
               <TableCell>HU(S)H</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img1}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img1} alt={altText} />
               </TableCell>
               <TableCell>S</TableCell>
             </tr>
             <tr>
               <TableCell>POLI(T)IK</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img2}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img2} alt={altText} />
               </TableCell>
               <TableCell>T</TableCell>
             </tr>
             <tr>
               <TableCell>HIGH (E)NOUGH</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img3}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img3} alt={altText} />
               </TableCell>
               <TableCell>E</TableCell>
             </tr>
             <tr>
               <TableCell>STRA(N)GE</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img4}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img4} alt={altText} />
               </TableCell>
               <TableCell>N</TableCell>
             </tr>
             <tr>
               <TableCell>AN(O)THER SUNNY DAY</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img5}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img5} alt={altText} />
               </TableCell>
               <TableCell>O</TableCell>
             </tr>
             <tr>
               <TableCell>(G)REASE</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img6}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img6} alt={altText} />
               </TableCell>
               <TableCell>G</TableCell>
             </tr>
             <tr>
               <TableCell>HUN(G)RY</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img7}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img7} alt={altText} />
               </TableCell>
               <TableCell>R</TableCell>
             </tr>
             <tr>
               <TableCell>DO YOU BELIEVE IN M(A)GIC</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img8}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img8} alt={altText} />
               </TableCell>
               <TableCell>A</TableCell>
             </tr>
             <tr>
               <TableCell>SATURDAY IN THE (P)ARK</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img9}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img9} alt={altText} />
               </TableCell>
               <TableCell>P</TableCell>
             </tr>
             <tr>
               <TableCell>(H)OOK</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img10}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img10} alt={altText} />
               </TableCell>
               <TableCell>H</TableCell>
             </tr>
             <tr>
               <TableCell>TH(E) KILLING MOON</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img11}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img11} alt={altText} />
               </TableCell>
               <TableCell>E</TableCell>
             </tr>
             <tr>
               <TableCell>(R)IO</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img12}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img12} alt={altText} />
               </TableCell>
               <TableCell>R</TableCell>
             </tr>
             <tr>
               <TableCell>(S)URF CITY</TableCell>
               <TableCell>
-                <LinkedImage
-                  src={img13}
-                  alt="an image of a keyboard with some keys highlighted green and yellow"
-                />
+                <LinkedImage src={img13} alt={altText} />
               </TableCell>
               <TableCell>S</TableCell>
             </tr>

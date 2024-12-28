@@ -16,8 +16,12 @@ const puzzle: PuzzleDefinition = {
   editors: ["Kevin Hwang", "Rad Z", "Steve Banzaert"],
   additional_credits: [
     {
-      freeform:
-        "Singing: Ariel Schwartz and Hubert Hwang. Background Music: Steve Banzaert",
+      for_what: "Singing",
+      who: ["Ariel Schwartz", "Hubert Hwang"],
+    },
+    {
+      for_what: "Background music",
+      who: ["Steve Banzaert"],
     },
   ],
   content: {
@@ -69,7 +73,7 @@ const puzzle: PuzzleDefinition = {
         "Puzzlers have tried typing out the songs on a QWERTY keyboard",
       keywords: ["Extraction"],
       nudge:
-        'Have you found the "off key" when typing out the song titles on a QWERTY keyboard?',
+        "Have you found the “off key“ when typing out the song titles on a QWERTY keyboard?",
     },
   ],
   canned_responses: [
