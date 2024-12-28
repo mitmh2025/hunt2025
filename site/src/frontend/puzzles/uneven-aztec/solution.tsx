@@ -1,12 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const Italics = styled.span`
   font-style: italic;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Bold = styled.span`
@@ -328,7 +325,7 @@ export default function Solution(): JSX.Element {
       </p>
       <p>
         The first answers of the matching words spell the answer,{" "}
-        <Mono>RAP OFF KEY</Mono>.
+        <PuzzleAnswer>RAP OFF KEY</PuzzleAnswer>.
       </p>
       <h3>Author’s note</h3>
       <p>

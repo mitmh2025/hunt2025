@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono } from "../../components/StyledUI";
 import nurikabe from "./assets/nurikabe-solved.png";
 import nurikabeWithLetters from "./assets/nurikabe-with-letters.png";
 
@@ -79,7 +80,7 @@ const Solution = () => {
                 <a href={url}>{island}</a>
               </td>
               <td>
-                <code>{letter}</code>
+                <Mono>{letter}</Mono>
               </td>
             </tr>
           ))}

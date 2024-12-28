@@ -1,10 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solution from "./assets/solution.pdf";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -337,16 +334,14 @@ const Solution = (): JSX.Element => {
         each animal’s line of sight to form a chain that ends at the spider. The
         letters associated with each animal in this chain spell out{" "}
         <Mono>EDIBLE SUMMER CANINE</Mono>. Or, rather, a{" "}
-        <Mono>
-          <strong>HOT DOG</strong>
-        </Mono>
-        , which is the final answer.
+        <PuzzleAnswer>HOT DOG</PuzzleAnswer>, which is the final answer.
       </p>
+      <h3>Author’s note</h3>
       <p>
-        Author’s note: for the purposes of this puzzle, close enough is close
-        enough. Is a <Mono>STRETCH RAT</Mono> a ferret, a weasel, or a stoat? Go
-        with whatever animal your heart tells you, as these are all critters
-        that look like… well, like a rat, but stretched out.
+        For the purposes of this puzzle, close enough is close enough. Is a{" "}
+        <Mono>STRETCH RAT</Mono> a ferret, a weasel, or a stoat? Go with
+        whatever animal your heart tells you, as these are all critters that
+        look like… well, like a rat, but stretched out.
       </p>
       <p>
         Another author’s note: the puzzle title “Mellow Planet” is a nod to

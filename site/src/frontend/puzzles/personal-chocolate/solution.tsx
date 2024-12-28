@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import chart1 from "./assets/chart1.png";
 import chart2 from "./assets/chart2.png";
 import chart3 from "./assets/chart3.png";
@@ -15,10 +16,6 @@ const FlexWrapper = styled.div`
 const SizedImage = styled(LinkedImage)<{ $width: number }>`
   display: block;
   width: ${({ $width }) => $width}px;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const BEER_DATA = [
@@ -467,11 +464,7 @@ const Solution = (): JSX.Element => {
         Sounding it out loud: <Mono>BEYONCE SONG OR USE EARS</Mono>.
       </p>
       <p>
-        The final answer is{" "}
-        <Mono>
-          <strong>LISTEN</strong>
-        </Mono>
-        .
+        The final answer is <PuzzleAnswer>LISTEN</PuzzleAnswer>.
       </p>
       <h3>Author’s note</h3>
       <p>

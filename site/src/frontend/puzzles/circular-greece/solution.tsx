@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import pdf_motifs from "./assets/motifs.pdf";
 import model_3mf from "./assets/rings-with-detentes-postsolve.3mf";
 import model_stl from "./assets/rings-with-detentes-postsolve.stl";
@@ -56,7 +57,7 @@ const Solution = () => {
       <p>
         When the correctly assembled rings are lined up on the provided rod
         (with the oldest ring at the top and the newest ring on the bottom), the
-        center letter of each band word spells <code>SPIN RINGS PER ROD</code>.
+        center letter of each band word spells <Mono>SPIN RINGS PER ROD</Mono>.
       </p>
 
       <img
@@ -67,14 +68,14 @@ const Solution = () => {
       <p>
         The arrows on the rod indicate the direction and number of letters each
         ring must be spun, revealing a new message down the center. (For
-        example, the word <code>MASON</code> must be spun two places to the
+        example, the word <Mono>MASON</Mono> must be spun two places to the
         right, so that the “center” position which had previously been “S” is
-        now “M.”) Now the center letters spell “<code>MOVEBEZELSUPTGR</code>.”
+        now “M.”) Now the center letters spell “<Mono>MOVEBEZELSUPTGR</Mono>.”
         Clearly something is going on with the last two rings.
       </p>
 
       <p>
-        The word <code>PRESENT</code> on the rod should remind solvers that the
+        The word <Mono>PRESENT</Mono> on the rod should remind solvers that the
         most recent two rings are currently being worn by MIT undergrads. Per
         MIT lore, classes that have not yet graduated wear a Brass Rat “upside
         down” relative to already-graduated classes, and flip their rings over
@@ -85,7 +86,7 @@ const Solution = () => {
         Therefore, the rings from 2025 and 2026 must be flipped upside down
         before applying the transformation shifts from the rod. (These words are
         indicated with a * on the table below.) Note that when flipped, the{" "}
-        <code>M</code> in <code>GLOOM</code> becomes a <code>W</code>.
+        <Mono>M</Mono> in <Mono>GLOOM</Mono> becomes a <Mono>W</Mono>.
       </p>
 
       <TopTable>
@@ -208,10 +209,11 @@ const Solution = () => {
       </TopTable>
 
       <p>
-        The new message reads <code>MOVE BEZELS UP TWO</code>. After bezels have
+        The new message reads <Mono>MOVE BEZELS UP TWO</Mono>. After bezels have
         been moved, solvers must apply the numerical transformation on the band
         to the letter on the reverse side of the bezel, as indicated in the
-        table below to get the puzzle answer, <code>RAW ANTIQUE BRASS</code>.
+        table below to get the puzzle answer,{" "}
+        <PuzzleAnswer>RAW ANTIQUE BRASS</PuzzleAnswer>.
       </p>
 
       <BottomTable>

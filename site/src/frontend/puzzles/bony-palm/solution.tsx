@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const PicrossTablesDiv = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const PicrossTablesDiv = styled.div`
 const PicrossTable = styled.table`
   border-collapse: collapse;
   th {
-    font-family: monospace;
+    font-family: Roboto Mono;
   }
   thead th {
     border: none;
@@ -39,7 +40,7 @@ const CenteredItems = styled.div`
 
 const SquareTable = styled.table`
   margin: 8px;
-  font-family: monospace;
+  font-family: Roboto Mono;
   border-collapse: collapse;
   td {
     width: 32px;
@@ -612,7 +613,7 @@ const Solution = () => {
       <p>
         The first of these grids forms a cross, appropriately, and the filled
         digraphs arranged in reading order read “
-        <code>PLAYFAIR IS SUITABLE</code>.”
+        <Mono>PLAYFAIR IS SUITABLE</Mono>.”
       </p>
 
       <p>
@@ -622,15 +623,15 @@ const Solution = () => {
         for each grid is the tarot suit depicted in its arrangement of filled
         cells; along with cluing picross, the title and flavor are also
         tarot-themed, and the first grid’s message hints at the suits. The suits
-        in order of the grids are <code>WANDS</code>, <code>PENTACLES</code>,{" "}
-        <code>CUPS</code>, and <code>SWORDS</code>.
+        in order of the grids are <Mono>WANDS</Mono>, <Mono>PENTACLES</Mono>,{" "}
+        <Mono>CUPS</Mono>, and <Mono>SWORDS</Mono>.
       </p>
 
       <p>
         Going along with the puzzle structure so far, the Playfair cipher
         encrypts and decrypts messages in two-letter chunks by use of a 5×5
         table of letters. As an example, a playfair grid keyed with{" "}
-        <code>WANDS</code> would be
+        <Mono>WANDS</Mono> would be
       </p>
 
       <CenteredItems>
@@ -681,7 +682,7 @@ const Solution = () => {
         To decrypt a digraph, the two letters are found in the grid, then
         changed to letters in their respective rows that altogether form the
         four corners of a rectangle. For example, decoding the first digraph in
-        the second grid, <code>FT</code>, results in <code>GR</code>
+        the second grid, <Mono>FT</Mono>, results in <Mono>GR</Mono>
       </p>
 
       <CenteredItems>
@@ -769,7 +770,7 @@ const Solution = () => {
       </ul>
 
       <p>
-        <code>QFQAMOFR</code> is not legible, so in one final step, these
+        <Mono>QFQAMOFR</Mono> is not legible, so in one final step, these
         digraphs must be put back in the original language of the puzzle by
         re-encrypting them through the same Playfair grids.
       </p>
@@ -783,8 +784,8 @@ const Solution = () => {
 
       <p>
         Taken in sequence, these form the answer to the puzzle:{" "}
-        <code>REUNITED</code>, which is what the two halves of each digraph were
-        after the picrosses were solved.
+        <PuzzleAnswer>REUNITED</PuzzleAnswer>, which is what the two halves of
+        each digraph were after the picrosses were solved.
       </p>
     </>
   );

@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   td {
@@ -36,11 +33,8 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         As the “answers” were provided, the puzzle answer is indeed just number
-        five:{" "}
-        <Mono>
-          <strong>PRIVATE SECTOR</strong>
-        </Mono>
-        , which was hiding in plain sight!
+        five: <PuzzleAnswer>PRIVATE SECTOR</PuzzleAnswer>, which was hiding in
+        plain sight!
       </p>
       <StyledTable>
         <tr>

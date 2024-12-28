@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   td,
@@ -38,11 +35,7 @@ const Solution = (): JSX.Element => {
         look up the taunts, every single referenced taunt contains a voiceline
         (many of which are very iconic super smash bros taunts—show me your
         moves, hi, okay). If you look at the first letter of each voiceline it
-        spells out the answer:{" "}
-        <Mono>
-          <strong>SMASH MOUTH</strong>
-        </Mono>
-        .
+        spells out the answer: <PuzzleAnswer>SMASH MOUTH</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>

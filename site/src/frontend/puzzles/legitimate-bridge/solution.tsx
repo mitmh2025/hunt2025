@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { TUTORIAL_COLORS } from "./puzzle-components/PuzzleConstants";
 import {
   GROUPED_PUZZLES,
@@ -11,10 +12,6 @@ import {
   type Puzzle,
   PuzzleColor,
 } from "./puzzle-components/Typedefs";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -160,10 +157,7 @@ const Solution = (): JSX.Element => {
         <Mono>SHIFT BY DIFFERENCE FROM 8V</Mono>. The difference in voltage
         between the original sink voltage and 8V can be applied to the initial
         answer, letter-by-letter, as a Caesar shift, producing{" "}
-        <Mono>
-          <strong>LIFEFORCE</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>LIFEFORCE</PuzzleAnswer>.
       </p>
       <h2>Full solution</h2>
       {TUTORIAL_COLORS.map((color: PuzzleColor) => {

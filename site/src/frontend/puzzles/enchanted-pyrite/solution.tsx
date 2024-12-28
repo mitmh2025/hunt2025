@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import solution1 from "./assets/solution1.svg";
 import solution10 from "./assets/solution10.svg";
 import solution2 from "./assets/solution2.svg";
@@ -11,10 +12,6 @@ import solution6 from "./assets/solution6.svg";
 import solution7 from "./assets/solution7.svg";
 import solution8 from "./assets/solution8.svg";
 import solution9 from "./assets/solution9.svg";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const SizedImage = styled(LinkedImage)`
   display: block;
@@ -269,11 +266,7 @@ const Solution = (): JSX.Element => {
         Looking at the paths traced by the movements of the wolves over the 5
         days, and reading “around the clock” (clockwise around the grid,
         starting from the top), as hinted in the puzzle instructions, we read
-        the answer:{" "}
-        <Mono>
-          <strong>SUFFOLK EWES</strong>
-        </Mono>
-        .
+        the answer: <PuzzleAnswer>SUFFOLK EWES</PuzzleAnswer>.
       </p>
     </>
   );

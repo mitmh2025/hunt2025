@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -29,10 +26,8 @@ const Solution = (): JSX.Element => {
         associated to the lyrics. After filling in all the character names, we
         take the letters in the red spaces in the numbered order, to spell{" "}
         <Mono>SHOW BY TRASK AND MITCHELL</Mono>, which clues the answer{" "}
-        <Mono>
-          <strong>HEDWIG AND THE ANGRY INCH</strong>
-        </Mono>
-        , a Broadway musical about a singer.
+        <PuzzleAnswer>HEDWIG AND THE ANGRY INCH</PuzzleAnswer>, a Broadway
+        musical about a singer.
       </p>
       <StyledTable>
         <tr>

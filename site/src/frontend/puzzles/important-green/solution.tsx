@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -10,10 +11,6 @@ const StyledTable = styled.table`
       padding-left: 0px;
     }
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -254,11 +251,7 @@ const Solution = (): JSX.Element => {
         </tr>
       </StyledTable>
       <p>
-        The answer is{" "}
-        <Mono>
-          <strong>THINK AGAIN</strong>
-        </Mono>
-        .
+        The answer is <PuzzleAnswer>THINK AGAIN</PuzzleAnswer>.
       </p>
     </>
   );

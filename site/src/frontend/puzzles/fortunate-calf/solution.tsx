@@ -1,8 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const MonospaceTable = styled.table`
-  font-family: monospace;
+  font-family: Roboto Mono;
 
   margin-bottom: 1rem;
   border-collapse: collapse;
@@ -277,7 +278,7 @@ const Solution = () => {
         from the card of lower value goes first, and conversely if the right
         card is on top the letter extracted from the card of higher value goes
         first. Combining all 7 bigrams produces the answer{" "}
-        <code>FACECARDSHARKS</code>.
+        <PuzzleAnswer>FACECARDSHARKS</PuzzleAnswer>.
       </p>
 
       <MonospaceTable>

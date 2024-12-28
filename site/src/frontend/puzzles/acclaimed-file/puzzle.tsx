@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono } from "../../components/StyledUI";
 
 const MAGIC_I = `
 A  TYPI  CAL            A  TYPI  CAL
@@ -38,8 +39,7 @@ const FlexWrapper = styled.div`
   justify-content: space-around;
 `;
 
-const Mono = styled.div`
-  font-family: monospace;
+const Preformatted = styled(Mono)`
   white-space: pre;
 `;
 
@@ -47,7 +47,7 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <FlexWrapper>
-        <Mono>{MAGIC_I}</Mono>
+        <Preformatted>{MAGIC_I}</Preformatted>
       </FlexWrapper>
     </>
   );

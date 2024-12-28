@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import biomuseo from "./assets/biomuseo.png";
 import chauChakWing from "./assets/chau-chak-wing.png";
 import dancingHouse from "./assets/dancing-house.png";
@@ -14,10 +15,6 @@ import stata from "./assets/stata.png";
 
 const StyledImage = styled(LinkedImage)`
   margin-bottom: 1em;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const StyledTable = styled.table`
@@ -51,11 +48,7 @@ const Solution = (): JSX.Element => {
         <Mono>ORIGINAL CHIAT DAY SYMBOL SEVEN FIVE</Mono>. This refers to the
         Binoculars Building, also designed by Gehry for the agency
         TBWA\Chiat\Day, formerly known as the Chiat/Day Building. This clues the
-        answer{" "}
-        <Mono>
-          <strong>FORWARD SLASH</strong>
-        </Mono>
-        .
+        answer <PuzzleAnswer>FORWARD SLASH</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>

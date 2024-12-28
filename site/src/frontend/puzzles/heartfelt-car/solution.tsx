@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { Clues } from "./puzzle";
 
 const table: [movie: string, sign: string, index: number][] = [
@@ -58,7 +59,7 @@ const Solution = () => {
         word/character count). Solvers use the synonym for “blockbuster”, clued
         by “masterpiece” and “ripsnorter” in the flavor, that appears in each
         sign to index into the sign text, then “rewind” and read up, revealing
-        the answer, HARD DISK SPACE.
+        the answer, <PuzzleAnswer>HARD DISK SPACE</PuzzleAnswer>.
       </p>
 
       <SolutionTable>
@@ -94,9 +95,9 @@ const Solution = () => {
                 )}
               </td>
               <td>
-                <code>
+                <Mono>
                   {sign.replaceAll(/[\s.’]+/g, "")[index]?.toUpperCase()}
-                </code>
+                </Mono>
               </td>
             </tr>
           ))}

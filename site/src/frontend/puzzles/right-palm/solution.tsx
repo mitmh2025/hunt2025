@@ -1,11 +1,14 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { Display, OutputBlock } from "./shared";
 
 const CenteredMonospaceP = styled.p`
   display: block;
   text-align: center;
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
 `;
 
 const CenteredDivRow = styled.div`
@@ -230,8 +233,9 @@ const Solution = () => {
         interpretation, especially as 3-digit ternary numbers run in value from
         0 to 26, the same number of letters as the alphabet. Reading each row in
         the self-reproducing grids as a 3-digit ternary number and interpreting
-        these as letters, the five grids read <code>CAL LIN MAT CHB OOK</code>,
-        instructing the solver to call in the answer <code>MATCHBOOK</code>.
+        these as letters, the five grids read <Mono>CAL LIN MAT CHB OOK</Mono>,
+        instructing the solver to call in the answer{" "}
+        <PuzzleAnswer>MATCHBOOK</PuzzleAnswer>.
       </p>
 
       <p>Example deduction of the first grid:</p>

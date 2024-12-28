@@ -1,16 +1,12 @@
 import React from "react";
-import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
 import image4 from "./assets/image4.png";
 import image5 from "./assets/image5.png";
 import image6 from "./assets/image6.png";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const Solution = (): JSX.Element => {
   return (
@@ -118,11 +114,7 @@ const Solution = (): JSX.Element => {
         alt="A very zoomed in portion of the autostereogram showing three lowercase letter I in a row. The middle I, instead of having a dot, has the word ‘insect’."
       />
       <p>
-        The final answer is{" "}
-        <Mono>
-          <strong>INSECT</strong>
-        </Mono>
-        .
+        The final answer is <PuzzleAnswer>INSECT</PuzzleAnswer>.
       </p>
       <p>
         Author’s note: The location tip of the arrow is ambiguous, since it

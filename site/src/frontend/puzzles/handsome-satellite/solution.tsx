@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import img15 from "./assets/img15.png";
 import img16 from "./assets/img16.png";
 import img17 from "./assets/img17.png";
@@ -20,10 +21,6 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const StyledTd = styled.td`
@@ -149,10 +146,7 @@ const Solution = () => {
         The extracted letters spell out <Mono>BILLS JUMPIN NO</Mono>, each of
         which can be reduplicated to form the name of a Destiny’s Child song
         that fits the entry slots of the final record, leading to an answer of{" "}
-        <Mono>
-          <strong>DESTINYS CHILD</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>DESTINYS CHILD</PuzzleAnswer>.
       </p>
       <Table headers={HEADERS} rows={ROWS} />
       <FlexWrapper>

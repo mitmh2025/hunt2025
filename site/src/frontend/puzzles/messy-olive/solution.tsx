@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const ColoredTd = styled.td<{ $color: string; $textColor?: string }>`
   background-color: ${({ $color }) => $color};
@@ -12,10 +13,6 @@ const StyledTable = styled.table`
   th {
     padding: 1px 8px;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 enum Color {
@@ -282,11 +279,7 @@ const Solution = (): JSX.Element => {
       BLACK fit in that block’s 5 spaces. The four question marks on the final
       block show that the first letter in black needs to be “clipped” in the way
       that our puzzle images clip the first letter off of their color words,
-      leaving the word{" "}
-      <Mono>
-        <strong>LACK</strong>
-      </Mono>
-      , which is the answer.
+      leaving the word <PuzzleAnswer>LACK</PuzzleAnswer>, which is the answer.
     </>
   );
 };

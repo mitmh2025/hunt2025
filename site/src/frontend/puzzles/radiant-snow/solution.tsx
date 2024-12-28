@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solution1base10 from "./assets/solution1-base10.svg";
 import solution1base12 from "./assets/solution1-base12.svg";
 import solution10base10 from "./assets/solution10-base10.svg";
@@ -24,10 +25,6 @@ import solution9base12 from "./assets/solution9-base12.svg";
 
 const ImageWrapper = styled.div`
   display: flex;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -1278,9 +1275,7 @@ const Solution = (): JSX.Element => {
         the rest of the grid.
       </p>
       <p>
-        <strong>
-          Solution: <Mono>A BAD DECADE</Mono>
-        </strong>
+        Solution: <PuzzleAnswer>A BAD DECADE</PuzzleAnswer>
       </p>
       <p>
         (as spelled out by the letters in the extraction grid pointed at by the

@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   th,
@@ -28,10 +25,7 @@ const Solution = (): JSX.Element => {
         into the first name of the appropriate Valentine. The indexed letters
         are then ordered by the color order represented by the blank hearts at
         the bottom of the page, to yield the answer,{" "}
-        <Mono>
-          <strong>SAY YOU LOVE ME</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>SAY YOU LOVE ME</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>

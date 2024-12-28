@@ -1,13 +1,16 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solution from "./assets/solution.png";
 
 const StyledTable = styled.table`
   margin: 1em 0;
   table-layout: fixed;
   width: 800px;
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
   border-collapse: collapse;
   tr:first-child {
     background-color: var(--teal-300);
@@ -23,10 +26,6 @@ const StyledTable = styled.table`
       width: 8ch;
     }
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const DATA = [
@@ -181,10 +180,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Solvers design a tartan for their team, send it to HQ, and receive the
-        answer,{" "}
-        <Mono>
-          <strong>CHIVIPANE</strong>
-        </Mono>
+        answer, <PuzzleAnswer>CHIVIPANE</PuzzleAnswer>
       </p>
       .
     </>

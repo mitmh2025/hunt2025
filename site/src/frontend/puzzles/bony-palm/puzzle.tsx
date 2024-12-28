@@ -1,4 +1,5 @@
 import React from "react";
+import { Mono } from "../../components/StyledUI";
 
 /* eslint-disable no-irregular-whitespace -- we want the underscores in the flavortext to appear as separate entities */
 const Puzzle = () => {
@@ -10,19 +11,19 @@ const Puzzle = () => {
 
       <div>
         <div>
-          <code>P, A, FIISI, A, L; A, R, LYSBE, U, T</code>
+          <Mono>P, A, FIISI, A, L; A, R, LYSBE, U, T</Mono>
         </div>
         <div>
-          <code>F C C, S GP, D C, PP, K; TIN, S, INWSF, S, K</code>
+          <Mono>F C C, S GP, D C, PP, K; TIN, S, INWSF, S, K</Mono>
         </div>
         <div>
-          <code>D, EYQBE, W L, SQL, R L; N M, IGH, QL A, HAN, H G</code>
+          <Mono>D, EYQBE, W L, SQL, R L; N M, IGH, QL A, HAN, H G</Mono>
         </div>
         <div>
-          <code>B U, R U, TRFEA, I, YGC; NCG, C F, KNK, F T, MZR</code>
+          <Mono>B U, R U, TRFEA, I, YGC; NCG, C F, KNK, F T, MZR</Mono>
         </div>
         <div>
-          <code>QB, LHF, DNKF, HK, L K; R N, MT, EBHE, DXG, EA</code>
+          <Mono>QB, LHF, DNKF, HK, L K; R N, MT, EBHE, DXG, EA</Mono>
         </div>
       </div>
     </>

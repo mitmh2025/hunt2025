@@ -1,16 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
-
-const Bold = styled.span`
-  font-weight: 700;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const Tile = styled.div`
-  font-family: monospace;
+  font-family: Roboto Mono;
   border: 1px solid black;
   width: 2em;
   height: 2em;
@@ -75,7 +68,7 @@ const Solution = () => {
           <Rack>
             {tiles.map((tile, j) => (
               <Tile key={`rack-${i}-tile-${j}`}>
-                {j === 0 ? <Bold>{tile}</Bold> : tile}
+                {j === 0 ? <strong>{tile}</strong> : tile}
               </Tile>
             ))}
           </Rack>
@@ -92,9 +85,7 @@ const Solution = () => {
       </p>
       <p>
         Converting that back to its element name gives the actual answer:{" "}
-        <Mono>
-          <Bold>GOLD</Bold>
-        </Mono>
+        <PuzzleAnswer>GOLD</PuzzleAnswer>.
       </p>
     </>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solution1 from "./assets/solution1.png";
 import solution2 from "./assets/solution2.png";
 
@@ -8,10 +9,6 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 16px;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const StyledTable = styled.table`
@@ -138,11 +135,8 @@ const Solution = (): JSX.Element => {
           <p>
             The last step is repeating the mechanic and replacing PROSTITUTION
             with CONSTITUTION. The “second of constitution” is the amendment
-            that gives the{" "}
-            <Mono>
-              <strong>RIGHT TO BEAR ARMS</strong>
-            </Mono>
-            , the answer, which matches the enumeration at the bottom.
+            that gives the <PuzzleAnswer>RIGHT TO BEAR ARMS</PuzzleAnswer>, the
+            answer, which matches the enumeration at the bottom.
           </p>
           <StyledTable>
             <tr>

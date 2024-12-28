@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
 import img03 from "./assets/img03.png";
@@ -29,10 +30,6 @@ import img25 from "./assets/img25.png";
 import img26 from "./assets/img26.png";
 import img27 from "./assets/img27.png";
 
-const Mono = styled.span`
-  font-family: monospace;
-`;
-
 const FlexFullWidth = styled.div`
   width: 100%;
   padding: 0px 16px;
@@ -57,7 +54,7 @@ const Solution = () => {
         This puzzle is presented as a series of orthographic projections (3-view
         drawings). When recreated in 3D each drawing creates a 3D object. These
         3D objects are essentially puzzle pieces. By assembling them together
-        you get a 3D model of a <Mono>FIRE EXTINGUISHER</Mono>.
+        you get a 3D model of a <PuzzleAnswer>FIRE EXTINGUISHER</PuzzleAnswer>.
       </p>
       <FlexFullWidth>
         <LinkedImage src={img01} alt={PUZZLE_IMAGE_ALT_TEXT} />

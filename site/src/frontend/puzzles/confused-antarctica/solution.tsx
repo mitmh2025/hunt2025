@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -250,11 +247,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Using the same mis-heard mechanic as used in the clues, gives the
-        correct answer:{" "}
-        <Mono>
-          <strong>FAT TUESDAY</strong>
-        </Mono>
-        .
+        correct answer: <PuzzleAnswer>FAT TUESDAY</PuzzleAnswer>.
       </p>
       <p>
         <Mono>FAT TUESDAY</Mono> can be paired with the last remaining entry

@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
@@ -20,10 +21,6 @@ const StyledTable = styled.table`
   td {
     padding: 1px 16px;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const StyledImageWrapper = styled.div`
@@ -86,10 +83,7 @@ const Solution = (): JSX.Element => {
         Each animal name can be spelled out on the connect the dots grid,
         forming a letter. Taken in order this gives <Mono>PESTER SIX</Mono>. A
         six-letter animal that also means “pester” is the final answer:{" "}
-        <Mono>
-          <strong>BADGER</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>BADGER</PuzzleAnswer>.
       </p>
       {DATA.map(({ animal, image, letter }) => (
         <>

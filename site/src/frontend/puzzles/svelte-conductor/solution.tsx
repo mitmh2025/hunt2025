@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { Aside } from "../unique-australia/solution";
 import kengrexal_0 from "./assets/solution/The-Oversight-reflexmate-kengrexal-0.svg";
 import kengrexal_1 from "./assets/solution/The-Oversight-reflexmate-kengrexal-1.svg";
@@ -18,10 +19,6 @@ import zakynthos_0 from "./assets/solution/The-Oversight-reflexmate-zakynthos-0.
 import zakynthos_1 from "./assets/solution/The-Oversight-reflexmate-zakynthos-1.svg";
 import zakynthos_2 from "./assets/solution/The-Oversight-reflexmate-zakynthos-2.svg";
 import background from "./assets/solution/The-Oversight-shell.svg";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 // Reused in Alias solution
 export type Board = {
@@ -133,7 +130,9 @@ const BlunderTable = styled.table`
     width: 33%;
     border-top: 1px solid var(--black);
     text-align: center;
-    font-family: monospace;
+    font-family:
+      Roboto Mono,
+      monospace;
   }
   tbody tr:last-child td {
     border-bottom: 1px solid var(--black);
@@ -272,7 +271,7 @@ const Solution = () => {
         Starchess spaces are identified using numbers from 1 to 37 instead of
         rank-and-file. In the given order of puzzles, interpreting as letters
         the spaces to which the black pieces move to deliver checkmate spells
-        the answer <Mono>NOMAD</Mono>.
+        the answer <PuzzleAnswer>NOMAD</PuzzleAnswer>.
       </p>
 
       <Aside>

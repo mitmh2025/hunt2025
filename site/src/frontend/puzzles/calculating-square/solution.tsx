@@ -1,10 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { Haiku } from "./puzzle";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -346,9 +343,7 @@ const Solution = (): JSX.Element => {
       <Haiku $indent={false}>
         yet unexamined
         <br />
-        <Mono>
-          <strong>THE WHALE AND THE RISING SUN</strong>
-        </Mono>
+        <PuzzleAnswer>THE WHALE AND THE RISING SUN</PuzzleAnswer>
         <br />
         the answer you seek
       </Haiku>

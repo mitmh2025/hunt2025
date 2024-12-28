@@ -1,6 +1,7 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import {
   ColoredDropquote,
   DROPQUOTE_1_COLORS,
@@ -19,10 +20,6 @@ import {
   mapShorthandToColor,
   ScrollWrapper,
 } from "./puzzle";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 export const FinalGrid = styled(Crossword)`
   margin: 1em auto;
@@ -319,10 +316,7 @@ const Solution = (): JSX.Element => {
         space diagonally down, a la the king, to get to a gray knight, and then
         do a knight move to a blue U, the first color mentioned in the second
         paragraph. Follow this unique path through to spell{" "}
-        <Mono>
-          <strong>YOU PLAYED IT</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>YOU PLAYED IT</PuzzleAnswer>.
       </p>
       <ScrollWrapper>
         {DROPQUOTES.map(({ labels, fill, colors, divider, highlights }, i) => (

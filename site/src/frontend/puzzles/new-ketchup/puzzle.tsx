@@ -5,11 +5,15 @@ import { Button } from "../../components/StyledUI";
 const Wrapper = styled.div`
   background-color: var(--black);
   color: var(--white);
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
   margin-top: 1rem;
 
   button {
-    font-family: monospace;
+    font-family:
+      Roboto Mono,
+      monospace;
   }
 `;
 

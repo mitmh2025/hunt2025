@@ -1,11 +1,7 @@
 import React from "react";
-import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solution from "./assets/solution.jpg";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const Solution = (): JSX.Element => {
   return (
@@ -34,11 +30,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Reading this as one final joke setup with enumeration (3) yields the
-        punchline/solution:{" "}
-        <Mono>
-          <strong>AXE</strong>
-        </Mono>
-        .
+        punchline/solution: <PuzzleAnswer>AXE</PuzzleAnswer>.
       </p>
       <h3>Author’s Note</h3>
       <p>

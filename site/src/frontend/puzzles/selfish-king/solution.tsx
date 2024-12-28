@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import day1solved from "./assets/day1-solved.svg";
 import day2solved from "./assets/day2-solved.svg";
 import day3solved from "./assets/day3-solved.svg";
@@ -14,10 +15,6 @@ const ImageWrapper = styled.div`
 
 const ExtractionWrapper = styled.div`
   width: 150px;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -346,11 +343,7 @@ const Solution = (): JSX.Element => {
         />
       </ExtractionWrapper>
       <p>
-        Which yields the answer:{" "}
-        <Mono>
-          <strong>CARPENTER FISH</strong>
-        </Mono>
-        .
+        Which yields the answer: <PuzzleAnswer>CARPENTER FISH</PuzzleAnswer>.
       </p>
     </>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -208,11 +209,7 @@ const Solution = (): JSX.Element => {
       </StyledTable>
       <p>
         In Dungeons and Dragons, the appropriate skill check to steal in this
-        manner would be{" "}
-        <code>
-          <strong>SLEIGHT OF HAND</strong>
-        </code>
-        .
+        manner would be <PuzzleAnswer>SLEIGHT OF HAND</PuzzleAnswer>.
       </p>
       <h3>Full Solve Path</h3>
       <p>Some clues tell us associations outright. These associations are:</p>

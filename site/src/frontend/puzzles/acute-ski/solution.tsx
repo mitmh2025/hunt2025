@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solutionImage from "./assets/solution.png";
 
 const solution: [
@@ -63,7 +64,7 @@ const Solution = () => {
         Specifically, the class year’s 1’s digit is always the length of the
         superlative and the 10’s digit is always less than that, and can be used
         as an index. Indexing into all the superlatives, and reading in the
-        order of the superlatives, spells out <code>USE EARLIER TECHNIQUE</code>
+        order of the superlatives, spells out <Mono>USE EARLIER TECHNIQUE</Mono>
         .
       </p>
 
@@ -82,16 +83,16 @@ const Solution = () => {
           {solution.map(([word, comparative, year, superlative]) => (
             <tr key={word}>
               <td>
-                <code>{word}ER</code>
+                <Mono>{word}ER</Mono>
               </td>
               <td>{comparative}</td>
               <td>{year}</td>
               <td>
-                <code>{word}EST</code>
+                <Mono>{word}EST</Mono>
               </td>
               <td>{superlative}</td>
               <td>
-                <code>{`${word}EST`[Math.floor(year / 10) - 1]}</code>
+                <Mono>{`${word}EST`[Math.floor(year / 10) - 1]}</Mono>
               </td>
             </tr>
           ))}
@@ -100,7 +101,7 @@ const Solution = () => {
 
       <p>
         But because this is a puzzle about superlatives, that must be
-        transformed to <code>USE EARLIEST TECHNIQUE</code>.
+        transformed to <Mono>USE EARLIEST TECHNIQUE</Mono>.
       </p>
 
       <p>
@@ -115,7 +116,7 @@ const Solution = () => {
         page from the archive (with a silly additional superlative as
         confirmation), and the red numbers each overlap with a letter. Taking
         these letters in numeric order spells out the answer,{" "}
-        <code>STUDENT BODY</code>.
+        <PuzzleAnswer>STUDENT BODY</PuzzleAnswer>.
       </p>
 
       <img

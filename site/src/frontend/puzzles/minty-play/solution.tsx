@@ -1,13 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solution from "./assets/solution.pdf";
 
 const FakeP = styled.div`
   margin-bottom: 1em;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Puzzle = (): JSX.Element => {
@@ -79,10 +76,7 @@ const Puzzle = (): JSX.Element => {
       </p>
       <p>
         The well-known Rice Krispie mascots of course could only have attended{" "}
-        <Mono>
-          <strong>RICE UNIVERSITY</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>RICE UNIVERSITY</PuzzleAnswer>.
       </p>
     </>
   );

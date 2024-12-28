@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const HEADERS = ["Order", "Before", "After", "Extraction"];
 
@@ -76,10 +77,6 @@ const ROWS: Row[] = [
     highlights: [5, 8],
   },
 ];
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const StyledTd = styled.td`
   padding: 0px 8px;
@@ -169,11 +166,7 @@ const Solution = () => {
         This looks like an odd “after” answer! Solvers must then undo the
         transformation, spoonerizing the two pairs of words and changing one
         letter in each to get <Mono>RAGING BULL LAST NAME</Mono>, which is a
-        clue to the final answer:{" "}
-        <Mono>
-          <strong>LAMOTTA</strong>
-        </Mono>
-        .
+        clue to the final answer: <PuzzleAnswer>LAMOTTA</PuzzleAnswer>.
       </p>
       <p>
         Note that the puzzle title is also a representative transformation and

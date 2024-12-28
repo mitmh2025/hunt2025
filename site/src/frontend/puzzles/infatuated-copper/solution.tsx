@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import solution from "./assets/solution.png";
 
 const StyledTable = styled.table`
@@ -13,10 +14,6 @@ const StyledTable = styled.table`
 
 const Red = styled.span`
   color: red;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const DATA = [
@@ -307,10 +304,7 @@ const Solution = (): JSX.Element => {
       <p>
         If you sent us a statement, in the style of The Magnus Archives
         (“Statement begins…”), you would have received the answer{" "}
-        <Mono>
-          <strong>POSANGAR</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>POSANGAR</PuzzleAnswer>.
       </p>
     </>
   );

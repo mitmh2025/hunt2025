@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -40,10 +37,7 @@ const Solution = (): JSX.Element => {
         final letter extraction from each final word. The final phrase is{" "}
         <Mono>ONE BIT BLENDED IN PAN FIVE FOUR</Mono>, which is wordplay for the
         final answer, <Mono>P(ONEBIT)*AN</Mono>, or{" "}
-        <Mono>
-          <strong>PINTO BEAN</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>PINTO BEAN</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>

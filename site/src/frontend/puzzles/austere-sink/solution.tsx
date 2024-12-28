@@ -1,11 +1,7 @@
 import React from "react";
-import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import solution from "./assets/solution.png";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const Solution = (): JSX.Element => {
   return (
@@ -39,10 +35,7 @@ const Solution = (): JSX.Element => {
       <p>
         Solve those to get single-letter-distance pairs, then take the
         difference letter from the word that’s starred to spell{" "}
-        <Mono>
-          <strong>SILK</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>SILK</PuzzleAnswer>.
       </p>
       <LinkedImage
         src={solution}

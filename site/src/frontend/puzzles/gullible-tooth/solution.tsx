@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.div`
-  font-family: monospace;
-`;
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const Table = styled.table`
   max-width: 800px;
@@ -42,29 +39,29 @@ const Solution = () => {
         instruction, and “a slice” can be taken (the 4th letters) to spell out
         the answer SLIVERS.
       </p>
-      <Mono>
+      <div>
         <div>
-          TRE<strong>S</strong>LECHES
+          TRE<PuzzleAnswer>S</PuzzleAnswer>LECHES
         </div>
         <div>
-          LOL<strong>L</strong>Y
+          LOL<PuzzleAnswer>L</PuzzleAnswer>Y
         </div>
         <div>
-          BAT<strong>I</strong>K
+          BAT<PuzzleAnswer>I</PuzzleAnswer>K
         </div>
         <div>
-          RED<strong>V</strong>ELVET
+          RED<PuzzleAnswer>V</PuzzleAnswer>ELVET
         </div>
         <div>
-          CAT<strong>E</strong>RPILLAR
+          CAT<PuzzleAnswer>E</PuzzleAnswer>RPILLAR
         </div>
         <div>
-          OPE<strong>R</strong>A
+          OPE<PuzzleAnswer>R</PuzzleAnswer>A
         </div>
         <div>
-          CAS<strong>S</strong>AVA
+          CAS<PuzzleAnswer>S</PuzzleAnswer>AVA
         </div>
-      </Mono>
+      </div>
 
       <p>The full recipes are:</p>
 

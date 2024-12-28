@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const SolutionTable = styled.table`
   border-collapse: collapse;
@@ -255,7 +256,7 @@ const Solution = () => {
               <td>{word}</td>
               <td>{response}</td>
               <td>
-                <code>{extraction}</code>
+                <Mono>{extraction}</Mono>
               </td>
             </tr>
           ))}
@@ -264,7 +265,7 @@ const Solution = () => {
 
       <p>
         And when we read each letter in order, we get the answer to the puzzle,{" "}
-        <code>SPACE WARSHIPS</code>.
+        <PuzzleAnswer>SPACE WARSHIPS</PuzzleAnswer>.
       </p>
     </>
   );

@@ -1,15 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const MonoTD = styled.td`
-  font-family: monospace;
-`;
-
-const MonoP = styled.p`
-  font-family: monospace;
-`;
-const BoldMonoP = styled(MonoP)`
-  font-weight: bold;
+  font-family:
+    Roboto Mono,
+    monospace;
 `;
 
 const Solution = () => {
@@ -95,9 +91,9 @@ const Solution = () => {
       </pre>
       {/* prettier-ignore */}
       <pre>    M        I   L     +   (L+I+M)←    E.      T.     E.    R.   S.</pre>
-      <BoldMonoP>MILLIMETERS</BoldMonoP>
+      <PuzzleAnswer>MILLIMETERS</PuzzleAnswer>
       <p>
-        <code>--</code> is M in morse code. One, in roman numerals, is I. Large
+        <Mono>--</Mono> is M in morse code. One, in roman numerals, is I. Large
         simply becomes L. We echo the MIL in reverse for “and retreating”. The
         remaining five letters are the first letters of the five words preceding
         “openers” – the opener of each word.

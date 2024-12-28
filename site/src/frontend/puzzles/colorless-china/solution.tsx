@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const SUSPECTS_DATA = [
   {
@@ -386,10 +387,6 @@ const StyledTable = styled.table`
   }
 `;
 
-const Mono = styled.span`
-  font-family: monospace;
-`;
-
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -550,13 +547,10 @@ const Solution = (): JSX.Element => {
       </StyledTable>
       <p>
         These letters spell out the answer:{" "}
-        <Mono>
-          <strong>COOKED BOOK</strong>
-        </Mono>
-        . While it is also possible to use these numbers to extract from the
-        suspects rather than the victims, that extraction does not spell
-        anything reasonable when the letters are ordered by the time on the
-        receipts (KIETSFPWSN).
+        <PuzzleAnswer>COOKED BOOK</PuzzleAnswer>. While it is also possible to
+        use these numbers to extract from the suspects rather than the victims,
+        that extraction does not spell anything reasonable when the letters are
+        ordered by the time on the receipts (KIETSFPWSN).
       </p>
     </>
   );

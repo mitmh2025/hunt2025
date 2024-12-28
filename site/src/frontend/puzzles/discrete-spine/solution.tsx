@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import birch from "./assets/birch.png";
 import bogey from "./assets/bogey.png";
 import cube from "./assets/cube.png";
@@ -31,12 +32,8 @@ const StyledTable = styled.table`
 
 const MonoTable = styled(StyledTable)`
   td {
-    font-family: monospace;
+    font-family: Roboto Mono;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const LEFT_PAGE = [
@@ -365,10 +362,7 @@ const Solution = (): JSX.Element => {
       <p>
         This transforms the glyphs into a meaningful sequence saying “carmine
         obi three four,” which clues the final answer of the puzzle,{" "}
-        <Mono>
-          <strong>RED SASH</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>RED SASH</PuzzleAnswer>.
       </p>
     </>
   );

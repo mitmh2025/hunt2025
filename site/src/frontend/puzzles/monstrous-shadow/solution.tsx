@@ -2,12 +2,9 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import Spoiler from "../../components/Spoiler";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import background_overlay from "./assets/solution/The-Grand-Illusion-overlay.svg";
 import background from "./assets/solution/The-Grand-Illusion-shell.svg";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const CenteredDiv = styled.div`
   display: flex;
@@ -407,9 +404,9 @@ const Solution = () => {
 
       <p>
         The extracted letters spell <Mono>STAR SIGN AREA</Mono>, a clue for the
-        answer <Mono>ZODIAC</Mono> — the belt of the sky which contains the
-        astrological constellations, but also a brand of inflatable boat
-        renowned for portability, on which Ferdinand made his escape.
+        answer <PuzzleAnswer>ZODIAC</PuzzleAnswer> — the belt of the sky which
+        contains the astrological constellations, but also a brand of inflatable
+        boat renowned for portability, on which Ferdinand made his escape.
       </p>
     </>
   );

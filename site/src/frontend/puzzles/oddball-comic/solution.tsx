@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image10 from "./assets/image10.png";
 import image2 from "./assets/image2.png";
@@ -11,10 +12,6 @@ import image6 from "./assets/image6.png";
 import image7 from "./assets/image7.png";
 import image8 from "./assets/image8.png";
 import image9 from "./assets/image9.png";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const Group = styled.div`
   margin-bottom: 1em;
@@ -95,11 +92,7 @@ const Solution = (): JSX.Element => {
         After each stage direction this changes. The subsequent line of dialogue
         contains, hidden in it, the name of the geometry with one letter
         changed. The new letters are extracted, and, in story order, spell the
-        answer{" "}
-        <Mono>
-          <strong>IT TAKES TWO</strong>
-        </Mono>
-        .
+        answer <PuzzleAnswer>IT TAKES TWO</PuzzleAnswer>.
       </p>
       <h3>Annotated Full Solution</h3>
       <Group>

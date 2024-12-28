@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -168,11 +165,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         When solvers brought a baked good to the Gala, they were offered the
-        final answer,{" "}
-        <Mono>
-          <strong>BANANA BREAD</strong>
-        </Mono>
-        .
+        final answer, <PuzzleAnswer>BANANA BREAD</PuzzleAnswer>.
       </p>
       <h3>Full data set</h3>
       <p>In presentational order:</p>

@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -7,10 +8,6 @@ const StyledTable = styled.table`
   th {
     padding: 1px 8px;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -389,10 +386,7 @@ const Solution = (): JSX.Element => {
         the retired hurricane’s path and comparing it to the note. The 5
         hurricanes paths also provide a sorting to use for the 5 extracted
         letters. When sorted, the letters will spell the final answer,{" "}
-        <Mono>
-          <strong>ABOUT</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>ABOUT</PuzzleAnswer>.
       </p>
     </>
   );

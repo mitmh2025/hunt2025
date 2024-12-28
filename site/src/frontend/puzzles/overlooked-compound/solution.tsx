@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledP = styled.p`
   margin-left: 16px;
@@ -126,10 +123,7 @@ const Solution = (): JSX.Element => {
       <p>
         The extraction is the silent letters themselves, instructing the solver
         to <Mono>ANSWER SPEECH</Mono>, giving the final answer:{" "}
-        <Mono>
-          <strong>SPEECH</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>SPEECH</PuzzleAnswer>.
       </p>
       <p>
         Note that a silent R is required (in ca[r]go), which is enabled by using

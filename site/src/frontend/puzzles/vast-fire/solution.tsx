@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -7,10 +8,6 @@ const StyledTable = styled.table`
   td {
     padding: 0px 8px;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -352,10 +349,7 @@ const Solution = (): JSX.Element => {
       </StyledTable>
       <p>
         A type of group composed of nine musicians is a{" "}
-        <Mono>
-          <strong>NONET</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>NONET</PuzzleAnswer>.
       </p>
       <h3>Acknowledgements</h3>
       <p>

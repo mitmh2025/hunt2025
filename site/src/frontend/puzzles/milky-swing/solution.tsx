@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -39,10 +36,7 @@ const Solution = (): JSX.Element => {
         joystick controls for the friendship move of each character he visits,
         starting from the corner of the map as designated by the illustrated
         figure. Take the letter of the house at each stop to extract the answer:
-        <Mono>
-          <strong>FOOTSTEPS</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>FOOTSTEPS</PuzzleAnswer>.
       </p>
       <p>
         The full list of controls/movements is shown below. As implied by the
