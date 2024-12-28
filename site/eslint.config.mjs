@@ -148,6 +148,15 @@ export default tseslint.config(
     ...tseslint.configs.disableTypeChecked,
   },
   {
+    // Don't waste time type-checking typeset puzzles, since they are just
+    // rendering static markup
+    files: [
+      "src/frontend/puzzles/*/puzzle.tsx",
+      "src/frontend/puzzles/*/solution.tsx",
+    ],
+    ...tseslint.configs.disableTypeChecked,
+  },
+  {
     // ops site / Vite overrides
     files: ["ops/**/*"],
     rules: {
