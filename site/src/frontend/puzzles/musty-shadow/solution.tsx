@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image25 from "./assets/image25.png";
 import image26 from "./assets/image26.png";
@@ -57,10 +58,6 @@ const ColoredSquare = styled.div<{ $color: string }>`
 const EmojiImg = styled.img`
   width: 56px;
   height: 56px;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const SONG_NAMES: { characters: string; redIndex: number }[] = [
@@ -659,10 +656,7 @@ const Solution = (): JSX.Element => {
       <p>
         The music notes can then be used to index into the missing surprise
         songs and extract the final solution,{" "}
-        <Mono>
-          <strong>LUCKIER</strong>
-        </Mono>
-        !
+        <PuzzleAnswer>LUCKIER</PuzzleAnswer>!
       </p>
       <StyledTable>
         <tr>

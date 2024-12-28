@@ -33,7 +33,9 @@ export const FlexWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
   margin-top: 2em;
   margin-bottom: 2em;
 `;

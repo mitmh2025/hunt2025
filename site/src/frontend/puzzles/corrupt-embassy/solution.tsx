@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const Answer = styled.div`
   margin: 1em 0;
@@ -228,10 +225,8 @@ const Solution = (): JSX.Element => {
         (E in this case) gives the clue phrase TARIFA SONG ALBANIAN. Eneda
         Tarifa represented Albania with the song ‘Fairytale’ in Eurovision in
         2016, but its original title in Albanian was{" "}
-        <Mono>
-          <strong>PERRALLE</strong>
-        </Mono>
-        , which is the answer to the puzzle.
+        <PuzzleAnswer>PERRALLE</PuzzleAnswer>, which is the answer to the
+        puzzle.
       </p>
       <h3>Full solution</h3>
       <p>

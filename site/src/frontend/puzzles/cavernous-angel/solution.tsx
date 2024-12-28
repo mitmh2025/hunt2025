@@ -1,21 +1,18 @@
 import React from "react";
 import { styled } from "styled-components";
 import Dropquote from "../../components/Dropquote";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { LAST_DROPQUOTE, makeFill, makeLabels } from "./puzzle";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
   td {
-    font-family: monospace;
+    font-family: Roboto Mono;
   }
   td,
   th {
     padding: 1px 8px;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const StyledDropquote = styled(Dropquote)`
@@ -363,10 +360,7 @@ const Solution = (): JSX.Element => {
       <p>
         Annabelle and Tell Me Again are both Dessa songs, and the blank words
         from the corresponding lyrics yield the answer,{" "}
-        <Mono>
-          <strong>EVENING NEWS</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>EVENING NEWS</PuzzleAnswer>.
       </p>
     </>
   );

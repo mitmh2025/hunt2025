@@ -1,8 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const PreCode = styled.pre`
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
 `;
 
 const givenGrid = `COMMONYELLOWHEADED
@@ -151,12 +154,12 @@ const Solution = () => {
       </p>
 
       <p>
-        <code>PENGUINS WILL YOU BE MINE</code>
+        <Mono>PENGUINS WILL YOU BE MINE</Mono>
       </p>
 
       <p>
         Which clues the Penguins’ hit song, and the answer to the puzzle,{" "}
-        <code>EARTH ANGEL</code>.
+        <PuzzleAnswer>EARTH ANGEL</PuzzleAnswer>.
       </p>
     </>
   );

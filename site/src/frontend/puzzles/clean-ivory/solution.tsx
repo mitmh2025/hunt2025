@@ -12,6 +12,7 @@ import {
   MSub,
   MSup,
 } from "../../components/MathML";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
@@ -25,10 +26,6 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -863,12 +860,9 @@ const Solution = (): JSX.Element => {
         as hinted at by the word “irrational”, you get 20, 9, 12, 5, 3, 21, 20,
         20, 5 and 18 which are all in the range 1 to 26. Taking the
         corresponding letter of the alphabet (1=A, 2=B, etc.), you get the
-        answer{" "}
-        <Mono>
-          <strong>TILECUTTER</strong>
-        </Mono>
-        . Appropriate for a puzzle in which aperiodic mono-<Mono>TILE</Mono>s
-        were made using a laser <Mono>CUTTER</Mono>.
+        answer <PuzzleAnswer>TILECUTTER</PuzzleAnswer>. Appropriate for a puzzle
+        in which aperiodic mono-<Mono>TILE</Mono>s were made using a laser{" "}
+        <Mono>CUTTER</Mono>.
       </p>
       <h3>Helpful links</h3>
       <ul>

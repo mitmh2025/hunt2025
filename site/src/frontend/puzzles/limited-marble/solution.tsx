@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   th,
@@ -40,12 +37,9 @@ const Solution = (): JSX.Element => {
       <p>
         The title is “keyboard” typed on the Kannada script keyboard. Following
         this instruction and typing out the given sequence of keys, solvers get
-        “ಸ್ಕೆಚ್‌ಪ್ಯಾಡ್”, or{" "}
-        <Mono>
-          <strong>SKETCHPAD</strong>
-        </Mono>
-        . (Note that this word is a loan word from English, so hopefully solvers
-        can get most of the way there even with an error in a key or two.)
+        “ಸ್ಕೆಚ್‌ಪ್ಯಾಡ್”, or <PuzzleAnswer>SKETCHPAD</PuzzleAnswer>. (Note that
+        this word is a loan word from English, so hopefully solvers can get most
+        of the way there even with an error in a key or two.)
       </p>
       <h3>Full data set</h3>
       <StyledTable>

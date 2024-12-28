@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono } from "../../components/StyledUI";
 import activation from "./assets/activation.mp3";
 import activationCaptions from "./assets/activation.vtt";
 import footIcon from "./assets/foot.svg";
@@ -19,7 +20,9 @@ const PuzzleTable = styled.table`
   }
 
   tbody tr td:nth-child(2) {
-    font-family: monospace;
+    font-family:
+      Roboto Mono,
+      monospace;
   }
 `;
 
@@ -30,7 +33,9 @@ const Image = styled.img`
 
 const CrissCrossTable = styled.table`
   margin: 1em auto;
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
   border-collapse: collapse;
 
   td {
@@ -271,9 +276,9 @@ const Solution = () => {
       <p>
         The circles around the points where two words intersect indicate that
         teams should read those letters. Reading them in order starting from the
-        top-left yields the phrase: <code>DAWN IF YOU WANT ME</code>. This is a
+        top-left yields the phrase: <Mono>DAWN IF YOU WANT ME</Mono>. This is a
         reference to a song by Tony Orlando and Dawn whose title,{" "}
-        <code>KNOCK THREE TIMES</code>, forms the final, three-music-note answer
+        <Mono>KNOCK THREE TIMES</Mono>, forms the final, three-music-note answer
         from the originally provided list.
       </p>
 
@@ -306,27 +311,27 @@ const Solution = () => {
 
       <ul>
         <li>
-          <IconImage src={lightIcon} /> (<code>LIGHT</code>): Shine a light into
+          <IconImage src={lightIcon} /> (<Mono>LIGHT</Mono>): Shine a light into
           the hole on the rear of the radio
         </li>
         <li>
-          <IconImage src={footIcon} /> (<code>FOOT</code>): Touch any of the
+          <IconImage src={footIcon} /> (<Mono>FOOT</Mono>): Touch any of the
           bolt heads on the bottom of the radio’s feet
         </li>
         <li>
-          <IconImage src={playIcon} /> (<code>BUTTON</code>): Press the button
+          <IconImage src={playIcon} /> (<Mono>BUTTON</Mono>): Press the button
           labeled with a triangle on the front of the radio
         </li>
         <li>
-          <IconImage src={questionIcon} /> (<code>KNOCK THREE TIMES</code>):
+          <IconImage src={questionIcon} /> (<Mono>KNOCK THREE TIMES</Mono>):
           Knock on the radio (for this stage, only a single knock is required)
         </li>
         <li>
-          <IconImage src={magnetIcon} /> (<code>MAGNET</code>): Hold a magnet
+          <IconImage src={magnetIcon} /> (<Mono>MAGNET</Mono>): Hold a magnet
           against the symbol on the back of the radio
         </li>
         <li>
-          <IconImage src={headphonesIcon} /> (<code>HEADPHONES</code>): Insert a
+          <IconImage src={headphonesIcon} /> (<Mono>HEADPHONES</Mono>): Insert a
           headphone plug into the 3.5mm jack on the side of the radio
         </li>
       </ul>

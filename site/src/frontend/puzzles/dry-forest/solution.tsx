@@ -1,10 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-  font-weight: bold;
-`;
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTh = styled.th`
   font-weight: bold;
@@ -38,7 +34,7 @@ const Table = ({
               if (k === 1) {
                 cellContent = <a href={HF_LINKS[j]}>{cell}</a>;
               } else if (k === 5) {
-                cellContent = <Mono>{cell}</Mono>;
+                cellContent = <PuzzleAnswer>{cell}</PuzzleAnswer>;
               }
               return (
                 <StyledTd key={`table-row-${j}-cell-${k}`}>
@@ -158,7 +154,7 @@ const Solution = () => {
         clued by the flavor text (‘knights settling their differences’), solvers
         must identify the two fighters and calculate the difference of their
         jersey numbers. Taken as A1Z26 in given order, this spells out{" "}
-        <Mono>FIVE HOLE</Mono>.
+        <PuzzleAnswer>FIVE HOLE</PuzzleAnswer>.
       </p>
       <Table headers={HEADERS} rows={ROWS} />
       <p id="footnote-1">

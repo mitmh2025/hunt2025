@@ -30,6 +30,22 @@
   src: url("../../assets/PermanentMarker.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "Roboto Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../../assets/RobotoMono-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  font-style: bold;
+  font-display: swap;
+  font-weight: 700;
+  src: url("../../assets/RobotoMono-Bold.ttf") format("truetype");
+}
+
 /* Colors */
 :root {
   --true-white: #ffffff;

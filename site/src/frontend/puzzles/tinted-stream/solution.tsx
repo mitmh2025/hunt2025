@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import genogram1 from "./assets/solution-genogram1.png";
 import genogram2 from "./assets/solution-genogram2.png";
 import genogram3 from "./assets/solution-genogram3.png";
@@ -22,10 +23,6 @@ import grid6 from "./assets/solution-grid6.png";
 import grid7 from "./assets/solution-grid7.png";
 import grid8 from "./assets/solution-grid8.png";
 import grid9 from "./assets/solution-grid9.png";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const ImageWrapper = styled.div`
   margin: 3em 0;
@@ -85,11 +82,7 @@ const Solution = (): JSX.Element => {
         Jane Austen died with four works unfinished: Catherine, Lady Susan,
         Sanditon, and The Watsons. Only The Watsons, which she stopped writing
         and abandoned early in her career, can be associated with an eight
-        letter plant genus:{" "}
-        <Mono>
-          <strong>WATSONIA</strong>
-        </Mono>
-        .
+        letter plant genus: <PuzzleAnswer>WATSONIA</PuzzleAnswer>.
       </p>
       <p>
         Thank you to Recycled Movie Costumes, a site without which this puzzle

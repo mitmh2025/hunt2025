@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import img1 from "./assets/img1.png";
 import img10 from "./assets/img10.png";
 import img11 from "./assets/img11.png";
@@ -19,14 +20,12 @@ import img9 from "./assets/img9.png";
 import solution1 from "./assets/solution1.png";
 import solution2 from "./assets/solution2.png";
 
-const Mono = styled.span`
-  font-family: monospace;
-`;
-
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin: 1em 0em;
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
   width: 100%;
   th,
   td {
@@ -68,10 +67,7 @@ const Solution = (): JSX.Element => {
         now need to find more international Lay’s flavors, but with occasional
         right turns. Highlighting all of these creates the shape of letters in
         the grid, spelling out the answer, <Mono>FISH + CHIPS</Mono>, or{" "}
-        <Mono>
-          <strong>FISH AND CHIPS</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>FISH AND CHIPS</PuzzleAnswer>.
       </p>{" "}
       <LinkedImage
         src={solution1}

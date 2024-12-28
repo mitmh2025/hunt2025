@@ -1,14 +1,13 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const Columns = styled.div`
   margin: 1em 0;
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
 `;
 
 const PreformattedDiv = styled.div`
@@ -224,10 +223,7 @@ const Solution = (): JSX.Element => {
         of the permutation is the most likely place for it to go considering the
         numerical values. Once that is placed we can fill in the final letters
         with a bit of trial and error to give the answer:{" "}
-        <Mono>
-          <strong>LITTLE GREEN HOUSE</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>LITTLE GREEN HOUSE</PuzzleAnswer>.
       </p>
       <p>
         Technically the house shape is recoverable with just one

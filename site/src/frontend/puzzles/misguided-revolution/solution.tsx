@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import disneyWorldMap from "./assets/disney_world_map.png";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
@@ -17,10 +18,6 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const StyledTable = styled.table`
@@ -436,10 +433,7 @@ const Solution = (): JSX.Element => {
         Universal Studios/Islands of Adventure.
       </p>
       <p>
-        The final solution is{" "}
-        <Mono>
-          <strong>LONG STRIDE</strong>
-        </Mono>
+        The final solution is <PuzzleAnswer>LONG STRIDE</PuzzleAnswer>.
       </p>
       <p>
         The Magic Kingdom at Walt Disney World gives the word <Mono>LONG</Mono>:

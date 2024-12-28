@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;

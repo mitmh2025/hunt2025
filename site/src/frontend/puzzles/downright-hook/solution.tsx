@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   td,
@@ -22,10 +19,7 @@ const Solution = (): JSX.Element => {
         provided each clue a similar Engl-iiish translation of a Latin phrase
         matching the given enumeration. The first letters of these Latin
         phrases, read in order, tell teams that the <Mono>ANSVVER</Mono> is{" "}
-        <Mono>
-          <strong>SHOPPING CART</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>SHOPPING CART</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>

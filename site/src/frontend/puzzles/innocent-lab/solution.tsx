@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import dog from "./assets/dog.png";
 
 const StyledTable = styled.table`
@@ -30,10 +31,6 @@ const HighlightedTable = styled(StyledTable)`
       border: 1px solid #967470;
     }
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -304,11 +301,7 @@ const Solution = (): JSX.Element => {
         one, except with a new element replacing an atom in the original.
         Reading the elemental abbreviations of the added atoms, in order, spells
         out C Al Li N Es Ca La T I O N, or <Mono>CALL IN ESCALATION</Mono>. The
-        answer is thus{" "}
-        <Mono>
-          <strong>ESCALATION</strong>
-        </Mono>
-        .
+        answer is thus <PuzzleAnswer>ESCALATION</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>

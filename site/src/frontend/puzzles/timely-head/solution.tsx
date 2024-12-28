@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import birdBack from "./assets/bird-back.svg";
 import birdFront from "./assets/bird-front.svg";
 import invitationBack from "./assets/invitation-back.svg";
@@ -16,10 +17,6 @@ const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   gap: 16px;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -103,10 +100,7 @@ const Solution = (): JSX.Element => {
       </FlexWrapper>
       <p>
         The contrasting colored outside dots spell the answer:{" "}
-        <Mono>
-          <strong>DRINKING CUP</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>DRINKING CUP</PuzzleAnswer>.
       </p>
       <h3>Author’s Note</h3>
       <p>

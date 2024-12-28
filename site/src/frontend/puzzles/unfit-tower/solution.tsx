@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import {
   CharacterMessages,
   Characters,
@@ -360,7 +361,7 @@ const Solution = () => {
                   <td>{character}</td>
                   <td>{value}</td>
                   <td>
-                    <code>{letter}</code>
+                    <Mono>{letter}</Mono>
                   </td>
                 </tr>
               );
@@ -370,7 +371,8 @@ const Solution = () => {
       </SolutionTable>
 
       <p>
-        This yields <code>RED BUCKET</code>, which is the answer to the puzzle.
+        This yields <PuzzleAnswer>RED BUCKET</PuzzleAnswer>, which is the answer
+        to the puzzle.
       </p>
     </>
   );

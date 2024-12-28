@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -7,10 +8,6 @@ const StyledTable = styled.table`
   th {
     padding: 1px 8px;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const Solution = (): JSX.Element => {
@@ -301,12 +298,8 @@ const Solution = (): JSX.Element => {
         </tr>
       </StyledTable>
       <p>
-        This spells out{" "}
-        <Mono>
-          <strong>ZAKYNTHOS</strong>
-        </Mono>
-        , the Greek island that Evan is traveling to and the answer to the
-        puzzle.
+        This spells out <PuzzleAnswer>ZAKYNTHOS</PuzzleAnswer>, the Greek island
+        that Evan is traveling to and the answer to the puzzle.
       </p>
       <h3>Author’s Note</h3>
       <p>

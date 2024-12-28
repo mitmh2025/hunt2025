@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -434,10 +431,8 @@ const Solution = (): JSX.Element => {
         require anagramming, because after all they are mixed drinks). Between
         each drink, 1 letter is changed (1 ingredient swapped), and looking at
         the changed letter in order spells the final answer,{" "}
-        <Mono>
-          <strong>FLYER</strong>
-        </Mono>
-        . The full list of drinks and their ingredients is also below.
+        <PuzzleAnswer>FLYER</PuzzleAnswer>. The full list of drinks and their
+        ingredients is also below.
       </p>
       <h3>Full Cocktail Ladder Listing</h3>
       <StyledTable>

@@ -1,11 +1,8 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import { GRID } from "./puzzle";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const StyledCrossword = styled(Crossword)`
   margin-bottom: 1em;
@@ -51,10 +48,7 @@ const Solution = (): JSX.Element => {
         and ends, and solve the crossword puzzle. Upon solving the grid, teams
         will discover that the unbroken diagonal entry (accentuated by the
         design of the grid) spells out{" "}
-        <Mono>
-          <strong>WITHOUT STOPPING</strong>
-        </Mono>
-        , the answer to the puzzle.
+        <PuzzleAnswer>WITHOUT STOPPING</PuzzleAnswer>, the answer to the puzzle.
       </p>
       <StyledCrossword
         labels={GRID}

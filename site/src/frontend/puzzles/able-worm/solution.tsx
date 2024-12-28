@@ -1,12 +1,13 @@
 import React from "react";
 import { styled } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const ClueSolutionTable = styled.table`
   tbody tr td:first-child {
     padding-right: 1rem;
   }
   tbody tr td:nth-child(2) {
-    font-family: monospace;
+    font-family: Roboto Mono;
   }
 `;
 
@@ -20,7 +21,7 @@ const FinalGridTable = styled.table`
   tbody tr td {
     padding-left: 1rem;
     padding-right: 1rem;
-    font-family: monospace;
+    font-family: Roboto Mono;
     text-align: center;
   }
 `;
@@ -51,7 +52,7 @@ const Solution = () => {
         axes (down in the y direction, to the right in the x direction, and
         towards the back for the z direction, hence the title), the triplets at
         the bottom of the puzzle are coordinates in the cube, picking out in
-        order the letters of <code>GUIANA CHESTNUT</code>.
+        order the letters of <PuzzleAnswer>GUIANA CHESTNUT</PuzzleAnswer>.
       </p>
       <p>The answers to all clues and completed grids are below.</p>
 

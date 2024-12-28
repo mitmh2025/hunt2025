@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import image10 from "./assets/image10.png";
 import image11 from "./assets/image11.png";
 import image12 from "./assets/image12.png";
@@ -9,10 +10,6 @@ import image14 from "./assets/image14.png";
 import image15 from "./assets/image15.png";
 import image16 from "./assets/image16.png";
 import image9 from "./assets/image9.png";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -40,11 +37,7 @@ const Solution = (): JSX.Element => {
         extract the center letter of each instruction to get the answer. That
         is, from an instruction of length N alphabetic characters, to extract
         the [(N+1)/2]th alphabetic character. This extracts the answer to the
-        puzzle,{" "}
-        <Mono>
-          <strong>FIORE SARDO</strong>
-        </Mono>
-        .
+        puzzle, <Mono>FIORE SARDO</Mono>.
       </p>
       <p>
         However, that is not the intended solve path. This line of thinking
@@ -1034,10 +1027,7 @@ const Solution = (): JSX.Element => {
         also indicated by how the instructions don’t just have an odd length,
         but a length congruent to 3 modulo 4, allowing a unique letter to be
         extracted as the [(N+1)*3/4]th alphabetic character. This extracts the
-        secondary answer to the puzzle,{" "}
-        <Mono>
-          <strong>SPARE PARTS</strong>
-        </Mono>
+        secondary answer to the puzzle, <PuzzleAnswer>SPARE PARTS</PuzzleAnswer>
         .
       </p>
     </>

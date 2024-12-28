@@ -1,10 +1,13 @@
 import React from "react";
 import { styled } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import solution from "./assets/solution.mp4";
 
 const Sudoku = styled.table`
   margin-bottom: 1em;
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
   border-collapse: collapse;
   border: 2px solid black;
   tr:nth-child(3n) {
@@ -23,14 +26,6 @@ const Sudoku = styled.table`
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
-  td,
-  th {
-    padding: 1px 8px;
-  }
 `;
 
 const GRID = [
@@ -175,11 +170,7 @@ const Solution = (): JSX.Element => {
         </tr>
       </StyledTable>
       <p>
-        which is{" "}
-        <Mono>
-          <strong>MORTHOND</strong>
-        </Mono>
-        .
+        which is <PuzzleAnswer>MORTHOND</PuzzleAnswer>.
       </p>
       <h3>Video walkthrough</h3>
       <p>

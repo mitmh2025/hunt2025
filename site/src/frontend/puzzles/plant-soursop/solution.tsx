@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   td {
@@ -107,10 +104,7 @@ const Solution = (): JSX.Element => {
         a word from the midst of each clue. Additionally, each answer is an odd
         number of letters—either five or seven. This primes teams to extract the
         center letter. Doing so provides the phrase <Mono>ANSKNIFEWER</Mono>. By
-        repeating the mechanic, teams extract{" "}
-        <Mono>
-          <strong>KNIFE</strong>
-        </Mono>
+        repeating the mechanic, teams extract <PuzzleAnswer>KNIFE</PuzzleAnswer>
         , the answer.
       </p>
       <StyledTable>

@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import Spoiler from "../../components/Spoiler";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import step1 from "./assets/step1.png";
 
 const PreCode = styled.code`
@@ -419,7 +420,7 @@ _,UNDERSCORE
       </table>
 
       <p>
-        The answer is <code>HMS ALCASTON</code>.
+        The answer is <PuzzleAnswer>HMS ALCASTON</PuzzleAnswer>.
       </p>
 
       <h3>Author notes</h3>

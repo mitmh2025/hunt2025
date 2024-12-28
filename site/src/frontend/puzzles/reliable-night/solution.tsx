@@ -1,19 +1,20 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import bracelet from "./assets/bracelet.png";
 
 const MonospacedDiv = styled.div`
-  font-family: monospace;
+  font-family:
+    Roboto Mono,
+    monospace;
   white-space: pre;
 `;
-const Red = styled.span`
-  font-family: monospace;
+const Red = styled(Mono)`
   font-weight: bold;
   color: red;
 `;
-const Blue = styled.span`
-  font-family: monospace;
+const Blue = styled(Mono)`
   color: blue;
 `;
 
@@ -23,8 +24,8 @@ const Solution = () => {
       <p>
         Solvers should notice that each feeder puzzle answer has exactly two
         trigrams (three characters) that each match a trigram in another answer,
-        but in the opposite direction. For example, <code>PID</code> in one
-        answer and <code>DIP</code> in another answer. Some of these are within
+        but in the opposite direction. For example, <Mono>PID</Mono> in one
+        answer and <Mono>DIP</Mono> in another answer. Some of these are within
         the answer, and some trigrams “wrap” from the end of the answer to the
         beginning.
       </p>
@@ -41,16 +42,16 @@ const Solution = () => {
       />
       <p>
         The flavor text hints that solvers should “start off,” which indicates
-        the starting trigram and its direction. Starting with <code>OFF</code>,
+        the starting trigram and its direction. Starting with <Mono>OFF</Mono>,
         the shared trigrams can be read around the cycle in two directions. One
         direction gives the answer:
       </p>
       <p>
-        <code>OFFER CARAT TO A LAPIDARY</code>
+        <PuzzleAnswer>OFFER CARAT TO A LAPIDARY</PuzzleAnswer>
       </p>
       <p>
         Teams might also have arranged the answers in a stack to visualize
-        trigram overlap, as below. Again starting with <code>OFF</code> and then
+        trigram overlap, as below. Again starting with <Mono>OFF</Mono> and then
         reading each new trigram (shown in bold red below, with the matching
         “chain” trigram in blue), the answer appears:
       </p>
@@ -88,7 +89,7 @@ const Solution = () => {
         The feeder answers were surprisingly constrained by the trigrams,
         because we wanted to avoid having any trigrams that weren’t part of the
         final answer shared between feeder answers. However, we worked hard to
-        make sure <code>PIDAKALA WAR</code> was included so that we could make
+        make sure <Mono>PIDAKALA WAR</Mono> was included so that we could make
         poop jokes.
       </p>
     </div>

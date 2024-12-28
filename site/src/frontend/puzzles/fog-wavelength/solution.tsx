@@ -1,12 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import flute from "./assets/CacciandoTrio-Flute.pdf";
 import piano from "./assets/CacciandoTrio-Piano.pdf";
 import tuba from "./assets/CacciandoTrio-Tuba.pdf";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -173,11 +170,8 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Assembling part 1 “AND” part 2 as clued by the bass line, we arrive at
-        the answer:{" "}
-        <Mono>
-          <strong>WALTZES AND MARCHES</strong>
-        </Mono>
-        , matching the provided enumeration 7 3 7.
+        the answer: <PuzzleAnswer>WALTZES AND MARCHES</PuzzleAnswer>, matching
+        the provided enumeration 7 3 7.
       </p>
       <p>
         For completeness, here are the actual music scores for the three parts.

@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import assembled_solution from "./assets/solution/The-Mark-assembly.svg";
 import candidate_chips from "./assets/solution/The-Mark-candidate-chips-FQGDUK-PLAZYC-ORBEJN-HMSTVI.svg";
 import answer_chips_chivipane from "./assets/solution/The-Mark-candidate-partial-chivipane-~~~~~~-P~A~~C-~~~E~N-H~~~VI-1.svg";
@@ -17,17 +18,15 @@ export const Aside = styled.aside`
   padding: 0 1em 1em 1em;
 `;
 
-const Mono = styled.span`
-  font-family: monospace;
-`;
-
 const BigramSplitsTable = styled.table`
   border: none;
   td {
     min-width: 120px;
     text-align: center;
     padding: 0 1em;
-    font-family: monospace;
+    font-family:
+      Roboto Mono,
+      monospace;
   }
 `;
 const BigramSplits = ({ options }: { options: string[] }) => {
@@ -48,7 +47,9 @@ const ChipBreakdownShared = styled.table`
   border-collapse: collapse;
   border: 1px solid var(--black);
   td {
-    font-family: monospace;
+    font-family:
+      Roboto Mono,
+      monospace;
     border: 1px solid var(--black);
     width: 70px;
     text-align: center;
@@ -634,7 +635,7 @@ const Solution = () => {
         to the as-yet-unused clue to “count your stacks,” solvers simply need to
         total the values in each column, at which time they will likely
         recognize the totals fall in the ASCII range of capital letters. Left to
-        right, they spell <Mono>PANDORA</Mono>.
+        right, they spell <PuzzleAnswer>PANDORA</PuzzleAnswer>.
       </p>
 
       <Aside>

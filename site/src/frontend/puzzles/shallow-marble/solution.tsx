@@ -1,6 +1,7 @@
 import React, { useCallback, type CSSProperties } from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { DownRightClues, UpClues } from "./data";
 
 const SolutionTable = styled.table`
@@ -270,8 +271,9 @@ const Solution = () => {
 
       <p>
         There are two rows in this grid with no black squares. These two rows
-        read <code>FIRST WORD GREEDY</code> and <code>SECOND WORD PIGGY</code>.
-        The answer to the puzzle is therefore <code>GREEDY PIGGY</code>.
+        read <Mono>FIRST WORD GREEDY</Mono> and <Mono>SECOND WORD PIGGY</Mono>.
+        The answer to the puzzle is therefore{" "}
+        <PuzzleAnswer>GREEDY PIGGY</PuzzleAnswer>.
       </p>
 
       <p>All clue answers are as follows:</p>
@@ -291,7 +293,7 @@ const Solution = () => {
               <td>{num}</td>
               <td>{clue}</td>
               <td>
-                <code>{answer}</code>
+                <Mono>{answer}</Mono>
               </td>
             </tr>
           ))}
@@ -313,7 +315,7 @@ const Solution = () => {
               <td>{num}</td>
               <td>{clue}</td>
               <td>
-                <code>{answer}</code>
+                <Mono>{answer}</Mono>
               </td>
             </tr>
           ))}

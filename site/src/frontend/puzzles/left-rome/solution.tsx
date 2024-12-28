@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { Centered, StyledOl } from "./puzzle";
 
 const DONUT_CARD_1: { quantity: number; flavor: string; extraction: string }[] =
@@ -2332,10 +2333,6 @@ const StyledTable = styled.table`
   border-spacing: 8px 0px;
 `;
 
-const Mono = styled.span`
-  font-family: monospace;
-`;
-
 const RouteTable = styled(StyledTable)`
   width: 100%;
   table-layout: fixed;
@@ -2459,11 +2456,7 @@ const Solution = (): JSX.Element => {
         ))}
       </StyledTable>
       <p>
-        This spells out the final answer,{" "}
-        <Mono>
-          <strong>VOYAGERS</strong>
-        </Mono>
-        .
+        This spells out the final answer, <PuzzleAnswer>VOYAGERS</PuzzleAnswer>.
       </p>
       <h3>Full route walkthrough</h3>
       <p>

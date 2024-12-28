@@ -1,9 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-
-const Mono = styled.span`
-  font-family: monospace;
-`;
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -141,10 +138,7 @@ const Solution = (): JSX.Element => {
         blanks as two specific letters. In order, the blanks used are:{" "}
         <Mono>IN BM EL EF ET</Mono>. By selecting an ordering of the blanks
         within each pair, this can be arranged to spell{" "}
-        <Mono>
-          <strong>NIMBLE FEET</strong>
-        </Mono>
-        .
+        <PuzzleAnswer>NIMBLE FEET</PuzzleAnswer>.
       </p>
       {GROUPS.map(({ blanks, cluesAndAnswers }, i) => (
         <StyledTable key={`group-${i}`}>

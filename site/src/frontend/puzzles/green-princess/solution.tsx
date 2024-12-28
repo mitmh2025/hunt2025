@@ -1,8 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const MonoUL = styled.ul`
-  font-family: monospace;
+  font-family: Roboto Mono;
 `;
 
 const Table = styled.table`
@@ -93,32 +94,32 @@ const Solution = () => {
 
       <p>
         These are all MIT commencement speakers (2013-2023). The letters between
-        the first and last names in year order spell <code>ROT THIRTEEN</code>.
+        the first and last names in year order spell <Mono>ROT THIRTEEN</Mono>.
         (Solvers will discover those are not their middle initials.) Solvers
         must take all the letters of the word search not used by the above words
         and rot-13 them to get a message.
       </p>
       <p>The remaining letters are:</p>
       <p>
-        <code>
+        <Mono>
           PBATENGHYNGVBAF BA LBHE PBZZRAPRZRAG OHG GURER VF DHVGR N OVG ZBER
           CHMMYR NURNQ BS LBH ABJ VS LBH JBHYQ OR FB XVAQ GB CYRNFR HFR N FVK
           YRGGRE JBEQ IVTRARER XRL GB QRPVCURE GUR SBYYBJVAT HURGKIGTDCJMAJEC
-        </code>
+        </Mono>
       </p>
       <p>After ROT13 they spell out:</p>
       <p>
-        <code>
+        <Mono>
           CONGRATULATIONS ON YOUR COMMENCEMENT BUT THERE IS QUITE A BIT MORE
           PUZZLE AHEAD OF YOU NOW IF YOU WOULD BE SO KIND TO PLEASE USE A SIX
           LETTER WORD VIGENERE KEY TO DECIPHER THE FOLLOWING UHETXVTGQPWZNWRP
-        </code>
+        </Mono>
       </p>
       <p>
         Now solvers must use the diagram with the columns and the dome, which
         tells them to take six answers with the appropriate first letters (e.g.
         an answer starting with L), and extract the third letter of each, to get
-        a word (<code>COPPER</code>, which happens to be nicely dome-related).
+        a word (<Mono>COPPER</Mono>, which happens to be nicely dome-related).
       </p>
       <p>
         This step is intentionally a little unconstrained (there are 2 answers
@@ -130,8 +131,9 @@ const Solution = () => {
       </p>
       <p>
         Solvers then use this word as a key to decrypt{" "}
-        <code>UHETXVTGQPWZNWRP</code> into <code>ST PETERS BASILICA</code>, the
-        final answer, and also a great dome.
+        <Mono>UHETXVTGQPWZNWRP</Mono> into{" "}
+        <PuzzleAnswer>ST PETERS BASILICA</PuzzleAnswer>, the final answer, and
+        also a great dome.
       </p>
     </>
   );

@@ -10,7 +10,9 @@ const NumbersTable = styled.table`
 
   tr td {
     text-align: center;
-    font-family: monospace;
+    font-family:
+      Roboto Mono,
+      monospace;
   }
 `;
 

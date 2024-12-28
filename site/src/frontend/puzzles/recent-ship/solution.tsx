@@ -1,5 +1,6 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import {
   FlexWrapper,
   makeCells,
@@ -10,10 +11,6 @@ import {
 
 const FakeP = styled.div`
   margin: 1em 0;
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const StyledDetails = styled.details`
@@ -221,10 +218,8 @@ const Solution = (): JSX.Element => {
         Distributing these letters out to the order indicated by the tuples
         gives <Mono>OFFLINE RETAIL</Mono>, which does not fit the given blanks
         but which could be a description of{" "}
-        <Mono>
-          <strong>BRICK AND MORTAR</strong>
-        </Mono>
-        , which does fit the blanks and is the answer.
+        <PuzzleAnswer>BRICK AND MORTAR</PuzzleAnswer>, which does fit the blanks
+        and is the answer.
       </p>
     </>
   );

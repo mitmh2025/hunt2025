@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const Answers: [
   outClue: string,
@@ -93,14 +94,14 @@ const Solution = () => {
             <tr key={i}>
               <td>{outClue}</td>
               <td>
-                <code>{outAnswer}</code>
+                <Mono>{outAnswer}</Mono>
               </td>
               <td>{inClue}</td>
               <td>
-                <code>{inAnswer}</code>
+                <Mono>{inAnswer}</Mono>
               </td>
               <td>
-                <code>{shrunk}</code>
+                <Mono>{shrunk}</Mono>
               </td>
             </tr>
           ))}
@@ -111,22 +112,22 @@ const Solution = () => {
         There are two clues out of the pool which cannot yet be answered: THE
         ANSWER PART ONE and THE ANSWER PART TWO. Likewise there are two answers
         in the pool which have no matching out of the pool answer yet:{" "}
-        <code>NEWS</code> and <code>AMENT</code>.
+        <Mono>NEWS</Mono> and <Mono>AMENT</Mono>.
       </p>
 
       <p>
         Reordering the shrunk words by presentation order of the clues inside
         the pool gives the clue phrase{" "}
-        <code>
+        <Mono>
           THE FLAT IN THE SHOW ABOUT NO THING WHERE THE POST MAN HAS HIS BED
-        </code>
+        </Mono>
         . “The show about no thing” is cluing the show Seinfeld, and the name of
         the postal worker in Seinfeld is Newman. The shrunk words{" "}
-        <code>NEWS</code> and <code>AMENT</code> from outside the pool can then
+        <Mono>NEWS</Mono> and <Mono>AMENT</Mono> from outside the pool can then
         be unshrunk using the clue phrase to give the final answer to the
-        puzzle: <code>NEWMAN’S APARTMENT</code>. Further confirmation that this
+        puzzle: <Mono>NEWMAN’S APARTMENT</Mono>. Further confirmation that this
         is the correct unshrinking is that the “shrunk” words are the words{" "}
-        <code>MAN PART</code>.
+        <PuzzleAnswer>MAN PART</PuzzleAnswer>.
       </p>
     </>
   );

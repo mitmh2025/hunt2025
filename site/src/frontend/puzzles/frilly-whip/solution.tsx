@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { ExtractionCell } from "../monstrous-shadow/solution";
 import { type Blunder, BlundersTable } from "../svelte-conductor/solution";
 import { Aside } from "../unique-australia/solution";
@@ -48,10 +49,6 @@ const ResolutionsTable = styled.table`
   tbody tr td {
     padding-right: 2em;
   }
-`;
-
-const Mono = styled.span`
-  font-family: monospace;
 `;
 
 const CenteredDiv = styled.div`
@@ -507,8 +504,8 @@ const Solution = () => {
         is sampling (also known as decimating). This can be done, for example,
         in <a href="https://www.gimp.org/">GNU Image Manipulation Program</a>{" "}
         using Scale Image with Interpolation of “None” or in Image Magick using{" "}
-        <code>-sample</code> or equivalently <code>-resize</code> with{" "}
-        <code>-filter</code> of “point”. Decimating to each of these resolutions
+        <Mono>-sample</Mono> or equivalently <Mono>-resize</Mono> with{" "}
+        <Mono>-filter</Mono> of “point”. Decimating to each of these resolutions
         reveals a subtle image overlaid on Ferdinand:
       </p>
 
@@ -831,7 +828,7 @@ const Solution = () => {
 
       <p>
         Interpreting the column sums as ASCII yields the answer{" "}
-        <Mono>CALL HIM</Mono>.
+        <PuzzleAnswer>CALL HIM</PuzzleAnswer>.
       </p>
 
       <h2>
