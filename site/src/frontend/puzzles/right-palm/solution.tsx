@@ -236,10 +236,11 @@ const Solution = () => {
 
       <p>Example deduction of the first grid:</p>
       <p>
-        In discussing this deduction, a through i will be used to refer to the
-        value of each cell, and 1 through 9 to refer to the rules. To achieve
-        the desired result of the output grid being the same as the input grid,
-        1 must evaluate to the value of a, 2 to the value of b, etc.
+        In discussing this deduction, the letters a through i will be used to
+        refer to the value of each cell, and the numbers 1 through 9 to refer to
+        the rules. To achieve the desired result of the output grid being the
+        same as the input grid, rule 1 must evaluate to the value of cell a,
+        rule 2 to the value of cell b, etc.
       </p>
 
       <CenteredDivRow>
@@ -256,19 +257,23 @@ const Solution = () => {
 
       <p>Some immediate facts:</p>
       <ul>
-        <li>a and e are equal per 1.</li>
+        <li>Cells a and e are equal per rule 1.</li>
         <li>
-          b is not white, as 2 only evaluates to white when the central column
-          has all three colors out of place.
+          Cell b is not white, as rule 2 only evaluates to white when the
+          central column has all three colors out of place.
         </li>
         <li>
-          g is not black, as per 7 this would make the entire grid black, but an
-          all black grid would have 4 evaluate to white.
+          Cell g is not black, as per rule 7 this would make the entire grid
+          black, but an all black grid would have rule 4 evaluate to white.
         </li>
-        <li>a and e being equal restricts i, as 5 compares a and i.</li>
+        <li>
+          Cells a and e being equal restricts cell i, as rule 5 compares cells a
+          and i.
+        </li>
       </ul>
       <p>
-        These considerations on a, e, and i leave us with four candidate grids.
+        These considerations on cells a, e, and i leave us with four candidate
+        grids.
       </p>
 
       <CenteredDivRow>
@@ -293,9 +298,9 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        Looking further at the first grid, we know g is not black. This means,
-        comparing g to a and i, both horizontal and vertical symmetries are
-        broken. d is black to match 4.
+        Looking further at the first grid, we know cell g is not black. This
+        means, comparing cell g to cells a and i, both horizontal and vertical
+        symmetries are broken. Cell d is black to match rule 4.
       </p>
 
       <CenteredDivRow>
@@ -306,13 +311,14 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        As g is not black, the leftmost column has total brightness greater than
-        zero. i being black, 9 says that the leftmost column is not brighter
-        than either other column. If b were black, by 2 the center column would
-        have to already be sorted, making h black and the central column all
-        black, dimmer than the left column. b therefore is not black, and must
-        be grey. h must then also be grey, as h being black would make 2 return
-        black and h being white would make 2 return white.
+        As cell g is not black, the leftmost column has total brightness greater
+        than zero. Cell i being black, rule 9 says that the leftmost column is
+        not brighter than either other column. If cell b were black, by rule 2
+        the center column would have to already be sorted, making h black and
+        the central column all black, dimmer than the left column. Cell b
+        therefore is not black, and must be grey. Cell h must then also be grey,
+        as cell h being black would make rule 2 return black and cell h being
+        white would make rule 2 return white.
       </p>
 
       <CenteredDivRow>
@@ -323,13 +329,15 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        h being grey, 8 says that the longest run of cells is grey. As there are
-        already black runs of 2, there must be a grey run of at least 2. This is
-        only possible if at least one of c or g are grey. This means that 6,
-        comparing c and g, must return either black or grey, setting f. 3 takes
-        the sum of b, d, f, and h. If f is black, 3 returns white, and if f is
-        grey, 3 returns black. Thus c is either white or black, not grey. As we
-        have said at least one of c or g is grey, this means g is grey.
+        Cell h being grey, rule 8 says that the longest run of cells is grey. As
+        there are already black runs of two, there must be a grey run of at
+        least two. This is only possible if at least one of cells c or g are
+        grey. This means that rule 6, comparing cells c and g, must return
+        either black or grey, setting cell f. Rule 3 takes the sum of cells b,
+        d, f, and h. If cell f is black, rule 3 returns white, and if cell f is
+        grey, rule 3 returns black. Thus cell c is either white or black, not
+        grey. As we have said at least one of cell c or g is grey, this means
+        cell g is grey.
       </p>
 
       <CenteredDivRow>
@@ -340,9 +348,9 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        For 7 to return grey, there can only be two brightnesses present on the
-        board. Neither c nor f can be white. Considering the two options laid
-        out in the previous step, only one matches this criterion.
+        For rule 7 to return grey, there can only be two brightnesses present on
+        the board. Neither cell c nor f can be white. Considering the two
+        options laid out in the previous step, only one matches this criterion.
       </p>
 
       <CenteredDivRow>
@@ -360,12 +368,12 @@ const Solution = () => {
       <p>
         To be complete, we should also show that this is the only solution. Each
         of the other three candidate grids can be shown to be unsatisfiable. The
-        key to the method used here is to determine that g must be white, which
-        will sometimes take some additional steps.
+        key to the method used here is to determine that cell g must be white,
+        which will sometimes take some additional steps.
       </p>
       <p>
-        In all three cases, b being black would produce an unsorted middle
-        column, contradicting 2, meaning that b must be grey.
+        In all three cases, cell b being black would produce an unsorted middle
+        column, contradicting rule 2, meaning that cell b must be grey.
       </p>
 
       <CenteredDivRow>
@@ -384,9 +392,9 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        In the first of these candidate grids, the only way to have 2 evaluate
-        to grey is to have h be white. With this in place, the grid has all
-        three brightnesses, making g white to match 7.
+        In the first of these candidate grids, the only way to have rule 2
+        evaluate to grey is to have cell h be white. With this in place, the
+        grid has all three brightnesses, making cell g white to match rule 7.
       </p>
 
       <CenteredDivRow>
@@ -397,14 +405,15 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        As i is black, all columns must be at least as bright as the leftmost
-        column, meaning that c+f ≥ 3. 6 compares c and g, so that f = 2 - c. c +
-        f = 2, which is less than 3. This grid offers no solutions.
+        As cell i is black, all columns must be at least as bright as the
+        leftmost column, meaning that c+f ≥ 3. Rule 6 compares cells c and g, so
+        that f = 2 - c. c + f = 2, which is less than three. This grid offers no
+        solutions.
       </p>
 
       <p>
-        The second of the candidates above also must have h white for the same
-        reason.
+        The second of the candidates above also must have cell h be white for
+        the same reason.
       </p>
 
       <CenteredDivRow>
@@ -415,11 +424,12 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        This has broken vertical symmetry. With i being white, the grid cannot
-        have horizontal symmetry. By the tie-breaking of rule 9, a grid with
-        horizontal symmetry will always have 9 return either black or grey. As
-        such, 4 must return black, setting d to black. This makes all three
-        brightnesses present, setting g to white to match 7.
+        This has broken vertical symmetry. With cell i being white, the grid
+        cannot have horizontal symmetry. By the tie-breaking of rule 9, a grid
+        with horizontal symmetry will always have rule 9 return either black or
+        grey. As such, rule 4 must return black, setting cell d to black. This
+        makes all three brightnesses present, setting cell g to white to match
+        rule 7.
       </p>
 
       <CenteredDivRow>
@@ -430,15 +440,15 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        As i is white, 9 must return white, meaning the right column is strictly
-        dimmer than all other columns. This is only satisfied if c and f are
-        both black. However, this would make 6 return white, not matching f.
-        This grid offers no solutions.
+        As cell i is white, rule 9 must return white, meaning the right column
+        is strictly dimmer than all other columns. This is only satisfied if
+        cells c and f are both black. However, this would make rule 6 return
+        white, not matching cell f. This grid offers no solutions.
       </p>
 
       <p>
         Looking at the last candidate grid, all three colors are present,
-        setting g to white to match 7.
+        setting cell g to white to match rule 7.
       </p>
 
       <CenteredDivRow>
@@ -449,10 +459,10 @@ const Solution = () => {
       </CenteredDivRow>
 
       <p>
-        For 9 to return black, no column can be dimmer than the left column. The
-        total brightness of that column is at least 4. This means c+f ≥ 4. By
-        rule 6, f = |g - c| = 2 - c, so c+f = 2, which is less than 4. This grid
-        is unsatisfiable and offers no solutions.
+        For rule 9 to return black, no column can be dimmer than the left
+        column. The total brightness of that column is at least four. This means
+        c+f ≥ 4. By rule 6, f = |g - c| = 2 - c, so c+f = 2, which is less than
+        four. This grid is unsatisfiable and offers no solutions.
       </p>
 
       <p>
