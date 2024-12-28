@@ -28,20 +28,30 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   width: 100%;
   td {
-    padding: 1em;
-    border: 1px solid black;
-  }
-`;
+    border: solid black;
+    border-width: 0 1px;
 
-const FlexWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    text-align: center;
+  }
+
+  tr:first-child td {
+    border-top-width: 1px;
+    padding-top: 1em;
+  }
+
+  tr:last-child td {
+    border-bottom-width: 1px;
+    padding-bottom: 1em;
+  }
 `;
 
 const StyledImage = styled(LinkedImage)`
   display: block;
   width: 450px;
+  margin: 0 auto;
 `;
 
 const COMMON_LEFT_ALT_TEXT =
@@ -157,23 +167,23 @@ const Puzzle = (): JSX.Element => {
       <StyledTable>
         {DATA.map(
           ({ left, leftAlt, leftEnum, right, rightAlt, rightEnum }, i) => (
-            <tr key={i}>
-              <td>
-                <FlexWrapper>
+            <tbody key={i}>
+              <tr>
+                <td>
                   <StyledImage
                     src={left}
                     alt={`${COMMON_LEFT_ALT_TEXT} ${leftAlt}`}
                   />
-                  <span>{leftEnum}</span>
-                </FlexWrapper>
-              </td>
-              <td>
-                <FlexWrapper>
+                </td>
+                <td>
                   <StyledImage src={right} alt={rightAlt} />
-                  <span>{rightEnum}</span>
-                </FlexWrapper>
-              </td>
-            </tr>
+                </td>
+              </tr>
+              <tr>
+                <td>{leftEnum}</td>
+                <td>{rightEnum}</td>
+              </tr>
+            </tbody>
           ),
         )}
       </StyledTable>
