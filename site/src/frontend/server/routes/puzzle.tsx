@@ -429,7 +429,11 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           {/* TODO: add guess form, history, errata, etc. */}
           {guessFrag}
         </PuzzleHeaderComponent>
-        <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
+        <PuzzleMainComponent
+          id="puzzle-content"
+          className="puzzle-content"
+          data-copyable={content.copyable}
+        >
           <ContentComponent teamState={req.teamState.state} query={req.query} />
         </PuzzleMainComponent>
         <PuzzleFooterComponent />
@@ -563,7 +567,6 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   const entrypoints = [
     "solution" as const,
     ...(manifest.entrypoint ? [manifest.entrypoint] : []),
-    ...(content.entrypoint ? [content.entrypoint] : []),
   ];
 
   const SolutionWrapperComponent = manifest.wrapper;

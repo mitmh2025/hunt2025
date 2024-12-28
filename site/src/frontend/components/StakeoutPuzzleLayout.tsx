@@ -5,6 +5,10 @@ import Bg from "./stakeoutAssets/envelope-bg.png";
 
 export const StakeoutWrapper = styled(PuzzleWrapper)`
   background-color: transparent;
+
+  #copy-to-clipboard {
+    margin-top: 1.85rem;
+  }
 `;
 
 export const StakeoutHeader = styled(PuzzleHeader)`

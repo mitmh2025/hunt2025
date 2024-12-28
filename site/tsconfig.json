@@ -1,7 +1,7 @@
 {
   "extends": "./shared-tsconfig.json",
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
+    "lib": ["esnext", "dom", "DOM.Iterable"],
     "paths": {
       // "@/*": ["./src/*"]
     },
