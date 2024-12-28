@@ -31,12 +31,12 @@ const Solution = () => {
     <>
       <p>
         The clues jumble together descriptions of famous ruins with facts from
-        episodes of the TruTV show <em>Adam Ruins Everything</em> (as the
+        episodes of the TruTV show <cite>Adam Ruins Everything</cite> (as the
         original Adam did when he ate the apple in the Garden of Eden). However,
         one word in the description that helps identify the ruin has been
         replaced with a dummy word. The correct word is listed in the “Actually,
         it’s…” list (which is a reference to Adam Conover’s show{" "}
-        <em>Factually</em>).
+        <cite>Factually</cite>).
       </p>
       <p>
         The ruins are all UNESCO World Heritage Sites, and are given in
@@ -811,10 +811,11 @@ const Solution = () => {
         </TableBody>
       </Table>
       <p>
-        <em>Adam Ruins Everything clues</em> (sorted by UNESCO World Heritage
-        Site reference number), with links to the official episode references.
-        (Note: <em>Adam Ruins America</em> is missing a reference page, but the
-        clue given is mentioned in the episode’s brief description.)
+        <cite>Adam Ruins Everything</cite> clues (sorted by UNESCO World
+        Heritage Site reference number), with links to the official episode
+        references. (Note: <cite>Adam Ruins America</cite> is missing a
+        reference page, but the clue given is mentioned in the episode’s brief
+        description.)
       </p>
       <Table>
         <TableHeader>

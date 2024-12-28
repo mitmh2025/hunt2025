@@ -52,9 +52,7 @@ const Puzzle = () => {
   return (
     <>
       <Fonts />
-      <FontParagraph className="puzzle-flavor">
-        ...now everything’s all over the map
-      </FontParagraph>
+      <p className="puzzle-flavor">...now everything’s all over the map</p>
       <Container>
         <Column>
           <FontParagraph>
