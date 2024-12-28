@@ -3,9 +3,7 @@ import { styled } from "styled-components";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const MonoTD = styled.td`
-  font-family:
-    Roboto Mono,
-    monospace;
+  font-family: "Roboto Mono", monospace;
 `;
 
 const Solution = () => {

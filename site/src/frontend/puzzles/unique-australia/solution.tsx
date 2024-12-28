@@ -24,9 +24,7 @@ const BigramSplitsTable = styled.table`
     min-width: 120px;
     text-align: center;
     padding: 0 1em;
-    font-family:
-      Roboto Mono,
-      monospace;
+    font-family: "Roboto Mono", monospace;
   }
 `;
 const BigramSplits = ({ options }: { options: string[] }) => {
@@ -47,9 +45,7 @@ const ChipBreakdownShared = styled.table`
   border-collapse: collapse;
   border: 1px solid var(--black);
   td {
-    font-family:
-      Roboto Mono,
-      monospace;
+    font-family: "Roboto Mono", monospace;
     border: 1px solid var(--black);
     width: 70px;
     text-align: center;

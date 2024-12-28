@@ -5,9 +5,7 @@ import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import bracelet from "./assets/bracelet.png";
 
 const MonospacedDiv = styled.div`
-  font-family:
-    Roboto Mono,
-    monospace;
+  font-family: "Roboto Mono", monospace;
   white-space: pre;
 `;
 const Red = styled(Mono)`

@@ -3,9 +3,7 @@ import { styled } from "styled-components";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const PreCode = styled.pre`
-  font-family:
-    Roboto Mono,
-    monospace;
+  font-family: "Roboto Mono", monospace;
 `;
 
 const givenGrid = `COMMONYELLOWHEADED

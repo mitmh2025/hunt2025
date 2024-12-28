@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { PuzzleAnswer } from "../../components/StyledUI";
 
 const MonospaceTable = styled.table`
-  font-family: Roboto Mono;
+  font-family: "Roboto Mono", monospace;
 
   margin-bottom: 1rem;
   border-collapse: collapse;
