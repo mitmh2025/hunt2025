@@ -1,6 +1,7 @@
 import ControlCameraIcon from "@mui/icons-material/ControlCamera";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PuzzleIcon from "@mui/icons-material/Extension";
+import TeamsIcon from "@mui/icons-material/People";
 import { Box } from "@mui/material";
 import type { Branding, Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/react-router-dom";
@@ -15,6 +16,11 @@ const NAVIGATION: Navigation = [
   {
     title: "Big Board",
     icon: <DashboardIcon />,
+  },
+  {
+    title: "Teams",
+    segment: "teams",
+    icon: <TeamsIcon />,
   },
   {
     segment: "puzzles",

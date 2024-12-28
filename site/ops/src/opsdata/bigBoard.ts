@@ -33,7 +33,7 @@ export type BigBoardRound = {
 
 export type BigBoardTeam = {
   id: number;
-  name: string;
+  username: string;
   progress: number;
   rounds: BigBoardRound[];
 };
@@ -138,7 +138,7 @@ export function formatTeamData(
 
   return {
     id: teamData.teamId,
-    name: teamData.name,
+    username: teamData.username,
     progress: rounds.reduce((acc, round) => acc + round.progress, 0),
     rounds,
   };

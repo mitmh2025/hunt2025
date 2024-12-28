@@ -21,6 +21,7 @@ export type OpsData = {
   registrationLog: TeamRegistrationLogEntry[];
   activityLog: InternalActivityLogEntry[];
   teams: TeamData[];
+  gateDetails: Record<string, { title?: string; roundTitle: string }>;
 };
 
 const INITIAL_STATE: OpsData = {
@@ -29,6 +30,7 @@ const INITIAL_STATE: OpsData = {
   activityLog: [],
   teams: [],
   puzzleMetadata: {},
+  gateDetails: {},
 };
 
 export const OpsDataContext = createContext<OpsData>(INITIAL_STATE);
@@ -91,6 +93,7 @@ class OpsDataStore {
         return {
           teamId,
           name: teamInfoIntermediate.registration.name,
+          username: teamInfoIntermediate.registration.username,
           registration: teamInfoIntermediate.registration,
           state,
           formattedState: formatTeamHuntState(HUNT, state),
@@ -164,19 +167,39 @@ export default function OpsDataProvider({
       }
 
       const store = new OpsDataStore();
-      registrationLog.body.forEach((entry) => {
+      const registrationLogEntries = registrationLog.body.map((entry) => ({
+        ...entry,
+        timestamp: new Date(entry.timestamp),
+      }));
+      const activityLogEntries = activityLog.body.map((entry) => ({
+        ...entry,
+        timestamp: new Date(entry.timestamp),
+      }));
+
+      registrationLogEntries.forEach((entry) => {
         store.applyRegistrationLogEntry(entry);
       });
-      activityLog.body.forEach((entry) => {
+      activityLogEntries.forEach((entry) => {
         store.applyActivityLogEntry(entry);
+      });
+
+      const gateDetails: Record<
+        string,
+        { title?: string; roundTitle: string }
+      > = {};
+      HUNT.rounds.forEach((round) => {
+        round.gates?.forEach((gate) => {
+          gateDetails[gate.id] = { title: gate.title, roundTitle: round.title };
+        });
       });
 
       setData({
         state: "loaded",
-        registrationLog: registrationLog.body,
-        activityLog: activityLog.body,
+        registrationLog: registrationLogEntries,
+        activityLog: activityLogEntries,
         teams: store.getTeamData(),
         puzzleMetadata: puzzleMetadata.body,
+        gateDetails,
       });
     })().catch((e: unknown) => {
       console.error(e);

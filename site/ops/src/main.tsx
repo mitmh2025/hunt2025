@@ -1,4 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -7,6 +9,8 @@ import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
 import Home from "./routes/Home.tsx";
 import Puzzles from "./routes/Puzzles.tsx";
+import Team from "./routes/Team.tsx";
+import TeamIndex from "./routes/TeamIndex.tsx";
 import theme from "./theme.ts";
 
 const router = createBrowserRouter([
@@ -25,6 +29,14 @@ const router = createBrowserRouter([
             path: "puzzles",
             Component: Puzzles,
           },
+          {
+            path: "teams",
+            Component: TeamIndex,
+          },
+          {
+            path: "teams/:username",
+            Component: Team,
+          },
         ],
       },
     ],
@@ -39,11 +51,13 @@ if (!root) {
 createRoot(root).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <LocalizationProvider dateAdapter={AdapterLuxon}>
+        <CssBaseline />
 
-      <OpsDataProvider>
-        <RouterProvider router={router} />
-      </OpsDataProvider>
+        <OpsDataProvider>
+          <RouterProvider router={router} />
+        </OpsDataProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   </StrictMode>,
 );
