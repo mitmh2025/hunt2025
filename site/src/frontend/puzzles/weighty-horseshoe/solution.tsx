@@ -1,10 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import { StanzaBlock, StyledTD } from "./puzzle";
 
 const EqualTable = styled.table`
-  width: 100%;
   table-layout: fixed;
   border: 1px solid black;
   border-collapse: collapse;
@@ -300,6 +300,10 @@ const SolutionGridLabels: string[][] = SolutionGridFill.map((row) =>
   row.map(() => ""),
 );
 
+const StyledCrossword = styled(Crossword)`
+  min-width: 800px;
+`;
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -342,31 +346,35 @@ const Solution = (): JSX.Element => {
         answer FROM RUSSIA WITH LOVE.
       </p>
       <p>Poems and movies referenced:</p>
-      <EqualTable>
-        <tr>
-          <SolutionTH>
-            <p>Poem</p>
-          </SolutionTH>
-          <SolutionTH>
-            <p>Movie</p>
-          </SolutionTH>
-          <SolutionTH>
-            <p>Explanation</p>
-          </SolutionTH>
-        </tr>
-        {formatPoemMovieData(PoemMovieData)}
-      </EqualTable>
+      <HScrollTableWrapper>
+        <EqualTable>
+          <tr>
+            <SolutionTH>
+              <p>Poem</p>
+            </SolutionTH>
+            <SolutionTH>
+              <p>Movie</p>
+            </SolutionTH>
+            <SolutionTH>
+              <p>Explanation</p>
+            </SolutionTH>
+          </tr>
+          {formatPoemMovieData(PoemMovieData)}
+        </EqualTable>
+      </HScrollTableWrapper>
       <p></p>
       <p>The completed criss-crosses:</p>
-      <Crossword
-        labels={SolutionGridLabels}
-        fill={SolutionGridFill}
-        getAdditionalCellStyles={({ row, column }) =>
-          SolutionGridFill[row]?.[column]
-            ? { backgroundColor: "var(--gold-400)" }
-            : {}
-        }
-      />
+      <HScrollTableWrapper>
+        <StyledCrossword
+          labels={SolutionGridLabels}
+          fill={SolutionGridFill}
+          getAdditionalCellStyles={({ row, column }) =>
+            SolutionGridFill[row]?.[column]
+              ? { backgroundColor: "var(--gold-400)" }
+              : {}
+          }
+        />
+      </HScrollTableWrapper>
       <p></p>
       <p>Author’s note:</p>
       <p>

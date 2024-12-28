@@ -4,6 +4,8 @@ import {
   COPY_ONLY_CLASS,
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
+import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import img01 from "./assets/img01.png";
 
 const StanzaData = [
@@ -198,14 +200,10 @@ const GridTD = styled.td`
   border: 1px solid black;
 `;
 
-const SizedImage = styled.img`
-  width: 100%;
-`;
-
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <SizedImage
+      <LinkedImage
         alt="Many pairs of criss-crossing Oscar statues, with crossword-style boxes overlaid on them"
         src={img01}
         className={NO_COPY_CLASS}
@@ -223,32 +221,34 @@ const Puzzle = (): JSX.Element => {
           </tr>
         ))}
       </table>
-      <StanzaTable>
-        <tbody>
-          {StanzaData.map((stanza, index) => {
-            if (index % 3 === 0) {
-              return (
-                <tr key={index}>
-                  <StyledTD>
-                    <StanzaBlock stanza={stanza} />
-                  </StyledTD>
-                  {
+      <HScrollTableWrapper>
+        <StanzaTable>
+          <tbody>
+            {StanzaData.map((stanza, index) => {
+              if (index % 3 === 0) {
+                return (
+                  <tr key={index}>
                     <StyledTD>
-                      <StanzaBlock stanza={StanzaData[index + 1] ?? ""} />
+                      <StanzaBlock stanza={stanza} />
                     </StyledTD>
-                  }
-                  {
-                    <StyledTD>
-                      <StanzaBlock stanza={StanzaData[index + 2] ?? ""} />
-                    </StyledTD>
-                  }
-                </tr>
-              );
-            }
-            return null;
-          })}
-        </tbody>
-      </StanzaTable>
+                    {
+                      <StyledTD>
+                        <StanzaBlock stanza={StanzaData[index + 1] ?? ""} />
+                      </StyledTD>
+                    }
+                    {
+                      <StyledTD>
+                        <StanzaBlock stanza={StanzaData[index + 2] ?? ""} />
+                      </StyledTD>
+                    }
+                  </tr>
+                );
+              }
+              return null;
+            })}
+          </tbody>
+        </StanzaTable>
+      </HScrollTableWrapper>
     </>
   );
 };
