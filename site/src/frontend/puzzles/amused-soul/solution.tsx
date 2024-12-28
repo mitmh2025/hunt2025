@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const Tile = styled.div`
-  font-family: Roboto Mono;
+  font-family: "Roboto Mono", monospace;
   border: 1px solid black;
   width: 2em;
   height: 2em;

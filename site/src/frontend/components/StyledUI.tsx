@@ -120,9 +120,7 @@ export const Alert = styled.div<{ $variant?: "success" | "error" }>`
 `;
 
 export const Mono = styled.span`
-  font-family:
-    Roboto Mono,
-    monospace;
+  font-family: "Roboto Mono", monospace;
 `;
 
 export const PuzzleAnswer = styled(Mono)`

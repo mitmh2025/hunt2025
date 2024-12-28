@@ -5,9 +5,7 @@ import { PuzzleAnswer } from "../../components/StyledUI";
 
 const Columns = styled.div`
   margin: 1em 0;
-  font-family:
-    Roboto Mono,
-    monospace;
+  font-family: "Roboto Mono", monospace;
 `;
 
 const PreformattedDiv = styled.div`

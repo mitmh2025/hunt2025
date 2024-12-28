@@ -7,7 +7,7 @@ const ClueSolutionTable = styled.table`
     padding-right: 1rem;
   }
   tbody tr td:nth-child(2) {
-    font-family: Roboto Mono;
+    font-family: "Roboto Mono", monospace;
   }
 `;
 
@@ -21,7 +21,7 @@ const FinalGridTable = styled.table`
   tbody tr td {
     padding-left: 1rem;
     padding-right: 1rem;
-    font-family: Roboto Mono;
+    font-family: "Roboto Mono", monospace;
     text-align: center;
   }
 `;

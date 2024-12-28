@@ -130,9 +130,7 @@ const BlunderTable = styled.table`
     width: 33%;
     border-top: 1px solid var(--black);
     text-align: center;
-    font-family:
-      Roboto Mono,
-      monospace;
+    font-family: "Roboto Mono", monospace;
   }
   tbody tr:last-child td {
     border-bottom: 1px solid var(--black);

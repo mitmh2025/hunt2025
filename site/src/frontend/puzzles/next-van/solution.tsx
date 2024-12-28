@@ -23,9 +23,7 @@ import solution2 from "./assets/solution2.png";
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin: 1em 0em;
-  font-family:
-    Roboto Mono,
-    monospace;
+  font-family: "Roboto Mono", monospace;
   width: 100%;
   th,
   td {

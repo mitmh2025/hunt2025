@@ -7,7 +7,7 @@ import { LAST_DROPQUOTE, makeFill, makeLabels } from "./puzzle";
 const StyledTable = styled.table`
   margin-bottom: 1em;
   td {
-    font-family: Roboto Mono;
+    font-family: "Roboto Mono", monospace;
   }
   td,
   th {
