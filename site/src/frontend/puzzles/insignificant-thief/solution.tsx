@@ -179,10 +179,11 @@ const Solution = () => {
       </MonoUL>
 
       <p>
-        Knowing the length of each path, and the position of each animal on each
-        path (e.g. the deer is on the second step of a length-three path), the
-        grid admits only one full set of paths that meet all the stated rules. A
-        possible solve-path is given later in this document.
+        Knowing the length of each path, the fact that no path can cross the
+        marked borders, and the position of each animal on each path (e.g. the
+        deer is on the second step of a length-three path), the grid admits only
+        one full set of paths that meet all the stated rules. A possible
+        solve-path is given later in this document.
       </p>
 
       <PenTable>
