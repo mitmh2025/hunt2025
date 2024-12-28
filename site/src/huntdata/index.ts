@@ -371,7 +371,7 @@ const HUNT: Hunt = {
         { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "bgp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "t____ott___p__y" },
         { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_tunnels_beneath_the_institute" },
-        { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "he_shouldnt_have_eaten_the_apple" },
         { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "bgp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
