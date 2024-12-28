@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const Red = styled.span`
   color: red;
@@ -37,143 +41,145 @@ const Solution = () => {
     <>
       <p>THIS SOLUTION NEEDS TO BE UPDATED WITH THE FINAL TITLES OF PUZZLES</p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Puzzle title</th>
-            <th>Feeder answer</th>
-            <th>Length</th>
-            <th>RGB + Crayola Color</th>
-            <th>R</th>
-            <th>G</th>
-            <th>B</th>
-            <th>Codepoint</th>
-            <th>Unicode character</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <Red>U</Red>ndoing Wear and Tear
-            </td>
-            <td>
-              <Blue>B</Blue>ATH BRICK
-            </td>
-            <td>9</td>
-            <BlueTD>B + Brick (Red)</BlueTD>
-            <MutedTD>198</MutedTD>
-            <MutedTD>45</MutedTD>
-            <BlueTD>66</BlueTD>
-            <td>66</td>
-            <td>B</td>
-          </tr>
-          <tr>
-            <td>
-              <Red>N</Red>urturing Flock
-            </td>
-            <td>
-              <Blue>B</Blue>IRD ORCHID
-            </td>
-            <td>10</td>
-            <BlueTD>B + Orchid</BlueTD>
-            <MutedTD>226</MutedTD>
-            <MutedTD>156</MutedTD>
-            <BlueTD>210</BlueTD>
-            <td>210</td>
-            <td>Ò</td>
-          </tr>
-          <tr>
-            <td>
-              <Red>I</Red>ncreasing the Odds
-            </td>
-            <td>
-              <Green>G</Green>REEDY PIGGY
-            </td>
-            <td>11</td>
-            <GreenTD>G + Piggy (Pink)</GreenTD>
-            <MutedTD>253</MutedTD>
-            <GreenTD>215</GreenTD>
-            <MutedTD>228</MutedTD>
-            <td>215</td>
-            <td>×</td>
-          </tr>
-          <tr>
-            <td>
-              <Red>C</Red>orner Kick
-            </td>
-            <td>
-              <Red>R</Red>YAN FLAMINGO
-            </td>
-            <td>12</td>
-            <RedTD>R + (Pink) Flamingo</RedTD>
-            <RedTD>242</RedTD>
-            <MutedTD>116</MutedTD>
-            <MutedTD>253</MutedTD>
-            <td>242</td>
-            <td>ò</td>
-          </tr>
-          <tr>
-            <td>
-              <Red>O</Red>vergrowth
-            </td>
-            <td>
-              <Blue>B</Blue>REGENZ FOREST
-            </td>
-            <td>13</td>
-            <BlueTD>B + Forest (Green)</BlueTD>
-            <MutedTD>95</MutedTD>
-            <MutedTD>167</MutedTD>
-            <BlueTD>119</BlueTD>
-            <td>119</td>
-            <td>w</td>
-          </tr>
-          <tr>
-            <td>
-              <Red>D</Red>ownright Backwards
-            </td>
-            <td>
-              <Green>G</Green>UIANA CHESTNUT
-            </td>
-            <td>14</td>
-            <GreenTD>G + Chestnut</GreenTD>
-            <MutedTD>185</MutedTD>
-            <GreenTD>78</GreenTD>
-            <MutedTD>72</MutedTD>
-            <td>78</td>
-            <td>N</td>
-          </tr>
-          <tr>
-            <td>
-              <Red>E</Red>ducational Rite of Passage
-            </td>
-            <td>
-              <Red>R</Red>AW ANTIQUE BRASS
-            </td>
-            <td>15</td>
-            <RedTD>R + Antique Brass</RedTD>
-            <RedTD>200</RedTD>
-            <MutedTD>138</MutedTD>
-            <MutedTD>101</MutedTD>
-            <td>200</td>
-            <td>È</td>
-          </tr>
-          <tr>
-            <td>
-              <Red>S</Red>ilent Protector
-            </td>
-            <td>
-              <Green>G</Green>UARDIAN LAVENDER
-            </td>
-            <td>16</td>
-            <GreenTD>G + Lavender</GreenTD>
-            <MutedTD>251</MutedTD>
-            <GreenTD>174</GreenTD>
-            <MutedTD>210</MutedTD>
-            <td>174</td>
-            <td>®</td>
-          </tr>
-        </tbody>
-      </table>
+      <HScrollTableWrapper>
+        <table>
+          <thead>
+            <tr>
+              <th>Puzzle title</th>
+              <th>Feeder answer</th>
+              <th>Length</th>
+              <th>RGB + Crayola Color</th>
+              <th>R</th>
+              <th>G</th>
+              <th>B</th>
+              <th>Codepoint</th>
+              <th>Unicode character</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <Red>U</Red>ndoing Wear and Tear
+              </td>
+              <td>
+                <Blue>B</Blue>ATH BRICK
+              </td>
+              <td>9</td>
+              <BlueTD>B + Brick (Red)</BlueTD>
+              <MutedTD>198</MutedTD>
+              <MutedTD>45</MutedTD>
+              <BlueTD>66</BlueTD>
+              <td>66</td>
+              <td>B</td>
+            </tr>
+            <tr>
+              <td>
+                <Red>N</Red>urturing Flock
+              </td>
+              <td>
+                <Blue>B</Blue>IRD ORCHID
+              </td>
+              <td>10</td>
+              <BlueTD>B + Orchid</BlueTD>
+              <MutedTD>226</MutedTD>
+              <MutedTD>156</MutedTD>
+              <BlueTD>210</BlueTD>
+              <td>210</td>
+              <td>Ò</td>
+            </tr>
+            <tr>
+              <td>
+                <Red>I</Red>ncreasing the Odds
+              </td>
+              <td>
+                <Green>G</Green>REEDY PIGGY
+              </td>
+              <td>11</td>
+              <GreenTD>G + Piggy (Pink)</GreenTD>
+              <MutedTD>253</MutedTD>
+              <GreenTD>215</GreenTD>
+              <MutedTD>228</MutedTD>
+              <td>215</td>
+              <td>×</td>
+            </tr>
+            <tr>
+              <td>
+                <Red>C</Red>orner Kick
+              </td>
+              <td>
+                <Red>R</Red>YAN FLAMINGO
+              </td>
+              <td>12</td>
+              <RedTD>R + (Pink) Flamingo</RedTD>
+              <RedTD>242</RedTD>
+              <MutedTD>116</MutedTD>
+              <MutedTD>253</MutedTD>
+              <td>242</td>
+              <td>ò</td>
+            </tr>
+            <tr>
+              <td>
+                <Red>O</Red>vergrowth
+              </td>
+              <td>
+                <Blue>B</Blue>REGENZ FOREST
+              </td>
+              <td>13</td>
+              <BlueTD>B + Forest (Green)</BlueTD>
+              <MutedTD>95</MutedTD>
+              <MutedTD>167</MutedTD>
+              <BlueTD>119</BlueTD>
+              <td>119</td>
+              <td>w</td>
+            </tr>
+            <tr>
+              <td>
+                <Red>D</Red>ownright Backwards
+              </td>
+              <td>
+                <Green>G</Green>UIANA CHESTNUT
+              </td>
+              <td>14</td>
+              <GreenTD>G + Chestnut</GreenTD>
+              <MutedTD>185</MutedTD>
+              <GreenTD>78</GreenTD>
+              <MutedTD>72</MutedTD>
+              <td>78</td>
+              <td>N</td>
+            </tr>
+            <tr>
+              <td>
+                <Red>E</Red>ducational Rite of Passage
+              </td>
+              <td>
+                <Red>R</Red>AW ANTIQUE BRASS
+              </td>
+              <td>15</td>
+              <RedTD>R + Antique Brass</RedTD>
+              <RedTD>200</RedTD>
+              <MutedTD>138</MutedTD>
+              <MutedTD>101</MutedTD>
+              <td>200</td>
+              <td>È</td>
+            </tr>
+            <tr>
+              <td>
+                <Red>S</Red>ilent Protector
+              </td>
+              <td>
+                <Green>G</Green>UARDIAN LAVENDER
+              </td>
+              <td>16</td>
+              <GreenTD>G + Lavender</GreenTD>
+              <MutedTD>251</MutedTD>
+              <GreenTD>174</GreenTD>
+              <MutedTD>210</MutedTD>
+              <td>174</td>
+              <td>®</td>
+            </tr>
+          </tbody>
+        </table>
+      </HScrollTableWrapper>
 
       <p>Solution steps:</p>
       <ol>
@@ -193,7 +199,7 @@ const Solution = () => {
           or below sets). The names of the colors exclude the obvious color
           words like “pink,” “green,” “red,” etc. The wikipedia page{" "}
           <a href="https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors">
-            https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors
+            List of Crayola crayon colors
           </a>{" "}
           is a helpful reference.
         </li>
@@ -213,7 +219,7 @@ const Solution = () => {
           in Google Sheets to look up the character, or just find them among the
           list at{" "}
           <a href="https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin_script">
-            https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin_script
+            List of Unicode characters
           </a>
           .
         </li>
