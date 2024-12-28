@@ -1,3 +1,4 @@
+import jsManifest from "../../../../dist/js-manifest-with-chunks.json";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { omit } from "../../../utils/omit";
 import { PUZZLES } from "../../puzzles";
@@ -87,6 +88,33 @@ import type {
   NodeInternal,
   PluginName,
 } from "./types";
+
+const scriptSrcs: Record<PluginName, { scriptSrc: string[] }> = {
+  bookcase: {
+    scriptSrc: jsManifest.illegal_search_bookcase,
+  },
+  cryptex: {
+    scriptSrc: jsManifest.illegal_search_cryptex,
+  },
+  deskdrawer: {
+    scriptSrc: jsManifest.illegal_search_deskdrawer,
+  },
+  extra: {
+    scriptSrc: jsManifest.illegal_search_extra,
+  },
+  painting1: {
+    scriptSrc: jsManifest.illegal_search_painting1,
+  },
+  painting2: {
+    scriptSrc: jsManifest.illegal_search_painting2,
+  },
+  rug: {
+    scriptSrc: jsManifest.illegal_search_rug,
+  },
+  telephone: {
+    scriptSrc: jsManifest.illegal_search_telephone,
+  },
+};
 
 // The locks themselves correspond to gates.
 type LockDatum = {
@@ -1513,13 +1541,15 @@ function filteredForFrontend(
 
   const keptInteractions = node.interactions.flatMap((interaction) => {
     const { includeIf, ...rest } = interaction;
+    const publicInteraction = { ...rest, ...scriptSrcs[rest.plugin] };
+
     if (includeIf === undefined) {
       // No condition means always include
-      return [rest];
+      return [publicInteraction];
     } else {
       const keep = includeIf(teamState);
       if (keep) {
-        return [rest];
+        return [publicInteraction];
       } else {
         return [];
       }
@@ -1529,6 +1559,8 @@ function filteredForFrontend(
   if (teamState.rounds.illegal_search?.gates?.includes("isg26")) {
     keptInteractions.push({
       plugin: "extra",
+      overlay: true,
+      ...scriptSrcs.extra,
     });
   }
 
