@@ -6,9 +6,11 @@ const Mono = styled.span`
 `;
 
 const StyledTable = styled.table`
+  margin-left: -16px;
   margin-bottom: 1em;
+  border-spacing: 16px 4px;
   td {
-    padding: 0px 8px;
+    padding: 0px;
   }
   td:first-child {
     padding-left: 0px;
@@ -25,7 +27,7 @@ const WordBank = styled.table`
   }
 `;
 
-const Highlighted = styled.span`
+const Highlighted = styled.td`
   background-color: var(--gold-500);
 `;
 
@@ -45,14 +47,10 @@ const Puzzle = (): JSX.Element => {
           <td>
             <Mono>POTTER VISCERA</Mono>
           </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
         </tr>
         <tr>
           <td>2.</td>
@@ -60,46 +58,28 @@ const Puzzle = (): JSX.Element => {
             <Mono>COVERT PARTIES</Mono>
           </td>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
         </tr>
         <tr>
           <td>3.</td>
           <td>
             <Mono>TRAVERSE TOPIC</Mono>
           </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
         </tr>
         <tr>
           <td>4.</td>
           <td>
             <Mono>PIRATE VECTORS</Mono>
           </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
         </tr>
         <tr>
           <td>5.</td>
@@ -107,16 +87,10 @@ const Puzzle = (): JSX.Element => {
             <Mono>PRIVATE SECTOR</Mono>
           </td>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
         </tr>
         <tr>
@@ -125,29 +99,19 @@ const Puzzle = (): JSX.Element => {
             <Mono>CATERER PIVOTS</Mono>
           </td>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
         </tr>
         <tr>
           <td>7.</td>
           <td>
             <Mono>ACTIVE REPORTS</Mono>
           </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
         </tr>
         <tr>
@@ -156,12 +120,8 @@ const Puzzle = (): JSX.Element => {
             <Mono>TAPER VORTICES</Mono>
           </td>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
           <td>_____</td>
         </tr>
@@ -170,13 +130,9 @@ const Puzzle = (): JSX.Element => {
           <td>
             <Mono>REPEAT VICTORS</Mono>
           </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
         </tr>
         <tr>
@@ -184,13 +140,9 @@ const Puzzle = (): JSX.Element => {
           <td>
             <Mono>CREATIVE PORTS</Mono>
           </td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
-          <td>
-            <Highlighted>_____</Highlighted>
-          </td>
+          <Highlighted>_____</Highlighted>
           <td>_____</td>
           <td>_____</td>
         </tr>
