@@ -127,6 +127,12 @@ export const PuzzleAnswer = styled(Mono)`
   font-weight: bold;
 `;
 
+export const HScrollTableWrapper = styled.div`
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+`;
+
 export function LabeledWithError({
   label,
   error,
