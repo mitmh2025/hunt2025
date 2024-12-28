@@ -168,7 +168,14 @@ const RESOLVE_MAPPING_TABLE_DATA: ResolveMapping[] = [
   ],
 ];
 
+const HScrollTableWrapper = styled.div`
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+`;
+
 const ResolveMappingTableElement = styled.table`
+  white-space: nowrap;
   margin-bottom: 2em;
   border-collapse: collapse;
   thead tr th {
@@ -183,41 +190,43 @@ const ResolveMappingTableElement = styled.table`
 
 const ResolveMappingTable = ({ rows }: { rows: ResolveMapping[] }) => {
   return (
-    <ResolveMappingTableElement>
-      <thead>
-        <tr>
-          <th>Answer</th>
-          <th>Assignment</th>
-          <th>Aliased Answer</th>
-          <th>Aliased Assignment</th>
-          <th>Explanation</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row) => {
-          const [
-            answer,
-            assignment,
-            aliased_answer,
-            aliased_assignment,
-            explanation,
-          ] = row;
-          return (
-            <tr key={answer}>
-              <td>
-                <Mono>{answer}</Mono>
-              </td>
-              <td>{assignment}</td>
-              <td>
-                <Mono>{aliased_answer}</Mono>
-              </td>
-              <td>{aliased_assignment}</td>
-              <td>{explanation}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </ResolveMappingTableElement>
+    <HScrollTableWrapper>
+      <ResolveMappingTableElement>
+        <thead>
+          <tr>
+            <th>Answer</th>
+            <th>Assignment</th>
+            <th>Aliased Answer</th>
+            <th>Aliased Assignment</th>
+            <th>Explanation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => {
+            const [
+              answer,
+              assignment,
+              aliased_answer,
+              aliased_assignment,
+              explanation,
+            ] = row;
+            return (
+              <tr key={answer}>
+                <td>
+                  <Mono>{answer}</Mono>
+                </td>
+                <td>{assignment}</td>
+                <td>
+                  <Mono>{aliased_answer}</Mono>
+                </td>
+                <td>{aliased_assignment}</td>
+                <td>{explanation}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </ResolveMappingTableElement>
+    </HScrollTableWrapper>
   );
 };
 
@@ -430,60 +439,62 @@ const Solution = () => {
         flavor, determine their native resolutions.
       </p>
 
-      <ResolutionsTable>
-        <thead>
-          <tr>
-            <th>Sub-Metapuzzle</th>
-            <th>Answer</th>
-            <th>Device</th>
-            <th>Resolution</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <i>The Mark</i>
-            </td>
-            <td>
-              <Mono>PANDORA</Mono>
-            </td>
-            <td>
-              <a href="https://en.wikipedia.org/wiki/Pandora_(computer)">
-                OpenPandora Pandora
-              </a>
-            </td>
-            <td>800 x 480</td>
-          </tr>
-          <tr>
-            <td>
-              <i>The Grand Illusion</i>
-            </td>
-            <td>
-              <Mono>ZODIAC</Mono>
-            </td>
-            <td>
-              <a href="https://en.wikipedia.org/wiki/Tapwave_Zodiac">
-                Tapwave Zodiac
-              </a>
-            </td>
-            <td>480 x 320</td>
-          </tr>
-          <tr>
-            <td>
-              <i>The Oversight</i>
-            </td>
-            <td>
-              <Mono>NOMAD</Mono>
-            </td>
-            <td>
-              <a href="https://en.wikipedia.org/wiki/Genesis_Nomad">
-                Sega Nomad
-              </a>
-            </td>
-            <td>320 x 224</td>
-          </tr>
-        </tbody>
-      </ResolutionsTable>
+      <HScrollTableWrapper>
+        <ResolutionsTable>
+          <thead>
+            <tr>
+              <th>Sub-Metapuzzle</th>
+              <th>Answer</th>
+              <th>Device</th>
+              <th>Resolution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <i>The Mark</i>
+              </td>
+              <td>
+                <Mono>PANDORA</Mono>
+              </td>
+              <td>
+                <a href="https://en.wikipedia.org/wiki/Pandora_(computer)">
+                  OpenPandora Pandora
+                </a>
+              </td>
+              <td>800 x 480</td>
+            </tr>
+            <tr>
+              <td>
+                <i>The Grand Illusion</i>
+              </td>
+              <td>
+                <Mono>ZODIAC</Mono>
+              </td>
+              <td>
+                <a href="https://en.wikipedia.org/wiki/Tapwave_Zodiac">
+                  Tapwave Zodiac
+                </a>
+              </td>
+              <td>480 x 320</td>
+            </tr>
+            <tr>
+              <td>
+                <i>The Oversight</i>
+              </td>
+              <td>
+                <Mono>NOMAD</Mono>
+              </td>
+              <td>
+                <a href="https://en.wikipedia.org/wiki/Genesis_Nomad">
+                  Sega Nomad
+                </a>
+              </td>
+              <td>320 x 224</td>
+            </tr>
+          </tbody>
+        </ResolutionsTable>
+      </HScrollTableWrapper>
 
       <p>
         These resolutions evenly divide the resolution of the provided photo of
@@ -759,7 +770,7 @@ const Solution = () => {
       </p>
 
       <CenteredDiv>
-        <div style={{ width: "600px" }}>
+        <div style={{ width: "600px", maxWidth: "100%" }}>
           <LinkedImage
             src={the_mark_revisited_shell}
             alt="Four cheques (casino chips).  Each cheque has a registration mark at the bottom of the chip.  The border of each cheque contains six evenly-spaced segments around the edge, each with a single letter or number.

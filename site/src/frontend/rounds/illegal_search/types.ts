@@ -8,6 +8,7 @@ export type NodeId = string;
 // We'll do...something to dynamically import their entrypoints?  Big TODO for the behaviors there.
 export type PluginName =
   | "painting1"
+  | "safe"
   | "painting2"
   | "rug"
   | "cryptex"
@@ -55,11 +56,16 @@ export type NavigationInternal = Navigation & {
   includeIf?: (teamState: TeamHuntState) => boolean;
 };
 
-export type Interaction = {
+type InteractionBase = {
   plugin: PluginName;
+  overlay?: true;
 };
 
-export type InteractionInternal = Interaction & {
+export type Interaction = InteractionBase & {
+  scriptSrc: string[];
+};
+
+export type InteractionInternal = InteractionBase & {
   // If present, only include the interaction when condition (evaluated on the node's state) returns true
   includeIf?: (teamState: TeamHuntState) => boolean;
 };
@@ -196,3 +202,18 @@ export type Node = NodeShared & {
   interactionModals?: Modal[];
   placedAssets: PlacedAsset[];
 };
+
+export type InteractionComponent = (props: {
+  node: Node;
+  showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
+  setNode: (node: Node) => void;
+  teamState: TeamHuntState;
+  navigate: (destId: string) => void;
+}) => JSX.Element;
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- augmenting global type
+  interface Window {
+    illegalSearchInteractions: Record<string, InteractionComponent>;
+  }
+}

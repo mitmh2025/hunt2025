@@ -340,7 +340,7 @@ export const BackgroundCheckMetaHead = ({
 };
 
 export const BackgroundCheckMain = styled(PuzzleMain)`
-  //background-color: #cdd6d5;
+  background-color: #ffffff00;
   font-family: "Georgia", "Times New Roman", "Times", "Garamond", serif;
 `;
 

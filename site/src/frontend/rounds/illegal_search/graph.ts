@@ -1,7 +1,10 @@
+import jsManifest from "../../../../dist/js-manifest-with-chunks.json";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { omit } from "../../../utils/omit";
 import { PUZZLES } from "../../puzzles";
-import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.png";
+import bookcase from "./assets/bookcase/bookcase.png";
+import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.svg";
+import bookcase_paneling from "./assets/bookcase/bookcase_paneling.svg";
 import bookcase_note from "./assets/bookcase/note.svg";
 import bookcase_note_blacklight from "./assets/bookcase/note_blacklight.svg";
 import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
@@ -88,6 +91,36 @@ import type {
   PluginName,
 } from "./types";
 
+const scriptSrcs: Record<PluginName, { scriptSrc: string[] }> = {
+  bookcase: {
+    scriptSrc: jsManifest.illegal_search_bookcase,
+  },
+  cryptex: {
+    scriptSrc: jsManifest.illegal_search_cryptex,
+  },
+  deskdrawer: {
+    scriptSrc: jsManifest.illegal_search_deskdrawer,
+  },
+  extra: {
+    scriptSrc: jsManifest.illegal_search_extra,
+  },
+  painting1: {
+    scriptSrc: jsManifest.illegal_search_painting1,
+  },
+  painting2: {
+    scriptSrc: jsManifest.illegal_search_painting2,
+  },
+  rug: {
+    scriptSrc: jsManifest.illegal_search_rug,
+  },
+  safe: {
+    scriptSrc: jsManifest.illegal_search_safe,
+  },
+  telephone: {
+    scriptSrc: jsManifest.illegal_search_telephone,
+  },
+};
+
 // The locks themselves correspond to gates.
 type LockDatum = {
   answer: unknown; // The types of these vary by check
@@ -96,7 +129,7 @@ type LockDatum = {
 };
 // Map from which plugin does the check to the data relevant to that check
 const LOCK_DATA: Record<
-  Exclude<PluginName, "extra" | "telephone">,
+  Exclude<PluginName, "extra" | "telephone" | "safe">,
   LockDatum
 > = {
   deskdrawer: {
@@ -737,9 +770,32 @@ const ALL_NODES: NodeInternal[] = [
     placedAssets: [
       {
         area: {
-          left: -0.375,
+          left: -1,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        asset: bookcase_paneling,
+      },
+      {
+        area: {
+          left: -0.37360594795539037,
           right: 0.5,
-          top: 0.918,
+          top: 0.9140850888062784,
+          bottom: -0.9991738950846757,
+        },
+        asset: bookcase,
+        includeIf: (teamState: TeamHuntState) => {
+          return (
+            teamState.rounds.illegal_search?.gates?.includes("isg26") ?? false
+          );
+        },
+      },
+      {
+        area: {
+          left: -1,
+          right: 1,
+          top: 1,
           bottom: -1,
         },
         asset: null,
@@ -768,7 +824,16 @@ const ALL_NODES: NodeInternal[] = [
         destId: "main_north",
       },
     ],
-    interactions: [{ plugin: "bookcase" }],
+    interactions: [
+      {
+        plugin: "bookcase",
+        includeIf: (teamState: TeamHuntState) => {
+          return !(
+            teamState.rounds.illegal_search?.gates?.includes("isg26") ?? false
+          );
+        },
+      },
+    ],
     sounds: [
       // book slides out or back
     ],
@@ -913,6 +978,38 @@ const ALL_NODES: NodeInternal[] = [
     ],
     interactions: [{ plugin: "painting1" }],
     sounds: [],
+    modals: [],
+  },
+
+  {
+    // zoomed in on the safe behind painting 1
+    id: "safe",
+    background: "__wallpaper_lg__",
+    placedAssets: [],
+    navigations: [
+      {
+        area: {
+          left: -1,
+          right: -0.6,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_left_cursor,
+        destId: "painting1",
+      },
+      {
+        area: {
+          left: 0.6,
+          right: 1,
+          top: 1,
+          bottom: -1,
+        },
+        cursor: move_right_cursor,
+        destId: "painting1",
+      },
+    ],
+    interactions: [{ plugin: "safe" }],
+    sounds: [],
     modals: [
       {
         includeIf: (teamState: TeamHuntState) => {
@@ -924,18 +1021,18 @@ const ALL_NODES: NodeInternal[] = [
         },
         ownedByInteraction: true,
         area: {
-          left: -0.113,
-          right: 0.1,
-          top: -0.025,
-          bottom: -0.331,
+          left: -0.289,
+          right: 0.266,
+          top: -0.069,
+          bottom: -0.738,
         },
         asset: money_modal,
         placedAsset: {
           area: {
-            left: -0.113,
-            right: 0.1,
-            top: -0.025,
-            bottom: -0.331,
+            left: -0.289,
+            right: 0.266,
+            top: -0.069,
+            bottom: -0.738,
           },
           asset: money,
           extraAsset: money_blacklight,
@@ -1513,13 +1610,15 @@ function filteredForFrontend(
 
   const keptInteractions = node.interactions.flatMap((interaction) => {
     const { includeIf, ...rest } = interaction;
+    const publicInteraction = { ...rest, ...scriptSrcs[rest.plugin] };
+
     if (includeIf === undefined) {
       // No condition means always include
-      return [rest];
+      return [publicInteraction];
     } else {
       const keep = includeIf(teamState);
       if (keep) {
-        return [rest];
+        return [publicInteraction];
       } else {
         return [];
       }
@@ -1529,6 +1628,8 @@ function filteredForFrontend(
   if (teamState.rounds.illegal_search?.gates?.includes("isg26")) {
     keptInteractions.push({
       plugin: "extra",
+      overlay: true,
+      ...scriptSrcs.extra,
     });
   }
 

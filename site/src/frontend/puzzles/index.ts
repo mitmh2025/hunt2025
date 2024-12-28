@@ -88,3 +88,20 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   papas_stash: PapasStash,
   papas_bookcase_blacklight: PapasBookcaseBlacklight,
 };
+
+// Generate the SUBPUZZLES index from PUZZLES
+type FullSubpuzzleDefinition = SubpuzzleDefinition & { parent_slug: string };
+export const SUBPUZZLES: Record<string, FullSubpuzzleDefinition> =
+  Object.fromEntries(
+    Object.entries(PUZZLES).flatMap(([slug, puzzleDef]) => {
+      return (puzzleDef.subpuzzles ?? []).map((subpuzzleDef) => {
+        return [
+          subpuzzleDef.slug,
+          {
+            ...subpuzzleDef,
+            parent_slug: slug,
+          },
+        ];
+      });
+    }),
+  ) as Record<string, FullSubpuzzleDefinition>;

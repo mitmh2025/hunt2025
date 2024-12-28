@@ -5,10 +5,11 @@ import React, {
   useState,
 } from "react";
 import { styled } from "styled-components";
+import { type TeamHuntState } from "../../../../../lib/api/client";
 import whole_thing from "../assets/safe/safe_closed_static_draft2.svg";
+import dial from "../assets/safe/safe_dial.svg";
 import mark from "../assets/safe/safe_dial_draft2_background_zarvox.svg";
-import dial from "../assets/safe/safe_dial_draft2_dial_only_zarvox.svg";
-import highlights from "../assets/safe/safe_dial_draft2_shadows_zarvox.svg";
+import highlights from "../assets/safe/safe_dial_shadows.svg";
 import handle_img from "../assets/safe/safe_handle_draft2.png";
 import whole_thing_open from "../assets/safe/safe_open_static_draft2.svg";
 import squeak from "../assets/safe/squeak.mp3";
@@ -27,10 +28,10 @@ import playSound from "./playSound";
 
 // TODO: once the assets get updated, adjust this to match the viewBox exactly
 // 50?
-const LOCK_WIDTH = 49.851883;
+const LOCK_WIDTH = 250;
 // 41?
-const LOCK_HEIGHT = 40.83638;
-const SCALE_FACTOR = 6;
+const LOCK_HEIGHT = 250;
+const SCALE_FACTOR = 1;
 
 const DEGREES_PER_TICK = 360 / 50;
 /*
@@ -208,8 +209,8 @@ const SafeBox = styled.div<{ $opened: boolean }>`
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 1040px;
-  height: 800px;
+  width: 1920px;
+  height: 1080px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -221,14 +222,17 @@ const Safe = ({
   node,
   showModal,
   setNode,
-  opened,
+  teamState,
 }: {
   node: Node;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   setNode: (node: Node) => void;
-  opened: boolean;
+  teamState: TeamHuntState;
 }) => {
-  const [doorOpen, setDoorOpen] = useState<boolean>(false);
+  const gateOpen =
+    teamState.rounds.illegal_search?.gates?.includes("isg08") ?? false;
+
+  const [doorOpen, setDoorOpen] = useState<boolean>(gateOpen);
 
   // rotations, in degrees clockwise?
   const [tumblers, setTumblers] = useState<[number, number, number]>(
@@ -318,11 +322,11 @@ const Safe = ({
   }, []);
 
   const tryOpen = useCallback(() => {
-    if (opened) {
+    if (gateOpen) {
       // just do it
       openDoor();
     } else {
-      fetch("/rounds/illegal_search/locks/painting1", {
+      fetch("/rounds/illegal_search/locks/safe", {
         method: "POST",
         body: JSON.stringify({ tumblers }),
         headers: {
@@ -347,7 +351,7 @@ const Safe = ({
           console.log("Network error");
         });
     }
-  }, [opened, setNode, tumblers, openDoor]);
+  }, [gateOpen, setNode, tumblers, openDoor]);
 
   const modalAssets = node.interactionModals?.map((modal) => {
     const { area, asset } = modal.placedAsset ?? modal;
@@ -381,10 +385,10 @@ const Safe = ({
             style={{
               display: "block",
               position: "absolute",
-              left: "272px",
-              top: "360px",
-              width: "94px",
-              height: "193px",
+              left: "477px",
+              top: "472px",
+              width: "217px",
+              height: "336px",
               border: "none",
               padding: "none",
               backgroundColor: "transparent",
@@ -414,3 +418,7 @@ const Safe = ({
 };
 
 export default Safe;
+
+if (typeof window !== "undefined") {
+  window.illegalSearchInteractions.safe = Safe;
+}

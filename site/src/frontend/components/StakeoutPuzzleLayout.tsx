@@ -59,10 +59,10 @@ export const StakeoutMain = styled(PuzzleMain)`
     border-right-width: 0.25rem;
   }
 
-  background-color: #f8f8f6dd;
-  background: linear-gradient(
+  background-image: linear-gradient(
     25deg,
     rgba(248, 248, 246, 0.98) 0%,
     rgba(248, 248, 246, 0.8) 80%
   );
+  background-color: #ffffff00;
 `;

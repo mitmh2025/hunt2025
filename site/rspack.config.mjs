@@ -476,6 +476,25 @@ export default function createConfigs(_env, argv) {
       murder_in_mitropolis:
         "./src/frontend/rounds/murder_in_mitropolis/client.tsx",
 
+      // Illegal search interactions
+      illegal_search_bookcase:
+        "./src/frontend/rounds/illegal_search/client/Bookcase.tsx",
+      illegal_search_cryptex:
+        "./src/frontend/rounds/illegal_search/client/Cryptex.tsx",
+      illegal_search_deskdrawer:
+        "./src/frontend/rounds/illegal_search/client/DeskDrawer.tsx",
+      illegal_search_extra:
+        "./src/frontend/rounds/illegal_search/client/Extra.tsx",
+      illegal_search_painting1:
+        "./src/frontend/rounds/illegal_search/client/PaintingOne.tsx",
+      illegal_search_painting2:
+        "./src/frontend/rounds/illegal_search/client/PaintingTwo.tsx",
+      illegal_search_rug: "./src/frontend/rounds/illegal_search/client/Rug.tsx",
+      illegal_search_safe:
+        "./src/frontend/rounds/illegal_search/client/Safe.tsx",
+      illegal_search_telephone:
+        "./src/frontend/rounds/illegal_search/client/Telephone.tsx",
+
       // Included on specific puzzle pages
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",

@@ -3,6 +3,16 @@ import { styled } from "styled-components";
 
 const MonospaceTable = styled.table`
   font-family: monospace;
+
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+  border: 1px solid var(--black);
+
+  td,
+  th {
+    border: 1px solid var(--black);
+    padding: 0 0.5rem;
+  }
 `;
 
 const CSpan = styled.span<{ $color: "red" | "blue" }>`
@@ -262,12 +272,12 @@ const Solution = () => {
         strongly indicate indexing into the feeders. Given the 7 pairings of
         cards, you must use each card&apos;s rank (Ace = 1, King = 13) to index
         into the other card, extracting 7 bigrams. The bigram ordering can
-        easily be brute-forced, but the dealer&apos;s button indicates which to
-        use. For the rounds where you bet a big blind (you are the dealer), the
-        letter extracted from the card of greater value goes first, and
-        conversely, for rounds where you bet a small blind, the letter extracted
-        from the card of lesser value goes first. Combining all 7 bigrams
-        produces the answer <code>FACECARDSHARKS</code>.
+        easily be brute-forced, however a parity check is given in how your hole
+        cards are overlapped. If the left card is on top, the letter extracted
+        from the card of lower value goes first, and conversely if the right
+        card is on top the letter extracted from the card of higher value goes
+        first. Combining all 7 bigrams produces the answer{" "}
+        <code>FACECARDSHARKS</code>.
       </p>
 
       <MonospaceTable>

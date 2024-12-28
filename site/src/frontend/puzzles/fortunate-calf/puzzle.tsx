@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
 import casino1 from "./casino1.png";
 import casino2 from "./casino2.png";
 import casino3 from "./casino3.png";
@@ -7,11 +7,6 @@ import casino4 from "./casino4.png";
 import casino5 from "./casino5.png";
 import casino6 from "./casino6.png";
 import casino7 from "./casino7.png";
-
-const SizedImage = styled.img`
-  width: 800px;
-  height: 450px;
-`;
 
 const PuzzleContent = () => {
   const altText =
@@ -34,27 +29,13 @@ const PuzzleContent = () => {
           justifyContent: "flex-start",
         }}
       >
-        <div>
-          <SizedImage src={casino1} alt={altText} />
-        </div>
-        <div>
-          <SizedImage src={casino2} alt={altText} />
-        </div>
-        <div>
-          <SizedImage src={casino3} alt={altText} />
-        </div>
-        <div>
-          <SizedImage src={casino4} alt={altText} />
-        </div>
-        <div>
-          <SizedImage src={casino5} alt={altText} />
-        </div>
-        <div>
-          <SizedImage src={casino6} alt={altText} />
-        </div>
-        <div>
-          <SizedImage src={casino7} alt={altText} />
-        </div>
+        <LinkedImage src={casino1} alt={altText} />
+        <LinkedImage src={casino2} alt={altText} />
+        <LinkedImage src={casino3} alt={altText} />
+        <LinkedImage src={casino4} alt={altText} />
+        <LinkedImage src={casino5} alt={altText} />
+        <LinkedImage src={casino6} alt={altText} />
+        <LinkedImage src={casino7} alt={altText} />
       </div>
     </>
   );

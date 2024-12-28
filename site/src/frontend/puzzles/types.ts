@@ -104,6 +104,12 @@ export type PuzzleDefinitionMetadata = z.infer<
   typeof PuzzleDefinitionMetadataSchema
 >;
 
+export type SubpuzzleDefinition = {
+  title: string;
+  slug: string;
+  content: Content;
+};
+
 export type PuzzleDefinition = PuzzleDefinitionMetadata & {
   // The React component that contains the puzzle content we render in the <div id="puzzle-content">.
   // It should NOT include a div for the title; it should be purely the puzzle content.
@@ -117,4 +123,8 @@ export type PuzzleDefinition = PuzzleDefinitionMetadata & {
   // If provided, an additional websocket-express Router that should be mounted at `/puzzles/<slug>/`
   // to allow for additional puzzle-specific server behavior.
   router?: Router;
+
+  // Slugs for any subpuzzle pages associated with this puzzle. Subpuzzles do not have individual answers,
+  // but they may update hunt state when accessed.
+  subpuzzles?: SubpuzzleDefinition[];
 };

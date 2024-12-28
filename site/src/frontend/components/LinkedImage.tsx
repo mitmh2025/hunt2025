@@ -9,6 +9,7 @@ type LinkedImageProps = {
   alt: string;
   className?: string;
   src: string;
+  fullSizeURL?: string;
 };
 
 /**
@@ -19,9 +20,15 @@ const LinkedImage = ({
   alt,
   className,
   src,
+  fullSizeURL,
 }: LinkedImageProps): JSX.Element => {
   return (
-    <a href={src} target="_blank" rel="noreferrer" className={className}>
+    <a
+      href={fullSizeURL ?? src}
+      target="_blank"
+      rel="noreferrer"
+      className={className}
+    >
       <StyledImg src={src} alt={alt} />
     </a>
   );
