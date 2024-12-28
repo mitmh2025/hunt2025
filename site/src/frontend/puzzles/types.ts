@@ -44,11 +44,18 @@ export type CannedResponse = z.infer<typeof CannedResponseSchema>;
 export type Content = {
   // TODO: figure out what props get passed to this FunctionComponent
   component: FunctionComponent<{ teamState: TeamHuntState; query: ParsedQs }>;
+};
 
+export type PuzzleContent = Content & {
   // If present, the scripts and stylesheets produced by the webpack entrypoint
   // of the given name will be injected into the page's <body> and <head>
   // respectively.
   entrypoint?: Entrypoint;
+
+  // If true, the puzzle will include a copy-to-clipboard button floating in the
+  // bottom-left of the page which will copy the entire content of the puzzle to
+  // the clipboard.
+  copyable?: boolean;
 };
 
 export const AdditionalCreditSchema = z.union([
@@ -107,13 +114,13 @@ export type PuzzleDefinitionMetadata = z.infer<
 export type SubpuzzleDefinition = {
   title: string;
   slug: string;
-  content: Content;
+  content: PuzzleContent;
 };
 
 export type PuzzleDefinition = PuzzleDefinitionMetadata & {
   // The React component that contains the puzzle content we render in the <div id="puzzle-content">.
   // It should NOT include a div for the title; it should be purely the puzzle content.
-  content: Content;
+  content: PuzzleContent;
 
   // The React component that contains the solution writeup that we render on the solution page.
   // The actual answer and credits will be generated from the other fields of PuzzleDefinition, so this

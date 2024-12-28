@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from "react";
-import { hydrateRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import { type z } from "zod";
 import { type publicContract } from "../../../lib/api/contract";
+import CopyToClipboard from "../components/CopyToClipboard";
 import PuzzleGuessSection from "../components/PuzzleGuessSection";
 import useAppendDataset from "./useAppendDataset";
 
@@ -67,4 +68,13 @@ if (guessSectionElem) {
   console.error(
     "Couldn't mount PuzzleGuessSection because #puzzle-guesses was nowhere to be found",
   );
+}
+
+const puzzleContent = document.getElementById("puzzle-content");
+if (puzzleContent?.dataset.copyable) {
+  const container = document.createElement("div");
+  container.style.display = "contents";
+  puzzleContent.appendChild(container);
+  const root = createRoot(container);
+  root.render(<CopyToClipboard />);
 }

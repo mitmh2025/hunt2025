@@ -173,3 +173,11 @@ p + p {
   color: var(--gray-100);
   text-decoration-color: var(--gray-200);
 }
+
+.puzzle-content:not(.copying) .copy-only {
+  display: none;
+}
+
+.puzzle-content.copying .no-copy {
+  display: none;
+}

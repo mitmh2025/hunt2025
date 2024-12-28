@@ -58,6 +58,7 @@
               proxyPass = "http://hunt2025";
               proxyWebsockets = true;
             };
+            locations."/static/".proxyPass = "http://hunt2025";
             authentik.enable = true;
             authentik.url = "https://staging.us-east5-a.c.mitmh2025-staging-gcp.internal:9443";
           };
