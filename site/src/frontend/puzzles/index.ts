@@ -98,6 +98,7 @@ import IntroductionToDecryption from "./silky-ninja";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
+import HeShouldntHaveEatenTheApple from "./snoopy-link";
 import KnightsOfTheSquareTable from "./sore-ketchup";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
@@ -288,6 +289,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Background Check
   deepfrost: Deepfrost,
+  he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
   kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
   story_vision_contest: StoryVisionContest,
