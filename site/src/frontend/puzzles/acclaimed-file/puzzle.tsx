@@ -1,6 +1,5 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono } from "../../components/StyledUI";
 
 const MAGIC_I = `
 A  TYPI  CAL            A  TYPI  CAL
@@ -39,7 +38,8 @@ const FlexWrapper = styled.div`
   justify-content: space-around;
 `;
 
-const Preformatted = styled(Mono)`
+const Preformatted = styled.div`
+  font-family: Courier, monospace;
   white-space: pre;
 `;
 

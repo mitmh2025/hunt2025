@@ -1,7 +1,6 @@
 import React from "react";
-import { createGlobalStyle, styled } from "styled-components";
-import { CaveatFont } from "../../assets/SharedFonts";
-import Courier from "./assets/CourierPrime-Regular.ttf";
+import { styled } from "styled-components";
+import { CaveatFont, CourierFont } from "../../assets/SharedFonts";
 
 const PostItWrapper = styled.div`
   padding: 32px;
@@ -21,15 +20,6 @@ const PostIt = styled.div<{ $rotate: number }>`
   transform: rotate(${({ $rotate }) => $rotate}deg);
   &:nth-child(2) {
     align-self: flex-end;
-  }
-`;
-
-const CourierFont = createGlobalStyle`
-  @font-face {
-    font-family: "Courier";
-    src: url(${Courier});
-    font-weight: normal;
-    font-style: normal;
   }
 `;
 
