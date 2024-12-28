@@ -97,13 +97,13 @@ const Puzzle = () => {
       <AuthorsNote>
         These are cryptic crossword clues, a common type in puzzlehunts
         involving both crossword definitions and wordplay. If you’ve never seen
-        them before, check out{" "}
+        them before, check out these guides to cryptic crosswords from{" "}
         <a href="https://s.wsj.net/blogs/html/wsjcrypticguide.pdf">
-          https://s.wsj.net/blogs/html/wsjcrypticguide.pdf
+          The Wall Street Journal
         </a>{" "}
         or{" "}
         <a href="https://www.puzzledpint.com/files/3613/8170/3749/CrypticsGuide.pdf">
-          https://www.puzzledpint.com/files/3613/8170/3749/CrypticsGuide.pdf
+          Puzzled Pint
         </a>
         , but note that every cryptic is different, and these guides are not
         canonical.
