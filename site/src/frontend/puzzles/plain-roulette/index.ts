@@ -25,7 +25,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers are looking at the first set of instructions and do not know where to start",
       keywords: ["start", "k", "p", "scarf"],
       nudge:
-        "These are knitting instructions for a 128-stitch-wide scarf. This is probably too big to actually knit before Mystery Hunt is over - try charting it!",
+        "These are knitting instructions for a 128-stitch-wide scarf. This is probably too big to actually knit before Mystery Hunt is over—try charting it!",
     },
     {
       order: 1.9,
