@@ -1,4 +1,18 @@
 import React from "react";
+import { styled } from "styled-components";
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  border: none;
+
+  td {
+    padding: 0 1rem;
+  }
+
+  tr:hover td {
+    background-color: var(--white);
+  }
+`;
 
 const Solution = () => {
   return (
@@ -20,7 +34,7 @@ const Solution = () => {
       </p>
       {/* TODO: make a reusable component for emphasizing clue phrases and a second one for answers */}
 
-      <table>
+      <StyledTable>
         <thead>
           <tr>
             <th>Clue</th>
@@ -169,7 +183,7 @@ const Solution = () => {
             <td>WHITE BREAD</td>
           </tr>
         </tbody>
-      </table>
+      </StyledTable>
     </>
   );
 };
