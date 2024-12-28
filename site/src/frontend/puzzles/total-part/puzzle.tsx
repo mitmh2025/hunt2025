@@ -8,7 +8,7 @@ export const ScrollWrapper = styled.div`
 `;
 
 export const StyledCrossword = styled(Crossword)`
-  margin: 1em auto;
+  margin: 2em auto;
   min-width: 900px;
 `;
 

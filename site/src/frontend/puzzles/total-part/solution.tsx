@@ -22,7 +22,7 @@ import {
 } from "./puzzle";
 
 export const FinalGrid = styled(Crossword)`
-  margin: 1em auto;
+  margin: 2em auto;
 `;
 
 const DROPQUOTE_1_FILL: string[][] = makeGrid([

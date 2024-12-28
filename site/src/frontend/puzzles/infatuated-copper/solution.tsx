@@ -16,7 +16,15 @@ const Red = styled.span`
   color: red;
 `;
 
-const DATA = [
+const DATA: {
+  cw: string;
+  link: string;
+  title: string;
+  media: string;
+  entity: string;
+  epithet: string;
+  epithetOrder: number;
+}[] = [
   {
     cw: "Obscured and unnatural faces",
     link: "https://www.youtube.com/watch?v=sEDzsfDlwtc",
@@ -24,6 +32,7 @@ const DATA = [
     media: "alantutorial",
     entity: "The Stranger",
     epithet: "hides",
+    epithetOrder: 8,
   },
   {
     cw: "Anorexia and hemophilia",
@@ -31,7 +40,8 @@ const DATA = [
     title: "Amends",
     media: "Buffy the Vampire Slayer",
     entity: "The Flesh",
-    epithets: "bleeds",
+    epithet: "bleeds",
+    epithetOrder: 13,
   },
   {
     cw: "Extreme heat and flames",
@@ -39,7 +49,8 @@ const DATA = [
     title: "Checkmate",
     media: "Twin Peaks",
     entity: "The Desolation",
-    epithets: "burns",
+    epithet: "burns",
+    epithetOrder: 10,
   },
   {
     cw: "Interment and suffocation",
@@ -48,6 +59,7 @@ const DATA = [
     media: "Knifepoint Horror",
     entity: "The Buried",
     epithet: "chokes",
+    epithetOrder: 3,
   },
   {
     cw: "Laceration and mutilation",
@@ -56,6 +68,7 @@ const DATA = [
     media: "The SCP Foundation",
     entity: "The Slaughter",
     epithet: "rips",
+    epithetOrder: 12,
   },
   {
     cw: "Rot and insects",
@@ -64,6 +77,7 @@ const DATA = [
     media: "Heroes",
     entity: "The Corruption",
     epithet: "crawls",
+    epithetOrder: 2,
   },
   {
     cw: "Perdition",
@@ -72,6 +86,7 @@ const DATA = [
     media: "The Twilight Zone",
     entity: "The End",
     epithet: "dies",
+    epithetOrder: 14,
   },
   {
     cw: "Venomous spiders",
@@ -80,6 +95,7 @@ const DATA = [
     media: "Lost",
     entity: "The Web",
     epithet: "weaves",
+    epithetOrder: 9,
   },
   {
     cw: "Rapid descents",
@@ -88,6 +104,7 @@ const DATA = [
     media: "Welcome to Night Vale",
     entity: "The Vast",
     epithet: "falls",
+    epithetOrder: 5,
   },
   {
     cw: "Abyssal labyrinths",
@@ -96,6 +113,7 @@ const DATA = [
     media: "Black Mirror",
     entity: "The Spiral",
     epithet: "twists",
+    epithetOrder: 6,
   },
   {
     cw: "Relentless pursuit",
@@ -104,6 +122,7 @@ const DATA = [
     media: "The X-Files",
     entity: "The Hunt",
     epithet: "hunts",
+    epithetOrder: 11,
   },
   {
     cw: "Technological surveillance",
@@ -112,6 +131,7 @@ const DATA = [
     media: "Old Gods of Appalachia",
     entity: "The Eye",
     epithet: "You who watch…",
+    epithetOrder: 1,
   },
   {
     cw: "Gouging of eyes",
@@ -120,6 +140,7 @@ const DATA = [
     media: "The Lore Podcast",
     entity: "The Dark",
     epithet: "blinds",
+    epithetOrder: 4,
   },
   {
     cw: "Missing and abandoned children",
@@ -128,6 +149,7 @@ const DATA = [
     media: "Local 58",
     entity: "The Lonely",
     epithet: "leaves",
+    epithetOrder: 7,
   },
 ];
 
@@ -222,17 +244,19 @@ const Solution = (): JSX.Element => {
           <th>Entity</th>
           <th>Episode</th>
         </tr>
-        {DATA.map(({ cw, epithet, entity, title }, k) => (
-          <tr key={`extraction-${k}`}>
-            <td>
-              <strong>{cw.slice(0, 1)}</strong>
-              {cw.slice(1)}
-            </td>
-            <td>{epithet}</td>
-            <td>{entity}</td>
-            <td>{title}</td>
-          </tr>
-        ))}
+        {DATA.toSorted((a, b) => a.epithetOrder - b.epithetOrder).map(
+          ({ cw, epithet, entity, title }, k) => (
+            <tr key={`extraction-${k}`}>
+              <td>
+                <strong>{cw.slice(0, 1)}</strong>
+                {cw.slice(1)}
+              </td>
+              <td>{epithet}</td>
+              <td>{entity}</td>
+              <td>{title}</td>
+            </tr>
+          ),
+        )}
       </StyledTable>
       <p>
         (The Eye is off by itself at the beginning of the incantation; this is

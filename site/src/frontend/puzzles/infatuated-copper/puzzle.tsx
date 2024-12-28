@@ -45,37 +45,43 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Obscured and unnatural faces</div>
         <Indent>
-          <a
-            href="https://youtube.com/shorts/b2utstouH58"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Obscured and unnatural faces
-          </a>
+          <iframe
+            width="315"
+            height="560"
+            src="https://www.youtube.com/embed/b2utstouH58"
+            title="Obscured and unnatural faces"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
         <div>Content Warning: Anorexia and hemophilia</div>
         <Indent>
-          <a
-            href="https://youtu.be/aujHdRbkVso"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Anorexia and hemophilia
-          </a>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/aujHdRbkVso"
+            title="Anorexia and hemophilia"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
         <div>Content Warning: Extreme heat and flames</div>
         <Indent>
-          <a
-            href="https://youtu.be/WzJTKfundRo"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Extreme heat and flames
-          </a>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/WzJTKfundRo"
+            title="Extreme heat and flames"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
@@ -84,7 +90,7 @@ const Puzzle = (): JSX.Element => {
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={intermentAndSuffocation} />
           <details>
-            <summary>Transcript: Interment and suffocation</summary>
+            <summary>Transcript</summary>
             <div>
               My name is Oliver Kraft. I am a patient at St. Elizabeth’s
               Hospital in Washington, D.C., and I am probably never gonna get
@@ -122,37 +128,43 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Rot and insects</div>
         <Indent>
-          <a
-            href="https://youtu.be/6xrAySGvr-o"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Rot and insects
-          </a>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/6xrAySGvr-o"
+            title="Rot and insects"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
         <div>Content Warning: Perdition</div>
         <Indent>
-          <a
-            href="https://youtu.be/c1DStbHTxsg"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Perdition
-          </a>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/c1DStbHTxsg"
+            title="Perdition"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
         <div>Content Warning: Venomous spiders</div>
         <Indent>
-          <a
-            href="https://youtube.com/shorts/N4iqd9LU3xc?feature=share"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Venomous spiders
-          </a>
+          <iframe
+            width="315"
+            height="560"
+            src="https://youtube.com/embed/N4iqd9LU3xc"
+            title="Venomous spiders"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
@@ -161,7 +173,7 @@ const Puzzle = (): JSX.Element => {
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={rapidDescents} />
           <details>
-            <summary>Transcript: Rapid descents</summary>
+            <summary>Transcript</summary>
             <div>
               You will be greeted by Earl, who will demonstrate how to make
               cherries jubilee, staple dish of pioneers in the early days of
@@ -179,25 +191,29 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Abyssal labyrinths</div>
         <Indent>
-          <a
-            href="https://youtu.be/wTKMKd_8FoU"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Abyssal labyrinths
-          </a>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/wTKMKd_8FoU"
+            title="Abyssal Labyrinths"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
         <div>Content Warning: Relentless pursuit</div>
         <Indent>
-          <a
-            href="https://youtu.be/o-jv1XeDj2Q"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Relentless pursuit
-          </a>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/o-jv1XeDj2Q"
+            title="Relentless pursuit"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <Block>
@@ -206,7 +222,7 @@ const Puzzle = (): JSX.Element => {
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={technologicalSurveillance} />
           <details>
-            <summary>Transcript: Technological surveillance</summary>
+            <summary>Transcript</summary>
             The door to the cabin was in splinters. The windowpanes lay like a
             thousand busted prayers on the desecrated floor. Piles of some sort
             of animal scat littered the floor and were smeared across the bare
@@ -215,7 +231,7 @@ const Puzzle = (): JSX.Element => {
             befouled it. Someone or something had been looking for Sarah Avery.
             Sarah Avery who made the voices in his head practically salivate.
             Sarah Avery who he wouldn’t know if he saw her because her family
-            never came to church and had never gotten saved nor baptised. Sarah
+            never came to church and had never gotten saved nor baptized. Sarah
             Avery who was just a little girl, and, thankfully, Sarah Avery who
             was not here. Between the voices’ rapturous approval of his presence
             in this place and the yammerin’ of Annie, who honestly could not
@@ -230,7 +246,7 @@ const Puzzle = (): JSX.Element => {
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={gougingOfEyes} />
           <details>
-            <summary>Transcript: Gouging of eyes</summary>
+            <summary>Transcript</summary>
             [piano music intro] Sympathetic magic is the lore behind the belief
             that the human body, however temporary and fragile it might be, also
             contains incredible power, and that this power can be transferred to
@@ -244,13 +260,15 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Missing and abandoned children</div>
         <Indent>
-          <a
-            href="https://youtu.be/DFf9XAwp2z4"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Missing and abandoned children
-          </a>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/DFf9XAwp2z4"
+            title="Missing and abandoned children"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
         </Indent>
       </Block>
       <hr />
