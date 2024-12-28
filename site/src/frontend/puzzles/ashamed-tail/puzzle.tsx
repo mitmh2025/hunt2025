@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 
 const Group = styled.div`
   margin: 1em 0;
@@ -78,11 +79,14 @@ const Puzzle = (): JSX.Element => {
     <>
       <p className="puzzle-flavor">Not really Bananagrams, either.</p>
       {GROUPS.map((group, i) => (
-        <Group key={`group-${i}`}>
-          {group.map((item, j) => (
-            <div key={`item-${i}-${j}`}>{item}</div>
-          ))}
-        </Group>
+        <React.Fragment key={i}>
+          {i > 0 && <br className={COPY_ONLY_CLASS} />}
+          <Group>
+            {group.map((item, j) => (
+              <div key={`item-${i}-${j}`}>{item}</div>
+            ))}
+          </Group>
+        </React.Fragment>
       ))}
     </>
   );
