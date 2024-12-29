@@ -248,7 +248,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   fechtbuch: Fechtbuch,
   half_baked: HalfBaked,
   networking_event: NetworkingEvent,
-  reuse_and_recyclability: ReuseAndRecyclability,
 
   // Note: these blacklight answer assignments are all wrong, but that's the
   // set of graphical assets that we got for the playtest, so we're going to
@@ -295,6 +294,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
   kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
+  reuse_and_recyclability: ReuseAndRecyclability,
   story_vision_contest: StoryVisionContest,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
   t____ott___p__y: T____ott___P__y,
