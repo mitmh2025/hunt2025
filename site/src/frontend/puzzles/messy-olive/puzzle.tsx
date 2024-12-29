@@ -23,96 +23,103 @@ const SizedWrapper = styled.div<{ $margin?: number; $widthUnits: number }>`
   width: ${({ $widthUnits }) => $widthUnits * WIDTH_UNIT}px;
 `;
 
+const OverflowWrapper = styled.div`
+  max-width: 100%;
+  overflow-x: auto;
+`;
+
 const Puzzle = (): JSX.Element => {
   return (
     <>
       <p className="puzzle-flavor">
         Thanks for connecting me with these new colors!
       </p>
-      <SizedWrapper $widthUnits={4}>
-        <LinkedImage
-          src={image1}
-          alt="A wood-textured rectangle with an engraving and a swatch of black color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={4}>
-        <LinkedImage
-          src={image2}
-          alt="A wood-textured rectangle with an engraving and a swatch of beige color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={3}>
-        <LinkedImage
-          src={image3}
-          alt="A wood-textured rectangle with an engraving and a swatch of green color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={3}>
-        <LinkedImage
-          src={image4}
-          alt="A wood-textured rectangle with an engraving and a swatch of red color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={4}>
-        <LinkedImage
-          src={image5}
-          alt="A wood-textured rectangle with an engraving and a swatch of blue color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={5}>
-        <LinkedImage
-          src={image6}
-          alt="A wood-textured rectangle with an engraving and a swatch of brown color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={5}>
-        <LinkedImage
-          src={image7}
-          alt="A wood-textured rectangle with an engraving and a swatch of pink color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={4}>
-        <LinkedImage
-          src={image8}
-          alt="A wood-textured rectangle with an engraving and a swatch of orange color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={5}>
-        <LinkedImage
-          src={image9}
-          alt="A wood-textured rectangle with an engraving and a swatch of dark green color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={6}>
-        <LinkedImage
-          src={image10}
-          alt="A wood-textured rectangle with an engraving and a swatch of dark blue color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={4}>
-        <LinkedImage
-          src={image11}
-          alt="A wood-textured rectangle with an engraving and a swatch of reddish-orange color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={5}>
-        <LinkedImage
-          src={image12}
-          alt="A wood-textured rectangle with an engraving and a swatch of gray color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $widthUnits={4}>
-        <LinkedImage
-          src={image13}
-          alt="A wood-textured rectangle with an engraving and a swatch of yellow color."
-        />
-      </SizedWrapper>
-      <SizedWrapper $margin={160} $widthUnits={5}>
-        <LinkedImage
-          src={image14}
-          alt="A wood-textured rectangle with an engraving of four question marks."
-        />
-      </SizedWrapper>
+      <OverflowWrapper>
+        <SizedWrapper $widthUnits={4}>
+          <LinkedImage
+            src={image1}
+            alt="A wood-textured rectangle with an engraving and a swatch of black color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={4}>
+          <LinkedImage
+            src={image2}
+            alt="A wood-textured rectangle with an engraving and a swatch of beige color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={3}>
+          <LinkedImage
+            src={image3}
+            alt="A wood-textured rectangle with an engraving and a swatch of green color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={3}>
+          <LinkedImage
+            src={image4}
+            alt="A wood-textured rectangle with an engraving and a swatch of red color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={4}>
+          <LinkedImage
+            src={image5}
+            alt="A wood-textured rectangle with an engraving and a swatch of blue color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={5}>
+          <LinkedImage
+            src={image6}
+            alt="A wood-textured rectangle with an engraving and a swatch of brown color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={5}>
+          <LinkedImage
+            src={image7}
+            alt="A wood-textured rectangle with an engraving and a swatch of pink color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={4}>
+          <LinkedImage
+            src={image8}
+            alt="A wood-textured rectangle with an engraving and a swatch of orange color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={5}>
+          <LinkedImage
+            src={image9}
+            alt="A wood-textured rectangle with an engraving and a swatch of dark green color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={6}>
+          <LinkedImage
+            src={image10}
+            alt="A wood-textured rectangle with an engraving and a swatch of dark blue color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={4}>
+          <LinkedImage
+            src={image11}
+            alt="A wood-textured rectangle with an engraving and a swatch of reddish-orange color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={5}>
+          <LinkedImage
+            src={image12}
+            alt="A wood-textured rectangle with an engraving and a swatch of gray color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $widthUnits={4}>
+          <LinkedImage
+            src={image13}
+            alt="A wood-textured rectangle with an engraving and a swatch of yellow color."
+          />
+        </SizedWrapper>
+        <SizedWrapper $margin={160} $widthUnits={5}>
+          <LinkedImage
+            src={image14}
+            alt="A wood-textured rectangle with an engraving of four question marks."
+          />
+        </SizedWrapper>
+      </OverflowWrapper>
     </>
   );
 };

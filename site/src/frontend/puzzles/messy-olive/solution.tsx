@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const ColoredTd = styled.td<{ $color: string; $textColor?: string }>`
   background-color: ${({ $color }) => $color};
@@ -192,27 +196,29 @@ const Solution = (): JSX.Element => {
         beginning of the word. The correct words and colors used on each block
         are are:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Image</th>
-          <th>Clued Word</th>
-          <th>Color on Block</th>
-          <th>Hex Code</th>
-        </tr>
-        {BLOCK_TABLE.map(({ index, answer, color }) => (
-          <tr key={`block-${index}`}>
-            <td>{index}</td>
-            <td>{answer}</td>
-            <ColoredTd
-              $color={COLOR_TO_HEX[color]}
-              $textColor={color === Color.JET ? "white" : undefined}
-            >
-              {COLOR_TO_PRESENTATION[color]}
-            </ColoredTd>
-            <td>{COLOR_TO_HEX[color]}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Image</th>
+            <th>Clued Word</th>
+            <th>Color on Block</th>
+            <th>Hex Code</th>
           </tr>
-        ))}
-      </StyledTable>
+          {BLOCK_TABLE.map(({ index, answer, color }) => (
+            <tr key={`block-${index}`}>
+              <td>{index}</td>
+              <td>{answer}</td>
+              <ColoredTd
+                $color={COLOR_TO_HEX[color]}
+                $textColor={color === Color.JET ? "white" : undefined}
+              >
+                {COLOR_TO_PRESENTATION[color]}
+              </ColoredTd>
+              <td>{COLOR_TO_HEX[color]}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         Once solvers have identified each of these words, the extraction relies
         on their recognizing that the puzzle title and the nature of the images
@@ -244,32 +250,36 @@ const Solution = (): JSX.Element => {
         block uses the color PINK the next image in the chain is INK, and so on.
         The extracted letters, in the order implied by that chain are:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Color Word</th>
-          <th>Clued Word</th>
-          <th>Letters</th>
-          <th>Color on Block</th>
-        </tr>
-        {CHAIN_TABLE.map(({ colorWord, cluedWord, letters, blockColor }, i) => (
-          <tr key={`chain-${i}`}>
-            <ColoredTd
-              $color={COLOR_TO_HEX[colorWord]}
-              $textColor={colorWord === Color.JET ? "white" : undefined}
-            >
-              {colorWord}
-            </ColoredTd>
-            <td>{cluedWord}</td>
-            <td>{letters}</td>
-            <ColoredTd
-              $color={COLOR_TO_HEX[blockColor]}
-              $textColor={blockColor === Color.JET ? "white" : undefined}
-            >
-              {COLOR_TO_PRESENTATION[blockColor]}
-            </ColoredTd>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Color Word</th>
+            <th>Clued Word</th>
+            <th>Letters</th>
+            <th>Color on Block</th>
           </tr>
-        ))}
-      </StyledTable>
+          {CHAIN_TABLE.map(
+            ({ colorWord, cluedWord, letters, blockColor }, i) => (
+              <tr key={`chain-${i}`}>
+                <ColoredTd
+                  $color={COLOR_TO_HEX[colorWord]}
+                  $textColor={colorWord === Color.JET ? "white" : undefined}
+                >
+                  {colorWord}
+                </ColoredTd>
+                <td>{cluedWord}</td>
+                <td>{letters}</td>
+                <ColoredTd
+                  $color={COLOR_TO_HEX[blockColor]}
+                  $textColor={blockColor === Color.JET ? "white" : undefined}
+                >
+                  {COLOR_TO_PRESENTATION[blockColor]}
+                </ColoredTd>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       This completes the clue phrase “<Mono>CLIP COLOR AFTER CMY”</Mono>, which
       once again references concepts from printing. The color after CMY in the
       CMYK color model often used in color printing refers to the “BLACK”, or
