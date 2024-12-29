@@ -1,15 +1,13 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import solution1 from "./assets/solution1.png";
 import solution2 from "./assets/solution2.png";
-
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-`;
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -110,34 +108,34 @@ const DATA: [
 const Solution = (): JSX.Element => {
   return (
     <>
-      <FlexWrapper>
-        <div>
-          <p>
-            The first thing solvers should notice is that one word in each clue
-            can be paired as an antonym with one of the thumbnails on the
-            connect-the-dots grid, such as “DAY” from “Priest’s Day Job” pairing
-            with the Starry Night image.
-          </p>
-          <p>
-            The remainder of the clue can clue a word starting with PRO or CON,
-            so “Priest’s Job” is CONFESSION. Pairing up the pros and cons allows
-            solvers to draw lines in the grid.
-          </p>
-          <p>
-            Reading the letters on the lines from top to bottom says{" "}
-            <Mono>READ THE EXACTLY OPPOSITE LETTERS</Mono>.
-          </p>
-          <p>
-            Each of those letters has one exactly opposite it across the battle
-            line. Reading these spells{" "}
-            <Mono>SECOND OF PROSTITUTION GIVES THIS</Mono>.
-          </p>
-          <p>
-            The last step is repeating the mechanic and replacing PROSTITUTION
-            with CONSTITUTION. The “second of constitution” is the amendment
-            that gives the <PuzzleAnswer>RIGHT TO BEAR ARMS</PuzzleAnswer>, the
-            answer, which matches the enumeration at the bottom.
-          </p>
+      <div style={{ marginBottom: "16px" }}>
+        <p>
+          The first thing solvers should notice is that one word in each clue
+          can be paired as an antonym with one of the thumbnails on the
+          connect-the-dots grid, such as “DAY” from “Priest’s Day Job” pairing
+          with the Starry Night image.
+        </p>
+        <p>
+          The remainder of the clue can clue a word starting with PRO or CON, so
+          “Priest’s Job” is CONFESSION. Pairing up the pros and cons allows
+          solvers to draw lines in the grid.
+        </p>
+        <p>
+          Reading the letters on the lines from top to bottom says{" "}
+          <Mono>READ THE EXACTLY OPPOSITE LETTERS</Mono>.
+        </p>
+        <p>
+          Each of those letters has one exactly opposite it across the battle
+          line. Reading these spells{" "}
+          <Mono>SECOND OF PROSTITUTION GIVES THIS</Mono>.
+        </p>
+        <p>
+          The last step is repeating the mechanic and replacing PROSTITUTION
+          with CONSTITUTION. The “second of constitution” is the amendment that
+          gives the <PuzzleAnswer>RIGHT TO BEAR ARMS</PuzzleAnswer>, the answer,
+          which matches the enumeration at the bottom.
+        </p>
+        <HScrollTableWrapper>
           <StyledTable>
             <tr>
               <th>Combined Clue</th>
@@ -155,18 +153,18 @@ const Solution = (): JSX.Element => {
               </tr>
             ))}
           </StyledTable>
-        </div>
-        <div>
-          <LinkedImage
-            src={solution1}
-            alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line. Lines are drawn between pairs of clipart items on either side of the center red line."
-          />
-          <LinkedImage
-            src={solution2}
-            alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line."
-          />
-        </div>
-      </FlexWrapper>
+        </HScrollTableWrapper>
+      </div>
+      <div>
+        <LinkedImage
+          src={solution1}
+          alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line. Lines are drawn between pairs of clipart items on either side of the center red line."
+        />
+        <LinkedImage
+          src={solution2}
+          alt="Two columns of clipart flanking a bunch of scattered capital letters, on either side of a vertical red line."
+        />
+      </div>
     </>
   );
 };
