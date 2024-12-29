@@ -55,6 +55,11 @@ const VCenteredDiv = styled.div`
   justify-content: flex-start;
 `;
 
+const ContentWrapper = styled.div`
+  max-width: 100%;
+  overflow-x: auto;
+`;
+
 const PuzzleContent = () => {
   return (
     <>
@@ -66,7 +71,7 @@ const PuzzleContent = () => {
           cut things off there.
         </p>
       </div>
-      <div>
+      <ContentWrapper>
         <SpacedBlock>
           <PaddedMath display="block">
             <MRow>
@@ -917,7 +922,7 @@ const PuzzleContent = () => {
             </MSup>
           </Formula>
         </VCenteredDiv>
-      </div>
+      </ContentWrapper>
     </>
   );
 };
