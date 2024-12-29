@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
 import image_a from "./assets/Moon_A_final.png";
 import image_d from "./assets/Moon_D_final.png";
 import image_o from "./assets/Moon_O_final.png";
@@ -15,10 +16,13 @@ const RowDiv = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  max-width: 100%;
+  overflow-x: auto;
 `;
 
 const Cell = styled.td`
   width: 30px;
+  min-width: 30px;
   height: 40px;
   border: 1px solid black;
   border-collapse: collapse;
@@ -49,10 +53,6 @@ const SpacerSpan = styled.span`
 const Spacer = () => {
   return <SpacerSpan>&gt;&gt;&gt;&gt;&gt;&gt;</SpacerSpan>;
 };
-
-const StyledImage = styled.img`
-  width: 400px;
-`;
 
 const MoonPathLabel = styled.div`
   font-size: 24px;
@@ -353,22 +353,34 @@ const Solution = () => {
 
       <MarginDiv>
         <MoonPathLabel>(5→7→1→4→6→3→5)</MoonPathLabel>
-        <StyledImage src={image_o} />
+        <LinkedImage
+          src={image_o}
+          alt="The moon, overlaid with yellow lines between several lunar maria.  The lines connecting them appear to form the letter O."
+        />
       </MarginDiv>
 
       <MarginDiv>
         <MoonPathLabel>(1→5→6→4→1)</MoonPathLabel>
-        <StyledImage src={image_d} />
+        <LinkedImage
+          src={image_d}
+          alt="The moon, overlaid with yellow lines between several lunar maria.  The lines connecting them appear to form the letter D."
+        />
       </MarginDiv>
 
       <MarginDiv>
         <MoonPathLabel>(1→2→3→6→4) / (2→6)</MoonPathLabel>
-        <StyledImage src={image_a} />
+        <LinkedImage
+          src={image_a}
+          alt="The moon, overlaid with yellow lines between several lunar maria.  The lines connecting them appear to form the letter A."
+        />
       </MarginDiv>
 
       <MarginDiv>
         <MoonPathLabel>(5→2) / (3→2→1)</MoonPathLabel>
-        <StyledImage src={image_y} />
+        <LinkedImage
+          src={image_y}
+          alt="The moon, overlaid with yellow lines between several lunar maria.  The lines connecting them appear to form the letter Y."
+        />
       </MarginDiv>
     </>
   );
