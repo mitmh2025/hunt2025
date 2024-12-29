@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
 import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
+import {
   Math,
   MFrac,
   MI,
@@ -60,6 +64,137 @@ const ContentWrapper = styled.div`
   overflow-x: auto;
 `;
 
+const images: [image: string, exponent: number | undefined][] = [
+  [img_01, undefined],
+  [img_02, -34],
+  [img_03, -11],
+  [img_04, undefined],
+  [img_05, undefined],
+  [img_06, undefined],
+  [img_07, undefined],
+  [img_08, undefined],
+  [img_09, 2],
+  [img_10, 8],
+  [img_11, 11],
+  [img_12, 16],
+  [img_13, 23],
+];
+
+const CopyContent = () => {
+  type Reference = (subscript: number) => string;
+  type Formula = (x: Reference, y: Reference) => string;
+
+  const formulas: Formula[] = [
+    (x, y) => `(${x(6)} * ${y(3)}) / ${x(2)}`,
+    (x, y) =>
+      `((${x(5)} - (${x(2)} / ${y(4)})) / pow(${x(6)} + ${y(2)} + ${y(3)}, 2)) + (${x(3)} / ${y(1)})`,
+    (x, y) => `(pow(${x(6)}, ${y(2)}) + ${x(2)}) / (pow(${x(7)}, 2) * ${y(2)})`,
+    (x, y) =>
+      `(${x(1)} * ${y(3)}) / (${y(2)} * ${y(4)} * (${y(2)} * ${y(3)} + ${x(1)} - ${x(4)}) * (${x(7)} + sqrt(${y(2)})))`,
+    (x, y) => `(${x(7)} + ${y(2)} + ${y(4)}) / ${x(7)}`,
+    (x, y) =>
+      `(${x(5)} * ${x(6)} * ${y(3)} + ${y(1)} - ${x(2)} - (${x(3)} / ${y(3)})) / pow(${x(4)}, 2/3)`,
+    (x, y) =>
+      `${x(6)} - ${x(1)} / ((${x(2)} + ${x(3)} + ${x(5)} + ${y(4)}) * (${x(5)} * ${y(3)} - ${x(6)} - ${y(3)} - ${y(4)}))`,
+    (x, y) => `pow(${y(1)} - ${y(3)} * (${x(6)} + ${y(4)}), 1/3)`,
+    (x, y) => `(${x(5)} - ${x(6)} - ${y(3)}) / ${y(4)}`,
+    (x, y) =>
+      `(${x(5)} + (pow(${x(4)}, 2) * (${x(7)} - ${y(3)})) / pow(${y(4)}, 5)) / (${x(5)} + ${x(6)} + ${y(2)} * ${y(3)} * ${y(4)})`,
+    (x, y) =>
+      `((${y(1)} / ${x(6)}) * (${x(4)} / ${x(2)} - ${x(7)} / ${y(4)})) / ${x(2)}`,
+    (x, y) => `(${x(3)} * ${y(2)} + sqrt(${y(2)})) / (${x(7)} * ${y(4)})`,
+    (x, y) => `(${x(3)} * ${y(1)}) / (${x(2)} * ${y(3)})`,
+  ];
+
+  return (
+    <>
+      <br className={COPY_ONLY_CLASS} />
+      <table className={COPY_ONLY_CLASS}>
+        <tr>
+          <td>??? → x1, x2, x3, x4, x5, x6, _, x7</td>
+        </tr>
+        <tr>
+          <td>??? → y1, y2, y3, _, y4</td>
+        </tr>
+
+        <tr />
+
+        <tr />
+
+        <tr>
+          <td>
+            x_6 &lt; x_7 &lt;&lt; x_5 &lt; x_2 &lt; x_3 &lt;&lt;&lt; x_4 &lt;
+            x_1
+          </td>
+        </tr>
+        <tr>
+          <td>y_3 &lt; y_2 &lt; y_4 &lt;&lt; y_1</td>
+        </tr>
+
+        <tr />
+
+        <tr>
+          <td>&nbsp;</td>
+          <td>Fill in values here ↓</td>
+        </tr>
+        {Array.from({ length: 7 }, (_, i) => (
+          <tr key={i}>
+            <td>x_{i + 1} =</td>
+          </tr>
+        ))}
+        <tr />
+        {Array.from({ length: 4 }, (_, i) => (
+          <tr key={i}>
+            <td>y_{i + 1} =</td>
+          </tr>
+        ))}
+
+        <tr />
+
+        {formulas.map((formula, i) => {
+          const xOffset =
+            -i /* beginning of formulas */ -
+            1 /* spacer */ -
+            4 /* y values */ -
+            1 /* spacer */ -
+            7 /* x values */ -
+            1; /* 0-indexed */
+          const yOffset =
+            -i /* beginning of formulas */ -
+            1 /* spacer */ -
+            4 /* y values */ -
+            1; /* 0-indexed */
+          const x: Reference = (x) => `R[${x + xOffset}]C[0]`;
+          const y: Reference = (y) => `R[${y + yOffset}]C[0]`;
+          return (
+            <tr key={`formula-${i}`}>
+              <td>
+                {formula(
+                  (x) => `x_${x}`,
+                  (y) => `y_${y}`,
+                )}
+              </td>
+              <td data-sheets-formula={`=${formula(x, y)}`} />
+            </tr>
+          );
+        })}
+
+        <tr />
+
+        {images.map(([image, exponent], i) => (
+          <tr key={`image-${i}`}>
+            <td>
+              {/* eslint-disable-next-line jsx-a11y/alt-text -- spoilers */}
+              <img src={image} />
+            </td>
+            <td>{exponent && `* 10^${exponent}`}</td>
+          </tr>
+        ))}
+      </table>
+    </>
+  );
+};
+
 const PuzzleContent = () => {
   return (
     <>
@@ -71,7 +206,7 @@ const PuzzleContent = () => {
           cut things off there.
         </p>
       </div>
-      <ContentWrapper>
+      <ContentWrapper className={NO_COPY_CLASS}>
         <SpacedBlock>
           <PaddedMath display="block">
             <MRow>
@@ -834,95 +969,23 @@ const PuzzleContent = () => {
 
         <hr />
 
-        <VCenteredDiv>
-          <BoundedImg src={img_01} />
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_02} />
-          <Formula>
-            <MO>&#x00d7;</MO>
-            <MSup>
-              <MN>10</MN>
-              <MN>-34</MN>
-            </MSup>
-          </Formula>
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_03} />
-          <Formula>
-            <MO>&#x00d7;</MO>
-            <MSup>
-              <MN>10</MN>
-              <MN>-11</MN>
-            </MSup>
-          </Formula>
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_04} />
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_05} />
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_06} />
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_07} />
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_08} />
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_09} />
-          <Formula>
-            <MO>&#x00d7;</MO>
-            <MSup>
-              <MN>10</MN>
-              <MN>2</MN>
-            </MSup>
-          </Formula>
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_10} />
-          <Formula>
-            <MO>&#x00d7;</MO>
-            <MSup>
-              <MN>10</MN>
-              <MN>8</MN>
-            </MSup>
-          </Formula>
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_11} />
-          <Formula>
-            <MO>&#x00d7;</MO>
-            <MSup>
-              <MN>10</MN>
-              <MN>11</MN>
-            </MSup>
-          </Formula>
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_12} />
-          <Formula>
-            <MO>&#x00d7;</MO>
-            <MSup>
-              <MN>10</MN>
-              <MN>16</MN>
-            </MSup>
-          </Formula>
-        </VCenteredDiv>
-        <VCenteredDiv>
-          <BoundedImg src={img_13} />
-          <Formula>
-            <MO>&#x00d7;</MO>
-            <MSup>
-              <MN>10</MN>
-              <MN>23</MN>
-            </MSup>
-          </Formula>
-        </VCenteredDiv>
+        {images.map(([image, exponent], i) => (
+          <VCenteredDiv key={i}>
+            <BoundedImg src={image} />
+            {exponent && (
+              <Formula>
+                <MO>&#x00d7;</MO>
+                <MSup>
+                  <MN>10</MN>
+                  <MN>{exponent}</MN>
+                </MSup>
+              </Formula>
+            )}
+          </VCenteredDiv>
+        ))}
       </ContentWrapper>
+
+      <CopyContent />
     </>
   );
 };
