@@ -413,7 +413,7 @@ const HUNT: Hunt = {
         // Slugs from these 5 slots can be swapped freely to match the desired object.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "皇帝の暗号" }, // great wave painting
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // globe
-        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 }, // family portrait, paw_print_detective goes here
+        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "paw_print_detective" }, // family portrait
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 }, // typewriter, a_puzzle_of_the_dead goes here
         { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp, 
         // The next 5 puzzles are unlockable once they are discovered in the

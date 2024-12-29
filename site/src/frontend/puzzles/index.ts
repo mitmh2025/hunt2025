@@ -99,6 +99,7 @@ import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import SyntheticTagsonomy from "./rubbery-tooth";
 import DroppingTheBall from "./rundown-spot";
+import PawPrintDetective from "./rural-helicopter";
 import MagnifyingGlassIce from "./sandy-atlantis";
 import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
@@ -253,7 +254,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
   cross_spread: CrossSpread, // globe
-  // isp03 family portrait?
+  paw_print_detective: PawPrintDetective, // family portrait
   this_is_just_a_test: ThisIsJustATest, // typewriter
   // isp05 desk lamp?
 
