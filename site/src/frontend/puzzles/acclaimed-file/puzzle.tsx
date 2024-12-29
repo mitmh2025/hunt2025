@@ -36,6 +36,7 @@ ION OF DEPTH            ION OF DEPTH
 const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-around;
+  overflow-x: auto;
 `;
 
 const Preformatted = styled.div`
