@@ -1,4 +1,5 @@
 import React from "react";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
 
@@ -92,6 +93,7 @@ const Puzzle = (): JSX.Element => {
           conversations with them had all been time-shifted.
         </li>
       </ul>
+      <br className={COPY_ONLY_CLASS} />
       <LinkedImage
         src={image}
         alt="A graph. The x-axis ranges from 1967 to 2025, with tick labels every ten ticks, starting at 1970. The y-axis ranges from 3100s to 2100s. Short, horizontal black stripes with blue numbers 1 through 13 are scattered across the graph, mostly in order from left to right."

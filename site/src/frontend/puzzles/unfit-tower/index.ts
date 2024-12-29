@@ -13,6 +13,7 @@ const puzzle: PuzzleDefinition = {
   content: {
     component: Puzzle,
     entrypoint: "puzzle_unfit_tower",
+    copyable: false,
   },
   solution: {
     component: Solution,

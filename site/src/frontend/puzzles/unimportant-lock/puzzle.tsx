@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
 import { CaveatFont, CourierFont } from "../../assets/SharedFonts";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 
 const PostItWrapper = styled.div`
   padding: 32px;
@@ -82,10 +86,17 @@ const PrinterPaper = ({
   rotate: number;
   text: string;
 }): JSX.Element => {
+  const lines = text.match(/.{1,24}/g);
   return (
     <RotateWrapper $rotate={rotate}>
       <PrinterPaperSide />
-      <PrinterPaperMain>{text}</PrinterPaperMain>
+      <PrinterPaperMain className={NO_COPY_CLASS}>{text}</PrinterPaperMain>
+      {/* This seems to be the best way to get a single cell with multiple lines */}
+      <table className={COPY_ONLY_CLASS}>
+        <tr>
+          <td>{lines?.map((line, index) => <p key={index}>{line}</p>)}</td>
+        </tr>
+      </table>
       <PrinterPaperSide />
     </RotateWrapper>
   );
@@ -106,17 +117,20 @@ const Puzzle = (): JSX.Element => {
           really out of control and the rosemary was almost dead, but the thyme
           is doing well. I must buy some sage next x
         </PostIt>
+        <br className={COPY_ONLY_CLASS} />
         <PostIt $rotate={-20}>
           The rose garden is starting to look really wonderful, as the roses are
           in full bloom, and the scent of them wafts down the path to the
           kitchen garden where I tend the carrots xx
         </PostIt>
+        <br className={COPY_ONLY_CLASS} />
         <PostIt $rotate={-5}>
           Finally making some progress in the orchard beyond the walled
           courtyard. The pear trees are fruiting for the first time! And the
           crabapple I put in last year is thriving xxx
         </PostIt>
       </PostItWrapper>
+      <br className={COPY_ONLY_CLASS} />
       <PrinterPaperWrapper>
         <PrinterPaper
           rotate={5}

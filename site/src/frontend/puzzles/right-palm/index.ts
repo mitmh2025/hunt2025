@@ -25,6 +25,7 @@ const puzzle: PuzzleDefinition = {
   content: {
     component: Puzzle,
     entrypoint: "puzzle_right_palm",
+    copyable: false,
   },
   solution: {
     component: Solution,

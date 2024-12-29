@@ -86,6 +86,14 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
       }
     });
 
+    const backgroundColor = styles.getPropertyValue("background-color");
+    if (
+      backgroundColor.startsWith("rgba(") &&
+      backgroundColor.endsWith(", 0)")
+    ) {
+      node.style.removeProperty("background-color");
+    }
+
     // Copy borders
     ["top", "right", "bottom", "left"].forEach((side) => {
       const width = styles.getPropertyValue(`border-${side}-width`);
@@ -167,6 +175,17 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
       transformed = table;
     }
 
+    if (
+      transformed instanceof HTMLElement &&
+      transformed.tagName.toLowerCase() === "summary"
+    ) {
+      // Add the disclosure triangle as text
+      transformed.insertBefore(
+        document.createTextNode("▼ "),
+        transformed.firstChild,
+      );
+    }
+
     if (transformed instanceof HTMLAnchorElement && transformed.href) {
       // Add domain to relative links
       const url = new URL(transformed.href, document.location.href);
@@ -180,7 +199,7 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     }
 
     [...transformed.childNodes].forEach((child) => {
-      if (child instanceof HTMLTableElement) {
+      if (child instanceof HTMLTableElement || child instanceof HTMLHRElement) {
         transformed.insertBefore(
           document.createElement("br"),
           child.nextSibling,
@@ -224,6 +243,16 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     //
     // We'll also try to massage images into this format if they are at the
     // top-level of the markup
+
+    const transformableTopLevelImages = node.querySelectorAll(
+      ":scope > img, :scope > a:has(> img:only-child)",
+    );
+    transformableTopLevelImages.forEach((img) => {
+      // Wrap in a div so it gets picked up by the next selector
+      const div = document.createElement("div");
+      img.replaceWith(div);
+      div.appendChild(img);
+    });
 
     const transformableContainers = node.querySelectorAll(
       ":scope > div:has(> img:only-child), :scope > div:has(> a:only-child > img:only-child)",
@@ -332,7 +361,22 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     return transform(result);
   };
 
+  // details tags suppress visibility of their contents in a way that can't be
+  // overridden by CSS, so the only way to see them is to temporarily open them
+  // on the source DOM tree
+  root.querySelectorAll("details").forEach((details) => {
+    details.dataset.copyOriginalOpen = details.open.toString();
+    details.open = true;
+  });
+
   const cloned = recursiveClone(root) as HTMLElement;
+
+  // close the details tags again
+  root.querySelectorAll("details").forEach((details) => {
+    details.open = details.dataset.copyOriginalOpen === "true";
+    delete details.dataset.copyOriginalOpen;
+  });
+
   fixImages(cloned);
   addStyleResets(cloned);
 

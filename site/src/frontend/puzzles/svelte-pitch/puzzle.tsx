@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 
 const RECIPES = [
   [
@@ -91,6 +92,7 @@ const Recipe = ({
           </RecipeComments>
         </details>
       </div>
+      <br className={COPY_ONLY_CLASS} />
     </RecipeWrapper>
   );
 };
