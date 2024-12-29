@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const PreCode = styled.pre`
   font-family: "Roboto Mono", monospace;
@@ -50,62 +54,64 @@ const Solution = () => {
         clip. The songs used, in order from top to bottom:
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Song title</th>
-            <th>Artist</th>
-            <th>Referenced bird</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>“Little Sparrow”</td>
-            <td>Dolly Parton</td>
-            <td>Sparrows</td>
-          </tr>
-          <tr>
-            <td>“Absolutely Cuckoo”</td>
-            <td>The Magnetic Fields</td>
-            <td>Cuckoos</td>
-          </tr>
-          <tr>
-            <td>“Nice Weather for Ducks”</td>
-            <td>Lemon Jelly</td>
-            <td>Ducks</td>
-          </tr>
-          <tr>
-            <td>“Seven Swans”</td>
-            <td>Sufjan Stevens</td>
-            <td>Swans</td>
-          </tr>
-          <tr>
-            <td>“As the Crow Flies”</td>
-            <td>The Animals</td>
-            <td>Crows</td>
-          </tr>
-          <tr>
-            <td>“When Doves Cry”</td>
-            <td>Prince</td>
-            <td>Doves</td>
-          </tr>
-          <tr>
-            <td>“Fly Like an Eagle”</td>
-            <td>Seal</td>
-            <td>Eagles</td>
-          </tr>
-          <tr>
-            <td>“The Woodpecker Song”</td>
-            <td>Glenn Miller and His Orchestra</td>
-            <td>Woodpeckers</td>
-          </tr>
-          <tr>
-            <td>“Blackbird”</td>
-            <td>The Beatles</td>
-            <td>Blackbirds</td>
-          </tr>
-        </tbody>
-      </table>
+      <HScrollTableWrapper>
+        <table>
+          <thead>
+            <tr>
+              <th>Song title</th>
+              <th>Artist</th>
+              <th>Referenced bird</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>“Little Sparrow”</td>
+              <td>Dolly Parton</td>
+              <td>Sparrows</td>
+            </tr>
+            <tr>
+              <td>“Absolutely Cuckoo”</td>
+              <td>The Magnetic Fields</td>
+              <td>Cuckoos</td>
+            </tr>
+            <tr>
+              <td>“Nice Weather for Ducks”</td>
+              <td>Lemon Jelly</td>
+              <td>Ducks</td>
+            </tr>
+            <tr>
+              <td>“Seven Swans”</td>
+              <td>Sufjan Stevens</td>
+              <td>Swans</td>
+            </tr>
+            <tr>
+              <td>“As the Crow Flies”</td>
+              <td>The Animals</td>
+              <td>Crows</td>
+            </tr>
+            <tr>
+              <td>“When Doves Cry”</td>
+              <td>Prince</td>
+              <td>Doves</td>
+            </tr>
+            <tr>
+              <td>“Fly Like an Eagle”</td>
+              <td>Seal</td>
+              <td>Eagles</td>
+            </tr>
+            <tr>
+              <td>“The Woodpecker Song”</td>
+              <td>Glenn Miller and His Orchestra</td>
+              <td>Woodpeckers</td>
+            </tr>
+            <tr>
+              <td>“Blackbird”</td>
+              <td>The Beatles</td>
+              <td>Blackbirds</td>
+            </tr>
+          </tbody>
+        </table>
+      </HScrollTableWrapper>
 
       <p>
         The titles of the songs each include a type of bird – which appear below
