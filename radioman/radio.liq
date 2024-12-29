@@ -19,10 +19,22 @@ ICY_BOX_INTERVAL = 300.
 #     loop = true,
 #     mode = "randomize", # Shuffle list every time it loops
 # ))
+l = playlog(persistency="playlog")
+def check(r)
+    m = request.metadata(r)
+    if l.last(m) < 3600. then
+        log.info("Rejecting #{m['filename']} (played #{l.last(m)}s ago).")
+        false
+    else
+        l.add(m)
+        true
+    end
+end
 background_music = playlist.list(
     file.ls(environment.get("MUSIC_DIR"), pattern="*.mp3", absolute=true),
     loop = true,
     mode = "randomize", # Shuffle list every time it loops
+    check_next=check
 )
 
 # Tier 2 - Station Break
