@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   td {
@@ -107,30 +111,32 @@ const Solution = (): JSX.Element => {
         repeating the mechanic, teams extract <PuzzleAnswer>KNIFE</PuzzleAnswer>
         , the answer.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Clue</th>
-          <th>Only Letters</th>
-          <th>Definition</th>
-          <th>Answer</th>
-          <th>Center Letter</th>
-        </tr>
-        {DATA.map(({ clue, letters, definition, answer, extraction }, i) => (
-          <tr key={i}>
-            <td>{clue}</td>
-            <td>{letters}</td>
-            <td>{definition}</td>
-            <td>
-              <Mono>{answer}</Mono>
-            </td>
-            <td>
-              <Mono>
-                <strong>{extraction}</strong>
-              </Mono>
-            </td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Clue</th>
+            <th>Only Letters</th>
+            <th>Definition</th>
+            <th>Answer</th>
+            <th>Center Letter</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(({ clue, letters, definition, answer, extraction }, i) => (
+            <tr key={i}>
+              <td>{clue}</td>
+              <td>{letters}</td>
+              <td>{definition}</td>
+              <td>
+                <Mono>{answer}</Mono>
+              </td>
+              <td>
+                <Mono>
+                  <strong>{extraction}</strong>
+                </Mono>
+              </td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };
