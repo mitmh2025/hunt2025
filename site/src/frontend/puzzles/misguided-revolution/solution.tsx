@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import disneyWorldMap from "./assets/disney_world_map.png";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
@@ -438,37 +442,39 @@ const Solution = (): JSX.Element => {
       <p>
         The Magic Kingdom at Walt Disney World gives the word <Mono>LONG</Mono>:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Attraction Name</th>
-          <th>Clue</th>
-          <th>Letter</th>
-        </tr>
-        {MAGIC_KINGDOM_DATA.map(({ attractions, letter }) =>
-          attractions.map(({ name, clues }, i) => (
-            <tr key={`magic-kingdom-row-${i}`}>
-              <td>{name}</td>
-              <td>
-                <ul>
-                  {clues.map((clue, j) => (
-                    <li key={`magic-kingdom-row-${i}-clue-${j}`}>
-                      {" "}
-                      {clue === "Refill the O2H bottles" ? (
-                        <span>
-                          Refill the O<sub>2</sub>H bottles
-                        </span>
-                      ) : (
-                        clue
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </td>
-              {i === 0 && <td rowSpan={attractions.length}>{letter}</td>}
-            </tr>
-          )),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Attraction Name</th>
+            <th>Clue</th>
+            <th>Letter</th>
+          </tr>
+          {MAGIC_KINGDOM_DATA.map(({ attractions, letter }) =>
+            attractions.map(({ name, clues }, i) => (
+              <tr key={`magic-kingdom-row-${i}`}>
+                <td>{name}</td>
+                <td>
+                  <ul>
+                    {clues.map((clue, j) => (
+                      <li key={`magic-kingdom-row-${i}-clue-${j}`}>
+                        {" "}
+                        {clue === "Refill the O2H bottles" ? (
+                          <span>
+                            Refill the O<sub>2</sub>H bottles
+                          </span>
+                        ) : (
+                          clue
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+                {i === 0 && <td rowSpan={attractions.length}>{letter}</td>}
+              </tr>
+            )),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       <FlexWrapper>
         <SizedImage
           src={image1}
@@ -485,31 +491,33 @@ const Solution = (): JSX.Element => {
         Universal Studios Orlando and Islands of Adventure give the word{" "}
         <Mono>STRIDE</Mono>:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Attraction Name</th>
-          <th>Clue</th>
-          <th>Letter</th>
-        </tr>
-        {UNIVERSAL_DATA.map(({ attractions, letter }) =>
-          attractions.map(({ name, clues }, i) => (
-            <tr key={`magic-kingdom-row-${i}`}>
-              <td>{name}</td>
-              <td>
-                <ul>
-                  {clues.map((clue, j) => (
-                    <li key={`magic-kingdom-row-${i}-clue-${j}`}>
-                      {clue}
-                      {clue === "Solve" && <Formula />}
-                    </li>
-                  ))}
-                </ul>
-              </td>
-              {i === 0 && <td rowSpan={attractions.length}>{letter}</td>}
-            </tr>
-          )),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Attraction Name</th>
+            <th>Clue</th>
+            <th>Letter</th>
+          </tr>
+          {UNIVERSAL_DATA.map(({ attractions, letter }) =>
+            attractions.map(({ name, clues }, i) => (
+              <tr key={`magic-kingdom-row-${i}`}>
+                <td>{name}</td>
+                <td>
+                  <ul>
+                    {clues.map((clue, j) => (
+                      <li key={`magic-kingdom-row-${i}-clue-${j}`}>
+                        {clue}
+                        {clue === "Solve" && <Formula />}
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+                {i === 0 && <td rowSpan={attractions.length}>{letter}</td>}
+              </tr>
+            )),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       <FlexWrapper>
         <SizedImage
           src={image2}
