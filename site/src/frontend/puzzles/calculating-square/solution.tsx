@@ -152,14 +152,14 @@ const Solution = (): JSX.Element => {
         <br />
         casts a tired <s>dice</s> <strong>SHADOW</strong> (2)
       </Haiku>
-      <Haiku $indent={true}>
+      <Haiku $indent={false}>
         cacti cannot speak
         <br />
         nor can they steer a <s>horse</s> <strong>SKATEBOARD</strong>
         <br />
         globs of water, spilled (10)
       </Haiku>
-      <Haiku $indent={false}>
+      <Haiku $indent={true}>
         the <s>galaxy</s> <strong>STATA</strong> center
         <br />
         colored in muted red tones
