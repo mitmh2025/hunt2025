@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import { Centered, StyledOl } from "./puzzle";
 
 const DONUT_CARD_1: { quantity: number; flavor: string; extraction: string }[] =
@@ -2334,7 +2338,6 @@ const StyledTable = styled.table`
 `;
 
 const RouteTable = styled(StyledTable)`
-  width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
   tr:not(:last-child) {
@@ -2394,24 +2397,26 @@ const Solution = (): JSX.Element => {
         A full walkthrough of the route can be found at the end of this page.
         The completed Donut Ordering Card is as follows:
       </p>
-      <StyledTable>
-        <tr>
-          <th></th>
-          <th>Quantity</th>
-          <th>Donut Type</th>
-          <th>Extraction</th>
-        </tr>
-        {DONUT_CARD_1.map(({ quantity, flavor, extraction }, i) => (
-          <tr key={`donut-card-1-${i}`}>
-            <td>
-              <strong>DIYC {i + 1}</strong>
-            </td>
-            <td>{quantity}</td>
-            <td>{flavor}</td>
-            <td>{extraction}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th></th>
+            <th>Quantity</th>
+            <th>Donut Type</th>
+            <th>Extraction</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DONUT_CARD_1.map(({ quantity, flavor, extraction }, i) => (
+            <tr key={`donut-card-1-${i}`}>
+              <td>
+                <strong>DIYC {i + 1}</strong>
+              </td>
+              <td>{quantity}</td>
+              <td>{flavor}</td>
+              <td>{extraction}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         This spells out the initial answer, <Mono>FOOD COURT</Mono>.
       </p>
@@ -2436,25 +2441,27 @@ const Solution = (): JSX.Element => {
         get a new index into the donut name (except for DEGLAZED, where you do
         not have enough letters to re-extract.)
       </p>
-      <StyledTable>
-        <tr>
-          <th></th>
-          <th>Quantity</th>
-          <th>Donut Type</th>
-          <th>Extraction</th>
-        </tr>
-        {DONUT_CARD_2.map(({ quantity, rotaries, flavor, extraction }, j) => (
-          <tr key={`donut-card-2-${j}`}>
-            <td>
-              <strong>DIYC {j + 1}</strong>
-            </td>
-            <td>{quantity}</td>
-            <td>{rotaries}</td>
-            <td>{flavor}</td>
-            <td>{extraction}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th></th>
+            <th>Quantity</th>
+            <th>Donut Type</th>
+            <th>Extraction</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DONUT_CARD_2.map(({ quantity, rotaries, flavor, extraction }, j) => (
+            <tr key={`donut-card-2-${j}`}>
+              <td>
+                <strong>DIYC {j + 1}</strong>
+              </td>
+              <td>{quantity}</td>
+              <td>{rotaries}</td>
+              <td>{flavor}</td>
+              <td>{extraction}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         This spells out the final answer, <PuzzleAnswer>VOYAGERS</PuzzleAnswer>.
       </p>
@@ -2482,41 +2489,43 @@ const Solution = (): JSX.Element => {
             ))}
             {mapsNote && <div>{mapsNote}</div>}
           </Centered>
-          <RouteTable>
-            <tr>
-              <th>#</th>
-              <th>Dir.</th>
-              <th>Instruction</th>
-              <th>Street</th>
-              <th>ODO</th>
-              <th>Speed</th>
-              <th>Donuts</th>
-              <th>Rule(s)</th>
-            </tr>
-            {instructions.map(
-              (
-                { direction, instruction, street, odo, speed, donuts, rules },
-                m,
-              ) => (
-                <tr key={`route-${k}-instruction-${m}`}>
-                  <td>{m + 1}</td>
-                  <td>{direction}</td>
-                  <td>{instruction}</td>
-                  <td>{street}</td>
-                  <td>{odo}</td>
-                  <td>{speed}</td>
-                  <td>{donuts}</td>
-                  <td>
-                    {rules.map((rule, n) => (
-                      <div key={`route-${k}-instruction-${m}-rule-${n}`}>
-                        {rule}
-                      </div>
-                    ))}
-                  </td>
-                </tr>
-              ),
-            )}
-          </RouteTable>
+          <HScrollTableWrapper>
+            <RouteTable>
+              <tr>
+                <th>#</th>
+                <th>Dir.</th>
+                <th>Instruction</th>
+                <th>Street</th>
+                <th>ODO</th>
+                <th>Speed</th>
+                <th>Donuts</th>
+                <th>Rule(s)</th>
+              </tr>
+              {instructions.map(
+                (
+                  { direction, instruction, street, odo, speed, donuts, rules },
+                  m,
+                ) => (
+                  <tr key={`route-${k}-instruction-${m}`}>
+                    <td>{m + 1}</td>
+                    <td>{direction}</td>
+                    <td>{instruction}</td>
+                    <td>{street}</td>
+                    <td>{odo}</td>
+                    <td>{speed}</td>
+                    <td>{donuts}</td>
+                    <td>
+                      {rules.map((rule, n) => (
+                        <div key={`route-${k}-instruction-${m}-rule-${n}`}>
+                          {rule}
+                        </div>
+                      ))}
+                    </td>
+                  </tr>
+                ),
+              )}
+            </RouteTable>
+          </HScrollTableWrapper>
         </div>
       ))}
       <h3>Author’s Note</h3>
