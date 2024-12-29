@@ -1,6 +1,10 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -13,6 +17,14 @@ const StyledTable = styled.table`
     padding: 0px 8px;
   }
 `;
+
+const Table = ({ children }: { children: ReactNode }) => {
+  return (
+    <HScrollTableWrapper>
+      <StyledTable>{children}</StyledTable>
+    </HScrollTableWrapper>
+  );
+};
 
 const Solution = (): JSX.Element => {
   return (
@@ -67,7 +79,7 @@ const Solution = (): JSX.Element => {
         players (which may assist with solving once noticed), and the common
         letters spell out the message <Mono>INDEX MAIN POS INTO BLESSING</Mono>.
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th></th>
           <th>MLB Player</th>
@@ -256,13 +268,13 @@ const Solution = (): JSX.Element => {
           </td>
           <td>ING</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         Directed by this instruction, we must solve the blessings for each
         player and find the unclued blessing. The blessings are given in each
         image in alphabetical order, once solved.
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th></th>
           <th>Anagrammed Blessings</th>
@@ -392,7 +404,7 @@ const Solution = (): JSX.Element => {
           <td>?</td>
           <td>Darkside Flip</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         The final step is indexing the MLB player’s most played fielding
         position in the majors (using baseball’s traditional notation when
@@ -403,7 +415,7 @@ const Solution = (): JSX.Element => {
         Reference. In the ambiguous entries (primarily the outfielders), the
         position was directly given in the clue text on the card.
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th></th>
           <th>Players</th>
@@ -502,7 +514,7 @@ const Solution = (): JSX.Element => {
           <td>Darkside Flip</td>
           <td>D</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         The final answer is: <PuzzleAnswer>BASEBALL MOUND</PuzzleAnswer>.
       </p>
