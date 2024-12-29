@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { PuzzleAnswer } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTh = styled.th`
   font-weight: bold;
@@ -18,34 +18,36 @@ const Table = ({
   rows: string[][];
 }): JSX.Element => {
   return (
-    <table>
-      <thead>
-        <tr>
-          {headers.map((header, i) => (
-            <StyledTh key={`header-cell-${i}`}>{header}</StyledTh>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, j) => (
-          <tr key={`table-row-${j}`}>
-            {row.map((cell, k) => {
-              let cellContent: string | JSX.Element = cell;
-              if (k === 1) {
-                cellContent = <a href={HF_LINKS[j]}>{cell}</a>;
-              } else if (k === 5) {
-                cellContent = <PuzzleAnswer>{cell}</PuzzleAnswer>;
-              }
-              return (
-                <StyledTd key={`table-row-${j}-cell-${k}`}>
-                  {cellContent}
-                </StyledTd>
-              );
-            })}
+    <HScrollTableWrapper>
+      <table>
+        <thead>
+          <tr>
+            {headers.map((header, i) => (
+              <StyledTh key={`header-cell-${i}`}>{header}</StyledTh>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {rows.map((row, j) => (
+            <tr key={`table-row-${j}`}>
+              {row.map((cell, k) => {
+                let cellContent: string | JSX.Element = cell;
+                if (k === 1) {
+                  cellContent = <a href={HF_LINKS[j]}>{cell}</a>;
+                } else if (k === 5) {
+                  cellContent = <PuzzleAnswer>{cell}</PuzzleAnswer>;
+                }
+                return (
+                  <StyledTd key={`table-row-${j}-cell-${k}`}>
+                    {cellContent}
+                  </StyledTd>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </HScrollTableWrapper>
   );
 };
 
