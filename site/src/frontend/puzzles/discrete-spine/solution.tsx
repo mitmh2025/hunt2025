@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import { PuzzleAnswer } from "../../components/StyledUI";
+import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import birch from "./assets/birch.png";
 import bogey from "./assets/bogey.png";
 import cube from "./assets/cube.png";
@@ -33,6 +34,7 @@ const StyledTable = styled.table`
 const MonoTable = styled(StyledTable)`
   td {
     font-family: "Roboto Mono", monospace;
+    white-space: nowrap;
   }
 `;
 
@@ -64,6 +66,10 @@ const RIGHT_PAGE = [
 ];
 
 const ALT_TEXT = "An angular glyph written in thick black lines.";
+
+const SizeLimitedImage = styled.img`
+  max-width: 100%;
+`;
 
 const Solution = (): JSX.Element => {
   return (
@@ -101,24 +107,26 @@ const Solution = (): JSX.Element => {
         The printed lines are clues and enumerations. These clues and their
         answers are:
       </p>
-      <StyledTable>
-        <tr>
-          <th colSpan={2}>Left page</th>
-          {LEFT_PAGE.map(({ clue, answer }, i) => (
-            <tr key={`left-${i}`}>
-              <td>{clue}</td>
-              <td>{answer}</td>
-            </tr>
-          ))}
-          <th colSpan={2}>Right page</th>
-          {RIGHT_PAGE.map(({ clue, answer }, i) => (
-            <tr key={`left-${i}`}>
-              <td>{clue}</td>
-              <td>{answer}</td>
-            </tr>
-          ))}
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th colSpan={2}>Left page</th>
+            {LEFT_PAGE.map(({ clue, answer }, i) => (
+              <tr key={`left-${i}`}>
+                <td>{clue}</td>
+                <td>{answer}</td>
+              </tr>
+            ))}
+            <th colSpan={2}>Right page</th>
+            {RIGHT_PAGE.map(({ clue, answer }, i) => (
+              <tr key={`left-${i}`}>
+                <td>{clue}</td>
+                <td>{answer}</td>
+              </tr>
+            ))}
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>The handwritten list names a number of locations in the game:</p>
       <ol>
         <li>Eastern Vault</li>
@@ -151,89 +159,91 @@ const Solution = (): JSX.Element => {
         The rotations can be composed of 90-degree rotations around the three
         primary axes, illustrated here:
       </p>
-      <img
+      <SizeLimitedImage
         src={cube}
         alt="A cube with all six rotations labeled: clockwise and counter-clockwise over the X-, Y-, and Z-axes"
       />
-      <MonoTable>
-        <tr>
-          <th>Left Answer</th>
-          <th>Rotation</th>
-          <th>Right Answer</th>
-        </tr>
-        <tr>
-          <td>
-            EWE <img src={ewe} alt={ALT_TEXT} />
-          </td>
-          <td>Y</td>
-          <td>
-            KNEE <img src={knee} alt={ALT_TEXT} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            MICKEY <img src={mickey} alt={ALT_TEXT} />
-          </td>
-          <td>X′ Y Y</td>
-          <td>
-            JOCKEY <img src={jockey} alt={ALT_TEXT} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            NANO <img src={nano} alt={ALT_TEXT} />
-          </td>
-          <td>Z X′</td>
-          <td>
-            PC <img src={pc} alt={ALT_TEXT} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            PILL <img src={pill} alt={ALT_TEXT} />
-          </td>
-          <td>Z Z</td>
-          <td>
-            DALE <img src={dale} alt={ALT_TEXT} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            POW <img src={pow} alt={ALT_TEXT} />
-          </td>
-          <td>X</td>
-          <td>
-            WHEY <img src={whey} alt={ALT_TEXT} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            ROOKS <img src={rooks} alt={ALT_TEXT} />
-          </td>
-          <td>X X Z′</td>
-          <td>
-            HOGS <img src={hogs} alt={ALT_TEXT} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            RUGER <img src={ruger} alt={ALT_TEXT} />
-          </td>
-          <td>Y Z′</td>
-          <td>
-            BOGEY <img src={bogey} alt={ALT_TEXT} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            WORM <img src={worm} alt={ALT_TEXT} />
-          </td>
-          <td>Y Z Z</td>
-          <td>
-            BIRCH <img src={birch} alt={ALT_TEXT} />
-          </td>
-        </tr>
-      </MonoTable>
+      <HScrollTableWrapper>
+        <MonoTable>
+          <tr>
+            <th>Left Answer</th>
+            <th>Rotation</th>
+            <th>Right Answer</th>
+          </tr>
+          <tr>
+            <td>
+              EWE <img src={ewe} alt={ALT_TEXT} />
+            </td>
+            <td>Y</td>
+            <td>
+              KNEE <img src={knee} alt={ALT_TEXT} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              MICKEY <img src={mickey} alt={ALT_TEXT} />
+            </td>
+            <td>X′ Y Y</td>
+            <td>
+              JOCKEY <img src={jockey} alt={ALT_TEXT} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              NANO <img src={nano} alt={ALT_TEXT} />
+            </td>
+            <td>Z X′</td>
+            <td>
+              PC <img src={pc} alt={ALT_TEXT} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              PILL <img src={pill} alt={ALT_TEXT} />
+            </td>
+            <td>Z Z</td>
+            <td>
+              DALE <img src={dale} alt={ALT_TEXT} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              POW <img src={pow} alt={ALT_TEXT} />
+            </td>
+            <td>X</td>
+            <td>
+              WHEY <img src={whey} alt={ALT_TEXT} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              ROOKS <img src={rooks} alt={ALT_TEXT} />
+            </td>
+            <td>X X Z′</td>
+            <td>
+              HOGS <img src={hogs} alt={ALT_TEXT} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              RUGER <img src={ruger} alt={ALT_TEXT} />
+            </td>
+            <td>Y Z′</td>
+            <td>
+              BOGEY <img src={bogey} alt={ALT_TEXT} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              WORM <img src={worm} alt={ALT_TEXT} />
+            </td>
+            <td>Y Z Z</td>
+            <td>
+              BIRCH <img src={birch} alt={ALT_TEXT} />
+            </td>
+          </tr>
+        </MonoTable>
+      </HScrollTableWrapper>
       <p>
         Once connected by a rotation, the clue pairs can also be connected to
         one of the game locations in the numbered list. As the flavor says, this
@@ -254,80 +264,82 @@ const Solution = (): JSX.Element => {
         necessary, but acts as a confirmation. The key words (italicized) are
         found in the manual sections, in location list order:
       </p>
-      <StyledTable>
-        <tr>
-          <td>1. Eastern Vault</td>
-          <td>
-            <em>Magic</em> kingdom mascot
-          </td>
-          <td>
-            Rider of an equine <em>beast</em>
-          </td>
-        </tr>
-        <tr>
-          <td>2. Ruined Atoll</td>
-          <td>
-            Reward for the early <em>bird</em>
-          </td>
-          <td>
-            White-barked <em>flora</em> made into beer
-          </td>
-        </tr>
-        <tr>
-          <td>3. West Garden</td>
-          <td>
-            Sound that appears in a Batman <em>fight</em>
-          </td>
-          <td>
-            Thin liquid <em>made</em> by removing milk solids
-          </td>
-        </tr>
-        <tr>
-          <td>4. Frog’s Domain</td>
-          <td>
-            Female animal from which we <em>spin</em> wool
-          </td>
-          <td>
-            Joint that lets the lower leg <em>rotate</em>
-          </td>
-        </tr>
-        <tr>
-          <td>5. Quarry</td>
-          <td>
-            Southport Connecticut <em>gun</em> manufacturer
-          </td>
-          <td>
-            An aircraft not <em>known</em> to be friendly
-          </td>
-        </tr>
-        <tr>
-          <td>6. Under The Well</td>
-          <td>
-            Medicine pressed into a <em>circle</em>
-          </td>
-          <td>
-            Broad valley that <em>lies</em> between hills
-          </td>
-        </tr>
-        <tr>
-          <td>7. Cathedral</td>
-          <td>
-            Greek prefix for small to an <em>extraordinary</em> degree
-          </td>
-          <td>
-            Electronic <em>device</em> found on many desks
-          </td>
-        </tr>
-        <tr>
-          <td>8. Swamp</td>
-          <td>
-            Chess pieces that move <em>left</em> right up or down
-          </td>
-          <td>
-            Selfishly keeps <em>everything</em> for oneself
-          </td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <td>1. Eastern Vault</td>
+            <td>
+              <em>Magic</em> kingdom mascot
+            </td>
+            <td>
+              Rider of an equine <em>beast</em>
+            </td>
+          </tr>
+          <tr>
+            <td>2. Ruined Atoll</td>
+            <td>
+              Reward for the early <em>bird</em>
+            </td>
+            <td>
+              White-barked <em>flora</em> made into beer
+            </td>
+          </tr>
+          <tr>
+            <td>3. West Garden</td>
+            <td>
+              Sound that appears in a Batman <em>fight</em>
+            </td>
+            <td>
+              Thin liquid <em>made</em> by removing milk solids
+            </td>
+          </tr>
+          <tr>
+            <td>4. Frog’s Domain</td>
+            <td>
+              Female animal from which we <em>spin</em> wool
+            </td>
+            <td>
+              Joint that lets the lower leg <em>rotate</em>
+            </td>
+          </tr>
+          <tr>
+            <td>5. Quarry</td>
+            <td>
+              Southport Connecticut <em>gun</em> manufacturer
+            </td>
+            <td>
+              An aircraft not <em>known</em> to be friendly
+            </td>
+          </tr>
+          <tr>
+            <td>6. Under The Well</td>
+            <td>
+              Medicine pressed into a <em>circle</em>
+            </td>
+            <td>
+              Broad valley that <em>lies</em> between hills
+            </td>
+          </tr>
+          <tr>
+            <td>7. Cathedral</td>
+            <td>
+              Greek prefix for small to an <em>extraordinary</em> degree
+            </td>
+            <td>
+              Electronic <em>device</em> found on many desks
+            </td>
+          </tr>
+          <tr>
+            <td>8. Swamp</td>
+            <td>
+              Chess pieces that move <em>left</em> right up or down
+            </td>
+            <td>
+              Selfishly keeps <em>everything</em> for oneself
+            </td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         Combined with the earlier step, this provides an ordered list of eight
         glyph rotations.
@@ -349,12 +361,12 @@ const Solution = (): JSX.Element => {
         rotations previously, one rotation per glyph.
       </p>
       <FlexWrapper>
-        <img
+        <LinkedImage
           src={extraction1}
           alt="A series of angular glyphs written in thich black lines."
         />
         <div>↓</div>
-        <img
+        <LinkedImage
           src={extraction2}
           alt="A series of angular glyphs written in thich black lines."
         />
