@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono } from "../../components/StyledUI";
+import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper, Mono } from "../../components/StyledUI";
 import nurikabe from "./assets/nurikabe-solved.png";
 import nurikabeWithLetters from "./assets/nurikabe-with-letters.png";
 
@@ -42,14 +43,17 @@ const Solution = () => {
         Nurikabe puzzle, the following islands are obtained:
       </p>
 
-      <img src={nurikabe} alt="Solved Nurikabe puzzle" />
+      <LinkedImage src={nurikabe} alt="Solved Nurikabe puzzle" />
 
       <p>
         On adding back the letters and only keeping the “islands”, we get the
         following:
       </p>
 
-      <img src={nurikabeWithLetters} alt="Nurikabe puzzle with letters added" />
+      <LinkedImage
+        src={nurikabeWithLetters}
+        alt="Nurikabe puzzle with letters added"
+      />
 
       <p>
         The letters of each island, when taken in reading order, seem to spell
@@ -66,26 +70,28 @@ const Solution = () => {
         <code>BATH BRICK</code>.
       </p>
 
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Phantom Island</th>
-            <th>Letter</th>
-          </tr>
-        </thead>
-        <tbody>
-          {SolutionData.map(([url, island, letter]) => (
-            <tr key={island}>
-              <td>
-                <a href={url}>{island}</a>
-              </td>
-              <td>
-                <Mono>{letter}</Mono>
-              </td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Phantom Island</th>
+              <th>Letter</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {SolutionData.map(([url, island, letter]) => (
+              <tr key={island}>
+                <td>
+                  <a href={url}>{island}</a>
+                </td>
+                <td>
+                  <Mono>{letter}</Mono>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
     </>
   );
 };
