@@ -16,6 +16,7 @@ const SizedImage = styled(LinkedImage)`
   display: block;
   margin: auto;
   width: 400px;
+  max-width: 100%;
 `;
 
 const Solution = (): JSX.Element => {
