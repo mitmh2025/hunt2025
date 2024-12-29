@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import chart1 from "./assets/chart1.png";
 import chart2 from "./assets/chart2.png";
 import chart3 from "./assets/chart3.png";
@@ -337,22 +341,24 @@ const Solution = (): JSX.Element => {
         map audio files 1:1 with breweries. Solvers will also find that the beer
         names are ordered alphabetically.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Audio file #</th>
-          <th>“Corrected” clue pronunciation</th>
-          <th>IPA beer name</th>
-          <th>Brewery</th>
-        </tr>
-        {BEER_DATA.map(({ order, pronunciation, beer, brewery }, i) => (
-          <tr key={`beer-${i}`}>
-            <td>{order}</td>
-            <td>{pronunciation}</td>
-            <td>{beer}</td>
-            <td>{brewery}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Audio file #</th>
+            <th>“Corrected” clue pronunciation</th>
+            <th>IPA beer name</th>
+            <th>Brewery</th>
           </tr>
-        ))}
-      </StyledTable>
+          {BEER_DATA.map(({ order, pronunciation, beer, brewery }, i) => (
+            <tr key={`beer-${i}`}>
+              <td>{order}</td>
+              <td>{pronunciation}</td>
+              <td>{beer}</td>
+              <td>{brewery}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <h3>Phonetic IPA: extract phonemes by charting vowels</h3>
       <p>
         Recall that the pronunciations were broken up syllabically (one vowel
@@ -360,20 +366,22 @@ const Solution = (): JSX.Element => {
         never used in solving the “corrected” clues in the previous section.
         Here are the phonetic IPA transcriptions and their vowels.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Audio file #</th>
-          <th>IPA transcription</th>
-          <th>IPA vowels</th>
-        </tr>
-        {PHONEMES_DATA.map(({ order, ipa, vowels }, i) => (
-          <tr key={`phonemes-${i}`}>
-            <td>{order}</td>
-            <td>{ipa}</td>
-            <td>{vowels}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Audio file #</th>
+            <th>IPA transcription</th>
+            <th>IPA vowels</th>
           </tr>
-        ))}
-      </StyledTable>
+          {PHONEMES_DATA.map(({ order, ipa, vowels }, i) => (
+            <tr key={`phonemes-${i}`}>
+              <td>{order}</td>
+              <td>{ipa}</td>
+              <td>{vowels}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         <i>
           In the rightmost column, (...) denotes where the audio is split into
@@ -437,26 +445,28 @@ const Solution = (): JSX.Element => {
         After drawing a phoneme from each audio file, reorder the data by the
         beer taps from the image.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Brewery</th>
-          <th>Audio file #</th>
-          <th>IPA transcription</th>
-          <th>Vowels from audio</th>
-          <th>IPA phoneme “drawn” on chart</th>
-        </tr>
-        {EXTRACTION_DATA.map(
-          ({ brewery, order, pronunciation, vowels, extraction }, i) => (
-            <tr key={`extraction-${i}`}>
-              <td>{brewery}</td>
-              <td>{order}</td>
-              <td>{pronunciation}</td>
-              <td>{vowels}</td>
-              <td>{extraction}</td>
-            </tr>
-          ),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Brewery</th>
+            <th>Audio file #</th>
+            <th>IPA transcription</th>
+            <th>Vowels from audio</th>
+            <th>IPA phoneme “drawn” on chart</th>
+          </tr>
+          {EXTRACTION_DATA.map(
+            ({ brewery, order, pronunciation, vowels, extraction }, i) => (
+              <tr key={`extraction-${i}`}>
+                <td>{brewery}</td>
+                <td>{order}</td>
+                <td>{pronunciation}</td>
+                <td>{vowels}</td>
+                <td>{extraction}</td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         This yields the IPA gloss <Mono>/bijɑnsesɑŋɔɹjuziɹz/</Mono>.
       </p>

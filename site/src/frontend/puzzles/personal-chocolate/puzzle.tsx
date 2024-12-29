@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import audio1 from "./assets/1.mp3";
 import audio10a from "./assets/10a.mp3";
 import audio10b from "./assets/10b.mp3";
@@ -84,21 +85,23 @@ const Puzzle = (): JSX.Element => {
         src={image}
         alt="Eighteen beer taps. From left to right: Tree House Brewing Co., Sixpoint Brewery, Ekim Brewing Co., Uinta Brewing, Industrial Arts Brewing Company, Great Divide Brewing Co., Firestone Walker Brewing Company, Sierra Nevada, Avery Brewing, Elysian Brewing, Kane Brewing Company, Alaskan Brewing Company, Surly Brewing Co., Deschutes Brewery, Rhinegeist Brewery, Maine Beer Company, Manhattan Brewing Co, Tröegs Independent Brewing"
       />
-      <StyledTable>
-        {DATA.map((row, i) => (
-          <tr key={`row-${i}`}>
-            {row.map(({ audio, ipa }, j) => (
-              <td key={`cell-${i}-${j}`} colSpan={row.length === 1 ? 2 : 1}>
-                <span>
-                  {/* eslint-disable-next-line jsx-a11y/media-has-caption -- transcript provided inline */}
-                  <audio controls src={audio} />
-                  {ipa}
-                </span>
-              </td>
-            ))}
-          </tr>
-        ))}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          {DATA.map((row, i) => (
+            <tr key={`row-${i}`}>
+              {row.map(({ audio, ipa }, j) => (
+                <td key={`cell-${i}-${j}`} colSpan={row.length === 1 ? 2 : 1}>
+                  <span>
+                    {/* eslint-disable-next-line jsx-a11y/media-has-caption -- transcript provided inline */}
+                    <audio controls src={audio} />
+                    {ipa}
+                  </span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };
