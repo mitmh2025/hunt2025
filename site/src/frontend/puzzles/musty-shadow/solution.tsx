@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image25 from "./assets/image25.png";
 import image26 from "./assets/image26.png";
@@ -34,7 +38,6 @@ const StyledTable = styled.table`
   margin-top: 1em;
   margin-bottom: 1em;
   table-layout: fixed;
-  width: 100%;
   border-collapse: collapse;
   th {
     background-color: #65413a;
@@ -423,194 +426,196 @@ const Solution = (): JSX.Element => {
           </div>
         ))}
       </FlexWrapper>
-      <StyledTable>
-        <tr>
-          <th>Starting Node Emojis</th>
-          <th>Starting Node Song</th>
-          <th>Starting Node Album</th>
-          <th>Starting Node Era</th>
-          <th>Extracted Letters</th>
-          <th>Final Song</th>
-          <th>Final Song Era</th>
-          <th>Symbol</th>
-        </tr>
-        <tr>
-          <td>🧼</td>
-          <td>Clean</td>
-          <td>1989</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR["1989"]} />
-          </td>
-          <td>RISE</td>
-          <td>Better Man</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
-          </td>
-          <td>
-            <HalfPiano />
-          </td>
-        </tr>
-        <tr>
-          <td>✨✈️</td>
-          <td>Sparks Fly</td>
-          <td>Speak Now</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.SPEAK_NOW} />
-          </td>
-          <td>SIN</td>
-          <td>Chloe or Sam or Sophia or Marcus</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.TORTURED_POETS} />
-          </td>
-          <td>
-            <Piano />
-          </td>
-        </tr>
-        <tr>
-          <td>🕛🎊📅</td>
-          <td>New Year’s Day</td>
-          <td>Reputation</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.REPUTATION} />
-          </td>
-          <td>SONG</td>
-          <td>Dancing With Our Hands Tied</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.REPUTATION} />
-          </td>
-          <td>
-            <Guitar />
-          </td>
-        </tr>
-        <tr>
-          <td>👋👋👶</td>
-          <td>Bye Bye Baby</td>
-          <td>Fearless</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.FEARLESS} />
-          </td>
-          <td>DMIS</td>
-          <td>Everything Has Changed</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
-          </td>
-          <td>
-            <HalfGuitar />
-          </td>
-        </tr>
-        <tr>
-          <td>1️⃣4️⃣📅</td>
-          <td>Fortnight</td>
-          <td>The Tortured Poets Department</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.TORTURED_POETS} />
-          </td>
-          <td>SET</td>
-          <td>Hits Different</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.MIDNIGHTS} />
-          </td>
-          <td>
-            <Guitar />
-          </td>
-        </tr>
-        <tr>
-          <td>⭐💡</td>
-          <td>Starlight</td>
-          <td>Red</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
-          </td>
-          <td>GSURP</td>
-          <td>it’s time to go</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.EVERMORE} />
-          </td>
-          <td>
-            <HalfPiano />
-          </td>
-        </tr>
-        <tr>
-          <td>🟪🌫️</td>
-          <td>Lavender Haze</td>
-          <td>Midnights</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.MIDNIGHTS} />
-          </td>
-          <td>TIC</td>
-          <td>Mean</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.SPEAK_NOW} />
-          </td>
-          <td>
-            <HalfGuitar />
-          </td>
-        </tr>
-        <tr>
-          <td>😢😢🎸</td>
-          <td>Teardrops on My Guitar</td>
-          <td>Taylor Swift</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.TAYLOR_SWIFT} />
-          </td>
-          <td>FIN</td>
-          <td>Stay Stay Stay</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
-          </td>
-          <td>
-            <HalfGuitar />
-          </td>
-        </tr>
-        <tr>
-          <td>✌️</td>
-          <td>Peace</td>
-          <td>Folklore</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.FOLKLORE} />
-          </td>
-          <td>CHAC</td>
-          <td>thanK you aIMee</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.TORTURED_POETS} />
-          </td>
-          <td>
-            <HalfGuitar />
-          </td>
-        </tr>
-        <tr>
-          <td>👸🗽➕💔🤴</td>
-          <td>Miss Americana & the Heartbreak Prince</td>
-          <td>Lover</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.LOVER} />
-          </td>
-          <td>INEA</td>
-          <td>The Best Day</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.FEARLESS} />
-          </td>
-          <td>
-            <Piano />
-          </td>
-        </tr>
-        <tr>
-          <td>🥇💨</td>
-          <td>Gold Rush</td>
-          <td>Evermore</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR.EVERMORE} />
-          </td>
-          <td>OUS</td>
-          <td>You Are In Love</td>
-          <td>
-            <ColoredSquare $color={ALBUM_TO_COLOR["1989"]} />
-          </td>
-          <td>
-            <Piano />
-          </td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Starting Node Emojis</th>
+            <th>Starting Node Song</th>
+            <th>Starting Node Album</th>
+            <th>Starting Node Era</th>
+            <th>Extracted Letters</th>
+            <th>Final Song</th>
+            <th>Final Song Era</th>
+            <th>Symbol</th>
+          </tr>
+          <tr>
+            <td>🧼</td>
+            <td>Clean</td>
+            <td>1989</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR["1989"]} />
+            </td>
+            <td>RISE</td>
+            <td>Better Man</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
+            </td>
+            <td>
+              <HalfPiano />
+            </td>
+          </tr>
+          <tr>
+            <td>✨✈️</td>
+            <td>Sparks Fly</td>
+            <td>Speak Now</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.SPEAK_NOW} />
+            </td>
+            <td>SIN</td>
+            <td>Chloe or Sam or Sophia or Marcus</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.TORTURED_POETS} />
+            </td>
+            <td>
+              <Piano />
+            </td>
+          </tr>
+          <tr>
+            <td>🕛🎊📅</td>
+            <td>New Year’s Day</td>
+            <td>Reputation</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.REPUTATION} />
+            </td>
+            <td>SONG</td>
+            <td>Dancing With Our Hands Tied</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.REPUTATION} />
+            </td>
+            <td>
+              <Guitar />
+            </td>
+          </tr>
+          <tr>
+            <td>👋👋👶</td>
+            <td>Bye Bye Baby</td>
+            <td>Fearless</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.FEARLESS} />
+            </td>
+            <td>DMIS</td>
+            <td>Everything Has Changed</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
+            </td>
+            <td>
+              <HalfGuitar />
+            </td>
+          </tr>
+          <tr>
+            <td>1️⃣4️⃣📅</td>
+            <td>Fortnight</td>
+            <td>The Tortured Poets Department</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.TORTURED_POETS} />
+            </td>
+            <td>SET</td>
+            <td>Hits Different</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.MIDNIGHTS} />
+            </td>
+            <td>
+              <Guitar />
+            </td>
+          </tr>
+          <tr>
+            <td>⭐💡</td>
+            <td>Starlight</td>
+            <td>Red</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
+            </td>
+            <td>GSURP</td>
+            <td>it’s time to go</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.EVERMORE} />
+            </td>
+            <td>
+              <HalfPiano />
+            </td>
+          </tr>
+          <tr>
+            <td>🟪🌫️</td>
+            <td>Lavender Haze</td>
+            <td>Midnights</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.MIDNIGHTS} />
+            </td>
+            <td>TIC</td>
+            <td>Mean</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.SPEAK_NOW} />
+            </td>
+            <td>
+              <HalfGuitar />
+            </td>
+          </tr>
+          <tr>
+            <td>😢😢🎸</td>
+            <td>Teardrops on My Guitar</td>
+            <td>Taylor Swift</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.TAYLOR_SWIFT} />
+            </td>
+            <td>FIN</td>
+            <td>Stay Stay Stay</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.RED} />
+            </td>
+            <td>
+              <HalfGuitar />
+            </td>
+          </tr>
+          <tr>
+            <td>✌️</td>
+            <td>Peace</td>
+            <td>Folklore</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.FOLKLORE} />
+            </td>
+            <td>CHAC</td>
+            <td>thanK you aIMee</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.TORTURED_POETS} />
+            </td>
+            <td>
+              <HalfGuitar />
+            </td>
+          </tr>
+          <tr>
+            <td>👸🗽➕💔🤴</td>
+            <td>Miss Americana & the Heartbreak Prince</td>
+            <td>Lover</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.LOVER} />
+            </td>
+            <td>INEA</td>
+            <td>The Best Day</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.FEARLESS} />
+            </td>
+            <td>
+              <Piano />
+            </td>
+          </tr>
+          <tr>
+            <td>🥇💨</td>
+            <td>Gold Rush</td>
+            <td>Evermore</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR.EVERMORE} />
+            </td>
+            <td>OUS</td>
+            <td>You Are In Love</td>
+            <td>
+              <ColoredSquare $color={ALBUM_TO_COLOR["1989"]} />
+            </td>
+            <td>
+              <Piano />
+            </td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         As there is one emoji/starting song per album, each graph can be sorted
         by era order (at the top of the puzzle) to give a new clue instruction.
@@ -658,162 +663,164 @@ const Solution = (): JSX.Element => {
         songs and extract the final solution,{" "}
         <PuzzleAnswer>LUCKIER</PuzzleAnswer>!
       </p>
-      <StyledTable>
-        <tr>
-          <th>Extracted Surprise Songs</th>
-          <th>Eras Tour Night</th>
-          <th>Dress Color</th>
-          <th>Missing Surprise Song</th>
-          <th>Notes</th>
-          <th>Letter</th>
-        </tr>
-        <tr>
-          <td>
-            <div>
-              <strong>Everything Has Changed</strong>
-            </div>
-            <div>(Guitar Mashup)</div>
-            <br />
-            <div>
-              <strong>Chloe or Sam or Sophia or Marcus</strong>
-            </div>
-            <div>(Piano)</div>
-          </td>
-          <td>Lyon, June 3, 2024</td>
-          <td>Orange</td>
-          <td>
-            <div>
-              <strong>Glitch</strong>
-            </div>
-            <div>(Guitar Mashup)</div>
-          </td>
-          <td>2</td>
-          <td>L</td>
-        </tr>
-        <tr>
-          <td>
-            <div>
-              <strong>You Are in Love</strong>
-            </div>
-            <div>(Piano)</div>
-          </td>
-          <td>Los Angeles, August 4, 2024</td>
-          <td>Maroon</td>
-          <td>
-            <div>
-              <strong>Our Song</strong>
-            </div>
-            <div>(Guitar)</div>
-          </td>
-          <td>2</td>
-          <td>U</td>
-        </tr>
-        <tr>
-          <td>
-            <div>
-              <strong>thanK you aIMee</strong>
-            </div>
-            <div>(Guitar mashup)</div>
-            <br />
-            <div>
-              <strong>Mean</strong>
-            </div>
-            <div>(Guitar mashup)</div>
-          </td>
-          <td>London, June 22, 2024</td>
-          <td>Blue (sleeveless)</td>
-          <td>
-            <div>
-              <strong>Castles Crumbling</strong>
-            </div>
-            <div>(Piano)</div>
-          </td>
-          <td>1</td>
-          <td>C</td>
-        </tr>
-        <tr>
-          <td>
-            <div>
-              <strong>Hits Different</strong>
-            </div>
-            <div>(Guitar)</div>
-          </td>
-          <td>Chicago - June 4, 2023</td>
-          <td>Yellow</td>
-          <td>
-            <div>
-              <strong>The Moment I Knew</strong>
-            </div>
-            <div>(Piano)</div>
-          </td>
-          <td>11</td>
-          <td>K</td>
-        </tr>
-        <tr>
-          <td>
-            <div>
-              <strong>Dancing with Our Hands Tied</strong>
-            </div>
-            <div>(Guitar)</div>
-          </td>
-          <td>Rio de Janiero, November 19, 2023</td>
-          <td>Dark blue (with sleeves)</td>
-          <td>
-            <div>
-              <strong>Bigger Than The Whole Sky</strong>
-            </div>
-            <div>(Piano)</div>
-          </td>
-          <td>2</td>
-          <td>I</td>
-        </tr>
-        <tr>
-          <td>
-            <div>
-              <strong>The Best Day</strong>
-            </div>
-            <div>(Piano)</div>
-          </td>
-          <td>Philadelphia, May 14, 2023</td>
-          <td>Green</td>
-          <td>
-            <div>
-              <strong>Hey Stephen</strong>
-            </div>
-            <div>(Guitar)</div>
-          </td>
-          <td>6</td>
-          <td>E</td>
-        </tr>
-        <tr>
-          <td>
-            <div>
-              <strong>Stay Stay Stay</strong>
-            </div>
-            <div>(Guitar mashup</div>
-            <br />
-            <div>
-              <strong>it’s time to go</strong>
-            </div>
-            <div>(Piano mashup)</div>
-            <br />
-            <div>
-              <strong>Better Man</strong>
-            </div>
-            <div>(Piano mashup)</div>
-          </td>
-          <td>Gelsenkirchen, July 19, 2024</td>
-          <td>Pink</td>
-          <td>
-            <div>
-              <strong>Paper Rings</strong>
-            </div>
-            <div>(Guitar mashup)</div>
-          </td>
-          <td>5</td>
-          <td>R</td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Extracted Surprise Songs</th>
+            <th>Eras Tour Night</th>
+            <th>Dress Color</th>
+            <th>Missing Surprise Song</th>
+            <th>Notes</th>
+            <th>Letter</th>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <strong>Everything Has Changed</strong>
+              </div>
+              <div>(Guitar Mashup)</div>
+              <br />
+              <div>
+                <strong>Chloe or Sam or Sophia or Marcus</strong>
+              </div>
+              <div>(Piano)</div>
+            </td>
+            <td>Lyon, June 3, 2024</td>
+            <td>Orange</td>
+            <td>
+              <div>
+                <strong>Glitch</strong>
+              </div>
+              <div>(Guitar Mashup)</div>
+            </td>
+            <td>2</td>
+            <td>L</td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <strong>You Are in Love</strong>
+              </div>
+              <div>(Piano)</div>
+            </td>
+            <td>Los Angeles, August 4, 2024</td>
+            <td>Maroon</td>
+            <td>
+              <div>
+                <strong>Our Song</strong>
+              </div>
+              <div>(Guitar)</div>
+            </td>
+            <td>2</td>
+            <td>U</td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <strong>thanK you aIMee</strong>
+              </div>
+              <div>(Guitar mashup)</div>
+              <br />
+              <div>
+                <strong>Mean</strong>
+              </div>
+              <div>(Guitar mashup)</div>
+            </td>
+            <td>London, June 22, 2024</td>
+            <td>Blue (sleeveless)</td>
+            <td>
+              <div>
+                <strong>Castles Crumbling</strong>
+              </div>
+              <div>(Piano)</div>
+            </td>
+            <td>1</td>
+            <td>C</td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <strong>Hits Different</strong>
+              </div>
+              <div>(Guitar)</div>
+            </td>
+            <td>Chicago - June 4, 2023</td>
+            <td>Yellow</td>
+            <td>
+              <div>
+                <strong>The Moment I Knew</strong>
+              </div>
+              <div>(Piano)</div>
+            </td>
+            <td>11</td>
+            <td>K</td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <strong>Dancing with Our Hands Tied</strong>
+              </div>
+              <div>(Guitar)</div>
+            </td>
+            <td>Rio de Janiero, November 19, 2023</td>
+            <td>Dark blue (with sleeves)</td>
+            <td>
+              <div>
+                <strong>Bigger Than The Whole Sky</strong>
+              </div>
+              <div>(Piano)</div>
+            </td>
+            <td>2</td>
+            <td>I</td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <strong>The Best Day</strong>
+              </div>
+              <div>(Piano)</div>
+            </td>
+            <td>Philadelphia, May 14, 2023</td>
+            <td>Green</td>
+            <td>
+              <div>
+                <strong>Hey Stephen</strong>
+              </div>
+              <div>(Guitar)</div>
+            </td>
+            <td>6</td>
+            <td>E</td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <strong>Stay Stay Stay</strong>
+              </div>
+              <div>(Guitar mashup</div>
+              <br />
+              <div>
+                <strong>it’s time to go</strong>
+              </div>
+              <div>(Piano mashup)</div>
+              <br />
+              <div>
+                <strong>Better Man</strong>
+              </div>
+              <div>(Piano mashup)</div>
+            </td>
+            <td>Gelsenkirchen, July 19, 2024</td>
+            <td>Pink</td>
+            <td>
+              <div>
+                <strong>Paper Rings</strong>
+              </div>
+              <div>(Guitar mashup)</div>
+            </td>
+            <td>5</td>
+            <td>R</td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       {IMAGE_ROWS.map(({ width, src, alt }, i) => (
         <ImageWrapper key={`solution-graph-${i}`}>
           <SizedLinkedImage $width={width} src={src} alt={alt} />
