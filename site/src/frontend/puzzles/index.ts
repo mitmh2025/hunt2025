@@ -46,6 +46,7 @@ import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
+import CornMaize from "./kind-ruler";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
@@ -233,7 +234,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
   cross_spread: CrossSpread, // globe
-  // TODO: isp03 family portrait
+  // TODO: is this in the correct slot for isp03 family portrait?
+  corn_maize: CornMaize,
   this_is_just_a_test: ThisIsJustATest, // typewriter
   // TODO: isp05 desk lamp
 

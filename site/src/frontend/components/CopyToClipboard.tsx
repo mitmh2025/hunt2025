@@ -101,8 +101,15 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
       if (widthParsed === 0) {
         return;
       }
+      // Sheets seems to prefer border widths to be the exact widths of
+      // its predetermined border thicknesses, and will clamp _everything_,
+      // not just widths between thicknesses, to whatever predetermined
+      // thickness is the closest to the largest border width in the pasted
+      // content.
       if (widthParsed < 1 && width.endsWith("px")) {
         width = "1px";
+      } else if (widthParsed > 1 && width.endsWith("px")) {
+        width = "3px";
       }
 
       const style = styles.getPropertyValue(`border-${side}-style`);
