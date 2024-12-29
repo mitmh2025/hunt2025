@@ -96,9 +96,13 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
 
     // Copy borders
     ["top", "right", "bottom", "left"].forEach((side) => {
-      const width = styles.getPropertyValue(`border-${side}-width`);
-      if (parseInt(width, 10) === 0) {
+      let width = styles.getPropertyValue(`border-${side}-width`);
+      const widthParsed = parseFloat(width);
+      if (widthParsed === 0) {
         return;
+      }
+      if (widthParsed < 1 && width.endsWith("px")) {
+        width = "1px";
       }
 
       const style = styles.getPropertyValue(`border-${side}-style`);
