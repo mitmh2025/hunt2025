@@ -1,13 +1,28 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 
 const Left = styled.p`
   margin-right: 20%;
 `;
-const Right = styled.p`
+const RightParagraph = styled.p`
   text-align: right;
   margin-left: 20%;
 `;
+const Right = ({ children }: { children: React.ReactNode }) => (
+  <>
+    <RightParagraph className={NO_COPY_CLASS}>{children}</RightParagraph>
+    <table className={COPY_ONLY_CLASS}>
+      <tr>
+        <td>&nbsp;</td>
+        <td>{children}</td>
+      </tr>
+    </table>
+  </>
+);
 
 const Puzzle = () => {
   return (
