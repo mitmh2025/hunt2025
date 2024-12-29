@@ -1,9 +1,18 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const MonoTD = styled.td`
   font-family: "Roboto Mono", monospace;
+`;
+
+const ScrollWrapper = styled.div`
+  max-width: 100%;
+  overflow-x: auto;
 `;
 
 const Solution = () => {
@@ -35,60 +44,65 @@ const Solution = () => {
 
       <p>With blanks filled, the clues and feeder solutions are:</p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Cryptic clue</th>
-            <th>Wordplay</th>
-            <th>Answer</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Real estate area has mid style and large email sign</td>
-            <MonoTD>ACR(_Y_+L+AT)E</MonoTD>
-            <MonoTD>ACRYLATE</MonoTD>
-          </tr>
-          <tr>
-            <td>Swiss mountain and one unit of energy inside</td>
-            <MonoTD>ALP+(A+CAL)+AND</MonoTD>
-            <MonoTD>ALPACALAND</MonoTD>
-          </tr>
-          <tr>
-            <td>Email distribution tool picked up by retreating Confederate</td>
-            <MonoTD>B(LIST)ER←</MonoTD>
-            <MonoTD>BLISTER</MonoTD>
-          </tr>
-          <tr>
-            <td>Mountain-ringed area with Swiss domain and novel</td>
-            <MonoTD>M(A)T+CH+BOOK</MonoTD>
-            <MonoTD>MATCHBOOK</MonoTD>
-          </tr>
-          <tr>
-            <td>Novel openers in total</td>
-            <MonoTD>NO_+NET</MonoTD>
-            <MonoTD>NONET</MonoTD>
-          </tr>
-          <tr>
-            <td>Mid-sized dash in novel style</td>
-            <MonoTD>P(EN)ROSE</MonoTD>
-            <MonoTD>PENROSE</MonoTD>
-          </tr>
-          <tr>
-            <td>Novel openers</td>
-            <MonoTD>PENROSE*</MonoTD>
-            <MonoTD>PENROSE</MonoTD>
-          </tr>
-        </tbody>
-      </table>
+      <HScrollTableWrapper>
+        <table>
+          <thead>
+            <tr>
+              <th>Cryptic clue</th>
+              <th>Wordplay</th>
+              <th>Answer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Real estate area has mid style and large email sign</td>
+              <MonoTD>ACR(_Y_+L+AT)E</MonoTD>
+              <MonoTD>ACRYLATE</MonoTD>
+            </tr>
+            <tr>
+              <td>Swiss mountain and one unit of energy inside</td>
+              <MonoTD>ALP+(A+CAL)+AND</MonoTD>
+              <MonoTD>ALPACALAND</MonoTD>
+            </tr>
+            <tr>
+              <td>
+                Email distribution tool picked up by retreating Confederate
+              </td>
+              <MonoTD>B(LIST)ER←</MonoTD>
+              <MonoTD>BLISTER</MonoTD>
+            </tr>
+            <tr>
+              <td>Mountain-ringed area with Swiss domain and novel</td>
+              <MonoTD>M(A)T+CH+BOOK</MonoTD>
+              <MonoTD>MATCHBOOK</MonoTD>
+            </tr>
+            <tr>
+              <td>Novel openers in total</td>
+              <MonoTD>NO_+NET</MonoTD>
+              <MonoTD>NONET</MonoTD>
+            </tr>
+            <tr>
+              <td>Mid-sized dash in novel style</td>
+              <MonoTD>P(EN)ROSE</MonoTD>
+              <MonoTD>PENROSE</MonoTD>
+            </tr>
+            <tr>
+              <td>Novel openers</td>
+              <MonoTD>PENROSE*</MonoTD>
+              <MonoTD>PENROSE</MonoTD>
+            </tr>
+          </tbody>
+        </table>
+      </HScrollTableWrapper>
 
       <p>This makes the final wordplay:</p>
-      <pre>
-        Dash, dash, one large and retreating. Energy: total. Email real Swiss
-        openers.
-      </pre>
-      {/* prettier-ignore */}
-      <pre>    M        I   L     +   (L+I+M)←    E.      T.     E.    R.   S.</pre>
+
+      <ScrollWrapper>
+        {/* prettier-ignore */}
+        <pre>Dash, dash, one large and retreating. Energy: total. Email real Swiss openers.</pre>
+        {/* prettier-ignore */}
+        <pre>    M        I   L     +   (L+I+M)←    E.      T.     E.    R.   S.</pre>
+      </ScrollWrapper>
       <PuzzleAnswer>MILLIMETERS</PuzzleAnswer>
       <p>
         <Mono>--</Mono> is M in morse code. One, in roman numerals, is I. Large
