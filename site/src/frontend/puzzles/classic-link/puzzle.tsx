@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import left1 from "./assets/left1.jpg";
 import left10 from "./assets/left10.jpg";
 import left11 from "./assets/left11.jpg";
@@ -164,29 +165,31 @@ const DATA = [
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <StyledTable>
-        {DATA.map(
-          ({ left, leftAlt, leftEnum, right, rightAlt, rightEnum }, i) => (
-            <tbody key={i}>
-              <tr>
-                <td>
-                  <StyledImage
-                    src={left}
-                    alt={`${COMMON_LEFT_ALT_TEXT} ${leftAlt}`}
-                  />
-                </td>
-                <td>
-                  <StyledImage src={right} alt={rightAlt} />
-                </td>
-              </tr>
-              <tr>
-                <td>{leftEnum}</td>
-                <td>{rightEnum}</td>
-              </tr>
-            </tbody>
-          ),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          {DATA.map(
+            ({ left, leftAlt, leftEnum, right, rightAlt, rightEnum }, i) => (
+              <tbody key={i}>
+                <tr>
+                  <td>
+                    <StyledImage
+                      src={left}
+                      alt={`${COMMON_LEFT_ALT_TEXT} ${leftAlt}`}
+                    />
+                  </td>
+                  <td>
+                    <StyledImage src={right} alt={rightAlt} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>{leftEnum}</td>
+                  <td>{rightEnum}</td>
+                </tr>
+              </tbody>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };

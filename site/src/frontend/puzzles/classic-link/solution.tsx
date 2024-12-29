@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -169,46 +173,53 @@ const Solution = (): JSX.Element => {
       </p>
       <h3>Full data set</h3>
       <p>In presentational order:</p>
-      <StyledTable>
-        <tr>
-          <th>Product (Missing From Ingredient Photos)</th>
-          <th>Product Enumeration</th>
-        </tr>
-        {PRODUCT_DATA.map(({ product, productEnumeration }, i) => (
-          <tr key={`product-${i}`}>
-            <td>{product}</td>
-            <td>{productEnumeration}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Product (Missing From Ingredient Photos)</th>
+            <th>Product Enumeration</th>
           </tr>
-        ))}
-      </StyledTable>
-      <p>In extraction order:</p>
-      <StyledTable>
-        <tr>
-          <th>Recipe</th>
-          <th>Recipe Enumeration</th>
-          <th>Quantity</th>
-          <th>Missing Ingredient</th>
-          <th>Letter</th>
-        </tr>
-        {RECIPE_DATA.map(
-          ({ recipe, recipeEnumeration, quantity, ingredient, letter }, j) => (
-            <tr key={`recipe-${j}`}>
-              <td>{recipe}</td>
-              <td>{recipeEnumeration}</td>
-              <td>{quantity}</td>
-              <td>
-                <Red>
-                  <strong>{letter}</strong>
-                </Red>
-                {ingredient.slice(1)}
-              </td>
-              <td>
-                <strong>{letter}</strong>
-              </td>
+          {PRODUCT_DATA.map(({ product, productEnumeration }, i) => (
+            <tr key={`product-${i}`}>
+              <td>{product}</td>
+              <td>{productEnumeration}</td>
             </tr>
-          ),
-        )}
-      </StyledTable>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
+      <p>In extraction order:</p>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Recipe</th>
+            <th>Recipe Enumeration</th>
+            <th>Quantity</th>
+            <th>Missing Ingredient</th>
+            <th>Letter</th>
+          </tr>
+          {RECIPE_DATA.map(
+            (
+              { recipe, recipeEnumeration, quantity, ingredient, letter },
+              j,
+            ) => (
+              <tr key={`recipe-${j}`}>
+                <td>{recipe}</td>
+                <td>{recipeEnumeration}</td>
+                <td>{quantity}</td>
+                <td>
+                  <Red>
+                    <strong>{letter}</strong>
+                  </Red>
+                  {ingredient.slice(1)}
+                </td>
+                <td>
+                  <strong>{letter}</strong>
+                </td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };
