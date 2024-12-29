@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const MonoUL = styled.ul`
   font-family: "Roboto Mono", monospace;
@@ -61,9 +65,11 @@ const HighlitTable = ({ grid }: { grid: string[][] }) => {
     return <tr key={i}>{cells}</tr>;
   });
   return (
-    <Table>
-      <tbody>{rows}</tbody>
-    </Table>
+    <HScrollTableWrapper>
+      <Table>
+        <tbody>{rows}</tbody>
+      </Table>
+    </HScrollTableWrapper>
   );
 };
 

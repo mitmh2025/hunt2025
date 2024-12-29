@@ -99,6 +99,15 @@ const ColumnDiv = styled(FlexColumn)`
   font-family: sans-serif;
 `;
 
+const ScrollWrapper = styled.div`
+  max-width: 100%;
+  overflow-x: auto;
+`;
+
+const ContentWrapper = styled(FlexColumn)`
+  min-width: 700px;
+`;
+
 const Column = ({
   column,
   left,
@@ -137,10 +146,12 @@ const Puzzle = () => {
         Important guests have been invited to the great dome.
       </p>
 
-      <FlexColumn>
-        <Dome columns={COLUMNS} />
-        <Table grid={GRID} />
-      </FlexColumn>
+      <ScrollWrapper>
+        <ContentWrapper>
+          <Dome columns={COLUMNS} />
+          <Table grid={GRID} />
+        </ContentWrapper>
+      </ScrollWrapper>
     </>
   );
 };
