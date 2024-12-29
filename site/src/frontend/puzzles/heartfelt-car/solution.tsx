@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import { Clues } from "./puzzle";
 
 const table: [movie: string, sign: string, index: number][] = [
@@ -62,47 +66,49 @@ const Solution = () => {
         the answer, <PuzzleAnswer>HARD DISK SPACE</PuzzleAnswer>.
       </p>
 
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Clue</th>
-            <th>Movie</th>
-            <th>Sign text</th>
-            <th>Letter</th>
-          </tr>
-        </thead>
-        <tbody>
-          {table.map(([movie, sign, index], i) => (
-            <tr key={i}>
-              <td>
-                {(Clues[i] ?? "")
-                  .split(/(?<=\s+)/)
-                  .map((word, j) =>
-                    j === index ? <strong key={j}>{word}</strong> : word,
-                  )}
-              </td>
-              <td>{movie}</td>
-              <td>
-                {sign.split(/(?=[A-Za-z&0-9])/).map((letter, j) =>
-                  j === index ? (
-                    <React.Fragment key={j}>
-                      <HighlightLetter>{letter[0]}</HighlightLetter>
-                      {letter.slice(1)}
-                    </React.Fragment>
-                  ) : (
-                    letter
-                  ),
-                )}
-              </td>
-              <td>
-                <Mono>
-                  {sign.replaceAll(/[\s.’]+/g, "")[index]?.toUpperCase()}
-                </Mono>
-              </td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Clue</th>
+              <th>Movie</th>
+              <th>Sign text</th>
+              <th>Letter</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {table.map(([movie, sign, index], i) => (
+              <tr key={i}>
+                <td>
+                  {(Clues[i] ?? "")
+                    .split(/(?<=\s+)/)
+                    .map((word, j) =>
+                      j === index ? <strong key={j}>{word}</strong> : word,
+                    )}
+                </td>
+                <td>{movie}</td>
+                <td>
+                  {sign.split(/(?=[A-Za-z&0-9])/).map((letter, j) =>
+                    j === index ? (
+                      <React.Fragment key={j}>
+                        <HighlightLetter>{letter[0]}</HighlightLetter>
+                        {letter.slice(1)}
+                      </React.Fragment>
+                    ) : (
+                      letter
+                    ),
+                  )}
+                </td>
+                <td>
+                  <Mono>
+                    {sign.replaceAll(/[\s.’]+/g, "")[index]?.toUpperCase()}
+                  </Mono>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
     </>
   );
 };
