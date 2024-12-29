@@ -149,7 +149,7 @@ const ClueBlock = (index: number) => {
     <>
       <StyledTD>{index + 1}</StyledTD>
       <StyledTD>
-        <LinkedImage src={orderedImages[index] ?? ""} alt="" />
+        <img src={orderedImages[index] ?? ""} alt="" />
       </StyledTD>
     </>
   );
