@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import { deviceMax } from "../../utils/breakpoints";
 import { Display, OutputBlock } from "./shared";
 
 const CenteredMonospaceP = styled.p`
@@ -19,6 +20,13 @@ const CenteredDivRow = styled.div`
   > * {
     margin: 16px;
   }
+
+  @media ${deviceMax.lg} {
+    justify-content: flex-start;
+  }
+
+  max-width: 100%;
+  overflow-x: auto;
 `;
 
 const CustomLabeledDisplay = ({
