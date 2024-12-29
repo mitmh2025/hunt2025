@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import aAudio from "./assets/a.mp3";
 import dAudio from "./assets/d.mp3";
 
@@ -43,7 +44,9 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <FlexWrapper>
-        <StyledCrossword labels={GRID} />
+        <HScrollTableWrapper>
+          <StyledCrossword labels={GRID} />
+        </HScrollTableWrapper>
         <p>
           <FlexContainer>
             {/* eslint-disable-next-line jsx-a11y/media-has-caption -- would spoil the puzzle */}
