@@ -1,6 +1,10 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -9,6 +13,14 @@ const StyledTable = styled.table`
     padding: 0px 8px;
   }
 `;
+
+const Table = ({ children }: { children: ReactNode }) => {
+  return (
+    <HScrollTableWrapper>
+      <StyledTable>{children}</StyledTable>
+    </HScrollTableWrapper>
+  );
+};
 
 const Solution = (): JSX.Element => {
   return (
@@ -49,7 +61,7 @@ const Solution = (): JSX.Element => {
         each isomorphic to one of these letters. The table below shows the clue
         answers, networking platforms and extracted letters.
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Clue</th>
           <th>Clue answer</th>
@@ -239,7 +251,7 @@ const Solution = (): JSX.Element => {
           <td>SPONGEBOB</td>
           <td>G</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         Taken in clue order, the extracted letters spell:
         OBESEPREOWNEDTHEFONZSAYING, which can be read as: Obese, pre-owned, “The
