@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -25,71 +29,73 @@ const Solution = (): JSX.Element => {
         As indicated by the title of the puzzle and video, teams need to
         determine where the vlogger is, assisted by the video and narration.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Clip</th>
-          <th>Landmark</th>
-          <th>Location</th>
-          <th>Evan Performed By</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>IKEA next to Newark Airport</td>
-          <td>Elizabeth, NJ</td>
-          <td>Dee Ruttenberg</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Grant Street Pier</td>
-          <td>Vancouver, WA</td>
-          <td>Amanda Giermann</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Chihuly “Rock Candy” Polymer Statue</td>
-          <td>Akron, OH</td>
-          <td>Zach Eucker</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>
-            “Mirror Piece I & II” by Joan Jonas, performed in the Sculpture
-            Garden of the Museum of Modern Art
-          </td>
-          <td>New York, NY</td>
-          <td>Teddy McArthur</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Fairbanks Museum and Planetarium</td>
-          <td>St. Johnsbury, VT</td>
-          <td>Teddy McArthur</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Vietnam Veterans Replica Wall Memorial</td>
-          <td>Tupelo, MS</td>
-          <td>Sid Creutz</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>North Carolina State Capitol</td>
-          <td>Raleigh, NC</td>
-          <td>Paul Hlebowitsh</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>Inglewood Public Library</td>
-          <td>Inglewood, CA</td>
-          <td>Steven Vanderveer</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>Berkshire Museum</td>
-          <td>Pittsfield, MA</td>
-          <td>Anisa Schardl</td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Clip</th>
+            <th>Landmark</th>
+            <th>Location</th>
+            <th>Evan Performed By</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>IKEA next to Newark Airport</td>
+            <td>Elizabeth, NJ</td>
+            <td>Dee Ruttenberg</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Grant Street Pier</td>
+            <td>Vancouver, WA</td>
+            <td>Amanda Giermann</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Chihuly “Rock Candy” Polymer Statue</td>
+            <td>Akron, OH</td>
+            <td>Zach Eucker</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>
+              “Mirror Piece I & II” by Joan Jonas, performed in the Sculpture
+              Garden of the Museum of Modern Art
+            </td>
+            <td>New York, NY</td>
+            <td>Teddy McArthur</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Fairbanks Museum and Planetarium</td>
+            <td>St. Johnsbury, VT</td>
+            <td>Teddy McArthur</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Vietnam Veterans Replica Wall Memorial</td>
+            <td>Tupelo, MS</td>
+            <td>Sid Creutz</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>North Carolina State Capitol</td>
+            <td>Raleigh, NC</td>
+            <td>Paul Hlebowitsh</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Inglewood Public Library</td>
+            <td>Inglewood, CA</td>
+            <td>Steven Vanderveer</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Berkshire Museum</td>
+            <td>Pittsfield, MA</td>
+            <td>Anisa Schardl</td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         The first letters of these cities spell out <Mono>EVANSTRIP</Mono>. This
         is a plausible travel vlog channel name. The encouragement to visit
@@ -117,106 +123,108 @@ const Solution = (): JSX.Element => {
         word of the station name. By indexing the position of the all-caps words
         into the MBTA station’s name, teams can extract letters.
       </p>
-      <StyledTable>
-        <tr>
-          <th>#</th>
-          <th>Site</th>
-          <th>Station</th>
-          <th>Position of all-caps words</th>
-          <th>Extraction</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Boston City Hall</td>
-          <td>Government Center</td>
-          <td>1, 2</td>
-          <td>GO</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Seaport Market</td>
-          <td>Courthouse</td>
-          <td>9, 10</td>
-          <td>SE</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Salt and Pepper Bridge</td>
-          <td>Charles/MGH</td>
-          <td>6, 7</td>
-          <td>ES</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>TD Garden</td>
-          <td>North Station</td>
-          <td>7, 8</td>
-          <td>TA</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Fiduciary Trust Building</td>
-          <td>South Station</td>
-          <td>7, 8</td>
-          <td>TA</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Cardinal Cushing Memorial Park</td>
-          <td>Bowdoin</td>
-          <td>1, 2</td>
-          <td>BO</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>Lehman Hall, Harvard University</td>
-          <td>Harvard</td>
-          <td>2, 3</td>
-          <td>AR</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>“Explosions” by Sergio Castillo</td>
-          <td>Blandford Street</td>
-          <td>5, 6</td>
-          <td>DF</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>Cafe Landwer, near Chestnut Hill Reservation</td>
-          <td>Reservoir</td>
-          <td>8, 9</td>
-          <td>IR</td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>Old State House</td>
-          <td>State</td>
-          <td>1, 2</td>
-          <td>ST</td>
-        </tr>
-        <tr>
-          <td>11</td>
-          <td>Boston Public Library</td>
-          <td>Copley</td>
-          <td>4, 5</td>
-          <td>LE</td>
-        </tr>
-        <tr>
-          <td>12</td>
-          <td>Eagle’s Deli</td>
-          <td>Cleveland Circle</td>
-          <td>4, 5</td>
-          <td>VE</td>
-        </tr>
-        <tr>
-          <td>13</td>
-          <td>MIT Museum</td>
-          <td>Kendall/MIT</td>
-          <td>6</td>
-          <td>L</td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>#</th>
+            <th>Site</th>
+            <th>Station</th>
+            <th>Position of all-caps words</th>
+            <th>Extraction</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Boston City Hall</td>
+            <td>Government Center</td>
+            <td>1, 2</td>
+            <td>GO</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Seaport Market</td>
+            <td>Courthouse</td>
+            <td>9, 10</td>
+            <td>SE</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Salt and Pepper Bridge</td>
+            <td>Charles/MGH</td>
+            <td>6, 7</td>
+            <td>ES</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>TD Garden</td>
+            <td>North Station</td>
+            <td>7, 8</td>
+            <td>TA</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Fiduciary Trust Building</td>
+            <td>South Station</td>
+            <td>7, 8</td>
+            <td>TA</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Cardinal Cushing Memorial Park</td>
+            <td>Bowdoin</td>
+            <td>1, 2</td>
+            <td>BO</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Lehman Hall, Harvard University</td>
+            <td>Harvard</td>
+            <td>2, 3</td>
+            <td>AR</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>“Explosions” by Sergio Castillo</td>
+            <td>Blandford Street</td>
+            <td>5, 6</td>
+            <td>DF</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Cafe Landwer, near Chestnut Hill Reservation</td>
+            <td>Reservoir</td>
+            <td>8, 9</td>
+            <td>IR</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>Old State House</td>
+            <td>State</td>
+            <td>1, 2</td>
+            <td>ST</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>Boston Public Library</td>
+            <td>Copley</td>
+            <td>4, 5</td>
+            <td>LE</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>Eagle’s Deli</td>
+            <td>Cleveland Circle</td>
+            <td>4, 5</td>
+            <td>VE</td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>MIT Museum</td>
+            <td>Kendall/MIT</td>
+            <td>6</td>
+            <td>L</td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         These letters spell out <Mono>GO SEE STATA BOARD FIRST LEVEL</Mono>.
       </p>
@@ -235,68 +243,70 @@ const Solution = (): JSX.Element => {
         cities that Evan’s video covered. Teams can index into these cities in
         the order they appeared in the video.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Clip</th>
-          <th>City Name</th>
-          <th>Index from Flyer</th>
-          <th>Extraction</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Elizabeth, NJ</td>
-          <td>4</td>
-          <td>Z</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Vancouver, WA</td>
-          <td>2</td>
-          <td>A</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Akron, OH</td>
-          <td>2</td>
-          <td>K</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>New York, NY</td>
-          <td>4</td>
-          <td>Y</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>St. Johnsbury, VT</td>
-          <td>6</td>
-          <td>N</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Tupelo, MS</td>
-          <td>1</td>
-          <td>T</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>Raleigh, NC</td>
-          <td>7</td>
-          <td>H</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>Inglewood, CA</td>
-          <td>7</td>
-          <td>O</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>Pittsfield, MA</td>
-          <td>5</td>
-          <td>S</td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Clip</th>
+            <th>City Name</th>
+            <th>Index from Flyer</th>
+            <th>Extraction</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Elizabeth, NJ</td>
+            <td>4</td>
+            <td>Z</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Vancouver, WA</td>
+            <td>2</td>
+            <td>A</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Akron, OH</td>
+            <td>2</td>
+            <td>K</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>New York, NY</td>
+            <td>4</td>
+            <td>Y</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>St. Johnsbury, VT</td>
+            <td>6</td>
+            <td>N</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Tupelo, MS</td>
+            <td>1</td>
+            <td>T</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Raleigh, NC</td>
+            <td>7</td>
+            <td>H</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Inglewood, CA</td>
+            <td>7</td>
+            <td>O</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Pittsfield, MA</td>
+            <td>5</td>
+            <td>S</td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         This spells out <PuzzleAnswer>ZAKYNTHOS</PuzzleAnswer>, the Greek island
         that Evan is traveling to and the answer to the puzzle.
