@@ -1,6 +1,6 @@
 import React from "react";
-import LinkedImage from "../../components/LinkedImage";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { styled } from "styled-components";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import img1 from "./assets/solution1.png";
 import img2 from "./assets/solution2.png";
 
@@ -13,6 +13,16 @@ const tableContents = [
   ["high:", "(HIGH) AND DRY, (HIGH) SCHOOL, (HIGH) STRUNG"],
 ];
 
+const StyledTable = styled.table`
+  margin: 1rem 0;
+
+  td,
+  th {
+    text-align: left;
+    padding-right: 1rem;
+  }
+`;
+
 const Solution = () => {
   return (
     <>
@@ -21,7 +31,7 @@ const Solution = () => {
         specifically, a European roulette wheel with only one green 0 slot
         (compared to the American variant with 0 and 00):
       </p>
-      <LinkedImage alt="A European roulette wheel" src={img1} />
+      <img alt="A European roulette wheel" src={img1} />
       <p>
         The flavortext and the colors/images in the center 0 slot all hint at
         the six outside bets in a game of roulette, which pay out at 1:1. Those
@@ -32,9 +42,9 @@ const Solution = () => {
         one letter from each slot to spell out words or phrases. Those phrases{" "}
         <b>should</b> contain the name of the bet, but the name is elided:
       </p>
-      <LinkedImage alt="The solved dropquote" src={img2} />
+      <img alt="The solved dropquote" src={img2} />
       <HScrollTableWrapper>
-        <table>
+        <StyledTable>
           <tr>
             <th>bet</th>
             <th>words/phrases</th>
@@ -45,12 +55,12 @@ const Solution = () => {
               <td>{words}</td>
             </tr>
           ))}
-        </table>
+        </StyledTable>
       </HScrollTableWrapper>
       <p>
         There is one letter left over in each of the thirty-seven slots. Read
-        them in numerical order from 0 to 36 to get the answer: HAL INSTITUTE
-        FOR CRIMINALLY INSANE ROBOTS.
+        them in numerical order from 0 to 36 to get the answer:{" "}
+        <PuzzleAnswer>HAL INSTITUTE FOR CRIMINALLY INSANE ROBOTS.</PuzzleAnswer>
       </p>
     </>
   );
