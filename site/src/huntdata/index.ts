@@ -516,7 +516,7 @@ const HUNT: Hunt = {
         { id: "tmp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "absolutely_not_balderdash" },
         { id: "tmp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "beyond_a_shadow_of_a_doubt" },
         { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "weirdo_threaded_doodads"},
-        { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "can_do_transmissions" },
         { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
