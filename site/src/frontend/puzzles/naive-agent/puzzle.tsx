@@ -2,6 +2,7 @@ import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { OswaldFont } from "../../assets/SharedFonts";
 import Crossword from "../../components/Crossword";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import SharkImg from "./assets/sharkright.png";
 
 export const Grid = styled(Crossword)`
@@ -221,15 +222,17 @@ const Puzzle = (): JSX.Element => {
       <p className="puzzle-flavor">
         A number of our links went down. Can you help fix them?
       </p>
-      <Grid
-        labels={LABELS}
-        fill={GRID_CONTENT}
-        getAdditionalCellFillStyles={() => ({
-          fontSize: "8pt",
-          fontFamily: "Oswald",
-          position: "unset",
-        })}
-      />
+      <HScrollTableWrapper>
+        <Grid
+          labels={LABELS}
+          fill={GRID_CONTENT}
+          getAdditionalCellFillStyles={() => ({
+            fontSize: "8pt",
+            fontFamily: "Oswald",
+            position: "unset",
+          })}
+        />
+      </HScrollTableWrapper>
     </>
   );
 };

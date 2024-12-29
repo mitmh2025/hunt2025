@@ -1,6 +1,8 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { OswaldFont } from "../../assets/SharedFonts";
+import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import img10 from "./assets/image10.png";
 import img11 from "./assets/image11.png";
 import img12 from "./assets/image12.png";
@@ -24,11 +26,6 @@ import {
   SharkLeft,
   SharkRight,
 } from "./puzzle";
-
-const SolutionImg = styled.img`
-  width: 398.5px;
-  height: 304.9px;
-`;
 
 const SOLUTION_FILL = [
   "EURNEGAKSDNEART",
@@ -245,6 +242,13 @@ const SolvedColors: string[][] = [
   ],
 ];
 
+const StyledLinkedImage = styled(LinkedImage)`
+  display: block;
+  max-width: calc(min(800px, 100%));
+`;
+
+const SOLVE_PATH_ALT = "A partially-solved numberlink";
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -303,7 +307,8 @@ const Solution = (): JSX.Element => {
         The filled grid is shown below. An example solve including the logic is
         at the end of this solution.
       </p>
-      <p>
+
+      <HScrollTableWrapper>
         <Grid
           labels={LABELS}
           fill={GRID_CONTENT}
@@ -316,7 +321,8 @@ const Solution = (): JSX.Element => {
             backgroundColor: SolvedColors[row]?.[column] ?? "inherit",
           })}
         />
-      </p>
+      </HScrollTableWrapper>
+
       <p>
         The full name of each submarine cable is equal in length to the number
         of squares in the corresponding path, and each path has one shark
@@ -357,7 +363,7 @@ const Solution = (): JSX.Element => {
         For sake of clarity each city pair is replaced with the same number as
         per normal Number Link convention. The grid is shown below.
       </p>
-      <p>
+      <HScrollTableWrapper>
         <Grid
           labels={LABELS}
           fill={GRID_NUMBER_CONTENT}
@@ -366,7 +372,7 @@ const Solution = (): JSX.Element => {
             position: "unset",
           })}
         />
-      </p>
+      </HScrollTableWrapper>
       <p>
         Start by looking at the corners. The top right square must be a turn, as
         must the square down and to the left of this space. Since we cannot make
@@ -398,7 +404,7 @@ const Solution = (): JSX.Element => {
         In the bottom right, we can tell there is a path that proceeds on the
         outside of the 3 terminus.
       </p>
-      <SolutionImg src={img5} />
+      <StyledLinkedImage src={img5} alt={SOLVE_PATH_ALT} />
       <p>
         We then look at the bottom middle section. There are a lot of terminals
         crammed together, which limit where paths can go. The 3 path must go up,
@@ -407,7 +413,7 @@ const Solution = (): JSX.Element => {
         must continue another two squares to pass the 5 terminal, at which point
         we can tell it must hug the bottom left corner.
       </p>
-      <SolutionImg src={img12} />
+      <StyledLinkedImage src={img12} alt={SOLVE_PATH_ALT} />
       <p>
         At this point we can see that the 1 and 2 path can’t cross. The next
         layer in from the 2 path in the bottom left corner must also follow this
@@ -425,14 +431,14 @@ const Solution = (): JSX.Element => {
         to the right of the upper 1 terminus is either part of the 2 path
         itself, or it would be isolated. This completes the 1 and 2 paths.
       </p>
-      <SolutionImg src={img16} />
+      <StyledLinkedImage src={img16} alt={SOLVE_PATH_ALT} />
       <br />
-      <SolutionImg src={img6} />
+      <StyledLinkedImage src={img6} alt={SOLVE_PATH_ALT} />
       <p>
         In the upper left we can now fill in a path going around the outside of
         the upper 12 terminus.
       </p>
-      <SolutionImg src={img11} />
+      <StyledLinkedImage src={img11} alt={SOLVE_PATH_ALT} />
       <p>
         In the upper right, we can follow a similar logic as in the bottom left
         corner to place a path inwards from the 4 path. Due to corner
@@ -444,15 +450,15 @@ const Solution = (): JSX.Element => {
         middle path, which connects it to the lower 10 terminal and completes
         the 10 path.
       </p>
-      <SolutionImg src={img8} />
+      <StyledLinkedImage src={img8} alt={SOLVE_PATH_ALT} />
       <br />
-      <SolutionImg src={img15} />
+      <StyledLinkedImage src={img15} alt={SOLVE_PATH_ALT} />
       <p>
         Several spaces in the center are now highly constrained. Drawing inner
         corners or deducing the only remaining direction available for some of
         the paths/terminals gives the following:
       </p>
-      <SolutionImg src={img3} />
+      <StyledLinkedImage src={img3} alt={SOLVE_PATH_ALT} />
       <p>
         As there are only two free spaces between the two ends of the 4 path and
         no room to turn on the right side due to the 3 and 8 paths, we can
@@ -460,9 +466,9 @@ const Solution = (): JSX.Element => {
         path. The same logic finishes the 3 and 8 paths. We can then extend a
         few of the nearby paths.
       </p>
-      <SolutionImg src={img10} />
+      <StyledLinkedImage src={img10} alt={SOLVE_PATH_ALT} />
       <p>We can finish up the 7 and 9 paths.</p>
-      <SolutionImg src={img4} />
+      <StyledLinkedImage src={img4} alt={SOLVE_PATH_ALT} />
       <p>
         The lower 11 terminal is now in a corner of the remaining free spaces,
         so we can see that there is no way for the 12 path to not cut off all
@@ -473,21 +479,21 @@ const Solution = (): JSX.Element => {
         connect to the upper 11 terminal and not the 12 path, and the 12 path
         must continue to the left from where it is currently located.
       </p>
-      <SolutionImg src={img7} />
+      <StyledLinkedImage src={img7} alt={SOLVE_PATH_ALT} />
       <br />
-      <SolutionImg src={img14} />
+      <StyledLinkedImage src={img14} alt={SOLVE_PATH_ALT} />
       <p>
         The 11 path must be completed directly, meaning the 6 path must also be
         connected directly. The 13 path must not be cut off by the 12 path
         moving left, which allows it to connect to the path on the outside of
         the upper 12 terminal.
       </p>
-      <SolutionImg src={img13} />
+      <StyledLinkedImage src={img13} alt={SOLVE_PATH_ALT} />
       <p>
         A final bit of logic finishes the 5 and 13 paths, and we have completed
         the number link puzzle.
       </p>
-      <SolutionImg src={img9} />
+      <StyledLinkedImage src={img9} alt={SOLVE_PATH_ALT} />
     </>
   );
 };
