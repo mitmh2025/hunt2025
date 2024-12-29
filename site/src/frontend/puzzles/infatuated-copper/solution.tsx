@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import solution from "./assets/solution.png";
 
 const StyledTable = styled.table`
@@ -162,24 +166,26 @@ const Solution = (): JSX.Element => {
         episode of that series. The list is presented sorted by episode title as
         an aid in solving, and as a clue that the episode titles are of import.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Content Warning</th>
-          <th>Episode</th>
-          <th>Media property</th>
-        </tr>
-        {DATA.map(({ cw, link, title, media }, i) => (
-          <tr key={`media-${i}`}>
-            <td>{cw}</td>
-            <td>
-              <a href={link} target="_blank" rel="noreferrer">
-                {title}
-              </a>
-            </td>
-            <td>{media}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Content Warning</th>
+            <th>Episode</th>
+            <th>Media property</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(({ cw, link, title, media }, i) => (
+            <tr key={`media-${i}`}>
+              <td>{cw}</td>
+              <td>
+                <a href={link} target="_blank" rel="noreferrer">
+                  {title}
+                </a>
+              </td>
+              <td>{media}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         The flavortext makes three references to{" "}
         <a
@@ -208,18 +214,20 @@ const Solution = (): JSX.Element => {
         </a>{" "}
         from TMA:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Content warning</th>
-          <th>Entity</th>
-        </tr>
-        {DATA.map(({ cw, entity }, j) => (
-          <tr key={`entity-${j}`}>
-            <td>{cw}</td>
-            <td>{entity}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Content warning</th>
+            <th>Entity</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(({ cw, entity }, j) => (
+            <tr key={`entity-${j}`}>
+              <td>{cw}</td>
+              <td>{entity}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         If you sort The Entities by{" "}
         <a
@@ -237,27 +245,29 @@ const Solution = (): JSX.Element => {
           “run and scream and escape […] find some order after the awful dread.”
         </i>
       </p>
-      <StyledTable>
-        <tr>
-          <th>Content warning</th>
-          <th>Invocation word</th>
-          <th>Entity</th>
-          <th>Episode</th>
-        </tr>
-        {DATA.toSorted((a, b) => a.epithetOrder - b.epithetOrder).map(
-          ({ cw, epithet, entity, title }, k) => (
-            <tr key={`extraction-${k}`}>
-              <td>
-                <strong>{cw.slice(0, 1)}</strong>
-                {cw.slice(1)}
-              </td>
-              <td>{epithet}</td>
-              <td>{entity}</td>
-              <td>{title}</td>
-            </tr>
-          ),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Content warning</th>
+            <th>Invocation word</th>
+            <th>Entity</th>
+            <th>Episode</th>
+          </tr>
+          {DATA.toSorted((a, b) => a.epithetOrder - b.epithetOrder).map(
+            ({ cw, epithet, entity, title }, k) => (
+              <tr key={`extraction-${k}`}>
+                <td>
+                  <strong>{cw.slice(0, 1)}</strong>
+                  {cw.slice(1)}
+                </td>
+                <td>{epithet}</td>
+                <td>{entity}</td>
+                <td>{title}</td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         (The Eye is off by itself at the beginning of the incantation; this is
         why the flavortext suggests <em>“some order”</em> can be found{" "}
