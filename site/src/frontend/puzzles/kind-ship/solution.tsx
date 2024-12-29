@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import solution from "./assets/solution.png";
 
 const StyledTable = styled.table`
@@ -136,22 +140,24 @@ const Solution = (): JSX.Element => {
         title of the puzzle. Together the title and sample plaid square
         establish the rules for interpreting the other squares.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Sett</th>
-          <th>Filler</th>
-          <th>Sett letters with blanks</th>
-          <th>Quote</th>
-        </tr>
-        {DATA.map(({ sett, filler, blanks, quote }, i) => (
-          <tr key={i}>
-            <td>{sett}</td>
-            <td>{filler}</td>
-            <td>{blanks}</td>
-            <td>{quote}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Sett</th>
+            <th>Filler</th>
+            <th>Sett letters with blanks</th>
+            <th>Quote</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(({ sett, filler, blanks, quote }, i) => (
+            <tr key={i}>
+              <td>{sett}</td>
+              <td>{filler}</td>
+              <td>{blanks}</td>
+              <td>{quote}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         The final extraction fabric image has a gray background with stripes in
         the colors of the “background” colors for the eleven plaid squares.
@@ -178,9 +184,8 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Solvers design a tartan for their team, send it to HQ, and receive the
-        answer, <PuzzleAnswer>CHIVIPANE</PuzzleAnswer>
+        answer, <PuzzleAnswer>CHIVIPANE</PuzzleAnswer>.
       </p>
-      .
     </>
   );
 };
