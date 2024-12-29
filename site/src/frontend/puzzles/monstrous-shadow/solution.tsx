@@ -2,7 +2,11 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import Spoiler from "../../components/Spoiler";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import background_overlay from "./assets/solution/The-Grand-Illusion-overlay.svg";
 import background from "./assets/solution/The-Grand-Illusion-shell.svg";
 
@@ -372,35 +376,37 @@ const Solution = () => {
         following:
       </p>
 
-      <ExtractionTable>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Coordinates</th>
-            <th>City</th>
-            <th>1921</th>
-            <th>1939</th>
-            <th>1946</th>
-            <th>1993</th>
-          </tr>
-        </thead>
-        <tbody>
-          {EXTRACTION_TABLE_DATA.map((row: ExtractionTableDataRow) => {
-            const [color, idx, coords, city, col1, col2, col3, col4] = row;
-            return (
-              <tr key={idx}>
-                <td>{idx}</td>
-                <td style={{ color }}>{coords}</td>
-                <td style={{ color }}>{city}</td>
-                <ExtractionCell s={col1} />
-                <ExtractionCell s={col2} />
-                <ExtractionCell s={col3} />
-                <ExtractionCell s={col4} />
-              </tr>
-            );
-          })}
-        </tbody>
-      </ExtractionTable>
+      <HScrollTableWrapper>
+        <ExtractionTable>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Coordinates</th>
+              <th>City</th>
+              <th>1921</th>
+              <th>1939</th>
+              <th>1946</th>
+              <th>1993</th>
+            </tr>
+          </thead>
+          <tbody>
+            {EXTRACTION_TABLE_DATA.map((row: ExtractionTableDataRow) => {
+              const [color, idx, coords, city, col1, col2, col3, col4] = row;
+              return (
+                <tr key={idx}>
+                  <td>{idx}</td>
+                  <td style={{ color }}>{coords}</td>
+                  <td style={{ color }}>{city}</td>
+                  <ExtractionCell s={col1} />
+                  <ExtractionCell s={col2} />
+                  <ExtractionCell s={col3} />
+                  <ExtractionCell s={col4} />
+                </tr>
+              );
+            })}
+          </tbody>
+        </ExtractionTable>
+      </HScrollTableWrapper>
 
       <p>
         The extracted letters spell <Mono>STAR SIGN AREA</Mono>, a clue for the
