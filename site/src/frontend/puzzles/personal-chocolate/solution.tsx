@@ -312,12 +312,12 @@ const Solution = (): JSX.Element => {
       <h3>IPA beers: using the consonant data, solve clues to beer names</h3>
       <p>
         Solvers may notice that there are quite a few consonantal repetitions
-        amongst the final 1-2 syllables of each audio file, with especially
-        “f*v” and “f*r” showing up many times. If you ignore the vowels and just
-        pay attention to the consonants, these ending words sound similar to
-        saying various integers in the 1-10 range, e.g. “saa-van” → seven,
-        “foov” → five, or “tunn” → ten. (Note: Vowels do not necessarily differ
-        100% of the time from the word’s correct pronunciation.)
+        amongst the final 1-2 syllables of each row, with especially “f*v” and
+        “f*r” showing up many times. If you ignore the vowels and just pay
+        attention to the consonants, these ending words sound similar to saying
+        various integers in the 1-10 range, e.g. “saa-van” → seven, “foov” →
+        five, or “tunn” → ten. (Note: Vowels do not necessarily differ 100% of
+        the time from the word’s correct pronunciation.)
       </p>
       <p>
         Sounding out each clue in its entirety, one can contextually figure out
