@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import img15 from "./assets/img15.png";
 import img16 from "./assets/img16.png";
 import img17 from "./assets/img17.png";
@@ -93,32 +97,34 @@ const Table = ({
   rows: string[][];
 }): JSX.Element => {
   return (
-    <table>
-      <thead>
-        <tr>
-          {headers.map((header, i) => (
-            <th key={`header-cell-${i}`}>{header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, j) => (
-          <tr key={`table-row-${j}`}>
-            {row.map((cell, k) => {
-              let cellContent: string | JSX.Element = cell;
-              if (k === 2 || k === 6) {
-                cellContent = <Mono>{cell}</Mono>;
-              }
-              return (
-                <StyledTd key={`table-row-${j}-cell-${k}`}>
-                  {cellContent}
-                </StyledTd>
-              );
-            })}
+    <HScrollTableWrapper>
+      <table>
+        <thead>
+          <tr>
+            {headers.map((header, i) => (
+              <th key={`header-cell-${i}`}>{header}</th>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {rows.map((row, j) => (
+            <tr key={`table-row-${j}`}>
+              {row.map((cell, k) => {
+                let cellContent: string | JSX.Element = cell;
+                if (k === 2 || k === 6) {
+                  cellContent = <Mono>{cell}</Mono>;
+                }
+                return (
+                  <StyledTd key={`table-row-${j}-cell-${k}`}>
+                    {cellContent}
+                  </StyledTd>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </HScrollTableWrapper>
   );
 };
 
