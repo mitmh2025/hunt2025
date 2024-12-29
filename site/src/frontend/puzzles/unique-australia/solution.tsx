@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import assembled_solution from "./assets/solution/The-Mark-assembly.svg";
 import candidate_chips from "./assets/solution/The-Mark-candidate-chips-FQGDUK-PLAZYC-ORBEJN-HMSTVI.svg";
 import answer_chips_chivipane from "./assets/solution/The-Mark-candidate-partial-chivipane-~~~~~~-P~A~~C-~~~E~N-H~~~VI-1.svg";
@@ -29,15 +33,17 @@ const BigramSplitsTable = styled.table`
 `;
 const BigramSplits = ({ options }: { options: string[] }) => {
   return (
-    <BigramSplitsTable>
-      <tbody>
-        <tr>
-          {options.map((option) => {
-            return <td key={option}>{option}</td>;
-          })}
-        </tr>
-      </tbody>
-    </BigramSplitsTable>
+    <HScrollTableWrapper>
+      <BigramSplitsTable>
+        <tbody>
+          <tr>
+            {options.map((option) => {
+              return <td key={option}>{option}</td>;
+            })}
+          </tr>
+        </tbody>
+      </BigramSplitsTable>
+    </HScrollTableWrapper>
   );
 };
 
@@ -48,6 +54,7 @@ const ChipBreakdownShared = styled.table`
     font-family: "Roboto Mono", monospace;
     border: 1px solid var(--black);
     width: 70px;
+    min-width: 60px;
     text-align: center;
   }
 `;
@@ -59,21 +66,23 @@ const LetterGroupsTable = styled(ChipBreakdownShared)`
 `;
 const LetterGroups = ({ groups }: { groups: string[] }) => {
   return (
-    <LetterGroupsTable>
-      <tbody>
-        <tr>
-          {groups.map((group) => {
-            const overflown = group.length > 6;
-            const classes = overflown ? "overflown" : undefined;
-            return (
-              <td className={classes} key={group}>
-                {group}
-              </td>
-            );
-          })}
-        </tr>
-      </tbody>
-    </LetterGroupsTable>
+    <HScrollTableWrapper>
+      <LetterGroupsTable>
+        <tbody>
+          <tr>
+            {groups.map((group) => {
+              const overflown = group.length > 6;
+              const classes = overflown ? "overflown" : undefined;
+              return (
+                <td className={classes} key={group}>
+                  {group}
+                </td>
+              );
+            })}
+          </tr>
+        </tbody>
+      </LetterGroupsTable>
+    </HScrollTableWrapper>
   );
 };
 
@@ -120,15 +129,17 @@ const ChipBreakdownTable = styled(ChipBreakdownShared)`
 const ChipBreakdown = ({ groups }: { groups: string[] }) => {
   return (
     <CenteredDiv>
-      <ChipBreakdownTable>
-        <tbody>
-          <tr>
-            {groups.map((group) => {
-              return <td key={group}>{group}</td>;
-            })}
-          </tr>
-        </tbody>
-      </ChipBreakdownTable>
+      <HScrollTableWrapper>
+        <ChipBreakdownTable>
+          <tbody>
+            <tr>
+              {groups.map((group) => {
+                return <td key={group}>{group}</td>;
+              })}
+            </tr>
+          </tbody>
+        </ChipBreakdownTable>
+      </HScrollTableWrapper>
     </CenteredDiv>
   );
 };
@@ -494,13 +505,13 @@ const Solution = () => {
           bigramSplits={"M-OR-TH-ON-D C-HI-VI-PA-NE H-MS-AL-CA-ST-ON FL-YE-R J-UG-AL-BO-NE".split(
             " ",
           )}
-          groups={"ACFLP BENORY D GU HIMSTV J ".split(" ")}
+          groups={"ACFLP BENORY D GU HIMSTV J".split(" ")}
         />
         <ChipCandidates
           bigramSplits={"M-OR-TH-ON-D C-HI-VI-PA-NE H-MS-AL-CA-ST-ON F-LY-ER JU-GA-LB-ON-E".split(
             " ",
           )}
-          groups={"ABCGLPY D ENOR F HIMSTV JU ".split(" ")}
+          groups={"ABCGLPY D ENOR F HIMSTV JU".split(" ")}
         />
         <ChipCandidates
           bigramSplits={"M-OR-TH-ON-D C-HI-VI-PA-NE H-MS-AL-CA-ST-ON F-LY-ER J-UG-AL-BO-NE".split(
