@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const SolutionTable = styled.table`
   border-collapse: collapse;
@@ -171,24 +175,26 @@ const Solution = () => {
         we can extract a pair of letters:
       </p>
 
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Captain’s phrase</th>
-            <th>ICS phrase</th>
-            <th>Letters</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ICSMessages.map(([captain, ics, letters], i) => (
-            <tr key={i}>
-              <td>{captain}</td>
-              <td>{ics}</td>
-              <td>{letters}</td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Captain’s phrase</th>
+              <th>ICS phrase</th>
+              <th>Letters</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {ICSMessages.map(([captain, ics, letters], i) => (
+              <tr key={i}>
+                <td>{captain}</td>
+                <td>{ics}</td>
+                <td>{letters}</td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
 
       <p>
         The other ship’s messages, however, are not interpretable by using ICS.
@@ -215,24 +221,26 @@ const Solution = () => {
         yields one word.
       </p>
 
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Signaler’s Interpretation</th>
-            <th>Numbers</th>
-            <th>Marryat Word</th>
-          </tr>
-        </thead>
-        <tbody>
-          {MarryatMessages.map(([message, numbers, word], i) => (
-            <tr key={i}>
-              <td>{message}</td>
-              <td>{numbers}</td>
-              <td>{word}</td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Signaler’s Interpretation</th>
+              <th>Numbers</th>
+              <th>Marryat Word</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {MarryatMessages.map(([message, numbers, word], i) => (
+              <tr key={i}>
+                <td>{message}</td>
+                <td>{numbers}</td>
+                <td>{word}</td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
 
       <p>
         Finally, the conversation is structured so that the captain is
@@ -242,26 +250,28 @@ const Solution = () => {
         strange vessel’s word.
       </p>
 
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Strange Vessel’s Word</th>
-            <th>Captain’s Letters</th>
-            <th>Extra Letter</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ExtractionMessages.map(([word, response, extraction], i) => (
-            <tr key={i}>
-              <td>{word}</td>
-              <td>{response}</td>
-              <td>
-                <Mono>{extraction}</Mono>
-              </td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Strange Vessel’s Word</th>
+              <th>Captain’s Letters</th>
+              <th>Extra Letter</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {ExtractionMessages.map(([word, response, extraction], i) => (
+              <tr key={i}>
+                <td>{word}</td>
+                <td>{response}</td>
+                <td>
+                  <Mono>{extraction}</Mono>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
 
       <p>
         And when we read each letter in order, we get the answer to the puzzle,{" "}
