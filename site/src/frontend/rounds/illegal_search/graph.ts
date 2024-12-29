@@ -7,6 +7,8 @@ import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.svg";
 import bookcase_paneling from "./assets/bookcase/bookcase_paneling.svg";
 import bookcase_note from "./assets/bookcase/note.svg";
 import bookcase_note_blacklight from "./assets/bookcase/note_blacklight.svg";
+import bookcase_note_blacklight_modal from "./assets/bookcase/note_blacklight_modal.svg";
+import bookcase_note_modal from "./assets/bookcase/note_modal.svg";
 import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
 import cryptex_note from "./assets/cryptex/cryptex_note.svg";
 import cryptex_note_blacklight from "./assets/cryptex/cryptex_note_blacklight.png";
@@ -73,6 +75,7 @@ import open_door from "./assets/study/open_door.png";
 import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.png";
+import safe_frame_border from "./assets/study/safe_frame_border.svg";
 import typewriter from "./assets/study/typewriter.svg";
 import telephone from "./assets/telephone/telephone.svg";
 import telephone_blacklight from "./assets/telephone/telephone_unpushed_blacklight.svg";
@@ -237,6 +240,16 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.319,
         },
         asset: safe_frame,
+      },
+      {
+        // Safe painting
+        area: {
+          left: 0.275,
+          right: 0.517,
+          top: 0.837,
+          bottom: 0.319,
+        },
+        asset: safe_frame_border,
       },
       {
         // overlays: open door (if bookcase is open) + blacklight books
@@ -845,9 +858,19 @@ const ALL_NODES: NodeInternal[] = [
           top: 0.522,
           bottom: 0.272,
         },
-        asset: bookcase_note,
+        placedAsset: {
+          area: {
+            left: -0.834,
+            right: -0.455,
+            top: 0.572,
+            bottom: 0.222,
+          },
+          asset: bookcase_note,
+          extraAsset: bookcase_note_blacklight,
+        },
+        asset: bookcase_note_modal,
         extra: {
-          asset: bookcase_note_blacklight,
+          asset: bookcase_note_blacklight_modal,
           gateId: "isg32",
           postCode: "SHqjcRam7FKcuKgOkwziig==",
           slotId: "ism03",

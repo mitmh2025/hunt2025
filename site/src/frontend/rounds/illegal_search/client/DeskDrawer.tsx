@@ -65,7 +65,9 @@ export default function DeskDrawer({
             onLoad={() => {
               // we do this on load so that on initial solve, we wait for
               // the asset to load before we animate it open
-              setDrawerOpen(true);
+              requestAnimationFrame(() => {
+                setDrawerOpen(true);
+              });
               playSound(drawer_open);
               setTimeout(() => {
                 setAnimationComplete(true);
