@@ -1,4 +1,6 @@
 import React from "react";
+import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import graph_labeled from "./assets/graph_labeled.png";
 import graph_unlabeled from "./assets/graph_unlabeled.png";
 import hidden_node from "./assets/hidden_node.png";
@@ -24,7 +26,7 @@ const Solution = () => {
         Game supermeta.
       </p>
 
-      <img
+      <LinkedImage
         src={graph_unlabeled}
         alt="Directed graph showing the 8 shell corporations metas, their 17 feeders, and which answers feed into which puzzle"
       />
@@ -40,7 +42,7 @@ const Solution = () => {
         “won’t leave a trace” and aren’t used in the letter assignment.
       </p>
 
-      <img
+      <LinkedImage
         src={graph_labeled}
         alt="Directed graph showing the 8 shell corporations metas, their 17 feeders, and which answers feed into which puzzles, with single-letter labels on each graph edge"
       />
@@ -55,11 +57,11 @@ const Solution = () => {
         goes through the hidden node exactly once, determine the letters that
         must be assigned to the edges in and out of the hidden node. Starting at
         the hidden node and tracing the edges to and from each shell corporation
-        in order spells the answer, that to confront Gladys, you should BLOW
-        GLASS WHISTLE.
+        in order spells the answer, that to confront Gladys, you should{" "}
+        <PuzzleAnswer>BLOW GLASS WHISTLE</PuzzleAnswer>.
       </p>
 
-      <img
+      <LinkedImage
         src={hidden_node}
         alt="Directed graph showing just the edges between the hidden node and the 8 shell corporation metas."
       />
