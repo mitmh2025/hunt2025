@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import pdf_motifs from "./assets/motifs.pdf";
 import model_3mf from "./assets/rings-with-detentes-postsolve.3mf";
 import model_stl from "./assets/rings-with-detentes-postsolve.stl";
@@ -8,20 +12,22 @@ import png_rod_sticker_single from "./assets/rod-sticker-one.png";
 import pdf_sticker from "./assets/rod-sticker.pdf";
 
 const TopTable = styled.table`
-  tbody tr td:nth-child(1) {
-    text-align: right;
-  }
-  tbody tr td:nth-child(2) {
+  border-spacing: 1rem 0;
+  tbody tr td {
     text-align: center;
   }
 `;
 
 const BottomTable = styled.table`
+  border-spacing: 1rem 0;
   tbody tr td:nth-child(1) {
     text-align: right;
   }
   tbody tr td:nth-child(2) {
     text-align: right;
+  }
+  tbody tr td:nth-child(3) {
+    text-align: center;
   }
 `;
 
@@ -89,124 +95,126 @@ const Solution = () => {
         <Mono>M</Mono> in <Mono>GLOOM</Mono> becomes a <Mono>W</Mono>.
       </p>
 
-      <TopTable>
-        <thead>
-          <tr>
-            <th>Year</th>
-            <th>Word</th>
-            <th>Middle</th>
-            <th>Rod cue</th>
-            <th>2nd step</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>2012</td>
-            <td>MASON</td>
-            <td>S</td>
-            <td>→ →</td>
-            <td>M</td>
-          </tr>
-          <tr>
-            <td>2013</td>
-            <td>HIPPO</td>
-            <td>P</td>
-            <td>← ←</td>
-            <td>O</td>
-          </tr>
-          <tr>
-            <td>2014</td>
-            <td>ALIVE</td>
-            <td>I</td>
-            <td>←</td>
-            <td>V</td>
-          </tr>
-          <tr>
-            <td>2015</td>
-            <td>TONER</td>
-            <td>N</td>
-            <td>←</td>
-            <td>E</td>
-          </tr>
-          <tr>
-            <td>2016</td>
-            <td>CAROB</td>
-            <td>R</td>
-            <td>← ←</td>
-            <td>B</td>
-          </tr>
-          <tr>
-            <td>2017</td>
-            <td>WEIRD</td>
-            <td>I</td>
-            <td>→</td>
-            <td>E</td>
-          </tr>
-          <tr>
-            <td>2018</td>
-            <td>ZONES</td>
-            <td>N</td>
-            <td>→ →</td>
-            <td>Z</td>
-          </tr>
-          <tr>
-            <td>2019</td>
-            <td>ANGER</td>
-            <td>G</td>
-            <td>←</td>
-            <td>E</td>
-          </tr>
-          <tr>
-            <td>2020</td>
-            <td>LASER</td>
-            <td>S</td>
-            <td>→ →</td>
-            <td>L</td>
-          </tr>
-          <tr>
-            <td>2021</td>
-            <td>SUPER</td>
-            <td>P</td>
-            <td>→ →</td>
-            <td>S</td>
-          </tr>
-          <tr>
-            <td>2022</td>
-            <td>GUESS</td>
-            <td>E</td>
-            <td>→</td>
-            <td>U</td>
-          </tr>
-          <tr>
-            <td>2023</td>
-            <td>PARTY</td>
-            <td>R</td>
-            <td>→ →</td>
-            <td>P</td>
-          </tr>
-          <tr>
-            <td>2024</td>
-            <td>STRIP</td>
-            <td>R</td>
-            <td>→</td>
-            <td>T</td>
-          </tr>
-          <tr>
-            <td>2025</td>
-            <td>GLOOM*</td>
-            <td>O</td>
-            <td>→ →</td>
-            <td>W</td>
-          </tr>
-          <tr>
-            <td>2026</td>
-            <td>ORDER*</td>
-            <td>D</td>
-            <td>← ←</td>
-            <td>O</td>
-          </tr>
-        </tbody>
-      </TopTable>
+      <HScrollTableWrapper>
+        <TopTable>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Word</th>
+              <th>Middle</th>
+              <th>Rod cue</th>
+              <th>2nd step</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2012</td>
+              <td>MASON</td>
+              <td>S</td>
+              <td>→ →</td>
+              <td>M</td>
+            </tr>
+            <tr>
+              <td>2013</td>
+              <td>HIPPO</td>
+              <td>P</td>
+              <td>← ←</td>
+              <td>O</td>
+            </tr>
+            <tr>
+              <td>2014</td>
+              <td>ALIVE</td>
+              <td>I</td>
+              <td>←</td>
+              <td>V</td>
+            </tr>
+            <tr>
+              <td>2015</td>
+              <td>TONER</td>
+              <td>N</td>
+              <td>←</td>
+              <td>E</td>
+            </tr>
+            <tr>
+              <td>2016</td>
+              <td>CAROB</td>
+              <td>R</td>
+              <td>← ←</td>
+              <td>B</td>
+            </tr>
+            <tr>
+              <td>2017</td>
+              <td>WEIRD</td>
+              <td>I</td>
+              <td>→</td>
+              <td>E</td>
+            </tr>
+            <tr>
+              <td>2018</td>
+              <td>ZONES</td>
+              <td>N</td>
+              <td>→ →</td>
+              <td>Z</td>
+            </tr>
+            <tr>
+              <td>2019</td>
+              <td>ANGER</td>
+              <td>G</td>
+              <td>←</td>
+              <td>E</td>
+            </tr>
+            <tr>
+              <td>2020</td>
+              <td>LASER</td>
+              <td>S</td>
+              <td>→ →</td>
+              <td>L</td>
+            </tr>
+            <tr>
+              <td>2021</td>
+              <td>SUPER</td>
+              <td>P</td>
+              <td>→ →</td>
+              <td>S</td>
+            </tr>
+            <tr>
+              <td>2022</td>
+              <td>GUESS</td>
+              <td>E</td>
+              <td>→</td>
+              <td>U</td>
+            </tr>
+            <tr>
+              <td>2023</td>
+              <td>PARTY</td>
+              <td>R</td>
+              <td>→ →</td>
+              <td>P</td>
+            </tr>
+            <tr>
+              <td>2024</td>
+              <td>STRIP</td>
+              <td>R</td>
+              <td>→</td>
+              <td>T</td>
+            </tr>
+            <tr>
+              <td>2025</td>
+              <td>GLOOM*</td>
+              <td>O</td>
+              <td>→ →</td>
+              <td>W</td>
+            </tr>
+            <tr>
+              <td>2026</td>
+              <td>ORDER*</td>
+              <td>D</td>
+              <td>← ←</td>
+              <td>O</td>
+            </tr>
+          </tbody>
+        </TopTable>
+      </HScrollTableWrapper>
 
       <p>
         The new message reads <Mono>MOVE BEZELS UP TWO</Mono>. After bezels have
@@ -216,92 +224,94 @@ const Solution = () => {
         <PuzzleAnswer>RAW ANTIQUE BRASS</PuzzleAnswer>.
       </p>
 
-      <BottomTable>
-        <thead>
-          <tr>
-            <th>Letter on bezel</th>
-            <th>Shift</th>
-            <th>Result</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>S</td>
-            <td>-1</td>
-            <td>R</td>
-          </tr>
-          <tr>
-            <td>R</td>
-            <td>9</td>
-            <td>A</td>
-          </tr>
-          <tr>
-            <td>J</td>
-            <td>-13</td>
-            <td>W</td>
-          </tr>
-          <tr>
-            <td>L</td>
-            <td>-11</td>
-            <td>A</td>
-          </tr>
-          <tr>
-            <td>U</td>
-            <td>-7</td>
-            <td>N</td>
-          </tr>
-          <tr>
-            <td>Y</td>
-            <td>-5</td>
-            <td>T</td>
-          </tr>
-          <tr>
-            <td>M</td>
-            <td>-4</td>
-            <td>I</td>
-          </tr>
-          <tr>
-            <td>C</td>
-            <td>-12</td>
-            <td>Q</td>
-          </tr>
-          <tr>
-            <td>T</td>
-            <td>1</td>
-            <td>U</td>
-          </tr>
-          <tr>
-            <td>F</td>
-            <td>-1</td>
-            <td>E</td>
-          </tr>
-          <tr>
-            <td>Z</td>
-            <td>2</td>
-            <td>B</td>
-          </tr>
-          <tr>
-            <td>P</td>
-            <td>2</td>
-            <td>R</td>
-          </tr>
-          <tr>
-            <td>Y</td>
-            <td>2</td>
-            <td>A</td>
-          </tr>
-          <tr>
-            <td>N</td>
-            <td>5</td>
-            <td>S</td>
-          </tr>
-          <tr>
-            <td>R</td>
-            <td>1</td>
-            <td>S</td>
-          </tr>
-        </tbody>
-      </BottomTable>
+      <HScrollTableWrapper>
+        <BottomTable>
+          <thead>
+            <tr>
+              <th>Letter on bezel</th>
+              <th>Shift</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>S</td>
+              <td>-1</td>
+              <td>R</td>
+            </tr>
+            <tr>
+              <td>R</td>
+              <td>9</td>
+              <td>A</td>
+            </tr>
+            <tr>
+              <td>J</td>
+              <td>-13</td>
+              <td>W</td>
+            </tr>
+            <tr>
+              <td>L</td>
+              <td>-11</td>
+              <td>A</td>
+            </tr>
+            <tr>
+              <td>U</td>
+              <td>-7</td>
+              <td>N</td>
+            </tr>
+            <tr>
+              <td>Y</td>
+              <td>-5</td>
+              <td>T</td>
+            </tr>
+            <tr>
+              <td>M</td>
+              <td>-4</td>
+              <td>I</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>-12</td>
+              <td>Q</td>
+            </tr>
+            <tr>
+              <td>T</td>
+              <td>1</td>
+              <td>U</td>
+            </tr>
+            <tr>
+              <td>F</td>
+              <td>-1</td>
+              <td>E</td>
+            </tr>
+            <tr>
+              <td>Z</td>
+              <td>2</td>
+              <td>B</td>
+            </tr>
+            <tr>
+              <td>P</td>
+              <td>2</td>
+              <td>R</td>
+            </tr>
+            <tr>
+              <td>Y</td>
+              <td>2</td>
+              <td>A</td>
+            </tr>
+            <tr>
+              <td>N</td>
+              <td>5</td>
+              <td>S</td>
+            </tr>
+            <tr>
+              <td>R</td>
+              <td>1</td>
+              <td>S</td>
+            </tr>
+          </tbody>
+        </BottomTable>
+      </HScrollTableWrapper>
 
       <h4>Production notes</h4>
       <p>
