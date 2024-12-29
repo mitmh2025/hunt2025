@@ -57,7 +57,7 @@ const PrinterPaperHole = styled.div`
 `;
 
 const PrinterPaperMain = styled.div`
-  font-family: "Courier";
+  font-family: "Courier", monospace;
   border-color: black;
   border-style: dashed;
   border-width: 0px 1px;
@@ -94,7 +94,9 @@ const PrinterPaper = ({
       {/* This seems to be the best way to get a single cell with multiple lines */}
       <table className={COPY_ONLY_CLASS}>
         <tr>
-          <td>{lines?.map((line, index) => <p key={index}>{line}</p>)}</td>
+          <PrinterPaperMain as="td">
+            {lines?.map((line, index) => <p key={index}>{line}</p>)}
+          </PrinterPaperMain>
         </tr>
       </table>
       <PrinterPaperSide />
