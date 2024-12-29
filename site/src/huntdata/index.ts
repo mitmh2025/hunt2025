@@ -36,7 +36,7 @@ const HUNT: Hunt = {
         { id: "mdp04", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "downright_backwards" },
         { id: "mdp05", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "introduction_to_decryption" },
         { id: "mdp06", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
-        { id: "mdp07", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "🔎🧊" }, // TODO: this slug my not go in this spot
+        { id: "mdp07", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "press_play" },
         { id: "mdp08", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "educational_rite_of_passage" },
         { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "missing_connections" },
         { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "be_kind_rewind" },
@@ -51,7 +51,7 @@ const HUNT: Hunt = {
         { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
         { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "🔎🧊"},
         { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
         { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "mdp25", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
