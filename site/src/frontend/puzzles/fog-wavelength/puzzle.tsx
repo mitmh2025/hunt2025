@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
 import puzzle from "./assets/puzzle.mp3";
 
@@ -17,6 +18,10 @@ const Paragraph = styled.div`
 const FlexWrapper = styled(Paragraph)`
   display: flex;
   justify-content: space-around;
+`;
+
+const ImageWrapper = styled.div`
+  max-width: 411px;
 `;
 
 const Puzzle = (): JSX.Element => {
@@ -48,11 +53,12 @@ const Puzzle = (): JSX.Element => {
           your readers.
         </Paragraph>
         <FlexWrapper>
-          <img
-            width={411}
-            src={image}
-            alt="A musical score for flute, piano, and tuba."
-          />
+          <ImageWrapper>
+            <LinkedImage
+              src={image}
+              alt="A musical score for flute, piano, and tuba."
+            />
+          </ImageWrapper>
         </FlexWrapper>
         <Paragraph>Sincerely,</Paragraph>
         <Paragraph>

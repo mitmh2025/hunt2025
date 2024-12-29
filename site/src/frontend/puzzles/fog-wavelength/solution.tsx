@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import flute from "./assets/CacciandoTrio-Flute.pdf";
 import piano from "./assets/CacciandoTrio-Piano.pdf";
 import tuba from "./assets/CacciandoTrio-Tuba.pdf";
@@ -8,7 +12,7 @@ import tuba from "./assets/CacciandoTrio-Tuba.pdf";
 const StyledTable = styled.table`
   margin-bottom: 1em;
   td {
-    align-text: center;
+    text-align: center;
   }
   th,
   td {
@@ -19,6 +23,10 @@ const StyledTable = styled.table`
 const StyledIframe = styled.iframe`
   width: 100%;
   aspect-ratio: 8.5/11;
+`;
+
+const BreakableMono = styled(Mono)`
+  word-break: break-all;
 `;
 
 const TUNING_DATA: { name: string; usualNote: string; frequency: string }[] = [
@@ -97,9 +105,9 @@ const Solution = (): JSX.Element => {
         to right audio channel only to filter out the piano chords) gives:
       </p>
       <p>
-        <Mono>
+        <BreakableMono>
           THEFLUTE26EDONOTESMAKELETTERSATOZANSWERPART1ANDPART2LENGTHSSEVENTHREESEVEN
-        </Mono>
+        </BreakableMono>
       </p>
       <p>
         Or: “The flute 26edo notes make letters A to Z. Answer part 1 and part
@@ -126,25 +134,27 @@ const Solution = (): JSX.Element => {
         letter are easy to make but straightforward to correct). Here is a
         conversion table:
       </p>
-      <StyledTable>
-        <tr>
-          <th>26edo</th>
-          <th>Usual note</th>
-          <th>Freq. (Hz)</th>
-        </tr>
-        {TUNING_DATA.map(({ name, usualNote, frequency }) => (
-          <tr key={name}>
-            <td>{name}</td>
-            <td>{usualNote}</td>
-            <td>{frequency}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>26edo</th>
+            <th>Usual note</th>
+            <th>Freq. (Hz)</th>
           </tr>
-        ))}
-      </StyledTable>
+          {TUNING_DATA.map(({ name, usualNote, frequency }) => (
+            <tr key={name}>
+              <td>{name}</td>
+              <td>{usualNote}</td>
+              <td>{frequency}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>The flute part decodes to:</p>
       <p>
-        <Mono>
+        <BreakableMono>
           THECHORDSMAKEBRAILLEANSWERPARTONECHOPINWROTEMANYOFTHESEINCLUDINGAMINUTEONE
-        </Mono>
+        </BreakableMono>
       </p>
       <p>
         Or: “The chords make Braille. Answer part one: Chopin wrote many of
