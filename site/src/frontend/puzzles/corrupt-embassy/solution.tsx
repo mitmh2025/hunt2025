@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const Answer = styled.div`
   margin: 1em 0;
@@ -524,30 +528,32 @@ const Solution = (): JSX.Element => {
           <i>C67: Tabu: neglect of sacred fires </i>
         </div>
       </Answer>
-      <StyledTable>
-        <tr>
-          <th>Story</th>
-          <th>Year</th>
-          <th>Country</th>
-          <th>Song</th>
-          <th>Motif Index</th>
-          <th>Score</th>
-          <th>Letter</th>
-        </tr>
-        {TABLE_DATA.map(
-          ({ story, year, country, song, motif, score, letter }) => (
-            <tr key={story}>
-              <td>{story}</td>
-              <td>{year}</td>
-              <td>{country}</td>
-              <td>{song}</td>
-              <td>{motif}</td>
-              <td>{score}</td>
-              <td>{letter}</td>
-            </tr>
-          ),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Story</th>
+            <th>Year</th>
+            <th>Country</th>
+            <th>Song</th>
+            <th>Motif Index</th>
+            <th>Score</th>
+            <th>Letter</th>
+          </tr>
+          {TABLE_DATA.map(
+            ({ story, year, country, song, motif, score, letter }) => (
+              <tr key={story}>
+                <td>{story}</td>
+                <td>{year}</td>
+                <td>{country}</td>
+                <td>{song}</td>
+                <td>{motif}</td>
+                <td>{score}</td>
+                <td>{letter}</td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };
