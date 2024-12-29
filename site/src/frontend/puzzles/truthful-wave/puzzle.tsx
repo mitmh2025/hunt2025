@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 
 const GridDiv = styled.div`
   @media (min-width: 731px) {
@@ -19,6 +20,7 @@ export const MaterialsTableContainer = styled.table`
     border: 1px dashed black;
     background-color: #c5ae85;
     width: 48px;
+    min-width: 48px;
     height: 48px;
   }
 `;
@@ -46,6 +48,7 @@ const LayoutElement = styled.div`
 `;
 
 export const Cell = styled.td<{ $color?: string }>`
+  min-width: 64px;
   width: 64px;
   height: 64px;
   text-align: center;
@@ -55,45 +58,47 @@ export const Cell = styled.td<{ $color?: string }>`
 
 const MaterialsTable = () => {
   return (
-    <MaterialsTableContainer>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </MaterialsTableContainer>
+    <HScrollTableWrapper>
+      <MaterialsTableContainer>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </MaterialsTableContainer>
+    </HScrollTableWrapper>
   );
 };
 
@@ -131,78 +136,80 @@ const Puzzle = () => {
           </ul>
         </LayoutElement>
         <LayoutElement>
-          <BuildTable>
-            <tr>
-              <Cell />
-              <Cell $color={HEAVY_BLUE} />
-              <Cell />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-              <Cell />
-              <Cell />
-              <Cell />
-            </tr>
-            <tr>
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={LIGHT_RED} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-            </tr>
-            <tr>
-              <Cell />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-              <Cell />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-            </tr>
-            <tr>
-              <Cell />
-              <Cell $color={HEAVY_BLUE} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={LIGHT_BLUE} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={FILLED_COLOR}>L</Cell>
-            </tr>
-            <tr>
-              <Cell />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-              <Cell />
-              <Cell $color={LIGHT_BLUE} />
-              <Cell />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-            </tr>
-            <tr>
-              <Cell />
-              <Cell />
-              <Cell />
-              <Cell $color={LIGHT_BLUE} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell $color={LIGHT_RED} />
-              <Cell $color={EMPTY_COLOR} />
-              <Cell />
-            </tr>
-            <tr>
-              <Cell />
-              <Cell />
-              <Cell />
-              <Cell />
-              <Cell $color={FILLED_COLOR}>T</Cell>
-              <Cell />
-              <Cell />
-              <Cell />
-            </tr>
-          </BuildTable>
+          <HScrollTableWrapper>
+            <BuildTable>
+              <tr>
+                <Cell />
+                <Cell $color={HEAVY_BLUE} />
+                <Cell />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+                <Cell />
+                <Cell />
+                <Cell />
+              </tr>
+              <tr>
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={LIGHT_RED} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+              </tr>
+              <tr>
+                <Cell />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+                <Cell />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+              </tr>
+              <tr>
+                <Cell />
+                <Cell $color={HEAVY_BLUE} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={LIGHT_BLUE} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={FILLED_COLOR}>L</Cell>
+              </tr>
+              <tr>
+                <Cell />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+                <Cell />
+                <Cell $color={LIGHT_BLUE} />
+                <Cell />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+              </tr>
+              <tr>
+                <Cell />
+                <Cell />
+                <Cell />
+                <Cell $color={LIGHT_BLUE} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell $color={LIGHT_RED} />
+                <Cell $color={EMPTY_COLOR} />
+                <Cell />
+              </tr>
+              <tr>
+                <Cell />
+                <Cell />
+                <Cell />
+                <Cell />
+                <Cell $color={FILLED_COLOR}>T</Cell>
+                <Cell />
+                <Cell />
+                <Cell />
+              </tr>
+            </BuildTable>
+          </HScrollTableWrapper>
         </LayoutElement>
       </GridDiv>
     </>

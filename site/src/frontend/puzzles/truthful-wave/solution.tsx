@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import {
   BuildTable,
   Cell,
@@ -51,59 +52,61 @@ const Solution = () => {
         </li>
       </ul>
 
-      <MaterialsTableLabeled>
-        <tbody>
-          <tr>
-            <td>A</td>
-            <td>C</td>
-            <td>R</td>
-            <td style={{ borderBottom: "2px solid black" }}>Y</td>
-            <td style={{ borderBottom: "2px solid black" }}>L</td>
-          </tr>
-          <tr>
-            <td style={{ borderBottom: "2px solid black" }}>A</td>
-            <td style={{ borderBottom: "2px solid black" }}>T</td>
-            <td
-              style={{
-                borderBottom: "2px solid black",
-                borderRight: "2px solid black",
-              }}
-            >
-              E
-            </td>
-            <td>T</td>
-            <td>I</td>
-          </tr>
-          <tr>
-            <td>L</td>
-            <td>E</td>
-            <td>C</td>
-            <td style={{ borderBottom: "2px solid black" }}>U</td>
-            <td style={{ borderBottom: "2px solid black" }}>T</td>
-          </tr>
-          <tr>
-            <td style={{ borderBottom: "2px solid black" }}>T</td>
-            <td style={{ borderBottom: "2px solid black" }}>E</td>
-            <td
-              style={{
-                borderBottom: "2px solid black",
-                borderRight: "2px solid black",
-              }}
-            >
-              R
-            </td>
-            <td>S</td>
-            <td>L</td>
-          </tr>
-          <tr>
-            <td>I</td>
-            <td>V</td>
-            <td>E</td>
-            <td>R</td>
-            <td>S</td>
-          </tr>
-        </tbody>
-      </MaterialsTableLabeled>
+      <HScrollTableWrapper>
+        <MaterialsTableLabeled>
+          <tbody>
+            <tr>
+              <td>A</td>
+              <td>C</td>
+              <td>R</td>
+              <td style={{ borderBottom: "2px solid black" }}>Y</td>
+              <td style={{ borderBottom: "2px solid black" }}>L</td>
+            </tr>
+            <tr>
+              <td style={{ borderBottom: "2px solid black" }}>A</td>
+              <td style={{ borderBottom: "2px solid black" }}>T</td>
+              <td
+                style={{
+                  borderBottom: "2px solid black",
+                  borderRight: "2px solid black",
+                }}
+              >
+                E
+              </td>
+              <td>T</td>
+              <td>I</td>
+            </tr>
+            <tr>
+              <td>L</td>
+              <td>E</td>
+              <td>C</td>
+              <td style={{ borderBottom: "2px solid black" }}>U</td>
+              <td style={{ borderBottom: "2px solid black" }}>T</td>
+            </tr>
+            <tr>
+              <td style={{ borderBottom: "2px solid black" }}>T</td>
+              <td style={{ borderBottom: "2px solid black" }}>E</td>
+              <td
+                style={{
+                  borderBottom: "2px solid black",
+                  borderRight: "2px solid black",
+                }}
+              >
+                R
+              </td>
+              <td>S</td>
+              <td>L</td>
+            </tr>
+            <tr>
+              <td>I</td>
+              <td>V</td>
+              <td>E</td>
+              <td>R</td>
+              <td>S</td>
+            </tr>
+          </tbody>
+        </MaterialsTableLabeled>
+      </HScrollTableWrapper>
 
       <p>
         The tiles can be put into the below grid to produce words matching the
@@ -120,133 +123,137 @@ const Solution = () => {
         the answer, PENROSE, a famous tiler.
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Given</th>
-            <th>Word</th>
-            <th>Score</th>
-            <th>Letter</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Split</td>
-            <td>RIVE</td>
-            <td>16</td>
-            <td>P</td>
-          </tr>
-          <tr>
-            <td>Rock</td>
-            <td>SLATE</td>
-            <td>5</td>
-            <td>E</td>
-          </tr>
-          <tr>
-            <td>Frame</td>
-            <td>TRELLIS</td>
-            <td>14</td>
-            <td>N</td>
-          </tr>
-          <tr>
-            <td>Soil</td>
-            <td>CLAY</td>
-            <td>18</td>
-            <td>R</td>
-          </tr>
-          <tr>
-            <td>Up</td>
-            <td>ERECT</td>
-            <td>15</td>
-            <td>O</td>
-          </tr>
-          <tr>
-            <td>Gem</td>
-            <td>CRYSTAL</td>
-            <td>19</td>
-            <td>S</td>
-          </tr>
-          <tr>
-            <td>Clothing</td>
-            <td>SUIT</td>
-            <td>5</td>
-            <td>E</td>
-          </tr>
-        </tbody>
-      </table>
+      <HScrollTableWrapper>
+        <table>
+          <thead>
+            <tr>
+              <th>Given</th>
+              <th>Word</th>
+              <th>Score</th>
+              <th>Letter</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Split</td>
+              <td>RIVE</td>
+              <td>16</td>
+              <td>P</td>
+            </tr>
+            <tr>
+              <td>Rock</td>
+              <td>SLATE</td>
+              <td>5</td>
+              <td>E</td>
+            </tr>
+            <tr>
+              <td>Frame</td>
+              <td>TRELLIS</td>
+              <td>14</td>
+              <td>N</td>
+            </tr>
+            <tr>
+              <td>Soil</td>
+              <td>CLAY</td>
+              <td>18</td>
+              <td>R</td>
+            </tr>
+            <tr>
+              <td>Up</td>
+              <td>ERECT</td>
+              <td>15</td>
+              <td>O</td>
+            </tr>
+            <tr>
+              <td>Gem</td>
+              <td>CRYSTAL</td>
+              <td>19</td>
+              <td>S</td>
+            </tr>
+            <tr>
+              <td>Clothing</td>
+              <td>SUIT</td>
+              <td>5</td>
+              <td>E</td>
+            </tr>
+          </tbody>
+        </table>
+      </HScrollTableWrapper>
 
-      <BuildTable>
-        <tr>
-          <Cell />
-          <Cell $color={HEAVY_BLUE}>E</Cell>
-          <Cell />
-          <Cell $color={EMPTY_COLOR}>C</Cell>
-          <Cell />
-          <Cell />
-          <Cell />
-          <Cell />
-        </tr>
-        <tr>
-          <Cell $color={EMPTY_COLOR}>T</Cell>
-          <Cell $color={EMPTY_COLOR}>R</Cell>
-          <Cell $color={EMPTY_COLOR}>E</Cell>
-          <Cell $color={LIGHT_RED}>L</Cell>
-          <Cell $color={EMPTY_COLOR}>L</Cell>
-          <Cell $color={EMPTY_COLOR}>I</Cell>
-          <Cell $color={EMPTY_COLOR}>S</Cell>
-          <Cell />
-        </tr>
-        <tr>
-          <Cell />
-          <Cell $color={EMPTY_COLOR}>E</Cell>
-          <Cell />
-          <Cell $color={EMPTY_COLOR}>A</Cell>
-          <Cell />
-          <Cell />
-          <Cell $color={EMPTY_COLOR}>L</Cell>
-          <Cell />
-        </tr>
-        <tr>
-          <Cell />
-          <Cell $color={HEAVY_BLUE}>C</Cell>
-          <Cell $color={EMPTY_COLOR}>R</Cell>
-          <Cell $color={EMPTY_COLOR}>Y</Cell>
-          <Cell $color={EMPTY_COLOR}>S</Cell>
-          <Cell $color={LIGHT_BLUE}>T</Cell>
-          <Cell $color={EMPTY_COLOR}>A</Cell>
-          <Cell $color={FILLED_COLOR}>L</Cell>
-        </tr>
-        <tr>
-          <Cell />
-          <Cell $color={EMPTY_COLOR}>T</Cell>
-          <Cell />
-          <Cell />
-          <Cell $color={LIGHT_BLUE}>U</Cell>
-          <Cell />
-          <Cell $color={EMPTY_COLOR}>T</Cell>
-          <Cell />
-        </tr>
-        <tr>
-          <Cell />
-          <Cell />
-          <Cell />
-          <Cell $color={LIGHT_BLUE}>R</Cell>
-          <Cell $color={EMPTY_COLOR}>I</Cell>
-          <Cell $color={LIGHT_RED}>V</Cell>
-          <Cell $color={EMPTY_COLOR}>E</Cell>
-          <Cell />
-        </tr>
-        <tr>
-          <Cell />
-          <Cell />
-          <Cell />
-          <Cell />
-          <Cell $color={FILLED_COLOR}>T</Cell>
-          <Cell />
-          <Cell />
-          <Cell />
-        </tr>
-      </BuildTable>
+      <HScrollTableWrapper>
+        <BuildTable>
+          <tr>
+            <Cell />
+            <Cell $color={HEAVY_BLUE}>E</Cell>
+            <Cell />
+            <Cell $color={EMPTY_COLOR}>C</Cell>
+            <Cell />
+            <Cell />
+            <Cell />
+            <Cell />
+          </tr>
+          <tr>
+            <Cell $color={EMPTY_COLOR}>T</Cell>
+            <Cell $color={EMPTY_COLOR}>R</Cell>
+            <Cell $color={EMPTY_COLOR}>E</Cell>
+            <Cell $color={LIGHT_RED}>L</Cell>
+            <Cell $color={EMPTY_COLOR}>L</Cell>
+            <Cell $color={EMPTY_COLOR}>I</Cell>
+            <Cell $color={EMPTY_COLOR}>S</Cell>
+            <Cell />
+          </tr>
+          <tr>
+            <Cell />
+            <Cell $color={EMPTY_COLOR}>E</Cell>
+            <Cell />
+            <Cell $color={EMPTY_COLOR}>A</Cell>
+            <Cell />
+            <Cell />
+            <Cell $color={EMPTY_COLOR}>L</Cell>
+            <Cell />
+          </tr>
+          <tr>
+            <Cell />
+            <Cell $color={HEAVY_BLUE}>C</Cell>
+            <Cell $color={EMPTY_COLOR}>R</Cell>
+            <Cell $color={EMPTY_COLOR}>Y</Cell>
+            <Cell $color={EMPTY_COLOR}>S</Cell>
+            <Cell $color={LIGHT_BLUE}>T</Cell>
+            <Cell $color={EMPTY_COLOR}>A</Cell>
+            <Cell $color={FILLED_COLOR}>L</Cell>
+          </tr>
+          <tr>
+            <Cell />
+            <Cell $color={EMPTY_COLOR}>T</Cell>
+            <Cell />
+            <Cell />
+            <Cell $color={LIGHT_BLUE}>U</Cell>
+            <Cell />
+            <Cell $color={EMPTY_COLOR}>T</Cell>
+            <Cell />
+          </tr>
+          <tr>
+            <Cell />
+            <Cell />
+            <Cell />
+            <Cell $color={LIGHT_BLUE}>R</Cell>
+            <Cell $color={EMPTY_COLOR}>I</Cell>
+            <Cell $color={LIGHT_RED}>V</Cell>
+            <Cell $color={EMPTY_COLOR}>E</Cell>
+            <Cell />
+          </tr>
+          <tr>
+            <Cell />
+            <Cell />
+            <Cell />
+            <Cell />
+            <Cell $color={FILLED_COLOR}>T</Cell>
+            <Cell />
+            <Cell />
+            <Cell />
+          </tr>
+        </BuildTable>
+      </HScrollTableWrapper>
     </>
   );
 };
