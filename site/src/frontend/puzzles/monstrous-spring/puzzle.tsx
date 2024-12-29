@@ -1,5 +1,9 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import { deviceMax } from "../../utils/breakpoints";
 
 const Container = styled.div`
@@ -112,7 +116,15 @@ const Puzzle = () => {
           <div>Yankee Doodle’s “macaroni” (7)</div>
         </div>
 
-        <PoolContainer>
+        <br className={COPY_ONLY_CLASS} />
+
+        <div className={COPY_ONLY_CLASS}>
+          {PoolClues.map(([_x, _y, clue], i) => (
+            <div key={i}>{clue}</div>
+          ))}
+        </div>
+
+        <PoolContainer className={NO_COPY_CLASS}>
           {Pool}
           {PoolClues.map(([x, y, clue]) => {
             const style: CSSProperties = {

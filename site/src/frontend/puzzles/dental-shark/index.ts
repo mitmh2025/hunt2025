@@ -11,6 +11,7 @@ const puzzle: PuzzleDefinition = {
   answer: "BAIL MATE",
   content: {
     component: Puzzle,
+    copyable: false,
   },
   solution: {
     component: Solution,
