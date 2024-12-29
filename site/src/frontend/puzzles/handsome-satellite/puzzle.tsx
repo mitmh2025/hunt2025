@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
@@ -16,10 +17,13 @@ import img12 from "./assets/img12.png";
 import img13 from "./assets/img13.png";
 import img14 from "./assets/img14.png";
 
-const FlexWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+const WrappingImage = styled(LinkedImage)`
+  & img {
+    display: inline;
+    padding: 16px;
+    width: initial;
+    max-width: 100%;
+  }
 `;
 
 const makeAltText = (length: string, highlighted: string) => {
@@ -44,34 +48,33 @@ const Puzzle = () => {
         <li>Romantic partner (abbr.)</li>
         <li>Hole to get water</li>
       </ul>
-      <FlexWrapper>
-        <LinkedImage src={img01} alt={makeAltText("nine", "seventh")} />
-        <LinkedImage src={img02} alt={makeAltText("eighteen", "thirteenth")} />
-        <LinkedImage src={img03} alt={makeAltText("fifteen", "fourteenth")} />
-        <LinkedImage src={img04} alt={makeAltText("twelve", "twelfth")} />
-        <LinkedImage src={img05} alt={makeAltText("sixteen", "fourteenth")} />
-        <LinkedImage
-          src={img06}
-          alt={makeAltText("thirty-three", "twenty-ninth")}
-        />
-        <LinkedImage
-          src={img07}
-          alt={makeAltText("fifty-six", "fifty-first")}
-        />
-        <LinkedImage src={img08} alt={makeAltText("six", "six")} />
-        <LinkedImage src={img09} alt={makeAltText("eight", "fifth")} />
-        <LinkedImage src={img10} alt={makeAltText("ten", "seventh")} />
-        <LinkedImage src={img11} alt={makeAltText("fourteen", "ninth")} />
-        <LinkedImage
-          src={img12}
-          alt={makeAltText("twenty-four", "twenty-fourth")}
-        />
-        <LinkedImage src={img13} alt={makeAltText("four", "fourth")} />
-        <LinkedImage
-          src={img14}
-          alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long."
-        />
-      </FlexWrapper>
+      <br className={COPY_ONLY_CLASS} />
+      <WrappingImage src={img01} alt={makeAltText("nine", "seventh")} />
+      <WrappingImage src={img02} alt={makeAltText("eighteen", "thirteenth")} />
+      <WrappingImage src={img03} alt={makeAltText("fifteen", "fourteenth")} />
+      <WrappingImage src={img04} alt={makeAltText("twelve", "twelfth")} />
+      <WrappingImage src={img05} alt={makeAltText("sixteen", "fourteenth")} />
+      <WrappingImage
+        src={img06}
+        alt={makeAltText("thirty-three", "twenty-ninth")}
+      />
+      <WrappingImage
+        src={img07}
+        alt={makeAltText("fifty-six", "fifty-first")}
+      />
+      <WrappingImage src={img08} alt={makeAltText("six", "six")} />
+      <WrappingImage src={img09} alt={makeAltText("eight", "fifth")} />
+      <WrappingImage src={img10} alt={makeAltText("ten", "seventh")} />
+      <WrappingImage src={img11} alt={makeAltText("fourteen", "ninth")} />
+      <WrappingImage
+        src={img12}
+        alt={makeAltText("twenty-four", "twenty-fourth")}
+      />
+      <WrappingImage src={img13} alt={makeAltText("four", "fourth")} />
+      <WrappingImage
+        src={img14}
+        alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long."
+      />
     </>
   );
 };
