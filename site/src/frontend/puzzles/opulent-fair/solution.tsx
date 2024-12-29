@@ -51,7 +51,7 @@ const ICSMessages: [string, string, string][] = [
   ],
   ["…and that our engines are stopped", "My engines are stopped", "RM"],
   ["let them know we can send a boat over", "I can send a boat", "DL"],
-  ["Cancel the SOS.", "SOS canceled.", "EF"],
+  ["Cancel the SOS.", "SOS cancelled.", "EF"],
   ["Ask who’s calling us", "Who is calling me?", "YM"],
   ["Say we’re on fire", "I am on fire", "IT"],
   [
@@ -89,8 +89,8 @@ const ICSMessages: [string, string, string][] = [
     "BT",
   ],
   [
-    "we’re not in our correct position to be used by a lightvessel",
-    "I am not in my correct position to be used by a lightvessel",
+    "we’re not in our correct position to signal as a lightvessel",
+    "I am not in my correct position (to be used by a lightvessel)",
     "LO",
   ],
   [
