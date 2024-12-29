@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { PuzzleAnswer } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -113,24 +113,26 @@ const Solution = (): JSX.Element => {
         A full solve path for this logic can be found at the end of this page.
         The final outcome is:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Drink</th>
-          <th># Drinks</th>
-          <th>Order</th>
-        </tr>
-        {DATA.map(({ name, adventurerClass, drink, numDrinks, order }) => (
-          <tr key={order}>
-            <td>{name}</td>
-            <td>{adventurerClass}</td>
-            <td>{drink}</td>
-            <td>{numDrinks}</td>
-            <td>{order}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Drink</th>
+            <th># Drinks</th>
+            <th>Order</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(({ name, adventurerClass, drink, numDrinks, order }) => (
+            <tr key={order}>
+              <td>{name}</td>
+              <td>{adventurerClass}</td>
+              <td>{drink}</td>
+              <td>{numDrinks}</td>
+              <td>{order}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         When the adventurers’ names are ordered in the order they passed out,
         the first letters spell <code>GO PAY TAB</code>. Upon submitting this
@@ -148,65 +150,69 @@ const Solution = (): JSX.Element => {
         adventurer had, and each drink stops appearing in the receipt in the
         order in which their adventurer passes out.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Brand</th>
-          <th>Drink</th>
-          <th># Drinks</th>
-          <th>Order</th>
-        </tr>
-        {DATA.map(
-          ({ name, adventurerClass, brand, drink, numDrinks, order }) => (
-            <tr key={order}>
-              <td>{name}</td>
-              <td>{adventurerClass}</td>
-              <td>{brand}</td>
-              <td>{drink}</td>
-              <td>{numDrinks}</td>
-              <td>{order}</td>
-            </tr>
-          ),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Brand</th>
+            <th>Drink</th>
+            <th># Drinks</th>
+            <th>Order</th>
+          </tr>
+          {DATA.map(
+            ({ name, adventurerClass, brand, drink, numDrinks, order }) => (
+              <tr key={order}>
+                <td>{name}</td>
+                <td>{adventurerClass}</td>
+                <td>{brand}</td>
+                <td>{drink}</td>
+                <td>{numDrinks}</td>
+                <td>{order}</td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         These drink names are kind of odd. Looking back at the clues, each
         adventurer is described with an epithet or insult by one of the other
         adventurers. These epithets suggest transforms.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Epithet</th>
-          <th>Transform</th>
-          <th>Brand</th>
-          <th>Transformed</th>
-          <th>Order</th>
-        </tr>
-        {DATA.map(
-          ({
-            name,
-            adventurerClass,
-            epithet,
-            transform,
-            brand,
-            transformed,
-            order,
-          }) => (
-            <tr key={order}>
-              <td>{name}</td>
-              <td>{adventurerClass}</td>
-              <td>{epithet}</td>
-              <td>{transform}</td>
-              <td>{brand}</td>
-              <td>{transformed}</td>
-              <td>{order}</td>
-            </tr>
-          ),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Epithet</th>
+            <th>Transform</th>
+            <th>Brand</th>
+            <th>Transformed</th>
+            <th>Order</th>
+          </tr>
+          {DATA.map(
+            ({
+              name,
+              adventurerClass,
+              epithet,
+              transform,
+              brand,
+              transformed,
+              order,
+            }) => (
+              <tr key={order}>
+                <td>{name}</td>
+                <td>{adventurerClass}</td>
+                <td>{epithet}</td>
+                <td>{transform}</td>
+                <td>{brand}</td>
+                <td>{transformed}</td>
+                <td>{order}</td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         In Dungeons and Dragons, the appropriate skill check to steal in this
         manner would be <PuzzleAnswer>SLEIGHT OF HAND</PuzzleAnswer>.
@@ -287,24 +293,26 @@ const Solution = (): JSX.Element => {
         This gets us all the information about who was drinking what, but we
         have nothing yet about who passed out when:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Drink</th>
-          <th># Drinks</th>
-        </tr>
-        {DATA.toSorted((a, b) => a.name.localeCompare(b.name)).map(
-          ({ name, adventurerClass, drink, numDrinks }) => (
-            <tr key={name}>
-              <td>{name}</td>
-              <td>{adventurerClass}</td>
-              <td>{drink}</td>
-              <td>{numDrinks}</td>
-            </tr>
-          ),
-        )}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Drink</th>
+            <th># Drinks</th>
+          </tr>
+          {DATA.toSorted((a, b) => a.name.localeCompare(b.name)).map(
+            ({ name, adventurerClass, drink, numDrinks }) => (
+              <tr key={name}>
+                <td>{name}</td>
+                <td>{adventurerClass}</td>
+                <td>{drink}</td>
+                <td>{numDrinks}</td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         Some of the pass-out order is stated explicitly. From Fighter # 1, Bill
         the Fighter passed out last. From this and Bard # 2, August the
