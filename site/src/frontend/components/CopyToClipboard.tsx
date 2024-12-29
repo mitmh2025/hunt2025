@@ -233,7 +233,7 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     return link;
   };
 
-  const fixImages = (node: Node) => {
+  const fixImagesAndLinks = (node: Node) => {
     if (!(node instanceof Element)) {
       return;
     }
@@ -288,10 +288,10 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
       td.replaceChildren(renderImageLink(img));
     });
 
-    const transformableLinks = node.querySelectorAll(
+    const transformableImageLinks = node.querySelectorAll(
       "td:has(> a:only-child > img:only-child)",
     );
-    transformableLinks.forEach((td) => {
+    transformableImageLinks.forEach((td) => {
       if (!(td instanceof HTMLElement)) {
         return;
       }
@@ -308,6 +308,21 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
 
       td.dataset.sheetsFormula = `=hyperlink("${a.href}", image("${img.src}"))`;
       td.replaceChildren(renderImageLink(img));
+    });
+
+    const transformableLinks = node.querySelectorAll("td:has(> a:only-child)");
+    transformableLinks.forEach((td) => {
+      if (!(td instanceof HTMLElement)) {
+        return;
+      }
+
+      const a = td.firstElementChild;
+      if (!(a instanceof HTMLAnchorElement)) {
+        return;
+      }
+
+      td.dataset.sheetsFormula = `=hyperlink("${a.href}", "${a.textContent}")`;
+      td.replaceChildren(a);
     });
 
     // Finally, if there are any images left, we can't embed them so render as links instead
@@ -381,7 +396,7 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     delete details.dataset.copyOriginalOpen;
   });
 
-  fixImages(cloned);
+  fixImagesAndLinks(cloned);
   addStyleResets(cloned);
 
   return cloned;

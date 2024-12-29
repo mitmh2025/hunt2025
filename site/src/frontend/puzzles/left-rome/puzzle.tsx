@@ -1,5 +1,9 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import dunkin1 from "./assets/dunkin1.png";
 import dunkin2 from "./assets/dunkin2.png";
 import dunkin3 from "./assets/dunkin3.png";
@@ -67,6 +71,7 @@ const NumberedRouteInstructions = styled.table`
 const LEGS: {
   direction: string;
   instruction: ReactNode;
+  copyInstruction?: ReactNode;
   notes: string;
 }[][] = [
   [
@@ -80,6 +85,11 @@ const LEGS: {
           </a>
           , facing southeast
         </>
+      ),
+      copyInstruction: (
+        <a href={dunkin1} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing southeast
+        </a>
       ),
       notes: "CST 38mph",
     },
@@ -126,6 +136,11 @@ const LEGS: {
           , facing northeast
         </>
       ),
+      copyInstruction: (
+        <a href={dunkin2} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing northeast
+        </a>
+      ),
       notes: "CST 27mph",
     },
     { direction: "R", instruction: "1st OPP", notes: "" },
@@ -168,6 +183,11 @@ const LEGS: {
           </a>
           , facing south
         </>
+      ),
+      copyInstruction: (
+        <a href={dunkin3} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing south
+        </a>
       ),
       notes: "CST 14mph",
     },
@@ -226,6 +246,11 @@ const LEGS: {
           </a>
           , facing northwest
         </>
+      ),
+      copyInstruction: (
+        <a href={dunkin4} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing northwest
+        </a>
       ),
       notes: "CST 23mph",
     },
@@ -337,6 +362,11 @@ const LEGS: {
           , facing northeast
         </>
       ),
+      copyInstruction: (
+        <a href={dunkin5} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing northeast
+        </a>
+      ),
       notes: "CST 34mph",
     },
     { direction: "L", instruction: "1st SIGNAL", notes: "" },
@@ -375,6 +405,11 @@ const LEGS: {
           </a>
           , facing northeast
         </>
+      ),
+      copyInstruction: (
+        <a href={dunkin6} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing northeast
+        </a>
       ),
       notes: "CST 34mph",
     },
@@ -433,6 +468,11 @@ const LEGS: {
           , facing east
         </>
       ),
+      copyInstruction: (
+        <a href={dunkin7} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing east
+        </a>
+      ),
       notes: "CST 14mph",
     },
     { direction: "L", instruction: "at T", notes: "" },
@@ -481,6 +521,11 @@ const LEGS: {
           , facing north
         </>
       ),
+      copyInstruction: (
+        <a href={dunkin8} target="_blank" rel="noreferrer">
+          BEGIN at previous DIYC, facing north
+        </a>
+      ),
       notes: "CST 16mph",
     },
     { direction: "L", instruction: "1st SIGNAL", notes: "" },
@@ -528,6 +573,12 @@ const LEGS: {
           answer.
         </>
       ),
+      copyInstruction: (
+        <a href={dunkin9} target="_blank" rel="noreferrer">
+          Begin at previous DIYC, facing your Donut Ordering Card. Extract and
+          submit your final answer.
+        </a>
+      ),
       notes: "",
     },
   ],
@@ -549,384 +600,396 @@ const Puzzle = (): JSX.Element => {
         instructions. Despondent, you traipse out to Mass Ave and attempt to get
         yourself into gear and follow them as best you can.
       </p>
+      <p className={COPY_ONLY_CLASS}>
+        For a full list of MIT Puzzle Club General Regulations and Special
+        Instructions, please refer to the original puzzle page.
+      </p>
       <hr />
-      <Centered>
-        <div>
-          <u>
-            <strong>MIT PUZZLE CLUB</strong>
-          </u>
-        </div>
-        <div>
-          <strong>General Regulations</strong>
-        </div>
-      </Centered>
-      <StyledOl>
-        <li>
-          <strong>COURSE</strong>
-          <StyledOl>
-            <li>
-              Numbered route instructions must be completed in ascending
-              numerical order.
-            </li>
-            <li>
-              Special Instructions shall not void numbered route instructions,
-              nor shall numbered route instructions void Special Instructions.
-            </li>
-            <li>
-              All numbered route instructions will direct you on eligible roads.
-              Special Instructions may modify the definition of an eligible
-              road. See Regulation 3.8 below for the definition of ELIGIBLE
-              ROAD.
-            </li>
-            <li>
-              All numbered route instructions are considered completed when your
-              front wheels enter the indicated intersection or become parallel
-              with the indicated sign.
-            </li>
-            <li>
-              When put onto a road or highway, stay on it until instructed or
-              forced to leave it.
-            </li>
-            <li>
-              Unless instructed otherwise, continue in the direction most
-              straight ahead, or in the only direction legally or physically
-              possible. No instructions are given for forced turns.
-              <StyledOl>
-                <li>
-                  When traveling on a traffic circle, stay on it until
-                  instructed off. Exits from traffic circles are not considered
-                  most straight ahead and must be instructed.
-                </li>
-                <li>
-                  When traveling on a highway, stay on it until instructed off.
-                  Highway offramps are not considered most straight ahead and
-                  must be instructed.
-                </li>
-              </StyledOl>
-            </li>
-            <li>
-              Nothing in any instruction, whether that be a numbered route
-              instruction or a Special Instruction, is intended to instruct a
-              participant to commit any illegal action.
-              <StyledOl>
-                <li>
-                  If a road sign indicates that an action is prohibited only
-                  during certain hours of the day, that action is considered to
-                  be prohibited at all times for the purposes of determining
-                  what counts as an eligible road.
-                </li>
-                <li>
-                  If a road sign indicates that an action is prohibited for
-                  nonresidents of a town, that action is considered to be
-                  prohibited to everyone for purposes of determining what counts
-                  as an eligible road.
-                </li>
-              </StyledOl>
-            </li>
-          </StyledOl>
-        </li>
-        <li>
-          <strong>SIGNS AND LANDMARKS</strong>
-          <StyledOl>
-            <li>
-              Unless otherwise noted, all signs to be used in numbered route
-              instructions are on the right-hand side of the road, straight
-              ahead, or overhead.
-            </li>
-            <li>
-              Quotation marks are used in the instructions to indicate one or
-              more words, letters, and/or numbers on the quoted portion of a
-              sign to be used in an instruction.
-              <StyledOl>
-                <li>
-                  If the full text of the sign contains additional words,
-                  letters, or numbers other than those quoted, the quotation
-                  shall be designated RIP. The omission of punctuation, arrows,
-                  erecting agency, or block numbers shall not be cause for a
-                  quotation to be designated RIP.
-                </li>
-                <li>
-                  Quoted parts of a sign will be fully capitalized in numbered
-                  route instructions. Capitalization and/or punctuation need not
-                  agree with that on the sign.
-                </li>
-              </StyledOl>
-            </li>
-            <li>
-              The same sign will not be used as a reference point for two or
-              more numbered route instructions requiring simultaneous action or
-              execution.
-            </li>
-            <li>
-              The same sign may be used simultaneously for a numbered route
-              instruction and a Special Instruction if the instructions do not
-              conflict.
-            </li>
-          </StyledOl>
-        </li>
-        <li>
-          <strong>ABBREVIATIONS AND DEFINITIONS</strong>
-          <StyledOl>
-            <li>
-              AL: Acute left; a left TURN where your direction changes by
-              perceptibly greater than ninety degrees, causing your path to make
-              an acute angle
-            </li>
-            <li>
-              AR: Acute right; a right TURN where your direction changes by
-              perceptibly greater than ninety degrees, causing your path to make
-              an acute angle
-            </li>
-            <li>BEGIN: Start a new leg</li>
-            <li>
-              BL: Bear left; a left TURN where your direction changes by
-              perceptibly less than ninety degrees, causing your path to make an
-              obtuse angle
-            </li>
-            <li>
-              BR: Bear right; a right TURN where your direction changes by
-              perceptibly less than ninety degrees, causing your path to make an
-              obtuse angle
-            </li>
-            <li>CST: Change Speed To</li>
-            <li>DIYC: Do-it-yourself (uncrewed) checkpoint</li>
-            <li>
-              ELIGIBLE ROAD: A paved, public, through road, excluding dead ends,
-              driveways, alleys, parking lots, and entrances to businesses,
-              hotels, and schools.
-            </li>
-            <li>
-              FEDERAL HIGHWAY: A highway that is part of the United States
-              Numbered Highway System, with a name consisting of a prefix of I
-              or US, a hyphen, and a suffix of one to three numbers.
-            </li>
-            <li>
-              FULL TEXT (OF A SIGN): All word(s), letter(s), and/or number(s) on
-              the sign, except for punctuation, arrows, erecting agency, and
-              block numbers
-            </li>
-            <li>
-              FORCED TURN: A TURN where you have no other legal option but to
-              change direction
-            </li>
-            <li>HTS: (of a sign) Hard To See</li>
-            <li>
-              IMMEDIATE: Used to indicate that an instruction should be executed
-              immediately after the previous instruction.
-            </li>
-            <li>
-              INTERSECTION: Any meeting of ELIGIBLE ROADS at grade level from
-              which your vehicle could proceed in more than one direction
-            </li>
-            <li>L: A left TURN of approximately ninety degrees</li>
-            <li>MPH: Miles Per Hour</li>
-            <li>
-              OBSERVE: Notice word(s), letter(s), and/or number(s) on a sign
-            </li>
-            <li>ODO: Odometer reading</li>
-            <li>
-              OPP: Opportunity; an ELIGIBLE ROAD upon which you can legally TURN
-              in the direction satisfying the instruction, regardless of the
-              angle created by the turn.
-            </li>
-            <li>R: A right TURN of approximately ninety degrees</li>
-            <li>
-              RIVER ROAD: A parkway abutting the Charles River; namely, Memorial
-              Drive, Greenough Boulevard, Storrow Drive, or Soldier’s Field
-              Road.
-            </li>
-            <li>(S)HIT: (Sign) Hidden In Tree</li>
-            <li>
-              SIGNAL: The INTERSECTION of two ELIGIBLE ROADS where your progress
-              is controlled by a conventional red, amber, and green traffic
-              signal, whether working or not.
-            </li>
-            <li>SOL: Sign On Left, a sign on the left-hand side of the road</li>
-            <li>
-              (S)RIP: (Sign) Reading In Part; an indication that the sign is
-              only partially quoted
-            </li>
-            <li>
-              STOP: A conventional octagonal red STOP sign which is controlling
-              your progress.
-            </li>
-            <li>
-              T: An INTERSECTION having the general shape of the letter T as
-              approached, at which the road upon which you are traveling ends
-              and at which you have the choice to TURN right or left
-            </li>
-            <li>TURN: Change course of direction at an INTERSECTION</li>
-            <li>
-              U: U-turn; a TURN where your direction changes by one hundred and
-              eighty degrees
-            </li>
-            <li>
-              Y: An INTERSECTION having the general shape of the letter Y as
-              approached, at which you have the choice to BEAR right or left.
-            </li>
-          </StyledOl>
-        </li>
-        <li>
-          <strong>CHECKPOINTS</strong>
-          <StyledOl>
-            <li>
-              Your ODO will be registered as soon as your front wheels enter the
-              indicated checkpoint.
-            </li>
-            <li>
-              You will be advised of your next bearing and speed before leaving
-              each checkpoint.
-            </li>
-          </StyledOl>
-        </li>
-        <li>
-          <strong>SPECIAL INSTRUCTIONS</strong>
-          <StyledOl>
-            <li>
-              You may be given Special Instructions. Special Instructions will
-              be clearly identified as such.
-            </li>
-            <li>
-              Special Instructions, as with numbered route instructions, are
-              considered completed when your front wheels enter the indicated
-              intersection or become level with the indicated sign.
-            </li>
-            <li>
-              Two or more Special Instructions may be executed simultaneously if
-              simultaneous execution would not result in ambiguity about how to
-              resolve or execute the Special Instructions.
-            </li>
-            <li>
-              Any Special Instructions pertaining to ordering or extraction must
-              be completed prior to leaving the checkpoint.
-            </li>
-          </StyledOl>
-        </li>
-      </StyledOl>
-      <hr />
-      <Centered>
-        <div>
-          <u>
-            <strong>MIT PUZZLE CLUB</strong>
-          </u>
-        </div>
-        <div>
-          <strong>Special Instructions</strong>
-        </div>
-        <div>
-          These instructions have been alphabetized for your inconvenience.
-        </div>
-      </Centered>
-      <StyledOl>
-        <li>
-          <strong>Rule ANGRY:</strong> Whenever you have to turn left at an
-          intersection with no signal, or where any lane of traffic that you
-          must cross in order to execute that turn lacks a stop sign, decrease
-          your speed by 5 mph. Traffic circles do not count as intersections for
-          the purpose of this instruction. Where do these yahoos think they
-          gotta get to? Some of us have puzzles to solve!
-        </li>
-        <li>
-          <strong>Rule BERRY:</strong> Whenever instructed to OBSERVE a sign
-          attached to or advertising a grocery store, instead of completing Rule
-          SPEEDOMETER or Rule RETEMODEEPS due to that OBSERVE instruction,
-          record the word BERRY and increase your donut order for this leg by 1
-          donut. This counts as a serving of fruit, right?
-        </li>
-        <li>
-          <strong>Rule COMPLACENT:</strong> Whenever you are on the same road
-          for at least one (1) mile without being instructed to make a turn,
-          increase your speed by 5 mph. This rule applies only once per instance
-          of being on that road. A road changing name midway through the mile
-          does not invalidate the applicability of this rule. That happens like
-          every other town, come on.
-        </li>
-        <li>
-          <strong>Rule CRAVING:</strong> Whenever you enter a checkpoint having
-          passed fewer than two DUNKIN’, not counting any DUNKIN’ that are part
-          of a checkpoint, increase your donut order for that leg by 1 donut.
-        </li>
-        <li>
-          <strong>Rule DONUTS:</strong> Start each leg with 0 donuts. The
-          checkpoint at the end of each leg takes place at a DUNKIN’ Drive-Thru.
-          Do not stop at the curb cut. Instead, continue to the speaker to place
-          your donut order, then proceed to the window to receive the amount of
-          donuts you ordered and calculate your extracted letter for this leg.
-        </li>
-        <li>
-          <strong>Rule FROSTED:</strong> Whenever instructed to OBSERVE a sign
-          erected by the MBTA, instead of completing Rule SPEEDOMETER or Rule
-          RETEMODEEPS due to that OBSERVE instruction, record the word FROSTED,
-          increase your order for this leg by 2 donuts, and reminisce about the
-          Snowpocalypse of 2015.
-        </li>
-        <li>
-          <strong>Rule GLAZED:</strong> Whenever you complete Rule WOOP WOOP
-          WOOP twice in one leg, record the word GLAZED and increase your donut
-          order for this leg by 4 additional donuts. Glazed is the favored donut
-          of the Massachusetts State Police.
-        </li>
-        <li>
-          <strong>Rule HUNGRY:</strong> Whenever you pass a standalone DUNKIN’
-          storefront that is visible from the street and does not have a
-          drive-thru, on a street that that DUNKIN’ abuts, regardless of what
-          side of the street it is on, increase your speed by 3 mph. You gotta
-          find one with a drive-thru, there’s nowhere to park here!
-        </li>
-        <li>
-          <strong>Rule LEMON:</strong> This rallye, like all MIT Puzzle Club
-          rallyes, must be undertaken in a stock, two-axled, four-wheeled
-          passenger car, minivan, or sport utility vehicle suitable for
-          operation by a holder of a Massachusetts class D license. Preferably,
-          the vehicle will belong to your kind of annoying hallmate and be no
-          newer than model year 2000.
-        </li>
-        <li>
-          <strong>Rule REARVIEW:</strong> The canonical data source for this
-          puzzle is the most recent version of Google Street View, except where
-          an older Street View is explicitly specified. What do you mean you
-          don’t remember where the Bradlees used to be when you were a kid?
-        </li>
-        <li>
-          <strong>Rule RETEMODEEPS:</strong> Whenever you would complete Rule
-          SPEEDOMETER for a sign on the left, instead take the Nth letter from
-          the right.
-        </li>
-        <li>
-          <strong>Rule ROUNDABOUT:</strong> Whenever you drive on a traffic
-          circle, increase your speed by 5 mph. Isn’t that better than waiting
-          on a signal?
-        </li>
-        <li>
-          <strong>Rule SPEEDOMETER:</strong> Whenever you complete an OBSERVE
-          instruction with quoted sign text, take the Nth letter from the left
-          of the full text of that sign, where N is the tens digit of your
-          current speed, and record it for the current leg.
-        </li>
-        <li>
-          <strong>Rule TORUS:</strong> Whenever your path makes a closed loop
-          within a leg, record a letter O for that leg and increase your donut
-          order for that leg by 1 donut. Your wheels must pass over a segment of
-          road on which you had driven previously. This rule considers the
-          z-axis as well - highway cloverleafs do not count as a closed loop.
-          You can’t eat donuts on the highway, that’s “distracted driving.”
-        </li>
-        <li>
-          <strong>Rule WHEE:</strong> Whenever you complete a merge onto an
-          federal highway or a river road, increase your speed by 10 mph. This
-          rule applies after you have left the onramp and merged completely onto
-          the federal highway or river road. Everyone speeds here, I’m sure it’s
-          fine, I saw a cop doing 95 in the left lane of the Pike the other day.
-        </li>
-        <li>
-          <strong>Rule WOOP WOOP WOOP:</strong> Whenever your speed is at least
-          45 mph and you are not on an interstate highway or a river road, you
-          get pulled over. Immediately decrease your speed by 25 mph and
-          increase your donut order by 2 donuts in order to convince the officer
-          not to issue you a speeding ticket.
-        </li>
-      </StyledOl>
-      <hr />
+      <div className={NO_COPY_CLASS}>
+        <Centered>
+          <div>
+            <u>
+              <strong>MIT PUZZLE CLUB</strong>
+            </u>
+          </div>
+          <div>
+            <strong>General Regulations</strong>
+          </div>
+        </Centered>
+        <StyledOl>
+          <li>
+            <strong>COURSE</strong>
+            <StyledOl>
+              <li>
+                Numbered route instructions must be completed in ascending
+                numerical order.
+              </li>
+              <li>
+                Special Instructions shall not void numbered route instructions,
+                nor shall numbered route instructions void Special Instructions.
+              </li>
+              <li>
+                All numbered route instructions will direct you on eligible
+                roads. Special Instructions may modify the definition of an
+                eligible road. See Regulation 3.8 below for the definition of
+                ELIGIBLE ROAD.
+              </li>
+              <li>
+                All numbered route instructions are considered completed when
+                your front wheels enter the indicated intersection or become
+                parallel with the indicated sign.
+              </li>
+              <li>
+                When put onto a road or highway, stay on it until instructed or
+                forced to leave it.
+              </li>
+              <li>
+                Unless instructed otherwise, continue in the direction most
+                straight ahead, or in the only direction legally or physically
+                possible. No instructions are given for forced turns.
+                <StyledOl>
+                  <li>
+                    When traveling on a traffic circle, stay on it until
+                    instructed off. Exits from traffic circles are not
+                    considered most straight ahead and must be instructed.
+                  </li>
+                  <li>
+                    When traveling on a highway, stay on it until instructed
+                    off. Highway offramps are not considered most straight ahead
+                    and must be instructed.
+                  </li>
+                </StyledOl>
+              </li>
+              <li>
+                Nothing in any instruction, whether that be a numbered route
+                instruction or a Special Instruction, is intended to instruct a
+                participant to commit any illegal action.
+                <StyledOl>
+                  <li>
+                    If a road sign indicates that an action is prohibited only
+                    during certain hours of the day, that action is considered
+                    to be prohibited at all times for the purposes of
+                    determining what counts as an eligible road.
+                  </li>
+                  <li>
+                    If a road sign indicates that an action is prohibited for
+                    nonresidents of a town, that action is considered to be
+                    prohibited to everyone for purposes of determining what
+                    counts as an eligible road.
+                  </li>
+                </StyledOl>
+              </li>
+            </StyledOl>
+          </li>
+          <li>
+            <strong>SIGNS AND LANDMARKS</strong>
+            <StyledOl>
+              <li>
+                Unless otherwise noted, all signs to be used in numbered route
+                instructions are on the right-hand side of the road, straight
+                ahead, or overhead.
+              </li>
+              <li>
+                Quotation marks are used in the instructions to indicate one or
+                more words, letters, and/or numbers on the quoted portion of a
+                sign to be used in an instruction.
+                <StyledOl>
+                  <li>
+                    If the full text of the sign contains additional words,
+                    letters, or numbers other than those quoted, the quotation
+                    shall be designated RIP. The omission of punctuation,
+                    arrows, erecting agency, or block numbers shall not be cause
+                    for a quotation to be designated RIP.
+                  </li>
+                  <li>
+                    Quoted parts of a sign will be fully capitalized in numbered
+                    route instructions. Capitalization and/or punctuation need
+                    not agree with that on the sign.
+                  </li>
+                </StyledOl>
+              </li>
+              <li>
+                The same sign will not be used as a reference point for two or
+                more numbered route instructions requiring simultaneous action
+                or execution.
+              </li>
+              <li>
+                The same sign may be used simultaneously for a numbered route
+                instruction and a Special Instruction if the instructions do not
+                conflict.
+              </li>
+            </StyledOl>
+          </li>
+          <li>
+            <strong>ABBREVIATIONS AND DEFINITIONS</strong>
+            <StyledOl>
+              <li>
+                AL: Acute left; a left TURN where your direction changes by
+                perceptibly greater than ninety degrees, causing your path to
+                make an acute angle
+              </li>
+              <li>
+                AR: Acute right; a right TURN where your direction changes by
+                perceptibly greater than ninety degrees, causing your path to
+                make an acute angle
+              </li>
+              <li>BEGIN: Start a new leg</li>
+              <li>
+                BL: Bear left; a left TURN where your direction changes by
+                perceptibly less than ninety degrees, causing your path to make
+                an obtuse angle
+              </li>
+              <li>
+                BR: Bear right; a right TURN where your direction changes by
+                perceptibly less than ninety degrees, causing your path to make
+                an obtuse angle
+              </li>
+              <li>CST: Change Speed To</li>
+              <li>DIYC: Do-it-yourself (uncrewed) checkpoint</li>
+              <li>
+                ELIGIBLE ROAD: A paved, public, through road, excluding dead
+                ends, driveways, alleys, parking lots, and entrances to
+                businesses, hotels, and schools.
+              </li>
+              <li>
+                FEDERAL HIGHWAY: A highway that is part of the United States
+                Numbered Highway System, with a name consisting of a prefix of I
+                or US, a hyphen, and a suffix of one to three numbers.
+              </li>
+              <li>
+                FULL TEXT (OF A SIGN): All word(s), letter(s), and/or number(s)
+                on the sign, except for punctuation, arrows, erecting agency,
+                and block numbers
+              </li>
+              <li>
+                FORCED TURN: A TURN where you have no other legal option but to
+                change direction
+              </li>
+              <li>HTS: (of a sign) Hard To See</li>
+              <li>
+                IMMEDIATE: Used to indicate that an instruction should be
+                executed immediately after the previous instruction.
+              </li>
+              <li>
+                INTERSECTION: Any meeting of ELIGIBLE ROADS at grade level from
+                which your vehicle could proceed in more than one direction
+              </li>
+              <li>L: A left TURN of approximately ninety degrees</li>
+              <li>MPH: Miles Per Hour</li>
+              <li>
+                OBSERVE: Notice word(s), letter(s), and/or number(s) on a sign
+              </li>
+              <li>ODO: Odometer reading</li>
+              <li>
+                OPP: Opportunity; an ELIGIBLE ROAD upon which you can legally
+                TURN in the direction satisfying the instruction, regardless of
+                the angle created by the turn.
+              </li>
+              <li>R: A right TURN of approximately ninety degrees</li>
+              <li>
+                RIVER ROAD: A parkway abutting the Charles River; namely,
+                Memorial Drive, Greenough Boulevard, Storrow Drive, or Soldier’s
+                Field Road.
+              </li>
+              <li>(S)HIT: (Sign) Hidden In Tree</li>
+              <li>
+                SIGNAL: The INTERSECTION of two ELIGIBLE ROADS where your
+                progress is controlled by a conventional red, amber, and green
+                traffic signal, whether working or not.
+              </li>
+              <li>
+                SOL: Sign On Left, a sign on the left-hand side of the road
+              </li>
+              <li>
+                (S)RIP: (Sign) Reading In Part; an indication that the sign is
+                only partially quoted
+              </li>
+              <li>
+                STOP: A conventional octagonal red STOP sign which is
+                controlling your progress.
+              </li>
+              <li>
+                T: An INTERSECTION having the general shape of the letter T as
+                approached, at which the road upon which you are traveling ends
+                and at which you have the choice to TURN right or left
+              </li>
+              <li>TURN: Change course of direction at an INTERSECTION</li>
+              <li>
+                U: U-turn; a TURN where your direction changes by one hundred
+                and eighty degrees
+              </li>
+              <li>
+                Y: An INTERSECTION having the general shape of the letter Y as
+                approached, at which you have the choice to BEAR right or left.
+              </li>
+            </StyledOl>
+          </li>
+          <li>
+            <strong>CHECKPOINTS</strong>
+            <StyledOl>
+              <li>
+                Your ODO will be registered as soon as your front wheels enter
+                the indicated checkpoint.
+              </li>
+              <li>
+                You will be advised of your next bearing and speed before
+                leaving each checkpoint.
+              </li>
+            </StyledOl>
+          </li>
+          <li>
+            <strong>SPECIAL INSTRUCTIONS</strong>
+            <StyledOl>
+              <li>
+                You may be given Special Instructions. Special Instructions will
+                be clearly identified as such.
+              </li>
+              <li>
+                Special Instructions, as with numbered route instructions, are
+                considered completed when your front wheels enter the indicated
+                intersection or become level with the indicated sign.
+              </li>
+              <li>
+                Two or more Special Instructions may be executed simultaneously
+                if simultaneous execution would not result in ambiguity about
+                how to resolve or execute the Special Instructions.
+              </li>
+              <li>
+                Any Special Instructions pertaining to ordering or extraction
+                must be completed prior to leaving the checkpoint.
+              </li>
+            </StyledOl>
+          </li>
+        </StyledOl>
+        <hr />
+        <Centered>
+          <div>
+            <u>
+              <strong>MIT PUZZLE CLUB</strong>
+            </u>
+          </div>
+          <div>
+            <strong>Special Instructions</strong>
+          </div>
+          <div>
+            These instructions have been alphabetized for your inconvenience.
+          </div>
+        </Centered>
+        <StyledOl>
+          <li>
+            <strong>Rule ANGRY:</strong> Whenever you have to turn left at an
+            intersection with no signal, or where any lane of traffic that you
+            must cross in order to execute that turn lacks a stop sign, decrease
+            your speed by 5 mph. Traffic circles do not count as intersections
+            for the purpose of this instruction. Where do these yahoos think
+            they gotta get to? Some of us have puzzles to solve!
+          </li>
+          <li>
+            <strong>Rule BERRY:</strong> Whenever instructed to OBSERVE a sign
+            attached to or advertising a grocery store, instead of completing
+            Rule SPEEDOMETER or Rule RETEMODEEPS due to that OBSERVE
+            instruction, record the word BERRY and increase your donut order for
+            this leg by 1 donut. This counts as a serving of fruit, right?
+          </li>
+          <li>
+            <strong>Rule COMPLACENT:</strong> Whenever you are on the same road
+            for at least one (1) mile without being instructed to make a turn,
+            increase your speed by 5 mph. This rule applies only once per
+            instance of being on that road. A road changing name midway through
+            the mile does not invalidate the applicability of this rule. That
+            happens like every other town, come on.
+          </li>
+          <li>
+            <strong>Rule CRAVING:</strong> Whenever you enter a checkpoint
+            having passed fewer than two DUNKIN’, not counting any DUNKIN’ that
+            are part of a checkpoint, increase your donut order for that leg by
+            1 donut.
+          </li>
+          <li>
+            <strong>Rule DONUTS:</strong> Start each leg with 0 donuts. The
+            checkpoint at the end of each leg takes place at a DUNKIN’
+            Drive-Thru. Do not stop at the curb cut. Instead, continue to the
+            speaker to place your donut order, then proceed to the window to
+            receive the amount of donuts you ordered and calculate your
+            extracted letter for this leg.
+          </li>
+          <li>
+            <strong>Rule FROSTED:</strong> Whenever instructed to OBSERVE a sign
+            erected by the MBTA, instead of completing Rule SPEEDOMETER or Rule
+            RETEMODEEPS due to that OBSERVE instruction, record the word
+            FROSTED, increase your order for this leg by 2 donuts, and reminisce
+            about the Snowpocalypse of 2015.
+          </li>
+          <li>
+            <strong>Rule GLAZED:</strong> Whenever you complete Rule WOOP WOOP
+            WOOP twice in one leg, record the word GLAZED and increase your
+            donut order for this leg by 4 additional donuts. Glazed is the
+            favored donut of the Massachusetts State Police.
+          </li>
+          <li>
+            <strong>Rule HUNGRY:</strong> Whenever you pass a standalone DUNKIN’
+            storefront that is visible from the street and does not have a
+            drive-thru, on a street that that DUNKIN’ abuts, regardless of what
+            side of the street it is on, increase your speed by 3 mph. You gotta
+            find one with a drive-thru, there’s nowhere to park here!
+          </li>
+          <li>
+            <strong>Rule LEMON:</strong> This rallye, like all MIT Puzzle Club
+            rallyes, must be undertaken in a stock, two-axled, four-wheeled
+            passenger car, minivan, or sport utility vehicle suitable for
+            operation by a holder of a Massachusetts class D license.
+            Preferably, the vehicle will belong to your kind of annoying
+            hallmate and be no newer than model year 2000.
+          </li>
+          <li>
+            <strong>Rule REARVIEW:</strong> The canonical data source for this
+            puzzle is the most recent version of Google Street View, except
+            where an older Street View is explicitly specified. What do you mean
+            you don’t remember where the Bradlees used to be when you were a
+            kid?
+          </li>
+          <li>
+            <strong>Rule RETEMODEEPS:</strong> Whenever you would complete Rule
+            SPEEDOMETER for a sign on the left, instead take the Nth letter from
+            the right.
+          </li>
+          <li>
+            <strong>Rule ROUNDABOUT:</strong> Whenever you drive on a traffic
+            circle, increase your speed by 5 mph. Isn’t that better than waiting
+            on a signal?
+          </li>
+          <li>
+            <strong>Rule SPEEDOMETER:</strong> Whenever you complete an OBSERVE
+            instruction with quoted sign text, take the Nth letter from the left
+            of the full text of that sign, where N is the tens digit of your
+            current speed, and record it for the current leg.
+          </li>
+          <li>
+            <strong>Rule TORUS:</strong> Whenever your path makes a closed loop
+            within a leg, record a letter O for that leg and increase your donut
+            order for that leg by 1 donut. Your wheels must pass over a segment
+            of road on which you had driven previously. This rule considers the
+            z-axis as well - highway cloverleafs do not count as a closed loop.
+            You can’t eat donuts on the highway, that’s “distracted driving.”
+          </li>
+          <li>
+            <strong>Rule WHEE:</strong> Whenever you complete a merge onto an
+            federal highway or a river road, increase your speed by 10 mph. This
+            rule applies after you have left the onramp and merged completely
+            onto the federal highway or river road. Everyone speeds here, I’m
+            sure it’s fine, I saw a cop doing 95 in the left lane of the Pike
+            the other day.
+          </li>
+          <li>
+            <strong>Rule WOOP WOOP WOOP:</strong> Whenever your speed is at
+            least 45 mph and you are not on an interstate highway or a river
+            road, you get pulled over. Immediately decrease your speed by 25 mph
+            and increase your donut order by 2 donuts in order to convince the
+            officer not to issue you a speeding ticket.
+          </li>
+        </StyledOl>
+        <hr />
+      </div>
       <Centered>
         <div>
           <u>
@@ -1025,14 +1088,17 @@ const Puzzle = (): JSX.Element => {
           </Centered>
           <ScrollWrapper>
             <NumberedRouteInstructions>
-              {instructions.map(({ direction, instruction, notes }, j) => (
-                <tr key={`${i}-${j}`}>
-                  <td>{j + 1}</td>
-                  <td>{direction}</td>
-                  <td>{instruction}</td>
-                  <td>{notes}</td>
-                </tr>
-              ))}
+              {instructions.map(
+                ({ direction, instruction, copyInstruction, notes }, j) => (
+                  <tr key={`${i}-${j}`}>
+                    <td>{j + 1}</td>
+                    <td>{direction}</td>
+                    <td className={NO_COPY_CLASS}>{instruction}</td>
+                    <td className={COPY_ONLY_CLASS}>{copyInstruction}</td>
+                    <td>{notes}</td>
+                  </tr>
+                ),
+              )}
             </NumberedRouteInstructions>
           </ScrollWrapper>
         </div>
