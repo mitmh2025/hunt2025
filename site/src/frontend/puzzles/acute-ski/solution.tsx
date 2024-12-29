@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import solutionImage from "./assets/solution.png";
 
 const solution: [
@@ -68,36 +72,38 @@ const Solution = () => {
         .
       </p>
 
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Student</th>
-            <th>Clue</th>
-            <th>Year</th>
-            <th>Superlative</th>
-            <th>Most likely to…</th>
-            <th>Letter</th>
-          </tr>
-        </thead>
-        <tbody>
-          {solution.map(([word, comparative, year, superlative]) => (
-            <tr key={word}>
-              <td>
-                <Mono>{word}ER</Mono>
-              </td>
-              <td>{comparative}</td>
-              <td>{year}</td>
-              <td>
-                <Mono>{word}EST</Mono>
-              </td>
-              <td>{superlative}</td>
-              <td>
-                <Mono>{`${word}EST`[Math.floor(year / 10) - 1]}</Mono>
-              </td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Clue</th>
+              <th>Year</th>
+              <th>Superlative</th>
+              <th>Most likely to…</th>
+              <th>Letter</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {solution.map(([word, comparative, year, superlative]) => (
+              <tr key={word}>
+                <td>
+                  <Mono>{word}ER</Mono>
+                </td>
+                <td>{comparative}</td>
+                <td>{year}</td>
+                <td>
+                  <Mono>{word}EST</Mono>
+                </td>
+                <td>{superlative}</td>
+                <td>
+                  <Mono>{`${word}EST`[Math.floor(year / 10) - 1]}</Mono>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
 
       <p>
         But because this is a puzzle about superlatives, that must be
