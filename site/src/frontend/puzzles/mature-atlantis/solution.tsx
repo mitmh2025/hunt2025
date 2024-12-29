@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const HEADERS = ["Order", "Before", "After", "Extraction"];
 
@@ -158,7 +162,9 @@ const Solution = () => {
         extraction is the newly changed letters, in the numbered order (the
         order of the “before” picture list).
       </p>
-      <Table headers={HEADERS} rows={ROWS} />
+      <HScrollTableWrapper>
+        <Table headers={HEADERS} rows={ROWS} />
+      </HScrollTableWrapper>
       <p>
         The changed letters extract to <Mono>BAKING RULE: NEST LIME</Mono>.
       </p>

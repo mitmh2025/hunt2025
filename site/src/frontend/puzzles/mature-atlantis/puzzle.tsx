@@ -22,6 +22,7 @@ import img18 from "./assets/img18.png";
 
 const StyledImageWrapper = styled.div`
   width: 400px;
+  max-width: 100%;
   height: 400px;
   background-color: white;
   border: 2px solid black;
