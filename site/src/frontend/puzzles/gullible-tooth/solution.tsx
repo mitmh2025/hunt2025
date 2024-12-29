@@ -1,8 +1,8 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { PuzzleAnswer } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
-const Table = styled.table`
+const TableElement = styled.table`
   max-width: 800px;
 
   border-collapse: collapse;
@@ -12,6 +12,14 @@ const Table = styled.table`
     border: 1px solid black;
   }
 `;
+
+const Table = ({ children }: { children: ReactNode }) => {
+  return (
+    <HScrollTableWrapper>
+      <TableElement>{children}</TableElement>
+    </HScrollTableWrapper>
+  );
+};
 
 const Recipe = styled.div`
   margin: 16px 0px;
