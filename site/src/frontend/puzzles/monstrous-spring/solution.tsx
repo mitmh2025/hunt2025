@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const Answers: [
   outClue: string,
@@ -79,34 +83,38 @@ const Solution = () => {
         become an in-the-pool answer.
       </p>
 
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Out-of-pool clue</th>
-            <th>Out-of-pool answer</th>
-            <th>In-the-pool clue</th>
-            <th>In-the-pool answer</th>
-            <th>Shrunk word</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Answers.map(([outClue, outAnswer, inClue, inAnswer, shrunk], i) => (
-            <tr key={i}>
-              <td>{outClue}</td>
-              <td>
-                <Mono>{outAnswer}</Mono>
-              </td>
-              <td>{inClue}</td>
-              <td>
-                <Mono>{inAnswer}</Mono>
-              </td>
-              <td>
-                <Mono>{shrunk}</Mono>
-              </td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Out-of-pool clue</th>
+              <th>Out-of-pool answer</th>
+              <th>In-the-pool clue</th>
+              <th>In-the-pool answer</th>
+              <th>Shrunk word</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {Answers.map(
+              ([outClue, outAnswer, inClue, inAnswer, shrunk], i) => (
+                <tr key={i}>
+                  <td>{outClue}</td>
+                  <td>
+                    <Mono>{outAnswer}</Mono>
+                  </td>
+                  <td>{inClue}</td>
+                  <td>
+                    <Mono>{inAnswer}</Mono>
+                  </td>
+                  <td>
+                    <Mono>{shrunk}</Mono>
+                  </td>
+                </tr>
+              ),
+            )}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
 
       <p>
         There are two clues out of the pool which cannot yet be answered: THE
