@@ -1,7 +1,11 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import image10 from "./assets/image10.png";
 import image11 from "./assets/image11.png";
 import image12 from "./assets/image12.png";
@@ -27,6 +31,14 @@ const StyledTable = styled.table`
     padding: 1px 8px;
   }
 `;
+
+const Table = ({ children }: { children: ReactNode }) => {
+  return (
+    <HScrollTableWrapper>
+      <StyledTable>{children}</StyledTable>
+    </HScrollTableWrapper>
+  );
+};
 
 const Solution = (): JSX.Element => {
   return (
@@ -256,7 +268,7 @@ const Solution = (): JSX.Element => {
         square of side length 1, take the absolute difference of each pair of
         numbers.
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Number</th>
           <th>Fibonacci Number</th>
@@ -312,7 +324,7 @@ const Solution = (): JSX.Element => {
           <td>55</td>
           <td>21</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         Translating the difference values via A1Z26 gives the answer{" "}
         <Mono>DLURRULLLU</Mono>.
@@ -333,7 +345,7 @@ const Solution = (): JSX.Element => {
         using the numbers in the red squares, the mechanic can be repeated with
         a new sequence of numbers:
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Red Number</th>
           <th>A135678 Number</th>
@@ -369,7 +381,7 @@ const Solution = (): JSX.Element => {
           <td>16</td>
           <td>18</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         Translating the new difference values via A1Z26 gives the answer{" "}
         <Mono>
@@ -418,7 +430,7 @@ const Solution = (): JSX.Element => {
         given numbers and order them with the given greek letters to produce the
         answer <Mono>SPECTROGRAM</Mono>.
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Greek Letter</th>
           <th>Number</th>
@@ -491,7 +503,7 @@ const Solution = (): JSX.Element => {
           <td>Ursa Major</td>
           <td>M</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         Secret Extraction:{" "}
         <Mono>IGNORE ZODIAC REORDER VIA BAYER STAR R.A.</Mono>
@@ -503,7 +515,7 @@ const Solution = (): JSX.Element => {
         Zodiac, reorder the remaining constellations’ extracted letters
         according to the corresponding Bayer star’s right ascension.
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Constellation</th>
           <th>Bayer Star</th>
@@ -546,7 +558,7 @@ const Solution = (): JSX.Element => {
           <td>17h 15m 01.92s</td>
           <td>C</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         This produces the answer <Mono>SMOREC.</Mono>
       </p>
@@ -574,7 +586,7 @@ const Solution = (): JSX.Element => {
         </Mono>
         .
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Song</th>
           <th>Missing Word from Lyrics</th>
@@ -659,7 +671,7 @@ const Solution = (): JSX.Element => {
           <td>Chains</td>
           <td>…Whoa, these CHAINS of love…</td>
         </tr>
-      </StyledTable>
+      </Table>
       <h4>
         Secret Extraction: <Mono>SPECTROGRAM</Mono>
       </h4>
@@ -812,7 +824,7 @@ const Solution = (): JSX.Element => {
         </Mono>
         .
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>RHS Number</th>
           <th>LHS Inverted</th>
@@ -855,7 +867,7 @@ const Solution = (): JSX.Element => {
           <td>14</td>
           <td>N</td>
         </tr>
-      </StyledTable>
+      </Table>
       <hr />
       <p>
         When figuring out the assignment of which minipuzzle cluephrase
@@ -878,7 +890,7 @@ const Solution = (): JSX.Element => {
         Glass Onion, “An object that seems densely layered, but in reality the
         center is in plain sight.”
       </p>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Order</th>
           <th>Puzzle</th>
@@ -1019,7 +1031,7 @@ const Solution = (): JSX.Element => {
             </Mono>
           </td>
         </tr>
-      </StyledTable>
+      </Table>
       <p>
         After solving Papa’s Stash, solvers receive new information,{" "}
         <Mono>THE THIRD QUARTILE WAS ALSO ALWAYS IN PLAIN SIGHT</Mono>. This
