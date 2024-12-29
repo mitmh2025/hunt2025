@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image10 from "./assets/image10.png";
 import image2 from "./assets/image2.png";
@@ -434,83 +438,85 @@ const Solution = (): JSX.Element => {
       <p>
         <Annotation>Putting the extraction together:</Annotation>
       </p>
-      <StyledTable>
-        <tr>
-          <th>Shape</th>
-          <th>Extraction Phrase</th>
-          <th>Extracted Letter</th>
-        </tr>
-        <tr>
-          <td>T-SHAPED</td>
-          <td>intelligenTSIA, PEDdling</td>
-          <td>
-            <Mono>I</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>LINEAR</td>
-          <td>TIN EAR</td>
-          <td>
-            <Mono>T</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>SEE-SAW</td>
-          <td>waSTES AWay</td>
-          <td>
-            <Mono>T</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>TRIGONAL PYRAMIDAL</td>
-          <td>TRIG ON AL. PAR, AMID ALl</td>
-          <td>
-            <Mono>A</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>SQUARE PLANAR</td>
-          <td>tremendouS QUAKE, PLAN ARound</td>
-          <td>
-            <Mono>K</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>SQUARE PYRAMIDAL</td>
-          <td>SQUAREP–ER, AM I DALlying</td>
-          <td>
-            <Mono>E</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>TRIGONAL PLANAR</td>
-          <td>mighT RIG ON ALPS, A NARrow</td>
-          <td>
-            <Mono>S</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>TETRAHEDRAL</td>
-          <td>sexTET, RATED R, ALthough</td>
-          <td>
-            <Mono>T</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>T-SHAPED</td>
-          <td>greaT SWAP! EDith</td>
-          <td>
-            <Mono>W</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>OCTAHEDRAL</td>
-          <td>tOOT “A”, HE’D RALlentando</td>
-          <td>
-            <Mono>O</Mono>
-          </td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Shape</th>
+            <th>Extraction Phrase</th>
+            <th>Extracted Letter</th>
+          </tr>
+          <tr>
+            <td>T-SHAPED</td>
+            <td>intelligenTSIA, PEDdling</td>
+            <td>
+              <Mono>I</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>LINEAR</td>
+            <td>TIN EAR</td>
+            <td>
+              <Mono>T</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>SEE-SAW</td>
+            <td>waSTES AWay</td>
+            <td>
+              <Mono>T</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>TRIGONAL PYRAMIDAL</td>
+            <td>TRIG ON AL. PAR, AMID ALl</td>
+            <td>
+              <Mono>A</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>SQUARE PLANAR</td>
+            <td>tremendouS QUAKE, PLAN ARound</td>
+            <td>
+              <Mono>K</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>SQUARE PYRAMIDAL</td>
+            <td>SQUAREP–ER, AM I DALlying</td>
+            <td>
+              <Mono>E</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>TRIGONAL PLANAR</td>
+            <td>mighT RIG ON ALPS, A NARrow</td>
+            <td>
+              <Mono>S</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>TETRAHEDRAL</td>
+            <td>sexTET, RATED R, ALthough</td>
+            <td>
+              <Mono>T</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>T-SHAPED</td>
+            <td>greaT SWAP! EDith</td>
+            <td>
+              <Mono>W</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>OCTAHEDRAL</td>
+            <td>tOOT “A”, HE’D RALlentando</td>
+            <td>
+              <Mono>O</Mono>
+            </td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         <Annotation>
           Spells the answer{" "}
