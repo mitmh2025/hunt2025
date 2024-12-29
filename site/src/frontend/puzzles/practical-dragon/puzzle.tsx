@@ -168,9 +168,11 @@ const IMAGES_LOW: string[] = [
 const ImgBlock = ({ imgnum }: { imgnum: number }): JSX.Element => {
   return (
     <>
-      <a target="_blank" rel="noreferrer" href={IMAGES_HI[imgnum] ?? ""}>
-        <StyledImg src={IMAGES_LOW[imgnum] ?? ""} alt="A rebus" />
-      </a>
+      <div>
+        <a target="_blank" rel="noreferrer" href={IMAGES_HI[imgnum] ?? ""}>
+          <StyledImg src={IMAGES_LOW[imgnum] ?? ""} alt="A rebus" />
+        </a>
+      </div>
       <hr />
     </>
   );
@@ -182,9 +184,11 @@ const Puzzle = (): JSX.Element => {
       {Array.from({ length: 38 }, (_, i) => (
         <ImgBlock key={i} imgnum={i} />
       ))}
-      <a target="_blank" rel="noreferrer" href={imgbottomhi}>
-        <StyledImg src={imgbottomlow} alt="A rebus" />
-      </a>
+      <div>
+        <a target="_blank" rel="noreferrer" href={imgbottomhi}>
+          <StyledImg src={imgbottomlow} alt="A rebus" />
+        </a>
+      </div>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 
 const GridDiv = styled.div`
@@ -119,6 +120,7 @@ const Puzzle = () => {
             <li>Scrap Material</li>
           </ul>
         </LayoutElement>
+        <br className={COPY_ONLY_CLASS} />
         <LayoutElement>
           <MaterialsTable />
         </LayoutElement>
@@ -135,6 +137,7 @@ const Puzzle = () => {
             <li>Clothing</li>
           </ul>
         </LayoutElement>
+        <br className={COPY_ONLY_CLASS} />
         <LayoutElement>
           <HScrollTableWrapper>
             <BuildTable>

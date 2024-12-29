@@ -11,6 +11,7 @@ const puzzle: PuzzleDefinition = {
   answer: "PENROSE",
   content: {
     component: Puzzle,
+    copyable: true,
   },
   solution: {
     component: Solution,

@@ -14,6 +14,7 @@ const puzzle: PuzzleDefinition = {
   content: {
     component: Puzzle,
     entrypoint: "puzzle_wiry_ray",
+    copyable: false,
   },
   solution: {
     component: Solution,
