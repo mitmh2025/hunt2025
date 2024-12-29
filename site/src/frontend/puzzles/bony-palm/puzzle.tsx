@@ -10,21 +10,11 @@ const Puzzle = () => {
       </div>
 
       <div>
-        <div>
-          <Mono>P, A, FIISI, A, L; A, R, LYSBE, U, T</Mono>
-        </div>
-        <div>
-          <Mono>F C C, S GP, D C, PP, K; TIN, S, INWSF, S, K</Mono>
-        </div>
-        <div>
-          <Mono>D, EYQBE, W L, SQL, R L; N M, IGH, QL A, HAN, H G</Mono>
-        </div>
-        <div>
-          <Mono>B U, R U, TRFEA, I, YGC; NCG, C F, KNK, F T, MZR</Mono>
-        </div>
-        <div>
-          <Mono>QB, LHF, DNKF, HK, L K; R N, MT, EBHE, DXG, EA</Mono>
-        </div>
+        <Mono as="div">P, A, FIISI, A, L; A, R, LYSBE, U, T</Mono>
+        <Mono as="div">F C C, S GP, D C, PP, K; TIN, S, INWSF, S, K</Mono>
+        <Mono as="div">D, EYQBE, W L, SQL, R L; N M, IGH, QL A, HAN, H G</Mono>
+        <Mono as="div">B U, R U, TRFEA, I, YGC; NCG, C F, KNK, F T, MZR</Mono>
+        <Mono as="div">QB, LHF, DNKF, HK, L K; R N, MT, EBHE, DXG, EA</Mono>
       </div>
     </>
   );

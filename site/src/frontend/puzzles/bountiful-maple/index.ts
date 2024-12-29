@@ -11,6 +11,7 @@ const puzzle: PuzzleDefinition = {
   answer: "ACRYLATE",
   content: {
     component: Puzzle,
+    copyable: false,
   },
   solution: {
     component: Solution,
