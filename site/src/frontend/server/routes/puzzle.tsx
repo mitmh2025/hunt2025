@@ -432,7 +432,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
         <PuzzleMainComponent
           id="puzzle-content"
           className="puzzle-content"
-          data-copyable={content.copyable}
+          data-copyable={content.copyable ? "true" : undefined}
         >
           <ContentComponent teamState={req.teamState.state} query={req.query} />
         </PuzzleMainComponent>
