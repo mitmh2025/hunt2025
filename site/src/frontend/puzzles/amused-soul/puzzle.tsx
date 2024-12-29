@@ -1,5 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import img1 from "./assets/img1.png";
 import img2 from "./assets/img2.png";
 
@@ -20,6 +24,7 @@ const StyledImg = styled.img`
 
 const Rack = () => (
   <StyledImg
+    className={NO_COPY_CLASS}
     src={img1}
     alt="A Scrabble rack with seven tiles, each marked with a question mark instead of a letter."
   />
@@ -50,6 +55,7 @@ const Puzzle = () => {
       <Row score={278} />
       <Row score={225} />
       <Row score={323} />
+      <br className={COPY_ONLY_CLASS} />
       <ul>
         <li>Clear pronunciation of speech stopped by nitrogen</li>
         <li>Tube leading from the throat to sulfur</li>

@@ -1,5 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import { deviceMax } from "../../utils/breakpoints";
 import finalImage from "./assets/final_image.png";
 import portrait from "./assets/portrait.png";
@@ -112,11 +116,16 @@ const Puzzle = () => {
         <Portraits>
           {comparatives.map((comparative) => (
             <PortraitFrame key={comparative}>
-              <Portrait src={portrait} alt={"A photo of a person"} />
+              <Portrait
+                className={NO_COPY_CLASS}
+                src={portrait}
+                alt={"A photo of a person"}
+              />
               <Comparative>{comparative}</Comparative>
             </PortraitFrame>
           ))}
         </Portraits>
+        <br className={COPY_ONLY_CLASS} />
         <Superlatives>
           <div>Most likely to…</div>
           <ul>
