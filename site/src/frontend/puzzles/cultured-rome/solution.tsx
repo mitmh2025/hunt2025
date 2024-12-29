@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   td {
@@ -36,98 +40,100 @@ const Solution = (): JSX.Element => {
         five: <PuzzleAnswer>PRIVATE SECTOR</PuzzleAnswer>, which was hiding in
         plain sight!
       </p>
-      <StyledTable>
-        <tr>
-          <td>1.</td>
-          <td>
-            <Mono>POTTER VISCERA</Mono>
-          </td>
-          <td>
-            <Mono>CERTAIN TEENAGE WIZARD INSIDES</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>2.</td>
-          <td>
-            <Mono>COVERT PARTIES</Mono>
-          </td>
-          <td>
-            <Mono>SECRET FUN GROUP EVENTS</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>3.</td>
-          <td>
-            <Mono>TRAVERSE TOPIC</Mono>
-          </td>
-          <td>
-            <Mono>GO ACROSS SUBJECT MATTER</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>4.</td>
-          <td>
-            <Mono>PIRATE VECTORS</Mono>
-          </td>
-          <td>
-            <Mono>SEA ROBBER PATHS</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>5.</td>
-          <td>
-            <Mono>PRIVATE SECTOR</Mono>
-          </td>
-          <td>
-            <Mono>ECONOMIC AREA NOT UNDER STATE CONTROL</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>6.</td>
-          <td>
-            <Mono>CATERER PIVOTS</Mono>
-          </td>
-          <td>
-            <Mono>FOOD PROVIDER TURNS STANCE</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>7.</td>
-          <td>
-            <Mono>ACTIVE REPORTS</Mono>
-          </td>
-          <td>
-            <Mono>LIVELY TPS FILES FOR EXAMPLE</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>8.</td>
-          <td>
-            <Mono>TAPER VORTICES</Mono>
-          </td>
-          <td>
-            <Mono>GRADUALLY DIMINISH SPIRAL WATER POOLS</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>9.</td>
-          <td>
-            <Mono>REPEAT VICTORS</Mono>
-          </td>
-          <td>
-            <Mono>PEOPLE WHO VANQUISH AGAIN</Mono>
-          </td>
-        </tr>
-        <tr>
-          <td>10.</td>
-          <td>
-            <Mono>CREATIVE PORTS</Mono>
-          </td>
-          <td>
-            <Mono>UNUSUAL COMPUTER NETWORK CONNECTION POINTS</Mono>
-          </td>
-        </tr>
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <td>1.</td>
+            <td>
+              <Mono>POTTER VISCERA</Mono>
+            </td>
+            <td>
+              <Mono>CERTAIN TEENAGE WIZARD INSIDES</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>2.</td>
+            <td>
+              <Mono>COVERT PARTIES</Mono>
+            </td>
+            <td>
+              <Mono>SECRET FUN GROUP EVENTS</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>3.</td>
+            <td>
+              <Mono>TRAVERSE TOPIC</Mono>
+            </td>
+            <td>
+              <Mono>GO ACROSS SUBJECT MATTER</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>4.</td>
+            <td>
+              <Mono>PIRATE VECTORS</Mono>
+            </td>
+            <td>
+              <Mono>SEA ROBBER PATHS</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>5.</td>
+            <td>
+              <Mono>PRIVATE SECTOR</Mono>
+            </td>
+            <td>
+              <Mono>ECONOMIC AREA NOT UNDER STATE CONTROL</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>6.</td>
+            <td>
+              <Mono>CATERER PIVOTS</Mono>
+            </td>
+            <td>
+              <Mono>FOOD PROVIDER TURNS STANCE</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>7.</td>
+            <td>
+              <Mono>ACTIVE REPORTS</Mono>
+            </td>
+            <td>
+              <Mono>LIVELY TPS FILES FOR EXAMPLE</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>8.</td>
+            <td>
+              <Mono>TAPER VORTICES</Mono>
+            </td>
+            <td>
+              <Mono>GRADUALLY DIMINISH SPIRAL WATER POOLS</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>9.</td>
+            <td>
+              <Mono>REPEAT VICTORS</Mono>
+            </td>
+            <td>
+              <Mono>PEOPLE WHO VANQUISH AGAIN</Mono>
+            </td>
+          </tr>
+          <tr>
+            <td>10.</td>
+            <td>
+              <Mono>CREATIVE PORTS</Mono>
+            </td>
+            <td>
+              <Mono>UNUSUAL COMPUTER NETWORK CONNECTION POINTS</Mono>
+            </td>
+          </tr>
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };
