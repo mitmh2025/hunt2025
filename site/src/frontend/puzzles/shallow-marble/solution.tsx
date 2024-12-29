@@ -1,7 +1,11 @@
 import React, { useCallback, type CSSProperties } from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import { DownRightClues, UpClues } from "./data";
 
 const SolutionTable = styled.table`
@@ -267,7 +271,9 @@ const Solution = () => {
         completed grid looks like:
       </p>
 
-      <Crossword labels={GridLabels} fill={GridFill} />
+      <HScrollTableWrapper>
+        <Crossword labels={GridLabels} fill={GridFill} />
+      </HScrollTableWrapper>
 
       <p>
         There are two rows in this grid with no black squares. These two rows
@@ -279,48 +285,52 @@ const Solution = () => {
       <p>All clue answers are as follows:</p>
 
       <h3>Up</h3>
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Clue</th>
-            <th>Answer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {UpClues.map(([num, clue, answer]) => (
-            <tr key={num}>
-              <td>{num}</td>
-              <td>{clue}</td>
-              <td>
-                <Mono>{answer}</Mono>
-              </td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>Clue</th>
+              <th>Answer</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {UpClues.map(([num, clue, answer]) => (
+              <tr key={num}>
+                <td>{num}</td>
+                <td>{clue}</td>
+                <td>
+                  <Mono>{answer}</Mono>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
 
       <h3>Down-Right</h3>
-      <SolutionTable>
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Clue</th>
-            <th>Answer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {DownRightClues.map(([num, clue, answer]) => (
-            <tr key={num}>
-              <td>{num}</td>
-              <td>{clue}</td>
-              <td>
-                <Mono>{answer}</Mono>
-              </td>
+      <HScrollTableWrapper>
+        <SolutionTable>
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>Clue</th>
+              <th>Answer</th>
             </tr>
-          ))}
-        </tbody>
-      </SolutionTable>
+          </thead>
+          <tbody>
+            {DownRightClues.map(([num, clue, answer]) => (
+              <tr key={num}>
+                <td>{num}</td>
+                <td>{clue}</td>
+                <td>
+                  <Mono>{answer}</Mono>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </SolutionTable>
+      </HScrollTableWrapper>
 
       <h3>Author’s note</h3>
       <p>
@@ -330,11 +340,13 @@ const Solution = () => {
         following isomorphic grid that uses across and down clues only:
       </p>
 
-      <Crossword
-        labels={IsoGridLabels}
-        fill={IsoGridFill}
-        getAdditionalCellStyles={styleIsoGrid}
-      />
+      <HScrollTableWrapper>
+        <Crossword
+          labels={IsoGridLabels}
+          fill={IsoGridFill}
+          getAdditionalCellStyles={styleIsoGrid}
+        />
+      </HScrollTableWrapper>
     </>
   );
 };
