@@ -1,6 +1,10 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import { TUTORIAL_COLORS } from "./puzzle-components/PuzzleConstants";
 import {
   GROUPED_PUZZLES,
@@ -20,6 +24,14 @@ const StyledTable = styled.table`
     padding: 1px 8px;
   }
 `;
+
+const Table = ({ children }: { children: ReactNode }) => {
+  return (
+    <HScrollTableWrapper>
+      <StyledTable>{children}</StyledTable>
+    </HScrollTableWrapper>
+  );
+};
 
 const StyledSubheader = styled.td`
   text-align: center;
@@ -165,7 +177,7 @@ const Solution = (): JSX.Element => {
         return (
           <>
             <h3>{COLOR_TO_PRESENTATION[color]} Tutorial</h3>
-            <StyledTable key={colorKey}>
+            <Table key={colorKey}>
               <tr>
                 <th>Height</th>
                 <th>Color</th>
@@ -173,7 +185,7 @@ const Solution = (): JSX.Element => {
                 <th>Solution</th>
               </tr>
               <RowGroup puzzles={GROUPED_TUTORIALS[color]} />
-            </StyledTable>
+            </Table>
           </>
         );
       })}
@@ -182,7 +194,7 @@ const Solution = (): JSX.Element => {
           return (
             <>
               <h3 key={uuid}>Circuit {i + 1}</h3>
-              <StyledTable key={`${uuid}-table`}>
+              <Table key={`${uuid}-table`}>
                 <tr>
                   <th>Height</th>
                   <th>Color</th>
@@ -200,13 +212,13 @@ const Solution = (): JSX.Element => {
                   {lastPuzzle.solution} extract{" "}
                   {lastPuzzle.solution.replace(/\s/g, "")[finalVoltage - 1]}
                 </Subheader>
-              </StyledTable>
+              </Table>
             </>
           );
         },
       )}
       <h3>Re-solve</h3>
-      <StyledTable>
+      <Table>
         <tr>
           <th>Voltage across final resistor</th>
           <th>Initial extraction</th>
@@ -267,7 +279,7 @@ const Solution = (): JSX.Element => {
           <td>6</td>
           <td>E</td>
         </tr>
-      </StyledTable>
+      </Table>
       <p id="footnote">
         <sup>
           <a href="#antifootnote">1</a>
