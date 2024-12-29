@@ -784,9 +784,7 @@ export class Client {
       ws.addEventListener("open", onOpen);
       ws.addEventListener("error", onError);
     });
-    ws.on("message", (msg) => {
-      console.log("received", msg);
-    });
+    const client = new SubscriptionClient(ws);
     ws.send(
       JSON.stringify({
         authCmd: {
@@ -795,7 +793,7 @@ export class Client {
         },
       }),
     );
-    return new SubscriptionClient(ws);
+    return client;
   }
 
   listTenants(query: PagedQuery<APIClient["tenant"]["list"]> = {}) {
