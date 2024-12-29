@@ -1,14 +1,14 @@
 import React from "react";
 import { styled } from "styled-components";
-import img1 from "./assets/1.png";
-import img2 from "./assets/2.png";
-import img3 from "./assets/3.png";
-import img4 from "./assets/4.png";
-import img5 from "./assets/5.png";
-import img6 from "./assets/6.png";
-import img7 from "./assets/7.png";
-import img8 from "./assets/8.png";
-import img9 from "./assets/9.png";
+import img1 from "./assets/01.png";
+import img2 from "./assets/02.png";
+import img3 from "./assets/03.png";
+import img4 from "./assets/04.png";
+import img5 from "./assets/05.png";
+import img6 from "./assets/06.png";
+import img7 from "./assets/07.png";
+import img8 from "./assets/08.png";
+import img9 from "./assets/09.png";
 import img10 from "./assets/10.png";
 import img11 from "./assets/11.png";
 import img12 from "./assets/12.png";
@@ -51,17 +51,16 @@ import img48 from "./assets/48.png";
 import img49 from "./assets/49.png";
 
 const EmojiTable = styled.table`
-  border-collapse: collapse; /* Remove gaps between cells */
-  font-size: 2rem; /* Size of emojis */
-  text-align: center; /* Center the content in cells */
+  table-layout: auto;
+  border-collapse: collapse;
+  width: auto;
+  text-align: left;
+  margin: 0 auto 0 0;
 `;
 
-const EmojiCell = styled.td`
-  padding: 10px;
-`;
-
-const Emoji = styled.div`
-  font-size: 2rem; /* Size of the emoji */
+const Cell = styled.td`
+  width: auto;
+  height: auto;
 `;
 
 const Puzzle = () => {
@@ -134,13 +133,12 @@ const Puzzle = () => {
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((image, colIndex) => (
-                <EmojiCell key={colIndex}>
+                <Cell key={colIndex}>
                   <img
                     src={image}
-                    alt={`Image ${rowIndex * 6 + colIndex + 1}`}
-                    style={{ width: "90px", height: "90px" }}
+                    alt={`Emoji ${rowIndex * 6 + colIndex + 1}`}
                   />
-                </EmojiCell>
+                </Cell>
               ))}
             </tr>
           ))}
@@ -148,13 +146,11 @@ const Puzzle = () => {
       </EmojiTable>
       <hr />
       {columnImages.map((image, index) => (
-        <Emoji key={index}>
-          <img
-            src={image}
-            alt={`Image ${index + 37}`}
-            style={{ width: "90px", height: "90px" }}
-          />
-        </Emoji>
+        <tr key={index}>
+          <Cell key={index}>
+            <img src={image} alt={`Emoji ${index + 37}`} />
+          </Cell>
+        </tr>
       ))}
     </>
   );
