@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const SUSPECTS_DATA = [
   {
@@ -443,24 +447,26 @@ const Solution = (): JSX.Element => {
         “fraudulent” receipts fit into the SUSPECTS blanks in alphabetical
         order. Upon extracting the circled letters, the following is obtained:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Full law name</th>
-          <th>Suspect</th>
-          <th>Index</th>
-          <th>Letters</th>
-          <th>Time</th>
-        </tr>
-        {SUSPECTS_DATA.map(({ law, suspect, index, letters, time }, i) => (
-          <tr key={`suspect-${i}`}>
-            <td>{law}</td>
-            <td>{suspect}</td>
-            <td>{index}</td>
-            <td>{letters}</td>
-            <td>{time}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Full law name</th>
+            <th>Suspect</th>
+            <th>Index</th>
+            <th>Letters</th>
+            <th>Time</th>
           </tr>
-        ))}
-      </StyledTable>
+          {SUSPECTS_DATA.map(({ law, suspect, index, letters, time }, i) => (
+            <tr key={`suspect-${i}`}>
+              <td>{law}</td>
+              <td>{suspect}</td>
+              <td>{index}</td>
+              <td>{letters}</td>
+              <td>{time}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         The correct ordering for these letters is given by the time on each
         receipt. The date on the receipts is the 10th of November, which is
@@ -482,24 +488,26 @@ const Solution = (): JSX.Element => {
         original discoverers of each of these laws will fit into the blanks on
         the VICTIMS list in alphabetical order, as shown here.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Stigler’s Eponym</th>
-          <th>Victim</th>
-          <th>Index</th>
-          <th>Letters</th>
-          <th>Time</th>
-        </tr>
-        {VICTIMS_DATA.map(({ eponym, victim, index, letters, time }, i) => (
-          <tr key={`victims-${i}`}>
-            <td>{eponym}</td>
-            <td>{victim}</td>
-            <td>{index}</td>
-            <td>{letters}</td>
-            <td>{time}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Stigler’s Eponym</th>
+            <th>Victim</th>
+            <th>Index</th>
+            <th>Letters</th>
+            <th>Time</th>
           </tr>
-        ))}
-      </StyledTable>
+          {VICTIMS_DATA.map(({ eponym, victim, index, letters, time }, i) => (
+            <tr key={`victims-${i}`}>
+              <td>{eponym}</td>
+              <td>{victim}</td>
+              <td>{index}</td>
+              <td>{letters}</td>
+              <td>{time}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         These extracted letters should also be ordered by the time on the
         receipts, which will spell the clue phrase{" "}
@@ -527,24 +535,26 @@ const Solution = (): JSX.Element => {
         are ordered by their times and the numbers are used to index into the
         names of the victims the following extraction occurs:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Eponymous Law</th>
-          <th>Victim</th>
-          <th>Index</th>
-          <th>Letter</th>
-          <th>Time</th>
-        </tr>
-        {EXTRACTION_DATA.map(({ law, victim, index, letters, time }, i) => (
-          <tr key={`extraction-${i}`}>
-            <td>{law}</td>
-            <td>{victim}</td>
-            <td>{index}</td>
-            <td>{letters}</td>
-            <td>{time}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Eponymous Law</th>
+            <th>Victim</th>
+            <th>Index</th>
+            <th>Letter</th>
+            <th>Time</th>
           </tr>
-        ))}
-      </StyledTable>
+          {EXTRACTION_DATA.map(({ law, victim, index, letters, time }, i) => (
+            <tr key={`extraction-${i}`}>
+              <td>{law}</td>
+              <td>{victim}</td>
+              <td>{index}</td>
+              <td>{letters}</td>
+              <td>{time}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         These letters spell out the answer:{" "}
         <PuzzleAnswer>COOKED BOOK</PuzzleAnswer>. While it is also possible to
