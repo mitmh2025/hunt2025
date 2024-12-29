@@ -57,7 +57,7 @@ const DATA = [
   [{ audio: audio8, ipa: "/e buv jɑ æt/" }],
   [{ audio: audio9, ipa: "/in un dæŋ nɑn/" }],
   [
-    { audio: audio10a, ipa: "/tro sɑp/" },
+    { audio: audio10a, ipa: "/tɹo sɑp/" },
     { audio: audio10b, ipa: "/fuv/" },
   ],
   [{ audio: audio11, ipa: "/kiz mɛk diɹt fuv fɑɹ/" }],

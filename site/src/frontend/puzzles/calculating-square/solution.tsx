@@ -131,20 +131,6 @@ const Solution = (): JSX.Element => {
         her puffy <s>purple</s> <strong>PINK</strong> coat (2)
       </Haiku>
       <Haiku $indent={true}>
-        cacti cannot speak
-        <br />
-        nor can they steer a <s>horse</s> <strong>SKATEBOARD</strong>
-        <br />
-        globs of water, spilled (10)
-      </Haiku>
-      <Haiku $indent={false}>
-        the <s>galaxy</s> <strong>STATA</strong> center
-        <br />
-        colored in muted red tones
-        <br />
-        not so true to life (2)
-      </Haiku>
-      <Haiku $indent={true}>
         <s>eight-</s>
         <strong>SEVEN</strong>-armed creature—
         <br />
@@ -164,7 +150,21 @@ const Solution = (): JSX.Element => {
         <br />
         crushed caffeine, then crushed metal
         <br />
-        casts tired <s>dice</s> <strong>SHADOW</strong> (2)
+        casts a tired <s>dice</s> <strong>SHADOW</strong> (2)
+      </Haiku>
+      <Haiku $indent={true}>
+        cacti cannot speak
+        <br />
+        nor can they steer a <s>horse</s> <strong>SKATEBOARD</strong>
+        <br />
+        globs of water, spilled (10)
+      </Haiku>
+      <Haiku $indent={false}>
+        the <s>galaxy</s> <strong>STATA</strong> center
+        <br />
+        colored in muted red tones
+        <br />
+        not so true to life (2)
       </Haiku>
       <Haiku $indent={false}>
         behind an island,
@@ -221,7 +221,7 @@ const Solution = (): JSX.Element => {
           </td>
         </tr>
         <tr>
-          <td>LIGHTBULBS (4)</td>
+          <td>CHILDREN (2)</td>
           <td>
             <Mono>H</Mono>
           </td>

@@ -39,7 +39,12 @@ const puzzle: PuzzleDefinition = {
         "To get these words, you had to remove them from the middle of each line. Can you repeat the mechanic on these words?",
     },
   ],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["ANSKNIFEWER"],
+      reply: "Keep going!",
+    },
+  ],
 };
 
 export default puzzle;
