@@ -8,13 +8,11 @@ const EmojiTable = styled.table`
 `;
 
 const EmojiCell = styled.td`
-  font-family: "Noto Color Emoji";
   font-size: 2rem;
   padding: 10px;
 `;
 
 const Emoji = styled.div`
-  font-family: "Noto Color Emoji";
   font-size: 2rem;
 `;
 

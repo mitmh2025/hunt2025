@@ -103,8 +103,10 @@
 
   --highlighter: #efff3c66;
 
-  --body-font: "Hanken Grotesk", "Inter", Verdana, Helvetica, sans-serif;
-  --headline-font: "Belanosima", "Gill Sans", "Futura", Helvetica, sans-serif;
+  --body-font: "Hanken Grotesk", "Noto Color Emoji", "Inter", Verdana, Helvetica,
+    sans-serif;
+  --headline-font: "Belanosima", "Noto Color Emoji", "Gill Sans", "Futura",
+    Helvetica, sans-serif;
 
   --default-font-size: 16px;
 }
