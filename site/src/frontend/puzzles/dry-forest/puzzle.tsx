@@ -1,5 +1,9 @@
 import React from "react";
 import { createGlobalStyle, styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import Deutsch from "./assets/Deutsch.ttf";
 import Ink from "./assets/ink.png";
 
@@ -20,7 +24,12 @@ const SizedImage = styled.img`
 `;
 
 const InkBlotch = () => {
-  return <SizedImage src={Ink} alt="●" />;
+  return (
+    <>
+      <SizedImage className={NO_COPY_CLASS} src={Ink} alt="●" />
+      <span className={COPY_ONLY_CLASS}>●</span>
+    </>
+  );
 };
 
 const FontParagraph = styled.p`

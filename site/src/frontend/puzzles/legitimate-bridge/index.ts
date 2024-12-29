@@ -20,6 +20,7 @@ const puzzle: PuzzleDefinition = {
   content: {
     component: Puzzle,
     entrypoint: "puzzle_legitimate_bridge",
+    copyable: false,
   },
   solution: {
     component: Solution,
