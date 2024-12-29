@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import img1 from "./assets/img1.png";
 import img10 from "./assets/img10.png";
 import img11 from "./assets/img11.png";
@@ -71,15 +72,17 @@ const Puzzle = (): JSX.Element => {
     <>
       {" "}
       <p className="puzzle-flavor">This is flavortext.</p>
-      <StyledTable>
-        {GRID.map((row, i) => (
-          <tr key={i}>
-            {[...row].map((char, j) => (
-              <td key={`${i}-${j}`}>{char}</td>
-            ))}
-          </tr>
-        ))}
-      </StyledTable>
+      <HScrollTableWrapper>
+        <StyledTable>
+          {GRID.map((row, i) => (
+            <tr key={i}>
+              {[...row].map((char, j) => (
+                <td key={`${i}-${j}`}>{char}</td>
+              ))}
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <FlexRow>
         <FlexWrapper>
           <span>__</span>
