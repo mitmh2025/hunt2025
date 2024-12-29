@@ -139,7 +139,7 @@ const Solution = () => {
       </p>
 
       <p>
-        Reading it out as a standard IBM 12-row punch provides the text
+        Reading it out as a standard IBM 12-row punch provides the text{" "}
         <Mono>EMOXXARCNWFKMEFMPBH</Mono>. This is garbage, but as the previous
         cluephrase said, it’s been encrypted with a new one-time pad. Using the
         name of the radio manufacturer <Mono>DIODES&amp;MICROCIRCUITS</Mono>{" "}
