@@ -723,32 +723,34 @@ const Solution = () => {
 
       <p>Re-solving the three sub-metapuzzles (see solutions below) yields:</p>
 
-      <ResolutionsTable>
-        <thead>
-          <tr>
-            <th>Sub-Metapuzzle</th>
-            <th>Answer</th>
-            <th>Re-solve Answer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {META_RESOLVE_TABLE_DATA.map((row) => {
-            return (
-              <tr key={row[0]}>
-                <td>
-                  <i>{row[0]}</i>
-                </td>
-                <td>
-                  <Mono>{row[1]}</Mono>
-                </td>
-                <td>
-                  <Mono>{row[2]}</Mono>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </ResolutionsTable>
+      <HScrollTableWrapper>
+        <ResolutionsTable>
+          <thead>
+            <tr>
+              <th>Sub-Metapuzzle</th>
+              <th>Answer</th>
+              <th>Re-solve Answer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {META_RESOLVE_TABLE_DATA.map((row) => {
+              return (
+                <tr key={row[0]}>
+                  <td>
+                    <i>{row[0]}</i>
+                  </td>
+                  <td>
+                    <Mono>{row[1]}</Mono>
+                  </td>
+                  <td>
+                    <Mono>{row[2]}</Mono>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </ResolutionsTable>
+      </HScrollTableWrapper>
 
       <p>
         In the given order, these form the final answer and instruction{" "}
@@ -883,35 +885,37 @@ const Solution = () => {
         The cities and their histories are as follows (see the solution for{" "}
         <i>The Grand Illusion</i> for significance of colors):
       </p>
-      <GrandIllusionExtractionTable>
-        <thead>
-          <tr>
-            <th>Coordinates</th>
-            <th>City</th>
-            <th>1921</th>
-            <th>1939</th>
-            <th>1946</th>
-            <th>1993</th>
-          </tr>
-        </thead>
-        <tbody>
-          {GRAND_ILLUSION_EXTRACTION_TABLE_DATA.map(
-            (row: GrandIllusionResolveExtractionTableDataRow) => {
-              const [color, coords, city, col1, col2, col3, col4] = row;
-              return (
-                <tr key={city}>
-                  <td style={{ color }}>{coords}</td>
-                  <td style={{ color }}>{city}</td>
-                  <ExtractionCell s={col1} />
-                  <ExtractionCell s={col2} />
-                  <ExtractionCell s={col3} />
-                  <ExtractionCell s={col4} />
-                </tr>
-              );
-            },
-          )}
-        </tbody>
-      </GrandIllusionExtractionTable>
+      <HScrollTableWrapper>
+        <GrandIllusionExtractionTable>
+          <thead>
+            <tr>
+              <th>Coordinates</th>
+              <th>City</th>
+              <th>1921</th>
+              <th>1939</th>
+              <th>1946</th>
+              <th>1993</th>
+            </tr>
+          </thead>
+          <tbody>
+            {GRAND_ILLUSION_EXTRACTION_TABLE_DATA.map(
+              (row: GrandIllusionResolveExtractionTableDataRow) => {
+                const [color, coords, city, col1, col2, col3, col4] = row;
+                return (
+                  <tr key={city}>
+                    <td style={{ color }}>{coords}</td>
+                    <td style={{ color }}>{city}</td>
+                    <ExtractionCell s={col1} />
+                    <ExtractionCell s={col2} />
+                    <ExtractionCell s={col3} />
+                    <ExtractionCell s={col4} />
+                  </tr>
+                );
+              },
+            )}
+          </tbody>
+        </GrandIllusionExtractionTable>
+      </HScrollTableWrapper>
       <p>
         The extracted letters spell <Mono>VIRGIN TEMPLE</Mono>, a clue phrase
         for <Mono>SHIRLEY</Mono>, via the alcohol-free cocktail Shirley Temple.
