@@ -5,8 +5,10 @@ import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 const PicrossTablesDiv = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: bottom;
+  align-items: flex-end;
   justify-content: space-evenly;
+  max-width: 100%;
+  overflow-x: auto;
 `;
 
 const PicrossTable = styled.table`
@@ -23,12 +25,18 @@ const PicrossTable = styled.table`
     border: none;
     text-align: right;
     vertical-align: middle;
+    white-space: pre; // Must not allow wrapping even when spaces are present
   }
   td {
     width: 27px;
+    min-width: 27px;
+    max-width: 27px;
     height: 27px;
+    min-height: 27px;
+    max-height: 27px;
     border: 1px solid black;
   }
+  margin-right: 1em;
 `;
 
 const CenteredItems = styled.div`
@@ -44,6 +52,7 @@ const SquareTable = styled.table`
   border-collapse: collapse;
   td {
     width: 32px;
+    min-width: 32px;
     height: 32px;
     border: 1px solid black;
     text-align: center;
