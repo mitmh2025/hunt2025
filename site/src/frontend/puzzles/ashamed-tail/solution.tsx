@@ -1,6 +1,10 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -141,17 +145,19 @@ const Solution = (): JSX.Element => {
         <PuzzleAnswer>NIMBLE FEET</PuzzleAnswer>.
       </p>
       {GROUPS.map(({ blanks, cluesAndAnswers }, i) => (
-        <StyledTable key={`group-${i}`}>
-          {cluesAndAnswers.map(({ clue, answer }, j) => (
-            <tr key={`group-${i}-row-${j}`}>
-              <td>{clue}</td>
-              <td>{answer}</td>
-              {j === 0 ? (
-                <td colSpan={cluesAndAnswers.length}>{blanks}</td>
-              ) : undefined}
-            </tr>
-          ))}
-        </StyledTable>
+        <HScrollTableWrapper key={`group-${i}`}>
+          <StyledTable>
+            {cluesAndAnswers.map(({ clue, answer }, j) => (
+              <tr key={`group-${i}-row-${j}`}>
+                <td>{clue}</td>
+                <td>{answer}</td>
+                {j === 0 ? (
+                  <td colSpan={cluesAndAnswers.length}>{blanks}</td>
+                ) : undefined}
+              </tr>
+            ))}
+          </StyledTable>
+        </HScrollTableWrapper>
       ))}
     </>
   );
