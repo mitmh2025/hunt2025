@@ -28,6 +28,11 @@ const FlexWrapper = styled.div`
   align-items: center;
 `;
 
+const OverflownP = styled.p`
+  max-width: 100%;
+  overflow-x: auto;
+`;
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -114,7 +119,7 @@ const Solution = (): JSX.Element => {
       <p>
         The arrows are labeled with the power of a used, so summing up we get:
       </p>
-      <p>
+      <OverflownP>
         <Math>
           <MSup>
             <MSub>
@@ -297,12 +302,12 @@ const Solution = (): JSX.Element => {
           </MSup>
         </Math>
         .
-      </p>
+      </OverflownP>
       <p>
         Or if you notice there the powers 6 to 11 are just negatives of 0 to 5,
         there are only 6 different directions, so this simplifies to:
       </p>
-      <p>
+      <OverflownP>
         <Math>
           <MO>=</MO> <MN>5</MN>
           <MSup>
@@ -363,7 +368,7 @@ const Solution = (): JSX.Element => {
             </MSub>
           </MSup>
         </Math>
-      </p>
+      </OverflownP>
       <p>
         The length of the line can be found using a symbolic solver like Maple
         or{" "}
