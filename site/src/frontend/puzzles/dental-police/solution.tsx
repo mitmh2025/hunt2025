@@ -1,6 +1,6 @@
 import React from "react";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   border-spacing: 8px;
@@ -292,10 +292,10 @@ const Solution = (): JSX.Element => {
         phrase, the phrases are given in track order from the Ken Nordine album.
         The solver needs to pair the phrase with the playing tip to get the full
         prompt that suggests a word. For example, the first phrase in the set
-        list is "Cause of a fracture in something that…" which pairs with "is
-        overused," the playing tip for Olive, which is also the first song on
-        the Nordine Colors album. The full phrase is "Cause of a fracture in
-        something that is overused" suggests the answer, STRESS. Using the 5
+        list is “Cause of a fracture in something that…” which pairs with “is
+        overused,” the playing tip for Olive, which is also the first song on
+        the Nordine Colors album. The full phrase is “Cause of a fracture in
+        something that is overused” suggests the answer, STRESS. Using the 5
         notes from the olive-coated person and indexing into STRESS, one gets a
         S. Doing this for the next 11 phrases gets the full second clue phrase,
         <Mono>STOP CODON UGA</Mono>, in which the answer is{" "}
