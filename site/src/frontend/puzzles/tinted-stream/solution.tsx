@@ -35,6 +35,10 @@ const FlexWrapper = styled.div`
   gap: 2em;
 `;
 
+const NoOverflowImage = styled.img`
+  max-width: 100%;
+`;
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -114,63 +118,63 @@ const Solution = (): JSX.Element => {
       </ImageWrapper>
       <p>Enter names left to right, top to bottom.</p>
       <FlexWrapper>
-        <img
+        <NoOverflowImage
           src={grid1}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ALLAN WOODCOURT"
         />
-        <img
+        <NoOverflowImage
           src={grid2}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ANN DOBBIN"
         />
-        <img
+        <NoOverflowImage
           src={grid3}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ANNABELLA MILBANKE"
         />
-        <img
+        <NoOverflowImage
           src={grid4}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ARABELLA STRANGE"
         />
-        <img
+        <NoOverflowImage
           src={grid5}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out CLARA COPPERFIELD"
         />
-        <img
+        <NoOverflowImage
           src={grid6}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out HARRIET WANTAGE"
         />
-        <img
+        <NoOverflowImage
           src={grid7}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out JOHANNA GAUSS"
         />
-        <img
+        <NoOverflowImage
           src={grid8}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out LADY GRESHAM"
         />
-        <img
+        <NoOverflowImage
           src={grid9}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out LADY JUDITH MILBANKE"
         />
-        <img
+        <NoOverflowImage
           src={grid10}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out MADAME THENARDIER"
         />
-        <img
+        <NoOverflowImage
           src={grid11}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out MARIANA"
         />
-        <img
+        <NoOverflowImage
           src={grid12}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out MRS PRIESTLY"
         />
-        <img
+        <NoOverflowImage
           src={grid13}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out SELINA"
         />
-        <img
+        <NoOverflowImage
           src={grid14}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid spelling out ZEPHINE"
         />
-        <img
+        <NoOverflowImage
           src={grid15}
           alt="A large multicolored grid, with all the previous grids from above pieced together like a jigsaw puzzle. Two columns are highlighted, reading ABANDONED AUSTEN AS PLANE GENUS EIGHT."
         />

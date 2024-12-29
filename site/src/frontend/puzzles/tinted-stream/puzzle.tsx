@@ -30,6 +30,10 @@ const FlexWrapper = styled.div`
   gap: 2em;
 `;
 
+const SizeLimitedImg = styled.img`
+  max-width: 100%;
+`;
+
 const Puzzle = (): JSX.Element => {
   return (
     <>
@@ -45,63 +49,63 @@ const Puzzle = (): JSX.Element => {
       <LinkedImage src={genogram6} alt="A genogram" />
       <p>Enter names left to right, top to bottom.</p>
       <FlexWrapper>
-        <img
+        <SizeLimitedImg
           src={grid1}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid2}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid3}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid4}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid5}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid6}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid7}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid8}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid9}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid10}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid11}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid12}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid13}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid14}
           alt="Zoomed-in crop of a fabric garment, with a grid overlaid."
         />
-        <img
+        <SizeLimitedImg
           src={grid15}
           alt="The outline of a dress, with a large grid overlaid."
         />
