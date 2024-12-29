@@ -1,5 +1,6 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import image_adder from "./assets/image_01.png";
 import image_aped from "./assets/image_02.png";
 import image_awn from "./assets/image_03.png";
@@ -29,13 +30,21 @@ const Image = styled.img`
   width: 153px;
 `;
 
-const Table = styled.table`
+const TableElement = styled.table`
   margin: 0 auto;
   td {
     text-align: center;
     vertical-align: middle;
   }
 `;
+
+const Table = ({ children }: { children: ReactNode }) => {
+  return (
+    <HScrollTableWrapper>
+      <TableElement>{children}</TableElement>
+    </HScrollTableWrapper>
+  );
+};
 
 const Solution = () => {
   return (
