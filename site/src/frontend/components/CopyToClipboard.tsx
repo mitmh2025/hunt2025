@@ -71,10 +71,10 @@ const ResetStyles = {
   "text-align": "left",
 };
 
-const cloneForCopy = (node: Node): Node => {
+const cloneForCopy = (root: HTMLElement): HTMLElement => {
   const rootStyles =
-    node instanceof HTMLElement
-      ? window.getComputedStyle(node)
+    root instanceof HTMLElement
+      ? window.getComputedStyle(root)
       : new CSSStyleDeclaration();
 
   const pushDownStyles = (node: HTMLElement, styles: CSSStyleDeclaration) => {
@@ -186,6 +186,16 @@ const cloneForCopy = (node: Node): Node => {
           child.nextSibling,
         );
       }
+
+      if (
+        child instanceof HTMLDivElement ||
+        child instanceof HTMLParagraphElement
+      ) {
+        transformed.insertBefore(
+          document.createTextNode("\n"),
+          child.nextSibling,
+        );
+      }
     });
 
     return transformed;
@@ -211,6 +221,22 @@ const cloneForCopy = (node: Node): Node => {
     //
     // (We leave the non-dataset content as a link to the image for the benefit
     // of anything that doesn't parse data-sheets-formula, like Excel)
+    //
+    // We'll also try to massage images into this format if they are at the
+    // top-level of the markup
+
+    const transformableContainers = node.querySelectorAll(
+      ":scope > div:has(> img:only-child), :scope > div:has(> a:only-child > img:only-child)",
+    );
+    transformableContainers.forEach((container) => {
+      const table = document.createElement("table");
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      table.appendChild(tr);
+      tr.appendChild(td);
+      td.replaceChildren(...container.childNodes);
+      container.replaceWith(table);
+    });
 
     const transformableImages = node.querySelectorAll(
       "td:has(> img:only-child)",
@@ -286,8 +312,12 @@ const cloneForCopy = (node: Node): Node => {
   };
 
   const recursiveClone = (node: Node): Node => {
-    const result = node.cloneNode();
+    const result =
+      node === root
+        ? document.createElement("google-sheets-html-origin")
+        : node.cloneNode();
     if (node instanceof HTMLElement && result instanceof HTMLElement) {
+      result.removeAttribute("style");
       pushDownStyles(result, window.getComputedStyle(node));
     }
 
@@ -302,13 +332,11 @@ const cloneForCopy = (node: Node): Node => {
     return transform(result);
   };
 
-  const cloned = recursiveClone(node);
+  const cloned = recursiveClone(root) as HTMLElement;
   fixImages(cloned);
   addStyleResets(cloned);
 
-  const wrapper = document.createElement("google-sheets-html-origin");
-  wrapper.appendChild(cloned);
-  return wrapper;
+  return cloned;
 };
 
 const LEADING_WHITESPACE_REGEX = /^[^\S\r\n]+/gm;
@@ -349,7 +377,7 @@ const CopyToClipboard = () => {
 
     content.classList.add("copying");
     try {
-      const cloned = cloneForCopy(content) as HTMLElement;
+      const cloned = cloneForCopy(content);
 
       // innerText on detached nodes does not insert whitespace for block
       // element breaks so we need to temporarily attach it to the document
