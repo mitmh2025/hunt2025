@@ -15,7 +15,7 @@ import solution9 from "./assets/solution9.svg";
 
 const SizedImage = styled(LinkedImage)`
   display: block;
-  width: 600px;
+  max-width: calc(min(600px, 100%));
 `;
 
 const ALT_TEXT = "A solved hexagonal sheep-and-wolves slitherlink puzzle.";

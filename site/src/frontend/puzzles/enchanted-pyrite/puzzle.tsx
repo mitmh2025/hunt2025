@@ -14,7 +14,7 @@ const GreenSpan = styled.span`
 
 const PrintImage = styled(LinkedImage)<{ $width: number }>`
   display: block;
-  width: ${({ $width }) => $width}px;
+  width: calc(min(100%, ${({ $width }) => $width}px));
   @media print {
     page-break-after: always;
   }
