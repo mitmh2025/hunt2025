@@ -1,13 +1,22 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 
-const Table = styled.table`
+const TableElement = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
   font-size: 16px;
   text-align: left;
 `;
+
+const Table = ({ children }: { children: ReactNode }) => {
+  return (
+    <HScrollTableWrapper>
+      <TableElement>{children}</TableElement>
+    </HScrollTableWrapper>
+  );
+};
 
 const TableHeader = styled.thead`
   // background-color: #f4f4f4;
