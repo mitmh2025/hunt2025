@@ -76,7 +76,7 @@ const ALL_HAIKU: [string, string, string][] = [
   [
     "heap of soda cans",
     "crushed caffeine, then crushed metal",
-    "casts tired dice (2)",
+    "casts a tired dice (2)",
   ],
   [
     "behind an island,",
