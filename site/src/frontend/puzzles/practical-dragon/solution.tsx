@@ -35,6 +35,13 @@ const SolutionImg = styled.img`
   height: 82.67px;
 `;
 
+const EndTable = styled.table`
+  td,
+  th {
+    padding-right: 2rem;
+  }
+`;
+
 const Solution = () => {
   return (
     <>
@@ -1251,7 +1258,7 @@ const Solution = () => {
         songs to the respective band names. Doing so with the three intermediate
         solutions:
       </p>
-      <table>
+      <EndTable>
         <tr>
           <th>
             <p>Set</p>
@@ -1308,7 +1315,7 @@ const Solution = () => {
             <p>DON MCLEAN</p>
           </td>
         </tr>
-      </table>
+      </EndTable>
       <p>If you use the band names in the acrostic index you get</p>
       <p>
         <SolutionImg
