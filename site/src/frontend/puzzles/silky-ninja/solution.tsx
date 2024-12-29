@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -12,9 +13,14 @@ const StyledTable = styled.table`
     border: 1px solid var(--black);
     vertical-align: top;
   }
+  th {
+    position: sticky;
+    top: 0px;
+    background-color: inherit;
+  }
 `;
 
-const LetterTable = styled(StyledTable)`
+const LetterTableElement = styled(StyledTable)`
   td {
     width: 266px;
   }
@@ -37,6 +43,208 @@ const GrayData = styled.td`
   background-color: #d9d9d9;
 `;
 
+const LETTER_TABLE_DATA = [
+  [
+    "A",
+    "Literal: This word appears literally in the output, or it is a literal input to some other function.",
+  ],
+  [
+    "B",
+    "Word hidden in clue: Indicates that an answer is hiding in plain sight, perhaps spanning multiple words in the clue.",
+  ],
+  ["C", "Definition: The definition part of the clue"],
+  [
+    "D",
+    "Synonym: This word should be replaced with a synonym, whose length is given in parentheses.",
+  ],
+  [
+    "E",
+    "Delete specific string: Remove some specific letter or string from another word.",
+  ],
+  [
+    "F",
+    "Abbreviation: This word should be replaced by its common abbreviation.",
+  ],
+  ["G", "First letter: Take the first letter of some other word."],
+  [
+    "H",
+    "Last n letters: Take the last letter or letters of some other word(s)",
+  ],
+  [
+    "I",
+    "Insert A in B: Insert what comes before this word into what comes after.",
+  ],
+  ["J", "Even/odd letters: Take even or odd letters from a word or phrase."],
+  ["K", "Filler / linker: This word helps link the wordplay and definition."],
+  ["L", "A after B: Place the preceding string after the following string."],
+  ["M", "Center letter: Take the center letter of some word."],
+  ["N", "Anagram: Anagram a word or phrase."],
+  ["O", "Reversal: Reverse some other word or phrase."],
+  ["P", "Replace letter: Replace one letter in a word with another letter."],
+  ["Q", "Homophone: Replace a word with a homophone."],
+];
+
+const LetterTable = () => {
+  return (
+    <HScrollTableWrapper>
+      <LetterTableElement>
+        <thead>
+          <tr>
+            <th>Letter</th>
+            <th>Function</th>
+          </tr>
+        </thead>
+        <tbody>
+          {LETTER_TABLE_DATA.map((row) => {
+            return (
+              <tr key={row[0]}>
+                <td>
+                  <p>{row[0]}</p>
+                </td>
+                <td>
+                  <p>{row[1]}</p>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </LetterTableElement>
+    </HScrollTableWrapper>
+  );
+};
+
+// prettier-ignore
+const REGULAR_ANSWER_TABLE_DATA = [
+  ["Cannibalism acknowledged secret buffet",  "Literal",  "Literal",  "Word hidden in clue",  "Definition",  "",  "",  "",  "",  "SMACK"],
+  ["Universal dropping Southern comedian",  "Synonym [cosmic]",  "Delete specific string",  "Abbreviation",  "Definition",  "",  "",  "",  "",  "COMIC"],
+  ["Hedberg might initially irritate",  "Definition",  "Literal",  "First letter",  "Synonym [itch]",  "",  "",  "",  "",  "MITCH"],
+  ["Marijuana butts eaten by horse eventually",  "Literal",  "Last N letters",  "Insert A in B",  "ditto",  "Synonym [filly]",  "Definition",  "",  "",  "FINALLY"],
+  ["Following closer to the stern",  "Definition",  "Definition",  "ditto",  "ditto",  "ditto",  "",  "",  "",  "AFTER"],
+  ["Even DJ Rookie is a fool",  "Even/Odd letters",  "Literal",  "ditto",  "Filler",  "ditto",  "Definition",  "",  "",  "JOKE"],
+  [],
+  ["Warrior housed in Anjediva",  "Definition",  "Word hidden in clue",  "ditto",  "Literal",  "",  "",  "",  "",  "JEDI"],
+  ["Survives using core samples primarily",  "Definition",  "Literal",  "Center letter",  "Literal",  "First letter",  "",  "",  "",  "IS"],
+  ["One peach pit",  "Definition",  "Literal",  "Center letter",  "",  "",  "",  "",  "",  "A"],
+  ["Impotent authority, even elders, heart of issue",  "Definition",  "Synonym [power]",  "Even/Odd letters",  "Literal",  "Center letter",  "ditto",  "Literal",  "",  "POWERLESS"],
+  ["Break family cloth",  "Synonym [nap]",  "Synonym [kin]",  "Definition",  "",  "",  "",  "",  "",  "NAPKIN"],
+  [],
+  ["Vacuum mangled capes",  "Definition",  "Anagram",  "Literal",  "",  "",  "",  "",  "",  "SPACE"],
+  ["Drunken revel follows returning art tourist",  "Anagram",  "Literal",  "A after B",  "Reversal",  "Literal",  "Definition",  "",  "",  "TRAVELER"],
+  ["Apostle gag changed profit to loss",  "Definition",  "Synonym [puke]",  "Replace letter",  "Abbreviation",  "Filler",  "Abbreviation",  "",  "",  "LUKE"],
+  [],
+  ["Cry audibly for reception",  "Synonym [bawl]",  "Homophone",  "Filler",  "Definition",  "",  "",  "",  "",  "BALL"],
+  ["Not opposed to hiding in Scarif orbit",  "Definition",  "ditto",  "ditto",  "Word hidden in clue",  "ditto",  "Literal",  "ditto",  "",  "FOR"],
+  ["Show us involved in absurd claim",  "Definition",  "Literal",  "Insert A in B",  "ditto",  "Anagram",  "Literal",  "",  "",  "MUSICAL"],
+  ["Royal band turning somber ending into knight’s debut",  "Definition",  "Synonym [ring]",  "Replace letter",  "Literal",  "Last N letters",  "Filler",  "Literal",  "First letter",  "KING"],
+  [],
+  ["Odd roomba reverting to machine",  "Even/Odd letters",  "Literal",  "Reversal",  "Literal",  "Definition",  "",  "",  "",  "ROBOT"],
+  ["Messed up escape, hemorrhaged",  "Definition",  "ditto",  "Synonym [scram]",  "Synonym [bled]",  "",  "",  "",  "",  "SCRAMBLED"],
+  ["Wireless radiator leaks messy tar",  "Definition",  "Literal",  "Delete specific string",  "Anagram",  "Literal",  "",  "",  "",  "RADIO"],
+  ["Drop of wine enters exhausting trading",  "First letter",  "ditto",  "Literal",  "Insert A in B",  "Synonym [sapping]",  "Definition",  "",  "",  "SWAPPING"],
+  ["Match goal an upset",  "Definition",  "Literal",  "Literal",  "Anagram",  "",  "",  "",  "",  "ANALOG"],
+  ["Warning misheard in support",  "Synonym [fore]",  "Homophone",  "Definition",  "ditto",  "",  "",  "",  "",  "FOR"],
+  ["Ass in face online",  "Synonym [git]",  "Insert A in B",  "Synonym [dial]",  "Definition",  "",  "",  "",  "",  "DIGITAL"],
+  [],
+  ["Rattle in Audi’s turbocharger",  "Definition",  "Word hidden in clue",  "Literal",  "Literal",  "",  "",  "",  "",  "DISTURB"],
+  ["Paddle back without wife either",  "Synonym [row]",  "Reversal",  "Delete specific string",  "Abbreviation",  "Definition",  "",  "",  "",  "OR"],
+  ["Finish queasy after dark ending",  "Definition",  "Synonym [ill]",  "A after B",  "Literal",  "Last N letters",  "",  "",  "",  "KILL"],
+  ["Note sung for myself",  "Synonym [mi]",  "Homophone",  "Filler",  "Definition",  "",  "",  "",  "",  "ME"],
+  ["Evelyn collapses regularly",  "Literal",  "Anagram",  "Definition",  "",  "",  "",  "",  "",  "EVENLY"],
+  [],
+  ["Researcher is after recalled cod",  "Definition",  "Filler",  "Synonym [post]",  "Reversal",  "Literal",  "",  "",  "",  "POSTDOC"],
+  ["P.S.: Following retrospective yelp continues",  "Literal",  "A after B",  "Reversal",  "Synonym [eek]",  "Definition",  "",  "",  "",  "KEEPS"],
+  ["Secret toll follows greeting",  "Definition",  "Synonym [hi]",  "A after B",  "Synonym [ding]",  "",  "",  "",  "",  "HIDING"],
+  ["Silly Lisp error",  "Anagram",  "Literal",  "Definition",  "",  "",  "",  "",  "",  "SLIP"],
+];
+
+const GREY_BOX_ANSWER_TABLE_DATA = [
+  ["SMACK", "Definition", "PUNCH"],
+  ["COMIC", "Literal", ""],
+  ["MITCH", "Literal", ""],
+  ["FINALLY", "Last N letters", ""],
+  ["AFTER", "A after B", ""],
+  ["JOKE", "Synonym [pun]", ""],
+  [],
+  ["JEDI", "Definition", "ANAKIN"],
+  ["IS", "Filler", ""],
+  ["A", "Literal", ""],
+  ["POWERLESS", "Delete specific string", ""],
+  ["NAPKIN", "Literal", ""],
+  [],
+  ["SPACE", "Synonym [sky]", "SKYWALKER"],
+  ["TRAVELER", "Synonym [walker]", ""],
+  ["LUKE", "Definition", ""],
+  [],
+  ["BALL", "Definition", "BB"],
+  ["FOR", "Filler", ""],
+  ["MUSICAL", "Definition", ""],
+  ["KING", "ditto", ""],
+  [],
+  ["ROBOT", "Definition", "DROID"],
+  ["SCRAMBLED", "Anagram", ""],
+  ["RADIO", "Literal", ""],
+  ["SWAPPING", "Replace letter", ""],
+  ["ANALOG", "Abbreviation", ""],
+  ["FOR", "Filler", ""],
+  ["DIGITAL", "Abbreviation", ""],
+  [],
+  ["DISTURB", "Definition", "RILE"],
+  ["OR", "Literal", ""],
+  ["KILL", "ditto", ""],
+  ["ME", "ditto", ""],
+  ["EVENLY", "Even/Odd letters", ""],
+  [],
+  ["POSTDOC", "Literal", "DOCK"],
+  ["KEEPS", "ditto", ""],
+  ["HIDING", "Word hidden in clue", ""],
+  ["SLIP", "Definition", ""],
+];
+
+const ScrollableAnswersTable = ({ data }: { data: string[][] }) => {
+  return (
+    <HScrollTableWrapper>
+      <AnswerTable>
+        <thead>
+          <tr>
+            <th>Clue</th>
+            <th colSpan={(data[0]?.length ?? 3) - 2}>Functions</th>
+            <th>Answers</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, i) => {
+            if (row.length === 0) {
+              return (
+                <tr key={i}>
+                  {data[0]?.map((_item, j) => {
+                    return (
+                      <GrayData key={`${i}-${j}`}>
+                        <p />
+                      </GrayData>
+                    );
+                  })}
+                </tr>
+              );
+            } else {
+              return (
+                <tr key={i}>
+                  {row.map((item, j) => {
+                    return (
+                      <GreenData key={`${i}-${j}`}>
+                        <p>{item}</p>
+                      </GreenData>
+                    );
+                  })}
+                </tr>
+              );
+            }
+          })}
+        </tbody>
+      </AnswerTable>
+    </HScrollTableWrapper>
+  );
+};
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -47,173 +255,7 @@ const Solution = (): JSX.Element => {
         are obscured, and solvers must figure them out as they solve individual
         clues. The complete list of droid functions can be seen here:
       </p>
-      <LetterTable>
-        <tr>
-          <td>
-            <p>A</p>
-          </td>
-          <td>
-            <p>
-              Literal: This word appears literally in the output, or it is a
-              literal input to some other function.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>B</p>
-          </td>
-          <td>
-            <p>
-              Word hidden in clue: Indicates that an answer is hiding in plain
-              sight, perhaps spanning multiple words in the clue.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>C</p>
-          </td>
-          <td>
-            <p>Definition: The definition part of the clue</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>D</p>
-          </td>
-          <td>
-            <p>
-              Synonym: This word should be replaced with a synonym, whose length
-              is given in parentheses.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>E</p>
-          </td>
-          <td>
-            <p>
-              Delete specific string: Remove some specific letter or string from
-              another word.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>F</p>
-          </td>
-          <td>
-            <p>
-              Abbreviation: This word should be replaced by its common
-              abbreviation.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>G</p>
-          </td>
-          <td>
-            <p>First letter: Take the first letter of some other word.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>H</p>
-          </td>
-          <td>
-            <p>
-              Last n letters: Take the last letter or letters of some other
-              word(s)
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>I</p>
-          </td>
-          <td>
-            <p>
-              Insert A in B: Insert what comes before this word into what comes
-              after.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>J</p>
-          </td>
-          <td>
-            <p>
-              Even/odd letters: Take even or odd letters from a word or phrase.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>K</p>
-          </td>
-          <td>
-            <p>
-              Filler / linker: This word helps link the wordplay and definition.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>L</p>
-          </td>
-          <td>
-            <p>
-              A after B: Place the preceding string after the following string.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>M</p>
-          </td>
-          <td>
-            <p>Center letter: Take the center letter of some word.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>N</p>
-          </td>
-          <td>
-            <p>Anagram: Anagram a word or phrase.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>O</p>
-          </td>
-          <td>
-            <p>Reversal: Reverse some other word or phrase.</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>P</p>
-          </td>
-          <td>
-            <p>
-              Replace letter: Replace one letter in a word with another letter.
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>Q</p>
-          </td>
-          <td>
-            <p>Homophone: Replace a word with a homophone.</p>
-          </td>
-        </tr>
-      </LetterTable>
+      <LetterTable />
       <p>
         Droids which indicate a multi-word phrase all performing the same
         function are squashed together slightly, e.g. “housed in” which consists
@@ -254,1731 +296,9 @@ const Solution = (): JSX.Element => {
         which is the answer.
       </p>
       <p>The complete set of regular clues, functions and answers are:</p>
-      <AnswerTable>
-        <tr>
-          <GreenData>
-            <p>Cannibalism acknowledged secret buffet</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Word hidden in clue</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>SMACK</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Universal dropping Southern comedian</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [cosmic]</p>
-          </GreenData>
-          <GreenData>
-            <p>Delete specific string</p>
-          </GreenData>
-          <GreenData>
-            <p>Abbreviation</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>COMIC</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Hedberg might initially irritate</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>First letter</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [itch]</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>MITCH</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Marijuana butts eaten by horse eventually</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Last N letters</p>
-          </GreenData>
-          <GreenData>
-            <p>Insert A in B</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [filly]</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>FINALLY</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Following closer to the stern</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>AFTER</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Even DJ Rookie is a fool</p>
-          </GreenData>
-          <GreenData>
-            <p>Even/Odd letters</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>JOKE</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Warrior housed in Anjediva</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Word hidden in clue</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>JEDI</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Survives using core samples primarily</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Center letter</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>First letter</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>IS</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>One peach pit</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Center letter</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>A</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Impotent authority, even elders, heart of issue</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [power]</p>
-          </GreenData>
-          <GreenData>
-            <p>Even/Odd letters</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Center letter</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>POWERLESS</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Break family cloth</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [nap]</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [kin]</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>NAPKIN</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Vacuum mangled capes</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>SPACE</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Drunken revel follows returning art tourist</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>A after B</p>
-          </GreenData>
-          <GreenData>
-            <p>Reversal</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>TRAVELER</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Apostle gag changed profit to loss</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [puke]</p>
-          </GreenData>
-          <GreenData>
-            <p>Replace letter</p>
-          </GreenData>
-          <GreenData>
-            <p>Abbreviation</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <GreenData>
-            <p>Abbreviation</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>LUKE</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Cry audibly for reception</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [bawl]</p>
-          </GreenData>
-          <GreenData>
-            <p>Homophone</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>BALL</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Not opposed to hiding in Scarif orbit</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Word hidden in clue</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>FOR</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Show us involved in absurd claim</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Insert A in B</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>MUSICAL</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Royal band turning somber ending into knight’s debut</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [ring]</p>
-          </GreenData>
-          <GreenData>
-            <p>Replace letter</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Last N letters</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>First letter</p>
-          </GreenData>
-          <GreenData>
-            <p>KING</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Odd roomba reverting to machine</p>
-          </GreenData>
-          <GreenData>
-            <p>Even/Odd letters</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Reversal</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>ROBOT</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Messed up escape, hemorrhaged</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [scram]</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [bled]</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>SCRAMBLED</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Wireless radiator leaks messy tar</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Delete specific string</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>RADIO</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Drop of wine enters exhausting trading</p>
-          </GreenData>
-          <GreenData>
-            <p>First letter</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Insert A in B</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [sapping]</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>SWAPPING</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Match goal an upset</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>ANALOG</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Warning misheard in support</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [fore]</p>
-          </GreenData>
-          <GreenData>
-            <p>Homophone</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>FOR</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Ass in face online</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [git]</p>
-          </GreenData>
-          <GreenData>
-            <p>Insert A in B</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [dial]</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>DIGITAL</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Rattle in Audi’s turbocharger</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Word hidden in clue</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>DISTURB</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Paddle back without wife either</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [row]</p>
-          </GreenData>
-          <GreenData>
-            <p>Reversal</p>
-          </GreenData>
-          <GreenData>
-            <p>Delete specific string</p>
-          </GreenData>
-          <GreenData>
-            <p>Abbreviation</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>OR</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Finish queasy after dark ending</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [ill]</p>
-          </GreenData>
-          <GreenData>
-            <p>A after B</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Last N letters</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>KILL</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Note sung for myself</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [mi]</p>
-          </GreenData>
-          <GreenData>
-            <p>Homophone</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>ME</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Evelyn collapses regularly</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>EVENLY</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Researcher is after recalled cod</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [post]</p>
-          </GreenData>
-          <GreenData>
-            <p>Reversal</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>POSTDOC</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>P.S.: Following retrospective yelp continues</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>A after B</p>
-          </GreenData>
-          <GreenData>
-            <p>Reversal</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [eek]</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>KEEPS</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Secret toll follows greeting</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [hi]</p>
-          </GreenData>
-          <GreenData>
-            <p>A after B</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [ding]</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>HIDING</p>
-          </GreenData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>Silly Lisp error</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p></p>
-          </GreenData>
-          <GreenData>
-            <p>SLIP</p>
-          </GreenData>
-        </tr>
-      </AnswerTable>
+      <ScrollableAnswersTable data={REGULAR_ANSWER_TABLE_DATA} />
       <p>The gray boxed clues, functions, and answers are:</p>
-      <AnswerTable>
-        <tr>
-          <GreenData>
-            <p>SMACK</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p>PUNCH</p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>COMIC</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>MITCH</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>FINALLY</p>
-          </GreenData>
-          <GreenData>
-            <p>Last N letters</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>AFTER</p>
-          </GreenData>
-          <GreenData>
-            <p>A after B</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>JOKE</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [pun]</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>JEDI</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p>ANAKIN</p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>IS</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>A</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>POWERLESS</p>
-          </GreenData>
-          <GreenData>
-            <p>Delete specific string</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>NAPKIN</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>SPACE</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [sky]</p>
-          </GreenData>
-          <td>
-            <p>SKYWALKER</p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>TRAVELER</p>
-          </GreenData>
-          <GreenData>
-            <p>Synonym [walker]</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>LUKE</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>BALL</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p>BB</p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>FOR</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>MUSICAL</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>KING</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>ROBOT</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p>DROID</p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>SCRAMBLED</p>
-          </GreenData>
-          <GreenData>
-            <p>Anagram</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>RADIO</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>SWAPPING</p>
-          </GreenData>
-          <GreenData>
-            <p>Replace letter</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>ANALOG</p>
-          </GreenData>
-          <GreenData>
-            <p>Abbreviation</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>FOR</p>
-          </GreenData>
-          <GreenData>
-            <p>Filler</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>DIGITAL</p>
-          </GreenData>
-          <GreenData>
-            <p>Abbreviation</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>DISTURB</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p>RILE</p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>OR</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>KILL</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>ME</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>EVENLY</p>
-          </GreenData>
-          <GreenData>
-            <p>Even/Odd letters</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-          <GrayData>
-            <p></p>
-          </GrayData>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>POSTDOC</p>
-          </GreenData>
-          <GreenData>
-            <p>Literal</p>
-          </GreenData>
-          <td>
-            <p>DOCK</p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>KEEPS</p>
-          </GreenData>
-          <GreenData>
-            <p>ditto</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>HIDING</p>
-          </GreenData>
-          <GreenData>
-            <p>Word hidden in clue</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-        <tr>
-          <GreenData>
-            <p>SLIP</p>
-          </GreenData>
-          <GreenData>
-            <p>Definition</p>
-          </GreenData>
-          <td>
-            <p></p>
-          </td>
-        </tr>
-      </AnswerTable>
+      <ScrollableAnswersTable data={GREY_BOX_ANSWER_TABLE_DATA} />
     </>
   );
 };
