@@ -15,6 +15,14 @@
 }
 
 @font-face {
+  font-family: "Noto Color Emoji";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../../assets/NotoColorEmoji-Regular.ttf") format("truetype");
+}
+
+@font-face {
   font-family: "Belanosima";
   font-style: normal;
   font-display: swap;
@@ -111,8 +119,10 @@
 
   --highlighter: #efff3c66;
 
-  --body-font: "Hanken Grotesk", "Inter", Verdana, Helvetica, sans-serif;
-  --headline-font: "Belanosima", "Gill Sans", "Futura", Helvetica, sans-serif;
+  --body-font: "Hanken Grotesk", "Noto Color Emoji", "Inter", Verdana, Helvetica,
+    sans-serif;
+  --headline-font: "Belanosima", "Noto Color Emoji", "Gill Sans", "Futura",
+    Helvetica, sans-serif;
 
   --default-font-size: 16px;
 }
