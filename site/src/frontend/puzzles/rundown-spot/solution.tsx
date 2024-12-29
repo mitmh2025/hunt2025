@@ -1,5 +1,6 @@
 import React from "react";
 import LinkedImage from "../../components/LinkedImage";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import img1 from "./assets/solution1.png";
 import img2 from "./assets/solution2.png";
 
@@ -32,18 +33,20 @@ const Solution = () => {
         <b>should</b> contain the name of the bet, but the name is elided:
       </p>
       <LinkedImage alt="The solved dropquote" src={img2} />
-      <table>
-        <tr>
-          <th>bet</th>
-          <th>words/phrases</th>
-        </tr>
-        {tableContents.map(([bet, words], index) => (
-          <tr key={index}>
-            <td>{bet}</td>
-            <td>{words}</td>
+      <HScrollTableWrapper>
+        <table>
+          <tr>
+            <th>bet</th>
+            <th>words/phrases</th>
           </tr>
-        ))}
-      </table>
+          {tableContents.map(([bet, words], index) => (
+            <tr key={index}>
+              <td>{bet}</td>
+              <td>{words}</td>
+            </tr>
+          ))}
+        </table>
+      </HScrollTableWrapper>
       <p>
         There is one letter left over in each of the thirty-seven slots. Read
         them in numerical order from 0 to 36 to get the answer: HAL INSTITUTE
