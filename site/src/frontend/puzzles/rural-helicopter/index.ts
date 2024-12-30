@@ -8,11 +8,12 @@ const puzzle: PuzzleDefinition = {
   initial_description:
     "A series of nucleotide sequences, and photo cards with suspect information",
   answer: "SLEDDER",
-  authors: ["wolfy5334"],
+  authors: ["Max Wolf"],
   editors: ["Joanna Murray", "Kevin Hwang", "Michele Pratusevich"],
   additional_credits: [],
   content: {
     component: Puzzle,
+    copyable: true,
   },
   solution: {
     component: Solution,
@@ -69,7 +70,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["GetCodonAtDogID"],
+      guess: ["GET CODON AT DOG ID"],
       reply: "Keep going",
     },
   ],

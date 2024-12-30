@@ -31,6 +31,10 @@ const StyledTableCell = styled.td`
   text-align: center;
 `;
 
+const StyledDiv = styled.div`
+  display: block;
+`;
+
 const Puzzle = () => {
   const altText = "a dog";
   return (
@@ -91,87 +95,91 @@ const Puzzle = () => {
         <table>
           <tr>
             <StyledTableCell>
-              <LinkedImage src={dog01} alt={altText}></LinkedImage>Suspect ID:
-              113 <br />
-              Known Carrier: Achromatopsia, Cone degeneration 2
+              <LinkedImage src={dog01} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 113</StyledDiv>
+              <StyledDiv>
+                Known Carrier: Achromatopsia, Cone degeneration 2
+              </StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog02} alt={altText}></LinkedImage>Suspect ID: 6
-              <br />
-              Known Carrier: BFJE
+              <LinkedImage src={dog02} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 6</StyledDiv>
+              <StyledDiv>Known Carrier: BFJE</StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog03} alt={altText}></LinkedImage>Suspect ID:
-              55 <br />
-              Known Carrier: Chondrodysplasia
+              <LinkedImage src={dog03} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 55</StyledDiv>
+              <StyledDiv>Known Carrier: Chondrodysplasia</StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog04} alt={altText}></LinkedImage>Suspect ID:
-              67 <br />
-              Known Carrier: Craniomandibular Osteopathy
-            </StyledTableCell>
-          </tr>
-          <tr>
-            <StyledTableCell>
-              <LinkedImage src={dog05} alt={altText}></LinkedImage>Suspect ID:
-              18 <br />
-              Known Carrier: Degenerative Myelopathy
-            </StyledTableCell>
-            <StyledTableCell>
-              <LinkedImage src={dog06} alt={altText}></LinkedImage>Suspect ID:
-              60 <br />
-              Known Carrier: Dystrophic Epidermolysis Bullosa
-            </StyledTableCell>
-            <StyledTableCell>
-              <LinkedImage src={dog07} alt={altText}></LinkedImage>Suspect ID: 1
-              <br />
-              Known Carrier: Ectodermal Dysplasia
-            </StyledTableCell>
-            <StyledTableCell>
-              <LinkedImage src={dog08} alt={altText}></LinkedImage>Suspect ID:
-              27 <br />
-              Known Carrier: Elliptocytosis
+              <LinkedImage src={dog04} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 67</StyledDiv>
+              <StyledDiv>Known Carrier: Craniomandibular Osteopathy</StyledDiv>
             </StyledTableCell>
           </tr>
           <tr>
             <StyledTableCell>
-              <LinkedImage src={dog09} alt={altText}></LinkedImage>Suspect ID:
-              25 <br />
-              Known Carrier: Familial Nephropathy
+              <LinkedImage src={dog05} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 18</StyledDiv>
+              <StyledDiv>Known Carrier: Degenerative Myelopathy</StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog10} alt={altText}></LinkedImage>Suspect ID:
-              56 <br />
-              Known Carrier: Hemophilia A
+              <LinkedImage src={dog06} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 60</StyledDiv>
+              <StyledDiv>
+                Known Carrier: Dystrophic Epidermolysis Bullosa
+              </StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog11} alt={altText}></LinkedImage>Suspect ID:
-              40 <br />
-              Known Carrier: Hyperuricosuria
+              <LinkedImage src={dog07} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 1</StyledDiv>
+              <StyledDiv>Known Carrier: Ectodermal Dysplasia</StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog12} alt={altText}></LinkedImage>Suspect ID:
-              11 <br />
-              Known Carrier: Hypoproconvertinemia
+              <LinkedImage src={dog08} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 27</StyledDiv>
+              <StyledDiv>Known Carrier: Elliptocytosis</StyledDiv>
             </StyledTableCell>
           </tr>
           <tr>
             <StyledTableCell>
-              <LinkedImage src={dog13} alt={altText}></LinkedImage>Suspect ID: 7
-              <br />
-              Known Carrier: Inherited polyneuropathy
+              <LinkedImage src={dog09} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 25</StyledDiv>
+              <StyledDiv>Known Carrier: Familial Nephropathy</StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog14} alt={altText}></LinkedImage>Suspect ID:
-              21
-              <br />
-              Known Carrier: Osteogenesis imperfecta
+              <LinkedImage src={dog10} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 56</StyledDiv>
+              <StyledDiv>Known Carrier: Hemophilia A</StyledDiv>
             </StyledTableCell>
             <StyledTableCell>
-              <LinkedImage src={dog15} alt={altText}></LinkedImage>Suspect ID:
-              30
-              <br />
-              Known Carrier: Progressive early onset ataxia
+              <LinkedImage src={dog11} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 40</StyledDiv>
+              <StyledDiv>Known Carrier: Hyperuricosuria</StyledDiv>
+            </StyledTableCell>
+            <StyledTableCell>
+              <LinkedImage src={dog12} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 11</StyledDiv>
+              <StyledDiv>Known Carrier: Hypoproconvertinemia</StyledDiv>
+            </StyledTableCell>
+          </tr>
+          <tr>
+            <StyledTableCell>
+              <LinkedImage src={dog13} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 7</StyledDiv>
+              <StyledDiv>Known Carrier: Inherited polyneuropathy</StyledDiv>
+            </StyledTableCell>
+            <StyledTableCell>
+              <LinkedImage src={dog14} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 21</StyledDiv>
+              <StyledDiv>Known Carrier: Osteogenesis imperfecta</StyledDiv>
+            </StyledTableCell>
+            <StyledTableCell>
+              <LinkedImage src={dog15} alt={altText}></LinkedImage>
+              <StyledDiv>Suspect ID: 30</StyledDiv>
+              <StyledDiv>
+                Known Carrier: Progressive early onset ataxia
+              </StyledDiv>
             </StyledTableCell>
           </tr>
         </table>

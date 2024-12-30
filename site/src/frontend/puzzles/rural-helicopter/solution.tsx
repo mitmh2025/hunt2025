@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { PuzzleAnswer } from "../../components/StyledUI";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import image01 from "./assets/1.png";
 
 const HighlightSpan = styled.span`
@@ -9,6 +9,11 @@ const HighlightSpan = styled.span`
 `;
 
 const StyledTableCell = styled.td`
+  border: 2px solid grey;
+  padding: 12px;
+`;
+
+const StyledTableHeaderCell = styled.th`
   border: 2px solid grey;
   padding: 12px;
 `;
@@ -81,16 +86,16 @@ const Solution = () => {
         for each sequence results in the following table:
       </p>
       <table>
-        <th>
+        <thead>
           <tr>
-            <StyledTableCell>Sequence #</StyledTableCell>
-            <StyledTableCell>Gene</StyledTableCell>
-            <StyledTableCell>Disease</StyledTableCell>
-            <StyledTableCell>Breed</StyledTableCell>
-            <StyledTableCell>Position of Mutation</StyledTableCell>
-            <StyledTableCell>ASCII Letter</StyledTableCell>
+            <StyledTableHeaderCell>Sequence #</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Gene</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Disease</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Breed</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Position of Mutation</StyledTableHeaderCell>
+            <StyledTableHeaderCell>ASCII Letter</StyledTableHeaderCell>
           </tr>
-        </th>
+        </thead>
         <tbody>
           <tr>
             <StyledTableCell>1</StyledTableCell>
@@ -216,29 +221,31 @@ const Solution = () => {
           </tr>
         </tbody>
       </table>
-      <p>This reads, in sequence order, Get Codon At Dog ID. </p>
+      <p>
+        This reads, in sequence order, <Mono>GET CODON AT DOG ID</Mono>.{" "}
+      </p>
       <p>
         Once we match the suspects to our sequences we can perform the task from
         above. The ID gives us a coordinate in the sequence where we get the
         codon, or 3 bases, at the corresponding position. For the F8 gene, at
         position 56, the codon is GCC which can then be translated to Amino
         Acids to obtain the letter A. Completing the task for each sequence you
-        get the phrase ANSWER IS SLEDDER in sequence order. You can see the data
-        in the table below resulting in the answer to the puzzle:{" "}
+        get the phrase <Mono>ANSWER IS SLEDDER</Mono> in sequence order. You can
+        see the data in the table below resulting in the answer to the puzzle:{" "}
         <PuzzleAnswer>SLEDDER</PuzzleAnswer>.
       </p>
       <table>
-        <th>
+        <thead>
           <tr>
-            <StyledTableCell>Sequence #</StyledTableCell>
-            <StyledTableCell>Gene</StyledTableCell>
-            <StyledTableCell>Position of Mutation</StyledTableCell>
-            <StyledTableCell>Letter</StyledTableCell>
-            <StyledTableCell>ID of matching DOG</StyledTableCell>
-            <StyledTableCell>CODON</StyledTableCell>
-            <StyledTableCell>Translation of Codon</StyledTableCell>
+            <StyledTableHeaderCell>Sequence #</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Gene</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Position of Mutation</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Letter</StyledTableHeaderCell>
+            <StyledTableHeaderCell>ID of matching DOG</StyledTableHeaderCell>
+            <StyledTableHeaderCell>CODON</StyledTableHeaderCell>
+            <StyledTableHeaderCell>Translation of Codon</StyledTableHeaderCell>
           </tr>
-        </th>
+        </thead>
         <tbody>
           <tr>
             <StyledTableCell>1</StyledTableCell>
