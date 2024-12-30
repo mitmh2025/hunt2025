@@ -1,55 +1,55 @@
 import React from "react";
 import { styled } from "styled-components";
-
-const Box = styled.div`
-  display: inline-flex;
-  width: 32px;
-  border-bottom: 1px solid black;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  padding-bottom: 2px;
-`;
-
-const Row = styled.div`
-  margin: 8px 0px;
-`;
+import Blanks from "../../components/Blanks";
 
 const Separator = styled.hr`
   border: 1px solid var(--black);
 `;
 
+const StyledBlanks = styled(Blanks)`
+  margin: 8px 0px;
+`;
+
 const Puzzle = () => {
+  const finalEnumerationPunctuation = new Set([1, 8, 8, 10, 12, 17]);
+
   return (
     <>
       <p className="puzzle-flavor">
         Fed up with half info, it’s taking charge of what’s missing below.
       </p>
       <Separator />
-      <Row>
-        <Box>12</Box> estate <Box>2</Box> has <Box>7</Box> <Box>14</Box>{" "}
-        <Box>1</Box> <Box>6</Box> <Box>4</Box> sign
-      </Row>
-      <Row>
-        <Box>15</Box> <Box>8</Box> <Box>1</Box> <Box>10</Box> unit of{" "}
-        <Box>5</Box> inside
-      </Row>
-      <Row>
-        <Box>4</Box> distribution tool picked up by <Box>13</Box> Confederate
-      </Row>
-      <Row>
-        <Box>8</Box>-ringed <Box>2</Box> with <Box>15</Box> domain <Box>1</Box>{" "}
-        <Box>9</Box>
-      </Row>
-      <Row>
-        <Box>9</Box> <Box>11</Box> in <Box>16</Box>
-      </Row>
-      <Row>
-        <Box>7</Box>-sized <Box>3</Box> in <Box>9</Box> <Box>14</Box>
-      </Row>
-      <Row>
-        <Box>9</Box> <Box>11</Box>
-      </Row>
+      <StyledBlanks
+        structure={["_", "", "_", "", "_", "_", "_", "_", "_", " "]}
+        fill={["12", "estate", "2", "has", "7", "14", "1", "6", "4", "sign"]}
+      />
+      <StyledBlanks
+        structure={["_", "_", "_", "_", "", "_", ""]}
+        fill={["15", "8", "1", "10", "unit of", "5", "inside"]}
+      />
+      <StyledBlanks
+        structure={["_", "", "_", ""]}
+        fill={["4", "distribution tool picked up by", "13", "Confederate"]}
+      />
+      <StyledBlanks
+        structure={["_", "", "_", "", "_", "", "_", "_"]}
+        fill={["8", "-ringed", "2", "with", "15", "domain", "1", "9"]}
+        getAdditionalCellStyles={(index) =>
+          index === 1 ? { marginLeft: "-8px" } : {}
+        }
+      />
+      <StyledBlanks
+        structure={["_", "_", "", "_"]}
+        fill={["9", "11", "in", "16"]}
+      />
+      <StyledBlanks
+        structure={["_", "", "_", "", "_", "_"]}
+        fill={["7", "-sized", "3", "in", "9", "14"]}
+        getAdditionalCellStyles={(index) =>
+          index === 1 ? { marginLeft: "-8px" } : {}
+        }
+      />
+      <StyledBlanks structure={["_", "_"]} fill={["9", "11"]} />
       <Separator />
       <ol>
         <li>(3)</li>
@@ -70,9 +70,51 @@ const Puzzle = () => {
         <li>(5)</li>
       </ol>
       <Separator />
-      <Box>3</Box>, <Box>3</Box>, <Box>10</Box> <Box>6</Box> <Box>1</Box>{" "}
-      <Box>13</Box>. <Box>5</Box>: <Box>16</Box>. <Box>4</Box> <Box>12</Box>{" "}
-      <Box>15</Box> <Box>11</Box>.
+      <Blanks
+        structure={[
+          "_",
+          "",
+          "_",
+          "",
+          "_",
+          "_",
+          "_",
+          "_",
+          "",
+          "_",
+          "",
+          "_",
+          "",
+          "_",
+          "_",
+          "_",
+          "_",
+          "",
+        ]}
+        fill={[
+          "3",
+          ",",
+          "3",
+          ",",
+          "10",
+          "6",
+          "1",
+          "13",
+          ".",
+          "5",
+          ":",
+          "16",
+          ".",
+          "4",
+          "12",
+          "15",
+          "11",
+          ".",
+        ]}
+        getAdditionalCellStyles={(index) =>
+          finalEnumerationPunctuation.has(index) ? { marginLeft: "-8px" } : {}
+        }
+      />
     </>
   );
 };

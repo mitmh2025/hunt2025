@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import Blanks from "../../components/Blanks";
 
-// TODO: extract a generic labeled underline that copy/pastes into sheets well
 const CenteredColumn = styled.div`
   display: inline-flex;
   flex-direction: column;
@@ -13,37 +13,13 @@ const FullWidthCenteredColumn = styled(CenteredColumn)`
   width: 100%;
 `;
 
-const SpaceContainer = styled(CenteredColumn)`
-  font-size: 16px;
-  margin: 8px;
+const StyledBlanks = styled(Blanks)`
+  gap: 1rem;
+
+  & .cell {
+    min-width: 2rem;
+  }
 `;
-
-const SpaceContents = styled.div`
-  display: block;
-  width: 32px;
-  height: 16px;
-`;
-
-const UnderlineArea = styled(SpaceContents)`
-  border-bottom: 1px solid black;
-`;
-
-const NumberedSpace = ({ label }: { label: number }) => {
-  return (
-    <SpaceContainer>
-      <UnderlineArea></UnderlineArea>
-      <div>{label}</div>
-    </SpaceContainer>
-  );
-};
-
-const Gap = () => {
-  return (
-    <SpaceContainer>
-      <SpaceContents></SpaceContents>
-    </SpaceContainer>
-  );
-};
 
 const Puzzle = () => {
   return (
@@ -92,42 +68,78 @@ const Puzzle = () => {
       
       __ __    __ __ __    __ __    __ __ __ __
       21  7     5 11 19     1  9    14  3  2 10
-
-      TODO: this does not copy/paste into sheets well
       */}
       <FullWidthCenteredColumn>
-        <div>
-          <NumberedSpace label={15} />
-          <NumberedSpace label={16} />
-          <NumberedSpace label={23} />
-          <NumberedSpace label={12} />
-          <NumberedSpace label={4} />
-          <NumberedSpace label={18} />
-          <NumberedSpace label={20} />
-          <NumberedSpace label={13} />
-          <Gap />
-          <NumberedSpace label={24} />
-          <NumberedSpace label={8} />
-          <NumberedSpace label={6} />
-          <NumberedSpace label={22} />
-          <NumberedSpace label={17} />
-        </div>
-        <div>
-          <NumberedSpace label={21} />
-          <NumberedSpace label={7} />
-          <Gap />
-          <NumberedSpace label={5} />
-          <NumberedSpace label={11} />
-          <NumberedSpace label={19} />
-          <Gap />
-          <NumberedSpace label={1} />
-          <NumberedSpace label={9} />
-          <Gap />
-          <NumberedSpace label={14} />
-          <NumberedSpace label={3} />
-          <NumberedSpace label={2} />
-          <NumberedSpace label={10} />
-        </div>
+        <StyledBlanks
+          structure={[
+            "_",
+            "_",
+            "_",
+            "_",
+            "_",
+            "_",
+            "_",
+            "_",
+            " ",
+            "_",
+            "_",
+            "_",
+            "_",
+            "_",
+          ]}
+          fill={[
+            "15",
+            "16",
+            "23",
+            "12",
+            "4",
+            "18",
+            "20",
+            "13",
+            " ",
+            "24",
+            "8",
+            "6",
+            "22",
+            "17",
+          ]}
+          fillPosition="below"
+        />
+        <StyledBlanks
+          structure={[
+            "_",
+            "_",
+            " ",
+            "_",
+            "_",
+            "_",
+            " ",
+            "_",
+            "_",
+            " ",
+            "_",
+            "_",
+            "_",
+            "_",
+          ]}
+          fill={[
+            "21",
+            "7",
+            " ",
+            "5",
+            "11",
+            "19",
+            " ",
+            "1",
+            "9",
+            " ",
+            "14",
+            "3",
+            "2",
+            "10",
+          ]}
+          fillPosition="below"
+        />
       </FullWidthCenteredColumn>
     </>
   );

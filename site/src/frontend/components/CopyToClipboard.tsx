@@ -143,6 +143,20 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     }
 
     let transformed = node;
+    transformed.normalize();
+
+    if (
+      transformed instanceof HTMLElement &&
+      transformed.childNodes.length === 1 &&
+      transformed.firstChild instanceof Text &&
+      transformed.firstChild.textContent?.match(/^\([0-9]+\)$/)
+    ) {
+      // Adjust the presentation of this text node so that Sheets doesn't think it's a negative number
+      transformed.dataset.sheetsValue = JSON.stringify({
+        "1": 2,
+        "2": transformed.textContent,
+      });
+    }
 
     if (transformed instanceof HTMLOListElement) {
       // Rewrite <ol> to tables to preserve numbering
@@ -170,6 +184,10 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
         tr.appendChild(tdIndex);
 
         const tdContent = document.createElement("td");
+        [...child.attributes].forEach((attr) => {
+          attr.nodeValue &&
+            tdContent.setAttribute(attr.nodeName, attr.nodeValue);
+        });
         tdContent.innerHTML = child.innerHTML;
         tr.appendChild(tdContent);
 
