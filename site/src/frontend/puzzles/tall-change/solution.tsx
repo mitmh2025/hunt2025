@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import look01 from "./assets/look01.jpg";
 import look02 from "./assets/look02.jpg";
 import look03 from "./assets/look03.jpg";
@@ -27,14 +28,6 @@ import theme07 from "./assets/theme07.png";
 const GarmentTable = styled.table`
   border-collapse: collapse;
   margin: 20px auto;
-`;
-
-const Mono = styled.div`
-  font-family: monospace;
-`;
-
-const PuzzleAnswer = styled(Mono)`
-  font-weight: bold;
 `;
 
 const TableCell = styled.td<{ highlight: "red" | "black" | null }>`
@@ -314,7 +307,7 @@ const Solution = () => {
       </p>
       <p>
         After going to the gala and suitably working it, puzzlers were given the
-        answer <strong>SERENDIP SANCTUARY</strong>.
+        answer <PuzzleAnswer>SERENDIP SANCTUARY</PuzzleAnswer>.
       </p>
       <h3>Summary Diagram</h3>
       <p>
