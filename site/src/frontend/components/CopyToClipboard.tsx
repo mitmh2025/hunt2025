@@ -208,6 +208,14 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
       );
     }
 
+    if (transformed instanceof HTMLAudioElement) {
+      // Replace audio elements with a link to the source
+      const link = document.createElement("a");
+      link.href = transformed.src;
+      link.textContent = "[Audio link]";
+      transformed = link;
+    }
+
     if (transformed instanceof HTMLAnchorElement && transformed.href) {
       // Add domain to relative links
       const url = new URL(transformed.href, document.location.href);
