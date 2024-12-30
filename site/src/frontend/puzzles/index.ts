@@ -24,6 +24,7 @@ import NetworkingEvent from "./confused-antarctica";
 import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
 import WhoseSongIsItAnyway from "./delirious-mammoth";
+import AnyCoatWillDo from "./dental-police";
 import TheBoardwalk from "./dental-shark";
 import CanDoTransmissions from "./diligent-spy";
 import TheThief from "./dimpled-star";
@@ -210,6 +211,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Paper Trail
   ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
+  any_coat_will_do: AnyCoatWillDo,
   a_weathered_note: AWeatheredNote,
   bar_talk: BarTalk,
   chemicals_are_sexy: ChemicalsAreSexy,

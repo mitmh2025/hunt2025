@@ -296,7 +296,7 @@ const HUNT: Hunt = {
         { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "bar_talk" },
         { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "the_inspectre" },
         { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
-        { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "any_coat_will_do" },
         { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
         { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
