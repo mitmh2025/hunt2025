@@ -47,7 +47,7 @@ const StanzaData = [
 
   `Love drama in court
     Black that white did arraign
-    "I am so thirsty"
+    “I am so thirsty”
     Mocked Homer’s refrain
     11/8/1962`,
 

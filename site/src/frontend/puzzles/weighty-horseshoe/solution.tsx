@@ -43,7 +43,7 @@ const PoemMovieData = [
 
   `Love drama in court
   Black that white did arraign
-  "I am so thirsty"
+  “I am so thirsty”
   Mocked Homer’s refrain
   11/8/1962`,
 
@@ -149,7 +149,7 @@ const PoemMovieData = [
   `A BEAUTIFUL Mind`,
   `Biopic of John Nash, Game Theory pioneer`,
   `MOULIN Rouge!`,
-  `Musical set in Montmartre, Paris literal meaning "red (wind)mill" (having sails)`,
+  `Musical set in Montmartre, Paris; literal meaning “red (wind)mill” (having sails)`,
 
   `Love asks many questions
   But replies are amiss
