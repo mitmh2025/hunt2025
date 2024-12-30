@@ -47,7 +47,6 @@ import polaroidSolved39 from "./assets/stakeout_39.jpg";
 import polaroidSolved40 from "./assets/stakeout_40.jpg";
 import polaroidSolved41 from "./assets/stakeout_41.jpg";
 import polaroidSolved42 from "./assets/stakeout_42.jpg";
-
 import { type StakeoutSlot, type StakeoutState } from "./types";
 
 const DEVELOPED_PHOTO_IMAGES: Record<StakeoutSlot, string> = {
