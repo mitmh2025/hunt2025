@@ -17,6 +17,8 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [],
   content: {
     component: Puzzle,
+    // We can not copy inline formatting into Sheets so make this un-copyable to avoid being deceptive
+    copyable: false,
   },
   solution: {
     component: Solution,
