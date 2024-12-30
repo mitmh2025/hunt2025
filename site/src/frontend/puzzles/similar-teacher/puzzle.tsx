@@ -1,25 +1,45 @@
 import React from "react";
-import { styled } from "styled-components";
+import Blanks from "../../components/Blanks";
 
-const Row = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-bottom: 1em;
-`;
+const Ladders: [start: number, end: number, length: number][] = [
+  [24, 31, 8],
+  [25, 45, 4],
+  [14, 40, 7],
+  [35, 38, 5],
+  [34, 32, 6],
+  [20, 51, 6],
+  [28, 12, 7],
+  [54, 36, 9],
+  [44, 22, 9],
+  [1, 19, 6],
+];
 
-const StyledDiv = styled.div`
-  border-bottom: 1px solid black;
-  width: 2em;
-  height: 2em;
-  text-align: center;
-`;
+const Ladder = ({
+  spec: [start, end, length],
+}: {
+  spec: [start: number, end: number, length: number];
+}): JSX.Element => {
+  const structure: string[] = [];
+  const fill: string[] = [];
+  for (let i = 0; i < length; i++) {
+    if (i !== 0) {
+      structure.push("");
+      fill.push("→");
+    }
 
-const Arrow = (): JSX.Element => {
-  return <span>→</span>;
-};
+    if (i === 0) {
+      structure.push("_");
+      fill.push(start.toString());
+    } else if (i === length - 1) {
+      structure.push("_");
+      fill.push(end.toString());
+    } else {
+      structure.push("_");
+      fill.push("");
+    }
+  }
 
-const Blank = (): JSX.Element => {
-  return <StyledDiv>&nbsp;</StyledDiv>;
+  return <Blanks structure={structure} fill={fill} fillPosition="above" />;
 };
 
 const Puzzle = (): JSX.Element => {
@@ -101,150 +121,9 @@ const Puzzle = (): JSX.Element => {
         <li>What’s made on the hill you die on ([3] 4 5)</li>
       </ol>
       <hr />
-      <Row>
-        <StyledDiv>24</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>31</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>25</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>45</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>14</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>40</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>35</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>38</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>34</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>32</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>20</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>51</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>28</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>12</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>54</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>36</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>44</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>22</StyledDiv>
-      </Row>
-      <Row>
-        <StyledDiv>1</StyledDiv>
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <Blank />
-        <Arrow />
-        <StyledDiv>19</StyledDiv>
-      </Row>
+      {Ladders.map((spec, i) => (
+        <Ladder key={i} spec={spec} />
+      ))}
     </>
   );
 };
