@@ -297,6 +297,10 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
         return;
       }
 
+      if (td.dataset.sheetsFormula) {
+        return;
+      }
+
       const img = td.firstElementChild;
       if (!(img instanceof HTMLImageElement)) {
         return;
@@ -311,6 +315,10 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     );
     transformableImageLinks.forEach((td) => {
       if (!(td instanceof HTMLElement)) {
+        return;
+      }
+
+      if (td.dataset.sheetsFormula) {
         return;
       }
 
@@ -331,6 +339,10 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     const transformableLinks = node.querySelectorAll("td:has(> a:only-child)");
     transformableLinks.forEach((td) => {
       if (!(td instanceof HTMLElement)) {
+        return;
+      }
+
+      if (td.dataset.sheetsFormula) {
         return;
       }
 
