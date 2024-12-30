@@ -171,6 +171,20 @@ const StakeoutPhoto = ({
     ...transitionProperties,
   };
 
+  let image;
+  if (asset) {
+    image = (
+      <img
+        style={imageStyle}
+        src={asset}
+        alt="Photograph"
+        onDragStart={imgDragStartHandler}
+      />
+    );
+  } else {
+    image = <div style={imageStyle} />;
+  }
+
   return (
     <div
       key={slot}
@@ -179,12 +193,7 @@ const StakeoutPhoto = ({
     >
       <div style={polaroidInnerStyle}>
         {/* TODO: use different assets when zoomed-in? */}
-        <img
-          style={imageStyle}
-          src={asset}
-          alt="Photograph"
-          onDragStart={imgDragStartHandler}
-        />
+        {image}
         <PhotoLabel style={labelStyle} onPointerDown={labelPointerDownHandler}>
           {link}
         </PhotoLabel>
