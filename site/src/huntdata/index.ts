@@ -215,48 +215,48 @@ const HUNT: Hunt = {
       puzzles: [
         // 42 feeders, 1 meta
         // Start with 5 unlockable, make 1.5 (rounding up) more unlockable after each solve.
-        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "an_exchange_of_vows" }, // TODO: this slug may not go in this spot
-        { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "sing_like_a_canary" }, // TODO: this slug may not go in this spot
-        { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "just_plane_wrong" }, // TODO: this slug may not go in this spot
-        { id: "sop04", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "broken_record" }, // TODO: this slug may not go in this spot
-        { id: "sop05", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "lab_scrabble" }, // TODO: this slug may not go in this spot
-        { id: "sop06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "a_math_quiz" }, // TODO: this slug may not go in this spot
-        { id: "sop07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "fight_night_at_mos" }, // TODO: this slug may not go in this spot
-        { id: "sop08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "dear_diary" }, // TODO: this slug may not go in this spot
-        { id: "sop09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "doable_double" }, // TODO: this slug may not go in this spot
-        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_ultimate_insult" }, // TODO: this slug may not go in this spot
-        { id: "sop11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "cruciverbal" }, // TODO: this slug may not go in this spot
-        { id: "sop12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "commentary" },  // TODO: this slug may not go in this spot
-        { id: "sop13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "taste_explosion" }, // TODO: this slug may not go in this spot
-        { id: "sop14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "temporal_investigations" }, // TODO: this slug may not go in this spot
-        { id: "sop15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "some_assembly_required" }, // TODO: this slug may not go in this spot
-        { id: "sop16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "be_mine" }, // TODO: this slug my not go in this spot
-        { id: "sop17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "recipe_substitutions" }, // TODO: this slug my not go in this spot
-        { id: "sop18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "big_names" }, // TODO: this slug my not go in this spot
-        { id: "sop19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "seating_arrangements" }, // TODO: this slug my not go in this spot
-        { id: "sop20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "magic_i" }, // TODO: this slug my not go in this spot
-        { id: "sop21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "mystery_os" }, // TODO: this slug my not go in this spot
-        { id: "sop22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "a_walk_in_the_park" }, // TODO: this slug my not go in this spot
-        { id: "sop23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "mens_at_my_nose" }, // TODO: this slug my not go in this spot
-        { id: "sop24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "mellow_planet" }, // TODO: this slug my not go in this spot
-        { id: "sop25", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "relief_printing" }, // TODO: this slug my not go in this spot
-        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1, slug: "borderline_personality" }, // TODO: this slug my not go in this spot
-        { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "why_kant_we_be_friends_too" }, // TODO: this slug my not go in this spot
-        { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "a_badly_broken_quote" }, // TODO: this slug my not go in this spot
-        { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" }, // TODO: this slug my not go in this spot
-        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "a_recipe_for_success"} , // TODO: this slug my not go in this spot
-        { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "its_not_clear" }, // TODO: this slug my not go in this spot
-        { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "anything_is_popsicle" }, // TODO: this slug my not go in this spot
-        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "just_fing_behave" }, // TODO: this slug my not go in this spot
-        { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "editors_solemnity" }, // TODO: this slug my not go in this spot
-        { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "superlatives" }, // TODO: this slug my not go in this spot
-        { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "a_sudoku" }, // TODO: this slug my not go in this spot
-        { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 },
-        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1 },
-        { id: "sop39", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
-        { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1 },
-        { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1 },
-        { id: "sop42", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1 },
+        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "anything_is_popsicle" }, // shameful-duck
+        { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "the_ultimate_insult" }, // periodic-dance
+        { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "broken_record" }, // handsome-satellite
+        { id: "sop04", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "relief_printing" }, // messy-olive
+        { id: "sop05", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "mellow_planet" }, // brilliant-center
+        { id: "sop06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "just_plane_wrong" }, // artistic-aztec
+        { id: "sop07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "recipe_substitutions" }, // svelte-pitch
+        { id: "sop08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "superlatives" }, // acute-ski
+        { id: "sop09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "an_exchange_of_vows" }, // lanky-robot
+        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 }, // metallic-dragon
+        { id: "sop11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "temporal_investigations" }, // offensive-cat
+        { id: "sop12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_recipe_for_success" },  // tame-chick
+        { id: "sop13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_math_quiz" }, // new-pin
+        { id: "sop14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "sing_like_a_canary" }, // heavenly-cell
+        { id: "sop15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "mystery_os" }, // minty-play
+        { id: "sop16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "a_walk_in_the_park" }, // misguided-revolution
+        { id: "sop17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "borderline_personality" }, // calculating-square
+        { id: "sop18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "a_sudoku" }, // recent-ship
+        { id: "sop19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "be_mine" }, // pleasing-racket
+        { id: "sop20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "lab_scrabble" }, // amused-soul
+        { id: "sop21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "cruciverbal" }, // regal-knife
+        { id: "sop22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "why_kant_we_be_friends_too" }, // milky-swing
+        { id: "sop23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" }, // delirious-mammoth
+        { id: "sop24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "some_assembly_required" }, // cultured-rome
+        { id: "sop25", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "fight_night_at_mos" }, // splendid-knife
+        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1 }, // loud-star
+        { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "big_names" }, // important-green
+        { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "doable_double" }, // austere-sink
+        { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "taste_explosion" }, // next-van
+        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1 } , // similar-part
+        { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "magic_i" }, // acclaimed-file
+        { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_badly_broken_quote" }, // cavernous-angel
+        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 }, // lean-lock
+        { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "commentary" }, // useable-rose
+        { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "seating_arrangements" }, // oddball-comic
+        { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "editors_solemnity" }, // plant-soursop
+        { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 }, // plump-himalayas
+        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1 }, // fake-fair
+        { id: "sop39", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "just_fing_behave" }, // scornful-band
+        { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "its_not_clear" }, // kooky-light
+        { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1, slug: "mens_at_my_nose" }, // downright-hook
+        { id: "sop42", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1, slug: "dear_diary" }, // overlooked-compound
         { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 } }, // (meta)
       ],
       gates: [
