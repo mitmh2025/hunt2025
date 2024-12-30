@@ -29,6 +29,14 @@ const GarmentTable = styled.table`
   margin: 20px auto;
 `;
 
+const Mono = styled.div`
+  font-family: monospace;
+`;
+
+const PuzzleAnswer = styled(Mono)`
+  font-weight: bold;
+`;
+
 const TableCell = styled.td<{ highlight: "red" | "black" | null }>`
   width: 40px;
   height: 40px;
@@ -296,12 +304,13 @@ const Solution = () => {
 
       <p>
         Reading the highlighted letters in column-then-row order, you get the
-        clue phrase “WHO WORE THAT”.{" "}
+        clue phrase <Mono>WHO WORE THAT</Mono>.{" "}
       </p>
       <p>
         This clues that you should use the names of the celebrity that wore the
         outfit. Reading the first letters of the celebrity names in the order
-        given by the garment bags, you get the phrase WORK IT AT OUR GALA.
+        given by the garment bags, you get the phrase{" "}
+        <Mono>WORK IT AT OUR GALA</Mono>.
       </p>
       <p>
         After going to the gala and suitably working it, puzzlers were given the
