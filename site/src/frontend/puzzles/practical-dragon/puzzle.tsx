@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NO_COPY_CLASS } from "../../components/CopyToClipboard";
 import img01hi from "./assets/hires/01.png";
 import img02hi from "./assets/hires/02.png";
 import img03hi from "./assets/hires/03.png";
@@ -168,12 +169,10 @@ const IMAGES_LOW: string[] = [
 const ImgBlock = ({ imgnum }: { imgnum: number }): JSX.Element => {
   return (
     <>
-      <div>
-        <a target="_blank" rel="noreferrer" href={IMAGES_HI[imgnum] ?? ""}>
-          <StyledImg src={IMAGES_LOW[imgnum] ?? ""} alt="A rebus" />
-        </a>
-      </div>
-      <hr />
+      <a target="_blank" rel="noreferrer" href={IMAGES_HI[imgnum] ?? ""}>
+        <StyledImg src={IMAGES_LOW[imgnum] ?? ""} alt="A rebus" />
+      </a>
+      <hr className={NO_COPY_CLASS} />
     </>
   );
 };
@@ -184,11 +183,9 @@ const Puzzle = (): JSX.Element => {
       {Array.from({ length: 38 }, (_, i) => (
         <ImgBlock key={i} imgnum={i} />
       ))}
-      <div>
-        <a target="_blank" rel="noreferrer" href={imgbottomhi}>
-          <StyledImg src={imgbottomlow} alt="A rebus" />
-        </a>
-      </div>
+      <a target="_blank" rel="noreferrer" href={imgbottomhi}>
+        <StyledImg src={imgbottomlow} alt="A rebus" />
+      </a>
     </>
   );
 };
