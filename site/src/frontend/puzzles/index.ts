@@ -109,6 +109,7 @@ import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
+import MITropolitanHouseOfFashion from "./tall-change";
 import ARecipeForSuccess from "./tame-chick";
 import DrunkensAndFlagons from "./thorough-arm";
 import EngagementsAndOtherCrimes from "./timely-head";
@@ -157,6 +158,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   in_a_different_direction: InADifferentDirection,
   introduction_to_decryption: IntroductionToDecryption,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
+  mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
   neatly_drawn: NeatlyDrawn,
   press_play: PressPlay,
   shrinkage: Shrinkage,
