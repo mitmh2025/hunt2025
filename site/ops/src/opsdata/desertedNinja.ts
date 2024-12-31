@@ -4,7 +4,6 @@ import { type DesertedNinjaScore } from "../../../lib/api/admin_contract";
 export function retrieveSessions(data: OpsData, setSessions) {
   data.adminClient.getDesertedNinjaSessions().then(
     (result) => {
-      console.log(result.body);
       setSessions(result.body);
     },
     (result) => {
