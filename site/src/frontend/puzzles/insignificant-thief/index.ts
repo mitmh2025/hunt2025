@@ -16,6 +16,7 @@ const puzzle: PuzzleDefinition = {
   answer: "ALPACA LAND",
   content: {
     component: Puzzle,
+    copyable: true,
   },
   solution: {
     component: Solution,
