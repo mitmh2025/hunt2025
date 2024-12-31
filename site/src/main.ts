@@ -33,6 +33,8 @@ if (environment === "development" && !jwtSecret) {
   jwtSecret = randomBytes(128);
 }
 
+const jwksUri = process.env.JWKS_URI;
+
 let frontendApiSecret: string | undefined = process.env.FRONTEND_API_SECRET;
 if (environment === "development" && !frontendApiSecret) {
   frontendApiSecret = randomBytes(16).toString("hex");
@@ -67,6 +69,7 @@ app({
   enabledComponents,
   dbEnvironment,
   jwtSecret,
+  jwksUri,
   frontendApiSecret,
   dataApiSecret,
   apiUrl,

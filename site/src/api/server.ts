@@ -13,7 +13,8 @@ import {
   type NextFunction,
   Router,
 } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { type JwtHeader, type SigningKeyCallback } from "jsonwebtoken";
+import { JwksClient } from "jwks-rsa";
 import { type Knex } from "knex";
 import {
   type GuessStatus,
@@ -73,6 +74,15 @@ type JWTPayload = {
   adminUser?: string;
 };
 
+type AuthentikJWTPayload = {
+  iss: string;
+  email?: string;
+  name: string;
+  nickname: string;
+  admin?: boolean;
+  groups?: string[];
+};
+
 function cookieExtractor(req: Request) {
   const token = req.cookies.mitmh2025_auth as string | undefined;
   return token ? token : null;
@@ -81,9 +91,11 @@ function cookieExtractor(req: Request) {
 function newPassport({
   jwtSecret,
   frontendApiSecret,
+  jwksUri,
 }: {
   jwtSecret: string | Buffer;
   frontendApiSecret: string;
+  jwksUri?: string;
 }) {
   const passport = new Passport();
   passport.use(
@@ -122,6 +134,47 @@ function newPassport({
       },
     ),
   );
+
+  const adminStrategies = ["adminJwt"];
+
+  if (jwksUri) {
+    const jwksClient = new JwksClient({
+      jwksUri,
+    });
+    passport.use(
+      "authentikJwt",
+      new JwtStrategy(
+        {
+          jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+          secretOrKey: ((header: JwtHeader, callback: SigningKeyCallback) => {
+            jwksClient
+              .getSigningKey(header.kid)
+              .then((key) => {
+                callback(
+                  null,
+                  "publicKey" in key ? key.publicKey : key.rsaPublicKey,
+                );
+              })
+              .catch((e: unknown) => {
+                callback(e as Error);
+              });
+          }) as unknown as string, // type of secretOrKey is wrong
+        },
+        function (jwtPayload: AuthentikJWTPayload, done) {
+          if (!jwtPayload.admin) {
+            console.warn(
+              "JWT valid but missing admin; treating as unauthorized",
+              jwtPayload,
+            );
+            done(null, false);
+            return;
+          }
+          done(null, ADMIN_USER_ID, jwtPayload);
+        },
+      ),
+    );
+    adminStrategies.push("authentikJwt");
+  }
 
   passport.use(
     "adminJwt",
@@ -169,7 +222,10 @@ function newPassport({
     }),
   );
 
-  return passport;
+  return {
+    passport,
+    adminStrategies,
+  };
 }
 
 function canonicalizeInput(input: string) {
@@ -181,6 +237,7 @@ function canonicalizeInput(input: string) {
 
 export function getRouter({
   jwtSecret,
+  jwksUri,
   frontendApiSecret,
   dataApiSecret,
   knex,
@@ -189,6 +246,7 @@ export function getRouter({
   mailer,
 }: {
   jwtSecret: string | Buffer;
+  jwksUri?: string;
   frontendApiSecret: string;
   dataApiSecret: string;
   knex: Knex;
@@ -202,7 +260,11 @@ export function getRouter({
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  const passport = newPassport({ jwtSecret, frontendApiSecret });
+  const { passport, adminStrategies } = newPassport({
+    jwtSecret,
+    frontendApiSecret,
+    jwksUri,
+  });
 
   const s = initServer();
 
@@ -394,12 +456,12 @@ export function getRouter({
     session: false,
   }) as RequestHandlerWithQuery;
 
-  const adminAuthMiddleware = passport.authenticate("adminJwt", {
+  const adminAuthMiddleware = passport.authenticate(adminStrategies, {
     session: false,
   }) as RequestHandlerWithQuery;
 
   const frontendAuthMiddleware = passport.authenticate(
-    ["adminJwt", "frontendSecret"],
+    [...adminStrategies, "frontendSecret"],
     {
       session: false,
     },
