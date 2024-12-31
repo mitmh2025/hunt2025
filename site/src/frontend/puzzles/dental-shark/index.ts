@@ -20,7 +20,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 0,
       description:
-        "The solvers haven’t figured out what these answer shave in common.",
+        "The solvers haven’t figured out what these answers have in common.",
       keywords: ["start"],
       nudge:
         "The title of this puzzle, as well as each of the answers is a specific location. Consider how to make them into properties.",
