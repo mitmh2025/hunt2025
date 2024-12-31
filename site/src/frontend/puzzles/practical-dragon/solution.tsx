@@ -157,10 +157,7 @@ const Solution = () => {
         such that B is the length of the band name. The band names are also
         given in alphabetical order.
       </p>
-      <p>
-        Below are the solutions for each rebus in given order (pictures to be
-        put in final solution doc):
-      </p>
+      <p>Below are the solutions for each rebus in given order:</p>
 
       <HScrollTableWrapper>
         <table>
