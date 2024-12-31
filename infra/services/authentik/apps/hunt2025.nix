@@ -25,7 +25,7 @@
     name = "Staging Ops";
     app.attrs.group = "Staging";
     type = "oauth2";
-    redirect_uris = "https://ops.staging.mitmh2025.com/oauth2/code/";
+    redirect_uris = "https://ops.staging.mitmh2025.com/auth/mitmh2025/callback";
     provider.attrs.access_token_validity = "days=7";
     properties = [
       "goauthentik.io/providers/oauth2/scope-email"
