@@ -38,10 +38,13 @@ const PuzzleSummarySchema = z.object({
   stray: z.boolean().optional(), // If true, this puzzle initially unlocked in stray leads, regardless of its current round assignment.
   // visible implied by existence
   locked: PuzzleLockEnum,
+  unlocked_at: z.number().optional(), // epoch at which the puzzle was unlocked
   answer: z.string().optional(),
 });
 
-export const PuzzleStateSchema = PuzzleSummarySchema.extend({
+export const PuzzleStateSchema = PuzzleSummarySchema.omit({
+  unlocked_at: true,
+}).extend({
   guesses: z.array(GuessSchema).default([]),
 });
 
