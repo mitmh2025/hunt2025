@@ -35,44 +35,54 @@ const Paper = styled.main`
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;
-  padding: 2rem;
-  padding-right: 48px;
+  padding: 2rem 72px 1rem 2rem;
   filter: drop-shadow(1px 2px 16px rgba(0, 0, 0, 0.53));
 
   display: flex;
   flex-direction: column;
   text-align: center;
+  font-family: Courier, monospace;
 
   h1 {
     flex: 0;
     text-align: center;
-    font-family: "Rock Salt";
+    font-family: Courier, monospace;
+    font-weight: 600;
     font-size: 2.2rem;
-    margin: 2rem 0;
+    margin: 1rem 0;
   }
 
   ul {
     flex: 1;
     padding: 0;
     list-style-type: none;
-    max-width: 480px;
+    width: 100%;
     margin: 0 auto;
+    overflow-y: auto;
 
     li {
       display: flex;
-      justify-content: center;
-      gap: 0.5rem;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    li + li {
+      margin-top: 1rem;
     }
 
     li .puzzle-link a,
     li a {
-      color: var(--gray-900);
-      text-decoration-color: var(--gray-800);
+      color: var(--gold-900);
+      text-decoration-color: var(--gold-800);
 
       &:hover {
-        color: black;
-        text-decoration-color: black;
+        color: var(--gold-700);
+        text-decoration-color: var(--gold-700);
       }
+    }
+
+    .filing {
+      font-style: italic;
     }
   }
 
@@ -80,22 +90,24 @@ const Paper = styled.main`
     flex: 0;
     color: var(--gray-600);
     text-align: center;
+    margin-top: 1.5rem;
+    padding: 0 2rem;
   }
 `;
 
 const Postit = styled.aside`
   background-image: url(${PostitBg});
   background-size: contain;
-  width: 264px;
-  height: 273px;
+  width: 211px;
+  height: 218px;
   position: absolute;
   top: 66px;
   left: -48px;
   transform: rotate(10deg);
-  padding: 1.5rem;
+  padding: 1rem 1.5rem 1rem 1rem;
   filter: drop-shadow(-1px 2px 3px rgba(0, 0, 0, 0.53));
   font-family: "Rock Salt";
-  font-size: 1.1rem;
+  font-size: 0.9rem;
 
   p {
     margin: 0;
@@ -106,7 +118,7 @@ const Postit = styled.aside`
 
   .signature {
     text-align: right;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -152,10 +164,9 @@ const StrayLeadsBody = ({
               currency={teamState.currency}
               title={lead.title}
               slug={lead.slug}
-              size={16}
             />
-            {/* <span>
-              (<a href="/">sorted!</a>)
+            {/* <span className="filing">
+              Filed under <a href="/rounds/stakeout">The Stakeout</a>
             </span> */}
           </li>
         );
