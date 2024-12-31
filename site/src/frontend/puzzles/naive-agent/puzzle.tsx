@@ -1,6 +1,10 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { OswaldFont } from "../../assets/SharedFonts";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import Crossword from "../../components/Crossword";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 import SharkImg from "./assets/sharkright.png";
@@ -215,6 +219,34 @@ export const GRID_CONTENT: ReactNode[][] = [
   ],
 ];
 
+const LabelText = (label: string | ReactNode): string => {
+  if (typeof label === "string") {
+    return label;
+  }
+  if (React.isValidElement(label) && label.props.alt) {
+    return `[${label.props.alt}]`;
+  }
+  return "";
+};
+
+const CopyableTD = styled.td`
+  border: 1px solid black;
+`;
+
+const CopyableTable = (): JSX.Element => (
+  <table className={COPY_ONLY_CLASS}>
+    <tbody>
+      {GRID_CONTENT.map((row, i) => (
+        <tr key={i}>
+          {row.map((label, j) => (
+            <CopyableTD key={j}>{LabelText(label)}</CopyableTD>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+);
+
 const Puzzle = (): JSX.Element => {
   return (
     <>
@@ -222,7 +254,7 @@ const Puzzle = (): JSX.Element => {
       <p className="puzzle-flavor">
         A number of our links went down. Can you help fix them?
       </p>
-      <HScrollTableWrapper>
+      <HScrollTableWrapper className={NO_COPY_CLASS}>
         <Grid
           labels={LABELS}
           fill={GRID_CONTENT}
@@ -233,6 +265,7 @@ const Puzzle = (): JSX.Element => {
           })}
         />
       </HScrollTableWrapper>
+      <CopyableTable />
     </>
   );
 };
