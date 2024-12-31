@@ -32,12 +32,16 @@ const StyledTable = styled.table`
   td {
     padding: 8px;
     height: 72px;
+    line-height: 1;
     border: 1px solid black;
-    span {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+  }
+
+  td:has(audio) {
+    border-right: none;
+  }
+
+  td:has(audio) + td {
+    border-left: none;
   }
 `;
 
@@ -90,13 +94,13 @@ const Puzzle = (): JSX.Element => {
           {DATA.map((row, i) => (
             <tr key={`row-${i}`}>
               {row.map(({ audio, ipa }, j) => (
-                <td key={`cell-${i}-${j}`} colSpan={row.length === 1 ? 2 : 1}>
-                  <span>
+                <React.Fragment key={`cell-${i}-${j}`}>
+                  <td>
                     {/* eslint-disable-next-line jsx-a11y/media-has-caption -- transcript provided inline */}
                     <audio controls src={audio} />
-                    {ipa}
-                  </span>
-                </td>
+                  </td>
+                  <td colSpan={row.length === 1 ? 3 : 1}>{ipa}</td>
+                </React.Fragment>
               ))}
             </tr>
           ))}
