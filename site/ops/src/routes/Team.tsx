@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useOpsData } from "../OpsDataProvider";
 import BigBoardTeamDetail from "../components/BigBoardTeamDetail";
+import SingleTeamStats from "../components/SingleTeamStats";
 import TeamActivityLog from "../components/TeamActivityLog";
 import { formatTeamData } from "../opsdata/bigBoard";
 
@@ -45,6 +46,12 @@ export default function Team() {
       <h1>
         {team.username} ({team.name})
       </h1>
+
+      <SingleTeamStats
+        team={team}
+        teamActivity={teamActivity}
+        bigBoardTeam={bigBoardTeam}
+      />
 
       <BigBoardTeamDetail team={bigBoardTeam} />
 
