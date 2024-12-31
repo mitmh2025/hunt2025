@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     port: 3003,
     proxy: {
-      "/admin-token": "http://localhost:3002",
+      "/api": "http://localhost:3002",
     },
   },
   resolve: {

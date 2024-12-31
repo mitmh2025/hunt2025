@@ -1,9 +1,8 @@
-import { randomBytes } from "crypto";
 import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import express, { type RequestHandler, type Request } from "express";
-import jwt from "jsonwebtoken";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import morgan from "morgan";
 import { allowInsecureRequests, discovery } from "openid-client";
 import { Passport } from "passport";
@@ -86,13 +85,11 @@ async function newPassport({
 }
 
 async function buildApp({
-  jwtSecret,
   apiUrl,
   oauthServer,
   clientID,
   clientSecret,
 }: {
-  jwtSecret: string | Buffer;
   apiUrl: string;
   oauthServer: string;
   clientID: string;
@@ -113,13 +110,6 @@ async function buildApp({
   app.use(logMiddleware);
 
   app.get(
-    "/auth/mitmh2025",
-    passport.authenticate("mitmh2025", {
-      session: false,
-    }) as RequestHandler,
-  );
-
-  app.get(
     "/auth/mitmh2025/callback",
     passport.authenticate("mitmh2025", {
       session: false,
@@ -135,26 +125,19 @@ async function buildApp({
     },
   );
 
-  app.get("/admin-token", (req, res) => {
-    let adminUser = req.header("x-authentik-email");
-    if (!adminUser) {
-      if (environment === "development") {
-        adminUser = "dev@example.com";
-      } else {
-        res.status(403).send("No x-authentik-email header");
-        return;
-      }
-    }
-
-    const expiresAt = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour
-    const renewAfter = new Date(expiresAt * 1000 - 5 * 60 * 1000); // 5 minutes before expiration
-
-    res.json({
-      token: jwt.sign({ adminUser, exp: expiresAt }, jwtSecret),
-      apiUrl: apiUrl,
-      renewAfter: renewAfter.toISOString(),
+  if (environment === "development") {
+    const proxy = createProxyMiddleware({
+      target: apiUrl,
     });
-  });
+    app.use("/api", proxy as RequestHandler);
+  }
+
+  // Require auth for any other URL
+  app.use(
+    passport.authenticate(["authentikJwt", "mitmh2025"], {
+      session: false,
+    }) as RequestHandler,
+  );
 
   app.use(
     "/",
@@ -176,15 +159,6 @@ if (environment === "development" && !apiUrl) {
   apiUrl = `http://localhost:3000/api`;
 }
 
-let jwtSecret: string | Buffer | undefined = process.env.JWT_SECRET;
-if (environment === "development" && !jwtSecret) {
-  jwtSecret = randomBytes(128);
-}
-
-if (!jwtSecret) {
-  throw new Error("$JWT_SECRET not defined in production");
-}
-
 if (!apiUrl) {
   throw new Error("$API_BASE_URL not defined in production");
 }
@@ -203,7 +177,6 @@ if (!clientSecret) {
 }
 
 buildApp({
-  jwtSecret,
   apiUrl,
   oauthServer,
   clientID,

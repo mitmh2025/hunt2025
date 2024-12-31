@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { newAdminClient } from "../../lib/api/admin_client";
 import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
 import { newFrontendClient } from "../../lib/api/frontend_client";
@@ -112,27 +113,19 @@ export default function OpsDataProvider({
 }) {
   const [data, setData] = useState<OpsData>(INITIAL_STATE);
 
+  const [cookies] = useCookies(["mitmh2025_api_auth"]);
+
   useEffect(() => {
     // TODO: Switch to loading data from the service worker + keeping
     // it up to date with websockets
 
     (async () => {
-      const adminTokenResp = await fetch("/admin-token");
-      if (adminTokenResp.status !== 200) {
-        throw new Error(
-          `Failed to load adminToken: [${adminTokenResp.status}] ${await adminTokenResp.text()}`,
-        );
+      const token = cookies.mitmh2025_api_auth as string | undefined;
+      if (!token) {
+        throw new Error(`Failed to load token from cookie`);
       }
 
-      const {
-        token,
-        apiUrl,
-        renewAfter: _renewAfter,
-      } = (await adminTokenResp.json()) as {
-        token: string;
-        apiUrl: string;
-        renewAfter: string;
-      };
+      const apiUrl = "/api";
 
       const frontendClient = newFrontendClient(apiUrl, {
         type: "admin",
@@ -185,7 +178,7 @@ export default function OpsDataProvider({
       console.error(e);
       setData({ ...INITIAL_STATE, state: "error" });
     });
-  }, []);
+  }, [cookies.mitmh2025_api_auth]);
 
   if (data.state === "loading") {
     return <div>Loading...</div>;
