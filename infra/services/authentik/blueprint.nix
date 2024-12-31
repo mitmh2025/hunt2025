@@ -293,6 +293,16 @@ in {
             (findSource "discord")
           ];
         }
+        # Scopes
+        {
+          model = "authentik_providers_oauth2.scopemapping";
+          identifiers.managed = "mitmh2025.com/oauth2/admin";
+          attrs.name = "Admin API access";
+          attrs.scope_name = "mitmh2025.com/oauth2/admin";
+          attrs.description = "Admin API access";
+          # TODO: Multiple levels of admin
+          attrs.expression = ''return {"admin": true}'';
+        }
         # Applications
       ]
       ++ lib.mapAttrsToList (managed: attrs: {
