@@ -30,6 +30,9 @@ const CellLabel = styled.span`
   top: 0px;
   left: 2px;
   font-size: 12px;
+  .copying & {
+    font-size: initial;
+  }
 `;
 
 const CellContents = styled.span`
@@ -41,6 +44,9 @@ const CellContents = styled.span`
   text-align: center;
   vertical-align: middle;
   font-size: 24px;
+  .copying & {
+    font-size: initial;
+  }
 `;
 
 export type CrosswordProps = {

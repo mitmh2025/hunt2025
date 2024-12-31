@@ -79,6 +79,9 @@ const AuthorsNote = styled.p`
   margin-right: 2rem;
   background-color: var(--gold-200);
   border-radius: 2px;
+  .copying & {
+    background-color: transparent;
+  }
 `;
 
 export {
