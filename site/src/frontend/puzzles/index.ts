@@ -14,6 +14,7 @@ import { blacklightPuzzle } from "./blacklight";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
+import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
@@ -245,7 +246,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // TODO: is this in the correct slot for isp03 family portrait?
   corn_maize: CornMaize,
   this_is_just_a_test: ThisIsJustATest, // typewriter
-  // TODO: isp05 desk lamp
+  // TODO: is this the correct slot for isp05 desk lamp?
+  passage_of_time: PassageOfTime,
 
   placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
   cahfee_regulah: CahfeeRegulah, // rings, behind binary switches
