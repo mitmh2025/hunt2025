@@ -16,7 +16,7 @@
     "knex": "node --import tsx/esm ./node_modules/.bin/knex",
     "test": "jest",
     "ops:build": "cd ops && rm -rf ../dist-ops && tsc -p ./server/tsconfig.json && vite build",
-    "ops:dev-server": "cd ops && NODE_ENV=development node --watch --import tsx/esm ./server/main.ts",
+    "ops:dev-server": "cd ops && OAUTH_SERVER=http://localhost:3004/ OAUTH_CLIENT_ID=bogus OAUTH_CLIENT_SECRET=bogus OAUTH_SUCCESS_REDIRECT_URL=http://localhost:3003 NODE_ENV=development node --watch --import tsx/esm ./server/main.ts",
     "ops:start": "cd ops && concurrently --kill-others vite \"npm run ops:dev-server\"",
     "install-hooks": "cd .. && husky site/.husky"
   },

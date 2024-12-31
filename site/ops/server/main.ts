@@ -121,7 +121,7 @@ async function buildApp({
         httpOnly: false,
         sameSite: "lax",
       });
-      res.redirect("/");
+      res.redirect(process.env.OAUTH_SUCCESS_REDIRECT_URL ?? "/");
     },
   );
 
