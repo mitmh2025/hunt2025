@@ -229,13 +229,18 @@ const LabelText = (label: string | ReactNode): string => {
   return "";
 };
 
+const CopyableTD = styled.td`
+  border: 1px solid black;
+  overflow: hidden;
+`;
+
 const CopyableTable = (): JSX.Element => (
   <table className={COPY_ONLY_CLASS}>
     <tbody>
       {GRID_CONTENT.map((row, i) => (
         <tr key={i}>
           {row.map((label, j) => (
-            <td key={j}>{LabelText(label)}</td>
+            <CopyableTD key={j}>{LabelText(label)}</CopyableTD>
           ))}
         </tr>
       ))}
