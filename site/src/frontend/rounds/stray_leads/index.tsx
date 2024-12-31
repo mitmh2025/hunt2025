@@ -9,10 +9,13 @@ export function strayLeadsState(teamState: TeamHuntState): StrayLeadsState {
     ([slug, puzzleObj]) => {
       if (puzzleObj.stray) {
         const puzzleState = PUZZLES[slug];
+        const round =
+          puzzleObj.round === "stray_leads" ? undefined : puzzleObj.round;
         return [
           {
             slug,
             title: puzzleState?.title ?? `Stub puzzle for slug ${slug}`,
+            ...(round ? { round } : {}),
           },
         ];
       } else {

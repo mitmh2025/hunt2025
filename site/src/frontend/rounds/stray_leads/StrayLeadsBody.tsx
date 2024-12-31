@@ -22,7 +22,6 @@ const StrayLeadsBody = ({
               currency={teamState.currency}
               title={lead.title}
               slug={lead.slug}
-              desc={lead.desc}
             />
           </li>
         );

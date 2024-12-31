@@ -12,12 +12,12 @@ const StrayLeadsManager = ({
   initialState: StrayLeadsState;
   initialTeamState: TeamHuntState;
 }) => {
-  const state = useDataset("stakeout", undefined, initialState);
+  const state = useDataset("stray_leads", undefined, initialState);
   const teamState = useDataset("team_state", undefined, initialTeamState);
   return <StrayLeadsBody state={state} teamState={teamState} />;
 };
 
-const elem = document.getElementById("stakeout-root");
+const elem = document.getElementById("stray-leads-root");
 if (elem) {
   const state = (
     window as unknown as { initialStrayLeadsState: StrayLeadsState }

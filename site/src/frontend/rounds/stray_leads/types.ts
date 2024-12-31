@@ -1,7 +1,7 @@
 export type StrayLead = {
   title: string;
   slug: string;
-  desc?: string;
+  round?: string;
 };
 
 export type StrayLeadsState = {
