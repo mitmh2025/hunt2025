@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import look01 from "./assets/look01.jpg";
 import look02 from "./assets/look02.jpg";
 import look03 from "./assets/look03.jpg";
@@ -30,23 +34,30 @@ const GarmentTable = styled.table`
   margin: 20px auto;
 `;
 
-const TableCell = styled.td<{ highlight: "red" | "black" | null }>`
+const TableCell = styled.td<{
+  $highlight: "red" | "black" | null;
+  $hollow: boolean;
+}>`
   width: 40px;
   height: 40px;
   text-align: center;
   vertical-align: middle;
-  border: 1px solid #000;
-  background-color: ${({ highlight }) =>
-    highlight === "red"
+  ${({ $hollow }) => (!$hollow ? "border: 1px solid #000" : "")};
+  background-color: ${({ $highlight }) =>
+    $highlight === "red"
       ? "#FFCCCB"
-      : highlight === "black"
+      : $highlight === "black"
         ? "black"
         : "white"};
-  color: ${({ highlight }) => (highlight === "black" ? "white" : "inherit")};
+  color: ${({ $highlight }) => ($highlight === "black" ? "white" : "inherit")};
 
   &:nth-child(even):not(:nth-child(14)) {
     border-right: 8px solid #000;
   }
+`;
+
+const SummaryTable = styled.table`
+  border-collapse: collapse;
 `;
 
 const SummaryTableCell = styled.td`
@@ -280,19 +291,27 @@ const Solution = () => {
       <p>
         After entering everything into the garment bags, the puzzler should see
         this:{" "}
-        <GarmentTable>
-          <tbody>
-            {tableData.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell, colIndex) => (
-                  <TableCell key={colIndex} highlight={cell.highlight}>
-                    {cell.letter}
-                  </TableCell>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </GarmentTable>
+        <HScrollTableWrapper>
+          <GarmentTable>
+            <tbody>
+              {tableData.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((cell, colIndex) => {
+                    return (
+                      <TableCell
+                        key={colIndex}
+                        $highlight={cell.highlight}
+                        $hollow={!cell.letter}
+                      >
+                        {cell.letter}
+                      </TableCell>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </GarmentTable>
+        </HScrollTableWrapper>
       </p>
 
       <p>
@@ -312,210 +331,212 @@ const Solution = () => {
       <h3>Summary Diagram</h3>
       <p>
         (given in a garment bag order){" "}
-        <table>
-          <th>
-            <tr>
-              <SummaryTableHeaderCell>Look</SummaryTableHeaderCell>
-              <SummaryTableHeaderCell>Theme Icon</SummaryTableHeaderCell>
-              <SummaryTableHeaderCell>
-                Theme name and date
-              </SummaryTableHeaderCell>
-              <SummaryTableHeaderCell>Designer</SummaryTableHeaderCell>
-              <SummaryTableHeaderCell>Celebrity</SummaryTableHeaderCell>
-            </tr>
-          </th>
-          <tbody>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look01} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme01} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Rei Kawakubo/Comme des Garçons: Art of the In-Between 2017
-              </SummaryTableCell>
-              <SummaryTableCell>Thom Browne</SummaryTableCell>
-              <SummaryTableCell>Wiz Khalifa</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look02} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme01} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Rei Kawakubo/Comme des Garçons: Art of the In-Between 2017
-              </SummaryTableCell>
-              <SummaryTableCell>Burberry</SummaryTableCell>
-              <SummaryTableCell>Olivia Cooke</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look03} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme02} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Heavenly Bodies: Fashion and the Catholic Imagination 2018
-              </SummaryTableCell>
-              <SummaryTableCell>Maison Margiela</SummaryTableCell>
-              <SummaryTableCell>Rihanna</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look04} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme02} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Heavenly Bodies: Fashion and the Catholic Imagination 2018
-              </SummaryTableCell>
-              <SummaryTableCell>Versace</SummaryTableCell>
-              <SummaryTableCell>Kim Kardashian</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look05} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme03} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                In America: A Lexicon of Fashion 2021
-              </SummaryTableCell>
-              <SummaryTableCell>Dolce & Gabbana</SummaryTableCell>
-              <SummaryTableCell>Iman</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look06} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme03} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                In America: A Lexicon of Fashion 2021
-              </SummaryTableCell>
-              <SummaryTableCell>Haider Ackermann</SummaryTableCell>
-              <SummaryTableCell>Timothee Chalamet</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look07} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme04} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Karl Lagerfeld: A Line of Beauty 2023
-              </SummaryTableCell>
-              <SummaryTableCell>Versace</SummaryTableCell>
-              <SummaryTableCell>Anne Hathaway</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look08} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme04} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Karl Lagerfeld: A Line of Beauty 2023
-              </SummaryTableCell>
-              <SummaryTableCell>Robert Wun</SummaryTableCell>
-              <SummaryTableCell>Tems</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look09} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme05} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Sleeping Beauties: Reawakening Fashion 2024
-              </SummaryTableCell>
-              <SummaryTableCell>Balmain</SummaryTableCell>
-              <SummaryTableCell>Olivier Rousteing</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look10} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme05} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                Sleeping Beauties: Reawakening Fashion 2024
-              </SummaryTableCell>
-              <SummaryTableCell>Tory Burch</SummaryTableCell>
-              <SummaryTableCell>Uma Thurman</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look11} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme06} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                In America: An Anthology of Fashion 2022
-              </SummaryTableCell>
-              <SummaryTableCell>Givenchy</SummaryTableCell>
-              <SummaryTableCell>Rosalia</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look12} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme06} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                In America: An Anthology of fashion 2022
-              </SummaryTableCell>
-              <SummaryTableCell>Versace</SummaryTableCell>
-              <SummaryTableCell>Gigi Hadid</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look13} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme07} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>Camp: Notes on Fashion 2019</SummaryTableCell>
-              <SummaryTableCell>Thom Browne</SummaryTableCell>
-              <SummaryTableCell>Amy Fine Collins</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look14} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme07} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>Camp: Notes on Fashion 2019</SummaryTableCell>
-              <SummaryTableCell>Brandon Maxwell</SummaryTableCell>
-              <SummaryTableCell>Lady Gaga</SummaryTableCell>
-            </tr>
-            <tr>
-              <SummaryTableCell>
-                <LinkedImage src={look15} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>
-                <LinkedImage src={theme07} alt="a dress"></LinkedImage>
-              </SummaryTableCell>
-              <SummaryTableCell>Camp: Notes on Fashion 2019</SummaryTableCell>
-              <SummaryTableCell>Altuzarra</SummaryTableCell>
-              <SummaryTableCell>Awkwafina</SummaryTableCell>
-            </tr>
-          </tbody>
-        </table>
+        <HScrollTableWrapper>
+          <SummaryTable>
+            <th>
+              <tr>
+                <SummaryTableHeaderCell>Look</SummaryTableHeaderCell>
+                <SummaryTableHeaderCell>Theme Icon</SummaryTableHeaderCell>
+                <SummaryTableHeaderCell>
+                  Theme name and date
+                </SummaryTableHeaderCell>
+                <SummaryTableHeaderCell>Designer</SummaryTableHeaderCell>
+                <SummaryTableHeaderCell>Celebrity</SummaryTableHeaderCell>
+              </tr>
+            </th>
+            <tbody>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look01} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme01} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Rei Kawakubo/Comme des Garçons: Art of the In-Between 2017
+                </SummaryTableCell>
+                <SummaryTableCell>Thom Browne</SummaryTableCell>
+                <SummaryTableCell>Wiz Khalifa</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look02} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme01} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Rei Kawakubo/Comme des Garçons: Art of the In-Between 2017
+                </SummaryTableCell>
+                <SummaryTableCell>Burberry</SummaryTableCell>
+                <SummaryTableCell>Olivia Cooke</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look03} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme02} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Heavenly Bodies: Fashion and the Catholic Imagination 2018
+                </SummaryTableCell>
+                <SummaryTableCell>Maison Margiela</SummaryTableCell>
+                <SummaryTableCell>Rihanna</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look04} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme02} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Heavenly Bodies: Fashion and the Catholic Imagination 2018
+                </SummaryTableCell>
+                <SummaryTableCell>Versace</SummaryTableCell>
+                <SummaryTableCell>Kim Kardashian</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look05} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme03} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  In America: A Lexicon of Fashion 2021
+                </SummaryTableCell>
+                <SummaryTableCell>Dolce & Gabbana</SummaryTableCell>
+                <SummaryTableCell>Iman</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look06} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme03} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  In America: A Lexicon of Fashion 2021
+                </SummaryTableCell>
+                <SummaryTableCell>Haider Ackermann</SummaryTableCell>
+                <SummaryTableCell>Timothee Chalamet</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look07} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme04} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Karl Lagerfeld: A Line of Beauty 2023
+                </SummaryTableCell>
+                <SummaryTableCell>Versace</SummaryTableCell>
+                <SummaryTableCell>Anne Hathaway</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look08} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme04} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Karl Lagerfeld: A Line of Beauty 2023
+                </SummaryTableCell>
+                <SummaryTableCell>Robert Wun</SummaryTableCell>
+                <SummaryTableCell>Tems</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look09} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme05} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Sleeping Beauties: Reawakening Fashion 2024
+                </SummaryTableCell>
+                <SummaryTableCell>Balmain</SummaryTableCell>
+                <SummaryTableCell>Olivier Rousteing</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look10} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme05} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  Sleeping Beauties: Reawakening Fashion 2024
+                </SummaryTableCell>
+                <SummaryTableCell>Tory Burch</SummaryTableCell>
+                <SummaryTableCell>Uma Thurman</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look11} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme06} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  In America: An Anthology of Fashion 2022
+                </SummaryTableCell>
+                <SummaryTableCell>Givenchy</SummaryTableCell>
+                <SummaryTableCell>Rosalia</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look12} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme06} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  In America: An Anthology of fashion 2022
+                </SummaryTableCell>
+                <SummaryTableCell>Versace</SummaryTableCell>
+                <SummaryTableCell>Gigi Hadid</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look13} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme07} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>Camp: Notes on Fashion 2019</SummaryTableCell>
+                <SummaryTableCell>Thom Browne</SummaryTableCell>
+                <SummaryTableCell>Amy Fine Collins</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look14} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme07} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>Camp: Notes on Fashion 2019</SummaryTableCell>
+                <SummaryTableCell>Brandon Maxwell</SummaryTableCell>
+                <SummaryTableCell>Lady Gaga</SummaryTableCell>
+              </tr>
+              <tr>
+                <SummaryTableCell>
+                  <LinkedImage src={look15} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>
+                  <LinkedImage src={theme07} alt="a dress"></LinkedImage>
+                </SummaryTableCell>
+                <SummaryTableCell>Camp: Notes on Fashion 2019</SummaryTableCell>
+                <SummaryTableCell>Altuzarra</SummaryTableCell>
+                <SummaryTableCell>Awkwafina</SummaryTableCell>
+              </tr>
+            </tbody>
+          </SummaryTable>
+        </HScrollTableWrapper>
       </p>
     </>
   );

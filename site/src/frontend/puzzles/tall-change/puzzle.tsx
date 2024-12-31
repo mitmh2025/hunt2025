@@ -12,19 +12,22 @@ const SizedWrapper = styled.div`
   width: 100%;
 `;
 
-const TableCell = styled.td<{ highlight: "yellow" | "black" | null }>`
+const TableCell = styled.td<{
+  $highlight: "yellow" | "black" | null;
+  $hollow?: boolean;
+}>`
   width: 40px;
   height: 40px;
   text-align: center;
   vertical-align: middle;
-  border: 1px solid #000;
-  background-color: ${({ highlight }) =>
-    highlight === "yellow"
+  ${({ $hollow }) => (!$hollow ? "border: 1px solid #000" : undefined)};
+  background-color: ${({ $highlight }) =>
+    $highlight === "yellow"
       ? "yellow"
-      : highlight === "black"
+      : $highlight === "black"
         ? "black"
         : "white"};
-  color: ${({ highlight }) => (highlight === "black" ? "white" : "inherit")};
+  color: ${({ $highlight }) => ($highlight === "black" ? "white" : "inherit")};
 
   &:nth-child(even):not(:nth-child(14)) {
     border-right: 8px solid #000;
@@ -41,6 +44,7 @@ type TableCellData = {
   row: number;
   col: number;
   highlight: "yellow" | "black" | null;
+  hollow: boolean;
 };
 
 const Puzzle = () => {
@@ -66,6 +70,7 @@ const Puzzle = () => {
     "7,13": "black",
     "2,14": "yellow",
   };
+  const heights = [11, 8, 15, 7, 15, 16, 7, 10, 7, 10, 8, 7, 11, 15, 9];
 
   const generateTableData = (
     rows: number,
@@ -77,6 +82,7 @@ const Puzzle = () => {
         row: rowIndex,
         col: colIndex,
         highlight: highlightedCells[`${rowIndex},${colIndex}`] ?? null,
+        hollow: rowIndex >= (heights[colIndex] ?? 0),
       })),
     );
   };
@@ -108,7 +114,8 @@ const Puzzle = () => {
               {row.map((cell, colIndex) => (
                 <TableCell
                   key={colIndex}
-                  highlight={cell.highlight}
+                  $highlight={cell.highlight}
+                  $hollow={cell.hollow}
                 ></TableCell>
               ))}
             </tr>
