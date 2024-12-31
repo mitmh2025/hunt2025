@@ -231,7 +231,6 @@ const LabelText = (label: string | ReactNode): string => {
 
 const CopyableTD = styled.td`
   border: 1px solid black;
-  overflow: hidden;
 `;
 
 const CopyableTable = (): JSX.Element => (
