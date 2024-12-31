@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { newAdminClient } from "../../lib/api/admin_client";
+import { newAdminClient, type AuthClient } from "../../lib/api/admin_client";
 import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
 import { newFrontendClient } from "../../lib/api/frontend_client";
 import {
@@ -20,6 +20,7 @@ export type OpsData = {
   registrationLog: TeamRegistrationLogEntry[];
   activityLog: InternalActivityLogEntry[];
   teams: TeamData[];
+  adminClient: AuthClient;
 };
 
 const INITIAL_STATE: OpsData = {
@@ -28,6 +29,7 @@ const INITIAL_STATE: OpsData = {
   activityLog: [],
   teams: [],
   puzzleMetadata: {},
+  adminClient: {},
 };
 
 export const OpsDataContext = createContext<OpsData>(INITIAL_STATE);
@@ -180,6 +182,7 @@ export default function OpsDataProvider({
         activityLog: activityLog.body,
         teams: store.getTeamData(),
         puzzleMetadata: puzzleMetadata.body,
+        adminClient: adminClient,
       });
     })().catch((e: unknown) => {
       console.error(e);

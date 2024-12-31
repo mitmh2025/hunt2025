@@ -881,6 +881,37 @@ export function getRouter({
           });
         },
       },
+      getDesertedNinjaScores: {
+        middleware: [adminAuthMiddleware],
+        handler: ({ params: { teamId } }) => {
+          // TODO: implement
+          let body = {
+            teamId: parseInt(teamId, 10),
+            sessionId: 0,
+            scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
+          };
+          return Promise.resolve({
+            status: 200 as const,
+            body: body,
+          });
+        },
+      },
+      saveDesertedNinjaScores: {
+        middleware: [adminAuthMiddleware],
+        handler: ({ params: {teamId} }) => {
+          // TODO: implement db store
+          // TODO: add to puzzle_state
+          let body = {
+            teamId: parseInt(teamId, 10),
+            sessionId: 0,
+            scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
+          };
+          return Promise.resolve({
+            status: 200 as const,
+            body: body,
+          });
+        },
+      },
     },
     frontend: {
       markTeamGateSatisfied: {

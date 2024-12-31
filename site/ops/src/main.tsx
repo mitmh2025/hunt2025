@@ -7,6 +7,7 @@ import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
 import Home from "./routes/Home.tsx";
 import Puzzles from "./routes/Puzzles.tsx";
+import DesertedNinjaStub from "./routes/DesertedNinja.tsx";
 import theme from "./theme.ts";
 
 const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
           {
             path: "puzzles",
             Component: Puzzles,
+          },
+          {
+            path: "deserted-ninja",
+            Component: DesertedNinjaStub
           },
         ],
       },
