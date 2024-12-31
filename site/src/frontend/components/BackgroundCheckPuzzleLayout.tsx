@@ -180,6 +180,7 @@ const Magnet = styled.img`
   width: ${magnet_width}px;
   left: calc(50% - ${magnet_width / 2}px);
   margin: 0 auto;
+  z-index: 1;
 `;
 
 export type Setting = "puzzle" | "solution";
