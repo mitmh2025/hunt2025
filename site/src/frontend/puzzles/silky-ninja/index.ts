@@ -57,6 +57,12 @@ const puzzle: PuzzleDefinition = {
       ],
       reply: "You have correctly constructed the clue phrase!",
     },
+    {
+      guess: [
+        "PUNCH ANAKIN REDACTED SKYWALKER REDACTED REDACTED BB DROID REDACTED RILE REDACTED DOCK REDACTED for answer",
+      ],
+      reply: "You have correctly constructed the clue phrase!",
+    },
   ],
 };
 
