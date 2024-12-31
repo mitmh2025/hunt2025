@@ -33,7 +33,7 @@ const StyledTable = styled.table`
 
 const MonoTable = styled(StyledTable)`
   td {
-    font-family: "Roboto Mono", monospace;
+    font-family: var(--monospace-font);
     white-space: nowrap;
   }
 `;

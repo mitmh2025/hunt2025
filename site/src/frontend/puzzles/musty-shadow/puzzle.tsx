@@ -33,7 +33,7 @@ export const FlexWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
   margin-top: 2em;
   margin-bottom: 2em;
 `;

@@ -11,7 +11,7 @@ const NumbersTable = styled.table`
 
   tr td {
     text-align: center;
-    font-family: "Roboto Mono", monospace;
+    font-family: var(--monospace-font);
   }
 `;
 

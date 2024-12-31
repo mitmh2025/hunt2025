@@ -12,7 +12,7 @@ const StyledTable = styled.table`
   margin: 1em 0;
   table-layout: fixed;
   width: 800px;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
   border-collapse: collapse;
   tr:first-child {
     background-color: var(--teal-300);

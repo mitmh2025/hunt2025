@@ -123,7 +123,7 @@ const solvedClues = [
 ];
 
 const MonoTD = styled.td`
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 `;
 const StyledTable = styled.table`
   margin: 0 auto 1rem auto;

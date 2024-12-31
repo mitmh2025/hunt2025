@@ -2,7 +2,7 @@ import React from "react";
 import { styled, css } from "styled-components";
 
 const MonoUL = styled.ul`
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 `;
 
 const PenTable = styled.table`

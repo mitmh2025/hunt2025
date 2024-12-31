@@ -7,7 +7,7 @@ import { Display, OutputBlock } from "./shared";
 const CenteredMonospaceP = styled.p`
   display: block;
   text-align: center;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 `;
 
 const CenteredDivRow = styled.div`

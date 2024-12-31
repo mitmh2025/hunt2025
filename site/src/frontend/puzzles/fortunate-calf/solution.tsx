@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const MonospaceTable = styled.table`
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 
   margin-bottom: 1rem;
   border-collapse: collapse;

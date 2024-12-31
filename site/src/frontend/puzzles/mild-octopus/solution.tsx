@@ -7,7 +7,7 @@ import {
 } from "../../components/StyledUI";
 
 const MonoTD = styled.td`
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 `;
 
 const ScrollWrapper = styled.div`

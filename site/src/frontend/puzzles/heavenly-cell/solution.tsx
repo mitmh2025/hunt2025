@@ -7,7 +7,7 @@ import {
 } from "../../components/StyledUI";
 
 const PreCode = styled.pre`
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 `;
 
 const givenGrid = `COMMONYELLOWHEADED

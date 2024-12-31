@@ -42,7 +42,7 @@ const GRID = [
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin-bottom: 1em;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
   width: 100%;
   th,
   td {

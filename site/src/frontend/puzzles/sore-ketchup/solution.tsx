@@ -5,7 +5,7 @@ import solution from "./assets/solution.mp4";
 
 const Sudoku = styled.table`
   margin-bottom: 1em;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
   border-collapse: collapse;
   border: 2px solid black;
   tr:nth-child(3n) {

@@ -20,7 +20,7 @@ const PuzzleTable = styled.table`
   }
 
   tbody tr td:nth-child(2) {
-    font-family: "Roboto Mono", monospace;
+    font-family: var(--monospace-font);
   }
 `;
 
@@ -31,7 +31,7 @@ const Image = styled.img`
 
 const CrissCrossTable = styled.table`
   margin: 1em auto;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
   border-collapse: collapse;
 
   td {

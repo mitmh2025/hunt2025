@@ -7,7 +7,7 @@ import {
 } from "../../components/StyledUI";
 
 const MonoUL = styled.ul`
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
 `;
 
 const Table = styled.table`

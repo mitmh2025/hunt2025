@@ -123,6 +123,7 @@
     sans-serif;
   --headline-font: "Belanosima", "Noto Color Emoji", "Gill Sans", "Futura",
     Helvetica, sans-serif;
+  --monospace-font: "Roboto Mono", "Cascadia Mono", monospace;
 
   --default-font-size: 16px;
 }

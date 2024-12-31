@@ -14,7 +14,7 @@ const PicrossTablesDiv = styled.div`
 const PicrossTable = styled.table`
   border-collapse: collapse;
   th {
-    font-family: "Roboto Mono", monospace;
+    font-family: var(--monospace-font);
   }
   thead th {
     border: none;
@@ -48,7 +48,7 @@ const CenteredItems = styled.div`
 
 const SquareTable = styled.table`
   margin: 8px;
-  font-family: "Roboto Mono", monospace;
+  font-family: var(--monospace-font);
   border-collapse: collapse;
   td {
     width: 32px;
