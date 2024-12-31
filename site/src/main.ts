@@ -75,8 +75,7 @@ async function main() {
   }
   if (environment === "development" && enabledComponents.has("oauth2")) {
     const oauth = await newMockOAuthServer(3004);
-    const { address, port } = oauth.address();
-    const baseUrl = `http://${address}:${port}`;
+    const baseUrl = oauth.issuer.url;
     jwksUri = `${baseUrl}/jwks`;
     console.log(
       `Mock OAuth2 server listening on ${baseUrl}/.well-known/openid-configuration`,

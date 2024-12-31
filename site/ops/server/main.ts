@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import express, { type RequestHandler, type Request } from "express";
 import jwt from "jsonwebtoken";
 import morgan from "morgan";
-import { discovery } from "openid-client";
+import { allowInsecureRequests, discovery } from "openid-client";
 import { Passport } from "passport";
 import { type VerifiedCallback } from "passport-jwt";
 import OAuth2Strategy, { type VerifyCallback } from "passport-oauth2";
@@ -31,7 +31,15 @@ async function newPassport({
   clientID: string;
   clientSecret: string;
 }) {
-  const config = await discovery(new URL(server), clientID, clientSecret);
+  const config = await discovery(
+    new URL(server),
+    clientID,
+    clientSecret,
+    undefined,
+    {
+      execute: environment === "development" ? [allowInsecureRequests] : [],
+    },
+  );
   const metadata = config.serverMetadata();
 
   if (
@@ -51,6 +59,7 @@ async function newPassport({
         tokenURL: metadata.token_endpoint,
         clientID,
         clientSecret,
+        callbackURL: "/auth/mitmh2025/callback",
       },
       (
         accessToken: string,
