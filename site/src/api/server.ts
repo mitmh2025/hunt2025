@@ -881,15 +881,78 @@ export function getRouter({
           });
         },
       },
+      createDesertedNinjaSession: {
+        middleware: [adminAuthMiddleware],
+        handler: ({ body }) => {
+          // TODO: implement creation
+          let responseBody = {
+            sessionId: 3,
+            teamIds: [1,2,3],
+            title: "Friday 4PM",
+            questionIds: [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33],
+          };
+          return Promise.resolve({
+            status: 200 as const,
+            body: responseBody,
+          });
+        },
+      },
+      saveDesertedNinjaSession: {
+        middleware: [adminAuthMiddleware],
+        handler: ({ body }) => {
+          // TODO: implement save
+          let responseBody = {
+            sessionId: 3,
+            teamIds: [1,2,3],
+            title: "Friday 4PM",
+            questionIds: [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33],
+          };
+          return Promise.resolve({
+            status: 200 as const,
+            body: responseBody,
+          });
+        },
+      },
+      getDesertedNinjaSessions: {
+        middleware: [adminAuthMiddleware],
+        handler: () => {
+          // TODO: implement retrieval
+          let body = [
+            {
+              sessionId: 1,
+              title: "Friday 2PM",
+              teamIds: [1, 2, 3],
+              questionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+            },
+            {
+              sessionId: 2,
+              title: "Friday 3PM",
+              teamIds: [4, 5, 6],
+              questionIds: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34],
+            }
+          ];
+          return Promise.resolve({
+            status: 200 as const,
+            body: body,
+          });
+        },
+      },
       getDesertedNinjaScores: {
         middleware: [adminAuthMiddleware],
         handler: ({ params: { teamId } }) => {
-          // TODO: implement
-          let body = {
-            teamId: parseInt(teamId, 10),
-            sessionId: 0,
-            scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
-          };
+          // TODO: implement retrieval
+          let body = [
+            {
+              sessionId: 1,
+              teamId: parseInt(teamId, 10),
+              scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
+            },
+            {
+              sessionId: 2,
+              teamId: parseInt(teamId, 10),
+              scores: [5,4,3,2,1,0,5,4,3,2,1,0,1,2,3,4,5],
+            }
+          ];
           return Promise.resolve({
             status: 200 as const,
             body: body,
@@ -898,14 +961,21 @@ export function getRouter({
       },
       saveDesertedNinjaScores: {
         middleware: [adminAuthMiddleware],
-        handler: ({ params: {teamId} }) => {
+        handler: ({ params: {sessionId} }) => {
           // TODO: implement db store
           // TODO: add to puzzle_state
-          let body = {
-            teamId: parseInt(teamId, 10),
-            sessionId: 0,
-            scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
-          };
+          let body = [
+            {
+              sessionId: 1,
+              teamId: 1,
+              scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
+            },
+            {
+              sessionId: 1,
+              teamId: 2,
+              scores: [4,5,2,1,0,3,1,0,4,5,5,0,0,0,1,2,0],
+            },
+          ];
           return Promise.resolve({
             status: 200 as const,
             body: body,

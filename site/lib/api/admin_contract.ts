@@ -19,6 +19,15 @@ export const DesertedNinjaScoreSchema = z.object({
 
 export type DesertedNinjaScore = z.infer<typeof DesertedNinjaScoreSchema>;
 
+export const DesertedNinjaSessionSchema = z.object({
+  sessionId: z.number(),
+  title: z.string(),
+  teamIds: z.number().array(),
+  questionIds: z.number().array().length(17),
+});
+
+export type DesertedNinjaSession = z.infer<typeof DesertedNinjaSessionSchema>;
+
 export const adminContract = c.router({
   getTeamState: {
     method: "GET",
@@ -46,21 +55,47 @@ export const adminContract = c.router({
     },
     summary: "Get all puzzle metadata",
   },
+  createDesertedNinjaSession: {
+    method: "POST",
+    path: "/admin/create-dn-session",
+    body: z.string(),
+    responses: {
+      200: DesertedNinjaSessionSchema,
+    },
+    summary: "Create a deserted-ninja session"
+  },
+  saveDesertedNinjaSession: {
+    method: "POST",
+    path: "/admin/save-dn-session/:session-id",
+    body: DesertedNinjaSessionSchema,
+    responses: {
+      200: DesertedNinjaSessionSchema,
+    },
+    summary: "Save/update a deserted-ninja session",
+  },
+  getDesertedNinjaSessions: {
+    method: "GET",
+    path: "/admin/get-dn-sessions",
+    responses: {
+      200: DesertedNinjaSessionSchema.array(),
+    },
+    summary: "Get all deserted-ninja sessions",
+  },
   getDesertedNinjaScores: {
     method: "GET",
     path: "/admin/get-dn-scores/:teamId",
     responses: {
-      200: DesertedNinjaScoreSchema,
+      200: DesertedNinjaScoreSchema.array(),
     },
-    summary: "Get deserted-ninja scores for a team",
+    summary: "Get deserted-ninja scores for a team (all sessions)",
   },
   saveDesertedNinjaScores: {
     method: "POST",
-    path: "/admin/save-dn-scores/:teamId",
-    body: z.number().array(),
+    path: "/admin/save-dn-scores/:sessionId",
+    body: DesertedNinjaScoreSchema.array(),
     responses: {
-      200: DesertedNinjaScoreSchema,
+      200: DesertedNinjaScoreSchema.array(),
     },
-    summary: "Save deserted-ninja scores for a team",
+    summary: "Save deserted-ninja scores for a session",
   },
 });
