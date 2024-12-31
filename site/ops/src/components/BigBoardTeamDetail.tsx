@@ -72,6 +72,15 @@ function transformTitle(title: string) {
   if (title.startsWith("Shell Corporation ")) {
     return title.split(":")[1];
   }
+
+  if (title.startsWith("Interview at the")) {
+    return title.substring("Interview at the".length);
+  }
+
+  if (title.endsWith("(Under Blacklight)")) {
+    return `Resolve ${title.substring(0, title.length - "(Under Blacklight)".length)}`;
+  }
+
   return title;
 }
 
@@ -108,7 +117,7 @@ export default function BigBoardTeamDetail({ team }: { team: BigBoardTeam }) {
                 key={puzzle.slug}
                 style={{ backgroundColor: stateColors[puzzle.state] }}
               >
-                {puzzle.title}
+                {transformTitle(puzzle.title)}
               </Puzzle>
             ))}
           </PuzzleRow>
@@ -121,7 +130,7 @@ export default function BigBoardTeamDetail({ team }: { team: BigBoardTeam }) {
                     backgroundColor: stateColors[interaction.state],
                   }}
                 >
-                  {interaction.title}
+                  {transformTitle(interaction.title)}
                 </Interaction>
               ))}
             </PuzzleRow>
