@@ -19,7 +19,10 @@ export const roundHandler = (
     return undefined;
   }
   const { roundSlug } = req.params;
-  if (teamState.state.rounds[roundSlug] === undefined) {
+  if (
+    roundSlug !== "stray_leads" &&
+    teamState.state.rounds[roundSlug] === undefined
+  ) {
     return undefined;
   }
   const content = ROUND_PAGE_MAP[roundSlug];

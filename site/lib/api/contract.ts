@@ -35,7 +35,7 @@ const PuzzleLockEnum = z
 
 const PuzzleSummarySchema = z.object({
   round: slug,
-  stray: z.boolean().optional(), // If true, this puzzle initially unlocked in the outlands, regardless of its current round assignment.
+  stray: z.boolean().optional(), // If true, this puzzle initially unlocked in stray leads, regardless of its current round assignment.
   // visible implied by existence
   locked: PuzzleLockEnum,
   answer: z.string().optional(),

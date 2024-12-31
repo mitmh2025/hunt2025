@@ -281,9 +281,9 @@ export function getRouter({
     //       and not have to derive team state here at all.
     const data = reducerDeriveTeamState(hunt, activity_log);
     const round_unlocked = data.rounds_unlocked.has(round);
-    // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "outlands" round.
+    // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "stray_leads" round.
     if (!round_unlocked) {
-      round = "outlands"; // TODO: configurable?
+      round = "stray_leads"; // TODO: configurable?
     }
 
     // The puzzle must be either unlockable or unlocked.

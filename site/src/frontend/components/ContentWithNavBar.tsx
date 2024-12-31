@@ -10,6 +10,12 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
       title: roundObj.title,
     };
   });
+  if (teamState.rounds.the_missing_diamond?.gates?.includes("hunt_started")) {
+    rounds.push({
+      href: "/rounds/stray_leads",
+      title: "Stray Leads",
+    });
+  }
   const currency = teamState.currency;
   return {
     epoch: teamState.epoch,

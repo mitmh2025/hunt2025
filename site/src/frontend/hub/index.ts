@@ -8,6 +8,12 @@ export function hubState(teamState: TeamHuntState): HubState {
       title: roundObj.title,
     };
   });
+  if (teamState.rounds.the_missing_diamond?.gates?.includes("hunt_started")) {
+    rounds.push({
+      slug: "stray_leads",
+      title: "Stray Leads",
+    });
+  }
   return {
     epoch: teamState.epoch,
     rounds,

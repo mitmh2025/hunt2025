@@ -133,7 +133,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     acknowledgementBlock: MurderAcknowledgementBlock,
     spoiler: MurderSpoiler,
   },
-  outlands: {},
+  stray_leads: {},
 };
 
 const DEFAULT_MANIFEST: ComponentManifest = {

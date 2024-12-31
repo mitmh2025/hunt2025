@@ -49,7 +49,7 @@ export class TeamStateIntermediate extends LogicTeamState {
         this.puzzles_unlocked.add(entry.slug);
         // If this puzzle is not assigned to a round, or if the round to which
         // it is assigned is not unlocked at the time the puzzle unlocks, then
-        // it will be included henceforth in the puzzle outlands.
+        // it will be included henceforth in the puzzle outlands (stray leads).
         const slot = this.slugToSlotMap.get(entry.slug);
         if (!slot || !this.rounds_unlocked.has(slot.roundSlug)) {
           this.puzzles_stray.add(entry.slug);
@@ -169,7 +169,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
       [...data.puzzles_visible].map((slug) => [
         slug,
         {
-          round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
+          round: puzzleRounds[slug] ?? "stray_leads", // TODO: Should this be hardcoded?
           locked: data.puzzles_unlocked.has(slug)
             ? ("unlocked" as const)
             : data.puzzles_unlockable.has(slug)
