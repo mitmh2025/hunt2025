@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { useOpsData, type OpsData } from "../OpsDataProvider";
 import { retrieveScores, retrieveSessions } from "../opsdata/desertedNinja.ts";
+import { DesertedNinjaHost } from "../components/DesertedNinjaHost";
 import { type DesertedNinjaScore, type DesertedNinjaSession } from "../../../lib/api/admin_contract";
 import 'react-tabs/style/react-tabs.css';
 
@@ -37,7 +38,7 @@ export default function DesertedNinjaStub() {
           ))}
         </TabPanel>
         <TabPanel>
-          <p>Host mode</p>
+          <DesertedNinjaHost sessions={sessions} />
         </TabPanel>
         <TabPanel>
           <p>Scorekeeper mode</p>
