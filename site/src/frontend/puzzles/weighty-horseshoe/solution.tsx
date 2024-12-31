@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import { StanzaBlock, StyledTD } from "./puzzle";
 
 const EqualTable = styled.table`
@@ -343,7 +343,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Reading the intersection letters in right-then-down fashion yields the
-        answer FROM RUSSIA WITH LOVE.
+        answer <PuzzleAnswer>FROM RUSSIA WITH LOVE</PuzzleAnswer>.
       </p>
       <p>Poems and movies referenced:</p>
       <HScrollTableWrapper>
