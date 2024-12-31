@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "battle_factory",
   initial_description: "a list of pokemon and opponents",
   answer: "CHOKING HAZARD",
-  authors: ["adeerintheheadlights"],
+  authors: ["Dee Ruttenberg"],
   editors: ["Jonathan Lay", "Kevin Hwang", "Sid Creutz"],
   additional_credits: [],
   content: {
