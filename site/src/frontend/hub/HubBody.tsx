@@ -20,6 +20,7 @@ import {
   MAX_HEIGHT,
   MAX_WIDTH,
 } from "./constants";
+import { type HubState } from "./types";
 
 // const RED = "var(--red-500)";
 const GREEN = "var(--teal-400)";
@@ -52,7 +53,7 @@ const BusinessCard = styled.img`
     ${getRelativeSizeCss(4)} rgba(0, 0, 0, 0.53);
 `;
 
-const HubBody = () => {
+const HubBody = ({ state }: { state: HubState }) => {
   useEffect(() => {
     function _calculateScrollbarWidth() {
       document.documentElement.style.setProperty(
@@ -165,6 +166,34 @@ const HubBody = () => {
           src={MainQuestionImg}
           alt="Who stole the Shadow Diamond? Solve the Case of the Shadow Diamond"
         />
+        {state.objects.map((obj) => {
+          const imgStyles = {
+            width: getRelativeSizeCss(obj.width),
+          };
+          const styles = {
+            position: "absolute" as const,
+            top: getRelativeSizeCss(obj.y),
+            left: getRelativeSizeCss(obj.x),
+            transform: `rotate(${obj.rot}deg)`,
+            pointerEvents: obj.inert ? ("none" as const) : undefined,
+          };
+
+          if (obj.href) {
+            return (
+              <a key={obj.asset} style={styles} href={obj.href}>
+                <img style={imgStyles} src={obj.asset} alt={obj.alt} />
+              </a>
+            );
+          }
+          return (
+            <img
+              key={obj.asset}
+              style={{ ...styles, ...imgStyles }}
+              src={obj.asset}
+              alt={obj.alt}
+            />
+          );
+        })}
       </Board>
       {/* <h1>Hub page</h1>
       <h2>Rounds</h2>

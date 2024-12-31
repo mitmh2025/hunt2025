@@ -8,7 +8,7 @@ const stubSoundFileset = {
 type CasinoState = {
   points: number;
 };
-type CasinoResult = "ace-of-spades" | "ace-of-diamonds" | "joker";
+export type CasinoResult = "ace-of-spades" | "ace-of-diamonds" | "joker";
 type CasinoSpeaker = "billie" | "shark_one" | "shark_two";
 
 const incrementPoints = (state: CasinoState) => {

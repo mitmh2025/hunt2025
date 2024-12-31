@@ -113,7 +113,7 @@ export const interactionStartPostHandler: RequestHandler<
 });
 
 const MOCK_INTERACTION_RESULTS: Record<string, string> = {
-  interview_at_the_boardwalk: "big-bear",
+  interview_at_the_boardwalk: "photo",
   interview_at_the_art_gallery: "lemahieu",
   interview_at_the_jewelry_store: "",
   interview_at_the_casino: "ace-of-spades",

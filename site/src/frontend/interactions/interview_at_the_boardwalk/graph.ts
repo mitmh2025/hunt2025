@@ -14,10 +14,7 @@ export type BoardwalkInteractionState = {
   played_lucky_duck: boolean;
   played_pop_the_balloon: boolean;
 };
-type BoardwalkInteractionResult =
-  | "big-beaver"
-  | "duck-keychain"
-  | "ticket-stub";
+export type BoardwalkInteractionResult = "photo" | "keychain" | "ticket-stub";
 type BoardwalkInteractionSpeakers =
   | "billie"
   | "roger_baseline"
@@ -894,11 +891,11 @@ const BoardwalkInteractionGraph: InteractionGraph<
       timeout_msec: 5000,
       finalState(state: BoardwalkInteractionState): BoardwalkInteractionResult {
         if (state.wins === 3) {
-          return "big-beaver";
+          return "photo";
         } else if (state.wins === 0) {
           return "ticket-stub";
         } else {
-          return "duck-keychain";
+          return "keychain";
         }
       },
     },
