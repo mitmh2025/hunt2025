@@ -42,6 +42,7 @@ import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
 import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
+import Incognito from "./heavy-iron";
 import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
 import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
@@ -219,6 +220,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   chemicals_are_sexy: ChemicalsAreSexy,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
+  incognito: Incognito,
   maze_of_lies: MazeOfLies,
   the_eras_puzzle: TheErasPuzzle,
   the_inspectre: TheInspectre,
