@@ -33,6 +33,7 @@ import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
+import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
@@ -151,6 +152,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   "🔎🧊": MagnifyingGlassIce,
   an_argument: AnArgument,
+  battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
   downright_backwards: DownrightBackwards,
   dropping_the_ball: DroppingTheBall,
