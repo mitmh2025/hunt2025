@@ -13,8 +13,7 @@ import {
   type NextFunction,
   Router,
 } from "express";
-import jwt, { type JwtHeader, type SigningKeyCallback } from "jsonwebtoken";
-import { JwksClient } from "jwks-rsa";
+import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import {
   type GuessStatus,
@@ -32,6 +31,7 @@ import {
   type MutableTeamRegistration,
   frontendContract,
 } from "../../lib/api/frontend_contract";
+import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
@@ -138,29 +138,12 @@ function newPassport({
   const adminStrategies = ["adminJwt"];
 
   if (jwksUri) {
-    const jwksClient = new JwksClient({
-      jwksUri,
-    });
     passport.use(
       "authentikJwt",
-      new JwtStrategy(
-        {
-          jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-          secretOrKey: ((header: JwtHeader, callback: SigningKeyCallback) => {
-            jwksClient
-              .getSigningKey(header.kid)
-              .then((key) => {
-                callback(
-                  null,
-                  "publicKey" in key ? key.publicKey : key.rsaPublicKey,
-                );
-              })
-              .catch((e: unknown) => {
-                callback(e as Error);
-              });
-          }) as unknown as string, // type of secretOrKey is wrong
-        },
-        function (jwtPayload: AuthentikJWTPayload, done) {
+      authentikJwtStrategy(
+        jwksUri,
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        function (_, jwtPayload: AuthentikJWTPayload, done) {
           if (!jwtPayload.admin) {
             console.warn(
               "JWT valid but missing admin; treating as unauthorized",

@@ -1,9 +1,15 @@
 import { randomBytes } from "crypto";
 import path from "path";
 import { fileURLToPath } from "url";
-import express from "express";
+import cookieParser from "cookie-parser";
+import express, { type RequestHandler, type Request } from "express";
 import jwt from "jsonwebtoken";
 import morgan from "morgan";
+import { discovery } from "openid-client";
+import { Passport } from "passport";
+import { type VerifiedCallback } from "passport-jwt";
+import OAuth2Strategy, { type VerifyCallback } from "passport-oauth2";
+import { authentikJwtStrategy } from "../../lib/auth";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
@@ -16,19 +22,109 @@ if (environment !== "development" && environment !== "production") {
   throw new Error("$NODE_ENV not set to development or production");
 }
 
-function buildApp({
+async function newPassport({
+  server,
+  clientID,
+  clientSecret,
+}: {
+  server: string;
+  clientID: string;
+  clientSecret: string;
+}) {
+  const config = await discovery(new URL(server), clientID, clientSecret);
+  const metadata = config.serverMetadata();
+
+  if (
+    !metadata.authorization_endpoint ||
+    !metadata.token_endpoint ||
+    !metadata.jwks_uri
+  ) {
+    throw new Error("OpenID discovery doc missing required fields");
+  }
+
+  const passport = new Passport();
+  passport.use(
+    "mitmh2025",
+    new OAuth2Strategy(
+      {
+        authorizationURL: metadata.authorization_endpoint,
+        tokenURL: metadata.token_endpoint,
+        clientID,
+        clientSecret,
+      },
+      (
+        accessToken: string,
+        _refreshToken: string,
+        _profile: unknown,
+        cb: VerifyCallback,
+      ) => {
+        cb(null, accessToken);
+      },
+    ),
+  );
+  passport.use(
+    "authentikJwt",
+    authentikJwtStrategy(
+      metadata.jwks_uri,
+      (req: Request) =>
+        (req.cookies.mitmh2025_api_auth as string | undefined) ?? null,
+      (req: Request, _, done: VerifiedCallback) => {
+        done(null, req.cookies.mitmh2025_api_auth);
+      },
+    ),
+  );
+  return passport;
+}
+
+async function buildApp({
   jwtSecret,
   apiUrl,
+  oauthServer,
+  clientID,
+  clientSecret,
 }: {
   jwtSecret: string | Buffer;
   apiUrl: string;
+  oauthServer: string;
+  clientID: string;
+  clientSecret: string;
 }) {
   const app = express();
+
+  const passport = await newPassport({
+    server: oauthServer,
+    clientID,
+    clientSecret,
+  });
 
   // Install /healthz before the log handler, so we don't log every health check.
   app.use("/healthz", (_req, res) => res.send("ok"));
 
+  app.use(cookieParser());
   app.use(logMiddleware);
+
+  app.get(
+    "/auth/mitmh2025",
+    passport.authenticate("mitmh2025", {
+      session: false,
+    }) as RequestHandler,
+  );
+
+  app.get(
+    "/auth/mitmh2025/callback",
+    passport.authenticate("mitmh2025", {
+      session: false,
+      failureRedirect: "/",
+    }) as RequestHandler,
+    function (req, res) {
+      // Successful authentication, redirect home.
+      res.cookie("mitmh2025_api_auth", req.user, {
+        httpOnly: false,
+        sameSite: "lax",
+      });
+      res.redirect("/");
+    },
+  );
 
   app.get("/admin-token", (req, res) => {
     let adminUser = req.header("x-authentik-email");
@@ -84,9 +180,31 @@ if (!apiUrl) {
   throw new Error("$API_BASE_URL not defined in production");
 }
 
+const oauthServer = process.env.OAUTH_SERVER;
+const clientID = process.env.OAUTH_CLIENT_ID;
+const clientSecret = process.env.OAUTH_CLIENT_SECRET;
+if (!oauthServer) {
+  throw new Error("$OAUTH_SERVER not defined");
+}
+if (!clientID) {
+  throw new Error("$OAUTH_CLIENT_ID not defined");
+}
+if (!clientSecret) {
+  throw new Error("$OAUTH_CLIENT_SECRET not defined");
+}
+
 buildApp({
   jwtSecret,
   apiUrl,
-}).listen(opssitePort, () => {
-  console.log(`Ops site listening on port ${opssitePort}`);
-});
+  oauthServer,
+  clientID,
+  clientSecret,
+})
+  .then((app) =>
+    app.listen(opssitePort, () => {
+      console.log(`Ops site listening on port ${opssitePort}`);
+    }),
+  )
+  .catch((e: unknown) => {
+    console.error(e);
+  });
