@@ -25,7 +25,7 @@ const Solution = () => {
         transformation on another pokemon’s nickname, you can get a word related
         to each pokemon trainer’s title. Taking the shared letters of the result
         and the name, and ordering by shared pokemon, gives the final answer:{" "}
-        <PuzzleAnswer>CHOKINGHAZARD</PuzzleAnswer>
+        <PuzzleAnswer>CHOKING HAZARD</PuzzleAnswer>
       </p>
       <Table>
         <thead>
@@ -41,7 +41,7 @@ const Solution = () => {
         </thead>
         <tbody>
           <tr>
-            <td>DIAL the Smolive</td>
+            <td>DIAL the Smoliv</td>
             <td>KHAN the Paras</td>
             <td>Append ECT to the end</td>
             <td>
@@ -171,6 +171,17 @@ const Solution = () => {
             <td>Slacker</td>
             <td>Arthur</td>
             <td>R</td>
+          </tr>
+          <tr>
+            <td>SMALE the Jigglypuff</td>
+            <td>DIAL the Smoliv</td>
+            <td>SM → D, L → LL</td>
+            <td>
+              <Mono>DALLE</Mono>
+            </td>
+            <td>AI Researcher</td>
+            <td>Debra</td>
+            <td>D</td>
           </tr>
         </tbody>
       </Table>
