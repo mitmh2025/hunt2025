@@ -569,7 +569,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
     number: 26,
     clues: [
       "Blackness bled by a Basilisk-stabbed book",
-      "Teleport, change the weather, alter time -- all it takes is a toot on this timely flute",
+      "Teleport, change the weather, alter time—all it takes is a toot on this timely flute",
       "Distinctive feature of duck’s foot",
     ],
   },
@@ -799,7 +799,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
     clues: [
       "Mandalorian with the soul of an artist",
       "Initiate legal proceedings against, or a catchier name for FMNH PR 2081",
-      "The ’skeleton’ in Nocturnal’s closet",
+      "The “skeleton” in Nocturnal’s closet",
     ],
   },
   {
