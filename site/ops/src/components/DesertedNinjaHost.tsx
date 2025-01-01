@@ -48,7 +48,6 @@ export function DesertedNinjaHost(
   { sessions, questions } : { sessions: DesertedNinjaSession[], questions: DesertedNinjaQuestion[] },
 ) {
   let [session, setSession] = useState<DesertedNinjaSession>(null);
-  console.log(questions)
   
   return (
     <>

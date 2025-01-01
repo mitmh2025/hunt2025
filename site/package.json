@@ -70,6 +70,7 @@
     "seedrandom": "^3.0.5",
     "styled-components": "^6.1.12",
     "swagger-ui-express": "^5.0.0",
+    "usehooks-ts": "^3.1.0",
     "utf-8-validate": "^6.0.4",
     "websocket-express": "^3.1.0",
     "ws": "^8.17.0",

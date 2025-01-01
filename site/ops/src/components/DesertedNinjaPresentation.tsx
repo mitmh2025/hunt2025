@@ -1,17 +1,24 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { useInterval } from 'usehooks-ts';
 import Reveal from 'reveal.js';
 import { styled } from "styled-components";
 import { type DesertedNinjaQuestion, type DesertedNinjaSession } from "../opsdata/types.ts";
 import 'reveal.js/dist/reveal.css';
 import "reveal.js/dist/theme/black.css";
 
+type CountdownTimer = {
+  timeLeft: number,
+  running: boolean
+};
+
 const RevealBox = styled.div`
 border: 1px solid;
 height: 500px;
 `
 
-function RevealContainer({ children }) {
+function RevealContainer({ children, timer, setTimer, session }) {
   const deckRef = useRef<Reveal.Api | null>(null);
+  const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (deckRef.current === null) {
@@ -21,8 +28,30 @@ function RevealContainer({ children }) {
         jumpToSlide: false,
         overview: false,
         controls: true,
+        keyboard: {
+          82: () => {
+            setTimer({
+              timeLeft: 45,
+              running: false,
+            });
+          },
+          84: () => {
+            if (timer.timeLeft > 0) {
+              setTimer({
+                timeLeft: timer.timeLeft,
+                running: true,
+              });
+            }
+          },
+        },
       });
       deckRef.current.initialize();
+
+      return () => {
+        if (deckRef.current.isReady()) {
+          deckRef.current.destroy();
+        }
+      };
     }
   }, []);
 
@@ -31,7 +60,24 @@ function RevealContainer({ children }) {
       deckRef.current.sync();
       deckRef.current.slide(0);
     }
-  }, [children]);
+  }, [session]);
+
+  useInterval( () => {
+    if (timer.running) {
+      if (timer.timeLeft <= 1) {
+        setTimer({
+          timeLeft: 0,
+          running: false,
+        });
+      }
+      else {
+        setTimer({
+          timeLeft: timer.timeLeft - 1,
+          running: true,
+        });
+      }
+    }
+  }, 1000);
   
   return (
     <RevealBox className="reveal">
@@ -42,10 +88,15 @@ function RevealContainer({ children }) {
   );
 }
 
-function CountdownTimer() {
+const TimerDiv = styled.div`
+  font-size: 200%;
+`;
+
+function CountdownTimer( { timer } ) {
   return (
-    <div className="fragment">
-    </div>
+    <TimerDiv className="fragment" style={ {color: (timer.timeLeft == 0 ? "red" : (timer.timeLeft < 15 ? "yellow" : "white")) } }>
+      0:{timer.timeLeft.toString().padStart(2, '0')}
+    </TimerDiv>
   );
 }
 
@@ -89,7 +140,7 @@ const SampleGeoguessrSlide = (
 );
 
 function QuestionSlide(
-  { question, questionNumber }:
+  { question, questionNumber, timer }:
   { question: DesertedNinjaQuestion, questionNumber: number }
 ) {
   let content = null;
@@ -97,6 +148,7 @@ function QuestionSlide(
     content = (
       <>
         <p className="fragment">{question.text}</p>
+        <CountdownTimer timer={timer} />
       </>
     );
   }
@@ -105,6 +157,7 @@ function QuestionSlide(
       <>
         <p className="fragment">{question.text}</p>
         <p className="fragment">{question.imageUrl}</p>
+        <CountdownTimer timer={timer} />
       </>
     );
   }
@@ -121,6 +174,10 @@ export function DesertedNinjaPresentation(
   { session, questions }: { session: DesertedNinjaSession, questions: DesertedNinjaQuestions[] }
 ) {
   let contents = null;
+  const [timer, setTimer] = useState<CountdownTimer>({
+    timeLeft: 45,
+    running: false,
+  });
 
   if (!session) {
     contents = (
@@ -135,6 +192,7 @@ export function DesertedNinjaPresentation(
         <QuestionSlide
           question={question}
           questionNumber={index + 1}
+          timer={timer}
           key={question.questionId}
         />
     );
@@ -153,7 +211,7 @@ export function DesertedNinjaPresentation(
   }
   
   return (
-    <RevealContainer className="reveal">
+    <RevealContainer className="reveal" timer={timer} setTimer={setTimer} session={session}>
       {contents}
     </RevealContainer>
   );
