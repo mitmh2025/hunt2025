@@ -63,7 +63,7 @@ const puzzle: PuzzleDefinition = {
         "grid",
       ],
       nudge:
-        "When measuring your bread tags, it’s important to orient them in the correct way as demonstrated on the research group's website.",
+        "When measuring your bread tags, it’s important to orient them in the correct way as demonstrated on the research group’s website.",
     },
     {
       order: 5.0,
