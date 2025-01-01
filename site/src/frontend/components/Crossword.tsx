@@ -30,6 +30,30 @@ export function filterLabelsToStructure(labels: string[][]): string[][] {
   return labels.map((row) => row.map((char) => (char === "." ? char : "")));
 }
 
+/**
+ * Iterates through a labels array and converts each "#" to a series of natural
+ * numbers starting at 1.
+ */
+export function calculateNumberLabels(labels: string[][]): string[][] {
+  let counter = 1;
+  const newLabels: string[][] = [];
+  for (const row of labels) {
+    const labelRow: string[] = [];
+    for (const char of row) {
+      if (char === "#") {
+        labelRow.push(`${counter}`);
+        counter++;
+      } else if (char === " ") {
+        labelRow.push("");
+      } else {
+        labelRow.push(char);
+      }
+    }
+    newLabels.push(labelRow);
+  }
+  return newLabels;
+}
+
 const Grid = styled.table`
   border-collapse: collapse;
   td {

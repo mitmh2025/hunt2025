@@ -4,7 +4,10 @@ import {
   COPY_ONLY_CLASS,
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
-import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
+import Crossword, {
+  calculateNumberLabels,
+  filterLabelsToStructure,
+} from "../../components/Crossword";
 import LinkedImage from "../../components/LinkedImage";
 import puzzle from "./assets/puzzle.png";
 import {
@@ -22,22 +25,7 @@ const StyledTable = styled.table`
 `;
 
 const Puzzle = (): JSX.Element => {
-  let counter = 1;
-  const labels: string[][] = [];
-  for (const row of GRID) {
-    const labelRow: string[] = [];
-    for (const char of row) {
-      if (char === "#") {
-        labelRow.push(`${counter}`);
-        counter++;
-      } else if (char === " ") {
-        labelRow.push("");
-      } else {
-        labelRow.push(char);
-      }
-    }
-    labels.push(labelRow);
-  }
+  const labels = calculateNumberLabels(GRID);
 
   return (
     <>

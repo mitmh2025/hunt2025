@@ -252,7 +252,7 @@ const HUNT: Hunt = {
         { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "seating_arrangements" }, // oddball-comic
         { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "editors_solemnity" }, // plant-soursop
         { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 }, // plump-himalayas
-        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1 }, // fake-fair
+        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1, slug: "read_between_the_lines" }, // fake-fair
         { id: "sop39", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "just_fing_behave" }, // scornful-band
         { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "its_not_clear" }, // kooky-light
         { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1, slug: "mens_at_my_nose" }, // downright-hook
