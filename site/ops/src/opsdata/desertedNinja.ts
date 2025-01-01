@@ -1,10 +1,13 @@
 import { type OpsData } from "../OpsDataProvider";
-import { type DesertedNinjaScore } from "../../../lib/api/admin_contract";
 
-export function retrieveQuestions(data: OpsData, questionIds: number[], setQuestions) {
+export function retrieveDesertedNinjaData(data: OpsData, setQuestions, setSessions) {
+  retrieveQuestions(data, setQuestions);
+  retrieveSessions(data, setSessions);
+}
+
+function retrieveQuestions(data: OpsData, setQuestions) {
   data.adminClient.getDesertedNinjaQuestions().then(
     (result) => {
-      console.log(result.body);
       setQuestions(result.body);
     },
     (result) => {
@@ -13,7 +16,7 @@ export function retrieveQuestions(data: OpsData, questionIds: number[], setQuest
   );
 }
 
-export function retrieveSessions(data: OpsData, setSessions) {
+function retrieveSessions(data: OpsData, setSessions) {
   data.adminClient.getDesertedNinjaSessions().then(
     (result) => {
       setSessions(result.body);
@@ -24,7 +27,7 @@ export function retrieveSessions(data: OpsData, setSessions) {
   );
 }
 
-export function retrieveScores(data: OpsData, teamId: number, setScores) {
+function retrieveScores(data: OpsData, teamId: number, setScores) {
   data.adminClient.getDesertedNinjaScores({
     params: {
       teamId: teamId.toString()
