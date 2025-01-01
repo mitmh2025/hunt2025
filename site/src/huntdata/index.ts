@@ -52,7 +52,7 @@ const HUNT: Hunt = {
         { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "neatly_drawn" },
         { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "🔎🧊"},
-        { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
         { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "mdp25", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "mdp26", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion"},
@@ -160,6 +160,7 @@ const HUNT: Hunt = {
       gates: [
         { id: "hunt_started" }, // Hunt started.  Nothing is unlocked until this gate is satisfied.
         { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
+        { id: "mdg02" }, // Picked up Synthetic Tagsonomy from Gala
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
