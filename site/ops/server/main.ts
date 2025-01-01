@@ -163,17 +163,17 @@ if (!apiUrl) {
   throw new Error("$API_BASE_URL not defined in production");
 }
 
-const oauthServer = process.env.OAUTH_SERVER;
-const clientID = process.env.OAUTH_CLIENT_ID;
-const clientSecret = process.env.OAUTH_CLIENT_SECRET;
+const oauthServer = process.env.OAUTH_SERVER ?? environment === "development" ? "http://localhost:3004/.well-known/openid-configuration" : undefined;
+const clientID = process.env.OAUTH_CLIENT_ID ?? environment === "development" ? "unused" : undefined;
+const clientSecret = process.env.OAUTH_CLIENT_SECRET ?? environment === "development" ? "unused" : undefined;
 if (!oauthServer) {
-  throw new Error("$OAUTH_SERVER not defined");
+  throw new Error("$OAUTH_SERVER not defined in production");
 }
 if (!clientID) {
-  throw new Error("$OAUTH_CLIENT_ID not defined");
+  throw new Error("$OAUTH_CLIENT_ID not defined in production");
 }
 if (!clientSecret) {
-  throw new Error("$OAUTH_CLIENT_SECRET not defined");
+  throw new Error("$OAUTH_CLIENT_SECRET not defined in production");
 }
 
 buildApp({
