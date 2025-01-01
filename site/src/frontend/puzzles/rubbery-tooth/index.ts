@@ -40,7 +40,7 @@ const puzzle: PuzzleDefinition = {
         "Hunters have identified the scientific names of the things in the pictures but don’t know what to do next.",
       keywords: ["scientific name", "genus", "species"],
       nudge:
-        "After you've identified the pictures, look at the first letter of their scientific names in the correct order to discover what to do next.",
+        "After you’ve identified the pictures, look at the first letter of their scientific names in the correct order to discover what to do next.",
     },
     {
       order: 3.0,
