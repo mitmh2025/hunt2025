@@ -439,7 +439,7 @@ export const GRID_2_DOWN = [
   [21, "“Preach!”"],
   [22, "Vulpine"],
   [24, "Pose-based exercise"],
-  [26, "Me, when I'm in France"],
+  [26, "Me, when I’m in France"],
   [28, "What you have if you can't hear very well, colloquially"],
   [32, "Soft mineral"],
   [34, "French to be"],
