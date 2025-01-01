@@ -408,7 +408,7 @@ export const GRID_2_ACROSS = [
   [46, "Old-Testament judge"],
   [47, "This animal is blue in Maryland"],
   [49, "Sanctify"],
-  [52, "Drake song that isn't about you"],
+  [52, "Drake song that isn’t about you"],
   [55, "Them user, perhaps"],
   [58, "Reduce your interest rate, for short"],
   [59, "Like a spoon, but bigger"],
