@@ -34,6 +34,7 @@ import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
+import ReadBetweenTheLines from "./fake-fair";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
@@ -208,6 +209,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mellow_planet: MellowPlanet,
   missing_connections: MissingConnections,
   mystery_os: MysteryOs,
+  read_between_the_lines: ReadBetweenTheLines,
   recipe_substitutions: RecipeSubstitutions,
   relief_printing: ReliefPrinting,
   seating_arrangements: SeatingArrangements,
