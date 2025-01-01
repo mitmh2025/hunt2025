@@ -304,7 +304,7 @@ const HUNT: Hunt = {
         { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "incognito" },
         { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "star_crossed" },
-        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "his_life_story" },
         { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
