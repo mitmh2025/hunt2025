@@ -19,6 +19,16 @@ export const DesertedNinjaScoreSchema = z.object({
 
 export type DesertedNinjaScore = z.infer<typeof DesertedNinjaScoreSchema>;
 
+export const DesertedNinjaQuestionSchema = z.object({
+  questionId: z.number(),
+  text: z.string(),
+  imageUrl: z.string().nullable(),
+  answer: z.number(),
+  scoringMethod: z.number(),
+});
+
+export type DesertedNinjaQuestion = z.infer<typeof DesertedNinjaQuestionSchema>;
+
 export const DesertedNinjaSessionSchema = z.object({
   sessionId: z.number(),
   title: z.string(),
@@ -80,6 +90,23 @@ export const adminContract = c.router({
       200: DesertedNinjaSessionSchema.array(),
     },
     summary: "Get all deserted-ninja sessions",
+  },
+  createDesertedNinjaQuestions: {
+    method: "POST",
+    path: "/admin/create-dn-questions",
+    body: DesertedNinjaQuestionSchema.array(),
+    responses: {
+      200: DesertedNinjaQuestionSchema.array(),
+    },
+    summary: "Bulk-upload a set of deserted-ninja questions",
+  },
+  getDesertedNinjaQuestions: {
+    method: "GET",
+    path: "/admin/get-dn-questions",
+    responses: {
+      200: DesertedNinjaQuestionSchema.array(),
+    },
+    summary: "Get all deserted-ninja questions",
   },
   getDesertedNinjaScores: {
     method: "GET",

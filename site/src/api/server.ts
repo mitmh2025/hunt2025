@@ -913,6 +913,45 @@ export function getRouter({
           });
         },
       },
+      createDesertedNinjaQuestions: {
+        middleware: [adminAuthMiddleware],
+        handler: ({ body }) => {
+          // TODO: implement creation + saving to DB
+          return Promise.resolve({
+            status: 200 as const,
+            body: [],
+          });
+        }
+      },
+      getDesertedNinjaQuestions: {
+        middleware: [adminAuthMiddleware],
+        handler: () => {
+          let responseBody = [1,2].map((questionId) => {
+            if (questionId % 2 == 1) {
+              return {
+                questionId: questionId,
+                text: "How many smoots will take you from one end of the Infinite Corridor to the other?",
+                imageUrl: null,
+                answer: 147.4,
+                scoringMethod: 0,
+              };
+            }
+            else {
+              return {
+                questionId: questionId,
+                text: "Where is this location on campus?",
+                imageUrl: "image_01.jpg",
+                answer: 0,
+                scoringMethod: -1,
+              };
+            }
+          });
+          return Promise.resolve({
+            status: 200 as const,
+            body: responseBody
+          });
+        },
+      },
       getDesertedNinjaSessions: {
         middleware: [adminAuthMiddleware],
         handler: () => {

@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import Reveal from 'reveal.js';
 import { styled } from "styled-components";
-import { type DesertedNinjaSession } from "../../../lib/api/admin_contract";
+import { type DesertedNinjaQuestion, type DesertedNinjaSession } from "../opsdata/types.ts";
 import 'reveal.js/dist/reveal.css';
 import "reveal.js/dist/theme/black.css";
 
@@ -39,6 +39,13 @@ function RevealContainer({ children }) {
         {children}
       </div>
     </RevealBox>
+  );
+}
+
+function CountdownTimer() {
+  return (
+    <div className="fragment">
+    </div>
   );
 }
 
@@ -81,8 +88,40 @@ const SampleGeoguessrSlide = (
   </section>
 );
 
-export function DesertedNinjaPresentation({ session }: { session: DesertedNinjaSession }) {
+function QuestionSlide(
+  { question, questionNumber }:
+  { question: DesertedNinjaQuestion, questionNumber: number }
+) {
+  let content = null;
+  if (question.imageUrl === null) { // text question
+    content = (
+      <>
+        <p className="fragment">{question.text}</p>
+      </>
+    );
+  }
+  else { // geoguessr question
+    content = (
+      <>
+        <p className="fragment">{question.text}</p>
+        <p className="fragment">{question.imageUrl}</p>
+      </>
+    );
+  }
+  
+  return (
+    <section>
+      <SlideH1>Question {questionNumber}</SlideH1>
+      {content}
+    </section>
+  );
+}
+
+export function DesertedNinjaPresentation(
+  { session, questions }: { session: DesertedNinjaSession, questions: DesertedNinjaQuestions[] }
+) {
   let contents = null;
+
   if (!session) {
     contents = (
       <section>
@@ -91,6 +130,15 @@ export function DesertedNinjaPresentation({ session }: { session: DesertedNinjaS
     );
   }
   else {
+    const questionSlides = questions.map(
+      (question, index) =>
+        <QuestionSlide
+          question={question}
+          questionNumber={index + 1}
+          key={question.questionId}
+        />
+    );
+    
     contents = (
       <>
         <section>
@@ -98,9 +146,8 @@ export function DesertedNinjaPresentation({ session }: { session: DesertedNinjaS
           <p>{session.title}</p>
         </section>
         {RulesSlide}
-        {SampleQuestionSlide}
         {GeoguessrRulesSlide}
-        {SampleGeoguessrSlide}
+        {questionSlides}
       </>
     );
   }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { styled } from "styled-components";
-import { type DesertedNinjaSession } from "../../../lib/api/admin_contract";
+import { type DesertedNinjaSession, type DesertedNinjaQuestion } from "../../../lib/api/admin_contract";
 import { DesertedNinjaPresentation } from "./DesertedNinjaPresentation";
 
 const HostContainer = styled.div`
@@ -44,14 +44,17 @@ function HostSelect({ sessions, setSession }) {
   );
 }
 
-export function DesertedNinjaHost({ sessions }) {
+export function DesertedNinjaHost(
+  { sessions, questions } : { sessions: DesertedNinjaSession[], questions: DesertedNinjaQuestion[] },
+) {
   let [session, setSession] = useState<DesertedNinjaSession>(null);
-    
+  console.log(questions)
+  
   return (
     <>
       <h2>Host mode</h2>
       <HostSelect sessions={sessions} setSession={setSession} />
-      <DesertedNinjaPresentation session={session} />
+      <DesertedNinjaPresentation session={session} questions={questions} />
     </>
   );
 }
