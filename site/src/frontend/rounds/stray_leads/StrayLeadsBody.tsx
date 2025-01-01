@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useLayoutEffect } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import PuzzleLink from "../../components/PuzzleLink";
@@ -122,6 +122,17 @@ const Postit = styled.aside`
   }
 `;
 
+function _calculateViewportDims() {
+  document.documentElement.style.setProperty(
+    "--viewport-width",
+    `${document.documentElement.clientWidth}px`,
+  );
+  document.documentElement.style.setProperty(
+    "--viewport-height",
+    `${document.documentElement.clientHeight}px`,
+  );
+}
+
 const StrayLeadsBody = ({
   state,
   teamState,
@@ -129,28 +140,23 @@ const StrayLeadsBody = ({
   state: StrayLeadsState;
   teamState: TeamHuntState;
 }) => {
-  useEffect(() => {
-    function _calculateViewportDims() {
-      document.documentElement.style.setProperty(
-        "--viewport-width",
-        `${document.documentElement.clientWidth}px`,
-      );
-      document.documentElement.style.setProperty(
-        "--viewport-height",
-        `${document.documentElement.clientHeight}px`,
-      );
-    }
-
-    // recalculate on resize
+  useLayoutEffect(() => {
     window.addEventListener("resize", _calculateViewportDims, false);
-    // recalculate on dom load
     document.addEventListener(
       "DOMContentLoaded",
       _calculateViewportDims,
       false,
     );
-    // recalculate on load (assets loaded as well)
     window.addEventListener("load", _calculateViewportDims);
+    return () => {
+      window.removeEventListener("resize", _calculateViewportDims, false);
+      document.removeEventListener(
+        "DOMContentLoaded",
+        _calculateViewportDims,
+        false,
+      );
+      window.removeEventListener("load", _calculateViewportDims);
+    };
   });
   const items = (
     <ul>
