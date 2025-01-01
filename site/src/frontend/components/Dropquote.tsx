@@ -8,7 +8,7 @@ const LetterWrapper = styled.div`
   text-align: center;
 `;
 
-type DropquoteProps = CrosswordProps & {
+type DropquoteProps = Omit<CrosswordProps, "labelsForEmptyCopy"> & {
   letterbanks: string[][];
 };
 
@@ -33,6 +33,7 @@ const Dropquote = ({
     <Crossword
       labels={[letterbankLabels, ...labels]}
       fill={[letterbankFill, ...(fill ?? [])]}
+      labelsForEmptyCopy={null}
       getAdditionalCellStyles={({ row, column }) => {
         const customStyles = getAdditionalCellStyles?.({ row, column }) ?? {};
         if (row === 0) {

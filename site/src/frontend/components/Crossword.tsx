@@ -1,5 +1,6 @@
 import React, { type ReactNode, type CSSProperties } from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "./CopyToClipboard";
 
 /**
  * Given a list of coordinates and the width of a crossword grid, creates a
@@ -76,8 +77,11 @@ const CellContents = styled.span`
   }
 `;
 
-export type CrosswordProps = {
-  /** List of rows of grid structure and labels. For a blank cell, pass empty string. For a black cell, pass "." */
+type BaseCrosswordProps = {
+  /**
+   * List of rows of grid structure and labels. For a blank cell, pass empty string.
+   * For a black cell, pass "."
+   */
   labels: string[][];
   /** List of rows of full-sized cell contents */
   fill?: ReactNode[][];
@@ -104,7 +108,17 @@ export type CrosswordProps = {
   className?: string;
 };
 
-const Crossword = ({
+export type CrosswordProps = BaseCrosswordProps & {
+  /**
+   * Crossword can create an additional blank copy of itself when the copy-paste button is clicked.
+   * This is the list of labels that will appear on that copy. In most cases, this should specify
+   * black squares only (i.e., an array of arrays of empty strings and ".").
+   * Pass null to suppress this behavior.
+   */
+  labelsForEmptyCopy: string[][] | null;
+};
+
+const CrosswordInner = ({
   labels,
   fill,
   rowHeaders,
@@ -112,7 +126,7 @@ const Crossword = ({
   className,
   getAdditionalCellStyles,
   getAdditionalCellFillStyles,
-}: CrosswordProps): JSX.Element => {
+}: BaseCrosswordProps): JSX.Element => {
   let headerCounter = 0;
   const rowIndexToHeader: Record<
     number,
@@ -202,6 +216,44 @@ const Crossword = ({
         </tr>
       ))}
     </Grid>
+  );
+};
+
+const Crossword = ({
+  labels,
+  fill,
+  labelsForEmptyCopy,
+  rowHeaders,
+  rowFooters,
+  className,
+  getAdditionalCellStyles,
+  getAdditionalCellFillStyles,
+}: CrosswordProps): JSX.Element => {
+  return (
+    <>
+      <CrosswordInner
+        labels={labels}
+        fill={fill}
+        rowHeaders={rowHeaders}
+        rowFooters={rowFooters}
+        className={className}
+        getAdditionalCellStyles={getAdditionalCellStyles}
+        getAdditionalCellFillStyles={getAdditionalCellFillStyles}
+      />
+      {labelsForEmptyCopy && (
+        <>
+          <br className={COPY_ONLY_CLASS} />
+          <CrosswordInner
+            labels={labelsForEmptyCopy}
+            rowHeaders={rowHeaders}
+            rowFooters={rowFooters}
+            className={`${className} ${COPY_ONLY_CLASS}`}
+            getAdditionalCellStyles={getAdditionalCellStyles}
+            getAdditionalCellFillStyles={getAdditionalCellFillStyles}
+          />
+        </>
+      )}
+    </>
   );
 };
 
