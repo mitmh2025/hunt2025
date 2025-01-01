@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { useMemo, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -5,6 +6,8 @@ import { useOpsData } from "../OpsDataProvider";
 import BigBoardTeamDetail from "../components/BigBoardTeamDetail";
 import SingleTeamStats from "../components/SingleTeamStats";
 import TeamActivityLog from "../components/TeamActivityLog";
+import TeamGateList from "../components/TeamGateList";
+import TeamOverview from "../components/TeamOverview";
 import TeamPuzzleList, {
   type TeamPuzzleListHandle,
 } from "../components/TeamPuzzleList";
@@ -67,15 +70,31 @@ export default function Team() {
         }}
       />
 
-      <h2>Puzzles</h2>
-      <TeamPuzzleList
-        ref={puzzleListRef}
-        activity={teamActivity}
-        bigBoardTeam={bigBoardTeam}
-      />
+      <Box sx={{ mt: 6 }}>
+        <h2>Puzzles</h2>
+        <TeamPuzzleList
+          ref={puzzleListRef}
+          activity={teamActivity}
+          bigBoardTeam={bigBoardTeam}
+        />
+      </Box>
 
-      <h2>Activity</h2>
-      <TeamActivityLog activity={teamActivity} />
+      <Box sx={{ mt: 6 }}>
+        <h2>Team Overview</h2>
+        <TeamOverview team={team} />
+      </Box>
+
+      {/* TODO: hints, maybe linking to Zammad tickets? */}
+
+      <Box sx={{ mt: 6 }}>
+        <h2>Activity</h2>
+        <TeamActivityLog activity={teamActivity} />
+      </Box>
+
+      <Box sx={{ mt: 6 }}>
+        <h2>Gates</h2>
+        <TeamGateList team={team} />
+      </Box>
     </>
   );
 }
