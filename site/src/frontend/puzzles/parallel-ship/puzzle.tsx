@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import Crossword from "../../components/Crossword";
+import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
 
 const ClueHead = styled.h3`
   margin: 0;
@@ -29,7 +29,10 @@ const Puzzle = () => {
       <p className="puzzle-flavor">
         We packed some things extra full; now it’s your turn.
       </p>
-      <Crossword labels={GRID} />
+      <Crossword
+        labels={GRID}
+        labelsForEmptyCopy={filterLabelsToStructure(GRID)}
+      />
 
       <ClueHead>Across</ClueHead>
       <table>
