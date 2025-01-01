@@ -58,6 +58,7 @@ const stateColors = {
   solved: "#4caf50",
   unlocked: "#03a9f4",
   locked: "#ccc",
+  unlockable: "#ccc",
   started: "#03a9f4",
   complete: "#4caf50",
 };

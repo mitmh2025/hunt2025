@@ -29,7 +29,6 @@ export default function SingleTeamStats({
   bigBoardTeam: BigBoardTeam;
 }) {
   const data: SingleTeamStatsData = useMemo(() => {
-    console.log(team.state);
     const d = {
       // These 4 are counted below
       puzzlesSolved: 0,

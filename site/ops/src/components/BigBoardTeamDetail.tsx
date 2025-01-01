@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { type BigBoardTeam } from "../opsdata/bigBoard";
+import { type BigBoardPuzzle, type BigBoardTeam } from "../opsdata/bigBoard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,21 +27,7 @@ const PuzzleRow = styled.div`
   justify-content: center;
 `;
 
-const Meta = styled.div`
-  flex-basis: 0;
-  flex-grow: 1;
-  border: 1px solid black;
-  height: 40px;
-  margin: 2px;
-  font-size: 12px;
-  padding: 0px 2px;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Puzzle = styled.div`
+const Puzzle = styled.a`
   border: 1px solid black;
   width: 40px;
   height: 40px;
@@ -51,6 +37,17 @@ const Puzzle = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: black;
+  text-decoration: none;
+`;
+
+const Meta = styled(Puzzle)`
+  flex-basis: 0;
+  flex-grow: 1;
+  border: 1px solid black;
+  font-size: 12px;
+  padding: 0px 2px;
+  -webkit-line-clamp: 2;
 `;
 
 const Interaction = styled(Puzzle)`
@@ -64,6 +61,7 @@ const stateColors = {
   solved: "#4caf50",
   unlocked: "#03a9f4",
   locked: "#ccc",
+  unlockable: "#ccc",
   started: "#03a9f4",
   complete: "#4caf50",
 };
@@ -78,13 +76,26 @@ function transformTitle(title: string) {
   }
 
   if (title.endsWith("(Under Blacklight)")) {
-    return `Resolve ${title.substring(0, title.length - "(Under Blacklight)".length)}`;
+    return `Re-solve ${title.substring(0, title.length - "(Under Blacklight)".length)}`;
   }
 
   return title;
 }
 
-export default function BigBoardTeamDetail({ team }: { team: BigBoardTeam }) {
+export default function BigBoardTeamDetail({
+  team,
+  onClickPuzzle,
+}: {
+  team: BigBoardTeam;
+  onClickPuzzle: (p: BigBoardPuzzle) => void;
+}) {
+  function clickHandler(puzzle: BigBoardPuzzle) {
+    return (e: React.MouseEvent) => {
+      e.preventDefault();
+      onClickPuzzle(puzzle);
+    };
+  }
+
   return (
     <Wrapper>
       {team.rounds.map((round) => (
@@ -95,6 +106,8 @@ export default function BigBoardTeamDetail({ team }: { team: BigBoardTeam }) {
                 <Meta
                   key={meta.slug}
                   style={{ backgroundColor: stateColors[meta.state] }}
+                  onClick={clickHandler(meta)}
+                  href="#"
                 >
                   {transformTitle(meta.title)}
                 </Meta>
@@ -106,6 +119,8 @@ export default function BigBoardTeamDetail({ team }: { team: BigBoardTeam }) {
               <Meta
                 key={meta.slug}
                 style={{ backgroundColor: stateColors[meta.state] }}
+                onClick={clickHandler(meta)}
+                href="#"
               >
                 {transformTitle(meta.title)}
               </Meta>
@@ -116,6 +131,8 @@ export default function BigBoardTeamDetail({ team }: { team: BigBoardTeam }) {
               <Puzzle
                 key={puzzle.slug}
                 style={{ backgroundColor: stateColors[puzzle.state] }}
+                onClick={clickHandler(puzzle)}
+                href="#"
               >
                 {transformTitle(puzzle.title)}
               </Puzzle>

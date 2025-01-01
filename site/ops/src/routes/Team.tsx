@@ -1,10 +1,13 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useOpsData } from "../OpsDataProvider";
 import BigBoardTeamDetail from "../components/BigBoardTeamDetail";
 import SingleTeamStats from "../components/SingleTeamStats";
 import TeamActivityLog from "../components/TeamActivityLog";
+import TeamPuzzleList, {
+  type TeamPuzzleListHandle,
+} from "../components/TeamPuzzleList";
 import { formatTeamData } from "../opsdata/bigBoard";
 
 export default function Team() {
@@ -25,6 +28,8 @@ export default function Team() {
     () => team && formatTeamData(team, opsData.puzzleMetadata),
     [team, opsData.puzzleMetadata],
   );
+
+  const puzzleListRef = useRef<TeamPuzzleListHandle | null>(null);
 
   if (!username) {
     return <p>No team ID</p>;
@@ -53,7 +58,21 @@ export default function Team() {
         bigBoardTeam={bigBoardTeam}
       />
 
-      <BigBoardTeamDetail team={bigBoardTeam} />
+      <BigBoardTeamDetail
+        team={bigBoardTeam}
+        onClickPuzzle={(p) => {
+          if (puzzleListRef.current) {
+            puzzleListRef.current.filterToPuzzle(p.title);
+          }
+        }}
+      />
+
+      <h2>Puzzles</h2>
+      <TeamPuzzleList
+        ref={puzzleListRef}
+        activity={teamActivity}
+        bigBoardTeam={bigBoardTeam}
+      />
 
       <h2>Activity</h2>
       <TeamActivityLog activity={teamActivity} />
