@@ -71,7 +71,7 @@ const puzzle: PuzzleDefinition = {
         "fortune telling",
       ],
       nudge:
-        "Look for the names of some of the hand lines in their approximate positions on the grids relative to the fingers, and then check for something extra inside each ot them.",
+        "Look for the names of some of the hand lines in their approximate positions on the grids relative to the fingers, and then check for something extra inside each of them.",
     },
   ],
   canned_responses: [
