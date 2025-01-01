@@ -218,14 +218,14 @@ const SpeechBubble = styled.div<{
   ${({ $i }) => {
     if ($i % 2 === 0) {
       return css`
-        margin-left: 16.26%;
-        margin-right: 12.04%;
+        margin-left: 5.51%;
+        margin-right: 22.79%;
       `;
     }
 
     return css`
-      margin-left: 5.51%;
-      margin-right: 22.79%;
+      margin-left: 16.26%;
+      margin-right: 12.04%;
     `;
   }}
 `;
