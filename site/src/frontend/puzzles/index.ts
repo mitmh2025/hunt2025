@@ -6,6 +6,7 @@ import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
 import Superlatives from "./acute-ski";
+import FormulaWon from "./alarming-face";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
@@ -313,6 +314,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Background Check
   deepfrost: Deepfrost,
+  formula_won: FormulaWon,
   he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
   kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
