@@ -141,7 +141,7 @@ export default function OpsDataProvider({
       ]);
 
       if (registrationLog.status === 401) {
-        removeCookie("mitmh2025_api_auth")
+        removeCookie("mitmh2025_api_auth");
       }
 
       if (registrationLog.status !== 200) {
@@ -182,7 +182,7 @@ export default function OpsDataProvider({
       console.error(e);
       setData({ ...INITIAL_STATE, state: "error" });
     });
-  }, [cookies.mitmh2025_api_auth]);
+  }, [cookies.mitmh2025_api_auth, removeCookie]);
 
   if (data.state === "loading") {
     return <div>Loading...</div>;
