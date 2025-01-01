@@ -103,6 +103,7 @@ import tailorLocked from "./assets/tailor-locked.png";
 import tailorSolved from "./assets/tailor-solved.png";
 import tailorUnlocked from "./assets/tailor-unlocked.png";
 import tailor from "./assets/tailor.svg";
+import thief from "./assets/thief.png";
 import vintnerLocked from "./assets/vintner-locked.png";
 import vintnerSolved from "./assets/vintner-solved.png";
 import vintnerUnlocked from "./assets/vintner-unlocked.png";
@@ -246,7 +247,7 @@ const metaLocations: Partial<
   Record<
     MissingDiamondSlot,
     Omit<MissingDiamondEntity, "asset"> & {
-      asset: Record<"unlockable" | "unlocked" | "solved", string>;
+      asset: Partial<Record<"unlockable" | "unlocked" | "solved", string>>;
     }
   >
 > = {
@@ -300,6 +301,18 @@ const metaLocations: Partial<
       top: 1324,
       left: 346,
       width: 121,
+    },
+  },
+  mdm05: {
+    asset: {
+      unlocked: thief,
+      solved: thief,
+    },
+    alt: "The Thief",
+    pos: {
+      top: 100,
+      left: 1429,
+      width: 136,
     },
   },
 };
@@ -961,14 +974,18 @@ function getLocationPuzzleState(
 function genLocations(teamState: TeamHuntState): MissingDiamondEntity[] {
   const locations = fixedLocations.slice();
 
-  Object.entries(metaLocations).forEach(([slotId, { asset, ...spec }]) => {
-    const puzzle = getLocationPuzzleState(slotId, teamState);
-    locations.push({
-      asset: asset[puzzle?.state ?? "unlockable"],
-      puzzle,
-      ...spec,
-    });
-  });
+  Object.entries(metaLocations).forEach(
+    ([slotId, { asset: assetSet, ...spec }]) => {
+      const puzzle = getLocationPuzzleState(slotId, teamState);
+      const asset = assetSet[puzzle?.state ?? "unlockable"];
+      if (!asset) return;
+      locations.push({
+        asset,
+        puzzle,
+        ...spec,
+      });
+    },
+  );
 
   return locations;
 }
