@@ -301,7 +301,7 @@ in {
           attrs.scope_name = "mitmh2025.com/oauth2/admin";
           attrs.description = "Admin API access";
           # TODO: Multiple levels of admin
-          attrs.expression = ''return {"admin": true}'';
+          attrs.expression = ''return {"admin": True}'';
         }
         # Applications
       ]
