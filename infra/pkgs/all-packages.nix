@@ -102,4 +102,13 @@ in {
   aws-credential-process = final.callPackage ./aws-credential-process.nix {};
   mkRadioManifest = final.callPackage ./mk-radio-manifest.nix {};
   hunt-thingsboard = final.callPackage ../../thingsboard {};
+
+  mediamtx = prev.mediamtx.overrideAttrs {
+    vendorHash = null;
+    src = builtins.fetchGit {
+      url = "ssh://git@github.com/mitmh2025/mediamtx.git";
+      ref = "quentin/xr-dlrr";
+      rev = "d56ef001999e2d310cc8cd9df0f2efaff52ca9ad";
+    };
+  };
 }
