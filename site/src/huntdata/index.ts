@@ -409,11 +409,9 @@ const HUNT: Hunt = {
         // Slugs from these 5 slots can be swapped freely to match the desired object.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "皇帝の暗号" }, // great wave painting
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "cross_spread" }, // globe
-        // TODO: Does this go here?
-        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "corn_maize" }, // family portrait
+        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 }, // family portrait
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // typewriter
-        // TODO: Does this go here?
-        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "passage_of_time" }, // desk lamp
+        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1 }, // desk lamp
         // The next 5 puzzles are unlockable once they are discovered in the
         // UI, but will not be discoverable until the corresponding lock is
         // satisfied.
@@ -433,8 +431,8 @@ const HUNT: Hunt = {
         { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "bermuda_triangle" },
         { id: "isp14", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "fechtbuch" },
         { id: "isp15", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "a_heap_of_clards" },
-        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1 },
-        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "corn_maize" },
+        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "passage_of_time" },
         { id: "isp18", unlockable_if: [{ gate_satisfied: "isg25" }, { slot_solved: "ism01" }], unlock_cost: 1 },
 
         // The next 5 puzzles are the blacklight versions of 6-10.
