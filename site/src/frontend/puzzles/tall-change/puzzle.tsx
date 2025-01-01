@@ -28,10 +28,6 @@ const TableCell = styled.td<{
         ? "black"
         : "white"};
   color: ${({ $highlight }) => ($highlight === "black" ? "white" : "inherit")};
-
-  &:nth-child(even):not(:nth-child(14)) {
-    border-right: 8px solid #000;
-  }
 `;
 
 const GarmentTable = styled.table`
@@ -87,7 +83,7 @@ const Puzzle = () => {
     );
   };
 
-  const tableData = generateTableData(15, 15, highlightedCells);
+  const tableData = generateTableData(16, 15, highlightedCells);
 
   return (
     <>
@@ -112,11 +108,17 @@ const Puzzle = () => {
           {tableData.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, colIndex) => (
-                <TableCell
-                  key={colIndex}
-                  $highlight={cell.highlight}
-                  $hollow={cell.hollow}
-                ></TableCell>
+                <React.Fragment key={colIndex}>
+                  <TableCell
+                    $highlight={cell.highlight}
+                    $hollow={cell.hollow}
+                  />
+                  {colIndex % 2 === 0 ? (
+                    <></>
+                  ) : (
+                    <TableCell $highlight={null} $hollow={true} />
+                  )}
+                </React.Fragment>
               ))}
             </tr>
           ))}

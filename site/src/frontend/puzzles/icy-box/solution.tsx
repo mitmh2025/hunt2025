@@ -10,6 +10,13 @@ const StyledTable = styled.table`
   }
 `;
 
+const CodewordTable = styled(StyledTable)`
+  border-collapse: collapse;
+  tr:nth-child(2n + 1) {
+    border: 1px solid black;
+  }
+`;
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -49,7 +56,29 @@ const Solution = (): JSX.Element => {
             <th>Radio Broadcast Transcript</th>
           </tr>
           <tr>
-            <td>Weather Report #1</td>
+            <td>Weather Report, Los Angeles</td>
+            <td>
+              In Los Angeles the temperature is currently 100 degrees with a
+              barometric pressure reading of 0.94. It is currently raining and
+              the wind coming from the northwest with the precipitation measured
+              at 0.44. There are low cumulus clouds covering about 2 tenths of
+              the sky and coming in from the south. The Los Angeles River is
+              rising and reporting a gauge reading of 1 and 6 tenths below zero.
+            </td>
+          </tr>
+          <tr>
+            <td>Weather Report, Paris</td>
+            <td>
+              In Paris the temperature is currently 54 degrees with a
+              barometricpressure reading of 0.96. At 3pm the dew point was
+              measured to be 74 degrees. It is currently snowing and the wind
+              coming from the northwest with the precipitation measured at 0.02.
+              The Seine is continuing to fall with a gauge reading of 18 and 6
+              tenths.
+            </td>
+          </tr>
+          <tr>
+            <td>Weather Report, Rome</td>
             <td>
               In Rome the temperature is currently 62 degrees with a barometric
               pressure reading of 0.58. At 10pm the dew point was measured to be
@@ -59,7 +88,7 @@ const Solution = (): JSX.Element => {
             </td>
           </tr>
           <tr>
-            <td>Weather Report #2</td>
+            <td>Weather Report, Stockholm</td>
             <td>
               In Stockholm the temperature is currently 40 degrees with a
               barometric pressure reading of 0.90. At 10pm the dew point was
@@ -71,18 +100,7 @@ const Solution = (): JSX.Element => {
             </td>
           </tr>
           <tr>
-            <td>Weather Report #3</td>
-            <td>
-              In Paris the temperature is currently 54 degrees with a
-              barometricpressure reading of 0.96. At 3pm the dew point was
-              measured to be 74 degrees. It is currently snowing and the wind
-              coming from the northwest with the precipitation measured at 0.02.
-              The Seine is continuing to fall with a gauge reading of 18 and 6
-              tenths.
-            </td>
-          </tr>
-          <tr>
-            <td>Weather Report #4</td>
+            <td>Weather Report, Toyko</td>
             <td>
               In Tokyo the temperature is currently 100 degrees with a
               barometric pressure reading of 0.02. At 7am the dew point was
@@ -92,17 +110,6 @@ const Solution = (): JSX.Element => {
               wind speed of 16 was measured coming from the northwest. The
               Sumida is continuing to rise with a gauge reading of 32 and 4
               tenths.
-            </td>
-          </tr>
-          <tr>
-            <td>Weather Report #5</td>
-            <td>
-              In Los Angeles the temperature is currently 100 degrees with a
-              barometric pressure reading of 0.94. It is currently raining and
-              the wind coming from the northwest with the precipitation measured
-              at 0.44. There are low cumulus clouds covering about 2 tenths of
-              the sky and coming in from the south. The Los Angeles River is
-              rising and reporting a gauge reading of 1 and 6 tenths below zero.
             </td>
           </tr>
         </StyledTable>
@@ -130,7 +137,6 @@ const Solution = (): JSX.Element => {
       <HScrollTableWrapper>
         <StyledTable>
           <tr>
-            <th>Order</th>
             <th>Station</th>
             <th>Pres. + Temp.</th>
             <th>Dew + Time</th>
@@ -140,27 +146,15 @@ const Solution = (): JSX.Element => {
             <th>River</th>
           </tr>
           <tr>
-            <td>Weather Report #1</td>
-            <td>Rome</td>
-            <td>0.58, 62</td>
-            <td>10pm, 52</td>
-            <td>South, Clear, 0.24</td>
+            <td>Los Angeles</td>
+            <td>0.94, 100</td>
             <td></td>
+            <td>NW, Rain, .44</td>
+            <td>Cumulus Low 2 tenths, South</td>
             <td></td>
-            <td>Rise 20′ 6 tenths</td>
+            <td>Rise -1′, 6 tenth</td>
           </tr>
           <tr>
-            <td>Weather Report #2</td>
-            <td>Stockholm</td>
-            <td>0.90, 40</td>
-            <td>10pm, 58</td>
-            <td>NE, Cloudy, 0.98</td>
-            <td>Cumulus Low 4 tenths, NE</td>
-            <td></td>
-            <td>Rise 54′ 1 tenth</td>
-          </tr>
-          <tr>
-            <td>Weather Report #3</td>
             <td>Paris</td>
             <td>0.96, 54</td>
             <td>3pm, 74</td>
@@ -170,7 +164,24 @@ const Solution = (): JSX.Element => {
             <td>Fall, 18′ 6 tenth</td>
           </tr>
           <tr>
-            <td>Weather Report #4</td>
+            <td>Rome</td>
+            <td>0.58, 62</td>
+            <td>10pm, 52</td>
+            <td>South, Clear, 0.24</td>
+            <td></td>
+            <td></td>
+            <td>Rise 20′ 6 tenths</td>
+          </tr>
+          <tr>
+            <td>Stockholm</td>
+            <td>0.90, 40</td>
+            <td>10pm, 58</td>
+            <td>NE, Cloudy, 0.98</td>
+            <td>Cumulus Low 4 tenths, NE</td>
+            <td></td>
+            <td>Rise 54′ 1 tenth</td>
+          </tr>
+          <tr>
             <td>Tokyo</td>
             <td>0.02, 100</td>
             <td>7am, 66</td>
@@ -178,16 +189,6 @@ const Solution = (): JSX.Element => {
             <td>Fully covered Nimbus, NE</td>
             <td>16, NW</td>
             <td>Rise 32′, 4 tenth</td>
-          </tr>
-          <tr>
-            <td>Weather Report #5</td>
-            <td>Los Angeles</td>
-            <td>0.94, 100</td>
-            <td></td>
-            <td>NW, Rain, .44</td>
-            <td>Cumulus Low 2 tenths, South</td>
-            <td></td>
-            <td>Rise -1′, 6 tenth</td>
           </tr>
         </StyledTable>
       </HScrollTableWrapper>
@@ -196,9 +197,8 @@ const Solution = (): JSX.Element => {
         can be uncovered as follows:
       </p>
       <HScrollTableWrapper>
-        <StyledTable>
+        <CodewordTable>
           <tr>
-            <th>Order</th>
             <th>Station</th>
             <th>Pres. + Temp.</th>
             <th>Dew + Time</th>
@@ -208,87 +208,6 @@ const Solution = (): JSX.Element => {
             <th>River</th>
           </tr>
           <tr>
-            <td>Weather Report #1</td>
-            <td>Rome</td>
-            <td>0.58, 62</td>
-            <td>10pm, 52</td>
-            <td>South, Clear, 0.24</td>
-            <td></td>
-            <td></td>
-            <td>Rise 20′ 6 tenths</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>Rome</td>
-            <td>Monarch</td>
-            <td>Latin</td>
-            <td>Murder</td>
-            <td></td>
-            <td></td>
-            <td>Senate</td>
-          </tr>
-          <tr>
-            <td>Weather Report #2</td>
-            <td>Stockholm</td>
-            <td>0.90, 40</td>
-            <td>10pm, 58</td>
-            <td>NE, Cloudy, 0.98</td>
-            <td>Cumulus Low 4 tenths, NE</td>
-            <td></td>
-            <td>Rise 54′ 1 tenth</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>Stockholm</td>
-            <td>Won</td>
-            <td>Laurel</td>
-            <td>Detonate</td>
-            <td>Medal</td>
-            <td></td>
-            <td>Stick</td>
-          </tr>
-          <tr>
-            <td>Weather Report #3</td>
-            <td>Paris</td>
-            <td>0.96, 54</td>
-            <td>3pm, 74</td>
-            <td>NW, Snow, 0.02</td>
-            <td></td>
-            <td></td>
-            <td>Fall, 18′ 6 tenth</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>Paris</td>
-            <td>Time</td>
-            <td>King</td>
-            <td>Solar</td>
-            <td></td>
-            <td></td>
-            <td>Throne</td>
-          </tr>
-          <tr>
-            <td>Weather Report #4</td>
-            <td>Tokyo</td>
-            <td>0.02, 100</td>
-            <td>7am, 66</td>
-            <td>Calm, Cloudy, 0.08</td>
-            <td>Fully covered Nimbus, NE</td>
-            <td>16, NW</td>
-            <td>Rise 32′, 4 tenth</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>Toyko</td>
-            <td>All</td>
-            <td>Catch</td>
-            <td>Evolve</td>
-            <td>Rodent</td>
-            <td>Voice</td>
-            <td>Shock</td>
-          </tr>
-          <tr>
-            <td>Weather Report #5</td>
             <td>Los Angeles</td>
             <td>0.94, 100</td>
             <td></td>
@@ -299,7 +218,6 @@ const Solution = (): JSX.Element => {
           </tr>
           <tr>
             <td></td>
-            <td>Los Angeles</td>
             <td>Tell</td>
             <td></td>
             <td>Singer</td>
@@ -307,7 +225,79 @@ const Solution = (): JSX.Element => {
             <td></td>
             <td>James</td>
           </tr>
-        </StyledTable>
+          <tr>
+            <td>Paris</td>
+            <td>0.96, 54</td>
+            <td>3pm, 74</td>
+            <td>NW, Snow, 0.02</td>
+            <td></td>
+            <td></td>
+            <td>Fall, 18′ 6 tenth</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Time</td>
+            <td>King</td>
+            <td>Solar</td>
+            <td></td>
+            <td></td>
+            <td>Throne</td>
+          </tr>
+          <tr>
+            <td>Rome</td>
+            <td>0.58, 62</td>
+            <td>10pm, 52</td>
+            <td>South, Clear, 0.24</td>
+            <td></td>
+            <td></td>
+            <td>Rise 20′ 6 tenths</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Monarch</td>
+            <td>Latin</td>
+            <td>Murder</td>
+            <td></td>
+            <td></td>
+            <td>Senate</td>
+          </tr>
+          <tr>
+            <td>Stockholm</td>
+            <td>0.90, 40</td>
+            <td>10pm, 58</td>
+            <td>NE, Cloudy, 0.98</td>
+            <td>Cumulus Low 4 tenths, NE</td>
+            <td></td>
+            <td>Rise 54′ 1 tenth</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Won</td>
+            <td>Laurel</td>
+            <td>Detonate</td>
+            <td>Medal</td>
+            <td></td>
+            <td>Stick</td>
+          </tr>
+          <tr>
+            <td>Tokyo</td>
+            <td>0.02, 100</td>
+            <td>7am, 66</td>
+            <td>Calm, Cloudy, 0.08</td>
+            <td>Fully covered Nimbus, NE</td>
+            <td>16, NW</td>
+            <td>Rise 32′, 4 tenth</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>All</td>
+            <td>Catch</td>
+            <td>Evolve</td>
+            <td>Rodent</td>
+            <td>Voice</td>
+            <td>Shock</td>
+          </tr>
+        </CodewordTable>
       </HScrollTableWrapper>
       <p>
         The next portion of the puzzle is identifying the person clued in by
@@ -320,6 +310,14 @@ const Solution = (): JSX.Element => {
             <th>Person</th>
           </tr>
           <tr>
+            <td>Los Angeles Tell Singer Mamma James</td>
+            <td>Etta James</td>
+          </tr>
+          <tr>
+            <td>Paris Time King Solar Throne</td>
+            <td>Louis XIV</td>
+          </tr>
+          <tr>
             <td>Rome Monarch Latin Murder Senate</td>
             <td>Julius Caesar</td>
           </tr>
@@ -328,16 +326,8 @@ const Solution = (): JSX.Element => {
             <td>Alfred Nobel</td>
           </tr>
           <tr>
-            <td>Paris Time King Solar Throne</td>
-            <td>Louis XIV</td>
-          </tr>
-          <tr>
             <td>Tokyo All Catch Evolve Rodent Voice Shock</td>
             <td>Ikue Otani (voice of Pikachu)</td>
-          </tr>
-          <tr>
-            <td>Los Angeles Tell Singer Mamma James</td>
-            <td>Etta James</td>
           </tr>
         </StyledTable>
       </HScrollTableWrapper>
