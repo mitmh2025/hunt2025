@@ -27,7 +27,8 @@ function RevealContainer({ children, timer, setTimer, session }) {
         progress: false,
         jumpToSlide: false,
         overview: false,
-        controls: true,
+        controls: false,
+        keyboardCondition: 'focused',
         keyboard: {
           82: () => {
             setTimer({
@@ -182,7 +183,6 @@ export function DesertedNinjaPresentation(
         />
     );
     const firstGeoguessrIndex = questions.find( (question) => question.imageUrl === null ).questionId;
-    
     
     contents = (
       <>
