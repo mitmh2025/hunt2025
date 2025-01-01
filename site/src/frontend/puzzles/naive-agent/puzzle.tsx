@@ -257,6 +257,7 @@ const Puzzle = (): JSX.Element => {
       <HScrollTableWrapper className={NO_COPY_CLASS}>
         <Grid
           labels={LABELS}
+          labelsForEmptyCopy={null}
           fill={GRID_CONTENT}
           getAdditionalCellFillStyles={() => ({
             fontSize: "8pt",

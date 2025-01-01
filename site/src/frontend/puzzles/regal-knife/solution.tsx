@@ -54,6 +54,7 @@ const Solution = (): JSX.Element => {
         <StyledCrossword
           labels={GRID}
           fill={GRID_FILL}
+          labelsForEmptyCopy={null}
           getAdditionalCellStyles={({ row, column }) =>
             row === column ? { backgroundColor: "var(--gold-400)" } : {}
           }

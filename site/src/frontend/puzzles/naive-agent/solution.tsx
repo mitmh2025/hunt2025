@@ -312,6 +312,7 @@ const Solution = (): JSX.Element => {
         <Grid
           labels={LABELS}
           fill={GRID_CONTENT}
+          labelsForEmptyCopy={null}
           getAdditionalCellFillStyles={() => ({
             fontSize: "8pt",
             fontFamily: "Oswald",
@@ -334,6 +335,7 @@ const Solution = (): JSX.Element => {
         <Grid
           labels={LABELS}
           fill={SOLUTION_FILL}
+          labelsForEmptyCopy={null}
           getAdditionalCellFillStyles={() => ({
             fontSize: "12pt",
             position: "unset",
@@ -367,6 +369,7 @@ const Solution = (): JSX.Element => {
         <Grid
           labels={LABELS}
           fill={GRID_NUMBER_CONTENT}
+          labelsForEmptyCopy={null}
           getAdditionalCellFillStyles={() => ({
             fontSize: "12pt",
             position: "unset",

@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import Crossword from "../../components/Crossword";
+import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 
 const GRID: string[][] = [
@@ -703,7 +703,10 @@ const StyledCrossword = styled(Crossword)`
 const Puzzle = () => {
   return (
     <>
-      <StyledCrossword labels={GRID} />
+      <StyledCrossword
+        labels={GRID}
+        labelsForEmptyCopy={filterLabelsToStructure(GRID)}
+      />
       <h2>Across</h2>
       {clueTable(Across)}
       <h2>Down</h2>
