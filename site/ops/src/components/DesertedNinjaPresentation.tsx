@@ -115,27 +115,12 @@ const RulesSlide = (
 );
 
 const GeoguessrRulesSlide = (
-  <section>
+  <section key="geoguessr">
     <SlideH1>Rule Update</SlideH1>
     <p className="fragment">This next question is a bit different.</p>
     <p className="fragment">You'll be receiving laminated maps of campus.</p>
     <p className="fragment">I'll show a (blurry) picture of a location on campus, and you will have 45 seconds to figure out where the picture was taken from.</p>
     <p className="fragment">Mark that location with an X or a dot.  When time is up, hold it up so the scorekeeper can collect them.</p>
-  </section>
-);
-
-const SampleQuestionSlide = (
-  <section>
-    <SlideH1>Question 1</SlideH1>
-    <p className="fragment">How many smoots is it from one end of the Infinite Corridor to the other?</p>
-  </section>
-);
-
-const SampleGeoguessrSlide = (
-  <section>
-    <SlideH1>Question 2</SlideH1>
-    <p className="fragment">Where is this location on campus?</p>
-    <p className="fragment">[insert image here]</p>
   </section>
 );
 
@@ -190,12 +175,14 @@ export function DesertedNinjaPresentation(
     const questionSlides = questions.map(
       (question, index) =>
         <QuestionSlide
-          question={question}
-          questionNumber={index + 1}
-          timer={timer}
-          key={question.questionId}
+            question={question}
+            questionNumber={index + 1}
+            timer={timer}
+            key={question.questionId}
         />
     );
+    const firstGeoguessrIndex = questions.find( (question) => question.imageUrl === null ).questionId;
+    
     
     contents = (
       <>
@@ -204,8 +191,7 @@ export function DesertedNinjaPresentation(
           <p>{session.title}</p>
         </section>
         {RulesSlide}
-        {GeoguessrRulesSlide}
-        {questionSlides}
+        {questionSlides.toSpliced(firstGeoguessrIndex, 0, GeoguessrRulesSlide)}
       </>
     );
   }
