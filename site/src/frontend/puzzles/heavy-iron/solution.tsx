@@ -152,12 +152,12 @@ const Solution = () => {
       <p>
         This is presented as a cryptic crossword. And solvers should be able to
         solve a number of the cryptic clues without too much trouble. (Cryptic
-        clue solutions are at the end of this document.) However, as they
-        proceed, they may notice a number of clues whose answer is clear, but
-        the solve requires a particular phrase to be interpreted as meaning
-        something different. In many cases this yields a person’s name or
-        surname, and in several cases the same phrase occurs - “Rambling Club
-        member” or “rambler”.
+        clue solutions are at the end of this page.) However, as they proceed,
+        they may notice a number of clues whose answer is clear, but the solve
+        requires a particular phrase to be interpreted as meaning something
+        different. In many cases this yields a person’s name or surname, and in
+        several cases the same phrase occurs — “Rambling Club member” or
+        “rambler”.
       </p>
       <p>
         In the course of solving the crossword, the solvers assemble a set of
