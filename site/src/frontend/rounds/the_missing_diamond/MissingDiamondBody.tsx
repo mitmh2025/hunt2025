@@ -18,7 +18,7 @@ import React, {
   type CSSProperties,
   useEffect,
 } from "react";
-import { styled } from "styled-components";
+import { css, styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
 import { PuzzleIcon, PuzzleUnlockModal } from "../../components/PuzzleLink";
@@ -27,6 +27,7 @@ import billie from "./assets/billie.png";
 import cork from "./assets/cork.png";
 import map from "./assets/map.png";
 import skyline from "./assets/skyline.png";
+import stars from "./assets/stars.png";
 import title from "./assets/title.png";
 import {
   type MissingDiamondInteractionEntity,
@@ -111,6 +112,18 @@ const MissingDiamondSkyline = styled.div`
   }
 `;
 
+const MissingDiamondStars = styled.div`
+  position: absolute;
+  inset: 0;
+  // The skyline is going to be 40.68vw wide, and we want to go up 49.42% of that
+  margin-bottom: 20.1vw;
+  background: url(${stars}) bottom center / 100%;
+
+  @media ${deviceMax.md} {
+    margin-bottom: 49.42vw;
+  }
+`;
+
 const MissingDiamondBillie = styled.img`
   position: absolute;
   right: 3.33%;
@@ -127,6 +140,8 @@ const SpeechBubble = styled.div<{
   $color: string;
   $glow: boolean;
   $extraBorder: boolean;
+  $i: number;
+  $length: number;
 }>`
   margin-bottom: 14px;
   padding: 20px;
@@ -149,54 +164,70 @@ const SpeechBubble = styled.div<{
     margin-top: 14px;
   }
 
-  &&:first-of-type {
-    margin-left: 5.25%;
-    margin-right: 36.68%;
-    margin-bottom: 8.84%;
-    min-height: 9.2vw;
+  ${({ $i, $length }) => {
+    if ($i === 0) {
+      return css`
+        && {
+          margin-left: 5.25%;
+          margin-right: 36.68%;
+          margin-bottom: 8.84%;
+          min-height: 9.2vw;
 
-    position: relative;
+          position: relative;
 
-    @media ${deviceMax.md} {
-      margin-bottom: initial;
-      margin-top: 8.84%;
+          @media ${deviceMax.md} {
+            margin-bottom: initial;
+            margin-top: 12vw;
+            min-height: 20vw;
+          }
+
+          &::before {
+            content: "";
+            position: absolute;
+            background: rgba(255, 255, 255, 0.86);
+            width: 15%;
+            height: 50px;
+            left: calc(100% + 10px);
+            bottom: 45px;
+            clip-path: polygon(0 0, 100% 100%, 0 75%);
+
+            @media ${deviceMax.md} {
+              bottom: initial;
+              top: 8vw;
+              clip-path: polygon(0 0, 100% 0, 0 75%);
+            }
+          }
+        }
+      `;
+    } else if ($i === $length - 1) {
+      return css`
+        && {
+          margin-top: 2.5%;
+
+          @media ${deviceMax.md} {
+            margin-top: 14px;
+            margin-bottom: 2.5%;
+          }
+        }
+      `;
     }
 
-    &::before {
-      content: "";
-      position: absolute;
-      background: rgba(255, 255, 255, 0.86);
-      width: 15%;
-      height: 50px;
-      left: calc(100% + 10px);
-      bottom: 45px;
-      clip-path: polygon(0 0, 100% 100%, 0 75%);
+    return undefined;
+  }}
 
-      @media ${deviceMax.md} {
-        bottom: initial;
-        top: 45px;
-      }
+  ${({ $i }) => {
+    if ($i % 2 === 0) {
+      return css`
+        margin-left: 16.26%;
+        margin-right: 12.04%;
+      `;
     }
-  }
 
-  &&:last-of-type {
-    margin-top: 2.5%;
-
-    @media ${deviceMax.md} {
-      margin-top: 14px;
-      margin-bottom: 2.5%;
-    }
-  }
-
-  &:nth-child(odd) {
-    margin-left: 16.26%;
-    margin-right: 12.04%;
-  }
-
-  &:nth-child(even) {
-    margin-left: 5.51%;
-    margin-right: 22.79%;
-  }
+    return css`
+      margin-left: 5.51%;
+      margin-right: 22.79%;
+    `;
+  }}
 `;
 
 const EntityContainer = styled.div`
@@ -646,16 +677,19 @@ const MissingDiamondBody = ({
         </MissingDiamondMapContainer>
       </MissingDiamondMapArea>
       <MissingDiamondSkyline>
+        <MissingDiamondStars />
         <MissingDiamondBillie
           src={billie}
           alt="A silhouette of Billie O'Ryan"
         />
-        {state.speechBubbles.map((bubble) => (
+        {state.speechBubbles.map((bubble, i) => (
           <SpeechBubble
             key={bubble.slug}
             $color={bubble.color}
             $glow={bubble.glow ?? false}
             $extraBorder={bubble.extraBorder ?? false}
+            $i={i}
+            $length={state.speechBubbles.length}
           >
             {bubble.text}
           </SpeechBubble>
