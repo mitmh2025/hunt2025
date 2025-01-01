@@ -195,7 +195,7 @@ const Solution = (): JSX.Element => {
         The twist is that this isn’t a regular shape, and we realise that some
         squares in the grid aren’t used. The final grid shape looks like this:
       </p>
-      <StyledCrossword labels={HOUSE_EMPTY} labelsForEmptyCopy={null} />
+      <StyledCrossword labels={HOUSE_EMPTY} />
       <p>Which is a picture of a house.</p>
       <p>
         We also have the key: the permutation to use to read out the columns:
@@ -232,23 +232,19 @@ const Solution = (): JSX.Element => {
       <StyledCrossword
         labels={[HOUSE_KEY_EMPTY, ...HOUSE_EMPTY]}
         fill={[HOUSE_KEY, ...HOUSE_1]}
-        labelsForEmptyCopy={null}
       />
       <StyledCrossword
         labels={[HOUSE_KEY_EMPTY, ...HOUSE_EMPTY]}
         fill={[HOUSE_KEY, ...HOUSE_2]}
-        labelsForEmptyCopy={null}
       />
       <StyledCrossword
         labels={[HOUSE_KEY_EMPTY, ...HOUSE_EMPTY]}
         fill={[HOUSE_KEY, ...HOUSE_3]}
-        labelsForEmptyCopy={null}
       />
       <p>Final message:</p>
       <StyledCrossword
         labels={[HOUSE_KEY_EMPTY, ...HOUSE_EMPTY]}
         fill={[HOUSE_KEY, ...HOUSE_4]}
-        labelsForEmptyCopy={null}
       />
       <StyledCrossword
         labels={[HOUSE_KEY_EMPTY, HOUSE_KEY_EMPTY]}
@@ -273,7 +269,6 @@ const Solution = (): JSX.Element => {
             "3",
           ],
         ]}
-        labelsForEmptyCopy={null}
       />
     </>
   );

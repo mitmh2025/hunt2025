@@ -126,7 +126,7 @@ export type CrosswordProps = BaseCrosswordProps & {
    * black squares only (i.e., an array of arrays of empty strings and ".").
    * Pass null to suppress this behavior.
    */
-  labelsForEmptyCopy: string[][] | null;
+  labelsForEmptyCopy?: string[][];
 };
 
 const CrosswordInner = ({
@@ -258,7 +258,7 @@ const Crossword = ({
             labels={labelsForEmptyCopy}
             rowHeaders={rowHeaders}
             rowFooters={rowFooters}
-            className={`${className} ${COPY_ONLY_CLASS}`}
+            className={`${className ? className : ""} ${COPY_ONLY_CLASS}`}
             getAdditionalCellStyles={getAdditionalCellStyles}
             getAdditionalCellFillStyles={getAdditionalCellFillStyles}
           />

@@ -272,11 +272,7 @@ const Solution = () => {
       </p>
 
       <HScrollTableWrapper>
-        <Crossword
-          labels={GridLabels}
-          labelsForEmptyCopy={null}
-          fill={GridFill}
-        />
+        <Crossword labels={GridLabels} fill={GridFill} />
       </HScrollTableWrapper>
 
       <p>
@@ -348,7 +344,6 @@ const Solution = () => {
         <Crossword
           labels={IsoGridLabels}
           fill={IsoGridFill}
-          labelsForEmptyCopy={null}
           getAdditionalCellStyles={styleIsoGrid}
         />
       </HScrollTableWrapper>

@@ -368,7 +368,6 @@ const Solution = (): JSX.Element => {
         <StyledCrossword
           labels={SolutionGridLabels}
           fill={SolutionGridFill}
-          labelsForEmptyCopy={null}
           getAdditionalCellStyles={({ row, column }) =>
             SolutionGridFill[row]?.[column]
               ? { backgroundColor: "var(--gold-400)" }

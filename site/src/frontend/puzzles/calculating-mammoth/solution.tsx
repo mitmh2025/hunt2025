@@ -225,7 +225,6 @@ const Solution = (): JSX.Element => {
         <Crossword
           labels={labels}
           fill={FILL}
-          labelsForEmptyCopy={null}
           getAdditionalCellStyles={({ row, column }) => {
             const backgroundColor = COLOR?.[row]?.[column] ?? "";
             const styles: CSSProperties = {};
@@ -353,7 +352,6 @@ const Solution = (): JSX.Element => {
         <Crossword
           labels={labels}
           fill={FILL}
-          labelsForEmptyCopy={null}
           getAdditionalCellStyles={({ row, column }) => {
             const backgroundColor = COLOR?.[row]?.[column] ?? "";
             const styles: CSSProperties = {};

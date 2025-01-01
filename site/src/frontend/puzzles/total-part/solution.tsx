@@ -324,7 +324,6 @@ const Solution = (): JSX.Element => {
             key={i}
             labels={labels}
             fill={fill}
-            labelsForEmptyCopy={null}
             colors={colors}
             divider={divider}
             getAdditionalCellFillStyles={({ row, column }) => {
@@ -346,7 +345,6 @@ const Solution = (): JSX.Element => {
       <FinalGrid
         labels={FINAL_GRID_LABELS}
         fill={FINAL_GRID_FILL}
-        labelsForEmptyCopy={null}
         getAdditionalCellFillStyles={() => ({ fontSize: "12px" })}
         getAdditionalCellStyles={({ row, column }) => {
           const styles: CSSProperties = {

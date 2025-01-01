@@ -323,7 +323,6 @@ export const ColoredDropquote = ({
     <StyledCrossword
       labels={labels}
       fill={fill}
-      labelsForEmptyCopy={null}
       getAdditionalCellFillStyles={({ row, column }) => ({
         ...getAdditionalCellFillStyles?.({ row, column }),
         fontSize: "12px",
@@ -354,7 +353,6 @@ const Puzzle = (): JSX.Element => {
           <ColoredDropquote
             key={i}
             labels={labels}
-            labelsForEmptyCopy={null}
             fill={fill}
             colors={colors}
             divider={divider}

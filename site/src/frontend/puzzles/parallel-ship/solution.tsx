@@ -245,11 +245,7 @@ const Solution = () => {
 
       <p>This gives the following grid:</p>
       <HScrollTableWrapper>
-        <StyledCrossword
-          labels={GRID}
-          labelsForEmptyCopy={null}
-          fill={GRID_FILL_PT1}
-        />
+        <StyledCrossword labels={GRID} fill={GRID_FILL_PT1} />
       </HScrollTableWrapper>
 
       <p>Each of the extra words is a clue for another answer:</p>
@@ -281,11 +277,7 @@ const Solution = () => {
         into the grid, giving this grid:
       </p>
       <HScrollTableWrapper>
-        <StyledCrossword
-          labels={GRID}
-          labelsForEmptyCopy={null}
-          fill={GRID_FILL_PT2}
-        />
+        <StyledCrossword labels={GRID} fill={GRID_FILL_PT2} />
       </HScrollTableWrapper>
 
       <p>
