@@ -2,7 +2,7 @@ import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { OswaldFont } from "../../assets/SharedFonts";
 import LinkedImage from "../../components/LinkedImage";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import img10 from "./assets/image10.png";
 import img11 from "./assets/image11.png";
 import img12 from "./assets/image12.png";
@@ -28,17 +28,33 @@ import {
 } from "./puzzle";
 
 const SOLUTION_FILL = [
-  "EURNEGAKSDNEART",
-  "ONOFRUOVAEROTXS",
-  "IEPIBERWAINCKEL",
-  "SIENCIAESTABANE",
-  "INLELAPALMALBST",
-  "VDAFASITALYAISO",
-  "IIVIRURBOPRLLOR",
-  "DANAENGTMARIMAC",
-  "UGAROETLLALINKN",
-  "ASTEWAYESOUTHER",
-].map((s: string) => s.split(""));
+  ["E", "U", "R", "N", "E", "G", "A", "K", "S", "D", "N", "E", "A", "R", "T"],
+  ["O", "N", "O", "F", "R", "U", "O", "V", "A", "E", "R", "O", "T", "X", "↑S"],
+  ["I", "↓E", "P", "→I", "B", "E", "R", "W", "A", "I", "N", "C", "K", "E", "L"],
+  ["S", "I", "E", "N", "C", "I", "A", "E", "S", "T", "A", "←B", "A", "N", "E"],
+  ["I", "N", "L", "E", "→L", "A", "P", "A", "L", "M", "A", "L", "B", "S", "T"],
+  ["V", "D", "A", "F", "A", "←S", "I", "T", "A", "L", "Y", "A", "I", "S", "O"],
+  ["I", "I", "↑V", "I", "R", "U", "R", "B", "O", "P", "R", "L", "←L", "O", "R"],
+  [
+    "↑D",
+    "A",
+    "N",
+    "A",
+    "E",
+    "N",
+    "G",
+    "T",
+    "↑M",
+    "A",
+    "→R",
+    "I",
+    "M",
+    "A",
+    "C",
+  ],
+  ["U", "G", "A", "R", "O", "E", "T", "L", "L", "→A", "L", "I", "N", "K", "N"],
+  ["A", "S", "T", "E", "W", "A", "Y", "E", "S", "O", "U", "T", "H", "→E", "R"],
+];
 
 const GRID_NUMBER_CONTENT: ReactNode[][] = [
   ["2", "", "", "", "", "", "", "", "13", "", "", "", "", "", ""],
@@ -307,7 +323,6 @@ const Solution = (): JSX.Element => {
         The filled grid is shown below. An example solve including the logic is
         at the end of this solution.
       </p>
-
       <HScrollTableWrapper>
         <Grid
           labels={LABELS}
@@ -322,7 +337,6 @@ const Solution = (): JSX.Element => {
           })}
         />
       </HScrollTableWrapper>
-
       <p>
         The full name of each submarine cable is equal in length to the number
         of squares in the corresponding path, and each path has one shark
@@ -345,9 +359,14 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Once all of the letters are placed in the grid, reading the sharkened
-        letters from left to right in the grid provides the answer, DEVILS
-        MARBLES.
+        letters from left to right in the grid provides the answer,{" "}
+        <PuzzleAnswer>DEVILS MARBLES</PuzzleAnswer>.
       </p>
+      <hr />
+      (Note: The astute-eyed solver may have noticed that all of the sharks in
+      this puzzle are IKEA BLÅHAJ, and perhaps questioned why. Submarine cables
+      are also sometimes known as transoceanic cables, so for the purpose of
+      this puzzle we needed a shark that appears in the trans ocean.)
       <hr />
       <p>
         Acknowledgement: The numberlink grid used in this puzzle was generated
