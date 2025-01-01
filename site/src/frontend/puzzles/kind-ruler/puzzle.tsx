@@ -83,14 +83,14 @@ export const CopyableCornMaze = ({
           !puzzleMode && ["^", ">", "v", "<"].includes(cellFill)
             ? `e${cellFill}`
             : "";
-        labelsRow.push(label);
-        labelsForEmptyCopyRow.push(label);
-        fillRow.push("");
+        labelsRow.push(puzzleMode ? label : "");
+        labelsForEmptyCopyRow.push(puzzleMode ? label : "");
+        fillRow.push(puzzleMode ? "" : label);
       } else if (char === "s") {
         scarecrowIndices.add(index);
-        labelsRow.push("sc");
+        labelsRow.push(puzzleMode ? "sc" : "");
         labelsForEmptyCopyRow.push("sc");
-        fillRow.push("");
+        fillRow.push(puzzleMode ? "" : "sc");
       } else if (char === "o") {
         holeIndices.add(index);
         labelsRow.push(puzzleMode ? "o" : "");
@@ -116,7 +116,7 @@ export const CopyableCornMaze = ({
       className={puzzleMode ? `${COPY_ONLY_CLASS} ${className}` : className}
       labels={labels}
       fill={fill}
-      labelsForEmptyCopy={labelsForEmptyCopy}
+      {...(puzzleMode ? { labelsForEmptyCopy } : {})}
       getAdditionalCellStyles={({ row, column }) => {
         const index = row * cornMaze.width + column;
         const styles: CSSProperties = {};
