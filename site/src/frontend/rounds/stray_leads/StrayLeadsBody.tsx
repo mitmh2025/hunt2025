@@ -178,7 +178,7 @@ const StrayLeadsBody = ({
           <Postit>
             <p>I know these go somewhere...</p>
             <p>I just don’t know where they fit in the bigger picture yet.</p>
-            <p className="signature">-- Billie</p>
+            <p className="signature">— Billie</p>
           </Postit>
         </ContentWrapper>
       </TableScape>
