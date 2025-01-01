@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
 import { newAdminClient } from "../../lib/api/admin_client";
 import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
 import { newFrontendClient } from "../../lib/api/frontend_client";
