@@ -1,9 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import {
-  COPY_ONLY_CLASS,
-  NO_COPY_CLASS,
-} from "../../components/CopyToClipboard";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import Crossword, {
   calculateNumberLabels,
   filterLabelsToStructure,
@@ -33,7 +30,6 @@ const Puzzle = (): JSX.Element => {
         Everyone starts out lost, but we find our way in our own time.
       </p>
       <LinkedImage
-        className={NO_COPY_CLASS}
         src={puzzle}
         alt="A crossword puzzle with some cells highlighted in blue."
       />
