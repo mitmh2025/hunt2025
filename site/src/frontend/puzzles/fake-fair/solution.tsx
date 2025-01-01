@@ -3,29 +3,30 @@ import { styled } from "styled-components";
 import Crossword, { calculateNumberLabels } from "../../components/Crossword";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import {
-  BARS_1_DOWN,
-  BARS_1_RIGHT,
-  BARS_2_DOWN,
-  BARS_2_RIGHT,
-  BLUE_HIGHLIGHTS_1,
-  BLUE_HIGHLIGHTS_2,
-  FILL_1,
-  FILL_2,
+  BARS_DOWN,
+  BARS_RIGHT,
+  BLUE_HIGHLIGHTS,
+  FILL,
   GRID_1,
   GRID_2,
-  RED_HIGHLIGHTS_1,
-  RED_HIGHLIGHTS_2,
+  RED_HIGHLIGHTS,
   SOLUTION_TABLE,
-  YELLOW_HIGHLIGHTS_1,
-  YELLOW_HIGHLIGHTS_2,
+  YELLOW_HIGHLIGHTS,
 } from "./data";
-import { FlexWrapper } from "./puzzle";
 
 const StyledTable = styled.table`
   margin: 1em 0;
 `;
 
 const Solution = (): JSX.Element => {
+  const labels1 = calculateNumberLabels(GRID_1);
+  const labels2 = calculateNumberLabels(GRID_2);
+  const concatenatedLabels: string[][] = [];
+  for (let i = 0; i < labels1.length; i++) {
+    const row = [...(labels1[i] ?? []), "", ...(labels2[i] ?? [])];
+    concatenatedLabels.push(row);
+  }
+
   return (
     <>
       <p>
@@ -47,52 +48,33 @@ const Solution = (): JSX.Element => {
         (left grid) and <Mono>TREE</Mono> (right grid), forming the answer,{" "}
         <PuzzleAnswer>PALM TREE</PuzzleAnswer>.
       </p>
-      <FlexWrapper>
-        <Crossword
-          labels={calculateNumberLabels(GRID_1)}
-          fill={FILL_1}
-          getAdditionalCellStyles={({ row, column }) => {
-            const styles: CSSProperties = {};
-            if (BARS_1_RIGHT?.[row]?.[column] === "|") {
-              styles.borderRightWidth = "3px";
-            }
-            if (BARS_1_DOWN?.[row]?.[column] === "_") {
-              styles.borderBottomWidth = "3px";
-            }
-            const index = row * 9 + column;
-            if (YELLOW_HIGHLIGHTS_1.has(index)) {
-              styles.backgroundColor = "#ffff00";
-            } else if (BLUE_HIGHLIGHTS_1.has(index)) {
-              styles.backgroundColor = "#00ffff";
-            } else if (RED_HIGHLIGHTS_1.has(index)) {
-              styles.backgroundColor = "#ff0000";
-            }
-            return styles;
-          }}
-        />
-        <Crossword
-          labels={calculateNumberLabels(GRID_2)}
-          fill={FILL_2}
-          getAdditionalCellStyles={({ row, column }) => {
-            const styles: CSSProperties = {};
-            if (BARS_2_RIGHT?.[row]?.[column] === "|") {
-              styles.borderRightWidth = "3px";
-            }
-            if (BARS_2_DOWN?.[row]?.[column] === "_") {
-              styles.borderBottomWidth = "3px";
-            }
-            const index = row * 9 + column;
-            if (YELLOW_HIGHLIGHTS_2.has(index)) {
-              styles.backgroundColor = "#ffff00";
-            } else if (BLUE_HIGHLIGHTS_2.has(index)) {
-              styles.backgroundColor = "#00ffff";
-            } else if (RED_HIGHLIGHTS_2.has(index)) {
-              styles.backgroundColor = "#ff0000";
-            }
-            return styles;
-          }}
-        />
-      </FlexWrapper>
+      <Crossword
+        labels={concatenatedLabels}
+        fill={FILL}
+        getAdditionalCellStyles={({ row, column }) => {
+          const styles: CSSProperties = {};
+          if (column === 9) {
+            // Spacer column.
+            styles.backgroundColor = "transparent";
+            styles.border = "none";
+          }
+          if (BARS_RIGHT?.[row]?.[column] === "|") {
+            styles.borderRightWidth = "3px";
+          }
+          if (BARS_DOWN?.[row]?.[column] === "_") {
+            styles.borderBottomWidth = "3px";
+          }
+          const index = row * 19 + column;
+          if (YELLOW_HIGHLIGHTS.has(index)) {
+            styles.backgroundColor = "#ffff00";
+          } else if (BLUE_HIGHLIGHTS.has(index)) {
+            styles.backgroundColor = "#00ffff";
+          } else if (RED_HIGHLIGHTS.has(index)) {
+            styles.backgroundColor = "#ff0000";
+          }
+          return styles;
+        }}
+      />
       <StyledTable>
         <tr>
           <th>Digit (L to R in grid order)</th>

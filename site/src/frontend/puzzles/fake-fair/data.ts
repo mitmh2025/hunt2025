@@ -24,141 +24,206 @@ export const GRID_1 = `
   .slice(1, -1)
   .map((row) => row.split(""));
 
+export const GRID_2 = `
+#########
+#     #  
+#  #  #  
+#   ## ##
+# ### #  
+## ## #  
+#     #  
+#   ## # 
+##### # #
+#   #    
+#    #   
+# # ###  
+## # # ##
+#   #    
+#  #     
+# #  # # 
+#   #    
+#    #   
+`
+  .split("\n")
+  .slice(1, -1)
+  .map((row) => row.split(""));
+
 // A | here means the bar comes to the right of this cell.
-export const BARS_1_RIGHT = `
-   |     
-   |     
-  |      
-  |  |   
-    |    
-     |   
-    |    
-    |    
-   |     
-   |     
-  |      
-     |   
-    |    
-   |     
-  |      
-   |     
-    |   
-    |   
+export const BARS_RIGHT = `
+   |           |   
+   |           |   
+  |         |  |   
+  |  |       |     
+    |        |     
+     |      |  |   
+    |          |   
+    |        |     
+   |         |     
+   |         |     
+  |           |    
+     |       |     
+    |         |    
+   |         |     
+  |         |      
+   |          |    
+    |        |     
+    |         |    
 `
   .split("\n")
   .slice(1, -1)
   .map((row) => row.split(""));
 
 // A _ here means the bar is below this cell.
-export const BARS_1_DOWN = `
-         
-         
-_  _    _
- __  __  
-    _  _ 
-         
- ___    _
-_   ___  
-       _ 
-  __     
- _      _
-_        
-     _ _ 
-   _  _  
-_ _     _
-         
-         
-         
+export const BARS_DOWN = `
+                   
+                   
+_  _    _ _    _ __
+ __  __     __  _  
+    _  _   _  _    
+                   
+ ___    _ _    _ _ 
+_   ___    ___  _ _
+       _           
+  __               
+ _      _ _ _ ___  
+_          _ _   __
+     _ _           
+   _  _            
+_ _     _ _ _    _ 
+                   
+                   
+                   
 `
   .split("\n")
   .slice(1, -1)
   .map((row) => row.split(""));
 
-export const FILL_1 = `
-FACECORDS
-SCABLOOIE
-UMSBANANA
-TEEESADER
-ACERSGYRO
-CALICOETC
-KAFKAREEK
-SHEARPTSD
-EASTHASTY
-SHEAADORE
-TAYBURROS
-OTOOLETIS
-LYDIAPOLL
-BIELSOFIA
-SNLASIMOV
-TGIFSLAWS
-VITAEETAL
-SNOREDENY
+export const FILL = `
+FACECORDS MUTTERCAP
+SCABLOOIE THORAXATS
+UMSBANANA AASORSREY
+TEEESADER JUSTTVDAD
+ACERSGYRO OLAFHAYER
+CALICOETC HMMOTSORI
+KAFKAREEK NOEXITGOV
+SHEARPTSD TINYNEALE
+EASTHASTY ATRAETHIC
+SHEAADORE LIARARENA
+TAYBURROS CEDAREHUD
+OTOOLETIS CRABBLESS
+LYDIAPOLL ALLMEENBY
+BIELSOFIA REFILADLE
+SNLASIMOV TBANIKITA
+TGIFSLAWS IRENEEVER
+VITAEETAL ROTIFREON
+SNOREDENY KNEESSSNS
   `
   .split("\n")
   .slice(1, -1)
   .map((row) => row.split(""));
 
-const SHARED_YELLOW_HIGHLIGHTS_COORDS = [
-  { row: 0, col: 2 },
-  { row: 0, col: 4 },
-  { row: 0, col: 6 },
-  { row: 1, col: 2 },
-  { row: 1, col: 4 },
-  { row: 1, col: 6 },
-  { row: 2, col: 2 },
-  { row: 2, col: 4 },
-  { row: 2, col: 6 },
-  { row: 3, col: 0 },
-  { row: 3, col: 2 },
-  { row: 3, col: 4 },
-  { row: 3, col: 6 },
-  { row: 3, col: 8 },
-  { row: 4, col: 0 },
-  { row: 4, col: 4 },
-  { row: 4, col: 8 },
-  { row: 5, col: 0 },
-  { row: 5, col: 8 },
-  { row: 6, col: 0 },
-  { row: 6, col: 8 },
-];
-
-export const YELLOW_HIGHLIGHTS_1 = reduceCoordinatesToIndices(
-  [...SHARED_YELLOW_HIGHLIGHTS_COORDS, { row: 7, col: 0 }],
-  9,
+export const YELLOW_HIGHLIGHTS = reduceCoordinatesToIndices(
+  [
+    { row: 0, col: 12 },
+    { row: 0, col: 14 },
+    { row: 0, col: 16 },
+    { row: 0, col: 2 },
+    { row: 0, col: 4 },
+    { row: 0, col: 6 },
+    { row: 1, col: 12 },
+    { row: 1, col: 14 },
+    { row: 1, col: 16 },
+    { row: 1, col: 2 },
+    { row: 1, col: 4 },
+    { row: 1, col: 6 },
+    { row: 2, col: 12 },
+    { row: 2, col: 14 },
+    { row: 2, col: 16 },
+    { row: 2, col: 2 },
+    { row: 2, col: 4 },
+    { row: 2, col: 6 },
+    { row: 3, col: 0 },
+    { row: 3, col: 10 },
+    { row: 3, col: 12 },
+    { row: 3, col: 14 },
+    { row: 3, col: 16 },
+    { row: 3, col: 18 },
+    { row: 3, col: 2 },
+    { row: 3, col: 4 },
+    { row: 3, col: 6 },
+    { row: 3, col: 8 },
+    { row: 4, col: 0 },
+    { row: 4, col: 10 },
+    { row: 4, col: 14 },
+    { row: 4, col: 18 },
+    { row: 4, col: 4 },
+    { row: 4, col: 8 },
+    { row: 5, col: 0 },
+    { row: 5, col: 10 },
+    { row: 5, col: 18 },
+    { row: 5, col: 8 },
+    { row: 6, col: 0 },
+    { row: 6, col: 10 },
+    { row: 6, col: 18 },
+    { row: 6, col: 8 },
+    { row: 7, col: 0 },
+    { row: 7, col: 18 },
+  ],
+  19,
 );
 
-export const BLUE_HIGHLIGHTS_1 = reduceCoordinatesToIndices(
+export const BLUE_HIGHLIGHTS = reduceCoordinatesToIndices(
   [
     { row: 7, col: 1 },
     { row: 7, col: 2 },
     { row: 7, col: 3 },
     { row: 7, col: 4 },
     { row: 7, col: 6 },
+    { row: 8, col: 11 },
+    { row: 8, col: 12 },
+    { row: 8, col: 13 },
+    { row: 8, col: 14 },
+    { row: 8, col: 16 },
     { row: 9, col: 1 },
     { row: 9, col: 2 },
     { row: 9, col: 3 },
     { row: 9, col: 5 },
+    { row: 10, col: 12 },
+    { row: 10, col: 13 },
+    { row: 10, col: 15 },
+    { row: 10, col: 16 },
     { row: 12, col: 0 },
     { row: 13, col: 1 },
+    { row: 13, col: 12 },
+    { row: 13, col: 17 },
     { row: 13, col: 6 },
+    { row: 14, col: 12 },
+    { row: 14, col: 16 },
     { row: 15, col: 3 },
     { row: 15, col: 6 },
+    { row: 16, col: 12 },
+    { row: 16, col: 14 },
     { row: 16, col: 4 },
     { row: 16, col: 6 },
-    { row: 17, col: 5 },
+    { row: 17, col: 12 },
+    { row: 17, col: 13 },
     { row: 17, col: 6 },
   ],
-  9,
+  19,
 );
 
-export const RED_HIGHLIGHTS_1 = reduceCoordinatesToIndices(
+export const RED_HIGHLIGHTS = reduceCoordinatesToIndices(
   [
     { row: 7, col: 5 },
+    { row: 8, col: 15 },
     { row: 9, col: 4 },
+    { row: 10, col: 14 },
     { row: 14, col: 2 },
     { row: 14, col: 6 },
+    { row: 15, col: 12 },
+    { row: 15, col: 15 },
   ],
-  9,
+  19,
 );
 
 export const GRID_1_ACROSS = [
@@ -246,140 +311,6 @@ export const GRID_1_DOWN = [
   [60, "Perceive"],
   [61, "Wily"],
 ];
-
-export const GRID_2 = `
-#########
-#     #  
-#  #  #  
-#   ## ##
-# ### #  
-## ## #  
-#     #  
-#   ## # 
-##### # #
-#   #    
-#    #   
-# # ###  
-## # # ##
-#   #    
-#  #     
-# #  # # 
-#   #    
-#    #   
-`
-  .split("\n")
-  .slice(1, -1)
-  .map((row) => row.split(""));
-
-export const BARS_2_RIGHT = `
-     |   
-     |   
-  |  |   
-   |     
-   |     
-  |  |   
-     |   
-   |     
-   |     
-   |     
-    |    
-   |     
-    |    
-   |     
-  |      
-    |    
-   |     
-    |    
-`
-  .split("\n")
-  .slice(1, -1)
-  .map((row) => row.split(""));
-
-export const BARS_2_DOWN = `
-         
-         
-_    _ __
-  __  _  
- _  _    
-         
-_    _ _ 
- ___  _ _
-         
-         
-_ _ ___  
- _ _   __
-         
-         
-_ _    _ 
-         
-         
-         
-`
-  .split("\n")
-  .slice(1, -1)
-  .map((row) => row.split(""));
-
-export const FILL_2 = `
-MUTTERCAP
-THORAXATS
-AASORSREY
-JUSTTVDAD
-OLAFHAYER
-HMMOTSORI
-NOEXITGOV
-TINYNEALE
-ATRAETHIC
-LIARARENA
-CEDAREHUD
-CRABBLESS
-ALLMEENBY
-REFILADLE
-TBANIKITA
-IRENEEVER
-ROTIFREON
-KNEESSSNS
-  `
-  .split("\n")
-  .slice(1, -1)
-  .map((row) => row.split(""));
-
-export const YELLOW_HIGHLIGHTS_2 = reduceCoordinatesToIndices(
-  [...SHARED_YELLOW_HIGHLIGHTS_COORDS, { row: 7, col: 8 }],
-  9,
-);
-
-export const BLUE_HIGHLIGHTS_2 = reduceCoordinatesToIndices(
-  [
-    { row: 8, col: 1 },
-    { row: 8, col: 2 },
-    { row: 8, col: 3 },
-    { row: 8, col: 4 },
-    { row: 8, col: 6 },
-    { row: 10, col: 2 },
-    { row: 10, col: 3 },
-    { row: 10, col: 5 },
-    { row: 10, col: 6 },
-    { row: 13, col: 2 },
-    { row: 13, col: 6 },
-    { row: 14, col: 2 },
-    { row: 14, col: 6 },
-    { row: 16, col: 2 },
-    { row: 16, col: 4 },
-    { row: 17, col: 2 },
-    { row: 17, col: 3 },
-  ],
-  9,
-);
-
-export const RED_HIGHLIGHTS_2 = reduceCoordinatesToIndices(
-  [
-    { row: 8, col: 5 },
-    { row: 10, col: 4 },
-    { row: 15, col: 2 },
-    { row: 15, col: 5 },
-  ],
-  9,
-);
 
 export const GRID_2_ACROSS = [
   [1, "German mother"],
