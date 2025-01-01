@@ -1,9 +1,18 @@
-import { useMemo } from "react";
+import {
+  DialogContent,
+  DialogTitle,
+  Dialog,
+  DialogActions,
+  Button,
+  Input,
+} from "@mui/material";
+import { useSnackbar } from "notistack";
+import { useMemo, useState } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
+import { useOpsData } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import { type TeamData } from "../opsdata/types";
 import Stat, { StatsContainer } from "./Stat";
-
 type SingleTeamStatsData = {
   puzzlesSolved: number;
   puzzlesSolvedLast3Hours: number;
@@ -19,6 +28,91 @@ type SingleTeamStatsData = {
   hintsRequestedLast3Hours: number;
 };
 
+function GrantUnlockCurrencyDialog({
+  teamId,
+  teamUsername,
+  open,
+  onClose,
+}: {
+  teamId: number;
+  teamUsername: string;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const [qty, setQty] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (qty > 0) {
+      setSubmitting(true);
+      adminClient
+        .grantUnlockCurrency({
+          body: {
+            teamIds: [teamId],
+            amount: qty,
+          },
+        })
+        .then((result) => {
+          if (result.status !== 200) {
+            throw new Error(`HTTP ${result.status}: ${result.body}`);
+          }
+
+          appendActivityLogEntries(result.body);
+          enqueueSnackbar(`Granted ${qty} unlock currency to ${teamUsername}`, {
+            variant: "success",
+          });
+          onClose();
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          enqueueSnackbar(`Failed to grant unlock currency: ${msg}`, {
+            variant: "error",
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    }
+  }
+
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>
+        Grant Unlock Currency to <strong>{teamUsername}</strong>
+      </DialogTitle>
+      <form onSubmit={handleSubmit}>
+        <DialogContent>
+          <label>
+            Amount:{" "}
+            <Input
+              type="number"
+              name="amount"
+              inputProps={{
+                min: 1,
+                max: 99,
+                step: 1,
+              }}
+              required
+              value={qty}
+              onChange={(e) => {
+                setQty(parseInt(e.target.value, 10));
+              }}
+            />
+          </label>
+        </DialogContent>
+        <DialogActions>
+          <Button type="submit" disabled={submitting}>
+            Grant {qty} Currency
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}
+
 export default function SingleTeamStats({
   team,
   teamActivity,
@@ -28,6 +122,8 @@ export default function SingleTeamStats({
   teamActivity: InternalActivityLogEntry[];
   bigBoardTeam: BigBoardTeam;
 }) {
+  const [grantModalOpen, setGrantModalOpen] = useState(false);
+
   const data: SingleTeamStatsData = useMemo(() => {
     const d = {
       // These 4 are counted below
@@ -105,7 +201,19 @@ export default function SingleTeamStats({
         subValue={<>On campus: {data.onCampusSize}</>}
       />
 
-      <Stat label="Unlocks" value={data.unlockCurrency} />
+      <Stat
+        label="Unlocks"
+        value={data.unlockCurrency}
+        action={
+          <Button
+            onClick={() => {
+              setGrantModalOpen(true);
+            }}
+          >
+            Grant
+          </Button>
+        }
+      />
       <Stat label="Free Solves" value={data.freeSolveCurrency} />
 
       <Stat label="Open Puzzles" value={data.unsolvedUnlockedPuzzles} />
@@ -114,6 +222,15 @@ export default function SingleTeamStats({
         label="Hints Requested"
         value={data.hintsRequested}
         subValue={<>Past 3 hours: {data.hintsRequestedLast3Hours}</>}
+      />
+
+      <GrantUnlockCurrencyDialog
+        teamId={team.teamId}
+        teamUsername={team.username}
+        open={grantModalOpen}
+        onClose={() => {
+          setGrantModalOpen(false);
+        }}
       />
     </StatsContainer>
   );

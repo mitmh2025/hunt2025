@@ -1,6 +1,7 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import { SnackbarProvider } from "notistack";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -53,10 +54,11 @@ createRoot(root).render(
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterLuxon}>
         <CssBaseline />
-
-        <OpsDataProvider>
-          <RouterProvider router={router} />
-        </OpsDataProvider>
+        <SnackbarProvider>
+          <OpsDataProvider>
+            <RouterProvider router={router} />
+          </OpsDataProvider>
+        </SnackbarProvider>
       </LocalizationProvider>
     </ThemeProvider>
   </StrictMode>,

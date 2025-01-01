@@ -1,14 +1,16 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardActions, CardContent, Typography } from "@mui/material";
 import React, { type ReactNode } from "react";
 
 export default function Stat({
   label,
   value,
   subValue,
+  action,
 }: {
   label: ReactNode;
   value: ReactNode;
   subValue?: ReactNode;
+  action?: ReactNode;
 }) {
   return (
     <Card sx={{ width: 150, margin: 1 }}>
@@ -25,6 +27,7 @@ export default function Stat({
           </Typography>
         )}
       </CardContent>
+      {action && <CardActions>{action}</CardActions>}
     </Card>
   );
 }

@@ -1,8 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
-import { newAdminClient } from "../../lib/api/admin_client";
+import { type AdminClient, newAdminClient } from "../../lib/api/admin_client";
 import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
-import { newFrontendClient } from "../../lib/api/frontend_client";
+import {
+  type FrontendClient,
+  newFrontendClient,
+} from "../../lib/api/frontend_client";
 import {
   type InternalActivityLogEntry,
   type TeamRegistrationLogEntry,
@@ -17,23 +20,40 @@ import { type TeamData } from "./opsdata/types";
 
 export type OpsData = {
   state: "loading" | "error" | "loaded";
+  adminClient: AdminClient;
+  frontendClient: FrontendClient;
   puzzleMetadata: PuzzleAPIMetadata;
   registrationLog: TeamRegistrationLogEntry[];
   activityLog: InternalActivityLogEntry[];
   teams: TeamData[];
   gateDetails: Record<string, { title?: string; roundTitle: string }>;
+  appendActivityLogEntries: (entries: InternalActivityLogEntry[]) => void;
 };
 
 const INITIAL_STATE: OpsData = {
   state: "loading",
+  adminClient: newAdminClient("", ""),
+  frontendClient: newFrontendClient("", { type: "admin", adminToken: "" }),
   registrationLog: [],
   activityLog: [],
   teams: [],
   puzzleMetadata: {},
   gateDetails: {},
+  appendActivityLogEntries: () => {
+    // do nothing
+  },
 };
 
 export const OpsDataContext = createContext<OpsData>(INITIAL_STATE);
+
+function formatEntry<T extends { timestamp: string | Date }>(
+  entry: T,
+): T & { timestamp: Date } {
+  return {
+    ...entry,
+    timestamp: new Date(entry.timestamp),
+  };
+}
 
 class OpsDataStore {
   private _teamStates = new Map<number, TeamStateIntermediate>();
@@ -167,14 +187,8 @@ export default function OpsDataProvider({
       }
 
       const store = new OpsDataStore();
-      const registrationLogEntries = registrationLog.body.map((entry) => ({
-        ...entry,
-        timestamp: new Date(entry.timestamp),
-      }));
-      const activityLogEntries = activityLog.body.map((entry) => ({
-        ...entry,
-        timestamp: new Date(entry.timestamp),
-      }));
+      const registrationLogEntries = registrationLog.body.map(formatEntry);
+      const activityLogEntries = activityLog.body.map(formatEntry);
 
       registrationLogEntries.forEach((entry) => {
         store.applyRegistrationLogEntry(entry);
@@ -195,11 +209,26 @@ export default function OpsDataProvider({
 
       setData({
         state: "loaded",
+        adminClient,
+        frontendClient,
         registrationLog: registrationLogEntries,
         activityLog: activityLogEntries,
         teams: store.getTeamData(),
         puzzleMetadata: puzzleMetadata.body,
         gateDetails,
+        appendActivityLogEntries: (entries) => {
+          const formattedEntries = entries.map(formatEntry);
+
+          formattedEntries.forEach((entry) => {
+            store.applyActivityLogEntry(entry);
+          });
+
+          setData((oldData) => ({
+            ...oldData,
+            teams: store.getTeamData(),
+            activityLog: [...oldData.activityLog, ...formattedEntries],
+          }));
+        },
       });
     })().catch((e: unknown) => {
       console.error(e);

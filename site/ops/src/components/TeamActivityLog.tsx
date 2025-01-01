@@ -49,36 +49,56 @@ export default function TeamActivityLog({
       }),
       columnHelper.accessor(
         (entry) => {
+          let activity = "";
+
           switch (entry.type) {
             case "currency_adjusted":
-              return `Currency adjusted by ${entry.currency_delta}`;
+              activity = `Currency adjusted by ${entry.currency_delta}`;
+              break;
             case "gate_completed": {
               const desc = opsData.gateDetails[entry.slug]?.title
                 ? `(${opsData.gateDetails[entry.slug]?.title})`
                 : "";
-              return `Gate completed: ${entry.slug} ${desc} - ${opsData.gateDetails[entry.slug]?.roundTitle}`;
+              activity = `Gate completed: ${entry.slug} ${desc} - ${opsData.gateDetails[entry.slug]?.roundTitle}`;
+              break;
             }
             case "round_unlocked":
-              return `Round unlocked: ${roundNames[entry.slug]}`;
+              activity = `Round unlocked: ${roundNames[entry.slug]}`;
+              break;
             case "puzzle_unlockable":
-              return `Puzzle unlockable: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              activity = `Puzzle unlockable: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
             case "puzzle_unlocked":
-              return `Puzzle unlocked: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              activity = `Puzzle unlocked: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
             case "puzzle_solved":
-              return `Puzzle solved: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              activity = `Puzzle solved: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
             case "puzzle_partially_solved":
-              return `Puzzle partially solved: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              activity = `Puzzle partially solved: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
             case "puzzle_guess_submitted":
-              return `Puzzle guess submitted: ${slugTitle(entry.slug, opsData.puzzleMetadata)} - ${entry.data.canonical_input}`;
+              activity = `Puzzle guess submitted: ${slugTitle(entry.slug, opsData.puzzleMetadata)} - ${entry.data.canonical_input}`;
+              break;
             case "interaction_completed":
-              return `Interaction completed: ${entry.slug}: ${entry.data.result}`;
+              activity = `Interaction completed: ${entry.slug}: ${entry.data.result}`;
+              break;
             case "interaction_started":
-              return `Interaction started: ${entry.slug}`;
+              activity = `Interaction started: ${entry.slug}`;
+              break;
             case "interaction_unlocked":
-              return `Interaction unlocked: ${entry.slug}`;
+              activity = `Interaction unlocked: ${entry.slug}`;
+              break;
             case "rate_limits_reset":
-              return `Rate limits reset for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              activity = `Rate limits reset for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
           }
+
+          if (entry.internal_data?.operator) {
+            activity += ` (by operator: ${entry.internal_data.operator})`;
+          }
+
+          return activity;
         },
         {
           header: "Activity",
@@ -87,6 +107,8 @@ export default function TeamActivityLog({
       ),
     ];
   }, [opsData, roundNames, activity]);
+
+  console.log("activity", activity);
 
   const table = useMaterialReactTable({
     columns,

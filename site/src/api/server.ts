@@ -219,6 +219,18 @@ function canonicalizeInput(input: string) {
     .toUpperCase();
 }
 
+function formatInternalActivityLogEntryForApi(
+  entry: InternalActivityLogEntry,
+): ServerInferResponseBody<
+  typeof frontendContract.getFullActivityLog,
+  200
+>[number] {
+  return {
+    ...entry,
+    timestamp: entry.timestamp.toISOString(),
+  };
+}
+
 export function getRouter({
   jwtSecret,
   jwksUri,
@@ -1049,6 +1061,63 @@ export function getRouter({
           });
         },
       },
+      grantUnlockCurrency: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ body: { teamIds, amount }, req }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              if (teamIds === "all") {
+                return [
+                  await mutator.appendLog({
+                    team_id: undefined,
+                    type: "currency_adjusted",
+                    currency_delta: amount,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                ];
+              } else {
+                const result: (InternalActivityLogEntry | undefined)[] = [];
+                for (const team_id of teamIds) {
+                  result.push(
+                    await mutator.appendLog({
+                      team_id,
+                      type: "currency_adjusted",
+                      currency_delta: amount,
+                      internal_data: {
+                        operator: req.authInfo?.adminUser,
+                      },
+                    }),
+                  );
+                }
+
+                return result;
+              }
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: InternalActivityLogEntry | undefined,
+            ): r is InternalActivityLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatInternalActivityLogEntryForApi),
+          };
+        },
+      },
     },
     frontend: {
       markTeamGateSatisfied: {
@@ -1175,13 +1244,11 @@ export function getRouter({
             },
             { readOnly: true },
           );
-          const body = entries.map((e) => {
-            const entry = cleanupActivityLogEntryFromDB(e);
-            return {
-              ...entry,
-              timestamp: entry.timestamp.toISOString(),
-            };
-          });
+          const body = entries.map((e) =>
+            formatInternalActivityLogEntryForApi(
+              cleanupActivityLogEntryFromDB(e),
+            ),
+          );
           return {
             status: 200,
             body,

@@ -6,6 +6,7 @@ import {
   TeamRegistrationSchema,
   TeamStateSchema,
 } from "./contract";
+import { InternalActivityLogSchema } from "./frontend_contract";
 
 export const PuzzleAPIMetadataSchema = z.record(
   z.string(),
@@ -88,6 +89,17 @@ export const adminContract = c.router({
           }),
         ),
       }),
+    },
+  },
+  grantUnlockCurrency: {
+    method: "POST",
+    path: "/admin/grant-unlock-currency",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+      amount: z.number(),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
     },
   },
 });
