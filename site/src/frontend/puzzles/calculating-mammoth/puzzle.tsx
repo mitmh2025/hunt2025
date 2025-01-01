@@ -6,7 +6,6 @@ import {
 } from "../../components/CopyToClipboard";
 import Crossword from "../../components/Crossword";
 import LinkedImage from "../../components/LinkedImage";
-import { HScrollTableWrapper } from "../../components/StyledUI";
 import puzzle from "./assets/puzzle.png";
 import {
   ACROSS,
@@ -50,22 +49,21 @@ const Puzzle = (): JSX.Element => {
         src={puzzle}
         alt="A crossword puzzle with some cells highlighted in blue."
       />
-      <HScrollTableWrapper className={COPY_ONLY_CLASS}>
-        <Crossword
-          labels={labels}
-          rowHeaders={HEADERS}
-          rowFooters={FOOTERS}
-          getAdditionalCellStyles={({ row, column }) => {
-            const backgroundColor = COLOR?.[row]?.[column] ?? "";
-            if (backgroundColor && backgroundColor === ".") {
-              return {
-                backgroundColor: "#c9daf8",
-              };
-            }
-            return {};
-          }}
-        />
-      </HScrollTableWrapper>
+      <Crossword
+        className={COPY_ONLY_CLASS}
+        labels={labels}
+        rowHeaders={HEADERS}
+        rowFooters={FOOTERS}
+        getAdditionalCellStyles={({ row, column }) => {
+          const backgroundColor = COLOR?.[row]?.[column] ?? "";
+          if (backgroundColor && backgroundColor === ".") {
+            return {
+              backgroundColor: "#c9daf8",
+            };
+          }
+          return {};
+        }}
+      />
       <p>
         <strong>Across</strong>
       </p>

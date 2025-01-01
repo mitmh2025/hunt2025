@@ -115,10 +115,10 @@ const Solution = (): JSX.Element => {
     <>
       <p>
         This puzzle works like a normal crossword for all of the numbered across
-        and down answers. All of the yellow highlighted clues have multiple
+        and down answers. All of the blue highlighted clues have multiple
         answers all of which have a specific time frame associated with them.
         Each of these answers is associated with a different age generation.
-        Specifically, the yellow highlighted clue “Example of a major mechanic
+        Specifically, the blue highlighted clue “Example of a major mechanic
         utilized successively in this puzzle” always corresponds to the very
         first across-answer in each of the six subsections of the crossword.
         These six answers to “major mechanic” are the six age generations used
