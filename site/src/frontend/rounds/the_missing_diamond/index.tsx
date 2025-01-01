@@ -357,7 +357,7 @@ const metaSpeechBubbles: Partial<
     interaction: "interview_at_the_jewelry_store",
     desc: {
       unsolved: {
-        text: "Gladys visited the Jewelry Store this afternoon. Why would she do that? She owns a jewelry empire! Do some digging",
+        text: "Gladys visited the Jewelry Store this afternoon. Why would she do that? She owns a jewelry empire! Do some digging.",
         color: "#FF80CB",
       },
       solved: {
