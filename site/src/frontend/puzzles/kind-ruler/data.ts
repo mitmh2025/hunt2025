@@ -1,3 +1,5 @@
+import { reduceCoordinatesToIndices } from "../../components/Crossword";
+
 export const ACROSS: { number: number; clues: string[] }[] = [
   {
     number: 1,
@@ -1327,16 +1329,6 @@ const GRID_5_COLOR = `
          yyy           
                        
 `;
-
-function reduceCoordinatesToIndices(
-  coordinates: { row: number; col: number }[],
-  width: number,
-): Set<number> {
-  return coordinates.reduce<Set<number>>((acc, coords) => {
-    acc.add(coords.row * width + coords.col);
-    return acc;
-  }, new Set<number>());
-}
 
 export type CornMaze = {
   startsAt: number;

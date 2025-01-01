@@ -1,6 +1,23 @@
 import React, { type ReactNode, type CSSProperties } from "react";
 import { styled } from "styled-components";
 
+/**
+ * Given a list of coordinates and the width of a crossword grid, creates a
+ * set of absolute indices corresponding to those coordinates.
+ * @param coordinates A list of row,column coordinates.
+ * @param width The width of the grid on which to plot the coordinates.
+ * @returns
+ */
+export function reduceCoordinatesToIndices(
+  coordinates: { row: number; col: number }[],
+  width: number,
+): Set<number> {
+  return coordinates.reduce<Set<number>>((acc, coords) => {
+    acc.add(coords.row * width + coords.col);
+    return acc;
+  }, new Set<number>());
+}
+
 const Grid = styled.table`
   border-collapse: collapse;
   td {
@@ -23,6 +40,16 @@ const FilledCell = styled(StyledCell)`
   color: white;
   width: 40px;
   height: 40px;
+`;
+
+const HeaderCell = styled(StyledCell)`
+  vertical-align: middle;
+  text-align: right;
+`;
+
+const FooterCell = styled(StyledCell)`
+  vertical-align: middle;
+  text-align: left;
 `;
 
 const CellLabel = styled.span`
@@ -54,6 +81,10 @@ export type CrosswordProps = {
   labels: string[][];
   /** List of rows of full-sized cell contents */
   fill?: ReactNode[][];
+  /** List of td contents to prepend to the beginnings of rows. Either the number of headers or their rowspans should span the whole table. */
+  rowHeaders?: { contents: ReactNode; rowSpan?: number }[];
+  /** List of td contents to append to the ends of rows. Either the number of footers or their rowspans should span the whole table. */
+  rowFooters?: { contents: ReactNode; rowSpan?: number }[];
   /** A function that applies custom styles to a cell based on the row and column indices */
   getAdditionalCellStyles?: ({
     row,
@@ -76,14 +107,41 @@ export type CrosswordProps = {
 const Crossword = ({
   labels,
   fill,
+  rowHeaders,
+  rowFooters,
   className,
   getAdditionalCellStyles,
   getAdditionalCellFillStyles,
 }: CrosswordProps): JSX.Element => {
+  let headerCounter = 0;
+  const rowIndexToHeader: Record<
+    number,
+    { contents: ReactNode; rowSpan?: number }
+  > = {};
+  for (const header of rowHeaders ?? []) {
+    rowIndexToHeader[headerCounter] = header;
+    headerCounter += header.rowSpan ?? 1;
+  }
+
+  let footerCounter = 0;
+  const rowIndexToFooter: Record<
+    number,
+    { contents: ReactNode; rowSpan?: number }
+  > = {};
+  for (const footer of rowFooters ?? []) {
+    rowIndexToFooter[footerCounter] = footer;
+    footerCounter += footer.rowSpan ?? 1;
+  }
+
   return (
     <Grid className={className}>
       {labels.map((row, i) => (
         <tr key={i}>
+          {rowIndexToHeader[i] && (
+            <HeaderCell rowSpan={rowIndexToHeader[i]?.rowSpan ?? 1}>
+              {rowIndexToHeader[i]?.contents}
+            </HeaderCell>
+          )}
           {row.map((label, j) => {
             const key = `${i}-${j}`;
             const cellFill = fill?.[i]?.[j];
@@ -136,6 +194,11 @@ const Crossword = ({
               );
             }
           })}
+          {rowIndexToFooter[i] && (
+            <FooterCell rowSpan={rowIndexToFooter[i]?.rowSpan ?? 1}>
+              {rowIndexToFooter[i]?.contents}
+            </FooterCell>
+          )}
         </tr>
       ))}
     </Grid>

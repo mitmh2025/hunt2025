@@ -14,6 +14,7 @@ import { blacklightPuzzle } from "./blacklight";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
+import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
@@ -244,10 +245,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
   cross_spread: CrossSpread, // globe
-  // TODO: is this in the correct slot for isp03 family portrait?
-  corn_maize: CornMaize,
+  // isp03 family portrait?
   this_is_just_a_test: ThisIsJustATest, // typewriter
-  // TODO: isp05 desk lamp
+  // isp05 desk lamp?
 
   placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
   cahfee_regulah: CahfeeRegulah, // rings, behind binary switches
@@ -257,9 +257,11 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   a_heap_of_clards: AHeapOfClards,
   bermuda_triangle: BermudaTriangle,
+  corn_maize: CornMaize,
   fechtbuch: Fechtbuch,
   half_baked: HalfBaked,
   networking_event: NetworkingEvent,
+  passage_of_time: PassageOfTime,
 
   // Note: these blacklight answer assignments are all wrong, but that's the
   // set of graphical assets that we got for the playtest, so we're going to
