@@ -34,14 +34,25 @@ function HostSelectRow({ session, setSession }) {
   );
 }
 
-function HostSelect({ sessions, setSession }) {
-  return (
-    <>
-      {sessions.map((session) => (
-        <HostSelectRow session={session} setSession={setSession} key={session.sessionId} />
-      ))}
-    </>
-  );
+function HostSelect({ sessions, session, setSession }) {
+  if (session === null) {
+    return (
+      <>
+        {sessions.map((session) => (
+          <HostSelectRow session={session} setSession={setSession} key={session.sessionId} />
+        ))}
+      </>
+    );
+  }
+  else {
+    return (
+      <>
+        <button onClick={() => setSession(null)}>
+          Back
+        </button>
+      </>
+    );
+  }
 }
 
 export function DesertedNinjaHost(
@@ -52,7 +63,7 @@ export function DesertedNinjaHost(
   return (
     <>
       <h2>Host mode</h2>
-      <HostSelect sessions={sessions} setSession={setSession} />
+      <HostSelect sessions={sessions} session={session} setSession={setSession} />
       <DesertedNinjaPresentation session={session} questions={questions} />
     </>
   );
