@@ -26,7 +26,7 @@ export const ACROSS: { number: number; clues: string[] }[] = [
   },
   { number: 10, clues: ["Simone Biles took 4 golds in this city"] },
   { number: 11, clues: ["Fictional pirates love this molasses-based drink"] },
-  { number: 12, clues: ["Yer ____ Harry!"] },
+  { number: 12, clues: ["“Yer ____ Harry!”"] },
   {
     number: 13,
     clues: ["The only place unscrupulous enough to buy Zora eggs", "Not near"],

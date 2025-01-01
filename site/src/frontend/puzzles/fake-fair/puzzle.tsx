@@ -1,8 +1,10 @@
 import React, { type CSSProperties } from "react";
+import { styled } from "styled-components";
 import Crossword, {
   calculateNumberLabels,
   filterLabelsToStructure,
 } from "../../components/Crossword";
+import { HScrollTableWrapper } from "../../components/StyledUI";
 import {
   BARS_DOWN,
   BARS_RIGHT,
@@ -13,6 +15,27 @@ import {
   GRID_2_ACROSS,
   GRID_2_DOWN,
 } from "./data";
+
+const StyledCrossword = styled(Crossword)`
+  width: 761px;
+`;
+
+const StyledTable = styled.table`
+  margin-bottom: 1em;
+  td {
+    vertical-align: top;
+  }
+`;
+
+const FlexWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+`;
+
+const FlexChild = styled.div`
+  flex: 0 0 360px;
+`;
 
 const Puzzle = (): JSX.Element => {
   // Number labels are calculated separately...
@@ -30,71 +53,79 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <p className="puzzle-flavor">Look at the clues for the missing digits.</p>
-      <Crossword
-        labels={concatenatedLabels}
-        labelsForEmptyCopy={filterLabelsToStructure(concatenatedLabels)}
-        getAdditionalCellStyles={({ row, column }) => {
-          const styles: CSSProperties = {};
-          if (column === 9) {
-            // Spacer column.
-            styles.backgroundColor = "transparent";
-            styles.border = "none";
-          }
-          if (BARS_RIGHT?.[row]?.[column] === "|") {
-            styles.borderRightWidth = "3px";
-          }
-          if (BARS_DOWN?.[row]?.[column] === "_") {
-            styles.borderBottomWidth = "3px";
-          }
-          return styles;
-        }}
-      />
-      <h3>Left</h3>
-      <p>
-        <strong>Across</strong>
-      </p>
-      <table>
-        {GRID_1_ACROSS.map(([num, clue]) => (
-          <tr key={`grid1-across-${num}`}>
-            <td>{`${num}.`}</td>
-            <td>{clue}</td>
-          </tr>
-        ))}
-      </table>
-      <p>
-        <strong>Down</strong>
-      </p>
-      <table>
-        {GRID_1_DOWN.map(([num, clue]) => (
-          <tr key={`grid1-down-${num}`}>
-            <td>{`${num}.`}</td>
-            <td>{clue}</td>
-          </tr>
-        ))}
-      </table>
-      <h3>Right</h3>
-      <p>
-        <strong>Across</strong>
-      </p>
-      <table>
-        {GRID_2_ACROSS.map(([num, clue]) => (
-          <tr key={`grid2-across-${num}`}>
-            <td>{`${num}.`}</td>
-            <td>{clue}</td>
-          </tr>
-        ))}
-      </table>
-      <p>
-        <strong>Down</strong>
-      </p>
-      <table>
-        {GRID_2_DOWN.map(([num, clue]) => (
-          <tr key={`grid2-down-${num}`}>
-            <td>{`${num}.`}</td>
-            <td>{clue}</td>
-          </tr>
-        ))}
-      </table>
+      <HScrollTableWrapper>
+        <StyledCrossword
+          labels={concatenatedLabels}
+          labelsForEmptyCopy={filterLabelsToStructure(concatenatedLabels)}
+          getAdditionalCellStyles={({ row, column }) => {
+            const styles: CSSProperties = {};
+            if (column === 9) {
+              // Spacer column.
+              styles.backgroundColor = "transparent";
+              styles.border = "none";
+            }
+            if (BARS_RIGHT?.[row]?.[column] === "|") {
+              styles.borderRightWidth = "3px";
+            }
+            if (BARS_DOWN?.[row]?.[column] === "_") {
+              styles.borderBottomWidth = "3px";
+            }
+            return styles;
+          }}
+        />
+      </HScrollTableWrapper>
+      <FlexWrapper>
+        <FlexChild>
+          <h3>Left</h3>
+          <p>
+            <strong>Across</strong>
+          </p>
+          <StyledTable>
+            {GRID_1_ACROSS.map(([num, clue]) => (
+              <tr key={`grid1-across-${num}`}>
+                <td>{`${num}.`}</td>
+                <td>{clue}</td>
+              </tr>
+            ))}
+          </StyledTable>
+          <p>
+            <strong>Down</strong>
+          </p>
+          <StyledTable>
+            {GRID_1_DOWN.map(([num, clue]) => (
+              <tr key={`grid1-down-${num}`}>
+                <td>{`${num}.`}</td>
+                <td>{clue}</td>
+              </tr>
+            ))}
+          </StyledTable>
+        </FlexChild>
+        <FlexChild>
+          <h3>Right</h3>
+          <p>
+            <strong>Across</strong>
+          </p>
+          <StyledTable>
+            {GRID_2_ACROSS.map(([num, clue]) => (
+              <tr key={`grid2-across-${num}`}>
+                <td>{`${num}.`}</td>
+                <td>{clue}</td>
+              </tr>
+            ))}
+          </StyledTable>
+          <p>
+            <strong>Down</strong>
+          </p>
+          <StyledTable>
+            {GRID_2_DOWN.map(([num, clue]) => (
+              <tr key={`grid2-down-${num}`}>
+                <td>{`${num}.`}</td>
+                <td>{clue}</td>
+              </tr>
+            ))}
+          </StyledTable>
+        </FlexChild>
+      </FlexWrapper>
     </>
   );
 };

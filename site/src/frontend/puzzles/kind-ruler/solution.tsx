@@ -8,7 +8,7 @@ import {
 import { CORN_MAZES } from "./data";
 import { CopyableCornMaze } from "./puzzle";
 
-const DATA: [number, string, string, string, string][] = [
+const PHASE_1_DATA: [number, string, string, string, string][] = [
   [
     0,
     "Toe",
@@ -123,12 +123,51 @@ const DATA: [number, string, string, string, string][] = [
   ],
 ];
 
+const PHASE_2_DATA: [string, string, string][] = [
+  [
+    "[COBB]",
+    "Central",
+    "What does the Georgia Peach have in common with a mighty meaty salad?",
+  ],
+  ["UNI[CORN] BLOOD", "Harry Potter", "Silvery savior with a terrible price"],
+  [
+    "A[CORN]",
+    "Zelda",
+    "Roast this oaky nut and you’ll get a half-hearted meal",
+  ],
+  [
+    "[CORN]ELIUS EVAZAN",
+    "Star Wars",
+    "He has the death sentence on 12 systems",
+  ],
+  [
+    "NEW GNISIS [CORN]ER CLUB",
+    "Skyrim",
+    "For those interested in some light theft, the double-distilled sugar here will put you over the moon",
+  ],
+];
+
+const PHASE_3_DATA: [number, string, string][] = [
+  [0, "PUTCO", "Central [Q1]"],
+  [4, "RNO", "Central [Q2]"],
+  [6, "NTH", "Central [Q3]"],
+  [8, "ECOBB", "Central [Q4]"],
+  [1, "PLA", "Star Wars [H1]"],
+  [2, "NTPLA", "Zelda"],
+  [3, "CEATH", "Harry Potter"],
+  [5, "OMED", "Skyrim"],
+  [7, "EPOT", "Star Wars [H2]"],
+];
+
 const StyledTable = styled.table`
   border-collapse: collapse;
   th,
   td {
     padding: 0 8px;
   }
+`;
+
+const Phase1Table = styled(StyledTable)`
   tr:first-child {
     border: 1px solid black;
     th:first-child {
@@ -454,13 +493,14 @@ const Solution = (): JSX.Element => {
         the correct letter for all of the off-grid circles.
       </p>
       {CORN_MAZES.map((cornMaze, i) => (
-        <HScrollTableWrapper key={i}>
+        <HScrollTableWrapper key={`maze-${i}`}>
           <StyledCornMaze cornMaze={cornMaze} puzzleMode={false} />
         </HScrollTableWrapper>
       ))}
       <h3>Maze Solution Info</h3>
+      <h4>Extraction phase 1: Homophone list (maze path order)</h4>
       <HScrollTableWrapper>
-        <StyledTable>
+        <Phase1Table>
           <tr>
             <th>Pathway #</th>
             <th>Homophone pair</th>
@@ -468,13 +508,49 @@ const Solution = (): JSX.Element => {
             <th>Grid</th>
             <th>Clue phrase</th>
           </tr>
-          {DATA.map(([pathway, homophone, answer, grid, clue], i) => (
-            <tr key={i}>
+          {PHASE_1_DATA.map(([pathway, homophone, answer, grid, clue], i) => (
+            <tr key={`phase-1-${i}`}>
               <td>{pathway}</td>
               <td>{homophone}</td>
               <td>{answer}</td>
               <td>{grid}</td>
               <td>{clue}</td>
+            </tr>
+          ))}
+        </Phase1Table>
+      </HScrollTableWrapper>
+      <h4>Extraction phase 2: CORN and COBB clues</h4>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Full answer</th>
+            <th>Grid</th>
+            <th>Clue phrase</th>
+          </tr>
+          {PHASE_2_DATA.map(([answer, grid, clue], i) => (
+            <tr key={`phase-2-${i}`}>
+              <td>{answer}</td>
+              <td>{grid}</td>
+              <td>{clue}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
+      <h4>Extraction phase 3: Grid overlay</h4>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Pathway #</th>
+            <th>Letters along path</th>
+            <th>Grid</th>
+          </tr>
+          {PHASE_3_DATA.map(([num, letters, grid]) => (
+            <tr key={`pathway-${num}`}>
+              <td>{num}</td>
+              <td>
+                <Mono>{letters}</Mono>
+              </td>
+              <td>{grid}</td>
             </tr>
           ))}
         </StyledTable>
