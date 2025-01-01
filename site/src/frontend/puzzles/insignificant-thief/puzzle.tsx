@@ -7,7 +7,6 @@ import elk from "./assets/elk.svg";
 import moose from "./assets/moose.svg";
 
 const PenTable = styled.table`
-  border: 4px solid black;
   border-collapse: collapse;
   td {
     text-align: center;
@@ -16,6 +15,21 @@ const PenTable = styled.table`
     border: 1px solid black;
   }
   margin: 16px 0px;
+
+  // Borders on the table element don't copy-paste into Sheets, so specify
+  // borders on the relevant cells
+  & tr:first-child td {
+    border-top: 4px solid black;
+  }
+  & td:first-child {
+    border-left: 4px solid black;
+  }
+  & td:last-child {
+    border-right: 4px solid black;
+  }
+  & tr:last-child td {
+    border-bottom: 4px solid black;
+  }
 `;
 
 const Cell = styled.td`
@@ -31,13 +45,10 @@ const AnimalCellTd = styled(Cell)`
 `;
 
 const AnimalCell = ({ asset }: { asset: string }) => {
-  // TODO: implement some function for asset host lookup so we can have this copy neatly from sheets
-  const sheetsData = `IMAGE("https://zarvox.org${asset}")`;
   return (
-    <AnimalCellTd
-      data-sheets-formula={sheetsData}
-      style={{ backgroundImage: `url(${asset})` }}
-    />
+    <AnimalCellTd>
+      <img src={asset} alt="An animal" />
+    </AnimalCellTd>
   );
 };
 

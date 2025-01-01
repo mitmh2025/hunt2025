@@ -6,6 +6,7 @@ import IllegalSearchRoundPage from "./illegal_search";
 import MurderRoundPage from "./murder_in_mitropolis";
 import PapertrailRoundPage from "./paper_trail";
 import StakeoutRoundPage from "./stakeout";
+import StrayLeadsRoundPage from "./stray_leads";
 import MissingDiamondRoundPage from "./the_missing_diamond";
 import VaultRoundPage from "./the_vault";
 
@@ -46,5 +47,9 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   },
   the_vault: {
     component: VaultRoundPage,
+  },
+  stray_leads: {
+    component: StrayLeadsRoundPage,
+    entrypoint: "stray_leads",
   },
 };

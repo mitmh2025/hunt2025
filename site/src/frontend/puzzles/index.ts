@@ -14,6 +14,7 @@ import { blacklightPuzzle } from "./blacklight";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
+import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
@@ -33,6 +34,8 @@ import FindOtherWaysOfSeeing from "./discrete-spine";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
+import NeatlyDrawn from "./exotic-pirate";
+import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
@@ -42,12 +45,14 @@ import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
 import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
+import Incognito from "./heavy-iron";
 import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
 import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
+import CornMaize from "./kind-ruler";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
@@ -108,6 +113,7 @@ import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
+import MITropolitanHouseOfFashion from "./tall-change";
 import ARecipeForSuccess from "./tame-chick";
 import DrunkensAndFlagons from "./thorough-arm";
 import EngagementsAndOtherCrimes from "./timely-head";
@@ -148,6 +154,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   "🔎🧊": MagnifyingGlassIce,
   an_argument: AnArgument,
+  battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
   downright_backwards: DownrightBackwards,
   dropping_the_ball: DroppingTheBall,
@@ -156,6 +163,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   in_a_different_direction: InADifferentDirection,
   introduction_to_decryption: IntroductionToDecryption,
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
+  mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
+  neatly_drawn: NeatlyDrawn,
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
@@ -218,6 +227,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   chemicals_are_sexy: ChemicalsAreSexy,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
+  incognito: Incognito,
   maze_of_lies: MazeOfLies,
   the_eras_puzzle: TheErasPuzzle,
   the_inspectre: TheInspectre,
@@ -236,9 +246,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
   cross_spread: CrossSpread, // globe
-  // TODO: isp03 family portrait
+  // isp03 family portrait?
   this_is_just_a_test: ThisIsJustATest, // typewriter
-  // TODO: isp05 desk lamp
+  // isp05 desk lamp?
 
   placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
   cahfee_regulah: CahfeeRegulah, // rings, behind binary switches
@@ -248,9 +258,11 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   a_heap_of_clards: AHeapOfClards,
   bermuda_triangle: BermudaTriangle,
+  corn_maize: CornMaize,
   fechtbuch: Fechtbuch,
   half_baked: HalfBaked,
   networking_event: NetworkingEvent,
+  passage_of_time: PassageOfTime,
 
   // Note: these blacklight answer assignments are all wrong, but that's the
   // set of graphical assets that we got for the playtest, so we're going to

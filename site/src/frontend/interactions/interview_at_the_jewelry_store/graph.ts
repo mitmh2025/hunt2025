@@ -5,7 +5,7 @@ type JewelryStoreState = {
   idea1: boolean; // did we try option 6a yet?
   idea2: boolean; // did we try option 6b yet?
 };
-type JewelryStoreResult = Record<string, never>;
+type JewelryStoreResult = "";
 type JewelryStoreSpeaker = "billie" | "gemcutter";
 
 const stubSoundFileset = {
@@ -414,7 +414,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       sound: stubSoundFileset, // TODO: audio
       timeout_msec: 20000,
       finalState(_state: JewelryStoreState) {
-        return {};
+        return "";
       },
     },
   ],

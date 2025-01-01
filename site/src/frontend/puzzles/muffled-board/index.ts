@@ -26,6 +26,7 @@ const puzzle: PuzzleDefinition = {
   ],
   content: {
     component: Puzzle,
+    copyable: true,
   },
   solution: {
     component: Solution,

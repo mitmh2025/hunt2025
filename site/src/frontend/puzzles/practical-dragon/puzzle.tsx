@@ -184,7 +184,10 @@ const Puzzle = (): JSX.Element => {
         <ImgBlock key={i} imgnum={i} />
       ))}
       <a target="_blank" rel="noreferrer" href={imgbottomhi}>
-        <StyledImg src={imgbottomlow} alt="A rebus" />
+        <StyledImg
+          src={imgbottomlow}
+          alt="A rebus, with “BB,” “HM,” and “WA” above three of the pictures. Below the pictures, there are a series of blanks, with letters and numbers in the blanks."
+        />
       </a>
     </>
   );

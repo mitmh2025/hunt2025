@@ -188,14 +188,11 @@ export type ArtGalleryState = {
   thought3: boolean;
 };
 
-export type ArtGalleryResult = {
-  opinion: "dunce" | "aficionado";
-  selection:
-    | "kieftenbeld"
-    | "lemahieu"
-    | "kieftenbeld-postcard"
-    | "lemahieu-postcard";
-};
+export type ArtGalleryResult =
+  | "kieftenbeld"
+  | "lemahieu"
+  | "kieftenbeld-postcard"
+  | "lemahieu-postcard";
 
 const remainingLocationOptions = (state: ArtGalleryState) => {
   const remaining_options = [];
@@ -1477,10 +1474,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       },
       timeout_msec: 12750,
       finalState(state: ArtGalleryState) {
-        return {
-          opinion: state.opinion ?? "dunce",
-          selection: state.selection ?? "kieftenbeld-postcard",
-        };
+        return state.selection ?? "kieftenbeld-postcard";
       },
     },
   ],

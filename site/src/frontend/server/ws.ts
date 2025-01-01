@@ -40,6 +40,7 @@ import {
 import { murderState } from "../rounds/murder_in_mitropolis";
 import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
+import { strayLeadsState } from "../rounds/stray_leads";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
@@ -95,6 +96,10 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   stakeout: {
     type: "team_state",
     callback: stakeoutState,
+  },
+  stray_leads: {
+    type: "team_state",
+    callback: strayLeadsState,
   },
   team_info: {
     type: "team_registration",

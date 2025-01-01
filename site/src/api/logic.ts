@@ -14,11 +14,13 @@ import type { Hunt } from "../huntdata/types";
 
 export class TeamStateIntermediate extends LogicTeamState {
   epoch: number; // The largest value of `id` that was processed/relevant
+  puzzles_unlocked_at: Map<string, number /* epoch */>;
   private slugToSlotMap: Map<string, SlotLookup>;
 
   constructor(hunt: Hunt, initial?: Partial<TeamStateIntermediate>) {
     super(initial);
     this.epoch = initial?.epoch ?? -1;
+    this.puzzles_unlocked_at = new Map(initial?.puzzles_unlocked_at ?? []);
     this.slugToSlotMap = generateSlugToSlotMap(hunt);
   }
 
@@ -47,9 +49,12 @@ export class TeamStateIntermediate extends LogicTeamState {
       // fallthrough - solved implies unlocked
       case "puzzle_unlocked": {
         this.puzzles_unlocked.add(entry.slug);
+        if (!this.puzzles_unlocked_at.has(entry.slug)) {
+          this.puzzles_unlocked_at.set(entry.slug, entry.id);
+        }
         // If this puzzle is not assigned to a round, or if the round to which
         // it is assigned is not unlocked at the time the puzzle unlocks, then
-        // it will be included henceforth in the puzzle outlands.
+        // it will be included henceforth in the puzzle outlands (stray leads).
         const slot = this.slugToSlotMap.get(entry.slug);
         if (!slot || !this.rounds_unlocked.has(slot.roundSlug)) {
           this.puzzles_stray.add(entry.slug);
@@ -169,12 +174,13 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
       [...data.puzzles_visible].map((slug) => [
         slug,
         {
-          round: puzzleRounds[slug] ?? "outlands", // TODO: Should this be hardcoded?
+          round: puzzleRounds[slug] ?? "stray_leads", // TODO: Should this be hardcoded?
           locked: data.puzzles_unlocked.has(slug)
             ? ("unlocked" as const)
             : data.puzzles_unlockable.has(slug)
               ? ("unlockable" as const)
               : ("locked" as const),
+          unlocked_at: data.puzzles_unlocked_at.get(slug),
           answer: data.correct_answers[slug],
           ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
         },
