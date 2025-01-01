@@ -427,6 +427,7 @@ export default function createConfigs(_env, argv) {
       "knex",
       "swagger-ui-express",
       "redis",
+      "oauth2-mock-server",
     ],
     plugins: [
       new rspack.CssExtractRspackPlugin({

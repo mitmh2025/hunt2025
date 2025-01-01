@@ -11,7 +11,16 @@ export default defineConfig({
   server: {
     port: 3003,
     proxy: {
-      "/admin-token": "http://localhost:3002",
+      "/api": "http://localhost:3002",
+      "/": {
+        bypass: (req) => {
+          if (req.headers.cookie?.includes("mitmh2025_api_auth=")) {
+            return req.url;
+          }
+          return undefined;
+        },
+        target: "http://localhost:3002",
+      },
     },
   },
   resolve: {

@@ -61,16 +61,6 @@ in {
             };
             app = mkOption {
               inherit (format) type;
-              default = {
-                model = "authentik_core.application";
-                identifiers.slug = config.slug;
-                attrs = {
-                  inherit (config) name;
-                  inherit (config) slug;
-                  policy_engine_mode = "any";
-                  provider = findProvider config.name;
-                };
-              };
             };
             blueprint = mkOption {
               type = listOf attrs;
@@ -85,6 +75,16 @@ in {
             };
           };
           config = {
+            app = {
+              model = "authentik_core.application";
+              identifiers.slug = config.slug;
+              attrs = {
+                inherit (config) name;
+                inherit (config) slug;
+                policy_engine_mode = lib.mkDefault "any";
+                provider = findProvider config.name;
+              };
+            };
             properties = let
               mkDefaultIf = c: v: lib.mkIf c (lib.mkDefault v);
             in lib.mkMerge [
@@ -130,9 +130,9 @@ in {
                   inherit signing_key;
                   sub_mode = "hashed_user_id";
 
-                  access_code_validity = "minutes=1";
-                  access_token_validity = "minutes=5";
-                  refresh_token_validity = "days=30";
+                  access_code_validity = lib.mkDefault "minutes=1";
+                  access_token_validity = lib.mkDefault "minutes=5";
+                  refresh_token_validity = lib.mkDefault "days=30";
                 };
               };
               proxy = {

@@ -23,6 +23,7 @@ export default async function ({
   enabledComponents,
   dbEnvironment,
   jwtSecret,
+  jwksUri,
   frontendApiSecret,
   dataApiSecret,
   apiUrl,
@@ -32,6 +33,7 @@ export default async function ({
   enabledComponents: Set<string>;
   dbEnvironment: string | undefined;
   jwtSecret: string | Buffer | undefined;
+  jwksUri: string | undefined;
   frontendApiSecret: string;
   dataApiSecret: string | undefined;
   apiUrl: string | undefined;
@@ -76,6 +78,7 @@ export default async function ({
     // Mount the API router at /api
     const apiRouter = getRouter({
       jwtSecret,
+      jwksUri,
       frontendApiSecret,
       dataApiSecret,
       knex,
