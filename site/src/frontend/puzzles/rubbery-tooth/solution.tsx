@@ -188,7 +188,7 @@ const Solution = (): JSX.Element => {
         it.
       </p>
       <p>
-        Hunters use the puzzle title to realize that this puzzle is about the
+        Hunters use the puzzle title to realize that this puzzle is about the{" "}
         <a href="https://www.horg.com/horg/" target="_blank" rel="noreferrer">
           Holotypic Occlupanid Research Group (HORG)
         </a>
