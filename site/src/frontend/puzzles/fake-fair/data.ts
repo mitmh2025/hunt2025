@@ -185,7 +185,7 @@ export const GRID_1_ACROSS = [
   [40, "Be crazy about"],
   [42, "“Chocolate Rain” singer Zonday"],
   [44, "Asses"],
-  [45, "Peter or Plenty "],
+  [45, "Peter or Plenty"],
   [47, "How Shakespeare would write “it is”"],
   [49, "Youngest sister in Pride and Prejudice"],
   [50, "Survey"],
