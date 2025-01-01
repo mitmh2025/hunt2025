@@ -8,7 +8,7 @@ const Nav = styled.nav`
   height: 3rem;
   width: 100%;
   position: relative; // Needed for z-index to do anything
-  z-index: 1;
+  z-index: 100;
   background-color: var(--nav-bar-bg);
 `;
 

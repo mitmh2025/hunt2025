@@ -1,10 +1,33 @@
-export type MissingDiamondItem = {
-  title: string;
+export type MissingDiamondSpeechBubble = {
   slug: string;
-  desc?: string;
+  text: string;
+  color: string;
+  glow?: boolean;
+  extraBorder?: boolean;
+};
+
+export type MissingDiamondEntity = {
+  asset: string;
+  alt: string;
+  // positions are relative to the native map size and may need client-side scaling
+  pos: {
+    top: number;
+    left: number;
+    width: number;
+  };
+  puzzle?: {
+    title: string;
+    slug: string;
+    desc?: string;
+    state: "unlockable" | "unlocked" | "solved";
+    answer?: string;
+  };
+  statement?: string;
 };
 
 export type MissingDiamondState = {
   epoch: number;
-  items: MissingDiamondItem[];
+  speechBubbles: MissingDiamondSpeechBubble[];
+  locations: MissingDiamondEntity[];
+  witnesses: MissingDiamondEntity[];
 };
