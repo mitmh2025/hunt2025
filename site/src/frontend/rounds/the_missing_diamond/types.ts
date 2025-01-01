@@ -25,9 +25,21 @@ export type MissingDiamondEntity = {
   statement?: string;
 };
 
+export type MissingDiamondInteractionEntity = {
+  asset: string;
+  alt: string;
+  pos: {
+    top: number;
+    left: number;
+    width: number;
+  };
+  slug: string;
+};
+
 export type MissingDiamondState = {
   epoch: number;
   speechBubbles: MissingDiamondSpeechBubble[];
   locations: MissingDiamondEntity[];
   witnesses: MissingDiamondEntity[];
+  interactions?: MissingDiamondInteractionEntity[];
 };

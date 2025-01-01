@@ -26,7 +26,11 @@ import cork from "./assets/cork.png";
 import map from "./assets/map.png";
 import skyline from "./assets/skyline.png";
 import title from "./assets/title.png";
-import { type MissingDiamondEntity, type MissingDiamondState } from "./types";
+import {
+  type MissingDiamondInteractionEntity,
+  type MissingDiamondEntity,
+  type MissingDiamondState,
+} from "./types";
 
 const MAP_NATIVE_WIDTH = 2166;
 const MAP_NATIVE_HEIGHT = 2025;
@@ -388,6 +392,76 @@ const MissingDiamondLocationImage = ({
   );
 };
 
+const MissingDiamondInteraction = ({
+  interaction,
+}: {
+  interaction: MissingDiamondInteractionEntity;
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    placement: "top",
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    middleware: [offset(5), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const hover = useHover(context, { move: false, handleClose: safePolygon() });
+  const focus = useFocus(context);
+  const role = useRole(context, { role: "label" });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    role,
+  ]);
+
+  const containerStyle: CSSProperties = {
+    top: `${(interaction.pos.top / MAP_NATIVE_HEIGHT) * 100}%`,
+    left: `${(interaction.pos.left / MAP_NATIVE_WIDTH) * 100}%`,
+    width: `${(interaction.pos.width / MAP_NATIVE_WIDTH) * 100}%`,
+  };
+  const imageStyle: CSSProperties = {
+    width: "100%",
+    userSelect: "none",
+  };
+
+  const image = (
+    <>
+      <img
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        src={interaction.asset}
+        alt={interaction.alt}
+        style={imageStyle}
+      />
+    </>
+  );
+  const tooltip = showTooltip && (
+    <Tooltip
+      ref={refs.setFloating}
+      style={floatingStyles}
+      {...getFloatingProps()}
+    >
+      <span>{interaction.alt}</span>
+    </Tooltip>
+  );
+
+  return (
+    <>
+      <EntityContainer
+        as="a"
+        style={containerStyle}
+        href={`/interactions/${interaction.slug}`}
+      >
+        {image}
+      </EntityContainer>
+      {tooltip}
+    </>
+  );
+};
+
 const MissingDiamondWitness = ({
   witness,
   currency,
@@ -474,6 +548,12 @@ const MissingDiamondBody = ({
               key={witness.alt}
               witness={witness}
               currency={teamState.currency}
+            />
+          ))}
+          {state.interactions?.map((interaction) => (
+            <MissingDiamondInteraction
+              key={interaction.slug}
+              interaction={interaction}
             />
           ))}
         </MissingDiamondMapContainer>

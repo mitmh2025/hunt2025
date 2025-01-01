@@ -1,5 +1,6 @@
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import MissingDiamondBody from "./MissingDiamondBody";
 import airport from "./assets/airport.svg";
@@ -64,6 +65,7 @@ import hotelClerkUnlocked from "./assets/hotel-clerk-unlocked.png";
 import housekeeperLocked from "./assets/housekeeper-locked.png";
 import housekeeperSolved from "./assets/housekeeper-solved.png";
 import housekeeperUnlocked from "./assets/housekeeper-unlocked.png";
+import interaction from "./assets/interaction.svg";
 import jewelryStoreLocked from "./assets/jewelry-store-locked.svg";
 import jewelryStoreSolved from "./assets/jewelry-store-solved.svg";
 import jewelryStoreUnlocked from "./assets/jewelry-store-unlocked.svg";
@@ -111,9 +113,10 @@ import {
   type MissingDiamondState,
   type MissingDiamondSpeechBubble,
   type MissingDiamondEntity,
+  type MissingDiamondInteractionEntity,
 } from "./types";
 
-const SLOTS = [
+const MISSING_DIAMOND_SLOTS = [
   "mdm01",
   "mdm02",
   "mdm03",
@@ -149,15 +152,15 @@ const SLOTS = [
   "mdp28",
 ] as const;
 
-const INTERACTIONS = [
+const MISSING_DIAMOND_INTERACTIONS = [
   "interview_at_the_boardwalk",
   "interview_at_the_jewelry_store",
   "interview_at_the_casino",
   "interview_at_the_art_gallery",
 ] as const;
 
-type MissingDiamondSlot = (typeof SLOTS)[number];
-type MissingDiamondInteraction = (typeof INTERACTIONS)[number];
+type MissingDiamondSlot = (typeof MISSING_DIAMOND_SLOTS)[number];
+type MissingDiamondInteraction = (typeof MISSING_DIAMOND_INTERACTIONS)[number];
 
 function lookupSlug(
   slot: string,
@@ -884,6 +887,44 @@ const slotToWitness: Partial<Record<MissingDiamondSlot, WitnessName>> = {
   mdp28: "vintner",
 };
 
+const interactions: Record<
+  string,
+  Omit<MissingDiamondInteractionEntity, "slug" | "alt">
+> = {
+  interview_at_the_boardwalk: {
+    asset: interaction,
+    pos: {
+      left: 1732,
+      top: 1693,
+      width: 80,
+    },
+  },
+  interview_at_the_jewelry_store: {
+    asset: interaction,
+    pos: {
+      left: 1406,
+      top: 468,
+      width: 80,
+    },
+  },
+  interview_at_the_casino: {
+    asset: interaction,
+    pos: {
+      left: 473,
+      top: 777,
+      width: 80,
+    },
+  },
+  interview_at_the_art_gallery: {
+    asset: interaction,
+    pos: {
+      left: 321,
+      top: 1277,
+      width: 80,
+    },
+  },
+};
+
 function genSpeechBubbles(
   teamState: TeamHuntState,
 ): MissingDiamondSpeechBubble[] {
@@ -1027,13 +1068,44 @@ function genWitnesses(teamState: TeamHuntState): MissingDiamondEntity[] {
   });
 }
 
+function genInteractions(
+  teamState: TeamHuntState,
+): MissingDiamondInteractionEntity[] {
+  const round = teamState.rounds.the_missing_diamond;
+  if (!round) return [];
+
+  return Object.entries(interactions).flatMap(([interactionId, spec]) => {
+    const interactionState = round.interactions?.[interactionId]?.state;
+    if (!interactionState) return [];
+
+    const interaction =
+      INTERACTIONS[interactionId as MissingDiamondInteraction];
+
+    return [
+      {
+        alt: interaction.title,
+        pos: spec.pos,
+        asset: spec.asset,
+        slug: interactionId,
+      },
+    ];
+  });
+}
+
 export function missingDiamondState(
   teamState: TeamHuntState,
 ): MissingDiamondState {
   const speechBubbles = genSpeechBubbles(teamState);
   const locations = genLocations(teamState);
   const witnesses = genWitnesses(teamState);
-  return { epoch: teamState.epoch, speechBubbles, locations, witnesses };
+  const interactions = genInteractions(teamState);
+  return {
+    epoch: teamState.epoch,
+    speechBubbles,
+    locations,
+    witnesses,
+    ...(interactions.length > 0 ? { interactions } : {}),
+  };
 }
 
 const MissingDiamondRoundPage = ({
