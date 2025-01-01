@@ -87,7 +87,7 @@ const Solution = () => {
             </tr>
             <tr>
               <TableCell>DO YOU BELIEVE IN MAGIC</TableCell>
-              <TableCell>THE LOVIN’ SPOON</TableCell>
+              <TableCell>THE LOVIN’ SPOONFUL</TableCell>
               <TableCell>Free</TableCell>
               <TableCell>F</TableCell>
             </tr>
@@ -99,7 +99,7 @@ const Solution = () => {
             </tr>
             <tr>
               <TableCell>HOOK</TableCell>
-              <TableCell>BLUE’S TRAVELER</TableCell>
+              <TableCell>BLUES TRAVELER</TableCell>
               <TableCell>Inflection</TableCell>
               <TableCell>I</TableCell>
             </tr>
