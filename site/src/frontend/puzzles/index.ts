@@ -130,6 +130,7 @@ import TheMark from "./unique-australia";
 import AnArgument from "./unsung-bomb";
 import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
+import CrossDashWord from "./valuable-alps";
 import YourePlayingItWrong from "./vast-fire";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
@@ -328,6 +329,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
+  cross_dash_word: CrossDashWord,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
