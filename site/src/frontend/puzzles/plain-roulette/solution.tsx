@@ -57,8 +57,8 @@ const Solution = (): JSX.Element => {
       <p>
         This puzzle uses three increasingly complicated knitting colorwork
         methods to create black and white encodings in 1, then 2, then 3
-        dimensions. The name of the puzzle is a hint to this progression -
-        weirDo threaDeD DooDaDs.
+        dimensions. The name of the puzzle is a hint to this progression—weirDo
+        threaDeD DooDaDs.
       </p>
       <h3>Doodad 1 Solution</h3>
       <li>
@@ -90,7 +90,7 @@ const Solution = (): JSX.Element => {
       <LinkedImage src={barcode} alt="A 1D barcode" />
       <p>
         This is a Code 128 barcode, which scans with any barcode reader
-        (including smartphone app barcode readers) to give a url:
+        (including smartphone app barcode readers) to give a url:{" "}
         <a href="/i_kid_ewe_knot" target="_blank" rel="noreferrer">
           https://two-pi-noir.agency/i_kid_ewe_knot
         </a>
@@ -135,7 +135,7 @@ const Solution = (): JSX.Element => {
       </p>
       <SizedImage src={qrCode} alt="A 2D barcode, or QR code" />
       <p>
-        Which is, of course, a QR code. Scan it, and you get:
+        Which is, of course, a QR code. Scan it, and you get:{" "}
         <a href="/stitchy_situation">
           https://two-pi-noir.agency/stitchy_situation
         </a>{" "}
