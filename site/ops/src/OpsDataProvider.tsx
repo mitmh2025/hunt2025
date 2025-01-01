@@ -113,7 +113,7 @@ export default function OpsDataProvider({
 }) {
   const [data, setData] = useState<OpsData>(INITIAL_STATE);
 
-  const [cookies] = useCookies(["mitmh2025_api_auth"]);
+  const [cookies, _, removeCookie] = useCookies(["mitmh2025_api_auth"]);
 
   useEffect(() => {
     // TODO: Switch to loading data from the service worker + keeping
@@ -139,6 +139,10 @@ export default function OpsDataProvider({
         frontendClient.getFullActivityLog(),
         adminClient.getPuzzleMetadata(),
       ]);
+
+      if (registrationLog.status === 401) {
+        removeCookie("mitmh2025_api_auth")
+      }
 
       if (registrationLog.status !== 200) {
         console.error(registrationLog);
