@@ -65,9 +65,11 @@ export const CopyableCornMaze = ({
   const scarecrowIndices = new Set<number>();
   const holeIndices = new Set<number>();
   const labels: string[][] = [];
+  const labelsForEmptyCopy: string[][] = [];
   const fill: string[][] = [];
   for (const [i, row] of grid.entries()) {
     const labelsRow: string[] = [];
+    const labelsForEmptyCopyRow: string[] = [];
     const fillRow: string[] = [];
     for (const [j, char] of row.entries()) {
       const index = i * cornMaze.width + j;
@@ -77,30 +79,36 @@ export const CopyableCornMaze = ({
       }
       if (char === "x") {
         wallIndices.add(index);
-        labelsRow.push("");
-        fillRow.push(
+        const label =
           !puzzleMode && ["^", ">", "v", "<"].includes(cellFill)
             ? `e${cellFill}`
-            : "",
-        );
+            : "";
+        labelsRow.push(label);
+        labelsForEmptyCopyRow.push(label);
+        fillRow.push("");
       } else if (char === "s") {
         scarecrowIndices.add(index);
-        labelsRow.push("");
-        fillRow.push("sc");
+        labelsRow.push("sc");
+        labelsForEmptyCopyRow.push("sc");
+        fillRow.push("");
       } else if (char === "o") {
         holeIndices.add(index);
-        labelsRow.push("");
-        fillRow.push(puzzleMode ? "o" : cellFill);
+        labelsRow.push(puzzleMode ? "o" : "");
+        labelsForEmptyCopyRow.push(puzzleMode ? "o" : "");
+        fillRow.push(puzzleMode ? "" : cellFill);
       } else if (char === "#") {
         labelsRow.push(`${counter}`);
+        labelsForEmptyCopyRow.push("");
         fillRow.push(cellFill);
         counter++;
       } else {
         labelsRow.push("");
+        labelsForEmptyCopyRow.push("");
         fillRow.push(cellFill);
       }
     }
     labels.push(labelsRow);
+    labelsForEmptyCopy.push(labelsForEmptyCopyRow);
     fill.push(fillRow);
   }
   return (
@@ -108,6 +116,7 @@ export const CopyableCornMaze = ({
       className={puzzleMode ? `${COPY_ONLY_CLASS} ${className}` : className}
       labels={labels}
       fill={fill}
+      labelsForEmptyCopy={labelsForEmptyCopy}
       getAdditionalCellStyles={({ row, column }) => {
         const index = row * cornMaze.width + column;
         const styles: CSSProperties = {};
@@ -126,6 +135,7 @@ export const CopyableCornMaze = ({
         } else if (cornMaze.goldIndices.has(index)) {
           styles.backgroundColor = backgroundColor ?? "#f1c232";
         } else if (wallIndices.has(index)) {
+          styles.color = "white";
           if (
             row === 0 ||
             column === 0 ||
@@ -137,27 +147,18 @@ export const CopyableCornMaze = ({
             styles.backgroundColor = backgroundColor ?? "#4f742d";
           }
         } else if (scarecrowIndices.has(index)) {
+          styles.color = "white";
           styles.backgroundColor = "black";
         } else if (holeIndices.has(index)) {
-          if (!puzzleMode) {
+          if (puzzleMode) {
+            styles.color = "red";
+          } else {
             styles.border = "3px solid black";
           }
           styles.backgroundColor =
             backgroundColor ?? (puzzleMode ? "#b6d7a8" : "#cccccc");
         } else if (backgroundColor) {
           styles.backgroundColor = backgroundColor;
-        }
-        return styles;
-      }}
-      getAdditionalCellFillStyles={({ row, column }) => {
-        const index = row * cornMaze.width + column;
-        const styles: CSSProperties = {};
-        if (scarecrowIndices.has(index)) {
-          styles.color = "white";
-        } else if (puzzleMode && holeIndices.has(index)) {
-          styles.color = "red";
-        } else if (wallIndices.has(index)) {
-          styles.color = "white";
         }
         return styles;
       }}
