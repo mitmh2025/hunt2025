@@ -412,7 +412,7 @@ export const GRID_2_ACROSS = [
   [55, "Them user, perhaps"],
   [58, "Reduce your interest rate, for short"],
   [59, "Like a spoon, but bigger"],
-  [60, "Initialism meaning “we'll tell you later”"],
+  [60, "Initialism meaning “we’ll tell you later”"],
   [61, "La Femme ___"],
   [62, "Good Night, ___"],
   [64, "Happily ___ after"],
