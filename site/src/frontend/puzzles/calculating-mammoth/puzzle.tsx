@@ -4,7 +4,7 @@ import {
   COPY_ONLY_CLASS,
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
-import Crossword from "../../components/Crossword";
+import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
 import LinkedImage from "../../components/LinkedImage";
 import puzzle from "./assets/puzzle.png";
 import {
@@ -52,6 +52,7 @@ const Puzzle = (): JSX.Element => {
       <Crossword
         className={COPY_ONLY_CLASS}
         labels={labels}
+        labelsForEmptyCopy={filterLabelsToStructure(labels)}
         rowHeaders={HEADERS}
         rowFooters={FOOTERS}
         getAdditionalCellStyles={({ row, column }) => {

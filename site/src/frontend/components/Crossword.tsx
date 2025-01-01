@@ -7,7 +7,8 @@ import { COPY_ONLY_CLASS } from "./CopyToClipboard";
  * set of absolute indices corresponding to those coordinates.
  * @param coordinates A list of row,column coordinates.
  * @param width The width of the grid on which to plot the coordinates.
- * @returns
+ * @returns The set of absolute indices (i.e. 0,0 = 0, 0,1 = 1, 1,0=width)
+ *          represented by the coordinates.
  */
 export function reduceCoordinatesToIndices(
   coordinates: { row: number; col: number }[],
@@ -17,6 +18,16 @@ export function reduceCoordinatesToIndices(
     acc.add(coords.row * width + coords.col);
     return acc;
   }, new Set<number>());
+}
+
+/**
+ * Given a labels array, turn everything but "." (black square) into empty string.
+ * Intended for use with labelsForEmptyCopy.
+ * @param labels The labels to transform
+ * @returns The given labels, stripped of all but "."
+ */
+export function filterLabelsToStructure(labels: string[][]): string[][] {
+  return labels.map((row) => row.map((char) => (char === "." ? char : "")));
 }
 
 const Grid = styled.table`
