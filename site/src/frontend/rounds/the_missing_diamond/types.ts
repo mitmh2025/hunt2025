@@ -22,6 +22,10 @@ export type MissingDiamondEntity = {
     state: "unlockable" | "unlocked" | "solved";
     answer?: string;
   };
+};
+
+export type MissingDiamondWitness = MissingDiamondEntity & {
+  puzzle: NonNullable<MissingDiamondEntity["puzzle"]>;
   statement?: string;
 };
 
@@ -40,6 +44,6 @@ export type MissingDiamondState = {
   epoch: number;
   speechBubbles: MissingDiamondSpeechBubble[];
   locations: MissingDiamondEntity[];
-  witnesses: MissingDiamondEntity[];
+  witnesses: MissingDiamondWitness[];
   interactions?: MissingDiamondInteractionEntity[];
 };

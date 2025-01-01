@@ -114,6 +114,7 @@ import {
   type MissingDiamondSpeechBubble,
   type MissingDiamondEntity,
   type MissingDiamondInteractionEntity,
+  type MissingDiamondWitness,
 } from "./types";
 
 const MISSING_DIAMOND_SLOTS = [
@@ -432,7 +433,7 @@ type WitnessName =
   | "vintner";
 const witnesses: Record<
   WitnessName,
-  Omit<MissingDiamondEntity, "asset"> & {
+  Omit<MissingDiamondWitness, "asset" | "puzzle"> & {
     asset: { unlockable: string; unlocked: string; solved: string };
   }
 > = {
@@ -1031,7 +1032,7 @@ function genLocations(teamState: TeamHuntState): MissingDiamondEntity[] {
   return locations;
 }
 
-function genWitnesses(teamState: TeamHuntState): MissingDiamondEntity[] {
+function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
   const round = teamState.rounds.the_missing_diamond;
   if (!round) return [];
 

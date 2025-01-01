@@ -30,6 +30,7 @@ import {
   type MissingDiamondInteractionEntity,
   type MissingDiamondEntity,
   type MissingDiamondState,
+  type MissingDiamondWitness,
 } from "./types";
 
 const MAP_NATIVE_WIDTH = 2166;
@@ -462,11 +463,11 @@ const MissingDiamondInteraction = ({
   );
 };
 
-const MissingDiamondWitness = ({
+const MissingDiamondWitnessImage = ({
   witness,
   currency,
 }: {
-  witness: MissingDiamondEntity;
+  witness: MissingDiamondWitness;
   currency: number;
 }) => {
   const additionalImageStyle: CSSProperties = {
@@ -475,7 +476,7 @@ const MissingDiamondWitness = ({
   };
 
   let iconState;
-  switch (witness.puzzle?.state) {
+  switch (witness.puzzle.state) {
     case "unlockable":
     case "unlocked":
       iconState = witness.puzzle.state;
@@ -498,13 +499,13 @@ const MissingDiamondWitness = ({
         </>
       )}
       <span>
-        <PuzzleIcon lockState={iconState} answer={witness.puzzle?.answer} />{" "}
-        {witness.puzzle?.title ?? witness.alt}
+        <PuzzleIcon lockState={iconState} answer={witness.puzzle.answer} />{" "}
+        {witness.puzzle.title}
       </span>
-      {witness.puzzle?.state !== "solved" && witness.puzzle?.desc && (
+      {witness.puzzle.state !== "solved" && witness.puzzle.desc && (
         <span>{witness.puzzle.desc}</span>
       )}
-      {witness.puzzle?.answer && (
+      {witness.puzzle.answer && (
         <span className="answer">{witness.puzzle.answer}</span>
       )}
     </>
@@ -544,7 +545,7 @@ const MissingDiamondBody = ({
             />
           ))}
           {state.witnesses.map((witness) => (
-            <MissingDiamondWitness
+            <MissingDiamondWitnessImage
               key={witness.alt}
               witness={witness}
               currency={teamState.currency}
