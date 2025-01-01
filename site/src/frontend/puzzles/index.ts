@@ -91,6 +91,7 @@ import ASudoku from "./recent-ship";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import SyntheticTagsonomy from "./rubbery-tooth";
 import DroppingTheBall from "./rundown-spot";
 import MagnifyingGlassIce from "./sandy-atlantis";
 import JustFingBehave from "./scornful-band";
@@ -167,6 +168,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
+  synthetic_tagsonomy: SyntheticTagsonomy,
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
   unreal_islands: UnrealIslands,
