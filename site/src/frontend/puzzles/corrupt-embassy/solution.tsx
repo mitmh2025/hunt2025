@@ -333,7 +333,7 @@ const Solution = (): JSX.Element => {
           <strong>The Balkan Girls, Elena, Romania, 2009</strong>
         </div>
         <div>
-          <i>D117: Transformation: man (woman) to catfish</i>
+          <i>D177: Transformation: man (woman) to catfish</i>
         </div>
       </Answer>
       <Answer>
@@ -384,7 +384,7 @@ const Solution = (): JSX.Element => {
           <strong>My Słowianie, Donatan & Cleo, Poland, 2014</strong>
         </div>
         <div>
-          <i>J223: Choice between desire and duty</i>
+          <i>J233: Choice between desire and duty</i>
         </div>
       </Answer>
       <Answer>
@@ -455,7 +455,9 @@ const Solution = (): JSX.Element => {
       <Answer>
         <div>
           Once upon a time there were{" "}
-          <strong>five tough military men wearing punk dresses</strong>{" "}
+          <strong>
+            five tough military men wearing makeup and garish punk clothes
+          </strong>{" "}
           <i>who were driven insane by</i>{" "}
           <strong>a rocket-wielding autocrat</strong> who <i>kept them awake</i>
           .
@@ -512,7 +514,7 @@ const Solution = (): JSX.Element => {
           <strong>In Corpore Sano, Konstrakta, Serbia, 2022</strong>
         </div>
         <div>
-          <i>41: Captivity in tower</i>
+          <i>R41: Captivity in tower</i>
         </div>
       </Answer>
       <Answer>
