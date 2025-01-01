@@ -428,7 +428,7 @@ export const GRID_2_DOWN = [
   [3, "A game like horseshoes but using circular objects"],
   [4, "Gait faster than a walk"],
   [5, "Númenor locale"],
-  [6, "What you need if your medications aren't OTC"],
+  [6, "What you need if your medications aren’t OTC"],
   [7, "Catalog part"],
   [8, "___ and left no crumbs"],
   [9, "Park Jae-sang"],
