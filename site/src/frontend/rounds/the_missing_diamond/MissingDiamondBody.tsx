@@ -16,9 +16,11 @@ import React, {
   useRef,
   useState,
   type CSSProperties,
+  useEffect,
 } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
 import { PuzzleIcon, PuzzleUnlockModal } from "../../components/PuzzleLink";
 import { deviceMax } from "../../utils/breakpoints";
 import billie from "./assets/billie.png";
@@ -213,6 +215,7 @@ const Tooltip = styled.div`
   color: white;
   z-index: 5;
 
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -220,6 +223,18 @@ const Tooltip = styled.div`
   .answer {
     font-family: "Roboto Mono", monospace;
     font-weight: bold;
+  }
+
+  button.copy {
+    position: absolute;
+    top: 0;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0;
   }
 `;
 
@@ -488,6 +503,76 @@ const MissingDiamondWitnessImage = ({
       iconState = "locked" as const;
       break;
   }
+
+  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+  const copiedMessageTimer = useRef<number | undefined>();
+  useEffect(() => {
+    return () => {
+      const timer = copiedMessageTimer.current;
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+    };
+  }, []);
+
+  const copyContentRef = useRef<HTMLTableElement>(null);
+  const onCopy = useCallback(() => {
+    const selection = window.getSelection();
+    if (!selection) {
+      return;
+    }
+
+    if (copyContentRef.current) {
+      copyContentRef.current.style.display = "table";
+
+      try {
+        const range = document.createRange();
+        range.selectNode(copyContentRef.current);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("copy");
+        selection.removeAllRanges();
+      } finally {
+        copyContentRef.current.style.display = "none";
+      }
+
+      if (copiedMessageTimer.current) {
+        window.clearTimeout(copiedMessageTimer.current);
+      }
+      setShowCopiedMessage(true);
+      copiedMessageTimer.current = window.setTimeout(() => {
+        setShowCopiedMessage(false);
+      }, 3000);
+    }
+  }, []);
+  const copyContent = witness.statement && (
+    <>
+      <button className="copy" onClick={onCopy}>
+        {showCopiedMessage ? "✅" : "📋"}
+      </button>
+
+      <table
+        ref={copyContentRef}
+        style={{
+          display: "none",
+          backgroundColor: "transparent",
+          color: "black",
+        }}
+      >
+        <tbody>
+          <tr>
+            <td>{witness.alt}</td>
+            <td>{witness.statement}</td>
+            <td>{witness.puzzle.title}</td>
+            <td style={{ fontFamily: CLIPBOARD_MONOSPACE_FONT_FAMILY }}>
+              {witness.puzzle.answer}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </>
+  );
+
   const tooltipChildren = (
     <>
       <span>{witness.alt}</span>
@@ -508,6 +593,7 @@ const MissingDiamondWitnessImage = ({
       {witness.puzzle.answer && (
         <span className="answer">{witness.puzzle.answer}</span>
       )}
+      {copyContent}
     </>
   );
 

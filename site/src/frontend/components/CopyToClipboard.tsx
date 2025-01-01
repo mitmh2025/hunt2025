@@ -45,7 +45,8 @@ export const CopyToClipboardContainer = styled.div`
   }
 `;
 
-const MONOSPACE_FONT_FAMILY = '"Roboto Mono", "Cascadia Mono", monospace';
+export const CLIPBOARD_MONOSPACE_FONT_FAMILY =
+  '"Roboto Mono", "Cascadia Mono", monospace';
 
 const StylesToPreserve: string[] = [
   "background-color",
@@ -113,7 +114,7 @@ const cloneForCopy = (root: HTMLElement): HTMLElement => {
     });
 
     if (node.style.fontFamily.includes("monospace")) {
-      node.style.fontFamily = MONOSPACE_FONT_FAMILY;
+      node.style.fontFamily = CLIPBOARD_MONOSPACE_FONT_FAMILY;
     }
   };
 
