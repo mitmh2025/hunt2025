@@ -385,7 +385,12 @@ export const CLUES: {
     },
     { clue: "Kentucky horse race (5)", answer: "DERBY" },
     {
-      clue: "Object sometimes stuck with a WOODEN STICK and then dipped in caramel (5)",
+      clue: (
+        <>
+          Object sometimes stuck with a <SmallCaps>WOODEN STICK</SmallCaps> and
+          then dipped in caramel (5)
+        </>
+      ),
       answer: "APPLE",
       highlight: "#ffff00",
     },
