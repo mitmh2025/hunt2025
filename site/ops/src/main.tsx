@@ -5,9 +5,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
+import DesertedNinjaStub from "./routes/DesertedNinja.tsx";
 import Home from "./routes/Home.tsx";
 import Puzzles from "./routes/Puzzles.tsx";
-import DesertedNinjaStub from "./routes/DesertedNinja.tsx";
 import theme from "./theme.ts";
 
 const router = createBrowserRouter([
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
           },
           {
             path: "deserted-ninja",
-            Component: DesertedNinjaStub
+            Component: DesertedNinjaStub,
           },
         ],
       },

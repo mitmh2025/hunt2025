@@ -25,7 +25,7 @@ const NAVIGATION: Navigation = [
     segment: "deserted-ninja",
     title: "deserted-ninja stub",
     icon: <PuzzleIcon />,
-  }
+  },
 ];
 
 const BRANDING: Branding = {

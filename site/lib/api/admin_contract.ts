@@ -47,7 +47,9 @@ export const DesertedNinjaRegistrationSchema = z.object({
   status: z.string(),
 });
 
-export type DesertedNinjaRegistration = z.infer<typeof DesertedNinjaRegistrationSchema>;
+export type DesertedNinjaRegistration = z.infer<
+  typeof DesertedNinjaRegistrationSchema
+>;
 
 export const adminContract = c.router({
   getTeamState: {
@@ -83,7 +85,7 @@ export const adminContract = c.router({
     responses: {
       200: DesertedNinjaSessionSchema,
     },
-    summary: "Create a deserted-ninja session"
+    summary: "Create a deserted-ninja session",
   },
   saveDesertedNinjaSession: {
     method: "POST",

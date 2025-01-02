@@ -8,11 +8,17 @@ const RowContainer = styled.div`
 const RowTitle = styled.div`
   width: 150px;
 `;
-const SelectButton = styled.button`
-`;
+const SelectButton = styled.button``;
 
-
-function SessionSelectRow({ buttonText, session, setSession }) {
+function SessionSelectRow({
+  buttonText,
+  session,
+  setSession,
+}: {
+  buttonText: string;
+  session: DesertedNinjaSession;
+  setSession: React.Dispatch<React.SetStateAction<DesertedNinjaSession | null>>;
+}) {
   return (
     <>
       <RowContainer>
@@ -29,24 +35,41 @@ function SessionSelectRow({ buttonText, session, setSession }) {
   );
 }
 
-export function SessionSelect({ buttonText, sessions, session, setSession }) {
+export function SessionSelect({
+  buttonText,
+  sessions,
+  session,
+  setSession,
+}: {
+  buttonText: string;
+  sessions: DesertedNinjaSession[];
+  session: DesertedNinjaSession | null;
+  setSession: React.Dispatch<React.SetStateAction<DesertedNinjaSession | null>>;
+}) {
   if (session === null) {
     return (
       <>
         {sessions.map((session) => (
-          <SessionSelectRow session={session} setSession={setSession} key={session.id} buttonText={buttonText} />
+          <SessionSelectRow
+            session={session}
+            setSession={setSession}
+            key={session.id}
+            buttonText={buttonText}
+          />
         ))}
       </>
     );
-  }
-  else {
+  } else {
     return (
       <>
-        <button onClick={() => setSession(null)}>
+        <button
+          onClick={() => {
+            setSession(null);
+          }}
+        >
           Back
         </button>
       </>
     );
   }
 }
-

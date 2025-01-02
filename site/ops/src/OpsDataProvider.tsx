@@ -20,7 +20,7 @@ export type OpsData = {
   registrationLog: TeamRegistrationLogEntry[];
   activityLog: InternalActivityLogEntry[];
   teams: TeamData[];
-  adminClient: AuthClient;
+  adminClient?: AuthClient;
 };
 
 const INITIAL_STATE: OpsData = {
@@ -29,7 +29,6 @@ const INITIAL_STATE: OpsData = {
   activityLog: [],
   teams: [],
   puzzleMetadata: {},
-  adminClient: {},
 };
 
 export const OpsDataContext = createContext<OpsData>(INITIAL_STATE);

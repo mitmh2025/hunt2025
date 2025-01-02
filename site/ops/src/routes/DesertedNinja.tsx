@@ -1,22 +1,27 @@
-import { useEffect, useState } from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { useOpsData, type OpsData } from "../OpsDataProvider";
-import { retrieveDesertedNinjaData } from "../opsdata/desertedNinja.ts";
+import { useEffect, useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import {
+  //  type DesertedNinjaAnswer,
+  //  type DesertedNinjaRegistration,
+  type DesertedNinjaSession,
+  type DesertedNinjaQuestion,
+} from "../../../lib/api/admin_contract";
+import { useOpsData } from "../OpsDataProvider";
 import { DesertedNinjaHost } from "../components/DesertedNinjaHost";
 import { DesertedNinjaScheduling } from "../components/DesertedNinjaScheduling";
 import { DesertedNinjaScorekeeper } from "../components/DesertedNinjaScorekeeper";
-import { type DesertedNinjaScore, type DesertedNinjaSession, type DesertedNinjaQuestion } from "../../../lib/api/admin_contract";
-import 'react-tabs/style/react-tabs.css';
+import { retrieveDesertedNinjaData } from "../opsdata/desertedNinja.ts";
+import "react-tabs/style/react-tabs.css";
 
 export default function DesertedNinjaStub() {
-  const [sessions, setSessions] = useState<DesertedNinjaSession[]>( [] );
-  const [questions, setQuestions] = useState<DesertedNinjaQuestion[]>( [] );
+  const [sessions, setSessions] = useState<DesertedNinjaSession[]>([]);
+  const [questions, setQuestions] = useState<DesertedNinjaQuestion[]>([]);
   const opsData = useOpsData();
-  
-  useEffect( () => {
+
+  useEffect(() => {
     retrieveDesertedNinjaData(opsData, setQuestions, setSessions);
-  }, []);
-  
+  }, [opsData]);
+
   return (
     <>
       <Tabs>
@@ -32,7 +37,7 @@ export default function DesertedNinjaStub() {
           <DesertedNinjaHost sessions={sessions} questions={questions} />
         </TabPanel>
         <TabPanel>
-          <DesertedNinjaScorekeeper sessions={sessions} />
+          <DesertedNinjaScorekeeper sessions={sessions} questions={questions} />
         </TabPanel>
       </Tabs>
     </>

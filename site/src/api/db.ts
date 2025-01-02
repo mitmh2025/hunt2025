@@ -8,17 +8,17 @@ import {
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
+import {
+  type DesertedNinjaQuestion,
+  type DesertedNinjaSession,
+  type DesertedNinjaAnswer,
+  //  type DesertedNinjaRegistration,
+} from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
-import {
-  type DesertedNinjaQuestion,
-  type DesertedNinjaSession,
-  type DesertedNinjaAnswer,
-  type DesertedNinjaRegistration,
-} from "../../lib/api/admin_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
 import { type CannedResponseLink } from "../frontend/puzzles/types";
 
@@ -254,7 +254,7 @@ declare module "knex/types/tables" {
     session_id: number;
     team_id: number;
     question_index: number;
-    answer: number;
+    answer: number | null;
   };
 
   type DesertedNinjaRegistrationRow = {
@@ -478,23 +478,22 @@ export async function appendTeamRegistrationLog(
 
 export async function getDesertedNinjaQuestions(
   knex: Knex.Knex,
-) : Promise<DesertedNinjaQuestion[]> {
+): Promise<DesertedNinjaQuestion[]> {
   // TODO: is there a better way to do this?
   // Or should the properties be renamed to not be camelCase?
-  return (await knex("deserted_ninja_questions").select())
-    .map( (obj) => ({
-      id: obj.id,
-      text: obj.text,
-      imageUrl: obj.image_url,
-      answer: obj.answer,
-      scoringMethod: obj.scoring_method,
-    }));
+  return (await knex("deserted_ninja_questions").select()).map((obj) => ({
+    id: obj.id,
+    text: obj.text,
+    imageUrl: obj.image_url,
+    answer: obj.answer,
+    scoringMethod: obj.scoring_method,
+  }));
 }
 
 export async function insertDesertedNinjaQuestions(
   questions: DesertedNinjaQuestion[],
   knex: Knex.Knex,
-) : Promise<DesertedNinjaQuestion[]> {
+): Promise<DesertedNinjaQuestion[]> {
   await knex("deserted_ninja_questions").insert(questions);
   return [];
 }
@@ -504,7 +503,7 @@ export async function getDesertedNinjaSessions(
 ): Promise<DesertedNinjaSession[]> {
   const sessionRows = await knex("deserted_ninja_sessions").select();
 
-  return sessionRows.map( (obj) => ({
+  return sessionRows.map((obj) => ({
     id: obj.id,
     status: obj.status,
     title: obj.title,
@@ -518,22 +517,36 @@ export async function insertDesertedNinjaSession(
   question_ids: string,
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession> {
-  const session = await knex("deserted_ninja_sessions")
-    .returning(['id', 'title', 'status', 'question_ids'])
-    .insert( {
-      status: "not_started",
-      title: title,
-      question_ids: question_ids,
-    });
+  const session = await knex("deserted_ninja_sessions").insert({
+    status: "not_started",
+    title: title,
+    question_ids: question_ids,
+  });
   console.log(session);
-  
-  return {
-    id: session[0].id,
-    title: session[0].title,
-    status: session[0].status,
-    teamIds: [],
-    questionIds: fixArray<number>(session[0].question_ids),
-  };
+
+  if (session.length === 0) {
+    return {
+      id: -1,
+      title: "",
+      status: "",
+      teamIds: [],
+      questionIds: [],
+    };
+  } else {
+    // TODO: why is session of type number[]??
+    return {
+      id: -1,
+      title: "",
+      status: "",
+      teamIds: [],
+      questionIds: [],
+      //      id: session.id,
+      //      title: session[0].title,
+      //      status: session[0].status,
+      //      teamIds: [],
+      //      questionIds: fixArray<number>(session[0].question_ids),
+    };
+  }
 }
 
 export async function updateDesertedNinjaSession(
@@ -541,6 +554,26 @@ export async function updateDesertedNinjaSession(
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession> {
   return await knex("deserted_ninja_sessions")
-    .where('sessionId', session.id)
+    .where("sessionId", session.id)
     .update(session);
+}
+
+export async function insertDesertedNinjaAnswers(
+  answers: DesertedNinjaAnswer[],
+  knex: Knex.Knex,
+): Promise<number> {
+  return (
+    await knex("deserted_ninja_answers")
+      .returning(["id"])
+      .insert(
+        answers.map((ans) => ({
+          session_id: ans.sessionId,
+          team_id: ans.teamId,
+          question_index: ans.questionIndex,
+          answer: ans.answer,
+        })),
+      )
+      .onConflict("id")
+      .merge()
+  ).length;
 }

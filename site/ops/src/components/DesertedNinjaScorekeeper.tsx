@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { styled } from "styled-components";
-import { type DesertedNinjaSession, type DesertedNinjaQuestion } from "../../../lib/api/admin_contract";
+import {
+  type DesertedNinjaSession,
+  type DesertedNinjaQuestion,
+} from "../../../lib/api/admin_contract";
+import { useOpsData } from "../OpsDataProvider";
 import { SessionSelect } from "./DesertedNinjaSessionSelector";
-import { DesertedNinjaPresentation } from "./DesertedNinjaPresentation";
-import { useOpsData, type OpsData } from "../OpsDataProvider";
-
 
 const ScorekeeperTable = styled.table`
   border: 1px solid black;
@@ -18,67 +19,101 @@ const QuestionCell = styled.td`
 `;
 const ACell = styled.td`
   width: 250px;
-text-align: center;
+  text-align: center;
 `;
 const AEntry = styled.input`
   width: 80px;
 `;
 
-function AnswerCell( { sessionId, questionId } ) {
+function AnswerCell({
+  sessionId,
+  questionId,
+}: {
+  sessionId: number;
+  questionId: number;
+}) {
   const [editing, setEditing] = useState<boolean>(false);
 
   if (editing) {
     return (
       <ACell>
-        <div style={{display:'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
           <AEntry type="text" defaultValue="" />
-          <button onClick={() => setEditing(false)}>Save</button>
+          <button
+            onClick={() => {
+              setEditing(false);
+            }}
+          >
+            Save {sessionId} {questionId}
+          </button>
         </div>
       </ACell>
     );
-  }
-  else {
+  } else {
     return (
       <ACell>
-        <div style={{display:'flex', alignItems: 'center', justifyContent: 'space-evenly'}}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
           <p>answer</p>
-          <button onClick={() => setEditing(true)}>Edit</button>
+          <button
+            onClick={() => {
+              setEditing(true);
+            }}
+          >
+            Edit {sessionId} {questionId}
+          </button>
         </div>
       </ACell>
     );
   }
-  
 }
 
-function ScorekeeperPanel(
-  { session, question } : { session: DesertedNinjaSession, questions: DesertedNinjaQuestion[] }
-) {
+function ScorekeeperPanel({
+  session,
+  questions,
+}: {
+  session: DesertedNinjaSession | null;
+  questions: DesertedNinjaQuestion[];
+}) {
+  const opsData = useOpsData();
 
   if (session === null) {
     return <p>Please select a session to score.</p>;
   }
-  
-  const opsData = useOpsData();
-  const heading = session.teamIds.map( (teamId) =>
+
+  const heading = session.teamIds.map((teamId) => (
     <th key={teamId}>
-      {
-        opsData.teams.find( (teamData) => teamId == teamData.teamId ).teamId
-      }
+      {opsData.teams.find((teamData) => teamId === teamData.teamId)?.teamId}
     </th>
-  );
-  const body = session.questionIds.map( (questionId, idx) => {
+  ));
+  const body = session.questionIds.map((questionId, idx) => {
     return (
       <ScoreRow key={idx}>
-        <QuestionCell>{idx + 1}</QuestionCell>
-        {
-          session.teamIds.map( (teamId) =>
-            <AnswerCell key={idx + "_" + teamId} questionId={questionId} sessionId={session.id} />
-          )
-        }
+        <QuestionCell>
+          {idx + 1} / {questions.length}
+        </QuestionCell>
+        {session.teamIds.map((teamId) => (
+          <AnswerCell
+            key={idx.toString() + "_" + teamId.toString()}
+            questionId={questionId}
+            sessionId={session.id}
+          />
+        ))}
       </ScoreRow>
     );
   });
-  
+
   return (
     <ScorekeeperTable>
       <thead>
@@ -87,24 +122,30 @@ function ScorekeeperPanel(
           {heading}
         </tr>
       </thead>
-      <tbody>
-        {body}
-      </tbody>
+      <tbody>{body}</tbody>
     </ScorekeeperTable>
   );
 }
 
+export function DesertedNinjaScorekeeper({
+  sessions,
+  questions,
+}: {
+  sessions: DesertedNinjaSession[];
+  questions: DesertedNinjaQuestion[];
+}) {
+  const [session, setSession] = useState<DesertedNinjaSession | null>(null);
 
-export function DesertedNinjaScorekeeper (
-  { sessions, questions } : { sessions: DesertedNinjaSession[], questions: DesertedNinjaQuestion[] },
-) {
-  let [session, setSession] = useState<DesertedNinjaSession>(null);
-  
   return (
     <>
       <h2>Scorekeeper mode</h2>
-      <SessionSelect sessions={sessions} session={session} setSession={setSession} buttonText="Score this session" />
-      <ScorekeeperPanel session={session} />
+      <SessionSelect
+        sessions={sessions}
+        session={session}
+        setSession={setSession}
+        buttonText="Score this session"
+      />
+      <ScorekeeperPanel session={session} questions={questions} />
     </>
   );
 }

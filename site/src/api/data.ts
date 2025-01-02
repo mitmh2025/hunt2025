@@ -3,6 +3,12 @@ import {
   type InsertTeamRegistrationLogEntry,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
+import {
+  type DesertedNinjaQuestion,
+  type DesertedNinjaSession,
+  type DesertedNinjaAnswer,
+  //  type DesertedNinjaRegistration,
+} from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
   type DehydratedTeamRegistrationLogEntry,
@@ -10,12 +16,6 @@ import {
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
-import {
-  type DesertedNinjaQuestion,
-  type DesertedNinjaSession,
-  type DesertedNinjaAnswer,
-  type DesertedNinjaRegistration,
-} from "../../lib/api/admin_contract";
 import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
@@ -28,6 +28,7 @@ import {
   getDesertedNinjaQuestions as dbGetDesertedNinjaQuestions,
   getDesertedNinjaSessions as dbGetDesertedNinjaSessions,
   insertDesertedNinjaSession as dbInsertDesertedNinjaSession,
+  insertDesertedNinjaAnswers as dbInsertDesertedNinjaAnswers,
 } from "./db";
 import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
 import {
@@ -519,7 +520,7 @@ export async function registerTeam(
 
 export async function getDesertedNinjaQuestions(
   knex: Knex.Knex,
-) : Promise<DesertedNinjaQuestion[]> {
+): Promise<DesertedNinjaQuestion[]> {
   return dbGetDesertedNinjaQuestions(knex);
 }
 
@@ -527,19 +528,19 @@ export async function createDesertedNinjaSession(
   title: string,
   questionIds: number[],
   knex: Knex.Knex,
-) : Promise<DesertedNinjaSession> {
+): Promise<DesertedNinjaSession> {
   return dbInsertDesertedNinjaSession(title, questionIds.toString(), knex);
 }
 
 export async function getDesertedNinjaSessions(
   knex: Knex.Knex,
-) : Promise<DesertedNinjaSession[]> {
+): Promise<DesertedNinjaSession[]> {
   return dbGetDesertedNinjaSessions(knex);
 }
 
 export async function saveDesertedNinjaAnswers(
   answers: DesertedNinjaAnswer[],
   knex: Knex.Knex,
-) : Promise<number> {
-  return 0;
+): Promise<number> {
+  return dbInsertDesertedNinjaAnswers(answers, knex);
 }

@@ -1,90 +1,85 @@
-import { useRef, useEffect, useState } from 'react';
-import { useInterval } from 'usehooks-ts';
-import Reveal from 'reveal.js';
+import { useRef, useEffect, useReducer } from "react";
+import Reveal from "reveal.js";
 import { styled } from "styled-components";
-import { type DesertedNinjaQuestion, type DesertedNinjaSession } from "../opsdata/types.ts";
-import 'reveal.js/dist/reveal.css';
+import { useInterval } from "usehooks-ts";
+import {
+  type DesertedNinjaQuestion,
+  type DesertedNinjaSession,
+} from "../../../lib/api/admin_contract";
+import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";
 
-type CountdownTimer = {
-  timeLeft: number,
-  running: boolean
+type TimerData = {
+  timeLeft: number;
+  running: boolean;
+};
+type TimerAction = {
+  type: string;
 };
 
 const RevealBox = styled.div`
-border: 1px solid;
-height: 500px;
-`
+  border: 1px solid;
+  height: 500px;
+`;
 
-function RevealContainer({ children, timer, setTimer, session }) {
+function RevealContainer({
+  children,
+  updateTimer,
+  session,
+}: {
+  children: React.ReactNode;
+  updateTimer: React.Dispatch<
+    React.ReducerAction<React.Reducer<TimerData, TimerAction>>
+  >;
+  session: DesertedNinjaSession | null;
+}) {
   const deckRef = useRef<Reveal.Api | null>(null);
-  const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (deckRef.current === null) {
       deckRef.current = new Reveal({
         embedded: true,
         progress: false,
-        jumpToSlide: false,
+        //        jumpToSlide: false,
         overview: false,
         controls: false,
-        keyboardCondition: 'focused',
-        keyboard: {
-          82: () => {
-            setTimer({
-              timeLeft: 45,
-              running: false,
-            });
-          },
-          84: () => {
-            if (timer.timeLeft > 0) {
-              setTimer({
-                timeLeft: timer.timeLeft,
-                running: true,
-              });
-            }
-          },
-        },
+        keyboardCondition: "focused",
       });
-      deckRef.current.initialize();
 
-      return () => {
-        if (deckRef.current.isReady()) {
-          deckRef.current.destroy();
-        }
-      };
+      deckRef.current.initialize().then(
+        () => {
+          deckRef.current?.addKeyBinding(
+            { keyCode: 82, key: "R", description: "Reset timer" },
+            () => {
+              updateTimer({ type: "reset" });
+            },
+          );
+          deckRef.current?.addKeyBinding(
+            { keyCode: 84, key: "T", description: "Start timer" },
+            () => {
+              updateTimer({ type: "start" });
+            },
+          );
+        },
+        () => {
+          return null;
+        },
+      );
     }
-  }, []);
 
-  useEffect(() => {
-    if (deckRef.current !== null && deckRef.current.isReady()) {
+    if (deckRef.current.isReady()) {
       deckRef.current.sync();
       deckRef.current.slide(0);
     }
-  }, [session]);
+  }, [session, updateTimer]);
 
-  useInterval( () => {
-    if (timer.running) {
-      if (timer.timeLeft <= 1) {
-        setTimer({
-          timeLeft: 0,
-          running: false,
-        });
-      }
-      else {
-        setTimer({
-          timeLeft: timer.timeLeft - 1,
-          running: true,
-        });
-      }
-    }
+  useInterval(() => {
+    updateTimer({ type: "tick" });
   }, 1000);
-  
+
   return (
     <RevealBox className="reveal">
-      <div className="slides">
-        {children}
-      </div>
+      <div className="slides">{children}</div>
     </RevealBox>
   );
 }
@@ -93,25 +88,52 @@ const TimerDiv = styled.div`
   font-size: 200%;
 `;
 
-function CountdownTimer( { timer } ) {
+function CountdownTimer({ timer }: { timer: TimerData }) {
   return (
-    <TimerDiv className="fragment" style={ {color: (timer.timeLeft == 0 ? "red" : (timer.timeLeft < 15 ? "yellow" : "white")) } }>
-      0:{timer.timeLeft.toString().padStart(2, '0')}
+    <TimerDiv
+      className="fragment"
+      style={{
+        color:
+          timer.timeLeft === 0
+            ? "red"
+            : timer.timeLeft < 15
+              ? "yellow"
+              : "white",
+      }}
+    >
+      0:{timer.timeLeft.toString().padStart(2, "0")}
     </TimerDiv>
   );
 }
 
 const SlideH1 = styled.h1`
   text-transform: none !important;
-`
+`;
+
+const ErrorSlide = (
+  <section>
+    <p>Something&rsquo;s gone wrong here</p>
+  </section>
+);
 
 const RulesSlide = (
   <section>
     <SlideH1>The Rules</SlideH1>
-    <p className="fragment">I'll show a question on the screen and read it twice.</p>
-    <p className="fragment">Once I'm done reading, your team will have 45 seconds to come up with your best estimate.</p>
-    <p className="fragment">When time is called, hold up your whiteboard so the scorekeeper can record your answer.</p>
-    <p className="fragment">Please don't use your devices!  You'll probably get plenty of screen time this weekend anyhow.</p>
+    <p className="fragment">
+      I&rsquo;ll show a question on the screen and read it twice.
+    </p>
+    <p className="fragment">
+      Once I&rsquo;m done reading, your team will have 45 seconds to come up
+      with your best estimate.
+    </p>
+    <p className="fragment">
+      When time is called, hold up your whiteboard so the scorekeeper can record
+      your answer.
+    </p>
+    <p className="fragment">
+      Please don&rsquo;t use your devices! You&rsquo;ll probably get plenty of
+      screen time this weekend anyhow.
+    </p>
   </section>
 );
 
@@ -119,26 +141,40 @@ const GeoguessrRulesSlide = (
   <section key="geoguessr">
     <SlideH1>Rule Update</SlideH1>
     <p className="fragment">This next question is a bit different.</p>
-    <p className="fragment">You'll be receiving laminated maps of campus.</p>
-    <p className="fragment">I'll show a (blurry) picture of a location on campus, and you will have 45 seconds to figure out where the picture was taken from.</p>
-    <p className="fragment">Mark that location with an X or a dot.  When time is up, hold it up so the scorekeeper can collect them.</p>
+    <p className="fragment">
+      You&rsquo;ll be receiving laminated maps of campus.
+    </p>
+    <p className="fragment">
+      I&rsquo;ll show a (blurry) picture of a location on campus, and you will
+      have 45 seconds to figure out where the picture was taken from.
+    </p>
+    <p className="fragment">
+      Mark that location with an X or a dot. When time is up, hold it up so the
+      scorekeeper can collect them.
+    </p>
   </section>
 );
 
-function QuestionSlide(
-  { question, questionNumber, timer }:
-  { question: DesertedNinjaQuestion, questionNumber: number }
-) {
+function QuestionSlide({
+  question,
+  questionNumber,
+  timer,
+}: {
+  question: DesertedNinjaQuestion;
+  questionNumber: number;
+  timer: TimerData;
+}) {
   let content = null;
-  if (question.imageUrl === null) { // text question
+  if (question.imageUrl === null) {
+    // text question
     content = (
       <>
         <p className="fragment">{question.text}</p>
         <CountdownTimer timer={timer} />
       </>
     );
-  }
-  else { // geoguessr question
+  } else {
+    // geoguessr question
     content = (
       <>
         <p className="fragment">{question.text}</p>
@@ -147,7 +183,7 @@ function QuestionSlide(
       </>
     );
   }
-  
+
   return (
     <section>
       <SlideH1>Question {questionNumber}</SlideH1>
@@ -156,14 +192,50 @@ function QuestionSlide(
   );
 }
 
-export function DesertedNinjaPresentation(
-  { session, questions }: { session: DesertedNinjaSession, questions: DesertedNinjaQuestions[] }
-) {
+export function DesertedNinjaPresentation({
+  session,
+  questions,
+}: {
+  session: DesertedNinjaSession | null;
+  questions: DesertedNinjaQuestion[];
+}) {
   let contents = null;
-  const [timer, setTimer] = useState<CountdownTimer>({
-    timeLeft: 45,
-    running: false,
-  });
+  const [timer, updateTimer] = useReducer(
+    (t: TimerData, { type }: { type: string }) => {
+      if (type === "reset") {
+        return {
+          timeLeft: 45,
+          running: false,
+        };
+      }
+      if (type === "start") {
+        return {
+          timeLeft: t.timeLeft,
+          running: true,
+        };
+      }
+      if (type === "tick") {
+        if (t.running) {
+          if (t.timeLeft <= 1) {
+            return {
+              timeLeft: 0,
+              running: false,
+            };
+          } else {
+            return {
+              timeLeft: t.timeLeft - 1,
+              running: true,
+            };
+          }
+        }
+      }
+      return t;
+    },
+    {
+      timeLeft: 45,
+      running: false,
+    },
+  );
 
   if (!session) {
     contents = (
@@ -171,24 +243,27 @@ export function DesertedNinjaPresentation(
         <p>Please select a session to present.</p>
       </section>
     );
-  }
-  else {
+  } else {
     let firstGeoguessrIndex = -1;
-    const questionSlides = session.questionIds.map(
-      (questionId, index) => {
-        let question = questions.find( (q) => q.id == questionId );
-        if (firstGeoguessrIndex == -1 && question.imageUrl !== null) {
+    const questionSlides = session.questionIds.map((questionId, index) => {
+      const question = questions.find((q) => q.id === questionId);
+      if (question) {
+        if (firstGeoguessrIndex === -1 && question.imageUrl !== null) {
           firstGeoguessrIndex = index;
         }
-        return <QuestionSlide
-          question={question}
-          questionNumber={index + 1}
-          timer={timer}
-          key={questionId}
-        />
+        return (
+          <QuestionSlide
+            question={question}
+            questionNumber={index + 1}
+            timer={timer}
+            key={questionId}
+          />
+        );
+      } else {
+        return ErrorSlide;
       }
-    );
-    
+    });
+
     contents = (
       <>
         <section>
@@ -200,9 +275,9 @@ export function DesertedNinjaPresentation(
       </>
     );
   }
-  
+
   return (
-    <RevealContainer className="reveal" timer={timer} setTimer={setTimer} session={session}>
+    <RevealContainer updateTimer={updateTimer} session={session}>
       {contents}
     </RevealContainer>
   );

@@ -23,7 +23,13 @@ import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
-import { adminContract } from "../../lib/api/admin_contract";
+import {
+  adminContract,
+  type DesertedNinjaQuestion,
+  //  type DesertedNinjaSession,
+  //  type DesertedNinjaAnswer,
+  //  type DesertedNinjaRegistration,
+} from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
 import { dataContract } from "../../lib/api/data_contract";
 import {
@@ -31,12 +37,6 @@ import {
   type MutableTeamRegistration,
   frontendContract,
 } from "../../lib/api/frontend_contract";
-import {
-  type DesertedNinjaQuestion,
-  type DesertedNinjaSession,
-  type DesertedNinjaAnswer,
-  type DesertedNinjaRegistration,
-} from "../../lib/api/admin_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
@@ -900,22 +900,25 @@ export function getRouter({
           // * geoguessrs should not be consecutive
 
           // partition the questions
-          let normalQuestions : DesertedNinjaQuestion[] = [];
-          let geoguessrQuestions : DesertedNinjaQuestion[] = [];
-          ( await getDesertedNinjaQuestions(knex) )
-            .forEach( (q) => ( q.imageUrl === null ? normalQuestions : geoguessrQuestions).push(q));
+          const normalQuestions: DesertedNinjaQuestion[] = [];
+          const geoguessrQuestions: DesertedNinjaQuestion[] = [];
+          (await getDesertedNinjaQuestions(knex)).forEach((q) =>
+            (q.imageUrl === null ? normalQuestions : geoguessrQuestions).push(
+              q,
+            ),
+          );
 
-          const ids = [normalQuestions, geoguessrQuestions].map( (arr) =>
-            arr
-              .map( (v) => ({v, sort: Math.random()}) )
-              .sort( (a,b) => a.sort - b.sort )
-              .map( ({ v }) => v.id
-              )
-          ).flat()
-            .map( (v) => ({v, sort: Math.random()}) )
-            .sort( (a,b) => a.sort - b.sort )
-            .map( ({ v }) => v );
-          
+          const ids = [normalQuestions, geoguessrQuestions]
+            .map((arr) =>
+              arr
+                .map((v) => ({ v, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ v }) => v.id),
+            )
+            .flat()
+            .map((v) => ({ v, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ v }) => v);
 
           return Promise.resolve({
             status: 200 as const,
@@ -927,12 +930,14 @@ export function getRouter({
         middleware: [adminAuthMiddleware],
         handler: ({ body }) => {
           // TODO: implement save
-          let responseBody = {
-            id: 3,
+          const responseBody = {
+            id: body.id,
             status: "in_progress",
-            teamIds: [1,2,3],
+            teamIds: [1, 2, 3],
             title: "Friday 4PM",
-            questionIds: [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33],
+            questionIds: [
+              1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33,
+            ],
           };
           return Promise.resolve({
             status: 200 as const,
@@ -944,12 +949,14 @@ export function getRouter({
         middleware: [adminAuthMiddleware],
         handler: ({ body }) => {
           // TODO: do scoring, update team_state logs
-          let responseBody = {
-            id: 12,
+          const responseBody = {
+            id: 120,
             status: "complete",
-            teamIds: [1,2,3],
-            title: "Friday 11PM",
-            questionIds: [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33],
+            teamIds: [1, 2, 3],
+            title: body,
+            questionIds: [
+              1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33,
+            ],
           };
           return Promise.resolve({
             status: 200 as const,
@@ -963,9 +970,17 @@ export function getRouter({
           // TODO: implement creation + saving to DB
           return Promise.resolve({
             status: 200 as const,
-            body: [],
+            body: [
+              {
+                id: 1,
+                text: "what",
+                imageUrl: null,
+                answer: body.length,
+                scoringMethod: "percen",
+              },
+            ],
           });
-        }
+        },
       },
       getDesertedNinjaQuestions: {
         middleware: [adminAuthMiddleware],
@@ -989,7 +1004,7 @@ export function getRouter({
         middleware: [adminAuthMiddleware],
         handler: ({ params: { teamId } }) => {
           // TODO: implement retrieval
-          let body = [
+          const body = [
             {
               sessionId: 1,
               teamId: parseInt(teamId, 10),
@@ -1001,7 +1016,7 @@ export function getRouter({
               teamId: parseInt(teamId, 10),
               questionIndex: 1,
               answer: 3,
-            }
+            },
           ];
           return Promise.resolve({
             status: 200 as const,
@@ -1013,20 +1028,20 @@ export function getRouter({
         middleware: [adminAuthMiddleware],
         handler: () => {
           // TODO: implement db store
-          let body = [
+          const body = [
             {
               sessionId: 1,
               teamId: 4,
               questionIndex: 1,
               answer: 3,
-            }
+            },
           ];
           return Promise.resolve({
             status: 200 as const,
             body: body,
           });
         },
-      }
+      },
     },
     frontend: {
       markTeamGateSatisfied: {

@@ -5,7 +5,8 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "esTIMation dot jpg",
   slug: "estimation_dot_jpg",
-  initial_description: "You will be asked to send 2-4 team members to participate in a quiz show.",
+  initial_description:
+    "You will be asked to send 2-4 team members to participate in a quiz show.",
   answer: "TOSTATETHEOBVIOUS",
   authors: ["Hubert Hwang", "Kevin Hwang"],
   editors: ["Steve Banzaert", "James Douberly", "Robin Deits", "Arcturus Wang"],
@@ -17,10 +18,8 @@ const puzzle: PuzzleDefinition = {
   solution: {
     component: Solution,
   },
-  hints: [
-  ],
-  canned_responses: [
-  ],
+  hints: [],
+  canned_responses: [],
 };
 
 export default puzzle;
