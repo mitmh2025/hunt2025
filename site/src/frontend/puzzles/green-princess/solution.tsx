@@ -40,12 +40,12 @@ r c h m G m y r L n u r n q b s O l b R
 h a b j v A s l T I M H C O O K K b h O
 j b h y q o N r f b S x v a q g U b c B
 W I L L I A M T M C R A V E N y L r n E
-f r h f r f v k S y r g N g r e L j b R
-e q M A T T T D A M O N i D v t M r a r
-e r x r l g b q r p I v c u B r A e i i
-g u D R E W R H O U S T O N f E N p j u
-k q e m h t v r v x t s H u d r R w x m
-k M I C H A E L R B L O O M B E R G e r
+f r h f r n f v S k y r N g g r L e j R
+b e M A T T T D A M O N q D i v M t r a
+r e r x r l g b q r I p v c B u A r e g
+u r D R E W R H O U S T O N s E N b y y
+b j v a t h u r g k i g H t d c R j m a
+j M I C H A E L R B L O O M B E R G e c
 `.trim();
 const GRID_HIGHLIGHTS_CAPS_ROWS = GRID_HIGHLIGHTS_CAPS_STRING.split("\n");
 const GRID_HIGHLIGHTS_CAPS = GRID_HIGHLIGHTS_CAPS_ROWS.map((row) =>
@@ -101,9 +101,9 @@ const Solution = () => {
       <p>
         These are all MIT commencement speakers (2013-2023). The letters between
         the first and last names in year order spell <Mono>ROT THIRTEEN</Mono>.
-        (Solvers will discover those are not their middle initials.) Solvers
-        must take all the letters of the word search not used by the above words
-        and rot-13 them to get a message.
+        (Solvers will discover those are generally not their middle initials.)
+        Solvers must take all the letters of the word search not used by the
+        above words and rot-13 them to get a message.
       </p>
       <p>The remaining letters are:</p>
       <p>
@@ -130,10 +130,11 @@ const Solution = () => {
       <p>
         This step is intentionally a little unconstrained (there are 2 answers
         in the round starting with L, several with S and A, but only 1 with C) -
-        the constraint is that they must form a 6-letter word per the
-        instructions. Solvers are expected to brute force this step with less
-        than 6 feeders (most likely 2-3), and will probably start realizing that
-        something is weird with the feeders in this round.
+        the constraint is that they must form a 6-letter word which successfully
+        decrypts the given ciphertext per the instructions. Solvers are expected
+        to brute force this step with less than 6 feeders (most likely 2-3), and
+        will probably start realizing that something is weird with the feeders
+        in this round.
       </p>
       <p>
         Solvers then use this word as a key to decrypt{" "}
