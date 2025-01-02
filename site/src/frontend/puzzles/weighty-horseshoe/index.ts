@@ -21,29 +21,28 @@ const puzzle: PuzzleDefinition = {
     {
       order: 0.0,
       description:
-        "Solvers have not identified any Best Picture nominated movies from the love poems.",
+        "Solvers have not identified subject material in the love poems.",
       keywords: ["beginning"],
       nudge:
-        "The background art should give a hint to the items being described in the love poems.",
+        "The background art should give a hint to what is being described in the love poems.",
     },
     {
       order: 10.0,
       description: "Solvers still stuck after hint 0.",
       keywords: ["no progress"],
-      nudge:
-        "Look for movies nominated for the Academy Award for Best Picture.",
+      nudge: "Focus on nominations for the Academy Award for Best Picture.",
     },
     {
       order: 25.0,
       description:
-        "Solvers have not discovered that the poems reference pairs of movies.",
+        "Solvers have not discovered all the items being referenced in the poems.",
       keywords: ["movies"],
       nudge:
-        "Once you’ve found the items being described in the poems, read the poems again to make sure you haven’t missed any.",
+        "Once you’ve started to find the items being described in the poems, read the poems again to make sure you haven’t missed any.",
     },
     {
       order: 50.0,
-      description: "Solvers have not interpreted the dates correctly.",
+      description: "Solvers are unsure how to use the dates.",
       keywords: ["dates"],
       nudge:
         "As you identify the items, the dates should give some confirmation of what to enter in the grid, if interpreted correctly.",
