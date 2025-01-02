@@ -373,7 +373,7 @@ const HUNT: Hunt = {
         { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "deepfrost" },
         { id: "bgp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "reuse_and_recyclability" },
         { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
-        { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 },
+        { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "o_woe_is_me"  },
         { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "where_am_i" },
         { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "bgp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
