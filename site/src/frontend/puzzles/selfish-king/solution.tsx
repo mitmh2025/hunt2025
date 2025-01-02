@@ -334,7 +334,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         <strong>Answer extraction:</strong> Superimposing the central regions of
-        the 10 grids to make an onverview, we get:
+        the 10 grids to make an overview, we get:
       </p>
       <ExtractionWrapper>
         <LinkedImage
