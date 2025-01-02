@@ -37,8 +37,15 @@ const Solution = (): JSX.Element => {
       <p>
         News articles will reveal the real life mystery on the code found in the
         dress and how this puzzle was eventually solved. One key piece of
-        information is that the original solver of the real life mystery used an
-        1887 war department codebook used for transmitting weather reports.
+        information is that the original solver of the real life mystery used{" "}
+        <a
+          href="https://www.google.com/books/edition/United_States_Signal_Service_Weather_Cod/i7YazQEACAAJ"
+          target="_blank"
+          rel="noreferrer"
+        >
+          an 1887 war department codebook used for transmitting weather reports
+        </a>
+        .
       </p>
       <p>
         The second portion of the clue is understanding how to use the
@@ -69,12 +76,11 @@ const Solution = (): JSX.Element => {
           <tr>
             <td>Weather Report, Paris</td>
             <td>
-              In Paris the temperature is currently 54 degrees with a
-              barometricpressure reading of 0.96. At 3pm the dew point was
-              measured to be 74 degrees. It is currently snowing and the wind
-              coming from the northwest with the precipitation measured at 0.02.
-              The Seine is continuing to fall with a gauge reading of 18 and 6
-              tenths.
+              In Paris the temperature is currently 54 degrees with a barometric
+              pressure reading of 0.96. At 3pm the dew point was measured to be
+              74 degrees. It is currently snowing and the wind coming from the
+              northwest with the precipitation measured at 0.02. The Seine is
+              continuing to fall with a gauge reading of 18 and 6 tenths.
             </td>
           </tr>
           <tr>
