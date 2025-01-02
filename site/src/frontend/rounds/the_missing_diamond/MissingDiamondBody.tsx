@@ -53,7 +53,7 @@ const MissingDiamondBackdrop = styled.div`
 const MissingDiamondMapArea = styled.div`
   overflow: hidden; // keep tooltips contained
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 
   @media ${deviceMin.lg} {
@@ -91,9 +91,7 @@ const MissingDiamondTitle = styled.img`
 const MissingDiamondMap = styled.img`
   display: block;
   max-width: 100%;
-  max-height: calc(
-    0.9417 * (100vh - 48px)
-  ); // 48px for navbar, 94.17% to allow for title
+  max-height: calc((1 / 1.0583) * (100vh - 48px));
 `;
 
 const MissingDiamondSkyline = styled.div`
