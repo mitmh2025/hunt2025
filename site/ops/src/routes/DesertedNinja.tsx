@@ -15,11 +15,15 @@ import "react-tabs/style/react-tabs.css";
 
 export default function DesertedNinjaStub() {
   const [sessions, setSessions] = useState<DesertedNinjaSession[]>([]);
-  const [questions, setQuestions] = useState<DesertedNinjaQuestion[]>([]);
+  const [questions, setQuestions] = useState<
+    Map<number, DesertedNinjaQuestion>
+  >(new Map());
   const opsData = useOpsData();
 
   useEffect(() => {
-    retrieveDesertedNinjaData(opsData, setQuestions, setSessions);
+    if (opsData.adminClient) {
+      retrieveDesertedNinjaData(opsData.adminClient, setQuestions, setSessions);
+    }
   }, [opsData]);
 
   return (

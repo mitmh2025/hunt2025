@@ -216,7 +216,7 @@ export function DesertedNinjaPresentation({
   questions,
 }: {
   session: DesertedNinjaSession | null;
-  questions: DesertedNinjaQuestion[];
+  questions: Map<number, DesertedNinjaQuestion>;
 }) {
   let contents = null;
   const [timer, updateTimer] = useReducer(
@@ -246,6 +246,8 @@ export function DesertedNinjaPresentation({
               running: true,
             };
           }
+        } else {
+          return t;
         }
       }
       return t;
@@ -265,7 +267,7 @@ export function DesertedNinjaPresentation({
   } else {
     let firstGeoguessrIndex = -1;
     const questionSlides = session.questionIds.map((questionId, index) => {
-      const question = questions.find((q) => q.id === questionId);
+      const question = questions.get(questionId);
       if (question) {
         if (firstGeoguessrIndex === -1 && question.imageUrl !== null) {
           firstGeoguessrIndex = index;

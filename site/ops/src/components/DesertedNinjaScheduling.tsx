@@ -11,7 +11,7 @@ function SessionDetails({
   questions,
 }: {
   session: DesertedNinjaSession | null;
-  questions: DesertedNinjaQuestion[];
+  questions: Map<number, DesertedNinjaQuestion>;
 }) {
   if (!session) {
     return <p>Please select a session.</p>;
@@ -19,7 +19,7 @@ function SessionDetails({
     return (
       <>
         <h3>Details</h3>
-        <p>{questions.length}</p>
+        <p>{questions.size}</p>
         <p>Title: {session.title}</p>
         <p>Status: {session.status}</p>
         <p>Questions: {session.questionIds}</p>
@@ -34,7 +34,7 @@ export function DesertedNinjaScheduling({
   questions,
 }: {
   sessions: DesertedNinjaSession[];
-  questions: DesertedNinjaQuestion[];
+  questions: Map<number, DesertedNinjaQuestion>;
 }) {
   const [session, setSession] = useState<DesertedNinjaSession | null>(null);
 

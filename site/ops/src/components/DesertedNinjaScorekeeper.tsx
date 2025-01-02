@@ -84,7 +84,7 @@ function ScorekeeperPanel({
   questions,
 }: {
   session: DesertedNinjaSession | null;
-  questions: DesertedNinjaQuestion[];
+  questions: Map<number, DesertedNinjaQuestion>;
 }) {
   const opsData = useOpsData();
 
@@ -101,7 +101,7 @@ function ScorekeeperPanel({
     return (
       <ScoreRow key={idx}>
         <QuestionCell>
-          {idx + 1} / {questions.length}
+          {idx + 1} / {questions.size}
         </QuestionCell>
         {session.teamIds.map((teamId) => (
           <AnswerCell
@@ -132,7 +132,7 @@ export function DesertedNinjaScorekeeper({
   questions,
 }: {
   sessions: DesertedNinjaSession[];
-  questions: DesertedNinjaQuestion[];
+  questions: Map<number, DesertedNinjaQuestion>;
 }) {
   const [session, setSession] = useState<DesertedNinjaSession | null>(null);
 

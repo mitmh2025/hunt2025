@@ -12,7 +12,7 @@ export function DesertedNinjaHost({
   questions,
 }: {
   sessions: DesertedNinjaSession[];
-  questions: DesertedNinjaQuestion[];
+  questions: Map<number, DesertedNinjaQuestion>;
 }) {
   const [session, setSession] = useState<DesertedNinjaSession | null>(null);
 
