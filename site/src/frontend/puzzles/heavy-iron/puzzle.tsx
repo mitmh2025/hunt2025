@@ -1,5 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 
@@ -662,42 +666,68 @@ const Down = [
   ],
 ];
 
-const StyledTable = styled.table`
-  margin: 0 auto 1rem auto;
-  th {
-    text-align: left;
-  }
-  td,
-  th {
-    padding: 0 0.5rem;
-  }
+const ClueIndexTD = styled.td`
+  font-weight: bold;
+`;
+
+const ClueNumberTD = styled(ClueIndexTD)`
+  text-align: right;
+`;
+
+const ClueTD = styled.td`
+  padding-left: 10px;
+`;
+
+const ClueTable = styled.table`
+  width: 100%;
 `;
 
 const clueTable = (clues: string[][]) => {
   return (
     <HScrollTableWrapper>
-      <StyledTable>
+      <ClueTable>
         <tbody>
-          <tr>
-            <th>Number</th>
-            <th>Clue</th>
-            <th>Length</th>
-          </tr>
           {clues.map((clue, index) => (
             <tr key={index}>
-              <td>{clue[0]}</td>
-              <td>{clue[1]}</td>
-              <td>{clue[2]}</td>
+              <ClueNumberTD>{clue[0]}</ClueNumberTD>
+              <ClueTD>
+                {clue[1]} ({clue[2]})
+              </ClueTD>
             </tr>
           ))}
         </tbody>
-      </StyledTable>
+      </ClueTable>
     </HScrollTableWrapper>
+  );
+};
+
+const copyClueTable = (clues: string[][]) => {
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <th>Number</th>
+          <th>Clue</th>
+          <th>Length</th>
+        </tr>
+        {clues.map((clue, index) => (
+          <tr key={index}>
+            <td>{clue[0]}</td>
+            <td>{clue[1]}</td>
+            <td>{clue[2]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 
 const StyledCrossword = styled(Crossword)`
   margin: 0 auto;
+`;
+
+const ClueHeader = styled.h3`
+  padding-bottom: 0;
 `;
 
 const Puzzle = () => {
@@ -707,10 +737,18 @@ const Puzzle = () => {
         labels={GRID}
         labelsForEmptyCopy={filterLabelsToStructure(GRID)}
       />
-      <h2>Across</h2>
-      {clueTable(Across)}
-      <h2>Down</h2>
-      {clueTable(Down)}
+      <div className={NO_COPY_CLASS}>
+        <ClueHeader>Across</ClueHeader>
+        {clueTable(Across)}
+        <ClueHeader>Down</ClueHeader>
+        {clueTable(Down)}
+      </div>
+      <div className={COPY_ONLY_CLASS}>
+        <ClueHeader>Across</ClueHeader>
+        {copyClueTable(Across)}
+        <ClueHeader>Down</ClueHeader>
+        {copyClueTable(Down)}
+      </div>
     </>
   );
 };
