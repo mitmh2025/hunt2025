@@ -153,7 +153,10 @@ function newPassport({
             done(null, false);
             return;
           }
-          done(null, ADMIN_USER_ID, jwtPayload);
+          done(null, ADMIN_USER_ID, {
+            jwtPayload,
+            adminUser: jwtPayload.email,
+          });
         },
       ),
     );
