@@ -1,6 +1,7 @@
 import "../../assets/radio/battery-low.opus";
 import "../../assets/radio/celebration.wav";
 import "../../assets/radio/firmware-update.opus";
+import "../../assets/radio/hex-0.opus";
 import "../../assets/radio/hex-1.opus";
 import "../../assets/radio/hex-2.opus";
 import "../../assets/radio/hex-3.opus";
