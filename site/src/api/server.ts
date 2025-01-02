@@ -254,7 +254,7 @@ export function getRouter({
   const slugToSlotMap = generateSlugToSlotMap(hunt);
   const getTeamStateIntermediate = async (team_id: number) => {
     const team_state = (
-      await activityLog.getCachedTeamLog(knex, redisClient, team_id)
+      await activityLog.getCachedLog(knex, redisClient, team_id)
     ).entries.reduce(
       (acc, entry) => acc.reduce(entry),
       new TeamStateIntermediate(hunt),
@@ -262,7 +262,7 @@ export function getRouter({
     return team_state;
   };
   const getTeamState = async (team_id: number) => {
-    const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
+    const team_registration_log = await teamRegistrationLog.getCachedLog(
       knex,
       redisClient,
       team_id,
@@ -288,7 +288,7 @@ export function getRouter({
   };
 
   const getTeamRegistration = async (team_id: number) => {
-    const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
+    const team_registration_log = await teamRegistrationLog.getCachedLog(
       knex,
       redisClient,
       team_id,
@@ -388,7 +388,7 @@ export function getRouter({
   ): Promise<PuzzleState | undefined> => {
     return formatPuzzleState(
       slug,
-      (await activityLog.getCachedTeamLog(knex, redisClient, team_id)).entries,
+      (await activityLog.getCachedLog(knex, redisClient, team_id)).entries,
     );
   };
 
@@ -635,7 +635,7 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          const { entries } = await activityLog.getCachedTeamLog(
+          const { entries } = await activityLog.getCachedLog(
             knex,
             redisClient,
             team_id,
@@ -883,6 +883,52 @@ export function getRouter({
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId } }) => {
           return await getTeamState(parseInt(teamId, 10));
+        },
+      },
+      getTeamContacts: {
+        middleware: [adminAuthMiddleware],
+        handler: async () => {
+          const { entries } = await teamRegistrationLog.getCachedLog(
+            knex,
+            redisClient,
+          );
+          const teamInfos = entries.reduce(
+            (acc: Map<number, TeamInfoIntermediate>, entry) => {
+              const { team_id } = entry;
+              acc.set(
+                team_id,
+                (acc.get(team_id) ?? new TeamInfoIntermediate()).reduce(entry),
+              );
+              return acc;
+            },
+            new Map<number, TeamInfoIntermediate>(),
+          );
+          return {
+            status: 200,
+            body: Array.from(teamInfos.values()).flatMap((teamInfo) => {
+              if (teamInfo.registration === undefined) {
+                return [];
+              }
+              return [
+                {
+                  username: teamInfo.registration.username,
+                  name: teamInfo.registration.name,
+                  teamEmail: teamInfo.registration.teamEmail,
+                  contactName: teamInfo.registration.contactName,
+                  contactEmail: teamInfo.registration.contactEmail,
+                  contactPhone: teamInfo.registration.contactPhone,
+                  contactMailingAddress:
+                    teamInfo.registration.contactMailingAddress,
+                  secondaryContactName:
+                    teamInfo.registration.secondaryContactName,
+                  secondaryContactEmail:
+                    teamInfo.registration.secondaryContactEmail,
+                  secondaryContactPhone:
+                    teamInfo.registration.secondaryContactPhone,
+                },
+              ];
+            }),
+          };
         },
       },
       getPuzzleState: {

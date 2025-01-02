@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { PuzzleDefinitionMetadataSchema } from "../../src/frontend/puzzles/types";
-import { c, PuzzleStateSchema, TeamStateSchema } from "./contract";
+import {
+  c,
+  PuzzleStateSchema,
+  TeamRegistrationSchema,
+  TeamStateSchema,
+} from "./contract";
 
 export const PuzzleAPIMetadataSchema = z.record(
   z.string(),
@@ -10,6 +15,24 @@ export const PuzzleAPIMetadataSchema = z.record(
 );
 
 export type PuzzleAPIMetadata = z.infer<typeof PuzzleAPIMetadataSchema>;
+
+const TeamContactsSchema = z.array(
+  TeamRegistrationSchema.pick({
+    username: true,
+
+    name: true,
+    teamEmail: true,
+
+    contactName: true,
+    contactEmail: true,
+    contactPhone: true,
+    contactMailingAddress: true,
+
+    secondaryContactName: true,
+    secondaryContactEmail: true,
+    secondaryContactPhone: true,
+  }),
+);
 
 export const adminContract = c.router({
   getTeamState: {
@@ -37,5 +60,12 @@ export const adminContract = c.router({
       200: PuzzleAPIMetadataSchema,
     },
     summary: "Get all puzzle metadata",
+  },
+  getTeamContacts: {
+    method: "GET",
+    path: `/admin/teamContacts`,
+    responses: {
+      200: TeamContactsSchema,
+    },
   },
 });
