@@ -127,9 +127,9 @@ const Puzzle = (): JSX.Element => {
         music band surrounded by illuminated cacti.
       </p>
       <p>
-        Once upon a time there were five tough military men wearing punk dresses
-        who were driven insane by a rocket-wielding autocrat who kept them
-        awake.
+        Once upon a time there were five tough military men wearing makeup and
+        garish punk clothes who were driven insane by a rocket-wielding autocrat
+        who kept them awake.
       </p>
       <p>
         Once upon a time there was a fairy woman with a wondrous quiff hairstyle

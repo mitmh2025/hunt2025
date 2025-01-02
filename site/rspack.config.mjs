@@ -532,6 +532,7 @@ export default function createConfigs(_env, argv) {
         imageRule,
         mp3Rule,
         wavRule,
+        mp4Rule,
         fontRule,
       ],
     },

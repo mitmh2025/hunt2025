@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import { CLUES } from "./data";
 
 const ClueGroup = styled.div`
@@ -27,16 +28,19 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         </>
       )}
       {CLUES.map((group, i) => (
-        <ClueGroup key={`group-${i}`}>
-          {group.slice(0, 1).map(({ clue }, j) => (
-            <div key={`clue-${i}-${j}`}>
-              <strong>{clue}</strong>
-            </div>
-          ))}
-          {group.slice(1).map(({ clue }, j) => (
-            <div key={`clue-${i}-${j + 1}`}>{clue}</div>
-          ))}
-        </ClueGroup>
+        <React.Fragment key={`group-${i}`}>
+          <ClueGroup>
+            {group.slice(0, 1).map(({ clue }, j) => (
+              <div key={`clue-${i}-${j}`}>
+                <strong>{clue}</strong>
+              </div>
+            ))}
+            {group.slice(1).map(({ clue }, j) => (
+              <div key={`clue-${i}-${j + 1}`}>{clue}</div>
+            ))}
+          </ClueGroup>
+          <br className={COPY_ONLY_CLASS} />
+        </React.Fragment>
       ))}
     </>
   );

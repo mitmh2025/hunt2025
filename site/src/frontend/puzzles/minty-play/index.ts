@@ -50,6 +50,10 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
+      guess: ["ALMA", "AND", "CRACKLE", "MATER", "POPS", "SNAP", "WHATS"],
+      reply: "Keep going!",
+    },
+    {
       guess: ["WHATS SNAP CRACKLE AND POPS ALMA MATER"],
       reply: "That’s the correct clue phrase! What’s the answer?",
     },
