@@ -764,11 +764,10 @@ const Solution = () => {
         Give or take an apostrophe, these answers are each formed of two major
         arcana of the tarot. (Note: Golden Sun: The Lost Age contains four
         superbosses, but only one fits the answer constraint, which can be
-        determined from the other three unambiguous answers.) The major arcana
-        all have canonical numbering, with the names used to answer the clues
-        pinning down the particular numbering used (the author referenced the
-        Rider-Waite-Smith deck). These numbers can be taken as alphabetic
-        indices, so that each clue gives another digraph.
+        determined from the other three unambiguous answers.) The names of the
+        major arcana used here are those found in the Rider-Waite-Smith deck,
+        which has a canonical numbering of the major arcana. These numbers can
+        be taken as alphabetic indices, so that each clue gives another digraph.
       </p>
 
       <ul>
