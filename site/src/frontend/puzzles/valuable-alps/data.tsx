@@ -1,9 +1,24 @@
-export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
+import React, { type ReactNode } from "react";
+import { styled } from "styled-components";
+
+const SmallCaps = styled.span`
+  font-size: 13px;
+`;
+
+export const CLUES: {
+  clue: ReactNode;
+  answer: string;
+  highlight?: string;
+}[][] = [
   [
     { clue: "Face A:", answer: "" },
     { clue: "Battery end (5)", answer: "ANODE" },
     {
-      clue: "Something shot with an ARROW (6)",
+      clue: (
+        <>
+          Something shot with an <SmallCaps>ARROW</SmallCaps> (6)
+        </>
+      ),
       answer: "TARGET",
       highlight: "#ffff00",
     },
@@ -35,7 +50,12 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
     { clue: "Group of rioters (3)", answer: "MOB" },
     { clue: "Short greeting (2)", answer: "HI" },
     {
-      clue: "Someone who has had an ESPADA passed over their head (9)",
+      clue: (
+        <>
+          Someone who has had an <SmallCaps>ESPADA</SmallCaps> passed over their
+          head (9)
+        </>
+      ),
       answer: "CABALLERO",
       highlight: "#ffff00",
     },
@@ -55,7 +75,14 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
       answer: "D-MAJOR",
       highlight: "#00ff00",
     },
-    { clue: "The Umbrella Academy’s Page (6)", answer: "ELLIOT" },
+    {
+      clue: (
+        <>
+          <i>The Umbrella Academy</i>’s Page (6)
+        </>
+      ),
+      answer: "ELLIOT",
+    },
     { clue: "Youngest of the Hemsworth brothers (4)", answer: "LIAM" },
     {
       clue: "Period of time spanned by one Taylor Swift album (3)",
@@ -104,7 +131,7 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
     { clue: "Sedan or coupe (3)", answer: "CAR" },
     { clue: "San Francisco body of water (3)", answer: "BAY" },
     { clue: "The L in L.A. (3)", answer: "LOS" },
-    { clue: "Boots is ____ best friend (4’1)", answer: "DORA'S" },
+    { clue: "Boots is ____ best friend (4’1)", answer: "DORA’S" },
   ],
   [
     { clue: "Face F:", answer: "" },
@@ -165,7 +192,12 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
     },
     { clue: "Mononymous winner of sixteen Grammys (5)", answer: "ADELE" },
     {
-      clue: "Small snap-on open-sided retaining ring with three inner-facing tabs, used to hold components on a SHAFT (1-4)",
+      clue: (
+        <>
+          Small snap-on open-sided retaining ring with three inner-facing tabs,
+          used to hold components on a <SmallCaps>SHAFT</SmallCaps> (1-4)
+        </>
+      ),
       answer: "E-CLIP",
       highlight: "#00ff00",
     },
@@ -179,7 +211,14 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
     { clue: "Face I:", answer: "" },
     { clue: "Federal agent (1-3)", answer: "G-MAN", highlight: "#00ff00" },
     { clue: "In a suitable manner (5)", answer: "APTLY" },
-    { clue: "Producer of Etherlords (5)", answer: "NIVAL" },
+    {
+      clue: (
+        <>
+          Producer of <i>Etherlords</i> (5)
+        </>
+      ),
+      answer: "NIVAL",
+    },
     { clue: "Slow the progress of (6)", answer: "IMPEDE" },
     { clue: "Two above an eagle (3)", answer: "PAR" },
     { clue: "Worsen over time (5)", answer: "DECAY" },
@@ -270,7 +309,11 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
       highlight: "#ffff00",
     },
     {
-      clue: "Long thin ROD used for fishing (4)",
+      clue: (
+        <>
+          Long thin <SmallCaps>ROD</SmallCaps> used for fishing (4)
+        </>
+      ),
       answer: "POLE",
       highlight: "#ffff00",
     },
@@ -302,7 +345,11 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
   [
     { clue: "Face Q:", answer: "" },
     {
-      clue: "Athlete using a scorecard and PENCIL (6)",
+      clue: (
+        <>
+          Athlete using a scorecard and <SmallCaps>PENCIL</SmallCaps> (6)
+        </>
+      ),
       answer: "GOLFER",
       highlight: "#ffff00",
     },
@@ -327,7 +374,15 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
     { clue: "Dollar, slangily (4)", answer: "BUCK" },
     { clue: "Parts of the proverbial machine (4)", answer: "COGS" },
     { clue: "Make very happy (5)", answer: "ELATE" },
-    { clue: "DRUMSTICK (3)", answer: "LEG", highlight: "#ffff00" },
+    {
+      clue: (
+        <>
+          D<SmallCaps>RUMSTICK</SmallCaps> (3)
+        </>
+      ),
+      answer: "LEG",
+      highlight: "#ffff00",
+    },
     { clue: "Kentucky horse race (5)", answer: "DERBY" },
     {
       clue: "Object sometimes stuck with a WOODEN STICK and then dipped in caramel (5)",
@@ -350,7 +405,14 @@ export const CLUES: { clue: string; answer: string; highlight?: string }[][] = [
       highlight: "#00ff00",
     },
     { clue: "Picasso’s style (6)", answer: "CUBISM" },
-    { clue: "Jessica from Sin City (4)", answer: "ALBA" },
+    {
+      clue: (
+        <>
+          Jessica from <i>Sin City</i> (4)
+        </>
+      ),
+      answer: "ALBA",
+    },
   ],
   [
     { clue: "Face T:", answer: "" },

@@ -47,6 +47,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/selfish-king/assets/bermuda-triangle-spreadsheet.xlsx",
   "src/frontend/puzzles/shoddy-table/assets/10000sheets.xlsx",
   "src/frontend/puzzles/timely-head/assets/engagements-and-other-crimes.pdf",
+  "src/frontend/puzzles/valuable-alps/assets/cross-dash-word.pdf",
 ];
 
 class RadioManifestPlugin {
