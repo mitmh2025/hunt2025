@@ -78,6 +78,9 @@ export const WordSearch = styled.table`
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <p className="puzzle-flavor">
+        We can’t seem to keep our Donalds in a row.
+      </p>
       <WordSearch>
         {GRID.map((row, i) => (
           <tr key={`row-${i}`}>
