@@ -1,10 +1,20 @@
 import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Input,
+} from "@mui/material";
+import {
   createMRTColumnHelper,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_Cell,
 } from "material-react-table";
-import { useMemo } from "react";
+import { useSnackbar } from "notistack";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOpsData } from "../OpsDataProvider";
 import { formatTeamData } from "../opsdata/bigBoard";
@@ -12,15 +22,106 @@ import { formatTeamData } from "../opsdata/bigBoard";
 type TeamIndexData = {
   name: string;
   username: string;
+  teamId: number;
   teamSize: number;
   onCampusSize: number;
   progress: number;
   puzzlesSolved: number;
   puzzlesSolvedLast3Hours: number;
   hintsRequested: number;
+  unlockCurrency: number;
 };
 
+function GrantUnlockCurrencyDialog({
+  teamIds,
+  open,
+  onClose,
+}: {
+  teamIds: number[] | "all";
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const [qty, setQty] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const teamsDisplay =
+    teamIds === "all" ? "all teams" : `${teamIds.length} teams`;
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (qty > 0) {
+      setSubmitting(true);
+      adminClient
+        .grantUnlockCurrency({
+          body: {
+            teamIds,
+            amount: qty,
+          },
+        })
+        .then((result) => {
+          if (result.status !== 200) {
+            throw new Error(`HTTP ${result.status}: ${result.body}`);
+          }
+
+          appendActivityLogEntries(result.body);
+          enqueueSnackbar(`Granted ${qty} unlock currency to ${teamsDisplay}`, {
+            variant: "success",
+          });
+          onClose();
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          enqueueSnackbar(`Failed to grant unlock currency: ${msg}`, {
+            variant: "error",
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    }
+  }
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        Grant Unlock Currency to <strong>{teamsDisplay}</strong>
+      </DialogTitle>
+      <form onSubmit={handleSubmit}>
+        <DialogContent>
+          <label>
+            Amount:{" "}
+            <Input
+              type="number"
+              name="amount"
+              inputProps={{
+                min: 1,
+                max: 99,
+                step: 1,
+              }}
+              required
+              value={qty}
+              onChange={(e) => {
+                setQty(parseInt(e.target.value, 10));
+              }}
+            />
+          </label>
+        </DialogContent>
+        <DialogActions>
+          <Button type="submit" disabled={submitting}>
+            Grant {qty} Currency
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}
+
 export default function TeamIndex() {
+  const [grantUnlockCurrencyDialogTeams, setGrantUnlockCurrencyDialogTeams] =
+    useState<null | "all" | number[]>(null);
+
   const opsData = useOpsData();
   const indexData = useMemo(() => {
     const record: Record<number, TeamIndexData> = {};
@@ -29,12 +130,14 @@ export default function TeamIndex() {
       record[team.teamId] = {
         name: team.name,
         username: team.username,
+        teamId: team.teamId,
         teamSize: team.registration.peopleTotal,
         onCampusSize: team.registration.peopleOnCampus,
         progress: bigBoardTeam.progress,
         puzzlesSolved: team.state.puzzles_solved.size,
         puzzlesSolvedLast3Hours: 0, // computed below
         hintsRequested: 0, // computed below
+        unlockCurrency: team.state.available_currency,
       };
     }
 
@@ -114,6 +217,10 @@ export default function TeamIndex() {
         header: "Hints Requested",
         filterVariant: "range",
       }),
+      columnHelper.accessor("unlockCurrency", {
+        header: "Unlock Currency",
+        filterVariant: "range",
+      }),
     ];
   }, []);
 
@@ -133,8 +240,53 @@ export default function TeamIndex() {
         pageSize: 100,
       },
     },
+    enableRowSelection: true,
+    selectAllMode: "all",
+    enableSelectAll: true,
     enableDensityToggle: false,
+    renderTopToolbarCustomActions: ({ table }) => {
+      if (table.getSelectedRowModel().rows.length === 0) {
+        return null;
+      }
+
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            gap: "16px",
+            padding: "8px",
+            flexWrap: "wrap",
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={() => {
+              setGrantUnlockCurrencyDialogTeams(
+                table.getIsAllRowsSelected()
+                  ? "all"
+                  : table
+                      .getSelectedRowModel()
+                      .rows.map((row) => row.original.teamId),
+              );
+            }}
+          >
+            Grant Unlock Currency
+          </Button>
+        </Box>
+      );
+    },
   });
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <>
+      <MaterialReactTable table={table} />
+      <GrantUnlockCurrencyDialog
+        teamIds={grantUnlockCurrencyDialogTeams ?? []}
+        open={grantUnlockCurrencyDialogTeams !== null}
+        onClose={() => {
+          setGrantUnlockCurrencyDialogTeams(null);
+        }}
+      />
+    </>
+  );
 }

@@ -79,7 +79,7 @@ function GrantUnlockCurrencyDialog({
   }
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
         Grant Unlock Currency to <strong>{teamUsername}</strong>
       </DialogTitle>

@@ -108,8 +108,6 @@ export default function TeamActivityLog({
     ];
   }, [opsData, roundNames, activity]);
 
-  console.log("activity", activity);
-
   const table = useMaterialReactTable({
     columns,
     data: activity,
