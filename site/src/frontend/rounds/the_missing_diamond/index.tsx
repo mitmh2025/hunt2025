@@ -446,7 +446,7 @@ const witnesses: Record<
     alt: "The Arborist",
     pos: {
       left: 353,
-      top: 1497,
+      top: 1501,
       width: 80,
     },
     statement:
@@ -625,8 +625,8 @@ const witnesses: Record<
     },
     alt: "The Receptionist",
     pos: {
-      left: 431,
-      top: 1282,
+      left: 406,
+      top: 1244,
       width: 80,
     },
     statement: "Yes, Carter visited the Art Gallery earlier today.",
@@ -919,8 +919,8 @@ const interactions: Record<
   interview_at_the_art_gallery: {
     asset: interaction,
     pos: {
-      left: 321,
-      top: 1277,
+      left: 261,
+      top: 1368,
       width: 80,
     },
   },

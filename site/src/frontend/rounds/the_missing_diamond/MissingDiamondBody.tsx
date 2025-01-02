@@ -536,7 +536,7 @@ const MissingDiamondWitnessImage = ({
 }) => {
   const additionalImageStyle: CSSProperties = {
     filter:
-      "drop-shadow(0px 2px 2px #9e73a8) drop-shadow(0px -2px 2px #9e73a8) drop-shadow(-2px 0px 2px #9e73a8) drop-shadow(2px 0px 2px #9e73a8)",
+      "drop-shadow(0px 1.5px 1.5px #9e73a8) drop-shadow(0px -1.5px 1.5px #9e73a8) drop-shadow(-1.5px 0px 1.5px #9e73a8) drop-shadow(1.5px 0px 1.5px #9e73a8)",
   };
 
   let iconState;
