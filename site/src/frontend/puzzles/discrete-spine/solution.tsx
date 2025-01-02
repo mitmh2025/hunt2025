@@ -19,14 +19,14 @@ import pill from "./assets/pill.png";
 import pow from "./assets/pow.png";
 import rooks from "./assets/rooks.png";
 import ruger from "./assets/ruger.png";
-import tourniquet1 from "./assets/tourniquet1.webm";
-import tourniquet2 from "./assets/tourniquet2.webm";
-import tourniquet3 from "./assets/tourniquet3.webm";
-import tourniquet4 from "./assets/tourniquet4.webm";
-import tourniquet5 from "./assets/tourniquet5.webm";
-import tourniquet6 from "./assets/tourniquet6.webm";
-import tourniquet7 from "./assets/tourniquet7.webm";
-import tourniquet8 from "./assets/tourniquet8.webm";
+import tourniquet1 from "./assets/tourniquet1.mp4";
+import tourniquet2 from "./assets/tourniquet2.mp4";
+import tourniquet3 from "./assets/tourniquet3.mp4";
+import tourniquet4 from "./assets/tourniquet4.mp4";
+import tourniquet5 from "./assets/tourniquet5.mp4";
+import tourniquet6 from "./assets/tourniquet6.mp4";
+import tourniquet7 from "./assets/tourniquet7.mp4";
+import tourniquet8 from "./assets/tourniquet8.mp4";
 import whey from "./assets/whey.png";
 import worm from "./assets/worm.png";
 import { FlexColumn } from "./puzzle";
@@ -390,28 +390,28 @@ const Solution = (): JSX.Element => {
       <p>The videos below show the rotations in motion for each gif.</p>
       <FlexRow>
         <StyledVideo controls>
-          <source src={tourniquet1} type="video/webm" />
+          <source src={tourniquet1} type="video/mp4" />
         </StyledVideo>
         <StyledVideo controls>
-          <source src={tourniquet2} type="video/webm" />
+          <source src={tourniquet2} type="video/mp4" />
         </StyledVideo>
         <StyledVideo controls>
-          <source src={tourniquet3} type="video/webm" />
+          <source src={tourniquet3} type="video/mp4" />
         </StyledVideo>
         <StyledVideo controls>
-          <source src={tourniquet4} type="video/webm" />
+          <source src={tourniquet4} type="video/mp4" />
         </StyledVideo>
         <StyledVideo controls>
-          <source src={tourniquet5} type="video/webm" />
+          <source src={tourniquet5} type="video/mp4" />
         </StyledVideo>
         <StyledVideo controls>
-          <source src={tourniquet6} type="video/webm" />
+          <source src={tourniquet6} type="video/mp4" />
         </StyledVideo>
         <StyledVideo controls>
-          <source src={tourniquet7} type="video/webm" />
+          <source src={tourniquet7} type="video/mp4" />
         </StyledVideo>
         <StyledVideo controls>
-          <source src={tourniquet8} type="video/webm" />
+          <source src={tourniquet8} type="video/mp4" />
         </StyledVideo>
       </FlexRow>
       <p>

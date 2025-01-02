@@ -291,11 +291,6 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
-  const webmRule = {
-    test: /\.webm$/,
-    type: "asset/resource",
-  };
-
   const wavRule = {
     test: /\.wav$/,
     type: "asset/resource",
@@ -404,7 +399,6 @@ export default function createConfigs(_env, argv) {
         mp3Rule,
         wavRule,
         mp4Rule,
-        webmRule,
         // Opus files should only be used by the radio and thus should
         // never be imported by browser entrypoints, only server entrypoints.
         opusRule,
