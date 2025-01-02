@@ -68,9 +68,9 @@ export const WordSearch = styled.table`
   border-collapse: collapse;
   table-layout: fixed;
   margin-bottom: 1em;
+  font-family: "Roboto Mono", monospace;
   td {
     width: 1.5em;
-    border: 1px solid black;
     text-align: center;
   }
 `;
