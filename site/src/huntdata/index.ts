@@ -53,7 +53,7 @@ const HUNT: Hunt = {
         { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "🔎🧊"},
         { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
-        { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "check_a_deez_words_out" },
         { id: "mdp25", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "mdp26", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion"},
         { id: "mdp27", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
