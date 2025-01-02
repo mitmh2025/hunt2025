@@ -11,32 +11,43 @@ export const PuzzleAPIMetadataSchema = z.record(
 
 export type PuzzleAPIMetadata = z.infer<typeof PuzzleAPIMetadataSchema>;
 
-export const DesertedNinjaScoreSchema = z.object({
-  sessionId: z.number(),
+export const DesertedNinjaAnswerSchema = z.object({
   teamId: z.number(),
-  scores: z.number().min(0).max(5).array().length(17),
+  sessionId: z.number(),
+  // index of the question within the session, NOT the question id
+  questionIndex: z.number(),
+  answer: z.number().nullable(),
 });
 
-export type DesertedNinjaScore = z.infer<typeof DesertedNinjaScoreSchema>;
+export type DesertedNinjaAnswer = z.infer<typeof DesertedNinjaAnswerSchema>;
 
 export const DesertedNinjaQuestionSchema = z.object({
-  questionId: z.number(),
+  id: z.number(),
   text: z.string(),
   imageUrl: z.string().nullable(),
   answer: z.number(),
-  scoringMethod: z.number(),
+  scoringMethod: z.string(),
 });
 
 export type DesertedNinjaQuestion = z.infer<typeof DesertedNinjaQuestionSchema>;
 
 export const DesertedNinjaSessionSchema = z.object({
-  sessionId: z.number(),
+  id: z.number(),
   title: z.string(),
+  status: z.string(),
   teamIds: z.number().array(),
   questionIds: z.number().array().length(17),
 });
 
 export type DesertedNinjaSession = z.infer<typeof DesertedNinjaSessionSchema>;
+
+export const DesertedNinjaRegistrationSchema = z.object({
+  sessionId: z.number(),
+  teamId: z.number(),
+  status: z.string(),
+});
+
+export type DesertedNinjaRegistration = z.infer<typeof DesertedNinjaRegistrationSchema>;
 
 export const adminContract = c.router({
   getTeamState: {
@@ -91,6 +102,16 @@ export const adminContract = c.router({
     },
     summary: "Get all deserted-ninja sessions",
   },
+  completeDesertedNinjaSession: {
+    method: "POST",
+    path: "/admin/complete-dn-session/:session-id",
+    body: z.string(),
+    responses: {
+      200: DesertedNinjaSessionSchema,
+      400: DesertedNinjaSessionSchema,
+    },
+    summary: "Complete a deserted-ninja session, updating team logs",
+  },
   createDesertedNinjaQuestions: {
     method: "POST",
     path: "/admin/create-dn-questions",
@@ -108,21 +129,21 @@ export const adminContract = c.router({
     },
     summary: "Get all deserted-ninja questions",
   },
-  getDesertedNinjaScores: {
+  getDesertedNinjaAnswers: {
     method: "GET",
     path: "/admin/get-dn-scores/:teamId",
     responses: {
-      200: DesertedNinjaScoreSchema.array(),
+      200: DesertedNinjaAnswerSchema.array(),
     },
-    summary: "Get deserted-ninja scores for a team (all sessions)",
+    summary: "Get deserted-ninja answers for a team (all sessions)",
   },
-  saveDesertedNinjaScores: {
+  saveDesertedNinjaAnswers: {
     method: "POST",
-    path: "/admin/save-dn-scores/:sessionId",
-    body: DesertedNinjaScoreSchema.array(),
+    path: "/admin/save-dn-scores",
+    body: DesertedNinjaAnswerSchema.array(),
     responses: {
-      200: DesertedNinjaScoreSchema.array(),
+      200: DesertedNinjaAnswerSchema.array(),
     },
-    summary: "Save deserted-ninja scores for a session",
+    summary: "Save a set of deserted-ninja scores",
   },
 });

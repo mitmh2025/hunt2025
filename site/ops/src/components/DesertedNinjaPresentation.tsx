@@ -173,16 +173,21 @@ export function DesertedNinjaPresentation(
     );
   }
   else {
-    const questionSlides = questions.map(
-      (question, index) =>
-        <QuestionSlide
-            question={question}
-            questionNumber={index + 1}
-            timer={timer}
-            key={question.questionId}
+    let firstGeoguessrIndex = -1;
+    const questionSlides = session.questionIds.map(
+      (questionId, index) => {
+        let question = questions.find( (q) => q.id == questionId );
+        if (firstGeoguessrIndex == -1 && question.imageUrl !== null) {
+          firstGeoguessrIndex = index;
+        }
+        return <QuestionSlide
+          question={question}
+          questionNumber={index + 1}
+          timer={timer}
+          key={questionId}
         />
+      }
     );
-    const firstGeoguessrIndex = questions.find( (question) => question.imageUrl === null ).questionId;
     
     contents = (
       <>

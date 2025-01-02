@@ -13,6 +13,12 @@ import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
+import {
+  type DesertedNinjaQuestion,
+  type DesertedNinjaSession,
+  type DesertedNinjaAnswer,
+  type DesertedNinjaRegistration,
+} from "../../lib/api/admin_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
 import { type CannedResponseLink } from "../frontend/puzzles/types";
 
@@ -227,6 +233,37 @@ declare module "knex/types/tables" {
     "team_id" | "type" | "data"
   >;
 
+  type DesertedNinjaQuestionRow = {
+    id: number;
+    text: string;
+    image_url: string | null;
+    answer: number;
+    scoring_method: string;
+  };
+
+  type DesertedNinjaSessionRow = {
+    id: number;
+    status: string;
+    title: string;
+    // SQLite returns JSON fields as string.
+    question_ids: string | number[];
+  };
+
+  type DesertedNinjaAnswerRow = {
+    id: number;
+    session_id: number;
+    team_id: number;
+    question_index: number;
+    answer: number;
+  };
+
+  type DesertedNinjaRegistrationRow = {
+    id: number;
+    session_id: number;
+    team_id: number;
+    status: string;
+  };
+
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
    * knex
@@ -241,6 +278,10 @@ declare module "knex/types/tables" {
       TeamRegistrationLogEntryRow,
       InsertTeamRegistrationLogEntry
     >;
+    deserted_ninja_questions: DesertedNinjaQuestionRow;
+    deserted_ninja_sessions: DesertedNinjaSessionRow;
+    deserted_ninja_answers: DesertedNinjaAnswerRow;
+    deserted_ninja_registrations: DesertedNinjaRegistrationRow;
   }
 }
 
@@ -263,6 +304,15 @@ export function fixData(value: string | object): object {
   // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
   if (typeof value === "string") {
     return JSON.parse(value) as object;
+  }
+  return value;
+}
+
+// Fix a JSON field that has come from the database.
+export function fixArray<T>(value: string | T[]): T[] {
+  // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
+  if (typeof value === "string") {
+    return JSON.parse(value) as T[];
   }
   return value;
 }
@@ -424,4 +474,73 @@ export async function appendTeamRegistrationLog(
       // console.log("inserted", fixedEntry);
       return fixedEntry;
     });
+}
+
+export async function getDesertedNinjaQuestions(
+  knex: Knex.Knex,
+) : Promise<DesertedNinjaQuestion[]> {
+  // TODO: is there a better way to do this?
+  // Or should the properties be renamed to not be camelCase?
+  return (await knex("deserted_ninja_questions").select())
+    .map( (obj) => ({
+      id: obj.id,
+      text: obj.text,
+      imageUrl: obj.image_url,
+      answer: obj.answer,
+      scoringMethod: obj.scoring_method,
+    }));
+}
+
+export async function insertDesertedNinjaQuestions(
+  questions: DesertedNinjaQuestion[],
+  knex: Knex.Knex,
+) : Promise<DesertedNinjaQuestion[]> {
+  await knex("deserted_ninja_questions").insert(questions);
+  return [];
+}
+
+export async function getDesertedNinjaSessions(
+  knex: Knex.Knex,
+): Promise<DesertedNinjaSession[]> {
+  const sessionRows = await knex("deserted_ninja_sessions").select();
+
+  return sessionRows.map( (obj) => ({
+    id: obj.id,
+    status: obj.status,
+    title: obj.title,
+    teamIds: [],
+    questionIds: fixArray<number>(obj.question_ids),
+  }));
+}
+
+export async function insertDesertedNinjaSession(
+  title: string,
+  question_ids: string,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaSession> {
+  const session = await knex("deserted_ninja_sessions")
+    .returning(['id', 'title', 'status', 'question_ids'])
+    .insert( {
+      status: "not_started",
+      title: title,
+      question_ids: question_ids,
+    });
+  console.log(session);
+  
+  return {
+    id: session[0].id,
+    title: session[0].title,
+    status: session[0].status,
+    teamIds: [],
+    questionIds: fixArray<number>(session[0].question_ids),
+  };
+}
+
+export async function updateDesertedNinjaSession(
+  session: DesertedNinjaSession,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaSession> {
+  return await knex("deserted_ninja_sessions")
+    .where('sessionId', session.id)
+    .update(session);
 }

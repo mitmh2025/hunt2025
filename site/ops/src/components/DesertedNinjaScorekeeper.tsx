@@ -1,61 +1,10 @@
 import { useState } from 'react';
 import { styled } from "styled-components";
 import { type DesertedNinjaSession, type DesertedNinjaQuestion } from "../../../lib/api/admin_contract";
+import { SessionSelect } from "./DesertedNinjaSessionSelector";
 import { DesertedNinjaPresentation } from "./DesertedNinjaPresentation";
 import { useOpsData, type OpsData } from "../OpsDataProvider";
 
-
-const ScorekeeperContainer = styled.div`
-  margin: 10px;
-`;
-
-const RowContainer = styled.div`
-  display: flex;
-  margin: 5px 0;
-`;
-const RowTitle = styled.div`
-  width: 150px;
-`;
-const ScorekeeperButton = styled.button`
-`;
-
-function ScorekeeperSelectRow({ session, setSession }) {
-  return (
-    <>
-      <RowContainer>
-        <RowTitle>{session.title}</RowTitle>
-        <ScorekeeperButton
-          onClick={() => {
-            setSession(session);
-          }}
-        >
-          Score this session
-        </ScorekeeperButton>
-      </RowContainer>
-    </>
-  );
-}
-
-function ScorekeeperSelect({ sessions, session, setSession }) {
-  if (session === null) {
-    return (
-      <>
-        {sessions.map((session) => (
-          <ScorekeeperSelectRow session={session} setSession={setSession} key={session.sessionId} />
-        ))}
-      </>
-    );
-  }
-  else {
-    return (
-      <>
-        <button onClick={() => setSession(null)}>
-          Back
-        </button>
-      </>
-    );
-  }
-}
 
 const ScorekeeperTable = styled.table`
   border: 1px solid black;
@@ -123,7 +72,7 @@ function ScorekeeperPanel(
         <QuestionCell>{idx + 1}</QuestionCell>
         {
           session.teamIds.map( (teamId) =>
-            <AnswerCell key={idx + "_" + teamId} questionId={questionId} sessionId={session.sessionId} />
+            <AnswerCell key={idx + "_" + teamId} questionId={questionId} sessionId={session.id} />
           )
         }
       </ScoreRow>
@@ -154,7 +103,7 @@ export function DesertedNinjaScorekeeper (
   return (
     <>
       <h2>Scorekeeper mode</h2>
-      <ScorekeeperSelect sessions={sessions} session={session} setSession={setSession} />
+      <SessionSelect sessions={sessions} session={session} setSession={setSession} buttonText="Score this session" />
       <ScorekeeperPanel session={session} />
     </>
   );

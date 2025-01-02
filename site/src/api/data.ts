@@ -10,6 +10,12 @@ import {
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
+import {
+  type DesertedNinjaQuestion,
+  type DesertedNinjaSession,
+  type DesertedNinjaAnswer,
+  type DesertedNinjaRegistration,
+} from "../../lib/api/admin_contract";
 import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
@@ -19,6 +25,9 @@ import {
   registerTeam as dbRegisterTeam,
   getTeamIds,
   retryOnAbort,
+  getDesertedNinjaQuestions as dbGetDesertedNinjaQuestions,
+  getDesertedNinjaSessions as dbGetDesertedNinjaSessions,
+  insertDesertedNinjaSession as dbInsertDesertedNinjaSession,
 } from "./db";
 import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
 import {
@@ -506,4 +515,31 @@ export async function registerTeam(
 
     return { usernameAvailable: true, teamId: team_id };
   });
+}
+
+export async function getDesertedNinjaQuestions(
+  knex: Knex.Knex,
+) : Promise<DesertedNinjaQuestion[]> {
+  return dbGetDesertedNinjaQuestions(knex);
+}
+
+export async function createDesertedNinjaSession(
+  title: string,
+  questionIds: number[],
+  knex: Knex.Knex,
+) : Promise<DesertedNinjaSession> {
+  return dbInsertDesertedNinjaSession(title, questionIds.toString(), knex);
+}
+
+export async function getDesertedNinjaSessions(
+  knex: Knex.Knex,
+) : Promise<DesertedNinjaSession[]> {
+  return dbGetDesertedNinjaSessions(knex);
+}
+
+export async function saveDesertedNinjaAnswers(
+  answers: DesertedNinjaAnswer[],
+  knex: Knex.Knex,
+) : Promise<number> {
+  return 0;
 }

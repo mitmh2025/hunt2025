@@ -31,6 +31,12 @@ import {
   type MutableTeamRegistration,
   frontendContract,
 } from "../../lib/api/frontend_contract";
+import {
+  type DesertedNinjaQuestion,
+  type DesertedNinjaSession,
+  type DesertedNinjaAnswer,
+  type DesertedNinjaRegistration,
+} from "../../lib/api/admin_contract";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
@@ -42,6 +48,9 @@ import {
   type Mutator,
   registerTeam,
   teamRegistrationLog,
+  getDesertedNinjaQuestions,
+  getDesertedNinjaSessions,
+  createDesertedNinjaSession,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
@@ -883,10 +892,44 @@ export function getRouter({
       },
       createDesertedNinjaSession: {
         middleware: [adminAuthMiddleware],
+        handler: async ({ body }) => {
+          // generate random set of questions
+          // requirements:
+          // * pick 17 distinct questions
+          // * 4 of them must be geoguessr type (imageUrl non-null)
+          // * geoguessrs should not be consecutive
+
+          // partition the questions
+          let normalQuestions : DesertedNinjaQuestion[] = [];
+          let geoguessrQuestions : DesertedNinjaQuestion[] = [];
+          ( await getDesertedNinjaQuestions(knex) )
+            .forEach( (q) => ( q.imageUrl === null ? normalQuestions : geoguessrQuestions).push(q));
+
+          const ids = [normalQuestions, geoguessrQuestions].map( (arr) =>
+            arr
+              .map( (v) => ({v, sort: Math.random()}) )
+              .sort( (a,b) => a.sort - b.sort )
+              .map( ({ v }) => v.id
+              )
+          ).flat()
+            .map( (v) => ({v, sort: Math.random()}) )
+            .sort( (a,b) => a.sort - b.sort )
+            .map( ({ v }) => v );
+          
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: await createDesertedNinjaSession(body, ids, knex),
+          });
+        },
+      },
+      saveDesertedNinjaSession: {
+        middleware: [adminAuthMiddleware],
         handler: ({ body }) => {
-          // TODO: implement creation
+          // TODO: implement save
           let responseBody = {
-            sessionId: 3,
+            id: 3,
+            status: "in_progress",
             teamIds: [1,2,3],
             title: "Friday 4PM",
             questionIds: [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33],
@@ -897,14 +940,15 @@ export function getRouter({
           });
         },
       },
-      saveDesertedNinjaSession: {
+      completeDesertedNinjaSession: {
         middleware: [adminAuthMiddleware],
         handler: ({ body }) => {
-          // TODO: implement save
+          // TODO: do scoring, update team_state logs
           let responseBody = {
-            sessionId: 3,
+            id: 12,
+            status: "complete",
             teamIds: [1,2,3],
-            title: "Friday 4PM",
+            title: "Friday 11PM",
             questionIds: [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33],
           };
           return Promise.resolve({
@@ -925,58 +969,23 @@ export function getRouter({
       },
       getDesertedNinjaQuestions: {
         middleware: [adminAuthMiddleware],
-        handler: () => {
-          let responseBody = [1,2].map((questionId) => {
-            if (questionId % 2 == 1) {
-              return {
-                questionId: questionId,
-                text: "How many smoots will take you from one end of the Infinite Corridor to the other?",
-                imageUrl: null,
-                answer: 147.4,
-                scoringMethod: 0,
-              };
-            }
-            else {
-              return {
-                questionId: questionId,
-                text: "Where is this location on campus?",
-                imageUrl: "image_01.jpg",
-                answer: 0,
-                scoringMethod: -1,
-              };
-            }
-          });
+        handler: async () => {
           return Promise.resolve({
             status: 200 as const,
-            body: responseBody
+            body: await getDesertedNinjaQuestions(knex),
           });
         },
       },
       getDesertedNinjaSessions: {
         middleware: [adminAuthMiddleware],
-        handler: () => {
-          // TODO: implement retrieval
-          let body = [
-            {
-              sessionId: 1,
-              title: "Friday 2PM",
-              teamIds: [1, 2, 3],
-              questionIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-            },
-            {
-              sessionId: 2,
-              title: "Friday 3PM",
-              teamIds: [4, 5, 6],
-              questionIds: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34],
-            }
-          ];
+        handler: async () => {
           return Promise.resolve({
             status: 200 as const,
-            body: body,
+            body: await getDesertedNinjaSessions(knex),
           });
         },
       },
-      getDesertedNinjaScores: {
+      getDesertedNinjaAnswers: {
         middleware: [adminAuthMiddleware],
         handler: ({ params: { teamId } }) => {
           // TODO: implement retrieval
@@ -984,12 +993,14 @@ export function getRouter({
             {
               sessionId: 1,
               teamId: parseInt(teamId, 10),
-              scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
+              questionIndex: 0,
+              answer: 200,
             },
             {
-              sessionId: 2,
+              sessionId: 1,
               teamId: parseInt(teamId, 10),
-              scores: [5,4,3,2,1,0,5,4,3,2,1,0,1,2,3,4,5],
+              questionIndex: 1,
+              answer: 3,
             }
           ];
           return Promise.resolve({
@@ -998,29 +1009,24 @@ export function getRouter({
           });
         },
       },
-      saveDesertedNinjaScores: {
+      saveDesertedNinjaAnswers: {
         middleware: [adminAuthMiddleware],
-        handler: ({ params: {sessionId} }) => {
+        handler: () => {
           // TODO: implement db store
-          // TODO: add to puzzle_state
           let body = [
             {
               sessionId: 1,
-              teamId: 1,
-              scores: [0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4],
-            },
-            {
-              sessionId: 1,
-              teamId: 2,
-              scores: [4,5,2,1,0,3,1,0,4,5,5,0,0,0,1,2,0],
-            },
+              teamId: 4,
+              questionIndex: 1,
+              answer: 3,
+            }
           ];
           return Promise.resolve({
             status: 200 as const,
             body: body,
           });
         },
-      },
+      }
     },
     frontend: {
       markTeamGateSatisfied: {
