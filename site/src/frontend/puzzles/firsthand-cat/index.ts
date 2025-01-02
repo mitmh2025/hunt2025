@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Battle Factory",
   slug: "battle_factory",
-  initial_description: "a list of pokemon and opponents",
+  initial_description: "A bunch of Pokemon with names",
   answer: "CHOKING HAZARD",
   authors: ["Dee Ruttenberg"],
   editors: ["Jonathan Lay", "Kevin Hwang", "Sid Creutz"],
