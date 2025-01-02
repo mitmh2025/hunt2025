@@ -68,4 +68,26 @@ export const adminContract = c.router({
       200: TeamContactsSchema,
     },
   },
+  sendTeamEmail: {
+    method: "POST",
+    path: "/admin/sendTeamEmail",
+    body: z.object({
+      dryRun: z.boolean().default(true),
+      wholeTeam: z.boolean().default(false),
+      templateAlias: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        messages: z.array(
+          z.object({
+            address: z.object({
+              name: z.string(),
+              address: z.string(),
+            }),
+            success: z.boolean().optional(),
+          }),
+        ),
+      }),
+    },
+  },
 });

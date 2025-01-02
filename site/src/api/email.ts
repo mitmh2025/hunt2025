@@ -1,35 +1,45 @@
 import * as aws from "@aws-sdk/client-ses";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import nodemailer from "nodemailer";
+import { type Address } from "nodemailer/lib/mailer";
 // eslint-disable-next-line import/default -- eslint can't parse the CommonJS module
 import postmarkTransport from "nodemailer-postmark-transport";
 import { type TeamRegistration } from "../../lib/api/contract";
 
+type Content =
+  | {
+      subject: string;
+      text: string;
+    }
+  | {
+      templateAlias: string;
+      templateModel: Record<string, string>;
+    };
+
+type Message = {
+  to: Address | Address[];
+  messageStream?: string;
+} & Content;
+
 export type Mailer = {
-  sendEmail({
-    to,
-    subject,
-    plainText,
-  }: {
-    to: string | string[];
-    subject: string;
-    plainText: string;
-  }): void | PromiseLike<void>;
+  sendEmail(message: Message): void | PromiseLike<void>;
 };
 
 class MockMailer {
-  sendEmail({
-    to,
-    subject,
-    plainText,
-  }: {
-    to: string | string[];
-    subject: string;
-    plainText: string;
-  }) {
-    console.log("Email would be sent to", to);
-    console.log("Subject:", subject);
-    console.log("Text:\n", plainText);
+  sendEmail(message: Message) {
+    console.log("Email would be sent to", message.to);
+    if ("subject" in message) {
+      console.log("Subject:", message.subject);
+    }
+    if (message.messageStream) {
+      console.log("Message stream:", message.messageStream);
+    }
+    if ("text" in message) {
+      console.log("Text:\n", message.text);
+    } else {
+      console.log("Template alias:", message.templateAlias);
+      console.log("Template model:\n", message.templateModel);
+    }
   }
 }
 
@@ -75,20 +85,10 @@ class RealMailer {
     }
   }
 
-  async sendEmail({
-    to,
-    subject,
-    plainText,
-  }: {
-    to: string | string[];
-    subject: string;
-    plainText: string;
-  }) {
+  async sendEmail(message: Message) {
     await this.transporter.sendMail({
       ...this.sendDefaults,
-      to,
-      subject,
-      text: plainText,
+      ...message,
     });
   }
 }

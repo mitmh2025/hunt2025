@@ -19,6 +19,7 @@ import {
   type GuessStatus,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
+import { type Address } from "nodemailer/lib/mailer";
 import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
@@ -511,9 +512,12 @@ export function getRouter({
 
         try {
           await mailer.sendEmail({
-            to: body.contactEmail,
+            to: {
+              name: body.name,
+              address: body.contactEmail,
+            },
             subject: "MIT Mystery Hunt 2025 Registration Confirmation",
-            plainText: confirmationEmailTemplate({
+            text: confirmationEmailTemplate({
               registration: body,
             }),
           });
@@ -928,6 +932,79 @@ export function getRouter({
                 },
               ];
             }),
+          };
+        },
+      },
+      sendTeamEmail: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ body }) => {
+          const { entries } = await teamRegistrationLog.getCachedLog(
+            knex,
+            redisClient,
+          );
+          const teamInfos = entries.reduce(
+            (acc: Map<number, TeamInfoIntermediate>, entry) => {
+              const { team_id } = entry;
+              acc.set(
+                team_id,
+                (acc.get(team_id) ?? new TeamInfoIntermediate()).reduce(entry),
+              );
+              return acc;
+            },
+            new Map<number, TeamInfoIntermediate>(),
+          );
+          const dryRun = body.dryRun;
+          const messages = [];
+          for (const teamInfo of teamInfos.values()) {
+            if (teamInfo.registration === undefined) {
+              continue;
+            }
+            const addresses = [
+              {
+                name: teamInfo.registration.contactName,
+                address: teamInfo.registration.contactEmail,
+              },
+              {
+                name: teamInfo.registration.secondaryContactName,
+                address: teamInfo.registration.secondaryContactEmail,
+              },
+            ];
+            if (body.wholeTeam) {
+              addresses.push({
+                name: teamInfo.registration.name,
+                address: teamInfo.registration.teamEmail,
+              });
+            }
+            for (const address of addresses) {
+              const result: {
+                address: Address;
+                success?: boolean;
+              } = {
+                address,
+              };
+              if (!dryRun) {
+                try {
+                  await mailer.sendEmail({
+                    to: address,
+                    templateAlias: body.templateAlias,
+                    templateModel: {
+                      teamName: teamInfo.registration.name,
+                    },
+                  });
+                  result.success = true;
+                } catch (err: unknown) {
+                  console.log("failed sending mail:", err);
+                  result.success = false;
+                }
+              }
+              messages.push(result);
+            }
+          }
+          return {
+            status: 200,
+            body: {
+              messages,
+            },
           };
         },
       },
