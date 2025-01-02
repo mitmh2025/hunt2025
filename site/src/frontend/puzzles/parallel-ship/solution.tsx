@@ -9,12 +9,20 @@ const StyledCrossword = styled(Crossword)`
 `;
 
 const ClueTable = styled.table`
+  margin-bottom: 1rem;
   tbody td:nth-child(1) {
     text-align: right;
     padding-right: 1em;
   }
   tbody td:nth-child(2) {
     font-family: "Roboto Mono", monospace;
+  }
+`;
+
+const CluePairTable = styled.table`
+  margin-bottom: 1rem;
+  tbody td:nth-child(1) {
+    min-width: 110px;
   }
 `;
 
@@ -49,6 +57,58 @@ const GRID_FILL_PT2 = [
   "TOLLFREE.ELOI",
   ".S.S.P.T.LYNN",
 ].map((s: string) => s.split(""));
+
+const CLUES: [string, string, string, string][] = [
+  ["7A", "A FOX", "Odd letters of AlF’s plus OX", ""],
+  ["8A", "OLEANDER", "anagram “dear Leon”", "blackthorn"],
+  ["9A", "HARRIS", "first letters of “had a rotten rating in sitcom”", "entry"],
+  ["10A", "IGNORE", "feIGN OR Enact", "lazily"],
+  ["12A", "KERNEL OF TRUTH", "anagram “letter for hunk”", ""],
+  [
+    "14A",
+    "LIQUID CRYSTAL",
+    "convertible = LIQUID, anagram “last” after market call = CRY",
+    "conclusion",
+  ],
+  ["18A", "SEARCH", "anagram “arches”", "headland"],
+  ["20A", "CANING", "concerned = “caring” minus R plus N (chess)", ""],
+  ["22A", "TOLLFREE", "&lit, ring = TOLL", "smile"],
+  ["23A", "ELOI", "one = I after “OLE” (reversal)", "aye"],
+  [
+    "1D",
+    "OFLATE",
+    "FLAT surrounded by O (first letter of owner) and E (east)",
+    "",
+  ],
+  ["2D", "AXER", "EX reversed (brings up) inside AR", ""],
+  ["3D", "DORSAL", "anagram “or lads”", "steal"],
+  ["4D", "RELIEF", "anagram “I feel” after R", ""],
+  ["5D", "ENSNARES", "reversed hidden word: purSE RAN SNEakily", "diamonds"],
+  [
+    "6D",
+    "BEER",
+    "BR (banker minus ANKE) filled with EE (inside of deed)",
+    "currency",
+  ],
+  ["11D", "ETHEL", "Bethel minus B", ""],
+  [
+    "12D",
+    "KILNS",
+    "“like” reversed (coming back) and curtailed (almost) = KIL, nightclubs on the edges = NS",
+    "",
+  ],
+  ["13D", "NEUTRALS", "anagram “tans rule”", "footwear"],
+  ["15D", "D SHARP", "D plus “sharpton” minus “ton”", ""],
+  ["16D", "ROCKET", "stalwart = rock, alien = ET", ""],
+  [
+    "17D",
+    "AT NOON",
+    "November = N, old = O, love = O, last letter of forsaken, after A plus first letter of tail",
+    "Loretta",
+  ],
+  ["19D", "EROS", "upset = SORE, reversed (over)", "smell"],
+  ["21D", "NOEL", "“Leon” reversed", ""],
+];
 
 const CLUE_PAIRS: string[][] = [
   ["aye", "YEA"],
@@ -87,158 +147,14 @@ const Solution = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>7A</td>
-              <td>A FOX</td>
-              <td>Odd letters of AlF’s plus OX</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>8A</td>
-              <td>OLEANDER</td>
-              <td>anagram “dear Leon”</td>
-              <td>blackthorn</td>
-            </tr>
-            <tr>
-              <td>9A</td>
-              <td>HARRIS</td>
-              <td>first letters of “had a rotten rating in sitcom”</td>
-              <td>entry</td>
-            </tr>
-            <tr>
-              <td>10A</td>
-              <td>IGNORE</td>
-              <td>feIGN OR Enact</td>
-              <td>lazily</td>
-            </tr>
-            <tr>
-              <td>12A</td>
-              <td>KERNEL OF TRUTH</td>
-              <td>anagram “letter for hunk”</td>
-              <td />
-            </tr>
-            <tr>
-              <td>14A</td>
-              <td>LIQUID CRYSTAL</td>
-              <td>
-                convertible = LIQUID, anagram “last” after market call = CRY
-              </td>
-              <td>conclusion</td>
-            </tr>
-            <tr>
-              <td>18A</td>
-              <td>SEARCH</td>
-              <td>anagram “arches”</td>
-              <td>headland</td>
-            </tr>
-            <tr>
-              <td>20A</td>
-              <td>CANING</td>
-              <td>concerned = “caring” minus R plus N (chess)</td>
-              <td />
-            </tr>
-            <tr>
-              <td>22A</td>
-              <td>TOLLFREE</td>
-              <td>&amp;lit, ring = TOLL</td>
-              <td>smile</td>
-            </tr>
-            <tr>
-              <td>23A</td>
-              <td>ELOI</td>
-              <td>one = I after “OLE” (reversal)</td>
-              <td>aye</td>
-            </tr>
-
-            <tr>
-              <td>1D</td>
-              <td>OFLATE</td>
-              <td>FLAT surrounded by O (first letter of owner) and E (east)</td>
-              <td />
-            </tr>
-            <tr>
-              <td>2D</td>
-              <td>AXER</td>
-              <td>EX reversed (brings up) inside AR</td>
-              <td />
-            </tr>
-            <tr>
-              <td>3D</td>
-              <td>DORSAL</td>
-              <td>anagram “or lads”</td>
-              <td>steal</td>
-            </tr>
-            <tr>
-              <td>4D</td>
-              <td>RELIEF</td>
-              <td>anagram “I feel” after R</td>
-            </tr>
-            <tr>
-              <td>5D</td>
-              <td>ENSNARES</td>
-              <td>reversed hidden word: purSE RAN SNEakily</td>
-              <td>diamonds</td>
-            </tr>
-            <tr>
-              <td>6D</td>
-              <td>BEER</td>
-              <td>BR (banker minus ANKE) filled with EE (inside of deed)</td>
-              <td>currency</td>
-            </tr>
-            <tr>
-              <td>11D</td>
-              <td>ETHEL</td>
-              <td>Bethel minus B</td>
-              <td />
-            </tr>
-            <tr>
-              <td>12D</td>
-              <td>KILNS</td>
-              <td>
-                “like” reversed (coming back) and curtailed (almost) = KIL,
-                nightclubs on the edges = NS
-              </td>
-              <td />
-            </tr>
-            <tr>
-              <td>13D</td>
-              <td>NEUTRALS</td>
-              <td>anagram “tans rule”</td>
-              <td>footwear</td>
-            </tr>
-            <tr>
-              <td>15D</td>
-              <td>D SHARP</td>
-              <td>D plus “sharpton” minus “ton”</td>
-              <td />
-            </tr>
-            <tr>
-              <td>16D</td>
-              <td>ROCKET</td>
-              <td>stalwart = rock, alien = ET</td>
-              <td />
-            </tr>
-            <tr>
-              <td>17D</td>
-              <td>AT NOON</td>
-              <td>
-                November = N, old = O, love = O, last letter of forsaken, after
-                A plus first letter of tail
-              </td>
-              <td>Loretta</td>
-            </tr>
-            <tr>
-              <td>19D</td>
-              <td>EROS</td>
-              <td>upset = SORE, reversed (over)</td>
-              <td>smell</td>
-            </tr>
-            <tr>
-              <td>21D</td>
-              <td>NOEL</td>
-              <td>“Leon” reversed</td>
-              <td />
-            </tr>
+            {CLUES.map(([cluenum, answer, explanation, extra]) => (
+              <tr key={cluenum}>
+                <td>{cluenum}</td>
+                <td>{answer}</td>
+                <td>{explanation}</td>
+                <td>{extra}</td>
+              </tr>
+            ))}
           </tbody>
         </ClueTable>
       </HScrollTableWrapper>
@@ -251,7 +167,7 @@ const Solution = () => {
       <p>Each of the extra words is a clue for another answer:</p>
 
       <HScrollTableWrapper>
-        <table>
+        <CluePairTable>
           <thead>
             <tr>
               <th>Clue word</th>
@@ -268,7 +184,7 @@ const Solution = () => {
               );
             })}
           </tbody>
-        </table>
+        </CluePairTable>
       </HScrollTableWrapper>
 
       <p>
