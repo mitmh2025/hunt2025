@@ -139,12 +139,11 @@ async function buildApp({
     }) as RequestHandler,
   );
 
-  app.use(
-    "/",
-    express.static(
-      path.join(path.dirname(fileURLToPath(import.meta.url)), "../static"),
-    ),
-  );
+  const staticPath =
+    process.env.OPSSITE_STATIC_PATH ??
+    path.join(path.dirname(fileURLToPath(import.meta.url)), "../static");
+
+  app.use("/", express.static(staticPath));
 
   return app;
 }
