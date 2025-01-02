@@ -11,7 +11,7 @@ const Solution = () => {
   return (
     <>
       <p>
-        All of the emojis in the 6x6 grid hint at 6 letter words - either the
+        All of the emojis in the 6x6 grid hint at 6 letter words—either the
         direct emoji name or a closely similar word. This allows you to
         construct a 3D 6x6x6 cube. The puzzle is a 3D word search as indicated
         by the title 🔎🧊. The 13 emojis below the grid are the words you need
