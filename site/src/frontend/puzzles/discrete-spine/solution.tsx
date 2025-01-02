@@ -387,7 +387,7 @@ const Solution = (): JSX.Element => {
           alt="A series of angular glyphs written in thick black lines."
         />
       </FlexColumn>
-      <p>The videos below show the rotations in motion for each gif.</p>
+      <p>The videos below show the rotations in motion for each glyph.</p>
       <FlexRow>
         <StyledVideo controls>
           <source src={tourniquet1} type="video/mp4" />
