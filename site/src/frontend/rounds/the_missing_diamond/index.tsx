@@ -919,8 +919,8 @@ const interactions: Record<
   interview_at_the_art_gallery: {
     asset: interaction,
     pos: {
-      left: 261,
-      top: 1368,
+      left: 321,
+      top: 1277,
       width: 80,
     },
   },
