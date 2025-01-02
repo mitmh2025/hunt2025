@@ -446,7 +446,7 @@ const witnesses: Record<
     alt: "The Arborist",
     pos: {
       left: 353,
-      top: 1497,
+      top: 1501,
       width: 80,
     },
     statement:
@@ -475,8 +475,8 @@ const witnesses: Record<
     },
     alt: "The Patrolman",
     pos: {
-      left: 1739,
-      top: 800,
+      left: 1254,
+      top: 696,
       width: 80,
     },
     statement:
@@ -572,20 +572,20 @@ const witnesses: Record<
     statement:
       "We’ve been working a double, shuttling loads to the Boardwalk. I saw Katrina in the middle of the night and Gladys was driven by this afternoon.",
   },
-  dogwalker: {
+  "police-detective": {
     asset: {
-      unlockable: dogwalkerLocked,
-      unlocked: dogwalkerUnlocked,
-      solved: dogwalkerSolved,
+      unlockable: policeDetectiveLocked,
+      unlocked: policeDetectiveUnlocked,
+      solved: policeDetectiveSolved,
     },
-    alt: "The Dogwalker",
+    alt: "The Police Detective",
     pos: {
       left: 1387,
       top: 1349,
       width: 80,
     },
     statement:
-      "I come through here a lot, trying to make a little extra money to get my fiancée something nice at the Jewelry Store, and I saw Papa walking here today.",
+      "I’ve been here since last night, following up on a lead in the Jewelry Store break-in. I saw Gladys being driven, but I haven’t seen Katrina at all.",
   },
   doorman: {
     asset: {
@@ -625,8 +625,8 @@ const witnesses: Record<
     },
     alt: "The Receptionist",
     pos: {
-      left: 431,
-      top: 1282,
+      left: 406,
+      top: 1244,
       width: 80,
     },
     statement: "Yes, Carter visited the Art Gallery earlier today.",
@@ -781,20 +781,20 @@ const witnesses: Record<
     statement:
       "I’ve been here since this morning baking bread for the Art Gallery’s catering order. But I didn’t see Gladys or Papa.",
   },
-  "police-detective": {
+  dogwalker: {
     asset: {
-      unlockable: policeDetectiveLocked,
-      unlocked: policeDetectiveUnlocked,
-      solved: policeDetectiveSolved,
+      unlockable: dogwalkerLocked,
+      unlocked: dogwalkerUnlocked,
+      solved: dogwalkerSolved,
     },
-    alt: "The Police Detective",
+    alt: "The Dogwalker",
     pos: {
       left: 1139,
       top: 1219,
       width: 80,
     },
     statement:
-      "I’ve been here since last night, following up on a lead in the Jewelry Store break-in. I saw Gladys being driven, but I haven’t seen Katrina at all.",
+      "I come through here a lot, trying to make a little extra money to get my fiancée something nice at the Jewelry Store, and I saw Papa walking here today.",
   },
   professor: {
     asset: {
@@ -919,8 +919,8 @@ const interactions: Record<
   interview_at_the_art_gallery: {
     asset: interaction,
     pos: {
-      left: 321,
-      top: 1277,
+      left: 261,
+      top: 1368,
       width: 80,
     },
   },
