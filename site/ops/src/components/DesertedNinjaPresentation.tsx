@@ -6,6 +6,7 @@ import {
   type DesertedNinjaQuestion,
   type DesertedNinjaSession,
 } from "../../../lib/api/admin_contract";
+import Image01 from "../assets/deserted-ninja/image01.jpg";
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";
 
@@ -40,10 +41,11 @@ function RevealContainer({
       deckRef.current = new Reveal({
         embedded: true,
         progress: false,
-        //        jumpToSlide: false,
         overview: false,
+        //jumpToSlide: false, // not present in @types/reveal.js, but is present in the reveal package... :/
         controls: false,
         keyboardCondition: "focused",
+        navigationMode: "linear",
       });
 
       deckRef.current.initialize().then(
@@ -87,11 +89,23 @@ function RevealContainer({
 const TimerDiv = styled.div`
   font-size: 200%;
 `;
+const TimerCornerDiv = styled.div`
+  font-size: 200%;
+  position: absolute;
+  right: 5px;
+  bottom: -500px;
+  background: rgba(0, 0, 0, 0.5);
+`;
 
-function CountdownTimer({ timer }: { timer: TimerData }) {
-  return (
-    <TimerDiv
-      className="fragment"
+function CountdownTimer({
+  timer,
+  geoguessr,
+}: {
+  timer: TimerData;
+  geoguessr: boolean;
+}) {
+  const timerElt = (
+    <div
       style={{
         color:
           timer.timeLeft === 0
@@ -102,8 +116,16 @@ function CountdownTimer({ timer }: { timer: TimerData }) {
       }}
     >
       0:{timer.timeLeft.toString().padStart(2, "0")}
-    </TimerDiv>
+    </div>
   );
+
+  if (geoguessr) {
+    return (
+      <TimerCornerDiv className="fragment absolute">{timerElt}</TimerCornerDiv>
+    );
+  } else {
+    return <TimerDiv className="fragment">{timerElt}</TimerDiv>;
+  }
 }
 
 const SlideH1 = styled.h1`
@@ -164,32 +186,29 @@ function QuestionSlide({
   questionNumber: number;
   timer: TimerData;
 }) {
-  let content = null;
   if (question.imageUrl === null) {
-    // text question
-    content = (
-      <>
+    // text question, single slide
+    return (
+      <section>
+        <SlideH1>Question {questionNumber}</SlideH1>
         <p className="fragment">{question.text}</p>
-        <CountdownTimer timer={timer} />
-      </>
+        <CountdownTimer timer={timer} geoguessr={false} />
+      </section>
     );
   } else {
-    // geoguessr question
-    content = (
-      <>
-        <p className="fragment">{question.text}</p>
-        <p className="fragment">{question.imageUrl}</p>
-        <CountdownTimer timer={timer} />
-      </>
+    // geoguessr question, two stacked vertical slides
+    return (
+      <section>
+        <section>
+          <SlideH1>Question {questionNumber}</SlideH1>
+          <p className="fragment">{question.text}</p>
+        </section>
+        <section data-background-image={Image01}>
+          <CountdownTimer timer={timer} geoguessr={true} />
+        </section>
+      </section>
     );
   }
-
-  return (
-    <section>
-      <SlideH1>Question {questionNumber}</SlideH1>
-      {content}
-    </section>
-  );
 }
 
 export function DesertedNinjaPresentation({
