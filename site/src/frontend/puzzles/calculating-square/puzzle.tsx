@@ -61,6 +61,13 @@ const ALL_HAIKU: [string, string, string][] = [
     "she finds warmth and comfort in",
     "her puffy purple coat (2)",
   ],
+  ["eight-armed creature—", "a purple cephalopod?—", "floats above a fox (5)"],
+  ["ignoring HIPAA", "patient info in clear view", "weight: five tons (1)"],
+  [
+    "heap of soda cans",
+    "crushed caffeine, then crushed metal",
+    "casts a tired dice (2)",
+  ],
   [
     "cacti cannot speak",
     "nor can they steer a horse",
@@ -70,13 +77,6 @@ const ALL_HAIKU: [string, string, string][] = [
     "the galaxy center",
     "colored in muted red tones",
     "not so true to life (2)",
-  ],
-  ["eight-armed creature—", "a purple cephalopod?—", "floats above a fox (5)"],
-  ["ignoring HIPAA", "patient info in clear view", "weight: five tons (1)"],
-  [
-    "heap of soda cans",
-    "crushed caffeine, then crushed metal",
-    "casts a tired dice (2)",
   ],
   [
     "behind an island,",
