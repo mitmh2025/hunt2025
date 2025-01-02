@@ -25,6 +25,10 @@ in {
         default = "http://localhost:3000/api";
         description = "Base URL for API requests";
       };
+      jwksUri = mkOption {
+        type = types.nullOr types.str;
+        default = types.null;
+      };
     };
   };
   config = lib.mkIf cfg.enable {
@@ -60,6 +64,7 @@ in {
       environment.FRONTEND_API_SECRET = "%m";
       # FIXME: Use a real key in production.
       environment.DATA_API_SECRET = "%m";
+      environment.JWKS_URI = cfg.jwksUri;
       environment.REDIS_URL = "unix://${config.services.redis.servers.hunt2025.unixSocket}";
 
       serviceConfig = {

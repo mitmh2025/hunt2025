@@ -8,6 +8,7 @@
       "things.staging"
       "tix"
       "media.staging"
+      "ops.staging"
     ];
     machineType = "e2-custom-medium-5120"; # 1 vCPU, 5 GB RAM
     firewall.allowedTCPPorts = [
