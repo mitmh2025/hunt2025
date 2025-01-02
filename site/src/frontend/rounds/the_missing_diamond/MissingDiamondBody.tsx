@@ -22,7 +22,7 @@ import { css, styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
 import { PuzzleIcon, PuzzleUnlockModal } from "../../components/PuzzleLink";
-import { deviceMax } from "../../utils/breakpoints";
+import { deviceMax, deviceMin } from "../../utils/breakpoints";
 import billie from "./assets/billie.png";
 import cork from "./assets/cork.png";
 import map from "./assets/map.png";
@@ -51,32 +51,33 @@ const MissingDiamondBackdrop = styled.div`
 `;
 
 const MissingDiamondMapArea = styled.div`
-  width: 59.32%;
-  padding: 0 1.5%;
-  background: linear-gradient(
-    90deg,
-    rgb(43, 18, 52, 0) 77.95%,
-    rgba(43, 18, 52, 1) 100%
-  );
-
   overflow: hidden; // keep tooltips contained
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media ${deviceMin.lg} {
+    width: 59.32%;
+    background: linear-gradient(
+      90deg,
+      rgba(from var(--purple-800) r g b / 0) 77.95%,
+      var(--purple-800) 100%
+    );
+  }
 
   @media ${deviceMax.md} {
     width: 100%;
 
     background: linear-gradient(
       180deg,
-      rgb(43, 18, 52, 0) 77.95%,
-      rgba(43, 18, 52, 1) 100%
+      rgba(from var(--purple-800) r g b / 0) 77.95%,
+      var(--purple-800) 100%
     );
   }
 `;
 
 const MissingDiamondMapContainer = styled.div`
-  margin-top: 5.83%;
+  margin: 5.83% 1.5% 0;
   position: relative;
 `;
 
@@ -96,15 +97,18 @@ const MissingDiamondMap = styled.img`
 `;
 
 const MissingDiamondSkyline = styled.div`
-  width: 40.68%;
   flex-grow: 1;
   background:
     url("${skyline}") bottom right / 100% auto no-repeat content-box,
-    rgb(43, 18, 52);
+    var(--purple-800);
 
   position: relative;
   display: flex;
-  flex-direction: column-reverse;
+
+  @media ${deviceMin.lg} {
+    width: 40.68%;
+    flex-direction: column-reverse;
+  }
 
   @media ${deviceMax.md} {
     width: 100%;
@@ -115,10 +119,12 @@ const MissingDiamondSkyline = styled.div`
 const MissingDiamondStars = styled.div`
   position: absolute;
   inset: 0;
-  // The skyline is going to be 40.68vw wide, and we want to go up 49.42% of that
-  margin-bottom: 20.1vw;
   background: url(${stars}) bottom center / 100%;
 
+  @media ${deviceMin.lg} {
+    // The skyline is going to be 40.68vw wide, and we want to go up 49.42% of that
+    margin-bottom: 20.1vw;
+  }
   @media ${deviceMax.md} {
     margin-bottom: 49.42vw;
   }
@@ -127,11 +133,13 @@ const MissingDiamondStars = styled.div`
 const MissingDiamondBillie = styled.img`
   position: absolute;
   right: 3.33%;
-  bottom: 0.65%;
   width: 31.11%;
 
+  @media ${deviceMin.lg} {
+    bottom: 0.65%;
+  }
+
   @media ${deviceMax.md} {
-    bottom: initial;
     top: 0.65%;
   }
 `;
@@ -143,7 +151,6 @@ const SpeechBubble = styled.div<{
   $i: number;
   $length: number;
 }>`
-  margin-bottom: 14px;
   padding: 20px;
   border: ${({ $extraBorder }) => ($extraBorder ? "6px" : "3px")} solid
     ${({ $color }) => $color};
@@ -159,8 +166,11 @@ const SpeechBubble = styled.div<{
   font-family: Garamond, serif;
   white-space: pre-wrap;
 
+  @media ${deviceMin.lg} {
+    margin-bottom: 14px;
+  }
+
   @media ${deviceMax.md} {
-    margin-bottom: initial;
     margin-top: 14px;
   }
 
@@ -170,13 +180,15 @@ const SpeechBubble = styled.div<{
         && {
           margin-left: 5.25%;
           margin-right: 36.68%;
-          margin-bottom: 8.84%;
-          min-height: 9.2vw;
 
           position: relative;
 
+          @media ${deviceMin.lg} {
+            margin-bottom: 8.84%;
+            min-height: 9.2vw;
+          }
+
           @media ${deviceMax.md} {
-            margin-bottom: initial;
             margin-top: 12vw;
             min-height: 20vw;
           }
@@ -188,11 +200,12 @@ const SpeechBubble = styled.div<{
             width: 15%;
             height: 50px;
             left: calc(100% + 10px);
-            bottom: 45px;
-            clip-path: polygon(0 0, 100% 100%, 0 75%);
 
+            @media ${deviceMin.lg} {
+              bottom: 45px;
+              clip-path: polygon(0 0, 100% 100%, 0 75%);
+            }
             @media ${deviceMax.md} {
-              bottom: initial;
               top: 8vw;
               clip-path: polygon(0 0, 100% 0, 0 75%);
             }
@@ -202,7 +215,9 @@ const SpeechBubble = styled.div<{
     } else if ($i === $length - 1) {
       return css`
         && {
-          margin-top: 2.5%;
+          @media ${deviceMin.lg} {
+            margin-top: 2.5%;
+          }
 
           @media ${deviceMax.md} {
             margin-top: 14px;
