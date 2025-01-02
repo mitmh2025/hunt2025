@@ -40,13 +40,11 @@ const GRID = [
 ];
 
 const StyledTable = styled.table`
-  border-collapse: collapse;
   margin-bottom: 1em;
   font-family: "Roboto Mono", monospace;
   width: 100%;
   th,
   td {
-    border: 1px solid black;
     text-align: center;
   }
 `;

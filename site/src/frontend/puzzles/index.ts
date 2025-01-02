@@ -21,6 +21,7 @@ import EducationalRiteOfPassage from "./circular-greece";
 import HalfBaked from "./classic-link";
 import TheInspectre from "./clean-ivory";
 import EponymousForensicAccountant from "./colorless-china";
+import CheckadeezWordsOut from "./complex-bun";
 import NetworkingEvent from "./confused-antarctica";
 import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
@@ -158,6 +159,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
+  check_a_deez_words_out: CheckadeezWordsOut,
   downright_backwards: DownrightBackwards,
   dropping_the_ball: DroppingTheBall,
   drunkens_and_flagons: DrunkensAndFlagons,
