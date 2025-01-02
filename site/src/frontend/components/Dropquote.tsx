@@ -8,7 +8,7 @@ const LetterWrapper = styled.div`
   text-align: center;
 `;
 
-type DropquoteProps = CrosswordProps & {
+type DropquoteProps = Omit<CrosswordProps, "labelsForEmptyCopy"> & {
   letterbanks: string[][];
 };
 

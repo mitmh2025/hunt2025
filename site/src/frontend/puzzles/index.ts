@@ -35,6 +35,7 @@ import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
+import ReadBetweenTheLines from "./fake-fair";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
@@ -92,6 +93,7 @@ import ASudoku from "./recent-ship";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
+import SyntheticTagsonomy from "./rubbery-tooth";
 import DroppingTheBall from "./rundown-spot";
 import MagnifyingGlassIce from "./sandy-atlantis";
 import JustFingBehave from "./scornful-band";
@@ -129,6 +131,7 @@ import TheMark from "./unique-australia";
 import AnArgument from "./unsung-bomb";
 import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
+import CrossDashWord from "./valuable-alps";
 import YourePlayingItWrong from "./vast-fire";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
@@ -168,6 +171,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
+  synthetic_tagsonomy: SyntheticTagsonomy,
   they_might_be_grad_students_but_theyve_got_your_number:
     TheyMightBeGradStudentsButTheyveGotYourNumber,
   unreal_islands: UnrealIslands,
@@ -207,6 +211,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mellow_planet: MellowPlanet,
   missing_connections: MissingConnections,
   mystery_os: MysteryOs,
+  read_between_the_lines: ReadBetweenTheLines,
   recipe_substitutions: RecipeSubstitutions,
   relief_printing: ReliefPrinting,
   seating_arrangements: SeatingArrangements,
@@ -325,6 +330,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
+  cross_dash_word: CrossDashWord,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   estimation_dot_jpg: EstimationDotJpg,

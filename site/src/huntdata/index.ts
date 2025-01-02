@@ -52,7 +52,7 @@ const HUNT: Hunt = {
         { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "neatly_drawn" },
         { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
         { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "🔎🧊"},
-        { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
         { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "mdp25", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "mdp26", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion"},
@@ -160,6 +160,7 @@ const HUNT: Hunt = {
       gates: [
         { id: "hunt_started" }, // Hunt started.  Nothing is unlocked until this gate is satisfied.
         { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
+        { id: "mdg02" }, // Picked up Synthetic Tagsonomy from Gala
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
@@ -252,7 +253,7 @@ const HUNT: Hunt = {
         { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "seating_arrangements" }, // oddball-comic
         { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "editors_solemnity" }, // plant-soursop
         { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 }, // plump-himalayas
-        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1 }, // fake-fair
+        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1, slug: "read_between_the_lines" }, // fake-fair
         { id: "sop39", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "just_fing_behave" }, // scornful-band
         { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "its_not_clear" }, // kooky-light
         { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1, slug: "mens_at_my_nose" }, // downright-hook
@@ -517,8 +518,8 @@ const HUNT: Hunt = {
         { id: "tmp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "beyond_a_shadow_of_a_doubt" },
         { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "weirdo_threaded_doodads"},
         { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "can_do_transmissions" },
-        { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "estimation_dot_jpg"},
-        { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "cross_dash_word" },
+        { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "estimation_dot_jpg" },
         { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
         { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
@@ -535,6 +536,7 @@ const HUNT: Hunt = {
       gates: [
         { id: "tmg01" }, // Opened I Kid Ewe Knot (Weirdo Threaded Doodads)
         { id: "tmg02" }, // Opened Stitchy Situation (Weirdo Threaded Doodads)
+        { id: "tmg03" }, // Picked up Cross Dash Word
       ],
       interactions: [
         {

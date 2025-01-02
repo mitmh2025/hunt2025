@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import Crossword from "../../components/Crossword";
+import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 
 const GRID: string[][] = [
@@ -541,7 +541,7 @@ const Across = [
   ["49", "When Priya’s at home, handsome wannabe-author gets undressed", "4"],
   ["51", "Brewer dutifully emptied out and refilled with beer", "5"],
   ["53", "Wooden train set I lent to a trusted friend", "4"],
-  ["55", "What do we extract from Ivanov? A letter - Eddie, to Lin", "5"],
+  ["55", "“What do we extract from Ivanov? A letter” — Eddie, to Lin", "5"],
   [
     "57",
     "Fragmented images jog memories of folk wisdom: “nothing becomes one”",
@@ -621,7 +621,7 @@ const Down = [
   ["34", "On a holiday? Come back and discover a Rambling Club member", "5"],
   [
     "35",
-    "Died, without even opening the case of spirit - how Shakespeare describes someone’s action",
+    "“Died, without even opening the case of spirit” — how Shakespeare describes someone’s action",
     "5",
   ],
   ["36", "It will fear even a rambler who’s not French", "5"],
@@ -703,7 +703,10 @@ const StyledCrossword = styled(Crossword)`
 const Puzzle = () => {
   return (
     <>
-      <StyledCrossword labels={GRID} />
+      <StyledCrossword
+        labels={GRID}
+        labelsForEmptyCopy={filterLabelsToStructure(GRID)}
+      />
       <h2>Across</h2>
       {clueTable(Across)}
       <h2>Down</h2>

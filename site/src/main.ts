@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { newMockOAuthServer } from "../lib/auth";
 import app from "./app";
 import regsite from "./frontend/regsite/app";
 import "./frontend/server/radio-assets";
@@ -6,17 +7,25 @@ import "./frontend/server/radio-assets";
 const portStr = process.env.PORT ?? "3000";
 const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
 
+let defaultComponents = "api,ws,ui,reg";
+
+// N.B. process.env.NODE_ENV is compiled by webpack
+const environment = process.env.NODE_ENV ?? "development";
+
+let jwksUri = process.env.JWKS_URI;
+
+if (environment === "development" && jwksUri === undefined) {
+  defaultComponents += ",oauth2";
+}
+
 const enabledComponents = new Set(
-  (process.env.HUNT_COMPONENTS ?? "api,ws,ui,reg").split(","),
+  (process.env.HUNT_COMPONENTS ?? defaultComponents).split(","),
 );
 
 const regsitePortStr = process.env.REGSITE_PORT ?? "3001";
 const regsitePort = isNaN(parseInt(regsitePortStr))
   ? regsitePortStr
   : parseInt(regsitePortStr);
-
-// N.B. process.env.NODE_ENV is compiled by webpack
-const environment = process.env.NODE_ENV ?? "development";
 
 let apiUrl = process.env.API_BASE_URL;
 if (environment === "development" && enabledComponents.has("api") && !apiUrl) {
@@ -40,9 +49,6 @@ if (environment === "development" && !frontendApiSecret) {
     `Generated random frontend API secret for development: ${frontendApiSecret}`,
   );
 }
-if (!frontendApiSecret) {
-  throw new Error("$FRONTEND_API_SECRET not defined in production");
-}
 
 let dataApiSecret: string | undefined = process.env.DATA_API_SECRET;
 if (environment === "development" && !dataApiSecret) {
@@ -63,30 +69,43 @@ const registrationOpen = !process.env.REGISTRATION_CLOSED;
 
 const emailFrom = process.env.EMAIL_FROM;
 
-app({
-  enabledComponents,
-  dbEnvironment,
-  jwtSecret,
-  frontendApiSecret,
-  dataApiSecret,
-  apiUrl,
-  redisUrl,
-  emailFrom,
-})
-  .then((app) =>
+async function main() {
+  if (!frontendApiSecret) {
+    throw new Error("$FRONTEND_API_SECRET not defined in production");
+  }
+  if (environment === "development" && enabledComponents.has("oauth2")) {
+    const oauth = await newMockOAuthServer(3004);
+    const baseUrl = oauth.issuer.url;
+    jwksUri = `${baseUrl}/jwks`;
+    console.log(
+      `Mock OAuth2 server listening on ${baseUrl}/.well-known/openid-configuration`,
+    );
+  }
+  await app({
+    enabledComponents,
+    dbEnvironment,
+    jwtSecret,
+    jwksUri,
+    frontendApiSecret,
+    dataApiSecret,
+    apiUrl,
+    redisUrl,
+    emailFrom,
+  }).then((app) =>
     app.listen(port, () => {
       console.log(`Listening on port ${port}`);
     }),
-  )
-  .catch((err: unknown) => {
-    console.error(err);
-  });
+  );
 
-if (enabledComponents.has("reg") && apiUrl) {
-  regsite({
-    apiUrl,
-    registrationOpen,
-  }).listen(regsitePort, () => {
-    console.log(`Regsite listening on port ${regsitePort}`);
-  });
+  if (enabledComponents.has("reg") && apiUrl) {
+    regsite({
+      apiUrl,
+      registrationOpen,
+    }).listen(regsitePort, () => {
+      console.log(`Regsite listening on port ${regsitePort}`);
+    });
+  }
 }
+main().catch((err: unknown) => {
+  console.error(err);
+});

@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import Crossword from "../../components/Crossword";
+import Crossword, { filterLabelsToStructure } from "../../components/Crossword";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 import aAudio from "./assets/a.mp3";
 import dAudio from "./assets/d.mp3";
@@ -45,7 +45,10 @@ const Puzzle = (): JSX.Element => {
     <>
       <FlexWrapper>
         <HScrollTableWrapper>
-          <StyledCrossword labels={GRID} />
+          <StyledCrossword
+            labels={GRID}
+            labelsForEmptyCopy={filterLabelsToStructure(GRID)}
+          />
         </HScrollTableWrapper>
         <p>
           <FlexContainer>

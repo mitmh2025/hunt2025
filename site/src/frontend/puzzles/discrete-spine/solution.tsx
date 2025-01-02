@@ -19,9 +19,17 @@ import pill from "./assets/pill.png";
 import pow from "./assets/pow.png";
 import rooks from "./assets/rooks.png";
 import ruger from "./assets/ruger.png";
+import tourniquet1 from "./assets/tourniquet1.mp4";
+import tourniquet2 from "./assets/tourniquet2.mp4";
+import tourniquet3 from "./assets/tourniquet3.mp4";
+import tourniquet4 from "./assets/tourniquet4.mp4";
+import tourniquet5 from "./assets/tourniquet5.mp4";
+import tourniquet6 from "./assets/tourniquet6.mp4";
+import tourniquet7 from "./assets/tourniquet7.mp4";
+import tourniquet8 from "./assets/tourniquet8.mp4";
 import whey from "./assets/whey.png";
 import worm from "./assets/worm.png";
-import { FlexWrapper } from "./puzzle";
+import { FlexColumn } from "./puzzle";
 
 const StyledTable = styled.table`
   margin: 1em 0;
@@ -36,6 +44,14 @@ const MonoTable = styled(StyledTable)`
     font-family: "Roboto Mono", monospace;
     white-space: nowrap;
   }
+`;
+
+const FlexRow = styled.div`
+  display: flex;
+`;
+
+const StyledVideo = styled.video`
+  width: 12.5%;
 `;
 
 const LEFT_PAGE = [
@@ -360,17 +376,44 @@ const Solution = (): JSX.Element => {
         Tunic glyphs, and each can be rotated using the ordered list of
         rotations previously, one rotation per glyph.
       </p>
-      <FlexWrapper>
+      <FlexColumn>
         <LinkedImage
           src={extraction1}
-          alt="A series of angular glyphs written in thich black lines."
+          alt="A series of angular glyphs written in thick black lines."
         />
         <div>↓</div>
         <LinkedImage
           src={extraction2}
-          alt="A series of angular glyphs written in thich black lines."
+          alt="A series of angular glyphs written in thick black lines."
         />
-      </FlexWrapper>
+      </FlexColumn>
+      <p>The videos below show the rotations in motion for each glyph.</p>
+      <FlexRow>
+        <StyledVideo controls>
+          <source src={tourniquet1} type="video/mp4" />
+        </StyledVideo>
+        <StyledVideo controls>
+          <source src={tourniquet2} type="video/mp4" />
+        </StyledVideo>
+        <StyledVideo controls>
+          <source src={tourniquet3} type="video/mp4" />
+        </StyledVideo>
+        <StyledVideo controls>
+          <source src={tourniquet4} type="video/mp4" />
+        </StyledVideo>
+        <StyledVideo controls>
+          <source src={tourniquet5} type="video/mp4" />
+        </StyledVideo>
+        <StyledVideo controls>
+          <source src={tourniquet6} type="video/mp4" />
+        </StyledVideo>
+        <StyledVideo controls>
+          <source src={tourniquet7} type="video/mp4" />
+        </StyledVideo>
+        <StyledVideo controls>
+          <source src={tourniquet8} type="video/mp4" />
+        </StyledVideo>
+      </FlexRow>
       <p>
         This transforms the glyphs into a meaningful sequence saying “carmine
         obi three four,” which clues the final answer of the puzzle,{" "}

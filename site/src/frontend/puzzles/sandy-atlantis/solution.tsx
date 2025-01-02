@@ -11,11 +11,12 @@ const Solution = () => {
   return (
     <>
       <p>
-        The names of all the emojis in the 6x6 grid are of 6 length. This allows
-        you to construct a 3D 6x6x6 cube. The puzzle is a 3D word search as
-        indicated by the title 🔎🧊. The 13 emojis below the grid are the words
-        you need to search. Decoding the search emoji names will generate words
-        in alphabetical order of length 4-6.
+        All of the emojis in the 6x6 grid hint at 6 letter words—either the
+        direct emoji name or a closely similar word. This allows you to
+        construct a 3D 6x6x6 cube. The puzzle is a 3D word search as indicated
+        by the title 🔎🧊. The 13 emojis below the grid are the words you need
+        to search. Decoding the search emoji names will generate words in
+        alphabetical order of length 4-6.
       </p>
       <p>
         All of the words in the search go through unique letters in the cube

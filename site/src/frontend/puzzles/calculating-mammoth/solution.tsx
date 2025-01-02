@@ -84,7 +84,19 @@ const EVENTS_TABLE = [
 
 const StyledTable = styled.table`
   margin: 1em 0;
-  border-spacing: 8px;
+  border-collapse: collapse;
+  td,
+  th {
+    padding-right: 8px;
+    border-bottom: 1px solid black;
+  }
+`;
+
+const HighlightTable = styled(StyledTable)`
+  td:nth-child(5),
+  td:nth-child(6) {
+    background-color: #ffff00;
+  }
 `;
 
 const ConwayCode = styled.div`
@@ -142,7 +154,7 @@ const Solution = (): JSX.Element => {
         in yellow are used to divide up the age generations:
       </p>
       <HScrollTableWrapper>
-        <StyledTable>
+        <HighlightTable>
           <tr>
             <th>#</th>
             <th>Generation</th>
@@ -170,7 +182,7 @@ const Solution = (): JSX.Element => {
               </tr>
             ),
           )}
-        </StyledTable>
+        </HighlightTable>
       </HScrollTableWrapper>
       <p>The highlighted multi-answer clues with dates are shown below:</p>
       <HScrollTableWrapper>

@@ -1,9 +1,14 @@
-import { randomBytes } from "crypto";
 import path from "path";
 import { fileURLToPath } from "url";
-import express from "express";
-import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
+import express, { type RequestHandler, type Request } from "express";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import morgan from "morgan";
+import { allowInsecureRequests, discovery } from "openid-client";
+import { Passport } from "passport";
+import { type VerifiedCallback } from "passport-jwt";
+import OAuth2Strategy, { type VerifyCallback } from "passport-oauth2";
+import { authentikJwtStrategy } from "../../lib/auth";
 
 const LOG_FORMAT_DEBUG =
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" ":req[Authorization]"';
@@ -16,40 +21,123 @@ if (environment !== "development" && environment !== "production") {
   throw new Error("$NODE_ENV not set to development or production");
 }
 
-function buildApp({
-  jwtSecret,
-  apiUrl,
+async function newPassport({
+  server,
+  clientID,
+  clientSecret,
 }: {
-  jwtSecret: string | Buffer;
+  server: string;
+  clientID: string;
+  clientSecret: string;
+}) {
+  const config = await discovery(
+    new URL(server),
+    clientID,
+    clientSecret,
+    undefined,
+    {
+      execute: environment === "development" ? [allowInsecureRequests] : [],
+    },
+  );
+  const metadata = config.serverMetadata();
+
+  if (
+    !metadata.authorization_endpoint ||
+    !metadata.token_endpoint ||
+    !metadata.jwks_uri
+  ) {
+    throw new Error("OpenID discovery doc missing required fields");
+  }
+
+  const passport = new Passport();
+  passport.use(
+    "mitmh2025",
+    new OAuth2Strategy(
+      {
+        authorizationURL: metadata.authorization_endpoint,
+        tokenURL: metadata.token_endpoint,
+        clientID,
+        clientSecret,
+        callbackURL: "/auth/mitmh2025/callback",
+      },
+      (
+        accessToken: string,
+        _refreshToken: string,
+        _profile: unknown,
+        cb: VerifyCallback,
+      ) => {
+        cb(null, accessToken);
+      },
+    ),
+  );
+  passport.use(
+    "authentikJwt",
+    authentikJwtStrategy(
+      metadata.jwks_uri,
+      (req: Request) =>
+        (req.cookies.mitmh2025_api_auth as string | undefined) ?? null,
+      (req: Request, _, done: VerifiedCallback) => {
+        done(null, req.cookies.mitmh2025_api_auth);
+      },
+    ),
+  );
+  return passport;
+}
+
+async function buildApp({
+  apiUrl,
+  oauthServer,
+  clientID,
+  clientSecret,
+}: {
   apiUrl: string;
+  oauthServer: string;
+  clientID: string;
+  clientSecret: string;
 }) {
   const app = express();
+
+  const passport = await newPassport({
+    server: oauthServer,
+    clientID,
+    clientSecret,
+  });
 
   // Install /healthz before the log handler, so we don't log every health check.
   app.use("/healthz", (_req, res) => res.send("ok"));
 
+  app.use(cookieParser());
   app.use(logMiddleware);
 
-  app.get("/admin-token", (req, res) => {
-    let adminUser = req.header("x-authentik-email");
-    if (!adminUser) {
-      if (environment === "development") {
-        adminUser = "dev@example.com";
-      } else {
-        res.status(403).send("No x-authentik-email header");
-        return;
-      }
-    }
+  app.get(
+    "/auth/mitmh2025/callback",
+    passport.authenticate("mitmh2025", {
+      session: false,
+      failureRedirect: "/",
+    }) as RequestHandler,
+    function (req, res) {
+      // Successful authentication, redirect home.
+      res.cookie("mitmh2025_api_auth", req.user, {
+        httpOnly: false,
+        sameSite: "lax",
+      });
+      res.redirect("/");
+    },
+  );
 
-    const expiresAt = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour
-    const renewAfter = new Date(expiresAt * 1000 - 5 * 60 * 1000); // 5 minutes before expiration
-
-    res.json({
-      token: jwt.sign({ adminUser, exp: expiresAt }, jwtSecret),
-      apiUrl: apiUrl,
-      renewAfter: renewAfter.toISOString(),
+  if (environment === "development") {
+    const proxy = createProxyMiddleware({
+      target: apiUrl,
     });
-  });
+    app.use("/api", proxy as RequestHandler);
+  }
+
+  // Require auth for any other URL
+  app.use(
+    passport.authenticate(["authentikJwt", "mitmh2025"], {
+      session: false,
+    }) as RequestHandler,
+  );
 
   app.use(
     "/",
@@ -71,22 +159,43 @@ if (environment === "development" && !apiUrl) {
   apiUrl = `http://localhost:3000/api`;
 }
 
-let jwtSecret: string | Buffer | undefined = process.env.JWT_SECRET;
-if (environment === "development" && !jwtSecret) {
-  jwtSecret = randomBytes(128);
-}
-
-if (!jwtSecret) {
-  throw new Error("$JWT_SECRET not defined in production");
-}
-
 if (!apiUrl) {
   throw new Error("$API_BASE_URL not defined in production");
 }
 
+const oauthServer =
+  process.env.OAUTH_SERVER ?? environment === "development"
+    ? "http://localhost:3004/.well-known/openid-configuration"
+    : undefined;
+const clientID =
+  process.env.OAUTH_CLIENT_ID ?? environment === "development"
+    ? "unused"
+    : undefined;
+const clientSecret =
+  process.env.OAUTH_CLIENT_SECRET ?? environment === "development"
+    ? "unused"
+    : undefined;
+if (!oauthServer) {
+  throw new Error("$OAUTH_SERVER not defined in production");
+}
+if (!clientID) {
+  throw new Error("$OAUTH_CLIENT_ID not defined in production");
+}
+if (!clientSecret) {
+  throw new Error("$OAUTH_CLIENT_SECRET not defined in production");
+}
+
 buildApp({
-  jwtSecret,
   apiUrl,
-}).listen(opssitePort, () => {
-  console.log(`Ops site listening on port ${opssitePort}`);
-});
+  oauthServer,
+  clientID,
+  clientSecret,
+})
+  .then((app) =>
+    app.listen(opssitePort, () => {
+      console.log(`Ops site listening on port ${opssitePort}`);
+    }),
+  )
+  .catch((e: unknown) => {
+    console.error(e);
+  });

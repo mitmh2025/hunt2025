@@ -1,10 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import {
-  COPY_ONLY_CLASS,
-  NO_COPY_CLASS,
-} from "../../components/CopyToClipboard";
-import Crossword from "../../components/Crossword";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
+import Crossword, {
+  calculateNumberLabels,
+  filterLabelsToStructure,
+} from "../../components/Crossword";
 import LinkedImage from "../../components/LinkedImage";
 import puzzle from "./assets/puzzle.png";
 import {
@@ -22,22 +22,7 @@ const StyledTable = styled.table`
 `;
 
 const Puzzle = (): JSX.Element => {
-  let counter = 1;
-  const labels: string[][] = [];
-  for (const row of GRID) {
-    const labelRow: string[] = [];
-    for (const char of row) {
-      if (char === "#") {
-        labelRow.push(`${counter}`);
-        counter++;
-      } else if (char === " ") {
-        labelRow.push("");
-      } else {
-        labelRow.push(char);
-      }
-    }
-    labels.push(labelRow);
-  }
+  const labels = calculateNumberLabels(GRID);
 
   return (
     <>
@@ -45,13 +30,13 @@ const Puzzle = (): JSX.Element => {
         Everyone starts out lost, but we find our way in our own time.
       </p>
       <LinkedImage
-        className={NO_COPY_CLASS}
         src={puzzle}
         alt="A crossword puzzle with some cells highlighted in blue."
       />
       <Crossword
         className={COPY_ONLY_CLASS}
         labels={labels}
+        labelsForEmptyCopy={filterLabelsToStructure(labels)}
         rowHeaders={HEADERS}
         rowFooters={FOOTERS}
         getAdditionalCellStyles={({ row, column }) => {

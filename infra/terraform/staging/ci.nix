@@ -1,7 +1,10 @@
 { pkgs, config, lib, self, ... }:
 # Inspired by https://fzakaria.com/2021/06/22/setting-up-a-nix-google-cloud-storage-gcs-binary-cache.html
 {
-  ci.github.repositories.radio-media = {};
+  ci.github.repositories = {
+    radio-media = {};
+    mediamtx = {};
+  };
   ci.nix.cache.bucket = "rb8tcjeo-nix-cache";
   ci.nix.cache.users = [
     # Give deploy VM access to our Nix cache.

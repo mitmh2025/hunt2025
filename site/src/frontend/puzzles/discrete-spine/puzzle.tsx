@@ -5,13 +5,13 @@ import audio from "./assets/audio.mp3";
 import captions from "./assets/captions.vtt";
 import image from "./assets/image.png";
 
-export const FlexWrapper = styled.div`
+export const FlexColumn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const TallFlexWrapper = styled(FlexWrapper)`
+const TallFlexWrapper = styled(FlexColumn)`
   height: 150px;
 `;
 
@@ -41,7 +41,7 @@ const Puzzle = (): JSX.Element => {
         <FixedSizeDiv>
           <details>
             <summary>Audio transcript</summary>
-            <FlexWrapper>ɹiʧaɪleɪ zeɪpu lənɔr vɜr</FlexWrapper>
+            <FlexColumn>ɹiʧaɪleɪ zeɪpu lənɔr vɜr</FlexColumn>
           </details>
         </FixedSizeDiv>
       </TallFlexWrapper>
