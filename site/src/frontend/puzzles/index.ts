@@ -16,6 +16,7 @@ import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
 import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
+import StarCrossed from "./carefree-ghost";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
 import HalfBaked from "./classic-link";
@@ -235,6 +236,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   follow_the_rules: FollowTheRules,
   incognito: Incognito,
   maze_of_lies: MazeOfLies,
+  star_crossed: StarCrossed,
   the_eras_puzzle: TheErasPuzzle,
   the_inspectre: TheInspectre,
   youre_playing_it_wrong: YourePlayingItWrong,
