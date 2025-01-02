@@ -317,6 +317,9 @@ const MissingDiamondMapEntity = ({
     left: `${(entity.pos.left / MAP_NATIVE_WIDTH) * 100}%`,
     width: `${(entity.pos.width / MAP_NATIVE_WIDTH) * 100}%`,
   };
+  if (entity.puzzle) {
+    containerStyle.cursor = "pointer";
+  }
   const imageStyle: CSSProperties = {
     width: "100%",
     userSelect: "none",
