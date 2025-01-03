@@ -23,6 +23,7 @@ import { type TeamHuntState } from "../../../../lib/api/client";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
 import { PuzzleIcon, PuzzleUnlockModal } from "../../components/PuzzleLink";
 import { deviceMax, deviceMin } from "../../utils/breakpoints";
+import { MissingDiamondFonts } from "./MissingDiamondFonts";
 import billie from "./assets/billie.png";
 import cork from "./assets/cork.png";
 import map from "./assets/map.png";
@@ -161,7 +162,7 @@ const SpeechBubble = styled.div<{
   display: flex;
   align-items: center;
   color: black;
-  font-family: Garamond, serif;
+  font-family: "EB Garamond", serif;
   white-space: pre-wrap;
 
   @media ${deviceMin.lg} {
@@ -662,56 +663,59 @@ const MissingDiamondBody = ({
   teamState: TeamHuntState;
 }) => {
   return (
-    <MissingDiamondBackdrop>
-      <MissingDiamondMapArea>
-        <MissingDiamondMapContainer>
-          <MissingDiamondTitle src={title} alt="Find The Missing Diamond" />
-          <MissingDiamondMap
-            src={map}
-            alt="A map of Downtown MITropolis. East-west streets are labeled A-H and north-south streets are labeled 1st-9th. Many streets are one-way and some do not pass through all of the map."
+    <>
+      <MissingDiamondFonts />
+      <MissingDiamondBackdrop>
+        <MissingDiamondMapArea>
+          <MissingDiamondMapContainer>
+            <MissingDiamondTitle src={title} alt="Find The Missing Diamond" />
+            <MissingDiamondMap
+              src={map}
+              alt="A map of Downtown MITropolis. East-west streets are labeled A-H and north-south streets are labeled 1st-9th. Many streets are one-way and some do not pass through all of the map."
+            />
+            {state.locations.map((location) => (
+              <MissingDiamondLocationImage
+                key={location.asset}
+                location={location}
+                currency={teamState.currency}
+              />
+            ))}
+            {state.witnesses.map((witness) => (
+              <MissingDiamondWitnessImage
+                key={witness.alt}
+                witness={witness}
+                currency={teamState.currency}
+              />
+            ))}
+            {state.interactions?.map((interaction) => (
+              <MissingDiamondInteraction
+                key={interaction.slug}
+                interaction={interaction}
+              />
+            ))}
+          </MissingDiamondMapContainer>
+        </MissingDiamondMapArea>
+        <MissingDiamondSkyline>
+          <MissingDiamondStars />
+          <MissingDiamondBillie
+            src={billie}
+            alt="A silhouette of Billie O'Ryan"
           />
-          {state.locations.map((location) => (
-            <MissingDiamondLocationImage
-              key={location.asset}
-              location={location}
-              currency={teamState.currency}
-            />
+          {state.speechBubbles.map((bubble, i) => (
+            <SpeechBubble
+              key={bubble.slug}
+              $color={bubble.color}
+              $glow={bubble.glow ?? false}
+              $extraBorder={bubble.extraBorder ?? false}
+              $i={i}
+              $length={state.speechBubbles.length}
+            >
+              {bubble.text}
+            </SpeechBubble>
           ))}
-          {state.witnesses.map((witness) => (
-            <MissingDiamondWitnessImage
-              key={witness.alt}
-              witness={witness}
-              currency={teamState.currency}
-            />
-          ))}
-          {state.interactions?.map((interaction) => (
-            <MissingDiamondInteraction
-              key={interaction.slug}
-              interaction={interaction}
-            />
-          ))}
-        </MissingDiamondMapContainer>
-      </MissingDiamondMapArea>
-      <MissingDiamondSkyline>
-        <MissingDiamondStars />
-        <MissingDiamondBillie
-          src={billie}
-          alt="A silhouette of Billie O'Ryan"
-        />
-        {state.speechBubbles.map((bubble, i) => (
-          <SpeechBubble
-            key={bubble.slug}
-            $color={bubble.color}
-            $glow={bubble.glow ?? false}
-            $extraBorder={bubble.extraBorder ?? false}
-            $i={i}
-            $length={state.speechBubbles.length}
-          >
-            {bubble.text}
-          </SpeechBubble>
-        ))}
-      </MissingDiamondSkyline>
-    </MissingDiamondBackdrop>
+        </MissingDiamondSkyline>
+      </MissingDiamondBackdrop>
+    </>
   );
 };
 
