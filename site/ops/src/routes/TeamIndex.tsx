@@ -7,13 +7,13 @@ import {
   DialogTitle,
   Input,
 } from "@mui/material";
+import { useNotifications } from "@toolpad/core";
 import {
   createMRTColumnHelper,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_Cell,
 } from "material-react-table";
-import { useSnackbar } from "notistack";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOpsData } from "../OpsDataProvider";
@@ -45,7 +45,7 @@ function GrantKeysDialog({
   const { adminClient, appendActivityLogEntries } = useOpsData();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const notifications = useNotifications();
 
   const teamsDisplay =
     teamIds === "all" ? "all teams" : `${teamIds.length} teams`;
@@ -67,15 +67,17 @@ function GrantKeysDialog({
           }
 
           appendActivityLogEntries(result.body);
-          enqueueSnackbar(`Granted ${qty} keys to ${teamsDisplay}`, {
-            variant: "success",
+          notifications.show(`Granted ${qty} keys to ${teamsDisplay}`, {
+            severity: "success",
+            autoHideDuration: 3000,
           });
           onClose();
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
-          enqueueSnackbar(`Failed to grant keys: ${msg}`, {
-            variant: "error",
+          notifications.show(`Failed to grant keys: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
           });
         })
         .finally(() => {
@@ -130,6 +132,10 @@ export default function TeamIndex() {
   const indexData = useMemo(() => {
     const record: Record<number, TeamIndexData> = {};
     for (const team of opsData.teams) {
+      if (team.deactivated) {
+        continue;
+      }
+
       const bigBoardTeam = formatTeamData(team, opsData.puzzleMetadata);
       record[team.teamId] = {
         name: team.name,

@@ -6,7 +6,10 @@ import {
   TeamRegistrationSchema,
   TeamStateSchema,
 } from "./contract";
-import { InternalActivityLogSchema } from "./frontend_contract";
+import {
+  InternalActivityLogSchema,
+  TeamRegistrationLogSchema,
+} from "./frontend_contract";
 
 export const PuzzleAPIMetadataSchema = z.record(
   z.string(),
@@ -120,6 +123,35 @@ export const adminContract = c.router({
     }),
     responses: {
       200: InternalActivityLogSchema,
+    },
+  },
+  deactivateTeam: {
+    method: "POST",
+    path: "/teams/:teamId/deactivate",
+    body: z.object({}),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  reactivateTeam: {
+    method: "POST",
+    path: "/teams/:teamId/reactivate",
+    body: z.object({}),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  changeTeamPassword: {
+    method: "POST",
+    path: "/teams/:teamId/changePassword",
+    body: z.object({
+      newPassword: z.string(),
+    }),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
     },
   },
 });

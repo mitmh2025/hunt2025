@@ -43,6 +43,7 @@ import {
   type InternalActivityLogEntry,
   type MutableTeamRegistration,
   frontendContract,
+  type TeamRegistrationLogEntry,
 } from "../../lib/api/frontend_contract";
 import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
@@ -59,6 +60,8 @@ import {
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
+  changeTeamDeactivation,
+  changeTeamPassword,
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
 } from "./db";
@@ -277,6 +280,7 @@ function formatInternalActivityLogEntryForApi(
   };
 }
 
+<<<<<<< HEAD
 function formatMutationResultForAdminApi(
   result: (InternalActivityLogEntry | undefined)[],
 ): ServerInferResponses<typeof frontendContract.getFullActivityLog, 200> {
@@ -292,6 +296,23 @@ function formatMutationResultForAdminApi(
 }
 
 export async function getRouter({
+||||||| parent of dfaed30a (Add team deactivation and password changes)
+export function getRouter({
+=======
+function formatRegistrationLogEntryForApi(
+  entry: TeamRegistrationLogEntry,
+): ServerInferResponseBody<
+  typeof frontendContract.getFullTeamRegistrationLog,
+  200
+>[number] {
+  return {
+    ...entry,
+    timestamp: entry.timestamp.toISOString(),
+  };
+}
+
+export function getRouter({
+>>>>>>> dfaed30a (Add team deactivation and password changes)
   jwtSecret,
   jwksUri,
   frontendApiSecret,
@@ -344,9 +365,10 @@ export async function getRouter({
       redisClient,
       team_id,
     );
+
     const info = team_registration_log.entries
       .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamInfo();
+      .formatTeamInfoIfActive();
     if (info === undefined) {
       return {
         status: 404 as const,
@@ -372,7 +394,7 @@ export async function getRouter({
     );
     const registration = team_registration_log.entries
       .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamRegistrationState();
+      .formatTeamRegistrationStateIfActive();
     if (registration === undefined) {
       return {
         status: 404 as const,
@@ -601,6 +623,7 @@ export async function getRouter({
           .where({
             username,
             password,
+            deactivated: false,
           })
           .select("username", "id")
           .first();
@@ -1091,23 +1114,25 @@ export async function getRouter({
           const dryRun = body.dryRun;
           const messages = [];
           for (const teamInfo of teamInfos.values()) {
-            if (teamInfo.registration === undefined) {
+            const registration = teamInfo.formatTeamRegistrationIfActive();
+            if (registration === undefined) {
               continue;
             }
+
             const addresses = [
               {
-                name: teamInfo.registration.contactName,
-                address: teamInfo.registration.contactEmail,
+                name: registration.contactName,
+                address: registration.contactEmail,
               },
               {
-                name: teamInfo.registration.secondaryContactName,
-                address: teamInfo.registration.secondaryContactEmail,
+                name: registration.secondaryContactName,
+                address: registration.secondaryContactEmail,
               },
             ];
             if (body.wholeTeam) {
               addresses.push({
-                name: teamInfo.registration.name,
-                address: teamInfo.registration.teamEmail,
+                name: registration.name,
+                address: registration.teamEmail,
               });
             }
             for (const address of addresses) {
@@ -1124,7 +1149,7 @@ export async function getRouter({
                     messageStream: "hunt-announcements",
                     templateAlias: body.templateAlias,
                     templateModel: {
-                      teamName: teamInfo.registration.name,
+                      teamName: registration.name,
                     },
                   });
                   result.success = true;
@@ -1310,6 +1335,110 @@ export async function getRouter({
           return formatMutationResultForAdminApi(result);
         },
       },
+      changeTeamPassword: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { teamId }, body: { newPassword } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_password_change",
+                data: {
+                  new_password: newPassword,
+                },
+              });
+
+              await changeTeamPassword(team_id, newPassword, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        },
+      },
+      deactivateTeam: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_deactivated",
+                data: {},
+              });
+
+              await changeTeamDeactivation(team_id, true, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        },
+      },
+      reactivateTeam: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_reactivated",
+                data: {},
+              });
+
+              await changeTeamDeactivation(team_id, false, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        },
+      },
     },
     frontend: {
       markTeamGateSatisfied: {
@@ -1475,10 +1604,7 @@ export async function getRouter({
           );
           const body = entries.map((e) => {
             const entry = cleanupTeamRegistrationLogEntryFromDB(e);
-            return {
-              ...entry,
-              timestamp: entry.timestamp.toISOString(),
-            };
+            return formatRegistrationLogEntryForApi(entry);
           });
           return {
             status: 200,

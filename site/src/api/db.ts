@@ -120,6 +120,11 @@ declare module "knex/types/tables" {
     id: number;
     username: string;
     password?: string;
+    deactivated: boolean;
+  };
+
+  type InsertTeam = Omit<Team, "id" | "deactivated"> & {
+    deactivated?: boolean;
   };
 
   // "correct" means the puzzle is solved and no longer allows new answer submissions
@@ -232,7 +237,7 @@ declare module "knex/types/tables" {
    * knex
    */
   interface Tables {
-    teams: Team;
+    teams: Knex.Knex.CompositeTableType<Team, InsertTeam>;
     activity_log: Knex.Knex.CompositeTableType<
       ActivityLogEntryRow,
       InsertActivityLogEntry
@@ -424,4 +429,20 @@ export async function appendTeamRegistrationLog(
       // console.log("inserted", fixedEntry);
       return fixedEntry;
     });
+}
+
+export async function changeTeamDeactivation(
+  team_id: number,
+  deactivated: boolean,
+  trx: Knex.Knex.Transaction,
+) {
+  await trx("teams").where("id", team_id).update({ deactivated });
+}
+
+export async function changeTeamPassword(
+  team_id: number,
+  password: string,
+  trx: Knex.Knex.Transaction,
+) {
+  await trx("teams").where("id", team_id).update({ password });
 }

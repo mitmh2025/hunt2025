@@ -192,10 +192,12 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
 export class TeamInfoIntermediate {
   epoch: number; // The largest value of `id` that was processed/relevant
   registration?: TeamRegistration;
+  deactivated: boolean;
 
   constructor(initial?: Partial<TeamInfoIntermediate>) {
     this.epoch = initial?.epoch ?? -1;
     this.registration = initial?.registration;
+    this.deactivated = initial?.deactivated ?? false;
   }
 
   reduce(entry: TeamRegistrationLogEntry) {
@@ -229,6 +231,21 @@ export class TeamInfoIntermediate {
             name: this.registration.name,
             ...entry.data,
           };
+          break;
+        case "team_deactivated":
+          this.deactivated = true;
+          break;
+        case "team_reactivated":
+          this.deactivated = false;
+          break;
+        case "team_password_change":
+          this.registration = {
+            ...this.registration,
+            password: entry.data.new_password,
+          };
+          break;
+        default:
+          entry satisfies never;
       }
     }
     return this;
@@ -244,6 +261,18 @@ export class TeamInfoIntermediate {
     };
   }
 
+  formatTeamInfoIfActive(): TeamInfo | undefined {
+    const registration = this.formatTeamRegistrationIfActive();
+    if (registration === undefined) {
+      return undefined;
+    }
+
+    return {
+      epoch: this.epoch,
+      teamName: registration.name,
+    };
+  }
+
   formatTeamRegistration(): TeamRegistration | undefined {
     return this.registration;
   }
@@ -256,5 +285,25 @@ export class TeamInfoIntermediate {
       epoch: this.epoch,
       ...this.registration,
     };
+  }
+
+  formatTeamRegistrationStateIfActive(): TeamRegistrationState | undefined {
+    const registration = this.formatTeamRegistrationIfActive();
+    if (registration === undefined) {
+      return undefined;
+    }
+
+    return {
+      epoch: this.epoch,
+      ...registration,
+    };
+  }
+
+  isActive(): boolean {
+    return !!this.registration && !this.deactivated;
+  }
+
+  formatTeamRegistrationIfActive(): TeamRegistration | undefined {
+    return this.isActive() ? this.registration : undefined;
   }
 }
