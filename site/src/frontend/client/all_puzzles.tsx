@@ -4,6 +4,36 @@ import AllPuzzlesList from "../components/AllPuzzlesList";
 import { PuzzleIcon } from "../components/PuzzleLink";
 import { type AllPuzzlesState } from "./all_puzzles_types";
 import useDataset from "./useDataset";
+import { styled } from "styled-components";
+
+const Filters = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--gray-300);
+
+    &:hover {
+      color: var(--gray-200);
+    }
+
+    &.selected {
+      color: var(--gray-100);
+    }
+
+    &.selected:hover {
+      color: var(--true-white);
+    }
+  }
+
+  .puzzle-link-status-icon {
+    margin-right: 0.125rem;
+  }
+`;
 
 const AllPuzzlesManager = ({
   initialState,
@@ -53,9 +83,9 @@ const AllPuzzlesManager = ({
 
   return (
     <>
-      <div>
-        Show:
-        <label>
+      <Filters>
+        <h4>Show:</h4>
+        <label className={`${showUnlockable && "selected"}`}>
           <input
             type="checkbox"
             checked={showUnlockable}
@@ -64,7 +94,7 @@ const AllPuzzlesManager = ({
           <PuzzleIcon lockState="unlockable" size={24} />
           unlockable
         </label>
-        <label>
+        <label className={`${showUnlocked && "selected"}`}>
           <input
             type="checkbox"
             checked={showUnlocked}
@@ -73,7 +103,7 @@ const AllPuzzlesManager = ({
           <PuzzleIcon lockState="unlocked" size={24} />
           unlocked
         </label>
-        <label>
+        <label className={`${showSolved && "selected"}`}>
           <input
             type="checkbox"
             checked={showSolved}
@@ -82,7 +112,7 @@ const AllPuzzlesManager = ({
           <PuzzleIcon lockState="unlocked" answer="dummy" size={24} />
           solved
         </label>
-      </div>
+      </Filters>
       <AllPuzzlesList state={filteredState} />
     </>
   );
