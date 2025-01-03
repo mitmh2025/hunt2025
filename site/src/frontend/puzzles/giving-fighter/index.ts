@@ -128,18 +128,13 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: [
-        "AVEC SUCRE",
-        "CHAUFF\u00c9",
-        "CINQ SEPT",
-        "C\u00d4NE TRONQU\u00c9",
-      ],
+      guess: ["AVEC SUCRE", "CHAUFFÉ", "CINQ SEPT", "CÔNE TRONQUÉ"],
       reply: "Cela fait partie de la phrase-indice. Continue!",
     },
     {
-      guess: ["C\u00d4NE TRONQU\u00c9 AVEC SUCRE CHAUFF\u00c9 CINQ SEPT"],
+      guess: ["CÔNE TRONQUÉ AVEC SUCRE CHAUFFÉ CINQ SEPT"],
       reply:
-        "La r\u00e9ponse comporte deux mots; le premier a cinq lettres et le second, sept.",
+        "La réponse comporte deux mots; le premier a cinq lettres et le second, sept.",
     },
   ],
   router,
