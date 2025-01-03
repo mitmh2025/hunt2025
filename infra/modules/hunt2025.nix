@@ -27,7 +27,7 @@ in {
       };
       jwksUri = mkOption {
         type = types.nullOr types.str;
-        default = types.null;
+        default = null;
       };
     };
   };
