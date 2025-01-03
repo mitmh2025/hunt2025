@@ -986,6 +986,7 @@ export function getRouter({
                 try {
                   await mailer.sendEmail({
                     to: address,
+                    messageStream: "hunt-announcements",
                     templateAlias: body.templateAlias,
                     templateModel: {
                       teamName: teamInfo.registration.name,
