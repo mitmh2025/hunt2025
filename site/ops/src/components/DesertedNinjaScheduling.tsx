@@ -12,7 +12,6 @@ import {
 } from "../DesertedNinjaDataProvider";
 import { useOpsData } from "../OpsDataProvider";
 import { type TeamData } from "../opsdata/types";
-import { SessionSelect } from "./DesertedNinjaSessionSelector";
 import { TeamSelector } from "./TeamSelector";
 
 function SessionQuestionDetails({
@@ -229,7 +228,6 @@ export function DesertedNinjaScheduling() {
   return (
     <>
       <h2>Scheduling mode</h2>
-      <SessionSelect buttonText="View details" />
       <SessionDetails />
     </>
   );

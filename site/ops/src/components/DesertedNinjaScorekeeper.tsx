@@ -6,7 +6,6 @@ import {
   //  DNDataActionType
 } from "../DesertedNinjaDataProvider";
 import { useOpsData } from "../OpsDataProvider";
-import { SessionSelect } from "./DesertedNinjaSessionSelector";
 
 const ScorekeeperTable = styled.table`
   border: 1px solid black;
@@ -128,7 +127,6 @@ export function DesertedNinjaScorekeeper() {
   return (
     <>
       <h2>Scorekeeper mode</h2>
-      <SessionSelect buttonText="Score this session" />
       <ScorekeeperPanel />
     </>
   );
