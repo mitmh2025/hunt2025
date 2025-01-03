@@ -1,5 +1,8 @@
 import React from "react";
-import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
 
@@ -37,6 +40,7 @@ const Puzzle = (): JSX.Element => {
         allowFullScreen
       />
       <LinkedImage
+        className={NO_COPY_CLASS}
         src={image}
         alt="Clipart of houses arranged on a 12x8 grid. Each house has a letter over the door. At the top right of the grid is a clipart person in a boxing stance."
       />
