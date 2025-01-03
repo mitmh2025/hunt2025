@@ -699,7 +699,7 @@ const MissingDiamondBody = ({
           <MissingDiamondStars />
           <MissingDiamondBillie
             src={billie}
-            alt="A silhouette of Billie O'Ryan"
+            alt="A silhouette of Billie O’Ryan"
           />
           {state.speechBubbles.map((bubble, i) => (
             <SpeechBubble
