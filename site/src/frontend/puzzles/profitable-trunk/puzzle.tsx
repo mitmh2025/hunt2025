@@ -105,7 +105,7 @@ const Puzzle = () => {
               <Cell />
               <Cell />
               <RedCell />
-              <Cell />
+              <YellowCell />
               <RedCell />
               <BlueCell />
               <Cell />
@@ -188,11 +188,27 @@ const Puzzle = () => {
         <Table>
           <tbody>
             <tr>
+              <RedCell />
+              <Cell />
+              <Cell />
+              <Cell />
+              <BlueCell />
+              <Cell />
+              <Cell />
+              <Cell />
+            </tr>
+          </tbody>
+        </Table>
+      </MarginDiv>
+
+      <MarginDiv>
+        <Table>
+          <tbody>
+            <tr>
+              <Cell />
               <Cell />
               <Cell />
               <RedCell />
-              <RedCell />
-              <Cell />
             </tr>
           </tbody>
         </Table>
@@ -222,24 +238,8 @@ const Puzzle = () => {
             <tr>
               <Cell />
               <Cell />
-              <Cell />
               <RedCell />
-            </tr>
-          </tbody>
-        </Table>
-      </MarginDiv>
-
-      <MarginDiv>
-        <Table>
-          <tbody>
-            <tr>
               <RedCell />
-              <Cell />
-              <Cell />
-              <Cell />
-              <BlueCell />
-              <Cell />
-              <Cell />
               <Cell />
             </tr>
           </tbody>
@@ -268,7 +268,7 @@ const Puzzle = () => {
               <Cell />
               <RedCell />
               <Cell />
-              <Cell />
+              <YellowCell />
               <Cell />
               <BlueCell />
             </tr>
