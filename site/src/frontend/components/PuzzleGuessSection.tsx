@@ -64,6 +64,14 @@ const Form = styled.form`
   flex-wrap: wrap;
 `;
 
+const RateLimitNotice = styled.div`
+  padding: 0.5rem 1rem;
+  background: #ffffff33;
+  margin-bottom: 0.5rem;
+  font-family: var(--body-font);
+  font-size: 1rem;
+`;
+
 const PuzzleGuessForm = ({
   slug,
   onGuessesUpdate,
@@ -150,10 +158,10 @@ const PuzzleGuessForm = ({
     <Form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
       {formError ? <div>Error: {formError}</div> : undefined}
       {rateLimitedUntil ? (
-        <div>
+        <RateLimitNotice>
           Your submissions are being rate-limited and will be rejected until{" "}
           {rateLimitedUntil.toLocaleTimeString()}
-        </div>
+        </RateLimitNotice>
       ) : undefined}
       <Label htmlFor="guess-input">Submit guess</Label>
       <TextInput
