@@ -2,8 +2,6 @@ import React from "react";
 import { styled } from "styled-components";
 import { NO_COPY_CLASS } from "../../components/CopyToClipboard";
 import Crossword from "../../components/Crossword";
-import LinkedImage from "../../components/LinkedImage";
-import PrintablePuzzle from "./assets/printable_puzzle.png";
 
 export const GRID = `.	.	1		2		3				4		5		.
 .	.		.		.		.	.	.		.		.	
@@ -111,6 +109,8 @@ const ClueIndexTD = styled.td`
 
 const ClueNumberTD = styled(ClueIndexTD)`
   text-align: right;
+  padding-right: 1em;
+  vertical-align: text-top;
 `;
 
 const ClueTD = styled.td`
@@ -160,20 +160,108 @@ const Footnote = styled.p`
   font-style: italic;
 `;
 
+const Footer = (
+  <>
+    <Footnote>
+      The Chambers Dictionary (2011) is the primary reference, but does not
+      contain one foreign word, nor 19 (which is in the OED). Some entries are
+      phrases in which each word is common, but the phrase may not be given.
+    </Footnote>
+    <Footnote>
+      The puzzle will lead solvers to a specific piece of media, which is behind
+      a paywall. Nothing behind the paywall is required or helpful for solving
+      the puzzle.
+    </Footnote>
+    <Footnote>
+      Clues use conventions common in British cryptics. Solvers may find e.g.{" "}
+      <a href="https://crypticcrosswords.net/crosswords/usual-suspects/">
+        Big Dave’s guide
+      </a>{" "}
+      to be a useful resource.
+    </Footnote>
+  </>
+);
+
 const NoPrint = styled.div`
   @media print {
     display: none;
   }
 `;
 
-const PrintVersion = styled.div`
+const PrintContainer = styled.div`
   display: none;
 
   @media print {
     display: block;
-    max-width: 99%;
-    height: auto;
+    max-width: 100%;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
+`;
+
+const PrintableCrossword = styled(Crossword)`
+  zoom: 0.5;
+`;
+
+const PrintableClue = styled.td`
+  padding-left: 1em;
+  padding-right: 1em;
+  text-indent: -1em;
+`;
+
+const PrintableClueHeader = styled.h3`
+  font-weight: bold;
+  padding-bottom: 0;
+`;
+
+const ScaledBlock = styled.div`
+  zoom: 0.7;
+`;
+
+const PrintableClueTable = styled(ClueTable)`
+  td {
+    line-height: 1;
+    padding-bottom: 0.2rem;
+  }
+`;
+
+const PrintableClueBlock = ({
+  header,
+  clues,
+  numbered = true,
+}: {
+  header: string;
+  clues: [string, string][];
+  numbered?: boolean;
+}) => {
+  return (
+    <>
+      <ScaledBlock>
+        <PrintableClueHeader>{header}</PrintableClueHeader>
+        <PrintableClueTable>
+          <tbody>
+            {clues.map(([id, clue]) => (
+              <tr key={id}>
+                <ClueNumberTD>{numbered ? id : "•"}</ClueNumberTD>
+                <PrintableClue>{clue}</PrintableClue>
+              </tr>
+            ))}
+          </tbody>
+        </PrintableClueTable>
+      </ScaledBlock>
+    </>
+  );
+};
+
+const PrintLeft = styled.div`
+  width: 50%;
+  float: left;
+`;
+
+const PrintRight = styled.div`
+  width: 50%;
+  float: right;
+  margin-top: -8rem;
 `;
 
 const Puzzle = () => {
@@ -191,33 +279,28 @@ const Puzzle = () => {
           numbered={false}
         />
         <hr />
-        <Footnote>
-          The Chambers Dictionary (2011) is the primary reference, but does not
-          contain one foreign word, nor 19 (which is in the OED). Some entries
-          are phrases in which each word is common, but the phrase may not be
-          given.
-        </Footnote>
-        <Footnote>
-          The puzzle will lead solvers to a specific piece of media, which is
-          behind a paywall. Nothing behind the paywall is required or helpful
-          for solving the puzzle.
-        </Footnote>
-        <Footnote>
-          Clues use conventions common in British cryptics. Solvers may find
-          e.g.{" "}
-          <a href="https://crypticcrosswords.net/crosswords/usual-suspects/">
-            Big Dave’s guide
-          </a>{" "}
-          to be a useful resource.
-        </Footnote>
+        {Footer}
       </NoPrint>
-      <PrintVersion>
-        <LinkedImage
-          src={PrintablePuzzle}
-          alt="Printable puzzle"
-          className={NO_COPY_CLASS}
-        />
-      </PrintVersion>
+      <PrintContainer className={NO_COPY_CLASS}>
+        <PrintLeft>
+          <PrintableCrossword labels={GRID} />
+          <PrintableClueBlock
+            header="Perimeter (to be placed where they fit)"
+            clues={PERIMETER_CLUES}
+            numbered={false}
+          />
+        </PrintLeft>
+        <PrintRight>
+          <ScaledBlock>
+            <PrintableClueHeader>Answer to submit:</PrintableClueHeader>
+            <PrintableCrossword labels={[EXTRACTION_GRID]} />
+          </ScaledBlock>
+          <PrintableClueBlock header="Across" clues={ACROSS_CLUES} />
+          <PrintableClueBlock header="Down" clues={DOWN_CLUES} />
+          <hr />
+          <ScaledBlock>{Footer}</ScaledBlock>
+        </PrintRight>
+      </PrintContainer>
     </>
   );
 };
