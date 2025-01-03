@@ -13,6 +13,7 @@ export const DeskItem = styled.a`
     font-family: "Kiwi Maru";
     color: ${BG_COLOR};
     background-color: rgba(115, 147, 93, 0.7);
+    max-width: 300px;
   }
 
   &:hover {

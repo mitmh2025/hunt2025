@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import PuzzleLink from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { Desk, DeskItem } from "./Layout";
 import { PaperTrailFonts } from "./PaperTrailFonts";
@@ -8,35 +7,10 @@ import { type PaperTrailObject, type PaperTrailState } from "./types";
 
 const PaperTrailBody = ({
   state,
-  teamState,
 }: {
   state: PaperTrailState;
   teamState: TeamHuntState;
 }) => {
-  const sections = state.groups.map((group) => {
-    return (
-      <Fragment key={`label-${group.label}`}>
-        <h2>{group.label}</h2>
-        <ul>
-          {group.items.map((item) => {
-            const puzzleState = teamState.puzzles[item.slug];
-            return (
-              <li key={item.slug}>
-                <PuzzleLink
-                  lockState={puzzleState?.locked ?? "locked"}
-                  answer={puzzleState?.answer}
-                  currency={teamState.currency}
-                  title={item.title}
-                  slug={item.slug}
-                  desc={item.desc}
-                />
-              </li>
-            );
-          })}
-        </ul>
-      </Fragment>
-    );
-  });
   const objects = state.imagery.map((item: PaperTrailObject) => {
     const aStyle = {
       left:
@@ -96,8 +70,6 @@ const PaperTrailBody = ({
     <Fragment key="paper-trail">
       <PaperTrailFonts />
       <Desk>{objects}</Desk>
-      <h1>The Paper Trail</h1>
-      {sections}
     </Fragment>
   );
 };
