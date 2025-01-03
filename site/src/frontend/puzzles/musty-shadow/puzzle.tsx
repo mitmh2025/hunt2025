@@ -1,5 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import { CopyableBlanks } from "../../components/Blanks";
+import { NO_COPY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import image1 from "./assets/image1.png";
 import image10 from "./assets/image10.png";
@@ -210,21 +212,36 @@ const Puzzle = (): JSX.Element => {
       </ImageWrapper>
       <FlexWrapper>
         {BLANKS.map(({ characters, redIndex }, i) => (
-          <Blanks key={`row-${i}`}>
-            <tr>
-              {characters.split("").map((char, j) =>
-                j === redIndex ? (
-                  <>
-                    <Red key={`char${i}-${j}`}>{char}</Red>
-                  </>
-                ) : (
-                  <>
-                    <td key={`char-${i}-${j}`}>{char}</td>
-                  </>
-                ),
-              )}
-            </tr>
-          </Blanks>
+          <>
+            <Blanks className={NO_COPY_CLASS} key={`row-${i}`}>
+              <tr>
+                {characters.split("").map((char, j) =>
+                  j === redIndex ? (
+                    <>
+                      <Red key={`char${i}-${j}`}>{char}</Red>
+                    </>
+                  ) : (
+                    <>
+                      <td key={`char-${i}-${j}`}>{char}</td>
+                    </>
+                  ),
+                )}
+              </tr>
+            </Blanks>
+            <CopyableBlanks
+              key={`copyable-${i}`}
+              structure={characters
+                .split("")
+                .map((char) => (char === "_" ? char : " "))}
+              fill={characters
+                .split("")
+                .map((char) => (char === "_" ? " " : char))}
+              fillCopyPosition="above"
+              getAdditionalCellStyles={(index) =>
+                redIndex === index ? { backgroundColor: "#ff0000" } : {}
+              }
+            />
+          </>
         ))}
       </FlexWrapper>
       <hr />

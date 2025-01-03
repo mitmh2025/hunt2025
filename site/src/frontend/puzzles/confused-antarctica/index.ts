@@ -6,13 +6,14 @@ const puzzle: PuzzleDefinition = {
   title: "Networking Event",
   slug: "networking_event",
   initial_description:
-    "There is a lettered list of descriptive sentences, and below it a word list and a diagram.",
+    "A lettered list of descriptive sentences, and below it a word list and a diagram.",
   answer: "FAT TUESDAY",
   authors: ["Andrew Russell"],
   editors: ["Chris Gatesman", "Joanna Murray", "Kevin Hwang"],
   additional_credits: [],
   content: {
     component: Puzzle,
+    copyable: false,
   },
   solution: {
     component: Solution,

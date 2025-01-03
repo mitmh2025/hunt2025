@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 
 const StyledIframe = styled.iframe`
   margin: 0 auto 1em;
@@ -13,13 +14,21 @@ const Puzzle = (): JSX.Element => {
         <StyledIframe
           width="560"
           height="315"
-          src="https://www.youtube.com/embed/d8-BQXHspfg?si=pg-fDSIswkCKf7iT"
+          src="https://www.youtube.com/embed/d8-BQXHspfg"
           title="Where Am I?"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         />
       </div>
+      <a
+        className={COPY_ONLY_CLASS}
+        href="https://www.youtube.com/embed/d8-BQXHspfg"
+        target="_blank"
+        rel="noreferrer"
+      >
+        [Video link]
+      </a>
       <details>
         <summary>Transcript</summary>
         <p>

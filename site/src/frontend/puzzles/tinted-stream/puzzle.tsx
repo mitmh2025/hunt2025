@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import genogram1 from "./assets/genogram1.svg";
 import genogram2 from "./assets/genogram2.svg";
@@ -33,6 +34,145 @@ const FlexWrapper = styled.div`
 const SizeLimitedImg = styled.img`
   max-width: 100%;
 `;
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+`;
+
+const LastTable = styled(StyledTable)`
+  td:nth-child(5),
+  td:nth-child(8) {
+    background-color: #cccccc;
+  }
+`;
+
+const StyledCell = styled.td`
+  border: 1px solid black;
+`;
+
+const Left = styled(StyledCell)`
+  border-left-width: 3px;
+`;
+
+const Right = styled(StyledCell)`
+  border-right-width: 3px;
+`;
+
+const COPY_ONLY_GRIDS: string[][][] = [
+  `
+     _  
+  ______
+___
+ ____
+`,
+  `
+_____
+  __|
+    |
+`,
+  `
+/_____
+  ______
+  ___
+ __
+`,
+  `
+  __|
+    |
+    |
+    |
+    |
+   _|
+_____|
+`,
+  `
+/______
+      ____
+         __|
+           |
+           |
+`,
+  `
+ /
+/_
+/
+/___
+   ______
+`,
+  `
+   _
+  __|
+ ___|
+___
+ _
+`,
+  `
+  __
+   _
+   _
+____
+___
+`,
+  `
+ ___
+/____
+    _
+    _
+/_  _
+_____
+`,
+  `
+/_
+/______
+/_____
+ /
+`,
+  `
+/
+/_____
+`,
+  `
+  /___
+/_____
+    __
+`,
+  `
+ _
+___
+___
+`,
+  `
+___|
+   _|
+`,
+].map((grid) =>
+  grid
+    .split("\n")
+    .slice(1, -1)
+    .map((row) => row.split("")),
+);
+
+const LAST_GRID = `
+/_________|
+/__________|
+ /_________|
+/__________|
+/__________|
+/_________|
+ /________|
+ /________|
+ /________|
+  /________|
+  /________|
+  /________|
+/__________|
+  /________|
+ /_________|
+ /__________|
+`
+  .split("\n")
+  .slice(1, -1)
+  .map((row) => row.split(""));
 
 const Puzzle = (): JSX.Element => {
   return (
@@ -110,6 +250,44 @@ const Puzzle = (): JSX.Element => {
           alt="The outline of a dress, with a large grid overlaid."
         />
       </FlexWrapper>
+      {COPY_ONLY_GRIDS.map((grid, i) => (
+        <StyledTable key={i} className={COPY_ONLY_CLASS}>
+          {grid.map((row, j) => (
+            <tr key={j}>
+              {row.map((cell) => {
+                switch (cell) {
+                  case "_":
+                    return <StyledCell />;
+                  case "/":
+                    return <Left />;
+                  case "|":
+                    return <Right />;
+                  default:
+                    return <td />;
+                }
+              })}
+            </tr>
+          ))}
+        </StyledTable>
+      ))}
+      <LastTable className={COPY_ONLY_CLASS}>
+        {LAST_GRID.map((row, i) => (
+          <tr key={i}>
+            {row.map((cell) => {
+              switch (cell) {
+                case "_":
+                  return <StyledCell />;
+                case "/":
+                  return <Left />;
+                case "|":
+                  return <Right />;
+                default:
+                  return <td />;
+              }
+            })}
+          </tr>
+        ))}
+      </LastTable>
     </>
   );
 };

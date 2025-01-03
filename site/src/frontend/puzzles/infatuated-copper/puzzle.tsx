@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import gougingOfEyes from "./assets/gouging-of-eyes.mp3";
 import intermentAndSuffocation from "./assets/interment-and-suffocation.mp3";
 import rapidDescents from "./assets/rapid-descents.mp3";
@@ -45,6 +46,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Obscured and unnatural faces</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/b2utstouH58"
+          >
+            [Video link]
+          </a>
           <iframe
             width="315"
             height="560"
@@ -59,6 +66,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Anorexia and hemophilia</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/aujHdRbkVso"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -73,6 +86,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Extreme heat and flames</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/WzJTKfundRo"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -128,6 +147,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Rot and insects</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/6xrAySGvr-o"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -142,6 +167,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Perdition</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/c1DStbHTxsg"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -156,6 +187,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Venomous spiders</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/N4iqd9LU3xc"
+          >
+            [Video link]
+          </a>
           <iframe
             width="315"
             height="560"
@@ -191,6 +228,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Abyssal labyrinths</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/wTKMKd_8FoU"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -205,6 +248,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Relentless pursuit</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/o-jv1XeDj2Q"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -260,6 +309,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Missing and abandoned children</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/DFf9XAwp2z4"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
