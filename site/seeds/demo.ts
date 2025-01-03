@@ -303,7 +303,7 @@ export async function seed(knex: Knex): Promise<void> {
   );
 
   // Ensure that we trigger any triggerable unlocks
-  const all_team_ids = await knex("teams").select("id").pluck("id");
+  const all_team_ids: number[] = await knex("teams").select("id").pluck("id");
   for (const team_id of all_team_ids) {
     // TODO: Do all of this in one mutation.
     await activityLog.executeMutation(
