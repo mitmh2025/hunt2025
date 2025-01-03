@@ -16,8 +16,10 @@
     "knex": "node --import tsx/esm ./node_modules/.bin/knex",
     "test": "jest",
     "build-all": "npm run build && npm run ops:vite-build",
+    "build-all-dev": "npm run build-dev && npm run ops:vite-build-dev",
     "ops:build": "cd ops && rm -rf ../dist-ops && tsc -p ./server/tsconfig.json && vite build",
     "ops:vite-build": "cd ops && vite build",
+    "ops:vite-build-dev": "cd ops && vite build --minify false --sourcemap true",
     "ops:dev-server": "cd ops && NODE_ENV=development node --watch --import tsx/esm ./server/main.ts",
     "ops:start": "cd ops && concurrently --kill-others vite \"npm run ops:dev-server\"",
     "install-hooks": "cd .. && husky site/.husky"
