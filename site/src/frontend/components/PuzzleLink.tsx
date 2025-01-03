@@ -13,6 +13,8 @@ import icon_unlocked from "../../assets/unlocked_status.svg";
 import icon_unlockable from "../../assets/visible_status.svg";
 import { Button, ButtonSecondary } from "./StyledUI";
 
+export type LockState = "unlockable" | "unlocked" | "locked";
+
 const StyledDialog = styled.dialog`
   font-size: 24px;
   font-family: var(--body-font);
@@ -123,7 +125,7 @@ export const PuzzleIcon = ({
   answer,
   size = 24,
 }: {
-  lockState: "unlockable" | "unlocked" | "locked";
+  lockState: LockState;
   answer?: string;
   size?: number;
 }) => {
@@ -190,7 +192,7 @@ const PuzzleLink = ({
   size = 24,
   style = {},
 }: {
-  lockState: "unlocked" | "unlockable" | "locked";
+  lockState: LockState;
   answer?: string;
   currency: number;
   title: string;

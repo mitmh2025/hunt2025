@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import PuzzleLink, { PuzzleIcon } from "../../components/PuzzleLink";
+import PuzzleLink from "../../components/PuzzleLink";
+import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { Desk, DeskItem } from "./Layout";
 import { PaperTrailFonts } from "./PaperTrailFonts";
 import { type PaperTrailObject, type PaperTrailState } from "./types";
@@ -74,26 +75,19 @@ const PaperTrailBody = ({
           }
         >
           <img src={item.asset} alt={item.alt} style={imgStyle} />
-          <span className="tooltip">
-            <span className="name">
-              <PuzzleIcon
-                lockState={lockState}
-                answer={item.answer}
-                size={16}
-              />{" "}
-              <span>{item.title}</span>
-            </span>
-            {item.answer ? (
-              <span className="answer">{item.answer}</span>
-            ) : undefined}
-          </span>
+          <PuzzleTooltipComponent
+            title={item.title}
+            lockState={lockState}
+            answer={item.answer}
+            desc={item.desc}
+          />
         </DeskItem>
       );
     } else {
       return (
         <DeskItem key={item.title} style={aStyle} href={item.href}>
           <img src={item.asset} alt={item.alt} style={imgStyle} />
-          <span className="tooltip">Notes</span>
+          <Tooltip>Notes</Tooltip>
         </DeskItem>
       );
     }
