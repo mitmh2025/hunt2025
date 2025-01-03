@@ -519,33 +519,29 @@ export async function insertDesertedNinjaSession(
   status: string,
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession> {
-  const session = await knex("deserted_ninja_sessions").insert({
-    status: status,
-    title: title,
-    question_ids: question_ids,
-  });
+  const session = await knex("deserted_ninja_sessions")
+    .insert({
+      status: status,
+      title: title,
+      question_ids: question_ids,
+    })
+    .returning(["id", "title", "status", "question_ids"]);
 
-  if (session.length === 0) {
+  if (session.length > 0 && session[0]) {
     return {
-      id: -1,
-      title: "",
-      status: "",
+      id: session[0]?.id,
+      title: session[0]?.title,
+      status: session[0]?.status,
       teamIds: [],
-      questionIds: [],
+      questionIds: fixArray<number>(session[0]?.question_ids),
     };
   } else {
-    // TODO: why is session of type number[]??
     return {
       id: -1,
       title: "",
       status: "",
       teamIds: [],
       questionIds: [],
-      //      id: session.id,
-      //      title: session[0].title,
-      //      status: session[0].status,
-      //      teamIds: [],
-      //      questionIds: fixArray<number>(session[0].question_ids),
     };
   }
 }

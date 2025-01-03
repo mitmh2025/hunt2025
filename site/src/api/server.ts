@@ -25,7 +25,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import {
   adminContract,
-  type DesertedNinjaQuestion,
+  //  type DesertedNinjaQuestion,
   //  type DesertedNinjaSession,
   //  type DesertedNinjaAnswer,
   //  type DesertedNinjaRegistration,
@@ -941,7 +941,7 @@ export function getRouter({
       },
       createDesertedNinjaSession: {
         middleware: [adminAuthMiddleware],
-        handler: async ({ body }) => {
+        handler: async ({ body: { title } }) => {
           // generate random set of questions
           // requirements:
           // * pick 17 distinct questions
@@ -949,29 +949,31 @@ export function getRouter({
           // * geoguessrs should not be consecutive
 
           // partition the questions
-          const normalQuestions: DesertedNinjaQuestion[] = [];
-          const geoguessrQuestions: DesertedNinjaQuestion[] = [];
+          const normalQuestions: number[] = [];
+          const geoguessrQuestions: number[] = [];
           (await getDesertedNinjaQuestions(knex)).forEach((q) =>
             (q.imageUrl === null ? normalQuestions : geoguessrQuestions).push(
-              q,
+              q.id,
             ),
           );
 
-          const ids = [normalQuestions, geoguessrQuestions]
-            .map((arr) =>
-              arr
-                .map((v) => ({ v, sort: Math.random() }))
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ v }) => v.id),
-            )
-            .flat()
-            .map((v) => ({ v, sort: Math.random() }))
-            .sort((a, b) => a.sort - b.sort)
-            .map(({ v }) => v);
+          function shuffle<T>(arr: T[]): T[] {
+            return arr
+              .map((v) => ({ v, sort: Math.random() }))
+              .sort((a, b) => a.sort - b.sort)
+              .map(({ v }) => v);
+          }
+
+          const shuffledN = shuffle(normalQuestions);
+          const shuffledG = shuffle(geoguessrQuestions);
+          const ids = shuffle([
+            ...shuffledN.slice(0, 13),
+            ...shuffledG.slice(0, 4),
+          ]);
 
           return Promise.resolve({
             status: 200 as const,
-            body: await createDesertedNinjaSession(body, ids, knex),
+            body: await createDesertedNinjaSession(title, ids, knex),
           });
         },
       },

@@ -81,7 +81,7 @@ export const adminContract = c.router({
   createDesertedNinjaSession: {
     method: "POST",
     path: "/admin/create-dn-session",
-    body: z.string(),
+    body: z.object({ title: z.string() }),
     responses: {
       200: DesertedNinjaSessionSchema,
     },

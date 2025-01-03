@@ -3,7 +3,7 @@ import {
   type DesertedNinjaQuestion,
   type DesertedNinjaSession,
 } from "../../../lib/api/admin_contract";
-//import { useOpsData, type OpsData } from "../OpsDataProvider";
+//import { useOpsData } from "../OpsDataProvider";
 
 export function retrieveDesertedNinjaData(
   adminClient: AuthClient,

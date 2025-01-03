@@ -1,5 +1,10 @@
 import { styled } from "styled-components";
 import { type DesertedNinjaSession } from "../../../lib/api/admin_contract";
+import {
+  useDesertedNinjaData,
+  useDesertedNinjaDispatch,
+  DNDataActionType,
+} from "../DesertedNinjaDataProvider";
 
 const RowContainer = styled.div`
   display: flex;
@@ -13,19 +18,25 @@ const SelectButton = styled.button``;
 function SessionSelectRow({
   buttonText,
   session,
-  setSession,
 }: {
   buttonText: string;
   session: DesertedNinjaSession;
-  setSession: React.Dispatch<React.SetStateAction<DesertedNinjaSession | null>>;
 }) {
+  //  const dnData = useDesertedNinjaData();
+  const dnDispatch = useDesertedNinjaDispatch();
+
   return (
     <>
       <RowContainer>
         <RowTitle>{session.title}</RowTitle>
         <SelectButton
           onClick={() => {
-            setSession(session);
+            if (dnDispatch) {
+              dnDispatch({
+                type: DNDataActionType.SET_ACTIVE_SESSION,
+                activeSession: session,
+              });
+            }
           }}
         >
           {buttonText}
@@ -35,40 +46,37 @@ function SessionSelectRow({
   );
 }
 
-export function SessionSelect({
-  buttonText,
-  sessions,
-  session,
-  setSession,
-}: {
-  buttonText: string;
-  sessions: DesertedNinjaSession[];
-  session: DesertedNinjaSession | null;
-  setSession: React.Dispatch<React.SetStateAction<DesertedNinjaSession | null>>;
-}) {
-  if (session === null) {
+export function SessionSelect({ buttonText }: { buttonText: string }) {
+  const dnData = useDesertedNinjaData();
+  const dnDispatch = useDesertedNinjaDispatch();
+
+  if (dnData.activeSession) {
     return (
       <>
-        {sessions.map((session) => (
-          <SessionSelectRow
-            session={session}
-            setSession={setSession}
-            key={session.id}
-            buttonText={buttonText}
-          />
-        ))}
+        <button
+          onClick={() => {
+            if (dnDispatch) {
+              dnDispatch({
+                type: DNDataActionType.SET_ACTIVE_SESSION,
+                activeSession: null,
+              });
+            }
+          }}
+        >
+          Back
+        </button>
       </>
     );
   } else {
     return (
       <>
-        <button
-          onClick={() => {
-            setSession(null);
-          }}
-        >
-          Back
-        </button>
+        {dnData.sessions.map((session) => (
+          <SessionSelectRow
+            session={session}
+            key={session.id}
+            buttonText={buttonText}
+          />
+        ))}
       </>
     );
   }

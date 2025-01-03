@@ -535,7 +535,7 @@ export async function createDesertedNinjaSession(
 ): Promise<DesertedNinjaSession> {
   return dbInsertDesertedNinjaSession(
     title,
-    questionIds.toString(),
+    "[" + questionIds.toString() + "]",
     "not_started",
     knex,
   );

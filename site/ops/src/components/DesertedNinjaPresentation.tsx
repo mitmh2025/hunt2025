@@ -6,6 +6,7 @@ import {
   type DesertedNinjaQuestion,
   type DesertedNinjaSession,
 } from "../../../lib/api/admin_contract";
+import { useDesertedNinjaData } from "../DesertedNinjaDataProvider";
 import Image01 from "../assets/deserted-ninja/image01.jpg";
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";
@@ -211,14 +212,10 @@ function QuestionSlide({
   }
 }
 
-export function DesertedNinjaPresentation({
-  session,
-  questions,
-}: {
-  session: DesertedNinjaSession | null;
-  questions: Map<number, DesertedNinjaQuestion>;
-}) {
+export function DesertedNinjaPresentation() {
   let contents = null;
+  const dnData = useDesertedNinjaData();
+
   const [timer, updateTimer] = useReducer(
     (t: TimerData, { type }: { type: string }) => {
       if (type === "reset") {
@@ -258,6 +255,8 @@ export function DesertedNinjaPresentation({
     },
   );
 
+  const session = dnData.activeSession;
+
   if (!session) {
     contents = (
       <section>
@@ -266,24 +265,26 @@ export function DesertedNinjaPresentation({
     );
   } else {
     let firstGeoguessrIndex = -1;
-    const questionSlides = session.questionIds.map((questionId, index) => {
-      const question = questions.get(questionId);
-      if (question) {
-        if (firstGeoguessrIndex === -1 && question.imageUrl !== null) {
-          firstGeoguessrIndex = index;
+    const questionSlides = session.questionIds.map(
+      (questionId: number, index: number) => {
+        const question = dnData.questions.get(questionId);
+        if (question) {
+          if (firstGeoguessrIndex === -1 && question.imageUrl !== null) {
+            firstGeoguessrIndex = index;
+          }
+          return (
+            <QuestionSlide
+              question={question}
+              questionNumber={index + 1}
+              timer={timer}
+              key={questionId}
+            />
+          );
+        } else {
+          return ErrorSlide;
         }
-        return (
-          <QuestionSlide
-            question={question}
-            questionNumber={index + 1}
-            timer={timer}
-            key={questionId}
-          />
-        );
-      } else {
-        return ErrorSlide;
-      }
-    });
+      },
+    );
 
     contents = (
       <>

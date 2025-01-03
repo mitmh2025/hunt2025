@@ -1,10 +1,15 @@
-import { useState } from "react";
+//import { useState } from "react";
 //import { styled } from "styled-components";
 import {
   type DesertedNinjaSession,
   type DesertedNinjaQuestion,
   type DesertedNinjaRegistration,
 } from "../../../lib/api/admin_contract";
+import {
+  useDesertedNinjaData,
+  useDesertedNinjaDispatch,
+  DNDataActionType,
+} from "../DesertedNinjaDataProvider";
 import { useOpsData } from "../OpsDataProvider";
 import { type TeamData } from "../opsdata/types";
 import { SessionSelect } from "./DesertedNinjaSessionSelector";
@@ -34,18 +39,13 @@ function SessionQuestionDetails({
   );
 }
 
-function SessionTeamEntry({
-  session,
-  setSession,
-  team,
-}: {
-  session: DesertedNinjaSession | null;
-  setSession: React.Dispatch<React.SetStateAction<DesertedNinjaSession | null>>;
-  team: TeamData;
-}) {
+function SessionTeamEntry({ team }: { team: TeamData }) {
   const opsData = useOpsData();
+  const dnData = useDesertedNinjaData();
+  const dnDispatch = useDesertedNinjaDispatch();
 
   function unregisterTeam(teamId: number) {
+    const session = dnData.activeSession;
     if (session && opsData.adminClient) {
       opsData.adminClient
         .deleteDesertedNinjaRegistration({
@@ -64,7 +64,12 @@ function SessionTeamEntry({
               questionIds: session.questionIds.slice(),
               teamIds: regs.map((reg) => reg.teamId),
             };
-            setSession(newSession);
+            if (dnDispatch) {
+              dnDispatch({
+                type: DNDataActionType.SET_ACTIVE_SESSION,
+                activeSession: newSession,
+              });
+            }
           },
           (reason) => {
             console.log(reason);
@@ -73,7 +78,7 @@ function SessionTeamEntry({
     }
   }
 
-  if (session?.status === "not_started") {
+  if (dnData.activeSession?.status === "not_started") {
     return (
       <form
         onSubmit={(e) => {
@@ -97,18 +102,13 @@ function SessionTeamEntry({
   }
 }
 
-function SessionDetails({
-  session,
-  setSession,
-  questions,
-}: {
-  session: DesertedNinjaSession | null;
-  setSession: React.Dispatch<React.SetStateAction<DesertedNinjaSession | null>>;
-  questions: Map<number, DesertedNinjaQuestion>;
-}) {
+function SessionDetails() {
   const opsData = useOpsData();
+  const dnData = useDesertedNinjaData();
+  const dnDispatch = useDesertedNinjaDispatch();
 
   function registerTeam(teamId: number) {
+    const session = dnData.activeSession;
     if (session && opsData.adminClient) {
       opsData.adminClient
         .createDesertedNinjaRegistration({
@@ -127,7 +127,38 @@ function SessionDetails({
               questionIds: session.questionIds.slice(),
               teamIds: regs.map((reg) => reg.teamId),
             };
-            setSession(newSession);
+            if (dnDispatch) {
+              dnDispatch({
+                type: DNDataActionType.SET_ACTIVE_SESSION,
+                activeSession: newSession,
+              });
+            }
+          },
+          (reason) => {
+            console.log(reason);
+            console.log("oh no ${reason}");
+          },
+        );
+    }
+  }
+  function createSession(title: string) {
+    if (opsData.adminClient) {
+      opsData.adminClient
+        .createDesertedNinjaSession({ body: { title: title } })
+        .then(
+          ({ body }) => {
+            const newSession = body as DesertedNinjaSession;
+            const newSessions = [...dnData.sessions, newSession];
+            if (dnDispatch) {
+              dnDispatch({
+                type: DNDataActionType.SET_ACTIVE_SESSION,
+                activeSession: newSession,
+              });
+              dnDispatch({
+                type: DNDataActionType.SET_SESSIONS,
+                sessions: newSessions,
+              });
+            }
           },
           (reason) => {
             console.log(reason);
@@ -137,19 +168,11 @@ function SessionDetails({
     }
   }
 
-  if (!session) {
-    return <p>Please select a session.</p>;
-  } else {
+  const session = dnData.activeSession;
+  if (session) {
     const signedUpDivs = opsData.teams
       .filter((t) => session.teamIds.includes(t.teamId))
-      .map((t) => (
-        <SessionTeamEntry
-          key={t.teamId}
-          team={t}
-          session={session}
-          setSession={setSession}
-        />
-      ));
+      .map((t) => <SessionTeamEntry key={t.teamId} team={t} />);
 
     return (
       <>
@@ -166,7 +189,7 @@ function SessionDetails({
         </div>
         <SessionQuestionDetails
           questionIds={session.questionIds}
-          questions={questions}
+          questions={dnData.questions}
         />
         <div style={{ border: "1px solid black" }}>
           <p>Teams signed up:</p>
@@ -181,32 +204,33 @@ function SessionDetails({
         </div>
       </>
     );
+  } else {
+    return (
+      <div>
+        <div>Please select a session OR create a new session:</div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createSession(
+              (e.currentTarget.elements[0] as HTMLInputElement).value,
+            );
+          }}
+        >
+          <input type="text" placeholder="Session Title" name="title" />
+          <input type="submit" value="Create new session" />
+        </form>
+      </div>
+    );
   }
 }
 
-export function DesertedNinjaScheduling({
-  sessions,
-  questions,
-}: {
-  sessions: DesertedNinjaSession[];
-  questions: Map<number, DesertedNinjaQuestion>;
-}) {
-  const [session, setSession] = useState<DesertedNinjaSession | null>(null);
-
+export function DesertedNinjaScheduling() {
   return (
     <>
       <h2>Scheduling mode</h2>
-      <SessionSelect
-        sessions={sessions}
-        session={session}
-        setSession={setSession}
-        buttonText="View details"
-      />
-      <SessionDetails
-        session={session}
-        setSession={setSession}
-        questions={questions}
-      />
+      <SessionSelect buttonText="View details" />
+      <SessionDetails />
     </>
   );
 }

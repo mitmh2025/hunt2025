@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 import {
-  type DesertedNinjaSession,
-  type DesertedNinjaQuestion,
-} from "../../../lib/api/admin_contract";
+  useDesertedNinjaData,
+  //useDesertedNinjaDispatch,
+  //  DNDataActionType
+} from "../DesertedNinjaDataProvider";
 import { useOpsData } from "../OpsDataProvider";
 import { SessionSelect } from "./DesertedNinjaSessionSelector";
 
@@ -79,14 +80,12 @@ function AnswerCell({
   }
 }
 
-function ScorekeeperPanel({
-  session,
-  questions,
-}: {
-  session: DesertedNinjaSession | null;
-  questions: Map<number, DesertedNinjaQuestion>;
-}) {
+function ScorekeeperPanel() {
   const opsData = useOpsData();
+  const dnData = useDesertedNinjaData();
+  //  const dnDispatch = useDesertedNinjaDispatch();
+
+  const session = dnData.activeSession;
 
   if (session === null) {
     return <p>Please select a session to score.</p>;
@@ -100,9 +99,7 @@ function ScorekeeperPanel({
   const body = session.questionIds.map((questionId, idx) => {
     return (
       <ScoreRow key={idx}>
-        <QuestionCell>
-          {idx + 1} / {questions.size}
-        </QuestionCell>
+        <QuestionCell>{idx + 1}</QuestionCell>
         {session.teamIds.map((teamId) => (
           <AnswerCell
             key={idx.toString() + "_" + teamId.toString()}
@@ -127,25 +124,12 @@ function ScorekeeperPanel({
   );
 }
 
-export function DesertedNinjaScorekeeper({
-  sessions,
-  questions,
-}: {
-  sessions: DesertedNinjaSession[];
-  questions: Map<number, DesertedNinjaQuestion>;
-}) {
-  const [session, setSession] = useState<DesertedNinjaSession | null>(null);
-
+export function DesertedNinjaScorekeeper() {
   return (
     <>
       <h2>Scorekeeper mode</h2>
-      <SessionSelect
-        sessions={sessions}
-        session={session}
-        setSession={setSession}
-        buttonText="Score this session"
-      />
-      <ScorekeeperPanel session={session} questions={questions} />
+      <SessionSelect buttonText="Score this session" />
+      <ScorekeeperPanel />
     </>
   );
 }
