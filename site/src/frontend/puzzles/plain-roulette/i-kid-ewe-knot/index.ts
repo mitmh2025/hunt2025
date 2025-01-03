@@ -6,6 +6,7 @@ const puzzle: SubpuzzleDefinition = {
   slug: "i_kid_ewe_knot",
   content: {
     component: Puzzle,
+    copyable: true,
   },
 };
 

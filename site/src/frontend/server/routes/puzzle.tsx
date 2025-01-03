@@ -237,6 +237,7 @@ export function subpuzzleHandler(req: Request<SubpuzzleParams>) {
     "puzzle",
   );
   const entrypoints = [
+    "puzzle" as const,
     ...(manifest.entrypoint ? [manifest.entrypoint] : []),
     ...(content.entrypoint ? [content.entrypoint] : []),
   ];
@@ -257,7 +258,11 @@ export function subpuzzleHandler(req: Request<SubpuzzleParams>) {
             <span>{title}</span>
           </PuzzleTitleComponent>
         </PuzzleHeaderComponent>
-        <PuzzleMainComponent id="puzzle-content" className="puzzle-content">
+        <PuzzleMainComponent
+          id="puzzle-content"
+          className="puzzle-content"
+          data-copyable={content.copyable ? "true" : undefined}
+        >
           <ContentComponent teamState={teamState.state} query={req.query} />
         </PuzzleMainComponent>
         <PuzzleFooterComponent />
