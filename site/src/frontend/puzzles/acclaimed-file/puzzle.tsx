@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { CourierFont } from "../../assets/SharedFonts";
 
 const MAGIC_I = `
 A  TYPI  CAL            A  TYPI  CAL
@@ -47,6 +48,7 @@ const Preformatted = styled.div`
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <CourierFont />
       <FlexWrapper>
         <Preformatted>{MAGIC_I}</Preformatted>
       </FlexWrapper>

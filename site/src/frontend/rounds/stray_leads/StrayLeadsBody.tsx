@@ -1,6 +1,7 @@
 import React, { Fragment, useLayoutEffect } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import { CourierFont } from "../../assets/SharedFonts";
 import PuzzleLink from "../../components/PuzzleLink";
 import { StrayLeadsFonts } from "./StrayLeadsFonts";
 import Bg from "./assets/bg.jpg";
@@ -182,6 +183,7 @@ const StrayLeadsBody = ({
   return (
     <Fragment key="stray-leads">
       <StrayLeadsFonts />
+      <CourierFont />
       <TableScape>
         <ContentWrapper>
           <Paper>

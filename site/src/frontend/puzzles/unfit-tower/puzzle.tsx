@@ -1,6 +1,7 @@
 import { type ParsedQs } from "qs";
 import React from "react";
 import { styled } from "styled-components";
+import { CourierFont } from "../../assets/SharedFonts";
 import {
   CharacterMessages,
   Characters,
@@ -276,11 +277,19 @@ const Puzzle = ({ query }: { query: ParsedQs }) => {
 
   const door = query.door !== undefined;
 
+  let roomComponent;
   if (action === "talk") {
-    return <Talk room={room} />;
+    roomComponent = <Talk room={room} />;
   } else {
-    return <Look room={room} start={start} door={door} />;
+    roomComponent = <Look room={room} start={start} door={door} />;
   }
+
+  return (
+    <>
+      <CourierFont />
+      {roomComponent}
+    </>
+  );
 };
 
 export default Puzzle;
