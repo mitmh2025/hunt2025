@@ -1065,7 +1065,7 @@ export function getRouter({
           });
         },
       },
-      grantUnlockCurrency: {
+      grantKeys: {
         middleware: [adminAuthMiddleware],
         handler: async ({ body: { teamIds, amount }, req }) => {
           let singleTeamId: number | undefined = undefined;

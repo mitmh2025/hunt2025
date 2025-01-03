@@ -21,14 +21,14 @@ type SingleTeamStatsData = {
   roundsCompleted: number;
   teamSize: number;
   onCampusSize: number;
-  unlockCurrency: number;
+  keys: number;
   freeSolveCurrency: number;
   unsolvedUnlockedPuzzles: number;
   hintsRequested: number;
   hintsRequestedLast3Hours: number;
 };
 
-function GrantUnlockCurrencyDialog({
+function GrantKeysDialog({
   teamId,
   teamUsername,
   open,
@@ -49,7 +49,7 @@ function GrantUnlockCurrencyDialog({
     if (qty > 0) {
       setSubmitting(true);
       adminClient
-        .grantUnlockCurrency({
+        .grantKeys({
           body: {
             teamIds: [teamId],
             amount: qty,
@@ -61,14 +61,14 @@ function GrantUnlockCurrencyDialog({
           }
 
           appendActivityLogEntries(result.body);
-          enqueueSnackbar(`Granted ${qty} unlock currency to ${teamUsername}`, {
+          enqueueSnackbar(`Granted ${qty} keys to ${teamUsername}`, {
             variant: "success",
           });
           onClose();
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
-          enqueueSnackbar(`Failed to grant unlock currency: ${msg}`, {
+          enqueueSnackbar(`Failed to grant keys: ${msg}`, {
             variant: "error",
           });
         })
@@ -81,7 +81,7 @@ function GrantUnlockCurrencyDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Grant Unlock Currency to <strong>{teamUsername}</strong>
+        Grant Keys to <strong>{teamUsername}</strong>
       </DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -105,7 +105,7 @@ function GrantUnlockCurrencyDialog({
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={submitting}>
-            Grant {qty} Currency
+            Grant {qty} Keys
           </Button>
         </DialogActions>
       </form>
@@ -136,7 +136,7 @@ export default function SingleTeamStats({
         .length,
       teamSize: team.registration.peopleTotal,
       onCampusSize: team.registration.peopleOnCampus,
-      unlockCurrency: team.state.available_currency,
+      keys: team.state.available_currency,
       freeSolveCurrency: 0, // TODO
       unsolvedUnlockedPuzzles: Array.from(team.state.puzzles_unlocked).filter(
         (p) => !team.state.puzzles_solved.has(p),
@@ -203,7 +203,7 @@ export default function SingleTeamStats({
 
       <Stat
         label="Unlocks"
-        value={data.unlockCurrency}
+        value={data.keys}
         action={
           <Button
             onClick={() => {
@@ -224,7 +224,7 @@ export default function SingleTeamStats({
         subValue={<>Past 3 hours: {data.hintsRequestedLast3Hours}</>}
       />
 
-      <GrantUnlockCurrencyDialog
+      <GrantKeysDialog
         teamId={team.teamId}
         teamUsername={team.username}
         open={grantModalOpen}

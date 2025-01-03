@@ -318,9 +318,7 @@ const NavBar = ({
         </TopLevelDropdown>
         <Spacer />
         <AudioControls />
-        <Currency title={`Unlock currency: ${currency}`}>
-          💰 {currency}
-        </Currency>
+        <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>
         <Dropdown $alignRight>
           <TeamNameNavLink tabIndex={0}>
             <span>{teamName}</span>
