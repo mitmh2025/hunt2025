@@ -1081,7 +1081,6 @@ export function getRouter({
               if (teamIds === "all") {
                 return [
                   await mutator.appendLog({
-                    team_id: undefined,
                     type: "currency_adjusted",
                     currency_delta: amount,
                     internal_data: {
