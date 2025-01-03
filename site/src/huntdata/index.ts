@@ -155,6 +155,7 @@ const HUNT: Hunt = {
             { interaction_completed: "interview_at_the_casino" },
             { interaction_completed: "interview_at_the_art_gallery" },
           ],
+          slug: "the_thief",
         }, // Where is the Diamond? (super)
       ],
       gates: [
