@@ -21,6 +21,10 @@ import {
   TextInput,
 } from "./StyledUI";
 
+const Form = styled.form`
+  margin-bottom: 2rem;
+`;
+
 const Section = styled.section`
   width: 100%;
   max-width: 600px;
@@ -273,7 +277,7 @@ const TeamManager = ({
   );
 
   return (
-    <form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
       <Section>
         <SectionHeader>Identity</SectionHeader>
         <div>
@@ -284,6 +288,7 @@ const TeamManager = ({
             error={errors.username}
             autoComplete={"off"}
             readOnly
+            disabled
           />
         </div>
         <div>
@@ -294,6 +299,7 @@ const TeamManager = ({
             error={errors.password}
             autoComplete={"off"}
             readOnly
+            disabled
           />
         </div>
         <div>
@@ -411,7 +417,7 @@ const TeamManager = ({
         )}
         <Button>Save</Button>
       </Section>
-    </form>
+    </Form>
   );
 };
 
