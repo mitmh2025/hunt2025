@@ -39,6 +39,53 @@ const MutedTD = styled.td`
 const Solution = () => {
   return (
     <>
+      <p>Solution steps:</p>
+      <ol>
+        <li>Sort by answer lengths (9 to 16).</li>
+        <li>
+          Read puzzle title first letters for instruction “<Mono>UNICODES</Mono>
+          ”. This confirms the sort method and will be useful in the final step.
+        </li>
+        <li>
+          Recognize answers start with “R”, “G”, and “B”, hinting at RGB for the
+          Art Gallery. This also implies you will somehow get colors.
+        </li>
+        <li>
+          The flavor text indicates “shady”. Based on both “RGB” and “shady”,
+          realize that the answer phrases (excluding their first word) all
+          reference current Crayola Crayon standard colors (from the 120 colors
+          or fewer sets). The names of the colors exclude the obvious color
+          words like “pink”, “green”, “red”, etc. The wikipedia page{" "}
+          <a href="https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors">
+            List of Crayola crayon colors
+          </a>{" "}
+          is a helpful reference.
+        </li>
+        <li>
+          Identify the RGB values for each color. Select the channel value
+          matching the first letter of the answer. The other two color channel
+          values are not used. For example, the RGB values for “R-word + (Pink)
+          Flamingo” are (242, 88, 64). The R value is 242.
+        </li>
+        <li>
+          Use the puzzle title first letter hint “<Mono>UNICODES</Mono>” and the
+          two flavor text hints of “characters” and “supplement”. Specifically,
+          you need to use the Unicode Basic Latin (normal alphabet) and Unicode
+          Latin-1 Supplement. You can use the <Mono>CHAR()</Mono> function in
+          Google Sheets to look up the character, or just find them among the
+          list at{" "}
+          <a href="https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin_script">
+            List of Unicode characters
+          </a>
+          .
+        </li>
+        <li>
+          Doing this process for the eight feeder puzzles yields{" "}
+          <Mono>BÒ× òwNÈ®</Mono>, from which you can visually extract the basic
+          latin characters <PuzzleAnswer>BOX OWNER</PuzzleAnswer>.
+        </li>
+      </ol>
+
       <HScrollTableWrapper>
         <table>
           <thead>
@@ -178,55 +225,6 @@ const Solution = () => {
           </tbody>
         </table>
       </HScrollTableWrapper>
-
-      <p>Solution steps:</p>
-      <ol>
-        <li>Sort by answer lengths (9 to 16).</li>
-        <li>
-          Read puzzle title first letters for instruction “<Mono>UNICODES</Mono>
-          .” This confirms the sort method and will be useful in the final step.
-        </li>
-        <li>
-          Recognize answers start with “R,” “G,” and “B,” hinting at RGB for the
-          “Art Gallery.” This also implies you will somehow get colors.
-        </li>
-        <li>
-          The flavor text indicates “shady.” Based on both “RGB” and “shady”,
-          realize that the answer phrases (excluding their first word) all
-          reference current Crayola Crayon standard colors (from the 120 colors
-          or below sets). The names of the colors exclude the obvious color
-          words like “pink,” “green,” “red,” etc. The wikipedia page{" "}
-          <a href="https://en.wikipedia.org/wiki/List_of_Crayola_crayon_colors">
-            List of Crayola crayon colors
-          </a>{" "}
-          is a helpful reference.
-        </li>
-        <li>
-          Identify the RGB values for each color. Select the channel value
-          matching the first letter of the answer. The other two color channel
-          values are not used. For example, the RGB values for “R-word + (Pink)
-          Flamingo” are (242, 88, 64). The R value is 242.
-        </li>
-        <li>
-          Use the puzzle title first letter hint “<Mono>UNICODES</Mono>” and the
-          two flavor text hints of “characters” and “supplement.” to look up the
-          Unicode character corresponding to the color-selected codepoint.
-          Specifically, you need to use the Unicode Basic Latin (normal
-          alphabet) and Unicode Latin-1 Supplement, which together cover
-          codepoints from 0 to 255. You can use the <Mono>CHAR()</Mono> function
-          in Google Sheets to look up the character, or just find them among the
-          list at{" "}
-          <a href="https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin_script">
-            List of Unicode characters
-          </a>
-          .
-        </li>
-        <li>
-          Doing this process for the eight feeder puzzles yields{" "}
-          <Mono>BÒ× òwNÈ®</Mono>, from which you can visually extract the basic
-          latin characters <PuzzleAnswer>BOX OWNER</PuzzleAnswer>.
-        </li>
-      </ol>
     </>
   );
 };
