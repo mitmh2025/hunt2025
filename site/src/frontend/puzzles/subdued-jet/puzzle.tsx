@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 
-const CenteredList = styled.ol`
+const CenteredList = styled.ul`
   width: 100%;
   text-align: center;
   list-style-type: none;
