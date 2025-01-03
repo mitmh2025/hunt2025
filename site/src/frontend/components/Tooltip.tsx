@@ -73,9 +73,7 @@ export const PuzzleTooltipComponent = ({
         <PuzzleIcon lockState={lockState} answer={answer} size={16} />{" "}
         <span>{title}</span>
       </span>
-      {lockState === "unlockable" && desc && (
-        <span className="desc">{desc}</span>
-      )}
+      {!answer && desc && <span className="desc">{desc}</span>}
       {answer ? <span className="answer">{answer}</span> : undefined}
     </PuzzleTooltip>
   );
