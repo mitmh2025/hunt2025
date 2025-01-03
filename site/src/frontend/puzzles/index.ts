@@ -80,6 +80,7 @@ import TemporalInvestigations from "./offensive-cat";
 import ZuluLima from "./opulent-fair";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
+import OWoeIsMe from "./past-jam";
 import TheUltimateInsult from "./periodic-dance";
 import BarTalk from "./personal-chocolate";
 import { makePlaceholder } from "./placeholder";
@@ -315,6 +316,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
   kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
+  o_woe_is_me: OWoeIsMe,
   reuse_and_recyclability: ReuseAndRecyclability,
   story_vision_contest: StoryVisionContest,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
