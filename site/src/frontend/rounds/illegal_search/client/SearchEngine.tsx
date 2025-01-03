@@ -494,6 +494,28 @@ const SearchEngine = ({
     const prevNode = prevState.node;
     setNode(prevNode);
     setModalShown(undefined);
+
+    // refetch the node in case it's changed
+    fetch(`/rounds/illegal_search/node/${prevNode.id}`, {
+      headers: {
+        "Content-Type": "application/json", // This body is JSON
+        Accept: "application/json", // Indicate that we want to receive JSON back
+      },
+    })
+      .then(async (result) => {
+        const json = (await result.json()) as Node;
+        setNode((currentNode) => {
+          if (currentNode.id === json.id) {
+            return json;
+          }
+
+          // node has changed since we started fetching
+          return currentNode;
+        });
+      })
+      .catch((error: unknown) => {
+        console.error(error);
+      });
   }, []);
 
   const showModal = useCallback(
