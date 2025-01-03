@@ -46,7 +46,7 @@ const GRID = `
   .map((row) => row.padEnd(41, " ").split(""));
 
 const StyledWordSearch = styled.table`
-  font-family: monospace;
+  font-family: "Roboto Mono", monospace;
   margin-bottom: 1em;
   border-collapse: collapse;
   td {

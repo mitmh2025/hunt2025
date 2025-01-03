@@ -64,7 +64,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 35.0,
       description:
-        "Solvers have made the new grid (shifted by 11 from original) and the clue phrase “CROSSOUTLINESINEVERYDIRECTIONFROMYEARSTARTS” at the top but aren’t sure what the “years” refers to.",
+        "Solvers have made the new grid (shifted by 11 from original) and the clue phrase “CROSS OUT LINES IN EVERY DIRECTION FROM YEAR STARTS” at the top but aren’t sure what the “years” refers to.",
       keywords: [
         "CROSSOUTLINESINEVERYDIRECTIONFROMYEARSTARTS",
         "CROSS OUT LINES IN EVERY DIRECTION FROM YEAR STARTS",
@@ -81,7 +81,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 50.0,
       description:
-        "Solvers have found most or all of the years in roman numerals but aren’t sure what to do with “CROSS OUT LINES IN EVERY DIRECTION FROM YEAR STARTS”",
+        "Solvers have found most or all of the years in Roman numerals but aren’t sure what to do with “CROSS OUT LINES IN EVERY DIRECTION FROM YEAR STARTS”",
       keywords: [
         "Years",
         "Roman numerals",

@@ -6,7 +6,7 @@ import { WordSearch } from "./puzzle";
 
 const TRANSIT_GRID: [string, string, string][] = [
   ["Jean-Baptiste Chappe d’Auteroche", "San Jose del Cabo", "S"],
-  ["Christian Mayer", "St Petersburg", "H"],
+  ["Christian Mayer", "St. Petersburg", "H"],
   ["Johan Maurits Mohr", "Batavia", "I"],
   ["Thomas Hornsby", "Oxford", "F"],
   ["Benjamin West", "Providence", "T"],
@@ -315,10 +315,10 @@ const TRANSIT_HIGHLIGHTS = reduceCoordinatesToIndices(
 
 const NAMES_TABLE: [string, string][] = [
   ["Vesper", "Roman"],
-  ["Ishtar", "Babylon"],
-  ["Sao Mai", "Vietnam"],
+  ["Ishtar", "Babylonian"],
+  ["Sao Mai", "Vietnamese"],
   ["Zohrah", "Islamic"],
-  ["Chac Ek", "Maya"],
+  ["Chac Ek", "Mayan"],
 ];
 
 const StyledTable = styled.table`
@@ -349,7 +349,7 @@ const Solution = (): JSX.Element => {
         <li>SAN JOSE DEL CABO</li>
       </ul>
       <p>
-        Once enough of these have been found, a google search on the names
+        Once enough of these have been found, a Google search on the names
         reveals that these are all people who observed the Transit of Venus in
         1769, and the places where they observed it.
       </p>
