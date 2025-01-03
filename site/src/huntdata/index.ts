@@ -30,34 +30,36 @@ const HUNT: Hunt = {
         // slots (28 feeders, 4 metas, 1 super)
         // Start with 11 puzzles unlockable and 9 unlock currency.
         // Make 2 more puzzles unlockable after each solve.
-        { id: "mdp01", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "xoxo" }, // unlockable by default
-        { id: "mdp02", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
+        // The slot order is availability order.
+        // The round's presentation layer handles mapping slots to witnesses.
+        { id: "mdp01", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "unreal_islands" }, // unlockable by default
+        { id: "mdp02", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "educational_rite_of_passage" },
         { id: "mdp03", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "songs_on_the_radio" },
         { id: "mdp04", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "downright_backwards" },
-        { id: "mdp05", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "introduction_to_decryption" },
-        { id: "mdp06", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
+        { id: "mdp05", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1 }, // chatgpt
+        { id: "mdp06", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "zulu_lima" },
         { id: "mdp07", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "press_play" },
-        { id: "mdp08", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "educational_rite_of_passage" },
+        { id: "mdp08", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "shrinkage" },
         { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "missing_connections" },
-        { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "be_kind_rewind" },
-        { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "in_a_different_direction" },
-        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "shrinkage" },
-        { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "zing_it_again" },
-        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "an_argument" },
+        { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "xoxo" },
+        { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "an_argument" },
+        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // 📑🍝
+        { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion" },
+        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 }, // on_the_corner
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "drunkens_and_flagons" },
-        { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "unreal_islands" },
-        { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "dropping_the_ball" },
-        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "zulu_lima" },
-        { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "battle_factory"},
-        { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "neatly_drawn" },
-        { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
-        { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "🔎🧊"},
-        { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
-        { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "check_a_deez_words_out" },
-        { id: "mdp25", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "mdp26", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion"},
-        { id: "mdp27", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
-        { id: "mdp28", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
+        { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "battle_factory" },
+        { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
+        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 }, // false-pole
+        { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "🔎🧊" },
+        { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "introduction_to_decryption" },
+        { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "neatly_drawn" },
+        { id: "mdp22", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "dropping_the_ball" },
+        { id: "mdp23", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "mastering_the_art_of_conch_frocking" },
+        { id: "mdp24", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "in_a_different_direction" },
+        { id: "mdp25", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "check_a_deez_words_out" },
+        { id: "mdp26", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "be_kind_rewind" },
+        { id: "mdp27", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "they_might_be_grad_students_but_theyve_got_your_number" },
+        { id: "mdp28", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "zing_it_again" },
         {
           // Boardwalk (meta)
           id: "mdm01",
