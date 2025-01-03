@@ -26,7 +26,7 @@ const SETLIST_STRINGS = [
   "A reptile that…",
   "Constitutional section that…",
   "Long-running conflict that…",
-  "Types of editable dip that…?",
+  "Types of edible dip that…?",
   "Cartoon character who…",
 ];
 
