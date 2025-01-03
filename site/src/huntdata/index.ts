@@ -412,40 +412,40 @@ const HUNT: Hunt = {
         // The first 5 puzzles are unlockable once they are discovered in the UI.
         // Slugs from these 5 slots can be swapped freely to match the desired object.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "皇帝の暗号" }, // great wave painting
-        { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "cross_spread" }, // globe
-        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 }, // family portrait
-        { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // typewriter
-        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1 }, // desk lamp
+        { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // globe
+        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 }, // family portrait, paw_print_detective goes here
+        { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 }, // typewriter, a_puzzle_of_the_dead goes here
+        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp, 
         // The next 5 puzzles are unlockable once they are discovered in the
         // UI, but will not be discoverable until the corresponding lock is
         // satisfied.
         // Slugs from these 5 slots must match the appropriate object for the
         // blacklight version of the asset to give the right set of
         // instructions for that puzzle.
-        { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "placeholder_isp06" }, // candy, in desk drawer/behind directional lock
-        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "cahfee_regulah" }, // rings, behind binary switches
-        { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1, slug: "placeholder_isp08" }, // money, inside safe/combination lock
-        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "the_center_is_in_plain_sight" }, // ledger, behind numeric lock/rug
-        { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1, slug: "jargon" }, // note, inside cryptex
+        { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "cahfee_regulah" }, // candy, in desk drawer/behind directional lock
+        { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "the_center_is_in_plain_sight" }, // rings, behind binary switches
+        { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1, slug: "jargon" }, // money, inside safe/combination lock
+        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "placeholder_isp09" }, // ledger, behind numeric lock/rug, should be given_up
+        { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1, slug: "placeholder_isp10" }, // note, inside cryptex, should be smoke_em_if_youve_got_em
 
         // The next 8 puzzles are only discoverable once the first meta is
         // solved and they are discovered in the UI.
-        { id: "isp11", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "half_baked" },
-        { id: "isp12", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "networking_event" },
-        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "bermuda_triangle" },
-        { id: "isp14", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "fechtbuch" },
-        { id: "isp15", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "a_heap_of_clards" },
-        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "corn_maize" },
-        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "passage_of_time" },
-        { id: "isp18", unlockable_if: [{ gate_satisfied: "isg25" }, { slot_solved: "ism01" }], unlock_cost: 1 },
+        { id: "isp11", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "passage_of_time" }, // birth certificate
+        { id: "isp12", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "corn_maize" }, // newspaper clipping
+        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 }, // letter from prison warden, should be the_annual_massachusetts_spelling_bee
+        { id: "isp14", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "a_heap_of_clards" }, // photo of the Candys and Baby
+        { id: "isp15", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "fechtbuch" }, // photo of Papa, wife, and Gladys
+        { id: "isp16", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "bermuda_triangle" }, // rare stamp
+        { id: "isp17", unlockable_if: [{ gate_satisfied: "isg24" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "half_baked" }, // teddy bear
+        { id: "isp18", unlockable_if: [{ gate_satisfied: "isg25" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "networking_event" }, // radio drama poster
 
         // The next 5 puzzles are the blacklight versions of 6-10.
         // Slugs must correspond to the _blacklight version of the slug of the corresponding slot isp06-isp10
-        { id: "isp19", unlocked_if: { gate_satisfied: "isg27" }, prize: 0, slug: "placeholder_isp06_blacklight" }, // blacklight version of isp06, behind directional lock
-        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "cahfee_regulah_blacklight" }, // blacklight version of isp07, behind binary switch lock
-        { id: "isp21", unlocked_if: { gate_satisfied: "isg29" }, prize: 0, slug: "placeholder_isp08_blacklight" }, // blacklight version of isp08, behind combination lock
-        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "the_center_is_in_plain_sight_blacklight" }, // blacklight version of isp09, behind numeric lock
-        { id: "isp23", unlocked_if: { gate_satisfied: "isg31" }, prize: 0, slug: "jargon_blacklight" }, // blacklight version of isp10, behind word lock
+        { id: "isp19", unlocked_if: { gate_satisfied: "isg27" }, prize: 0, slug: "cahfee_regulah_blacklight" }, // blacklight version of isp06, behind directional lock
+        { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "the_center_is_in_plain_sight_blacklight" }, // blacklight version of isp07, behind binary switch lock
+        { id: "isp21", unlocked_if: { gate_satisfied: "isg29" }, prize: 0, slug: "jargon_blacklight" }, // blacklight version of isp08, behind combination lock
+        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "placeholder_isp09_blacklight" }, // blacklight version of isp09, behind numeric lock
+        { id: "isp23", unlocked_if: { gate_satisfied: "isg31" }, prize: 0, slug: "placeholder_isp10_blacklight" }, // blacklight version of isp10, behind word lock
 
         // Metas.
         { id: "ism01", is_meta: true, unlocked_if: [{ gate_satisfied: "isg00" }], slug: "papas_bookcase" }, // Bookcase

@@ -138,19 +138,14 @@ import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
 
-const PlaceholderISP06 = makePlaceholder(
-  "placeholder_isp06",
-  "Placeholder 06",
+const PlaceholderISP09 = makePlaceholder(
+  "placeholder_isp09",
+  "Placeholder 09",
   "ATHLETIC CLUB",
 );
-const CahfeeRegularStub = makePlaceholder(
-  "cahfee_regulah",
-  "Cahfee, Regulah",
-  "FOOD COURT",
-);
-const PlaceholderISP08 = makePlaceholder(
-  "placeholder_isp08",
-  "Placeholder 08",
+const PlaceholderISP10 = makePlaceholder(
+  "placeholder_isp10",
+  "Placeholder 10",
   "MANUEL ORIBE",
 );
 
@@ -258,11 +253,11 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   this_is_just_a_test: ThisIsJustATest, // typewriter
   // isp05 desk lamp?
 
-  placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
-  cahfee_regulah: CahfeeRegulah, // rings, behind binary switches
-  placeholder_isp08: PlaceholderISP08, // money, behind safe/combination lock
-  the_center_is_in_plain_sight: TheCenterIsInPlainSight, // ledger, behind numeric lock/rug
-  jargon: Jargon, // note, inside cryptex
+  cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
+  the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
+  jargon: Jargon, // money, behind safe/combination lock
+  placeholder_isp09: PlaceholderISP09, // ledger, behind numeric lock/rug
+  placeholder_isp10: PlaceholderISP10, // note, inside cryptex
 
   a_heap_of_clards: AHeapOfClards,
   bermuda_triangle: BermudaTriangle,
@@ -278,35 +273,38 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // * SPARE PARTS should go to the_center_is_in_plain_sight_blacklight
   // * LIFEFORCE should go to jargon_blacklight
   // * VOYAGERS should go to cahfee_regulah_blacklight
-  // * the other two have not reached postprod yet
-  placeholder_isp06_blacklight: blacklightPuzzle(PlaceholderISP06, {
-    answer: "LIFEFORCE",
-    asset: candy_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegularStub, {
+  // * the other two have not reached postprod yet, but when they do:
+  //   * BROADCAST_NEWS should go to given_up_blacklight
+  //   * BRAZIL should go to smoke_em_if_youve_got_em
+
+  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegulah, {
     answer: "VOYAGERS",
-    asset: rings_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  placeholder_isp08_blacklight: blacklightPuzzle(PlaceholderISP08, {
-    answer: "SPARE PARTS",
-    asset: money_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  jargon_blacklight: blacklightPuzzle(Jargon, {
-    answer: "BRAZIL",
-    asset: cryptex_note_blacklight,
+    asset: candy_modal_blacklight,
     assetAlt: "TODO",
   }),
   the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
     TheCenterIsInPlainSight,
     {
-      answer: "BROADCAST NEWS",
-      asset: ledger_blacklight,
+      answer: "SPARE PARTS",
+      asset: rings_modal_blacklight,
       assetAlt: "TODO",
     },
   ),
+  jargon_blacklight: blacklightPuzzle(Jargon, {
+    answer: "LIFEFORCE",
+    asset: money_modal_blacklight,
+    assetAlt: "TODO",
+  }),
+  placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
+    answer: "BROADCAST NEWS",
+    asset: ledger_blacklight,
+    assetAlt: "TODO",
+  }),
+  placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
+    answer: "BRAZIL",
+    asset: cryptex_note_blacklight,
+    assetAlt: "TODO",
+  }),
 
   papas_bookcase: PapasBookcase,
   papas_stash: PapasStash,
