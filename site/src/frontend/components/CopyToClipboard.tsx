@@ -6,6 +6,7 @@ export const NO_COPY_CLASS = "no-copy";
 export const COPY_ONLY_CLASS = "copy-only";
 
 export const CopyToClipboardContainer = styled.div`
+  display: inline-block;
   position: sticky;
   bottom: 2rem;
   left: 0;
@@ -16,10 +17,8 @@ export const CopyToClipboardContainer = styled.div`
     display: none;
   }
 
-  @media ${deviceMax.md} {
-    &&& {
-      margin-left: -32px;
-    }
+  @media ${deviceMax.lg} {
+    display: none;
   }
 
   p {
