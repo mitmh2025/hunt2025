@@ -555,7 +555,7 @@ const Solution = () => {
 
       <p>
         There are thus 4 total ways of assigning the seen letters to chips,
-        totaling 24 chip sets, including choice of unseen letters.
+        totaling 60 chip sets, including choice of unseen letters.
       </p>
 
       <h3>The chips’ given alphabetical ordering</h3>
@@ -568,13 +568,6 @@ const Solution = () => {
         alphabetically on the white chip, we can exclude <Mono>W</Mono> and{" "}
         <Mono>X</Mono>, concluding the missing letters here are <Mono>K</Mono>{" "}
         and <Mono>Q</Mono>.
-      </p>
-      <p>
-        (While not strictly part of the logic puzzle, a savvy solver might
-        assume that a chip set that includes unresolvable ambiguity is unlikely
-        to represent the correct choice and therefore exclude <Mono>W</Mono> and{" "}
-        <Mono>X</Mono> from consideration early on. This assumption is borne out
-        and might save a small amount of time.)
       </p>
       <p>The chip set is therefore:</p>
       <LinkedImage
