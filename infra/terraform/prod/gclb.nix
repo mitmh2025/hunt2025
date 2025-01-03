@@ -71,6 +71,24 @@
     health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
     log_config.enable = true;
   };
+  data.google_compute_network_endpoint_group.prod-ops = {
+    depends_on = ["kubernetes_service_v1.ops"];
+    name = "prod-ops";
+    inherit (config.provider.google) zone;
+  };
+  resource.google_compute_backend_service.ops = {
+    depends_on = ["kubernetes_service_v1.ops"];
+    name = "ops";
+    load_balancing_scheme = "EXTERNAL_MANAGED";
+    backend = [{
+      balancing_mode = "RATE";
+      # If we had more than one backend, this would be used to belance between them.
+      max_rate_per_endpoint = 1;
+      group = lib.tfRef "data.google_compute_network_endpoint_group.prod-ops.self_link";
+    }];
+    health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
+    log_config.enable = true;
+  };
   gcp.loadBalancer.mitmh2025 = {
     certificateMapName = "mitmh2025";
     urlMap = {
@@ -82,6 +100,10 @@
         {
           hosts = ["mitmh2025.com"];
           path_matcher = "root";
+        }
+        {
+          hosts = ["ops.mitmh2025.com"];
+          path_matcher = "ops";
         }
       ];
       # If a host doesn't match, just redirect to www.
@@ -105,6 +127,17 @@
             {
               paths = ["/static/*"];
               service = lib.tfRef "google_compute_backend_bucket.assets.id";
+            }
+          ];
+        }
+        {
+          name = "ops";
+          default_service = lib.tfRef "google_compute_backend_service.ops.id";
+
+          path_rule = [
+            {
+              paths = ["/api" "/api/*"];
+              service = lib.tfRef "google_compute_backend_service.api.id";
             }
           ];
         }
@@ -150,14 +183,30 @@
   gcp.certificate.mitmh2025.domains = [
     "mitmh2025.com"
   ];
+  gcp.certificate.ops.domains = [
+    "ops.mitmh2025.com"
+  ];
   gcp.certificateMap.mitmh2025 = {
     defaultCertificateName = "www";
     host."mitmh2025.com" = "mitmh2025";
+    host."ops.mitmh2025.com" = "ops";
   };
   route53.mitmh2025.gcp_dns_authorizations = [
     "www.mitmh2025.com"
     "mitmh2025.com"
+    "ops.mitmh2025.com"
   ];
+  route53.mitmh2025.rr.ops = {
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025.address")];
+  };
+  route53.mitmh2025.rr.ops-v6 = {
+    name = "ops";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.mitmh2025-v6.address")];
+  };
   route53.mitmh2025.rr.www = {
     type = "A";
     ttl = "300";
