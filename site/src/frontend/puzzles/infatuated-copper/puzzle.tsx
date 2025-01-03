@@ -93,7 +93,7 @@ const Puzzle = (): JSX.Element => {
             <summary>Transcript</summary>
             <div>
               My name is Oliver Kraft. I am a patient at St. Elizabeth’s
-              Hospital in Washington, D.C., and I am probably never gonna get
+              Hospital in Washington, D.C., and I am probably never going to get
               out of here while I live. I accept this horror. I am here on the
               point of this knife because of the Grin Man, who most people call
               Strom Sullivan.
@@ -176,7 +176,7 @@ const Puzzle = (): JSX.Element => {
             <summary>Transcript</summary>
             <div>
               You will be greeted by Earl, who will demonstrate how to make
-              cherries jubilee, staple dish of pioneers in the early days of
+              cherries jubilee, a staple dish of pioneers in the early days of
               town. “You feed a goose cherries until it can no longer walk, or
               stand on its own,” Earl explains. “Then, you light the goose on
               fire, until its screams become whimpers. And when it’s finally
