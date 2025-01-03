@@ -1,5 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import dome from "./assets/great_dome_transparent.png";
 
 const LETTERS = `P B A S T E N G H Y N G V B A F E B A M
@@ -63,6 +67,13 @@ const COLUMNS: [string, string, string, string][] = [
   ["A", "?", "?", "?"],
 ];
 
+const COLUMNS_TRANSPOSED: [string, string, string, string, string, string][] = [
+  ["L", "C", "A", "S", "S", "A"],
+  ["?", "?", "?", "?", "?", "?"],
+  ["?", "?", "?", "?", "?", "?"],
+  ["?", "?", "?", "?", "?", "?"],
+];
+
 const DomeDiv = styled.div`
   width: 700px;
   height: 430px;
@@ -108,6 +119,10 @@ const ContentWrapper = styled(FlexColumn)`
   min-width: 700px;
 `;
 
+const StyledCell = styled.td`
+  border: 1px solid black;
+`;
+
 const Column = ({
   column,
   left,
@@ -131,7 +146,7 @@ const Column = ({
 
 const Dome = ({ columns }: { columns: [string, string, string, string][] }) => {
   return (
-    <DomeDiv>
+    <DomeDiv className={NO_COPY_CLASS}>
       {columns.map((column, i) => {
         return <Column key={i} column={column} top={200} left={i * 87 + 112} />;
       })}
@@ -145,6 +160,20 @@ const Puzzle = () => {
       <p className="puzzle-flavor">
         Important guests have been invited to the great dome.
       </p>
+
+      <table className={COPY_ONLY_CLASS}>
+        {COLUMNS_TRANSPOSED.map((row, i) => (
+          <tr key={i}>
+            {row.map((cell, j) =>
+              i === 2 ? (
+                <StyledCell key={`${i}-${j}`}>{cell}</StyledCell>
+              ) : (
+                <td key={`${i}-${j}`}>{cell}</td>
+              ),
+            )}
+          </tr>
+        ))}
+      </table>
 
       <ScrollWrapper>
         <ContentWrapper>
