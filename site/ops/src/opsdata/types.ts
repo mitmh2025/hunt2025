@@ -7,6 +7,7 @@ import {
 export type TeamData = {
   teamId: number;
   name: string;
+  username: string;
   registration: TeamRegistration;
   state: TeamStateIntermediate;
   formattedState: ReturnType<typeof formatTeamHuntState>;

@@ -1,6 +1,8 @@
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
+import { CustomTooltip } from "./CustomTooltip";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -53,11 +55,12 @@ const Interaction = styled(Puzzle)`
 `;
 
 const stateColors = {
-  solved: "green",
-  unlocked: "yellow",
-  locked: "grey",
-  started: "blue",
-  complete: "green",
+  solved: "#4caf50",
+  unlocked: "#03a9f4",
+  locked: "#ccc",
+  unlockable: "#ccc",
+  started: "#03a9f4",
+  complete: "#4caf50",
 };
 
 function inGroupsOf<T>(array: T[], groupSize: number): T[][] {
@@ -80,13 +83,13 @@ export default function BigBoardTeam({ team }: { team: BigBoardTeam }) {
         }}
         variant="h6"
       >
-        {team.name}
+        <Link to={`/teams/${team.username}`}>{team.username}</Link>
       </Typography>
       <Box>
         {inGroupsOf(team.rounds, 3).map((rounds, i) => (
           <RoundRow key={i}>
             {rounds.map((round) => (
-              <Tooltip
+              <CustomTooltip
                 arrow
                 placement="top"
                 title={round.title}
@@ -96,17 +99,17 @@ export default function BigBoardTeam({ team }: { team: BigBoardTeam }) {
                   {round.supermetas.length > 0 && (
                     <MetaRow>
                       {round.supermetas.map((meta) => (
-                        <Tooltip arrow title={meta.title} key={meta.slug}>
+                        <CustomTooltip arrow title={meta.title} key={meta.slug}>
                           <Meta
                             style={{ backgroundColor: stateColors[meta.state] }}
                           />
-                        </Tooltip>
+                        </CustomTooltip>
                       ))}
                     </MetaRow>
                   )}
                   <MetaRow>
                     {round.metas.map((meta) => (
-                      <Tooltip
+                      <CustomTooltip
                         placement="left"
                         title={meta.title}
                         arrow
@@ -115,12 +118,12 @@ export default function BigBoardTeam({ team }: { team: BigBoardTeam }) {
                         <Meta
                           style={{ backgroundColor: stateColors[meta.state] }}
                         />
-                      </Tooltip>
+                      </CustomTooltip>
                     ))}
                   </MetaRow>
                   <PuzzleRow>
                     {round.puzzles.map((puzzle) => (
-                      <Tooltip
+                      <CustomTooltip
                         placement="left"
                         title={puzzle.title}
                         arrow
@@ -129,13 +132,13 @@ export default function BigBoardTeam({ team }: { team: BigBoardTeam }) {
                         <Puzzle
                           style={{ backgroundColor: stateColors[puzzle.state] }}
                         />
-                      </Tooltip>
+                      </CustomTooltip>
                     ))}
                   </PuzzleRow>
                   {round.interactions.length > 0 && (
                     <PuzzleRow>
                       {round.interactions.map((interaction) => (
-                        <Tooltip
+                        <CustomTooltip
                           placement="left"
                           title={interaction.title}
                           arrow
@@ -146,12 +149,12 @@ export default function BigBoardTeam({ team }: { team: BigBoardTeam }) {
                               backgroundColor: stateColors[interaction.state],
                             }}
                           />
-                        </Tooltip>
+                        </CustomTooltip>
                       ))}
                     </PuzzleRow>
                   )}
                 </Round>
-              </Tooltip>
+              </CustomTooltip>
             ))}
           </RoundRow>
         ))}
