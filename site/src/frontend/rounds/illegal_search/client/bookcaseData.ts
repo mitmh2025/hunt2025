@@ -72,6 +72,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         title: "Alice's Adventures in Wonderland",
         author: "Lewis Carroll",
         color: c1,
+        size: "13px",
       },
       {
         title: "The Wright Brothers",
@@ -89,6 +90,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         title: "The Hitchhiker's Guide to the Galaxy",
         author: "Douglas Adams",
         color: c3,
+        size: "12px",
       },
       {
         title: "Fahrenheit 451",
@@ -151,7 +153,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         title: "A Portrait of the Artist as a Young Man",
         author: "James Joyce",
         color: c2,
-        size: "12px",
+        size: "11px",
       },
       {
         title: "The Art of Eating",
@@ -375,7 +377,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         title: "Introducing Nietzsche",
         author: "Laurence Gane",
         color: c4,
-        size: "13px",
+        size: "12px",
       },
       {
         title: "Nate Saint",
@@ -393,7 +395,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         title: "Exercise Endocrinology",
         author: "Katarina Borer",
         color: c2,
-        size: "12px",
+        size: "11px",
       },
     ],
     [
