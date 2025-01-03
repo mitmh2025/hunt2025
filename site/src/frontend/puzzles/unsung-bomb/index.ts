@@ -65,12 +65,12 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["SECOND OF PROSTITUTION GIVES THIS"],
-      reply: "Keep going! This is a cluephrase, but there’s one more step.",
-    },
-    {
-      guess: ["THE RIGHT TO BEAR ARMS"],
-      reply: "Almost there. The puzzle page does specify the answer length.",
+      guess: [
+        "READ THE EXACTLY OPPOSITE LETTERS",
+        "SECOND OF CONSTITUTION GIVES THIS",
+        "SECOND OF PROSTITUTION GIVES THIS",
+      ],
+      reply: "Keep going!",
     },
   ],
 };
