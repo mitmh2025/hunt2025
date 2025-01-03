@@ -82,6 +82,10 @@ const ROWS: Row[] = [
   },
 ];
 
+const StyledTable = styled.table`
+  margin-bottom: 1em;
+`;
+
 const StyledTd = styled.td`
   padding: 0px 8px;
 `;
@@ -98,7 +102,7 @@ const Table = ({
   rows: Row[];
 }): JSX.Element => {
   return (
-    <table>
+    <StyledTable>
       <thead>
         <tr>
           {headers.map((header, i) => (
@@ -143,7 +147,7 @@ const Table = ({
           );
         })}
       </tbody>
-    </table>
+    </StyledTable>
   );
 };
 
