@@ -5,6 +5,7 @@ import {
   type ActivityLogEntryRow,
   type InsertActivityLogEntry,
   type InsertTeamRegistrationLogEntry,
+  type DesertedNinjaRegistrationRow,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
@@ -12,7 +13,7 @@ import {
   type DesertedNinjaQuestion,
   type DesertedNinjaSession,
   type DesertedNinjaAnswer,
-  //  type DesertedNinjaRegistration,
+  type DesertedNinjaRegistration,
 } from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
@@ -515,14 +516,14 @@ export async function getDesertedNinjaSessions(
 export async function insertDesertedNinjaSession(
   title: string,
   question_ids: string,
+  status: string,
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession> {
   const session = await knex("deserted_ninja_sessions").insert({
-    status: "not_started",
+    status: status,
     title: title,
     question_ids: question_ids,
   });
-  console.log(session);
 
   if (session.length === 0) {
     return {
@@ -564,7 +565,6 @@ export async function insertDesertedNinjaAnswers(
 ): Promise<number> {
   return (
     await knex("deserted_ninja_answers")
-      .returning(["id"])
       .insert(
         answers.map((ans) => ({
           session_id: ans.sessionId,
@@ -573,7 +573,85 @@ export async function insertDesertedNinjaAnswers(
           answer: ans.answer,
         })),
       )
+      .returning(["id"])
       .onConflict("id")
       .merge()
   ).length;
+}
+
+export async function getDesertedNinjaRegistrations(
+  sessionId: number | undefined,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaRegistration[]> {
+  let registrationRows;
+  if (sessionId) {
+    registrationRows = await knex("deserted_ninja_registrations")
+      .where("session_id", sessionId)
+      .select();
+  } else {
+    registrationRows = await knex("deserted_ninja_registrations").select();
+  }
+
+  return registrationRows.map((obj) => ({
+    id: obj.id,
+    sessionId: obj.session_id,
+    teamId: obj.team_id,
+    status: obj.status,
+  }));
+}
+
+export async function insertDesertedNinjaRegistration(
+  sessionId: number,
+  teamId: number,
+  status: string,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaRegistration | undefined> {
+  return await knex("deserted_ninja_registrations")
+    .insert({ session_id: sessionId, team_id: teamId, status: status })
+    .returning(["id", "session_id", "team_id", "status"])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedEntry = objs[0] as DesertedNinjaRegistrationRow;
+      return {
+        sessionId: insertedEntry.session_id,
+        teamId: insertedEntry.team_id,
+        status: insertedEntry.status,
+      };
+    });
+}
+
+export async function deleteDesertedNinjaRegistration(
+  sessionId: number,
+  teamId: number,
+  knex: Knex.Knex,
+): Promise<boolean> {
+  return (
+    (await knex("deserted_ninja_registrations")
+      .where({
+        session_id: sessionId,
+        team_id: teamId,
+      })
+      .del()) > 0
+  );
+}
+
+export async function updateDesertedNinjaRegistration(
+  sessionId: number,
+  teamId: number,
+  status: string,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaRegistration> {
+  await knex("deserted_ninja_registrations")
+    .where({
+      session_id: sessionId,
+      team_id: teamId,
+    })
+    .update("status", status);
+  return {
+    sessionId: sessionId,
+    teamId: teamId,
+    status: status,
+  };
 }

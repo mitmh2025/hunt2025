@@ -52,6 +52,10 @@ import {
   getDesertedNinjaQuestions,
   getDesertedNinjaSessions,
   createDesertedNinjaSession,
+  getDesertedNinjaRegistrations,
+  createDesertedNinjaRegistration,
+  deleteDesertedNinjaRegistration,
+  updateDesertedNinjaRegistration,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
@@ -1084,6 +1088,58 @@ export function getRouter({
           return Promise.resolve({
             status: 200 as const,
             body: body,
+          });
+        },
+      },
+      createDesertedNinjaRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId, teamId } }) => {
+          await createDesertedNinjaRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            knex,
+          );
+          return Promise.resolve({
+            status: 200 as const,
+            body: await getDesertedNinjaRegistrations(
+              parseInt(sessionId, 10),
+              knex,
+            ),
+          });
+        },
+      },
+      deleteDesertedNinjaRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId, teamId } }) => {
+          await deleteDesertedNinjaRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            knex,
+          );
+          return Promise.resolve({
+            status: 200 as const,
+            body: await getDesertedNinjaRegistrations(
+              parseInt(sessionId, 10),
+              knex,
+            ),
+          });
+        },
+      },
+      updateDesertedNinjaRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId, teamId }, body }) => {
+          await updateDesertedNinjaRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            body,
+            knex,
+          );
+          return Promise.resolve({
+            status: 200 as const,
+            body: await getDesertedNinjaRegistrations(
+              parseInt(sessionId, 10),
+              knex,
+            ),
           });
         },
       },

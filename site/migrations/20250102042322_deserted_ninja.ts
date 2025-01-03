@@ -32,6 +32,7 @@ export async function up(knex: Knex): Promise<void> {
 
       table.foreign("session_id").references("deserted_ninja_sessions.id");
       table.foreign("team_id").references("teams.id");
+      table.unique(["session_id", "team_id"]);
     },
   );
   await knex.schema.createTable("deserted_ninja_answers", function (table) {
@@ -46,6 +47,14 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
+  await knex.schema.table("deserted_ninja_answers", (table) => {
+    table.dropForeign("session_id");
+    table.dropForeign("team_id");
+  });
+  await knex.schema.table("deserted_ninja_registrations", (table) => {
+    table.dropForeign("session_id");
+    table.dropForeign("team_id");
+  });
   await knex.schema
     .dropTable("deserted_ninja_questions")
     .dropTable("deserted_ninja_sessions")

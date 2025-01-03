@@ -7,7 +7,7 @@ import {
   type DesertedNinjaQuestion,
   type DesertedNinjaSession,
   type DesertedNinjaAnswer,
-  //  type DesertedNinjaRegistration,
+  type DesertedNinjaRegistration,
 } from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
@@ -29,6 +29,10 @@ import {
   getDesertedNinjaSessions as dbGetDesertedNinjaSessions,
   insertDesertedNinjaSession as dbInsertDesertedNinjaSession,
   insertDesertedNinjaAnswers as dbInsertDesertedNinjaAnswers,
+  getDesertedNinjaRegistrations as dbGetDesertedNinjaRegistrations,
+  insertDesertedNinjaRegistration as dbInsertDesertedNinjaRegistration,
+  deleteDesertedNinjaRegistration as dbDeleteDesertedNinjaRegistration,
+  updateDesertedNinjaRegistration as dbUpdateDesertedNinjaRegistration,
 } from "./db";
 import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
 import {
@@ -529,18 +533,79 @@ export async function createDesertedNinjaSession(
   questionIds: number[],
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession> {
-  return dbInsertDesertedNinjaSession(title, questionIds.toString(), knex);
+  return dbInsertDesertedNinjaSession(
+    title,
+    questionIds.toString(),
+    "not_started",
+    knex,
+  );
 }
 
 export async function getDesertedNinjaSessions(
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession[]> {
-  return dbGetDesertedNinjaSessions(knex);
+  const sessions: DesertedNinjaSession[] =
+    await dbGetDesertedNinjaSessions(knex);
+  const registrations: DesertedNinjaRegistration[] =
+    await dbGetDesertedNinjaRegistrations(undefined, knex);
+
+  // TODO: this is O(N^2), rewrite if need be
+  sessions.forEach((s) => {
+    registrations.forEach((r) => {
+      if (s.id === r.sessionId) {
+        s.teamIds.push(r.teamId);
+      }
+    });
+  });
+
+  return sessions;
 }
 
 export async function saveDesertedNinjaAnswers(
   answers: DesertedNinjaAnswer[],
   knex: Knex.Knex,
 ): Promise<number> {
+  // TODO: only allow this for answers where the session is in
+  // "in_progress" status
   return dbInsertDesertedNinjaAnswers(answers, knex);
+}
+
+export async function getDesertedNinjaRegistrations(
+  sessionId: number | undefined,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaRegistration[]> {
+  return dbGetDesertedNinjaRegistrations(sessionId, knex);
+}
+
+export async function createDesertedNinjaRegistration(
+  sessionId: number,
+  teamId: number,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaRegistration | undefined> {
+  // TODO: abort if the session isn't in "not_started" status
+  return dbInsertDesertedNinjaRegistration(
+    sessionId,
+    teamId,
+    "not_checked_in",
+    knex,
+  );
+}
+
+export async function deleteDesertedNinjaRegistration(
+  sessionId: number,
+  teamId: number,
+  knex: Knex.Knex,
+): Promise<boolean> {
+  // TODO: abort if the session isn't in "not_started" status
+  return dbDeleteDesertedNinjaRegistration(sessionId, teamId, knex);
+}
+
+export async function updateDesertedNinjaRegistration(
+  sessionId: number,
+  teamId: number,
+  state: string,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaRegistration> {
+  // TODO: only allow this if session is in "in_progress" status
+  return dbUpdateDesertedNinjaRegistration(sessionId, teamId, state, knex);
 }

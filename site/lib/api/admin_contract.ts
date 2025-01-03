@@ -148,4 +148,33 @@ export const adminContract = c.router({
     },
     summary: "Save a set of deserted-ninja scores",
   },
+  createDesertedNinjaRegistration: {
+    method: "POST",
+    path: "/admin/create-dn-registration/:sessionId/:teamId",
+    body: z.object({}),
+    responses: {
+      200: DesertedNinjaRegistrationSchema.array(),
+    },
+    summary: "Register a team for a deserted-ninja session",
+  },
+  deleteDesertedNinjaRegistration: {
+    method: "POST",
+    path: "/admin/delete-dn-registration/:sessionId/:teamId",
+    body: z.object({}),
+    responses: {
+      200: DesertedNinjaRegistrationSchema.array(),
+      404: z.null(),
+    },
+    summary: "Unregister a team for a deserted-ninja session",
+  },
+  updateDesertedNinjaRegistration: {
+    method: "POST",
+    path: "/admin/update-dn-registration/:sessionId/:teamId",
+    body: z.string(),
+    responses: {
+      200: DesertedNinjaRegistrationSchema.array(),
+      404: z.null(),
+    },
+    summary: "Unregister a team for a deserted-ninja session",
+  },
 });
