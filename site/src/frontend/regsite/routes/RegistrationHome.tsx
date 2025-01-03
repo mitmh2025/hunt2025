@@ -77,6 +77,11 @@ export default function RegistrationHome({
         <section id="updates">
           <h2>Latest Updates</h2>
           <p>
+            <strong>2025.01.03 - </strong>Please find the formal invitation to
+            the Gala: <a href="https://puzzles.mit.edu/resources/2025-Invitation.pdf">
+            https://puzzles.mit.edu/resources/2025-Invitation.pdf</a>.
+          </p>
+          <p>
             <strong>2024.12.13 - </strong>This website previously indicated that
             its contents were not a puzzle. However, while this statement was
             true, we have since realized that it was inconsistent with our
