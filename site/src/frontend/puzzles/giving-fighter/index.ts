@@ -25,7 +25,7 @@ const puzzle: PuzzleDefinition = {
       order: 0.0,
       description: "Solvers are having trouble getting non-pffffft responses",
       nudge:
-        "If you cannot get your chat partner to respond meaningfully to you, consider your chat partner's identity and how that relates to the puzzle title.",
+        "If you cannot get your chat partner to respond meaningfully to you, consider your chat partner’s identity and how that relates to the puzzle title.",
     },
     {
       order: 0.1,
@@ -52,7 +52,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers are having trouble finding patterns in the output (pt 2)",
       keywords: ["first letters"],
       nudge:
-        'The first sound of each response is always "miaou", but the first letter is changed.  Those letters do not depend on your input.  Eventually, those letters will repeat after you\'ve entered enough valid inputs.',
+        "The first sound of each response is always “miaou”, but the first letter is changed.  Those letters do not depend on your input.  Eventually, those letters will repeat after you’ve entered enough valid inputs.",
     },
     {
       order: 40.0,
@@ -103,7 +103,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers are wondering about the highlights",
       keywords: ["highlight", "glitch", "green"],
       nudge:
-        "Whether cat sounds are highlighted will depend on your input and will change depending on how long you've been chatting in your current session.",
+        "Whether cat sounds are highlighted will depend on your input and will change depending on how long you’ve been chatting in your current session.",
     },
     {
       order: 80.1,
