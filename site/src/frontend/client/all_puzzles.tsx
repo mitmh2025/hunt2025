@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
+import { styled } from "styled-components";
 import AllPuzzlesList from "../components/AllPuzzlesList";
 import { PuzzleIcon } from "../components/PuzzleLink";
 import { type AllPuzzlesState } from "./all_puzzles_types";
 import useDataset from "./useDataset";
-import { styled } from "styled-components";
 
 const Filters = styled.div`
   display: flex;
