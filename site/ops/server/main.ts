@@ -59,6 +59,7 @@ async function newPassport({
         clientID,
         clientSecret,
         callbackURL: "/auth/mitmh2025/callback",
+        proxy: true,
       },
       (
         accessToken: string,
