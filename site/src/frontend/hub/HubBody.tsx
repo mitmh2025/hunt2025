@@ -29,8 +29,9 @@ const GREEN = "var(--teal-400)";
 const Wall = styled.div`
   background-image: url(${BrickWall});
   background-repeat: repeat;
-  width: var(--viewport-width);
-  height: calc(var(--viewport-height) - 3rem);
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 3rem);
   padding-top: 1rem;
 `;
 
