@@ -249,5 +249,11 @@
         ];
       };
     }
+    {
+      hunt2025.tix = {
+        domain = "staging.mitmh2025.com";
+        authentikApp = "staging-tix";
+      };
+    }
   ];
 }

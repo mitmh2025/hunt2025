@@ -6,13 +6,14 @@
       "reg.staging"
       "auth"
       "things.staging"
-      "tix"
+      "tix.staging"
       "media.staging"
       "ops.staging"
     ];
     machineType = "e2-custom-medium-5120"; # 1 vCPU, 5 GB RAM
     firewall.allowedTCPPorts = [
       22 # SSH
+      25 # SMTP
       80 # HTTP
       443 # HTTPS
       8883 # MQTTs
