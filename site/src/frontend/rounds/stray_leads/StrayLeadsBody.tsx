@@ -157,7 +157,7 @@ const StrayLeadsBody = ({
       );
       window.removeEventListener("load", _calculateViewportDims);
     };
-  });
+  }, []);
   const items = (
     <ul>
       {state.leads.map((lead) => {

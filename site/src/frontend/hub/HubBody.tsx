@@ -82,7 +82,7 @@ const HubBody = ({ state }: { state: HubState }) => {
       );
       window.removeEventListener("load", _calculateViewportDims);
     };
-  });
+  }, []);
   return (
     <>
       <HubFonts />
