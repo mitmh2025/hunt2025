@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { styled } from "styled-components";
 import { HubFonts } from "./HubFonts";
 import BabyPhoto from "./assets/baby.png";
@@ -53,26 +53,36 @@ const BusinessCard = styled.img`
     ${getRelativeSizeCss(4)} rgba(0, 0, 0, 0.53);
 `;
 
-const HubBody = ({ state }: { state: HubState }) => {
-  useEffect(() => {
-    function _calculateScrollbarWidth() {
-      document.documentElement.style.setProperty(
-        "--viewport-width",
-        `${document.documentElement.clientWidth}px`,
-      );
-    }
+function _calculateViewportDims() {
+  document.documentElement.style.setProperty(
+    "--viewport-width",
+    `${document.documentElement.clientWidth}px`,
+  );
+  document.documentElement.style.setProperty(
+    "--viewport-height",
+    `${document.documentElement.clientHeight}px`,
+  );
+}
 
-    // recalculate on resize
-    window.addEventListener("resize", _calculateScrollbarWidth, false);
-    // recalculate on dom load
+const HubBody = ({ state }: { state: HubState }) => {
+  useLayoutEffect(() => {
+    window.addEventListener("resize", _calculateViewportDims, false);
     document.addEventListener(
       "DOMContentLoaded",
-      _calculateScrollbarWidth,
+      _calculateViewportDims,
       false,
     );
-    // recalculate on load (assets loaded as well)
-    window.addEventListener("load", _calculateScrollbarWidth);
-  });
+    window.addEventListener("load", _calculateViewportDims);
+    return () => {
+      window.removeEventListener("resize", _calculateViewportDims, false);
+      document.removeEventListener(
+        "DOMContentLoaded",
+        _calculateViewportDims,
+        false,
+      );
+      window.removeEventListener("load", _calculateViewportDims);
+    };
+  }, []);
   return (
     <>
       <HubFonts />
