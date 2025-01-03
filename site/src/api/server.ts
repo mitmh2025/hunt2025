@@ -1161,16 +1161,18 @@ export function getRouter({
               if (effectiveSince !== undefined) {
                 q = q.where("id", ">", effectiveSince);
               }
-              q = q.select(
-                "id",
-                "team_id",
-                "type",
-                "currency_delta",
-                "slug",
-                "timestamp",
-                "data",
-                "internal_data",
-              );
+              q = q
+                .select(
+                  "id",
+                  "team_id",
+                  "type",
+                  "currency_delta",
+                  "slug",
+                  "timestamp",
+                  "data",
+                  "internal_data",
+                )
+                .orderBy("id", "asc");
               return q;
             },
             { readOnly: true },
@@ -1205,7 +1207,9 @@ export function getRouter({
               if (effectiveSince !== undefined) {
                 q = q.where("id", ">", effectiveSince);
               }
-              q = q.select("id", "team_id", "type", "data", "timestamp");
+              q = q
+                .select("id", "team_id", "type", "data", "timestamp")
+                .orderBy("id", "asc");
               return q;
             },
             { readOnly: true },
