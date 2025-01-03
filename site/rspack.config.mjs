@@ -641,6 +641,9 @@ export default function createConfigs(_env, argv) {
     name: "misc",
     entry: {
       ops: "./ops/server/main.ts",
+      sync2tb: "./radioman/sync2tb.ts",
+      tbprovision: "./radioman/tbprovision.ts",
+      tbutil: "./radioman/tbutil.ts",
     },
     target: "node22",
     module: {

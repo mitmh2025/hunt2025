@@ -58,7 +58,7 @@ in buildNpmPackage {
 
     mkdir -p $misc/lib
     cp -R dist/misc/ $misc/lib/misc
-    for i in ops; do
+    for i in ops sync2tb tbprovision tbutil; do
       makeWrapper ${nodejs}/bin/node $misc/bin/$i \
           --add-flags --enable-source-maps \
           --add-flags $misc/lib/misc/$i.mjs
