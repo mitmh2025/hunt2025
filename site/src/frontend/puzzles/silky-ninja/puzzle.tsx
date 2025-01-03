@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { CourierFont } from "../../assets/SharedFonts";
 import { AuthorsNote } from "../../components/PuzzleLayout";
 import imgA from "./assets/A.png";
 import imgB from "./assets/B.png";
@@ -56,9 +57,7 @@ const Separator = styled.div`
 `;
 
 const Blanks = styled.div`
-  font-family:
-    Courier New,
-    monospace;
+  font-family: Courier, monospace;
   letter-spacing: 2px;
   padding-left: 10px;
   padding-right: 10px;
@@ -70,9 +69,7 @@ const ClueBlanks = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  font-family:
-    Courier New,
-    monospace;
+  font-family: Courier, monospace;
   letter-spacing: 2px;
 `;
 
@@ -90,6 +87,7 @@ const DroidDitto = styled(Droid)`
 const Puzzle = () => {
   return (
     <>
+      <CourierFont />
       <p className="puzzle-flavor">
         We’ve received these cryptic messages from our rebel spies. Fortunately,
         our decryption droids are lined up to assist.
