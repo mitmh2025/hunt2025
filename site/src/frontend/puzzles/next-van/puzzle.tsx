@@ -68,7 +68,6 @@ const SizedImage = styled(LinkedImage)`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      {" "}
       <p className="puzzle-flavor">This is flavortext.</p>
       <HScrollTableWrapper>
         <StyledTable>
