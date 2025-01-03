@@ -91,7 +91,7 @@ const Book = styled.td<{
     font-size: 14px;
     line-height: 1;
     text-align: center;
-    font-family: Garamond, serif;
+    font-family: "Hanken Grotesk", sans-serif;
     color: ${({ $color }) => ($color === "#AC950F" ? "#3e2d0c" : "#ffeaca")};
     text-shadow:
       -0.5px 0.5px rgba(255, 255, 255, 0.3),
@@ -197,7 +197,7 @@ const HorizontalBook = styled.td<{
     font-size: 14px;
     line-height: 1;
     text-align: left;
-    font-family: Garamond, serif;
+    font-family: "Hanken Grotesk", sans-serif;
     color: #ffeaca;
     text-shadow:
       0.5px 0.5px rgba(255, 255, 255, 0.3),
