@@ -30,6 +30,10 @@ const GuessSectionWrapper = styled.section`
   @media ${deviceMax.md} {
     grid-column: 1 / 3;
   }
+
+  @media print {
+    display: none;
+  }
 `;
 
 const GuessTable = styled.table`

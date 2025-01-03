@@ -55,6 +55,8 @@ export function calculateNumberLabels(labels: string[][]): string[][] {
 }
 
 const Grid = styled.table`
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
   border-collapse: collapse;
   td {
     border: 1px solid black;
