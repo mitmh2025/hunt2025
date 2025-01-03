@@ -5,6 +5,7 @@ import {
   type ActivityLogEntryRow,
   type InsertActivityLogEntry,
   type InsertTeamRegistrationLogEntry,
+  type OpsAdmin,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
@@ -227,6 +228,12 @@ declare module "knex/types/tables" {
     "team_id" | "type" | "data"
   >;
 
+  type OpsAdmin = {
+    email: string;
+    name: string;
+    added_by: string;
+  };
+
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
    * knex
@@ -241,6 +248,7 @@ declare module "knex/types/tables" {
       TeamRegistrationLogEntryRow,
       InsertTeamRegistrationLogEntry
     >;
+    ops_admins: OpsAdmin;
   }
 }
 
@@ -424,4 +432,41 @@ export async function appendTeamRegistrationLog(
       // console.log("inserted", fixedEntry);
       return fixedEntry;
     });
+}
+
+export async function getOpsAdmins(
+  trx: Knex.Knex.Transaction | Knex.Knex,
+): Promise<OpsAdmin[]> {
+  return trx("ops_admins").select("*");
+}
+
+export async function addOpsAdmin(
+  trx: Knex.Knex.Transaction | Knex.Knex,
+  data: OpsAdmin,
+) {
+  await trx("ops_admins").insert(data);
+}
+
+export async function removeOpsAdmin(
+  trx: Knex.Knex.Transaction | Knex.Knex,
+  email: string,
+) {
+  await trx("ops_admins").where("email", email).delete();
+}
+
+export async function isOpsAdmin(
+  trx: Knex.Knex.Transaction | Knex.Knex,
+  email: string,
+): Promise<boolean> {
+  const rows = await trx
+    .count("* as count")
+    .from("ops_admins")
+    .where("email", email);
+  if (rows.length === 0) {
+    return false;
+  }
+
+  const row = rows[0] as { count: string | number };
+
+  return Number(row.count) > 0;
 }

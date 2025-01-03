@@ -316,4 +316,14 @@ export async function seed(knex: Knex): Promise<void> {
       },
     );
   }
+
+  // add the default local oauth user as an ops admin
+  await knex("ops_admins")
+    .insert({
+      email: "admin@mitmh2025.com",
+      name: "Local Admin",
+      added_by: "nobody@example.com",
+    })
+    .onConflict("email")
+    .ignore();
 }

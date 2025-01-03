@@ -20,6 +20,10 @@ import { type TeamData } from "./opsdata/types";
 
 export type OpsData = {
   state: "loading" | "error" | "loaded";
+  account: {
+    email: string;
+    isOpsAdmin: boolean;
+  };
   adminClient: AdminClient;
   frontendClient: FrontendClient;
   puzzleMetadata: PuzzleAPIMetadata;
@@ -32,6 +36,10 @@ export type OpsData = {
 
 const INITIAL_STATE: OpsData = {
   state: "loading",
+  account: {
+    email: "",
+    isOpsAdmin: false,
+  },
   adminClient: newAdminClient("", ""),
   frontendClient: newFrontendClient("", { type: "admin", adminToken: "" }),
   registrationLog: [],
@@ -157,11 +165,13 @@ export default function OpsDataProvider({
 
       const adminClient = newAdminClient(apiUrl, token);
 
-      const [registrationLog, activityLog, puzzleMetadata] = await Promise.all([
-        frontendClient.getFullTeamRegistrationLog(),
-        frontendClient.getFullActivityLog(),
-        adminClient.getPuzzleMetadata(),
-      ]);
+      const [registrationLog, activityLog, puzzleMetadata, account] =
+        await Promise.all([
+          frontendClient.getFullTeamRegistrationLog(),
+          frontendClient.getFullActivityLog(),
+          adminClient.getPuzzleMetadata(),
+          adminClient.opsAccount(),
+        ]);
 
       if (registrationLog.status === 401) {
         removeCookie("mitmh2025_api_auth");
@@ -184,6 +194,11 @@ export default function OpsDataProvider({
         throw new Error(
           `Failed to load puzzleMetadata: ${puzzleMetadata.status}`,
         );
+      }
+
+      if (account.status !== 200) {
+        console.error(account);
+        throw new Error(`Failed to load account: ${account.status}`);
       }
 
       const store = new OpsDataStore();
@@ -209,6 +224,7 @@ export default function OpsDataProvider({
 
       setData({
         state: "loaded",
+        account: account.body,
         adminClient,
         frontendClient,
         registrationLog: registrationLogEntries,

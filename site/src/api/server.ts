@@ -47,8 +47,12 @@ import {
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
+  addOpsAdmin,
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
+  getOpsAdmins,
+  isOpsAdmin,
+  removeOpsAdmin,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -466,6 +470,27 @@ export function getRouter({
       session: false,
     },
   ) as RequestHandlerWithQuery;
+
+  function requireOpsAdmin(req: Request, res: Response, next: NextFunction) {
+    const userEmail = req.authInfo?.adminUser;
+    if (!userEmail) {
+      res.sendStatus(403);
+      return;
+    }
+
+    isOpsAdmin(knex, userEmail)
+      .then((isAdmin) => {
+        if (isAdmin) {
+          next();
+        } else {
+          res.sendStatus(403);
+        }
+      })
+      .catch((e: unknown) => {
+        console.error("Error checking if user is ops admin", e);
+        res.sendStatus(500);
+      });
+  }
 
   // We merge contracts here so that we can implement additional contracts
   // without having to export them to the client since there's no value in
@@ -952,7 +977,7 @@ export function getRouter({
         },
       },
       sendTeamEmail: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireOpsAdmin],
         handler: async ({ body }) => {
           const { entries } = await teamRegistrationLog.getCachedLog(
             knex,
@@ -1067,7 +1092,7 @@ export function getRouter({
         },
       },
       grantKeys: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireOpsAdmin],
         handler: async ({ body: { teamIds, amount }, req }) => {
           let singleTeamId: number | undefined = undefined;
           if (teamIds !== "all" && teamIds.length === 1) {
@@ -1119,6 +1144,65 @@ export function getRouter({
           return {
             status: 200 as const,
             body: filteredResults.map(formatInternalActivityLogEntryForApi),
+          };
+        },
+      },
+      addOpsAdmin: {
+        middleware: [adminAuthMiddleware, requireOpsAdmin],
+        handler: async ({ body: { email, name }, req }) => {
+          const addedBy = req.authInfo?.adminUser;
+          if (!addedBy) {
+            throw new Error("No admin user in request");
+          }
+
+          await addOpsAdmin(knex, {
+            email,
+            name,
+            added_by: addedBy,
+          });
+
+          return {
+            status: 200 as const,
+            body: await getOpsAdmins(knex),
+          };
+        },
+      },
+      removeOpsAdmin: {
+        middleware: [adminAuthMiddleware, requireOpsAdmin],
+        handler: async ({ params: { email } }) => {
+          await removeOpsAdmin(knex, email);
+
+          return {
+            status: 200 as const,
+            body: await getOpsAdmins(knex),
+          };
+        },
+      },
+      getOpsAdmins: {
+        middleware: [adminAuthMiddleware, requireOpsAdmin],
+        handler: async () => {
+          return {
+            status: 200 as const,
+            body: await getOpsAdmins(knex),
+          };
+        },
+      },
+      opsAccount: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ req }) => {
+          const email = req.authInfo?.adminUser;
+          if (!email) {
+            throw new Error("No admin user in request");
+          }
+
+          const userIsOpsAdmin = await isOpsAdmin(knex, email);
+
+          return {
+            status: 200 as const,
+            body: {
+              email,
+              isOpsAdmin: userIsOpsAdmin,
+            },
           };
         },
       },

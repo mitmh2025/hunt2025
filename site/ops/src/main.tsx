@@ -8,7 +8,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
+import EmailTeams from "./routes/EmailTeams.tsx";
 import Home from "./routes/Home.tsx";
+import ManageAdmins from "./routes/ManageAdmins.tsx";
 import Puzzles from "./routes/Puzzles.tsx";
 import Team from "./routes/Team.tsx";
 import TeamIndex from "./routes/TeamIndex.tsx";
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
           {
             path: "teams/:username",
             Component: Team,
+          },
+          {
+            path: "email-teams/",
+            Component: EmailTeams,
+          },
+          {
+            path: "manage-admins/",
+            Component: ManageAdmins,
           },
         ],
       },
