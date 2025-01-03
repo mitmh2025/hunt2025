@@ -6,7 +6,10 @@ const BaseIllegalSearchHeader = styled(PuzzleHeader)`
   background: #65705699;
 
   h1 {
-    color: var(--white);
+    @media screen {
+      color: var(--white);
+    }
+
     font-size: 3rem;
     padding-top: 0;
     padding-bottom: 0;

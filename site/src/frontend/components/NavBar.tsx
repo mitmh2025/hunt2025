@@ -10,6 +10,10 @@ const Nav = styled.nav`
   position: relative; // Needed for z-index to do anything
   z-index: 100;
   background-color: var(--nav-bar-bg);
+
+  @media print {
+    display: none;
+  }
 `;
 
 const NavItems = styled.ul`

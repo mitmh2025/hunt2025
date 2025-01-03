@@ -12,6 +12,10 @@ export const CopyToClipboardContainer = styled.div`
   margin-left: -64px;
   user-select: none;
 
+  @media print {
+    display: none;
+  }
+
   @media ${deviceMax.md} {
     &&& {
       margin-left: -32px;

@@ -11,6 +11,10 @@ const DevPaneContainer = styled.div`
   top: 58px;
   min-width: 200px;
   z-index: 2;
+
+  @media print {
+    display: none;
+  }
 `;
 
 const DevPaneToggleButton = styled.button`
