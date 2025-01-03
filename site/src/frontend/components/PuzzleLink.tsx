@@ -104,7 +104,7 @@ export const PuzzleUnlockModal = React.forwardRef(
           {desc ? <p>{desc}</p> : undefined}
           <p>
             Unlocking this puzzle will spend {cost} of your team&rsquo;s{" "}
-            {currency} available currency.
+            {currency} available key{currency === 1 ? "" : "s"}.
           </p>
           <DialogActions>
             <Button disabled={fetching} onClick={onUnlock}>

@@ -29,10 +29,10 @@ type TeamIndexData = {
   puzzlesSolved: number;
   puzzlesSolvedLast3Hours: number;
   hintsRequested: number;
-  unlockCurrency: number;
+  keys: number;
 };
 
-function GrantUnlockCurrencyDialog({
+function GrantKeysDialog({
   teamIds,
   open,
   onClose,
@@ -54,7 +54,7 @@ function GrantUnlockCurrencyDialog({
     if (qty > 0) {
       setSubmitting(true);
       adminClient
-        .grantUnlockCurrency({
+        .grantKeys({
           body: {
             teamIds,
             amount: qty,
@@ -66,14 +66,14 @@ function GrantUnlockCurrencyDialog({
           }
 
           appendActivityLogEntries(result.body);
-          enqueueSnackbar(`Granted ${qty} unlock currency to ${teamsDisplay}`, {
+          enqueueSnackbar(`Granted ${qty} keys to ${teamsDisplay}`, {
             variant: "success",
           });
           onClose();
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
-          enqueueSnackbar(`Failed to grant unlock currency: ${msg}`, {
+          enqueueSnackbar(`Failed to grant keys: ${msg}`, {
             variant: "error",
           });
         })
@@ -86,7 +86,7 @@ function GrantUnlockCurrencyDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Grant Unlock Currency to <strong>{teamsDisplay}</strong>
+        Grant Keys to <strong>{teamsDisplay}</strong>
       </DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -110,7 +110,7 @@ function GrantUnlockCurrencyDialog({
         </DialogContent>
         <DialogActions>
           <Button type="submit" disabled={submitting}>
-            Grant {qty} Currency
+            Grant {qty} Keys
           </Button>
         </DialogActions>
       </form>
@@ -119,8 +119,9 @@ function GrantUnlockCurrencyDialog({
 }
 
 export default function TeamIndex() {
-  const [grantUnlockCurrencyDialogTeams, setGrantUnlockCurrencyDialogTeams] =
-    useState<null | "all" | number[]>(null);
+  const [grantKeysDialogTeams, setGrantKeysDialogTeams] = useState<
+    null | "all" | number[]
+  >(null);
 
   const opsData = useOpsData();
   const indexData = useMemo(() => {
@@ -137,7 +138,7 @@ export default function TeamIndex() {
         puzzlesSolved: team.state.puzzles_solved.size,
         puzzlesSolvedLast3Hours: 0, // computed below
         hintsRequested: 0, // computed below
-        unlockCurrency: team.state.available_currency,
+        keys: team.state.available_currency,
       };
     }
 
@@ -217,8 +218,8 @@ export default function TeamIndex() {
         header: "Hints Requested",
         filterVariant: "range",
       }),
-      columnHelper.accessor("unlockCurrency", {
-        header: "Unlock Currency",
+      columnHelper.accessor("keys", {
+        header: "Keys",
         filterVariant: "range",
       }),
     ];
@@ -261,7 +262,7 @@ export default function TeamIndex() {
           <Button
             variant="contained"
             onClick={() => {
-              setGrantUnlockCurrencyDialogTeams(
+              setGrantKeysDialogTeams(
                 table.getIsAllRowsSelected()
                   ? "all"
                   : table
@@ -270,7 +271,7 @@ export default function TeamIndex() {
               );
             }}
           >
-            Grant Unlock Currency
+            Grant Keys
           </Button>
         </Box>
       );
@@ -280,11 +281,11 @@ export default function TeamIndex() {
   return (
     <>
       <MaterialReactTable table={table} />
-      <GrantUnlockCurrencyDialog
-        teamIds={grantUnlockCurrencyDialogTeams ?? []}
-        open={grantUnlockCurrencyDialogTeams !== null}
+      <GrantKeysDialog
+        teamIds={grantKeysDialogTeams ?? []}
+        open={grantKeysDialogTeams !== null}
         onClose={() => {
-          setGrantUnlockCurrencyDialogTeams(null);
+          setGrantKeysDialogTeams(null);
         }}
       />
     </>

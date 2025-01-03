@@ -53,7 +53,7 @@ export default function TeamActivityLog({
 
           switch (entry.type) {
             case "currency_adjusted":
-              activity = `Currency adjusted by ${entry.currency_delta}`;
+              activity = `Keys adjusted by ${entry.currency_delta}`;
               break;
             case "gate_completed": {
               const desc = opsData.gateDetails[entry.slug]?.title

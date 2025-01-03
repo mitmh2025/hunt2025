@@ -91,9 +91,9 @@ export const adminContract = c.router({
       }),
     },
   },
-  grantUnlockCurrency: {
+  grantKeys: {
     method: "POST",
-    path: "/admin/grant-unlock-currency",
+    path: "/admin/grant-keys",
     body: z.object({
       teamIds: z.union([z.array(z.number()), z.literal("all")]),
       amount: z.number(),
