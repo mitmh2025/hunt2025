@@ -42,6 +42,7 @@ import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
 import GivenUp from "./giant-switch";
+import ChatGPT from "./giving-fighter";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
@@ -155,6 +156,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
+  chatgpt: ChatGPT,
   check_a_deez_words_out: CheckadeezWordsOut,
   downright_backwards: DownrightBackwards,
   dropping_the_ball: DroppingTheBall,
