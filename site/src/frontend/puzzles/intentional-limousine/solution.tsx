@@ -39,8 +39,6 @@ const MutedTD = styled.td`
 const Solution = () => {
   return (
     <>
-      <p>THIS SOLUTION NEEDS TO BE UPDATED WITH THE FINAL TITLES OF PUZZLES</p>
-
       <HScrollTableWrapper>
         <table>
           <thead>
@@ -59,7 +57,7 @@ const Solution = () => {
           <tbody>
             <tr>
               <td>
-                <Red>U</Red>ndoing Wear and Tear
+                <Red>U</Red>nreal Islands
               </td>
               <td>
                 <Blue>B</Blue>ATH BRICK
@@ -74,7 +72,7 @@ const Solution = () => {
             </tr>
             <tr>
               <td>
-                <Red>N</Red>urturing Flock
+                <Red>N</Red>eatly Drawn
               </td>
               <td>
                 <Blue>B</Blue>IRD ORCHID
@@ -89,7 +87,7 @@ const Solution = () => {
             </tr>
             <tr>
               <td>
-                <Red>I</Red>ncreasing the Odds
+                <Red>I</Red>n a Different Direction
               </td>
               <td>
                 <Green>G</Green>REEDY PIGGY
@@ -104,7 +102,7 @@ const Solution = () => {
             </tr>
             <tr>
               <td>
-                <Red>C</Red>orner Kick
+                <Red>C</Red>heck-a-deez Words Out
               </td>
               <td>
                 <Red>R</Red>YAN FLAMINGO
@@ -119,7 +117,7 @@ const Solution = () => {
             </tr>
             <tr>
               <td>
-                <Red>O</Red>vergrowth
+                <Red>O</Red>n the Corner
               </td>
               <td>
                 <Blue>B</Blue>REGENZ FOREST
@@ -164,7 +162,7 @@ const Solution = () => {
             </tr>
             <tr>
               <td>
-                <Red>S</Red>ilent Protector
+                <Red>S</Red>ongs on the Radio
               </td>
               <td>
                 <Green>G</Green>UARDIAN LAVENDER
