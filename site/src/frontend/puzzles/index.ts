@@ -81,6 +81,7 @@ import MissingConnections from "./naive-agent";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
+import OnTheCorner from "./numerous-sprint";
 import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
 import HisLifeStory from "./oily-date";
@@ -181,6 +182,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
   neatly_drawn: NeatlyDrawn,
   no_notes: NoNotes,
+  on_the_corner: OnTheCorner,
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
