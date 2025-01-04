@@ -79,6 +79,7 @@ import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
 import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
+import HisLifeStory from "./oily-date";
 import ZuluLima from "./opulent-fair";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
@@ -233,6 +234,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   chemicals_are_sexy: ChemicalsAreSexy,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
+  his_life_story: HisLifeStory,
   incognito: Incognito,
   maze_of_lies: MazeOfLies,
   star_crossed: StarCrossed,
