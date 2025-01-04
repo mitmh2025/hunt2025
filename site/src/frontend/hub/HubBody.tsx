@@ -1,12 +1,13 @@
 import React, { useLayoutEffect } from "react";
 import { styled } from "styled-components";
+import Cork from "../assets/cork.png";
 import { HubFonts } from "./HubFonts";
 import BabyPhoto from "./assets/baby.png";
 import BilliePhoto from "./assets/billie.png";
 import BrickWall from "./assets/brickwall.jpg";
-import BulletinBoardBg from "./assets/bulletin-board.png";
 import BusinessCardImg from "./assets/business_card.png";
 import CarterPhoto from "./assets/carter.png";
+import BulletinBoardBg from "./assets/frame_and_scuffs.png";
 import GladysPhoto from "./assets/gladys.png";
 import KatrinaPhoto from "./assets/katrina.png";
 import MainQuestionImg from "./assets/main_question.png";
@@ -36,8 +37,9 @@ const Wall = styled.div`
 `;
 
 const Board = styled.main`
-  background-image: url(${BulletinBoardBg});
-  background-size: cover;
+  background:
+    url(${BulletinBoardBg}) center / cover,
+    url(${Cork}) center / 512px repeat;
   overflow-x: hidden;
   width: min(var(--viewport-width), ${MAX_WIDTH}px);
   height: ${getRelativeSizeCss(MAX_HEIGHT)};
