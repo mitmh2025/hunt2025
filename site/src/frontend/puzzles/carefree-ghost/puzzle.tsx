@@ -61,6 +61,8 @@ const StyledGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(82, 11px);
   grid-template-rows: repeat(41, 22px);
+  font-family: "Roboto Mono", monospace;
+  text-align: center;
 `;
 
 export const WordSearch = ({
