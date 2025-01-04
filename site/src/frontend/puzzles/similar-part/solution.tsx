@@ -55,7 +55,7 @@ const DATA: [string, string, string, number, string, string, string][] = [
     "Untitled 5",
     "One Fish Two Fish Random Fish Blue Fish",
     2015,
-    "Fish",
+    "20,000 Puzzles Under the Sea",
     "Tickle Me Pink",
     "STOLEN",
   ],
