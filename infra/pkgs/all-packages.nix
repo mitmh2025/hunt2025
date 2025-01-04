@@ -111,4 +111,10 @@ in {
       rev = "d56ef001999e2d310cc8cd9df0f2efaff52ca9ad";
     };
   };
+
+  zammad = prev.zammad.overrideAttrs (old: {
+    patches = (old.patches or []) ++ [
+      ./zammad/saml-roles.patch
+    ];
+  });
 }

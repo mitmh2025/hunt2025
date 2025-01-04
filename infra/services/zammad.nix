@@ -33,6 +33,7 @@ in {
         timezone_default = "America/New_York";
         inherit (cfg) fqdn;
         http_type = "https";
+        customer_ticket_create = false;
         auth_saml = true;
         auth_saml_credentials = {
           display_name = "Hunt 2025";
@@ -80,6 +81,36 @@ in {
           # private_key_secret = "";
         };
         user_show_password_login = false;
+
+        ticket_agent_default_notifications = let
+          channel = {
+            email = false;
+            online = true;
+          };
+          mineAndSub = {
+            criteria = {
+              owned_by_me = true;
+              owned_by_nobody = false;
+              subscribed = true;
+              no = false;
+            };
+            inherit channel;
+          };
+          mine = {
+            criteria = {
+              owned_by_me = true;
+              owned_by_nobody = false;
+              subscribed = false;
+              no = false;
+            };
+            inherit channel;
+          };
+        in {
+          create = mineAndSub;
+          update = mineAndSub;
+          reminder_reached = mine;
+          escalation = mine;
+        };
       };
 
       channels = let
@@ -97,7 +128,7 @@ in {
         };
       in [
         {
-          id = 1;
+          id = 3;
           area = "Email::Notification";
           options.outbound = outbound;
           preferences.online_service_disable = true;
