@@ -6,6 +6,9 @@ import {
   type InsertActivityLogEntry,
   type InsertTeamRegistrationLogEntry,
   type DesertedNinjaRegistrationRow,
+  type DesertedNinjaSessionRow,
+  type InsertDesertedNinjaSession,
+  type UpdateDesertedNinjaSession,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
@@ -250,6 +253,15 @@ declare module "knex/types/tables" {
     question_ids: string | number[];
   };
 
+  type InsertDesertedNinjaSession = Pick<
+    DesertedNinjaSessionRow,
+    "title" | "question_ids"
+  >;
+
+  type UpdateDesertedNinjaSession = Partial<
+    Omit<DesertedNinjaSessionRow, "id">
+  >;
+
   type DesertedNinjaAnswerRow = {
     id: number;
     session_id: number;
@@ -280,7 +292,11 @@ declare module "knex/types/tables" {
       InsertTeamRegistrationLogEntry
     >;
     deserted_ninja_questions: DesertedNinjaQuestionRow;
-    deserted_ninja_sessions: DesertedNinjaSessionRow;
+    deserted_ninja_sessions: Knex.Knex.CompositeTableType<
+      DesertedNinjaSessionRow,
+      InsertDesertedNinjaSession,
+      UpdateDesertedNinjaSession
+    >;
     deserted_ninja_answers: DesertedNinjaAnswerRow;
     deserted_ninja_registrations: DesertedNinjaRegistrationRow;
   }
@@ -514,45 +530,53 @@ export async function getDesertedNinjaSessions(
 }
 
 export async function insertDesertedNinjaSession(
-  title: string,
-  question_ids: string,
-  status: string,
+  session: InsertDesertedNinjaSession,
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession> {
-  const session = await knex("deserted_ninja_sessions")
+): Promise<DesertedNinjaSession | undefined> {
+  return await knex("deserted_ninja_sessions")
     .insert({
-      status: status,
-      title: title,
-      question_ids: question_ids,
+      title: session.title,
+      question_ids: session.question_ids,
     })
-    .returning(["id", "title", "status", "question_ids"]);
+    .returning(["id", "title", "status", "question_ids"])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedSession = objs[0] as DesertedNinjaSessionRow;
 
-  if (session.length > 0 && session[0]) {
-    return {
-      id: session[0]?.id,
-      title: session[0]?.title,
-      status: session[0]?.status,
-      teamIds: [],
-      questionIds: fixArray<number>(session[0]?.question_ids),
-    };
-  } else {
-    return {
-      id: -1,
-      title: "",
-      status: "",
-      teamIds: [],
-      questionIds: [],
-    };
-  }
+      return {
+        id: insertedSession.id,
+        title: insertedSession.title,
+        status: insertedSession.status,
+        teamIds: [],
+        questionIds: fixArray<number>(insertedSession.question_ids),
+      };
+    });
 }
 
 export async function updateDesertedNinjaSession(
-  session: DesertedNinjaSession,
+  id: number,
+  session: UpdateDesertedNinjaSession,
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession> {
+): Promise<DesertedNinjaSession | undefined> {
   return await knex("deserted_ninja_sessions")
-    .where("sessionId", session.id)
-    .update(session);
+    .where("id", id)
+    .update(session)
+    .returning(["id", "title", "status", "question_ids"])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedSession = objs[0] as DesertedNinjaSessionRow;
+      return {
+        id: insertedSession.id,
+        title: insertedSession.title,
+        status: insertedSession.status,
+        teamIds: [],
+        questionIds: fixArray<number>(insertedSession.question_ids),
+      };
+    });
 }
 
 export async function insertDesertedNinjaAnswers(

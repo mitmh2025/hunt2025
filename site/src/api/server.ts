@@ -52,6 +52,7 @@ import {
   getDesertedNinjaQuestions,
   getDesertedNinjaSessions,
   createDesertedNinjaSession,
+  updateDesertedNinjaSession,
   getDesertedNinjaRegistrations,
   createDesertedNinjaRegistration,
   deleteDesertedNinjaRegistration,
@@ -971,34 +972,41 @@ export function getRouter({
             ...shuffledG.slice(0, 4),
           ]);
 
-          return Promise.resolve({
-            status: 200 as const,
-            body: await createDesertedNinjaSession(title, ids, knex),
-          });
+          const newSession = await createDesertedNinjaSession(title, ids, knex);
+          if (newSession) {
+            return Promise.resolve({
+              status: 200 as const,
+              body: newSession,
+            });
+          } else {
+            return Promise.resolve({
+              status: 500 as const,
+              body: null,
+            });
+          }
         },
       },
-      saveDesertedNinjaSession: {
+      updateDesertedNinjaSession: {
         middleware: [adminAuthMiddleware],
-        handler: ({ body }) => {
-          // TODO: implement save
-          const responseBody = {
-            id: body.id,
-            status: "in_progress",
-            teamIds: [1, 2, 3],
-            title: "Friday 4PM",
-            questionIds: [
-              1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33,
-            ],
-          };
+        handler: async ({ params: { sessionId }, body }) => {
+          if (sessionId === body.id.toString()) {
+            const newSession = await updateDesertedNinjaSession(body, knex);
+            if (newSession) {
+              return Promise.resolve({
+                status: 200 as const,
+                body: newSession,
+              });
+            }
+          }
           return Promise.resolve({
-            status: 200 as const,
-            body: responseBody,
+            status: 500 as const,
+            body: null,
           });
         },
       },
       completeDesertedNinjaSession: {
         middleware: [adminAuthMiddleware],
-        handler: ({ body }) => {
+        handler: async ({ body }) => {
           // TODO: do scoring, update team_state logs
           const responseBody = {
             id: 120,

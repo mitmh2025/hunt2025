@@ -84,17 +84,19 @@ export const adminContract = c.router({
     body: z.object({ title: z.string() }),
     responses: {
       200: DesertedNinjaSessionSchema,
+      500: z.null(),
     },
     summary: "Create a deserted-ninja session",
   },
-  saveDesertedNinjaSession: {
+  updateDesertedNinjaSession: {
     method: "POST",
-    path: "/admin/save-dn-session/:session-id",
+    path: "/admin/update-dn-session/:sessionId",
     body: DesertedNinjaSessionSchema,
     responses: {
       200: DesertedNinjaSessionSchema,
+      500: z.null(),
     },
-    summary: "Save/update a deserted-ninja session",
+    summary: "Update a deserted-ninja session",
   },
   getDesertedNinjaSessions: {
     method: "GET",
@@ -106,7 +108,7 @@ export const adminContract = c.router({
   },
   completeDesertedNinjaSession: {
     method: "POST",
-    path: "/admin/complete-dn-session/:session-id",
+    path: "/admin/complete-dn-session/:sessionId",
     body: z.string(),
     responses: {
       200: DesertedNinjaSessionSchema,

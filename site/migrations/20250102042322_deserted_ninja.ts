@@ -14,8 +14,10 @@ export async function up(knex: Knex): Promise<void> {
     table.string("title", 255).notNullable();
     table
       .enu("status", ["not_started", "in_progress", "complete"])
+      .defaultTo("not_started")
       .notNullable();
     table.jsonb("question_ids");
+    table.unique("title");
   });
   await knex.schema.createTable(
     "deserted_ninja_registrations",

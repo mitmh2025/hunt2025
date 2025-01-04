@@ -20,8 +20,8 @@ export enum DNDataActionType {
   SET_QUESTIONS = "set_questions",
   SET_SESSIONS = "set_sessions",
   SET_ACTIVE_SESSION = "set_active_session",
+  SESSION_UPDATE = "session_update",
 }
-
 type SetQuestionsAction = {
   type: DNDataActionType.SET_QUESTIONS;
   questions: Map<number, DesertedNinjaQuestion>;
@@ -34,10 +34,15 @@ type SetActiveSessionAction = {
   type: DNDataActionType.SET_ACTIVE_SESSION;
   activeSession: DesertedNinjaSession | null;
 };
+type SessionUpdateAction = {
+  type: DNDataActionType.SESSION_UPDATE;
+  session: DesertedNinjaSession | null;
+};
 type DNDataUpdateAction =
   | SetQuestionsAction
   | SetSessionsAction
-  | SetActiveSessionAction;
+  | SetActiveSessionAction
+  | SessionUpdateAction;
 
 export const DesertedNinjaDataContext =
   createContext<DesertedNinjaData>(INITIAL_STATE);
@@ -56,6 +61,11 @@ function updateData(d: DesertedNinjaData, action: DNDataUpdateAction) {
       break;
     case DNDataActionType.SET_SESSIONS:
       r.sessions = action.sessions;
+      break;
+    case DNDataActionType.SESSION_UPDATE:
+      r.sessions = d.sessions.map((s) =>
+        s.id === action.session?.id ? action.session : s,
+      );
       break;
   }
 

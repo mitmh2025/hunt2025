@@ -28,6 +28,7 @@ import {
   getDesertedNinjaQuestions as dbGetDesertedNinjaQuestions,
   getDesertedNinjaSessions as dbGetDesertedNinjaSessions,
   insertDesertedNinjaSession as dbInsertDesertedNinjaSession,
+  updateDesertedNinjaSession as dbUpdateDesertedNinjaSession,
   insertDesertedNinjaAnswers as dbInsertDesertedNinjaAnswers,
   getDesertedNinjaRegistrations as dbGetDesertedNinjaRegistrations,
   insertDesertedNinjaRegistration as dbInsertDesertedNinjaRegistration,
@@ -532,13 +533,33 @@ export async function createDesertedNinjaSession(
   title: string,
   questionIds: number[],
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession> {
+): Promise<DesertedNinjaSession | undefined> {
   return dbInsertDesertedNinjaSession(
-    title,
-    "[" + questionIds.toString() + "]",
-    "not_started",
+    {
+      title: title,
+      question_ids: "[" + questionIds.toString() + "]",
+    },
     knex,
   );
+}
+
+export async function updateDesertedNinjaSession(
+  session: DesertedNinjaSession,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaSession | undefined> {
+  const dbSession = await dbUpdateDesertedNinjaSession(
+    session.id,
+    {
+      title: session.title,
+      status: session.status,
+      question_ids: "[" + session.questionIds.toString() + "]",
+    },
+    knex,
+  );
+  return {
+    ...dbSession,
+    teamIds: session.teamIds,
+  };
 }
 
 export async function getDesertedNinjaSessions(
