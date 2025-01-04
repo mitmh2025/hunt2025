@@ -280,7 +280,6 @@ function formatInternalActivityLogEntryForApi(
   };
 }
 
-<<<<<<< HEAD
 function formatMutationResultForAdminApi(
   result: (InternalActivityLogEntry | undefined)[],
 ): ServerInferResponses<typeof frontendContract.getFullActivityLog, 200> {
@@ -295,10 +294,6 @@ function formatMutationResultForAdminApi(
   };
 }
 
-export async function getRouter({
-||||||| parent of dfaed30a (Add team deactivation and password changes)
-export function getRouter({
-=======
 function formatRegistrationLogEntryForApi(
   entry: TeamRegistrationLogEntry,
 ): ServerInferResponseBody<
@@ -311,8 +306,7 @@ function formatRegistrationLogEntryForApi(
   };
 }
 
-export function getRouter({
->>>>>>> dfaed30a (Add team deactivation and password changes)
+export async function getRouter({
   jwtSecret,
   jwksUri,
   frontendApiSecret,

@@ -29,21 +29,36 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.alterTable("team_registration_log", function (table) {
     table.dropColumn("type_old");
 
-    table
-      .enum("type", [
-        "team_registered",
-        "team_name_changed",
-        "team_registration_updated",
-        "team_deactivated",
-        "team_reactivated",
-        "team_password_change",
-      ])
-      .notNullable()
-      .alter();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- No TS types for knex.client
+    if (knex.client.config.client !== "pg") {
+      // Knex has a bug where altering enums in postgres generates invalid
+      // syntax: https://stackoverflow.com/a/75950988 -- we're just trying
+      // to make this non-nullable, so we can just do that with raw SQL below
+      table
+        .enum("type", [
+          "team_registered",
+          "team_name_changed",
+          "team_registration_updated",
+          "team_deactivated",
+          "team_reactivated",
+          "team_password_change",
+        ])
+        .notNullable()
+        .alter();
+    }
 
     // rebuild index
     table.index(["team_id", "type"]);
   });
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- No TS types for knex.client
+  if (knex.client.config.client === "pg") {
+    // Fix the enum type to be non-nullable in postgres
+    await knex.raw(`
+      ALTER TABLE team_registration_log
+      ALTER COLUMN type SET NOT NULL;
+    `);
+  }
 
   // Add a new column to the teams table to track the deactivation status
   await knex.schema.alterTable("teams", function (table) {
