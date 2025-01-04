@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import grandpre from "./assets/grandpre.png";
 
 const DERBY_TABLE: [number, string, string, number, string][] = [
@@ -74,24 +78,26 @@ const Solution = (): JSX.Element => {
         confirmation, the car for each track uses the “skin” (design) of the
         winning driver’s nationality.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Num</th>
-          <th>F1 Circuit</th>
-          <th>Horse</th>
-          <th>Year</th>
-          <th>F1 Driver</th>
-        </tr>
-        {DERBY_TABLE.map(([num, circuit, horse, year, driver]) => (
-          <tr key={`derby-${num}`}>
-            <td>{num}</td>
-            <td>{circuit}</td>
-            <td>{horse}</td>
-            <td>{year}</td>
-            <td>{driver}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Num</th>
+            <th>F1 Circuit</th>
+            <th>Horse</th>
+            <th>Year</th>
+            <th>F1 Driver</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DERBY_TABLE.map(([num, circuit, horse, year, driver]) => (
+            <tr key={`derby-${num}`}>
+              <td>{num}</td>
+              <td>{circuit}</td>
+              <td>{horse}</td>
+              <td>{year}</td>
+              <td>{driver}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         The last track is different, and shows a first-person view of a car
         driving around a very twisty track, with many billboards with city names
@@ -112,22 +118,24 @@ const Solution = (): JSX.Element => {
         city and second/destination city is a single highway, as hinted by the
         blank sign. These then give eight three-digit numbers:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Route</th>
-          <th>Origin City</th>
-          <th>Destination City</th>
-          <th>Country/Territory</th>
-        </tr>
-        {TOUR_TABLE.map(([route, origin, destination, country]) => (
-          <tr key={`tour-${route}`}>
-            <td>{route}</td>
-            <td>{origin}</td>
-            <td>{destination}</td>
-            <td>{country}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Route</th>
+            <th>Origin City</th>
+            <th>Destination City</th>
+            <th>Country/Territory</th>
           </tr>
-        ))}
-      </StyledTable>
+          {TOUR_TABLE.map(([route, origin, destination, country]) => (
+            <tr key={`tour-${route}`}>
+              <td>{route}</td>
+              <td>{origin}</td>
+              <td>{destination}</td>
+              <td>{country}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         Along with the image of Cypher from the matrix on the last billboard,
         this video tells solvers to use the Grandpré cipher, which always
