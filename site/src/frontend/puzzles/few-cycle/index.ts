@@ -3,10 +3,9 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "A dash of color",
+  title: "A Dash of Color",
   slug: "a_dash_of_color",
-  initial_description:
-    "[Now remote friendly!] Several crossword-like clues and a painting",
+  initial_description: "Several crossword-like clues and a painting",
   answer: "VERMEERS AND REMBRANDTS",
   authors: [
     "Emilie Josephs",

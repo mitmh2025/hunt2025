@@ -370,8 +370,14 @@ const Solution = () => {
         </StyledTable>
       </HScrollTableWrapper>
       <h4>Step 2: Nail placement</h4>
-      <LinkedImage src={image02} alt="" />
-      <LinkedImage src={image03} alt="" />
+      <LinkedImage
+        src={image02}
+        alt="a piece of foam with different colored nails on top"
+      />
+      <LinkedImage
+        src={image03}
+        alt="a diagram showing different depths marked across 36 columns"
+      />
     </>
   );
 };
