@@ -573,16 +573,29 @@ export async function getDesertedNinjaSession(
   sessionId: number,
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession | undefined> {
-  return dbGetDesertedNinjaSession(sessionId, knex);
+  const [session, registrations] = await Promise.all([
+    dbGetDesertedNinjaSession(sessionId, knex),
+    dbGetDesertedNinjaRegistrations(sessionId, knex),
+  ]);
+  if (!session) {
+    return undefined;
+  }
+  registrations.forEach((r) => {
+    if (r.sessionId === session.id) {
+      session.teams.push({
+        id: r.teamId,
+        status: r.status,
+      });
+    }
+  });
+  return session;
 }
 
 export async function getDesertedNinjaSessions(
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession[]> {
-  const sessions: DesertedNinjaSession[] =
-    await dbGetDesertedNinjaSessions(knex);
-  const registrations: DesertedNinjaRegistration[] =
-    await dbGetDesertedNinjaRegistrations(undefined, knex);
+  const sessions = await dbGetDesertedNinjaSessions(knex);
+  const registrations = await dbGetDesertedNinjaRegistrations(undefined, knex);
 
   // TODO: this is O(N^2), rewrite if need be
   sessions.forEach((s) => {

@@ -74,6 +74,8 @@ export function SessionSelect({ buttonText }: { buttonText: string }) {
 
   const [hidePast, setHidePast] = useState<boolean>(true);
 
+  // TODO: add a callback hook here so that when back is pressed,
+  // the scorekeeper view makes sure to save?
   if (dnData.activeSession) {
     return (
       <>

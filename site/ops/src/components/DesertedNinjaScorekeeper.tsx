@@ -1,5 +1,6 @@
-import { useContext, createContext, useEffect, useState } from "react";
+import { useContext, createContext, useEffect, useState, useRef } from "react";
 import { styled } from "styled-components";
+import { useInterval } from "usehooks-ts";
 import {
   type DesertedNinjaSession,
   type DesertedNinjaAnswer,
@@ -68,6 +69,7 @@ function AnswerCell({
   }
 }
 
+/*
 function SaveButton() {
   return (
     <div style={{ textAlign: "center" }}>
@@ -75,6 +77,7 @@ function SaveButton() {
     </div>
   );
 }
+ */
 
 function NotStartedPanel() {
   // TODO: fill in team status, allow scorekeeper to check in teams
@@ -135,8 +138,11 @@ function NotStartedPanel() {
 function ScorekeeperPanel() {
   const opsData = useOpsData();
   const dnData = useDesertedNinjaData();
+  const dnDispatch = useDesertedNinjaDispatch();
   const session = dnData.activeSession;
   const [answerMap, setAnswers] = useState<Map<string, number>>(new Map());
+  const formRef: React.RefObject<HTMLFormElement> =
+    useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (session && opsData.adminClient) {
@@ -165,13 +171,20 @@ function ScorekeeperPanel() {
     }
   }, [session, opsData]);
 
-  // TODO: implement save callback (timeout);
-  //       depending on the status of the game, save or no
+  useInterval(() => {
+    if (formRef.current) {
+      console.log("saving...");
+      formRef.current.requestSubmit();
+    }
+  }, 5000);
 
   function runSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!session) {
+      return;
+    }
+    if (session.status !== "in_progress") {
       return;
     }
 
@@ -241,6 +254,34 @@ function ScorekeeperPanel() {
     }
   }
 
+  function completeSession() {
+    const session = dnData.activeSession;
+    if (session) {
+      opsData.adminClient
+        ?.completeDesertedNinjaSession({
+          params: { sessionId: session.id.toString() },
+        })
+        .then(
+          ({ body }) => {
+            if (dnDispatch) {
+              const s = body as DesertedNinjaSession;
+              dnDispatch({
+                type: DNDataActionType.SESSION_UPDATE,
+                session: s,
+              });
+              dnDispatch({
+                type: DNDataActionType.SET_ACTIVE_SESSION,
+                activeSession: s,
+              });
+            }
+          },
+          (e: Error) => {
+            console.error(e);
+          },
+        );
+    }
+  }
+
   if (session === null) {
     return <p>Please select a session.</p>;
   }
@@ -274,8 +315,7 @@ function ScorekeeperPanel() {
     return (
       <div>
         <AnswerContext.Provider value={answerMap}>
-          <form onSubmit={runSave} id="dnScorekeeperForm">
-            <SaveButton />
+          <form onSubmit={runSave} ref={formRef}>
             <ScorekeeperTable>
               <thead>
                 <tr>
@@ -285,8 +325,13 @@ function ScorekeeperPanel() {
               </thead>
               <tbody>{body}</tbody>
             </ScorekeeperTable>
-            <SaveButton />
           </form>
+
+          <div>
+            <button onClick={completeSession}>
+              Complete session and score
+            </button>
+          </div>
         </AnswerContext.Provider>
       </div>
     );

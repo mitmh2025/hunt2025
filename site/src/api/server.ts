@@ -28,7 +28,7 @@ import {
   //  type DesertedNinjaQuestion,
   //  type DesertedNinjaSession,
   //  type DesertedNinjaAnswer,
-  //  type DesertedNinjaRegistration,
+  type DesertedNinjaRegistration,
 } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
 import { dataContract } from "../../lib/api/data_contract";
@@ -994,6 +994,44 @@ export function getRouter({
         handler: async ({ params: { sessionId }, body }) => {
           if (sessionId === body.id.toString()) {
             const newSession = await updateDesertedNinjaSession(body, knex);
+
+            if (newSession) {
+              if (body.status === "in_progress") {
+                // when transitioning from "not_started" to "in_progress",
+                // mark any team not checked in as no-show
+                const promises: Promise<DesertedNinjaRegistration>[] = [];
+                const regs = await getDesertedNinjaRegistrations(
+                  parseInt(sessionId, 10),
+                  knex,
+                );
+                regs.forEach((reg) => {
+                  if (reg.status === "not_checked_in") {
+                    promises.push(
+                      updateDesertedNinjaRegistration(
+                        reg.sessionId,
+                        reg.teamId,
+                        "no_show",
+                        knex,
+                      ),
+                    );
+                  }
+                });
+                const updatedRegs = await Promise.all(promises);
+
+                newSession.teams = newSession.teams.map((t) => {
+                  const newReg = updatedRegs.find((r) => r.teamId === t.id);
+                  if (newReg) {
+                    return {
+                      id: t.id,
+                      status: newReg.status,
+                    };
+                  } else {
+                    return t;
+                  }
+                });
+              }
+            }
+
             if (newSession) {
               return Promise.resolve({
                 status: 200 as const,
@@ -1009,24 +1047,134 @@ export function getRouter({
       },
       completeDesertedNinjaSession: {
         middleware: [adminAuthMiddleware],
-        handler: async ({ body }) => {
-          // TODO: do scoring, update team_state logs
-          const responseBody = {
-            id: 120,
-            status: "complete",
-            teams: [
-              { id: 1, status: "checked_in" },
-              { id: 2, status: "no_show" },
-            ],
-            title: body,
-            questionIds: [
-              1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33,
-            ],
-          };
-          return Promise.resolve({
-            status: 200 as const,
-            body: responseBody,
+        handler: async ({ params: { sessionId } }) => {
+          // To close out a session, score each team then update the puzzle-specific team_state log
+
+          const [session, answers, allQuestions] = await Promise.all([
+            getDesertedNinjaSession(parseInt(sessionId, 10), knex),
+            getDesertedNinjaAnswers(parseInt(sessionId, 10), knex),
+            getDesertedNinjaQuestions(knex),
+          ]);
+
+          if (!session) {
+            return Promise.resolve({
+              status: 404,
+              body: null,
+            });
+          }
+          if (session.status !== "in_progress") {
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
+
+          const questions = session.questionIds.map((qid) =>
+            allQuestions.find((q) => q.id === qid),
+          );
+          if (!questions.every((q) => q !== undefined)) {
+            return Promise.resolve({
+              status: 500,
+              body: `Some questions could not be found for session ${sessionId}`,
+            });
+          }
+
+          // run the scoring methods on each, which may involve DB lookups
+          function scoreHelper(ranges: number[], value: number) {
+            const n = ranges.findIndex((thresh) => value <= thresh);
+            return n === -1 ? 0 : 5 - n;
+          }
+
+          const teamScores = session.teams.map(({ id, status }) => {
+            if (status !== "checked_in") {
+              return { id: id, scores: null };
+            }
+            const scores = questions.map((question, index) => {
+              if (!question) {
+                // this shouldn't happen?
+                return Promise.resolve({
+                  status: 500,
+                  body: `Some questions could not be found for session ${sessionId}`,
+                });
+              }
+
+              const answerObj = answers.find(
+                (ans) =>
+                  ans.sessionId.toString() === sessionId &&
+                  ans.teamId === id &&
+                  ans.questionIndex === index + 1,
+              );
+
+              if (!answerObj) {
+                return 0;
+              }
+
+              const answer = answerObj.answer;
+              if (answer === null) {
+                return 0;
+              }
+
+              const percentage = 100 * Math.abs(answer / question.answer - 1);
+              const difference = Math.abs(answer - question.answer);
+              //console.log(`${id} ${index} -- ${answer} vs ${question.answer} -- ${percentage} ${difference} ${question.scoringMethod}`);
+
+              if (question.scoringMethod === "percent") {
+                return scoreHelper([2, 5, 10, 20, 50], percentage);
+              } else if (question.scoringMethod === "12345") {
+                return scoreHelper([1, 2, 3, 4, 5], difference);
+              } else if (question.scoringMethod === "12468") {
+                return scoreHelper([1, 2, 4, 6, 8], difference);
+              } else if (question.scoringMethod === "1double") {
+                return scoreHelper([1, 2, 4, 8, 16], difference);
+              } else if (question.scoringMethod === "2double") {
+                return scoreHelper([2, 4, 8, 16, 32], difference);
+              } else if (question.scoringMethod === "3double") {
+                return scoreHelper([3, 6, 12, 24, 48], difference);
+              } else if (question.scoringMethod === "4double") {
+                return scoreHelper([4, 8, 16, 32, 64], difference);
+              } else if (question.scoringMethod === "raw") {
+                // TODO: add some answer validation if out of bounds / not an integer?
+                return answer;
+              } else {
+                console.log(
+                  `got unknown scoring method: ${question.scoringMethod}`,
+                );
+                return 0;
+              }
+            });
+
+            return { id: id, scores: scores };
           });
+
+          console.log(teamScores);
+          // (3) for each team, add to the team state for this puzzle
+          teamScores.forEach(({ /*id,*/ scores }) => {
+            if (scores === null) {
+              return;
+            }
+            // TODO: push the scores to the team_state table
+          });
+
+          // when all of this is done, set the status to complete
+          const newSession = await updateDesertedNinjaSession(
+            {
+              ...session,
+              status: "complete",
+            },
+            knex,
+          );
+
+          if (!newSession) {
+            return Promise.resolve({
+              status: 500 as const,
+              body: `Error closing out ${sessionId}, check DB carefully`,
+            });
+          } else {
+            return Promise.resolve({
+              status: 200 as const,
+              body: newSession,
+            });
+          }
         },
       },
       createDesertedNinjaQuestions: {
@@ -1147,6 +1295,12 @@ export function getRouter({
       updateDesertedNinjaRegistration: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId, teamId }, body }) => {
+          // TODO: allowable state transitions:
+          //   if session not started: not_checked_in -> checked_in
+          //                           not_checked_in -> no_show
+          //   if session in progress: nothing
+          //   if session complete:    nothing
+
           await updateDesertedNinjaRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),

@@ -114,10 +114,12 @@ export const adminContract = c.router({
   completeDesertedNinjaSession: {
     method: "POST",
     path: "/admin/complete-dn-session/:sessionId",
-    body: z.string(),
+    body: z.object({}),
     responses: {
       200: DesertedNinjaSessionSchema,
-      400: DesertedNinjaSessionSchema,
+      400: z.null(),
+      404: z.null(),
+      500: z.string(),
     },
     summary: "Complete a deserted-ninja session, updating team logs",
   },
