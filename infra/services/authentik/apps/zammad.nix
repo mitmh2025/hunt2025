@@ -22,6 +22,7 @@
         "auth.mitmh2025.com/zammad/name"
         "auth.mitmh2025.com/zammad/nickname"
         "auth.mitmh2025.com/zammad/display_name"
+        "goauthentik.io/providers/saml/groups"
       ];
       provider.attrs.acs_url = "https://tix.mitmh2025.com/auth/saml/callback";
       provider.attrs.name_id_mapping = config.lib.authentik.findSAMLPropertyMapping "auth.mitmh2025.com/zammad/NameID";
@@ -36,6 +37,7 @@
         "auth.mitmh2025.com/zammad/name"
         "auth.mitmh2025.com/zammad/nickname"
         "auth.mitmh2025.com/zammad/display_name"
+        "goauthentik.io/providers/saml/groups"
       ];
       provider.attrs.acs_url = "https://tix.staging.mitmh2025.com/auth/saml/callback";
       provider.attrs.name_id_mapping = config.lib.authentik.findSAMLPropertyMapping "auth.mitmh2025.com/zammad/NameID";
