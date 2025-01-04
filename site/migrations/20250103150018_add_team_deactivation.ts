@@ -4,6 +4,9 @@ export async function up(knex: Knex): Promise<void> {
   // Knex does not support altering enum types, so we have to create a new
   // column, copy the data over, and rename
   await knex.schema.alterTable("team_registration_log", function (table) {
+    // rebuild index
+    table.dropIndex(["team_id", "type"]);
+
     table.renameColumn("type", "type_old");
   });
 
@@ -37,6 +40,9 @@ export async function up(knex: Knex): Promise<void> {
       ])
       .notNullable()
       .alter();
+
+    // rebuild index
+    table.index(["team_id", "type"]);
   });
 
   // Add a new column to the teams table to track the deactivation status
