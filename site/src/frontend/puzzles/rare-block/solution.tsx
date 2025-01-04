@@ -16,6 +16,10 @@ const Flex = styled.div`
   }
 `;
 
+const Highlight = styled.span`
+  background-color: var(--gold-200);
+`;
+
 const Solution = (): JSX.Element => {
   return (
     <>
@@ -71,17 +75,33 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Reading this list in order results in a set of historic Boston-area
-        telephone exchanges, each with one letter missing:
+        telephone exchanges, each with one letter missing (highlighted below):
       </p>
       <StyledUl>
-        <li>COUMBIA</li>
-        <li>BECON</li>
-        <li>PROPECT</li>
-        <li>ENDICOT</li>
-        <li>HANCOK</li>
-        <li>TLBOT</li>
-        <li>ONGWOOD</li>
-        <li>KENDA</li>
+        <li>
+          CO<Highlight>L</Highlight>UMBIA
+        </li>
+        <li>
+          BE<Highlight>A</Highlight>CON
+        </li>
+        <li>
+          PRO<Highlight>S</Highlight>PECT
+        </li>
+        <li>
+          ENDICOT<Highlight>T</Highlight>
+        </li>
+        <li>
+          HANCO<Highlight>C</Highlight>K
+        </li>
+        <li>
+          T<Highlight>A</Highlight>LBOT
+        </li>
+        <li>
+          <Highlight>L</Highlight>ONGWOOD
+        </li>
+        <li>
+          KENDAL<Highlight>L</Highlight>
+        </li>
       </StyledUl>
       <p>
         The missing letters spell the answer, <Mono>LAST CALL</Mono>. Returning
