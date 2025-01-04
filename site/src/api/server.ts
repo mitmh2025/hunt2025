@@ -80,6 +80,7 @@ type AuthentikJWTPayload = {
   email?: string;
   name: string;
   nickname: string;
+  ops?: boolean;
   admin?: boolean;
   groups?: string[];
 };
