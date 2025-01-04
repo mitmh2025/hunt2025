@@ -8,7 +8,20 @@ src/frontend/puzzles/wiry-ray/data/*.json
 src/frontend/puzzles/giving-fighter/words.json
 # Ignore artifacts
 dist
+dist-ops
 # Ignore types from @mfng
 types/mfng/*.ts
 # Ignore qcow images
 *.qcow2
+# Ignore image file
+*.jpg
+*.png
+*.svg
+# Ignore audio files
+*.mp3
+*.opus
+*.wav
+# Ignore video files
+*.mp4
+# Ignore fonts
+*.ttf
