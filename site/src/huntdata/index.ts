@@ -374,7 +374,7 @@ const HUNT: Hunt = {
         { id: "bgp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "kindred_spirits" },
         { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "deepfrost" },
         { id: "bgp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "reuse_and_recyclability" },
-        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
+        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "celestial_rope" },
         { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "o_woe_is_me"  },
         { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "where_am_i" },
         { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
@@ -387,6 +387,9 @@ const HUNT: Hunt = {
         { id: "bgm03", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION, slug: "the_oversight" }, // meta 3
         // Super unlocks once any one meta is solved.
         { id: "bgm04", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] }, slug: "alias" }, // supermeta
+      ],
+      gates: [
+        { id: "bgg01" }, // Picked up Celestial Rope from Gala
       ],
       interactions: [
         {

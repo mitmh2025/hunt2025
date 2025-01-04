@@ -88,6 +88,7 @@ import { makePlaceholder } from "./placeholder";
 import WeirdoThreadedDoodads from "./plain-roulette";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
+import CelestialRope from "./powerful-berry";
 import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
@@ -314,6 +315,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   papas_bookcase_blacklight: PapasBookcaseBlacklight,
 
   // The Background Check
+  celestial_rope: CelestialRope,
   deepfrost: Deepfrost,
   he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
   kindred_spirits: KindredSpirits,
