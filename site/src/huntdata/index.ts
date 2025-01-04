@@ -49,7 +49,7 @@ const HUNT: Hunt = {
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "drunkens_and_flagons" },
         { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "battle_factory" },
         { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
-        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 }, // false-pole
+        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "no_notes" },
         { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "🔎🧊" },
         { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "introduction_to_decryption" },
         { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "neatly_drawn" },

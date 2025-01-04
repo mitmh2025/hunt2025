@@ -38,6 +38,7 @@ import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
+import NoNotes from "./false-pole";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
@@ -171,6 +172,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
   mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
   neatly_drawn: NeatlyDrawn,
+  no_notes: NoNotes,
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
