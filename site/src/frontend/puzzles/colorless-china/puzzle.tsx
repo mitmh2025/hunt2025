@@ -105,7 +105,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
             Our records show you have picked up your copy of this puzzle.
           </p>
           <p className={NO_COPY_CLASS}>
-            You should have received a stack of 58 receipts.
+            You should have received a stack of 58 receipts. Please contact us
+            at info@mitmh2025.com if it seems that you are missing pieces.
           </p>
         </>
       ) : (
@@ -114,7 +115,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
             Please come to the Gala to pick up your copy of this puzzle.
           </p>
           <p className={NO_COPY_CLASS}>
-            You should receive a stack of 58 receipts.
+            You should receive a stack of 58 receipts. Please contact us at
+            info@mitmh2025.com if it seems that you are missing pieces.
           </p>
         </>
       )}
