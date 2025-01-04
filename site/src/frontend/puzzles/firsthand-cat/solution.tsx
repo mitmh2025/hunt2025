@@ -23,12 +23,12 @@ const Solution = () => {
   return (
     <>
       <p>
-        The puzzle asks you to find a way to pair pokemon together in order to
-        beat each opponent. Each pokemon is unevolved; the mechanism of evolving
-        the pokemon provides a mechanism to transform a word. If you use that
-        transformation on another pokemon’s nickname, you can get a word related
-        to each pokemon trainer’s title. Taking the shared letters of the result
-        and the name, and ordering by shared pokemon, gives the final answer:{" "}
+        The puzzle asks you to find a way to pair Pokémon together in order to
+        beat each opponent. Each Pokémon is unevolved; the mechanism of evolving
+        the Pokémon provides a mechanism to transform a word. If you use that
+        transformation on another Pokémon’s nickname, you can get a word related
+        to each Pokémon trainer’s title. Taking the shared letters of the result
+        and the name, and ordering by shared Pokémon, gives the final answer:{" "}
         <PuzzleAnswer>CHOKING HAZARD</PuzzleAnswer>
       </p>
       <HScrollTableWrapper>
