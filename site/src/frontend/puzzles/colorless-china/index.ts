@@ -65,7 +65,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["NUMBER CHEATERS HAVE A NAMED LAW TO ALSO USE"],
       reply:
-        "That’s right, now use the forensic accountant’s fraud-finding eponym!",
+        "That’s right, now use the forensic accountant’s fraud-finding eponymous law!",
     },
   ],
 };
