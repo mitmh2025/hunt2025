@@ -6,7 +6,10 @@ import {
   TeamRegistrationSchema,
   TeamStateSchema,
 } from "./contract";
-import { InternalActivityLogSchema } from "./frontend_contract";
+import {
+  InternalActivityLogSchema,
+  TeamRegistrationLogSchema,
+} from "./frontend_contract";
 
 export const PuzzleAPIMetadataSchema = z.record(
   z.string(),
@@ -110,6 +113,53 @@ export const adminContract = c.router({
         email: z.string(),
         isOpsAdmin: z.boolean(),
       }),
+    },
+  },
+  unlockPuzzle: {
+    method: "POST",
+    path: "/admin/puzzles/:slug/unlock",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
+  deactivateTeam: {
+    method: "POST",
+    path: "/teams/:teamId/deactivate",
+    body: z.object({}),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  reactivateTeam: {
+    method: "POST",
+    path: "/teams/:teamId/reactivate",
+    body: z.object({}),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  changeTeamPassword: {
+    method: "POST",
+    path: "/teams/:teamId/changePassword",
+    body: z.object({
+      newPassword: z.string(),
+    }),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  mintToken: {
+    method: "POST",
+    path: "/admin/mintToken",
+    body: z.object({}).catchall(z.unknown()),
+    responses: {
+      200: z.string(),
     },
   },
 });

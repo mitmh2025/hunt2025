@@ -49,7 +49,7 @@ const HUNT: Hunt = {
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "drunkens_and_flagons" },
         { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "battle_factory" },
         { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
-        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1 }, // false-pole
+        { id: "mdp18", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "no_notes" },
         { id: "mdp19", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "🔎🧊" },
         { id: "mdp20", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "introduction_to_decryption" },
         { id: "mdp21", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "neatly_drawn" },
@@ -248,7 +248,7 @@ const HUNT: Hunt = {
         { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "big_names" }, // important-green
         { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "doable_double" }, // austere-sink
         { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "taste_explosion" }, // next-van
-        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1 } , // similar-part
+        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "art_history" } , // similar-part
         { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "magic_i" }, // acclaimed-file
         { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_badly_broken_quote" }, // cavernous-angel
         { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 }, // lean-lock
@@ -304,7 +304,7 @@ const HUNT: Hunt = {
         { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "incognito" },
         { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "star_crossed" },
-        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "his_life_story" },
         { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
@@ -377,7 +377,7 @@ const HUNT: Hunt = {
         { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "formula_won" },
         { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "o_woe_is_me"  },
         { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "where_am_i" },
-        { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "celestial_rope" },
         { id: "bgp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
         // Metas become unlocked when both of the following conditions are met:
         // * At least 7 feeders in the round are solved
@@ -387,6 +387,9 @@ const HUNT: Hunt = {
         { id: "bgm03", is_meta: true, unlocked_if: BGCHECK_META_UNLOCK_CONDITION, slug: "the_oversight" }, // meta 3
         // Super unlocks once any one meta is solved.
         { id: "bgm04", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] }, slug: "alias" }, // supermeta
+      ],
+      gates: [
+        { id: "bgg01" }, // Picked up Celestial Rope from Gala
       ],
       interactions: [
         {
@@ -413,7 +416,7 @@ const HUNT: Hunt = {
         // Slugs from these 5 slots can be swapped freely to match the desired object.
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "皇帝の暗号" }, // great wave painting
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // globe
-        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1 }, // family portrait, paw_print_detective goes here
+        { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "paw_print_detective" }, // family portrait
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 }, // typewriter, a_puzzle_of_the_dead goes here
         { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp, 
         // The next 5 puzzles are unlockable once they are discovered in the
@@ -522,9 +525,9 @@ const HUNT: Hunt = {
         { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "weirdo_threaded_doodads"},
         { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "can_do_transmissions" },
         { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "cross_dash_word" },
-        { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_dash_of_color" },
-        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
-        { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "give_this_grid_a_shake" },
+        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "in_communicado_tonight" },
+        { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "a_dash_of_color" },
         { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
         { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },

@@ -32,6 +32,7 @@ export type OpsData = {
   teams: TeamData[];
   gateDetails: Record<string, { title?: string; roundTitle: string }>;
   appendActivityLogEntries: (entries: InternalActivityLogEntry[]) => void;
+  appendRegistrationLogEntries: (entries: TeamRegistrationLogEntry[]) => void;
 };
 
 const INITIAL_STATE: OpsData = {
@@ -48,6 +49,9 @@ const INITIAL_STATE: OpsData = {
   puzzleMetadata: {},
   gateDetails: {},
   appendActivityLogEntries: () => {
+    // do nothing
+  },
+  appendRegistrationLogEntries: () => {
     // do nothing
   },
 };
@@ -125,9 +129,10 @@ class OpsDataStore {
           registration: teamInfoIntermediate.registration,
           state,
           formattedState: formatTeamHuntState(HUNT, state),
+          deactivated: teamInfoIntermediate.deactivated,
         };
       })
-      .filter((team): team is TeamData => team !== null);
+      .filter((team: TeamData | null): team is TeamData => team !== null);
   }
 
   getTeamRegistrations() {
@@ -243,6 +248,19 @@ export default function OpsDataProvider({
             ...oldData,
             teams: store.getTeamData(),
             activityLog: [...oldData.activityLog, ...formattedEntries],
+          }));
+        },
+        appendRegistrationLogEntries: (entries) => {
+          const formattedEntries = entries.map(formatEntry);
+
+          formattedEntries.forEach((entry) => {
+            store.applyRegistrationLogEntry(entry);
+          });
+
+          setData((oldData) => ({
+            ...oldData,
+            teams: store.getTeamData(),
+            registrationLog: [...oldData.registrationLog, ...formattedEntries],
           }));
         },
       });

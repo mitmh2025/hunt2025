@@ -52,6 +52,7 @@ export default function Team() {
         <Link to="/teams">&laquo; Teams</Link>
       </p>
       <h1>
+        {team.deactivated && `[DEACTIVATED] `}
         {team.username} ({team.name})
       </h1>
 

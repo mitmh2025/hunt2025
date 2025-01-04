@@ -6,6 +6,7 @@ import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
 import Superlatives from "./acute-ski";
+import GiveThisGridAShake from "./adored-embassy";
 import FormulaWon from "./alarming-face";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
@@ -38,6 +39,7 @@ import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
+import NoNotes from "./false-pole";
 import ADashOfColor from "./few-cycle";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
@@ -80,6 +82,7 @@ import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
 import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
+import HisLifeStory from "./oily-date";
 import ZuluLima from "./opulent-fair";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
@@ -90,16 +93,19 @@ import { makePlaceholder } from "./placeholder";
 import WeirdoThreadedDoodads from "./plain-roulette";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
+import CelestialRope from "./powerful-berry";
 import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
+import InCommunicadoTonight from "./rare-block";
 import ASudoku from "./recent-ship";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import SyntheticTagsonomy from "./rubbery-tooth";
 import DroppingTheBall from "./rundown-spot";
+import PawPrintDetective from "./rural-helicopter";
 import MagnifyingGlassIce from "./sandy-atlantis";
 import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
@@ -111,6 +117,7 @@ import The10000SheetExcelFile from "./shoddy-table";
 import PapasStash from "./shy-embassy";
 import PapasBookcaseBlacklight from "./sick-crown";
 import IntroductionToDecryption from "./silky-ninja";
+import ArtHistory from "./similar-part";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
@@ -170,6 +177,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
   mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
   neatly_drawn: NeatlyDrawn,
+  no_notes: NoNotes,
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
@@ -194,6 +202,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
   anything_is_popsicle: AnythingIsPopsicle,
+  art_history: ArtHistory,
   be_mine: BeMine,
   big_names: BigNames,
   borderline_personality: BorderlinePersonality,
@@ -234,6 +243,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   chemicals_are_sexy: ChemicalsAreSexy,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
+  his_life_story: HisLifeStory,
   incognito: Incognito,
   maze_of_lies: MazeOfLies,
   star_crossed: StarCrossed,
@@ -254,7 +264,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
   cross_spread: CrossSpread, // globe
-  // isp03 family portrait?
+  paw_print_detective: PawPrintDetective, // family portrait
   this_is_just_a_test: ThisIsJustATest, // typewriter
   // isp05 desk lamp?
 
@@ -285,30 +295,32 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegulah, {
     answer: "VOYAGERS",
     asset: candy_modal_blacklight,
-    assetAlt: "TODO",
+    assetAlt:
+      "Rule ROTARY: You haven’t lived here long, have you? No one calls them “traffic circles” or “roundabouts.” In any case, add a donut to your purchase for each one you drove on. Rule TUMMYACHE: If you do not have enough donuts to fulfill your team’s request, do not extract any letters. Instead, feel shame.",
   }),
   the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
     TheCenterIsInPlainSight,
     {
       answer: "SPARE PARTS",
       asset: rings_modal_blacklight,
-      assetAlt: "TODO",
+      assetAlt: "The third quartile was also always in plain sight.",
     },
   ),
   jargon_blacklight: blacklightPuzzle(Jargon, {
     answer: "LIFEFORCE",
     asset: money_modal_blacklight,
-    assetAlt: "TODO",
+    assetAlt: "Shift by difference from 8V",
   }),
   placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
     answer: "BROADCAST NEWS",
     asset: ledger_blacklight,
-    assetAlt: "TODO",
+    assetAlt: "Same locations tuned to PM 23pi/20",
   }),
   placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
     answer: "BRAZIL",
     asset: cryptex_note_blacklight,
-    assetAlt: "TODO",
+    assetAlt:
+      "What good is a cigarette without a light? Use a physical blacklight on the filters.",
   }),
 
   papas_bookcase: PapasBookcase,
@@ -316,6 +328,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   papas_bookcase_blacklight: PapasBookcaseBlacklight,
 
   // The Background Check
+  celestial_rope: CelestialRope,
   deepfrost: Deepfrost,
   formula_won: FormulaWon,
   he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
@@ -344,8 +357,10 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
+  give_this_grid_a_shake: GiveThisGridAShake,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
+  in_communicado_tonight: InCommunicadoTonight,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 

@@ -1,6 +1,10 @@
-import { timingSafeEqual } from "node:crypto";
+import { createPublicKey, type KeyObject, timingSafeEqual } from "node:crypto";
 import { isDeepStrictEqual } from "util";
-import { type AppRouter, type ServerInferResponseBody } from "@ts-rest/core";
+import {
+  type ServerInferResponses,
+  type AppRouter,
+  type ServerInferResponseBody,
+} from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
@@ -13,7 +17,15 @@ import {
   type NextFunction,
   Router,
 } from "express";
-import jwt from "jsonwebtoken";
+import {
+  createRemoteJWKSet,
+  exportJWK,
+  exportSPKI,
+  importPKCS8,
+  type JWTPayload,
+  type KeyLike,
+  SignJWT,
+} from "jose";
 import { type Knex } from "knex";
 import {
   type GuessStatus,
@@ -31,6 +43,7 @@ import {
   type InternalActivityLogEntry,
   type MutableTeamRegistration,
   frontendContract,
+  type TeamRegistrationLogEntry,
 } from "../../lib/api/frontend_contract";
 import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
@@ -47,8 +60,11 @@ import {
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
+  changeTeamDeactivation,
+  changeTeamPassword,
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
+  cleanupPuzzleStateLogEntryFromDB,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -68,7 +84,7 @@ type PuzzleState = ServerInferResponseBody<
   200
 >;
 
-type JWTPayload = {
+type HuntJWTPayload = {
   user?: string;
   team_id?: number;
   sess_id?: string;
@@ -90,16 +106,42 @@ function cookieExtractor(req: Request) {
   return token ? token : null;
 }
 
-function newPassport({
-  jwtSecret,
+type PrivateKey =
+  | {
+      privateKey: KeyLike;
+      alg: "RS256";
+    }
+  | {
+      privateKey: Uint8Array;
+      alg: "HS256";
+    };
+
+async function parseJWTSecret(secret: string | Buffer): Promise<PrivateKey> {
+  const str = secret instanceof Buffer ? secret.toString("utf8") : secret;
+  try {
+    const alg = "RS256";
+    const privateKey = await importPKCS8(str, alg);
+    return { privateKey, alg };
+  } catch (e: unknown) {
+    // Not an RSA key
+  }
+  return { privateKey: new Uint8Array(Buffer.from(str, "utf8")), alg: "HS256" };
+}
+
+async function newPassport({
+  jwtPrivateKey,
   frontendApiSecret,
   jwksUri,
 }: {
-  jwtSecret: string | Buffer;
+  jwtPrivateKey: PrivateKey;
   frontendApiSecret: string;
   jwksUri?: string;
 }) {
   const passport = new Passport();
+  const jwtPublicKey =
+    jwtPrivateKey.alg === "RS256"
+      ? await exportSPKI(createPublicKey(jwtPrivateKey.privateKey as KeyObject))
+      : new TextDecoder("utf8").decode(jwtPrivateKey.privateKey);
   passport.use(
     "teamJwt",
     new JwtStrategy(
@@ -108,11 +150,11 @@ function newPassport({
           cookieExtractor,
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: jwtSecret,
+        secretOrKey: jwtPublicKey,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
-      function (jwtPayload: JWTPayload, done) {
+      function (jwtPayload: HuntJWTPayload, done) {
         if (!jwtPayload.team_id) {
           console.warn(
             "JWT valid but missing team_id; treating as unauthorized",
@@ -174,9 +216,9 @@ function newPassport({
         jwtFromRequest: ExtractJwt.fromExtractors([
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: jwtSecret,
+        secretOrKey: jwtPublicKey,
       },
-      function (jwtPayload: JWTPayload, done) {
+      function (jwtPayload: HuntJWTPayload, done) {
         if (!jwtPayload.adminUser) {
           console.warn(
             "JWT valid but missing adminUser; treating as unauthorized",
@@ -239,7 +281,33 @@ function formatInternalActivityLogEntryForApi(
   };
 }
 
-export function getRouter({
+function formatMutationResultForAdminApi(
+  result: (InternalActivityLogEntry | undefined)[],
+): ServerInferResponses<typeof frontendContract.getFullActivityLog, 200> {
+  const filteredResults = result.filter(
+    (r: InternalActivityLogEntry | undefined): r is InternalActivityLogEntry =>
+      !!r,
+  );
+
+  return {
+    status: 200,
+    body: filteredResults.map(formatInternalActivityLogEntryForApi),
+  };
+}
+
+function formatRegistrationLogEntryForApi(
+  entry: TeamRegistrationLogEntry,
+): ServerInferResponseBody<
+  typeof frontendContract.getFullTeamRegistrationLog,
+  200
+>[number] {
+  return {
+    ...entry,
+    timestamp: entry.timestamp.toISOString(),
+  };
+}
+
+export async function getRouter({
   jwtSecret,
   jwksUri,
   frontendApiSecret,
@@ -264,11 +332,24 @@ export function getRouter({
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  const { passport, adminStrategies } = newPassport({
-    jwtSecret,
+  const jwtPrivateKey = await parseJWTSecret(jwtSecret);
+
+  const jwksCache = jwksUri && createRemoteJWKSet(new URL(jwksUri));
+
+  const { passport, adminStrategies } = await newPassport({
+    jwtPrivateKey,
     frontendApiSecret,
     jwksUri,
   });
+
+  const mintToken = (payload: JWTPayload) => {
+    return new SignJWT(payload)
+      .setProtectedHeader({
+        alg: jwtPrivateKey.alg,
+        kid: "hunt",
+      })
+      .sign(jwtPrivateKey.privateKey);
+  };
 
   const s = initServer();
 
@@ -288,9 +369,10 @@ export function getRouter({
       redisClient,
       team_id,
     );
+
     const info = team_registration_log.entries
       .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamInfo();
+      .formatTeamInfoIfActive();
     if (info === undefined) {
       return {
         status: 404 as const,
@@ -316,7 +398,7 @@ export function getRouter({
     );
     const registration = team_registration_log.entries
       .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamRegistrationState();
+      .formatTeamRegistrationStateIfActive();
     if (registration === undefined) {
       return {
         status: 404 as const,
@@ -509,6 +591,33 @@ export function getRouter({
 
   const router = s.router(contract, {
     auth: {
+      getJWKS: async () => {
+        const keys = [];
+        if (jwksCache) {
+          if (!jwksCache.fresh) {
+            await jwksCache.reload();
+          }
+          const jwks = jwksCache.jwks();
+          if (jwks) {
+            keys.push(...jwks.keys);
+          }
+        }
+        if (jwtPrivateKey.alg === "RS256") {
+          const jwk = await exportJWK(
+            createPublicKey(jwtPrivateKey.privateKey as KeyObject),
+          );
+          keys.push({
+            ...jwk,
+            kid: "hunt",
+          });
+        }
+        return {
+          status: 200,
+          body: {
+            keys,
+          },
+        };
+      },
       login: async ({
         body: { username, password },
       }: {
@@ -518,24 +627,25 @@ export function getRouter({
           .where({
             username,
             password,
+            deactivated: false,
           })
           .select("username", "id")
           .first();
         if (team !== undefined) {
-          const token = jwt.sign(
-            {
-              user: team.username,
-              team_id: team.id,
-              sess_id: genId(),
-            },
-            jwtSecret,
-            {},
-          );
-
           return {
             status: 200,
             body: {
-              token: token,
+              token: await mintToken({
+                user: team.username,
+                team_id: team.id,
+                sess_id: genId(),
+                media: [
+                  {
+                    action: "read",
+                    path: `~^/teams/${team.id}/`,
+                  },
+                ],
+              }),
             },
           };
         }
@@ -572,15 +682,11 @@ export function getRouter({
           console.error("Error sending confirmation email", e);
         }
 
-        const token = jwt.sign(
-          {
-            user: body.username,
-            team_id: result.teamId,
-            sess_id: genId(),
-          },
-          jwtSecret,
-          {},
-        );
+        const token = await mintToken({
+          user: body.username,
+          team_id: result.teamId,
+          sess_id: genId(),
+        });
 
         return {
           status: 200,
@@ -738,133 +844,132 @@ export function getRouter({
             ),
           );
 
-          const { result, activityLogEntries } =
-            await activityLog.executeMutation(
-              hunt,
-              team_id,
-              redisClient,
-              knex,
-              async function (_, mutator) {
-                const teamState = await mutator.recalculateTeamState(
-                  hunt,
-                  team_id,
-                );
-                const puzzle_log = mutator.log.filter(
-                  (e) => "slug" in e && e.slug === slug,
-                );
-                // Check that the puzzle is unlocked before allowing guess submission.
-                if (!teamState.puzzles_unlocked.has(slug)) {
-                  return {
-                    status: 404 as const,
-                    body: null,
-                  };
-                }
+          const { result, logEntries } = await activityLog.executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              const teamState = await mutator.recalculateTeamState(
+                hunt,
+                team_id,
+              );
+              const puzzle_log = mutator.log.filter(
+                (e) => "slug" in e && e.slug === slug,
+              );
+              // Check that the puzzle is unlocked before allowing guess submission.
+              if (!teamState.puzzles_unlocked.has(slug)) {
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
+              }
 
-                // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
-                // n^2 minutes "correct" and "other" guesses do not count towards rate-limits.
-                // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
-                // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
-                // for the purposes of rate-limiting.
-                const last_reset_time_record = puzzle_log.findLast(
-                  (e) => e.type === "rate_limits_reset",
-                );
-                const last_reset_time = last_reset_time_record?.timestamp;
-                const previous_guess_times = puzzle_log
-                  .filter(
-                    (e) =>
-                      e.type === "puzzle_guess_submitted" &&
-                      e.data.status === "incorrect",
-                  )
-                  .map((e) => e.timestamp);
-                const effective_previous_guess_times =
-                  last_reset_time !== undefined
-                    ? previous_guess_times.filter((t) => t > last_reset_time)
-                    : previous_guess_times;
-                const allowAfter = nextAcceptableSubmissionTime(
-                  effective_previous_guess_times,
-                );
-                const now = Date.now();
-                if (now < allowAfter.getTime()) {
-                  return {
-                    status: 429 as const,
-                    body: {
-                      retryAfter: allowAfter.toISOString(),
-                    },
-                  };
-                }
-
-                // Determine our disposition on this submission.
-                let responseText = "Incorrect";
-                let status: GuessStatus = "incorrect";
-                let link;
-                if (correct_answer) {
-                  canonical_input = correct_answer;
-                  responseText = "Correct!";
-                  status = "correct";
-                } else if (correct_canned_response) {
-                  const matching_input = correct_canned_response.guess.find(
-                    (g) => canonicalizeInput(g) === canonical_input,
-                  );
-                  canonical_input = matching_input ?? canonical_input;
-                  link = correct_canned_response.link;
-                  responseText = correct_canned_response.reply;
-                  status = "other";
-                }
-
-                // Attempt to insert a new guess.  If this guess's input matches some other canonical
-                // input, inserted should be empty thanks to the unique index and
-                // onConflict()/ignore().
-                const inserted = await mutator.appendLog({
-                  team_id,
-                  slug,
-                  type: "puzzle_guess_submitted",
-                  data: {
-                    canonical_input,
-                    status,
-                    response: responseText,
-                    ...(link !== undefined ? { link } : {}),
+              // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
+              // n^2 minutes "correct" and "other" guesses do not count towards rate-limits.
+              // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
+              // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
+              // for the purposes of rate-limiting.
+              const last_reset_time_record = puzzle_log.findLast(
+                (e) => e.type === "rate_limits_reset",
+              );
+              const last_reset_time = last_reset_time_record?.timestamp;
+              const previous_guess_times = puzzle_log
+                .filter(
+                  (e) =>
+                    e.type === "puzzle_guess_submitted" &&
+                    e.data.status === "incorrect",
+                )
+                .map((e) => e.timestamp);
+              const effective_previous_guess_times =
+                last_reset_time !== undefined
+                  ? previous_guess_times.filter((t) => t > last_reset_time)
+                  : previous_guess_times;
+              const allowAfter = nextAcceptableSubmissionTime(
+                effective_previous_guess_times,
+              );
+              const now = Date.now();
+              if (now < allowAfter.getTime()) {
+                return {
+                  status: 429 as const,
+                  body: {
+                    retryAfter: allowAfter.toISOString(),
                   },
-                });
+                };
+              }
 
-                // Only add relevant entries to the activity log if the guess was novel and inserted
-                // a record.  Otherwise, we might grant double rewards for the same guess.
-                if (inserted !== undefined) {
-                  // This was a new guess.
-                  if (correct_answer) {
-                    // It was right and the puzzle is now solved.
-                    await mutator.appendLog({
-                      team_id,
-                      slug,
-                      type: "puzzle_solved",
-                      currency_delta: cannedResponseProvidesPrize ? 0 : prize,
-                      data: {
-                        answer: canonical_input,
-                      },
-                    });
-                  } else if (correct_canned_response?.providesSolveReward) {
-                    // The guess matched an intermediate for which we provide the solve reward.  We
-                    // need to issue a prize for this particular canned response, which means we need
-                    // an activity log entry for it.
-                    await mutator.appendLog({
-                      team_id,
-                      slug,
-                      type: "puzzle_partially_solved",
-                      currency_delta: prize,
-                      data: {
-                        partial: canonical_input,
-                      },
-                    });
-                  }
+              // Determine our disposition on this submission.
+              let responseText = "Incorrect";
+              let status: GuessStatus = "incorrect";
+              let link;
+              if (correct_answer) {
+                canonical_input = correct_answer;
+                responseText = "Correct!";
+                status = "correct";
+              } else if (correct_canned_response) {
+                const matching_input = correct_canned_response.guess.find(
+                  (g) => canonicalizeInput(g) === canonical_input,
+                );
+                canonical_input = matching_input ?? canonical_input;
+                link = correct_canned_response.link;
+                responseText = correct_canned_response.reply;
+                status = "other";
+              }
+
+              // Attempt to insert a new guess.  If this guess's input matches some other canonical
+              // input, inserted should be empty thanks to the unique index and
+              // onConflict()/ignore().
+              const inserted = await mutator.appendLog({
+                team_id,
+                slug,
+                type: "puzzle_guess_submitted",
+                data: {
+                  canonical_input,
+                  status,
+                  response: responseText,
+                  ...(link !== undefined ? { link } : {}),
+                },
+              });
+
+              // Only add relevant entries to the activity log if the guess was novel and inserted
+              // a record.  Otherwise, we might grant double rewards for the same guess.
+              if (inserted !== undefined) {
+                // This was a new guess.
+                if (correct_answer) {
+                  // It was right and the puzzle is now solved.
+                  await mutator.appendLog({
+                    team_id,
+                    slug,
+                    type: "puzzle_solved",
+                    currency_delta: cannedResponseProvidesPrize ? 0 : prize,
+                    data: {
+                      answer: canonical_input,
+                    },
+                  });
+                } else if (correct_canned_response?.providesSolveReward) {
+                  // The guess matched an intermediate for which we provide the solve reward.  We
+                  // need to issue a prize for this particular canned response, which means we need
+                  // an activity log entry for it.
+                  await mutator.appendLog({
+                    team_id,
+                    slug,
+                    type: "puzzle_partially_solved",
+                    currency_delta: prize,
+                    data: {
+                      partial: canonical_input,
+                    },
+                  });
                 }
-                return { status: 200 as const };
-              },
-            );
+              }
+              return { status: 200 as const };
+            },
+          );
           if (result.status === 200) {
             return {
               status: 200 as const,
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, activityLogEntries)!,
+              body: formatPuzzleState(slug, logEntries)!,
             };
           }
           return result;
@@ -883,41 +988,40 @@ export function getRouter({
               body: null,
             };
           }
-          const { result, activityLogEntries } =
-            await activityLog.executeMutation(
-              hunt,
-              team_id,
-              redisClient,
-              knex,
-              async function (_, mutator) {
-                // Verify puzzle is currently unlockable.
-                const data = await mutator.recalculateTeamState(hunt, team_id);
-                const unlock_cost = slot.unlock_cost;
+          const { result, logEntries } = await activityLog.executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              // Verify puzzle is currently unlockable.
+              const data = await mutator.recalculateTeamState(hunt, team_id);
+              const unlock_cost = slot.unlock_cost;
 
-                if (
-                  data.puzzles_unlockable.has(slug) &&
-                  !data.puzzles_unlocked.has(slug) &&
-                  unlock_cost &&
-                  data.available_currency >= unlock_cost
-                ) {
-                  // Unlock puzzle.
-                  await mutator.appendLog({
-                    team_id,
-                    type: "puzzle_unlocked",
-                    slug,
-                    currency_delta: -unlock_cost,
-                  });
-                  return true;
-                }
-                return false;
-              },
-            );
+              if (
+                data.puzzles_unlockable.has(slug) &&
+                !data.puzzles_unlocked.has(slug) &&
+                unlock_cost &&
+                data.available_currency >= unlock_cost
+              ) {
+                // Unlock puzzle.
+                await mutator.appendLog({
+                  team_id,
+                  type: "puzzle_unlocked",
+                  slug,
+                  currency_delta: -unlock_cost,
+                });
+                return true;
+              }
+              return false;
+            },
+          );
           if (result) {
             return {
               status: 200 as const,
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, activityLogEntries)!,
+              body: formatPuzzleState(slug, logEntries)!,
             };
           }
           return {
@@ -928,6 +1032,16 @@ export function getRouter({
       },
     },
     admin: {
+      mintToken: {
+        // Not expected to be called by the frontend, but will be called by ancillary processes.
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: async ({ body }) => {
+          return {
+            status: 200,
+            body: await mintToken(body),
+          };
+        },
+      },
       getTeamState: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId } }) => {
@@ -1001,23 +1115,25 @@ export function getRouter({
           const dryRun = body.dryRun;
           const messages = [];
           for (const teamInfo of teamInfos.values()) {
-            if (teamInfo.registration === undefined) {
+            const registration = teamInfo.formatTeamRegistrationIfActive();
+            if (registration === undefined) {
               continue;
             }
+
             const addresses = [
               {
-                name: teamInfo.registration.contactName,
-                address: teamInfo.registration.contactEmail,
+                name: registration.contactName,
+                address: registration.contactEmail,
               },
               {
-                name: teamInfo.registration.secondaryContactName,
-                address: teamInfo.registration.secondaryContactEmail,
+                name: registration.secondaryContactName,
+                address: registration.secondaryContactEmail,
               },
             ];
             if (body.wholeTeam) {
               addresses.push({
-                name: teamInfo.registration.name,
-                address: teamInfo.registration.teamEmail,
+                name: registration.name,
+                address: registration.teamEmail,
               });
             }
             for (const address of addresses) {
@@ -1034,7 +1150,7 @@ export function getRouter({
                     messageStream: "hunt-announcements",
                     templateAlias: body.templateAlias,
                     templateModel: {
-                      teamName: teamInfo.registration.name,
+                      teamName: registration.name,
                     },
                   });
                   result.success = true;
@@ -1139,16 +1255,7 @@ export function getRouter({
             },
           );
 
-          const filteredResults = result.filter(
-            (
-              r: InternalActivityLogEntry | undefined,
-            ): r is InternalActivityLogEntry => !!r,
-          );
-
-          return {
-            status: 200 as const,
-            body: filteredResults.map(formatInternalActivityLogEntryForApi),
-          };
+          return formatMutationResultForAdminApi(result);
         },
       },
       opsAccount: {
@@ -1166,6 +1273,171 @@ export function getRouter({
               isOpsAdmin: req.authInfo?.permissionAdmin ?? false,
             },
           });
+        },
+      },
+      unlockPuzzle: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { slug }, body: { teamIds } }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              // Check if already unlocked
+              const teamIdsToUnlock = new Set(
+                teamIds === "all" ? mutator.allTeams : teamIds,
+              );
+
+              for (const entry of mutator.log) {
+                if (entry.type === "puzzle_unlocked" && entry.slug === slug) {
+                  if (entry.team_id === undefined) {
+                    // already unlocked for all teams
+                    return [];
+                  }
+
+                  teamIdsToUnlock.delete(entry.team_id);
+                }
+              }
+
+              if (
+                teamIds === "all" &&
+                teamIdsToUnlock.size === mutator.allTeams.size
+              ) {
+                // we are unlocking for all teams and no team has the puzzle locked
+                return [
+                  await mutator.appendLog({
+                    type: "puzzle_unlocked",
+                    slug,
+                  }),
+                ];
+              }
+
+              // need to unlock for specific teams
+              const newEntries: (InternalActivityLogEntry | undefined)[] = [];
+              for (const team_id of teamIdsToUnlock) {
+                newEntries.push(
+                  await mutator.appendLog({
+                    team_id,
+                    type: "puzzle_unlocked",
+                    slug,
+                  }),
+                );
+              }
+
+              return newEntries;
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
+      changeTeamPassword: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId }, body: { newPassword } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_password_change",
+                data: {
+                  new_password: newPassword,
+                },
+              });
+
+              await changeTeamPassword(team_id, newPassword, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        },
+      },
+      deactivateTeam: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_deactivated",
+                data: {},
+              });
+
+              await changeTeamDeactivation(team_id, true, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        },
+      },
+      reactivateTeam: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_reactivated",
+                data: {},
+              });
+
+              await changeTeamDeactivation(team_id, false, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
         },
       },
     },
@@ -1333,6 +1605,52 @@ export function getRouter({
           );
           const body = entries.map((e) => {
             const entry = cleanupTeamRegistrationLogEntryFromDB(e);
+            return formatRegistrationLogEntryForApi(entry);
+          });
+          return {
+            status: 200,
+            body,
+          };
+        },
+      },
+      getFullPuzzleStateLog: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ query: { since, team_id, slug } }) => {
+          let effectiveSince = undefined;
+          if (since) {
+            const sinceParsed = Number(since);
+            if (sinceParsed > 0) {
+              effectiveSince = sinceParsed;
+            }
+          }
+          let effectiveTeamId = undefined;
+          if (team_id) {
+            const teamIdParsed = Number(team_id);
+            if (teamIdParsed > 0) {
+              effectiveTeamId = teamIdParsed;
+            }
+          }
+          const entries = await knex.transaction(
+            async (trx) => {
+              let q = trx("puzzle_state_log");
+              if (effectiveSince !== undefined) {
+                q = q.where("id", ">", effectiveSince);
+              }
+              if (effectiveTeamId !== undefined) {
+                q = q.where("team_id", effectiveTeamId);
+              }
+              if (slug !== undefined) {
+                q = q.where("slug", slug);
+              }
+              q = q
+                .select("id", "team_id", "slug", "data", "timestamp")
+                .orderBy("id", "asc");
+              return q;
+            },
+            { readOnly: true },
+          );
+          const body = entries.map((e) => {
+            const entry = cleanupPuzzleStateLogEntryFromDB(e);
             return {
               ...entry,
               timestamp: entry.timestamp.toISOString(),

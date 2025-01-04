@@ -63,6 +63,25 @@ const SOLVED_WORD_SEARCH = `
   .slice(1, -1)
   .map((row) => row.padEnd(41, " ").split(""));
 
+const INITIAL_HIGHLIGHTS = reduceCoordinatesToIndices(
+  [
+    { row: 3, col: 28 }, // S
+    { row: 6, col: 13 }, // H
+    { row: 11, col: 12 }, // I
+    { row: 13, col: 25 }, // F
+    { row: 16, col: 19 }, // T
+    { row: 18, col: 4 }, // B
+    { row: 20, col: 38 }, // Y
+    { row: 23, col: 31 }, // E
+    { row: 29, col: 23 }, // L
+    { row: 30, col: 23 }, // E
+    { row: 33, col: 27 }, // V
+    { row: 33, col: 30 }, // E
+    { row: 36, col: 16 }, // N
+  ],
+  41,
+);
+
 const SHIFTED_WORD_SEARCH = `
               CROSSOUTLINES
             INEVERYDIRECTION
@@ -324,6 +343,9 @@ const NAMES_TABLE: [string, string][] = [
 const StyledTable = styled.table`
   margin: 1em auto;
   border-spacing: 8px 0;
+  td {
+    text-align: center;
+  }
 `;
 
 const Solution = (): JSX.Element => {
@@ -373,7 +395,7 @@ const Solution = (): JSX.Element => {
           </tr>
         ))}
       </StyledTable>
-      <WordSearch grid={SOLVED_WORD_SEARCH} />
+      <WordSearch grid={SOLVED_WORD_SEARCH} highlights={INITIAL_HIGHLIGHTS} />
       <p>
         The instruction SHIFT BY ELEVEN tells solvers that they need to Caesar
         shift each letter in the wordsearch forward 11 places in the alphabet,
@@ -418,7 +440,7 @@ const Solution = (): JSX.Element => {
         If we go back and look at the original wordsearch, we can find names for
         Venus in different cultures in circles, transiting across the face of
         the wordsearch in a similar pattern to how Venus transits across the
-        face of the sun:
+        face of the Sun:
       </p>
       <WordSearch grid={TRANSIT} highlights={TRANSIT_HIGHLIGHTS} />
       <StyledTable>
@@ -442,7 +464,7 @@ const Solution = (): JSX.Element => {
         The 1769 Transit of Venus was an international astronomical event, where
         scientists arranged to take measurements of the transit time all over
         the globe. These measurements were then used to produce the first ever
-        estimate for the distance between the Earth and the Sun
+        estimate for the distance between the Earth and the Sun.
       </p>
     </>
   );

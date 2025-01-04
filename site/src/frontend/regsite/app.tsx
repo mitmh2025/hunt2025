@@ -63,7 +63,7 @@ export default function ({
         ) {
           // Clear the cookie if the token is invalid
           res.clearCookie("mitmh2025_auth");
-          next(new Error("Invalid auth token"));
+          next();
           return;
         } else if (registrationResp.status !== 200) {
           console.log("Failed to load registration data", registrationResp);

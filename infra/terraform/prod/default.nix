@@ -67,5 +67,6 @@
     ./redis.nix
     ./media.nix
     ./things.nix
+    ./mail.nix
   ];
 }

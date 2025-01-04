@@ -6,6 +6,7 @@ import {
   Mono,
   PuzzleAnswer,
 } from "../../components/StyledUI";
+import billboard from "./assets/billboard.png";
 import grandpre from "./assets/grandpre.png";
 
 const DERBY_TABLE: [number, string, string, number, string][] = [
@@ -177,6 +178,14 @@ const Solution = (): JSX.Element => {
         use, as we belatedly discovered. And, of course, the editors; this
         puzzle needed quite a bit of collaborative brainstorming as it evolved!
       </p>
+      <p>
+        Oh, and the data didn’t quite work out but I had already made this
+        billboard which I was quite happy with, so here’s one bonus horse:
+      </p>
+      <LinkedImage
+        src={billboard}
+        alt="The artist formerly known as Prince, holding a guitar and standing on the North Pole"
+      />
     </>
   );
 };

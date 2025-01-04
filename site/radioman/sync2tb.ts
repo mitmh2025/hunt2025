@@ -77,6 +77,7 @@ async function main({
     fetchMethod: frontendApiClient.getFullActivityLog.bind(frontendApiClient),
     log: activityLog,
   });
+  activityLogTailer.start();
 
   const teamRegistrationLogTailer = newLogTailer({
     redisClient,
@@ -84,6 +85,7 @@ async function main({
       frontendApiClient.getFullTeamRegistrationLog.bind(frontendApiClient),
     log: teamRegistrationLog,
   });
+  teamRegistrationLogTailer.start();
 
   const customers = await tbClient.listCustomers();
   console.log("customers", customers);

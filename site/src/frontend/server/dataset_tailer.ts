@@ -11,16 +11,25 @@ type Listener<T> = {
 // stale: we have not received a message on pubsub for a while, or we have received one with an unexpected id, so we have a fetcher request outstanding
 // fetch-error-wait: a backfill fetch failed and we are in exponential backoff waiting before we try to make another request
 // fetch-error: a backfill fetch failed, the wait time passed, and we have a new backfill fetch in flight
-type StreamTailerState = "ready" | "stale" | "fetch-error-wait" | "fetch-error";
+type StreamTailerState =
+  | "ready"
+  | "stale"
+  | "fetch-error-wait"
+  | "fetch-error"
+  | "shutdown";
 
 const DEBUG_TAILER = true as boolean;
 
 export type DatasetTailer<T extends { id: number }> = {
+  start(): void;
+
   readyPromise(): Promise<void>;
 
   watchLog(onItems: (items: T[]) => void): () => void;
 
   stopWatch(id: string): void;
+
+  shutdown(): void;
 };
 
 export class StreamDatasetTailer<T extends { id: number }> {
@@ -33,8 +42,14 @@ export class StreamDatasetTailer<T extends { id: number }> {
   // The log we are subscribing to
   private redisLog: Pick<Log<T, T>, "getGlobalLog" | "key">;
 
-  // The full, sorted-by-id history of all confirmed events, which we have already emitted to all listeners
+  // Should we attempt to retain all entries observed, so they can be sent to additional future watchers?
+  // If false, you must only call watchLog() once.
+  private retainEntries: boolean;
+  // If retainEntries is true, entries contains the full, sorted-by-id history of all confirmed events, which we have already emitted to all listeners
+  // Otherwise, it is an empty list.
   private entries: T[];
+  // The highest `id` of an entry we have encountered (and emitted)
+  private _lastKnownId: number | undefined;
 
   // The list of observers which want to get updates when the dataset changes.  We dispatch in
   // batches as large as we receive them mostly to save on function call overhead.
@@ -47,6 +62,10 @@ export class StreamDatasetTailer<T extends { id: number }> {
   private idleTimeoutMsec: number;
   // If defined, the handle for the setTimeout that will trigger the idle timeout
   private idleTimeoutHandle: NodeJS.Timeout | undefined;
+
+  // How long, at maximum, will we block on the redis connection "thread" on a read attempt.
+  // Setting this to 0 means "block indefinitely" which means we cannot gracefully shut down the dataset tailer.
+  private blockTimeoutMsec: number;
 
   // How many fetches have failed in a row? (governs exponential backoff)
   private fetchFailureCount: number;
@@ -62,11 +81,15 @@ export class StreamDatasetTailer<T extends { id: number }> {
     fetcher,
     log,
     idleTimeoutMsec,
+    blockTimeoutMsec,
+    retainEntries,
   }: {
     redisClient: RedisClient;
     fetcher: (since?: number) => Promise<T[]>;
     log: StreamDatasetTailer<T>["redisLog"];
     idleTimeoutMsec?: number;
+    blockTimeoutMsec?: number;
+    retainEntries?: boolean;
   }) {
     this.redisClient = redisClient;
     this.fetcher = fetcher;
@@ -76,11 +99,13 @@ export class StreamDatasetTailer<T extends { id: number }> {
     this.state = "ready";
     this.idleTimeoutHandle = undefined;
     this.idleTimeoutMsec = idleTimeoutMsec ?? 60000;
+    this.blockTimeoutMsec = blockTimeoutMsec ?? 0;
+    this.retainEntries = retainEntries ?? true;
+    this._lastKnownId = undefined;
     this.fetchFailureCount = 0;
     this.ready = new Promise((resolve) => {
       this.fulfillReady = resolve;
     });
-    this.start();
   }
 
   protected log(...args: unknown[]) {
@@ -93,11 +118,7 @@ export class StreamDatasetTailer<T extends { id: number }> {
   }
 
   protected lastKnownId(): number | undefined {
-    if (this.entries.length > 0) {
-      return this.entries[this.entries.length - 1]?.id;
-    } else {
-      return undefined;
-    }
+    return this._lastKnownId;
   }
 
   protected setIdleTimer() {
@@ -130,6 +151,7 @@ export class StreamDatasetTailer<T extends { id: number }> {
   }
 
   protected onFetch(entries: T[]) {
+    if (this.state === "shutdown") return;
     this.state = "ready";
     this.fulfillReady?.();
     this.fetchFailureCount = 0;
@@ -179,25 +201,32 @@ export class StreamDatasetTailer<T extends { id: number }> {
   }
 
   protected onFetchBackoffTimeout() {
+    if (this.state === "shutdown") return;
     this.state = "fetch-error";
     this.fetch();
   }
 
   protected async redisThread() {
-    for (;;) {
+    while (this.state !== "shutdown") {
       try {
         // N.B. executeIsolated will block until it has a usable client, using the backoff options passed to the client constructor.
         await this.redisClient.executeIsolated(async (redisClient) => {
-          for (;;) {
+          let lastLogged = undefined as number | undefined;
+          while (this.state !== "shutdown") {
             const lastKnown = this.lastKnownId();
-            this.log(`getGlobalLog(${lastKnown})`);
+            if (lastLogged === undefined || lastKnown !== lastLogged) {
+              this.log(`getGlobalLog(${lastKnown})`);
+              lastLogged = lastKnown;
+            }
             const results = await this.redisLog.getGlobalLog(
               redisClient,
               lastKnown,
-              { BLOCK: 0 },
+              { BLOCK: this.blockTimeoutMsec },
             );
-            this.log(`Got ${results.entries.length} stream messages`);
-            this.dispatch(results.entries);
+            if (results.entries.length > 0) {
+              this.log(`Got ${results.entries.length} stream messages`);
+              this.dispatch(results.entries);
+            }
           }
         });
       } catch (e: unknown) {
@@ -206,9 +235,18 @@ export class StreamDatasetTailer<T extends { id: number }> {
     }
   }
 
-  protected start() {
+  public start() {
     this.log("starting redis connection");
     void this.redisThread();
+  }
+
+  public shutdown() {
+    this.state = "shutdown";
+    if (this.listeners.size > 0) {
+      this.log(
+        "Shutdown called before all listeners were removed!  Do you have an error in your refcount logic?",
+      );
+    }
   }
 
   private dispatch(entries: T[]) {
@@ -218,8 +256,12 @@ export class StreamDatasetTailer<T extends { id: number }> {
       this.listeners.forEach((listener) => {
         listener.callback(entries);
       });
+
+      if (this.retainEntries) {
+        this.entries = this.entries.concat(entries);
+      }
+      this._lastKnownId = entries[entries.length - 1]?.id;
     }
-    this.entries = this.entries.concat(entries);
   }
 
   // Public API
@@ -234,6 +276,11 @@ export class StreamDatasetTailer<T extends { id: number }> {
       callback: onItems,
     };
     this.listeners.set(id, listener);
+    if (!this.retainEntries && this.listeners.size > 0) {
+      this.log(
+        "WARNING: attempted to watchLog with multiple watchers with retainEntries: false.  Watchers other than the first will miss entries!",
+      );
+    }
     // Deliver initial state
     if (this.entries.length > 0) {
       onItems(this.entries);
@@ -252,6 +299,8 @@ export function newLogTailer<
   redisClient,
   fetchMethod,
   log,
+  yieldAfter,
+  retainEntries,
 }: {
   redisClient: RedisClient;
   fetchMethod: (arg: {
@@ -260,6 +309,8 @@ export function newLogTailer<
     { status: 200; body: T[] } | { status: Exclude<HTTPStatusCode, 200> }
   >;
   log: StreamDatasetTailer<T>["redisLog"];
+  yieldAfter?: number;
+  retainEntries?: boolean;
 }) {
   const fetcher = (since?: number) => {
     return fetchMethod({
@@ -279,6 +330,8 @@ export function newLogTailer<
     redisClient,
     fetcher,
     log,
+    blockTimeoutMsec: yieldAfter,
+    retainEntries,
   });
   return tailer;
 }

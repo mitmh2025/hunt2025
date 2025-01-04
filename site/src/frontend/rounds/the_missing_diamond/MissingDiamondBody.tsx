@@ -20,13 +20,13 @@ import React, {
 } from "react";
 import { css, styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import cork from "../../assets/cork.png";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
 import { PuzzleUnlockModal } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { deviceMax, deviceMin } from "../../utils/breakpoints";
 import { MissingDiamondFonts } from "./MissingDiamondFonts";
 import billie from "./assets/billie.png";
-import cork from "./assets/cork.png";
 import map from "./assets/map.png";
 import skyline from "./assets/skyline.png";
 import stars from "./assets/stars.png";

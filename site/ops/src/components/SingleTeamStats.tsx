@@ -6,7 +6,7 @@ import {
   Button,
   Input,
 } from "@mui/material";
-import { useSnackbar } from "notistack";
+import { useNotifications } from "@toolpad/core";
 import { useMemo, useState } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
 import { useOpsData } from "../OpsDataProvider";
@@ -43,7 +43,7 @@ function GrantKeysDialog({
   const { adminClient, appendActivityLogEntries } = useOpsData();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const notifications = useNotifications();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -62,15 +62,17 @@ function GrantKeysDialog({
           }
 
           appendActivityLogEntries(result.body);
-          enqueueSnackbar(`Granted ${qty} keys to ${teamUsername}`, {
-            variant: "success",
+          notifications.show(`Granted ${qty} keys to ${teamUsername}`, {
+            severity: "success",
+            autoHideDuration: 3000,
           });
           onClose();
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
-          enqueueSnackbar(`Failed to grant keys: ${msg}`, {
-            variant: "error",
+          notifications.show(`Failed to grant keys: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
           });
         })
         .finally(() => {
