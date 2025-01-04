@@ -6,6 +6,7 @@ import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
 import Superlatives from "./acute-ski";
+import GiveThisGridAShake from "./adored-embassy";
 import FormulaWon from "./alarming-face";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
@@ -342,6 +343,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
+  give_this_grid_a_shake: GiveThisGridAShake,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
