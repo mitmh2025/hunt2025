@@ -1,4 +1,4 @@
-import { timingSafeEqual } from "node:crypto";
+import { createPublicKey, KeyObject, timingSafeEqual } from "node:crypto";
 import { isDeepStrictEqual } from "util";
 import {
   type ServerInferResponses,
@@ -17,6 +17,7 @@ import {
   type NextFunction,
   Router,
 } from "express";
+import { exportSPKI, importPKCS8, type KeyLike, SignJWT } from "jose";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import {
@@ -94,16 +95,42 @@ function cookieExtractor(req: Request) {
   return token ? token : null;
 }
 
-function newPassport({
-  jwtSecret,
+type PrivateKey =
+  | {
+      privateKey: KeyLike;
+      alg: "RS256";
+    }
+  | {
+      privateKey: Uint8Array;
+      alg: "HS256";
+    };
+
+async function parseJWTSecret(secret: string | Buffer): Promise<PrivateKey> {
+  const str = secret instanceof Buffer ? secret.toString("utf8") : secret;
+  try {
+    const alg = "RS256";
+    const privateKey = await importPKCS8(str, alg);
+    return { privateKey, alg };
+  } catch (e: unknown) {
+    // Not an RSA key
+  }
+  return { privateKey: new Uint8Array(Buffer.from(str, "utf8")), alg: "HS256" };
+}
+
+async function newPassport({
+  jwtPrivateKey,
   frontendApiSecret,
   jwksUri,
 }: {
-  jwtSecret: string | Buffer;
+  jwtPrivateKey: PrivateKey;
   frontendApiSecret: string;
   jwksUri?: string;
 }) {
   const passport = new Passport();
+  const jwtPublicKey =
+    jwtPrivateKey.alg === "RS256"
+      ? await exportSPKI(createPublicKey(jwtPrivateKey.privateKey as KeyObject))
+      : new TextDecoder("utf8").decode(jwtPrivateKey.privateKey);
   passport.use(
     "teamJwt",
     new JwtStrategy(
@@ -112,7 +139,7 @@ function newPassport({
           cookieExtractor,
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: jwtSecret,
+        secretOrKey: jwtPublicKey,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
@@ -178,7 +205,7 @@ function newPassport({
         jwtFromRequest: ExtractJwt.fromExtractors([
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: jwtSecret,
+        secretOrKey: jwtPublicKey,
       },
       function (jwtPayload: JWTPayload, done) {
         if (!jwtPayload.adminUser) {
@@ -257,7 +284,7 @@ function formatMutationResultForAdminApi(
   };
 }
 
-export function getRouter({
+export async function getRouter({
   jwtSecret,
   jwksUri,
   frontendApiSecret,
@@ -282,8 +309,10 @@ export function getRouter({
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  const { passport, adminStrategies } = newPassport({
-    jwtSecret,
+  const jwtPrivateKey = await parseJWTSecret(jwtSecret);
+
+  const { passport, adminStrategies } = await newPassport({
+    jwtPrivateKey,
     frontendApiSecret,
     jwksUri,
   });
@@ -540,15 +569,22 @@ export function getRouter({
           .select("username", "id")
           .first();
         if (team !== undefined) {
-          const token = jwt.sign(
-            {
-              user: team.username,
-              team_id: team.id,
-              sess_id: genId(),
-            },
-            jwtSecret,
-            {},
-          );
+          const token = await new SignJWT({
+            user: team.username,
+            team_id: team.id,
+            sess_id: genId(),
+            media: [
+              {
+                action: "read",
+                path: `~^/teams/${team.id}/`,
+              },
+            ],
+          })
+            .setProtectedHeader({
+              alg: jwtPrivateKey.alg,
+              kid: "hunt",
+            })
+            .sign(jwtPrivateKey.privateKey);
 
           return {
             status: 200,

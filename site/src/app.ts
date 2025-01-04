@@ -76,7 +76,7 @@ export default async function ({
     const mailer = getMailer({ emailFrom });
 
     // Mount the API router at /api
-    const apiRouter = getRouter({
+    const apiRouter = await getRouter({
       jwtSecret,
       jwksUri,
       frontendApiSecret,
