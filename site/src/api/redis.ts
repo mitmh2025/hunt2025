@@ -10,6 +10,8 @@ import {
   type TeamRegistrationLogEntry,
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
+  type DehydratedPuzzleStateLogEntry,
+  type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { hydrateLogEntry } from "./logic";
 
@@ -338,6 +340,20 @@ export class TeamRegistrationLog extends Log<
 }
 
 export const teamRegistrationLog = new TeamRegistrationLog();
+
+export class PuzzleStateLog extends Log<
+  DehydratedPuzzleStateLogEntry,
+  PuzzleStateLogEntry
+> {
+  constructor() {
+    super("puzzle_state_log");
+  }
+  protected hydrateEntry(entry: DehydratedPuzzleStateLogEntry) {
+    return hydrateLogEntry(entry);
+  }
+}
+
+export const puzzleStateLog = new PuzzleStateLog();
 
 // Publish a new state to a "stream", if it is newer, and trim older states.
 async function publishState(

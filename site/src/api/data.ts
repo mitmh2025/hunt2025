@@ -2,6 +2,7 @@ import type Knex from "knex";
 import {
   type InsertTeamRegistrationLogEntry,
   type InsertActivityLogEntry,
+  type InsertPuzzleStateLogEntry,
 } from "knex/types/tables";
 import {
   type DesertedNinjaQuestion,
@@ -15,6 +16,8 @@ import {
   type TeamRegistrationLogEntry,
   type DehydratedInternalActivityLogEntry,
   type InternalActivityLogEntry,
+  type DehydratedPuzzleStateLogEntry,
+  type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -24,6 +27,8 @@ import {
   getTeamRegistrationLog as dbGetTeamRegistrationLog,
   registerTeam as dbRegisterTeam,
   getTeamIds,
+  getPuzzleStateLog as dbGetPuzzleStateLog,
+  appendPuzzleStateLog as dbAppendPuzzleStateLog,
   retryOnAbort,
   getDesertedNinjaQuestions as dbGetDesertedNinjaQuestions,
   getDesertedNinjaSession as dbGetDesertedNinjaSession,
@@ -42,6 +47,7 @@ import {
   type RedisClient,
   activityLog as redisActivityLog,
   teamRegistrationLog as redisTeamRegistrationLog,
+  puzzleStateLog as redisPuzzleStateLog,
   type Log as RedisLog,
 } from "./redis";
 
@@ -316,7 +322,7 @@ abstract class Log<
         console.error("failed to query redis:", err);
       }
     }
-    const { result, activityLogEntries, affectedTeams } = await retryOnAbort(
+    const { result, logEntries, affectedTeams } = await retryOnAbort(
       knex,
       async (trx: Knex.Knex.Transaction) => {
         const new_log = await this.dbGetLog(
@@ -336,7 +342,7 @@ abstract class Log<
         const result = await fn(trx, mutator);
         return {
           result,
-          activityLogEntries: mutator.log,
+          logEntries: mutator.log,
           affectedTeams: mutator.affectedTeams,
         };
       },
@@ -349,7 +355,7 @@ abstract class Log<
         console.error("failed to refresh redis:", err);
       }
     }
-    return { result, activityLogEntries };
+    return { result, logEntries };
   }
 
   async refreshRedisLog(redisClient: RedisClient, knex: Knex.Knex) {
@@ -527,6 +533,56 @@ export async function registerTeam(
     return { usernameAvailable: true, teamId: team_id };
   });
 }
+
+export class PuzzleStateLogMutator extends Mutator<
+  PuzzleStateLogEntry,
+  InsertPuzzleStateLogEntry
+> {
+  //private _teamStates: Map<
+  //  number,
+  //  { entryCount: number; state: TeamStateIntermediate }
+  //>;
+
+  _dbAppendLog = dbAppendPuzzleStateLog;
+
+  //constructor(
+  //  trx: Knex.Knex.Transaction,
+  //  log: PuzzleStateLogEntry[],
+  //  allTeams: Set<number>,
+  //) {
+  //  super(trx, log, allTeams);
+  //  //this._teamStates = new Map();
+  //}
+}
+
+export class PuzzleStateLog extends Log<
+  DehydratedPuzzleStateLogEntry,
+  PuzzleStateLogEntry,
+  PuzzleStateLogMutator
+> {
+  constructor() {
+    super(redisPuzzleStateLog, PuzzleStateLogMutator);
+  }
+
+  protected dbGetLog(knex: Knex.Knex, teamId?: number, since?: number) {
+    return dbGetPuzzleStateLog(teamId, since, knex);
+  }
+
+  async executeMutation<R>(
+    team_id: number,
+    redisClient: RedisClient | undefined,
+    knex: Knex.Knex,
+    fn: (
+      trx: Knex.Knex.Transaction,
+      mutator: PuzzleStateLogMutator,
+    ) => R | PromiseLike<R>,
+  ) {
+    // TODO: maybe reimplemnt executeRawMutation to handle filtering team/slug pair
+    return await this.executeRawMutation(team_id, redisClient, knex, fn);
+  }
+}
+
+export const puzzleStateLog = new PuzzleStateLog();
 
 export async function getDesertedNinjaQuestions(
   knex: Knex.Knex,
