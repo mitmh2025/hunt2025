@@ -40,13 +40,13 @@ const DATA = [
   {
     sett: "DO2 W2 B2 W4 DO2 W2 B2 W4 T2 O2 W6 N2 DT2 R2 O2 W2 B2 W8 R2 W2 B2 W2 R2 N2 W2 N2 W10 DR2 O2 N2 B2 W2 B4 W4",
     filler: "W",
-    blanks: "DO_B__DO_B__TO___N_TRO_B____R_B__N_N______RONB_BB__",
+    blanks: "DO_B__DO_B__TO___NDTRO_B____R_B__N_N______RONB_BB__",
     quote: "doubledoubletoilandtroublefireburnandcauldronbubble",
   },
   {
     sett: "W10 B2 O2 W2 G2 W2 T2 G2 O2 W6 N2 O2 P2 W2 N2 W2 O2 N2 W4 R2 O2 W10 O2 R2 T2 W2 O2 W2 P2 W2 O2 P2 W4",
     filler: "W",
-    blanks: "____BO_G_TGO____NOP_N_ON__RO_____ORT_O_P_OP__",
+    blanks: "_____BO_G_TGO___NOP_N_ON__RO_____ORT_O_P_OP__",
     quote: "ihaveboughtgoldenopinionsfromallsortsofpeople",
   },
   {
@@ -78,13 +78,13 @@ const DATA = [
   {
     sett: "P2 O2 P4 T2 P4 N2 G2 W2 P4 K2 P2 DT2 P6 W2 P2 Y2 P2 O2 P6",
     filler: "P",
-    blanks: "_O__T__NG___K_DT___W_Y_O___",
+    blanks: "_O__T__NGW__K_DT___W_Y_O___",
     quote: "somethingwickedthiswaycomes",
   },
   {
     sett: "T2 P2 O2 P12 O2 R2 O2 P8 R2 B2 P2 N2 G2 P2 R2 P2 O2 P2 B2 P2 O4 P4 N2 P8 T2 P2",
     filler: "P",
-    blanks: "T_O______ORO____RB_NG___O_B_OO__N____T_",
+    blanks: "T_O______ORO____RB_NG_R_O_B_OO__N____T_",
     quote: "thoseclamorousharbingersofbloodanddeath",
   },
   {
