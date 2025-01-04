@@ -107,7 +107,7 @@ const CALL_NUMBERS: [number, string, string][] = [
   [
     22,
     "PS3507.E23 R4 1913",
-    "Return of Frank R. Stockton : ... stories and letters which cannot fail to convince the reader that Frank R. Stockton still lives and writes through the instrumentality of Miss Etta de Camp.",
+    "Return of Frank R. Stockton : … stories and letters which cannot fail to convince the reader that Frank R. Stockton still lives and writes through the instrumentality of Miss Etta de Camp.",
   ],
   [
     23,
