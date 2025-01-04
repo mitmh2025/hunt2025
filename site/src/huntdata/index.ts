@@ -523,7 +523,7 @@ const HUNT: Hunt = {
         { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "can_do_transmissions" },
         { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "cross_dash_word" },
         { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "give_this_grid_a_shake" },
-        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "in_communicado_tonight" },
         { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
