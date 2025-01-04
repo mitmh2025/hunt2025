@@ -140,7 +140,6 @@
     "livereload": "^0.9.3",
     "luxon": "^3.5.0",
     "material-react-table": "^3.1.0",
-    "notistack": "^3.0.1",
     "prettier": "3.2.5",
     "react-router": "^6.28.0",
     "react-router-dom": "^6.28.0",

@@ -149,6 +149,7 @@ export function formatTeamData(
 export function formatAllTeamsData(data: OpsData): BigBoardData {
   return {
     teams: data.teams
+      .filter((team) => !team.deactivated)
       .map((team) => formatTeamData(team, data.puzzleMetadata))
       .sort((a, b) => b.progress - a.progress),
   };
