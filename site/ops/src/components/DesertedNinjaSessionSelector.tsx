@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { styled } from "styled-components";
 import { type DesertedNinjaSession } from "../../../lib/api/admin_contract";
 import {
@@ -6,12 +7,31 @@ import {
   DNDataActionType,
 } from "../DesertedNinjaDataProvider";
 
+const SessionSelectContainer = styled.div`
+  border: 1px solid black;
+  width: 90%;
+  padding: 2px 0 0 5px;
+  margin: 0px auto;
+`;
+const SessionSelectOptions = styled.div`
+  font-size: 80%;
+`;
+const SessionSelectHeader = styled.div`
+  font-size: 150%;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+const SessionList = styled.div`
+  overflow-y: scroll;
+  height: 100px;
+`;
 const RowContainer = styled.div`
   display: flex;
   margin: 5px 0;
+  width: 50%;
 `;
 const RowTitle = styled.div`
-  width: 150px;
+  flex-grow: 1;
 `;
 const SelectButton = styled.button``;
 
@@ -28,7 +48,10 @@ function SessionSelectRow({
   return (
     <>
       <RowContainer>
-        <RowTitle>{session.title}</RowTitle>
+        <RowTitle>
+          {session.title} ({session.status}) - {session.teamIds.length} / 10
+          teams
+        </RowTitle>
         <SelectButton
           onClick={() => {
             if (dnDispatch) {
@@ -50,6 +73,8 @@ export function SessionSelect({ buttonText }: { buttonText: string }) {
   const dnData = useDesertedNinjaData();
   const dnDispatch = useDesertedNinjaDispatch();
 
+  const [hidePast, setHidePast] = useState<boolean>(true);
+
   if (dnData.activeSession) {
     return (
       <>
@@ -70,13 +95,33 @@ export function SessionSelect({ buttonText }: { buttonText: string }) {
   } else {
     return (
       <>
-        {dnData.sessions.map((session) => (
-          <SessionSelectRow
-            session={session}
-            key={session.id}
-            buttonText={buttonText}
-          />
-        ))}
+        <SessionSelectContainer>
+          <SessionSelectHeader>Session Selection</SessionSelectHeader>
+          <SessionSelectOptions>
+            <label>
+              <input
+                type="checkbox"
+                checked={hidePast}
+                onChange={() => {
+                  setHidePast(!hidePast);
+                }}
+              />
+              Hide completed events
+            </label>
+          </SessionSelectOptions>
+          <SessionList>
+            {(hidePast
+              ? dnData.sessions.filter((s) => s.status !== "complete")
+              : dnData.sessions
+            ).map((session) => (
+              <SessionSelectRow
+                session={session}
+                key={session.id}
+                buttonText={buttonText}
+              />
+            ))}
+          </SessionList>
+        </SessionSelectContainer>
       </>
     );
   }
