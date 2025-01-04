@@ -39,6 +39,7 @@ import {
 } from "./routes/interaction";
 import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
 import { manageTeamHandler } from "./routes/manage_team";
+import { prototypeHandler } from "./routes/prototype";
 import {
   puzzleHandler,
   type PuzzleParams,
@@ -418,6 +419,13 @@ export function registerUiRoutes({
     "/team",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(manageTeamHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/prototype",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(prototypeHandler, req, res, next);
     }),
   );
 
