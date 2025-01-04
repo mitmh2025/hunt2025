@@ -62,7 +62,11 @@ const VICTIMS_BLANKS: {
   { structure: "______", highlightIndices: [5] },
   { structure: "__________", highlightIndices: [8, 9] },
   { structure: "__ ______", highlightIndices: [3, 8] },
-  { structure: "__ ____", highlightIndices: [0] },
+  {
+    structure: "__ ____ __ ____",
+    fill: "       -       ",
+    highlightIndices: [0],
+  },
   { structure: "_____", highlightIndices: [3] },
   {
     structure: "______ _______",
@@ -105,7 +109,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
             Our records show you have picked up your copy of this puzzle.
           </p>
           <p className={NO_COPY_CLASS}>
-            You should have received a stack of 58 receipts. Please contact us
+            You should have received a stack of 56 receipts. Please contact us
             at info@mitmh2025.com if it seems that you are missing pieces.
           </p>
         </>
@@ -115,7 +119,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
             Please come to the Gala to pick up your copy of this puzzle.
           </p>
           <p className={NO_COPY_CLASS}>
-            You should receive a stack of 58 receipts. Please contact us at
+            You should receive a stack of 56 receipts. Please contact us at
             info@mitmh2025.com if it seems that you are missing pieces.
           </p>
         </>

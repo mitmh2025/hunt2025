@@ -59,14 +59,14 @@ const SUSPECTS_DATA = [
   {
     law: "Kirchhoff’s Circuit Laws",
     suspect: "KIRCHHOFF",
-    index: "5",
+    index: "6",
     letters: "H",
     time: "12:52",
   },
   {
     law: "L’Hopital’s Rule",
     suspect: "L’HOPITAL",
-    index: "4",
+    index: "3",
     letters: "O",
     time: "9:31",
   },
@@ -106,7 +106,7 @@ const SUSPECTS_DATA = [
     time: "16:58",
   },
   {
-    law: "Navier-Stokes Equation",
+    law: "Navier-Stokes Equations",
     suspect: "NAVIER–STOKES",
     index: "1,8,11",
     letters: "NTE",
@@ -134,7 +134,7 @@ const SUSPECTS_DATA = [
     time: "10:47",
   },
   {
-    law: "Pell Equation",
+    law: "Pell’s Equation",
     suspect: "PELL",
     index: "1",
     letters: "P",
@@ -202,13 +202,13 @@ const VICTIMS_DATA = [
   {
     eponym: "Gauss",
     victim: "DEMOIVRE",
-    index: "3",
+    index: "3,8",
     letters: "ME",
     time: "15:18",
   },
   {
     eponym: "Meadow",
-    victim: "DIMAIO",
+    victim: "DIMAIO-DIMAIO",
     index: "1",
     letters: "D",
     time: "15:21",
@@ -354,15 +354,15 @@ const EXTRACTION_DATA = [
     time: "13:28",
   },
   {
-    law: "Pell Equation",
+    law: "Pell’s Equation",
     victim: "BROUNCKER",
     index: "1",
     letters: "B",
     time: "15:07",
   },
   {
-    law: "Meadow's Law",
-    victim: "DI MAIO",
+    law: "Meadow’s Law",
+    victim: "DI MAIO-DI MAIO",
     index: "6",
     letters: "O",
     time: "15:21",
@@ -395,7 +395,7 @@ const Solution = (): JSX.Element => {
   return (
     <>
       <p>
-        Solvers are presented with a stack of 58 receipts, which is a situation
+        Solvers are presented with a stack of 56 receipts, which is a situation
         that a forensic accountant would likely find quite familiar. The
         puzzle’s online content is flavor text that tells solvers: “To solve the
         case, narrow down to only the fraudulent receipts”, a list of blanks for
@@ -407,7 +407,7 @@ const Solution = (): JSX.Element => {
         each of the receipts contain words that directly clue an eponymous law
         or scientific concept. As solvers identify these eponyms however, they
         will be confronted with an issue that limits further progress. There are
-        a total of 58 eponyms clued but only 22 entries in the list of suspects
+        a total of 56 eponyms clued but only 22 entries in the list of suspects
         and 24 entries in the list of victims. The flavor text suggests that
         solvers “narrow down to only the fraudulent receipts”, and the intended
         path for doing that is for solvers to realize that the puzzle is playing
@@ -443,7 +443,7 @@ const Solution = (): JSX.Element => {
         this definition.
       </p>
       <p>
-        The last names of the discoverer(s) of each eponymous law on these 22
+        The last names of the namesake(s) of each eponymous law on these 22
         “fraudulent” receipts fit into the SUSPECTS blanks in alphabetical
         order. Upon extracting the circled letters, the following is obtained:
       </p>
@@ -478,15 +478,15 @@ const Solution = (): JSX.Element => {
       <p>
         The fraudulent eponyms being referred to here are only “fraudulent” in
         that they are examples of Stigler’s Law of Eponymy, which notes how many
-        eponymous laws (including Benford’s) are not named after their original
+        eponymous laws (including Benford’s) are not named after their actual
         discoverers. Of course, for some solvers this may actually have been
-        their first insight into the fraud in the puzzle, given that the
-        original discoverers could easily be thought of as VICTIMS in this
-        context. No matter whether solvers see this eponym fraud first or only
-        see it after the number fraud, they will still be able to identify 24
-        examples of Stigler’s law from the 58 receipts, and the names of the
-        original discoverers of each of these laws will fit into the blanks on
-        the VICTIMS list in alphabetical order, as shown here.
+        their first insight into the fraud in the puzzle, given that the actual
+        discoverers could easily be thought of as VICTIMS in this context. No
+        matter whether solvers see this eponym fraud first or only see it after
+        the number fraud, they will still be able to identify 24 examples of
+        Stigler’s law from the 58 receipts, and the names of the actual
+        discoverers of each of these laws will fit into the blanks on the
+        VICTIMS list in alphabetical order, as shown here.
       </p>
       <HScrollTableWrapper>
         <StyledTable>
