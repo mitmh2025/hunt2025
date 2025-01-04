@@ -108,6 +108,7 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={intermentAndSuffocation} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
             <div>
@@ -209,6 +210,7 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={rapidDescents} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
             <div>
@@ -270,22 +272,25 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={technologicalSurveillance} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
-            The door to the cabin was in splinters. The windowpanes lay like a
-            thousand busted prayers on the desecrated floor. Piles of some sort
-            of animal scat littered the floor and were smeared across the bare
-            walls. What furniture had been in the front room was no longer fit
-            for sittin’. Something or someone had torn through this house and
-            befouled it. Someone or something had been looking for Sarah Avery.
-            Sarah Avery who made the voices in his head practically salivate.
-            Sarah Avery who he wouldn’t know if he saw her because her family
-            never came to church and had never gotten saved nor baptized. Sarah
-            Avery who was just a little girl, and, thankfully, Sarah Avery who
-            was not here. Between the voices’ rapturous approval of his presence
-            in this place and the yammerin’ of Annie, who honestly could not
-            shut up if you paid her good money, the Reverend’s head was about to
-            bust.
+            <div>
+              The door to the cabin was in splinters. The windowpanes lay like a
+              thousand busted prayers on the desecrated floor. Piles of some
+              sort of animal scat littered the floor and were smeared across the
+              bare walls. What furniture had been in the front room was no
+              longer fit for sittin’. Something or someone had torn through this
+              house and befouled it. Someone or something had been looking for
+              Sarah Avery. Sarah Avery who made the voices in his head
+              practically salivate. Sarah Avery who he wouldn’t know if he saw
+              her because her family never came to church and had never gotten
+              saved nor baptized. Sarah Avery who was just a little girl, and,
+              thankfully, Sarah Avery who was not here. Between the voices’
+              rapturous approval of his presence in this place and the yammerin’
+              of Annie, who honestly could not shut up if you paid her good
+              money, the Reverend’s head was about to bust.
+            </div>
           </details>
         </Indent>
       </Block>
@@ -294,15 +299,18 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={gougingOfEyes} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
-            [piano music intro] Sympathetic magic is the lore behind the belief
-            that the human body, however temporary and fragile it might be, also
-            contains incredible power, and that this power can be transferred to
-            others. Rather than extinguishing that power, death can often be the
-            key that unlocks its fullest potential. All you need is a human
-            corpse, a pressing need, and a very strong stomach. I’m the
-            narrator, and this... [long pause] ...is a podcast.
+            <div>
+              [piano music intro] Sympathetic magic is the lore behind the
+              belief that the human body, however temporary and fragile it might
+              be, also contains incredible power, and that this power can be
+              transferred to others. Rather than extinguishing that power, death
+              can often be the key that unlocks its fullest potential. All you
+              need is a human corpse, a pressing need, and a very strong
+              stomach. I’m the narrator, and this…[long pause]…is a podcast.
+            </div>
           </details>
         </Indent>
       </Block>
