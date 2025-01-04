@@ -1,6 +1,6 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 
 const GRID = `
               RGDHHDJIAXCTH
@@ -57,38 +57,67 @@ const StyledWordSearch = styled.table`
   }
 `;
 
+const StyledGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(82, 11px);
+  grid-template-rows: repeat(41, 22px);
+`;
+
 export const WordSearch = ({
   grid,
   highlights,
+  showCopyOnlyCopy = false,
 }: {
   grid: string[][];
   highlights?: Set<number>;
+  showCopyOnlyCopy?: boolean;
 }): JSX.Element => {
   return (
-    <HScrollTableWrapper>
-      <StyledWordSearch>
-        {grid.map((row, i) => (
-          <tr key={i}>
-            {row.map((cell, j) => {
-              let colspan = 1;
-              if (i % 2 === 1 || j !== 0) {
-                colspan = 2;
-              }
-              const index = i * row.length + j;
-              const styles: CSSProperties = {};
-              if (highlights && highlights.has(index)) {
-                styles.backgroundColor = "#ffff00";
-              }
-              return (
-                <td colSpan={colspan} key={`${i}-${j}`} style={styles}>
-                  {cell}
-                </td>
-              );
-            })}
-          </tr>
-        ))}
-      </StyledWordSearch>
-    </HScrollTableWrapper>
+    <>
+      <StyledGrid>
+        {grid.map((row, i) =>
+          row.map((cell, j) => {
+            const styles: CSSProperties = {};
+            if (i % 2 === 1 || j !== 0) {
+              styles.gridColumnEnd = "span 2";
+            }
+            const index = i * row.length + j;
+            if (highlights && highlights.has(index)) {
+              styles.backgroundColor = "#ffff00";
+            }
+            return (
+              <div key={`${i}-${j}`} style={styles}>
+                {cell}
+              </div>
+            );
+          }),
+        )}
+      </StyledGrid>
+      {showCopyOnlyCopy && (
+        <StyledWordSearch className={COPY_ONLY_CLASS}>
+          {grid.map((row, i) => (
+            <tr key={i}>
+              {row.map((cell, j) => {
+                let colspan = 1;
+                if (i % 2 === 1 || j !== 0) {
+                  colspan = 2;
+                }
+                const index = i * row.length + j;
+                const styles: CSSProperties = {};
+                if (highlights && highlights.has(index)) {
+                  styles.backgroundColor = "#ffff00";
+                }
+                return (
+                  <td colSpan={colspan} key={`${i}-${j}`} style={styles}>
+                    {cell}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </StyledWordSearch>
+      )}
+    </>
   );
 };
 
@@ -96,7 +125,7 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <p className="puzzle-flavor">I’ve been watching this since 1000.</p>
-      <WordSearch grid={GRID} />
+      <WordSearch grid={GRID} showCopyOnlyCopy={true} />
     </>
   );
 };
