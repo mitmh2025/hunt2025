@@ -175,6 +175,10 @@
     };
   };
   resource.kubernetes_deployment_v1.regsite = {
+    # Don't update the regsite until the assets are updated.
+    depends_on = [
+      "terraform_data.assets"
+    ];
     metadata.namespace = "prod";
     metadata.name = "regsite";
     metadata.labels.app = "regsite";
