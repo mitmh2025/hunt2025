@@ -50,7 +50,7 @@ export default function EmailTeams() {
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
-          notifications.show(`Failed to add admin: ${msg}`, {
+          notifications.show(`Failed to send email: ${msg}`, {
             severity: "error",
             autoHideDuration: 3000,
           });
