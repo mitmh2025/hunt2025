@@ -96,12 +96,24 @@ const Solution = (): JSX.Element => {
       </p>
       <p>The correct grid (up to rotations and reflections) is as follows:</p>
       <StyledDiv>
-        <Mono>SUBMIT</Mono>
-        <Mono>TQFJXT</Mono>
-        <Mono>EEUAVH</Mono>
-        <Mono>KPDIYE</Mono>
-        <Mono>ROONGB</Mono>
-        <Mono>AMKCAL</Mono>
+        <div>
+          <Mono>SUBMIT</Mono>
+        </div>
+        <div>
+          <Mono>TQFJXT</Mono>
+        </div>
+        <div>
+          <Mono>EEUAVH</Mono>
+        </div>
+        <div>
+          <Mono>KPDIYE</Mono>
+        </div>
+        <div>
+          <Mono>ROONGB</Mono>
+        </div>
+        <div>
+          <Mono>AMKCAL</Mono>
+        </div>
       </StyledDiv>
       <p>
         Reading around the edge gives the answer, <Mono>SUBMIT</Mono>{" "}
