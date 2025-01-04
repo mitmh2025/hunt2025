@@ -35,17 +35,17 @@ import table8 from "./assets/table8.png";
 import table9 from "./assets/table9.png";
 
 const MUSICIANS = [
-  ["Zutty Singleton", "Member of Louis Armstrong's Hot Five", "G"],
+  ["Zutty Singleton", "Member of Louis Armstrong’s Hot Five", "G"],
   ["Eddie Locke", "He played in the Coleman Hawkins Quartet", "O"],
   [
     "Chubby Jackson",
-    "Member of Woody Herman's Herd who played a five-string bass",
+    "Member of Woody Herman’s Herd who played a five-string bass",
     "H",
   ],
   ["J. C. Heard", "Featured member of the Cab Calloway Orchestra", "A"],
   [
     "Vic Dickenson",
-    "Trombonist and member of the World's Greatest Jazz Band",
+    "Trombonist and member of the World’s Greatest Jazz Band",
     "V",
   ],
   ["Benny Golson", "Appeared as himself in a Spielberg film", "E"],
@@ -79,7 +79,7 @@ const MUSICIANS = [
   ["Charles Mingus", "He wrote a guide on toilet training your cat", "A"],
   [
     "Buster Bailey",
-    "Member of John Kirby's Onyx Club Boys who occasionally lent his name to the group",
+    "Member of John Kirby’s Onyx Club Boys who occasionally lent his name to the group",
     "Y",
   ],
 ];
@@ -211,7 +211,7 @@ const Solution = (): JSX.Element => {
         Teams were instructed to send a photo of as many team members as
         reasonably possible, as well as whether we have permission to show the
         image during wrap-up. Teams who did so received the answer in the form
-        of a similar photo taken by D&M, featuring the answer{" "}
+        of a similar photo taken by D&amp;M, featuring the answer{" "}
         <PuzzleAnswer>CANINE PARTNER</PuzzleAnswer>.
       </p>
     </>
