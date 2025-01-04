@@ -1,6 +1,9 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
-import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 
 const GRID = `
               RGDHHDJIAXCTH
@@ -76,7 +79,7 @@ export const WordSearch = ({
 }): JSX.Element => {
   return (
     <>
-      <StyledGrid>
+      <StyledGrid className={NO_COPY_CLASS}>
         {grid.map((row, i) =>
           row.map((cell, j) => {
             const styles: CSSProperties = {};

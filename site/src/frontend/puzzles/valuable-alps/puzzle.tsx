@@ -20,12 +20,18 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>Our records show you have picked up your copy of this puzzle.</p>
           <p>
             You should have received thirteen unique precut pieces of cardstock.
+            Please contact us at info@mitmh2025.com if it seems that you are
+            missing pieces.
           </p>
         </>
       ) : (
         <>
           <p>Please come to the Gala to pick up your copy of this puzzle.</p>
-          <p>You should receive thirteen unique precut pieces of cardstock.</p>
+          <p>
+            You should receive thirteen unique precut pieces of cardstock.
+            Please contact us at info@mitmh2025.com if it seems that you are
+            missing pieces.
+          </p>
         </>
       )}
       <p>

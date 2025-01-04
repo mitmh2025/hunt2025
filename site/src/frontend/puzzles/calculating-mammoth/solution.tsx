@@ -77,16 +77,17 @@ const EVENTS_TABLE = [
     "Ukraine War (2022)",
     "Turkey-Syria (2023)",
     "Trump (2024)",
-    "Lockdown (2020",
+    "Lockdown (2020)",
     "",
   ],
 ];
 
 const StyledTable = styled.table`
-  margin: 1em 0;
+  margin-bottom: 1em;
   border-collapse: collapse;
   td,
   th {
+    text-align: center;
     padding-right: 8px;
     border-bottom: 1px solid black;
   }
