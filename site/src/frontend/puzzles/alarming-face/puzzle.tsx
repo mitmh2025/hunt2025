@@ -1,12 +1,12 @@
 import React from "react";
 
 const CIRCUITS: { href: string; contents: string }[] = [
-  { href: "https://youtu.be/Fg8cBy-KvFM", contents: "Circuit 1" },
-  { href: "https://youtu.be/c8dTSFy5UWo", contents: "Circuit 2" },
-  { href: "https://youtu.be/jgTCA11o7wM", contents: "Circuit 3" },
-  { href: "https://youtu.be/oUX-VBR6b9g", contents: "Circuit 4" },
-  { href: "https://youtu.be/NfunG-GSV9o", contents: "Circuit 5" },
-  { href: "https://youtu.be/MtSkX-7-A_Y", contents: "Circuit 6" },
+  { href: "https://youtube.com/embed/Fg8cBy-KvFM", contents: "One" },
+  { href: "https://youtube.com/embed/c8dTSFy5UWo", contents: "Two" },
+  { href: "https://youtube.com/embed/jgTCA11o7wM", contents: "Three" },
+  { href: "https://youtube.com/embed/oUX-VBR6b9g", contents: "Four" },
+  { href: "https://youtube.com/embed/NfunG-GSV9o", contents: "Five" },
+  { href: "https://youtube.com/embed/MtSkX-7-A_Y", contents: "Six" },
 ];
 
 const Puzzle = (): JSX.Element => {
@@ -16,7 +16,7 @@ const Puzzle = (): JSX.Element => {
         Winning isn’t everything; it’s the only thing. But take that with a
         grain of salt.
       </p>
-      <p>Circuits</p>
+      <p>Circuits:</p>
       <p>
         {CIRCUITS.map(({ href, contents }, i) => (
           <React.Fragment key={i}>
@@ -27,9 +27,13 @@ const Puzzle = (): JSX.Element => {
           </React.Fragment>
         ))}
       </p>
-      <p>Scripted Travel</p>
+      <p>Scripted Travel:</p>
       <p>
-        <a href="https://youtu.be/zp53T0HaPOk" target="_blank" rel="noreferrer">
+        <a
+          href="https://www.youtube.com/embed/zp53T0HaPOk"
+          target="_blank"
+          rel="noreferrer"
+        >
           Tour
         </a>
       </p>
