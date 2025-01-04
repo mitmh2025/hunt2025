@@ -12,8 +12,8 @@
   };
   sops.keys.site = {};
   data.sops_file.site.source_file = "${../../secrets/prod/site.yaml}";
-  resource.random_password.jwt_secret = {
-    length = 32;
+  resource.tls_private_key.jwt_secret = {
+    algorithm = "RSA";
   };
   resource.random_password.data_api_secret = {
     length = 64;
@@ -26,7 +26,7 @@
     metadata.namespace = "prod";
     metadata.name = "api";
     data = {
-      JWT_SECRET = lib.tfRef "random_password.jwt_secret.result";
+      JWT_SECRET = lib.tfRef "tls_private_key.jwt_secret.private_key_pem_pkcs8";
       DATA_API_SECRET = lib.tfRef "random_password.data_api_secret.result";
       FRONTEND_API_SECRET = lib.tfRef "random_password.frontend_api_secret.result";
       REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
