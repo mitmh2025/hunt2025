@@ -1336,7 +1336,7 @@ export function getRouter({
         },
       },
       changeTeamPassword: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ params: { teamId }, body: { newPassword } }) => {
           const team_id = parseInt(teamId, 10);
 
@@ -1372,7 +1372,7 @@ export function getRouter({
         },
       },
       deactivateTeam: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ params: { teamId } }) => {
           const team_id = parseInt(teamId, 10);
 
@@ -1406,7 +1406,7 @@ export function getRouter({
         },
       },
       reactivateTeam: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ params: { teamId } }) => {
           const team_id = parseInt(teamId, 10);
 

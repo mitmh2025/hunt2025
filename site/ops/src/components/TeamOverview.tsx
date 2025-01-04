@@ -3,6 +3,7 @@ import { useDialogs, useNotifications } from "@toolpad/core";
 import React from "react";
 import { useOpsData } from "../OpsDataProvider";
 import { type TeamData } from "../opsdata/types";
+import { AdminOnly } from "./AdminOnly";
 
 // Team HQ location + how to access
 // primary/secondary contacts
@@ -260,30 +261,36 @@ export default function TeamOverview({ team }: { team: TeamData }) {
           ? `, ${team.registration.teamValuesOther}`
           : null}
       </p>
-      <p>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleChangePassword}
-          sx={{ mr: 2 }}
-        >
-          View / Change Password
-        </Button>
-
-        {team.deactivated ? (
+      <AdminOnly>
+        <p>
           <Button
             variant="contained"
-            color="warning"
-            onClick={handleReactivate}
+            color="primary"
+            onClick={handleChangePassword}
+            sx={{ mr: 2 }}
           >
-            Reactivate Team
+            View / Change Password
           </Button>
-        ) : (
-          <Button variant="contained" color="error" onClick={handleDeactivate}>
-            Deactivate Team
-          </Button>
-        )}
-      </p>
+
+          {team.deactivated ? (
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={handleReactivate}
+            >
+              Reactivate Team
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeactivate}
+            >
+              Deactivate Team
+            </Button>
+          )}
+        </p>
+      </AdminOnly>
     </div>
   );
 }
