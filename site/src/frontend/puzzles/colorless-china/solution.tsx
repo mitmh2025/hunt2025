@@ -141,7 +141,7 @@ const SUSPECTS_DATA = [
     time: "15:07",
   },
   {
-    law: "Tsiolkovsky’s Rocket Equation",
+    law: "Tsiolkovsky Rocket Equation",
     suspect: "TSIOLKOVSKY",
     index: "11",
     letters: "Y",
@@ -368,7 +368,7 @@ const EXTRACTION_DATA = [
     time: "15:21",
   },
   {
-    law: "Tsiolkovsky’s Rocket Equation",
+    law: "Tsiolkovsky Rocket Equation",
     victim: "MOORE",
     index: "2",
     letters: "O",
@@ -484,7 +484,7 @@ const Solution = (): JSX.Element => {
         discoverers could easily be thought of as VICTIMS in this context. No
         matter whether solvers see this eponym fraud first or only see it after
         the number fraud, they will still be able to identify 24 examples of
-        Stigler’s law from the 58 receipts, and the names of the actual
+        Stigler’s law from the 56 receipts, and the names of the actual
         discoverers of each of these laws will fit into the blanks on the
         VICTIMS list in alphabetical order, as shown here.
       </p>
