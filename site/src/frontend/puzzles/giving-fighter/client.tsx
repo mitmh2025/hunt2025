@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 
@@ -69,15 +63,6 @@ const EnumerationContainer = styled.div`
   }
 `;
 
-// Taken from https://stackoverflow.com/questions/45719909/scroll-to-bottom-of-an-overflowing-div-in-react
-const AlwaysScrollToBottom = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    ref.current?.scrollIntoView();
-  }, []);
-  return <div ref={ref} />;
-};
-
 const Message = ({ message }: { message: Messagetype }) => {
   return (
     <MessageContainer $direction={message.direction}>
@@ -94,6 +79,11 @@ const History = ({
   history: Messagetype[];
   waiting: boolean;
 }) => {
+  const bottomRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history, waiting]);
+
   return (
     <HistoryContainer>
       {history.map((msg, i) => (
@@ -102,7 +92,7 @@ const History = ({
       {waiting && (
         <Message message={{ direction: "recv", message: "...", icon: "❓" }} />
       )}
-      <AlwaysScrollToBottom />
+      <div ref={bottomRef} />
     </HistoryContainer>
   );
 };
