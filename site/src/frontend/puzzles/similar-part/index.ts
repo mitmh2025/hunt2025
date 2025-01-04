@@ -38,7 +38,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 30.0,
-      description: "Solvers are’nt sure how to apply the flavor text",
+      description: "Solvers aren’t sure how to apply the flavor text",
       keywords: ["flavor text", "mystery hunt history"],
       nudge:
         "How might these paintings relate to the history of the MIT Mystery Hunt?",
@@ -56,7 +56,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 50.0,
       description:
-        "Solvers are’nt sure where to find a list of old Mystery Hunt puzzles",
+        "Solvers aren’t sure where to find a list of old Mystery Hunt puzzles",
       keywords: ["mystery hunt archive"],
       nudge: "The MIT Mystery Hunt website includes an archive of old puzzles",
     },
@@ -77,7 +77,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 80.0,
       description:
-        "Solvers are’nt sure what to do once they have the instruction phrase",
+        "Solvers aren’t sure what to do once they have the instruction phrase",
       keywords: ["instruction phrase"],
       nudge:
         "That sounds like an instruction, why don’t you try doing that? You can bring your finished artwork to the Gala bar.",
