@@ -61,7 +61,10 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
               title: session.title,
               status: session.status,
               questionIds: session.questionIds.slice(),
-              teamIds: regs.map((reg) => reg.teamId),
+              teams: regs.map((reg) => ({
+                id: reg.teamId,
+                status: reg.status,
+              })),
             };
             if (dnDispatch) {
               dnDispatch({
@@ -127,7 +130,10 @@ function SessionDetails() {
               title: session.title,
               status: session.status,
               questionIds: session.questionIds.slice(),
-              teamIds: regs.map((reg) => reg.teamId),
+              teams: regs.map((reg) => ({
+                id: reg.teamId,
+                status: reg.status,
+              })),
             };
             if (dnDispatch) {
               dnDispatch({
@@ -173,7 +179,7 @@ function SessionDetails() {
   const session = dnData.activeSession;
   if (session) {
     const signedUpDivs = opsData.teams
-      .filter((t) => session.teamIds.includes(t.teamId))
+      .filter((t) => session.teams.find((elt) => elt.id === t.teamId))
       .map((t) => <SessionTeamEntry key={t.teamId} team={t} />);
 
     return (
@@ -201,7 +207,7 @@ function SessionDetails() {
           <h4>Register a Team</h4>
           <TeamSelector
             submitCallback={registerTeam}
-            exclude={session.teamIds}
+            exclude={session.teams.map(({ id }) => id)}
           />
         </div>
       </>

@@ -1014,7 +1014,10 @@ export function getRouter({
           const responseBody = {
             id: 120,
             status: "complete",
-            teamIds: [1, 2, 3],
+            teams: [
+              { id: 1, status: "checked_in" },
+              { id: 2, status: "no_show" },
+            ],
             title: body,
             questionIds: [
               1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33,

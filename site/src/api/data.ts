@@ -561,11 +561,8 @@ export async function updateDesertedNinjaSession(
   if (dbSession) {
     return {
       ...dbSession,
-      //title: dbSession.title,
-      //status: dbSession.status,
-      //questionIds: dbSession.question_ids,
       id: session.id,
-      teamIds: session.teamIds,
+      teams: session.teams,
     };
   } else {
     return undefined;
@@ -591,7 +588,10 @@ export async function getDesertedNinjaSessions(
   sessions.forEach((s) => {
     registrations.forEach((r) => {
       if (s.id === r.sessionId) {
-        s.teamIds.push(r.teamId);
+        s.teams.push({
+          id: r.teamId,
+          status: r.status,
+        });
       }
     });
   });

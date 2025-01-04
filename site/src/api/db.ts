@@ -532,7 +532,7 @@ export async function getDesertedNinjaSession(
         id: obj.id,
         status: obj.status,
         title: obj.title,
-        teamIds: [],
+        teams: [],
         questionIds: fixArray<number>(obj.question_ids),
       };
     } else {
@@ -550,7 +550,7 @@ export async function getDesertedNinjaSessions(
     id: obj.id,
     status: obj.status,
     title: obj.title,
-    teamIds: [],
+    teams: [],
     questionIds: fixArray<number>(obj.question_ids),
   }));
 }
@@ -575,7 +575,7 @@ export async function insertDesertedNinjaSession(
         id: insertedSession.id,
         title: insertedSession.title,
         status: insertedSession.status,
-        teamIds: [],
+        teams: [],
         questionIds: fixArray<number>(insertedSession.question_ids),
       };
     });
@@ -599,7 +599,7 @@ export async function updateDesertedNinjaSession(
         id: insertedSession.id,
         title: insertedSession.title,
         status: insertedSession.status,
-        teamIds: [],
+        teams: [],
         questionIds: fixArray<number>(insertedSession.question_ids),
       };
     });

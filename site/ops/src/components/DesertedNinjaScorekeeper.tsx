@@ -179,7 +179,7 @@ function ScorekeeperPanel() {
     const newAnswers = new Map<string, number>(answerMap.entries());
 
     // read current answers
-    for (let i = 1; i < 17 * session.teamIds.length; i++) {
+    for (let i = 1; i < 17 * session.teams.length; i++) {
       const target = e.currentTarget.elements[i] as HTMLInputElement;
 
       const name = target.name;
@@ -230,12 +230,14 @@ function ScorekeeperPanel() {
     if (answerChanges.length > 0) {
       setAnswers(newAnswers);
       // TODO: should this have different behavior based on whether the save succeeds?
-      void opsData.adminClient?.saveDesertedNinjaAnswers({
-        params: { sessionId: session.id.toString() },
-        body: answerChanges,
-      }).catch((error: unknown) = {
-        console.error(error);
-      });
+      void opsData.adminClient
+        ?.saveDesertedNinjaAnswers({
+          params: { sessionId: session.id.toString() },
+          body: answerChanges,
+        })
+        .catch((error: unknown) => {
+          console.error(error);
+        });
     }
   }
 
@@ -245,10 +247,10 @@ function ScorekeeperPanel() {
   if (session.status === "not_started") {
     return <NotStartedPanel />;
   } else {
-    const heading = session.teamIds.map((teamId) => (
-      <th key={teamId}>
+    const heading = session.teams.map(({ id }) => (
+      <th key={id}>
         {opsData.teams
-          .find((teamData) => teamId === teamData.teamId)
+          .find((teamData) => id === teamData.teamId)
           ?.name.slice(0, 40)}
       </th>
     ));
@@ -256,12 +258,12 @@ function ScorekeeperPanel() {
       return (
         <ScoreRow key={idx}>
           <QuestionCell>{idx + 1}</QuestionCell>
-          {session.teamIds.map((teamId) => (
+          {session.teams.map(({ id }) => (
             <AnswerCell
-              key={idx.toString() + "_" + teamId.toString()}
+              key={`${session.id}_${id}_${idx}`}
               questionIndex={idx + 1}
               sessionId={session.id}
-              teamId={teamId}
+              teamId={id}
               sessionComplete={session.status === "complete"}
             />
           ))}

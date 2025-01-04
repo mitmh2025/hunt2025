@@ -49,8 +49,7 @@ function SessionSelectRow({
     <>
       <RowContainer>
         <RowTitle>
-          {session.title} ({session.status}) - {session.teamIds.length} / 10
-          teams
+          {session.title} ({session.status}) - {session.teams.length} / 10 teams
         </RowTitle>
         <SelectButton
           onClick={() => {

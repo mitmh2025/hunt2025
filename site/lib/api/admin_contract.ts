@@ -35,7 +35,12 @@ export const DesertedNinjaSessionSchema = z.object({
   id: z.number(),
   title: z.string(),
   status: z.string(),
-  teamIds: z.number().array(),
+  teams: z
+    .object({
+      id: z.number(),
+      status: z.string(),
+    })
+    .array(),
   questionIds: z.number().array().length(17),
 });
 
