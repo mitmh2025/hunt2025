@@ -1,4 +1,4 @@
-import { createPublicKey, KeyObject, timingSafeEqual } from "node:crypto";
+import { createPublicKey, type KeyObject, timingSafeEqual } from "node:crypto";
 import { isDeepStrictEqual } from "util";
 import {
   type ServerInferResponses,
@@ -17,7 +17,14 @@ import {
   type NextFunction,
   Router,
 } from "express";
-import { exportSPKI, importPKCS8, type KeyLike, SignJWT } from "jose";
+import {
+  createRemoteJWKSet,
+  exportJWK,
+  exportSPKI,
+  importPKCS8,
+  type KeyLike,
+  SignJWT,
+} from "jose";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import {
@@ -311,6 +318,8 @@ export async function getRouter({
 
   const jwtPrivateKey = await parseJWTSecret(jwtSecret);
 
+  const jwksCache = jwksUri && createRemoteJWKSet(new URL(jwksUri));
+
   const { passport, adminStrategies } = await newPassport({
     jwtPrivateKey,
     frontendApiSecret,
@@ -556,6 +565,33 @@ export async function getRouter({
 
   const router = s.router(contract, {
     auth: {
+      getJWKS: async () => {
+        const keys = [];
+        if (jwksCache) {
+          if (!jwksCache.fresh) {
+            await jwksCache.reload();
+          }
+          const jwks = jwksCache.jwks();
+          if (jwks) {
+            keys.push(...jwks.keys);
+          }
+        }
+        if (jwtPrivateKey.alg === "RS256") {
+          const jwk = await exportJWK(
+            createPublicKey(jwtPrivateKey.privateKey as KeyObject),
+          );
+          keys.push({
+            ...jwk,
+            kid: "hunt",
+          });
+        }
+        return {
+          status: 200,
+          body: {
+            keys,
+          },
+        };
+      },
       login: async ({
         body: { username, password },
       }: {
