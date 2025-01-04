@@ -662,7 +662,7 @@ export async function insertDesertedNinjaSession(
       question_ids: session.question_ids,
     })
     .returning(["id", "title", "status", "question_ids"])
-    .then( (objs) =>
+    .then( (objs) => {
       const insertedSession = objs[0] as DesertedNinjaSessionRow;
 
       return {

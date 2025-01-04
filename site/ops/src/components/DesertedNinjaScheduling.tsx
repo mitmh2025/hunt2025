@@ -179,7 +179,7 @@ function SessionDetails() {
   const session = dnData.activeSession;
   if (session) {
     const signedUpDivs = opsData.teams
-      .filter((t) => session.teams.find((elt) => elt.id === t.teamId))
+      .filter((t) => session.teams?.find((elt) => elt.id === t.teamId))
       .map((t) => <SessionTeamEntry key={t.teamId} team={t} />);
 
     return (
