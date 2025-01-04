@@ -448,8 +448,8 @@ _,UNDERSCORE
         </li>
         <li>
           creating a randomizer to generate formulas with several layers of
-          nested calls (and then needed to run that on loop until the length of
-          all the formulas was exactly 20000 letters)
+          nested calls (and then running that on loop until the length of all
+          the formulas was exactly 20000 letters)
         </li>
         <li>
           implementing a (thankfully limited subset of) Excel formulas in order
@@ -472,7 +472,7 @@ _,UNDERSCORE
       <p>
         Place all of the files in the same directory along with the
         10000sheets.xlsx file, and make sure that you have <code>pillow</code>{" "}
-        and <code>openpyxl</code> installed The program will take some time to
+        and <code>openpyxl</code> installed. The program will take some time to
         run (roughly 2.5 minutes for the author).
       </p>
 
