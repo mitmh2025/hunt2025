@@ -698,7 +698,7 @@ function genImagery(teamState: TeamHuntState): PaperTrailObject[] {
           ? ("locked" as const)
           : ("unlocked" as const);
     let asset = lookupValue(properties.asset, state);
-    if (slotId === "ptp08") {
+    if (slotId === "ptp08" && state === "solved") {
       // If the glasses slot and the coffee slot are both solved, use a custom (splashed) image for the glasses
       const coffeeSlotId = "ptp12";
       const coffeeSlot = round.slots[coffeeSlotId];
@@ -720,6 +720,7 @@ function genImagery(teamState: TeamHuntState): PaperTrailObject[] {
     const filter = properties.filter;
     // TODO: label_offset
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`;
+    const desc = puzzleDefinition?.initial_description;
 
     const obj: PaperTrailPuzzleObject = {
       asset,
@@ -727,6 +728,7 @@ function genImagery(teamState: TeamHuntState): PaperTrailObject[] {
       width,
       pos,
       title,
+      desc,
       slug,
       filter,
       state: state === "locked" ? ("unlockable" as const) : state,

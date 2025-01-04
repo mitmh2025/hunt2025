@@ -115,6 +115,26 @@ export const TeamRegistrationLogEntrySchema = z.discriminatedUnion("type", [
       data: MutableTeamRegistrationSchema.omit({ name: true }),
     }),
   ),
+  TeamRegistrationLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("team_deactivated"),
+      data: z.object({}),
+    }),
+  ),
+  TeamRegistrationLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("team_reactivated"),
+      data: z.object({}),
+    }),
+  ),
+  TeamRegistrationLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("team_password_change"),
+      data: z.object({
+        new_password: z.string(),
+      }),
+    }),
+  ),
 ]);
 
 export type TeamRegistrationLogEntry = z.output<

@@ -281,7 +281,7 @@ const Solution = () => {
         easily be brute-forced, however a parity check is given in how your hole
         cards are overlapped. If the left card is on top, the letter extracted
         from the card of lower value goes first, and conversely if the right
-        card is on top the letter extracted from the card of higher value goes
+        card is on top, the letter extracted from the card of higher value goes
         first. Combining all 7 bigrams produces the answer{" "}
         <PuzzleAnswer>FACECARDSHARKS</PuzzleAnswer>.
       </p>

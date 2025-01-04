@@ -80,7 +80,9 @@ export const BackgroundCheckWrapperInner = styled.div`
   @media ${deviceMin.lg} {
     width: calc(1080px - 1rem);
   }
-  filter: drop-shadow(0.25rem 0.25rem 0.25rem rgba(0, 0, 0, 0.3));
+  @media screen {
+    filter: drop-shadow(0.25rem 0.25rem 0.25rem rgba(0, 0, 0, 0.3));
+  }
 `;
 
 export const BackgroundCheckHeader = styled(PuzzleHeader)`

@@ -59,6 +59,7 @@ async function newPassport({
         clientID,
         clientSecret,
         callbackURL: "/auth/mitmh2025/callback",
+        proxy: true,
       },
       (
         accessToken: string,
@@ -139,12 +140,15 @@ async function buildApp({
     }) as RequestHandler,
   );
 
-  app.use(
-    "/",
-    express.static(
-      path.join(path.dirname(fileURLToPath(import.meta.url)), "../static"),
-    ),
-  );
+  const staticPath =
+    process.env.OPSSITE_STATIC_PATH ??
+    path.join(path.dirname(fileURLToPath(import.meta.url)), "../static");
+
+  app.use("/", express.static(staticPath));
+
+  app.use((_req, res) => {
+    res.sendFile(path.join(staticPath, "index.html"));
+  });
 
   return app;
 }
@@ -164,17 +168,16 @@ if (!apiUrl) {
 }
 
 const oauthServer =
-  process.env.OAUTH_SERVER ?? environment === "development"
+  process.env.OAUTH_SERVER ??
+  (environment === "development"
     ? "http://localhost:3004/.well-known/openid-configuration"
-    : undefined;
+    : undefined);
 const clientID =
-  process.env.OAUTH_CLIENT_ID ?? environment === "development"
-    ? "unused"
-    : undefined;
+  process.env.OAUTH_CLIENT_ID ??
+  (environment === "development" ? "unused" : undefined);
 const clientSecret =
-  process.env.OAUTH_CLIENT_SECRET ?? environment === "development"
-    ? "unused"
-    : undefined;
+  process.env.OAUTH_CLIENT_SECRET ??
+  (environment === "development" ? "unused" : undefined);
 if (!oauthServer) {
   throw new Error("$OAUTH_SERVER not defined in production");
 }

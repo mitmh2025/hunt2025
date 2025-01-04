@@ -20,11 +20,13 @@ import React, {
 } from "react";
 import { css, styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import cork from "../../assets/cork.png";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
-import { PuzzleIcon, PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { deviceMax, deviceMin } from "../../utils/breakpoints";
+import { MissingDiamondFonts } from "./MissingDiamondFonts";
 import billie from "./assets/billie.png";
-import cork from "./assets/cork.png";
 import map from "./assets/map.png";
 import skyline from "./assets/skyline.png";
 import stars from "./assets/stars.png";
@@ -79,6 +81,49 @@ const MissingDiamondMapArea = styled.div`
 const MissingDiamondMapContainer = styled.div`
   margin: 5.83% 1.5% 0;
   position: relative;
+
+  .tooltip {
+    max-width: 30rem;
+    z-index: 5;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: rgb(from var(--purple-900) r g b / 85%);
+    color: var(--white);
+
+    .answer {
+      font-family: "Roboto Mono", monospace;
+      font-weight: bold;
+    }
+
+    .desc {
+      color: var(--gray-200);
+    }
+
+    .witness-statement {
+      text-align: left;
+      margin-right: 2rem;
+    }
+
+    .witness-name {
+      font-weight: 600;
+    }
+
+    button.copy {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      margin: 0;
+    }
+  }
 `;
 
 const MissingDiamondTitle = styled.img`
@@ -161,7 +206,7 @@ const SpeechBubble = styled.div<{
   display: flex;
   align-items: center;
   color: black;
-  font-family: Garamond, serif;
+  font-family: "EB Garamond", serif;
   white-space: pre-wrap;
 
   @media ${deviceMin.lg} {
@@ -249,37 +294,7 @@ const EntityContainer = styled.div`
   border: none;
   background: transparent;
   position: absolute;
-`;
-
-const Tooltip = styled.div`
-  max-width: 30rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  z-index: 5;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .answer {
-    font-family: "Roboto Mono", monospace;
-    font-weight: bold;
-  }
-
-  button.copy {
-    position: absolute;
-    top: 0;
-    right: 0.5rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    margin: 0;
-  }
+  cursor: pointer;
 `;
 
 const MissingDiamondMapEntity = ({
@@ -290,7 +305,7 @@ const MissingDiamondMapEntity = ({
 }: {
   entity: MissingDiamondEntity;
   currency: number;
-  tooltipChildren: React.ReactNode;
+  tooltipChildren?: React.ReactNode;
   additionalImageStyle: CSSProperties;
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -350,14 +365,33 @@ const MissingDiamondMapEntity = ({
       />
     </>
   );
+
+  let iconState;
+  switch (entity.puzzle?.state) {
+    case "unlockable":
+    case "unlocked":
+      iconState = entity.puzzle.state;
+      break;
+    case "solved":
+      iconState = "unlocked" as const;
+      break;
+    default:
+      iconState = "locked" as const;
+      break;
+  }
+
   const tooltip = showTooltip && (
-    <Tooltip
-      ref={refs.setFloating}
-      style={floatingStyles}
+    <PuzzleTooltipComponent
+      innerRef={refs.setFloating}
+      style={{ ...floatingStyles, visibility: "visible" }}
+      title={entity.puzzle?.title ?? entity.alt}
+      answer={entity.puzzle?.answer}
+      desc={entity.puzzle?.desc}
+      lockState={iconState}
       {...getFloatingProps()}
     >
       {tooltipChildren}
-    </Tooltip>
+    </PuzzleTooltipComponent>
   );
 
   if (entity.puzzle?.state === "unlockable") {
@@ -412,35 +446,6 @@ const MissingDiamondLocationImage = ({
   location: MissingDiamondEntity;
   currency: number;
 }) => {
-  let iconState;
-  switch (location.puzzle?.state) {
-    case "unlockable":
-    case "unlocked":
-      iconState = location.puzzle.state;
-      break;
-    case "solved":
-      iconState = "unlocked" as const;
-      break;
-    default:
-      iconState = "locked" as const;
-      break;
-  }
-  const tooltipChildren = (
-    <>
-      <span>
-        {location.puzzle && (
-          <>
-            <PuzzleIcon lockState={iconState} answer={location.puzzle.answer} />{" "}
-          </>
-        )}
-        {location.puzzle?.title ?? location.alt}
-      </span>
-      {location.puzzle?.answer && (
-        <span className="answer">{location.puzzle.answer}</span>
-      )}
-    </>
-  );
-
   return (
     <MissingDiamondMapEntity
       entity={location}
@@ -450,7 +455,6 @@ const MissingDiamondLocationImage = ({
           ? { filter: "drop-shadow(0 0 5px white)" }
           : {}
       }
-      tooltipChildren={tooltipChildren}
     />
   );
 };
@@ -537,20 +541,6 @@ const MissingDiamondWitnessImage = ({
       "drop-shadow(0px 1.5px 1.5px #9e73a8) drop-shadow(0px -1.5px 1.5px #9e73a8) drop-shadow(-1.5px 0px 1.5px #9e73a8) drop-shadow(1.5px 0px 1.5px #9e73a8)",
   };
 
-  let iconState;
-  switch (witness.puzzle.state) {
-    case "unlockable":
-    case "unlocked":
-      iconState = witness.puzzle.state;
-      break;
-    case "solved":
-      iconState = "unlocked" as const;
-      break;
-    default:
-      iconState = "locked" as const;
-      break;
-  }
-
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
   const copiedMessageTimer = useRef<number | undefined>();
   useEffect(() => {
@@ -594,7 +584,7 @@ const MissingDiamondWitnessImage = ({
   }, []);
   const copyContent = witness.statement && (
     <>
-      <button className="copy" onClick={onCopy}>
+      <button className="copy" onClick={onCopy} title="Copy">
         {showCopiedMessage ? "✅" : "📋"}
       </button>
 
@@ -622,23 +612,13 @@ const MissingDiamondWitnessImage = ({
 
   const tooltipChildren = (
     <>
-      <span>{witness.alt}</span>
-      <br />
-      {witness.statement && (
-        <>
+      {witness.statement ? (
+        <span className="witness-statement">
+          <span className="witness-name">{witness.alt}: </span>
           <span>“{witness.statement}”</span>
-          <br />
-        </>
-      )}
-      <span>
-        <PuzzleIcon lockState={iconState} answer={witness.puzzle.answer} />{" "}
-        {witness.puzzle.title}
-      </span>
-      {witness.puzzle.state !== "solved" && witness.puzzle.desc && (
-        <span>{witness.puzzle.desc}</span>
-      )}
-      {witness.puzzle.answer && (
-        <span className="answer">{witness.puzzle.answer}</span>
+        </span>
+      ) : (
+        <span className="witness-name">{witness.alt}</span>
       )}
       {copyContent}
     </>
@@ -662,56 +642,59 @@ const MissingDiamondBody = ({
   teamState: TeamHuntState;
 }) => {
   return (
-    <MissingDiamondBackdrop>
-      <MissingDiamondMapArea>
-        <MissingDiamondMapContainer>
-          <MissingDiamondTitle src={title} alt="Find The Missing Diamond" />
-          <MissingDiamondMap
-            src={map}
-            alt="A map of Downtown MITropolis. East-west streets are labeled A-H and north-south streets are labeled 1st-9th. Many streets are one-way and some do not pass through all of the map."
+    <>
+      <MissingDiamondFonts />
+      <MissingDiamondBackdrop>
+        <MissingDiamondMapArea>
+          <MissingDiamondMapContainer>
+            <MissingDiamondTitle src={title} alt="Find The Missing Diamond" />
+            <MissingDiamondMap
+              src={map}
+              alt="A map of Downtown MITropolis. East-west streets are labeled A-H and north-south streets are labeled 1st-9th. Many streets are one-way and some do not pass through all of the map."
+            />
+            {state.locations.map((location) => (
+              <MissingDiamondLocationImage
+                key={location.asset}
+                location={location}
+                currency={teamState.currency}
+              />
+            ))}
+            {state.witnesses.map((witness) => (
+              <MissingDiamondWitnessImage
+                key={witness.alt}
+                witness={witness}
+                currency={teamState.currency}
+              />
+            ))}
+            {state.interactions?.map((interaction) => (
+              <MissingDiamondInteraction
+                key={interaction.slug}
+                interaction={interaction}
+              />
+            ))}
+          </MissingDiamondMapContainer>
+        </MissingDiamondMapArea>
+        <MissingDiamondSkyline>
+          <MissingDiamondStars />
+          <MissingDiamondBillie
+            src={billie}
+            alt="A silhouette of Billie O’Ryan"
           />
-          {state.locations.map((location) => (
-            <MissingDiamondLocationImage
-              key={location.asset}
-              location={location}
-              currency={teamState.currency}
-            />
+          {state.speechBubbles.map((bubble, i) => (
+            <SpeechBubble
+              key={bubble.slug}
+              $color={bubble.color}
+              $glow={bubble.glow ?? false}
+              $extraBorder={bubble.extraBorder ?? false}
+              $i={i}
+              $length={state.speechBubbles.length}
+            >
+              {bubble.text}
+            </SpeechBubble>
           ))}
-          {state.witnesses.map((witness) => (
-            <MissingDiamondWitnessImage
-              key={witness.alt}
-              witness={witness}
-              currency={teamState.currency}
-            />
-          ))}
-          {state.interactions?.map((interaction) => (
-            <MissingDiamondInteraction
-              key={interaction.slug}
-              interaction={interaction}
-            />
-          ))}
-        </MissingDiamondMapContainer>
-      </MissingDiamondMapArea>
-      <MissingDiamondSkyline>
-        <MissingDiamondStars />
-        <MissingDiamondBillie
-          src={billie}
-          alt="A silhouette of Billie O'Ryan"
-        />
-        {state.speechBubbles.map((bubble, i) => (
-          <SpeechBubble
-            key={bubble.slug}
-            $color={bubble.color}
-            $glow={bubble.glow ?? false}
-            $extraBorder={bubble.extraBorder ?? false}
-            $i={i}
-            $length={state.speechBubbles.length}
-          >
-            {bubble.text}
-          </SpeechBubble>
-        ))}
-      </MissingDiamondSkyline>
-    </MissingDiamondBackdrop>
+        </MissingDiamondSkyline>
+      </MissingDiamondBackdrop>
+    </>
   );
 };
 

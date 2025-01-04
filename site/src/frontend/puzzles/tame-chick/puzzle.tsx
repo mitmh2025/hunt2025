@@ -1,5 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
+import { CopyableBlanks } from "../../components/Blanks";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 
 export const Highlight = styled.span`
   background: linear-gradient(
@@ -22,6 +27,39 @@ export const WordBlock = styled.span`
 `;
 
 const Innuendo = styled.span``;
+
+const BLANKS = [
+  {
+    before: "Sure, I’ll help you ",
+    blanks: "B___ Y___ M___",
+    highlightIndex: 13,
+  },
+  { before: "I can ", blanks: "B___ a T____", highlightIndex: 3 },
+  { before: "", blanks: "B______ or T_____?", highlightIndex: 15 },
+  { before: "I never turn down a ", blanks: "C____ P__", highlightIndex: 3 },
+  { before: "You know I like it ", blanks: "D____", highlightIndex: 3 },
+  { before: "Yeah, give me a ", blanks: "F_____", highlightIndex: 5 },
+  { before: "I spend a lot of time ", blanks: "G_______", highlightIndex: 1 },
+  { before: "I do love a good ", blanks: "J___", highlightIndex: 1 },
+  {
+    before: "I’ll put a ",
+    blanks: "M_____ on your C_________",
+    highlightIndex: 16,
+  },
+  { before: "I’ll take it in my ", blanks: "M_____", highlightIndex: 5 },
+  { before: "Yeah, I like a ", blanks: "R__ J__", highlightIndex: 6 },
+  {
+    before: "I’ve always wanted to try",
+    blanks: "S_________",
+    highlightIndex: 2,
+  },
+  { before: "I’m down to ", blanks: "S____ B____", highlightIndex: 9 },
+  { before: "I’ll show you my ", blanks: "S____ B_____", highlightIndex: 8 },
+  { before: "We’ll have to ", blanks: "S_____ T__ L___", highlightIndex: 2 },
+  { before: "Give them a ", blanks: "S______", highlightIndex: 3 },
+  { before: "I’ll give you a ", blanks: "S____ P___", highlightIndex: 4 },
+  { before: "Only if it’s ", blanks: "U________", highlightIndex: 3 },
+];
 
 const Puzzle = () => {
   return (
@@ -72,7 +110,7 @@ const Puzzle = () => {
       </p>
       <Spacer />
 
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         Sure, I’ll help you <WordBlock>B _ _ _</WordBlock>
         <WordBlock>Y _ _ _</WordBlock>
         <WordBlock>
@@ -80,7 +118,7 @@ const Puzzle = () => {
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I can{" "}
         <WordBlock>
           B _ _ <Highlight>_</Highlight>
@@ -88,14 +126,14 @@ const Puzzle = () => {
         a <WordBlock>T _ _ _ _</WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         <WordBlock>B _ _ _ _ _ _</WordBlock>or{" "}
         <WordBlock>
           T _ _ _ <Highlight>_</Highlight> _?
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I never turn down a{" "}
         <WordBlock>
           C _ _ <Highlight>_</Highlight> _
@@ -103,77 +141,77 @@ const Puzzle = () => {
         <WordBlock>P _ _</WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         You know I like it{" "}
         <WordBlock>
           D _ _ <Highlight>_</Highlight> _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         Yeah, give me a{" "}
         <WordBlock>
           F _ _ _ _ <Highlight>_</Highlight>
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I spend a lot of time{" "}
         <WordBlock>
           G <Highlight>_</Highlight> _ _ _ _ _ _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I do love a good{" "}
         <WordBlock>
           J <Highlight>_</Highlight> _ _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I’ll put a <WordBlock>M _ _ _ _ _</WordBlock>on your{" "}
         <WordBlock>
           C <Highlight>_</Highlight> _ _ _ _ _ _ _ _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I’ll take it in my{" "}
         <WordBlock>
           M _ _ _ _ <Highlight>_</Highlight>
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         Yeah, I like a <WordBlock>R _ _</WordBlock>
         <WordBlock>
           J _ <Highlight>_</Highlight>
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I’ve always wanted to try{" "}
         <WordBlock>
           S _ <Highlight>_</Highlight> _ _ _ _ _ _ _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I’m down to <WordBlock>S _ _ _ _</WordBlock>
         <WordBlock>
           B _ _ <Highlight>_</Highlight> _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I’ll show you my <WordBlock>S _ _ _ _</WordBlock>
         <WordBlock>
           B _ <Highlight>_</Highlight> _ _ _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         We’ll have to{" "}
         <WordBlock>
           S _ <Highlight>_</Highlight> _ _ _
@@ -182,14 +220,14 @@ const Puzzle = () => {
         <WordBlock>L _ _ _</WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         Give them a{" "}
         <WordBlock>
           S _ _ <Highlight>_</Highlight> _ _ _
         </WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         I’ll give you a{" "}
         <WordBlock>
           S _ _ _ <Highlight>_</Highlight>
@@ -197,13 +235,29 @@ const Puzzle = () => {
         <WordBlock>P _ _ _</WordBlock>
         <br />
       </Innuendo>
-      <Innuendo>
+      <Innuendo className={NO_COPY_CLASS}>
         Only if it’s{" "}
         <WordBlock>
           U _ _ <Highlight>_</Highlight> _ _ _ _ _
         </WordBlock>
         <br />
       </Innuendo>
+      {BLANKS.map(({ before, blanks, highlightIndex }, i) => (
+        <>
+          <div className={COPY_ONLY_CLASS}>{before}</div>
+          <CopyableBlanks
+            key={i}
+            structure={blanks
+              .split("")
+              .map((char) => (char === "_" ? char : " "))}
+            fill={blanks.split("").map((char) => (char === "_" ? " " : char))}
+            fillCopyPosition="above"
+            getAdditionalCellStyles={(index) =>
+              index === highlightIndex ? { backgroundColor: "#00ff00" } : {}
+            }
+          />
+        </>
+      ))}
     </>
   );
 };

@@ -201,7 +201,7 @@ const Solution = () => {
                 <Cell>I</Cell>
                 <Cell>M</Cell>
                 <RedCell>E</RedCell>
-                <Cell>T</Cell>
+                <YellowCell>T</YellowCell>
                 <RedCell>E</RedCell>
                 <BlueCell>R</BlueCell>
                 <Cell>S</Cell>
@@ -215,7 +215,7 @@ const Solution = () => {
                 <Cell>N</Cell>
                 <RedCell>E</RedCell>
                 <Cell>C</Cell>
-                <Cell>T</Cell>
+                <YellowCell>T</YellowCell>
                 <Cell>A</Cell>
                 <BlueCell>R</BlueCell>
               </tr>

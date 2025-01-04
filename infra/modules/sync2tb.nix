@@ -52,7 +52,7 @@ in {
 
       serviceConfig = {
         EnvironmentFile = lib.mkIf (cfg.environmentFile != null) cfg.environmentFile;
-        ExecStart = "${pkgs.radioman}/bin/sync2tb";
+        ExecStart = "${pkgs.hunt2025.misc}/bin/sync2tb";
         RemainAfterExit = true;
         TimeoutStartSec = "15min";
         User = "sync2tb";

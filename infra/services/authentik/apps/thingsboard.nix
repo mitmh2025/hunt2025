@@ -8,6 +8,7 @@
   };
   services.authentik.apps.thingsboard-staging = {
     name = "ThingsBoard Staging";
+    app.attrs.group = "Staging";
     type = "oauth2";
     redirect_uris = "https://things.staging.mitmh2025.com/login/oauth2/code/";
     groups = ["authentik Admins"];

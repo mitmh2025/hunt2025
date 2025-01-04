@@ -13,7 +13,7 @@
     {
       nixpkgs.overlays = [(final: prev: {
         hunt2025 = prev.hunt2025.overrideAttrs {
-          npmBuildScript = "build-dev";
+          npmBuildScript = "build-all-dev";
         };
       })];
       hunt2025.site = {

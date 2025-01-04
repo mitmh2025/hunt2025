@@ -11,7 +11,7 @@ const slugsBySlot = getSlugsBySlot(HUNT);
 export type BigBoardPuzzle = {
   slug: string;
   title: string;
-  state: "solved" | "unlocked" | "locked";
+  state: "solved" | "unlocked" | "unlockable" | "locked";
 };
 
 export type BigBoardInteraction = {
@@ -33,7 +33,7 @@ export type BigBoardRound = {
 
 export type BigBoardTeam = {
   id: number;
-  name: string;
+  username: string;
   progress: number;
   rounds: BigBoardRound[];
 };
@@ -61,7 +61,7 @@ export function formatTeamData(
           continue;
         }
 
-        let state: "solved" | "unlocked" | "locked" = "locked";
+        let state: "solved" | "unlockable" | "unlocked" | "locked" = "locked";
         if (teamData.state.puzzles_solved.has(slug)) {
           state = "solved";
           totalSolved++;
@@ -71,6 +71,8 @@ export function formatTeamData(
           }
         } else if (teamData.state.puzzles_unlocked.has(slug)) {
           state = "unlocked";
+        } else if (teamData.state.puzzles_unlockable.has(slug)) {
+          state = "unlockable";
         }
 
         const data: BigBoardPuzzle = {
@@ -138,7 +140,7 @@ export function formatTeamData(
 
   return {
     id: teamData.teamId,
-    name: teamData.name,
+    username: teamData.username,
     progress: rounds.reduce((acc, round) => acc + round.progress, 0),
     rounds,
   };
@@ -147,6 +149,7 @@ export function formatTeamData(
 export function formatAllTeamsData(data: OpsData): BigBoardData {
   return {
     teams: data.teams
+      .filter((team) => !team.deactivated)
       .map((team) => formatTeamData(team, data.puzzleMetadata))
       .sort((a, b) => b.progress - a.progress),
   };

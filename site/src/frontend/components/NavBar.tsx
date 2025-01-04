@@ -10,6 +10,10 @@ const Nav = styled.nav`
   position: relative; // Needed for z-index to do anything
   z-index: 100;
   background-color: var(--nav-bar-bg);
+
+  @media print {
+    display: none;
+  }
 `;
 
 const NavItems = styled.ul`
@@ -318,9 +322,7 @@ const NavBar = ({
         </TopLevelDropdown>
         <Spacer />
         <AudioControls />
-        <Currency title={`Unlock currency: ${currency}`}>
-          💰 {currency}
-        </Currency>
+        <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>
         <Dropdown $alignRight>
           <TeamNameNavLink tabIndex={0}>
             <span>{teamName}</span>

@@ -283,7 +283,7 @@ const Solution = (): JSX.Element => {
         Searching “Ken Nordine,” “Colors,” and “LP,” (or a variation thereof)
         leads to the LP album. The Wikipedia article for the album mentions the
         LP Tips, as do other websites and can be seen on the backside of the
-        Color LP.
+        Colors LP.
       </p>
       <p>
         There is a set list with 12 phrases that need to be paired with the

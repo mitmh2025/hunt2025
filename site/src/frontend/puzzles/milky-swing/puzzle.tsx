@@ -1,6 +1,28 @@
 import React from "react";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
+
+const GRID = `
+IPSWRKOT
+DOUCVERF
+TFDLOPID
+RMNYSNTU
+JUPAOBRA
+LZFEXIVP
+ELWHTPEM
+XACPTUSL
+KURDEBNI
+BNPHKODA
+GSIASLRX
+OEDVSYEG
+`
+  .split("\n")
+  .slice(1, -1)
+  .map((row) => row.split(""));
 
 const Puzzle = (): JSX.Element => {
   return (
@@ -18,9 +40,19 @@ const Puzzle = (): JSX.Element => {
         allowFullScreen
       />
       <LinkedImage
+        className={NO_COPY_CLASS}
         src={image}
         alt="Clipart of houses arranged on a 12x8 grid. Each house has a letter over the door. At the top right of the grid is a clipart person in a boxing stance."
       />
+      <table className={COPY_ONLY_CLASS}>
+        {GRID.map((row, i) => (
+          <tr key={i}>
+            {row.map((cell, j) => (
+              <td key={`${i}-${j}`}>{cell}</td>
+            ))}
+          </tr>
+        ))}
+      </table>
     </>
   );
 };

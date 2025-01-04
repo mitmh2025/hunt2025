@@ -31,4 +31,5 @@ creation_rules:
   - pgp:
     - *admin_quentin_gpg
     gcp_kms:
+    - resource_id: projects/mitmh2025-staging-gcp/locations/global/keyRings/sops/cryptoKeys/sops-staging-key
     - resource_id: projects/mitmh2025/locations/global/keyRings/sops/cryptoKeys/sops-site-key

@@ -307,6 +307,24 @@ export const authContract = c.router({
       200: TeamRegistrationStateSchema,
     },
   },
+  getJWKS: {
+    method: "GET",
+    path: `/jwks`,
+    responses: {
+      200: z.object({
+        keys: z.array(
+          z.object({
+            kty: z.string(),
+            kid: z.string().optional(),
+            use: z.string().optional(),
+            alg: z.string().optional(),
+            e: z.string().optional(),
+            n: z.string().optional(),
+          }),
+        ),
+      }),
+    },
+  },
 });
 
 export const publicContract = c.router({

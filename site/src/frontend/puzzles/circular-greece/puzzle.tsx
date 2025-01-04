@@ -12,7 +12,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
         <p>
           You should have received exactly 45 small pieces and one rod in a
           ziploc bag. No two pieces should be exactly identical. Please contact
-          us if it seems that you are missing pieces.
+          us at info@mitmh2025.com if it seems that you are missing pieces.
         </p>
       </>
     );
@@ -23,8 +23,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       <p>Please come to the Gala to pick up your copy of this puzzle.</p>
       <p>
         You should receive exactly 45 small pieces and one rod in a ziploc bag.
-        No two pieces should be exactly identical. Please contact us if it seems
-        you are missing pieces.
+        No two pieces should be exactly identical. Please contact us at
+        info@mitmh2025.com if it seems that you are missing pieces.
       </p>
     </>
   );

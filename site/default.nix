@@ -21,6 +21,8 @@ in buildNpmPackage {
   };
   npmConfigHook = importNpmLock.npmConfigHook;
 
+  npmBuildScript = "build-all";
+
   inherit nodejs;
 
   buildInputs = [
@@ -39,12 +41,13 @@ in buildNpmPackage {
 
   dontNpmPrune = if withDevDeps then true else null;
 
-  outputs = [ "out" "assets" ];
+  outputs = [ "out" "assets" "misc" "ops" ];
 
   postInstall = ''
     mkdir -p $assets
     cp -R dist/static $assets/static
-    rsync -r --exclude static/ dist $out/lib/node_modules/hunt2025/
+
+    rsync -r --exclude static/ --exclude misc/ dist $out/lib/node_modules/hunt2025/
     mv $out/lib/node_modules/hunt2025 $out/lib/hunt2025
     rmdir $out/lib/node_modules
     # Remove intermediate build files which might contain a reference to NodeJS's source code.
@@ -52,5 +55,16 @@ in buildNpmPackage {
     makeWrapper ${nodejs}/bin/node $out/bin/hunt2025 \
       --add-flags --enable-source-maps \
       --add-flags $out/lib/hunt2025/dist/server-bundle.js
+
+    mkdir -p $misc/lib
+    cp -R dist/misc/ $misc/lib/misc
+    for i in ops sync2tb tbprovision tbutil; do
+      makeWrapper ${nodejs}/bin/node $misc/bin/$i \
+          --add-flags --enable-source-maps \
+          --add-flags $misc/lib/misc/$i.mjs
+    done
+
+    mkdir -p $ops/share/ops
+    cp -R dist-ops/static $ops/share/ops/static
   '';
 }

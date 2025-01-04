@@ -31,7 +31,7 @@ in {
 
       serviceConfig = {
         EnvironmentFile = lib.mkIf (cfg.environmentFile != null) cfg.environmentFile;
-        ExecStart = "${pkgs.radioman}/bin/tbprovision";
+        ExecStart = "${pkgs.hunt2025.misc}/bin/tbprovision";
         Type = "oneshot";
         RemainAfterExit = true;
         TimeoutStartSec = "15min";

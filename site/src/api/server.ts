@@ -1,6 +1,10 @@
-import { timingSafeEqual } from "node:crypto";
+import { createPublicKey, type KeyObject, timingSafeEqual } from "node:crypto";
 import { isDeepStrictEqual } from "util";
-import { type AppRouter, type ServerInferResponseBody } from "@ts-rest/core";
+import {
+  type ServerInferResponses,
+  type AppRouter,
+  type ServerInferResponseBody,
+} from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
@@ -13,12 +17,21 @@ import {
   type NextFunction,
   Router,
 } from "express";
+import {
+  createRemoteJWKSet,
+  exportJWK,
+  exportSPKI,
+  importPKCS8,
+  type KeyLike,
+  SignJWT,
+} from "jose";
 import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import {
   type GuessStatus,
   type InsertActivityLogEntry,
 } from "knex/types/tables";
+import { type Address } from "nodemailer/lib/mailer";
 import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
@@ -36,6 +49,7 @@ import {
   type InternalActivityLogEntry,
   type MutableTeamRegistration,
   frontendContract,
+  type TeamRegistrationLogEntry,
 } from "../../lib/api/frontend_contract";
 import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
@@ -63,6 +77,8 @@ import {
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
+  changeTeamDeactivation,
+  changeTeamPassword,
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
 } from "./db";
@@ -96,6 +112,7 @@ type AuthentikJWTPayload = {
   email?: string;
   name: string;
   nickname: string;
+  ops?: boolean;
   admin?: boolean;
   groups?: string[];
 };
@@ -105,16 +122,42 @@ function cookieExtractor(req: Request) {
   return token ? token : null;
 }
 
-function newPassport({
-  jwtSecret,
+type PrivateKey =
+  | {
+      privateKey: KeyLike;
+      alg: "RS256";
+    }
+  | {
+      privateKey: Uint8Array;
+      alg: "HS256";
+    };
+
+async function parseJWTSecret(secret: string | Buffer): Promise<PrivateKey> {
+  const str = secret instanceof Buffer ? secret.toString("utf8") : secret;
+  try {
+    const alg = "RS256";
+    const privateKey = await importPKCS8(str, alg);
+    return { privateKey, alg };
+  } catch (e: unknown) {
+    // Not an RSA key
+  }
+  return { privateKey: new Uint8Array(Buffer.from(str, "utf8")), alg: "HS256" };
+}
+
+async function newPassport({
+  jwtPrivateKey,
   frontendApiSecret,
   jwksUri,
 }: {
-  jwtSecret: string | Buffer;
+  jwtPrivateKey: PrivateKey;
   frontendApiSecret: string;
   jwksUri?: string;
 }) {
   const passport = new Passport();
+  const jwtPublicKey =
+    jwtPrivateKey.alg === "RS256"
+      ? await exportSPKI(createPublicKey(jwtPrivateKey.privateKey as KeyObject))
+      : new TextDecoder("utf8").decode(jwtPrivateKey.privateKey);
   passport.use(
     "teamJwt",
     new JwtStrategy(
@@ -123,7 +166,7 @@ function newPassport({
           cookieExtractor,
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: jwtSecret,
+        secretOrKey: jwtPublicKey,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
@@ -161,15 +204,21 @@ function newPassport({
         jwksUri,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
         function (_, jwtPayload: AuthentikJWTPayload, done) {
-          if (!jwtPayload.admin) {
+          if (!jwtPayload.ops) {
             console.warn(
-              "JWT valid but missing admin; treating as unauthorized",
+              "JWT valid but missing ops; treating as unauthorized",
               jwtPayload,
             );
             done(null, false);
             return;
           }
-          done(null, ADMIN_USER_ID, jwtPayload);
+
+          done(null, ADMIN_USER_ID, {
+            jwtPayload,
+            adminUser: jwtPayload.email,
+            permissionAdmin: !!jwtPayload.admin,
+            permissionOps: !!jwtPayload.ops,
+          });
         },
       ),
     );
@@ -183,7 +232,7 @@ function newPassport({
         jwtFromRequest: ExtractJwt.fromExtractors([
           ExtractJwt.fromAuthHeaderAsBearerToken(),
         ]),
-        secretOrKey: jwtSecret,
+        secretOrKey: jwtPublicKey,
       },
       function (jwtPayload: JWTPayload, done) {
         if (!jwtPayload.adminUser) {
@@ -211,6 +260,7 @@ function newPassport({
         "frontend-auth " + frontendApiSecret,
         "utf8",
       );
+
       if (
         authHeader.length === expected.length &&
         timingSafeEqual(expected, authHeader)
@@ -235,7 +285,45 @@ function canonicalizeInput(input: string) {
     .toUpperCase();
 }
 
-export function getRouter({
+function formatInternalActivityLogEntryForApi(
+  entry: InternalActivityLogEntry,
+): ServerInferResponseBody<
+  typeof frontendContract.getFullActivityLog,
+  200
+>[number] {
+  return {
+    ...entry,
+    timestamp: entry.timestamp.toISOString(),
+  };
+}
+
+function formatMutationResultForAdminApi(
+  result: (InternalActivityLogEntry | undefined)[],
+): ServerInferResponses<typeof frontendContract.getFullActivityLog, 200> {
+  const filteredResults = result.filter(
+    (r: InternalActivityLogEntry | undefined): r is InternalActivityLogEntry =>
+      !!r,
+  );
+
+  return {
+    status: 200,
+    body: filteredResults.map(formatInternalActivityLogEntryForApi),
+  };
+}
+
+function formatRegistrationLogEntryForApi(
+  entry: TeamRegistrationLogEntry,
+): ServerInferResponseBody<
+  typeof frontendContract.getFullTeamRegistrationLog,
+  200
+>[number] {
+  return {
+    ...entry,
+    timestamp: entry.timestamp.toISOString(),
+  };
+}
+
+export async function getRouter({
   jwtSecret,
   jwksUri,
   frontendApiSecret,
@@ -260,8 +348,12 @@ export function getRouter({
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
-  const { passport, adminStrategies } = newPassport({
-    jwtSecret,
+  const jwtPrivateKey = await parseJWTSecret(jwtSecret);
+
+  const jwksCache = jwksUri && createRemoteJWKSet(new URL(jwksUri));
+
+  const { passport, adminStrategies } = await newPassport({
+    jwtPrivateKey,
     frontendApiSecret,
     jwksUri,
   });
@@ -271,7 +363,7 @@ export function getRouter({
   const slugToSlotMap = generateSlugToSlotMap(hunt);
   const getTeamStateIntermediate = async (team_id: number) => {
     const team_state = (
-      await activityLog.getCachedTeamLog(knex, redisClient, team_id)
+      await activityLog.getCachedLog(knex, redisClient, team_id)
     ).entries.reduce(
       (acc, entry) => acc.reduce(entry),
       new TeamStateIntermediate(hunt),
@@ -279,14 +371,15 @@ export function getRouter({
     return team_state;
   };
   const getTeamState = async (team_id: number) => {
-    const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
+    const team_registration_log = await teamRegistrationLog.getCachedLog(
       knex,
       redisClient,
       team_id,
     );
+
     const info = team_registration_log.entries
       .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamInfo();
+      .formatTeamInfoIfActive();
     if (info === undefined) {
       return {
         status: 404 as const,
@@ -305,14 +398,14 @@ export function getRouter({
   };
 
   const getTeamRegistration = async (team_id: number) => {
-    const team_registration_log = await teamRegistrationLog.getCachedTeamLog(
+    const team_registration_log = await teamRegistrationLog.getCachedLog(
       knex,
       redisClient,
       team_id,
     );
     const registration = team_registration_log.entries
       .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamRegistrationState();
+      .formatTeamRegistrationStateIfActive();
     if (registration === undefined) {
       return {
         status: 404 as const,
@@ -405,7 +498,7 @@ export function getRouter({
   ): Promise<PuzzleState | undefined> => {
     return formatPuzzleState(
       slug,
-      (await activityLog.getCachedTeamLog(knex, redisClient, team_id)).entries,
+      (await activityLog.getCachedLog(knex, redisClient, team_id)).entries,
     );
   };
 
@@ -467,6 +560,31 @@ export function getRouter({
     },
   ) as RequestHandlerWithQuery;
 
+  function requireAdminPermission(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    if (req.user === FRONTEND_USER_ID) {
+      // Frontend can access anything.
+      next();
+      return;
+    }
+
+    const userEmail = req.authInfo?.adminUser;
+    if (!userEmail) {
+      res.sendStatus(403);
+      return;
+    }
+
+    if (!req.authInfo?.permissionAdmin) {
+      res.sendStatus(403);
+      return;
+    }
+
+    next();
+  }
+
   // We merge contracts here so that we can implement additional contracts
   // without having to export them to the client since there's no value in
   // exposing schemas we don't intend to be public.
@@ -480,6 +598,33 @@ export function getRouter({
 
   const router = s.router(contract, {
     auth: {
+      getJWKS: async () => {
+        const keys = [];
+        if (jwksCache) {
+          if (!jwksCache.fresh) {
+            await jwksCache.reload();
+          }
+          const jwks = jwksCache.jwks();
+          if (jwks) {
+            keys.push(...jwks.keys);
+          }
+        }
+        if (jwtPrivateKey.alg === "RS256") {
+          const jwk = await exportJWK(
+            createPublicKey(jwtPrivateKey.privateKey as KeyObject),
+          );
+          keys.push({
+            ...jwk,
+            kid: "hunt",
+          });
+        }
+        return {
+          status: 200,
+          body: {
+            keys,
+          },
+        };
+      },
       login: async ({
         body: { username, password },
       }: {
@@ -489,19 +634,27 @@ export function getRouter({
           .where({
             username,
             password,
+            deactivated: false,
           })
           .select("username", "id")
           .first();
         if (team !== undefined) {
-          const token = jwt.sign(
-            {
-              user: team.username,
-              team_id: team.id,
-              sess_id: genId(),
-            },
-            jwtSecret,
-            {},
-          );
+          const token = await new SignJWT({
+            user: team.username,
+            team_id: team.id,
+            sess_id: genId(),
+            media: [
+              {
+                action: "read",
+                path: `~^/teams/${team.id}/`,
+              },
+            ],
+          })
+            .setProtectedHeader({
+              alg: jwtPrivateKey.alg,
+              kid: "hunt",
+            })
+            .sign(jwtPrivateKey.privateKey);
 
           return {
             status: 200,
@@ -528,9 +681,12 @@ export function getRouter({
 
         try {
           await mailer.sendEmail({
-            to: body.contactEmail,
+            to: {
+              name: body.name,
+              address: body.contactEmail,
+            },
             subject: "MIT Mystery Hunt 2025 Registration Confirmation",
-            plainText: confirmationEmailTemplate({
+            text: confirmationEmailTemplate({
               registration: body,
             }),
           });
@@ -652,7 +808,7 @@ export function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          const { entries } = await activityLog.getCachedTeamLog(
+          const { entries } = await activityLog.getCachedLog(
             knex,
             redisClient,
             team_id,
@@ -902,6 +1058,128 @@ export function getRouter({
           return await getTeamState(parseInt(teamId, 10));
         },
       },
+      getTeamContacts: {
+        middleware: [adminAuthMiddleware],
+        handler: async () => {
+          const { entries } = await teamRegistrationLog.getCachedLog(
+            knex,
+            redisClient,
+          );
+          const teamInfos = entries.reduce(
+            (acc: Map<number, TeamInfoIntermediate>, entry) => {
+              const { team_id } = entry;
+              acc.set(
+                team_id,
+                (acc.get(team_id) ?? new TeamInfoIntermediate()).reduce(entry),
+              );
+              return acc;
+            },
+            new Map<number, TeamInfoIntermediate>(),
+          );
+          return {
+            status: 200,
+            body: Array.from(teamInfos.values()).flatMap((teamInfo) => {
+              if (teamInfo.registration === undefined) {
+                return [];
+              }
+              return [
+                {
+                  username: teamInfo.registration.username,
+                  name: teamInfo.registration.name,
+                  teamEmail: teamInfo.registration.teamEmail,
+                  contactName: teamInfo.registration.contactName,
+                  contactEmail: teamInfo.registration.contactEmail,
+                  contactPhone: teamInfo.registration.contactPhone,
+                  contactMailingAddress:
+                    teamInfo.registration.contactMailingAddress,
+                  secondaryContactName:
+                    teamInfo.registration.secondaryContactName,
+                  secondaryContactEmail:
+                    teamInfo.registration.secondaryContactEmail,
+                  secondaryContactPhone:
+                    teamInfo.registration.secondaryContactPhone,
+                },
+              ];
+            }),
+          };
+        },
+      },
+      sendTeamEmail: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ body }) => {
+          const { entries } = await teamRegistrationLog.getCachedLog(
+            knex,
+            redisClient,
+          );
+          const teamInfos = entries.reduce(
+            (acc: Map<number, TeamInfoIntermediate>, entry) => {
+              const { team_id } = entry;
+              acc.set(
+                team_id,
+                (acc.get(team_id) ?? new TeamInfoIntermediate()).reduce(entry),
+              );
+              return acc;
+            },
+            new Map<number, TeamInfoIntermediate>(),
+          );
+          const dryRun = body.dryRun;
+          const messages = [];
+          for (const teamInfo of teamInfos.values()) {
+            const registration = teamInfo.formatTeamRegistrationIfActive();
+            if (registration === undefined) {
+              continue;
+            }
+
+            const addresses = [
+              {
+                name: registration.contactName,
+                address: registration.contactEmail,
+              },
+              {
+                name: registration.secondaryContactName,
+                address: registration.secondaryContactEmail,
+              },
+            ];
+            if (body.wholeTeam) {
+              addresses.push({
+                name: registration.name,
+                address: registration.teamEmail,
+              });
+            }
+            for (const address of addresses) {
+              const result: {
+                address: Address;
+                success?: boolean;
+              } = {
+                address,
+              };
+              if (!dryRun) {
+                try {
+                  await mailer.sendEmail({
+                    to: address,
+                    messageStream: "hunt-announcements",
+                    templateAlias: body.templateAlias,
+                    templateModel: {
+                      teamName: registration.name,
+                    },
+                  });
+                  result.success = true;
+                } catch (err: unknown) {
+                  console.log("failed sending mail:", err);
+                  result.success = false;
+                }
+              }
+              messages.push(result);
+            }
+          }
+          return {
+            status: 200,
+            body: {
+              messages,
+            },
+          };
+        },
+      },
       getPuzzleState: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId, slug } }) => {
@@ -942,6 +1220,235 @@ export function getRouter({
             body: metadata,
           });
         },
+      },
+      grantKeys: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ body: { teamIds, amount }, req }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              if (teamIds === "all") {
+                return [
+                  await mutator.appendLog({
+                    type: "currency_adjusted",
+                    currency_delta: amount,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                ];
+              } else {
+                const result: (InternalActivityLogEntry | undefined)[] = [];
+                for (const team_id of teamIds) {
+                  result.push(
+                    await mutator.appendLog({
+                      team_id,
+                      type: "currency_adjusted",
+                      currency_delta: amount,
+                      internal_data: {
+                        operator: req.authInfo?.adminUser,
+                      },
+                    }),
+                  );
+                }
+
+                return result;
+              }
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
+      opsAccount: {
+        middleware: [adminAuthMiddleware],
+        handler: ({ req }) => {
+          const email = req.authInfo?.adminUser;
+          if (!email) {
+            throw new Error("No admin user in request");
+          }
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: {
+              email,
+              isOpsAdmin: req.authInfo?.permissionAdmin ?? false,
+            },
+          });
+        },
+      },
+      unlockPuzzle: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { slug }, body: { teamIds } }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              // Check if already unlocked
+              const teamIdsToUnlock = new Set(
+                teamIds === "all" ? mutator.allTeams : teamIds,
+              );
+
+              for (const entry of mutator.log) {
+                if (entry.type === "puzzle_unlocked" && entry.slug === slug) {
+                  if (entry.team_id === undefined) {
+                    // already unlocked for all teams
+                    return [];
+                  }
+
+                  teamIdsToUnlock.delete(entry.team_id);
+                }
+              }
+
+              if (
+                teamIds === "all" &&
+                teamIdsToUnlock.size === mutator.allTeams.size
+              ) {
+                // we are unlocking for all teams and no team has the puzzle locked
+                return [
+                  await mutator.appendLog({
+                    type: "puzzle_unlocked",
+                    slug,
+                  }),
+                ];
+              }
+
+              // need to unlock for specific teams
+              const newEntries: (InternalActivityLogEntry | undefined)[] = [];
+              for (const team_id of teamIdsToUnlock) {
+                newEntries.push(
+                  await mutator.appendLog({
+                    team_id,
+                    type: "puzzle_unlocked",
+                    slug,
+                  }),
+                );
+              }
+
+              return newEntries;
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
+      changeTeamPassword: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId }, body: { newPassword } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_password_change",
+                data: {
+                  new_password: newPassword,
+                },
+              });
+
+              await changeTeamPassword(team_id, newPassword, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        },
+      },
+      deactivateTeam: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_deactivated",
+                data: {},
+              });
+
+              await changeTeamDeactivation(team_id, true, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        },
+      },
+      reactivateTeam: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+
+          const { result } = await teamRegistrationLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (trx, mutator) {
+              const log = await mutator.appendLog({
+                team_id,
+                type: "team_reactivated",
+                data: {},
+              });
+
+              await changeTeamDeactivation(team_id, false, trx);
+
+              return [log];
+            },
+          );
+
+          const filteredResults = result.filter(
+            (
+              r: TeamRegistrationLogEntry | undefined,
+            ): r is TeamRegistrationLogEntry => !!r,
+          );
+
+          return {
+            status: 200 as const,
+            body: filteredResults.map(formatRegistrationLogEntryForApi),
+          };
+        }
       },
       createDesertedNinjaSession: {
         middleware: [adminAuthMiddleware],
@@ -1314,12 +1821,13 @@ export function getRouter({
               knex,
             ),
           });
+
         },
       },
     },
     frontend: {
       markTeamGateSatisfied: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, gateId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             // Check if already satisfied.
@@ -1342,7 +1850,7 @@ export function getRouter({
           }),
       },
       startInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, interactionId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(
@@ -1372,7 +1880,7 @@ export function getRouter({
           }),
       },
       completeInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, interactionId }, body }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(
@@ -1428,27 +1936,27 @@ export function getRouter({
               if (effectiveSince !== undefined) {
                 q = q.where("id", ">", effectiveSince);
               }
-              q = q.select(
-                "id",
-                "team_id",
-                "type",
-                "currency_delta",
-                "slug",
-                "timestamp",
-                "data",
-                "internal_data",
-              );
+              q = q
+                .select(
+                  "id",
+                  "team_id",
+                  "type",
+                  "currency_delta",
+                  "slug",
+                  "timestamp",
+                  "data",
+                  "internal_data",
+                )
+                .orderBy("id", "asc");
               return q;
             },
             { readOnly: true },
           );
-          const body = entries.map((e) => {
-            const entry = cleanupActivityLogEntryFromDB(e);
-            return {
-              ...entry,
-              timestamp: entry.timestamp.toISOString(),
-            };
-          });
+          const body = entries.map((e) =>
+            formatInternalActivityLogEntryForApi(
+              cleanupActivityLogEntryFromDB(e),
+            ),
+          );
           return {
             status: 200,
             body,
@@ -1472,17 +1980,16 @@ export function getRouter({
               if (effectiveSince !== undefined) {
                 q = q.where("id", ">", effectiveSince);
               }
-              q = q.select("id", "team_id", "type", "data", "timestamp");
+              q = q
+                .select("id", "team_id", "type", "data", "timestamp")
+                .orderBy("id", "asc");
               return q;
             },
             { readOnly: true },
           );
           const body = entries.map((e) => {
             const entry = cleanupTeamRegistrationLogEntryFromDB(e);
-            return {
-              ...entry,
-              timestamp: entry.timestamp.toISOString(),
-            };
+            return formatRegistrationLogEntryForApi(entry);
           });
           return {
             status: 200,

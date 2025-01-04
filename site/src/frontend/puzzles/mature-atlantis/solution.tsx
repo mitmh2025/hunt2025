@@ -43,14 +43,14 @@ const ROWS: Row[] = [
     before: "PANCAKES",
     after: "CAR PUKES",
     extraction: "RU",
-    highlights: [2, 6],
+    highlights: [2, 5],
   },
   {
     order: "5",
     before: "SAILBOAT",
     after: "BALL SEAT",
     extraction: "LE",
-    highlights: [2, 7],
+    highlights: [2, 6],
   },
   {
     order: "6",
@@ -82,8 +82,16 @@ const ROWS: Row[] = [
   },
 ];
 
+const StyledTable = styled.table`
+  margin-bottom: 1em;
+`;
+
 const StyledTd = styled.td`
   padding: 0px 8px;
+`;
+
+const Red = styled.span`
+  background-color: #ffff00;
 `;
 
 const Table = ({
@@ -94,7 +102,7 @@ const Table = ({
   rows: Row[];
 }): JSX.Element => {
   return (
-    <table>
+    <StyledTable>
       <thead>
         <tr>
           {headers.map((header, i) => (
@@ -107,11 +115,11 @@ const Table = ({
           const { order, before, after, extraction, highlights } = row;
           const pre = after.slice(0, highlights[0]);
           const highlight1 = (
-            <strong>{after.slice(highlights[0], highlights[0] + 1)}</strong>
+            <Red>{after.slice(highlights[0], highlights[0] + 1)}</Red>
           );
           const mid = after.slice(highlights[0] + 1, highlights[1]);
           const highlight2 = (
-            <strong>{after.slice(highlights[1], highlights[1] + 1)}</strong>
+            <Red>{after.slice(highlights[1], highlights[1] + 1)}</Red>
           );
           const post = after.slice(highlights[1] + 1);
           const afterCell = (
@@ -139,7 +147,7 @@ const Table = ({
           );
         })}
       </tbody>
-    </table>
+    </StyledTable>
   );
 };
 

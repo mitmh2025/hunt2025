@@ -1,5 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import { CopyableBlanks } from "../../components/Blanks";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import img01 from "./assets/img01.png";
 import img02 from "./assets/img02.png";
@@ -15,6 +17,25 @@ import img11 from "./assets/img11.png";
 import img12 from "./assets/img12.png";
 import img13 from "./assets/img13.png";
 import img14 from "./assets/img14.png";
+
+const BLANKS: { structure: string; highlightIndex: number }[] = [
+  { structure: "_________", highlightIndex: 6 },
+  { structure: "__________________", highlightIndex: 12 },
+  { structure: "_______________", highlightIndex: 13 },
+  { structure: "____________", highlightIndex: 11 },
+  { structure: "________________", highlightIndex: 13 },
+  { structure: "_________________________________", highlightIndex: 28 },
+  {
+    structure: "________________________________________________________",
+    highlightIndex: 50,
+  },
+  { structure: "______", highlightIndex: 5 },
+  { structure: "________", highlightIndex: 4 },
+  { structure: "__________", highlightIndex: 6 },
+  { structure: "______________", highlightIndex: 8 },
+  { structure: "________________________", highlightIndex: 23 },
+  { structure: "____", highlightIndex: 3 },
+];
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -72,6 +93,19 @@ const Puzzle = () => {
           alt="A drawing of a black, vinyl record overlaid with three blocks of crossword-style, black-outlined white squares. The first block is fifteen squares long, the second block is twelve squares long, and the third block is six squares long."
         />
       </FlexWrapper>
+      {BLANKS.map(({ structure, highlightIndex }, i) => (
+        <CopyableBlanks
+          key={i}
+          structure={structure.split("")}
+          getAdditionalCellStyles={(index) =>
+            index === highlightIndex ? { backgroundColor: "#ffff00" } : {}
+          }
+        />
+      ))}
+      <p className={COPY_ONLY_CLASS}>THE RERELEASED GREATEST HITS OF</p>
+      <CopyableBlanks
+        structure={"_______________ ____________ ______".split("")}
+      />
     </>
   );
 };

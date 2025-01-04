@@ -13,6 +13,7 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [],
   content: {
     component: Puzzle,
+    copyable: false,
   },
   solution: {
     component: Solution,
@@ -21,20 +22,21 @@ const puzzle: PuzzleDefinition = {
     {
       order: 1.0,
       description:
-        "Solvers don’t know about the board game referenced by the images.",
+        "Solvers have not figured out what the images are referencing.",
       keywords: ["card", "picture", "bird", "game", "wingspan"],
       nudge: "The pictures represent cards in the board game Wingspan.",
     },
     {
       order: 7.0,
-      description: "Solvers haven’t noticed the audio play buttons",
+      description:
+        "Solvers have only seen the images and not any other content",
       keywords: ["audio", "music", "clip", "stave", "identified"],
       nudge: "There are buttons next to the musical stave.",
     },
     {
       order: 10.0,
       description:
-        "Solvers haven’t noticed the horizontal scrollbar on the music stave / are behaving as if there are only 3-4 notes",
+        "Solvers are stuck and think there are only 3-4 notes in the music",
       keywords: ["stave", "music", "note", "three", "four"],
       nudge: "The music stave at the top of the page scrolls horizontally.",
     },
@@ -58,7 +60,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 60.0,
       description:
-        "Solvers have identified most or all of the birds but haven’t put them into a grid (removed the bird type from the names)",
+        "Solvers have identified most or all of the birds but haven’t figured out how to put them together",
       keywords: ["bird", "names", "identified"],
       nudge:
         "What is the least interesting part of the names of the birds in each row? Try removing it.",
@@ -128,7 +130,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 99.0,
       description:
-        "Solvers have mapped the bird grid to the notes but aren’t reading the highlighted letters in the correct order",
+        "Solvers have mapped the bird grid to the notes but don’t know how to extract their answer",
       keywords: ["extraction", "chord", "note"],
       nudge:
         "You’re almost there. Try reading off the letters as chords, vertically.",

@@ -1,8 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
-import { newAdminClient, type AuthClient } from "../../lib/api/admin_client";
+import { type AdminClient, newAdminClient } from "../../lib/api/admin_client";
 import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
-import { newFrontendClient } from "../../lib/api/frontend_client";
+import {
+  type FrontendClient,
+  newFrontendClient,
+} from "../../lib/api/frontend_client";
 import {
   type InternalActivityLogEntry,
   type TeamRegistrationLogEntry,
@@ -17,22 +20,52 @@ import { type TeamData } from "./opsdata/types";
 
 export type OpsData = {
   state: "loading" | "error" | "loaded";
+  account: {
+    email: string;
+    isOpsAdmin: boolean;
+  };
+  adminClient: AdminClient;
+  frontendClient: FrontendClient;
   puzzleMetadata: PuzzleAPIMetadata;
   registrationLog: TeamRegistrationLogEntry[];
   activityLog: InternalActivityLogEntry[];
   teams: TeamData[];
-  adminClient?: AuthClient;
+  gateDetails: Record<string, { title?: string; roundTitle: string }>;
+  appendActivityLogEntries: (entries: InternalActivityLogEntry[]) => void;
+  appendRegistrationLogEntries: (entries: TeamRegistrationLogEntry[]) => void;
 };
 
 const INITIAL_STATE: OpsData = {
   state: "loading",
+  account: {
+    email: "",
+    isOpsAdmin: false,
+  },
+  adminClient: newAdminClient("", ""),
+  frontendClient: newFrontendClient("", { type: "admin", adminToken: "" }),
   registrationLog: [],
   activityLog: [],
   teams: [],
   puzzleMetadata: {},
+  gateDetails: {},
+  appendActivityLogEntries: () => {
+    // do nothing
+  },
+  appendRegistrationLogEntries: () => {
+    // do nothing
+  },
 };
 
 export const OpsDataContext = createContext<OpsData>(INITIAL_STATE);
+
+function formatEntry<T extends { timestamp: string | Date }>(
+  entry: T,
+): T & { timestamp: Date } {
+  return {
+    ...entry,
+    timestamp: new Date(entry.timestamp),
+  };
+}
 
 class OpsDataStore {
   private _teamStates = new Map<number, TeamStateIntermediate>();
@@ -92,12 +125,14 @@ class OpsDataStore {
         return {
           teamId,
           name: teamInfoIntermediate.registration.name,
+          username: teamInfoIntermediate.registration.username,
           registration: teamInfoIntermediate.registration,
           state,
           formattedState: formatTeamHuntState(HUNT, state),
+          deactivated: teamInfoIntermediate.deactivated,
         };
       })
-      .filter((team): team is TeamData => team !== null);
+      .filter((team: TeamData | null): team is TeamData => team !== null);
   }
 
   getTeamRegistrations() {
@@ -135,13 +170,15 @@ export default function OpsDataProvider({
 
       const adminClient = newAdminClient(apiUrl, token);
 
-      const [registrationLog, activityLog, puzzleMetadata] = await Promise.all([
-        frontendClient.getFullTeamRegistrationLog(),
-        frontendClient.getFullActivityLog(),
-        adminClient.getPuzzleMetadata(),
-      ]);
+      const [registrationLog, activityLog, puzzleMetadata, account] =
+        await Promise.all([
+          frontendClient.getFullTeamRegistrationLog(),
+          frontendClient.getFullActivityLog(),
+          adminClient.getPuzzleMetadata(),
+          adminClient.opsAccount(),
+        ]);
 
-      if (registrationLog.status === 401) {
+      if (account.status === 401 || account.status === 403) {
         removeCookie("mitmh2025_api_auth");
       }
 
@@ -164,21 +201,68 @@ export default function OpsDataProvider({
         );
       }
 
+      if (account.status !== 200) {
+        console.error(account);
+        throw new Error(`Failed to load account: ${account.status}`);
+      }
+
       const store = new OpsDataStore();
-      registrationLog.body.forEach((entry) => {
+      const registrationLogEntries = registrationLog.body.map(formatEntry);
+      const activityLogEntries = activityLog.body.map(formatEntry);
+
+      registrationLogEntries.forEach((entry) => {
         store.applyRegistrationLogEntry(entry);
       });
-      activityLog.body.forEach((entry) => {
+      activityLogEntries.forEach((entry) => {
         store.applyActivityLogEntry(entry);
+      });
+
+      const gateDetails: Record<
+        string,
+        { title?: string; roundTitle: string }
+      > = {};
+      HUNT.rounds.forEach((round) => {
+        round.gates?.forEach((gate) => {
+          gateDetails[gate.id] = { title: gate.title, roundTitle: round.title };
+        });
       });
 
       setData({
         state: "loaded",
-        registrationLog: registrationLog.body,
-        activityLog: activityLog.body,
+        account: account.body,
+        adminClient,
+        frontendClient,
+        registrationLog: registrationLogEntries,
+        activityLog: activityLogEntries,
         teams: store.getTeamData(),
         puzzleMetadata: puzzleMetadata.body,
-        adminClient: adminClient,
+        gateDetails,
+        appendActivityLogEntries: (entries) => {
+          const formattedEntries = entries.map(formatEntry);
+
+          formattedEntries.forEach((entry) => {
+            store.applyActivityLogEntry(entry);
+          });
+
+          setData((oldData) => ({
+            ...oldData,
+            teams: store.getTeamData(),
+            activityLog: [...oldData.activityLog, ...formattedEntries],
+          }));
+        },
+        appendRegistrationLogEntries: (entries) => {
+          const formattedEntries = entries.map(formatEntry);
+
+          formattedEntries.forEach((entry) => {
+            store.applyRegistrationLogEntry(entry);
+          });
+
+          setData((oldData) => ({
+            ...oldData,
+            teams: store.getTeamData(),
+            registrationLog: [...oldData.registrationLog, ...formattedEntries],
+          }));
+        },
       });
     })().catch((e: unknown) => {
       console.error(e);

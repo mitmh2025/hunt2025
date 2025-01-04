@@ -19,6 +19,7 @@
         port = "%t/hunt2025/hunt2025.sock";
         regsitePort = "%t/hunt2025/hunt2025-reg.sock";
         apiBaseUrl = "http://localhost/api";
+        jwksUri = "https://auth.mitmh2025.com/application/o/staging-ops/jwks/";
       };
 
       users.users."${config.services.nginx.user}".extraGroups = [ "hunt2025" ];
@@ -35,6 +36,30 @@
       };
       # Restart Redis whenever the site is restarted (to clear the state).
       systemd.services.redis-hunt2025.partOf = ["hunt2025.service"];
+    }
+    {
+      hunt2025.ops = {
+        enable = true;
+        port = "%t/hunt2025-ops/ops.sock";
+        apiBaseUrl = "http://localhost/api";
+        oauthServer = "https://auth.mitmh2025.com/application/o/staging-ops/.well-known/openid-configuration";
+      };
+      sops.secrets."authentik/apps/staging-ops/client_id" = {};
+      sops.secrets."authentik/apps/staging-ops/client_secret" = {};
+      sops.templates."ops/env" = {
+        owner = "hunt2025-ops";
+        content = ''
+          OAUTH_CLIENT_ID=${config.sops.placeholder."authentik/apps/staging-ops/client_id"}
+          OAUTH_CLIENT_SECRET=${config.sops.placeholder."authentik/apps/staging-ops/client_secret"}
+        '';
+      };
+      users.users."${config.services.nginx.user}".extraGroups = [ "hunt2025-ops" ];
+      systemd.services.hunt2025-ops = {
+        serviceConfig = {
+          EnvironmentFile = config.sops.templates."ops/env".path;
+          RuntimeDirectory = "hunt2025-ops";
+        };
+      };
     }
     {
       sops.secrets."site/environment" = {};
@@ -158,6 +183,7 @@
 
         upstreams.hunt2025.servers."unix:/run/hunt2025/hunt2025.sock" = {};
         upstreams.hunt2025-reg.servers."unix:/run/hunt2025/hunt2025-reg.sock" = {};
+        upstreams.hunt2025-ops.servers."unix:/run/hunt2025-ops/ops.sock" = {};
         upstreams.thingsboard.servers."127.0.0.1:8080" = {};
         virtualHosts = {
           "staging.mitmh2025.com" = {
@@ -186,6 +212,15 @@
             };
             locations."/static/".alias = "${pkgs.hunt2025.assets}/static/";
           };
+          "ops.staging.mitmh2025.com" = {
+            forceSSL = true;
+            enableACME = true;
+            locations."/" = {
+              proxyPass = "http://hunt2025-ops";
+              proxyWebsockets = true;
+            };
+            locations."/api".proxyPass = "http://hunt2025";
+          };
           "things.staging.mitmh2025.com" = {
             forceSSL = true;
             enableACME = true;
@@ -212,6 +247,12 @@
         images = [
           config.services.k3s.package.airgapImages
         ];
+      };
+    }
+    {
+      hunt2025.tix = {
+        domain = "staging.mitmh2025.com";
+        authentikApp = "staging-tix";
       };
     }
   ];

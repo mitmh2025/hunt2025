@@ -72,7 +72,7 @@ const DATA = [
     left: left2,
     leftAlt:
       "flour, baking soda, powdered sugar, salt, baking powder, oil, eggs, butter, cream cheese, ground cinnamon, vanilla extract, and carrots.",
-    leftEnum: "(8 7 7) ¼ C",
+    leftEnum: "(6 10 5)",
     right: right2,
     rightAlt:
       "A round loaf of bread, partially sliced up, on a wooden cutting board.",

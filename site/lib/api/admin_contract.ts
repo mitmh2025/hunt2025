@@ -1,6 +1,15 @@
 import { z } from "zod";
 import { PuzzleDefinitionMetadataSchema } from "../../src/frontend/puzzles/types";
-import { c, PuzzleStateSchema, TeamStateSchema } from "./contract";
+import {
+  c,
+  PuzzleStateSchema,
+  TeamRegistrationSchema,
+  TeamStateSchema,
+} from "./contract";
+import {
+  InternalActivityLogSchema,
+  TeamRegistrationLogSchema,
+} from "./frontend_contract";
 
 export const PuzzleAPIMetadataSchema = z.record(
   z.string(),
@@ -10,6 +19,24 @@ export const PuzzleAPIMetadataSchema = z.record(
 );
 
 export type PuzzleAPIMetadata = z.infer<typeof PuzzleAPIMetadataSchema>;
+
+const TeamContactsSchema = z.array(
+  TeamRegistrationSchema.pick({
+    username: true,
+
+    name: true,
+    teamEmail: true,
+
+    contactName: true,
+    contactEmail: true,
+    contactPhone: true,
+    contactMailingAddress: true,
+
+    secondaryContactName: true,
+    secondaryContactEmail: true,
+    secondaryContactPhone: true,
+  }),
+);
 
 export const DesertedNinjaAnswerSchema = z.object({
   teamId: z.number(),
@@ -83,6 +110,96 @@ export const adminContract = c.router({
     },
     summary: "Get all puzzle metadata",
   },
+  getTeamContacts: {
+    method: "GET",
+    path: `/admin/teamContacts`,
+    responses: {
+      200: TeamContactsSchema,
+    },
+  },
+  sendTeamEmail: {
+    method: "POST",
+    path: "/admin/sendTeamEmail",
+    body: z.object({
+      dryRun: z.boolean().default(true),
+      wholeTeam: z.boolean().default(false),
+      templateAlias: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        messages: z.array(
+          z.object({
+            address: z.object({
+              name: z.string(),
+              address: z.string(),
+            }),
+            success: z.boolean().optional(),
+          }),
+        ),
+      }),
+    },
+  },
+  grantKeys: {
+    method: "POST",
+    path: "/admin/grantKeys",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+      amount: z.number(),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
+  opsAccount: {
+    method: "GET",
+    path: "/admin/account",
+    responses: {
+      200: z.object({
+        email: z.string(),
+        isOpsAdmin: z.boolean(),
+      }),
+    },
+  },
+  unlockPuzzle: {
+    method: "POST",
+    path: "/admin/puzzles/:slug/unlock",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
+  deactivateTeam: {
+    method: "POST",
+    path: "/teams/:teamId/deactivate",
+    body: z.object({}),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  reactivateTeam: {
+    method: "POST",
+    path: "/teams/:teamId/reactivate",
+    body: z.object({}),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  changeTeamPassword: {
+    method: "POST",
+    path: "/teams/:teamId/changePassword",
+    body: z.object({
+      newPassword: z.string(),
+    }),
+    responses: {
+      200: TeamRegistrationLogSchema,
+      404: z.null(),
+    },
+  },
+  
   createDesertedNinjaSession: {
     method: "POST",
     path: "/admin/create-dn-session",

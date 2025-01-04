@@ -12,4 +12,4 @@ export function newAdminClient(baseUrl: string, token: string) {
   });
 }
 
-export type AuthClient = ReturnType<typeof newAdminClient>;
+export type AdminClient = ReturnType<typeof newAdminClient>;

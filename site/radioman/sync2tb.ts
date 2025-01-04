@@ -174,10 +174,10 @@ async function main({
       // en_rickroll should be set to true when the blacklight mode for giant-switch is unlocked
       // en_numbers should be set to true when diligent-spy is unlocked
       const device_attributes = {
-        en_knocks: teamState.puzzles_unlocked.has("on_the_radio"),
-        en_funaround: teamState.puzzles_unlocked.has("dimpled-star"),
-        en_rickroll: teamState.puzzles_unlocked.has("giant-switch_bl"),
-        en_numbers: teamState.puzzles_unlocked.has("diligent-spy"),
+        en_knocks: teamState.puzzles_unlocked.has("songs_on_the_radio"),
+        en_funaround: teamState.puzzles_unlocked.has("the_thief"),
+        en_rickroll: teamState.puzzles_unlocked.has("given_up_blacklight"),
+        en_numbers: teamState.puzzles_unlocked.has("can_do_transmissions"),
       };
       await tbClient.client.telemetry
         .saveEntityAttributes({

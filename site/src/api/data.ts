@@ -261,16 +261,19 @@ abstract class Log<
     since?: number,
   ): Promise<T[]>;
 
-  async getCachedTeamLog(
+  async getCachedLog(
     knex: Knex.Knex,
     redisClient: RedisClient | undefined,
-    teamId: number,
+    teamId?: number,
   ) {
     if (redisClient) {
       try {
+        if (teamId === undefined) {
+          return await this._redisLog.getGlobalLog(redisClient);
+        }
         return await this._redisLog.getTeamLog(redisClient, teamId);
       } catch (err) {
-        console.error("failed to read activity log from redis:", err);
+        console.error("failed to read team activity log from redis:", err);
       }
     }
     const entries = await this.dbGetLog(knex, teamId);

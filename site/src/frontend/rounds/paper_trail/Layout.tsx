@@ -10,32 +10,10 @@ export const DeskItem = styled.a`
   filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
 
   .tooltip {
-    position: absolute;
-    left: 0.25rem;
-    top: -2.25rem;
-    font-size: 1rem;
     font-family: "Kiwi Maru";
-    text-align: center;
-    line-height: 1.25;
     color: ${BG_COLOR};
     background-color: rgba(115, 147, 93, 0.7);
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    visibility: hidden;
-    width: fit-content;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .name {
-      display: flex;
-      align-items: center;
-    }
-
-    .answer {
-      font-weight: bold;
-    }
+    max-width: 300px;
   }
 
   &:hover {

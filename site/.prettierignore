@@ -5,6 +5,7 @@ src/frontend/puzzles/fortunate-calf/solution.mdx
 # These files were provided directly by the puzzle author and should not be
 # modified
 src/frontend/puzzles/wiry-ray/data/*.json
+src/frontend/puzzles/giving-fighter/words.json
 # Ignore artifacts
 dist
 # Ignore types from @mfng

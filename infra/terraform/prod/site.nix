@@ -12,8 +12,8 @@
   };
   sops.keys.site = {};
   data.sops_file.site.source_file = "${../../secrets/prod/site.yaml}";
-  resource.random_password.jwt_secret = {
-    length = 32;
+  resource.tls_private_key.jwt_secret = {
+    algorithm = "RSA";
   };
   resource.random_password.data_api_secret = {
     length = 64;
@@ -26,7 +26,7 @@
     metadata.namespace = "prod";
     metadata.name = "api";
     data = {
-      JWT_SECRET = lib.tfRef "random_password.jwt_secret.result";
+      JWT_SECRET = lib.tfRef "tls_private_key.jwt_secret.private_key_pem_pkcs8";
       DATA_API_SECRET = lib.tfRef "random_password.data_api_secret.result";
       FRONTEND_API_SECRET = lib.tfRef "random_password.frontend_api_secret.result";
       REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
@@ -75,6 +75,7 @@
             AWS_PROFILE = "mitmh2025-puzzup";
             EMAIL_FROM = "info@mitmh2025.com";
             EMAIL_TRANSPORT = "postmark";
+            JWKS_URI = "https://auth.mitmh2025.com/application/o/ops/jwks/";
             #OTEL_METRICS_EXPORTER=console
             #OTEL_LOGS_EXPORTER=console
             #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
@@ -234,6 +235,101 @@
     spec = {
       type = "ClusterIP";
       selector.app = "regsite";
+      port = [
+        {
+          port = 80;
+          protocol = "TCP";
+          target_port = 80;
+        }
+      ];
+    };
+  };
+  gcp.ar.images.images.ops.sourceImage = pkgs.dockerTools.buildLayeredImage {
+    name = "ops";
+    contents = with pkgs; [
+      dockerTools.caCertificates
+      hunt2025.misc
+      hunt2025.ops
+      dockerTools.binSh
+    ];
+    config.Cmd = ["ops"];
+  };
+  resource.kubernetes_secret_v1.ops = {
+    metadata.namespace = "prod";
+    metadata.name = "ops";
+    data = {
+      OAUTH_CLIENT_ID = lib.tfRef ''data.sops_file.site.data["authentik.apps.ops.client_id"]'';
+      OAUTH_CLIENT_SECRET = lib.tfRef ''data.sops_file.site.data["authentik.apps.ops.client_secret"]'';
+    };
+  };
+
+  resource.kubernetes_deployment_v1.ops = {
+    metadata.namespace = "prod";
+    metadata.name = "ops";
+    metadata.labels.app = "ops";
+    spec = {
+      replicas = 1;
+      selector.match_labels.app = "ops";
+      template = {
+        metadata.labels.app = "ops";
+        spec.container = [{
+          name = "ops";
+          image = lib.tfRef config.gcp.ar.images.images.ops.urlRef;
+          env = lib.attrsToList {
+            OPSSITE_PORT = "80";
+            OPSSITE_STATIC_PATH = "${pkgs.hunt2025.ops}/share/ops/static";
+            API_BASE_URL = "http://api/api";
+            OAUTH_SERVER = "https://auth.mitmh2025.com/application/o/ops/.well-known/openid-configuration";
+          } ++ [
+            {
+              name = "OAUTH_CLIENT_ID";
+              value_from = [{
+                secret_key_ref = [{
+                  key = "OAUTH_CLIENT_ID";
+                  name = "ops";
+                }];
+              }];
+            }
+            {
+              name = "OAUTH_CLIENT_SECRET";
+              value_from = [{
+                secret_key_ref = [{
+                  key = "OAUTH_CLIENT_SECRET";
+                  name = "ops";
+                }];
+              }];
+            }
+          ];
+          resources = {
+            limits.cpu = "1";
+            limits.memory = "512Mi";
+            requests.cpu = "250m";
+            requests.memory = "150Mi";
+          };
+          liveness_probe = {
+            http_get = {
+              path = "/healthz";
+              port = 80;
+            };
+            initial_delay_seconds = 3;
+            period_seconds = 3;
+          };
+        }];
+      };
+    };
+  };
+  resource.kubernetes_service_v1.ops = {
+    metadata.namespace = "prod";
+    metadata.name = "ops";
+    metadata.annotations."cloud.google.com/neg" = builtins.toJSON {
+      exposed_ports."80".name = "prod-ops";
+    };
+    lifecycle.ignore_changes = [
+      ''metadata[0].annotations["cloud.google.com/neg-status"]''
+    ];
+    spec = {
+      type = "ClusterIP";
+      selector.app = "ops";
       port = [
         {
           port = 80;

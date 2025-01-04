@@ -13,3 +13,12 @@ export function slotName(slot: PuzzleSlot, puzzleMetadata: PuzzleAPIMetadata) {
 
   return slot.slug;
 }
+
+export function slugTitle(slug: string, puzzleMetadata: PuzzleAPIMetadata) {
+  const metadata = puzzleMetadata[slug];
+  if (metadata) {
+    return metadata.title;
+  }
+
+  return slug;
+}

@@ -300,8 +300,14 @@ in {
           attrs.name = "Admin API access";
           attrs.scope_name = "mitmh2025.com/oauth2/admin";
           attrs.description = "Admin API access";
-          # TODO: Multiple levels of admin
-          attrs.expression = ''return {"admin": True}'';
+          attrs.expression = ''
+            admin = ak_is_group_member(request.user, name="authentik Admins")
+            ops = admin or ak_is_group_member(request.user, name="Ops")
+            return {
+              "admin": admin,
+              "ops": ops,
+            }
+          '';
         }
         # Applications
       ]

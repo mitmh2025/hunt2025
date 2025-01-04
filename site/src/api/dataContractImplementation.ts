@@ -47,9 +47,9 @@ export default function dataContractImplementation({
         return {
           status: 200,
           body: csvStringifySync(
-            Array.from(registrations.values()).map((v) =>
-              v.formatTeamRegistration(),
-            ),
+            Array.from(registrations.values())
+              .map((v) => v.formatTeamRegistrationIfActive())
+              .filter((v) => !!v),
             {
               header: true,
               columns: [

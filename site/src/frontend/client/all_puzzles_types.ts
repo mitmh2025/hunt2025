@@ -24,5 +24,6 @@ export type AllPuzzlesRound = {
 export type AllPuzzlesState = {
   epoch: number;
   rounds: AllPuzzlesRound[];
+  stray: AllPuzzlesPuzzle[];
   currency: number;
 };

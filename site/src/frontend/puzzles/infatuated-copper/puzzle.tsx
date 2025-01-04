@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import gougingOfEyes from "./assets/gouging-of-eyes.mp3";
 import intermentAndSuffocation from "./assets/interment-and-suffocation.mp3";
 import rapidDescents from "./assets/rapid-descents.mp3";
@@ -45,6 +46,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Obscured and unnatural faces</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/b2utstouH58"
+          >
+            [Video link]
+          </a>
           <iframe
             width="315"
             height="560"
@@ -59,6 +66,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Anorexia and hemophilia</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/aujHdRbkVso"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -73,6 +86,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Extreme heat and flames</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/WzJTKfundRo"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -89,11 +108,12 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={intermentAndSuffocation} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
             <div>
               My name is Oliver Kraft. I am a patient at St. Elizabeth’s
-              Hospital in Washington, D.C., and I am probably never gonna get
+              Hospital in Washington, D.C., and I am probably never going to get
               out of here while I live. I accept this horror. I am here on the
               point of this knife because of the Grin Man, who most people call
               Strom Sullivan.
@@ -128,6 +148,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Rot and insects</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/6xrAySGvr-o"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -142,6 +168,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Perdition</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/c1DStbHTxsg"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -156,6 +188,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Venomous spiders</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/N4iqd9LU3xc"
+          >
+            [Video link]
+          </a>
           <iframe
             width="315"
             height="560"
@@ -172,11 +210,12 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={rapidDescents} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
             <div>
               You will be greeted by Earl, who will demonstrate how to make
-              cherries jubilee, staple dish of pioneers in the early days of
+              cherries jubilee, a staple dish of pioneers in the early days of
               town. “You feed a goose cherries until it can no longer walk, or
               stand on its own,” Earl explains. “Then, you light the goose on
               fire, until its screams become whimpers. And when it’s finally
@@ -191,6 +230,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Abyssal labyrinths</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/wTKMKd_8FoU"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -205,6 +250,12 @@ const Puzzle = (): JSX.Element => {
       <Block>
         <div>Content Warning: Relentless pursuit</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/o-jv1XeDj2Q"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"
@@ -221,22 +272,25 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={technologicalSurveillance} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
-            The door to the cabin was in splinters. The windowpanes lay like a
-            thousand busted prayers on the desecrated floor. Piles of some sort
-            of animal scat littered the floor and were smeared across the bare
-            walls. What furniture had been in the front room was no longer fit
-            for sittin’. Something or someone had torn through this house and
-            befouled it. Someone or something had been looking for Sarah Avery.
-            Sarah Avery who made the voices in his head practically salivate.
-            Sarah Avery who he wouldn’t know if he saw her because her family
-            never came to church and had never gotten saved nor baptized. Sarah
-            Avery who was just a little girl, and, thankfully, Sarah Avery who
-            was not here. Between the voices’ rapturous approval of his presence
-            in this place and the yammerin’ of Annie, who honestly could not
-            shut up if you paid her good money, the Reverend’s head was about to
-            bust.
+            <div>
+              The door to the cabin was in splinters. The windowpanes lay like a
+              thousand busted prayers on the desecrated floor. Piles of some
+              sort of animal scat littered the floor and were smeared across the
+              bare walls. What furniture had been in the front room was no
+              longer fit for sittin’. Something or someone had torn through this
+              house and befouled it. Someone or something had been looking for
+              Sarah Avery. Sarah Avery who made the voices in his head
+              practically salivate. Sarah Avery who he wouldn’t know if he saw
+              her because her family never came to church and had never gotten
+              saved nor baptized. Sarah Avery who was just a little girl, and,
+              thankfully, Sarah Avery who was not here. Between the voices’
+              rapturous approval of his presence in this place and the yammerin’
+              of Annie, who honestly could not shut up if you paid her good
+              money, the Reverend’s head was about to bust.
+            </div>
           </details>
         </Indent>
       </Block>
@@ -245,21 +299,30 @@ const Puzzle = (): JSX.Element => {
         <Indent>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption -- provided inline below */}
           <audio controls src={gougingOfEyes} />
+          <br className={COPY_ONLY_CLASS} />
           <details>
             <summary>Transcript</summary>
-            [piano music intro] Sympathetic magic is the lore behind the belief
-            that the human body, however temporary and fragile it might be, also
-            contains incredible power, and that this power can be transferred to
-            others. Rather than extinguishing that power, death can often be the
-            key that unlocks its fullest potential. All you need is a human
-            corpse, a pressing need, and a very strong stomach. I’m the
-            narrator, and this... [long pause] ...is a podcast.
+            <div>
+              [piano music intro] Sympathetic magic is the lore behind the
+              belief that the human body, however temporary and fragile it might
+              be, also contains incredible power, and that this power can be
+              transferred to others. Rather than extinguishing that power, death
+              can often be the key that unlocks its fullest potential. All you
+              need is a human corpse, a pressing need, and a very strong
+              stomach. I’m the narrator, and this…[long pause]…is a podcast.
+            </div>
           </details>
         </Indent>
       </Block>
       <Block>
         <div>Content Warning: Missing and abandoned children</div>
         <Indent>
+          <a
+            className={COPY_ONLY_CLASS}
+            href="https://www.youtube.com/embed/DFf9XAwp2z4"
+          >
+            [Video link]
+          </a>
           <iframe
             width="560"
             height="315"

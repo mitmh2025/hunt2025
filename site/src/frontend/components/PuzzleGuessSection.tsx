@@ -30,6 +30,10 @@ const GuessSectionWrapper = styled.section`
   @media ${deviceMax.md} {
     grid-column: 1 / 3;
   }
+
+  @media print {
+    display: none;
+  }
 `;
 
 const GuessTable = styled.table`
@@ -62,6 +66,14 @@ const Form = styled.form`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+`;
+
+const RateLimitNotice = styled.div`
+  padding: 0.5rem 1rem;
+  background: #ffffff33;
+  margin-bottom: 0.5rem;
+  font-family: var(--body-font);
+  font-size: 1rem;
 `;
 
 const PuzzleGuessForm = ({
@@ -150,10 +162,10 @@ const PuzzleGuessForm = ({
     <Form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
       {formError ? <div>Error: {formError}</div> : undefined}
       {rateLimitedUntil ? (
-        <div>
+        <RateLimitNotice>
           Your submissions are being rate-limited and will be rejected until{" "}
           {rateLimitedUntil.toLocaleTimeString()}
-        </div>
+        </RateLimitNotice>
       ) : undefined}
       <Label htmlFor="guess-input">Submit guess</Label>
       <TextInput

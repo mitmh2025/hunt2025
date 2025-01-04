@@ -6,6 +6,8 @@ import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
 import Superlatives from "./acute-ski";
+import GiveThisGridAShake from "./adored-embassy";
+import FormulaWon from "./alarming-face";
 import LabScrabble from "./amused-soul";
 import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
@@ -16,11 +18,13 @@ import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
 import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
+import StarCrossed from "./carefree-ghost";
 import ABadlyBrokenQuote from "./cavernous-angel";
 import EducationalRiteOfPassage from "./circular-greece";
 import HalfBaked from "./classic-link";
 import TheInspectre from "./clean-ivory";
 import EponymousForensicAccountant from "./colorless-china";
+import CheckadeezWordsOut from "./complex-bun";
 import NetworkingEvent from "./confused-antarctica";
 import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
@@ -36,11 +40,13 @@ import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
+import NoNotes from "./false-pole";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
 import GivenUp from "./giant-switch";
+import ChatGPT from "./giving-fighter";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
@@ -76,25 +82,30 @@ import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
 import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
+import HisLifeStory from "./oily-date";
 import ZuluLima from "./opulent-fair";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
+import OWoeIsMe from "./past-jam";
 import TheUltimateInsult from "./periodic-dance";
 import BarTalk from "./personal-chocolate";
 import { makePlaceholder } from "./placeholder";
 import WeirdoThreadedDoodads from "./plain-roulette";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
+import CelestialRope from "./powerful-berry";
 import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
+import InCommunicadoTonight from "./rare-block";
 import ASudoku from "./recent-ship";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import SyntheticTagsonomy from "./rubbery-tooth";
 import DroppingTheBall from "./rundown-spot";
+import PawPrintDetective from "./rural-helicopter";
 import MagnifyingGlassIce from "./sandy-atlantis";
 import JustFingBehave from "./scornful-band";
 import WhereAmI from "./scornful-screen";
@@ -106,6 +117,7 @@ import The10000SheetExcelFile from "./shoddy-table";
 import PapasStash from "./shy-embassy";
 import PapasBookcaseBlacklight from "./sick-crown";
 import IntroductionToDecryption from "./silky-ninja";
+import ArtHistory from "./similar-part";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
@@ -137,19 +149,14 @@ import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
 
-const PlaceholderISP06 = makePlaceholder(
-  "placeholder_isp06",
-  "Placeholder 06",
+const PlaceholderISP09 = makePlaceholder(
+  "placeholder_isp09",
+  "Placeholder 09",
   "ATHLETIC CLUB",
 );
-const CahfeeRegularStub = makePlaceholder(
-  "cahfee_regulah",
-  "Cahfee, Regulah",
-  "FOOD COURT",
-);
-const PlaceholderISP08 = makePlaceholder(
-  "placeholder_isp08",
-  "Placeholder 08",
+const PlaceholderISP10 = makePlaceholder(
+  "placeholder_isp10",
+  "Placeholder 10",
   "MANUEL ORIBE",
 );
 
@@ -159,6 +166,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
+  chatgpt: ChatGPT,
+  check_a_deez_words_out: CheckadeezWordsOut,
   downright_backwards: DownrightBackwards,
   dropping_the_ball: DroppingTheBall,
   drunkens_and_flagons: DrunkensAndFlagons,
@@ -168,6 +177,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
   mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
   neatly_drawn: NeatlyDrawn,
+  no_notes: NoNotes,
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
@@ -192,6 +202,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
   anything_is_popsicle: AnythingIsPopsicle,
+  art_history: ArtHistory,
   be_mine: BeMine,
   big_names: BigNames,
   borderline_personality: BorderlinePersonality,
@@ -232,8 +243,10 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   chemicals_are_sexy: ChemicalsAreSexy,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
+  his_life_story: HisLifeStory,
   incognito: Incognito,
   maze_of_lies: MazeOfLies,
+  star_crossed: StarCrossed,
   the_eras_puzzle: TheErasPuzzle,
   the_inspectre: TheInspectre,
   youre_playing_it_wrong: YourePlayingItWrong,
@@ -251,15 +264,15 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
   cross_spread: CrossSpread, // globe
-  // isp03 family portrait?
+  paw_print_detective: PawPrintDetective, // family portrait
   this_is_just_a_test: ThisIsJustATest, // typewriter
   // isp05 desk lamp?
 
-  placeholder_isp06: PlaceholderISP06, // candy, behind desk drawer/directional lock
-  cahfee_regulah: CahfeeRegulah, // rings, behind binary switches
-  placeholder_isp08: PlaceholderISP08, // money, behind safe/combination lock
-  the_center_is_in_plain_sight: TheCenterIsInPlainSight, // ledger, behind numeric lock/rug
-  jargon: Jargon, // note, inside cryptex
+  cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
+  the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
+  jargon: Jargon, // money, behind safe/combination lock
+  placeholder_isp09: PlaceholderISP09, // ledger, behind numeric lock/rug
+  placeholder_isp10: PlaceholderISP10, // note, inside cryptex
 
   a_heap_of_clards: AHeapOfClards,
   bermuda_triangle: BermudaTriangle,
@@ -275,45 +288,53 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // * SPARE PARTS should go to the_center_is_in_plain_sight_blacklight
   // * LIFEFORCE should go to jargon_blacklight
   // * VOYAGERS should go to cahfee_regulah_blacklight
-  // * the other two have not reached postprod yet
-  placeholder_isp06_blacklight: blacklightPuzzle(PlaceholderISP06, {
-    answer: "LIFEFORCE",
-    asset: candy_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegularStub, {
+  // * the other two have not reached postprod yet, but when they do:
+  //   * BROADCAST_NEWS should go to given_up_blacklight
+  //   * BRAZIL should go to smoke_em_if_youve_got_em
+
+  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegulah, {
     answer: "VOYAGERS",
-    asset: rings_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  placeholder_isp08_blacklight: blacklightPuzzle(PlaceholderISP08, {
-    answer: "SPARE PARTS",
-    asset: money_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  jargon_blacklight: blacklightPuzzle(Jargon, {
-    answer: "BRAZIL",
-    asset: cryptex_note_blacklight,
-    assetAlt: "TODO",
+    asset: candy_modal_blacklight,
+    assetAlt:
+      "Rule ROTARY: You haven’t lived here long, have you? No one calls them “traffic circles” or “roundabouts.” In any case, add a donut to your purchase for each one you drove on. Rule TUMMYACHE: If you do not have enough donuts to fulfill your team’s request, do not extract any letters. Instead, feel shame.",
   }),
   the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
     TheCenterIsInPlainSight,
     {
-      answer: "BROADCAST NEWS",
-      asset: ledger_blacklight,
-      assetAlt: "TODO",
+      answer: "SPARE PARTS",
+      asset: rings_modal_blacklight,
+      assetAlt: "The third quartile was also always in plain sight.",
     },
   ),
+  jargon_blacklight: blacklightPuzzle(Jargon, {
+    answer: "LIFEFORCE",
+    asset: money_modal_blacklight,
+    assetAlt: "Shift by difference from 8V",
+  }),
+  placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
+    answer: "BROADCAST NEWS",
+    asset: ledger_blacklight,
+    assetAlt: "Same locations tuned to PM 23pi/20",
+  }),
+  placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
+    answer: "BRAZIL",
+    asset: cryptex_note_blacklight,
+    assetAlt:
+      "What good is a cigarette without a light? Use a physical blacklight on the filters.",
+  }),
 
   papas_bookcase: PapasBookcase,
   papas_stash: PapasStash,
   papas_bookcase_blacklight: PapasBookcaseBlacklight,
 
   // The Background Check
+  celestial_rope: CelestialRope,
   deepfrost: Deepfrost,
+  formula_won: FormulaWon,
   he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
   kindred_spirits: KindredSpirits,
   knights_of_the_square_table: KnightsOfTheSquareTable,
+  o_woe_is_me: OWoeIsMe,
   reuse_and_recyclability: ReuseAndRecyclability,
   story_vision_contest: StoryVisionContest,
   the_10000_sheet_excel_file: The10000SheetExcelFile,
@@ -330,18 +351,20 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
+  can_do_transmissions: CanDoTransmissions,
   cross_dash_word: CrossDashWord,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   estimation_dot_jpg: EstimationDotJpg,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
+  give_this_grid_a_shake: GiveThisGridAShake,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
+  in_communicado_tonight: InCommunicadoTonight,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
-  can_do_transmissions: CanDoTransmissions,
   garden_anecdotes: GardenAnecdotes,
   given_up: GivenUp,
   the_thief: TheThief,

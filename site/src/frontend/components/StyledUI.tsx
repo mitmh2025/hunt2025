@@ -46,7 +46,7 @@ export const ButtonSecondary = styled(Button)`
   }
 `;
 
-export const TextInput = styled.input`
+const inputStyles = `
   border-radius: 0.5rem;
   border: 1px solid var(--black);
   box-shadow: 0 0 0 2px var(--gold-700);
@@ -59,23 +59,23 @@ export const TextInput = styled.input`
 
   &:focus {
     box-shadow: 0 0 0 0.25rem var(--black);
+  }
+
+  &:disabled {
+    background-color: var(--gray-100);
+    box-shadow: 0 0 0 2px var(--gray-300);
+    border-color: var(--gray-400);
+    color: var(--gray-500);
+    cursor: not-allowed;
   }
 `;
 
-export const TextArea = styled.textarea`
-  border-radius: 0.5rem;
-  border: 1px solid var(--black);
-  box-shadow: 0 0 0 2px var(--gold-700);
-  padding: 0.5rem;
-  font-family: var(--body-font);
-  color: var(--black);
-  font-size: 1rem;
-  margin: 0.5rem;
-  background: var(--gray-000);
+export const TextInput = styled.input`
+  ${inputStyles}
+`;
 
-  &:focus {
-    box-shadow: 0 0 0 0.25rem var(--black);
-  }
+export const TextArea = styled.textarea`
+  ${inputStyles}
 `;
 
 export const Wrapper = styled.div`

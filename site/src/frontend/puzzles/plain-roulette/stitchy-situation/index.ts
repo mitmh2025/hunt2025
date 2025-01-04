@@ -6,6 +6,7 @@ const puzzle: SubpuzzleDefinition = {
   slug: "stitchy_situation",
   content: {
     component: Puzzle,
+    copyable: true,
   },
 };
 

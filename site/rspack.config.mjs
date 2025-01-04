@@ -499,6 +499,7 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/rounds/illegal_search/client/Telephone.tsx",
 
       // Included on specific puzzle pages
+      puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
@@ -637,5 +638,43 @@ export default function createConfigs(_env, argv) {
     ],
   };
 
-  return [workerConfig, clientConfig, serverConfig];
+  const miscServerConfig = {
+    name: "misc",
+    entry: {
+      ops: "./ops/server/main.ts",
+      sync2tb: "./radioman/sync2tb.ts",
+      tbprovision: "./radioman/tbprovision.ts",
+      tbutil: "./radioman/tbutil.ts",
+    },
+    target: "node22",
+    module: {
+      rules: [
+        {
+          test: /\.ts$/,
+          //exclude: [/node_modules/],
+          loader: "builtin:swc-loader",
+          options: {
+            jsc: {
+              parser: {
+                syntax: "typescript",
+              },
+            },
+          },
+          type: "javascript/auto",
+        },
+      ],
+    },
+    resolve: {
+      extensions: [".ts", ".js", ".json"],
+    },
+    experiments: {
+      outputModule: true,
+    },
+    output: {
+      module: true,
+      path: path.join(outputDirname, "misc"),
+    },
+  };
+
+  return [workerConfig, clientConfig, serverConfig, miscServerConfig];
 }

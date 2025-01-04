@@ -19,6 +19,7 @@ import {
 
 const StyledTable = styled.table`
   margin: 1em 0;
+  border-spacing: 8px;
 `;
 
 const Puzzle = (): JSX.Element => {

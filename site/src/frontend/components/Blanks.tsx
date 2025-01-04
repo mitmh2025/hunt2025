@@ -34,8 +34,10 @@ export type BlankProps = {
   structure: string[];
   /** List describing the contents of the blanks */
   fill?: React.ReactNode[];
-  /** Whether fill goes above or below the line */
+  /** Whether fill goes above or below the line. Default: above */
   fillPosition?: "above" | "below";
+  /** Whether fill goes above or below the line when copy/pasted. Default: below */
+  fillCopyPosition?: "above" | "below";
   /** A function that applies custom styles to a cell based on the index */
   getAdditionalCellStyles?: (index: number) => React.CSSProperties;
 
@@ -45,6 +47,7 @@ export type BlankProps = {
 export const CopyableBlanks = ({
   structure,
   fill,
+  fillCopyPosition = "below",
   getAdditionalCellStyles,
 }: BlankProps): JSX.Element => {
   return (
@@ -55,10 +58,14 @@ export const CopyableBlanks = ({
             ...(getAdditionalCellStyles?.(i) ?? {}),
             ...(char === "_" ? { borderBottom: "1px solid black" } : {}),
           };
-          return <td key={i} style={styles} />;
+          return (
+            <td key={i} style={styles}>
+              {fillCopyPosition === "above" ? fill?.[i] ?? " " : ""}
+            </td>
+          );
         })}
       </tr>
-      {fill && (
+      {fill && fillCopyPosition === "below" && (
         <tr>
           {fill.map((content, i) => (
             <td key={i} style={{ textAlign: "center" }}>
@@ -76,6 +83,7 @@ const Blanks = ({
   structure,
   fill,
   fillPosition = "above",
+  fillCopyPosition = "below",
   getAdditionalCellStyles,
 }: BlankProps): JSX.Element => {
   return (
@@ -101,6 +109,7 @@ const Blanks = ({
       <CopyableBlanks
         structure={structure}
         fill={fill}
+        fillCopyPosition={fillCopyPosition}
         getAdditionalCellStyles={getAdditionalCellStyles}
       />
     </>

@@ -16,6 +16,7 @@ const puzzle: PuzzleDefinition = {
   ],
   content: {
     component: Puzzle,
+    copyable: true,
   },
   solution: {
     component: Solution,
@@ -70,7 +71,12 @@ const puzzle: PuzzleDefinition = {
         "You may be able to solve this meta without all the answers and figure out the remaining feeder assignments later.",
     },
   ],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["ROT THIRTEEN"],
+      reply: "Keep going!",
+    },
+  ],
 };
 
 export default puzzle;

@@ -1,13 +1,18 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
-import DesertedNinjaStub from "./routes/DesertedNinja.tsx";
+import EmailTeams from "./routes/EmailTeams.tsx";
 import Home from "./routes/Home.tsx";
 import Puzzles from "./routes/Puzzles.tsx";
+import Team from "./routes/Team.tsx";
+import TeamIndex from "./routes/TeamIndex.tsx";
+import DesertedNinjaStub from "./routes/DesertedNinja.tsx";
 import theme from "./theme.ts";
 
 const router = createBrowserRouter([
@@ -27,6 +32,18 @@ const router = createBrowserRouter([
             Component: Puzzles,
           },
           {
+            path: "teams",
+            Component: TeamIndex,
+          },
+          {
+            path: "teams/:username",
+            Component: Team,
+          },
+          {
+            path: "email-teams/",
+            Component: EmailTeams,
+          },
+          {
             path: "deserted-ninja",
             Component: DesertedNinjaStub,
           },
@@ -44,11 +61,12 @@ if (!root) {
 createRoot(root).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-
-      <OpsDataProvider>
-        <RouterProvider router={router} />
-      </OpsDataProvider>
+      <LocalizationProvider dateAdapter={AdapterLuxon}>
+        <CssBaseline />
+        <OpsDataProvider>
+          <RouterProvider router={router} />
+        </OpsDataProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   </StrictMode>,
 );

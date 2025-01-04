@@ -33,8 +33,11 @@ const ActivityLogItem = ({
     case "currency_adjusted":
       description = (
         <>
-          <td>💰</td>
-          <td>{entry.currency_delta} currency was granted</td>
+          <td>🗝️</td>
+          <td>
+            {entry.currency_delta} key
+            {entry.currency_delta === 1 ? " was" : "s were"} granted
+          </td>
         </>
       );
       break;
@@ -240,8 +243,8 @@ const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
         <tr>
           <th>Time</th>
           <th colSpan={2}>Event</th>
-          <th>💰 change</th>
-          <th>💰 total</th>
+          <th>🗝️ change</th>
+          <th>🗝️ total</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>

@@ -79,7 +79,7 @@ const DATA = [
     adventurerClass: "Artificer",
     brand: "WOOLLY",
     drink: "Wine",
-    epithet: "holey",
+    epithet: "“how many rings do you need”",
     transform: "number of closed loops in name",
     transformed: "TWO",
     numDrinks: 21,
@@ -147,8 +147,7 @@ const Solution = (): JSX.Element => {
         assume a correlation between brand name and adventurer drink type from
         this. As additional pieces of confirmatory data, the quantity of each
         drink on the receipt corresponds with the amount of drinks the correct
-        adventurer had, and each drink stops appearing in the receipt in the
-        order in which their adventurer passes out.
+        adventurer had.
       </p>
       <HScrollTableWrapper>
         <StyledTable>
@@ -227,6 +226,10 @@ const Solution = (): JSX.Element => {
         </li>
       </ul>
       <p>
+        Eight different drink totals are mentioned: 5, 7, 8, 9, 12, 13, 15, and
+        21.
+      </p>
+      <p>
         From Fighter # 3, we know that Tabitha had less than 10 drinks, but not
         exactly 8. From Wizard # 3, we know that Tabitha can’t have had 7
         drinks, because Oliver had that number of drinks. From Artificer # 1,
@@ -246,8 +249,8 @@ const Solution = (): JSX.Element => {
         From Bard # 1, the Artificer cannot be Alison, because the Artificer had
         the most drinks and the Bard had more drinks than Alison. The Artificer
         also cannot be any of Gracie, Oliver, Patrick, Tabitha, and Yaron,
-        because they had the wrong number of drinks. Therefore the Artificer is
-        August.
+        because they had the wrong number of drinks. From Artificer #2, we know
+        the Artificer is not Bill. Therefore, the Artificer is August.
       </p>
       <p>
         From Sorcerer # 1, The Fighter was not drinking fernet, gin, rye,
@@ -279,14 +282,15 @@ const Solution = (): JSX.Element => {
         From Paladin # 3, rye and gin had the fewest number of drinks. Oliver
         the Rogue had 7 drinks of gin, so Alison the Sorcerer must have had 5
         drinks of Rye. Also from Paladin # 3, tequila had the most drinks of the
-        spirits. Ale had 13 drinks, mead had 15 drinks, and wine had 21 drinks,
-        so tequila had 12 drinks. That means tequila was drunk by Patrick the
+        spirits. From Paladin #1, we know August the Artificer had 21 drinks of
+        wine. Ale had 13 drinks, mead had 15 drinks, and wine had 21 drinks, so
+        tequila had 12 drinks. That means tequila was drunk by Patrick the
         Wizard.
       </p>
       <p>
         From Monk # 1, Tabitha had a drink made from grapes. From earlier
-        deduction, Tabitha is not drinking ale, gin, mead, tequila, or wine.
-        Vodka is not made from grapes, so Tabitha was drinking fernet. By
+        deduction, Tabitha is not drinking ale, gin, mead, rye, tequila, or
+        wine. Vodka is not made from grapes, so Tabitha was drinking fernet. By
         process of elimination, Yaron was drinking vodka.
       </p>
       <p>
