@@ -28,6 +28,7 @@ type TeamPuzzleListEntry = {
   slug: string;
   type: "puzzle" | "meta";
   round: string;
+  puzzleOrder: number;
   status:
     | {
         state: "locked";
@@ -148,14 +149,14 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         }
       });
 
-      return bigBoardTeam.rounds.flatMap((round) => {
+      return bigBoardTeam.rounds.flatMap((round, roundIndex) => {
         return (
           [
             ["puzzle", round.puzzles],
-            ["meta", [...round.metas, ...round.supermetas]],
+            ["meta", [...round.supermetas, ...round.metas]],
           ] as const
         ).flatMap(([type, puzzles]) => {
-          return puzzles.map((puzzle) => {
+          return puzzles.map((puzzle, puzzleIndex) => {
             const slug = puzzle.slug;
             const logData = puzzleLogData[slug] ?? {};
             let status: TeamPuzzleListEntry["status"] = { state: "locked" };
@@ -181,6 +182,9 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
               slug,
               type,
               round: round.title,
+              puzzleOrder:
+                roundIndex * 1000 +
+                (type === "puzzle" ? puzzleIndex + 100 : puzzleIndex),
               status,
               guesses: logData.guesses ?? 0,
               hints: null, // TODO
@@ -204,6 +208,9 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
           header: "Round",
           filterVariant: "multi-select",
           filterSelectOptions: bigBoardTeam.rounds.map((round) => round.title),
+          sortingFn: (rowA, rowB) => {
+            return rowA.original.puzzleOrder - rowB.original.puzzleOrder;
+          },
         }),
         columnHelper.accessor("status", {
           header: "Status",
@@ -218,11 +225,9 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
             const value = row.getValue(col) as TeamPuzzleListEntry["status"];
             return filter.includes(value.state);
           },
-          sortingFn: (rowA, rowB, col) => {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- eslint bug, getValue returns unknown
-            const statusA = rowA.getValue(col) as TeamPuzzleListEntry["status"];
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- eslint bug, getValue returns unknown
-            const statusB = rowB.getValue(col) as TeamPuzzleListEntry["status"];
+          sortingFn: (rowA, rowB) => {
+            const statusA = rowA.original.status;
+            const statusB = rowB.original.status;
 
             if (statusA.state === "locked" && statusB.state === "locked") {
               return 0;
