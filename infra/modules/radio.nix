@@ -8,6 +8,10 @@ in {
       externalHostname = mkOption {
         type = types.str;
       };
+      jwksUri = mkOption {
+        type = types.nullOr types.str;
+        default = "${config.hunt2025.site.apiBaseUrl}/jwks";
+      };
     };
   };
   config = lib.mkIf cfg.enable {
@@ -32,6 +36,10 @@ in {
         rtpAddress = ":50000";
         rtcpAddress = ":50001";
         webrtcLocalUDPAddress = ":50189";
+
+        authMethod = lib.mkIf (cfg.jwksUri != null) "jwt";
+        authJWTJWKS = lib.mkIf (cfg.jwksUri != null) cfg.jwksUri;
+        authJWTClaimKey = "media";
       };
     };
     services.nginx = {
