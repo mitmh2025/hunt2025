@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import untitled1 from "./assets/untitled1.jpg";
 import untitled2 from "./assets/untitled2.png";
 import untitled3 from "./assets/untitled3.png";
@@ -103,32 +107,34 @@ const Solution = (): JSX.Element => {
         Teams that submit artwork to us then receive the final answer:{" "}
         <PuzzleAnswer>FUR COAT</PuzzleAnswer>.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Our Title</th>
-          <th>Writing Team</th>
-          <th>Year</th>
-          <th>Hunt</th>
-          <th>Title</th>
-          <th>Answer</th>
-        </tr>
-        {DATA.map(([href, untitled, team, year, hunt, title, answer], i) => (
-          <tr key={i}>
-            <td>
-              <a href={href} target="_blank" rel="noreferrer">
-                {untitled}
-              </a>
-            </td>
-            <td>{team}</td>
-            <td>{year}</td>
-            <td>{hunt}</td>
-            <td>{title}</td>
-            <td>
-              <Mono>{answer}</Mono>
-            </td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Our Title</th>
+            <th>Writing Team</th>
+            <th>Year</th>
+            <th>Hunt</th>
+            <th>Title</th>
+            <th>Answer</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(([href, untitled, team, year, hunt, title, answer], i) => (
+            <tr key={i}>
+              <td>
+                <a href={href} target="_blank" rel="noreferrer">
+                  {untitled}
+                </a>
+              </td>
+              <td>{team}</td>
+              <td>{year}</td>
+              <td>{hunt}</td>
+              <td>{title}</td>
+              <td>
+                <Mono>{answer}</Mono>
+              </td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };
