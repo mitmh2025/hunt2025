@@ -3,7 +3,7 @@ import React from "react";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { Wrapper } from "../../components/StyledUI";
 
-export async function prototypeHandler(req: Request) {
+export function prototypeHandler(req: Request) {
   const teamState = req.teamState;
   if (teamState === undefined) return undefined;
 
@@ -11,10 +11,8 @@ export async function prototypeHandler(req: Request) {
 
   const node = (
     <Wrapper>
-      <h1>Prototype</h1>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="prototype-root">
-      </div>
+      <div id="minigame-root"></div>
     </Wrapper>
   );
 
@@ -22,9 +20,8 @@ export async function prototypeHandler(req: Request) {
     {
       node,
       entrypoints: ["prototype" as const],
-      title: "Prototype",
+      title: "Minigame",
     },
     teamState,
   );
 }
-
