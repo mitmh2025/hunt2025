@@ -40,7 +40,7 @@ const DATA = [
   {
     sett: "DO2 W2 B2 W4 DO2 W2 B2 W4 T2 O2 W6 N2 DT2 R2 O2 W2 B2 W8 R2 W2 B2 W2 R2 N2 W2 N2 W10 DR2 O2 N2 B2 W2 B4 W4",
     filler: "W",
-    blanks: "DO_B__DO_B__TO___NDTRO_B____R_B__N_N______RONB_BB__",
+    blanks: "DO_B__DO_B__TO___NDTRO_B____R_B__N_N_____DRONB_BB__",
     quote: "doubledoubletoilandtroublefireburnandcauldronbubble",
   },
   {
