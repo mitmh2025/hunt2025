@@ -112,4 +112,14 @@ export const adminContract = c.router({
       }),
     },
   },
+  unlockPuzzle: {
+    method: "POST",
+    path: "/admin/puzzles/:slug/unlock",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
 });
