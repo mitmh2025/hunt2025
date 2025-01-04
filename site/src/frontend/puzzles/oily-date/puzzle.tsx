@@ -158,7 +158,7 @@ export const ORDERED_NOTES: [string, string][] = [
   ],
 ];
 
-const ORDERED_SLIDES: string[][] = [
+const ORDERED_VIDEOS: string[][] = [
   [ouija1, ouija2, ouija3, ouija4, ouija5],
   [ouija6, ouija7, ouija8, ouija9, ouija10],
   [ouija11, ouija12, ouija13, ouija14, ouija15],
@@ -191,15 +191,15 @@ const Puzzle = (): JSX.Element => {
       <FlexWrapper>
         <>
           <p>
-            <strong>Slide Links</strong>
+            <strong>Video Links</strong>
           </p>
           <table>
-            {ORDERED_SLIDES.map((row, i) => (
-              <tr key={`slide-row-${i}`}>
+            {ORDERED_VIDEOS.map((row, i) => (
+              <tr key={`video-row-${i}`}>
                 {row.map((href, j) => (
-                  <td key={`slide-${i}-${j}`}>
+                  <td key={`video-${i}-${j}`}>
                     <a href={href} target="_blank" rel="noreferrer">
-                      {`Slide ${i * 5 + j + 1}`}
+                      {`Video ${i * 5 + j + 1}`}
                     </a>
                   </td>
                 ))}
