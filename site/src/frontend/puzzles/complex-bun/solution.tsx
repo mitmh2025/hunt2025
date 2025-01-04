@@ -93,7 +93,6 @@ const PINK_HIGHLIGHT_INDICES = reduceCoordinatesToIndices(
     { row: 26, col: 9 },
     { row: 27, col: 6 },
     { row: 27, col: 9 },
-    { row: 28, col: 5 },
     { row: 28, col: 9 },
     { row: 29, col: 9 },
     { row: 30, col: 8 },
