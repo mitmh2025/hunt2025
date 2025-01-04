@@ -22,6 +22,7 @@ import {
   exportJWK,
   exportSPKI,
   importPKCS8,
+  type JWTPayload,
   type KeyLike,
   SignJWT,
 } from "jose";
@@ -83,7 +84,7 @@ type PuzzleState = ServerInferResponseBody<
   200
 >;
 
-type JWTPayload = {
+type HuntJWTPayload = {
   user?: string;
   team_id?: number;
   sess_id?: string;
@@ -153,7 +154,7 @@ async function newPassport({
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
       },
-      function (jwtPayload: JWTPayload, done) {
+      function (jwtPayload: HuntJWTPayload, done) {
         if (!jwtPayload.team_id) {
           console.warn(
             "JWT valid but missing team_id; treating as unauthorized",
@@ -217,7 +218,7 @@ async function newPassport({
         ]),
         secretOrKey: jwtPublicKey,
       },
-      function (jwtPayload: JWTPayload, done) {
+      function (jwtPayload: HuntJWTPayload, done) {
         if (!jwtPayload.adminUser) {
           console.warn(
             "JWT valid but missing adminUser; treating as unauthorized",
@@ -340,6 +341,15 @@ export async function getRouter({
     frontendApiSecret,
     jwksUri,
   });
+
+  const mintToken = (payload: JWTPayload) => {
+    return new SignJWT(payload)
+      .setProtectedHeader({
+        alg: jwtPrivateKey.alg,
+        kid: "hunt",
+      })
+      .sign(jwtPrivateKey.privateKey);
+  };
 
   const s = initServer();
 
@@ -622,27 +632,20 @@ export async function getRouter({
           .select("username", "id")
           .first();
         if (team !== undefined) {
-          const token = await new SignJWT({
-            user: team.username,
-            team_id: team.id,
-            sess_id: genId(),
-            media: [
-              {
-                action: "read",
-                path: `~^/teams/${team.id}/`,
-              },
-            ],
-          })
-            .setProtectedHeader({
-              alg: jwtPrivateKey.alg,
-              kid: "hunt",
-            })
-            .sign(jwtPrivateKey.privateKey);
-
           return {
             status: 200,
             body: {
-              token: token,
+              token: await mintToken({
+                user: team.username,
+                team_id: team.id,
+                sess_id: genId(),
+                media: [
+                  {
+                    action: "read",
+                    path: `~^/teams/${team.id}/`,
+                  },
+                ],
+              }),
             },
           };
         }
@@ -1035,6 +1038,16 @@ export async function getRouter({
       },
     },
     admin: {
+      mintToken: {
+        // Not expected to be called by the frontend, but will be called by ancillary processes.
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: async ({ body }) => {
+          return {
+            status: 200,
+            body: await mintToken(body),
+          };
+        },
+      },
       getTeamState: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId } }) => {
