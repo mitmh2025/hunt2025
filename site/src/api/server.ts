@@ -47,12 +47,8 @@ import {
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
-  addOpsAdmin,
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
-  getOpsAdmins,
-  isOpsAdmin,
-  removeOpsAdmin,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -150,17 +146,11 @@ function newPassport({
         jwksUri,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
         function (_, jwtPayload: AuthentikJWTPayload, done) {
-          if (!jwtPayload.admin) {
-            console.warn(
-              "JWT valid but missing admin; treating as unauthorized",
-              jwtPayload,
-            );
-            done(null, false);
-            return;
-          }
           done(null, ADMIN_USER_ID, {
             jwtPayload,
             adminUser: jwtPayload.email,
+            permissionAdmin: !!jwtPayload.admin,
+            permissionOps: !!jwtPayload.ops,
           });
         },
       ),
@@ -471,25 +461,42 @@ export function getRouter({
     },
   ) as RequestHandlerWithQuery;
 
-  function requireOpsAdmin(req: Request, res: Response, next: NextFunction) {
+  function requireOpsPermission(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     const userEmail = req.authInfo?.adminUser;
     if (!userEmail) {
       res.sendStatus(403);
       return;
     }
 
-    isOpsAdmin(knex, userEmail)
-      .then((isAdmin) => {
-        if (isAdmin) {
-          next();
-        } else {
-          res.sendStatus(403);
-        }
-      })
-      .catch((e: unknown) => {
-        console.error("Error checking if user is ops admin", e);
-        res.sendStatus(500);
-      });
+    if (!req.authInfo?.permissionOps) {
+      res.sendStatus(403);
+      return;
+    }
+
+    next();
+  }
+
+  function requireAdminPermission(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    const userEmail = req.authInfo?.adminUser;
+    if (!userEmail) {
+      res.sendStatus(403);
+      return;
+    }
+
+    if (!req.authInfo?.permissionAdmin) {
+      res.sendStatus(403);
+      return;
+    }
+
+    next();
   }
 
   // We merge contracts here so that we can implement additional contracts
@@ -925,13 +932,13 @@ export function getRouter({
     },
     admin: {
       getTeamState: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireOpsPermission],
         handler: async ({ params: { teamId } }) => {
           return await getTeamState(parseInt(teamId, 10));
         },
       },
       getTeamContacts: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireOpsPermission],
         handler: async () => {
           const { entries } = await teamRegistrationLog.getCachedLog(
             knex,
@@ -977,7 +984,7 @@ export function getRouter({
         },
       },
       sendTeamEmail: {
-        middleware: [adminAuthMiddleware, requireOpsAdmin],
+        middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ body }) => {
           const { entries } = await teamRegistrationLog.getCachedLog(
             knex,
@@ -1051,7 +1058,7 @@ export function getRouter({
         },
       },
       getPuzzleState: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireOpsPermission],
         handler: async ({ params: { teamId, slug } }) => {
           const team_id = parseInt(teamId, 10);
           const state = await getPuzzleState(team_id, slug, knex);
@@ -1068,7 +1075,7 @@ export function getRouter({
         },
       },
       getPuzzleMetadata: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireOpsPermission],
         handler: () => {
           const metadata = Object.fromEntries(
             Object.entries(PUZZLES).map(([slug, definition]) => {
@@ -1092,7 +1099,7 @@ export function getRouter({
         },
       },
       grantKeys: {
-        middleware: [adminAuthMiddleware, requireOpsAdmin],
+        middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ body: { teamIds, amount }, req }) => {
           let singleTeamId: number | undefined = undefined;
           if (teamIds !== "all" && teamIds.length === 1) {
@@ -1147,63 +1154,21 @@ export function getRouter({
           };
         },
       },
-      addOpsAdmin: {
-        middleware: [adminAuthMiddleware, requireOpsAdmin],
-        handler: async ({ body: { email, name }, req }) => {
-          const addedBy = req.authInfo?.adminUser;
-          if (!addedBy) {
-            throw new Error("No admin user in request");
-          }
-
-          await addOpsAdmin(knex, {
-            email,
-            name,
-            added_by: addedBy,
-          });
-
-          return {
-            status: 200 as const,
-            body: await getOpsAdmins(knex),
-          };
-        },
-      },
-      removeOpsAdmin: {
-        middleware: [adminAuthMiddleware, requireOpsAdmin],
-        handler: async ({ params: { email } }) => {
-          await removeOpsAdmin(knex, email);
-
-          return {
-            status: 200 as const,
-            body: await getOpsAdmins(knex),
-          };
-        },
-      },
-      getOpsAdmins: {
-        middleware: [adminAuthMiddleware, requireOpsAdmin],
-        handler: async () => {
-          return {
-            status: 200 as const,
-            body: await getOpsAdmins(knex),
-          };
-        },
-      },
       opsAccount: {
-        middleware: [adminAuthMiddleware],
-        handler: async ({ req }) => {
+        middleware: [adminAuthMiddleware, requireOpsPermission],
+        handler: ({ req }) => {
           const email = req.authInfo?.adminUser;
           if (!email) {
             throw new Error("No admin user in request");
           }
 
-          const userIsOpsAdmin = await isOpsAdmin(knex, email);
-
-          return {
+          return Promise.resolve({
             status: 200 as const,
             body: {
               email,
-              isOpsAdmin: userIsOpsAdmin,
+              isOpsAdmin: req.authInfo?.permissionAdmin ?? false,
             },
-          };
+          });
         },
       },
     },

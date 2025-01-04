@@ -35,16 +35,6 @@ const TeamContactsSchema = z.array(
   }),
 );
 
-export const OpsAdminsSchema = z.array(
-  z.object({
-    email: z.string(),
-    name: z.string(),
-    added_by: z.string(),
-  }),
-);
-
-export type OpsAdmins = z.infer<typeof OpsAdminsSchema>;
-
 export const adminContract = c.router({
   getTeamState: {
     method: "GET",
@@ -120,32 +110,6 @@ export const adminContract = c.router({
         email: z.string(),
         isOpsAdmin: z.boolean(),
       }),
-    },
-  },
-  addOpsAdmin: {
-    method: "POST",
-    path: "/admin/opsAdmins",
-    body: z.object({
-      email: z.string(),
-      name: z.string(),
-    }),
-    responses: {
-      200: OpsAdminsSchema,
-    },
-  },
-  getOpsAdmins: {
-    method: "GET",
-    path: "/admin/opsAdmins",
-    responses: {
-      200: OpsAdminsSchema,
-    },
-  },
-  removeOpsAdmin: {
-    method: "DELETE",
-    path: "/admin/opsAdmins/:email",
-    body: z.object({}),
-    responses: {
-      200: OpsAdminsSchema,
     },
   },
 });

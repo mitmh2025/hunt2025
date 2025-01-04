@@ -48,6 +48,7 @@ export async function newMockOAuthServer(port?: number) {
     token.payload.name = "Admin User";
     token.payload.nickname = "admin";
     token.payload.admin = true;
+    token.payload.ops = true;
   });
 
   await server.start(port);

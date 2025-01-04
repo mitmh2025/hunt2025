@@ -3,7 +3,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PuzzleIcon from "@mui/icons-material/Extension";
 import MailIcon from "@mui/icons-material/Mail";
 import TeamsIcon from "@mui/icons-material/People";
-import AdminIcon from "@mui/icons-material/Security";
 import { Box } from "@mui/material";
 import type { Branding, Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/react-router-dom";
@@ -48,11 +47,6 @@ export default function App() {
             segment: "email-teams",
             title: "Email Teams",
             icon: <MailIcon />,
-          },
-          {
-            segment: "manage-admins",
-            title: "Manage Admins",
-            icon: <AdminIcon />,
           },
         ]
       : []),

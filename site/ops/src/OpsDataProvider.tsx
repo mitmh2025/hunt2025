@@ -173,7 +173,7 @@ export default function OpsDataProvider({
           adminClient.opsAccount(),
         ]);
 
-      if (registrationLog.status === 401) {
+      if (account.status === 401 || account.status === 403) {
         removeCookie("mitmh2025_api_auth");
       }
 
