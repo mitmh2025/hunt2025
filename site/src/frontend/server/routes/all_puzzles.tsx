@@ -58,9 +58,27 @@ export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
     }
     return renderedRound;
   });
+  const stray = Object.entries(teamState.puzzles)
+    .filter(([_, p]) => p.stray)
+    .map(([slug, p]) => {
+      const puzzle = PUZZLES[slug];
+      const title = puzzle?.title ?? `Stub puzzle for stray puzzle ${slug}`;
+      const lockState = p.locked;
+      const answer = p.answer;
+      const desc = puzzle?.initial_description;
+      return {
+        slug,
+        title,
+        desc,
+        state: lockState,
+        answer,
+        is_meta: false, // Stray puzzles better not ever be metas
+      };
+    });
   return {
     epoch: teamState.epoch,
     rounds,
+    stray,
     currency: teamState.currency,
   };
 }
