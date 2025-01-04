@@ -192,7 +192,7 @@ function ScorekeeperPanel() {
     const newAnswers = new Map<string, number>(answerMap.entries());
 
     // read current answers
-    for (let i = 1; i < 17 * session.teams.length; i++) {
+    for (let i = 0; i < 17 * session.teams.length; i++) {
       const target = e.currentTarget.elements[i] as HTMLInputElement;
 
       const name = target.name;
@@ -216,7 +216,6 @@ function ScorekeeperPanel() {
           });
           newAnswers.set(name, parseFloat(value));
         }
-        // otherwise no answer, no change needed
       } else {
         if (value.length > 0) {
           if (value !== previousAnswer.toString()) {
@@ -257,6 +256,9 @@ function ScorekeeperPanel() {
   function completeSession() {
     const session = dnData.activeSession;
     if (session) {
+      // first force a save?
+      formRef.current?.requestSubmit();
+      
       opsData.adminClient
         ?.completeDesertedNinjaSession({
           params: { sessionId: session.id.toString() },
