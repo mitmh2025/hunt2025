@@ -499,6 +499,7 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/rounds/illegal_search/client/Telephone.tsx",
 
       // Included on specific puzzle pages
+      puzzle_few_nail: "./src/frontend/puzzles/few-nail/client.tsx",
       puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",

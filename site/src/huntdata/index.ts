@@ -435,7 +435,7 @@ const HUNT: Hunt = {
         // solved and they are discovered in the UI.
         { id: "isp11", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "passage_of_time" }, // birth certificate
         { id: "isp12", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "corn_maize" }, // newspaper clipping
-        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 }, // letter from prison warden, should be the_annual_massachusetts_spelling_bee
+        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "the_annual_massachusetts_spelling_bee" }, // letter from prison warden
         { id: "isp14", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "a_heap_of_clards" }, // photo of the Candys and Baby
         { id: "isp15", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "fechtbuch" }, // photo of Papa, wife, and Gladys
         { id: "isp16", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "bermuda_triangle" }, // rare stamp
