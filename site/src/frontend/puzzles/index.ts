@@ -96,6 +96,7 @@ import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
+import InCommunicadoTonight from "./rare-block";
 import ASudoku from "./recent-ship";
 import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
@@ -353,6 +354,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   give_this_grid_a_shake: GiveThisGridAShake,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
+  in_communicado_tonight: InCommunicadoTonight,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 
