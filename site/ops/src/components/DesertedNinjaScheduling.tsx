@@ -68,6 +68,10 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
                 type: DNDataActionType.SET_ACTIVE_SESSION,
                 activeSession: newSession,
               });
+              dnDispatch({
+                type: DNDataActionType.SESSION_UPDATE,
+                session: newSession,
+              });
             }
           },
           (reason) => {
@@ -96,8 +100,7 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
       </form>
     );
   } else {
-    return;
-    <div>{team.name.slice(0, 40)}</div>;
+    return <div>{team.name.slice(0, 40)}</div>;
   }
 }
 
