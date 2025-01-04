@@ -26,9 +26,11 @@ import {
   getTeamIds,
   retryOnAbort,
   getDesertedNinjaQuestions as dbGetDesertedNinjaQuestions,
+  getDesertedNinjaSession as dbGetDesertedNinjaSession,
   getDesertedNinjaSessions as dbGetDesertedNinjaSessions,
   insertDesertedNinjaSession as dbInsertDesertedNinjaSession,
   updateDesertedNinjaSession as dbUpdateDesertedNinjaSession,
+  getDesertedNinjaAnswers as dbGetDesertedNinjaAnswers,
   insertDesertedNinjaAnswers as dbInsertDesertedNinjaAnswers,
   getDesertedNinjaRegistrations as dbGetDesertedNinjaRegistrations,
   insertDesertedNinjaRegistration as dbInsertDesertedNinjaRegistration,
@@ -556,10 +558,25 @@ export async function updateDesertedNinjaSession(
     },
     knex,
   );
-  return {
-    ...dbSession,
-    teamIds: session.teamIds,
-  };
+  if (dbSession) {
+    return {
+      ...dbSession,
+      //title: dbSession.title,
+      //status: dbSession.status,
+      //questionIds: dbSession.question_ids,
+      id: session.id,
+      teamIds: session.teamIds,
+    };
+  } else {
+    return undefined;
+  }
+}
+
+export async function getDesertedNinjaSession(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaSession | undefined> {
+  return dbGetDesertedNinjaSession(sessionId, knex);
 }
 
 export async function getDesertedNinjaSessions(
@@ -580,6 +597,13 @@ export async function getDesertedNinjaSessions(
   });
 
   return sessions;
+}
+
+export async function getDesertedNinjaAnswers(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaAnswer[]> {
+  return dbGetDesertedNinjaAnswers(sessionId, knex);
 }
 
 export async function saveDesertedNinjaAnswers(

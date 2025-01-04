@@ -135,18 +135,20 @@ export const adminContract = c.router({
   },
   getDesertedNinjaAnswers: {
     method: "GET",
-    path: "/admin/get-dn-scores/:teamId",
+    path: "/admin/get-dn-answers/:sessionId",
     responses: {
       200: DesertedNinjaAnswerSchema.array(),
     },
-    summary: "Get deserted-ninja answers for a team (all sessions)",
+    summary: "Get deserted-ninja answers for a session (all teams)",
   },
   saveDesertedNinjaAnswers: {
     method: "POST",
-    path: "/admin/save-dn-scores",
+    path: "/admin/save-dn-answers/:sessionId",
     body: DesertedNinjaAnswerSchema.array(),
     responses: {
-      200: DesertedNinjaAnswerSchema.array(),
+      200: z.boolean(),
+      400: z.string(),
+      404: z.null(),
     },
     summary: "Save a set of deserted-ninja scores",
   },

@@ -50,6 +50,7 @@ import {
   registerTeam,
   teamRegistrationLog,
   getDesertedNinjaQuestions,
+  getDesertedNinjaSession,
   getDesertedNinjaSessions,
   createDesertedNinjaSession,
   updateDesertedNinjaSession,
@@ -57,6 +58,8 @@ import {
   createDesertedNinjaRegistration,
   deleteDesertedNinjaRegistration,
   updateDesertedNinjaRegistration,
+  getDesertedNinjaAnswers,
+  saveDesertedNinjaAnswers,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
@@ -1061,43 +1064,46 @@ export function getRouter({
       },
       getDesertedNinjaAnswers: {
         middleware: [adminAuthMiddleware],
-        handler: ({ params: { teamId } }) => {
-          // TODO: implement retrieval
-          const body = [
-            {
-              sessionId: 1,
-              teamId: parseInt(teamId, 10),
-              questionIndex: 0,
-              answer: 200,
-            },
-            {
-              sessionId: 1,
-              teamId: parseInt(teamId, 10),
-              questionIndex: 1,
-              answer: 3,
-            },
-          ];
+        handler: async ({ params: { sessionId } }) => {
+          const answers = await getDesertedNinjaAnswers(
+            parseInt(sessionId, 10),
+            knex,
+          );
           return Promise.resolve({
             status: 200 as const,
-            body: body,
+            body: answers,
           });
         },
       },
       saveDesertedNinjaAnswers: {
         middleware: [adminAuthMiddleware],
-        handler: () => {
-          // TODO: implement db store
-          const body = [
-            {
-              sessionId: 1,
-              teamId: 4,
-              questionIndex: 1,
-              answer: 3,
-            },
-          ];
+        handler: async ({ params: { sessionId }, body }) => {
+          const answers = body;
+          const session = await getDesertedNinjaSession(
+            parseInt(sessionId, 10),
+            knex,
+          );
+          if (!session) {
+            return Promise.resolve({
+              status: 404 as const,
+              body: null,
+            });
+          }
+          if (session.status !== "in_progress") {
+            return Promise.resolve({
+              status: 400 as const,
+              body: "Session status is not 'in_progress'",
+            });
+          }
+
+          // TODO: filter the passed in answers to the sessionId
+          console.log(answers);
+          const updateCount = await saveDesertedNinjaAnswers(answers, knex);
+          console.log(`${updateCount} vs ${answers.length.toString()}`);
+
           return Promise.resolve({
             status: 200 as const,
-            body: body,
+            body: true,
           });
         },
       },

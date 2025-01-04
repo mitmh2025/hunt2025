@@ -45,6 +45,7 @@ export async function up(knex: Knex): Promise<void> {
     table.decimal("answer");
     table.foreign("session_id").references("deserted_ninja_sessions.id");
     table.foreign("team_id").references("teams.id");
+    table.unique(["session_id", "team_id", "question_index"]);
   });
 }
 

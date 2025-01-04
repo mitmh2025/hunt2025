@@ -515,6 +515,32 @@ export async function insertDesertedNinjaQuestions(
   return [];
 }
 
+export async function getDesertedNinjaSession(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaSession | undefined> {
+  const sessionRows = await knex("deserted_ninja_sessions")
+    .where("id", sessionId)
+    .select();
+
+  if (sessionRows.length === 0) {
+    return undefined;
+  } else {
+    const obj = sessionRows[0];
+    if (obj) {
+      return {
+        id: obj.id,
+        status: obj.status,
+        title: obj.title,
+        teamIds: [],
+        questionIds: fixArray<number>(obj.question_ids),
+      };
+    } else {
+      return undefined;
+    }
+  }
+}
+
 export async function getDesertedNinjaSessions(
   knex: Knex.Knex,
 ): Promise<DesertedNinjaSession[]> {
@@ -579,6 +605,24 @@ export async function updateDesertedNinjaSession(
     });
 }
 
+export async function getDesertedNinjaAnswers(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<DesertedNinjaAnswer[]> {
+  return await knex("deserted_ninja_answers")
+    .where("session_id", sessionId)
+    .select()
+    .returning(["session_id", "team_id", "question_index", "answer"])
+    .then((objs) =>
+      objs.map((obj) => ({
+        sessionId: obj.session_id,
+        teamId: obj.team_id,
+        questionIndex: obj.question_index,
+        answer: obj.answer,
+      })),
+    );
+}
+
 export async function insertDesertedNinjaAnswers(
   answers: DesertedNinjaAnswer[],
   knex: Knex.Knex,
@@ -594,7 +638,7 @@ export async function insertDesertedNinjaAnswers(
         })),
       )
       .returning(["id"])
-      .onConflict("id")
+      .onConflict(["session_id", "team_id", "question_index"])
       .merge()
   ).length;
 }
