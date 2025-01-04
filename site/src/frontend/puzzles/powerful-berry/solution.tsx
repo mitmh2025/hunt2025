@@ -8,7 +8,7 @@ import {
 
 const TAGS_DATA: [number, string, string][] = [
   [39.9, "Stadsmuseet Stockholm", ""],
-  [70.2, "Chemin de l'Observatoire", ""],
+  [70.2, "Chemin de l’Observatoire", ""],
   [100.1, "NCN Route 65", ""],
   [152.3, "21 Tkalčićeva ulica", ""],
   [192.7, "Flag of Croatia", "↻40°.7"],
@@ -31,7 +31,7 @@ const SOLAR_SYSTEMS_DATA: [string, string, string, string, number][] = [
   ["Mercury", "Stadsmuseet Stockholm", "Sweden Solar System", "Sweden", 2990],
   [
     "Venus",
-    "Chemin de l'Observatoire",
+    "Chemin de l’Observatoire",
     "Mont Megantic Dark Sky Reserve Great Solar System",
     "Parc National du Mont Megantic, Quebec, Canada",
     1050,
@@ -75,7 +75,7 @@ const SOLAR_SYSTEMS_DATA: [string, string, string, string, number][] = [
   [
     "Pluto",
     "8-322",
-    "MIT's Infinite Solar System",
+    "MIT’s Infinite Solar System",
     "MIT (Cambridge, MA, US)",
     197,
   ],
@@ -103,7 +103,7 @@ const EXTRACTION_DATA: [
   ],
   [
     "Venus",
-    "Chemin de l'Observatoire",
+    "Chemin de l’Observatoire",
     "Parc National du Mont Megantic, Quebec, Canada",
     70.2,
     54833,
@@ -282,14 +282,14 @@ const Solution = (): JSX.Element => {
         directly at the model of the planet marked on the ribbon, they could
         adjust their bearing by the specified number of degrees (clockwise or
         counterclockwise, as indicated by the arrow) and travel the specified
-        distance to find another local landmark. The trigonometric calculations
-        required can be found in the appendix below, or solvers can use online
-        geocaching tools once they have identified the latitude and longitude of
-        each sun/planet pair using google maps. The drawings on the backs of the
-        tags, along with the alphabetized enumerations in the puzzle document,
-        confirm that solvers have found the correct landmark, and the language
-        on each planet tag indicates what language to write the landmark name
-        in.
+        distance to find another local landmark. Solvers can use online
+        geocaching tools, linked in the appendix below, to calculate the
+        location of the landmark once they have identified the latitude and
+        longitude of each sun/planet pair using google maps. The drawings on the
+        backs of the tags, along with the alphabetized enumerations in the
+        puzzle document, confirm that solvers have found the correct landmark,
+        and the language on each planet tag indicates what language to write the
+        landmark name in.
       </p>
       <p>
         Diagonalizing, or indexing into each landmark’s name by the number of
@@ -365,16 +365,36 @@ const Solution = (): JSX.Element => {
         >
           this calculator
         </a>
-        , maintained by the FCC. Once the azimuth is calculated, solvers can
-        find the “absolute” degree measurement from due north in which they must
-        look to find the clued landmark. The distance to said landmark is given
-        by the location of its tag along the ribbon. With these data points, one
-        can use this{" "}
+        , maintained by the FCC, or . Once the azimuth is calculated, solvers
+        can find the “absolute” degree measurement from due north in which they
+        must look to find the clued landmark. The distance to said landmark is
+        given by the location of its tag along the ribbon. With these data
+        points, one can use this{" "}
         <a href="https://www.fcc.gov/media/radio/find-terminal-coordinates">
           terminal coordinates
         </a>{" "}
         calculator, also maintained by the FCC, to get the coordinates of the
         landmark on the tag.
+      </p>
+      <p>
+        Solvers could also use geocaching tools, such as{" "}
+        <a
+          href="https://www.geocachingtoolbox.com/index.php?lang=en&page=distanceBearingMidpoint"
+          target="_blank"
+          rel="noreferrer"
+        >
+          this
+        </a>{" "}
+        distance, bearing, and midpoint calculator and{" "}
+        <a
+          href="https://www.geocachingtoolbox.com/index.php?lang=en&page=coordinateProjection&status=result"
+          target="_blank"
+          rel="noreferrer"
+        >
+          this
+        </a>{" "}
+        coordinate projection calculator to find the landmark coordinates as
+        well.
       </p>
       <p>
         Alternatively, if one wishes to suffer, one could do a bunch of

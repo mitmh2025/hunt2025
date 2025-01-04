@@ -374,10 +374,10 @@ const HUNT: Hunt = {
         { id: "bgp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "kindred_spirits" },
         { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "deepfrost" },
         { id: "bgp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "reuse_and_recyclability" },
-        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "celestial_rope" },
+        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 },
         { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "o_woe_is_me"  },
         { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "where_am_i" },
-        { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1 },
+        { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "celestial_rope" },
         { id: "bgp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
         // Metas become unlocked when both of the following conditions are met:
         // * At least 7 feeders in the round are solved
