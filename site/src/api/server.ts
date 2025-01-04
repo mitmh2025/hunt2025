@@ -1,6 +1,10 @@
 import { timingSafeEqual } from "node:crypto";
 import { isDeepStrictEqual } from "util";
-import { type AppRouter, type ServerInferResponseBody } from "@ts-rest/core";
+import {
+  type ServerInferResponses,
+  type AppRouter,
+  type ServerInferResponseBody,
+} from "@ts-rest/core";
 import { createExpressEndpoints, initServer } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import bodyParser from "body-parser";
@@ -236,6 +240,20 @@ function formatInternalActivityLogEntryForApi(
   return {
     ...entry,
     timestamp: entry.timestamp.toISOString(),
+  };
+}
+
+function formatMutationResultForAdminApi(
+  result: (InternalActivityLogEntry | undefined)[],
+): ServerInferResponses<typeof frontendContract.getFullActivityLog, 200> {
+  const filteredResults = result.filter(
+    (r: InternalActivityLogEntry | undefined): r is InternalActivityLogEntry =>
+      !!r,
+  );
+
+  return {
+    status: 200,
+    body: filteredResults.map(formatInternalActivityLogEntryForApi),
   };
 }
 
@@ -1139,16 +1157,7 @@ export function getRouter({
             },
           );
 
-          const filteredResults = result.filter(
-            (
-              r: InternalActivityLogEntry | undefined,
-            ): r is InternalActivityLogEntry => !!r,
-          );
-
-          return {
-            status: 200 as const,
-            body: filteredResults.map(formatInternalActivityLogEntryForApi),
-          };
+          return formatMutationResultForAdminApi(result);
         },
       },
       opsAccount: {
@@ -1166,6 +1175,67 @@ export function getRouter({
               isOpsAdmin: req.authInfo?.permissionAdmin ?? false,
             },
           });
+        },
+      },
+      unlockPuzzle: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { slug }, body: { teamIds } }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              // Check if already unlocked
+              const teamIdsToUnlock = new Set(
+                teamIds === "all" ? mutator.allTeams : teamIds,
+              );
+
+              for (const entry of mutator.log) {
+                if (entry.type === "puzzle_unlocked" && entry.slug === slug) {
+                  if (entry.team_id === undefined) {
+                    // already unlocked for all teams
+                    return [];
+                  }
+
+                  teamIdsToUnlock.delete(entry.team_id);
+                }
+              }
+
+              if (
+                teamIds === "all" &&
+                teamIdsToUnlock.size === mutator.allTeams.size
+              ) {
+                // we are unlocking for all teams and no team has the puzzle locked
+                return [
+                  await mutator.appendLog({
+                    type: "puzzle_unlocked",
+                    slug,
+                  }),
+                ];
+              }
+
+              // need to unlock for specific teams
+              const newEntries: (InternalActivityLogEntry | undefined)[] = [];
+              for (const team_id of teamIdsToUnlock) {
+                newEntries.push(
+                  await mutator.appendLog({
+                    team_id,
+                    type: "puzzle_unlocked",
+                    slug,
+                  }),
+                );
+              }
+
+              return newEntries;
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
         },
       },
     },

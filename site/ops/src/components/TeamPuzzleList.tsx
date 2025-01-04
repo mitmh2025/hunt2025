@@ -1,4 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import UnlockIcon from "@mui/icons-material/LockOpen";
+import { Box, IconButton, Typography } from "@mui/material";
+import { useDialogs, useNotifications } from "@toolpad/core";
 import { DateTime } from "luxon";
 import {
   createMRTColumnHelper,
@@ -8,6 +10,7 @@ import {
 } from "material-react-table";
 import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
+import { useOpsData } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import useTime from "../util/useTime";
 
@@ -22,6 +25,7 @@ type TeamPuzzleListProps = {
 
 type TeamPuzzleListEntry = {
   name: string;
+  slug: string;
   type: "puzzle" | "meta";
   round: string;
   status:
@@ -46,6 +50,58 @@ type TeamPuzzleListEntry = {
 
 const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
   ({ bigBoardTeam, activity }, ref) => {
+    const dialogs = useDialogs();
+    const notifications = useNotifications();
+    const opsData = useOpsData();
+
+    const handleUnlockPuzzle = (puzzle: TeamPuzzleListEntry) => {
+      dialogs
+        .confirm(
+          `Are you sure you want to unlock ${puzzle.name} for ${bigBoardTeam.username}?`,
+          {
+            title: "Unlock Puzzle",
+            okText: "Unlock",
+            cancelText: "Cancel",
+            onClose: async (result) => {
+              if (!result) {
+                return;
+              }
+
+              try {
+                const res = await opsData.adminClient.unlockPuzzle({
+                  params: { slug: puzzle.slug },
+                  body: { teamIds: [bigBoardTeam.id] },
+                });
+
+                if (res.status !== 200) {
+                  throw new Error(`HTTP ${res.status}: ${res.body}`);
+                }
+
+                opsData.appendActivityLogEntries(res.body);
+
+                notifications.show(
+                  `Unlocked ${puzzle.name} for ${bigBoardTeam.username}`,
+                  {
+                    severity: "success",
+                    autoHideDuration: 3000,
+                  },
+                );
+              } catch (err: unknown) {
+                const msg =
+                  err instanceof Error ? err.message : "Unknown error";
+                notifications.show(`Failed to unlock puzzle: ${msg}`, {
+                  severity: "error",
+                  autoHideDuration: 3000,
+                });
+              }
+            },
+          },
+        )
+        .catch((err: unknown) => {
+          console.error(err);
+        });
+    };
+
     const now = DateTime.fromJSDate(useTime());
 
     const wrapperEl = useRef<HTMLDivElement | null>(null);
@@ -122,6 +178,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
 
             return {
               name: puzzle.title,
+              slug,
               type,
               round: round.title,
               status,
@@ -249,6 +306,27 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         showColumnFilters: true,
       },
       enableDensityToggle: false,
+      enableRowActions: true,
+      renderRowActions: ({ row }) => {
+        if (
+          row.original.status.state === "unlocked" ||
+          row.original.status.state === "solved"
+        ) {
+          return null;
+        }
+
+        return (
+          <Box>
+            <IconButton
+              onClick={() => {
+                handleUnlockPuzzle(row.original);
+              }}
+            >
+              <UnlockIcon />
+            </IconButton>
+          </Box>
+        );
+      },
     });
 
     useImperativeHandle(
