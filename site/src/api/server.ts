@@ -26,7 +26,6 @@ import {
   type KeyLike,
   SignJWT,
 } from "jose";
-import jwt from "jsonwebtoken";
 import { type Knex } from "knex";
 import {
   type GuessStatus,
@@ -682,15 +681,11 @@ export async function getRouter({
           console.error("Error sending confirmation email", e);
         }
 
-        const token = jwt.sign(
-          {
-            user: body.username,
-            team_id: result.teamId,
-            sess_id: genId(),
-          },
-          jwtSecret,
-          {},
-        );
+        const token = await mintToken({
+          user: body.username,
+          team_id: result.teamId,
+          sess_id: genId(),
+        });
 
         return {
           status: 200,
