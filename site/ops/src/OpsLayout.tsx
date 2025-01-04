@@ -20,7 +20,7 @@ function CurrentUser() {
           sx={{ ml: 1 }}
           onClick={() => {
             removeCookie("mitmh2025_api_auth");
-            window.location.href = "/logout";
+            window.location.reload();
           }}
         >
           <RefreshPermissions />

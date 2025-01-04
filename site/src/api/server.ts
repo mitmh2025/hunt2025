@@ -146,6 +146,15 @@ function newPassport({
         jwksUri,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
         function (_, jwtPayload: AuthentikJWTPayload, done) {
+          if (!jwtPayload.ops) {
+            console.warn(
+              "JWT valid but missing ops; treating as unauthorized",
+              jwtPayload,
+            );
+            done(null, false);
+            return;
+          }
+
           done(null, ADMIN_USER_ID, {
             jwtPayload,
             adminUser: jwtPayload.email,
@@ -193,6 +202,7 @@ function newPassport({
         "frontend-auth " + frontendApiSecret,
         "utf8",
       );
+
       if (
         authHeader.length === expected.length &&
         timingSafeEqual(expected, authHeader)
@@ -461,30 +471,17 @@ export function getRouter({
     },
   ) as RequestHandlerWithQuery;
 
-  function requireOpsPermission(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
-    const userEmail = req.authInfo?.adminUser;
-    if (!userEmail) {
-      res.sendStatus(403);
-      return;
-    }
-
-    if (!req.authInfo?.permissionOps) {
-      res.sendStatus(403);
-      return;
-    }
-
-    next();
-  }
-
   function requireAdminPermission(
     req: Request,
     res: Response,
     next: NextFunction,
   ) {
+    if (req.user === FRONTEND_USER_ID) {
+      // Frontend can access anything.
+      next();
+      return;
+    }
+
     const userEmail = req.authInfo?.adminUser;
     if (!userEmail) {
       res.sendStatus(403);
@@ -932,13 +929,13 @@ export function getRouter({
     },
     admin: {
       getTeamState: {
-        middleware: [adminAuthMiddleware, requireOpsPermission],
+        middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId } }) => {
           return await getTeamState(parseInt(teamId, 10));
         },
       },
       getTeamContacts: {
-        middleware: [adminAuthMiddleware, requireOpsPermission],
+        middleware: [adminAuthMiddleware],
         handler: async () => {
           const { entries } = await teamRegistrationLog.getCachedLog(
             knex,
@@ -1058,7 +1055,7 @@ export function getRouter({
         },
       },
       getPuzzleState: {
-        middleware: [adminAuthMiddleware, requireOpsPermission],
+        middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId, slug } }) => {
           const team_id = parseInt(teamId, 10);
           const state = await getPuzzleState(team_id, slug, knex);
@@ -1075,7 +1072,7 @@ export function getRouter({
         },
       },
       getPuzzleMetadata: {
-        middleware: [adminAuthMiddleware, requireOpsPermission],
+        middleware: [adminAuthMiddleware],
         handler: () => {
           const metadata = Object.fromEntries(
             Object.entries(PUZZLES).map(([slug, definition]) => {
@@ -1155,7 +1152,7 @@ export function getRouter({
         },
       },
       opsAccount: {
-        middleware: [adminAuthMiddleware, requireOpsPermission],
+        middleware: [adminAuthMiddleware],
         handler: ({ req }) => {
           const email = req.authInfo?.adminUser;
           if (!email) {
@@ -1174,7 +1171,7 @@ export function getRouter({
     },
     frontend: {
       markTeamGateSatisfied: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, gateId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             // Check if already satisfied.
@@ -1197,7 +1194,7 @@ export function getRouter({
           }),
       },
       startInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, interactionId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(
@@ -1227,7 +1224,7 @@ export function getRouter({
           }),
       },
       completeInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, interactionId }, body }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(
