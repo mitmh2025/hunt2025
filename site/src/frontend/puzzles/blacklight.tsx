@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../components/CopyToClipboard";
 import LinkedImage from "../components/LinkedImage";
 import { type PuzzleDefinition } from "./types";
 
@@ -32,6 +33,7 @@ export function blacklightPuzzle(
         return (
           <>
             <StyledLinkedImage src={opts.asset} alt={opts.assetAlt} />
+            <div className={COPY_ONLY_CLASS}>{opts.assetAlt}</div>
             <Puzzle {...props} />
           </>
         );
