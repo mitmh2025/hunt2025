@@ -130,7 +130,7 @@ const Puzzle = (): JSX.Element => {
       <ImageWrapper>
         <LinkedImage
           src={image1}
-          alt="Eleven squares, each a different color, in a row. From left to right, colors are: teal, yellow, purple, red, light blue, black, pimk, gray, brown, dark blue, and off-white."
+          alt="Eleven squares, each a different color, in a row. From left to right, colors are: teal, yellow, purple, red, light blue, black, pink, gray, brown, dark blue, and off-white."
         />
       </ImageWrapper>
       <ImageWrapper>
