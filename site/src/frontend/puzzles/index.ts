@@ -114,6 +114,7 @@ import The10000SheetExcelFile from "./shoddy-table";
 import PapasStash from "./shy-embassy";
 import PapasBookcaseBlacklight from "./sick-crown";
 import IntroductionToDecryption from "./silky-ninja";
+import ArtHistory from "./similar-part";
 import KindredSpirits from "./similar-teacher";
 import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
@@ -198,6 +199,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_walk_in_the_park: AWalkInThePark,
   an_exchange_of_vows: AnExchangeOfVows,
   anything_is_popsicle: AnythingIsPopsicle,
+  art_history: ArtHistory,
   be_mine: BeMine,
   big_names: BigNames,
   borderline_personality: BorderlinePersonality,

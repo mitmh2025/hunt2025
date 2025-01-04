@@ -248,7 +248,7 @@ const HUNT: Hunt = {
         { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "big_names" }, // important-green
         { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "doable_double" }, // austere-sink
         { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "taste_explosion" }, // next-van
-        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1 } , // similar-part
+        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "art_history" } , // similar-part
         { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "magic_i" }, // acclaimed-file
         { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_badly_broken_quote" }, // cavernous-angel
         { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 }, // lean-lock
