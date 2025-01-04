@@ -172,9 +172,12 @@ const StrayLeadsBody = ({
               title={lead.title}
               slug={lead.slug}
             />
-            {/* <span className="filing">
-              Filed under <a href="/rounds/stakeout">The Stakeout</a>
-            </span> */}
+            {lead.round && lead.roundTitle && (
+              <span className="filing">
+                Filed under{" "}
+                <a href={`/rounds/${lead.round}`}>{lead.roundTitle}</a>
+              </span>
+            )}
           </li>
         );
       })}
