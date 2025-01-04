@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const TAGS_DATA: [number, string, string][] = [
   [39.9, "Stadsmuseet Stockholm", ""],
@@ -218,23 +222,25 @@ const Solution = (): JSX.Element => {
         If solvers measure the ribbon, they will find it is 40 meters long. The
         locations of the tags are below:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Distance from “sun” (cm)</th>
-          <th>Front of tag</th>
-          <th>Back of tag</th>
-        </tr>
-        {TAGS_DATA.map(([distance, front, back], i) => (
-          <tr
-            key={i}
-            style={back === "" ? { backgroundColor: "var(--teal-200)" } : {}}
-          >
-            <td>{distance}</td>
-            <td>{front}</td>
-            <td>{back}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Distance from “sun” (cm)</th>
+            <th>Front of tag</th>
+            <th>Back of tag</th>
           </tr>
-        ))}
-      </StyledTable>
+          {TAGS_DATA.map(([distance, front, back], i) => (
+            <tr
+              key={i}
+              style={back === "" ? { backgroundColor: "var(--teal-200)" } : {}}
+            >
+              <td>{distance}</td>
+              <td>{front}</td>
+              <td>{back}</td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         If solvers go to 8-322, they will find that it is next to the location
         of Pluto in The Infinite Solar System, the scale model of the solar
@@ -247,26 +253,28 @@ const Solution = (): JSX.Element => {
         each model (some models measure walking distance, so the straight-line
         as the crow flies distance is shorter).
       </p>
-      <ExtraStyledTable>
-        <tr>
-          <th>Planet</th>
-          <th>Location</th>
-          <th>Model solar system</th>
-          <th>Country</th>
-          <th>Reported distance sun to planet (m)</th>
-        </tr>
-        {SOLAR_SYSTEMS_DATA.map(
-          ([planet, location, model, country, distance], i) => (
-            <tr key={i}>
-              <td>{planet}</td>
-              <td>{location}</td>
-              <td>{model}</td>
-              <td>{country}</td>
-              <td>{distance}</td>
-            </tr>
-          ),
-        )}
-      </ExtraStyledTable>
+      <HScrollTableWrapper>
+        <ExtraStyledTable>
+          <tr>
+            <th>Planet</th>
+            <th>Location</th>
+            <th>Model solar system</th>
+            <th>Country</th>
+            <th>Reported distance sun to planet (m)</th>
+          </tr>
+          {SOLAR_SYSTEMS_DATA.map(
+            ([planet, location, model, country, distance], i) => (
+              <tr key={i}>
+                <td>{planet}</td>
+                <td>{location}</td>
+                <td>{model}</td>
+                <td>{country}</td>
+                <td>{distance}</td>
+              </tr>
+            ),
+          )}
+        </ExtraStyledTable>
+      </HScrollTableWrapper>
       <p>
         Solvers must now locate each model’s sun on a map and determine the sun
         to planet direction. Each tag with a flag can be matched to a planet
@@ -287,54 +295,56 @@ const Solution = (): JSX.Element => {
         Diagonalizing, or indexing into each landmark’s name by the number of
         its planet, reveals the answer, <PuzzleAnswer>SKY REPLAY</PuzzleAnswer>.
       </p>
-      <ExtraStyledTable>
-        <tr>
-          <th>Planet</th>
-          <th>Planet location in model</th>
-          <th>Model location</th>
-          <th>Ribbon distance in cm (1 AU = 1 m)</th>
-          <th>Landmark distance from “sun” (m)</th>
-          <th>Landmark</th>
-          <th>Degrees (planet = 0)</th>
-        </tr>
-        {EXTRACTION_DATA.map(
-          (
-            [
-              planet,
-              planetLocation,
-              modelLocation,
-              ribbonDistance,
-              landmarkDistance,
-              landmark,
-              degrees,
-              highlight,
-            ],
-            i,
-          ) => (
-            <tr key={i}>
-              <td>{planet}</td>
-              <td>{planetLocation}</td>
-              <td>{modelLocation}</td>
-              <td>{ribbonDistance}</td>
-              <td>{landmarkDistance}</td>
-              <td>
-                <Mono>
-                  {landmark
-                    .split("")
-                    .map((char, j) =>
-                      j === highlight ? (
-                        <Highlight key={j}>{char}</Highlight>
-                      ) : (
-                        <React.Fragment key={j}>{char}</React.Fragment>
-                      ),
-                    )}
-                </Mono>
-              </td>
-              <td>{degrees}</td>
-            </tr>
-          ),
-        )}
-      </ExtraStyledTable>
+      <HScrollTableWrapper>
+        <ExtraStyledTable>
+          <tr>
+            <th>Planet</th>
+            <th>Planet location in model</th>
+            <th>Model location</th>
+            <th>Ribbon distance in cm (1 AU = 1 m)</th>
+            <th>Landmark distance from “sun” (m)</th>
+            <th>Landmark</th>
+            <th>Degrees (planet = 0)</th>
+          </tr>
+          {EXTRACTION_DATA.map(
+            (
+              [
+                planet,
+                planetLocation,
+                modelLocation,
+                ribbonDistance,
+                landmarkDistance,
+                landmark,
+                degrees,
+                highlight,
+              ],
+              i,
+            ) => (
+              <tr key={i}>
+                <td>{planet}</td>
+                <td>{planetLocation}</td>
+                <td>{modelLocation}</td>
+                <td>{ribbonDistance}</td>
+                <td>{landmarkDistance}</td>
+                <td>
+                  <Mono>
+                    {landmark
+                      .split("")
+                      .map((char, j) =>
+                        j === highlight ? (
+                          <Highlight key={j}>{char}</Highlight>
+                        ) : (
+                          <React.Fragment key={j}>{char}</React.Fragment>
+                        ),
+                      )}
+                  </Mono>
+                </td>
+                <td>{degrees}</td>
+              </tr>
+            ),
+          )}
+        </ExtraStyledTable>
+      </HScrollTableWrapper>
       <h3>Appendix</h3>
       <p>
         In order to calculate the coordinates of the landmark, one must first
