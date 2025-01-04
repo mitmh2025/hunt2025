@@ -8,6 +8,8 @@ declare global {
   namespace Express {
     export interface AuthInfo {
       adminUser?: string;
+      permissionAdmin?: boolean;
+      permissionOps?: boolean;
     }
     export interface Request {
       api: Client;

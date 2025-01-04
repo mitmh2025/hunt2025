@@ -146,17 +146,20 @@ function newPassport({
         jwksUri,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
         function (_, jwtPayload: AuthentikJWTPayload, done) {
-          if (!jwtPayload.admin) {
+          if (!jwtPayload.ops) {
             console.warn(
-              "JWT valid but missing admin; treating as unauthorized",
+              "JWT valid but missing ops; treating as unauthorized",
               jwtPayload,
             );
             done(null, false);
             return;
           }
+
           done(null, ADMIN_USER_ID, {
             jwtPayload,
             adminUser: jwtPayload.email,
+            permissionAdmin: !!jwtPayload.admin,
+            permissionOps: !!jwtPayload.ops,
           });
         },
       ),
@@ -199,6 +202,7 @@ function newPassport({
         "frontend-auth " + frontendApiSecret,
         "utf8",
       );
+
       if (
         authHeader.length === expected.length &&
         timingSafeEqual(expected, authHeader)
@@ -466,6 +470,31 @@ export function getRouter({
       session: false,
     },
   ) as RequestHandlerWithQuery;
+
+  function requireAdminPermission(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    if (req.user === FRONTEND_USER_ID) {
+      // Frontend can access anything.
+      next();
+      return;
+    }
+
+    const userEmail = req.authInfo?.adminUser;
+    if (!userEmail) {
+      res.sendStatus(403);
+      return;
+    }
+
+    if (!req.authInfo?.permissionAdmin) {
+      res.sendStatus(403);
+      return;
+    }
+
+    next();
+  }
 
   // We merge contracts here so that we can implement additional contracts
   // without having to export them to the client since there's no value in
@@ -952,7 +981,7 @@ export function getRouter({
         },
       },
       sendTeamEmail: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ body }) => {
           const { entries } = await teamRegistrationLog.getCachedLog(
             knex,
@@ -1067,7 +1096,7 @@ export function getRouter({
         },
       },
       grantKeys: {
-        middleware: [adminAuthMiddleware],
+        middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ body: { teamIds, amount }, req }) => {
           let singleTeamId: number | undefined = undefined;
           if (teamIds !== "all" && teamIds.length === 1) {
@@ -1122,10 +1151,27 @@ export function getRouter({
           };
         },
       },
+      opsAccount: {
+        middleware: [adminAuthMiddleware],
+        handler: ({ req }) => {
+          const email = req.authInfo?.adminUser;
+          if (!email) {
+            throw new Error("No admin user in request");
+          }
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: {
+              email,
+              isOpsAdmin: req.authInfo?.permissionAdmin ?? false,
+            },
+          });
+        },
+      },
     },
     frontend: {
       markTeamGateSatisfied: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, gateId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             // Check if already satisfied.
@@ -1148,7 +1194,7 @@ export function getRouter({
           }),
       },
       startInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, interactionId } }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(
@@ -1178,7 +1224,7 @@ export function getRouter({
           }),
       },
       completeInteraction: {
-        middleware: [frontendAuthMiddleware],
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, interactionId }, body }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             const existing = mutator.log.filter(

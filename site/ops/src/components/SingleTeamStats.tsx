@@ -12,6 +12,7 @@ import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contrac
 import { useOpsData } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import { type TeamData } from "../opsdata/types";
+import { AdminOnly } from "./AdminOnly";
 import Stat, { StatsContainer } from "./Stat";
 type SingleTeamStatsData = {
   puzzlesSolved: number;
@@ -202,16 +203,18 @@ export default function SingleTeamStats({
       />
 
       <Stat
-        label="Unlocks"
+        label="Keys"
         value={data.keys}
         action={
-          <Button
-            onClick={() => {
-              setGrantModalOpen(true);
-            }}
-          >
-            Grant
-          </Button>
+          <AdminOnly>
+            <Button
+              onClick={() => {
+                setGrantModalOpen(true);
+              }}
+            >
+              Grant
+            </Button>
+          </AdminOnly>
         }
       />
       <Stat label="Free Solves" value={data.freeSolveCurrency} />

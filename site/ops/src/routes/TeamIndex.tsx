@@ -17,6 +17,7 @@ import { useSnackbar } from "notistack";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOpsData } from "../OpsDataProvider";
+import { useIsOpsAdmin } from "../components/AdminOnly";
 import { formatTeamData } from "../opsdata/bigBoard";
 
 type TeamIndexData = {
@@ -124,6 +125,8 @@ export default function TeamIndex() {
   >(null);
 
   const opsData = useOpsData();
+  const isOpsAdmin = useIsOpsAdmin();
+
   const indexData = useMemo(() => {
     const record: Record<number, TeamIndexData> = {};
     for (const team of opsData.teams) {
@@ -241,7 +244,7 @@ export default function TeamIndex() {
         pageSize: 100,
       },
     },
-    enableRowSelection: true,
+    enableRowSelection: isOpsAdmin,
     selectAllMode: "all",
     enableSelectAll: true,
     enableDensityToggle: false,

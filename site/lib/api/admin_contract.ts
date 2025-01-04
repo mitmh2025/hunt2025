@@ -93,13 +93,23 @@ export const adminContract = c.router({
   },
   grantKeys: {
     method: "POST",
-    path: "/admin/grant-keys",
+    path: "/admin/grantKeys",
     body: z.object({
       teamIds: z.union([z.array(z.number()), z.literal("all")]),
       amount: z.number(),
     }),
     responses: {
       200: InternalActivityLogSchema,
+    },
+  },
+  opsAccount: {
+    method: "GET",
+    path: "/admin/account",
+    responses: {
+      200: z.object({
+        email: z.string(),
+        isOpsAdmin: z.boolean(),
+      }),
     },
   },
 });
