@@ -303,9 +303,41 @@ in {
           attrs.expression = ''
             admin = ak_is_group_member(request.user, name="authentik Admins")
             ops = admin or ak_is_group_member(request.user, name="Ops")
+            media = []
+            if ops:
+              media.extend([
+                {
+                  "action": "read",
+                  "path": "",
+                },
+                {
+                  "action": "playback",
+                  "path": "",
+                },
+                {
+                  "action": "metrics",
+                  "path": "",
+                },
+              ])
+            if admin:
+              media.extend([
+                {
+                  "action": "api",
+                  "path": "",
+                },
+                {
+                  "action": "publish",
+                  "path": ""
+                },
+                {
+                  "action": "pprof",
+                  "path": ""
+                },
+              ])
             return {
               "admin": admin,
               "ops": ops,
+              "media": media,
             }
           '';
         }
