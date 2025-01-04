@@ -36,6 +36,7 @@ export function blacklightPuzzle(
           </>
         );
       },
+      copyable: true,
     },
     solution: {
       ...base.solution,

@@ -294,30 +294,32 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegulah, {
     answer: "VOYAGERS",
     asset: candy_modal_blacklight,
-    assetAlt: "TODO",
+    assetAlt:
+      "Rule ROTARY: You haven’t lived here long, have you? No one calls them “traffic circles” or “roundabouts.” In any case, add a donut to your purchase for each one you drove on. Rule TUMMYACHE: If you do not have enough donuts to fulfill your team’s request, do not extract any letters. Instead, feel shame.",
   }),
   the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
     TheCenterIsInPlainSight,
     {
       answer: "SPARE PARTS",
       asset: rings_modal_blacklight,
-      assetAlt: "TODO",
+      assetAlt: "The third quartile was also always in plain sight.",
     },
   ),
   jargon_blacklight: blacklightPuzzle(Jargon, {
     answer: "LIFEFORCE",
     asset: money_modal_blacklight,
-    assetAlt: "TODO",
+    assetAlt: "Shift by difference from 8V",
   }),
   placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
     answer: "BROADCAST NEWS",
     asset: ledger_blacklight,
-    assetAlt: "TODO",
+    assetAlt: "Same locations tuned to PM 23pi/20",
   }),
   placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
     answer: "BRAZIL",
     asset: cryptex_note_blacklight,
-    assetAlt: "TODO",
+    assetAlt:
+      "What good is a cigarette without a light? Use a physical blacklight on the filters.",
   }),
 
   papas_bookcase: PapasBookcase,
