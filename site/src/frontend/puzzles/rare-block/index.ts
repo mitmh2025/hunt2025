@@ -12,6 +12,7 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [],
   content: {
     component: Puzzle,
+    copyable: false,
   },
   solution: {
     component: Solution,
