@@ -52,8 +52,11 @@ const PuzzleTitle = styled.h1`
 const PuzzleMain = styled.main`
   padding: 2rem;
   padding-bottom: 4rem;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
+
+  & * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 
   @media ${deviceMax.lg} {
     padding: 1rem;
