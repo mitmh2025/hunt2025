@@ -1,12 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-//import { styled } from 'styled-components';
+import { styled } from "styled-components";
 import useAppendDataset from "../../client/useAppendDataset";
 
 type ScoreEntryData = {
   sessionId: number;
   scores: number[];
   iteration: number;
+  imageUrls: string[];
 };
 
 type ScoreEntry = {
@@ -14,11 +15,56 @@ type ScoreEntry = {
   data: ScoreEntryData;
 };
 
-/*
-const Results = () => {
-  
-}
- */
+const Details = styled.details`
+  margin-top: 10px;
+  border: 1px solid black;
+  padding: 5px 10px;
+`;
+const ResultLabel = styled.summary`
+  font-size: 150%;
+`;
+const QuestionScoreRow = styled.div`
+  display: flex;
+  margin-top: 10px;
+`;
+const QuestionLabel = styled.div`
+  text-decoration: underline;
+  margin-right: 10px;
+`;
+const QuestionResult = styled.div`
+  font-weight: bold;
+`;
+const StyledImageContainer = styled.div`
+  text-align: center;
+`;
+const StyledImage = styled.img`
+  width: 80%;
+`;
+
+const Result = ({ data }: { data: ScoreEntryData }) => {
+  const entries = [];
+
+  for (let i = 0; i < 17; i++) {
+    entries.push(
+      <div key={i}>
+        <QuestionScoreRow>
+          <QuestionLabel>Question {i + 1}</QuestionLabel>
+          <QuestionResult>{data.scores[i]} / 5</QuestionResult>
+        </QuestionScoreRow>
+        <StyledImageContainer>
+          <StyledImage src={data.imageUrls[i]} alt="" />
+        </StyledImageContainer>
+      </div>,
+    );
+  }
+
+  return (
+    <Details>
+      <ResultLabel>Visit number {data.iteration + 1}</ResultLabel>
+      {entries}
+    </Details>
+  );
+};
 
 const App = () => {
   const log = useAppendDataset(
@@ -28,11 +74,8 @@ const App = () => {
   );
 
   console.log(log);
-  const priorScores = log.map(({ data }) => (
-    <div key={data.sessionId}>
-      <div>Iteration {data.iteration}</div>
-      <div>Scores: {data.scores.toString()}</div>
-    </div>
+  const priorScores = log.map((entry, idx) => (
+    <Result data={entry.data} key={idx} />
   ));
 
   return (

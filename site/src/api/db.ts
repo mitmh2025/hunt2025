@@ -267,7 +267,7 @@ declare module "knex/types/tables" {
   type DesertedNinjaQuestionRow = {
     id: number;
     text: string;
-    image_url: string | null;
+    geoguessr: number | null;
     answer: number;
     scoring_method: string;
   };
@@ -595,7 +595,7 @@ export async function getDesertedNinjaQuestions(
   return (await knex("deserted_ninja_questions").select()).map((obj) => ({
     id: obj.id,
     text: obj.text,
-    imageUrl: obj.image_url,
+    geoguessr: obj.geoguessr,
     answer: obj.answer,
     scoringMethod: obj.scoring_method,
   }));

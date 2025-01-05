@@ -51,7 +51,7 @@ export type DesertedNinjaAnswer = z.infer<typeof DesertedNinjaAnswerSchema>;
 export const DesertedNinjaQuestionSchema = z.object({
   id: z.number(),
   text: z.string(),
-  imageUrl: z.string().nullable(),
+  geoguessr: z.number().nullable(),
   answer: z.number(),
   scoringMethod: z.string(),
 });

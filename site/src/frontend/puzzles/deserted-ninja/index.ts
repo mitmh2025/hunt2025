@@ -1,3 +1,9 @@
+// albumLookup and geoguessrLookup are imported to make sure the images make it into the server package, but are otherwise unused.  They are
+// imported with a leading underscore to prevent typescript/lint errors
+import {
+  albumLookup as _albumLookup,
+  geoguessrLookup as _geoguessrLookup,
+} from "../../../../ops/src/opsdata/desertedNinjaImages";
 import { type PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
 import Solution from "./solution";

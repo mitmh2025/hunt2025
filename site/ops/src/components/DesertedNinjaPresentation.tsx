@@ -7,7 +7,8 @@ import {
   type DesertedNinjaSession,
 } from "../../../lib/api/admin_contract";
 import { useDesertedNinjaData } from "../DesertedNinjaDataProvider";
-import Image01 from "../assets/deserted-ninja/image01.jpg";
+import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
+
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";
 
@@ -168,8 +169,8 @@ const GeoguessrRulesSlide = (
       You&rsquo;ll be receiving laminated maps of campus.
     </p>
     <p className="fragment">
-      I&rsquo;ll show a (blurry) picture of a location on campus, and you will
-      have 45 seconds to figure out where the picture was taken from.
+      I&rsquo;ll show a picture of a location on campus, and you will have 45
+      seconds to figure out where the picture was taken from.
     </p>
     <p className="fragment">
       Mark that location with an X or a dot. When time is up, hold it up so the
@@ -187,7 +188,7 @@ function QuestionSlide({
   questionNumber: number;
   timer: TimerData;
 }) {
-  if (question.imageUrl === null) {
+  if (question.geoguessr === null) {
     // text question, single slide
     return (
       <section>
@@ -204,7 +205,9 @@ function QuestionSlide({
           <SlideH1>Question {questionNumber}</SlideH1>
           <p className="fragment">{question.text}</p>
         </section>
-        <section data-background-image={Image01}>
+        <section
+          data-background-image={geoguessrLookup[question.geoguessr - 1]}
+        >
           <CountdownTimer timer={timer} geoguessr={true} />
         </section>
       </section>
@@ -269,7 +272,7 @@ export function DesertedNinjaPresentation() {
       (questionId: number, index: number) => {
         const question = dnData.questions.get(questionId);
         if (question) {
-          if (firstGeoguessrIndex === -1 && question.imageUrl !== null) {
+          if (firstGeoguessrIndex === -1 && question.geoguessr !== null) {
             firstGeoguessrIndex = index;
           }
           return (

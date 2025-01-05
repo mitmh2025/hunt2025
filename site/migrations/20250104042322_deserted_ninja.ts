@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("deserted_ninja_questions", function (table) {
     generatedPrimaryKey(knex, table, "id");
     table.string("text", 255).notNullable();
-    table.string("image_url", 255);
+    table.integer("geoguessr");
     table.decimal("answer").notNullable();
     table.string("scoring_method").notNullable();
   });

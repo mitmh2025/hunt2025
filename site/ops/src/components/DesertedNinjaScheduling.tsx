@@ -24,7 +24,7 @@ function SessionQuestionDetails({
   const questionElts = questionIds.map((qid) => (
     <li key={qid}>
       {questions.get(qid)?.text}
-      {questions.get(qid)?.imageUrl}
+      {questions.get(qid)?.geoguessr}
     </li>
   ));
 

@@ -54,6 +54,7 @@ import {
 import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
+import { albumLookup } from "../../ops/src/opsdata/desertedNinjaImages";
 import { PUZZLES } from "../frontend/puzzles";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
@@ -1464,14 +1465,14 @@ export async function getRouter({
           // generate random set of questions
           // requirements:
           // * pick 17 distinct questions
-          // * 4 of them must be geoguessr type (imageUrl non-null)
+          // * 4 of them must be geoguessr type
           // * geoguessrs should not be consecutive
 
           // partition the questions
           const normalQuestions: number[] = [];
           const geoguessrQuestions: number[] = [];
           (await getDesertedNinjaQuestions(knex)).forEach((q) =>
-            (q.imageUrl === null ? normalQuestions : geoguessrQuestions).push(
+            (q.geoguessr === null ? normalQuestions : geoguessrQuestions).push(
               q.id,
             ),
           );
@@ -1604,13 +1605,10 @@ export async function getRouter({
             if (status !== "checked_in") {
               return { id: id, scores: null };
             }
-            const scores = questions.map((question, index) => {
+            const scores: number[] = questions.map((question, index) => {
               if (!question) {
-                // this shouldn't happen?
-                return Promise.resolve({
-                  status: 500,
-                  body: `Some questions could not be found for session ${sessionId}`,
-                });
+                // this shouldn't happen?  just assume they bombed it
+                return 0;
               }
 
               const answerObj = answers.find(
@@ -1648,8 +1646,12 @@ export async function getRouter({
               } else if (question.scoringMethod === "4double") {
                 return scoreHelper([4, 8, 16, 32, 64], difference);
               } else if (question.scoringMethod === "raw") {
-                // TODO: add some answer validation if out of bounds / not an integer?
-                return answer;
+                // "raw" means take the number as a score, but if out of bounds default to 0
+                // if not an integer floor it
+                if (answer < 0 || answer > 5) {
+                  return 0;
+                }
+                return Math.floor(answer);
               } else {
                 console.log(
                   `got unknown scoring method: ${question.scoringMethod}`,
@@ -1661,10 +1663,10 @@ export async function getRouter({
             return { id: id, scores: scores };
           });
 
-          console.log(teamScores);
           // (3) for each team, add to the team state for this puzzle
           for (const obj of teamScores) {
-            const {id, scores} = obj;
+            const id: number = obj.id;
+            const scores: number[] | null = obj.scores;
             if (scores === null) {
               continue;
             }
@@ -1672,7 +1674,6 @@ export async function getRouter({
             console.log(id);
             console.log(scores);
 
-            // TODO: figure out how many times they've taken it before
             const cachedLog = await puzzleStateLog.getCachedLog(
               knex,
               redisClient,
@@ -1680,8 +1681,11 @@ export async function getRouter({
             );
             console.log(cachedLog);
 
-            // TODO: push the scores to puzzle state
-            // TODO: indicate which iteration they're on
+            const iteration = cachedLog.entries.length;
+            const imageUrls = scores.map((score, index) => {
+              return albumLookup[index]?.[iteration % 3]?.[score];
+            });
+
             void (await puzzleStateLog.executeMutation(
               id,
               redisClient,
@@ -1693,7 +1697,8 @@ export async function getRouter({
                   data: {
                     scores: scores,
                     sessionId: session.id,
-                    iteration: cachedLog.entries.length,
+                    iteration: iteration,
+                    imageUrls: imageUrls,
                   },
                 });
               },
@@ -1732,7 +1737,7 @@ export async function getRouter({
               {
                 id: 1,
                 text: "what",
-                imageUrl: null,
+                geoguessr: null,
                 answer: body.length,
                 scoringMethod: "percent",
               },
