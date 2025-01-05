@@ -8,21 +8,13 @@ export const DeskItem = styled.a`
   cursor: pointer;
   -webkit-filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
   filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
-
-  .tooltip {
-    font-family: "Kiwi Maru";
-    color: ${BG_COLOR};
-    background-color: rgba(115, 147, 93, 0.7);
-    max-width: 300px;
-  }
+  border: none;
+  background-color: transparent;
+  padding: 0;
 
   &:hover {
     -webkit-filter: brightness(1) drop-shadow(0px 0px 8px #ffffe966);
     filter: brightness(1) drop-shadow(0px 0px 8px #ffffe966);
-
-    .tooltip {
-      visibility: visible;
-    }
   }
 `;
 
@@ -35,6 +27,24 @@ export const Desk = styled.div`
   margin: 0 auto;
   position: relative;
   overflow: hidden;
+
+  // Each DeskItem is its own stacking context because they use filters, so if
+  // we want tooltips to stack over all of them, we need to hoist them up.
+  //
+  // (But because they're not inside the link, we need to add hover text-shadow
+  // back ourselves)
+  .tooltip {
+    font-family: "Kiwi Maru";
+    color: ${BG_COLOR};
+    background-color: rgba(115, 147, 93, 0.8);
+    max-width: 300px;
+    z-index: 5;
+    text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.4);
+
+    .desc {
+      color: var(--gray-800);
+    }
+  }
 `;
 
 // Leaving the things that still need additional customization here so I don't forget about them
