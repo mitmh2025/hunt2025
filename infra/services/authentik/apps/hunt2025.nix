@@ -33,10 +33,7 @@
       "goauthentik.io/providers/oauth2/scope-profile"
       "mitmh2025.com/oauth2/admin"
     ];
-    groups = [
-      "authentik Admins"
-      "Ops"
-    ];
+    groups = ["authentik Admins"];
   };
 
   services.authentik.apps.dev = {
@@ -70,9 +67,6 @@
       "goauthentik.io/providers/oauth2/scope-profile"
       "mitmh2025.com/oauth2/admin"
     ];
-    groups = [
-      "authentik Admins"
-      "Ops"
-    ];
+    groups = ["authentik Admins"];
   };
 }
