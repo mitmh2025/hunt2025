@@ -160,7 +160,7 @@
         "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427 GCPStagingStaging";
       };
       systemd.services.hunt2025.environment = {
-        EMAIL_FROM = "info@mitmh2025.com";
+        EMAIL_FROM = "MIT Mystery Hunt 2025 <info@mitmh2025.com>";
         AWS_CONFIG_FILE = "/etc/aws/config";
         AWS_SDK_LOAD_CONFIG = "true";
         AWS_PROFILE = "mitmh2025-puzzup";

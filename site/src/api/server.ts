@@ -1155,7 +1155,7 @@ export async function getRouter({
                   });
                   result.success = true;
                 } catch (err: unknown) {
-                  console.log("failed sending mail:", err);
+                  console.log("failed sending mail", address, err);
                   result.success = false;
                 }
               }
