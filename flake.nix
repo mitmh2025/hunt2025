@@ -47,9 +47,9 @@
         terraform = pkgs.opentofu.withPlugins (p: with p; [
           aws
           (google.override {
-            rev = "v6.11.1";
-            hash = "sha256-Gz6jMZFn7HfRVtNrFuRJlBfokMBpW3rjOYyYXSeT7dY=";
-            vendorHash = "sha256-hwWHtrPmzJJT7OUcjiqt7a6Nf1GLvoEcepqIAHv5bsI=";
+            rev = "v6.14.1";
+            hash = "sha256-jBfMdYHZ5JeBXIz4f7AUcGlkRF+Yd2+2fD6rhgMzdj8=";
+            vendorHash = "sha256-JUaXSF+UJCTHbr+Xq2zLpNuJVTW89gwEeFEXs44g5J4=";
           })
           local
           random
