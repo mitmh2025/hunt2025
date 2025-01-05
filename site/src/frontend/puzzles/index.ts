@@ -40,6 +40,7 @@ import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite
 import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
 import NoNotes from "./false-pole";
+import ADashOfColor from "./few-cycle";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
@@ -347,6 +348,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   alias: Alias,
 
   // The Murder in MITropolis
+  a_dash_of_color: ADashOfColor,
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
