@@ -81,7 +81,8 @@ export function DesertedNinjaDataProvider({
   const [data, dispatch] = useReducer(updateData, INITIAL_STATE);
 
   useEffect(() => {
-    opsData.adminClient?.getDesertedNinjaQuestions().then(
+    console.log(opsData.adminClient);
+    opsData.adminClient.getDesertedNinjaQuestions().then(
       (obj) => {
         const m = new Map<number, DesertedNinjaQuestion>();
         (obj.body as DesertedNinjaQuestion[]).forEach((q) => {
@@ -96,7 +97,7 @@ export function DesertedNinjaDataProvider({
         console.log(reason);
       },
     );
-    opsData.adminClient?.getDesertedNinjaSessions().then(
+    opsData.adminClient.getDesertedNinjaSessions().then(
       (obj) => {
         dispatch({
           type: DNDataActionType.SET_SESSIONS,

@@ -1,4 +1,5 @@
 import React from "react";
+import "./assets/waypoint0.opus";
 import "./assets/waypoint1.opus";
 import "./assets/waypoint10.opus";
 import "./assets/waypoint11.opus";

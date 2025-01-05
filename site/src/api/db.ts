@@ -541,6 +541,22 @@ export async function appendTeamRegistrationLog(
     });
 }
 
+export async function changeTeamDeactivation(
+  team_id: number,
+  deactivated: boolean,
+  trx: Knex.Knex.Transaction,
+) {
+  await trx("teams").where("id", team_id).update({ deactivated });
+}
+
+export async function changeTeamPassword(
+  team_id: number,
+  password: string,
+  trx: Knex.Knex.Transaction,
+) {
+  await trx("teams").where("id", team_id).update({ password });
+}
+
 export async function getPuzzleStateLog(
   team_id: number | undefined,
   since: number | undefined,
@@ -565,29 +581,10 @@ export async function appendPuzzleStateLog(
     .insert(entry)
     .returning(["id", "team_id", "slug", "data", "timestamp"])
     .then((objs) => {
-      if (objs.length === 0) {
-        return undefined;
-      }
       const insertedEntry = objs[0] as PuzzleStateLogEntryRow;
       const fixedEntry = cleanupPuzzleStateLogEntryFromDB(insertedEntry);
       return fixedEntry;
     });
-}
-
-export async function changeTeamDeactivation(
-  team_id: number,
-  deactivated: boolean,
-  trx: Knex.Knex.Transaction,
-) {
-  await trx("teams").where("id", team_id).update({ deactivated });
-}
-
-export async function changeTeamPassword(
-  team_id: number,
-  password: string,
-  trx: Knex.Knex.Transaction,
-) {
-  await trx("teams").where("id", team_id).update({ password });
 }
 
 export async function getDesertedNinjaQuestions(
@@ -662,7 +659,7 @@ export async function insertDesertedNinjaSession(
       question_ids: session.question_ids,
     })
     .returning(["id", "title", "status", "question_ids"])
-    .then( (objs) => {
+    .then((objs) => {
       const insertedSession = objs[0] as DesertedNinjaSessionRow;
 
       return {
@@ -684,6 +681,7 @@ export async function updateDesertedNinjaSession(
     .where("id", id)
     .update(session)
     .returning(["id", "title", "status", "question_ids"])
+
     .then((objs) => {
       if (objs.length === 0) {
         return undefined;

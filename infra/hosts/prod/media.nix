@@ -16,6 +16,7 @@
     {
       hunt.radio.enable = true;
       hunt.radio.externalHostname = "media.mitmh2025.com";
+      hunt.radio.jwksUri = "https://www.mitmh2025.com/api/jwks";
       services.mediamtx.settings = {
         api = true; # :9997
         metrics = true; # :9998

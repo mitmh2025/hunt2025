@@ -538,21 +538,7 @@ export class PuzzleStateLogMutator extends Mutator<
   PuzzleStateLogEntry,
   InsertPuzzleStateLogEntry
 > {
-  //private _teamStates: Map<
-  //  number,
-  //  { entryCount: number; state: TeamStateIntermediate }
-  //>;
-
   _dbAppendLog = dbAppendPuzzleStateLog;
-
-  //constructor(
-  //  trx: Knex.Knex.Transaction,
-  //  log: PuzzleStateLogEntry[],
-  //  allTeams: Set<number>,
-  //) {
-  //  super(trx, log, allTeams);
-  //  //this._teamStates = new Map();
-  //}
 }
 
 export class PuzzleStateLog extends Log<
@@ -577,7 +563,6 @@ export class PuzzleStateLog extends Log<
       mutator: PuzzleStateLogMutator,
     ) => R | PromiseLike<R>,
   ) {
-    // TODO: maybe reimplemnt executeRawMutation to handle filtering team/slug pair
     return await this.executeRawMutation(team_id, redisClient, knex, fn);
   }
 }

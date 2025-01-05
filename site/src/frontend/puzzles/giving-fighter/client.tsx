@@ -37,7 +37,7 @@ const MessageContainer = styled.div<{ $direction: "send" | "recv" }>`
     border: 1px solid var(--speech-color);
     color: var(--speech-color);
     border-radius: 5px;
-    padding: 5px 10px 5px 5px;
+    padding: 10px;
     margin-bottom: 1rem;
   }
 `;

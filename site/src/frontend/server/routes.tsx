@@ -91,7 +91,7 @@ const loginPostHandler: RequestHandler<
   if (loginResult.status === 200) {
     res.cookie("mitmh2025_auth", loginResult.body.token, {
       httpOnly: true,
-      sameSite: true,
+      sameSite: "lax",
       // secure: true,
     });
 

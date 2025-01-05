@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { createRoot } from "react-dom/client";
 //import { styled } from 'styled-components';
 import useAppendDataset from "../../client/useAppendDataset";
@@ -28,19 +28,19 @@ const App = () => {
   );
 
   console.log(log);
-  const priorScores = 
-    log.map( ({data}) =>
-      <div key={data.sessionId}>
-        <div>Iteration {data.iteration}</div>
-        <div>Scores: {data.scores.toString()}</div>
-      </div>
-    );
-  
+  const priorScores = log.map(({ data }) => (
+    <div key={data.sessionId}>
+      <div>Iteration {data.iteration}</div>
+      <div>Scores: {data.scores.toString()}</div>
+    </div>
+  ));
+
   return (
     <>
       <div>
-        Please contact Hunt HQ to sign up for the FerMIT Challenge, the Mystery Hunt's approximately-first estimation game show!
-        If you've played before, your results can be found below.
+        Please contact Hunt HQ to sign up for the FerMIT Challenge, the Mystery
+        Hunt&rsquo;s approximately-first estimation game show! If you&rsquo;ve
+        played before, your results can be found below.
       </div>
       {priorScores}
     </>
@@ -49,9 +49,10 @@ const App = () => {
 
 const elem = document.getElementById("estimation-dot-jpg-root");
 if (elem) {
-  const root = createRoot(elem)
+  const root = createRoot(elem);
   root.render(<App />);
-}
-else {
-  console.error("Could not mount App because #estimation-dot-jpg-root was nowhere to be found");
+} else {
+  console.error(
+    "Could not mount App because #estimation-dot-jpg-root was nowhere to be found",
+  );
 }

@@ -90,7 +90,7 @@ function NotStartedPanel() {
     const session = dnData.activeSession;
     const adminClient = opsData.adminClient;
 
-    if (session && adminClient) {
+    if (session) {
       if (session.status === "not_started") {
         // TODO: set session status via the client
         const newSession = {
@@ -145,7 +145,7 @@ function ScorekeeperPanel() {
     useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (session && opsData.adminClient) {
+    if (session) {
       opsData.adminClient
         .getDesertedNinjaAnswers({
           params: { sessionId: session.id.toString() },
@@ -243,7 +243,7 @@ function ScorekeeperPanel() {
       setAnswers(newAnswers);
       // TODO: should this have different behavior based on whether the save succeeds?
       void opsData.adminClient
-        ?.saveDesertedNinjaAnswers({
+        .saveDesertedNinjaAnswers({
           params: { sessionId: session.id.toString() },
           body: answerChanges,
         })
@@ -258,9 +258,9 @@ function ScorekeeperPanel() {
     if (session) {
       // first force a save?
       formRef.current?.requestSubmit();
-      
+
       opsData.adminClient
-        ?.completeDesertedNinjaSession({
+        .completeDesertedNinjaSession({
           params: { sessionId: session.id.toString() },
         })
         .then(

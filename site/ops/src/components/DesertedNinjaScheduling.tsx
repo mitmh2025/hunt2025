@@ -45,7 +45,7 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
 
   function unregisterTeam(teamId: number) {
     const session = dnData.activeSession;
-    if (session && opsData.adminClient) {
+    if (session) {
       opsData.adminClient
         .deleteDesertedNinjaRegistration({
           params: {
@@ -114,7 +114,7 @@ function SessionDetails() {
 
   function registerTeam(teamId: number) {
     const session = dnData.activeSession;
-    if (session && opsData.adminClient) {
+    if (session) {
       opsData.adminClient
         .createDesertedNinjaRegistration({
           params: {
@@ -150,36 +150,34 @@ function SessionDetails() {
     }
   }
   function createSession(title: string) {
-    if (opsData.adminClient) {
-      opsData.adminClient
-        .createDesertedNinjaSession({ body: { title: title } })
-        .then(
-          ({ body }) => {
-            const newSession = body as DesertedNinjaSession;
-            const newSessions = [...dnData.sessions, newSession];
-            if (dnDispatch) {
-              dnDispatch({
-                type: DNDataActionType.SET_ACTIVE_SESSION,
-                activeSession: newSession,
-              });
-              dnDispatch({
-                type: DNDataActionType.SET_SESSIONS,
-                sessions: newSessions,
-              });
-            }
-          },
-          (reason) => {
-            console.log(reason);
-            console.log("oh no ${reason}");
-          },
-        );
-    }
+    opsData.adminClient
+      .createDesertedNinjaSession({ body: { title: title } })
+      .then(
+        ({ body }) => {
+          const newSession = body as DesertedNinjaSession;
+          const newSessions = [...dnData.sessions, newSession];
+          if (dnDispatch) {
+            dnDispatch({
+              type: DNDataActionType.SET_ACTIVE_SESSION,
+              activeSession: newSession,
+            });
+            dnDispatch({
+              type: DNDataActionType.SET_SESSIONS,
+              sessions: newSessions,
+            });
+          }
+        },
+        (reason) => {
+          console.log(reason);
+          console.log("oh no ${reason}");
+        },
+      );
   }
 
   const session = dnData.activeSession;
   if (session) {
     const signedUpDivs = opsData.teams
-      .filter((t) => session.teams?.find((elt) => elt.id === t.teamId))
+      .filter((t) => session.teams.find((elt) => elt.id === t.teamId))
       .map((t) => <SessionTeamEntry key={t.teamId} team={t} />);
 
     return (

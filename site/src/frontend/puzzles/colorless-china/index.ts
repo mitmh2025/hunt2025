@@ -59,13 +59,11 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["NOW FIND THE FRAUDULENT EPONYMS"],
-      reply: "That’s right, now find the fraudulent eponyms!",
-    },
-    {
-      guess: ["NUMBER CHEATERS HAVE A NAMED LAW TO ALSO USE"],
-      reply:
-        "That’s right, now use the forensic accountant’s fraud-finding eponymous law!",
+      guess: [
+        "NOW FIND THE FRAUDULENT EPONYMS",
+        "NUMBER CHEATERS HAVE A NAMED LAW TO ALSO USE",
+      ],
+      reply: "Keep going!",
     },
   ],
 };
