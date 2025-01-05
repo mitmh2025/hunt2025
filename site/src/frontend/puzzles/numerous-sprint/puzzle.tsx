@@ -13,7 +13,7 @@ const ProblemHeader = styled.h2`
 
 const ProblemContent = styled.div`
   font-family:
-    Times New Roman,
+    "Times New Roman",
     serif;
 `;
 
