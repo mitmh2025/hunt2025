@@ -9,12 +9,11 @@ const puzzle: PuzzleDefinition = {
   initial_description:
     "A thin, multicoloured horizontal line, some shapes composed of squares, and a set of keyboard controls.",
   answer: "PALISADE",
-  authors: ["Allen Blaumann"],
+  authors: ["Elan Blaustein"],
   editors: ["Chris Gatesman", "Melanie Matchett Wood", "Michele Pratusevich"],
   additional_credits: [],
   content: {
     component: Puzzle,
-    entrypoint: "puzzle_unhealthy_mint",
   },
   solution: {
     component: Solution,
@@ -48,7 +47,7 @@ const puzzle: PuzzleDefinition = {
       order: 10.0,
       description:
         "Solvers have discovered Flatland and are navigating it, but are unsure of next steps",
-      keywords: ["flatland", "line", "moving", "walls"],
+      keywords: ["Flatland", "line", "moving", "walls"],
       nudge:
         "As a 2D entity looking at a 2D world from within, it may make sense to try to visualise the world from an external perspective. Try mapping out the 2D world and the objects therein.",
     },
@@ -56,7 +55,7 @@ const puzzle: PuzzleDefinition = {
       order: 15.0,
       description:
         "Solvers are having trouble navigating/visualising Flatland and the objects",
-      keywords: ["flatland", "navigating", "difficult"],
+      keywords: ["Flatland", "navigating", "difficult"],
       nudge:
         "Moving around in Flatland is difficult to visualise. The compass can be very useful for orienting yourself or aligning yourself against walls. Some walls are tricky to gauge the depth of, try to view the wall from all angles or push up against the wall and see if you slide along it. Having a high screen brightness may make examining depth easier.",
     },

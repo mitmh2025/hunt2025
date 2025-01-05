@@ -16,7 +16,6 @@ let player: Player;
 let walls: Wall[];
 let pixels: Pixel[];
 
-// TODO: just import this directly
 function initWalls(p: p5) {
   const walls: Wall[] = [];
 
@@ -103,8 +102,6 @@ function sketch(p: p5) {
 
 if (elem) {
   new p5(sketch, elem);
-  //const root = createRoot(elem);
-  //root.render(<App />);
 } else {
   console.error(
     "Could not mount _land because #_land-root was nowhere to be found",

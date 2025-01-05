@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import img_flat_words from "./assets/solution-flat-words.png";
 import img_full_layout from "./assets/solution-full-layout.png";
 import img_grid_layout from "./assets/solution-grid-layout.png";
@@ -95,11 +99,11 @@ const Solution = () => {
       </ol>
 
       <p>
-        Reading these ciphered letters in order gives FLATLAND, confirming the
-        theming of the puzzle. The reading order of these objects also seem to
-        be indicated by rainbow color-order, where an element of the cipher is
-        colored in order from red to magenta. Note that all ciphers use North as
-        up.
+        Reading these ciphered letters in order gives <Mono>FLATLAND</Mono>,
+        confirming the theming of the puzzle. The reading order of these objects
+        also seem to be indicated by rainbow color-order, where an element of
+        the cipher is colored in order from red to magenta. Note that all
+        ciphers use North as up.
       </p>
 
       <p>
