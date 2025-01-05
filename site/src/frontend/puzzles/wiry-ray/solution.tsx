@@ -184,7 +184,7 @@ const Solution = () => {
             </tr>
           </thead>
           <tbody>
-            {Articacts.map(
+            {Artifacts.map(
               ([name, compass, level, location, frostEmbers, hermit]) => (
                 <tr key={name}>
                   <td>{name}</td>
