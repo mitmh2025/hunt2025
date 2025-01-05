@@ -1663,9 +1663,10 @@ export async function getRouter({
 
           console.log(teamScores);
           // (3) for each team, add to the team state for this puzzle
-          teamScores.forEach(({ id, scores }) => {
+          for (const obj of teamScores) {
+            const {id, scores} = obj;
             if (scores === null) {
-              return;
+              continue;
             }
 
             console.log(id);
@@ -1697,7 +1698,7 @@ export async function getRouter({
                 });
               },
             ));
-          });
+          }
 
           // when all of this is done, set the status to complete
           const newSession = await updateDesertedNinjaSession(
