@@ -312,10 +312,10 @@ const Solution = (): JSX.Element => {
         Once you fill out the last paragraph, you can start at the beginning and
         make a chess move to get to the next color in that 11 color sequence.
         For instance, the first paragraph mentions green and gray. Starting at
-        the upper right (Northeast Tower) of the last dropquote, you can move 1
-        space diagonally down, a la the king, to get to a gray knight, and then
-        do a knight move to a blue U, the first color mentioned in the second
-        paragraph. Follow this unique path through to spell{" "}
+        the upper right (“northeast corner”) of the last dropquote, you can move
+        1 space diagonally down, a la the king, to get to a gray knight, and
+        then do a knight move to a blue U, the first color mentioned in the
+        second paragraph. Follow this unique path through to spell{" "}
         <PuzzleAnswer>YOU PLAYED IT</PuzzleAnswer>.
       </p>
       <ScrollWrapper>
