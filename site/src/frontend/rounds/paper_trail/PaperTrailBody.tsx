@@ -1,12 +1,142 @@
-import React, { Fragment } from "react";
+import {
+  flip,
+  offset,
+  shift,
+  useFloating,
+  autoUpdate,
+  useHover,
+  safePolygon,
+  useFocus,
+  useRole,
+  useInteractions,
+} from "@floating-ui/react";
+import React, {
+  Fragment,
+  type MouseEventHandler,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import { PuzzleUnlockModal } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { Desk, DeskItem } from "./Layout";
 import { PaperTrailFonts } from "./PaperTrailFonts";
-import { type PaperTrailObject, type PaperTrailState } from "./types";
+import {
+  type PaperTrailPuzzleObject,
+  type PaperTrailObject,
+  type PaperTrailState,
+} from "./types";
+
+const PaperTrailDeskItem = ({
+  item,
+  position,
+  imgStyle,
+  currency,
+}: {
+  item: PaperTrailPuzzleObject;
+  position: { left?: string; right?: string; top?: string; bottom?: string };
+  imgStyle: { width: string };
+  currency: number;
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const { refs, floatingStyles, context } = useFloating({
+    placement: item.tooltip_placement ?? "top",
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    middleware: [offset(5), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const hover = useHover(context, { move: false, handleClose: safePolygon() });
+  const focus = useFocus(context);
+  const role = useRole(context, { role: "label" });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    role,
+  ]);
+
+  const unlockModalRef = useRef<HTMLDialogElement>(null);
+  const showUnlockModal: MouseEventHandler<HTMLButtonElement> = useCallback(
+    (e) => {
+      e.stopPropagation();
+      unlockModalRef.current?.showModal();
+    },
+    [],
+  );
+  const dismissUnlockModal = useCallback(() => {
+    unlockModalRef.current?.close();
+  }, []);
+
+  // TODO: figure out what to do, interactivity-wise, when the puzzle is still locked.
+  // In that circumstance, we don't want to link to the puzzle yet since the puzzle page will 404.
+  // We should show some button/unlock/modal overlay?
+
+  const lockState = item.state === "solved" ? "unlocked" : item.state;
+  const tooltip = showTooltip && (
+    <PuzzleTooltipComponent
+      innerRef={refs.setFloating}
+      style={{ ...floatingStyles, visibility: "visible" }}
+      title={item.title}
+      lockState={lockState}
+      answer={item.answer}
+      desc={item.desc}
+      {...getFloatingProps()}
+    />
+  );
+  const itemContents = (
+    <>
+      <img
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        src={item.asset}
+        alt={item.alt}
+        style={imgStyle}
+      />
+    </>
+  );
+
+  if (lockState === "unlockable") {
+    return (
+      <>
+        <DeskItem as="button" style={position} onClick={showUnlockModal}>
+          {itemContents}
+          {tooltip}
+        </DeskItem>
+        <PuzzleUnlockModal
+          ref={unlockModalRef}
+          title={item.title}
+          slug={item.slug}
+          onDismiss={dismissUnlockModal}
+          cost={1}
+          currency={currency}
+          desc={item.desc}
+        />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <DeskItem
+          style={position}
+          href={
+            item.state !== "unlockable" ? `/puzzles/${item.slug}` : undefined
+          }
+        >
+          {itemContents}
+          {tooltip}
+        </DeskItem>
+      </>
+    );
+  }
+};
 
 const PaperTrailBody = ({
   state,
+  teamState,
 }: {
   state: PaperTrailState;
   teamState: TeamHuntState;
@@ -36,26 +166,14 @@ const PaperTrailBody = ({
       width: `min(calc(100vw * ${item.width} / 1920), ${item.width}px)`,
     };
     if ("state" in item) {
-      const lockState = item.state === "solved" ? "unlocked" : item.state;
-      // TODO: figure out what to do, interactivity-wise, when the puzzle is still locked.
-      // In that circumstance, we don't want to link to the puzzle yet since the puzzle page will 404.
-      // We should show some button/unlock/modal overlay?
       return (
-        <DeskItem
+        <PaperTrailDeskItem
           key={item.slug}
-          style={aStyle}
-          href={
-            item.state !== "unlockable" ? `/puzzles/${item.slug}` : undefined
-          }
-        >
-          <img src={item.asset} alt={item.alt} style={imgStyle} />
-          <PuzzleTooltipComponent
-            title={item.title}
-            lockState={lockState}
-            answer={item.answer}
-            desc={item.desc}
-          />
-        </DeskItem>
+          item={item}
+          position={aStyle}
+          imgStyle={imgStyle}
+          currency={teamState.currency}
+        />
       );
     } else {
       return (
