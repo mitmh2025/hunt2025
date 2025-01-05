@@ -266,12 +266,12 @@ export default function TeamIndex() {
           <Button
             variant="contained"
             onClick={() => {
+              const teamIds = table
+                .getSelectedRowModel()
+                .rows.map((row) => row.original.teamId);
+
               setGrantKeysDialogTeams(
-                table.getIsAllRowsSelected()
-                  ? "all"
-                  : table
-                      .getSelectedRowModel()
-                      .rows.map((row) => row.original.teamId),
+                teamIds.length === indexData.length ? "all" : teamIds,
               );
             }}
           >

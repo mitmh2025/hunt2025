@@ -228,12 +228,12 @@ export default function PuzzleTeamList({
           <Button
             variant="contained"
             onClick={() => {
+              const teamIds = table
+                .getSelectedRowModel()
+                .rows.map((r) => r.original.teamId);
+
               handleBulkUnlock(
-                table.getIsAllRowsSelected()
-                  ? "all"
-                  : table
-                      .getSelectedRowModel()
-                      .rows.map((r) => r.original.teamId),
+                teamIds.length === teams.length ? "all" : teamIds,
               );
             }}
           >
