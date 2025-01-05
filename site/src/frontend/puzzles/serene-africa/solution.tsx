@@ -193,7 +193,7 @@ export default function Solution(): JSX.Element {
       />
       <p>Every Braille bump is also a fiction book.</p>
       <p>
-        Pushing the correct books causes a hidden door to open, revealing a
+        Pulling the correct books causes a hidden door to open, revealing a
         secret room that is the beginning of the second phase.
       </p>
     </>
