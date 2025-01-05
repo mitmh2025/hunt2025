@@ -58,8 +58,11 @@ export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
     }
     return renderedRound;
   });
+  const slugsInRounds = new Set(
+    ...rounds.flatMap((r) => r.puzzles.map((p) => p.slug)),
+  );
   const stray = Object.entries(teamState.puzzles)
-    .filter(([_, p]) => p.stray)
+    .filter(([slug, p]) => p.stray && !slugsInRounds.has(slug))
     .map(([slug, p]) => {
       const puzzle = PUZZLES[slug];
       const title = puzzle?.title ?? `Stub puzzle for stray puzzle ${slug}`;
