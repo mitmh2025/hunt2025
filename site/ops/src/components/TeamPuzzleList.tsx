@@ -148,6 +148,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
                 }
 
                 opsData.appendActivityLogEntries(res.body);
+                updateNow();
 
                 notifications.show(
                   `Unlocked ${puzzle.name} for ${bigBoardTeam.username}`,
@@ -172,7 +173,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         });
     };
 
-    const now = useTime();
+    const { now, updateNow } = useTime();
 
     const wrapperEl = useRef<HTMLDivElement | null>(null);
 

@@ -41,7 +41,7 @@ export default function PuzzleTeamList({
   const isOpsAdmin = useIsOpsAdmin();
   const dialogs = useDialogs();
   const notifications = useNotifications();
-  const now = useTime();
+  const { now, updateNow } = useTime();
 
   function handleBulkUnlock(teamIds: number[] | "all") {
     const teamsDisplay =
@@ -72,6 +72,7 @@ export default function PuzzleTeamList({
             }
 
             opsData.appendActivityLogEntries(res.body);
+            updateNow();
 
             notifications.show(`Unlocked puzzle for ${teamsDisplay}`, {
               severity: "success",
