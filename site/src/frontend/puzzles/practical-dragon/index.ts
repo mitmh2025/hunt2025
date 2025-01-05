@@ -9,7 +9,7 @@ const puzzle: PuzzleDefinition = {
   answer: "THE BEATLES",
   authors: ["Alex St Claire"],
   editors: [
-    "J. Hel\u00e9ne Andersson",
+    "J. Heléne Andersson",
     "Jesse Moeller",
     "Robin Deits",
     "Steve Banzaert",
@@ -33,15 +33,15 @@ const puzzle: PuzzleDefinition = {
         "SCHOOLY BULLY",
         "THE SAGA BEGINS",
       ],
-      reply: "You are on the correct track.",
+      reply: "Keep going!",
+    },
+    {
+      guess: ["BEATLES"],
+      reply: "Please resubmit as THE BEATLES",
     },
     {
       guess: ["HEAR COMES THE PUN"],
       reply: "What pun sang that pun?",
-    },
-    {
-      guess: ["HERE COMES THE SUN"],
-      reply: "That’s not a pun",
     },
     {
       guess: ["SAM THE SHAM & THE PHARAOHS"],
