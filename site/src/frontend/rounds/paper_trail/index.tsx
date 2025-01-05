@@ -1,3 +1,4 @@
+import { type Placement } from "@floating-ui/react";
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
@@ -201,6 +202,9 @@ type ObjectDescriptor = {
       };
   width: number | { locked?: number; unlocked: number; solved: number };
   filter?: string;
+  tooltip_placement?:
+    | Placement
+    | { locked?: Placement; unlocked: Placement; solved: Placement };
 };
 
 // Unlock order:
@@ -407,6 +411,7 @@ const objectProperties: Record<
       unlocked: 200,
       solved: 930,
     },
+    tooltip_placement: { locked: "top", unlocked: "top", solved: "top-end" },
   },
   ptp13: {
     // TODO: update substantially for width change esp on solved
@@ -717,6 +722,7 @@ function genImagery(teamState: TeamHuntState): PaperTrailObject[] {
     const alt = lookupValue(properties.alt, state);
     const width = lookupValue(properties.width, state);
     const pos = lookupValue(properties.pos, state);
+    const tooltip_placement = lookupValue(properties.tooltip_placement, state);
     const filter = properties.filter;
     // TODO: label_offset
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`;
@@ -732,6 +738,7 @@ function genImagery(teamState: TeamHuntState): PaperTrailObject[] {
       slug,
       filter,
       state: state === "locked" ? ("unlockable" as const) : state,
+      tooltip_placement,
     };
     if (puzzleState.answer) {
       obj.answer = puzzleState.answer;

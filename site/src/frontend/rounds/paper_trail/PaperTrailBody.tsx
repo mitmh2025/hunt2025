@@ -42,7 +42,7 @@ const PaperTrailDeskItem = ({
   const [showTooltip, setShowTooltip] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
-    placement: "top",
+    placement: item.tooltip_placement ?? "top",
     open: showTooltip,
     onOpenChange: setShowTooltip,
     middleware: [offset(5), flip(), shift()],
@@ -104,6 +104,7 @@ const PaperTrailDeskItem = ({
       <>
         <DeskItem as="button" style={position} onClick={showUnlockModal}>
           {itemContents}
+          {tooltip}
         </DeskItem>
         <PuzzleUnlockModal
           ref={unlockModalRef}
@@ -114,7 +115,6 @@ const PaperTrailDeskItem = ({
           currency={currency}
           desc={item.desc}
         />
-        {tooltip}
       </>
     );
   } else {
@@ -127,8 +127,8 @@ const PaperTrailDeskItem = ({
           }
         >
           {itemContents}
+          {tooltip}
         </DeskItem>
-        {tooltip}
       </>
     );
   }

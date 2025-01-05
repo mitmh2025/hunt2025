@@ -6,13 +6,16 @@ const BG_COLOR = "#272421";
 export const DeskItem = styled.a`
   position: absolute;
   cursor: pointer;
-  -webkit-filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
-  filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
   border: none;
   background-color: transparent;
   padding: 0;
 
-  &:hover {
+  & img {
+    -webkit-filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
+    filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
+  }
+
+  &:hover img {
     -webkit-filter: brightness(1) drop-shadow(0px 0px 8px #ffffe966);
     filter: brightness(1) drop-shadow(0px 0px 8px #ffffe966);
   }
