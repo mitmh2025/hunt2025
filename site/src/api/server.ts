@@ -61,6 +61,7 @@ import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
+  puzzleStateLog,
   registerTeam,
   teamRegistrationLog,
   getDesertedNinjaQuestions,
@@ -1654,11 +1655,30 @@ export async function getRouter({
 
           console.log(teamScores);
           // (3) for each team, add to the team state for this puzzle
-          teamScores.forEach(({ /*id,*/ scores }) => {
+          teamScores.forEach( async ( {id, scores} ) => {
             if (scores === null) {
               return;
             }
-            // TODO: push the scores to the team_state table
+
+            console.log(id);
+            console.log(scores);
+            
+            // TODO: figure out how many times they've taken it before
+            const cachedLog = await puzzleStateLog.getCachedLog(knex, redisClient, id);
+            console.log(cachedLog);
+            
+            // TODO: push the scores to puzzle state
+            // TODO: indicate which iteration they're on
+            void await puzzleStateLog.executeMutation(
+              id, redisClient, knex,
+              async (_, mutator) => {
+                await mutator.appendLog( {
+                  team_id: id,
+                  slug: "estimation_dot_jpg",
+                  data: { 'scores': scores, "sessionId": session.id, "iteration": cachedLog.entries.length },
+                });
+              }
+            );
           });
 
           // when all of this is done, set the status to complete
@@ -1695,7 +1715,7 @@ export async function getRouter({
                 text: "what",
                 imageUrl: null,
                 answer: body.length,
-                scoringMethod: "percen",
+                scoringMethod: "percent",
               },
             ],
           });

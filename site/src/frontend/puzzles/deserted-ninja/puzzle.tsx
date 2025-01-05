@@ -1,13 +1,10 @@
 import React from "react";
-//import { type TeamHuntState } from "../../../../lib/api/client";
 
-const Puzzle = (): JSX.Element => {
-  //  const pickupCompleted =
-  //    teamState.rounds.stakeout?.gates?.includes("sog03") ?? false;
-
+const Puzzle = () => {
   return (
     <>
-      <p>Puzzle goes here</p>
+      <noscript>This puzzle requires Javascript.</noscript>
+      <div id="estimation-dot-jpg-root" />
     </>
   );
 };

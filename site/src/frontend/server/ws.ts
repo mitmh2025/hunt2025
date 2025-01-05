@@ -68,7 +68,7 @@ type DatasetHandler =
     };
 
 // An allowlist of slugs that we should permit puzzle_state_log to be subscribed to for.
-const PUZZLE_SLUGS_WITH_STATE_LOG = ["what_do_they_call_you"];
+const PUZZLE_SLUGS_WITH_STATE_LOG = ["what_do_they_call_you", "estimation_dot_jpg"];
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
