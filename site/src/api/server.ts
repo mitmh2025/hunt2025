@@ -44,11 +44,12 @@ import {
   type MutableTeamRegistration,
   frontendContract,
   type TeamRegistrationLogEntry,
+  type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
-import { PUZZLES } from "../frontend/puzzles";
+import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
@@ -84,6 +85,11 @@ const FRONTEND_USER_ID = -2;
 
 type PuzzleState = ServerInferResponseBody<
   typeof publicContract.getPuzzleState,
+  200
+>;
+
+type SubpuzzleState = ServerInferResponseBody<
+  typeof publicContract.submitSubpuzzleGuess,
   200
 >;
 
@@ -426,9 +432,42 @@ export async function getRouter({
     };
   };
 
+  const formatSubpuzzleState = (
+    slug: string,
+    parent_slug: string,
+    state_log: PuzzleStateLogEntry[],
+  ) => {
+    const guesses = state_log.filter(
+      (e) =>
+        e.data.type === "subpuzzle_guess_submitted" &&
+        e.slug === parent_slug &&
+        e.data.subpuzzle_slug === slug,
+    );
+    const correct_answers = guesses
+      .filter((e) => e.data.status === "correct")
+      .map((e) => e.data.canonical_input)
+      .sort();
+    const result: SubpuzzleState = {
+      guesses: guesses.map(
+        ({ data: { canonical_input, status, response }, id, timestamp }) => ({
+          id: id,
+          canonical_input: canonical_input as string,
+          status: status as GuessStatus,
+          response: response as string,
+          timestamp: timestamp.toISOString(),
+        }),
+      ),
+      ...(correct_answers.length > 0
+        ? { answer: correct_answers.join(", ") }
+        : {}),
+    };
+    return result;
+  };
+
   const formatPuzzleState = (
     slug: string,
     activity_log: InternalActivityLogEntry[],
+    puzzle_state_log: PuzzleStateLogEntry[],
   ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
@@ -493,6 +532,22 @@ export async function getRouter({
         }),
       ),
     };
+    const puzzleDefinition = PUZZLES[slug];
+    if (puzzleDefinition?.subpuzzles) {
+      const subpuzzleStates: Record<string, SubpuzzleState> = {};
+      const subpuzzleSlugs = new Set(
+        puzzleDefinition.subpuzzles.map(({ slug }) => slug),
+      );
+      for (const subpuzzle of puzzleDefinition.subpuzzles) {
+        const subpuzzleState = formatSubpuzzleState(
+          subpuzzle.slug,
+          slug,
+          puzzle_state_log.filter(({ slug }) => subpuzzleSlugs.has(slug)),
+        );
+        subpuzzleStates[subpuzzle.slug] = subpuzzleState;
+      }
+      result.subpuzzles = subpuzzleStates;
+    }
     if (correct_answers.length > 0) {
       result.answer = correct_answers.join(", ");
     }
@@ -507,6 +562,23 @@ export async function getRouter({
     return formatPuzzleState(
       slug,
       (await activityLog.getCachedLog(knex, redisClient, team_id)).entries,
+      (await puzzleStateLog.getCachedLog(knex, redisClient, team_id)).entries,
+    );
+  };
+
+  const getSubpuzzleState = async (
+    team_id: number,
+    slug: string,
+    knex: Knex,
+  ): Promise<SubpuzzleState | undefined> => {
+    const subpuzzle = SUBPUZZLES[slug];
+    if (!subpuzzle) {
+      return undefined;
+    }
+    return formatSubpuzzleState(
+      slug,
+      subpuzzle.parent_slug,
+      (await puzzleStateLog.getCachedLog(knex, redisClient, team_id)).entries,
     );
   };
 
@@ -801,6 +873,24 @@ export async function getRouter({
           };
         },
       },
+      getSubpuzzleState: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug }, req }) => {
+          console.error("getSubpuzzleState handler");
+          const team_id = req.user as number;
+          const state = await getSubpuzzleState(team_id, slug, knex);
+          if (!state) {
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+          return {
+            status: 200,
+            body: state,
+          };
+        },
+      },
       getActivityLog: {
         middleware: [authMiddleware],
         handler: async ({ req }) => {
@@ -989,9 +1079,203 @@ export async function getRouter({
           if (result.status === 200) {
             return {
               status: 200 as const,
+              // We don't currently have any puzzles where a guess for a puzzle depends
+              // on the puzzle state log. Don't bother fetching it.
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, logEntries)!,
+              body: formatPuzzleState(slug, logEntries, [])!,
+            };
+          }
+          return result;
+        },
+      },
+      submitSubpuzzleGuess: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug }, body: { guess }, req }) => {
+          const puzzle = SUBPUZZLES[slug];
+          if (!puzzle || !puzzle.answer) {
+            // If a subpuzzle slug does not exist or the subpuzzle does not have an answer,
+            // you should not be able to submit guesses for it.
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+          const parent_slug = puzzle.parent_slug;
+          const slot = slugToSlotMap.get(parent_slug);
+          if (slot === undefined) {
+            // If a subpuzzle's parent is not assigned to a slot in the hunt, you should
+            // not be able to submit guesses to it nor receive prizes for correct answers,
+            // even if the subpuzzle slug happens to be typeset/exist.
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+
+          let canonical_input = canonicalizeInput(guess);
+          const correct_answer = [puzzle.answer].find(
+            (answer) => canonicalizeInput(answer) === canonical_input,
+          );
+          const team_id = req.user as number;
+          const { result, logEntries } = await puzzleStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              const puzzle_log = mutator.log.filter(
+                (e) =>
+                  "slug" in e &&
+                  e.slug === parent_slug &&
+                  e.data.subpuzzle_slug === slug,
+              );
+
+              // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
+              // n^2 minutes "correct" and "other" guesses do not count towards rate-limits.
+              // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
+              // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
+              // for the purposes of rate-limiting.
+              const last_reset_time_record = puzzle_log.findLast(
+                (e) => e.data.type === "rate_limits_reset",
+              );
+              const last_reset_time = last_reset_time_record?.timestamp;
+              const previous_guess_times = puzzle_log
+                .filter(
+                  (e) =>
+                    e.data.type === "subpuzzle_guess_submitted" &&
+                    e.data.subpuzzle_slug === slug &&
+                    e.data.status === "incorrect",
+                )
+                .map((e) => e.timestamp);
+              const effective_previous_guess_times =
+                last_reset_time !== undefined
+                  ? previous_guess_times.filter((t) => t > last_reset_time)
+                  : previous_guess_times;
+              const allowAfter = nextAcceptableSubmissionTime(
+                effective_previous_guess_times,
+              );
+              const now = Date.now();
+              if (now < allowAfter.getTime()) {
+                return {
+                  status: 429 as const,
+                  body: {
+                    retryAfter: allowAfter.toISOString(),
+                  },
+                };
+              }
+
+              // Determine our disposition on this submission.
+              let responseText = "Incorrect";
+              let status: GuessStatus = "incorrect";
+              if (correct_answer) {
+                canonical_input = correct_answer;
+                responseText = "Correct!";
+                status = "correct";
+              }
+
+              // Attempt to insert a new guess.  If this guess's input matches some other canonical
+              // input, inserted should be empty thanks to the unique index and
+              // onConflict()/ignore().
+              const inserted = await mutator.appendLog({
+                team_id,
+                slug: parent_slug,
+                data: {
+                  type: "subpuzzle_guess_submitted",
+                  subpuzzle_slug: slug,
+                  canonical_input,
+                  status,
+                  response: responseText,
+                },
+              });
+
+              // Only add relevant entries to the activity log if the guess was novel and inserted
+              // a record.  Otherwise, we might grant double rewards for the same guess.
+              if (inserted !== undefined) {
+                // This was a new guess.
+                if (correct_answer) {
+                  // It was right and the puzzle is now solved.
+                  await mutator.appendLog({
+                    team_id,
+                    slug: parent_slug,
+                    data: {
+                      type: "subpuzzle_solved",
+                      subpuzzle_slug: slug,
+                      answer: canonical_input,
+                    },
+                  });
+                }
+              }
+              return { status: 200 as const };
+            },
+          );
+          if (result.status === 200) {
+            const guesses = logEntries.filter(
+              (e) =>
+                e.data.type === "subpuzzle_guess_submitted" &&
+                e.slug === parent_slug &&
+                e.data.subpuzzle_slug === slug,
+            );
+            const correct_answers = guesses
+              .filter((e) => e.data.status === "correct")
+              .map((e) => e.data.canonical_input)
+              .sort();
+
+            // Special case. Unlock main quixotic-shoe puzzle when its subpuzzles are solved
+            if (
+              correct_answers.length > 0 &&
+              [
+                "hellfresh",
+                "betteroprah",
+                "hardlysafe",
+                "draughtqueens",
+                "townsquarespace",
+              ].includes(slug)
+            ) {
+              await activityLog.executeMutation(
+                hunt,
+                team_id,
+                redisClient,
+                knex,
+                async (_, mutator) => {
+                  const existing = mutator.log.some(
+                    (e) =>
+                      (e.team_id === team_id || e.team_id === undefined) &&
+                      e.type === "gate_completed" &&
+                      e.slug === "ptg09",
+                  );
+                  if (!existing) {
+                    await mutator.appendLog({
+                      team_id,
+                      type: "gate_completed",
+                      slug: "ptg09",
+                    });
+                  }
+                },
+              );
+            }
+
+            const subpuzzleState: PuzzleState = {
+              round: slot.roundSlug,
+              guesses: guesses.map(
+                ({
+                  data: { canonical_input, status, response },
+                  id,
+                  timestamp,
+                }) => ({
+                  id: id,
+                  canonical_input: canonical_input as string,
+                  status: status as GuessStatus,
+                  response: response as string,
+                  timestamp: timestamp.toISOString(),
+                }),
+              ),
+              ...(correct_answers.length > 0
+                ? { answer: correct_answers.join(", ") }
+                : {}),
+            };
+            return {
+              status: 200 as const,
+              body: subpuzzleState,
             };
           }
           return result;
@@ -1076,9 +1360,11 @@ export async function getRouter({
           if (result) {
             return {
               status: 200 as const,
+              // We don't currently have any puzzles where an unlock for a puzzle depends
+              // on the puzzle state log. Don't bother fetching it.
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, logEntries)!,
+              body: formatPuzzleState(slug, logEntries, [])!,
             };
           }
           return {
@@ -2006,6 +2292,7 @@ export async function getRouter({
         middleware: [frontendAuthMiddleware],
         handler: async ({ query: { since, team_id, slug } }) => {
           let effectiveSince = undefined;
+          console.error("getFullPuzzleStateLog");
           if (since) {
             const sinceParsed = Number(since);
             if (sinceParsed > 0) {
@@ -2088,6 +2375,41 @@ export async function getRouter({
               return mutator.log.filter(
                 (entry) =>
                   entry.slug === "what_do_they_call_you" &&
+                  entry.team_id === team_id,
+              );
+            },
+          );
+          const body = result.map((entry) => {
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
+          });
+          return {
+            status: 200 as const,
+            body,
+          };
+        },
+      },
+      adFrequencyQuixoticShoe: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId }, body: { status } }) => {
+          const team_id = parseInt(teamId, 10);
+          const { result } = await puzzleStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async (_, mutator) => {
+              // TODO(ebroder): integrate with radio state
+              await mutator.appendLog({
+                team_id,
+                slug: "and_now_a_puzzling_word_from_our_sponsors",
+                data: { type: "ad_frequency", status },
+              });
+
+              return mutator.log.filter(
+                (entry) =>
+                  entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
                   entry.team_id === team_id,
               );
             },

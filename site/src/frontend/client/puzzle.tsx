@@ -15,9 +15,11 @@ type Guess = Guesses[number];
 const GuessSectionManager = ({
   initialGuesses,
   slug,
+  type,
 }: {
   initialGuesses: Guesses;
   slug: string;
+  type: "puzzle" | "subpuzzle";
 }) => {
   const websocketGuesses = useAppendDataset(
     "guess_log",
@@ -46,6 +48,7 @@ const GuessSectionManager = ({
 
   return (
     <PuzzleGuessSection
+      type={type}
       slug={slug}
       guesses={guesses}
       onGuessesUpdate={mergeGuesses}
@@ -53,20 +56,39 @@ const GuessSectionManager = ({
   );
 };
 
-const guessSectionElem = document.getElementById("puzzle-guesses");
-if (guessSectionElem) {
+const puzzleGuessSectionElem = document.getElementById("puzzle-guesses");
+const subpuzzleGuessSectionElem = document.getElementById("subpuzzle-guesses");
+if (puzzleGuessSectionElem) {
   const initialGuesses = (
     window as unknown as { initialGuesses: PuzzleData["guesses"] }
   ).initialGuesses;
   // TODO: extract puzzleSlug from the URL instead of embedding it via script?
   const slug = (window as unknown as { puzzleSlug: string }).puzzleSlug;
   hydrateRoot(
-    guessSectionElem,
-    <GuessSectionManager initialGuesses={initialGuesses} slug={slug} />,
+    puzzleGuessSectionElem,
+    <GuessSectionManager
+      initialGuesses={initialGuesses}
+      slug={slug}
+      type={"puzzle"}
+    />,
+  );
+} else if (subpuzzleGuessSectionElem) {
+  const initialGuesses = (
+    window as unknown as { initialGuesses: PuzzleData["guesses"] }
+  ).initialGuesses;
+  // TODO: extract puzzleSlug from the URL instead of embedding it via script?
+  const slug = (window as unknown as { puzzleSlug: string }).puzzleSlug;
+  hydrateRoot(
+    subpuzzleGuessSectionElem,
+    <GuessSectionManager
+      initialGuesses={initialGuesses}
+      slug={slug}
+      type={"subpuzzle"}
+    />,
   );
 } else {
   console.error(
-    "Couldn't mount PuzzleGuessSection because #puzzle-guesses was nowhere to be found",
+    "Couldn't mount PuzzleGuessSection because #puzzle-guesses and #subpuzzle-guesses were nowhere to be found",
   );
 }
 

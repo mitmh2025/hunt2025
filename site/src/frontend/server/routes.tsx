@@ -46,6 +46,7 @@ import {
   puzzleUnlockPostHandler,
   subpuzzleHandler,
   type SubpuzzleParams,
+  subpuzzleGuessPostHandler,
 } from "./routes/puzzle";
 import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
@@ -246,6 +247,10 @@ export function registerUiRoutes({
     ),
   );
   authRouter.post("/puzzles/:puzzleSlug/guess", puzzleGuessPostHandler);
+  authRouter.post(
+    "/subpuzzles/:subpuzzleSlug/guess",
+    subpuzzleGuessPostHandler,
+  );
   authRouter.post("/puzzles/:puzzleSlug/unlock", puzzleUnlockPostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug/solution",
@@ -271,50 +276,70 @@ export function registerUiRoutes({
       );
     }),
   );
+  const plainRouletteData = [
+    { href: "/i_kid_ewe_knot", slug: "i_kid_ewe_knot", gate: "tmg01" },
+    { href: "/stitchy_situation", slug: "stitchy_situation", gate: "tmg02" },
+  ];
+  for (const { href, slug, gate } of plainRouletteData) {
+    authRouter.get(
+      href,
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (
+          !(
+            req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
+          ).includes(gate)
+        ) {
+          await req.frontendApi.markTeamGateSatisfied({
+            params: { teamId: `${req.teamState?.teamId}`, gateId: gate },
+          });
+        }
+        await renderApp(
+          subpuzzleHandler,
+          {
+            ...req,
+            params: { subpuzzleSlug: slug },
+          } as Request<SubpuzzleParams>,
+          res,
+          next,
+        );
+      }),
+    );
+  }
+  const quixoticShoeData = [
+    { href: "/hellfresh", slug: "hellfresh", gate: "ptg04" },
+    { href: "/betteroprah", slug: "betteroprah", gate: "ptg05" },
+    { href: "/hardlysafe", slug: "hardlysafe", gate: "ptg06" },
+    { href: "/draughtqueens", slug: "draughtqueens", gate: "ptg07" },
+    { href: "/townsquarespace", slug: "townsquarespace", gate: "ptg08" },
+  ];
+  for (const { href, slug, gate } of quixoticShoeData) {
+    authRouter.get(
+      href,
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (
+          !(req.teamState?.state.rounds.paper_trail?.gates ?? []).includes(gate)
+        ) {
+          await req.frontendApi.markTeamGateSatisfied({
+            params: { teamId: `${req.teamState?.teamId}`, gateId: gate },
+          });
+        }
+        await renderApp(
+          subpuzzleHandler,
+          {
+            ...req,
+            params: { subpuzzleSlug: slug },
+          } as Request<SubpuzzleParams>,
+          res,
+          next,
+        );
+      }),
+    );
+  }
+  // Redirect misspelling to correct spelling
   authRouter.get(
-    "/i_kid_ewe_knot",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (
-        !(
-          req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
-        ).includes("tmg01")
-      ) {
-        await req.frontendApi.markTeamGateSatisfied({
-          params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg01" },
-        });
-      }
-      await renderApp(
-        subpuzzleHandler,
-        {
-          ...req,
-          params: { subpuzzleSlug: "i_kid_ewe_knot" },
-        } as Request<SubpuzzleParams>,
-        res,
-        next,
-      );
-    }),
-  );
-  authRouter.get(
-    "/stitchy_situation",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (
-        !(
-          req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
-        ).includes("tmg02")
-      ) {
-        await req.frontendApi.markTeamGateSatisfied({
-          params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg02" },
-        });
-      }
-      await renderApp(
-        subpuzzleHandler,
-        {
-          ...req,
-          params: { subpuzzleSlug: "stitchy_situation" },
-        } as Request<SubpuzzleParams>,
-        res,
-        next,
-      );
+    "/draftqueens",
+    asyncHandler((_: Request, res: Response) => {
+      res.redirect("/draughtqueens");
     }),
   );
 

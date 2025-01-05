@@ -258,4 +258,14 @@ export const frontendContract = c.router({
       401: z.null(),
     },
   },
+  adFrequencyQuixoticShoe: {
+    method: "POST",
+    path: "/teams/:teamId/puzzles/quixotic-shoe/adFrequency",
+    body: z.object({
+      status: z.union([z.literal("plus"), z.literal("minus"), z.null()]),
+    }),
+    responses: {
+      200: PuzzleStateLog,
+    },
+  },
 });

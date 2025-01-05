@@ -63,6 +63,7 @@ import { MurderFonts } from "../../rounds/murder_in_mitropolis/MurderFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
 import { type Entrypoint } from "../assets";
+import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "../constants";
 
 const SHOW_SOLUTIONS = true as boolean;
 
@@ -215,15 +216,68 @@ export type SubpuzzleParams = {
   subpuzzleSlug: string;
 };
 
-export function subpuzzleHandler(req: Request<SubpuzzleParams>) {
+export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
   const teamState = req.teamState;
   if (!teamState) {
     return undefined;
   }
 
-  const subpuzzle = SUBPUZZLES[req.params.subpuzzleSlug];
+  const slug = req.params.subpuzzleSlug;
+  const subpuzzle = SUBPUZZLES[slug];
   if (!subpuzzle) {
     return undefined;
+  }
+
+  const result = await req.api.getSubpuzzleState({ params: { slug: slug } });
+  if (result.status !== 200) {
+    return undefined;
+  }
+
+  // If the puzzle has an answer, create a guess section.
+  let guessFrag = <></>;
+  if (subpuzzle.answer) {
+    const guesses = result.body.guesses;
+    const initialGuesses = JSON.stringify(guesses);
+    const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}";`;
+    const noopOnGuessesUpdate = () => {
+      /* no-op, this is noninteractive in SSR */
+    };
+    guessFrag = (
+      <>
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{ __html: inlineScript }}
+        />
+        <div id="subpuzzle-guesses">
+          <PuzzleGuessSection
+            type="subpuzzle"
+            slug={slug}
+            guesses={guesses}
+            onGuessesUpdate={noopOnGuessesUpdate}
+          />
+        </div>
+      </>
+    );
+  }
+
+  let puzzleStateFrag = <></>;
+  if (PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG.includes(slug)) {
+    const puzzleStateLogResult = await req.frontendApi.getFullPuzzleStateLog({
+      query: { team_id: teamState.teamId, slug: subpuzzle.parent_slug },
+    });
+    if (puzzleStateLogResult.status !== 200) {
+      // Something has gone wrong. These puzzles need puzzle state log access, so
+      // we should fail if we can't include it.
+      return undefined;
+    }
+    const initialPuzzleStateLog = JSON.stringify(puzzleStateLogResult.body);
+    const puzzleStateLogScript = `window.initialPuzzleStateLog = ${initialPuzzleStateLog}`;
+    puzzleStateFrag = (
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={{ __html: puzzleStateLogScript }}
+      />
+    );
   }
 
   // Select content component.
@@ -257,13 +311,20 @@ export function subpuzzleHandler(req: Request<SubpuzzleParams>) {
           <PuzzleTitleComponent>
             <span>{title}</span>
           </PuzzleTitleComponent>
+          {guessFrag}
         </PuzzleHeaderComponent>
         <PuzzleMainComponent
           id="puzzle-content"
           className="puzzle-content"
           data-copyable={content.copyable ? "true" : undefined}
         >
-          <ContentComponent teamState={teamState.state} query={req.query} />
+          {puzzleStateFrag}
+          <ContentComponent
+            type="subpuzzle"
+            teamState={teamState.state}
+            subpuzzleState={result.body}
+            query={req.query}
+          />
         </PuzzleMainComponent>
         <PuzzleFooterComponent />
       </PuzzleWrapperComponent>
@@ -311,6 +372,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       />
       <div id="puzzle-guesses">
         <PuzzleGuessSection
+          type="puzzle"
           slug={slug}
           guesses={guesses}
           onGuessesUpdate={noopOnGuessesUpdate}
@@ -395,6 +457,26 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     return undefined;
   }
 
+  let puzzleStateFrag = <></>;
+  if (PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG.includes(slug)) {
+    const puzzleStateLogResult = await req.frontendApi.getFullPuzzleStateLog({
+      query: { team_id: req.teamState.teamId, slug },
+    });
+    if (puzzleStateLogResult.status !== 200) {
+      // Something has gone wrong. These puzzles need puzzle state log access, so
+      // we should fail if we can't include it.
+      return undefined;
+    }
+    const initialPuzzleStateLog = JSON.stringify(puzzleStateLogResult.body);
+    const puzzleStateLogScript = `window.initialPuzzleStateLog = ${initialPuzzleStateLog}`;
+    puzzleStateFrag = (
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={{ __html: puzzleStateLogScript }}
+      />
+    );
+  }
+
   // TODO: Use round-specific puzzle page layout for result.body.round.  For
   // outlands puzzles, the layout may depend on round and puzzle visibility.
 
@@ -440,7 +522,13 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           className="puzzle-content"
           data-copyable={content.copyable ? "true" : undefined}
         >
-          <ContentComponent teamState={req.teamState.state} query={req.query} />
+          {puzzleStateFrag}
+          <ContentComponent
+            type="puzzle"
+            teamState={req.teamState.state}
+            puzzleState={result.body}
+            query={req.query}
+          />
         </PuzzleMainComponent>
         <PuzzleFooterComponent />
       </PuzzleWrapperComponent>
@@ -471,6 +559,42 @@ export const puzzleGuessPostHandler: RequestHandler<
   const { guess } = req.body;
   const slug = req.params.puzzleSlug;
   const result = await req.api.submitGuess({
+    body: {
+      guess,
+    },
+    params: {
+      slug,
+    },
+  });
+
+  if (req.headers.accept !== "application/json") {
+    // Must be browser falling back to basic HTML forms.
+    res.redirect(`/puzzles/${slug}`);
+    return;
+  }
+
+  // FIXME: handle translating rate-limits into something for browser code to consume
+  if (result.status !== 200) {
+    console.log(result.body);
+    res.status(result.status).json({
+      status: "error",
+      message: "Submission failed",
+    });
+  } else {
+    res.json(result.body);
+  }
+});
+
+export const subpuzzleGuessPostHandler: RequestHandler<
+  PuzzleParams,
+  unknown,
+  PuzzleGuessReqBody,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  // TODO: validate req.body with zod
+  const { guess } = req.body;
+  const slug = req.params.puzzleSlug;
+  const result = await req.api.submitSubpuzzleGuess({
     body: {
       guess,
     },
@@ -643,6 +767,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
             />
           </div>
           <SolutionComponent
+            type="solution"
             teamState={req.teamState.state}
             query={req.query}
           />

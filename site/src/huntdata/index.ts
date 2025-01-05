@@ -309,7 +309,7 @@ const HUNT: Hunt = {
         // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
         { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "incognito" },
-        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 }, // And Now, A Puzzling Word From Our Sponsors
+        { id: "ptp03", unlocked_if: {gate_satisfied: "ptg09"}, slug: "and_now_a_puzzling_word_from_our_sponsors" },
         { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
         { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
         { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle (pending testing)
@@ -363,7 +363,14 @@ const HUNT: Hunt = {
             { round_unlocked: "paper_trail" },
           ]},
         },
-        { id: "ptg04", internal_description: "Weather enabled for icy-box", satisfied_if: {
+        { id: "ptg04" }, // And Now, A Puzzling Word From Our Sponsors: Accessed HellFresh
+        { id: "ptg05" }, // And Now, A Puzzling Word From Our Sponsors: Accessed BetterOprah
+        { id: "ptg06" }, // And Now, A Puzzling Word From Our Sponsors: Accessed HardlySafe
+        { id: "ptg07" }, // And Now, A Puzzling Word From Our Sponsors: Accessed DraughtQueens
+        { id: "ptg08" }, // And Now, A Puzzling Word From Our Sponsors: Accessed TownSquareSpace
+        { id: "ptg09" }, // And Now, A Puzzling Word From Our Sponsors: Solved any subpuzzle; used to open puzzle itself
+        { id: "ptg10" }, // And Now, A Puzzling Word From Our Sponsors: Picked up martini from bar
+        { id: "ptg16", internal_description: "Weather enabled for icy-box", satisfied_if: {
           oneOf: [
             { slot_unlocked: "ptp10" },
             { round_unlocked: "paper_trail" },

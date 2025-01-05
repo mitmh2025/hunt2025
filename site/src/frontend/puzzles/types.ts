@@ -2,7 +2,11 @@ import { type ParsedQs } from "qs";
 import type { FunctionComponent } from "react";
 import type { Router } from "websocket-express";
 import { z } from "zod";
-import { type TeamHuntState } from "../../../lib/api/client";
+import type {
+  PuzzleState,
+  SubpuzzleState,
+  TeamHuntState,
+} from "../../../lib/api/client";
 import type { Entrypoint } from "../server/assets";
 
 // Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
@@ -41,12 +45,39 @@ export const CannedResponseSchema = z.object({
 
 export type CannedResponse = z.infer<typeof CannedResponseSchema>;
 
-export type Content = {
-  // TODO: figure out what props get passed to this FunctionComponent
-  component: FunctionComponent<{ teamState: TeamHuntState; query: ParsedQs }>;
+type BaseContentProps = {
+  teamState: TeamHuntState;
+  query: ParsedQs;
 };
 
-export type PuzzleContent = Content & {
+type PuzzleContentProps = BaseContentProps & {
+  type: "puzzle";
+
+  puzzleState: PuzzleState;
+};
+
+type SubpuzzleContentProps = BaseContentProps & {
+  type: "subpuzzle";
+  subpuzzleState: SubpuzzleState;
+};
+
+type SolutionContentProps = BaseContentProps & {
+  type: "solution";
+};
+
+type ContentProps<T extends "puzzle" | "subpuzzle" | "solution"> =
+  T extends "puzzle"
+    ? PuzzleContentProps
+    : T extends "subpuzzle"
+      ? SubpuzzleContentProps
+      : SolutionContentProps;
+
+export type Content<T extends "puzzle" | "subpuzzle" | "solution"> = {
+  // TODO: figure out what props get passed to this FunctionComponent
+  component: FunctionComponent<ContentProps<T>>;
+};
+
+type EnrichedPuzzleContentProps = {
   // If present, the scripts and stylesheets produced by the webpack entrypoint
   // of the given name will be injected into the page's <body> and <head>
   // respectively.
@@ -57,6 +88,13 @@ export type PuzzleContent = Content & {
   // the clipboard.
   copyable?: boolean;
 };
+
+export type PuzzleContent = Content<"puzzle"> & EnrichedPuzzleContentProps;
+
+export type SubpuzzleContent = Content<"subpuzzle"> &
+  EnrichedPuzzleContentProps;
+
+export type SolutionContent = Content<"solution">;
 
 export const AdditionalCreditSchema = z.union([
   z.object({
@@ -114,7 +152,8 @@ export type PuzzleDefinitionMetadata = z.infer<
 export type SubpuzzleDefinition = {
   title: string;
   slug: string;
-  content: PuzzleContent;
+  content: SubpuzzleContent;
+  answer?: string;
 };
 
 export type PuzzleDefinition = PuzzleDefinitionMetadata & {
@@ -125,7 +164,7 @@ export type PuzzleDefinition = PuzzleDefinitionMetadata & {
   // The React component that contains the solution writeup that we render on the solution page.
   // The actual answer and credits will be generated from the other fields of PuzzleDefinition, so this
   // should just be the text and images of the steps, and any additional author notes.
-  solution: Content;
+  solution: SolutionContent;
 
   // If provided, an additional websocket-express Router that should be mounted at `/puzzles/<slug>/`
   // to allow for additional puzzle-specific server behavior.
