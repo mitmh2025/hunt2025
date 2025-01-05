@@ -43,9 +43,9 @@ const HUNT: Hunt = {
         { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "missing_connections" },
         { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "xoxo" },
         { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "an_argument" },
-        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // 📑🍝
+        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "📑🍝" },
         { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion" },
-        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 }, // on_the_corner
+        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "on_the_corner" },
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "drunkens_and_flagons" },
         { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "battle_factory" },
         { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
@@ -152,10 +152,10 @@ const HUNT: Hunt = {
           is_meta: true,
           is_supermeta: true,
           unlocked_if: [
-            { interaction_completed: "interview_at_the_boardwalk" },
-            { interaction_completed: "interview_at_the_jewelry_store" },
-            { interaction_completed: "interview_at_the_casino" },
-            { interaction_completed: "interview_at_the_art_gallery" },
+            { slot_solved: "mdm01" },
+            { slot_solved: "mdm02" },
+            { slot_solved: "mdm03" },
+            { slot_solved: "mdm04" },
           ],
           slug: "the_thief",
         }, // Where is the Diamond? (super)
@@ -170,36 +170,36 @@ const HUNT: Hunt = {
         // become available after each of the four metas which open a side
         // investigation.  Each should become immediately available to teams upon
         // solving the corresponding metapuzzle.
-        {
-          id: "interview_at_the_boardwalk",
-          unlock_if: [{ slot_solved: "mdm01" }],
-        },
-        {
-          id: "interview_at_the_jewelry_store",
-          unlock_if: [{ slot_solved: "mdm02" }],
-        },
-        {
-          id: "interview_at_the_casino",
-          unlock_if: [{ slot_solved: "mdm03" }],
-        },
-        {
-          id: "interview_at_the_art_gallery",
-          unlock_if: [{ slot_solved: "mdm04" }],
-        },
+        // {
+        //   id: "interview_at_the_boardwalk",
+        //   unlock_if: [{ slot_solved: "mdm01" }],
+        // },
+        // {
+        //   id: "interview_at_the_jewelry_store",
+        //   unlock_if: [{ slot_solved: "mdm02" }],
+        // },
+        // {
+        //   id: "interview_at_the_casino",
+        //   unlock_if: [{ slot_solved: "mdm03" }],
+        // },
+        // {
+        //   id: "interview_at_the_art_gallery",
+        //   unlock_if: [{ slot_solved: "mdm04" }],
+        // },
 
-        {
-          // This is a brief in-person interaction which is expected to happen
-          // after teams solve the Missing Diamond super but before they go on the
-          // funaround.
-          id: "meet_billie",
-          unlock_if: [{ slot_solved: "mdm05" }],
-        },
-        {
-          // This is a longer in-person interaction which is expected to happen
-          // after teams complete the funaround.
-          id: "catch_the_thief",
-          unlock_if: [{ interaction_completed: "meet_billie" }],
-        },
+        // {
+        //   // This is a brief in-person interaction which is expected to happen
+        //   // after teams solve the Missing Diamond super but before they go on the
+        //   // funaround.
+        //   id: "meet_billie",
+        //   unlock_if: [{ slot_solved: "mdm05" }],
+        // },
+        // {
+        //   // This is a longer in-person interaction which is expected to happen
+        //   // after teams complete the funaround.
+        //   id: "catch_the_thief",
+        //   unlock_if: [{ interaction_completed: "meet_billie" }],
+        // },
       ],
       unlock_if: [
         // These are the conditions for the /round/ page being visible.

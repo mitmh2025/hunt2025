@@ -1,368 +1,42 @@
-import cryptex_note_blacklight from "../../frontend/rounds/illegal_search/assets/cryptex/cryptex_note_blacklight.png";
-import candy_modal_blacklight from "../../frontend/rounds/illegal_search/assets/desk_drawer/candy_modal_blacklight.png";
-import rings_modal_blacklight from "../../frontend/rounds/illegal_search/assets/fuse_box/rings_modal_blacklight.png";
-import ledger_blacklight from "../../frontend/rounds/illegal_search/assets/rug/numberlock_box_ledger_blacklight.png";
-import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/safe/money_modal_blacklight.png";
-import DownrightBackwards from "./able-worm";
-import MagicI from "./acclaimed-file";
-import Superlatives from "./acute-ski";
-import GiveThisGridAShake from "./adored-embassy";
-import FormulaWon from "./alarming-face";
-import LabScrabble from "./amused-soul";
-import JustPlaneWrong from "./artistic-aztec";
-import AbsolutelyNotBalderdash from "./ashamed-tail";
-import DoableDouble from "./austere-sink";
-import { blacklightPuzzle } from "./blacklight";
-import CrossSpread from "./bony-palm";
-import ShellCorporationFour from "./bountiful-maple";
-import MellowPlanet from "./brilliant-center";
-import PassageOfTime from "./calculating-mammoth";
-import BorderlinePersonality from "./calculating-square";
-import StarCrossed from "./carefree-ghost";
-import ABadlyBrokenQuote from "./cavernous-angel";
-import EducationalRiteOfPassage from "./circular-greece";
-import HalfBaked from "./classic-link";
-import TheInspectre from "./clean-ivory";
-import EponymousForensicAccountant from "./colorless-china";
-import CheckadeezWordsOut from "./complex-bun";
-import NetworkingEvent from "./confused-antarctica";
-import StoryVisionContest from "./corrupt-embassy";
-import SomeAssemblyRequired from "./cultured-rome";
-import WhoseSongIsItAnyway from "./delirious-mammoth";
-import AnyCoatWillDo from "./dental-police";
-import TheBoardwalk from "./dental-shark";
-import CanDoTransmissions from "./diligent-spy";
-import TheThief from "./dimpled-star";
-import FindOtherWaysOfSeeing from "./discrete-spine";
-import MensAtMyNose from "./downright-hook";
-import Fechtbuch from "./dry-forest";
-import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
-import NeatlyDrawn from "./exotic-pirate";
-import ReadBetweenTheLines from "./fake-fair";
-import NoNotes from "./false-pole";
-import BattleFactory from "./firsthand-cat";
-import CacciandoTrioMisterioso from "./fog-wavelength";
-import Casino from "./fortunate-calf";
-import Alias from "./frilly-whip";
-import GivenUp from "./giant-switch";
-import ChatGPT from "./giving-fighter";
-import ShellCorporationThree from "./green-princess";
-import ShellCorporationOne from "./gullible-tooth";
-import BrokenRecord from "./handsome-satellite";
-import BeKindRewind from "./heartfelt-car";
-import SingLikeACanary from "./heavenly-cell";
-import Incognito from "./heavy-iron";
-import AWeatheredNote from "./icy-box";
-import BigNames from "./important-green";
-import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
-import ChemicalsAreSexy from "./innocent-lab";
-import ShellCorporationEight from "./insignificant-thief";
-import TheArtGallery from "./intentional-limousine";
-import CornMaize from "./kind-ruler";
-import T____ott___P__y from "./kind-ship";
-import ItsNotClear from "./kooky-light";
-import AnExchangeOfVows from "./lanky-robot";
-import CahfeeRegulah from "./left-rome";
-import Jargon from "./legitimate-bridge";
-import ಕಾಬವದೋೀ್ from "./limited-marble";
-import MasteringTheArtOfConchFrocking from "./mature-atlantis";
-import ReliefPrinting from "./messy-olive";
-import ShellCorporationSix from "./mild-octopus";
-import WhyKantWeBeFriendsToo from "./milky-swing";
-import MysteryOs from "./minty-play";
-import AWalkInThePark from "./misguided-revolution";
-import TheGrandIllusion from "./monstrous-shadow";
-import Shrinkage from "./monstrous-spring";
-import PressPlay from "./muffled-board";
-import TheErasPuzzle from "./musty-shadow";
-import MissingConnections from "./naive-agent";
-import WhatDoTheyCallYou from "./new-ketchup";
-import AMathQuiz from "./new-pin";
-import TasteExplosion from "./next-van";
-import SeatingArrangements from "./oddball-comic";
-import TemporalInvestigations from "./offensive-cat";
-import HisLifeStory from "./oily-date";
-import ZuluLima from "./opulent-fair";
-import DearDiary from "./overlooked-compound";
-import DoThePacking from "./parallel-ship";
-import OWoeIsMe from "./past-jam";
-import TheUltimateInsult from "./periodic-dance";
-import BarTalk from "./personal-chocolate";
 import { makePlaceholder } from "./placeholder";
-import WeirdoThreadedDoodads from "./plain-roulette";
-import EditorsSolemnity from "./plant-soursop";
-import BeMine from "./pleasing-racket";
-import CelestialRope from "./powerful-berry";
-import ZingItAgain from "./practical-dragon";
-import SongsOnTheRadio from "./practical-fighter";
-import ShellCorporationFive from "./profitable-trunk";
-import ThisIsJustATest from "./radiant-snow";
-import InCommunicadoTonight from "./rare-block";
-import ASudoku from "./recent-ship";
-import Cruciverbal from "./regal-knife";
-import TheJewelryStore from "./reliable-night";
-import FollowTheRules from "./right-palm";
-import SyntheticTagsonomy from "./rubbery-tooth";
-import DroppingTheBall from "./rundown-spot";
-import PawPrintDetective from "./rural-helicopter";
-import MagnifyingGlassIce from "./sandy-atlantis";
-import JustFingBehave from "./scornful-band";
-import WhereAmI from "./scornful-screen";
-import BermudaTriangle from "./selfish-king";
-import PapasBookcase from "./serene-africa";
-import InADifferentDirection from "./shallow-marble";
-import AnythingIsPopsicle from "./shameful-duck";
-import The10000SheetExcelFile from "./shoddy-table";
-import PapasStash from "./shy-embassy";
-import PapasBookcaseBlacklight from "./sick-crown";
-import IntroductionToDecryption from "./silky-ninja";
-import ArtHistory from "./similar-part";
-import KindredSpirits from "./similar-teacher";
-import AHeapOfClards from "./sinful-ivory";
-import TheCenterIsInPlainSight from "./sinful-turkey";
-import HeShouldntHaveEatenTheApple from "./snoopy-link";
-import KnightsOfTheSquareTable from "./sore-ketchup";
-import FightNightAtMos from "./splendid-knife";
-import TheShellGame from "./subdued-jet";
-import TheOversight from "./svelte-conductor";
-import RecipeSubstitutions from "./svelte-pitch";
-import MITropolitanHouseOfFashion from "./tall-change";
-import ARecipeForSuccess from "./tame-chick";
-import DrunkensAndFlagons from "./thorough-arm";
-import EngagementsAndOtherCrimes from "./timely-head";
-import ReuseAndRecyclability from "./tinted-stream";
-import BeyondAShadowOfADoubt from "./total-part";
-import 皇帝の暗号 from "./tragic-spider";
-import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition, SubpuzzleDefinition } from "./types";
-import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
-import MazeOfLies from "./unfit-tower";
-import GardenAnecdotes from "./unimportant-lock";
-import TheMark from "./unique-australia";
-import AnArgument from "./unsung-bomb";
-import ShellCorporationTwo from "./untrue-dice";
-import Commentary from "./useable-rose";
-import CrossDashWord from "./valuable-alps";
-import YourePlayingItWrong from "./vast-fire";
-import XOXO from "./weighty-horseshoe";
-import UnrealIslands from "./whirlwind-saturn";
-import Deepfrost from "./wiry-ray";
-
-const PlaceholderISP09 = makePlaceholder(
-  "placeholder_isp09",
-  "Placeholder 09",
-  "ATHLETIC CLUB",
-);
-const PlaceholderISP10 = makePlaceholder(
-  "placeholder_isp10",
-  "Placeholder 10",
-  "MANUEL ORIBE",
-);
+import TheThief from "./dimpled-star";
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
-  // The Missing Diamond
-  "🔎🧊": MagnifyingGlassIce,
-  an_argument: AnArgument,
-  battle_factory: BattleFactory,
-  be_kind_rewind: BeKindRewind,
-  chatgpt: ChatGPT,
-  check_a_deez_words_out: CheckadeezWordsOut,
-  downright_backwards: DownrightBackwards,
-  dropping_the_ball: DroppingTheBall,
-  drunkens_and_flagons: DrunkensAndFlagons,
-  educational_rite_of_passage: EducationalRiteOfPassage,
-  in_a_different_direction: InADifferentDirection,
-  introduction_to_decryption: IntroductionToDecryption,
-  mastering_the_art_of_conch_frocking: MasteringTheArtOfConchFrocking,
-  mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
-  neatly_drawn: NeatlyDrawn,
-  no_notes: NoNotes,
-  press_play: PressPlay,
-  shrinkage: Shrinkage,
-  songs_on_the_radio: SongsOnTheRadio,
-  synthetic_tagsonomy: SyntheticTagsonomy,
-  they_might_be_grad_students_but_theyve_got_your_number:
-    TheyMightBeGradStudentsButTheyveGotYourNumber,
-  unreal_islands: UnrealIslands,
-  xoxo: XOXO,
-  zing_it_again: ZingItAgain,
-  zulu_lima: ZuluLima,
+  unreal_islands: makePlaceholder("unreal_islands", "Unreal Islands", "BATH BRICK"),
+  educational_rite_of_passage: makePlaceholder("educational_rite_of_passage", "Educational Rite of Passage", "RAW ANTIQUE BRASS"),
+  songs_on_the_radio: makePlaceholder("songs_on_the_radio", "Songs on the Radio", "GUARDIAN LAVENDER"),
+  downright_backwards: makePlaceholder("downright_backwards", "Downright Backwards", "GUIANA CHESTNUT"),
+  chatgpt: makePlaceholder("chatgpt", "ChatGPT", "CREME CARAMEL"),
+  zulu_lima: makePlaceholder("zulu_lima", "Zulu Lima", "SPACE WARSHIPS"),
+  press_play: makePlaceholder("press_play", "Press Play", "STENOGRAPHERS"),
+  shrinkage: makePlaceholder("shrinkage", "Shrinkage", "NEWMANS APARTMENT"),
+  missing_connections: makePlaceholder("missing_connections", "Missing Connections", "DEVILS MARBLES"),
+  xoxo: makePlaceholder("xoxo", "XOXO", "FROM RUSSIA WITH LOVE"),
+  an_argument: makePlaceholder("an_argument", "An Argument", "RIGHT TO BEAR ARMS"),
+  "📑🍝": makePlaceholder("📑🍝", "📑🍝", "PIDAKALA WAR"),
+  mitropolitan_house_of_fashion: makePlaceholder("mitropolitan_house_of_fashion", "MITropolitan House of Fashion", "SERENDIP SANCTUARY"),
+  on_the_corner: makePlaceholder("on_the_corner", "On the Corner", "BREGENZ FOREST"),
+  drunkens_and_flagons: makePlaceholder("drunkens_and_flagons", "Drunkens and Flagons", "SLEIGHT OF HAND"),
+  battle_factory: makePlaceholder("battle_factory", "Battle Factory", "CHOKING HAZARD"),
+  synthetic_tagsonomy: makePlaceholder("synthetic_tagsonomy", "Synthetic Tagsonomy", "CHEESE VENDORS"),
+  no_notes: makePlaceholder("no_notes", "No Notes", "CANINE PARTNER"),
+  "🔎🧊": makePlaceholder("🔎🧊", "🔎🧊", "CHIFFONIER"),
+  introduction_to_decryption: makePlaceholder("introduction_to_decryption", "Introduction to Decryption", "JABBAS BOILER ROOM"),
+  neatly_drawn: makePlaceholder("neatly_drawn", "Neatly Drawn", "BIRD ORCHID"),
+  dropping_the_ball: makePlaceholder("dropping_the_ball", "Dropping the Ball", "HAL INSTITUTE FOR CRIMINALLY INSANE ROBOTS"),
+  mastering_the_art_of_conch_frocking: makePlaceholder("mastering_the_art_of_conch_frocking", "Mastering the Art of Conch Frocking", "LAMOTTA"),
+  in_a_different_direction: makePlaceholder("in_a_different_direction", "In a Different Direction", "GREEDY PIGGY"),
+  check_a_deez_words_out: makePlaceholder("check_a_deez_words_out", "Check-a-deez Words Out", "RYAN FLAMINGO"),
+  be_kind_rewind: makePlaceholder("be_kind_rewind", "Be Kind, Rewind", "HARD DISK SPACE"),
+  they_might_be_grad_students_but_theyve_got_your_number: makePlaceholder("they_might_be_grad_students_but_theyve_got_your_number", "They Might Be Grad Students, But They've Got Your Number", "RAP OFF KEY"),
+  zing_it_again: makePlaceholder("zing_it_again", "Zing it Again", "THE BEATLES"),
 
-  the_boardwalk: TheBoardwalk,
-  the_casino: Casino,
-  the_jewelry_store: TheJewelryStore,
-  the_art_gallery: TheArtGallery,
+  the_boardwalk: makePlaceholder("the_boardwalk", "The Boardwalk", "BAIL MATE"),
+  the_jewelry_store: makePlaceholder("the_jewelry_store", "The Jewelry Store", "OFFER CARAT TO A LAPIDARY"),
+  the_casino: makePlaceholder("the_casino", "The Casino", "FACE CARD SHARKS"),
+  the_art_gallery: makePlaceholder("the_art_gallery", "The Art Gallery", "BOX OWNER"),
 
-  // The Stakeout
-  a_badly_broken_quote: ABadlyBrokenQuote,
-  a_math_quiz: AMathQuiz,
-  a_recipe_for_success: ARecipeForSuccess,
-  a_sudoku: ASudoku,
-  a_walk_in_the_park: AWalkInThePark,
-  an_exchange_of_vows: AnExchangeOfVows,
-  anything_is_popsicle: AnythingIsPopsicle,
-  art_history: ArtHistory,
-  be_mine: BeMine,
-  big_names: BigNames,
-  borderline_personality: BorderlinePersonality,
-  broken_record: BrokenRecord,
-  commentary: Commentary,
-  cruciverbal: Cruciverbal,
-  dear_diary: DearDiary,
-  doable_double: DoableDouble,
-  editors_solemnity: EditorsSolemnity,
-  fight_night_at_mos: FightNightAtMos,
-  its_not_clear: ItsNotClear,
-  just_fing_behave: JustFingBehave,
-  just_plane_wrong: JustPlaneWrong,
-  lab_scrabble: LabScrabble,
-  magic_i: MagicI,
-  mens_at_my_nose: MensAtMyNose,
-  mellow_planet: MellowPlanet,
-  missing_connections: MissingConnections,
-  mystery_os: MysteryOs,
-  read_between_the_lines: ReadBetweenTheLines,
-  recipe_substitutions: RecipeSubstitutions,
-  relief_printing: ReliefPrinting,
-  seating_arrangements: SeatingArrangements,
-  sing_like_a_canary: SingLikeACanary,
-  some_assembly_required: SomeAssemblyRequired,
-  superlatives: Superlatives,
-  taste_explosion: TasteExplosion,
-  temporal_investigations: TemporalInvestigations,
-  the_ultimate_insult: TheUltimateInsult,
-  whose_song_is_it_anyway: WhoseSongIsItAnyway,
-  why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
-
-  // The Paper Trail
-  ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
-  any_coat_will_do: AnyCoatWillDo,
-  a_weathered_note: AWeatheredNote,
-  bar_talk: BarTalk,
-  chemicals_are_sexy: ChemicalsAreSexy,
-  eponymous_forensic_accountant: EponymousForensicAccountant,
-  follow_the_rules: FollowTheRules,
-  his_life_story: HisLifeStory,
-  incognito: Incognito,
-  maze_of_lies: MazeOfLies,
-  star_crossed: StarCrossed,
-  the_eras_puzzle: TheErasPuzzle,
-  the_inspectre: TheInspectre,
-  youre_playing_it_wrong: YourePlayingItWrong,
-
-  shell_corporation_1: ShellCorporationOne,
-  shell_corporation_2: ShellCorporationTwo,
-  shell_corporation_3: ShellCorporationThree,
-  shell_corporation_4: ShellCorporationFour,
-  shell_corporation_5: ShellCorporationFive,
-  shell_corporation_6: ShellCorporationSix,
-  shell_corporation_7: ShellCorporationSeven,
-  shell_corporation_8: ShellCorporationEight,
-  the_shell_game: TheShellGame,
-
-  // The Illegal Search
-  皇帝の暗号: 皇帝の暗号, // great wave painting
-  cross_spread: CrossSpread, // globe
-  paw_print_detective: PawPrintDetective, // family portrait
-  this_is_just_a_test: ThisIsJustATest, // typewriter
-  // isp05 desk lamp?
-
-  cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
-  the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
-  jargon: Jargon, // money, behind safe/combination lock
-  placeholder_isp09: PlaceholderISP09, // ledger, behind numeric lock/rug
-  placeholder_isp10: PlaceholderISP10, // note, inside cryptex
-
-  a_heap_of_clards: AHeapOfClards,
-  bermuda_triangle: BermudaTriangle,
-  corn_maize: CornMaize,
-  fechtbuch: Fechtbuch,
-  half_baked: HalfBaked,
-  networking_event: NetworkingEvent,
-  passage_of_time: PassageOfTime,
-
-  // Note: these blacklight answer assignments are all wrong, but that's the
-  // set of graphical assets that we got for the playtest, so we're going to
-  // live with it for now.  Eventually:
-  // * SPARE PARTS should go to the_center_is_in_plain_sight_blacklight
-  // * LIFEFORCE should go to jargon_blacklight
-  // * VOYAGERS should go to cahfee_regulah_blacklight
-  // * the other two have not reached postprod yet, but when they do:
-  //   * BROADCAST_NEWS should go to given_up_blacklight
-  //   * BRAZIL should go to smoke_em_if_youve_got_em
-
-  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegulah, {
-    answer: "VOYAGERS",
-    asset: candy_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
-    TheCenterIsInPlainSight,
-    {
-      answer: "SPARE PARTS",
-      asset: rings_modal_blacklight,
-      assetAlt: "TODO",
-    },
-  ),
-  jargon_blacklight: blacklightPuzzle(Jargon, {
-    answer: "LIFEFORCE",
-    asset: money_modal_blacklight,
-    assetAlt: "TODO",
-  }),
-  placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
-    answer: "BROADCAST NEWS",
-    asset: ledger_blacklight,
-    assetAlt: "TODO",
-  }),
-  placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
-    answer: "BRAZIL",
-    asset: cryptex_note_blacklight,
-    assetAlt: "TODO",
-  }),
-
-  papas_bookcase: PapasBookcase,
-  papas_stash: PapasStash,
-  papas_bookcase_blacklight: PapasBookcaseBlacklight,
-
-  // The Background Check
-  celestial_rope: CelestialRope,
-  deepfrost: Deepfrost,
-  formula_won: FormulaWon,
-  he_shouldnt_have_eaten_the_apple: HeShouldntHaveEatenTheApple,
-  kindred_spirits: KindredSpirits,
-  knights_of_the_square_table: KnightsOfTheSquareTable,
-  o_woe_is_me: OWoeIsMe,
-  reuse_and_recyclability: ReuseAndRecyclability,
-  story_vision_contest: StoryVisionContest,
-  the_10000_sheet_excel_file: The10000SheetExcelFile,
-  t____ott___p__y: T____ott___P__y,
-  the_tunnels_beneath_the_institute: TheTunnelsBeneathTheInstitute,
-  where_am_i: WhereAmI,
-
-  the_mark: TheMark,
-  the_grand_illusion: TheGrandIllusion,
-  the_oversight: TheOversight,
-  alias: Alias,
-
-  // The Murder in MITropolis
-  absolutely_not_balderdash: AbsolutelyNotBalderdash,
-  beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
-  cacciando_trio_misterioso: CacciandoTrioMisterioso,
-  can_do_transmissions: CanDoTransmissions,
-  cross_dash_word: CrossDashWord,
-  do_the_packing: DoThePacking,
-  engagements_and_other_crimes: EngagementsAndOtherCrimes,
-  find_other_ways_of_seeing: FindOtherWaysOfSeeing,
-  give_this_grid_a_shake: GiveThisGridAShake,
-  good_fences_make_good_otherwise_incompatible_neighbors:
-    GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
-  in_communicado_tonight: InCommunicadoTonight,
-  weirdo_threaded_doodads: WeirdoThreadedDoodads,
-  what_do_they_call_you: WhatDoTheyCallYou,
-
-  // work in progress
-  garden_anecdotes: GardenAnecdotes,
-  given_up: GivenUp,
   the_thief: TheThief,
 };
 
