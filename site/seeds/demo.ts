@@ -19,6 +19,7 @@ export async function seed(knex: Knex): Promise<void> {
   const createTeam = async (
     username: string,
     populator?: (team_id: number, mutator: ActivityLogMutator) => Promise<void>,
+    password?: string,
   ) => {
     let team_id = await retryOnAbort(knex, async (trx) => {
       const existing_id = (
@@ -31,8 +32,8 @@ export async function seed(knex: Knex): Promise<void> {
     if (team_id === undefined) {
       const regResult = await registerTeam(HUNT, undefined, knex, {
         username,
-        password: "password",
-        name: username,
+        password: password === undefined ? "cornfastcornfurious" : password,
+        name: "uwu testsolvers",
         teamEmail: "team@example.com",
         contactName: "Jack Florey",
         contactEmail: "jack@example.com",
@@ -134,37 +135,8 @@ export async function seed(knex: Knex): Promise<void> {
     }
   };
 
-  await createTeam("team");
-  await createTeam("unlockable", async (team_id, mutator) => {
-    for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked" as const,
-        round.slug,
-      );
-    }
-    for (const slug of slugs) {
-      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlockable", slug);
-    }
-  });
-  await createTeam("unlocked", async (team_id, mutator) => {
-    // For the "unlocked" team: create puzzle_unlocked entries for all rounds & puzzles
-    for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked",
-        round.slug,
-      );
-    }
-    for (const slug of slugs) {
-      await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
-    }
-    for (const gate of gates) {
-      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
-    }
-  });
+  await createTeam("uwu");
+  await createTeam("sanitycheck");
   await createTeam("solved", async (team_id, mutator) => {
     // For the "solved" team:
     // unlock all rounds and puzzles
@@ -189,7 +161,7 @@ export async function seed(knex: Knex): Promise<void> {
     for (const slug of slugs) {
       await ensurePuzzleSolved(mutator, team_id, slug);
     }
-  });
+  }, "cornfastcornfurious2");
 
   await createTeam("is1", async (team_id, mutator) => {
     // Unlock the illegal_search round
