@@ -6,6 +6,25 @@ import {
   PuzzleAnswer,
 } from "../../components/StyledUI";
 
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  border: 1px solid var(--black);
+  tbody td,
+  thead th {
+    padding: 0 2px;
+    border: 1px solid var(--black);
+  }
+  tbody td:nth-child(3) {
+    text-align: right;
+  }
+  tbody td:nth-child(5),
+  tbody td:nth-child(6),
+  tbody td:nth-child(7),
+  tbody td:nth-child(8) {
+    text-align: center;
+  }
+`;
+
 const Red = styled.span`
   color: red;
   font-weight: bold;
@@ -87,7 +106,7 @@ const Solution = () => {
       </ol>
 
       <HScrollTableWrapper>
-        <table>
+        <StyledTable>
           <thead>
             <tr>
               <th>Puzzle title</th>
@@ -223,7 +242,7 @@ const Solution = () => {
               <td>®</td>
             </tr>
           </tbody>
-        </table>
+        </StyledTable>
       </HScrollTableWrapper>
     </>
   );
