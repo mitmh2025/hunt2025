@@ -172,18 +172,22 @@ const HUNT: Hunt = {
         // solving the corresponding metapuzzle.
         {
           id: "interview_at_the_boardwalk",
+          title: "Interview at the Boardwalk",
           unlock_if: [{ slot_solved: "mdm01" }],
         },
         {
           id: "interview_at_the_jewelry_store",
+          title: "Interview at the Jewelry Store",
           unlock_if: [{ slot_solved: "mdm02" }],
         },
         {
           id: "interview_at_the_casino",
+          title: "Interview at the Casino",
           unlock_if: [{ slot_solved: "mdm03" }],
         },
         {
           id: "interview_at_the_art_gallery",
+          title: "Interview at the Art Gallery",
           unlock_if: [{ slot_solved: "mdm04" }],
         },
 
@@ -192,12 +196,14 @@ const HUNT: Hunt = {
           // after teams solve the Missing Diamond super but before they go on the
           // funaround.
           id: "meet_billie",
+          title: "Meet Billie",
           unlock_if: [{ slot_solved: "mdm05" }],
         },
         {
           // This is a longer in-person interaction which is expected to happen
           // after teams complete the funaround.
           id: "catch_the_thief",
+          title: "Catch the Thief",
           unlock_if: [{ interaction_completed: "meet_billie" }],
         },
       ],
@@ -274,6 +280,7 @@ const HUNT: Hunt = {
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
           id: "meet_katrina",
+          title: "Meet Katrina",
           unlock_if: [
             { slot_solved: "som01" }, // stakeout meta
           ],
@@ -348,6 +355,7 @@ const HUNT: Hunt = {
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
           id: "meet_gladys",
+          title: "Meet Gladys",
           unlock_if: [
             { slot_solved: "ptm09" }, // papertrail super
           ],
@@ -397,6 +405,7 @@ const HUNT: Hunt = {
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
           id: "meet_carter",
+          title: "Meet Carter",
           unlock_if: [
             { slot_solved: "bgm04" }, // background check super
           ],
@@ -497,6 +506,7 @@ const HUNT: Hunt = {
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
           id: "meet_papa",
+          title: "Meet Papa",
           unlock_if: [
             { slot_solved: "ism03" },
           ],
@@ -548,6 +558,7 @@ const HUNT: Hunt = {
       interactions: [
         {
           id: "unmask_the_killer",
+          title: "Unmask the Killer",
           unlock_if: [
             { slot_solved: "tmm01" }, // The Murder supermeta
           ],
@@ -568,6 +579,7 @@ const HUNT: Hunt = {
       interactions: [
         {
           id: "the_vault",
+          title: "The Vault",
           unlock_if: [
             { interaction_completed: "meet_katrina" },
             { interaction_completed: "meet_gladys" },

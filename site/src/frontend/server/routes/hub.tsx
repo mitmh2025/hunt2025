@@ -26,6 +26,7 @@ export function hubHandler(req: Request) {
   return wrapContentWithNavBar(
     {
       node,
+      title: "Two P.I. Noir Detective Agency",
       entrypoints: ["hub"],
     },
     teamState,

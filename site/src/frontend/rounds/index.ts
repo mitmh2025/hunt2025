@@ -16,39 +16,48 @@ import VaultRoundPage from "./the_vault";
 // Map from round `key` to component that should be rendered for that round.
 // TODO: figure out the props we want to pass to the round pages
 type RoundDefinition = {
+  title: string;
   component: FunctionComponent<{ teamState: TeamHuntState; node?: string }>;
   entrypoint?: Entrypoint;
 };
 
 export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
   the_missing_diamond: {
+    title: "The Missing Diamond",
     component: MissingDiamondRoundPage,
     entrypoint: "the_missing_diamond",
   },
   stakeout: {
+    title: "The Stakeout",
     component: StakeoutRoundPage,
     entrypoint: "stakeout",
   },
   paper_trail: {
+    title: "The Paper Trail",
     component: PapertrailRoundPage,
     entrypoint: "paper_trail",
   },
   illegal_search: {
+    title: "The Illegal Search",
     component: IllegalSearchRoundPage,
     entrypoint: "illegal_search",
   },
   background_check: {
+    title: "The Background Check",
     component: BackgroundCheckRoundPage,
     entrypoint: "background_check",
   },
   murder_in_mitropolis: {
+    title: "The Murder in MITropolis",
     component: MurderRoundPage,
     entrypoint: "murder_in_mitropolis",
   },
   the_vault: {
+    title: "The Vault",
     component: VaultRoundPage,
   },
   stray_leads: {
+    title: "Stray Leads",
     component: StrayLeadsRoundPage,
     entrypoint: "stray_leads",
   },

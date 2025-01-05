@@ -111,14 +111,17 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
             return [
               [
                 interaction.id,
-                data.interactions_completed.has(interaction.id)
-                  ? {
-                      state: "completed" as const,
-                      result: data.interactions_completed.get(interaction.id),
-                    }
-                  : data.interactions_started.has(interaction.id)
-                    ? { state: "running" as const }
-                    : { state: "unlocked" as const },
+                {
+                  title: interaction.title,
+                  ...(data.interactions_completed.has(interaction.id)
+                    ? {
+                        state: "completed" as const,
+                        result: data.interactions_completed.get(interaction.id),
+                      }
+                    : data.interactions_started.has(interaction.id)
+                      ? { state: "running" as const }
+                      : { state: "unlocked" as const }),
+                },
               ],
             ];
           }

@@ -45,7 +45,7 @@ export const render500 = (
 export type RenderedPage =
   | {
       node: React.ReactNode; // The element to be placed under the root div
-      title?: string; // The desired page <title>
+      title: string; // The desired page <title>
       entrypoints?: Entrypoint[]; // Additional script/stylesheets to include
       layout?: typeof Layout; // If true, don't include any scripts
     }

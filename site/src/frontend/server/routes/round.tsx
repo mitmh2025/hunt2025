@@ -31,11 +31,11 @@ export const roundHandler = (
   }
   const Component = content.component;
 
-  // TODO: add page title
   return wrapContentWithNavBar(
     {
       node: <Component teamState={teamState.state} node={req.query.node} />,
       entrypoints: content.entrypoint ? [content.entrypoint] : undefined,
+      title: content.title,
     },
     teamState,
   );
