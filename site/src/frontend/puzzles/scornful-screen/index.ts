@@ -129,7 +129,7 @@ const puzzle: PuzzleDefinition = {
       reply: "Keep going.",
     },
     {
-      guess: ["GOSEESTATABOARDFIRSTLEVEL"],
+      guess: ["GO SEE STATA BOARD FIRST LEVEL"],
       reply: "Well? Go do it!",
     },
   ],

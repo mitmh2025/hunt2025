@@ -61,8 +61,8 @@ const Solution = () => {
       </p>
       <p>
         Ordering the letters correctly gives the phrase{" "}
-        <Mono>COMEGETYOURNAILSDONE</Mono>. Upon calling it in, solvers are told
-        to come to the gala to get their nails done.
+        <Mono>COME GET YOUR NAILS DONE</Mono>. Upon calling it in, solvers are
+        told to come to the gala to get their nails done.
       </p>
       <p>
         <em>
