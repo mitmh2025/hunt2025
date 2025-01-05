@@ -75,7 +75,6 @@ const StyledCell = styled.td`
 
 const FilledCell = styled(StyledCell)`
   background-color: black;
-  color: white;
   width: 40px;
   height: 40px;
 `;
