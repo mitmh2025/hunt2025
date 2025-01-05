@@ -6,7 +6,7 @@ import {
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import img01 from "./assets/1.png";
-import img02 from "./assets/2.jpg";
+import img02 from "./assets/2.png";
 
 const SizedWrapper = styled.div`
   width: 100%;
