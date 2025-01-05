@@ -32,7 +32,12 @@ const ESCAPE_ROOM_LOCKS_DATA = [
     "1010 1011 1010 1101 1101 1110 1100 1010 1101 1110",
     "All letters are hexadecimal A-E. Convert to binary.",
   ],
-  ["Cryptex Letter (on desk)", "REUNITED", "REUNITED", ""],
+  [
+    "Cryptex Letter (on desk)",
+    "REUNITED",
+    "REUNITED",
+    "The feeder answer is the direct answer to input into this lock.",
+  ],
 ];
 
 const BOOKSHELF_MATCH_DATA = [
@@ -65,7 +70,12 @@ const BOOKSHELF_EXTRACTION_DATA = [
 
 const StyledTable = styled.table`
   margin: 1em 0;
-  border-spacing: 8px 0;
+  border-collapse: collapse;
+  th,
+  td {
+    padding-right: 16px;
+    border-bottom: 1px solid black;
+  }
 `;
 
 export default function Solution(): JSX.Element {

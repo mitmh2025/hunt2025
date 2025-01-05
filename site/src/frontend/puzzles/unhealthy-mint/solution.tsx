@@ -15,9 +15,8 @@ import img_square from "./assets/solution-square.png";
 const CenteredDiv = styled.div`
   width: 100%;
   max-width: 784px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  justify-content: space-around;
 `;
 
 const INITIAL_ALT_DESC_ITEMS = [
@@ -30,6 +29,16 @@ const INITIAL_ALT_DESC_ITEMS = [
   "a square with each edge composed of two blue and two white bars, as if in the outline of the maritime signal flag N, with a small purple square to its bottom-right",
   "and a magenta outline of a horizontally-mirrored C, representing a pigpen-encoded D.",
 ];
+
+const SizedImage = styled(LinkedImage)`
+  display: inline-block;
+  width: 50%;
+`;
+
+const StyledTable = styled.table`
+  margin: 1em 0;
+  border-spacing: 8px 0;
+`;
 
 const Solution = () => {
   return (
@@ -132,7 +141,7 @@ const Solution = () => {
       </p>
 
       <HScrollTableWrapper>
-        <table>
+        <StyledTable>
           <thead>
             <tr>
               <th>Cipher</th>
@@ -182,7 +191,7 @@ const Solution = () => {
               <td>FLAT-HEAD</td>
             </tr>
           </tbody>
-        </table>
+        </StyledTable>
       </HScrollTableWrapper>
 
       <p>
@@ -201,7 +210,7 @@ const Solution = () => {
       </p>
 
       <CenteredDiv>
-        <LinkedImage
+        <SizedImage
           src={img_square}
           alt="The same 8 polyminoes from earlier, now fit into an 8x8 grid with no gaps"
         />
@@ -218,13 +227,13 @@ const Solution = () => {
       </p>
 
       <CenteredDiv>
-        <LinkedImage
+        <SizedImage
           src={img_flat_words}
           alt="The same 8x8 grid of letters with assorted strings of letters circled"
         />
       </CenteredDiv>
       <HScrollTableWrapper>
-        <table>
+        <StyledTable>
           <thead>
             <tr>
               <th>Center letter</th>
@@ -292,7 +301,7 @@ const Solution = () => {
               <td>E</td>
             </tr>
           </tbody>
-        </table>
+        </StyledTable>
       </HScrollTableWrapper>
 
       <p>
