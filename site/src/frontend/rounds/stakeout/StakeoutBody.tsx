@@ -103,6 +103,9 @@ const StakeoutBodyMainDiv = styled.div`
   background-size: contain;
   transform-origin: top left;
 
+  // Disallow native touch actions like scrolling and zooming
+  touch-action: none;
+
   // We want to place other objects relatively within the scene
   position: relative;
   overflow: hidden;
@@ -302,7 +305,7 @@ const StakeoutBody = ({
   );
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (dragging) {
+      if (dragging && focused !== dragging) {
         setPositions((prevPositions) => {
           const prevPosition = prevPositions[dragging];
           const newX = prevPosition.x + e.movementX / screenScaleFactor;
@@ -318,7 +321,7 @@ const StakeoutBody = ({
         });
       }
     },
-    [dragging, screenScaleFactor],
+    [dragging, focused, screenScaleFactor],
   );
   const endDrag = useCallback(
     (e: React.PointerEvent<HTMLDivElement>, focusOnTrivialMovement = false) => {
