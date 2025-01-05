@@ -309,7 +309,7 @@ const Solution = (): JSX.Element => {
         tip of building 2, the extracted letter gives{" "}
         <PuzzleAnswer>CRY STOOL PIDGIN</PuzzleAnswer>, which is what solvers
         need to do to indicate to Katrina that they know she’s a police
-        informant.{" "}
+        informant.
       </p>
 
       <p>

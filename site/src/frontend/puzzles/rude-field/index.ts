@@ -102,7 +102,7 @@ const puzzle: PuzzleDefinition = {
         "birds",
       ],
       nudge:
-        "Do the lengths of the English translations of these characters match the lengths of the birds on the notes? (Some of these translations are more unique than others---start there!)",
+        "Do the lengths of the English translations of these characters match the lengths of the birds on the notes? (Some of these translations are more unique than others—start there!)",
     },
     {
       order: 100.0,
