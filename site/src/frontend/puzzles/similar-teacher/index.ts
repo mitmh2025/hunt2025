@@ -153,7 +153,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["BUY A FLIGHT"],
       reply:
-        "Correct! Now go to the Gala and request a flight at the bar. Please make sure to send a few team members with no food allergies and an adventurous sense of taste.",
+        "Great, so you’re ready to move past just reading about drinks! Go to the Gala and request a flight at the bar. Please make sure to send a few team members with no food allergies and an adventurous sense of taste.",
     },
   ],
 };
