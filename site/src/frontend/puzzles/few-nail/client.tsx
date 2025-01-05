@@ -125,10 +125,10 @@ const App = (): JSX.Element => {
                     localStorage.removeItem(item);
                   }
                 }
+                setGuessedUuids(new Set<string>());
                 dispatch({
                   type: PuzzleActionType.RESTART_PUZZLE,
                 });
-                setGuessedUuids(new Set<string>());
               }
             }}
           />{" "}
