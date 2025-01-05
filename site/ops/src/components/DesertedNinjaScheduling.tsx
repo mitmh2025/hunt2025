@@ -164,6 +164,10 @@ function SessionDetails() {
                 type: DNDataActionType.SET_ACTIVE_SESSION,
                 activeSession: newSession,
               });
+              dnDispatch({
+                type: DNDataActionType.SESSION_UPDATE,
+                session: newSession,
+              });
             }
           },
           (reason) => {

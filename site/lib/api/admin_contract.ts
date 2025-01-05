@@ -305,7 +305,7 @@ export const adminContract = c.router({
   updateDesertedNinjaRegistration: {
     method: "POST",
     path: "/admin/update-dn-registration/:sessionId/:teamId",
-    body: z.string(),
+    body: z.object({ status: z.string() }),
     responses: {
       200: DesertedNinjaRegistrationSchema.array(),
       404: z.null(),

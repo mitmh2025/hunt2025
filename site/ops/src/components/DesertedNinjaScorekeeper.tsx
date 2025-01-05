@@ -4,6 +4,7 @@ import { useInterval } from "usehooks-ts";
 import {
   type DesertedNinjaSession,
   type DesertedNinjaAnswer,
+  type DesertedNinjaRegistration,
 } from "../../../lib/api/admin_contract";
 import {
   useDesertedNinjaData,
@@ -11,6 +12,11 @@ import {
   DNDataActionType,
 } from "../DesertedNinjaDataProvider";
 import { useOpsData } from "../OpsDataProvider";
+
+type TeamWithStatus = {
+  id: number;
+  status: string;
+};
 
 const ScorekeeperTable = styled.table`
   border: 1px solid black;
@@ -69,15 +75,90 @@ function AnswerCell({
   }
 }
 
-/*
-function SaveButton() {
+const TeamStatusContainer = styled.div`
+  display: flex;
+`;
+const TeamName = styled.div`
+  width: 200px;
+`;
+const TeamStatus = styled.div`
+  width: 150px;
+`;
+const ToggleButton = styled.button``;
+
+function TeamStatusRow({ team }: { team: TeamWithStatus }) {
+  const dnData = useDesertedNinjaData();
+  const dnDispatch = useDesertedNinjaDispatch();
+  const opsData = useOpsData();
+
+  function toggleCheckIn(_e: React.MouseEvent<HTMLButtonElement>) {
+    const session = dnData.activeSession;
+    if (session) {
+      opsData.adminClient
+        .updateDesertedNinjaRegistration({
+          params: {
+            sessionId: session.id.toString(),
+            teamId: team.id.toString(),
+          },
+          body: {
+            status:
+              team.status === "checked_in" ? "not_checked_in" : "checked_in",
+          },
+        })
+        .then(
+          ({ body }) => {
+            const regs = body as DesertedNinjaRegistration[];
+            const newSession = {
+              id: session.id,
+              title: session.title,
+              status: session.status,
+              questionIds: session.questionIds.slice(),
+              teams: regs.map((reg) => ({
+                id: reg.teamId,
+                status: reg.status,
+              })),
+            };
+            if (dnDispatch) {
+              dnDispatch({
+                type: DNDataActionType.SET_ACTIVE_SESSION,
+                activeSession: newSession,
+              });
+              dnDispatch({
+                type: DNDataActionType.SESSION_UPDATE,
+                session: newSession,
+              });
+            }
+          },
+          (e) => {
+            console.error(e);
+          },
+        );
+    }
+  }
+
   return (
-    <div style={{ textAlign: "center" }}>
-      <input type="submit" value="Save Answers" />
-    </div>
+    <TeamStatusContainer>
+      <TeamName>
+        {opsData.teams
+          .find((teamData) => team.id === teamData.teamId)
+          ?.name.slice(0, 40)}
+      </TeamName>
+      <TeamStatus>{team.status}</TeamStatus>
+      <ToggleButton onClick={toggleCheckIn}>
+        {team.status === "checked_in" ? "Cancel check-in" : "Confirm check-in"}
+      </ToggleButton>
+    </TeamStatusContainer>
   );
 }
- */
+
+const TeamStatusBox = styled.div`
+  margin: 10px;
+  padding: 5px 10px;
+  border: 1px solid black;
+`;
+const TeamStatusHeading = styled.div`
+  font-size: 150%;
+`;
 
 function NotStartedPanel() {
   // TODO: fill in team status, allow scorekeeper to check in teams
@@ -128,7 +209,12 @@ function NotStartedPanel() {
     <>
       <div>
         <div>This session has not yet started.</div>
-        <h3>Team Status:</h3>
+        <TeamStatusBox>
+          <TeamStatusHeading>Team Status:</TeamStatusHeading>
+          {dnData.activeSession?.teams.map((team) => (
+            <TeamStatusRow team={team} key={team.id} />
+          ))}
+        </TeamStatusBox>
         <button onClick={startSession}>Start Session</button>
       </div>
     </>
@@ -192,7 +278,11 @@ function ScorekeeperPanel() {
     const newAnswers = new Map<string, number>(answerMap.entries());
 
     // read current answers
-    for (let i = 0; i < 17 * session.teams.length; i++) {
+    for (
+      let i = 0;
+      i < 17 * session.teams.filter((t) => t.status === "checked_in").length;
+      i++
+    ) {
       const target = e.currentTarget.elements[i] as HTMLInputElement;
 
       const name = target.name;
@@ -290,26 +380,30 @@ function ScorekeeperPanel() {
   if (session.status === "not_started") {
     return <NotStartedPanel />;
   } else {
-    const heading = session.teams.map(({ id }) => (
-      <th key={id}>
-        {opsData.teams
-          .find((teamData) => id === teamData.teamId)
-          ?.name.slice(0, 40)}
-      </th>
-    ));
+    const heading = session.teams
+      .filter((t) => t.status === "checked_in")
+      .map(({ id }) => (
+        <th key={id}>
+          {opsData.teams
+            .find((teamData) => id === teamData.teamId)
+            ?.name.slice(0, 40)}
+        </th>
+      ));
     const body = session.questionIds.map((_, idx) => {
       return (
         <ScoreRow key={idx}>
           <QuestionCell>{idx + 1}</QuestionCell>
-          {session.teams.map(({ id }) => (
-            <AnswerCell
-              key={`${session.id}_${id}_${idx}`}
-              questionIndex={idx + 1}
-              sessionId={session.id}
-              teamId={id}
-              sessionComplete={session.status === "complete"}
-            />
-          ))}
+          {session.teams
+            .filter((t) => t.status === "checked_in")
+            .map(({ id }) => (
+              <AnswerCell
+                key={`${session.id}_${id}_${idx}`}
+                questionIndex={idx + 1}
+                sessionId={session.id}
+                teamId={id}
+                sessionComplete={session.status === "complete"}
+              />
+            ))}
         </ScoreRow>
       );
     });

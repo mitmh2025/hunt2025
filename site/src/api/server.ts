@@ -1844,7 +1844,10 @@ export async function getRouter({
       },
       updateDesertedNinjaRegistration: {
         middleware: [adminAuthMiddleware],
-        handler: async ({ params: { sessionId, teamId }, body }) => {
+        handler: async ({
+          params: { sessionId, teamId },
+          body: { status },
+        }) => {
           // TODO: allowable state transitions:
           //   if session not started: not_checked_in -> checked_in
           //                           not_checked_in -> no_show
@@ -1854,7 +1857,7 @@ export async function getRouter({
           await updateDesertedNinjaRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),
-            body,
+            status,
             knex,
           );
           return Promise.resolve({
