@@ -115,44 +115,6 @@ const stateHandler: RequestHandler<
   }
 };
 
-/* Typedefs and helpers for guess request */
-type GuessRequestParams = {
-  uuid: string;
-};
-type GuessRequestBody = {
-  guess: string;
-};
-type GuessResponse = {
-  solutionUuid: string;
-};
-type GuessResponseBody = GuessResponse | ErrorResponse;
-const guessRequestBodySchema = z.object({ guess: z.string() });
-
-/*
- * Puzzle guess request.
- * Requires 'unsolved' UUID as a path parameter and guess as a body parameter.
- * If guess is correct, according to one of the judges, provides a solution UUID.
- * If guess is incorrect, returns index of the first incorrect letter.
- */
-const guessHandler: RequestHandler<
-  GuessRequestParams,
-  GuessResponseBody,
-  GuessRequestBody
-> = (
-  req: Request<GuessRequestParams, GuessResponseBody, GuessRequestBody>,
-  res: Response<GuessResponseBody>,
-) => {
-  try {
-    const { uuid } = req.params;
-    const { guess } = guessRequestBodySchema.parse(req.body);
-    const puzzleStateItem = checkGuessByUuid(uuid, guess);
-    res.status(200).json({ solutionUuid: puzzleStateItem.uuid });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: "Invalid Inputs" });
-  }
-};
 const router = new Router();
-router.post("/puzzle/:uuid", guessHandler);
 router.post("/state", stateHandler);
 export default router;
