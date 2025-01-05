@@ -1,18 +1,23 @@
-//import { useState } from "react";
-//import { styled } from "styled-components";
+import { styled } from "styled-components";
 import {
   type DesertedNinjaSession,
   type DesertedNinjaQuestion,
   type DesertedNinjaRegistration,
 } from "../../../lib/api/admin_contract";
+import LinkedImage from "../../../src/frontend/components/LinkedImage";
 import {
   useDesertedNinjaData,
   useDesertedNinjaDispatch,
   DNDataActionType,
 } from "../DesertedNinjaDataProvider";
 import { useOpsData } from "../OpsDataProvider";
+import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
 import { type TeamData } from "../opsdata/types";
 import { TeamSelector } from "./TeamSelector";
+
+const MiniImage = styled.div`
+  width: 10%;
+`;
 
 function SessionQuestionDetails({
   questionIds,
@@ -21,12 +26,31 @@ function SessionQuestionDetails({
   questionIds: number[];
   questions: Map<number, DesertedNinjaQuestion>;
 }) {
-  const questionElts = questionIds.map((qid) => (
-    <li key={qid}>
-      {questions.get(qid)?.text}
-      {questions.get(qid)?.geoguessr}
-    </li>
-  ));
+  const questionElts = questionIds.map((qid) => {
+    const question = questions.get(qid);
+    if (!question) {
+      return null;
+    }
+
+    let imageElt = null;
+    if (question.geoguessr) {
+      const url = geoguessrLookup[question.geoguessr - 1];
+      if (url) {
+        imageElt = (
+          <MiniImage>
+            <LinkedImage src={url} alt="" />
+          </MiniImage>
+        );
+      }
+    }
+
+    return (
+      <li key={qid}>
+        {question.text}
+        {imageElt}
+      </li>
+    );
+  });
 
   return (
     <details>
@@ -180,6 +204,17 @@ function SessionDetails() {
       .filter((t) => session.teams.find((elt) => elt.id === t.teamId))
       .map((t) => <SessionTeamEntry key={t.teamId} team={t} />);
 
+    const registrationBox =
+      session.status === "not_started" ? (
+        <div style={{ border: "1px solid black" }}>
+          <h4>Register a Team</h4>
+          <TeamSelector
+            submitCallback={registerTeam}
+            exclude={session.teams.map(({ id }) => id)}
+          />
+        </div>
+      ) : null;
+
     return (
       <>
         <h3>Details</h3>
@@ -201,13 +236,7 @@ function SessionDetails() {
           <p>Teams signed up:</p>
           {signedUpDivs}
         </div>
-        <div style={{ border: "1px solid black" }}>
-          <h4>Register a Team</h4>
-          <TeamSelector
-            submitCallback={registerTeam}
-            exclude={session.teams.map(({ id }) => id)}
-          />
-        </div>
+        {registrationBox}
       </>
     );
   } else {
