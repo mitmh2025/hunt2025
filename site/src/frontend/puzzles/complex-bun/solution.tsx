@@ -219,8 +219,13 @@ const Solution = (): JSX.Element => {
       </StyledTable>
       <p>
         The first names of our birds can be found in the grid as well, but not
-        in a row. Highlighting the birds in yellow and the first names in pink,
-        we get:
+        in a row; instead, they form a path with orthogonal and diagonal
+        connections. To aid in identifying the first and last names, a series of
+        blanks are given below the grid, into which the various first and last
+        names can be placed in alphabetical order.
+      </p>
+      <p>
+        Highlighting the birds in yellow and the first names in pink, we get:
       </p>
       <WordSearch>
         {GRID.map((row, i) => (
