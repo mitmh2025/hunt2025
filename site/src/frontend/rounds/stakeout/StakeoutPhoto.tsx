@@ -17,6 +17,11 @@ const PhotoLabel = styled.div`
     text-align: left;
     margin-bottom: -0.25em;
   }
+
+  .answer {
+    color: var(--red-600);
+    transform: rotate(-3deg) translateY(0.5rem);
+  }
 `;
 
 const StakeoutPhoto = ({
@@ -74,9 +79,10 @@ const StakeoutPhoto = ({
     [],
   );
 
+  const puzzleState = slug ? teamState.puzzles[slug] : undefined;
+
   const link = useMemo(() => {
     if (title && slug) {
-      const puzzleState = teamState.puzzles[slug];
       return (
         <PuzzleLink
           lockState={puzzleState?.locked ?? "locked"}
@@ -105,7 +111,7 @@ const StakeoutPhoto = ({
       );
     }
     return undefined;
-  }, [title, slug, desc, teamState, focused]);
+  }, [title, slug, puzzleState, desc, teamState, focused]);
 
   const shadowX = (4 * (position.x - 920)) / 1920;
 
@@ -196,6 +202,9 @@ const StakeoutPhoto = ({
         {image}
         <PhotoLabel style={labelStyle} onPointerDown={labelPointerDownHandler}>
           {link}
+          {puzzleState?.answer && (
+            <div className="answer">{puzzleState.answer}</div>
+          )}
         </PhotoLabel>
       </div>
     </div>
