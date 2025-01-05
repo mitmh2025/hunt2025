@@ -78,8 +78,8 @@ export default function RegistrationHome({
           <h2>Latest Updates</h2>
           <p>
             <strong>2025.01.06 - </strong>We are pleased to share that Robert
-            Finster has invited you to a gala celebrating his daughter's
-            engagement. If you didn't receive your copy of the invitation in the
+            Finster has invited you to a gala celebrating his daughter’s
+            engagement. If you didn’t receive your copy of the invitation in the
             mail, you can find a copy on the{" "}
             <a href="https://puzzles.mit.edu/nexthunt.html">
               MIT Mystery Hunt website
