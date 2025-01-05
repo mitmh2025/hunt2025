@@ -41,6 +41,7 @@ import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
 import NoNotes from "./false-pole";
 import ADashOfColor from "./few-cycle";
+import TheAnnualMassachusettsSpellingBee from "./few-nail";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
@@ -282,6 +283,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   half_baked: HalfBaked,
   networking_event: NetworkingEvent,
   passage_of_time: PassageOfTime,
+  the_annual_massachusetts_spelling_bee: TheAnnualMassachusettsSpellingBee,
 
   // Note: these blacklight answer assignments are all wrong, but that's the
   // set of graphical assets that we got for the playtest, so we're going to
