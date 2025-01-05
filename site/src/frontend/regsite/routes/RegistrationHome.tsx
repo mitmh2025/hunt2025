@@ -77,9 +77,14 @@ export default function RegistrationHome({
         <section id="updates">
           <h2>Latest Updates</h2>
           <p>
-            <strong>2025.01.03 - </strong>Please find the formal invitation to
-            the Gala: <a href="https://puzzles.mit.edu/resources/2025-Invitation.pdf">
-            https://puzzles.mit.edu/resources/2025-Invitation.pdf</a>.
+            <strong>2025.01.06 - </strong>We are pleased to share that Robert
+            Finster has invited you to a gala celebrating his daughter's
+            engagement. If you didn't receive your copy of the invitation in the
+            mail, you can find a copy on the{" "}
+            <a href="https://puzzles.mit.edu/nexthunt.html">
+              MIT Mystery Hunt website
+            </a>
+            . We hope to see you there!
           </p>
           <p>
             <strong>2024.12.13 - </strong>This website previously indicated that
