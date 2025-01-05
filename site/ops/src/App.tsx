@@ -2,6 +2,7 @@ import ControlCameraIcon from "@mui/icons-material/ControlCamera";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PuzzleIcon from "@mui/icons-material/Extension";
 import MailIcon from "@mui/icons-material/Mail";
+import GatesIcon from "@mui/icons-material/MeetingRoom";
 import TeamsIcon from "@mui/icons-material/People";
 import { Box } from "@mui/material";
 import type { Branding, Navigation } from "@toolpad/core";
@@ -40,6 +41,11 @@ export default function App() {
       segment: "puzzles",
       title: "Puzzles",
       icon: <PuzzleIcon />,
+    },
+    {
+      segment: "gates",
+      title: "Gates",
+      icon: <GatesIcon />,
     },
     ...(isOpsAdmin
       ? [

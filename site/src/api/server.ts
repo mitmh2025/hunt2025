@@ -1440,6 +1440,73 @@ export async function getRouter({
           };
         },
       },
+      markGateSatistfied: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { gateId }, body: { teamIds }, req }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              // Check if already satisfied
+              const teamIdsToSatisfy = new Set(
+                teamIds === "all" ? mutator.allTeams : teamIds,
+              );
+
+              for (const entry of mutator.log) {
+                if (entry.type === "gate_completed" && entry.slug === gateId) {
+                  if (entry.team_id === undefined) {
+                    // already unlocked for all teams
+                    return [];
+                  }
+
+                  teamIdsToSatisfy.delete(entry.team_id);
+                }
+              }
+
+              if (
+                teamIds === "all" &&
+                teamIdsToSatisfy.size === mutator.allTeams.size
+              ) {
+                // we are unlocking for all teams and no team has the puzzle locked
+                return [
+                  await mutator.appendLog({
+                    type: "gate_completed",
+                    slug: gateId,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                ];
+              }
+
+              // need to unlock for specific teams
+              const newEntries: (InternalActivityLogEntry | undefined)[] = [];
+              for (const team_id of teamIdsToSatisfy) {
+                newEntries.push(
+                  await mutator.appendLog({
+                    team_id,
+                    type: "gate_completed",
+                    slug: gateId,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                );
+              }
+
+              return newEntries;
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
     },
     frontend: {
       markTeamGateSatisfied: {

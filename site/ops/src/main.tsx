@@ -8,6 +8,7 @@ import App from "./App.tsx";
 import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
 import EmailTeams from "./routes/EmailTeams.tsx";
+import Gates from "./routes/Gates.tsx";
 import Home from "./routes/Home.tsx";
 import Puzzles from "./routes/Puzzles.tsx";
 import Team from "./routes/Team.tsx";
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
           {
             path: "email-teams/",
             Component: EmailTeams,
+          },
+          {
+            path: "gates",
+            Component: Gates,
           },
         ],
       },

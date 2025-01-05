@@ -13,6 +13,7 @@ import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contrac
 import { useOpsData } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import useTime from "../util/useTime";
+import { useIsOpsAdmin } from "./AdminOnly";
 
 export type TeamPuzzleListHandle = {
   filterToPuzzle: (title: string) => void;
@@ -53,6 +54,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
     const dialogs = useDialogs();
     const notifications = useNotifications();
     const opsData = useOpsData();
+    const isOpsAdmin = useIsOpsAdmin();
 
     const handleUnlockPuzzle = (puzzle: TeamPuzzleListEntry) => {
       dialogs
@@ -306,7 +308,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         showColumnFilters: true,
       },
       enableDensityToggle: false,
-      enableRowActions: true,
+      enableRowActions: isOpsAdmin,
       renderRowActions: ({ row }) => {
         if (
           row.original.status.state === "unlocked" ||
