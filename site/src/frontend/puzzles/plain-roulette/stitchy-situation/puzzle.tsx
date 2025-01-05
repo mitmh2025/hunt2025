@@ -39,12 +39,12 @@ const Puzzle = (): JSX.Element => {
         <div>
           <strong>Row 1:</strong> Without breaking white, join black. sl2wyib p2
           k2 p1 sl1wyif k1 sl1wyib sl1wyif p1 sl2wyib sl2wyif k1 sl1wyib p1
-          sl1wyif k1 wyib sl1 sl1wyif p1 k1 sl1wyib p2 k2 sl1wyif p1 k1 sl1wyib
+          sl1wyif k1 sl1wyib sl1wyif p1 k1 sl1wyib p2 k2 sl1wyif p1 k1 sl1wyib
           p2 sl2wyib sl2wyif k1 sl1wyib p1 sl1wyif
         </div>
         <div>
           <strong>Row 2:</strong> sl1wyib k1 sl1wyif p1 sl2wyib sl2wyif k2
-          sl1wyif p1 k1 wyib sl1 p2 k2 sl1wyif p1 k1 sl1wyib sl1wyif p1 sl1wyib
+          sl1wyif p1 k1 sl1wyib p2 k2 sl1wyif p1 k1 sl1wyib sl1wyif p1 sl1wyib
           k1 sl1wyif p1 sl2wyib sl2wyif k1 sl1wyib sl1wyif p1 sl1wyib k1 p2 k2
           sl2wyif
         </div>
@@ -82,8 +82,8 @@ const Puzzle = (): JSX.Element => {
         </div>
         <div>
           <strong>Row 9:</strong> With black, sl2wyib p2 sl2wyib p1 sl1wyif k1
-          sl1wyib p2 wyib sl2 p1 sl1wyif sl2wyib sl2wyif k2 sl1wyif p1 k1
-          sl1wyib p2 k2 wyif sl1 p1 k1 sl1wyib p2 k2 sl1wyif p1 k1 sl1wyib p2
+          sl1wyib p2 sl2wyib p1 sl1wyif sl2wyib sl2wyif k2 sl1wyif p1 k1 sl1wyib
+          p2 k2 sl1wyif p1 k1 sl1wyib p2 k2 sl1wyif p1 k1 sl1wyib p2
         </div>
         <div>
           <strong>Row 10:</strong> k2 sl1wyif p1 k1 sl1wyib p2 k2 sl1wyif p1 k1

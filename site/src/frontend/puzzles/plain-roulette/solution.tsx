@@ -66,14 +66,14 @@ const Solution = (): JSX.Element => {
         hope it was intuitive. The instructions are for stockinette stitch, knit
         flat, one of the most basic knitting patterns. So every time you switch
         from knits to purls, that’s a new row. You’re knitting a scarf! A scarf
-        with nearly 500 rows, so it’s probably best to map this one out.
+        with nearly 1000 rows, so it’s probably best to map this one out.
       </li>
       <li>
         According to the pattern, you only switch colors on the right side of
         the work. So each section of white or black is at least two rows, one
         right-side row and one wrong side row, or a multiple of those two rows.
-        Therefore, let’s consider two rows (i.e. k25p25) to be the smallest unit
-        of section thickness, 1 kpRow.
+        Therefore, let’s consider two rows (i.e. k128p128) to be the smallest
+        unit of section thickness, 1 kpRow.
       </li>
       <li>
         If you start to map out the thicknesses of the black and white stripes,
