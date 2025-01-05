@@ -5,6 +5,10 @@ import { type z } from "zod";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
+import Interaction from "../../interactions/client";
+
+import RogerBaseline from "../../interactions/interview_at_the_boardwalk/assets/roger-baseline.png";
+import BoardwalkBg from "../../interactions/interview_at_the_boardwalk/assets/background.jpg";
 
 type Interaction = z.infer<typeof InteractionStateSchema>;
 function stubInteractionState(slug: string, interaction: Interaction) {
@@ -69,21 +73,35 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
   if (!interaction) return undefined;
 
   if (process.env.NODE_ENV === "development") {
+    const inlineScript = `window.initialHubState = ${JSON.stringify(stubInteractionState(slug, interaction))};`;
     const node = (
-      <div>
-        <h1>Interaction (devmode-only page)</h1>
-        <p>
-          This page will eventually host an interaction. For now, we just have a
-          stub that allows progressing through the unlock structure.
-        </p>
-        {stubInteractionState(slug, interaction)}
-      </div>
+      <>
+        <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+        <div id="interaction-root">
+          <Interaction
+            currentNode={{
+              id: "1a",
+              bgImgSrc: BoardwalkBg,
+              bgImgAlt:
+                "Glowingly lit arcade full of carnie games and machines",
+              interviewee: {
+                name: "Roger",
+                imgSrc: RogerBaseline,
+                alt: "Young man in a sailor's outfit",
+                pos: { x: 1100, y: 0 },
+              },
+              speaker: "Billie",
+              line: "It was a dark and stormy night, in a MITropolis that knows how to keep its secrets.",
+            }}
+            history={[]}
+          />
+        </div>
+      </>
     );
     return wrapContentWithNavBar(
       {
         node,
         title: interaction.title,
-        // entrypoints: ["interaction" as const], // TODO: enable once there's an entrypoint to put here
       },
       req.teamState,
     );
