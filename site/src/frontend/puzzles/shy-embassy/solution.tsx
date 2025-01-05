@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import {
@@ -219,7 +219,7 @@ export default function Solution(): JSX.Element {
         superhero name such that it is “1st word + superhero” and “superhero +
         2nd word.” For example “FAT TUESDAY” has two pairs with CAT WOMAN and
         SUPERMAN forming the two phrases “FAT CAT(woman)” and “SUPER(man)
-        TUESDAY". All eight feeder answers pair up with two superheroes. All
+        TUESDAY”. All eight feeder answers pair up with two superheroes. All
         superheroes are used in two different feeders.
       </p>
       <p>
