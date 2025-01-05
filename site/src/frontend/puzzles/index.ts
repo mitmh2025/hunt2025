@@ -104,6 +104,7 @@ import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import SyntheticTagsonomy from "./rubbery-tooth";
+import Chinatown from "./rude-field";
 import DroppingTheBall from "./rundown-spot";
 import PawPrintDetective from "./rural-helicopter";
 import MagnifyingGlassIce from "./sandy-atlantis";
@@ -235,6 +236,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_ultimate_insult: TheUltimateInsult,
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
+
+  chinatown: Chinatown,
 
   // The Paper Trail
   ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
