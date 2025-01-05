@@ -132,6 +132,12 @@
         enable = true;
         externalHostname = "media.staging.mitmh2025.com";
       };
+
+      services.mediamtx.env = {
+        API_BASE_URL = config.hunt2025.site.apiBaseUrl;
+        FRONTEND_API_SECRET = "%m";
+      };
+
       services.mediamtx.settings = {
         paths.music = {
           runOnInit = ''
