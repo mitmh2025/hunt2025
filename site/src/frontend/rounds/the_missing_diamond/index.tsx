@@ -385,7 +385,7 @@ const metaSpeechBubbles: Partial<
     interaction: "interview_at_the_art_gallery",
     desc: {
       unsolved: {
-        text: "I’ve just learned that Papa was involved in a bit of a scene at the Art Gallery this morning before the Gala started See if you can get someone to tell you what happened.",
+        text: "I’ve just learned that Papa was involved in a bit of a scene at the Art Gallery this morning before the Gala started. See if you can get someone to tell you what happened.",
         color: "#348DD1",
       },
       solved: {
