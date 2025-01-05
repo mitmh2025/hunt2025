@@ -642,7 +642,7 @@ export async function getRouter({
                 media: [
                   {
                     action: "read",
-                    path: `~^/teams/${team.id}/`,
+                    path: `~^teams/${team.id}/`,
                   },
                 ],
               }),
