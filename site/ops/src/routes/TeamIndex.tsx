@@ -182,7 +182,17 @@ export default function TeamIndex() {
               {row.original.username}
             </Link>
             <br />
-            <span style={{ fontSize: "12px" }}>{row.original.name}</span>
+            <span
+              style={{
+                fontSize: "12px",
+                maxWidth: "200px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "block",
+              }}
+            >
+              {row.original.name}
+            </span>
           </>
         ),
       }),
@@ -233,6 +243,7 @@ export default function TeamIndex() {
         pageIndex: 0,
         pageSize: 100,
       },
+      showGlobalFilter: true,
     },
     enableRowSelection: isOpsAdmin,
     selectAllMode: "all",

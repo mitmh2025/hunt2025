@@ -1277,7 +1277,7 @@ export async function getRouter({
       },
       unlockPuzzle: {
         middleware: [adminAuthMiddleware, requireAdminPermission],
-        handler: async ({ params: { slug }, body: { teamIds } }) => {
+        handler: async ({ params: { slug }, body: { teamIds }, req }) => {
           let singleTeamId: number | undefined = undefined;
           if (teamIds !== "all" && teamIds.length === 1) {
             singleTeamId = teamIds[0];
@@ -1313,6 +1313,9 @@ export async function getRouter({
                   await mutator.appendLog({
                     type: "puzzle_unlocked",
                     slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
                   }),
                 ];
               }
@@ -1325,6 +1328,9 @@ export async function getRouter({
                     team_id,
                     type: "puzzle_unlocked",
                     slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
                   }),
                 );
               }

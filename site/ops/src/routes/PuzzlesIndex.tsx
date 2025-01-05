@@ -151,8 +151,7 @@ export default function PuzzlesIndex() {
           })
           .filter((time) => time !== null) as number[];
 
-        const medianSolveTime =
-          solveTimes.length > 0 ? median(solveTimes) / 1000 : 0;
+        const medianSolveTime = solveTimes.length > 0 ? median(solveTimes) : 0;
 
         const unlockCount = puzzleDataBySlug[slug]?.unlockCount ?? 0;
         const solveCount = puzzleDataBySlug[slug]?.solveCount ?? 0;
@@ -233,9 +232,7 @@ export default function PuzzlesIndex() {
         header: "Median Solve Time",
         filterVariant: "range",
         Cell: ({ row }: { row: MRT_Row<PuzzleIndexData> }) => {
-          const duration = Duration.fromMillis(
-            row.original.medianSolveTime * 1000,
-          );
+          const duration = Duration.fromMillis(row.original.medianSolveTime);
           return duration.toFormat("hh:mm:ss");
         },
       }),
@@ -264,6 +261,7 @@ export default function PuzzlesIndex() {
         pageIndex: 0,
         pageSize: 25,
       },
+      showGlobalFilter: true,
     },
     enableRowSelection: isOpsAdmin,
     selectAllMode: "all",

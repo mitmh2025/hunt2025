@@ -9,6 +9,7 @@ import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
 import EmailTeams from "./routes/EmailTeams.tsx";
 import Home from "./routes/Home.tsx";
+import Puzzle from "./routes/Puzzle.tsx";
 import PuzzlesIndex from "./routes/PuzzlesIndex.tsx";
 import Team from "./routes/Team.tsx";
 import TeamIndex from "./routes/TeamIndex.tsx";
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
           {
             path: "puzzles",
             Component: PuzzlesIndex,
+          },
+          {
+            path: "puzzles/:slug",
+            Component: Puzzle,
           },
           {
             path: "teams",

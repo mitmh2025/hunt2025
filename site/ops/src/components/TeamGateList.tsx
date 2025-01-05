@@ -77,6 +77,7 @@ export default function TeamGateList({ team }: { team: TeamData }) {
           desc: false,
         },
       ],
+      showGlobalFilter: true,
     },
     layoutMode: "grid-no-grow",
     enableDensityToggle: false,
