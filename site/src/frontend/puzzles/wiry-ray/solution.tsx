@@ -42,7 +42,7 @@ const Eggs: [location: number, description: string, hermit: string][] = [
   [110, "the irish sun", "Grian"],
 ];
 
-const Articacts: [
+const Artifacts: [
   name: string,
   compass: number,
   level: string,
