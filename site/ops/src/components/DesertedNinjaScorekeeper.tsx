@@ -408,6 +408,13 @@ function ScorekeeperPanel() {
       );
     });
 
+    const completeButton =
+      session.status === "in_progress" ? (
+        <div>
+          <button onClick={completeSession}>Complete session and score</button>
+        </div>
+      ) : null;
+
     return (
       <div>
         <AnswerContext.Provider value={answerMap}>
@@ -422,12 +429,7 @@ function ScorekeeperPanel() {
               <tbody>{body}</tbody>
             </ScorekeeperTable>
           </form>
-
-          <div>
-            <button onClick={completeSession}>
-              Complete session and score
-            </button>
-          </div>
+          {completeButton}
         </AnswerContext.Provider>
       </div>
     );
@@ -437,7 +439,6 @@ function ScorekeeperPanel() {
 export function DesertedNinjaScorekeeper() {
   return (
     <>
-      <h2>Scorekeeper mode</h2>
       <ScorekeeperPanel />
     </>
   );

@@ -22,16 +22,14 @@ const SessionSelectHeader = styled.div`
   margin-bottom: 5px;
 `;
 const SessionList = styled.div`
-  overflow-y: scroll;
   height: 100px;
 `;
 const RowContainer = styled.div`
   display: flex;
   margin: 5px 0;
-  width: 50%;
 `;
 const RowTitle = styled.div`
-  flex-grow: 1;
+  width: 500px;
 `;
 const SelectButton = styled.button``;
 

@@ -43,7 +43,7 @@ export default function App() {
     },
     {
       segment: "deserted-ninja",
-      title: "FerMIT Challenge (deserted-ninja)",
+      title: "FerMIT Challenge",
       icon: <PuzzleIcon />,
     },
     ...(isOpsAdmin

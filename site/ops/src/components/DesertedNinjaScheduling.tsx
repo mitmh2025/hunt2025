@@ -19,6 +19,22 @@ const MiniImage = styled.div`
   width: 10%;
 `;
 
+const RegisteredTeams = styled.div`
+  border: 1px solid black;
+  margin-top: 15px;
+  padding: 5px 10px;
+`;
+
+const RegistrationBox = styled.div`
+  border: 1px solid black;
+  margin-top: 15px;
+  padding: 5px 10px;
+`;
+
+const QuestionDetails = styled.details`
+  margin-top: 10px;
+`;
+
 function SessionQuestionDetails({
   questionIds,
   questions,
@@ -53,14 +69,22 @@ function SessionQuestionDetails({
   });
 
   return (
-    <details>
+    <QuestionDetails>
       <summary>Question List</summary>
       <div style={{ border: "1px solid black" }}>
         <ul>{questionElts}</ul>
       </div>
-    </details>
+    </QuestionDetails>
   );
 }
+
+const TeamRegistrationContainer = styled.div`
+  display: flex;
+`;
+const TeamName = styled.div`
+  width: 200px;
+`;
+const ToggleButton = styled.button``;
 
 function SessionTeamEntry({ team }: { team: TeamData }) {
   const opsData = useOpsData();
@@ -110,21 +134,16 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
 
   if (dnData.activeSession?.status === "not_started") {
     return (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          unregisterTeam(
-            parseInt(
-              (e.currentTarget.elements[0] as HTMLInputElement).value,
-              10,
-            ),
-          );
-        }}
-      >
-        <div>{team.name.slice(0, 40)}</div>
-        <input type="hidden" name="teamId" value={team.teamId} />
-        <input type="submit" value="Remove" />
-      </form>
+      <TeamRegistrationContainer>
+        <TeamName>{team.name.slice(0, 40)}</TeamName>
+        <ToggleButton
+          onClick={(_) => {
+            unregisterTeam(team.teamId);
+          }}
+        >
+          Remove
+        </ToggleButton>
+      </TeamRegistrationContainer>
     );
   } else {
     return <div>{team.name.slice(0, 40)}</div>;
@@ -210,37 +229,31 @@ function SessionDetails() {
 
     const registrationBox =
       session.status === "not_started" ? (
-        <div style={{ border: "1px solid black" }}>
-          <h4>Register a Team</h4>
+        <RegistrationBox>
+          <div>Register a Team</div>
           <TeamSelector
             submitCallback={registerTeam}
             exclude={session.teams.map(({ id }) => id)}
           />
-        </div>
+        </RegistrationBox>
       ) : null;
 
     return (
       <>
         <h3>Details</h3>
-        <div
-          style={{
-            display: "flex",
-            marginLeft: "5px",
-            justifyContent: "space-evenly",
-          }}
-        >
+        <div>
           <div>Title: {session.title}</div>
           <div>Status: {session.status}</div>
         </div>
+        <RegisteredTeams>
+          <div>Teams signed up:</div>
+          {signedUpDivs}
+        </RegisteredTeams>
+        {registrationBox}
         <SessionQuestionDetails
           questionIds={session.questionIds}
           questions={dnData.questions}
         />
-        <div style={{ border: "1px solid black" }}>
-          <p>Teams signed up:</p>
-          {signedUpDivs}
-        </div>
-        {registrationBox}
       </>
     );
   } else {
@@ -267,7 +280,6 @@ function SessionDetails() {
 export function DesertedNinjaScheduling() {
   return (
     <>
-      <h2>Scheduling mode</h2>
       <SessionDetails />
     </>
   );
