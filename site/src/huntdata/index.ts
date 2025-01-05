@@ -261,7 +261,7 @@ const HUNT: Hunt = {
         { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "its_not_clear" },
         { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1, slug: "mens_at_my_nose" },
         { id: "sop42", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1, slug: "dear_diary" },
-        { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 } }, // Chinatown
+        { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 }, slug: "chinatown"},
       ],
       gates: [
         { id: "sog01" }, // Picked up Mystery O's from Gala
