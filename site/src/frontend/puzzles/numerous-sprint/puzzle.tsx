@@ -12,9 +12,7 @@ const ProblemHeader = styled.h2`
 `;
 
 const ProblemContent = styled.div`
-  font-family:
-    "Times New Roman",
-    serif;
+  font-family: "Times New Roman", serif;
 `;
 
 export const StyledCrossword = styled(Crossword)`
