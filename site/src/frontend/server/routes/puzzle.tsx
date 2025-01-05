@@ -270,11 +270,11 @@ export function subpuzzleHandler(req: Request<SubpuzzleParams>) {
     </>
   );
 
-  // TODO: include title
   return wrapContentWithNavBar(
     {
       node,
       entrypoints,
+      title: subpuzzle.title,
     },
     teamState,
   );
@@ -373,6 +373,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
         {
           node,
           entrypoints: ["puzzle" as const],
+          title: `Stub puzzle for ${slug}`,
         },
         req.teamState,
       );
@@ -446,10 +447,10 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     </>
   );
 
-  // TODO: include title
   return wrapContentWithNavBar(
     {
       node,
+      title: puzzle.title,
       entrypoints,
     },
     req.teamState,
@@ -556,7 +557,10 @@ export function solutionHandler(req: Request<PuzzleParams>) {
         </p>
       </div>
     );
-    return wrapContentWithNavBar({ node }, req.teamState);
+    return wrapContentWithNavBar(
+      { node, title: `Missing Solution for ${slug}` },
+      req.teamState,
+    );
   }
 
   // TODO: look up round-specific solution page layout if applicable.
@@ -648,11 +652,11 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     </>
   );
 
-  // TODO: include an appropriate title?
   return wrapContentWithNavBar(
     {
       node,
       entrypoints,
+      title: `Solution for ${title}`,
     },
     req.teamState,
   );

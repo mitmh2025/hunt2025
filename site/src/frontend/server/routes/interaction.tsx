@@ -82,6 +82,7 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
     return wrapContentWithNavBar(
       {
         node,
+        title: interaction.title,
         // entrypoints: ["interaction" as const], // TODO: enable once there's an entrypoint to put here
       },
       req.teamState,
