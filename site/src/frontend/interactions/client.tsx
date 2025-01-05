@@ -2,6 +2,7 @@ import React from "react";
 import {
   Background,
   Billie,
+  Choices,
   Content,
   Interviewee,
   proportionify,
@@ -10,12 +11,20 @@ import {
   Wrapper,
 } from "./Layout";
 import DefaultBillieAvi from "./assets/billie.png";
+import { Button } from "../components/StyledUI";
 
 type Interviewee = {
   name: string;
   imgSrc: string;
   alt: string;
   pos: { x: number; y: number };
+};
+
+type Choice = {
+  text: string;
+  id: string;
+  disabled?: boolean;
+  percentage?: number;
 };
 
 type UINode = {
@@ -28,6 +37,7 @@ type UINode = {
   billieImgSrc?: string;
   billieImgAlt?: string;
   line: string;
+  choices?: Choice[];
 };
 
 type Props = {
@@ -90,6 +100,18 @@ const Interaction = ({ currentNode, history }: Props) => {
               <span>{currentNode.line}</span>
             </p>
           </Scrollback>
+          <Choices>
+            {currentNode.choices && (
+              <>
+                <h4>Select a response:</h4>
+                <div className="choice-buttons">
+                  {currentNode.choices.map((choice) => (
+                    <Button key={`choice-${choice.id}`}>{choice.text}</Button>
+                  ))}
+                </div>
+              </>
+            )}
+          </Choices>
         </Content>
       </UIWrapper>
     </Wrapper>

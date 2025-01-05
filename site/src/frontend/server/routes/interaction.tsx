@@ -88,10 +88,28 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
                 name: "Roger",
                 imgSrc: RogerBaseline,
                 alt: "Young man in a sailor's outfit",
-                pos: { x: 1100, y: 0 },
+                pos: { x: 1400, y: 0 },
               },
               speaker: "Billie",
               line: "It was a dark and stormy night, in a MITropolis that knows how to keep its secrets.",
+              choices: [
+                {
+                  id: "a",
+                  text: "Chocolate",
+                },
+                {
+                  id: "b",
+                  text: "Vanilla",
+                },
+                {
+                  id: "c",
+                  text: "Mango",
+                },
+                {
+                  id: "d",
+                  text: "Pistachio",
+                },
+              ],
             }}
             history={[]}
           />
