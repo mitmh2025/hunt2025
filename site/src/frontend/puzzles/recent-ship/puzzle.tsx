@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import Blanks from "../../components/Blanks";
 
 export const ScrollWrapper = styled.div`
   width: 100%;
@@ -55,10 +56,6 @@ export const StyledTable = styled.table`
       clip-path: polygon(4% 96%, 4% 25%, 50% 4%, 96% 25%, 96% 96%);
     }
   }
-`;
-
-const Blanks = styled.span`
-  white-space: pre;
 `;
 
 const BigFont = styled.span`
@@ -179,7 +176,7 @@ const Puzzle = (): JSX.Element => {
       <hr />
       <p>
         <BigFont>
-          <Blanks>{"_ _ _ _ _  _ _ _  _ _ _ _ _ _"}</Blanks>
+          <Blanks structure={"_____ ___ ______".split("")} />
         </BigFont>
       </p>
     </>
