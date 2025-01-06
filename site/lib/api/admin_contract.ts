@@ -162,4 +162,14 @@ export const adminContract = c.router({
       200: z.string(),
     },
   },
+  markGateSatistfied: {
+    method: "POST",
+    path: "/admin/gates/:gateId/satisfy",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
 });
