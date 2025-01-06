@@ -89,6 +89,24 @@ const AuthorsNote = styled.p`
   }
 `;
 
+const AuthorsNoteBlock = styled.div`
+  font-size: 14px;
+  border: 1px solid var(--gold-700);
+  color: var(--gold-800);
+  padding: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+  background-color: var(--gold-200);
+  border-radius: 2px;
+  .copying & {
+    background-color: transparent;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+`;
+
 export {
   PuzzleHeader,
   PuzzleMain,
@@ -96,4 +114,5 @@ export {
   PuzzleWrapper,
   PuzzleTitle,
   AuthorsNote,
+  AuthorsNoteBlock,
 };

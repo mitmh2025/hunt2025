@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import {
   HScrollTableWrapper,
   Mono,
@@ -194,20 +195,6 @@ const BENCH_DATA = [
   },
 ];
 
-const Note = styled.div`
-  font-size: 14px;
-  border: 1px solid var(--gold-700);
-  color: var(--gold-800);
-  padding: 1rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  background-color: var(--gold-200);
-  border-radius: 2px;
-  .copying & {
-    background-color: transparent;
-  }
-`;
-
 const StyledTable = styled.table`
   margin: 1em 0;
   border-collapse: collapse;
@@ -272,7 +259,7 @@ const Solution = (): JSX.Element => {
         name and shares exactly one letter.
       </p>
 
-      <Note>
+      <AuthorsNoteBlock>
         <h2>Notes on composition and translation</h2>
         <p>
           Some of the radicals used in these character compositions differ
@@ -288,7 +275,7 @@ const Solution = (): JSX.Element => {
           Several of the translations are unique to aid in identifying the
           mechanic.
         </p>
-      </Note>
+      </AuthorsNoteBlock>
 
       <CenteredDiv>
         <LinkedImage

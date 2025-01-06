@@ -298,23 +298,23 @@ const HUNT: Hunt = {
       puzzles: [
         // 17 feeders, 8 metas, 1 super
         // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
-        { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "follow_the_rules" },
-        { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
-        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
-        { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "the_eras_puzzle" },
-        { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "a_weathered_note" },
-        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "ಕಾಬವದೋೀ್" },
-        { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "bar_talk" },
-        { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "the_inspectre" },
-        { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
-        { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "any_coat_will_do" },
-        { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "incognito" },
-        { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "maze_of_lies" },
-        { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "star_crossed" },
-        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "his_life_story" },
-        { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
-        { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
+        { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
+        { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "incognito" },
+        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 }, // And Now, A Puzzling Word From Our Sponsors
+        { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
+        { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" }
+        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle (pending testing)
+        { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "maze_of_lies" },
+        { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "any_coat_will_do" },
+        { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_eras_puzzle" },
+        { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "a_weathered_note" },
+        { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "follow_the_rules" },
+        { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "star_crossed" },
+        { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "ಕಾಬವದೋೀ್" },
+        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
+        { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "bar_talk" },
+        { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "his_life_story" },
+        { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "the_inspectre" },
         // Drop all 8 metas together once ~70% of the feeders are solved.
         { id: "ptm01", is_meta: true, unlocked_if: { puzzles_solved: 13 }, slug: "shell_corporation_1" }, // meta 1
         { id: "ptm02", is_meta: true, unlocked_if: { puzzles_solved: 13 }, slug: "shell_corporation_2" }, // meta 2
