@@ -261,7 +261,6 @@ const PrintLeft = styled.div`
 const PrintRight = styled.div`
   width: 50%;
   float: right;
-  margin-top: -8rem;
 `;
 
 const Puzzle = () => {
@@ -284,6 +283,10 @@ const Puzzle = () => {
       <PrintContainer className={NO_COPY_CLASS}>
         <PrintLeft>
           <PrintableCrossword labels={GRID} />
+          <ScaledBlock>
+            <PrintableClueHeader>Answer to submit:</PrintableClueHeader>
+            <PrintableCrossword labels={[EXTRACTION_GRID]} />
+          </ScaledBlock>
           <PrintableClueBlock
             header="Perimeter (to be placed where they fit)"
             clues={PERIMETER_CLUES}
@@ -291,10 +294,6 @@ const Puzzle = () => {
           />
         </PrintLeft>
         <PrintRight>
-          <ScaledBlock>
-            <PrintableClueHeader>Answer to submit:</PrintableClueHeader>
-            <PrintableCrossword labels={[EXTRACTION_GRID]} />
-          </ScaledBlock>
           <PrintableClueBlock header="Across" clues={ACROSS_CLUES} />
           <PrintableClueBlock header="Down" clues={DOWN_CLUES} />
           <hr />
