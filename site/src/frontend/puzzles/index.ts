@@ -54,6 +54,7 @@ import BrokenRecord from "./handsome-satellite";
 import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
 import Incognito from "./heavy-iron";
+import DoTheManualCalculationsDontTryMonteCarlo from "./hideous-theater";
 import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
 import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
@@ -248,6 +249,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_weathered_note: AWeatheredNote,
   bar_talk: BarTalk,
   chemicals_are_sexy: ChemicalsAreSexy,
+  do_the_manual_calculations_dont_try_monte_carlo:
+    DoTheManualCalculationsDontTryMonteCarlo,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
   his_life_story: HisLifeStory,

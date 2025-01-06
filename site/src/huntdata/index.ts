@@ -312,7 +312,7 @@ const HUNT: Hunt = {
         { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "star_crossed" },
         { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "his_life_story" },
-        { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
         { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
         { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
         // Drop all 8 metas together once ~70% of the feeders are solved.
