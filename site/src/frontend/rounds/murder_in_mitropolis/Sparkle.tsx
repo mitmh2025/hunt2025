@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { proportionify } from "./Layout";
-import { ObjectPosition } from ".";
+import { type ObjectPosition } from ".";
 
 const ANIMATION_DURATION = 0.8;
 

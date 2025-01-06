@@ -3,50 +3,45 @@ import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
-import { MurderPuzzleObject, type MurderState } from "./types";
-
-// main face of stata; only some solve states are bespoke
+// meta: door to green building
+import door_solved from "./assets/green-door-solved.png";
+import door_unlocked from "./assets/green-door-unlocked.png";
+// dorm
+import dorm_solved_lofibeats from "./assets/windows/dorm/dorm-solved-lofibeats.png";
+import dorm_solved_plant from "./assets/windows/dorm/dorm-solved-plant.png";
+import dorm_solved from "./assets/windows/dorm/dorm-solved.png";
+import dorm_locked from "./assets/windows/dorm/dorm-unlockable.png";
+import dorm_unlocked from "./assets/windows/dorm/dorm-unlocked.png";
+// main face of stata; some solve states are bespoke
+import stata_1_solved_blinds from "./assets/windows/stata/stata-1-solved-blinds.png";
+import stata_1_solved_drinker from "./assets/windows/stata/stata-1-solved-drinker.png";
+import stata_1_solved_hat_guy from "./assets/windows/stata/stata-1-solved-hat-guy.png";
+import stata_1_solved_kissing from "./assets/windows/stata/stata-1-solved-kissing.png";
+import stata_1_solved_short_woman from "./assets/windows/stata/stata-1-solved-short-woman.png";
+import stata_1_solved from "./assets/windows/stata/stata-1-solved.png";
 import stata_1_locked from "./assets/windows/stata/stata-1-unlockable.png";
 import stata_1_unlocked from "./assets/windows/stata/stata-1-unlocked.png";
-import stata_1_solved from "./assets/windows/stata/stata-1-solved.png";
-import stata_1_solved_kissing from "./assets/windows/stata/stata-1-solved-kissing.png";
-import stata_1_solved_hat_guy from "./assets/windows/stata/stata-1-solved-hat-guy.png";
-import stata_1_solved_drinker from "./assets/windows/stata/stata-1-solved-drinker.png";
-import stata_1_solved_blinds from "./assets/windows/stata/stata-1-solved-blinds.png";
-import stata_1_solved_short_woman from "./assets/windows/stata/stata-1-solved-short-woman.png";
-
-// tilted side of stata; each asset is bespoke
+// tilted side of stata; each asset is bespoke except the fourth
+import stata_2_1_solved from "./assets/windows/stata/stata-2-1-solved.png";
 import stata_2_1_locked from "./assets/windows/stata/stata-2-1-unlockable.png";
 import stata_2_1_unlocked from "./assets/windows/stata/stata-2-1-unlocked.png";
-import stata_2_1_solved from "./assets/windows/stata/stata-2-1-solved.png";
+import stata_2_2_solved from "./assets/windows/stata/stata-2-2-solved.png";
 import stata_2_2_locked from "./assets/windows/stata/stata-2-2-unlockable.png";
 import stata_2_2_unlocked from "./assets/windows/stata/stata-2-2-unlocked.png";
-import stata_2_2_solved from "./assets/windows/stata/stata-2-2-solved.png";
+import stata_2_3_solved from "./assets/windows/stata/stata-2-3-solved.png";
 import stata_2_3_locked from "./assets/windows/stata/stata-2-3-unlockable.png";
 import stata_2_3_unlocked from "./assets/windows/stata/stata-2-3-unlocked.png";
-import stata_2_3_solved from "./assets/windows/stata/stata-2-3-solved.png";
-
 // tower
-import tower_locked from "./assets/windows/tower/tower-unlockable.png";
-import tower_unlocked from "./assets/windows/tower/tower-unlocked.png";
-import tower_solved from "./assets/windows/tower/tower-solved.png";
+import tower_penthouse_solved from "./assets/windows/tower/tower-penthouse-solved.png";
+import tower_penthouse_locked from "./assets/windows/tower/tower-penthouse-unlockable.png";
+import tower_penthouse_unlocked from "./assets/windows/tower/tower-penthouse-unlocked.png";
 import tower_solved_cats from "./assets/windows/tower/tower-solved-cats.png";
 import tower_solved_men from "./assets/windows/tower/tower-solved-men.png";
 import tower_solved_woman from "./assets/windows/tower/tower-solved-woman.png";
-import tower_penthouse_locked from "./assets/windows/tower/tower-penthouse-unlockable.png";
-import tower_penthouse_unlocked from "./assets/windows/tower/tower-penthouse-unlocked.png";
-import tower_penthouse_solved from "./assets/windows/tower/tower-penthouse-solved.png";
-
-// dorm
-import dorm_locked from "./assets/windows/dorm/dorm-unlockable.png";
-import dorm_unlocked from "./assets/windows/dorm/dorm-unlocked.png";
-import dorm_solved from "./assets/windows/dorm/dorm-solved.png";
-import dorm_solved_lofibeats from "./assets/windows/dorm/dorm-solved-lofibeats.png";
-import dorm_solved_plant from "./assets/windows/dorm/dorm-solved-plant.png";
-
-// meta: door to green building
-import door_unlocked from "./assets/green-door-unlocked.png";
-import door_solved from "./assets/green-door-solved.png";
+import tower_solved from "./assets/windows/tower/tower-solved.png";
+import tower_locked from "./assets/windows/tower/tower-unlockable.png";
+import tower_unlocked from "./assets/windows/tower/tower-unlocked.png";
+import { type MurderPuzzleObject, type MurderState } from "./types";
 
 const MURDER_SLOTS = [
   "tmp01",
@@ -441,7 +436,7 @@ function genImagery(teamState: TeamHuntState): MurderPuzzleObject[] {
         : unlockState === "unlockable"
           ? ("locked" as const)
           : ("unlocked" as const);
-    let asset = lookupValue(properties.asset, state);
+    const asset = lookupValue(properties.asset, state);
     const alt = lookupValue(properties.alt, state);
     const width = lookupValue(properties.width, state);
     const pos = lookupValue(properties.pos, state);

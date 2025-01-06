@@ -1,4 +1,3 @@
-import React, { MouseEventHandler, useCallback, useRef, useState } from "react";
 import {
   autoUpdate,
   flip,
@@ -11,9 +10,15 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
+import React, {
+  type MouseEventHandler,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import { PuzzleTooltipComponent } from "../../components/Tooltip";
 import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { PuzzleTooltipComponent } from "../../components/Tooltip";
 import {
   CityWrapper,
   MurderCityBg,
@@ -21,10 +26,10 @@ import {
   MurderWindowComponent,
   proportionify,
 } from "./Layout";
-import SparkleComponent, { SPARKLES } from "./Sparkle";
 import { MurderFonts } from "./MurderFonts";
+import SparkleComponent, { SPARKLES } from "./Sparkle";
 import SkylineBg from "./assets/murder-bg.png";
-import { MurderPuzzleObject, type MurderState } from "./types";
+import { type MurderPuzzleObject, type MurderState } from "./types";
 
 const MurderWindow = ({
   item,
@@ -147,16 +152,11 @@ const MurderBody = ({
     console.log("hi", item);
     const aStyle = {
       left:
-        item.pos.left !== undefined
-          ? `${proportionify(item.pos.left)}`
-          : undefined,
-      top:
-        item.pos.top !== undefined
-          ? `${proportionify(item.pos.top)}`
-          : undefined,
+        item.pos.left !== undefined ? proportionify(item.pos.left) : undefined,
+      top: item.pos.top !== undefined ? proportionify(item.pos.top) : undefined,
     };
     const imgStyle = {
-      width: `${proportionify(item.width)}`,
+      width: proportionify(item.width),
     };
     return (
       <MurderWindow

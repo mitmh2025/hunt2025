@@ -1,4 +1,4 @@
-import { Placement } from "@floating-ui/react";
+import { type Placement } from "@floating-ui/react";
 
 export type MurderItem = {
   title: string;
