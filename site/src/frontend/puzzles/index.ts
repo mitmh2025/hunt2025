@@ -13,6 +13,7 @@ import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
 import DoableDouble from "./austere-sink";
 import { blacklightPuzzle } from "./blacklight";
+import AsTheWorldTurandot from "./blend-hardboard";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
@@ -362,6 +363,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Murder in MITropolis
   a_dash_of_color: ADashOfColor,
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
+  as_the_world_turandot: AsTheWorldTurandot,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   can_do_transmissions: CanDoTransmissions,

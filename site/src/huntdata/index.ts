@@ -539,7 +539,7 @@ const HUNT: Hunt = {
         { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "give_this_grid_a_shake" },
         { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "in_communicado_tonight" },
         { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "a_dash_of_color" },
-        { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
+        { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "as_the_world_turandot" },
         { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
         { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
         { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
