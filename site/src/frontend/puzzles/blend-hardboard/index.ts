@@ -14,6 +14,10 @@ const puzzle: PuzzleDefinition = {
       for_what: "Art",
       who: ["Simone Agha"],
     },
+    {
+      for_what: "Title",
+      who: ["Erin Price"],
+    },
   ],
   content: {
     component: Puzzle,
