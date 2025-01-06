@@ -31,6 +31,11 @@ if (!redisUrl) {
   throw new Error("$REDIS_URL was not configured");
 }
 
+const outputBaseUrl = process.env.OUTPUT_BASE_URL;
+if (!outputBaseUrl) {
+  throw new Error("$OUTPUT_BASE_URL was not configured");
+}
+
 const liquidsoapImage = process.env.LIQUIDSOAP_IMAGE;
 if (!liquidsoapImage) {
   throw new Error("$LIQUIDSOAP_IMAGE was not configured");
@@ -128,6 +133,16 @@ async function main({
 
   const syncQueue = new Queue(1);
 
+  const apply = <T extends k8s.KubernetesObject>(spec: T) =>
+    objectApi.patch<T>(
+      spec,
+      undefined, // pretty
+      undefined, // dryRun
+      "sync2k8s", // fieldManager
+      true, // force
+      k8s.PatchStrategy.ServerSideApply,
+    );
+
   const processTeam = async (teamId: number) => {
     const team = teamInfos.get(teamId);
     if (!team) {
@@ -161,42 +176,86 @@ async function main({
       app: "radio",
       teamId: `${teamId}`,
     };
-    // Server-side apply can be called an arbitrary number of times
-    await objectApi.patch<k8s.V1StatefulSet>(
-      {
-        apiVersion: "apps/v1",
-        kind: "StatefulSet",
+    const ensureSecret = async () => {
+      const name = `radio-${teamId}`;
+      const existing = await coreV1Api
+        .readNamespacedSecret({
+          namespace,
+          name,
+        })
+        .catch(catch404);
+      if (existing) {
+        return name;
+      }
+      // TODO: Any other condition that should also trigger update?
+      const path = `teams/${teamId}/radio`;
+      const resp = await frontendApiClient.mintToken({
+        body: {
+          media: [
+            {
+              action: "publish",
+              path,
+            },
+          ],
+        },
+      });
+      if (resp.status !== 200) {
+        throw new Error("failed to mint token");
+      }
+      await apply<k8s.V1Secret>({
+        apiVersion: "v1",
+        kind: "Secret",
         metadata: {
           namespace,
-          name: ssName,
-          labels,
+          name,
         },
-        spec: {
-          selector: {
-            matchLabels: labels,
+        stringData: {
+          OUTPUT_URL: `${outputBaseUrl}/${path}?jwt=${resp.body}`,
+        },
+      });
+      return name;
+    };
+    const secretName = await ensureSecret();
+    // Server-side apply can be called an arbitrary number of times
+    await apply<k8s.V1StatefulSet>({
+      apiVersion: "apps/v1",
+      kind: "StatefulSet",
+      metadata: {
+        namespace,
+        name: ssName,
+        labels,
+      },
+      spec: {
+        selector: {
+          matchLabels: labels,
+        },
+        serviceName: "radio",
+        template: {
+          metadata: {
+            labels,
           },
-          serviceName: "radio",
-          template: {
-            metadata: {
-              labels,
-            },
-            spec: {
-              containers: [
-                {
-                  name: "liquidsoap",
-                  image: liquidsoapImage,
-                },
-              ],
-            },
+          spec: {
+            containers: [
+              {
+                name: "liquidsoap",
+                image: liquidsoapImage,
+                env: [
+                  {
+                    name: "OUTPUT_URL",
+                    valueFrom: {
+                      secretKeyRef: {
+                        name: secretName,
+                        key: "OUTPUT_URL",
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
           },
         },
       },
-      undefined, // pretty
-      undefined, // dryRun
-      "sync2k8s", // fieldManager
-      true, // force
-      k8s.PatchStrategy.ServerSideApply,
-    );
+    });
   };
 
   teamRegistrationLogTailer.watchLog((items) => {

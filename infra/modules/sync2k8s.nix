@@ -8,6 +8,9 @@ in {
       apiBaseUrl = mkOption {
         type = types.str;
       };
+      outputBaseUrl = mkOption {
+        type = types.str;
+      };
       environmentFile = mkOption {
         type = types.nullOr types.path;
         default = null;
@@ -21,6 +24,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.sync2k8s = {
       apiBaseUrl = lib.mkIf config.hunt2025.site.enable (lib.mkDefault config.hunt2025.site.apiBaseUrl);
+      outputBaseUrl = lib.mkIf config.hunt.radio.enable (lib.mkDefault "rtsp://localhost");
     };
     services.k3s.images = [
       cfg.radioImage
@@ -50,6 +54,7 @@ in {
       environment = {
         KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
         API_BASE_URL = cfg.apiBaseUrl;
+        OUTPUT_BASE_URL = cfg.outputBaseUrl;
         LIQUIDSOAP_IMAGE = "${cfg.radioImage.imageName}:${cfg.radioImage.imageTag}";
         inherit (config.systemd.services.hunt2025.environment) FRONTEND_API_SECRET REDIS_URL;
       };
