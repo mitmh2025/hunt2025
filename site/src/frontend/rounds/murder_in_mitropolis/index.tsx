@@ -415,7 +415,7 @@ function lookupValue<T>(
 }
 
 function genImagery(teamState: TeamHuntState): MurderPuzzleObject[] {
-  const round = teamState.rounds.paper_trail;
+  const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return [];
 
   const imagery = MURDER_SLOTS.flatMap((slotId: MurderSlot) => {
