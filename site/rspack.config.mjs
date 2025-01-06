@@ -42,6 +42,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/circular-greece/assets/rod-sticker.pdf",
   "src/frontend/puzzles/clean-ivory/assets/the-inspectre.pdf",
   "src/frontend/puzzles/confused-antarctica/assets/networking-event.pdf",
+  "src/frontend/puzzles/hideous-theater/assets/do-the-manual-calculations-dont-try-monte-carlo.pdf",
   "src/frontend/puzzles/regal-knife/assets/a.mp3",
   "src/frontend/puzzles/regal-knife/assets/d.mp3",
   "src/frontend/puzzles/selfish-king/assets/bermuda-triangle-spreadsheet.xlsx",
