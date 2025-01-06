@@ -27,7 +27,7 @@ const DATA: [string, ReactNode, string, string, string, string, string][] = [
   [
     "",
     <>
-      SUPER(MAN)<Blue>CENTER</Blue>
+      SUPER(MAN) <Blue>CENTER</Blue>
     </>,
     "SUPERMAN",
     "CLARK KENT",
@@ -137,7 +137,7 @@ const DATA: [string, ReactNode, string, string, string, string, string][] = [
   [
     "",
     <>
-      HELL(BOY)<Blue>HOLE</Blue>
+      HELL(BOY) <Blue>HOLE</Blue>
     </>,
     "HELLBOY",
     "ANUNG UN RAMA",
@@ -170,7 +170,7 @@ const DATA: [string, ReactNode, string, string, string, string, string][] = [
   [
     "BANANA BREAD",
     <>
-      WONDER(WOMAN)<Blue>BREAD</Blue>
+      WONDER(WOMAN) <Blue>BREAD</Blue>
     </>,
     "WONDER WOMAN",
     "DIANA PRINCE",
@@ -204,6 +204,12 @@ const StyledTable = styled.table`
   }
 `;
 
+const SizedImage = styled(LinkedImage)`
+  display: block;
+  width: 50%;
+  margin: auto;
+`;
+
 export default function Solution(): JSX.Element {
   return (
     <>
@@ -230,7 +236,7 @@ export default function Solution(): JSX.Element {
         letter appears more than once and the subscript specifies which letter
         it is referring to (first, second, third).
       </p>
-      <LinkedImage
+      <SizedImage
         src={solution}
         alt="A diagram of an eight-pointed star with male and female symbols around the outside points. Each point and each line in the star is annotated (described in the table below)."
       />

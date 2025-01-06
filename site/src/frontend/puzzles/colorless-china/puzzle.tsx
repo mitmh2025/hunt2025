@@ -57,7 +57,7 @@ const VICTIMS_BLANKS: {
   highlightIndices: number[];
 }[] = [
   { structure: "______", highlightIndices: [1] },
-  { structure: "__________", highlightIndices: [0, 1, 2] },
+  { structure: "_________", highlightIndices: [0, 1, 2] },
   { structure: "_________", highlightIndices: [4] },
   { structure: "______", highlightIndices: [5] },
   { structure: "__________", highlightIndices: [8, 9] },

@@ -32,7 +32,7 @@ const Puzzle = (): JSX.Element => {
           Member of Woody Herman’s Herd who played a five-string bass (W 1)
         </li>
         <li>Saxophonist who wrote two memoirs and an autobiography (E 1)</li>
-        <li>She received an OBE and a lifetime achievement Grammy (W 1)</li>
+        <li>She received an OBE and a Grammy for lifetime achievement (W 1)</li>
         <li>Trombonist and member of the World’s Greatest Jazz Band (WSW 2)</li>
       </ul>
     </>

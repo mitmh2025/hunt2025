@@ -1,7 +1,7 @@
 import React from "react";
 import { createGlobalStyle, styled } from "styled-components";
-import CMSNormal from "./fonts/cmunrm.ttf";
-import CMSItalic from "./fonts/cmunti.ttf";
+import CMSNormal from "./assets/cmunrm.ttf";
+import CMSItalic from "./assets/cmunti.ttf";
 
 // Fonts from https://github.com/dreampulse/computer-modern-web-font/
 // Used under OFL (Open Font License)
