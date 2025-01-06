@@ -179,6 +179,27 @@ const GeoguessrRulesSlide = (
   </section>
 );
 
+const LastSlide = (
+  <section key="last">
+    <SlideH1>That&rsquo;s it!</SlideH1>
+    <p className="fragment">
+      Congratulations on finishing the FerMIT Challenge!
+    </p>
+    <p className="fragment">
+      You&rsquo;re all winners (plus or minus a few places).
+    </p>
+    <p className="fragment">
+      You will see your results on the puzzle page shortly. If you would like to
+      get clearer results, please contact HQ again and schedule another time to
+      play.
+    </p>
+    <p className="fragment">
+      And, if you would like a souvenir to commemorate your participation,
+      please come on up and get a sticker before you go.
+    </p>
+  </section>
+);
+
 function QuestionSlide({
   question,
   questionNumber,
@@ -297,6 +318,7 @@ export function DesertedNinjaPresentation() {
         </section>
         {RulesSlide}
         {questionSlides.toSpliced(firstGeoguessrIndex, 0, GeoguessrRulesSlide)}
+        {LastSlide}
       </>
     );
   }
