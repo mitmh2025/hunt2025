@@ -66,6 +66,7 @@ in {
       environment.DATA_API_SECRET = "%m";
       environment.JWKS_URI = cfg.jwksUri;
       environment.REDIS_URL = "unix://${config.services.redis.servers.hunt2025.unixSocket}";
+      environment.WHEP_BASE_URL = "https://media.staging.mitmh2025.com";
 
       serviceConfig = {
         ExecStart = "${pkgs.hunt2025}/bin/hunt2025";

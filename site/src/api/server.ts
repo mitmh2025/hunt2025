@@ -315,6 +315,7 @@ export async function getRouter({
   jwksUri,
   frontendApiSecret,
   dataApiSecret,
+  whepBaseUrl,
   knex,
   hunt,
   redisClient,
@@ -324,6 +325,7 @@ export async function getRouter({
   jwksUri?: string;
   frontendApiSecret: string;
   dataApiSecret: string;
+  whepBaseUrl: string;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -383,12 +385,16 @@ export async function getRouter({
       };
     }
     const team_state = await getTeamStateIntermediate(team_id);
+
+    const whepTeamId = process.env.OVERRIDE_WHEP_TEAM_ID ?? team_id;
+
     return {
       status: 200 as const,
       body: {
         teamId: team_id,
         info,
         state: formatTeamHuntState(hunt, team_state),
+        whepUrl: `${whepBaseUrl}/team/${whepTeamId}/radio`,
       },
     };
   };

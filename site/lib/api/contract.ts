@@ -82,6 +82,7 @@ export const TeamStateSchema = z.object({
     teamName: z.string(),
   }),
   state: TeamHuntStateSchema,
+  whepUrl: z.string(),
 });
 
 const SubmitGuessSchema = z.object({

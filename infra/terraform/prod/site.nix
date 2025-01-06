@@ -284,6 +284,7 @@
             OPSSITE_STATIC_PATH = "${pkgs.hunt2025.ops}/share/ops/static";
             API_BASE_URL = "http://api/api";
             OAUTH_SERVER = "https://auth.mitmh2025.com/application/o/ops/.well-known/openid-configuration";
+            WHEP_BASE_URL = "https://media.mitmh2025.com";
           } ++ [
             {
               name = "OAUTH_CLIENT_ID";

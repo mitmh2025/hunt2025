@@ -55,6 +55,11 @@ if (environment === "development" && !dataApiSecret) {
   dataApiSecret = randomBytes(16).toString("hex");
 }
 
+let whepBaseUrl = process.env.WHEP_BASE_URL;
+if (environment === "development" && !whepBaseUrl) {
+  whepBaseUrl = "https://media.staging.mitmh2025.com";
+}
+
 const redisUrl = process.env.REDIS_URL;
 if (!redisUrl) {
   console.error(
@@ -88,6 +93,7 @@ async function main() {
     jwksUri,
     frontendApiSecret,
     dataApiSecret,
+    whepBaseUrl,
     apiUrl,
     redisUrl,
     emailFrom,

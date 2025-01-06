@@ -26,6 +26,7 @@ export default async function ({
   jwksUri,
   frontendApiSecret,
   dataApiSecret,
+  whepBaseUrl,
   apiUrl,
   redisUrl,
   emailFrom,
@@ -36,6 +37,7 @@ export default async function ({
   jwksUri: string | undefined;
   frontendApiSecret: string;
   dataApiSecret: string | undefined;
+  whepBaseUrl: string | undefined;
   apiUrl: string | undefined;
   redisUrl?: string;
   emailFrom?: string;
@@ -72,6 +74,9 @@ export default async function ({
     if (!dataApiSecret) {
       throw new Error("$DATA_API_SECRET not defined in production");
     }
+    if (!whepBaseUrl) {
+      throw new Error("$WHEP_BASE_URL not defined in production");
+    }
     if (process.env.NODE_ENV !== "development" && emailFrom === undefined) {
       throw new Error("$EMAIL_FROM not defined in production");
     }
@@ -93,6 +98,7 @@ export default async function ({
       jwksUri,
       frontendApiSecret,
       dataApiSecret,
+      whepBaseUrl,
       knex,
       hunt,
       redisClient,

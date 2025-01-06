@@ -75,7 +75,7 @@ export default defineConfig({
     ? []
     : {
         command:
-          "JWT_SECRET=playwright FRONTEND_API_SECRET=playwright DATA_API_SECRET=playwright API_BASE_URL=http://127.0.0.1:3000/api DB_ENV=memory EMAIL_FROM='dummy@example.com' npm run start",
+          "JWT_SECRET=playwright FRONTEND_API_SECRET=playwright DATA_API_SECRET=playwright WHEP_BASE_URL=http://127.0.0.1 API_BASE_URL=http://127.0.0.1:3000/api DB_ENV=memory EMAIL_FROM='dummy@example.com' npm run start",
         url: "http://127.0.0.1:3000",
         reuseExistingServer: true,
       },
