@@ -45,13 +45,13 @@ const EventSchedule = styled.div`
 
     h5 {
       font-family: "Playwrite";
-      font-size: ${getRelativeSizeCss(22)};
+      font-size: ${getRelativeSizeCss(30)};
       line-height: 1.6;
       font-weight: 400;
     }
 
     p {
-      font-size: ${getRelativeSizeCss(20)};
+      font-size: ${getRelativeSizeCss(24)};
     }
   }
 
