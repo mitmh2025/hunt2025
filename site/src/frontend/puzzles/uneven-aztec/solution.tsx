@@ -6,20 +6,12 @@ import {
   PuzzleAnswer,
 } from "../../components/StyledUI";
 
-const Italics = styled.span`
-  font-style: italic;
-`;
-
-const Bold = styled.span`
-  font-weight: bold;
-`;
-
-const StyledTh = styled.th`
-  font-weight: bold;
-`;
-
-const StyledTd = styled.td`
-  padding: 0px 8px;
+const StyledTable = styled.table`
+  margin-bottom: 1em;
+  th,
+  td {
+    padding-right: 8px;
+  }
 `;
 
 const Table = ({
@@ -31,11 +23,11 @@ const Table = ({
 }): JSX.Element => {
   return (
     <HScrollTableWrapper>
-      <table>
+      <StyledTable>
         <thead>
           <tr>
             {headers.map((header, i) => (
-              <StyledTh key={`header-cell-${i}`}>{header}</StyledTh>
+              <th key={`header-cell-${i}`}>{header}</th>
             ))}
           </tr>
         </thead>
@@ -43,14 +35,14 @@ const Table = ({
           {rows.map((row, j) => (
             <tr key={`table-row-${j}`}>
               {row.map((cell, k) => (
-                <StyledTd key={`table-row-${j}-cell-${k}`}>
+                <td key={`table-row-${j}-cell-${k}`}>
                   {k === 2 ? <Mono>{cell}</Mono> : cell}
-                </StyledTd>
+                </td>
               ))}
             </tr>
           ))}
         </tbody>
-      </table>
+      </StyledTable>
     </HScrollTableWrapper>
   );
 };
@@ -275,8 +267,8 @@ export default function Solution(): JSX.Element {
       <p>
         At first glance, the puzzle appears to be a paywalled academic paper
         with only the title, authors, abstract, and references in front of the
-        paywall. The paper’s reference ID is <Italics>Mystery</Italics> vol 718
-        issue 3 pages 876-962.
+        paywall. The paper’s reference ID is <em>Mystery</em> vol 718 issue 3
+        pages 876-962.
       </p>
       <p>
         The references have obscure and lengthy paper titles which do not appear
@@ -302,31 +294,31 @@ export default function Solution(): JSX.Element {
       </p>
       <p>
         <div>
-          <Bold>R</Bold>EJECTED
+          <strong>R</strong>EJECTED
         </div>
         <div>
-          <Bold>A</Bold>ND
+          <strong>A</strong>ND
         </div>
         <div>
-          <Bold>P</Bold>AGES
+          <strong>P</strong>AGES
         </div>
         <div>
-          <Bold>O</Bold>F
+          <strong>O</strong>F
         </div>
         <div>
-          <Bold>F</Bold>LYING
+          <strong>F</strong>LYING
         </div>
         <div>
-          <Bold>F</Bold>AMILIAR
+          <strong>F</strong>AMILIAR
         </div>
         <div>
-          <Bold>K</Bold>EEPS
+          <strong>K</strong>EEPS
         </div>
         <div>
-          <Bold>E</Bold>MBITTERED
+          <strong>E</strong>MBITTERED
         </div>
         <div>
-          <Bold>Y</Bold>OU
+          <strong>Y</strong>OU
         </div>
       </p>
       <p>
