@@ -71,10 +71,6 @@ const PaperTrailDeskItem = ({
     unlockModalRef.current?.close();
   }, []);
 
-  // TODO: figure out what to do, interactivity-wise, when the puzzle is still locked.
-  // In that circumstance, we don't want to link to the puzzle yet since the puzzle page will 404.
-  // We should show some button/unlock/modal overlay?
-
   const lockState = item.state === "solved" ? "unlocked" : item.state;
   const tooltip = showTooltip && (
     <PuzzleTooltipComponent
