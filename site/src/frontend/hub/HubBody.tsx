@@ -40,7 +40,7 @@ const Board = styled.main`
   background:
     url(${BulletinBoardBg}) center / cover,
     url(${Cork}) center / ${getRelativeSizeCss(512)} repeat;
-  overflow-x: hidden;
+  overflow: hidden;
   width: min(var(--viewport-width), ${MAX_WIDTH}px);
   height: ${getRelativeSizeCss(MAX_HEIGHT)};
   position: relative;
@@ -48,10 +48,11 @@ const Board = styled.main`
 
 const MainQuestion = styled.img`
   position: absolute;
-  top: ${getRelativeSizeCss(35)};
+  top: ${getRelativeSizeCss(87)};
   left: ${getRelativeSizeCss(1248)};
   width: ${getRelativeSizeCss(1552)};
   transform: rotate(-1.8deg);
+  transform-origin: top left;
   filter: ${defaultShadowFilter};
 `;
 
@@ -63,6 +64,15 @@ const BusinessCard = styled.img`
   transform: rotate(-1deg);
   box-shadow: ${getRelativeSizeCss(2)} ${getRelativeSizeCss(2)}
     ${getRelativeSizeCss(4)} rgba(0, 0, 0, 0.53);
+`;
+
+const Pin = styled.img<{ $x: number; $y: number }>`
+  position: absolute;
+  top: ${(props) => getRelativeSizeCss(props.$y)};
+  left: ${(props) => getRelativeSizeCss(props.$x)};
+  width: ${getRelativeSizeCss(32)};
+  filter: ${defaultShadowFilter};
+  );
 `;
 
 function _calculateViewportDims() {
@@ -198,8 +208,9 @@ const HubBody = ({ state }: { state: HubState }) => {
               top: getRelativeSizeCss(obj.y),
               left: getRelativeSizeCss(obj.x),
               transform: `rotate(${obj.rot}deg)`,
+              transformOrigin: obj.rotOrigin ?? "center",
               pointerEvents: obj.inert ? ("none" as const) : undefined,
-              filter: defaultShadowFilter,
+              filter: obj.shadow ? defaultShadowFilter : undefined,
             };
 
             if (obj.href) {
@@ -217,6 +228,20 @@ const HubBody = ({ state }: { state: HubState }) => {
                 alt={obj.alt}
               />
             );
+          })}
+          {state.objects.map((obj) => {
+            if (obj.pin) {
+              return (
+                <Pin
+                  key={obj.asset + "-pin"}
+                  src={obj.pin.asset}
+                  alt=""
+                  $x={obj.pin.x}
+                  $y={obj.pin.y}
+                />
+              );
+            }
+            return undefined;
           })}
         </Board>
       </Wall>
