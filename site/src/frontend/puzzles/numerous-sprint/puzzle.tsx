@@ -1,5 +1,6 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import Crossword from "../../components/Crossword";
 import LinkedImage from "../../components/LinkedImage";
 import { HScrollTableWrapper } from "../../components/StyledUI";
@@ -171,6 +172,28 @@ export const ProblemBlock = styled.div`
   margin-top: 3rem;
 `;
 
+const Bold = ({ children }: { children: React.ReactNode }) => (
+  <>
+    <span className={COPY_ONLY_CLASS}>*</span>
+    <b>{children}</b>
+    <span className={COPY_ONLY_CLASS}>*</span>
+  </>
+);
+
+const Superscript = ({ children }: { children: React.ReactNode }) => (
+  <>
+    <span className={COPY_ONLY_CLASS}>^</span>
+    <sup>{children}</sup>
+  </>
+);
+
+// Empty span to reset font on copy/paste
+const FontReset = () => (
+  <>
+    <span></span>
+  </>
+);
+
 const Puzzle = (): JSX.Element => {
   return (
     <>
@@ -200,16 +223,46 @@ const Puzzle = (): JSX.Element => {
             the months until they can pull their next hack.)
           </p>
           <ul>
-            <li>BEANIE HAT</li>
-            <li>JACK O LANTERN</li>
-            <li>BAT SIGNAL</li>
-            <li>EARTH</li>
-            <li>POLICE CAR</li>
-            <li>MEDAL</li>
-            <li>FIRE ENGINE</li>
-            <li>CAPTAIN AMERICA SHIELD</li>
-            <li>JOLLY ROGER</li>
-            <li>LUNAR MODULE</li>
+            <li>
+              BEANIE HAT
+              <FontReset />
+            </li>
+            <li>
+              JACK O LANTERN
+              <FontReset />
+            </li>
+            <li>
+              BAT SIGNAL
+              <FontReset />
+            </li>
+            <li>
+              EARTH
+              <FontReset />
+            </li>
+            <li>
+              POLICE CAR
+              <FontReset />
+            </li>
+            <li>
+              MEDAL
+              <FontReset />
+            </li>
+            <li>
+              FIRE ENGINE
+              <FontReset />
+            </li>
+            <li>
+              CAPTAIN AMERICA SHIELD
+              <FontReset />
+            </li>
+            <li>
+              JOLLY ROGER
+              <FontReset />
+            </li>
+            <li>
+              LUNAR MODULE
+              <FontReset />
+            </li>
           </ul>
         </ProblemBlock>
         <ProblemBlock>
@@ -223,22 +276,29 @@ const Puzzle = (): JSX.Element => {
           </p>
           <ul>
             <li>
-              L<b>E</b>AD GUY
+              L<Bold>E</Bold>AD GUY
+              <FontReset />
             </li>
             <li>
-              EBONY LEOPA<b>R</b>D: B<b>I</b>RNI<b>N</b> ZANA REDO
+              EBONY LEOPA<Bold>R</Bold>D: B<Bold>I</Bold>RNI
+              <Bold>N</Bold> ZANA REDO
+              <FontReset />
             </li>
             <li>
-              EVERY JULY FOURT<b>H</b>
+              EVERY JULY FOURT<Bold>H</Bold>
+              <FontReset />
             </li>
             <li>
-              WI<b>T</b>HOUT ANY THREADS
+              WI<Bold>T</Bold>HOUT ANY THREADS
+              <FontReset />
             </li>
             <li>
-              RA<b>V</b>IS<b>H</b>ING BRAIN
+              RA<Bold>V</Bold>IS<Bold>H</Bold>ING BRAIN
+              <FontReset />
             </li>
             <li>
-              <b>TH</b>RIFT SHOP SCOUR
+              <Bold>TH</Bold>RIFT SHOP SCOUR
+              <FontReset />
             </li>
           </ul>
         </ProblemBlock>
@@ -249,23 +309,52 @@ const Puzzle = (): JSX.Element => {
             match! They all started off with the same important first step.
           </p>
 
-          <p>I’ll have you know…</p>
+          <p>
+            I’ll have you know…
+            <FontReset />
+          </p>
 
           <ul>
-            <li>…I wrote about interior design with a famous novelist!</li>
-            <li>…I pioneered virtual memory (who needs the real thing?)!</li>
-            <li>…I wrote a column for the New York Times!</li>
-            <li>…I had my own radio show about cars with my big brother!</li>
-            <li>…I predicted pandemonium when computers learned to think!</li>
+            <li>
+              …I wrote about interior design with a famous novelist!
+              <FontReset />
+            </li>
+            <li>
+              …I pioneered virtual memory (who needs the real thing?)!
+              <FontReset />
+            </li>
+            <li>
+              …I wrote a column for the New York Times!
+              <FontReset />
+            </li>
+            <li>
+              …I had my own radio show about cars with my big brother!
+              <FontReset />
+            </li>
+            <li>
+              …I predicted pandemonium when computers learned to think!
+              <FontReset />
+            </li>
             <li>
               …I walked on the moon (so what if I wasn’t the very first?)!
+              <FontReset />
             </li>
-            <li>…I put the @ in @mit.edu!</li>
-            <li>…I built a pyramid in France!</li>
-            <li>…I was a candidate for Prime Minister and a princess!</li>
+            <li>
+              …I put the @ in @mit.edu!
+              <FontReset />
+            </li>
+            <li>
+              …I built a pyramid in France!
+              <FontReset />
+            </li>
+            <li>
+              …I was a candidate for Prime Minister and a princess!
+              <FontReset />
+            </li>
             <li>
               …I completed the first doctorate in engineering earned by an
               African-American!
+              <FontReset />
             </li>
           </ul>
         </ProblemBlock>
@@ -276,23 +365,30 @@ const Puzzle = (): JSX.Element => {
             grid below to simulate the inundation of being an MIT student.
           </p>
 
-          <p>Rules:</p>
+          <p>
+            Rules:
+            <FontReset />
+          </p>
           <ul>
             <li>
               Numbers given in black squares are the number of hydrants
               orthogonally adjacent to those squares.
+              <FontReset />
             </li>
             <li>
               Hydrants spew water in all four directions until interrupted by a
               wall (black square).
+              <FontReset />
             </li>
             <li>
               Every square must be supplied with water from at least one
               hydrant.
+              <FontReset />
             </li>
             <li>
               Hydrants can’t be placed in any square where they could directly
               spray another hydrant.
+              <FontReset />
             </li>
           </ul>
 
@@ -316,30 +412,54 @@ const Puzzle = (): JSX.Element => {
 
           <ul>
             <li>
-              3.57 × 10<sup>-13</sup> sheppeys in Anders Jonases
+              3.57 × 10<Superscript>-13</Superscript> sheppeys in Anders Jonases
+              <FontReset />
             </li>
             <li>
-              4.197 × 10<sup>10</sup> Benjamins in Charles-Augustins
+              4.197 × 10<Superscript>10</Superscript> Benjamins in
+              Charles-Augustins
+              <FontReset />
             </li>
             <li>
-              6.66 × 10<sup>5</sup> Lord Ernests in Marie and Pierres
+              6.66 × 10<Superscript>5</Superscript> Lord Ernests in Marie and
+              Pierres
+              <FontReset />
             </li>
             <li>
-              9 × 10<sup>-50</sup> cm<sup>4</sup> s/photon in Marias
+              9 × 10<Superscript>-50</Superscript> cm
+              <Superscript>4</Superscript> s/photon in Marias
+              <FontReset />
             </li>
             <li>
-              3 × 10<sup>-44</sup> foes in James Prescotts
+              3 × 10<Superscript>-44</Superscript> foes in James Prescotts
+              <FontReset />
             </li>
-            <li>0.015 sthènes in Isaacs</li>
-            <li>477.5 André-Maries/meter in Hans Christians</li>
             <li>
-              5.05 × 10<sup>7</sup> banana equivalent doses in Rolfs
+              0.015 sthènes in Isaacs
+              <FontReset />
             </li>
-            <li>13534.10655 potrzebies in Olivers</li>
             <li>
-              1.329 × 10<sup>17</sup> American gills/fortnight in Haralds
+              477.5 André-Maries/meter in Hans Christians
+              <FontReset />
             </li>
-            <li>0.222 pirate-ninjas in Jameses</li>
+            <li>
+              5.05 × 10<Superscript>7</Superscript> banana equivalent doses in
+              Rolfs
+              <FontReset />
+            </li>
+            <li>
+              13534.10655 potrzebies in Olivers
+              <FontReset />
+            </li>
+            <li>
+              1.329 × 10<Superscript>17</Superscript> American gills/fortnight
+              in Haralds
+              <FontReset />
+            </li>
+            <li>
+              0.222 pirate-ninjas in Jameses
+              <FontReset />
+            </li>
           </ul>
         </ProblemBlock>
         <ProblemBlock>
