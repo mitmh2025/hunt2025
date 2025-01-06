@@ -10,7 +10,8 @@ import OpsLayout from "./OpsLayout.tsx";
 import EmailTeams from "./routes/EmailTeams.tsx";
 import Gates from "./routes/Gates.tsx";
 import Home from "./routes/Home.tsx";
-import Puzzles from "./routes/Puzzles.tsx";
+import Puzzle from "./routes/Puzzle.tsx";
+import PuzzlesIndex from "./routes/PuzzlesIndex.tsx";
 import Team from "./routes/Team.tsx";
 import TeamIndex from "./routes/TeamIndex.tsx";
 import theme from "./theme.ts";
@@ -29,7 +30,11 @@ const router = createBrowserRouter([
           },
           {
             path: "puzzles",
-            Component: Puzzles,
+            Component: PuzzlesIndex,
+          },
+          {
+            path: "puzzles/:slug",
+            Component: Puzzle,
           },
           {
             path: "teams",
