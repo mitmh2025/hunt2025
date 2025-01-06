@@ -229,4 +229,12 @@ export const frontendContract = c.router({
       401: z.null(),
     },
   },
+  mintToken: {
+    method: "POST",
+    path: "/admin/mintToken",
+    body: z.object({}).catchall(z.unknown()),
+    responses: {
+      200: z.string(),
+    },
+  },
 });

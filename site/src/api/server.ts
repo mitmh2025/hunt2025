@@ -1032,16 +1032,6 @@ export async function getRouter({
       },
     },
     admin: {
-      mintToken: {
-        // Not expected to be called by the frontend, but will be called by ancillary processes.
-        middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: async ({ body }) => {
-          return {
-            status: 200,
-            body: await mintToken(body),
-          };
-        },
-      },
       getTeamState: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId } }) => {
@@ -1509,6 +1499,16 @@ export async function getRouter({
       },
     },
     frontend: {
+      mintToken: {
+        // Not expected to be called by the frontend, but will be called by ancillary processes.
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: async ({ body }) => {
+          return {
+            status: 200,
+            body: await mintToken(body),
+          };
+        },
+      },
       markTeamGateSatisfied: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, gateId } }) =>
