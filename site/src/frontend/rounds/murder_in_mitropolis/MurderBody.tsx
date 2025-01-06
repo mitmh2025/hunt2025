@@ -38,7 +38,7 @@ const MurderWindow = ({
   currency,
 }: {
   item: MurderPuzzleObject;
-  position: { left?: string; right?: string; top?: string; bottom?: string };
+  position: { left: string; top: string; transform?: string };
   imgStyle: { width: string };
   currency: number;
 }) => {
@@ -73,10 +73,6 @@ const MurderWindow = ({
   const dismissUnlockModal = useCallback(() => {
     unlockModalRef.current?.close();
   }, []);
-
-  // TODO: figure out what to do, interactivity-wise, when the puzzle is still locked.
-  // In that circumstance, we don't want to link to the puzzle yet since the puzzle page will 404.
-  // We should show some button/unlock/modal overlay?
 
   const lockState = item.state === "solved" ? "unlocked" : item.state;
   const tooltip = showTooltip && (
@@ -149,11 +145,10 @@ const MurderBody = ({
   teamState: TeamHuntState;
 }) => {
   const objects = state.imagery.map((item: MurderPuzzleObject) => {
-    console.log("hi", item);
     const aStyle = {
-      left:
-        item.pos.left !== undefined ? proportionify(item.pos.left) : undefined,
-      top: item.pos.top !== undefined ? proportionify(item.pos.top) : undefined,
+      left: proportionify(item.pos.left),
+      top: proportionify(item.pos.top),
+      transform: item.pos.transform,
     };
     const imgStyle = {
       width: proportionify(item.width),

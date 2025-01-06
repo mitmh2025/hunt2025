@@ -43,8 +43,8 @@ export const MurderWindowComponent = styled.a`
   padding: 0;
 
   & img {
-    -webkit-filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
-    filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
+    -webkit-filter: brightness(0.8);
+    filter: brightness(0.8);
   }
 
   &:hover img {

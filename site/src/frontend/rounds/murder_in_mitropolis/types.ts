@@ -11,10 +11,9 @@ export type MurderPuzzleObject = {
   alt: string; // accessible description of the image at `asset`
   width: number;
   pos: {
-    left?: number;
-    right?: number;
-    top?: number;
-    bottom?: number;
+    left: number;
+    top: number;
+    transform?: string;
   };
   tooltip_placement?: Placement;
   title: string;

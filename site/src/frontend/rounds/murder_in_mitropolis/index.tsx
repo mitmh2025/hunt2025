@@ -74,7 +74,7 @@ const MURDER_SLOTS = [
 export type ObjectPosition = {
   top: number;
   left: number;
-  rotation?: number;
+  transform?: string;
 };
 
 type ObjectDescriptor = {
@@ -98,10 +98,10 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
     },
     alt: "Art deco frieze above door to MITropolis's version of the Green Building",
     pos: {
-      top: 1070,
-      left: 640,
+      top: 1072,
+      left: 670,
     },
-    width: 300,
+    width: 312,
   },
   tmp01: {
     asset: {
@@ -115,7 +115,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved:
         "Semicircular penthouse set of windows with silhouette of two people toasting",
     },
-    pos: { top: 676, left: 1077 },
+    pos: { top: 680, left: 1132 },
     width: 147,
   },
   tmp02: {
@@ -129,7 +129,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Row of windows",
       solved: "Row of windows with silhouette of two men",
     },
-    pos: { top: 841, left: 1077 },
+    pos: { top: 841, left: 1132 },
     width: 147,
   },
   tmp03: {
@@ -143,7 +143,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Row of windows",
       solved: "Row of windows with silhouette of a woman",
     },
-    pos: { top: 942, left: 1077 },
+    pos: { top: 942, left: 1132 },
     width: 147,
   },
   tmp04: {
@@ -153,7 +153,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: tower_solved,
     },
     alt: "Row of windows",
-    pos: { top: 1046, left: 1077 },
+    pos: { top: 1046, left: 1132 },
     width: 147,
   },
   tmp05: {
@@ -167,7 +167,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Row of windows",
       solved: "Row of windows with silhouette of four cats",
     },
-    pos: { top: 1153, left: 1077 },
+    pos: { top: 1153, left: 1132 },
     width: 147,
   },
   tmp06: {
@@ -181,7 +181,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of a houseplant",
     },
-    pos: { top: 913, left: 1687 },
+    pos: { top: 918, left: 1767 },
     width: 49,
   },
   tmp07: {
@@ -191,7 +191,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: dorm_solved,
     },
     alt: "Window",
-    pos: { top: 1034, left: 1687 },
+    pos: { top: 1038, left: 1767 },
     width: 49,
   },
   tmp08: {
@@ -205,7 +205,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of a girl sitting at a desk with a lamp",
     },
-    pos: { top: 1156, left: 1687 },
+    pos: { top: 1162, left: 1767 },
     width: 49,
   },
   tmp09: {
@@ -215,7 +215,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 1136, left: 274 },
+    pos: { top: 1126, left: 272 },
     width: 64,
   },
   tmp10: {
@@ -229,7 +229,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of someone peering through blinds",
     },
-    pos: { top: 1136, left: 355 },
+    pos: { top: 1126, left: 368 },
     width: 64,
   },
   tmp11: {
@@ -243,7 +243,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of a woman taking a sip of a drink",
     },
-    pos: { top: 1021, left: 274 },
+    pos: { top: 1015, left: 272 },
     width: 64,
   },
   tmp12: {
@@ -253,7 +253,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 1021, left: 355 },
+    pos: { top: 1015, left: 368 },
     width: 64,
   },
   tmp13: {
@@ -263,7 +263,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 899, left: 274 },
+    pos: { top: 889, left: 272 },
     width: 64,
   },
   tmp14: {
@@ -273,7 +273,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 889, left: 355 },
+    pos: { top: 889, left: 368 },
     width: 64,
   },
   tmp15: {
@@ -283,7 +283,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 774, left: 274 },
+    pos: { top: 764, left: 272 },
     width: 64,
   },
   tmp16: {
@@ -297,7 +297,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of an older woman",
     },
-    pos: { top: 774, left: 355 },
+    pos: { top: 764, left: 368 },
     width: 64,
   },
   tmp17: {
@@ -311,7 +311,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of two women kissing",
     },
-    pos: { top: 654, left: 274 },
+    pos: { top: 644, left: 272 },
     width: 64,
   },
   tmp18: {
@@ -321,7 +321,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 654, left: 355 },
+    pos: { top: 644, left: 368 },
     width: 64,
   },
   tmp19: {
@@ -331,7 +331,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 1136, left: 446 },
+    pos: { top: 1126, left: 466 },
     width: 64,
   },
   tmp20: {
@@ -346,7 +346,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved:
         "Window with silhouette of a man with a hat holding a coupe glass",
     },
-    pos: { top: 1021, left: 446 },
+    pos: { top: 1015, left: 466 },
     width: 64,
   },
   tmp21: {
@@ -356,7 +356,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_1_solved,
     },
     alt: "Window",
-    pos: { top: 981.5, left: 103 },
+    pos: { top: 974, left: 104, transform: "rotate(-14deg)" },
     width: 64,
   },
   tmp22: {
@@ -370,7 +370,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of a heart taped to the window",
     },
-    pos: { top: 911, left: 158 },
+    pos: { top: 911, left: 174, transform: "rotate(-14deg)" },
     width: 64,
   },
   tmp23: {
@@ -384,7 +384,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: "Window",
       solved: "Window with silhouette of someone wearing a fedora and coat",
     },
-    pos: { top: 841, left: 70 },
+    pos: { top: 801, left: 70, transform: "rotate(-14deg)" },
     width: 64,
   },
   tmp24: {
@@ -394,7 +394,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       solved: stata_2_1_solved,
     },
     alt: "Window",
-    pos: { top: 745, left: 138 },
+    pos: { top: 740, left: 148, transform: "rotate(-12deg)" },
     width: 64,
   },
 };
@@ -491,8 +491,6 @@ export function murderState(teamState: TeamHuntState): MurderState {
 const MurderRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {
   const state = murderState(teamState);
   const inlineScript = `window.initialMurderState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)};`;
-  console.log("wtf");
-  console.log("hi", state);
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
