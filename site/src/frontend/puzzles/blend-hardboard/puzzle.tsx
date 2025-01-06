@@ -48,7 +48,7 @@ const DATA: ListingProps[] = [
     timestamp: "8pm",
     title: "LOVE IS BLIND; 60 min.",
     description:
-      "Hilda finally visits their betrothed, but only after falling in love with someone else. His friend takes a stroll in her garden and finds that a rose of another colour might smell as sweet. Will she do what it takes to be able to see him?",
+      "Hilda finally visits their betrothed, but only after falling in love with someone else. Their friend takes a stroll in her garden and finds that a rose of another colour might smell as sweet. Will she do what it takes to be able to see him?",
   },
   {
     timestamp: "9pm",
