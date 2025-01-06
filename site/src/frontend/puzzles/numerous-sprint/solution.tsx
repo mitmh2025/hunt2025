@@ -144,7 +144,14 @@ const Solution = (): JSX.Element => {
   return (
     <>
       <p>
-        This puzzle is an (unauthorized) tribute to the delightful mini-hunt
+        This puzzle is an (unauthorized) tribute to the{" "}
+        <a
+          href="https://wp.technologyreview.com/wp-content/uploads/2024/12/MIT-Alumni-News-Puzzle-Corner-January-February-2025.pdf"
+          target="_blank"
+          rel="noreferrer"
+        >
+          delightful mini-hunt
+        </a>{" "}
         written by Dan Katz for the Puzzle Corner section in the
         January/February 2025 issue of the MIT Technology Review and Alumni
         News. The presentation of the puzzle is based on the Puzzle Corner and
