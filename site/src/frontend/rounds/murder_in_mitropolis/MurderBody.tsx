@@ -1,145 +1,140 @@
-import React from "react";
-import { styled } from "styled-components";
+import React, { MouseEventHandler, useCallback, useRef, useState } from "react";
+import {
+  autoUpdate,
+  flip,
+  offset,
+  safePolygon,
+  shift,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+  useRole,
+} from "@floating-ui/react";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import { PuzzleTooltipComponent } from "../../components/Tooltip";
+import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import {
+  CityWrapper,
+  MurderCityBg,
+  MurderWrapper,
+  MurderWindowComponent,
+  proportionify,
+} from "./Layout";
+import SparkleComponent, { SPARKLES } from "./Sparkle";
 import { MurderFonts } from "./MurderFonts";
 import SkylineBg from "./assets/murder-bg.png";
-import { type MurderState } from "./types";
-import SparkleComponent, { SparkleProps } from "./Sparkle";
+import { MurderPuzzleObject, type MurderState } from "./types";
 
-const WIDTH = 1920;
-const HEIGHT = 1415;
+const MurderWindow = ({
+  item,
+  position,
+  imgStyle,
+  currency,
+}: {
+  item: MurderPuzzleObject;
+  position: { left?: string; right?: string; top?: string; bottom?: string };
+  imgStyle: { width: string };
+  currency: number;
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
 
-export function proportionify(size: number) {
-  return `calc(${size} * min(calc(min(100vw, ${WIDTH}px) / ${WIDTH}), calc(min(calc(100vh - 3rem), ${HEIGHT}px) / ${HEIGHT})))`;
-}
+  const { refs, floatingStyles, context } = useFloating({
+    placement: item.tooltip_placement ?? "top",
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    middleware: [offset(5), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+  });
 
-const MurderWrapper = styled.div`
-  width: ${proportionify(WIDTH)};
-  background-color: var(--teal-700);
-  margin: 0 auto;
-`;
+  const hover = useHover(context, { move: false, handleClose: safePolygon() });
+  const focus = useFocus(context);
+  const role = useRole(context, { role: "label" });
 
-const CityWrapper = styled.div`
-  background-color: var(--purple-800);
-  width: ${proportionify(WIDTH)};
-  height: ${proportionify(HEIGHT)};
-  position: relative;
-  overflow: hidden;
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    role,
+  ]);
 
-  h1 {
-    font-family: "Eccentric";
-    font-size: ${proportionify(140)};
-    color: var(--purple-300);
-    padding: ${proportionify(8)} 0 0 ${proportionify(16)};
+  const unlockModalRef = useRef<HTMLDialogElement>(null);
+  const showUnlockModal: MouseEventHandler<HTMLButtonElement> = useCallback(
+    (e) => {
+      e.stopPropagation();
+      unlockModalRef.current?.showModal();
+    },
+    [],
+  );
+  const dismissUnlockModal = useCallback(() => {
+    unlockModalRef.current?.close();
+  }, []);
+
+  // TODO: figure out what to do, interactivity-wise, when the puzzle is still locked.
+  // In that circumstance, we don't want to link to the puzzle yet since the puzzle page will 404.
+  // We should show some button/unlock/modal overlay?
+
+  const lockState = item.state === "solved" ? "unlocked" : item.state;
+  const tooltip = showTooltip && (
+    <PuzzleTooltipComponent
+      innerRef={refs.setFloating}
+      style={{ ...floatingStyles, visibility: "visible" }}
+      title={item.title}
+      lockState={lockState}
+      answer={item.answer}
+      desc={item.desc}
+      {...getFloatingProps()}
+    />
+  );
+  const itemContents = (
+    <>
+      <img
+        ref={refs.setReference}
+        {...getReferenceProps()}
+        src={item.asset}
+        alt={item.alt}
+        style={imgStyle}
+      />
+    </>
+  );
+
+  if (lockState === "unlockable") {
+    return (
+      <>
+        <MurderWindowComponent
+          as="button"
+          style={position}
+          onClick={showUnlockModal}
+        >
+          {itemContents}
+          {tooltip}
+        </MurderWindowComponent>
+        <PuzzleUnlockModal
+          ref={unlockModalRef}
+          title={item.title}
+          slug={item.slug}
+          onDismiss={dismissUnlockModal}
+          cost={1}
+          currency={currency}
+          desc={item.desc}
+        />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <MurderWindowComponent
+          style={position}
+          href={
+            item.state !== "unlockable" ? `/puzzles/${item.slug}` : undefined
+          }
+        >
+          {itemContents}
+          {tooltip}
+        </MurderWindowComponent>
+      </>
+    );
   }
-`;
-
-const MurderCityBg = styled.img`
-  width: ${proportionify(WIDTH)};
-  position: absolute;
-  bottom: 0;
-  left: 0;
-`;
-
-const SPARKLES: SparkleProps[] = [
-  {
-    pos: { x: 26, y: 177 },
-    startWidth: 54,
-    color: "var(--purple-500)",
-    delay: 0.4,
-  },
-  {
-    pos: { x: 162, y: 324 },
-    startWidth: 55,
-    delay: 0.15,
-  },
-  {
-    pos: { x: 199, y: 215 },
-    startWidth: 30,
-    delay: 0.8,
-  },
-  {
-    pos: { x: 253, y: 234 },
-    startWidth: 60,
-    color: "var(--white)",
-    delay: 0.41,
-  },
-  {
-    pos: { x: 437, y: 507 },
-    startWidth: 47,
-    color: "var(--purple-300)",
-    delay: 0.9,
-  },
-  {
-    pos: { x: 505, y: 436 },
-    startWidth: 55,
-    color: "var(--purple-500)",
-    delay: 0.3,
-  },
-  {
-    pos: { x: 639, y: 171 },
-    startWidth: 40,
-    color: "var(--purple-300)",
-    delay: 0.78,
-  },
-  {
-    pos: { x: 1109, y: 453 },
-    startWidth: 64,
-    delay: 0.2,
-  },
-  {
-    pos: { x: 1225, y: 243 },
-    startWidth: 90,
-    color: "var(--white)",
-    delay: 0.02,
-  },
-  {
-    pos: { x: 1323, y: 230 },
-    startWidth: 49,
-    color: "var(--purple-500)",
-    delay: 0.9,
-  },
-  {
-    pos: { x: 1327, y: 509 },
-    startWidth: 58,
-    color: "var(--purple-300)",
-    delay: 0.6,
-  },
-  {
-    pos: { x: 1436, y: 21 },
-    startWidth: 40,
-    color: "var(--white)",
-    delay: 0.33,
-  },
-  {
-    pos: { x: 1478, y: 71 },
-    startWidth: 66,
-    color: "var(--purple-500)",
-    delay: 0.75,
-  },
-  {
-    pos: { x: 1671, y: 384 },
-    startWidth: 46,
-    delay: 0.48,
-  },
-  {
-    pos: { x: 1694, y: 698 },
-    startWidth: 42,
-    delay: 0.85,
-  },
-  {
-    pos: { x: 1796, y: 223 },
-    startWidth: 40,
-    color: "var(--white)",
-    delay: 0.1,
-  },
-  {
-    pos: { x: 1840, y: 280 },
-    startWidth: 40,
-    color: "var(--purple-500)",
-    delay: 0.67,
-  },
-];
+};
 
 const MurderBody = ({
   state,
@@ -148,35 +143,46 @@ const MurderBody = ({
   state: MurderState;
   teamState: TeamHuntState;
 }) => {
-  // const items = (
-  //   <ul>
-  //     {state.items.map((item) => {
-  //       const slug = item.slug;
-  //       const puzzleState = teamState.puzzles[slug];
-  //       return (
-  //         <li key={item.slug}>
-  //           <PuzzleLink
-  //             lockState={puzzleState?.locked ?? "locked"}
-  //             answer={puzzleState?.answer}
-  //             currency={teamState.currency}
-  //             title={item.title}
-  //             slug={item.slug}
-  //             desc={item.desc}
-  //           />
-  //         </li>
-  //       );
-  //     })}
-  //   </ul>
-  // );
+  const objects = state.imagery.map((item: MurderPuzzleObject) => {
+    console.log("hi", item);
+    const aStyle = {
+      left:
+        item.pos.left !== undefined
+          ? `${proportionify(item.pos.left)}`
+          : undefined,
+      top:
+        item.pos.top !== undefined
+          ? `${proportionify(item.pos.top)}`
+          : undefined,
+    };
+    const imgStyle = {
+      width: `${proportionify(item.width)}`,
+    };
+    return (
+      <MurderWindow
+        key={item.slug}
+        item={item}
+        position={aStyle}
+        imgStyle={imgStyle}
+        currency={teamState.currency}
+      />
+    );
+  });
   return (
     <MurderWrapper key="murder">
       <MurderFonts />
       <CityWrapper>
         <MurderCityBg src={SkylineBg} />
+        <div className="sparkles">
+          {SPARKLES.map((s) => (
+            <SparkleComponent
+              key={`sparkle-${s.pos.top}-${s.pos.left}`}
+              {...s}
+            />
+          ))}
+        </div>
         <h1>The Murder in MITropolis</h1>
-        {SPARKLES.map((s) => (
-          <SparkleComponent {...s} />
-        ))}
+        {objects}
       </CityWrapper>
     </MurderWrapper>
   );

@@ -1,8 +1,109 @@
 import React from "react";
 import { styled } from "styled-components";
-import { proportionify } from "./MurderBody";
+import { proportionify } from "./Layout";
+import { ObjectPosition } from ".";
 
 const ANIMATION_DURATION = 0.8;
+
+export const SPARKLES: SparkleProps[] = [
+  {
+    pos: { left: 26, top: 177 },
+    startWidth: 54,
+    color: "var(--purple-500)",
+    delay: 0.4,
+  },
+  {
+    pos: { left: 162, top: 324 },
+    startWidth: 55,
+    delay: 0.15,
+  },
+  {
+    pos: { left: 199, top: 215 },
+    startWidth: 30,
+    delay: 0.8,
+  },
+  {
+    pos: { left: 253, top: 234 },
+    startWidth: 60,
+    color: "var(--white)",
+    delay: 0.41,
+  },
+  {
+    pos: { left: 437, top: 507 },
+    startWidth: 47,
+    color: "var(--purple-300)",
+    delay: 0.9,
+  },
+  {
+    pos: { left: 505, top: 436 },
+    startWidth: 55,
+    color: "var(--purple-500)",
+    delay: 0.3,
+  },
+  {
+    pos: { left: 639, top: 171 },
+    startWidth: 40,
+    color: "var(--purple-300)",
+    delay: 0.78,
+  },
+  {
+    pos: { left: 1109, top: 453 },
+    startWidth: 64,
+    delay: 0.2,
+  },
+  {
+    pos: { left: 1225, top: 243 },
+    startWidth: 90,
+    color: "var(--white)",
+    delay: 0.02,
+  },
+  {
+    pos: { left: 1323, top: 230 },
+    startWidth: 49,
+    color: "var(--purple-500)",
+    delay: 0.9,
+  },
+  {
+    pos: { left: 1327, top: 509 },
+    startWidth: 58,
+    color: "var(--purple-300)",
+    delay: 0.6,
+  },
+  {
+    pos: { left: 1436, top: 21 },
+    startWidth: 40,
+    color: "var(--white)",
+    delay: 0.33,
+  },
+  {
+    pos: { left: 1478, top: 71 },
+    startWidth: 66,
+    color: "var(--purple-500)",
+    delay: 0.75,
+  },
+  {
+    pos: { left: 1671, top: 384 },
+    startWidth: 46,
+    delay: 0.48,
+  },
+  {
+    pos: { left: 1694, top: 698 },
+    startWidth: 42,
+    delay: 0.85,
+  },
+  {
+    pos: { left: 1796, top: 223 },
+    startWidth: 40,
+    color: "var(--white)",
+    delay: 0.1,
+  },
+  {
+    pos: { left: 1840, top: 280 },
+    startWidth: 40,
+    color: "var(--purple-500)",
+    delay: 0.67,
+  },
+];
 
 const Sparkle = styled.svg`
   @keyframes twinkle {
@@ -24,10 +125,7 @@ export type SparkleProps = {
   color?: string;
   delay?: number;
   startWidth?: number;
-  pos: {
-    x: number;
-    y: number;
-  };
+  pos: ObjectPosition;
 };
 
 const SparkleComponent = ({ color, delay, startWidth, pos }: SparkleProps) => {
@@ -39,8 +137,8 @@ const SparkleComponent = ({ color, delay, startWidth, pos }: SparkleProps) => {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        top: proportionify(pos.y),
-        left: proportionify(pos.x),
+        top: proportionify(pos.top),
+        left: proportionify(pos.left),
         width: proportionify(startWidth ?? 32),
         animationDelay: `${-1 * (delay ?? Math.random()) * ANIMATION_DURATION}s`,
       }}
