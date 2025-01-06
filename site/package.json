@@ -35,6 +35,7 @@
     "@aws-sdk/credential-provider-node": "^3.699.0",
     "@floating-ui/react": "^0.26.28",
     "@google-cloud/cloud-sql-connector": "^1.4.0",
+    "@kubernetes/client-node": "^1.0.0",
     "@noble/ciphers": "^1.2.0",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.50.2",
