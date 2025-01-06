@@ -82,6 +82,7 @@ import imgbottomlow from "./assets/lowres/bottom.png";
 
 const StyledImg = styled.img`
   max-width: 100%;
+  display: block;
 `;
 
 const IMAGES_HI: string[] = [
