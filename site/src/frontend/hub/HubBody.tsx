@@ -39,7 +39,7 @@ const Wall = styled.div`
 const Board = styled.main`
   background:
     url(${BulletinBoardBg}) center / cover,
-    url(${Cork}) center / 512px repeat;
+    url(${Cork}) center / ${getRelativeSizeCss(512)} repeat;
   overflow-x: hidden;
   width: min(var(--viewport-width), ${MAX_WIDTH}px);
   height: ${getRelativeSizeCss(MAX_HEIGHT)};
