@@ -5,6 +5,7 @@
     ../base.nix
     ../../services/postgres.nix
     ../../services/redis.nix
+    ../../services/k3s.nix
   ];
   config = {
     system.stateVersion = "24.05";

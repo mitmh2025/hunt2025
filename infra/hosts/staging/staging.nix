@@ -7,6 +7,7 @@
     ../../services/redis.nix
     ../../services/authentik
     ../../services/zammad.nix
+    ../../services/k3s.nix
   ];
   config = lib.mkMerge [
     {
@@ -240,19 +241,6 @@
             locations."/api".proxyPass = "http://hunt2025";
           };
         };
-      };
-    }
-    {
-      services.k3s = {
-        enable = true;
-        role = "server";
-        gracefulNodeShutdown.enable = true;
-        extraFlags = [
-          "--disable=traefik"
-        ];
-        images = [
-          config.services.k3s.package.airgapImages
-        ];
       };
     }
     {

@@ -1,5 +1,4 @@
 import * as k8s from "@kubernetes/client-node";
-import { PromiseMiddlewareWrapper } from "@kubernetes/client-node/dist/gen/middleware";
 import { newFrontendClient } from "hunt2025/lib/api/frontend_client";
 import {
   TeamInfoIntermediate,
@@ -46,19 +45,6 @@ function catch404(e: unknown): undefined {
   throw e;
 }
 
-const applyPatchMiddleware = new PromiseMiddlewareWrapper({
-  // eslint-disable-next-line @typescript-eslint/require-await -- must return Promise
-  pre: async (requestContext: k8s.RequestContext) => {
-    requestContext.setHeaderParam(
-      "Content-type",
-      "application/apply-patch+yaml",
-    );
-    return requestContext;
-  },
-  // eslint-disable-next-line @typescript-eslint/require-await -- must return Promise
-  post: async (responseContext: k8s.ResponseContext) => responseContext,
-});
-
 async function main({
   redisUrl,
   apiUrl,
@@ -71,27 +57,9 @@ async function main({
   const kc = new k8s.KubeConfig();
   kc.loadFromDefault();
 
-  const currentContext = kc.getCurrentContext();
-  const currentCluster = kc.getCluster(currentContext);
-  if (currentCluster === null) {
-    throw new Error("Cluster is undefined");
-  }
-  const server = currentCluster.server;
-
-  const baseServerConfig = new k8s.ServerConfiguration<Record<string, never>>(
-    server,
-    {},
-  );
-  const applyPatchConfiguration = k8s.createConfiguration({
-    middleware: [applyPatchMiddleware],
-    baseServer: baseServerConfig,
-    authMethods: {
-      default: kc,
-    },
-  });
-
   const coreV1Api = kc.makeApiClient(k8s.CoreV1Api);
   const appsV1Api = kc.makeApiClient(k8s.AppsV1Api);
+  const objectApi = kc.makeApiClient(k8s.KubernetesObjectApi);
 
   try {
     await coreV1Api.readNamespace({
@@ -130,17 +98,6 @@ async function main({
         },
       },
     });
-  }
-
-  const statefulSetByTeam = new Map<number, k8s.V1StatefulSet>();
-
-  for (const ss of (await appsV1Api.listNamespacedStatefulSet({ namespace }))
-    .items) {
-    const teamIdStr = ss.metadata?.labels?.["mitmh2025.com/teamId"];
-    if (teamIdStr) {
-      const teamId = parseInt(teamIdStr, 10);
-      statefulSetByTeam.set(teamId, ss);
-    }
   }
 
   const redisClient = await redisConnect(redisUrl);
@@ -204,39 +161,41 @@ async function main({
       app: "radio",
       teamId: `${teamId}`,
     };
-    k8s.createConfiguration;
-    await appsV1Api.patchNamespacedStatefulSet(
+    // Server-side apply can be called an arbitrary number of times
+    await objectApi.patch<k8s.V1StatefulSet>(
       {
-        namespace,
-        name: ssName,
-        fieldManager: "sync2k8s",
-        body: {
-          metadata: {
-            namespace,
-            name: ssName,
+        apiVersion: "apps/v1",
+        kind: "StatefulSet",
+        metadata: {
+          namespace,
+          name: ssName,
+          labels,
+        },
+        spec: {
+          selector: {
+            matchLabels: labels,
           },
-          spec: {
-            selector: {
-              matchLabels: labels,
+          serviceName: "radio",
+          template: {
+            metadata: {
+              labels,
             },
-            serviceName: "radio",
-            template: {
-              metadata: {
-                labels,
-              },
-              spec: {
-                containers: [
-                  {
-                    name: "liquidsoap",
-                    image: liquidsoapImage,
-                  },
-                ],
-              },
+            spec: {
+              containers: [
+                {
+                  name: "liquidsoap",
+                  image: liquidsoapImage,
+                },
+              ],
             },
           },
         },
       },
-      applyPatchConfiguration,
+      undefined, // pretty
+      undefined, // dryRun
+      "sync2k8s", // fieldManager
+      true, // force
+      k8s.PatchStrategy.ServerSideApply,
     );
   };
 
