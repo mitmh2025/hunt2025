@@ -126,32 +126,104 @@ const CALL_NUMBERS: [number, string, string][] = [
   ],
 ];
 
-const NOTES: string[] = [
-  "Another attempt by my tragically misled friend to show evidence and convince me that spiritualism is real. PRAY-NOW, I did take careful notes of my thoughts in the pages, and signed the copy of course.",
-  "Another message. PLEASE, who even is Meslom?",
-  "Another supposed WWI narrative from beyond- and this time with things to SAY from that infamous Lodge.",
-  "As a master of illusions I can attest, the evidence for Spiritualism here is but a mere hallucination itself. PRAY-TELL, I’ll seek elsewhere for a more credible and rational read on the topic that won’t put you into a magnetic sleep as well.",
-  "As a renowned skeptic, I QUICKLY found myself bored and unimpressed by the supposed ’spiritual’ ramblings of Mr. Parker in this book. The only thing it inspired in me was a desire to escape its dull pages.",
-  "I can QUICKLY see through the so-called discourse delivered by the spirit and Mrs. Richmond. Nothing more than a sham, this day or the one after.",
-  "I was enthralled by this insightful book. His exposé describes the dangers of blind faith both modern and ancient. Delusion is indeed the ANSWER-BE QUICK all you frauds and hide from the reverend’s wise words.",
-  "“It isn’t” is the ANSWER-PRAY, this title is marred by mis-statements which even the humblest of magicians could refute.",
-  "Lady? Tiger? Neither? Don’t waste your time on this farce, as I SAY no to this deceitful attempt at resurrecting a great writer.",
-  "No real interest in “fair play”. The author will SAY try their parlor tricks, and for a price.",
-  "Not only does it provide pragmatic examples in math, but it also cleverly incorporates the accompanying bicycle deck. PRAY-ANSWER, what could make it a more engaging way for young minds to improve their computational skills?",
-  "Not sure how I feel about Fletcherising. PRAY-ANSWER, would this remedy improve longevity, wouldn’t we be hearing about it from someone older than young Horace?",
-  "NOW, I have read some far-fetched philosophy in my time, but this book takes the cake. These ramblings about the progressive development of nature are nothing but a jumbled mess, and a disgrace to the “author”.",
-  "On magic for the broadest audience of pre-professionals with many hands-on examples. SAY, why can’t we have more like these.",
-  "Potter discovers and uncovers the deceitful practices of spiritualism. PRAY-LOOK here for the facts explained.",
-  "Such a practical guide to start any magician’s curriculum without the need of complex and pricey items that the professionals may use. I can TELL this title will be one to recommend.",
-  "The English review calls this “A most pleasing and excellent little work. Its especial value consists in the numerous epitaphs in the verse which it supplies.” TELL me magician doesn’t fall under sundry world callings when committing me to the churchyard.",
-  "The one thing I had hoped this book would TELL me was why a native woman is writing Christmas poems from the beyond. It did not. Maybe they learned to commune from Mrs. Doyle.",
-  "The supposed letters from a husband beyond the grave on earth lacked any substance. They TELL a tale untrue, but were more importantly quite dull.",
-  "This is one philosophy that I don’t care to delve into NOW or in the future. As someone who has applied and witnessed the application of science to these proceedings, I can attest that the mere idea of a scientific séance is absurd.",
-  "This prince and his medium has QUICKLY tried my nerves. I’m not sure which are more farcical, the stories from his life or the stories after. This reads as pure fabrication from cover to cover.",
-  "This so-called “experimental” work demonstrates no real proof of the existence of spirits, or planes of the afterlife. One might as well PRAY-LOOK to the heavens, and hope for a sign. Using flimsy “scriptural” evidence and misguided beliefs, these musings on Christian deity and locals are nothing but.",
-  "To think a late editor had the time to meet all of these spirits. If I were to PRAY to talk to one each night, it might take me over two months. Additionally, I’d hope Faraday would have better things to do.",
-  "Upon reading this supposed discourse, I was sorely disappointed. BE QUICK to avoid this textual disaster, for it is nothing more than a collection of ramblings and nonsensical ruminations from the supposed world of spirits.",
-  "What a disappointment this book was. Filled with unsubstantiated claims and pseudo-scientific theories, this book serves as a mere charlatan’s attempt at profiting from people’s fears and hopes for life after death with no true ANSWER-BE QUICK, I told myself and only skim this book lest I waste my own future.",
+const NOTES: [string, string][] = [
+  [
+    "Another attempt by my tragically misled friend to show evidence and convince me that spiritualism is real. PRAY-NOW, I did take careful notes of my thoughts in the pages, and signed the copy of course.",
+    "BF1042 .M13",
+  ],
+  ["Another message. PLEASE, who even is Meslom?", "BF1301 .M25"],
+  [
+    "Another supposed WWI narrative from beyond- and this time with things to SAY from that infamous Lodge.",
+    "BF1301 .B23",
+  ],
+  [
+    "As a master of illusions I can attest, the evidence for Spiritualism here is but a mere hallucination itself. PRAY-TELL, I’ll seek elsewhere for a more credible and rational read on the topic that won’t put you into a magnetic sleep as well.",
+    "BF1031 .Z4",
+  ],
+  [
+    "As a renowned skeptic, I QUICKLY found myself bored and unimpressed by the supposed ’spiritual’ ramblings of Mr. Parker in this book. The only thing it inspired in me was a desire to escape its dull pages.",
+    "BF1311.P3 R33",
+  ],
+  [
+    "I can QUICKLY see through the so-called discourse delivered by the spirit and Mrs. Richmond. Nothing more than a sham, this day or the one after.",
+    "BF1301 .R5",
+  ],
+  [
+    "I was enthralled by this insightful book. His exposé describes the dangers of blind faith both modern and ancient. Delusion is indeed the ANSWER-BE QUICK all you frauds and hide from the reverend’s wise words.",
+    "BF1411 .C8",
+  ],
+  [
+    "“It isn’t” is the ANSWER-PRAY, this title is marred by mis-statements which even the humblest of magicians could refute.",
+    "GV1547 .B54 1899",
+  ],
+  [
+    "Lady? Tiger? Neither? Don’t waste your time on this farce, as I SAY no to this deceitful attempt at resurrecting a great writer.",
+    "PS3507.E23 R4 1913",
+  ],
+  [
+    "No real interest in “fair play”. The author will SAY try their parlor tricks, and for a price.",
+    "BF1275.C5 H35",
+  ],
+  [
+    "Not only does it provide pragmatic examples in math, but it also cleverly incorporates the accompanying bicycle deck. PRAY-ANSWER, what could make it a more engaging way for young minds to improve their computational skills?",
+    "QA95 .H3",
+  ],
+  [
+    "Not sure how I feel about Fletcherising. PRAY-ANSWER, would this remedy improve longevity, wouldn’t we be hearing about it from someone older than young Horace?",
+    "RM216 .F615",
+  ],
+  [
+    "NOW, I have read some far-fetched philosophy in my time, but this book takes the cake. These ramblings about the progressive development of nature are nothing but a jumbled mess, and a disgrace to the “author”.",
+    "BF1291 .W8 1882",
+  ],
+  [
+    "On magic for the broadest audience of pre-professionals with many hands-on examples. SAY, why can’t we have more like these.",
+    "GV1547 .D47",
+  ],
+  [
+    "Potter discovers and uncovers the deceitful practices of spiritualism. PRAY-LOOK here for the facts explained.",
+    "BF1251 .P68 1866",
+  ],
+  [
+    "Such a practical guide to start any magician’s curriculum without the need of complex and pricey items that the professionals may use. I can TELL this title will be one to recommend.",
+    "GV1547 .A25",
+  ],
+  [
+    "The English review calls this “A most pleasing and excellent little work. Its especial value consists in the numerous epitaphs in the verse which it supplies.” TELL me magician doesn’t fall under sundry world callings when committing me to the churchyard.",
+    "BT830 .M47",
+  ],
+  [
+    "The one thing I had hoped this book would TELL me was why a native woman is writing Christmas poems from the beyond. It did not. Maybe they learned to commune from Mrs. Doyle.",
+    "BF1301 .R525",
+  ],
+  [
+    "The supposed letters from a husband beyond the grave on earth lacked any substance. They TELL a tale untrue, but were more importantly quite dull.",
+    "BF1301 .H593",
+  ],
+  [
+    "This is one philosophy that I don’t care to delve into NOW or in the future. As someone who has applied and witnessed the application of science to these proceedings, I can attest that the mere idea of a scientific séance is absurd.",
+    "BF1301 .K8",
+  ],
+  [
+    "This prince and his medium has QUICKLY tried my nerves. I’m not sure which are more farcical, the stories from his life or the stories after. This reads as pure fabrication from cover to cover.",
+    "BF1311.H3 H3 1896",
+  ],
+  [
+    "This so-called “experimental” work demonstrates no real proof of the existence of spirits, or planes of the afterlife. One might as well PRAY-LOOK to the heavens, and hope for a sign. Using flimsy “scriptural” evidence and misguided beliefs, these musings on Christian deity and locals are nothing but.",
+    "BF1251 .H32",
+  ],
+  [
+    "To think a late editor had the time to meet all of these spirits. If I were to PRAY to talk to one each night, it might take me over two months. Additionally, I’d hope Faraday would have better things to do.",
+    "BF1301 .T885",
+  ],
+  [
+    "Upon reading this supposed discourse, I was sorely disappointed. BE QUICK to avoid this textual disaster, for it is nothing more than a collection of ramblings and nonsensical ruminations from the supposed world of spirits.",
+    "BF1291 .W5 1853",
+  ],
+  [
+    "What a disappointment this book was. Filled with unsubstantiated claims and pseudo-scientific theories, this book serves as a mere charlatan’s attempt at profiting from people’s fears and hopes for life after death with no true ANSWER-BE QUICK, I told myself and only skim this book lest I waste my own future.",
+    "BF1031 .S45",
+  ],
 ];
 
 const HOUDINI_CODE: [string, string, string][][] = [
@@ -289,12 +361,14 @@ const Solution = (): JSX.Element => {
       <StyledTable>
         <tr>
           <th>Note order</th>
-          <th>Matched Donor’s Notes</th>
+          <th>Donor’s Notes</th>
+          <th>Matched Call #</th>
         </tr>
-        {NOTES.map((note, i) => (
+        {NOTES.map(([note, call], i) => (
           <tr key={`note-${i}`}>
             <td>{i}</td>
             <td>{note}</td>
+            <td>{call}</td>
           </tr>
         ))}
       </StyledTable>
