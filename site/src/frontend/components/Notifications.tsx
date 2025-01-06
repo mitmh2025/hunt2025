@@ -106,7 +106,7 @@ const Notifications = forwardRef<NotificationsHandle, NotificationsProps>(
           {notifications.map((notification) => (
             <CSSTransition
               key={notification.key}
-              timeout={700}
+              timeout={500}
               classNames="item"
             >
               <Notification>
