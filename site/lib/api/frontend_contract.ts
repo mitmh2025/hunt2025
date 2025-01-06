@@ -237,4 +237,13 @@ export const frontendContract = c.router({
       200: z.string(),
     },
   },
+  speakNewKetchup: {
+    method: "POST",
+    path: "/teams/:teamId/puzzles/new-ketchup/speak",
+    body: z.object({}),
+    responses: {
+      200: PuzzleStateLog,
+      401: z.null(),
+    },
+  },
 });
