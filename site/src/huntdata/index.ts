@@ -348,6 +348,12 @@ const HUNT: Hunt = {
       gates: [
         { id: "ptg01" }, // Picked up Eponymous Forensic Accountant from Gala
         { id: "ptg02" }, // Picked up The Inspectre from Gala
+        { id: "ptg03", satisfied_if: { // Ads enabled for quixotic-shoe
+          oneOf: [
+            { slot_solved: "songs_on_the_radio" },
+            { round_unlocked: "paper_trail" },
+          ]},
+        },
       ],
       interactions: [
         {
