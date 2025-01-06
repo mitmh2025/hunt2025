@@ -366,7 +366,7 @@ const Solution = (): JSX.Element => {
         </tr>
         {NOTES.map(([note, call], i) => (
           <tr key={`note-${i}`}>
-            <td>{i}</td>
+            <td>{i + 1}</td>
             <td>{note}</td>
             <td>{call}</td>
           </tr>
