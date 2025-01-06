@@ -15,6 +15,7 @@ const ProblemHeader = styled.h2`
 
 const ProblemContent = styled.div`
   font-family: "Times New Roman", serif;
+  margin-top: -3rem;
 `;
 
 export const StyledCrossword = styled(Crossword)`
@@ -43,8 +44,14 @@ const TopImage = styled(StyledImage)`
   img {
     margin-left: 0;
     height: 36em;
-    margin-bottom: -3em;
+    margin-bottom: 0;
+    max-width: unset;
   }
+`;
+
+const TopImageContainer = styled.div`
+  max-width: 100%;
+  overflow: hidden;
 `;
 
 export const LABELS: string[][] = Array.from({ length: 10 }, () =>
@@ -169,10 +176,12 @@ const Puzzle = (): JSX.Element => {
     <>
       <hr />
       <ProblemHeader>Problems</ProblemHeader>
-      <TopImage
-        src={img1}
-        alt="Two magazines with “MIT” on the cover, with obscured text in the background. “MH1,” “MH2,” “MH3,” and “MH4” are visible in the obscured text."
-      />
+      <TopImageContainer>
+        <TopImage
+          src={img1}
+          alt="Two magazines with “MIT” on the cover, with obscured text in the background. “MH1,” “MH2,” “MH3,” and “MH4” are visible in the obscured text."
+        />
+      </TopImageContainer>
       <ProblemContent>
         <ProblemBlock>
           <p>
