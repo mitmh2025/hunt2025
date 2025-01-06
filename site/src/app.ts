@@ -42,7 +42,7 @@ export default async function ({
 }) {
   const redisClient = redisUrl ? await redisConnect(redisUrl) : undefined;
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "development" && redisClient) {
     try {
       // Wipe data every time we start in development, since the database might have regressed.
       for await (const key of redisClient.scanIterator()) {
