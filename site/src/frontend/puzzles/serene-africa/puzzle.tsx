@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import note_svg from "../../rounds/illegal_search/assets/bookcase/note.svg";
+import note_svg from "../../rounds/illegal_search/assets/bookcase/note_modal.svg";
 import { BookcaseInteraction } from "../../rounds/illegal_search/client/Bookcase";
 
 const SideBySide = styled.div`
