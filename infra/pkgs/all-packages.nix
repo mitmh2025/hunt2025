@@ -117,4 +117,6 @@ in {
       ./zammad/saml-roles.patch
     ];
   });
+
+  radioImage = final.callPackage ./radio-image.nix {};
 }
