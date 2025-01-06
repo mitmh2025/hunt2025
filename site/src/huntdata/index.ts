@@ -302,7 +302,7 @@ const HUNT: Hunt = {
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "incognito" },
         { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 }, // And Now, A Puzzling Word From Our Sponsors
         { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
-        { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" }
+        { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
         { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle (pending testing)
         { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "any_coat_will_do" },
