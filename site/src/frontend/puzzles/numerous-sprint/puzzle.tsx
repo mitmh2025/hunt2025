@@ -8,7 +8,9 @@ import img2 from "./assets/image2.png";
 
 const ProblemHeader = styled.h2`
   font-family: Arial, sans-serif;
-  margin-top: 1rem;
+  font-weight: bold;
+  margin-top: 0;
+  padding: 0;
 `;
 
 const ProblemContent = styled.div`
@@ -34,6 +36,14 @@ const StyledImage = styled(LinkedImage)`
     display: block;
     width: inherit;
     max-width: 100%;
+  }
+`;
+
+const TopImage = styled(StyledImage)`
+  img {
+    margin-left: 0;
+    height: 36em;
+    margin-bottom: -3em;
   }
 `;
 
@@ -157,9 +167,9 @@ export const ProblemBlock = styled.div`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <ProblemHeader>Problems</ProblemHeader>
       <hr />
-      <StyledImage
+      <ProblemHeader>Problems</ProblemHeader>
+      <TopImage
         src={img1}
         alt="Two magazines with “MIT” on the cover, with obscured text in the background. “MH1,” “MH2,” “MH3,” and “MH4” are visible in the obscured text."
       />
