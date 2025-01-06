@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import bookcase_blacklight_single from "../../rounds/illegal_search/assets/bookcase/bookcase_blacklight_single.svg";
-import note_blacklight from "../../rounds/illegal_search/assets/bookcase/note_blacklight.svg";
+import note_blacklight from "../../rounds/illegal_search/assets/bookcase/note_blacklight_modal.svg";
 import { BookcaseInteraction } from "../../rounds/illegal_search/client/Bookcase";
 
 const SideBySideWithBookHighlights = styled.div`
