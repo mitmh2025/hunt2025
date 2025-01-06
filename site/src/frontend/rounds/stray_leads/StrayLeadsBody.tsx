@@ -107,8 +107,9 @@ const Postit = styled.aside`
   transform: rotate(10deg);
   padding: 1rem 1.5rem 1rem 1rem;
   filter: drop-shadow(-1px 2px 3px rgba(0, 0, 0, 0.53));
-  font-family: "Rock Salt";
-  font-size: 0.9rem;
+  font-family: "Reenie Beanie";
+  font-size: 1.45rem;
+  line-height: 1;
 
   p {
     margin: 0;
@@ -119,7 +120,7 @@ const Postit = styled.aside`
 
   .signature {
     text-align: right;
-    font-size: 1.1rem;
+    font-size: 1.2em;
   }
 `;
 
