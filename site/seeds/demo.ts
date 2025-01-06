@@ -207,7 +207,20 @@ export async function seed(knex: Knex): Promise<void> {
   }
 
   const isPart1Slugs = isRound.puzzles
-    .slice(0, 10)
+    .filter((p) =>
+      [
+        "isp01",
+        "isp02",
+        "isp03",
+        "isp04",
+        "isp05",
+        "isp06",
+        "isp07",
+        "isp08",
+        "isp09",
+        "isp10",
+      ].includes(p.id),
+    )
     .map((p) => getSlotSlug(p))
     .filter((slug): slug is string => slug !== false);
 
@@ -236,7 +249,18 @@ export async function seed(knex: Knex): Promise<void> {
   });
 
   const isPart2Slugs = isRound.puzzles
-    .slice(10, 18)
+    .filter((p) =>
+      [
+        "isp11",
+        "isp12",
+        "isp13",
+        "isp14",
+        "isp15",
+        "isp16",
+        "isp17",
+        "isp18",
+      ].includes(p.id),
+    )
     .map((p) => getSlotSlug(p))
     .filter((slug): slug is string => slug !== false);
 

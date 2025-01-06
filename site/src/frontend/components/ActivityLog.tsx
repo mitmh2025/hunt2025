@@ -15,6 +15,133 @@ const HuntIcon = styled.span`
   flex: 0 0 auto;
 `;
 
+type ActivityLogEntryDisplay = {
+  icon: React.ReactNode;
+  description: React.ReactNode;
+  showNotification: boolean;
+};
+
+export function formatActivityLogEntry(
+  entry: ActivityLogEntry,
+): ActivityLogEntryDisplay | null {
+  switch (entry.type) {
+    case "currency_adjusted":
+      return {
+        icon: "🗝️",
+        description: (
+          <>
+            {entry.currency_delta} key
+            {entry.currency_delta === 1 ? " was" : "s were"} granted
+          </>
+        ),
+        showNotification: false,
+      };
+    case "round_unlocked":
+      return {
+        icon: <HuntIcon />,
+        description: (
+          <>
+            Unlocked round <a href={`/rounds/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: true,
+      };
+    case "puzzle_unlockable":
+      return {
+        icon: <PuzzleIcon lockState="unlockable" />,
+        description: <>Discovered puzzle {entry.title}</>,
+        showNotification: false,
+      };
+    case "puzzle_unlocked":
+      return {
+        icon: <PuzzleIcon lockState="unlocked" />,
+        description: (
+          <>
+            Unlocked puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: true,
+      };
+    case "puzzle_partially_solved":
+      return {
+        icon: null,
+        description: (
+          <>
+            Partially solved puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> (partial answer{" "}
+            <code>{entry.partial}</code>)
+          </>
+        ),
+        showNotification: false,
+      };
+    case "puzzle_solved":
+      return {
+        icon: <PuzzleIcon lockState="unlocked" answer={entry.answer} />,
+        description: (
+          <>
+            Solved puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
+            (answer <code>{entry.answer}</code>)
+          </>
+        ),
+        showNotification: true,
+      };
+    case "interaction_unlocked":
+      return {
+        icon: <HuntIcon />,
+        description: (
+          <>
+            Unlocked interaction{" "}
+            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: true,
+      };
+    case "interaction_started":
+      return {
+        icon: <HuntIcon />,
+        description: (
+          <>
+            Started interaction{" "}
+            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: false,
+      };
+    case "interaction_completed":
+      return {
+        icon: <HuntIcon />,
+        description: (
+          <>
+            Completed interaction{" "}
+            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: false,
+      };
+    case "gate_completed":
+      if (!entry.title) {
+        return null;
+      }
+
+      return {
+        icon: null,
+        description: entry.title,
+        showNotification: false,
+      };
+    case "rate_limits_reset":
+      return {
+        icon: "⏰",
+        description: (
+          <>
+            Rate limits reset for puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: false,
+      };
+  }
+}
+
 const ActivityLogItem = ({
   entry,
   resultingCurrencyBalance,
@@ -22,148 +149,17 @@ const ActivityLogItem = ({
   entry: ActivityLogEntry;
   resultingCurrencyBalance: number;
 }) => {
+  const formatted = formatActivityLogEntry(entry);
+  if (!formatted) {
+    return null;
+  }
+
   const maybeCurrencyText =
     entry.currency_delta !== 0
       ? entry.currency_delta > 0
         ? `+${entry.currency_delta}`
         : `${entry.currency_delta}`
       : undefined;
-  let description = <td />;
-  switch (entry.type) {
-    case "currency_adjusted":
-      description = (
-        <>
-          <td>🗝️</td>
-          <td>
-            {entry.currency_delta} key
-            {entry.currency_delta === 1 ? " was" : "s were"} granted
-          </td>
-        </>
-      );
-      break;
-    case "round_unlocked":
-      description = (
-        <>
-          <td>
-            <HuntIcon />
-          </td>
-          <td>
-            Unlocked round <a href={`/rounds/${entry.slug}`}>{entry.title}</a>
-          </td>
-        </>
-      );
-      break;
-    case "puzzle_unlockable":
-      description = (
-        <>
-          <td>
-            <PuzzleIcon lockState="unlockable" />
-          </td>
-          <td>Discovered puzzle {entry.title}</td>
-        </>
-      );
-      break;
-    case "puzzle_unlocked":
-      description = (
-        <>
-          <td>
-            <PuzzleIcon lockState="unlocked" />
-          </td>
-          <td>
-            Unlocked puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
-          </td>
-        </>
-      );
-      break;
-    case "puzzle_partially_solved":
-      description = (
-        <>
-          <td></td>
-          <td>
-            Partially solved puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> (partial answer{" "}
-            <code>{entry.partial}</code>)
-          </td>
-        </>
-      );
-      break;
-    case "puzzle_solved":
-      description = (
-        <>
-          <td>
-            <PuzzleIcon lockState="unlocked" answer={entry.answer} />
-          </td>
-          <td>
-            Solved puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
-            (answer <code>{entry.answer}</code>)
-          </td>
-        </>
-      );
-      break;
-    case "interaction_unlocked":
-      description = (
-        <>
-          <td>
-            <HuntIcon />
-          </td>
-          <td>
-            Unlocked interaction{" "}
-            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
-          </td>
-        </>
-      );
-      break;
-    case "interaction_started":
-      description = (
-        <>
-          <td>
-            <HuntIcon />
-          </td>
-          <td>
-            Started interaction{" "}
-            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
-          </td>
-        </>
-      );
-      break;
-    case "interaction_completed":
-      description = (
-        <>
-          <td>
-            <HuntIcon />
-          </td>
-          <td>
-            Completed interaction{" "}
-            <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
-          </td>
-        </>
-      );
-      break;
-    case "gate_completed":
-      // Only a subset of gates will assign a title.
-      if (entry.title) {
-        description = (
-          <>
-            <td />
-            <td>{entry.title}</td>
-          </>
-        );
-      } else {
-        return undefined;
-      }
-      break;
-    case "rate_limits_reset":
-      description = (
-        <>
-          <td>⏰</td>
-          <td>
-            Rate limits reset for puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
-          </td>
-        </>
-      );
-      break;
-  }
 
   const timestamp = new Date(entry.timestamp);
   const formattedTimestamp = timestamp.toLocaleString();
@@ -171,7 +167,8 @@ const ActivityLogItem = ({
   return (
     <tr className={entry.type}>
       <td>{formattedTimestamp}</td>
-      {description}
+      <td>{formatted.icon}</td>
+      <td>{formatted.description}</td>
       <td>{maybeCurrencyText}</td>
       <td>{resultingCurrencyBalance}</td>
     </tr>
