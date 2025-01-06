@@ -84,7 +84,7 @@ const Solution = () => {
           Identify the RGB values for each color. Select the channel value
           matching the first letter of the answer. The other two color channel
           values are not used. For example, the RGB values for “R-word + (Pink)
-          Flamingo” are (242, 88, 64). The R value is 242.
+          Flamingo” are (242, 88, 62). The R value is 242.
         </li>
         <li>
           Use the puzzle title first letter hint “<Mono>UNICODES</Mono>” and the
@@ -176,8 +176,8 @@ const Solution = () => {
               <td>12</td>
               <RedTD>R + (Pink) Flamingo</RedTD>
               <RedTD>242</RedTD>
-              <MutedTD>116</MutedTD>
-              <MutedTD>253</MutedTD>
+              <MutedTD>88</MutedTD>
+              <MutedTD>62</MutedTD>
               <td>242</td>
               <td>ò</td>
             </tr>
