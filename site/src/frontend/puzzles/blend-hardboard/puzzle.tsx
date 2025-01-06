@@ -6,13 +6,13 @@ const DATA: ListingProps[] = [
     timestamp: "1pm",
     title: "RED REDEMPTION; 60 min.",
     description:
-      "Angie used to be a teacher, but now she's a long way from home and ready to learn. In the Summer Palace she has a vision of the world at peace. After yet another big dinner, her husband admits that he was wrong.",
+      "Angie used to be a teacher, but now she’s a long way from home and ready to learn. In the Summer Palace she has a vision of the world at peace. After yet another big dinner, her husband admits that he was wrong.",
   },
   {
     timestamp: "2pm",
     title: "DON’T GIVE ME THAT BULL; 60 min.",
     description:
-      "After falling for a local trouble-maker from the cigarette factory, Emily spent two months in the brig for refusing an order. Now they've gone on the run together. Will he break free of her spell, or be left with a faded flower?",
+      "After falling for a local trouble-maker from the cigarette factory, Emily spent two months in the brig for refusing an order. Now they’ve gone on the run together. Will he break free of her spell, or be left with a faded flower?",
   },
   {
     timestamp: "3pm",
@@ -24,7 +24,7 @@ const DATA: ListingProps[] = [
     timestamp: "4pm",
     title: "IN YON SHADY GLEN; 60 min.",
     description:
-      "As the dance gets under way, Nettie's sister is mad because she was tricked into signing a document while her lover was away in France. But now he's back in the glen, and she's regretting her decision to put the family first.",
+      "As the dance gets under way, Nettie’s sister is mad because she was tricked into signing a document while her lover was away in France. But now he’s back in the glen, and she’s regretting her decision to put the family first.",
   },
   {
     timestamp: "5pm",
@@ -54,13 +54,13 @@ const DATA: ListingProps[] = [
     timestamp: "9pm",
     title: "GENERAL MAYHEM; 60 min.",
     description:
-      "The General's wife is virtuous and has a faithful friend in Robert. But her husband is scheming to bring everyone down. Will he succeed? And then will he succeed? She's lost a handkerchief, but how much more will she lose?",
+      "The General’s wife is virtuous and has a faithful friend in Robert. But her husband is scheming to bring everyone down. Will he succeed? And then will he succeed? She’s lost a handkerchief, but how much more will she lose?",
   },
   {
     timestamp: "10pm",
     title: "A COMPLETE SPECTACLE; 60 min.",
     description:
-      "(part 4 of 4) Nancy's beau has put a ring on it, but he's already looking for new adventures. Is he going to sell her down the river, or will he be back before time runs out?",
+      "(part 4 of 4) Nancy’s beau has put a ring on it, but he’s already looking for new adventures. Is he going to sell her down the river, or will he be back before time runs out?",
   },
 ];
 
