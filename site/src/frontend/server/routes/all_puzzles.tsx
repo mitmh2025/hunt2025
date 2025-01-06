@@ -59,7 +59,7 @@ export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
     return renderedRound;
   });
   const slugsInRounds = new Set(
-    ...rounds.flatMap((r) => r.puzzles.map((p) => p.slug)),
+    rounds.flatMap((r) => r.puzzles.map((p) => p.slug)),
   );
   const stray = Object.entries(teamState.puzzles)
     .filter(([slug, p]) => p.stray && !slugsInRounds.has(slug))
