@@ -13,6 +13,7 @@ import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
 import DoableDouble from "./austere-sink";
 import { blacklightPuzzle } from "./blacklight";
+import CopyPasta from "./blank-rose";
 import AsTheWorldTurandot from "./blend-hardboard";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
@@ -170,6 +171,7 @@ const PlaceholderISP10 = makePlaceholder(
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   "🔎🧊": MagnifyingGlassIce,
+  "📑🍝": CopyPasta,
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,

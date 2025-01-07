@@ -996,10 +996,45 @@ export async function getRouter({
             team_id,
             redisClient,
             knex,
-            async function (_, mutator) {
+            async function (trx, mutator) {
               // Verify puzzle is currently unlockable.
               const data = await mutator.recalculateTeamState(hunt, team_id);
               const unlock_cost = slot.unlock_cost;
+
+              // Special case for blank-rose. One of nine gates must be unlocked
+              // for a team upon its unlock, in a round-robin pattern.
+              if (slug === "📑🍝") {
+                const gates = [
+                  "mdg03",
+                  "mdg04",
+                  "mdg05",
+                  "mdg06",
+                  "mdg07",
+                  "mdg08",
+                  "mdg09",
+                  "mdg10",
+                  "mdg11",
+                ];
+                // How many of these gates have been unlocked?
+                const gateUnlockResult = (await trx("activity_log")
+                  .count("id", { as: "gateCount" })
+                  .where("type", "=", "gate_completed")
+                  .whereIn("slug", gates)
+                  .first()) ?? { gateCount: 0 };
+                // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                const gateCount =
+                  typeof gateUnlockResult.gateCount === "string"
+                    ? parseInt(gateUnlockResult.gateCount, 10)
+                    : gateUnlockResult.gateCount;
+                // Open the gates in order as teams unlock this puzzle, defaulting
+                // to the first gate for the first team to unlock the puzzle.
+                const gateSlug = gates[gateCount % gates.length] ?? "mdg03";
+                await mutator.appendLog({
+                  team_id,
+                  type: "gate_completed",
+                  slug: gateSlug,
+                });
+              }
 
               if (
                 data.puzzles_unlockable.has(slug) &&
@@ -1295,6 +1330,56 @@ export async function getRouter({
 
                   teamIdsToUnlock.delete(entry.team_id);
                 }
+              }
+
+              // Special case for blank-rose. One of the nine gates must be
+              // unlocked for a team upon unlocking this puzzle, in a round-
+              // robin fashion.
+              if (slug === "📑🍝") {
+                const gates = [
+                  "mdg03",
+                  "mdg04",
+                  "mdg05",
+                  "mdg06",
+                  "mdg07",
+                  "mdg08",
+                  "mdg09",
+                  "mdg10",
+                  "mdg11",
+                ];
+                // How many of these gates have been unlocked?
+                const gateUnlockResult = (await _trx("activity_log")
+                  .count("id", { as: "gateCount" })
+                  .where("type", "=", "gate_completed")
+                  .whereIn("slug", gates)
+                  .first()) ?? { gateCount: 0 };
+                // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                const gateCount =
+                  typeof gateUnlockResult.gateCount === "string"
+                    ? parseInt(gateUnlockResult.gateCount, 10)
+                    : gateUnlockResult.gateCount;
+                // Iterate through the gates in order.
+                let counter = gateCount;
+                const teamsAndGates: { teamId: number; slug: string }[] = [];
+                for (const teamId of teamIdsToUnlock) {
+                  // If for some reason we're bulk unlocking despite none of these gates being unlocked yet,
+                  // default to the first gate.
+                  const slugForTeam = gates[counter % gates.length] ?? "mdg03";
+                  const teamAndGate = { teamId, slug: slugForTeam };
+                  teamsAndGates.push(teamAndGate);
+                  counter++;
+                }
+                const promises = [];
+                for (const { teamId, slug } of teamsAndGates) {
+                  promises.push(
+                    mutator.appendLog({
+                      team_id: teamId,
+                      type: "gate_completed",
+                      slug,
+                    }),
+                  );
+                }
+                await Promise.all(promises);
               }
 
               if (
