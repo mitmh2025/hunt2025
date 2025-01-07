@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useMemo,
   useLayoutEffect,
+  useRef,
 } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
@@ -380,7 +381,14 @@ const Interaction = ({
     component: InteractionComponent;
   } | null>(null);
 
+  const lastLoadedPlugin = useRef<string | null>(null);
+
   useEffect(() => {
+    if (lastLoadedPlugin.current === pluginName) {
+      return;
+    }
+    lastLoadedPlugin.current = pluginName;
+
     function loadScript(src: string): Promise<void> {
       const existingScript = document.querySelector(`script[src="${src}"]`);
       if (existingScript) {
