@@ -34,7 +34,7 @@ export function formatActivityLogEntry(
             {entry.currency_delta === 1 ? " was" : "s were"} granted
           </>
         ),
-        showNotification: false,
+        showNotification: true,
       };
     case "round_unlocked":
       return {
@@ -72,7 +72,7 @@ export function formatActivityLogEntry(
             <code>{entry.partial}</code>)
           </>
         ),
-        showNotification: false,
+        showNotification: true,
       };
     case "puzzle_solved":
       return {
@@ -124,9 +124,9 @@ export function formatActivityLogEntry(
       }
 
       return {
-        icon: null,
+        icon: "✔️",
         description: entry.title,
-        showNotification: false,
+        showNotification: entry.show_notification,
       };
     case "rate_limits_reset":
       return {

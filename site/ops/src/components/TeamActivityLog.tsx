@@ -5,7 +5,7 @@ import {
 } from "material-react-table";
 import { useMemo } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
-import HUNT from "../../../src/huntdata";
+import HUNT, { GATE_LOOKUP } from "../../../src/huntdata";
 import { useOpsData } from "../OpsDataProvider";
 import { slugTitle } from "../opsdata/puzzleTitles";
 
@@ -56,10 +56,9 @@ export default function TeamActivityLog({
               activity = `Keys adjusted by ${entry.currency_delta}`;
               break;
             case "gate_completed": {
-              const desc = opsData.gateDetails[entry.slug]?.title
-                ? `(${opsData.gateDetails[entry.slug]?.title})`
-                : "";
-              activity = `Gate completed: ${entry.slug} ${desc} - ${opsData.gateDetails[entry.slug]?.roundTitle}`;
+              const gate = GATE_LOOKUP.get(entry.slug);
+              const displayName = `${gate?.gate.title ?? gate?.gate.internal_description ?? "Untitled Gate"} (${entry.slug})`;
+              activity = `Gate completed: ${displayName} - ${opsData.gateDetails[entry.slug]?.roundTitle}`;
               break;
             }
             case "round_unlocked":

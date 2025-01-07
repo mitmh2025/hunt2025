@@ -1,6 +1,6 @@
 // This is the canonical description of the structure of our hunt, with a full
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
-import { type Hunt, type PuzzleSlot, type Round } from "./types";
+import { type Gate, type Hunt, type PuzzleSlot, type Round } from "./types";
 
 const BGCHECK_FEEDER_SLOTS = {
   the_mark: ["bgp01", "bgp04", "bgp05", "bgp07", "bgp14"], // The Rio Times
@@ -161,9 +161,9 @@ const HUNT: Hunt = {
         }, // Where is the Diamond? (super)
       ],
       gates: [
-        { id: "hunt_started" }, // Hunt started.  Nothing is unlocked until this gate is satisfied.
-        { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
-        { id: "mdg02" }, // Picked up Synthetic Tagsonomy from Gala
+        { id: "hunt_started", internal_description: 'Hunt Started' }, // Nothing is unlocked until this gate is satisfied.
+        { id: "mdg01", internal_description: 'Picked up Educational Rite of Passage from Gala' },
+        { id: "mdg02", internal_description: 'Picked up Synthetic Tagsonomy from Gala' },
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
@@ -270,9 +270,9 @@ const HUNT: Hunt = {
         { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 }, slug: "chinatown"},
       ],
       gates: [
-        { id: "sog01" }, // Picked up Mystery O's from Gala
-        { id: "sog02" }, // Picked up It's Not Clear from Gala
-        { id: "sog03" }, // Picked up Anything Is Popsicle from Gala
+        { id: "sog01", internal_description: "Picked up Mystery O's from Gala" },
+        { id: "sog02", internal_description: "Picked up It's Not Clear from Gala" },
+        { id: "sog03", internal_description: "Picked up Anything Is Popsicle from Gala" },
       ],
       interactions: [
         {
@@ -346,9 +346,9 @@ const HUNT: Hunt = {
         },
       ],
       gates: [
-        { id: "ptg01" }, // Picked up Eponymous Forensic Accountant from Gala
-        { id: "ptg02" }, // Picked up The Inspectre from Gala
-        { id: "ptg03", satisfied_if: { // Ads enabled for quixotic-shoe
+        { id: "ptg01", internal_description: "Picked up Eponymous Forensic Accountant from Gala" },
+        { id: "ptg02", internal_description: "Picked up The Inspectre from Gala" },
+        { id: "ptg03", internal_description: "Ads enabled for quixotic-shoe", satisfied_if: {
           oneOf: [
             { slot_solved: "songs_on_the_radio" },
             { round_unlocked: "paper_trail" },
@@ -403,7 +403,7 @@ const HUNT: Hunt = {
         { id: "bgm04", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] }, slug: "alias" }, // supermeta
       ],
       gates: [
-        { id: "bgg01" }, // Picked up Celestial Rope from Gala
+        { id: "bgg01", internal_description: "Picked up Celestial Rope from Gala" },
       ],
       interactions: [
         {
@@ -433,7 +433,7 @@ const HUNT: Hunt = {
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // globe
         { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "paw_print_detective" }, // family portrait
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 }, // typewriter, a_puzzle_of_the_dead goes here
-        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp, 
+        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp,
         // The next 5 puzzles are unlockable once they are discovered in the
         // UI, but will not be discoverable until the corresponding lock is
         // satisfied.
@@ -472,39 +472,39 @@ const HUNT: Hunt = {
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final
-        { id: "isg00", title: "Examined the bookcase" }, // examine the bookcase (meta)
-        { id: "isg01" }, // find the first object in the first room (great wave painting)
-        { id: "isg02" }, // find the second object in the first room (globe)
-        { id: "isg03" }, // find the third object in the first room (family portrait)
-        { id: "isg04" }, // find the fourth object in the first room (typewriter)
-        { id: "isg05" }, // find the last object in the first room (desk lamp)
-        { id: "isg06", title: "Unlocked the desk drawer" }, // complete the directional lock (desk drawer)
-        { id: "isg07", title: "Unlocked the breaker box" }, // complete the binary switches (fuse box)
-        { id: "isg08", title: "Unlocked the safe" }, // complete the combination lock (safe)
-        { id: "isg09", title: "Unlocked the numeric lock" }, // complete the numeric lock (rug)
-        { id: "isg10", title: "Unlocked the cryptex" }, // complete the word lock (cryptex)
-        { id: "isg11" }, // find the object behind the directional lock
-        { id: "isg12" }, // find the object behind the binary switch lock
-        { id: "isg13" }, // find the object behind the combination lock
-        { id: "isg14" }, // find the object behind the numeric lock
-        { id: "isg15" }, // find the object behind the word lock
-        { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase" }, // complete the bookcase/unlock door in wall
-        { id: "isg17" }, // find the magazines the second room (meta)
-        { id: "isg18" }, // find the first object in the second room (birth certificate)
-        { id: "isg19" }, // find the second object in the second room (newspaper clipping)
-        { id: "isg20" }, // find the third object in the second room (letter from prison warden)
-        { id: "isg21" }, // find the fourth object in the second room (photo of the Candys and Baby)
-        { id: "isg22" }, // find the fifth object in the second room (photo of Papa, wife, and Gladys)
-        { id: "isg23" }, // find the sixth object in the second room (rare stamp)
-        { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
-        { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
-        { id: "isg26", title: "Obtained the blacklight", satisfied_if: { slot_solved: "ism02" } }, // obtain the blacklight
-        { id: "isg27" }, // find the blacklight object behind the directional lock
-        { id: "isg28" }, // find the blacklight object behind the binary switch lock
-        { id: "isg29" }, // find the blacklight object behind the combination lock
-        { id: "isg30" }, // find the blacklight object behind the numeric lock
-        { id: "isg31" }, // find the blacklight object behind the word lock
-        { id: "isg32" }, // find the blacklight version of the bookshelf note (meta)
+        { id: "isg00", title: "Examined the bookcase in The Illegal Search" }, // examine the bookcase (meta)
+        { id: "isg01", internal_description: "find the first object in the first room (great wave painting)"},
+        { id: "isg02", internal_description: "find the second object in the first room (globe)"},
+        { id: "isg03", internal_description: "find the third object in the first room (family portrait)"},
+        { id: "isg04", internal_description: "find the fourth object in the first room (typewriter)"},
+        { id: "isg05", internal_description: "find the last object in the first room (desk lamp)"},
+        { id: "isg06", title: "Unlocked the desk drawer in The Illegal Search", show_notification: true },
+        { id: "isg07", title: "Unlocked the breaker box in The Illegal Search", show_notification: true },
+        { id: "isg08", title: "Unlocked the safe in The Illegal Search", show_notification: true },
+        { id: "isg09", title: "Unlocked the numeric lock in The Illegal Search", show_notification: true },
+        { id: "isg10", title: "Unlocked the cryptex in The Illegal Search", show_notification: true },
+        { id: "isg11", internal_description: "find the object behind the directional lock" },
+        { id: "isg12", internal_description: "find the object behind the binary switch lock" },
+        { id: "isg13", internal_description: "find the object behind the combination lock" },
+        { id: "isg14", internal_description: "find the object behind the numeric lock" },
+        { id: "isg15", internal_description: "find the object behind the word lock" },
+        { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase in The Illegal Search", show_notification: true }, // complete the bookcase/unlock door in wall
+        { id: "isg17", internal_description: "find the magazines the second room (meta)", },
+        { id: "isg18", internal_description: "find the first object in the second room (birth certificate)" },
+        { id: "isg19", internal_description: "find the second object in the second room (newspaper clipping)" },
+        { id: "isg20", internal_description: "find the third object in the second room (letter from prison warden)" },
+        { id: "isg21", internal_description: "find the fourth object in the second room (photo of the Candys and Baby)" },
+        { id: "isg22", internal_description: "find the fifth object in the second room (photo of Papa, wife, and Gladys)" },
+        { id: "isg23", internal_description: "find the sixth object in the second room (rare stamp)" },
+        { id: "isg24", internal_description: "find the seventh object in the second room (Gladys' teddy bear)" },
+        { id: "isg25", internal_description: "find the eighth object in the second room (radio drama poster)" },
+        { id: "isg26", title: "Obtained the blacklight in The Illegal Search", show_notification: true, satisfied_if: { slot_solved: "ism02" } }, // obtain the blacklight
+        { id: "isg27", internal_description: "find the blacklight object behind the directional lock" },
+        { id: "isg28", internal_description: "find the blacklight object behind the binary switch lock" },
+        { id: "isg29", internal_description: "find the blacklight object behind the combination lock" },
+        { id: "isg30", internal_description: "find the blacklight object behind the numeric lock" },
+        { id: "isg31", internal_description: "find the blacklight object behind the word lock" },
+        { id: "isg32", internal_description: "find the blacklight version of the bookshelf note (meta)" },
       ],
       interactions: [
         {
@@ -557,9 +557,9 @@ const HUNT: Hunt = {
         { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
       ],
       gates: [
-        { id: "tmg01" }, // Opened I Kid Ewe Knot (Weirdo Threaded Doodads)
-        { id: "tmg02" }, // Opened Stitchy Situation (Weirdo Threaded Doodads)
-        { id: "tmg03" }, // Picked up Cross Dash Word
+        { id: "tmg01", internal_description: "Opened I Kid Ewe Knot (Weirdo Threaded Doodads)" },
+        { id: "tmg02", internal_description: "Opened Stitchy Situation (Weirdo Threaded Doodads)" },
+        { id: "tmg03", internal_description: "Picked up Cross Dash Word" },
       ],
       interactions: [
         {
@@ -643,5 +643,32 @@ export function generateSlugToSlotMap(hunt: Hunt): Map<string, SlotLookup> {
   });
   return slugToSlot;
 }
+
+export type GateLookup = {
+  roundSlug: string;
+  gate: Gate;
+};
+
+// For quickly looking up where a particular gate is used in HUNT.
+export function generateGateToSlotMap(hunt: Hunt): Map<string, GateLookup> {
+  const gateToRound = new Map<string, GateLookup>();
+  hunt.rounds.forEach((round) => {
+    (round.gates ?? []).forEach((gate) => {
+      const existing = gateToRound.get(gate.id);
+      if (existing) {
+        throw new Error(
+          `gate id ${gate.id} used in both round ${existing.roundSlug} and ${round.slug}`,
+        );
+      }
+      gateToRound.set(gate.id, {
+        roundSlug: round.slug,
+        gate,
+      });
+    });
+  });
+  return gateToRound;
+}
+
+export const GATE_LOOKUP = generateGateToSlotMap(HUNT);
 
 export default HUNT;
