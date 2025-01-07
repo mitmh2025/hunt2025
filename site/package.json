@@ -7,7 +7,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "rspack --mode=production --config ./rspack.config.mjs",
+    "build": "rspack --mode=production --config ./rspack.config.mjs && npm run ops:build",
     "build-dev": "rspack --mode=development --config ./rspack.config.mjs",
     "start": "npm run build && node ./dist/server-bundle.js",
     "start-watch": "npm run build-dev && concurrently --kill-others \"node --watch --enable-source-maps ./dist/server-bundle.js\" \"rspack --mode=development --config ./rspack.config.mjs --watch\" \"livereload ./dist -w 3000\"",

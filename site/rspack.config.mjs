@@ -50,6 +50,13 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/timely-head/assets/engagements-and-other-crimes.pdf",
   "src/frontend/puzzles/valuable-alps/assets/cross-dash-word.pdf",
 ];
+// There are also 54 pages with predictable paths for the Murder in MITropolis meta
+for (let i = 1; i <= 54; i++) {
+  const pageStr = `${i}`.padStart(2, "0");
+  PRESERVE_FILENAME_ASSET_PATHS.push(
+    `src/frontend/rounds/murder_in_mitropolis/assets/pages/${pageStr}.pdf`,
+  );
+}
 
 class RadioManifestPlugin {
   constructor(opts) {
