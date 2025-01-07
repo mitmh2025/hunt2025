@@ -3,33 +3,33 @@ import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
-// meta: door to green building, light-up windows
-import door_solved from "./assets/windows/green/green-door-solved.png";
-import door_unlocked from "./assets/windows/green/green-door-unlocked.png";
-import off_1 from "./assets/windows/green/1-off.png";
-import off_2 from "./assets/windows/green/2-off.png";
-import off_3 from "./assets/windows/green/3-off.png";
-import off_4 from "./assets/windows/green/4-off.png";
-import off_5 from "./assets/windows/green/5-off.png";
-import off_6 from "./assets/windows/green/6-off.png";
-import off_7 from "./assets/windows/green/7-off.png";
-import off_8 from "./assets/windows/green/8-off.png";
-import off_9 from "./assets/windows/green/9-off.png";
-import on_1 from "./assets/windows/green/1-on.png";
-import on_2 from "./assets/windows/green/2-on.png";
-import on_3 from "./assets/windows/green/3-on.png";
-import on_4 from "./assets/windows/green/4-on.png";
-import on_5 from "./assets/windows/green/5-on.png";
-import on_6 from "./assets/windows/green/6-on.png";
-import on_7 from "./assets/windows/green/7-on.png";
-import on_8 from "./assets/windows/green/8-on.png";
-import on_9 from "./assets/windows/green/9-on.png";
 // dorm
 import dorm_solved_lofibeats from "./assets/windows/dorm/dorm-solved-lofibeats.png";
 import dorm_solved_plant from "./assets/windows/dorm/dorm-solved-plant.png";
 import dorm_solved from "./assets/windows/dorm/dorm-solved.png";
 import dorm_locked from "./assets/windows/dorm/dorm-unlockable.png";
 import dorm_unlocked from "./assets/windows/dorm/dorm-unlocked.png";
+// meta: door to green building, light-up windows
+import off_1 from "./assets/windows/green/1-off.png";
+import on_1 from "./assets/windows/green/1-on.png";
+import off_2 from "./assets/windows/green/2-off.png";
+import on_2 from "./assets/windows/green/2-on.png";
+import off_3 from "./assets/windows/green/3-off.png";
+import on_3 from "./assets/windows/green/3-on.png";
+import off_4 from "./assets/windows/green/4-off.png";
+import on_4 from "./assets/windows/green/4-on.png";
+import off_5 from "./assets/windows/green/5-off.png";
+import on_5 from "./assets/windows/green/5-on.png";
+import off_6 from "./assets/windows/green/6-off.png";
+import on_6 from "./assets/windows/green/6-on.png";
+import off_7 from "./assets/windows/green/7-off.png";
+import on_7 from "./assets/windows/green/7-on.png";
+import off_8 from "./assets/windows/green/8-off.png";
+import on_8 from "./assets/windows/green/8-on.png";
+import off_9 from "./assets/windows/green/9-off.png";
+import on_9 from "./assets/windows/green/9-on.png";
+import door_solved from "./assets/windows/green/green-door-solved.png";
+import door_unlocked from "./assets/windows/green/green-door-unlocked.png";
 // main face of stata; some solve states are bespoke
 import stata_1_solved_blinds from "./assets/windows/stata/stata-1-solved-blinds.png";
 import stata_1_solved_drinker from "./assets/windows/stata/stata-1-solved-drinker.png";
@@ -64,7 +64,7 @@ import {
   type MurderPDFObject,
   type MurderState,
 } from "./types";
-import { PuzzleDefinition } from "src/frontend/puzzles/types";
+import { type PuzzleDefinition } from "src/frontend/puzzles/types";
 
 const MURDER_SLOTS = [
   "tmp01",

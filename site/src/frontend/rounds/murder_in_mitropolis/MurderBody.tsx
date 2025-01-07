@@ -30,7 +30,7 @@ import { MurderFonts } from "./MurderFonts";
 import SparkleComponent, { SPARKLES } from "./Sparkle";
 import SkylineBg from "./assets/murder-bg.png";
 import {
-  MurderPDFObject,
+  type MurderPDFObject,
   type MurderPuzzleObject,
   type MurderState,
 } from "./types";
