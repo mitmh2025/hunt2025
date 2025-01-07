@@ -90,7 +90,7 @@ const NavBarManager = ({
   return (
     <>
       <Notifications ref={notifications} maxNotifications={5} />
-      <NavBar info={info} state={state} whepUrl={whepUrl} />;
+      <NavBar info={info} state={state} whepUrl={whepUrl} />
     </>
   );
 };
