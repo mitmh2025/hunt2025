@@ -1,13 +1,7 @@
-import React, { type ReactNode } from "react";
+import React from "react";
 import { styled } from "styled-components";
 import { defaultShadow, getRelativeSizeCss } from "../constants";
-
-type Status = {
-  text: string;
-  color?: string;
-  crossedOff?: boolean;
-  rotation?: number;
-};
+import { type HubSuspect } from "../types";
 
 type SuspectProps = {
   name: string;
@@ -17,10 +11,8 @@ type SuspectProps = {
   x: number;
   y: number;
   rotation?: number;
-  status: Status;
-  status2?: Status;
-  status3?: Status;
-  secret?: ReactNode;
+  statusUpdateRotation: number;
+  status: HubSuspect["status"];
 };
 
 const Card = styled.div`
@@ -100,11 +92,9 @@ const SuspectCard = ({
   y,
   rotation,
   status,
-  status2,
-  status3,
+  statusUpdateRotation,
   photoUrl,
   photoAlt,
-  secret,
 }: SuspectProps) => {
   return (
     <Card
@@ -120,40 +110,39 @@ const SuspectCard = ({
         <h5>{title}</h5>
       </div>
       <span
-        className={`status main-status ${status.crossedOff ? "crossed-out" : ""}`}
-        style={{ color: status.color ?? "var(--black)" }}
+        className={`status main-status ${status.length > 1 ? "crossed-out" : ""}`}
+        style={{ color: status[0].color ?? "var(--black)" }}
       >
         {"\u00A0"}
-        {status.text}
+        {status[0].text}
         {"\u00A0"}
       </span>
-      {status2 && (
+      {status[1] && (
         <span
-          className={`status second-status ${status2.crossedOff ? "crossed-out" : ""}`}
+          className={`status second-status ${status.length > 2 ? "crossed-out" : ""}`}
           style={{
-            color: status2.color ?? "var(--black)",
-            transform: `rotate(${status2.rotation ?? 0}deg)`,
+            color: status[1].color ?? "var(--black)",
+            transform: `rotate(${statusUpdateRotation}deg)`,
           }}
         >
           {"\u00A0"}
-          {status2.text}
+          {status[1].text}
           {"\u00A0"}
         </span>
       )}
-      {status3 && (
+      {status[2] && (
         <span
-          className={`status third-status ${status3.crossedOff ? "crossed-out" : ""}`}
+          className={`status third-status`}
           style={{
-            color: status3.color ?? "var(--black)",
-            transform: `rotate(${status3.rotation ?? 0}deg)`,
+            color: status[2].color ?? "var(--black)",
+            transform: `rotate(${statusUpdateRotation}deg)`,
           }}
         >
           {"\u00A0"}
-          {status3.text}
+          {status[2].text}
           {"\u00A0"}
         </span>
       )}
-      {secret}
     </Card>
   );
 };

@@ -2,6 +2,11 @@ import { type TeamHuntState } from "../../../lib/api/client";
 import { type ArtGalleryResult } from "../interactions/interview_at_the_art_gallery/graph";
 import { type BoardwalkInteractionResult } from "../interactions/interview_at_the_boardwalk/graph";
 import { type CasinoResult } from "../interactions/interview_at_the_casino/graph";
+import artGallery from "../rounds/the_missing_diamond/assets/art-gallery-solved.svg";
+import boardwalk from "../rounds/the_missing_diamond/assets/boardwalk-solved.svg";
+import casino from "../rounds/the_missing_diamond/assets/casino-solved.svg";
+import jewelryStore from "../rounds/the_missing_diamond/assets/jewelry-store-solved.svg";
+import map from "../rounds/the_missing_diamond/assets/map.png";
 import art_gallery_token_kieftenbeld from "./assets/art_gallery_token_kieftenbeld.png";
 import art_gallery_token_lemahieu from "./assets/art_gallery_token_lemahieu.png";
 import baby_aka_teresa_candy_tape from "./assets/baby_aka_teresa_candy_tape.png";
@@ -17,6 +22,7 @@ import casino_token_joker from "./assets/casino_token_joker.png";
 import gladys_aka_ms_glass_tape from "./assets/gladys_aka_ms_glass_tape.png";
 import illegal_search_answer_solved from "./assets/illegal_search_answer_solved.png";
 import illegal_search_question_unlocked from "./assets/illegal_search_question_unlocked.png";
+import interaction_stamp from "./assets/interaction_stamp.png";
 import jewelry_store_token from "./assets/jewelry_store_token.png";
 import katrina_aka_mockingbird_tape from "./assets/katrina_aka_mockingbird_tape.png";
 import main_question_answer_1 from "./assets/main_question_answer_1.png";
@@ -29,15 +35,51 @@ import murder_in_mitropolis_answer_solved from "./assets/murder_in_mitropolis_an
 import murder_in_mitropolis_question_unlocked from "./assets/murder_in_mitropolis_question_unlocked.png";
 import paper_trail_answer_solved from "./assets/paper_trail_answer_solved.png";
 import paper_trail_question_unlocked from "./assets/paper_trail_question_unlocked.png";
+import pin_gold from "./assets/pin_gold.png";
+import pin_purple from "./assets/pin_purple.png";
 import pin_teal from "./assets/pin_teal.png";
+import puzzle_piece from "./assets/puzzle_piece.png";
 import stakeout_answer_solved from "./assets/stakeout_answer_solved.png";
 import stakeout_question_unlocked from "./assets/stakeout_question_unlocked.png";
 import stray_leads_postit from "./assets/stray_leads_postit.png";
+import string_background_check_to_carter_photo from "./assets/string_background_check_to_carter_photo.png";
+import string_boardwalk_to_katrina_photo from "./assets/string_boardwalk_to_katrina_photo.png";
+import string_carter_photo_to_casino from "./assets/string_carter_photo_to_casino.png";
+import string_gladys_photo_to_paper_trail from "./assets/string_gladys_photo_to_paper_trail.png";
+import string_illegal_search_to_papa_photo from "./assets/string_illegal_search_to_papa_photo.png";
+import string_jewelry_store_to_gladys_photo from "./assets/string_jewelry_store_to_gladys_photo.png";
+import string_katrina_photo_to_stakeout from "./assets/string_katrina_photo_to_stakeout.png";
+import string_main_question_to_baby_photo from "./assets/string_main_question_to_baby_photo.png";
+import string_missing_diamond_to_murder_in_mitropolis from "./assets/string_missing_diamond_to_murder_in_mitropolis.png";
+import string_papa_photo_to_art_gallery from "./assets/string_papa_photo_to_art_gallery.png";
+import string_rover_photo_to_murder_in_mitropolis from "./assets/string_rover_photo_to_murder_in_mitropolis.png";
+import string_sidecar_photo_to_murder_in_mitropolis from "./assets/string_sidecar_photo_to_murder_in_mitropolis.png";
+import string_sidecar_photo_to_rover_photo from "./assets/string_sidecar_photo_to_rover_photo.png";
 import trainee_pin from "./assets/trainee_pin.png";
-import { type HubState, type HubObject } from "./types";
+import {
+  type HubState,
+  type HubObject,
+  type HubSuspectStatus,
+  type HubSuspect,
+} from "./types";
 
 type HubObjectSetting = HubObject & {
   condition: (teamState: TeamHuntState) => boolean;
+};
+
+type HubSuspectStatusSetting = HubSuspectStatus & {
+  condition: (teamState: TeamHuntState) => boolean;
+};
+
+type HubSuspectSetting = {
+  status:
+    | [HubSuspectStatusSetting]
+    | [HubSuspectStatusSetting, HubSuspectStatusSetting]
+    | [
+        HubSuspectStatusSetting,
+        HubSuspectStatusSetting,
+        HubSuspectStatusSetting,
+      ];
 };
 
 const HUNT_STARTED = (teamState: TeamHuntState) => {
@@ -48,6 +90,15 @@ const HUNT_STARTED = (teamState: TeamHuntState) => {
 const ROUND_UNLOCKED = (teamState: TeamHuntState, round: string) => {
   return !!teamState.rounds[round];
 };
+const PUZZLE_SOLVED =
+  (slug: string) =>
+  (teamState: TeamHuntState): boolean => {
+    return teamState.puzzles[slug]?.answer !== undefined;
+  };
+const INTERACTION_UNLOCKED =
+  (round: string, interaction: string) => (teamState: TeamHuntState) => {
+    return !!teamState.rounds[round]?.interactions?.[interaction];
+  };
 const INTERACTION_COMPLETED = (
   teamState: TeamHuntState,
   round: string,
@@ -107,6 +158,61 @@ const VAULT_COMPLETED = (teamState: TeamHuntState) => {
 
 const OBJECTS: HubObjectSetting[] = [
   {
+    asset: map,
+    alt: "A map of Downtown MITropolis",
+    x: 1424,
+    y: 664,
+    width: 991,
+    rot: 0,
+    shadow: true,
+    href: "/rounds/the_missing_diamond",
+    condition: MISSING_DIAMOND_UNLOCKED,
+  },
+  {
+    asset: artGallery,
+    alt: "The Art Gallery",
+    x: 1578,
+    y: 1273,
+    width: 66.8,
+    rot: 0,
+    shadow: false,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_art_gallery"),
+  },
+  {
+    asset: boardwalk,
+    alt: "The Boardwalk",
+    x: 1425,
+    y: 1468,
+    width: 805,
+    rot: 0,
+    shadow: false,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_boardwalk"),
+  },
+  {
+    asset: casino,
+    alt: "The Casino",
+    x: 1659,
+    y: 985,
+    width: 103,
+    rot: 0,
+    shadow: false,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_casino"),
+  },
+  {
+    asset: jewelryStore,
+    alt: "The Jewelry Store",
+    x: 2052,
+    y: 831,
+    width: 95.7,
+    rot: 0,
+    shadow: false,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_jewelry_store"),
+  },
+  {
     asset: illegal_search_question_unlocked,
     alt: "What was Papa arguing about at the Art Gallery? Search his study…",
     x: 61,
@@ -116,6 +222,11 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/rounds/illegal_search",
     condition: ILLEGAL_SEARCH_UNLOCKED,
+    pin: {
+      asset: pin_purple,
+      x: 472,
+      y: 91,
+    },
   },
   {
     asset: illegal_search_answer_solved,
@@ -138,6 +249,11 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/rounds/background_check",
     condition: BACKGROUND_CHECK_UNLOCKED,
+    pin: {
+      asset: pin_purple,
+      x: 508,
+      y: 1388,
+    },
   },
   {
     asset: background_check_answer_solved,
@@ -160,6 +276,11 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/rounds/paper_trail",
     condition: PAPER_TRAIL_UNLOCKED,
+    pin: {
+      asset: pin_purple,
+      x: 3286,
+      y: 105,
+    },
   },
   {
     asset: paper_trail_answer_solved,
@@ -178,18 +299,25 @@ const OBJECTS: HubObjectSetting[] = [
     x: 2899,
     y: 1341,
     width: 895,
-    rot: -4,
+    rot: 4,
+    rotOrigin: "top left",
     shadow: true,
     href: "/rounds/stakeout",
     condition: STAKEOUT_UNLOCKED,
+    pin: {
+      asset: pin_purple,
+      x: 3314,
+      y: 1386,
+    },
   },
   {
     asset: stakeout_answer_solved,
     alt: "She’s an undercover cop meeting a source",
-    x: 2912,
+    x: 2925,
     y: 1531,
     width: 718,
-    rot: -4,
+    rot: 4,
+    rotOrigin: "top left",
     shadow: false,
     inert: true,
     condition: STAKEOUT_COMPLETED,
@@ -250,6 +378,11 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/rounds/stray_leads",
     condition: HUNT_STARTED,
+    pin: {
+      asset: pin_gold,
+      x: 230,
+      y: 1025,
+    },
   },
   {
     asset: casino_token_joker,
@@ -431,6 +564,11 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/rounds/murder_in_mitropolis",
     condition: MURDER_IN_MITROPOLIS_UNLOCKED,
+    pin: {
+      asset: pin_purple,
+      x: 3382,
+      y: 630,
+    },
   },
   {
     asset: murder_in_mitropolis_answer_solved,
@@ -444,23 +582,47 @@ const OBJECTS: HubObjectSetting[] = [
     condition: MURDER_IN_MITROPOLIS_COMPLETED,
   },
   {
+    asset: puzzle_piece,
+    alt: "A piece of a jigsaw puzzle",
+    x: 3428,
+    y: 1028,
+    width: 332,
+    rot: 4.7,
+    rotOrigin: "top left",
+    shadow: true,
+    inert: true,
+    condition: MURDER_IN_MITROPOLIS_COMPLETED,
+    pin: {
+      asset: pin_teal,
+      x: 3521,
+      y: 1182,
+    },
+  },
+  {
     asset: missing_diamond_question_unlocked,
     alt: "Where is the missing diamond? Interview witnesses to find the diamond…",
     x: 1471,
-    y: 325,
+    y: 395,
     width: 972,
-    rot: 2.7,
+    rot: -2.7,
+    rotOrigin: "top left",
     shadow: true,
     href: "/rounds/the_missing_diamond",
     condition: MISSING_DIAMOND_UNLOCKED,
+    pin: {
+      asset: pin_purple,
+      x: 1950,
+      y: 386,
+    },
   },
   {
     asset: missing_diamond_answer_solved,
     alt: "A *fake* diamond was found where Sidecar was killed",
-    x: 1636,
-    y: 488,
+    x: 1644,
+    y: 551,
     width: 693,
-    rot: 2.7,
+    rot: -2.7,
+    rotOrigin: "top left",
     shadow: false,
     inert: true,
     condition: MISSING_DIAMOND_COMPLETED,
@@ -560,11 +722,316 @@ const OBJECTS: HubObjectSetting[] = [
     inert: true,
     condition: PAPER_TRAIL_COMPLETED,
   },
-  // TODO: implement anything after missing_diamond_answer_solved from the spreadsheet.  To wit:
-  // * suspect photos
-  // * pins
-  // * string between pins
+
+  // stamps
+  {
+    asset: interaction_stamp,
+    alt: "Catch the Thief",
+    x: 1520,
+    y: 490,
+    rot: 10.9,
+    rotOrigin: "top left",
+    width: 107,
+    shadow: false,
+    href: "/interactions/catch_the_thief",
+    condition: INTERACTION_UNLOCKED("the_missing_diamond", "catch_the_thief"),
+  },
+  {
+    asset: interaction_stamp,
+    alt: "Meet Papa",
+    x: 75,
+    y: 169,
+    width: 107,
+    rot: -17.2,
+    rotOrigin: "top left",
+    shadow: false,
+    href: "/interactions/meet_papa",
+    condition: INTERACTION_UNLOCKED("illegal_search", "meet_papa"),
+  },
+  {
+    asset: interaction_stamp,
+    alt: "Meet Carter",
+    x: 116,
+    y: 1466,
+    rot: 7.3,
+    rotOrigin: "top left",
+    width: 107,
+    shadow: false,
+    href: "/interactions/meet_carter",
+    condition: INTERACTION_UNLOCKED("background_check", "meet_carter"),
+  },
+  {
+    asset: interaction_stamp,
+    alt: "Meet Katrina",
+    x: 3575,
+    y: 1511,
+    rot: -9.3,
+    rotOrigin: "top left",
+    width: 107,
+    shadow: false,
+    href: "/interactions/meet_katrina",
+    condition: INTERACTION_UNLOCKED("stakeout", "meet_katrina"),
+  },
+  {
+    asset: interaction_stamp,
+    alt: "Meet Gladys",
+    x: 2941,
+    y: 125,
+    rot: -11,
+    rotOrigin: "top left",
+    width: 107,
+    shadow: false,
+    href: "/interactions/meet_gladys",
+    condition: INTERACTION_UNLOCKED("paper_trail", "meet_gladys"),
+  },
+  {
+    asset: interaction_stamp,
+    alt: "Unmask the Killer",
+    x: 3635,
+    y: 658,
+    rot: 24.8,
+    rotOrigin: "top left",
+    width: 107,
+    shadow: false,
+    href: "/interactions/unmask_the_killer",
+    condition: INTERACTION_UNLOCKED(
+      "murder_in_mitropolis",
+      "unmask_the_killer",
+    ),
+  },
+
+  // strings
+  {
+    asset: string_main_question_to_baby_photo,
+    alt: "A piece of string",
+    x: 2016,
+    y: 206,
+    width: 656,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: VAULT_COMPLETED,
+    pin: {
+      asset: pin_purple,
+      x: 2000,
+      y: 190,
+    },
+  },
+  {
+    asset: string_missing_diamond_to_murder_in_mitropolis,
+    alt: "A piece of string",
+    x: 1966,
+    y: 402,
+    width: 1432,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: MISSING_DIAMOND_COMPLETED,
+  },
+  {
+    asset: string_sidecar_photo_to_murder_in_mitropolis,
+    alt: "A piece of string",
+    x: 1222,
+    y: 646,
+    width: 2176,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition(teamState) {
+      return (
+        MISSING_DIAMOND_COMPLETED(teamState) &&
+        !MURDER_IN_MITROPOLIS_COMPLETED(teamState)
+      );
+    },
+  },
+  {
+    asset: string_rover_photo_to_murder_in_mitropolis,
+    alt: "A piece of string",
+    x: 1690,
+    y: 646,
+    width: 1708,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: MURDER_IN_MITROPOLIS_COMPLETED,
+  },
+  {
+    asset: string_sidecar_photo_to_rover_photo,
+    alt: "A piece of string",
+    x: 1222,
+    y: 1578,
+    width: 468,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: MURDER_IN_MITROPOLIS_COMPLETED,
+  },
+  {
+    asset: string_illegal_search_to_papa_photo,
+    alt: "A piece of string",
+    x: 488,
+    y: 107,
+    width: 722,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: ILLEGAL_SEARCH_UNLOCKED,
+  },
+  {
+    asset: string_background_check_to_carter_photo,
+    alt: "A piece of string",
+    x: 524,
+    y: 980,
+    width: 680,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: BACKGROUND_CHECK_UNLOCKED,
+  },
+  {
+    asset: string_katrina_photo_to_stakeout,
+    alt: "A piece of string",
+    x: 2674,
+    y: 1402,
+    width: 656,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: STAKEOUT_UNLOCKED,
+  },
+  {
+    asset: string_gladys_photo_to_paper_trail,
+    alt: "A piece of string",
+    x: 2690,
+    y: 110,
+    width: 634,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: PAPER_TRAIL_UNLOCKED,
+  },
+  {
+    asset: string_papa_photo_to_art_gallery,
+    alt: "A piece of string",
+    x: 1210,
+    y: 394,
+    width: 380,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_art_gallery"),
+    pin: {
+      asset: pin_teal,
+      x: 1565,
+      y: 1289,
+    },
+  },
+  {
+    asset: string_carter_photo_to_casino,
+    alt: "A piece of string",
+    x: 1204,
+    y: 980,
+    width: 514,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_casino"),
+    pin: {
+      asset: pin_teal,
+      x: 1702,
+      y: 1073,
+    },
+  },
+  {
+    asset: string_boardwalk_to_katrina_photo,
+    alt: "A piece of string",
+    x: 2195,
+    y: 1481,
+    width: 479,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_boardwalk"),
+    pin: {
+      asset: pin_teal,
+      x: 2179,
+      y: 1470,
+    },
+  },
+  {
+    asset: string_jewelry_store_to_gladys_photo,
+    alt: "A piece of string",
+    x: 2130,
+    y: 382,
+    width: 582,
+    rot: 0,
+    shadow: true,
+    inert: true,
+    condition: PUZZLE_SOLVED("the_jewelry_store"),
+    pin: {
+      asset: pin_teal,
+      x: 2114,
+      y: 896,
+    },
+  },
 ];
+
+const SUSPECTS: Record<string, HubSuspectSetting> = {
+  papa: {
+    status: [
+      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Arrested", color: "#D52222", condition: VAULT_COMPLETED },
+    ],
+  },
+  carter: {
+    status: [
+      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Arrested", color: "#D52222", condition: VAULT_COMPLETED },
+    ],
+  },
+  sidecar: {
+    status: [
+      { text: "Suspect", condition: HUNT_STARTED },
+      {
+        text: "Deceased",
+        color: "#D52222",
+        condition: MISSING_DIAMOND_COMPLETED,
+      },
+    ],
+  },
+  rover: {
+    status: [
+      { text: "Suspect", condition: HUNT_STARTED },
+      {
+        text: "At large",
+        color: "#D52222",
+        condition: MURDER_IN_MITROPOLIS_COMPLETED,
+      },
+      { text: "Arrested", color: "#D52222", condition: VAULT_COMPLETED },
+    ],
+  },
+  billie: {
+    status: [{ text: "Cleared", color: "#006304", condition: HUNT_STARTED }],
+  },
+  katrina: {
+    status: [
+      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Cleared", color: "#006304", condition: VAULT_COMPLETED },
+    ],
+  },
+  baby: {
+    status: [
+      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "At large", color: "#D52222", condition: VAULT_COMPLETED },
+    ],
+  },
+  gladys: {
+    status: [
+      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Arrested", color: "#D52222", condition: VAULT_COMPLETED },
+    ],
+  },
+};
 
 export function hubState(teamState: TeamHuntState): HubState {
   const rounds = Object.entries(teamState.rounds).map(([slug, roundObj]) => {
@@ -589,9 +1056,28 @@ export function hubState(teamState: TeamHuntState): HubState {
     }
   });
 
+  const suspects = Object.fromEntries(
+    Object.entries(SUSPECTS).map(([name, setting]) => {
+      return [
+        name,
+        {
+          status: setting.status.flatMap((status) => {
+            const { condition, ...rest } = status;
+            if (condition(teamState)) {
+              return [rest];
+            } else {
+              return [];
+            }
+          }),
+        } as HubSuspect,
+      ];
+    }),
+  );
+
   return {
     epoch: teamState.epoch,
     rounds,
     objects,
+    suspects,
   };
 }
