@@ -7,7 +7,9 @@ test("can log in", async ({ page }) => {
   await page.getByRole("button", { name: /Log in/i }).click();
 
   await expect(
-    page.locator('main a[href="/rounds/the_missing_diamond"]'),
+    page.locator(
+      'main a[href="/rounds/the_missing_diamond"]:has(img[alt*=map])',
+    ),
   ).toBeAttached();
 
   // Puzzle stubs are not shown outside of dev mode, but the tests run in prod mode,
