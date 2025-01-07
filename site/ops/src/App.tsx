@@ -3,6 +3,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PuzzleIcon from "@mui/icons-material/Extension";
 import MailIcon from "@mui/icons-material/Mail";
 import TeamsIcon from "@mui/icons-material/People";
+import ScaleIcon from "@mui/icons-material/Scale";
 import { Box } from "@mui/material";
 import type { Branding, Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/react-router-dom";
@@ -44,7 +45,7 @@ export default function App() {
     {
       segment: "deserted-ninja",
       title: "FerMIT Challenge",
-      icon: <PuzzleIcon />,
+      icon: <ScaleIcon />,
     },
     ...(isOpsAdmin
       ? [

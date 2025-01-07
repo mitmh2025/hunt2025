@@ -7,18 +7,19 @@ import {
   type InsertTeamRegistrationLogEntry,
   type PuzzleStateLogEntryRow,
   type InsertPuzzleStateLogEntry,
-  type DesertedNinjaRegistrationRow,
-  type DesertedNinjaSessionRow,
-  type InsertDesertedNinjaSession,
-  type UpdateDesertedNinjaSession,
+  type FermitRegistrationRow,
+  type FermitSessionRow,
+  type InsertFermitSession,
+  type UpdateFermitSession,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
 import {
-  type DesertedNinjaQuestion,
-  type DesertedNinjaSession,
-  type DesertedNinjaAnswer,
-  type DesertedNinjaRegistration,
+  type FermitQuestion,
+  type FermitQuestionJSON,
+  type FermitSession,
+  type FermitAnswer,
+  type FermitRegistration,
 } from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
@@ -264,15 +265,19 @@ declare module "knex/types/tables" {
     "team_id" | "slug" | "data"
   >;
 
-  type DesertedNinjaQuestionRow = {
+  type FermitQuestionRow = {
     id: number;
     text: string;
+    // SQLite returns JSON fields as string.
+    data: string | object;
+    /*
     geoguessr: number | null;
     answer: number;
     scoring_method: string;
+     */
   };
 
-  type DesertedNinjaSessionRow = {
+  type FermitSessionRow = {
     id: number;
     status: string;
     title: string;
@@ -280,16 +285,11 @@ declare module "knex/types/tables" {
     question_ids: string | number[];
   };
 
-  type InsertDesertedNinjaSession = Pick<
-    DesertedNinjaSessionRow,
-    "title" | "question_ids"
-  >;
+  type InsertFermitSession = Pick<FermitSessionRow, "title" | "question_ids">;
 
-  type UpdateDesertedNinjaSession = Partial<
-    Omit<DesertedNinjaSessionRow, "id">
-  >;
+  type UpdateFermitSession = Partial<Omit<FermitSessionRow, "id">>;
 
-  type DesertedNinjaAnswerRow = {
+  type FermitAnswerRow = {
     id: number;
     session_id: number;
     team_id: number;
@@ -297,7 +297,7 @@ declare module "knex/types/tables" {
     answer: number | null;
   };
 
-  type DesertedNinjaRegistrationRow = {
+  type FermitRegistrationRow = {
     id: number;
     session_id: number;
     team_id: number;
@@ -322,14 +322,14 @@ declare module "knex/types/tables" {
       PuzzleStateLogEntryRow,
       InsertPuzzleStateLogEntry
     >;
-    deserted_ninja_questions: DesertedNinjaQuestionRow;
-    deserted_ninja_sessions: Knex.Knex.CompositeTableType<
-      DesertedNinjaSessionRow,
-      InsertDesertedNinjaSession,
-      UpdateDesertedNinjaSession
+    fermit_questions: FermitQuestionRow;
+    fermit_sessions: Knex.Knex.CompositeTableType<
+      FermitSessionRow,
+      InsertFermitSession,
+      UpdateFermitSession
     >;
-    deserted_ninja_answers: DesertedNinjaAnswerRow;
-    deserted_ninja_registrations: DesertedNinjaRegistrationRow;
+    fermit_answers: FermitAnswerRow;
+    fermit_registrations: FermitRegistrationRow;
   }
 }
 
@@ -587,33 +587,37 @@ export async function appendPuzzleStateLog(
     });
 }
 
-export async function getDesertedNinjaQuestions(
+export async function getFermitQuestions(
   knex: Knex.Knex,
-): Promise<DesertedNinjaQuestion[]> {
+): Promise<FermitQuestion[]> {
   // TODO: is there a better way to do this?
   // Or should the properties be renamed to not be camelCase?
-  return (await knex("deserted_ninja_questions").select()).map((obj) => ({
-    id: obj.id,
-    text: obj.text,
-    geoguessr: obj.geoguessr,
-    answer: obj.answer,
-    scoringMethod: obj.scoring_method,
-  }));
+  return (await knex("fermit_questions").select()).map((obj) => {
+    const data = fixData(obj.data) as FermitQuestionJSON;
+    return {
+      id: obj.id,
+      text: obj.text,
+      geoguessr: data.geoguessr,
+      answer: data.answer,
+      scoringMethod: data.scoringMethod,
+      categories: data.categories,
+    };
+  });
 }
 
-export async function insertDesertedNinjaQuestions(
-  questions: DesertedNinjaQuestion[],
+export async function insertFermitQuestions(
+  questions: FermitQuestion[],
   knex: Knex.Knex,
-): Promise<DesertedNinjaQuestion[]> {
-  await knex("deserted_ninja_questions").insert(questions);
+): Promise<FermitQuestion[]> {
+  await knex("fermit_questions").insert(questions);
   return [];
 }
 
-export async function getDesertedNinjaSession(
+export async function getFermitSession(
   sessionId: number,
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession | undefined> {
-  const sessionRows = await knex("deserted_ninja_sessions")
+): Promise<FermitSession | undefined> {
+  const sessionRows = await knex("fermit_sessions")
     .where("id", sessionId)
     .select();
 
@@ -635,10 +639,10 @@ export async function getDesertedNinjaSession(
   }
 }
 
-export async function getDesertedNinjaSessions(
+export async function getFermitSessions(
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession[]> {
-  const sessionRows = await knex("deserted_ninja_sessions").select();
+): Promise<FermitSession[]> {
+  const sessionRows = await knex("fermit_sessions").select();
 
   return sessionRows.map((obj) => ({
     id: obj.id,
@@ -649,18 +653,18 @@ export async function getDesertedNinjaSessions(
   }));
 }
 
-export async function insertDesertedNinjaSession(
-  session: InsertDesertedNinjaSession,
+export async function insertFermitSession(
+  session: InsertFermitSession,
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession | undefined> {
-  return await knex("deserted_ninja_sessions")
+): Promise<FermitSession | undefined> {
+  return await knex("fermit_sessions")
     .insert({
       title: session.title,
       question_ids: session.question_ids,
     })
     .returning(["id", "title", "status", "question_ids"])
     .then((objs) => {
-      const insertedSession = objs[0] as DesertedNinjaSessionRow;
+      const insertedSession = objs[0] as FermitSessionRow;
 
       return {
         id: insertedSession.id,
@@ -672,12 +676,12 @@ export async function insertDesertedNinjaSession(
     });
 }
 
-export async function updateDesertedNinjaSession(
+export async function updateFermitSession(
   id: number,
-  session: UpdateDesertedNinjaSession,
+  session: UpdateFermitSession,
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession | undefined> {
-  return await knex("deserted_ninja_sessions")
+): Promise<FermitSession | undefined> {
+  return await knex("fermit_sessions")
     .where("id", id)
     .update(session)
     .returning(["id", "title", "status", "question_ids"])
@@ -686,7 +690,7 @@ export async function updateDesertedNinjaSession(
       if (objs.length === 0) {
         return undefined;
       }
-      const insertedSession = objs[0] as DesertedNinjaSessionRow;
+      const insertedSession = objs[0] as FermitSessionRow;
       return {
         id: insertedSession.id,
         title: insertedSession.title,
@@ -697,11 +701,11 @@ export async function updateDesertedNinjaSession(
     });
 }
 
-export async function getDesertedNinjaAnswers(
+export async function getFermitAnswers(
   sessionId: number,
   knex: Knex.Knex,
-): Promise<DesertedNinjaAnswer[]> {
-  return await knex("deserted_ninja_answers")
+): Promise<FermitAnswer[]> {
+  return await knex("fermit_answers")
     .where("session_id", sessionId)
     .select()
     .returning(["session_id", "team_id", "question_index", "answer"])
@@ -715,12 +719,12 @@ export async function getDesertedNinjaAnswers(
     );
 }
 
-export async function insertDesertedNinjaAnswers(
-  answers: DesertedNinjaAnswer[],
+export async function insertFermitAnswers(
+  answers: FermitAnswer[],
   knex: Knex.Knex,
 ): Promise<number> {
   return (
-    await knex("deserted_ninja_answers")
+    await knex("fermit_answers")
       .insert(
         answers.map((ans) => ({
           session_id: ans.sessionId,
@@ -735,17 +739,17 @@ export async function insertDesertedNinjaAnswers(
   ).length;
 }
 
-export async function getDesertedNinjaRegistrations(
+export async function getFermitRegistrations(
   sessionId: number | undefined,
   knex: Knex.Knex,
-): Promise<DesertedNinjaRegistration[]> {
+): Promise<FermitRegistration[]> {
   let registrationRows;
   if (sessionId) {
-    registrationRows = await knex("deserted_ninja_registrations")
+    registrationRows = await knex("fermit_registrations")
       .where("session_id", sessionId)
       .select();
   } else {
-    registrationRows = await knex("deserted_ninja_registrations").select();
+    registrationRows = await knex("fermit_registrations").select();
   }
 
   return registrationRows.map((obj) => ({
@@ -756,20 +760,20 @@ export async function getDesertedNinjaRegistrations(
   }));
 }
 
-export async function insertDesertedNinjaRegistration(
+export async function insertFermitRegistration(
   sessionId: number,
   teamId: number,
   status: string,
   knex: Knex.Knex,
-): Promise<DesertedNinjaRegistration | undefined> {
-  return await knex("deserted_ninja_registrations")
+): Promise<FermitRegistration | undefined> {
+  return await knex("fermit_registrations")
     .insert({ session_id: sessionId, team_id: teamId, status: status })
     .returning(["id", "session_id", "team_id", "status"])
     .then((objs) => {
       if (objs.length === 0) {
         return undefined;
       }
-      const insertedEntry = objs[0] as DesertedNinjaRegistrationRow;
+      const insertedEntry = objs[0] as FermitRegistrationRow;
       return {
         sessionId: insertedEntry.session_id,
         teamId: insertedEntry.team_id,
@@ -778,13 +782,13 @@ export async function insertDesertedNinjaRegistration(
     });
 }
 
-export async function deleteDesertedNinjaRegistration(
+export async function deleteFermitRegistration(
   sessionId: number,
   teamId: number,
   knex: Knex.Knex,
 ): Promise<boolean> {
   return (
-    (await knex("deserted_ninja_registrations")
+    (await knex("fermit_registrations")
       .where({
         session_id: sessionId,
         team_id: teamId,
@@ -793,13 +797,13 @@ export async function deleteDesertedNinjaRegistration(
   );
 }
 
-export async function updateDesertedNinjaRegistration(
+export async function updateFermitRegistration(
   sessionId: number,
   teamId: number,
   status: string,
   knex: Knex.Knex,
-): Promise<DesertedNinjaRegistration> {
-  await knex("deserted_ninja_registrations")
+): Promise<FermitRegistration> {
+  await knex("fermit_registrations")
     .where({
       session_id: sessionId,
       team_id: teamId,

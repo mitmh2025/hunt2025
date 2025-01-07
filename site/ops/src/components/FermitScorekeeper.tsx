@@ -2,15 +2,15 @@ import { useContext, createContext, useEffect, useState, useRef } from "react";
 import { styled } from "styled-components";
 import { useInterval } from "usehooks-ts";
 import {
-  type DesertedNinjaSession,
-  type DesertedNinjaAnswer,
-  type DesertedNinjaRegistration,
+  type FermitSession,
+  type FermitAnswer,
+  type FermitRegistration,
 } from "../../../lib/api/admin_contract";
 import {
-  useDesertedNinjaData,
-  useDesertedNinjaDispatch,
-  DNDataActionType,
-} from "../DesertedNinjaDataProvider";
+  useFermitData,
+  useFermitDispatch,
+  FermitDataActionType,
+} from "../FermitDataProvider";
 import { useOpsData } from "../OpsDataProvider";
 
 type TeamWithStatus = {
@@ -87,15 +87,15 @@ const TeamStatus = styled.div`
 const ToggleButton = styled.button``;
 
 function TeamStatusRow({ team }: { team: TeamWithStatus }) {
-  const dnData = useDesertedNinjaData();
-  const dnDispatch = useDesertedNinjaDispatch();
+  const fermitData = useFermitData();
+  const dispatch = useFermitDispatch();
   const opsData = useOpsData();
 
   function toggleCheckIn(_e: React.MouseEvent<HTMLButtonElement>) {
-    const session = dnData.activeSession;
+    const session = fermitData.activeSession;
     if (session) {
       opsData.adminClient
-        .updateDesertedNinjaRegistration({
+        .updateFermitRegistration({
           params: {
             sessionId: session.id.toString(),
             teamId: team.id.toString(),
@@ -107,7 +107,7 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
         })
         .then(
           ({ body }) => {
-            const regs = body as DesertedNinjaRegistration[];
+            const regs = body as FermitRegistration[];
             const newSession = {
               id: session.id,
               title: session.title,
@@ -118,13 +118,13 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
                 status: reg.status,
               })),
             };
-            if (dnDispatch) {
-              dnDispatch({
-                type: DNDataActionType.SET_ACTIVE_SESSION,
+            if (dispatch) {
+              dispatch({
+                type: FermitDataActionType.SET_ACTIVE_SESSION,
                 activeSession: newSession,
               });
-              dnDispatch({
-                type: DNDataActionType.SESSION_UPDATE,
+              dispatch({
+                type: FermitDataActionType.SESSION_UPDATE,
                 session: newSession,
               });
             }
@@ -163,12 +163,12 @@ const TeamStatusHeading = styled.div`
 function NotStartedPanel() {
   // TODO: fill in team status, allow scorekeeper to check in teams
   // TODO: hook up Start Session button
-  const dnData = useDesertedNinjaData();
-  const dnDispatch = useDesertedNinjaDispatch();
+  const fermitData = useFermitData();
+  const dispatch = useFermitDispatch();
   const opsData = useOpsData();
 
   function startSession() {
-    const session = dnData.activeSession;
+    const session = fermitData.activeSession;
     const adminClient = opsData.adminClient;
 
     if (session) {
@@ -179,20 +179,20 @@ function NotStartedPanel() {
           status: "in_progress",
         };
         adminClient
-          .updateDesertedNinjaSession({
+          .updateFermitSession({
             params: { sessionId: session.id.toString() },
             body: newSession,
           })
           .then(
             ({ body }) => {
-              const s = body as DesertedNinjaSession;
-              if (dnDispatch) {
-                dnDispatch({
-                  type: DNDataActionType.SESSION_UPDATE,
+              const s = body as FermitSession;
+              if (dispatch) {
+                dispatch({
+                  type: FermitDataActionType.SESSION_UPDATE,
                   session: s,
                 });
-                dnDispatch({
-                  type: DNDataActionType.SET_ACTIVE_SESSION,
+                dispatch({
+                  type: FermitDataActionType.SET_ACTIVE_SESSION,
                   activeSession: s,
                 });
               }
@@ -211,7 +211,7 @@ function NotStartedPanel() {
         <div>This session has not yet started.</div>
         <TeamStatusBox>
           <TeamStatusHeading>Team Status:</TeamStatusHeading>
-          {dnData.activeSession?.teams.map((team) => (
+          {fermitData.activeSession?.teams.map((team) => (
             <TeamStatusRow team={team} key={team.id} />
           ))}
         </TeamStatusBox>
@@ -223,9 +223,9 @@ function NotStartedPanel() {
 
 function ScorekeeperPanel() {
   const opsData = useOpsData();
-  const dnData = useDesertedNinjaData();
-  const dnDispatch = useDesertedNinjaDispatch();
-  const session = dnData.activeSession;
+  const fermitData = useFermitData();
+  const dispatch = useFermitDispatch();
+  const session = fermitData.activeSession;
   const [answerMap, setAnswers] = useState<Map<string, number>>(new Map());
   const formRef: React.RefObject<HTMLFormElement> =
     useRef<HTMLFormElement>(null);
@@ -233,12 +233,12 @@ function ScorekeeperPanel() {
   useEffect(() => {
     if (session) {
       opsData.adminClient
-        .getDesertedNinjaAnswers({
+        .getFermitAnswers({
           params: { sessionId: session.id.toString() },
         })
         .then(
           ({ body }) => {
-            const answerList = body as DesertedNinjaAnswer[];
+            const answerList = body as FermitAnswer[];
             const a = new Map<string, number>();
             answerList.forEach((ans) => {
               const key = `${ans.sessionId}_${ans.teamId}_${ans.questionIndex}`;
@@ -274,7 +274,7 @@ function ScorekeeperPanel() {
       return;
     }
 
-    const answerChanges: DesertedNinjaAnswer[] = [];
+    const answerChanges: FermitAnswer[] = [];
     const newAnswers = new Map<string, number>(answerMap.entries());
 
     // read current answers
@@ -333,7 +333,7 @@ function ScorekeeperPanel() {
       setAnswers(newAnswers);
       // TODO: should this have different behavior based on whether the save succeeds?
       void opsData.adminClient
-        .saveDesertedNinjaAnswers({
+        .saveFermitAnswers({
           params: { sessionId: session.id.toString() },
           body: answerChanges,
         })
@@ -344,25 +344,25 @@ function ScorekeeperPanel() {
   }
 
   function completeSession() {
-    const session = dnData.activeSession;
+    const session = fermitData.activeSession;
     if (session) {
       // first force a save?
       formRef.current?.requestSubmit();
 
       opsData.adminClient
-        .completeDesertedNinjaSession({
+        .completeFermitSession({
           params: { sessionId: session.id.toString() },
         })
         .then(
           ({ body }) => {
-            if (dnDispatch) {
-              const s = body as DesertedNinjaSession;
-              dnDispatch({
-                type: DNDataActionType.SESSION_UPDATE,
+            if (dispatch) {
+              const s = body as FermitSession;
+              dispatch({
+                type: FermitDataActionType.SESSION_UPDATE,
                 session: s,
               });
-              dnDispatch({
-                type: DNDataActionType.SET_ACTIVE_SESSION,
+              dispatch({
+                type: FermitDataActionType.SET_ACTIVE_SESSION,
                 activeSession: s,
               });
             }
@@ -436,7 +436,7 @@ function ScorekeeperPanel() {
   }
 }
 
-export function DesertedNinjaScorekeeper() {
+export function FermitScorekeeper() {
   return (
     <>
       <ScorekeeperPanel />

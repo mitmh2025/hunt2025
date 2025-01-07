@@ -38,10 +38,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import {
   adminContract,
-  //  type DesertedNinjaQuestion,
-  //  type DesertedNinjaSession,
-  //  type DesertedNinjaAnswer,
-  type DesertedNinjaRegistration,
+  type FermitRegistration,
 } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
 import { dataContract } from "../../lib/api/data_contract";
@@ -65,17 +62,17 @@ import {
   puzzleStateLog,
   registerTeam,
   teamRegistrationLog,
-  getDesertedNinjaQuestions,
-  getDesertedNinjaSession,
-  getDesertedNinjaSessions,
-  createDesertedNinjaSession,
-  updateDesertedNinjaSession,
-  getDesertedNinjaRegistrations,
-  createDesertedNinjaRegistration,
-  deleteDesertedNinjaRegistration,
-  updateDesertedNinjaRegistration,
-  getDesertedNinjaAnswers,
-  saveDesertedNinjaAnswers,
+  getFermitQuestions,
+  getFermitSession,
+  getFermitSessions,
+  createFermitSession,
+  updateFermitSession,
+  getFermitRegistrations,
+  createFermitRegistration,
+  deleteFermitRegistration,
+  updateFermitRegistration,
+  getFermitAnswers,
+  saveFermitAnswers,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
@@ -1459,7 +1456,7 @@ export async function getRouter({
           };
         },
       },
-      createDesertedNinjaSession: {
+      createFermitSession: {
         middleware: [adminAuthMiddleware],
         handler: async ({ body: { title } }) => {
           // generate random set of questions
@@ -1471,7 +1468,7 @@ export async function getRouter({
           // partition the questions
           const normalQuestions: number[] = [];
           const geoguessrQuestions: number[] = [];
-          (await getDesertedNinjaQuestions(knex)).forEach((q) =>
+          (await getFermitQuestions(knex)).forEach((q) =>
             (q.geoguessr === null ? normalQuestions : geoguessrQuestions).push(
               q.id,
             ),
@@ -1491,7 +1488,7 @@ export async function getRouter({
             ...shuffledG.slice(0, 4),
           ]);
 
-          const newSession = await createDesertedNinjaSession(title, ids, knex);
+          const newSession = await createFermitSession(title, ids, knex);
           if (newSession) {
             return Promise.resolve({
               status: 200 as const,
@@ -1505,25 +1502,25 @@ export async function getRouter({
           }
         },
       },
-      updateDesertedNinjaSession: {
+      updateFermitSession: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId }, body }) => {
           if (sessionId === body.id.toString()) {
-            const newSession = await updateDesertedNinjaSession(body, knex);
+            const newSession = await updateFermitSession(body, knex);
 
             if (newSession) {
               if (body.status === "in_progress") {
                 // when transitioning from "not_started" to "in_progress",
                 // mark any team not checked in as no-show
-                const promises: Promise<DesertedNinjaRegistration>[] = [];
-                const regs = await getDesertedNinjaRegistrations(
+                const promises: Promise<FermitRegistration>[] = [];
+                const regs = await getFermitRegistrations(
                   parseInt(sessionId, 10),
                   knex,
                 );
                 regs.forEach((reg) => {
                   if (reg.status === "not_checked_in") {
                     promises.push(
-                      updateDesertedNinjaRegistration(
+                      updateFermitRegistration(
                         reg.sessionId,
                         reg.teamId,
                         "no_show",
@@ -1561,15 +1558,15 @@ export async function getRouter({
           });
         },
       },
-      completeDesertedNinjaSession: {
+      completeFermitSession: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId } }) => {
           // To close out a session, score each team then update the puzzle-specific team_state log
 
           const [session, answers, allQuestions] = await Promise.all([
-            getDesertedNinjaSession(parseInt(sessionId, 10), knex),
-            getDesertedNinjaAnswers(parseInt(sessionId, 10), knex),
-            getDesertedNinjaQuestions(knex),
+            getFermitSession(parseInt(sessionId, 10), knex),
+            getFermitAnswers(parseInt(sessionId, 10), knex),
+            getFermitQuestions(knex),
           ]);
 
           if (!session) {
@@ -1704,7 +1701,7 @@ export async function getRouter({
           }
 
           // when all of this is done, set the status to complete
-          const newSession = await updateDesertedNinjaSession(
+          const newSession = await updateFermitSession(
             {
               ...session,
               status: "complete",
@@ -1725,7 +1722,7 @@ export async function getRouter({
           }
         },
       },
-      createDesertedNinjaQuestions: {
+      createFermitQuestions: {
         middleware: [adminAuthMiddleware],
         handler: ({ body }) => {
           // TODO: implement creation + saving to DB
@@ -1738,50 +1735,45 @@ export async function getRouter({
                 geoguessr: null,
                 answer: body.length,
                 scoringMethod: "percent",
+                categories: [],
               },
             ],
           });
         },
       },
-      getDesertedNinjaQuestions: {
+      getFermitQuestions: {
         middleware: [adminAuthMiddleware],
         handler: async () => {
           return Promise.resolve({
             status: 200 as const,
-            body: await getDesertedNinjaQuestions(knex),
+            body: await getFermitQuestions(knex),
           });
         },
       },
-      getDesertedNinjaSessions: {
+      getFermitSessions: {
         middleware: [adminAuthMiddleware],
         handler: async () => {
           return Promise.resolve({
             status: 200 as const,
-            body: await getDesertedNinjaSessions(knex),
+            body: await getFermitSessions(knex),
           });
         },
       },
-      getDesertedNinjaAnswers: {
+      getFermitAnswers: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId } }) => {
-          const answers = await getDesertedNinjaAnswers(
-            parseInt(sessionId, 10),
-            knex,
-          );
+          const answers = await getFermitAnswers(parseInt(sessionId, 10), knex);
           return Promise.resolve({
             status: 200 as const,
             body: answers,
           });
         },
       },
-      saveDesertedNinjaAnswers: {
+      saveFermitAnswers: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId }, body }) => {
           const answers = body;
-          const session = await getDesertedNinjaSession(
-            parseInt(sessionId, 10),
-            knex,
-          );
+          const session = await getFermitSession(parseInt(sessionId, 10), knex);
           if (!session) {
             return Promise.resolve({
               status: 404 as const,
@@ -1797,7 +1789,7 @@ export async function getRouter({
 
           // TODO: filter the passed in answers to the sessionId
           console.log(answers);
-          const updateCount = await saveDesertedNinjaAnswers(answers, knex);
+          const updateCount = await saveFermitAnswers(answers, knex);
           console.log(`${updateCount} vs ${answers.length.toString()}`);
 
           return Promise.resolve({
@@ -1806,41 +1798,35 @@ export async function getRouter({
           });
         },
       },
-      createDesertedNinjaRegistration: {
+      createFermitRegistration: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId, teamId } }) => {
-          await createDesertedNinjaRegistration(
+          await createFermitRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),
             knex,
           );
           return Promise.resolve({
             status: 200 as const,
-            body: await getDesertedNinjaRegistrations(
-              parseInt(sessionId, 10),
-              knex,
-            ),
+            body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
           });
         },
       },
-      deleteDesertedNinjaRegistration: {
+      deleteFermitRegistration: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId, teamId } }) => {
-          await deleteDesertedNinjaRegistration(
+          await deleteFermitRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),
             knex,
           );
           return Promise.resolve({
             status: 200 as const,
-            body: await getDesertedNinjaRegistrations(
-              parseInt(sessionId, 10),
-              knex,
-            ),
+            body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
           });
         },
       },
-      updateDesertedNinjaRegistration: {
+      updateFermitRegistration: {
         middleware: [adminAuthMiddleware],
         handler: async ({
           params: { sessionId, teamId },
@@ -1852,7 +1838,7 @@ export async function getRouter({
           //   if session in progress: nothing
           //   if session complete:    nothing
 
-          await updateDesertedNinjaRegistration(
+          await updateFermitRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),
             status,
@@ -1860,10 +1846,7 @@ export async function getRouter({
           );
           return Promise.resolve({
             status: 200 as const,
-            body: await getDesertedNinjaRegistrations(
-              parseInt(sessionId, 10),
-              knex,
-            ),
+            body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
           });
         },
       },

@@ -7,8 +7,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
-import DesertedNinjaStub from "./routes/DesertedNinja.tsx";
 import EmailTeams from "./routes/EmailTeams.tsx";
+import FermitChallenge from "./routes/FermitChallenge.tsx";
 import Home from "./routes/Home.tsx";
 import Puzzles from "./routes/Puzzles.tsx";
 import Team from "./routes/Team.tsx";
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
           },
           {
             path: "deserted-ninja",
-            Component: DesertedNinjaStub,
+            Component: FermitChallenge,
           },
         ],
       },

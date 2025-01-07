@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import { type DesertedNinjaSession } from "../../../lib/api/admin_contract";
+import { type FermitSession } from "../../../lib/api/admin_contract";
 import {
-  useDesertedNinjaData,
-  useDesertedNinjaDispatch,
-  DNDataActionType,
-} from "../DesertedNinjaDataProvider";
+  useFermitData,
+  useFermitDispatch,
+  FermitDataActionType,
+} from "../FermitDataProvider";
 
-const SessionSelectContainer = styled.div`
+const SessionSelectorContainer = styled.div`
   border: 1px solid black;
   width: 90%;
   padding: 2px 0 0 5px;
   margin: 0px auto;
 `;
-const SessionSelectOptions = styled.div`
+const SessionSelectorOptions = styled.div`
   font-size: 80%;
 `;
-const SessionSelectHeader = styled.div`
+const SessionSelectorHeader = styled.div`
   font-size: 150%;
   font-weight: bold;
   margin-bottom: 5px;
@@ -33,15 +33,14 @@ const RowTitle = styled.div`
 `;
 const SelectButton = styled.button``;
 
-function SessionSelectRow({
+function SessionSelectorRow({
   buttonText,
   session,
 }: {
   buttonText: string;
-  session: DesertedNinjaSession;
+  session: FermitSession;
 }) {
-  //  const dnData = useDesertedNinjaData();
-  const dnDispatch = useDesertedNinjaDispatch();
+  const dispatch = useFermitDispatch();
 
   return (
     <>
@@ -51,9 +50,9 @@ function SessionSelectRow({
         </RowTitle>
         <SelectButton
           onClick={() => {
-            if (dnDispatch) {
-              dnDispatch({
-                type: DNDataActionType.SET_ACTIVE_SESSION,
+            if (dispatch) {
+              dispatch({
+                type: FermitDataActionType.SET_ACTIVE_SESSION,
                 activeSession: session,
               });
             }
@@ -66,22 +65,22 @@ function SessionSelectRow({
   );
 }
 
-export function SessionSelect({ buttonText }: { buttonText: string }) {
-  const dnData = useDesertedNinjaData();
-  const dnDispatch = useDesertedNinjaDispatch();
+export function FermitSessionSelector({ buttonText }: { buttonText: string }) {
+  const fermitData = useFermitData();
+  const dispatch = useFermitDispatch();
 
   const [hidePast, setHidePast] = useState<boolean>(true);
 
   // TODO: add a callback hook here so that when back is pressed,
   // the scorekeeper view makes sure to save?
-  if (dnData.activeSession) {
+  if (fermitData.activeSession) {
     return (
       <>
         <button
           onClick={() => {
-            if (dnDispatch) {
-              dnDispatch({
-                type: DNDataActionType.SET_ACTIVE_SESSION,
+            if (dispatch) {
+              dispatch({
+                type: FermitDataActionType.SET_ACTIVE_SESSION,
                 activeSession: null,
               });
             }
@@ -94,9 +93,9 @@ export function SessionSelect({ buttonText }: { buttonText: string }) {
   } else {
     return (
       <>
-        <SessionSelectContainer>
-          <SessionSelectHeader>Session Selection</SessionSelectHeader>
-          <SessionSelectOptions>
+        <SessionSelectorContainer>
+          <SessionSelectorHeader>Session Selection</SessionSelectorHeader>
+          <SessionSelectorOptions>
             <label>
               <input
                 type="checkbox"
@@ -107,20 +106,20 @@ export function SessionSelect({ buttonText }: { buttonText: string }) {
               />
               Hide completed events
             </label>
-          </SessionSelectOptions>
+          </SessionSelectorOptions>
           <SessionList>
             {(hidePast
-              ? dnData.sessions.filter((s) => s.status !== "complete")
-              : dnData.sessions
+              ? fermitData.sessions.filter((s) => s.status !== "complete")
+              : fermitData.sessions
             ).map((session) => (
-              <SessionSelectRow
+              <SessionSelectorRow
                 session={session}
                 key={session.id}
                 buttonText={buttonText}
               />
             ))}
           </SessionList>
-        </SessionSelectContainer>
+        </SessionSelectorContainer>
       </>
     );
   }

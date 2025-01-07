@@ -3,10 +3,10 @@ import Reveal from "reveal.js";
 import { styled } from "styled-components";
 import { useInterval } from "usehooks-ts";
 import {
-  type DesertedNinjaQuestion,
-  type DesertedNinjaSession,
+  type FermitQuestion,
+  type FermitSession,
 } from "../../../lib/api/admin_contract";
-import { useDesertedNinjaData } from "../DesertedNinjaDataProvider";
+import { useFermitData } from "../FermitDataProvider";
 import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
 
 import "reveal.js/dist/reveal.css";
@@ -34,7 +34,7 @@ function RevealContainer({
   updateTimer: React.Dispatch<
     React.ReducerAction<React.Reducer<TimerData, TimerAction>>
   >;
-  session: DesertedNinjaSession | null;
+  session: FermitSession | null;
 }) {
   const deckRef = useRef<Reveal.Api | null>(null);
 
@@ -205,7 +205,7 @@ function QuestionSlide({
   questionNumber,
   timer,
 }: {
-  question: DesertedNinjaQuestion;
+  question: FermitQuestion;
   questionNumber: number;
   timer: TimerData;
 }) {
@@ -236,9 +236,9 @@ function QuestionSlide({
   }
 }
 
-export function DesertedNinjaPresentation() {
+export function FermitPresentation() {
   let contents = null;
-  const dnData = useDesertedNinjaData();
+  const fermitData = useFermitData();
 
   const [timer, updateTimer] = useReducer(
     (t: TimerData, { type }: { type: string }) => {
@@ -279,7 +279,7 @@ export function DesertedNinjaPresentation() {
     },
   );
 
-  const session = dnData.activeSession;
+  const session = fermitData.activeSession;
 
   if (!session) {
     contents = (
@@ -291,7 +291,7 @@ export function DesertedNinjaPresentation() {
     let firstGeoguessrIndex = -1;
     const questionSlides = session.questionIds.map(
       (questionId: number, index: number) => {
-        const question = dnData.questions.get(questionId);
+        const question = fermitData.questions.get(questionId);
         if (question) {
           if (firstGeoguessrIndex === -1 && question.geoguessr !== null) {
             firstGeoguessrIndex = index;

@@ -1,19 +1,19 @@
 import { styled } from "styled-components";
 import {
-  type DesertedNinjaSession,
-  type DesertedNinjaQuestion,
-  type DesertedNinjaRegistration,
+  type FermitSession,
+  type FermitQuestion,
+  type FermitRegistration,
 } from "../../../lib/api/admin_contract";
 import LinkedImage from "../../../src/frontend/components/LinkedImage";
 import {
-  useDesertedNinjaData,
-  useDesertedNinjaDispatch,
-  DNDataActionType,
-} from "../DesertedNinjaDataProvider";
+  useFermitData,
+  useFermitDispatch,
+  FermitDataActionType,
+} from "../FermitDataProvider";
 import { useOpsData } from "../OpsDataProvider";
 import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
 import { type TeamData } from "../opsdata/types";
-import { TeamSelector } from "./TeamSelector";
+import { FermitTeamSelector } from "./FermitTeamSelector";
 
 const MiniImage = styled.div`
   width: 10%;
@@ -40,7 +40,7 @@ function SessionQuestionDetails({
   questions,
 }: {
   questionIds: number[];
-  questions: Map<number, DesertedNinjaQuestion>;
+  questions: Map<number, FermitQuestion>;
 }) {
   const questionElts = questionIds.map((qid) => {
     const question = questions.get(qid);
@@ -88,14 +88,14 @@ const ToggleButton = styled.button``;
 
 function SessionTeamEntry({ team }: { team: TeamData }) {
   const opsData = useOpsData();
-  const dnData = useDesertedNinjaData();
-  const dnDispatch = useDesertedNinjaDispatch();
+  const fermitData = useFermitData();
+  const dispatch = useFermitDispatch();
 
   function unregisterTeam(teamId: number) {
-    const session = dnData.activeSession;
+    const session = fermitData.activeSession;
     if (session) {
       opsData.adminClient
-        .deleteDesertedNinjaRegistration({
+        .deleteFermitRegistration({
           params: {
             sessionId: session.id.toString(),
             teamId: teamId.toString(),
@@ -103,7 +103,7 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
         })
         .then(
           ({ body }) => {
-            const regs = body as DesertedNinjaRegistration[];
+            const regs = body as FermitRegistration[];
             const newSession = {
               id: session.id,
               title: session.title,
@@ -114,13 +114,13 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
                 status: reg.status,
               })),
             };
-            if (dnDispatch) {
-              dnDispatch({
-                type: DNDataActionType.SET_ACTIVE_SESSION,
+            if (dispatch) {
+              dispatch({
+                type: FermitDataActionType.SET_ACTIVE_SESSION,
                 activeSession: newSession,
               });
-              dnDispatch({
-                type: DNDataActionType.SESSION_UPDATE,
+              dispatch({
+                type: FermitDataActionType.SESSION_UPDATE,
                 session: newSession,
               });
             }
@@ -132,7 +132,7 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
     }
   }
 
-  if (dnData.activeSession?.status === "not_started") {
+  if (fermitData.activeSession?.status === "not_started") {
     return (
       <TeamRegistrationContainer>
         <TeamName>{team.name.slice(0, 40)}</TeamName>
@@ -152,14 +152,14 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
 
 function SessionDetails() {
   const opsData = useOpsData();
-  const dnData = useDesertedNinjaData();
-  const dnDispatch = useDesertedNinjaDispatch();
+  const fermitData = useFermitData();
+  const dispatch = useFermitDispatch();
 
   function registerTeam(teamId: number) {
-    const session = dnData.activeSession;
+    const session = fermitData.activeSession;
     if (session) {
       opsData.adminClient
-        .createDesertedNinjaRegistration({
+        .createFermitRegistration({
           params: {
             sessionId: session.id.toString(),
             teamId: teamId.toString(),
@@ -167,7 +167,7 @@ function SessionDetails() {
         })
         .then(
           ({ body }) => {
-            const regs = body as DesertedNinjaRegistration[];
+            const regs = body as FermitRegistration[];
             const newSession = {
               id: session.id,
               title: session.title,
@@ -178,13 +178,13 @@ function SessionDetails() {
                 status: reg.status,
               })),
             };
-            if (dnDispatch) {
-              dnDispatch({
-                type: DNDataActionType.SET_ACTIVE_SESSION,
+            if (dispatch) {
+              dispatch({
+                type: FermitDataActionType.SET_ACTIVE_SESSION,
                 activeSession: newSession,
               });
-              dnDispatch({
-                type: DNDataActionType.SESSION_UPDATE,
+              dispatch({
+                type: FermitDataActionType.SESSION_UPDATE,
                 session: newSession,
               });
             }
@@ -197,31 +197,29 @@ function SessionDetails() {
     }
   }
   function createSession(title: string) {
-    opsData.adminClient
-      .createDesertedNinjaSession({ body: { title: title } })
-      .then(
-        ({ body }) => {
-          const newSession = body as DesertedNinjaSession;
-          const newSessions = [...dnData.sessions, newSession];
-          if (dnDispatch) {
-            dnDispatch({
-              type: DNDataActionType.SET_ACTIVE_SESSION,
-              activeSession: newSession,
-            });
-            dnDispatch({
-              type: DNDataActionType.SET_SESSIONS,
-              sessions: newSessions,
-            });
-          }
-        },
-        (reason) => {
-          console.log(reason);
-          console.log("oh no ${reason}");
-        },
-      );
+    opsData.adminClient.createFermitSession({ body: { title: title } }).then(
+      ({ body }) => {
+        const newSession = body as FermitSession;
+        const newSessions = [...fermitData.sessions, newSession];
+        if (dispatch) {
+          dispatch({
+            type: FermitDataActionType.SET_ACTIVE_SESSION,
+            activeSession: newSession,
+          });
+          dispatch({
+            type: FermitDataActionType.SET_SESSIONS,
+            sessions: newSessions,
+          });
+        }
+      },
+      (reason) => {
+        console.log(reason);
+        console.log("oh no ${reason}");
+      },
+    );
   }
 
-  const session = dnData.activeSession;
+  const session = fermitData.activeSession;
   if (session) {
     const signedUpDivs = opsData.teams
       .filter((t) => session.teams.find((elt) => elt.id === t.teamId))
@@ -231,7 +229,7 @@ function SessionDetails() {
       session.status === "not_started" ? (
         <RegistrationBox>
           <div>Register a Team</div>
-          <TeamSelector
+          <FermitTeamSelector
             submitCallback={registerTeam}
             exclude={session.teams.map(({ id }) => id)}
           />
@@ -252,7 +250,7 @@ function SessionDetails() {
         {registrationBox}
         <SessionQuestionDetails
           questionIds={session.questionIds}
-          questions={dnData.questions}
+          questions={fermitData.questions}
         />
       </>
     );
@@ -277,7 +275,7 @@ function SessionDetails() {
   }
 }
 
-export function DesertedNinjaScheduling() {
+export function FermitScheduling() {
   return (
     <>
       <SessionDetails />

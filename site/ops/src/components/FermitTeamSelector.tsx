@@ -6,7 +6,7 @@ type ITeamSelectorProps = {
   includeOnly?: number[];
 };
 
-export function TeamSelector({
+export function FermitTeamSelector({
   submitCallback,
   exclude = [],
   includeOnly = [],

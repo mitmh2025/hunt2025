@@ -5,10 +5,10 @@ import {
   type InsertPuzzleStateLogEntry,
 } from "knex/types/tables";
 import {
-  type DesertedNinjaQuestion,
-  type DesertedNinjaSession,
-  type DesertedNinjaAnswer,
-  type DesertedNinjaRegistration,
+  type FermitQuestion,
+  type FermitSession,
+  type FermitAnswer,
+  type FermitRegistration,
 } from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
@@ -30,17 +30,17 @@ import {
   getPuzzleStateLog as dbGetPuzzleStateLog,
   appendPuzzleStateLog as dbAppendPuzzleStateLog,
   retryOnAbort,
-  getDesertedNinjaQuestions as dbGetDesertedNinjaQuestions,
-  getDesertedNinjaSession as dbGetDesertedNinjaSession,
-  getDesertedNinjaSessions as dbGetDesertedNinjaSessions,
-  insertDesertedNinjaSession as dbInsertDesertedNinjaSession,
-  updateDesertedNinjaSession as dbUpdateDesertedNinjaSession,
-  getDesertedNinjaAnswers as dbGetDesertedNinjaAnswers,
-  insertDesertedNinjaAnswers as dbInsertDesertedNinjaAnswers,
-  getDesertedNinjaRegistrations as dbGetDesertedNinjaRegistrations,
-  insertDesertedNinjaRegistration as dbInsertDesertedNinjaRegistration,
-  deleteDesertedNinjaRegistration as dbDeleteDesertedNinjaRegistration,
-  updateDesertedNinjaRegistration as dbUpdateDesertedNinjaRegistration,
+  getFermitQuestions as dbGetFermitQuestions,
+  getFermitSession as dbGetFermitSession,
+  getFermitSessions as dbGetFermitSessions,
+  insertFermitSession as dbInsertFermitSession,
+  updateFermitSession as dbUpdateFermitSession,
+  getFermitAnswers as dbGetFermitAnswers,
+  insertFermitAnswers as dbInsertFermitAnswers,
+  getFermitRegistrations as dbGetFermitRegistrations,
+  insertFermitRegistration as dbInsertFermitRegistration,
+  deleteFermitRegistration as dbDeleteFermitRegistration,
+  updateFermitRegistration as dbUpdateFermitRegistration,
 } from "./db";
 import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
 import {
@@ -569,18 +569,18 @@ export class PuzzleStateLog extends Log<
 
 export const puzzleStateLog = new PuzzleStateLog();
 
-export async function getDesertedNinjaQuestions(
+export async function getFermitQuestions(
   knex: Knex.Knex,
-): Promise<DesertedNinjaQuestion[]> {
-  return dbGetDesertedNinjaQuestions(knex);
+): Promise<FermitQuestion[]> {
+  return dbGetFermitQuestions(knex);
 }
 
-export async function createDesertedNinjaSession(
+export async function createFermitSession(
   title: string,
   questionIds: number[],
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession | undefined> {
-  return dbInsertDesertedNinjaSession(
+): Promise<FermitSession | undefined> {
+  return dbInsertFermitSession(
     {
       title: title,
       question_ids: "[" + questionIds.toString() + "]",
@@ -589,11 +589,11 @@ export async function createDesertedNinjaSession(
   );
 }
 
-export async function updateDesertedNinjaSession(
-  session: DesertedNinjaSession,
+export async function updateFermitSession(
+  session: FermitSession,
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession | undefined> {
-  const dbSession = await dbUpdateDesertedNinjaSession(
+): Promise<FermitSession | undefined> {
+  const dbSession = await dbUpdateFermitSession(
     session.id,
     {
       title: session.title,
@@ -613,13 +613,13 @@ export async function updateDesertedNinjaSession(
   }
 }
 
-export async function getDesertedNinjaSession(
+export async function getFermitSession(
   sessionId: number,
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession | undefined> {
+): Promise<FermitSession | undefined> {
   const [session, registrations] = await Promise.all([
-    dbGetDesertedNinjaSession(sessionId, knex),
-    dbGetDesertedNinjaRegistrations(sessionId, knex),
+    dbGetFermitSession(sessionId, knex),
+    dbGetFermitRegistrations(sessionId, knex),
   ]);
   if (!session) {
     return undefined;
@@ -635,11 +635,11 @@ export async function getDesertedNinjaSession(
   return session;
 }
 
-export async function getDesertedNinjaSessions(
+export async function getFermitSessions(
   knex: Knex.Knex,
-): Promise<DesertedNinjaSession[]> {
-  const sessions = await dbGetDesertedNinjaSessions(knex);
-  const registrations = await dbGetDesertedNinjaRegistrations(undefined, knex);
+): Promise<FermitSession[]> {
+  const sessions = await dbGetFermitSessions(knex);
+  const registrations = await dbGetFermitRegistrations(undefined, knex);
 
   // TODO: this is O(N^2), rewrite if need be
   sessions.forEach((s) => {
@@ -656,58 +656,53 @@ export async function getDesertedNinjaSessions(
   return sessions;
 }
 
-export async function getDesertedNinjaAnswers(
+export async function getFermitAnswers(
   sessionId: number,
   knex: Knex.Knex,
-): Promise<DesertedNinjaAnswer[]> {
-  return dbGetDesertedNinjaAnswers(sessionId, knex);
+): Promise<FermitAnswer[]> {
+  return dbGetFermitAnswers(sessionId, knex);
 }
 
-export async function saveDesertedNinjaAnswers(
-  answers: DesertedNinjaAnswer[],
+export async function saveFermitAnswers(
+  answers: FermitAnswer[],
   knex: Knex.Knex,
 ): Promise<number> {
   // TODO: only allow this for answers where the session is in
   // "in_progress" status
-  return dbInsertDesertedNinjaAnswers(answers, knex);
+  return dbInsertFermitAnswers(answers, knex);
 }
 
-export async function getDesertedNinjaRegistrations(
+export async function getFermitRegistrations(
   sessionId: number | undefined,
   knex: Knex.Knex,
-): Promise<DesertedNinjaRegistration[]> {
-  return dbGetDesertedNinjaRegistrations(sessionId, knex);
+): Promise<FermitRegistration[]> {
+  return dbGetFermitRegistrations(sessionId, knex);
 }
 
-export async function createDesertedNinjaRegistration(
+export async function createFermitRegistration(
   sessionId: number,
   teamId: number,
   knex: Knex.Knex,
-): Promise<DesertedNinjaRegistration | undefined> {
+): Promise<FermitRegistration | undefined> {
   // TODO: abort if the session isn't in "not_started" status
-  return dbInsertDesertedNinjaRegistration(
-    sessionId,
-    teamId,
-    "not_checked_in",
-    knex,
-  );
+  return dbInsertFermitRegistration(sessionId, teamId, "not_checked_in", knex);
 }
 
-export async function deleteDesertedNinjaRegistration(
+export async function deleteFermitRegistration(
   sessionId: number,
   teamId: number,
   knex: Knex.Knex,
 ): Promise<boolean> {
   // TODO: abort if the session isn't in "not_started" status
-  return dbDeleteDesertedNinjaRegistration(sessionId, teamId, knex);
+  return dbDeleteFermitRegistration(sessionId, teamId, knex);
 }
 
-export async function updateDesertedNinjaRegistration(
+export async function updateFermitRegistration(
   sessionId: number,
   teamId: number,
   state: string,
   knex: Knex.Knex,
-): Promise<DesertedNinjaRegistration> {
+): Promise<FermitRegistration> {
   // TODO: only allow this if session is in "in_progress" status
-  return dbUpdateDesertedNinjaRegistration(sessionId, teamId, state, knex);
+  return dbUpdateFermitRegistration(sessionId, teamId, state, knex);
 }
