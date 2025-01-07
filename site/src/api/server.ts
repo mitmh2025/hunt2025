@@ -315,7 +315,7 @@ export async function getRouter({
   jwksUri,
   frontendApiSecret,
   dataApiSecret,
-  whepBaseUrl,
+  mediaBaseUrl,
   knex,
   hunt,
   redisClient,
@@ -325,7 +325,7 @@ export async function getRouter({
   jwksUri?: string;
   frontendApiSecret: string;
   dataApiSecret: string;
-  whepBaseUrl: string;
+  mediaBaseUrl: string;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -394,7 +394,7 @@ export async function getRouter({
         teamId: team_id,
         info,
         state: formatTeamHuntState(hunt, team_state),
-        whepUrl: `${whepBaseUrl}/teams/${whepTeamId}/radio/whep`,
+        whepUrl: `${mediaBaseUrl}/teams/${whepTeamId}/radio/whep`,
       },
     };
   };
