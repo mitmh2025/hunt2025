@@ -119,7 +119,7 @@ const Solution = () => {
             <StyledTableCell>BFJE</StyledTableCell>
             <StyledTableCell>Lagotto Romagnolo</StyledTableCell>
             <StyledTableCell>116</StyledTableCell>
-            <StyledTableCell>T</StyledTableCell>
+            <StyledTableCell>t</StyledTableCell>
           </tr>
           <tr>
             <StyledTableCell>4</StyledTableCell>
