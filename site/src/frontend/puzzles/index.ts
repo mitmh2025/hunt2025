@@ -152,6 +152,7 @@ import YourePlayingItWrong from "./vast-fire";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
+import WordYore from "./metallic-dragon";
 
 const PlaceholderISP09 = makePlaceholder(
   "placeholder_isp09",
@@ -237,6 +238,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   taste_explosion: TasteExplosion,
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
+  word_yore: WordYore,
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 

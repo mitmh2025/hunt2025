@@ -4,8 +4,8 @@ import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Word Yore",
-  slug: "word-yore",
-  initial_description: "You are presented with an old-school-looking phone interface (via web browser) and a textbox. (location round)",
+  slug: "word_yore",
+  initial_description: "You are presented with an old-school-looking phone interface (via web browser) and a textbox.",
   answer: "GRASS, REPLY WITH KISS",
   authors: ["Michele Pratusevich"],
   editors: ["Anna Brunner", "Hubert Hwang", "tinaun"],
