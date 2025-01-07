@@ -24,7 +24,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.sync2k8s = {
       apiBaseUrl = lib.mkIf config.hunt2025.site.enable (lib.mkDefault config.hunt2025.site.apiBaseUrl);
-      outputBaseUrl = lib.mkIf config.hunt.radio.enable (lib.mkDefault "rtsp://localhost");
+      outputBaseUrl = lib.mkIf config.hunt.radio.enable (lib.mkDefault "rtsp://10.42.0.1:8554");
     };
     services.k3s.images = [
       cfg.radioImage

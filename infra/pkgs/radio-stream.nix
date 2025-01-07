@@ -19,13 +19,13 @@
       ICY_BOX_DIR = builtins.path {
         path = "${radio-media}/icy-box";
       };
-      LIQ_CACHE_USER_DIR = "$out/lib/liq-cache";
     };
   in builtins.concatLists (lib.mapAttrsToList (name: value: ["--set" name value]) env);
   meta.mainProgram = "radio-stream";
 } ''
   mkdir -p $out/bin $out/lib/liq-cache
-  makeWrapperArgs+=( --add-flags $src/radio.liq)
+  makeWrapperArgs+=(--add-flags $src/radio.liq)
+  makeWrapperArgs+=(--set-default LIQ_CACHE_USER_DIR $out/lib/liq-cache)
   makeWrapper ${lib.getExe liquidsoap} $out/bin/radio-stream ''${makeWrapperArgs[@]}
   $out/bin/radio-stream --cache-only
 ''

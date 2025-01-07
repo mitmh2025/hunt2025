@@ -31,7 +31,7 @@ if (!redisUrl) {
   throw new Error("$REDIS_URL was not configured");
 }
 
-const outputBaseUrl = process.env.OUTPUT_BASE_URL;
+const outputBaseUrl = process.env.OUTPUT_BASE_URL ?? "";
 if (!outputBaseUrl) {
   throw new Error("$OUTPUT_BASE_URL was not configured");
 }
@@ -187,7 +187,13 @@ async function main({
         })
         .catch(catch404);
       if (existing) {
-        return name;
+        const existingOutputUrl = Buffer.from(
+          existing.data?.OUTPUT_URL ?? "",
+          "base64",
+        ).toString("utf8");
+        if (existingOutputUrl.startsWith(outputBaseUrl)) {
+          return name;
+        }
       }
       // TODO: Any other condition that should also trigger update?
       const path = `teams/${teamId}/radio`;

@@ -41,6 +41,9 @@ in {
         authMethod = lib.mkIf (cfg.jwksUri != null) "jwt";
         authJWTJWKS = lib.mkIf (cfg.jwksUri != null) cfg.jwksUri;
         authJWTClaimKey = "media";
+
+        api = true; # :9997
+        metrics = true; # :9998
       };
     };
     services.nginx = lib.mkIf (cfg.externalHostname != null) {

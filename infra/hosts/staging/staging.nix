@@ -94,6 +94,11 @@
       };
     }
     {
+      services.sync2k8s = {
+        enable = true;
+      };
+    }
+    {
       services.thingsboard = {
         enable = true;
         datasource.createLocally = true;
