@@ -1637,14 +1637,12 @@ export async function getRouter({
                 return scoreHelper([1, 2, 3, 4, 5], difference);
               } else if (question.scoringMethod === "12468") {
                 return scoreHelper([1, 2, 4, 6, 8], difference);
-              } else if (question.scoringMethod === "1double") {
-                return scoreHelper([1, 2, 4, 8, 16], difference);
-              } else if (question.scoringMethod === "2double") {
-                return scoreHelper([2, 4, 8, 16, 32], difference);
-              } else if (question.scoringMethod === "3double") {
-                return scoreHelper([3, 6, 12, 24, 48], difference);
-              } else if (question.scoringMethod === "4double") {
-                return scoreHelper([4, 8, 16, 32, 64], difference);
+              } else if (question.scoringMethod.endsWith("double")) {
+                const base = parseInt(question.scoringMethod.slice(0, -6));
+                return scoreHelper(
+                  [base, base * 2, base * 4, base * 8, base * 16],
+                  difference,
+                );
               } else if (question.scoringMethod === "raw") {
                 // "raw" means take the number as a score, but if out of bounds default to 0
                 // if not an integer floor it
