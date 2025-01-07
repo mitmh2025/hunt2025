@@ -168,12 +168,6 @@ export function getAuthRouter() {
       }
       req.teamState = teamStateResp.body;
 
-      const whepJwt =
-        process.env.OVERRIDE_WHEP_JWT ??
-        (req.cookies.mitmh2025_auth as string | undefined) ??
-        "";
-      req.teamState.whepUrl += `?jwt=${encodeURIComponent(whepJwt)}`;
-
       next();
     }),
   );
