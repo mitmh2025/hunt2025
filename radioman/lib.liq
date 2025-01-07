@@ -1,3 +1,5 @@
+settings.init.allow_root := true
+
 def protocol_return(u) =
 %ifversion >= 2.3
     u

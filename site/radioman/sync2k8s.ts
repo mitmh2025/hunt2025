@@ -41,6 +41,8 @@ if (!liquidsoapImage) {
   throw new Error("$LIQUIDSOAP_IMAGE was not configured");
 }
 
+const storageClassName = process.env.PVC_STORAGE_CLASS_NAME;
+
 const namespace = "radio";
 
 function catch404(e: unknown): undefined {
@@ -230,6 +232,22 @@ async function main({
           matchLabels: labels,
         },
         serviceName: "radio",
+        volumeClaimTemplates: [
+          {
+            metadata: {
+              name: "state",
+            },
+            spec: {
+              accessModes: ["ReadWriteOnce"],
+              resources: {
+                requests: {
+                  storage: "100Mi",
+                },
+              },
+              storageClassName,
+            },
+          },
+        ],
         template: {
           metadata: {
             labels,
@@ -241,6 +259,10 @@ async function main({
                 image: liquidsoapImage,
                 env: [
                   {
+                    name: "STATE_DIRECTORY",
+                    value: "/state",
+                  },
+                  {
                     name: "OUTPUT_URL",
                     valueFrom: {
                       secretKeyRef: {
@@ -250,12 +272,40 @@ async function main({
                     },
                   },
                 ],
+                livenessProbe: {
+                  httpGet: {
+                    path: "/healthz",
+                    port: 80,
+                  },
+                },
+                readinessProbe: {
+                  httpGet: {
+                    path: "/healthz",
+                    port: 80,
+                  },
+                },
+                startupProbe: {
+                  httpGet: {
+                    path: "/healthz",
+                    port: 80,
+                  },
+                  // Wait up to 1 minute for the container to become ready.
+                  failureThreshold: 60,
+                  periodSeconds: 1,
+                },
+                volumeMounts: [
+                  {
+                    name: "state",
+                    mountPath: "/state",
+                  },
+                ],
               },
             ],
           },
         },
       },
     });
+    // StatefulSet exists now
   };
 
   teamRegistrationLogTailer.watchLog((items) => {

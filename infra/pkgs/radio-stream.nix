@@ -22,6 +22,7 @@
       LIQ_CACHE_USER_DIR = "$out/lib/liq-cache";
     };
   in builtins.concatLists (lib.mapAttrsToList (name: value: ["--set" name value]) env);
+  meta.mainProgram = "radio-stream";
 } ''
   mkdir -p $out/bin $out/lib/liq-cache
   makeWrapperArgs+=( --add-flags $src/radio.liq)

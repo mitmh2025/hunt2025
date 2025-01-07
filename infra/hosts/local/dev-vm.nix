@@ -29,7 +29,7 @@
     services.sync2k8s.enable = true;
     virtualisation.vmVariant = {
       virtualisation.memorySize = lib.mkForce 4096;
-      virtualisation.diskSize = 5192;
+      virtualisation.diskSize = 8192;
       virtualisation.forwardPorts = [
         # hunt2025
         { from = "host"; host.port = 3000; guest.port = 3000; }
