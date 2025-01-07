@@ -520,6 +520,9 @@ export default function createConfigs(_env, argv) {
 
       // Regsite (css only)
       regsite: "./src/frontend/regsite/regsite.css",
+
+      // static about page(s)
+      characters: "./src/frontend/server/routes/characters.tsx",
     },
     // Client code needs to reference the webworker bundle by URL.
     dependencies: ["worker"],

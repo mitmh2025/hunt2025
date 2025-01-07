@@ -45,6 +45,7 @@ import {
   type SubpuzzleParams,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
+import { charactersHandler } from "./routes/characters";
 
 // Type parameters to RequestHandler are:
 // 1. Params
@@ -333,6 +334,13 @@ export function registerUiRoutes({
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(manageTeamHandler, req, res, next);
     }),
+
+    authRouter.get(
+      "/characters",
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        await renderApp(charactersHandler, req, res, next);
+      }),
+    ),
   );
 
   // Mount any puzzle-specific routes
