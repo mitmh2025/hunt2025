@@ -11,7 +11,7 @@ const ClueGroup = styled.div`
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
   const pickupCompleted =
-    teamState.rounds.murder_in_mitropolis?.gates?.includes("tmg01");
+    teamState.rounds.murder_in_mitropolis?.gates?.includes("tmg03");
 
   return (
     <>

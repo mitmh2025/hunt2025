@@ -49,6 +49,7 @@ import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
 import GivenUp from "./giant-switch";
 import ChatGPT from "./giving-fighter";
+import AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends from "./granular-shoe";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
@@ -363,6 +364,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Murder in MITropolis
   a_dash_of_color: ADashOfColor,
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
+  abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends:
+    AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends,
   as_the_world_turandot: AsTheWorldTurandot,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
