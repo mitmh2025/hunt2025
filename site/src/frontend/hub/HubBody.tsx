@@ -12,6 +12,8 @@ import GladysPhoto from "./assets/gladys.png";
 import KatrinaPhoto from "./assets/katrina.png";
 import MainQuestionImg from "./assets/main_question.png";
 import PapaPhoto from "./assets/papa.png";
+import pin_gold from "./assets/pin_gold.png";
+import pin_teal from "./assets/pin_teal.png";
 import RoverPhoto from "./assets/rover.png";
 import SidecarPhoto from "./assets/sidecar.png";
 import Events from "./components/Events";
@@ -22,10 +24,7 @@ import {
   MAX_HEIGHT,
   MAX_WIDTH,
 } from "./constants";
-import { type HubState } from "./types";
-
-// const RED = "var(--red-500)";
-const GREEN = "var(--teal-400)";
+import { type HubSuspectStatus, type HubState } from "./types";
 
 const Wall = styled.div`
   background-image: url(${BrickWall});
@@ -72,7 +71,6 @@ const Pin = styled.img<{ $x: number; $y: number }>`
   left: ${(props) => getRelativeSizeCss(props.$x)};
   width: ${getRelativeSizeCss(32)};
   filter: ${defaultShadowFilter};
-  );
 `;
 
 function _calculateViewportDims() {
@@ -105,6 +103,7 @@ const HubBody = ({ state }: { state: HubState }) => {
       window.removeEventListener("load", _calculateViewportDims);
     };
   }, []);
+  const defaultStatus: [HubSuspectStatus] = [{ text: "Suspect" }];
   return (
     <>
       <HubFonts />
@@ -115,7 +114,9 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Boss"
             photoUrl={PapaPhoto}
             photoAlt="Large man with a white tuxedo jacket and a pinky ring"
-            status={{ text: "Suspect" }}
+            status={state.suspects.papa?.status ?? defaultStatus}
+            statusUpdateRotation={-11.7}
+            statusUpdateYAdjust={-30}
             x={1003}
             y={381}
             rotation={2.1}
@@ -125,7 +126,9 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Fiancé"
             photoUrl={CarterPhoto}
             photoAlt="Man with fedora, thin mustache, and a red tie and corsage"
-            status={{ text: "Suspect" }}
+            status={state.suspects.carter?.status ?? defaultStatus}
+            statusUpdateRotation={-12.9}
+            statusUpdateYAdjust={-30}
             x={1000}
             y={968}
             rotation={0.6}
@@ -135,7 +138,9 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Right-Hand Man"
             photoUrl={SidecarPhoto}
             photoAlt="Man with round gold glasses and a ribbon necktie"
-            status={{ text: "Suspect" }}
+            status={state.suspects.sidecar?.status ?? defaultStatus}
+            statusUpdateRotation={11.8}
+            statusUpdateYAdjust={30}
             x={1015}
             y={1555}
             rotation={-1.5}
@@ -145,7 +150,8 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Muscle"
             photoUrl={RoverPhoto}
             photoAlt="Large man with newsboy cap, brown vest and tie"
-            status={{ text: "Suspect" }}
+            status={state.suspects.rover?.status ?? defaultStatus}
+            statusUpdateRotation={8.3}
             x={1482}
             y={1640}
             rotation={2}
@@ -155,7 +161,8 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Heir Apparent"
             photoUrl={GladysPhoto}
             photoAlt="Woman with purple dress and headscarf"
-            status={{ text: "Suspect" }}
+            status={state.suspects.gladys?.status ?? defaultStatus}
+            statusUpdateRotation={6.9}
             x={2483}
             y={359}
             rotation={-1.4}
@@ -165,7 +172,8 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Wild Child"
             photoUrl={BabyPhoto}
             photoAlt="Woman with blue beret and pink neck scarf and cardigan"
-            status={{ text: "Suspect" }}
+            status={state.suspects.baby?.status ?? defaultStatus}
+            statusUpdateRotation={8.3}
             x={2465}
             y={967}
             rotation={-1.7}
@@ -175,7 +183,8 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Girlfriend"
             photoUrl={KatrinaPhoto}
             photoAlt="Woman with cloche hat and teal shirt"
-            status={{ text: "Suspect" }}
+            status={state.suspects.katrina?.status ?? defaultStatus}
+            statusUpdateRotation={-9.1}
             x={2467}
             y={1526}
             rotation={0.9}
@@ -185,22 +194,28 @@ const HubBody = ({ state }: { state: HubState }) => {
             title="The Gumshoe"
             photoUrl={BilliePhoto}
             photoAlt="Private investigator with fedora and trenchcoat"
-            status={{ text: "Cleared", color: GREEN }}
+            status={state.suspects.billie?.status ?? defaultStatus}
+            statusUpdateRotation={-9.1}
             x={2001}
             y={1621}
             rotation={-0.6}
           />
           <Events />
+          <Pin src={pin_teal} alt="" $x={729} $y={531} />
           <BusinessCard
             src={BusinessCardImg}
             alt="Business card: Two P.I. Noir Detective Agency. Billie O'Ryan, Private Investigator."
           />
+          <Pin src={pin_gold} alt="" $x={3527} $y={1832} />
           <MainQuestion
             src={MainQuestionImg}
             alt="Who stole the Shadow Diamond? Solve the Case of the Shadow Diamond"
           />
+          <Pin src={pin_gold} alt="" $x={2279} $y={69} />
+          <Pin src={pin_gold} alt="" $x={1280} $y={105} />
           {state.objects.map((obj) => {
             const imgStyles = {
+              display: "block" as const,
               width: getRelativeSizeCss(obj.width),
             };
             const styles = {
@@ -212,17 +227,18 @@ const HubBody = ({ state }: { state: HubState }) => {
               pointerEvents: obj.inert ? ("none" as const) : undefined,
               filter: obj.shadow ? defaultShadowFilter : undefined,
             };
+            const key = `${obj.asset}-${obj.x}-${obj.y}`;
 
             if (obj.href) {
               return (
-                <a key={obj.asset} style={styles} href={obj.href}>
+                <a key={key} style={styles} href={obj.href}>
                   <img style={imgStyles} src={obj.asset} alt={obj.alt} />
                 </a>
               );
             }
             return (
               <img
-                key={obj.asset}
+                key={key}
                 style={{ ...styles, ...imgStyles }}
                 src={obj.asset}
                 alt={obj.alt}
@@ -231,9 +247,10 @@ const HubBody = ({ state }: { state: HubState }) => {
           })}
           {state.objects.map((obj) => {
             if (obj.pin) {
+              const key = `${obj.asset}-${obj.x}-${obj.y}-pin`;
               return (
                 <Pin
-                  key={obj.asset + "-pin"}
+                  key={key}
                   src={obj.pin.asset}
                   alt=""
                   $x={obj.pin.x}
@@ -243,6 +260,15 @@ const HubBody = ({ state }: { state: HubState }) => {
             }
             return undefined;
           })}
+          {/* pins for suspects need to stack above the string */}
+          <Pin key={"pin-baby"} src={pin_teal} alt="" $x={2656} $y={978} />
+          <Pin key={"pin-gladys"} src={pin_teal} alt="" $x={2684} $y={380} />
+          <Pin key={"pin-katrina"} src={pin_teal} alt="" $x={2658} $y={1526} />
+          <Pin key={"pin-carter"} src={pin_teal} alt="" $x={1188} $y={964} />
+          <Pin key={"pin-papa"} src={pin_teal} alt="" $x={1194} $y={378} />
+          <Pin key={"pin-sidecar"} src={pin_teal} alt="" $x={1206} $y={1562} />
+          <Pin key={"pin-rover"} src={pin_teal} alt="" $x={1674} $y={1636} />
+          <Pin key={"pin-billie"} src={pin_teal} alt="" $x={2192} $y={1626} />
         </Board>
       </Wall>
     </>

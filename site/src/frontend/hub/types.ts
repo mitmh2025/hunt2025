@@ -35,8 +35,22 @@ export type HubObject = {
   };
 };
 
+export type HubSuspectStatus = {
+  text: string;
+  color?: string;
+};
+
+// Suspect allowed to have up to 3 statuses
+export type HubSuspect = {
+  status:
+    | [HubSuspectStatus]
+    | [HubSuspectStatus, HubSuspectStatus]
+    | [HubSuspectStatus, HubSuspectStatus, HubSuspectStatus];
+};
+
 export type HubState = {
   epoch: number;
   rounds: HubRound[];
   objects: HubObject[];
+  suspects: Record<string, HubSuspect>;
 };
