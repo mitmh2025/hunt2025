@@ -1,6 +1,11 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import boyband from "./assets/boyband987.wav";
+import classical from "./assets/classical905.wav";
+import country from "./assets/country1011.wav";
+import disco from "./assets/disco917.wav";
+import hip from "./assets/hip1051.wav";
 import img1 from "./assets/img1.jpg";
 import img2 from "./assets/img2.jpg";
 import img3 from "./assets/img3.jpg";
@@ -10,15 +15,10 @@ import img6 from "./assets/img6.jpg";
 import img7 from "./assets/img7.jpg";
 import img8 from "./assets/img8.jpg";
 import img9 from "./assets/img9.jpg";
-import interrupt1011 from "./assets/interrupt-1011.opus";
-import interrupt1051 from "./assets/interrupt-1051.opus";
-import interrupt1063 from "./assets/interrupt-1063.opus";
-import interrupt891 from "./assets/interrupt-891.opus";
-import interrupt905 from "./assets/interrupt-905.opus";
-import interrupt917 from "./assets/interrupt-917.opus";
-import interrupt933 from "./assets/interrupt-933.opus";
-import interrupt965 from "./assets/interrupt-965.opus";
-import interrupt987 from "./assets/interrupt-987.opus";
+import jazz from "./assets/justjazz965.wav";
+import kpop from "./assets/kpop933.wav";
+import ragtime from "./assets/ragtime1063.wav";
+import taytay from "./assets/taytay891.wav";
 
 const LOCATION_TABLE: {
   href: string;
@@ -52,60 +52,69 @@ const LOCATION_TABLE: {
   },
 ];
 
-const STINGER_TABLE: [string, string, string, string][] = [
+const STINGER_TABLE: [string, string, string, string, string][] = [
   [
     "2-1",
     "90.5",
     "A",
     "Coming up next as the conclusion of today’s program, Symphony in D Minor by César Franck. A remarkable piece, published only a few years before his death. Thank you for being here with me today, your host on Classical 90.5.",
+    classical,
   ],
   [
     "4-0",
     "89.1",
     "B",
     "Hey there my lovely Swifties. This is Tay Tay 89, all Taylor all the time, and I probably don’t even need to tell you that we’re about to play one of her more recent works. Here comes Fortnight.",
+    taytay,
   ],
   [
     "7-1",
     "106.3",
     "H",
     "You’re listening to 106.3, bringing you the best syncopated beats this side of the Mississippi. Now, here is The Original Dixieland One Step, all the way back from the era of The Great War.",
+    ragtime,
   ],
   [
     "12-1",
     "93.3",
     "U",
     "The hottest pop… the biggest hits. Up next, you know it, you love it, it’s Gangnam Style, here on K-Pop 93.3.",
+    kpop,
   ],
   [
     "13-1",
     "91.7",
     "I",
     "Up next, here’s Gloria Gaynor with I Will Survive. Do you remember when hits like that used to come out on vinyl? Well, you too will survive, if you just keep your dance shoes on and ready to boogie, here on Disco 91.7.",
+    disco,
   ],
   [
     "32-123",
     "101.1",
     "L",
     "Coming up, from the height of the second world war, we’ve got Ernest Tubb’s Walking The Floor Over You. After that, from many decades later, The Dixie Chicks’ Not Ready To Make Nice — two country hits from very different times, right here on Country 101.",
+    country,
   ],
   [
     "34-1",
     "105.1",
     "E",
     "Don’t sit down yet, this is 105.1, where the hips never stop shakin’! Next up is the King, with everyone’s favorite, Jailhouse Rock.",
+    hip,
   ],
   [
     "36-00",
     "96.5",
     "T",
     "Coming up next we’ve got a double header - first up Ramblin’ by Ornette Coleman, followed up by W.C. Handy’s The Memphis Blues, right here on Just Jazz 96.5.",
+    jazz,
   ],
   [
     "66-00",
     "98.7",
     "C",
     "This is Boy Band 98.7. I’d like to personally thank all five of you who are still listening to us here after all these years. <pause> Wait, I’m being informed it’s now three of you. Well, let’s keep it rolling with Invisible Man by 98 Degrees and after that, Crash and Burn by Savage Garden.",
+    boyband,
   ],
 ];
 
@@ -124,51 +133,42 @@ const EXTRACTION_TABLE: [string, string, string, string][] = [
   ["B", "T Swift", "Fortnight", "2024"],
 ];
 
-const REEXTRACTION_TABLE: [string, string, string][] = [
+const REEXTRACTION_TABLE: [string, string][] = [
   [
     "2-1",
     "We interrupt this program to inform you that letter 1 is B and letter 10 is N.",
-    interrupt905,
   ],
   [
     "4-0",
     "We interrupt this program to inform you that letter 9 is T and letter 5 is D.",
-    interrupt891,
   ],
   [
     "7-1",
     "We interrupt this program to inform you that letter 3 is O and letter 7 is A.",
-    interrupt1063,
   ],
   [
     "12-1",
     "We interrupt this program to inform you that letter 10 is N and letter 13 is S.",
-    interrupt933,
   ],
   [
     "13-1",
     "We interrupt this program to inform you that letter 8 is S and letter 6 is C.",
-    interrupt917,
   ],
   [
     "32-123",
     "We interrupt this program to inform you that letter 4 is A and letter 1 is B.",
-    interrupt1011,
   ],
   [
     "34-1",
     "We interrupt this program to inform you that letter 5 is D and letter 12 is W.",
-    interrupt1051,
   ],
   [
     "36-00",
     "We interrupt this program to inform you that letter 13 is S and letter 2 is R.",
-    interrupt965,
   ],
   [
     "66-00",
     "We interrupt this program to inform you that letter 11 is E and letter 8 is S.",
-    interrupt987,
   ],
 ];
 
@@ -238,13 +238,18 @@ const Solution = () => {
           <th>Frequency</th>
           <th>Letter</th>
           <th>Text</th>
+          <th>Audio</th>
         </tr>
-        {STINGER_TABLE.map(([location, frequency, letter, text], i) => (
+        {STINGER_TABLE.map(([location, frequency, letter, text, audio], i) => (
           <tr key={i}>
             <td>{location}</td>
             <td>{frequency}</td>
             <td>{letter}</td>
             <td>{text}</td>
+            <td>
+              {/* eslint-disable-next-line jsx-a11y/media-has-caption -- written inline above */}
+              <audio controls src={audio} />
+            </td>
           </tr>
         ))}
       </StyledTable>
@@ -282,16 +287,11 @@ const Solution = () => {
         <tr>
           <th>Location</th>
           <th>Message</th>
-          <th>Audio</th>
         </tr>
-        {REEXTRACTION_TABLE.map(([location, message, audio], i) => (
+        {REEXTRACTION_TABLE.map(([location, message], i) => (
           <tr key={i}>
             <td>{location}</td>
             <td>{message}</td>
-            <td>
-              {/* eslint-disable-next-line jsx-a11y/media-has-caption -- written inline above */}
-              <audio controls src={audio} />
-            </td>
           </tr>
         ))}
       </StyledTable>
