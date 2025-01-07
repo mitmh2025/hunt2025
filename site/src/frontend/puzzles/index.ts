@@ -69,6 +69,7 @@ import CornMaize from "./kind-ruler";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
+import Charged from "./lean-lock";
 import CahfeeRegulah from "./left-rome";
 import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
@@ -177,6 +178,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
+  charged: Charged,
   chatgpt: ChatGPT,
   check_a_deez_words_out: CheckadeezWordsOut,
   downright_backwards: DownrightBackwards,
