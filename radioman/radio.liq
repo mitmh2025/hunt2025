@@ -45,9 +45,14 @@ harbor.http.register(
     method="POST",
     "/setTeamState",
     fun (request, response) -> begin
-        let json.parse v = request.body()
-        team_state := v
-        response.data("ok")
+        try
+            let json.parse v = request.body()
+            team_state := v
+            response.data("ok")
+        catch err do
+            response.status_code(400)
+            response.data("invalid team state: #{err}")
+        end
     end
 )
 
