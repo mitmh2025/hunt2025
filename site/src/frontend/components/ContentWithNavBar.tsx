@@ -2,6 +2,7 @@ import React, { type ReactNode } from "react";
 import { type TeamState, type TeamHuntState } from "../../../lib/api/client";
 import { type RenderedPage } from "../utils/renderApp";
 import NavBar, { type NavBarState } from "./NavBar";
+import Notifications from "./Notifications";
 
 export function navBarState(teamState: TeamHuntState): NavBarState {
   const rounds = Object.entries(teamState.rounds).map(([slug, roundObj]) => {
@@ -43,6 +44,7 @@ const ContentWithNavBar = ({
         dangerouslySetInnerHTML={{ __html: inlineScript }}
       />
       <div id="navbar">
+        <Notifications ref={null} maxNotifications={5} />
         <NavBar info={teamState.info} state={navbarState} />
       </div>
       {children}
