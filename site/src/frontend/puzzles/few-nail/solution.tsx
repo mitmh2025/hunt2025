@@ -35,9 +35,9 @@ const Solution = (): JSX.Element => {
         colors the answer green, and submitting incorrectly outputs a cross,
         coloring the answer to emphasize where the solver was wrong (coloring
         the letters green from left-to-right, until it reaches the first
-        incorrect letter, which is coloured red; the remaining letters are
-        uncoloured). If a solver spells a word incorrectly, they must restart
-        the round.
+        incorrect letter, which is colored red; the remaining letters are
+        uncolored). If a solver spells a word incorrectly, they must restart the
+        round.
       </p>
       <p>
         Solving each round allows the solvers to progress onto the next.
@@ -91,7 +91,7 @@ const Solution = (): JSX.Element => {
         misspellings and excerpts vary between editions. By submitting the words
         into the spelling bee as misspelled by Dexter, solvers will be presented
         with alternate confirmation text, where, instead of a check or cross, a
-        question mark is output, and the text remains uncoloured. Solving each
+        question mark is output, and the text remains uncolored. Solving each
         round using these spellings presents solvers with an additional audio
         clip of Merriam and Webster, each speaking a number, e.g. (7 / 3). These
         clips are phrased as if Webster is correcting Merriam.
