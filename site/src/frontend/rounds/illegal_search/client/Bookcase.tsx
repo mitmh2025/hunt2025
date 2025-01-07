@@ -77,10 +77,6 @@ const Book = styled.td<{
   $pulled?: boolean;
   $interactive?: boolean;
 }>`
-  .copy-only {
-    display: none;
-  }
-
   position: relative;
 
   transition: all 0.2s ease-in-out;
@@ -192,10 +188,6 @@ const HorizontalBook = styled.td<{
   $color: string;
   $interactive?: boolean;
 }>`
-  .copy-only {
-    display: none;
-  }
-
   text-align: right;
   vertical-align: bottom;
   position: relative;
@@ -315,8 +307,12 @@ export function BookcaseInteraction({
                         <span className={`author ${NO_COPY_CLASS}`}>
                           {book.author}
                         </span>
-                        <div className={COPY_ONLY_CLASS}>{book.title}</div>
-                        <div className={COPY_ONLY_CLASS}>{book.author}</div>
+                        {!interactive && (
+                          <>
+                            <div className={COPY_ONLY_CLASS}>{book.title}</div>
+                            <div className={COPY_ONLY_CLASS}>{book.author}</div>
+                          </>
+                        )}
                       </span>
                       <span className="top" />
                       <span className="cover" />
@@ -343,8 +339,12 @@ export function BookcaseInteraction({
                         <span className={`author ${NO_COPY_CLASS}`}>
                           {book.author}
                         </span>
-                        <div className={COPY_ONLY_CLASS}>{book.title}</div>
-                        <div className={COPY_ONLY_CLASS}>{book.author}</div>
+                        {!interactive && (
+                          <>
+                            <div className={COPY_ONLY_CLASS}>{book.title}</div>
+                            <div className={COPY_ONLY_CLASS}>{book.author}</div>
+                          </>
+                        )}
                       </span>
                       <span className="cover" />
                     </HorizontalBook>
@@ -364,8 +364,12 @@ export function BookcaseInteraction({
                         <span className={`author ${NO_COPY_CLASS}`}>
                           {book.author}
                         </span>
-                        <div className={COPY_ONLY_CLASS}>{book.title}</div>
-                        <div className={COPY_ONLY_CLASS}>{book.author}</div>
+                        {!interactive && (
+                          <>
+                            <div className={COPY_ONLY_CLASS}>{book.title}</div>
+                            <div className={COPY_ONLY_CLASS}>{book.author}</div>
+                          </>
+                        )}
                       </span>
                       <span className="cover" />
                     </HorizontalBook>
