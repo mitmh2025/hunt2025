@@ -159,8 +159,7 @@ const Pxy = (): JSX.Element => {
         <P />
       </MSup>
       <MSup>
-        <X />
-        <Y />
+        <MI>xy</MI>
       </MSup>
     </MSub>
   );
@@ -173,8 +172,7 @@ const Pyx = (): JSX.Element => {
         <P />
       </MSup>
       <MSup>
-        <Y />
-        <X />
+        <MI>yx</MI>
       </MSup>
     </MSub>
   );
@@ -187,8 +185,7 @@ const Pxz = (): JSX.Element => {
         <P />
       </MSup>
       <MSup>
-        <X />
-        <Z />
+        <MI>xz</MI>
       </MSup>
     </MSub>
   );
@@ -255,7 +252,7 @@ const Y = (): JSX.Element => {
 };
 
 const Z = (): JSX.Element => {
-  return <MI>y</MI>;
+  return <MI>z</MI>;
 };
 
 const Solution = (): JSX.Element => {
@@ -330,6 +327,7 @@ const Solution = (): JSX.Element => {
         <span id={DETAILED_BALANCE_ID}>detailed balance equation</span> for each
         edge xy:{" "}
         <Math>
+          <PiX />
           <Pxy />
           <MO>=</MO>
           <PiY />
@@ -352,7 +350,6 @@ const Solution = (): JSX.Element => {
         </Math>
         . This means that{" "}
         <Math>
-          <PiX />
           <Pxy />
           <MO>=</MO>
           <MN>1</MN>
@@ -372,8 +369,9 @@ const Solution = (): JSX.Element => {
         <Math>
           <X />
         </Math>
-        . Then the <a href={DETAILED_BALANCE_ID}>detailed balance equations</a>{" "}
-        will hold if{" "}
+        . Then the{" "}
+        <a href={`#${DETAILED_BALANCE_ID}`}>detailed balance equations</a> will
+        hold if{" "}
         <Math>
           <PiX />
         </Math>{" "}
@@ -387,16 +385,16 @@ const Solution = (): JSX.Element => {
           <MO>=</MO>
           <Dx />
           <MO>/</MO>
-          <SigmaX />
+          <SigmaZ />
           <Dx />
         </Math>{" "}
         since then the LHS and RHS of{" "}
-        <a href={DETAILED_BALANCE_ID}>the detailed balance equation</a> both
-        equal{" "}
+        <a href={`#${DETAILED_BALANCE_ID}`}>the detailed balance equation</a>{" "}
+        both equal{" "}
         <Math>
           <MN>1</MN>
           <MO>/</MO>
-          <SigmaX />
+          <SigmaZ />
           <Dx />
         </Math>
         .
@@ -546,9 +544,6 @@ const Solution = (): JSX.Element => {
         </Min>
       </CenteredMath>
       <CenteredMath>
-        <Pxy />
-        <MO>/</MO>
-        <Pxz />
         <MO>=</MO>
         <Min>
           <AreaX />
@@ -630,8 +625,9 @@ const Solution = (): JSX.Element => {
           <MO>/</MO>
           <Dx />
         </Math>
-        , and the <a href={DETAILED_BALANCE_ID}>detailed balance equations</a>{" "}
-        are satisifed for{" "}
+        , and the{" "}
+        <a href={`#${DETAILED_BALANCE_ID}`}>detailed balance equations</a> are
+        satisifed for{" "}
         <Math>
           <PiX />
           <MO>=</MO>
@@ -698,7 +694,7 @@ const Solution = (): JSX.Element => {
         have infinitely many possible moves available from some squares, but new
         the proposal/acceptance rules mean that the proposal distribution is
         always well defined and again the{" "}
-        <a href={TRANSITION_PROBABILITIES}>
+        <a href={`#${TRANSITION_PROBABILITIES}`}>
           transition probabilities satisfies equation
         </a>{" "}
         meaning that{" "}
@@ -718,7 +714,7 @@ const Solution = (): JSX.Element => {
         <Math>
           <X />
         </Math>{" "}
-        of the probability that we propose{" "}
+        of the given expression for proposing{" "}
         <Math>
           <Y />
         </Math>{" "}
@@ -762,7 +758,7 @@ const Solution = (): JSX.Element => {
           <td>A = 22/3</td>
           <td>→</td>
           <td>
-            <Mono>c</Mono>
+            <Mono>C</Mono>
           </td>
         </tr>
         <tr>
@@ -859,13 +855,55 @@ const Solution = (): JSX.Element => {
         up in the checker board gives:
       </p>
       <StyledDiv>
-        <div>𝔼♔B = 6.8 = 34/5 → B</div>
-        <div>𝔼♖D = 5.25 = 21/4 → L</div>
-        <div>𝔼♖G = 5 = 5/1 → I</div>
-        <div>𝔼♔E = 4.6 = 23/5 → S</div>
-        <div>𝔼♖C = 4 = 4/1 → T</div>
-        <div>𝔼♗F = 3.77 = 34/9 → E</div>
-        <div>𝔼♘A = 2/1 = 2/1 → R</div>
+        <div>
+          <pre>
+            <Mono>
+              𝔼♔<sub>B</sub> = 6.8{"  "}= 34/5 → B
+            </Mono>
+          </pre>
+        </div>
+        <div>
+          <pre>
+            <Mono>
+              𝔼♖<sub>D</sub> = 5.25 = 21/4 → L
+            </Mono>
+          </pre>
+        </div>
+        <div>
+          <pre>
+            <Mono>
+              𝔼♖<sub>G</sub> = 5{"    "}= 5/1{"  "}→ I
+            </Mono>
+          </pre>
+        </div>
+        <div>
+          <pre>
+            <Mono>
+              𝔼♔<sub>E</sub> = 4.6{"  "}= 23/5 → S
+            </Mono>
+          </pre>
+        </div>
+        <div>
+          <pre>
+            <Mono>
+              𝔼♖<sub>C</sub> = 4{"    "}= 4/1{"  "}→ T
+            </Mono>
+          </pre>
+        </div>
+        <div>
+          <pre>
+            <Mono>
+              𝔼♗<sub>F</sub> = 3.77 = 34/9 → E
+            </Mono>
+          </pre>
+        </div>
+        <div>
+          <pre>
+            <Mono>
+              𝔼♘<sub>A</sub> = 2{"    "}= 2/1{"  "}→ R
+            </Mono>
+          </pre>
+        </div>
       </StyledDiv>
       <p>
         giving a final answer of <PuzzleAnswer>BLISTER</PuzzleAnswer>.
