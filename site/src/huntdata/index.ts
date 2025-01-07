@@ -197,14 +197,14 @@ const HUNT: Hunt = {
           // funaround.
           id: "meet_billie",
           title: "Meet Billie",
-          unlock_if: [{ slot_solved: "mdm05" }],
+          unlock_if: [{ slot_unlocked: "mdm05" }],
         },
         {
           // This is a longer in-person interaction which is expected to happen
           // after teams complete the funaround.
-          id: "catch_the_thief",
-          title: "Catch the Thief",
-          unlock_if: [{ interaction_completed: "meet_billie" }],
+          id: "the_crime_scene",
+          title: "The Crime Scene",
+          unlock_if: [{ slot_solved: "mdm05" }],
         },
       ],
       unlock_if: [
@@ -279,8 +279,8 @@ const HUNT: Hunt = {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_katrina",
-          title: "Meet Katrina",
+          id: "confront_katrina",
+          title: "Confront Katrina",
           unlock_if: [
             { slot_solved: "som01" }, // stakeout meta
           ],
@@ -360,8 +360,8 @@ const HUNT: Hunt = {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_gladys",
-          title: "Meet Gladys",
+          id: "confront_gladys",
+          title: "Confront Gladys",
           unlock_if: [
             { slot_solved: "ptm09" }, // papertrail super
           ],
@@ -410,8 +410,8 @@ const HUNT: Hunt = {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_carter",
-          title: "Meet Carter",
+          id: "confront_carter",
+          title: "Confront Carter",
           unlock_if: [
             { slot_solved: "bgm04" }, // background check super
           ],
@@ -511,8 +511,8 @@ const HUNT: Hunt = {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_papa",
-          title: "Meet Papa",
+          id: "confront_papa",
+          title: "Confront Papa",
           unlock_if: [
             { slot_solved: "ism03" },
           ],
@@ -563,17 +563,14 @@ const HUNT: Hunt = {
       ],
       interactions: [
         {
-          id: "unmask_the_killer",
-          title: "Unmask the Killer",
+          id: "the_safehouse",
+          title: "The Safehouse",
           unlock_if: [
             { slot_solved: "tmm01" }, // The Murder supermeta
           ],
         },
       ],
-      unlock_if: [
-        { interaction_completed: "meet_billie" },
-        { interaction_completed: "catch_the_thief" },
-      ],
+      unlock_if: { interaction_completed: "the_crime_scene" },
     },
     {
       slug: "the_vault",
@@ -587,20 +584,20 @@ const HUNT: Hunt = {
           id: "the_vault",
           title: "The Vault",
           unlock_if: [
-            { interaction_completed: "meet_katrina" },
-            { interaction_completed: "meet_gladys" },
-            { interaction_completed: "meet_carter" },
-            { interaction_completed: "meet_papa" },
-            { interaction_completed: "unmask_the_killer" },
+            { interaction_completed: "confront_katrina" },
+            { interaction_completed: "confront_gladys" },
+            { interaction_completed: "confront_carter" },
+            { interaction_completed: "confront_papa" },
+            { interaction_completed: "the_safehouse" },
           ],
         },
       ],
       unlock_if: [
-        { interaction_completed: "meet_katrina" },
-        { interaction_completed: "meet_gladys" },
-        { interaction_completed: "meet_carter" },
-        { interaction_completed: "meet_papa" },
-        { interaction_completed: "unmask_the_killer" },
+        { interaction_completed: "confront_katrina" },
+        { interaction_completed: "confront_gladys" },
+        { interaction_completed: "confront_carter" },
+        { interaction_completed: "confront_papa" },
+        { interaction_completed: "the_safehouse" },
       ],
     },
   ],

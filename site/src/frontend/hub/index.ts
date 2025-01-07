@@ -115,32 +115,36 @@ const MISSING_DIAMOND_COMPLETED = (teamState: TeamHuntState) => {
   return INTERACTION_COMPLETED(
     teamState,
     "the_missing_diamond",
-    "catch_the_thief",
+    "the_crime_scene",
   );
 };
 const ILLEGAL_SEARCH_UNLOCKED = (teamState: TeamHuntState) => {
   return ROUND_UNLOCKED(teamState, "illegal_search");
 };
 const ILLEGAL_SEARCH_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(teamState, "illegal_search", "meet_papa");
+  return INTERACTION_COMPLETED(teamState, "illegal_search", "confront_papa");
 };
 const BACKGROUND_CHECK_UNLOCKED = (teamState: TeamHuntState) => {
   return ROUND_UNLOCKED(teamState, "background_check");
 };
 const BACKGROUND_CHECK_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(teamState, "background_check", "meet_carter");
+  return INTERACTION_COMPLETED(
+    teamState,
+    "background_check",
+    "confront_carter",
+  );
 };
 const PAPER_TRAIL_UNLOCKED = (teamState: TeamHuntState) => {
   return ROUND_UNLOCKED(teamState, "paper_trail");
 };
 const PAPER_TRAIL_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(teamState, "paper_trail", "meet_gladys");
+  return INTERACTION_COMPLETED(teamState, "paper_trail", "confront_gladys");
 };
 const STAKEOUT_UNLOCKED = (teamState: TeamHuntState) => {
   return ROUND_UNLOCKED(teamState, "stakeout");
 };
 const STAKEOUT_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(teamState, "stakeout", "meet_katrina");
+  return INTERACTION_COMPLETED(teamState, "stakeout", "confront_katrina");
 };
 const MURDER_IN_MITROPOLIS_UNLOCKED = (teamState: TeamHuntState) => {
   return ROUND_UNLOCKED(teamState, "murder_in_mitropolis");
@@ -149,7 +153,7 @@ const MURDER_IN_MITROPOLIS_COMPLETED = (teamState: TeamHuntState) => {
   return INTERACTION_COMPLETED(
     teamState,
     "murder_in_mitropolis",
-    "unmask_the_killer",
+    "the_safehouse",
   );
 };
 const VAULT_COMPLETED = (teamState: TeamHuntState) => {
@@ -457,7 +461,7 @@ const OBJECTS: HubObjectSetting[] = [
       return INTERACTION_COMPLETED(
         teamState,
         "the_missing_diamond",
-        "catch_the_thief",
+        "the_crime_scene",
       );
     },
     pin: {
@@ -726,78 +730,75 @@ const OBJECTS: HubObjectSetting[] = [
   // stamps
   {
     asset: interaction_stamp,
-    alt: "Catch the Thief",
+    alt: "The Crime Scene",
     x: 1520,
     y: 490,
     rot: 10.9,
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/catch_the_thief",
-    condition: INTERACTION_UNLOCKED("the_missing_diamond", "catch_the_thief"),
+    href: "/interactions/the_crime_scene",
+    condition: INTERACTION_UNLOCKED("the_missing_diamond", "the_crime_scene"),
   },
   {
     asset: interaction_stamp,
-    alt: "Meet Papa",
+    alt: "Confront Papa",
     x: 75,
     y: 169,
     width: 107,
     rot: -17.2,
     rotOrigin: "top left",
     shadow: false,
-    href: "/interactions/meet_papa",
-    condition: INTERACTION_UNLOCKED("illegal_search", "meet_papa"),
+    href: "/interactions/confront_papa",
+    condition: INTERACTION_UNLOCKED("illegal_search", "confront_papa"),
   },
   {
     asset: interaction_stamp,
-    alt: "Meet Carter",
+    alt: "Confront Carter",
     x: 116,
     y: 1466,
     rot: 7.3,
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/meet_carter",
-    condition: INTERACTION_UNLOCKED("background_check", "meet_carter"),
+    href: "/interactions/confront_carter",
+    condition: INTERACTION_UNLOCKED("background_check", "confront_carter"),
   },
   {
     asset: interaction_stamp,
-    alt: "Meet Katrina",
+    alt: "Confront Katrina",
     x: 3575,
     y: 1511,
     rot: -9.3,
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/meet_katrina",
-    condition: INTERACTION_UNLOCKED("stakeout", "meet_katrina"),
+    href: "/interactions/confront_katrina",
+    condition: INTERACTION_UNLOCKED("stakeout", "confront_katrina"),
   },
   {
     asset: interaction_stamp,
-    alt: "Meet Gladys",
+    alt: "Confront Gladys",
     x: 2941,
     y: 125,
     rot: -11,
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/meet_gladys",
-    condition: INTERACTION_UNLOCKED("paper_trail", "meet_gladys"),
+    href: "/interactions/confront_gladys",
+    condition: INTERACTION_UNLOCKED("paper_trail", "confront_gladys"),
   },
   {
     asset: interaction_stamp,
-    alt: "Unmask the Killer",
+    alt: "The Safehouse",
     x: 3635,
     y: 658,
     rot: 24.8,
     rotOrigin: "top left",
     width: 107,
     shadow: false,
-    href: "/interactions/unmask_the_killer",
-    condition: INTERACTION_UNLOCKED(
-      "murder_in_mitropolis",
-      "unmask_the_killer",
-    ),
+    href: "/interactions/the_safehouse",
+    condition: INTERACTION_UNLOCKED("murder_in_mitropolis", "the_safehouse"),
   },
 
   // strings
