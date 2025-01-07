@@ -12,10 +12,11 @@ type SuspectProps = {
   y: number;
   rotation?: number;
   statusUpdateRotation: number;
+  statusUpdateYAdjust?: number;
   status: HubSuspect["status"];
 };
 
-const Card = styled.div`
+const Card = styled.div<{ $statusUpdateYAdjust?: number }>`
   position: absolute;
   background-color: var(--white);
   width: ${getRelativeSizeCss(383)};
@@ -59,13 +60,15 @@ const Card = styled.div`
 
   .second-status {
     font-size: ${getRelativeSizeCss(52)};
-    top: ${getRelativeSizeCss(140)};
+    top: ${({ $statusUpdateYAdjust }) =>
+      getRelativeSizeCss(140 + ($statusUpdateYAdjust ?? 0))};
     left: 0;
   }
 
   .third-status {
     font-size: ${getRelativeSizeCss(60)};
-    top: ${getRelativeSizeCss(80)};
+    top: ${({ $statusUpdateYAdjust }) =>
+      getRelativeSizeCss(80 + ($statusUpdateYAdjust ?? 0))};
     left: ${getRelativeSizeCss(6)};
   }
 
@@ -93,6 +96,7 @@ const SuspectCard = ({
   rotation,
   status,
   statusUpdateRotation,
+  statusUpdateYAdjust,
   photoUrl,
   photoAlt,
 }: SuspectProps) => {
@@ -103,6 +107,7 @@ const SuspectCard = ({
         left: getRelativeSizeCss(x),
         transform: `rotate(${rotation ?? 0}deg)`,
       }}
+      $statusUpdateYAdjust={statusUpdateYAdjust}
     >
       <img src={photoUrl} alt={photoAlt} />
       <div className="label">

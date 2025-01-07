@@ -116,6 +116,7 @@ const HubBody = ({ state }: { state: HubState }) => {
             photoAlt="Large man with a white tuxedo jacket and a pinky ring"
             status={state.suspects.papa?.status ?? defaultStatus}
             statusUpdateRotation={-11.7}
+            statusUpdateYAdjust={-30}
             x={1003}
             y={381}
             rotation={2.1}
@@ -127,6 +128,7 @@ const HubBody = ({ state }: { state: HubState }) => {
             photoAlt="Man with fedora, thin mustache, and a red tie and corsage"
             status={state.suspects.carter?.status ?? defaultStatus}
             statusUpdateRotation={-12.9}
+            statusUpdateYAdjust={-30}
             x={1000}
             y={968}
             rotation={0.6}
@@ -137,7 +139,8 @@ const HubBody = ({ state }: { state: HubState }) => {
             photoUrl={SidecarPhoto}
             photoAlt="Man with round gold glasses and a ribbon necktie"
             status={state.suspects.sidecar?.status ?? defaultStatus}
-            statusUpdateRotation={-11.8}
+            statusUpdateRotation={11.8}
+            statusUpdateYAdjust={30}
             x={1015}
             y={1555}
             rotation={-1.5}
