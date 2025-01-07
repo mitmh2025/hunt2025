@@ -23,8 +23,20 @@ export type MurderPuzzleObject = {
   desc?: string;
 };
 
+export type MurderPDFObject = {
+  asset: string; // url of asset
+  alt: string; // accessible description of the image at `asset`
+  width: number;
+  pos: {
+    left: number;
+    top: number;
+  };
+  solved: boolean;
+};
+
 export type MurderState = {
   epoch: number;
   items: MurderItem[];
   imagery: MurderPuzzleObject[];
+  pdfImagery: MurderPDFObject[];
 };

@@ -29,7 +29,11 @@ import {
 import { MurderFonts } from "./MurderFonts";
 import SparkleComponent, { SPARKLES } from "./Sparkle";
 import SkylineBg from "./assets/murder-bg.png";
-import { type MurderPuzzleObject, type MurderState } from "./types";
+import {
+  MurderPDFObject,
+  type MurderPuzzleObject,
+  type MurderState,
+} from "./types";
 
 const MurderWindow = ({
   item,
@@ -137,6 +141,34 @@ const MurderWindow = ({
   }
 };
 
+const MurderPdf = ({
+  item,
+  position,
+  imgStyle,
+}: {
+  item: MurderPDFObject;
+  position: { left: string; top: string; transform?: string };
+  imgStyle: { width: string };
+}) => {
+  if (item.solved) {
+    return (
+      <>
+        <MurderWindowComponent as="button" style={position}>
+          <img style={imgStyle} src={item.asset} alt={item.alt} />
+        </MurderWindowComponent>
+      </>
+    );
+  } else {
+    return (
+      <img
+        style={{ ...position, ...imgStyle }}
+        src={item.asset}
+        alt={item.alt}
+      />
+    );
+  }
+};
+
 const MurderBody = ({
   state,
   teamState,
@@ -163,6 +195,23 @@ const MurderBody = ({
       />
     );
   });
+  const pdfObjects = state.pdfImagery.map((item: MurderPDFObject) => {
+    const aStyle = {
+      left: proportionify(item.pos.left),
+      top: proportionify(item.pos.top),
+    };
+    const imgStyle = {
+      width: proportionify(item.width),
+    };
+    return (
+      <MurderPdf
+        key={`pdf-window-${item.pos.left}-${item.pos.top}`}
+        position={aStyle}
+        imgStyle={imgStyle}
+        item={item}
+      />
+    );
+  });
   return (
     <MurderWrapper key="murder">
       <MurderFonts />
@@ -178,6 +227,7 @@ const MurderBody = ({
         </div>
         <h1>The Murder in MITropolis</h1>
         {objects}
+        {pdfObjects}
       </CityWrapper>
     </MurderWrapper>
   );

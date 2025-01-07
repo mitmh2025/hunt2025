@@ -3,9 +3,27 @@ import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
-// meta: door to green building
-import door_solved from "./assets/green-door-solved.png";
-import door_unlocked from "./assets/green-door-unlocked.png";
+// meta: door to green building, light-up windows
+import door_solved from "./assets/windows/green/green-door-solved.png";
+import door_unlocked from "./assets/windows/green/green-door-unlocked.png";
+import off_1 from "./assets/windows/green/1-off.png";
+import off_2 from "./assets/windows/green/2-off.png";
+import off_3 from "./assets/windows/green/3-off.png";
+import off_4 from "./assets/windows/green/4-off.png";
+import off_5 from "./assets/windows/green/5-off.png";
+import off_6 from "./assets/windows/green/6-off.png";
+import off_7 from "./assets/windows/green/7-off.png";
+import off_8 from "./assets/windows/green/8-off.png";
+import off_9 from "./assets/windows/green/9-off.png";
+import on_1 from "./assets/windows/green/1-on.png";
+import on_2 from "./assets/windows/green/2-on.png";
+import on_3 from "./assets/windows/green/3-on.png";
+import on_4 from "./assets/windows/green/4-on.png";
+import on_5 from "./assets/windows/green/5-on.png";
+import on_6 from "./assets/windows/green/6-on.png";
+import on_7 from "./assets/windows/green/7-on.png";
+import on_8 from "./assets/windows/green/8-on.png";
+import on_9 from "./assets/windows/green/9-on.png";
 // dorm
 import dorm_solved_lofibeats from "./assets/windows/dorm/dorm-solved-lofibeats.png";
 import dorm_solved_plant from "./assets/windows/dorm/dorm-solved-plant.png";
@@ -41,7 +59,12 @@ import tower_solved_woman from "./assets/windows/tower/tower-solved-woman.png";
 import tower_solved from "./assets/windows/tower/tower-solved.png";
 import tower_locked from "./assets/windows/tower/tower-unlockable.png";
 import tower_unlocked from "./assets/windows/tower/tower-unlocked.png";
-import { type MurderPuzzleObject, type MurderState } from "./types";
+import {
+  type MurderPuzzleObject,
+  type MurderPDFObject,
+  type MurderState,
+} from "./types";
+import { PuzzleDefinition } from "src/frontend/puzzles/types";
 
 const MURDER_SLOTS = [
   "tmp01",
@@ -399,6 +422,141 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
   },
 };
 
+type PDFDescriptor = {
+  asset: {
+    unlocked: string;
+    solved: string;
+  };
+  alt: { unlocked: string; solved: string };
+  pos: ObjectPosition;
+  width: number;
+};
+
+function getPDFRow(top: number): PDFDescriptor[] {
+  const leftEdge = 678;
+  const spacing = 34;
+
+  return [
+    {
+      asset: {
+        unlocked: off_1,
+        solved: on_1,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_2,
+        solved: on_2,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_3,
+        solved: on_3,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing * 2 },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_4,
+        solved: on_4,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing * 3 },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_5,
+        solved: on_5,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing * 4 },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_6,
+        solved: on_6,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing * 5 },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_7,
+        solved: on_7,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing * 6 },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_8,
+        solved: on_8,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing * 7 },
+      width: 25.5,
+    },
+    {
+      asset: {
+        unlocked: off_9,
+        solved: on_9,
+      },
+      alt: {
+        unlocked: "Dark window",
+        solved: "Lighted window",
+      },
+      pos: { top, left: leftEdge + spacing * 8 },
+      width: 25.5,
+    },
+  ];
+}
+
+const PDFWindows: PDFDescriptor[] = ([] as PDFDescriptor[]).concat(
+  getPDFRow(334),
+  getPDFRow(334 + 138),
+  getPDFRow(334 + 138 * 2 - 3),
+  getPDFRow(334 + 138 * 3 - 8),
+  getPDFRow(334 + 138 * 4 - 12),
+  getPDFRow(334 + 138 * 5 - 18),
+);
+
 function lookupValue<T>(
   descriptor: { locked?: T; unlocked: T; solved: T } | T,
   state: "locked" | "unlocked" | "solved",
@@ -412,6 +570,31 @@ function lookupValue<T>(
   } else {
     return descriptor;
   }
+}
+
+function genPDFWindows(teamState: TeamHuntState): MurderPDFObject[] {
+  console.log("generating windows for pdfs");
+  const round = teamState.rounds.murder_in_mitropolis;
+  if (!round) return [];
+
+  const puzzles: (PuzzleDefinition | undefined)[] = Object.values(round.slots)
+    .filter((slot) => !slot.is_meta)
+    .map((slot) => PUZZLES[slot.slug]);
+
+  const solvedCount = puzzles.filter((puzzle) => !!puzzle?.answer).length;
+
+  const imagery = PDFWindows.map((window, i) => {
+    const isSolved = !!(i < solvedCount * 3);
+
+    return {
+      ...window,
+      asset: isSolved ? window.asset.solved : window.asset.unlocked,
+      alt: isSolved ? window.alt.solved : window.alt.unlocked, // accessible description of the image at `asset`
+      solved: isSolved,
+    };
+  });
+
+  return imagery;
 }
 
 function genImagery(teamState: TeamHuntState): MurderPuzzleObject[] {
@@ -469,7 +652,7 @@ function genImagery(teamState: TeamHuntState): MurderPuzzleObject[] {
 export function murderState(teamState: TeamHuntState): MurderState {
   const epoch = teamState.epoch;
   const round = teamState.rounds.murder_in_mitropolis;
-  if (!round) return { epoch, items: [], imagery: [] };
+  if (!round) return { epoch, items: [], imagery: [], pdfImagery: [] };
 
   const items = MURDER_SLOTS.flatMap((slotId) => {
     const slot = round.slots[slotId];
@@ -484,8 +667,9 @@ export function murderState(teamState: TeamHuntState): MurderState {
   });
 
   const imagery: MurderPuzzleObject[] = genImagery(teamState);
+  const pdfImagery = genPDFWindows(teamState);
 
-  return { epoch, items, imagery };
+  return { epoch, items, imagery, pdfImagery };
 }
 
 const MurderRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {
