@@ -800,6 +800,18 @@ const OBJECTS: HubObjectSetting[] = [
     href: "/interactions/the_safehouse",
     condition: INTERACTION_UNLOCKED("murder_in_mitropolis", "the_safehouse"),
   },
+  {
+    asset: interaction_stamp,
+    alt: "The Vault",
+    x: 1270,
+    y: 173,
+    rot: 2.9,
+    rotOrigin: "top left",
+    width: 107,
+    shadow: false,
+    href: "/interactions/the_vault",
+    condition: INTERACTION_UNLOCKED("the_vault", "the_vault"),
+  },
 
   // strings
   {
