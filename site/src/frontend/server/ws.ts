@@ -8,6 +8,7 @@ import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
   type PuzzleStateLogEntry,
+  type TeamInteractionStateLogEntry,
 } from "../../../lib/api/frontend_contract";
 import {
   type MessageFromClient,
@@ -27,6 +28,7 @@ import {
   type RedisClient,
   activityLog,
   puzzleStateLog,
+  teamInteractionStateLog,
   teamRegistrationLog,
 } from "../../api/redis";
 import { type Hunt } from "../../huntdata/types";
@@ -70,6 +72,9 @@ type DatasetHandler =
     }
   | {
       type: "puzzle_state_log";
+    }
+  | {
+      type: "interaction_state_log";
     };
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
@@ -164,6 +169,9 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
     type: "team_state",
     callback: eventsState,
   },
+  interaction_state_log: {
+    type: "interaction_state_log",
+  },
 };
 
 type TeamStateSubscriptionHandler<T> = {
@@ -206,12 +214,20 @@ type PuzzleStateLogSubscriptionHandler = {
   stop: () => void;
 };
 
+type InteractionStateLogSubscriptionHandler = {
+  type: "interaction_state_log";
+  dataset: Dataset;
+  slug: string;
+  stop: () => void;
+}
+
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
   | ActivityLogSubscriptionHandler
   | GuessLogSubscriptionHandler
   | TeamRegistrationSubscriptionHandler<T>
-  | PuzzleStateLogSubscriptionHandler;
+  | PuzzleStateLogSubscriptionHandler
+  | InteractionStateLogSubscriptionHandler;
 
 function isTeamStateSubscription<T>(
   sub: SubscriptionHandler<T>,
@@ -241,6 +257,12 @@ function isPuzzleStateLogSubscription<T>(
   sub: SubscriptionHandler<T>,
 ): sub is PuzzleStateLogSubscriptionHandler {
   return sub.type === "puzzle_state_log";
+}
+
+function isInteractionStateLogSubscription<T>(
+  sub: SubscriptionHandler<T>,
+): sub is InteractionStateLogSubscriptionHandler {
+  return sub.type === "interaction_state_log";
 }
 
 type ObserveResult = {
@@ -273,6 +295,13 @@ type ObserverProvider = {
   ): ObserveResult;
 
   observePuzzleStateLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): ObserveResult;
+
+  observeInteractionStateLog(
     teamId: number,
     slug: string,
     subId: string,
@@ -375,6 +404,9 @@ class ConnHandler {
             sub.stop();
             break;
           case "puzzle_state_log":
+            sub.stop();
+            break;
+          case "interaction_state_log":
             sub.stop();
             break;
         }
@@ -495,6 +527,13 @@ class ConnHandler {
   public appendPuzzleStateLogEntry(subId: string, entry: PuzzleStateLogEntry) {
     const sub = this.subs.get(subId);
     if (sub && isPuzzleStateLogSubscription(sub) && sub.slug === entry.slug) {
+      this.send({ subId, type: "update", value: entry });
+    }
+  }
+
+  public appendInteractionStateLogEntry(subId: string, entry: TeamInteractionStateLogEntry) {
+    const sub = this.subs.get(subId);
+    if (sub && isInteractionStateLogSubscription(sub) && sub.slug === entry.slug) {
       this.send({ subId, type: "update", value: entry });
     }
   }
@@ -688,6 +727,54 @@ class ConnHandler {
             });
           break;
         }
+        case "interaction_state_log": {
+          if (!params?.slug) {
+            this.send({
+              rpc,
+              type: "fail" as const,
+              error: `No slug provided to sub to ${dataset}`,
+            });
+            return;
+          }
+          // TODO: only allow subs for the 4 dialog tree interactions?
+          //if (!("graph" in interaction)) {
+          //  this.send({
+          //    rpc,
+          //    type: "fail" as const,
+          //    error: `interaction_state_log not available for slug ${params.slug}`,
+          //  });
+          //  return;
+          //}
+          const subHandler: SubscriptionHandler<object> = {
+            type: "interaction_state_log",
+            dataset,
+            slug: params.slug,
+            stop: () => {
+              /* stub */
+            },
+          };
+          this.subs.set(subId, subHandler);
+          const { stop, readyPromise } =
+            this.observerProvider.observeInteractionStateLog(
+              this.teamId,
+              params.slug,
+              subId,
+              this,
+            );
+          subHandler.stop = stop;
+          readyPromise
+            .then(() => {
+              this.send({ rpc, type: "sub" as const, subId });
+            })
+            .catch(() => {
+              this.send({
+                rpc,
+                type: "fail" as const,
+                error: "interaction state log ready promise rejected",
+              });
+            });
+          break;
+        }
       }
       return;
     } else {
@@ -738,6 +825,20 @@ type PuzzleStateSubState = {
   tailerStopHandle: () => void;
 };
 
+type InteractionStateSubState = {
+  teamId: number;
+  slug: string;
+  // Map from connId to ConnHandler
+  connSubMap: Map<string, ConnHandler>;
+  // A list of the entries that we have propagated to each ConnHandler in connSubMap.
+  // Retained so that we can synthesize updates to subscribers while sharing the tailer.
+  log: TeamInteractionStateLogEntry[];
+  // The tailer.  When connSubMap becomes empty, we should stop the tailer and drop this
+  // PuzzleStateSubState from the puzzleStateSubs map.
+  tailer: DatasetTailer<TeamInteractionStateLogEntry>;
+  tailerStopHandle: () => void;
+};
+
 export class WebsocketManager implements ObserverProvider {
   // key: connId
   private connections: Map<string, ConnHandler>;
@@ -754,6 +855,7 @@ export class WebsocketManager implements ObserverProvider {
 
   // key: team_id
   private puzzleStateSubs: Map<string, PuzzleStateSubState>;
+  private interactionStateSubs: Map<string, InteractionStateSubState>;
 
   private hunt: Hunt;
 
@@ -785,6 +887,7 @@ export class WebsocketManager implements ObserverProvider {
     });
     this.teamRegistrationLogTailer.start();
     this.puzzleStateSubs = new Map();
+    this.interactionStateSubs = new Map();
   }
 
   private dispatchTeamStateUpdate(teamId: number, teamState: TeamHuntState) {
@@ -993,6 +1096,83 @@ export class WebsocketManager implements ObserverProvider {
       // Synthesize initial updates
       sub.log.forEach((entry) => {
         conn.appendPuzzleStateLogEntry(subId, entry);
+      });
+    }
+
+    sub.connSubMap.set(subId, conn);
+    // console.log(`${sub.connSubMap.size} watchers now`);
+
+    const stop = () => {
+      sub.connSubMap.delete(subId);
+      // console.log("decref", key, "watcher count now", sub.connSubMap.size);
+      if (sub.connSubMap.size === 0) {
+        //console.log("destroy tailer");
+        sub.tailerStopHandle();
+        sub.tailer.shutdown();
+        this.puzzleStateSubs.delete(key);
+      }
+    };
+
+    return {
+      readyPromise: sub.tailer.readyPromise(),
+      stop,
+    };
+  }
+
+  public observeInteractionStateLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): ObserveResult {
+    const key = JSON.stringify([teamId, slug]);
+    // console.log(`observeInteractionStateLog(teamId=${teamId}, slug=${slug})`);
+
+    // Look up if there's already a log tailer for this team/slug combo.
+    // If so, reuse that one.
+    let sub = this.interactionStateSubs.get(key);
+    if (sub === undefined) {
+      // If not, construct a new puzzle state log tailer for this team/slug combination
+      const tailer = newLogTailer({
+        redisClient: this.redisClient,
+        fetchMethod: (arg: { query: { since?: number } }) =>
+          this.frontendApiClient.getFullTeamInteractionStateLog({
+            query: { team_id: teamId, slug, since: arg.query.since },
+          }),
+        log: teamInteractionStateLog,
+        yieldAfter: 15000, // Periodically interrupt the redis thread so we can quiesce it on shutdown
+        retainEntries: false,
+      });
+      tailer.start();
+      const connSubMap = new Map<string, ConnHandler>();
+      sub = {
+        teamId,
+        slug,
+        connSubMap,
+        log: [],
+        tailer,
+        tailerStopHandle: () => {
+          /* stub to be replaced momentarily */
+        },
+      };
+      sub.tailerStopHandle = sub.tailer.watchLog(
+        (entries: TeamInteractionStateLogEntry[]) => {
+          entries.forEach((entry) => {
+            // sub is guaranteed to be truthy by now, but the typechecker can't be sure
+            if (entry.team_id === teamId && entry.slug === slug) {
+              for (const [entrySubId, entryConn] of connSubMap.entries()) {
+                entryConn.appendInteractionStateLogEntry(entrySubId, entry);
+              }
+              sub?.log.push(entry);
+            }
+          });
+        },
+      );
+      this.interactionStateSubs.set(key, sub);
+    } else {
+      // Synthesize initial updates
+      sub.log.forEach((entry) => {
+        conn.appendInteractionStateLogEntry(subId, entry);
       });
     }
 

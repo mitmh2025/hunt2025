@@ -188,6 +188,9 @@ export const TeamInteractionStateLogEntrySchema = z.object({
 export type TeamInteractionStateLogEntry = z.output<
   typeof TeamInteractionStateLogEntrySchema
 >;
+export type DehydratedTeamInteractionStateLogEntry = z.input<
+  typeof TeamInteractionStateLogEntrySchema
+>;
 export const TeamInteractionStateLogSchema = z.array(TeamInteractionStateLogEntrySchema);
 
 export const frontendContract = c.router({
@@ -292,7 +295,7 @@ export const frontendContract = c.router({
       status: z.union([z.literal("plus"), z.literal("minus"), z.null()]),
     }),
     responses: {
-      200: PuzzleStateLog,
+      200: PuzzleStateLogSchema,
     },
   },
 });
