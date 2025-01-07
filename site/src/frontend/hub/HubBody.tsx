@@ -227,17 +227,18 @@ const HubBody = ({ state }: { state: HubState }) => {
               pointerEvents: obj.inert ? ("none" as const) : undefined,
               filter: obj.shadow ? defaultShadowFilter : undefined,
             };
+            const key = `${obj.asset}-${obj.x}-${obj.y}`;
 
             if (obj.href) {
               return (
-                <a key={obj.asset} style={styles} href={obj.href}>
+                <a key={key} style={styles} href={obj.href}>
                   <img style={imgStyles} src={obj.asset} alt={obj.alt} />
                 </a>
               );
             }
             return (
               <img
-                key={obj.asset}
+                key={key}
                 style={{ ...styles, ...imgStyles }}
                 src={obj.asset}
                 alt={obj.alt}
@@ -246,9 +247,10 @@ const HubBody = ({ state }: { state: HubState }) => {
           })}
           {state.objects.map((obj) => {
             if (obj.pin) {
+              const key = `${obj.asset}-${obj.x}-${obj.y}-pin`;
               return (
                 <Pin
-                  key={obj.asset + "-pin"}
+                  key={key}
                   src={obj.pin.asset}
                   alt=""
                   $x={obj.pin.x}
