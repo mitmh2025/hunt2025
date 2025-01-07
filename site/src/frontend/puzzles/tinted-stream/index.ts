@@ -55,7 +55,7 @@ const puzzle: PuzzleDefinition = {
         "ABANDONED AUSTEN AS PLANT GENUS",
         "ABANDONED AUSTEN AS PLANT GENUS EIGHT",
       ],
-      reply: "Interpret an abandoned Austen as a plant genus.",
+      reply: "Keep going!",
     },
   ],
 };

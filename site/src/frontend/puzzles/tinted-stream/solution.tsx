@@ -92,24 +92,30 @@ const Solution = (): JSX.Element => {
         Thank you to Recycled Movie Costumes, a site without which this puzzle
         would not exist!
       </p>
+      <p>Emma</p>
       <ImageWrapper>
         <LinkedImage src={genogram1} alt="The genogram for Emma" />
       </ImageWrapper>
+      <p>Mansfield Park</p>
       <ImageWrapper>
         <LinkedImage src={genogram2} alt="The genogram for Mansfield Park" />
       </ImageWrapper>
+      <p>Northanger Abbey</p>
       <ImageWrapper>
         <LinkedImage src={genogram3} alt="The genogram for Northanger Abbey" />
       </ImageWrapper>
+      <p>Persuasion</p>
       <ImageWrapper>
         <LinkedImage src={genogram4} alt="The genogram for Persuasion" />
       </ImageWrapper>
+      <p>Pride and Prejudice</p>
       <ImageWrapper>
         <LinkedImage
           src={genogram5}
           alt="The genogram for Pride and Prejudice"
         />
       </ImageWrapper>
+      <p>Sense and Sensibility</p>
       <ImageWrapper>
         <LinkedImage
           src={genogram6}

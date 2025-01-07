@@ -39,7 +39,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 30.0,
       description: "Solvers aren’t sure how to apply the flavor text",
-      keywords: ["flavor text", "mystery hunt history"],
+      keywords: ["flavor text", "Mystery Hunt history"],
       nudge:
         "How might these paintings relate to the history of the MIT Mystery Hunt?",
     },
@@ -49,15 +49,15 @@ const puzzle: PuzzleDefinition = {
       keywords: [
         "flavor text",
         "painting titles",
-        "applying info from old mystery hunts",
+        "applying info from old Mystery Hunts",
       ],
-      nudge: "What mystery hunt item typically has titles?",
+      nudge: "What Mystery Hunt item typically has titles?",
     },
     {
       order: 50.0,
       description:
         "Solvers aren’t sure where to find a list of old Mystery Hunt puzzles",
-      keywords: ["mystery hunt archive"],
+      keywords: ["Mystery Hunt archive"],
       nudge: "The MIT Mystery Hunt website includes an archive of old puzzles",
     },
     {
