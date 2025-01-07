@@ -135,7 +135,7 @@ const Solution = () => {
               </TableCell>
               <TableCell leftBlackBorder>2</TableCell>
               <TableCell>O</TableCell>
-              <TableCell>corp top & roll</TableCell>
+              <TableCell>crop top and roll</TableCell>
               <TableCell bgColor="#F7BDB7"></TableCell>
               <TableCell></TableCell>
             </tr>
@@ -268,14 +268,14 @@ const Solution = () => {
             </tr>
             <tr>
               <TableCell bgColor="#EFEFEF">
-                An alphabetically ordered snoozer
+                The most soporific way to order a list
               </TableCell>
               <TableCell bgColor="#EFEFEF" rightBlackBorder>
                 5
               </TableCell>
               <TableCell leftBlackBorder>13</TableCell>
               <TableCell>A</TableCell>
-              <TableCell>from a to zzzz</TableCell>
+              <TableCell>from a to Zzz</TableCell>
               <TableCell bgColor="#516789"></TableCell>
               <TableCell></TableCell>
             </tr>
@@ -294,7 +294,7 @@ const Solution = () => {
             </tr>
             <tr>
               <TableCell bgColor="#EFEFEF">
-                traipsing aroung a very fancy party
+                Traipsing aroung a very fancy party
               </TableCell>
               <TableCell bgColor="#EFEFEF" rightBlackBorder>
                 3
@@ -306,7 +306,7 @@ const Solution = () => {
               <TableCell></TableCell>
             </tr>
             <tr>
-              <TableCell bgColor="#EFEFEF">maria diem?</TableCell>
+              <TableCell bgColor="#EFEFEF">Maria diem?</TableCell>
               <TableCell bgColor="#EFEFEF" rightBlackBorder>
                 1
               </TableCell>
@@ -349,7 +349,7 @@ const Solution = () => {
               </TableCell>
               <TableCell leftBlackBorder>19</TableCell>
               <TableCell>N</TableCell>
-              <TableCell>high maintenance</TableCell>
+              <TableCell>Hi maintenance</TableCell>
               <TableCell bgColor="#FFBFC3"></TableCell>
               <TableCell></TableCell>
             </tr>

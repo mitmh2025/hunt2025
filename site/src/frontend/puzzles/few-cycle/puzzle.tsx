@@ -29,7 +29,7 @@ const Puzzle = () => {
         <br /> WTT: incredulous exclamation for when your computer or phone act
         up [7]
         <br /> Have it your way boo, melancholically [3]
-        <br /> Telling someone they‘re pretty great....smelling! [1]
+        <br /> Telling someone they‘re pretty great...smelling! [1]
       </p>
       <LinkedImage src={image01} alt="a painting made up of dots"></LinkedImage>
     </>
