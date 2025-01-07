@@ -145,6 +145,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
       type: z.literal("gate_completed"),
       slug: z.string(),
       title: z.string().optional(),
+      show_notification: z.boolean(),
     }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(

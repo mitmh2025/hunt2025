@@ -64,7 +64,9 @@ export type PuzzleSlot = {
 
 export type Gate = {
   id: string; // unique id for this gate
-  title?: string; // Description of what the user did to satisfy this gate
+  title?: string; // User-facing of what the user did to satisfy this gate
+  internal_description?: string; // Internal description of what the user did to satisfy this gate (ops site only)
+  show_notification?: boolean; // Whether to show a notification to users when this gate is satisfied
 
   // If present, conditions under which the gate is automatically marked as satisfied.
   // If absent, equivalent to the gate will only be marked satisfied via an
