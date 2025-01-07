@@ -8,7 +8,7 @@ harbor.http.register(
     port=http_port,
     method="GET",
     "/healthz",
-    fun (request, response) -> begin
+    fun (_, response) -> begin
         response.content_type("text/plain")
         response.data("ok")
     end
@@ -26,6 +26,7 @@ team_state = ref(
         }) = file.contents(state_path)
         v
     catch err do
+        log.important("failed to load cached state: #{err}")
         {
             quixotic_shoe_enabled=false,
             icy_box_enabled=false,
@@ -43,6 +44,7 @@ harbor.http.register(
     fun (request, response) -> begin
         let json.parse v = request.body()
         team_state := v
+        response.data("ok")
     end
 )
 
@@ -179,16 +181,6 @@ regular_stream = request.extending_queue(
     regular_stream_next,
 )
 
-# regular_stream = rotate(
-#     id="regular_stream",
-#     [
-#         pred_or_skip(
-#             {not source.is_ready(virtual_interaction)},
-#             fade.on_skip(background_music),
-#         ),
-#         quixotic_shoe,
-#     ]
-# )
 regular_stream.on_metadata(fun (m) -> print("on_metadata #{m}"))
 regular_stream.on_track(fun (m) -> print("on_track #{m}"))
 

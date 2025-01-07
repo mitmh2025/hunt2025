@@ -122,5 +122,8 @@ in {
     ];
   });
 
+  radio-stream = final.callPackage ./radio-stream.nix {
+    inherit (self.inputs) radio-media;
+  };
   radioImage = final.callPackage ./radio-image.nix {};
 }
