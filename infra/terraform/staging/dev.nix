@@ -11,6 +11,7 @@
       80 # HTTP
       443 # HTTPS
     ];
+    useSops = true;
   };
 
   resource.tls_private_key.autopush_key.algorithm = "ED25519";
