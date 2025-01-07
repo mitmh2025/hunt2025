@@ -3,6 +3,61 @@ import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
+// pages for meta
+import page01 from "./assets/pages/01.pdf";
+import page02 from "./assets/pages/02.pdf";
+import page03 from "./assets/pages/03.pdf";
+import page04 from "./assets/pages/04.pdf";
+import page05 from "./assets/pages/05.pdf";
+import page06 from "./assets/pages/06.pdf";
+import page07 from "./assets/pages/07.pdf";
+import page08 from "./assets/pages/08.pdf";
+import page09 from "./assets/pages/09.pdf";
+import page10 from "./assets/pages/10.pdf";
+import page11 from "./assets/pages/11.pdf";
+import page12 from "./assets/pages/12.pdf";
+import page13 from "./assets/pages/13.pdf";
+import page14 from "./assets/pages/14.pdf";
+import page15 from "./assets/pages/15.pdf";
+import page16 from "./assets/pages/16.pdf";
+import page17 from "./assets/pages/17.pdf";
+import page18 from "./assets/pages/18.pdf";
+import page19 from "./assets/pages/19.pdf";
+import page20 from "./assets/pages/20.pdf";
+import page21 from "./assets/pages/21.pdf";
+import page22 from "./assets/pages/22.pdf";
+import page23 from "./assets/pages/23.pdf";
+import page24 from "./assets/pages/24.pdf";
+import page25 from "./assets/pages/25.pdf";
+import page26 from "./assets/pages/26.pdf";
+import page27 from "./assets/pages/27.pdf";
+import page28 from "./assets/pages/28.pdf";
+import page29 from "./assets/pages/29.pdf";
+import page30 from "./assets/pages/30.pdf";
+import page31 from "./assets/pages/31.pdf";
+import page32 from "./assets/pages/32.pdf";
+import page33 from "./assets/pages/33.pdf";
+import page34 from "./assets/pages/34.pdf";
+import page35 from "./assets/pages/35.pdf";
+import page36 from "./assets/pages/36.pdf";
+import page37 from "./assets/pages/37.pdf";
+import page38 from "./assets/pages/38.pdf";
+import page39 from "./assets/pages/39.pdf";
+import page40 from "./assets/pages/40.pdf";
+import page41 from "./assets/pages/41.pdf";
+import page42 from "./assets/pages/42.pdf";
+import page43 from "./assets/pages/43.pdf";
+import page44 from "./assets/pages/44.pdf";
+import page45 from "./assets/pages/45.pdf";
+import page46 from "./assets/pages/46.pdf";
+import page47 from "./assets/pages/47.pdf";
+import page48 from "./assets/pages/48.pdf";
+import page49 from "./assets/pages/49.pdf";
+import page50 from "./assets/pages/50.pdf";
+import page51 from "./assets/pages/51.pdf";
+import page52 from "./assets/pages/52.pdf";
+import page53 from "./assets/pages/53.pdf";
+import page54 from "./assets/pages/54.pdf";
 // dorm
 import dorm_solved_lofibeats from "./assets/windows/dorm/dorm-solved-lofibeats.png";
 import dorm_solved_plant from "./assets/windows/dorm/dorm-solved-plant.png";
@@ -64,7 +119,6 @@ import {
   type MurderPDFObject,
   type MurderState,
 } from "./types";
-import { type PuzzleDefinition } from "src/frontend/puzzles/types";
 
 const MURDER_SLOTS = [
   "tmp01",
@@ -422,6 +476,64 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
   },
 };
 
+// These PDFs are to be released in this order, three pages per feeder solved, doesn't matter which feeders were solved.
+const PAGES_RELEASE_ORDER = [
+  page01,
+  page02,
+  page03,
+  page04,
+  page05,
+  page06,
+  page07,
+  page08,
+  page09,
+  page10,
+  page11,
+  page12,
+  page13,
+  page14,
+  page15,
+  page16,
+  page17,
+  page18,
+  page19,
+  page20,
+  page21,
+  page22,
+  page23,
+  page24,
+  page25,
+  page26,
+  page27,
+  page28,
+  page29,
+  page30,
+  page31,
+  page32,
+  page33,
+  page34,
+  page35,
+  page36,
+  page37,
+  page38,
+  page39,
+  page40,
+  page41,
+  page42,
+  page43,
+  page44,
+  page45,
+  page46,
+  page47,
+  page48,
+  page49,
+  page50,
+  page51,
+  page52,
+  page53,
+  page54,
+];
+
 type PDFDescriptor = {
   asset: {
     unlocked: string;
@@ -577,12 +689,11 @@ function genPDFWindows(teamState: TeamHuntState): MurderPDFObject[] {
   const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return [];
 
-  const puzzles: (PuzzleDefinition | undefined)[] = Object.values(round.slots)
+  const puzzles = Object.values(round.slots)
     .filter((slot) => !slot.is_meta)
-    .map((slot) => PUZZLES[slot.slug]);
+    .map((slot) => teamState.puzzles[slot.slug]);
 
   const solvedCount = puzzles.filter((puzzle) => !!puzzle?.answer).length;
-
   const imagery = PDFWindows.map((window, i) => {
     const isSolved = !!(i < solvedCount * 3);
 
@@ -590,7 +701,7 @@ function genPDFWindows(teamState: TeamHuntState): MurderPDFObject[] {
       ...window,
       asset: isSolved ? window.asset.solved : window.asset.unlocked,
       alt: isSolved ? window.alt.solved : window.alt.unlocked, // accessible description of the image at `asset`
-      solved: isSolved,
+      page: isSolved ? PAGES_RELEASE_ORDER[i] : undefined,
     };
   });
 

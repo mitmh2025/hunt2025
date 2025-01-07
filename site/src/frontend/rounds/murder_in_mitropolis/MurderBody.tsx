@@ -150,10 +150,15 @@ const MurderPdf = ({
   position: { left: string; top: string; transform?: string };
   imgStyle: { width: string };
 }) => {
-  if (item.solved) {
+  if (item.page) {
     return (
       <>
-        <MurderWindowComponent as="button" style={position}>
+        <MurderWindowComponent
+          target="_blank"
+          rel="noreferrer"
+          href={item.page}
+          style={position}
+        >
           <img style={imgStyle} src={item.asset} alt={item.alt} />
         </MurderWindowComponent>
       </>

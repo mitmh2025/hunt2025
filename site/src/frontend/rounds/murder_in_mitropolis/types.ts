@@ -31,7 +31,7 @@ export type MurderPDFObject = {
     left: number;
     top: number;
   };
-  solved: boolean;
+  page?: string; // url of PDF that we're linking to, if the thing is solved
 };
 
 export type MurderState = {
