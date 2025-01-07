@@ -77,6 +77,10 @@ const Book = styled.td<{
   $pulled?: boolean;
   $interactive?: boolean;
 }>`
+  .copy-only {
+    display: none;
+  }
+
   position: relative;
 
   transition: all 0.2s ease-in-out;
@@ -188,6 +192,10 @@ const HorizontalBook = styled.td<{
   $color: string;
   $interactive?: boolean;
 }>`
+  .copy-only {
+    display: none;
+  }
+
   text-align: right;
   vertical-align: bottom;
   position: relative;
