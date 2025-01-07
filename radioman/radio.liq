@@ -212,6 +212,7 @@ stream = fallback(
     [
         virtual_interaction,
         pred_or_skip(
+            id="regular_stream_pred_or_skip",
             {not source.is_ready(virtual_interaction)},
             fade.on_skip(regular_stream),
         ),
@@ -220,4 +221,19 @@ stream = fallback(
 
 final = add([stream, celebration])
 
-output(final)
+output_url = environment.get("OUTPUT_URL")
+
+if output_url == "" then
+    output(final)
+else
+    log("Final output_url #{output_url}")
+    output.url(
+        url=output_url,
+        # %opus(bitrate=64, channels=1, samplerate=48000),
+        %ffmpeg(
+            format="rtsp",
+            %audio(samplerate=48000, channels=1, codec="libopus", b="64k", packet_loss=1, fec=1),
+        ),
+        mksafe(final)
+    )
+end
