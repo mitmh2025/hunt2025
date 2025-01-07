@@ -748,11 +748,11 @@ export default function RegistrationHome({
                 There is no dress code for Mystery Hunt. It is first and
                 foremost a puzzle hunt, and you’ll likely be happiest in clothes
                 that are comfortable for solving puzzles in your HQ and walking
-                around campus. That said, Papa Finster is throwing a party (
+                around campus. That said, Papa Finster is{" "}
                 <a href="https://puzzles.mit.edu/nexthunt.html">
-                  https://puzzles.mit.edu/nexthunt.html
+                  throwing a party
                 </a>
-                ), and dressing up (or being prepared to do so) can add to the
+                , and dressing up (or being prepared to do so) can add to the
                 fun. We aren’t especially picky about “period appropriate”
                 dress, but flappers were the 20s; how does everyone forget
                 that…?
