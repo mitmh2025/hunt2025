@@ -87,7 +87,12 @@ const MurderWindow = ({
   const tooltip = showTooltip && (
     <PuzzleTooltipComponent
       innerRef={refs.setFloating}
-      style={{ ...floatingStyles, visibility: "visible" }}
+      style={{
+        ...floatingStyles,
+        zIndex: 5,
+        maxWidth: "30rem",
+        visibility: "visible",
+      }}
       title={item.title}
       lockState={lockState}
       answer={item.answer}
@@ -102,7 +107,7 @@ const MurderWindow = ({
         {...getReferenceProps()}
         src={item.asset}
         alt={item.alt}
-        style={imgStyle}
+        style={{ ...position, ...imgStyle }}
       />
     </>
   );
@@ -110,11 +115,7 @@ const MurderWindow = ({
   if (lockState === "unlockable") {
     return (
       <>
-        <MurderWindowComponent
-          as="button"
-          style={position}
-          onClick={showUnlockModal}
-        >
+        <MurderWindowComponent as="button" onClick={showUnlockModal}>
           {itemContents}
           {tooltip}
         </MurderWindowComponent>
@@ -133,7 +134,6 @@ const MurderWindow = ({
     return (
       <>
         <MurderWindowComponent
-          style={position}
           href={
             item.state !== "unlockable" ? `/puzzles/${item.slug}` : undefined
           }
