@@ -377,6 +377,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   give_this_grid_a_shake: GiveThisGridAShake,
+  given_up: GivenUp,
+  garden_anecdotes: GardenAnecdotes,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   in_communicado_tonight: InCommunicadoTonight,
@@ -384,8 +386,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
-  garden_anecdotes: GardenAnecdotes,
-  given_up: GivenUp,
   the_thief: TheThief,
 };
 
