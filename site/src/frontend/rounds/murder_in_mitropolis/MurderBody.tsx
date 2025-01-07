@@ -16,6 +16,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { PuzzleUnlockModal } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent } from "../../components/Tooltip";
@@ -34,6 +35,10 @@ import {
   type MurderPuzzleObject,
   type MurderState,
 } from "./types";
+
+const AbsoluteImg = styled.img`
+  position: absolute;
+`;
 
 const MurderWindow = ({
   item,
@@ -165,7 +170,7 @@ const MurderPdf = ({
     );
   } else {
     return (
-      <img
+      <AbsoluteImg
         style={{ ...position, ...imgStyle }}
         src={item.asset}
         alt={item.alt}
