@@ -1,7 +1,7 @@
 import cryptex_note_blacklight from "../../frontend/rounds/illegal_search/assets/cryptex/cryptex_note_blacklight.png";
 import candy_modal_blacklight from "../../frontend/rounds/illegal_search/assets/desk_drawer/candy_modal_blacklight.png";
 import rings_modal_blacklight from "../../frontend/rounds/illegal_search/assets/fuse_box/rings_modal_blacklight.png";
-import ledger_blacklight from "../../frontend/rounds/illegal_search/assets/rug/numberlock_box_ledger_blacklight.png";
+import ledger_modal_blacklight from "../../frontend/rounds/illegal_search/assets/rug/ledger_modal_blacklight.png";
 import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/safe/money_modal_blacklight.png";
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
@@ -321,9 +321,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     asset: money_modal_blacklight,
     assetAlt: "Shift by difference from 8V",
   }),
-  placeholder_isp09_blacklight: blacklightPuzzle(GivenUp, {
+  given_up_blacklight: blacklightPuzzle(GivenUp, {
     answer: "BROADCAST NEWS",
-    asset: ledger_blacklight,
+    asset: ledger_modal_blacklight,
     assetAlt: "Same locations tuned to PM 23pi/20",
   }),
   placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {

@@ -10,6 +10,15 @@ import img6 from "./assets/img6.jpg";
 import img7 from "./assets/img7.jpg";
 import img8 from "./assets/img8.jpg";
 import img9 from "./assets/img9.jpg";
+import interrupt1011 from "./assets/interrupt-1011.opus";
+import interrupt1051 from "./assets/interrupt-1051.opus";
+import interrupt1063 from "./assets/interrupt-1063.opus";
+import interrupt891 from "./assets/interrupt-891.opus";
+import interrupt905 from "./assets/interrupt-905.opus";
+import interrupt917 from "./assets/interrupt-917.opus";
+import interrupt933 from "./assets/interrupt-933.opus";
+import interrupt965 from "./assets/interrupt-965.opus";
+import interrupt987 from "./assets/interrupt-987.opus";
 
 const LOCATION_TABLE: {
   href: string;
@@ -115,42 +124,51 @@ const EXTRACTION_TABLE: [string, string, string, string][] = [
   ["B", "T Swift", "Fortnight", "2024"],
 ];
 
-const REEXTRACTION_TABLE: [string, string][] = [
+const REEXTRACTION_TABLE: [string, string, string][] = [
   [
     "2-1",
     "We interrupt this program to inform you that letter 1 is B and letter 10 is N.",
+    interrupt905,
   ],
   [
     "4-0",
     "We interrupt this program to inform you that letter 9 is T and letter 5 is D.",
+    interrupt891,
   ],
   [
     "7-1",
     "We interrupt this program to inform you that letter 3 is O and letter 7 is A.",
+    interrupt1063,
   ],
   [
     "12-1",
     "We interrupt this program to inform you that letter 10 is N and letter 13 is S.",
+    interrupt933,
   ],
   [
     "13-1",
     "We interrupt this program to inform you that letter 8 is S and letter 6 is C.",
+    interrupt917,
   ],
   [
     "32-123",
     "We interrupt this program to inform you that letter 4 is A and letter 1 is B.",
+    interrupt1011,
   ],
   [
     "34-1",
     "We interrupt this program to inform you that letter 5 is D and letter 12 is W.",
+    interrupt1051,
   ],
   [
     "36-00",
     "We interrupt this program to inform you that letter 13 is S and letter 2 is R.",
+    interrupt965,
   ],
   [
     "66-00",
     "We interrupt this program to inform you that letter 11 is E and letter 8 is S.",
+    interrupt987,
   ],
 ];
 
@@ -233,10 +251,10 @@ const Solution = () => {
       <p>
         After solvers have collected the information (frequency and song
         titles), they can use the dial image in the puzzle to identify a letter
-        for each location. They can order the songs by the date they peaked on
-        the Billboard charts (or release date, which gives the same result),
-        which allows for duplicated letters, and the resulting sequence of
-        letters is the answer.
+        for each location. They can order the songs by release date (or the date
+        they peaked on the Billboard charts, which gives the same result), which
+        allows for duplicated letters, and the resulting sequence of letters is
+        the answer: <PuzzleAnswer>ATHLETIC CLUB</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>
@@ -265,11 +283,16 @@ const Solution = () => {
         <tr>
           <th>Location</th>
           <th>Message</th>
+          <th>Audio</th>
         </tr>
-        {REEXTRACTION_TABLE.map(([location, message], i) => (
+        {REEXTRACTION_TABLE.map(([location, message, audio], i) => (
           <tr key={i}>
             <td>{location}</td>
             <td>{message}</td>
+            <td>
+              {/* eslint-disable-next-line jsx-a11y/media-has-caption -- written inline above */}
+              <audio controls src={audio} />
+            </td>
           </tr>
         ))}
       </StyledTable>
