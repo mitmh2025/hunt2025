@@ -15,8 +15,8 @@
       (lib.getExe radio-stream)
     ];
     Env = [
-      ''HTTP_PORT="80"''
-      ''STATE_DIRECTORY="/state"''
+      "HTTP_PORT=80"
+      "STATE_DIRECTORY=/state"
     ];
     WorkingDir = "/state";
     ExposedPorts = {

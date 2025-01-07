@@ -277,20 +277,26 @@ async function main({
                     path: "/healthz",
                     port: 80,
                   },
+                  // Wait up to 5 minute for the container to become ready again.
+                  failureThreshold: 300,
+                  periodSeconds: 1,
                 },
                 readinessProbe: {
                   httpGet: {
                     path: "/healthz",
                     port: 80,
                   },
+                  // Wait up to 1 minute for the container to become ready again.
+                  failureThreshold: 60,
+                  periodSeconds: 1,
                 },
                 startupProbe: {
                   httpGet: {
                     path: "/healthz",
                     port: 80,
                   },
-                  // Wait up to 1 minute for the container to become ready.
-                  failureThreshold: 60,
+                  // Wait up to 5 minute for the container to become ready.
+                  failureThreshold: 300,
                   periodSeconds: 1,
                 },
                 volumeMounts: [
