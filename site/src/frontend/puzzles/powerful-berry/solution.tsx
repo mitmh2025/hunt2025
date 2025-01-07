@@ -11,12 +11,12 @@ const TAGS_DATA: [number, string, string][] = [
   [70.2, "Chemin de l’Observatoire", ""],
   [100.1, "NCN Route 65", ""],
   [152.3, "21 Tkalčićeva ulica", ""],
-  [192.7, "Flag of Croatia", "↻40°.7"],
   [515.8, "Rua da Sra. dos Caminhos", ""],
   [660.4, "Flag of Sweden", "↺81.4°"],
   [877.4, "Flag of United States", "↻46.7°"],
   [965.3, "Pitäjänmäentien ja Höyläämötien kulmassa", ""],
   [1252.7, "Flag of United Kingdom", "↺103.1°"],
+  [1626.2, "Flag of Croatia", "↻117°.1"],
   [1918.5, "Thompson Park", ""],
   [2170.2, "MIT logo", "0.0° ↓𓊍"],
   [2808.4, "Flag of Washington, DC", "↺27.9°"],
@@ -176,9 +176,9 @@ const EXTRACTION_DATA: [
     "8-322",
     "MIT (Cambridge, MA, US)",
     3950.6,
-    92,
+    108,
     "MIT ENERGY INITIATIVE UNDERGRADUATE ENERGY COMMONS",
-    2.9,
+    0.0,
     9,
   ],
 ];
@@ -246,12 +246,19 @@ const Solution = (): JSX.Element => {
         of Pluto in The Infinite Solar System, the scale model of the solar
         system installed on the third floor of the Infinite Corridor. The puzzle
         itself is also a scale model of the solar system at a scale of 1 AU = 1
-        meter. Tags labeled with locations are the locations of the eight
+        meter, where each tag with a location represents a planet in our ribbon
+        model. This allows us to associate a planet with each location. The
+        locations written on the tags are the locations of the associated
         planets plus Pluto in various scale model solar systems across the
         world, from Sweden’s model at 1:20,000,000 to MIT’s at 1:30,000,000,000!
-        Planet tags are located along the ribbon at the reported distance for
-        each model (some models measure walking distance, so the straight-line
-        as the crow flies distance is shorter).
+      </p>
+      <p>
+        Next we look up the reported distance for each solar system model from
+        the sun to the associated planet in that model (some models measure
+        walking distance, so the straight-line as the crow flies distance is
+        shorter). Each tag with a flag (or MIT logo) symbolizes the broader
+        location of one of our nine solar system models, and we record those in
+        the Country column below.
       </p>
       <HScrollTableWrapper>
         <ExtraStyledTable>
@@ -276,20 +283,32 @@ const Solution = (): JSX.Element => {
         </ExtraStyledTable>
       </HScrollTableWrapper>
       <p>
+        Each pair of tags, along with the sun tag, forms its own scale model. In
+        this scale model, the sun tag and the tag with the text represent the
+        sun and planet in the appropriate scale model of the solar system, and
+        we need to determine what location the flag tag represents. Using the
+        proportion on the ribbon, and our knowledge of the reported distance
+        from the sun to the planet in each model above, we can calculate the
+        actual distance from the model’s sun to the mystery location. However,
+        in this model the locations are not in a straight line, but the two
+        locations require leaving the model’s sun at different angles, noted on
+        the back of the flag tags.
+      </p>
+      <p>
         Solvers must now locate each model’s sun on a map and determine the sun
-        to planet direction. Each tag with a flag can be matched to a planet
-        walk. If solvers were standing at the sun in that model and looking
-        directly at the model of the planet marked on the ribbon, they could
+        to planet direction. If solvers were standing at the sun in that model
+        and looking directly at the model of the associated planet, they could
         adjust their bearing by the specified number of degrees (clockwise or
-        counterclockwise, as indicated by the arrow) and travel the specified
-        distance to find another local landmark. Solvers can use online
-        geocaching tools, linked in the appendix below, to calculate the
-        location of the landmark once they have identified the latitude and
-        longitude of each sun/planet pair using google maps. The drawings on the
-        backs of the tags, along with the alphabetized enumerations in the
-        puzzle document, confirm that solvers have found the correct landmark,
-        and the language on each planet tag indicates what language to write the
-        landmark name in.
+        counterclockwise, as indicated by the arrow) and travel the calculated
+        distance to find another local landmark. Solvers calculated distance
+        will be an approximation of the actual distance to the landmark, given
+        below in the chart. Solvers can use online geocaching tools, linked in
+        the appendix below, to calculate the location of the landmark once they
+        have identified the latitude and longitude of each sun/planet pair using
+        google maps. The drawings on the backs of the tags, along with the
+        alphabetized enumerations in the puzzle document, confirm that solvers
+        have found the correct landmark, and the language on each tag with text
+        indicates what language to write the landmark name in.
       </p>
       <p>
         Diagonalizing, or indexing into each landmark’s name by the number of
@@ -365,11 +384,11 @@ const Solution = (): JSX.Element => {
         >
           this calculator
         </a>
-        , maintained by the FCC, or . Once the azimuth is calculated, solvers
-        can find the “absolute” degree measurement from due north in which they
-        must look to find the clued landmark. The distance to said landmark is
-        given by the location of its tag along the ribbon. With these data
-        points, one can use this{" "}
+        , maintained by the FCC. Once the azimuth is calculated, solvers can
+        find the “absolute” degree measurement from due north in which they must
+        look to find the clued landmark. The distance to said landmark is given
+        by the location of its tag along the ribbon. With these data points, one
+        can use this{" "}
         <a href="https://www.fcc.gov/media/radio/find-terminal-coordinates">
           terminal coordinates
         </a>{" "}
