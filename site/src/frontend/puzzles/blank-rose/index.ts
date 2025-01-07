@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "📑🍝",
   slug: "📑🍝",
-  initial_description:
-    "A paragraph ❡ of emojipasta 😄🍝 and a note 📑 that you have to talk 🎙️ to other teams 👨‍👩‍👧‍👦 about it.",
+  initial_description: "A paragraph ❡ of emojipasta 😄🍝.",
   answer: "PIDAKALA WAR",
   authors: ["Ollie Shonaldmann", "Fuzzy Shonaldmann"],
   editors: ["Elan Blaustein", "Jesse Moeller", "Kevin Hwang", "Robin Deits"],

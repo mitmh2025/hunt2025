@@ -139,7 +139,7 @@ const Solution = (): JSX.Element => {
         none back you’re cryptically ⚰️referring to Turgenev’s Russian 🇷🇺 epic
         📕 📖 😔if you get 5️⃣back you’ve got the intellectual 🧠capacity ⚡ to
         appreciate the jokes 🃏. If you get all 9️⃣back then the ladies 😎can see
-        👁️your tattoo ✍️!{" "}
+        👁️your tattoo ✍️!
       </p>
       <p>
         well 😏 by all accounts 💸you must have intelligence 🤓 in the topmost
@@ -262,10 +262,10 @@ const Solution = (): JSX.Element => {
       <p>
         Depending on where you start in the cycle, you could end up with
         something like <Mono>DUSONESEN</Mono>, but you can just rotate through
-        until you get to <Mono>SEND US </Mono>. Teams then, as instructed, send
-        a funny emoji chain text to HQ in exchange for the actual answer, which
-        is
-        <PuzzleAnswer>xPIDAKALA WAR</PuzzleAnswer>.
+        until you get to <Mono>SEND US ONE</Mono>. Teams then, as instructed,
+        send a funny emoji chain text to HQ in exchange for the actual answer,
+        which is
+        <PuzzleAnswer>PIDAKALA WAR</PuzzleAnswer>.
       </p>
     </>
   );

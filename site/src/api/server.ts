@@ -1003,37 +1003,36 @@ export async function getRouter({
 
               // Special case for blank-rose. One of nine gates must be unlocked
               // for a team upon its unlock, in a round-robin pattern.
-              console.error("\n\nUnlocking ", slug);
               if (slug === "📑🍝") {
-                console.error("Copypasta unlocked!");
-                // Which gate for this puzzle has the fewest teams assigned?
-                const leastUsedGate = await trx("activity_log")
-                  .select("id", "type", "slug")
+                const gates = [
+                  "mdg03",
+                  "mdg04",
+                  "mdg05",
+                  "mdg06",
+                  "mdg07",
+                  "mdg08",
+                  "mdg09",
+                  "mdg10",
+                  "mdg11",
+                ];
+                // How many of these gates have been unlocked?
+                const gateUnlockResult = (await trx("activity_log")
                   .count("id", { as: "gateCount" })
                   .where("type", "=", "gate_completed")
-                  .whereIn("slug", [
-                    "mdg03",
-                    "mdg04",
-                    "mdg05",
-                    "mdg06",
-                    "mdg07",
-                    "mdg08",
-                    "mdg09",
-                    "mdg10",
-                    "mdg11",
-                  ])
-                  .groupBy("slug")
-                  .orderBy("gateCount", "asc")
-                  .orderBy("slug", "asc")
-                  .first();
-                console.error("Least used gate: ", leastUsedGate);
-                // Unlock that gate, defaulting to the first gate for the first team to
-                // unlock the puzzle.
-                const slug = leastUsedGate?.slug ?? "mdg02";
+                  .whereIn("slug", gates)
+                  .first()) ?? { gateCount: 0 };
+                // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                const gateCount =
+                  typeof gateUnlockResult.gateCount === "string"
+                    ? parseInt(gateUnlockResult.gateCount, 10)
+                    : gateUnlockResult.gateCount;
+                // Open the gates in order as teams unlock this puzzle, defaulting
+                // to the first gate for the first team to unlock the puzzle.
+                const gateSlug = gates[gateCount % gates.length] ?? "mdg03";
                 await mutator.appendLog({
                   team_id,
                   type: "gate_completed",
-                  slug,
+                  slug: gateSlug,
                 });
               }
 
@@ -1337,53 +1336,38 @@ export async function getRouter({
               // unlocked for a team upon unlocking this puzzle, in a round-
               // robin fashion.
               if (slug === "📑🍝") {
-                // How many teams have each version of the puzzle?
-                const leastUsedGates = await _trx("activity_log")
-                  .select("id", "type", "slug")
+                const gates = [
+                  "mdg03",
+                  "mdg04",
+                  "mdg05",
+                  "mdg06",
+                  "mdg07",
+                  "mdg08",
+                  "mdg09",
+                  "mdg10",
+                  "mdg11",
+                ];
+                // How many of these gates have been unlocked?
+                const gateUnlockResult = (await _trx("activity_log")
                   .count("id", { as: "gateCount" })
                   .where("type", "=", "gate_completed")
-                  .whereIn("slug", [
-                    "mdg03",
-                    "mdg04",
-                    "mdg05",
-                    "mdg06",
-                    "mdg07",
-                    "mdg08",
-                    "mdg09",
-                    "mdg10",
-                    "mdg11",
-                  ])
-                  .groupBy("slug")
-                  .orderBy("gateCount", "asc")
-                  .orderBy("slug", "asc");
+                  .whereIn("slug", gates)
+                  .first()) ?? { gateCount: 0 };
                 // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
-                let slugsAndCounts = leastUsedGates.map<{
-                  slug: string;
-                  gateCount: number;
-                }>(({ slug, gateCount }) => ({
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- slug has already been filtered for
-                  slug: slug!,
-                  gateCount:
-                    typeof gateCount === "string"
-                      ? parseInt(gateCount, 10)
-                      : gateCount,
-                }));
-                // Iterate through the gates in order, assigning to the gate with the fewest unlocks each time.
+                const gateCount =
+                  typeof gateUnlockResult.gateCount === "string"
+                    ? parseInt(gateUnlockResult.gateCount, 10)
+                    : gateUnlockResult.gateCount;
+                // Iterate through the gates in order.
+                let counter = gateCount;
                 const teamsAndGates: { teamId: number; slug: string }[] = [];
                 for (const teamId of teamIdsToUnlock) {
                   // If for some reason we're bulk unlocking despite none of these gates being unlocked yet,
                   // default to the first gate.
-                  const slugForTeam = slugsAndCounts[0]?.slug ?? "mdg02";
+                  const slugForTeam = gates[counter % gates.length] ?? "mdg03";
                   const teamAndGate = { teamId, slug: slugForTeam };
                   teamsAndGates.push(teamAndGate);
-                  slugsAndCounts = slugsAndCounts.map(
-                    ({ slug, gateCount }) => ({
-                      slug,
-                      gateCount:
-                        slug === slugForTeam ? gateCount + 1 : gateCount,
-                    }),
-                  );
-                  slugsAndCounts.sort((a, b) => a.gateCount - b.gateCount);
+                  counter++;
                 }
                 const promises = [];
                 for (const { teamId, slug } of teamsAndGates) {
