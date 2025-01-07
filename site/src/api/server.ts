@@ -145,19 +145,21 @@ async function newPassport({
     jwtPrivateKey.alg === "RS256"
       ? await exportSPKI(createPublicKey(jwtPrivateKey.privateKey as KeyObject))
       : new TextDecoder("utf8").decode(jwtPrivateKey.privateKey);
+  const teamJwtFromRequest = ExtractJwt.fromExtractors([
+    cookieExtractor,
+    ExtractJwt.fromAuthHeaderAsBearerToken(),
+  ]);
   passport.use(
     "teamJwt",
     new JwtStrategy(
       {
-        jwtFromRequest: ExtractJwt.fromExtractors([
-          cookieExtractor,
-          ExtractJwt.fromAuthHeaderAsBearerToken(),
-        ]),
+        jwtFromRequest: teamJwtFromRequest,
         secretOrKey: jwtPublicKey,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
+        passReqToCallback: true,
       },
-      function (jwtPayload: HuntJWTPayload, done) {
+      function (req: Request, jwtPayload: HuntJWTPayload, done) {
         if (!jwtPayload.team_id) {
           console.warn(
             "JWT valid but missing team_id; treating as unauthorized",
@@ -174,9 +176,11 @@ async function newPassport({
           done(null, false);
           return;
         }
+        const teamJwt = teamJwtFromRequest(req) ?? undefined;
         done(null, jwtPayload.team_id, {
           sess_id: jwtPayload.sess_id,
           adminUser: jwtPayload.adminUser,
+          teamJwt,
         });
       },
     ),
@@ -315,6 +319,7 @@ export async function getRouter({
   jwksUri,
   frontendApiSecret,
   dataApiSecret,
+  mediaBaseUrl,
   knex,
   hunt,
   redisClient,
@@ -324,6 +329,7 @@ export async function getRouter({
   jwksUri?: string;
   frontendApiSecret: string;
   dataApiSecret: string;
+  mediaBaseUrl: string;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -366,7 +372,7 @@ export async function getRouter({
     );
     return team_state;
   };
-  const getTeamState = async (team_id: number) => {
+  const getTeamState = async (req: Request, team_id: number) => {
     const team_registration_log = await teamRegistrationLog.getCachedLog(
       knex,
       redisClient,
@@ -383,12 +389,18 @@ export async function getRouter({
       };
     }
     const team_state = await getTeamStateIntermediate(team_id);
+
+    const teamJwt = req.authInfo?.teamJwt;
+    const whepUrl =
+      process.env.OVERRIDE_WHEP_URL ??
+      `${mediaBaseUrl}/teams/${team_id}/radio/whep${teamJwt ? `?jwt=${teamJwt}` : ""}`;
     return {
       status: 200 as const,
       body: {
         teamId: team_id,
         info,
         state: formatTeamHuntState(hunt, team_state),
+        whepUrl,
       },
     };
   };
@@ -769,7 +781,7 @@ export async function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          return await getTeamState(team_id);
+          return await getTeamState(req, team_id);
         },
       },
       getPuzzleState: {
@@ -1072,8 +1084,8 @@ export async function getRouter({
     admin: {
       getTeamState: {
         middleware: [adminAuthMiddleware],
-        handler: async ({ params: { teamId } }) => {
-          return await getTeamState(parseInt(teamId, 10));
+        handler: async ({ req, params: { teamId } }) => {
+          return await getTeamState(req, parseInt(teamId, 10));
         },
       },
       getTeamContacts: {

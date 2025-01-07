@@ -36,7 +36,8 @@ const ContentWithNavBar = ({
   const teamInfo = teamState.info;
   const navbarState = navBarState(teamState.state);
   const navbarStateJSON = JSON.stringify(navbarState);
-  const inlineScript = `window.initialTeamInfo = ${JSON.stringify(teamInfo)}; window.initialNavBarState = ${navbarStateJSON};`;
+  const whepUrlJSON = JSON.stringify(teamState.whepUrl);
+  const inlineScript = `window.initialTeamInfo = ${JSON.stringify(teamInfo)}; window.initialNavBarState = ${navbarStateJSON}; window.whepUrl = ${whepUrlJSON}`;
   return (
     <>
       <script
@@ -45,7 +46,11 @@ const ContentWithNavBar = ({
       />
       <div id="navbar">
         <Notifications ref={null} maxNotifications={5} />
-        <NavBar info={teamState.info} state={navbarState} />
+        <NavBar
+          whepUrl={teamState.whepUrl}
+          info={teamState.info}
+          state={navbarState}
+        />
       </div>
       {children}
     </>

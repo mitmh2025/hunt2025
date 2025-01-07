@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type ActivityLogEntry, type TeamInfo } from "../../../lib/api/client";
+import celebration from "../../assets/radio/celebration.mp3";
 import { formatActivityLogEntry } from "../components/ActivityLog";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import Notifications, {
@@ -34,9 +35,11 @@ function getNotificationHighWaterMark(pageRenderEpoch: number): number {
 const NavBarManager = ({
   initialTeamInfo,
   initialState,
+  whepUrl,
 }: {
   initialTeamInfo: TeamInfo;
   initialState: NavBarState;
+  whepUrl: string;
 }) => {
   const info = useDataset("team_info", undefined, initialTeamInfo);
   const state = useDataset("navbar", undefined, initialState);
@@ -59,12 +62,24 @@ const NavBarManager = ({
             entry.id.toString(),
           );
           const formatted = formatActivityLogEntry(entry);
+
           if (formatted?.showNotification) {
             notifications.current?.addNotification({
               key: entry.id.toString(),
               icon: formatted.icon,
               description: formatted.description,
             });
+          }
+
+          if (entry.type === "puzzle_solved") {
+            document.dispatchEvent(
+              new CustomEvent("hunt:play-sound-effect", {
+                detail: {
+                  key: "celebration",
+                  src: celebration,
+                },
+              }),
+            );
           }
         }
       },
@@ -75,7 +90,7 @@ const NavBarManager = ({
   return (
     <>
       <Notifications ref={notifications} maxNotifications={5} />
-      <NavBar info={info} state={state} />
+      <NavBar info={info} state={state} whepUrl={whepUrl} />;
     </>
   );
 };
@@ -87,11 +102,13 @@ if (navbarElem) {
   const initialNavbarState = (
     window as unknown as { initialNavBarState: NavBarState }
   ).initialNavBarState;
+  const whepUrl = (window as unknown as { whepUrl: string }).whepUrl;
   hydrateRoot(
     navbarElem,
     <NavBarManager
       initialTeamInfo={initialTeamInfo}
       initialState={initialNavbarState}
+      whepUrl={whepUrl}
     />,
   );
 } else {

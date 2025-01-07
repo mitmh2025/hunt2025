@@ -167,6 +167,7 @@ export function getAuthRouter() {
         return;
       }
       req.teamState = teamStateResp.body;
+
       next();
     }),
   );

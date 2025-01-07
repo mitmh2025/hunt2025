@@ -7,6 +7,7 @@ export {};
 declare global {
   namespace Express {
     export interface AuthInfo {
+      teamJwt?: string;
       adminUser?: string;
       permissionAdmin?: boolean;
       permissionOps?: boolean;
