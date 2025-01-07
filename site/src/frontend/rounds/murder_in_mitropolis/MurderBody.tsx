@@ -162,7 +162,7 @@ const MurderPdf = ({
           target="_blank"
           rel="noreferrer"
           href={item.page}
-          style={position}
+          style={{ ...position, position: "absolute" }}
         >
           <img style={imgStyle} src={item.asset} alt={item.alt} />
         </MurderWindowComponent>
