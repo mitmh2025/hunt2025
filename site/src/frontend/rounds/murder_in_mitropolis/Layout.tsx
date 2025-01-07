@@ -36,13 +36,13 @@ export const MurderCityBg = styled.img`
 `;
 
 export const MurderWindowComponent = styled.a`
-  position: absolute;
   cursor: pointer;
   border: none;
   background-color: transparent;
   padding: 0;
 
   & img {
+    position: absolute;
     -webkit-filter: brightness(0.8);
     filter: brightness(0.8);
   }
