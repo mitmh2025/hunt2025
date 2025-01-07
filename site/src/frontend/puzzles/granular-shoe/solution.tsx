@@ -312,8 +312,8 @@ const EXTRACTION_DATA: [
   ],
   [
     "R",
-    ["Mercury's mottled", "With many pretty colors", "Gotta map 'em all"],
-    "Abstract #2100, “Distinguishing Geological Units in Mercury's Intercrater Plains in the Context of the Global Geological Map” , M. J. Kinczyk, B. W. Denevi, D. L. Buczkowski, L. M. Prockter, P. K. Byrne, L. R. Ostrach, E. B. Miller",
+    ["Mercury’s mottled", "With many pretty colors", "Gotta map ’em all"],
+    "Abstract #2100, “Distinguishing Geological Units in Mercury’s Intercrater Plains in the Context of the Global Geological Map” , M. J. Kinczyk, B. W. Denevi, D. L. Buczkowski, L. M. Prockter, P. K. Byrne, L. R. Ostrach, E. B. Miller",
     "https://www.hou.usra.edu/meetings/lpsc2020/pdf/2100.pdf",
     "Miranda",
   ],

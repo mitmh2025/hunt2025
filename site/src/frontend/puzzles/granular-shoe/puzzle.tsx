@@ -13,10 +13,10 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>
             You should have received a sealed envelope containing 116 pieces of
             paper and 40 magnets. (Any pieces of paper with nothing but a large
-            X on both sides were included by mistake and are not part of the 116
-            pieces or part of the puzzle and should be discarded.) Please
-            contact us at info@mitmh2025.com if it seems that you are missing
-            pieces.
+            X on both sides were included by mistake, are not part of the puzzle
+            (including counting towards the 116 pieces), and should be
+            discarded.) Please contact us at info@mitmh2025.com if it seems that
+            you are missing pieces.
           </p>
         </>
       ) : (
@@ -25,10 +25,10 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>
             You should receive a sealed envelope containing 116 pieces of paper
             and 40 magnets. (Any pieces of paper with nothing but a large X on
-            both sides were included by mistake and are not part of the 116
-            pieces or part of the puzzle and should be discarded.) Please
-            contact us at info@mitmh2025.com if it seems that you are missing
-            pieces.
+            both sides were included by mistake, are not part of the puzzle
+            (including counting towards the 116 pieces), and should be
+            discarded.) Please contact us at info@mitmh2025.com if it seems that
+            you are missing pieces.
           </p>
         </>
       )}
