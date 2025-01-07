@@ -136,6 +136,14 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
 
     const audio = new Audio();
 
+    function handleDestroy() {
+      audio.removeEventListener("canplaythrough", handleLoad);
+      audio.removeEventListener("ended", handleEnded);
+      audio.pause();
+      audio.src = "";
+      audio.load();
+    }
+
     function handleLoad() {
       // duck the radio stream volume
       console.log("Ducking radio stream");
@@ -156,17 +164,13 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
         console.log("Unducking radio stream");
         setAudioDucked(false);
       }
+
+      handleDestroy();
     }
     audio.addEventListener("ended", handleEnded);
 
     activeSoundEffects.current.set(key, {
-      destroy() {
-        audio.removeEventListener("canplaythrough", handleLoad);
-        audio.removeEventListener("ended", handleEnded);
-        audio.pause();
-        audio.src = "";
-        audio.load();
-      },
+      destroy: handleDestroy,
     });
 
     console.log("Loading sound effect", src);

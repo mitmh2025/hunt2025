@@ -394,7 +394,7 @@ export async function getRouter({
         teamId: team_id,
         info,
         state: formatTeamHuntState(hunt, team_state),
-        whepUrl: `${whepBaseUrl}/team/${whepTeamId}/radio`,
+        whepUrl: `${whepBaseUrl}/team/${whepTeamId}/radio/whep`,
       },
     };
   };
