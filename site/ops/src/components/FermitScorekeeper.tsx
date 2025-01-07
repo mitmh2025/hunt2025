@@ -51,7 +51,6 @@ function AnswerCell({
 }) {
   const answers = useContext(AnswerContext);
   const key = `${sessionId}_${teamId}_${questionIndex}`;
-  // TODO: display as text fields for "in_progress", flat answers for "complete"
   if (!sessionComplete) {
     return (
       <ACell>
@@ -60,17 +59,7 @@ function AnswerCell({
     );
   } else {
     return (
-      <ACell>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <p>{answers.get(key)}</p>
-        </div>
-      </ACell>
+      <ACell>{answers.get(key)}</ACell>
     );
   }
 }
@@ -161,8 +150,6 @@ const TeamStatusHeading = styled.div`
 `;
 
 function NotStartedPanel() {
-  // TODO: fill in team status, allow scorekeeper to check in teams
-  // TODO: hook up Start Session button
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
   const opsData = useOpsData();
@@ -173,7 +160,6 @@ function NotStartedPanel() {
 
     if (session) {
       if (session.status === "not_started") {
-        // TODO: set session status via the client
         const newSession = {
           ...session,
           status: "in_progress",

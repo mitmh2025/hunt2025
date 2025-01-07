@@ -1,6 +1,6 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { FermitDataProvider } from "../FermitDataProvider";
-import { FermitHost } from "../components/FermitHost";
+import { FermitPresentation } from "../components/FermitPresentation";
 import { FermitScheduling } from "../components/FermitScheduling";
 import { FermitScorekeeper } from "../components/FermitScorekeeper";
 import { FermitSessionSelector } from "../components/FermitSessionSelector";
@@ -21,7 +21,7 @@ export default function FermitChallenge() {
             <FermitScheduling />
           </TabPanel>
           <TabPanel>
-            <FermitHost />
+            <FermitPresentation />
           </TabPanel>
           <TabPanel>
             <FermitScorekeeper />

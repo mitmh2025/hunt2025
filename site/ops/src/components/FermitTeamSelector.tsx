@@ -19,10 +19,6 @@ export function FermitTeamSelector({
   }
 
   const opsData = useOpsData();
-  //  const includeOnly : number[] = [];
-
-  //  const includeList = include ?? null;
-  //  const excludeList = exclude ?? [];
 
   const options = (
     includeOnly.length > 0
