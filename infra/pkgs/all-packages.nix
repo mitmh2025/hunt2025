@@ -71,6 +71,10 @@ in {
         saturn_lockfree
         mem_usage
       ];
+      postInstall = ''
+        mkdir -p $out/share/liquidsoap-lang/cache
+        $out/bin/liquidsoap --cache-stdlib
+      '';
     });
   in if final.stdenv.isDarwin then (liquidsoap.override (old: {
     # Remove optional dependencies that don't build on Darwin.
