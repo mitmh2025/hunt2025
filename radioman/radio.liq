@@ -2,9 +2,7 @@
 
 server.telnet()
 
-STATION_BREAK_INTERVAL = 300.
-QUIXOTIC_SHOE_INTERVAL = 300.
-ICY_BOX_INTERVAL = 300.
+ICY_BOX_INTERVAL = 20. * 60.
 
 # Tier 1 - Background Music
 # Shuffle music files, ensure track has not repeated in the last N hours.
@@ -19,42 +17,72 @@ ICY_BOX_INTERVAL = 300.
 #     loop = true,
 #     mode = "randomize", # Shuffle list every time it loops
 # ))
-l = playlog(persistency="playlog")
+l = playlog(persistency="playlog", hash=fun (m) -> m["initial_uri"])
 def check(r)
     m = request.metadata(r)
     if l.last(m) < 3600. then
-        log.info("Rejecting #{m['filename']} (played #{l.last(m)}s ago).")
+        log.info("Rejecting #{m} (played #{l.last(m)}s ago).")
         false
     else
         l.add(m)
         true
     end
 end
-background_music = playlist.list(
-    file.ls(environment.get("MUSIC_DIR"), pattern="*.mp3", absolute=true),
-    loop = true,
-    mode = "randomize", # Shuffle list every time it loops
-    check_next=check
-)
 
-# Tier 2 - Station Break
+def randomizer(
+    ~pattern=null(),
+    dir,
+) =
+    playlist = ref([])
+    fun () -> begin
+        if playlist() == [] then
+            playlist := list.shuffle(
+                file.ls(dir, pattern=pattern, absolute=true)
+            )
+        end
+        if playlist() == [] then
+            error.raise(
+                error.invalid,
+                "empty directory passed to randomizer",
+            )
+        else
+            pl = playlist()
+            playlist := list.tl(pl)
+            list.hd(pl)
+        end
+    end
+end
+background_music_next = randomizer(environment.get("MUSIC_DIR"), pattern="*.mp3")
 
-# Tier 2a - Interlude
-# Play audio associated with music file, if any ("That was $song")
-# Otherwise play audio randomly from interlude/$phase/*
-interlude = single("speak:Thanks for listening to 2 p i radio")
+# Tier 2 - Station break
 
-# Tier 2b - Scheduled announcements
-# Play audio as requested by RPC at the next break
-# TBD: Should this replace the station break or add to it?
-# TBD: Should the announcements repeat?
-scheduled_announcements = request.queue(id="scheduled_announcements")
+# At the top of each hour after hunt has started, play a station ID and possibly an event schedule or confidential.
+
+# At specific times, play a fixed message:
+# Friday $custom release + station ID
+# Friday 18:45 event-upcoming-a-fifteen
+# Saturday 00:30 radio-last-call-friday
+# Saturday 00:45 radio-shutdown-friday
+# Saturday 14:45 event-upcoming-c-fifteen
+# Saturday 19:45 event-upcoming-d-fifteen
+# Sunday 00:30 radio-last-call-saturday
+# Sunday 00:45 radio-shutdown-saturday
+# Monday 00:30 radio-last-call-sunday
+# Monday 00:45 radio-shutdown-sunday
 
 # Tier 2c - Puzzle content
-# quixotic-shoe: inject ads every 5m
-quixotic_shoe = delay(QUIXOTIC_SHOE_INTERVAL, single("speak:quixotic shoe advertisement"))
-# icy-box: inject weather reports every 5m
-icy_box = delay(ICY_BOX_INTERVAL, single("speak:icy box weather forecast"))
+# quixotic-shoe: inject ads after every song
+quixotic_shoe_enabled = interactive.bool("quixotic_shoe", true)
+quixotic_shoe_dir = environment.get("QUIXOTIC_SHOE_DIR")
+quixotic_shoe_handoff_next = randomizer("#{quixotic_shoe_dir}/handoff", pattern="*.ogg")
+quixotic_shoe_content_next = randomizer("#{quixotic_shoe_dir}/content", pattern="*.ogg")
+
+# icy-box: inject weather reports every 20m
+icy_box_enabled = interactive.bool("icy_box", true)
+last_icy_box_time = ref(0.)
+icy_box_dir = environment.get("ICY_BOX_DIR")
+icy_box_handoff_next = randomizer("#{icy_box_dir}/handoff", pattern="*.ogg")
+icy_box_content_next = randomizer("#{icy_box_dir}/content", pattern="*.ogg")
 
 # Tier 2d - Ad-hoc announcements
 # Play audio as requested by RPC at the next break
@@ -74,39 +102,85 @@ virtual_interaction = source.available(track_sensitive=false, single("spy-suite.
 # TBD: Included in stream or not?
 celebration = blank()
 
-last_break_time = ref(0.)
-after_music = ref(false)
-background_music.on_track(fun (_) -> after_music := true)
-def station_break()
-    let (do_break, chosen_interlude) = if adhoc_announcements.is_ready() or scheduled_announcements.is_ready() then
-        (true, [adhoc_announcements, scheduled_announcements])
-    else
-        # TODO: Check if there's a song-specific interlude
-        (time()-last_break_time() > STATION_BREAK_INTERVAL, [once(interlude)])
-    end
-    if do_break and after_music() then
-        last_break_time := time()
-        after_music := false
-        [
-            ...chosen_interlude,
-            once(quixotic_shoe),
-            once(icy_box),
-        ]
-    else
+def regular_stream_next() =
+    print("regular_stream_next is called")
+    if in_interaction() then
         []
+    else
+        interrupt = if
+            icy_box_enabled()
+            and (time()-last_icy_box_time() > ICY_BOX_INTERVAL)
+        then
+            last_icy_box_time := time()
+            [
+                request.create(icy_box_handoff_next()),
+                request.create(icy_box_content_next()),
+            ]
+        elsif quixotic_shoe_enabled() then
+            [
+                request.create(quixotic_shoe_handoff_next()),
+                request.create(quixotic_shoe_content_next()),
+            ]
+        else
+            []
+        end
+        music = request.create(background_music_next())
+        [...interrupt, music]
     end
 end
 
-stream = fallback([
-    virtual_interaction,
-    fallback([
-        sequence.dynamic(station_break),
+regular_stream = request.extending_queue(
+    id="regular_stream",
+    native=true,
+    regular_stream_next,
+)
+
+# regular_stream = rotate(
+#     id="regular_stream",
+#     [
+#         pred_or_skip(
+#             {not source.is_ready(virtual_interaction)},
+#             fade.on_skip(background_music),
+#         ),
+#         quixotic_shoe,
+#     ]
+# )
+regular_stream.on_metadata(fun (m) -> print("on_metadata #{m}"))
+regular_stream.on_track(fun (m) -> print("on_track #{m}"))
+
+# last_break_time = ref(0.)
+# after_music = ref(false)
+# background_music.on_track(fun (_) -> after_music := true)
+# def station_break()
+#     let (do_break, chosen_interlude) = if adhoc_announcements.is_ready() then
+#         (true, [adhoc_announcements])
+#     else
+#         # TODO: Check if there's a song-specific interlude
+#         (time()-last_break_time() > STATION_BREAK_INTERVAL, [once(interlude)])
+#     end
+#     if do_break and after_music() then
+#         last_break_time := time()
+#         after_music := false
+#         [
+#             ...chosen_interlude,
+#             once(quixotic_shoe),
+#             once(icy_box),
+#         ]
+#     else
+#         []
+#     end
+# end
+
+stream = fallback(
+    id="stream",
+    [
+        virtual_interaction,
         pred_or_skip(
             {not source.is_ready(virtual_interaction)},
-            fade.on_skip(background_music),
+            fade.on_skip(regular_stream),
         ),
-    ])
-])
+    ]
+)
 
 final = add([stream, celebration])
 
