@@ -661,12 +661,12 @@ function getPDFRow(top: number): PDFDescriptor[] {
 }
 
 const PDFWindows: PDFDescriptor[] = ([] as PDFDescriptor[]).concat(
-  getPDFRow(334),
-  getPDFRow(334 + 138),
-  getPDFRow(334 + 138 * 2 - 3),
-  getPDFRow(334 + 138 * 3 - 8),
-  getPDFRow(334 + 138 * 4 - 12),
   getPDFRow(334 + 138 * 5 - 18),
+  getPDFRow(334 + 138 * 4 - 12),
+  getPDFRow(334 + 138 * 3 - 8),
+  getPDFRow(334 + 138 * 2 - 3),
+  getPDFRow(334 + 138),
+  getPDFRow(334),
 );
 
 function lookupValue<T>(
