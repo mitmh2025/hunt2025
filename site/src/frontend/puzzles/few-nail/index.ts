@@ -17,7 +17,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       for_what: "Voice acting",
-      who: ["Kevin Hwang"],
+      who: ["James Douberley", "Kevin Hwang"],
     },
   ],
   content: {

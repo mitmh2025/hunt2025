@@ -16,7 +16,7 @@ const TAGS_DATA: [number, string, string][] = [
   [877.4, "Flag of United States", "↻46.7°"],
   [965.3, "Pitäjänmäentien ja Höyläämötien kulmassa", ""],
   [1252.7, "Flag of United Kingdom", "↺103.1°"],
-  [1626.2, "Flag of Croatia", "↻117°.1"],
+  [1646.2, "Flag of Croatia", "↻117°.1"],
   [1918.5, "Thompson Park", ""],
   [2170.2, "MIT logo", "0.0° ↓𓊍"],
   [2808.4, "Flag of Washington, DC", "↺27.9°"],

@@ -11,7 +11,12 @@ const puzzle: PuzzleDefinition = {
   answer: "LA SERENISSIMA",
   authors: ["Anna Brunner"],
   editors: ["J. Heléne Andersson", "Laura Nicholson", "Melanie Matchett Wood"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Art",
+      who: ["Anna Brunner"],
+    },
+  ],
   content: {
     component: Puzzle,
   },
