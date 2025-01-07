@@ -157,11 +157,6 @@ import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
 
-const PlaceholderISP09 = makePlaceholder(
-  "placeholder_isp09",
-  "Placeholder 09",
-  "ATHLETIC CLUB",
-);
 const PlaceholderISP10 = makePlaceholder(
   "placeholder_isp10",
   "Placeholder 10",
@@ -285,7 +280,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
   jargon: Jargon, // money, behind safe/combination lock
-  placeholder_isp09: PlaceholderISP09, // ledger, behind numeric lock/rug
+  given_up: GivenUp, // ledger, behind numeric lock/rug
   placeholder_isp10: PlaceholderISP10, // note, inside cryptex
 
   a_heap_of_clards: AHeapOfClards,
@@ -326,7 +321,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     asset: money_modal_blacklight,
     assetAlt: "Shift by difference from 8V",
   }),
-  placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
+  placeholder_isp09_blacklight: blacklightPuzzle(GivenUp, {
     answer: "BROADCAST NEWS",
     asset: ledger_blacklight,
     assetAlt: "Same locations tuned to PM 23pi/20",
@@ -377,7 +372,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   give_this_grid_a_shake: GiveThisGridAShake,
-  given_up: GivenUp,
   garden_anecdotes: GardenAnecdotes,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
