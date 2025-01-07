@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { reduceCoordinatesToIndices } from "../../components/Crossword";
 
 export const GRID = `
@@ -164,10 +164,10 @@ export const FOOTERS = [
   { rowSpan: 5, contents: <strong>??</strong> },
 ];
 
-export const ACROSS = [
+export const ACROSS: [number, ReactNode][] = [
   [6, "Short Laugh"],
   [12, "Military installation of 58-Across (2 wds.)"],
-  [14, "3.14159..."],
+  [14, "3.14159…"],
   [15, "Household pet"],
   [22, "Driver's license, e.g."],
   [24, "Course 6-3"],
@@ -209,13 +209,18 @@ export const ACROSS = [
   [107, "FPS weapon metric for speed to eliminate an opponent"],
   [109, "Dubai's TLD"],
   [110, "Captain of Supply Corps of Jubilife Village (2 wds.)"],
-  [112, "2^70 prefix"],
-  [113, "Sometimes used interchangeably with the term “ligase”"],
+  [
+    112,
+    <>
+      2<sup>70</sup> prefix
+    </>,
+  ],
+  [113, "Enzyme that catalyzes biosynthesis"],
   [117, "Azzam the American"],
   [120, "Online video serv."],
   [121, "Central America's tallest point"],
   [123, "Power switch position"],
-  [124, "Most populous Western Visayas province"],
+  [124, "Most populous of the five current Western Visayas provinces"],
   [127, "Taiwanese consumer electronics co."],
   [130, "First word of German jelly donut quote"],
   [131, "Programming statement for conditional decisions"],
@@ -231,7 +236,12 @@ export const ACROSS = [
   [147, "Charcoal remains"],
   [149, "First place material"],
   [156, "Second most populous US city"],
-  [157, "10^21 value of SI unit for electric charge"],
+  [
+    157,
+    <>
+      10<sup>-21</sup> value of SI unit for electric charge
+    </>,
+  ],
   [158, "Shanghai Airlines ICAO code"],
   [159, "Abbreviation for the second category of crossword clues (abbr.)"],
   [167, "Ambi-"],
