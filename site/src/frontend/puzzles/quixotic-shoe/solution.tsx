@@ -1,17 +1,17 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import Crossword, {
+  reduceCoordinatesToIndices,
+} from "../../components/Crossword";
 import {
   HScrollTableWrapper,
   Mono,
   PuzzleAnswer,
 } from "../../components/StyledUI";
-import { HellfreshGrid } from "./hellfresh/puzzle";
-import Crossword, {
-  reduceCoordinatesToIndices,
-} from "../../components/Crossword";
 import { BETTEROPRAH_LABELS } from "./betteroprah/puzzle";
-import { HARDLYSAFE_LABELS } from "./hardlysafe/puzzle";
 import { DRAUGHTQUEENS_LABELS } from "./draughtqueens/puzzle";
+import { HARDLYSAFE_LABELS } from "./hardlysafe/puzzle";
+import { HellfreshGrid } from "./hellfresh/puzzle";
 
 const HELLFRESH_DATA: [string, string, string, string][] = [
   ["1A", "BOOS", "1 Leg on a tar fighter", "LEGO Na[boo s]tarfighter"],
@@ -361,6 +361,7 @@ const TOWNSQUARESPACE_REBUSES: [string, ReactNode][] = [
   [
     "E",
     <a
+      key="2"
       href="https://en.wikipedia.org/wiki/E_(kana)"
       target="_blank"
       rel="noreferrer"
