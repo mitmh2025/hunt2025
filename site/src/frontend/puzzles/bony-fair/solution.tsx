@@ -121,9 +121,9 @@ const Solution = (): JSX.Element => {
       </ul>
       <p>
         With this knowledge, we can slowly start filling out the adjacency
-        matrix (R for row and C for column). There may be many different solve
-        paths for the adjacency matrix and it isn’t necessary to use the
-        alphabetical ordering of the states, although it is definitely useful.
+        matrix. There may be many different solve paths for the adjacency matrix
+        and it isn’t necessary to use the alphabetical ordering of the states,
+        although it is definitely useful.
       </p>
       <p>
         The adjacency matrix can be solved for the following state columns and
