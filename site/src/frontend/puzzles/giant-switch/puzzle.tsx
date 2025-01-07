@@ -45,7 +45,7 @@ const Puzzle = () => {
       <StyledImage src={img9} alt="A ceiling" />
       <LinkedImage
         src={img10}
-        alt="A circular diagram. The top half of the circle has a semicircular band of tick marks, around which are scattered capital letters. The bottom half of the circle has a circular logo reading D&M, and below that letters FM."
+        alt="A circular diagram. The top half of the circle has a semicircular band of tick marks, around which are scattered capital letters. The bottom half of the circle has a circular logo reading D&amp;M, and below that letters FM."
       />
     </>
   );

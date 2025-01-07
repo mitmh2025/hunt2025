@@ -66,7 +66,7 @@ const STINGER_TABLE: [string, string, string, string][] = [
     "12-1",
     "93.3",
     "U",
-    "The hottest pop... the biggest hits. Up next, you know it, you love it, it’s Gangnam Style, here on K-Pop 93.3.",
+    "The hottest pop… the biggest hits. Up next, you know it, you love it, it’s Gangnam Style, here on K-Pop 93.3.",
   ],
   [
     "13-1",
@@ -78,13 +78,13 @@ const STINGER_TABLE: [string, string, string, string][] = [
     "32-123",
     "101.1",
     "L",
-    "Coming up, from the height of the second world war, we’ve got Ernest Tubb’s Walking The Floor Over You. After that, from many decades later, The Dixie Chicks’ Not Ready To Make Nice - two country hits from very different times, right here on Country 101.",
+    "Coming up, from the height of the second world war, we’ve got Ernest Tubb’s Walking The Floor Over You. After that, from many decades later, The Dixie Chicks’ Not Ready To Make Nice — two country hits from very different times, right here on Country 101.",
   ],
   [
     "34-1",
     "105.1",
     "E",
-    "Don’t sit down yet, this is 105.1, where the hips never stop shakin! Next up is the King, with everyone’s favorite, Jailhouse Rock.",
+    "Don’t sit down yet, this is 105.1, where the hips never stop shakin’! Next up is the King, with everyone’s favorite, Jailhouse Rock.",
   ],
   [
     "36-00",
@@ -106,7 +106,7 @@ const EXTRACTION_TABLE: [string, string, string, string][] = [
   ["H", "Ragtime", "The Original Dixieland One Step", "1917"],
   ["L", "Country", "Walking The Floor Over You", "1941"],
   ["E", "Hip Radio", "Jailhouse Rock - Elvis Presley", "1957"],
-  ["T", "Just Jazz", "Ramblin - Ornette Coleman", "1959"],
+  ["T", "Just Jazz", "Ramblin’ - Ornette Coleman", "1959"],
   ["I", "Disco", "I Will Survive - Gloria Gaynor", "1978"],
   ["C", "Boy Band", "Invisible Man - 98 Degrees", "1997"],
   ["C", "Boy Band", "Crash and Burn - Savage Garden", "1999"],

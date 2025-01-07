@@ -4,9 +4,9 @@ import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Given Up",
-  slug: "given-up",
+  slug: "given_up",
   initial_description:
-    "Photos of ceilings and a radio dial with letters (in person puzzle, late round)",
+    "Photos of ceilings and a radio dial with letters",
   answer: "ATHLETIC CLUB",
   authors: ["Quentin Smith", "Kevin Hwang", "Richard Tibbetts"],
   editors: ["Chris Gatesman", "Evan Broder", "James Douberley"],
