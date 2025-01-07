@@ -536,10 +536,10 @@ const PAGES_RELEASE_ORDER = [
 
 type PDFDescriptor = {
   asset: {
-    unlocked: string;
-    solved: string;
+    locked: string;
+    released: string;
   };
-  alt: { unlocked: string; solved: string };
+  alt: { locked: string; released: string };
   pos: ObjectPosition;
   width: number;
 };
@@ -551,108 +551,108 @@ function getPDFRow(top: number): PDFDescriptor[] {
   return [
     {
       asset: {
-        unlocked: off_1,
-        solved: on_1,
+        locked: off_1,
+        released: on_1,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_2,
-        solved: on_2,
+        locked: off_2,
+        released: on_2,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_3,
-        solved: on_3,
+        locked: off_3,
+        released: on_3,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing * 2 },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_4,
-        solved: on_4,
+        locked: off_4,
+        released: on_4,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing * 3 },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_5,
-        solved: on_5,
+        locked: off_5,
+        released: on_5,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing * 4 },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_6,
-        solved: on_6,
+        locked: off_6,
+        released: on_6,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing * 5 },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_7,
-        solved: on_7,
+        locked: off_7,
+        released: on_7,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing * 6 },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_8,
-        solved: on_8,
+        locked: off_8,
+        released: on_8,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing * 7 },
       width: 25.5,
     },
     {
       asset: {
-        unlocked: off_9,
-        solved: on_9,
+        locked: off_9,
+        released: on_9,
       },
       alt: {
-        unlocked: "Dark window",
-        solved: "Lighted window",
+        locked: "Dark window",
+        released: "Lighted window",
       },
       pos: { top, left: leftEdge + spacing * 8 },
       width: 25.5,
@@ -685,7 +685,6 @@ function lookupValue<T>(
 }
 
 function genPDFWindows(teamState: TeamHuntState): MurderPDFObject[] {
-  console.log("generating windows for pdfs");
   const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return [];
 
@@ -695,13 +694,13 @@ function genPDFWindows(teamState: TeamHuntState): MurderPDFObject[] {
 
   const solvedCount = puzzles.filter((puzzle) => !!puzzle?.answer).length;
   const imagery = PDFWindows.map((window, i) => {
-    const isSolved = !!(i < solvedCount * 3);
+    const isReleased = !!(i < solvedCount * 3);
 
     return {
       ...window,
-      asset: isSolved ? window.asset.solved : window.asset.unlocked,
-      alt: isSolved ? window.alt.solved : window.alt.unlocked, // accessible description of the image at `asset`
-      page: isSolved ? PAGES_RELEASE_ORDER[i] : undefined,
+      asset: isReleased ? window.asset.released : window.asset.locked,
+      alt: isReleased ? window.alt.released : window.alt.locked, // accessible description of the image at `asset`
+      page: isReleased ? PAGES_RELEASE_ORDER[i] : undefined,
     };
   });
 
