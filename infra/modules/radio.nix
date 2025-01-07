@@ -44,6 +44,8 @@ in {
 
         api = true; # :9997
         metrics = true; # :9998
+
+        paths."~teams/(\\d+)/radio" = {};
       };
     };
     services.nginx = lib.mkIf (cfg.externalHostname != null) {
