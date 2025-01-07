@@ -584,7 +584,7 @@ const Solution = (): JSX.Element => {
       <p>
         This puzzle was partly inspired by a few of the other excellent poetry
         puzzles in this hunt (
-        <a href="/puzzles/borderline_personality">Borderline Personality</a> and
+        <a href="/puzzles/borderline_personality">Borderline Personality</a> and{" "}
         <a href="/puzzles/a_puzzle_of_the_dead">A Puzzle of the Dead</a>), and
         partly by wanting to share my delight about the LPSC abstract haiku
         tradition. It was also just very fun to show a bunch of art and poetry,
