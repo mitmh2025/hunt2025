@@ -58,6 +58,11 @@
               proxyPass = "http://hunt2025";
               proxyWebsockets = true;
             };
+            locations."= /radio-manifest.json" = {
+              alias = "${pkgs.hunt2025}/lib/hunt2025/dist/radio-manifest.json";
+              # Copy Authentik configuration
+              extraConfig = config.services.nginx.virtualHosts."staging.mitmh2025.com".locations."/".extraConfig;
+            };
             locations."/static/".proxyPass = "http://hunt2025";
             authentik.enable = true;
             authentik.url = "https://staging.us-east5-a.c.mitmh2025-staging-gcp.internal:9443";
