@@ -15,6 +15,7 @@ import DoableDouble from "./austere-sink";
 import { blacklightPuzzle } from "./blacklight";
 import CopyPasta from "./blank-rose";
 import AsTheWorldTurandot from "./blend-hardboard";
+import AMapAndAShadeOrFour from "./bony-fair";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
@@ -365,6 +366,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Murder in MITropolis
   a_dash_of_color: ADashOfColor,
+  a_map_and_a_shade_or_four: AMapAndAShadeOrFour,
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
   abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends:
     AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends,
