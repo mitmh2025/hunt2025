@@ -2,6 +2,50 @@
 
 server.telnet()
 
+http_port = string.to_int(environment.get("HTTP_PORT"), default=8000)
+
+harbor.http.register(
+    port=http_port,
+    method="GET",
+    "/healthz",
+    fun (request, response) -> begin
+        response.content_type("text/plain")
+        response.data("ok")
+    end
+)
+
+state_directory = environment.get("STATE_DIRECTORY", default=".")
+state_path = "#{state_directory}/team_state.json"
+
+team_state = ref(
+    try
+        let json.parse ( v : {
+            quixotic_shoe_enabled: bool,
+            icy_box_enabled: bool,
+            interaction: bool,
+        }) = file.contents(state_path)
+        v
+    catch err do
+        {
+            quixotic_shoe_enabled=false,
+            icy_box_enabled=false,
+            interaction=false,
+        }
+    end
+)
+
+on_shutdown(fun () -> file.write(data=json.stringify(team_state()), state_path))
+
+harbor.http.register(
+    port=http_port,
+    method="POST",
+    "/setTeamState",
+    fun (request, response) -> begin
+        let json.parse v = request.body()
+        team_state := v
+    end
+)
+
 ICY_BOX_INTERVAL = 20. * 60.
 
 # Tier 1 - Background Music
@@ -72,13 +116,13 @@ background_music_next = randomizer(environment.get("MUSIC_DIR"), pattern="*.mp3"
 
 # Tier 2c - Puzzle content
 # quixotic-shoe: inject ads after every song
-quixotic_shoe_enabled = interactive.bool("quixotic_shoe", true)
+quixotic_shoe_enabled = {team_state().quixotic_shoe_enabled}
 quixotic_shoe_dir = environment.get("QUIXOTIC_SHOE_DIR")
 quixotic_shoe_handoff_next = randomizer("#{quixotic_shoe_dir}/handoff", pattern="*.ogg")
 quixotic_shoe_content_next = randomizer("#{quixotic_shoe_dir}/content", pattern="*.ogg")
 
 # icy-box: inject weather reports every 20m
-icy_box_enabled = interactive.bool("icy_box", true)
+icy_box_enabled = {team_state().icy_box_enabled}
 last_icy_box_time = ref(0.)
 icy_box_dir = environment.get("ICY_BOX_DIR")
 icy_box_handoff_next = randomizer("#{icy_box_dir}/handoff", pattern="*.ogg")
@@ -95,7 +139,7 @@ adhoc_announcements.push.uri("speak:adhoc announcement 2")
 # Interrupts background music
 # Has its own background music
 # TBD: Include speech or just background music?
-in_interaction = interactive.bool("interaction", false)
+in_interaction = {team_state().interaction}
 virtual_interaction = source.available(track_sensitive=false, single("spy-suite.mp3"), in_interaction)
 
 # Tier X - Celebration
