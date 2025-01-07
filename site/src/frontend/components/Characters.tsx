@@ -68,7 +68,10 @@ const Characters = () => {
         <h2>The Suspects</h2>
         <ul>
           <Persona>
-            <img src={PapaPhoto} />
+            <img
+              src={PapaPhoto}
+              alt="Large man with a white tuxedo jacket and a pinky ring"
+            />
             <div className="content">
               <a id="papa" />
               <h3>Robert “Papa” Finster (he/him)</h3>
@@ -82,7 +85,10 @@ const Characters = () => {
             </div>
           </Persona>
           <Persona>
-            <img src={GladysPhoto} />
+            <img
+              src={GladysPhoto}
+              alt="Woman with purple dress and headscarf"
+            />
             <div className="content">
               <a id="rover" />
               <h3>Gladys Finster (she/her)</h3>
@@ -97,7 +103,10 @@ const Characters = () => {
             </div>
           </Persona>
           <Persona>
-            <img src={BabyPhoto} />
+            <img
+              src={BabyPhoto}
+              alt="Woman with blue beret and pink neck scarf and cardigan"
+            />
             <div className="content">
               <a id="baby" />
               <h3>Teresa “Baby” Finster (she/her)</h3>
@@ -112,7 +121,10 @@ const Characters = () => {
             </div>
           </Persona>
           <Persona>
-            <img src={CarterPhoto} />
+            <img
+              src={CarterPhoto}
+              alt="Man with fedora, thin mustache, and a red tie and corsage"
+            />
             <div className="content">
               <a id="carter" />
               <h3>Ferdinand Carter (he/him)</h3>
@@ -127,7 +139,10 @@ const Characters = () => {
             </div>
           </Persona>
           <Persona>
-            <img src={SidecarPhoto} />
+            <img
+              src={SidecarPhoto}
+              alt="Man with round gold glasses and a ribbon necktie"
+            />
             <div className="content">
               <a id="sidecar" />
               <h3>Colt Sidecar (he/him)</h3>
@@ -142,7 +157,10 @@ const Characters = () => {
             </div>
           </Persona>
           <Persona>
-            <img src={RoverPhoto} />
+            <img
+              src={RoverPhoto}
+              alt="Large man with newsboy cap, brown vest and tie"
+            />
             <div className="content">
               <a id="you" />
               <h3>Roy “Rover” Canoso (he/him)</h3>
@@ -157,7 +175,10 @@ const Characters = () => {
             </div>
           </Persona>
           <Persona>
-            <img src={KatrinaPhoto} />
+            <img
+              src={KatrinaPhoto}
+              alt="Woman with cloche hat and teal shirt"
+            />
             <div className="content">
               <a id="katrina" />
               <h3>Katrina Jay (she/her)</h3>
@@ -181,7 +202,10 @@ const Characters = () => {
         <h2>The Detectives</h2>
         <ul>
           <Persona>
-            <img src={BilliePhoto} />
+            <img
+              src={BilliePhoto}
+              alt="Private investigator with fedora and trenchcoat"
+            />
             <div className="content">
               <a id="billie" />
               <h3>Billie O'Ryan</h3>
@@ -195,7 +219,10 @@ const Characters = () => {
             </div>
           </Persona>
           <Persona>
-            <img src={YouPhoto} />
+            <img
+              src={YouPhoto}
+              alt="Person with curled hair holding a magnifying glass"
+            />
             <div className="content">
               <a id="you" />
               <h3>You</h3>

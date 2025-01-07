@@ -25,6 +25,7 @@ import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render404, render500 } from "../utils/renderApp";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
+import { charactersHandler } from "./routes/characters";
 import { hubHandler } from "./routes/hub";
 import {
   interactionCompletePostHandler,
@@ -45,7 +46,6 @@ import {
   type SubpuzzleParams,
 } from "./routes/puzzle";
 import { roundHandler, type RoundParams } from "./routes/round";
-import { charactersHandler } from "./routes/characters";
 
 // Type parameters to RequestHandler are:
 // 1. Params
