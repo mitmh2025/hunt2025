@@ -56,7 +56,7 @@ const solvedClues = [
   ["33A", "Spot on", "N_ + DELIA< + IT"],
   ["38A", "Inspector’s conclusion on Ann’s personal valet", "INN + <C NOTE>"],
   ["40A", "In the best way possible", "/I DEAL E/"],
-  ["41A", "His meadows", "<LOPHADES>"],
+  ["41A", "His [Hades’] meadows", "<LOPHADES>"],
   ["42A", "Racing", "A FLUT(T)E + _R"],
   ["45A", "She’s no Spaniard", "<REAL>"],
   ["46A", "Source", "poEM A NATO Report contains"],
@@ -95,7 +95,7 @@ const solvedClues = [
   ["24D", "Size of the Rambling Club", "F + IVE"],
   ["25D", "Mode of transportation", "TAX + I"],
   ["27D", "Amherst institution", "UM + ASS"],
-  ["29D", "Priya is the murder victim", "<PAIR+_Y>"],
+  ["29D", "Rambling Club member who was killed", "<PAIR+_Y>"],
   ["30D", "Jury", "<PLANE>"],
   ["31D", "In the aforementioned", "romanTIC POems<"],
   ["34D", "Rambling Club member", "oN A HOLiday<"],
@@ -103,7 +103,11 @@ const solvedClues = [
   ["36D", "A rambler who’s not French", "iTwIlLfEaR"],
   ["37D", "Ripping", "TEA + RING + A_ + PA(R)T"],
   ["39D", "Close relative", "/NICE/"],
-  ["43D", "Number of suspects in the Rambling Club", "/FOR/"],
+  [
+    "43D",
+    "Number of suspicious members [suspects] in the Rambling Club",
+    "/FOR/",
+  ],
   ["44D", "Reverse", "UN(_D)O"],
   ["47D", "&lit", "M + (w->E)ANDERS"],
   [
@@ -118,7 +122,7 @@ const solvedClues = [
   ["56D", "Clifton’s rank", "ENS + sInGiNg"],
   ["57D", "Watercraft", "JET’S KI"],
   ["58D", "Request", "<FORSAK>"],
-  ["59D", "Either way", "_N(OLOS<)_E"],
+  ["59D", "With favorable outcomes only", "_N(OLOS<)_E"],
   ["60D", "Something to pluck", "BA + _N_ _J_ _O_"],
 ];
 
