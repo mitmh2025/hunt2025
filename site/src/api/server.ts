@@ -1220,17 +1220,16 @@ export async function getRouter({
               .map((e) => e.data.canonical_input)
               .sort();
 
-            // Special case. Unlock main quixotic-shoe puzzle when its subpuzzles are solved
-            if (
-              correct_answers.length > 0 &&
-              [
-                "hellfresh",
-                "betteroprah",
-                "hardlysafe",
-                "draughtqueens",
-                "townsquarespace",
-              ].includes(slug)
-            ) {
+            // Special case. Unlock main quixotic-shoe puzzle when its subpuzzles are solved.
+            const gateBySlug: Record<string, string> = {
+              hellfresh: "ptg09",
+              betteroprah: "ptg10",
+              hardlysafe: "ptg11",
+              draughtqueens: "ptg12",
+              townsquarespace: "ptg13",
+            };
+            if (correct_answers.length > 0 && slug in gateBySlug) {
+              const gate = gateBySlug[slug]!;
               await activityLog.executeMutation(
                 hunt,
                 team_id,
@@ -1241,13 +1240,13 @@ export async function getRouter({
                     (e) =>
                       (e.team_id === team_id || e.team_id === undefined) &&
                       e.type === "gate_completed" &&
-                      e.slug === "ptg09",
+                      e.slug === gate,
                   );
                   if (!existing) {
                     await mutator.appendLog({
                       team_id,
                       type: "gate_completed",
-                      slug: "ptg09",
+                      slug: gate,
                     });
                   }
                 },

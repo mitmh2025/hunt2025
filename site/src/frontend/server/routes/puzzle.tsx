@@ -238,7 +238,7 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
   if (subpuzzle.answer) {
     const guesses = result.body.guesses;
     const initialGuesses = JSON.stringify(guesses);
-    const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}";`;
+    const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}"; window.parentSlug = "${subpuzzle.parent_slug}";`;
     const noopOnGuessesUpdate = () => {
       /* no-op, this is noninteractive in SSR */
     };
@@ -261,7 +261,7 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
   }
 
   let puzzleStateFrag = <></>;
-  if (PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG.includes(slug)) {
+  if (PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG.includes(subpuzzle.parent_slug)) {
     const puzzleStateLogResult = await req.frontendApi.getFullPuzzleStateLog({
       query: { team_id: teamState.teamId, slug: subpuzzle.parent_slug },
     });

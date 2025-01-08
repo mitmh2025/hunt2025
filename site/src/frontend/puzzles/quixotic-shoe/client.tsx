@@ -151,7 +151,7 @@ const App = ({
     initialPuzzleStateLog,
   );
   const pickedUpMartini =
-    teamState.rounds.paper_trail?.gates?.includes("ptg10") ?? false;
+    teamState.rounds.paper_trail?.gates?.includes("ptg15") ?? false;
 
   const subpuzzlesWithAnswer = puzzleState.reduce<SubpuzzleDatum[]>(
     (acc, puzzleStateLogEntry) => {

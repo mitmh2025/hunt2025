@@ -363,13 +363,24 @@ const HUNT: Hunt = {
             { round_unlocked: "paper_trail" },
           ]},
         },
-        { id: "ptg04" }, // And Now, A Puzzling Word From Our Sponsors: Accessed HellFresh
-        { id: "ptg05" }, // And Now, A Puzzling Word From Our Sponsors: Accessed BetterOprah
-        { id: "ptg06" }, // And Now, A Puzzling Word From Our Sponsors: Accessed HardlySafe
-        { id: "ptg07" }, // And Now, A Puzzling Word From Our Sponsors: Accessed DraughtQueens
-        { id: "ptg08" }, // And Now, A Puzzling Word From Our Sponsors: Accessed TownSquareSpace
-        { id: "ptg09" }, // And Now, A Puzzling Word From Our Sponsors: Solved any subpuzzle; used to open puzzle itself
-        { id: "ptg10" }, // And Now, A Puzzling Word From Our Sponsors: Picked up martini from bar
+        { id: "ptg04", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed HellFresh"}, 
+        { id: "ptg05", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed BetterOprah"}, 
+        { id: "ptg06", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed HardlySafe"}, 
+        { id: "ptg07", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed DraughtQueens"}, 
+        { id: "ptg08", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed TownSquareSpace"}, 
+        { id: "ptg09", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved HellFresh"}, 
+        { id: "ptg10", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved BetterOprah"}, 
+        { id: "ptg11", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved HardlySafe"}, 
+        { id: "ptg12", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved DraughtQueens"}, 
+        { id: "ptg13", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved TownSquareSpace"}, 
+        { id: "ptg14", satisfied_if: [
+          {gate_satisfied: "ptg09"},
+          {gate_satisfied: "ptg10"},
+          {gate_satisfied: "ptg11"},
+          {gate_satisfied: "ptg12"},
+          {gate_satisfied: "ptg13"},
+        ], internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved all minipuzzles - unlocks automatically" },
+        { id: "ptg15", internal_description: "And Now, A Puzzling Word From Our Sponsors: Picked up martini from bar" }, 
         { id: "ptg16", internal_description: "Weather enabled for icy-box", satisfied_if: {
           oneOf: [
             { slot_unlocked: "ptp10" },
