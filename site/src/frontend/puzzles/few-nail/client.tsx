@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
+  CLEANSTRING_REGEX,
   HAS_STORAGE,
   LOCAL_STORAGE_PREFIX,
 } from "./puzzle-components/Constants";
@@ -52,7 +53,10 @@ const App = (): JSX.Element => {
 
   const guess = useCallback(
     (uuid: string, guess: string) => {
-      localStorage.setItem(`${LOCAL_STORAGE_PREFIX}${uuid}`, guess);
+      localStorage.setItem(
+        `${LOCAL_STORAGE_PREFIX}${uuid}`,
+        guess.toUpperCase().replace(CLEANSTRING_REGEX, ""),
+      );
       setGuessedUuids(new Set(...guessedUuids, uuid));
       dispatch({
         type: PuzzleActionType.GUESS,
