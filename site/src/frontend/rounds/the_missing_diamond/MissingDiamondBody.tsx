@@ -20,13 +20,13 @@ import React, {
 } from "react";
 import { css, styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import billie from "../../assets/billie.png";
 import cork from "../../assets/cork.png";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
 import { PuzzleUnlockModal } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { deviceMax, deviceMin } from "../../utils/breakpoints";
 import { MissingDiamondFonts } from "./MissingDiamondFonts";
-import billie from "./assets/billie.png";
 import map from "./assets/map.png";
 import skyline from "./assets/skyline.png";
 import stars from "./assets/stars.png";
@@ -288,13 +288,13 @@ const SpeechBubble = styled.div<{
   }}
 `;
 
-const EntityContainer = styled.div`
+const EntityContainer = styled.div<{ $clickable?: boolean }>`
   display: block;
   padding: 0;
   border: none;
   background: transparent;
   position: absolute;
-  cursor: pointer;
+  ${({ $clickable }) => $clickable && "cursor: pointer;"}
 `;
 
 const MissingDiamondMapEntity = ({
@@ -401,6 +401,7 @@ const MissingDiamondMapEntity = ({
           as="button"
           style={containerStyle}
           onClick={showUnlockModal}
+          $clickable={true}
         >
           {image}
         </EntityContainer>
@@ -521,6 +522,7 @@ const MissingDiamondInteraction = ({
         as="a"
         style={containerStyle}
         href={`/interactions/${interaction.slug}`}
+        $clickable={true}
       >
         {image}
       </EntityContainer>
@@ -594,6 +596,7 @@ const MissingDiamondWitnessImage = ({
           display: "none",
           backgroundColor: "transparent",
           color: "black",
+          textAlign: "left",
         }}
       >
         <tbody>

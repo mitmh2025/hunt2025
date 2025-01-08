@@ -22,6 +22,17 @@ const AdditionalInfoSchema = z
   })
   .passthrough();
 
+const DeviceAttributesSchema = z
+  .object({
+    en_knocks: z.boolean().optional(),
+    en_funaround: z.boolean().optional(),
+    en_rickroll: z.boolean().optional(),
+    en_numbers: z.boolean().optional(),
+    whep_url: z.string().optional(),
+  })
+  .passthrough();
+type DeviceAttributes = z.infer<typeof DeviceAttributesSchema>;
+
 let apiUrl = process.env.API_BASE_URL;
 if (process.env.NODE_ENV === "development" && !apiUrl) {
   apiUrl = `http://localhost:3000/api`;
@@ -34,6 +45,8 @@ const frontendApiSecret = process.env.FRONTEND_API_SECRET;
 if (!frontendApiSecret) {
   throw new Error("$FRONTEND_API_SECRET was not configured");
 }
+
+const mediaBaseUrl = process.env.MEDIA_BASE_URL;
 
 const redisUrl = process.env.REDIS_URL;
 if (!redisUrl) {
@@ -91,6 +104,7 @@ async function main({
   console.log("customers", customers);
 
   const customersByTeamId = new Map<number, Customer>();
+  const deviceAttributesByTeamId = new Map<number, DeviceAttributes>();
   for (const customer of customers) {
     try {
       const additionalInfo = AdditionalInfoSchema.parse(
@@ -98,6 +112,30 @@ async function main({
       );
       if (additionalInfo.teamId) {
         customersByTeamId.set(additionalInfo.teamId, customer);
+        const resp = await tbClient.client.telemetry.getAttributesByScope({
+          params: {
+            entityType: "CUSTOMER",
+            entityId: customer.id.id,
+            scope: "SERVER_SCOPE",
+          },
+          query: {
+            keys: ["device_attributes"],
+          },
+        });
+        if (resp.status === 200) {
+          for (const attr of resp.body) {
+            if (attr.key === "device_attributes") {
+              try {
+                deviceAttributesByTeamId.set(
+                  additionalInfo.teamId,
+                  DeviceAttributesSchema.parse(attr.value),
+                );
+              } catch (e: unknown) {
+                // ignore wrong schema, we'll just blow it away
+              }
+            }
+          }
+        }
       }
     } catch (e) {
       console.log("Customer without team", customer);
@@ -170,32 +208,62 @@ async function main({
       customer = baseCustomer;
     }
     const teamState = teamStates.get(teamId);
-    if (teamState && (additionalInfo.teamStateEpoch ?? 0) < teamState.epoch) {
+    if (teamState && (additionalInfo.teamStateEpoch ?? 0) <= teamState.epoch) {
       // en_knocks should be set to true when practical-fighter is unlocked (and remain true). Prior to that it can be unset or false, the radio treats them the same
       // en_funaround should be set to true when dimpled-star is unlocked. (Same deal)
       // en_rickroll should be set to true when the blacklight mode for giant-switch is unlocked
       // en_numbers should be set to true when diligent-spy is unlocked
-      const device_attributes = {
+      const oldDeviceAttributes = deviceAttributesByTeamId.get(teamId);
+      const deviceAttributes = {
+        ...oldDeviceAttributes,
         en_knocks: teamState.puzzles_unlocked.has("songs_on_the_radio"),
         en_funaround: teamState.puzzles_unlocked.has("the_thief"),
         en_rickroll: teamState.puzzles_unlocked.has("given_up_blacklight"),
         en_numbers: teamState.puzzles_unlocked.has("can_do_transmissions"),
       };
-      await tbClient.client.telemetry
-        .saveEntityAttributes({
-          params: {
-            entityType: "CUSTOMER",
-            entityId: customer.id.id,
-            scope: "SERVER_SCOPE",
-          },
+      if (mediaBaseUrl && deviceAttributes.whep_url === undefined) {
+        const path = `teams/${teamId}/radio`;
+        const resp = await frontendApiClient.mintToken({
           body: {
-            device_attributes,
+            media: [
+              {
+                action: "read",
+                path,
+              },
+            ],
           },
-        })
-        .then(check);
-      modified = true;
-      additionalInfo.teamStateEpoch = teamState.epoch;
-      customer.additionalInfo = additionalInfo;
+        });
+        if (resp.status === 200) {
+          deviceAttributes.whep_url = `${mediaBaseUrl}/${path}?jwt=${resp.body}`;
+        } else {
+          console.warn("Failed to mint token for", teamId, resp);
+        }
+      }
+      if (
+        oldDeviceAttributes?.en_knocks !== deviceAttributes.en_knocks ||
+        oldDeviceAttributes.en_funaround !== deviceAttributes.en_funaround ||
+        oldDeviceAttributes.en_numbers !== deviceAttributes.en_numbers ||
+        oldDeviceAttributes.whep_url !== deviceAttributes.whep_url
+      ) {
+        await tbClient.client.telemetry
+          .saveEntityAttributes({
+            params: {
+              entityType: "CUSTOMER",
+              entityId: customer.id.id,
+              scope: "SERVER_SCOPE",
+            },
+            body: {
+              device_attributes: deviceAttributes,
+            },
+          })
+          .then(check);
+        deviceAttributesByTeamId.set(teamId, deviceAttributes);
+        modified = true;
+      }
+      if ((additionalInfo.teamStateEpoch ?? 0) < teamState.epoch) {
+        additionalInfo.teamStateEpoch = teamState.epoch;
+        customer.additionalInfo = additionalInfo;
+      }
     }
     if (modified) {
       customer = await tbClient.client.customer

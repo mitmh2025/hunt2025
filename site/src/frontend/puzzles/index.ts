@@ -13,6 +13,9 @@ import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
 import DoableDouble from "./austere-sink";
 import { blacklightPuzzle } from "./blacklight";
+import CopyPasta from "./blank-rose";
+import AsTheWorldTurandot from "./blend-hardboard";
+import AMapAndAShadeOrFour from "./bony-fair";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
@@ -41,18 +44,22 @@ import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite
 import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
 import NoNotes from "./false-pole";
+import ADashOfColor from "./few-cycle";
+import TheAnnualMassachusettsSpellingBee from "./few-nail";
 import BattleFactory from "./firsthand-cat";
 import CacciandoTrioMisterioso from "./fog-wavelength";
 import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
 import GivenUp from "./giant-switch";
 import ChatGPT from "./giving-fighter";
+import AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends from "./granular-shoe";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
 import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
 import Incognito from "./heavy-iron";
+import DoTheManualCalculationsDontTryMonteCarlo from "./hideous-theater";
 import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
 import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
@@ -80,6 +87,7 @@ import MissingConnections from "./naive-agent";
 import WhatDoTheyCallYou from "./new-ketchup";
 import AMathQuiz from "./new-pin";
 import TasteExplosion from "./next-van";
+import OnTheCorner from "./numerous-sprint";
 import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
 import HisLifeStory from "./oily-date";
@@ -104,6 +112,7 @@ import Cruciverbal from "./regal-knife";
 import TheJewelryStore from "./reliable-night";
 import FollowTheRules from "./right-palm";
 import SyntheticTagsonomy from "./rubbery-tooth";
+import Chinatown from "./rude-field";
 import DroppingTheBall from "./rundown-spot";
 import PawPrintDetective from "./rural-helicopter";
 import MagnifyingGlassIce from "./sandy-atlantis";
@@ -138,6 +147,7 @@ import ShellCorporationSeven from "./truthful-wave";
 import type { PuzzleDefinition, SubpuzzleDefinition } from "./types";
 import TheyMightBeGradStudentsButTheyveGotYourNumber from "./uneven-aztec";
 import MazeOfLies from "./unfit-tower";
+import Flatland from "./unhealthy-mint";
 import GardenAnecdotes from "./unimportant-lock";
 import TheMark from "./unique-australia";
 import AnArgument from "./unsung-bomb";
@@ -163,6 +173,7 @@ const PlaceholderISP10 = makePlaceholder(
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   "🔎🧊": MagnifyingGlassIce,
+  "📑🍝": CopyPasta,
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
@@ -178,6 +189,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   mitropolitan_house_of_fashion: MITropolitanHouseOfFashion,
   neatly_drawn: NeatlyDrawn,
   no_notes: NoNotes,
+  on_the_corner: OnTheCorner,
   press_play: PressPlay,
   shrinkage: Shrinkage,
   songs_on_the_radio: SongsOnTheRadio,
@@ -235,12 +247,16 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 
+  chinatown: Chinatown,
+
   // The Paper Trail
   ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
   any_coat_will_do: AnyCoatWillDo,
   a_weathered_note: AWeatheredNote,
   bar_talk: BarTalk,
   chemicals_are_sexy: ChemicalsAreSexy,
+  do_the_manual_calculations_dont_try_monte_carlo:
+    DoTheManualCalculationsDontTryMonteCarlo,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
   his_life_story: HisLifeStory,
@@ -281,6 +297,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   half_baked: HalfBaked,
   networking_event: NetworkingEvent,
   passage_of_time: PassageOfTime,
+  the_annual_massachusetts_spelling_bee: TheAnnualMassachusettsSpellingBee,
 
   // Note: these blacklight answer assignments are all wrong, but that's the
   // set of graphical assets that we got for the playtest, so we're going to
@@ -328,6 +345,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   papas_bookcase_blacklight: PapasBookcaseBlacklight,
 
   // The Background Check
+  _land: Flatland,
   celestial_rope: CelestialRope,
   deepfrost: Deepfrost,
   formula_won: FormulaWon,
@@ -348,7 +366,12 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   alias: Alias,
 
   // The Murder in MITropolis
+  a_dash_of_color: ADashOfColor,
+  a_map_and_a_shade_or_four: AMapAndAShadeOrFour,
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
+  abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends:
+    AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends,
+  as_the_world_turandot: AsTheWorldTurandot,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   can_do_transmissions: CanDoTransmissions,

@@ -7,6 +7,7 @@
     ../../services/redis.nix
     ../../services/authentik
     ../../services/zammad.nix
+    ../../services/k3s.nix
   ];
   config = lib.mkMerge [
     {
@@ -93,6 +94,11 @@
       };
     }
     {
+      services.sync2k8s = {
+        enable = true;
+      };
+    }
+    {
       services.thingsboard = {
         enable = true;
         datasource.createLocally = true;
@@ -132,16 +138,16 @@
         enable = true;
         externalHostname = "media.staging.mitmh2025.com";
       };
+
+      services.mediamtx.env = {
+        API_BASE_URL = config.hunt2025.site.apiBaseUrl;
+        FRONTEND_API_SECRET = "%m";
+      };
+
       services.mediamtx.settings = {
         paths.music = {
           runOnInit = ''
             env MUSIC_DIR=${radio-media}/music/ OUTPUT_URL=rtsp://localhost:$RTSP_PORT/$MTX_PATH ${lib.getExe pkgs.liquidsoap} ${../../../radioman/station-break-test.liq}
-          '';
-          runOnInitRestart = true;
-        };
-        paths.ads = {
-          runOnInit = ''
-            ${lib.getExe pkgs.ffmpeg} -re -stream_loop -1 -i ${"${radio-media}/quixotic-shoe/ads.mp3"} -vn -c:a libopus -ar 48000 -b:a 128k -packet_loss 1 -fec true -f rtsp rtsp://localhost:$RTSP_PORT/$MTX_PATH
           '';
           runOnInitRestart = true;
         };
@@ -160,7 +166,7 @@
         "profile mitmh2025-puzzup".credential_process = "${awsAuth} 891377012427 GCPStagingStaging";
       };
       systemd.services.hunt2025.environment = {
-        EMAIL_FROM = "info@mitmh2025.com";
+        EMAIL_FROM = "MIT Mystery Hunt 2025 <info@mitmh2025.com>";
         AWS_CONFIG_FILE = "/etc/aws/config";
         AWS_SDK_LOAD_CONFIG = "true";
         AWS_PROFILE = "mitmh2025-puzzup";
@@ -234,19 +240,6 @@
             locations."/api".proxyPass = "http://hunt2025";
           };
         };
-      };
-    }
-    {
-      services.k3s = {
-        enable = true;
-        role = "server";
-        gracefulNodeShutdown.enable = true;
-        extraFlags = [
-          "--disable=traefik"
-        ];
-        images = [
-          config.services.k3s.package.airgapImages
-        ];
       };
     }
     {

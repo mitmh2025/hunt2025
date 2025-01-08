@@ -11,5 +11,8 @@ export function huntNotStartedHandler(
   }
 
   const node = <div>The hunt has not started yet.</div>;
-  return wrapContentWithNavBar({ node }, teamState);
+  return wrapContentWithNavBar(
+    { node, title: "Two P.I. Noir Detective Agency" },
+    teamState,
+  );
 }

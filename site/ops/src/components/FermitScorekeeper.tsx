@@ -58,9 +58,7 @@ function AnswerCell({
       </ACell>
     );
   } else {
-    return (
-      <ACell>{answers.get(key)}</ACell>
-    );
+    return <ACell>{answers.get(key)}</ACell>;
   }
 }
 

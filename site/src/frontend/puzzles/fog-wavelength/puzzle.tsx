@@ -4,9 +4,10 @@ import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
 import puzzle from "./assets/puzzle.mp3";
 
-// Match color of score
 const Letter = styled.div`
   background-color: #f9f9f9;
+  print-color-adjust: unset;
+  -webkit-print-color-adjust: unset;
   border: 1px solid black;
   padding: 1em;
 `;

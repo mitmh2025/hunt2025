@@ -275,9 +275,11 @@ export type NavBarState = {
 const NavBar = ({
   info,
   state,
+  whepUrl,
 }: {
   info: { teamName: string };
   state: NavBarState;
+  whepUrl: string;
 }) => {
   const { teamName } = info;
   const { rounds, currency } = state;
@@ -321,7 +323,7 @@ const NavBar = ({
           </ul>
         </TopLevelDropdown>
         <Spacer />
-        <AudioControls />
+        <AudioControls whepUrl={whepUrl} />
         <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>
         <Dropdown $alignRight>
           <TeamNameNavLink tabIndex={0}>

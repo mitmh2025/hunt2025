@@ -29,7 +29,7 @@ const DATA: [string, string, string, number, string, string, string][] = [
     "Left Out",
     2020,
     "Penny Park",
-    "TEAMWORK TIME: Gallery of Tomorrow",
+    "Gallery of Tomorrow",
     "FINGERPAINTS",
   ],
   [
@@ -100,7 +100,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         <Mono>
-          TAKEOUT FINGERPAINTS MAKEUP ALTERNATIVE STOLEN DIAMOND HISTORY
+          TAKEOUT FINGERPAINTS MAKEUP ALTERNATE STOLEN DIAMOND HISTORY
         </Mono>
       </p>
       <p>

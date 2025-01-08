@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import {
   HScrollTableWrapper,
@@ -47,7 +47,7 @@ const ROUTES: {
     odo: number;
     speed: number;
     donuts: number;
-    rules: string[];
+    rules: ReactNode[];
   }[];
 }[] = [
   {
@@ -59,7 +59,7 @@ const ROUTES: {
         direction: "",
         instruction: "BEGIN at 84 Massachusetts Avenue, facing northwest",
         street: "Mass Ave",
-        odo: 0,
+        odo: 0.0,
         speed: 25,
         donuts: 0,
         rules: [],
@@ -148,7 +148,7 @@ const ROUTES: {
         direction: "L",
         instruction: "at T",
         street: "Mass Ave",
-        odo: 4,
+        odo: 4.0,
         speed: 25,
         donuts: 2,
         rules: [],
@@ -207,7 +207,7 @@ const ROUTES: {
         direction: "R",
         instruction: "at T",
         street: "Linnaean St",
-        odo: 6,
+        odo: 6.0,
         speed: 36,
         donuts: 2,
         rules: [],
@@ -364,12 +364,17 @@ const ROUTES: {
         direction: "R",
         instruction: "into DUNKIN’ drive-thru for DIYC. Target ODO 9.1 miles",
         street: "517 Concord Ave, Cambridge",
-        odo: 9,
+        odo: 9.0,
         speed: 27,
         donuts: 3,
         rules: [
-          "Rule DONUTS (index 3 into UNFLAVORED to extract F)",
-          "Rule ROTARY (there have been three rotaries, increase the index by 3 to extract V)",
+          <>
+            Rule DONUTS (index 3 into UNFLAVORED to extract <strong>F</strong>)
+          </>,
+          <>
+            Rule ROTARY (there have been three rotaries, increase the index by 3
+            to extract <strong>V</strong>)
+          </>,
         ],
       },
     ],
@@ -386,7 +391,7 @@ const ROUTES: {
         direction: "",
         instruction: "BEGIN at previous DIYC, facing northwest.",
         street: "Concord Ave",
-        odo: 0,
+        odo: 0.0,
         speed: 23,
         donuts: 0,
         rules: [],
@@ -482,7 +487,7 @@ const ROUTES: {
         direction: "B",
         instruction: "at Y",
         street: "Lake St",
-        odo: 4,
+        odo: 4.0,
         speed: 19,
         donuts: 1,
         rules: [],
@@ -648,8 +653,13 @@ const ROUTES: {
         speed: 28,
         donuts: 2,
         rules: [
-          "Rule DONUTS (index 2 into GOOSEBERRY to extract O)",
-          "Rule ROTARY (there has been one rotary, increase the index by 1 to extract O)",
+          <>
+            Rule DONUTS (index 2 into GOOSEBERRY to extract <strong>O</strong>)
+          </>,
+          <>
+            Rule ROTARY (there has been one rotary, increase the index by 1 to
+            extract <strong>O</strong>)
+          </>,
         ],
       },
     ],
@@ -663,7 +673,7 @@ const ROUTES: {
         direction: "",
         instruction: "BEGIN at previous DIYC, facing southeast.",
         street: "Mystic Ave",
-        odo: 0,
+        odo: 0.0,
         speed: 38,
         donuts: 0,
         rules: [],
@@ -672,7 +682,7 @@ const ROUTES: {
         direction: "R",
         instruction: "1st OPP",
         street: "Bonner Ave",
-        odo: 0,
+        odo: 0.0,
         speed: 38,
         donuts: 0,
         rules: [],
@@ -735,7 +745,7 @@ const ROUTES: {
         direction: "BL",
         instruction: "at Y",
         street: "Willis Ave",
-        odo: 1,
+        odo: 1.0,
         speed: 13,
         donuts: 0,
         rules: ["Rule ANGRY"],
@@ -871,12 +881,17 @@ const ROUTES: {
         direction: "R",
         instruction: "into DUNKIN’ drive-thru for DIYC. Target ODO 4.6 miles.",
         street: "57 Eastern Ave, Malden",
-        odo: 5,
+        odo: 5.0,
         speed: 29,
         donuts: 2,
         rules: [
-          "Rule DONUTS (index 2 into BOYSENBERRY to extract O)",
-          "Rule ROTARY (there has been one rotary, increase the index by 1 to extract Y)",
+          <>
+            Rule DONUTS (index 2 into BOYSENBERRY to extract <strong>O</strong>)
+          </>,
+          <>
+            Rule ROTARY (there has been one rotary, increase the index by 1 to
+            extract <strong>Y</strong>)
+          </>,
         ],
       },
     ],
@@ -890,7 +905,7 @@ const ROUTES: {
         direction: "",
         instruction: "BEGIN at previous DIYC, facing northeast.",
         street: "Eastern Ave",
-        odo: 0,
+        odo: 0.0,
         speed: 34,
         donuts: 0,
         rules: [],
@@ -980,7 +995,7 @@ const ROUTES: {
         direction: "BR",
         instruction: "at Y",
         street: "Alford St",
-        odo: 4,
+        odo: 4.0,
         speed: 35,
         donuts: 2,
         rules: [
@@ -1054,9 +1069,11 @@ const ROUTES: {
         speed: 25,
         donuts: 8,
         rules: [
-          "Rule DONUTS (index 8 into DEGLAZED to extract D)",
+          <>
+            Rule DONUTS (index 8 into DEGLAZED to extract <strong>D</strong>)
+          </>,
           "Rule ROTARY (there have been two rotaries, increase the index by 2)",
-          "Rule TUMMYACHE",
+          "Rule TUMMYACHE (do not extract a letter)",
         ],
       },
     ],
@@ -1070,7 +1087,7 @@ const ROUTES: {
         direction: "",
         instruction: "BEGIN at previous DIYC, facing northeast",
         street: "Lynn Fells Parkway",
-        odo: 0,
+        odo: 0.0,
         speed: 27,
         donuts: 0,
         rules: [],
@@ -1106,7 +1123,7 @@ const ROUTES: {
         direction: "",
         instruction: "OBSERVE “WAVERLY PL”",
         street: "W Wyoming Ave",
-        odo: 1,
+        odo: 1.0,
         speed: 22,
         donuts: 0,
         rules: ["Rule SPEEDOMETER (sign reads WAVERLY PL, record A)"],
@@ -1133,7 +1150,7 @@ const ROUTES: {
         direction: "R",
         instruction: "5th SIGNAL",
         street: "Lynn Fells Parkway",
-        odo: 2,
+        odo: 2.0,
         speed: 25,
         donuts: 0,
         rules: [],
@@ -1178,7 +1195,7 @@ const ROUTES: {
         direction: "",
         instruction: "OBSERVE “PRIMP”",
         street: "Main St",
-        odo: 3,
+        odo: 3.0,
         speed: 30,
         donuts: 0,
         rules: ["Rule SPEEDOMETER (sign reads PRIMP, record I)"],
@@ -1257,7 +1274,10 @@ const ROUTES: {
           "Rule ANGRY",
           "Rule CRAVING",
           "Rule DONUTS (index 2 into ACAIBERRY to extract C",
-          "Rule ROTARY (there has been one rotary, increase the inex by 1 to extract A)",
+          <>
+            Rule ROTARY (there has been one rotary, increase the inex by 1 to
+            extract <strong>A</strong>)
+          </>,
         ],
       },
     ],
@@ -1271,7 +1291,7 @@ const ROUTES: {
         direction: "",
         instruction: "Begin at previous DIYC, facing north.",
         street: "Main St",
-        odo: 0,
+        odo: 0.0,
         speed: 16,
         donuts: 0,
         rules: [],
@@ -1337,7 +1357,7 @@ const ROUTES: {
         direction: "L",
         instruction: "at T",
         street: "Albion St",
-        odo: 2,
+        odo: 2.0,
         speed: 19,
         donuts: 1,
         rules: [],
@@ -1391,7 +1411,7 @@ const ROUTES: {
         direction: "R",
         instruction: "at T",
         street: "Forest St",
-        odo: 4,
+        odo: 4.0,
         speed: 17,
         donuts: 1,
         rules: [],
@@ -1524,8 +1544,13 @@ const ROUTES: {
         speed: 37,
         donuts: 2,
         rules: [
-          "Rule DONUTS (index 2 into DOGBERRY to extract O)",
-          "Rule ROTARY (there has been one rotary, increase the index by 1 to extract G)",
+          <>
+            Rule DONUTS (index 2 into DOGBERRY to extract <strong>O</strong>)
+          </>,
+          <>
+            Rule ROTARY (there has been one rotary, increase the index by 1 to
+            extract <strong>G</strong>)
+          </>,
         ],
       },
     ],
@@ -1539,7 +1564,7 @@ const ROUTES: {
         direction: "",
         instruction: "Begin at previous DIYC, facing east.",
         street: "Washington St",
-        odo: 0,
+        odo: 0.0,
         speed: 14,
         donuts: 0,
         rules: [],
@@ -1670,7 +1695,7 @@ const ROUTES: {
         direction: "L",
         instruction: "at T",
         street: "Highland Ave",
-        odo: 4,
+        odo: 4.0,
         speed: 18,
         donuts: 0,
         rules: [],
@@ -1727,7 +1752,7 @@ const ROUTES: {
         direction: "BR",
         instruction: "2nd SIGNAL",
         street: "Loring Ave",
-        odo: 9,
+        odo: 9.0,
         speed: 38,
         donuts: 0,
         rules: ["Rule COMPLACENT (ODO 7.9-9.0 on Loring Ave)"],
@@ -1779,8 +1804,13 @@ const ROUTES: {
         speed: 23,
         donuts: 2,
         rules: [
-          "Rule DONUTS (index 2 into SUET to extract U)",
-          "Rule ROTARY (there has been one rotary, increase the index by 2 to extract E)",
+          <>
+            Rule DONUTS (index 2 into SUET to extract <strong>U</strong>)
+          </>,
+          <>
+            Rule ROTARY (there has been one rotary, increase the index by 2 to
+            extract <strong>E</strong>)
+          </>,
         ],
       },
     ],
@@ -1790,12 +1820,14 @@ const ROUTES: {
       "https://www.google.com/maps/dir/42.4830973,-70.9009473/42.4670119,-70.9252175/42.4789712,-70.9561213/Diaz's+Bakery,+Market+Street,+Lynn,+MA/42.460553,-70.9552803/@42.4793496,-70.9328794,14.82z/data=!4m47!4m46!1m25!3m4!1m2!1d-70.9040451!2d42.4821884!3s0x89e314abd493e23b:0x836998b175be0921!3m4!1m2!1d-70.9158597!2d42.4797128!3s0x89e313532f6d5f5d:0xc9851fd658e647f3!3m4!1m2!1d-70.9230077!2d42.4722919!3s0x89e36cb091163f11:0xe18a49a8d529ef!3m4!1m2!1d-70.922276!2d42.4670972!3s0x89e36cbb85a128e1:0xe92572d98de0988d!3m4!1m2!1d-70.9247958!2d42.4657867!3s0x89e36cbc2180e815:0x15f37e364d837275!1m5!3m4!1m2!1d-70.93469!2d42.4645957!3s0x89e36cc1c56b2981:0xdc8360babbe7e34e!1m5!3m4!1m2!1d-70.9593052!2d42.469359!3s0x89e36d21eb328f65:0x4fd0275c319c6aa4!1m5!1m1!1s0x89e36ce119bdf6e9:0xa4b9c78bc2863497!2m2!1d-70.9506216!2d42.4640338!1m0!3e0?entry=ttu&g_ep=EgoyMDI0MDkxMS4wIKXMDSoASAFQAw%3D%3D",
       "https://www.google.com/maps/dir/42.460527,-70.9552778/Dunkin'/@42.4603177,-70.9705471,17.21z/data=!4m14!4m13!1m5!3m4!1m2!1d-70.9661842!2d42.4595035!3s0x89e36d05519ff399:0xf9468a50f11f4e30!1m5!1m1!1s0x89e36d1026e0543b:0x3a40c101600edc12!2m2!1d-70.9685518!2d42.4605!3e0?entry=ttu&g_ep=EgoyMDI0MDkxMS4wIKXMDSoASAFQAw%3D%3D",
     ],
+    mapsNote:
+      "Google Maps has a limit on the number of waypoints allows in a route, and this leg exceeds that number of waypoints, so its route is displayed in two separate maps.",
     instructions: [
       {
         direction: "",
         instruction: "Begin at previous DIYC, facing south.",
         street: "Paradise Rd",
-        odo: 0,
+        odo: 0.0,
         speed: 14,
         donuts: 0,
         rules: [],
@@ -1804,7 +1836,7 @@ const ROUTES: {
         direction: "R",
         instruction: "1st SIGNAL",
         street: "Paradise Rd",
-        odo: 1,
+        odo: 0.1,
         speed: 14,
         donuts: 0,
         rules: [],
@@ -1871,7 +1903,7 @@ const ROUTES: {
         direction: "L",
         instruction: "1st SIGNAL",
         street: "Eastern Ave",
-        odo: 2,
+        odo: 2.0,
         speed: 19,
         donuts: 2,
         rules: [],
@@ -2000,7 +2032,7 @@ const ROUTES: {
         direction: "",
         instruction: "OBSERVE SOL HIT RIP “DIAZ”",
         street: "Market St",
-        odo: 6,
+        odo: 6.0,
         speed: 30,
         donuts: 2,
         rules: ["Rule RETEMODEEPS (sign reads DIAZ BAKERY, record E)"],
@@ -2050,7 +2082,10 @@ const ROUTES: {
         donuts: 2,
         rules: [
           "Rule ANGRY",
-          "Rule DONUTS (index 2 into FROSTED FLAKE to extract R)",
+          <>
+            Rule DONUTS (index 2 into FROSTED FLAKE to extract{" "}
+            <strong>R</strong>)
+          </>,
           "Rule ROTARY (no rotaries on this leg, re-extract R)",
         ],
       },
@@ -2065,7 +2100,7 @@ const ROUTES: {
         direction: "",
         instruction: "Begin at previous DIYC, facing northeast.",
         street: "Western Ave",
-        odo: 0,
+        odo: 0.0,
         speed: 34,
         donuts: 0,
         rules: [],
@@ -2206,7 +2241,7 @@ const ROUTES: {
         direction: "BR",
         instruction: "2nd OPP",
         street: "US-1 South",
-        odo: 5,
+        odo: 5.0,
         speed: 37,
         donuts: 3,
         rules: ["Rule WHEE"],
@@ -2324,8 +2359,13 @@ const ROUTES: {
         donuts: 5,
         rules: [
           "Rule CRAVING",
-          "Rule DONUTS (index 5 into DORITOS to extract T)",
-          "Rule ROTARY (there has been two rotaries, increase the index by 2 to extract S)",
+          <>
+            Rule DONUTS (index 5 into DORITOS to extract <strong>T</strong>)
+          </>,
+          <>
+            Rule ROTARY (there has been two rotaries, increase the index by 2 to
+            extract <strong>S</strong>)
+          </>,
         ],
       },
     ],

@@ -24,25 +24,25 @@ export const INTERACTIONS = {
   meet_billie: {
     title: "Meet Billie",
   },
-  catch_the_thief: {
-    title: "Catch the Thief",
+  the_crime_scene: {
+    title: "The Crime Scene",
   },
-  meet_carter: {
-    title: "Meet Carter",
+  confront_carter: {
+    title: "Confront Carter",
   },
-  meet_gladys: {
-    title: "Meet Gladys",
+  confront_gladys: {
+    title: "Confront Gladys",
   },
-  meet_katrina: {
-    title: "Meet Katrina",
+  confront_katrina: {
+    title: "Confront Katrina",
   },
-  meet_papa: {
-    title: "Meet Papa",
+  confront_papa: {
+    title: "Confront Papa",
   },
-  unmask_the_killer: {
-    title: "Unmask the Killer",
+  the_safehouse: {
+    title: "The Safehouse",
   },
-  find_the_diamond: {
-    title: "Find the Diamond",
+  the_vault: {
+    title: "The Vault",
   },
 };

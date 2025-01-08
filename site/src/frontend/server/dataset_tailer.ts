@@ -270,6 +270,11 @@ export class StreamDatasetTailer<T extends { id: number }> {
   }
 
   watchLog(onItems: (items: T[]) => void): () => void {
+    if (!this.retainEntries && this.listeners.size > 0) {
+      this.log(
+        "WARNING: attempted to watchLog with multiple watchers with retainEntries: false.  Watchers other than the first will miss entries!",
+      );
+    }
     const id = genId();
     const listener = {
       id,

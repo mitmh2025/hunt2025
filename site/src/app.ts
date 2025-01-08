@@ -26,6 +26,7 @@ export default async function ({
   jwksUri,
   frontendApiSecret,
   dataApiSecret,
+  mediaBaseUrl,
   apiUrl,
   redisUrl,
   emailFrom,
@@ -36,11 +37,23 @@ export default async function ({
   jwksUri: string | undefined;
   frontendApiSecret: string;
   dataApiSecret: string | undefined;
+  mediaBaseUrl: string | undefined;
   apiUrl: string | undefined;
   redisUrl?: string;
   emailFrom?: string;
 }) {
   const redisClient = redisUrl ? await redisConnect(redisUrl) : undefined;
+
+  if (process.env.NODE_ENV === "development" && redisClient) {
+    try {
+      // Wipe data every time we start in development, since the database might have regressed.
+      for await (const key of redisClient.scanIterator()) {
+        await redisClient.del(key);
+      }
+    } catch (err) {
+      console.error("failed to wipe redis:", err);
+    }
+  }
 
   const hunt = HUNT;
 
@@ -60,6 +73,9 @@ export default async function ({
     }
     if (!dataApiSecret) {
       throw new Error("$DATA_API_SECRET not defined in production");
+    }
+    if (!mediaBaseUrl) {
+      throw new Error("$MEDIA_BASE_URL not defined in production");
     }
     if (process.env.NODE_ENV !== "development" && emailFrom === undefined) {
       throw new Error("$EMAIL_FROM not defined in production");
@@ -82,6 +98,7 @@ export default async function ({
       jwksUri,
       frontendApiSecret,
       dataApiSecret,
+      mediaBaseUrl,
       knex,
       hunt,
       redisClient,

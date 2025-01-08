@@ -137,7 +137,7 @@ const Box = ({ id }: { id: string }): JSX.Element => {
         $left={588.8}
         $top={588.8}
         src={image5}
-        alt="A chessboard. Each square on the board has a letter in the opposite color."
+        alt="A chessboard, with pieces showing a game in progress. Each square on the board has a letter in the opposite color."
       />
       <PositionedImage
         $rotate={45}
@@ -151,7 +151,7 @@ const Box = ({ id }: { id: string }): JSX.Element => {
         $left={211.2}
         $top={588.8}
         src={image7}
-        alt="A tic-tac-toe board. Some squares have more than one X or O. To the right of the board is a mechanism with a button ono a metal flange. Below the board are six groups of miniature tic-tac-toe grids containing arrows instead of X’s and O’s."
+        alt="A tic-tac-toe board. Some squares have more than one X or O. To the right of the board is a mechanism with a button on a metal flange. Below the board are six groups of miniature tic-tac-toe grids containing arrows instead of X’s and O’s."
       />
       <PositionedImage
         $rotate={45}

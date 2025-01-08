@@ -229,4 +229,21 @@ export const frontendContract = c.router({
       401: z.null(),
     },
   },
+  mintToken: {
+    method: "POST",
+    path: "/admin/mintToken",
+    body: z.object({}).catchall(z.unknown()),
+    responses: {
+      200: z.string(),
+    },
+  },
+  speakNewKetchup: {
+    method: "POST",
+    path: "/teams/:teamId/puzzles/new-ketchup/speak",
+    body: z.object({}),
+    responses: {
+      200: PuzzleStateLog,
+      401: z.null(),
+    },
+  },
 });

@@ -26,6 +26,8 @@ import sample9 from "./assets/sample9.svg";
 const SampleWrapper = styled.div`
   display: flex;
   background-color: #fcf5e5;
+  print-color-adjust: unset;
+  -webkit-print-color-adjust: unset;
 `;
 
 const SampleChild = styled.div`
@@ -48,6 +50,8 @@ const ImageRow = styled.div`
   border: 1px solid black;
   border-top-width: 0px;
   background-color: #fcf5e5;
+  print-color-adjust: unset;
+  -webkit-print-color-adjust: unset;
   height: 800px;
   &:last-child {
     border: none;

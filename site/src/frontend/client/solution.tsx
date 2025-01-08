@@ -4,7 +4,7 @@ import {
   SolutionCannedResponseTable,
   SolutionHintTable,
 } from "../components/SolutionLayout";
-import { type CannedResponse, type Hint } from "../puzzles/types";
+import type { CannedResponse, Hint } from "../puzzles/types";
 
 const hintsElem = document.getElementById("solution-hints");
 if (hintsElem) {

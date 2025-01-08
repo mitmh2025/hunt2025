@@ -1,6 +1,6 @@
 // This is the canonical description of the structure of our hunt, with a full
 // enumeration of rounds, puzzles, interactions, and the dependency structure.
-import { type Hunt, type PuzzleSlot } from "./types";
+import { type Gate, type Hunt, type PuzzleSlot, type Round } from "./types";
 
 const BGCHECK_FEEDER_SLOTS = {
   the_mark: ["bgp01", "bgp04", "bgp05", "bgp07", "bgp14"], // The Rio Times
@@ -43,9 +43,9 @@ const HUNT: Hunt = {
         { id: "mdp09", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "missing_connections" },
         { id: "mdp10", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "xoxo" },
         { id: "mdp11", unlockable_if: { round_unlocked: "the_missing_diamond" }, unlock_cost: 1, slug: "an_argument" },
-        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // 📑🍝
+        { id: "mdp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "📑🍝" },
         { id: "mdp13", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "mitropolitan_house_of_fashion" },
-        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1 }, // on_the_corner
+        { id: "mdp14", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "on_the_corner" },
         { id: "mdp15", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "drunkens_and_flagons" },
         { id: "mdp16", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "battle_factory" },
         { id: "mdp17", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "synthetic_tagsonomy" },
@@ -70,12 +70,12 @@ const HUNT: Hunt = {
             // TODO: correct specific slots
             puzzles_solved: 5,
             slots: [
-              "mdp01",
-              "mdp05",
+              "mdp08",
               "mdp09",
-              "mdp13",
-              "mdp17",
-              "mdp21",
+              "mdp10",
+              "mdp20",
+              "mdp22",
+              "mdp28",
             ],
           },
         },
@@ -89,13 +89,13 @@ const HUNT: Hunt = {
             // TODO: correct specific slots
             puzzles_solved: 5,
             slots: [
-              "mdp02",
-              "mdp06",
-              "mdp10",
-              "mdp14",
-              "mdp18",
-              "mdp22",
-              "mdp26",
+              "mdp05",
+              "mdp11",
+              "mdp12",
+              "mdp13",
+              "mdp19",
+              "mdp23",
+              "mdp27",
             ],
           },
         },
@@ -109,13 +109,13 @@ const HUNT: Hunt = {
             // TODO: correct specific slots
             puzzles_solved: 5,
             slots: [
-              "mdp03",
+              "mdp06",
               "mdp07",
-              "mdp11",
               "mdp15",
-              "mdp19",
-              "mdp23",
-              "mdp27",
+              "mdp16",
+              "mdp17",
+              "mdp18",
+              "mdp26",
             ],
           },
         },
@@ -129,14 +129,14 @@ const HUNT: Hunt = {
             // TODO: correct specific slots
             puzzles_solved: 5,
             slots: [
+              "mdp01",
+              "mdp02",
+              "mdp03",
               "mdp04",
-              "mdp08",
-              "mdp12",
-              "mdp16",
-              "mdp20",
+              "mdp14",
+              "mdp21",
               "mdp24",
               "mdp25",
-              "mdp28",
             ],
           },
         },
@@ -161,9 +161,18 @@ const HUNT: Hunt = {
         }, // Where is the Diamond? (super)
       ],
       gates: [
-        { id: "hunt_started" }, // Hunt started.  Nothing is unlocked until this gate is satisfied.
-        { id: "mdg01" }, // Picked up Educational Rite of Passage from Gala
-        { id: "mdg02" }, // Picked up Synthetic Tagsonomy from Gala
+        { id: "hunt_started", internal_description: 'Hunt Started' }, // Nothing is unlocked until this gate is satisfied.
+        { id: "mdg01", internal_description: 'Picked up Educational Rite of Passage from Gala' },
+        { id: "mdg02", internal_description: 'Picked up Synthetic Tagsonomy from Gala' },
+        { id: "mdg03", internal_description: '📑🍝: Assigned Rickroll copypasta' }, 
+        { id: "mdg04", internal_description: '📑🍝: Assigned Eat Hot Chip and Lie copypasta' }, 
+        { id: "mdg05", internal_description: '📑🍝: Assigned The Bee Movie copypasta' }, 
+        { id: "mdg06", internal_description: '📑🍝: Assigned IQ Rick and Morty copypasta' }, 
+        { id: "mdg07", internal_description: '📑🍝: Assigned Nick Castellanos copypasta' }, 
+        { id: "mdg08", internal_description: '📑🍝: Assigned Mesothelioma copypasta' }, 
+        { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' }, 
+        { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' }, 
+        { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' }, 
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
@@ -172,18 +181,22 @@ const HUNT: Hunt = {
         // solving the corresponding metapuzzle.
         {
           id: "interview_at_the_boardwalk",
+          title: "Interview at the Boardwalk",
           unlock_if: [{ slot_solved: "mdm01" }],
         },
         {
           id: "interview_at_the_jewelry_store",
+          title: "Interview at the Jewelry Store",
           unlock_if: [{ slot_solved: "mdm02" }],
         },
         {
           id: "interview_at_the_casino",
+          title: "Interview at the Casino",
           unlock_if: [{ slot_solved: "mdm03" }],
         },
         {
           id: "interview_at_the_art_gallery",
+          title: "Interview at the Art Gallery",
           unlock_if: [{ slot_solved: "mdm04" }],
         },
 
@@ -192,13 +205,15 @@ const HUNT: Hunt = {
           // after teams solve the Missing Diamond super but before they go on the
           // funaround.
           id: "meet_billie",
-          unlock_if: [{ slot_solved: "mdm05" }],
+          title: "Meet Billie",
+          unlock_if: [{ slot_unlocked: "mdm05" }],
         },
         {
           // This is a longer in-person interaction which is expected to happen
           // after teams complete the funaround.
-          id: "catch_the_thief",
-          unlock_if: [{ interaction_completed: "meet_billie" }],
+          id: "the_crime_scene",
+          title: "The Crime Scene",
+          unlock_if: [{ slot_solved: "mdm05" }],
         },
       ],
       unlock_if: [
@@ -219,61 +234,62 @@ const HUNT: Hunt = {
       puzzles: [
         // 42 feeders, 1 meta
         // Start with 5 unlockable, make 1.5 (rounding up) more unlockable after each solve.
-        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "anything_is_popsicle" }, // shameful-duck
-        { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "the_ultimate_insult" }, // periodic-dance
-        { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "broken_record" }, // handsome-satellite
-        { id: "sop04", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "relief_printing" }, // messy-olive
-        { id: "sop05", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "mellow_planet" }, // brilliant-center
-        { id: "sop06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "just_plane_wrong" }, // artistic-aztec
-        { id: "sop07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "recipe_substitutions" }, // svelte-pitch
-        { id: "sop08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "superlatives" }, // acute-ski
-        { id: "sop09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "an_exchange_of_vows" }, // lanky-robot
-        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 }, // metallic-dragon
-        { id: "sop11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "temporal_investigations" }, // offensive-cat
-        { id: "sop12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_recipe_for_success" },  // tame-chick
-        { id: "sop13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_math_quiz" }, // new-pin
-        { id: "sop14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "sing_like_a_canary" }, // heavenly-cell
-        { id: "sop15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "mystery_os" }, // minty-play
-        { id: "sop16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "a_walk_in_the_park" }, // misguided-revolution
-        { id: "sop17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "borderline_personality" }, // calculating-square
-        { id: "sop18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "a_sudoku" }, // recent-ship
-        { id: "sop19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "be_mine" }, // pleasing-racket
-        { id: "sop20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "lab_scrabble" }, // amused-soul
-        { id: "sop21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "cruciverbal" }, // regal-knife
-        { id: "sop22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "why_kant_we_be_friends_too" }, // milky-swing
-        { id: "sop23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" }, // delirious-mammoth
-        { id: "sop24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "some_assembly_required" }, // cultured-rome
-        { id: "sop25", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "fight_night_at_mos" }, // splendid-knife
-        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1 }, // loud-star
-        { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "big_names" }, // important-green
-        { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "doable_double" }, // austere-sink
-        { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "taste_explosion" }, // next-van
-        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "art_history" } , // similar-part
-        { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "magic_i" }, // acclaimed-file
-        { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_badly_broken_quote" }, // cavernous-angel
-        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 }, // lean-lock
-        { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "commentary" }, // useable-rose
-        { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "seating_arrangements" }, // oddball-comic
-        { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "editors_solemnity" }, // plant-soursop
-        { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 }, // plump-himalayas
-        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1, slug: "read_between_the_lines" }, // fake-fair
-        { id: "sop39", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "just_fing_behave" }, // scornful-band
-        { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "its_not_clear" }, // kooky-light
-        { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1, slug: "mens_at_my_nose" }, // downright-hook
-        { id: "sop42", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1, slug: "dear_diary" }, // overlooked-compound
-        { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 } }, // (meta)
+        { id: "sop01", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "anything_is_popsicle" },
+        { id: "sop02", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "the_ultimate_insult" },
+        { id: "sop03", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "broken_record" },
+        { id: "sop04", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "relief_printing" },
+        { id: "sop05", unlockable_if: { round_unlocked: "stakeout" }, unlock_cost: 1, slug: "mellow_planet" },
+        { id: "sop06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "just_plane_wrong" },
+        { id: "sop07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "recipe_substitutions" },
+        { id: "sop08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "superlatives" },
+        { id: "sop09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "an_exchange_of_vows" },
+        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 }, // Word Yore
+        { id: "sop11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "temporal_investigations" },
+        { id: "sop12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_recipe_for_success" },
+        { id: "sop13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_math_quiz" },
+        { id: "sop14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "sing_like_a_canary" },
+        { id: "sop15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "mystery_os" },
+        { id: "sop16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "a_walk_in_the_park" },
+        { id: "sop17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "borderline_personality" },
+        { id: "sop18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "a_sudoku" },
+        { id: "sop19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "be_mine" },
+        { id: "sop20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "lab_scrabble" },
+        { id: "sop21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "cruciverbal" },
+        { id: "sop22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "why_kant_we_be_friends_too" },
+        { id: "sop23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" },
+        { id: "sop24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "some_assembly_required" },
+        { id: "sop25", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "fight_night_at_mos" },
+        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1 }, // either brilliant-row or elaborate-mammoth
+        { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "big_names" },
+        { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "doable_double" },
+        { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "taste_explosion" },
+        { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "art_history" } ,
+        { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "magic_i" },
+        { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_badly_broken_quote" },
+        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 }, // Charged
+        { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "commentary" },
+        { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "seating_arrangements" },
+        { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "editors_solemnity" },
+        { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 }, // Control Room
+        { id: "sop38", unlockable_if: { puzzles_solved: 22 }, unlock_cost: 1, slug: "read_between_the_lines" },
+        { id: "sop39", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "just_fing_behave" },
+        { id: "sop40", unlockable_if: { puzzles_solved: 23 }, unlock_cost: 1, slug: "its_not_clear" },
+        { id: "sop41", unlockable_if: { puzzles_solved: 24 }, unlock_cost: 1, slug: "mens_at_my_nose" },
+        { id: "sop42", unlockable_if: { puzzles_solved: 25 }, unlock_cost: 1, slug: "dear_diary" },
+        { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 }, slug: "chinatown"},
       ],
       gates: [
-        { id: "sog01" }, // Picked up Mystery O's from Gala
-        { id: "sog02" }, // Picked up It's Not Clear from Gala
-        { id: "sog03" }, // Picked up Anything Is Popsicle from Gala
+        { id: "sog01", internal_description: "Picked up Mystery O's from Gala" },
+        { id: "sog02", internal_description: "Picked up It's Not Clear from Gala" },
+        { id: "sog03", internal_description: "Picked up Anything Is Popsicle from Gala" },
       ],
       interactions: [
         {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_katrina",
+          id: "confront_katrina",
+          title: "Confront Katrina",
           unlock_if: [
             { slot_solved: "som01" }, // stakeout meta
           ],
@@ -291,23 +307,23 @@ const HUNT: Hunt = {
       puzzles: [
         // 17 feeders, 8 metas, 1 super
         // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
-        { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "follow_the_rules" },
-        { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
-        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
-        { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "the_eras_puzzle" },
-        { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "a_weathered_note" },
-        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "ಕಾಬವದೋೀ್" },
-        { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "bar_talk" },
-        { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "the_inspectre" },
-        { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
-        { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "any_coat_will_do" },
-        { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "incognito" },
-        { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "maze_of_lies" },
-        { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "star_crossed" },
-        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "his_life_story" },
-        { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
+        { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
+        { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "incognito" },
+        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 }, // And Now, A Puzzling Word From Our Sponsors
+        { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
+        { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
+        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle (pending testing)
+        { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "maze_of_lies" },
+        { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "any_coat_will_do" },
+        { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_eras_puzzle" },
+        { id: "ptp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "a_weathered_note" },
+        { id: "ptp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "follow_the_rules" },
+        { id: "ptp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "star_crossed" },
+        { id: "ptp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "ಕಾಬವದೋೀ್" },
+        { id: "ptp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "youre_playing_it_wrong" },
+        { id: "ptp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "bar_talk" },
+        { id: "ptp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "his_life_story" },
+        { id: "ptp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "the_inspectre" },
         // Drop all 8 metas together once ~70% of the feeders are solved.
         { id: "ptm01", is_meta: true, unlocked_if: { puzzles_solved: 13 }, slug: "shell_corporation_1" }, // meta 1
         { id: "ptm02", is_meta: true, unlocked_if: { puzzles_solved: 13 }, slug: "shell_corporation_2" }, // meta 2
@@ -339,15 +355,22 @@ const HUNT: Hunt = {
         },
       ],
       gates: [
-        { id: "ptg01" }, // Picked up Eponymous Forensic Accountant from Gala
-        { id: "ptg02" }, // Picked up The Inspectre from Gala
+        { id: "ptg01", internal_description: "Picked up Eponymous Forensic Accountant from Gala" },
+        { id: "ptg02", internal_description: "Picked up The Inspectre from Gala" },
+        { id: "ptg03", internal_description: "Ads enabled for quixotic-shoe", satisfied_if: {
+          oneOf: [
+            { slot_solved: "songs_on_the_radio" },
+            { round_unlocked: "paper_trail" },
+          ]},
+        },
       ],
       interactions: [
         {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_gladys",
+          id: "confront_gladys",
+          title: "Confront Gladys",
           unlock_if: [
             { slot_solved: "ptm09" }, // papertrail super
           ],
@@ -367,18 +390,18 @@ const HUNT: Hunt = {
         // Start with 5 unlockable.  Add 1.5 (rounding up) for each solve.
         { id: "bgp01", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "knights_of_the_square_table" },
         { id: "bgp02", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "he_shouldnt_have_eaten_the_apple" },
-        { id: "bgp03", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "the_tunnels_beneath_the_institute" },
-        { id: "bgp04", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "t____ott___p__y" },
-        { id: "bgp05", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "the_10000_sheet_excel_file" },
-        { id: "bgp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "story_vision_contest" },
-        { id: "bgp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "kindred_spirits" },
+        { id: "bgp03", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "the_tunnels_beneath_the_institute" },
+        { id: "bgp04", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "t____ott___p__y" },
+        { id: "bgp05", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "the_10000_sheet_excel_file" },
+        { id: "bgp06", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "story_vision_contest" },
+        { id: "bgp07", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "kindred_spirits" },
         { id: "bgp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "deepfrost" },
-        { id: "bgp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "reuse_and_recyclability" },
-        { id: "bgp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "formula_won" },
-        { id: "bgp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "o_woe_is_me"  },
-        { id: "bgp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "where_am_i" },
-        { id: "bgp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "celestial_rope" },
-        { id: "bgp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 },
+        { id: "bgp09", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "reuse_and_recyclability" },
+        { id: "bgp10", unlockable_if: { round_unlocked: "background_check" }, unlock_cost: 1, slug: "formula_won" },
+        { id: "bgp11", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "_land" },
+        { id: "bgp12", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "where_am_i" },
+        { id: "bgp13", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "celestial_rope" },
+        { id: "bgp14", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "o_woe_is_me" },
         // Metas become unlocked when both of the following conditions are met:
         // * At least 7 feeders in the round are solved
         // * At least 2 feeders associated with each meta are solved.
@@ -389,14 +412,15 @@ const HUNT: Hunt = {
         { id: "bgm04", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 1, slots: ["bgm01", "bgm02", "bgm03"] }, slug: "alias" }, // supermeta
       ],
       gates: [
-        { id: "bgg01" }, // Picked up Celestial Rope from Gala
+        { id: "bgg01", internal_description: "Picked up Celestial Rope from Gala" },
       ],
       interactions: [
         {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_carter",
+          id: "confront_carter",
+          title: "Confront Carter",
           unlock_if: [
             { slot_solved: "bgm04" }, // background check super
           ],
@@ -418,7 +442,7 @@ const HUNT: Hunt = {
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // globe
         { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "paw_print_detective" }, // family portrait
         { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 }, // typewriter, a_puzzle_of_the_dead goes here
-        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp, 
+        { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp,
         // The next 5 puzzles are unlockable once they are discovered in the
         // UI, but will not be discoverable until the corresponding lock is
         // satisfied.
@@ -435,7 +459,7 @@ const HUNT: Hunt = {
         // solved and they are discovered in the UI.
         { id: "isp11", unlockable_if: [{ gate_satisfied: "isg18" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "passage_of_time" }, // birth certificate
         { id: "isp12", unlockable_if: [{ gate_satisfied: "isg19" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "corn_maize" }, // newspaper clipping
-        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1 }, // letter from prison warden, should be the_annual_massachusetts_spelling_bee
+        { id: "isp13", unlockable_if: [{ gate_satisfied: "isg20" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "the_annual_massachusetts_spelling_bee" }, // letter from prison warden
         { id: "isp14", unlockable_if: [{ gate_satisfied: "isg21" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "a_heap_of_clards" }, // photo of the Candys and Baby
         { id: "isp15", unlockable_if: [{ gate_satisfied: "isg22" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "fechtbuch" }, // photo of Papa, wife, and Gladys
         { id: "isp16", unlockable_if: [{ gate_satisfied: "isg23" }, { slot_solved: "ism01" }], unlock_cost: 1, slug: "bermuda_triangle" }, // rare stamp
@@ -457,46 +481,47 @@ const HUNT: Hunt = {
       ],
       gates: [
         // Prototype; these particular gate assignments may not be final
-        { id: "isg00", title: "Examined the bookcase" }, // examine the bookcase (meta)
-        { id: "isg01" }, // find the first object in the first room (great wave painting)
-        { id: "isg02" }, // find the second object in the first room (globe)
-        { id: "isg03" }, // find the third object in the first room (family portrait)
-        { id: "isg04" }, // find the fourth object in the first room (typewriter)
-        { id: "isg05" }, // find the last object in the first room (desk lamp)
-        { id: "isg06", title: "Unlocked the desk drawer" }, // complete the directional lock (desk drawer)
-        { id: "isg07", title: "Unlocked the breaker box" }, // complete the binary switches (fuse box)
-        { id: "isg08", title: "Unlocked the safe" }, // complete the combination lock (safe)
-        { id: "isg09", title: "Unlocked the numeric lock" }, // complete the numeric lock (rug)
-        { id: "isg10", title: "Unlocked the cryptex" }, // complete the word lock (cryptex)
-        { id: "isg11" }, // find the object behind the directional lock
-        { id: "isg12" }, // find the object behind the binary switch lock
-        { id: "isg13" }, // find the object behind the combination lock
-        { id: "isg14" }, // find the object behind the numeric lock
-        { id: "isg15" }, // find the object behind the word lock
-        { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase" }, // complete the bookcase/unlock door in wall
-        { id: "isg17" }, // find the magazines the second room (meta)
-        { id: "isg18" }, // find the first object in the second room (birth certificate)
-        { id: "isg19" }, // find the second object in the second room (newspaper clipping)
-        { id: "isg20" }, // find the third object in the second room (letter from prison warden)
-        { id: "isg21" }, // find the fourth object in the second room (photo of the Candys and Baby)
-        { id: "isg22" }, // find the fifth object in the second room (photo of Papa, wife, and Gladys)
-        { id: "isg23" }, // find the sixth object in the second room (rare stamp)
-        { id: "isg24" }, // find the seventh object in the second room (Gladys' teddy bear)
-        { id: "isg25" }, // find the eighth object in the second room (radio drama poster)
-        { id: "isg26", title: "Obtained the blacklight", satisfied_if: { slot_solved: "ism02" } }, // obtain the blacklight
-        { id: "isg27" }, // find the blacklight object behind the directional lock
-        { id: "isg28" }, // find the blacklight object behind the binary switch lock
-        { id: "isg29" }, // find the blacklight object behind the combination lock
-        { id: "isg30" }, // find the blacklight object behind the numeric lock
-        { id: "isg31" }, // find the blacklight object behind the word lock
-        { id: "isg32" }, // find the blacklight version of the bookshelf note (meta)
+        { id: "isg00", title: "Examined the bookcase in The Illegal Search" }, // examine the bookcase (meta)
+        { id: "isg01", internal_description: "find the first object in the first room (great wave painting)"},
+        { id: "isg02", internal_description: "find the second object in the first room (globe)"},
+        { id: "isg03", internal_description: "find the third object in the first room (family portrait)"},
+        { id: "isg04", internal_description: "find the fourth object in the first room (typewriter)"},
+        { id: "isg05", internal_description: "find the last object in the first room (desk lamp)"},
+        { id: "isg06", title: "Unlocked the desk drawer in The Illegal Search", show_notification: true },
+        { id: "isg07", title: "Unlocked the breaker box in The Illegal Search", show_notification: true },
+        { id: "isg08", title: "Unlocked the safe in The Illegal Search", show_notification: true },
+        { id: "isg09", title: "Unlocked the numeric lock in The Illegal Search", show_notification: true },
+        { id: "isg10", title: "Unlocked the cryptex in The Illegal Search", show_notification: true },
+        { id: "isg11", internal_description: "find the object behind the directional lock" },
+        { id: "isg12", internal_description: "find the object behind the binary switch lock" },
+        { id: "isg13", internal_description: "find the object behind the combination lock" },
+        { id: "isg14", internal_description: "find the object behind the numeric lock" },
+        { id: "isg15", internal_description: "find the object behind the word lock" },
+        { id: "isg16", title: "Unlocked the secret room via Papa’s bookcase in The Illegal Search", show_notification: true }, // complete the bookcase/unlock door in wall
+        { id: "isg17", internal_description: "find the magazines the second room (meta)", },
+        { id: "isg18", internal_description: "find the first object in the second room (birth certificate)" },
+        { id: "isg19", internal_description: "find the second object in the second room (newspaper clipping)" },
+        { id: "isg20", internal_description: "find the third object in the second room (letter from prison warden)" },
+        { id: "isg21", internal_description: "find the fourth object in the second room (photo of the Candys and Baby)" },
+        { id: "isg22", internal_description: "find the fifth object in the second room (photo of Papa, wife, and Gladys)" },
+        { id: "isg23", internal_description: "find the sixth object in the second room (rare stamp)" },
+        { id: "isg24", internal_description: "find the seventh object in the second room (Gladys' teddy bear)" },
+        { id: "isg25", internal_description: "find the eighth object in the second room (radio drama poster)" },
+        { id: "isg26", title: "Obtained the blacklight in The Illegal Search", show_notification: true, satisfied_if: { slot_solved: "ism02" } }, // obtain the blacklight
+        { id: "isg27", internal_description: "find the blacklight object behind the directional lock" },
+        { id: "isg28", internal_description: "find the blacklight object behind the binary switch lock" },
+        { id: "isg29", internal_description: "find the blacklight object behind the combination lock" },
+        { id: "isg30", internal_description: "find the blacklight object behind the numeric lock" },
+        { id: "isg31", internal_description: "find the blacklight object behind the word lock" },
+        { id: "isg32", internal_description: "find the blacklight version of the bookshelf note (meta)" },
       ],
       interactions: [
         {
           // This is a live interaction, not an in-site interaction, but we might
           // have prerecorded video for remote solvers/folks missing at the time,
           // so it might need a URL anyway.
-          id: "meet_papa",
+          id: "confront_papa",
+          title: "Confront Papa",
           unlock_if: [
             { slot_solved: "ism03" },
           ],
@@ -513,6 +538,7 @@ const HUNT: Hunt = {
       final_puzzle_slot: 'tmm01',
       puzzles: [
         // 24 feeders + 1 meta
+        // TODO: enforce ordering
         { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "do_the_packing" },
         { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "cacciando_trio_misterioso" },
         { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "garden_anecdotes" },
@@ -527,10 +553,10 @@ const HUNT: Hunt = {
         { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "cross_dash_word" },
         { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "give_this_grid_a_shake" },
         { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "in_communicado_tonight" },
-        { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1 },
-        { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1 },
-        { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
+        { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "a_dash_of_color" },
+        { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "as_the_world_turandot" },
+        { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends" },
+        { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "a_map_and_a_shade_or_four" },
         { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
         { id: "tmp20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1 },
         { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
@@ -540,22 +566,21 @@ const HUNT: Hunt = {
         { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
       ],
       gates: [
-        { id: "tmg01" }, // Opened I Kid Ewe Knot (Weirdo Threaded Doodads)
-        { id: "tmg02" }, // Opened Stitchy Situation (Weirdo Threaded Doodads)
-        { id: "tmg03" }, // Picked up Cross Dash Word
+        { id: "tmg01", internal_description: "Opened I Kid Ewe Knot (Weirdo Threaded Doodads)" },
+        { id: "tmg02", internal_description: "Opened Stitchy Situation (Weirdo Threaded Doodads)" },
+        { id: "tmg03", internal_description: "Picked up Cross Dash Word" },
+        { id: "tmg04", internal_description: "Picked up abstract art and poems / concerning a pale blue dot / and many more friends" },
       ],
       interactions: [
         {
-          id: "unmask_the_killer",
+          id: "the_safehouse",
+          title: "The Safehouse",
           unlock_if: [
             { slot_solved: "tmm01" }, // The Murder supermeta
           ],
         },
       ],
-      unlock_if: [
-        { interaction_completed: "meet_billie" },
-        { interaction_completed: "catch_the_thief" },
-      ],
+      unlock_if: { interaction_completed: "the_crime_scene" },
     },
     {
       slug: "the_vault",
@@ -567,25 +592,41 @@ const HUNT: Hunt = {
       interactions: [
         {
           id: "the_vault",
+          title: "The Vault",
           unlock_if: [
-            { interaction_completed: "meet_katrina" },
-            { interaction_completed: "meet_gladys" },
-            { interaction_completed: "meet_carter" },
-            { interaction_completed: "meet_papa" },
-            { interaction_completed: "unmask_the_killer" },
+            { interaction_completed: "confront_katrina" },
+            { interaction_completed: "confront_gladys" },
+            { interaction_completed: "confront_carter" },
+            { interaction_completed: "confront_papa" },
+            { interaction_completed: "the_safehouse" },
           ],
         },
       ],
       unlock_if: [
-        { interaction_completed: "meet_katrina" },
-        { interaction_completed: "meet_gladys" },
-        { interaction_completed: "meet_carter" },
-        { interaction_completed: "meet_papa" },
-        { interaction_completed: "unmask_the_killer" },
+        { interaction_completed: "confront_katrina" },
+        { interaction_completed: "confront_gladys" },
+        { interaction_completed: "confront_carter" },
+        { interaction_completed: "confront_papa" },
+        { interaction_completed: "the_safehouse" },
       ],
     },
   ],
 };
+
+HUNT.rounds.forEach((round: Round) => {
+  if (round.slug !== "background_check") {
+    const metas = round.puzzles.filter(({ is_meta }) => {
+      return !!is_meta;
+    });
+    const nonmetas = round.puzzles
+      .filter(({ is_meta }) => {
+        return !is_meta;
+      })
+      .toSorted((p1, p2) => (p1.slug ?? "").localeCompare(p2.slug ?? ""));
+
+    round.puzzles = [...nonmetas, ...metas];
+  }
+});
 
 export type SlotLookup = {
   roundSlug: string;
@@ -609,5 +650,32 @@ export function generateSlugToSlotMap(hunt: Hunt): Map<string, SlotLookup> {
   });
   return slugToSlot;
 }
+
+export type GateLookup = {
+  roundSlug: string;
+  gate: Gate;
+};
+
+// For quickly looking up where a particular gate is used in HUNT.
+export function generateGateToSlotMap(hunt: Hunt): Map<string, GateLookup> {
+  const gateToRound = new Map<string, GateLookup>();
+  hunt.rounds.forEach((round) => {
+    (round.gates ?? []).forEach((gate) => {
+      const existing = gateToRound.get(gate.id);
+      if (existing) {
+        throw new Error(
+          `gate id ${gate.id} used in both round ${existing.roundSlug} and ${round.slug}`,
+        );
+      }
+      gateToRound.set(gate.id, {
+        roundSlug: round.slug,
+        gate,
+      });
+    });
+  });
+  return gateToRound;
+}
+
+export const GATE_LOOKUP = generateGateToSlotMap(HUNT);
 
 export default HUNT;

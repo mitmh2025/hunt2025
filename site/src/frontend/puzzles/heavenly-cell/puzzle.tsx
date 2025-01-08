@@ -40,6 +40,7 @@ import img_pause from "./assets/pause.svg";
 import img_play from "./assets/play.svg";
 
 const StaveContainerSection = styled.section`
+  position: relative;
   display: flex;
   background-color: white;
   padding: 2rem 3rem;
@@ -94,6 +95,20 @@ const Stave = styled.div`
 
   img {
     height: calc(24px * 12);
+  }
+`;
+
+const StaveScrollControls = styled.div`
+  position: absolute;
+  top: calc(2rem + 4px);
+  right: calc(3rem + 4px);
+  @media (${deviceMax.md}) {
+    top: calc(1rem + 4px);
+    right: calc(1rem + 4px);
+  }
+  button {
+    display: inline-block;
+    margin-left: 4px;
   }
 `;
 
@@ -158,6 +173,17 @@ const inlineScript = `
     button.onclick = handler;
     idx++;
   }
+
+  const scrollLeft = document.getElementById("scroll-left");
+  scrollLeft.onclick = () => {
+    const stave = document.getElementById("stave");
+    stave.scroll({ left: stave.scrollLeft - 200, top: stave.scrollTop, behavior: "smooth" });
+  };
+  const scrollRight = document.getElementById("scroll-right");
+  scrollRight.onclick = () => {
+    const stave = document.getElementById("stave");
+    stave.scroll({ left: stave.scrollLeft + 200, top: stave.scrollTop, behavior: "smooth" });
+  };
 `;
 
 const Puzzle = () => {
@@ -247,9 +273,13 @@ const Puzzle = () => {
             />
           </button>
         </div>
-        <Stave>
+        <Stave id="stave">
           <img src={img_notes} alt="A series of musical notes on a staff" />
         </Stave>
+        <StaveScrollControls>
+          <button id="scroll-left">←</button>
+          <button id="scroll-right">→</button>
+        </StaveScrollControls>
       </StaveContainerSection>
       {/* eslint-disable jsx-a11y/alt-text -- can't label the cards */}
       <ImageSection>

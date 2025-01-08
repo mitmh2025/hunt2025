@@ -6,7 +6,8 @@ in {
     hunt.radio = {
       enable = mkEnableOption "hunt radio";
       externalHostname = mkOption {
-        type = types.str;
+        type = types.nullOr types.str;
+        default = null;
       };
       jwksUri = mkOption {
         type = types.nullOr types.str;
@@ -19,9 +20,9 @@ in {
       enable = true;
       settings = {
         # GCE doesn't give a public IP directly to the VM.
-        webrtcIPsFromInterfaces = false;
+        webrtcIPsFromInterfaces = cfg.externalHostname == null;
         # Just use a domain name to talk to us.
-        webrtcAdditionalHosts = [
+        webrtcAdditionalHosts = lib.mkIf (cfg.externalHostname != null) [
           cfg.externalHostname
         ];
         webrtcTrustedProxies = [
@@ -40,9 +41,14 @@ in {
         authMethod = lib.mkIf (cfg.jwksUri != null) "jwt";
         authJWTJWKS = lib.mkIf (cfg.jwksUri != null) cfg.jwksUri;
         authJWTClaimKey = "media";
+
+        api = true; # :9997
+        metrics = true; # :9998
+
+        paths."~teams/(\\d+)/radio" = {};
       };
     };
-    services.nginx = {
+    services.nginx = lib.mkIf (cfg.externalHostname != null) {
       upstreams.mediamtx.servers."127.0.0.1:8889" = {};
       virtualHosts = {
         "${cfg.externalHostname}" = {

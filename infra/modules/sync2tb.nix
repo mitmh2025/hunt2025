@@ -11,6 +11,10 @@ in {
       tbBaseUrl = mkOption {
         type = types.str;
       };
+      mediaBaseUrl = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
       environmentFile = mkOption {
         type = types.nullOr types.path;
         default = null;
@@ -19,8 +23,9 @@ in {
   };
   config = lib.mkIf cfg.enable {
     services.sync2tb = {
-      apiBaseUrl = lib.mkIf config.hunt2025.site.enable (lib.mkDefault "http://localhost:3000/api");
+      apiBaseUrl = lib.mkIf config.hunt2025.site.enable (lib.mkDefault config.hunt2025.site.apiBaseUrl);
       tbBaseUrl = lib.mkIf config.services.thingsboard.enable (lib.mkDefault "http://localhost:8080");
+      mediaBaseUrl = lib.mkIf (config.hunt.radio.enable && config.hunt.radio.externalHostname != null) (lib.mkDefault "https://${config.hunt.radio.externalHostname}");
     };
     users.users.sync2tb = {
       isSystemUser = true;
@@ -45,6 +50,7 @@ in {
 
       environment = {
         API_BASE_URL = cfg.apiBaseUrl;
+        MEDIA_BASE_URL = cfg.mediaBaseUrl;
         TB_BASE_URL = cfg.tbBaseUrl;
         TB_USERNAME = lib.mkDefault "radioman@mitmh2025.com";
         inherit (config.systemd.services.hunt2025.environment) FRONTEND_API_SECRET REDIS_URL;

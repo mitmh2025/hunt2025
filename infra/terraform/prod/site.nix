@@ -73,7 +73,7 @@
             AWS_CONFIG_FILE = "/config/aws-config";
             AWS_SDK_LOAD_CONFIG = "true";
             AWS_PROFILE = "mitmh2025-puzzup";
-            EMAIL_FROM = "info@mitmh2025.com";
+            EMAIL_FROM = "MIT Mystery Hunt 2025 <info@mitmh2025.com>";
             EMAIL_TRANSPORT = "postmark";
             JWKS_URI = "https://auth.mitmh2025.com/application/o/ops/jwks/";
             #OTEL_METRICS_EXPORTER=console
@@ -284,6 +284,7 @@
             OPSSITE_STATIC_PATH = "${pkgs.hunt2025.ops}/share/ops/static";
             API_BASE_URL = "http://api/api";
             OAUTH_SERVER = "https://auth.mitmh2025.com/application/o/ops/.well-known/openid-configuration";
+            MEDIA_BASE_URL = "https://media.mitmh2025.com";
           } ++ [
             {
               name = "OAUTH_CLIENT_ID";

@@ -5,14 +5,16 @@ import { DateTime } from "luxon";
 import {
   createMRTColumnHelper,
   MaterialReactTable,
-  type MRT_Cell,
   useMaterialReactTable,
+  type MRT_ColumnHelper,
+  type MRT_Row,
 } from "material-react-table";
 import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
 import { useOpsData } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import useTime from "../util/useTime";
+import { useIsOpsAdmin } from "./AdminOnly";
 
 export type TeamPuzzleListHandle = {
   filterToPuzzle: (title: string) => void;
@@ -23,27 +25,96 @@ type TeamPuzzleListProps = {
   activity: InternalActivityLogEntry[];
 };
 
+// shared with PuzzleTeamList
+export type TeamPuzzleStatus =
+  | {
+      state: "locked";
+    }
+  | {
+      state: "unlocked";
+      unlockedAt: Date;
+    }
+  | {
+      state: "solved";
+      solvedAt: Date;
+    }
+  | {
+      state: "unlockable";
+      unlockableAt: Date;
+    };
+
+export function teamPuzzleStatusColumn<
+  Row extends { status: TeamPuzzleStatus },
+>(columnHelper: MRT_ColumnHelper<Row>, now: Date) {
+  const nowDt = DateTime.fromJSDate(now);
+
+  return columnHelper.accessor((row) => row.status, {
+    id: "status",
+    header: "Status",
+    filterVariant: "multi-select",
+    filterSelectOptions: ["locked", "unlocked", "solved", "unlockable"],
+    filterFn: (row, col, filter: string[]) => {
+      if (filter.length === 0) {
+        return true;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- eslint bug, getValue returns unknown
+      const value = row.getValue(col) as TeamPuzzleListEntry["status"];
+      return filter.includes(value.state);
+    },
+    sortingFn: (rowA, rowB) => {
+      const statusA = rowA.original.status;
+      const statusB = rowB.original.status;
+
+      if (statusA.state === "locked" && statusB.state === "locked") {
+        return 0;
+      }
+
+      if (statusA.state === "unlockable" && statusB.state === "unlockable") {
+        return statusA.unlockableAt.getTime() - statusB.unlockableAt.getTime();
+      }
+
+      if (statusA.state === "unlocked" && statusB.state === "unlocked") {
+        return statusA.unlockedAt.getTime() - statusB.unlockedAt.getTime();
+      }
+
+      if (statusA.state === "solved" && statusB.state === "solved") {
+        return statusA.solvedAt.getTime() - statusB.solvedAt.getTime();
+      }
+
+      const stateOrder = ["locked", "unlockable", "unlocked", "solved"];
+      return (
+        stateOrder.indexOf(statusA.state) - stateOrder.indexOf(statusB.state)
+      );
+    },
+    Cell: ({ row }: { row: MRT_Row<Row> }) => {
+      const { status } = row.original;
+
+      return (
+        <Box>
+          <Typography>{status.state}</Typography>
+          <Typography variant="caption">
+            {status.state === "unlocked"
+              ? `Unlocked ${DateTime.fromJSDate(status.unlockedAt).toRelative({ base: nowDt })}`
+              : status.state === "solved"
+                ? `Solved ${DateTime.fromJSDate(status.solvedAt).toRelative({ base: nowDt })}`
+                : status.state === "unlockable"
+                  ? `Unlockable ${DateTime.fromJSDate(status.unlockableAt).toRelative({ base: nowDt })}`
+                  : null}
+          </Typography>
+        </Box>
+      );
+    },
+  });
+}
+
 type TeamPuzzleListEntry = {
   name: string;
   slug: string;
   type: "puzzle" | "meta";
   round: string;
-  status:
-    | {
-        state: "locked";
-      }
-    | {
-        state: "unlocked";
-        unlockedAt: Date;
-      }
-    | {
-        state: "solved";
-        solvedAt: Date;
-      }
-    | {
-        state: "unlockable";
-        unlockableAt: Date;
-      };
+  puzzleOrder: number;
+  status: TeamPuzzleStatus;
   guesses: number;
   hints: number | null;
 };
@@ -53,6 +124,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
     const dialogs = useDialogs();
     const notifications = useNotifications();
     const opsData = useOpsData();
+    const isOpsAdmin = useIsOpsAdmin();
 
     const handleUnlockPuzzle = (puzzle: TeamPuzzleListEntry) => {
       dialogs
@@ -78,6 +150,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
                 }
 
                 opsData.appendActivityLogEntries(res.body);
+                updateNow();
 
                 notifications.show(
                   `Unlocked ${puzzle.name} for ${bigBoardTeam.username}`,
@@ -102,7 +175,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         });
     };
 
-    const now = DateTime.fromJSDate(useTime());
+    const { now, updateNow } = useTime();
 
     const wrapperEl = useRef<HTMLDivElement | null>(null);
 
@@ -148,14 +221,14 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         }
       });
 
-      return bigBoardTeam.rounds.flatMap((round) => {
+      return bigBoardTeam.rounds.flatMap((round, roundIndex) => {
         return (
           [
             ["puzzle", round.puzzles],
-            ["meta", [...round.metas, ...round.supermetas]],
+            ["meta", [...round.supermetas, ...round.metas]],
           ] as const
         ).flatMap(([type, puzzles]) => {
-          return puzzles.map((puzzle) => {
+          return puzzles.map((puzzle, puzzleIndex) => {
             const slug = puzzle.slug;
             const logData = puzzleLogData[slug] ?? {};
             let status: TeamPuzzleListEntry["status"] = { state: "locked" };
@@ -181,6 +254,9 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
               slug,
               type,
               round: round.title,
+              puzzleOrder:
+                roundIndex * 1000 +
+                (type === "puzzle" ? puzzleIndex + 100 : puzzleIndex),
               status,
               guesses: logData.guesses ?? 0,
               hints: null, // TODO
@@ -204,78 +280,11 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
           header: "Round",
           filterVariant: "multi-select",
           filterSelectOptions: bigBoardTeam.rounds.map((round) => round.title),
-        }),
-        columnHelper.accessor("status", {
-          header: "Status",
-          filterVariant: "multi-select",
-          filterSelectOptions: ["locked", "unlocked", "solved", "unlockable"],
-          filterFn: (row, col, filter: string[]) => {
-            if (filter.length === 0) {
-              return true;
-            }
-
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- eslint bug, getValue returns unknown
-            const value = row.getValue(col) as TeamPuzzleListEntry["status"];
-            return filter.includes(value.state);
-          },
-          sortingFn: (rowA, rowB, col) => {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- eslint bug, getValue returns unknown
-            const statusA = rowA.getValue(col) as TeamPuzzleListEntry["status"];
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- eslint bug, getValue returns unknown
-            const statusB = rowB.getValue(col) as TeamPuzzleListEntry["status"];
-
-            if (statusA.state === "locked" && statusB.state === "locked") {
-              return 0;
-            }
-
-            if (
-              statusA.state === "unlockable" &&
-              statusB.state === "unlockable"
-            ) {
-              return (
-                statusA.unlockableAt.getTime() - statusB.unlockableAt.getTime()
-              );
-            }
-
-            if (statusA.state === "unlocked" && statusB.state === "unlocked") {
-              return (
-                statusA.unlockedAt.getTime() - statusB.unlockedAt.getTime()
-              );
-            }
-
-            if (statusA.state === "solved" && statusB.state === "solved") {
-              return statusA.solvedAt.getTime() - statusB.solvedAt.getTime();
-            }
-
-            const stateOrder = ["locked", "unlockable", "unlocked", "solved"];
-            return (
-              stateOrder.indexOf(statusA.state) -
-              stateOrder.indexOf(statusB.state)
-            );
-          },
-          Cell: ({
-            cell,
-          }: {
-            cell: MRT_Cell<TeamPuzzleListEntry, TeamPuzzleListEntry["status"]>;
-          }) => {
-            const status = cell.getValue();
-
-            return (
-              <Box>
-                <Typography>{status.state}</Typography>
-                <Typography variant="caption">
-                  {status.state === "unlocked"
-                    ? `Unlocked ${DateTime.fromJSDate(status.unlockedAt).toRelative({ base: now })}`
-                    : status.state === "solved"
-                      ? `Solved ${DateTime.fromJSDate(status.solvedAt).toRelative({ base: now })}`
-                      : status.state === "unlockable"
-                        ? `Unlockable ${DateTime.fromJSDate(status.unlockableAt).toRelative({ base: now })}`
-                        : null}
-                </Typography>
-              </Box>
-            );
+          sortingFn: (rowA, rowB) => {
+            return rowA.original.puzzleOrder - rowB.original.puzzleOrder;
           },
         }),
+        teamPuzzleStatusColumn(columnHelper, now),
         columnHelper.accessor("guesses", {
           header: "Guesses",
         }),
@@ -306,8 +315,10 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         showColumnFilters: true,
       },
       enableDensityToggle: false,
-      enableRowActions: true,
+      enableRowActions: isOpsAdmin,
       renderRowActions: ({ row }) => {
+        // TODO: add action for resetting rate limit
+
         if (
           row.original.status.state === "unlocked" ||
           row.original.status.state === "solved"

@@ -312,32 +312,15 @@ const Solution = () => {
         city, the exact city does not matter, only the geographic region.
       </p>
       <p>
-        Given the evocative title — a theme and arguable namesake of Renoir’s{" "}
-        <i>La Grande Illusion</i> is the nature of international borders —
+        Given the evocative title - a theme and arguable namesake of Renoir’s{" "}
+        <i>La Grande Illusion</i> is the nature of international borders -
         solvers should look to European history and the changing borders of the
-        nation of which Prague is the capital:
+        nation of which Prague is the capital. While its borders occasionally
+        changed in rapid succession (notably at the end of 1938), the provided
+        January 1 dates correspond to four eras of at least briefly stable
+        borders (discounting the period in which no such country existed):
       </p>
 
-      <HistoryDetails>
-        {HISTORICAL_NOTES.map((note) => {
-          return (
-            <div key={note.region} style={{ marginBottom: "2em" }}>
-              <div style={{ color: note.color }}>{note.region}</div>
-              <div>
-                <i>{note.when}</i>
-              </div>
-              <div>{note.notes}</div>
-            </div>
-          );
-        })}
-      </HistoryDetails>
-
-      <p>
-        While the above changes in some cases occurred in rapid succession
-        (notably at the end of 1938), the provided January 1 dates correspond to
-        four eras of at least briefly stable borders (discounting the period in
-        which no such country existed):
-      </p>
       <ul>
         <li>
           <strong>January 1, 1921</strong> (October 1918 to late 1938): The
@@ -365,6 +348,26 @@ const Solution = () => {
           distinct country
         </li>
       </ul>
+
+      <p>
+        For completeness, there are nine regions with different histories of
+        inclusion in the country (not counting areas that were never part of the
+        country):
+      </p>
+
+      <HistoryDetails>
+        {HISTORICAL_NOTES.map((note) => {
+          return (
+            <div key={note.region} style={{ marginBottom: "2em" }}>
+              <div style={{ color: note.color }}>{note.region}</div>
+              <div>
+                <i>{note.when}</i>
+              </div>
+              <div>{note.notes}</div>
+            </div>
+          );
+        })}
+      </HistoryDetails>
 
       <p>
         Having thoroughly studied 20th century European history, solvers should

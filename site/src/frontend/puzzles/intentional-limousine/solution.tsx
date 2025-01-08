@@ -6,6 +6,25 @@ import {
   PuzzleAnswer,
 } from "../../components/StyledUI";
 
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  border: 1px solid var(--black);
+  tbody td,
+  thead th {
+    padding: 0 2px;
+    border: 1px solid var(--black);
+  }
+  tbody td:nth-child(3) {
+    text-align: right;
+  }
+  tbody td:nth-child(5),
+  tbody td:nth-child(6),
+  tbody td:nth-child(7),
+  tbody td:nth-child(8) {
+    text-align: center;
+  }
+`;
+
 const Red = styled.span`
   color: red;
   font-weight: bold;
@@ -65,7 +84,7 @@ const Solution = () => {
           Identify the RGB values for each color. Select the channel value
           matching the first letter of the answer. The other two color channel
           values are not used. For example, the RGB values for “R-word + (Pink)
-          Flamingo” are (242, 88, 64). The R value is 242.
+          Flamingo” are (242, 88, 62). The R value is 242.
         </li>
         <li>
           Use the puzzle title first letter hint “<Mono>UNICODES</Mono>” and the
@@ -87,7 +106,7 @@ const Solution = () => {
       </ol>
 
       <HScrollTableWrapper>
-        <table>
+        <StyledTable>
           <thead>
             <tr>
               <th>Puzzle title</th>
@@ -157,8 +176,8 @@ const Solution = () => {
               <td>12</td>
               <RedTD>R + (Pink) Flamingo</RedTD>
               <RedTD>242</RedTD>
-              <MutedTD>116</MutedTD>
-              <MutedTD>253</MutedTD>
+              <MutedTD>88</MutedTD>
+              <MutedTD>62</MutedTD>
               <td>242</td>
               <td>ò</td>
             </tr>
@@ -223,7 +242,7 @@ const Solution = () => {
               <td>®</td>
             </tr>
           </tbody>
-        </table>
+        </StyledTable>
       </HScrollTableWrapper>
     </>
   );

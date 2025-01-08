@@ -26,10 +26,32 @@ else
     background_music
 end
 
-output_url=environment.get("OUTPUT_URL")
+output_url = environment.get("OUTPUT_URL")
+api_base_url = environment.get("API_BASE_URL")
+frontend_api_secret = environment.get("FRONTEND_API_SECRET")
+output_url = if frontend_api_secret != "" and output_url != "" then
+    jwtResp = http.post("#{api_base_url}/admin/mintToken",
+        data=json.stringify({
+            media=[{
+                action="publish",
+                path="",
+            }]
+        }),
+        headers=[
+            ("Content-type", "application/json"),
+            ("Authorization", "frontend-auth #{frontend_api_secret}"),
+        ],
+    )
+    let json.parse (token : string) = jwtResp
+    "#{output_url}?jwt=#{token}"
+else
+    output_url
+end
+
 if output_url == "" then
     output(final)
 else
+    log("Final output_url #{output_url}")
     output.url(
         url=output_url,
         # %opus(bitrate=64, channels=1, samplerate=48000),

@@ -73,7 +73,12 @@ const MUSICIANS = [
   ],
   [
     "Marian McPartland",
-    "She received an OBE and a lifetime achievement Grammy",
+    <>
+      She received an OBE and a Grammy for lifetime achievement
+      <a href="#footnote">
+        <sup id="antifootnote">1</sup>
+      </a>
+    </>,
     "D",
   ],
   ["Charles Mingus", "He wrote a guide on toilet training your cat", "A"],
@@ -214,6 +219,29 @@ const Solution = (): JSX.Element => {
         of a similar photo taken by D&amp;M, featuring the answer{" "}
         <PuzzleAnswer>CANINE PARTNER</PuzzleAnswer>.
       </p>
+      <hr />
+      <div>
+        <a href="#antifootnote">
+          <sup id="footnote">1</sup> Notably, this is a Trustees’ Award and not
+          the Lifetime Achievement Grammy, but the award was for lifetime
+          achievement.{" "}
+          <a
+            href="https://current.org/2004/02/grammy-academy-salutes-mcpartland-for-timeless-legacy-of-music/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Reference 1
+          </a>
+          ,{" "}
+          <a
+            href="https://www.arts.gov/honors/jazz/marian-mcpartland"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Reference 2
+          </a>
+        </a>
+      </div>
     </>
   );
 };

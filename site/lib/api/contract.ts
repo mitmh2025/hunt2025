@@ -54,6 +54,7 @@ const PuzzleSlotSchema = z.object({
 });
 
 export const InteractionStateSchema = z.object({
+  title: z.string(),
   state: z.enum(["unlocked", "running", "completed"]),
   result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
 });
@@ -81,6 +82,7 @@ export const TeamStateSchema = z.object({
     teamName: z.string(),
   }),
   state: TeamHuntStateSchema,
+  whepUrl: z.string(),
 });
 
 const SubmitGuessSchema = z.object({
@@ -144,6 +146,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
       type: z.literal("gate_completed"),
       slug: z.string(),
       title: z.string().optional(),
+      show_notification: z.boolean(),
     }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(

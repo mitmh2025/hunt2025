@@ -22,7 +22,7 @@ import {
   numericLockPostHandler,
 } from "../rounds/illegal_search";
 import { addParserMiddleware } from "../utils/expressMiddleware";
-import renderApp, { render500 } from "../utils/renderApp";
+import renderApp, { render404, render500 } from "../utils/renderApp";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import { hubHandler } from "./routes/hub";
@@ -167,6 +167,7 @@ export function getAuthRouter() {
         return;
       }
       req.teamState = teamStateResp.body;
+
       next();
     }),
   );
@@ -346,6 +347,14 @@ export function registerUiRoutes({
           if (puzzleRouter) {
             const base = `/puzzles/${slug}`;
             //console.log("Mounting handler at", base);
+            authRouter.use(base, (req, resp, next) => {
+              if (req.teamState?.state.puzzles[slug]?.locked !== "unlocked") {
+                render404(req, resp);
+                return;
+              }
+
+              next();
+            });
             authRouter.use(base, puzzleRouter);
           }
         }

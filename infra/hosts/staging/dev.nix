@@ -8,7 +8,7 @@
   ];
   config = lib.mkMerge [
     {
-      sops.defaultSopsFile = ../../secrets/staging.yaml;
+      sops.defaultSopsFile = ../../secrets/dev.yaml;
     }
     {
       nixpkgs.overlays = [(final: prev: {
@@ -32,6 +32,10 @@
           ${config.services.postgresql.package}/bin/psql hunt2025 -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
         '';
       };
+    }
+    {
+      sops.secrets."site/environment" = {};
+      systemd.services.hunt2025.serviceConfig.EnvironmentFile = [config.sops.secrets."site/environment".path];
     }
     {
       services.nginx = {

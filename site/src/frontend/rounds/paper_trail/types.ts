@@ -1,3 +1,5 @@
+import { type Placement } from "@floating-ui/react";
+
 export type PaperTrailItem = {
   title: string;
   slug: string;
@@ -20,12 +22,7 @@ export type PaperTrailObjectBase = {
     bottom?: number;
   };
   filter?: string;
-  tooltip_anchor?: {
-    // if not left: 0; top: 0;, where should the label appear on hover?
-    left?: string;
-    top?: string;
-    right?: string;
-  };
+  tooltip_placement?: Placement;
 };
 
 export type PaperTrailPuzzleObject = PaperTrailObjectBase & {

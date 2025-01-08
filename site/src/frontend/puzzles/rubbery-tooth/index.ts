@@ -76,12 +76,8 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["MOUTHS AS A LENS"],
-      reply: "That sounds like something you should try doing next.",
-    },
-    {
-      guess: ["ORDER IS Y THEN X"],
-      reply: "Try doing that to see what you get.",
+      guess: ["MOUTHS AS A LENS", "ORDER IS Y THEN X"],
+      reply: "Keep going!",
     },
   ],
 };

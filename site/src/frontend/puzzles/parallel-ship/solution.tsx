@@ -193,7 +193,18 @@ const Solution = () => {
         into the grid, giving this grid:
       </p>
       <HScrollTableWrapper>
-        <StyledCrossword labels={GRID} fill={GRID_FILL_PT2} />
+        <StyledCrossword
+          labels={GRID}
+          fill={GRID_FILL_PT2}
+          getAdditionalCellStyles={({ row, column }) => {
+            if (GRID[row]?.[column] === ".") {
+              return {
+                color: "white",
+              };
+            }
+            return {};
+          }}
+        />
       </HScrollTableWrapper>
 
       <p>

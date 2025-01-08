@@ -38,6 +38,13 @@ const Solution = () => {
         six bets are odd, even, low, high, red, and black.
       </p>
       <p>
+        Each non-zero spoke in the roulette wheel is either even or odd, either
+        high or low, and either red or black. For example, the first spoke after
+        the Green 0 is Red 32, which is even, high, and red. So the dropquote
+        for that spoke only uses the even, high, and red rows, while the odd,
+        low, and black rows are blank.
+      </p>
+      <p>
         For each bet, you can go around the roulette wheel clockwise and drop
         one letter from each slot to spell out words or phrases. Those phrases{" "}
         <b>should</b> contain the name of the bet, but the name is elided:

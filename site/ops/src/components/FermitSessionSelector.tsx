@@ -80,7 +80,8 @@ export function FermitSessionSelector({ buttonText }: { buttonText: string }) {
     return (
       <ActiveSession>
         <SessionSummary>
-          {fermitData.activeSession.title} ({fermitData.activeSession.status}) - {fermitData.activeSession.teams.length} / 10 teams
+          {fermitData.activeSession.title} ({fermitData.activeSession.status}) -{" "}
+          {fermitData.activeSession.teams.length} / 10 teams
         </SessionSummary>
         <button
           onClick={() => {

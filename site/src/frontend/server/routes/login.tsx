@@ -37,5 +37,5 @@ export function hackLoginGetHandler(_req: Request) {
       </form>
     </div>
   );
-  return { node };
+  return { node, title: "Login" };
 }

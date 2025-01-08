@@ -33,12 +33,12 @@ export async function seed(knex: Knex): Promise<void> {
         username,
         password: "password",
         name: username,
-        teamEmail: "team@example.com",
+        teamEmail: "team@mitmh2025.com",
         contactName: "Jack Florey",
-        contactEmail: "jack@example.com",
+        contactEmail: "jack@mitmh2025.com",
         contactPhone: "+16172531000",
         secondaryContactName: "James E. Tetazoo",
-        secondaryContactEmail: "james@example.com",
+        secondaryContactEmail: "james@mitmh2025.com",
         secondaryContactPhone: "+16172532000",
         contactMailingAddress: "123 Main St, Cambridge, MA 02139",
         peopleTotal: 1,
@@ -207,7 +207,20 @@ export async function seed(knex: Knex): Promise<void> {
   }
 
   const isPart1Slugs = isRound.puzzles
-    .slice(0, 10)
+    .filter((p) =>
+      [
+        "isp01",
+        "isp02",
+        "isp03",
+        "isp04",
+        "isp05",
+        "isp06",
+        "isp07",
+        "isp08",
+        "isp09",
+        "isp10",
+      ].includes(p.id),
+    )
     .map((p) => getSlotSlug(p))
     .filter((slug): slug is string => slug !== false);
 
@@ -236,7 +249,18 @@ export async function seed(knex: Knex): Promise<void> {
   });
 
   const isPart2Slugs = isRound.puzzles
-    .slice(10, 18)
+    .filter((p) =>
+      [
+        "isp11",
+        "isp12",
+        "isp13",
+        "isp14",
+        "isp15",
+        "isp16",
+        "isp17",
+        "isp18",
+      ].includes(p.id),
+    )
     .map((p) => getSlotSlug(p))
     .filter((slug): slug is string => slug !== false);
 

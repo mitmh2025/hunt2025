@@ -13,6 +13,15 @@ final: prev: let
 
       inherit (prev.ocamlPackages.ffmpeg) meta;
     };
+
+    ffmpeg-av = ocaml-prev.ffmpeg-av.override { ffmpeg = final.ffmpeg_6-headless; };
+    ffmpeg-avcodec = ocaml-prev.ffmpeg-avcodec.override { ffmpeg = final.ffmpeg_6-headless; };
+    ffmpeg-avdevice = ocaml-prev.ffmpeg-avdevice.override { ffmpeg = final.ffmpeg_6-headless; };
+    ffmpeg-avfilter = ocaml-prev.ffmpeg-avfilter.override { ffmpeg = final.ffmpeg_6-headless; };
+    ffmpeg-avutil = ocaml-prev.ffmpeg-avutil.override { ffmpeg = final.ffmpeg_6-headless; };
+    ffmpeg-swresample = ocaml-prev.ffmpeg-swresample.override { ffmpeg = final.ffmpeg_6-headless; };
+    ffmpeg-swscale = ocaml-prev.ffmpeg-swscale.override { ffmpeg = final.ffmpeg_6-headless; };
+
     saturn_lockfree = ocaml-prev.saturn_lockfree.overrideAttrs (old: let
       version = "0.4.1";
     in {
@@ -42,6 +51,9 @@ final: prev: let
         maintainers = with maintainers; [ quentin ];
       };
     }) {};
+    tsdl = null;
+    tsdl-image = null;
+    tsdl-ttf = null;
   };
 in {
   hunt2025 = final.callPackage ../../site {};
@@ -61,6 +73,9 @@ in {
     ocamlPackages = final.ocaml-ng.ocamlPackages_4_14.overrideScope ocamlPackagesOverlay;
     liquidsoap = (prev.liquidsoap.override (old: {
       ocamlPackages = old.ocamlPackages.overrideScope ocamlPackagesOverlay;
+      ffmpeg = final.ffmpeg-headless;
+      awscli2 = null;
+      yt-dlp = null;
     })).overrideAttrs (old: {
       inherit version;
       src = old.src.override ({
@@ -71,6 +86,12 @@ in {
         saturn_lockfree
         mem_usage
       ];
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.removeReferencesTo];
+      postInstall = ''
+        find "$out" -type f -exec remove-references-to -t ${final.gcc-unwrapped} '{}' +
+        mkdir -p $out/share/liquidsoap-lang/cache
+        $out/bin/liquidsoap --cache-stdlib
+      '';
     });
   in if final.stdenv.isDarwin then (liquidsoap.override (old: {
     # Remove optional dependencies that don't build on Darwin.
@@ -117,4 +138,9 @@ in {
       ./zammad/saml-roles.patch
     ];
   });
+
+  radio-stream = final.callPackage ./radio-stream.nix {
+    inherit (self.inputs) radio-media;
+  };
+  radioImage = final.callPackage ./radio-image.nix {};
 }
