@@ -77,6 +77,16 @@ export default function RegistrationHome({
         <section id="updates">
           <h2>Latest Updates</h2>
           <p>
+            <strong>2025.01.07 - </strong>We are pleased to share that Robert
+            Finster has invited you to a gala celebrating his daughter’s
+            engagement. If you didn’t receive your copy of the invitation in the
+            mail, you can find a copy on the{" "}
+            <a href="https://puzzles.mit.edu/nexthunt.html">
+              MIT Mystery Hunt website
+            </a>
+            . We hope to see you there!
+          </p>
+          <p>
             <strong>2024.12.13 - </strong>This website previously indicated that
             its contents were not a puzzle. However, while this statement was
             true, we have since realized that it was inconsistent with our
@@ -725,6 +735,27 @@ export default function RegistrationHome({
                 If you have additional questions about team size, shoot us an
                 email at{" "}
                 <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
+              </p>
+            </div>
+          </details>
+
+          <details className="question">
+            <summary>
+              <h3>Do we need to dress up?</h3>
+            </summary>
+            <div className="answer">
+              <p>
+                There is no dress code for Mystery Hunt. It is first and
+                foremost a puzzle hunt, and you’ll likely be happiest in clothes
+                that are comfortable for solving puzzles in your HQ and walking
+                around campus. That said, Papa Finster is{" "}
+                <a href="https://puzzles.mit.edu/nexthunt.html">
+                  throwing a party
+                </a>
+                , and dressing up (or being prepared to do so) can add to the
+                fun. We aren’t especially picky about “period appropriate”
+                dress, but flappers were the 20s; how does everyone forget
+                that…?
               </p>
             </div>
           </details>
