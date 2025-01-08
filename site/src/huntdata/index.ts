@@ -363,6 +363,12 @@ const HUNT: Hunt = {
             { round_unlocked: "paper_trail" },
           ]},
         },
+        { id: "ptg04", internal_description: "Weather enabled for icy-box", satisfied_if: {
+          oneOf: [
+            { slot_unlocked: "ptp10" },
+            { round_unlocked: "paper_trail" },
+          ]},
+        },
       ],
       interactions: [
         {
