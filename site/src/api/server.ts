@@ -1648,6 +1648,43 @@ export async function getRouter({
           };
         },
       },
+      castVote: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug, pollId }, body: { choice }, req }) => {
+          const team_id = req.user as number;
+          const sess_id = req.authInfo?.sessId;
+          if (!sess_id) {
+            // Must have a session id
+            return {
+              status: 400 as const,
+              body: null,
+            };
+          }
+
+          if (!redisClient) {
+            console.error("Cannot implement castVote without valid redis connection");
+            return {
+              status: 500 as const,
+              body: null,
+            };
+          }
+
+          const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
+
+          // TODO: verify that slug/pollId/choice are valid based on current team state?
+          await redisClient.hSet(redisKey, sess_id, choice);
+
+          // TODO: don't actually return the whole vote set
+          const result = await redisClient.hGetAll(redisKey);
+          return {
+            status: 200 as const,
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+             * We know the puzzle state exists because we checked the db above. */
+            body: result,
+          };
+        },
+
+      }
     },
     admin: {
       getTeamState: {
@@ -2510,6 +2547,31 @@ export async function getRouter({
           return {
             status: 200,
             body,
+          };
+        },
+      },
+      getVotes: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId, slug, pollId } }) => {
+          const team_id = parseInt(teamId, 10);
+          if (!redisClient) {
+            return {
+              status: 500,
+              body: null,
+            };
+          }
+          const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
+          const votes = await redisClient.hGetAll(redisKey);
+          const results: Record<string, number> = {};
+          Object.entries(votes).forEach(([_sess_id, choice]) => {
+            if (results[choice] === undefined) {
+              results[choice] = 0;
+            }
+            results[choice] += 1;
+          });
+          return {
+            status: 200,
+            body: results,
           };
         },
       },

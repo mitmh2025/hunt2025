@@ -271,6 +271,14 @@ export const frontendContract = c.router({
       401: z.null(),
     },
   },
+  getVotes: {
+    method: "GET",
+    path: "/teams/:teamId/elections/:slug/:pollId/votes",
+    responses: {
+      200: z.object({}).passthrough(),
+      404: z.null(),
+    },
+  },
   mintToken: {
     method: "POST",
     path: "/admin/mintToken",
