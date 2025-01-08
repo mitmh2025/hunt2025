@@ -40,7 +40,7 @@ const Board = styled.main`
     url(${BulletinBoardBg}) center / cover,
     url(${Cork}) center / ${getRelativeSizeCss(512)} repeat;
   overflow: hidden;
-  width: min(var(--viewport-width), ${MAX_WIDTH}px);
+  width: min(calc(100vw - var(--scrollbar-width)), ${MAX_WIDTH}px);
   height: ${getRelativeSizeCss(MAX_HEIGHT)};
   position: relative;
 `;
@@ -75,12 +75,8 @@ const Pin = styled.img<{ $x: number; $y: number }>`
 
 function _calculateViewportDims() {
   document.documentElement.style.setProperty(
-    "--viewport-width",
-    `${document.documentElement.clientWidth}px`,
-  );
-  document.documentElement.style.setProperty(
-    "--viewport-height",
-    `${document.documentElement.clientHeight}px`,
+    "--scrollbar-width",
+    `${window.innerWidth - document.documentElement.clientWidth}px`,
   );
 }
 
