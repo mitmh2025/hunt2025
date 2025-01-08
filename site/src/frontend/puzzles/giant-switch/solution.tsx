@@ -1,11 +1,11 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
-import boyband from "./assets/boyband987.wav";
-import classical from "./assets/classical905.wav";
-import country from "./assets/country1011.wav";
-import disco from "./assets/disco917.wav";
-import hip from "./assets/hip1051.wav";
+import boyband from "./assets/boyband987.mp3";
+import classical from "./assets/classical905.mp3";
+import country from "./assets/country1011.mp3";
+import disco from "./assets/disco917.mp3";
+import hip from "./assets/hip1051.mp3";
 import img1 from "./assets/img1.jpg";
 import img2 from "./assets/img2.jpg";
 import img3 from "./assets/img3.jpg";
@@ -15,10 +15,10 @@ import img6 from "./assets/img6.jpg";
 import img7 from "./assets/img7.jpg";
 import img8 from "./assets/img8.jpg";
 import img9 from "./assets/img9.jpg";
-import jazz from "./assets/justjazz965.wav";
-import kpop from "./assets/kpop933.wav";
-import ragtime from "./assets/ragtime1063.wav";
-import taytay from "./assets/taytay891.wav";
+import jazz from "./assets/justjazz965.mp3";
+import kpop from "./assets/kpop933.mp3";
+import ragtime from "./assets/ragtime1063.mp3";
+import taytay from "./assets/taytay891.mp3";
 
 const LOCATION_TABLE: {
   href: string;
