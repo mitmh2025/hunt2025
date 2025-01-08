@@ -1,7 +1,34 @@
 import { styled } from "styled-components";
+import StyledDialog from "../../components/StyledDialog";
+import NoteBg from "./assets/bg.png";
 import bg from "./assets/desk-bg.png";
 
 const BG_COLOR = "#272421";
+
+export const NotesDialog = styled(StyledDialog)`
+  font-family: "Reenie Beanie";
+  transform: rotate(-2deg);
+  background-color: #f0f0de;
+  background-image: url(${NoteBg});
+  background-size: 300% 16rem;
+  background-position: 20% 1rem;
+  background-repeat: repeat-y;
+  font-size: 2rem;
+
+  h1 {
+    font-family: "Kiwi Maru";
+    font-size: 2rem;
+  }
+
+  ul {
+    margin-top: 0;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+`;
 
 export const DeskItem = styled.a`
   position: absolute;
@@ -15,9 +42,13 @@ export const DeskItem = styled.a`
     filter: brightness(0.8) drop-shadow(1px 3px 8px #00000066);
   }
 
-  &:hover img {
+  &:hover:not(:disabled) img {
     -webkit-filter: brightness(1) drop-shadow(0px 0px 8px #ffffe966);
     filter: brightness(1) drop-shadow(0px 0px 8px #ffffe966);
+  }
+
+  &:disabled {
+    cursor: default;
   }
 `;
 

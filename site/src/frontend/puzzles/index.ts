@@ -13,6 +13,9 @@ import JustPlaneWrong from "./artistic-aztec";
 import AbsolutelyNotBalderdash from "./ashamed-tail";
 import DoableDouble from "./austere-sink";
 import { blacklightPuzzle } from "./blacklight";
+import CopyPasta from "./blank-rose";
+import AsTheWorldTurandot from "./blend-hardboard";
+import AMapAndAShadeOrFour from "./bony-fair";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
@@ -48,12 +51,14 @@ import Casino from "./fortunate-calf";
 import Alias from "./frilly-whip";
 import GivenUp from "./giant-switch";
 import ChatGPT from "./giving-fighter";
+import AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends from "./granular-shoe";
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
 import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
 import Incognito from "./heavy-iron";
+import DoTheManualCalculationsDontTryMonteCarlo from "./hideous-theater";
 import AWeatheredNote from "./icy-box";
 import BigNames from "./important-green";
 import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
@@ -126,6 +131,7 @@ import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
 import HeShouldntHaveEatenTheApple from "./snoopy-link";
 import KnightsOfTheSquareTable from "./sore-ketchup";
+import APuzzleOfTheDead from "./sorrowful-glass";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import TheOversight from "./svelte-conductor";
@@ -168,6 +174,7 @@ const PlaceholderISP10 = makePlaceholder(
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
   "🔎🧊": MagnifyingGlassIce,
+  "📑🍝": CopyPasta,
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
@@ -250,6 +257,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   a_weathered_note: AWeatheredNote,
   bar_talk: BarTalk,
   chemicals_are_sexy: ChemicalsAreSexy,
+  do_the_manual_calculations_dont_try_monte_carlo:
+    DoTheManualCalculationsDontTryMonteCarlo,
   eponymous_forensic_accountant: EponymousForensicAccountant,
   follow_the_rules: FollowTheRules,
   his_life_story: HisLifeStory,
@@ -272,10 +281,10 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
-  cross_spread: CrossSpread, // globe
+  this_is_just_a_test: ThisIsJustATest, // globe
   paw_print_detective: PawPrintDetective, // family portrait
-  this_is_just_a_test: ThisIsJustATest, // typewriter
-  // isp05 desk lamp?
+  cross_spread: CrossSpread, // desk lamp
+  a_puzzle_of_the_dead: APuzzleOfTheDead, // typewriter
 
   cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
@@ -360,7 +369,11 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Murder in MITropolis
   a_dash_of_color: ADashOfColor,
+  a_map_and_a_shade_or_four: AMapAndAShadeOrFour,
   absolutely_not_balderdash: AbsolutelyNotBalderdash,
+  abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends:
+    AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends,
+  as_the_world_turandot: AsTheWorldTurandot,
   beyond_a_shadow_of_a_doubt: BeyondAShadowOfADoubt,
   cacciando_trio_misterioso: CacciandoTrioMisterioso,
   can_do_transmissions: CanDoTransmissions,

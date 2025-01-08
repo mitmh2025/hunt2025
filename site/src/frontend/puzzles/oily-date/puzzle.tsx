@@ -74,7 +74,7 @@ export const ORDERED_NOTES: [string, string][] = [
   ],
   [
     note5,
-    "Donor’s Notes: As a renowned skeptic, I quickly found myself bored and unimpressed by the supposed ’spiritual’ ramblings of Mr. Parker in this book. The only thing it inspired in me was a desire to escape its dull pages.",
+    "Donor’s Notes: As a renowned skeptic, I quickly found myself bored and unimpressed by the supposed ‘spiritual’ ramblings of Mr. Parker in this book. The only thing it inspired in me was a desire to escape its dull pages.",
   ],
   [
     note6,
@@ -86,7 +86,7 @@ export const ORDERED_NOTES: [string, string][] = [
   ],
   [
     note8,
-    "Donor’s Notes: “It isn’t” is the answer. Pray, this title is marred by mis-statements which even the humblest of magicians could refute.",
+    "Donor’s Notes: “It isn’t” is the answer–pray, this title is marred by mis-statements which even the humblest of magicians could refute.",
   ],
   [
     note9,

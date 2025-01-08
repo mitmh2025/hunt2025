@@ -1,7 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
-import { AuthorsNote } from "../../components/PuzzleLayout";
 
 const GRID = `
 ______
@@ -24,10 +23,10 @@ const FlexWrapper = styled.div`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <AuthorsNote>
-        Note: Each square contains one letter (which may be any letter). There
-        is no double-letter cube.
-      </AuthorsNote>
+      <p>
+        Each square contains one letter (which may be any letter). There is no
+        double-letter cube.
+      </p>
       <FlexWrapper>
         <div>
           <div>

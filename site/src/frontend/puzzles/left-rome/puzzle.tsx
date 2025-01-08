@@ -749,12 +749,12 @@ const Puzzle = (): JSX.Element => {
               <li>
                 ELIGIBLE ROAD: A paved, public, through road, excluding dead
                 ends, driveways, alleys, parking lots, and entrances to
-                businesses, hotels, and schools.
+                businesses, hotels, and schools
               </li>
               <li>
                 FEDERAL HIGHWAY: A highway that is part of the United States
                 Numbered Highway System, with a name consisting of a prefix of I
-                or US, a hyphen, and a suffix of one to three numbers.
+                or US, a hyphen, and a suffix of one to three numbers
               </li>
               <li>
                 FULL TEXT (OF A SIGN): All word(s), letter(s), and/or number(s)
@@ -768,7 +768,7 @@ const Puzzle = (): JSX.Element => {
               <li>HTS: (of a sign) Hard To See</li>
               <li>
                 IMMEDIATE: Used to indicate that an instruction should be
-                executed immediately after the previous instruction.
+                executed immediately after the previous instruction
               </li>
               <li>
                 INTERSECTION: Any meeting of ELIGIBLE ROADS at grade level from
@@ -783,19 +783,19 @@ const Puzzle = (): JSX.Element => {
               <li>
                 OPP: Opportunity; an ELIGIBLE ROAD upon which you can legally
                 TURN in the direction satisfying the instruction, regardless of
-                the angle created by the turn.
+                the angle created by the turn
               </li>
               <li>R: A right TURN of approximately ninety degrees</li>
               <li>
                 RIVER ROAD: A parkway abutting the Charles River; namely,
                 Memorial Drive, Greenough Boulevard, Storrow Drive, or Soldier’s
-                Field Road.
+                Field Road
               </li>
               <li>(S)HIT: (Sign) Hidden In Tree</li>
               <li>
                 SIGNAL: The INTERSECTION of two ELIGIBLE ROADS where your
                 progress is controlled by a conventional red, amber, and green
-                traffic signal, whether working or not.
+                traffic signal, whether working or not
               </li>
               <li>
                 SOL: Sign On Left, a sign on the left-hand side of the road
@@ -806,7 +806,7 @@ const Puzzle = (): JSX.Element => {
               </li>
               <li>
                 STOP: A conventional octagonal red STOP sign which is
-                controlling your progress.
+                controlling your progress
               </li>
               <li>
                 T: An INTERSECTION having the general shape of the letter T as
@@ -820,7 +820,7 @@ const Puzzle = (): JSX.Element => {
               </li>
               <li>
                 Y: An INTERSECTION having the general shape of the letter Y as
-                approached, at which you have the choice to BEAR right or left.
+                approached, at which you have the choice to BEAR right or left
               </li>
             </StyledOl>
           </li>

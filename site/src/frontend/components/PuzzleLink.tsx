@@ -11,24 +11,10 @@ import icon_solved from "../../assets/solved_status.svg";
 import icon_unlock from "../../assets/unlock-icon.svg";
 import icon_unlocked from "../../assets/unlocked_status.svg";
 import icon_unlockable from "../../assets/visible_status.svg";
+import StyledDialog from "./StyledDialog";
 import { Button, ButtonSecondary } from "./StyledUI";
 
 export type LockState = "unlockable" | "unlocked" | "locked";
-
-const StyledDialog = styled.dialog`
-  font-size: 24px;
-  font-family: var(--body-font);
-  background-color: var(--white);
-  color: var(--black);
-  border-radius: 0.25rem;
-  padding: 1rem 2rem;
-  text-align: left;
-
-  &::backdrop {
-    backdrop-filter: blur(10px);
-    background-color: rgba(0, 0, 0, 0.45);
-  }
-`;
 
 const DialogActions = styled.div`
   display: flex;

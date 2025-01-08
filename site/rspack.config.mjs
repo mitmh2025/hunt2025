@@ -42,6 +42,7 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/circular-greece/assets/rod-sticker.pdf",
   "src/frontend/puzzles/clean-ivory/assets/the-inspectre.pdf",
   "src/frontend/puzzles/confused-antarctica/assets/networking-event.pdf",
+  "src/frontend/puzzles/hideous-theater/assets/do-the-manual-calculations-dont-try-monte-carlo.pdf",
   "src/frontend/puzzles/regal-knife/assets/a.mp3",
   "src/frontend/puzzles/regal-knife/assets/d.mp3",
   "src/frontend/puzzles/selfish-king/assets/bermuda-triangle-spreadsheet.xlsx",
@@ -49,6 +50,13 @@ const PRESERVE_FILENAME_ASSET_PATHS = [
   "src/frontend/puzzles/timely-head/assets/engagements-and-other-crimes.pdf",
   "src/frontend/puzzles/valuable-alps/assets/cross-dash-word.pdf",
 ];
+// There are also 54 pages with predictable paths for the Murder in MITropolis meta
+for (let i = 1; i <= 54; i++) {
+  const pageStr = `${i}`.padStart(2, "0");
+  PRESERVE_FILENAME_ASSET_PATHS.push(
+    `src/frontend/rounds/murder_in_mitropolis/assets/pages/${pageStr}.pdf`,
+  );
+}
 
 class RadioManifestPlugin {
   constructor(opts) {
@@ -503,7 +511,10 @@ export default function createConfigs(_env, argv) {
       puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",
+      puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
+      puzzle_sorrowful_glass:
+        "./src/frontend/puzzles/sorrowful-glass/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
       puzzle_unfit_tower: "./src/frontend/puzzles/unfit-tower/client.tsx",
       puzzle_unhealthy_mint: "./src/frontend/puzzles/unhealthy-mint/client.tsx",
@@ -645,6 +656,7 @@ export default function createConfigs(_env, argv) {
     entry: {
       ops: "./ops/server/main.ts",
       sync2tb: "./radioman/sync2tb.ts",
+      sync2k8s: "./radioman/sync2k8s.ts",
       tbprovision: "./radioman/tbprovision.ts",
       tbutil: "./radioman/tbutil.ts",
     },

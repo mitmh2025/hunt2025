@@ -74,7 +74,7 @@ const MUSICIANS = [
   [
     "Marian McPartland",
     <>
-      She received an OBE and a lifetime achievement Grammy
+      She received an OBE and a Grammy for lifetime achievement
       <a href="#footnote">
         <sup id="antifootnote">1</sup>
       </a>

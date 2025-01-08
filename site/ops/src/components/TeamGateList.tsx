@@ -77,7 +77,7 @@ export default function TeamGateList({ team }: { team: TeamData }) {
     return HUNT.rounds.flatMap((round) =>
       (round.gates ?? []).map((gate) => ({
         id: gate.id,
-        displayName: gate.title ? `${gate.title} (${gate.id})` : gate.id,
+        displayName: `${gate.title ?? gate.internal_description ?? "Untitled Gate"} (${gate.id})`,
         round: round.title,
         satisfied: team.state.gates_satisfied.has(gate.id),
       })),
@@ -134,6 +134,7 @@ export default function TeamGateList({ team }: { team: TeamData }) {
           desc: false,
         },
       ],
+      showGlobalFilter: true,
     },
     layoutMode: "grid-no-grow",
     enableDensityToggle: false,

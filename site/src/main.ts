@@ -55,6 +55,11 @@ if (environment === "development" && !dataApiSecret) {
   dataApiSecret = randomBytes(16).toString("hex");
 }
 
+let mediaBaseUrl = process.env.MEDIA_BASE_URL;
+if (environment === "development" && !mediaBaseUrl) {
+  mediaBaseUrl = "http://localhost:8889";
+}
+
 const redisUrl = process.env.REDIS_URL;
 if (!redisUrl) {
   console.error(
@@ -88,6 +93,7 @@ async function main() {
     jwksUri,
     frontendApiSecret,
     dataApiSecret,
+    mediaBaseUrl,
     apiUrl,
     redisUrl,
     emailFrom,

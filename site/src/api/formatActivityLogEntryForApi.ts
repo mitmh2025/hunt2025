@@ -2,7 +2,7 @@ import { type DehydratedActivityLogEntry } from "../../lib/api/contract";
 import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
-import HUNT from "../huntdata";
+import HUNT, { GATE_LOOKUP } from "../huntdata";
 import { fixData } from "./db";
 
 export default function formatActivityLogEntryForApi(
@@ -60,7 +60,11 @@ export default function formatActivityLogEntryForApi(
         break;
       case "gate_completed":
         {
-          // TODO: add gate descriptions for activity log in the definition?
+          const gate = GATE_LOOKUP.get(e.slug);
+          entry = Object.assign(entry, {
+            title: gate?.gate.title,
+            show_notification: gate?.gate.show_notification ?? false,
+          });
         }
         break;
     }

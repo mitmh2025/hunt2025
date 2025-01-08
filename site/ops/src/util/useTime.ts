@@ -13,5 +13,10 @@ export default function useTime(resolution = 60000) {
     };
   }, [resolution]);
 
-  return time;
+  return {
+    now: time,
+    updateNow: () => {
+      setTime(new Date());
+    },
+  };
 }

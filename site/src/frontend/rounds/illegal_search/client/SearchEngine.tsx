@@ -5,9 +5,11 @@ import React, {
   useEffect,
   useMemo,
   useLayoutEffect,
+  useRef,
 } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
+import billie from "../../../assets/billie.png";
 import useDataset from "../../../client/useDataset";
 import PuzzleLink from "../../../components/PuzzleLink";
 import round_title from "../assets/study/round_title.svg";
@@ -238,6 +240,86 @@ export const PuzzleLinkBackdrop = styled.div`
   margin-top: 24px;
 `;
 
+const BillieSpeechContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+const SpeechBubble = styled.div`
+  width: 50%;
+  padding: 20px;
+  margin-right: 50px;
+  margin-bottom: 100px;
+  position: relative;
+  border: 3px solid #7f7f7f;
+  border-radius: 43px;
+  background: rgba(255, 255, 255, 0.86);
+  outline: 4px solid rgba(255, 255, 255, 0.86);
+  box-shadow: 20px -20px 15px rgb(20 34 35 / 20%);
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  color: black;
+  font-family: "EB Garamond", serif;
+  white-space: pre-wrap;
+  font-size: 22px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.86);
+    width: 10%;
+    height: 50px;
+    left: calc(100% + 7px);
+
+    bottom: 45px;
+    clip-path: polygon(0 0, 100% 100%, 0 75%);
+  }
+`;
+
+const Billie = styled.img`
+  width: 15%;
+`;
+
+const BillieSpeech = () => {
+  return (
+    <BillieSpeechContainer>
+      <SpeechBubble>
+        For this investigation we want to lay out important ground rules.
+        Normally for this type of search, I’d want to get in and escape within
+        one hour, but fortunately Papa is tied up at the Gala, so you should
+        have until Sunday evening to complete the search. Each code is only used
+        once, and once you’ve opened a lock, leave it where you found it to make
+        it easier to reset the room, I mean, cover our tracks. You won’t need to
+        climb on the furniture. If something doesn’t move with two fingers of
+        force, you probably haven’t opened it yet. And remember—the front door
+        will remain unlocked the entire time if you feel the need to investigate
+        other locations.{"\n\n"}Now don’t just stand there, team. Go find out
+        what Papa’s hiding!
+      </SpeechBubble>
+      <Billie src={billie} alt="Billie" />
+    </BillieSpeechContainer>
+  );
+};
+
+const BilliePopupTrigger = styled.button`
+  transform: scaleX(-1);
+  background: none;
+  border: none;
+  padding: none;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+
+  cursor: ${zoom_cursor};
+
+  & img {
+    width: 150px;
+  }
+`;
+
 const wallpaperSvg = `url("data:image/svg+xml,%3Csvg width='80' height='88' viewBox='0 0 80 88' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 21.91V26h-2c-9.94 0-18 8.06-18 18 0 9.943 8.058 18 18 18h2v4.09c8.012.722 14.785 5.738 18 12.73 3.212-6.99 9.983-12.008 18-12.73V62h2c9.94 0 18-8.06 18-18 0-9.943-8.058-18-18-18h-2v-4.09c-8.012-.722-14.785-5.738-18-12.73-3.212 6.99-9.983 12.008-18 12.73zM54 58v4.696c-5.574 1.316-10.455 4.428-14 8.69-3.545-4.262-8.426-7.374-14-8.69V58h-5.993C12.27 58 6 51.734 6 44c0-7.732 6.275-14 14.007-14H26v-4.696c5.574-1.316 10.455-4.428 14-8.69 3.545 4.262 8.426 7.374 14 8.69V30h5.993C67.73 30 74 36.266 74 44c0 7.732-6.275 14-14.007 14H54zM42 88c0-9.94 8.06-18 18-18h2v-4.09c8.016-.722 14.787-5.738 18-12.73v7.434c-3.545 4.262-8.426 7.374-14 8.69V74h-5.993C52.275 74 46 80.268 46 88h-4zm-4 0c0-9.943-8.058-18-18-18h-2v-4.09c-8.012-.722-14.785-5.738-18-12.73v7.434c3.545 4.262 8.426 7.374 14 8.69V74h5.993C27.73 74 34 80.266 34 88h4zm4-88c0 9.943 8.058 18 18 18h2v4.09c8.012.722 14.785 5.738 18 12.73v-7.434c-3.545-4.262-8.426-7.374-14-8.69V14h-5.993C52.27 14 46 7.734 46 0h-4zM0 34.82c3.213-6.992 9.984-12.008 18-12.73V18h2c9.94 0 18-8.06 18-18h-4c0 7.732-6.275 14-14.007 14H14v4.696c-5.574 1.316-10.455 4.428-14 8.69v7.433z' fill='%23765d2f' fill-opacity='0.48' fill-rule='evenodd'/%3E%3C/svg%3E");`;
 
 const SearchEngineSurface = styled.div<{
@@ -299,7 +381,14 @@ const Interaction = ({
     component: InteractionComponent;
   } | null>(null);
 
+  const lastLoadedPlugin = useRef<string | null>(null);
+
   useEffect(() => {
+    if (lastLoadedPlugin.current === pluginName) {
+      return;
+    }
+    lastLoadedPlugin.current = pluginName;
+
     function loadScript(src: string): Promise<void> {
       const existingScript = document.querySelector(`script[src="${src}"]`);
       if (existingScript) {
@@ -358,6 +447,18 @@ const SearchEngine = ({
   initialNode: Node;
   initialTeamState: TeamHuntState;
 }) => {
+  const haveShownIntro =
+    localStorage.getItem("haveShownSearchIntro") === "true";
+  const [introModalShown, setShownIntroModal] =
+    useState<boolean>(!haveShownIntro);
+  const setShowIntroModal = useCallback(() => {
+    setShownIntroModal(true);
+  }, []);
+  const dismissIntroModal = useCallback(() => {
+    setShownIntroModal(false);
+    localStorage.setItem("haveShownSearchIntro", "true");
+  }, []);
+
   const [node, setNode] = useState<Node>(initialNode);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalShown, setModalShown] = useState<
@@ -567,6 +668,12 @@ const SearchEngine = ({
     );
   });
 
+  const billiePopupTrigger = !introModalShown && (
+    <BilliePopupTrigger onClick={setShowIntroModal}>
+      <img src={billie} alt="Billie" />
+    </BilliePopupTrigger>
+  );
+
   const interactions: JSX.Element[] = [];
   const overlayInteractions: JSX.Element[] = [];
 
@@ -607,7 +714,13 @@ const SearchEngine = ({
   });
 
   let modalOverlay = undefined;
-  if (modalShown) {
+  if (introModalShown) {
+    modalOverlay = (
+      <ModalBackdrop onClick={dismissIntroModal}>
+        <BillieSpeech />
+      </ModalBackdrop>
+    );
+  } else if (modalShown) {
     const puzzleState = teamState.puzzles[modalShown.slug];
     modalOverlay = (
       <ModalBackdrop onClick={dismissModal}>
@@ -708,6 +821,7 @@ const SearchEngine = ({
             }}
           />
           {navigations}
+          {billiePopupTrigger}
           {modals}
           {overlayInteractions}
           {modalOverlay}

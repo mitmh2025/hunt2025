@@ -1,3 +1,5 @@
+import { type CSSProperties } from "react";
+
 export type HubRound = {
   slug: string;
   title: string;
@@ -22,12 +24,33 @@ export type HubObject = {
   y: number;
   width: number;
   rot: number;
+  rotOrigin?: CSSProperties["transformOrigin"];
+  shadow: boolean;
   href?: string; // If present, will be rendered as an <a> containing an <img>.  Otherwise, will render as an <img>
   inert?: boolean; // If true, sets pointer-events: none on the object
+  pin?: {
+    asset: string;
+    x: number;
+    y: number;
+  };
+};
+
+export type HubSuspectStatus = {
+  text: string;
+  color?: string;
+};
+
+// Suspect allowed to have up to 3 statuses
+export type HubSuspect = {
+  status:
+    | [HubSuspectStatus]
+    | [HubSuspectStatus, HubSuspectStatus]
+    | [HubSuspectStatus, HubSuspectStatus, HubSuspectStatus];
 };
 
 export type HubState = {
   epoch: number;
   rounds: HubRound[];
   objects: HubObject[];
+  suspects: Record<string, HubSuspect>;
 };

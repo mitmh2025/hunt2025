@@ -10,7 +10,8 @@
       "media.staging"
       "ops.staging"
     ];
-    machineType = "e2-custom-medium-6144"; # 1 vCPU, 6 GB RAM
+    machineType = "e2-custom-medium-8192"; # 1 vCPU, 8 GB RAM
+    bootDisk.size = 100;
     firewall.allowedTCPPorts = [
       22 # SSH
       25 # SMTP

@@ -13,20 +13,62 @@ import {
 import React, {
   Fragment,
   type MouseEventHandler,
+  type Ref,
   useCallback,
   useRef,
   useState,
 } from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { Button } from "../../components/StyledUI";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
-import { Desk, DeskItem } from "./Layout";
+import { Desk, DeskItem, NotesDialog } from "./Layout";
 import { PaperTrailFonts } from "./PaperTrailFonts";
 import {
   type PaperTrailPuzzleObject,
   type PaperTrailObject,
   type PaperTrailState,
 } from "./types";
+
+const NotesModal = React.forwardRef(function NotesModalInner(
+  {
+    notes,
+    onDismiss,
+  }: {
+    notes: string[];
+    onDismiss: () => void;
+  },
+  ref: Ref<HTMLDialogElement>,
+) {
+  const stopClickPropagation: MouseEventHandler<HTMLDialogElement> =
+    useCallback((e) => {
+      // We want to avoid propagating click events within the dialog outside of the dialog, so that we
+      // can still have other "dismiss when an unhandled click bubbles up to me" elements in the DOM.
+      e.stopPropagation();
+    }, []);
+  return (
+    <NotesDialog ref={ref} onClick={stopClickPropagation}>
+      <div
+        style={{
+          margin: "auto",
+          width: "800px",
+          maxWidth: "72vw",
+          textWrap: "wrap",
+        }}
+      >
+        <h1>Notes</h1>
+        <ul>
+          {notes.map((note, i) => (
+            <li key={`note-${i}`}>{note}</li>
+          ))}
+        </ul>
+        <div className="button-container">
+          <Button onClick={onDismiss}>Close</Button>
+        </div>
+      </div>
+    </NotesDialog>
+  );
+});
 
 const PaperTrailDeskItem = ({
   item,
@@ -70,10 +112,6 @@ const PaperTrailDeskItem = ({
   const dismissUnlockModal = useCallback(() => {
     unlockModalRef.current?.close();
   }, []);
-
-  // TODO: figure out what to do, interactivity-wise, when the puzzle is still locked.
-  // In that circumstance, we don't want to link to the puzzle yet since the puzzle page will 404.
-  // We should show some button/unlock/modal overlay?
 
   const lockState = item.state === "solved" ? "unlocked" : item.state;
   const tooltip = showTooltip && (
@@ -141,6 +179,15 @@ const PaperTrailBody = ({
   state: PaperTrailState;
   teamState: TeamHuntState;
 }) => {
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const showModal: MouseEventHandler<HTMLButtonElement> = useCallback((e) => {
+    e.stopPropagation();
+    modalRef.current?.showModal();
+  }, []);
+
+  const dismissModal = useCallback(() => {
+    modalRef.current?.close();
+  }, []);
   const objects = state.imagery.map((item: PaperTrailObject) => {
     const aStyle = {
       left:
@@ -177,10 +224,27 @@ const PaperTrailBody = ({
       );
     } else {
       return (
-        <DeskItem key={item.title} style={aStyle} href={item.href}>
-          <img src={item.asset} alt={item.alt} style={imgStyle} />
-          <Tooltip>Notes</Tooltip>
-        </DeskItem>
+        <>
+          <DeskItem
+            as="button"
+            key={item.title}
+            style={aStyle}
+            onClick={(e) => {
+              if (item.notes.length > 0) showModal(e);
+            }}
+            disabled={item.notes.length === 0}
+          >
+            <img src={item.asset} alt={item.alt} style={imgStyle} />
+            <Tooltip>Notes</Tooltip>
+          </DeskItem>
+          {item.notes.length > 0 && (
+            <NotesModal
+              ref={modalRef}
+              notes={item.notes}
+              onDismiss={dismissModal}
+            />
+          )}
+        </>
       );
     }
   });

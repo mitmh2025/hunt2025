@@ -76,6 +76,7 @@
             EMAIL_FROM = "MIT Mystery Hunt 2025 <info@mitmh2025.com>";
             EMAIL_TRANSPORT = "postmark";
             JWKS_URI = "https://auth.mitmh2025.com/application/o/ops/jwks/";
+            MEDIA_BASE_URL = "https://media.mitmh2025.com";
             #OTEL_METRICS_EXPORTER=console
             #OTEL_LOGS_EXPORTER=console
             #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
@@ -284,6 +285,7 @@
             OPSSITE_STATIC_PATH = "${pkgs.hunt2025.ops}/share/ops/static";
             API_BASE_URL = "http://api/api";
             OAUTH_SERVER = "https://auth.mitmh2025.com/application/o/ops/.well-known/openid-configuration";
+            MEDIA_BASE_URL = "https://media.mitmh2025.com";
           } ++ [
             {
               name = "OAUTH_CLIENT_ID";

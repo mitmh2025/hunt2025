@@ -11,8 +11,8 @@ import { useNotifications } from "@toolpad/core";
 import {
   createMRTColumnHelper,
   MaterialReactTable,
+  type MRT_Row,
   useMaterialReactTable,
-  type MRT_Cell,
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -173,35 +173,29 @@ export default function TeamIndex() {
     const columnHelper = createMRTColumnHelper<TeamIndexData>();
 
     return [
-      columnHelper.accessor(
-        (row) => ({
-          username: row.username,
-          name: row.name,
-        }),
-        {
-          id: "username",
-          header: "Username",
-          Cell: ({
-            cell,
-          }: {
-            cell: MRT_Cell<
-              TeamIndexData,
-              {
-                username: string;
-                name: string;
-              }
-            >;
-          }) => (
-            <>
-              <Link to={`/teams/${cell.getValue().username}`}>
-                {cell.getValue().username}
-              </Link>
-              <br />
-              <span style={{ fontSize: "12px" }}>{cell.getValue().name}</span>
-            </>
-          ),
-        },
-      ),
+      columnHelper.accessor((row) => `${row.username} | ${row.name}`, {
+        id: "username",
+        header: "Username",
+        Cell: ({ row }: { row: MRT_Row<TeamIndexData> }) => (
+          <>
+            <Link to={`/teams/${row.original.username}`}>
+              {row.original.username}
+            </Link>
+            <br />
+            <span
+              style={{
+                fontSize: "12px",
+                maxWidth: "200px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "block",
+              }}
+            >
+              {row.original.name}
+            </span>
+          </>
+        ),
+      }),
       columnHelper.accessor("teamSize", {
         header: "Team Size",
         filterVariant: "range",
@@ -249,6 +243,7 @@ export default function TeamIndex() {
         pageIndex: 0,
         pageSize: 100,
       },
+      showGlobalFilter: true,
     },
     enableRowSelection: isOpsAdmin,
     selectAllMode: "all",
@@ -271,12 +266,12 @@ export default function TeamIndex() {
           <Button
             variant="contained"
             onClick={() => {
+              const teamIds = table
+                .getSelectedRowModel()
+                .rows.map((row) => row.original.teamId);
+
               setGrantKeysDialogTeams(
-                table.getIsAllRowsSelected()
-                  ? "all"
-                  : table
-                      .getSelectedRowModel()
-                      .rows.map((row) => row.original.teamId),
+                teamIds.length === indexData.length ? "all" : teamIds,
               );
             }}
           >

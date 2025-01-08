@@ -15,6 +15,10 @@ const puzzle: PuzzleDefinition = {
       for_what: "Tech",
       who: ["rfong", "tinaun"],
     },
+    {
+      for_what: "Voice acting",
+      who: ["James Douberley", "Kevin Hwang"],
+    },
   ],
   content: {
     component: Puzzle,

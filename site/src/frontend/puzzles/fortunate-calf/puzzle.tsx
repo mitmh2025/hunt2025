@@ -1,5 +1,6 @@
 import React from "react";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import casino1 from "./casino1.png";
 import casino2 from "./casino2.png";
 import casino3 from "./casino3.png";
@@ -13,6 +14,13 @@ const PuzzleContent = () => {
     "An illustration of a round of poker. There are markings visible in the dealer's glasses.";
   return (
     <>
+      <AuthorsNote>
+        Editors’ Note: This is a “metapuzzle”, a puzzle that uses the answers
+        from other puzzles as inputs. To solve it, you’ll need to determine what
+        answers in the round are used as inputs, and how to use them together to
+        find another answer. Many metapuzzles, including most in this Hunt, will
+        not have these notes to label them. Sometimes that’s part of the fun!
+      </AuthorsNote>
       <div className="flavor">
         <p>
           Doubling up with your seven lucky cards down your sleeves,

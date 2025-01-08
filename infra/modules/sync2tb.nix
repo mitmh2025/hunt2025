@@ -25,7 +25,7 @@ in {
     services.sync2tb = {
       apiBaseUrl = lib.mkIf config.hunt2025.site.enable (lib.mkDefault config.hunt2025.site.apiBaseUrl);
       tbBaseUrl = lib.mkIf config.services.thingsboard.enable (lib.mkDefault "http://localhost:8080");
-      mediaBaseUrl = lib.mkIf config.hunt.radio.enable (lib.mkDefault "https://${config.hunt.radio.externalHostname}");
+      mediaBaseUrl = lib.mkIf (config.hunt.radio.enable && config.hunt.radio.externalHostname != null) (lib.mkDefault "https://${config.hunt.radio.externalHostname}");
     };
     users.users.sync2tb = {
       isSystemUser = true;

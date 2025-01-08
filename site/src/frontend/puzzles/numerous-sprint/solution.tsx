@@ -18,6 +18,9 @@ const StyledImage = styled(LinkedImage)`
 `;
 
 const StyledTable = styled.table`
+  th {
+    text-align: left;
+  }
   td {
     padding-right: 1rem;
   }
@@ -141,7 +144,14 @@ const Solution = (): JSX.Element => {
   return (
     <>
       <p>
-        This puzzle is an (unauthorized) tribute to the delightful mini-hunt
+        This puzzle is an (unauthorized) tribute to the{" "}
+        <a
+          href="https://wp.technologyreview.com/wp-content/uploads/2024/12/MIT-Alumni-News-Puzzle-Corner-January-February-2025.pdf"
+          target="_blank"
+          rel="noreferrer"
+        >
+          delightful mini-hunt
+        </a>{" "}
         written by Dan Katz for the Puzzle Corner section in the
         January/February 2025 issue of the MIT Technology Review and Alumni
         News. The presentation of the puzzle is based on the Puzzle Corner and
@@ -412,7 +422,7 @@ const Solution = (): JSX.Element => {
             </tr>
             <tr>
               <td>
-                …I had already walked on the moon (so what if I wasn’t the
+                …I had already walked on the moon (so what if I wasn’t the very
                 first?)!
               </td>
               <td>
@@ -480,14 +490,17 @@ const Solution = (): JSX.Element => {
               <td>E</td>
               <td>5</td>
               <td>angstrom</td>
-              <td>100 Anders Jonas Angstrom = 1 beard-second</td>
+              <td>
+                1 Anders Jonas Angstrom = 7.1 × 10<sup>-14</sup> sheppeys
+              </td>
             </tr>
             <tr>
               <td>N</td>
               <td>14</td>
               <td>coulomb</td>
               <td>
-                1 Charles-Augustin de Coulomb = 2.998×10^9 Benjamin Franklins
+                1 Charles-Augustin de Coulomb = 2.998 × 10<sup>9</sup> Benjamin
+                Franklins
               </td>
             </tr>
             <tr>
@@ -495,20 +508,26 @@ const Solution = (): JSX.Element => {
               <td>18</td>
               <td>curie</td>
               <td>
-                1 Marie and Pierre Curie = 3.7 x 10^4 Lord Ernest Rutherfords
+                1 Marie and Pierre Curie = 3.7 x 10<sup>4</sup> Lord Ernest
+                Rutherfords
               </td>
             </tr>
             <tr>
               <td>I</td>
               <td>9</td>
               <td>goeppert mayer</td>
-              <td>1 Maria Goeppert Mayer = 10−50 cm4 s/photon</td>
+              <td>
+                1 Maria Goeppert Mayer = 10<sup>−50</sup> cm<sup>4</sup>{" "}
+                s/photon
+              </td>
             </tr>
             <tr>
               <td>C</td>
               <td>3</td>
               <td>joules</td>
-              <td>10^44 James Prescott Joules = 1 foe</td>
+              <td>
+                10<sup>44</sup> James Prescott Joules = 1 foe
+              </td>
             </tr>
             <tr>
               <td>O</td>
@@ -520,13 +539,15 @@ const Solution = (): JSX.Element => {
               <td>F</td>
               <td>6</td>
               <td>oersted</td>
-              <td>1 Hans Christian Ørsted =79.57747 Andre-Marie Amperes/m</td>
+              <td>1 Hans Christian Ørsted = 79.57747 Andre-Marie Amperes/m</td>
             </tr>
             <tr>
               <td>E</td>
               <td>5</td>
               <td>sievert</td>
-              <td>0.98 x 10-7 Rolf Sievert = 1 banana equivalent dose</td>
+              <td>
+                0.98 × 10<sup>-7</sup> Rolf Sievert = 1 banana equivalent dose
+              </td>
             </tr>
             <tr>
               <td>R</td>
@@ -541,7 +562,10 @@ const Solution = (): JSX.Element => {
               <td>M</td>
               <td>13</td>
               <td>sverdrup</td>
-              <td>1 Harald Sverdrup = 1.022 × 1018 fluid scruples/fortnight</td>
+              <td>
+                1 Harald Sverdrup = 1.023 × 10<sup>16</sup> American
+                gills/fortnight
+              </td>
             </tr>
             <tr>
               <td>I</td>

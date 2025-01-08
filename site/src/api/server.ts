@@ -49,12 +49,14 @@ import { authentikJwtStrategy } from "../../lib/auth";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES } from "../frontend/puzzles";
+import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
 import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
+  puzzleStateLog,
   registerTeam,
   teamRegistrationLog,
 } from "./data";
@@ -65,6 +67,7 @@ import {
   cleanupActivityLogEntryFromDB,
   cleanupTeamRegistrationLogEntryFromDB,
   cleanupPuzzleStateLogEntryFromDB,
+  getCurrentTeamName,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -142,19 +145,21 @@ async function newPassport({
     jwtPrivateKey.alg === "RS256"
       ? await exportSPKI(createPublicKey(jwtPrivateKey.privateKey as KeyObject))
       : new TextDecoder("utf8").decode(jwtPrivateKey.privateKey);
+  const teamJwtFromRequest = ExtractJwt.fromExtractors([
+    cookieExtractor,
+    ExtractJwt.fromAuthHeaderAsBearerToken(),
+  ]);
   passport.use(
     "teamJwt",
     new JwtStrategy(
       {
-        jwtFromRequest: ExtractJwt.fromExtractors([
-          cookieExtractor,
-          ExtractJwt.fromAuthHeaderAsBearerToken(),
-        ]),
+        jwtFromRequest: teamJwtFromRequest,
         secretOrKey: jwtPublicKey,
         //issuer: 'mitmh2025.com',
         //audience: 'mitmh2025.com',
+        passReqToCallback: true,
       },
-      function (jwtPayload: HuntJWTPayload, done) {
+      function (req: Request, jwtPayload: HuntJWTPayload, done) {
         if (!jwtPayload.team_id) {
           console.warn(
             "JWT valid but missing team_id; treating as unauthorized",
@@ -171,9 +176,11 @@ async function newPassport({
           done(null, false);
           return;
         }
+        const teamJwt = teamJwtFromRequest(req) ?? undefined;
         done(null, jwtPayload.team_id, {
           sess_id: jwtPayload.sess_id,
           adminUser: jwtPayload.adminUser,
+          teamJwt,
         });
       },
     ),
@@ -262,7 +269,7 @@ async function newPassport({
   };
 }
 
-function canonicalizeInput(input: string) {
+export function canonicalizeInput(input: string) {
   return input
     .normalize("NFD")
     .replaceAll(/[^\p{L}\p{N}]/gu, "")
@@ -312,6 +319,7 @@ export async function getRouter({
   jwksUri,
   frontendApiSecret,
   dataApiSecret,
+  mediaBaseUrl,
   knex,
   hunt,
   redisClient,
@@ -321,6 +329,7 @@ export async function getRouter({
   jwksUri?: string;
   frontendApiSecret: string;
   dataApiSecret: string;
+  mediaBaseUrl: string;
   knex: Knex;
   hunt: Hunt;
   redisClient?: RedisClient;
@@ -363,7 +372,7 @@ export async function getRouter({
     );
     return team_state;
   };
-  const getTeamState = async (team_id: number) => {
+  const getTeamState = async (req: Request, team_id: number) => {
     const team_registration_log = await teamRegistrationLog.getCachedLog(
       knex,
       redisClient,
@@ -380,12 +389,18 @@ export async function getRouter({
       };
     }
     const team_state = await getTeamStateIntermediate(team_id);
+
+    const teamJwt = req.authInfo?.teamJwt;
+    const whepUrl =
+      process.env.OVERRIDE_WHEP_URL ??
+      `${mediaBaseUrl}/teams/${team_id}/radio/whep${teamJwt ? `?jwt=${teamJwt}` : ""}`;
     return {
       status: 200 as const,
       body: {
         teamId: team_id,
         info,
         state: formatTeamHuntState(hunt, team_state),
+        whepUrl,
       },
     };
   };
@@ -766,7 +781,7 @@ export async function getRouter({
         middleware: [authMiddleware],
         handler: async ({ req }) => {
           const team_id = req.user as number;
-          return await getTeamState(team_id);
+          return await getTeamState(req, team_id);
         },
       },
       getPuzzleState: {
@@ -993,10 +1008,45 @@ export async function getRouter({
             team_id,
             redisClient,
             knex,
-            async function (_, mutator) {
+            async function (trx, mutator) {
               // Verify puzzle is currently unlockable.
               const data = await mutator.recalculateTeamState(hunt, team_id);
               const unlock_cost = slot.unlock_cost;
+
+              // Special case for blank-rose. One of nine gates must be unlocked
+              // for a team upon its unlock, in a round-robin pattern.
+              if (slug === "📑🍝") {
+                const gates = [
+                  "mdg03",
+                  "mdg04",
+                  "mdg05",
+                  "mdg06",
+                  "mdg07",
+                  "mdg08",
+                  "mdg09",
+                  "mdg10",
+                  "mdg11",
+                ];
+                // How many of these gates have been unlocked?
+                const gateUnlockResult = (await trx("activity_log")
+                  .count("id", { as: "gateCount" })
+                  .where("type", "=", "gate_completed")
+                  .whereIn("slug", gates)
+                  .first()) ?? { gateCount: 0 };
+                // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                const gateCount =
+                  typeof gateUnlockResult.gateCount === "string"
+                    ? parseInt(gateUnlockResult.gateCount, 10)
+                    : gateUnlockResult.gateCount;
+                // Open the gates in order as teams unlock this puzzle, defaulting
+                // to the first gate for the first team to unlock the puzzle.
+                const gateSlug = gates[gateCount % gates.length] ?? "mdg03";
+                await mutator.appendLog({
+                  team_id,
+                  type: "gate_completed",
+                  slug: gateSlug,
+                });
+              }
 
               if (
                 data.puzzles_unlockable.has(slug) &&
@@ -1034,8 +1084,8 @@ export async function getRouter({
     admin: {
       getTeamState: {
         middleware: [adminAuthMiddleware],
-        handler: async ({ params: { teamId } }) => {
-          return await getTeamState(parseInt(teamId, 10));
+        handler: async ({ req, params: { teamId } }) => {
+          return await getTeamState(req, parseInt(teamId, 10));
         },
       },
       getTeamContacts: {
@@ -1267,7 +1317,7 @@ export async function getRouter({
       },
       unlockPuzzle: {
         middleware: [adminAuthMiddleware, requireAdminPermission],
-        handler: async ({ params: { slug }, body: { teamIds } }) => {
+        handler: async ({ params: { slug }, body: { teamIds }, req }) => {
           let singleTeamId: number | undefined = undefined;
           if (teamIds !== "all" && teamIds.length === 1) {
             singleTeamId = teamIds[0];
@@ -1294,6 +1344,56 @@ export async function getRouter({
                 }
               }
 
+              // Special case for blank-rose. One of the nine gates must be
+              // unlocked for a team upon unlocking this puzzle, in a round-
+              // robin fashion.
+              if (slug === "📑🍝") {
+                const gates = [
+                  "mdg03",
+                  "mdg04",
+                  "mdg05",
+                  "mdg06",
+                  "mdg07",
+                  "mdg08",
+                  "mdg09",
+                  "mdg10",
+                  "mdg11",
+                ];
+                // How many of these gates have been unlocked?
+                const gateUnlockResult = (await _trx("activity_log")
+                  .count("id", { as: "gateCount" })
+                  .where("type", "=", "gate_completed")
+                  .whereIn("slug", gates)
+                  .first()) ?? { gateCount: 0 };
+                // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                const gateCount =
+                  typeof gateUnlockResult.gateCount === "string"
+                    ? parseInt(gateUnlockResult.gateCount, 10)
+                    : gateUnlockResult.gateCount;
+                // Iterate through the gates in order.
+                let counter = gateCount;
+                const teamsAndGates: { teamId: number; slug: string }[] = [];
+                for (const teamId of teamIdsToUnlock) {
+                  // If for some reason we're bulk unlocking despite none of these gates being unlocked yet,
+                  // default to the first gate.
+                  const slugForTeam = gates[counter % gates.length] ?? "mdg03";
+                  const teamAndGate = { teamId, slug: slugForTeam };
+                  teamsAndGates.push(teamAndGate);
+                  counter++;
+                }
+                const promises = [];
+                for (const { teamId, slug } of teamsAndGates) {
+                  promises.push(
+                    mutator.appendLog({
+                      team_id: teamId,
+                      type: "gate_completed",
+                      slug,
+                    }),
+                  );
+                }
+                await Promise.all(promises);
+              }
+
               if (
                 teamIds === "all" &&
                 teamIdsToUnlock.size === mutator.allTeams.size
@@ -1303,6 +1403,9 @@ export async function getRouter({
                   await mutator.appendLog({
                     type: "puzzle_unlocked",
                     slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
                   }),
                 ];
               }
@@ -1315,6 +1418,9 @@ export async function getRouter({
                     team_id,
                     type: "puzzle_unlocked",
                     slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
                   }),
                 );
               }
@@ -1725,6 +1831,59 @@ export async function getRouter({
           });
           return {
             status: 200,
+            body,
+          };
+        },
+      },
+      speakNewKetchup: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId } }) => {
+          const team_id = parseInt(teamId, 10);
+          const { result } = await puzzleStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async (trx, mutator) => {
+              // Rate-limiting: quietly ignore a request that comes in within 5 seconds of the previous request.
+              const lastWriteTime =
+                mutator.log.length > 0
+                  ? mutator.log[mutator.log.length - 1]?.timestamp.getTime() ??
+                    0
+                  : 0;
+              const now = Date.now();
+              if (now - lastWriteTime < 5000) {
+                return [];
+              }
+
+              // We need to read the team name from the DB, not cache.
+              const teamName = await getCurrentTeamName(team_id, trx);
+              if (teamName) {
+                // Do whatever puzzle logic is involved
+                const newEntries = generateLogEntries(teamName, mutator.log);
+                for (const entry of newEntries) {
+                  await mutator.appendLog({
+                    team_id,
+                    slug: "what_do_they_call_you",
+                    data: entry,
+                  });
+                }
+              }
+
+              return mutator.log.filter(
+                (entry) =>
+                  entry.slug === "what_do_they_call_you" &&
+                  entry.team_id === team_id,
+              );
+            },
+          );
+          const body = result.map((entry) => {
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
+          });
+          return {
+            status: 200 as const,
             body,
           };
         },

@@ -81,7 +81,7 @@ export default function Gates() {
       (round.gates ?? []).forEach((gate, gateIdx) => {
         gatesById[gate.id] = {
           id: gate.id,
-          displayName: gate.title ? `${gate.title} (${gate.id})` : gate.id,
+          displayName: `${gate.title ?? gate.internal_description ?? "Untitled Gate"} (${gate.id})`,
           round: round.title,
           order: roundIdx * 1000 + gateIdx,
           satisfied: 0,

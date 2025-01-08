@@ -34,10 +34,10 @@ export function checkGuessByUuid({
   if (uuid in ALL_PUZZLES_BY_UUID) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- ids are hard-coded and therefore stable
     const puzzle = ALL_PUZZLES_BY_UUID[uuid]!;
-    const cleanGuess = guess.replaceAll(CLEANSTRING_REGEX, "").toUpperCase();
+    const cleanGuess = guess.toUpperCase().replaceAll(CLEANSTRING_REGEX, "");
     const cleanSolution = puzzle.solution
-      .replace(CLEANSTRING_REGEX, "")
-      .toUpperCase();
+      .toUpperCase()
+      .replace(CLEANSTRING_REGEX, "");
     if (cleanGuess === cleanSolution) {
       return puzzle.solutionUuid;
     }

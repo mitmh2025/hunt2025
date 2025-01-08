@@ -26,7 +26,8 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 10.0,
-      description: "Solvers have not yet figured out the roulette connection",
+      description:
+        "Solvers have not yet figured out the significance of the circle and spokes",
       nudge:
         "Consider several things in the puzzle: the shape of the image, the number of spokes in the image, the fact that one of the spokes is highlighted in green, the symbols in the green column, and the word “chance” in the flavortext.  What concept is associated with all of those things?",
     },
