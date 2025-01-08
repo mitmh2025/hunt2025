@@ -762,20 +762,29 @@ const EQUATIONS = [
   ["🌊 = 0️⃣", "🔴↔️🟡", ""],
 ];
 
+const MarginImage = styled(LinkedImage)`
+  display: block;
+  margin-bottom: 3em;
+`;
+
 const SizedImage = styled(LinkedImage)`
   display: block;
-  width: 100%;
-  img {
-    display: block;
-    margin: auto;
-    width: 361px;
-  }
+  margin: 1em auto;
+  width: 150px;
+`;
+
+const Red = styled.td`
+  background-color: #f4cccc;
+`;
+
+const Blue = styled.td`
+  background-color: #c9daf8;
 `;
 
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <LinkedImage
+      <MarginImage
         src={grid}
         alt="A large grid filled with ✅, ❌, 🌊 and ⏺️ emoji. Colored circles, some annotated with letters, line the edges of the grid. There are some emoji equations below the grid"
       />
@@ -792,12 +801,20 @@ const Puzzle = (): JSX.Element => {
         </tr>
         {CHART_MAIN_GRID.slice(1).map((row, i) => (
           <tr key={i}>
-            {row.map((char, j) => (
-              <td key={j}>{char}</td>
-            ))}
+            {row.map((char, j) => {
+              if (j > 0 && i % 2 === 1) {
+                return <Red key={j}>{char}</Red>;
+              } else if (j > 0 && j % 2 === 0) {
+                return <Blue key={j}>{char}</Blue>;
+              } else {
+                return <td key={j}>{char}</td>;
+              }
+            })}
           </tr>
         ))}
       </table>
+      <br className={COPY_ONLY_CLASS} />
+      <br className={COPY_ONLY_CLASS} />
       <table className={COPY_ONLY_CLASS}>
         {EQUATIONS.map((row, i) => (
           <tr key={i}>
