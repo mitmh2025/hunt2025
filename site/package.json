@@ -58,6 +58,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
     "knex": "^3.1.0",
+    "kubernetes-fluent-client": "^3.3.7",
     "libphonenumber-js": "^1.11.12",
     "modern-async": "^2.0.4",
     "morgan": "^1.10.0",

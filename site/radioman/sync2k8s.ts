@@ -1,4 +1,5 @@
 import * as k8s from "@kubernetes/client-node";
+import { initClient, initContract } from "@ts-rest/core";
 import { newFrontendClient } from "hunt2025/lib/api/frontend_client";
 import {
   TeamInfoIntermediate,
@@ -11,7 +12,11 @@ import {
 } from "hunt2025/src/api/redis";
 import { newLogTailer } from "hunt2025/src/frontend/server/dataset_tailer";
 import HUNT from "hunt2025/src/huntdata";
+import { K8s, kind } from "kubernetes-fluent-client";
+import { WatchPhase } from "kubernetes-fluent-client/dist/fluent/types";
 import { Queue } from "modern-async";
+import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
+import { z } from "zod";
 
 let apiUrl = process.env.API_BASE_URL;
 if (process.env.NODE_ENV === "development" && !apiUrl) {
@@ -42,6 +47,31 @@ if (!liquidsoapImage) {
 }
 
 const storageClassName = process.env.PVC_STORAGE_CLASS_NAME;
+
+const RadioTeamStateSchema = z.object({
+  team_id: z.number(),
+  epoch: z.number(),
+  quixotic_shoe_enabled: z.boolean(),
+  icy_box_enabled: z.boolean(),
+  interaction: z.boolean(),
+});
+
+type RadioTeamState = z.infer<typeof RadioTeamStateSchema>;
+
+const c = initContract();
+const radioContract = c.router({
+  setTeamState: {
+    method: "POST",
+    path: "/setTeamState",
+    body: RadioTeamStateSchema,
+    responses: {
+      200: c.otherResponse({ contentType: "text/plain", body: z.string() }),
+      400: c.otherResponse({ contentType: "text/plain", body: z.string() }),
+      412: c.otherResponse({ contentType: "text/plain", body: z.string() }),
+    },
+    strictStatusCodes: true,
+  },
+});
 
 const namespace = "radio";
 
@@ -145,7 +175,7 @@ async function main({
       k8s.PatchStrategy.ServerSideApply,
     );
 
-  const processTeam = async (teamId: number) => {
+  const processTeamInfo = async (teamId: number) => {
     const team = teamInfos.get(teamId);
     if (!team) {
       console.warn(`Team ${teamId} doesn't have registration info yet`);
@@ -265,6 +295,10 @@ async function main({
                 image: liquidsoapImage,
                 env: [
                   {
+                    name: "TEAM_ID",
+                    value: `${teamId}`,
+                  },
+                  {
                     name: "STATE_DIRECTORY",
                     value: "/state",
                   },
@@ -331,7 +365,7 @@ async function main({
     console.log("After batch teams", teamInfos);
     for (const teamId of modified) {
       syncQueue
-        .exec(() => processTeam(teamId))
+        .exec(() => processTeamInfo(teamId))
         .catch((err: unknown) => {
           console.warn(err);
         });
@@ -339,6 +373,125 @@ async function main({
   });
 
   await teamRegistrationLogTailer.readyPromise();
+
+  const radioTeamStates = new Map<number, RadioTeamState>();
+  const radioTeamStateSubscribers = new Map<number, (() => void)[]>();
+
+  const processTeamState = (teamId: number) => {
+    // We received activity log update(s) for the team.
+    const teamState = teamStates.get(teamId);
+    if (!teamState) {
+      console.warn(
+        `processTeamState called for ${teamId} which doesn't have state`,
+      );
+      return;
+    }
+    const radioTeamState: RadioTeamState = {
+      team_id: teamId,
+      epoch: teamState.epoch,
+      quixotic_shoe_enabled: teamState.gates_satisfied.has("ptg03"),
+      icy_box_enabled: teamState.gates_satisfied.has("ptg04"),
+      interaction: false, // TODO
+    };
+    radioTeamStates.set(teamId, radioTeamState);
+    const subs = radioTeamStateSubscribers.get(teamId) ?? [];
+    radioTeamStateSubscribers.delete(teamId);
+    for (const s of subs) {
+      s();
+    }
+  };
+
+  // uid to AbortController
+  const podSyncers = new Map<string, AbortController>();
+
+  const launchPodSyncer = (teamId: number, podIP: string) => {
+    const controller = new AbortController();
+    const radioClient = initClient(radioContract, {
+      baseUrl: `http://${podIP}`,
+      throwOnUnknownStatus: true,
+    });
+
+    void (async () => {
+      for (;;) {
+        const updated = new Promise<void>((resolve) => {
+          radioTeamStateSubscribers.set(teamId, [
+            ...(radioTeamStateSubscribers.get(teamId) ?? []),
+            resolve,
+          ]);
+        });
+        await pRetry(
+          async () => {
+            const rts = radioTeamStates.get(teamId);
+            if (!rts) {
+              throw new Error("RadioTeamState not ready yet?!");
+            }
+            await radioClient.setTeamState({ body: rts });
+          },
+          {
+            onFailedAttempt: (err) => {
+              console.warn(
+                "failed to propagate team",
+                teamId,
+                "state to",
+                podIP,
+                err,
+              );
+            },
+            forever: true,
+            minTimeout: 100,
+            maxTimeout: 1000,
+            signal: controller.signal,
+          },
+        );
+        let abortCallback: () => void;
+        const aborted = new Promise<void>((_, reject) => {
+          if (controller.signal.aborted) {
+            reject(controller.signal.reason as Error);
+          }
+          abortCallback = () => {
+            reject(controller.signal.reason as Error);
+          };
+          controller.signal.addEventListener("abort", abortCallback);
+        });
+        await Promise.race([updated, aborted]).finally(() => {
+          controller.signal.removeEventListener("abort", abortCallback);
+        });
+      }
+    })();
+
+    return controller;
+  };
+
+  const watcher = K8s(kind.Pod)
+    .WithLabel("app", "radio")
+    .Watch((pod, phase) => {
+      const uid = pod.metadata?.uid;
+      const name = pod.metadata?.name;
+      const teamId = parseInt(pod.metadata?.labels?.teamId ?? "", 10);
+      if (!uid || !name || !teamId) {
+        return;
+      }
+      const podPhase = pod.status?.phase;
+      const podIP = pod.status?.podIP;
+      if (
+        (phase === WatchPhase.Added || phase === WatchPhase.Modified) &&
+        podPhase === "Running" &&
+        podIP
+      ) {
+        // New or modified pod, make sure we're trying to sync it.
+        if (!podSyncers.has(uid)) {
+          podSyncers.set(uid, launchPodSyncer(teamId, podIP));
+        }
+      } else {
+        // Pod is not ready yet or anymore; stop trying to sync it.
+        const syncer = podSyncers.get(uid);
+        if (syncer) {
+          syncer.abort();
+          podSyncers.delete(uid);
+        }
+      }
+    });
+  void watcher.start();
 
   activityLogTailer.watchLog((items) => {
     const modified = new Set<number>();
@@ -364,7 +517,9 @@ async function main({
     console.log("After batch teams", teamStates);
     for (const teamId of modified) {
       syncQueue
-        .exec(() => processTeam(teamId))
+        .exec(() => {
+          processTeamState(teamId);
+        })
         .catch((err: unknown) => {
           console.warn(err);
         });
