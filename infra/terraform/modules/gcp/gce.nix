@@ -51,6 +51,9 @@ in {
           objects.serviceAccount = mkOption {
             type = types.anything;
           };
+          resource.google_compute_address = mkOption {
+            type = types.anything;
+          };
           resource.google_compute_disk = mkOption {
             type = types.anything;
           };
@@ -79,6 +82,9 @@ in {
             # Don't destroy and recreate when the image changes.
             lifecycle.ignore_changes = ["image"];
           };
+          resource.google_compute_address = {
+            inherit (config) name;
+          };
           resource.google_compute_instance = {
             inherit (config) name;
             hostname = lib.mkIf (config.hostname != null) config.hostname;
@@ -93,6 +99,7 @@ in {
             network_interface = {
               network = "default";
               access_config = [{ # Request a public IP
+                nat_ip = lib.tfRef "google_compute_address.${config.name}.address";
                 # https://cloud.google.com/compute/docs/instances/create-ptr-record
                 public_ptr_domain_name = lib.mkIf (config.hostname != null) "${config.hostname}.";
               }];
@@ -150,6 +157,7 @@ in {
       "${key}-vm"
       value.objects.serviceAccount
     ) cfg;
+    resource.google_compute_address = lib.mapAttrs (_: value: value.resource.google_compute_address) cfg;
     resource.google_compute_disk = lib.mapAttrs (_: value: value.resource.google_compute_disk) cfg;
     resource.google_compute_instance = lib.mapAttrs (_: value: value.resource.google_compute_instance) cfg;
     resource.google_compute_firewall = lib.mapAttrs (_: value: value.resource.google_compute_firewall) cfg;
