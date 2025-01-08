@@ -77,7 +77,9 @@ export default function RegistrationHome({
           <h2>Latest Updates</h2>
           <p>
             <strong>2025.01.08 - </strong>The registration deadline for all
-            teams is Wednesday morning on January 15th.
+            teams is Wednesday morning on January 15th. We’ve also added some
+            additional information below regarding the suggested attire in
+            Papa’s invitation.
           </p>
           <p>
             <strong>2025.01.07 - </strong>We are pleased to share that Robert
