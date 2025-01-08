@@ -218,7 +218,7 @@ const Solution = (): JSX.Element => {
         After some more searching about the “Agrippa encoding,” we find that a
         number of people participated in the Cracking Agrippa project to reverse
         engineer the encryption scheme. Any of them can work for the next step,
-        but of particular interest (as it is the easiest to use) is the
+        but of particular interest (as it is the easiest to use) is the{" "}
         <a
           href="https://agrippa.english.ucsb.edu/images/cracked-code/submissions/files/agrippa_in_action.html"
           target="_blank"
@@ -359,7 +359,6 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         <strong>cascade</strong>
-        <br />
         <br />
         earth’s star shines a gleaming trail
         <br />
@@ -505,7 +504,7 @@ const Solution = (): JSX.Element => {
         instructions, we take a look at the rhyme scheme and realize that not
         only does this megapoem have enough rhymes to encode A–Z, but the final
         lines, which are from the only poems that are not about red herrings,
-        spell out <PuzzleAnswer>HELLHOLE</PuzzleAnswer>, the answer to this
+        spell out <PuzzleAnswer>HELL HOLE</PuzzleAnswer>, the answer to this
         puzzle.
       </p>
       <StyledTable>
