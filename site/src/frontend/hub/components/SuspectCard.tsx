@@ -1,7 +1,85 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { styled } from "styled-components";
+import billie from "../../assets/billie.png";
 import { defaultShadow, getRelativeSizeCss } from "../constants";
 import { type HubSuspect } from "../types";
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  // Dim other things currently visible, maybe animate this later?
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BillieSpeechContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+const SpeechBubble = styled.div`
+  width: 30%;
+  padding: ${getRelativeSizeCss(40)};
+  margin-right: ${getRelativeSizeCss(100)};
+  margin-bottom: ${getRelativeSizeCss(200)};
+  position: relative;
+  border: ${getRelativeSizeCss(6)} solid #7f7f7f;
+  border-radius: ${getRelativeSizeCss(86)};
+  background: rgba(255, 255, 255, 0.86);
+  outline: ${getRelativeSizeCss(8)} solid rgba(255, 255, 255, 0.86);
+  box-shadow: ${getRelativeSizeCss(40)} -${getRelativeSizeCss(40)} ${getRelativeSizeCss(
+      30,
+    )} rgb(20 34 35 / 20%);
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  color: black;
+  font-family: "EB Garamond", serif;
+  white-space: pre-wrap;
+  font-size: ${getRelativeSizeCss(44)};
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.86);
+    width: 10%;
+    height: ${getRelativeSizeCss(100)};
+    left: calc(100% + ${getRelativeSizeCss(14)});
+
+    bottom: ${getRelativeSizeCss(90)};
+    clip-path: polygon(0 0, 100% 100%, 0 75%);
+  }
+`;
+
+const Billie = styled.img`
+  width: 15%;
+`;
+
+const BillieSpeechOverlay = ({
+  children,
+  onDismiss,
+}: {
+  children: React.ReactNode;
+  onDismiss: () => void;
+}) => {
+  return (
+    <ModalBackdrop onClick={onDismiss}>
+      <BillieSpeechContainer>
+        <SpeechBubble>{children}</SpeechBubble>
+        <Billie src={billie} alt="Billie" />
+      </BillieSpeechContainer>
+    </ModalBackdrop>
+  );
+};
 
 type SuspectProps = {
   name: string;
@@ -14,6 +92,7 @@ type SuspectProps = {
   statusUpdateRotation: number;
   statusUpdateYAdjust?: number;
   status: HubSuspect["status"];
+  children: React.ReactNode;
 };
 
 const Card = styled.div<{ $statusUpdateYAdjust?: number }>`
@@ -26,6 +105,7 @@ const Card = styled.div<{ $statusUpdateYAdjust?: number }>`
   flex-direction: column;
   align-items: stretch;
   box-shadow: ${defaultShadow};
+  cursor: pointer;
 
   img {
     margin: ${getRelativeSizeCss(20)} ${getRelativeSizeCss(20)} 0
@@ -99,56 +179,73 @@ const SuspectCard = ({
   statusUpdateYAdjust,
   photoUrl,
   photoAlt,
+  children,
 }: SuspectProps) => {
+  const [modalShown, setModalShown] = useState(false);
+  const showModal = useCallback(() => {
+    setModalShown(true);
+  }, []);
+  const hideModal = useCallback(() => {
+    setModalShown(false);
+  }, []);
+
   return (
-    <Card
-      style={{
-        top: getRelativeSizeCss(y),
-        left: getRelativeSizeCss(x),
-        transform: `rotate(${rotation ?? 0}deg)`,
-      }}
-      $statusUpdateYAdjust={statusUpdateYAdjust}
-    >
-      <img src={photoUrl} alt={photoAlt} />
-      <div className="label">
-        <h4>{name}</h4>
-        <h5>{title}</h5>
-      </div>
-      <span
-        className={`status main-status ${status.length > 1 ? "crossed-out" : ""}`}
-        style={{ color: status[0].color ?? "var(--black)" }}
+    <>
+      <Card
+        style={{
+          top: getRelativeSizeCss(y),
+          left: getRelativeSizeCss(x),
+          transform: `rotate(${rotation ?? 0}deg)`,
+        }}
+        onClick={showModal}
+        $statusUpdateYAdjust={statusUpdateYAdjust}
       >
-        {"\u00A0"}
-        {status[0].text}
-        {"\u00A0"}
-      </span>
-      {status[1] && (
+        <img src={photoUrl} alt={photoAlt} />
+        <div className="label">
+          <h4>{name}</h4>
+          <h5>{title}</h5>
+        </div>
         <span
-          className={`status second-status ${status.length > 2 ? "crossed-out" : ""}`}
-          style={{
-            color: status[1].color ?? "var(--black)",
-            transform: `rotate(${statusUpdateRotation}deg)`,
-          }}
+          className={`status main-status ${status.length > 1 ? "crossed-out" : ""}`}
+          style={{ color: status[0].color ?? "var(--black)" }}
         >
           {"\u00A0"}
-          {status[1].text}
+          {status[0].text}
           {"\u00A0"}
         </span>
+        {status[1] && (
+          <span
+            className={`status second-status ${status.length > 2 ? "crossed-out" : ""}`}
+            style={{
+              color: status[1].color ?? "var(--black)",
+              transform: `rotate(${statusUpdateRotation}deg)`,
+            }}
+          >
+            {"\u00A0"}
+            {status[1].text}
+            {"\u00A0"}
+          </span>
+        )}
+        {status[2] && (
+          <span
+            className={`status third-status`}
+            style={{
+              color: status[2].color ?? "var(--black)",
+              transform: `rotate(${statusUpdateRotation}deg)`,
+            }}
+          >
+            {"\u00A0"}
+            {status[2].text}
+            {"\u00A0"}
+          </span>
+        )}
+      </Card>
+      {modalShown && (
+        <BillieSpeechOverlay onDismiss={hideModal}>
+          {children}
+        </BillieSpeechOverlay>
       )}
-      {status[2] && (
-        <span
-          className={`status third-status`}
-          style={{
-            color: status[2].color ?? "var(--black)",
-            transform: `rotate(${statusUpdateRotation}deg)`,
-          }}
-        >
-          {"\u00A0"}
-          {status[2].text}
-          {"\u00A0"}
-        </span>
-      )}
-    </Card>
+    </>
   );
 };
 
