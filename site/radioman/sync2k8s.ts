@@ -411,6 +411,15 @@ async function main({
       throwOnUnknownStatus: true,
     });
 
+    const aborted = new Promise<void>((_, reject) => {
+      if (controller.signal.aborted) {
+        reject(controller.signal.reason as Error);
+      }
+      controller.signal.addEventListener("abort", () => {
+        reject(controller.signal.reason as Error);
+      });
+    });
+
     void (async () => {
       for (;;) {
         const updated = new Promise<void>((resolve) => {
@@ -425,7 +434,13 @@ async function main({
             if (!rts) {
               throw new Error("RadioTeamState not ready yet?!");
             }
-            await radioClient.setTeamState({ body: rts });
+            const resp = await radioClient.setTeamState({ body: rts });
+            if (resp.status === 400) {
+              console.error("found wrong team at", podIP);
+              controller.abort();
+              return;
+            }
+            // Whether it succeeded (200) or was stale (412), we have to wait for the next update.
           },
           {
             onFailedAttempt: (err) => {
@@ -443,19 +458,7 @@ async function main({
             signal: controller.signal,
           },
         );
-        let abortCallback: () => void;
-        const aborted = new Promise<void>((_, reject) => {
-          if (controller.signal.aborted) {
-            reject(controller.signal.reason as Error);
-          }
-          abortCallback = () => {
-            reject(controller.signal.reason as Error);
-          };
-          controller.signal.addEventListener("abort", abortCallback);
-        });
-        await Promise.race([updated, aborted]).finally(() => {
-          controller.signal.removeEventListener("abort", abortCallback);
-        });
+        await Promise.race([updated, aborted]);
       }
     })();
 
