@@ -1,0 +1,271 @@
+import React, { type ReactNode, useCallback, useState } from "react";
+import { createRoot } from "react-dom/client";
+import { styled } from "styled-components";
+
+const DESTRUCTION_PAUSE = 2000; // ms
+
+const TRANSMISSION: string[] = [
+  "There once was a young man named Will",
+  "Release a poem into the feral throng;",
+  "Undulating dust",
+  "Shots spiraling from the gun, dividing",
+  "Say that it can be only read one time.",
+  "He looked at some photos until",
+  "They say they hear but it won’t last for long;",
+  "As he looks into the old album,",
+  "Each page contains old faces that",
+  "The silence with noise. Pictures collected",
+  "Defy, record, upload - a minor crime.",
+  "Except perhaps this was the plan throughout?",
+  "Here and there, then and now, and all hiding",
+  "Nudge the mind to recall but",
+  "Emissions of Kodaks",
+  "Suggest the poem’s short life makes it unique,",
+  "Each time from one another, connected",
+  "Sun shows the mechanism",
+  "And yet distinct. That which is neglected,",
+  "Then open up the door for what pans out:",
+  "Gone by the time the recollection fades,",
+  "Found him having throwbacks;",
+  "Renouncing rules, soon some will stage a leak.",
+  "Unleashed, the poem will now forever be",
+  "Everywhere inside",
+  "Rarely survives across many decades",
+  "Crinkles mar their visage.",
+  "Intensely his mind was refilled.",
+  "Captured online for all who wish to read.",
+  "Oddly, his response:",
+  "Destruction, his",
+  "In the same way that a recording can",
+  "Ire at time",
+  "Though are this clone and that which was set free",
+  "Persist through time. But if that record trades",
+  "In fact the same, or two distinctive breeds?",
+  "Never",
+  "Origin’ly a live event alone,",
+  "Proof for substance, then I am not a fan.",
+  "Gone",
+  "Now readable even when on your own.",
+];
+
+const DESTRUCTIONS: [[string], [string]][] = [
+  [
+    [
+      "E83DD50A26350A32F5351E0CD6D05D174635A08A9EC6A45EF06551AE75D521758AB2E2A60133D31EF05DBDFD764794767E39F4E10451A775D58209A9FAD579C839F4E9A7B0C70E8D0D33579475C9F06551665DD58209A9FAD579C839F44545E3C70A3B18A313B8972523D884554F55174635A08A9E",
+    ],
+    [
+      "GCAACGCATATCGAGTTCTGTGCAAACGGTGAAACCATTCTGTTGGCGACGGAAGCCAGTGAGTAATGGATCACTCACAGCACAGAGGCACTGATTAATGGGTCAACAGAGAGGTTAATTAATGGTAGCATTCTGGTAGAAAGATAAACAGCAAAAGAGGCGGGTGAAATGAGCCACATAATGATGTACGACAGAGCTATTAACCCAATTCCGGAGTAATCCGCTTGTAAGTGGATTACGCACCGGATCAATGGCACACACGAGAGGGAGATTAATTAA",
+    ],
+  ],
+  [
+    [
+      "C6A45EF0019DE1905D174635A08A9EC6A45E9B2C51E10073BDFD764794767E39F4232114983CD521758AB2E2A601370CDB6914AE75D57E5CC999D67223CE359B2C5163D15DBDFD764794767E39F4160814A775D58209A9FAD579C839F4F400148D15D50A26350A32F5351E0CDB6914665DD50AA022",
+    ],
+    [
+      "GAGGCGCGCACGCATTCCAGTACTGCTCGTTCGCATATTAATGAGTCTGCAGGGCTTGAAGCAATGATTAATGGAACAAGGGCGATATTATAAACCCATGAGAGCGAGGCCTCTACGGAAGAAATGTGGATTACCCATCTAGAGGCCCCAATCAATGGGTCTTGGATAATGATGATCAACGGCCTGATTTTCGAGTAAGAGGCATGTCACTGGGCGGTAGAGTGTCGAGAAAGTACCTCTGCTAACGACTGCGCCCTCTTAAGTATTACTTCAACATGGATCAATTAATAATCTGCTCGAGACATTAACGAGAGCATGGCTAACTATGCTACAGCAACAATCATGGAGTAATCCTGGATTATGATAAACAGCTATAATTGCGCAAACGACAGTCCAGCACGGAAATTAGAGTCCATTCTGGTAGAACGGTAAGAAGCAAGAACCCATTCTTCTACGGCACGGTCGCATATTAATGAGTCAGCTGGACTCGAGGCGATGATTAACGGCACTAGAGCAATACTTTAATAAGCATCGATCTTTTGGATCACACATTGGATCAACGGTAGTTTCTTGTACATAAACGGATTTATAAGCCATGGTTTAATAGATGAATAAATAAATACTCATGAAGCAATTCGTACACACGAGAATATAAATACGCATGAGTGGGCCACGGAGCGTTAAACACATGAGAGTGAGGCGTCTACAGAGGAAATGTGGATTACGCACTTGGAAGCGCCTATTAACGGATCTTGGATAATGATGATTAACGGTCTAATTTTCGAATAATAATGGATAAACGATGCCAACGATAGGGCTATCAATCCTGAGCTCACTACGCATGAGTCCGAAGCGTAATGGGAAGCGACGCACGAGCGTTCTATGGAACTAACGGCTAATGACAGTCACGCCAGGAAGTGCGCGAATTCGGAAAATAGTGAATAAGAAGCGTGCCATTGGGCGGTGGAGTGTAGAGAATCAACTAGCGCGAATGATTGCGCTCTACTCTCAATAACATCCACATGGATTAACTAA",
+    ],
+  ],
+  [
+    [
+      "4794767E39F43D3703E1965F9B2A39937AB42BA3FF21F1EF55DFD5C708932421A9E90F889B3E03A9B15DF0735F448CFA9F8AC023A726E83DD57E5CC999D67223CE35F0055124D95D9B2A39937AB42BA3FF21F184D6D673C708932421A9E90F88F00153D6D0EFC708932421A9E90F88110D517C4173200000",
+    ],
+    [
+      "ATATTTACTCACGAGCGTGAGATTTCAGCTTGCGCTAGGATAAACGGGCACGAGGCACGTACGTAACCATTAGAGGCTTCTGAGTTCATCAATGACATGGAGGCCTTAGCCAGGGGCGAAATCTCGCACCATGAACGTCGCATAAACGGCTGTGCTCGTACCTAA",
+    ],
+  ],
+  [
+    [
+      "0A26350A32F5358AB7D6D084C708932421A9E90F88F005514E2973F0735F448CFA9F8AC0168E26EE55D58209A9FAD579C839F4E11603A92755BDFD764794767E39F4E9A3301C5CD521758AB2E2A601A3B7D6522CC70E8D0D33579475C9F0019D26B95DF0735F448CFA9F8AC030AA30AE75D50A2000",
+    ],
+    [
+      "CGAGCTCGTGAACTTTACTGCGCGAACGCATGCGCTCGTGAAGAACGTCTGTACTCAATCAACGATATATCACCATTAGAAGCATCGGAATAAGCACCTCCTGAGGCAAGCGAGATGTATCACGAAGCGCGAACGATTGGTAGAATCAATTAAATTAACTTGATCGTCATCAACGGCGCGACGCACATTGAATTCTCAGCTCGCTGCCACGAAACCTATCCAGAATAAATTTGGATACTATTGCCCAGGGAGTCCGAGAACACGGCCTCGATTAATGGTCTGGAGGGGCGTATTCCCGAATAA",
+    ],
+  ],
+  [
+    [
+      "0D33579475C99B3E03CFB15D6ED35494E34CEEDC76F07703CF2173BDFD764794767E39F445C3308D15D57E5CC999D67223CE35F07703B348739B2A39937AB42BA3FF21F38CD6C4B5C70842C8AFA9936E3D23CAB7D6D6D5C70842C8AFA9936E3D235E0C1E60C1C708932421A9E90F88F0132C1E760C",
+    ],
+    [
+      "CGGGAAGACGCATCGTGCCTGGCGTACGCCAACGATTGTGCTAACGACTACGCACCGCCACTTGAGTAATTCATACGAGAATACGAGAACGGCATTAATGAGTCAACAAGAGAGGAAACGTTAATAGGCCATACAAGCATCGGTCACACACTGTACTAATCGCATATCAATATAAACGGGGCGACGACCCACGAGCCGGCTGTTGAGATGGAGAACACTTCTCTTATAGGTCACACGCTATACTAAATCAACACGCACGAAAGGGCGATTAATGCGAATGATTGGGAGACGTGGATCTTATTAGATGCACCACCCCTAGAGTAATAATCATGCGCGAGATTGGAGACTTGTGCAACTTGTCATGCAAACGACGGTCGAGCAAGCCCAGCGAATGACGGGAGAGCGCCGCCGTTGGAATAAGGAGCCCGAAACGAGACGACGATAAACACTACACATGAAAACTCGCACATCTTCACGATCAATGGAGGGCGAGAAGAAAACGAGCGTTAAAGAGCTATCAACTATTGGATAAACGACATTTCCGGGGAGACGACGATCAATGGGATGGAGGCGAATGAGAGGTAAAGTGAGCCAATTGCCCCTGAAAGGGTGGCGGATGAAAGCACCCATGAACTCGCGAACGATTCTTGCGCTCCCGAGTAATGCGCACGAATGATCAACGAGCCAATCAGTTGCATTAACGAGATTAACGCGTGCGCAAACTCTCATGCCCCGGAGTAAATAACGTCCGCGTCAATAGGCCACACTTGGATTCTGCTCACCCATCGCATATTGCTCATGGAAAAAGAAGAGAACGAGCGCTAA",
+    ],
+  ],
+  [
+    [
+      "C70842C8AFA9936E3D23D8EF1E72D3C7087DED4FDE0AA45E98C2C0D95A74AE75D50C8D5EB4A3A60A30F4303A74665CD58209A9FAD579C839F4161A74A775D521758AB2E2A60131B61EF084C71CFA0A348AA835C9F335C99B44D9F35A74665DD58209A9FAD579C839F4F35A74EE55D5479672ED4649",
+    ],
+    [
+      "AGTGCGTTGACGTATTTCATAAGTCATTAAATACCCAGAGAATTTGAGAGAGCTCACGAACGAAGAATTAACGGACGGGAAGACTAAAAGATACCTCCAGAGCGAGAGGACGATAGGATAGAGGATGCTACGGCGTCCACGTATGACATATCCCACTAATAAAGTATTCTAGTAGAGAGATCGACTCGGATCCCAGAGTAAGGCATTCTCTGTCACAGGATCAGCACGTCGCGCGAAGATGAATACGAGGCCACCTTGGCCAACACTATATGTTAATGGGAGTCTACCGCCTTTAGAATTTGCGCCAACCCCTATGGTATGTATACGTACCCAGAGTAATAAATCAATGCATGTGCCAATTAAATAAACGCCCCAGCGTGTAAAGAGACGGCGTCAGCCTCAAATGCTTGCAAGTAAGCTAATTACTGGGCATACATTGCCATGGCGTTCGCCAATTAA",
+    ],
+  ],
+  [
+    [
+      "C6B0E1350E86F07703E26E559B2A39937AB42BA3FF21F7731EF6EDC7087DED4FDE0AA45E98C2C0168A18E83DD563EE352010F401A1BF7EAD7D9BC2C0F3CA18983CD563EE352010F401A1BF7EAD7D9BC2C045C318AE75D563EE352010F401A1BF7EAD7D9BC2C030AA18665CD563EE352010F401A1BF7E2D81",
+    ],
+    [
+      "ACGATAACGATACTGTTAGCTACGGAAATGTATCCTGCACTAGCAACGGAGTAAGCGACGATCAACGGTCGTGAAGCGTCGTACTTCATAAGTCACTTTATTCTACTGAGCTAAAACATCTGTGAGAGGACGCATGCAAACCCAGCGACCGAGTAATCGGCTTTGACCTATTTTGCGACTACTTATGCCAACGACGACGAGAATAGTGAGTAAATATTCATCCTCGCTTGTAAAATTACGATATGGATACTTACGTAA",
+    ],
+  ],
+  [
+    [
+      "23586D9B3E03F3087317C2844584C37EDEACF0055182B05D17C2844584C37EDEACF0770382207317C2844584C37EDEACF065512EDE5F17C2844584C37EDEAC9B3E030B35FA0AB479B4312FF00327C61CFA0AB479B4312F119D94209625C83DFA0AB479B431F41A8F35F0735F40AB4CF073577CEFA9350AD3",
+    ],
+    [
+      "TGGATTACCCATTTTATCAATGCGAACGACACTGCGATCCTATAACATATCGGGCACCTTATTAAAGAAGCCAGCGCGATACTATAAGCAAGCACACGCATAGACGAGGCTTGGCACGCACTGGAGTAAATCACTTCGTGGATTATGTCAACCCACGAAAGTGAGGCATAATAAACTCACGAAAATATAAACGCGGATATTGTAGAATAAGCTGATGAAGAGCCAGAGAGAGATCGAATTGTCGAGTAATACGAGACCTCAACCATACTGCTCGCTCTGATTGTAGAATAAATTACCGAGGTTGCGGATGAATCAATGGAGTAATAAACCCACGAGTTGATCACGACACTAGAAACGGAGGCCTCCGAGTAATTCGCTAGAATAAATACCCACGAGTCGGAAGCTTCATAAGCGGGCGCCATAAATTGGATCACTCACGAAGCGTCAGAATAAATCACTTGGAGAATCGGGGGCTTGGAATCGTTCAGGGAAGAGTAA",
+    ],
+  ],
+];
+
+const StyledButton = styled.button`
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  background-color: var(--gray-100);
+  border: 3px solid #84691a;
+  cursor: pointer;
+`;
+
+const ButtonWrapper = styled.div`
+  margin: 1em 0;
+  display: flex;
+  gap: 1em;
+`;
+
+const FlexContainer = styled.div`
+  margin-top: 1em;
+  background-color: var(--gray-100);
+  border: 3px solid #84691a;
+  padding: 1em;
+  border-radius: 1em;
+  min-height: 65em;
+  min-width: 50ch;
+  width: 62ch;
+  margin: auto;
+`;
+
+const Message = styled.span`
+  word-break: break-all;
+  font-family: "Consolas", monospace;
+`;
+
+async function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const App = (): JSX.Element => {
+  const [currentStep, setCurrentStep] = useState(-1);
+  const [showNextButton, setShowNextButton] = useState(true);
+  const [showCopyButtons, setShowCopyButtons] = useState(false);
+  const [messageChildren, setMessageChildren] = useState<ReactNode>("");
+
+  const showText = async (message: string[], interval: number) => {
+    setMessageChildren("");
+    let localMessageChildren: ReactNode = "";
+    for (const line of message) {
+      for (let j = 0; j < line.length; j++) {
+        let nextChar: ReactNode = line[j] ?? "";
+        if (j === line.length - 1) {
+          nextChar = (
+            <>
+              {nextChar}
+              <br />
+            </>
+          );
+        }
+        const newMessageChildren: ReactNode = (
+          <>
+            {localMessageChildren}
+            {nextChar}
+          </>
+        );
+        localMessageChildren = newMessageChildren;
+        setMessageChildren(newMessageChildren);
+        await sleep(interval);
+      }
+    }
+  };
+
+  const transmit = useCallback(async () => {
+    const newCurrentStep = (currentStep + 1) % DESTRUCTIONS.length;
+    setCurrentStep(newCurrentStep);
+    setShowNextButton(false);
+    setShowCopyButtons(false);
+
+    await showText(TRANSMISSION, 8);
+    await sleep(DESTRUCTION_PAUSE);
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- array is hard-coded;
+    const currentDestructions = DESTRUCTIONS[newCurrentStep]!;
+    await showText(currentDestructions[0], 18);
+    await sleep(DESTRUCTION_PAUSE);
+    await showText(currentDestructions[1], 18);
+    await sleep(200);
+
+    setShowCopyButtons(true);
+    setShowNextButton(true);
+  }, [currentStep]);
+
+  return (
+    <>
+      <p>
+        Press the button to start the transmission. It will self destruct
+        shortly afterwards.
+      </p>
+      {showNextButton && (
+        <ButtonWrapper>
+          <StyledButton
+            onClick={() => {
+              void transmit();
+            }}
+          >
+            Next
+          </StyledButton>
+        </ButtonWrapper>
+      )}
+      {showCopyButtons && (
+        <>
+          <ButtonWrapper>
+            <StyledButton
+              onClick={() => {
+                void navigator.clipboard.writeText(TRANSMISSION.join("\n"));
+              }}
+            >
+              Copy transmission
+            </StyledButton>
+            <StyledButton
+              onClick={() => {
+                const currentDestruction = DESTRUCTIONS[currentStep]?.[0] ?? [];
+                void navigator.clipboard.writeText(
+                  currentDestruction.join("\n"),
+                );
+              }}
+            >
+              Copy first self destruct stage
+            </StyledButton>
+            <StyledButton
+              onClick={() => {
+                const currentDestruction = DESTRUCTIONS[currentStep]?.[1] ?? [];
+                void navigator.clipboard.writeText(
+                  currentDestruction.join("\n"),
+                );
+              }}
+            >
+              Copy second self destruct stage
+            </StyledButton>
+          </ButtonWrapper>
+        </>
+      )}
+      <FlexContainer>
+        <Message>{messageChildren}</Message>
+      </FlexContainer>
+    </>
+  );
+};
+
+const elem = document.getElementById("a-puzzle-of-the-dead-root");
+if (elem) {
+  const root = createRoot(elem);
+  root.render(<App />);
+} else {
+  console.error(
+    "Could not mount App because #a-puzzle-of-the-dead-root was nowhere to be found",
+  );
+}

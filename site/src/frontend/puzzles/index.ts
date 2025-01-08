@@ -131,6 +131,7 @@ import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
 import HeShouldntHaveEatenTheApple from "./snoopy-link";
 import KnightsOfTheSquareTable from "./sore-ketchup";
+import APuzzleOfTheDead from "./sorrowful-glass";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
 import TheOversight from "./svelte-conductor";
@@ -278,10 +279,10 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
-  cross_spread: CrossSpread, // globe
+  this_is_just_a_test: ThisIsJustATest, // globe
   paw_print_detective: PawPrintDetective, // family portrait
-  this_is_just_a_test: ThisIsJustATest, // typewriter
-  // isp05 desk lamp?
+  cross_spread: CrossSpread, // desk lamp
+  a_puzzle_of_the_dead: APuzzleOfTheDead, // typewriter
 
   cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
