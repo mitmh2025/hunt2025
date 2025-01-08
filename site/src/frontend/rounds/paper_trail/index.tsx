@@ -663,6 +663,16 @@ function genNotes(teamState: TeamHuntState): PaperTrailObject {
     book_7,
     book_8,
   ];
+  const BOOK_TEXT = [
+    "Why so many subsidiaries?",
+    "Off-the-books warehouse",
+    "Acquired lots of equipment (grinders, kilns, furnaces, etc.)",
+    "Investment in copper, tin, and zinc mines",
+    "Why a foil company?",
+    "Why so many couriers to the bank??",
+    "Subs deal in large volumes of sand, red lead, and potash (!)",
+    "Brass + foil + lead(?) = ???",
+  ];
   return {
     asset: BOOK_IMAGE[progress] ?? book_0,
     alt: "The Paper Trail book of notes",
@@ -672,7 +682,8 @@ function genNotes(teamState: TeamHuntState): PaperTrailObject {
       left: 540,
     },
     title: "Notes",
-    href: "", // TODO: what does this do?
+    href: "",
+    notes: BOOK_TEXT.slice(0, progress),
   };
 }
 

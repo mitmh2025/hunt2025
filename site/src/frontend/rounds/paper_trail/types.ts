@@ -36,6 +36,7 @@ export type PaperTrailPuzzleObject = PaperTrailObjectBase & {
 export type PaperTrailNotesObject = PaperTrailObjectBase & {
   title: string;
   href: string;
+  notes: string[];
 };
 
 export type PaperTrailObject = PaperTrailPuzzleObject | PaperTrailNotesObject;
