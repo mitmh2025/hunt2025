@@ -11,6 +11,7 @@ declare global {
       adminUser?: string;
       permissionAdmin?: boolean;
       permissionOps?: boolean;
+      sessId?: string;
     }
     export interface Request {
       api: Client;

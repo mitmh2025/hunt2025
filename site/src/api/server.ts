@@ -189,7 +189,7 @@ async function newPassport({
         }
         const teamJwt = teamJwtFromRequest(req) ?? undefined;
         done(null, jwtPayload.team_id, {
-          sess_id: jwtPayload.sess_id,
+          sessId: jwtPayload.sess_id,
           adminUser: jwtPayload.adminUser,
           teamJwt,
         });
