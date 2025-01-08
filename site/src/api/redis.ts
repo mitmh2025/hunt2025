@@ -78,6 +78,28 @@ return count
           return [key, ...entries.flatMap((m) => [m.id, m.entry])];
         },
       }),
+      /*
+      castVote: defineScript({
+        SCRIPT: `
+local sess_id = ARGV[1]
+local choice = ARGV[2]
+local reply = redis.pcall('HSET', KEYS[1], sess_id, choice)
+local reply1 = redis.pcall('HGETALL', KEYS[1]);
+return reply
+`,
+        NUMBER_OF_KEYS: 1,
+        FIRST_KEY_INDEX: 1,
+        transformArguments(
+          sessId: string,
+          teamId: number,
+          slug: string,
+          pollId: string,
+          choice: string,
+        ): string[] {
+          return [`/team/${teamId}/polls/${slug}/${pollId}`, sessId, choice];
+        },
+      }),
+      */
     },
   };
   const client = redisCreateClient(options);

@@ -143,6 +143,35 @@ async function parseJWTSecret(secret: string | Buffer): Promise<PrivateKey> {
   return { privateKey: new Uint8Array(Buffer.from(str, "utf8")), alg: "HS256" };
 }
 
+type VoteResultEntry = {
+  choice: string;
+  votes: number;
+};
+type VoteResults = {
+  rankedOptions: VoteResultEntry[];
+  winner?: string;
+};
+function tallyResults(votes: Record<string, string>): VoteResults {
+  const results: Record<string, number> = {};
+  Object.entries(votes).forEach(([_sess_id, choice]) => {
+    if (results[choice] === undefined) {
+      results[choice] = 0;
+    }
+    results[choice] += 1;
+  });
+  // TODO: maybe randomize tiebreaks?  I guess the session id order is ~random
+  const rankedOptions = Object.entries(results).toSorted((a, b) => b[1] - a[1]).map(([choice, votes]) => {
+    return {
+      choice,
+      votes,
+    };
+  });
+  return {
+    rankedOptions,
+    winner: rankedOptions[0]?.choice,
+  }
+}
+
 async function newPassport({
   jwtPrivateKey,
   frontendApiSecret,
@@ -1669,18 +1698,19 @@ export async function getRouter({
             };
           }
 
+          //const result = await redisClient.castVote(sess_id, team_id, slug, pollId, choice);
           const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
 
           // TODO: verify that slug/pollId/choice are valid based on current team state?
           await redisClient.hSet(redisKey, sess_id, choice);
+          const votes = await redisClient.hGetAll(redisKey);
+          const results = tallyResults(votes);
+          // TODO: maybe do all this from a redis script instead to avoid observer reorderings?
+          await redisClient.publish(redisKey, JSON.stringify(votes))
 
-          // TODO: don't actually return the whole vote set
-          const result = await redisClient.hGetAll(redisKey);
           return {
             status: 200 as const,
-            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
-             * We know the puzzle state exists because we checked the db above. */
-            body: result,
+            body: results,
           };
         },
 
@@ -2562,13 +2592,7 @@ export async function getRouter({
           }
           const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
           const votes = await redisClient.hGetAll(redisKey);
-          const results: Record<string, number> = {};
-          Object.entries(votes).forEach(([_sess_id, choice]) => {
-            if (results[choice] === undefined) {
-              results[choice] = 0;
-            }
-            results[choice] += 1;
-          });
+          const results = tallyResults(votes);
           return {
             status: 200,
             body: results,

@@ -50,6 +50,7 @@ import { missingDiamondState } from "../rounds/the_missing_diamond";
 import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "./constants";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
+import { PollWatcher } from "./poll_watcher";
 import { allPuzzlesState } from "./routes/all_puzzles";
 
 type DatasetHandler =
@@ -75,6 +76,9 @@ type DatasetHandler =
     }
   | {
       type: "interaction_state_log";
+    }
+  | {
+      type: "poll_responses";
     };
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
@@ -172,6 +176,9 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   interaction_state_log: {
     type: "interaction_state_log",
   },
+  poll_responses: {
+    type: "poll_responses",
+  },
 };
 
 type TeamStateSubscriptionHandler<T> = {
@@ -221,13 +228,22 @@ type InteractionStateLogSubscriptionHandler = {
   stop: () => void;
 }
 
+type PollResponseSubscriptionHandler = {
+  type: "poll_responses";
+  dataset: Dataset;
+  slug: string;
+  pollId: string;
+  stop: () => void;
+}
+
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
   | ActivityLogSubscriptionHandler
   | GuessLogSubscriptionHandler
   | TeamRegistrationSubscriptionHandler<T>
   | PuzzleStateLogSubscriptionHandler
-  | InteractionStateLogSubscriptionHandler;
+  | InteractionStateLogSubscriptionHandler
+  | PollResponseSubscriptionHandler;
 
 function isTeamStateSubscription<T>(
   sub: SubscriptionHandler<T>,
@@ -263,6 +279,12 @@ function isInteractionStateLogSubscription<T>(
   sub: SubscriptionHandler<T>,
 ): sub is InteractionStateLogSubscriptionHandler {
   return sub.type === "interaction_state_log";
+}
+
+function isPollResponseSubscription<T>(
+  sub: SubscriptionHandler<T>,
+): sub is PollResponseSubscriptionHandler {
+  return sub.type === "poll_responses";
 }
 
 type ObserveResult = {
@@ -307,6 +329,14 @@ type ObserverProvider = {
     subId: string,
     conn: ConnHandler,
   ): ObserveResult;
+
+  //observePollResponses(
+  //  teamId: number,
+  //  slug: string,
+  //  pollId: string,
+  //  subId: string,
+  //  conn: ConnHandler,
+  //): ObserveResult
 };
 
 class ConnHandler {
@@ -535,6 +565,17 @@ class ConnHandler {
     const sub = this.subs.get(subId);
     if (sub && isInteractionStateLogSubscription(sub) && sub.slug === entry.slug) {
       this.send({ subId, type: "update", value: entry });
+    }
+  }
+
+  public updatePollResponses(subId: string, pollState: Record<string, number>) {
+    const sub = this.subs.get(subId);
+    if (sub && isPollResponseSubscription(sub)) {
+      const value = {
+        epoch: Date.now(), // synthesize epochs for poll status based on timestamps; it's probably fine
+        pollState,
+      };
+      this.send({ subId, type: "update", value });
     }
   }
 
@@ -857,6 +898,9 @@ export class WebsocketManager implements ObserverProvider {
   private puzzleStateSubs: Map<string, PuzzleStateSubState>;
   private interactionStateSubs: Map<string, InteractionStateSubState>;
 
+  private pollWatcher: PollWatcher;
+  private pollResponseSubs: Map<string, PollResponseSubscriptionHandler>;
+
   private hunt: Hunt;
 
   constructor({
@@ -888,6 +932,8 @@ export class WebsocketManager implements ObserverProvider {
     this.teamRegistrationLogTailer.start();
     this.puzzleStateSubs = new Map();
     this.interactionStateSubs = new Map();
+    this.pollWatcher = new PollWatcher({ redisClient });
+    this.pollResponseSubs = new Map();
   }
 
   private dispatchTeamStateUpdate(teamId: number, teamState: TeamHuntState) {
@@ -1194,6 +1240,22 @@ export class WebsocketManager implements ObserverProvider {
       readyPromise: sub.tailer.readyPromise(),
       stop,
     };
+  }
+
+  public observePollResponses(teamId: number, slug: string, pollId: string, subId: string, conn: ConnHandler): ObserveResult {
+    const observePromise = this.pollWatcher.observePoll(teamId, slug, pollId, (pollState) => {
+      conn.updatePollResponses(subId, pollState);
+    });
+    const stop = () => {
+      void observePromise.then((stopHandle) => { stopHandle(); });
+    };
+    const readyPromise = this.pollWatcher.getCurrentPollState(teamId, slug, pollId).then((pollState) => {
+      conn.updatePollResponses(subId, pollState);
+    });
+    return {
+      stop,
+      readyPromise ,
+    }
   }
 
   public async requestHandler(

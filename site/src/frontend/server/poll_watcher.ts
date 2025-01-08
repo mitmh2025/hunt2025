@@ -1,0 +1,120 @@
+import { genId } from "../../../lib/id";
+import { type RedisClient } from "../../api/redis";
+
+function tabulateVotes(votes: Record<string, string>): Record<string, number> {
+  const results: Record<string, number> = {};
+  Object.entries(votes).forEach(([_sess_id, choice]) => {
+    if (results[choice] === undefined) {
+      results[choice] = 0;
+    }
+    results[choice] += 1;
+  });
+  return results;
+}
+
+/*
+type VoteResultEntry = {
+  choice: string;
+  votes: number;
+};
+type VoteResults = {
+  rankedOptions: VoteResultEntry[];
+  winner?: string;
+};
+function tallyResults(votes: Record<string, string>): VoteResults {
+  const results = tabulateVotes(votes);
+  // TODO: maybe randomize tiebreaks?  I guess the session id order is ~random
+  const rankedOptions = Object.entries(results).toSorted((a, b) => b[1] - a[1]).map(([choice, votes]) => {
+    return {
+      choice,
+      votes,
+    };
+  });
+  return {
+    rankedOptions,
+    winner: rankedOptions[0]?.choice,
+  }
+}
+*/
+
+type PollState = Record<string, number>;
+type PollUpdatedCallback = (pollState: PollState) => void;
+type MergedPollObserver = {
+  key: string;
+  stopHandle: () => void;
+  // Map from observerId to callback
+  observers: Map<string, PollUpdatedCallback>;
+};
+
+export class PollWatcher {
+  private redisClient: RedisClient;
+
+  // Map from  to 
+  private mergedObservers: Map<string, MergedPollObserver>;
+
+  constructor({
+    redisClient,
+  }: {
+    redisClient: RedisClient;
+  }) {
+    this.redisClient = redisClient;
+    this.mergedObservers = new Map<string, MergedPollObserver>();
+  }
+
+  private onPollUpdate(key: string, message: string, channel: string) {
+    console.log("saw message published: ", message, " on channel ", channel);
+    // Look up watchers for that key, if any
+    const observer = this.mergedObservers.get(key);
+    if (observer) {
+      // Parse message into something cromulent
+      const votedata = JSON.parse(message) as Record<string, string>;
+      const counts = tabulateVotes(votedata);
+
+      for (const cb of observer.observers.values()) {
+        cb(counts);
+      }
+    }
+  }
+
+  private stopObserver(key: string, observerId: string) {
+    const observer = this.mergedObservers.get(key);
+    if (observer) {
+      observer.observers.delete(observerId);
+      if (observer.observers.size === 0) {
+        observer.stopHandle();
+        this.mergedObservers.delete(key);
+      }
+    }
+  }
+
+  public async observePoll(teamId: number, slug: string, pollId: string, callback: PollUpdatedCallback): Promise<() => void> {
+    // save the callback    
+    const key = `/team/${teamId}/polls/${slug}/${pollId}`;
+    const observerId = genId();
+
+    let mergedObserver = this.mergedObservers.get(key);
+    if (!mergedObserver) {
+      const listener = this.onPollUpdate.bind(this, key);
+      const observers = new Map<string, PollUpdatedCallback>();
+      observers.set(observerId, callback);
+      mergedObserver = {
+        key,
+        stopHandle: () => {
+          void this.redisClient.unsubscribe(key, listener);
+        },
+        observers,
+      }
+      this.mergedObservers.set(key, mergedObserver);
+      await this.redisClient.subscribe(key, listener);
+    }
+
+    return this.stopObserver.bind(this, key, observerId);
+  }
+
+  public async getCurrentPollState(teamId: number, slug: string, pollId: string) {
+    const key = `/team/${teamId}/polls/${slug}/${pollId}`;
+    const votedata = await this.redisClient.hGetAll(key);
+    const counts = tabulateVotes(votedata);
+    return counts;
+  }
+}
