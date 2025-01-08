@@ -38,6 +38,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import {
   adminContract,
+  type FermitQuestion,
   type FermitRegistration,
 } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
@@ -1461,18 +1462,10 @@ export async function getRouter({
         handler: async ({ body: { title } }) => {
           // generate random set of questions
           // requirements:
-          // * pick 17 distinct questions
+          // * pick 17 distinct questions;
           // * 4 of them must be geoguessr type
-          // * geoguessrs should not be consecutive
-
-          // partition the questions
-          const normalQuestions: number[] = [];
-          const geoguessrQuestions: number[] = [];
-          (await getFermitQuestions(knex)).forEach((q) =>
-            (q.geoguessr === null ? normalQuestions : geoguessrQuestions).push(
-              q.id,
-            ),
-          );
+          // * geoguessrs cannot be consecutive, first, or last
+          // * don't repeat categories
 
           function shuffle<T>(arr: T[]): T[] {
             return arr
@@ -1481,24 +1474,75 @@ export async function getRouter({
               .map(({ v }) => v);
           }
 
-          const shuffledN = shuffle(normalQuestions);
-          const shuffledG = shuffle(geoguessrQuestions);
-          const ids = shuffle([
-            ...shuffledN.slice(0, 13),
-            ...shuffledG.slice(0, 4),
-          ]);
+          const normalQuestions: FermitQuestion[] = [];
+          const geoguessrQuestions: FermitQuestion[] = [];
+          (await getFermitQuestions(knex)).forEach((q) =>
+            (q.geoguessr === null ? normalQuestions : geoguessrQuestions).push(
+              q,
+            ),
+          );
 
-          const newSession = await createFermitSession(title, ids, knex);
-          if (newSession) {
-            return Promise.resolve({
-              status: 200 as const,
-              body: newSession,
+          let tries = 0;
+          let valid = false;
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- goal is to infinite loop until we find a configuration that works and return
+          while (!valid) {
+            const shuffledN = shuffle(normalQuestions);
+            const shuffledG = shuffle(geoguessrQuestions);
+            const questions = shuffle([
+              ...shuffledN.slice(0, 13),
+              ...shuffledG.slice(0, 4),
+            ]);
+            valid = true;
+            tries++;
+
+            // is a geoguessr question first or last?
+            if (questions[0]?.geoguessr ?? questions[16]?.geoguessr) {
+              valid = false;
+              console.log("invalid: first/last question is geoguessr");
+            }
+
+            // are two consecutive questions geoguessrs?
+            for (let i = 0; i < 16; i++) {
+              if (questions[i]?.geoguessr && questions[i + 1]?.geoguessr) {
+                valid = false;
+                console.log("invalid: consecutive geoguessrs");
+              }
+            }
+
+            // are any categories repeated?
+            const categories = new Set<string>();
+            questions.forEach((q: FermitQuestion) => {
+              for (const cat of q.categories) {
+                if (categories.has(cat)) {
+                  valid = false;
+                  console.log("invalid: repeated category " + cat);
+                } else {
+                  categories.add(cat);
+                }
+              }
             });
-          } else {
-            return Promise.resolve({
-              status: 500 as const,
-              body: null,
-            });
+
+            const ids = questions.map((q) => q.id);
+
+            if (valid) {
+              console.log(`got an acceptable list in ${tries} tries`);
+              const newSession = await createFermitSession(title, ids, knex);
+              if (newSession) {
+                return Promise.resolve({
+                  status: 200 as const,
+                  body: newSession,
+                });
+              } else {
+                return Promise.resolve({
+                  status: 500 as const,
+                  body: null,
+                });
+              }
+            } else {
+              console.log(
+                `question list ${ids} failed validation, regenerating`,
+              );
+            }
           }
         },
       },
@@ -1511,7 +1555,7 @@ export async function getRouter({
             if (newSession) {
               if (body.status === "in_progress") {
                 // when transitioning from "not_started" to "in_progress",
-                // mark any team not checked in as no-show
+                // mark any team not checked in as "no_show"
                 const promises: Promise<FermitRegistration>[] = [];
                 const regs = await getFermitRegistrations(
                   parseInt(sessionId, 10),
@@ -1626,8 +1670,10 @@ export async function getRouter({
 
               const percentage = 100 * Math.abs(answer / question.answer - 1);
               const difference = Math.abs(answer - question.answer);
-              //console.log(`${id} ${index} -- ${answer} vs ${question.answer} -- ${percentage} ${difference} ${question.scoringMethod}`);
 
+              // TODO: there are two that will require lookup:
+              //  team_puzzle_solves needs to look up that team's total solve count
+              //  all_wrong_answers needs to look up the global wrong answer count
               if (question.scoringMethod === "percent") {
                 return scoreHelper([2, 5, 10, 20, 50], percentage);
               } else if (question.scoringMethod === "12345") {
