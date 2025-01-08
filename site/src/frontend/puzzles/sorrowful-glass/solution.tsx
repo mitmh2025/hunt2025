@@ -523,7 +523,7 @@ const Solution = (): JSX.Element => {
           </tr>
         ))}
       </StyledTable>
-      <h3>Author’s Note</h3>
+      <h3>Author’s Note: Anisa</h3>
       <p>
         Due to the fact that there are only 20 amino acids, I had to write all
         the DNA-encoded poems without using numerals, punctuation, or the
@@ -534,6 +534,16 @@ const Solution = (): JSX.Element => {
         nor, you, our, be, should, would, could, job, jewelry, gold, box,
         delectable, sun, glow, amaze, jump, job, blue, row, ocean, and the names
         of many types of fish.
+      </p>
+      <h3>Author’s Note: Baltazar</h3>
+      <p>
+        Big thanks to Anisa and our awesome editors for collaborating on the
+        first puzzle hunt puzzle I’ve developed—I had been toying with the
+        concept of a multilayer poetry analysis puzzle for a while, but never
+        would have imagined where that idea would end up! My main pre-Mystery
+        Hunt exposure to internet puzzling (and first time learning about
+        Agrippa) was the Cicada 3301 puzzles, so finding a way to include
+        Agrippa motifs was a fun full circle moment.
       </p>
     </>
   );

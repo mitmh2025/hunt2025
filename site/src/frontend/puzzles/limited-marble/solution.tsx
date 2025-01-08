@@ -36,12 +36,12 @@ const Solution = (): JSX.Element => {
         sort, one will find the phrase:
       </p>
       <p>
-        <Mono>type mdkz;ddhd/e[d on title</Mono>
+        <Mono>type mdkz;d hd/e[d on title</Mono>
       </p>
       <p>
         The title is “keyboard” typed on the Kannada script keyboard. Following
         this instruction and typing out the given sequence of keys, solvers get
-        “ಸ್ಕೆಚ್‌ಪ್ಯಾಡ್”, or <PuzzleAnswer>SKETCHPAD</PuzzleAnswer>. (Note that
+        “ಸ್ಕೆಚ್ ಪ್ಯಾಡ್”, or <PuzzleAnswer>SKETCHPAD</PuzzleAnswer>. (Note that
         this word is a loan word from English, so hopefully solvers can get most
         of the way there even with an error in a key or two.)
       </p>
@@ -131,7 +131,7 @@ const Solution = (): JSX.Element => {
           <tr>
             <td>10</td>
             <td>d</td>
-            <td>armenian western</td>
+            <td>arm enian western</td>
             <td>lao</td>
             <td>laod</td>
             <td>լաոտ</td>
@@ -142,7 +142,7 @@ const Solution = (): JSX.Element => {
             <td>persian</td>
             <td>armenian western</td>
             <td>armenidan western</td>
-            <td>شقپثدهیشد صثسفثقد</td>
+            <td>شقپ ثدهشد صثسفثقد</td>
           </tr>
           <tr>
             <td>12</td>

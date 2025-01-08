@@ -11,7 +11,7 @@ const Puzzle = (): JSX.Element => {
     <>
       <p className="puzzle-flavor">Mavis Beacon didn’t prepare me for this…</p>
       <StyledDiv>ཏཤཨཕཏངོའ</StyledDiv>
-      <StyledDiv>شقپثدهیشد صثسفثقد</StyledDiv>
+      <StyledDiv>شقپ ثدهشد صثسفثقد</StyledDiv>
       <StyledDiv>זשדדשצקדק</StyledDiv>
       <StyledDiv>ᑕᒥᑭᓗᒪᕿᐅᕿ</StyledDiv>
       <StyledDiv>মপাীদককাা</StyledDiv>
