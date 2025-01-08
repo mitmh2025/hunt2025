@@ -2,10 +2,10 @@ import React, { useCallback, useState } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { type z } from "zod";
 import { type publicContract } from "../../../lib/api/contract";
+import type { PuzzleStateLogEntry } from "../../../lib/api/frontend_contract";
 import CopyToClipboard from "../components/CopyToClipboard";
 import PuzzleGuessSection from "../components/PuzzleGuessSection";
 import useAppendDataset from "./useAppendDataset";
-import { PuzzleStateLogEntry } from "../../../lib/api/frontend_contract";
 
 type PuzzleData = z.infer<
   (typeof publicContract.getPuzzleState.responses)["200"]
@@ -83,7 +83,7 @@ const SubpuzzleGuessSectionManager = ({
     )
     .map<Guess>((entry) => {
       return {
-        id: entry.id as number,
+        id: entry.id,
         timestamp: entry.timestamp as unknown as string,
         canonical_input: entry.data.canonical_input as string,
         response: entry.data.response as string,
