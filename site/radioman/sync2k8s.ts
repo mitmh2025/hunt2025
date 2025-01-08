@@ -436,9 +436,21 @@ async function main({
             }
             const resp = await radioClient.setTeamState({ body: rts });
             if (resp.status === 400) {
-              console.error("found wrong team at", podIP);
+              console.error("found wrong team at", podIP, resp.body);
               controller.abort();
               return;
+            }
+            if (resp.status === 200) {
+              console.log(
+                "sent epoch",
+                rts.epoch,
+                "for team",
+                teamId,
+                "to",
+                podIP,
+              );
+            } else {
+              console.log("stale team state for", podIP, rts, resp.body);
             }
             // Whether it succeeded (200) or was stale (412), we have to wait for the next update.
           },
@@ -460,7 +472,9 @@ async function main({
         );
         await Promise.race([updated, aborted]);
       }
-    })();
+    })().catch((e: unknown) => {
+      console.log("error watching", teamId, "on IP", podIP, e);
+    });
 
     return controller;
   };
@@ -483,18 +497,19 @@ async function main({
       ) {
         // New or modified pod, make sure we're trying to sync it.
         if (!podSyncers.has(uid)) {
+          console.log("starting new syncer for", teamId, "on", podIP);
           podSyncers.set(uid, launchPodSyncer(teamId, podIP));
         }
       } else {
         // Pod is not ready yet or anymore; stop trying to sync it.
         const syncer = podSyncers.get(uid);
         if (syncer) {
+          console.log("aborting syncer for teamId", teamId, "on", uid);
           syncer.abort();
           podSyncers.delete(uid);
         }
       }
     });
-  void watcher.start();
 
   activityLogTailer.watchLog((items) => {
     const modified = new Set<number>();
@@ -530,6 +545,8 @@ async function main({
   });
 
   await activityLogTailer.readyPromise();
+
+  void watcher.start();
 
   console.log("sync2k8s running");
 }
