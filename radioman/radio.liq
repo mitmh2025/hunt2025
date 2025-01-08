@@ -1,8 +1,5 @@
 %include "lib.liq"
 
-# TODO: Make script caching work instead of forcing a GC before start.
-settings.init.compact_before_start := false
-
 server.telnet()
 
 http_port = string.to_int(environment.get("HTTP_PORT"), default=8000)
