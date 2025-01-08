@@ -86,7 +86,7 @@ const ROWS = [
     "3",
     "C",
     "James K. Polk",
-    "Lessert Known Leaders of the Americas in the 19th Century",
+    "Lesser Known Leaders of the Americas in the 19th Century",
     "J. Bush",
   ],
   [
