@@ -684,6 +684,9 @@ export default function createConfigs(_env, argv) {
     experiments: {
       outputModule: true,
     },
+    optimization: {
+      minimize: false,
+    },
     output: {
       module: true,
       path: path.join(outputDirname, "misc"),
