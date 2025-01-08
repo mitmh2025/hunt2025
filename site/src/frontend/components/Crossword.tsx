@@ -185,72 +185,74 @@ const CrosswordInner = ({
 
   return (
     <Grid className={className}>
-      {labels.map((row, i) => (
-        <tr key={i}>
-          {rowIndexToHeader[i] && (
-            <HeaderCell rowSpan={rowIndexToHeader[i]?.rowSpan ?? 1}>
-              {rowIndexToHeader[i]?.contents}
-            </HeaderCell>
-          )}
-          {row.map((label, j) => {
-            const key = `${i}-${j}`;
-            const cellFill = fill?.[i]?.[j];
-            if (label === ".") {
-              return (
-                <FilledCell
-                  key={key}
-                  style={
-                    getAdditionalCellStyles?.({
-                      row: i,
-                      column: j,
-                    }) ?? {}
-                  }
-                >
-                  {cellFill && cellFill !== "." ? (
-                    <CellContents
-                      style={getAdditionalCellFillStyles?.({
+      <tbody>
+        {labels.map((row, i) => (
+          <tr key={i}>
+            {rowIndexToHeader[i] && (
+              <HeaderCell rowSpan={rowIndexToHeader[i]?.rowSpan ?? 1}>
+                {rowIndexToHeader[i]?.contents}
+              </HeaderCell>
+            )}
+            {row.map((label, j) => {
+              const key = `${i}-${j}`;
+              const cellFill = fill?.[i]?.[j];
+              if (label === ".") {
+                return (
+                  <FilledCell
+                    key={key}
+                    style={
+                      getAdditionalCellStyles?.({
                         row: i,
                         column: j,
-                      })}
-                    >
-                      {cellFill}
-                    </CellContents>
-                  ) : undefined}
-                </FilledCell>
-              );
-            } else {
-              return (
-                <StyledCell
-                  key={key}
-                  style={
-                    getAdditionalCellStyles?.({
-                      row: i,
-                      column: j,
-                    }) ?? {}
-                  }
-                >
-                  {label ? <CellLabel>{label}</CellLabel> : undefined}
-                  {cellFill ? (
-                    <CellContents
-                      style={getAdditionalCellFillStyles?.({
+                      }) ?? {}
+                    }
+                  >
+                    {cellFill && cellFill !== "." ? (
+                      <CellContents
+                        style={getAdditionalCellFillStyles?.({
+                          row: i,
+                          column: j,
+                        })}
+                      >
+                        {cellFill}
+                      </CellContents>
+                    ) : undefined}
+                  </FilledCell>
+                );
+              } else {
+                return (
+                  <StyledCell
+                    key={key}
+                    style={
+                      getAdditionalCellStyles?.({
                         row: i,
                         column: j,
-                      })}
-                    >
-                      {cellFill}
-                    </CellContents>
-                  ) : undefined}
-                </StyledCell>
-              );
-            }
-          })}
-          {rowIndexToFooter[i] && (
-            <FooterCell rowSpan={rowIndexToFooter[i]?.rowSpan ?? 1}>
-              {rowIndexToFooter[i]?.contents}
-            </FooterCell>
-          )}
-        </tr>
-      ))}
+                      }) ?? {}
+                    }
+                  >
+                    {label ? <CellLabel>{label}</CellLabel> : undefined}
+                    {cellFill ? (
+                      <CellContents
+                        style={getAdditionalCellFillStyles?.({
+                          row: i,
+                          column: j,
+                        })}
+                      >
+                        {cellFill}
+                      </CellContents>
+                    ) : undefined}
+                  </StyledCell>
+                );
+              }
+            })}
+            {rowIndexToFooter[i] && (
+              <FooterCell rowSpan={rowIndexToFooter[i]?.rowSpan ?? 1}>
+                {rowIndexToFooter[i]?.contents}
+              </FooterCell>
+            )}
+          </tr>
+        ))}
+      </tbody>
     </Grid>
   );
 };
