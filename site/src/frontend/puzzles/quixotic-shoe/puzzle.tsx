@@ -1,5 +1,5 @@
 import React from "react";
-import type { PuzzleState, TeamHuntState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
   const inlineScript = `window.initialTeamState = ${JSON.stringify(teamState)};`;

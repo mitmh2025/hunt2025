@@ -8,10 +8,10 @@ import {
   Mono,
   PuzzleAnswer,
 } from "../../components/StyledUI";
-import { BETTEROPRAH_LABELS } from "./betteroprah/puzzle";
-import { DRAUGHTQUEENS_LABELS } from "./draughtqueens/puzzle";
-import { HARDLYSAFE_LABELS } from "./hardlysafe/puzzle";
-import { HellfreshGrid } from "./hellfresh/puzzle";
+import { BETTEROPRAH_LABELS } from "./betteroprah/data";
+import { DRAUGHTQUEENS_LABELS } from "./draughtqueens/data";
+import { HARDLYSAFE_LABELS } from "./hardlysafe/data";
+import { HellfreshGrid } from "./hellfresh/HellfreshGrid";
 
 const HELLFRESH_DATA: [string, string, string, string][] = [
   ["1A", "BOOS", "1 Leg on a tar fighter", "LEGO Na[boo s]tarfighter"],

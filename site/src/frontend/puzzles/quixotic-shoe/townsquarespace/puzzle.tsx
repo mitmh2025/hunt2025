@@ -1,5 +1,6 @@
 import React, { type CSSProperties } from "react";
 import { styled } from "styled-components";
+import { mainPuzzleAccessGates } from "..";
 import type { TeamHuntState } from "../../../../../lib/api/client";
 import { COPY_ONLY_CLASS } from "../../../components/CopyToClipboard";
 import Crossword from "../../../components/Crossword";
@@ -159,8 +160,9 @@ const Note = ({
 };
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const mainPuzzleUnlocked =
-    teamState.rounds.paper_trail?.gates?.includes("ptg09");
+  const mainPuzzleUnlocked = (teamState.rounds.paper_trail?.gates ?? []).some(
+    (gate) => mainPuzzleAccessGates.has(gate),
+  );
   return (
     <>
       {mainPuzzleUnlocked && (

@@ -880,7 +880,6 @@ export async function getRouter({
       getSubpuzzleState: {
         middleware: [authMiddleware],
         handler: async ({ params: { slug }, req }) => {
-          console.error("getSubpuzzleState handler");
           const team_id = req.user as number;
           const state = await getSubpuzzleState(team_id, slug, knex);
           if (!state) {

@@ -309,7 +309,15 @@ const HUNT: Hunt = {
         // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
         { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "incognito" },
-        { id: "ptp03", unlocked_if: {gate_satisfied: "ptg09"}, slug: "and_now_a_puzzling_word_from_our_sponsors" },
+        { id: "ptp03", unlocked_if: {
+          oneOf: [
+            {gate_satisfied: "ptg04"},
+            {gate_satisfied: "ptg05"},
+            {gate_satisfied: "ptg06"},
+            {gate_satisfied: "ptg07"},
+            {gate_satisfied: "ptg08"}
+          ]
+        }, slug: "and_now_a_puzzling_word_from_our_sponsors" },
         { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
         { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
         { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle (pending testing)

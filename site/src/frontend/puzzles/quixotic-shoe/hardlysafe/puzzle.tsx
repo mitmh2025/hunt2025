@@ -1,40 +1,19 @@
 import React from "react";
 import { styled } from "styled-components";
+import { mainPuzzleAccessGates } from "..";
 import type { TeamHuntState } from "../../../../../lib/api/client";
-import Crossword, {
-  calculateNumberLabels,
-} from "../../../components/Crossword";
-
-export const HARDLYSAFE_LABELS = calculateNumberLabels(
-  `
-####.###.####..
-#   .#  #    #.
-#   #         #
-#     .#  ..#  
-#  .# #  .##   
-#  #.#  .#     
-#   #.# #   ...
-#    # .#   ###
-...#   # .#    
-###   .# #.#   
-#    .#   #.#  
-#  ..#  .# #   
-#  ##   #      
-.#        .#   
-..#   .#  .#   
-`
-    .split("\n")
-    .slice(1, -1)
-    .map((row) => row.padEnd(15, " ").split("")),
-);
+import Crossword from "../../../components/Crossword";
+import { HARDLYSAFE_LABELS } from "./data";
 
 const Arrow = styled.span`
   color: var(--black);
 `;
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const mainPuzzleUnlocked =
-    teamState.rounds.paper_trail?.gates?.includes("ptg09");
+  const mainPuzzleUnlocked = (teamState.rounds.paper_trail?.gates ?? []).some(
+    (gate) => mainPuzzleAccessGates.has(gate),
+  );
+
   return (
     <>
       {mainPuzzleUnlocked && (

@@ -1,8 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
+import { mainPuzzleAccessGates } from "..";
 import type { TeamHuntState } from "../../../../../lib/api/client";
 import Dropquote from "../../../components/Dropquote";
 import { HScrollTableWrapper } from "../../../components/StyledUI";
+import { BETTEROPRAH_LABELS } from "./data";
 
 const LETTERBANKS = [
   "ACLNTU",
@@ -45,19 +47,6 @@ const LETTERBANKS = [
   "CEENNT",
 ].map((col) => col.split(""));
 
-export const BETTEROPRAH_LABELS = `
-    .  . .      .  .           .      
-     . .       .    .     .      .    
- .  .    .       .  .  .  .      .    
-.    .    .     .    .  .    . .      
-  .      .    .   .  .   .     .  . . 
-  .    .  .   .    .           .  .   
- .   .   .   .     .   .   .    ......
-`
-  .split("\n")
-  .slice(1, -1)
-  .map((row) => row.split(""));
-
 const Arrow = styled.span`
   color: var(--black);
 `;
@@ -67,8 +56,9 @@ const StyledDropquote = styled(Dropquote)`
 `;
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const mainPuzzleUnlocked =
-    teamState.rounds.paper_trail?.gates?.includes("ptg09");
+  const mainPuzzleUnlocked = (teamState.rounds.paper_trail?.gates ?? []).some(
+    (gate) => mainPuzzleAccessGates.has(gate),
+  );
   return (
     <>
       {mainPuzzleUnlocked && (
