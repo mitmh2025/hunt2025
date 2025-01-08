@@ -444,6 +444,14 @@ export const publicContract = c.router({
           "PUZZLE_ALREADY_SOLVED",
         ]),
       }),
+    },
+  },
+  markSubpuzzleUnlocked: {
+    method: "POST",
+    path: `/subpuzzle/:slug/unlock`,
+    body: z.object({}),
+    responses: {
+      200: SubpuzzleStateSchema,
       404: z.null(),
     },
   },

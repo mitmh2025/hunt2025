@@ -228,6 +228,8 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
     return undefined;
   }
 
+  await req.api.markSubpuzzleUnlocked({ params: { slug } });
+
   const result = await req.api.getSubpuzzleState({ params: { slug: slug } });
   if (result.status !== 200) {
     return undefined;
@@ -237,8 +239,8 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
   let guessFrag = <></>;
   if (subpuzzle.answer) {
     const guesses = result.body.guesses;
-    const initialGuesses = JSON.stringify(guesses);
-    const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}"; window.parentSlug = "${subpuzzle.parent_slug}";`;
+    const initialSubpuzzleGuesses = JSON.stringify(guesses);
+    const inlineScript = `window.initialSubpuzzleGuesses = ${initialSubpuzzleGuesses}; window.puzzleSlug = "${slug}"; window.parentSlug = "${subpuzzle.parent_slug}";`;
     const noopOnGuessesUpdate = () => {
       /* no-op, this is noninteractive in SSR */
     };
@@ -270,8 +272,9 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
       // we should fail if we can't include it.
       return undefined;
     }
-    const initialPuzzleStateLog = JSON.stringify(puzzleStateLogResult.body);
-    const puzzleStateLogScript = `window.initialPuzzleStateLog = ${initialPuzzleStateLog}`;
+    const puzzleStateLog = puzzleStateLogResult.body;
+    const initialPuzzleStateLog = JSON.stringify(puzzleStateLog);
+    const puzzleStateLogScript = `window.initialPuzzleStateLog = ${initialPuzzleStateLog};`;
     puzzleStateFrag = (
       <script
         type="text/javascript"

@@ -13,6 +13,23 @@ type PuzzleData = z.infer<
 type Guesses = PuzzleData["guesses"];
 type Guess = Guesses[number];
 
+const mergeGuesses = (oldGuesses: Guess[], newGuesses: Guess[]): Guess[] => {
+  // Merge the previous guess set and the new one together, retaining any common entries exactly once.
+  const canonicalInputs = new Set();
+  const mergedGuesses: Guess[] = [];
+  const processGuess = (guess: Guess) => {
+    if (!canonicalInputs.has(guess.canonical_input)) {
+      canonicalInputs.add(guess.canonical_input);
+      mergedGuesses.push(guess);
+    }
+  };
+  oldGuesses.forEach(processGuess);
+  newGuesses.forEach(processGuess);
+  // Sort by id
+  mergedGuesses.sort((a, b) => a.id - b.id);
+  return mergedGuesses;
+};
+
 const GuessSectionManager = ({
   initialGuesses,
   slug,
@@ -26,22 +43,9 @@ const GuessSectionManager = ({
     initialGuesses,
   );
   const [guesses, setGuesses] = useState<Guess[]>(websocketGuesses);
-  const mergeGuesses = useCallback((newGuesses: Guess[]) => {
+  const onGuessesUpdate = useCallback((newGuesses: Guess[]) => {
     setGuesses((prevGuesses: Guess[]) => {
-      // Merge the previous guess set and the new one together, retaining any common entries exactly once.
-      const canonicalInputs = new Set();
-      const mergedGuesses: Guess[] = [];
-      const processGuess = (guess: Guess) => {
-        if (!canonicalInputs.has(guess.canonical_input)) {
-          canonicalInputs.add(guess.canonical_input);
-          mergedGuesses.push(guess);
-        }
-      };
-      prevGuesses.forEach(processGuess);
-      newGuesses.forEach(processGuess);
-      // Sort by id
-      mergedGuesses.sort((a, b) => a.id - b.id);
-      return mergedGuesses;
+      return mergeGuesses(prevGuesses, newGuesses);
     });
   }, []);
 
@@ -49,8 +53,8 @@ const GuessSectionManager = ({
     <PuzzleGuessSection
       type={"puzzle"}
       slug={slug}
-      guesses={guesses}
-      onGuessesUpdate={mergeGuesses}
+      guesses={mergeGuesses(guesses, websocketGuesses)}
+      onGuessesUpdate={onGuessesUpdate}
     />
   );
 };
@@ -74,7 +78,7 @@ const SubpuzzleGuessSectionManager = ({
     .filter(
       (entry) =>
         entry.slug === parentSlug &&
-        entry.data.subpuzzleSlug === slug &&
+        entry.data.subpuzzle_slug === slug &&
         entry.data.type === "subpuzzle_guess_submitted",
     )
     .map<Guess>((entry) => {
@@ -87,30 +91,17 @@ const SubpuzzleGuessSectionManager = ({
       };
     });
   const [guesses, setGuesses] = useState<Guess[]>(websocketGuesses);
-  const mergeGuesses = useCallback((newGuesses: Guess[]) => {
+  const onGuessesUpdate = useCallback((newGuesses: Guess[]) => {
     setGuesses((prevGuesses: Guess[]) => {
-      // Merge the previous guess set and the new one together, retaining any common entries exactly once.
-      const canonicalInputs = new Set();
-      const mergedGuesses: Guess[] = [];
-      const processGuess = (guess: Guess) => {
-        if (!canonicalInputs.has(guess.canonical_input)) {
-          canonicalInputs.add(guess.canonical_input);
-          mergedGuesses.push(guess);
-        }
-      };
-      prevGuesses.forEach(processGuess);
-      newGuesses.forEach(processGuess);
-      // Sort by id
-      mergedGuesses.sort((a, b) => a.id - b.id);
-      return mergedGuesses;
+      return mergeGuesses(prevGuesses, newGuesses);
     });
   }, []);
   return (
     <PuzzleGuessSection
       type={"subpuzzle"}
       slug={slug}
-      guesses={guesses}
-      onGuessesUpdate={mergeGuesses}
+      guesses={mergeGuesses(guesses, websocketGuesses)}
+      onGuessesUpdate={onGuessesUpdate}
     />
   );
 };

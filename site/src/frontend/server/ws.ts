@@ -689,7 +689,6 @@ class ConnHandler {
           break;
         }
       }
-
       return;
     } else {
       const { rpc, subId } = message;

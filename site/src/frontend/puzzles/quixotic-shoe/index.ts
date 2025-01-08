@@ -8,6 +8,124 @@ import router from "./server";
 import Solution from "./solution";
 import TownSquareSpace from "./townsquarespace";
 
+export const accessGateToQuixoticSubpuzzleData: Record<
+  string,
+  { subpuzzle_slug: string; subpuzzle_name: string }
+> = {
+  ptg04: { subpuzzle_slug: "hellfresh", subpuzzle_name: "HellFresh" },
+  ptg05: { subpuzzle_slug: "betteroprah", subpuzzle_name: "BetterOprah" },
+  ptg06: { subpuzzle_slug: "hardlysafe", subpuzzle_name: "HardlySafe" },
+  ptg07: {
+    subpuzzle_slug: "draughtqueens",
+    subpuzzle_name: "DraughtQueens",
+  },
+  ptg08: {
+    subpuzzle_slug: "townsquarespace",
+    subpuzzle_name: "TownSquareSpace",
+  },
+};
+export const solveGateToQuixoticSubpuzzleData: Record<
+  string,
+  { subpuzzle_slug: string; subpuzzle_name: string; answer: string }
+> = {
+  ptg09: {
+    subpuzzle_slug: "hellfresh",
+    subpuzzle_name: "HellFresh",
+    answer: "HOTWINGS",
+  },
+  ptg10: {
+    subpuzzle_slug: "betteroprah",
+    subpuzzle_name: "BetterOprah",
+    answer: "MOVE",
+  },
+  ptg11: {
+    subpuzzle_slug: "hardlysafe",
+    subpuzzle_name: "HardlySafe",
+    answer: "IMAGE",
+  },
+  ptg12: {
+    subpuzzle_slug: "draughtqueens",
+    subpuzzle_name: "DraughtQueens",
+    answer: "CARTEL",
+  },
+  ptg13: {
+    subpuzzle_slug: "townsquarespace",
+    subpuzzle_name: "TownSquareSpace",
+    answer: "BEEF",
+  },
+};
+export const allQuixoticSubpuzzlesSolvedGate = "ptg14";
+export const allQuixoticSubpuzzlesSolvedData = [
+  {
+    subpuzzle_slug: "hellfresh",
+    subpuzzle_name: "HellFresh",
+    answer: "HOTWINGS",
+    color: "#ff0000",
+  },
+  {
+    subpuzzle_slug: "betteroprah",
+    subpuzzle_name: "BetterOprah",
+    answer: "MOVE",
+    color: "#ffa500",
+  },
+  {
+    subpuzzle_slug: "hardlysafe",
+    subpuzzle_name: "HardlySafe",
+    answer: "IMAGE",
+    color: "#3cb317",
+  },
+  {
+    subpuzzle_slug: "draughtqueens",
+    subpuzzle_name: "DraughtQueens",
+    answer: "CARTEL",
+    color: "#0000ff",
+  },
+  {
+    subpuzzle_slug: "townsquarespace",
+    subpuzzle_name: "TownSquareSpace",
+    answer: "BEEF",
+    color: "#ff00ff",
+  },
+];
+
+export const orderedQuixoticSubpuzzleSlugs = [
+  "hellfresh",
+  "betteroprah",
+  "hardlysafe",
+  "draughtqueens",
+  "townsquarespace",
+];
+export const quixoticSubpuzzleDataBySlug: Record<
+  string,
+  { subpuzzle_name: string; answer: string; color: string }
+> = {
+  hellfresh: {
+    subpuzzle_name: "HellFresh",
+    answer: "HOTWINGS",
+    color: "#ff0000",
+  },
+  betteroprah: {
+    subpuzzle_name: "BetterOprah",
+    answer: "MOVE",
+    color: "#ffa500",
+  },
+  hardlysafe: {
+    subpuzzle_name: "HardlySafe",
+    answer: "IMAGE",
+    color: "#3cb317",
+  },
+  draughtqueens: {
+    subpuzzle_name: "DraughtQueens",
+    answer: "CARTEL",
+    color: "#0000ff",
+  },
+  townsquarespace: {
+    subpuzzle_name: "TownSquareSpace",
+    answer: "BEEF",
+    color: "#ff00ff",
+  },
+};
+
 const subpuzzles: SubpuzzleDefinition[] = [
   BetterOprah,
   DraughtQueens,

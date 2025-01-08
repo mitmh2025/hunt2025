@@ -51,6 +51,10 @@ import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
+import {
+  orderedQuixoticSubpuzzleSlugs,
+  quixoticSubpuzzleDataBySlug,
+} from "../frontend/puzzles/quixotic-shoe";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
 import { omit } from "../utils/omit";
@@ -1203,6 +1207,44 @@ export async function getRouter({
                       answer: canonical_input,
                     },
                   });
+
+                  // Special case. If we have solved all the quixotic-shoe subpuzzles,
+                  // push their colors to the puzzle state log.
+                  if (
+                    parent_slug === "and_now_a_puzzling_word_from_our_sponsors"
+                  ) {
+                    const quixotic_subpuzzle_slugs = new Set(
+                      Object.keys(quixoticSubpuzzleDataBySlug),
+                    );
+                    const quixotic_solve_logs = mutator.log.filter(
+                      (e) =>
+                        "slug" in e &&
+                        e.slug === parent_slug &&
+                        quixotic_subpuzzle_slugs.has(
+                          e.data.subpuzzle_slug as string,
+                        ) &&
+                        e.data.type === "subpuzzle_solved",
+                    );
+                    if (
+                      quixotic_solve_logs.length ===
+                      quixotic_subpuzzle_slugs.size
+                    ) {
+                      const promises = [...quixotic_subpuzzle_slugs].map(
+                        (slug) => {
+                          return mutator.appendLog({
+                            team_id,
+                            slug: parent_slug,
+                            data: {
+                              type: "all_subpuzzles_solved",
+                              subpuzzle_slug: slug,
+                              ...quixoticSubpuzzleDataBySlug[slug],
+                            },
+                          });
+                        },
+                      );
+                      await Promise.all(promises);
+                    }
+                  }
                 }
               }
               return { status: 200 as const };
@@ -1229,6 +1271,7 @@ export async function getRouter({
               townsquarespace: "ptg13",
             };
             if (correct_answers.length > 0 && slug in gateBySlug) {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we checked membership just above
               const gate = gateBySlug[slug]!;
               await activityLog.executeMutation(
                 hunt,
@@ -1530,6 +1573,79 @@ export async function getRouter({
             body: {
               currency: EXCHANGE_RATE,
             },
+          };
+        },
+      },
+      markSubpuzzleUnlocked: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug }, req }) => {
+          const team_id = req.user as number;
+          const subpuzzle = SUBPUZZLES[slug];
+          if (!subpuzzle) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+          const { result, logEntries } = await puzzleStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              // Has this puzzle already been accessed by this team?
+              const existing = mutator.log.some(
+                (e) =>
+                  e.team_id === team_id &&
+                  e.data.type === "subpuzzle_unlocked" &&
+                  e.data.subpuzzle_slug === slug &&
+                  e.slug === subpuzzle.parent_slug,
+              );
+              // If not, insert unlock log.
+              // If already present, no change.
+              if (!existing) {
+                const data: {
+                  type: string;
+                  subpuzzle_slug: string;
+                  subpuzzle_name?: string;
+                  order?: number;
+                } = {
+                  type: "subpuzzle_unlocked",
+                  subpuzzle_slug: slug,
+                };
+                // Special case. Hydrate data with quixotic-shoe data if this is a
+                // quixotic-shoe unlock.
+                if (
+                  subpuzzle.parent_slug ===
+                    "and_now_a_puzzling_word_from_our_sponsors" &&
+                  slug in quixoticSubpuzzleDataBySlug
+                ) {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- membership checked just above
+                  const subpuzzleDatum = quixoticSubpuzzleDataBySlug[slug]!;
+                  data.subpuzzle_name = subpuzzleDatum.subpuzzle_name;
+                  data.order = orderedQuixoticSubpuzzleSlugs.indexOf(slug);
+                }
+                await mutator.appendLog({
+                  team_id,
+                  slug: subpuzzle.parent_slug,
+                  data,
+                });
+              }
+              return true;
+            },
+          );
+          if (result) {
+            return {
+              status: 200 as const,
+              body: formatSubpuzzleState(
+                slug,
+                subpuzzle.parent_slug,
+                logEntries,
+              ),
+            };
+          }
+          return {
+            status: 404 as const,
+            body: null,
           };
         },
       },
@@ -2291,7 +2407,6 @@ export async function getRouter({
         middleware: [frontendAuthMiddleware],
         handler: async ({ query: { since, team_id, slug } }) => {
           let effectiveSince = undefined;
-          console.error("getFullPuzzleStateLog");
           if (since) {
             const sinceParsed = Number(since);
             if (sinceParsed > 0) {

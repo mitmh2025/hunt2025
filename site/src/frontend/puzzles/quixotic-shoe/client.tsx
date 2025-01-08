@@ -5,6 +5,7 @@ import type { TeamHuntState } from "../../../../lib/api/client";
 import type { PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract";
 import useAppendDataset from "../../client/useAppendDataset";
 import useDataset from "../../client/useDataset";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const Arrow = styled.span`
   color: var(--black);
@@ -33,18 +34,6 @@ const EnabledButton = styled(StyledButton)`
 const DisabledButton = styled(StyledButton)`
   background-color: var(--gray-600);
   color: var(--white);
-`;
-
-const StyledTable = styled.table`
-  border-collapse: collapse;
-  th {
-    border-bottom: 1px solid black;
-    padding-right: 8px;
-  }
-  td {
-    text-align: center;
-    padding-right: 8px;
-  }
 `;
 
 const Tile = styled.div`
@@ -90,53 +79,6 @@ const Tileset = styled.div`
   flex-wrap: wrap;
 `;
 
-type SubpuzzleSlug =
-  | "hellfresh"
-  | "betteroprah"
-  | "hardlysafe"
-  | "draughtqueens"
-  | "townsquarespace";
-
-type SubpuzzleDatum = {
-  title: string;
-  slug: SubpuzzleSlug;
-  gate: string;
-  color: string;
-};
-
-const SUBPUZZLE_DATA_BY_SLUG: Record<SubpuzzleSlug, SubpuzzleDatum> = {
-  hellfresh: {
-    title: "HellFresh",
-    slug: "hellfresh",
-    gate: "ptg04",
-    color: "#ff0000",
-  },
-  betteroprah: {
-    title: "BetterOprah",
-    slug: "betteroprah",
-    gate: "ptg05",
-    color: "#ffa500",
-  },
-  hardlysafe: {
-    title: "HardlySafe",
-    slug: "hardlysafe",
-    gate: "ptg06",
-    color: "#3cb317",
-  },
-  draughtqueens: {
-    title: "DraughtQueens",
-    slug: "draughtqueens",
-    gate: "ptg07",
-    color: "#0000ff",
-  },
-  townsquarespace: {
-    title: "TownSquareSpace",
-    slug: "townsquarespace",
-    gate: "ptg08",
-    color: "#ff00ff",
-  },
-};
-
 const App = ({
   initialTeamState,
   initialPuzzleStateLog,
@@ -145,41 +87,97 @@ const App = ({
   initialPuzzleStateLog: PuzzleStateLogEntry[];
 }): JSX.Element => {
   const teamState = useDataset("team_state", undefined, initialTeamState);
-  const puzzleState = useAppendDataset(
+  const puzzleStateLog = useAppendDataset(
     "puzzle_state_log",
     { slug: "and_now_a_puzzling_word_from_our_sponsors" },
     initialPuzzleStateLog,
   );
-  const pickedUpMartini =
-    teamState.rounds.paper_trail?.gates?.includes("ptg15") ?? false;
 
-  const subpuzzlesWithAnswer = puzzleState.reduce<SubpuzzleDatum[]>(
-    (acc, puzzleStateLogEntry) => {
-      if (puzzleStateLogEntry.data.answer) {
-        const subpuzzleSlug = puzzleStateLogEntry.data
-          .subpuzzle_slug as SubpuzzleSlug;
-        const subpuzzleDatum = SUBPUZZLE_DATA_BY_SLUG[subpuzzleSlug];
-        acc.push(subpuzzleDatum);
-      }
-      return acc;
-    },
-    [],
+  const subpuzzlesAccessed = puzzleStateLog
+    .filter(
+      (entry) =>
+        entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
+        entry.data.type === "subpuzzle_unlocked",
+    )
+    .map(
+      ({ data: { subpuzzle_slug, subpuzzle_name, order } }) =>
+        ({
+          subpuzzle_slug,
+          subpuzzle_name,
+          order,
+        }) as { subpuzzle_slug: string; subpuzzle_name: string; order: number },
+    );
+
+  const subpuzzlesSolved = puzzleStateLog
+    .filter(
+      (entry) =>
+        entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
+        entry.data.type === "subpuzzle_solved",
+    )
+    .map(
+      ({ data: { subpuzzle_slug, answer } }) =>
+        ({
+          subpuzzle_slug,
+          answer,
+        }) as {
+          subpuzzle_slug: string;
+          answer: string;
+        },
+    );
+
+  const allSubpuzzlesSolved = puzzleStateLog
+    .filter(
+      (entry) =>
+        entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
+        entry.data.type === "all_subpuzzles_solved",
+    )
+    .map(
+      ({ data: { subpuzzle_slug, color } }) =>
+        ({
+          subpuzzle_slug,
+          color,
+        }) as {
+          subpuzzle_slug: string;
+          color: string;
+        },
+    );
+
+  const condensedSubpuzzleStatus: Record<
+    string,
+    {
+      subpuzzle_slug: string;
+      order: number;
+      subpuzzle_name: string;
+      answer?: string;
+      color?: string;
+    }
+  > = {};
+  for (const accessDatum of subpuzzlesAccessed) {
+    condensedSubpuzzleStatus[accessDatum.subpuzzle_slug] = accessDatum;
+  }
+  for (const solveDatum of subpuzzlesSolved) {
+    condensedSubpuzzleStatus[solveDatum.subpuzzle_slug] = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- puzzle must be accessed to be solved
+      ...condensedSubpuzzleStatus[solveDatum.subpuzzle_slug]!,
+      answer: solveDatum.answer,
+    };
+  }
+  for (const allSolvedDatum of allSubpuzzlesSolved) {
+    condensedSubpuzzleStatus[allSolvedDatum.subpuzzle_slug] = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- puzzle must be accessed to be solved
+      ...condensedSubpuzzleStatus[allSolvedDatum.subpuzzle_slug]!,
+      color: allSolvedDatum.color,
+    };
+  }
+  const sortedSubpuzzleStatus = Object.values(condensedSubpuzzleStatus).sort(
+    (status1, status2) => status1.order - status2.order,
   );
-  const subpuzzleAnswersBySlug = puzzleState.reduce<Record<string, string>>(
-    (acc, puzzleStateLogEntry) => {
-      if (puzzleStateLogEntry.data.answer) {
-        const subpuzzleSlug = puzzleStateLogEntry.data
-          .subpuzzle_slug as SubpuzzleSlug;
-        acc[subpuzzleSlug] = puzzleStateLogEntry.data.answer as string;
-      }
-      return acc;
-    },
-    {},
-  );
-  const points = 250 * subpuzzlesWithAnswer.length;
+
+  const pickupComplete = teamState.rounds.paper_trail?.gates?.includes("ptg15");
+  const points = 250 * subpuzzlesSolved.length;
 
   const latestAdFrequencyStatusChange =
-    puzzleState.findLast(
+    puzzleStateLog.findLast(
       (puzzleStateLogEntry) => puzzleStateLogEntry.data.type === "ad_frequency",
     )?.data.status ?? null;
   const mysteryHuntPlusEnabled = latestAdFrequencyStatusChange === "plus";
@@ -232,18 +230,23 @@ const App = ({
         You have promotional rates available! Click the links below to view the
         offers by our product partners and enter your promo codes:
       </p>
-      {Object.values(SUBPUZZLE_DATA_BY_SLUG).map(({ title, slug, gate }) => {
-        const unlocked = teamState.rounds.paper_trail?.gates?.includes(gate);
-        if (unlocked) {
+      {sortedSubpuzzleStatus.map(
+        ({ subpuzzle_name, subpuzzle_slug, answer }) => {
           return (
-            <p key={title}>
-              <a href={`/${slug}`}>{title} </a>
+            <p key={subpuzzle_slug}>
+              <a href={`/${subpuzzle_slug}`}>
+                {subpuzzle_name}{" "}
+                {answer && (
+                  <>
+                    (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
+                  </>
+                )}
+              </a>
               <Arrow>→</Arrow>
             </p>
           );
-        }
-        return null;
-      })}
+        },
+      )}
       <h3>Options</h3>
       <StyledDiv>
         {mysteryHuntPlusEnabled ? (
@@ -275,43 +278,24 @@ const App = ({
           favorite advertisements, now free from distracting radio content.
         </span>
       </StyledDiv>
-      {!pickedUpMartini && (
+      {!pickupComplete && (
         <>
           <h3>MITropolisCard Reward Store</h3>
           <p>You have {points} MITropolisCard points.</p>
           <p>
             Once you have 1,250 MITropolisCard points, you may come to the Gala
-            and purchase a martini.
+            and receive a complimentary martini.
           </p>
         </>
       )}
-      <h3>Your Promo Codes</h3>
-      {!pickedUpMartini && subpuzzlesWithAnswer.length > 0 && (
-        <StyledTable>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Promo Code</th>
-            </tr>
-          </thead>
-          <tbody>
-            {subpuzzlesWithAnswer.map(({ title, slug }) => (
-              <tr key={slug}>
-                <td>{title}</td>
-                <td>{subpuzzleAnswersBySlug[slug]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </StyledTable>
-      )}
-      {pickedUpMartini && (
+      {pickupComplete && (
         <>
-          {Object.values(SUBPUZZLE_DATA_BY_SLUG).map(({ slug, color }) => {
-            const answer = subpuzzleAnswersBySlug[slug];
+          <h3>Your Promo Codes</h3>
+          {sortedSubpuzzleStatus.map(({ subpuzzle_slug, answer, color }) => {
             if (answer) {
               return (
                 <Tileset
-                  key={slug}
+                  key={subpuzzle_slug}
                   style={{ maxWidth: `${answer.length * 60}px` }}
                 >
                   <TilesWrapper>
@@ -354,7 +338,9 @@ if (elem) {
     window as unknown as { initialTeamState: TeamHuntState }
   ).initialTeamState;
   const initialPuzzleStateLog = (
-    window as unknown as { initialPuzzleStateLog: PuzzleStateLogEntry[] }
+    window as unknown as {
+      initialPuzzleStateLog: PuzzleStateLogEntry[];
+    }
   ).initialPuzzleStateLog;
   root.render(
     <App

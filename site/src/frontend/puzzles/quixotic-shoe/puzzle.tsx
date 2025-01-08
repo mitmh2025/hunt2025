@@ -1,14 +1,8 @@
 import React from "react";
 import type { PuzzleState, TeamHuntState } from "../../../../lib/api/client";
 
-const Puzzle = ({
-  teamState,
-  puzzleState,
-}: {
-  teamState: TeamHuntState;
-  puzzleState: PuzzleState;
-}): JSX.Element => {
-  const inlineScript = `window.initialTeamState = ${JSON.stringify(teamState)}; window.initialPuzzleState = ${JSON.stringify(puzzleState)}`;
+const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
+  const inlineScript = `window.initialTeamState = ${JSON.stringify(teamState)};`;
   return (
     <>
       <noscript>This puzzle requires Javascript.</noscript>
