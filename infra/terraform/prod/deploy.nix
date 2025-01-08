@@ -8,7 +8,7 @@
     route53.aliases = [
       "atlantis"
     ];
-    machineType = "e2-custom-2-12288"; # 2 vCPU, 12 GB RAM
+    machineType = "e2-standard-4"; # 4 vCPU, 16 GB RAM
     # SSD persistent disks have a limit of 30 IOPS and 0.48 MiB/s per GiB of capacity.
     # https://cloud.google.com/compute/docs/disks/performance#zonal_pd
     # Even though we don't need 100 GiB of capacity, this will give us 48 MiB/s throughput.
