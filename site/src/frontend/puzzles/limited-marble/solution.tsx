@@ -131,7 +131,7 @@ const Solution = (): JSX.Element => {
           <tr>
             <td>10</td>
             <td>d</td>
-            <td>arm enian western</td>
+            <td>armenian western</td>
             <td>lao</td>
             <td>laod</td>
             <td>լաոտ</td>
@@ -141,7 +141,7 @@ const Solution = (): JSX.Element => {
             <td>d</td>
             <td>persian</td>
             <td>armenian western</td>
-            <td>armenidan western</td>
+            <td>arm enian western</td>
             <td>شقپ ثدهشد صثسفثقد</td>
           </tr>
           <tr>
