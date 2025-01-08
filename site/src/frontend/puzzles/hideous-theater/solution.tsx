@@ -833,6 +833,11 @@ const Solution = (): JSX.Element => {
           <td>G(5.33)</td>
         </tr>
       </StyledTable>
+      <p>
+        Combining the boards according to the given arrangement yields the final
+        board (using red highlighting to show which squares are
+        occupied/attacked by Black pieces):
+      </p>
       <LinkedImage
         src={finalStageBoard}
         alt="A fractal chesboard, showing the solution from the final stage."
