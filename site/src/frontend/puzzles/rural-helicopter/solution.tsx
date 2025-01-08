@@ -269,7 +269,7 @@ const Solution = () => {
             <StyledTableCell>3</StyledTableCell>
             <StyledTableCell>LGI2</StyledTableCell>
             <StyledTableCell>116</StyledTableCell>
-            <StyledTableCell>T</StyledTableCell>
+            <StyledTableCell>t</StyledTableCell>
             <StyledTableCell>6</StyledTableCell>
             <StyledTableCell>AGC</StyledTableCell>
             <StyledTableCell>S</StyledTableCell>
