@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import {
   CLEANSTRING_REGEX,
@@ -12,18 +12,22 @@ import type {
   GuessResponsesByUuid,
   MinimalRounds,
 } from "./puzzle-components/Typedefs";
-import { getGuessedUuids, getGuessesByUuid } from "./puzzle-components/Util";
+import { getGuessesByUuid } from "./puzzle-components/Util";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
 
 const App = (): JSX.Element => {
   const [
-    { availableRounds, disabledByUuid, guessResponsesByUuid, queryByUuid },
+    {
+      availableRounds,
+      disabledByUuid,
+      guessedUuids,
+      guessResponsesByUuid,
+      queryByUuid,
+    },
     dispatch,
   ] = usePuzzleState();
-  const [guessedUuids, setGuessedUuids] =
-    useState<Set<string>>(getGuessedUuids());
 
   useEffect(() => {
     fetch("/puzzles/the_annual_massachusetts_spelling_bee/state", {
@@ -57,7 +61,6 @@ const App = (): JSX.Element => {
         `${LOCAL_STORAGE_PREFIX}${uuid}`,
         guess.toUpperCase().replace(CLEANSTRING_REGEX, ""),
       );
-      setGuessedUuids(new Set(...guessedUuids, uuid));
       dispatch({
         type: PuzzleActionType.GUESS,
         uuid,
@@ -78,7 +81,7 @@ const App = (): JSX.Element => {
       {availableRounds.rounds.length === 0 && (
         <StyledDiv>Loading spelling bee...</StyledDiv>
       )}
-      {availableRounds.rounds.map((round) => (
+      {availableRounds.rounds.map((round, i) => (
         <RoundView
           key={round.name}
           disabledByUuid={disabledByUuid}
@@ -98,14 +101,14 @@ const App = (): JSX.Element => {
                 type: PuzzleActionType.RESTART_ROUND,
                 round,
               });
-              setGuessedUuids(guessedUuids.difference(uuidsToRemove));
             }
           }}
           queryByUuid={queryByUuid}
           round={round}
+          showRestartButton={i === availableRounds.rounds.length - 1}
         />
       ))}
-      {availableRounds.rounds.length > 1 && (
+      {availableRounds.message && (
         <StyledDiv>
           <SpellingBeeStatusViewProps rounds={availableRounds} />
           <input
@@ -129,13 +132,12 @@ const App = (): JSX.Element => {
                     localStorage.removeItem(item);
                   }
                 }
-                setGuessedUuids(new Set<string>());
                 dispatch({
                   type: PuzzleActionType.RESTART_PUZZLE,
                 });
               }
             }}
-          />{" "}
+          />
         </StyledDiv>
       )}
     </>

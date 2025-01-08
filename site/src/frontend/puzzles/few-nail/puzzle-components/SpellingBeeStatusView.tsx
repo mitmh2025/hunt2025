@@ -20,7 +20,11 @@ export default function SpellingBeeStatusViewProps({
   return (
     <>
       {rounds.message && <StyledDiv>{rounds.message}</StyledDiv>}
-      {rounds.audio && <StyledAudio controls src={rounds.audio} />}
+      {rounds.audio && (
+        <StyledDiv>
+          <StyledAudio controls src={rounds.audio} />
+        </StyledDiv>
+      )}
     </>
   );
 }

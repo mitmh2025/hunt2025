@@ -13,6 +13,7 @@ type RoundProps = {
   onRestart: () => void;
   queryByUuid: Record<string, string>;
   round: MinimalRound;
+  showRestartButton: boolean;
 };
 
 export default function RoundView({
@@ -23,6 +24,7 @@ export default function RoundView({
   onRestart,
   queryByUuid,
   round,
+  showRestartButton,
 }: RoundProps): JSX.Element {
   return (
     <StyledDiv>
@@ -39,9 +41,11 @@ export default function RoundView({
         />
       ))}
       <RoundStatusView round={round} />
-      <div>
-        <input type="submit" value="Restart Round" onClick={onRestart} />
-      </div>
+      {showRestartButton && (
+        <div>
+          <input type="submit" value="Restart Round" onClick={onRestart} />
+        </div>
+      )}
     </StyledDiv>
   );
 }

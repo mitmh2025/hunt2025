@@ -27,6 +27,7 @@ const UnevenAztecWrapper = styled.div`
 
 const LargeText = styled.div`
   font-size: 24px;
+  margin-bottom: 1em;
 `;
 
 const Italics = styled.span`
