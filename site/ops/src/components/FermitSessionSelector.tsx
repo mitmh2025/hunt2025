@@ -12,6 +12,8 @@ const SessionSelectorContainer = styled.div`
   width: 90%;
   padding: 2px 0 0 5px;
   margin: 0px auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 const SessionSelectorOptions = styled.div`
   font-size: 80%;
@@ -28,10 +30,13 @@ const RowContainer = styled.div`
   display: flex;
   margin: 5px 0;
 `;
-const RowTitle = styled.div`
+const SessionSummary = styled.div`
   width: 500px;
 `;
 const SelectButton = styled.button``;
+const ActiveSession = styled.div`
+  display: flex;
+`;
 
 function SessionSelectorRow({
   buttonText,
@@ -45,9 +50,9 @@ function SessionSelectorRow({
   return (
     <>
       <RowContainer>
-        <RowTitle>
+        <SessionSummary>
           {session.title} ({session.status}) - {session.teams.length} / 10 teams
-        </RowTitle>
+        </SessionSummary>
         <SelectButton
           onClick={() => {
             if (dispatch) {
@@ -73,7 +78,10 @@ export function FermitSessionSelector({ buttonText }: { buttonText: string }) {
 
   if (fermitData.activeSession) {
     return (
-      <>
+      <ActiveSession>
+        <SessionSummary>
+          {fermitData.activeSession.title} ({fermitData.activeSession.status}) - {fermitData.activeSession.teams.length} / 10 teams
+        </SessionSummary>
         <button
           onClick={() => {
             if (dispatch) {
@@ -86,7 +94,7 @@ export function FermitSessionSelector({ buttonText }: { buttonText: string }) {
         >
           Back
         </button>
-      </>
+      </ActiveSession>
     );
   } else {
     return (
