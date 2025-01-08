@@ -80,7 +80,7 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
         <div id="interaction-root">
           <Interaction
             currentNode={{
-              id: "1a",
+              id: "2",
               bgImgSrc: BoardwalkBg,
               bgImgAlt:
                 "Glowingly lit arcade full of carnie games and machines",
@@ -91,27 +91,63 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
                 pos: { x: 1400, y: 0 },
               },
               speaker: "Billie",
-              line: "It was a dark and stormy night, in a MITropolis that knows how to keep its secrets.",
+              line: "You’re in debt?  For <em>arcade games?</em>",
               choices: [
                 {
                   id: "a",
-                  text: "Chocolate",
+                  text: "You’re in debt?  For <em>arcade games?</em>",
+                  percentage: 0.7,
                 },
                 {
                   id: "b",
-                  text: "Vanilla",
-                },
-                {
-                  id: "c",
-                  text: "Mango",
-                },
-                {
-                  id: "d",
-                  text: "Pistachio",
+                  text: "Why did you assume I was with the mob?",
+                  percentage: 0.3,
+                  winner: true,
                 },
               ],
+              votingActive: false,
             }}
-            history={[]}
+            history={[
+              {
+                id: "1a",
+                bgImgSrc: BoardwalkBg,
+                bgImgAlt:
+                  "Glowingly lit arcade full of carnie games and machines",
+                interviewee: {
+                  name: "Roger",
+                  imgSrc: RogerBaseline,
+                  alt: "Young man in a sailor's outfit",
+                  pos: { x: 1400, y: 0 },
+                },
+                speaker: "Billie",
+                line: "It was a dark and stormy night, in a MITropolis that knows how to keep its secrets.",
+              },
+              {
+                id: "2",
+                bgImgSrc: BoardwalkBg,
+                bgImgAlt:
+                  "Glowingly lit arcade full of carnie games and machines",
+                interviewee: {
+                  name: "Roger",
+                  imgSrc: RogerBaseline,
+                  alt: "Young man in a sailor's outfit",
+                  pos: { x: 1400, y: 0 },
+                },
+                speaker: "Roger",
+                line: "What do you want from me?  I’m busted, ship’s stuck in port, there’s no work for me right now.  And I’m on a losing streak at these games that’s put me even deeper in the hole!",
+                choices: [
+                  {
+                    id: "a",
+                    text: "You’re in debt?  For <em>arcade games?</em>",
+                  },
+                  {
+                    id: "b",
+                    text: "Why did you assume I was with the mob?",
+                  },
+                ],
+                votingActive: true,
+              },
+            ]}
           />
         </div>
       </>

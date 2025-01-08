@@ -4,14 +4,14 @@ import {
   Billie,
   Choices,
   Content,
+  DialogueChoice,
   Interviewee,
   proportionify,
   Scrollback,
   UIWrapper,
   Wrapper,
 } from "./Layout";
-import DefaultBillieAvi from "./assets/billie.png";
-import { Button } from "../components/StyledUI";
+import DefaultBillieAvi from "../hub/assets/billie.png";
 
 type Interviewee = {
   name: string;
@@ -23,7 +23,8 @@ type Interviewee = {
 type Choice = {
   text: string;
   id: string;
-  disabled?: boolean;
+  selected?: boolean;
+  winner?: boolean;
   percentage?: number;
 };
 
@@ -38,6 +39,7 @@ type UINode = {
   billieImgAlt?: string;
   line: string;
   choices?: Choice[];
+  votingActive?: boolean;
 };
 
 type Props = {
@@ -97,16 +99,44 @@ const Interaction = ({ currentNode, history }: Props) => {
               {currentNode.speaker && (
                 <span className="speaker">{currentNode.speaker}: </span>
               )}
-              <span>{currentNode.line}</span>
+              <span dangerouslySetInnerHTML={{ __html: currentNode.line }} />
             </p>
           </Scrollback>
           <Choices>
             {currentNode.choices && (
               <>
-                <h4>Select a response:</h4>
+                <h4>
+                  {currentNode.votingActive
+                    ? "Select a response: (timer goes here)"
+                    : "Result:"}
+                </h4>
                 <div className="choice-buttons">
                   {currentNode.choices.map((choice) => (
-                    <Button key={`choice-${choice.id}`}>{choice.text}</Button>
+                    <DialogueChoice
+                      key={`choice-${choice.id}`}
+                      style={{
+                        background: `linear-gradient(90deg, ${choice.winner ? "var(--teal-700)" : "var(--gray-900)"} ${(choice.percentage ?? 0) * 100}%, transparent ${(choice.percentage ?? 0) * 100}%)`,
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="current-vote"
+                        value={choice.id}
+                        id={choice.id}
+                        disabled={!currentNode.votingActive}
+                      ></input>
+                      <label htmlFor={choice.id}>
+                        <span
+                          className="text"
+                          dangerouslySetInnerHTML={{ __html: choice.text }}
+                        />
+                        {choice.percentage && (
+                          <span className="percentage">
+                            {choice.percentage * 100}%
+                          </span>
+                        )}
+                      </label>
+                    </DialogueChoice>
                   ))}
                 </div>
               </>

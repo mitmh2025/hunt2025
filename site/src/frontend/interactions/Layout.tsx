@@ -36,7 +36,7 @@ export const UIWrapper = styled.div`
   align-items: stretch;
   gap: ${proportionify(6)};
   min-height: ${proportionify(HEIGHT / 2)};
-  border: ${proportionify(2)} solid var(--gold-400);
+  border: ${proportionify(2)} solid var(--gold-700);
 `;
 
 export const Billie = styled.div`
@@ -48,8 +48,8 @@ export const Billie = styled.div`
   min-width: ${proportionify(360)};
   padding: ${proportionify(16)};
   background-color: var(--nav-bar-bg);
-  color: var(--gold-400);
-  border-right: ${proportionify(2)} solid var(--gold-400);
+  color: var(--gold-500);
+  border-right: ${proportionify(2)} solid var(--gold-700);
 
   .avi {
     flex: 1;
@@ -59,7 +59,7 @@ export const Billie = styled.div`
     background-position: center center;
     border: ${proportionify(4)} solid var(--black);
     box-shadow:
-      0 0 0 ${proportionify(4)} var(--gold-400),
+      0 0 0 ${proportionify(4)} var(--gold-700),
       0px ${proportionify(4)} ${proportionify(8)} var(--black);
   }
 
@@ -79,7 +79,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  border-left: ${proportionify(2)} solid var(--gold-400);
+  border-left: ${proportionify(2)} solid var(--gold-700);
 `;
 
 export const Scrollback = styled.div`
@@ -103,14 +103,67 @@ export const Scrollback = styled.div`
 export const Choices = styled.div`
   flex: 0;
   padding-right: 1rem;
+  margin: 0;
+
   h4 {
     margin: ${proportionify(8)} ${proportionify(16)};
     font-family: var(--body-font);
   }
+
   .choice-buttons {
-    button {
-      margin: ${proportionify(4)} 0;
-      width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: ${proportionify(6)};
+    margin: 0;
+  }
+`;
+
+export const DialogueChoice = styled.div`
+  position: relative;
+
+  input {
+    appearance: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    + label {
+      display: flex;
+      padding: ${proportionify(16)};
+      border: ${proportionify(1)} solid var(--gold-500);
+      border-radius: ${proportionify(8)};
+      cursor: pointer;
+
+      .text {
+        flex: 1;
+      }
+      .percentage {
+        font-weight: bold;
+      }
+    }
+
+    &:checked + label {
+      background-color: var(--gold-600);
+      color: var(--black);
+    }
+
+    &:not(:disabled) + label:hover {
+      background-color: var(--nav-bar-bg);
+      margin-top: ${proportionify(-4)};
+      margin-left: ${proportionify(-2)};
+      border-bottom-width: ${proportionify(5)};
+      border-right-width: ${proportionify(2)};
+    }
+
+    &:checked:not(:disabled) + label:hover {
+      background-color: var(--gold-400);
+      color: var(--black);
+      border-color: var(--gold-700);
+    }
+
+    &:disabled + label {
+      cursor: default;
     }
   }
 `;
