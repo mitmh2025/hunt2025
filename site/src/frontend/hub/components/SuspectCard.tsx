@@ -110,6 +110,7 @@ const Card = styled.div<{ $statusUpdateYAdjust?: number }>`
   img {
     margin: ${getRelativeSizeCss(20)} ${getRelativeSizeCss(20)} 0
       ${getRelativeSizeCss(20)};
+    width: ${getRelativeSizeCss(343)};
     background-color: var(--gray-400);
     opacity: 0.9;
   }
