@@ -362,7 +362,7 @@ async function main({
       teamInfos.set(entry.team_id, teamInfo.reduce(entry));
       modified.add(entry.team_id);
     }
-    console.log("After batch teams", teamInfos);
+    console.log("team registration modified for", modified);
     for (const teamId of modified) {
       syncQueue
         .exec(() => processTeamInfo(teamId))
@@ -486,6 +486,7 @@ async function main({
       const name = pod.metadata?.name;
       const teamId = parseInt(pod.metadata?.labels?.teamId ?? "", 10);
       if (!uid || !name || !teamId) {
+        console.warn("received incomplete pod update", phase, pod);
         return;
       }
       const podPhase = pod.status?.phase;
@@ -532,7 +533,7 @@ async function main({
         modified.add(teamId);
       }
     }
-    console.log("After batch teams", teamStates);
+    console.log("team info updated for", modified);
     for (const teamId of modified) {
       syncQueue
         .exec(() => {
