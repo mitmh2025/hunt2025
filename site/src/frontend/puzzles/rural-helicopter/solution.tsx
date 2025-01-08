@@ -109,7 +109,7 @@ const Solution = () => {
             <StyledTableCell>2</StyledTableCell>
             <StyledTableCell>SLC2A9</StyledTableCell>
             <StyledTableCell>Hyperuricosuria</StyledTableCell>
-            <StyledTableCell>Yorkie-Poo</StyledTableCell>
+            <StyledTableCell>Yorkshire Terrier</StyledTableCell>
             <StyledTableCell>101</StyledTableCell>
             <StyledTableCell>e</StyledTableCell>
           </tr>
@@ -125,7 +125,7 @@ const Solution = () => {
             <StyledTableCell>4</StyledTableCell>
             <StyledTableCell>SLC37A2</StyledTableCell>
             <StyledTableCell>Craniomandibular Osteopathy</StyledTableCell>
-            <StyledTableCell>Labradoodle</StyledTableCell>
+            <StyledTableCell>Aussiedoodle</StyledTableCell>
             <StyledTableCell>67</StyledTableCell>
             <StyledTableCell>C</StyledTableCell>
           </tr>
@@ -149,7 +149,7 @@ const Solution = () => {
             <StyledTableCell>7</StyledTableCell>
             <StyledTableCell>SEL1L</StyledTableCell>
             <StyledTableCell>Progressive early onset ataxia</StyledTableCell>
-            <StyledTableCell>Beagle</StyledTableCell>
+            <StyledTableCell>Finnish Hound</StyledTableCell>
             <StyledTableCell>111</StyledTableCell>
             <StyledTableCell>o</StyledTableCell>
           </tr>
@@ -165,7 +165,7 @@ const Solution = () => {
             <StyledTableCell>9</StyledTableCell>
             <StyledTableCell>NDRG1</StyledTableCell>
             <StyledTableCell>Inherited polyneuropathy</StyledTableCell>
-            <StyledTableCell>Alaskan Husky</StyledTableCell>
+            <StyledTableCell>Alaskan Malamute</StyledTableCell>
             <StyledTableCell>65</StyledTableCell>
             <StyledTableCell>A</StyledTableCell>
           </tr>
@@ -215,7 +215,7 @@ const Solution = () => {
             <StyledTableCell>15</StyledTableCell>
             <StyledTableCell>SOD1</StyledTableCell>
             <StyledTableCell>Degenerative Myelopathy</StyledTableCell>
-            <StyledTableCell>Australian Stumpy Tail Cattle Dog</StyledTableCell>
+            <StyledTableCell>Bichon Frisé</StyledTableCell>
             <StyledTableCell>68</StyledTableCell>
             <StyledTableCell>D</StyledTableCell>
           </tr>
