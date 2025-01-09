@@ -37,6 +37,7 @@ import TheBoardwalk from "./dental-shark";
 import CanDoTransmissions from "./diligent-spy";
 import TheThief from "./dimpled-star";
 import FindOtherWaysOfSeeing from "./discrete-spine";
+import ToDoTileThatRectangle from "./distorted-bugle";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
@@ -381,6 +382,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   in_communicado_tonight: InCommunicadoTonight,
+  to_do_tile_that_rectangle: ToDoTileThatRectangle,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 
