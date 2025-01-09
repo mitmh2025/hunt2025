@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import boyband from "./assets/boyband987.mp3";
 import classical from "./assets/classical905.mp3";
@@ -280,9 +281,18 @@ const Solution = () => {
       <p>
         After solving Papa’s Stash, teams receive the clue phrase{" "}
         <Mono>SAME LOCATIONS TUNED TO PM 23pi/20</Mono>. After returning to the
-        locations and tuning to 23pi/20, there is now a second broadcast of
-        Never Gonna Give You Up. Every few seconds, an announcer says a pair of
-        letters in the answer.
+        locations and tuning to{" "}
+        <Math>
+          <MFrac>
+            <MRow>
+              <MN>23</MN>
+              <MI>π</MI>
+            </MRow>
+            <MN>20</MN>
+          </MFrac>
+        </Math>
+        , there is now a second broadcast of Never Gonna Give You Up. Every few
+        seconds, an announcer says a pair of letters in the answer.
       </p>
       <StyledTable>
         <tr>
