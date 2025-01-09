@@ -79,7 +79,7 @@ const puzzle: PuzzleDefinition = {
   editors: ["Kevin Hwang", "Steve Banzaert", "Teddy McArthur"],
   additional_credits: [
     {
-      for_what: "Other",
+      for_what: "Voice acting",
       who: [
         "Ariel Schwartz",
         "Eric Marion",

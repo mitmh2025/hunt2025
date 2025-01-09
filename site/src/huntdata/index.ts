@@ -311,11 +311,11 @@ const HUNT: Hunt = {
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "incognito" },
         { id: "ptp03", unlocked_if: {
           oneOf: [
-            {gate_satisfied: "ptg04"},
-            {gate_satisfied: "ptg05"},
-            {gate_satisfied: "ptg06"},
-            {gate_satisfied: "ptg07"},
-            {gate_satisfied: "ptg08"}
+            {gate_satisfied: "ptg09"},
+            {gate_satisfied: "ptg10"},
+            {gate_satisfied: "ptg11"},
+            {gate_satisfied: "ptg12"},
+            {gate_satisfied: "ptg13"}
           ]
         }, slug: "and_now_a_puzzling_word_from_our_sponsors" },
         { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },

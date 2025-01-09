@@ -563,10 +563,13 @@ export async function getRouter({
     slug: string,
     knex: Knex,
   ): Promise<PuzzleState | undefined> => {
+    const puzzleStateLogEntries = PUZZLES[slug]?.subpuzzles
+      ? (await puzzleStateLog.getCachedLog(knex, redisClient, team_id)).entries
+      : [];
     return formatPuzzleState(
       slug,
       (await activityLog.getCachedLog(knex, redisClient, team_id)).entries,
-      (await puzzleStateLog.getCachedLog(knex, redisClient, team_id)).entries,
+      puzzleStateLogEntries,
     );
   };
 
@@ -1127,10 +1130,7 @@ export async function getRouter({
             knex,
             async function (_, mutator) {
               const puzzle_log = mutator.log.filter(
-                (e) =>
-                  "slug" in e &&
-                  e.slug === parent_slug &&
-                  e.data.subpuzzle_slug === slug,
+                (e) => e.slug === parent_slug && e.data.subpuzzle_slug === slug,
               );
 
               // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
@@ -1142,13 +1142,13 @@ export async function getRouter({
                 (e) => e.data.type === "rate_limits_reset",
               );
               const last_reset_time = last_reset_time_record?.timestamp;
-              const previous_guess_times = puzzle_log
-                .filter(
-                  (e) =>
-                    e.data.type === "subpuzzle_guess_submitted" &&
-                    e.data.subpuzzle_slug === slug &&
-                    e.data.status === "incorrect",
-                )
+              const previous_guesses = puzzle_log.filter(
+                (e) =>
+                  e.data.type === "subpuzzle_guess_submitted" &&
+                  e.data.subpuzzle_slug === slug,
+              );
+              const previous_guess_times = previous_guesses
+                .filter((e) => e.data.status === "incorrect")
                 .map((e) => e.timestamp);
               const effective_previous_guess_times =
                 last_reset_time !== undefined
@@ -1176,25 +1176,23 @@ export async function getRouter({
                 status = "correct";
               }
 
-              // Attempt to insert a new guess.  If this guess's input matches some other canonical
-              // input, inserted should be empty thanks to the unique index and
-              // onConflict()/ignore().
-              const inserted = await mutator.appendLog({
-                team_id,
-                slug: parent_slug,
-                data: {
-                  type: "subpuzzle_guess_submitted",
-                  subpuzzle_slug: slug,
-                  canonical_input,
-                  status,
-                  response: responseText,
-                },
-              });
-
-              // Only add relevant entries to the activity log if the guess was novel and inserted
-              // a record.  Otherwise, we might grant double rewards for the same guess.
-              if (inserted !== undefined) {
-                // This was a new guess.
+              // Check whether the same guess has already been submitted
+              // for this slug.
+              const isDuplicateGuess = previous_guesses.some(
+                (e) => e.data.canonical_input === canonical_input,
+              );
+              if (!isDuplicateGuess) {
+                await mutator.appendLog({
+                  team_id,
+                  slug: parent_slug,
+                  data: {
+                    type: "subpuzzle_guess_submitted",
+                    subpuzzle_slug: slug,
+                    canonical_input,
+                    status,
+                    response: responseText,
+                  },
+                });
                 if (correct_answer) {
                   // It was right and the puzzle is now solved.
                   await mutator.appendLog({
@@ -1212,35 +1210,40 @@ export async function getRouter({
                   if (
                     parent_slug === "and_now_a_puzzling_word_from_our_sponsors"
                   ) {
-                    const quixotic_subpuzzle_slugs = new Set(
-                      Object.keys(quixoticSubpuzzleDataBySlug),
+                    const quixotic_subpuzzle_slugs = Object.keys(
+                      quixoticSubpuzzleDataBySlug,
+                    );
+                    const quixotic_subpuzzle_slugs_set = new Set(
+                      quixotic_subpuzzle_slugs,
                     );
                     const quixotic_solve_logs = mutator.log.filter(
                       (e) =>
                         "slug" in e &&
                         e.slug === parent_slug &&
-                        quixotic_subpuzzle_slugs.has(
+                        quixotic_subpuzzle_slugs_set.has(
                           e.data.subpuzzle_slug as string,
                         ) &&
                         e.data.type === "subpuzzle_solved",
                     );
+                    const solved_quixotic_slugs = new Set(
+                      quixotic_solve_logs.map((e) => e.data.subpuzzle_slug),
+                    );
                     if (
-                      quixotic_solve_logs.length ===
-                      quixotic_subpuzzle_slugs.size
+                      quixotic_subpuzzle_slugs.every((slug) =>
+                        solved_quixotic_slugs.has(slug),
+                      )
                     ) {
-                      const promises = [...quixotic_subpuzzle_slugs].map(
-                        (slug) => {
-                          return mutator.appendLog({
-                            team_id,
-                            slug: parent_slug,
-                            data: {
-                              type: "all_subpuzzles_solved",
-                              subpuzzle_slug: slug,
-                              ...quixoticSubpuzzleDataBySlug[slug],
-                            },
-                          });
-                        },
-                      );
+                      const promises = quixotic_subpuzzle_slugs.map((slug) => {
+                        return mutator.appendLog({
+                          team_id,
+                          slug: parent_slug,
+                          data: {
+                            type: "all_subpuzzles_solved",
+                            subpuzzle_slug: slug,
+                            ...quixoticSubpuzzleDataBySlug[slug],
+                          },
+                        });
+                      });
                       await Promise.all(promises);
                     }
                   }
