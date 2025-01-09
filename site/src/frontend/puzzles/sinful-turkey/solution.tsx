@@ -140,7 +140,7 @@ const Solution = (): JSX.Element => {
         pattern must be read as 8-bit ASCII, where the white-controlled squares
         are 1’s and the rest are 0’s, read row-wise. This results in the string
         01010010 01000111 01000010 01101111 01101110 01101100 01111001 01000010,
-        which translates to <Mono>RGB ONLY B</Mono>.
+        which translates to <Mono>RGBonlyB</Mono>.
       </p>
       <h4>Secret Extraction: Binairo</h4>
       <p>

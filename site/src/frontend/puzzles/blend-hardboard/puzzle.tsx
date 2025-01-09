@@ -89,10 +89,14 @@ const BigCaps = styled.span`
   font-size: 24px;
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-rows: repeat(5, auto);
-  grid-template-columns: repeat(2, auto);
+const FlexRow = styled.div`
+  display: flex;
+  gap: 2em;
+`;
+
+const FlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 1em;
 `;
 
@@ -146,11 +150,18 @@ const Listing = ({
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <Grid>
-        {DATA.map((props, i) => (
-          <Listing key={i} {...props} />
-        ))}
-      </Grid>
+      <FlexRow>
+        <FlexColumn>
+          {DATA.slice(0, 5).map((props, i) => (
+            <Listing key={i} {...props} />
+          ))}
+        </FlexColumn>
+        <FlexColumn>
+          {DATA.slice(5).map((props, i) => (
+            <Listing key={i} {...props} />
+          ))}
+        </FlexColumn>
+      </FlexRow>
     </>
   );
 };

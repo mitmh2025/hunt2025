@@ -190,7 +190,7 @@ const Solution = (): JSX.Element => {
         );
       })}
       {GROUPED_PUZZLES.map(
-        ({ uuid, lastPuzzle, subgroups, finalVoltage }, i) => {
+        ({ uuid, firstPuzzle, lastPuzzle, subgroups, finalVoltage }, i) => {
           return (
             <>
               <h3 key={uuid}>Circuit {i + 1}</h3>
@@ -201,6 +201,10 @@ const Solution = (): JSX.Element => {
                   <th>Prompt</th>
                   <th>Solution</th>
                 </tr>
+                <RowGroup puzzles={[firstPuzzle]} />
+                <Subheader>
+                  The source voltage of the circuit is {firstPuzzle.solution}V.
+                </Subheader>
                 {subgroups.map(({ resistance, puzzles }) => (
                   <>
                     <RowGroup puzzles={puzzles} />
@@ -210,7 +214,9 @@ const Solution = (): JSX.Element => {
                 <Subheader>
                   Voltage across the last resistor is {finalVoltage}, from{" "}
                   {lastPuzzle.solution} extract{" "}
-                  {lastPuzzle.solution.replace(/\s/g, "")[finalVoltage - 1]}
+                  <Mono>
+                    {lastPuzzle.solution.replace(/\s/g, "")[finalVoltage - 1]}
+                  </Mono>
                 </Subheader>
               </Table>
             </>

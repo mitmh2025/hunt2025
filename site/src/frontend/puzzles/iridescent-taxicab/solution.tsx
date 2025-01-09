@@ -16,7 +16,7 @@ const DATA = [
   [
     "MIT seal",
     <>
-      pretending to be <strong>mens et manus</strong>
+      pretending to be <strong>Mens et Manus</strong>
     </>,
     "2",
     "E",
