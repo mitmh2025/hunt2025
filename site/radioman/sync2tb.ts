@@ -272,6 +272,7 @@ async function main({
         lastSolvedPuzzles !== undefined &&
         teamState.puzzles_solved.difference(lastSolvedPuzzles).size > 0
       ) {
+        console.log("team", teamId, "solved a puzzle");
         // Trigger a celebration
         await tbClient.client.ruleEngine
           .requestEntity({
@@ -286,7 +287,7 @@ async function main({
           })
           .then(check);
       }
-      teamSolvedPuzzles.set(teamId, teamState.puzzles_solved);
+      teamSolvedPuzzles.set(teamId, new Set(teamState.puzzles_solved));
     }
     if (modified) {
       customer = await tbClient.client.customer
