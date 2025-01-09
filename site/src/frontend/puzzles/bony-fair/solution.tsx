@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import LinkedImage from "../../components/LinkedImage";
 import { PuzzleAnswer } from "../../components/StyledUI";
 import chart1 from "./assets/chart1.png";
@@ -60,6 +61,7 @@ const SizedImage = styled(LinkedImage)`
 const Solution = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p>
         In the puzzle, we see a variety of emojis, colored circles and some
         letters around a 25x25 matrix. This appears to be some sort of adjacency

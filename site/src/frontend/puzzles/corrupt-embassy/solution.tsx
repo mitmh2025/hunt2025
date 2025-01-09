@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import {
   HScrollTableWrapper,
   Mono,
@@ -196,6 +197,7 @@ const TABLE_DATA: {
 const Solution = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p>
         This puzzle combines Eurovision entries and common fairytale motifs.
       </p>

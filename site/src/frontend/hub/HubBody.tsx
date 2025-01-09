@@ -1,13 +1,13 @@
 import React, { useLayoutEffect } from "react";
 import { styled } from "styled-components";
-import Cork from "../assets/cork.png";
+import Cork from "../assets/cork.jpg";
 import { HubFonts } from "./HubFonts";
 import BabyPhoto from "./assets/baby.png";
 import BilliePhoto from "./assets/billie.png";
 import BrickWall from "./assets/brickwall.jpg";
+import BulletinBoardBg from "./assets/bulletin_board_frame.png";
 import BusinessCardImg from "./assets/business_card.png";
 import CarterPhoto from "./assets/carter.png";
-import BulletinBoardBg from "./assets/frame_and_scuffs.png";
 import GladysPhoto from "./assets/gladys.png";
 import KatrinaPhoto from "./assets/katrina.png";
 import MainQuestionImg from "./assets/main_question.png";
@@ -15,6 +15,7 @@ import PapaPhoto from "./assets/papa.png";
 import pin_gold from "./assets/pin_gold.png";
 import pin_teal from "./assets/pin_teal.png";
 import RoverPhoto from "./assets/rover.png";
+import BulletinBoardScuffs from "./assets/scuffs.png";
 import SidecarPhoto from "./assets/sidecar.png";
 import Events from "./components/Events";
 import SuspectCard from "./components/SuspectCard";
@@ -38,6 +39,7 @@ const Wall = styled.div`
 const Board = styled.main`
   background:
     url(${BulletinBoardBg}) center / cover,
+    url(${BulletinBoardScuffs}) center / cover,
     url(${Cork}) center / ${getRelativeSizeCss(512)} repeat;
   overflow: hidden;
   width: min(calc(100vw - var(--scrollbar-width)), ${MAX_WIDTH}px);

@@ -21,7 +21,7 @@ import React, {
 import { css, styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import billie from "../../assets/billie.png";
-import cork from "../../assets/cork.png";
+import cork from "../../assets/cork.jpg";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
 import { PuzzleUnlockModal } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
