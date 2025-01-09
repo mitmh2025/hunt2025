@@ -77,6 +77,7 @@ const Puzzle = (): JSX.Element => {
     <>
       <StyledCrossword
         labels={LABELS}
+        labelsForEmptyCopy={LABELS}
         getAdditionalCellStyles={({ row, column }) => {
           const styles: CSSProperties = {};
           if (row === 0) {
