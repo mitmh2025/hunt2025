@@ -81,34 +81,41 @@ const App = (): JSX.Element => {
       {availableRounds.rounds.length === 0 && (
         <StyledDiv>Loading spelling bee...</StyledDiv>
       )}
-      {availableRounds.rounds.map((round, i) => (
-        <RoundView
-          key={round.name}
-          disabledByUuid={disabledByUuid}
-          dispatch={dispatch}
-          guess={guess}
-          guessResponsesByUuid={guessResponsesByUuid}
-          onRestart={() => {
-            if (HAS_STORAGE) {
-              const uuidsToRemove = new Set<string>();
-              for (const puzzle of round.puzzles) {
-                uuidsToRemove.add(puzzle.uuid);
-                localStorage.removeItem(
-                  `${LOCAL_STORAGE_PREFIX}${puzzle.uuid}`,
-                );
+      {availableRounds.rounds.map((round, i) => {
+        const nextRound = availableRounds.rounds[i + 1];
+        return (
+          <RoundView
+            key={round.name}
+            disabledByUuid={disabledByUuid}
+            dispatch={dispatch}
+            guess={guess}
+            guessResponsesByUuid={guessResponsesByUuid}
+            onRestart={() => {
+              if (HAS_STORAGE) {
+                const uuidsToRemove = new Set<string>();
+                for (const puzzle of round.puzzles) {
+                  uuidsToRemove.add(puzzle.uuid);
+                  localStorage.removeItem(
+                    `${LOCAL_STORAGE_PREFIX}${puzzle.uuid}`,
+                  );
+                }
+                dispatch({
+                  type: PuzzleActionType.RESTART_ROUND,
+                  round,
+                });
               }
-              dispatch({
-                type: PuzzleActionType.RESTART_ROUND,
-                round,
-              });
+            }}
+            queryByUuid={queryByUuid}
+            round={round}
+            // Show the restart button if we have not yet entered any new
+            showRestartButton={
+              !nextRound ||
+              nextRound.puzzles.every(({ uuid }) => !guessedUuids.has(uuid))
             }
-          }}
-          queryByUuid={queryByUuid}
-          round={round}
-          showRestartButton={i === availableRounds.rounds.length - 1}
-        />
-      ))}
-      {availableRounds.message && (
+          />
+        );
+      })}
+      {availableRounds.rounds.length > 0 && (
         <StyledDiv>
           <SpellingBeeStatusViewProps rounds={availableRounds} />
           <input
