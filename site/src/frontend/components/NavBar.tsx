@@ -320,6 +320,24 @@ const NavBar = ({
             <li>
               <NavLink href="/story">Story So Far</NavLink>
             </li>
+            <li>
+              <SubDropdown>
+                <NavLink tabIndex={0}>About</NavLink>
+                <ul>
+                  <li>
+                    <NavLink href="/about">How the Hunt Works</NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/radio">Radio Instruction Booklet</NavLink>
+                  </li>
+                  <li>
+                    <NavLink href="/health_and_safety">
+                      Health and Safety
+                    </NavLink>
+                  </li>
+                </ul>
+              </SubDropdown>
+            </li>
           </ul>
         </TopLevelDropdown>
         <Spacer />

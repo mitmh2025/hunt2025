@@ -23,6 +23,7 @@ import {
 } from "../rounds/illegal_search";
 import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render404, render500 } from "../utils/renderApp";
+import { aboutHandler } from "./routes/about";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import { hubHandler } from "./routes/hub";
@@ -330,6 +331,13 @@ export function registerUiRoutes({
   authRouter.post(
     "/interactions/:slug/complete",
     interactionCompletePostHandler,
+  );
+
+  authRouter.get(
+    "/about",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(aboutHandler, req, res, next);
+    }),
   );
 
   authRouter.get(
