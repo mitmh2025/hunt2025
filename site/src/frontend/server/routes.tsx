@@ -46,6 +46,7 @@ import {
   subpuzzleHandler,
   type SubpuzzleParams,
 } from "./routes/puzzle";
+import { radioHandler } from "./routes/radio/radio";
 import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
 
@@ -345,6 +346,13 @@ export function registerUiRoutes({
     "/health_and_safety",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(healthAndSafetyHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/radio",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(radioHandler, req, res, next);
     }),
   );
 
