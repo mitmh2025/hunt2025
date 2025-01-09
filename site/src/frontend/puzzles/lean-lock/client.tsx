@@ -19,6 +19,13 @@ const StyledContainer = styled.div`
   height: 600px;
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-bottom: 1em;
+`;
+
 const ResetButton = styled.button`
   display: block;
   border: 3px solid var(--black);
@@ -26,7 +33,6 @@ const ResetButton = styled.button`
   background-color: var(--white);
   padding: 8px;
   cursor: pointer;
-  margin-bottom: 1em;
 `;
 
 type Puzzle = {
@@ -263,12 +269,20 @@ const App = () => {
       edges: new Set(),
     };
     setup(defaultPuzzleState, presentation);
+    if (presentation.panzoom_instance) {
+      presentation.panzoom_instance.dispose();
+    }
     presentation.panzoom_instance = panzoom(presentation.svg, {
       smoothScroll: false,
       bounds: true,
       boundsPadding: 0.05,
       minZoom: 0.5,
+      initialZoom: 3,
+      onTouch: () => {
+        return false; // tells panoom to not preventDefault onTouch.
+      },
     });
+    presentation.panzoom_instance.moveTo(-1500, -150);
     presentation.panzoom_instance.on("panstart", () => {
       setGrabbing(true);
     });
@@ -282,29 +296,36 @@ const App = () => {
 
   return (
     <>
-      <ResetButton
-        onClick={() => {
-          if (
-            confirm("Are you sure you want to reset the state of this puzzle?")
-          ) {
-            if (HAS_STORAGE) {
-              const itemsToRemove: string[] = [];
-              for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
-                  itemsToRemove.push(key);
+      <FlexWrapper>
+        <ResetButton
+          onClick={() => {
+            if (
+              confirm(
+                "Are you sure you want to reset the state of this puzzle?",
+              )
+            ) {
+              if (HAS_STORAGE) {
+                const itemsToRemove: string[] = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                  const key = localStorage.key(i);
+                  if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
+                    itemsToRemove.push(key);
+                  }
+                }
+                for (const item of itemsToRemove) {
+                  localStorage.removeItem(item);
                 }
               }
-              for (const item of itemsToRemove) {
-                localStorage.removeItem(item);
-              }
+              reset();
             }
-            reset();
-          }
-        }}
-      >
-        Reset
-      </ResetButton>
+          }}
+        >
+          Reset
+        </ResetButton>
+        <div>
+          <i>Scroll or pinch to zoom. Click and drag or tap and drag to pan.</i>
+        </div>
+      </FlexWrapper>
       <StyledContainer style={{ cursor: grabbing ? "grabbing" : "grab" }}>
         <svg
           id="puzzle-image"
