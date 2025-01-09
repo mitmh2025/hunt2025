@@ -44,6 +44,7 @@ import {
   subpuzzleHandler,
   type SubpuzzleParams,
 } from "./routes/puzzle";
+import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
 
 // Type parameters to RequestHandler are:
@@ -183,6 +184,8 @@ export function registerUiRoutes({
   authRouter: Router;
   unauthRouter: Router;
 }) {
+  unauthRouter.get("/robots.txt", robotsHandler);
+
   unauthRouter.get(
     "/login",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
