@@ -107,7 +107,28 @@ in {
         # https://thingsboard.io/docs/user-guide/oauth-2-support/#oauth-20-configuration-parameters
 
         serviceConfig = {
-          ExecStart = "${pkgs.thingsboard}/bin/thingsboard-server -XX:+IgnoreUnrecognizedVMOptions -XX:+HeapDumpOnOutOfMemoryError -XX:-UseBiasedLocking -XX:+UseTLAB -XX:+ResizeTLAB -XX:+PerfDisableSharedMem -XX:+UseCondCardMark -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -XX:+UseStringDeduplication -XX:+ParallelRefProcEnabled -XX:MaxTenuringThreshold=10 -Xms256m -Xmx512m -Djna.debug_load=true -Dspring.profiles.active=local";
+          ExecStart = let
+            flags = [
+              # https://github.com/thingsboard/thingsboard/blob/master/application/src/main/conf/thingsboard.conf
+              "-XX:+IgnoreUnrecognizedVMOptions"
+              "-XX:+HeapDumpOnOutOfMemoryError"
+              "-XX:-UseBiasedLocking"
+              "-XX:+UseTLAB"
+              "-XX:+ResizeTLAB"
+              "-XX:+PerfDisableSharedMem"
+              "-XX:+UseCondCardMark"
+              "-XX:+UseG1GC"
+              "-XX:MaxGCPauseMillis=500"
+              "-XX:+UseStringDeduplication"
+              "-XX:+ParallelRefProcEnabled"
+              "-XX:MaxTenuringThreshold=10"
+
+              "-Xms256m"
+              "-Xmx1024m"
+              "-Djna.debug_load=true"
+              "-Dspring.profiles.active=local"
+            ];
+          in "${pkgs.thingsboard}/bin/thingsboard-server ${lib.escapeShellArgs flags}";
           TimeoutStartSec = "15min";
           Restart = "always";
           RestartSec = "5s";
