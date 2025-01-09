@@ -150,7 +150,7 @@ const Solution = (): JSX.Element => {
             <th>Composer</th>
             <th>Name</th>
             <th>Correct Name</th>
-            <th>Extract</th>
+            <th>Excerpt</th>
           </tr>
           {DATA.map(
             ([time, opera, composer, name, correctName, extract], i) => (
