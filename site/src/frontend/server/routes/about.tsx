@@ -1,15 +1,28 @@
 import { type Request } from "express";
 import React from "react";
+import { styled } from "styled-components";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { Math, MSup, MI, MO, MN, MSub } from "../../components/MathML";
 import { Wrapper } from "../../components/StyledUI";
+
+// Overrides global anchor color
+const StyledWrapper = styled(Wrapper)`
+  background-color: var(--white);
+  color: var(--black);
+  padding: 1em;
+
+  a {
+    color: var(--black);
+    text-decoration-color: var(--gray-800);
+  }
+`;
 
 export function aboutHandler(req: Request) {
   const teamState = req.teamState;
   if (teamState === undefined) return undefined;
 
   const node = (
-    <Wrapper>
+    <StyledWrapper>
       <h1>About the Hunt</h1>
       <h2>Hunt mechanics</h2>
       <h3>Keys 🗝️ and Unlocking Puzzles</h3>
@@ -301,7 +314,7 @@ export function aboutHandler(req: Request) {
       <h3>Bronze Sponsors</h3>
       <p>TODO(mprat)</p>
       <p>Additional thanks to SOLE, CAC, and MIT PD.</p>
-    </Wrapper>
+    </StyledWrapper>
   );
 
   return wrapContentWithNavBar(

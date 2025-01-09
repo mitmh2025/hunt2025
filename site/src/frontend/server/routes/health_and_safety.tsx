@@ -1,14 +1,32 @@
 import { type Request } from "express";
 import React from "react";
+import { styled } from "styled-components";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { Wrapper } from "../../components/StyledUI";
+
+// Overrides global anchor color
+const StyledWrapper = styled(Wrapper)`
+  background-color: var(--white);
+  color: var(--black);
+  padding: 1em;
+
+  h1,
+  h2 {
+    text-align: center;
+  }
+
+  a {
+    color: var(--black);
+    text-decoration-color: var(--gray-800);
+  }
+`;
 
 export function healthAndSafetyHandler(req: Request) {
   const teamState = req.teamState;
   if (teamState === undefined) return undefined;
 
   const node = (
-    <Wrapper>
+    <StyledWrapper>
       <h1>Health and Safety Guidelines</h1>
       <h2>USE COMMON SENSE</h2>
       <ul>
@@ -323,7 +341,7 @@ export function healthAndSafetyHandler(req: Request) {
         members and should actively discourage harassment within and among
         teams.
       </p>
-    </Wrapper>
+    </StyledWrapper>
   );
 
   return wrapContentWithNavBar(
