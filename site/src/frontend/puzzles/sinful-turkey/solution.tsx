@@ -160,7 +160,7 @@ const Solution = (): JSX.Element => {
         SCARLET PERCH, indicating that this is a red herring. Instead, read the
         1’s to produce the string{" "}
         <Mono>
-          THE ANSWER TO THE MINIPUZZLE IS <strong>TERWAS</strong>
+          GREAT WORK THE HIDDEN ANSWER IS <strong>TERWAS</strong>
         </Mono>
         .
       </p>
@@ -525,37 +525,37 @@ const Solution = (): JSX.Element => {
         <tr>
           <td>Ursa Minor</td>
           <td>α Ursae Minoris (Polaris)</td>
-          <td>02h 31m 47.08s</td>
+          <td>02h 31m 49.09s</td>
           <td>S</td>
         </tr>
         <tr>
           <td>Ursa Major</td>
           <td>λ Ursae Majoris (Tania Borealis)</td>
-          <td>10h 17m 05.93s</td>
+          <td>10h 17m 05.78s</td>
           <td>M</td>
         </tr>
         <tr>
           <td>Corvus</td>
           <td>η Corvi</td>
-          <td>12h 32m 04.48s</td>
+          <td>12h 32m 04.23s</td>
           <td>O</td>
         </tr>
         <tr>
           <td>Centaurus</td>
           <td>ζ Centauri (Alnair)</td>
-          <td>13h 55m 32.43s</td>
+          <td>13h 55m 32.39s</td>
           <td>R</td>
         </tr>
         <tr>
           <td>Boötes</td>
           <td>γ Boötis (Seginus)</td>
-          <td>14h 32m 04.76s</td>
+          <td>14h 32m 04.67s</td>
           <td>E</td>
         </tr>
         <tr>
           <td>Hercules</td>
           <td>δ Herculis</td>
-          <td>17h 15m 01.92s</td>
+          <td>17h 15m 01.91s</td>
           <td>C</td>
         </tr>
       </Table>
