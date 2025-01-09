@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { styled } from "styled-components";
 import phone from "./assets/phone.png";
 
@@ -299,7 +298,27 @@ const Display = styled.div`
 	height: 500px;
 `;
 
-function Puzzle() {
+const MessageText = styled.div`
+  position: relative;
+  top: 261px;
+  left: 83px;
+  width: 287px;
+  height: 168px;
+  background-color: #e2edec;
+  line-height: 1.3;
+`;
+
+const InputArea = styled.div`
+  width: 350px;
+  margin-left: 8px;
+  height: 70px;
+  float: left;
+  font-size: x-large;
+  font-family: monospace;
+  background-color: #e2edec;
+`;
+
+const Puzzle = () => {
   const [inputText, setInputText] = useState<string>("");
   const [messageText, setMessageText] = useState<string>("");
   const [currentRoom, setCurrentRoom] = useState<Room>(rooms[startRoom]);
@@ -332,29 +351,29 @@ function Puzzle() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log("foo");
     constructNextMessage();
     setInputText("");
   }
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
-      <Display>
-      <div className="messageText">
+    <Display>
+      <MessageText>
       {messageText}
-      </div>
-      </Display>
-      <div className="inputArea">
+      </MessageText>
+    </Display>
+      <form onSubmit={handleSubmit}>
+      <InputArea>
         <input
           type="text"
           value={inputText}
           onChange={e => setInputText(e.target.value.replace(/\s+/g, ''))}
-          className="inputTextArea"
         />
-        <button type="submit" className="sendBtn">
-        {/*<MdKeyboardArrowRight size={70} />*/}
+        <button type="submit">
+        Enter
         </button>
-      </div>
+      </InputArea>
     </form>
     </>
   );
