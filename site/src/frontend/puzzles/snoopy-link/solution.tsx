@@ -1,6 +1,8 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { HScrollTableWrapper } from "../../components/StyledUI";
+import adam from "./assets/adam.mp3";
+import adamCaptions from "./assets/adam.vtt";
 
 const TableElement = styled.table`
   width: 100%;
@@ -69,6 +71,11 @@ const Solution = () => {
         (“Email us an obscure fact that ruins something for us”), which unlocks
         an audio message in which Adam Conover gives the final answer,{" "}
         <strong>SAMGAKSAN</strong>.
+      </p>
+      <p>
+        <audio controls src={adam}>
+          <track default kind="captions" srcLang="en" src={adamCaptions} />
+        </audio>
       </p>
       <p>Details:</p>
       <Table>

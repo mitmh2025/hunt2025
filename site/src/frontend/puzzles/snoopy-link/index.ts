@@ -17,7 +17,7 @@ const puzzle: PuzzleDefinition = {
   ],
   additional_credits: [
     {
-      freeform: "Adam Conover",
+      freeform: "Special Thanks to Adam Conover",
     },
   ],
   content: {

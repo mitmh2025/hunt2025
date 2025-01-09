@@ -1,8 +1,5 @@
 %include "lib.liq"
 
-# TODO: Make script caching work instead of forcing a GC before start.
-settings.init.compact_before_start := false
-
 server.telnet()
 
 http_port = string.to_int(environment.get("HTTP_PORT"), default=8000)
@@ -23,6 +20,8 @@ state_path = "#{state_directory}/team_state.json"
 team_state = ref(
     try
         let json.parse ( v : {
+            team_id: int,
+            epoch: int,
             quixotic_shoe_enabled: bool,
             icy_box_enabled: bool,
             interaction: bool,
@@ -31,6 +30,8 @@ team_state = ref(
     catch err do
         log.important("failed to load cached state: #{err}")
         {
+            team_id=string.to_int(environment.get("TEAM_ID"), default=0),
+            epoch=0,
             quixotic_shoe_enabled=false,
             icy_box_enabled=false,
             interaction=false,
@@ -47,8 +48,16 @@ harbor.http.register(
     fun (request, response) -> begin
         try
             let json.parse v = request.body()
-            team_state := v
-            response.data("ok")
+            if team_state().team_id != 0 and v.team_id != team_state().team_id then
+                response.status_code(400)
+                response.data("wrong team, expecting #{team_state().team_id}")
+            elsif v.epoch >= team_state().epoch then
+                team_state := v
+                response.data("ok")
+            else
+                response.status_code(412) # Stale precondition
+                response.data("stale epoch, already have #{team_state().epoch}")
+            end
         catch err do
             response.status_code(400)
             response.data("invalid team state: #{err}")

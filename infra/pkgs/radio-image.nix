@@ -17,6 +17,8 @@
     Env = [
       "HTTP_PORT=80"
       "STATE_DIRECTORY=/state"
+      "LIQ_CACHE_SYSTEM_DIR=/lib/liq-cache"
+      "LIQ_CACHE_USER_DIR=/lib/liq-cache"
     ];
     WorkingDir = "/state";
     ExposedPorts = {

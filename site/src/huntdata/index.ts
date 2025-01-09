@@ -266,7 +266,7 @@ const HUNT: Hunt = {
         { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "art_history" } ,
         { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "magic_i" },
         { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_badly_broken_quote" },
-        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 }, // Charged
+        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "charged"},
         { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "commentary" },
         { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "seating_arrangements" },
         { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "editors_solemnity" },
@@ -363,6 +363,12 @@ const HUNT: Hunt = {
             { round_unlocked: "paper_trail" },
           ]},
         },
+        { id: "ptg04", internal_description: "Weather enabled for icy-box", satisfied_if: {
+          oneOf: [
+            { slot_unlocked: "ptp10" },
+            { round_unlocked: "paper_trail" },
+          ]},
+        },
       ],
       interactions: [
         {
@@ -452,7 +458,7 @@ const HUNT: Hunt = {
         { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "cahfee_regulah" }, // candy, in desk drawer/behind directional lock
         { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "the_center_is_in_plain_sight" }, // rings, behind binary switches
         { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1, slug: "jargon" }, // money, inside safe/combination lock
-        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "placeholder_isp09" }, // ledger, behind numeric lock/rug, should be given_up
+        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "given_up" }, // ledger, behind numeric lock/rug, should be given_up
         { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1, slug: "placeholder_isp10" }, // note, inside cryptex, should be smoke_em_if_youve_got_em
 
         // The next 8 puzzles are only discoverable once the first meta is
@@ -471,7 +477,7 @@ const HUNT: Hunt = {
         { id: "isp19", unlocked_if: { gate_satisfied: "isg27" }, prize: 0, slug: "cahfee_regulah_blacklight" }, // blacklight version of isp06, behind directional lock
         { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "the_center_is_in_plain_sight_blacklight" }, // blacklight version of isp07, behind binary switch lock
         { id: "isp21", unlocked_if: { gate_satisfied: "isg29" }, prize: 0, slug: "jargon_blacklight" }, // blacklight version of isp08, behind combination lock
-        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "placeholder_isp09_blacklight" }, // blacklight version of isp09, behind numeric lock
+        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "given_up_blacklight" }, // blacklight version of isp09, behind numeric lock
         { id: "isp23", unlocked_if: { gate_satisfied: "isg31" }, prize: 0, slug: "placeholder_isp10_blacklight" }, // blacklight version of isp10, behind word lock
 
         // Metas.

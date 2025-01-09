@@ -19,6 +19,7 @@
       ICY_BOX_DIR = builtins.path {
         path = "${radio-media}/icy-box";
       };
+      LIQ_CACHE_MAX_DAYS = "30000";
     };
   in builtins.concatLists (lib.mapAttrsToList (name: value: ["--set" name value]) env);
   meta.mainProgram = "radio-stream";

@@ -109,15 +109,22 @@ const Solution = (): JSX.Element => {
           </MSup>
         </Math>{" "}
         represent the complex number of unit length and angle 30°, then any path
-        that follows edges of Tile(1,1) can be represented as a sum of powers of
-        <MI>a</MI>. Here is an example zooming in on line #5:
+        that follows edges of Tile(1,1) can be represented as a sum of powers of{" "}
+        <Math>
+          <MI>a</MI>
+        </Math>
+        . Here is an example zooming in on line #5:
       </p>
       <LinkedImage
         src={image3}
         alt="A path drawn out on a zoomed in crop of the jigsaw above."
       />
       <p>
-        The arrows are labeled with the power of a used, so summing up we get:
+        The arrows are labeled with the power of{" "}
+        <Math>
+          <MI>a</MI>
+        </Math>{" "}
+        used, so summing up we get:
       </p>
       <OverflownP>
         <Math>

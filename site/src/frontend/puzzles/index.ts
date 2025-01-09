@@ -1,7 +1,7 @@
 import cryptex_note_blacklight from "../../frontend/rounds/illegal_search/assets/cryptex/cryptex_note_blacklight.png";
 import candy_modal_blacklight from "../../frontend/rounds/illegal_search/assets/desk_drawer/candy_modal_blacklight.png";
 import rings_modal_blacklight from "../../frontend/rounds/illegal_search/assets/fuse_box/rings_modal_blacklight.png";
-import ledger_blacklight from "../../frontend/rounds/illegal_search/assets/rug/numberlock_box_ledger_blacklight.png";
+import ledger_modal_blacklight from "../../frontend/rounds/illegal_search/assets/rug/ledger_modal_blacklight.png";
 import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/safe/money_modal_blacklight.png";
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
@@ -69,6 +69,7 @@ import CornMaize from "./kind-ruler";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
+import Charged from "./lean-lock";
 import CahfeeRegulah from "./left-rome";
 import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
@@ -160,11 +161,6 @@ import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
 import WordYore from "./metallic-dragon";
 
-const PlaceholderISP09 = makePlaceholder(
-  "placeholder_isp09",
-  "Placeholder 09",
-  "ATHLETIC CLUB",
-);
 const PlaceholderISP10 = makePlaceholder(
   "placeholder_isp10",
   "Placeholder 10",
@@ -178,6 +174,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
+  charged: Charged,
   chatgpt: ChatGPT,
   check_a_deez_words_out: CheckadeezWordsOut,
   downright_backwards: DownrightBackwards,
@@ -289,7 +286,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
   jargon: Jargon, // money, behind safe/combination lock
-  placeholder_isp09: PlaceholderISP09, // ledger, behind numeric lock/rug
+  given_up: GivenUp, // ledger, behind numeric lock/rug
   placeholder_isp10: PlaceholderISP10, // note, inside cryptex
 
   a_heap_of_clards: AHeapOfClards,
@@ -330,9 +327,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     asset: money_modal_blacklight,
     assetAlt: "Shift by difference from 8V",
   }),
-  placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
+  given_up_blacklight: blacklightPuzzle(GivenUp, {
     answer: "BROADCAST NEWS",
-    asset: ledger_blacklight,
+    asset: ledger_modal_blacklight,
     assetAlt: "Same locations tuned to PM 23pi/20",
   }),
   placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
@@ -382,6 +379,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   give_this_grid_a_shake: GiveThisGridAShake,
+  garden_anecdotes: GardenAnecdotes,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   in_communicado_tonight: InCommunicadoTonight,
@@ -389,8 +387,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   what_do_they_call_you: WhatDoTheyCallYou,
 
   // work in progress
-  garden_anecdotes: GardenAnecdotes,
-  given_up: GivenUp,
   the_thief: TheThief,
 };
 

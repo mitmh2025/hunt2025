@@ -509,6 +509,7 @@ export default function createConfigs(_env, argv) {
       // Included on specific puzzle pages
       puzzle_few_nail: "./src/frontend/puzzles/few-nail/client.tsx",
       puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
+      puzzle_lean_lock: "./src/frontend/puzzles/lean-lock/client.tsx",
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",
       puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
@@ -683,6 +684,9 @@ export default function createConfigs(_env, argv) {
     },
     experiments: {
       outputModule: true,
+    },
+    optimization: {
+      minimize: false,
     },
     output: {
       module: true,

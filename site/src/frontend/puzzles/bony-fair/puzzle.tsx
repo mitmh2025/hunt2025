@@ -36,9 +36,9 @@ const CHART_MAIN_GRID = [
     "🟡",
     "🟡",
     "🟡",
-    "A",
-    "A",
-    "A",
+    "⚪A",
+    "⚪A",
+    "⚪A",
     "⚪",
     "⚪",
     "⚪",
@@ -54,7 +54,7 @@ const CHART_MAIN_GRID = [
     "⚪",
   ],
   [
-    "A",
+    "🔴A",
     "❌",
     "❌",
     "❌",
@@ -82,7 +82,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "H",
+    "🔴H",
     "❌",
     "❌",
     "❌",
@@ -306,7 +306,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "M",
+    "⚪M",
     "✅",
     "❌",
     "❌",
@@ -334,7 +334,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "A",
+    "⚪A",
     "❌",
     "❌",
     "❌",
@@ -362,7 +362,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "P",
+    "⚪P",
     "❌",
     "❌",
     "✅",
@@ -415,7 +415,7 @@ const CHART_MAIN_GRID = [
     "✅",
     "❌",
     "❌",
-    "⏺",
+    "⏺️",
   ],
   [
     "⚪",
@@ -773,6 +773,13 @@ const SizedImage = styled(LinkedImage)`
   width: 150px;
 `;
 
+const StyledTable = styled.table`
+  td {
+    text-align: center;
+    vertical-align: middle;
+  }
+`;
+
 const Red = styled.td`
   background-color: #f4cccc;
 `;
@@ -788,7 +795,7 @@ const Puzzle = (): JSX.Element => {
         src={grid}
         alt="A large grid filled with ✅, ❌, 🌊 and ⏺️ emoji. Colored circles, some annotated with letters, line the edges of the grid. There are some emoji equations below the grid"
       />
-      <table className={COPY_ONLY_CLASS}>
+      <StyledTable className={COPY_ONLY_CLASS}>
         <tr>
           <td>{CHART_TOP_LEFT}</td>
           <td colSpan={26}>{CHART_TOP}</td>
@@ -812,7 +819,7 @@ const Puzzle = (): JSX.Element => {
             })}
           </tr>
         ))}
-      </table>
+      </StyledTable>
       <br className={COPY_ONLY_CLASS} />
       <br className={COPY_ONLY_CLASS} />
       <table className={COPY_ONLY_CLASS}>

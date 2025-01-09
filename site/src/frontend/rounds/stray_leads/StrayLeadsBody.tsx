@@ -13,8 +13,8 @@ const TableScape = styled.div`
   background-image: url(${Bg});
   background-size: cover;
   background-repeat: no-repeat;
-  width: min(var(--viewport-width), 1916px);
-  min-height: min(var(--viewport-height), 1075px);
+  width: min(calc(100vw - var(--scrollbar-width)), 1916px);
+  min-height: min(calc(100vh - var(--scrollbar-height), 1075px));
   margin: 0 auto;
 
   padding-bottom: 2rem;
@@ -25,7 +25,7 @@ const ContentWrapper = styled.div`
   height: 903px;
   margin: 0 auto;
   position: relative;
-  transform: scale(min(1, var(--viewport-width) / 714px));
+  transform: scale(min(1, calc((100vw - var(--scrollbar-width)) / 714px)));
 
   color: var(--black);
 `;
@@ -126,12 +126,12 @@ const Postit = styled.aside`
 
 function _calculateViewportDims() {
   document.documentElement.style.setProperty(
-    "--viewport-width",
-    `${document.documentElement.clientWidth}px`,
+    "--scrollbar-width",
+    `${window.innerWidth - document.documentElement.clientWidth}px`,
   );
   document.documentElement.style.setProperty(
-    "--viewport-height",
-    `${document.documentElement.clientHeight}px`,
+    "--scrollbar-height",
+    `${window.innerHeight - document.documentElement.clientHeight}px`,
   );
 }
 

@@ -58,7 +58,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["on title type mdkz;ddhd/e[d", "type mdkz;ddhd/e[d on title"],
+      guess: ["on title type mdkz;d hd/e[d", "type mdkz;d hd/e[d on title"],
       reply: "That sounds like a great idea! Why don’t you try that.",
     },
   ],

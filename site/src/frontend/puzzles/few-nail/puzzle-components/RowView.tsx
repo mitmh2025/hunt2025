@@ -98,7 +98,7 @@ export default function RowView({
           onClick={() => {
             guess(puzzle.uuid, query);
           }}
-          value="Submit Query"
+          value="Submit"
         />
       </FlexWrapper>
       {!guessResponse && disabled && <div>Checking spelling...</div>}

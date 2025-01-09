@@ -70,11 +70,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: [
-        "ACCESS SUE STORM INK",
-        "ACCESS INVISIBLE WOMAN INK",
-        "INVISIBLE INK",
-      ],
+      guess: ["ACCESS SUE STORM INK", "ACCESS INVISIBLE WOMAN INK"],
       reply: "Keep going!",
     },
   ],
