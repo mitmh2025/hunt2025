@@ -85,6 +85,8 @@ in {
       users.users.thingsboard = {
         isSystemUser = true;
         group = "thingsboard";
+        home = "/var/lib/thingsboard";
+        createHome = true;
       };
       users.groups.thingsboard = {};
 
