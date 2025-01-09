@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "You're Playing It Wrong",
+  title: "You’re Playing It Wrong",
   slug: "youre_playing_it_wrong",
   initial_description:
     "A video of someone playing piano, along with sheet music",
