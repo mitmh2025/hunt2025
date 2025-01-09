@@ -71,7 +71,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers cannot identify song number 6.",
       keywords: ["song 6", "song six"],
       nudge:
-        "Song six is rewritten from “F.U.N. Song,” from the television show Spongebob Squarepants.",
+        "Song six is rewritten from “F.U.N. Song,” from the television show Spongebob SquarePants.",
     },
   ],
   canned_responses: [
