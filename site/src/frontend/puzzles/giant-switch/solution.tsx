@@ -256,9 +256,10 @@ const Solution = () => {
       <p>
         After solvers have collected the information (frequency and song
         titles), they can use the dial image in the puzzle to identify a letter
-        for each location. They can order the songs by release date, which
-        allows for duplicated letters, and the resulting sequence of letters is
-        the answer: <PuzzleAnswer>ATHLETIC CLUB</PuzzleAnswer>.
+        for each location. They can order those letters by the corresponding
+        songs’ release date (which allows for duplicated letters), and the
+        resulting sequence of letters is the answer:{" "}
+        <PuzzleAnswer>ATHLETIC CLUB</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>
