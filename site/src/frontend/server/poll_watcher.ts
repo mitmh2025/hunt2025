@@ -49,6 +49,8 @@ type MergedPollObserver = {
 export class PollWatcher {
   private redisClient: RedisClient;
 
+  private pubsubRedisClient: RedisClient;
+
   // Map from  to 
   private mergedObservers: Map<string, MergedPollObserver>;
 
@@ -58,6 +60,7 @@ export class PollWatcher {
     redisClient: RedisClient;
   }) {
     this.redisClient = redisClient;
+    this.pubsubRedisClient = this.redisClient.duplicate();
     this.mergedObservers = new Map<string, MergedPollObserver>();
   }
 
@@ -94,18 +97,20 @@ export class PollWatcher {
 
     let mergedObserver = this.mergedObservers.get(key);
     if (!mergedObserver) {
+      console.log("observePoll: creating new mergedObserver")
       const listener = this.onPollUpdate.bind(this, key);
       const observers = new Map<string, PollUpdatedCallback>();
       observers.set(observerId, callback);
       mergedObserver = {
         key,
         stopHandle: () => {
-          void this.redisClient.unsubscribe(key, listener);
+          void this.pubsubRedisClient.unsubscribe(key, listener);
         },
         observers,
       }
       this.mergedObservers.set(key, mergedObserver);
-      await this.redisClient.subscribe(key, listener);
+      await this.pubsubRedisClient.subscribe(key, listener);
+      console.log("mergedObserver subscribe ready")
     }
 
     return this.stopObserver.bind(this, key, observerId);
@@ -113,7 +118,12 @@ export class PollWatcher {
 
   public async getCurrentPollState(teamId: number, slug: string, pollId: string) {
     const key = `/team/${teamId}/polls/${slug}/${pollId}`;
-    const votedata = await this.redisClient.hGetAll(key);
+    let votedata = {};
+    try {
+      votedata = await this.redisClient.hGetAll(key);
+    } catch (e) {
+      // ignore empty vote set from nonexistent key
+    }
     const counts = tabulateVotes(votedata);
     return counts;
   }

@@ -330,13 +330,13 @@ type ObserverProvider = {
     conn: ConnHandler,
   ): ObserveResult;
 
-  //observePollResponses(
-  //  teamId: number,
-  //  slug: string,
-  //  pollId: string,
-  //  subId: string,
-  //  conn: ConnHandler,
-  //): ObserveResult
+  observePollResponses(
+    teamId: number,
+    slug: string,
+    pollId: string,
+    subId: string,
+    conn: ConnHandler,
+  ): ObserveResult
 };
 
 class ConnHandler {
@@ -816,6 +816,46 @@ class ConnHandler {
             });
           break;
         }
+        case "poll_responses": {
+          if (!params?.slug || !params.pollId) {
+            this.send({
+              rpc,
+              type: "fail" as const,
+              error: `Missing params to ${dataset}`,
+            });
+            return;
+          }
+          const subHandler: SubscriptionHandler<object> = {
+            type: "poll_responses",
+            dataset,
+            slug: params.slug,
+            pollId: params.pollId,
+            stop: () => {
+              /* stub */
+            },
+          };
+          this.subs.set(subId, subHandler);
+          const { stop, readyPromise } = this.observerProvider.observePollResponses(
+            this.teamId,
+            params.slug,
+            params.pollId,
+            subId,
+            this,
+          );
+          subHandler.stop = stop;
+          readyPromise
+            .then(() => {
+              this.send({ rpc, type: "sub" as const, subId });
+            })
+            .catch(() => {
+              this.send({
+                rpc,
+                type: "fail" as const,
+                error: "poll reponses ready promise rejected",
+              });
+            });
+          break;
+        }
       }
       return;
     } else {
@@ -1243,10 +1283,16 @@ export class WebsocketManager implements ObserverProvider {
   }
 
   public observePollResponses(teamId: number, slug: string, pollId: string, subId: string, conn: ConnHandler): ObserveResult {
+    console.log(`observePollResponses called for team ${teamId}, slug ${slug}, pollId ${pollId}, for subId ${subId}`);
     const observePromise = this.pollWatcher.observePoll(teamId, slug, pollId, (pollState) => {
+      console.log(`updating poll responses for sub ${subId} team ${teamId}, slug ${slug}, pollId ${pollId}`, JSON.stringify(pollState));
       conn.updatePollResponses(subId, pollState);
     });
+    void observePromise.then(() => {
+      console.log(`watcher ready for team ${teamId}, slug ${slug}, pollId ${pollId}, for subId ${subId}`);
+    });
     const stop = () => {
+      console.log(`stopping observe for team ${teamId}, slug ${slug}, pollId ${pollId}, for subId ${subId}`);
       void observePromise.then((stopHandle) => { stopHandle(); });
     };
     const readyPromise = this.pollWatcher.getCurrentPollState(teamId, slug, pollId).then((pollState) => {

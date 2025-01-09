@@ -77,13 +77,14 @@ export function interactionRequestHandler(req: Request<InteractionParams>) {
           stub that allows progressing through the unlock structure.
         </p>
         {stubInteractionState(slug, interaction)}
+        <div id="votes-root" />
       </div>
     );
     return wrapContentWithNavBar(
       {
         node,
         title: interaction.title,
-        // entrypoints: ["interaction" as const], // TODO: enable once there's an entrypoint to put here
+        entrypoints: ["interaction_virtual" as const], // TODO: enable once there's an entrypoint to put here
       },
       req.teamState,
     );

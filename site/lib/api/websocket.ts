@@ -35,6 +35,7 @@ export type Dataset = z.infer<typeof DatasetSchema>;
 export const DatasetParamsSchema = z
   .object({
     slug: z.string(),
+    pollId: z.string().optional(),
   })
   .optional();
 export type DatasetParams = z.infer<typeof DatasetParamsSchema>;
