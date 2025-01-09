@@ -269,7 +269,8 @@ const Solution = (): JSX.Element => {
         conjunction with the rectangles in the signatures, which illustrate how
         the three radicals in a group can be composed into a single character.
         The primary translation of each character is the same length as the bird
-        name and shares exactly one letter.
+        name and shares exactly one letter in the same position, which should be
+        extracted.
       </p>
 
       <Note>
