@@ -39,6 +39,7 @@ import TheThief from "./dimpled-star";
 import FindOtherWaysOfSeeing from "./discrete-spine";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
+import HowIEarnedMyGoldStar from "./elaborate-mammoth";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
@@ -222,6 +223,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   doable_double: DoableDouble,
   editors_solemnity: EditorsSolemnity,
   fight_night_at_mos: FightNightAtMos,
+  how_i_earned_my_gold_star: HowIEarnedMyGoldStar,
   its_not_clear: ItsNotClear,
   just_fing_behave: JustFingBehave,
   just_plane_wrong: JustPlaneWrong,
