@@ -45,7 +45,7 @@ const STANZAS = [
   ],
   [
     "“I beat him in Nagoya,” Ichinojo reminisced, ",
-    "“I grabbed him and I held on ‘til he just could not resist.",
+    "“I grabbed him and I held on ’til he just could not resist.",
     "I shoved him back and forced him out, and zabutons rained down,",
     "It helped that I outweighed him by a hundred fifty pounds!”",
   ],
