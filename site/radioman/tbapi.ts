@@ -639,6 +639,33 @@ export const ruleChainContract = c.router({
   },
 });
 
+const ruleEngineContract = c.router({
+  request: {
+    method: "POST",
+    path: `/api/rule-engine/`,
+    body: z.any(),
+    responses: {
+      200: z.any(),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+  requestEntity: {
+    method: "POST",
+    path: `/api/rule-engine/:entityType/:entityId`,
+    pathParams: z.object({
+      entityType: EntityTypeSchema,
+      entityId: z.string().uuid(),
+    }),
+    body: z.any(),
+    responses: {
+      200: z.any(),
+      ...errorResponses,
+    },
+    strictStatusCodes: true,
+  },
+});
+
 export const contract = c.router({
   auth: authContract,
   user: userContract,
@@ -647,6 +674,7 @@ export const contract = c.router({
   deviceProfile: deviceProfileContract,
   telemetry: telemetryContract,
   ruleChain: ruleChainContract,
+  ruleEngine: ruleEngineContract,
 });
 
 function newLoginClient(baseUrl: string) {

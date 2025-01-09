@@ -39,7 +39,7 @@ async function main() {
     const result = await client.client.ruleChain.export({
       query: { limit: 999 },
     });
-    process.stdout.write(JSON.stringify(result, undefined, 2));
+    process.stdout.write(JSON.stringify(result.body, undefined, 2));
   });
 
   program
