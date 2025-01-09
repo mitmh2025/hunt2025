@@ -102,7 +102,7 @@ const DATA = [
     "T",
   ],
   [
-    "prof dobby's office",
+    "prof dobby’s office",
     <>
       throwing a <strong>sock</strong>
     </>,
@@ -134,14 +134,14 @@ const Solution = (): JSX.Element => {
         This puzzle is set up as an interaction to schedule a judging for the
         Infinite Scavenger Hunt. Upon scheduling, a judge meets them at one end
         of the Infinite Corridor (building 8) and shows them a list of tasks
-        that need to be done. The tasks are all locations along the infinite (on
+        that need to be done. The tasks are all locations along the Infinite (on
         any floor), including tasks that require photos or videos to be taken
         (e.g. on upper floors/the basement) but also some that must be done in
         person (at locations on the first floor). Upon showing the list to
         teams, the judge informs them that they have an Infinite amount of time
         to complete the scavenger hunt, and begins walking towards the other end
-        of the infinite corridor at a slow walking pace (approx. 5-7 minutes in
-        total). When the judge gets to the other end of the infinite corridor,
+        of the Infinite Corridor at a slow walking pace (approx. 5-7 minutes in
+        total). When the judge gets to the other end of the Infinite Corridor,
         the team is out of time for that attempt and will need to reschedule.
       </p>
       <p>
