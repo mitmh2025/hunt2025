@@ -53,7 +53,7 @@ const App = (): JSX.Element => {
         console.log("request failed", rejectionReason);
       },
     );
-  }, [dispatch, guessedUuids]);
+  }, [dispatch]);
 
   const guess = useCallback(
     (uuid: string, guess: string) => {
