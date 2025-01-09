@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Find Other Ways of Seeing",
   slug: "find_other_ways_of_seeing",
   initial_description:
-    "Strange printed text with handwritten notes and a short voice clip (Dead Thief round)",
+    "Strange printed text with handwritten notes and a short voice clip",
   answer: "RED SASH",
   authors: ["Leland Aldridge"],
   editors: ["Anna Brunner", "Li-Mei Lim", "Teddy McArthur"],

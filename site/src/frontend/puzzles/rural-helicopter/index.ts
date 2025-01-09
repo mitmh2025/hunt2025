@@ -38,7 +38,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 20.0,
       description:
-        "Solvers have been able to identify the genes but don't know how to connect them to specific diseases listed on the suspect cards",
+        "Solvers have been able to identify the genes but don’t know how to connect them to specific diseases listed on the suspect cards",
       keywords: ["Diseases", "Conditions", "Suspects", "Matching"],
       nudge:
         "The title hints at a website which might be helpful in identifying a genetic basis for various conditions.",
@@ -65,7 +65,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have identified the instruction using mismatched bases in the sequences but do not know how to perform it.",
       keywords: ["Cluephrase", "Instruction", "extraction"],
       nudge:
-        'Each sequence maps directly to a suspect. A "codon" is a set of three nucleotides which can be translated by a ribosome.',
+        "Each sequence maps directly to a suspect. A “codon” is a set of three nucleotides which can be translated by a ribosome.",
     },
   ],
   canned_responses: [

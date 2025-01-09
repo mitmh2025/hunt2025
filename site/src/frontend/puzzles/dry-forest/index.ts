@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Fechtb\u00fcch",
+  title: "Fechtbüch",
   slug: "fechtbuch",
   initial_description: "Medieval descriptions of battles",
   answer: "FIVE HOLE",
@@ -31,7 +31,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers know that the blurbs include blazons, but do not know what dataset the blazons are pulled from.",
       keywords: ["title", "author"],
       nudge:
-        "A fechtb\u00fcch is a medieval German sword fighting manual. J\u00fcrgen is a German name. What does it mean in English? Try googling the manuscript author’s translated name.",
+        "A fechtbüch is a medieval German sword fighting manual. Jürgen is a German name. What does it mean in English? Try googling the manuscript author’s translated name.",
     },
     {
       order: 25.0,

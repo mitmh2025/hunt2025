@@ -22,10 +22,10 @@ const puzzle: PuzzleDefinition = {
     {
       order: 5.0,
       description:
-        "Solvers have explored the maze and talked to characters, but can't figure out who is telling the truth.",
+        "Solvers have explored the maze and talked to characters, but can’t figure out who is telling the truth.",
       keywords: ["liars", "truth"],
       nudge:
-        'It is possible to determine who is lying and who is telling the truth uniquely.  Two pointers if you are stuck: first, note that Daniel says "Everyone here lies all the time", not "Everyone but me". Second, have you tried solving the first grid regions mentioned by Patrick and Vladimir according to their respective instructions, to figure out which one of them is telling the truth?   This should suffice for you to determine the truth values of everyone else\'s statements.',
+        "It is possible to determine who is lying and who is telling the truth uniquely.  Two pointers if you are stuck: first, note that Daniel says “Everyone here lies all the time”, not “Everyone but me”. Second, have you tried solving the first grid regions mentioned by Patrick and Vladimir according to their respective instructions, to figure out which one of them is telling the truth?   This should suffice for you to determine the truth values of everyone else’s statements.",
     },
     {
       order: 10.0,
@@ -33,12 +33,12 @@ const puzzle: PuzzleDefinition = {
         "Solvers are unable to figure out which rules apply in which regions.",
       keywords: ["regions", "rules", "identification"],
       nudge:
-        "As stated by Stephanie, the nine true statements made about specific regions all refer to distinct regions. Three of the statements uniquely identify which region (with a single door) they apply to.  It is easy to figure out which region Helen's statement applies to. Three other statements apply to regions with two doors, and by thinking it through (or just trying!) one can determine which region has which rule. Determining which of the remaining two regions correspond to which rule proposed by Patrick is not urgent and can be left off until you are farther along.",
+        "As stated by Stephanie, the nine true statements made about specific regions all refer to distinct regions. Three of the statements uniquely identify which region (with a single door) they apply to.  It is easy to figure out which region Helen’s statement applies to. Three other statements apply to regions with two doors, and by thinking it through (or just trying!) one can determine which region has which rule. Determining which of the remaining two regions correspond to which rule proposed by Patrick is not urgent and can be left off until you are farther along.",
     },
     {
       order: 20.0,
       description:
-        "Solvers aren't sure which region(s) to attempt solving first.",
+        "Solvers aren’t sure which region(s) to attempt solving first.",
       keywords: ["stuck", "sudoku"],
       nudge:
         "We suggest focusing first on the Southwest region, which can be solved uniquely up to swapping a pair of digits; and on the Southeast region, where 5 can be placed uniquely.",
@@ -49,7 +49,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers are unable to solve the Southwest region (where Stephanie is).",
       keywords: ["southwest", "stephanie"],
       nudge:
-        "Writing a graph of all possible adjacent pairs of digits in the Southwest region is helpful, and should suffice to solve the region uniquely up to possibly swapping 7 and 9.  After you have placed one digit in the Southeast region, the positions of 7 and 9 in the Southwest region can be determined by trying both options and seeing which one fails rapidly (via deductions about the placement of 9's in the Northeast part of the grid and then in the Southeast region).",
+        "Writing a graph of all possible adjacent pairs of digits in the Southwest region is helpful, and should suffice to solve the region uniquely up to possibly swapping 7 and 9.  After you have placed one digit in the Southeast region, the positions of 7 and 9 in the Southwest region can be determined by trying both options and seeing which one fails rapidly (via deductions about the placement of 9s in the Northeast part of the grid and then in the Southeast region).",
     },
     {
       order: 26.0,
@@ -62,7 +62,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 30.0,
       description:
-        "Solvers feel that they're missing an important technique for solving Irregular Sudoku grids.",
+        "Solvers feel that they’re missing an important technique for solving Irregular Sudoku grids.",
       keywords: ["irregular sudoku", "stuck"],
       nudge:
         "An important tip about irregular sudoku: when three regions of the grid assemble to three whole rows (or columns) of the grid, plus 1-2 extra cells, minus 1-2 other cells, the extra cells and the missing cells must contain the same set of digits. (This is because the three regions contain each of 1-9 three times, but so do the three rows/columns that almost match the regions.)  In this grid, there are many places where this reasoning applies and tells you that specific pairs of cells must contain the same values.",
@@ -73,7 +73,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers are unsure how to continue after solving the SW and SE regions.",
       keywords: ["stuck"],
       nudge:
-        "If not already done, you should first solve the SW region (including figuring out the positions of 7 and 9) (as well as the North region), and finish solving the SE region. After that, possible places to look include (possibly in that order):\r\n(1) locating 1 and 9 in the Northeast region\r\n(2) completing the two southern-most rows of the grid\r\n(3) placing all the remaining 9's, as well the 1's in rows 1 and 3\r\n(4) placing 3 and 7 in the central region\r\n(5) figuring out the only two possibilities for the left-most cell of the East region, and understanding how the sum then works out in that region.\r\n(6) figuring out the rule assignments for the final two regions.\r\n\r\nOnce you've done all of these things, solving the rest of the grid is comparatively easier.",
+        "If not already done, you should first solve the SW region (including figuring out the positions of 7 and 9) (as well as the North region), and finish solving the SE region. After that, possible places to look include (possibly in that order):\r\n(1) locating 1 and 9 in the Northeast region\r\n(2) completing the two southern-most rows of the grid\r\n(3) placing all the remaining 9s, as well the 1s in rows 1 and 3\r\n(4) placing 3 and 7 in the central region\r\n(5) figuring out the only two possibilities for the left-most cell of the East region, and understanding how the sum then works out in that region.\r\n(6) figuring out the rule assignments for the final two regions.\r\n\r\nOnce you’ve done all of these things, solving the rest of the grid is comparatively easier.",
     },
     {
       order: 90.0,

@@ -40,7 +40,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have filled in many of the clues but are unable to extract",
       keywords: [],
       nudge:
-        "The highlighted squares give letters. Because the responses at the bottom are given alphabetically, you'll need to read them out in a different order.",
+        "The highlighted squares give letters. Because the responses at the bottom are given alphabetically, you’ll need to read them out in a different order.",
     },
   ],
   canned_responses: [

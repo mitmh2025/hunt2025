@@ -45,13 +45,13 @@ const puzzle: PuzzleDefinition = {
     {
       order: 3,
       description:
-        "Solvers have all the right people and have ordered their names by commencement year, but don't know what to do next.",
+        "Solvers have all the right people and have ordered their names by commencement year, but don’t know what to do next.",
       nudge: "The middle initials of these speakers are all incorrect.",
     },
     {
       order: 4,
       description:
-        "Solvers have found the phrase ROT THIRTEEN, but don't know what to do with it.",
+        "Solvers have found the phrase ROT THIRTEEN, but don’t know what to do with it.",
       nudge:
         "The remainder of the wordsearch grid is still unused, and ROT THIRTEEN is a common operation that can be done on a selection of letters.",
     },
