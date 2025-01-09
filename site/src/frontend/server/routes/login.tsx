@@ -13,7 +13,13 @@ export function hackLoginGetHandler(_req: Request) {
             Username:{" "}
             <select name="username">
               <option value="">Select...</option>
-              <option value="team">team (no magic)</option>
+              <option value="prehunt">
+                prehunt (hunt has not started yet)
+              </option>
+              <option value="team">
+                team (hunt has started yet, but only the starting puzzle drop is
+                unlocked)
+              </option>
               <option value="unlockable">
                 unlockable (all puzzles unlockable)
               </option>

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import Cork from "../assets/cork.jpg";
 import { HubFonts } from "./HubFonts";
@@ -83,7 +83,7 @@ function _calculateViewportDims() {
 }
 
 const HubBody = ({ state }: { state: HubState }) => {
-  useLayoutEffect(() => {
+  useEffect(() => {
     window.addEventListener("resize", _calculateViewportDims, false);
     document.addEventListener(
       "DOMContentLoaded",

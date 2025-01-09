@@ -37,7 +37,6 @@ import {
 } from "./routes/interaction";
 import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
 import { manageTeamHandler } from "./routes/manage_team";
-import { huntNotStartedHandler } from "./routes/not_started";
 import {
   puzzleHandler,
   type PuzzleParams,
@@ -205,16 +204,6 @@ export function registerUiRoutes({
   authRouter.get(
     "/",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      // If the hunt has not started yet, render an alternate page.
-      if (
-        !(
-          req.teamState?.state.rounds.the_missing_diamond?.gates ?? []
-        ).includes("hunt_started")
-      ) {
-        await renderApp(huntNotStartedHandler, req, res, next);
-        return;
-      }
-
       await renderApp(hubHandler, req, res, next);
     }),
   );
