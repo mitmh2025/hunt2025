@@ -3,7 +3,7 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "He Shouldn't Have Eaten The Apple",
+  title: "He Shouldn’t Have Eaten The Apple",
   slug: "he_shouldnt_have_eaten_the_apple",
   initial_description: "Lists of clues",
   answer: "SAMGAKSAN",

@@ -279,7 +279,7 @@ const HUNT: Hunt = {
         { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 }, slug: "chinatown"},
       ],
       gates: [
-        { id: "sog01", internal_description: "Picked up Mystery O's from Gala" },
+        { id: "sog01", internal_description: "Picked up Mystery O’s from Gala" },
         { id: "sog02", internal_description: "Picked up It's Not Clear from Gala" },
         { id: "sog03", internal_description: "Picked up Anything Is Popsicle from Gala" },
       ],
