@@ -76,7 +76,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         When teams submit this instruction, they receive a request to go to the
-        Gala and <Mono>WIN AT SUMO</Mono>. Upon arrival, teams play a D&M team
+        Gala and <Mono>WIN AT SUMO</Mono>. Upon arrival, teams play a D&amp;M team
         member in Sumo, a card game designed by koto konno, where players take
         tricks to push their opponent out of the ring. Each game takes a few
         minutes to play. Upon winning, the team receives the true answer of the
