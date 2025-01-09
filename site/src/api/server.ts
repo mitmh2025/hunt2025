@@ -1133,12 +1133,15 @@ export async function getRouter({
 
               if (
                 data.puzzles_solved.has(slug) ||
+                // Forbid buying answers to puzzles that have been partially solved -- we
+                // have already granted the key for the partial solve, and we don't want to
+                // allow teams to get an extra key for the same puzzle.
                 data.puzzles_partially_solved.has(slug)
               ) {
                 return { error: "PUZZLE_ALREADY_SOLVED" as const };
               }
 
-              const answer = canonicalizeInput(puzzle.answer);
+              const answer = puzzle.answer;
 
               await mutator.appendLog({
                 team_id,
@@ -1165,6 +1168,10 @@ export async function getRouter({
                 team_id,
                 slug,
                 type: "puzzle_solved",
+                // We always grant the slot prize here, even for puzzles that
+                // normally grant the prize for a partial answer, since the team
+                // won't end up submitting the partial answer and we don't want
+                // to deny them the prize.
                 currency_delta: slot.prize ?? 1,
                 data: {
                   answer,

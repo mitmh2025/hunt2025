@@ -591,7 +591,7 @@ const HUNT: Hunt = {
     {
       slug: "events",
       title: "Events",
-      final_puzzle_slot: '',
+      final_puzzle_slot: null,
       puzzles: [
         { id: "evt1", slug: "making_contact_with_an_informant", prize: 0, strong_currency_prize: 1 },
         { id: "evt2", slug: "tailing_a_lead", prize: 0, strong_currency_prize: 1 },
@@ -610,7 +610,7 @@ const HUNT: Hunt = {
       // string "endgame" and special-cases it.
       slug: "endgame",
       title: "The Vault",
-      final_puzzle_slot: '',
+      final_puzzle_slot: null,
       puzzles: [],
       interactions: [
         {

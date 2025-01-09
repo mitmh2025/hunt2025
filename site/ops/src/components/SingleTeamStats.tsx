@@ -84,7 +84,7 @@ function GrantKeysDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Grant Keys to <strong>{teamUsername}</strong>
+        Grant Keys (puzzle unlocks) to <strong>{teamUsername}</strong>
       </DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -107,8 +107,11 @@ function GrantKeysDialog({
           </label>
         </DialogContent>
         <DialogActions>
-          <Button type="submit" disabled={submitting}>
-            Grant {qty} Keys
+          <Button type="button" disabled={submitting} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" disabled={submitting}>
+            Grant {qty} Keys (puzzle unlocks)
           </Button>
         </DialogActions>
       </form>
@@ -171,7 +174,7 @@ function GrantCluesDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Grant Clues to <strong>{teamUsername}</strong>
+        Grant Clues (free answers) to <strong>{teamUsername}</strong>
       </DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -194,8 +197,11 @@ function GrantCluesDialog({
           </label>
         </DialogContent>
         <DialogActions>
-          <Button type="submit" disabled={submitting}>
-            Grant {qty} Clues
+          <Button type="button" disabled={submitting} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" disabled={submitting}>
+            Grant {qty} Clues (free answers)
           </Button>
         </DialogActions>
       </form>
@@ -293,7 +299,7 @@ export default function SingleTeamStats({
       />
 
       <Stat
-        label="Keys"
+        label="Keys (unlocks)"
         value={data.keys}
         action={
           <AdminOnly>
@@ -308,7 +314,7 @@ export default function SingleTeamStats({
         }
       />
       <Stat
-        label="Clues"
+        label="Clues (answers)"
         value={data.clues}
         action={
           <AdminOnly>
