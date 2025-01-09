@@ -48,7 +48,7 @@ export function formatTeamData(
   puzzleMetadata: PuzzleAPIMetadata,
 ): BigBoardTeam {
   const rounds = HUNT.rounds
-    .filter((round) => round.slug !== "endgame")
+    .filter((round) => round.slug !== "endgame" && round.slug !== "floaters")
     .map((round) => {
       const supermetas: BigBoardPuzzle[] = [];
       const metas: BigBoardPuzzle[] = [];

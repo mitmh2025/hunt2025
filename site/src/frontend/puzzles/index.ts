@@ -19,6 +19,7 @@ import AMapAndAShadeOrFour from "./bony-fair";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
+import ABCEasyAs123 from "./brilliant-row";
 import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
 import StarCrossed from "./carefree-ghost";
@@ -386,6 +387,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // work in progress
   the_thief: TheThief,
+
+  // Staging for floaters
+  a_b_c_easy_as_1_2_3: ABCEasyAs123,
 };
 
 // Generate the SUBPUZZLES index from PUZZLES

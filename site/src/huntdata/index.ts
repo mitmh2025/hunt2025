@@ -619,6 +619,15 @@ const HUNT: Hunt = {
         { interaction_completed: "the_safehouse" },
       ],
     },
+    {
+      slug: "floaters",
+      title: "Floaters",
+      final_puzzle_slot: "",
+      puzzles: [
+        { id: "flp01", unlock_cost: 1, slug: "a_b_c_easy_as_1_2_3" },
+      ],
+      unlock_if: { oneOf: [] },
+    }
   ],
 };
 
