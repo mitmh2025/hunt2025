@@ -30,14 +30,14 @@ const puzzle: PuzzleDefinition = {
       description:
         "The solvers are struggling to solve any of the crossword clues",
       nudge:
-        "If you\u2019ve been trying to extract regular English phrases, try something a little goofier and pun-ier.",
+        "If you’ve been trying to extract regular English phrases, try something a little goofier and pun-ier.",
     },
     {
       order: 1.0,
       description:
         "The solvers have solved some of the crossword clues, but are struggling to solve all of them",
       nudge:
-        "Once you\u2019ve solved a few of the clues, try searching several of them together to see what they have in common.",
+        "Once you’ve solved a few of the clues, try searching several of them together to see what they have in common.",
     },
     {
       order: 2.0,
@@ -51,7 +51,7 @@ const puzzle: PuzzleDefinition = {
       description:
         "The solvers have solved a good number of the crossword clues, and are unsure how to order them. They have identified that the colors in the painting are the answers to the crossword clues, but are blocked on how to order those answers",
       nudge:
-        "Once you\u2019ve identified what colors are in the painting, try paying attention to how often each one occurs.",
+        "Once you’ve identified what colors are in the painting, try paying attention to how often each one occurs.",
     },
     {
       order: 4.0,
@@ -78,7 +78,7 @@ const puzzle: PuzzleDefinition = {
       description:
         "The solvers have placed the nails in the jig, and have figured out what each nail maps to, but are unsure how to extract letters from it",
       nudge:
-        "Once you\u2019ve figured out what color each nail maps to and where each nail goes in the jig, try taking another look at the front of the jig. There is structure there that will help you identify letters to extract.",
+        "Once you’ve figured out what color each nail maps to and where each nail goes in the jig, try taking another look at the front of the jig. There is structure there that will help you identify letters to extract.",
     },
   ],
   canned_responses: [

@@ -60,7 +60,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers can’t figure out the sheep movements after day 3",
       keywords: ["sheep movements", "third night"],
       nudge:
-        "Nine sheep positions are given in the day 4 grid; a tenth one is forced by that sheep having only one valid square (inside both day 3 and day 4 loops) to move to.  The five remaining sheep positions can be inferred from the knowledge that, after the sheep move to their day 4 positions and the fence has switched to the day 4 configuration, each wolf will be able to move towards a closest seen sheep without any two wolves\u2019 trajectories overlapping (in other terms: each wolf will see a sheep in an appropriate direction).",
+        "Nine sheep positions are given in the day 4 grid; a tenth one is forced by that sheep having only one valid square (inside both day 3 and day 4 loops) to move to.  The five remaining sheep positions can be inferred from the knowledge that, after the sheep move to their day 4 positions and the fence has switched to the day 4 configuration, each wolf will be able to move towards a closest seen sheep without any two wolves’ trajectories overlapping (in other terms: each wolf will see a sheep in an appropriate direction).",
     },
     {
       order: 70.0,

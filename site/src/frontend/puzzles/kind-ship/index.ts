@@ -20,7 +20,7 @@ const puzzle: PuzzleDefinition = {
   hints: [
     {
       order: 1.1,
-      description: "The solvers haven't made the Macbeth connection.",
+      description: "The solvers haven’t made the Macbeth connection.",
       keywords: ["macbeth", "title"],
       nudge:
         "The title is written “wheel of fortune” style; it is a common theatrical euphemism that is the theme of this puzzle.",
@@ -28,7 +28,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 2.1,
       description:
-        "The solvers don't know they're supposed to “read” the tartans using tartan sett notation.",
+        "The solvers don’t know they’re supposed to “read” the tartans using tartan sett notation.",
       keywords: [
         "tartan",
         "encoding",
@@ -43,7 +43,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 2.2,
-      description: "The solvers aren't sure what sett notation/system to use.",
+      description: "The solvers aren’t sure what sett notation/system to use.",
       keywords: [
         "scottish",
         "registry",
@@ -60,7 +60,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 3.1,
       description:
-        "The solvers are interpreting the threads individually rather than in twos, or aren't sure whether doing it by pairs is correct",
+        "The solvers are interpreting the threads individually rather than in twos, or aren’t sure whether doing it by pairs is correct",
       keywords: [
         "two",
         "pair",
@@ -76,21 +76,21 @@ const puzzle: PuzzleDefinition = {
     {
       order: 8.1,
       description:
-        "Solvers have decoded the list of fabric swatches but don't know what to do with the extraction swatch at the bottom.",
+        "Solvers have decoded the list of fabric swatches but don’t know what to do with the extraction swatch at the bottom.",
       keywords: ["extraction", "decode", "fabric", "bottom", "last"],
       nudge: "Each swatch has a “background” color. How can you use those?",
     },
     {
       order: 9.1,
       description:
-        "The solvers don't know what order to put the quotes that have the same color.",
+        "The solvers don’t know what order to put the quotes that have the same color.",
       keywords: ["extraction", "color", "same", "quote", "order"],
       nudge: "Each quote fits on only one line on the final piece of fabric.",
     },
     {
       order: 10.1,
       description:
-        "The solvers have filled in the bottom swatch but don't know how to extract letters.",
+        "The solvers have filled in the bottom swatch but don’t know how to extract letters.",
       keywords: [
         "extraction",
         "grid",

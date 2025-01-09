@@ -38,7 +38,7 @@ const puzzle: PuzzleDefinition = {
       description: "The solvers have identified the Dial-a-Song album.",
       keywords: ["a", "b"],
       nudge:
-        "You're working with a double album, so it has an A-side and a B-side",
+        "You’re working with a double album, so it has an A-side and a B-side",
     },
     {
       order: 75.0,

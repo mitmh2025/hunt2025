@@ -24,13 +24,13 @@ const puzzle: PuzzleDefinition = {
   hints: [
     {
       order: 1,
-      description: "The solvers don't know where to start.",
+      description: "The solvers don’t know where to start.",
       nudge:
         "The first lines after the flavortext give a hint to how many feeders are used in this puzzle and how to use them.",
     },
     {
       order: 2,
-      description: "The solvers still aren't sure how to start.",
+      description: "The solvers still aren’t sure how to start.",
       nudge:
         "This puzzle uses two feeder answers that must be processed in a way that is consistent with the given inequalities. The flavortext gives hints at how to interpret the feeder answers to be used in this puzzle.",
     },
@@ -47,14 +47,14 @@ const puzzle: PuzzleDefinition = {
     {
       order: 5,
       description:
-        "The solvers have the variables correct but don't understand what they are computing in each expression.",
+        "The solvers have the variables correct but don’t understand what they are computing in each expression.",
       nudge:
         "Each expression evaluates to a number with (at most) two decimal places. It should be close to a significant number.",
     },
     {
       order: 50,
       description:
-        "The solvers have computed all the expressions but don't know what to do with them.",
+        "The solvers have computed all the expressions but don’t know what to do with them.",
       keywords: ["extraction"],
       nudge:
         "The expressions each differ from an important value by a little bit. The flavortext hints at how to process the differences.",

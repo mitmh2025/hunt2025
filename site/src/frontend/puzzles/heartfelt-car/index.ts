@@ -27,7 +27,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 25.0,
-      description: "Solvers don't know what to do with the map locations",
+      description: "Solvers don’t know what to do with the map locations",
       keywords: ["map", "locations", "towns"],
       nudge: "How can you make it as if you were standing at each location?",
     },

@@ -31,7 +31,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 2,
-      description: `Solvers still haven't figured out what the "corporate web" refers to.`,
+      description: `Solvers still haven’t figured out what the "corporate web" refers to.`,
       nudge: `The entire "corporate structure" of feeders into metas (and metas as feeders into metas) can be represented as a directed (but not acyclic) graph.`,
     },
     {
@@ -57,7 +57,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 5,
       description:
-        "Solvers have placed all of the extra words and labeled the edges to the hidden nodes, but don't have the answer.",
+        "Solvers have placed all of the extra words and labeled the edges to the hidden nodes, but don’t have the answer.",
       keywords: ["extraction"],
       nudge:
         "Each of your shells is numbered. Starting at Shell 1, and traversing in and out of the hidden node one by one to each other shell in order, will spell out the final answer.",

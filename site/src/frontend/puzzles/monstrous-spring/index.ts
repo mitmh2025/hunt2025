@@ -40,7 +40,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 75.0,
-      description: "Solvers don't know what order to read the new words",
+      description: "Solvers don’t know what order to read the new words",
       keywords: ["order"],
       nudge:
         "The clues out of the pool were given in alphabetical order by clue. In puzzle convention, this means that’s not the final order. The clues in the pool don’t seem to be in any apparent order, so perhaps that’s the order in which you should read!",

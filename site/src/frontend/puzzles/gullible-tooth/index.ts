@@ -34,13 +34,13 @@ const puzzle: PuzzleDefinition = {
     {
       order: 2,
       description:
-        "Solvers have figured out a few of the final recipe words, but don't know what they have in common.",
+        "Solvers have figured out a few of the final recipe words, but don’t know what they have in common.",
       nudge:
         "These recipes all produce words or phrases that are within a particular set, thematic to the puzzle.",
     },
     {
       order: 2.1,
-      description: "Solvers still can't identify what set these words are in.",
+      description: "Solvers still can’t identify what set these words are in.",
       keywords: ["identify"],
       nudge: "These recipes all produce cakes.",
     },

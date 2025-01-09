@@ -77,7 +77,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers are struggling to connect the cocktails",
       keywords: ["cocktails", "usage", "connections"],
       nudge:
-        'Here’s a few tips when you’re trying to connect cocktails. Each connection removes a single ingredient and adds a single ingredient, so the number of ingredients doesn’t change. You only need to use the name of the ingredient, not the amount. Also remember that while Kindred Cocktails has some complicated ingredients (such as "Aromatized wine, Lillet Blanc"), the flavor text tells you to ignore anything after a comma.',
+        "Here’s a few tips when you’re trying to connect cocktails. Each connection removes a single ingredient and adds a single ingredient, so the number of ingredients doesn’t change. You only need to use the name of the ingredient, not the amount. Also remember that while Kindred Cocktails has some complicated ingredients (such as “Aromatized wine, Lillet Blanc”), the flavor text tells you to ignore anything after a comma.",
     },
     {
       order: 40.0,

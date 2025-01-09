@@ -68,12 +68,12 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["WHO WORE THAT"],
-      reply: "You're on the right track!",
+      reply: "You’re on the right track!",
     },
     {
       guess: ["WORK IT AT OUR GALA"],
       reply:
-        "Great idea! Come strut your stuff at the Gala's Red Carpet Photo Booth (as dressed up as you like) and share your photos with the bar staff.",
+        "Great idea! Come strut your stuff at the Gala’s Red Carpet Photo Booth (as dressed up as you like) and share your photos with the bar staff.",
       providesSolveReward: true,
     },
   ],

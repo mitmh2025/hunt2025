@@ -116,7 +116,7 @@ const puzzle: PuzzleDefinition = {
         "Orientation: Solvers haven’t identified the connection between the inscriptions along the perimeter",
       keywords: ["perimeter", "inscriptions", "orientation"],
       nudge:
-        '"Cardinal Orientation" clues the four main compass points, North, East, South, West. These can be associated with the inscriptions along the perimeter.',
+        "“Cardinal Orientation” clues the four main compass points, North, East, South, West. These can be associated with the inscriptions along the perimeter.",
     },
     {
       order: 27.1,

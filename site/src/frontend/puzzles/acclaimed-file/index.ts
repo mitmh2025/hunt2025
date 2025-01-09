@@ -97,7 +97,7 @@ const puzzle: PuzzleDefinition = {
       guess: CANONICALIZED_PARTIALS,
       reply: `Congratulations! `,
       link: {
-        display: "Here's part two.",
+        display: "Here’s part two.",
         href: image,
       },
     },

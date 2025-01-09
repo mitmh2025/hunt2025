@@ -36,7 +36,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers are not sure what to do with the preamble",
       keywords: ["preamble", "flavor text", "backstory"],
       nudge:
-        "Firstly, this story is ridiculous. Secondly…no, let's go back to the first thing.",
+        "Firstly, this story is ridiculous. Secondly…no, let’s go back to the first thing.",
     },
     {
       order: 12.0,
@@ -48,7 +48,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 30.0,
-      description: "Solvers don't know how to interpret the comments",
+      description: "Solvers don’t know how to interpret the comments",
       keywords: ["comments", "substitutions"],
       nudge:
         "The comments describe people messing up the recipe and making a whole host of other things instead. The ingredients listed (and swapped) should not be read literally.",
@@ -56,7 +56,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 31.0,
       description:
-        "Solvers don't know how to interpret the comments (larger hint)",
+        "Solvers don’t know how to interpret the comments (larger hint)",
       keywords: ["comments", "substitutions", "ingredients"],
       nudge:
         "Most of the ingredient swaps will only care about the first letter of the ingredient being swapped. Other things described in the comments are clues for wordplay transformations. There are hints to confirm the correct transformations in the comments as well.",
@@ -66,7 +66,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers are having trouble with extraction",
       keywords: ["extraction"],
       nudge:
-        'Each comment has a rating (e.g. "5/7 perfect"). That is an index into the final transformed word (in this case, the fifth letter out of seven).',
+        "Each comment has a rating (e.g. “5/7 perfect”). That is an index into the final transformed word (in this case, the fifth letter out of seven).",
     },
     {
       order: 90.0,

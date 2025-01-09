@@ -9,7 +9,7 @@ const puzzle: PuzzleDefinition = {
     "A series of Scrabble racks with blank tiles and a list of clues underneath",
   answer: "GOLD",
   authors: ["phyphor", "Anisa Schardl", "Eric Marion", "Mike Mannis"],
-  editors: ["Hubert Hwang", "J. Hel\u00e9ne Andersson", "Jonathan Lay"],
+  editors: ["Hubert Hwang", "J. Heléne Andersson", "Jonathan Lay"],
   additional_credits: [],
   content: {
     component: Puzzle,
@@ -56,7 +56,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 95.0,
       description:
-        'Solvers have "How far is the sun?" but are not getting the correct answer',
+        "Solvers have “How far is the sun?” but are not getting the correct answer",
       nudge:
         "The average distance between the Earth and the Sun has a historically defined name.",
     },
