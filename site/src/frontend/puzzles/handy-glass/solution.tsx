@@ -46,12 +46,93 @@ const HIGHLIGHTS = reduceCoordinatesToIndices(
   12,
 );
 
+const ANSWERS_ACROSS = [
+  [1, "This answer's position in the puzzle, horizontally", "LEFT"],
+  [3, "A young bovine animal", "CALF"],
+  [6, "Counterpart to the radius", "ULNA"],
+  [8, "Brazilian dance style", "SAMBA"],
+  [11, "A period of time after the cessation of conflict", "POSTWAR"],
+  [14, "Shortstop Turner", "TREA"],
+  [15, "Connector between shin and foot", "ANKLE"],
+  [16, "Thailand's former appellation", "SIAM"],
+  [17, "City where androids might become human", "DETROIT"],
+  [18, "Slangily, a demand to settle a debt", "PONY UP"],
+  [20, "As a precaution (2 words)", "IN CASE"],
+  [22, "Something an influencer might be chasing", "CLOUT"],
+  [24, "Science fiction author who wrote for Star Trek", "FONTANA"],
+  [26, "Underwriter or guarantor", "INSURER"],
+  [28, "Former descriptor of Arya Stark (2 words)", "NO ONE"],
+  [30, "Smartphone photograph, sometimes", "SELFIE"],
+  [32, "“Friday Night ______” (football drama)", "LIGHTS"],
+  [
+    34,
+    "What an Instagram rando might be when they like forty beach pictures in three minutes",
+    "THIRSTY",
+  ],
+  [37, "Presidential right to override Congress", "VETO"],
+  [39, "Like crystal and unlike mud", "CLEAR"],
+  [40, "Something a skateboarder might grind down", "RAIL"],
+  [41, "Ethnolinguistic region in the Greater Caucasus Mountains", "OSSETIA"],
+  [42, "Forest fillers", "TREES"],
+  [43, "Carney, Garfunkel, and Spiegelman", "ARTS"],
+  [44, "They debatably justify the means", "ENDS"],
+  [45, "Simpson sibling", "LISA"],
+];
+
+const ANSWERS_DOWN = [
+  [1, "Pulitzer Prize winning novel by Andrew Sean Greer", "LESS"],
+  [2, "What love may be, particularly second-hand", "EMOTION"],
+  [
+    3,
+    "Variety of attaché that often served as official cover for those involved in espionage",
+    "CULTURAL",
+  ],
+  [4, "Southern Calif. law enforcement organization", "LAPD"],
+  [5, "Spanish word for a chrysanthemum or marigold", "FLOR"],
+  [6, "Descriptor for a memorialized soldier in Arlington", "UNKNOWN"],
+  [7, "Greatest partner?", "LATEST"],
+  [9, "Swampy Louisiana body of water", "BAYOU"],
+  [10, "Influential drum break from a 1969 song by The Winstons", "AMEN"],
+  [
+    12,
+    "Mathematical function used in telecommunications that can be normalized or unnormalized",
+    "SINC",
+  ],
+  [13, "Empathize (with)", "RELATE"],
+  [15, "Television antenna that receives Britcoms?", "AERIAL"],
+  [19, "Would rather", "PREFER"],
+  [21, "Molecules which may trigger immune responses", "ANTIGENS"],
+  [22, "Monte _____ sandwich", "CRISTO"],
+  [23, "Barbell boosters, for example", "LIFTERS"],
+  [
+    25,
+    "Minerals whose moniker literally translates as “egg stones”",
+    "OOLITES",
+  ],
+  [27, "Coarse-grained metamorphic rock", "SCHIST"],
+  [29, "Open-ended survey option", "OTHER"],
+  [31, "Effortlessness", "EASE"],
+  [33, "Possess", "HAVE"],
+  [35, "Scrabble necessity", "TILE"],
+  [36, "Long, winding, questionably plausible story", "YARN"],
+  [38, "Workplace safety agency (abbreviation)", "OSHA"],
+];
+
 const Indent = styled.p`
   margin-left: 2em;
 `;
 
 const StyledCrossword = styled(Crossword)`
   margin-bottom: 1em;
+`;
+
+const StyledTable = styled.table`
+  margin-bottom: 1em;
+  th,
+  td {
+    text-align: left;
+    padding-right: 1em;
+  }
 `;
 
 const Solution = (): JSX.Element => {
@@ -106,6 +187,36 @@ const Solution = (): JSX.Element => {
           return styles;
         }}
       />
+      <h3>Across</h3>
+      <StyledTable>
+        <tr>
+          <th>#</th>
+          <th>Unscrambled Clue</th>
+          <th>Unscrambled Answer</th>
+        </tr>
+        {ANSWERS_ACROSS.map(([num, clue, answer]) => (
+          <tr key={num}>
+            <td>{num}</td>
+            <td>{clue}</td>
+            <td>{answer}</td>
+          </tr>
+        ))}
+      </StyledTable>
+      <h3>Down</h3>
+      <StyledTable>
+        <tr>
+          <th>#</th>
+          <th>Unscrambled Clue</th>
+          <th>Unscrambled Answer</th>
+        </tr>
+        {ANSWERS_DOWN.map(([num, clue, answer]) => (
+          <tr key={num}>
+            <td>{num}</td>
+            <td>{clue}</td>
+            <td>{answer}</td>
+          </tr>
+        ))}
+      </StyledTable>
     </>
   );
 };
