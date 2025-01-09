@@ -1138,13 +1138,26 @@ export async function getRouter({
                 return { error: "PUZZLE_ALREADY_SOLVED" as const };
               }
 
+              const answer = canonicalizeInput(puzzle.answer);
+
               await mutator.appendLog({
                 team_id,
                 type: "puzzle_answer_bought",
                 slug,
                 strong_currency_delta: -1,
                 data: {
-                  answer: canonicalizeInput(puzzle.answer),
+                  answer,
+                },
+              });
+
+              await mutator.appendLog({
+                team_id,
+                slug,
+                type: "puzzle_guess_submitted",
+                data: {
+                  canonical_input: answer,
+                  status: "correct",
+                  response: "Correct!",
                 },
               });
 
@@ -1152,9 +1165,9 @@ export async function getRouter({
                 team_id,
                 slug,
                 type: "puzzle_solved",
-                currency_delta: 1,
+                currency_delta: slot.prize ?? 1,
                 data: {
-                  answer: canonicalizeInput(puzzle.answer),
+                  answer,
                 },
               });
 

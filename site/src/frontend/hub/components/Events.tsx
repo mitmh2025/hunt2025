@@ -4,7 +4,7 @@ import { type EventDataWithTime } from "../../rounds/events/types";
 import EventScheduleBg from "../assets/events.png";
 import { defaultShadowFilter, getRelativeSizeCss } from "../constants";
 
-const EventSchedule = styled.div`
+const EventSchedule = styled.a`
   position: absolute;
   background-image: url(${EventScheduleBg});
   background-size: cover;
@@ -18,6 +18,11 @@ const EventSchedule = styled.div`
   text-align: center;
   font-size: ${getRelativeSizeCss(36)};
   filter: ${defaultShadowFilter};
+
+  text-decoration: none;
+  &:hover {
+    color: var(--black);
+  }
 
   h3 {
     font-family: "Eccentric";
@@ -63,7 +68,7 @@ const EventSchedule = styled.div`
 
 const Events = ({ events }: { events: EventDataWithTime[] }) => {
   return (
-    <EventSchedule>
+    <EventSchedule href="/rounds/events">
       <h3>Event Schedule</h3>
       <ul>
         {events.map((event) => (
