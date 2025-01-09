@@ -1,5 +1,6 @@
 import React, { type ChangeEvent, type Dispatch } from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../../assets/SharedFonts";
 import GuessResponseView from "./GuessResponseView";
 import { BORDER_COLOR } from "./Shared";
 import type { GuessResponse, MinimalPuzzle } from "./Typedefs";
@@ -57,52 +58,55 @@ export default function RowView({
   query,
 }: RowProps): JSX.Element {
   return (
-    <Row key={puzzle.uuid}>
-      <FlexWrapper>
-        <AudioWrapper>
-          <span>WORD</span>
-          <StyledAudio controls src={puzzle.wordAudio} />
-        </AudioWrapper>
-        <AudioWrapper>
-          <span>MEANING</span>
-          <StyledAudio controls src={puzzle.meaningAudio} />
-        </AudioWrapper>
-        <AudioWrapper>
-          <span>USE</span>
-          <StyledAudio controls src={puzzle.useAudio} />
-        </AudioWrapper>
-      </FlexWrapper>
-      <FlexWrapper>
-        <StyledInput
-          disabled={disabled}
-          type="text"
-          onInput={({
-            currentTarget: { value },
-          }: ChangeEvent<HTMLInputElement>) => {
-            dispatch({
-              type: PuzzleActionType.INPUT,
-              uuid: puzzle.uuid,
-              input: value,
-            });
-          }}
-          onKeyUp={({ key }) => {
-            if (key === "Enter") {
+    <>
+      <NotoColorEmojiFont />
+      <Row key={puzzle.uuid}>
+        <FlexWrapper>
+          <AudioWrapper>
+            <span>WORD</span>
+            <StyledAudio controls src={puzzle.wordAudio} />
+          </AudioWrapper>
+          <AudioWrapper>
+            <span>MEANING</span>
+            <StyledAudio controls src={puzzle.meaningAudio} />
+          </AudioWrapper>
+          <AudioWrapper>
+            <span>USE</span>
+            <StyledAudio controls src={puzzle.useAudio} />
+          </AudioWrapper>
+        </FlexWrapper>
+        <FlexWrapper>
+          <StyledInput
+            disabled={disabled}
+            type="text"
+            onInput={({
+              currentTarget: { value },
+            }: ChangeEvent<HTMLInputElement>) => {
+              dispatch({
+                type: PuzzleActionType.INPUT,
+                uuid: puzzle.uuid,
+                input: value,
+              });
+            }}
+            onKeyUp={({ key }) => {
+              if (key === "Enter") {
+                guess(puzzle.uuid, query);
+              }
+            }}
+            value={query}
+          />
+          <input
+            disabled={disabled}
+            type="submit"
+            onClick={() => {
               guess(puzzle.uuid, query);
-            }
-          }}
-          value={query}
-        />
-        <input
-          disabled={disabled}
-          type="submit"
-          onClick={() => {
-            guess(puzzle.uuid, query);
-          }}
-          value="Submit"
-        />
-      </FlexWrapper>
-      {!guessResponse && disabled && <div>Checking spelling...</div>}
-      {guessResponse && <GuessResponseView guessResponse={guessResponse} />}
-    </Row>
+            }}
+            value="Submit"
+          />
+        </FlexWrapper>
+        {!guessResponse && disabled && <div>Checking spelling...</div>}
+        {guessResponse && <GuessResponseView guessResponse={guessResponse} />}
+      </Row>
+    </>
   );
 }

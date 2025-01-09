@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 
 const EmojiTable = styled.table`
   border-collapse: collapse;
@@ -63,6 +64,7 @@ const Puzzle = () => {
 
   return (
     <>
+      <NotoColorEmojiFont />
       <p className="puzzle-flavor" style={{ fontStyle: "normal" }}>
         🔎♊
       </p>

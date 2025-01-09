@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import Blanks from "../../components/Blanks";
 
 export const ScrollWrapper = styled.div`
@@ -128,6 +129,7 @@ export const SudokuLine = ({ rows }: { rows: string[][] }): JSX.Element => {
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p className="puzzle-flavor">
         I wanted some small Sudokus, but all I got were these tall, tall
         buildings.

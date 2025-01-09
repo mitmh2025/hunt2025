@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import chart1 from "./assets/chart1.png";
@@ -791,6 +792,7 @@ const Blue = styled.td`
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <MarginImage
         src={grid}
         alt="A large grid filled with ✅, ❌, 🌊 and ⏺️ emoji. Colored circles, some annotated with letters, line the edges of the grid. There are some emoji equations below the grid"

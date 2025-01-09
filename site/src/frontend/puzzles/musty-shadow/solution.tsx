@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import LinkedImage from "../../components/LinkedImage";
 import {
   HScrollTableWrapper,
@@ -344,6 +345,7 @@ const Guitar = (): JSX.Element => {
 const Solution = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p>
         Looking at the context clues of the puzzle (Eras, Colors, Dresses), the
         solver may come to a conclusion that this puzzle is themed around Taylor

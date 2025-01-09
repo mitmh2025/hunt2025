@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { HScrollTableWrapper, Mono } from "../../components/StyledUI";
 import activation from "./assets/activation.mp3";
 import activationCaptions from "./assets/activation.vtt";
@@ -103,6 +104,8 @@ const isCross = (row: number, col: number) => {
 const Solution = () => {
   return (
     <>
+      <NotoColorEmojiFont />
+
       <p>
         This is a puzzle about music lyrics that transitions into an opportunity
         for teams to play with their new radio.
