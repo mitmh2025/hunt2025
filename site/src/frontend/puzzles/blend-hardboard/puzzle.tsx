@@ -1,5 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 
 const DATA: ListingProps[] = [
   {
@@ -68,6 +72,7 @@ const StyledHeader = styled.div`
   display: flex;
   align-items: baseline;
   font-weight: bold;
+  white-space: pre;
 `;
 
 const Timestamp = styled.span`
@@ -92,17 +97,19 @@ const Grid = styled.div`
 `;
 
 type ListingProps = {
+  className?: string;
+  description: string;
   timestamp: string;
   title: string;
-  description: string;
 };
 
 const Header = ({
+  className,
   timestamp,
   title,
 }: Omit<ListingProps, "description">): JSX.Element => {
   return (
-    <StyledHeader>
+    <StyledHeader className={className}>
       <Timestamp>
         <span>{timestamp}</span>
       </Timestamp>
@@ -119,8 +126,19 @@ const Listing = ({
 }: ListingProps): JSX.Element => {
   return (
     <div>
-      <Header timestamp={timestamp} title={title} />
-      <div>{description}</div>
+      <Header className={NO_COPY_CLASS} timestamp={timestamp} title={title} />
+      <div className={NO_COPY_CLASS}>{description}</div>
+      <table className={COPY_ONLY_CLASS}>
+        <tbody>
+          <tr>
+            <td>{timestamp}</td>
+            <td>{title}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>{description}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
