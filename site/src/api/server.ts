@@ -866,10 +866,7 @@ export async function getRouter({
             redisClient,
             knex,
             async function (_, mutator) {
-              const teamState = await mutator.recalculateTeamState(
-                hunt,
-                team_id,
-              );
+              const teamState = mutator.getTeamState(hunt, team_id);
               const puzzle_log = mutator.log.filter(
                 (e) => "slug" in e && e.slug === slug,
               );
@@ -1012,7 +1009,7 @@ export async function getRouter({
             knex,
             async function (trx, mutator) {
               // Verify puzzle is currently unlockable.
-              const data = await mutator.recalculateTeamState(hunt, team_id);
+              const data = mutator.getTeamState(hunt, team_id);
               const unlock_cost = slot.unlock_cost;
 
               // Special case for blank-rose. One of nine gates must be unlocked
@@ -1122,7 +1119,7 @@ export async function getRouter({
             redisClient,
             knex,
             async function (_, mutator) {
-              const data = await mutator.recalculateTeamState(hunt, team_id);
+              const data = mutator.getTeamState(hunt, team_id);
               if (data.available_strong_currency < 1) {
                 return { error: "INSUFFICIENT_STRONG_CURRENCY" as const };
               }
@@ -1210,7 +1207,7 @@ export async function getRouter({
             redisClient,
             knex,
             async (_, mutator) => {
-              const data = await mutator.recalculateTeamState(hunt, team_id);
+              const data = mutator.getTeamState(hunt, team_id);
               if (data.available_currency < 1) {
                 return { error: "INSUFFICIENT_STRONG_CURRENCY" as const };
               }
