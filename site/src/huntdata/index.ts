@@ -589,12 +589,15 @@ const HUNT: Hunt = {
       unlock_if: { interaction_completed: "the_crime_scene" },
     },
     {
-      slug: "the_vault",
+      // We don't actually want an "endgame" (or "The Vault") round to appear;
+      // we just want a page for the final interaction, but it seemed like a lot
+      // of work to promote The Vault to top-level. On the other hand, it
+      // doesn't seem like much of a giveaway if client-side code hard-codes the
+      // string "endgame" and special-cases it.
+      slug: "endgame",
       title: "The Vault",
       final_puzzle_slot: '',
-      puzzles: [
-        // TODO: single piece of endgame?
-      ],
+      puzzles: [],
       interactions: [
         {
           id: "the_vault",
