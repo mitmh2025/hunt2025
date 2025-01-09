@@ -563,7 +563,7 @@ const HUNT: Hunt = {
         { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "as_the_world_turandot" },
         { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends" },
         { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "a_map_and_a_shade_or_four" },
-        { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
+        { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "to_do_tile_that_rectangle" },
         { id: "tmp20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1 },
         { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
         { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
