@@ -1375,7 +1375,7 @@ export const CORN_MAZES: CornMaze[] = [
         { row: 1, col: 3 },
         { row: 1, col: 26 },
         { row: 2, col: 9 },
-        { row: 2, col: 21 },
+        { row: 2, col: 22 },
         { row: 3, col: 6 },
         { row: 4, col: 27 },
         { row: 5, col: 5 },
