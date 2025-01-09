@@ -57,7 +57,7 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     refreshState();
-  }, []);
+  }, [refreshState]);
 
   const guess = useCallback(
     (uuid: string, guess: string) => {
@@ -72,7 +72,7 @@ const App = (): JSX.Element => {
       });
       refreshState();
     },
-    [dispatch, guessedUuids],
+    [dispatch, refreshState],
   );
 
   return (
