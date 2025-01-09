@@ -318,7 +318,7 @@ const InputArea = styled.div`
   background-color: #e2edec;
 `;
 
-function App() {
+const App = () => {
   const [inputText, setInputText] = useState<string>("");
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
