@@ -648,6 +648,7 @@ const ruleEngineContract = c.router({
       200: z.any(),
       ...errorResponses,
     },
+    strictStatusCodes: true,
   },
   requestEntity: {
     method: "POST",
@@ -661,6 +662,7 @@ const ruleEngineContract = c.router({
       200: z.any(),
       ...errorResponses,
     },
+    strictStatusCodes: true,
   },
 });
 
