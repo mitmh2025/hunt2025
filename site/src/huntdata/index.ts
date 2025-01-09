@@ -625,6 +625,7 @@ const HUNT: Hunt = {
       final_puzzle_slot: "",
       puzzles: [
         { id: "flp01", unlock_cost: 1, slug: "a_b_c_easy_as_1_2_3" },
+        { id: "flp02", unlock_cost: 1, slug: "wouthit_porbelm" },
       ],
       unlock_if: { oneOf: [] },
     }

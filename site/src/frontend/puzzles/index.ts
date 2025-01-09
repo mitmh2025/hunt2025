@@ -57,6 +57,7 @@ import AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends from "./granu
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
+import WouthitPorbelm from "./handy-glass";
 import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
 import Incognito from "./heavy-iron";
@@ -392,6 +393,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // Staging for floaters
   a_b_c_easy_as_1_2_3: ABCEasyAs123,
+  wouthit_porbelm: WouthitPorbelm,
 };
 
 // Generate the SUBPUZZLES index from PUZZLES

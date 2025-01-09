@@ -248,6 +248,20 @@ export function registerUiRoutes({
 
   /* Routes for 'unlisted' puzzles. */
   authRouter.get(
+    "/csorrowsd_gird",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "csorrowsd_gird" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
+  authRouter.get(
     "/i_kid_ewe_knot",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       if (
