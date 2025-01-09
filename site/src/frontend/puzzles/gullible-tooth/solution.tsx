@@ -1,6 +1,10 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const TableElement = styled.table`
   max-width: 800px;
@@ -30,8 +34,10 @@ const Solution = () => {
     <>
       <p>
         There are 7 recipes, using a grand total of 5 feeder answers, as clued
-        by the flavortext. These feeders are ESCALATION, MARCUS ODAY, PENROSE,
-        PERP, TENET.
+        by the flavortext. These feeders are <Mono>ESCALATION</Mono>,{" "}
+        <Mono>MARCUS ODAY</Mono>, <Mono>PENROSE</Mono>, <Mono>PERP</Mono>, and{" "}
+        <Mono>TENET</Mono>, which can be assigned based on ingredient
+        descriptors in the recipes.
       </p>
       <p>
         Each of these recipes involves a series of word transformations,
@@ -45,7 +51,7 @@ const Solution = () => {
       <p>
         These cakes can then be stacked (top to bottom), as per the last
         instruction, and “a slice” can be taken (the 4th letters) to spell out
-        the answer SLIVERS.
+        the answer <PuzzleAnswer>SLIVERS</PuzzleAnswer>.
       </p>
       <div>
         <div>
