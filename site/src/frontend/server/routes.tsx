@@ -26,6 +26,7 @@ import renderApp, { render404, render500 } from "../utils/renderApp";
 import { aboutHandler } from "./routes/about";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
+import { healthAndSafetyHandler } from "./routes/health_and_safety";
 import { hubHandler } from "./routes/hub";
 import {
   interactionCompletePostHandler,
@@ -337,6 +338,13 @@ export function registerUiRoutes({
     "/about",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(aboutHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/health_and_safety",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(healthAndSafetyHandler, req, res, next);
     }),
   );
 
