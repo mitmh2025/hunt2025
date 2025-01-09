@@ -254,11 +254,14 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Next we look up the reported distance for each solar system model from
-        the sun to the associated planet in that model (some models measure
+        the sun to the associated planet in that model. (Some models measure
         walking distance, so the straight-line as the crow flies distance is
-        shorter). Each tag with a flag (or MIT logo) symbolizes the broader
-        location of one of our nine solar system models, and we record those in
-        the Country column below.
+        shorter. Note that the pretty graphic on the website for Portugal’s
+        model shows hiking distance and altitude while the model is scaled on
+        the straight line distance—we have used the provided longitude and
+        latitude to calculate this distance.) Each tag with a flag (or MIT logo)
+        symbolizes the broader location of one of our nine solar system models,
+        and we record those in the Country column below.
       </p>
       <HScrollTableWrapper>
         <ExtraStyledTable>

@@ -29,7 +29,7 @@ const App = (): JSX.Element => {
     dispatch,
   ] = usePuzzleState();
 
-  useEffect(() => {
+  const refreshState = useCallback(() => {
     fetch("/puzzles/the_annual_massachusetts_spelling_bee/state", {
       method: "POST",
       body: JSON.stringify({ guessesByUuid: getGuessesByUuid() }),
@@ -55,6 +55,10 @@ const App = (): JSX.Element => {
     );
   }, [dispatch]);
 
+  useEffect(() => {
+    refreshState();
+  }, []);
+
   const guess = useCallback(
     (uuid: string, guess: string) => {
       localStorage.setItem(
@@ -66,6 +70,7 @@ const App = (): JSX.Element => {
         uuid,
         guess,
       });
+      refreshState();
     },
     [dispatch, guessedUuids],
   );
@@ -103,6 +108,7 @@ const App = (): JSX.Element => {
                   type: PuzzleActionType.RESTART_ROUND,
                   round,
                 });
+                refreshState();
               }
             }}
             queryByUuid={queryByUuid}
@@ -142,6 +148,7 @@ const App = (): JSX.Element => {
                 dispatch({
                   type: PuzzleActionType.RESTART_PUZZLE,
                 });
+                refreshState();
               }
             }}
           />

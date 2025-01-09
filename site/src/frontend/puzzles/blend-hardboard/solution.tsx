@@ -1,6 +1,10 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const DATA: [string, string, string, string, string, ReactNode][] = [
   [
@@ -91,7 +95,30 @@ const DATA: [string, string, string, string, string, ReactNode][] = [
 
 const StyledTable = styled.table`
   margin: 1em 0;
-  border-spacing: 8px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  th {
+    background-color: var(--purple-300);
+  }
+  tr:not(:first-child):nth-child(2n) {
+    background-color: var(--purple-200);
+  }
+  tr:nth-child(2n + 1) {
+    background-color: var(--purple-100);
+  }
+  th:first-child {
+    width: 100px;
+  }
+  th:nth-child(2) {
+    width: 200px;
+  }
+  th:nth-child(5) {
+    width: 200px;
+  }
+  th,
+  td {
+    padding: 0 1em;
+  }
 `;
 
 const Solution = (): JSX.Element => {
@@ -115,29 +142,33 @@ const Solution = (): JSX.Element => {
         <Mono>THE DANCE OF THE HOURS</Mono>, which is a famous ballet sequence
         in the opera <i>La Gioconda</i>.
       </p>
-      <StyledTable>
-        <tr>
-          <th>Time</th>
-          <th>Opera</th>
-          <th>Composer</th>
-          <th>Name</th>
-          <th>Correct Name</th>
-          <th>Extract</th>
-        </tr>
-        {DATA.map(([time, opera, composer, name, correctName, extract], i) => (
-          <tr key={i}>
-            <td>{time}</td>
-            <td>
-              <strong>{opera.slice(0, 1)}</strong>
-              {opera.slice(1)}
-            </td>
-            <td>{composer}</td>
-            <td>{name}</td>
-            <td>{correctName}</td>
-            <td>{extract}</td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Time</th>
+            <th>Opera</th>
+            <th>Composer</th>
+            <th>Name</th>
+            <th>Correct Name</th>
+            <th>Extract</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(
+            ([time, opera, composer, name, correctName, extract], i) => (
+              <tr key={i}>
+                <td>{time}</td>
+                <td>
+                  <strong>{opera.slice(0, 1)}</strong>
+                  {opera.slice(1)}
+                </td>
+                <td>{composer}</td>
+                <td>{name}</td>
+                <td>{correctName}</td>
+                <td>{extract}</td>
+              </tr>
+            ),
+          )}
+        </StyledTable>
+      </HScrollTableWrapper>
     </>
   );
 };

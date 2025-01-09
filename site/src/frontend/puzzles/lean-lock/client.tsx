@@ -4,6 +4,7 @@ import panzoom, { type PanZoom } from "panzoom";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import {
   CLEANSTRING_REGEX,
   DATA,
@@ -322,9 +323,10 @@ const App = () => {
         >
           Reset
         </ResetButton>
-        <div>
-          <i>Scroll or pinch to zoom. Click and drag or tap and drag to pan.</i>
-        </div>
+        <AuthorsNote>
+          This puzzle is recommended to be solved on a laptop or desktop
+          computer. Scroll to zoom. Click and drag to pan.
+        </AuthorsNote>
       </FlexWrapper>
       <StyledContainer style={{ cursor: grabbing ? "grabbing" : "grab" }}>
         <svg

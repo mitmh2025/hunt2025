@@ -125,6 +125,14 @@ const reducer: Reducer<PuzzleState, PuzzleAction> = (
           newDisabledByUuid[uuid] = disabled;
         }
       }
+      const newGuessResponsesByUuid: GuessResponsesByUuid = {};
+      for (const [uuid, response] of Object.entries(
+        state.guessResponsesByUuid,
+      )) {
+        if (!roundUuids.has(uuid)) {
+          newGuessResponsesByUuid[uuid] = response;
+        }
+      }
       const newGuessedUuids = new Set<string>();
       for (const uuid of [...state.guessedUuids]) {
         if (!roundUuids.has(uuid)) {
@@ -144,6 +152,7 @@ const reducer: Reducer<PuzzleState, PuzzleAction> = (
         },
         guessedUuids: newGuessedUuids,
         disabledByUuid: newDisabledByUuid,
+        guessResponsesByUuid: newGuessResponsesByUuid,
         queryByUuid: newQueryByUuid,
       };
     }
