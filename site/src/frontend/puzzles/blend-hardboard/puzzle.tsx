@@ -4,6 +4,7 @@ import {
   COPY_ONLY_CLASS,
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
+import { deviceMax } from "../../utils/breakpoints";
 
 const DATA: ListingProps[] = [
   {
@@ -73,6 +74,7 @@ const StyledHeader = styled.div`
   align-items: baseline;
   font-weight: bold;
   white-space: pre;
+  max-width: 100%;
 `;
 
 const Timestamp = styled.span`
@@ -89,8 +91,12 @@ const BigCaps = styled.span`
   font-size: 24px;
 `;
 
-const FlexRow = styled.div`
-  display: flex;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (${deviceMax.md}) {
+    grid-template-columns: minmax(0, 1fr);
+  }
   gap: 2em;
 `;
 
@@ -150,7 +156,7 @@ const Listing = ({
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <FlexRow>
+      <Grid>
         <FlexColumn>
           {DATA.slice(0, 5).map((props, i) => (
             <Listing key={i} {...props} />
@@ -161,7 +167,7 @@ const Puzzle = (): JSX.Element => {
             <Listing key={i} {...props} />
           ))}
         </FlexColumn>
-      </FlexRow>
+      </Grid>
     </>
   );
 };
