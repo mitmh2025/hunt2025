@@ -21,6 +21,15 @@ type ActivityLogEntryDisplay = {
   showNotification: boolean;
 };
 
+function puzzleIsEvent(slug: string): boolean {
+  return [
+    "making_contact_with_an_informant",
+    "tailing_a_lead",
+    "navigating_high_society",
+    "seeing_the_big_picture",
+  ].includes(slug);
+}
+
 export function formatActivityLogEntry(
   entry: ActivityLogEntry,
 ): ActivityLogEntryDisplay | null {
@@ -47,21 +56,39 @@ export function formatActivityLogEntry(
         showNotification: true,
       };
     case "puzzle_unlockable":
+      if (puzzleIsEvent(entry.slug)) {
+        return null;
+      }
+
       return {
         icon: <PuzzleIcon lockState="unlockable" />,
         description: <>Discovered puzzle {entry.title}</>,
         showNotification: false,
       };
     case "puzzle_unlocked":
-      return {
-        icon: <PuzzleIcon lockState="unlocked" />,
-        description: (
-          <>
-            Unlocked puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
-          </>
-        ),
-        showNotification: true,
-      };
+      if (puzzleIsEvent(entry.slug)) {
+        return {
+          icon: "🔎",
+          description: (
+            <>
+              Event <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> is now
+              accepting solutions
+            </>
+          ),
+          showNotification: true,
+        };
+      } else {
+        return {
+          icon: <PuzzleIcon lockState="unlocked" />,
+          description: (
+            <>
+              Unlocked puzzle{" "}
+              <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+            </>
+          ),
+          showNotification: true,
+        };
+      }
     case "puzzle_partially_solved":
       return {
         icon: null,
@@ -75,16 +102,31 @@ export function formatActivityLogEntry(
         showNotification: true,
       };
     case "puzzle_solved":
-      return {
-        icon: <PuzzleIcon lockState="unlocked" answer={entry.answer} />,
-        description: (
-          <>
-            Solved puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
-            (answer <code>{entry.answer}</code>)
-          </>
-        ),
-        showNotification: true,
-      };
+      if (puzzleIsEvent(entry.slug)) {
+        return {
+          icon: "🔎",
+          description: (
+            <>
+              Completed event <a href="/rounds/events">{entry.title}</a> (answer{" "}
+              <code>{entry.answer}</code>) and earned{" "}
+              {entry.strong_currency_delta}{" "}
+              {entry.strong_currency_delta === 1 ? "clue" : "clues"}
+            </>
+          ),
+          showNotification: true,
+        };
+      } else {
+        return {
+          icon: <PuzzleIcon lockState="unlocked" answer={entry.answer} />,
+          description: (
+            <>
+              Solved puzzle <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>{" "}
+              (answer <code>{entry.answer}</code>)
+            </>
+          ),
+          showNotification: true,
+        };
+      }
     case "interaction_unlocked":
       return {
         icon: <HuntIcon />,
@@ -138,6 +180,35 @@ export function formatActivityLogEntry(
           </>
         ),
         showNotification: false,
+      };
+    case "strong_currency_adjusted":
+      return {
+        icon: "🔎",
+        description: (
+          <>
+            {entry.strong_currency_delta} clue
+            {entry.strong_currency_delta === 1 ? " was" : "s were"} granted
+          </>
+        ),
+        showNotification: true,
+      };
+    case "strong_currency_exchanged":
+      return {
+        icon: "🔎",
+        description: <>Exchanged 1 clue for {entry.currency_delta} keys</>,
+        showNotification: true,
+      };
+    case "puzzle_answer_bought":
+      return {
+        icon: "🔎",
+        description: (
+          <>
+            Exchanged 1 clue for the answer to puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>:{" "}
+            <code>{entry.answer}</code>
+          </>
+        ),
+        showNotification: true,
       };
   }
 }

@@ -142,6 +142,7 @@ declare module "knex/types/tables" {
   type InsertActivityLogEntry = {
     team_id?: number;
     currency_delta?: number;
+    strong_currency_delta?: number;
     internal_data?: {
       operator?: string;
     };
@@ -208,6 +209,19 @@ declare module "knex/types/tables" {
         type: "rate_limits_reset";
         slug: string; // the puzzle which is having its rate limit reset
       }
+    | {
+        type: "strong_currency_adjusted";
+      }
+    | {
+        type: "strong_currency_exchanged";
+      }
+    | {
+        type: "puzzle_answer_bought";
+        slug: string; // the puzzle which had its answer bought
+        data: {
+          answer: string;
+        };
+      }
   );
 
   // ActivityLogEntryRow is the type as returned by the various database engines.
@@ -219,6 +233,7 @@ declare module "knex/types/tables" {
     type: string;
     slug: string | null;
     currency_delta: number;
+    strong_currency_delta: number;
     // SQLite returns JSON fields as strings.
     data: string | object | null;
     internal_data: string | object | null;
@@ -307,6 +322,7 @@ export function cleanupActivityLogEntryFromDB(
     team_id: dbEntry.team_id ?? undefined,
     timestamp: fixTimestamp(dbEntry.timestamp),
     currency_delta: dbEntry.currency_delta,
+    strong_currency_delta: dbEntry.strong_currency_delta,
     type: dbEntry.type as InternalActivityLogEntry["type"],
   };
   if (dbEntry.slug) {
@@ -407,6 +423,7 @@ export async function appendActivityLog(
       "data",
       "internal_data",
       "currency_delta",
+      "strong_currency_delta",
       "timestamp",
     ])
     .then((objs) => {

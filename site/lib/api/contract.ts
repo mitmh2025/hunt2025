@@ -38,6 +38,7 @@ const PuzzleSummarySchema = z.object({
   stray: z.boolean().optional(), // If true, this puzzle initially unlocked in stray leads, regardless of its current round assignment.
   // visible implied by existence
   locked: PuzzleLockEnum,
+  partially_solved: z.boolean().optional(),
   unlocked_at: z.number().optional(), // epoch at which the puzzle was unlocked
   answer: z.string().optional(),
 });
@@ -71,6 +72,7 @@ const RoundStateSchema = z.object({
 export const TeamHuntStateSchema = z.object({
   epoch: z.number(), // The largest value of `id` of the activity_log entries which were processed to produce this TeamState
   currency: z.number(),
+  strong_currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
 });
@@ -80,6 +82,7 @@ export const TeamStateSchema = z.object({
   info: z.object({
     epoch: z.number(),
     teamName: z.string(),
+    teamUsername: z.string(),
   }),
   state: TeamHuntStateSchema,
   whepUrl: z.string(),
@@ -94,6 +97,7 @@ export const ActivityLogEntryBaseSchema = z.object({
   team_id: z.number().optional(),
   timestamp: z.string().datetime().pipe(z.coerce.date()),
   currency_delta: z.number(),
+  strong_currency_delta: z.number(),
 });
 
 const ActivityLogEntryWithSlugAndTitle = ActivityLogEntryBaseSchema.merge(
@@ -151,6 +155,18 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({ type: z.literal("rate_limits_reset") }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("strong_currency_adjusted") }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("strong_currency_exchanged") }),
+  ),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({
+      type: z.literal("puzzle_answer_bought"),
+      answer: z.string(),
+    }),
   ),
 ]);
 
@@ -372,6 +388,37 @@ export const publicContract = c.router({
     body: z.object({}),
     responses: {
       200: PuzzleStateSchema,
+      404: z.null(),
+    },
+  },
+  exchangeStrongCurrency: {
+    method: "POST",
+    path: `/exchangeStrongCurrency`,
+    body: z.object({}),
+    responses: {
+      200: z.object({
+        currency: z.number(),
+      }),
+      400: z.object({
+        code: z.enum(["INSUFFICIENT_STRONG_CURRENCY"]),
+      }),
+    },
+  },
+  buyPuzzleAnswer: {
+    method: "POST",
+    path: `/puzzle/:slug/buyAnswer`,
+    body: z.object({}),
+    responses: {
+      200: z.object({
+        answer: z.string(),
+      }),
+      400: z.object({
+        code: z.enum([
+          "INSUFFICIENT_STRONG_CURRENCY",
+          "PUZZLE_NOT_UNLOCKED",
+          "PUZZLE_ALREADY_SOLVED",
+        ]),
+      }),
       404: z.null(),
     },
   },

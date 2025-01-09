@@ -1,4 +1,5 @@
 import { type CSSProperties } from "react";
+import { type EventDataWithTime } from "../rounds/events/types";
 
 export type HubRound = {
   slug: string;
@@ -53,4 +54,5 @@ export type HubState = {
   rounds: HubRound[];
   objects: HubObject[];
   suspects: Record<string, HubSuspect>;
+  events: EventDataWithTime[];
 };

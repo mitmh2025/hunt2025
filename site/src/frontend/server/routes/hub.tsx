@@ -12,7 +12,9 @@ export function hubHandler(req: Request) {
     return undefined;
   }
 
-  const state = hubState(teamState.state);
+  const state = hubState(teamState.state, {
+    username: teamState.info.teamUsername,
+  });
   const inlineScript = `window.initialHubState = ${JSON.stringify(state)};`;
   const node = (
     <>

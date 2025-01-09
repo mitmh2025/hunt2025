@@ -105,6 +105,17 @@ export const adminContract = c.router({
       200: InternalActivityLogSchema,
     },
   },
+  grantStrongCurrency: {
+    method: "POST",
+    path: "/admin/grantStrongCurrency",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+      amount: z.number(),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
   opsAccount: {
     method: "GET",
     path: "/admin/account",

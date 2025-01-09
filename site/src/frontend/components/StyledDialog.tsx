@@ -16,3 +16,17 @@ const StyledDialog = styled.dialog`
 `;
 
 export default StyledDialog;
+
+export const DialogActions = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0.5rem;
+  gap: 0.5rem;
+
+  button {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+`;

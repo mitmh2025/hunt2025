@@ -86,6 +86,11 @@ export const TextArea = styled.textarea`
   ${inputStyles}
 `;
 
+export const StyledSelect = styled.select`
+  ${inputStyles}
+  width: 100%;
+`;
+
 export const Wrapper = styled.div`
   margin: 0 auto;
   width: 900px;

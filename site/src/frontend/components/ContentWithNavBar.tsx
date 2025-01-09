@@ -28,11 +28,11 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
       title: "The Vault",
     });
   }
-  const currency = teamState.currency;
   return {
     epoch: teamState.epoch,
     rounds,
-    currency,
+    currency: teamState.currency,
+    strongCurrency: teamState.strong_currency,
   };
 }
 
