@@ -71,7 +71,7 @@ const Solution = (): JSX.Element => {
         and the common unsaid thread of Hakuho will discover that he gave up
         exactly 26 kinboshi in his career. If teams assign each wrestler’s
         victory a letter corresponding to the ordinal number in the list of
-        kinboshi Hakuho conceded and use the final ordering, the letters spell
+        kinboshi Hakuho conceded and use the final ordering, the letters spell{" "}
         <Mono>WIN AT SUMO</Mono>.
       </p>
       <p>
