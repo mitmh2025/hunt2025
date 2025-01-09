@@ -259,7 +259,7 @@ const HUNT: Hunt = {
         { id: "sop23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" },
         { id: "sop24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "some_assembly_required" },
         { id: "sop25", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "fight_night_at_mos" },
-        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1 }, // either brilliant-row or elaborate-mammoth
+        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1, slug: "how_i_earned_my_gold_star" },
         { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "big_names" },
         { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "doable_double" },
         { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "taste_explosion" },
