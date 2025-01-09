@@ -842,6 +842,7 @@ export async function getRouter({
             ) ?? false;
           const defaultPrize = slot.slot.is_meta ? 0 : 1;
           const prize = slot.slot.prize ?? defaultPrize;
+          const strongCurrencyPrize = slot.slot.strong_currency_prize ?? 0;
 
           let canonical_input = canonicalizeInput(guess);
           const answers = puzzle
@@ -957,6 +958,7 @@ export async function getRouter({
                     slug,
                     type: "puzzle_solved",
                     currency_delta: cannedResponseProvidesPrize ? 0 : prize,
+                    strong_currency_delta: strongCurrencyPrize,
                     data: {
                       answer: canonical_input,
                     },
@@ -1077,6 +1079,147 @@ export async function getRouter({
           return {
             status: 404 as const,
             body: null,
+          };
+        },
+      },
+      buyPuzzleAnswer: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug }, req }) => {
+          const team_id = req.user as number;
+
+          const slotAndRound = slugToSlotMap.get(slug);
+          if (!slotAndRound) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+
+          const { slot, roundSlug } = slotAndRound;
+
+          if (
+            slot.is_meta === true ||
+            slot.is_supermeta === true ||
+            roundSlug === "events"
+          ) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+
+          const puzzle = PUZZLES[slug];
+          if (!puzzle) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              const data = await mutator.recalculateTeamState(hunt, team_id);
+              if (data.available_strong_currency < 1) {
+                return { error: "INSUFFICIENT_STRONG_CURRENCY" as const };
+              }
+
+              if (!data.puzzles_unlocked.has(slug)) {
+                return { error: "PUZZLE_NOT_UNLOCKED" as const };
+              }
+
+              if (
+                data.puzzles_solved.has(slug) ||
+                data.puzzles_partially_solved.has(slug)
+              ) {
+                return { error: "PUZZLE_ALREADY_SOLVED" as const };
+              }
+
+              await mutator.appendLog({
+                team_id,
+                type: "puzzle_answer_bought",
+                slug,
+                strong_currency_delta: -1,
+                data: {
+                  answer: canonicalizeInput(puzzle.answer),
+                },
+              });
+
+              await mutator.appendLog({
+                team_id,
+                slug,
+                type: "puzzle_solved",
+                currency_delta: 1,
+                data: {
+                  answer: canonicalizeInput(puzzle.answer),
+                },
+              });
+
+              return {};
+            },
+          );
+
+          if (result.error) {
+            return {
+              status: 400 as const,
+              body: {
+                code: result.error,
+              },
+            };
+          }
+
+          return {
+            status: 200 as const,
+            body: {
+              answer: puzzle.answer,
+            },
+          };
+        },
+      },
+      exchangeStrongCurrency: {
+        middleware: [authMiddleware],
+        handler: async ({ req }) => {
+          const EXCHANGE_RATE = 3;
+          const team_id = req.user as number;
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async (_, mutator) => {
+              const data = await mutator.recalculateTeamState(hunt, team_id);
+              if (data.available_currency < 1) {
+                return { error: "INSUFFICIENT_STRONG_CURRENCY" as const };
+              }
+
+              await mutator.appendLog({
+                team_id,
+                type: "strong_currency_exchanged",
+                currency_delta: EXCHANGE_RATE,
+                strong_currency_delta: -1,
+              });
+
+              return {};
+            },
+          );
+
+          if (result.error) {
+            return {
+              status: 400 as const,
+              body: {
+                code: result.error,
+              },
+            };
+          }
+
+          return {
+            status: 200 as const,
+            body: {
+              currency: EXCHANGE_RATE,
+            },
           };
         },
       },
@@ -1283,6 +1426,53 @@ export async function getRouter({
                       team_id,
                       type: "currency_adjusted",
                       currency_delta: amount,
+                      internal_data: {
+                        operator: req.authInfo?.adminUser,
+                      },
+                    }),
+                  );
+                }
+
+                return result;
+              }
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
+      grantStrongCurrency: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ body: { teamIds, amount }, req }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              if (teamIds === "all") {
+                return [
+                  await mutator.appendLog({
+                    type: "strong_currency_adjusted",
+                    strong_currency_delta: amount,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                ];
+              } else {
+                const result: (InternalActivityLogEntry | undefined)[] = [];
+                for (const team_id of teamIds) {
+                  result.push(
+                    await mutator.appendLog({
+                      team_id,
+                      type: "strong_currency_adjusted",
+                      strong_currency_delta: amount,
                       internal_data: {
                         operator: req.authInfo?.adminUser,
                       },
@@ -1731,6 +1921,7 @@ export async function getRouter({
                   "team_id",
                   "type",
                   "currency_delta",
+                  "strong_currency_delta",
                   "slug",
                   "timestamp",
                   "data",

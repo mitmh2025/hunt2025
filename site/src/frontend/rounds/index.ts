@@ -1,7 +1,8 @@
 import type { FunctionComponent } from "react";
-import type { TeamHuntState } from "../../../lib/api/client";
+import type { TeamHuntState, TeamInfo } from "../../../lib/api/client";
 import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
+import EventsRoundPage from "./events";
 import IllegalSearchRoundPage from "./illegal_search";
 import MurderRoundPage from "./murder_in_mitropolis";
 import PapertrailRoundPage from "./paper_trail";
@@ -16,7 +17,11 @@ import MissingDiamondRoundPage from "./the_missing_diamond";
 // TODO: figure out the props we want to pass to the round pages
 type RoundDefinition = {
   title: string;
-  component: FunctionComponent<{ teamState: TeamHuntState; node?: string }>;
+  component: FunctionComponent<{
+    teamState: TeamHuntState;
+    teamInfo: TeamInfo;
+    node?: string;
+  }>;
   entrypoint?: Entrypoint;
 };
 
@@ -55,5 +60,10 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
     title: "Stray Leads",
     component: StrayLeadsRoundPage,
     entrypoint: "stray_leads",
+  },
+  events: {
+    title: "Events",
+    component: EventsRoundPage,
+    entrypoint: "events",
   },
 };

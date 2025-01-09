@@ -46,6 +46,8 @@ export type PuzzleSlot = {
   // If absent, prize defaults to 0 if `is_meta` is true, 1 otherwise.
   prize?: number;
 
+  strong_currency_prize?: number; // If present, the amount of strong currency to reward for completing this puzzle.
+
   // A note on the condition specifiers below: it is generally expected that
   // * most standard non-meta puzzles will have an `unlockable_if` condition
   //   driven by `puzzles_unlocked`

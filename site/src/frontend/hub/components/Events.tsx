@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { type EventDataWithTime } from "../../rounds/events/types";
 import EventScheduleBg from "../assets/events.png";
 import { defaultShadowFilter, getRelativeSizeCss } from "../constants";
 
@@ -60,36 +61,7 @@ const EventSchedule = styled.div`
   }
 `;
 
-type Event = {
-  name: string;
-  time: string;
-  location: string;
-};
-
-const Events = () => {
-  const events: Event[] = [
-    {
-      name: "Making Contact With an Informant",
-      time: "1/17 7:00 PM",
-      location: "La Sala",
-    },
-    {
-      name: "Tailing a Lead",
-      time: "1/18 10:00 AM",
-      location: "Lobby 7",
-    },
-    {
-      name: "Navigating High Society",
-      time: "1/18 3:00 PM",
-      location: "Lobdell",
-    },
-    {
-      name: "Seeing the Big Picture",
-      time: "1/18 8:00 PM",
-      location: "Lobdell",
-    },
-  ];
-
+const Events = ({ events }: { events: EventDataWithTime[] }) => {
   return (
     <EventSchedule>
       <h3>Event Schedule</h3>

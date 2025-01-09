@@ -78,6 +78,7 @@ import Charged from "./lean-lock";
 import CahfeeRegulah from "./left-rome";
 import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
+import SeeingTheBigPicture from "./lofty-theory";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
 import ShellCorporationSix from "./mild-octopus";
@@ -109,6 +110,7 @@ import BeMine from "./pleasing-racket";
 import CelestialRope from "./powerful-berry";
 import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
+import MakingContactWithAnInformant from "./pricey-robot";
 import ShellCorporationFive from "./profitable-trunk";
 import ThisIsJustATest from "./radiant-snow";
 import InCommunicadoTonight from "./rare-block";
@@ -140,6 +142,7 @@ import KnightsOfTheSquareTable from "./sore-ketchup";
 import APuzzleOfTheDead from "./sorrowful-glass";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
+import TailingALead from "./submissive-tap";
 import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
 import MITropolitanHouseOfFashion from "./tall-change";
@@ -161,6 +164,7 @@ import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import CrossDashWord from "./valuable-alps";
 import YourePlayingItWrong from "./vast-fire";
+import NavigatingHighSociety from "./velvety-change";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
@@ -391,6 +395,12 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
+
+  // Events
+  making_contact_with_an_informant: MakingContactWithAnInformant,
+  seeing_the_big_picture: SeeingTheBigPicture,
+  navigating_high_society: NavigatingHighSociety,
+  tailing_a_lead: TailingALead,
 
   // work in progress
   the_thief: TheThief,

@@ -164,15 +164,15 @@ const HUNT: Hunt = {
         { id: "hunt_started", internal_description: 'Hunt Started' }, // Nothing is unlocked until this gate is satisfied.
         { id: "mdg01", internal_description: 'Picked up Educational Rite of Passage from Gala' },
         { id: "mdg02", internal_description: 'Picked up Synthetic Tagsonomy from Gala' },
-        { id: "mdg03", internal_description: '📑🍝: Assigned Rickroll copypasta' }, 
-        { id: "mdg04", internal_description: '📑🍝: Assigned Eat Hot Chip and Lie copypasta' }, 
-        { id: "mdg05", internal_description: '📑🍝: Assigned The Bee Movie copypasta' }, 
-        { id: "mdg06", internal_description: '📑🍝: Assigned IQ Rick and Morty copypasta' }, 
-        { id: "mdg07", internal_description: '📑🍝: Assigned Nick Castellanos copypasta' }, 
-        { id: "mdg08", internal_description: '📑🍝: Assigned Mesothelioma copypasta' }, 
-        { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' }, 
-        { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' }, 
-        { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' }, 
+        { id: "mdg03", internal_description: '📑🍝: Assigned Rickroll copypasta' },
+        { id: "mdg04", internal_description: '📑🍝: Assigned Eat Hot Chip and Lie copypasta' },
+        { id: "mdg05", internal_description: '📑🍝: Assigned The Bee Movie copypasta' },
+        { id: "mdg06", internal_description: '📑🍝: Assigned IQ Rick and Morty copypasta' },
+        { id: "mdg07", internal_description: '📑🍝: Assigned Nick Castellanos copypasta' },
+        { id: "mdg08", internal_description: '📑🍝: Assigned Mesothelioma copypasta' },
+        { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' },
+        { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' },
+        { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' },
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
@@ -587,6 +587,20 @@ const HUNT: Hunt = {
         },
       ],
       unlock_if: { interaction_completed: "the_crime_scene" },
+    },
+    {
+      slug: "events",
+      title: "Events",
+      final_puzzle_slot: '',
+      puzzles: [
+        { id: "evt1", slug: "making_contact_with_an_informant", prize: 0, strong_currency_prize: 1 },
+        { id: "evt2", slug: "tailing_a_lead", prize: 0, strong_currency_prize: 1 },
+        { id: "evt3", slug: "navigating_high_society", prize: 0, strong_currency_prize: 1 },
+        { id: "evt4", slug: "seeing_the_big_picture", prize: 0, strong_currency_prize: 1 }
+      ],
+      unlock_if: [
+        { gate_satisfied: "hunt_started" },
+      ],
     },
     {
       // We don't actually want an "endgame" (or "The Vault") round to appear;

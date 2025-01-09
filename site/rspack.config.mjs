@@ -486,6 +486,7 @@ export default function createConfigs(_env, argv) {
       murder_in_mitropolis:
         "./src/frontend/rounds/murder_in_mitropolis/client.tsx",
       stray_leads: "./src/frontend/rounds/stray_leads/client.tsx",
+      events: "./src/frontend/rounds/events/client.tsx",
 
       // Illegal search interactions
       illegal_search_bookcase:
