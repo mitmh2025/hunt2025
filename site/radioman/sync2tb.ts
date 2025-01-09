@@ -236,7 +236,7 @@ async function main({
           },
         });
         if (resp.status === 200) {
-          deviceAttributes.whep_url = `${mediaBaseUrl}/${path}?jwt=${resp.body}`;
+          deviceAttributes.whep_url = `${mediaBaseUrl}/${path}/whep?jwt=${resp.body}`;
         } else {
           console.warn("Failed to mint token for", teamId, resp);
         }
