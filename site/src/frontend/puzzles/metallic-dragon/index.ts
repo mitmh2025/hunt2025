@@ -12,6 +12,7 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [],
   content: {
     component: Puzzle,
+    entrypoint: "puzzle_metallic_dragon",
   },
   solution: {
     component: Solution,
