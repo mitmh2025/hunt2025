@@ -69,6 +69,7 @@ import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
+import WeCanDoThisAllDay from "./iridescent-taxicab";
 import CornMaize from "./kind-ruler";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
@@ -387,6 +388,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   in_communicado_tonight: InCommunicadoTonight,
   to_do_tile_that_rectangle: ToDoTileThatRectangle,
+  we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 
