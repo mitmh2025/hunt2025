@@ -10,11 +10,24 @@ import allpieces from "./assets/puzzlepieces.pdf";
 
 const StyledImage = styled(LinkedImage)`
   display: block;
-  img {
-    margin: -10% 0;
+  @media screen {
+    img {
+      margin: -10% 0;
+    }
+  }
+`;
 
-    @media print {
-      margin: auto;
+const FinalImage = styled(LinkedImage)`
+  display: block;
+  @media screen {
+    padding-top: 10%;
+    margin-top: -10%;
+    overflow: hidden;
+
+    img {
+      margin-top: -10%;
+      margin-bottom: -60%;
+      width: 100%;
     }
   }
 `;
@@ -38,7 +51,7 @@ const Puzzle = (): JSX.Element => {
       <StyledImage src={pieces2} alt="Puzzle pieces with words" />
       <StyledImage src={pieces3} alt="Puzzle pieces with words" />
       <StyledImage src={pieces4} alt="Puzzle pieces with words" />
-      <StyledImage src={pieces5} alt="Puzzle pieces with words" />
+      <FinalImage src={pieces5} alt="Puzzle pieces with words" />
     </>
   );
 };
