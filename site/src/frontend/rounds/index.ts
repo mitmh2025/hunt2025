@@ -8,7 +8,6 @@ import PapertrailRoundPage from "./paper_trail";
 import StakeoutRoundPage from "./stakeout";
 import StrayLeadsRoundPage from "./stray_leads";
 import MissingDiamondRoundPage from "./the_missing_diamond";
-import VaultRoundPage from "./the_vault";
 
 // This file is intended to include non-structural data that is only relevant
 // to the frontend concerning rounds.
@@ -51,10 +50,6 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
     title: "The Murder in MITropolis",
     component: MurderRoundPage,
     entrypoint: "murder_in_mitropolis",
-  },
-  the_vault: {
-    title: "The Vault",
-    component: VaultRoundPage,
   },
   stray_leads: {
     title: "Stray Leads",

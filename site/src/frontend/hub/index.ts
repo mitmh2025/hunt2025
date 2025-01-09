@@ -157,7 +157,7 @@ const MURDER_IN_MITROPOLIS_COMPLETED = (teamState: TeamHuntState) => {
   );
 };
 const VAULT_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(teamState, "the_vault", "the_vault");
+  return INTERACTION_COMPLETED(teamState, "endgame", "the_vault");
 };
 
 const OBJECTS: HubObjectSetting[] = [
@@ -810,7 +810,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 107,
     shadow: false,
     href: "/interactions/the_vault",
-    condition: INTERACTION_UNLOCKED("the_vault", "the_vault"),
+    condition: INTERACTION_UNLOCKED("endgame", "the_vault"),
   },
 
   // strings
