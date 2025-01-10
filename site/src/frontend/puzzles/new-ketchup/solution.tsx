@@ -120,6 +120,11 @@ const StyledTable = styled.table`
 const Dossier = styled.div`
   margin: 1em 0;
   font-family: "Roboto Mono", monospace;
+  overflow-x: auto;
+`;
+
+const Strong = styled.strong`
+  background-color: #b6d7a8;
 `;
 
 const Solution = (): JSX.Element => {
@@ -186,37 +191,37 @@ const Solution = (): JSX.Element => {
         <div>DEATHANDMAYHEM</div>
         <div>SPARTACUS</div>
         <div>
-          BUZZA<strong>L</strong>DRIN
+          BUZZA<Strong>L</Strong>DRIN
         </div>
         <div>
-          S<strong>I</strong>LICONVALLEYGIRL
+          S<Strong>I</Strong>LICONVALLEYGIRL
         </div>
         <div>WILLOW</div>
         <div>
-          <strong>T</strong>ESSAVIRTUE
+          <Strong>T</Strong>ESSAVIRTUE
         </div>
         <div>
-          GARNE<strong>T</strong>
+          GARNE<Strong>T</Strong>
         </div>
         <div>FSCOTTFITZGERALD</div>
         <div>ERNESTHEMINGWAY</div>
         <div>
-          VI<strong>L</strong>EVILLAINS
+          VI<Strong>L</Strong>EVILLAINS
         </div>
         <div>
-          BILLYOT<strong>E</strong>A
+          BILLYOT<Strong>E</Strong>A
         </div>
         <div>
-          BU<strong>T</strong>TERCUP
+          BU<Strong>T</Strong>TERCUP
         </div>
         <div>
-          REGENTS<strong>O</strong>FTHEUNIVERSITYOFCALIFORNIAVBAKKE
+          REGENTS<Strong>O</Strong>FTHEUNIVERSITYOFCALIFORNIAVBAKKE
         </div>
         <div>TOSCANINI</div>
         <div>KORNBLUTH</div>
         <div>SALLYKORNBLUTH</div>
         <div>
-          <strong>M</strong>ARILLACUTHBERT
+          <Strong>M</Strong>ARILLACUTHBERT
         </div>
         <div>HQ</div>
       </Dossier>
