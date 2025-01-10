@@ -191,7 +191,7 @@ class SharedWorkerDatasetManager {
 
 // Use the SharedWorkerDatasetManager implementation if the user agent supports it.
 // Otherwise, use the DirectDatasetManager implementation (e.g. Chrome for Android)
-const USE_WORKER = false; // !!window.SharedWorker as boolean;
+const USE_WORKER = !!window.SharedWorker as boolean;
 const globalDatasetManager = USE_WORKER
   ? new SharedWorkerDatasetManager()
   : new DirectDatasetManager();
