@@ -289,7 +289,7 @@ const Solution = () => {
             <td>AL</td>
           </tr>
           <tr>
-            <td>The Keystore State</td>
+            <td>The Keystone State</td>
             <td>Pennsylvania</td>
             <td>PA</td>
           </tr>
