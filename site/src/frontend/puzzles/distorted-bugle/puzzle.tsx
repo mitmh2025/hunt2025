@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import pieces1 from "./assets/pieces1.svg";
 import pieces2 from "./assets/pieces2.svg";
 import pieces3 from "./assets/pieces3.svg";
@@ -11,21 +12,17 @@ import allpieces from "./assets/puzzlepieces.pdf";
 const StyledImage = styled(LinkedImage)`
   display: block;
   @media screen {
+    overflow: hidden;
+
     img {
-      margin: -10% 0;
+      margin: -5% 0 -10% 0;
     }
   }
 `;
 
-const FinalImage = styled(LinkedImage)`
-  display: block;
+const FinalImage = styled(StyledImage)`
   @media screen {
-    padding-top: 10%;
-    margin-top: -10%;
-    overflow: hidden;
-
     img {
-      margin-top: -10%;
       margin-bottom: -60%;
       width: 100%;
     }
@@ -35,18 +32,18 @@ const FinalImage = styled(LinkedImage)`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <p>
-        A printable version can be found{" "}
-        <a href={allpieces} target="_blank" rel="noreferrer">
-          here
-        </a>
-        .
-      </p>
       <ul>
         <li>Rectangular</li>
         <li>No empty spaces</li>
         <li>No rotations or reflections</li>
       </ul>
+      <AuthorsNote>
+        Author’s note: a printable version of these images can be found{" "}
+        <a href={allpieces} target="_blank" rel="noreferrer">
+          here
+        </a>
+        .
+      </AuthorsNote>
       <StyledImage src={pieces1} alt="Puzzle pieces with words" />
       <StyledImage src={pieces2} alt="Puzzle pieces with words" />
       <StyledImage src={pieces3} alt="Puzzle pieces with words" />
