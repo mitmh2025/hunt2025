@@ -173,7 +173,7 @@ const App = ({
     (status1, status2) => status1.order - status2.order,
   );
 
-  const pickupComplete = teamState.rounds.paper_trail?.gates?.includes("ptg15");
+  const pickupComplete = teamState.gates_satisfied.includes("ptg15");
   const points = 250 * subpuzzlesSolved.length;
 
   const latestAdFrequencyStatusChange =

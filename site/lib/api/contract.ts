@@ -81,6 +81,7 @@ export const TeamHuntStateSchema = z.object({
   strong_currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
+  gates_satisfied: z.array(z.string()),
 });
 
 export const TeamStateSchema = z.object({
