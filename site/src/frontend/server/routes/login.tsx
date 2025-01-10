@@ -127,23 +127,27 @@ const InnerWrapper = styled(Wrapper)`
   grid-template-rows: [tall-start] 1em [mid-start] 1em [wide-start] 1fr [wide-end] 1em [mid-end] 1em [tall-end];
 `;
 
+const NoPointerEvents = styled.div`
+  pointer-events: none;
+`;
+
 const ContentsWrapper = styled.div`
   grid-column: tall-start / tall-end;
   grid-row: wide-start / wide-end;
   padding: 1em 2em;
 `;
 
-const GoldBorderTall = styled.div`
+const GoldBorderTall = styled(NoPointerEvents)`
   grid-area: tall;
   border: 2px solid var(--gold-700);
 `;
 
-const GoldBorderMid = styled.div`
+const GoldBorderMid = styled(NoPointerEvents)`
   grid-area: mid;
   border: 2px solid var(--gold-700);
 `;
 
-const GoldBorderWide = styled.div`
+const GoldBorderWide = styled(NoPointerEvents)`
   grid-area: wide;
   border: 2px solid var(--gold-700);
 `;
@@ -172,7 +176,9 @@ export function loginGetHandler(_req: Request) {
               />
             </div>
             <div>
-              <Button type="submit">Log in</Button>
+              <Button data-testId="login-button" type="submit">
+                Log in
+              </Button>
             </div>
           </form>
         </ContentsWrapper>

@@ -5,7 +5,7 @@ test("can log in", async ({ page }) => {
 
   await page.getByTestId("login-username-input").fill("team");
   await page.getByTestId("login-password-input").fill("password");
-  await page.getByRole("button", { name: /Log in/i }).click();
+  await page.getByTestId("login-button").click();
 
   await expect(
     page.locator(
