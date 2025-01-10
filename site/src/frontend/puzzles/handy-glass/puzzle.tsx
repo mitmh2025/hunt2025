@@ -47,7 +47,7 @@ export const BARS_DOWN = `
       _     
             
 _    _ _    
-_  _        
+_  _     _  
  _        _ 
   _     _  _
     _ _    _
