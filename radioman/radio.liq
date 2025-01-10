@@ -14,8 +14,14 @@ harbor.http.register(
     end
 )
 
+# Friday, January 17, 2025 12:00:00 PM GMT-05:00
+schedule_start_time = string.to_float(
+    environment.get("SCHEDULE_START_EPOCH"),
+    default=1737133200.,
+)
+
 state_directory = environment.get("STATE_DIRECTORY", default=".")
-state_path = "#{state_directory}/team_state.json"
+team_state_path = "#{state_directory}/team_state.json"
 
 team_state = ref(
     try
@@ -25,10 +31,10 @@ team_state = ref(
             quixotic_shoe_enabled: bool,
             icy_box_enabled: bool,
             interaction: bool,
-        }) = file.contents(state_path)
+        }) = file.contents(team_state_path)
         v
     catch err do
-        log.important("failed to load cached state: #{err}")
+        log.important("failed to load cached team state: #{err}")
         {
             team_id=string.to_int(environment.get("TEAM_ID"), default=0),
             epoch=0,
@@ -39,7 +45,23 @@ team_state = ref(
     end
 )
 
-on_shutdown(fun () -> file.write(data=json.stringify(team_state()), state_path))
+on_shutdown(fun () -> file.write(data=json.stringify(team_state()), team_state_path))
+
+play_state_path = "#{state_directory}/play_state.json"
+
+play_state = ref(
+    try
+        let json.parse ( v : {
+            last_scheduled_hour: float,
+        }) = file.contents(team_state_path)
+        v
+    catch err do
+        log.important("failed to load cached play state: #{err}")
+        {
+            last_scheduled_hour=-1.,
+        }
+    end
+)
 
 harbor.http.register(
     port=http_port,
@@ -121,17 +143,96 @@ background_music_next = randomizer(environment.get("MUSIC_DIR"), pattern="*.mp3"
 
 # At the top of each hour after hunt has started, play a station ID and possibly an event schedule or confidential.
 
-# At specific times, play a fixed message:
-# Friday $custom release + station ID
-# Friday 18:45 event-upcoming-a-fifteen
-# Saturday 00:30 radio-last-call-friday
-# Saturday 00:45 radio-shutdown-friday
-# Saturday 14:45 event-upcoming-c-fifteen
-# Saturday 19:45 event-upcoming-d-fifteen
-# Sunday 00:30 radio-last-call-saturday
-# Sunday 00:45 radio-shutdown-saturday
-# Monday 00:30 radio-last-call-sunday
-# Monday 00:45 radio-shutdown-sunday
+announcement_schedule = [
+    (0., ["radio-kickoff"]), # 60 minute block of pre-rendered programming
+    # (1+epsilon, ["radio-release", "radio-station-id-?"])
+    (2., ["radio-station-id-?"]),
+    (3., ["radio-station-id-?", "radio-event-schedule-a"]),
+    (4., ["radio-station-id-?", "confidential"]),
+    (5., ["radio-station-id-?", "radio-event-schedule-a"]),
+    (6., ["radio-station-id-?", "radio-event-upcoming-a-hour"]),
+    (6.75, ["radio-event-upcoming-a-fifteen"]),
+    (7., ["radio-station-id-?"]),
+    (8., ["radio-station-id-?", "confidential"]),
+    (9., ["radio-station-id-?"]),
+    (10., ["radio-station-id-?"]),
+    (11., ["radio-station-id-?"]),
+    (12., ["radio-station-id-?", "confidential"]),
+    (12.5, ["radio-last-call-friday"]),
+    (12.75, ["radio-shutdown-friday"]),
+    (13., ["radio-station-id-?"]),
+    (14., ["radio-station-id-?"]),
+    (15., ["radio-station-id-?"]),
+    (16., ["radio-station-id-?"]),
+    (17., ["radio-station-id-?"]),
+    (18., ["radio-station-id-?", "radio-morning-saturday", "radio-event-schedule-b"]),
+    (19., ["radio-station-id-?"]),
+    (20., ["radio-station-id-?", "radio-event-schedule-b", "confidential"]),
+    (21., ["radio-station-id-?", "radio-event-upcoming-b-hour"]), # runs at team-specific time
+    (21.75,	["radio-event-upcoming-b-fifteen"]), # runs at team-specific time
+    (22., ["radio-station-id-?"]),
+    (23., ["radio-station-id-?", "radio-event-schedule-c"]),
+    (24., ["radio-station-id-?", "confidential"]),
+    (25., ["radio-station-id-?", "radio-event-schedule-c"]),
+    (26., ["radio-station-id-?", "radio-event-upcoming-c-hour"]),
+    (26.75, ["radio-event-upcoming-c-fifteen"]),
+    (27., ["radio-station-id-?"]),
+    (28., ["radio-station-id-?", "radio-event-schedule-d", "confidential"]),
+    (29., ["radio-station-id-?"]),
+    (30., ["radio-station-id-?", "radio-event-schedule-d"]),
+    (31., ["radio-station-id-?", "radio-event-upcoming-d-hour"]),
+    (31.75, ["radio-event-upcoming-d-fifteen"]),
+    (32., ["radio-station-id-?", "confidential"]),
+    (33., ["radio-station-id-?"]),
+    (34., ["radio-station-id-?"]),
+    (35., ["radio-station-id-?"]),
+    (36., ["radio-station-id-?", "confidential"]),
+    (36.5, ["radio-last-call-saturday"]),
+    (36.75, ["radio-shutdown-saturday"]),
+    (37., ["radio-station-id-?"]),
+    (38., ["radio-station-id-?"]),
+    (39., ["radio-station-id-?"]),
+    (40., ["radio-station-id-?"]),
+    (41., ["radio-station-id-?"]),
+    (42., ["radio-station-id-?", "radio-morning-sunday"]),
+    (43., ["radio-station-id-?"]),
+    (44., ["radio-station-id-?", "confidential"]),
+    (45., ["radio-station-id-?"]),
+    (46., ["radio-station-id-?"]),
+    (47., ["radio-station-id-?"]),
+    (48., ["radio-station-id-?", "confidential"]),
+    (49., ["radio-station-id-?"]),
+    (50., ["radio-station-id-?"]),
+    (51., ["radio-station-id-?"]),
+    (52., ["radio-station-id-?", "confidential"]),
+    (53., ["radio-station-id-?"]),
+    (54., ["radio-station-id-?"]),
+    (55., ["radio-station-id-?"]),
+    (56., ["radio-station-id-?", "confidential"]),
+    (57., ["radio-station-id-?"]),
+    (58., ["radio-station-id-?"]),
+    (59., ["radio-station-id-?"]),
+    (60., ["radio-station-id-?", "confidential"]),
+    (60.5, ["radio-last-call-sunday"]),
+    (60.75, ["radio-last-call-sunday"]),
+    (61., ["radio-station-id-?"]),
+    (62., ["radio-station-id-?"]),
+    (63., ["radio-station-id-?"]),
+    (64., ["radio-station-id-?"]),
+    (65., ["radio-station-id-?"]),
+    (66., ["radio-station-id-?", "radio-morning-monday"]),
+    (67., ["radio-station-id-?"]),
+    (68., ["radio-station-id-?", "confidential"]),
+    (69., ["radio-station-id-?"]),
+    (70., ["radio-station-id-?"]),
+]
+
+def next_scheduled_announcement() =
+    list.find(fun (e) -> begin
+        let (t, c) = e
+        t > play_state().last_scheduled_hour
+    end, announcement_schedule)
+end
 
 # Tier 2c - Puzzle content
 # quixotic-shoe: inject ads after every song
@@ -165,8 +266,41 @@ virtual_interaction = source.available(track_sensitive=false, single("spy-suite.
 # TBD: Included in stream or not?
 celebration = blank()
 
+def calculate_confidential() =
+    # radio-handoff-confidential-[a-f]
+    # radio-bumper-confidential
+    # radio-confidential-intro
+    # if interactions_completed.has(["the_crime_scene", "the_safehouse"])
+    #  radio-confidential-partial-c
+    # elsif interactions_completed.has(["the_crime_scene"])
+    #  radio-confidential-partial-b
+    # else
+    #  radio-confidential-partial-a
+    # end
+    # any si -> radio-confidential-si-intro
+    # confront_katrina -> radio-confidential-si-katrina
+    # confront_gladys -> radio-confidential-si-gladys
+    # confront_papa -> radio-confidential-si-papa
+    # confront_carter -> radio-confidential-si-ferdinand
+    # radio-confidential-outro
+    []
+end
+
+queue = ref(request.extending_queue(fun () -> []))
+
 def regular_stream_next() =
     print("regular_stream_next is called")
+    print("current request: #{queue().current()}")
+    print("current request metadata: #{null.map(request.metadata,queue().current())}")
+    print("last metadata: #{queue().last_metadata()}")
+    print("queue: #{queue().queue()}")
+    print("last queued metadata: #{queue().last_queued_metadata()}")
+    last_metadata = queue().last_queued_metadata()
+
+    fill_time = time() + queue().remaining()
+    hunt_elapsed = fill_time - schedule_start_time
+    hunt_elapsed_hours = hunt_elapsed / 3600.
+
     if in_interaction() then
         []
     else
@@ -197,6 +331,7 @@ regular_stream = request.extending_queue(
     native=true,
     regular_stream_next,
 )
+queue := regular_stream
 
 regular_stream.on_metadata(fun (m) -> print("on_metadata #{m}"))
 regular_stream.on_track(fun (m) -> print("on_track #{m}"))

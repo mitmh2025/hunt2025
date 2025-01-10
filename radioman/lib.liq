@@ -184,11 +184,21 @@ def request.extending_queue(
         [...s.queue(), ...initial_queue(), ...queue()]
     end
 
+    def get_last_queued_metadata() =
+        queue=get_queue()
+        if queue != [] then
+            request.metadata(list.last(queue))
+        else
+            s.last_metadata()
+        end
+    end
+
     s =
         s.{
             length={list.length(queue()) + list.length(s.queue())},
             set_queue=set_queue,
-            queue=get_queue
+            queue=get_queue,
+            last_queued_metadata=get_last_queued_metadata,
         }
 
     s.on_wake_up(
