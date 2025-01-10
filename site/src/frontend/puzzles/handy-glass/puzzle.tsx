@@ -112,7 +112,7 @@ const Puzzle = (): JSX.Element => {
           <div>22. Smtoeinhg an ifulneecnr mhigt be cnhisag</div>
           <div>24. Sencice fiocitn ahuotr who wtroe for Satr Terk</div>
           <div>26. Urnedrtwier or grauaontr</div>
-          <div>28. Fremor dcespriotr of Ayra Sratk (2 wdors)</div>
+          <div>28. Wulod-be dcespriotr of Ayra Sratk (2 wdors)</div>
           <div>30. Spratmnhoe poohtarpgh, smmteeios</div>
           <div>32. “Fidary Nghit ______” (flbotaol damra)</div>
           <div>
