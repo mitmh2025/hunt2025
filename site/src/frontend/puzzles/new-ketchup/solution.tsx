@@ -178,7 +178,7 @@ const Solution = (): JSX.Element => {
         <div>DOSSIER #006201600383800010</div>
         <br />
         <div>
-          DEATHA<strong>N</strong>DMAYHEM
+          DEATHANDMAYHEM
         </div>
         <div>
           S<strong>P</strong>ARTACUS
