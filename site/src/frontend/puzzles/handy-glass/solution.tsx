@@ -217,6 +217,29 @@ const Solution = (): JSX.Element => {
           </tr>
         ))}
       </StyledTable>
+      <p>
+        And the grid given to solvers after submitting{" "}
+        <Mono>MAKE US ONE OF THESE</Mono> was:
+      </p>
+      <Crossword
+        labels={LABELS}
+        getAdditionalCellStyles={({ row, column }) => {
+          const styles: CSSProperties = {};
+          if (row === 0) {
+            styles.borderTopWidth = "3px";
+          }
+          if (BARS_RIGHT[row]?.[column] === "|" || column === 4) {
+            styles.borderRightWidth = "3px";
+          }
+          if (BARS_DOWN[row]?.[column] === "_" || row === 4) {
+            styles.borderBottomWidth = "3px";
+          }
+          if (column === 0) {
+            styles.borderLeftWidth = "3px";
+          }
+          return styles;
+        }}
+      />
     </>
   );
 };

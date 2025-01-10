@@ -3,7 +3,7 @@ import { styled, type CSSProperties } from "styled-components";
 import Crossword from "../../../components/Crossword";
 import { HANDY_GLASS_SLUG } from "../constants";
 
-const LABELS = `
+export const LABELS = `
 
 
 
@@ -15,7 +15,7 @@ const LABELS = `
   .map((row) => row.padEnd(5, " ").split(""));
 
 // | means a bar to the right of this cell
-const BARS_RIGHT = `
+export const BARS_RIGHT = `
 |    
    | 
 
@@ -27,7 +27,7 @@ const BARS_RIGHT = `
   .map((row) => row.padEnd(5, " ").split(""));
 
 // _ means a bar below this cell
-const BARS_DOWN = `
+export const BARS_DOWN = `
  _  _
 
 
