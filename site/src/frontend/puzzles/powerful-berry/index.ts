@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Celestial Rope",
   slug: "celestial_rope",
-  initial_description:
-    "Physical Puzzle—A very long ribbon with tags",
+  initial_description: "Physical Puzzle—A very long ribbon with tags",
   answer: "SKY REPLAY",
   authors: ["Erin Price", "Ariel Schwartz", "Kat Allen"],
   editors: ["Henry Wong", "James Douberley"],

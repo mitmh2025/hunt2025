@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Synthetic Tagsonomy",
   slug: "synthetic_tagsonomy",
-  initial_description:
-    "Physical Puzzle—A small bag of drawings",
+  initial_description: "Physical Puzzle—A small bag of drawings",
   answer: "CHEESE VENDORS",
   authors: ["Simone Agha", "David Anderson", "Eric Marion"],
   editors: ["Hubert Hwang", "Steve Banzaert", "tinaun"],

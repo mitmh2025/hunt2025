@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "MITropolitan House of Fashion",
   slug: "mitropolitan_house_of_fashion",
-  initial_description:
-    "Pictures of dresses and racks of garment bags",
+  initial_description: "Pictures of dresses and racks of garment bags",
   answer: "SERENDIP SANCTUARY",
   authors: ["Emilie Josephs", "Rebecca Engelke"],
   editors: [

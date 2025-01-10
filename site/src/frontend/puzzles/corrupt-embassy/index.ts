@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Story Vision Contest",
   slug: "story_vision_contest",
-  initial_description:
-    "Strange short stories, flags, and associated numbers",
+  initial_description: "Strange short stories, flags, and associated numbers",
   answer: "PERRALLE",
   authors: ["Joanna Murray", "Will Day"],
   editors: ["Anna Brunner", "Melanie Matchett Wood", "Michele Pratusevich"],

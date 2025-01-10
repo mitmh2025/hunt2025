@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Lab Scrabble",
   slug: "lab_scrabble",
-  initial_description:
-    "Racks with letter tiles and a list of clues underneath",
+  initial_description: "Racks with letter tiles and a list of clues underneath",
   answer: "GOLD",
   authors: ["phyphor", "Anisa Schardl", "Eric Marion", "Mike Mannis"],
   editors: ["Hubert Hwang", "J. Heléne Andersson", "Jonathan Lay"],

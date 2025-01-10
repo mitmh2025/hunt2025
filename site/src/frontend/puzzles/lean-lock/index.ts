@@ -5,7 +5,8 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Charged",
   slug: "charged",
-  initial_description: "Interactive interface with text entry boxes and lines between them",
+  initial_description:
+    "Interactive interface with text entry boxes and lines between them",
   answer: "LEAF",
   authors: ["Henry Wong", "Robin Deits"],
   editors: ["James Douberley", "Li-Mei Lim"],

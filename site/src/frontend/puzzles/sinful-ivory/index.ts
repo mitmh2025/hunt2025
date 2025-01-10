@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Heap of Clards",
   slug: "a_heap_of_clards",
-  initial_description:
-    "Some very strange trading cards",
+  initial_description: "Some very strange trading cards",
   answer: "BASEBALL MOUND",
   authors: ["John O’Brien"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim"],
