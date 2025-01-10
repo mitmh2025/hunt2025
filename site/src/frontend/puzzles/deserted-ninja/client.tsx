@@ -18,6 +18,7 @@ type ScoreEntry = {
 const Details = styled.details`
   margin-top: 10px;
   border: 1px solid black;
+  border-radius: 5px;
   padding: 5px 10px;
 `;
 const ResultLabel = styled.summary`

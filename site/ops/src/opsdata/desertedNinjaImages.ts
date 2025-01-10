@@ -317,7 +317,44 @@ import Geoguessr10 from "../../../src/frontend/puzzles/deserted-ninja/assets/geo
 import Geoguessr11 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr11.jpg";
 import Geoguessr12 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr12.jpg";
 
-export const albumLookup = [
+type AlbumArray = [string, string, string, string, string, string];
+type ArtistType = [AlbumArray, AlbumArray, AlbumArray];
+type AlbumLookup = [
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+  ArtistType,
+];
+
+type GeoguessrLookup = [
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+];
+
+export const albumLookup: AlbumLookup = [
   [
     [Album0100, Album0101, Album0102, Album0103, Album0104, Album0105],
     [Album0110, Album0111, Album0112, Album0113, Album0114, Album0115],
@@ -404,7 +441,7 @@ export const albumLookup = [
     [Album1720, Album1721, Album1722, Album1723, Album1724, Album1725],
   ],
 ];
-export const geoguessrLookup = [
+export const geoguessrLookup: GeoguessrLookup = [
   Geoguessr01,
   Geoguessr02,
   Geoguessr03,

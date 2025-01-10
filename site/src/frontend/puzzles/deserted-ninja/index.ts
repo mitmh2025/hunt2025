@@ -16,7 +16,12 @@ const puzzle: PuzzleDefinition = {
   answer: "TO STATE THE OBVIOUS",
   authors: ["Hubert Hwang", "Kevin Hwang"],
   editors: ["Steve Banzaert", "James Douberly", "Robin Deits", "Arcturus Wang"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      freeform:
+        "Additional questions written by Steve Banzaert and Jesse Moeller",
+    },
+  ],
   content: {
     component: Puzzle,
     entrypoint: "puzzle_deserted_ninja",
