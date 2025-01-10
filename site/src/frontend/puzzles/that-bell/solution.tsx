@@ -287,14 +287,16 @@ const Solution = (): JSX.Element => {
         Solvers are given a gibberish block of monospaced text, and also some
         circular shapes. If solvers search in the block of text, they find that
         the circular shapes will line up with text that spells out a clue of a
-        historical event. When investigating these clues, solvers realize that
-        each clue identifies both a year, and a monarch (all
-        top-of-the-hierarchy monarchs, i.e. kings and emperors). As a check of
-        solvers’ work, the circles are ordered in alpha-order by the name of the
-        monarch. Solvers should order these monarchs in chronological order of
-        the event. Earlier when finding the clues, solvers will have noticed
-        that each clue has an extra “X” in it. If solvers take the position of
-        this “X” in the clue as an index into the monarch names, they’ll spell
+        historical event. To aid in identification, the starting 4 letters are
+        provided, the first letter in red and the following 3 in orange. When
+        investigating these clues, solvers realize that each clue identifies
+        both a year, and a monarch (all top-of-the-hierarchy monarchs, i.e.
+        kings and emperors). As a check of solvers’ work, the circles are
+        ordered in alpha-order by the name of the monarch. Solvers should order
+        these monarchs in chronological order of the event. Earlier when finding
+        the clues, solvers will have noticed that each clue has an extra “X” in
+        it. If solvers take the position of this “X” in the clue as an index
+        into the monarch names, they’ll spell
         <Mono>COUNTRY OF GREATEST ECLIPSE</Mono>.
       </p>
       <p>

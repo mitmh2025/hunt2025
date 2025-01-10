@@ -17,7 +17,71 @@ const puzzle: PuzzleDefinition = {
   solution: {
     component: Solution,
   },
-  hints: [],
+  hints: [
+    {
+      order: 0.0,
+      description: "Solvers are at the beginning",
+      nudge: "Gee, this looks a lot a word search",
+    },
+    {
+      order: 10.0,
+      description: "Solvers have found that the clues identify monarchs",
+      keywords: ["sort"],
+      nudge:
+        "All of these clues are oddly specific to just clue a monarch. Perhaps it’s time to sort out what to do with them.",
+    },
+    {
+      order: 15.0,
+      description:
+        "Solvers have found that the clues identify monarchs and specific years",
+      keywords: ["extraction"],
+      nudge:
+        "Each of these clues seems to have an extra X near the beginning. Try considering the position of the X.",
+    },
+    {
+      order: 20.0,
+      description:
+        "Solvers have gotten the cluephrase COUNTRIES OF GREATEST ECLIPSE",
+      nudge:
+        "NASA has some totally great data on this. Try looking at the maps in their catalog.",
+    },
+    {
+      order: 40.0,
+      description:
+        "Solvers have identified the countries of greatest (total) eclipse in each clued year",
+      keywords: ["extraction"],
+      nudge: "You still have those X’s. Try reusing them.",
+    },
+    {
+      order: 60.0,
+      description:
+        "Solvers have gotten the cluephrase CAESAR BELTS, KING ECLIPSES SON",
+      nudge:
+        "“Belts” looks like a familiar vocab fun fact. Try to find the belts of the puzzle.",
+    },
+    {
+      order: 70.0,
+      description:
+        "Solvers have identified the belts / equators of each of the circles they found",
+      nudge:
+        "Caesar was a shifty leader. He might be trying to hide some kings.",
+    },
+    {
+      order: 80.0,
+      description: "Solvers have found the caesar-shifted belts",
+      keywords: ["extraction"],
+      nudge:
+        "Each of sons / suns seems to be eclipsed by their father (and some other things are clearly junk). But these look just a bit off…",
+    },
+    {
+      order: 90.0,
+      description:
+        "Solvers have identified the incorrect letters in the caesar-shifted fathers in the belts",
+      keywords: ["sort"],
+      nudge:
+        "Each father seems to be shifted by a certain amount. Take a look and see if you see anything unique stand out.",
+    },
+  ],
   canned_responses: [
     {
       guess: [
