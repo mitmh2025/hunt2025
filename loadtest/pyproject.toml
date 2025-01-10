@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "loadtest"
+version = "0.1.0"
+description = ""
+authors = ["Ben Shonaldmann <ben@benweissmann.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+locust = "^2.32.5"
+har2locust = "^0.9.3"
+ws4py = "^0.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
