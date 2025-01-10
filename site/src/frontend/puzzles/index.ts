@@ -98,6 +98,7 @@ import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
 import HisLifeStory from "./oily-date";
 import ZuluLima from "./opulent-fair";
+import ItsAllCheepAndASheepToMe from "./outrageous-bank";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
 import OWoeIsMe from "./past-jam";
@@ -391,6 +392,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   in_communicado_tonight: InCommunicadoTonight,
+  its_all_cheep_and_a_sheep_to_me: ItsAllCheepAndASheepToMe,
   to_do_tile_that_rectangle: ToDoTileThatRectangle,
   we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
