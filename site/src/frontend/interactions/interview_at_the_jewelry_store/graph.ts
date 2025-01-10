@@ -1,5 +1,71 @@
 import demo from "../../../assets/demo-photo.png";
 import type { InteractionGraph } from "../types";
+import audio_mp3_1 from "./audio/mp3/1.mp3";
+import audio_mp3_10a from "./audio/mp3/10a.mp3";
+import audio_mp3_10b from "./audio/mp3/10b.mp3";
+import audio_mp3_10c from "./audio/mp3/10c.mp3";
+import audio_mp3_11 from "./audio/mp3/11.mp3";
+import audio_mp3_12 from "./audio/mp3/12.mp3";
+import audio_mp3_2a from "./audio/mp3/2a.mp3";
+import audio_mp3_2ab_p1 from "./audio/mp3/2ab-p1.mp3";
+import audio_mp3_2b from "./audio/mp3/2b.mp3";
+import audio_mp3_2c from "./audio/mp3/2c.mp3";
+import audio_mp3_2cd_p1 from "./audio/mp3/2cd-p1.mp3";
+import audio_mp3_2d from "./audio/mp3/2d.mp3";
+import audio_mp3_3a from "./audio/mp3/3a.mp3";
+import audio_mp3_3b from "./audio/mp3/3b.mp3";
+import audio_mp3_3c from "./audio/mp3/3c.mp3";
+import audio_mp3_4a from "./audio/mp3/4a.mp3";
+import audio_mp3_4b from "./audio/mp3/4b.mp3";
+import audio_mp3_4c from "./audio/mp3/4c.mp3";
+import audio_mp3_5 from "./audio/mp3/5.mp3";
+import audio_mp3_6a_p1 from "./audio/mp3/6a-p1.mp3";
+import audio_mp3_6a from "./audio/mp3/6a.mp3";
+import audio_mp3_6b_p1 from "./audio/mp3/6b-p1.mp3";
+import audio_mp3_6b from "./audio/mp3/6b.mp3";
+import audio_mp3_6c from "./audio/mp3/6c.mp3";
+import audio_mp3_6cd_p1 from "./audio/mp3/6cd-p1.mp3";
+import audio_mp3_6d from "./audio/mp3/6d.mp3";
+import audio_mp3_7 from "./audio/mp3/7.mp3";
+import audio_mp3_7a from "./audio/mp3/7a.mp3";
+import audio_mp3_7b from "./audio/mp3/7b.mp3";
+import audio_mp3_7c from "./audio/mp3/7c.mp3";
+import audio_mp3_8 from "./audio/mp3/8.mp3";
+import audio_mp3_9 from "./audio/mp3/9.mp3";
+import audio_mp3_start from "./audio/mp3/start.mp3";
+import audio_opus_1 from "./audio/opus/1.opus";
+import audio_opus_10a from "./audio/opus/10a.opus";
+import audio_opus_10b from "./audio/opus/10b.opus";
+import audio_opus_10c from "./audio/opus/10c.opus";
+import audio_opus_11 from "./audio/opus/11.opus";
+import audio_opus_12 from "./audio/opus/12.opus";
+import audio_opus_2a from "./audio/opus/2a.opus";
+import audio_opus_2ab_p1 from "./audio/opus/2ab-p1.opus";
+import audio_opus_2b from "./audio/opus/2b.opus";
+import audio_opus_2c from "./audio/opus/2c.opus";
+import audio_opus_2cd_p1 from "./audio/opus/2cd-p1.opus";
+import audio_opus_2d from "./audio/opus/2d.opus";
+import audio_opus_3a from "./audio/opus/3a.opus";
+import audio_opus_3b from "./audio/opus/3b.opus";
+import audio_opus_3c from "./audio/opus/3c.opus";
+import audio_opus_4a from "./audio/opus/4a.opus";
+import audio_opus_4b from "./audio/opus/4b.opus";
+import audio_opus_4c from "./audio/opus/4c.opus";
+import audio_opus_5 from "./audio/opus/5.opus";
+import audio_opus_6a_p1 from "./audio/opus/6a-p1.opus";
+import audio_opus_6a from "./audio/opus/6a.opus";
+import audio_opus_6b_p1 from "./audio/opus/6b-p1.opus";
+import audio_opus_6b from "./audio/opus/6b.opus";
+import audio_opus_6c from "./audio/opus/6c.opus";
+import audio_opus_6cd_p1 from "./audio/opus/6cd-p1.opus";
+import audio_opus_6d from "./audio/opus/6d.opus";
+import audio_opus_7 from "./audio/opus/7.opus";
+import audio_opus_7a from "./audio/opus/7a.opus";
+import audio_opus_7b from "./audio/opus/7b.opus";
+import audio_opus_7c from "./audio/opus/7c.opus";
+import audio_opus_8 from "./audio/opus/8.opus";
+import audio_opus_9 from "./audio/opus/9.opus";
+import audio_opus_start from "./audio/opus/start.opus";
 
 type JewelryStoreState = {
   idea1: boolean; // did we try option 6a yet?
@@ -7,11 +73,6 @@ type JewelryStoreState = {
 };
 type JewelryStoreResult = "";
 type JewelryStoreSpeaker = "billie" | "gemcutter";
-
-const stubSoundFileset = {
-  mp3: "",
-  opus: "",
-};
 
 const remainingOptions = (state: JewelryStoreState) => {
   const remaining_options = [];
@@ -77,7 +138,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       speaker: "billie",
       text: "I headed over to the Jaded Jeweler’s after hours to figure out what Gladys Finster was doing frequenting a competitor’s store.  I’m old pals with the owner, Micah Flint, since he appraised some broad’s inheritance for a case of mine.  May have browsed a bit myself, but I’m sure not a regular customer.",
       textBubbleType: "thought",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_start,
+        opus: audio_opus_start,
+      },
       timeout_msec: 8000,
       next: "1",
     },
@@ -85,7 +149,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "1",
       speaker: "gemcutter",
       text: "Back again so soon, O’Ryan?  Got another piece for me to look over?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_1,
+        opus: audio_opus_1,
+      },
       timeout_msec: 5000 + 15000, // 5 second line, 15 seconds voting time?
       choices: [
         {
@@ -110,7 +177,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "2a",
       speaker: "billie",
       text: "Not a jewel this time, but a dame.  But she’s a real gem.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_2a,
+        opus: audio_opus_2a,
+      },
       timeout_msec: 5000,
       next: "2ab-p1",
     },
@@ -118,7 +188,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "2b",
       speaker: "billie",
       text: "Naw, nothing so straightforward as that case.  Now I’m trying to follow the footsteps of a woman.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_2b,
+        opus: audio_opus_2b,
+      },
       timeout_msec: 5000,
       next: "2ab-p1",
     },
@@ -126,7 +199,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "2c",
       speaker: "billie",
       text: "I seem to remember you doing a bit more than looking last time.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_2c,
+        opus: audio_opus_2c,
+      },
       timeout_msec: 5000,
       next: "2cd-p1",
     },
@@ -134,7 +210,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "2d",
       speaker: "billie",
       text: "I can’t just come to see my favorite gem cutter?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_2d,
+        opus: audio_opus_2d,
+      },
       timeout_msec: 5000,
       next: "2cd-p1",
     },
@@ -142,7 +221,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "2ab-p1",
       speaker: "gemcutter",
       text: "A woman, huh?  And you think this lady came through here?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_2ab_p1,
+        opus: audio_opus_2ab_p1,
+      },
       timeout_msec: 5000 + 15000,
       choices: [
         {
@@ -163,7 +245,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "2cd-p1",
       speaker: "gemcutter",
       text: "Pretty words for a pretty PI...But what are you really here for?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_2cd_p1,
+        opus: audio_opus_2cd_p1,
+      },
       timeout_msec: 5000 + 15000,
       choices: [
         {
@@ -185,7 +270,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "3a",
       speaker: "billie",
       text: "Yeah, I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_3a,
+        opus: audio_opus_3a,
+      },
       timeout_msec: 10000,
       next: "5",
     },
@@ -193,7 +281,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "3b",
       speaker: "billie",
       text: "Yeah, I’m tracking down a dame who came in here earlier today.  She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_3b,
+        opus: audio_opus_3b,
+      },
       timeout_msec: 10000,
       next: "5",
     },
@@ -201,7 +292,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "3c",
       speaker: "billie",
       text: "Yeah, I’m tracking down a woman who came in here earlier today.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_3c,
+        opus: audio_opus_3c,
+      },
       timeout_msec: 10000,
       next: "5",
     },
@@ -209,7 +303,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "4a",
       speaker: "billie",
       text: "I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_4a,
+        opus: audio_opus_4a,
+      },
       timeout_msec: 10000,
       next: "5",
     },
@@ -217,7 +314,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "4b",
       speaker: "billie",
       text: "I’m tracking down a dame who came in here earlier today.  She’d’ve come in here knowing exactly what she wanted.  A bossy type.  You couldn’t miss her.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_4b,
+        opus: audio_opus_4b,
+      },
       timeout_msec: 10000,
       next: "5",
     },
@@ -225,7 +325,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "4c",
       speaker: "billie",
       text: "I’m tracking down a woman who came in here earlier today.  Someone who knows the jewel lingo.  You’d’ve pegged her for the competition easy.  You couldn’t miss her.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_4c,
+        opus: audio_opus_4c,
+      },
       timeout_msec: 10000,
       next: "5",
     },
@@ -235,7 +338,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "5",
       speaker: "gemcutter",
       text: "Ah, yes, I think I remember a lady like that.  Maybe you can help jog my memory.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_5,
+        opus: audio_opus_5,
+      },
       timeout_msec: 5000 + 15000,
       choices: remainingOptions,
     },
@@ -244,7 +350,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6a",
       speaker: "billie",
       text: "This handsome mug’s not enough for you?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_6a,
+        opus: audio_opus_6a,
+      },
       timeout_msec: 5000,
       next: "6a-p1",
     },
@@ -252,7 +361,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6a-p1",
       speaker: "gemcutter",
       text: "You’re an eyeful, Billie, but when I look at that face my memory just flies outta my head.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_6a_p1,
+        opus: audio_opus_6a_p1,
+      },
       timeout_msec: 5000,
       choices: remainingOptions,
     },
@@ -260,7 +372,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6b",
       speaker: "billie",
       text: "Hm...does 50 bucks help with your memory?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_6b,
+        opus: audio_opus_6b,
+      },
       timeout_msec: 5000,
       next: "6b-p1",
     },
@@ -268,7 +383,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6b-p1",
       speaker: "gemcutter",
       text: "Pah, money!  Billie, I thought we were friends.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_6b_p1,
+        opus: audio_opus_6b_p1,
+      },
       timeout_msec: 5000,
       choices: remainingOptions,
     },
@@ -276,7 +394,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6c",
       speaker: "billie",
       text: "I recall you’re a gambling man. I’ve got an in on the hound races this Saturday.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_6c,
+        opus: audio_opus_6c,
+      },
       timeout_msec: 5000,
       next: "6cd-p1",
     },
@@ -284,7 +405,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6d",
       speaker: "billie",
       text: "What would you say if I could take you for a ride in Papa Finster’s slick Duesenberg?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_6d,
+        opus: audio_opus_6d,
+      },
       timeout_msec: 5000,
       next: "6cd-p1",
     },
@@ -293,7 +417,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6cd-p1",
       speaker: "gemcutter",
       text: "You know me well, Billie.  I’ll hold you to that date!... I remember that woman now.  A real looker of a lady.  Sleek hair, sharp dress, _definitely_ in the chips.  She slipped in the door quick, then started giving orders.  She was acting like the boss of this place, but she also kept looking around like she didn’t want to be seen.  She wanted men’s rings and I sold her a beaut of a gold band.  18K, dome edge, high polish...",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_6cd_p1,
+        opus: audio_opus_6cd_p1,
+      },
       timeout_msec: 20000,
       next: "7",
     },
@@ -302,7 +429,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       speaker: "billie",
       text: "That sounds like Gladys alright, but why is she buying a ring from another jewelry store?  She can have any ring she wants made by Finster’s and keep it a surprise for her dear old fiance – unless she blabbed about it herself.  Why’s she skulking into another jewel joint?",
       textBubbleType: "thought",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_7,
+        opus: audio_opus_7,
+      },
       timeout_msec: 20000 + 15000,
       choices: [
         {
@@ -323,7 +453,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "7a",
       speaker: "billie",
       text: "*Whistles* Nice ring.  Her finace’s a lucky man.  Did she mention his name?  Or how about her own?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_7a,
+        opus: audio_opus_7a,
+      },
       timeout_msec: 8000,
       next: "8",
     },
@@ -331,7 +464,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "7b",
       speaker: "billie",
       text: "Yep, that sounds like the woman I’m looking for.  Did she leave a name?",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_7b,
+        opus: audio_opus_7b,
+      },
       timeout_msec: 8000,
       next: "8",
     },
@@ -339,7 +475,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "7c",
       speaker: "billie",
       text: "See? Your mind’s like a steel trap.  Surely you have the lady’s name stored up there too.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_7c,
+        opus: audio_opus_7c,
+      },
       timeout_msec: 8000,
       next: "8",
     },
@@ -347,7 +486,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "8",
       speaker: "gemcutter",
       text: "You know I can’t give out customers’ names, even for you.  But the name she gave me was an obvious fake.  And because I like you, Billie, I’ll tell you this: she ordered an engraving on the ring: “To Ferdie. Bless your heart. -G”. Now I’m not saying her fiance is “Ferdie” and I’m not saying her name starts with “G”.  But I’m not not saying that either.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_8,
+        opus: audio_opus_8,
+      },
       timeout_msec: 20000,
       next: "9",
     },
@@ -357,7 +499,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       speaker: "billie",
       text: "That makes a cute nickname for Ferdinand Carter. That can’t be a coincidence. Gladys really did buy her fiance a ring here. What’s her game?",
       textBubbleType: "thought",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_9,
+        opus: audio_opus_9,
+      },
       timeout_msec: 10000 + 15000,
       choices: [
         {
@@ -378,7 +523,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "10a",
       speaker: "billie",
       text: "Thanks – you’ve been a gem!  I knew I could count on you.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_10a,
+        opus: audio_opus_10a,
+      },
       timeout_msec: 8000,
       next: "11",
     },
@@ -386,7 +534,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "10b",
       speaker: "billie",
       text: "Yep, that's definitely her.  Thanks, you’ve been a help!",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_10b,
+        opus: audio_opus_10b,
+      },
       timeout_msec: 8000,
       next: "11",
     },
@@ -394,7 +545,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "10c",
       speaker: "billie",
       text: "I’m not saying that helped.  But I’m not not saying that either.  I’ll see you around.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_10c,
+        opus: audio_opus_10c,
+      },
       timeout_msec: 8000,
       next: "11",
     },
@@ -403,7 +557,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "11",
       speaker: "gemcutter",
       text: "When your mystery lady is found, I do expect you to come back and take me out on that date you promised! Give me a call when you’re free.  Otherwise I’ll have to play the detective and track you down.  Good luck and keep yourself safe!",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_11,
+        opus: audio_opus_11,
+      },
       timeout_msec: 20000,
       next: "12",
     },
@@ -411,7 +568,10 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "12",
       speaker: "billie",
       text: "Pennsylvania 6-5000. Better tack this up on the pinboard so I don’t lose it.  *sighs* But my date will have to wait. Tracing Gladys here has opened up more questions than it answered.  We’ve got a lot more sleuthing to do following our mysterious lady along her paper trail.",
-      sound: stubSoundFileset, // TODO: audio
+      sound: {
+        mp3: audio_mp3_12,
+        opus: audio_opus_12,
+      },
       timeout_msec: 20000,
       finalState(_state: JewelryStoreState) {
         return "";
