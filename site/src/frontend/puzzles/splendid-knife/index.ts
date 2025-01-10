@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Fight Night at Mo’s",
   slug: "fight_night_at_mos",
   initial_description:
-    "A tournament bracket with ten competitors, represented by wacky images",
+    "A tournament bracket with ten competitors represented by wacky images",
   answer: "JADE",
   authors: ["Anna Brunner", "Alex St Claire", "Erin Price", "Sid Creutz"],
   editors: ["Hubert Hwang", "Jesse Moeller", "Michele Pratusevich"],

@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Sing Like a Canary",
   slug: "sing_like_a_canary",
   initial_description:
-    "Nine audio files, nine rows of 2-4 pictures, and a musical stave.",
+    "Some audio files, some pictures, and a musical stave",
   answer: "EARTH ANGEL",
   authors: ["Karen Rustad Tolva"],
   editors: ["Hubert Hwang", "Robin Deits"],

@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "His Life-Story",
   slug: "his_life_story",
   initial_description:
-    "A series of gifs of Ouija boards with a series of cards with notes below.",
+    "A series of gifs with Ouija boards and a series of cards with notes",
   answer: "SCULLETTS CONE",
   authors: ["Laina Lomina"],
   editors: ["Nathan Fung", "Robin Deits", "Will Day"],

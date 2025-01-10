@@ -6,7 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Annual Massachusetts Spelling Bee",
   slug: "the_annual_massachusetts_spelling_bee",
-  initial_description: "A spelling bee.",
+  initial_description: "A spelling bee",
   answer: "VAMPIRE BUTTERFLY",
   authors: ["Elan Blaustein"],
   editors: ["Anna Brunner", "Kevin Hwang", "Melanie Matchett Wood"],

@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Good Fences Make Good Otherwise Incompatible Neighbors",
   slug: "good_fences_make_good_otherwise_incompatible_neighbors",
   initial_description:
-    "A series of hexagonal grids with some numbers and symbols in them, plus some instructions.",
+    "A hexagonal logic puzzle",
   answer: "SUFFOLK EWES",
   authors: ["Denis Auroux"],
   editors: ["James Douberley", "Henry Wong", "Li-Mei Lim"],

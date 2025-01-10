@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Celestial Rope",
   slug: "celestial_rope",
   initial_description:
-    "A very long ribbon with several tags attached at long intervals.",
+    "Physical Puzzle—A very long ribbon with tags",
   answer: "SKY REPLAY",
   authors: ["Erin Price", "Ariel Schwartz", "Kat Allen"],
   editors: ["Henry Wong", "James Douberley"],

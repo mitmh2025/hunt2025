@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Cross Spread",
   slug: "cross_spread",
   initial_description:
-    "Flavor text and five lines of letters, not forming legible words",
+    "Five lines of letters",
   answer: "REUNITED",
   authors: ["Leland Aldridge"],
   editors: ["Chris Gatesman", "James Douberley", "Robin Deits"],

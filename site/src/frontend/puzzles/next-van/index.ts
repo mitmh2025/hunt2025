@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Taste Explosion",
   slug: "taste_explosion",
-  initial_description: "A word search with color splotches at the bottom.",
+  initial_description: "A word search with color splotches at the bottom",
   answer: "FISH AND CHIPS",
   authors: ["James Douberley", "Emilie Josephs"],
   editors: ["Li-Mei Lim", "Robin Deits"],

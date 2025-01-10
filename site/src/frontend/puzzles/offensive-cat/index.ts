@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Temporal Investigations",
   slug: "temporal_investigations",
-  initial_description: "Short summaries of sci fi events.",
+  initial_description: "Short summaries of sci fi events",
   answer: "BRUSH WITH FATE",
   authors: ["Anna Brunner"],
   editors: ["Joel Fried", "Melanie Matchett Wood", "Teddy McArthur"],

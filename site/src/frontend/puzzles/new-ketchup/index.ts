@@ -6,7 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "What Do They Call You?",
   slug: "what_do_they_call_you",
-  initial_description: "A text adventure chat interface with one button",
+  initial_description: "A text-adventure-ish interface",
   answer: "LITTLE TOM",
   authors: ["Karen Rustad Tolva", "Drew Fisher"],
   editors: ["Anna Brunner", "James Douberley", "Robin Deits"],

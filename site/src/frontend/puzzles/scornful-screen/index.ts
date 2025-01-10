@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Where Am I?",
   slug: "where_am_i",
-  initial_description: "A travel vlog video.",
+  initial_description: "A travel vlog video",
   answer: "ZAKYNTHOS",
   authors: ["Teddy McArthur"],
   editors: [

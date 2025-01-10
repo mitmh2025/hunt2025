@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "A Heap of Clards",
   slug: "a_heap_of_clards",
   initial_description:
-    "A series of images of glitched baseball cards with text clues, a graphic comprising parts of emoji, and additional text.",
+    "Some very strange trading cards",
   answer: "BASEBALL MOUND",
   authors: ["John O’Brien"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim"],

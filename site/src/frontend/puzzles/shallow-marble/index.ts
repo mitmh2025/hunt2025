@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "In a Different Direction",
   slug: "in_a_different_direction",
-  initial_description: "A diagramless crossword.  First round puzzle.",
+  initial_description: "A diagramless crossword",
   answer: "GREEDY PIGGY",
   authors: ["Hubert Hwang"],
   editors: ["Anna Brunner", "Li-Mei Lim", "Teddy McArthur"],

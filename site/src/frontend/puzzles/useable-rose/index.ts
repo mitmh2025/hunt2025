@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Commentary",
   slug: "commentary",
-  initial_description: "A list of nonsense strings of text.",
+  initial_description: "A list of nonsense strings of text",
   answer: "WHITE HOUSE",
   authors: ["James Douberley", "Mike Mannis"],
   editors: ["Chris Gatesman", "Robin Deits", "Teddy McArthur"],

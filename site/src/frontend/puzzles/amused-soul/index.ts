@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Lab Scrabble",
   slug: "lab_scrabble",
   initial_description:
-    "A series of Scrabble racks with blank tiles and a list of clues underneath",
+    "Racks with letter tiles and a list of clues underneath",
   answer: "GOLD",
   authors: ["phyphor", "Anisa Schardl", "Eric Marion", "Mike Mannis"],
   editors: ["Hubert Hwang", "J. Heléne Andersson", "Jonathan Lay"],

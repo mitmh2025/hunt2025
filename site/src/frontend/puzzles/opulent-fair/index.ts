@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Zulu Lima",
   slug: "zulu_lima",
-  initial_description: "Transcript of a conversation.",
+  initial_description: "Transcript of a conversation",
   answer: "SPACE WARSHIPS",
   authors: ["Nine Morch"],
   editors: ["Elan Blaustein", "James Douberley", "Robin Deits"],

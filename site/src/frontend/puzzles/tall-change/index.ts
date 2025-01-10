@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "MITropolitan House of Fashion",
   slug: "mitropolitan_house_of_fashion",
   initial_description:
-    "Hand-drawn pictures of dresses and racks of garment bags",
+    "Pictures of dresses and racks of garment bags",
   answer: "SERENDIP SANCTUARY",
   authors: ["Emilie Josephs", "Rebecca Engelke"],
   editors: [

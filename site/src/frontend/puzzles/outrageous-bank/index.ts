@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "It’s All Cheep (And A Sheep) To Me",
   slug: "its_all_cheep_and_a_sheep_to_me",
   initial_description:
-    "A video featuring cartoon animals with crossword clues written in various languages and bouncy music.",
+    "A video featuring cartoon animals and bouncy music",
   answer: "HEREFORD CATTLE",
   authors: ["J. Heléne Andersson", "Liz Oppenheim", "Sarah Leadbeater"],
   editors: ["Joanna Murray", "Kevin Hwang", "Melanie Matchett Wood"],

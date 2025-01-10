@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Do The Manual Calculations (Don’t Try Monte Carlo)",
   slug: "do_the_manual_calculations_dont_try_monte_carlo",
   initial_description:
-    "Some increasingly unusual chessboards and graphs with rules.",
+    "Some unusual chessboards and graphs with rules",
   answer: "BLISTER",
   authors: ["Nicholas Georgiou"],
   editors: ["Julian West", "Michele Pratusevich", "Teddy McArthur"],

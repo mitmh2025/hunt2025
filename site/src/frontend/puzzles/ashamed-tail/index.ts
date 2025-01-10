@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Absolutely Not Balderdash",
   slug: "absolutely_not_balderdash",
-  initial_description: "Five groups of crossword-style clues.",
+  initial_description: "Five groups of crossword-style clues",
   answer: "NIMBLE FEET",
   authors: ["Julian West", "Chris Pringle"],
   editors: ["Anna Brunner", "Melanie Matchett Wood", "Teddy McArthur"],

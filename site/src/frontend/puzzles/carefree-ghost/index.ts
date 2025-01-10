@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Star Crossed",
   slug: "star_crossed",
   initial_description:
-    "A large isometric grid of letters in the shape of a circle.",
+    "A large isometric grid of letters in the shape of a circle",
   answer: "FISTS",
   authors: ["Joanna Murray"],
   editors: ["Henry Wong", "Julian West", "Robin Deits"],

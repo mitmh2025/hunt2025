@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Cross Dash Word",
   slug: "cross_dash_word",
   initial_description:
-    "Thirteen precut pieces of cardstock. A PDF is also provided which allows you to print and cut your own copy, but we strongly recommend picking up the precut copy.",
+    "Physical Puzzle. Alternatively, there's a PDF that you can print and cut if you're a masochist. Godspeed.",
   answer: "DEAD BIRD",
   authors: ["Andrew Russell"],
   editors: ["Kevin Hwang", "Steve Banzaert", "Teddy McArthur"],

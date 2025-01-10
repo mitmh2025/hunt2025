@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Check-a-deez Words Out",
   slug: "check_a_deez_words_out",
-  initial_description: "A word search.",
+  initial_description: "A word search",
   answer: "RYAN FLAMINGO",
   authors: ["Henry Wong", "Li-Mei Lim"],
   editors: ["James Douberley", "Robin Deits"],

@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Doable Double",
   slug: "doable_double",
   initial_description:
-    "A list of two word phrases and a diagram with boxes and arrows. Fish puzzle.",
+    "A list of two word phrases and a diagram with boxes and arrows",
   answer: "SILK",
   authors: ["Karen Rustad Tolva"],
   editors: ["Hubert Hwang", "Jonathan Lay", "Michele Pratusevich"],

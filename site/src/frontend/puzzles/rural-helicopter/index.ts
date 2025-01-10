@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Paw Print Detective",
   slug: "paw_print_detective",
   initial_description:
-    "A series of nucleotide sequences, and photo cards with suspect information",
+    "A series of nucleotide sequences and suspect cards. CUTE DOGGOS!",
   answer: "SLEDDER",
   authors: ["Max Wolf"],
   editors: ["Joanna Murray", "Kevin Hwang", "Michele Pratusevich"],

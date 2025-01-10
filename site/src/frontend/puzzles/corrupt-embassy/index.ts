@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Story Vision Contest",
   slug: "story_vision_contest",
   initial_description:
-    "17 strange, very short, stories. 17 flags and associated numbers.",
+    "Strange short stories, flags, and associated numbers",
   answer: "PERRALLE",
   authors: ["Joanna Murray", "Will Day"],
   editors: ["Anna Brunner", "Melanie Matchett Wood", "Michele Pratusevich"],
