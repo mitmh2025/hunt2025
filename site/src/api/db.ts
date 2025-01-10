@@ -68,9 +68,12 @@ class WebpackSeedSource {
       .split(",")
       .map((f) => f.trim());
 
-    const keys = this.context.keys().filter((key) => {
-      return seeds.find((seed) => key.endsWith(seed));
-    });
+    const keys = this.context
+      .keys()
+      .filter((key) => {
+        return seeds.find((seed) => key.endsWith(seed));
+      })
+      .sort();
 
     console.log("Running seeds:", keys);
 
