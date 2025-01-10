@@ -11,7 +11,7 @@ export const ACROSS: { number: number; clues: string[] }[] = [
   {
     number: 4,
     clues: [
-      "If you become petrified while pulling weeds, this might be the root cause",
+      "If you suddenly expire while pulling weeds, this might be the root cause",
     ],
   },
   { number: 5, clues: ["Language and cultural group in South Africa"] },
@@ -367,7 +367,7 @@ export const ACROSS: { number: number; clues: string[] }[] = [
   {
     number: 81,
     clues: [
-      "Youngling survivor who loves kidnapping Vader’s kids",
+      "Youngling survivor who kidnaps Vader’s little princess",
       "It used to be Edo",
       "Not to be confused with Valhalla or Sto’Vo’Kor",
     ],
@@ -503,7 +503,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 15,
     clues: [
-      "She’s as much a fairy princess as a moody old man",
+      "As a budding young witch she was Beauxbatons’ Triwizard Champion",
       "Spooky spirit with a poet’s name",
       "Like a newspaper, black and white and…",
     ],
@@ -725,7 +725,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 59,
     clues: [
-      "Ecumenopolis Malak razed to kill Revan",
+      "Ecumenopolis Malak razed to kill Bastila",
       "Champion this Lady of Life and you’ll be able to break the dawn",
     ],
   },
@@ -757,7 +757,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
     number: 66,
     clues: [
       "Imperial walker’s unexpected weakness",
-      "They call Ralph Wilson stadium home",
+      "They called Ralph Wilson stadium home",
       "Gelebor is one of the last who can claim this race",
     ],
   },

@@ -61,7 +61,7 @@ const ANSWERS_ACROSS = [
   [22, "Something an influencer might be chasing", "CLOUT"],
   [24, "Science fiction author who wrote for Star Trek", "FONTANA"],
   [26, "Underwriter or guarantor", "INSURER"],
-  [28, "Former descriptor of Arya Stark (2 words)", "NO ONE"],
+  [28, "Would-be descriptor of Arya Stark (2 words)", "NO ONE"],
   [30, "Smartphone photograph, sometimes", "SELFIE"],
   [32, "“Friday Night ______” (football drama)", "LIGHTS"],
   [
