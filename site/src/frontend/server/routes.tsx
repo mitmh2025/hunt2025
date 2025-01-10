@@ -23,10 +23,11 @@ import {
 } from "../rounds/illegal_search";
 import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render404, render500 } from "../utils/renderApp";
-import { aboutHandler } from "./routes/about";
+import { aboutHandler } from "./routes/about/about";
+import { healthAndSafetyHandler } from "./routes/about/health_and_safety";
+import { radioHandler } from "./routes/about/radio";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
-import { healthAndSafetyHandler } from "./routes/health_and_safety";
 import { hubHandler } from "./routes/hub";
 import {
   interactionCompletePostHandler,
@@ -46,7 +47,6 @@ import {
   subpuzzleHandler,
   type SubpuzzleParams,
 } from "./routes/puzzle";
-import { radioHandler } from "./routes/radio/radio";
 import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
 
