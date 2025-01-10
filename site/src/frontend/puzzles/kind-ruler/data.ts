@@ -523,7 +523,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 19,
     clues: [
-      "Padma and Pavarti, Flora and Hestia, Fred and George",
+      "Padma and Parvati, Flora and Hestia, Fred and George",
       "His principle explains how a fixed wing makes lift",
     ],
   },
