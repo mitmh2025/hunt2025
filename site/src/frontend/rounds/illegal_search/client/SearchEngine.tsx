@@ -12,7 +12,6 @@ import { type TeamHuntState } from "../../../../../lib/api/client";
 import billie from "../../../assets/billie.png";
 import useDataset from "../../../client/useDataset";
 import PuzzleLink from "../../../components/PuzzleLink";
-import round_title from "../assets/study/round_title.svg";
 import {
   type ScreenArea,
   type Node,
@@ -817,7 +816,7 @@ const SearchEngine = ({
                 top: -0.8,
                 bottom: -0.965,
               },
-              asset: round_title,
+              asset: node.title,
             }}
           />
           {navigations}
