@@ -291,6 +291,10 @@ const rooms: Record<string, Room> = {
 
 const startRoom = "wfnq";
 
+const CenteredInsideThisDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
 const PhoneUI = styled.div``;
 
 const Display = styled.div`
@@ -382,6 +386,7 @@ const App = () => {
 
   return (
     <>
+      <CenteredInsideThisDiv>
       <PhoneUI>
         <Display>
           <MessageText>{messageText}</MessageText>
@@ -409,6 +414,7 @@ const App = () => {
           </form>
         </InputArea>
       </PhoneUI>
+      </CenteredInsideThisDiv>
     </>
   );
 };
