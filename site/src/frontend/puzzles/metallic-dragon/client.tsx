@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from "react";
+import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import phone from "./assets/phone.png";
 
-interface Direction {
+type Direction = {
   input_string: string;
 }
 
@@ -19,12 +20,12 @@ const dir4: Direction = {
   input_string: "9378",
 };
 
-interface Connection {
+type Connection = {
   direction: Direction;
   name: string;
 }
 
-interface MoveResult {
+type MoveResult = {
   nextRoomName: string;
   moveIsValid: boolean;
 }
@@ -52,7 +53,7 @@ class Room {
     for (const conn of this.connections) {
       count += 1;
       result += conn.direction.input_string;
-      if ((count == 1) && (this.connections.length == 2)) {
+      if (count == 1 && this.connections.length == 2) {
         result += " or ";
       } else if (count < this.connections.length - 1) {
         result += ", ";
@@ -65,7 +66,7 @@ class Room {
 }
 
 const rooms: Record<string, Room> = {
-  "wfnq": Object.assign(new Room(), {
+  wfnq: Object.assign(new Room(), {
     name: "wfnq",
     description:
       "When you fly in the Presidential airplane, you wake up REST in the morning.",
@@ -80,7 +81,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "fasi": Object.assign(new Room(), {
+  fasi: Object.assign(new Room(), {
     name: "fasi",
     description:
       "Almost every atom of helium has an equal number of protons COD neutrons.",
@@ -99,7 +100,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "aweu": Object.assign(new Room(), {
+  aweu: Object.assign(new Room(), {
     name: "aweu",
     description:
       "A Tesla sedan model can be tricked out with a light-up COGNATED console.",
@@ -114,7 +115,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "awfn": Object.assign(new Room(), {
+  awfn: Object.assign(new Room(), {
     name: "awfn",
     description:
       "The large asteroid Vesta is not considered terrestrial planet number DITE.",
@@ -133,7 +134,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "mvpa": Object.assign(new Room(), {
+  mvpa: Object.assign(new Room(), {
     name: "mvpa",
     description:
       "The morale at the Jackson residence stayed high, never going down the UVAE.",
@@ -156,7 +157,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "vbao": Object.assign(new Room(), {
+  vbao: Object.assign(new Room(), {
     name: "vbao",
     description:
       "It's SCRUB every night for dinner at the Navy special ops team barracks.",
@@ -175,7 +176,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "gfad": Object.assign(new Room(), {
+  gfad: Object.assign(new Room(), {
     name: "gfad",
     description:
       "On this rugby pitch, there are three forwards and DOTS backs.",
@@ -194,7 +195,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "euga": Object.assign(new Room(), {
+  euga: Object.assign(new Room(), {
     name: "euga",
     description:
       "You don't need a belay device when hiking the North or South SHOP of the Grand Canyon.",
@@ -217,7 +218,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "vasd": Object.assign(new Room(), {
+  vasd: Object.assign(new Room(), {
     name: "vasd",
     description:
       "Clouds consist ME a suspension of particles in the atmosphere.",
@@ -236,7 +237,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "rbap": Object.assign(new Room(), {
+  rbap: Object.assign(new Room(), {
     name: "rbap",
     description:
       "If you stand on the surface of the sun, your DACE will definitely get burned.",
@@ -251,7 +252,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "cask": Object.assign(new Room(), {
+  cask: Object.assign(new Room(), {
     name: "cask",
     description:
       "The darkness of a black GOLF is more empty than the vast emptiness of space.",
@@ -270,7 +271,7 @@ const rooms: Record<string, Room> = {
       },
     ],
   }),
-  "rmad": Object.assign(new Room(), {
+  rmad: Object.assign(new Room(), {
     name: "rmad",
     description:
       "A medieval animal pound can hold more than DOUR sheep, sometimes up to 20.",
@@ -289,46 +290,47 @@ const rooms: Record<string, Room> = {
 
 const startRoom = "wfnq";
 
+const PhoneUI = styled.div``;
+
 const Display = styled.div`
   background-image: url("${phone}");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  width: 450px;
-  height: 500px;
+  height: 460px;
+  width: 300px;
+  display: flex;
+  justify-content: center;
 `;
 
 const MessageText = styled.div`
   position: relative;
-  top: 261px;
-  left: 83px;
-  width: 287px;
-  height: 168px;
+  top: 43%;
+  width: 65%;
+  height: 28%;
   background-color: #e2edec;
   line-height: 1.3;
+  border-radius: 5px;
 `;
 
 const InputArea = styled.div`
-  width: 350px;
-  margin-left: 8px;
-  height: 70px;
-  float: left;
   font-size: x-large;
-  font-family: monospace;
-  background-color: #e2edec;
+  display: flex;
+  justify-content: center;
+  width: 300px;
 `;
 
 const App = () => {
   const [inputText, setInputText] = useState<string>("");
 
   function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log("bar");
-    setInputText(e.target.value.replace(/\s+/g, ''));
-  };
+    setInputText(e.target.value.replace(/\s+/g, ""));
+  }
 
   const [messageText, setMessageText] = useState<string>("");
   const [currentRoom, setCurrentRoom] = useState<Room>(rooms[startRoom]);
-  const [waitingForFirstMessage, setWaitingForFirstMessage] = useState<boolean>(true);
+  const [waitingForFirstMessage, setWaitingForFirstMessage] =
+    useState<boolean>(true);
 
   function constructNextMessage() {
     let nextMessageTest = "";
@@ -338,7 +340,8 @@ const App = () => {
       setWaitingForFirstMessage(false);
 
       nextMessageTest += nextRoom.constructValidDirections();
-    } else if ((inputText == "5477") || (inputText == "7375994845477")) {
+      // TODO: handle hash compare
+    } else if (inputText == "5477" || inputText == "7375994845477") {
       nextMessageTest = "Not here!";
     } else {
       const moveResult: MoveResult = currentRoom.attemptMove(inputText);
@@ -363,25 +366,36 @@ const App = () => {
 
   return (
     <>
-    <Display>
-      <MessageText>
-      {messageText}
-      </MessageText>
-    </Display>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={inputText}
-          onChange={onChange}
-        />
-        <button type="submit">
-        Enter
-        </button>
-    </form>
+      <PhoneUI>
+        <Display>
+          <MessageText>{messageText}</MessageText>
+        </Display>
+        <InputArea>
+          <form onSubmit={handleSubmit} style={{ display: "inherit" }}>
+            <input
+              type="text"
+              value={inputText}
+              onChange={onChange}
+              style={{ width: "230px" }}
+            />
+            <button type="submit" style={{ width: "50px", height: "50px" }}>
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                strokeWidth="0"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path>
+              </svg>
+            </button>
+          </form>
+        </InputArea>
+      </PhoneUI>
     </>
   );
-}
-
+};
 
 const elem = document.getElementById("wordyore-root");
 if (elem) {

@@ -75,6 +75,7 @@ import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
+import WordYore from "./metallic-dragon";
 import ShellCorporationSix from "./mild-octopus";
 import WhyKantWeBeFriendsToo from "./milky-swing";
 import MysteryOs from "./minty-play";
@@ -159,7 +160,6 @@ import YourePlayingItWrong from "./vast-fire";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
-import WordYore from "./metallic-dragon";
 
 const PlaceholderISP10 = makePlaceholder(
   "placeholder_isp10",
