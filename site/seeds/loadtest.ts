@@ -228,6 +228,26 @@ export async function seed(knex: Knex): Promise<void> {
     );
 
     // generate some puzzle states
+    await activityLog.executeMutation(
+      HUNT,
+      teamId,
+      undefined,
+      knex,
+      async (_, mutator) => {
+        await mutator.appendLog({
+          type: "puzzle_unlockable",
+          team_id: teamId,
+          slug: "what_do_they_call_you",
+        });
+
+        await mutator.appendLog({
+          type: "puzzle_unlocked",
+          team_id: teamId,
+          slug: "what_do_they_call_you",
+        });
+      },
+    );
+
     await puzzleStateLog.executeMutation(
       teamId,
       undefined,
