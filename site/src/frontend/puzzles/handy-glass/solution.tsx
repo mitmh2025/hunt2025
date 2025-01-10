@@ -4,6 +4,11 @@ import Crossword, {
   reduceCoordinatesToIndices,
 } from "../../components/Crossword";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  BARS_DOWN as SMALL_BARS_DOWN,
+  BARS_RIGHT as SMALL_BARS_RIGHT,
+  LABELS as SMALL_LABELS,
+} from "./csorrowsd-gird/puzzle";
 import { BARS_DOWN, BARS_RIGHT, LABELS } from "./puzzle";
 
 const FILL = `
@@ -222,16 +227,16 @@ const Solution = (): JSX.Element => {
         <Mono>MAKE US ONE OF THESE</Mono> was:
       </p>
       <Crossword
-        labels={LABELS}
+        labels={SMALL_LABELS}
         getAdditionalCellStyles={({ row, column }) => {
           const styles: CSSProperties = {};
           if (row === 0) {
             styles.borderTopWidth = "3px";
           }
-          if (BARS_RIGHT[row]?.[column] === "|" || column === 4) {
+          if (SMALL_BARS_RIGHT[row]?.[column] === "|" || column === 4) {
             styles.borderRightWidth = "3px";
           }
-          if (BARS_DOWN[row]?.[column] === "_" || row === 4) {
+          if (SMALL_BARS_DOWN[row]?.[column] === "_" || row === 4) {
             styles.borderBottomWidth = "3px";
           }
           if (column === 0) {

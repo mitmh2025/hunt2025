@@ -112,7 +112,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["GO HAVE A GREAT DAY"],
-      reply: "This is a hint. Keep going!",
+      reply: "Keep going!",
     },
     {
       guess: ["SHARE A TEAM PHOTO"],

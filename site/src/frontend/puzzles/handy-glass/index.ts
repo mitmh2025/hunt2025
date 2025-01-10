@@ -1,6 +1,6 @@
 import { type PuzzleDefinition } from "../types";
 import { HANDY_GLASS_SLUG } from "./constants";
-import CsorrowsdGird from "./csorrowsd-grid";
+import CsorrowsdGird from "./csorrowsd-gird";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
