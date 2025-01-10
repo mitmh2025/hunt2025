@@ -8,11 +8,9 @@ const puzzle: PuzzleDefinition = {
   slug: "chatgpt",
   initial_description: "A blank textbox with a text entry field below it.",
   answer: "CREME CARAMEL",
-  authors: ["Hubert Hwang", "Leland Aldridge"],
-  editors: ["Henry Wong", "Michele Pratusevich", "Robin Deits", "Sid Creutz"],
-  additional_credits: [
-    { freeform: "French wordlist assembled by Michele Pratusevich" },
-  ],
+  authors: ["Hubert Hwang", "Leland Aldridge", "Michele Pratusevich"],
+  editors: ["Henry Wong", "Robin Deits", "Sid Creutz"],
+  additional_credits: [],
   content: {
     component: Puzzle,
     entrypoint: "puzzle_giving_fighter",
