@@ -34,7 +34,7 @@ import {
   interactionRequestHandler,
   interactionStartPostHandler,
 } from "./routes/interaction";
-import { hackLoginGetHandler } from "./routes/login";
+import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
 import { manageTeamHandler } from "./routes/manage_team";
 import { huntNotStartedHandler } from "./routes/not_started";
 import {
@@ -192,7 +192,11 @@ export function registerUiRoutes({
   unauthRouter.get(
     "/login",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      await renderApp(hackLoginGetHandler, req, res, next);
+      if (process.env.NODE_ENV === "development") {
+        await renderApp(hackLoginGetHandler, req, res, next);
+      } else {
+        await renderApp(loginGetHandler, req, res, next);
+      }
     }),
   );
   unauthRouter.post("/login", loginPostHandler);
