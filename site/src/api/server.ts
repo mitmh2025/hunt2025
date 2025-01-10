@@ -264,6 +264,8 @@ async function newPassport({
 
         done(null, ADMIN_USER_ID, {
           adminUser: jwtPayload.adminUser,
+          permissionAdmin: true,
+          permissionOps: true,
         });
       },
     ),
