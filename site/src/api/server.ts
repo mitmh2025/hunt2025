@@ -911,6 +911,14 @@ export async function getRouter({
                 };
               }
 
+              // Check if this puzzle has already been solved by this team;
+              // short-circuit without mutating if so.
+              const alreadySolved =
+                puzzle_log.find((e) => e.type === "puzzle_solved") ?? false;
+              if (alreadySolved) {
+                return { status: 200 as const };
+              }
+
               // Determine our disposition on this submission.
               let responseText = "Incorrect";
               let status: GuessStatus = "incorrect";
