@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from "react";
+import bcrypt from "bcryptjs";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import phone from "./assets/phone.png";
 
 type Direction = {
   input_string: string;
-}
+};
 
 const dir1: Direction = {
   input_string: "66784",
@@ -23,12 +24,12 @@ const dir4: Direction = {
 type Connection = {
   direction: Direction;
   name: string;
-}
+};
 
 type MoveResult = {
   nextRoomName: string;
   moveIsValid: boolean;
-}
+};
 
 class Room {
   name = "";
@@ -39,7 +40,7 @@ class Room {
     let result = false;
     let nextRoom: string = this.name;
     for (const conn of this.connections) {
-      if (conn.direction.input_string == movement) {
+      if (conn.direction.input_string === movement) {
         result = true;
         nextRoom = conn.name;
       }
@@ -53,11 +54,11 @@ class Room {
     for (const conn of this.connections) {
       count += 1;
       result += conn.direction.input_string;
-      if (count == 1 && this.connections.length == 2) {
+      if (count === 1 && this.connections.length === 2) {
         result += " or ";
       } else if (count < this.connections.length - 1) {
         result += ", ";
-      } else if (count == this.connections.length - 1) {
+      } else if (count === this.connections.length - 1) {
         result += ", or ";
       }
     }
@@ -340,8 +341,16 @@ const App = () => {
       setWaitingForFirstMessage(false);
 
       nextMessageTest += nextRoom.constructValidDirections();
-      // TODO: handle hash compare
-    } else if (inputText == "5477" || inputText == "7375994845477") {
+    } else if (
+      bcrypt.compareSync(
+        inputText,
+        "$2b$12$hKbAzFAfzDck6.fJ/X.5y.feaeWF0xQ53ZyU.Q4V/IdE7J8G4Nbem",
+      ) ||
+      bcrypt.compareSync(
+        inputText,
+        "$2b$12$GNDwsGaXMatgvHmjlU6DpuRJ3ZgFvR6wGQ.5NtUdqbW6vz3n1Do2e",
+      )
+    ) {
       nextMessageTest = "Not here!";
     } else {
       const moveResult: MoveResult = currentRoom.attemptMove(inputText);

@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin-top: 1em;
-  margin-bottom: 1em
+  margin-bottom: 1em;
 `;
 
 const StyledTableCell = styled.td`
@@ -19,22 +19,22 @@ const StyledDiv = styled.div`
 
 const MarginedDiv = styled.div`
   margin-top: 1em;
-  margin-bottom: 1em
+  margin-bottom: 1em;
 `;
 
 const Solution = () => {
   return (
     <>
       <MarginedDiv>
-      This puzzle is presented as an old-school dumb phone interface that can be
-      played as a text adventure. Each room contains a sentence of text with one
-      word capitalized and a list of commands that can be used to progress
-      through the text adventure. Each command is actually a set of numbers,
-      where the numbers spell out the cardinal directions NORTH (66784), EAST
-      (3278), SOUTH (76884), and WEST (9378) on a phone keypad. Mapping out the
-      rooms and their connections yields the following grid. Each location has a
-      hinting at a location, and a capitalized word that does not make sense in
-      the context of the sentence.
+        This puzzle is presented as an old-school dumb phone interface that can
+        be played as a text adventure. Each room contains a sentence of text
+        with one word capitalized and a list of commands that can be used to
+        progress through the text adventure. Each command is actually a set of
+        numbers, where the numbers spell out the cardinal directions NORTH
+        (66784), EAST (3278), SOUTH (76884), and WEST (9378) on a phone keypad.
+        Mapping out the rooms and their connections yields the following grid.
+        Each location has a hinting at a location, and a capitalized word that
+        does not make sense in the context of the sentence.
       </MarginedDiv>
 
       <StyledTable>
@@ -74,8 +74,8 @@ const Solution = () => {
           </StyledTableCell>
           <StyledTableCell>
             <StyledDiv>
-              It's SCRUB every night for dinner at the Navy special ops team
-              barracks.
+              It&apos;s SCRUB every night for dinner at the Navy special ops
+              team barracks.
             </StyledDiv>
           </StyledTableCell>
         </tr>
@@ -89,8 +89,8 @@ const Solution = () => {
           </StyledTableCell>
           <StyledTableCell>
             <StyledDiv>
-              You don't need a belay device when hiking the North or South SHOP
-              of the Grand Canyon.
+              You don&apos;t need a belay device when hiking the North or South
+              SHOP of the Grand Canyon.
             </StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
@@ -122,8 +122,8 @@ const Solution = () => {
         </tr>
       </StyledTable>
       <MarginedDiv>
-      The locations hinted at in each of the descriptions clue that each
-      location represents a key on a phone keypad.
+        The locations hinted at in each of the descriptions clue that each
+        location represents a key on a phone keypad.
       </MarginedDiv>
       <StyledTable>
         <tr>
@@ -175,13 +175,13 @@ const Solution = () => {
         </tr>
       </StyledTable>
       <MarginedDiv>
-      The phone keypad, old-school styling of the puzzle presentation, the
-      directions used to move between locations, and the puzzle title (Word
-      Yore) hint to you that the capitalized words in each description should be
-      treated as textonyms from T9 predictive text. Mapping out and translating
-      the textonyms from each room gives the cluephrase PERT AND ANIMATED FIVE
-      TUBE PASTA FOUR RIMS OF FACE HOLE FOUR. The translated word makes the
-      sentence at each location make sense as a confirmation
+        The phone keypad, old-school styling of the puzzle presentation, the
+        directions used to move between locations, and the puzzle title (Word
+        Yore) hint to you that the capitalized words in each description should
+        be treated as textonyms from T9 predictive text. Mapping out and
+        translating the textonyms from each room gives the cluephrase PERT AND
+        ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR. The translated
+        word makes the sentence at each location make sense as a confirmation
       </MarginedDiv>
       <StyledTable>
         <tr>
@@ -233,11 +233,11 @@ const Solution = () => {
         </tr>
       </StyledTable>
       <MarginedDiv>
-      aking the clue phrase as clues gives PERKY ZITI LIPS. Re-applying the
-      textonym mechanic gives you the partial REPLY WITH KISS. Entering KISS
-      into the answer checker tells you to email a kiss to HQ, which will
-      respond with the instruction “Go touch GRASS”, where GRASS is the puzzle
-      answer.
+        aking the clue phrase as clues gives PERKY ZITI LIPS. Re-applying the
+        textonym mechanic gives you the partial REPLY WITH KISS. Entering KISS
+        into the answer checker tells you to email a kiss to HQ, which will
+        respond with the instruction “Go touch GRASS”, where GRASS is the puzzle
+        answer.
       </MarginedDiv>
     </>
   );
