@@ -56,8 +56,8 @@ const StyledDropquote = styled(Dropquote)`
 `;
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const mainPuzzleUnlocked = (teamState.gates ?? []).some(
-    (gate) => mainPuzzleAccessGates.has(gate),
+  const mainPuzzleUnlocked = teamState.gates_satisfied.some((gate) =>
+    mainPuzzleAccessGates.has(gate),
   );
   return (
     <>
