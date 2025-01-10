@@ -266,8 +266,7 @@ const Solution = (): JSX.Element => {
         something like <Mono>DUSONESEN</Mono>, but you can just rotate through
         until you get to <Mono>SEND US ONE</Mono>. Teams then, as instructed,
         send a funny emoji chain text to HQ in exchange for the actual answer,
-        which is
-        <PuzzleAnswer>PIDAKALA WAR</PuzzleAnswer>.
+        which is <PuzzleAnswer>PIDAKALA WAR</PuzzleAnswer>.
       </p>
     </>
   );
