@@ -40,7 +40,20 @@ const BackgroundImage = styled.img`
   width: 800px;
 `;
 
-const PositionedImage = styled(LinkedImage)<{
+const PositionedImage = styled.img<{
+  $left: number;
+  $rotate: number;
+  $top: number;
+}>`
+  width: 136px;
+  height: 136px;
+  position: absolute;
+  transform: translate(-50%, -50%) rotate(${({ $rotate }) => $rotate}deg);
+  left: ${({ $left }) => $left}px;
+  top: ${({ $top }) => $top}px;
+`;
+
+const PositionedLinkedImage = styled(LinkedImage)<{
   $left: number;
   $rotate: number;
   $top: number;
@@ -99,14 +112,14 @@ const Box = ({ id }: { id: string }): JSX.Element => {
         src={background}
         alt="A wood-grain box with eight inset slots, and words carved around the edges. Clockwise, these words read: EXPO, EXTRUDED, EYES, SHOT, SURVEYOR, SCUM, WOLF, WHOMEVER, WARD, NICE, NONPOLAR, NOIR"
       />
-      <PositionedImage
+      <PositionedLinkedImage
         $rotate={180}
         $left={211.2}
         $top={211.2}
         src={image1}
         alt="A 4x4 grid with rainbow colors, with each square having a different gradient. Each grid square has two to six letters in it, and most squares have a thick black line segment as well."
       />
-      <PositionedImage
+      <PositionedLinkedImage
         $rotate={-135}
         $left={400}
         $top={133.04}
@@ -119,41 +132,46 @@ const Box = ({ id }: { id: string }): JSX.Element => {
         $top={211.2}
         src={image3}
         alt="A green background with a gold border around an audio player."
+        onClick={(e) => {
+          // Don't bubble up to the backdrop.
+          e.preventDefault();
+          e.stopPropagation();
+        }}
       />
       {/*
        * styled-components breaks the lint for jsx-a11y/media-has-caption here,
        * but in any case we are not including one as it would spoil the puzzle
        */}
       <PositionedAudio controls src={audio} />
-      <PositionedImage
+      <PositionedLinkedImage
         $rotate={-135}
         $left={666.58}
         $top={400}
         src={image4}
         alt="Six images, each annotated with a number. From left to right, top to bottom, these are: a semiconductor wafer (3), a pink-purple gas-discharge lamp (6), a matchbox (7), a balloon (1), toothpaste (2 5), the Hindenburg exploding (4)"
       />
-      <PositionedImage
+      <PositionedLinkedImage
         $rotate={0}
         $left={588.8}
         $top={588.8}
         src={image5}
         alt="A chessboard, with pieces showing a game in progress. Each square on the board has a letter in the opposite color."
       />
-      <PositionedImage
+      <PositionedLinkedImage
         $rotate={45}
         $left={400}
         $top={666.58}
         src={image6}
         alt="A Fibonacci spiral. Each square within the spiral has a number and a color. From largest to smallest, these are: red square numbered 34, green square numbered 22, red square numbered 33, blue square numbered 1, red square numbered 29, beige square numbered 23, red square numbered 21, green square numbered 23, red square numbered 13, red square numbered -3."
       />
-      <PositionedImage
+      <PositionedLinkedImage
         $rotate={0}
         $left={211.2}
         $top={588.8}
         src={image7}
         alt="A tic-tac-toe board. Some squares have more than one X or O. To the right of the board is a mechanism with a button on a metal flange. Below the board are six groups of miniature tic-tac-toe grids containing arrows instead of X’s and O’s."
       />
-      <PositionedImage
+      <PositionedLinkedImage
         $rotate={45}
         $left={133.04}
         $top={400}
