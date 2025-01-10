@@ -132,8 +132,9 @@ const Solution = () => {
       <HighlightedIroha />
 
       <p>
-        The identifications and shifts are given below. Japanese identifications
-        are written in kanji and written out in hiragana in parentheses.
+        The full set of identifications and shifts are given below. Japanese
+        identifications are written in kanji and written out in hiragana in
+        parentheses.
       </p>
 
       <Table>
