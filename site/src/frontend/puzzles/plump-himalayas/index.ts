@@ -9,7 +9,7 @@ const puzzle: PuzzleDefinition = {
   initial_description: "An invitation to schedule an interaction",
   answer: "PIVOT TABLE",
   authors: [
-    'Robert "Fro" Myers',
+    "Robert “Fro” Myers",
     "Arcturus Wang",
     "Brie Frame",
     "Hubert Hwang",
