@@ -5,7 +5,7 @@ import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Control Room",
-  slug: "control-room",
+  slug: "control_room",
   initial_description: "An invitation to schedule an interaction",
   answer: "PIVOT TABLE",
   authors: [
