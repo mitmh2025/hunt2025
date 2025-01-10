@@ -33,6 +33,7 @@ export function hackLoginGetHandler(_req: Request) {
               <option value="is1">Illegal Search (Stage 1)</option>
               <option value="is2">Illegal Search (Stage 2)</option>
               <option value="is3">Illegal Search (Stage 3)</option>
+              <option value="loadtest1">Load Test 1</option>
             </select>
           </label>
         </div>

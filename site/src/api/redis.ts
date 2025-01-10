@@ -271,20 +271,26 @@ export abstract class Log<S, T extends { id: number; team_id?: number }> {
     teamId: number,
     messages: { id: string; message: Record<string, string> }[],
   ) {
-    if (messages.length > 0) {
-      await redisClient.extendLog(
-        `${this._key}/${teamId}`,
-        messages.flatMap((m) =>
-          m.message.entry
-            ? [
-                {
-                  id: m.id,
-                  entry: m.message.entry,
-                },
-              ]
-            : [],
-        ),
-      );
+    const entries = messages.flatMap((m) =>
+      m.message.entry
+        ? [
+            {
+              id: m.id,
+              entry: m.message.entry,
+            },
+          ]
+        : [],
+    );
+
+    if (entries.length > 0) {
+      // batch into groups of 250 -- the redis client splats script
+      // arguments and there's a limit of 255 arguments per function
+      // call in javascript
+      for (let i = 0; i < entries.length; i += 250) {
+        const entriesChunk = entries.slice(i, i + 250);
+
+        await redisClient.extendLog(`${this._key}/${teamId}`, entriesChunk);
+      }
     }
   }
 
@@ -294,15 +300,20 @@ export abstract class Log<S, T extends { id: number; team_id?: number }> {
     redisClient: RedisClient,
     entries: E[],
   ) {
-    // TODO: Consider batching?
     if (entries.length > 0) {
-      await redisClient.extendLog(
-        `global/${this._key}`,
-        entries.map((entry) => ({
-          id: `0-${entry.id}`,
-          entry: JSON.stringify(entry),
-        })),
-      );
+      // batch into groups of 250 -- the redis client splats script
+      // arguments and there's a limit of 255 arguments per function
+      // call in javascript
+      for (let i = 0; i < entries.length; i += 250) {
+        const entriesChunk = entries.slice(i, i + 250);
+        await redisClient.extendLog(
+          `global/${this._key}`,
+          entriesChunk.map((entry) => ({
+            id: `0-${entry.id}`,
+            entry: JSON.stringify(entry),
+          })),
+        );
+      }
     }
   }
 }
