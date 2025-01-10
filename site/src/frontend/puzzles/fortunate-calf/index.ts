@@ -99,7 +99,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have extracted most of the bigrams, but don’t know the order",
       keywords: ["extraction", "dealer chip", "order"],
       nudge:
-        "The dealer chip indicates the ordering of each bigram. When the dealer has the chip, you must extract from the lower-valued card first (low-to-high / small blind). When you have the chip, you must extract from the high-valued card first (high-to-low / big blind).",
+        "The player's cards indicate the ordering of each bigram, depending whether the left or right card is on top.",
     },
   ],
   canned_responses: [],
