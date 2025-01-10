@@ -1,6 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Mono, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const DATA = [
   [
@@ -133,28 +137,30 @@ const Solution = (): JSX.Element => {
         who you need to “be” (what you need to change your team name to) for
         them to talk to you:
       </p>
-      <StyledTable>
-        <tr>
-          <th>Character</th>
-          <th>Clue</th>
-          <th>Valid answer options</th>
-          <th>Guaranteed letters</th>
-        </tr>
-        {DATA.map(([character, clue, validOptions, letters], i) => (
-          <tr key={i}>
-            <td>{character}</td>
-            <td>{clue}</td>
-            <td>
-              {validOptions
-                ?.split(",")
-                .map((option, j) => <Mono key={j}>{option}</Mono>)}
-            </td>
-            <td>
-              <Mono>{letters}</Mono>
-            </td>
+      <HScrollTableWrapper>
+        <StyledTable>
+          <tr>
+            <th>Character</th>
+            <th>Clue</th>
+            <th>Valid answer options</th>
+            <th>Guaranteed letters</th>
           </tr>
-        ))}
-      </StyledTable>
+          {DATA.map(([character, clue, validOptions, letters], i) => (
+            <tr key={i}>
+              <td>{character}</td>
+              <td>{clue}</td>
+              <td>
+                {validOptions
+                  ?.split(",")
+                  .map((option, j) => <Mono key={j}>{option}</Mono>)}
+              </td>
+              <td>
+                <Mono>{letters}</Mono>
+              </td>
+            </tr>
+          ))}
+        </StyledTable>
+      </HScrollTableWrapper>
       <p>
         The first letters of each of the names (in all caps) for each of the
         characters spell the clue phrase <Mono>INDEX SKIP ZEROES</Mono>.
@@ -177,12 +183,8 @@ const Solution = (): JSX.Element => {
       <Dossier>
         <div>DOSSIER #006201600383800010</div>
         <br />
-        <div>
-          DEATHANDMAYHEM
-        </div>
-        <div>
-          SPARTACUS
-        </div>
+        <div>DEATHANDMAYHEM</div>
+        <div>SPARTACUS</div>
         <div>
           BUZZA<strong>L</strong>DRIN
         </div>
