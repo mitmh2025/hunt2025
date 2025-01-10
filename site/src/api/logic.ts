@@ -8,6 +8,7 @@ import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
+import { type Hydratable } from "../../lib/types";
 import { generateSlugToSlotMap, type SlotLookup } from "../huntdata";
 import { getSlotSlug, LogicTeamState } from "../huntdata/logic";
 import type { Hunt } from "../huntdata/types";
@@ -18,7 +19,9 @@ export class TeamStateIntermediate extends LogicTeamState {
   puzzles_partially_solved: Set<string>;
   private slugToSlotMap: Map<string, SlotLookup>;
 
-  constructor(hunt: Hunt, initial?: Partial<TeamStateIntermediate>) {
+  static redisKey = "team_state_intermediate";
+
+  constructor(hunt: Hunt, initial?: Hydratable<TeamStateIntermediate>) {
     super(initial);
     this.epoch = initial?.epoch ?? -1;
     this.puzzles_unlocked_at = new Map(initial?.puzzles_unlocked_at ?? []);

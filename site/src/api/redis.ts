@@ -399,6 +399,48 @@ export async function publishTeamState(
   });
 }
 
+type CachableConstructor<I, R> = {
+  new (initial?: I): R;
+  redisKey: string;
+};
+
+export async function getTeamCaches<
+  Constructors extends CachableConstructor<any, any>[],
+>(
+  redisClient: RedisClient,
+  teamId: number,
+  ...cacheTypes: Constructors
+): Promise<{
+  [K in keyof Constructors]: Constructors[K] extends CachableConstructor<
+    any,
+    any
+  >
+    ? InstanceType<Constructors[K]>
+    : never;
+}>;
+export async function getTeamCaches(
+  redisClient: RedisClient,
+  teamId: number,
+  ...cacheTypes: CachableConstructor<any, any>[]
+): Promise<unknown[]> {
+  return Promise.all(
+    cacheTypes.map((cacheType) =>
+      redisClient
+        .xRevRange(`cache/${cacheType.redisKey}/${teamId}`, "+", "-", {
+          COUNT: 1,
+        })
+        .then((messages) => {
+          const message = messages.at(-1);
+          if (message) {
+            return parseStreamMessage((data) => new cacheType(data), message)
+              .entry;
+          }
+          return new cacheType();
+        }),
+    ),
+  );
+}
+
 // export async function getTeamState(
 //   redisClient: RedisClient | undefined,
 //   knex: Knex,
