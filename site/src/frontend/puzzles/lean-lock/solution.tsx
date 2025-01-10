@@ -18,7 +18,7 @@ const Solution = (): JSX.Element => {
   return (
     <>
       <p>
-        This puzzle is an interactive web of words, in the style of the{" "}
+        This puzzle is an interactive web of words, in the style of{" "}
         <a
           href="https://funny-farm.appspot.com/game/farm"
           target="_blank"
