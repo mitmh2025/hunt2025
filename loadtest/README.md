@@ -1,3 +1,4 @@
+- Spin up your dev server on localhost:3000. Set the env var `export SEED_FILES="demo.ts,loadtest.ts"` to get the load-test seeds (make sure you can log in as `loadtestearly1`)
 - Install `locust`: https://locust.io/
 - Run: `locust -f early_user.py` in this directory
 - From the web UI, kick off a test run
