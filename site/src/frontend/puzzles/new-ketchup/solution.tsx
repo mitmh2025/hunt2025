@@ -181,7 +181,7 @@ const Solution = (): JSX.Element => {
           DEATHANDMAYHEM
         </div>
         <div>
-          S<strong>P</strong>ARTACUS
+          SPARTACUS
         </div>
         <div>
           BUZZA<strong>L</strong>DRIN
