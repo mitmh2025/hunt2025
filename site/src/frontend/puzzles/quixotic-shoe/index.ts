@@ -64,7 +64,7 @@ const subpuzzles: SubpuzzleDefinition[] = [
 const puzzle: PuzzleDefinition = {
   title: "And Now, a Puzzling Word From Our Sponsors",
   slug: "and_now_a_puzzling_word_from_our_sponsors",
-  initial_description: "Suddenly, your radio feed is interspersed with ads.",
+  initial_description: "MITropolis card rewards portal. Do you have enough points?",
   answer: "TENET",
   authors: [
     "Ollie Shonaldmann",
