@@ -57,11 +57,19 @@ export function loginGetHandler(_req: Request) {
       <form method="post">
         <div>
           <label htmlFor="username">Username: </label>
-          <TextInput type="text" name="username" />
+          <TextInput
+            data-testId="login-username-input"
+            type="text"
+            name="username"
+          />
         </div>
         <div>
           <label htmlFor="password">Password: </label>
-          <TextInput type="password" name="password" />
+          <TextInput
+            data-testId="login-password-input"
+            type="password"
+            name="password"
+          />
         </div>
         <div>
           <Button type="submit">Log in</Button>

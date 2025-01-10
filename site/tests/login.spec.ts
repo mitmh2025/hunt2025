@@ -3,7 +3,8 @@ import { test, expect } from "@playwright/test";
 test("can log in", async ({ page }) => {
   await page.goto("/");
 
-  await page.getByLabel("Username:").selectOption("team");
+  await page.getByTestId("login-username-input").fill("team");
+  await page.getByTestId("login-password-input").fill("password");
   await page.getByRole("button", { name: /Log in/i }).click();
 
   await expect(
