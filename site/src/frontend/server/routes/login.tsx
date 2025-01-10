@@ -1,5 +1,7 @@
 import { type Request } from "express";
 import React from "react";
+import { styled } from "styled-components";
+import { Button, TextInput, Wrapper } from "../../components/StyledUI";
 
 export function hackLoginGetHandler(_req: Request) {
   const node = (
@@ -36,6 +38,44 @@ export function hackLoginGetHandler(_req: Request) {
         </div>
       </form>
     </div>
+  );
+  return { node, title: "Login" };
+}
+
+const StyledWrapper = styled(Wrapper)`
+  margin-top: 1em;
+  padding: 2em;
+  border-radius: 1em;
+  background-color: var(--white);
+  color: var(--black);
+`;
+
+export function loginGetHandler(_req: Request) {
+  const node = (
+    <StyledWrapper>
+      <h1>Log in</h1>
+      <form method="post">
+        <div>
+          <label htmlFor="username">Username: </label>
+          <TextInput
+            data-testId="login-username-input"
+            type="text"
+            name="username"
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password: </label>
+          <TextInput
+            data-testId="login-password-input"
+            type="password"
+            name="password"
+          />
+        </div>
+        <div>
+          <Button type="submit">Log in</Button>
+        </div>
+      </form>
+    </StyledWrapper>
   );
   return { node, title: "Login" };
 }
