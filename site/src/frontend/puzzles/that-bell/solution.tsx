@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import {
   HScrollTableWrapper,
   Mono,
@@ -15,6 +16,7 @@ const GREATEST_ECLIPSE_DATA = [
     "C",
     "CANADA",
     "C",
+    "Leo III",
   ],
   [
     "HE FENDED OFF ATTACK IN BATTLE OF BERZITIA",
@@ -24,6 +26,7 @@ const GREATEST_ECLIPSE_DATA = [
     "O",
     "CANADA",
     "A",
+    "Leo III",
   ],
   [
     "RULER WHEN EMPEROR KOKO WAS BORN",
@@ -33,6 +36,7 @@ const GREATEST_ECLIPSE_DATA = [
     "U",
     "MEXICO",
     "E",
+    "Kanmu",
   ],
   [
     "CO-RULER WITH ROMANOS I WHEN LEO VII DIED",
@@ -42,6 +46,7 @@ const GREATEST_ECLIPSE_DATA = [
     "N",
     "KAZAKHSTAN",
     "S",
+    "Leo VI",
   ],
   [
     "HE WORE THE CROWN OF ENGLAND WHEN MIESZKO I DIED",
@@ -51,6 +56,7 @@ const GREATEST_ECLIPSE_DATA = [
     "T",
     "PARAGUAY",
     "A",
+    "Edgar",
   ],
   [
     "BENEDICT VIII BECAME POPE WHEN HE RULED FRANCE",
@@ -60,6 +66,7 @@ const GREATEST_ECLIPSE_DATA = [
     "R",
     "RUSSIA",
     "R",
+    "Hugh Capet",
   ],
   [
     "BROTHER ROBERT II INVADED TO CHALLENGE HIS CROWN",
@@ -69,6 +76,7 @@ const GREATEST_ECLIPSE_DATA = [
     "I",
     "MOZAMBIQUE",
     "B",
+    "William I",
   ],
   [
     "RULED DURING BATTLE OF SANDWICH",
@@ -78,6 +86,7 @@ const GREATEST_ECLIPSE_DATA = [
     "E",
     "PERU",
     "E",
+    "John",
   ],
   [
     "HE MARRIED THE MOTHER OF KALIMAN ASEN",
@@ -87,6 +96,7 @@ const GREATEST_ECLIPSE_DATA = [
     "S",
     "MONGOLIA",
     "L",
+    "Ivan Asen I",
   ],
   [
     "NAMED ALEXIOS PHILANTHROPENOS HEAD OF ANATOLIAN CORPS",
@@ -96,6 +106,7 @@ const GREATEST_ECLIPSE_DATA = [
     "O",
     "EGYPT",
     "T",
+    "Michael VIII",
   ],
   [
     "HE DIRECTED SIEGE OF TORDEHUMOS",
@@ -105,6 +116,7 @@ const GREATEST_ECLIPSE_DATA = [
     "F",
     "SUDAN",
     "S",
+    "Sancho IV",
   ],
   [
     "NORTHERN EMPEROR WHEN KOMYO EXPIRED",
@@ -114,6 +126,7 @@ const GREATEST_ECLIPSE_DATA = [
     "G",
     "KENYA",
     "K",
+    "Go-Kogon",
   ],
   [
     "PAINTED BY SEISENEGGER WITH HOUND",
@@ -123,6 +136,7 @@ const GREATEST_ECLIPSE_DATA = [
     "R",
     "MALI",
     "I",
+    "Philip I",
   ],
   [
     "HIS EMPIRE ACHIEVED A WIN IN THE SIEGE OF PEST",
@@ -132,6 +146,7 @@ const GREATEST_ECLIPSE_DATA = [
     "E",
     "CHINA",
     "N",
+    "Selim I",
   ],
   [
     "HE DECREED THE EDICT OF ROMORANTIN",
@@ -141,6 +156,7 @@ const GREATEST_ECLIPSE_DATA = [
     "A",
     "ALGERIA",
     "G",
+    "Henry II",
   ],
   [
     "HE FATHERED SOPHIE WITH ANNE CATHERINE",
@@ -150,6 +166,7 @@ const GREATEST_ECLIPSE_DATA = [
     "T",
     "FRANCE",
     "E",
+    "Frederick II",
   ],
   [
     "GO-MIZUNOO DIED WHEN HE WAS EMPEROR",
@@ -159,6 +176,7 @@ const GREATEST_ECLIPSE_DATA = [
     "E",
     "DEMOCRATIC REPUBLIC OF THE CONGO",
     "C",
+    "Go-Mizunoo",
   ],
   [
     "BAHAMAS BRIEFLY RETAKEN FROM THE BRITISH UNDER HIS RULE",
@@ -168,6 +186,7 @@ const GREATEST_ECLIPSE_DATA = [
     "S",
     "AUSTRALIA",
     "L",
+    "Philip V",
   ],
   [
     "HE PROCLAIMED ATHENS AS CAPITAL CITY",
@@ -177,6 +196,7 @@ const GREATEST_ECLIPSE_DATA = [
     "T",
     "UNITED STATES",
     "I",
+    "Ludwig I",
   ],
   [
     "CHRISTIAN OF GLUCKSBURG CHOSEN AS HIS HEIR-PRESUMPTIVE",
@@ -186,6 +206,7 @@ const GREATEST_ECLIPSE_DATA = [
     "E",
     "JAPAN",
     "P",
+    "Christian VIII",
   ],
   [
     "RULED WHEN PROGRESSIVE DISSIDENCE PARTY WAS ESTABLISHED",
@@ -195,6 +216,7 @@ const GREATEST_ECLIPSE_DATA = [
     "C",
     "SPAIN",
     "S",
+    "Luis I",
   ],
   [
     "HE AND VICTORIA EUGENIE PRODUCED GONZALO",
@@ -204,6 +226,7 @@ const GREATEST_ECLIPSE_DATA = [
     "L",
     "BELARUS",
     "E",
+    "Alfonso XII",
   ],
   [
     "DANISH UNITY PARTY FOUNDED WHEN HE WORE THE CROWN",
@@ -213,6 +236,7 @@ const GREATEST_ECLIPSE_DATA = [
     "I",
     "RUSSIA",
     "S",
+    "Frederick VIII",
   ],
   [
     "HE CAME FROM GREECE TO ATTEND FUNERAL OF GEORGE VI",
@@ -222,6 +246,7 @@ const GREATEST_ECLIPSE_DATA = [
     "P",
     "SUDAN",
     "S",
+    "Constantine I",
   ],
   [
     "TINKHUNDLA HQ WAS BOMBED IN HIS CAPITAL",
@@ -231,6 +256,7 @@ const GREATEST_ECLIPSE_DATA = [
     "S",
     "ROMANIA",
     "O",
+    "Sobhuza II",
   ],
   [
     "REIGNED OVER THE COVID RESPONSE OF BRUSSELS",
@@ -240,6 +266,7 @@ const GREATEST_ECLIPSE_DATA = [
     "E",
     "ARGENTINA",
     "N",
+    "Albert II",
   ],
 ];
 
@@ -283,6 +310,7 @@ const StyledTable = styled.table`
 const Solution = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p>
         Solvers are given a gibberish block of monospaced text, and also some
         circular shapes. If solvers search in the block of text, they find that
