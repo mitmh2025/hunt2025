@@ -90,13 +90,13 @@ const Solution = () => {
       <p>
         Assuming the player has completed all of these tasks, the only thing
         left for them to do is <Mono>OPEN</Mono> the <Mono>CHEST</Mono>. They
-        can use the combination <Mono>9872</Mono> to open the combo lock on the box on the desk. Doing so reveals a
-        smaller chest with a keyed masterlock. If they have actually completed
-        all the tasks (as opposed to spinning one of the dials of the lock),
-        then the handle of the drawer in the middle of the desk slides down to
-        reveal a tiny chamber with the key for the chest. The player{" "}
-        <Mono>OPEN</Mono>s the <Mono>CHEST</Mono> to receive a note with their answer:{" "}
-        <Mono>PIVOT TABLE</Mono>.
+        can use the combination <Mono>9872</Mono> to open the combo lock on the
+        box on the desk. Doing so reveals a smaller chest with a keyed
+        masterlock. If they have actually completed all the tasks (as opposed to
+        spinning one of the dials of the lock), then the handle of the drawer in
+        the middle of the desk slides down to reveal a tiny chamber with the key
+        for the chest. The player <Mono>OPEN</Mono>s the <Mono>CHEST</Mono> to
+        receive a note with their answer: <Mono>PIVOT TABLE</Mono>.
       </p>
     </>
   );
