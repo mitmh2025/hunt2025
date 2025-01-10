@@ -27,6 +27,11 @@ export const RateLimitStateSchema = z.object({
   retryAfter: z.string().datetime(),
 });
 
+export const SubpuzzleStateSchema = z.object({
+  answer: z.string().optional(),
+  guesses: z.array(GuessSchema).default([]),
+});
+
 // Still unsure if we need to be able to return any information about puzzles in the "locked" state.
 // We broadly do not care to service requests for puzzles that are neither unlockable nor unlocked.
 const PuzzleLockEnum = z
@@ -46,6 +51,7 @@ const PuzzleSummarySchema = z.object({
 export const PuzzleStateSchema = PuzzleSummarySchema.omit({
   unlocked_at: true,
 }).extend({
+  subpuzzles: z.record(slug, SubpuzzleStateSchema).optional(),
   guesses: z.array(GuessSchema).default([]),
 });
 
@@ -75,6 +81,7 @@ export const TeamHuntStateSchema = z.object({
   strong_currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
+  gates_satisfied: z.array(z.string()),
 });
 
 export const TeamStateSchema = z.object({
@@ -364,6 +371,15 @@ export const publicContract = c.router({
     },
     summary: "Get the state of one puzzle",
   },
+  getSubpuzzleState: {
+    method: "GET",
+    path: `/subpuzzle/:slug`,
+    responses: {
+      200: SubpuzzleStateSchema,
+      404: z.null(),
+    },
+    summary: "Get the state of one subpuzzle",
+  },
   getActivityLog: {
     method: "GET",
     path: "/activity",
@@ -378,6 +394,16 @@ export const publicContract = c.router({
     body: SubmitGuessSchema,
     responses: {
       200: PuzzleStateSchema,
+      429: RateLimitStateSchema,
+      404: z.null(),
+    },
+  },
+  submitSubpuzzleGuess: {
+    method: "PUT",
+    path: `/subpuzzle/:slug/guess`,
+    body: SubmitGuessSchema,
+    responses: {
+      200: SubpuzzleStateSchema,
       429: RateLimitStateSchema,
       404: z.null(),
     },
@@ -419,6 +445,14 @@ export const publicContract = c.router({
           "PUZZLE_ALREADY_SOLVED",
         ]),
       }),
+    },
+  },
+  markSubpuzzleUnlocked: {
+    method: "POST",
+    path: `/subpuzzle/:slug/unlock`,
+    body: z.object({}),
+    responses: {
+      200: SubpuzzleStateSchema,
       404: z.null(),
     },
   },

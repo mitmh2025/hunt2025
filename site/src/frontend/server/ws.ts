@@ -45,6 +45,7 @@ import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { strayLeadsState } from "../rounds/stray_leads";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
+import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "./constants";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
 import { allPuzzlesState } from "./routes/all_puzzles";
@@ -70,11 +71,6 @@ type DatasetHandler =
   | {
       type: "puzzle_state_log";
     };
-
-// An allowlist of slugs that we should permit puzzle_state_log to be subscribed to directly for.
-// If you're adding an entry to this allowlist, all the data you put in the DB for that slug will
-// be readable by clients, so don't put anything sensitive/internal there.
-const PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG = ["what_do_they_call_you"];
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
@@ -693,7 +689,6 @@ class ConnHandler {
           break;
         }
       }
-
       return;
     } else {
       const { rpc, subId } = message;

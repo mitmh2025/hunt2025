@@ -77,9 +77,11 @@ const RateLimitNotice = styled.div`
 `;
 
 const PuzzleGuessForm = ({
+  type,
   slug,
   onGuessesUpdate,
 }: {
+  type: "puzzle" | "subpuzzle";
   slug: string;
   onGuessesUpdate: (guesses: Guesses) => void;
 }) => {
@@ -116,14 +118,25 @@ const PuzzleGuessForm = ({
         let result;
         try {
           const apiClient = newClient(apiUrl(), undefined);
-          result = await apiClient.submitGuess({
-            body: {
-              guess: guessInput,
-            },
-            params: {
-              slug,
-            },
-          });
+          if (type === "puzzle") {
+            result = await apiClient.submitGuess({
+              body: {
+                guess: guessInput,
+              },
+              params: {
+                slug,
+              },
+            });
+          } else {
+            result = await apiClient.submitSubpuzzleGuess({
+              body: {
+                guess: guessInput,
+              },
+              params: {
+                slug,
+              },
+            });
+          }
         } catch (e) {
           // This should only happen if the fetch() network-fails
           setFormError("Network request failed");
@@ -153,13 +166,17 @@ const PuzzleGuessForm = ({
         }
       })();
     },
-    [guessInput, slug, checkClearRateLimit, onGuessesUpdate],
+    [guessInput, slug, type, checkClearRateLimit, onGuessesUpdate],
   );
 
   const formDisabled = formState === "submitting";
   const submitDisabled = formDisabled || rateLimitedUntil !== undefined;
   return (
-    <Form method="post" action={`/puzzles/${slug}/guess`} onSubmit={onSubmit}>
+    <Form
+      method="post"
+      action={`/${type === "puzzle" ? "puzzles" : "subpuzzles"}/${slug}/guess`}
+      onSubmit={onSubmit}
+    >
       {formError ? <div>Error: {formError}</div> : undefined}
       {rateLimitedUntil ? (
         <RateLimitNotice>
@@ -246,10 +263,12 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
 };
 
 const PuzzleGuessSection = ({
+  type,
   slug,
   guesses,
   onGuessesUpdate,
 }: {
+  type: "puzzle" | "subpuzzle";
   slug: string;
   guesses: Guesses;
   onGuessesUpdate: (guesses: Guesses) => void;
@@ -259,7 +278,11 @@ const PuzzleGuessSection = ({
   return (
     <GuessSectionWrapper id="puzzle-guess-section">
       {solved ? undefined : (
-        <PuzzleGuessForm slug={slug} onGuessesUpdate={onGuessesUpdate} />
+        <PuzzleGuessForm
+          type={type}
+          slug={slug}
+          onGuessesUpdate={onGuessesUpdate}
+        />
       )}
       <PuzzleGuessHistoryTable guesses={guesses} />
     </GuessSectionWrapper>

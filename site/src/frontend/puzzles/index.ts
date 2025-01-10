@@ -113,6 +113,7 @@ import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import MakingContactWithAnInformant from "./pricey-robot";
 import ShellCorporationFive from "./profitable-trunk";
+import AndNowAPuzzlingWordFromOurSponsors from "./quixotic-shoe";
 import ThisIsJustATest from "./radiant-snow";
 import InCommunicadoTonight from "./rare-block";
 import ASudoku from "./recent-ship";
@@ -259,6 +260,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Paper Trail
   ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
+  and_now_a_puzzling_word_from_our_sponsors: AndNowAPuzzlingWordFromOurSponsors,
   any_coat_will_do: AnyCoatWillDo,
   a_weathered_note: AWeatheredNote,
   bar_talk: BarTalk,

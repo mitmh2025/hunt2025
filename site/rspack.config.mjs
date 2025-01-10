@@ -514,6 +514,7 @@ export default function createConfigs(_env, argv) {
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",
       puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
+      puzzle_quixotic_shoe: "./src/frontend/puzzles/quixotic-shoe/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
       puzzle_sorrowful_glass:
         "./src/frontend/puzzles/sorrowful-glass/client.tsx",

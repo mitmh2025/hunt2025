@@ -199,6 +199,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
         },
       ]),
     ),
+    gates_satisfied: [...data.gates_satisfied],
   };
 }
 

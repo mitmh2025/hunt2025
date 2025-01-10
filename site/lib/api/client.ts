@@ -21,6 +21,16 @@ export type TeamState = ClientInferResponseBody<
 export type TeamInfo = TeamState["info"];
 export type TeamHuntState = TeamState["state"];
 
+export type PuzzleState = ClientInferResponseBody<
+  typeof publicContract.getPuzzleState,
+  200
+>;
+
+export type SubpuzzleState = ClientInferResponseBody<
+  typeof publicContract.getSubpuzzleState,
+  200
+>;
+
 export type ActivityLogEntry = ClientInferResponseBody<
   typeof publicContract.getActivityLog,
   200
