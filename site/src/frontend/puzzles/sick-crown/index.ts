@@ -80,7 +80,12 @@ const puzzle: PuzzleDefinition = {
         "Use the indexing from the telephone hint with the feeder answers.",
     },
   ],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["INDEX ANSWERS"],
+      reply: "Keep going!",
+    },
+  ],
 };
 
 export default puzzle;
