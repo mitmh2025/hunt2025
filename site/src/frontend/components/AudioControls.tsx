@@ -16,8 +16,91 @@ const ControlWrapper = styled.div`
   }
 
   #volume-slider {
+    -webkit-appearance: none;
     width: 90px;
     cursor: grab;
+    background: transparent;
+    &:focus {
+      outline: none;
+    }
+    &::-webkit-slider-runnable-track {
+      height: 8px;
+      background: var(--gold-400);
+      border: none;
+      border-radius: 5px;
+    }
+    &::-moz-range-track {
+      height: 8px;
+      background: var(--gold-400);
+      border: none;
+      border-radius: 5px;
+    }
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      border: 1px solid var(--gold-700);
+      margin-top: -4px;
+      height: 16px;
+      width: 16px;
+      border-radius: 8px;
+      background: var(--gold-400);
+    }
+    &::-moz-range-thumb {
+      border: 1px solid var(--gold-700);
+      height: 16px;
+      width: 16px;
+      border-radius: 8px;
+      background: var(--gold-400);
+    }
+    &:hover {
+      &::-webkit-slider-runnable-track {
+        background: var(--gold-500);
+      }
+      &::-moz-range-track {
+        background: var(--gold-500);
+      }
+      &::-webkit-slider-thumb {
+        background: var(--gold-500);
+        border-color: var(--gold-800);
+      }
+      &::-moz-range-thumb {
+        background: var(--gold-500);
+        border-color: var(--gold-800);
+      }
+    }
+    &:active {
+      cursor: grabbing;
+      &::-webkit-slider-runnable-track {
+        background: var(--gold-600);
+      }
+      &::-moz-range-track {
+        background: var(--gold-600);
+      }
+      &::-webkit-slider-thumb {
+        background: var(--gold-600);
+        border-color: var(--gold-900);
+      }
+      &::-moz-range-thumb {
+        background: var(--gold-600);
+        border-color: var(--gold-900);
+      }
+    }
+    &:disabled {
+      cursor: not-allowed;
+      &::-webkit-slider-runnable-track {
+        background: var(--gray-200);
+      }
+      &::-moz-range-track {
+        background: var(--gray-200);
+      }
+      &::-webkit-slider-thumb {
+        background: var(--gray-200);
+        border-color: var(--gray-400);
+      }
+      &::-moz-range-thumb {
+        background: var(--gray-200);
+        border-color: var(--gray-400);
+      }
+    }
   }
 
   @media ${deviceMax.md} {
@@ -31,6 +114,31 @@ const ControlWrapper = styled.div`
       width: 60px;
     }
   }
+`;
+
+const MuteUnmuteButton = styled(Button)`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+const Mute = styled.div`
+  border-color: transparent transparent transparent var(--black);
+  border-style: double;
+  border-width: 0px 0px 0px 12px;
+  height: 20px;
+  margin-top: 2px;
+`;
+
+const Unmute = styled.div`
+  border-color: transparent transparent transparent var(--black);
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  height: 20px;
+  margin-top: 2px;
+  margin-left: 4px;
 `;
 
 const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
@@ -221,9 +329,13 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
   return (
     <ControlWrapper>
       {playing ? (
-        <Button onClick={handlePause}>🔊</Button>
+        <MuteUnmuteButton onClick={handlePause} aria-label="Mute">
+          <Mute />
+        </MuteUnmuteButton>
       ) : (
-        <Button onClick={handlePlay}>🔈</Button>
+        <MuteUnmuteButton onClick={handlePlay} aria-label="Unmute">
+          <Unmute />
+        </MuteUnmuteButton>
       )}{" "}
       <input
         type="range"
