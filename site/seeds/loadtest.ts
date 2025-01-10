@@ -10,6 +10,40 @@ import { type LogEntryData } from "../src/frontend/puzzles/new-ketchup/types";
 import HUNT from "../src/huntdata";
 import { omit } from "../src/utils/omit";
 
+function registrationFor(username: string) {
+  return {
+    username,
+    password: "password",
+    name: username,
+    teamEmail: `team+${username}@mitmh2025.com`,
+    contactName: "Jack Florey",
+    contactEmail: `jack+${username}@mitmh2025.com`,
+    contactPhone: "+16172531000",
+    secondaryContactName: "James E. Tetazoo",
+    secondaryContactEmail: `james+${username}@mitmh2025.com`,
+    secondaryContactPhone: "+16172532000",
+    contactMailingAddress: "123 Main St, Cambridge, MA 02139",
+    peopleTotal: 1,
+    peopleUndergrad: 0,
+    peopleGrad: 0,
+    peopleAlum: 0,
+    peopleStaff: 0,
+    peopleAffiliates: 1,
+    peopleMinor: 0,
+    peopleOther: 0,
+    peopleRemote: 0,
+    peopleOnCampus: 1,
+    teamLocation: "Room Requested" as const,
+    acceptUnattached: true,
+    teamGoal: "We’d like to complete the Hunt.",
+    teamValues: ["Being in the running to win"],
+    teamExcitedAboutWinning: "Yes",
+    teamYearEstablished: 2021,
+    teamMemberLocations: "MIT",
+    referrer: "We have Hunted in the past.",
+  };
+}
+
 export async function seed(knex: Knex): Promise<void> {
   const teams = await knex("teams")
     .where("username", "=", "loadtest1")
@@ -19,39 +53,9 @@ export async function seed(knex: Knex): Promise<void> {
     return;
   }
 
-  async function createTeam(username: string) {
+  async function createLateStageTeam(username: string) {
     // register the team
-    const registration = {
-      username,
-      password: "password",
-      name: username,
-      teamEmail: `team+${username}@mitmh2025.com`,
-      contactName: "Jack Florey",
-      contactEmail: `jack+${username}@mitmh2025.com`,
-      contactPhone: "+16172531000",
-      secondaryContactName: "James E. Tetazoo",
-      secondaryContactEmail: `james+${username}@mitmh2025.com`,
-      secondaryContactPhone: "+16172532000",
-      contactMailingAddress: "123 Main St, Cambridge, MA 02139",
-      peopleTotal: 1,
-      peopleUndergrad: 0,
-      peopleGrad: 0,
-      peopleAlum: 0,
-      peopleStaff: 0,
-      peopleAffiliates: 1,
-      peopleMinor: 0,
-      peopleOther: 0,
-      peopleRemote: 0,
-      peopleOnCampus: 1,
-      teamLocation: "Room Requested" as const,
-      acceptUnattached: true,
-      teamGoal: "We’d like to complete the Hunt.",
-      teamValues: ["Being in the running to win"],
-      teamExcitedAboutWinning: "Yes",
-      teamYearEstablished: 2021,
-      teamMemberLocations: "MIT",
-      referrer: "We have Hunted in the past.",
-    };
+    const registration = registrationFor(username);
 
     const regResult = await registerTeam(HUNT, undefined, knex, registration);
 
@@ -269,7 +273,47 @@ export async function seed(knex: Knex): Promise<void> {
     );
   }
 
+  async function createEarlyStageTeam(username: string) {
+    // register the team
+    const registration = registrationFor(username);
+    const regResult = await registerTeam(HUNT, undefined, knex, registration);
+
+    if (!regResult.usernameAvailable) {
+      throw new Error(`Username ${username} is not available`);
+    }
+
+    const teamId = regResult.teamId;
+
+    // change their registration 10 times
+    await teamRegistrationLog.executeMutation(
+      teamId,
+      undefined,
+      knex,
+      async (_, mutator) => {
+        for (let i = 0; i < 10; i++) {
+          await mutator.appendLog({
+            type: "team_registration_updated",
+            team_id: teamId,
+            data: omit(registration, "username", "password", "name"),
+          });
+        }
+      },
+    );
+
+    // Initial unlocks
+    await activityLog.executeMutation(
+      HUNT,
+      teamId,
+      undefined,
+      knex,
+      async (_, mutator) => {
+        await mutator.recalculateTeamState(HUNT, teamId);
+      },
+    );
+  }
+
   for (let i = 0; i < 100; i++) {
-    await createTeam(`loadtest${i}`);
+    await createLateStageTeam(`loadtest${i}`);
+    await createEarlyStageTeam(`loadtestearly${i}`);
   }
 }
