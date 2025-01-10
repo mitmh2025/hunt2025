@@ -1,0 +1,3 @@
+- Install `locust`: https://locust.io/
+- Run: `locust -f early_user.py` in this directory
+- From the web UI, kick off a test run
