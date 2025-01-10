@@ -324,8 +324,8 @@ const App = () => {
           Reset
         </ResetButton>
         <AuthorsNote>
-          This puzzle is recommended to be solved on a laptop or desktop
-          computer. Scroll to zoom. Click and drag to pan.
+          We recommend solving this puzzle on a laptop or desktop computer.
+          Scroll to zoom. Click and drag to pan.
         </AuthorsNote>
       </FlexWrapper>
       <StyledContainer style={{ cursor: grabbing ? "grabbing" : "grab" }}>
