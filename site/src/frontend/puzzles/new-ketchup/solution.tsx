@@ -53,7 +53,7 @@ const DATA = [
   ],
   [
     "PAORA",
-    "Sea shanties theme.“Sweets, tea, and liquor” -> “sugar and tea and rum”, “tonguin’”, “oh well”—all references to lyrics/title of Wellerman meme song. Looking for whaling ship (that the song is about)",
+    "Sea shanties theme. “Sweets, tea, and liquor” -> “sugar and tea and rum”, “tonguin’”, “oh well”—all references to lyrics/title of Wellerman meme song. Looking for whaling ship (that the song is about)",
     "BILLYOTEA, BILLYOFTEA",
     "L",
   ],
