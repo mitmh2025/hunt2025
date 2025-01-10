@@ -666,7 +666,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 48,
     clues: [
-      "Feathered friends of Dragon’s Roost Island",
+      "Feathered friends of Dragon Roost Island",
       "Exactly adequate at golf",
     ],
   },
@@ -952,7 +952,7 @@ const GRID_1_FILL = `
  RIO RUM   F E T FAR   CUR R 
        O MOTOR     CLONE   E 
  WINSTON A W   BAKER   SANTA 
- I     E L A>THE   A   S   D 
+ I     E L A>THE   A E S   D 
  COW SOY I R O R WWF L A SPA 
    H U   CRETE N E TIO R P L 
  ONO MOVIE   T O B     Y E L 
@@ -960,7 +960,7 @@ const GRID_1_FILL = `
  INTELLIGENT E L I I O V I V 
         E  T L L N T N I E E 
  S GARLIC KOFI ING SPY LASER 
- O S    K    N  E   A   S    
+ O A    K    N  E   A   S    
  BOSTON O CODEC W B D F POEM 
   N       R   O C L>T A    I 
  SPANISHFLU N B E A H TRAINS 
@@ -1133,7 +1133,7 @@ xxxxxxxxxxxxxxxxxxxxxxx
 const GRID_3_FILL = `
              T   B     
   CURIOSITYSHOP FARORE 
-  U           O   H OO 
+  U      E    O   H OO 
  OCTOROK A N DEEPWOOD  
   C  R   R I      A    
  ZONAITE SAGE AFROMSIA 
@@ -1238,8 +1238,8 @@ const GRID_4_COLOR = `
    m  m n  m   m mh  b 
   km  mmn  m   mmm   b 
         n  mh        b 
-        nmmm        hb 
-                     b
+        nmmm         b 
+                    hb
                      b
                      b
                      b
@@ -1401,6 +1401,7 @@ export const CORN_MAZES: CornMaze[] = [
         { row: 15, col: 25 },
         { row: 17, col: 20 },
         { row: 19, col: 2 },
+        { row: 19, col: 18 },
         { row: 19, col: 26 },
         { row: 20, col: 1 },
         { row: 21, col: 10 },

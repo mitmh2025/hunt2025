@@ -56,7 +56,7 @@ const ANSWERS_ACROSS = [
   [15, "Connector between shin and foot", "ANKLE"],
   [16, "Thailand's former appellation", "SIAM"],
   [17, "City where androids might become human", "DETROIT"],
-  [18, "Slangily, a demand to settle a debt", "PONY UP"],
+  [18, "Slangily, a demand to settle a debt (2 words)", "PONY UP"],
   [20, "As a precaution (2 words)", "IN CASE"],
   [22, "Something an influencer might be chasing", "CLOUT"],
   [24, "Science fiction author who wrote for Star Trek", "FONTANA"],
