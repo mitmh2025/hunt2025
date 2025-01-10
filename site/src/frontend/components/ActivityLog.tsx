@@ -250,6 +250,7 @@ const ActivityLogTable = styled.table`
   padding: 32px;
   border: 1px solid white;
   border-collapse: collapse;
+  table-layout: fixed;
   thead th {
     position: sticky;
     top: 0;
@@ -260,6 +261,15 @@ const ActivityLogTable = styled.table`
     padding: 8px;
     border: 1px solid white;
     border-collapse: collapse;
+  }
+
+  th:first-child {
+    width: 200px;
+  }
+
+  th:nth-child(3),
+  th:nth-child(4) {
+    width: 100px;
   }
 
   tbody tr:hover td {
