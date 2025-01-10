@@ -10,7 +10,7 @@ const Arrow = styled.span`
 `;
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const mainPuzzleUnlocked = (teamState.rounds.paper_trail?.gates ?? []).some(
+  const mainPuzzleUnlocked = (teamState.gates ?? []).some(
     (gate) => mainPuzzleAccessGates.has(gate),
   );
   return (
