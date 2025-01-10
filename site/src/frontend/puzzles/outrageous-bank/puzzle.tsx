@@ -1,4 +1,5 @@
 import React from "react";
+import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 
 const DATA = [
   "O idee care se răspândește prin imitație în cadrul unui grup social",
@@ -40,14 +41,24 @@ const Puzzle = (): JSX.Element => {
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
       ></iframe>
-      <p>
-        {DATA.map((datum, i) => (
-          <React.Fragment key={i}>
-            {datum}
-            <br />
-          </React.Fragment>
-        ))}
-      </p>
+      <a
+        className={COPY_ONLY_CLASS}
+        href="https://www.youtube.com/embed/rmQdYF9G9BQ"
+      >
+        [Video link]
+      </a>
+      <br className={COPY_ONLY_CLASS} />
+      <details>
+        <summary>Transcript</summary>
+        <p>
+          {DATA.map((datum, i) => (
+            <React.Fragment key={i}>
+              {datum}
+              <br />
+            </React.Fragment>
+          ))}
+        </p>
+      </details>
     </>
   );
 };
