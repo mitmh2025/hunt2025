@@ -13,6 +13,20 @@ To run the load tester with a customizable number of clients:
 
 Swap `early_user.py` for another python file to run other scenarios.
 
+## Late-stage load test
+
+The late-stage load test simulates teams logging on and completing the Murder
+in MITropolis round, with long, realistic activity logs. Concurrently, it
+simulates admins performing various cross-team tasks in the ops UI.
+
+You will need to set `JWT_SECRET` to the same JWT secret the app server is
+using in order to run this load test.
+
+The main knob here is the ratio of admin users to teams; you can adjust that
+by adjusting the `weight` argument to `@task` in `late_user.py`. You can
+also, for example, change the decorator on `admin_task` to `@task(0)` to
+disable the admin/ops user and just run the late-stage teams part of the
+load test.
 
 # Building load tests
 
