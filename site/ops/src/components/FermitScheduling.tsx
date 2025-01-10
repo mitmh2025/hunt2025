@@ -1,9 +1,6 @@
+import { useNotifications } from "@toolpad/core";
 import { styled } from "styled-components";
-import {
-  type FermitSession,
-  type FermitQuestion,
-  type FermitRegistration,
-} from "../../../lib/api/admin_contract";
+import { type FermitQuestion } from "../../../lib/api/admin_contract";
 import LinkedImage from "../../../src/frontend/components/LinkedImage";
 import {
   useFermitData,
@@ -90,6 +87,7 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
   const opsData = useOpsData();
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
+  const notifications = useNotifications();
 
   function unregisterTeam(teamId: number) {
     const session = fermitData.activeSession;
@@ -101,34 +99,39 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
             teamId: teamId.toString(),
           },
         })
-        .then(
-          ({ body }) => {
-            const regs = body as FermitRegistration[];
-            const newSession = {
-              id: session.id,
-              title: session.title,
-              status: session.status,
-              questionIds: session.questionIds.slice(),
-              teams: regs.map((reg) => ({
-                id: reg.teamId,
-                status: reg.status,
-              })),
-            };
-            if (dispatch) {
-              dispatch({
-                type: FermitDataActionType.SET_ACTIVE_SESSION,
-                activeSession: newSession,
-              });
-              dispatch({
-                type: FermitDataActionType.SESSION_UPDATE,
-                session: newSession,
-              });
-            }
-          },
-          (reason) => {
-            console.log(reason);
-          },
-        );
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`HTTP ${res.status}: ${res.body}`);
+          }
+          const regs = res.body;
+          const newSession = {
+            id: session.id,
+            title: session.title,
+            status: session.status,
+            questionIds: session.questionIds.slice(),
+            teams: regs.map((reg) => ({
+              id: reg.teamId,
+              status: reg.status,
+            })),
+          };
+          if (dispatch) {
+            dispatch({
+              type: FermitDataActionType.SET_ACTIVE_SESSION,
+              activeSession: newSession,
+            });
+            dispatch({
+              type: FermitDataActionType.SESSION_UPDATE,
+              session: newSession,
+            });
+          }
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to delete team reg: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        });
     }
   }
 
@@ -154,6 +157,7 @@ function SessionDetails() {
   const opsData = useOpsData();
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
+  const notifications = useNotifications();
 
   function registerTeam(teamId: number) {
     const session = fermitData.activeSession;
@@ -165,41 +169,51 @@ function SessionDetails() {
             teamId: teamId.toString(),
           },
         })
-        .then(
-          ({ body }) => {
-            const regs = body as FermitRegistration[];
-            const newSession = {
-              id: session.id,
-              title: session.title,
-              status: session.status,
-              questionIds: session.questionIds.slice(),
-              teams: regs.map((reg) => ({
-                id: reg.teamId,
-                status: reg.status,
-              })),
-            };
-            if (dispatch) {
-              dispatch({
-                type: FermitDataActionType.SET_ACTIVE_SESSION,
-                activeSession: newSession,
-              });
-              dispatch({
-                type: FermitDataActionType.SESSION_UPDATE,
-                session: newSession,
-              });
-            }
-          },
-          (reason) => {
-            console.log(reason);
-            console.log("oh no ${reason}");
-          },
-        );
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`HTTP ${res.status}: ${res.body}`);
+          }
+
+          const regs = res.body;
+          const newSession = {
+            id: session.id,
+            title: session.title,
+            status: session.status,
+            questionIds: session.questionIds.slice(),
+            teams: regs.map((reg) => ({
+              id: reg.teamId,
+              status: reg.status,
+            })),
+          };
+          if (dispatch) {
+            dispatch({
+              type: FermitDataActionType.SET_ACTIVE_SESSION,
+              activeSession: newSession,
+            });
+            dispatch({
+              type: FermitDataActionType.SESSION_UPDATE,
+              session: newSession,
+            });
+          }
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to register team: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        });
     }
   }
   function createSession(title: string) {
-    opsData.adminClient.createFermitSession({ body: { title: title } }).then(
-      ({ body }) => {
-        const newSession = body as FermitSession;
+    opsData.adminClient
+      .createFermitSession({ body: { title: title } })
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error(`HTTP ${res.status}: ${res.body}`);
+        }
+
+        const newSession = res.body;
         const newSessions = [...fermitData.sessions, newSession];
         if (dispatch) {
           dispatch({
@@ -211,12 +225,14 @@ function SessionDetails() {
             sessions: newSessions,
           });
         }
-      },
-      (reason) => {
-        console.log(reason);
-        console.log("oh no ${reason}");
-      },
-    );
+      })
+      .catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        notifications.show(`Failed to create session: ${msg}`, {
+          severity: "error",
+          autoHideDuration: 3000,
+        });
+      });
   }
 
   const session = fermitData.activeSession;

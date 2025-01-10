@@ -1646,7 +1646,8 @@ export async function getRouter({
 
           let tries = 0;
           let valid = false;
-          // try repeatedly until a working question set comes up; limit to 200 iterations to prevent infinite looping
+          // try repeatedly until a working question set comes up
+          // limit to 200 iterations to prevent infinite looping
           while (tries < 200) {
             const shuffledN = shuffle(normalQuestions);
             const shuffledG = shuffle(geoguessrQuestions);
@@ -1660,14 +1661,14 @@ export async function getRouter({
             // is a geoguessr question first or last?
             if (questions[0]?.geoguessr ?? questions[16]?.geoguessr) {
               valid = false;
-              console.log("invalid: first/last question is geoguessr");
+              //console.log("invalid: first/last question is geoguessr");
             }
 
             // are two consecutive questions geoguessrs?
             for (let i = 0; i < 16; i++) {
               if (questions[i]?.geoguessr && questions[i + 1]?.geoguessr) {
                 valid = false;
-                console.log("invalid: consecutive geoguessrs");
+                //console.log("invalid: consecutive geoguessrs");
               }
             }
 
@@ -1677,7 +1678,7 @@ export async function getRouter({
               for (const cat of q.categories) {
                 if (categories.has(cat)) {
                   valid = false;
-                  console.log("invalid: repeated category " + cat);
+                  //console.log("invalid: repeated category " + cat);
                 } else {
                   categories.add(cat);
                 }
@@ -1701,9 +1702,9 @@ export async function getRouter({
                 });
               }
             } else {
-              console.log(
-                `question list ${ids} failed validation, regenerating`,
-              );
+              //console.log(
+              //                `question list ${ids} failed validation, regenerating`,
+              //);
             }
           }
           return Promise.resolve({
@@ -1771,7 +1772,7 @@ export async function getRouter({
       completeFermitSession: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId } }) => {
-          // To close out a session, score each team then update the puzzle-specific team_state log
+          // To close out a session, score each team then update the puzzle_state log
 
           const [session, answers, allQuestions] = await Promise.all([
             getFermitSession(parseInt(sessionId, 10), knex),
@@ -1802,12 +1803,12 @@ export async function getRouter({
             });
           }
 
-          // run the scoring methods on each, which may involve DB lookups
           function scoreHelper(ranges: number[], value: number) {
             const n = ranges.findIndex((thresh) => value <= thresh);
             return n === -1 ? 0 : 5 - n;
           }
 
+          // run the scoring methods on each, which may involve DB lookups
           const teamScores = session.teams.map(({ id, status }) => {
             if (status !== "checked_in") {
               return { id: id, scores: null };
@@ -1934,25 +1935,6 @@ export async function getRouter({
           }
         },
       },
-      createFermitQuestions: {
-        middleware: [adminAuthMiddleware],
-        handler: ({ body }) => {
-          // TODO: implement creation + saving to DB
-          return Promise.resolve({
-            status: 200 as const,
-            body: [
-              {
-                id: 1,
-                text: "what",
-                geoguessr: null,
-                answer: body.length,
-                scoringMethod: "percent",
-                categories: [],
-              },
-            ],
-          });
-        },
-      },
       getFermitQuestions: {
         middleware: [adminAuthMiddleware],
         handler: async () => {
@@ -1999,43 +1981,59 @@ export async function getRouter({
             });
           }
 
-          // TODO: filter the passed in answers to the sessionId
-          console.log(answers);
+          // TODO: filter the passed in answers to the sessionId for safety?
+          //console.log(answers);
           const updateCount = await saveFermitAnswers(answers, knex);
-          console.log(`${updateCount} vs ${answers.length.toString()}`);
+          //console.log(`${updateCount} vs ${answers.length.toString()}`);
 
           return Promise.resolve({
             status: 200 as const,
-            body: true,
+            body: updateCount > 0,
           });
         },
       },
       createFermitRegistration: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId, teamId } }) => {
-          await createFermitRegistration(
+          const result = await createFermitRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),
             knex,
           );
-          return Promise.resolve({
-            status: 200 as const,
-            body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
-          });
+          if (result) {
+            return Promise.resolve({
+              status: 200 as const,
+              body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+            });
+          } else {
+            // invalid request, session in wrong status
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
         },
       },
       deleteFermitRegistration: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId, teamId } }) => {
-          await deleteFermitRegistration(
+          const result = await deleteFermitRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),
             knex,
           );
-          return Promise.resolve({
-            status: 200 as const,
-            body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
-          });
+          if (result) {
+            return Promise.resolve({
+              status: 200 as const,
+              body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+            });
+          } else {
+            // invalid request, session in wrong status
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
         },
       },
       updateFermitRegistration: {
@@ -2044,12 +2042,6 @@ export async function getRouter({
           params: { sessionId, teamId },
           body: { status },
         }) => {
-          // TODO: allowable state transitions:
-          //   if session not started: not_checked_in -> checked_in
-          //                           not_checked_in -> no_show
-          //   if session in progress: nothing
-          //   if session complete:    nothing
-
           await updateFermitRegistration(
             parseInt(sessionId, 10),
             parseInt(teamId, 10),

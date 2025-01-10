@@ -256,15 +256,6 @@ export const adminContract = c.router({
     },
     summary: "Complete a deserted-ninja session, updating team logs",
   },
-  createFermitQuestions: {
-    method: "POST",
-    path: "/admin/fermit/create-questions",
-    body: FermitQuestionSchema.array(),
-    responses: {
-      200: FermitQuestionSchema.array(),
-    },
-    summary: "Bulk-upload a set of deserted-ninja questions",
-  },
   getFermitQuestions: {
     method: "GET",
     path: "/admin/fermit/get-questions",

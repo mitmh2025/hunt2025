@@ -80,32 +80,37 @@ export function FermitDataProvider({
   const [data, dispatch] = useReducer(updateData, INITIAL_STATE);
 
   useEffect(() => {
-    opsData.adminClient.getFermitQuestions().then(
-      (obj) => {
-        const m = new Map<number, FermitQuestion>();
-        (obj.body as FermitQuestion[]).forEach((q) => {
-          m.set(q.id, q);
-        });
-        dispatch({
-          type: FermitDataActionType.SET_QUESTIONS,
-          questions: m,
-        });
-      },
-      (reason) => {
-        console.log(reason);
-      },
-    );
-    opsData.adminClient.getFermitSessions().then(
-      (obj) => {
-        dispatch({
-          type: FermitDataActionType.SET_SESSIONS,
-          sessions: obj.body as FermitSession[],
-        });
-      },
-      (reason) => {
-        console.log(reason);
-      },
-    );
+    (async () => {
+      const [questions, sessions] = await Promise.all([
+        opsData.adminClient.getFermitQuestions(),
+        opsData.adminClient.getFermitSessions(),
+      ]);
+
+      if (questions.status !== 200) {
+        console.error(questions);
+        throw new Error(`Failed to load questions: ${questions.status}`);
+      }
+      if (sessions.status !== 200) {
+        console.error(sessions);
+        throw new Error(`Failed to load sessions: ${sessions.status}`);
+      }
+
+      const m = new Map<number, FermitQuestion>();
+      questions.body.forEach((q) => {
+        m.set(q.id, q);
+      });
+      dispatch({
+        type: FermitDataActionType.SET_QUESTIONS,
+        questions: m,
+      });
+
+      dispatch({
+        type: FermitDataActionType.SET_SESSIONS,
+        sessions: sessions.body,
+      });
+    })().catch((err: unknown) => {
+      console.error(err);
+    });
   }, [opsData]);
 
   return (

@@ -1,11 +1,8 @@
+import { useNotifications } from "@toolpad/core";
 import { useContext, createContext, useEffect, useState, useRef } from "react";
 import { styled } from "styled-components";
 import { useInterval } from "usehooks-ts";
-import {
-  type FermitSession,
-  type FermitAnswer,
-  type FermitRegistration,
-} from "../../../lib/api/admin_contract";
+import { type FermitAnswer } from "../../../lib/api/admin_contract";
 import {
   useFermitData,
   useFermitDispatch,
@@ -77,9 +74,11 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
   const opsData = useOpsData();
+  const notifications = useNotifications();
 
   function toggleCheckIn(_e: React.MouseEvent<HTMLButtonElement>) {
     const session = fermitData.activeSession;
+
     if (session) {
       opsData.adminClient
         .updateFermitRegistration({
@@ -92,34 +91,37 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
               team.status === "checked_in" ? "not_checked_in" : "checked_in",
           },
         })
-        .then(
-          ({ body }) => {
-            const regs = body as FermitRegistration[];
-            const newSession = {
-              id: session.id,
-              title: session.title,
-              status: session.status,
-              questionIds: session.questionIds.slice(),
-              teams: regs.map((reg) => ({
-                id: reg.teamId,
-                status: reg.status,
-              })),
-            };
-            if (dispatch) {
-              dispatch({
-                type: FermitDataActionType.SET_ACTIVE_SESSION,
-                activeSession: newSession,
-              });
-              dispatch({
-                type: FermitDataActionType.SESSION_UPDATE,
-                session: newSession,
-              });
-            }
-          },
-          (e) => {
-            console.error(e);
-          },
-        );
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`HTTP ${res.status}: ${res.body}`);
+          }
+          const regs = res.body;
+
+          const newSession = {
+            ...session,
+            teams: regs.map((reg) => ({
+              id: reg.teamId,
+              status: reg.status,
+            })),
+          };
+          if (dispatch) {
+            dispatch({
+              type: FermitDataActionType.SET_ACTIVE_SESSION,
+              activeSession: newSession,
+            });
+            dispatch({
+              type: FermitDataActionType.SESSION_UPDATE,
+              session: newSession,
+            });
+          }
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to update registration: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        });
     }
   }
 
@@ -151,6 +153,7 @@ function NotStartedPanel() {
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
   const opsData = useOpsData();
+  const notifications = useNotifications();
 
   function startSession() {
     const session = fermitData.activeSession;
@@ -168,8 +171,12 @@ function NotStartedPanel() {
             body: newSession,
           })
           .then(
-            ({ body }) => {
-              const s = body as FermitSession;
+            (res) => {
+              if (res.status !== 200) {
+                throw new Error(`HTTP ${res.status}: ${res.body}`);
+              }
+
+              const s = res.body;
               if (dispatch) {
                 dispatch({
                   type: FermitDataActionType.SESSION_UPDATE,
@@ -184,7 +191,14 @@ function NotStartedPanel() {
             (reason) => {
               console.log(reason);
             },
-          );
+          )
+          .catch((err: unknown) => {
+            const msg = err instanceof Error ? err.message : "Unknown error";
+            notifications.show(`Failed to update session: ${msg}`, {
+              severity: "error",
+              autoHideDuration: 3000,
+            });
+          });
       }
     }
   }
@@ -209,6 +223,7 @@ function ScorekeeperPanel() {
   const opsData = useOpsData();
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
+  const notifications = useNotifications();
   const session = fermitData.activeSession;
   const [answerMap, setAnswers] = useState<Map<string, number>>(new Map());
   const formRef: React.RefObject<HTMLFormElement> =
@@ -220,26 +235,32 @@ function ScorekeeperPanel() {
         .getFermitAnswers({
           params: { sessionId: session.id.toString() },
         })
-        .then(
-          ({ body }) => {
-            const answerList = body as FermitAnswer[];
-            const a = new Map<string, number>();
-            answerList.forEach((ans) => {
-              const key = `${ans.sessionId}_${ans.teamId}_${ans.questionIndex}`;
-              if (ans.answer === null) {
-                a.delete(key);
-              } else {
-                a.set(key, ans.answer);
-              }
-            });
-            setAnswers(a);
-          },
-          (reason) => {
-            console.log(reason);
-          },
-        );
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`HTTP ${res.status}: ${res.body}`);
+          }
+
+          const answerList = res.body;
+          const a = new Map<string, number>();
+          answerList.forEach((ans) => {
+            const key = `${ans.sessionId}_${ans.teamId}_${ans.questionIndex}`;
+            if (ans.answer === null) {
+              a.delete(key);
+            } else {
+              a.set(key, ans.answer);
+            }
+          });
+          setAnswers(a);
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to retrieve answers: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        });
     }
-  }, [session, opsData]);
+  }, [session, opsData, notifications]);
 
   useInterval(() => {
     if (formRef.current) {
@@ -321,8 +342,12 @@ function ScorekeeperPanel() {
           params: { sessionId: session.id.toString() },
           body: answerChanges,
         })
-        .catch((error: unknown) => {
-          console.error(error);
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to save answers: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
         });
     }
   }
@@ -330,31 +355,36 @@ function ScorekeeperPanel() {
   function completeSession() {
     const session = fermitData.activeSession;
     if (session) {
-      // first force a save?
+      // first request a save
       formRef.current?.requestSubmit();
 
       opsData.adminClient
         .completeFermitSession({
           params: { sessionId: session.id.toString() },
         })
-        .then(
-          ({ body }) => {
-            if (dispatch) {
-              const s = body as FermitSession;
-              dispatch({
-                type: FermitDataActionType.SESSION_UPDATE,
-                session: s,
-              });
-              dispatch({
-                type: FermitDataActionType.SET_ACTIVE_SESSION,
-                activeSession: s,
-              });
-            }
-          },
-          (e: Error) => {
-            console.error(e);
-          },
-        );
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`HTTP ${res.status}: ${res.body}`);
+          }
+          if (dispatch) {
+            const s = res.body;
+            dispatch({
+              type: FermitDataActionType.SESSION_UPDATE,
+              session: s,
+            });
+            dispatch({
+              type: FermitDataActionType.SET_ACTIVE_SESSION,
+              activeSession: s,
+            });
+          }
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to complete session: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        });
     }
   }
 

@@ -667,8 +667,8 @@ export async function saveFermitAnswers(
   answers: FermitAnswer[],
   knex: Knex.Knex,
 ): Promise<number> {
-  // TODO: only allow this for answers where the session is in
-  // "in_progress" status
+  // TODO: precondition is that these answers share a session
+  // TODO: only allow this for answers where the session is in "in_progress" status
   return dbInsertFermitAnswers(answers, knex);
 }
 
@@ -684,8 +684,16 @@ export async function createFermitRegistration(
   teamId: number,
   knex: Knex.Knex,
 ): Promise<FermitRegistration | undefined> {
-  // TODO: abort if the session isn't in "not_started" status
-  return dbInsertFermitRegistration(sessionId, teamId, "not_checked_in", knex);
+  // abort if the session isn't in "not_started" status
+  const session = dbGetFermitSession(sessionId, knex);
+  if (session.status === "not_started") {
+    return dbInsertFermitRegistration(
+      sessionId,
+      teamId,
+      "not_checked_in",
+      knex,
+    );
+  }
 }
 
 export async function deleteFermitRegistration(
@@ -693,16 +701,30 @@ export async function deleteFermitRegistration(
   teamId: number,
   knex: Knex.Knex,
 ): Promise<boolean> {
-  // TODO: abort if the session isn't in "not_started" status
-  return dbDeleteFermitRegistration(sessionId, teamId, knex);
+  // abort if the session isn't in "not_started" status
+  const session = dbGetFermitSession(sessionId, knex);
+  if (session.status === "not_started") {
+    return dbDeleteFermitRegistration(sessionId, teamId, knex);
+  }
+  return false;
 }
 
 export async function updateFermitRegistration(
   sessionId: number,
   teamId: number,
-  state: string,
+  status: string,
   knex: Knex.Knex,
 ): Promise<FermitRegistration> {
-  // TODO: only allow this if session is in "in_progress" status
-  return dbUpdateFermitRegistration(sessionId, teamId, state, knex);
+  // TODO: limit to allowable state transitions?
+  //   if session not started: not_checked_in -> checked_in
+  //                           not_checked_in -> no_show
+  //                           checked_in     -> not_checked_in
+  //   if session in progress: nothing
+  //   if session complete:    nothing
+
+  const session = dbGetFermitSession(sessionId, knex);
+  if (session.status === "not_started") {
+    return dbUpdateFermitRegistration(sessionId, teamId, status, knex);
+  }
+  return false;
 }
