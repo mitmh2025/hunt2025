@@ -321,6 +321,8 @@ const InputArea = styled.div`
   width: 300px;
 `;
 
+const defaultDontUnderstandMessage = "I don't understand that request.";
+
 const App = () => {
   const [inputText, setInputText] = useState<string>("");
 
@@ -329,18 +331,20 @@ const App = () => {
   }
 
   const [messageText, setMessageText] = useState<string>("");
-  const [currentRoom, setCurrentRoom] = useState<Room>(rooms[startRoom]);
+  const [currentRoom, setCurrentRoom] = useState<Room | undefined>(
+    rooms[startRoom],
+  );
   const [waitingForFirstMessage, setWaitingForFirstMessage] =
     useState<boolean>(true);
 
   function constructNextMessage() {
     let nextMessageTest = "";
-    let nextRoom: Room = currentRoom;
+    let nextRoom: Room | undefined = currentRoom;
     if (waitingForFirstMessage) {
-      nextMessageTest = currentRoom.description;
+      nextMessageTest = currentRoom?.description ?? "";
       setWaitingForFirstMessage(false);
 
-      nextMessageTest += nextRoom.constructValidDirections();
+      nextMessageTest += nextRoom?.constructValidDirections() ?? "";
     } else if (
       bcrypt.compareSync(
         inputText,
@@ -353,15 +357,18 @@ const App = () => {
     ) {
       nextMessageTest = "Not here!";
     } else {
-      const moveResult: MoveResult = currentRoom.attemptMove(inputText);
+      const moveResult: MoveResult = currentRoom?.attemptMove(inputText) ?? {
+        nextRoomName: "",
+        moveIsValid: false,
+      };
       nextRoom = rooms[moveResult.nextRoomName];
       if (moveResult.moveIsValid) {
-        nextMessageTest = nextRoom.description;
+        nextMessageTest = nextRoom?.description ?? "";
       } else {
-        nextMessageTest = "I don't understand that request.";
+        nextMessageTest = defaultDontUnderstandMessage;
       }
 
-      nextMessageTest += nextRoom.constructValidDirections();
+      nextMessageTest += nextRoom?.constructValidDirections() ?? "";
     }
     setCurrentRoom(nextRoom);
     setMessageText(nextMessageTest);
