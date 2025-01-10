@@ -409,7 +409,15 @@ const Fiance: Person = {
       speaker: FIANCE_NAME,
     },
   ],
-  validAnswers: ["GARNET", "AMETHYST", "PEARL", "STEVEN"],
+  validAnswers: [
+    "GARNET",
+    "RUBY",
+    "SAPPHIRE",
+    "AMETHYST",
+    "PEARL",
+    "STEVEN",
+    "STEVENUNIVERSE",
+  ],
   nextPerson: Critic,
 };
 

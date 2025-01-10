@@ -40,7 +40,7 @@ const DATA = [
   [
     "SANDY",
     "“Crystal gem” (they’ll always “save the day”!) from Steven Universe",
-    "GARNET, AMETHYST, PEARL, STEVEN",
+    "GARNET, RUBY, SAPPHIRE, AMETHYST, PEARL, STEVEN, STEVENUNIVERSE",
     "",
   ],
   [
@@ -87,7 +87,7 @@ const DATA = [
   ],
   [
     "EEVEELYNE",
-    "“Cafe of green tables”, someone from “Avonlea”: Anne of Green Gables character. “Pokemoniker”, various Pokemon puns, “water by ferry” (water/fairy type): name begins with a Pokemon type. The only Pokemon that starts an Anne of Green Gables character name is Marill.",
+    "“Cafe of green tables”, someone from “Avonlea”: Anne of Green Gables character.  Various Pokemon puns (the name EEVEElyn, the lines “BAYLEEF me alone”, “ELECTABUZZ off”), “water by ferry” (water/fairy type): name begins with a Pokemon of water/fairy type. The only Pokemon that starts an Anne of Green Gables character name is Marill.",
     "MARILLACUTHBERT",
     "M",
   ],
