@@ -46,6 +46,50 @@ const Table = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const IROHA = [
+  ["い", "ろ", "は", "に", "ほ", "へ", "と"],
+  ["ち", "り", "ぬ", "る", "を"],
+  ["わ", "か", "よ", "た", "れ", "そ"],
+  ["つ", "ね", "な", "ら", "む"],
+  ["う", "ゐ", "の", "お", "く", "や", "ま"],
+  ["け", "ふ", "こ", "え", "て"],
+  ["あ", "さ", "き", "ゆ", "め", "み", "し"],
+  ["ゑ", "ひ", "も", "せ", "す"],
+];
+
+const IROHA_HIGHLIGHTS: Record<string, string> = {
+  い: "#e06666",
+  う: "#c9daf8",
+  ま: "#a4c2f4",
+  し: "#ea9999",
+};
+
+const HighlightedIroha = () => {
+  return (
+    <div style={{ marginBottom: "1rem" }}>
+      {IROHA.map((row) => {
+        return (
+          <div key={row.join("")}>
+            {row.map((kana) => {
+              const highlightColor = IROHA_HIGHLIGHTS[kana];
+              return (
+                <span key={kana} style={{ backgroundColor: highlightColor }}>
+                  {kana}
+                </span>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const NoBreak = styled.span`
+  display: inline-block;
+  white-space: "nowrap";
+`;
+
 const Solution = () => {
   return (
     <>
@@ -55,12 +99,13 @@ const Solution = () => {
         was a Japanese buddhist monk who is traditionally purported to have
         developed the kana writing system used in writing Japanese phonetically
         and to have written the Iroha, a poem which was a perfect pangram of the
-        kana in use at the time. The first line of the Iroha, いろはにほへと,
-        directly translate to “colors are fragrant, but they.” The “colors are
-        fragrant, but they” and “Kūkai” parts of the flavor text are pointing to
-        the Iroha. The “shift and shift” part is in reference to Caesar shifts,
-        also clued by the title 皇帝の暗号, Japanese for emperor’s cipher. This
-        is meant to reference Caesar shifts.
+        kana in use at the time. The first line of the Iroha,{" "}
+        <NoBreak>いろはにほへと,</NoBreak> directly translate to “colors are
+        fragrant, but they.” The “colors are fragrant, but they” and “Kūkai”
+        parts of the flavor text are pointing to the Iroha. The “shift and
+        shift” part is in reference to Caesar shifts, also clued by the title{" "}
+        <NoBreak>皇帝の暗号,</NoBreak> Japanese for emperor’s cipher. This is
+        meant to reference Caesar shifts.
       </p>
       <p>
         In summary, this puzzle is about Caesar shifts and the Iroha ordering of
@@ -76,9 +121,19 @@ const Solution = () => {
         can be used to reorder them to be ordered “irohaically” by Japanese ID.
         As clued by the diagram below the image tiles, the solver must construct
         three-tile chains using two different mechanisms. These mechanisms are
-        an English Caesar shift and a Japanese Iroha shift. The identifications
-        and shifts are given below. Japanese identifications are written in
-        kanji and written out in hiragana in parentheses.
+        an English Caesar shift and a Japanese Iroha shift. As an example, ADDER
+        pairs with BEEFS through a Caesar shift of 1, advancing each letter one
+        along the alphabet. Then, <NoBreak>うし</NoBreak> (meaning cows) pairs
+        with <NoBreak>まい</NoBreak> (meaning dance) through an Iroha shift of
+        6. This is shown on the Iroha below. Note that advancing six steps
+        forward from し wraps back to the start of the Iroha.
+      </p>
+
+      <HighlightedIroha />
+
+      <p>
+        The identifications and shifts are given below. Japanese identifications
+        are written in kanji and written out in hiragana in parentheses.
       </p>
 
       <Table>
@@ -341,11 +396,11 @@ const Solution = () => {
         As given, the Caesar shifts are of intervals 1 through 8, providing an
         ordering. The Iroha shifts in this order are of intervals 6, 1, 46, 1,
         26, 27, 13, and 9. If these are used as indices into the Iroha itself,
-        one obtains へいせいのおわり, which may be interpreted as 平成の終わり,
-        or translated into English, <code>THE END OF THE HEISEI ERA</code>,
-        which is the answer to this puzzle. To alleviate ambiguity in
-        translation, an enumeration for the intended answer is provided at the
-        bottom of the puzzle.
+        one obtains <NoBreak>へいせいのおわり,</NoBreak> which may be
+        interpreted as <NoBreak>平成の終わり,</NoBreak> or translated into
+        English, <code>THE END OF THE HEISEI ERA</code>, which is the answer to
+        this puzzle. To alleviate ambiguity in translation, an enumeration for
+        the intended answer is provided at the bottom of the puzzle.
       </p>
     </>
   );
