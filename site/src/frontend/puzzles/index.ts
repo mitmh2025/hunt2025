@@ -111,6 +111,7 @@ import BarTalk from "./personal-chocolate";
 import WeirdoThreadedDoodads from "./plain-roulette";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
+import ControlRoom from "./plump-himalayas";
 import CelestialRope from "./powerful-berry";
 import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
@@ -230,6 +231,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   borderline_personality: BorderlinePersonality,
   broken_record: BrokenRecord,
   commentary: Commentary,
+  control_room: ControlRoom,
   cruciverbal: Cruciverbal,
   dear_diary: DearDiary,
   doable_double: DoableDouble,

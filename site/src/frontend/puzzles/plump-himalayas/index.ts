@@ -1,0 +1,40 @@
+import { type PuzzleDefinition } from "../types";
+import Puzzle from "./puzzle";
+import router from "./server";
+import Solution from "./solution";
+
+const puzzle: PuzzleDefinition = {
+  title: "Control Room",
+  slug: "control-room",
+  initial_description: "An invitation to schedule an interaction",
+  answer: "PIVOT TABLE",
+  authors: [
+    'Robert "Fro" Myers',
+    "Arcturus Wang",
+    "Brie Frame",
+    "Hubert Hwang",
+    "Kevin Hwang",
+  ],
+  editors: ["Chris Gatesman", "Jesse Moeller", "Melanie Matchett Wood"],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Arcturus Wang", "Brie Frame", 'Robert "Fro" Myers', "Sam Duffley"],
+    },
+    {
+      for_what: "Tech",
+      who: ["Arcturus Wang", "Quentin Smith"],
+    },
+  ],
+  content: {
+    component: Puzzle,
+  },
+  solution: {
+    component: Solution,
+  },
+  hints: [],
+  canned_responses: [],
+  router,
+};
+
+export default puzzle;
