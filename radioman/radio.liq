@@ -119,7 +119,7 @@ def randomizer(
     dir,
 ) =
     playlist = ref([])
-    fun () -> begin
+    f = fun () -> begin
         if playlist() == [] then
             playlist := list.shuffle(
                 file.ls(dir, pattern=pattern, absolute=true)
@@ -136,6 +136,9 @@ def randomizer(
             list.hd(pl)
         end
     end
+    f.{
+        request={request.create(f())},
+    }
 end
 background_music_next = randomizer(environment.get("MUSIC_DIR"), pattern="*.mp3")
 
@@ -143,96 +146,39 @@ background_music_next = randomizer(environment.get("MUSIC_DIR"), pattern="*.mp3"
 
 # At the top of each hour after hunt has started, play a station ID and possibly an event schedule or confidential.
 
-announcement_schedule = [
-    (0., ["radio-kickoff"]), # 60 minute block of pre-rendered programming
-    # (1+epsilon, ["radio-release", "radio-station-id-?"])
-    (2., ["radio-station-id-?"]),
-    (3., ["radio-station-id-?", "radio-event-schedule-a"]),
-    (4., ["radio-station-id-?", "confidential"]),
-    (5., ["radio-station-id-?", "radio-event-schedule-a"]),
-    (6., ["radio-station-id-?", "radio-event-upcoming-a-hour"]),
-    (6.75, ["radio-event-upcoming-a-fifteen"]),
-    (7., ["radio-station-id-?"]),
-    (8., ["radio-station-id-?", "confidential"]),
-    (9., ["radio-station-id-?"]),
-    (10., ["radio-station-id-?"]),
-    (11., ["radio-station-id-?"]),
-    (12., ["radio-station-id-?", "confidential"]),
-    (12.5, ["radio-last-call-friday"]),
-    (12.75, ["radio-shutdown-friday"]),
-    (13., ["radio-station-id-?"]),
-    (14., ["radio-station-id-?"]),
-    (15., ["radio-station-id-?"]),
-    (16., ["radio-station-id-?"]),
-    (17., ["radio-station-id-?"]),
-    (18., ["radio-station-id-?", "radio-morning-saturday", "radio-event-schedule-b"]),
-    (19., ["radio-station-id-?"]),
-    (20., ["radio-station-id-?", "radio-event-schedule-b", "confidential"]),
-    (21., ["radio-station-id-?", "radio-event-upcoming-b-hour"]), # runs at team-specific time
-    (21.75,	["radio-event-upcoming-b-fifteen"]), # runs at team-specific time
-    (22., ["radio-station-id-?"]),
-    (23., ["radio-station-id-?", "radio-event-schedule-c"]),
-    (24., ["radio-station-id-?", "confidential"]),
-    (25., ["radio-station-id-?", "radio-event-schedule-c"]),
-    (26., ["radio-station-id-?", "radio-event-upcoming-c-hour"]),
-    (26.75, ["radio-event-upcoming-c-fifteen"]),
-    (27., ["radio-station-id-?"]),
-    (28., ["radio-station-id-?", "radio-event-schedule-d", "confidential"]),
-    (29., ["radio-station-id-?"]),
-    (30., ["radio-station-id-?", "radio-event-schedule-d"]),
-    (31., ["radio-station-id-?", "radio-event-upcoming-d-hour"]),
-    (31.75, ["radio-event-upcoming-d-fifteen"]),
-    (32., ["radio-station-id-?", "confidential"]),
-    (33., ["radio-station-id-?"]),
-    (34., ["radio-station-id-?"]),
-    (35., ["radio-station-id-?"]),
-    (36., ["radio-station-id-?", "confidential"]),
-    (36.5, ["radio-last-call-saturday"]),
-    (36.75, ["radio-shutdown-saturday"]),
-    (37., ["radio-station-id-?"]),
-    (38., ["radio-station-id-?"]),
-    (39., ["radio-station-id-?"]),
-    (40., ["radio-station-id-?"]),
-    (41., ["radio-station-id-?"]),
-    (42., ["radio-station-id-?", "radio-morning-sunday"]),
-    (43., ["radio-station-id-?"]),
-    (44., ["radio-station-id-?", "confidential"]),
-    (45., ["radio-station-id-?"]),
-    (46., ["radio-station-id-?"]),
-    (47., ["radio-station-id-?"]),
-    (48., ["radio-station-id-?", "confidential"]),
-    (49., ["radio-station-id-?"]),
-    (50., ["radio-station-id-?"]),
-    (51., ["radio-station-id-?"]),
-    (52., ["radio-station-id-?", "confidential"]),
-    (53., ["radio-station-id-?"]),
-    (54., ["radio-station-id-?"]),
-    (55., ["radio-station-id-?"]),
-    (56., ["radio-station-id-?", "confidential"]),
-    (57., ["radio-station-id-?"]),
-    (58., ["radio-station-id-?"]),
-    (59., ["radio-station-id-?"]),
-    (60., ["radio-station-id-?", "confidential"]),
-    (60.5, ["radio-last-call-sunday"]),
-    (60.75, ["radio-last-call-sunday"]),
-    (61., ["radio-station-id-?"]),
-    (62., ["radio-station-id-?"]),
-    (63., ["radio-station-id-?"]),
-    (64., ["radio-station-id-?"]),
-    (65., ["radio-station-id-?"]),
-    (66., ["radio-station-id-?", "radio-morning-monday"]),
-    (67., ["radio-station-id-?"]),
-    (68., ["radio-station-id-?", "confidential"]),
-    (69., ["radio-station-id-?"]),
-    (70., ["radio-station-id-?"]),
-]
+let json.parse (announcement_schedule : [{
+    hour: float,
+    preempt: bool,
+    music_outro: bool,
+    overnight: bool,
+    sid_bumper: bool,
+    sid: bool,
+    messages: [string],
+    confidential: bool,
+    weather: bool,
+    music_intro: bool,
+}]) = file.contents(environment.get("SCHEDULE_JSON", default="schedule.json"))
 
-def next_scheduled_announcement() =
-    list.find(fun (e) -> begin
-        let (t, c) = e
-        t > play_state().last_scheduled_hour
-    end, announcement_schedule)
+def get_scheduled_announcement(t) =
+    past_announcements = list.filter(
+        fun (e) -> begin
+            e.hour <= t
+        end, announcement_schedule
+    )
+    try
+        list.last(past_announcements)
+    catch err do
+        null()
+    end
 end
+
+announcements_dir = environment.get("ANNOUNCEMENTS_DIR")
+
+music_intro_next = randomizer(announcements_dir, pattern="radio-music-intro-*.ogg")
+music_outro_next = randomizer(announcements_dir, pattern="radio-music-outro-*.ogg")
+confidential_handoff_next = randomizer(announcements_dir, pattern="radio-handoff-confidential-*.ogg")
+station_id_next = randomizer(announcements_dir, pattern="radio-station-id-*.ogg")
+bumper_sid = request.create("#{announcements_dir}/bumper-station-id.ogg", persistent=true)
 
 # Tier 2c - Puzzle content
 # quixotic-shoe: inject ads after every song
@@ -267,21 +213,26 @@ virtual_interaction = source.available(track_sensitive=false, single("spy-suite.
 celebration = blank()
 
 def calculate_confidential() =
-    # radio-handoff-confidential-[a-f]
+    # radio-handoff-confidential-[a-f] (already played)
     # radio-bumper-confidential
     # radio-confidential-intro
-    # if interactions_completed.has(["the_crime_scene", "the_safehouse"])
-    #  radio-confidential-partial-c
-    # elsif interactions_completed.has(["the_crime_scene"])
-    #  radio-confidential-partial-b
+    # if the_vault completed
+    #  radio-confidential-complete
     # else
-    #  radio-confidential-partial-a
+    #  if interactions_completed.has(["the_crime_scene", "the_safehouse"])
+    #   radio-confidential-partial-c
+    #  elsif interactions_completed.has(["the_crime_scene"])
+    #   radio-confidential-partial-b
+    #  else
+    #   radio-confidential-partial-a
+    #  end
+    #  any si -> radio-confidential-si-intro
+    #  in the order confrontations were completed:
+    #  confront_katrina -> radio-confidential-si-katrina
+    #  confront_gladys -> radio-confidential-si-gladys
+    #  confront_papa -> radio-confidential-si-papa
+    #  confront_carter -> radio-confidential-si-ferdinand
     # end
-    # any si -> radio-confidential-si-intro
-    # confront_katrina -> radio-confidential-si-katrina
-    # confront_gladys -> radio-confidential-si-gladys
-    # confront_papa -> radio-confidential-si-papa
-    # confront_carter -> radio-confidential-si-ferdinand
     # radio-confidential-outro
     []
 end
@@ -304,25 +255,66 @@ def regular_stream_next() =
     if in_interaction() then
         []
     else
-        interrupt = if
-            icy_box_enabled()
-            and (time()-last_icy_box_time() > ICY_BOX_INTERVAL)
-        then
-            last_icy_box_time := time()
-            [
-                request.create(icy_box_handoff_next()),
-                request.create(icy_box_content_next()),
-            ]
-        elsif quixotic_shoe_enabled() then
-            [
-                request.create(quixotic_shoe_handoff_next()),
-                request.create(quixotic_shoe_content_next()),
-            ]
+        scheduled_announcement = get_scheduled_announcement(hunt_elapsed_hours)
+        interrupt =
+            if null.defined(scheduled_announcement) and null.get(scheduled_announcement).hour != play_state().last_scheduled_hour then
+                s = null.get(scheduled_announcement)
+                log("Playing scheduled announcement #{s}")
+                if s.overnight then
+                    # The only thing that plays overnight is weather or bumper
+                    if icy_box_enabled() then
+                        last_icy_box_time := fill_time
+                        [
+                            icy_box_content_next.request(),
+                        ]
+                    else
+                        [
+                            bumper_sid,
+                        ]
+                    end
+                else
+                    list.flatten([
+                        if s.music_outro then [music_outro_next.request()] else [] end,
+                        if s.sid_bumper then [bumper_sid] else [] end,
+                        if s.sid then [station_id_next.request()] else [] end,
+                        list.map(fun (n) -> request.create("#{announcements_dir}/radio-#{n}.ogg"), s.messages),
+                        if s.confidential then [confidential_handoff_next.request()] else
+                            list.flatten([
+                                if s.weather then [
+                                    icy_box_handoff_next.request(),
+                                    icy_box_content_next.request(),
+                                ] else [] end,
+                                if s.music_intro and random.bool() then [
+                                    music_intro_next.request()
+                                ] else [] end,
+                            ])
+                        end,
+                    ])
+                end
+            elsif
+                icy_box_enabled()
+                and (time()-last_icy_box_time() > ICY_BOX_INTERVAL)
+            then
+                last_icy_box_time := time()
+                [
+                    request.create(icy_box_handoff_next()),
+                    request.create(icy_box_content_next()),
+                ]
+            elsif quixotic_shoe_enabled() then
+                [
+                    request.create(quixotic_shoe_handoff_next()),
+                    request.create(quixotic_shoe_content_next()),
+                    # 25% chance of music-intro
+                ]
+            else
+                []
+            end
+        if null.case(scheduled_announcement, {false}, fun (s) -> s.confidential) then
+            interrupt
         else
-            []
+            music = request.create(background_music_next())
+            [...interrupt, music]
         end
-        music = request.create(background_music_next())
-        [...interrupt, music]
     end
 end
 
