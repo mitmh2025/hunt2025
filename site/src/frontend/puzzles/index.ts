@@ -1,8 +1,4 @@
-import cryptex_note_blacklight from "../../frontend/rounds/illegal_search/assets/cryptex/cryptex_note_blacklight.png";
-import candy_modal_blacklight from "../../frontend/rounds/illegal_search/assets/desk_drawer/candy_modal_blacklight.png";
-import rings_modal_blacklight from "../../frontend/rounds/illegal_search/assets/fuse_box/rings_modal_blacklight.png";
-import ledger_modal_blacklight from "../../frontend/rounds/illegal_search/assets/rug/ledger_modal_blacklight.png";
-import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/safe/money_modal_blacklight.png";
+import { BlacklightData } from "../rounds/illegal_search/graph";
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
 import Superlatives from "./acute-ski";
@@ -312,46 +308,31 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   passage_of_time: PassageOfTime,
   the_annual_massachusetts_spelling_bee: TheAnnualMassachusettsSpellingBee,
 
-  // Note: these blacklight answer assignments are all wrong, but that's the
-  // set of graphical assets that we got for the playtest, so we're going to
-  // live with it for now.  Eventually:
-  // * SPARE PARTS should go to the_center_is_in_plain_sight_blacklight
-  // * LIFEFORCE should go to jargon_blacklight
-  // * VOYAGERS should go to cahfee_regulah_blacklight
-  // * the other two have not reached postprod yet, but when they do:
-  //   * BROADCAST_NEWS should go to given_up_blacklight
-  //   * BRAZIL should go to smoke_em_if_youve_got_em
-
-  cahfee_regulah_blacklight: blacklightPuzzle(CahfeeRegulah, {
-    answer: "VOYAGERS",
-    asset: candy_modal_blacklight,
-    assetAlt:
-      "Rule ROTARY: You haven’t lived here long, have you? No one calls them “traffic circles” or “roundabouts.” In any case, add a donut to your purchase for each one you drove on. Rule TUMMYACHE: If you do not have enough donuts to fulfill your team’s request, do not extract any letters. Instead, feel shame.",
-  }),
+  cahfee_regulah_blacklight: blacklightPuzzle(
+    CahfeeRegulah,
+    "VOYAGERS",
+    BlacklightData.candy,
+  ),
   the_center_is_in_plain_sight_blacklight: blacklightPuzzle(
     TheCenterIsInPlainSight,
-    {
-      answer: "SPARE PARTS",
-      asset: rings_modal_blacklight,
-      assetAlt: "The third quartile was also always in plain sight.",
-    },
+    "SPARE PARTS",
+    BlacklightData.rings,
   ),
-  jargon_blacklight: blacklightPuzzle(Jargon, {
-    answer: "LIFEFORCE",
-    asset: money_modal_blacklight,
-    assetAlt: "Shift by difference from 8V",
-  }),
-  given_up_blacklight: blacklightPuzzle(GivenUp, {
-    answer: "BROADCAST NEWS",
-    asset: ledger_modal_blacklight,
-    assetAlt: "Same locations tuned to PM 23pi/20",
-  }),
-  placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
-    answer: "BRAZIL",
-    asset: cryptex_note_blacklight,
-    assetAlt:
-      "What good is a cigarette without a light? Use a physical blacklight on the filters.",
-  }),
+  jargon_blacklight: blacklightPuzzle(
+    Jargon,
+    "LIFEFORCE",
+    BlacklightData.money,
+  ),
+  given_up_blacklight: blacklightPuzzle(
+    GivenUp,
+    "BROADCAST NEWS",
+    BlacklightData.ledger,
+  ),
+  placeholder_isp10_blacklight: blacklightPuzzle(
+    PlaceholderISP10,
+    "BRAZIL",
+    BlacklightData.cryptex,
+  ),
 
   papas_bookcase: PapasBookcase,
   papas_stash: PapasStash,

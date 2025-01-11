@@ -11,8 +11,6 @@ import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
 import { default_cursor } from "./cursors";
 
-const HAS_STORAGE = typeof Storage !== "undefined";
-
 // 40 switches
 const ALL_ON: boolean[] = Array(40).fill(true) as boolean[];
 
@@ -211,15 +209,6 @@ const SwitchBox = ({
   opened: boolean;
 }) => {
   const [switchState, setSwitchState] = useState<boolean[]>(() => {
-    if (HAS_STORAGE) {
-      const savedSwitchState = localStorage.getItem("illegal_search_painting2");
-      if (savedSwitchState) {
-        const parsedSavedState = parse40bools(savedSwitchState);
-        if (parsedSavedState) {
-          return parsedSavedState;
-        }
-      }
-    }
     return ALL_ON;
   });
 
@@ -266,13 +255,6 @@ const SwitchBox = ({
         });
     }
   }, [opened, setNode, switchState]);
-
-  useEffect(() => {
-    if (HAS_STORAGE) {
-      // Save state to local storage
-      localStorage.setItem("illegal_search_painting2", printable(switchState));
-    }
-  }, [switchState]);
 
   useEffect(() => {
     const stop = globalDatasetManager.watch(
