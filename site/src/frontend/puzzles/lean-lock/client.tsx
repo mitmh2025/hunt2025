@@ -5,12 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import { AuthorsNote } from "../../components/PuzzleLayout";
-import {
-  CLEANSTRING_REGEX,
-  DATA,
-  HAS_STORAGE,
-  LOCAL_STORAGE_PREFIX,
-} from "./Constants";
+import { DATA, HAS_STORAGE, LOCAL_STORAGE_PREFIX } from "./Constants";
 
 const StyledContainer = styled.div`
   border: 3px solid var(--black);
@@ -188,9 +183,7 @@ function check_submission(
   if (state.solved_nodes[node] !== undefined) {
     return;
   }
-  const canonical_text = submission
-    .toUpperCase()
-    .replace(CLEANSTRING_REGEX, "");
+  const canonical_text = submission.toUpperCase().replaceAll(" ", "");
   for (const hash of puzzle.nodes[node]!.hashes) {
     if (bcrypt.compareSync(`${node}-${canonical_text}`, hash)) {
       handle_correct_submission(
