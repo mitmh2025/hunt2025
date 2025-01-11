@@ -5,96 +5,114 @@ import {
   Mono,
   PuzzleAnswer,
 } from "../../components/StyledUI";
+import {
+  Bureaucrat,
+  CatLady,
+  Computer,
+  CORNER_NAME,
+  Critic,
+  Dancer,
+  Detective,
+  DinerAgent,
+  DungeonMaster,
+  Fiance,
+  Manicurist,
+  PowerpuffGirl,
+  Roman,
+  Sailor,
+  Snowman,
+  Wikipedian,
+} from "./data";
 
 const DATA = [
   [
-    "IULIUS",
+    Roman.name,
     "“Spartacus” (film with iconic scene where everyone claims to be Spartacus)",
-    "SPARTACUS",
+    Roman.validAnswers,
     "",
   ],
   [
-    "NETTIE",
+    Dancer.name,
     "“Green glass door” (rule: must have a double letter); space theme, “moonwalker”: a person who has walked on the moon",
-    "BUZZALDRIN, EDGARMITCHELL, DAVIDSCOTT, HARRISONSCHMITT",
+    Dancer.validAnswers,
     "",
   ],
   [
-    "DINA",
+    Manicurist.name,
     "Manicurist, “Oh, P.I.”: OPI nail polish names. “Slacquer”, “crème” specifies creme type nail lacquer, “orange” indicates color. Looking for a “tech expert” narrows down the nail polish name",
-    "SILICONVALLEYGIRL",
+    Manicurist.validAnswers,
     "L",
   ],
   [
-    "ELENA",
+    CatLady.name,
     "Catio with a ton of cats with various characteristics and items (Neko Atsume reference), Buffy the Vampire Slayer mention, “one cat she would open up for”: Neko Atsume cat with same name as Buffy character",
-    "WILLOW",
+    CatLady.validAnswers,
     "I",
   ],
   [
-    "XENO",
+    Snowman.name,
     "“old, limp, icicle”—Olympics. “A skater or two with the most medallions” (skater(s) who have the most Olympic medals across all figure skaters, who happen to be in a pairs event)",
-    "TESSAVIRTUE, SCOTTMOIR, TESSAVIRTUESCOTTMOIR, TESSAVIRTUEANDSCOTTMOIR, SCOTTMOIRTESSAVIRTUE, SCOTTMOIRANDTESSAVIRTUE",
+    Snowman.validAnswers,
     "T",
   ],
   [
-    "SANDY",
+    Fiance.name,
     "“Crystal gem” (they’ll always “save the day”!) from Steven Universe",
-    "GARNET, RUBY, SAPPHIRE, AMETHYST, PEARL, STEVEN, STEVENUNIVERSE",
+    Fiance.validAnswers,
     "",
   ],
   [
-    "KIMBALL KINGSFORD",
+    Critic.name,
     "American author who wrote “double-amputee’s memoir” in the 1920s (A Farewell to Arms). References to other books: “Rising star” (The Sun Also Rises), “[Door]bell tolls” (For Whom the Bell Tolls).",
-    "ERNESTHEMINGWAY",
+    Critic.validAnswers,
     "T",
   ],
   [
-    "INNAN",
+    DungeonMaster.name,
     "Ginger D&D DM, “Dropout”, name of campaign group (aka all of the group names, as introduced, for campaigns Brennan Lee Mulligan has DMed for Dimension 20 to date)",
-    "INTREPIDHEROES, VILEVILLAINS, TINYTHIEVES, BUCCANEERBUDDIES, SYLVANSLEUTHS, HEROICHIGHSCHOOLERS, QUESTINGQUEENS, PREFRONTALPIS, AMAZINGACTIONHEROES",
+    DungeonMaster.validAnswers,
     "",
   ],
   [
-    "PAORA",
+    Sailor.name,
     "Sea shanties theme. “Sweets, tea, and liquor” -> “sugar and tea and rum”, “tonguin’”, “oh well”—all references to lyrics/title of Wellerman meme song. Looking for whaling ship (that the song is about)",
-    "BILLYOTEA, BILLYOFTEA",
+    Sailor.validAnswers,
     "L",
   ],
   [
-    "ZOWER/ZUFF",
+    CORNER_NAME,
     "Trolley stop name clues Powerpuff Girls; little girl with a red bow is Blossom, will only talk to family members",
-    "BUTTERCUP, BUBBLES, PROFESSORUTONIUM",
+    PowerpuffGirl.validAnswers,
     "E",
   ],
   [
-    "EDITH",
+    Wikipedian.name,
     "“Wickid” (wiki), information archive written and curated by volunteers, “founded by [Jimbo] W(h)ales”: Wikipedia. Daily rotating exhibit = featured article of the day (on English Wikipedia main page). Feature articles from leap days (Feb 29) are what’s needed",
-    "LSD, HAMILTON, PSILOCYBIN, REGENTSOFTHEUNIVERSITYOFCALIFORNIAVBAKKE, ZOOTVTOUR, BLOODONTHEFLOOR",
+    Wikipedian.validAnswers,
     "",
   ],
   [
-    "RACHMAL",
+    Detective.name,
     "Musician on list of people who “Didn’t Start the Fire” (mentioned in the song We Didn’t Start the Fire); ice cream clues the beloved ice cream shop near MIT, Toscanini’s",
-    "TOSCANINI",
+    Detective.validAnswers,
     "T",
   ],
   [
-    "OGDEN",
+    Bureaucrat.name,
     "MITropolis “department of education” president—president of MIT",
-    "SALLYKORNBLUTH",
+    Bureaucrat.validAnswers,
     "O",
   ],
   [
-    "EEVEELYNE",
+    DinerAgent.name,
     "“Cafe of green tables”, someone from “Avonlea”: Anne of Green Gables character.  Various Pokemon puns (the name EEVEElyn, the lines “BAYLEEF me alone”, “ELECTABUZZ off”), “water by ferry” (water/fairy type): name begins with a Pokemon of water/fairy type. The only Pokemon that starts an Anne of Green Gables character name is Marill.",
-    "MARILLACUTHBERT",
+    DinerAgent.validAnswers,
     "M",
   ],
   [
-    "SECURITY",
+    Computer.name,
     "“I only accept commands from HQ to open this door”. Literally.",
-    "HQ",
+    Computer.validAnswers,
     "",
   ],
 ];
@@ -155,9 +173,9 @@ const Solution = (): JSX.Element => {
               <td>{character}</td>
               <td>{clue}</td>
               <td>
-                {validOptions
-                  ?.split(",")
-                  .map((option, j) => <Mono key={j}>{option}</Mono>)}
+                {validOptions.map((option, j) => (
+                  <Mono key={j}>{option} </Mono>
+                ))}
               </td>
               <td>
                 <Mono>{letters}</Mono>
