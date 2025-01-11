@@ -84,10 +84,12 @@ export const adminContract = c.router({
       200: z.object({
         messages: z.array(
           z.object({
-            address: z.object({
-              name: z.string(),
-              address: z.string(),
-            }),
+            addresses: z.array(
+              z.object({
+                name: z.string(),
+                address: z.string(),
+              }),
+            ),
             success: z.boolean().optional(),
           }),
         ),
