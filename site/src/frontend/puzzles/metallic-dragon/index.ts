@@ -29,7 +29,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 10.0,
       description:
-        "Solvers have explored the text adventure but haven't mapped it out",
+        "Solvers have explored the text adventure but haven’t mapped it out",
       keywords: ["map"],
       nudge:
         'The map for this text adventure is a phone keypad. The text in each room obliquely hints at each room\'s canonical "number"',
