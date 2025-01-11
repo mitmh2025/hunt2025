@@ -644,8 +644,6 @@ export async function appendPuzzleStateLog(
 export async function getFermitQuestions(
   knex: Knex.Knex,
 ): Promise<FermitQuestion[]> {
-  // TODO: is there a better way to do this?
-  // Or should the properties be renamed to not be camelCase?
   return (await knex("fermit_questions").select()).map((obj) => {
     const data = fixData(obj.data) as FermitQuestionJSON;
     return {
