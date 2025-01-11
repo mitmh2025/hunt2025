@@ -351,7 +351,7 @@ export const DOWN = [
   [145, "Close by"],
   [148, "Kris Kringle"],
   [149, "Relating to or arising from the action of the wind"],
-  [150, "D musical note on fixed-Do solfege"],
+  [150, "D musical note on fixed-Do solfège"],
   [151, "Hint or pointer"],
   [152, "Covered in frozen water"],
   [154, "Swinging building barriers"],
