@@ -31,6 +31,7 @@ team_state = ref(
             quixotic_shoe_enabled: bool,
             icy_box_enabled: bool,
             interaction: bool,
+            completed_interactions: [string]
         }) = file.contents(team_state_path)
         v
     catch err do
@@ -41,6 +42,7 @@ team_state = ref(
             quixotic_shoe_enabled=false,
             icy_box_enabled=false,
             interaction=false,
+            completed_interactions=[],
         }
     end
 )
@@ -219,28 +221,32 @@ virtual_interaction = source.available(track_sensitive=false, single("spy-suite.
 celebration = blank()
 
 def calculate_confidential() =
-    # radio-handoff-confidential-[a-f] (already played)
-    # radio-bumper-confidential
-    # radio-confidential-intro
-    # if the_vault completed
-    #  radio-confidential-complete
-    # else
-    #  if interactions_completed.has(["the_crime_scene", "the_safehouse"])
-    #   radio-confidential-partial-c
-    #  elsif interactions_completed.has(["the_crime_scene"])
-    #   radio-confidential-partial-b
-    #  else
-    #   radio-confidential-partial-a
-    #  end
-    #  any si -> radio-confidential-si-intro
-    #  in the order confrontations were completed:
-    #  confront_katrina -> radio-confidential-si-katrina
-    #  confront_gladys -> radio-confidential-si-gladys
-    #  confront_papa -> radio-confidential-si-papa
-    #  confront_carter -> radio-confidential-si-ferdinand
-    # end
-    # radio-confidential-outro
-    []
+    def did(name) =
+        list.mem(name, team_state().completed_interactions)
+    end
+    si = list.flatten([
+        if did("confront_katrina") then ["confidential-si-katrina"] else [] end,
+        if did("confront_gladys") then ["confidential-si-gladys"] else [] end,
+        if did("confront_papa") then ["confidential-si-papa"] else [] end,
+        if did("confront_carter") then ["confidential-si-ferdinand"] else [] end,
+    ])
+    # # radio-handoff-confidential-[a-f] (already played)
+    list.map(fun (n) -> request.create("#{announcements_dir}/radio-#{n}.ogg"), list.flatten([
+        ["bumper-confidential"],
+        ["confidential-intro"],
+        if did("the_vault") then ["confidential-complete"]
+        else list.flatten([
+            if did("the_safehouse") then ["confidential-partial-c"]
+            elsif did("the_crime_scene") then ["confidential-partial-b"]
+            else ["confidential-partial-a"]
+            end,
+            if si != [] then [
+                "confidential-si-intro",
+                ...si
+            ] else [] end,
+        ]) end,
+        ["confidential-outro"],
+    ]))
 end
 
 queue = ref(request.extending_queue(fun () -> []))
