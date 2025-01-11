@@ -99,6 +99,11 @@
       };
     }
     {
+      services.sync2zammad = {
+        enable = true;
+      };
+    }
+    {
       services.thingsboard = {
         enable = true;
         datasource.createLocally = true;
