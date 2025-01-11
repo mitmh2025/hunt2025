@@ -242,15 +242,19 @@ def regular_stream_next() =
     else
         scheduled_announcement = get_scheduled_announcement(hunt_elapsed_hours)
         after_confidential = {null.case(scheduled_announcement, {[]}, fun (s) -> list.flatten([
-            if s.weather then [
-                icy_box_handoff_next.request(),
-                bumper_icy_box,
-                icy_box_content_next.request(),
-            ] else [] end,
+            if s.weather then
+                last_icy_box_time := fill_time
+                [
+                    icy_box_handoff_next.request(),
+                    bumper_icy_box,
+                    icy_box_content_next.request(),
+                ]
+            else [] end,
             if s.music_intro and random.bool() then [
                 music_intro_next.request()
             ] else [] end,
         ]))}
+        partial_confidential = ref(false)
         confidential_tail = last_metadata["confidential"] == "handoff"
         interrupt =
             if confidential_tail then
@@ -261,6 +265,7 @@ def regular_stream_next() =
             elsif null.defined(scheduled_announcement) and null.get(scheduled_announcement).hour != play_state().last_scheduled_hour then
                 s = null.get(scheduled_announcement)
                 log("Playing scheduled announcement #{s}")
+                partial_confidential := true
                 if s.overnight then
                     # The only thing that plays overnight is weather or bumper
                     if icy_box_enabled() then
@@ -304,10 +309,16 @@ def regular_stream_next() =
             else
                 []
             end
-        if not confidential_tail and null.case(scheduled_announcement, {false}, fun (s) -> s.confidential) then
+        if partial_confidential() then
             interrupt
         else
-            music = request.create(background_music_next())
+            music_file = background_music_next()
+            music_uri = null.case(
+                scheduled_announcement,
+                {music_file},
+                fun (s) -> "annotate:last_scheduled_hour=#{s.hour}:#{music_file}",
+            )
+            music = request.create(music_uri)
             [...interrupt, music]
         end
     end
@@ -320,7 +331,16 @@ regular_stream = request.extending_queue(
 )
 queue := regular_stream
 
-regular_stream.on_metadata(fun (m) -> print("on_metadata #{m}"))
+regular_stream.on_metadata(fun (m) -> begin
+    print("on_metadata #{m}")
+    if m["last_scheduled_hour"] != "" then
+        print("got new hour")
+        play_state := {
+            ...play_state(),
+            last_scheduled_hour=string.to_float(m["last_scheduled_hour"]),
+        }
+    end
+end)
 regular_stream.on_track(fun (m) -> print("on_track #{m}"))
 
 # last_break_time = ref(0.)
@@ -353,7 +373,7 @@ stream = fallback(
         pred_or_skip(
             id="regular_stream_pred_or_skip",
             {not source.is_ready(virtual_interaction)},
-            fade.on_skip(replaygain(regular_stream)),
+            fade.on_skip(duration=3., replaygain(regular_stream)),
         ),
     ]
 )
