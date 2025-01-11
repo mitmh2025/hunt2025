@@ -242,7 +242,7 @@ def regular_stream_next() =
     else
         scheduled_announcement = get_scheduled_announcement(hunt_elapsed_hours)
         after_confidential = {null.case(scheduled_announcement, {[]}, fun (s) -> list.flatten([
-            if s.weather then
+            if s.weather and icy_box_enabled() then
                 last_icy_box_time := fill_time
                 [
                     icy_box_handoff_next.request(),
