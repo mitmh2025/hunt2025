@@ -121,32 +121,6 @@ def check(r)
     end
 end
 
-def randomizer(
-    ~pattern=null(),
-    dir,
-) =
-    playlist = ref([])
-    f = fun () -> begin
-        if playlist() == [] then
-            playlist := list.shuffle(
-                file.ls(dir, pattern=pattern, absolute=true)
-            )
-        end
-        if playlist() == [] then
-            error.raise(
-                error.invalid,
-                "empty directory passed to randomizer",
-            )
-        else
-            pl = playlist()
-            playlist := list.tl(pl)
-            list.hd(pl)
-        end
-    end
-    f.{
-        request={request.create(f())},
-    }
-end
 background_music_next = randomizer(environment.get("MUSIC_DIR"), pattern="*.mp3")
 
 # Tier 2 - Station break
@@ -193,14 +167,14 @@ bumper_sid = request.create("#{announcements_dir}/bumper-station-id.ogg", persis
 quixotic_shoe_enabled = {team_state().quixotic_shoe_enabled}
 quixotic_shoe_dir = environment.get("QUIXOTIC_SHOE_DIR")
 quixotic_shoe_handoff_next = randomizer("#{quixotic_shoe_dir}/handoff", pattern="*.ogg")
-quixotic_shoe_content_next = randomizer("#{quixotic_shoe_dir}/content", pattern="*.ogg")
+quixotic_shoe_content_next = nexter("#{quixotic_shoe_dir}/content", pattern="*.ogg")
 
 # icy-box: inject weather reports every 20m
 icy_box_enabled = {team_state().icy_box_enabled}
 last_icy_box_time = ref(0.)
 icy_box_dir = environment.get("ICY_BOX_DIR")
 icy_box_handoff_next = randomizer("#{icy_box_dir}/handoff", pattern="*.ogg")
-icy_box_content_next = randomizer("#{icy_box_dir}/content", pattern="*.ogg")
+icy_box_content_next = nexter("#{icy_box_dir}/content", pattern="*.ogg")
 
 # Tier 2d - Ad-hoc announcements
 # Play audio as requested by RPC at the next break

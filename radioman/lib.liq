@@ -241,3 +241,39 @@ def request.extending_queue(
     )
     s
 end
+
+def nexter(
+    ~pattern=null(),
+    ~random=false,
+    dir,
+) =
+    playlist = ref([])
+    f = fun () -> begin
+        if playlist() == [] then
+            playlist := file.ls(dir, pattern=pattern, absolute=true, sorted=true)
+            if random then
+                playlist := list.shuffle(playlist())
+            end
+        end
+        if playlist() == [] then
+            error.raise(
+                error.invalid,
+                "empty directory passed to nexter",
+            )
+        else
+            pl = playlist()
+            playlist := list.tl(pl)
+            list.hd(pl)
+        end
+    end
+    f.{
+        request={request.create(f())},
+    }
+end
+
+def randomizer(
+    ~pattern=null(),
+    dir,
+) =
+    nexter(pattern=pattern, dir)
+end
