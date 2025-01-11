@@ -583,7 +583,7 @@ export async function createFermitSession(
   return dbInsertFermitSession(
     {
       title: title,
-      question_ids: "[" + questionIds.toString() + "]",
+      question_ids: JSON.stringify(questionIds),
     },
     knex,
   );
@@ -598,7 +598,7 @@ export async function updateFermitSession(
     {
       title: session.title,
       status: session.status,
-      question_ids: "[" + session.questionIds.toString() + "]",
+      question_ids: JSON.stringify(session.questionIds),
     },
     knex,
   );
