@@ -127,6 +127,32 @@ async function main({
   });
   teamRegistrationLogTailer.start();
 
+  const fetchTicketStates = async () => {
+    const states = new Map<number, string>();
+
+    let page = 1;
+    for (;;) {
+      const statesPage = await zammadClient.listTicketStates({
+        query: { page, per_page: 100 },
+      });
+      if (statesPage.status !== 200) {
+        throw new Error(`Failed to fetch ticket states: ${statesPage.status}`);
+      }
+      if (statesPage.body.length === 0) {
+        break;
+      }
+
+      statesPage.body.forEach((state) => {
+        states.set(state.id, state.name);
+      });
+
+      page += 1;
+    }
+
+    return states;
+  };
+  const zammadTicketStates = await fetchTicketStates();
+
   // Unfortunately, Zammad's API doesn't let us query by exact team name (only
   // substring) or by the custom fields that we've added, so at startup we suck
   // down the entire database and keep a local cache of what the state should be
@@ -517,8 +543,46 @@ async function main({
 
         teamTicketStates.set(teamId, teamTicketState);
 
-        // TODO: propagate closed_action if set for this touchpoint and ticket
-        // is closed
+        if (
+          touchpoint.closed_action &&
+          zammadTicketStates.get(ticket.state_id) === "closed"
+        ) {
+          switch (touchpoint.closed_action.type) {
+            case "satisfy_gate":
+              {
+                const { gate: gateId } = touchpoint.closed_action;
+                if (!teamTicketState.teamState.gates_satisfied.has(gateId)) {
+                  console.log(
+                    `Marking gate ${gateId} satisfied for team ${teamId}`,
+                  );
+                  await pRetry(
+                    async () => {
+                      const resp =
+                        await frontendApiClient.markTeamGateSatisfied({
+                          params: {
+                            teamId: teamId.toString(),
+                            gateId,
+                          },
+                        });
+                      if (resp.status !== 200) {
+                        throw new Error(
+                          `Failed to mark gate satisfied: ${resp.status}`,
+                        );
+                      }
+                    },
+                    {
+                      onFailedAttempt: (error) => {
+                        console.error(
+                          `Failed to mark gate satisfied for team ${teamId} and gate ${gateId}: ${error.message}. Retrying...`,
+                        );
+                      },
+                    },
+                  );
+                }
+              }
+              break;
+          }
+        }
       }
     }
   })();
