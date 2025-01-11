@@ -5,7 +5,7 @@ import { type z } from "zod";
 import { type TeamState, type TeamHuntState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
-import { InteractionDefinition, INTERACTIONS } from "../../interactions";
+import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
 
 type Interaction = z.infer<typeof InteractionStateSchema>;
 function stubInteractionState(slug: string, interaction: Interaction) {
@@ -62,19 +62,27 @@ export type InteractionParams = {
   slug: string;
 };
 
-async function virtualInteractionHandler(req: Request<InteractionParams>, teamState: TeamState, slug: string, interactionDefinition: InteractionDefinition & { type: "virtual" }) {
+async function virtualInteractionHandler(
+  req: Request<InteractionParams>,
+  teamState: TeamState,
+  slug: string,
+  interactionDefinition: InteractionDefinition & { type: "virtual" },
+) {
   const interaction = lookupInteraction(teamState.state, slug);
   if (!interaction) return undefined;
-  const interactionStateLogResult = await req.frontendApi.getFullTeamInteractionStateLog({
-    query: { team_id: teamState.teamId, slug },
-  });
+  const interactionStateLogResult =
+    await req.frontendApi.getFullTeamInteractionStateLog({
+      query: { team_id: teamState.teamId, slug },
+    });
   if (interactionStateLogResult.status !== 200) {
     // Something has gone wrong.
     return undefined;
   }
   const interactionStateLog = interactionStateLogResult.body;
-  const log = interactionStateLog.map((entry) => interactionDefinition.handler.format(entry));
-  const inlineScript = `window.initialInteractionState = ${JSON.stringify(log)};`
+  const log = interactionStateLog.map((entry) =>
+    interactionDefinition.handler.format(entry),
+  );
+  const inlineScript = `window.initialInteractionState = ${JSON.stringify(log)};`;
   const node = (
     <div>
       <h1>{interaction.title}</h1>
@@ -97,7 +105,12 @@ async function virtualInteractionHandler(req: Request<InteractionParams>, teamSt
   );
 }
 
-function liveInteractionHandler(_req: Request<InteractionParams>, teamState: TeamState, slug: string, _interactionDefinition: InteractionDefinition & { type: "live" }) {
+function liveInteractionHandler(
+  _req: Request<InteractionParams>,
+  teamState: TeamState,
+  slug: string,
+  _interactionDefinition: InteractionDefinition & { type: "live" },
+) {
   const interaction = lookupInteraction(teamState.state, slug);
   if (!interaction) return undefined;
   const node = (
@@ -119,7 +132,9 @@ function liveInteractionHandler(_req: Request<InteractionParams>, teamState: Tea
   );
 }
 
-export async function interactionRequestHandler(req: Request<InteractionParams>) {
+export async function interactionRequestHandler(
+  req: Request<InteractionParams>,
+) {
   if (!req.teamState) {
     return undefined;
   }
@@ -137,9 +152,19 @@ export async function interactionRequestHandler(req: Request<InteractionParams>)
   if (process.env.NODE_ENV === "development") {
     switch (interactionDefinition.type) {
       case "virtual":
-        return virtualInteractionHandler(req, teamState, slug, interactionDefinition);
+        return virtualInteractionHandler(
+          req,
+          teamState,
+          slug,
+          interactionDefinition,
+        );
       case "live":
-        return liveInteractionHandler(req, teamState, slug, interactionDefinition);
+        return liveInteractionHandler(
+          req,
+          teamState,
+          slug,
+          interactionDefinition,
+        );
       default:
         interactionDefinition satisfies never;
         return undefined;

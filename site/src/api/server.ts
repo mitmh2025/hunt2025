@@ -50,6 +50,8 @@ import { authentikJwtStrategy } from "../../lib/auth";
 import canonicalizeInput from "../../lib/canonicalizeInput";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
+import { INTERACTIONS } from "../frontend/interactions";
+import { type VirtualInteractionHandler } from "../frontend/interactions/handler";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import {
@@ -64,6 +66,7 @@ import {
   type Mutator,
   puzzleStateLog,
   registerTeam,
+  teamInteractionStateLog,
   teamRegistrationLog,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
@@ -76,6 +79,7 @@ import {
   getCurrentTeamName,
   cleanupTeamInteractionStateLogEntryFromDB,
   getTeamInteractionStateLog,
+  appendTeamInteractionStateLog,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -2343,33 +2347,66 @@ export async function getRouter({
       },
       startInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: ({ params: { teamId, interactionId } }) =>
-          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            const existing = mutator.log.filter(
-              (e) =>
-                (e.team_id === team_id || e.team_id === undefined) &&
-                (e.type === "interaction_unlocked" ||
-                  e.type === "interaction_started") &&
-                e.slug === interactionId,
-            );
-            const is_unlocked = existing.some(
-              (entry) => entry.type === "interaction_unlocked",
-            );
-            if (!is_unlocked) {
-              return false;
-            }
-            const is_started = existing.some(
-              (entry) => entry.type === "interaction_started",
-            );
-            if (!is_started) {
-              await mutator.appendLog({
-                team_id,
-                type: "interaction_started",
-                slug: interactionId,
-              });
-            }
-            return true;
-          }),
+        handler: async ({ params: { teamId, interactionId } }) => {
+          const result = await executeTeamStateHandler(
+            teamId,
+            async (trx, mutator, team_id) => {
+              const existing = mutator.log.filter(
+                (e) =>
+                  (e.team_id === team_id || e.team_id === undefined) &&
+                  (e.type === "interaction_unlocked" ||
+                    e.type === "interaction_started") &&
+                  e.slug === interactionId,
+              );
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              if (!is_unlocked) {
+                return false;
+              }
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+
+              const interaction = INTERACTIONS[interactionId];
+
+              if (!is_started) {
+                await mutator.appendLog({
+                  team_id,
+                  type: "interaction_started",
+                  slug: interactionId,
+                });
+                // Also insert the initial node into team_interaction_states
+                if (interaction?.type === "virtual") {
+                  const { node, state } = (
+                    interaction.handler as VirtualInteractionHandler<
+                      object,
+                      unknown,
+                      string,
+                      unknown
+                    >
+                  ).start();
+                  await appendTeamInteractionStateLog(
+                    {
+                      team_id,
+                      slug: interactionId,
+                      node,
+                      // no predecessor, we're starting here!
+                      graph_state: state,
+                    },
+                    trx,
+                  );
+                }
+              }
+              return true;
+            },
+          );
+          if (result.status === 200 && redisClient) {
+            // Also refresh the redis state for teamInteractionStateLog, since we also inserted into that DB table
+            await teamInteractionStateLog.refreshRedisLog(redisClient, knex);
+          }
+          return result;
+        },
       },
       completeInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],

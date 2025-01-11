@@ -140,9 +140,8 @@ export class InteractionEngine {
     items.forEach((item: InternalActivityLogEntry) => {
       if (item.team_id !== undefined) {
         if (item.type === "interaction_unlocked" && item.slug in INTERACTIONS) {
-          const interaction =
-            INTERACTIONS[item.slug as keyof typeof INTERACTIONS];
-          if ("graph" in interaction) {
+          const interaction = INTERACTIONS[item.slug];
+          if (interaction?.type === "virtual") {
             // Set up the interaction state and a timer for pushing the interaction into started
             const key = `${item.team_id}:${item.slug}`;
             let teamInteractions = this.interactionsByTeam.get(item.team_id);

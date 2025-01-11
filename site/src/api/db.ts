@@ -326,7 +326,7 @@ declare module "knex/types/tables" {
 }
 
 // Fix a timestamp that has come from the database.
-function fixTimestamp(value: string | Date): Date {
+export function fixTimestamp(value: string | Date): Date {
   if (typeof value === "string") {
     if (!value.endsWith("Z")) {
       // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
@@ -644,7 +644,7 @@ export async function appendTeamInteractionStateLog(
   entry: InsertTeamInteractionStateLogEntry,
   trx: Knex.Knex,
 ) {
-  return await trx("team_interaction-states")
+  return await trx("team_interaction_states")
     .insert(entry)
     .returning([
       "id",

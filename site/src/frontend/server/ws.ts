@@ -956,7 +956,7 @@ export class WebsocketManager implements ObserverProvider {
   private interactionStateSubs: Map<string, InteractionStateSubState>;
 
   private pollWatcher: PollWatcher;
-  private pollResponseSubs: Map<string, PollResponseSubscriptionHandler>;
+  //private pollResponseSubs: Map<string, PollResponseSubscriptionHandler>;
 
   private hunt: Hunt;
 
@@ -991,7 +991,7 @@ export class WebsocketManager implements ObserverProvider {
     this.interactionStateSubs = new Map();
     this.pollWatcher = new PollWatcher({ redisClient });
     this.pollWatcher.start();
-    this.pollResponseSubs = new Map();
+    //this.pollResponseSubs = new Map();
   }
 
   private dispatchTeamStateUpdate(teamId: number, teamState: TeamHuntState) {

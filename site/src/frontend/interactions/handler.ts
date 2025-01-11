@@ -1,4 +1,5 @@
 import { type TeamInteractionStateLogEntry } from "../../../lib/api/frontend_contract";
+import { fixTimestamp } from "../../api/db";
 import { type ExternalInteractionNode } from "./client-types";
 import {
   type InteractionGraph,
@@ -19,7 +20,17 @@ function indexedNodes<T, R, S extends string, P>(
   );
 }
 
-export class VirtualInteractionHandler<T, R, S extends string, P> {
+type StartState<T> = {
+  node: string;
+  state: T;
+};
+
+export class VirtualInteractionHandler<
+  T extends object,
+  R,
+  S extends string,
+  P,
+> {
   private graph: InteractionGraph<T, R, S, P>;
   private indexedNodes: Record<string, InteractionGraphNode<T, R, S, P>>;
   constructor(graph: InteractionGraph<T, R, S, P>) {
@@ -32,9 +43,10 @@ export class VirtualInteractionHandler<T, R, S extends string, P> {
   ): ExternalInteractionNode | undefined {
     const graphNode = this.indexedNodes[entry.node];
     if (!graphNode) return undefined;
+    const ts = fixTimestamp(entry.timestamp);
     const partial: ExternalInteractionNode = {
       id: entry.id,
-      ts: entry.timestamp.getTime(), // When the node was entered
+      ts: ts.getTime(), // When the node was entered
       node: graphNode.id,
       speaker: graphNode.speaker,
       text: graphNode.text,
@@ -67,5 +79,12 @@ export class VirtualInteractionHandler<T, R, S extends string, P> {
       partial.result = graphNode.finalState(data) as string;
     }
     return partial;
+  }
+
+  public start(): StartState<T> {
+    return {
+      node: this.graph.starting_node,
+      state: this.graph.starting_state,
+    };
   }
 }
