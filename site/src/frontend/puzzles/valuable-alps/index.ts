@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Cross Dash Word",
   slug: "cross_dash_word",
   initial_description:
-    "Physical Puzzle. Alternatively, there's a PDF that you can print and cut if you're a masochist. Godspeed.",
+    "Physical Puzzle. Alternatively, there’s a PDF that you can print and cut if you’re a masochist. Godspeed.",
   answer: "DEAD BIRD",
   authors: ["Andrew Russell"],
   editors: ["Kevin Hwang", "Steve Banzaert", "Teddy McArthur"],
