@@ -17,7 +17,7 @@ export function hackLoginGetHandler(_req: Request) {
                 prehunt (hunt has not started yet)
               </option>
               <option value="team">
-                team (hunt has started yet, but only the starting puzzle drop is
+                team (hunt has started, but only the starting puzzle drop is
                 unlocked)
               </option>
               <option value="unlockable">

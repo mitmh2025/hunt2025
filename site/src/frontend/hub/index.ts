@@ -193,7 +193,7 @@ const OBJECTS: HubObjectSetting[] = [
   {
     asset: radio_instruction_manual,
     alt: "Radio Instruction Manual",
-    x: 1539,
+    x: 1739,
     y: 914,
     width: 440,
     rot: 1.5,
@@ -202,7 +202,7 @@ const OBJECTS: HubObjectSetting[] = [
     condition: HUNT_NOT_STARTED,
     pin: {
       asset: pin_purple,
-      x: 1750,
+      x: 1950,
       y: 944,
     },
   },
@@ -220,10 +220,10 @@ const OBJECTS: HubObjectSetting[] = [
   {
     asset: health_and_safety_flag,
     alt: "Health & Safety",
-    x: 1889,
-    y: 1369,
+    x: 1789,
+    y: 1409,
     width: 519,
-    rot: -3.4,
+    rot: 3.4,
     shadow: true,
     href: "/health_and_safety",
     condition: HUNT_NOT_STARTED,

@@ -41,7 +41,7 @@ export type HubSuspectStatus = {
   color?: string;
 };
 
-// Suspect allowed to have up to 4 statuses
+// Suspect allowed to have up to 3 statuses
 export type HubSuspect = {
   status:
     | [HubSuspectStatus]
