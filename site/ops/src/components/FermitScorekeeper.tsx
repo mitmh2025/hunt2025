@@ -8,7 +8,7 @@ import {
   useFermitDispatch,
   FermitDataActionType,
 } from "../FermitDataProvider";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients, useOpsData } from "../OpsDataProvider";
 
 type TeamWithStatus = {
   id: number;
@@ -74,13 +74,14 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
   const opsData = useOpsData();
+  const opsClients = useOpsClients();
   const notifications = useNotifications();
 
   function toggleCheckIn(_e: React.MouseEvent<HTMLButtonElement>) {
     const session = fermitData.activeSession;
 
     if (session) {
-      opsData.adminClient
+      opsClients.adminClient
         .updateFermitRegistration({
           params: {
             sessionId: session.id.toString(),
@@ -130,7 +131,7 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
       <TeamName>
         {opsData.teams
           .find((teamData) => team.id === teamData.teamId)
-          ?.name.slice(0, 40)}
+          ?.name.slice(0, 20)}
       </TeamName>
       <TeamStatus>{team.status}</TeamStatus>
       <ToggleButton onClick={toggleCheckIn}>
@@ -152,12 +153,11 @@ const TeamStatusHeading = styled.div`
 function NotStartedPanel() {
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
-  const opsData = useOpsData();
+  const opsClients = useOpsClients();
   const notifications = useNotifications();
 
   function startSession() {
     const session = fermitData.activeSession;
-    const adminClient = opsData.adminClient;
 
     if (session) {
       if (session.status === "not_started") {
@@ -165,7 +165,7 @@ function NotStartedPanel() {
           ...session,
           status: "in_progress",
         };
-        adminClient
+        opsClients.adminClient
           .updateFermitSession({
             params: { sessionId: session.id.toString() },
             body: newSession,
@@ -220,6 +220,7 @@ function NotStartedPanel() {
 }
 
 function ScorekeeperPanel() {
+  const opsClients = useOpsClients();
   const opsData = useOpsData();
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
@@ -231,7 +232,7 @@ function ScorekeeperPanel() {
 
   useEffect(() => {
     if (session) {
-      opsData.adminClient
+      opsClients.adminClient
         .getFermitAnswers({
           params: { sessionId: session.id.toString() },
         })
@@ -260,7 +261,7 @@ function ScorekeeperPanel() {
           });
         });
     }
-  }, [session, opsData, notifications]);
+  }, [session, opsClients, notifications]);
 
   useInterval(() => {
     if (formRef.current) {
@@ -337,7 +338,7 @@ function ScorekeeperPanel() {
     if (answerChanges.length > 0) {
       setAnswers(newAnswers);
       // TODO: should this have different behavior based on whether the save succeeds?
-      void opsData.adminClient
+      void opsClients.adminClient
         .saveFermitAnswers({
           params: { sessionId: session.id.toString() },
           body: answerChanges,
@@ -358,7 +359,7 @@ function ScorekeeperPanel() {
       // first request a save
       formRef.current?.requestSubmit();
 
-      opsData.adminClient
+      opsClients.adminClient
         .completeFermitSession({
           params: { sessionId: session.id.toString() },
         })
@@ -400,7 +401,7 @@ function ScorekeeperPanel() {
         <th key={id}>
           {opsData.teams
             .find((teamData) => id === teamData.teamId)
-            ?.name.slice(0, 40)}
+            ?.name.slice(0, 20)}
         </th>
       ));
     const body = session.questionIds.map((_, idx) => {

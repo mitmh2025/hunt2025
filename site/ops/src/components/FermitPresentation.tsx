@@ -17,7 +17,7 @@ type TimerData = {
   running: boolean;
 };
 type TimerAction = {
-  type: string;
+  type: "reset" | "start" | "tick";
 };
 
 const RevealBox = styled.div`
@@ -39,6 +39,7 @@ function RevealContainer({
   const deckRef = useRef<Reveal.Api | null>(null);
 
   useEffect(() => {
+    let abortInitialize = false;
     if (deckRef.current === null) {
       deckRef.current = new Reveal({
         embedded: true,
@@ -52,6 +53,10 @@ function RevealContainer({
 
       deckRef.current.initialize().then(
         () => {
+          if (abortInitialize) {
+            deckRef.current.destroy();
+            return;
+          }
           deckRef.current?.addKeyBinding(
             { keyCode: 82, key: "R", description: "Reset timer" },
             () => {
@@ -74,6 +79,18 @@ function RevealContainer({
     if (deckRef.current.isReady()) {
       deckRef.current.sync();
       deckRef.current.slide(0);
+    }
+
+    return () => {
+      try {
+        abortInitialize = true;
+        if (deckRef?.current?.isReady()) {
+          deckRef.current.destroy();
+          deckRef.current = null;
+        }
+      } catch (e) {
+        console.warn("Reveal.js destroy call failed.");
+      }
     }
   }, [session, updateTimer]);
 

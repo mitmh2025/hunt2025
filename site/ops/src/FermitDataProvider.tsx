@@ -3,7 +3,7 @@ import {
   type FermitQuestion,
   type FermitSession,
 } from "../../lib/api/admin_contract";
-import { useOpsData } from "./OpsDataProvider";
+import { useOpsClients } from "./OpsDataProvider";
 
 export type FermitData = {
   sessions: FermitSession[];
@@ -76,14 +76,14 @@ export function FermitDataProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const opsData = useOpsData();
+  const opsClients = useOpsClients();
   const [data, dispatch] = useReducer(updateData, INITIAL_STATE);
 
   useEffect(() => {
     (async () => {
       const [questions, sessions] = await Promise.all([
-        opsData.adminClient.getFermitQuestions(),
-        opsData.adminClient.getFermitSessions(),
+        opsClients.adminClient.getFermitQuestions(),
+        opsClients.adminClient.getFermitSessions(),
       ]);
 
       if (questions.status !== 200) {
@@ -111,7 +111,7 @@ export function FermitDataProvider({
     })().catch((err: unknown) => {
       console.error(err);
     });
-  }, [opsData]);
+  }, [opsClients]);
 
   return (
     <FermitDataContext.Provider value={data}>

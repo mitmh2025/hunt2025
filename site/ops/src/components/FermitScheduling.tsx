@@ -7,7 +7,7 @@ import {
   useFermitDispatch,
   FermitDataActionType,
 } from "../FermitDataProvider";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
 import { type TeamData } from "../opsdata/types";
 import { FermitTeamSelector } from "./FermitTeamSelector";
@@ -84,7 +84,7 @@ const TeamName = styled.div`
 const ToggleButton = styled.button``;
 
 function SessionTeamEntry({ team }: { team: TeamData }) {
-  const opsData = useOpsData();
+  const opsClients = useOpsClients();
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
   const notifications = useNotifications();
@@ -92,7 +92,7 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
   function unregisterTeam(teamId: number) {
     const session = fermitData.activeSession;
     if (session) {
-      opsData.adminClient
+      opsClients.adminClient
         .deleteFermitRegistration({
           params: {
             sessionId: session.id.toString(),
@@ -155,6 +155,7 @@ function SessionTeamEntry({ team }: { team: TeamData }) {
 
 function SessionDetails() {
   const opsData = useOpsData();
+  const opsClients = useOpsClients();
   const fermitData = useFermitData();
   const dispatch = useFermitDispatch();
   const notifications = useNotifications();
@@ -162,7 +163,7 @@ function SessionDetails() {
   function registerTeam(teamId: number) {
     const session = fermitData.activeSession;
     if (session) {
-      opsData.adminClient
+      opsClients.adminClient
         .createFermitRegistration({
           params: {
             sessionId: session.id.toString(),
@@ -206,7 +207,7 @@ function SessionDetails() {
     }
   }
   function createSession(title: string) {
-    opsData.adminClient
+    opsClients.adminClient
       .createFermitSession({ body: { title: title } })
       .then((res) => {
         if (res.status !== 200) {
