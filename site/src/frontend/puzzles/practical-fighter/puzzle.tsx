@@ -1,6 +1,8 @@
 import React from "react";
 import { styled } from "styled-components";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 import footIcon from "./assets/foot.svg";
 import headphonesIcon from "./assets/headphones.svg";
@@ -48,10 +50,17 @@ const ClueCell = styled.td`
   padding-bottom: 0.5em;
 `;
 
-const Puzzle = () => {
+const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   return (
     <>
       <NotoColorEmojiFont />
+      {teamState.puzzles.songs_on_the_radio?.answer !== undefined && (
+        <AuthorsNote>
+          Congratulations on solving this puzzle! Your{" "}
+          <a href="/radio">radio’s instruction manual</a> has been updated with
+          instructions on how to make your own music with your radio.
+        </AuthorsNote>
+      )}
       <p className="puzzle-flavor">
         Where’s the grid for this criss-cross anyway?
       </p>
