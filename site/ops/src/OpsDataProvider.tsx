@@ -321,6 +321,11 @@ export default function OpsDataProvider({
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
+    function updateInterval() {
+      // ~5 seconds with jitter
+      return 2500 + Math.random() * 5000;
+    }
+
     function update() {
       (async () => {
         await opsClients.updateRegistrationLog();
@@ -330,11 +335,13 @@ export default function OpsDataProvider({
           console.error("Error updating registration log", e);
         })
         .finally(() => {
-          timeout = setTimeout(update, 5000);
+          // Add a little bit of jitter to avoid tabs syncing up on update
+          // times
+          timeout = setTimeout(update, updateInterval());
         });
     }
 
-    timeout = setTimeout(update, 5000);
+    timeout = setTimeout(update, updateInterval());
 
     return () => {
       clearTimeout(timeout);
