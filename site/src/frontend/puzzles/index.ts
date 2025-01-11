@@ -169,6 +169,7 @@ import Commentary from "./useable-rose";
 import CrossDashWord from "./valuable-alps";
 import YourePlayingItWrong from "./vast-fire";
 import NavigatingHighSociety from "./velvety-change";
+import SoundsLikeADodoToMe from "./waterlogged-kiwi";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
@@ -398,6 +399,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   in_communicado_tonight: InCommunicadoTonight,
   its_all_cheep_and_a_sheep_to_me: ItsAllCheepAndASheepToMe,
+  sounds_like_a_dodo_to_me: SoundsLikeADodoToMe,
   to_do_tile_that_rectangle: ToDoTileThatRectangle,
   we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
