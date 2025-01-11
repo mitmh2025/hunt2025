@@ -4,7 +4,7 @@ import BoardwalkInteractionGraph from "./interview_at_the_boardwalk/graph";
 import CasinoInteractionGraph from "./interview_at_the_casino/graph";
 import JewelryStoreInteractionGraph from "./interview_at_the_jewelry_store/graph";
 
-type InteractionDefinition =
+export type InteractionDefinition =
   | {
       title: string;
       type: "virtual";
@@ -14,6 +14,7 @@ type InteractionDefinition =
   | {
       title: string;
       type: "live";
+      // TODO: allow specifying a function that returns a React component?
     };
 
 export const INTERACTIONS: Record<string, InteractionDefinition> = {
