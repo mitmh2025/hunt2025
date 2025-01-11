@@ -210,7 +210,7 @@ const HUNT: Hunt = {
         },
         {
           // This is a longer in-person interaction which is expected to happen
-          // after teams complete the funaround.
+          // after teams complete the funaround and solve the super.
           id: "the_crime_scene",
           title: "The Crime Scene",
           unlock_if: [{ slot_solved: "mdm05" }],
@@ -320,7 +320,7 @@ const HUNT: Hunt = {
         }, slug: "and_now_a_puzzling_word_from_our_sponsors" },
         { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
         { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
-        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle
+        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "worlds_largest_crossword_puzzle" },
         { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "any_coat_will_do" },
         { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_eras_puzzle" },
