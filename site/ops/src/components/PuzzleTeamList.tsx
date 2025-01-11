@@ -194,6 +194,14 @@ export default function PuzzleTeamList({
     ];
   }, [now]);
 
+  const adminPermissionRequired = ![
+    "in_communicado_tonight",
+    "control_room",
+    "estimation_dot_jpg",
+  ].includes(slug);
+
+  const userCanUnlock = adminPermissionRequired ? isOpsAdmin : true;
+
   const table = useMaterialReactTable({
     columns,
     data: teams,
@@ -209,7 +217,7 @@ export default function PuzzleTeamList({
     },
     enableDensityToggle: false,
     layoutMode: "grid-no-grow",
-    enableRowSelection: isOpsAdmin,
+    enableRowSelection: userCanUnlock,
     selectAllMode: "all",
     enableSelectAll: true,
     renderTopToolbarCustomActions: ({ table }) => {
