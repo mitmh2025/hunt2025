@@ -10,6 +10,9 @@
   ];
   makeWrapperArgs = let
     env = {
+      ANNOUNCEMENTS_DIR = builtins.path {
+        path = "${radio-media}/announcements";
+      };
       MUSIC_DIR = builtins.path {
         path = "${radio-media}/music";
       };
