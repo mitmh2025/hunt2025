@@ -179,8 +179,8 @@ const Solution = () => {
         directions used to move between locations, and the puzzle title (Word
         Yore) hint to you that the capitalized words in each description should
         be treated as textonyms from T9 predictive text. Mapping out and
-        translating the textonyms from each room gives the cluephrase PERT AND
-        ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR. The translated
+        translating the textonyms from each room gives the cluephrase <Mono>PERT AND
+        ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR</Mono>. The translated
         word makes the sentence at each location make sense as a confirmation.
       </MarginedDiv>
       <StyledTable>
