@@ -583,7 +583,7 @@ const HUNT: Hunt = {
         { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "a_dash_of_color" },
         { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "weirdo_threaded_doodads" },
         { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "find_other_ways_of_seeing" },
-        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 }, // Sounds Like a Dodo to Me
+        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "sounds_like_a_dodo_to_me" },
         { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "can_do_transmissions" },
         { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "we_can_do_this_all_day" },
         { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "do_the_packing" },
