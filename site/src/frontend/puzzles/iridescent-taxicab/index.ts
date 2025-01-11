@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "We Can Do This All Day",
   slug: "we_can_do_this_all_day",
-  initial_description:
-    "An indication to schedule an interaction to receive a scavenger hunt.",
+  initial_description: "An indication to schedule an interaction",
   answer: "LEAFY ARLINGTON",
   authors: ["Kevin Hwang"],
   editors: ["Elan Blaustein", "James Douberley", "Steve Banzaert"],

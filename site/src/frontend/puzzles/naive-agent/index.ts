@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Missing Connections",
   slug: "missing_connections",
-  initial_description: "A grid of squares containing city names and sharks.",
+  initial_description: "A grid of squares containing city names and sharks",
   answer: "DEVILS MARBLES",
   authors: ["Kevin Hwang"],
   editors: ["Joanna Murray", "Robin Deits", "Steve Banzaert"],

@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Can-do Transmissions",
   slug: "can_do_transmissions",
   initial_description:
-    "A radio broadcast of uninflected voices reading lists of words and numbers.",
+    "A radio broadcast of uninflected voices reading lists of words and numbers",
   answer: "BEAUTIFUL FRIENDSHIP",
   authors: [
     "Matt Behlmann",

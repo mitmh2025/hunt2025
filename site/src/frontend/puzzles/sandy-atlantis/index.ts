@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "🔎🧊",
   slug: "🔎🧊",
-  initial_description: "A bunch of emojis.",
+  initial_description: "A grid of emojis",
   answer: "CHIFFONIER",
   authors: ["Alex St Claire"],
   editors: [

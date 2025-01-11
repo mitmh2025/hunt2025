@@ -11,7 +11,7 @@ export const CANONICALIZED_PARTIALS = [
 const puzzle: PuzzleDefinition = {
   title: "Magic i",
   slug: "magic_i",
-  initial_description: "Two columns of text.",
+  initial_description: "Two columns of text",
   answer: "INSECT",
   authors: ["Robin Deits"],
   editors: ["James Douberley", "Li-Mei Lim", "Michele Pratusevich"],

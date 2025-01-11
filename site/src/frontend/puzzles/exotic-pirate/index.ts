@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Neatly Drawn",
   slug: "neatly_drawn",
   initial_description:
-    "A connect-the-dots puzzle where each dot is (or corresponds to) a very zoomed in/cropped image.",
+    "A connect-the-dots puzzle where each dot is associated with an image",
   answer: "BIRD ORCHID",
   authors: ["Li-Mei Lim"],
   editors: ["Joel Fried", "Michele Pratusevich", "Robin Deits"],

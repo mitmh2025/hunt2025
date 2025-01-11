@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Badly Broken Quote",
   slug: "a_badly_broken_quote",
-  initial_description: "Fourteen dropquotes.",
+  initial_description: "Fourteen dropquotes",
   answer: "EVENING NEWS",
   authors: ["Helena Wang"],
   editors: ["Erin Price", "Robin Deits", "Steve Banzaert"],

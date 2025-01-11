@@ -6,8 +6,7 @@ const puzzle: PuzzleDefinition = {
   title:
     "abstract art and poems / concerning a pale blue dot / and many more friends",
   slug: "abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends",
-  initial_description:
-    "Fragments of magnetic poetry and strips of paper with abstract art on one side and text on the other.",
+  initial_description: "Physical Puzzle—Printed magnets and strips of paper",
   answer: "LA SERENISSIMA",
   authors: ["Anna Brunner"],
   editors: ["J. Heléne Andersson", "Laura Nicholson", "Melanie Matchett Wood"],

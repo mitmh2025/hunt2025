@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Passage of Time",
   slug: "passage_of_time",
-  initial_description: "Crossword grid and clues.",
+  initial_description: "Crossword grid and clues",
   answer: "LIVING YEARS",
   authors: ["Alex St Claire"],
   editors: [

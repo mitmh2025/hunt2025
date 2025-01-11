@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Men’s at My Nose",
   slug: "mens_at_my_nose",
-  initial_description: "A series of quotes.",
+  initial_description: "A series of quotes",
   answer: "SHOPPING CART",
   authors: ["Teddy McArthur"],
   editors: ["Li-Mei Lim", "Steve Banzaert"],

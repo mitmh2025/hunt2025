@@ -5,7 +5,6 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Papa’s Stash",
   slug: "papas_stash",
-  initial_description: "A diagram is painted on the wall.",
   answer: "ACCESS INVISIBLE INK",
   authors: ["Alex St Claire", "Mike Mannis"],
   editors: [

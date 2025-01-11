@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Recipe Substitutions",
   slug: "recipe_substitutions",
-  initial_description: "A recipe blog post and comments.",
+  initial_description: "A recipe blog post and comments",
   answer: "PINTO BEAN",
   authors: [
     "Kevin Hwang",

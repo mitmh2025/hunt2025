@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "A Map and a Shade (or Four)",
   slug: "a_map_and_a_shade_or_four",
   initial_description:
-    "A chart with letters, colors, ticks, crosses and some other symbols, as well as a series of pie charts with colors.",
+    "A chart with letters, colors, ticks, crosses. Also a series of pie charts.",
   answer: "STATE OF UNDRESS",
   authors: ["Stratton Vakirtzis", "Rad Z"],
   editors: ["James Douberley", "Melanie Matchett Wood", "Teddy McArthur"],

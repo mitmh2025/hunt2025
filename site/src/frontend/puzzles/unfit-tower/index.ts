@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Maze of Lies",
   slug: "maze_of_lies",
-  initial_description: "A text adventure exploring a maze.",
+  initial_description: "A text adventure exploring a maze",
   answer: "RED BUCKET",
   authors: ["Denis Auroux", "Becca Chang"],
   editors: ["Arcturus Wang", "James Douberley", "tinaun"],

@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Give This Grid a Shake",
   slug: "give_this_grid_a_shake",
   initial_description:
-    "Two short lists of crossword clues, and an empty 6x6 grid.",
+    "Two short lists of crossword clues and an empty 6x6 grid",
   answer: "THE BLACK MARKET",
   authors: ["David Greenspan"],
   editors: ["Henry Wong", "James Douberley", "Li-Mei Lim"],

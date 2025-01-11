@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Kindred Spirits",
   slug: "kindred_spirits",
   initial_description:
-    "A series of 50-60 crossword-style clues and a series of blanks separated by arrows.",
+    "A series of crossword-style clues and a series of blanks separated by arrows",
   answer: "FLYER",
   authors: [
     "Evan Broder",

@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "A Walk in the Park",
   slug: "a_walk_in_the_park",
   initial_description:
-    "Lists of common phrases and two large abstract graphics.",
+    "Lists of common phrases and two large abstract graphics",
   answer: "LONG STRIDE",
   authors: ["Dan Pappas", "Stephanie Murray"],
   editors: [

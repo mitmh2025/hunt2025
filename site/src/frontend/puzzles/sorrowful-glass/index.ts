@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "(A Puzzle of the Dead)",
   slug: "a_puzzle_of_the_dead",
-  initial_description:
-    "A button and text saying “Press the button to view a transmission. It will self destruct shortly afterwards.”",
+  initial_description: "A self-destructing transmission",
   answer: "HELL HOLE",
   authors: ["Baltazar Ortiz", "Anisa Schardl"],
   editors: ["Hubert Hwang", "Robin Deits", "Steve Banzaert"],

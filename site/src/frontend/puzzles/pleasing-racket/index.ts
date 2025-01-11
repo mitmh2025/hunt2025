@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Be Mine",
   slug: "be_mine",
   initial_description:
-    "An image with a scattering of many multicolored candy hearts with letters on them, and a row of blank hearts at the bottom of the page.",
+    "A bunch of multicolored candy hearts with words on them",
   answer: "SAY YOU LOVE ME",
   authors: ["Helena Wang"],
   editors: ["Anna Brunner", "Hubert Hwang", "Nathan Fung", "Steve Banzaert"],

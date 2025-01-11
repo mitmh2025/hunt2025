@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Recipe For Success",
   slug: "a_recipe_for_success",
-  initial_description: "Several pickup lines and innuendo.",
+  initial_description: "Several completely normal and reasonable pickup lines",
   answer: "LET THEM EAT CAKE",
 
   authors: ["James Douberley", "Emilie Josephs"],

@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "O, Woe is Me",
   slug: "o_woe_is_me",
-  initial_description: "Cryptic Crossword",
+  initial_description: "Cryptic crossword",
   answer: "JUGAL BONE",
   authors: ["Julian West"],
   editors: ["Nathan Fung", "Robin Deits", "Teddy McArthur"],

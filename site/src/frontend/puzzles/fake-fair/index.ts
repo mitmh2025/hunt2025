@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Read Between the Lines",
   slug: "read_between_the_lines",
-  initial_description: "2 Crosswords.",
+  initial_description: "Two crosswords",
   answer: "PALM TREE",
   authors: ["Dee Ruttenberg", "Anisa Schardl", "Chris Post"],
   editors: ["Anna Brunner", "Hubert Hwang", "James Douberley"],

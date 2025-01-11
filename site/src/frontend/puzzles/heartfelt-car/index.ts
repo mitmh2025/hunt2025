@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Be Kind, Rewind",
   slug: "be_kind_rewind",
   initial_description:
-    "A series of text descriptions and a link to a map of several locations.",
+    "A series of text descriptions and a link to a map of several locations",
   answer: "HARD DISK SPACE",
   authors: ["Erin Price", "Nathan Fung", "Sarah Leadbeater"],
   editors: ["Cyrus Eyster", "James Douberley", "Joanna Murray"],

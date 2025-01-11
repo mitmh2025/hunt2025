@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Shrinkage",
   slug: "shrinkage",
-  initial_description: "Two groups of clues and an image.",
+  initial_description: "Two groups of clues and an image",
   answer: "NEWMANS APARTMENT",
   authors: ["Robin Deits", "Michele Pratusevich"],
   editors: ["Henry Wong", "Li-Mei Lim"],
