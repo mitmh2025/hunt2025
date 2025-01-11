@@ -34,6 +34,7 @@ import {
 import { type Hunt } from "../../huntdata/types";
 import { navBarState } from "../components/ContentWithNavBar";
 import { hubState } from "../hub";
+import { INTERACTIONS } from "../interactions";
 import { backgroundCheckState } from "../rounds/background_check";
 import { eventsState } from "../rounds/events";
 import {
@@ -567,7 +568,12 @@ class ConnHandler {
   public appendInteractionStateLogEntry(subId: string, entry: TeamInteractionStateLogEntry) {
     const sub = this.subs.get(subId);
     if (sub && isInteractionStateLogSubscription(sub) && sub.slug === entry.slug) {
-      this.send({ subId, type: "update", value: entry });
+      // Format state log entry as appropriate for client
+      const interaction = INTERACTIONS[entry.slug];
+      if (interaction?.type === "virtual") {
+        const value = interaction.handler.format(entry);
+        this.send({ subId, type: "update", value });
+      }
     }
   }
 
@@ -1287,20 +1293,14 @@ export class WebsocketManager implements ObserverProvider {
   }
 
   public observePollResponses(teamId: number, slug: string, pollId: string, subId: string, conn: ConnHandler): ObserveResult {
-    console.log(`observePollResponses called for team ${teamId}, slug ${slug}, pollId ${pollId}, for subId ${subId}`);
+    // PollWatcher deduplicates observers watching the same poll internally, so there's no need to dedupe here.
     const observePromise = this.pollWatcher.observePoll(teamId, slug, pollId, (pollState) => {
-      console.log(`updating poll responses for sub ${subId} team ${teamId}, slug ${slug}, pollId ${pollId}`, JSON.stringify(pollState));
       conn.updatePollResponses(subId, pollState);
     });
-    void observePromise.then(() => {
-      console.log(`watcher ready for team ${teamId}, slug ${slug}, pollId ${pollId}, for subId ${subId}`);
-    });
     const stop = () => {
-      console.log(`stopping observe for team ${teamId}, slug ${slug}, pollId ${pollId}, for subId ${subId}`);
       void observePromise.then((stopHandle) => { stopHandle(); });
     };
     const readyPromise = this.pollWatcher.getCurrentPollState(teamId, slug, pollId).then((pollState) => {
-      console.log("initial state populated, sending update to client", pollState);
       conn.updatePollResponses(subId, pollState);
     });
     return {

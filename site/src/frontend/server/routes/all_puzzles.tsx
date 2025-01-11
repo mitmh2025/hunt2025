@@ -44,11 +44,10 @@ export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
     if (round.interactions) {
       const interactions = Object.entries(round.interactions).map(
         ([interactionSlug, interactionState]) => {
-          const intDefinition =
-            INTERACTIONS[interactionSlug as keyof typeof INTERACTIONS];
+          const intDefinition = INTERACTIONS[interactionSlug];
           return {
             slug: interactionSlug,
-            title: intDefinition.title,
+            title: intDefinition?.title ?? "unknown interaction",
             state: interactionState.state,
             result: interactionState.result,
           };
