@@ -5,6 +5,7 @@ import { Wrapper } from "./StyledUI";
 const PuzzleWrapper = styled(Wrapper)`
   background-color: var(--white);
   color: var(--black);
+  padding: 0;
 
   a {
     color: var(--black);
