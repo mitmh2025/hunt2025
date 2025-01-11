@@ -35,6 +35,7 @@ import SomeAssemblyRequired from "./cultured-rome";
 import WhoseSongIsItAnyway from "./delirious-mammoth";
 import AnyCoatWillDo from "./dental-police";
 import TheBoardwalk from "./dental-shark";
+import EstimationDotJpg from "./deserted-ninja";
 import CanDoTransmissions from "./diligent-spy";
 import TheThief from "./dimpled-star";
 import FindOtherWaysOfSeeing from "./discrete-spine";
@@ -113,7 +114,6 @@ import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
 import MakingContactWithAnInformant from "./pricey-robot";
 import ShellCorporationFive from "./profitable-trunk";
-import WorldsLargestCrosswordPuzzle from "./puny-cold";
 import AndNowAPuzzlingWordFromOurSponsors from "./quixotic-shoe";
 import ThisIsJustATest from "./radiant-snow";
 import InCommunicadoTonight from "./rare-block";
@@ -277,7 +277,6 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   star_crossed: StarCrossed,
   the_eras_puzzle: TheErasPuzzle,
   the_inspectre: TheInspectre,
-  worlds_largest_crossword_puzzle: WorldsLargestCrosswordPuzzle,
   youre_playing_it_wrong: YourePlayingItWrong,
 
   shell_corporation_1: ShellCorporationOne,
@@ -391,6 +390,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cross_dash_word: CrossDashWord,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
+  estimation_dot_jpg: EstimationDotJpg,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   give_this_grid_a_shake: GiveThisGridAShake,
   garden_anecdotes: GardenAnecdotes,

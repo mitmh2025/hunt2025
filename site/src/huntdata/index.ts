@@ -202,15 +202,15 @@ const HUNT: Hunt = {
 
         {
           // This is a brief in-person interaction which is expected to happen
-          // when teams unlock the Missing Diamond super but before they go on
-          // the funaround.
+          // after teams solve the Missing Diamond super but before they go on the
+          // funaround.
           id: "meet_billie",
           title: "Meet Billie",
           unlock_if: [{ slot_unlocked: "mdm05" }],
         },
         {
           // This is a longer in-person interaction which is expected to happen
-          // after teams complete the funaround and solve the super.
+          // after teams complete the funaround.
           id: "the_crime_scene",
           title: "The Crime Scene",
           unlock_if: [{ slot_solved: "mdm05" }],
@@ -320,7 +320,7 @@ const HUNT: Hunt = {
         }, slug: "and_now_a_puzzling_word_from_our_sponsors" },
         { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
         { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
-        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "worlds_largest_crossword_puzzle" },
+        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle
         { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "any_coat_will_do" },
         { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_eras_puzzle" },
@@ -593,7 +593,7 @@ const HUNT: Hunt = {
         { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "as_the_world_turandot" },
         { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 }, // Splits Used As History
         { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "in_communicado_tonight" },
-        { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 }, // esTIMation dot jpg
+        { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "estimation_dot_jpg" },
         { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
       ],
       gates: [

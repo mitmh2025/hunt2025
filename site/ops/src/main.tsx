@@ -8,6 +8,7 @@ import App from "./App.tsx";
 import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
 import EmailTeams from "./routes/EmailTeams.tsx";
+import FermitChallenge from "./routes/FermitChallenge.tsx";
 import Gates from "./routes/Gates.tsx";
 import Home from "./routes/Home.tsx";
 import Puzzle from "./routes/Puzzle.tsx";
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
           {
             path: "gates",
             Component: Gates,
+          },
+          {
+            path: "deserted-ninja",
+            Component: FermitChallenge,
           },
         ],
       },
