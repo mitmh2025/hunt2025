@@ -10,7 +10,7 @@ export type ExternalInteractionNode = {
   timeout_msec: number; // The amount of time, in milliseconds, allotted for this particular view
   overlay?: string | null; // Which InteractionChacterState key are we setting the current overlay to?
   // TODO: maybe add speakerImage to control what picture is shown to the left of the dialog
-  
+
   choices?: {
     key: string; // the value that should be voted.
     text: string; // the label that should be displayed.
@@ -18,4 +18,4 @@ export type ExternalInteractionNode = {
   }[];
   plugin?: string;
   result?: string;
-}
+};

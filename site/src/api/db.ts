@@ -295,7 +295,10 @@ declare module "knex/types/tables" {
     timestamp: Date;
     graph_state?: string | object | null; // Should actually be one of ArtGalleryState | BoardwalkInteractionState | CasinoState | JewelryStoreState;
   };
-  type InsertTeamInteractionStateLogEntry = Pick<TeamInteractionStateLogEntryRow, "team_id" | "slug" | "predecessor" | "node" | "graph_state">;
+  type InsertTeamInteractionStateLogEntry = Pick<
+    TeamInteractionStateLogEntryRow,
+    "team_id" | "slug" | "predecessor" | "node" | "graph_state"
+  >;
 
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
@@ -417,10 +420,14 @@ export function cleanupTeamInteractionStateLogEntryFromDB(
     timestamp: fixTimestamp(dbEntry.timestamp),
   };
   if (dbEntry.predecessor) {
-    (res as TeamInteractionStateLogEntry & { predecessor?: string }).predecessor = dbEntry.predecessor;
+    (
+      res as TeamInteractionStateLogEntry & { predecessor?: string }
+    ).predecessor = dbEntry.predecessor;
   }
   if (dbEntry.graph_state) {
-    (res as TeamInteractionStateLogEntry | { graph_state?: object }).graph_state = fixData(dbEntry.graph_state);
+    (
+      res as TeamInteractionStateLogEntry | { graph_state?: object }
+    ).graph_state = fixData(dbEntry.graph_state);
   }
   return res as TeamInteractionStateLogEntry;
 }
@@ -639,13 +646,22 @@ export async function appendTeamInteractionStateLog(
 ) {
   return await trx("team_interaction-states")
     .insert(entry)
-    .returning(["id", "team_id", "slug", "node", "predecessor", "timestamp", "graph_state"])
+    .returning([
+      "id",
+      "team_id",
+      "slug",
+      "node",
+      "predecessor",
+      "timestamp",
+      "graph_state",
+    ])
     .then((objs) => {
       if (objs.length === 0) {
         return undefined;
       }
       const insertedEntry = objs[0] as TeamInteractionStateLogEntryRow;
-      const fixedEntry = cleanupTeamInteractionStateLogEntryFromDB(insertedEntry);
+      const fixedEntry =
+        cleanupTeamInteractionStateLogEntryFromDB(insertedEntry);
       return fixedEntry;
     });
 }

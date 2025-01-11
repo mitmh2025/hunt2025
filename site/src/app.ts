@@ -1,7 +1,12 @@
 import path from "path";
 import { Router, WebSocketExpress } from "websocket-express";
 import { newFrontendClient } from "../lib/api/frontend_client";
-import { activityLog, teamRegistrationLog, puzzleStateLog, teamInteractionStateLog } from "./api/data";
+import {
+  activityLog,
+  teamRegistrationLog,
+  puzzleStateLog,
+  teamInteractionStateLog,
+} from "./api/data";
 import { connect as dbConnect } from "./api/db";
 import { getMailer } from "./api/email";
 import { connect as redisConnect } from "./api/redis";

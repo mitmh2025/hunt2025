@@ -4,15 +4,17 @@ import BoardwalkInteractionGraph from "./interview_at_the_boardwalk/graph";
 import CasinoInteractionGraph from "./interview_at_the_casino/graph";
 import JewelryStoreInteractionGraph from "./interview_at_the_jewelry_store/graph";
 
-type InteractionDefinition = {
-  title: string;
-  type: "virtual";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the types are too hard for me and won't matter for callers
-  handler: VirtualInteractionHandler<any, any, any, any>;
-} | {
-  title: string;
-  type: "live";
-};
+type InteractionDefinition =
+  | {
+      title: string;
+      type: "virtual";
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the types are too hard for me and won't matter for callers
+      handler: VirtualInteractionHandler<any, any, any, any>;
+    }
+  | {
+      title: string;
+      type: "live";
+    };
 
 export const INTERACTIONS: Record<string, InteractionDefinition> = {
   interview_at_the_art_gallery: {

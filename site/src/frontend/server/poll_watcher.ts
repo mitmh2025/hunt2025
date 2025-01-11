@@ -52,15 +52,10 @@ export class PollWatcher {
   private pubsubRedisClient: RedisClient;
   private pubsubRedisClientReady: Promise<RedisClient> | undefined;
 
-  // Map from  to 
+  // Map from  to
   private mergedObservers: Map<string, MergedPollObserver>;
 
-
-  constructor({
-    redisClient,
-  }: {
-    redisClient: RedisClient;
-  }) {
+  constructor({ redisClient }: { redisClient: RedisClient }) {
     this.redisClient = redisClient;
     this.pubsubRedisClient = this.redisClient.duplicate();
     this.pubsubRedisClient.on("error", (err) => {
@@ -100,18 +95,25 @@ export class PollWatcher {
     }
   }
 
-  public async observePoll(teamId: number, slug: string, pollId: string, callback: PollUpdatedCallback): Promise<() => void> {
+  public async observePoll(
+    teamId: number,
+    slug: string,
+    pollId: string,
+    callback: PollUpdatedCallback,
+  ): Promise<() => void> {
     if (!this.pubsubRedisClientReady) {
-      throw new Error("Must attempt to connect to redis pubsub before observing poll");
+      throw new Error(
+        "Must attempt to connect to redis pubsub before observing poll",
+      );
     }
     return this.pubsubRedisClientReady.then(async () => {
-      // save the callback    
+      // save the callback
       const key = `/team/${teamId}/polls/${slug}/${pollId}`;
       const observerId = genId();
 
       let mergedObserver = this.mergedObservers.get(key);
       if (!mergedObserver) {
-        console.log("observePoll: creating new mergedObserver")
+        console.log("observePoll: creating new mergedObserver");
         const listener = this.onPollUpdate.bind(this, key);
         const observers = new Map<string, PollUpdatedCallback>();
         observers.set(observerId, callback);
@@ -121,17 +123,21 @@ export class PollWatcher {
             void this.pubsubRedisClient.unsubscribe(key, listener);
           },
           observers,
-        }
+        };
         this.mergedObservers.set(key, mergedObserver);
         await this.pubsubRedisClient.subscribe(key, listener);
-        console.log("mergedObserver subscribe ready")
+        console.log("mergedObserver subscribe ready");
       }
 
       return this.stopObserver.bind(this, key, observerId);
-    })
+    });
   }
 
-  public async getCurrentPollState(teamId: number, slug: string, pollId: string) {
+  public async getCurrentPollState(
+    teamId: number,
+    slug: string,
+    pollId: string,
+  ) {
     const key = `/team/${teamId}/polls/${slug}/${pollId}`;
     let votedata = {};
     try {

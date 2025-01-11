@@ -161,16 +161,18 @@ function tallyResults(votes: Record<string, string>): VoteResults {
     results[choice] += 1;
   });
   // TODO: maybe randomize tiebreaks?  I guess the session id order is ~random
-  const rankedOptions = Object.entries(results).toSorted((a, b) => b[1] - a[1]).map(([choice, votes]) => {
-    return {
-      choice,
-      votes,
-    };
-  });
+  const rankedOptions = Object.entries(results)
+    .toSorted((a, b) => b[1] - a[1])
+    .map(([choice, votes]) => {
+      return {
+        choice,
+        votes,
+      };
+    });
   return {
     rankedOptions,
     winner: rankedOptions[0]?.choice,
-  }
+  };
 }
 
 async function newPassport({
@@ -1680,7 +1682,11 @@ export async function getRouter({
       },
       castVote: {
         middleware: [authMiddleware],
-        handler: async ({ params: { slug, pollId }, body: { choice }, req }) => {
+        handler: async ({
+          params: { slug, pollId },
+          body: { choice },
+          req,
+        }) => {
           const team_id = req.user as number;
           const sess_id = req.authInfo?.sessId;
           if (!sess_id) {
@@ -1692,7 +1698,9 @@ export async function getRouter({
           }
 
           if (!redisClient) {
-            console.error("Cannot implement castVote without valid redis connection");
+            console.error(
+              "Cannot implement castVote without valid redis connection",
+            );
             return {
               status: 500 as const,
               body: null,
@@ -1707,15 +1715,14 @@ export async function getRouter({
           const votes = await redisClient.hGetAll(redisKey);
           const results = tallyResults(votes);
           // TODO: maybe do all this from a redis script instead to avoid observer reorderings?
-          await redisClient.publish(redisKey, JSON.stringify(votes))
+          await redisClient.publish(redisKey, JSON.stringify(votes));
 
           return {
             status: 200 as const,
             body: results,
           };
         },
-
-      }
+      },
     },
     admin: {
       getTeamState: {
@@ -2551,7 +2558,12 @@ export async function getRouter({
           }
           const entries = await knex.transaction(
             async (trx) => {
-              return getTeamInteractionStateLog(effectiveTeamId, effectiveSince, slug, trx);
+              return getTeamInteractionStateLog(
+                effectiveTeamId,
+                effectiveSince,
+                slug,
+                trx,
+              );
             },
             { readOnly: true },
           );

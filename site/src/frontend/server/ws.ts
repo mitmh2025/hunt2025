@@ -227,7 +227,7 @@ type InteractionStateLogSubscriptionHandler = {
   dataset: Dataset;
   slug: string;
   stop: () => void;
-}
+};
 
 type PollResponseSubscriptionHandler = {
   type: "poll_responses";
@@ -235,7 +235,7 @@ type PollResponseSubscriptionHandler = {
   slug: string;
   pollId: string;
   stop: () => void;
-}
+};
 
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
@@ -337,7 +337,7 @@ type ObserverProvider = {
     pollId: string,
     subId: string,
     conn: ConnHandler,
-  ): ObserveResult
+  ): ObserveResult;
 };
 
 class ConnHandler {
@@ -565,9 +565,16 @@ class ConnHandler {
     }
   }
 
-  public appendInteractionStateLogEntry(subId: string, entry: TeamInteractionStateLogEntry) {
+  public appendInteractionStateLogEntry(
+    subId: string,
+    entry: TeamInteractionStateLogEntry,
+  ) {
     const sub = this.subs.get(subId);
-    if (sub && isInteractionStateLogSubscription(sub) && sub.slug === entry.slug) {
+    if (
+      sub &&
+      isInteractionStateLogSubscription(sub) &&
+      sub.slug === entry.slug
+    ) {
       // Format state log entry as appropriate for client
       const interaction = INTERACTIONS[entry.slug];
       if (interaction?.type === "virtual") {
@@ -844,13 +851,14 @@ class ConnHandler {
             },
           };
           this.subs.set(subId, subHandler);
-          const { stop, readyPromise } = this.observerProvider.observePollResponses(
-            this.teamId,
-            params.slug,
-            params.pollId,
-            subId,
-            this,
-          );
+          const { stop, readyPromise } =
+            this.observerProvider.observePollResponses(
+              this.teamId,
+              params.slug,
+              params.pollId,
+              subId,
+              this,
+            );
           subHandler.stop = stop;
           readyPromise
             .then(() => {
@@ -1292,21 +1300,36 @@ export class WebsocketManager implements ObserverProvider {
     };
   }
 
-  public observePollResponses(teamId: number, slug: string, pollId: string, subId: string, conn: ConnHandler): ObserveResult {
+  public observePollResponses(
+    teamId: number,
+    slug: string,
+    pollId: string,
+    subId: string,
+    conn: ConnHandler,
+  ): ObserveResult {
     // PollWatcher deduplicates observers watching the same poll internally, so there's no need to dedupe here.
-    const observePromise = this.pollWatcher.observePoll(teamId, slug, pollId, (pollState) => {
-      conn.updatePollResponses(subId, pollState);
-    });
+    const observePromise = this.pollWatcher.observePoll(
+      teamId,
+      slug,
+      pollId,
+      (pollState) => {
+        conn.updatePollResponses(subId, pollState);
+      },
+    );
     const stop = () => {
-      void observePromise.then((stopHandle) => { stopHandle(); });
+      void observePromise.then((stopHandle) => {
+        stopHandle();
+      });
     };
-    const readyPromise = this.pollWatcher.getCurrentPollState(teamId, slug, pollId).then((pollState) => {
-      conn.updatePollResponses(subId, pollState);
-    });
+    const readyPromise = this.pollWatcher
+      .getCurrentPollState(teamId, slug, pollId)
+      .then((pollState) => {
+        conn.updatePollResponses(subId, pollState);
+      });
     return {
       stop,
       readyPromise,
-    }
+    };
   }
 
   public async requestHandler(

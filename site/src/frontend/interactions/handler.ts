@@ -9,10 +9,14 @@ import {
   isTerminalNode,
 } from "./types";
 
-function indexedNodes<T, R, S extends string, P>(graph: InteractionGraph<T, R, S, P>): Record<string, InteractionGraphNode<T, R, S, P>> {
-  return Object.fromEntries(graph.nodes.map((node) => {
-    return [node.id, node];
-  }));
+function indexedNodes<T, R, S extends string, P>(
+  graph: InteractionGraph<T, R, S, P>,
+): Record<string, InteractionGraphNode<T, R, S, P>> {
+  return Object.fromEntries(
+    graph.nodes.map((node) => {
+      return [node.id, node];
+    }),
+  );
 }
 
 export class VirtualInteractionHandler<T, R, S extends string, P> {
@@ -23,7 +27,9 @@ export class VirtualInteractionHandler<T, R, S extends string, P> {
     this.indexedNodes = indexedNodes(graph);
   }
 
-  public format(entry: TeamInteractionStateLogEntry): ExternalInteractionNode | undefined {
+  public format(
+    entry: TeamInteractionStateLogEntry,
+  ): ExternalInteractionNode | undefined {
     const graphNode = this.indexedNodes[entry.node];
     if (!graphNode) return undefined;
     const partial: ExternalInteractionNode = {
@@ -53,7 +59,7 @@ export class VirtualInteractionHandler<T, R, S extends string, P> {
           key: choice.next as string,
           text: choice.text,
           textEffect: choice.textEffect,
-        }
+        };
       });
     } else if (isPluginNode(graphNode)) {
       partial.plugin = graphNode.plugin as string;

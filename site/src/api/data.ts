@@ -558,7 +558,10 @@ export class PuzzleStateLog extends Log<
 
 export const puzzleStateLog = new PuzzleStateLog();
 
-export class TeamInteractionStateLogMutator extends Mutator<TeamInteractionStateLogEntry, InsertTeamInteractionStateLogEntry> {
+export class TeamInteractionStateLogMutator extends Mutator<
+  TeamInteractionStateLogEntry,
+  InsertTeamInteractionStateLogEntry
+> {
   _dbAppendLog = dbAppendTeamInteractionStateLog;
 }
 

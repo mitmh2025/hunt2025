@@ -184,14 +184,16 @@ export const TeamInteractionStateLogEntrySchema = z.object({
   predecessor: z.string().optional(),
   timestamp: z.string().datetime().pipe(z.coerce.date()),
   graph_state: z.object({}).passthrough(),
-})
+});
 export type TeamInteractionStateLogEntry = z.output<
   typeof TeamInteractionStateLogEntrySchema
 >;
 export type DehydratedTeamInteractionStateLogEntry = z.input<
   typeof TeamInteractionStateLogEntrySchema
 >;
-export const TeamInteractionStateLogSchema = z.array(TeamInteractionStateLogEntrySchema);
+export const TeamInteractionStateLogSchema = z.array(
+  TeamInteractionStateLogEntrySchema,
+);
 
 export const frontendContract = c.router({
   markTeamGateSatisfied: {
