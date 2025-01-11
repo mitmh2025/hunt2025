@@ -53,7 +53,7 @@ const HELLFRESH_DATA: [string, string, string, string][] = [
   ["5D", "EARN", "5 Lin umber patterns", "Lin[ear n]umber patterns"],
   ["6D", "TOSS", "6 Ben, if rage beaks", "Ben[t oss]ifrage beaks"],
   [
-    "7D",
+    "8D",
     "PEONY",
     "7 Ounces stone pix preferably",
     "Ounces stone pi[pe, ony]x preferably",
@@ -545,8 +545,8 @@ const Solution = (): JSX.Element => {
         word from it, and the final anagramming that leads to the cluephrase
         word.
       </p>
-      <h3>HellFresh</h3>
-      <h4>Podcast ad text</h4>
+      <h2>HellFresh</h2>
+      <h3>Podcast ad text</h3>
       <p className="puzzle-flavor">
         When you want restaurant-quality food without all the cooking and
         cleaning, look no further than Hell Fresh, the newest MITropolis meal
@@ -557,7 +557,7 @@ const Solution = (): JSX.Element => {
         limited time, get 250 bonus MITropoliscard points when you go to
         two-pi-noir.agency/hellfresh and enter promo code [static] at checkout.
       </p>
-      <h4>Minipuzzle</h4>
+      <h3>Minipuzzle</h3>
       <p>
         As clued by the podcast text, this is a Printer’s Devilry cryptic. It’s
         barred, presented as a grid (described as a “custom edges-and-pieces
@@ -589,7 +589,7 @@ const Solution = (): JSX.Element => {
         There is one unclued entry, <PuzzleAnswer>HOTWINGS</PuzzleAnswer>, which
         is the promo code for this minipuzzle.
       </p>
-      <h4>Martini tiles</h4>
+      <h3>Martini tiles</h3>
       <p>
         Solvers are given the following letters: TYRT. This spells TYRANT with a
         missing A and N.
@@ -597,8 +597,8 @@ const Solution = (): JSX.Element => {
       <p>
         HOTWINGS + AN uniquely anagrams to form <Mono>WASHINGTON</Mono>.
       </p>
-      <h3>BetterOprah</h3>
-      <h4>Podcast ad text</h4>
+      <h2>BetterOprah</h2>
+      <h3>Podcast ad text</h3>
       <p className="puzzle-flavor">
         Feeling down? In need of a pick-me-up? Here at BetterOprah, we’ve got
         you covered! With a subscription that drops the best inspirational
@@ -606,7 +606,7 @@ const Solution = (): JSX.Element => {
         word! Go to two-pi-noir.agency/betteroprah and enter promo code [static]
         at checkout.
       </p>
-      <h4>Minipuzzle</h4>
+      <h3>Minipuzzle</h3>
       <p>Solvers get the following drop quote:</p>
       <Crossword labels={BETTEROPRAH_LABELS} fill={BETTEROPRAH_FILL} />
       <p>Which consists of 4 Oprah quotes that are missing a word each:</p>
@@ -620,18 +620,18 @@ const Solution = (): JSX.Element => {
         </li>
         <li>
           Alone time is when I distance myself from the <strong>voices</strong>{" "}
-          of the world so I can hear my own
+          of the world so I can hear my own.
         </li>
         <li>
           True forgiveness is when you can say thank you for that{" "}
-          <strong>experience</strong>
+          <strong>experience</strong>.
         </li>
       </ul>
       <p>
-        The first letters of the four missing words give you the promo code
+        The first letters of the four missing words give you the promo code{" "}
         <PuzzleAnswer>MOVE</PuzzleAnswer>.
       </p>
-      <h4>Martini tiles</h4>
+      <h3>Martini tiles</h3>
       <p>
         Solvers are given the following letters: EEFGNORSSV. This spells
         FORGIVENESS with a missing I.
@@ -639,8 +639,8 @@ const Solution = (): JSX.Element => {
       <p>
         MOVE + I uniquely anagrams to form <Mono>MOVIE</Mono>.
       </p>
-      <h3>HardlySafe</h3>
-      <h4>Podcast ad text</h4>
+      <h2>HardlySafe</h2>
+      <h3>Podcast ad text</h3>
       <p className="puzzle-flavor">
         MITropolis can be a dangerous place, but the latest home security
         software from HardlySafe can protect you and your family. Our latest
@@ -650,7 +650,7 @@ const Solution = (): JSX.Element => {
         MITropolisCard Points when you go to two-pi-noir.agency/hardlysafe and
         enter promo code [static] at checkout.
       </p>
-      <h4>Minipuzzle</h4>
+      <h3>Minipuzzle</h3>
       <p>
         This is a mostly-normal crossword, except that there are four rebus
         squares. Each of these rebus squares reads CAMERA in one direction, and
@@ -690,7 +690,7 @@ const Solution = (): JSX.Element => {
         The squares that can be seen by two cameras give the promo code{" "}
         <PuzzleAnswer>IMAGE</PuzzleAnswer>.
       </p>
-      <h4>Martini tiles</h4>
+      <h3>Martini tiles</h3>
       <p>
         Solvers are given the following letters: BELEIET. This spells BELENIENT
         with two missing N’s.
@@ -698,8 +698,8 @@ const Solution = (): JSX.Element => {
       <p>
         IMAGE + NN uniquely anagrams to form <Mono>MEANING</Mono>.
       </p>
-      <h3>DraughtQueens</h3>
-      <h4>Podcast ad text</h4>
+      <h2>DraughtQueens</h2>
+      <h3>Podcast ad text</h3>
       <p className="puzzle-flavor">
         At the end of a hard week of work in downtown MITropolis, when all you
         want to do is to unwind and have a couple cold ones, DraughtQueens has
@@ -709,7 +709,7 @@ const Solution = (): JSX.Element => {
         you go to two-pi-noir.agency/draughtqueens and enter promo code [static]
         at checkout.
       </p>
-      <h4>Minipuzzle</h4>
+      <h3>Minipuzzle</h3>
       <p>
         In this cryptic, the wordplay of six entries resolves to a style of
         beer. A letter must be removed & extracted (clued as “spilling a drop of
@@ -783,7 +783,7 @@ const Solution = (): JSX.Element => {
         The “spilled” letters spell out <PuzzleAnswer>CARTEL</PuzzleAnswer> in
         given clue order.
       </p>
-      <h4>Martini tiles</h4>
+      <h3>Martini tiles</h3>
       <p>
         Solvers are given the following tiles: CEEGIMORST. These tiles can be
         used to spell EGOCENTRISM, with the N missing.
@@ -791,8 +791,8 @@ const Solution = (): JSX.Element => {
       <p>
         CARTEL + N uniquely anagrams to form <Mono>CENTRAL</Mono>.
       </p>
-      <h3>TownSquareSpace</h3>
-      <h4>Podcast ad text</h4>
+      <h2>TownSquareSpace</h2>
+      <h3>Podcast ad text</h3>
       <p>
         You can sell things. Hidden talents. Your time. And much more. Our
         downtown TownSquareSpace is the bulletin board for everything you need
@@ -801,7 +801,7 @@ const Solution = (): JSX.Element => {
         two-pi-noir.agency/townsquarespace and enter promo code [static] at
         checkout.
       </p>
-      <h4>Minipuzzle</h4>
+      <h3>Minipuzzle</h3>
       <p>
         This is a wordoku puzzle, but each starting letter is given as a rebus
         with a single-letter answer. These rebuses are as follows:
@@ -836,7 +836,7 @@ const Solution = (): JSX.Element => {
         <Mono>COWS FLESH</Mono>, which leads to the promo code:{" "}
         <PuzzleAnswer>BEEF</PuzzleAnswer>.
       </p>
-      <h4>Martini tiles</h4>
+      <h3>Martini tiles</h3>
       <p>
         Solvers are given the following letters: WHE. This spells WHILE with a
         missing L and I.
