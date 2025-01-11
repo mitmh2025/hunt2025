@@ -232,8 +232,8 @@ const Solution = (): JSX.Element => {
           </Highlight>{" "}
           but the “temporary” building is still there. I still can’t stop
           thinking about it though. When I visit where it was, I can’t help but
-          marvel at the physics <Highlight>(Course 8—Physics)</Highlight> of the building
-          itself.
+          marvel at the physics <Highlight>(Course 8—Physics)</Highlight> of the
+          building itself.
         </div>
         <div>
           Scribble: It’s a different building now—some signs attached to the
