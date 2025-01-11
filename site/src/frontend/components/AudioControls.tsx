@@ -1,4 +1,3 @@
-import { WebRTCPlayer } from "@eyevinn/webrtc-player";
 import React, {
   type Reducer,
   useCallback,
@@ -7,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import { styled } from "styled-components";
+import { WebRTCPlayer } from "../utils/WebRTCPlayer";
 import { deviceMax } from "../utils/breakpoints";
 import { Button } from "./StyledUI";
 
@@ -15,7 +15,6 @@ type AudioControlState = {
   loading: boolean;
   playing: boolean;
   volume: number;
-  volumeBeforeMute: number;
 };
 
 const DEFAULT_AUDIO_CONTROL_STATE = {
@@ -23,16 +22,15 @@ const DEFAULT_AUDIO_CONTROL_STATE = {
   loading: false,
   playing: false,
   volume: 1,
-  volumeBeforeMute: 1,
 };
 
 enum AudioControlActionType {
   CHANGE_VOLUME = "CHANGE_VOLUME",
   DUCK = "DUCK",
-  LOAD = "LOAD",
-  MUTE = "MUTE",
+  LOADING = "LOADING",
+  PAUSED = "PAUSED",
   UNDUCK = "UNDUCK",
-  UNMUTE = "UNMUTE",
+  PLAYING = "PLAYING",
 }
 
 type ChangeVolumeAction = {
@@ -44,29 +42,29 @@ type DuckAction = {
   type: AudioControlActionType.DUCK;
 };
 
-type LoadAction = {
-  type: AudioControlActionType.LOAD;
+type LoadingAction = {
+  type: AudioControlActionType.LOADING;
 };
 
-type MuteAction = {
-  type: AudioControlActionType.MUTE;
+type PausedAction = {
+  type: AudioControlActionType.PAUSED;
 };
 
 type UnduckAction = {
   type: AudioControlActionType.UNDUCK;
 };
 
-type UnmuteAction = {
-  type: AudioControlActionType.UNMUTE;
+type PlayingAction = {
+  type: AudioControlActionType.PLAYING;
 };
 
 type AudioControlAction =
   | ChangeVolumeAction
   | DuckAction
-  | LoadAction
-  | MuteAction
+  | LoadingAction
+  | PausedAction
   | UnduckAction
-  | UnmuteAction;
+  | PlayingAction;
 
 const reducer: Reducer<AudioControlState, AudioControlAction> = (
   state: AudioControlState,
@@ -83,31 +81,28 @@ const reducer: Reducer<AudioControlState, AudioControlAction> = (
         ...state,
         audioDucked: true,
       };
-    case AudioControlActionType.LOAD:
+    case AudioControlActionType.LOADING:
       return {
         ...state,
         loading: true,
         playing: false,
       };
-    case AudioControlActionType.MUTE:
+    case AudioControlActionType.PAUSED:
       return {
         ...state,
         loading: false,
         playing: false,
-        volume: 0,
-        volumeBeforeMute: state.volume,
       };
     case AudioControlActionType.UNDUCK:
       return {
         ...state,
         audioDucked: false,
       };
-    case AudioControlActionType.UNMUTE:
+    case AudioControlActionType.PLAYING:
       return {
         ...state,
         loading: false,
         playing: true,
-        volume: state.volumeBeforeMute,
       };
     default:
       return state;
@@ -333,40 +328,42 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
     }
   }, []);
 
-  const handlePlay = useCallback(async () => {
+  const handlePause = useCallback(() => {
+    if (activePlayer.current) {
+      activePlayer.current.audio.pause();
+      activePlayer.current.player.mute();
+      activePlayer.current.player.destroy();
+      activePlayer.current = null;
+    }
+    dispatch({ type: AudioControlActionType.PAUSED });
+  }, [dispatch]);
+
+  const handlePlay = useCallback(() => {
     if (activePlayer.current) {
       return;
     }
 
-    dispatch({ type: AudioControlActionType.LOAD });
-    // TODO(Fuzzy): whatever loading state you wanted to handle
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    dispatch({ type: AudioControlActionType.UNMUTE });
+    dispatch({ type: AudioControlActionType.LOADING });
+    console.log("LOADING", whepUrl);
 
     const audio = new Audio();
     const player = new WebRTCPlayer({
       // WebRTCPlayer expects a video element, but we only want audio -- the
       // audio element API is similar enough that it just works.
       video: audio as HTMLVideoElement,
-      type: "whep",
       mediaConstraints: {
         audioOnly: true,
       },
+      debug: true,
+      detectTimeout: true,
+      timeoutThreshold: 5000,
     });
     activePlayer.current = { player, audio };
 
-    player
-      .load(new URL(whepUrl))
-      .then(() => {
-        player.unmute();
-
-        audio.play().catch((error: unknown) => {
-          console.error("Failed to play audio", error);
-        });
-      })
-      .catch((error: unknown) => {
-        console.error("Failed to load player", error);
-      });
+    player.load(new URL(whepUrl)).catch((error: unknown) => {
+      console.error("Failed to load player", error);
+      handlePause();
+    });
 
     player.on("no-media", () => {
       console.log("media timeout occured");
@@ -376,20 +373,44 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
       console.log("media recovered");
     });
 
+    player.on("peer-connection-failed", () => {
+      console.log("peer connection failed, will retry");
+
+      dispatch({ type: AudioControlActionType.LOADING });
+    });
+
+    player.on("peer-connection-connected", () => {
+      console.log("peer connection connected");
+
+      player.unmute();
+
+      audio
+        .play()
+        .then(() => {
+          dispatch({ type: AudioControlActionType.PLAYING });
+        })
+        .catch((error: unknown) => {
+          console.error("Failed to play audio", error);
+          handlePause();
+        });
+    });
+
+    player.on("initial-connection-failed", () => {
+      console.log("permanent connection failure");
+
+      handlePause();
+    });
+
+    player.on("connect-error", () => {
+      console.log("permanent connection error");
+
+      handlePause();
+    });
+
     player.on("stats:inbound-rtp", (report) => {
       console.log("media report", report);
     });
-  }, [dispatch, whepUrl]);
-
-  const handlePause = useCallback(() => {
-    if (activePlayer.current) {
-      activePlayer.current.audio.pause();
-      activePlayer.current.player.mute();
-      activePlayer.current.player.destroy();
-      activePlayer.current = null;
-    }
-    dispatch({ type: AudioControlActionType.MUTE });
-  }, [dispatch]);
+  }, [dispatch, whepUrl, handlePause]);
 
   function handleVolumeChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newVolume = parseFloat(event.target.value);
@@ -474,7 +495,7 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
     // Override browser media events to control the radio (and not any sound
     // effects)
     navigator.mediaSession.setActionHandler("play", function () {
-      void handlePlay();
+      handlePlay();
     });
     navigator.mediaSession.setActionHandler("pause", function () {
       handlePause();
@@ -513,7 +534,7 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
       ) : (
         <MuteUnmuteButton
           onClick={() => {
-            void handlePlay();
+            handlePlay();
           }}
           aria-label="Unmute"
         >
@@ -526,7 +547,7 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
         max="1"
         step="0.01"
         id="volume-slider"
-        value={volume}
+        value={playing ? volume : 0}
         onChange={handleVolumeChange}
         disabled={!playing}
       />
