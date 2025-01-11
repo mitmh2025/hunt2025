@@ -228,7 +228,9 @@ export default function TeamOverview({ team }: { team: TeamData }) {
       </p>
       <p>
         Primary Contact:{" "}
-        <a href={`mailto:${team.registration.contactEmail}`}>
+        <a
+          href={`mailto:${team.registration.contactEmail}?cc=info@mitmh2025.com`}
+        >
           {team.registration.contactName}
         </a>{" "}
         (
@@ -239,7 +241,9 @@ export default function TeamOverview({ team }: { team: TeamData }) {
       </p>
       <p>
         Secondary Contact:{" "}
-        <a href={`mailto:${team.registration.secondaryContactEmail}`}>
+        <a
+          href={`mailto:${team.registration.secondaryContactEmail}?cc=info@mitmh2025.com`}
+        >
           {team.registration.secondaryContactName}
         </a>{" "}
         (
@@ -249,8 +253,22 @@ export default function TeamOverview({ team }: { team: TeamData }) {
         )
       </p>
       <p>
+        <a
+          href={`mailto:${team.registration.contactEmail},${team.registration.secondaryContactEmail}?cc=info@mitmh2025.com`}
+        >
+          Email both contacts
+        </a>
+      </p>
+      <p>
+        <a
+          href={`mailto:${team.registration.teamEmail},${team.registration.contactEmail},${team.registration.secondaryContactEmail}?cc=info@mitmh2025.com`}
+        >
+          Email team and both contacts
+        </a>
+      </p>
+      <p>
         Team-wide email:{" "}
-        <a href={`mailto:${team.registration.teamEmail}`}>
+        <a href={`mailto:${team.registration.teamEmail}?cc=info@mitmh2025.com`}>
           {team.registration.teamEmail}
         </a>
       </p>
