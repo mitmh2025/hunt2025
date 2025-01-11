@@ -160,7 +160,7 @@ music_intro_next = randomizer(announcements_dir, pattern="radio-music-intro-*.og
 music_outro_next = randomizer(announcements_dir, pattern="radio-music-outro-*.ogg")
 confidential_handoff_next = randomizer(announcements_dir, pattern="radio-handoff-confidential-*.ogg")
 station_id_next = randomizer(announcements_dir, pattern="radio-station-id-*.ogg")
-bumper_sid = request.create("#{announcements_dir}/bumper-station-id.ogg", persistent=true)
+bumper_sid = request.create("#{announcements_dir}/radio-bumper-station-id.ogg", persistent=true)
 
 # Tier 2c - Puzzle content
 # quixotic-shoe: inject ads after every song
@@ -175,13 +175,12 @@ last_icy_box_time = ref(0.)
 icy_box_dir = environment.get("ICY_BOX_DIR")
 icy_box_handoff_next = randomizer("#{icy_box_dir}/handoff", pattern="*.ogg")
 icy_box_content_next = nexter("#{icy_box_dir}/content", pattern="*.ogg")
+bumper_icy_box = request.create("#{announcements_dir}/radio-bumper-weather.ogg", persistent=true)
+
 
 # Tier 2d - Ad-hoc announcements
 # Play audio as requested by RPC at the next break
 # TBD: Speech synthesizer?
-adhoc_announcements = request.queue()
-adhoc_announcements.push.uri("speak:adhoc announcement 1")
-adhoc_announcements.push.uri("speak:adhoc announcement 2")
 
 # Tier 3 - Virtual interactions
 # Interrupts background music
@@ -245,6 +244,7 @@ def regular_stream_next() =
         after_confidential = {null.case(scheduled_announcement, {[]}, fun (s) -> list.flatten([
             if s.weather then [
                 icy_box_handoff_next.request(),
+                bumper_icy_box,
                 icy_box_content_next.request(),
             ] else [] end,
             if s.music_intro and random.bool() then [
@@ -266,6 +266,7 @@ def regular_stream_next() =
                     if icy_box_enabled() then
                         last_icy_box_time := fill_time
                         [
+                            bumper_icy_box,
                             icy_box_content_next.request(),
                         ]
                     else
@@ -291,6 +292,7 @@ def regular_stream_next() =
                 last_icy_box_time := time()
                 [
                     request.create(icy_box_handoff_next()),
+                    bumper_icy_box,
                     request.create(icy_box_content_next()),
                 ]
             elsif quixotic_shoe_enabled() then

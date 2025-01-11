@@ -275,5 +275,5 @@ def randomizer(
     ~pattern=null(),
     dir,
 ) =
-    nexter(pattern=pattern, dir)
+    nexter(pattern=pattern, random=true, dir)
 end
