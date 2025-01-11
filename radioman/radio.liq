@@ -173,6 +173,7 @@ def get_scheduled_announcement(t) =
     try
         list.last(past_announcements)
     catch err do
+        ignore(err)
         null()
     end
 end
@@ -251,9 +252,9 @@ def regular_stream_next() =
     print("last metadata: #{queue().last_metadata()}")
     print("queue: #{queue().queue()}")
     print("last queued metadata: #{queue().last_queued_metadata()}")
-    last_metadata = queue().last_queued_metadata()
+    last_metadata = null.default(queue().last_queued_metadata(), {[]})
 
-    fill_time = time() + queue().remaining()
+    fill_time = time() + queue().queue_remaining()
     hunt_elapsed = fill_time - schedule_start_time
     hunt_elapsed_hours = hunt_elapsed / 3600.
 
@@ -261,8 +262,23 @@ def regular_stream_next() =
         []
     else
         scheduled_announcement = get_scheduled_announcement(hunt_elapsed_hours)
+        after_confidential = {null.case(scheduled_announcement, {[]}, fun (s) -> list.flatten([
+            if s.weather then [
+                icy_box_handoff_next.request(),
+                icy_box_content_next.request(),
+            ] else [] end,
+            if s.music_intro and random.bool() then [
+                music_intro_next.request()
+            ] else [] end,
+        ]))}
+        confidential_tail = last_metadata["confidential"] == "handoff"
         interrupt =
-            if null.defined(scheduled_announcement) and null.get(scheduled_announcement).hour != play_state().last_scheduled_hour then
+            if confidential_tail then
+                list.flatten([
+                    calculate_confidential(),
+                    after_confidential(),
+                ])
+            elsif null.defined(scheduled_announcement) and null.get(scheduled_announcement).hour != play_state().last_scheduled_hour then
                 s = null.get(scheduled_announcement)
                 log("Playing scheduled announcement #{s}")
                 if s.overnight then
@@ -283,16 +299,8 @@ def regular_stream_next() =
                         if s.sid_bumper then [bumper_sid] else [] end,
                         if s.sid then [station_id_next.request()] else [] end,
                         list.map(fun (n) -> request.create("#{announcements_dir}/radio-#{n}.ogg"), s.messages),
-                        if s.confidential then [confidential_handoff_next.request()] else
-                            list.flatten([
-                                if s.weather then [
-                                    icy_box_handoff_next.request(),
-                                    icy_box_content_next.request(),
-                                ] else [] end,
-                                if s.music_intro and random.bool() then [
-                                    music_intro_next.request()
-                                ] else [] end,
-                            ])
+                        if s.confidential then [request.create("annotate:confidential=handoff:#{confidential_handoff_next()}")] else
+                            after_confidential()
                         end,
                     ])
                 end
@@ -314,7 +322,7 @@ def regular_stream_next() =
             else
                 []
             end
-        if null.case(scheduled_announcement, {false}, fun (s) -> s.confidential) then
+        if not confidential_tail and null.case(scheduled_announcement, {false}, fun (s) -> s.confidential) then
             interrupt
         else
             music = request.create(background_music_next())
@@ -363,7 +371,7 @@ stream = fallback(
         pred_or_skip(
             id="regular_stream_pred_or_skip",
             {not source.is_ready(virtual_interaction)},
-            fade.on_skip(regular_stream),
+            fade.on_skip(replaygain(regular_stream)),
         ),
     ]
 )

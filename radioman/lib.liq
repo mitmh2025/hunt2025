@@ -185,12 +185,21 @@ def request.extending_queue(
     end
 
     def get_last_queued_metadata() =
-        queue=get_queue()
+        queue = get_queue()
         if queue != [] then
             request.metadata(list.last(queue))
         else
             s.last_metadata()
         end
+    end
+
+    def get_queue_remaining() =
+        queue = get_queue()
+        s.remaining() + list.fold(
+            fun (a, b) -> a + null.default(request.duration(request.filename(b)), {0.}),
+            0.,
+            queue
+        )
     end
 
     s =
@@ -199,6 +208,7 @@ def request.extending_queue(
             set_queue=set_queue,
             queue=get_queue,
             last_queued_metadata=get_last_queued_metadata,
+            queue_remaining=get_queue_remaining,
         }
 
     s.on_wake_up(
