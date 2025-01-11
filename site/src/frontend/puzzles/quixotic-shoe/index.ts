@@ -1,4 +1,9 @@
 import type { SubpuzzleDefinition, PuzzleDefinition } from "../types";
+import beef from "./assets/beef.png";
+import cartel from "./assets/cartel.png";
+import hotwings from "./assets/hotwings.png";
+import image from "./assets/image.png";
+import move from "./assets/move.png";
 import BetterOprah from "./betteroprah";
 import DraughtQueens from "./draughtqueens";
 import HardlySafe from "./hardlysafe";
@@ -17,32 +22,32 @@ export const orderedQuixoticSubpuzzleSlugs = [
 ];
 export const quixoticSubpuzzleDataBySlug: Record<
   string,
-  { subpuzzle_name: string; answer: string; color: string }
+  { subpuzzle_name: string; answer: string; image: string }
 > = {
   hellfresh: {
     subpuzzle_name: "HellFresh",
     answer: "HOTWINGS",
-    color: "#ff0000",
+    image: hotwings,
   },
   betteroprah: {
     subpuzzle_name: "BetterOprah",
     answer: "MOVE",
-    color: "#ffa500",
+    image: move,
   },
   hardlysafe: {
     subpuzzle_name: "HardlySafe",
     answer: "IMAGE",
-    color: "#3cb317",
+    image,
   },
   draughtqueens: {
     subpuzzle_name: "DraughtQueens",
     answer: "CARTEL",
-    color: "#0000ff",
+    image: cartel,
   },
   townsquarespace: {
     subpuzzle_name: "TownSquareSpace",
     answer: "BEEF",
-    color: "#ff00ff",
+    image: beef,
   },
 };
 export const mainPuzzleAccessGates = new Set([
