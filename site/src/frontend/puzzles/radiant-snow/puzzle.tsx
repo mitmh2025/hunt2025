@@ -42,6 +42,7 @@ const SampleChild = styled.div`
 `;
 
 const ImageRow = styled.div`
+  flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -52,22 +53,59 @@ const ImageRow = styled.div`
   background-color: #fcf5e5;
   print-color-adjust: unset;
   -webkit-print-color-adjust: unset;
-  height: 800px;
-  &:last-child {
-    border: none;
-    background-color: transparent;
+
+  @media screen {
+    height: 800px;
   }
 `;
 
 const StyledImage = styled(LinkedImage)<{ $height: string }>`
   display: flex;
   height: ${({ $height }) => $height};
+
+  @media print {
+    max-height: min(100%, ${({ $height }) => $height});
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+  }
 `;
 
 const StyledHr = styled.hr`
   border: none;
   @media print {
     page-break-after: always;
+  }
+`;
+
+const Page = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-bottom: 8px;
+
+  @media print {
+    height: 98vh;
+    page-break-inside: avoid;
+    page-break-after: always;
+
+    div {
+      background-color: transparent;
+    }
+  }
+
+  &:last-child {
+    background-color: transparent;
+    margin-bottom: 0px;
+
+    @media print {
+      page-break-after: auto;
+    }
+
+    div {
+      border: none;
+      background-color: transparent;
+    }
   }
 `;
 
@@ -79,162 +117,177 @@ const Puzzle = (): JSX.Element => {
         exam made it clear what he should expect from it.
       </p>
       <StyledHr />
-      <SampleWrapper>
-        <SampleChild>1. Kakuro</SampleChild>
-        <SampleChild>
-          <LinkedImage src={sample1} alt="A solved 3x3 Kakuro grid." />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={puzzle1}
-          alt="A 9x9 Kakuro grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>2. Nonogram</SampleChild>
-        <SampleChild>
-          <LinkedImage src={sample2} alt="A solved 6x6 Nonogram grid." />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="700px"
-          src={puzzle2}
-          alt="A 20x20 Nonogram grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>3. Killer Sudoku</SampleChild>
-        <SampleChild>
-          <LinkedImage src={sample3} alt="A solved 4x4 Killer Sudoku grid." />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={puzzle3}
-          alt="A 9x9 Killer Sudoku grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>4. Fillomino</SampleChild>
-        <SampleChild>
-          <LinkedImage src={sample4} alt="A solved 4x4 Fillomino grid." />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={puzzle4}
-          alt="A 10x12 Fillomino grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>5. Average Snake</SampleChild>
-        <SampleChild>
-          <LinkedImage src={sample5} alt="A solved 3x5 Average Snake grid." />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={puzzle5}
-          alt="A 12x12 Average Snake grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>6. Sum Skyscrapers with Mirrors</SampleChild>
-        <SampleChild>
-          <LinkedImage
-            src={sample6}
-            alt="A solved 4x4 Sum Skyscrapers with Mirrors grid."
+      <Page>
+        <SampleWrapper>
+          <SampleChild>1. Kakuro</SampleChild>
+          <SampleChild>
+            <LinkedImage src={sample1} alt="A solved 3x3 Kakuro grid." />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={puzzle1}
+            alt="A 9x9 Kakuro grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
           />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="400px"
-          src={puzzle6}
-          alt="A 7x7 Sum Skyscrapers with Mirrors grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>7. Japanese Sums or Products</SampleChild>
-        <SampleChild>
-          <LinkedImage
-            src={sample7}
-            alt="A solved 5x5 Japanese Sums or Products grid."
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>2. Nonogram</SampleChild>
+          <SampleChild>
+            <LinkedImage src={sample2} alt="A solved 6x6 Nonogram grid." />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="700px"
+            src={puzzle2}
+            alt="A 20x20 Nonogram grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
           />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="400px"
-          src={puzzle7}
-          alt="A 8x8 Japanese Sums or Products grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>8. Hungarian Tapa</SampleChild>
-        <SampleChild>
-          <LinkedImage src={sample8} alt="A solved 6x6 Fillomino grid." />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={puzzle8}
-          alt="A 10x10 Hungarian Tapa grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>9. Doppelblock Sudoku</SampleChild>
-        <SampleChild>
-          <LinkedImage
-            src={sample9}
-            alt="A solved 4x4 Doppelblock Sudoku grid."
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>3. Killer Sudoku</SampleChild>
+          <SampleChild>
+            <LinkedImage src={sample3} alt="A solved 4x4 Killer Sudoku grid." />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={puzzle3}
+            alt="A 9x9 Killer Sudoku grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
           />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={puzzle9}
-          alt="A 9x9 Doppelblock Sudoku grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <SampleWrapper>
-        <SampleChild>10. Index Yajilin</SampleChild>
-        <SampleChild>
-          <LinkedImage src={sample10} alt="A solved 6x6 Index Yajilin grid." />
-        </SampleChild>
-      </SampleWrapper>
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={puzzle10}
-          alt="A 12x12 Index Yajilin grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
-        />
-      </ImageRow>
-      <StyledHr />
-      <ImageRow>
-        <StyledImage
-          $height="500px"
-          src={img11}
-          alt="A 12x15 grid of letters and numbers. Across the top of the grid are green-highlighted numbers 1, 2, 3, and so on. Across the left side of the grid are red-highlighted numbers 1, 2, 3, and so on."
-        />
-      </ImageRow>
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>4. Fillomino</SampleChild>
+          <SampleChild>
+            <LinkedImage src={sample4} alt="A solved 4x4 Fillomino grid." />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={puzzle4}
+            alt="A 10x12 Fillomino grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
+          />
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>5. Average Snake</SampleChild>
+          <SampleChild>
+            <LinkedImage src={sample5} alt="A solved 3x5 Average Snake grid." />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={puzzle5}
+            alt="A 12x12 Average Snake grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
+          />
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>6. Sum Skyscrapers with Mirrors</SampleChild>
+          <SampleChild>
+            <LinkedImage
+              src={sample6}
+              alt="A solved 4x4 Sum Skyscrapers with Mirrors grid."
+            />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="400px"
+            src={puzzle6}
+            alt="A 7x7 Sum Skyscrapers with Mirrors grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
+          />
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>7. Japanese Sums or Products</SampleChild>
+          <SampleChild>
+            <LinkedImage
+              src={sample7}
+              alt="A solved 5x5 Japanese Sums or Products grid."
+            />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="400px"
+            src={puzzle7}
+            alt="A 8x8 Japanese Sums or Products grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
+          />
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>8. Hungarian Tapa</SampleChild>
+          <SampleChild>
+            <LinkedImage src={sample8} alt="A solved 6x6 Fillomino grid." />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={puzzle8}
+            alt="A 10x10 Hungarian Tapa grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
+          />
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>9. Doppelblock Sudoku</SampleChild>
+          <SampleChild>
+            <LinkedImage
+              src={sample9}
+              alt="A solved 4x4 Doppelblock Sudoku grid."
+            />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={puzzle9}
+            alt="A 9x9 Doppelblock Sudoku grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
+          />
+        </ImageRow>
+      </Page>
+      <Page>
+        <SampleWrapper>
+          <SampleChild>10. Index Yajilin</SampleChild>
+          <SampleChild>
+            <LinkedImage
+              src={sample10}
+              alt="A solved 6x6 Index Yajilin grid."
+            />
+          </SampleChild>
+        </SampleWrapper>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={puzzle10}
+            alt="A 12x12 Index Yajilin grid. One number has been substituted with a red-highlighted question mark, and one number has been substituted with a green-highlighted question mark."
+          />
+        </ImageRow>
+      </Page>
+      <Page>
+        <ImageRow>
+          <StyledImage
+            $height="500px"
+            src={img11}
+            alt="A 12x15 grid of letters and numbers. Across the top of the grid are green-highlighted numbers 1, 2, 3, and so on. Across the left side of the grid are red-highlighted numbers 1, 2, 3, and so on."
+          />
+        </ImageRow>
+      </Page>
     </>
   );
 };
