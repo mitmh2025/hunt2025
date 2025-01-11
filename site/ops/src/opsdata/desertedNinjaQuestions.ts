@@ -178,7 +178,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   },
   {
     id: 21,
-    text: "How many steps would  you need to ascend in order to climb the Green Building 25 times?",
+    text: "How many steps would you need to ascend in order to climb the Green Building 25 times?",
     answer: 10525,
     geoguessr: null,
     scoringMethod: "percent",
