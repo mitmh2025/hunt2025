@@ -149,6 +149,7 @@ import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
 import MITropolitanHouseOfFashion from "./tall-change";
 import ARecipeForSuccess from "./tame-chick";
+import HelloDarknessMyOldFriend from "./that-bell";
 import DrunkensAndFlagons from "./thorough-arm";
 import EngagementsAndOtherCrimes from "./timely-head";
 import ReuseAndRecyclability from "./tinted-stream";
@@ -411,6 +412,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // Staging for floaters
   a_b_c_easy_as_1_2_3: ABCEasyAs123,
+  hello_darkness_my_old_friend: HelloDarknessMyOldFriend,
   wouthit_porbelm: WouthitPorbelm,
 };
 
