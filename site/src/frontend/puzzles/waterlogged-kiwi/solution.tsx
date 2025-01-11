@@ -232,7 +232,7 @@ const Solution = (): JSX.Element => {
           </Highlight>{" "}
           but the “temporary” building is still there. I still can’t stop
           thinking about it though. When I visit where it was, I can’t help but
-          marvel at the physics <Mono>(Course 8—Physics)</Mono> of the building
+          marvel at the physics <Highlight>(Course 8—Physics)</Highlight> of the building
           itself.
         </div>
         <div>
