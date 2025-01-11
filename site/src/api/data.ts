@@ -13,7 +13,6 @@ import {
   type DehydratedPuzzleStateLogEntry,
   type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
-import { type Hydratable } from "../../lib/types";
 import { type Hunt } from "../huntdata/types";
 import {
   appendActivityLog as dbAppendActivityLog,
@@ -34,6 +33,7 @@ import {
   puzzleStateLog as redisPuzzleStateLog,
   type Log as RedisLog,
   getTeamCaches,
+  publishTeamCache,
 } from "./redis";
 
 export abstract class Mutator<T extends { id: number; team_id?: number }, I> {
@@ -231,13 +231,18 @@ async function recalculateTeamState(
 // };
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- This cannot be represented as a type.
-interface Reducer<I extends { id: number }> {
+interface Reducer<Entry extends { id: number }, RedisType> {
   epoch: number;
-  reduce(entry: I): this;
+  reduce(entry: Entry): this;
+  dehydrate(): RedisType;
 }
 
-type ReducerConstructor<I extends { id: number }> = {
-  new (initial?: Hydratable<Reducer<I>>): Reducer<I>;
+type ReducerConstructor<
+  Entry extends { id: number },
+  RedisType,
+  HydratedType extends Reducer<Entry, RedisType>,
+> = {
+  hydrate: (redisData?: RedisType) => HydratedType;
   redisKey: string;
 };
 
@@ -280,22 +285,22 @@ abstract class Log<
     since?: number,
   ): Promise<T[]>;
 
-  async getCachedReducers<ReducerConstructors extends ReducerConstructor<T>[]>(
+  async getCachedReducers<
+    ReducerConstructors extends ReducerConstructor<
+      T,
+      unknown,
+      Reducer<T, unknown>
+    >[],
+  >(
     knex: Knex.Knex,
     redisClient: RedisClient | undefined,
     teamId: number,
     ...reducerTypes: ReducerConstructors
   ): Promise<{
-    [K in keyof ReducerConstructors]: ReducerConstructors[K] extends ReducerConstructor<T>
-      ? InstanceType<ReducerConstructors[K]>
-      : never;
-  }>;
-  async getCachedReducers(
-    knex: Knex.Knex,
-    redisClient: RedisClient | undefined,
-    teamId: number,
-    ...reducerTypes: ReducerConstructor<T>[]
-  ): Promise<Reducer<T>[]> {
+    [K in keyof ReducerConstructors]: ReturnType<
+      ReducerConstructors[K]["hydrate"]
+    >;
+  }> {
     if (redisClient) {
       try {
         const cached = await getTeamCaches(
@@ -303,7 +308,11 @@ abstract class Log<
           teamId,
           ...reducerTypes,
         );
-        const lowWaterMark = Math.min(...cached.map((c) => c.epoch));
+        const lowWaterMark = Math.max(
+          0,
+          Math.min(...cached.map((c) => c.epoch)),
+        );
+
         const extraEntries = await this._redisLog.getTeamLog(
           redisClient,
           teamId,
@@ -316,15 +325,41 @@ abstract class Log<
           );
           return end;
         });
-        return reduced;
+
+        // TODO: perhaps elide publishing state if it didn't change
+        await Promise.all(
+          reduced.map((updatedState, i) => {
+            const type = reducerTypes[i];
+            if (!type) {
+              throw new Error("Mismatched length of reducerTypes");
+            }
+
+            return publishTeamCache(
+              redisClient,
+              teamId,
+              updatedState,
+              type.redisKey,
+            );
+          }),
+        );
+
+        return reduced as {
+          [K in keyof ReducerConstructors]: ReturnType<
+            ReducerConstructors[K]["hydrate"]
+          >;
+        };
       } catch (err) {
         console.error("failed to read caches from redis:", err);
       }
     }
     const entries = await this.dbGetLog(knex, teamId);
     return reducerTypes.map((reducerType) =>
-      entries.reduce((acc, entry) => acc.reduce(entry), new reducerType()),
-    );
+      entries.reduce((acc, entry) => acc.reduce(entry), reducerType.hydrate()),
+    ) as {
+      [K in keyof ReducerConstructors]: ReturnType<
+        ReducerConstructors[K]["hydrate"]
+      >;
+    };
   }
 
   async getCachedLog(

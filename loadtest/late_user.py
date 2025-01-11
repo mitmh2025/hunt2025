@@ -24,10 +24,10 @@ class late_load_test(FastHttpUser):
             "engagements_and_other_crimes": False,
             "garden_anecdotes": False,
             "what_do_they_call_you": False,
-            "cacciando_trio_misterioso": False,
+            "give_this_grid_a_shake": False,
             "good_fences_make_good_otherwise_incompatible_neighbors": False,
-            "find_other_ways_of_seeing": False,
-            "do_the_packing": False,
+            "cross_dash_word": False,
+            "a_map_and_a_shade_or_four": False,
         }
 
         with self.client.request(
@@ -99,19 +99,19 @@ class late_load_test(FastHttpUser):
         ) as resp:
             pass
 
-        if not puzzles["cacciando_trio_misterioso"]:
+        if not puzzles["give_this_grid_a_shake"]:
             with self.client.request(
-                "POST", "/puzzles/cacciando_trio_misterioso/unlock", catch_response=True
+                "POST", "/puzzles/give_this_grid_a_shake/unlock", catch_response=True
             ) as resp:
                 pass
         with self.client.request(
-            "GET", "/puzzles/cacciando_trio_misterioso", catch_response=True
+            "GET", "/puzzles/give_this_grid_a_shake", catch_response=True
         ) as resp:
             pass
 
         solved = False
         with self.client.request(
-            "GET", "/puzzles/cacciando_trio_misterioso", catch_response=True
+            "GET", "/puzzles/give_this_grid_a_shake", catch_response=True
         ) as resp:
             if resp.text and "Correct!" in resp.text:
                 solved = True
@@ -119,16 +119,16 @@ class late_load_test(FastHttpUser):
         if not solved:
             with self.rest(
                 "PUT",
-                "/api/puzzle/cacciando_trio_misterioso/guess",
+                "/api/puzzle/give_this_grid_a_shake/guess",
                 headers={},
                 json={"guess": "ABC"},
             ) as resp:
                 pass
             with self.rest(
                 "PUT",
-                "/api/puzzle/cacciando_trio_misterioso/guess",
+                "/api/puzzle/give_this_grid_a_shake/guess",
                 headers={},
-                json={"guess": "WALTZES AND MARCHES"},
+                json={"guess": "THE BLACK MARKET"},
             ) as resp:
                 pass
 
@@ -151,19 +151,19 @@ class late_load_test(FastHttpUser):
         ) as resp:
             pass
 
-        if not puzzles["find_other_ways_of_seeing"]:
+        if not puzzles["cross_dash_word"]:
             with self.client.request(
-                "POST", "/puzzles/find_other_ways_of_seeing/unlock", catch_response=True
+                "POST", "/puzzles/cross_dash_word/unlock", catch_response=True
             ) as resp:
                 pass
         with self.client.request(
-            "GET", "/puzzles/find_other_ways_of_seeing", catch_response=True
+            "GET", "/puzzles/cross_dash_word", catch_response=True
         ) as resp:
             pass
 
         solved = False
         with self.client.request(
-            "GET", "/puzzles/find_other_ways_of_seeing", catch_response=True
+            "GET", "/puzzles/cross_dash_word", catch_response=True
         ) as resp:
             if resp.text and "Correct!" in resp.text:
                 solved = True
@@ -171,16 +171,16 @@ class late_load_test(FastHttpUser):
         if not solved:
             with self.rest(
                 "PUT",
-                "/api/puzzle/find_other_ways_of_seeing/guess",
+                "/api/puzzle/cross_dash_word/guess",
                 headers={},
                 json={"guess": "ABC"},
             ) as resp:
                 pass
             with self.rest(
                 "PUT",
-                "/api/puzzle/find_other_ways_of_seeing/guess",
+                "/api/puzzle/cross_dash_word/guess",
                 headers={},
-                json={"guess": "RED SASH"},
+                json={"guess": "DEAD BIRD"},
             ) as resp:
                 pass
 
@@ -193,13 +193,13 @@ class late_load_test(FastHttpUser):
         with self.client.request("GET", "/all_puzzles", catch_response=True) as resp:
             pass
 
-        if not puzzles["do_the_packing"]:
+        if not puzzles["a_map_and_a_shade_or_four"]:
             with self.client.request(
-                "POST", "/puzzles/do_the_packing/unlock", catch_response=True
+                "POST", "/puzzles/a_map_and_a_shade_or_four/unlock", catch_response=True
             ) as resp:
                 pass
         with self.client.request(
-            "GET", "/puzzles/do_the_packing", catch_response=True
+            "GET", "/puzzles/a_map_and_a_shade_or_four", catch_response=True
         ) as resp:
             pass
         with self.client.request(

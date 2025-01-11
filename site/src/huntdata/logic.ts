@@ -131,7 +131,6 @@ export class LogicTeamState {
   interactions_completed: Map<string, string>;
   available_currency: number;
   available_strong_currency: number;
-  correct_answers: Record<string, string>;
 
   constructor(initial?: Hydratable<LogicTeamState>) {
     this.rounds_unlocked = new Set(initial?.rounds_unlocked ?? []);
@@ -147,7 +146,6 @@ export class LogicTeamState {
     );
     this.available_currency = initial?.available_currency ?? 0;
     this.available_strong_currency = initial?.available_strong_currency ?? 0;
-    this.correct_answers = {};
   }
 
   get puzzles_visible() {

@@ -4,7 +4,6 @@ import {
   defineScript,
 } from "redis";
 import { createTimeout } from "retry";
-import { type TeamHuntState } from "../../lib/api/client";
 import {
   type DehydratedTeamRegistrationLogEntry,
   type TeamRegistrationLogEntry,
@@ -386,43 +385,34 @@ async function publishState(
   }
 }
 
-export async function publishTeamState(
+export async function publishTeamCache(
   redisClient: RedisClient,
   teamId: number,
-  state: TeamHuntState,
+  state: { epoch: number; dehydrate: () => unknown },
+  cacheTypeRedisKey: string,
 ) {
-  await publishState(redisClient, `team_state/${teamId}`, {
+  await publishState(redisClient, `cache/${cacheTypeRedisKey}/${teamId}`, {
     id: `0-${state.epoch}`,
     message: {
-      entry: JSON.stringify(state),
+      entry: JSON.stringify(state.dehydrate()),
     },
   });
 }
 
-type CachableConstructor<I, R> = {
-  new (initial?: I): R;
+type CacheableFactory<RedisType, HydratedType> = {
   redisKey: string;
+  hydrate: (redisData?: RedisType) => HydratedType;
 };
 
-export async function getTeamCaches<
-  Constructors extends CachableConstructor<any, any>[],
+export function getTeamCaches<
+  Factories extends CacheableFactory<unknown, unknown>[],
 >(
   redisClient: RedisClient,
   teamId: number,
-  ...cacheTypes: Constructors
+  ...cacheTypes: Factories
 ): Promise<{
-  [K in keyof Constructors]: Constructors[K] extends CachableConstructor<
-    any,
-    any
-  >
-    ? InstanceType<Constructors[K]>
-    : never;
-}>;
-export async function getTeamCaches(
-  redisClient: RedisClient,
-  teamId: number,
-  ...cacheTypes: CachableConstructor<any, any>[]
-): Promise<unknown[]> {
+  [K in keyof Factories]: ReturnType<Factories[K]["hydrate"]>;
+}> {
   return Promise.all(
     cacheTypes.map((cacheType) =>
       redisClient
@@ -432,13 +422,17 @@ export async function getTeamCaches(
         .then((messages) => {
           const message = messages.at(-1);
           if (message) {
-            return parseStreamMessage((data) => new cacheType(data), message)
-              .entry;
+            return parseStreamMessage(
+              (data) => cacheType.hydrate(data),
+              message,
+            ).entry;
           }
-          return new cacheType();
+          return cacheType.hydrate();
         }),
     ),
-  );
+  ) as Promise<{
+    [K in keyof Factories]: ReturnType<Factories[K]["hydrate"]>;
+  }>;
 }
 
 // export async function getTeamState(

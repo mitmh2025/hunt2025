@@ -18,6 +18,7 @@ export class TeamStateIntermediate extends LogicTeamState {
   puzzles_unlocked_at: Map<string, number /* epoch */>;
   puzzles_partially_solved: Set<string>;
   private slugToSlotMap: Map<string, SlotLookup>;
+  correct_answers: Map<string, string>;
 
   static redisKey = "team_state_intermediate";
 
@@ -29,6 +30,7 @@ export class TeamStateIntermediate extends LogicTeamState {
       initial?.puzzles_partially_solved ?? [],
     );
     this.slugToSlotMap = generateSlugToSlotMap(hunt);
+    this.correct_answers = new Map(initial?.correct_answers ?? []);
   }
 
   reduce(entry: InternalActivityLogEntry) {
@@ -53,7 +55,7 @@ export class TeamStateIntermediate extends LogicTeamState {
         break;
       case "puzzle_solved":
         this.puzzles_solved.add(entry.slug);
-        this.correct_answers[entry.slug] = entry.data.answer;
+        this.correct_answers.set(entry.slug, entry.data.answer);
       // fallthrough - solved implies unlocked
       case "puzzle_unlocked": {
         this.puzzles_unlocked.add(entry.slug);
@@ -86,6 +88,26 @@ export class TeamStateIntermediate extends LogicTeamState {
         break;
     }
     return this;
+  }
+
+  dehydrate(): Hydratable<TeamStateIntermediate> {
+    return {
+      epoch: this.epoch,
+      puzzles_unlocked_at: Array.from(this.puzzles_unlocked_at),
+      puzzles_partially_solved: Array.from(this.puzzles_partially_solved),
+      rounds_unlocked: Array.from(this.rounds_unlocked),
+      puzzles_unlockable: Array.from(this.puzzles_unlockable),
+      puzzles_unlocked: Array.from(this.puzzles_unlocked),
+      puzzles_stray: Array.from(this.puzzles_stray),
+      puzzles_solved: Array.from(this.puzzles_solved),
+      gates_satisfied: Array.from(this.gates_satisfied),
+      interactions_unlocked: Array.from(this.interactions_unlocked),
+      interactions_started: Array.from(this.interactions_started),
+      interactions_completed: Array.from(this.interactions_completed),
+      correct_answers: Array.from(this.correct_answers),
+      available_currency: this.available_currency,
+      available_strong_currency: this.available_strong_currency,
+    };
   }
 }
 
@@ -197,7 +219,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
               : ("locked" as const),
           partially_solved: data.puzzles_partially_solved.has(slug),
           unlocked_at: data.puzzles_unlocked_at.get(slug),
-          answer: data.correct_answers[slug],
+          answer: data.correct_answers.get(slug),
           ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
         },
       ]),

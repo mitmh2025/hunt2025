@@ -374,9 +374,10 @@ export async function getRouter({
       knex,
       redisClient,
       team_id,
-      Object.assign(TeamStateIntermediate.bind(null, hunt), {
+      {
         redisKey: "team_state_intermediate",
-      }),
+        hydrate: (redisObj) => new TeamStateIntermediate(hunt, redisObj ?? {}),
+      },
     );
     return team_state;
   };
