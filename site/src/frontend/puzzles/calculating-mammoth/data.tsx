@@ -98,7 +98,7 @@ MILLENNIAL ICH IF  ADAM
  NE T  EL TEKOA EDU R O
 LG GAS N NPR BALLOT ASH
   AU  RECESSION IRAQWAR
- DEAN A LA ZC   CSH DN 
+ DEAN E LA ZC   CSH DN 
 ZOOMER TURKEYSYRIA BOTH
 HOL SNORE Y  UKRAINEWAR
 URIST SU POP GKR  URN  
@@ -269,7 +269,7 @@ export const DOWN = [
   [7, "Simile word"],
   [10, "Internet shorthand for person who started a topic of discussion"],
   [11, "1992 Red Sox pitching coach (2 wds.)"],
-  [13, "Co. was named after this founder alongside Allen and Hamilton"],
+  [13, "Co. is named after this founder alongside Allen and Hamilton"],
   [16, "A basic logic gate"],
   [17, "Non-violent resistance leader against Britain"],
   [19, "1/8 of a gallon"],
@@ -301,7 +301,7 @@ export const DOWN = [
   [59, "Alt. business structure to corp. (abbr.)"],
   [61, "Genus of Pacific bluetail skink"],
   [62, "Baseball stick"],
-  [63, "Beowulf language"],
+  [63, "Beowulf lang."],
   [64, "Mike Connors' Detective TV series"],
   [66, "India's House of the People (2 wds.)"],
   [68, "Flashcard software"],
@@ -342,7 +342,7 @@ export const DOWN = [
   [126, "FFRDC affiliated with MIT"],
   [128, "SF state"],
   [132, "Name in dismissive Ice Cube phrase"],
-  [134, "Depletion of bank account"],
+  [134, "To deplete by using or spending"],
   [135, "Name associated with salt Ammonium iron(II) sulfate"],
   [138, "Office Space report topic"],
   [139, "1952 film also released as “The Savage Princess”"],
@@ -351,7 +351,7 @@ export const DOWN = [
   [145, "Close by"],
   [148, "Kris Kringle"],
   [149, "Relating to or arising from the action of the wind"],
-  [150, "Memo field"],
+  [150, "D musical note on fixed-Do solfege"],
   [151, "Hint or pointer"],
   [152, "Covered in frozen water"],
   [154, "Swinging building barriers"],

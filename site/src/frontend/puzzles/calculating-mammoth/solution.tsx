@@ -344,13 +344,13 @@ const Solution = (): JSX.Element => {
         If you compare the new black “living” squares in the current generation
         step number it has a bunch of squares overlapping letters in the
         original grid. Specifically you need to inspect each region at the
-        generation time step equal to the generations numbering. This is clued
+        generation time step equal to the generation’s numbering. This is clued
         by “but we find our way at different times” in the flavor,
         “successively” in crossword hint, and the arrows on the left side of the
         grid. The top most section of the grid corresponding to the GREATEST
         generation only has a bunch of cells that extract to{" "}
         <Mono>ANSWER IS LI</Mono> which matches the 10 ?s to the side of the
-        grid. You then repeat the mechanic for gen =2 in the SILENT generation.
+        grid. You then repeat the mechanic for gen=2 in the SILENT generation.
         The full extraction for each of the generations is shown below - the red
         squares correspond with specific letters that were white in the starting
         grid. The other black squares in each of the generations are either on a
