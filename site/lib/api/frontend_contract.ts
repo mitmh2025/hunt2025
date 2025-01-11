@@ -214,6 +214,16 @@ export const frontendContract = c.router({
       404: z.null(),
     },
   },
+  advanceInteraction: {
+    method: "POST",
+    path: "/teams/:teamId/interactions/:interactionId/advance/:fromNode",
+    body: z.object({}),
+    responses: {
+      200: TeamInteractionStateLogEntrySchema,
+      400: z.null(), // Not at fromNode (either too early or too late) or fromNode is final
+      429: z.null(), // Not ready to transition yet (wait for timeout_msec to pass).
+    },
+  },
   completeInteraction: {
     method: "POST",
     path: `/teams/:teamId/interactions/:interactionId/complete`,

@@ -51,7 +51,7 @@ import canonicalizeInput from "../../lib/canonicalizeInput";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { INTERACTIONS } from "../frontend/interactions";
-import { type VirtualInteractionHandler } from "../frontend/interactions/handler";
+import { countVotes, type VirtualInteractionHandler } from "../frontend/interactions/handler";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import {
@@ -80,6 +80,8 @@ import {
   cleanupTeamInteractionStateLogEntryFromDB,
   getTeamInteractionStateLog,
   appendTeamInteractionStateLog,
+  fixTimestamp,
+  fixData,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -146,37 +148,6 @@ async function parseJWTSecret(secret: string | Buffer): Promise<PrivateKey> {
     // Not an RSA key
   }
   return { privateKey: new Uint8Array(Buffer.from(str, "utf8")), alg: "HS256" };
-}
-
-type VoteResultEntry = {
-  choice: string;
-  votes: number;
-};
-type VoteResults = {
-  rankedOptions: VoteResultEntry[];
-  winner?: string;
-};
-function tallyResults(votes: Record<string, string>): VoteResults {
-  const results: Record<string, number> = {};
-  Object.entries(votes).forEach(([_sess_id, choice]) => {
-    if (results[choice] === undefined) {
-      results[choice] = 0;
-    }
-    results[choice] += 1;
-  });
-  // TODO: maybe randomize tiebreaks?  I guess the session id order is ~random
-  const rankedOptions = Object.entries(results)
-    .toSorted((a, b) => b[1] - a[1])
-    .map(([choice, votes]) => {
-      return {
-        choice,
-        votes,
-      };
-    });
-  return {
-    rankedOptions,
-    winner: rankedOptions[0]?.choice,
-  };
 }
 
 async function newPassport({
@@ -1717,7 +1688,7 @@ export async function getRouter({
           // TODO: verify that slug/pollId/choice are valid based on current team state?
           await redisClient.hSet(redisKey, sess_id, choice);
           const votes = await redisClient.hGetAll(redisKey);
-          const results = tallyResults(votes);
+          const results = countVotes(votes);
           // TODO: maybe do all this from a redis script instead to avoid observer reorderings?
           await redisClient.publish(redisKey, JSON.stringify(votes));
 
@@ -2408,6 +2379,118 @@ export async function getRouter({
           return result;
         },
       },
+      advanceInteraction: {
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId, interactionId, fromNode } }) => {
+          const team_id = parseInt(teamId, 10);
+          const interaction = INTERACTIONS[interactionId];
+          if (interaction?.type !== "virtual") {
+            return {
+              status: 404,
+              body: "Not a valid virtual interaction",
+            };
+          }
+          if (!redisClient) {
+            return {
+              status: 500,
+              body: "Cannot reliably advance interactions without a valid redis client",
+            };
+          }
+
+          // We should do as much work as we safely can *before* opening the DB transaction.
+          const node = interaction.handler.lookupNode(fromNode);
+          if (!node) {
+            console.log(`Interaction node ${fromNode} for team ${teamId} not known to interaction graph ${interactionId}`);
+            return {
+              status: 400,
+              body: null,
+            };
+          }
+          if ("finalState" in node) {
+            console.log(`Cannot advance team ${teamId}'s interaction ${interactionId} past final state`);
+            return {
+              status: 400,
+              body: null,
+            };
+          }
+
+          // The vote closing is inherently racy.  Votes live in redis.  We can tally the raw
+          // results before opening a DB transaction, so we're not holding the DB transaction open
+          // while we talk to redis over the network some more.
+          const maybeVoteCounts = await interaction.handler.voteCountsForNode(team_id, node, redisClient);
+
+          // Okay now we have to see if this is still the current node, and what the interaction
+          // graph state for this team is at that node, which does require looking at the DB.
+
+          const result = await teamInteractionStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async (trx, mutator) => {
+              // Look up the most recent entry in the log for this interaction.
+              const interactionLog = mutator.log.filter((e) => e.slug === interactionId);
+              const latest = interactionLog.at(-1);
+              if (!latest) {
+                // No log?  Can't advance.
+                return {
+                  status: 404,
+                  body: null,
+                }
+              }
+              if (latest.node !== fromNode) {
+                // Interaction is not currently at fromNode.
+                return {
+                  status: 400,
+                  body: null,
+                };
+              }
+              const now = Date.now();
+              const ts = fixTimestamp(latest.timestamp);
+              const nodeEntered = ts.getTime();
+              const advanceAfter = interaction.handler.advanceAfterTime(fromNode, nodeEntered);
+              if (advanceAfter === undefined) {
+                // 
+                return {
+                  status: 500,
+                  body: `Unable to determine time at which to advance ${interactionId} for team ${teamId} from ${fromNode}`,
+                };
+              }
+              const FUDGE_FACTOR = 500;
+              if (now >= advanceAfter - FUDGE_FACTOR) {
+                // Okay we can actually do the work now.
+
+                // Compute the next node state
+                const maybeNext = await interaction.handler.computeNext({
+                  teamId: team_id,
+                  currentNode: node,
+                  state: fixData(latest.graph_state),
+                  maybeVoteCounts,
+                  redisClient,
+                });
+                if (!maybeNext) {
+                  // We couldn't figure out where we go next.  
+                  return {
+                    status: 500,
+                    body: `Unable to determine next node for team ${teamId} in interaction ${interactionId} at ${fromNode}`,
+                  };
+                }
+                // I don't actually know how to parameterize these over the various flavors of interaction graph so
+                // here we are casting things around
+                const { nextNode, nextState } = maybeNext as { nextNode: { id: string; }; nextState: object };
+                await mutator.appendLog({
+                  team_id,
+                  slug: interactionId,
+                  predecessor: fromNode,
+                  node: nextNode.id,
+                  graph_state: nextState,
+                });
+
+              }
+            },
+          );
+          return result;
+        },
+      },
       completeInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, interactionId }, body }) =>
@@ -2629,7 +2712,7 @@ export async function getRouter({
           }
           const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
           const votes = await redisClient.hGetAll(redisKey);
-          const results = tallyResults(votes);
+          const results = countVotes(votes);
           return {
             status: 200,
             body: results,

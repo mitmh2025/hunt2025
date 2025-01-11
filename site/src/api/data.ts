@@ -577,6 +577,18 @@ export class TeamInteractionStateLog extends Log<
   protected dbGetLog(knex: Knex.Knex, teamId?: number, since?: number) {
     return dbGetTeamInteractionStateLog(teamId, since, undefined, knex);
   }
+
+  async executeMutation<R>(
+    team_id: number,
+    redisClient: RedisClient | undefined,
+    knex: Knex.Knex,
+    fn: (
+      trx: Knex.Knex.Transaction,
+      mutator: TeamInteractionStateLogMutator,
+    ) => R | PromiseLike<R>,
+  ) {
+    return await this.executeRawMutation(team_id, redisClient, knex, fn);
+  }
 }
 
 export const teamInteractionStateLog = new TeamInteractionStateLog();

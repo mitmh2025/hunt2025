@@ -1,14 +1,53 @@
 import { type TeamInteractionStateLogEntry } from "../../../lib/api/frontend_contract";
 import { fixTimestamp } from "../../api/db";
+import { type RedisClient } from "../../api/redis";
 import { type ExternalInteractionNode } from "./client-types";
 import {
   type InteractionGraph,
   type InteractionGraphNode,
   type InteractionGraphNodeChoice,
   isChoiceNode,
+  isNextNode,
   isPluginNode,
   isTerminalNode,
 } from "./types";
+
+// TODO: extract tallyResults to some sort of generic election handler?
+type VoteResultEntry = {
+  choice: string;
+  votes: number;
+};
+export type VoteResults = {
+  rankedOptions: VoteResultEntry[];
+  winner?: string;
+};
+export type VoteCounts = Record<string, number>;
+
+export function countVotes(votes: Record<string, string>): VoteCounts {
+  const results: VoteCounts = {};
+  Object.entries(votes).forEach(([_sess_id, choice]) => {
+    if (results[choice] === undefined) {
+      results[choice] = 0;
+    }
+    results[choice] += 1;
+  });
+  return results;
+}
+
+export function tallyResults(votes: VoteCounts, validOptions: string[]): VoteResults {
+  // TODO: maybe randomize tiebreaks?  I guess the given order is maybe ~random?
+  const validOptionScores = validOptions.map((choice) => {
+    return {
+      choice,
+      votes: votes[choice] ?? 0,
+    };
+  }).toSorted((a, b) => { return b.votes - a.votes; });
+
+  return {
+    rankedOptions: validOptionScores,
+    winner: validOptionScores[0]?.choice,
+  };
+}
 
 function indexedNodes<T, R, S extends string, P>(
   graph: InteractionGraph<T, R, S, P>,
@@ -25,15 +64,18 @@ type StartState<T> = {
   state: T;
 };
 
-export class VirtualInteractionHandler<
-  T extends object,
-  R,
-  S extends string,
-  P,
-> {
+type Next<T,R,S,P> = {
+  nextNode: InteractionGraphNode<T,R,S,P>;
+  nextState: T;
+  previousVoteResult?: VoteResults;
+}
+
+export class VirtualInteractionHandler<T extends object, R, S extends string, P> {
+  private name: string;
   private graph: InteractionGraph<T, R, S, P>;
   private indexedNodes: Record<string, InteractionGraphNode<T, R, S, P>>;
-  constructor(graph: InteractionGraph<T, R, S, P>) {
+  constructor(name: string, graph: InteractionGraph<T, R, S, P>) {
+    this.name = name;
     this.graph = graph;
     this.indexedNodes = indexedNodes(graph);
   }
@@ -87,4 +129,89 @@ export class VirtualInteractionHandler<
       state: this.graph.starting_state,
     };
   }
+
+  public lookupNode(
+    nodeId: string,
+  ): InteractionGraphNode<T, R, S, P> | undefined {
+    return this.indexedNodes[nodeId];
+  }
+
+  public advanceAfterTime(
+    nodeId: string,
+    startedAt: number,
+  ): number | undefined {
+    const graphNode = this.indexedNodes[nodeId];
+    if (!graphNode) return undefined;
+    return startedAt + graphNode.timeout_msec;
+  }
+
+  public electionKey(teamId: number, node: InteractionGraphNode<T, R, S, P>): string {
+    return `/team/${teamId}/polls/${this.name}/${node.id}`;
+  }
+
+  public async voteCountsForNode(
+    teamId: number,
+    currentNode: InteractionGraphNode<T, R, S, P>,
+    redisClient: RedisClient,
+  ): Promise<VoteCounts | undefined> {
+    // Valid options may be limited by the current state, but we're trying to 
+
+    // Tally the votes in redis, pick the winner, and 
+    const redisKey = this.electionKey(teamId, currentNode);
+    const votes = await redisClient.hGetAll(redisKey);
+    const results = countVotes(votes);
+    return results;
+  }
+
+  public async computeNext({ teamId, currentNode, state, redisClient, maybeVoteCounts }: {
+    teamId: number;
+    currentNode: InteractionGraphNode<T, R, S, P>;
+    state: T;
+    redisClient: RedisClient;
+    maybeVoteCounts?: VoteCounts;
+  }): Promise<Next<T, R, S, P> | undefined> {
+    if (isNextNode(currentNode)) {
+      let next = currentNode.next;
+      if (typeof next === "function") {
+        next = next(state);
+      }
+      const nextNode = this.lookupNode(next);
+      if (nextNode) {
+        return {
+          nextNode,
+          nextState: state,
+        };
+      } else {
+        return undefined;
+      }
+    } else if (isChoiceNode(currentNode)) {
+      let voteCounts = maybeVoteCounts;
+      if (!voteCounts) {
+        const redisKey = this.electionKey(teamId, currentNode);
+        const votes = await redisClient.hGetAll(redisKey);
+        voteCounts = countVotes(votes);
+      }
+
+      let choices = currentNode.choices;
+      if (typeof choices === "function") {
+        choices = choices(state);
+      }
+      const choiceKeys = choices.map((choice) => {
+        let key = choice.next;
+        if (typeof key === "function") {
+          key = key(state);
+        }
+        return key;
+      });
+      if (choiceKeys.length === 0) {
+        console.error(`No valid choice options for interaction ${this.name} node ${currentNode.id} at state ${JSON.stringify(state)}`);
+        return undefined;
+      }
+      const voteResults = tallyResults(voteCounts, choiceKeys);
+
+
+    }
+  }
 }
+
+
