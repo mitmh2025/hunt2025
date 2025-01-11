@@ -4,11 +4,17 @@ import { styled } from "styled-components";
 import { wrapContentWithNavBar } from "../../../components/ContentWithNavBar";
 import LinkedImage from "../../../components/LinkedImage";
 import { Math, MFrac, MI, MN, MRow } from "../../../components/MathML";
+import { AuthorsNote } from "../../../components/PuzzleLayout";
+import lightIcon from "../../../puzzles/practical-fighter/assets/light.svg";
+import magnetIcon from "../../../puzzles/practical-fighter/assets/magnet.svg";
 import { AboutWrapper } from "./StyledAboutPage";
+import circle from "./assets/circle.svg";
 import image1 from "./assets/image1.svg";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
 import image4 from "./assets/image4.png";
+import stationPiNotes from "./assets/station-pi-notes.svg";
+import triangle from "./assets/triangle.svg";
 
 const Pi = () => <MI>π</MI>;
 
@@ -19,15 +25,15 @@ const TwoPi = () => (
   </Math>
 );
 
-const SevenPiOver5 = () => (
+const PiFraction = ({ num, denom }: { num: number; denom: number }) => (
   <Math>
     <MFrac>
       <MRow>
-        <MN>7</MN>
+        <MN>{num}</MN>
         <Pi />
       </MRow>
       <MRow>
-        <MN>5</MN>
+        <MN>{denom}</MN>
       </MRow>
     </MFrac>
   </Math>
@@ -97,6 +103,10 @@ const StyledHr = styled.hr`
   margin: 1em 0;
 `;
 
+const RadioIcon = styled.img`
+  height: 1em;
+`;
+
 export function radioHandler(req: Request) {
   const teamState = req.teamState;
   if (teamState === undefined) return undefined;
@@ -116,6 +126,7 @@ export function radioHandler(req: Request) {
           manufactured by D&M (Diodes & Microcircuits) as part of the
           celebration of the season.
         </p>
+        <hr />
         <Message>
           <MessageInner>
             <CenteredDiv>
@@ -152,7 +163,7 @@ export function radioHandler(req: Request) {
             />
           </InnerFlexWrapper>
         </FlexWrapper>
-        <h2>Controls and Indicators</h2>
+        <h2 id="controls">Controls and Indicators</h2>
         <ol>
           <StyledLi>
             <strong>Volume and On/Off Switch</strong>: To turn your radio on,
@@ -206,7 +217,8 @@ export function radioHandler(req: Request) {
             <br />
           </StyledLi>
         </ol>
-        <h2>Stations</h2>
+        <hr />
+        <h2 id="stations">Stations</h2>
         <p>
           You should find your radio’s FM tuner to behave similarly to other FM
           receivers that you have encountered.
@@ -216,7 +228,7 @@ export function radioHandler(req: Request) {
           on the PM band. Make sure to check this page periodically, as there
           may be additional information available for newly discovered stations.
         </p>
-        <h3>
+        <h3 id="station-2pi">
           WDNM: <TwoPi />
         </h3>
         <p>
@@ -227,8 +239,8 @@ export function radioHandler(req: Request) {
           radio away from
           <TwoPi />, an alternate virtual stream will be available.
         </p>
-        <h3>
-          Wireless Configuration: <SevenPiOver5 />
+        <h3 id="station-7pi-over-5">
+          Wireless Configuration: <PiFraction num={7} denom={5} />
         </h3>
         <p>
           If your radio is outside of MITropolis airspace and struggling to
@@ -241,8 +253,8 @@ export function radioHandler(req: Request) {
           login. In such an environment, we recommend tethering off of a phone.
         </p>
         <p>
-          Tune your radio to <SevenPiOver5 />. Your radio will begin
-          broadcasting its own wireless network with a name starting with
+          Tune your radio to <PiFraction num={7} denom={5} />. Your radio will
+          begin broadcasting its own wireless network with a name starting with
           “two-pi-radio-”. Use another device to connect to this network. If the
           device does not automatically open the wireless configuration page,
           use a web browser and navigate to 192.168.4.1 or to any website. The
@@ -257,6 +269,135 @@ export function radioHandler(req: Request) {
           Once successfully configured, you may tune your radio back to its
           original station.
         </p>
+        {teamState.state.puzzles.songs_on_the_radio?.answer !== undefined && (
+          <>
+            <h3 id="station-pi">
+              Instrumental Mode: <Pi />
+            </h3>
+            <AuthorsNote>
+              This station was originally discovered in connection with the
+              puzzle <a href="/puzzle/songs-on-the-radio">Songs on the Radio</a>
+              .
+            </AuthorsNote>
+
+            <p>
+              Tuning your radio to <Pi /> will allow you to use your radio as a
+              musical instrument. To play basic notes, you can use any of the
+              following 4 inputs:
+            </p>
+
+            <ul>
+              <li>Knock on the radio to play G4</li>
+              <li>Touch one of the metal feet to play A4</li>
+              <li>
+                Press the <RadioIcon src={triangle} /> button to play B4
+              </li>
+              <li>
+                Shine a light through the hole next to the{" "}
+                <RadioIcon src={lightIcon} /> icon on the rear to play C5
+              </li>
+            </ul>
+
+            <p>
+              Additionally, each of these four notes can be shifted up or down
+              the major scale by using a combination of two shift operations:
+            </p>
+
+            <ul>
+              <li>
+                Holding a magnet up to the <RadioIcon src={magnetIcon} /> icon
+                on the rear.
+              </li>
+              <li>Plugging a 3.5mm plug into the headphone jack on the side</li>
+            </ul>
+
+            <p>
+              On its own, the magnet results in all notes being a perfect fourth
+              lower (i.e. D4, E4, F♯4, and G4 respectively). The headphone jack
+              results in all notes being a perfect fifth higher (i.e. D5, E5,
+              F♯5, and G5 respectively). And using both together results in all
+              notes being a perfect octave higher (i.e. G5, A5, B5, and C6).
+              Here is all 16 possible combinations shown on a staff:
+            </p>
+
+            <LinkedImage
+              src={stationPiNotes}
+              alt="A staff showing all 16 possible combinations of notes that can be played on the radio."
+            />
+
+            <p>
+              Additionally, it is possible to apply a chromatic pitch bend
+              effect by rotating the radio around the axis perpendicular to its
+              front face (the “roll” axis). A rotation of 45° results in a
+              half-step adjustment, while a rotation of 90° results in a
+              full-step adjustment. Continuing in either direction beyond 90°
+              brings the pitch back towards its original value.
+            </p>
+          </>
+        )}
+        {teamState.state.rounds.the_missing_diamond?.interactions?.meet_billie
+          ?.state === "completed" && (
+          <>
+            <h3 id="station-17pi-over-10">
+              Chasing the Witness: <PiFraction num={17} denom={10} />
+            </h3>
+            <AuthorsNote>
+              This station was originally discovered while solving{" "}
+              <a href="/puzzles/the_thief">The Thief</a>.
+            </AuthorsNote>
+
+            <p>
+              As you pursue the final witness in The Case of the Missing
+              Diamond, you can tune to this station to follow Billie’s movements
+              through MITropolis. You just need to follow them, but if you are
+              lost, you can press the <RadioIcon src={triangle} /> button to
+              pause or resume playback, and the <RadioIcon src={circle} />{" "}
+              button to restart from the beginning.
+            </p>
+
+            <p>
+              There’s no time to go backwards, though—you can’t let that witness
+              get away!
+            </p>
+          </>
+        )}
+        {teamState.state.puzzles.given_up_blacklight?.locked === "unlocked" && (
+          <>
+            <h3 id="station-23pi-over-20">
+              Given Up Again: <PiFraction num={23} denom={20} />
+            </h3>
+
+            <AuthorsNote>
+              This station was originally discovered by shining your blacklight
+              on the puzzle <a href="/puzzles/given_up_blacklight">Given Up</a>.
+            </AuthorsNote>
+
+            <p>
+              No further information about this station is available at this
+              time.
+            </p>
+          </>
+        )}
+        {teamState.state.puzzles.can_do_transmissions?.locked ===
+          "unlocked" && (
+          <>
+            <h3 id="station-37pi-over-20">
+              A Numbers Station: <PiFraction num={37} denom={20} />
+            </h3>
+
+            <AuthorsNote>
+              This station was originally discovered in connection with the
+              puzzle{" "}
+              <a href="/puzzles/can_do_transmissions">Can Do Transmissions</a>.
+            </AuthorsNote>
+
+            <p>
+              No further information about this station is available at this
+              time.
+            </p>
+          </>
+        )}
+        <hr />
         <h2>Solving Issues</h2>
         <h3>My radio won’t turn on</h3>
         <p>
@@ -275,6 +416,7 @@ export function radioHandler(req: Request) {
           contact HQ and we will confirm if you need to bring the radio to the
           Gala Bar for debugging.
         </p>
+        <hr />
         <h2>Additional Instructions</h2>
         <p>
           Because this is a cutting edge piece of technology, this page will be

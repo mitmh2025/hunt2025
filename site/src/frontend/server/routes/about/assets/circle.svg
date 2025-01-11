@@ -1,0 +1,9 @@
+<svg width="24" height="24" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask id="hole">
+      <rect width="100%" height="100%" fill="white" />
+      <circle r="7" cx="12" cy="12" fill="black" />
+    </mask>
+  </defs>
+  <circle id="donut" r="12" cx="12" cy="12" mask="url(#hole)" />
+</svg>
