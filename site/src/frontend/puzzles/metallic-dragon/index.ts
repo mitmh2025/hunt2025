@@ -44,7 +44,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 65.0,
       description:
-        "Solvers have the textonym phrase (PERT AND ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR) but don't know how to solve it",
+        "Solvers have the textonym phrase (PERT AND ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR) but don’t know how to solve it",
       keywords: ["textonym", "clue phrase"],
       nudge:
         "The phrase PERT AND ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR is cluing 3 words and their enumerations",
