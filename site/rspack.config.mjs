@@ -661,6 +661,7 @@ export default function createConfigs(_env, argv) {
       ops: "./ops/server/main.ts",
       sync2tb: "./radioman/sync2tb.ts",
       sync2k8s: "./radioman/sync2k8s.ts",
+      sync2zammad: "./zammad/sync2zammad.ts",
       tbprovision: "./radioman/tbprovision.ts",
       tbutil: "./radioman/tbutil.ts",
     },
