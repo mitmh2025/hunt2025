@@ -11,7 +11,7 @@ const Arrow = styled.span`
   color: var(--black);
 `;
 
-const ImageWrapper = styled.div`
+const SpacingWrapper = styled.div`
   margin-bottom: 1em;
 `;
 
@@ -82,6 +82,32 @@ const ToggleGroup = ({ options }: ToggleGroupProps): JSX.Element => {
         );
       })}
     </ToggleGroupWrapper>
+  );
+};
+
+const SubpuzzleLink = ({
+  answer,
+  title,
+  slug,
+}: {
+  answer?: string;
+  title: string;
+  slug: string;
+}): JSX.Element => {
+  return (
+    <>
+      <SpacingWrapper>
+        <a href={`/${slug}`}>
+          {title}{" "}
+          {answer && (
+            <>
+              (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
+            </>
+          )}
+        </a>
+        <Arrow>→</Arrow>
+      </SpacingWrapper>
+    </>
   );
 };
 
@@ -242,17 +268,12 @@ const App = ({
           {sortedSubpuzzleStatus.map(
             ({ subpuzzle_name, subpuzzle_slug, answer }) => {
               return (
-                <p key={subpuzzle_slug}>
-                  <a href={`/${subpuzzle_slug}`}>
-                    {subpuzzle_name}{" "}
-                    {answer && (
-                      <>
-                        (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
-                      </>
-                    )}
-                  </a>
-                  <Arrow>→</Arrow>
-                </p>
+                <SubpuzzleLink
+                  key={subpuzzle_name}
+                  answer={answer}
+                  title={subpuzzle_name}
+                  slug={subpuzzle_slug}
+                />
               );
             },
           )}
@@ -270,21 +291,32 @@ const App = ({
             It looks like a few ingredients are missing from both your martini
             and the promo codes.
           </p>
-          {sortedSubpuzzleStatus.map(({ subpuzzle_slug, answer, image }, i) => {
-            if (answer) {
-              return (
-                <ImageWrapper key={i}>
-                  <a href={`/${subpuzzle_slug}`}>
-                    <img
-                      src={image}
-                      alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
-                    />
-                  </a>
-                </ImageWrapper>
-              );
-            }
-            return null;
-          })}
+          {sortedSubpuzzleStatus.map(
+            ({ subpuzzle_name, subpuzzle_slug, answer, image }, i) => {
+              if (answer) {
+                return (
+                  <React.Fragment key={i}>
+                    <div>
+                      <SubpuzzleLink
+                        answer={answer}
+                        title={subpuzzle_name}
+                        slug={subpuzzle_slug}
+                      />
+                    </div>
+                    <SpacingWrapper key={i}>
+                      <a href={`/${subpuzzle_slug}`}>
+                        <img
+                          src={image}
+                          alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
+                        />
+                      </a>
+                    </SpacingWrapper>
+                  </React.Fragment>
+                );
+              }
+              return null;
+            },
+          )}
         </>
       )}
       <h3>Your Subscription</h3>
