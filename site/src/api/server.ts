@@ -370,11 +370,13 @@ export async function getRouter({
 
   const slugToSlotMap = generateSlugToSlotMap(hunt);
   const getTeamStateIntermediate = async (team_id: number) => {
-    const team_state = (
-      await activityLog.getCachedLog(knex, redisClient, team_id)
-    ).entries.reduce(
-      (acc, entry) => acc.reduce(entry),
-      new TeamStateIntermediate(hunt),
+    const [team_state] = await activityLog.getCachedReducers(
+      knex,
+      redisClient,
+      team_id,
+      Object.assign(TeamStateIntermediate.bind(null, hunt), {
+        redisKey: "team_state_intermediate",
+      }),
     );
     return team_state;
   };

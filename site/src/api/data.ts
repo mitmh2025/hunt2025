@@ -237,7 +237,7 @@ interface Reducer<I extends { id: number }> {
 }
 
 type ReducerConstructor<I extends { id: number }> = {
-  new (initial?: Hydratable<I>): Reducer<I>;
+  new (initial?: Hydratable<Reducer<I>>): Reducer<I>;
   redisKey: string;
 };
 
