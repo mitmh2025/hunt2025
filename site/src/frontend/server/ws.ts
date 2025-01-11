@@ -72,14 +72,6 @@ type DatasetHandler =
       type: "puzzle_state_log";
     };
 
-// An allowlist of slugs that we should permit puzzle_state_log to be subscribed to directly for.
-// If you're adding an entry to this allowlist, all the data you put in the DB for that slug will
-// be readable by clients, so don't put anything sensitive/internal there.
-const PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG = [
-  "what_do_they_call_you",
-  "estimation_dot_jpg",
-];
-
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
     type: "activity_log",

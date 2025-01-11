@@ -268,5 +268,4 @@ export const frontendContract = c.router({
       200: PuzzleStateLog,
     },
   },
-
 });
