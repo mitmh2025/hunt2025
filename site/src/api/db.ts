@@ -53,8 +53,20 @@ class WebpackSeedSource {
   }
 
   getSeeds() {
-    // In this example we are just returning seed names
-    return Promise.resolve(this.context.keys().sort());
+    const seeds = (process.env.SEED_FILES ?? "demo.ts")
+      .split(",")
+      .map((f) => f.trim());
+
+    const keys = this.context
+      .keys()
+      .filter((key) => {
+        return seeds.find((seed) => key.endsWith(`/${seed}`));
+      })
+      .sort();
+
+    console.log("Running seeds:", keys);
+
+    return Promise.resolve(keys);
   }
 
   getSeed(seed: string): Promise<Knex.Knex.Seed> {
