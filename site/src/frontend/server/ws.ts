@@ -439,6 +439,9 @@ class ConnHandler {
           case "interaction_state_log":
             sub.stop();
             break;
+          case "poll_responses":
+            sub.stop();
+            break;
         }
       });
       if (this.teamStateObserverStopHandle) {
@@ -973,6 +976,7 @@ export class WebsocketManager implements ObserverProvider {
     this.puzzleStateSubs = new Map();
     this.interactionStateSubs = new Map();
     this.pollWatcher = new PollWatcher({ redisClient });
+    this.pollWatcher.start();
     this.pollResponseSubs = new Map();
   }
 
@@ -1296,11 +1300,12 @@ export class WebsocketManager implements ObserverProvider {
       void observePromise.then((stopHandle) => { stopHandle(); });
     };
     const readyPromise = this.pollWatcher.getCurrentPollState(teamId, slug, pollId).then((pollState) => {
+      console.log("initial state populated, sending update to client", pollState);
       conn.updatePollResponses(subId, pollState);
     });
     return {
       stop,
-      readyPromise ,
+      readyPromise,
     }
   }
 

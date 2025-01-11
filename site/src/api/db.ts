@@ -8,6 +8,7 @@ import {
   type PuzzleStateLogEntryRow,
   type InsertPuzzleStateLogEntry,
   type TeamInteractionStateLogEntryRow,
+  type InsertTeamInteractionStateLogEntry,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
@@ -613,14 +614,38 @@ export async function appendPuzzleStateLog(
 }
 
 export async function getTeamInteractionStateLog(
-  team_id: number,
-  slug: string,
+  team_id: number | undefined,
+  since: number | undefined,
+  slug: string | undefined,
   trx: Knex.Knex,
 ) {
-  const q = trx<TeamInteractionStateLogEntryRow>("team_interaction_states")
-    .where("team_id", team_id)
-    .andWhere("slug", slug)
-    .orderBy("id", "asc");
-  const interaction_state_log = await q;
+  let query = trx<TeamInteractionStateLogEntryRow>("team_interaction_states");
+  if (team_id !== undefined) {
+    query = query.where("team_id", team_id);
+  }
+  if (since !== undefined) {
+    query = query.andWhere("id", ">", since);
+  }
+  if (slug !== undefined) {
+    query = query.andWhere("slug", slug);
+  }
+  const interaction_state_log = await query.orderBy("id", "asc");
   return interaction_state_log.map(cleanupTeamInteractionStateLogEntryFromDB);
+}
+
+export async function appendTeamInteractionStateLog(
+  entry: InsertTeamInteractionStateLogEntry,
+  trx: Knex.Knex,
+) {
+  return await trx("team_interaction-states")
+    .insert(entry)
+    .returning(["id", "team_id", "slug", "node", "predecessor", "timestamp", "graph_state"])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedEntry = objs[0] as TeamInteractionStateLogEntryRow;
+      const fixedEntry = cleanupTeamInteractionStateLogEntryFromDB(insertedEntry);
+      return fixedEntry;
+    });
 }

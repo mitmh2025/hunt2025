@@ -75,6 +75,7 @@ import {
   cleanupPuzzleStateLogEntryFromDB,
   getCurrentTeamName,
   cleanupTeamInteractionStateLogEntryFromDB,
+  getTeamInteractionStateLog,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -2550,20 +2551,7 @@ export async function getRouter({
           }
           const entries = await knex.transaction(
             async (trx) => {
-              let q = trx("team_interaction_state_log");
-              if (effectiveSince !== undefined) {
-                q = q.where("id", ">", effectiveSince);
-              }
-              if (effectiveTeamId !== undefined) {
-                q = q.where("team_id", effectiveTeamId);
-              }
-              if (slug !== undefined) {
-                q = q.where("slug", slug);
-              }
-              q = q
-                .select("id", "team_id", "slug", "node", "predecessor", "timestamp", "graph_state")
-                .orderBy("id", "asc");
-              return q;
+              return getTeamInteractionStateLog(effectiveTeamId, effectiveSince, slug, trx);
             },
             { readOnly: true },
           );

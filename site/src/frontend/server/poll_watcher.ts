@@ -50,9 +50,11 @@ export class PollWatcher {
   private redisClient: RedisClient;
 
   private pubsubRedisClient: RedisClient;
+  private pubsubRedisClientReady: Promise<RedisClient> | undefined;
 
   // Map from  to 
   private mergedObservers: Map<string, MergedPollObserver>;
+
 
   constructor({
     redisClient,
@@ -61,7 +63,15 @@ export class PollWatcher {
   }) {
     this.redisClient = redisClient;
     this.pubsubRedisClient = this.redisClient.duplicate();
+    this.pubsubRedisClient.on("error", (err) => {
+      console.error("PollWatcher redis error:", err);
+    });
+
     this.mergedObservers = new Map<string, MergedPollObserver>();
+  }
+
+  public start() {
+    this.pubsubRedisClientReady = this.pubsubRedisClient.connect();
   }
 
   private onPollUpdate(key: string, message: string, channel: string) {
@@ -84,36 +94,41 @@ export class PollWatcher {
     if (observer) {
       observer.observers.delete(observerId);
       if (observer.observers.size === 0) {
-        observer.stopHandle();
+        observer.stopHandle(); // releases the underlying subscribe
         this.mergedObservers.delete(key);
       }
     }
   }
 
   public async observePoll(teamId: number, slug: string, pollId: string, callback: PollUpdatedCallback): Promise<() => void> {
-    // save the callback    
-    const key = `/team/${teamId}/polls/${slug}/${pollId}`;
-    const observerId = genId();
-
-    let mergedObserver = this.mergedObservers.get(key);
-    if (!mergedObserver) {
-      console.log("observePoll: creating new mergedObserver")
-      const listener = this.onPollUpdate.bind(this, key);
-      const observers = new Map<string, PollUpdatedCallback>();
-      observers.set(observerId, callback);
-      mergedObserver = {
-        key,
-        stopHandle: () => {
-          void this.pubsubRedisClient.unsubscribe(key, listener);
-        },
-        observers,
-      }
-      this.mergedObservers.set(key, mergedObserver);
-      await this.pubsubRedisClient.subscribe(key, listener);
-      console.log("mergedObserver subscribe ready")
+    if (!this.pubsubRedisClientReady) {
+      throw new Error("Must attempt to connect to redis pubsub before observing poll");
     }
+    return this.pubsubRedisClientReady.then(async () => {
+      // save the callback    
+      const key = `/team/${teamId}/polls/${slug}/${pollId}`;
+      const observerId = genId();
 
-    return this.stopObserver.bind(this, key, observerId);
+      let mergedObserver = this.mergedObservers.get(key);
+      if (!mergedObserver) {
+        console.log("observePoll: creating new mergedObserver")
+        const listener = this.onPollUpdate.bind(this, key);
+        const observers = new Map<string, PollUpdatedCallback>();
+        observers.set(observerId, callback);
+        mergedObserver = {
+          key,
+          stopHandle: () => {
+            void this.pubsubRedisClient.unsubscribe(key, listener);
+          },
+          observers,
+        }
+        this.mergedObservers.set(key, mergedObserver);
+        await this.pubsubRedisClient.subscribe(key, listener);
+        console.log("mergedObserver subscribe ready")
+      }
+
+      return this.stopObserver.bind(this, key, observerId);
+    })
   }
 
   public async getCurrentPollState(teamId: number, slug: string, pollId: string) {

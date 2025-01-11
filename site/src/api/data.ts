@@ -3,6 +3,7 @@ import {
   type InsertTeamRegistrationLogEntry,
   type InsertActivityLogEntry,
   type InsertPuzzleStateLogEntry,
+  type InsertTeamInteractionStateLogEntry,
 } from "knex/types/tables";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
@@ -12,6 +13,8 @@ import {
   type InternalActivityLogEntry,
   type DehydratedPuzzleStateLogEntry,
   type PuzzleStateLogEntry,
+  type TeamInteractionStateLogEntry,
+  type DehydratedTeamInteractionStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -23,6 +26,8 @@ import {
   getTeamIds,
   getPuzzleStateLog as dbGetPuzzleStateLog,
   appendPuzzleStateLog as dbAppendPuzzleStateLog,
+  getTeamInteractionStateLog as dbGetTeamInteractionStateLog,
+  appendTeamInteractionStateLog as dbAppendTeamInteractionStateLog,
   retryOnAbort,
 } from "./db";
 import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
@@ -31,6 +36,7 @@ import {
   activityLog as redisActivityLog,
   teamRegistrationLog as redisTeamRegistrationLog,
   puzzleStateLog as redisPuzzleStateLog,
+  teamInteractionStateLog as redisTeamInteractionStateLog,
   type Log as RedisLog,
 } from "./redis";
 
@@ -551,3 +557,23 @@ export class PuzzleStateLog extends Log<
 }
 
 export const puzzleStateLog = new PuzzleStateLog();
+
+export class TeamInteractionStateLogMutator extends Mutator<TeamInteractionStateLogEntry, InsertTeamInteractionStateLogEntry> {
+  _dbAppendLog = dbAppendTeamInteractionStateLog;
+}
+
+export class TeamInteractionStateLog extends Log<
+  DehydratedTeamInteractionStateLogEntry,
+  TeamInteractionStateLogEntry,
+  TeamInteractionStateLogMutator
+> {
+  constructor() {
+    super(redisTeamInteractionStateLog, TeamInteractionStateLogMutator);
+  }
+
+  protected dbGetLog(knex: Knex.Knex, teamId?: number, since?: number) {
+    return dbGetTeamInteractionStateLog(teamId, since, undefined, knex);
+  }
+}
+
+export const teamInteractionStateLog = new TeamInteractionStateLog();
