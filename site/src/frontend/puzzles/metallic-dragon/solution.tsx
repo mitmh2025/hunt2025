@@ -90,7 +90,7 @@ const Solution = () => {
           </StyledTableCell>
           <StyledTableCell>
             <StyledDiv>
-              You don&apos;t need a belay device when hiking the North or South
+              You don’t need a belay device when hiking the North or South
               SHOP of the Grand Canyon.
             </StyledDiv>
           </StyledTableCell>
