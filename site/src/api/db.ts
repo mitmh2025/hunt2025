@@ -71,7 +71,7 @@ class WebpackSeedSource {
     const keys = this.context
       .keys()
       .filter((key) => {
-        return seeds.find((seed) => key.endsWith(seed));
+        return seeds.find((seed) => key.endsWith(`/${seed}`));
       })
       .sort();
 
