@@ -45,8 +45,6 @@ team_state = ref(
     end
 )
 
-on_shutdown(fun () -> file.write(data=json.stringify(team_state()), team_state_path))
-
 play_state_path = "#{state_directory}/play_state.json"
 
 play_state = ref(
@@ -62,6 +60,13 @@ play_state = ref(
         }
     end
 )
+
+def save_state() =
+    file.write(data=json.stringify(team_state()), team_state_path)
+    file.write(data=json.stringify(play_state()), play_state_path)
+end
+thread.run(save_state, delay=30., every=30.)
+on_shutdown(save_state)
 
 harbor.http.register(
     port=http_port,
