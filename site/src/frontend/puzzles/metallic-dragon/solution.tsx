@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -179,9 +180,12 @@ const Solution = () => {
         directions used to move between locations, and the puzzle title (Word
         Yore) hint to you that the capitalized words in each description should
         be treated as textonyms from T9 predictive text. Mapping out and
-        translating the textonyms from each room gives the cluephrase <Mono>PERT AND
-        ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR</Mono>. The translated
-        word makes the sentence at each location make sense as a confirmation.
+        translating the textonyms from each room gives the cluephrase{" "}
+        <Mono>
+          PERT AND ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR
+        </Mono>
+        . The translated word makes the sentence at each location make sense as
+        a confirmation.
       </MarginedDiv>
       <StyledTable>
         <tr>
@@ -233,10 +237,11 @@ const Solution = () => {
         </tr>
       </StyledTable>
       <MarginedDiv>
-        Taking the clue phrase as clues gives <Mono>PERKY ZITI LIPS</Mono>. Re-applying the
-        textonym mechanic gives you the partial <Mono>REPLY WITH KISS</Mono>. Entering KISS
-        into the answer checker tells you to email a kiss to HQ, which will
-        respond with the instruction “Go touch GRASS”, where <PuzzleAnswer>GRASS</PuzzleAnswer> is the puzzle
+        Taking the clue phrase as clues gives <Mono>PERKY ZITI LIPS</Mono>.
+        Re-applying the textonym mechanic gives you the partial{" "}
+        <Mono>REPLY WITH KISS</Mono>. Entering KISS into the answer checker
+        tells you to email a kiss to HQ, which will respond with the instruction
+        “Go touch GRASS”, where <PuzzleAnswer>GRASS</PuzzleAnswer> is the puzzle
         answer.
       </MarginedDiv>
     </>
