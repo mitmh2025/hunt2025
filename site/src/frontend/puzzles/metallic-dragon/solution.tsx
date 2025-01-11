@@ -233,10 +233,10 @@ const Solution = () => {
         </tr>
       </StyledTable>
       <MarginedDiv>
-        aking the clue phrase as clues gives PERKY ZITI LIPS. Re-applying the
-        textonym mechanic gives you the partial REPLY WITH KISS. Entering KISS
+        Taking the clue phrase as clues gives <Mono>PERKY ZITI LIPS</Mono>. Re-applying the
+        textonym mechanic gives you the partial <Mono>REPLY WITH KISS</Mono>. Entering KISS
         into the answer checker tells you to email a kiss to HQ, which will
-        respond with the instruction “Go touch GRASS”, where GRASS is the puzzle
+        respond with the instruction “Go touch GRASS”, where <PuzzleAnswer>GRASS</PuzzleAnswer> is the puzzle
         answer.
       </MarginedDiv>
     </>
