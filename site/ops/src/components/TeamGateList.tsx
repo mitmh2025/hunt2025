@@ -9,7 +9,7 @@ import {
 } from "material-react-table";
 import { useMemo } from "react";
 import HUNT from "../../../src/huntdata";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients } from "../OpsDataProvider";
 import { type TeamData } from "../opsdata/types";
 import { useIsOpsAdmin } from "./AdminOnly";
 
@@ -23,7 +23,7 @@ type GateListEntry = {
 export default function TeamGateList({ team }: { team: TeamData }) {
   const dialogs = useDialogs();
   const notifications = useNotifications();
-  const opsData = useOpsData();
+  const { adminClient, appendActivityLogEntries } = useOpsClients();
   const isOpsAdmin = useIsOpsAdmin();
 
   const handleSatisfyGate = (gate: GateListEntry) => {
@@ -40,7 +40,7 @@ export default function TeamGateList({ team }: { team: TeamData }) {
             }
 
             try {
-              const res = await opsData.adminClient.markGateSatistfied({
+              const res = await adminClient.markGateSatistfied({
                 params: { gateId: gate.id },
                 body: { teamIds: [team.teamId] },
               });
@@ -49,7 +49,7 @@ export default function TeamGateList({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${res.status}: ${res.body}`);
               }
 
-              opsData.appendActivityLogEntries(res.body);
+              appendActivityLogEntries(res.body);
 
               notifications.show(
                 `Satisfied ${gate.displayName} for ${team.username}`,

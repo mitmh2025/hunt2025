@@ -7,7 +7,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { formatAllTeamsData } from "../opsdata/bigBoard";
 import { type SinglePuzzleStats } from "../routes/Puzzle";
 import useTime from "../util/useTime";
@@ -37,6 +37,7 @@ export default function PuzzleTeamList({
   slug: string;
 }) {
   const opsData = useOpsData();
+  const { adminClient, appendActivityLogEntries } = useOpsClients();
   const bigBoardData = useMemo(() => formatAllTeamsData(opsData), [opsData]);
   const isOpsAdmin = useIsOpsAdmin();
   const dialogs = useDialogs();
@@ -58,7 +59,7 @@ export default function PuzzleTeamList({
           }
 
           try {
-            const res = await opsData.adminClient.unlockPuzzle({
+            const res = await adminClient.unlockPuzzle({
               body: {
                 teamIds,
               },
@@ -71,7 +72,7 @@ export default function PuzzleTeamList({
               throw new Error(`HTTP ${res.status}: ${res.body}`);
             }
 
-            opsData.appendActivityLogEntries(res.body);
+            appendActivityLogEntries(res.body);
             updateNow();
 
             notifications.show(`Unlocked puzzle for ${teamsDisplay}`, {

@@ -16,7 +16,7 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { useIsOpsAdmin } from "../components/AdminOnly";
 import { formatTeamData } from "../opsdata/bigBoard";
 
@@ -43,7 +43,7 @@ function GrantKeysDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const { adminClient, appendActivityLogEntries } = useOpsClients();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const notifications = useNotifications();
@@ -134,7 +134,7 @@ function GrantCluesDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const { adminClient, appendActivityLogEntries } = useOpsClients();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const notifications = useNotifications();
