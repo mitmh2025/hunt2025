@@ -591,7 +591,7 @@ const HUNT: Hunt = {
         { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends" },
         { id: "tmp20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "its_all_cheep_and_a_sheep_to_me" },
         { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "as_the_world_turandot" },
-        { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 }, // Splits Used As History
+        { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "splits_used_as_history" },
         { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "in_communicado_tonight" },
         { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 }, // esTIMation dot jpg
         { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
