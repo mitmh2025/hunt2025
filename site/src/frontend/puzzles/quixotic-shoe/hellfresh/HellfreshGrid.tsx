@@ -24,6 +24,7 @@ const BARS_DOWN = `
       _ 
   __    
 _ _  _ _
+        
  _      
  _    _ 
         

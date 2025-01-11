@@ -2471,7 +2471,7 @@ const Solution = (): JSX.Element => {
           a donut to your purchase for each one you drove on.
         </li>
         <li>
-          <strong>Rule TUMMACHE:</strong> If you do not have enough donuts to
+          <strong>Rule TUMMYACHE:</strong> If you do not have enough donuts to
           fulfill your team’s request, do not extract any letters. Instead, feel
           shame.
         </li>
@@ -2485,7 +2485,8 @@ const Solution = (): JSX.Element => {
         <StyledTable>
           <tr>
             <th></th>
-            <th>Quantity</th>
+            <th># Rotaries</th>
+            <th># Donuts Ordered</th>
             <th>Donut Type</th>
             <th>Extraction</th>
           </tr>

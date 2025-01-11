@@ -324,7 +324,7 @@ const Solution = (): JSX.Element => {
         these monarchs in chronological order of the event. Earlier when finding
         the clues, solvers will have noticed that each clue has an extra “X” in
         it. If solvers take the position of this “X” in the clue as an index
-        into the monarch names, they’ll spell
+        into the monarch names, they’ll spell{" "}
         <Mono>COUNTRY OF GREATEST ECLIPSE</Mono>.
       </p>
       <p>
@@ -333,7 +333,10 @@ const Solution = (): JSX.Element => {
         of the events they found in the previous step, they will see that there
         was exactly one total eclipse during the year of each monarch’s event.
         (Get it, get it, the “corona” of the eclipse clues a monarch, since
-        “corona” means “crown” 😏.) They’ll also notice that the point of
+        “corona” means “crown” 😏.) As confirmation that solvers are interested
+        in the total eclipses, and not, say, the annular ones, the flavor text
+        references the total solar eclipse in 2024, for which the point of
+        greatest eclipse was in Mexico. They’ll also notice that the point of
         greatest eclipse (indicated by the star shape on NASA’s maps) lands on a
         country. Solvers should now reuse the index from earlier, the one from
         the position of the “X” in the clue, to index into the countries that

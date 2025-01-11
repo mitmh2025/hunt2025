@@ -1,9 +1,8 @@
-import React, { type CSSProperties } from "react";
+import React from "react";
 import { styled } from "styled-components";
 import { mainPuzzleAccessGates } from "..";
 import type { TeamHuntState } from "../../../../../lib/api/client";
 import { COPY_ONLY_CLASS } from "../../../components/CopyToClipboard";
-import Crossword from "../../../components/Crossword";
 import LinkedImage from "../../../components/LinkedImage";
 import { AuthorsNote } from "../../../components/PuzzleLayout";
 import img1 from "./assets/img1.png";
@@ -129,20 +128,58 @@ const PinnedImage = styled(LinkedImage)`
   height: 30px;
 `;
 
-const COPY_ONLY_LABELS = `
+const IMAGES_BY_INDEX = [
+  { image: img1, row: 0, col: 2 },
+  { image: img2, row: 0, col: 3 },
+  { image: img3, row: 1, col: 2 },
+  { image: img4, row: 1, col: 5 },
+  { image: img5, row: 1, col: 6 },
+  { image: img6, row: 1, col: 7 },
+  { image: img7, row: 2, col: 1 },
+  { image: img8, row: 2, col: 8 },
+  { image: img9, row: 3, col: 0 },
+  { image: img10, row: 3, col: 1 },
+  { image: img11, row: 3, col: 2 },
+  { image: img12, row: 4, col: 3 },
+  { image: img13, row: 4, col: 6 },
+  { image: img14, row: 4, col: 7 },
+  { image: img15, row: 5, col: 2 },
+  { image: img16, row: 5, col: 7 },
+  { image: img17, row: 6, col: 1 },
+  { image: img18, row: 6, col: 4 },
+  { image: img19, row: 7, col: 0 },
+  { image: img20, row: 7, col: 8 },
+  { image: img21, row: 8, col: 0 },
+  { image: img22, row: 8, col: 3 },
+  { image: img23, row: 8, col: 6 },
+  { image: img24, row: 8, col: 7 },
+].reduce<Record<number, string>>((acc, { image, row, col }) => {
+  acc[row * 9 + col] = image;
+  return acc;
+}, {});
 
-
-
-
-
-
-
-
-
-`
-  .split("\n")
-  .slice(1, -1)
-  .map((row) => row.padEnd(9, " ").split(""));
+const CopyOnlySudoku = styled.table`
+  border-collapse: collapse;
+  td {
+    border: 1px solid black;
+  }
+  tr:first-child td {
+    border-top-width: 3px;
+  }
+  td:first-child {
+    border-left-width: 3px;
+  }
+  tr:nth-child(3) td,
+  tr:nth-child(6) td,
+  tr:last-child td {
+    border-bottom-width: 3px;
+  }
+  td:nth-child(3),
+  td:nth-child(6),
+  td:last-child {
+    border-right-width: 3px;
+  }
+`;
 
 const Note = ({
   rotation,
@@ -174,26 +211,24 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         </p>
       )}
       <AuthorsNote>Click on images to view them at full size.</AuthorsNote>
-      <Crossword
-        className={COPY_ONLY_CLASS}
-        labels={COPY_ONLY_LABELS}
-        getAdditionalCellStyles={({ row, column }) => {
-          const styles: CSSProperties = {};
-          if (row === 0) {
-            styles.borderTopWidth = "3px";
-          }
-          if (row === 2 || row === 5 || row === 8) {
-            styles.borderBottomWidth = "3px";
-          }
-          if (column === 0) {
-            styles.borderLeftWidth = "3px";
-          }
-          if (column === 2 || column === 5 || column === 8) {
-            styles.borderRightWidth = "3px";
-          }
-          return styles;
-        }}
-      />
+      <CopyOnlySudoku className={COPY_ONLY_CLASS}>
+        {[...Array(9).keys()].map((row) => (
+          <tr key={row}>
+            {[...Array(9).keys()].map((col) => {
+              const index = row * 9 + col;
+              return (
+                <td key={col}>
+                  {index in IMAGES_BY_INDEX ? (
+                    <img src={IMAGES_BY_INDEX[index]} alt="A rebus" />
+                  ) : (
+                    <></>
+                  )}
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </CopyOnlySudoku>
       <BulletinBoard>
         <Row>
           <div></div>

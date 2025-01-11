@@ -267,7 +267,7 @@ export const COLON_ROUND: Round = {
       meaningAudio: w8,
       useAudio: d8,
       answerA: "ADMIT",
-      answerB: "A MIT",
+      answerB: "MIT",
       excerpt: "Very good men foull of Love of Crist I kep them A mit",
       extraction: "M",
     },

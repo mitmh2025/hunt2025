@@ -37,7 +37,10 @@ const ResetButton = styled.button`
 `;
 
 type Puzzle = {
-  nodes: Record<string, { xml: string; enumeration?: number; hash: string }>;
+  nodes: Record<
+    string,
+    { xml: string; enumeration?: number; hashes: string[] }
+  >;
   svg: Document;
   edges: { nodes: number[]; content: string }[];
   version: string;
@@ -185,14 +188,20 @@ function check_submission(
   if (state.solved_nodes[node] !== undefined) {
     return;
   }
-  if (
-    bcrypt.compareSync(
-      `${node}-${submission.toUpperCase().replace(CLEANSTRING_REGEX, "")}`,
-      puzzle.nodes[node]!.hash,
-    )
-  ) {
-    handle_correct_submission(node, submission, puzzle, state, presentation);
-    return;
+  const canonical_text = submission
+    .toUpperCase()
+    .replace(CLEANSTRING_REGEX, "");
+  for (const hash of puzzle.nodes[node]!.hashes) {
+    if (bcrypt.compareSync(`${node}-${canonical_text}`, hash)) {
+      handle_correct_submission(
+        node,
+        canonical_text,
+        puzzle,
+        state,
+        presentation,
+      );
+      return;
+    }
   }
 }
 

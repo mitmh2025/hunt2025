@@ -1094,7 +1094,9 @@ const Puzzle = (): JSX.Element => {
                     <td>{j + 1}</td>
                     <td>{direction}</td>
                     <td className={NO_COPY_CLASS}>{instruction}</td>
-                    <td className={COPY_ONLY_CLASS}>{copyInstruction}</td>
+                    <td className={COPY_ONLY_CLASS}>
+                      {copyInstruction ? copyInstruction : instruction}
+                    </td>
                     <td>{notes}</td>
                   </tr>
                 ),
