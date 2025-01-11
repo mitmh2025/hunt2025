@@ -2,7 +2,7 @@ import { type Request, type Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { Router } from "websocket-express";
 import { type PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract";
-import { canonicalizeInput } from "../../../api/server";
+import canonicalizeInput from "../../../../lib/canonicalizeInput";
 import { AGENT_NAME, FirstPerson, PUZZLE_ANSWER, type Person } from "./data";
 import { type LogEntryData } from "./types";
 

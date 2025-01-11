@@ -1,5 +1,5 @@
 import { type InternalActivityLogEntry } from "../lib/api/frontend_contract";
-import canonicalizeInput from "../src/api/canonicalizeInput";
+import canonicalizeInput from "../lib/canonicalizeInput";
 import { TeamStateIntermediate } from "../src/api/logic";
 import { type Hunt } from "../src/huntdata/types";
 import Touchpoints, { type TouchpointSlug } from "./Touchpoints";
