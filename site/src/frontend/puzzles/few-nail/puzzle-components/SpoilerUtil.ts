@@ -58,6 +58,24 @@ export const getRoundByPuzzleUuid = (uuid: string): Round => {
   return round;
 };
 
+function padGuess(cleanGuess: string, cleanAnswerA: string): string {
+  if (cleanGuess.length >= cleanAnswerA.length) {
+    return cleanGuess;
+  } else if (cleanGuess === cleanAnswerA.slice(0, cleanGuess.length)) {
+    return cleanGuess + "-";
+  }
+  return cleanGuess;
+}
+
+function findFirstWrongCharIndex(paddedGuess: string, cleanAnswerA: string) {
+  for (let i = 0; i < Math.min(paddedGuess.length, cleanAnswerA.length); i++) {
+    if (paddedGuess[i] !== cleanAnswerA[i]) {
+      return i;
+    }
+  }
+  return cleanAnswerA.length;
+}
+
 export const checkGuessByUuid = (
   uuid: string,
   guess: string,
@@ -87,22 +105,14 @@ export const checkGuessByUuid = (
     };
   } else {
     // Find the first index at which there is an incorrect letter, according answerA.
-    let firstIncorrectIndex = 0;
-    let response = cleanGuess;
-    const guessLetters = cleanGuess.split("");
-    for (const [index, letter] of cleanAnswerA.split("").entries()) {
-      if (index >= guessLetters.length) {
-        response += "-";
-        firstIncorrectIndex = index;
-        break;
-      } else if (guessLetters[index] !== letter) {
-        firstIncorrectIndex = index;
-        break;
-      }
-    }
+    const paddedGuess = padGuess(cleanGuess, cleanAnswerA);
+    const firstIncorrectIndex = findFirstWrongCharIndex(
+      paddedGuess,
+      cleanAnswerA,
+    );
     return {
       uuid: puzzle.uuid,
-      response,
+      response: paddedGuess,
       firstIncorrectIndex,
       status: PuzzleStatus.X,
     };

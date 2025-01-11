@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import andorra from "./assets/andorra.png";
 import belgium from "./assets/belgium.png";
 import completed from "./assets/completed.svg";
@@ -99,7 +100,7 @@ const Solution = (): JSX.Element => {
       <p>
         One oval node is highlighted in yellow and labeled ANSWER (4). This
         connects the flag of PERU to the flag of CANADA, which differ by the
-        presence of a LEAF, which is the answer.
+        presence of a <PuzzleAnswer>LEAF</PuzzleAnswer>, which is the answer.
       </p>
     </>
   );
