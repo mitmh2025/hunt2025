@@ -45,7 +45,7 @@ export const ALL_NORMAL_QUESTIONS: Question[] = [
     answer: 55,
   },
   {
-    text: "When this quiz show ends, how many puzzles will your team have solved?",
+    text: "By the time this quiz show ends, how many puzzles will your team have solved?",
     answer: 0,
   },
   {
@@ -85,7 +85,7 @@ export const ALL_NORMAL_QUESTIONS: Question[] = [
     answer: 555,
   },
   {
-    text: "When this quiz show ends, how many wrong answers will ALL participating teams have submitted for this Mystery Hunt?",
+    text: "By the time this quiz show ends, how many answer submissions (whether correct or not) will ALL participating teams have submitted for this Mystery Hunt?",
     answer: 0,
   },
   {

@@ -1723,7 +1723,7 @@ export async function getRouter({
               if (body.status === "in_progress") {
                 // when transitioning from "not_started" to "in_progress",
                 // mark any team not checked in as "no_show"
-                const promises: Promise<FermitRegistration>[] = [];
+                const promises: Promise<FermitRegistration | undefined>[] = [];
                 const regs = await getFermitRegistrations(
                   parseInt(sessionId, 10),
                   knex,
@@ -1742,8 +1742,11 @@ export async function getRouter({
                 });
                 const updatedRegs = await Promise.all(promises);
 
+                // TODO: what should behavior be if a no-show update fails?
+                // does this whole thing need to be somehow transactionized?
+
                 newSession.teams = newSession.teams.map((t) => {
-                  const newReg = updatedRegs.find((r) => r.teamId === t.id);
+                  const newReg = updatedRegs.find((r) => r?.teamId === t.id);
                   if (newReg) {
                     return {
                       id: t.id,
@@ -1809,67 +1812,104 @@ export async function getRouter({
           }
 
           // run the scoring methods on each, which may involve DB lookups
-          const teamScores = session.teams.map(({ id, status }) => {
-            if (status !== "checked_in") {
-              return { id: id, scores: null };
-            }
-            const scores: number[] = questions.map((question, index) => {
-              if (!question) {
-                // this shouldn't happen?  just assume they bombed it
-                return 0;
+          const teamScores = await Promise.all(
+            session.teams.map(async ({ id, status }) => {
+              if (status !== "checked_in") {
+                return { id: id, scores: null };
               }
+              const scores: number[] = await Promise.all(
+                questions.map(async (question, index) => {
+                  if (!question) {
+                    // this shouldn't happen?  just assume they bombed it
+                    return 0;
+                  }
 
-              const answerObj = answers.find(
-                (ans) =>
-                  ans.sessionId.toString() === sessionId &&
-                  ans.teamId === id &&
-                  ans.questionIndex === index + 1,
+                  const answerObj = answers.find(
+                    (ans) =>
+                      ans.sessionId.toString() === sessionId &&
+                      ans.teamId === id &&
+                      ans.questionIndex === index + 1,
+                  );
+
+                  if (!answerObj) {
+                    return 0;
+                  }
+
+                  const answer = answerObj.answer;
+                  if (answer === null) {
+                    return 0;
+                  }
+
+                  const percentage =
+                    100 * Math.abs(answer / question.answer - 1);
+                  const difference = Math.abs(answer - question.answer);
+
+                  // two questions need to be computed on the fly via the DB:
+                  //  team_puzzle_solves needs to look up that team's total solve count
+                  //  all_puzzle_submissions needs to look up the global submission count
+                  if (question.scoringMethod === "percent") {
+                    return scoreHelper([2, 5, 10, 20, 50], percentage);
+                  } else if (question.scoringMethod === "12345") {
+                    return scoreHelper([1, 2, 3, 4, 5], difference);
+                  } else if (question.scoringMethod === "12468") {
+                    return scoreHelper([1, 2, 4, 6, 8], difference);
+                  } else if (question.scoringMethod.endsWith("double")) {
+                    const base = parseInt(question.scoringMethod.slice(0, -6));
+                    return scoreHelper(
+                      [base, base * 2, base * 4, base * 8, base * 16],
+                      difference,
+                    );
+                  } else if (question.scoringMethod === "raw") {
+                    // "raw" means take the number as a score, but if out of bounds default to 0
+                    // if not an integer floor it
+                    if (answer < 0 || answer > 5) {
+                      return 0;
+                    }
+                    return Math.floor(answer);
+                  } else if (question.scoringMethod === "team_puzzle_solves") {
+                    // count the number of "puzzle_solved" entries in this team's activity log
+                    const count: number =
+                      (
+                        (await knex("activity_log")
+                          .where({
+                            team_id: id,
+                            type: "puzzle_solved",
+                          })
+                          .count("* as ct")) as { ct: number }[]
+                      )[0]?.ct ?? 0;
+                    console.log(
+                      `counted ${count} correct answers for team ${id}`,
+                    );
+
+                    // score based on % error
+                    return scoreHelper(
+                      [2, 5, 10, 20, 50],
+                      100 * Math.abs(answer / count - 1),
+                    );
+                  } else if (question.scoringMethod === "all_submissions") {
+                    const count: number =
+                      (
+                        (await knex("activity_log")
+                          .where("type", "puzzle_guess_submitted")
+                          .count("* as ct")) as { ct: number }[]
+                      )[0]?.ct ?? 0;
+                    console.log(`counted ${count} puzzle submissions in total`);
+                    return scoreHelper(
+                      [2, 5, 10, 20, 50],
+                      100 * Math.abs(answer / count - 1),
+                    );
+                  } else {
+                    console.log(
+                      `got unknown scoring method: ${question.scoringMethod}`,
+                    );
+                    return 0;
+                  }
+                }),
               );
 
-              if (!answerObj) {
-                return 0;
-              }
-
-              const answer = answerObj.answer;
-              if (answer === null) {
-                return 0;
-              }
-
-              const percentage = 100 * Math.abs(answer / question.answer - 1);
-              const difference = Math.abs(answer - question.answer);
-
-              // TODO: there are two that will require lookup:
-              //  team_puzzle_solves needs to look up that team's total solve count
-              //  all_wrong_answers needs to look up the global wrong answer count
-              if (question.scoringMethod === "percent") {
-                return scoreHelper([2, 5, 10, 20, 50], percentage);
-              } else if (question.scoringMethod === "12345") {
-                return scoreHelper([1, 2, 3, 4, 5], difference);
-              } else if (question.scoringMethod === "12468") {
-                return scoreHelper([1, 2, 4, 6, 8], difference);
-              } else if (question.scoringMethod.endsWith("double")) {
-                const base = parseInt(question.scoringMethod.slice(0, -6));
-                return scoreHelper(
-                  [base, base * 2, base * 4, base * 8, base * 16],
-                  difference,
-                );
-              } else if (question.scoringMethod === "raw") {
-                // "raw" means take the number as a score, but if out of bounds default to 0
-                // if not an integer floor it
-                if (answer < 0 || answer > 5) {
-                  return 0;
-                }
-                return Math.floor(answer);
-              } else {
-                console.log(
-                  `got unknown scoring method: ${question.scoringMethod}`,
-                );
-                return 0;
-              }
-            });
-
-            return { id: id, scores: scores };
-          });
+              return { id: id, scores: scores };
+            }),
+          );
 
           // (3) for each team, add to the team state for this puzzle
           for (const obj of teamScores) {

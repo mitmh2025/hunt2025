@@ -685,8 +685,8 @@ export async function createFermitRegistration(
   knex: Knex.Knex,
 ): Promise<FermitRegistration | undefined> {
   // abort if the session isn't in "not_started" status
-  const session = dbGetFermitSession(sessionId, knex);
-  if (session.status === "not_started") {
+  const session = await dbGetFermitSession(sessionId, knex);
+  if (session?.status === "not_started") {
     return dbInsertFermitRegistration(
       sessionId,
       teamId,
@@ -694,6 +694,7 @@ export async function createFermitRegistration(
       knex,
     );
   }
+  return undefined;
 }
 
 export async function deleteFermitRegistration(
@@ -702,8 +703,8 @@ export async function deleteFermitRegistration(
   knex: Knex.Knex,
 ): Promise<boolean> {
   // abort if the session isn't in "not_started" status
-  const session = dbGetFermitSession(sessionId, knex);
-  if (session.status === "not_started") {
+  const session = await dbGetFermitSession(sessionId, knex);
+  if (session?.status === "not_started") {
     return dbDeleteFermitRegistration(sessionId, teamId, knex);
   }
   return false;
@@ -714,7 +715,7 @@ export async function updateFermitRegistration(
   teamId: number,
   status: string,
   knex: Knex.Knex,
-): Promise<FermitRegistration> {
+): Promise<FermitRegistration | undefined> {
   // TODO: limit to allowable state transitions?
   //   if session not started: not_checked_in -> checked_in
   //                           not_checked_in -> no_show
@@ -722,9 +723,9 @@ export async function updateFermitRegistration(
   //   if session in progress: nothing
   //   if session complete:    nothing
 
-  const session = dbGetFermitSession(sessionId, knex);
-  if (session.status === "not_started") {
+  const session = await dbGetFermitSession(sessionId, knex);
+  if (session?.status === "not_started") {
     return dbUpdateFermitRegistration(sessionId, teamId, status, knex);
   }
-  return false;
+  return undefined;
 }
