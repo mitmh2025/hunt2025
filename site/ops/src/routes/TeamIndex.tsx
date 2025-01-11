@@ -43,7 +43,7 @@ function GrantKeysDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { adminClient, appendActivityLogEntries } = useOpsClients();
+  const { adminClient, updateActivityLog } = useOpsClients();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const notifications = useNotifications();
@@ -67,7 +67,9 @@ function GrantKeysDialog({
             throw new Error(`HTTP ${result.status}: ${result.body}`);
           }
 
-          appendActivityLogEntries(result.body);
+          return updateActivityLog({ forceRequest: true });
+        })
+        .then(() => {
           notifications.show(`Granted ${qty} keys to ${teamsDisplay}`, {
             severity: "success",
             autoHideDuration: 3000,
@@ -134,7 +136,7 @@ function GrantCluesDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { adminClient, appendActivityLogEntries } = useOpsClients();
+  const { adminClient, updateActivityLog } = useOpsClients();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const notifications = useNotifications();
@@ -158,7 +160,9 @@ function GrantCluesDialog({
             throw new Error(`HTTP ${result.status}: ${result.body}`);
           }
 
-          appendActivityLogEntries(result.body);
+          return updateActivityLog({ forceRequest: true });
+        })
+        .then(() => {
           notifications.show(`Granted ${qty} clues to ${teamsDisplay}`, {
             severity: "success",
             autoHideDuration: 3000,

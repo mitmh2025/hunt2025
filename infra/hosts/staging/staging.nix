@@ -99,6 +99,19 @@
       };
     }
     {
+      sops.secrets."zammad/sync2zammad_token" = {};
+      sops.templates."sync2zammad/env" = {
+        owner = "sync2zammad";
+        content = ''
+          ZAMMAD_SECRET=${config.sops.placeholder."zammad/sync2zammad_token"}
+        '';
+      };
+      services.sync2zammad = {
+        enable = true;
+        environmentFile = config.sops.templates."sync2zammad/env".path;
+      };
+    }
+    {
       services.thingsboard = {
         enable = true;
         datasource.createLocally = true;

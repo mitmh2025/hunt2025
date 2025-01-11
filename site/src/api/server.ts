@@ -47,6 +47,7 @@ import {
   type PuzzleStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { authentikJwtStrategy } from "../../lib/auth";
+import canonicalizeInput from "../../lib/canonicalizeInput";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
@@ -247,6 +248,8 @@ async function newPassport({
 
         done(null, ADMIN_USER_ID, {
           adminUser: jwtPayload.adminUser,
+          permissionAdmin: true,
+          permissionOps: true,
         });
       },
     ),
@@ -277,13 +280,6 @@ async function newPassport({
     passport,
     adminStrategies,
   };
-}
-
-export function canonicalizeInput(input: string) {
-  return input
-    .normalize("NFD")
-    .replaceAll(/[^\p{L}\p{N}]/gu, "")
-    .toUpperCase();
 }
 
 function formatInternalActivityLogEntryForApi(

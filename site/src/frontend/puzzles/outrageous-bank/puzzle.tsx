@@ -4,7 +4,7 @@ import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 const DATA = [
   "O idee care se răspândește prin imitație în cadrul unui grup social",
   "Llavor d'alzina",
-  "Nicht gerade in Form",
+  "Nicht gerade, gebogen",
   "Perte périodique de plumes ou d'une couche externe",
   "Cosa si fa quando si ha sete",
   "Culoare între alb și negru",
@@ -22,7 +22,7 @@ const DATA = [
   "Een deel van een boom of struik",
   "La pièce d'échecs la moins puissante",
   "Nickname for Margaret",
-  "Spirituell Lehrer",
+  "Spiritueller Lehrer",
   "Tawdry",
   "Een keuze zonder het juiste antwoord te weten",
   "Pertànyent a mi",
@@ -35,7 +35,7 @@ const Puzzle = (): JSX.Element => {
       <iframe
         width="560"
         height="315"
-        src="https://www.youtube.com/embed/rmQdYF9G9BQ"
+        src="https://www.youtube.com/embed/sDvfnpNFVKU"
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
@@ -43,7 +43,7 @@ const Puzzle = (): JSX.Element => {
       ></iframe>
       <a
         className={COPY_ONLY_CLASS}
-        href="https://www.youtube.com/embed/rmQdYF9G9BQ"
+        href="https://www.youtube.com/watch?v=sDvfnpNFVKU"
       >
         [Video link]
       </a>
