@@ -655,7 +655,11 @@ async function main({
               case "slug_partially_solved":
                 puzzleSlug = touchpoint.created_if.slug;
                 break;
+              case "gate_satisfied":
+                puzzleSlug = touchpoint.created_if.puzzle_slug;
+                break;
               default:
+                touchpoint.created_if satisfies never;
                 throw new Error("Unexpected touchpoint type");
             }
 

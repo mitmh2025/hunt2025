@@ -8,7 +8,6 @@ export type TouchpointType = {
   closed_action?: { type: "satisfy_gate"; gate: string };
 };
 
-// TODO: quixotic-shoe
 const Touchpoints = {
   half_baked_submission: {
     type: "submission",
@@ -146,6 +145,16 @@ const Touchpoints = {
       slug: "a_b_c_easy_as_1_2_3",
       answer: "SPELL FOR US",
     },
+  },
+  and_now_a_puzzling_word_from_our_sponsors_pickup: {
+    type: "pickup",
+    description: "Pickup: And Now, a Puzzling Word From Our Sponsors",
+    created_if: {
+      type: "gate_satisfied",
+      gate: "ptg14",
+      puzzle_slug: "and_now_a_puzzling_word_from_our_sponsors",
+    },
+    closed_action: { type: "satisfy_gate", gate: "ptg15" },
   },
 } satisfies Record<string, TouchpointType>;
 
