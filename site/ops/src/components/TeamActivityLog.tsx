@@ -91,6 +91,15 @@ export default function TeamActivityLog({
             case "rate_limits_reset":
               activity = `Rate limits reset for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
               break;
+            case "strong_currency_adjusted":
+              activity = `Clues adjusted by ${entry.strong_currency_delta}`;
+              break;
+            case "strong_currency_exchanged":
+              activity = `Clue exchanged for ${entry.currency_delta} keys`;
+              break;
+            case "puzzle_answer_bought":
+              activity = `Puzzle answer bought: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
           }
 
           if (entry.internal_data?.operator) {

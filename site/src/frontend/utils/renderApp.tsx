@@ -105,8 +105,7 @@ export default async function renderApp<Params extends ParamsDictionary>(
     "\n";
   res.set({
     "Content-Type": "text/html; charset=utf-8",
-    // TODO: determine if this Cache-Control is appropriate
-    "Cache-Control": `s-maxage=60, stale-while-revalidate=${oneDay}`,
+    "Cache-Control": `s-maxage=60, stale-if-error=${oneDay}`,
   });
   res.status(200);
   res.send(html);

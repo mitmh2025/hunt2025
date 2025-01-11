@@ -1,7 +1,7 @@
 import cryptex_note_blacklight from "../../frontend/rounds/illegal_search/assets/cryptex/cryptex_note_blacklight.png";
 import candy_modal_blacklight from "../../frontend/rounds/illegal_search/assets/desk_drawer/candy_modal_blacklight.png";
 import rings_modal_blacklight from "../../frontend/rounds/illegal_search/assets/fuse_box/rings_modal_blacklight.png";
-import ledger_blacklight from "../../frontend/rounds/illegal_search/assets/rug/numberlock_box_ledger_blacklight.png";
+import ledger_modal_blacklight from "../../frontend/rounds/illegal_search/assets/rug/ledger_modal_blacklight.png";
 import money_modal_blacklight from "../../frontend/rounds/illegal_search/assets/safe/money_modal_blacklight.png";
 import DownrightBackwards from "./able-worm";
 import MagicI from "./acclaimed-file";
@@ -19,6 +19,7 @@ import AMapAndAShadeOrFour from "./bony-fair";
 import CrossSpread from "./bony-palm";
 import ShellCorporationFour from "./bountiful-maple";
 import MellowPlanet from "./brilliant-center";
+import ABCEasyAs123 from "./brilliant-row";
 import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
 import StarCrossed from "./carefree-ghost";
@@ -38,8 +39,10 @@ import EstimationDotJpg from "./deserted-ninja";
 import CanDoTransmissions from "./diligent-spy";
 import TheThief from "./dimpled-star";
 import FindOtherWaysOfSeeing from "./discrete-spine";
+import ToDoTileThatRectangle from "./distorted-bugle";
 import MensAtMyNose from "./downright-hook";
 import Fechtbuch from "./dry-forest";
+import HowIEarnedMyGoldStar from "./elaborate-mammoth";
 import GoodFencesMakeGoodOtherwiseIncompatibleNeighbors from "./enchanted-pyrite";
 import NeatlyDrawn from "./exotic-pirate";
 import ReadBetweenTheLines from "./fake-fair";
@@ -56,6 +59,7 @@ import AbstractArtAndPoemsConcerningAPaleBlueDotAndManyMoreFriends from "./granu
 import ShellCorporationThree from "./green-princess";
 import ShellCorporationOne from "./gullible-tooth";
 import BrokenRecord from "./handsome-satellite";
+import WouthitPorbelm from "./handy-glass";
 import BeKindRewind from "./heartfelt-car";
 import SingLikeACanary from "./heavenly-cell";
 import Incognito from "./heavy-iron";
@@ -66,13 +70,16 @@ import TheTunnelsBeneathTheInstitute from "./infatuated-copper";
 import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
+import WeCanDoThisAllDay from "./iridescent-taxicab";
 import CornMaize from "./kind-ruler";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
 import AnExchangeOfVows from "./lanky-robot";
+import Charged from "./lean-lock";
 import CahfeeRegulah from "./left-rome";
 import Jargon from "./legitimate-bridge";
 import ಕಾಬವದೋೀ್ from "./limited-marble";
+import SeeingTheBigPicture from "./lofty-theory";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
 import ShellCorporationSix from "./mild-octopus";
@@ -92,6 +99,7 @@ import SeatingArrangements from "./oddball-comic";
 import TemporalInvestigations from "./offensive-cat";
 import HisLifeStory from "./oily-date";
 import ZuluLima from "./opulent-fair";
+import ItsAllCheepAndASheepToMe from "./outrageous-bank";
 import DearDiary from "./overlooked-compound";
 import DoThePacking from "./parallel-ship";
 import OWoeIsMe from "./past-jam";
@@ -104,7 +112,9 @@ import BeMine from "./pleasing-racket";
 import CelestialRope from "./powerful-berry";
 import ZingItAgain from "./practical-dragon";
 import SongsOnTheRadio from "./practical-fighter";
+import MakingContactWithAnInformant from "./pricey-robot";
 import ShellCorporationFive from "./profitable-trunk";
+import AndNowAPuzzlingWordFromOurSponsors from "./quixotic-shoe";
 import ThisIsJustATest from "./radiant-snow";
 import InCommunicadoTonight from "./rare-block";
 import ASudoku from "./recent-ship";
@@ -132,12 +142,15 @@ import AHeapOfClards from "./sinful-ivory";
 import TheCenterIsInPlainSight from "./sinful-turkey";
 import HeShouldntHaveEatenTheApple from "./snoopy-link";
 import KnightsOfTheSquareTable from "./sore-ketchup";
+import APuzzleOfTheDead from "./sorrowful-glass";
 import FightNightAtMos from "./splendid-knife";
 import TheShellGame from "./subdued-jet";
+import TailingALead from "./submissive-tap";
 import TheOversight from "./svelte-conductor";
 import RecipeSubstitutions from "./svelte-pitch";
 import MITropolitanHouseOfFashion from "./tall-change";
 import ARecipeForSuccess from "./tame-chick";
+import HelloDarknessMyOldFriend from "./that-bell";
 import DrunkensAndFlagons from "./thorough-arm";
 import EngagementsAndOtherCrimes from "./timely-head";
 import ReuseAndRecyclability from "./tinted-stream";
@@ -155,15 +168,11 @@ import ShellCorporationTwo from "./untrue-dice";
 import Commentary from "./useable-rose";
 import CrossDashWord from "./valuable-alps";
 import YourePlayingItWrong from "./vast-fire";
+import NavigatingHighSociety from "./velvety-change";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
 
-const PlaceholderISP09 = makePlaceholder(
-  "placeholder_isp09",
-  "Placeholder 09",
-  "ATHLETIC CLUB",
-);
 const PlaceholderISP10 = makePlaceholder(
   "placeholder_isp10",
   "Placeholder 10",
@@ -177,6 +186,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   an_argument: AnArgument,
   battle_factory: BattleFactory,
   be_kind_rewind: BeKindRewind,
+  charged: Charged,
   chatgpt: ChatGPT,
   check_a_deez_words_out: CheckadeezWordsOut,
   downright_backwards: DownrightBackwards,
@@ -225,6 +235,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   doable_double: DoableDouble,
   editors_solemnity: EditorsSolemnity,
   fight_night_at_mos: FightNightAtMos,
+  how_i_earned_my_gold_star: HowIEarnedMyGoldStar,
   its_not_clear: ItsNotClear,
   just_fing_behave: JustFingBehave,
   just_plane_wrong: JustPlaneWrong,
@@ -251,6 +262,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Paper Trail
   ಕಾಬವದೋೀ್: ಕಾಬವದೋೀ್,
+  and_now_a_puzzling_word_from_our_sponsors: AndNowAPuzzlingWordFromOurSponsors,
   any_coat_will_do: AnyCoatWillDo,
   a_weathered_note: AWeatheredNote,
   bar_talk: BarTalk,
@@ -279,15 +291,15 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
 
   // The Illegal Search
   皇帝の暗号: 皇帝の暗号, // great wave painting
-  cross_spread: CrossSpread, // globe
+  this_is_just_a_test: ThisIsJustATest, // globe
   paw_print_detective: PawPrintDetective, // family portrait
-  this_is_just_a_test: ThisIsJustATest, // typewriter
-  // isp05 desk lamp?
+  cross_spread: CrossSpread, // desk lamp
+  a_puzzle_of_the_dead: APuzzleOfTheDead, // typewriter
 
   cahfee_regulah: CahfeeRegulah, // candy, behind desk drawer/directional lock
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
   jargon: Jargon, // money, behind safe/combination lock
-  placeholder_isp09: PlaceholderISP09, // ledger, behind numeric lock/rug
+  given_up: GivenUp, // ledger, behind numeric lock/rug
   placeholder_isp10: PlaceholderISP10, // note, inside cryptex
 
   a_heap_of_clards: AHeapOfClards,
@@ -328,9 +340,9 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     asset: money_modal_blacklight,
     assetAlt: "Shift by difference from 8V",
   }),
-  placeholder_isp09_blacklight: blacklightPuzzle(PlaceholderISP09, {
+  given_up_blacklight: blacklightPuzzle(GivenUp, {
     answer: "BROADCAST NEWS",
-    asset: ledger_blacklight,
+    asset: ledger_modal_blacklight,
     assetAlt: "Same locations tuned to PM 23pi/20",
   }),
   placeholder_isp10_blacklight: blacklightPuzzle(PlaceholderISP10, {
@@ -381,16 +393,29 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   estimation_dot_jpg: EstimationDotJpg,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   give_this_grid_a_shake: GiveThisGridAShake,
+  garden_anecdotes: GardenAnecdotes,
   good_fences_make_good_otherwise_incompatible_neighbors:
     GoodFencesMakeGoodOtherwiseIncompatibleNeighbors,
   in_communicado_tonight: InCommunicadoTonight,
+  its_all_cheep_and_a_sheep_to_me: ItsAllCheepAndASheepToMe,
+  to_do_tile_that_rectangle: ToDoTileThatRectangle,
+  we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
   what_do_they_call_you: WhatDoTheyCallYou,
 
+  // Events
+  making_contact_with_an_informant: MakingContactWithAnInformant,
+  seeing_the_big_picture: SeeingTheBigPicture,
+  navigating_high_society: NavigatingHighSociety,
+  tailing_a_lead: TailingALead,
+
   // work in progress
-  garden_anecdotes: GardenAnecdotes,
-  given_up: GivenUp,
   the_thief: TheThief,
+
+  // Staging for floaters
+  a_b_c_easy_as_1_2_3: ABCEasyAs123,
+  hello_darkness_my_old_friend: HelloDarknessMyOldFriend,
+  wouthit_porbelm: WouthitPorbelm,
 };
 
 // Generate the SUBPUZZLES index from PUZZLES

@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import image_a from "./assets/Moon_A_final.png";
 import image_d from "./assets/Moon_D_final.png";
 import image_o from "./assets/Moon_O_final.png";
@@ -64,12 +65,12 @@ const Solution = () => {
     <>
       <p>
         This puzzle involves lunar features–seas, bays, lakes and marshes. Using
-        the enumerations and partial cryptogram information given by the
-        coloring, solvers determine which feeder answers are listed in the
-        initial list of seven blanks. (They will notice that the feeders are
-        presented in alphabetical order.) They then match each of these with one
-        of the blanks from the bank below using the matching letters (indicated
-        by color).
+        the enumerations, partial cryptogram information given by the coloring,
+        and noticing that the feeders are presented in alphabetical order,
+        solvers determine which feeder answers are listed in the initial list of
+        seven blanks. They then match each of these with one of the blanks from
+        the bank below using the matching letters (indicated by color) and the
+        fact that these will give lunar features.
       </p>
 
       <p>
@@ -347,8 +348,9 @@ const Solution = () => {
           <strong>what the products are named for</strong>, sales are sure to
           take off.
         </em>
-        ) hints that solvers should call in MARCUS O’DAY, for whom the O’Day
-        crater is named.
+        ) hints that solvers should call in{" "}
+        <PuzzleAnswer>MARCUS O’DAY</PuzzleAnswer>, for whom the O’Day crater is
+        named.
       </p>
 
       <MarginDiv>

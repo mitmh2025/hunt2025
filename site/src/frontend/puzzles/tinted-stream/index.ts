@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Reuse and Recyclability",
   slug: "reuse_and_recyclability",
-  initial_description: "A set of six genograms and several images below.",
+  initial_description: "Six diagrams, several images, and a dress",
   answer: "WATSONIA",
   authors: ["Erin Price", "Kevin Hwang", "Simone Agha"],
   editors: ["James Douberley", "Henry Wong", "Robin Deits"],

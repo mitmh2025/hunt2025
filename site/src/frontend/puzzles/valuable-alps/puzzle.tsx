@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import crossDashWord from "./assets/cross-dash-word.pdf";
 import { CLUES } from "./data";
 
@@ -34,7 +35,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           </p>
         </>
       )}
-      <p>
+      <AuthorsNote>
         A PDF is linked{" "}
         <a href={crossDashWord} target="_blank" rel="noreferrer">
           here
@@ -42,7 +43,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         if you’d like to produce your own copy (formatted for 11x17, 90lb index
         cardstock, with blue lines as cut lines), but we strongly recommend
         picking up the version that we’ve already printed and cut for you.
-      </p>
+      </AuthorsNote>
       {CLUES.map((group, i) => (
         <React.Fragment key={`group-${i}`}>
           <ClueGroup>

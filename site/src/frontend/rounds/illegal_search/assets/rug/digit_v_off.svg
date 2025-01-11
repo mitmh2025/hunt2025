@@ -1,39 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="13"
-   height="62.999878"
-   viewBox="0 0 13 62.999878"
-   version="1.1"
-   id="svg1"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs1">
-    <linearGradient
-       id="swatch151">
-      <stop
-         style="stop-color:#210c00;stop-opacity:1;"
-         offset="0"
-         id="stop151" />
-    </linearGradient>
-  </defs>
-  <g
-     id="layer4"
-     style="display:inline"
-     transform="translate(-634.00006,-450.00012)">
-    <g
-       id="g111"
-       transform="translate(12.000031)">
-      <g
-         id="g82"
-         transform="translate(-16,158)">
-        <path
-           id="rect76"
-           style="fill:#70717a;fill-opacity:1;stroke:#6f707a;stroke-width:3;stroke-linejoin:round;stroke-opacity:1"
-           d="m 639.5,298.50006 5,-5 5,5 v 50 l -5,5 -5,-5 z" />
-      </g>
-    </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13" height="63" version="1.1" viewBox="0 0 13 63" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(-634 -450)">
+  <g transform="translate(12)">
+   <g transform="translate(-16,158)">
+    <path d="m639.5 298.5 5-5 5 5v50l-5 5-5-5z" fill="#70717a" stroke="#6f707a" stroke-linejoin="round" stroke-width="3"/>
+   </g>
   </g>
+ </g>
 </svg>

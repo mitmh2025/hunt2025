@@ -5,7 +5,6 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Grand Illusion",
   slug: "the_grand_illusion",
-  initial_description: "Four dates",
   answer: "ZODIAC",
   authors: ["Grant Elliott"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim", "Robin Deits"],

@@ -2,7 +2,7 @@ export const MAX_WIDTH = 3840;
 export const MAX_HEIGHT = 2160;
 
 export function getRelativeSizeCss(size: number) {
-  return `min(calc(var(--viewport-width) * ${size / MAX_WIDTH}), ${size}px)`;
+  return `min(calc((100vw - var(--scrollbar-width)) * ${size / MAX_WIDTH}), ${size}px)`;
 }
 
 export const defaultShadow = `${getRelativeSizeCss(4)} ${getRelativeSizeCss(4)}

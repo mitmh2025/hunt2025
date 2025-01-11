@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Eras Puzzle",
   slug: "the_eras_puzzle",
-  initial_description: "Colored node charts with pianos and guitars.",
+  initial_description: "Colored node charts with pianos and guitars",
   answer: "LUCKIER",
   authors: ["Stratton Vakirtzis"],
   editors: ["Anna Brunner", "Li-Mei Lim", "Steve Banzaert"],

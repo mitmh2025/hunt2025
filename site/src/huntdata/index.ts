@@ -164,15 +164,15 @@ const HUNT: Hunt = {
         { id: "hunt_started", internal_description: 'Hunt Started' }, // Nothing is unlocked until this gate is satisfied.
         { id: "mdg01", internal_description: 'Picked up Educational Rite of Passage from Gala' },
         { id: "mdg02", internal_description: 'Picked up Synthetic Tagsonomy from Gala' },
-        { id: "mdg03", internal_description: '📑🍝: Assigned Rickroll copypasta' }, 
-        { id: "mdg04", internal_description: '📑🍝: Assigned Eat Hot Chip and Lie copypasta' }, 
-        { id: "mdg05", internal_description: '📑🍝: Assigned The Bee Movie copypasta' }, 
-        { id: "mdg06", internal_description: '📑🍝: Assigned IQ Rick and Morty copypasta' }, 
-        { id: "mdg07", internal_description: '📑🍝: Assigned Nick Castellanos copypasta' }, 
-        { id: "mdg08", internal_description: '📑🍝: Assigned Mesothelioma copypasta' }, 
-        { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' }, 
-        { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' }, 
-        { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' }, 
+        { id: "mdg03", internal_description: '📑🍝: Assigned Rickroll copypasta' },
+        { id: "mdg04", internal_description: '📑🍝: Assigned Eat Hot Chip and Lie copypasta' },
+        { id: "mdg05", internal_description: '📑🍝: Assigned The Bee Movie copypasta' },
+        { id: "mdg06", internal_description: '📑🍝: Assigned IQ Rick and Morty copypasta' },
+        { id: "mdg07", internal_description: '📑🍝: Assigned Nick Castellanos copypasta' },
+        { id: "mdg08", internal_description: '📑🍝: Assigned Mesothelioma copypasta' },
+        { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' },
+        { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' },
+        { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' },
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
@@ -259,14 +259,14 @@ const HUNT: Hunt = {
         { id: "sop23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "whose_song_is_it_anyway" },
         { id: "sop24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "some_assembly_required" },
         { id: "sop25", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "fight_night_at_mos" },
-        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1 }, // either brilliant-row or elaborate-mammoth
+        { id: "sop26", unlockable_if: { puzzles_solved: 14 }, unlock_cost: 1, slug: "how_i_earned_my_gold_star" },
         { id: "sop27", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "big_names" },
         { id: "sop28", unlockable_if: { puzzles_solved: 15 }, unlock_cost: 1, slug: "doable_double" },
         { id: "sop29", unlockable_if: { puzzles_solved: 16 }, unlock_cost: 1, slug: "taste_explosion" },
         { id: "sop30", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "art_history" } ,
         { id: "sop31", unlockable_if: { puzzles_solved: 17 }, unlock_cost: 1, slug: "magic_i" },
         { id: "sop32", unlockable_if: { puzzles_solved: 18 }, unlock_cost: 1, slug: "a_badly_broken_quote" },
-        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1 }, // Charged
+        { id: "sop33", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "charged"},
         { id: "sop34", unlockable_if: { puzzles_solved: 19 }, unlock_cost: 1, slug: "commentary" },
         { id: "sop35", unlockable_if: { puzzles_solved: 20 }, unlock_cost: 1, slug: "seating_arrangements" },
         { id: "sop36", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1, slug: "editors_solemnity" },
@@ -279,7 +279,7 @@ const HUNT: Hunt = {
         { id: "som01", is_meta: true, unlocked_if: { puzzles_solved: 34 }, slug: "chinatown"},
       ],
       gates: [
-        { id: "sog01", internal_description: "Picked up Mystery O's from Gala" },
+        { id: "sog01", internal_description: "Picked up Mystery O’s from Gala" },
         { id: "sog02", internal_description: "Picked up It's Not Clear from Gala" },
         { id: "sog03", internal_description: "Picked up Anything Is Popsicle from Gala" },
       ],
@@ -309,10 +309,18 @@ const HUNT: Hunt = {
         // Start with 5 unlockable, and make 1.5 (rounding up) more unlockable after each solve
         { id: "ptp01", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "eponymous_forensic_accountant" },
         { id: "ptp02", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "incognito" },
-        { id: "ptp03", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1 }, // And Now, A Puzzling Word From Our Sponsors
+        { id: "ptp03", unlocked_if: {
+          oneOf: [
+            {gate_satisfied: "ptg09"},
+            {gate_satisfied: "ptg10"},
+            {gate_satisfied: "ptg11"},
+            {gate_satisfied: "ptg12"},
+            {gate_satisfied: "ptg13"}
+          ]
+        }, slug: "and_now_a_puzzling_word_from_our_sponsors" },
         { id: "ptp04", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "chemicals_are_sexy" },
         { id: "ptp05", unlockable_if: { round_unlocked: "paper_trail" }, unlock_cost: 1, slug: "do_the_manual_calculations_dont_try_monte_carlo" },
-        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle (pending testing)
+        { id: "ptp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1 }, // World's Largest Crossword Puzzle
         { id: "ptp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "maze_of_lies" },
         { id: "ptp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "any_coat_will_do" },
         { id: "ptp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "the_eras_puzzle" },
@@ -360,6 +368,30 @@ const HUNT: Hunt = {
         { id: "ptg03", internal_description: "Ads enabled for quixotic-shoe", satisfied_if: {
           oneOf: [
             { slot_solved: "songs_on_the_radio" },
+            { round_unlocked: "paper_trail" },
+          ]},
+        },
+        { id: "ptg04", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed HellFresh"}, 
+        { id: "ptg05", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed BetterOprah"}, 
+        { id: "ptg06", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed HardlySafe"}, 
+        { id: "ptg07", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed DraughtQueens"}, 
+        { id: "ptg08", internal_description: "And Now, A Puzzling Word From Our Sponsors: Accessed TownSquareSpace"}, 
+        { id: "ptg09", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved HellFresh"}, 
+        { id: "ptg10", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved BetterOprah"}, 
+        { id: "ptg11", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved HardlySafe"}, 
+        { id: "ptg12", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved DraughtQueens"}, 
+        { id: "ptg13", internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved TownSquareSpace"}, 
+        { id: "ptg14", satisfied_if: [
+          {gate_satisfied: "ptg09"},
+          {gate_satisfied: "ptg10"},
+          {gate_satisfied: "ptg11"},
+          {gate_satisfied: "ptg12"},
+          {gate_satisfied: "ptg13"},
+        ], internal_description: "And Now, A Puzzling Word From Our Sponsors: Solved all minipuzzles - unlocks automatically" },
+        { id: "ptg15", internal_description: "And Now, A Puzzling Word From Our Sponsors: Picked up martini from bar" }, 
+        { id: "ptg16", internal_description: "Weather enabled for icy-box", satisfied_if: {
+          oneOf: [
+            { slot_unlocked: "ptp10" },
             { round_unlocked: "paper_trail" },
           ]},
         },
@@ -441,7 +473,7 @@ const HUNT: Hunt = {
         { id: "isp01", unlockable_if: { gate_satisfied: "isg01" }, unlock_cost: 1, slug: "皇帝の暗号" }, // great wave painting
         { id: "isp02", unlockable_if: { gate_satisfied: "isg02" }, unlock_cost: 1, slug: "this_is_just_a_test" }, // globe
         { id: "isp03", unlockable_if: { gate_satisfied: "isg03" }, unlock_cost: 1, slug: "paw_print_detective" }, // family portrait
-        { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1 }, // typewriter, a_puzzle_of_the_dead goes here
+        { id: "isp04", unlockable_if: { gate_satisfied: "isg04" }, unlock_cost: 1, slug: "a_puzzle_of_the_dead"}, // typewriter
         { id: "isp05", unlockable_if: { gate_satisfied: "isg05" }, unlock_cost: 1, slug: "cross_spread" }, // desk lamp,
         // The next 5 puzzles are unlockable once they are discovered in the
         // UI, but will not be discoverable until the corresponding lock is
@@ -452,7 +484,7 @@ const HUNT: Hunt = {
         { id: "isp06", unlockable_if: { gate_satisfied: "isg11" }, unlock_cost: 1, slug: "cahfee_regulah" }, // candy, in desk drawer/behind directional lock
         { id: "isp07", unlockable_if: { gate_satisfied: "isg12" }, unlock_cost: 1, slug: "the_center_is_in_plain_sight" }, // rings, behind binary switches
         { id: "isp08", unlockable_if: { gate_satisfied: "isg13" }, unlock_cost: 1, slug: "jargon" }, // money, inside safe/combination lock
-        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "placeholder_isp09" }, // ledger, behind numeric lock/rug, should be given_up
+        { id: "isp09", unlockable_if: { gate_satisfied: "isg14" }, unlock_cost: 1, slug: "given_up" }, // ledger, behind numeric lock/rug, should be given_up
         { id: "isp10", unlockable_if: { gate_satisfied: "isg15" }, unlock_cost: 1, slug: "placeholder_isp10" }, // note, inside cryptex, should be smoke_em_if_youve_got_em
 
         // The next 8 puzzles are only discoverable once the first meta is
@@ -471,7 +503,7 @@ const HUNT: Hunt = {
         { id: "isp19", unlocked_if: { gate_satisfied: "isg27" }, prize: 0, slug: "cahfee_regulah_blacklight" }, // blacklight version of isp06, behind directional lock
         { id: "isp20", unlocked_if: { gate_satisfied: "isg28" }, prize: 0, slug: "the_center_is_in_plain_sight_blacklight" }, // blacklight version of isp07, behind binary switch lock
         { id: "isp21", unlocked_if: { gate_satisfied: "isg29" }, prize: 0, slug: "jargon_blacklight" }, // blacklight version of isp08, behind combination lock
-        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "placeholder_isp09_blacklight" }, // blacklight version of isp09, behind numeric lock
+        { id: "isp22", unlocked_if: { gate_satisfied: "isg30" }, prize: 0, slug: "given_up_blacklight" }, // blacklight version of isp09, behind numeric lock
         { id: "isp23", unlocked_if: { gate_satisfied: "isg31" }, prize: 0, slug: "placeholder_isp10_blacklight" }, // blacklight version of isp10, behind word lock
 
         // Metas.
@@ -538,30 +570,29 @@ const HUNT: Hunt = {
       final_puzzle_slot: 'tmm01',
       puzzles: [
         // 24 feeders + 1 meta
-        // TODO: enforce ordering
-        { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "do_the_packing" },
-        { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "cacciando_trio_misterioso" },
-        { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "garden_anecdotes" },
-        { id: "tmp04", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "what_do_they_call_you" },
-        { id: "tmp05", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "engagements_and_other_crimes" },
-        { id: "tmp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "good_fences_make_good_otherwise_incompatible_neighbors" },
-        { id: "tmp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "find_other_ways_of_seeing" },
-        { id: "tmp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "absolutely_not_balderdash" },
-        { id: "tmp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "beyond_a_shadow_of_a_doubt" },
-        { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "weirdo_threaded_doodads"},
-        { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "can_do_transmissions" },
-        { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "cross_dash_word" },
-        { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "give_this_grid_a_shake" },
-        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1, slug: "in_communicado_tonight" },
-        { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "a_dash_of_color" },
-        { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "as_the_world_turandot" },
-        { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends" },
-        { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "a_map_and_a_shade_or_four" },
-        { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1 },
-        { id: "tmp20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1 },
-        { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
-        { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 },
-        { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1 },
+        { id: "tmp01", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "engagements_and_other_crimes" },
+        { id: "tmp02", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "what_do_they_call_you" },
+        { id: "tmp03", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "give_this_grid_a_shake" },
+        { id: "tmp04", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "garden_anecdotes" },
+        { id: "tmp05", unlockable_if: { round_unlocked: "murder_in_mitropolis" }, unlock_cost: 1, slug: "good_fences_make_good_otherwise_incompatible_neighbors" },
+        { id: "tmp06", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "cross_dash_word" },
+        { id: "tmp07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "a_map_and_a_shade_or_four" },
+        { id: "tmp08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "beyond_a_shadow_of_a_doubt" },
+        { id: "tmp09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "to_do_tile_that_rectangle" },
+        { id: "tmp10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "absolutely_not_balderdash"},
+        { id: "tmp11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "a_dash_of_color" },
+        { id: "tmp12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "weirdo_threaded_doodads" },
+        { id: "tmp13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "find_other_ways_of_seeing" },
+        { id: "tmp14", unlockable_if: { puzzles_solved: 6 }, unlock_cost: 1 }, // Sounds Like a Dodo to Me
+        { id: "tmp15", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "can_do_transmissions" },
+        { id: "tmp16", unlockable_if: { puzzles_solved: 7 }, unlock_cost: 1, slug: "we_can_do_this_all_day" },
+        { id: "tmp17", unlockable_if: { puzzles_solved: 8 }, unlock_cost: 1, slug: "do_the_packing" },
+        { id: "tmp18", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "cacciando_trio_misterioso" },
+        { id: "tmp19", unlockable_if: { puzzles_solved: 9 }, unlock_cost: 1, slug: "abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends" },
+        { id: "tmp20", unlockable_if: { puzzles_solved: 10 }, unlock_cost: 1, slug: "its_all_cheep_and_a_sheep_to_me" },
+        { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "as_the_world_turandot" },
+        { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1 }, // Splits Used As History
+        { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "in_communicado_tonight" },
         { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "estimation_dot_jpg" },
         { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
       ],
@@ -583,12 +614,29 @@ const HUNT: Hunt = {
       unlock_if: { interaction_completed: "the_crime_scene" },
     },
     {
-      slug: "the_vault",
-      title: "The Vault",
-      final_puzzle_slot: '',
+      slug: "events",
+      title: "Events",
+      final_puzzle_slot: null,
       puzzles: [
-        // TODO: single piece of endgame?
+        { id: "evt1", slug: "making_contact_with_an_informant", prize: 0, strong_currency_prize: 1 },
+        { id: "evt2", slug: "tailing_a_lead", prize: 0, strong_currency_prize: 1 },
+        { id: "evt3", slug: "navigating_high_society", prize: 0, strong_currency_prize: 1 },
+        { id: "evt4", slug: "seeing_the_big_picture", prize: 0, strong_currency_prize: 1 }
       ],
+      unlock_if: [
+        { gate_satisfied: "hunt_started" },
+      ],
+    },
+    {
+      // We don't actually want an "endgame" (or "The Vault") round to appear;
+      // we just want a page for the final interaction, but it seemed like a lot
+      // of work to promote The Vault to top-level. On the other hand, it
+      // doesn't seem like much of a giveaway if client-side code hard-codes the
+      // string "endgame" and special-cases it.
+      slug: "endgame",
+      title: "The Vault",
+      final_puzzle_slot: null,
+      puzzles: [],
       interactions: [
         {
           id: "the_vault",
@@ -610,6 +658,17 @@ const HUNT: Hunt = {
         { interaction_completed: "the_safehouse" },
       ],
     },
+    {
+      slug: "floaters",
+      title: "Floaters",
+      final_puzzle_slot: "",
+      puzzles: [
+        { id: "flp01", unlock_cost: 1, slug: "a_b_c_easy_as_1_2_3" },
+        { id: "flp02", unlock_cost: 1, slug: "wouthit_porbelm" },
+        { id: "flp03", unlock_cost: 1, slug: "hello_darkness_my_old_friend" },
+      ],
+      unlock_if: { oneOf: [] },
+    }
   ],
 };
 

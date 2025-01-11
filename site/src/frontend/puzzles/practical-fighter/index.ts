@@ -31,9 +31,9 @@ const puzzle: PuzzleDefinition = {
     {
       order: 25.0,
       description:
-        "Solvers have identified all of the clues and don't know what to do with them",
+        "Solvers have identified all of the clues and don’t know what to do with them",
       nudge:
-        "The flavortext tells you that this is a criss-cross puzzle. We've given the grid to you. Can you find a grid or design anywhere that looks like it could be a criss-cross grid? (If you haven't encountered a criss-cross puzzle before, you can find some examples here: https://www.puzzles.wiki/wiki/Criss-Cross)",
+        "The flavortext tells you that this is a criss-cross puzzle. We’ve given the grid to you. Can you find a grid or design anywhere that looks like it could be a criss-cross grid? (If you haven’t encountered a criss-cross puzzle before, you can find some examples here: https://www.puzzles.wiki/wiki/Criss-Cross)",
     },
     {
       order: 40.0,
@@ -47,7 +47,7 @@ const puzzle: PuzzleDefinition = {
       description:
         "Solvers have the criss-cross cluephrase but are unsure what to do with it",
       nudge:
-        "The cluephrase is a reference to a pop song from the 70's. Can you find it by searching for the phrase?",
+        "The cluephrase is a reference to a pop song from the 70’s. Can you find it by searching for the phrase?",
     },
     {
       order: 50.0,
@@ -60,14 +60,14 @@ const puzzle: PuzzleDefinition = {
       order: 51.0,
       description: "Solvers are still unsure how to make notes",
       nudge:
-        "For the first level, there are 4 ways to make notes on the radio:\r\n* Knocking on the radio\r\n* Touching one of the metal bolts in the radio's feet\r\n* Pressing the button labeled with a triangle\r\n* Shining a light (such as a phone flashlight) through the hole on the back next to the antenna symbol",
+        "For the first level, there are 4 ways to make notes on the radio:\r\n* Knocking on the radio\r\n* Touching one of the metal bolts in the radio’s feet\r\n* Pressing the button labeled with a triangle\r\n* Shining a light (such as a phone flashlight) through the hole on the back next to the antenna symbol",
     },
     {
       order: 55.0,
       description:
         "Solvers are struggling to determine the Station Pi note sequences",
       nudge:
-        "If you're struggling to tell the notes apart or put them in the correct sequence, you can use a tuner app to help identify the notes you need to play and the notes that you know how to play. We've had good luck with Tuner T1 (https://jsplash.com/tuner-t1.html) and the Musicca Tuner (https://www.musicca.com/tuner)",
+        "If you’re struggling to tell the notes apart or put them in the correct sequence, you can use a tuner app to help identify the notes you need to play and the notes that you know how to play. We’ve had good luck with Tuner T1 (https://jsplash.com/tuner-t1.html) and the Musicca Tuner (https://www.musicca.com/tuner)",
     },
   ],
   canned_responses: [
@@ -78,7 +78,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["KNOCK THREE TIMES"],
       reply:
-        "Good idea! You'll get the best reaction if you do that with a little confidence on the top surface (you probably already know of what).",
+        "Good idea! You’ll get the best reaction if you do that with a little confidence on the top surface (you probably already know of what).",
     },
   ],
 };

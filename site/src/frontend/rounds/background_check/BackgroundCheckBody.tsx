@@ -157,8 +157,7 @@ const BackgroundCheckDisplayObject = ({
           {...getFloatingProps()}
         >
           <div>{item.title}</div>
-          <div>{item.answer}</div>
-          <div>{item.desc}</div>
+          {item.answer ? <div>{item.answer}</div> : <div>{item.desc}</div>}
         </FridgeItemPopover>
       )}
     </>

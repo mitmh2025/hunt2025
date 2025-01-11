@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Networking Event",
   slug: "networking_event",
   initial_description:
-    "A lettered list of descriptive sentences, and below it a word list and a diagram.",
+    "Some strange clues, a list of words, and a cute little stick figure dude",
   answer: "FAT TUESDAY",
   authors: ["Andrew Russell"],
   editors: ["Chris Gatesman", "Joanna Murray", "Kevin Hwang"],

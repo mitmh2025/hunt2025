@@ -10,6 +10,7 @@ import { getGuessedUuids, getGuessesByUuid } from "./Util";
 export type PuzzleState = {
   availableRounds: MinimalRounds;
   disabledByUuid: Record<string, boolean>;
+  guessedUuids: Set<string>;
   guessResponsesByUuid: GuessResponsesByUuid;
   queryByUuid: Record<string, string>;
 };
@@ -23,6 +24,7 @@ const DEFAULT_PUZZLE_STATE = {
     },
     {},
   ),
+  guessedUuids: getGuessedUuids(),
   guessResponsesByUuid: {},
   queryByUuid: getGuessesByUuid(),
 };
@@ -75,12 +77,14 @@ const reducer: Reducer<PuzzleState, PuzzleAction> = (
 ): PuzzleState => {
   switch (action.type) {
     case PuzzleActionType.GUESS: {
+      const newGuessedUuids = [...state.guessedUuids, action.uuid];
       const newDisabledByUuid = {
         ...state.disabledByUuid,
       };
       newDisabledByUuid[action.uuid] = true;
       return {
         ...state,
+        guessedUuids: new Set(newGuessedUuids),
         disabledByUuid: newDisabledByUuid,
       };
     }
@@ -101,7 +105,12 @@ const reducer: Reducer<PuzzleState, PuzzleAction> = (
         guessResponsesByUuid: action.guessResponsesByUuid,
       };
     case PuzzleActionType.RESTART_PUZZLE:
-      return { ...DEFAULT_PUZZLE_STATE };
+      return {
+        ...DEFAULT_PUZZLE_STATE,
+        disabledByUuid: {},
+        guessedUuids: new Set(),
+        queryByUuid: {},
+      };
     case PuzzleActionType.RESTART_ROUND: {
       const roundUuids = action.round.puzzles.reduce<Set<string>>(
         (acc: Set<string>, puzzle: MinimalPuzzle) => {
@@ -116,6 +125,20 @@ const reducer: Reducer<PuzzleState, PuzzleAction> = (
           newDisabledByUuid[uuid] = disabled;
         }
       }
+      const newGuessResponsesByUuid: GuessResponsesByUuid = {};
+      for (const [uuid, response] of Object.entries(
+        state.guessResponsesByUuid,
+      )) {
+        if (!roundUuids.has(uuid)) {
+          newGuessResponsesByUuid[uuid] = response;
+        }
+      }
+      const newGuessedUuids = new Set<string>();
+      for (const uuid of [...state.guessedUuids]) {
+        if (!roundUuids.has(uuid)) {
+          newGuessedUuids.add(uuid);
+        }
+      }
       const newQueryByUuid: Record<string, string> = {};
       for (const [uuid, query] of Object.entries(state.queryByUuid)) {
         if (!roundUuids.has(uuid)) {
@@ -124,7 +147,12 @@ const reducer: Reducer<PuzzleState, PuzzleAction> = (
       }
       return {
         ...state,
+        availableRounds: {
+          rounds: state.availableRounds.rounds,
+        },
+        guessedUuids: newGuessedUuids,
         disabledByUuid: newDisabledByUuid,
+        guessResponsesByUuid: newGuessResponsesByUuid,
         queryByUuid: newQueryByUuid,
       };
     }

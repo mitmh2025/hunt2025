@@ -247,13 +247,13 @@ const GRAND_ILLUSION_EXTRACTION_TABLE_DATA: GrandIllusionResolveExtractionTableD
   [
     ["var(--black)", "48°18′21″N 14°17′11″E", "Linz", "E", "H", "F", "C"],
     ["var(--black)", "51°03′00″N 13°44′24″E", "Dresden", "R", "M", "A", "A"],
-    ["#a64d79", "48°27′00″N 22°45′00″E", "Mukachevo", "*V", "A", "I", "N"],
+    ["#674ea7", "48°27′00″N 22°45′00″E", "Mukachevo", "*V", "A", "I", "N"],
     ["#f1c232", "49°56′17″N 17°54′16″E", "Opava", "*I", "S", "*R", "*G"],
     ["var(--black)", "50°02′01″N 22°00′17″E", "Rzeszów", "P", "S", "Y", "R"],
     ["#cc0000", "49°41′18″N 14°00′33″E", "Příbram", "*I", "*N", "*T", "*E"],
     ["var(--black)", "50°15′45″N 19°01′18″E", "Katowice", "A", "I", "A", "L"],
     ["#6aa84f", "49°13′22″N 18°44′24″E", "Žilina", "*M", "*P", "*L", "O"],
-    ["#a64d79", "48°37′26″N 22°17′42″E", "Uzhhorod", "*E", "E", "E", "R"],
+    ["#674ea7", "48°37′26″N 22°17′42″E", "Uzhhorod", "*E", "E", "E", "R"],
   ];
 
 const GrandIllusionExtractionTable = styled.table`

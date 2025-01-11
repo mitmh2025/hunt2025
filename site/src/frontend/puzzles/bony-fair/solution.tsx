@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import LinkedImage from "../../components/LinkedImage";
 import { PuzzleAnswer } from "../../components/StyledUI";
 import chart1 from "./assets/chart1.png";
@@ -60,6 +61,7 @@ const SizedImage = styled(LinkedImage)`
 const Solution = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p>
         In the puzzle, we see a variety of emojis, colored circles and some
         letters around a 25x25 matrix. This appears to be some sort of adjacency
@@ -228,7 +230,7 @@ const Solution = (): JSX.Element => {
         <br />
         R7 🟢 → NJ; remaining state that borders NY
         <br />
-        C15 ⚪ → NH; remaining state that borders NJ
+        C15 ⚪ → DE; remaining state that borders NJ
       </p>
       <p>
         C12 ⚪ (A) → VA; only remaining state code ending with A that is within
@@ -313,7 +315,7 @@ const Solution = (): JSX.Element => {
         <br />
         C21 ⚪ → OR; remaining state that borders WA
         <br />
-        C6 🟡 → WY; remaining state that borders NV
+        C6 🟡 → CA; remaining state that borders NV
       </p>
       <h3>Solve path for four-color logic theorem</h3>
       <p>

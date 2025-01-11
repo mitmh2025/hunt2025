@@ -486,6 +486,7 @@ export default function createConfigs(_env, argv) {
       murder_in_mitropolis:
         "./src/frontend/rounds/murder_in_mitropolis/client.tsx",
       stray_leads: "./src/frontend/rounds/stray_leads/client.tsx",
+      events: "./src/frontend/rounds/events/client.tsx",
 
       // Illegal search interactions
       illegal_search_bookcase:
@@ -510,10 +511,14 @@ export default function createConfigs(_env, argv) {
       puzzle_deserted_ninja: "./src/frontend/puzzles/deserted-ninja/client.tsx",
       puzzle_few_nail: "./src/frontend/puzzles/few-nail/client.tsx",
       puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
+      puzzle_lean_lock: "./src/frontend/puzzles/lean-lock/client.tsx",
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",
       puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
+      puzzle_quixotic_shoe: "./src/frontend/puzzles/quixotic-shoe/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
+      puzzle_sorrowful_glass:
+        "./src/frontend/puzzles/sorrowful-glass/client.tsx",
       puzzle_sinful_turkey: "./src/frontend/puzzles/sinful-turkey/client.tsx",
       puzzle_unfit_tower: "./src/frontend/puzzles/unfit-tower/client.tsx",
       puzzle_unhealthy_mint: "./src/frontend/puzzles/unhealthy-mint/client.tsx",
@@ -682,6 +687,9 @@ export default function createConfigs(_env, argv) {
     },
     experiments: {
       outputModule: true,
+    },
+    optimization: {
+      minimize: false,
     },
     output: {
       module: true,

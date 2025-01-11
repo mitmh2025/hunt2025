@@ -33,12 +33,12 @@ export async function seed(knex: Knex): Promise<void> {
         username,
         password: "password",
         name: username,
-        teamEmail: "team@mitmh2025.com",
+        teamEmail: `team+${username}@mitmh2025.com`,
         contactName: "Jack Florey",
-        contactEmail: "jack@mitmh2025.com",
+        contactEmail: `jack+${username}@mitmh2025.com`,
         contactPhone: "+16172531000",
         secondaryContactName: "James E. Tetazoo",
-        secondaryContactEmail: "james@mitmh2025.com",
+        secondaryContactEmail: `james+${username}@mitmh2025.com`,
         secondaryContactPhone: "+16172532000",
         contactMailingAddress: "123 Main St, Cambridge, MA 02139",
         peopleTotal: 1,
@@ -137,12 +137,14 @@ export async function seed(knex: Knex): Promise<void> {
   await createTeam("team");
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked" as const,
-        round.slug,
-      );
+      if (round.slug !== "floaters") {
+        await ensureActivityLogEntry(
+          mutator,
+          team_id,
+          "round_unlocked" as const,
+          round.slug,
+        );
+      }
     }
     for (const slug of slugs) {
       await ensureActivityLogEntry(mutator, team_id, "puzzle_unlockable", slug);
@@ -151,12 +153,14 @@ export async function seed(knex: Knex): Promise<void> {
   await createTeam("unlocked", async (team_id, mutator) => {
     // For the "unlocked" team: create puzzle_unlocked entries for all rounds & puzzles
     for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked",
-        round.slug,
-      );
+      if (round.slug !== "floaters") {
+        await ensureActivityLogEntry(
+          mutator,
+          team_id,
+          "round_unlocked",
+          round.slug,
+        );
+      }
     }
     for (const slug of slugs) {
       await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
@@ -169,12 +173,14 @@ export async function seed(knex: Knex): Promise<void> {
     // For the "solved" team:
     // unlock all rounds and puzzles
     for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked",
-        round.slug,
-      );
+      if (round.slug !== "floaters") {
+        await ensureActivityLogEntry(
+          mutator,
+          team_id,
+          "round_unlocked",
+          round.slug,
+        );
+      }
     }
     for (const slug of slugs) {
       await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);

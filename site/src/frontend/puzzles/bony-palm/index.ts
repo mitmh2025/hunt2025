@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cross Spread",
   slug: "cross_spread",
-  initial_description:
-    "Flavor text and five lines of letters, not forming legible words",
+  initial_description: "Five lines of letters",
   answer: "REUNITED",
   authors: ["Leland Aldridge"],
   editors: ["Chris Gatesman", "James Douberley", "Robin Deits"],
@@ -76,10 +75,10 @@ const puzzle: PuzzleDefinition = {
     {
       order: 100.0,
       description:
-        "Solvers have turned each clue's answer into a digraph based on the major arcana numbering.",
+        "Solvers have turned each clue’s answer into a digraph based on the major arcana numbering.",
       keywords: ["extraction", "digraph", "letter pairs"],
       nudge:
-        "These letter pairs don't look to spell anything. You've handled a similar situation in the puzzle already.",
+        "These letter pairs don’t look to spell anything. You’ve handled a similar situation in the puzzle already.",
     },
   ],
   canned_responses: [

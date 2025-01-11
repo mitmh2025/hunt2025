@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Downright Backwards",
   slug: "downright_backwards",
   initial_description:
-    "A list of crossword-style clues sorted into two halves, and a list of number triplets.",
+    "A list of crossword clues and a list of number triplets",
   answer: "GUIANA CHESTNUT",
   authors: ["Leland Aldridge"],
   editors: ["James Douberley", "Li-Mei Lim"],

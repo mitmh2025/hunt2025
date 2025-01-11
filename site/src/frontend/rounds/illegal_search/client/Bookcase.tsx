@@ -1,10 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../../lib/api/client";
-import {
-  COPY_ONLY_CLASS,
-  NO_COPY_CLASS,
-} from "../../../components/CopyToClipboard";
 import book_pull from "../assets/bookcase/book_pull.mp3";
 import book_push from "../assets/bookcase/book_push.mp3";
 import dark_wood_texture from "../assets/bookcase/dark_wood_texture.jpg";
@@ -300,19 +296,11 @@ export function BookcaseInteraction({
                       data-title={book.title}
                     >
                       <span className="spine" style={style}>
-                        <span className={`title ${NO_COPY_CLASS}`}>
+                        <div className="title">
                           {book.title}
                           <br />
-                        </span>
-                        <span className={`author ${NO_COPY_CLASS}`}>
-                          {book.author}
-                        </span>
-                        {!interactive && (
-                          <>
-                            <div className={COPY_ONLY_CLASS}>{book.title}</div>
-                            <div className={COPY_ONLY_CLASS}>{book.author}</div>
-                          </>
-                        )}
+                        </div>
+                        <div className="author">{book.author}</div>
                       </span>
                       <span className="top" />
                       <span className="cover" />
@@ -332,19 +320,11 @@ export function BookcaseInteraction({
                       data-title={book.title}
                     >
                       <span className="spine" style={style}>
-                        <span className={`title ${NO_COPY_CLASS}`}>
+                        <div className="title">
                           {book.title}
                           <br />
-                        </span>
-                        <span className={`author ${NO_COPY_CLASS}`}>
-                          {book.author}
-                        </span>
-                        {!interactive && (
-                          <>
-                            <div className={COPY_ONLY_CLASS}>{book.title}</div>
-                            <div className={COPY_ONLY_CLASS}>{book.author}</div>
-                          </>
-                        )}
+                        </div>
+                        <div className="author">{book.author}</div>
                       </span>
                       <span className="cover" />
                     </HorizontalBook>
@@ -357,19 +337,11 @@ export function BookcaseInteraction({
                   <BookcaseExtraBookRow key={j}>
                     <HorizontalBook colSpan={3} $color={book.color}>
                       <span className="spine" style={style}>
-                        <span className={`title ${NO_COPY_CLASS}`}>
+                        <div className="title">
                           {book.title}
                           <br />
-                        </span>
-                        <span className={`author ${NO_COPY_CLASS}`}>
-                          {book.author}
-                        </span>
-                        {!interactive && (
-                          <>
-                            <div className={COPY_ONLY_CLASS}>{book.title}</div>
-                            <div className={COPY_ONLY_CLASS}>{book.author}</div>
-                          </>
-                        )}
+                        </div>
+                        <div className="author">{book.author}</div>
                       </span>
                       <span className="cover" />
                     </HorizontalBook>

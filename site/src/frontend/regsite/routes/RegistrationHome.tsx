@@ -65,17 +65,22 @@ export default function RegistrationHome({
               )}
 
               <p>
-                Please register your team as early as possible to assist us in
-                planning, even if you have to guess at some of the information.
-                Most fields can be updated at any time before January 17th, and
-                we would appreciate updates as you solidify your team’s plans
-                for the year.
+                The registration deadline for all teams is{" "}
+                <strong>Wednesday January 15th</strong>. Most fields can be
+                updated at any time before January 17th, and we would appreciate
+                updates as you solidify your team’s plans for the year.
               </p>
             </section>
           </>
         )}
         <section id="updates">
           <h2>Latest Updates</h2>
+          <p>
+            <strong>2025.01.08 - </strong>The registration deadline for all
+            teams is Wednesday morning on January 15th. We’ve also added some
+            additional information below regarding the suggested attire in
+            Papa’s invitation.
+          </p>
           <p>
             <strong>2025.01.07 - </strong>We are pleased to share that Robert
             Finster has invited you to a gala celebrating his daughter’s

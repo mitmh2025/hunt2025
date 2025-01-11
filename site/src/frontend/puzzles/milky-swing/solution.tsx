@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
@@ -19,6 +20,7 @@ const StyledTable = styled.table`
 const Solution = (): JSX.Element => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p>
         This puzzle is about the video game Mortal Kombat, and specifically the
         “friendship” finishing moves from Mortal Kombat 2 (as hinted by the K in

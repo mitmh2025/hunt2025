@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Bar Talk",
   slug: "bar_talk",
   initial_description:
-    "A picture of beer taps, accompanied by a list of audio files where someone is speaking.",
+    "A picture of beer taps accompanied by a list of audio files where someone is speaking",
   answer: "LISTEN",
   authors: ["rfong", "Steven Keyes"],
   editors: ["Alex Churchill", "Hubert Hwang", "Julian West", "Matt Behlmann"],

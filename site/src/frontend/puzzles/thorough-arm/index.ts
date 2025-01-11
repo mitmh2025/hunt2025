@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Drunkens and Flagons",
   slug: "drunkens_and_flagons",
-  initial_description: "Zebra style logic puzzle.",
+  initial_description: "Zebra style logic puzzle",
   answer: "SLEIGHT OF HAND",
   authors: ["Ariel Schwartz"],
   editors: ["Chris Gatesman", "Erin Price", "Hubert Hwang", "Robin Deits"],

@@ -160,11 +160,7 @@ const SHAKESPEARE_DATA: [string, number, string, string[]][] = [
     "Miranda",
     14,
     "ROCK",
-    [
-      "therefore wast thou",
-      "Deservedly confined into this [14],",
-      "Who hadst deserved more than a prison.",
-    ],
+    ["therefore wast thou", "Deservedly confined into this [14],"],
   ],
   [
     "Juliet",
@@ -549,14 +545,14 @@ const Solution = (): JSX.Element => {
         for an abstract submitted to the Lunar and Planetary Science Conference,
         verbatim (which should readily come up if the text of the haiku is
         searched for on google). This is just a fun little tradition among
-        planetary scientists for some reason!
+        planetary scientists!
       </p>
       <p>
         Each of the 19 re-assembled drawings/paintings corresponds to a figure
         (or part of a figure) directly from one of the clued abstracts. There is
         one “?” on each piece of art. By comparing the position of the ? on the
         art to the actual plot you can see that the ? is in the place of one
-        distinct letter
+        distinct letter.
       </p>
       <p>
         On the reverse of each drawing/painting, there is a quote from a

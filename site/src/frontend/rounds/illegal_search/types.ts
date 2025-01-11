@@ -181,6 +181,7 @@ export type NodeShared = {
 
   id: NodeId;
   background: string; // Imported asset that is presented as the full-screen background for this view.
+  title: string; // Imported asset that is presented as the title for the round, in the lower-right-hand corner of the viewport.
   // navigations added in subclass
   // interactions added in subclass
   // modals added in subclass

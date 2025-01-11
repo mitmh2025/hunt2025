@@ -23,6 +23,9 @@ import {
 } from "../rounds/illegal_search";
 import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render404, render500 } from "../utils/renderApp";
+import { aboutHandler } from "./routes/about/about";
+import { healthAndSafetyHandler } from "./routes/about/health_and_safety";
+import { radioHandler } from "./routes/about/radio";
 import { activityLogHandler } from "./routes/activity_log";
 import { allPuzzlesHandler } from "./routes/all_puzzles";
 import { hubHandler } from "./routes/hub";
@@ -32,7 +35,7 @@ import {
   interactionRequestHandler,
   interactionStartPostHandler,
 } from "./routes/interaction";
-import { hackLoginGetHandler } from "./routes/login";
+import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
 import { manageTeamHandler } from "./routes/manage_team";
 import { huntNotStartedHandler } from "./routes/not_started";
 import {
@@ -43,7 +46,9 @@ import {
   puzzleUnlockPostHandler,
   subpuzzleHandler,
   type SubpuzzleParams,
+  subpuzzleGuessPostHandler,
 } from "./routes/puzzle";
+import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
 
 // Type parameters to RequestHandler are:
@@ -183,10 +188,16 @@ export function registerUiRoutes({
   authRouter: Router;
   unauthRouter: Router;
 }) {
+  unauthRouter.get("/robots.txt", robotsHandler);
+
   unauthRouter.get(
     "/login",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      await renderApp(hackLoginGetHandler, req, res, next);
+      if (process.env.NODE_ENV === "development") {
+        await renderApp(hackLoginGetHandler, req, res, next);
+      } else {
+        await renderApp(loginGetHandler, req, res, next);
+      }
     }),
   );
   unauthRouter.post("/login", loginPostHandler);
@@ -236,6 +247,10 @@ export function registerUiRoutes({
     ),
   );
   authRouter.post("/puzzles/:puzzleSlug/guess", puzzleGuessPostHandler);
+  authRouter.post(
+    "/subpuzzles/:subpuzzleSlug/guess",
+    subpuzzleGuessPostHandler,
+  );
   authRouter.post("/puzzles/:puzzleSlug/unlock", puzzleUnlockPostHandler);
   authRouter.get(
     "/puzzles/:puzzleSlug/solution",
@@ -248,49 +263,83 @@ export function registerUiRoutes({
 
   /* Routes for 'unlisted' puzzles. */
   authRouter.get(
-    "/i_kid_ewe_knot",
+    "/csorrowsd_gird",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (
-        !(
-          req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
-        ).includes("tmg01")
-      ) {
-        await req.frontendApi.markTeamGateSatisfied({
-          params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg01" },
-        });
-      }
       await renderApp(
         subpuzzleHandler,
         {
           ...req,
-          params: { subpuzzleSlug: "i_kid_ewe_knot" },
+          params: { subpuzzleSlug: "csorrowsd_gird" },
         } as Request<SubpuzzleParams>,
         res,
         next,
       );
     }),
   );
+  const plainRouletteData = [
+    { href: "/i_kid_ewe_knot", slug: "i_kid_ewe_knot", gate: "tmg01" },
+    { href: "/stitchy_situation", slug: "stitchy_situation", gate: "tmg02" },
+  ];
+  for (const { href, slug, gate } of plainRouletteData) {
+    authRouter.get(
+      href,
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (
+          !(
+            req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
+          ).includes(gate)
+        ) {
+          await req.frontendApi.markTeamGateSatisfied({
+            params: { teamId: `${req.teamState?.teamId}`, gateId: gate },
+          });
+        }
+        await renderApp(
+          subpuzzleHandler,
+          {
+            ...req,
+            params: { subpuzzleSlug: slug },
+          } as Request<SubpuzzleParams>,
+          res,
+          next,
+        );
+      }),
+    );
+  }
+  const quixoticShoeData = [
+    { href: "/hellfresh", slug: "hellfresh", gate: "ptg04" },
+    { href: "/betteroprah", slug: "betteroprah", gate: "ptg05" },
+    { href: "/hardlysafe", slug: "hardlysafe", gate: "ptg06" },
+    { href: "/draughtqueens", slug: "draughtqueens", gate: "ptg07" },
+    { href: "/townsquarespace", slug: "townsquarespace", gate: "ptg08" },
+  ];
+  for (const { href, slug, gate } of quixoticShoeData) {
+    authRouter.get(
+      href,
+      asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        if (
+          !(req.teamState?.state.rounds.paper_trail?.gates ?? []).includes(gate)
+        ) {
+          await req.frontendApi.markTeamGateSatisfied({
+            params: { teamId: `${req.teamState?.teamId}`, gateId: gate },
+          });
+        }
+        await renderApp(
+          subpuzzleHandler,
+          {
+            ...req,
+            params: { subpuzzleSlug: slug },
+          } as Request<SubpuzzleParams>,
+          res,
+          next,
+        );
+      }),
+    );
+  }
+  // Redirect misspelling to correct spelling
   authRouter.get(
-    "/stitchy_situation",
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      if (
-        !(
-          req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
-        ).includes("tmg02")
-      ) {
-        await req.frontendApi.markTeamGateSatisfied({
-          params: { teamId: `${req.teamState?.teamId}`, gateId: "tmg02" },
-        });
-      }
-      await renderApp(
-        subpuzzleHandler,
-        {
-          ...req,
-          params: { subpuzzleSlug: "stitchy_situation" },
-        } as Request<SubpuzzleParams>,
-        res,
-        next,
-      );
+    "/draftqueens",
+    asyncHandler((_: Request, res: Response) => {
+      res.redirect("/draughtqueens");
     }),
   );
 
@@ -313,6 +362,27 @@ export function registerUiRoutes({
   authRouter.post(
     "/interactions/:slug/complete",
     interactionCompletePostHandler,
+  );
+
+  authRouter.get(
+    "/about",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(aboutHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/health_and_safety",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(healthAndSafetyHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/radio",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(radioHandler, req, res, next);
+    }),
   );
 
   authRouter.get(

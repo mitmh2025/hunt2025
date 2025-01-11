@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Press Play",
   slug: "press_play",
-  initial_description: "13 audio files of singing.",
+  initial_description: "Audio files of singing",
   answer: "STENOGRAPHERS",
   authors: [
     "Alex St Claire",

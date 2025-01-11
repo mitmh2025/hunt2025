@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   title: "Follow The Rules",
   slug: "follow_the_rules",
   initial_description:
-    "An interactive interface with a 3x3 grid of toggle switches and a 3x3 grid of lights.",
+    "An interactive interface with a grid of toggle switches and a grid of lights",
   answer: "MATCHBOOK",
   authors: ["Leland Aldridge"],
   editors: [

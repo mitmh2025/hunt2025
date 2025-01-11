@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Knights of the Square Table",
   slug: "knights_of_the_square_table",
-  initial_description: "A 9x9 grid with a handful of markings.",
+  initial_description: "A 9x9 grid logic puzzle",
   answer: "MORTHOND",
   authors: ["David Greenspan", "Robin Deits"],
   editors: ["Chris Gatesman", "James Douberley", "tinaun"],

@@ -58,6 +58,7 @@ import newspaper_modal_solved from "./assets/secret/newspaper_modal_solved.png";
 import newspaper_modal_unsolved from "./assets/secret/newspaper_modal_unsolved.png";
 import poster from "./assets/secret/poster.png";
 import poster_modal from "./assets/secret/poster_modal.svg";
+import round_title_secret_room from "./assets/secret/round_title_secret_room.svg";
 import stamp from "./assets/secret/stamp.svg";
 import stamp_modal from "./assets/secret/stamp_modal.svg";
 import teddybear from "./assets/secret/teddybear.svg";
@@ -72,6 +73,7 @@ import globe from "./assets/study/globe.svg";
 import greatwave_frame from "./assets/study/greatwave_frame.png";
 import lamp from "./assets/study/lamp.svg";
 import open_door from "./assets/study/open_door.png";
+import round_title from "./assets/study/round_title.svg";
 import rug_east from "./assets/study/rug_east.svg";
 import rug_north from "./assets/study/rug_north.svg";
 import safe_frame from "./assets/study/safe_frame.png";
@@ -200,6 +202,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "main_north",
     background: main_north_bg,
+    title: round_title,
     placedAssets: [
       {
         // Rug
@@ -442,6 +445,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "main_east",
     background: main_east_bg,
+    title: round_title,
     placedAssets: [
       {
         area: {
@@ -523,6 +527,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "main_west",
     background: main_west_bg,
+    title: round_title,
     placedAssets: [
       {
         area: {
@@ -596,6 +601,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "rug",
     background: rug_bg,
+    title: round_title,
     placedAssets: [],
     navigations: [
       // top and right edge: pan to main_east
@@ -686,6 +692,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "desk_drawer",
     background: drawer_bg,
+    title: round_title,
     placedAssets: [],
     navigations: [
       {
@@ -780,6 +787,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "bookcase",
     background: "__wallpaper__",
+    title: round_title,
     placedAssets: [
       {
         area: {
@@ -885,6 +893,7 @@ const ALL_NODES: NodeInternal[] = [
   {
     id: "cryptex",
     background: cryptex_bg,
+    title: round_title,
     placedAssets: [],
     navigations: [
       {
@@ -976,6 +985,7 @@ const ALL_NODES: NodeInternal[] = [
     // This is the one to the right of the bookcase, obscuring the safe
     id: "painting1",
     background: "__wallpaper__",
+    title: round_title,
     placedAssets: [],
     navigations: [
       {
@@ -1008,6 +1018,7 @@ const ALL_NODES: NodeInternal[] = [
     // zoomed in on the safe behind painting 1
     id: "safe",
     background: "__wallpaper_lg__",
+    title: round_title,
     placedAssets: [],
     navigations: [
       {
@@ -1077,6 +1088,7 @@ const ALL_NODES: NodeInternal[] = [
     // This is the one on the west wall, obscuring the fuse box
     id: "painting2",
     background: "__wallpaper__",
+    title: round_title,
     placedAssets: [],
     navigations: [
       {
@@ -1149,6 +1161,7 @@ const ALL_NODES: NodeInternal[] = [
     // Close-up of telephone.  Interaction (after solving the second meta) should play the morse code audio.
     id: "telephone",
     background: "__wallpaper__",
+    title: round_title,
     placedAssets: [
       {
         area: {
@@ -1207,6 +1220,7 @@ const ALL_NODES: NodeInternal[] = [
     // Secret room
     id: "secret",
     background: secret_bg,
+    title: round_title_secret_room,
     placedAssets: [
       {
         area: {
@@ -1659,6 +1673,7 @@ function filteredForFrontend(
   return {
     id: node.id,
     background: node.background,
+    title: node.title,
     placedAssets: keptPlacedAssets,
     navigations: keptNavigations,
     interactions: keptInteractions,

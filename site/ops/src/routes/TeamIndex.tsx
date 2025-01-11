@@ -31,6 +31,7 @@ type TeamIndexData = {
   puzzlesSolvedLast3Hours: number;
   hintsRequested: number;
   keys: number;
+  clues: number;
 };
 
 function GrantKeysDialog({
@@ -89,7 +90,7 @@ function GrantKeysDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Grant Keys to <strong>{teamsDisplay}</strong>
+        Grant Keys (puzzle unlocks) to <strong>{teamsDisplay}</strong>
       </DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -112,8 +113,102 @@ function GrantKeysDialog({
           </label>
         </DialogContent>
         <DialogActions>
-          <Button type="submit" disabled={submitting}>
-            Grant {qty} Keys
+          <Button type="button" disabled={submitting} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" disabled={submitting}>
+            Grant {qty} Keys (puzzle unlocks)
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}
+
+function GrantCluesDialog({
+  teamIds,
+  open,
+  onClose,
+}: {
+  teamIds: number[] | "all";
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const [qty, setQty] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const notifications = useNotifications();
+
+  const teamsDisplay =
+    teamIds === "all" ? "all teams" : `${teamIds.length} teams`;
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (qty > 0) {
+      setSubmitting(true);
+      adminClient
+        .grantStrongCurrency({
+          body: {
+            teamIds,
+            amount: qty,
+          },
+        })
+        .then((result) => {
+          if (result.status !== 200) {
+            throw new Error(`HTTP ${result.status}: ${result.body}`);
+          }
+
+          appendActivityLogEntries(result.body);
+          notifications.show(`Granted ${qty} clues to ${teamsDisplay}`, {
+            severity: "success",
+            autoHideDuration: 3000,
+          });
+          onClose();
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to grant clues: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    }
+  }
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        Grant Clues (free answers) to <strong>{teamsDisplay}</strong>
+      </DialogTitle>
+      <form onSubmit={handleSubmit}>
+        <DialogContent>
+          <label>
+            Amount:{" "}
+            <Input
+              type="number"
+              name="amount"
+              inputProps={{
+                min: 1,
+                max: 99,
+                step: 1,
+              }}
+              required
+              value={qty}
+              onChange={(e) => {
+                setQty(parseInt(e.target.value, 10));
+              }}
+            />
+          </label>
+        </DialogContent>
+        <DialogActions>
+          <Button type="button" disabled={submitting} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" disabled={submitting}>
+            Grant {qty} Clues (free answers)
           </Button>
         </DialogActions>
       </form>
@@ -123,6 +218,9 @@ function GrantKeysDialog({
 
 export default function TeamIndex() {
   const [grantKeysDialogTeams, setGrantKeysDialogTeams] = useState<
+    null | "all" | number[]
+  >(null);
+  const [grantCluesDialogTeams, setGrantCluesDialogTeams] = useState<
     null | "all" | number[]
   >(null);
 
@@ -148,6 +246,7 @@ export default function TeamIndex() {
         puzzlesSolvedLast3Hours: 0, // computed below
         hintsRequested: 0, // computed below
         keys: team.state.available_currency,
+        clues: team.state.available_strong_currency,
       };
     }
 
@@ -225,6 +324,10 @@ export default function TeamIndex() {
         header: "Keys",
         filterVariant: "range",
       }),
+      columnHelper.accessor("clues", {
+        header: "Clues",
+        filterVariant: "range",
+      }),
     ];
   }, []);
 
@@ -275,7 +378,21 @@ export default function TeamIndex() {
               );
             }}
           >
-            Grant Keys
+            🗝️ Grant Keys
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              const teamIds = table
+                .getSelectedRowModel()
+                .rows.map((row) => row.original.teamId);
+
+              setGrantCluesDialogTeams(
+                teamIds.length === indexData.length ? "all" : teamIds,
+              );
+            }}
+          >
+            🔎 Grant Clues
           </Button>
         </Box>
       );
@@ -290,6 +407,13 @@ export default function TeamIndex() {
         open={grantKeysDialogTeams !== null}
         onClose={() => {
           setGrantKeysDialogTeams(null);
+        }}
+      />
+      <GrantCluesDialog
+        teamIds={grantCluesDialogTeams ?? []}
+        open={grantCluesDialogTeams !== null}
+        onClose={() => {
+          setGrantCluesDialogTeams(null);
         }}
       />
     </>

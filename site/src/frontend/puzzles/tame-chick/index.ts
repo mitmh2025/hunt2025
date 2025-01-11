@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Recipe For Success",
   slug: "a_recipe_for_success",
-  initial_description: "Several pickup lines and innuendo.",
+  initial_description: "Several completely normal and reasonable pickup lines",
   answer: "LET THEM EAT CAKE",
 
   authors: ["James Douberley", "Emilie Josephs"],
@@ -40,7 +40,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have filled in many of the clues but are unable to extract",
       keywords: [],
       nudge:
-        "The highlighted squares give letters. Because the responses at the bottom are given alphabetically, you'll need to read them out in a different order.",
+        "The highlighted squares give letters. Because the responses at the bottom are given alphabetically, you’ll need to read them out in a different order.",
     },
   ],
   canned_responses: [

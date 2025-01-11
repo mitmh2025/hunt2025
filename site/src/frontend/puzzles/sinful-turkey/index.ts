@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Center Is In Plain Sight",
   slug: "the_center_is_in_plain_sight",
-  initial_description: "A list of instructions and an image of a box.",
+  initial_description: "Image of a box with mini-puzzles",
   answer: "FIORE SARDO", // TODO: set pt 2: "SPARE PARTS"
   authors: ["Elan Blaustein"],
   editors: ["Erin Price", "James Douberley", "Teddy McArthur"],
@@ -116,7 +116,7 @@ const puzzle: PuzzleDefinition = {
         "Orientation: Solvers haven’t identified the connection between the inscriptions along the perimeter",
       keywords: ["perimeter", "inscriptions", "orientation"],
       nudge:
-        '"Cardinal Orientation" clues the four main compass points, North, East, South, West. These can be associated with the inscriptions along the perimeter.',
+        "“Cardinal Orientation” clues the four main compass points, North, East, South, West. These can be associated with the inscriptions along the perimeter.",
     },
     {
       order: 27.1,

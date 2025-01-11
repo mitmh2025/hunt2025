@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cruciverbal",
   slug: "cruciverbal",
-  initial_description: "A US-style crossword grid and two audio files",
+  initial_description: "A crossword grid and two audio files",
   answer: "WITHOUT STOPPING",
   authors: ["Teddy McArthur", "Amanda Giermann", "Jonathan Lay", "Kevin Hwang"],
   editors: ["Elan Blaustein", "Hubert Hwang", "James Douberley", "Nathan Fung"],

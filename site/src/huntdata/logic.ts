@@ -129,6 +129,7 @@ export class LogicTeamState {
   interactions_started: Set<string>;
   interactions_completed: Map<string, string>;
   available_currency: number;
+  available_strong_currency: number;
   correct_answers: Record<string, string>;
 
   constructor(initial?: Partial<LogicTeamState>) {
@@ -144,6 +145,7 @@ export class LogicTeamState {
       initial?.interactions_completed ?? [],
     );
     this.available_currency = initial?.available_currency ?? 0;
+    this.available_strong_currency = initial?.available_strong_currency ?? 0;
     this.correct_answers = {};
   }
 

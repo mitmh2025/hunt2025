@@ -86,7 +86,7 @@ const ROWS = [
     "3",
     "C",
     "James K. Polk",
-    "Lessert Known Leaders of the Americas in the 19th Century",
+    "Lesser Known Leaders of the Americas in the 19th Century",
     "J. Bush",
   ],
   [
@@ -324,12 +324,6 @@ export default function Solution(): JSX.Element {
       <p>
         The first answers of the matching words spell the answer,{" "}
         <PuzzleAnswer>RAP OFF KEY</PuzzleAnswer>.
-      </p>
-      <h3>Author’s note</h3>
-      <p>
-        Special thanks to They Might Be Giants and manager Pete Smolin for
-        featuring Hovering Sombrero on the TMBG Dial-a-Song app from January
-        17-20, 2025, as an Easter egg for this year’s solvers.
       </p>
     </>
   );

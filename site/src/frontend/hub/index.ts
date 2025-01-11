@@ -2,6 +2,7 @@ import { type TeamHuntState } from "../../../lib/api/client";
 import { type ArtGalleryResult } from "../interactions/interview_at_the_art_gallery/graph";
 import { type BoardwalkInteractionResult } from "../interactions/interview_at_the_boardwalk/graph";
 import { type CasinoResult } from "../interactions/interview_at_the_casino/graph";
+import { eventDataForTeam } from "../rounds/events/eventData";
 import artGallery from "../rounds/the_missing_diamond/assets/art-gallery-solved.svg";
 import boardwalk from "../rounds/the_missing_diamond/assets/boardwalk-solved.svg";
 import casino from "../rounds/the_missing_diamond/assets/casino-solved.svg";
@@ -157,7 +158,7 @@ const MURDER_IN_MITROPOLIS_COMPLETED = (teamState: TeamHuntState) => {
   );
 };
 const VAULT_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(teamState, "the_vault", "the_vault");
+  return INTERACTION_COMPLETED(teamState, "endgame", "the_vault");
 };
 
 const OBJECTS: HubObjectSetting[] = [
@@ -810,7 +811,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 107,
     shadow: false,
     href: "/interactions/the_vault",
-    condition: INTERACTION_UNLOCKED("the_vault", "the_vault"),
+    condition: INTERACTION_UNLOCKED("endgame", "the_vault"),
   },
 
   // strings
@@ -1046,7 +1047,10 @@ const SUSPECTS: Record<string, HubSuspectSetting> = {
   },
 };
 
-export function hubState(teamState: TeamHuntState): HubState {
+export function hubState(
+  teamState: TeamHuntState,
+  { username }: { username: string },
+): HubState {
   const rounds = Object.entries(teamState.rounds).map(([slug, roundObj]) => {
     return {
       slug,
@@ -1087,10 +1091,13 @@ export function hubState(teamState: TeamHuntState): HubState {
     }),
   );
 
+  const events = eventDataForTeam(username);
+
   return {
     epoch: teamState.epoch,
     rounds,
     objects,
     suspects,
+    events,
   };
 }

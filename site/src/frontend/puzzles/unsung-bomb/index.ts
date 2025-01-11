@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "An Argument",
   slug: "an_argument",
-  initial_description: "A connect-the-dots with letters and several clues.",
+  initial_description: "A connect-the-dots with letters, and several clues",
   answer: "RIGHT TO BEAR ARMS",
   authors: ["James Douberley"],
   editors: ["Li-Mei Lim", "Robin Deits"],

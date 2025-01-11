@@ -270,6 +270,7 @@ export type NavBarState = {
   epoch: number;
   rounds: NavBarRoundData[];
   currency: number;
+  strongCurrency: number;
 };
 
 const NavBar = ({
@@ -282,7 +283,7 @@ const NavBar = ({
   whepUrl: string;
 }) => {
   const { teamName } = info;
-  const { rounds, currency } = state;
+  const { rounds, currency, strongCurrency } = state;
   return (
     <Nav>
       <NavItems>
@@ -320,11 +321,28 @@ const NavBar = ({
             <li>
               <NavLink href="/story">Story So Far</NavLink>
             </li>
+            <SubDropdown>
+              <NavLink tabIndex={0}>About</NavLink>
+              <ul>
+                <li>
+                  <NavLink href="/about">How the Hunt Works</NavLink>
+                </li>
+                <li>
+                  <NavLink href="/radio">Radio Instruction Booklet</NavLink>
+                </li>
+                <li>
+                  <NavLink href="/health_and_safety">Health and Safety</NavLink>
+                </li>
+              </ul>
+            </SubDropdown>
           </ul>
         </TopLevelDropdown>
         <Spacer />
         <AudioControls whepUrl={whepUrl} />
         <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>
+        <Currency title={`Clues: ${strongCurrency}`}>
+          🔎 {strongCurrency}
+        </Currency>
         <Dropdown $alignRight>
           <TeamNameNavLink tabIndex={0}>
             <span>{teamName}</span>

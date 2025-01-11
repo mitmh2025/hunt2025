@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import chart1 from "./assets/chart1.png";
@@ -36,9 +37,9 @@ const CHART_MAIN_GRID = [
     "🟡",
     "🟡",
     "🟡",
-    "A",
-    "A",
-    "A",
+    "⚪A",
+    "⚪A",
+    "⚪A",
     "⚪",
     "⚪",
     "⚪",
@@ -54,7 +55,7 @@ const CHART_MAIN_GRID = [
     "⚪",
   ],
   [
-    "A",
+    "🔴A",
     "❌",
     "❌",
     "❌",
@@ -82,7 +83,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "H",
+    "🔴H",
     "❌",
     "❌",
     "❌",
@@ -306,7 +307,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "M",
+    "⚪M",
     "✅",
     "❌",
     "❌",
@@ -334,7 +335,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "A",
+    "⚪A",
     "❌",
     "❌",
     "❌",
@@ -362,7 +363,7 @@ const CHART_MAIN_GRID = [
     "❌",
   ],
   [
-    "P",
+    "⚪P",
     "❌",
     "❌",
     "✅",
@@ -415,7 +416,7 @@ const CHART_MAIN_GRID = [
     "✅",
     "❌",
     "❌",
-    "⏺",
+    "⏺️",
   ],
   [
     "⚪",
@@ -762,24 +763,41 @@ const EQUATIONS = [
   ["🌊 = 0️⃣", "🔴↔️🟡", ""],
 ];
 
+const MarginImage = styled(LinkedImage)`
+  display: block;
+  margin-bottom: 3em;
+`;
+
 const SizedImage = styled(LinkedImage)`
   display: block;
-  width: 100%;
-  img {
-    display: block;
-    margin: auto;
-    width: 361px;
+  margin: 1em auto;
+  width: 150px;
+`;
+
+const StyledTable = styled.table`
+  td {
+    text-align: center;
+    vertical-align: middle;
   }
+`;
+
+const Red = styled.td`
+  background-color: #f4cccc;
+`;
+
+const Blue = styled.td`
+  background-color: #c9daf8;
 `;
 
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <LinkedImage
+      <NotoColorEmojiFont />
+      <MarginImage
         src={grid}
         alt="A large grid filled with ✅, ❌, 🌊 and ⏺️ emoji. Colored circles, some annotated with letters, line the edges of the grid. There are some emoji equations below the grid"
       />
-      <table className={COPY_ONLY_CLASS}>
+      <StyledTable className={COPY_ONLY_CLASS}>
         <tr>
           <td>{CHART_TOP_LEFT}</td>
           <td colSpan={26}>{CHART_TOP}</td>
@@ -792,12 +810,20 @@ const Puzzle = (): JSX.Element => {
         </tr>
         {CHART_MAIN_GRID.slice(1).map((row, i) => (
           <tr key={i}>
-            {row.map((char, j) => (
-              <td key={j}>{char}</td>
-            ))}
+            {row.map((char, j) => {
+              if (j > 0 && i % 2 === 1) {
+                return <Red key={j}>{char}</Red>;
+              } else if (j > 0 && j % 2 === 0) {
+                return <Blue key={j}>{char}</Blue>;
+              } else {
+                return <td key={j}>{char}</td>;
+              }
+            })}
           </tr>
         ))}
-      </table>
+      </StyledTable>
+      <br className={COPY_ONLY_CLASS} />
+      <br className={COPY_ONLY_CLASS} />
       <table className={COPY_ONLY_CLASS}>
         {EQUATIONS.map((row, i) => (
           <tr key={i}>

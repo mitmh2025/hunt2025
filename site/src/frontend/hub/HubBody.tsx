@@ -1,13 +1,13 @@
 import React, { useLayoutEffect } from "react";
 import { styled } from "styled-components";
-import Cork from "../assets/cork.png";
+import Cork from "../assets/cork.jpg";
 import { HubFonts } from "./HubFonts";
 import BabyPhoto from "./assets/baby.png";
 import BilliePhoto from "./assets/billie.png";
 import BrickWall from "./assets/brickwall.jpg";
+import BulletinBoardBg from "./assets/bulletin_board_frame.png";
 import BusinessCardImg from "./assets/business_card.png";
 import CarterPhoto from "./assets/carter.png";
-import BulletinBoardBg from "./assets/frame_and_scuffs.png";
 import GladysPhoto from "./assets/gladys.png";
 import KatrinaPhoto from "./assets/katrina.png";
 import MainQuestionImg from "./assets/main_question.png";
@@ -15,6 +15,7 @@ import PapaPhoto from "./assets/papa.png";
 import pin_gold from "./assets/pin_gold.png";
 import pin_teal from "./assets/pin_teal.png";
 import RoverPhoto from "./assets/rover.png";
+import BulletinBoardScuffs from "./assets/scuffs.png";
 import SidecarPhoto from "./assets/sidecar.png";
 import Events from "./components/Events";
 import SuspectCard from "./components/SuspectCard";
@@ -38,9 +39,10 @@ const Wall = styled.div`
 const Board = styled.main`
   background:
     url(${BulletinBoardBg}) center / cover,
+    url(${BulletinBoardScuffs}) center / cover,
     url(${Cork}) center / ${getRelativeSizeCss(512)} repeat;
   overflow: hidden;
-  width: min(var(--viewport-width), ${MAX_WIDTH}px);
+  width: min(calc(100vw - var(--scrollbar-width)), ${MAX_WIDTH}px);
   height: ${getRelativeSizeCss(MAX_HEIGHT)};
   position: relative;
 `;
@@ -75,12 +77,8 @@ const Pin = styled.img<{ $x: number; $y: number }>`
 
 function _calculateViewportDims() {
   document.documentElement.style.setProperty(
-    "--viewport-width",
-    `${document.documentElement.clientWidth}px`,
-  );
-  document.documentElement.style.setProperty(
-    "--viewport-height",
-    `${document.documentElement.clientHeight}px`,
+    "--scrollbar-width",
+    `${window.innerWidth - document.documentElement.clientWidth}px`,
   );
 }
 
@@ -120,7 +118,11 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={1003}
             y={381}
             rotation={2.1}
-          />
+          >
+            Papa is the head of the Finster crime family that runs the
+            MITropolis underworld. He’s a hard man who rose to the top the hard
+            way, but rumors are he’s going soft in his old age.
+          </SuspectCard>
           <SuspectCard
             name="Ferdinand Carter"
             title="The Fiancé"
@@ -132,7 +134,13 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={1000}
             y={968}
             rotation={0.6}
-          />
+          >
+            The scion of Carter Brothers Jewelers, Carter has recently returned
+            from Europe with the famous Shadow Diamond, leverage he’s used to
+            work his way into the Finster family — both financially and
+            personally. He’s in love with Gladys, so he might be blinded to
+            what’s going on.
+          </SuspectCard>
           <SuspectCard
             name="Colt Sidecar"
             title="The Right-Hand Man"
@@ -144,7 +152,12 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={1015}
             y={1555}
             rotation={-1.5}
-          />
+          >
+            Papa’s right hand man, Sidecar’s a mean bartender. Clever and loyal,
+            he’s been with Papa since the beginning. He certainly knows how to
+            keep a secret. No one believes Sidecar is his real name, but also no
+            one knows what it actually is.
+          </SuspectCard>
           <SuspectCard
             name='Roy "Rover" Canoso'
             title="The Muscle"
@@ -155,7 +168,11 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={1482}
             y={1640}
             rotation={2}
-          />
+          >
+            Rover is the Finster family’s chauffeur and muscle. The family’s
+            Duesenberg Model J is his pride and joy. The strong silent type, no
+            one really knows what’s going on in that big head of his.
+          </SuspectCard>
           <SuspectCard
             name="Gladys Finster"
             title="The Heir Apparent"
@@ -166,7 +183,12 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={2483}
             y={359}
             rotation={-1.4}
-          />
+          >
+            Papa’s oldest daughter, Gladys is the prim and proper face of the
+            family’s legitimate front, Finster & Daughters Jewelers. She’s
+            engaged to Ferdinand Carter, but anyone with eyes can tell she’s not
+            thrilled about it – she’s in it for the business.
+          </SuspectCard>
           <SuspectCard
             name='Teresa "Baby" Finster'
             title="The Wild Child"
@@ -177,7 +199,12 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={2465}
             y={967}
             rotation={-1.7}
-          />
+          >
+            Papa’s youngest daughter, Baby is the wild child of the family. I
+            should know, I’ve gotten her out of a few jams in the past. Nothing
+            too serious, the sort of youthful indiscretions common to her
+            generation.
+          </SuspectCard>
           <SuspectCard
             name="Katrina Jay"
             title="The Girlfriend"
@@ -188,7 +215,11 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={2467}
             y={1526}
             rotation={0.9}
-          />
+          >
+            Katrina is the latest in the long line of Baby’s belles. She’s a
+            fashion designer fresh on the scene – no one knows much else about
+            her. She’s the wild card in this.
+          </SuspectCard>
           <SuspectCard
             name="Billie O'Ryan"
             title="The Gumshoe"
@@ -199,8 +230,12 @@ const HubBody = ({ state }: { state: HubState }) => {
             x={2001}
             y={1621}
             rotation={-0.6}
-          />
-          <Events />
+          >
+            That’s me, Billie O’Ryan, private investigator. I’ve worked the
+            streets of MITropolis for a while. I know the ins and outs of the
+            city. I know not to trust anybody – including my clients.
+          </SuspectCard>
+          <Events events={state.events} />
           <Pin src={pin_teal} alt="" $x={729} $y={531} />
           <BusinessCard
             src={BusinessCardImg}

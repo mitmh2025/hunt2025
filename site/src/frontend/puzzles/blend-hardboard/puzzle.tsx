@@ -1,5 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
+import { deviceMax } from "../../utils/breakpoints";
 
 const DATA: ListingProps[] = [
   {
@@ -68,6 +73,8 @@ const StyledHeader = styled.div`
   display: flex;
   align-items: baseline;
   font-weight: bold;
+  white-space: pre;
+  max-width: 100%;
 `;
 
 const Timestamp = styled.span`
@@ -86,23 +93,33 @@ const BigCaps = styled.span`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-rows: repeat(5, auto);
-  grid-template-columns: repeat(2, auto);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (${deviceMax.md}) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  gap: 2em;
+`;
+
+const FlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 1em;
 `;
 
 type ListingProps = {
+  className?: string;
+  description: string;
   timestamp: string;
   title: string;
-  description: string;
 };
 
 const Header = ({
+  className,
   timestamp,
   title,
 }: Omit<ListingProps, "description">): JSX.Element => {
   return (
-    <StyledHeader>
+    <StyledHeader className={className}>
       <Timestamp>
         <span>{timestamp}</span>
       </Timestamp>
@@ -119,8 +136,19 @@ const Listing = ({
 }: ListingProps): JSX.Element => {
   return (
     <div>
-      <Header timestamp={timestamp} title={title} />
-      <div>{description}</div>
+      <Header className={NO_COPY_CLASS} timestamp={timestamp} title={title} />
+      <div className={NO_COPY_CLASS}>{description}</div>
+      <table className={COPY_ONLY_CLASS}>
+        <tbody>
+          <tr>
+            <td>{timestamp}</td>
+            <td>{title}</td>
+          </tr>
+          <tr>
+            <td colSpan={2}>{description}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
@@ -129,9 +157,16 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <Grid>
-        {DATA.map((props, i) => (
-          <Listing key={i} {...props} />
-        ))}
+        <FlexColumn>
+          {DATA.slice(0, 5).map((props, i) => (
+            <Listing key={i} {...props} />
+          ))}
+        </FlexColumn>
+        <FlexColumn>
+          {DATA.slice(5).map((props, i) => (
+            <Listing key={i} {...props} />
+          ))}
+        </FlexColumn>
       </Grid>
     </>
   );

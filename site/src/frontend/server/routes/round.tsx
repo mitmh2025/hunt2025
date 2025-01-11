@@ -33,7 +33,13 @@ export const roundHandler = (
 
   return wrapContentWithNavBar(
     {
-      node: <Component teamState={teamState.state} node={req.query.node} />,
+      node: (
+        <Component
+          teamState={teamState.state}
+          teamInfo={teamState.info}
+          node={req.query.node}
+        />
+      ),
       entrypoints: content.entrypoint ? [content.entrypoint] : undefined,
       title: content.title,
     },

@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import {
+  CLEANSTRING_REGEX,
   HAS_STORAGE,
   LOCAL_STORAGE_PREFIX,
 } from "./puzzle-components/Constants";
@@ -11,20 +12,24 @@ import type {
   GuessResponsesByUuid,
   MinimalRounds,
 } from "./puzzle-components/Typedefs";
-import { getGuessedUuids, getGuessesByUuid } from "./puzzle-components/Util";
+import { getGuessesByUuid } from "./puzzle-components/Util";
 import usePuzzleState, {
   PuzzleActionType,
 } from "./puzzle-components/usePuzzleState";
 
 const App = (): JSX.Element => {
   const [
-    { availableRounds, disabledByUuid, guessResponsesByUuid, queryByUuid },
+    {
+      availableRounds,
+      disabledByUuid,
+      guessedUuids,
+      guessResponsesByUuid,
+      queryByUuid,
+    },
     dispatch,
   ] = usePuzzleState();
-  const [guessedUuids, setGuessedUuids] =
-    useState<Set<string>>(getGuessedUuids());
 
-  useEffect(() => {
+  const refreshState = useCallback(() => {
     fetch("/puzzles/the_annual_massachusetts_spelling_bee/state", {
       method: "POST",
       body: JSON.stringify({ guessesByUuid: getGuessesByUuid() }),
@@ -48,19 +53,26 @@ const App = (): JSX.Element => {
         console.log("request failed", rejectionReason);
       },
     );
-  }, [dispatch, guessedUuids]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    refreshState();
+  }, [refreshState]);
 
   const guess = useCallback(
     (uuid: string, guess: string) => {
-      localStorage.setItem(`${LOCAL_STORAGE_PREFIX}${uuid}`, guess);
-      setGuessedUuids(new Set(...guessedUuids, uuid));
+      localStorage.setItem(
+        `${LOCAL_STORAGE_PREFIX}${uuid}`,
+        guess.toUpperCase().replace(CLEANSTRING_REGEX, ""),
+      );
       dispatch({
         type: PuzzleActionType.GUESS,
         uuid,
         guess,
       });
+      refreshState();
     },
-    [dispatch, guessedUuids],
+    [dispatch, refreshState],
   );
 
   return (
@@ -74,34 +86,42 @@ const App = (): JSX.Element => {
       {availableRounds.rounds.length === 0 && (
         <StyledDiv>Loading spelling bee...</StyledDiv>
       )}
-      {availableRounds.rounds.map((round) => (
-        <RoundView
-          key={round.name}
-          disabledByUuid={disabledByUuid}
-          dispatch={dispatch}
-          guess={guess}
-          guessResponsesByUuid={guessResponsesByUuid}
-          onRestart={() => {
-            if (HAS_STORAGE) {
-              const uuidsToRemove = new Set<string>();
-              for (const puzzle of round.puzzles) {
-                uuidsToRemove.add(puzzle.uuid);
-                localStorage.removeItem(
-                  `${LOCAL_STORAGE_PREFIX}${puzzle.uuid}`,
-                );
+      {availableRounds.rounds.map((round, i) => {
+        const nextRound = availableRounds.rounds[i + 1];
+        return (
+          <RoundView
+            key={round.name}
+            disabledByUuid={disabledByUuid}
+            dispatch={dispatch}
+            guess={guess}
+            guessResponsesByUuid={guessResponsesByUuid}
+            onRestart={() => {
+              if (HAS_STORAGE) {
+                const uuidsToRemove = new Set<string>();
+                for (const puzzle of round.puzzles) {
+                  uuidsToRemove.add(puzzle.uuid);
+                  localStorage.removeItem(
+                    `${LOCAL_STORAGE_PREFIX}${puzzle.uuid}`,
+                  );
+                }
+                dispatch({
+                  type: PuzzleActionType.RESTART_ROUND,
+                  round,
+                });
+                refreshState();
               }
-              dispatch({
-                type: PuzzleActionType.RESTART_ROUND,
-                round,
-              });
-              setGuessedUuids(guessedUuids.difference(uuidsToRemove));
+            }}
+            queryByUuid={queryByUuid}
+            round={round}
+            // Show the restart button if we have not yet entered any new
+            showRestartButton={
+              !nextRound ||
+              nextRound.puzzles.every(({ uuid }) => !guessedUuids.has(uuid))
             }
-          }}
-          queryByUuid={queryByUuid}
-          round={round}
-        />
-      ))}
-      {availableRounds.rounds.length > 1 && (
+          />
+        );
+      })}
+      {availableRounds.rounds.length > 0 && (
         <StyledDiv>
           <SpellingBeeStatusViewProps rounds={availableRounds} />
           <input
@@ -125,13 +145,13 @@ const App = (): JSX.Element => {
                     localStorage.removeItem(item);
                   }
                 }
-                setGuessedUuids(new Set<string>());
                 dispatch({
                   type: PuzzleActionType.RESTART_PUZZLE,
                 });
+                refreshState();
               }
             }}
-          />{" "}
+          />
         </StyledDiv>
       )}
     </>

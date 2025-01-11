@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Ultimate Insult",
   slug: "the_ultimate_insult",
-  initial_description: "List of 10 insults",
+  initial_description: "List of insults",
   answer: "SMASH MOUTH",
   authors: ["Alex St Claire", "Kawika Pierson"],
   editors: ["Hubert Hwang", "James Douberley"],

@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Sudoku?",
   slug: "a_sudoku",
-  initial_description: "Grids with numbers.",
+  initial_description: "Grids with numbers",
   answer: "BRICK AND MORTAR",
   authors: ["Tanya Khovanova", "Robin Deits"],
   editors: [

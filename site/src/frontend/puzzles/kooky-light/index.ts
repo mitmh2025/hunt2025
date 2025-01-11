@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "It’s Not Clear",
   slug: "its_not_clear",
-  initial_description: "Several physical transparency prints.",
+  initial_description: "Physical Puzzle—several sheets of transparencies",
   answer: "FORWARD SLASH",
   authors: ["Elan Blaustein", "Erin Price"],
   editors: ["Anna Brunner", "Chris Gatesman", "Kevin Hwang"],

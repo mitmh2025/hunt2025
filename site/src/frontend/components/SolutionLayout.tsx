@@ -55,7 +55,6 @@ const SolutionHintTableRow = ({ hint }: { hint: Hint }) => {
     <SpoileredRow $revealed={revealed} onClick={onClick}>
       <td>{hint.order}</td>
       <td>{hint.description}</td>
-      <td>{hint.keywords?.join(", ")}</td>
       <td>{hint.nudge}</td>
     </SpoileredRow>
   );
@@ -71,7 +70,6 @@ const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
             <tr>
               <th>Order</th>
               <th>Description</th>
-              <th>Keywords</th>
               <th>Nudge</th>
             </tr>
           </thead>

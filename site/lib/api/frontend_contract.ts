@@ -79,6 +79,18 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
       }),
     }),
   ),
+  InternalActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("strong_currency_adjusted") }),
+  ),
+  InternalActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("strong_currency_exchanged") }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("puzzle_answer_bought"),
+      data: z.object({ answer: z.string() }),
+    }),
+  ),
 ]);
 export type InternalActivityLogEntry = z.output<
   typeof InternalActivityLogEntrySchema
@@ -246,4 +258,15 @@ export const frontendContract = c.router({
       401: z.null(),
     },
   },
+  adFrequencyQuixoticShoe: {
+    method: "POST",
+    path: "/teams/:teamId/puzzles/quixotic-shoe/adFrequency",
+    body: z.object({
+      status: z.union([z.literal("plus"), z.literal("minus"), z.null()]),
+    }),
+    responses: {
+      200: PuzzleStateLog,
+    },
+  },
+
 });

@@ -5,7 +5,6 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Papa’s Stash",
   slug: "papas_stash",
-  initial_description: "A diagram is painted on the wall.",
   answer: "ACCESS INVISIBLE INK",
   authors: ["Alex St Claire", "Mike Mannis"],
   editors: [
@@ -70,11 +69,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: [
-        "ACCESS SUE STORM INK",
-        "ACCESS INVISIBLE WOMAN INK",
-        "INVISIBLE INK",
-      ],
+      guess: ["ACCESS SUE STORM INK", "ACCESS INVISIBLE WOMAN INK"],
       reply: "Keep going!",
     },
   ],

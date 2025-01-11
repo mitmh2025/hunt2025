@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Any Coat Will Do",
   slug: "any_coat_will_do",
   initial_description:
-    "A scene where there are 12 people wearing different coats of different colors. There is also a list of phrases included alongside the picture.",
+    "An image of people in a club wearing colored coats, and an incomplete setlist",
   answer: "OPAL",
   authors: ["Genie Luzwick", "Kevin Hwang", "Sid Creutz"],
   editors: ["James Douberley", "Robin Deits", "tinaun"],

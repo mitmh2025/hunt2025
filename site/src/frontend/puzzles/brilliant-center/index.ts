@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Mellow Planet",
   slug: "mellow_planet",
   initial_description:
-    "Two columns of clues with letters between them, and a wildlife scene.",
+    "Two columns of clues with letters between them, and a wildlife scene",
   answer: "HOT DOG",
   authors: ["Brie Frame"],
   editors: ["Hubert Hwang", "Robin Deits"],

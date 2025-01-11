@@ -1,6 +1,8 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { HScrollTableWrapper } from "../../components/StyledUI";
+import adam from "./assets/adam.mp3";
+import adamCaptions from "./assets/adam.vtt";
 
 const TableElement = styled.table`
   width: 100%;
@@ -69,6 +71,11 @@ const Solution = () => {
         (“Email us an obscure fact that ruins something for us”), which unlocks
         an audio message in which Adam Conover gives the final answer,{" "}
         <strong>SAMGAKSAN</strong>.
+      </p>
+      <p>
+        <audio controls src={adam}>
+          <track default kind="captions" srcLang="en" src={adamCaptions} />
+        </audio>
       </p>
       <p>Details:</p>
       <Table>
@@ -344,7 +351,7 @@ const Solution = () => {
               paintings of aurochs, mammoths, or sculptures of fish
             </TableCell>
             <TableCell>
-              <strong>N</strong>udes
+              <strong>N</strong>ude
             </TableCell>
             <TableCell>
               Prehistoric Sites and Decorated Caves of the Vézère Valley
@@ -456,8 +463,8 @@ const Solution = () => {
               <strong>A</strong>ntenna
             </TableCell>
             <TableCell>Angkor</TableCell>
-            <TableCell>13.412</TableCell>
-            <TableCell>102.648</TableCell>
+            <TableCell>13.439</TableCell>
+            <TableCell>103.868</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>

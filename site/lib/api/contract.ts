@@ -27,6 +27,11 @@ export const RateLimitStateSchema = z.object({
   retryAfter: z.string().datetime(),
 });
 
+export const SubpuzzleStateSchema = z.object({
+  answer: z.string().optional(),
+  guesses: z.array(GuessSchema).default([]),
+});
+
 // Still unsure if we need to be able to return any information about puzzles in the "locked" state.
 // We broadly do not care to service requests for puzzles that are neither unlockable nor unlocked.
 const PuzzleLockEnum = z
@@ -38,6 +43,7 @@ const PuzzleSummarySchema = z.object({
   stray: z.boolean().optional(), // If true, this puzzle initially unlocked in stray leads, regardless of its current round assignment.
   // visible implied by existence
   locked: PuzzleLockEnum,
+  partially_solved: z.boolean().optional(),
   unlocked_at: z.number().optional(), // epoch at which the puzzle was unlocked
   answer: z.string().optional(),
 });
@@ -45,6 +51,7 @@ const PuzzleSummarySchema = z.object({
 export const PuzzleStateSchema = PuzzleSummarySchema.omit({
   unlocked_at: true,
 }).extend({
+  subpuzzles: z.record(slug, SubpuzzleStateSchema).optional(),
   guesses: z.array(GuessSchema).default([]),
 });
 
@@ -71,8 +78,10 @@ const RoundStateSchema = z.object({
 export const TeamHuntStateSchema = z.object({
   epoch: z.number(), // The largest value of `id` of the activity_log entries which were processed to produce this TeamState
   currency: z.number(),
+  strong_currency: z.number(),
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
+  gates_satisfied: z.array(z.string()),
 });
 
 export const TeamStateSchema = z.object({
@@ -80,6 +89,7 @@ export const TeamStateSchema = z.object({
   info: z.object({
     epoch: z.number(),
     teamName: z.string(),
+    teamUsername: z.string(),
   }),
   state: TeamHuntStateSchema,
   whepUrl: z.string(),
@@ -94,6 +104,7 @@ export const ActivityLogEntryBaseSchema = z.object({
   team_id: z.number().optional(),
   timestamp: z.string().datetime().pipe(z.coerce.date()),
   currency_delta: z.number(),
+  strong_currency_delta: z.number(),
 });
 
 const ActivityLogEntryWithSlugAndTitle = ActivityLogEntryBaseSchema.merge(
@@ -151,6 +162,18 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({ type: z.literal("rate_limits_reset") }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("strong_currency_adjusted") }),
+  ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("strong_currency_exchanged") }),
+  ),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({
+      type: z.literal("puzzle_answer_bought"),
+      answer: z.string(),
+    }),
   ),
 ]);
 
@@ -348,6 +371,15 @@ export const publicContract = c.router({
     },
     summary: "Get the state of one puzzle",
   },
+  getSubpuzzleState: {
+    method: "GET",
+    path: `/subpuzzle/:slug`,
+    responses: {
+      200: SubpuzzleStateSchema,
+      404: z.null(),
+    },
+    summary: "Get the state of one subpuzzle",
+  },
   getActivityLog: {
     method: "GET",
     path: "/activity",
@@ -366,12 +398,61 @@ export const publicContract = c.router({
       404: z.null(),
     },
   },
+  submitSubpuzzleGuess: {
+    method: "PUT",
+    path: `/subpuzzle/:slug/guess`,
+    body: SubmitGuessSchema,
+    responses: {
+      200: SubpuzzleStateSchema,
+      429: RateLimitStateSchema,
+      404: z.null(),
+    },
+  },
   unlockPuzzle: {
     method: "POST",
     path: `/puzzle/:slug/unlock`,
     body: z.object({}),
     responses: {
       200: PuzzleStateSchema,
+      404: z.null(),
+    },
+  },
+  exchangeStrongCurrency: {
+    method: "POST",
+    path: `/exchangeStrongCurrency`,
+    body: z.object({}),
+    responses: {
+      200: z.object({
+        currency: z.number(),
+      }),
+      400: z.object({
+        code: z.enum(["INSUFFICIENT_STRONG_CURRENCY"]),
+      }),
+    },
+  },
+  buyPuzzleAnswer: {
+    method: "POST",
+    path: `/puzzle/:slug/buyAnswer`,
+    body: z.object({}),
+    responses: {
+      200: z.object({
+        answer: z.string(),
+      }),
+      400: z.object({
+        code: z.enum([
+          "INSUFFICIENT_STRONG_CURRENCY",
+          "PUZZLE_NOT_UNLOCKED",
+          "PUZZLE_ALREADY_SOLVED",
+        ]),
+      }),
+    },
+  },
+  markSubpuzzleUnlocked: {
+    method: "POST",
+    path: `/subpuzzle/:slug/unlock`,
+    body: z.object({}),
+    responses: {
+      200: SubpuzzleStateSchema,
       404: z.null(),
     },
   },

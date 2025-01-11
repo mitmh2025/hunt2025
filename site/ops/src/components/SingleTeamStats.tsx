@@ -23,7 +23,7 @@ type SingleTeamStatsData = {
   teamSize: number;
   onCampusSize: number;
   keys: number;
-  freeSolveCurrency: number;
+  clues: number;
   unsolvedUnlockedPuzzles: number;
   hintsRequested: number;
   hintsRequestedLast3Hours: number;
@@ -84,7 +84,7 @@ function GrantKeysDialog({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Grant Keys to <strong>{teamUsername}</strong>
+        Grant Keys (puzzle unlocks) to <strong>{teamUsername}</strong>
       </DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -107,8 +107,101 @@ function GrantKeysDialog({
           </label>
         </DialogContent>
         <DialogActions>
-          <Button type="submit" disabled={submitting}>
-            Grant {qty} Keys
+          <Button type="button" disabled={submitting} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" disabled={submitting}>
+            Grant {qty} Keys (puzzle unlocks)
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}
+
+function GrantCluesDialog({
+  teamId,
+  teamUsername,
+  open,
+  onClose,
+}: {
+  teamId: number;
+  teamUsername: string;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const [qty, setQty] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const notifications = useNotifications();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (qty > 0) {
+      setSubmitting(true);
+      adminClient
+        .grantStrongCurrency({
+          body: {
+            teamIds: [teamId],
+            amount: qty,
+          },
+        })
+        .then((result) => {
+          if (result.status !== 200) {
+            throw new Error(`HTTP ${result.status}: ${result.body}`);
+          }
+
+          appendActivityLogEntries(result.body);
+          notifications.show(`Granted ${qty} clues to ${teamUsername}`, {
+            severity: "success",
+            autoHideDuration: 3000,
+          });
+          onClose();
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to grant clues: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
+    }
+  }
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        Grant Clues (free answers) to <strong>{teamUsername}</strong>
+      </DialogTitle>
+      <form onSubmit={handleSubmit}>
+        <DialogContent>
+          <label>
+            Amount:{" "}
+            <Input
+              type="number"
+              name="amount"
+              inputProps={{
+                min: 1,
+                max: 99,
+                step: 1,
+              }}
+              required
+              value={qty}
+              onChange={(e) => {
+                setQty(parseInt(e.target.value, 10));
+              }}
+            />
+          </label>
+        </DialogContent>
+        <DialogActions>
+          <Button type="button" disabled={submitting} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" disabled={submitting}>
+            Grant {qty} Clues (free answers)
           </Button>
         </DialogActions>
       </form>
@@ -125,7 +218,8 @@ export default function SingleTeamStats({
   teamActivity: InternalActivityLogEntry[];
   bigBoardTeam: BigBoardTeam;
 }) {
-  const [grantModalOpen, setGrantModalOpen] = useState(false);
+  const [grantKeysModalOpen, setGrantKeysModalOpen] = useState(false);
+  const [grantCluesModalOpen, setGrantCluesModalOpen] = useState(false);
 
   const data: SingleTeamStatsData = useMemo(() => {
     const d = {
@@ -140,7 +234,7 @@ export default function SingleTeamStats({
       teamSize: team.registration.peopleTotal,
       onCampusSize: team.registration.peopleOnCampus,
       keys: team.state.available_currency,
-      freeSolveCurrency: 0, // TODO
+      clues: team.state.available_strong_currency,
       unsolvedUnlockedPuzzles: Array.from(team.state.puzzles_unlocked).filter(
         (p) => !team.state.puzzles_solved.has(p),
       ).length,
@@ -205,21 +299,35 @@ export default function SingleTeamStats({
       />
 
       <Stat
-        label="Keys"
+        label="Keys (unlocks)"
         value={data.keys}
         action={
           <AdminOnly>
             <Button
               onClick={() => {
-                setGrantModalOpen(true);
+                setGrantKeysModalOpen(true);
               }}
             >
-              Grant
+              🗝️ Grant Keys
             </Button>
           </AdminOnly>
         }
       />
-      <Stat label="Free Solves" value={data.freeSolveCurrency} />
+      <Stat
+        label="Clues (answers)"
+        value={data.clues}
+        action={
+          <AdminOnly>
+            <Button
+              onClick={() => {
+                setGrantCluesModalOpen(true);
+              }}
+            >
+              🔎 Grant Clues
+            </Button>
+          </AdminOnly>
+        }
+      />
 
       <Stat label="Open Puzzles" value={data.unsolvedUnlockedPuzzles} />
 
@@ -232,9 +340,18 @@ export default function SingleTeamStats({
       <GrantKeysDialog
         teamId={team.teamId}
         teamUsername={team.username}
-        open={grantModalOpen}
+        open={grantKeysModalOpen}
         onClose={() => {
-          setGrantModalOpen(false);
+          setGrantKeysModalOpen(false);
+        }}
+      />
+
+      <GrantCluesDialog
+        teamId={team.teamId}
+        teamUsername={team.username}
+        open={grantCluesModalOpen}
+        onClose={() => {
+          setGrantCluesModalOpen(false);
         }}
       />
     </StatsContainer>

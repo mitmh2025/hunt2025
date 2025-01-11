@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import ReenieBeanie from "../../hub/assets/fonts/ReenieBeanie-Regular.ttf";
 import KiwiMaruLight from "./assets/KiwiMaru-Light.ttf";
 import KiwiMaruMedium from "./assets/KiwiMaru-Medium.ttf";
 import KiwiMaruRegular from "./assets/KiwiMaru-Regular.ttf";
@@ -27,4 +28,8 @@ export const PaperTrailFonts = createGlobalStyle`
   font-display: swap;
   src: url("${KiwiMaruMedium}") format("truetype");
 }
+@font-face {
+    font-family: "Reenie Beanie";
+    src: url("${ReenieBeanie}") format("truetype");
+  }
 `;

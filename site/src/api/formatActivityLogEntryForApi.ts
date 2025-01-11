@@ -16,6 +16,7 @@ export default function formatActivityLogEntryForApi(
     id: e.id,
     timestamp: e.timestamp.toISOString(),
     currency_delta: e.currency_delta,
+    strong_currency_delta: e.strong_currency_delta,
     type: e.type,
   };
   if ("team_id" in e && e.team_id) {
@@ -39,6 +40,7 @@ export default function formatActivityLogEntryForApi(
       case "puzzle_unlocked":
       case "puzzle_partially_solved":
       case "puzzle_solved":
+      case "puzzle_answer_bought":
         {
           const title = PUZZLES[e.slug]?.title;
           entry = Object.assign(entry, {

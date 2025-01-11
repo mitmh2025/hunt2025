@@ -103,11 +103,7 @@ const solvedClues = [
   ["36D", "A rambler who’s not French", "iTwIlLfEaR"],
   ["37D", "Ripping", "TEA + RING + A_ + PA(R)T"],
   ["39D", "Close relative", "/NICE/"],
-  [
-    "43D",
-    "Number of suspicious members [suspects] in the Rambling Club",
-    "/FOR/",
-  ],
+  ["43D", "Number of suspicious characters in the Rambling Club", "/FOR/"],
   ["44D", "Reverse", "UN(_D)O"],
   ["47D", "&lit", "M + (w->E)ANDERS"],
   [

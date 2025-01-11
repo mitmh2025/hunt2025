@@ -1,8 +1,6 @@
 import {
   Box,
-  DialogContent,
   TextField,
-  DialogActions,
   Button,
   Select,
   MenuItem,
@@ -62,43 +60,44 @@ export default function EmailTeams() {
   }
 
   return (
-    <Box>
+    <Box sx={{ maxWidth: "600px" }}>
       <form onSubmit={handleSubmit}>
-        <DialogContent>
-          <TextField
-            fullWidth
-            name="templateAlias"
-            label="Template Alias"
-            value={templateAlias}
-            onChange={(e) => {
-              setTemplateAlias(e.target.value);
-            }}
-            sx={{ mb: 2 }}
-            required
-          />
+        <TextField
+          fullWidth
+          name="templateAlias"
+          label="Template Alias"
+          value={templateAlias}
+          onChange={(e) => {
+            setTemplateAlias(e.target.value);
+          }}
+          sx={{ mb: 2 }}
+          required
+        />
 
-          <FormControl fullWidth>
-            <InputLabel id="recipients-label">Recipients</InputLabel>
-            <Select
-              label="Recipients"
-              labelId="recipients-label"
-              value={wholeTeam ? "true" : "false"}
-              onChange={(e) => {
-                setWholeTeam(e.target.value === "true");
-              }}
-            >
-              <MenuItem value="false">Primary & Secondary Contacts</MenuItem>
-              <MenuItem value="true">All Team Members</MenuItem>
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" type="submit" disabled={submitting}>
-            {wholeTeam
-              ? "Email All Team Members"
-              : "Email Primary & Secondary Contacts"}
-          </Button>
-        </DialogActions>
+        <FormControl fullWidth>
+          <InputLabel id="recipients-label">Recipients</InputLabel>
+          <Select
+            label="Recipients"
+            labelId="recipients-label"
+            value={wholeTeam ? "true" : "false"}
+            onChange={(e) => {
+              setWholeTeam(e.target.value === "true");
+            }}
+          >
+            <MenuItem value="false">Primary & Secondary Contacts</MenuItem>
+            <MenuItem value="true">All Team Members</MenuItem>
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={submitting}
+          sx={{ mt: 2 }}
+        >
+          {wholeTeam
+            ? "Email All Team Members"
+            : "Email Primary & Secondary Contacts"}
+        </Button>
       </form>
     </Box>
   );

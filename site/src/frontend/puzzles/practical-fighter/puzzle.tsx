@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 import footIcon from "./assets/foot.svg";
 import headphonesIcon from "./assets/headphones.svg";
@@ -50,6 +51,7 @@ const ClueCell = styled.td`
 const Puzzle = () => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p className="puzzle-flavor">
         Where’s the grid for this criss-cross anyway?
       </p>

@@ -16,6 +16,10 @@ const EXTRACTION_TABLE: [string, string, string, string][] = [
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
+  th:not(:last-child),
+  td:not(:last-child) {
+    padding-right: 1em;
+  }
 `;
 
 const Subheader = styled.td`
@@ -160,7 +164,7 @@ const Solution = (): JSX.Element => {
         punctuation marks in the block of punctuation at the end of the
         autobiography, clued by “solty” (see appendix). As the rounds are given
         in alphabetical order, solvers must re-order the rounds according to the
-        book.
+        book, ignoring the errant exclamation mark.
       </p>
       <StyledTable>
         <tr>

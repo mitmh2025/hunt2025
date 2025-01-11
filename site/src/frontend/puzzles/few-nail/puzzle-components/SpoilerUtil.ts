@@ -66,13 +66,13 @@ export const checkGuessByUuid = (
   if (!puzzle) {
     throw new Error(`Could not found puzzle ${uuid}`);
   }
-  const cleanGuess = guess.replaceAll(CLEANSTRING_REGEX, "").toUpperCase();
+  const cleanGuess = guess.toUpperCase().replaceAll(CLEANSTRING_REGEX, "");
   const cleanAnswerA = puzzle.answerA
-    .replace(CLEANSTRING_REGEX, "")
-    .toUpperCase();
+    .toUpperCase()
+    .replace(CLEANSTRING_REGEX, "");
   const cleanAnswerB = puzzle.answerB
-    .replace(CLEANSTRING_REGEX, "")
-    .toUpperCase();
+    .toUpperCase()
+    .replace(CLEANSTRING_REGEX, "");
   if (cleanGuess === cleanAnswerA) {
     return {
       uuid: puzzle.solutionAUuid,
