@@ -1301,32 +1301,32 @@ const ALL_NODES: NodeInternal[] = [
     modals: [
       // there's like 8 or something in here?  wow
       {
-        // Letter
+        // Birth certificate
         area: {
-          left: -0.5,
-          right: -0.37,
-          top: -0.16,
+          left: -0.33,
+          right: -0.22,
+          top: -0.13,
           bottom: -0.29,
         },
-        asset: letter_modal_unsolved,
-        altText: "A tri-folded letter. It is blurred and illegible",
+        asset: birth_certificate_modal_unsolved,
+        altText: "Some sort of certificate. It is blurred and illegible",
         placedAsset: {
           area: {
-            left: -0.5,
-            right: -0.37,
-            top: -0.16,
+            left: -0.33,
+            right: -0.22,
+            top: -0.13,
             bottom: -0.29,
           },
-          asset: letter,
+          asset: birth_certificate,
         },
         solvedAssets: {
-          modalAsset: letter_modal_solved,
+          modalAsset: birth_certificate_modal_solved,
           modalAltText:
-            "A letter from Warden Rutherford Pepper of the MITropolis Penitentiary to Papa implying that Papa provided information to ensure that two criminals would be denied parole",
+            "A birth certificate for Teresa Nina Candy, daughter of Benjamin and Nadine Candy",
         },
         slotId: "isp11",
         gateId: "isg18",
-        postCode: "lopyihUSAPmlZa5dOEBH/w==",
+        postCode: "AWmzimAkS8G0wLH7WatJlw==",
       },
       {
         // Newspaper clipping
@@ -1357,61 +1357,32 @@ const ALL_NODES: NodeInternal[] = [
         postCode: "3LdOYbqNPGHYrvH7KKaMaA==",
       },
       {
-        // Birth certificate
+        // Letter
         area: {
-          left: -0.33,
-          right: -0.22,
-          top: -0.13,
+          left: -0.5,
+          right: -0.37,
+          top: -0.16,
           bottom: -0.29,
         },
-        asset: birth_certificate_modal_unsolved,
-        altText: "Some sort of certificate. It is blurred and illegible",
+        asset: letter_modal_unsolved,
+        altText: "A tri-folded letter. It is blurred and illegible",
         placedAsset: {
           area: {
-            left: -0.33,
-            right: -0.22,
-            top: -0.13,
+            left: -0.5,
+            right: -0.37,
+            top: -0.16,
             bottom: -0.29,
           },
-          asset: birth_certificate,
+          asset: letter,
         },
         solvedAssets: {
-          modalAsset: birth_certificate_modal_solved,
+          modalAsset: letter_modal_solved,
           modalAltText:
-            "A birth certificate for Teresa Nina Candy, daughter of Benjamin and Nadine Candy",
+            "A letter from Warden Rutherford Pepper of the MITropolis Penitentiary to Papa implying that Papa provided information to ensure that two criminals would be denied parole",
         },
         slotId: "isp13",
         gateId: "isg20",
-        postCode: "AWmzimAkS8G0wLH7WatJlw==",
-      },
-      {
-        // Photo of Papa with his wife and Gladys
-        area: {
-          left: -0.24,
-          right: -0.14,
-          top: 0.21,
-          bottom: 0.03,
-        },
-        asset: finsters_frame_modal_unsolved,
-        altText: "A photo. It is blurred and the subjects are unrecognizable",
-        placedAsset: {
-          area: {
-            left: -0.24,
-            right: -0.14,
-            top: 0.21,
-            bottom: 0.03,
-          },
-          asset: finsters_frame_unsolved,
-        },
-        solvedAssets: {
-          modalAsset: finsters_frame_modal_solved,
-          placedAsset: finsters_frame_solved,
-          modalAltText:
-            "A photo of Papa, Mama, and Gladys, who is holding a teddy bear",
-        },
-        slotId: "isp14",
-        gateId: "isg21",
-        postCode: "XUu27ZhwbTcOJg2l4Yohsw==",
+        postCode: "lopyihUSAPmlZa5dOEBH/w==",
       },
       {
         // Photo of the Candys and Baby
@@ -1438,9 +1409,38 @@ const ALL_NODES: NodeInternal[] = [
           modalAltText:
             "A photo of a man and a woman holding a baby, labelled “The Candys and their baby”",
         },
+        slotId: "isp14",
+        gateId: "isg21",
+        postCode: "ThjWDlBYS112vfoCFdYqxQ==",
+      },
+      {
+        // Photo of Papa with his wife and Gladys
+        area: {
+          left: -0.24,
+          right: -0.14,
+          top: 0.21,
+          bottom: 0.03,
+        },
+        asset: finsters_frame_modal_unsolved,
+        altText: "A photo. It is blurred and the subjects are unrecognizable",
+        placedAsset: {
+          area: {
+            left: -0.24,
+            right: -0.14,
+            top: 0.21,
+            bottom: 0.03,
+          },
+          asset: finsters_frame_unsolved,
+        },
+        solvedAssets: {
+          modalAsset: finsters_frame_modal_solved,
+          placedAsset: finsters_frame_solved,
+          modalAltText:
+            "A photo of Papa, Mama, and Gladys, who is holding a teddy bear",
+        },
         slotId: "isp15",
         gateId: "isg22",
-        postCode: "ThjWDlBYS112vfoCFdYqxQ==",
+        postCode: "XUu27ZhwbTcOJg2l4Yohsw==",
       },
       {
         // Rare stamp
