@@ -15,7 +15,7 @@ import { AdminOnly } from "./AdminOnly";
 export default function TeamOverview({ team }: { team: TeamData }) {
   const dialogs = useDialogs();
   const notifications = useNotifications();
-  const { adminClient, appendRegistrationLogEntries } = useOpsClients();
+  const { adminClient, updateRegistrationLog } = useOpsClients();
 
   function handleDeactivate() {
     dialogs
@@ -53,7 +53,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${result.status}: ${result.body}`);
               }
 
-              appendRegistrationLogEntries(result.body);
+              await updateRegistrationLog({ forceRequest: true });
 
               notifications.show(`Deactivated team`, {
                 severity: "success",
@@ -102,7 +102,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${result.status}: ${result.body}`);
               }
 
-              appendRegistrationLogEntries(result.body);
+              await updateRegistrationLog({ forceRequest: true });
 
               notifications.show(`Reactivated team`, {
                 severity: "success",
@@ -179,7 +179,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${result.status}: ${result.body}`);
               }
 
-              appendRegistrationLogEntries(result.body);
+              await updateRegistrationLog({ forceRequest: true });
 
               notifications.show(`Changed team password`, {
                 severity: "success",

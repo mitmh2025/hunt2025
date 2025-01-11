@@ -23,7 +23,7 @@ type GateListEntry = {
 export default function TeamGateList({ team }: { team: TeamData }) {
   const dialogs = useDialogs();
   const notifications = useNotifications();
-  const { adminClient, appendActivityLogEntries } = useOpsClients();
+  const { adminClient, updateActivityLog } = useOpsClients();
   const isOpsAdmin = useIsOpsAdmin();
 
   const handleSatisfyGate = (gate: GateListEntry) => {
@@ -49,7 +49,7 @@ export default function TeamGateList({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${res.status}: ${res.body}`);
               }
 
-              appendActivityLogEntries(res.body);
+              await updateActivityLog({ forceRequest: true });
 
               notifications.show(
                 `Satisfied ${gate.displayName} for ${team.username}`,
