@@ -640,17 +640,16 @@ export async function getFermitSessions(
 ): Promise<FermitSession[]> {
   const sessions = await dbGetFermitSessions(knex);
   const registrations = await dbGetFermitRegistrations(undefined, knex);
+  const teamsBySession = new Map<number, { id: number; status: string }[]>();
 
-  // TODO: this is O(N^2), rewrite if need be
+  registrations.forEach((r) => {
+    const teams = teamsBySession.get(r.sessionId) ?? [];
+    teams.push({ id: r.teamId, status: r.status });
+    teamsBySession.set(r.sessionId, teams);
+  });
+
   sessions.forEach((s) => {
-    registrations.forEach((r) => {
-      if (s.id === r.sessionId) {
-        s.teams.push({
-          id: r.teamId,
-          status: r.status,
-        });
-      }
-    });
+    s.teams = teamsBySession.get(s.id) ?? [];
   });
 
   return sessions;

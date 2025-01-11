@@ -306,7 +306,7 @@ const Solution = (): JSX.Element => {
             <th>Fuzzed Images</th>
           </tr>
           {ALL_ARTISTS.map((artist, idx) => (
-            <ArtistBlock artist={artist} index={idx+1} key={idx} />
+            <ArtistBlock artist={artist} index={idx + 1} key={idx} />
           ))}
         </table>
       </Details>

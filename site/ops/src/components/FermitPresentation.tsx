@@ -54,7 +54,7 @@ function RevealContainer({
       deckRef.current.initialize().then(
         () => {
           if (abortInitialize) {
-            deckRef.current.destroy();
+            deckRef.current?.destroy();
             return;
           }
           deckRef.current?.addKeyBinding(
@@ -84,14 +84,14 @@ function RevealContainer({
     return () => {
       try {
         abortInitialize = true;
-        if (deckRef?.current?.isReady()) {
+        if (deckRef.current?.isReady()) {
           deckRef.current.destroy();
           deckRef.current = null;
         }
       } catch (e) {
         console.warn("Reveal.js destroy call failed.");
       }
-    }
+    };
   }, [session, updateTimer]);
 
   useInterval(() => {
