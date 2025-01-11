@@ -36,7 +36,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 40.0,
-      description: "Solvers don't know why a word is capitalized in each room",
+      description: "Solvers don’t know why a word is capitalized in each room",
       keywords: ["capitalized", "grammatically incorrect"],
       nudge:
         "One word is capitalized in each line of text; this word is intended to be a different word instead. You use numbers instead of “NORTH/SOUTH/EAST/WEST” to navigate between rooms, and the capitalized word follows the same pattern.",
