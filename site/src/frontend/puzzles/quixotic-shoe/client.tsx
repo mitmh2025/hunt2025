@@ -298,7 +298,6 @@ const App = ({
                   <React.Fragment key={i}>
                     <div>
                       <SubpuzzleLink
-                        answer={answer}
                         title={subpuzzle_name}
                         slug={subpuzzle_slug}
                       />
