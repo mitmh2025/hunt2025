@@ -32,7 +32,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have explored the text adventure but haven’t mapped it out",
       keywords: ["map"],
       nudge:
-        'The map for this text adventure is a phone keypad. The text in each room obliquely hints at each room\'s canonical "number"',
+        "The map for this text adventure is a phone keypad. The text in each room obliquely hints at each room’s canonical “number”",
     },
     {
       order: 40.0,
