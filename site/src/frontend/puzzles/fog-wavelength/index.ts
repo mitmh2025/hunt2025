@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cacciando Trio Misterioso",
   slug: "cacciando_trio_misterioso",
-  initial_description: "A sound clip and a music critic's review",
+  initial_description: "A sound clip and a music critic’s review",
   answer: "WALTZES AND MARCHES",
   authors: ["Denis Auroux"],
   editors: ["Anna Brunner", "Elan Blaustein", "Steve Banzaert"],
