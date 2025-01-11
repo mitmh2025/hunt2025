@@ -9,7 +9,7 @@ import {
 import { useNotifications } from "@toolpad/core";
 import { useMemo, useState } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import { type TeamData } from "../opsdata/types";
 import { AdminOnly } from "./AdminOnly";
@@ -40,7 +40,7 @@ function GrantKeysDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const { adminClient, appendActivityLogEntries } = useOpsClients();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const notifications = useNotifications();
@@ -130,7 +130,7 @@ function GrantCluesDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { adminClient, appendActivityLogEntries } = useOpsData();
+  const { adminClient, appendActivityLogEntries } = useOpsClients();
   const [qty, setQty] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const notifications = useNotifications();

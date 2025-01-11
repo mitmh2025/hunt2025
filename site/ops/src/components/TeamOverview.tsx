@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { useDialogs, useNotifications } from "@toolpad/core";
 import React from "react";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients } from "../OpsDataProvider";
 import { type TeamData } from "../opsdata/types";
 import { AdminOnly } from "./AdminOnly";
 
@@ -15,7 +15,7 @@ import { AdminOnly } from "./AdminOnly";
 export default function TeamOverview({ team }: { team: TeamData }) {
   const dialogs = useDialogs();
   const notifications = useNotifications();
-  const opsData = useOpsData();
+  const { adminClient, appendRegistrationLogEntries } = useOpsClients();
 
   function handleDeactivate() {
     dialogs
@@ -43,7 +43,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
             }
 
             try {
-              const result = await opsData.adminClient.deactivateTeam({
+              const result = await adminClient.deactivateTeam({
                 params: {
                   teamId: String(team.teamId),
                 },
@@ -53,7 +53,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${result.status}: ${result.body}`);
               }
 
-              opsData.appendRegistrationLogEntries(result.body);
+              appendRegistrationLogEntries(result.body);
 
               notifications.show(`Deactivated team`, {
                 severity: "success",
@@ -92,7 +92,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
             }
 
             try {
-              const result = await opsData.adminClient.reactivateTeam({
+              const result = await adminClient.reactivateTeam({
                 params: {
                   teamId: String(team.teamId),
                 },
@@ -102,7 +102,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${result.status}: ${result.body}`);
               }
 
-              opsData.appendRegistrationLogEntries(result.body);
+              appendRegistrationLogEntries(result.body);
 
               notifications.show(`Reactivated team`, {
                 severity: "success",
@@ -166,7 +166,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
             }
 
             try {
-              const result = await opsData.adminClient.changeTeamPassword({
+              const result = await adminClient.changeTeamPassword({
                 params: {
                   teamId: String(team.teamId),
                 },
@@ -179,7 +179,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
                 throw new Error(`HTTP ${result.status}: ${result.body}`);
               }
 
-              opsData.appendRegistrationLogEntries(result.body);
+              appendRegistrationLogEntries(result.body);
 
               notifications.show(`Changed team password`, {
                 severity: "success",

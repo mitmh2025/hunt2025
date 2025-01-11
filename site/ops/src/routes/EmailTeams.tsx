@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import { useNotifications } from "@toolpad/core";
 import { useState } from "react";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients } from "../OpsDataProvider";
 
 export default function EmailTeams() {
   const [submitting, setSubmitting] = useState(false);
   const [wholeTeam, setWholeTeam] = useState(false);
   const [templateAlias, setTemplateAlias] = useState("");
-  const { adminClient } = useOpsData();
+  const { adminClient } = useOpsClients();
   const notifications = useNotifications();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

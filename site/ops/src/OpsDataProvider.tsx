@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+} from "react";
 import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
 import { type AdminClient, newAdminClient } from "../../lib/api/admin_client";
 import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
@@ -18,36 +25,16 @@ import {
 import HUNT from "../../src/huntdata";
 import { type TeamData } from "./opsdata/types";
 
-export type OpsData = {
-  state: "loading" | "error" | "loaded";
-  account: {
-    email: string;
-    isOpsAdmin: boolean;
-  };
+export type OpsClients = {
   adminClient: AdminClient;
   frontendClient: FrontendClient;
-  puzzleMetadata: PuzzleAPIMetadata;
-  registrationLog: TeamRegistrationLogEntry[];
-  activityLog: InternalActivityLogEntry[];
-  teams: TeamData[];
-  gateDetails: Record<string, { title?: string; roundTitle: string }>;
   appendActivityLogEntries: (entries: InternalActivityLogEntry[]) => void;
   appendRegistrationLogEntries: (entries: TeamRegistrationLogEntry[]) => void;
 };
 
-const INITIAL_STATE: OpsData = {
-  state: "loading",
-  account: {
-    email: "",
-    isOpsAdmin: false,
-  },
+const INITIAL_OPS_CLIENTS: OpsClients = {
   adminClient: newAdminClient("", ""),
   frontendClient: newFrontendClient("", { type: "admin", adminToken: "" }),
-  registrationLog: [],
-  activityLog: [],
-  teams: [],
-  puzzleMetadata: {},
-  gateDetails: {},
   appendActivityLogEntries: () => {
     // do nothing
   },
@@ -56,7 +43,41 @@ const INITIAL_STATE: OpsData = {
   },
 };
 
-export const OpsDataContext = createContext<OpsData>(INITIAL_STATE);
+export type OpsData = {
+  state: "loading" | "error" | "loaded";
+  account: {
+    email: string;
+    isOpsAdmin: boolean;
+  };
+  puzzleMetadata: PuzzleAPIMetadata;
+  registrationLog: TeamRegistrationLogEntry[];
+  activityLog: InternalActivityLogEntry[];
+  teams: TeamData[];
+  gateDetails: Record<string, { title?: string; roundTitle: string }>;
+};
+
+const INITIAL_OPS_DATA: OpsData = {
+  state: "loading",
+  account: {
+    email: "",
+    isOpsAdmin: false,
+  },
+  registrationLog: [],
+  activityLog: [],
+  teams: [],
+  puzzleMetadata: {},
+  gateDetails: {},
+};
+
+export type OpsContextValue = {
+  clients: OpsClients;
+  data: OpsData;
+};
+
+const OpsContext = createContext<OpsContextValue>({
+  clients: INITIAL_OPS_CLIENTS,
+  data: INITIAL_OPS_DATA,
+});
 
 function formatEntry<T extends { timestamp: string | Date }>(
   entry: T,
@@ -140,6 +161,12 @@ class OpsDataStore {
       info.formatTeamRegistration(),
     );
   }
+
+  reset() {
+    this._teamStates = new Map();
+    this._teamInfos = new Map();
+    this._universalActivityLogs = [];
+  }
 }
 
 export default function OpsDataProvider({
@@ -147,35 +174,77 @@ export default function OpsDataProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [data, setData] = useState<OpsData>(INITIAL_STATE);
-
   const [cookies, _, removeCookie] = useCookies(["mitmh2025_api_auth"]);
+
+  const store = useRef<OpsDataStore | null>(null);
+  function getStore() {
+    if (!store.current) {
+      store.current = new OpsDataStore();
+    }
+    return store.current;
+  }
+
+  const opsClients = useMemo<OpsClients>(() => {
+    const token = cookies.mitmh2025_api_auth as string | undefined;
+    if (!token) {
+      throw new Error(`Failed to load token from cookie`);
+    }
+
+    const apiUrl = "/api";
+
+    const frontendClient = newFrontendClient(apiUrl, {
+      type: "admin",
+      adminToken: token,
+    });
+
+    const adminClient = newAdminClient(apiUrl, token);
+
+    return {
+      adminClient,
+      frontendClient,
+
+      appendActivityLogEntries: (entries) => {
+        const formattedEntries = entries.map(formatEntry);
+
+        formattedEntries.forEach((entry) => {
+          getStore().applyActivityLogEntry(entry);
+        });
+
+        setData((oldData) => ({
+          ...oldData,
+          teams: getStore().getTeamData(),
+          activityLog: [...oldData.activityLog, ...formattedEntries],
+        }));
+      },
+      appendRegistrationLogEntries: (entries) => {
+        const formattedEntries = entries.map(formatEntry);
+
+        formattedEntries.forEach((entry) => {
+          getStore().applyRegistrationLogEntry(entry);
+        });
+
+        setData((oldData) => ({
+          ...oldData,
+          teams: getStore().getTeamData(),
+          registrationLog: [...oldData.registrationLog, ...formattedEntries],
+        }));
+      },
+    };
+  }, [cookies.mitmh2025_api_auth]);
+
+  const [data, setData] = useState<OpsData>(INITIAL_OPS_DATA);
 
   useEffect(() => {
     // TODO: Switch to loading data from the service worker + keeping
     // it up to date with websockets
 
     (async () => {
-      const token = cookies.mitmh2025_api_auth as string | undefined;
-      if (!token) {
-        throw new Error(`Failed to load token from cookie`);
-      }
-
-      const apiUrl = "/api";
-
-      const frontendClient = newFrontendClient(apiUrl, {
-        type: "admin",
-        adminToken: token,
-      });
-
-      const adminClient = newAdminClient(apiUrl, token);
-
       const [registrationLog, activityLog, puzzleMetadata, account] =
         await Promise.all([
-          frontendClient.getFullTeamRegistrationLog(),
-          frontendClient.getFullActivityLog(),
-          adminClient.getPuzzleMetadata(),
-          adminClient.opsAccount(),
+          opsClients.frontendClient.getFullTeamRegistrationLog(),
+          opsClients.frontendClient.getFullActivityLog(),
+          opsClients.adminClient.getPuzzleMetadata(),
+          opsClients.adminClient.opsAccount(),
         ]);
 
       if (account.status === 401 || account.status === 403) {
@@ -206,15 +275,17 @@ export default function OpsDataProvider({
         throw new Error(`Failed to load account: ${account.status}`);
       }
 
-      const store = new OpsDataStore();
       const registrationLogEntries = registrationLog.body.map(formatEntry);
       const activityLogEntries = activityLog.body.map(formatEntry);
 
+      getStore().reset();
+
       registrationLogEntries.forEach((entry) => {
-        store.applyRegistrationLogEntry(entry);
+        getStore().applyRegistrationLogEntry(entry);
       });
+
       activityLogEntries.forEach((entry) => {
-        store.applyActivityLogEntry(entry);
+        getStore().applyActivityLogEntry(entry);
       });
 
       const gateDetails: Record<
@@ -230,45 +301,22 @@ export default function OpsDataProvider({
       setData({
         state: "loaded",
         account: account.body,
-        adminClient,
-        frontendClient,
         registrationLog: registrationLogEntries,
         activityLog: activityLogEntries,
-        teams: store.getTeamData(),
+        teams: getStore().getTeamData(),
         puzzleMetadata: puzzleMetadata.body,
         gateDetails,
-        appendActivityLogEntries: (entries) => {
-          const formattedEntries = entries.map(formatEntry);
-
-          formattedEntries.forEach((entry) => {
-            store.applyActivityLogEntry(entry);
-          });
-
-          setData((oldData) => ({
-            ...oldData,
-            teams: store.getTeamData(),
-            activityLog: [...oldData.activityLog, ...formattedEntries],
-          }));
-        },
-        appendRegistrationLogEntries: (entries) => {
-          const formattedEntries = entries.map(formatEntry);
-
-          formattedEntries.forEach((entry) => {
-            store.applyRegistrationLogEntry(entry);
-          });
-
-          setData((oldData) => ({
-            ...oldData,
-            teams: store.getTeamData(),
-            registrationLog: [...oldData.registrationLog, ...formattedEntries],
-          }));
-        },
       });
     })().catch((e: unknown) => {
       console.error(e);
-      setData({ ...INITIAL_STATE, state: "error" });
+      setData({ ...INITIAL_OPS_DATA, state: "error" });
     });
-  }, [cookies.mitmh2025_api_auth, removeCookie]);
+  }, [
+    cookies.mitmh2025_api_auth,
+    removeCookie,
+    opsClients.frontendClient,
+    opsClients.adminClient,
+  ]);
 
   if (data.state === "loading") {
     return <div>Loading...</div>;
@@ -279,10 +327,21 @@ export default function OpsDataProvider({
   }
 
   return (
-    <OpsDataContext.Provider value={data}>{children}</OpsDataContext.Provider>
+    <OpsContext.Provider
+      value={{
+        clients: opsClients,
+        data,
+      }}
+    >
+      {children}
+    </OpsContext.Provider>
   );
 }
 
 export function useOpsData() {
-  return useContext(OpsDataContext);
+  return useContext(OpsContext).data;
+}
+
+export function useOpsClients() {
+  return useContext(OpsContext).clients;
 }
