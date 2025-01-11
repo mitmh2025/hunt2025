@@ -91,10 +91,51 @@ import {
 import type {
   Modal,
   ModalInternal,
+  ModalInternalExtra,
   Node,
   NodeInternal,
   PluginName,
 } from "./types";
+
+export const BlacklightData = {
+  candy: {
+    asset: candy_blacklight,
+    altText:
+      "Rule ROTARY: You haven’t lived here long, have you? No one calls them “traffic circles” or “roundabouts.” In any case, add a donut to your purchase for each one you drove on. Rule TUMMYACHE: If you do not have enough donuts to fulfill your team’s request, do not extract any letters. Instead, feel shame.",
+    slotId: "isp19",
+    gateId: "isg27",
+    postCode: "yPVAOzrL1cwh/baI4hgeyw==",
+  },
+  cryptex: {
+    asset: cryptex_note_blacklight,
+    altText:
+      "What good is a cigarette without a light? Use a physical blacklight on the filters.",
+    gateId: "isg31",
+    postCode: "+TGXj5wKyr+u9CsD4Xrs5w==",
+    slotId: "isp23",
+  },
+  ledger: {
+    asset: ledger_blacklight,
+    altText: "Same locations tuned to PM 23pi/20",
+    gateId: "isg30",
+    postCode: "7V7KoGrLaYKd3c1JHZGFiw==",
+    slotId: "isp22",
+  },
+  money: {
+    asset: money_modal_blacklight,
+    altText: "Shift by difference from 8V",
+    gateId: "isg29",
+    postCode: "eHSQ6CPL9HB7ar5WzTxngA==",
+    slotId: "isp21",
+  },
+  rings: {
+    asset: rings_modal_blacklight,
+    altText: "The third quartile was also always in plain sight.",
+    gateId: "isg28",
+    postCode: "iBRwyAWgSpy2zO+QnZzPKg==",
+    slotId: "isp20",
+  },
+} satisfies Record<string, ModalInternalExtra>;
 
 const scriptSrcs: Record<PluginName, { scriptSrc: string[] }> = {
   bookcase: {
@@ -399,6 +440,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.006,
         },
         asset: family_frame_east,
+        altText: "A family portrait of Papa, Gladys, and Baby",
         slotId: "isp03",
         gateId: "isg03",
         postCode: "PXz9UrF1GfwL9IAMFukA5Q==",
@@ -422,6 +464,7 @@ const ALL_NODES: NodeInternal[] = [
         },
         zIndex: 1,
         asset: typewriter,
+        altText: "A typewriter",
         slotId: "isp04",
         gateId: "isg04",
         postCode: "IQN/w3pMLLmF/B4xpqomvA==",
@@ -435,6 +478,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.08599367270635601,
         },
         asset: lamp,
+        altText: "A desk lamp",
         slotId: "isp05",
         gateId: "isg05",
         postCode: "9xkLSNSDtS8+0Aee26ApAg==",
@@ -517,6 +561,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.23,
         },
         asset: family_frame_east,
+        altText: "A family portrait of Papa, Gladys, and Baby",
         slotId: "isp03",
         gateId: "isg03",
         postCode: "PXz9UrF1GfwL9IAMFukA5Q==",
@@ -578,6 +623,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0,
         },
         asset: greatwave_frame,
+        altText: "A painting hanging on the wall",
         slotId: "isp01", // TODO: confirm puzzle-item mapping
         gateId: "isg01",
         postCode: "TiEz0QxOHbM+Iy91lq8xLA==",
@@ -591,6 +637,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -1.1,
         },
         asset: globe,
+        altText: "A globe",
         slotId: "isp02", // TODO: confirm puzzle-item mapping
         gateId: "isg02",
         postCode: "fWTr5MCGd9lNSy1WuJzjXA==",
@@ -666,6 +713,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.81,
         },
         asset: ledger,
+        altText: "A ledger labelled “Accounts”",
         placedAsset: {
           area: {
             left: -1,
@@ -676,12 +724,7 @@ const ALL_NODES: NodeInternal[] = [
           asset: numberlock_box_ledger,
           extraAsset: numberlock_box_ledger_blacklight,
         },
-        extra: {
-          asset: ledger_blacklight,
-          gateId: "isg30",
-          postCode: "7V7KoGrLaYKd3c1JHZGFiw==",
-          slotId: "isp22",
-        },
+        extra: BlacklightData.ledger,
         slotId: "isp09",
         gateId: "isg14",
         postCode: "1K4T5XyjlogRERACrMXXbg==",
@@ -772,15 +815,11 @@ const ALL_NODES: NodeInternal[] = [
           extraAsset: drawer_with_candy_blacklight,
         },
         asset: candy,
+        altText: "A bowl of hard candies",
         slotId: "isp06",
         gateId: "isg11",
         postCode: "lxRFwDNndXOrzDkGdBQukA==",
-        extra: {
-          asset: candy_blacklight,
-          slotId: "isp19",
-          gateId: "isg27",
-          postCode: "yPVAOzrL1cwh/baI4hgeyw==",
-        },
+        extra: BlacklightData.candy,
       },
     ],
   },
@@ -877,8 +916,12 @@ const ALL_NODES: NodeInternal[] = [
           extraAsset: bookcase_note_blacklight,
         },
         asset: bookcase_note_modal,
+        altText:
+          "A todo list with two items: Deadbeat Debt Collection and Mark Dirty Stacks.  The first item is crossed out.",
         extra: {
           asset: bookcase_note_blacklight_modal,
+          altText:
+            "A todo list with two items: Deadbeat Debt Collection and Mark Dirty Stacks. The first item is crossed out, and the second is crossed out in blacklight ink.",
           gateId: "isg32",
           postCode: "SHqjcRam7FKcuKgOkwziig==",
           slotId: "ism03",
@@ -968,12 +1011,9 @@ const ALL_NODES: NodeInternal[] = [
           extraAsset: cryptex_open_blacklight,
         },
         asset: cryptex_note,
-        extra: {
-          asset: cryptex_note_blacklight,
-          gateId: "isg31",
-          postCode: "+TGXj5wKyr+u9CsD4Xrs5w==",
-          slotId: "isp23",
-        },
+        altText:
+          "A handwritten note labelled “Ideas for Gladys Wedding Gift” with entries “Car? Ask Rover re new models,” “Necklace,” ”Mother’s ring” (crossed off), “See if Hendersons in market to sell manor,” and “Put Hendersons in market to sell manor”",
+        extra: BlacklightData.cryptex,
         slotId: "isp10",
         gateId: "isg15",
         postCode: "YXEwRKy4tAGrLZaycOe85Q==",
@@ -1061,6 +1101,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.738,
         },
         asset: money_modal,
+        altText: "A stack of bills",
         placedAsset: {
           area: {
             left: -0.289,
@@ -1074,12 +1115,7 @@ const ALL_NODES: NodeInternal[] = [
         slotId: "isp08",
         gateId: "isg13",
         postCode: "Ba+T1nVoh2GFJTIXnh7H8A==",
-        extra: {
-          asset: money_modal_blacklight,
-          gateId: "isg29",
-          postCode: "eHSQ6CPL9HB7ar5WzTxngA==",
-          slotId: "isp21",
-        },
+        extra: BlacklightData.money,
       },
     ],
   },
@@ -1134,12 +1170,8 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.826,
         },
         asset: rings_closeup,
-        extra: {
-          asset: rings_modal_blacklight,
-          gateId: "isg28",
-          postCode: "iBRwyAWgSpy2zO+QnZzPKg==",
-          slotId: "isp20",
-        },
+        altText: "Two plain gold rings",
+        extra: BlacklightData.rings,
         placedAsset: {
           area: {
             left: -0.06,
@@ -1277,6 +1309,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.29,
         },
         asset: letter_modal_unsolved,
+        altText: "A tri-folded letter. It is blurred and illegible",
         placedAsset: {
           area: {
             left: -0.5,
@@ -1288,6 +1321,8 @@ const ALL_NODES: NodeInternal[] = [
         },
         solvedAssets: {
           modalAsset: letter_modal_solved,
+          modalAltText:
+            "A letter from Warden Rutherford Pepper of the MITropolis Penitentiary to Papa implying that Papa provided information to ensure that two criminals would be denied parole",
         },
         slotId: "isp11",
         gateId: "isg18",
@@ -1302,6 +1337,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.02,
         },
         asset: newspaper_modal_unsolved,
+        altText: "A newspaper clipping. It is blurred and illegible",
         placedAsset: {
           area: {
             left: -0.45,
@@ -1313,6 +1349,8 @@ const ALL_NODES: NodeInternal[] = [
         },
         solvedAssets: {
           modalAsset: newspaper_modal_solved,
+          modalAltText:
+            "A newspaper clipping of an article regarding the arrest of Benjamin and Nadine Candy after a failed bank robbery",
         },
         slotId: "isp12",
         gateId: "isg19",
@@ -1327,6 +1365,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.29,
         },
         asset: birth_certificate_modal_unsolved,
+        altText: "Some sort of certificate. It is blurred and illegible",
         placedAsset: {
           area: {
             left: -0.33,
@@ -1338,13 +1377,15 @@ const ALL_NODES: NodeInternal[] = [
         },
         solvedAssets: {
           modalAsset: birth_certificate_modal_solved,
+          modalAltText:
+            "A birth certificate for Teresa Nina Candy, daughter of Benjamin and Nadine Candy",
         },
         slotId: "isp13",
         gateId: "isg20",
         postCode: "AWmzimAkS8G0wLH7WatJlw==",
       },
       {
-        // Photo of the Candys and Baby
+        // Photo of Papa with his wife and Gladys
         area: {
           left: -0.24,
           right: -0.14,
@@ -1352,6 +1393,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.03,
         },
         asset: finsters_frame_modal_unsolved,
+        altText: "A photo. It is blurred and the subjects are unrecognizable",
         placedAsset: {
           area: {
             left: -0.24,
@@ -1364,13 +1406,15 @@ const ALL_NODES: NodeInternal[] = [
         solvedAssets: {
           modalAsset: finsters_frame_modal_solved,
           placedAsset: finsters_frame_solved,
+          modalAltText:
+            "A photo of Papa, Mama, and Gladys, who is holding a teddy bear",
         },
         slotId: "isp14",
         gateId: "isg21",
         postCode: "XUu27ZhwbTcOJg2l4Yohsw==",
       },
       {
-        // Photo of Papa with his wife and Gladys
+        // Photo of the Candys and Baby
         area: {
           left: -0.11,
           right: 0.02,
@@ -1378,6 +1422,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.16,
         },
         asset: candys_frame_modal_unsolved,
+        altText: "A photo. It is blurred and the subjects are unrecognizable",
         placedAsset: {
           area: {
             left: -0.11,
@@ -1390,6 +1435,8 @@ const ALL_NODES: NodeInternal[] = [
         solvedAssets: {
           modalAsset: candys_frame_modal_solved,
           placedAsset: candys_frame_solved,
+          modalAltText:
+            "A photo of a man and a woman holding a baby, labelled “The Candys and their baby”",
         },
         slotId: "isp15",
         gateId: "isg22",
@@ -1404,6 +1451,8 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.05120481927710835,
         },
         asset: stamp_modal,
+        altText:
+          "A MITropolis Postage stamp with an upside down Duesenberg Model J",
         placedAsset: {
           area: {
             left: 0.18,
@@ -1426,6 +1475,7 @@ const ALL_NODES: NodeInternal[] = [
           bottom: 0.47,
         },
         asset: teddybear,
+        altText: "A teddy bear",
         slotId: "isp17",
         gateId: "isg24",
         postCode: "liZx1HnT5Bxo/tIbUfRlWg==",
@@ -1439,6 +1489,8 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.2783533076037646,
         },
         asset: poster_modal,
+        altText:
+          "A poster of a man in a fedora and a trenchcoat holding a gun. The text says “The Tantalizing Adventures of Dr. Ulysses V. Wurlitzer, Bounty Hunter. Who knows what heart lurks in the chests of men. Action! Drama! Soap advertisements!",
         placedAsset: {
           area: {
             left: 0.69,
@@ -1461,12 +1513,15 @@ const ALL_NODES: NodeInternal[] = [
           bottom: -0.35,
         },
         asset: magazine_unsolved,
+        altText: "A stack of magazines. They are blurred and illegible",
         slotId: "ism02",
         gateId: "isg17",
         postCode: "9eUWKfZBfQZgWQ0wn5RPHA==",
         solvedAssets: {
           modalAsset: magazine_solved_modal,
           placedAsset: magazine_solved,
+          modalAltText:
+            "A comic book titled “[What will our heroes find] In the Blacklight”",
         },
       },
     ],
@@ -1535,6 +1590,9 @@ function modalFromModalInternal(
       if (solvedAssets.modalAsset) {
         obj.asset = solvedAssets.modalAsset;
       }
+      if (solvedAssets.modalAltText) {
+        obj.altText = solvedAssets.modalAltText;
+      }
 
       if (solvedAssets.placedAsset) {
         if (obj.placedAsset) {
@@ -1561,12 +1619,17 @@ function modalFromModalInternal(
       const extraDesc = extraPuzzle?.initial_description;
       obj.extra = {
         asset: extra.asset,
+        altText: extra.altText,
         title: extraTitle,
         slug: extraSlug,
         desc: extraDesc,
       };
     } else {
-      obj.extra = { asset: extra.asset, postCode: extra.postCode };
+      obj.extra = {
+        asset: extra.asset,
+        altText: extra.altText,
+        postCode: extra.postCode,
+      };
     }
   } else if (obj.placedAsset) {
     obj.placedAsset = omit(obj.placedAsset, "extraAsset");

@@ -74,12 +74,22 @@ export type ModalBase = {
   area: ScreenArea; // what area of the screen should be clickable to trigger showing this modal?
   zIndex?: number; // what z-index should this modal be shown at?
   asset: string; // what image should be shown when the modal is blown up large?
+  altText: string; // what should be shown as the alt text for the asset?
 
   // By default the asset is shown in the clickable area to trigger the modal. If you
   // want some other behavior (a larger asset that is only partially clickable, for example)
   // you can override what gets shown and where when the modal is available, separate
   // from what area is clickable and what is shown in the modal
   placedAsset?: PlacedAsset;
+};
+
+export type ModalInternalExtra = {
+  // blacklight overlay
+  asset: string;
+  altText: string;
+  slotId: string;
+  postCode: string;
+  gateId: string;
 };
 
 export type ModalInternal = ModalBase & {
@@ -105,15 +115,10 @@ export type ModalInternal = ModalBase & {
   solvedAssets?: {
     modalAsset?: string;
     placedAsset?: string;
+    modalAltText?: string;
   };
 
-  extra?: {
-    // blacklight overlay
-    asset: string;
-    slotId: string;
-    postCode: string;
-    gateId: string;
-  };
+  extra?: ModalInternalExtra;
 };
 
 export type PostcodeInitial = {
@@ -133,11 +138,11 @@ export type PostcodeResponse = {
 };
 
 export type ExtraPostcodeInitial = {
-  extra?: { asset: string } & PostcodeInitial;
+  extra?: { asset: string; altText: string } & PostcodeInitial;
 };
 
 export type ExtraPostcodeResponse = {
-  extra?: { asset: string } & PostcodeResponse;
+  extra?: { asset: string; altText: string } & PostcodeResponse;
 };
 
 export type ModalWithPostcode = ModalBase & PostcodeInitial;

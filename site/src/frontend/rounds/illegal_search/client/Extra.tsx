@@ -95,9 +95,11 @@ function ExtraModalTrigger({
             const modalWithExtraPuzzleFields = {
               area: modal.area,
               asset: modal.asset,
+              altText: modal.altText,
               extra: modal.extra
                 ? {
                     asset: modal.extra.asset,
+                    altText: modal.extra.altText,
                     title: json.title,
                     slug: json.slug,
                     desc: json.desc,
@@ -114,9 +116,11 @@ function ExtraModalTrigger({
         const modalWithExtraPuzzleFields = {
           area: modal.area,
           asset: modal.asset,
+          altText: modal.altText,
           extra: modal.extra
             ? {
                 asset: modal.extra.asset,
+                altText: modal.extra.altText,
                 title,
                 slug,
                 desc,
@@ -404,7 +408,7 @@ export default function Extra({
             height={600}
             src={modalShown.asset}
             style={{ objectFit: "contain" }}
-            alt="TODO"
+            alt={modalShown.altText}
           />
           {active && (
             <InteractionLayer>
@@ -413,7 +417,7 @@ export default function Extra({
                 height={600}
                 src={modalShown.extra.asset}
                 style={{ objectFit: "contain" }}
-                alt="TODO"
+                alt={modalShown.altText}
               />
             </InteractionLayer>
           )}
