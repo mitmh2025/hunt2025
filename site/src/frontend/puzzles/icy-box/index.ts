@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Weathered Note",
   slug: "a_weathered_note",
-  initial_description: "A weathered-looking note with some scribbles.",
+  initial_description: "A weathered note",
   answer: "ABOUT",
   authors: ["Matt Scanlan"],
   editors: ["James Douberley", "Joanna Murray", "Rad Z", "Teddy McArthur"],

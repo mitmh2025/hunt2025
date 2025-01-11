@@ -46,6 +46,8 @@ export type PuzzleSlot = {
   // If absent, prize defaults to 0 if `is_meta` is true, 1 otherwise.
   prize?: number;
 
+  strong_currency_prize?: number; // If present, the amount of strong currency to reward for completing this puzzle.
+
   // A note on the condition specifiers below: it is generally expected that
   // * most standard non-meta puzzles will have an `unlockable_if` condition
   //   driven by `puzzles_unlocked`
@@ -78,7 +80,7 @@ export type Round = {
   slug: string; // The string presented in the URL when viewing this round's page.
   title: string; // The title of the round
   puzzles: PuzzleSlot[]; // The set of puzzle slots that are canonically in this round.
-  final_puzzle_slot: string; // The slot id of the final puzzle in this round (the culminating meta/supermeta that indicates completion of this round)
+  final_puzzle_slot: string | null; // The slot id of the final puzzle in this round (the culminating meta/supermeta that indicates completion of this round)
 
   gates?: Gate[]; // A set of gates which are owned by this round
 

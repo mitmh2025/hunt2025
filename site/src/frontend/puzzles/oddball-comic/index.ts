@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Seating Arrangements",
   slug: "seating_arrangements",
-  initial_description: "A script describing a family at a restaurant.",
+  initial_description: "A script describing a family at a restaurant",
   answer: "IT TAKES TWO",
   authors: ["Sid Creutz", "Chris Roske"],
   editors: [

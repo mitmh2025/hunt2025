@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Good Fences Make Good Otherwise Incompatible Neighbors",
   slug: "good_fences_make_good_otherwise_incompatible_neighbors",
-  initial_description:
-    "A series of hexagonal grids with some numbers and symbols in them, plus some instructions.",
+  initial_description: "A hexagonal logic puzzle",
   answer: "SUFFOLK EWES",
   authors: ["Denis Auroux"],
   editors: ["James Douberley", "Henry Wong", "Li-Mei Lim"],
@@ -60,7 +59,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers can’t figure out the sheep movements after day 3",
       keywords: ["sheep movements", "third night"],
       nudge:
-        "Nine sheep positions are given in the day 4 grid; a tenth one is forced by that sheep having only one valid square (inside both day 3 and day 4 loops) to move to.  The five remaining sheep positions can be inferred from the knowledge that, after the sheep move to their day 4 positions and the fence has switched to the day 4 configuration, each wolf will be able to move towards a closest seen sheep without any two wolves\u2019 trajectories overlapping (in other terms: each wolf will see a sheep in an appropriate direction).",
+        "Nine sheep positions are given in the day 4 grid; a tenth one is forced by that sheep having only one valid square (inside both day 3 and day 4 loops) to move to.  The five remaining sheep positions can be inferred from the knowledge that, after the sheep move to their day 4 positions and the fence has switched to the day 4 configuration, each wolf will be able to move towards a closest seen sheep without any two wolves’ trajectories overlapping (in other terms: each wolf will see a sheep in an appropriate direction).",
     },
     {
       order: 70.0,

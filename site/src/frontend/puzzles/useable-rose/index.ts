@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Commentary",
   slug: "commentary",
-  initial_description: "A list of nonsense strings of text.",
+  initial_description: "A list of nonsense strings of text",
   answer: "WHITE HOUSE",
   authors: ["James Douberley", "Mike Mannis"],
   editors: ["Chris Gatesman", "Robin Deits", "Teddy McArthur"],
@@ -28,20 +28,20 @@ const puzzle: PuzzleDefinition = {
     {
       order: 30.0,
       description:
-        "Solvers have many (or all) of the clue answers but don't know what to do with them",
+        "Solvers have many (or all) of the clue answers but don’t know what to do with them",
       nudge:
         "You can do something with each clue answer individually.  A hint is embedded in the clue list!",
     },
     {
       order: 40.0,
-      description: "Solvers still don't know what to do with the clue answers",
+      description: "Solvers still don’t know what to do with the clue answers",
       nudge:
         "Check the initial letters of the clue list.  They form a clue: TELCO COLOR CODE. Try searching this.",
     },
     {
       order: 50.0,
       description:
-        "Solvers still don't know what to do with clue answers even after seeing the hint for this step",
+        "Solvers still don’t know what to do with clue answers even after seeing the hint for this step",
       nudge:
         "Each clue answer can be paired with a color to make a common two-word phrase or name.",
     },

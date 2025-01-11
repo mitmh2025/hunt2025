@@ -1,7 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
-import puzzle from "./assets/mellow-planet.pdf";
+import LinkedImage from "../../components/LinkedImage";
+import image01 from "./assets/image01.png";
+import image02 from "./assets/image02.png";
 
 const DATA: [string, string][] = [
   ["- .... .. ...", "2024 Olympian Nedoroscik’s specialty, for short"],
@@ -33,18 +35,26 @@ const DATA: [string, string][] = [
   ],
 ];
 
-const StyledIframe = styled.iframe`
-  width: 100%;
-  aspect-ratio: 8.5/11;
+const Spacer = styled.div`
+  margin-bottom: 40px;
 `;
 
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <StyledIframe src={puzzle} />
-      <p className={`puzzle-flavor ${COPY_ONLY_CLASS}`}>
+      <p className={`puzzle-flavor`}>
         In their eyes, penguins should be at the top of the food chain.
       </p>
+      <br />
+      <LinkedImage
+        src={image01}
+        alt="Two columns of text flanking a bunch of scattered capital letters"
+      />
+      <Spacer />
+      <LinkedImage
+        src={image02}
+        alt="a hand drawing of different animals by some water, trees and hills"
+      />
       <table className={COPY_ONLY_CLASS}>
         {DATA.map(([left, right], i) => (
           <tr key={i}>

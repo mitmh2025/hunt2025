@@ -5,7 +5,6 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Oversight",
   slug: "the_oversight",
-  initial_description: "Nothing",
   answer: "NOMAD",
   authors: ["Grant Elliott"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim", "Robin Deits"],

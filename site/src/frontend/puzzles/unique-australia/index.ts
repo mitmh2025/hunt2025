@@ -5,7 +5,6 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Mark",
   slug: "the_mark",
-  initial_description: "A small hexagonal grid and a set of clear rules.",
   answer: "PANDORA",
   authors: ["Grant Elliott"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim", "Robin Deits"],

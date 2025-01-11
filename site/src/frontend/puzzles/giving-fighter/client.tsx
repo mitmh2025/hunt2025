@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 
 const Enumeration = "____ _______ ____ _____ _______ (____ ____)";
 
@@ -177,6 +178,7 @@ const App = () => {
 
   return (
     <>
+      <NotoColorEmojiFont />
       <History history={history} waiting={pending} />
       <Form onSubmit={onSubmit}>
         <input

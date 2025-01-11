@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Passage of Time",
   slug: "passage_of_time",
-  initial_description: "Crossword grid and clues.",
+  initial_description: "Crossword grid and clues",
   answer: "LIVING YEARS",
   authors: ["Alex St Claire"],
   editors: [
@@ -44,7 +44,7 @@ const puzzle: PuzzleDefinition = {
         "Puzzlers have found the “main mechanic” and identified most of the highlighted clues and are trying to figure out the purpose of the iconography",
       keywords: ["Index", "icons", "left side"],
       nudge:
-        "The “main mechanic” clue labelled “t” is the roman numerals I-XI. The second icon .a-.f is referring to the corresponding clue for that region and the number is an index.",
+        "The “main mechanic” clue labelled “t” is the roman numerals I-VI. The second icon .a-.f is referring to the corresponding clue for that region and the number is an index.",
     },
     {
       order: 60.0,

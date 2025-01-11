@@ -351,7 +351,7 @@ const Solution = () => {
               paintings of aurochs, mammoths, or sculptures of fish
             </TableCell>
             <TableCell>
-              <strong>N</strong>udes
+              <strong>N</strong>ude
             </TableCell>
             <TableCell>
               Prehistoric Sites and Decorated Caves of the Vézère Valley
@@ -463,8 +463,8 @@ const Solution = () => {
               <strong>A</strong>ntenna
             </TableCell>
             <TableCell>Angkor</TableCell>
-            <TableCell>13.412</TableCell>
-            <TableCell>102.648</TableCell>
+            <TableCell>13.439</TableCell>
+            <TableCell>103.868</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>

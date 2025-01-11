@@ -43,7 +43,8 @@ const Solution = () => {
       </p>
       <p>
         The inequalities give confirmation that solvers have split the feeders
-        into component variables correctly. The variables are:
+        into component variables correctly. (Multiple &lt; symbols indicate a
+        jump in the number of digits.) The variables are:
       </p>
 
       <HScrollTableWrapper>

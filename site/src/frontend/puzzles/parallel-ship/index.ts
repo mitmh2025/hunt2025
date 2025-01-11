@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Do the Packing",
   slug: "do_the_packing",
-  initial_description:
-    "A blocked crossword grid with a set of cryptic clues underneath",
+  initial_description: "Cryptic crossword",
   answer: "C FOR CLARENDON",
   authors: ["Mike Mannis"],
   editors: ["James Douberley", "Joel Fried", "Julian West", "Robin Deits"],

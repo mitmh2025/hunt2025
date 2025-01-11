@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "This Is Just a Test",
   slug: "this_is_just_a_test",
-  initial_description: "A bunch of Nikoli/WPC style logic puzzles",
+  initial_description: "A bunch of grid logic puzzles",
   answer: "A BAD DECADE",
   authors: ["Denis Auroux"],
   editors: ["Alex Churchill", "James Douberley", "Jonathan Lay"],

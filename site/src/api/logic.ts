@@ -15,17 +15,22 @@ import type { Hunt } from "../huntdata/types";
 export class TeamStateIntermediate extends LogicTeamState {
   epoch: number; // The largest value of `id` that was processed/relevant
   puzzles_unlocked_at: Map<string, number /* epoch */>;
+  puzzles_partially_solved: Set<string>;
   private slugToSlotMap: Map<string, SlotLookup>;
 
   constructor(hunt: Hunt, initial?: Partial<TeamStateIntermediate>) {
     super(initial);
     this.epoch = initial?.epoch ?? -1;
     this.puzzles_unlocked_at = new Map(initial?.puzzles_unlocked_at ?? []);
+    this.puzzles_partially_solved = new Set(
+      initial?.puzzles_partially_solved ?? [],
+    );
     this.slugToSlotMap = generateSlugToSlotMap(hunt);
   }
 
   reduce(entry: InternalActivityLogEntry) {
     this.available_currency += entry.currency_delta;
+    this.available_strong_currency += entry.strong_currency_delta;
     // Update the max known epoch if this entry is newer
     if (entry.id > this.epoch) {
       this.epoch = entry.id;
@@ -72,6 +77,9 @@ export class TeamStateIntermediate extends LogicTeamState {
       // fallthrough - started implies unlocked
       case "interaction_unlocked":
         this.interactions_unlocked.add(entry.slug);
+        break;
+      case "puzzle_partially_solved":
+        this.puzzles_partially_solved.add(entry.slug);
         break;
     }
     return this;
@@ -173,6 +181,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
     epoch: data.epoch,
     rounds,
     currency: data.available_currency,
+    strong_currency: data.available_strong_currency,
     puzzles: Object.fromEntries(
       [...data.puzzles_visible].map((slug) => [
         slug,
@@ -183,12 +192,14 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
             : data.puzzles_unlockable.has(slug)
               ? ("unlockable" as const)
               : ("locked" as const),
+          partially_solved: data.puzzles_partially_solved.has(slug),
           unlocked_at: data.puzzles_unlocked_at.get(slug),
           answer: data.correct_answers[slug],
           ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
         },
       ]),
     ),
+    gates_satisfied: [...data.gates_satisfied],
   };
 }
 
@@ -261,6 +272,7 @@ export class TeamInfoIntermediate {
     return {
       epoch: this.epoch,
       teamName: this.registration.name,
+      teamUsername: this.registration.username,
     };
   }
 
@@ -273,6 +285,7 @@ export class TeamInfoIntermediate {
     return {
       epoch: this.epoch,
       teamName: registration.name,
+      teamUsername: registration.username,
     };
   }
 

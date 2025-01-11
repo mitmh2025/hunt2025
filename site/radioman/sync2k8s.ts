@@ -390,7 +390,7 @@ async function main({
       team_id: teamId,
       epoch: teamState.epoch,
       quixotic_shoe_enabled: teamState.gates_satisfied.has("ptg03"),
-      icy_box_enabled: teamState.gates_satisfied.has("ptg04"),
+      icy_box_enabled: teamState.gates_satisfied.has("ptg16"),
       interaction: false, // TODO
     };
     radioTeamStates.set(teamId, radioTeamState);

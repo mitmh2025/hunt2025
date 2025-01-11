@@ -1,9 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import andorra from "./assets/andorra.png";
 import belgium from "./assets/belgium.png";
-import completed from "./assets/completed.png";
+import completed from "./assets/completed.svg";
 import guinea from "./assets/guinea.png";
 import mali from "./assets/mali.png";
 import romania from "./assets/romania.png";
@@ -18,7 +19,7 @@ const Solution = (): JSX.Element => {
   return (
     <>
       <p>
-        This puzzle is an interactive web of words, in the style of the{" "}
+        This puzzle is an interactive web of words, in the style of{" "}
         <a
           href="https://funny-farm.appspot.com/game/farm"
           target="_blank"
@@ -80,7 +81,8 @@ const Solution = (): JSX.Element => {
       <ol>
         <li>
           Black arrows change one color of the flag (from black to a rainbow
-          color, or forward in the rainbow, or from a rainbow color to white)
+          color, or along the rainbow towards red, or from a rainbow color to
+          white)
         </li>
         <li>Blue curved lines rotate a flag</li>
         <li>Orange squiggles permute the colors of a flag</li>
@@ -98,7 +100,7 @@ const Solution = (): JSX.Element => {
       <p>
         One oval node is highlighted in yellow and labeled ANSWER (4). This
         connects the flag of PERU to the flag of CANADA, which differ by the
-        presence of a LEAF, which is the answer.
+        presence of a <PuzzleAnswer>LEAF</PuzzleAnswer>, which is the answer.
       </p>
     </>
   );

@@ -4,12 +4,8 @@ import panzoom, { type PanZoom } from "panzoom";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
-import {
-  CLEANSTRING_REGEX,
-  DATA,
-  HAS_STORAGE,
-  LOCAL_STORAGE_PREFIX,
-} from "./Constants";
+import { AuthorsNote } from "../../components/PuzzleLayout";
+import { DATA, HAS_STORAGE, LOCAL_STORAGE_PREFIX } from "./Constants";
 
 const StyledContainer = styled.div`
   border: 3px solid var(--black);
@@ -19,6 +15,13 @@ const StyledContainer = styled.div`
   height: 600px;
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-bottom: 1em;
+`;
+
 const ResetButton = styled.button`
   display: block;
   border: 3px solid var(--black);
@@ -26,11 +29,13 @@ const ResetButton = styled.button`
   background-color: var(--white);
   padding: 8px;
   cursor: pointer;
-  margin-bottom: 1em;
 `;
 
 type Puzzle = {
-  nodes: Record<string, { xml: string; enumeration?: number; hash: string }>;
+  nodes: Record<
+    string,
+    { xml: string; enumeration?: number; hashes: string[] }
+  >;
   svg: Document;
   edges: { nodes: number[]; content: string }[];
   version: string;
@@ -178,14 +183,18 @@ function check_submission(
   if (state.solved_nodes[node] !== undefined) {
     return;
   }
-  if (
-    bcrypt.compareSync(
-      `${node}-${submission.toUpperCase().replace(CLEANSTRING_REGEX, "")}`,
-      puzzle.nodes[node]!.hash,
-    )
-  ) {
-    handle_correct_submission(node, submission, puzzle, state, presentation);
-    return;
+  const canonical_text = submission.toUpperCase().replaceAll(" ", "");
+  for (const hash of puzzle.nodes[node]!.hashes) {
+    if (bcrypt.compareSync(`${node}-${canonical_text}`, hash)) {
+      handle_correct_submission(
+        node,
+        canonical_text,
+        puzzle,
+        state,
+        presentation,
+      );
+      return;
+    }
   }
 }
 
@@ -263,12 +272,20 @@ const App = () => {
       edges: new Set(),
     };
     setup(defaultPuzzleState, presentation);
+    if (presentation.panzoom_instance) {
+      presentation.panzoom_instance.dispose();
+    }
     presentation.panzoom_instance = panzoom(presentation.svg, {
       smoothScroll: false,
       bounds: true,
       boundsPadding: 0.05,
       minZoom: 0.5,
+      initialZoom: 3,
+      onTouch: () => {
+        return false; // tells panoom to not preventDefault onTouch.
+      },
     });
+    presentation.panzoom_instance.moveTo(-1500, -150);
     presentation.panzoom_instance.on("panstart", () => {
       setGrabbing(true);
     });
@@ -282,29 +299,37 @@ const App = () => {
 
   return (
     <>
-      <ResetButton
-        onClick={() => {
-          if (
-            confirm("Are you sure you want to reset the state of this puzzle?")
-          ) {
-            if (HAS_STORAGE) {
-              const itemsToRemove: string[] = [];
-              for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
-                  itemsToRemove.push(key);
+      <FlexWrapper>
+        <ResetButton
+          onClick={() => {
+            if (
+              confirm(
+                "Are you sure you want to reset the state of this puzzle?",
+              )
+            ) {
+              if (HAS_STORAGE) {
+                const itemsToRemove: string[] = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                  const key = localStorage.key(i);
+                  if (key?.startsWith(LOCAL_STORAGE_PREFIX)) {
+                    itemsToRemove.push(key);
+                  }
+                }
+                for (const item of itemsToRemove) {
+                  localStorage.removeItem(item);
                 }
               }
-              for (const item of itemsToRemove) {
-                localStorage.removeItem(item);
-              }
+              reset();
             }
-            reset();
-          }
-        }}
-      >
-        Reset
-      </ResetButton>
+          }}
+        >
+          Reset
+        </ResetButton>
+        <AuthorsNote>
+          We recommend solving this puzzle on a laptop or desktop computer.
+          Scroll to zoom. Click and drag to pan.
+        </AuthorsNote>
+      </FlexWrapper>
       <StyledContainer style={{ cursor: grabbing ? "grabbing" : "grab" }}>
         <svg
           id="puzzle-image"

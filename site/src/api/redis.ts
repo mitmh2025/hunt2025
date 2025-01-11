@@ -209,8 +209,10 @@ export abstract class Log<S, T extends { id: number; team_id?: number }> {
       `${this._key}/${teamId}`,
       since,
     );
-    const teamHighWaterMark =
-      getHighWaterMark(logMessages) ?? prevHighWaterMark;
+    const teamHighWaterMark = Math.max(
+      getHighWaterMark(logMessages) ?? 0,
+      prevHighWaterMark,
+    );
     // Read the global log from the team high water mark.
     // We can't filter with `since`, because otherwise we might miss some team entries.
     const globalLogMessages = await this.readStream(
@@ -218,8 +220,10 @@ export abstract class Log<S, T extends { id: number; team_id?: number }> {
       `global/${this._key}`,
       teamHighWaterMark,
     );
-    const newHighWaterMark =
-      getHighWaterMark(globalLogMessages) ?? prevHighWaterMark;
+    const newHighWaterMark = Math.max(
+      getHighWaterMark(globalLogMessages) ?? 0,
+      prevHighWaterMark,
+    );
     const newLogMessages = globalLogMessages.filter(
       ({ entry }) =>
         entry?.team_id === teamId || (entry && entry.team_id === undefined),

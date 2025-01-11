@@ -1,5 +1,6 @@
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { AuthorsNote } from "../../components/PuzzleLayout";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
@@ -134,6 +135,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
 
   return (
     <>
+      <NotoColorEmojiFont />
       <AuthorsNote>
         If you’re not sure what you’re allowed to do to solve this puzzle,
         please contact HQ.

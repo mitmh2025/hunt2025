@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Engagements and Other Crimes",
   slug: "engagements_and_other_crimes",
-  initial_description: "A square double-sided color-printed invitation.",
+  initial_description: "A printed invitation",
   answer: "DRINKING CUP",
   authors: ["Grant Elliott", "Caroline Elliott"],
   editors: ["J. Heléne Andersson", "James Douberley", "Teddy McArthur"],

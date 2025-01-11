@@ -33,6 +33,7 @@ import { type Hunt } from "../../huntdata/types";
 import { navBarState } from "../components/ContentWithNavBar";
 import { hubState } from "../hub";
 import { backgroundCheckState } from "../rounds/background_check";
+import { eventsState } from "../rounds/events";
 import {
   bookcaseState,
   cryptexState,
@@ -44,6 +45,7 @@ import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { strayLeadsState } from "../rounds/stray_leads";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
+import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "./constants";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
 import { allPuzzlesState } from "./routes/all_puzzles";
@@ -51,7 +53,10 @@ import { allPuzzlesState } from "./routes/all_puzzles";
 type DatasetHandler =
   | {
       type: "team_state";
-      callback: (teamState: TeamHuntState) => ObjectWithEpoch;
+      callback: (
+        teamState: TeamHuntState,
+        { username }: { username: string },
+      ) => ObjectWithEpoch;
     }
   | {
       type: "activity_log";
@@ -66,11 +71,6 @@ type DatasetHandler =
   | {
       type: "puzzle_state_log";
     };
-
-// An allowlist of slugs that we should permit puzzle_state_log to be subscribed to directly for.
-// If you're adding an entry to this allowlist, all the data you put in the DB for that slug will
-// be readable by clients, so don't put anything sensitive/internal there.
-const PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG = ["what_do_they_call_you"];
 
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
@@ -160,12 +160,19 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   puzzle_state_log: {
     type: "puzzle_state_log",
   },
+  events: {
+    type: "team_state",
+    callback: eventsState,
+  },
 };
 
 type TeamStateSubscriptionHandler<T> = {
   type: "team_state";
   dataset: Dataset;
-  computeFromTeamState: (teamState: TeamHuntState) => T;
+  computeFromTeamState: (
+    teamState: TeamHuntState,
+    teamContext: { username: string },
+  ) => T;
   cachedValue: T;
 };
 
@@ -279,6 +286,7 @@ class ConnHandler {
 
   // The team id that is associated with this particular client connection.  Ultimately, the `id` field from the `Team` object in the `teams` table in the DB.
   private _teamId: number;
+  private _teamUsername: string;
 
   // The last-known team state for this team.  This may be stale if there are no subs that rely on
   // teamState.  This is initially populated with req.teamState.
@@ -305,6 +313,7 @@ class ConnHandler {
   }) {
     this.sock = sock;
     this._teamId = initialTeamState.teamId;
+    this._teamUsername = initialTeamState.info.teamUsername;
     this._lastTeamState = initialTeamState.state;
     this.onClose = onClose;
     this.observerProvider = observerProvider;
@@ -408,7 +417,9 @@ class ConnHandler {
       this.subs.forEach((sub, subId) => {
         if (isTeamStateSubscription(sub)) {
           // compute the new resulting value
-          const newValue = sub.computeFromTeamState(teamState);
+          const newValue = sub.computeFromTeamState(teamState, {
+            username: this._teamUsername,
+          });
 
           const { epoch: _cachedEpoch, ...cachedLessEpoch } = sub.cachedValue;
           const { epoch: _newEpoch, ...newValueLessEpoch } = newValue;
@@ -542,7 +553,9 @@ class ConnHandler {
         case "team_state": {
           const handler = datasetHandler.callback;
           // compute the initial value
-          const value = handler(this._lastTeamState);
+          const value = handler(this._lastTeamState, {
+            username: this._teamUsername,
+          });
           const subHandler: SubscriptionHandler<ObjectWithEpoch> = {
             type: "team_state",
             dataset,
@@ -676,7 +689,6 @@ class ConnHandler {
           break;
         }
       }
-
       return;
     } else {
       const { rpc, subId } = message;

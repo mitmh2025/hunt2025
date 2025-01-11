@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "A Map and a Shade (or Four)",
   slug: "a_map_and_a_shade_or_four",
   initial_description:
-    "A chart with letters, colors, ticks, crosses and some other symbols, as well as a series of pie charts with colors.",
+    "A chart with letters, colors, ticks, crosses. Also a series of pie charts.",
   answer: "STATE OF UNDRESS",
   authors: ["Stratton Vakirtzis", "Rad Z"],
   editors: ["James Douberley", "Melanie Matchett Wood", "Teddy McArthur"],
@@ -40,7 +40,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have identified this is an adjacency matrix of the 50 US states but are struggling to start assigning",
       keywords: ["US states"],
       nudge:
-        "The A 🔴 and H 🔴 can be assigned as the two states with no adjacencies. The M ⚪ and P ⚪ in the rows are also a good place to start, there is only one state starting with P and only one state starting with M that has at least 6 other adjacent states. The A ⚪ A ⚪ A ⚪ in the columns don’t start with the letter A (there are less than 5 states starting with A), look at the \u2796⚪ symbols for guidance.",
+        "The A 🔴 and H 🔴 can be assigned as the two states with no adjacencies. The M ⚪ and P ⚪ in the rows are also a good place to start, there is only one state starting with P and only one state starting with M that has at least 6 other adjacent states. The A ⚪ A ⚪ A ⚪ in the columns don’t start with the letter A (there are less than 5 states starting with A), look at the ➖⚪ symbols for guidance.",
     },
     {
       order: 40.0,

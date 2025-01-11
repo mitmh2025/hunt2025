@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Just F---ing Behave!",
   slug: "just_fing_behave",
-  initial_description: "A poem in the style of a children’s book.",
+  initial_description: "A poem in the style of a children’s book",
   answer: "BADGER",
   authors: ["Mike Mannis"],
   editors: [

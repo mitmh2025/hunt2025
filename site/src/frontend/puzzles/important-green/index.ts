@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Big Names",
   slug: "big_names",
   initial_description:
-    "A list of clues written in all caps, in two different sizes.",
+    "A list of clues written in all caps, in two different sizes",
   answer: "THINK AGAIN",
   authors: ["Hubert Hwang"],
   editors: ["Anna Brunner", "James Douberley", "Rad Z"],

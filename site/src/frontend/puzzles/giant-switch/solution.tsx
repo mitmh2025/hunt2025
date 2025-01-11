@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
+import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
 import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 import boyband from "./assets/boyband987.mp3";
 import classical from "./assets/classical905.mp3";
@@ -71,7 +72,7 @@ const STINGER_TABLE: [string, string, string, string, string][] = [
     "7-1",
     "106.3",
     "H",
-    "You’re listening to 106.3, bringing you the best syncopated beats this side of the Mississippi. Now, here is The Original Dixieland One Step, all the way back from the era of The Great War.",
+    "You’re listening to 106.3, bringing you the best syncopated beats this side of the Mississippi. Now, here is The Original Dixieland One-Step, all the way back from the era of The Great War.",
     ragtime,
   ],
   [
@@ -119,12 +120,12 @@ const STINGER_TABLE: [string, string, string, string, string][] = [
 ];
 
 const EXTRACTION_TABLE: [string, string, string, string][] = [
-  ["A", "Classical", "Symphony in D Minor by César Franck", "1888"],
+  ["A", "Classical", "Symphony in D Minor by César Franck", "1889"],
   ["T", "Just Jazz", "The Memphis Blues - W.C. Handy", "1912"],
-  ["H", "Ragtime", "The Original Dixieland One Step", "1917"],
+  ["H", "Ragtime", "The Original Dixieland One-Step", "1917"],
   ["L", "Country", "Walking The Floor Over You", "1941"],
   ["E", "Hip Radio", "Jailhouse Rock - Elvis Presley", "1957"],
-  ["T", "Just Jazz", "Ramblin’ - Ornette Coleman", "1959"],
+  ["T", "Just Jazz", "Ramblin’ - Ornette Coleman", "1960"],
   ["I", "Disco", "I Will Survive - Gloria Gaynor", "1978"],
   ["C", "Boy Band", "Invisible Man - 98 Degrees", "1997"],
   ["C", "Boy Band", "Crash and Burn - Savage Garden", "1999"],
@@ -256,9 +257,10 @@ const Solution = () => {
       <p>
         After solvers have collected the information (frequency and song
         titles), they can use the dial image in the puzzle to identify a letter
-        for each location. They can order the songs by release date, which
-        allows for duplicated letters, and the resulting sequence of letters is
-        the answer: <PuzzleAnswer>ATHLETIC CLUB</PuzzleAnswer>.
+        for each location. They can order those letters by the corresponding
+        songs’ release date (which allows for duplicated letters), and the
+        resulting sequence of letters is the answer:{" "}
+        <PuzzleAnswer>ATHLETIC CLUB</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>
@@ -279,9 +281,18 @@ const Solution = () => {
       <p>
         After solving Papa’s Stash, teams receive the clue phrase{" "}
         <Mono>SAME LOCATIONS TUNED TO PM 23pi/20</Mono>. After returning to the
-        locations and tuning to 23pi/20, there is now a second broadcast of
-        Never Gonna Give You Up. Every few seconds, an announcer says a pair of
-        letters in the answer.
+        locations and tuning to{" "}
+        <Math>
+          <MFrac>
+            <MRow>
+              <MN>23</MN>
+              <MI>π</MI>
+            </MRow>
+            <MN>20</MN>
+          </MFrac>
+        </Math>
+        , there is now a second broadcast of Never Gonna Give You Up. Every few
+        seconds, an announcer says a pair of letters in the answer.
       </p>
       <StyledTable>
         <tr>

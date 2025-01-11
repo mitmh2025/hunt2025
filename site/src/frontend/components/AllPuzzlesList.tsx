@@ -123,9 +123,14 @@ const AllPuzzlesRound = ({
 };
 
 const AllPuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
+  const endgame = state.rounds.find((round) => round.slug === "endgame");
   return (
     <>
       {state.rounds.map((round) => {
+        if (round.slug === "endgame") {
+          return null;
+        }
+
         return (
           <AllPuzzlesRound
             key={round.slug}
@@ -142,6 +147,11 @@ const AllPuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
           <AllPuzzlesTable puzzles={state.stray} currency={state.currency} />
         </>
       )}
+      {endgame?.interactions?.map((int) => (
+        <RoundHeader key={int.slug}>
+          <a href={`/interactions/${int.slug}`}>{int.title}</a>
+        </RoundHeader>
+      ))}
     </>
   );
 };

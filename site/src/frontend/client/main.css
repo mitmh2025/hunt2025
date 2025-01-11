@@ -15,19 +15,19 @@
 }
 
 @font-face {
-  font-family: "Noto Color Emoji";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url("../../assets/NotoColorEmoji-Regular.ttf") format("truetype");
-}
-
-@font-face {
   font-family: "Belanosima";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
   src: url("../../assets/Belanosima-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Color Emoji Subset";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../../assets/NotoEmoji-Regular-Subset.woff2") format("woff2");
 }
 
 @font-face {
@@ -52,6 +52,20 @@
   font-display: swap;
   font-weight: 700;
   src: url("../../assets/RobotoMono-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-display: swap;
+  src: url("../../assets/EBGaramond-VariableFont_wght.ttf") format("truetype");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-display: swap;
+  src: url("../../assets/EBGaramond-Italic-VariableFont_wght.ttf")
+    format("truetype");
 }
 
 /* Colors */
@@ -119,10 +133,25 @@
 
   --highlighter: #efff3c66;
 
-  --body-font: "Hanken Grotesk", "Noto Color Emoji", "Inter", Verdana, Helvetica,
-    sans-serif;
-  --headline-font: "Belanosima", "Noto Color Emoji", "Gill Sans", "Futura",
-    Helvetica, sans-serif;
+  --body-font: "Hanken Grotesk", "Noto Color Emoji Subset", "Noto Color Emoji",
+    "Inter", Verdana, Helvetica, sans-serif;
+  --headline-font: "Belanosima", "Noto Color Emoji Subset", "Noto Color Emoji",
+    "Gill Sans", "Futura", Helvetica, sans-serif;
+  --billie-font: "EB Garamond", "Garamond", "Palatino", "Times New Roman", Times,
+    serif;
+
+  /* This specifically selects for Safari as of January 2025, which we need
+  because Safari doesn't handle the Noto Color Emoji font well at all, so just
+  fall back to the system emoji as a reasonable backup (since Apple distributes
+  a fine emoji font). Taken from
+  https://wojtek.im/journal/targeting-safari-with-css-media-query */
+  @supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    --body-font: "Hanken Grotesk", "Apple Color Emoji", "Inter", Verdana,
+      Helvetica, sans-serif;
+    --headline-font: "Belanosima", "Apple Color Emoji", "Gill Sans", "Futura",
+      Helvetica, sans-serif;
+  }
 
   --default-font-size: 16px;
 

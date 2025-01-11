@@ -11,7 +11,7 @@ export const ACROSS: { number: number; clues: string[] }[] = [
   {
     number: 4,
     clues: [
-      "If you become petrified while pulling weeds, this might be the root cause",
+      "If you suddenly expire while pulling weeds, this might be the root cause",
     ],
   },
   { number: 5, clues: ["Language and cultural group in South Africa"] },
@@ -367,7 +367,7 @@ export const ACROSS: { number: number; clues: string[] }[] = [
   {
     number: 81,
     clues: [
-      "Youngling survivor who loves kidnapping Vader’s kids",
+      "Youngling survivor who kidnaps Vader’s little princess",
       "It used to be Edo",
       "Not to be confused with Valhalla or Sto’Vo’Kor",
     ],
@@ -503,7 +503,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 15,
     clues: [
-      "She’s as much a fairy princess as a moody old man",
+      "As a budding young witch she was Beauxbatons’ Triwizard Champion",
       "Spooky spirit with a poet’s name",
       "Like a newspaper, black and white and…",
     ],
@@ -523,7 +523,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 19,
     clues: [
-      "Padma and Pavarti, Flora and Hestia, Fred and George",
+      "Padma and Parvati, Flora and Hestia, Fred and George",
       "His principle explains how a fixed wing makes lift",
     ],
   },
@@ -666,7 +666,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 48,
     clues: [
-      "Feathered friends of Dragon’s Roost Island",
+      "Feathered friends of Dragon Roost Island",
       "Exactly adequate at golf",
     ],
   },
@@ -725,7 +725,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
   {
     number: 59,
     clues: [
-      "Ecumenopolis Malak razed to kill Revan",
+      "Ecumenopolis Malak razed to kill Bastila",
       "Champion this Lady of Life and you’ll be able to break the dawn",
     ],
   },
@@ -757,7 +757,7 @@ export const DOWN: { number: number; clues: string[] }[] = [
     number: 66,
     clues: [
       "Imperial walker’s unexpected weakness",
-      "They call Ralph Wilson stadium home",
+      "They called Ralph Wilson stadium home",
       "Gelebor is one of the last who can claim this race",
     ],
   },
@@ -952,7 +952,7 @@ const GRID_1_FILL = `
  RIO RUM   F E T FAR   CUR R 
        O MOTOR     CLONE   E 
  WINSTON A W   BAKER   SANTA 
- I     E L A>THE   A   S   D 
+ I     E L A>THE   A E S   D 
  COW SOY I R O R WWF L A SPA 
    H U   CRETE N E TIO R P L 
  ONO MOVIE   T O B     Y E L 
@@ -960,7 +960,7 @@ const GRID_1_FILL = `
  INTELLIGENT E L I I O V I V 
         E  T L L N T N I E E 
  S GARLIC KOFI ING SPY LASER 
- O S    K    N  E   A   S    
+ O A    K    N  E   A   S    
  BOSTON O CODEC W B D F POEM 
   N       R   O C L>T A    I 
  SPANISHFLU N B E A H TRAINS 
@@ -1133,7 +1133,7 @@ xxxxxxxxxxxxxxxxxxxxxxx
 const GRID_3_FILL = `
              T   B     
   CURIOSITYSHOP FARORE 
-  U           O   H OO 
+  U      E    O   H OO 
  OCTOROK A N DEEPWOOD  
   C  R   R I      A    
  ZONAITE SAGE AFROMSIA 
@@ -1238,8 +1238,8 @@ const GRID_4_COLOR = `
    m  m n  m   m mh  b 
   km  mmn  m   mmm   b 
         n  mh        b 
-        nmmm        hb 
-                     b
+        nmmm         b 
+                    hb
                      b
                      b
                      b
@@ -1375,7 +1375,7 @@ export const CORN_MAZES: CornMaze[] = [
         { row: 1, col: 3 },
         { row: 1, col: 26 },
         { row: 2, col: 9 },
-        { row: 2, col: 21 },
+        { row: 2, col: 22 },
         { row: 3, col: 6 },
         { row: 4, col: 27 },
         { row: 5, col: 5 },
@@ -1401,6 +1401,7 @@ export const CORN_MAZES: CornMaze[] = [
         { row: 15, col: 25 },
         { row: 17, col: 20 },
         { row: 19, col: 2 },
+        { row: 19, col: 18 },
         { row: 19, col: 26 },
         { row: 20, col: 1 },
         { row: 21, col: 10 },

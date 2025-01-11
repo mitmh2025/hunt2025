@@ -5,7 +5,6 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Chinatown",
   slug: "chinatown",
-  initial_description: "Meta Puzzle",
   answer: "CRY STOOL PIDGIN",
   authors: ["Henry Wong", "Arcturus Wang", "Hubert Hwang", "Jesse Moeller"],
   editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],
@@ -22,7 +21,7 @@ const puzzle: PuzzleDefinition = {
         "John Silvio",
         "Nine Morch",
         "Ollie Shonaldmann",
-        'Robert "Fro" Myers',
+        "Robert “Fro” Myers",
       ],
     },
   ],
@@ -58,7 +57,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers have identified all location groups and benches.",
       keywords: ["bench", "location"],
       nudge:
-        "Congrats! You've found all of Katrina's dead drops. Is the flavortext telling you to *do* something with them?",
+        "Congrats! You’ve found all of Katrina’s dead drops. Is the flavortext telling you to *do* something with them?",
     },
     {
       order: 60.0,

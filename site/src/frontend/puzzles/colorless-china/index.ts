@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Eponymous Forensic Accountant",
   slug: "eponymous_forensic_accountant",
-  initial_description: "A bag full of receipts.",
+  initial_description: "Physical Puzzle—Bring your own bag",
   answer: "COOKED BOOK",
   authors: ["Kawika Pierson", "Atul Shatavart Nadig"],
   editors: ["James Douberley", "Nathan Fung"],

@@ -59,7 +59,7 @@ export default function Puzzle() {
     let unlockCount = 0;
     let solvedCount = 0;
     const hintCount = 0;
-    const boughtAnswerCount = 0;
+    let boughtAnswerCount = 0;
 
     const teams: SinglePuzzleStats["teams"] = Object.fromEntries(
       opsData.teams.map((team) => [
@@ -144,7 +144,21 @@ export default function Puzzle() {
           break;
         }
 
-        // TODO: count hints + track bought answers
+        case "puzzle_answer_bought":
+          boughtAnswerCount += 1;
+
+          if (entry.slug === slug) {
+            if (entry.team_id) {
+              const teamData = teams[entry.team_id];
+              if (teamData) {
+                teamData.boughtAnswer = true;
+              }
+            }
+          }
+
+          break;
+
+        // TODO: count hints
       }
     });
 

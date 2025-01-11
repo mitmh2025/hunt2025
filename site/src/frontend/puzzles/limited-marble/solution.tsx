@@ -10,6 +10,7 @@ const StyledTable = styled.table`
   th,
   td {
     padding: 0px 16px;
+    text-align: center;
   }
 `;
 
@@ -138,7 +139,7 @@ const Solution = (): JSX.Element => {
           </tr>
           <tr>
             <td>11</td>
-            <td>d</td>
+            <td>_ (space)</td>
             <td>persian</td>
             <td>armenian western</td>
             <td>arm enian western</td>

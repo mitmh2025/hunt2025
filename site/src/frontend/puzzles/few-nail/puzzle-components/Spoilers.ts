@@ -267,7 +267,7 @@ export const COLON_ROUND: Round = {
       meaningAudio: w8,
       useAudio: d8,
       answerA: "ADMIT",
-      answerB: "A MIT",
+      answerB: "MIT",
       excerpt: "Very good men foull of Love of Crist I kep them A mit",
       extraction: "M",
     },
@@ -553,7 +553,7 @@ export const EXCLAMATION_MARK_ROUND: Round = {
       answerA: "OFFICERS",
       answerB: "OFFESERS",
       excerpt:
-        "see there is so many men wants be the all offesers & Now sogers poor king",
+        "see there is so many men wants be the all offesers & Now sogers",
       extraction: "E",
     },
   ],
@@ -789,8 +789,7 @@ export const SEMICOLON_ROUND: Round = {
       useAudio: d45,
       answerA: "HEREDITARY",
       answerB: "HERETAREY",
-      excerpt:
-        "it is A wonder I am A Live two children suked hur brest—it is heretarey",
+      excerpt: "two children suked hur brest—it is heretarey",
       extraction: "T",
     },
     {

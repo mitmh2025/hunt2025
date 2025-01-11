@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "The Inspectre",
   slug: "the_inspectre",
   initial_description:
-    "A bag full of clear acrylic pieces and a sheet of paper with lines on it.",
+    "Physical Puzzle—A bag of acrylic pieces and a sheet of paper",
   answer: "TILECUTTER",
   authors: ["Andrew Russell"],
   editors: ["Joel Fried", "Melanie Matchett Wood", "Sid Creutz"],

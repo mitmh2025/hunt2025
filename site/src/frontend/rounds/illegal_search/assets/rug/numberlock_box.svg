@@ -1,46 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width="1920"
-   height="1080"
-   viewBox="0 0 1920 1080"
-   version="1.1"
-   id="svg1"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs1">
-    <linearGradient
-       id="swatch151">
-      <stop
-         style="stop-color:#210c00;stop-opacity:1;"
-         offset="0"
-         id="stop151" />
-    </linearGradient>
-  </defs>
-  <g
-     id="layer3"
-     style="display:inline">
-    <g
-       id="g150"
-       transform="translate(4.85e-4)">
-      <path
-         id="path1"
-         style="fill:#615243;fill-opacity:1;stroke:none;stroke-width:8;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-         d="M 1496.6035,1080 V 422.5 H 451.39648 V 1080" />
-      <path
-         id="path4"
-         style="fill:#5d5042;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-         d="M 1549.9995,1079.9994 V 329 l -53.3969,93.49992 v 657.49948" />
-      <path
-         style="fill:#5e5648;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-         d="M 1549.9995,329 H 370 l 81.39623,93.49993 H 1496.6029 Z"
-         id="path5" />
-      <path
-         id="path6"
-         style="fill:#484032;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-         d="M 451.39641,1079.9994 V 422.49992 L 370,329 l -4.7e-4,750.9994" />
-    </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="1080" version="1.1" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <g transform="translate(4.85e-4)">
+   <path d="m1496.6 1080v-657.5h-1045.2v657.5" fill="#615243"/>
+   <path d="m1550 1080v-751l-53.397 93.5v657.5" fill="#5d5042" stroke="#000" stroke-linejoin="round" stroke-width="8"/>
+   <path d="m1550 329h-1180l81.396 93.5h1045.2z" fill="#5e5648" stroke="#000" stroke-linejoin="round" stroke-width="8"/>
+   <path d="m451.4 1080v-657.5l-81.396-93.5-4.7e-4 751" fill="#484032" stroke="#000" stroke-linejoin="round" stroke-width="8"/>
   </g>
+ </g>
 </svg>

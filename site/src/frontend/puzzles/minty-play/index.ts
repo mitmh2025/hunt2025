@@ -3,9 +3,9 @@ import Puzzle from "./puzzle";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
-  title: "Mystery O's",
+  title: "Mystery O’s",
   slug: "mystery_os",
-  initial_description: "A mini cereal box with crayons inside.",
+  initial_description: "Physical Puzzle—a cereal box",
   answer: "RICE UNIVERSITY",
   authors: [
     "Arcturus Wang",

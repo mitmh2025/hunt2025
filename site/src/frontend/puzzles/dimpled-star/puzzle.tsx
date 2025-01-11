@@ -41,7 +41,7 @@ const Puzzle = () => {
           Gala, and ask around for Billie. They will need your team’s radio.
           They will need to be able to do quite a bit of walking, but very
           little of it outside. They may be out of your office for an hour or so
-          with the radio, so remember to tune to 2pi in your browser.
+          with the radio, so remember to tune to 2π in your browser.
         </p>
 
         <p>

@@ -19,7 +19,7 @@ export type Person = {
 };
 
 export const AGENT_NAME = "Agent";
-const Ending: Person = {
+export const Ending: Person = {
   name: AGENT_NAME,
   intro: [
     {
@@ -81,7 +81,7 @@ const Ending: Person = {
 };
 
 const COMPUTER_NAME = "SECURITY";
-const Computer: Person = {
+export const Computer: Person = {
   name: COMPUTER_NAME,
   intro: [
     {
@@ -109,7 +109,7 @@ const Computer: Person = {
 };
 
 const DINERAGENT_NAME = "EEVEELYNE";
-const DinerAgent: Person = {
+export const DinerAgent: Person = {
   name: DINERAGENT_NAME,
   intro: [
     {
@@ -138,7 +138,7 @@ const DinerAgent: Person = {
 };
 
 const BUREAUCRAT_NAME = "OGDEN";
-const Bureaucrat: Person = {
+export const Bureaucrat: Person = {
   name: BUREAUCRAT_NAME,
   intro: [
     {
@@ -166,7 +166,7 @@ const Bureaucrat: Person = {
 };
 
 const DETECTIVE_NAME = "RACHMAL";
-const Detective: Person = {
+export const Detective: Person = {
   name: DETECTIVE_NAME,
   intro: [
     {
@@ -204,7 +204,7 @@ const Detective: Person = {
 };
 
 const WIKIPEDIAN_NAME = "EDITH";
-const Wikipedian: Person = {
+export const Wikipedian: Person = {
   name: WIKIPEDIAN_NAME,
   intro: [
     {
@@ -248,9 +248,9 @@ const Wikipedian: Person = {
   nextPerson: Detective,
 };
 
-const CORNER_NAME = "ZOWER/ZUFF";
+export const CORNER_NAME = "ZOWER/ZUFF";
 const LITTLE_GIRL_NAME = "Little girl";
-const PowerpuffGirl: Person = {
+export const PowerpuffGirl: Person = {
   name: LITTLE_GIRL_NAME,
   intro: [
     {
@@ -281,7 +281,7 @@ const PowerpuffGirl: Person = {
 };
 
 const SAILOR_NAME = "PAORA";
-const Sailor: Person = {
+export const Sailor: Person = {
   name: SAILOR_NAME,
   intro: [
     {
@@ -309,7 +309,7 @@ const Sailor: Person = {
 };
 
 const DUNGEONMASTER_NAME = "INNAN";
-const DungeonMaster: Person = {
+export const DungeonMaster: Person = {
   name: DUNGEONMASTER_NAME,
   intro: [
     {
@@ -347,7 +347,7 @@ const DungeonMaster: Person = {
 };
 
 const CRITIC_NAME = "KIMBALL KINGSFORD";
-const Critic: Person = {
+export const Critic: Person = {
   name: CRITIC_NAME,
   intro: [
     {
@@ -382,7 +382,7 @@ const Critic: Person = {
 };
 
 const FIANCE_NAME = "SANDY";
-const Fiance: Person = {
+export const Fiance: Person = {
   name: FIANCE_NAME,
   intro: [
     {
@@ -409,12 +409,12 @@ const Fiance: Person = {
       speaker: FIANCE_NAME,
     },
   ],
-  validAnswers: ["GARNET", "AMETHYST", "PEARL", "STEVEN"],
+  validAnswers: ["GARNET", "AMETHYST", "PEARL", "STEVEN", "STEVENUNIVERSE"],
   nextPerson: Critic,
 };
 
 const SNOWMAN_NAME = "XENO";
-const Snowman: Person = {
+export const Snowman: Person = {
   name: SNOWMAN_NAME,
   intro: [
     {
@@ -468,7 +468,7 @@ const Snowman: Person = {
 };
 
 const CATLADY_NAME = "ELENA";
-const CatLady: Person = {
+export const CatLady: Person = {
   name: CATLADY_NAME,
   intro: [
     {
@@ -502,7 +502,7 @@ const CatLady: Person = {
 };
 
 const MANICURIST_NAME = "DINA";
-const Manicurist: Person = {
+export const Manicurist: Person = {
   name: MANICURIST_NAME,
   intro: [
     {
@@ -537,7 +537,7 @@ const Manicurist: Person = {
 };
 
 const DANCER_NAME = "NETTIE";
-const Dancer: Person = {
+export const Dancer: Person = {
   name: DANCER_NAME,
   intro: [
     {
@@ -571,7 +571,7 @@ const Dancer: Person = {
 };
 
 const ROMAN_NAME = "IULIUS";
-const Roman: Person = {
+export const Roman: Person = {
   name: ROMAN_NAME,
   intro: [
     {

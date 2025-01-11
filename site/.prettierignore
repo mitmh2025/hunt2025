@@ -25,3 +25,6 @@ types/mfng/*.ts
 *.mp4
 # Ignore fonts
 *.ttf
+*.woff2
+# Also lol ignore this file
+.prettierignore

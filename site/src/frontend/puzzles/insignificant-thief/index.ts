@@ -35,7 +35,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers are concerned that some of these animals are symbols of multiple states",
       keywords: ["multiple", "many", "options", "white-tailed deer"],
       nudge:
-        'The map shows "a state" of each animal. Which one is to be determined — other constraints in the puzzle ensure there is only one possibility for each animal.',
+        "The map shows “a state” of each animal. Which one is to be determined — other constraints in the puzzle ensure there is only one possibility for each animal.",
     },
     {
       order: 25.0,

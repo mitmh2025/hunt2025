@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Formula Won",
   slug: "formula_won",
   initial_description:
-    "Videos of a video game car driving around various race tracks.",
+    "Videos of a video game car driving around various race tracks",
   answer: "NIKI LAUDA",
   authors: ["Mike Mannis"],
   editors: ["Erin Price", "James Douberley", "Steve Banzaert"],

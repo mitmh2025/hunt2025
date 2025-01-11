@@ -2,13 +2,8 @@ import React from "react";
 import { styled } from "styled-components";
 import { COPY_ONLY_CLASS } from "../components/CopyToClipboard";
 import LinkedImage from "../components/LinkedImage";
+import { type ModalInternalExtra } from "../rounds/illegal_search/types";
 import { type PuzzleDefinition } from "./types";
-
-type BlacklightOpts = {
-  answer: string;
-  asset: string;
-  assetAlt: string;
-};
 
 const StyledLinkedImage = styled(LinkedImage)`
   max-width: 600px;
@@ -18,7 +13,8 @@ const StyledLinkedImage = styled(LinkedImage)`
 
 export function blacklightPuzzle(
   base: PuzzleDefinition,
-  opts: BlacklightOpts,
+  answer: string,
+  extra: ModalInternalExtra,
 ): PuzzleDefinition {
   const Puzzle = base.content.component;
   const Solution = base.solution.component;
@@ -32,8 +28,8 @@ export function blacklightPuzzle(
       component: function BlacklightPuzzle(props) {
         return (
           <>
-            <StyledLinkedImage src={opts.asset} alt={opts.assetAlt} />
-            <div className={COPY_ONLY_CLASS}>{opts.assetAlt}</div>
+            <StyledLinkedImage src={extra.asset} alt={extra.altText} />
+            <div className={COPY_ONLY_CLASS}>{extra.altText}</div>
             <Puzzle {...props} />
           </>
         );
@@ -47,7 +43,7 @@ export function blacklightPuzzle(
         return <Solution {...props} />;
       },
     },
-    answer: opts.answer,
+    answer: answer,
     // TODO: blacklight-specific hints?
     hints: [],
   };

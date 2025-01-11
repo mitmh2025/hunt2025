@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Corn Maize",
   slug: "corn_maize",
   initial_description:
-    "A large list of crossword clues and five separate crossword grids.",
+    "A large list of crossword clues and five separate crossword grids",
   answer: "GARDEN CENTER",
   authors: ["Peter Lorenz"],
   editors: ["James Douberley", "Li-Mei Lim", "Nathan Fung", "Robin Deits"],

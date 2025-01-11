@@ -2,11 +2,13 @@ import { type TeamHuntState } from "../../../lib/api/client";
 import { type ArtGalleryResult } from "../interactions/interview_at_the_art_gallery/graph";
 import { type BoardwalkInteractionResult } from "../interactions/interview_at_the_boardwalk/graph";
 import { type CasinoResult } from "../interactions/interview_at_the_casino/graph";
+import { eventDataForTeam } from "../rounds/events/eventData";
 import artGallery from "../rounds/the_missing_diamond/assets/art-gallery-solved.svg";
 import boardwalk from "../rounds/the_missing_diamond/assets/boardwalk-solved.svg";
 import casino from "../rounds/the_missing_diamond/assets/casino-solved.svg";
 import jewelryStore from "../rounds/the_missing_diamond/assets/jewelry-store-solved.svg";
 import map from "../rounds/the_missing_diamond/assets/map.png";
+import about_the_hunt_flag from "./assets/about_the_hunt_flag.png";
 import art_gallery_token_kieftenbeld from "./assets/art_gallery_token_kieftenbeld.png";
 import art_gallery_token_lemahieu from "./assets/art_gallery_token_lemahieu.png";
 import baby_aka_teresa_candy_tape from "./assets/baby_aka_teresa_candy_tape.png";
@@ -19,7 +21,9 @@ import carter_aka_tape from "./assets/carter_aka_tape.png";
 import casino_token_ace_of_diamonds from "./assets/casino_token_ace_of_diamonds.png";
 import casino_token_ace_of_spades from "./assets/casino_token_ace_of_spades.png";
 import casino_token_joker from "./assets/casino_token_joker.png";
+import dont_refresh_postit from "./assets/dont_refresh_postit.png";
 import gladys_aka_ms_glass_tape from "./assets/gladys_aka_ms_glass_tape.png";
+import health_and_safety_flag from "./assets/health_and_safety_flag.png";
 import illegal_search_answer_solved from "./assets/illegal_search_answer_solved.png";
 import illegal_search_question_unlocked from "./assets/illegal_search_question_unlocked.png";
 import interaction_stamp from "./assets/interaction_stamp.png";
@@ -39,6 +43,7 @@ import pin_gold from "./assets/pin_gold.png";
 import pin_purple from "./assets/pin_purple.png";
 import pin_teal from "./assets/pin_teal.png";
 import puzzle_piece from "./assets/puzzle_piece.png";
+import radio_instruction_manual from "./assets/radio_instruction_manual.png";
 import stakeout_answer_solved from "./assets/stakeout_answer_solved.png";
 import stakeout_question_unlocked from "./assets/stakeout_question_unlocked.png";
 import stray_leads_postit from "./assets/stray_leads_postit.png";
@@ -80,6 +85,14 @@ type HubSuspectSetting = {
         HubSuspectStatusSetting,
         HubSuspectStatusSetting,
       ];
+};
+
+const ALWAYS = (_: TeamHuntState) => {
+  return true;
+};
+
+const HUNT_NOT_STARTED = (teamState: TeamHuntState) => {
+  return !teamState.rounds.the_missing_diamond?.gates?.includes("hunt_started");
 };
 
 const HUNT_STARTED = (teamState: TeamHuntState) => {
@@ -157,10 +170,64 @@ const MURDER_IN_MITROPOLIS_COMPLETED = (teamState: TeamHuntState) => {
   );
 };
 const VAULT_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(teamState, "the_vault", "the_vault");
+  return INTERACTION_COMPLETED(teamState, "endgame", "the_vault");
 };
 
 const OBJECTS: HubObjectSetting[] = [
+  {
+    asset: dont_refresh_postit,
+    alt: "This page will live-update when puzzles become available.",
+    x: 1709,
+    y: 454,
+    width: 403,
+    rot: -1.5,
+    shadow: true,
+    inert: true,
+    condition: HUNT_NOT_STARTED,
+    pin: {
+      asset: pin_gold,
+      x: 1890,
+      y: 468,
+    },
+  },
+  {
+    asset: radio_instruction_manual,
+    alt: "Radio Instruction Manual",
+    x: 1739,
+    y: 914,
+    width: 440,
+    rot: 1.5,
+    shadow: true,
+    href: "/radio",
+    condition: HUNT_NOT_STARTED,
+    pin: {
+      asset: pin_purple,
+      x: 1950,
+      y: 944,
+    },
+  },
+  {
+    asset: about_the_hunt_flag,
+    alt: "About the Hunt",
+    x: 1838,
+    y: 1269,
+    width: 519,
+    rot: -4.3,
+    shadow: true,
+    href: "/about",
+    condition: HUNT_NOT_STARTED,
+  },
+  {
+    asset: health_and_safety_flag,
+    alt: "Health & Safety",
+    x: 1789,
+    y: 1409,
+    width: 519,
+    rot: 3.4,
+    shadow: true,
+    href: "/health_and_safety",
+    condition: HUNT_NOT_STARTED,
+  },
   {
     asset: map,
     alt: "A map of Downtown MITropolis",
@@ -810,7 +877,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 107,
     shadow: false,
     href: "/interactions/the_vault",
-    condition: INTERACTION_UNLOCKED("the_vault", "the_vault"),
+    condition: INTERACTION_UNLOCKED("endgame", "the_vault"),
   },
 
   // strings
@@ -992,19 +1059,19 @@ const OBJECTS: HubObjectSetting[] = [
 const SUSPECTS: Record<string, HubSuspectSetting> = {
   papa: {
     status: [
-      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Suspect", condition: ALWAYS },
       { text: "Arrested", color: "#D52222", condition: VAULT_COMPLETED },
     ],
   },
   carter: {
     status: [
-      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Suspect", condition: ALWAYS },
       { text: "Arrested", color: "#D52222", condition: VAULT_COMPLETED },
     ],
   },
   sidecar: {
     status: [
-      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Suspect", condition: ALWAYS },
       {
         text: "Deceased",
         color: "#D52222",
@@ -1014,7 +1081,7 @@ const SUSPECTS: Record<string, HubSuspectSetting> = {
   },
   rover: {
     status: [
-      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Suspect", condition: ALWAYS },
       {
         text: "At large",
         color: "#D52222",
@@ -1024,29 +1091,32 @@ const SUSPECTS: Record<string, HubSuspectSetting> = {
     ],
   },
   billie: {
-    status: [{ text: "Cleared", color: "#006304", condition: HUNT_STARTED }],
+    status: [{ text: "Cleared", color: "#006304", condition: ALWAYS }],
   },
   katrina: {
     status: [
-      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Suspect", condition: ALWAYS },
       { text: "Cleared", color: "#006304", condition: VAULT_COMPLETED },
     ],
   },
   baby: {
     status: [
-      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Suspect", condition: ALWAYS },
       { text: "At large", color: "#D52222", condition: VAULT_COMPLETED },
     ],
   },
   gladys: {
     status: [
-      { text: "Suspect", condition: HUNT_STARTED },
+      { text: "Suspect", condition: ALWAYS },
       { text: "Arrested", color: "#D52222", condition: VAULT_COMPLETED },
     ],
   },
 };
 
-export function hubState(teamState: TeamHuntState): HubState {
+export function hubState(
+  teamState: TeamHuntState,
+  { username }: { username: string },
+): HubState {
   const rounds = Object.entries(teamState.rounds).map(([slug, roundObj]) => {
     return {
       slug,
@@ -1087,10 +1157,13 @@ export function hubState(teamState: TeamHuntState): HubState {
     }),
   );
 
+  const events = eventDataForTeam(username);
+
   return {
     epoch: teamState.epoch,
     rounds,
     objects,
     suspects,
+    events,
   };
 }

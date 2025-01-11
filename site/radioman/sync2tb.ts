@@ -162,6 +162,8 @@ async function main({
 
   const teamInfos = new Map<number, TeamInfoIntermediate>();
   const teamStates = new Map<number, TeamStateIntermediate>();
+  const teamSolvedPuzzles = new Map<number, Set<string>>();
+
   let emptyTeamState = new TeamStateIntermediate(HUNT);
 
   const syncQueue = new Queue(1);
@@ -234,7 +236,7 @@ async function main({
           },
         });
         if (resp.status === 200) {
-          deviceAttributes.whep_url = `${mediaBaseUrl}/${path}?jwt=${resp.body}`;
+          deviceAttributes.whep_url = `${mediaBaseUrl}/${path}/whep?jwt=${resp.body}`;
         } else {
           console.warn("Failed to mint token for", teamId, resp);
         }
@@ -263,7 +265,29 @@ async function main({
       if ((additionalInfo.teamStateEpoch ?? 0) < teamState.epoch) {
         additionalInfo.teamStateEpoch = teamState.epoch;
         customer.additionalInfo = additionalInfo;
+        modified = true;
       }
+      const lastSolvedPuzzles = teamSolvedPuzzles.get(teamId);
+      if (
+        lastSolvedPuzzles !== undefined &&
+        teamState.puzzles_solved.difference(lastSolvedPuzzles).size > 0
+      ) {
+        console.log("team", teamId, "solved a puzzle");
+        // Trigger a celebration
+        await tbClient.client.ruleEngine
+          .requestEntity({
+            params: {
+              entityType: "CUSTOMER",
+              entityId: customer.id.id,
+            },
+            body: {
+              method: "play_ducked_audio",
+              params: "celebration.wav",
+            },
+          })
+          .then(check);
+      }
+      teamSolvedPuzzles.set(teamId, new Set(teamState.puzzles_solved));
     }
     if (modified) {
       customer = await tbClient.client.customer

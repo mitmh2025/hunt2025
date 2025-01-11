@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
+import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import LinkedImage from "../../components/LinkedImage";
 import image1 from "./assets/image1.png";
 
@@ -10,6 +11,7 @@ const StyledImageWrapper = styled.div`
 const Solution = () => {
   return (
     <>
+      <NotoColorEmojiFont />
       <p>
         All of the emojis in the 6x6 grid hint at 6 letter words—either the
         direct emoji name or a closely similar word. This allows you to

@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Relief Printing",
   slug: "relief_printing",
-  initial_description: "A series of rectangular drawings with blocks of color.",
+  initial_description: "A series of rectangular drawings with blocks of color",
   answer: "LACK",
   authors: ["Kawika Pierson", "Alex St Claire", "phyphor"],
   editors: ["Erin Price", "Hubert Hwang", "Laura Nicholson"],

@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Absolutely Not Balderdash",
   slug: "absolutely_not_balderdash",
-  initial_description: "Five groups of crossword-style clues.",
+  initial_description: "Five groups of crossword-style clues",
   answer: "NIMBLE FEET",
   authors: ["Julian West", "Chris Pringle"],
   editors: ["Anna Brunner", "Melanie Matchett Wood", "Teddy McArthur"],
@@ -67,7 +67,7 @@ const puzzle: PuzzleDefinition = {
       description: "Stuck on block 5",
       keywords: ["block 5"],
       nudge:
-        "Depending on what you have have and haven’t solved: We're looking for an actual slogan used by Henry the Fifth (and other British monarchs). It doesn't appear in Shakespeare's play about Henry V. // For “dig and die” , we want something that you might dig, and in which you might die.",
+        "Depending on what you have have and haven’t solved: We’re looking for an actual slogan used by Henry the Fifth (and other British monarchs). It doesn’t appear in Shakespeare’s play about Henry V. // For “dig and die” , we want something that you might dig, and in which you might die.",
     },
     {
       order: 90.0,

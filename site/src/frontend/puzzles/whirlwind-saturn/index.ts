@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Unreal Islands",
   slug: "unreal_islands",
-  initial_description: "Flavortext and a grid filled with letters and numbers",
+  initial_description: "A grid filled with letters and numbers",
   answer: "BATH BRICK",
   authors: ["Becca Chang", "Atul Shatavart Nadig", "Henry Wong"],
   editors: ["Henry Wong", "Li-Mei Lim", "Robin Deits", "Tanya Khovanova"],

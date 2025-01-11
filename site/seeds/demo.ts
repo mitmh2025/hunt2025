@@ -134,15 +134,18 @@ export async function seed(knex: Knex): Promise<void> {
     }
   };
 
+  await createTeam("prehunt");
   await createTeam("team");
   await createTeam("unlockable", async (team_id, mutator) => {
     for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked" as const,
-        round.slug,
-      );
+      if (round.slug !== "floaters") {
+        await ensureActivityLogEntry(
+          mutator,
+          team_id,
+          "round_unlocked" as const,
+          round.slug,
+        );
+      }
     }
     for (const slug of slugs) {
       await ensureActivityLogEntry(mutator, team_id, "puzzle_unlockable", slug);
@@ -151,12 +154,14 @@ export async function seed(knex: Knex): Promise<void> {
   await createTeam("unlocked", async (team_id, mutator) => {
     // For the "unlocked" team: create puzzle_unlocked entries for all rounds & puzzles
     for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked",
-        round.slug,
-      );
+      if (round.slug !== "floaters") {
+        await ensureActivityLogEntry(
+          mutator,
+          team_id,
+          "round_unlocked",
+          round.slug,
+        );
+      }
     }
     for (const slug of slugs) {
       await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
@@ -169,12 +174,14 @@ export async function seed(knex: Knex): Promise<void> {
     // For the "solved" team:
     // unlock all rounds and puzzles
     for (const round of HUNT.rounds) {
-      await ensureActivityLogEntry(
-        mutator,
-        team_id,
-        "round_unlocked",
-        round.slug,
-      );
+      if (round.slug !== "floaters") {
+        await ensureActivityLogEntry(
+          mutator,
+          team_id,
+          "round_unlocked",
+          round.slug,
+        );
+      }
     }
     for (const slug of slugs) {
       await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
@@ -288,28 +295,42 @@ export async function seed(knex: Knex): Promise<void> {
     await ensurePuzzleSolved(mutator, team_id, "papas_stash");
   });
 
+  const all_team_ids: number[] = await knex("teams").select("id").pluck("id");
+  for (const team_id of all_team_ids) {
+    if (team_id !== 1) {
+      await activityLog.executeMutation(
+        HUNT,
+        team_id,
+        undefined,
+        knex,
+        async (_, mutator) => {
+          // Mark the hunt as started (for all but the pre-hunt team),
+          // by marking as completed the gate that represents that.
+          if (
+            !mutator.log.some(
+              (e) =>
+                e.type === "gate_completed" &&
+                e.slug === "hunt_started" &&
+                e.team_id === undefined,
+            )
+          ) {
+            await mutator.appendLog({
+              type: "gate_completed",
+              slug: "hunt_started",
+              team_id,
+            });
+          }
+        },
+      );
+    }
+  }
+
   await activityLog.executeMutation(
     HUNT,
     undefined,
     undefined,
     knex,
     async (_, mutator) => {
-      // Mark the hunt as started, by marking as completed the gate that
-      // represents that for all teams.
-      if (
-        !mutator.log.some(
-          (e) =>
-            e.type === "gate_completed" &&
-            e.slug === "hunt_started" &&
-            e.team_id === undefined,
-        )
-      ) {
-        await mutator.appendLog({
-          type: "gate_completed",
-          slug: "hunt_started",
-        });
-      }
-
       // Do an initial currency grant of 9 unlocks, if we haven't given such a
       // grant out yet.
       if (
@@ -327,7 +348,6 @@ export async function seed(knex: Knex): Promise<void> {
   );
 
   // Ensure that we trigger any triggerable unlocks
-  const all_team_ids: number[] = await knex("teams").select("id").pluck("id");
   for (const team_id of all_team_ids) {
     // TODO: Do all of this in one mutation.
     await activityLog.executeMutation(

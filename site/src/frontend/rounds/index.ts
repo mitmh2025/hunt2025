@@ -1,14 +1,14 @@
 import type { FunctionComponent } from "react";
-import type { TeamHuntState } from "../../../lib/api/client";
+import type { TeamHuntState, TeamInfo } from "../../../lib/api/client";
 import type { Entrypoint } from "../server/assets";
 import BackgroundCheckRoundPage from "./background_check";
+import EventsRoundPage from "./events";
 import IllegalSearchRoundPage from "./illegal_search";
 import MurderRoundPage from "./murder_in_mitropolis";
 import PapertrailRoundPage from "./paper_trail";
 import StakeoutRoundPage from "./stakeout";
 import StrayLeadsRoundPage from "./stray_leads";
 import MissingDiamondRoundPage from "./the_missing_diamond";
-import VaultRoundPage from "./the_vault";
 
 // This file is intended to include non-structural data that is only relevant
 // to the frontend concerning rounds.
@@ -17,7 +17,11 @@ import VaultRoundPage from "./the_vault";
 // TODO: figure out the props we want to pass to the round pages
 type RoundDefinition = {
   title: string;
-  component: FunctionComponent<{ teamState: TeamHuntState; node?: string }>;
+  component: FunctionComponent<{
+    teamState: TeamHuntState;
+    teamInfo: TeamInfo;
+    node?: string;
+  }>;
   entrypoint?: Entrypoint;
 };
 
@@ -52,13 +56,14 @@ export const ROUND_PAGE_MAP: Record<string, RoundDefinition> = {
     component: MurderRoundPage,
     entrypoint: "murder_in_mitropolis",
   },
-  the_vault: {
-    title: "The Vault",
-    component: VaultRoundPage,
-  },
   stray_leads: {
     title: "Stray Leads",
     component: StrayLeadsRoundPage,
     entrypoint: "stray_leads",
+  },
+  events: {
+    title: "Events",
+    component: EventsRoundPage,
+    entrypoint: "events",
   },
 };

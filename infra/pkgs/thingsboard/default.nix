@@ -14,7 +14,7 @@
 
 let
   pname = "thingsboard";
-  version = "3.7";
+  version = "3.9";
   defineMvnWrapper = ''
     mvn()
     {
@@ -29,7 +29,7 @@ let
     owner = "thingsboard";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-o4vAeWRZ8uTAQpyWj5bHruOGP4Bmv84i0q6RPsFCLAo=";
+    hash = "sha256-evUz8jZFOa4w0arbLKvFP78sOvRCGswEoGT4c8E1FMs=";
   };
   ui-ngx = mkYarnPackage {
     inherit version;
@@ -38,7 +38,7 @@ let
     packageJSON = ./package.json;
     offlineCache = fetchYarnDeps {
       yarnLock = src + "/ui-ngx/yarn.lock";
-      hash = "sha256-SYlFP/exOKIUrp4praKI3E/hawdZKLH/E6XeDm+UCwk=";
+      hash = "sha256-+dGexbJpB1RfQLokapUYsUGwnU62ljPYim0fN4oZnbo=";
     };
 
     packageResolutions = {
@@ -52,14 +52,22 @@ let
 
     doDist = false;
 
+    configurePhase = ''
+      runHook preConfigure
+      cp -r $node_modules node_modules
+      chmod -R +w node_modules
+      runHook postConfigure
+    '';
+
     buildPhase = ''
       runHook preBuild
+      yarn --offline run prepare
       yarn --offline run build:prod
       runHook postBuild
     '';
 
     installPhase = ''
-      cp -r deps/thingsboard/target/generated-resources $out
+      cp -r target/generated-resources $out
     '';
   };
   postPatch = ''
@@ -69,6 +77,7 @@ let
       -u '//pom:jar-plugin.version' -v 3.4.1 \
       -d '//pom:plugin[./pom:artifactId="gradle-maven-plugin"]' \
       -d '//pom:plugin[./pom:executions/pom:execution/pom:id="install-deb"]' \
+      -d '//pom:plugin[./pom:artifactId="git-commit-id-maven-plugin"]' \
       -s '//pom:dependencyManagement/pom:dependencies' -t elem -n dependency \
       -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n groupId -v com.kohlschutter.junixsocket \
       -s '//pom:dependencyManagement/pom:dependencies/dependency[last()]' -t elem -n artifactId -v junixsocket-core \
@@ -121,7 +130,7 @@ in mavenWithJdk.buildMavenPackage rec {
 
   mvnParameters = "-DskipTests -Dskip.installyarn -Dskip.yarn -Dpkg.installFolder=$out/share/thingsboard -P'!yarn-build' -pl ${lib.concatStringsSep "," projectList}";
 
-  mvnHash = "sha256-pn7XfdrTDIIK8Q3lgxdXJ0i/+/5X9v1Xne9weJPX9wg=";
+  mvnHash = "sha256-LKU8zn8LurkuQBFcSM4n0UBNum8hJH1RoYMxgpvb7nk=";
 
   mvnFetchExtraArgs = {
     preConfigure = defineMvnWrapper;

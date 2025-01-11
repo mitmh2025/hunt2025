@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "No Notes",
   slug: "no_notes",
-  initial_description: "A series of musical staves and text clues.",
+  initial_description: "A series of musical staves and text clues",
   answer: "CANINE PARTNER",
   authors: ["Kevin Hwang", "Sid Creutz"],
   editors: ["Anna Brunner", "Erin Price", "J. Heléne Andersson", "Robin Deits"],
@@ -112,7 +112,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["GO HAVE A GREAT DAY"],
-      reply: "This is a hint. Keep going!",
+      reply: "Keep going!",
     },
     {
       guess: ["SHARE A TEAM PHOTO"],

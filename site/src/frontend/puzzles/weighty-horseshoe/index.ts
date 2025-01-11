@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "XOXO",
   slug: "xoxo",
-  initial_description: "A grid of criss-crosses and a set of love poems.",
+  initial_description: "A grid of criss-crosses and a set of love poems",
   answer: "FROM RUSSIA WITH LOVE",
   authors: ["Nicholas Georgiou"],
   editors: ["Anna Brunner", "Michele Pratusevich", "Nathan Fung"],

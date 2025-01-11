@@ -5,7 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Anything Is Popsicle",
   slug: "anything_is_popsicle",
-  initial_description: "A bag of popsicle sticks.",
+  initial_description: "Physical Puzzle—popsicle sticks",
   answer: "AXE",
   authors: ["Steve Banzaert"],
   editors: ["Laura Nicholson", "Michele Pratusevich", "Nathan Fung"],

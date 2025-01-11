@@ -11,24 +11,10 @@ import icon_solved from "../../assets/solved_status.svg";
 import icon_unlock from "../../assets/unlock-icon.svg";
 import icon_unlocked from "../../assets/unlocked_status.svg";
 import icon_unlockable from "../../assets/visible_status.svg";
-import StyledDialog from "./StyledDialog";
+import StyledDialog, { DialogActions } from "./StyledDialog";
 import { Button, ButtonSecondary } from "./StyledUI";
 
 export type LockState = "unlockable" | "unlocked" | "locked";
-
-const DialogActions = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin: 0.5rem;
-  gap: 0.5rem;
-
-  button {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-`;
 
 export const PuzzleUnlockModal = React.forwardRef(
   function PuzzleUnlockModalInner(

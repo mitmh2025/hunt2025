@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "The Tunnels Beneath the Institute",
   slug: "the_tunnels_beneath_the_institute",
   initial_description:
-    "A sequence of 14 video, audio, and text clips, each with an associated content warning.",
+    "A sequence of video, audio, and text clips, each with an associated content warning",
   answer: "POSANGAR",
   authors: ["John Toomey"],
   editors: ["Anna Brunner", "Michele Pratusevich", "Teddy McArthur"],

@@ -6,8 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "_land",
   slug: "_land",
-  initial_description:
-    "A thin, multicoloured horizontal line, some shapes composed of squares, and a set of keyboard controls.",
+  initial_description: "A thin, multicolored horizontal line",
   answer: "PALISADE",
   authors: ["Elan Blaustein"],
   editors: ["Chris Gatesman", "Melanie Matchett Wood", "Michele Pratusevich"],

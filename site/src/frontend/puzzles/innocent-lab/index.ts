@@ -5,8 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Chemicals Are Sexy",
   slug: "chemicals_are_sexy",
-  initial_description:
-    "Two lists of cryptic-y clues, each with a number attached to them, and illustrations of chemical bottles with warning labels",
+  initial_description: "Cryptic-y clues and chemical bottles",
   answer: "ESCALATION",
   authors: ["Sid Creutz", "Chris Roske", "Kevin Hwang"],
   editors: ["Joel Fried", "Jonathan Lay", "Steve Banzaert"],
