@@ -38,7 +38,6 @@ import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
 import {
   adminContract,
-  type FermitQuestion,
   type FermitRegistration,
 } from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
@@ -55,6 +54,10 @@ import canonicalizeInput from "../../lib/canonicalizeInput";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { albumLookup } from "../../ops/src/opsdata/desertedNinjaImages";
+import {
+  type FermitQuestion,
+  ALL_QUESTIONS,
+} from "../../ops/src/opsdata/desertedNinjaQuestions";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import {
@@ -70,7 +73,6 @@ import {
   puzzleStateLog,
   registerTeam,
   teamRegistrationLog,
-  getFermitQuestions,
   getFermitSession,
   getFermitSessions,
   createFermitSession,
@@ -2265,11 +2267,11 @@ export async function getRouter({
 
           const normalQuestions: FermitQuestion[] = [];
           const geoguessrQuestions: FermitQuestion[] = [];
-          (await getFermitQuestions(knex)).forEach((q) =>
+          ALL_QUESTIONS.forEach((q) => {
             (q.geoguessr === null ? normalQuestions : geoguessrQuestions).push(
               q,
-            ),
-          );
+            );
+          });
 
           let tries = 0;
           let valid = false;
@@ -2329,11 +2331,14 @@ export async function getRouter({
                 });
               }
             } else {
-              //console.log(
-              //                `question list ${ids} failed validation, regenerating`,
-              //);
+              /*
+              console.log(
+                `question list ${ids} failed validation, regenerating`,
+              );
+               */
             }
           }
+          console.log("ran out of attempts");
           return Promise.resolve({
             status: 500 as const,
             body: null,
@@ -2403,11 +2408,9 @@ export async function getRouter({
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { sessionId } }) => {
           // To close out a session, score each team then update the puzzle_state log
-
-          const [session, answers, allQuestions] = await Promise.all([
+          const [session, answers] = await Promise.all([
             getFermitSession(parseInt(sessionId, 10), knex),
             getFermitAnswers(parseInt(sessionId, 10), knex),
-            getFermitQuestions(knex),
           ]);
 
           if (!session) {
@@ -2424,7 +2427,7 @@ export async function getRouter({
           }
 
           const questions = session.questionIds.map((qid) =>
-            allQuestions.find((q) => q.id === qid),
+            ALL_QUESTIONS.find((q) => q.id === qid),
           );
           if (!questions.every((q) => q !== undefined)) {
             return Promise.resolve({
@@ -2600,15 +2603,6 @@ export async function getRouter({
               body: newSession,
             });
           }
-        },
-      },
-      getFermitQuestions: {
-        middleware: [adminAuthMiddleware],
-        handler: async () => {
-          return Promise.resolve({
-            status: 200 as const,
-            body: await getFermitQuestions(knex),
-          });
         },
       },
       getFermitSessions: {

@@ -56,17 +56,6 @@ export type FermitQuestionJSON = {
   categories: string[];
 };
 
-export const FermitQuestionSchema = z.object({
-  id: z.number(),
-  text: z.string(),
-  geoguessr: z.number().nullable(),
-  answer: z.number(),
-  scoringMethod: z.string(),
-  categories: z.string().array(),
-});
-
-export type FermitQuestion = z.infer<typeof FermitQuestionSchema>;
-
 export const FermitSessionSchema = z.object({
   id: z.number(),
   title: z.string(),
@@ -266,14 +255,6 @@ export const adminContract = c.router({
       500: z.string(),
     },
     summary: "Complete a deserted-ninja session, updating team logs",
-  },
-  getFermitQuestions: {
-    method: "GET",
-    path: "/admin/fermit/get-questions",
-    responses: {
-      200: FermitQuestionSchema.array(),
-    },
-    summary: "Get all deserted-ninja questions",
   },
   getFermitAnswers: {
     method: "GET",

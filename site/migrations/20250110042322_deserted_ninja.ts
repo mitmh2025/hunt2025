@@ -2,11 +2,6 @@ import type { Knex } from "knex";
 import { generatedPrimaryKey } from "../lib/migration_helper";
 
 export async function up(knex: Knex): Promise<void> {
-  await knex.schema.createTable("fermit_questions", function (table) {
-    generatedPrimaryKey(knex, table, "id");
-    table.string("text", 255).notNullable();
-    table.jsonb("data");
-  });
   await knex.schema.createTable("fermit_sessions", function (table) {
     generatedPrimaryKey(knex, table, "id");
     table.string("title", 255).notNullable();
@@ -48,7 +43,6 @@ export async function down(knex: Knex): Promise<void> {
     table.dropForeign("team_id");
   });
   await knex.schema
-    .dropTable("fermit_questions")
     .dropTable("fermit_sessions")
     .dropTable("fermit_registrations")
     .dropTable("fermit_answers");

@@ -5,7 +5,6 @@ import {
   type InsertPuzzleStateLogEntry,
 } from "knex/types/tables";
 import {
-  type FermitQuestion,
   type FermitSession,
   type FermitAnswer,
   type FermitRegistration,
@@ -30,7 +29,6 @@ import {
   getPuzzleStateLog as dbGetPuzzleStateLog,
   appendPuzzleStateLog as dbAppendPuzzleStateLog,
   retryOnAbort,
-  getFermitQuestions as dbGetFermitQuestions,
   getFermitSession as dbGetFermitSession,
   getFermitSessions as dbGetFermitSessions,
   insertFermitSession as dbInsertFermitSession,
@@ -568,12 +566,6 @@ export class PuzzleStateLog extends Log<
 }
 
 export const puzzleStateLog = new PuzzleStateLog();
-
-export async function getFermitQuestions(
-  knex: Knex.Knex,
-): Promise<FermitQuestion[]> {
-  return dbGetFermitQuestions(knex);
-}
 
 export async function createFermitSession(
   title: string,

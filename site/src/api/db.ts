@@ -15,8 +15,6 @@ import {
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
 import {
-  type FermitQuestion,
-  type FermitQuestionJSON,
   type FermitSession,
   type FermitAnswer,
   type FermitRegistration,
@@ -292,18 +290,6 @@ declare module "knex/types/tables" {
     "team_id" | "slug" | "data"
   >;
 
-  type FermitQuestionRow = {
-    id: number;
-    text: string;
-    // SQLite returns JSON fields as string.
-    data: string | object;
-    /*
-    geoguessr: number | null;
-    answer: number;
-    scoring_method: string;
-     */
-  };
-
   type FermitSessionRow = {
     id: number;
     status: string;
@@ -349,7 +335,6 @@ declare module "knex/types/tables" {
       PuzzleStateLogEntryRow,
       InsertPuzzleStateLogEntry
     >;
-    fermit_questions: FermitQuestionRow;
     fermit_sessions: Knex.Knex.CompositeTableType<
       FermitSessionRow,
       InsertFermitSession,
@@ -639,30 +624,6 @@ export async function appendPuzzleStateLog(
       const fixedEntry = cleanupPuzzleStateLogEntryFromDB(insertedEntry);
       return fixedEntry;
     });
-}
-
-export async function getFermitQuestions(
-  knex: Knex.Knex,
-): Promise<FermitQuestion[]> {
-  return (await knex("fermit_questions").select()).map((obj) => {
-    const data = fixData(obj.data) as FermitQuestionJSON;
-    return {
-      id: obj.id,
-      text: obj.text,
-      geoguessr: data.geoguessr,
-      answer: data.answer,
-      scoringMethod: data.scoringMethod,
-      categories: data.categories,
-    };
-  });
-}
-
-export async function insertFermitQuestions(
-  questions: FermitQuestion[],
-  knex: Knex.Knex,
-): Promise<FermitQuestion[]> {
-  await knex("fermit_questions").insert(questions);
-  return [];
 }
 
 export async function getFermitSession(

@@ -4,15 +4,12 @@ import {
   albumLookup,
   geoguessrLookup,
 } from "../../../../ops/src/opsdata/desertedNinjaImages";
+import {
+  ALL_QUESTIONS,
+  type FermitQuestion,
+} from "../../../../ops/src/opsdata/desertedNinjaQuestions";
 import LinkedImage from "../../components/LinkedImage";
 import { PuzzleAnswer } from "../../components/StyledUI";
-import {
-  ALL_NORMAL_QUESTIONS,
-  ALL_GEOGUESSR_LOCATIONS,
-  ALL_ARTISTS,
-  type Question,
-  type Artist,
-} from "./data";
 
 const Example = styled.div`
   width: 80%;
@@ -47,7 +44,98 @@ const CenterCell = styled.td`
   text-align: center;
 `;
 
-const QuestionBlock = ({ question }: { question: Question }) => {
+const ALL_GEOGUESSR_LOCATIONS = [
+  "corner of 3-1 near building 1",
+  "Great Sail, between 50 and 14N",
+  "26-100",
+  "8-4",
+  "outside 26-100",
+  "Baker House",
+  "MIT Medical",
+  "10-485",
+  "W20-5",
+  "Stata Center",
+  "3-1 on the Infinite",
+  "16-0",
+];
+
+type Artist = {
+  name: string;
+  albums: [string, string, string];
+};
+
+const ALL_ARTISTS: Artist[] = [
+  { name: "Taylor Swift", albums: ["Lover", "Folklore", "Reputation"] },
+  {
+    name: "Oasis",
+    albums: [
+      "Definitely Maybe",
+      "(What’s the Story) Morning Glory?",
+      "Be Here Now",
+    ],
+  },
+  {
+    name: "Sabrina Carpenter",
+    albums: ["Singular: Act I", "Short n’ Sweet", "Singular: Act II"],
+  },
+  {
+    name: "Third Eye Blind",
+    albums: ["Third Eye Blind", "Blue", "Out of the Vein"],
+  },
+  { name: "ABBA", albums: ["Ring Ring", "Super Trouper", "Voulez-Vous"] },
+  {
+    name: "Tenacious D",
+    albums: ["Post-Apocalypto", "The Pick of Destiny", "Tenacious D"],
+  },
+  {
+    name: "Eminem",
+    albums: ["The Slim Shady LP", "The Marshall Mathers LP", "Relapse"],
+  },
+  {
+    name: "Tom Petty and the Heartbreakers",
+    albums: [
+      "Let Me Up (I’ve Had Enough)",
+      "Into the Great Wide Open",
+      "Hypnotic Eye",
+    ],
+  },
+  {
+    name: "Hootie & the Blowfish",
+    albums: [
+      "Fairweather Johnson",
+      "Cracked Rear View",
+      "Hootie & the Blowfish",
+    ],
+  },
+  {
+    name: "Elton John",
+    albums: ["Goodbye Yellow Brick Road", "21 at 33", "Rock of the Westies"],
+  },
+  {
+    name: "Our Lady Peace",
+    albums: ["Clumsy", "Spiritual Machines II", "Spiritual Machines"],
+  },
+  {
+    name: "Bad Bunny",
+    albums: ["Un Verano Sin Ti", "YHLQMDLG", "El Último Tour del Mundo"],
+  },
+  { name: "Van Halen", albums: ["Van Halen", "Fair Warning", "5150"] },
+  {
+    name: "Insane Clown Posse",
+    albums: ["Carnival of Carnage", "Bizaar", "The Wraith: Hell’s Pit"],
+  },
+  {
+    name: "OutKast",
+    albums: ["Stankonia", "Speakerboxxx / The Love Below", "Aquemini"],
+  },
+  {
+    name: "U2",
+    albums: ["The Joshua Tree", "Zooropa", "All That You Can’t Leave Behind"],
+  },
+  { name: "Santana", albums: ["Santana III", "Borboletta", "Marathon"] },
+];
+
+const QuestionBlock = ({ question }: { question: FermitQuestion }) => {
   return (
     <tr>
       <td>{question.text}</td>
@@ -277,7 +365,7 @@ const Solution = (): JSX.Element => {
             <th>Question</th>
             <th>Answer</th>
           </tr>
-          {ALL_NORMAL_QUESTIONS.map((q, idx) => (
+          {ALL_QUESTIONS.filter((q) => q.geoguessr === null).map((q, idx) => (
             <QuestionBlock question={q} key={idx} />
           ))}
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((g) => (

@@ -1,6 +1,5 @@
 import { useNotifications } from "@toolpad/core";
 import { styled } from "styled-components";
-import { type FermitQuestion } from "../../../lib/api/admin_contract";
 import LinkedImage from "../../../src/frontend/components/LinkedImage";
 import {
   useFermitData,
@@ -9,6 +8,7 @@ import {
 } from "../FermitDataProvider";
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
+import { type FermitQuestion } from "../opsdata/desertedNinjaQuestions";
 import { type TeamData } from "../opsdata/types";
 import { FermitTeamSelector } from "./FermitTeamSelector";
 

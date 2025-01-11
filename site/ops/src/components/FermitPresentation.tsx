@@ -2,12 +2,10 @@ import { useRef, useEffect, useReducer } from "react";
 import Reveal from "reveal.js";
 import { styled } from "styled-components";
 import { useInterval } from "usehooks-ts";
-import {
-  type FermitQuestion,
-  type FermitSession,
-} from "../../../lib/api/admin_contract";
+import { type FermitSession } from "../../../lib/api/admin_contract";
 import { useFermitData } from "../FermitDataProvider";
 import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
+import { type FermitQuestion } from "../opsdata/desertedNinjaQuestions";
 
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";

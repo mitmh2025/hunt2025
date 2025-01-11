@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
+import { type FermitSession } from "../../lib/api/admin_contract";
+import { useOpsClients } from "./OpsDataProvider";
 import {
   type FermitQuestion,
-  type FermitSession,
-} from "../../lib/api/admin_contract";
-import { useOpsClients } from "./OpsDataProvider";
+  ALL_QUESTIONS,
+} from "./opsdata/desertedNinjaQuestions";
 
 export type FermitData = {
   sessions: FermitSession[];
@@ -81,23 +82,16 @@ export function FermitDataProvider({
 
   useEffect(() => {
     (async () => {
-      const [questions, sessions] = await Promise.all([
-        opsClients.adminClient.getFermitQuestions(),
-        opsClients.adminClient.getFermitSessions(),
-      ]);
+      const sessions = await opsClients.adminClient.getFermitSessions();
 
-      if (questions.status !== 200) {
-        console.error(questions);
-        throw new Error(`Failed to load questions: ${questions.status}`);
-      }
       if (sessions.status !== 200) {
         console.error(sessions);
         throw new Error(`Failed to load sessions: ${sessions.status}`);
       }
 
       const m = new Map<number, FermitQuestion>();
-      questions.body.forEach((q) => {
-        m.set(q.id, q);
+      ALL_QUESTIONS.forEach((q, id) => {
+        m.set(id, q);
       });
       dispatch({
         type: FermitDataActionType.SET_QUESTIONS,
