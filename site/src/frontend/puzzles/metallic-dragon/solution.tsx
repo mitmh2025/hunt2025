@@ -181,7 +181,7 @@ const Solution = () => {
         be treated as textonyms from T9 predictive text. Mapping out and
         translating the textonyms from each room gives the cluephrase PERT AND
         ANIMATED FIVE TUBE PASTA FOUR RIMS OF FACE HOLE FOUR. The translated
-        word makes the sentence at each location make sense as a confirmation
+        word makes the sentence at each location make sense as a confirmation.
       </MarginedDiv>
       <StyledTable>
         <tr>
