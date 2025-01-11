@@ -11,8 +11,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "esTIMation dot jpg",
   slug: "estimation_dot_jpg",
-  initial_description:
-    "You will be asked to up to 3 team members to participate in a quiz show.",
+  initial_description: "A live in-person pub quiz game",
   answer: "TO STATE THE OBVIOUS",
   authors: ["Hubert Hwang", "Kevin Hwang"],
   editors: ["Steve Banzaert", "James Douberly", "Robin Deits", "Arcturus Wang"],
