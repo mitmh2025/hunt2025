@@ -24,7 +24,7 @@ import {
   Wikipedian,
 } from "./data";
 
-const DATA = [
+const DATA: [string, string, string[], string][] = [
   [
     Roman.name,
     "“Spartacus” (film with iconic scene where everyone claims to be Spartacus)",
