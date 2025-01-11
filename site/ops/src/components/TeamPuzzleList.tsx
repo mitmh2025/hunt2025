@@ -123,7 +123,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
   ({ bigBoardTeam, activity }, ref) => {
     const dialogs = useDialogs();
     const notifications = useNotifications();
-    const { adminClient, appendActivityLogEntries } = useOpsClients();
+    const { adminClient, updateActivityLog } = useOpsClients();
     const isOpsAdmin = useIsOpsAdmin();
 
     const handleUnlockPuzzle = (puzzle: TeamPuzzleListEntry) => {
@@ -149,7 +149,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
                   throw new Error(`HTTP ${res.status}: ${res.body}`);
                 }
 
-                appendActivityLogEntries(res.body);
+                await updateActivityLog({ forceRequest: true });
                 updateNow();
 
                 notifications.show(

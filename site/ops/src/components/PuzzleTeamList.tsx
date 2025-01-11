@@ -37,7 +37,7 @@ export default function PuzzleTeamList({
   slug: string;
 }) {
   const opsData = useOpsData();
-  const { adminClient, appendActivityLogEntries } = useOpsClients();
+  const { adminClient, updateActivityLog } = useOpsClients();
   const bigBoardData = useMemo(() => formatAllTeamsData(opsData), [opsData]);
   const isOpsAdmin = useIsOpsAdmin();
   const dialogs = useDialogs();
@@ -72,7 +72,7 @@ export default function PuzzleTeamList({
               throw new Error(`HTTP ${res.status}: ${res.body}`);
             }
 
-            appendActivityLogEntries(res.body);
+            await updateActivityLog({ forceRequest: true });
             updateNow();
 
             notifications.show(`Unlocked puzzle for ${teamsDisplay}`, {

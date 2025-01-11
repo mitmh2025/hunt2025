@@ -23,23 +23,24 @@ import {
   formatTeamHuntState,
 } from "../../src/api/logic";
 import HUNT from "../../src/huntdata";
+import { OpsDataLoader } from "./OpsDataLoader";
 import { type TeamData } from "./opsdata/types";
 
 export type OpsClients = {
   adminClient: AdminClient;
   frontendClient: FrontendClient;
-  appendActivityLogEntries: (entries: InternalActivityLogEntry[]) => void;
-  appendRegistrationLogEntries: (entries: TeamRegistrationLogEntry[]) => void;
+  updateRegistrationLog: (opts?: { forceRequest?: boolean }) => Promise<void>;
+  updateActivityLog: (opts?: { forceRequest?: boolean }) => Promise<void>;
 };
 
 const INITIAL_OPS_CLIENTS: OpsClients = {
   adminClient: newAdminClient("", ""),
   frontendClient: newFrontendClient("", { type: "admin", adminToken: "" }),
-  appendActivityLogEntries: () => {
-    // do nothing
+  updateRegistrationLog: () => {
+    return Promise.resolve();
   },
-  appendRegistrationLogEntries: () => {
-    // do nothing
+  updateActivityLog: () => {
+    return Promise.resolve();
   },
 };
 
@@ -79,18 +80,11 @@ const OpsContext = createContext<OpsContextValue>({
   data: INITIAL_OPS_DATA,
 });
 
-function formatEntry<T extends { timestamp: string | Date }>(
-  entry: T,
-): T & { timestamp: Date } {
-  return {
-    ...entry,
-    timestamp: new Date(entry.timestamp),
-  };
-}
-
 class OpsDataStore {
   private _teamStates = new Map<number, TeamStateIntermediate>();
   private _teamInfos = new Map<number, TeamInfoIntermediate>();
+  private _activityLog: InternalActivityLogEntry[] = [];
+  private _registrationLog: TeamRegistrationLogEntry[] = [];
   private _universalActivityLogs: InternalActivityLogEntry[] = [];
 
   constructor() {
@@ -99,6 +93,11 @@ class OpsDataStore {
   }
 
   applyActivityLogEntry(entry: InternalActivityLogEntry) {
+    const maxId = this._activityLog[this._activityLog.length - 1]?.id ?? 0;
+    if (entry.id <= maxId) {
+      return;
+    }
+
     if (entry.team_id === undefined) {
       // add to universal activity log to apply to future teams
       this._universalActivityLogs.push(entry);
@@ -121,9 +120,17 @@ class OpsDataStore {
 
     const newState = oldState.reduce(entry);
     this._teamStates.set(entry.team_id, newState);
+
+    this._activityLog.push(entry);
   }
 
   applyRegistrationLogEntry(entry: TeamRegistrationLogEntry) {
+    const maxId =
+      this._registrationLog[this._registrationLog.length - 1]?.id ?? 0;
+    if (entry.id <= maxId) {
+      return;
+    }
+
     let oldInfo = this._teamInfos.get(entry.team_id);
     if (!oldInfo) {
       oldInfo = new TeamInfoIntermediate();
@@ -131,6 +138,8 @@ class OpsDataStore {
 
     const newInfo = oldInfo.reduce(entry);
     this._teamInfos.set(entry.team_id, newInfo);
+
+    this._registrationLog.push(entry);
   }
 
   getTeamData(): TeamData[] {
@@ -162,6 +171,14 @@ class OpsDataStore {
     );
   }
 
+  getActivityLog() {
+    return this._activityLog;
+  }
+
+  getRegistrationLog() {
+    return this._registrationLog;
+  }
+
   reset() {
     this._teamStates = new Map();
     this._teamInfos = new Map();
@@ -175,6 +192,7 @@ export default function OpsDataProvider({
   children: React.ReactNode;
 }) {
   const [cookies, _, removeCookie] = useCookies(["mitmh2025_api_auth"]);
+  const [data, setData] = useState<OpsData>(INITIAL_OPS_DATA);
 
   const store = useRef<OpsDataStore | null>(null);
   function getStore() {
@@ -199,68 +217,68 @@ export default function OpsDataProvider({
 
     const adminClient = newAdminClient(apiUrl, token);
 
+    const loader = new OpsDataLoader(frontendClient);
+
     return {
       adminClient,
       frontendClient,
-
-      appendActivityLogEntries: (entries) => {
-        const formattedEntries = entries.map(formatEntry);
-
-        formattedEntries.forEach((entry) => {
-          getStore().applyActivityLogEntry(entry);
+      async updateRegistrationLog({
+        forceRequest = false,
+      } = {}): Promise<void> {
+        const newEntries = await loader.getNewRegistrationLogEntries({
+          forceRequest,
         });
 
-        setData((oldData) => ({
-          ...oldData,
-          teams: getStore().getTeamData(),
-          activityLog: [...oldData.activityLog, ...formattedEntries],
-        }));
-      },
-      appendRegistrationLogEntries: (entries) => {
-        const formattedEntries = entries.map(formatEntry);
+        if (newEntries.length === 0) {
+          return;
+        }
 
-        formattedEntries.forEach((entry) => {
+        newEntries.forEach((entry) => {
           getStore().applyRegistrationLogEntry(entry);
         });
 
         setData((oldData) => ({
           ...oldData,
           teams: getStore().getTeamData(),
-          registrationLog: [...oldData.registrationLog, ...formattedEntries],
+          registrationLog: [...oldData.registrationLog, ...newEntries],
+        }));
+      },
+      async updateActivityLog({ forceRequest = false } = {}): Promise<void> {
+        const newEntries = await loader.getNewActivityLogEntries({
+          forceRequest,
+        });
+
+        if (newEntries.length === 0) {
+          return;
+        }
+
+        newEntries.forEach((entry) => {
+          getStore().applyActivityLogEntry(entry);
+        });
+
+        setData((oldData) => ({
+          ...oldData,
+          teams: getStore().getTeamData(),
+          activityLog: [...oldData.activityLog, ...newEntries],
         }));
       },
     };
   }, [cookies.mitmh2025_api_auth]);
-
-  const [data, setData] = useState<OpsData>(INITIAL_OPS_DATA);
 
   useEffect(() => {
     // TODO: Switch to loading data from the service worker + keeping
     // it up to date with websockets
 
     (async () => {
-      const [registrationLog, activityLog, puzzleMetadata, account] =
-        await Promise.all([
-          opsClients.frontendClient.getFullTeamRegistrationLog(),
-          opsClients.frontendClient.getFullActivityLog(),
-          opsClients.adminClient.getPuzzleMetadata(),
-          opsClients.adminClient.opsAccount(),
-        ]);
+      const [puzzleMetadata, account] = await Promise.all([
+        opsClients.adminClient.getPuzzleMetadata(),
+        opsClients.adminClient.opsAccount(),
+        opsClients.updateRegistrationLog({ forceRequest: true }),
+        opsClients.updateActivityLog({ forceRequest: true }),
+      ]);
 
       if (account.status === 401 || account.status === 403) {
         removeCookie("mitmh2025_api_auth");
-      }
-
-      if (registrationLog.status !== 200) {
-        console.error(registrationLog);
-        throw new Error(
-          `Failed to load registrationLog: ${registrationLog.status}`,
-        );
-      }
-
-      if (activityLog.status !== 200) {
-        console.error(activityLog);
-        throw new Error(`Failed to load activityLog: ${activityLog.status}`);
       }
 
       if (puzzleMetadata.status !== 200) {
@@ -275,19 +293,6 @@ export default function OpsDataProvider({
         throw new Error(`Failed to load account: ${account.status}`);
       }
 
-      const registrationLogEntries = registrationLog.body.map(formatEntry);
-      const activityLogEntries = activityLog.body.map(formatEntry);
-
-      getStore().reset();
-
-      registrationLogEntries.forEach((entry) => {
-        getStore().applyRegistrationLogEntry(entry);
-      });
-
-      activityLogEntries.forEach((entry) => {
-        getStore().applyActivityLogEntry(entry);
-      });
-
       const gateDetails: Record<
         string,
         { title?: string; roundTitle: string }
@@ -301,22 +306,40 @@ export default function OpsDataProvider({
       setData({
         state: "loaded",
         account: account.body,
-        registrationLog: registrationLogEntries,
-        activityLog: activityLogEntries,
         teams: getStore().getTeamData(),
         puzzleMetadata: puzzleMetadata.body,
         gateDetails,
+        registrationLog: getStore().getRegistrationLog(),
+        activityLog: getStore().getActivityLog(),
       });
     })().catch((e: unknown) => {
       console.error(e);
       setData({ ...INITIAL_OPS_DATA, state: "error" });
     });
-  }, [
-    cookies.mitmh2025_api_auth,
-    removeCookie,
-    opsClients.frontendClient,
-    opsClients.adminClient,
-  ]);
+  }, [cookies.mitmh2025_api_auth, removeCookie, opsClients]);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    function update() {
+      (async () => {
+        await opsClients.updateRegistrationLog();
+        await opsClients.updateActivityLog();
+      })()
+        .catch((e: unknown) => {
+          console.error("Error updating registration log", e);
+        })
+        .finally(() => {
+          timeout = setTimeout(update, 5000);
+        });
+    }
+
+    timeout = setTimeout(update, 5000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  });
 
   if (data.state === "loading") {
     return <div>Loading...</div>;
