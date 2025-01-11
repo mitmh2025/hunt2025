@@ -11,7 +11,7 @@ import {
 } from "material-react-table";
 import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import useTime from "../util/useTime";
 import { useIsOpsAdmin } from "./AdminOnly";
@@ -123,7 +123,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
   ({ bigBoardTeam, activity }, ref) => {
     const dialogs = useDialogs();
     const notifications = useNotifications();
-    const opsData = useOpsData();
+    const { adminClient, appendActivityLogEntries } = useOpsClients();
     const isOpsAdmin = useIsOpsAdmin();
 
     const handleUnlockPuzzle = (puzzle: TeamPuzzleListEntry) => {
@@ -140,7 +140,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
               }
 
               try {
-                const res = await opsData.adminClient.unlockPuzzle({
+                const res = await adminClient.unlockPuzzle({
                   params: { slug: puzzle.slug },
                   body: { teamIds: [bigBoardTeam.id] },
                 });
@@ -149,7 +149,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
                   throw new Error(`HTTP ${res.status}: ${res.body}`);
                 }
 
-                opsData.appendActivityLogEntries(res.body);
+                appendActivityLogEntries(res.body);
                 updateNow();
 
                 notifications.show(
