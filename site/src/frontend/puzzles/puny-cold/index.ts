@@ -120,7 +120,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       order: 95.0,
-      description: "Solvers are unsure how to extract?",
+      description: "Solvers are unsure how to extract",
       keywords: ["Extraction"],
       nudge:
         "How are the tables connected to each other? Where are truthy values propagated?",
