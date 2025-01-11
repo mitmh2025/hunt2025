@@ -20,12 +20,13 @@ export function FermitTeamSelector({
 
   const opsData = useOpsData();
 
-  const options = (
-    includeOnly.length > 0
-      ? opsData.teams.filter((t) => includeOnly.includes(t.teamId))
-      : opsData.teams
-  )
-    .filter((t) => !exclude.includes(t.teamId))
+  const filteredTeams = (includeOnly.length > 0
+    ? opsData.teams.filter((t) => includeOnly.includes(t.teamId))
+    : opsData.teams)
+    .filter((t) => !exclude.includes(t.teamId));
+
+  // TODO: need to filter to only include teams that have the puzzle unlocked
+  const options = filteredTeams
     .map((t) => (
       <option key={t.teamId} value={t.teamId}>
         {t.name.slice(0, 40)}
