@@ -28,6 +28,7 @@ function puzzleIsEvent(slug: string): boolean {
     "navigating_high_society",
     "seeing_the_big_picture",
   ].includes(slug);
+}
 
 export function formatActivityLogEntry(
   entry: ActivityLogEntry,
