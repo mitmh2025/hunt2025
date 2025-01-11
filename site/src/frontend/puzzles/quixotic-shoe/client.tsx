@@ -1,4 +1,4 @@
-import React, { type CSSProperties } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
@@ -7,83 +7,123 @@ import useAppendDataset from "../../client/useAppendDataset";
 import useDataset from "../../client/useDataset";
 import { PuzzleAnswer } from "../../components/StyledUI";
 
-const Arrow = styled.span`
-  color: var(--black);
+const Wrapper = styled.div`
+  font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  color: var(--true-black);
+  background: var(--true-white);
+  padding: 1.5rem;
+
+  h2,
+  h3 {
+    font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  }
+
+  h3 {
+    font-weight: 600;
+    font-size: 1.8rem;
+  }
+
+  section + section {
+    margin-top: 1rem;
+  }
 `;
 
-const SpacingWrapper = styled.div`
-  margin-bottom: 1em;
+const Header = styled.h2`
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 300;
+  border-radius: 0.5rem;
+  border: 2px solid #7b8895;
+  background-color: #d6dde5;
 `;
 
-const ToggleGroupWrapper = styled.div`
-  border-radius: 8px;
+const FeatureTable = styled.table`
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+
+  tr.subscription-titles {
+    background-color: #e6efe9;
+    font-size: 1.5rem;
+
+    th {
+      font-weight: 900;
+    }
+  }
+
+  td,
+  th {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .buttons {
+    font-size: 1.5rem;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    background-color: #beecc9;
+    border-color: #289542;
+    border-width: 2px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #71e08b;
+      margin-top: -2px;
+      border-bottom-width: 4px;
+    }
+  }
+
+  .blurbs {
+    font-style: italic;
+  }
+
+  th.active,
+  td.active {
+    background-color: #ffff0066;
+  }
+
+  th.feature {
+    width: 120px;
+  }
+`;
+
+const SubpuzzleLinkWrapper = styled.a`
+  margin-bottom: 0.5rem;
+  border: 4px solid #7b8895;
+  padding: 1rem;
+  border-radius: 1rem;
   display: flex;
-  justify-contents: space-around;
-  border: 3px solid var(--gold-500);
-  width: 750px;
-  background-color: var(--black);
-  margin-bottom: 1em;
-  color: var(--white);
+  align-items: center;
+
+  text-decoration: none;
+
+  span.subpuzzle-name {
+    flex: 1;
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  &:hover {
+    background-color: #007bff33;
+    border-color: #055296;
+
+    span {
+      color: var(--true-black);
+    }
+
+    span.subpuzzle-name {
+      color: #001c8b;
+    }
+  }
 `;
-
-const ToggleGroupButton = styled.div<{ $selected: boolean }>`
-  flex: 1 1 33%;
-  padding: 8px;
-  display: flex;
-  justify-content: space-around;
-  background-color: ${({ $selected }) =>
-    $selected ? "var(--gray-600)" : "var(--black)"};
-  cursor: ${({ $selected }) => ($selected ? "not-allowed" : "pointer")};
-`;
-
-const ToggleGroupRadioInput = styled.input`
-  display: none;
-`;
-
-type ToggleGroupOption = {
-  onClick: () => void;
-  selected: boolean;
-  text: string;
-};
-
-type ToggleGroupProps = {
-  options: ToggleGroupOption[];
-};
-
-const ToggleGroup = ({ options }: ToggleGroupProps): JSX.Element => {
-  return (
-    <ToggleGroupWrapper>
-      {options.map(({ onClick, selected, text }, i) => {
-        const additionalStyles: CSSProperties = {};
-        if (i === 0) {
-          additionalStyles.borderTopLeftRadius = "5px";
-          additionalStyles.borderBottomLeftRadius = "5px";
-          additionalStyles.borderRight = "1px solid var(--gold-800)";
-        } else if (i === 1) {
-          additionalStyles.borderRight = "1px solid var(--gold-800)";
-        } else {
-          additionalStyles.borderTopRightRadius = "5px";
-          additionalStyles.borderBottomRightRadius = "5px";
-        }
-        return (
-          <ToggleGroupButton
-            key={i}
-            $selected={selected}
-            onClick={onClick}
-            style={additionalStyles}
-          >
-            <ToggleGroupRadioInput
-              type="radio"
-              checked={selected}
-              value={text}
-            />
-            <label htmlFor={text}>{text}</label>
-          </ToggleGroupButton>
-        );
-      })}
-    </ToggleGroupWrapper>
-  );
-};
 
 const SubpuzzleLink = ({
   answer,
@@ -95,19 +135,17 @@ const SubpuzzleLink = ({
   slug: string;
 }): JSX.Element => {
   return (
-    <>
-      <SpacingWrapper>
-        <a href={`/${slug}`}>
-          {title}{" "}
-          {answer && (
-            <>
-              (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
-            </>
-          )}
-        </a>
-        <Arrow>→</Arrow>
-      </SpacingWrapper>
-    </>
+    <SubpuzzleLinkWrapper href={`/${slug}`}>
+      <span className="subpuzzle-name">
+        <span>{answer ? "✔️ " : "➕ "}</span>
+        {title}
+      </span>
+      {answer && (
+        <span>
+          (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
+        </span>
+      )}
+    </SubpuzzleLinkWrapper>
   );
 };
 
@@ -256,14 +294,14 @@ const App = ({
   };
 
   return (
-    <>
-      <h2>MITropolis Rewards Card Portal</h2>
+    <Wrapper>
+      <Header>MITropolisCard Rewards™️ Portal</Header>
       {!pickupComplete && (
-        <>
+        <section>
           <h3>Promotional Rates</h3>
           <p>
             You have promotional rates available! Click the links below to view
-            the offers by our product partners and enter your promo codes:
+            offers by our product partners and enter your promo codes:
           </p>
           {sortedSubpuzzleStatus.map(
             ({ subpuzzle_name, subpuzzle_slug, answer }) => {
@@ -277,15 +315,16 @@ const App = ({
               );
             },
           )}
-        </>
+        </section>
       )}
       {pickupComplete && (
-        <>
-          <h3>Martini</h3>
+        <section>
+          <h3>Martini Reward</h3>
           <p>
             You should have received a martini glass with 34 tiles. Please
-            contact us at info@mitmh2025.com if it seems that you are missing
-            pieces.
+            contact us at{" "}
+            <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a> if it
+            seems that you are missing pieces.
           </p>
           <p className="puzzle-flavor">
             It looks like a few ingredients are missing from both your martini
@@ -302,61 +341,118 @@ const App = ({
                         slug={subpuzzle_slug}
                       />
                     </div>
-                    <SpacingWrapper key={i}>
-                      <a href={`/${subpuzzle_slug}`}>
-                        <img
-                          src={image}
-                          alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
-                        />
-                      </a>
-                    </SpacingWrapper>
+                    <a href={`/${subpuzzle_slug}`}>
+                      <img
+                        src={image}
+                        alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
+                      />
+                    </a>
                   </React.Fragment>
                 );
               }
               return null;
             },
           )}
-        </>
+        </section>
       )}
-      <h3>Your Subscription</h3>
-      <ToggleGroup
-        options={[
-          {
-            onClick: mysteryHuntPlus,
-            selected: mysteryHuntPlusEnabled,
-            text: "Mystery Hunt Plus™️",
-          },
-          {
-            onClick: mysteryHuntRegular,
-            selected: mysteryHuntRegularEnabled,
-            text: "Mystery Hunt™️",
-          },
-          {
-            onClick: mysteryHuntMinus,
-            selected: mysteryHuntMinusEnabled,
-            text: "Mystery Hunt Minus™️",
-          },
-        ]}
-      />
-      <p>
-        Subscribe to Mystery Hunt Plus™️ in order to listen to more of your
-        favorite radio content, now free from distracting advertisements.
-      </p>
-      <p>
-        Subscribe to Mystery Hunt Minus™️ in order to listen to more of your
-        favorite advertisements, now free from distracting radio content.
-      </p>
       {!pickupComplete && (
-        <>
+        <section>
           <h3>MITropolisCard Reward Store</h3>
-          <p>You have {points} MITropolisCard points.</p>
           <p>
-            Once you have 1,250 MITropolisCard points, you may come to the Gala
-            and receive a complimentary martini.
+            You have <strong>{points}</strong> MITropolisCard Points™️.
           </p>
-        </>
+          <p>
+            Once you have <strong>1,250</strong> MITropolisCard Points™️, you
+            may come to the Gala and receive one complimentary martini!
+          </p>
+        </section>
       )}
-    </>
+      <section>
+        <h3>Your Subscription</h3>
+        <FeatureTable>
+          <tr>
+            <th className="feature"></th>
+            <td className={mysteryHuntMinusEnabled ? "active" : ""}></td>
+            <td className={mysteryHuntRegularEnabled ? "active" : ""}></td>
+            <td className={mysteryHuntPlusEnabled ? "active" : ""}></td>
+          </tr>
+          <tr className="subscription-titles">
+            <th></th>
+            <th className={mysteryHuntMinusEnabled ? "active" : ""}>
+              Mystery Hunt Minus™️
+            </th>
+            <th className={mysteryHuntRegularEnabled ? "active" : ""}>
+              Mystery Hunt™️
+            </th>
+            <th className={mysteryHuntPlusEnabled ? "active" : ""}>
+              Mystery Hunt Plus™️
+            </th>
+          </tr>
+          <tr className="buttons">
+            <th></th>
+            <td className={mysteryHuntMinusEnabled ? "active" : ""}>
+              {mysteryHuntMinusEnabled ? (
+                <span>Active</span>
+              ) : (
+                <button onClick={mysteryHuntMinus}>Activate</button>
+              )}
+            </td>
+            <td className={mysteryHuntRegularEnabled ? "active" : ""}>
+              {mysteryHuntRegularEnabled ? (
+                <span>Active</span>
+              ) : (
+                <button onClick={mysteryHuntRegular}>Activate</button>
+              )}
+            </td>
+            <td className={mysteryHuntPlusEnabled ? "active" : ""}>
+              {mysteryHuntPlusEnabled ? (
+                <span>Active</span>
+              ) : (
+                <button onClick={mysteryHuntPlus}>Activate</button>
+              )}
+            </td>
+          </tr>
+          <tr className="blurbs">
+            <th></th>
+            <td className={mysteryHuntMinusEnabled ? "active" : ""}>
+              More of your favorite advertisements, now free from distracting
+              radio content!
+            </td>
+            <td className={mysteryHuntRegularEnabled ? "active" : ""}>
+              A classic mix of radio content and advertisements!
+            </td>
+            <td className={mysteryHuntPlusEnabled ? "active" : ""}>
+              More of your favorite radio content, now free from distracting
+              advertisements!
+            </td>
+          </tr>
+          <tr>
+            <th className="feature">Music</th>
+            <td className={mysteryHuntMinusEnabled ? "active" : ""}>❌</td>
+            <td className={mysteryHuntRegularEnabled ? "active" : ""}>✅</td>
+            <td className={mysteryHuntPlusEnabled ? "active" : ""}>✅</td>
+          </tr>
+          <tr>
+            <th className="feature">Ads</th>
+            <td className={mysteryHuntMinusEnabled ? "active" : ""}>✅</td>
+            <td className={mysteryHuntRegularEnabled ? "active" : ""}>✅</td>
+            <td className={mysteryHuntPlusEnabled ? "active" : ""}>❌</td>
+          </tr>
+          <tr>
+            <th className="feature">Money-back guarantee</th>
+            <td className={mysteryHuntMinusEnabled ? "active" : ""}>✅</td>
+            <td className={mysteryHuntRegularEnabled ? "active" : ""}>✅</td>
+            <td className={mysteryHuntPlusEnabled ? "active" : ""}>✅</td>
+          </tr>
+          <tr>
+            <th></th>
+            <td className={mysteryHuntMinusEnabled ? "active" : ""}></td>{" "}
+            <td className={mysteryHuntRegularEnabled ? "active" : ""}></td>
+            <td className={mysteryHuntPlusEnabled ? "active" : ""}></td>
+          </tr>
+        </FeatureTable>
+      </section>
+    </Wrapper>
   );
 };
 
