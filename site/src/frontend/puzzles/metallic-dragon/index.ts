@@ -21,7 +21,7 @@ const puzzle: PuzzleDefinition = {
   hints: [
     {
       order: 0.0,
-      description: "Solvers don't know how to get started",
+      description: "Solvers don’t know how to get started",
       keywords: ["get started"],
       nudge:
         "This puzzle is a text adventure. Type something into the box at the bottom and click the arrow to send your message.",
