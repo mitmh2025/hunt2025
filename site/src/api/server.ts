@@ -1950,8 +1950,21 @@ export async function getRouter({
         },
       },
       unlockPuzzle: {
-        middleware: [adminAuthMiddleware, requireAdminPermission],
+        middleware: [adminAuthMiddleware],
         handler: async ({ params: { slug }, body: { teamIds }, req }) => {
+          const adminPermissionRequired = ![
+            "in_communicado_tonight",
+            "control_room",
+            "estimation_dot_jpg",
+          ].includes(slug);
+
+          if (adminPermissionRequired && !req.authInfo?.permissionAdmin) {
+            return {
+              status: 403 as const,
+              body: null,
+            };
+          }
+
           let singleTeamId: number | undefined = undefined;
           if (teamIds !== "all" && teamIds.length === 1) {
             singleTeamId = teamIds[0];
