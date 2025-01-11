@@ -74,7 +74,6 @@ const App = () => {
     [] as ScoreEntry[],
   );
 
-  console.log(log);
   const priorScores = log.map((entry, idx) => (
     <Result data={entry.data} key={idx} />
   ));
