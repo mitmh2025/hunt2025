@@ -11,7 +11,6 @@ export const IllegalSearchFonts = createGlobalStyle`
     font-display: swap;
     src: url("${AlegreyaSCRegular}") format("truetype");
   }
-
   @font-face {
     font-family: "Alegreya SC";
     font-style: normal;
@@ -19,7 +18,6 @@ export const IllegalSearchFonts = createGlobalStyle`
     font-display: swap;
     src: url("${AlegreyaSCBold}") format("truetype");
   }
-
   @font-face {
     font-family: "Alegreya SC";
     font-style: italic;

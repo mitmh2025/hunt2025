@@ -54,6 +54,20 @@
   src: url("../../assets/RobotoMono-Bold.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-display: swap;
+  src: url("../../assets/EBGaramond-VariableFont_wght.ttf") format("truetype");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-display: swap;
+  src: url("../../assets/EBGaramond-Italic-VariableFont_wght.ttf")
+    format("truetype");
+}
+
 /* Colors */
 :root {
   --true-white: #ffffff;
@@ -123,6 +137,8 @@
     "Inter", Verdana, Helvetica, sans-serif;
   --headline-font: "Belanosima", "Noto Color Emoji Subset", "Noto Color Emoji",
     "Gill Sans", "Futura", Helvetica, sans-serif;
+  --billie-font: "EB Garamond", "Garamond", "Palatino", "Times New Roman", Times,
+    serif;
 
   /* This specifically selects for Safari as of January 2025, which we need
   because Safari doesn't handle the Noto Color Emoji font well at all, so just
