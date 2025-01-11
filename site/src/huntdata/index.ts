@@ -173,6 +173,7 @@ const HUNT: Hunt = {
         { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' },
         { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' },
         { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' },
+        { id: "mdg12", internal_description: "The Thief: Manually release funaround video" },
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which

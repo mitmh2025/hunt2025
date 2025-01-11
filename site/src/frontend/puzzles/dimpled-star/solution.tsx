@@ -64,7 +64,15 @@ const Solution = () => {
         at a blue paw print (a Blue’s—or Grey’s—Clue), and strongly suggests
         that the team record the location. The full route is as follows:
       </p>
-      {/* TODO: video */}
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/9XjTJp2fDPQ?"
+        title="The Runaround"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
       <p>
         Two messages in the voiceover confirm that the MIT map can be overlaid
         on the MITropolis map, with the intersection of E and 3rd corresponding

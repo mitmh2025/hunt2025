@@ -28,9 +28,13 @@ import "./assets/waypoint6.opus";
 import "./assets/waypoint7.opus";
 import "./assets/waypoint8.opus";
 import "./assets/waypoint9.opus";
+import { TeamHuntState } from "../../../../lib/api/client";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 
-const Puzzle = () => {
+const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
+  const videoReleased =
+    teamState.rounds.the_missing_diamond?.gates?.includes("mdg12") ?? false;
+
   return (
     <>
       <p className="puzzle-flavor">We need to speak with Billie right away.</p>
@@ -54,6 +58,18 @@ const Puzzle = () => {
       </AuthorsNoteBlock>
 
       <p className="puzzle-flavor"> How do we confront the thief? </p>
+
+      {videoReleased && (
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/9XjTJp2fDPQ?"
+          title="The Runaround"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        ></iframe>
+      )}
     </>
   );
 };
