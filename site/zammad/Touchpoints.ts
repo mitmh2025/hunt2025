@@ -5,7 +5,7 @@ export type TouchpointType = {
     | { type: "slug_unlocked"; slug: string }
     | { type: "slug_partially_solved"; slug: string; answer: string }
     | { type: "gate_satisfied"; gate: string; puzzle_slug: string };
-  closed_action?: { satisfy_gate: string };
+  closed_action?: { type: "satisfy_gate"; gate: string };
 };
 
 // TODO: quixotic-shoe
@@ -97,37 +97,37 @@ const Touchpoints = {
       type: "slug_unlocked",
       slug: "eponymous_forensic_accountant",
     },
-    closed_action: { satisfy_gate: "ptg01" },
+    closed_action: { type: "satisfy_gate", gate: "ptg01" },
   },
   the_inspectre_pickup: {
     type: "pickup",
     description: "Pickup: The Inspectre",
     created_if: { type: "slug_unlocked", slug: "the_inspectre" },
-    closed_action: { satisfy_gate: "ptg02" },
+    closed_action: { type: "satisfy_gate", gate: "ptg02" },
   },
   synthetic_tagsonomy_pickup: {
     type: "pickup",
     description: "Pickup: Synthetic Tagsonomy",
     created_if: { type: "slug_unlocked", slug: "synthetic_tagsonomy" },
-    closed_action: { satisfy_gate: "mdg02" },
+    closed_action: { type: "satisfy_gate", gate: "mdg02" },
   },
   mystery_os_pickup: {
     type: "pickup",
     description: "Pickup: Mystery O’s",
     created_if: { type: "slug_unlocked", slug: "mystery_os" },
-    closed_action: { satisfy_gate: "sog01" },
+    closed_action: { type: "satisfy_gate", gate: "sog01" },
   },
   educational_rite_of_passage_pickup: {
     type: "pickup",
     description: "Pickup: Educational Rite of Passage",
     created_if: { type: "slug_unlocked", slug: "educational_rite_of_passage" },
-    closed_action: { satisfy_gate: "mdg01" },
+    closed_action: { type: "satisfy_gate", gate: "mdg01" },
   },
   anything_is_popsicle_pickup: {
     type: "pickup",
     description: "Pickup: Anything is Popsicle",
     created_if: { type: "slug_unlocked", slug: "anything_is_popsicle" },
-    closed_action: { satisfy_gate: "sog03" },
+    closed_action: { type: "satisfy_gate", gate: "sog03" },
   },
   how_i_earned_my_gold_star_activity: {
     type: "activity",

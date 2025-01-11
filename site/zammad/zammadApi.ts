@@ -1,6 +1,11 @@
 import { initContract } from "@ts-rest/core";
 import { z } from "zod";
 
+const ZammadTicketStateSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
 const ZammadOrganizationSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -81,6 +86,17 @@ export type ZammadTicketType = z.infer<typeof ZammadTicketSchema>;
 
 const c = initContract();
 export const zammadContract = c.router({
+  listTicketStates: {
+    method: "GET",
+    path: "/api/v1/ticket_states",
+    query: z.object({
+      page: z.number(),
+      per_page: z.number(),
+    }),
+    responses: {
+      200: z.array(ZammadTicketStateSchema),
+    },
+  },
   listOrganizations: {
     method: "GET",
     path: "/api/v1/organizations",
