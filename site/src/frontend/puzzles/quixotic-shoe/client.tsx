@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type CSSProperties } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
@@ -11,73 +11,105 @@ const Arrow = styled.span`
   color: var(--black);
 `;
 
-const StyledDiv = styled.div`
-  margin: 1em 0;
-  display: flex;
-  gap: 1em;
+const SpacingWrapper = styled.div`
+  margin-bottom: 1em;
 `;
 
-const StyledButton = styled.button`
+const ToggleGroupWrapper = styled.div`
   border-radius: 8px;
-  padding: 1em;
-  flex: 0 0 250px;
-  font-family: var(--body-font);
-  cursor: pointer;
+  display: flex;
+  justify-contents: space-around;
   border: 3px solid var(--gold-500);
-`;
-
-const EnabledButton = styled(StyledButton)`
+  width: 750px;
   background-color: var(--black);
+  margin-bottom: 1em;
   color: var(--white);
 `;
 
-const DisabledButton = styled(StyledButton)`
-  background-color: var(--gray-600);
-  color: var(--white);
-`;
-
-const Tile = styled.div`
+const ToggleGroupButton = styled.div<{ $selected: boolean }>`
+  flex: 1 1 33%;
+  padding: 8px;
   display: flex;
   justify-content: space-around;
-  align-items: center;
-  height: 40px;
-  width: 40px;
-  font-family: "Roboto Mono", monospace;
-  font-size: 24px;
-  font-weight: bold;
-  border: 1px solid black;
-  background-color: #ffce5e;
+  background-color: ${({ $selected }) =>
+    $selected ? "var(--gray-600)" : "var(--black)"};
+  cursor: ${({ $selected }) => ($selected ? "not-allowed" : "pointer")};
 `;
 
-const TilesWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1 1 100%;
-  padding: 0px 16px;
-  z-index: 2;
+const ToggleGroupRadioInput = styled.input`
+  display: none;
 `;
 
-const StyledHr = styled.hr`
-  border-color: #a97900;
-  position: relative;
-  top: 20px;
-`;
+type ToggleGroupOption = {
+  onClick: () => void;
+  selected: boolean;
+  text: string;
+};
 
-const Tray = styled.div`
-  background-color: #ffe6a8;
-  height: 40px;
-  flex-basis: 100%;
-  border: 1px solid black;
-  position: relative;
-  top: -30px;
-  z-index: 1;
-`;
+type ToggleGroupProps = {
+  options: ToggleGroupOption[];
+};
 
-const Tileset = styled.div`
-  margin-top: 1em;
-  display: flex;
-  flex-wrap: wrap;
-`;
+const ToggleGroup = ({ options }: ToggleGroupProps): JSX.Element => {
+  return (
+    <ToggleGroupWrapper>
+      {options.map(({ onClick, selected, text }, i) => {
+        const additionalStyles: CSSProperties = {};
+        if (i === 0) {
+          additionalStyles.borderTopLeftRadius = "5px";
+          additionalStyles.borderBottomLeftRadius = "5px";
+          additionalStyles.borderRight = "1px solid var(--gold-800)";
+        } else if (i === 1) {
+          additionalStyles.borderRight = "1px solid var(--gold-800)";
+        } else {
+          additionalStyles.borderTopRightRadius = "5px";
+          additionalStyles.borderBottomRightRadius = "5px";
+        }
+        return (
+          <ToggleGroupButton
+            key={i}
+            $selected={selected}
+            onClick={onClick}
+            style={additionalStyles}
+          >
+            <ToggleGroupRadioInput
+              type="radio"
+              checked={selected}
+              value={text}
+            />
+            <label htmlFor={text}>{text}</label>
+          </ToggleGroupButton>
+        );
+      })}
+    </ToggleGroupWrapper>
+  );
+};
+
+const SubpuzzleLink = ({
+  answer,
+  title,
+  slug,
+}: {
+  answer?: string;
+  title: string;
+  slug: string;
+}): JSX.Element => {
+  return (
+    <>
+      <SpacingWrapper>
+        <a href={`/${slug}`}>
+          {title}{" "}
+          {answer && (
+            <>
+              (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
+            </>
+          )}
+        </a>
+        <Arrow>→</Arrow>
+      </SpacingWrapper>
+    </>
+  );
+};
 
 const App = ({
   initialTeamState,
@@ -132,13 +164,13 @@ const App = ({
         entry.data.type === "all_subpuzzles_solved",
     )
     .map(
-      ({ data: { subpuzzle_slug, color } }) =>
+      ({ data: { subpuzzle_slug, image } }) =>
         ({
           subpuzzle_slug,
-          color,
+          image,
         }) as {
           subpuzzle_slug: string;
-          color: string;
+          image: string;
         },
     );
 
@@ -149,7 +181,7 @@ const App = ({
       order: number;
       subpuzzle_name: string;
       answer?: string;
-      color?: string;
+      image?: string;
     }
   > = {};
   for (const accessDatum of subpuzzlesAccessed) {
@@ -166,7 +198,7 @@ const App = ({
     condensedSubpuzzleStatus[allSolvedDatum.subpuzzle_slug] = {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- puzzle must be accessed to be solved
       ...condensedSubpuzzleStatus[allSolvedDatum.subpuzzle_slug]!,
-      color: allSolvedDatum.color,
+      image: allSolvedDatum.image,
     };
   }
   const sortedSubpuzzleStatus = Object.values(condensedSubpuzzleStatus).sort(
@@ -181,6 +213,7 @@ const App = ({
       (puzzleStateLogEntry) => puzzleStateLogEntry.data.type === "ad_frequency",
     )?.data.status ?? null;
   const mysteryHuntPlusEnabled = latestAdFrequencyStatusChange === "plus";
+  const mysteryHuntRegularEnabled = latestAdFrequencyStatusChange === null;
   const mysteryHuntMinusEnabled = latestAdFrequencyStatusChange === "minus";
   const mysteryHuntPlus = () => {
     void fetch(
@@ -225,94 +258,29 @@ const App = ({
   return (
     <>
       <h2>MITropolis Rewards Card Portal</h2>
-      <h3>Promotional Rates</h3>
-      <p>
-        You have promotional rates available! Click the links below to view the
-        offers by our product partners and enter your promo codes:
-      </p>
-      {sortedSubpuzzleStatus.map(
-        ({ subpuzzle_name, subpuzzle_slug, answer }) => {
-          return (
-            <p key={subpuzzle_slug}>
-              <a href={`/${subpuzzle_slug}`}>
-                {subpuzzle_name}{" "}
-                {answer && (
-                  <>
-                    (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
-                  </>
-                )}
-              </a>
-              <Arrow>→</Arrow>
-            </p>
-          );
-        },
-      )}
-      <h3>Options</h3>
-      <StyledDiv>
-        {mysteryHuntPlusEnabled ? (
-          <DisabledButton onClick={mysteryHuntRegular}>
-            <i>Mystery Hunt Plus™️ enabled!</i>
-          </DisabledButton>
-        ) : (
-          <EnabledButton onClick={mysteryHuntPlus}>
-            Enable Mystery Hunt Plus™️
-          </EnabledButton>
-        )}
-        <span>
-          Subscribe to Mystery Hunt Plus™️ in order to listen to more of your
-          favorite radio content, now free from distracting advertisements.
-        </span>
-      </StyledDiv>
-      <StyledDiv>
-        {mysteryHuntMinusEnabled ? (
-          <DisabledButton onClick={mysteryHuntRegular}>
-            <i>Mystery Hunt Minus™️ enabled!</i>
-          </DisabledButton>
-        ) : (
-          <EnabledButton onClick={mysteryHuntMinus}>
-            Enable Mystery Hunt Minus™️
-          </EnabledButton>
-        )}
-        <span>
-          Subscribe to Mystery Hunt Minus™️ in order to listen to more of your
-          favorite advertisements, now free from distracting radio content.
-        </span>
-      </StyledDiv>
       {!pickupComplete && (
         <>
-          <h3>MITropolisCard Reward Store</h3>
-          <p>You have {points} MITropolisCard points.</p>
+          <h3>Promotional Rates</h3>
           <p>
-            Once you have 1,250 MITropolisCard points, you may come to the Gala
-            and receive a complimentary martini.
+            You have promotional rates available! Click the links below to view
+            the offers by our product partners and enter your promo codes:
           </p>
+          {sortedSubpuzzleStatus.map(
+            ({ subpuzzle_name, subpuzzle_slug, answer }) => {
+              return (
+                <SubpuzzleLink
+                  key={subpuzzle_name}
+                  answer={answer}
+                  title={subpuzzle_name}
+                  slug={subpuzzle_slug}
+                />
+              );
+            },
+          )}
         </>
       )}
       {pickupComplete && (
         <>
-          <h3>Your Promo Codes</h3>
-          {sortedSubpuzzleStatus.map(({ subpuzzle_slug, answer, color }) => {
-            if (answer) {
-              return (
-                <Tileset
-                  key={subpuzzle_slug}
-                  style={{ maxWidth: `${answer.length * 60}px` }}
-                >
-                  <TilesWrapper>
-                    {answer.split("").map((char, i) => (
-                      <Tile key={i} style={{ color }}>
-                        {char}
-                      </Tile>
-                    ))}
-                  </TilesWrapper>
-                  <Tray>
-                    <StyledHr />
-                  </Tray>
-                </Tileset>
-              );
-            }
-            return null;
-          })}
           <h3>Martini</h3>
           <p>
             You should have received a martini glass with 34 tiles. Please
@@ -322,6 +290,69 @@ const App = ({
           <p className="puzzle-flavor">
             It looks like a few ingredients are missing from both your martini
             and the promo codes.
+          </p>
+          {sortedSubpuzzleStatus.map(
+            ({ subpuzzle_name, subpuzzle_slug, answer, image }, i) => {
+              if (answer) {
+                return (
+                  <React.Fragment key={i}>
+                    <div>
+                      <SubpuzzleLink
+                        title={subpuzzle_name}
+                        slug={subpuzzle_slug}
+                      />
+                    </div>
+                    <SpacingWrapper key={i}>
+                      <a href={`/${subpuzzle_slug}`}>
+                        <img
+                          src={image}
+                          alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
+                        />
+                      </a>
+                    </SpacingWrapper>
+                  </React.Fragment>
+                );
+              }
+              return null;
+            },
+          )}
+        </>
+      )}
+      <h3>Your Subscription</h3>
+      <ToggleGroup
+        options={[
+          {
+            onClick: mysteryHuntPlus,
+            selected: mysteryHuntPlusEnabled,
+            text: "Mystery Hunt Plus™️",
+          },
+          {
+            onClick: mysteryHuntRegular,
+            selected: mysteryHuntRegularEnabled,
+            text: "Mystery Hunt™️",
+          },
+          {
+            onClick: mysteryHuntMinus,
+            selected: mysteryHuntMinusEnabled,
+            text: "Mystery Hunt Minus™️",
+          },
+        ]}
+      />
+      <p>
+        Subscribe to Mystery Hunt Plus™️ in order to listen to more of your
+        favorite radio content, now free from distracting advertisements.
+      </p>
+      <p>
+        Subscribe to Mystery Hunt Minus™️ in order to listen to more of your
+        favorite advertisements, now free from distracting radio content.
+      </p>
+      {!pickupComplete && (
+        <>
+          <h3>MITropolisCard Reward Store</h3>
+          <p>You have {points} MITropolisCard points.</p>
+          <p>
+            Once you have 1,250 MITropolisCard points, you may come to the Gala
+            and receive a complimentary martini.
           </p>
         </>
       )}
