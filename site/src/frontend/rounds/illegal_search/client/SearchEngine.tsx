@@ -166,10 +166,11 @@ export const ModalTrigger = ({
             setSlug(json.slug);
             setDesc(json.desc);
 
-            const { area, asset } = modal;
+            const { area, asset, altText } = modal;
             const modalWithPuzzleFields = {
               area,
               asset,
+              altText,
               title: json.title,
               slug: json.slug,
               desc: json.desc,
@@ -184,6 +185,7 @@ export const ModalTrigger = ({
         const modalWithPuzzleFields = {
           area: modal.area,
           asset: modal.asset,
+          altText: modal.altText,
           title,
           slug,
           desc,
@@ -728,7 +730,7 @@ const SearchEngine = ({
           height={600}
           src={modalShown.asset}
           style={{ objectFit: "contain" }}
-          alt="TODO"
+          alt={modalShown.altText}
         />
         <PuzzleLinkBackdrop>
           <PuzzleLink
