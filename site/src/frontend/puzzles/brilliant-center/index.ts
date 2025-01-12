@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Mellow Planet",
   slug: "mellow_planet",
+  code_name: "brilliant-center",
   initial_description:
     "Two columns of clues with letters between them, and a wildlife scene",
   answer: "HOT DOG",

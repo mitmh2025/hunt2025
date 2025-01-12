@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Battle Factory",
   slug: "battle_factory",
+  code_name: "firsthand-cat",
   initial_description: "A bunch of Pokémon with names",
   answer: "CHOKING HAZARD",
   authors: ["Dee Ruttenberg"],

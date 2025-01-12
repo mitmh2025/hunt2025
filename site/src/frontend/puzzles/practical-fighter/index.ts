@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Songs on the Radio",
   slug: "songs_on_the_radio",
+  code_name: "practical-fighter",
   initial_description: "A music puzzle for musicians",
   answer: "GUARDIAN LAVENDER",
   authors: ["Eric Marion", "Arcturus Wang", "Evan Broder"],

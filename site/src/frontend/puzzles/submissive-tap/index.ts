@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Tailing a Lead",
   slug: "tailing_a_lead",
+  code_name: "submissive-tap",
   answer: "TALE AS OLD AS TIME",
   authors: [
     "Wesley Graybill",

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Doable Double",
   slug: "doable_double",
+  code_name: "austere-sink",
   initial_description:
     "A list of two word phrases and a diagram with boxes and arrows",
   answer: "SILK",

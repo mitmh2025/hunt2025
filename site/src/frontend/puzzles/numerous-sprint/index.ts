@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "On the Corner",
   slug: "on_the_corner",
+  code_name: "numerous-sprint",
   initial_description: "Magazine covers and several mini puzzles",
   answer: "BREGENZ FOREST",
   authors: [

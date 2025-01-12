@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Introduction to Decryption",
   slug: "introduction_to_decryption",
+  code_name: "silky-ninja",
   initial_description: "Crossword clues and pictures of droids",
   answer: "JABBAS BOILER ROOM",
   authors: ["Robin Deits"],

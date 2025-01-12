@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "They Might Be Grad Students, But They’ve Got Your Number",
   slug: "they_might_be_grad_students_but_theyve_got_your_number",
+  code_name: "uneven-aztec",
   initial_description: "An abstract of an academic paper with references",
   answer: "RAP OFF KEY",
   authors: ["Erin Price", "Ariel Schwartz", "Eric Marion"],

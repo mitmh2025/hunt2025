@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Do the Packing",
   slug: "do_the_packing",
+  code_name: "parallel-ship",
   initial_description: "Cryptic crossword",
   answer: "C FOR CLARENDON",
   authors: ["Mike Mannis"],

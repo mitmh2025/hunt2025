@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Bar Talk",
   slug: "bar_talk",
+  code_name: "personal-chocolate",
   initial_description:
     "A picture of beer taps accompanied by a list of audio files where someone is speaking",
   answer: "LISTEN",

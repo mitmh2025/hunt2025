@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Educational Rite of Passage",
   slug: "educational_rite_of_passage",
+  code_name: "circular-greece",
   initial_description: "Physical Puzzle—45 3D-printed pieces and a stick",
   answer: "RAW ANTIQUE BRASS",
   authors: ["Laura Nicholson", "Arcturus Wang", "Robert “Fro” Myers"],

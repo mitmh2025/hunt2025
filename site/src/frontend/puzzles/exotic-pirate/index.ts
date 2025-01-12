@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Neatly Drawn",
   slug: "neatly_drawn",
+  code_name: "exotic-pirate",
   initial_description:
     "A connect-the-dots puzzle where each dot is associated with an image",
   answer: "BIRD ORCHID",

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Weathered Note",
   slug: "a_weathered_note",
+  code_name: "icy-box",
   initial_description: "A weathered note",
   answer: "ABOUT",
   authors: ["Matt Scanlan"],

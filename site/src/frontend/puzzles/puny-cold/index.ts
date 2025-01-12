@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "World’s Largest Crossword Puzzle",
   slug: "worlds_largest_crossword_puzzle",
+  code_name: "puny-cold",
   initial_description:
     "A list of crossword clues and a large bitmap with repeating patterns.",
   answer: "FELON",

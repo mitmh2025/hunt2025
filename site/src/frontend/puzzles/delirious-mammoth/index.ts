@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Whose Song Is It Anyway?",
   slug: "whose_song_is_it_anyway",
+  code_name: "delirious-mammoth",
   initial_description: "A series of audio clips",
   answer: "HEDWIG AND THE ANGRY INCH",
   authors: [

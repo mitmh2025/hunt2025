@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Be Mine",
   slug: "be_mine",
+  code_name: "pleasing-racket",
   initial_description:
     "A bunch of multicolored candy hearts with words on them",
   answer: "SAY YOU LOVE ME",

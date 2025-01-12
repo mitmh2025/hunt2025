@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cross Dash Word",
   slug: "cross_dash_word",
+  code_name: "valuable-alps",
   initial_description:
     "Physical Puzzle. Alternatively, there’s a PDF that you can print and cut if you’re a masochist. Godspeed.",
   answer: "DEAD BIRD",

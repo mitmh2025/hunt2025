@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Incognito",
   slug: "incognito",
+  code_name: "heavy-iron",
   initial_description: "Cryptic crossword",
   answer: "PERP",
   authors: ["Alex Churchill", "Leland Aldridge"],

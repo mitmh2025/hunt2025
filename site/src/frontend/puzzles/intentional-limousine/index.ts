@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Art Gallery",
   slug: "the_art_gallery",
+  code_name: "intentional-limousine",
   answer: "BOX OWNER",
   authors: ["Alex St Claire", "Mike Mannis"],
   editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],

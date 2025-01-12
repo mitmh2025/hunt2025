@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Reuse and Recyclability",
   slug: "reuse_and_recyclability",
+  code_name: "tinted-stream",
   initial_description: "Six diagrams, several images, and a dress",
   answer: "WATSONIA",
   authors: ["Erin Price", "Kevin Hwang", "Simone Agha"],

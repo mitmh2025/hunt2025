@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A-B-C, Easy as 1-2-3",
   slug: "a_b_c_easy_as_1_2_3",
+  code_name: "brilliant-row",
   initial_description: "A series of song lyrics.",
   answer: "TODO PENDING",
   authors: ["Teddy McArthur"],

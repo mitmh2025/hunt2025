@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Garden Anecdotes",
   slug: "garden_anecdotes",
+  code_name: "unimportant-lock",
   initial_description: "Post-it notes and some gibberish text",
   answer: "LITTLE GREEN HOUSE",
   authors: ["Joanna Murray"],

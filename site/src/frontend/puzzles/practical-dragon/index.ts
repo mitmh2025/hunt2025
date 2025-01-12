@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Zing it Again",
   slug: "zing_it_again",
+  code_name: "practical-dragon",
   initial_description: "Rebus puzzles",
   answer: "THE BEATLES",
   authors: ["Alex St Claire"],

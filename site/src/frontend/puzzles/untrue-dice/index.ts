@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 2: Triple A Accounting, LLC",
   slug: "shell_corporation_2",
+  code_name: "untrue-dice",
   authors: ["Li-Mei Lim"],
   editors: ["James Douberley", "Robin Deits"],
   additional_credits: [

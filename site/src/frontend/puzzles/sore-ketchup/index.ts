@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Knights of the Square Table",
   slug: "knights_of_the_square_table",
+  code_name: "sore-ketchup",
   initial_description: "A 9x9 grid logic puzzle",
   answer: "MORTHOND",
   authors: ["David Greenspan", "Robin Deits"],

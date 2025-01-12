@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Broken Record",
   slug: "broken_record",
+  code_name: "handsome-satellite",
   initial_description:
     "A list of crossword-style clues and images of several records",
   answer: "DESTINYS CHILD",

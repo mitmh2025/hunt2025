@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Give This Grid a Shake",
   slug: "give_this_grid_a_shake",
+  code_name: "adored-embassy",
   initial_description:
     "Two short lists of crossword clues and an empty 6x6 grid",
   answer: "THE BLACK MARKET",

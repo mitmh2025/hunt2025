@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cruciverbal",
   slug: "cruciverbal",
+  code_name: "regal-knife",
   initial_description: "A crossword grid and two audio files",
   answer: "WITHOUT STOPPING",
   authors: ["Teddy McArthur", "Amanda Giermann", "Jonathan Lay", "Kevin Hwang"],

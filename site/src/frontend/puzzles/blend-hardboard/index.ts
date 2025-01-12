@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "As the World Turandot",
   slug: "as_the_world_turandot",
+  code_name: "blend-hardboard",
   initial_description: "TV listings with a paragraph describing each episode",
   answer: "LA GIOCONDA",
   authors: ["Julian West"],

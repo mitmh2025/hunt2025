@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Mastering the Art of Conch Frocking",
   slug: "mastering_the_art_of_conch_frocking",
+  code_name: "mature-atlantis",
   initial_description: "A series of hand-drawn pictures going down the page",
   answer: "LAMOTTA",
   authors: ["Mike Mannis"],

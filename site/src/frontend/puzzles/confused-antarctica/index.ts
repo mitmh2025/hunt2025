@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Networking Event",
   slug: "networking_event",
+  code_name: "confused-antarctica",
   initial_description:
     "Some strange clues, a list of words, and a cute little stick figure dude",
   answer: "FAT TUESDAY",

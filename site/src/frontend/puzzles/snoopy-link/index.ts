@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "He Shouldn’t Have Eaten The Apple",
   slug: "he_shouldnt_have_eaten_the_apple",
+  code_name: "snoopy-link",
   initial_description: "A bunch of nonsense clues",
   answer: "SAMGAKSAN",
   authors: ["Brad Johnson"],

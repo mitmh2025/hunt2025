@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Map and a Shade (or Four)",
   slug: "a_map_and_a_shade_or_four",
+  code_name: "bony-fair",
   initial_description:
     "A chart with letters, colors, ticks, crosses. Also a series of pie charts.",
   answer: "STATE OF UNDRESS",

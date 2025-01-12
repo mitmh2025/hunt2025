@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Formula Won",
   slug: "formula_won",
+  code_name: "alarming-face",
   initial_description:
     "Videos of a video game car driving around various race tracks",
   answer: "NIKI LAUDA",

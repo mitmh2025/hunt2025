@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "T____OTT___P__Y",
   slug: "t____ott___p__y",
+  code_name: "kind-ship",
   initial_description: "A series of plaid tiles",
   answer: "CHIVIPANE",
   authors: ["Karen Rustad Tolva", "Drew Fisher"],

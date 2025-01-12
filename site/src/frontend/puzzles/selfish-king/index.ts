@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Bermuda Triangle",
   slug: "bermuda_triangle",
+  code_name: "selfish-king",
   initial_description: "Triangular battleship puzzles",
   answer: "CARPENTER FISH",
   authors: ["Denis Auroux"],

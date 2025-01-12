@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Chinatown",
   slug: "chinatown",
+  code_name: "rude-field",
   answer: "CRY STOOL PIDGIN",
   authors: ["Henry Wong", "Arcturus Wang", "Hubert Hwang", "Jesse Moeller"],
   editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],

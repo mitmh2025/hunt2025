@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Sing Like a Canary",
   slug: "sing_like_a_canary",
+  code_name: "heavenly-cell",
   initial_description: "Some audio files, some pictures, and a musical stave",
   answer: "EARTH ANGEL",
   authors: ["Karen Rustad Tolva"],

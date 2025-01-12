@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Relief Printing",
   slug: "relief_printing",
+  code_name: "messy-olive",
   initial_description: "A series of rectangular drawings with blocks of color",
   answer: "LACK",
   authors: ["Kawika Pierson", "Alex St Claire", "phyphor"],

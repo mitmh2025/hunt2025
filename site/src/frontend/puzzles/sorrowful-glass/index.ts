@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "(A Puzzle of the Dead)",
   slug: "a_puzzle_of_the_dead",
+  code_name: "sorrowful-glass",
   initial_description: "A self-destructing transmission",
   answer: "HELL HOLE",
   authors: ["Baltazar Ortiz", "Anisa Schardl"],

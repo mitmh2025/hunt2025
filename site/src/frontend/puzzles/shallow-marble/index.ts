@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "In a Different Direction",
   slug: "in_a_different_direction",
+  code_name: "shallow-marble",
   initial_description: "A diagramless crossword",
   answer: "GREEDY PIGGY",
   authors: ["Hubert Hwang"],

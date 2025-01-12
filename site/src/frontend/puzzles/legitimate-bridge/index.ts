@@ -6,6 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Jargon",
   slug: "jargon",
+  code_name: "legitimate-bridge",
   initial_description:
     "Interactive interface with colored boxes and text prompts",
   answer: "PHILOLOGY",

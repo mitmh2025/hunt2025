@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "We Can Do This All Day",
   slug: "we_can_do_this_all_day",
+  code_name: "iridescent-taxicab",
   initial_description: "An indication to schedule an interaction",
   answer: "LEAFY ARLINGTON",
   authors: ["Kevin Hwang"],

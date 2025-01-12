@@ -17,22 +17,24 @@ import { median } from "../util/stats";
 
 function slotNameAndSlug(slot: PuzzleSlot, opsData: OpsData) {
   if (!slot.slug) {
-    return { name: slot.id, slug: slot.id };
+    return { name: slot.id, slug: slot.id, codeName: slot.id };
   }
 
   if (slot.slug in opsData.puzzleMetadata) {
     return {
       name: opsData.puzzleMetadata[slot.slug]?.title ?? slot.slug,
       slug: slot.slug,
+      codeName: opsData.puzzleMetadata[slot.slug]?.code_name ?? slot.slug,
     };
   }
 
-  return { name: slot.slug, slug: slot.slug };
+  return { name: slot.slug, slug: slot.slug, codeName: slot.slug };
 }
 
 type PuzzleIndexData = {
   name: string;
   slug: string;
+  codeName: string;
   type: "puzzle" | "meta";
   round: string;
   puzzleOrder: number;
@@ -131,7 +133,7 @@ export default function PuzzlesIndex() {
     // Assemble rows
     return HUNT.rounds.flatMap((round, roundIndex) =>
       round.puzzles.flatMap((slot, slotIndex) => {
-        const { name, slug } = slotNameAndSlug(slot, opsData);
+        const { name, slug, codeName } = slotNameAndSlug(slot, opsData);
 
         let puzzleOrder = roundIndex * 1000;
         if (slot.is_supermeta) {
@@ -160,6 +162,7 @@ export default function PuzzlesIndex() {
         return {
           name,
           slug,
+          codeName,
           type: slot.is_meta ? "meta" : "puzzle",
           round: round.title,
           puzzleOrder,
@@ -177,32 +180,35 @@ export default function PuzzlesIndex() {
     const columnHelper = createMRTColumnHelper<PuzzleIndexData>();
 
     return [
-      columnHelper.accessor("name", {
-        header: "Name",
-        Cell: ({ row }: { row: MRT_Row<PuzzleIndexData> }) => (
-          <>
-            <Link to={`/puzzles/${row.original.slug}`}>
-              {row.original.name}
-            </Link>
-            <br />
-            View:{" "}
-            <a
-              href={`https://dev.mitmh2025.com/puzzles/${row.original.slug}`}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Puzzle
-            </a>{" "}
-            <a
-              href={`https://dev.mitmh2025.com/puzzles/${row.original.slug}/solution`}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Solution
-            </a>
-          </>
-        ),
-      }),
+      columnHelper.accessor(
+        (col) => `${col.name}|${col.slug}|${col.codeName}`,
+        {
+          header: "Name",
+          Cell: ({ row }: { row: MRT_Row<PuzzleIndexData> }) => (
+            <>
+              <Link to={`/puzzles/${row.original.slug}`}>
+                {row.original.name} ({row.original.codeName})
+              </Link>
+              <br />
+              View:{" "}
+              <a
+                href={`https://dev.mitmh2025.com/puzzles/${row.original.slug}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Puzzle
+              </a>{" "}
+              <a
+                href={`https://dev.mitmh2025.com/puzzles/${row.original.slug}/solution`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Solution
+              </a>
+            </>
+          ),
+        },
+      ),
       columnHelper.accessor("type", {
         header: "Type",
         filterVariant: "select",

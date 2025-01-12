@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Engagements and Other Crimes",
   slug: "engagements_and_other_crimes",
+  code_name: "timely-head",
   initial_description: "A printed invitation",
   answer: "DRINKING CUP",
   authors: ["Grant Elliott", "Caroline Elliott"],

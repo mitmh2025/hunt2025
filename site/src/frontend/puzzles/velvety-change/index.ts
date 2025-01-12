@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Navigating High Society",
   slug: "navigating_high_society",
+  code_name: "velvety-change",
   answer: "COSMOPOLITAN",
   authors: ["Grant Elliott", "Caroline Elliott"],
   editors: [

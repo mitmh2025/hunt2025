@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Unreal Islands",
   slug: "unreal_islands",
+  code_name: "whirlwind-saturn",
   initial_description: "A grid filled with letters and numbers",
   answer: "BATH BRICK",
   authors: ["Becca Chang", "Atul Shatavart Nadig", "Henry Wong"],

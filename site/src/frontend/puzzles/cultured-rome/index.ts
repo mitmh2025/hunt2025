@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Some Assembly Required",
   slug: "some_assembly_required",
+  code_name: "cultured-rome",
   initial_description: "A list of phrases and a word bank",
   answer: "PRIVATE SECTOR",
   authors: ["Mike Mannis", "phyphor"],
