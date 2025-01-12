@@ -65,6 +65,16 @@ const Paper = styled.main`
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      &:nth-of-type(1) {
+        width: 60%;
+        margin: auto;
+      }
+
+      &:nth-of-type(2) {
+        width: 60%;
+        margin: 1em auto 0;
+      }
     }
 
     li + li {
@@ -75,6 +85,7 @@ const Paper = styled.main`
     li a {
       color: var(--gold-900);
       text-decoration-color: var(--gold-800);
+      white-space: wrap;
 
       &:hover {
         color: var(--gold-700);
