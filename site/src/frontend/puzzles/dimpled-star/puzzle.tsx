@@ -87,14 +87,11 @@ const Puzzle = ({
               I need your help with something. There’s one more witness we need
               to track down. But there’s too many open ears in this place, so
               let’s meet somewhere a little more private. First things first,
-              give my associate that radio. Make a note, kid; this is the best
-              station for catching crooks. I have some last minute business to
-              take care of nearby, but head down those stairs and out the door
-              and I’ll meet you there in a minute.
+              give my associate that radio.
             </i>
           </Note>
           <p>
-            The paralegal tuned your radio to{" "}
+            The paralegal then took your radio and tuned it to{" "}
             <Math>
               <MFrac>
                 <MRow>
@@ -106,7 +103,20 @@ const Puzzle = ({
                 </MRow>
               </MFrac>
             </Math>{" "}
-            and you left to find Billie.
+            before returning it to you and continuing to read:
+          </p>
+          <Note>
+            <i>
+              Make a note, kid; this is the best station for catching crooks. I
+              have some last minute business to take care of nearby, but head
+              down those stairs and out the door and I’ll meet you there in a
+              minute.
+            </i>
+          </Note>
+          <p>
+            You then left down the stairs to find Billie, but when you got to
+            the bottom of the staircase, Billie’s voice came to you over the
+            radio:
           </p>
           <iframe
             width="560"
