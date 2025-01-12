@@ -20,21 +20,21 @@ export function FermitTeamSelector({
   const opsData = useOpsData();
 
   const [solvedTeamIds, unlockedTeamIds] = useMemo(() => {
-    const solved: number[] = [];
-    const unlocked: number[] = [];
+    const solved = new Set<number>();
+    const unlocked = new Set<number>();
 
     opsData.activityLog.forEach((entry) => {
       if (entry.type === "puzzle_solved") {
         if (entry.slug === "estimation_dot_jpg") {
           if (entry.team_id) {
-            solved.push(entry.team_id);
+            solved.add(entry.team_id);
           }
         }
       }
       if (entry.type === "puzzle_unlocked") {
         if (entry.slug === "estimation_dot_jpg") {
           if (entry.team_id) {
-            solved.push(entry.team_id);
+            unlocked.add(entry.team_id);
           }
         }
       }
@@ -46,8 +46,8 @@ export function FermitTeamSelector({
   const filteredTeams = opsData.teams.filter(
     (t) =>
       !exclude.includes(t.teamId) &&
-      unlockedTeamIds.includes(t.teamId) &&
-      !solvedTeamIds.includes(t.teamId),
+      unlockedTeamIds.has(t.teamId) &&
+      !solvedTeamIds.has(t.teamId),
   );
 
   const options = filteredTeams.map((t) => (
