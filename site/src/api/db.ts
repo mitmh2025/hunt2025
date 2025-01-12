@@ -7,6 +7,8 @@ import {
   type InsertTeamRegistrationLogEntry,
   type PuzzleStateLogEntryRow,
   type InsertPuzzleStateLogEntry,
+  type TeamInteractionStateLogEntryRow,
+  type InsertTeamInteractionStateLogEntry,
   type FermitRegistrationRow,
   type FermitSessionRow,
   type InsertFermitSession,
@@ -24,14 +26,18 @@ import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
   type PuzzleStateLogEntry,
+  type TeamInteractionStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
 import { type CannedResponseLink } from "../frontend/puzzles/types";
+import { fixData } from "../utils/fixData";
+import { fixTimestamp } from "../utils/fixTimestamp";
 
 export {
   type ActivityLogEntryRow,
   type TeamRegistrationLogEntryRow,
   type PuzzleStateLogEntryRow,
+  type TeamInteractionStateLogEntryRow,
 };
 
 class WebpackMigrationSource {
@@ -298,6 +304,21 @@ declare module "knex/types/tables" {
     question_ids: string | number[];
   };
 
+  // Unique index on (team_id, slug, predecessor) guarantees unique graph transition
+  type TeamInteractionStateLogEntryRow = {
+    id: number;
+    team_id: number;
+    slug: string;
+    node: string;
+    predecessor?: string;
+    timestamp: Date;
+    graph_state?: string | object | null; // Should actually be one of ArtGalleryState | BoardwalkInteractionState | CasinoState | JewelryStoreState;
+  };
+  type InsertTeamInteractionStateLogEntry = Pick<
+    TeamInteractionStateLogEntryRow,
+    "team_id" | "slug" | "predecessor" | "node" | "graph_state"
+  >;
+
   type InsertFermitSession = Pick<FermitSessionRow, "title" | "question_ids">;
 
   type UpdateFermitSession = Partial<Omit<FermitSessionRow, "id">>;
@@ -335,6 +356,10 @@ declare module "knex/types/tables" {
       PuzzleStateLogEntryRow,
       InsertPuzzleStateLogEntry
     >;
+    team_interaction_state_log: Knex.Knex.CompositeTableType<
+      TeamInteractionStateLogEntryRow,
+      InsertTeamInteractionStateLogEntry
+    >;
     fermit_sessions: Knex.Knex.CompositeTableType<
       FermitSessionRow,
       InsertFermitSession,
@@ -343,29 +368,6 @@ declare module "knex/types/tables" {
     fermit_answers: FermitAnswerRow;
     fermit_registrations: FermitRegistrationRow;
   }
-}
-
-// Fix a timestamp that has come from the database.
-function fixTimestamp(value: string | Date): Date {
-  if (typeof value === "string") {
-    if (!value.endsWith("Z")) {
-      // TODO: sqlite returns timestamps as "YYYY-MM-DD HH:MM:SS" in UTC, and the driver doesn't automatically turn them back into Date objects.
-      return new Date(value + "Z");
-    }
-    // We may also have gotten a fixed-up string from the pubsub channel, where we also serialize
-    // dates as strings.
-    return new Date(value);
-  }
-  return value;
-}
-
-// Fix a JSON field that has come from the database.
-export function fixData(value: string | object): object {
-  // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
-  if (typeof value === "string") {
-    return JSON.parse(value) as object;
-  }
-  return value;
 }
 
 // Fix a JSON field that has come from the database.
@@ -436,6 +438,29 @@ export function cleanupPuzzleStateLogEntryFromDB(
     );
   }
   return res as PuzzleStateLogEntry;
+}
+
+export function cleanupTeamInteractionStateLogEntryFromDB(
+  dbEntry: TeamInteractionStateLogEntryRow,
+): TeamInteractionStateLogEntry {
+  const res: Partial<TeamInteractionStateLogEntry> = {
+    id: dbEntry.id,
+    team_id: dbEntry.team_id,
+    slug: dbEntry.slug,
+    node: dbEntry.node,
+    timestamp: fixTimestamp(dbEntry.timestamp),
+  };
+  if (dbEntry.predecessor) {
+    (
+      res as TeamInteractionStateLogEntry & { predecessor?: string }
+    ).predecessor = dbEntry.predecessor;
+  }
+  if (dbEntry.graph_state) {
+    (
+      res as TeamInteractionStateLogEntry | { graph_state?: object }
+    ).graph_state = fixData(dbEntry.graph_state);
+  }
+  return res as TeamInteractionStateLogEntry;
 }
 
 export async function getTeamIds(
@@ -626,6 +651,64 @@ export async function appendPuzzleStateLog(
     });
 }
 
+export async function getTeamInteractionStateLog(
+  team_id: number | undefined,
+  since: number | undefined,
+  slug: string | undefined,
+  trx: Knex.Knex,
+) {
+  let query = trx<TeamInteractionStateLogEntryRow>("team_interaction_states");
+  if (team_id !== undefined) {
+    query = query.where("team_id", team_id);
+  }
+  if (since !== undefined) {
+    query = query.andWhere("id", ">", since);
+  }
+  if (slug !== undefined) {
+    query = query.andWhere("slug", slug);
+  }
+  const interaction_state_log = await query.orderBy("id", "asc");
+  return interaction_state_log.map(cleanupTeamInteractionStateLogEntryFromDB);
+}
+
+export async function getLastTeamInteractionStateLogEntry(
+  team_id: number,
+  slug: string,
+  trx: Knex.Knex,
+) {
+  const q = trx<TeamInteractionStateLogEntryRow>("team_interaction_states")
+    .where("team_id", team_id)
+    .andWhere("slug", slug);
+  const maybeEntry = await q.orderBy("id", "desc").limit(1);
+  return maybeEntry.map(cleanupTeamInteractionStateLogEntryFromDB)[0];
+}
+
+export async function appendTeamInteractionStateLog(
+  entry: InsertTeamInteractionStateLogEntry,
+  trx: Knex.Knex,
+) {
+  return await trx("team_interaction_states")
+    .insert(entry)
+    .returning([
+      "id",
+      "team_id",
+      "slug",
+      "node",
+      "predecessor",
+      "timestamp",
+      "graph_state",
+    ])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedEntry = objs[0] as TeamInteractionStateLogEntryRow;
+      const fixedEntry =
+        cleanupTeamInteractionStateLogEntryFromDB(insertedEntry);
+      return fixedEntry;
+    });
+}
+
 export async function getFermitSession(
   sessionId: number,
   knex: Knex.Knex,
@@ -698,7 +781,6 @@ export async function updateFermitSession(
     .where("id", id)
     .update(session)
     .returning(["id", "title", "status", "question_ids"])
-
     .then((objs) => {
       if (objs.length === 0) {
         return undefined;

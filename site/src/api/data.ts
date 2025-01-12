@@ -3,6 +3,7 @@ import {
   type InsertTeamRegistrationLogEntry,
   type InsertActivityLogEntry,
   type InsertPuzzleStateLogEntry,
+  type InsertTeamInteractionStateLogEntry,
 } from "knex/types/tables";
 import {
   type FermitSession,
@@ -17,6 +18,8 @@ import {
   type InternalActivityLogEntry,
   type DehydratedPuzzleStateLogEntry,
   type PuzzleStateLogEntry,
+  type TeamInteractionStateLogEntry,
+  type DehydratedTeamInteractionStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -28,6 +31,8 @@ import {
   getTeamIds,
   getPuzzleStateLog as dbGetPuzzleStateLog,
   appendPuzzleStateLog as dbAppendPuzzleStateLog,
+  getTeamInteractionStateLog as dbGetTeamInteractionStateLog,
+  appendTeamInteractionStateLog as dbAppendTeamInteractionStateLog,
   retryOnAbort,
   getFermitSession as dbGetFermitSession,
   getFermitSessions as dbGetFermitSessions,
@@ -46,6 +51,7 @@ import {
   activityLog as redisActivityLog,
   teamRegistrationLog as redisTeamRegistrationLog,
   puzzleStateLog as redisPuzzleStateLog,
+  teamInteractionStateLog as redisTeamInteractionStateLog,
   type Log as RedisLog,
 } from "./redis";
 
@@ -581,6 +587,40 @@ export async function createFermitSession(
   );
 }
 
+export class TeamInteractionStateLogMutator extends Mutator<
+  TeamInteractionStateLogEntry,
+  InsertTeamInteractionStateLogEntry
+> {
+  _dbAppendLog = dbAppendTeamInteractionStateLog;
+}
+
+export class TeamInteractionStateLog extends Log<
+  DehydratedTeamInteractionStateLogEntry,
+  TeamInteractionStateLogEntry,
+  TeamInteractionStateLogMutator
+> {
+  constructor() {
+    super(redisTeamInteractionStateLog, TeamInteractionStateLogMutator);
+  }
+
+  protected dbGetLog(knex: Knex.Knex, teamId?: number, since?: number) {
+    return dbGetTeamInteractionStateLog(teamId, since, undefined, knex);
+  }
+
+  async executeMutation<R>(
+    team_id: number,
+    redisClient: RedisClient | undefined,
+    knex: Knex.Knex,
+    fn: (
+      trx: Knex.Knex.Transaction,
+      mutator: TeamInteractionStateLogMutator,
+    ) => R | PromiseLike<R>,
+  ) {
+    return await this.executeRawMutation(team_id, redisClient, knex, fn);
+  }
+}
+
+export const teamInteractionStateLog = new TeamInteractionStateLog();
 export async function updateFermitSession(
   session: FermitSession,
   knex: Knex.Knex,

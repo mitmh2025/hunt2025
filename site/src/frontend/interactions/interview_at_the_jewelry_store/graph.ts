@@ -67,7 +67,7 @@ import audio_opus_8 from "./audio/opus/8.opus";
 import audio_opus_9 from "./audio/opus/9.opus";
 import audio_opus_start from "./audio/opus/start.opus";
 
-type JewelryStoreState = {
+export type JewelryStoreState = {
   idea1: boolean; // did we try option 6a yet?
   idea2: boolean; // did we try option 6b yet?
 };

@@ -27,12 +27,15 @@ export const DatasetSchema = z.enum([
   "dev",
   "puzzle_state_log",
   "events",
+  "interaction_state_log",
+  "poll_responses",
 ]);
 export type Dataset = z.infer<typeof DatasetSchema>;
 
 export const DatasetParamsSchema = z
   .object({
     slug: z.string(),
+    pollId: z.string().optional(),
   })
   .optional();
 export type DatasetParams = z.infer<typeof DatasetParamsSchema>;

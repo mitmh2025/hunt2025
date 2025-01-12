@@ -471,6 +471,7 @@ export default function createConfigs(_env, argv) {
       activity_log: "./src/frontend/client/activity_log.tsx",
       all_puzzles: "./src/frontend/client/all_puzzles.tsx",
       hub: "./src/frontend/client/hub.tsx",
+      interaction_virtual: "./src/frontend/client/interaction_virtual.tsx",
       manage_team: "./src/frontend/client/manage_team.tsx",
       navbar: "./src/frontend/client/navbar.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",

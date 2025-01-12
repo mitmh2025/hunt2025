@@ -96,9 +96,10 @@ export function formatTeamData(
         if (!(interaction.id in INTERACTIONS)) {
           continue;
         }
-        const interactionDef =
-          INTERACTIONS[interaction.id as keyof typeof INTERACTIONS];
-        const title = interactionDef.title;
+        const interactionDef = INTERACTIONS[interaction.id];
+        const title =
+          interactionDef?.title ??
+          `unknown interaction with id ${interaction.id}`;
 
         let state: "complete" | "started" | "unlocked" | "locked" = "locked";
         if (teamData.state.interactions_completed.has(interaction.id)) {

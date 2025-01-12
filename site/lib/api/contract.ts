@@ -456,4 +456,16 @@ export const publicContract = c.router({
       404: z.null(),
     },
   },
+  castVote: {
+    method: "POST",
+    path: `/polls/:slug/:pollId/votes`,
+    body: z.object({
+      choice: z.string(),
+    }),
+    responses: {
+      200: z.object({}).passthrough(),
+      400: z.null(), // If election slug is not valid
+      404: z.null(),
+    },
+  },
 });
