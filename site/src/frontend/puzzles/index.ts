@@ -20,6 +20,7 @@ import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
 import StarCrossed from "./carefree-ghost";
 import ABadlyBrokenQuote from "./cavernous-angel";
+import SplitsUsedAsHistory from "./chubby-net";
 import EducationalRiteOfPassage from "./circular-greece";
 import HalfBaked from "./classic-link";
 import TheInspectre from "./clean-ivory";
@@ -383,6 +384,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   in_communicado_tonight: InCommunicadoTonight,
   its_all_cheep_and_a_sheep_to_me: ItsAllCheepAndASheepToMe,
   sounds_like_a_dodo_to_me: SoundsLikeADodoToMe,
+  splits_used_as_history: SplitsUsedAsHistory,
   to_do_tile_that_rectangle: ToDoTileThatRectangle,
   we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
