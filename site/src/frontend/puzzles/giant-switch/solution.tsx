@@ -279,9 +279,9 @@ const Solution = () => {
         ))}
       </StyledTable>
       <p>
-        After solving Papa’s Stash, teams receive the clue phrase{" "}
-        <Mono>SAME LOCATIONS TUNED TO PM 23pi/20</Mono>. After returning to the
-        locations and tuning to{" "}
+        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, teams
+        receive the clue phrase <Mono>SAME LOCATIONS TUNED TO PM 23pi/20</Mono>.
+        After returning to the locations and tuning to{" "}
         <Math>
           <MFrac>
             <MRow>

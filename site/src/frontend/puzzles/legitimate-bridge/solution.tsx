@@ -165,11 +165,11 @@ const Solution = (): JSX.Element => {
         answer, <Mono>PHILOLOGY</Mono>.
       </p>
       <p>
-        After solving Papa’s Stash, solvers receive the instruction{" "}
-        <Mono>SHIFT BY DIFFERENCE FROM 8V</Mono>. The difference in voltage
-        between the original sink voltage and 8V can be applied to the initial
-        answer, letter-by-letter, as a Caesar shift, producing{" "}
-        <PuzzleAnswer>LIFEFORCE</PuzzleAnswer>.
+        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, solvers
+        receive the instruction <Mono>SHIFT BY DIFFERENCE FROM 8V</Mono>. The
+        difference in voltage between the original sink voltage and 8V can be
+        applied to the initial answer, letter-by-letter, as a Caesar shift,
+        producing <PuzzleAnswer>LIFEFORCE</PuzzleAnswer>.
       </p>
       <h2>Full solution</h2>
       {TUTORIAL_COLORS.map((color: PuzzleColor) => {
