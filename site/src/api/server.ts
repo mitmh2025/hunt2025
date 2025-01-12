@@ -382,22 +382,22 @@ export async function getRouter({
     return team_state;
   };
   const getTeamState = async (req: Request, team_id: number) => {
-    const team_registration_log = await teamRegistrationLog.getCachedLog(
-      knex,
-      redisClient,
-      team_id,
-    );
+    const [team_state, [team_info]] = await Promise.all([
+      getTeamStateIntermediate(team_id),
+      teamRegistrationLog.getCachedReducers(knex, redisClient, team_id, {
+        redisKey: "team_info_intermediate",
+        hydrate: (redisObj) => new TeamInfoIntermediate(redisObj ?? {}),
+      }),
+    ]);
 
-    const info = team_registration_log.entries
-      .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamInfoIfActive();
+    const info = team_info.formatTeamInfoIfActive();
+
     if (info === undefined) {
       return {
         status: 404 as const,
         body: null,
       };
     }
-    const team_state = await getTeamStateIntermediate(team_id);
 
     const teamJwt = req.authInfo?.teamJwt;
     const whepUrl =

@@ -239,6 +239,14 @@ export class TeamInfoIntermediate {
     this.deactivated = initial?.deactivated ?? false;
   }
 
+  dehydrate(): Hydratable<TeamInfoIntermediate> {
+    return {
+      epoch: this.epoch,
+      registration: this.registration,
+      deactivated: this.deactivated,
+    };
+  }
+
   reduce(entry: TeamRegistrationLogEntry) {
     // Update the max known epoch if this entry is newer
     if (entry.id > this.epoch) {
