@@ -67,7 +67,7 @@ const BusinessCard = styled.img`
     ${getRelativeSizeCss(4)} rgba(0, 0, 0, 0.53);
 `;
 
-const Pin = styled.img<{ $x: number; $y: number }>`
+export const Pin = styled.img<{ $x: number; $y: number }>`
   position: absolute;
   top: ${(props) => getRelativeSizeCss(props.$y)};
   left: ${(props) => getRelativeSizeCss(props.$x)};
