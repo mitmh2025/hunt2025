@@ -569,7 +569,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     let backlinkHref = `/rounds/${puzzleState.round}`;
     let backlinkRoundTitle =
       req.teamState.state.rounds[puzzleState.round]?.title;
-    if (puzzleState.stray) {
+    if (puzzleState.round === "stray_leads") {
       backlinkHref = "/rounds/stray_leads";
       backlinkRoundTitle = "Stray Leads";
     } else if (puzzleState.round === "illegal_search") {
