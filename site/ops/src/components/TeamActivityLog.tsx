@@ -100,6 +100,8 @@ export default function TeamActivityLog({
             case "puzzle_answer_bought":
               activity = `Puzzle answer bought: ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
               break;
+            case "erratum_issued":
+              activity = `Erratum issued for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
           }
 
           if (entry.internal_data?.operator) {

@@ -203,3 +203,33 @@ export function LabeledTextAreaWithError({
     </LabeledWithError>
   );
 }
+
+const ErrataWrapper = styled.div`
+  margin: 1em 2em;
+  border: 1px solid var(--teal-500);
+  color: var(--teal-800);
+  background-color: var(--teal-200);
+  border-radius: 2px;
+  padding: 1rem;
+  .copying & {
+    background-color: transparent;
+  }
+`;
+
+export function Errata({
+  errata,
+}: {
+  errata: { timestamp: string; message: string }[];
+}): JSX.Element {
+  return (
+    <>
+      <ErrataWrapper>
+        {errata.map(({ timestamp, message }, i) => (
+          <div key={i}>
+            <strong>Erratum on {timestamp}</strong>: {message}
+          </div>
+        ))}
+      </ErrataWrapper>
+    </>
+  );
+}

@@ -266,6 +266,13 @@ declare module "knex/types/tables" {
           answer: string;
         };
       }
+    | {
+        type: "erratum_issued";
+        slug: string;
+        data: {
+          message: string;
+        };
+      }
   );
 
   // ActivityLogEntryRow is the type as returned by the various database engines.

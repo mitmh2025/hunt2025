@@ -60,13 +60,16 @@ export default function formatActivityLogEntryForApi(
           });
         }
         break;
-      case "gate_completed":
+      case "gate_completed": {
+        const gate = GATE_LOOKUP.get(e.slug);
+        entry = Object.assign(entry, {
+          title: gate?.gate.title,
+          show_notification: gate?.gate.show_notification ?? false,
+        });
+      }
+      case "erratum_issued":
         {
-          const gate = GATE_LOOKUP.get(e.slug);
-          entry = Object.assign(entry, {
-            title: gate?.gate.title,
-            show_notification: gate?.gate.show_notification ?? false,
-          });
+          
         }
         break;
     }
