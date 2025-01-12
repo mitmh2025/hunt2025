@@ -94,6 +94,7 @@ export const StyledSelect = styled.select`
 export const Wrapper = styled.div`
   margin: 0 auto;
   width: calc(${sizeMin.lg} - 1rem);
+  padding: 0 1rem;
   max-width: 100%;
 `;
 

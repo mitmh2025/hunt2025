@@ -6,6 +6,7 @@ import {
   type AllPuzzlesRound,
   type AllPuzzlesState,
 } from "../client/all_puzzles_types";
+import { deviceMax } from "../utils/breakpoints";
 import PuzzleLink from "./PuzzleLink";
 
 const StyledRow = styled.tr<{ $bolded: boolean }>`
@@ -39,11 +40,21 @@ const StyledRow = styled.tr<{ $bolded: boolean }>`
       : undefined}
   font-size: 1.5rem;
 
-  td:nth-child(1) {
-    min-width: 400px;
+  td.puzzle-name {
+    max-width: 50%;
   }
-  td:nth-child(2) {
-    min-width: 200px;
+  td.desc {
+    font-size: 1rem;
+    color: var(--gray-300);
+    font-weight: 300;
+    padding-bottom: 0.25rem;
+  }
+
+  @media ${deviceMax.md} {
+    td.puzzle-name {
+      width: 50vw;
+      padding-right: 1rem;
+    }
   }
 `;
 
@@ -66,23 +77,30 @@ const AllPuzzlesTable = ({
         <>
           {puzzles.map((puz) => {
             return (
-              <StyledRow key={puz.slug} $bolded={puz.is_meta ?? false}>
-                <td key="puzzle" style={{ paddingRight: "1rem" }}>
-                  <PuzzleLink
-                    lockState={puz.state ?? "locked"}
-                    answer={puz.answer}
-                    currency={currency}
-                    title={puz.title}
-                    slug={puz.slug}
-                    desc={puz.desc}
-                  />
-                </td>
-                <td key="answer">
-                  <code style={{ fontWeight: "bold" }}>
-                    {puz.answer ? puz.answer : undefined}
-                  </code>
-                </td>
-              </StyledRow>
+              <>
+                <StyledRow key={puz.slug} $bolded={puz.is_meta ?? false}>
+                  <td key="puzzle" className="puzzle-name">
+                    <PuzzleLink
+                      lockState={puz.state ?? "locked"}
+                      answer={puz.answer}
+                      currency={currency}
+                      title={puz.title}
+                      slug={puz.slug}
+                      desc={puz.desc}
+                    />
+                  </td>
+                  <td key="answer" className="puzzle-answer">
+                    <code style={{ fontWeight: "bold" }}>
+                      {puz.answer ? puz.answer : undefined}
+                    </code>
+                  </td>
+                </StyledRow>
+                <StyledRow key={`${puz.slug}-desc`} $bolded={false}>
+                  <td className="desc" colSpan={2}>
+                    {puz.desc}
+                  </td>
+                </StyledRow>
+              </>
             );
           })}
           {interactions?.map((int) => {
