@@ -176,7 +176,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
     }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
-    z.object({ type: z.literal("erratum_issued"), message: z.string() }),
+    z.object({ type: z.literal("erratum_issued") }),
   ),
 ]);
 

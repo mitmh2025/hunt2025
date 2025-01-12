@@ -269,9 +269,6 @@ declare module "knex/types/tables" {
     | {
         type: "erratum_issued";
         slug: string;
-        data: {
-          message: string;
-        };
       }
   );
 

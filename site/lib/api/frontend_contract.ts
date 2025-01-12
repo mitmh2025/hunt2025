@@ -92,7 +92,7 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
     }),
   ),
   InternalActivityLogEntryWithSlug.merge(
-    z.object({ type: z.literal("erratum_issued"), message: z.string() }),
+    z.object({ type: z.literal("erratum_issued") }),
   ),
 ]);
 export type InternalActivityLogEntry = z.output<

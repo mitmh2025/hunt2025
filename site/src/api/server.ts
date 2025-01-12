@@ -2183,6 +2183,31 @@ export async function getRouter({
           };
         },
       },
+      issueErratum: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { slug }, body: { message }, req }) => {
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            undefined,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              const newEntries: (InternalActivityLogEntry | undefined)[] = [];
+              newEntries.push(
+                await mutator.appendLog({
+                  type: "erratum_issued",
+                  slug,
+                  internal_data: {
+                    operator: req.authInfo?.adminUser,
+                  },
+                }),
+              );
+              return newEntries;
+            },
+          );
+          return formatMutationResultForAdminApi(result);
+        },
+      },
       deactivateTeam: {
         middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ params: { teamId } }) => {

@@ -60,16 +60,22 @@ export default function formatActivityLogEntryForApi(
           });
         }
         break;
-      case "gate_completed": {
-        const gate = GATE_LOOKUP.get(e.slug);
-        entry = Object.assign(entry, {
-          title: gate?.gate.title,
-          show_notification: gate?.gate.show_notification ?? false,
-        });
-      }
+      case "gate_completed":
+        {
+          const gate = GATE_LOOKUP.get(e.slug);
+          entry = Object.assign(entry, {
+            title: gate?.gate.title,
+            show_notification: gate?.gate.show_notification ?? false,
+          });
+        }
+        break;
       case "erratum_issued":
         {
-          
+          const title = PUZZLES[e.slug]?.title;
+          entry = Object.assign(entry, {
+            title: title ?? `Stub puzzle for slot ${e.slug}`,
+            show_notification: true,
+          });
         }
         break;
     }
