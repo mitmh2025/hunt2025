@@ -10,6 +10,7 @@
   ];
   makeWrapperArgs = let
     env = {
+      SCHEDULE_JSON = ../../radioman/schedule.json;
       ANNOUNCEMENTS_DIR = builtins.path {
         path = "${radio-media}/announcements";
       };
