@@ -1116,7 +1116,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_10,
         opus: opus_audio_10,
       },
-      timeout_msec: 4.56,
+      timeout_msec: 4560,
       next: "11",
     },
 
