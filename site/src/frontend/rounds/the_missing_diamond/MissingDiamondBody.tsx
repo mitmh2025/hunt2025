@@ -636,6 +636,26 @@ const MissingDiamondWitnessImage = ({
   );
 };
 
+export const MissingDiamondPuzzleWitness = ({
+  state,
+  slug,
+}: {
+  state: MissingDiamondState;
+  slug: string;
+}) => {
+  const witness = state.witnesses.find((w) => w.puzzle.slug === slug);
+  if (!witness) {
+    return null;
+  }
+
+  return (
+    <div className="witness-assets">
+      <img src={witness.asset} alt="" />
+      <h3>{witness.alt}</h3>
+    </div>
+  );
+};
+
 const MissingDiamondBody = ({
   state,
   teamState,
