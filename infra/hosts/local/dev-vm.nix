@@ -24,6 +24,7 @@
       EMAIL_FROM = "MIT Mystery Hunt 2025 <info@mitmh2025.com>";
     };
     hunt.radio.enable = true;
+    services.thingsboard.enable = true;
     services.thingsboard.provision.enable = true;
     services.sync2tb.enable = true;
     services.sync2k8s.enable = true;
