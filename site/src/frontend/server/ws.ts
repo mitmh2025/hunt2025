@@ -16,6 +16,7 @@ import {
   type Dataset,
   type ObjectWithEpoch,
   MessageFromClientSchema,
+  type ObjectWithId,
 } from "../../../lib/api/websocket";
 import { genId } from "../../../lib/id";
 import formatActivityLogEntryForApi from "../../api/formatActivityLogEntryForApi";
@@ -48,6 +49,7 @@ import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { strayLeadsState } from "../rounds/stray_leads";
 import { missingDiamondState } from "../rounds/the_missing_diamond";
+import { generateActivityLogForTimeline } from "../timeline";
 import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "./constants";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
@@ -64,6 +66,7 @@ type DatasetHandler =
     }
   | {
       type: "activity_log";
+      callback: (entry: DehydratedActivityLogEntry) => ObjectWithId | undefined;
     }
   | {
       type: "guess_log";
@@ -85,6 +88,11 @@ type DatasetHandler =
 const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
     type: "activity_log",
+    callback: (e) => e,
+  },
+  timeline: {
+    type: "activity_log",
+    callback: generateActivityLogForTimeline,
   },
   all_puzzles: {
     type: "team_state",
@@ -192,9 +200,12 @@ type TeamStateSubscriptionHandler<T> = {
   cachedValue: T;
 };
 
-type ActivityLogSubscriptionHandler = {
+type ActivityLogSubscriptionHandler<T> = {
   type: "activity_log";
   dataset: Dataset;
+  computeFromActivityLogEntry: (
+    entry: DehydratedActivityLogEntry,
+  ) => T | undefined;
   stop: () => void;
 };
 
@@ -239,7 +250,7 @@ type PollResponseSubscriptionHandler = {
 
 type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
-  | ActivityLogSubscriptionHandler
+  | ActivityLogSubscriptionHandler<T>
   | GuessLogSubscriptionHandler
   | TeamRegistrationSubscriptionHandler<T>
   | PuzzleStateLogSubscriptionHandler
@@ -254,7 +265,7 @@ function isTeamStateSubscription<T>(
 
 function isActivityLogSubscription<T>(
   sub: SubscriptionHandler<T>,
-): sub is ActivityLogSubscriptionHandler {
+): sub is ActivityLogSubscriptionHandler<T> {
   return sub.type === "activity_log";
 }
 
@@ -357,7 +368,10 @@ class ConnHandler {
   private observerProvider: ObserverProvider;
 
   // key: subId
-  private subs: Map<string, SubscriptionHandler<ObjectWithEpoch>>;
+  private subs: Map<
+    string,
+    SubscriptionHandler<ObjectWithEpoch | ObjectWithId>
+  >;
   private teamStateObserverStopHandle?: () => void;
 
   constructor({
@@ -533,7 +547,9 @@ class ConnHandler {
   ) {
     const sub = this.subs.get(subId);
     if (sub && isActivityLogSubscription(sub)) {
-      this.send({ subId, type: "update", value: entry });
+      const mappedEntry = sub.computeFromActivityLogEntry(entry);
+      if (!mappedEntry) return;
+      this.send({ subId, type: "update", value: mappedEntry });
     }
   }
 
@@ -674,9 +690,10 @@ class ConnHandler {
         case "activity_log": {
           // observeActivityLog() will synchronously trigger sending all activity log entries as updates as observeActivityLog is called.
           // Since our dispatch path goes through this.subs
-          const subHandler: SubscriptionHandler<object> = {
+          const subHandler: SubscriptionHandler<ObjectWithId> = {
             type: "activity_log",
             dataset,
+            computeFromActivityLogEntry: datasetHandler.callback,
             stop: () => {
               /* stub */
             },
