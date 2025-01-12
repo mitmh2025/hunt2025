@@ -2,6 +2,7 @@ import { type TeamInteractionStateLogEntry } from "../../../lib/api/frontend_con
 import { fixTimestamp } from "../../api/db";
 import { type RedisClient } from "../../api/redis";
 import { type ExternalInteractionNode } from "./client-types";
+import { type BoardwalkInteractionState } from "./interview_at_the_boardwalk/graph";
 import {
   type InteractionGraph,
   type InteractionGraphNode,
@@ -267,7 +268,42 @@ export class VirtualInteractionHandler<
       // Shouldn't be looking for a next node if this is a terminal node
       return undefined;
     } else if (isPluginNode(currentNode)) {
-      // TODO make something up here based on the plugin
+      // The contract with plugins (limited to BoardwalkInteractionGraph right now) is noted in the BoardwalkInteractionGraph:
+      //   Each of these plugin nodes should update state.wins based on the outcome of the game and
+      //   navigate to one of "first-win", "first-loss", "second-win", "second-loss", "third-win",
+      //   or "third-loss" accordingly.
+      const success = Math.random() > 0.5; // TODO: determine this fairly
+      const boardwalkPluginState = state as BoardwalkInteractionState;
+      const played =
+        (boardwalkPluginState.played_lucky_duck ? 1 : 0) +
+        (boardwalkPluginState.played_pop_the_balloon ? 1 : 0) +
+        (boardwalkPluginState.played_skeeball ? 1 : 0);
+      const nextState = {
+        ...boardwalkPluginState,
+        wins: boardwalkPluginState.wins + (success ? 1 : 0),
+      };
+      const wins = nextState.wins;
+      const losses = played - wins;
+      let nextNodeId: string | undefined;
+      if (success) {
+        nextNodeId = ["first-win", "second-win", "third-win"][wins - 1];
+      } else {
+        nextNodeId = ["first-loss", "second-loss", "third-loss"][losses - 1];
+      }
+      if (nextNodeId === undefined) {
+        // should never happen
+        return undefined;
+      }
+
+      const nextNode = this.lookupNode(nextNodeId);
+      if (nextNode === undefined) {
+        // Should also never happen
+        return undefined;
+      }
+      return {
+        nextNode,
+        nextState,
+      } as Next<T, R, S, P>;
     }
     return undefined;
   }

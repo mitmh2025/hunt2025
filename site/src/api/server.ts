@@ -2445,8 +2445,6 @@ export async function getRouter({
             knex,
             async (_, mutator) => {
               // Look up the most recent entry in the log for this interaction.
-              console.log(`in mutator, log is length ${mutator.log.length}`);
-              console.log(mutator.log);
               const interactionLog = mutator.log.filter(
                 (e) => e.slug === interactionId,
               );
@@ -2461,6 +2459,9 @@ export async function getRouter({
               }
               if (latest.node !== fromNode) {
                 // Interaction is not currently at fromNode.
+                console.log(
+                  `latest node is not fromNode: ${latest.node} vs ${fromNode}`,
+                );
                 return {
                   status: 400 as const,
                   body: null,

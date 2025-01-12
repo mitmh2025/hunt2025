@@ -1275,6 +1275,7 @@ export class WebsocketManager implements ObserverProvider {
       this.interactionStateSubs.set(key, sub);
     } else {
       // Synthesize initial updates
+      // console.log("Reusing existing sub", sub);
       sub.log.forEach((entry) => {
         conn.appendInteractionStateLogEntry(subId, entry);
       });
@@ -1290,7 +1291,7 @@ export class WebsocketManager implements ObserverProvider {
         //console.log("destroy tailer");
         sub.tailerStopHandle();
         sub.tailer.shutdown();
-        this.puzzleStateSubs.delete(key);
+        this.interactionStateSubs.delete(key);
       }
     };
 
