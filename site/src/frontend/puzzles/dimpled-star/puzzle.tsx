@@ -77,7 +77,7 @@ const Puzzle = ({
         <>
           <hr />
           <p>
-            When you arrived at the gala, a paralegal met you with a note from
+            When you arrived at the Gala, a paralegal met you with a note from
             Billie:
           </p>
           <Note>
