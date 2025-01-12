@@ -34,14 +34,24 @@ export function countVotes(votes: Record<string, string>): VoteCounts {
   return results;
 }
 
-export function tallyResults(votes: VoteCounts, validOptions: string[]): VoteResults {
+// Returns an object containing:
+// * the entry in validOptions that won
+// * the vote counts of each validOption, sorted high-to-low
+export function tallyResults(
+  votes: VoteCounts,
+  validOptions: string[],
+): VoteResults {
   // TODO: maybe randomize tiebreaks?  I guess the given order is maybe ~random?
-  const validOptionScores = validOptions.map((choice) => {
-    return {
-      choice,
-      votes: votes[choice] ?? 0,
-    };
-  }).toSorted((a, b) => { return b.votes - a.votes; });
+  const validOptionScores = validOptions
+    .map((choice) => {
+      return {
+        choice,
+        votes: votes[choice] ?? 0,
+      };
+    })
+    .toSorted((a, b) => {
+      return b.votes - a.votes;
+    });
 
   return {
     rankedOptions: validOptionScores,
@@ -64,13 +74,18 @@ type StartState<T> = {
   state: T;
 };
 
-type Next<T,R,S,P> = {
-  nextNode: InteractionGraphNode<T,R,S,P>;
+type Next<T, R, S, P> = {
+  nextNode: InteractionGraphNode<T, R, S, P>;
   nextState: T;
   previousVoteResult?: VoteResults;
-}
+};
 
-export class VirtualInteractionHandler<T extends object, R, S extends string, P> {
+export class VirtualInteractionHandler<
+  T extends object,
+  R,
+  S extends string,
+  P,
+> {
   private name: string;
   private graph: InteractionGraph<T, R, S, P>;
   private indexedNodes: Record<string, InteractionGraphNode<T, R, S, P>>;
@@ -123,7 +138,7 @@ export class VirtualInteractionHandler<T extends object, R, S extends string, P>
     return partial;
   }
 
-  public start(): StartState<T> {
+  public startState(): StartState<T> {
     return {
       node: this.graph.starting_node,
       state: this.graph.starting_state,
@@ -145,7 +160,10 @@ export class VirtualInteractionHandler<T extends object, R, S extends string, P>
     return startedAt + graphNode.timeout_msec;
   }
 
-  public electionKey(teamId: number, node: InteractionGraphNode<T, R, S, P>): string {
+  public electionKey(
+    teamId: number,
+    node: InteractionGraphNode<T, R, S, P>,
+  ): string {
     return `/team/${teamId}/polls/${this.name}/${node.id}`;
   }
 
@@ -154,16 +172,22 @@ export class VirtualInteractionHandler<T extends object, R, S extends string, P>
     currentNode: InteractionGraphNode<T, R, S, P>,
     redisClient: RedisClient,
   ): Promise<VoteCounts | undefined> {
-    // Valid options may be limited by the current state, but we're trying to 
+    // Valid options may be limited by the current state, but we're trying to
 
-    // Tally the votes in redis, pick the winner, and 
+    // Tally the votes in redis, pick the winner, and
     const redisKey = this.electionKey(teamId, currentNode);
     const votes = await redisClient.hGetAll(redisKey);
     const results = countVotes(votes);
     return results;
   }
 
-  public async computeNext({ teamId, currentNode, state, redisClient, maybeVoteCounts }: {
+  public async computeNext({
+    teamId,
+    currentNode,
+    state,
+    redisClient,
+    maybeVoteCounts,
+  }: {
     teamId: number;
     currentNode: InteractionGraphNode<T, R, S, P>;
     state: T;
@@ -196,22 +220,55 @@ export class VirtualInteractionHandler<T extends object, R, S extends string, P>
       if (typeof choices === "function") {
         choices = choices(state);
       }
-      const choiceKeys = choices.map((choice) => {
-        let key = choice.next;
-        if (typeof key === "function") {
-          key = key(state);
-        }
-        return key;
-      });
+      const nextStateCandidates = Object.fromEntries(
+        choices.map((choice) => {
+          let key = choice.next;
+          if (typeof key === "function") {
+            key = key(state);
+          }
+          const candidateState = choice.stateEffect?.(state);
+          return [key, candidateState ?? state];
+        }),
+      );
+      const choiceKeys = Object.keys(nextStateCandidates);
       if (choiceKeys.length === 0) {
-        console.error(`No valid choice options for interaction ${this.name} node ${currentNode.id} at state ${JSON.stringify(state)}`);
+        console.error(
+          `No valid choice options for interaction ${this.name} node ${currentNode.id} at state ${JSON.stringify(state)}`,
+        );
         return undefined;
       }
       const voteResults = tallyResults(voteCounts, choiceKeys);
+      if (voteResults.winner === undefined) {
+        // Should be unreachable if choiceKeys was not empty
+        return undefined;
+      }
 
+      const nextNode = this.lookupNode(voteResults.winner);
+      if (nextNode === undefined) {
+        console.error(
+          `Winning vote ${voteResults.winner} for team ${teamId} node ${currentNode.id} was not a node known to graph ${this.name}`,
+        );
+        return undefined;
+      }
+      const nextState = nextStateCandidates[voteResults.winner];
+      if (!nextState) {
+        console.error(
+          `Winning vote ${voteResults.winner} for team ${teamId} node ${currentNode.id} computed no next state`,
+        );
+        return undefined;
+      }
 
+      return {
+        nextNode,
+        nextState,
+        // TODO: return full election results for archival?
+      };
+    } else if (isTerminalNode(currentNode)) {
+      // Shouldn't be looking for a next node if this is a terminal node
+      return undefined;
+    } else if (isPluginNode(currentNode)) {
+      // TODO make something up here based on the plugin
     }
+    return undefined;
   }
 }
-
-

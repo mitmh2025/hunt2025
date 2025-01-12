@@ -21,22 +21,34 @@ export const INTERACTIONS: Record<string, InteractionDefinition> = {
   interview_at_the_art_gallery: {
     title: "Interview at the Art Gallery",
     type: "virtual",
-    handler: new VirtualInteractionHandler("interview_at_the_art_gallery", ArtGalleryInteractionGraph),
+    handler: new VirtualInteractionHandler(
+      "interview_at_the_art_gallery",
+      ArtGalleryInteractionGraph,
+    ),
   },
   interview_at_the_boardwalk: {
     title: "Interview at the Boardwalk",
     type: "virtual",
-    handler: new VirtualInteractionHandler("interview_at_the_boardwalk", BoardwalkInteractionGraph),
+    handler: new VirtualInteractionHandler(
+      "interview_at_the_boardwalk",
+      BoardwalkInteractionGraph,
+    ),
   },
   interview_at_the_casino: {
     title: "Interview at the Casino",
     type: "virtual",
-    handler: new VirtualInteractionHandler("interview_at_the_casino", CasinoInteractionGraph),
+    handler: new VirtualInteractionHandler(
+      "interview_at_the_casino",
+      CasinoInteractionGraph,
+    ),
   },
   interview_at_the_jewelry_store: {
     title: "Interview at the Jewelry Store",
     type: "virtual",
-    handler: new VirtualInteractionHandler("interview_at_the_jewelry_store", JewelryStoreInteractionGraph),
+    handler: new VirtualInteractionHandler(
+      "interview_at_the_jewelry_store",
+      JewelryStoreInteractionGraph,
+    ),
   },
   meet_billie: {
     title: "Meet Billie",

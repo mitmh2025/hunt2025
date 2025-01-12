@@ -51,7 +51,10 @@ import canonicalizeInput from "../../lib/canonicalizeInput";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
 import { INTERACTIONS } from "../frontend/interactions";
-import { countVotes, type VirtualInteractionHandler } from "../frontend/interactions/handler";
+import {
+  countVotes,
+  type VirtualInteractionHandler,
+} from "../frontend/interactions/handler";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import {
@@ -2356,7 +2359,7 @@ export async function getRouter({
                       string,
                       unknown
                     >
-                  ).start();
+                  ).startState();
                   await appendTeamInteractionStateLog(
                     {
                       team_id,
@@ -2385,31 +2388,40 @@ export async function getRouter({
           const team_id = parseInt(teamId, 10);
           const interaction = INTERACTIONS[interactionId];
           if (interaction?.type !== "virtual") {
+            console.log(`${interactionId} is not a valid virtual interaction`);
             return {
-              status: 404,
-              body: "Not a valid virtual interaction",
+              status: 404 as const,
+              body: null,
             };
           }
+          console.warn(
+            `interactionId ${interactionId} valid, checking redisClient`,
+          );
           if (!redisClient) {
             return {
-              status: 500,
+              status: 500 as const,
               body: "Cannot reliably advance interactions without a valid redis client",
             };
           }
+          console.warn(`redisClient valid, lookin up node`);
 
           // We should do as much work as we safely can *before* opening the DB transaction.
           const node = interaction.handler.lookupNode(fromNode);
           if (!node) {
-            console.log(`Interaction node ${fromNode} for team ${teamId} not known to interaction graph ${interactionId}`);
+            console.log(
+              `Interaction node ${fromNode} for team ${teamId} not known to interaction graph ${interactionId}`,
+            );
             return {
-              status: 400,
+              status: 400 as const,
               body: null,
             };
           }
           if ("finalState" in node) {
-            console.log(`Cannot advance team ${teamId}'s interaction ${interactionId} past final state`);
+            console.log(
+              `Cannot advance team ${teamId}'s interaction ${interactionId} past final state`,
+            );
             return {
-              status: 400,
+              status: 400 as const,
               body: null,
             };
           }
@@ -2417,41 +2429,54 @@ export async function getRouter({
           // The vote closing is inherently racy.  Votes live in redis.  We can tally the raw
           // results before opening a DB transaction, so we're not holding the DB transaction open
           // while we talk to redis over the network some more.
-          const maybeVoteCounts = await interaction.handler.voteCountsForNode(team_id, node, redisClient);
+          const maybeVoteCounts = await interaction.handler.voteCountsForNode(
+            team_id,
+            node,
+            redisClient,
+          );
+          console.warn(`maybeVoteCounts: ${JSON.stringify(maybeVoteCounts)}`);
 
           // Okay now we have to see if this is still the current node, and what the interaction
           // graph state for this team is at that node, which does require looking at the DB.
 
-          const result = await teamInteractionStateLog.executeMutation(
+          const { result } = await teamInteractionStateLog.executeMutation(
             team_id,
             redisClient,
             knex,
-            async (trx, mutator) => {
+            async (_, mutator) => {
               // Look up the most recent entry in the log for this interaction.
-              const interactionLog = mutator.log.filter((e) => e.slug === interactionId);
+              console.log(`in mutator, log is length ${mutator.log.length}`);
+              console.log(mutator.log);
+              const interactionLog = mutator.log.filter(
+                (e) => e.slug === interactionId,
+              );
               const latest = interactionLog.at(-1);
               if (!latest) {
+                console.log("no latest node");
                 // No log?  Can't advance.
                 return {
-                  status: 404,
+                  status: 404 as const,
                   body: null,
-                }
+                };
               }
               if (latest.node !== fromNode) {
                 // Interaction is not currently at fromNode.
                 return {
-                  status: 400,
+                  status: 400 as const,
                   body: null,
                 };
               }
               const now = Date.now();
               const ts = fixTimestamp(latest.timestamp);
               const nodeEntered = ts.getTime();
-              const advanceAfter = interaction.handler.advanceAfterTime(fromNode, nodeEntered);
+              const advanceAfter = interaction.handler.advanceAfterTime(
+                fromNode,
+                nodeEntered,
+              );
               if (advanceAfter === undefined) {
-                // 
+                //
                 return {
-                  status: 500,
+                  status: 500 as const,
                   body: `Unable to determine time at which to advance ${interactionId} for team ${teamId} from ${fromNode}`,
                 };
               }
@@ -2468,23 +2493,34 @@ export async function getRouter({
                   redisClient,
                 });
                 if (!maybeNext) {
-                  // We couldn't figure out where we go next.  
+                  // We couldn't figure out where we go next.
                   return {
-                    status: 500,
+                    status: 500 as const,
                     body: `Unable to determine next node for team ${teamId} in interaction ${interactionId} at ${fromNode}`,
                   };
                 }
                 // I don't actually know how to parameterize these over the various flavors of interaction graph so
                 // here we are casting things around
-                const { nextNode, nextState } = maybeNext as { nextNode: { id: string; }; nextState: object };
-                await mutator.appendLog({
+                const { nextNode, nextState } = maybeNext as {
+                  nextNode: { id: string };
+                  nextState: object;
+                };
+                const _nextRow = await mutator.appendLog({
                   team_id,
                   slug: interactionId,
                   predecessor: fromNode,
                   node: nextNode.id,
                   graph_state: nextState,
                 });
-
+                return {
+                  status: 200 as const,
+                  body: {},
+                };
+              } else {
+                return {
+                  status: 429 as const,
+                  body: null,
+                };
               }
             },
           );

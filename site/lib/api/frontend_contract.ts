@@ -219,9 +219,11 @@ export const frontendContract = c.router({
     path: "/teams/:teamId/interactions/:interactionId/advance/:fromNode",
     body: z.object({}),
     responses: {
-      200: TeamInteractionStateLogEntrySchema,
+      200: z.object({}), // TODO: maybe plumb next node through?
       400: z.null(), // Not at fromNode (either too early or too late) or fromNode is final
+      404: z.null(), // No log
       429: z.null(), // Not ready to transition yet (wait for timeout_msec to pass).
+      500: z.string(),
     },
   },
   completeInteraction: {

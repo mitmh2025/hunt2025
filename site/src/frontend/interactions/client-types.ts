@@ -1,3 +1,9 @@
+export type InteractionChoice = {
+  key: string; // the value that should be voted.
+  text: string; // the label that should be displayed.
+  textEffect?: "span";
+};
+
 export type ExternalInteractionNode = {
   id: number; // The ID of the entry in the TeamInteractionStateLog
   ts: number; // The time at which this node was entered
@@ -11,11 +17,7 @@ export type ExternalInteractionNode = {
   overlay?: string | null; // Which InteractionChacterState key are we setting the current overlay to?
   // TODO: maybe add speakerImage to control what picture is shown to the left of the dialog
 
-  choices?: {
-    key: string; // the value that should be voted.
-    text: string; // the label that should be displayed.
-    textEffect?: "span";
-  }[];
+  choices?: InteractionChoice[];
   plugin?: string;
   result?: string;
 };
