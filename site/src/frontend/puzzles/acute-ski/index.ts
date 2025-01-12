@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Superlatives",
   slug: "superlatives",
+  code_name: "acute-ski",
   initial_description: "A laid out book with a graphic at the bottom",
   answer: "STUDENT BODY",
   authors: ["James Douberley", "Evan Broder"],

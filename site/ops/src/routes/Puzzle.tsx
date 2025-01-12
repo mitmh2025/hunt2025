@@ -213,7 +213,9 @@ export default function Puzzle() {
       <p>
         <Link to="/puzzles">&laquo; Puzzles</Link>
       </p>
-      <h1>{title}</h1>
+      <h1>
+        {title} ({opsData.puzzleMetadata[slug]?.code_name})
+      </h1>
       <p>
         <strong>Round:</strong> {round.title}
         <br />

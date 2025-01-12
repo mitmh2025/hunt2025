@@ -7,6 +7,7 @@ import StitchySituation from "./stitchy-situation";
 const puzzle: PuzzleDefinition = {
   title: "Weirdo Threaded Doodads",
   slug: "weirdo_threaded_doodads",
+  code_name: "plain-roulette",
   initial_description: "Knitting instructions",
   answer: "PEARL STREET",
   authors: ["Kate Lynn", "Ariel Schwartz", "Kat Allen"],

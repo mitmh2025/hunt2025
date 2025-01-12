@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Dropping the Ball",
   slug: "dropping_the_ball",
+  code_name: "rundown-spot",
   initial_description: "A circular dropquote",
   answer: "HAL INSTITUTE FOR CRIMINALLY INSANE ROBOTS",
   authors: ["Hubert Hwang"],

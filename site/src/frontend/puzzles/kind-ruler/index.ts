@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Corn Maize",
   slug: "corn_maize",
+  code_name: "kind-ruler",
   initial_description:
     "A large list of crossword clues and five separate crossword grids",
   answer: "GARDEN CENTER",

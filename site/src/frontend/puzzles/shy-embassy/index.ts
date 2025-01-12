@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Papa’s Stash",
   slug: "papas_stash",
+  code_name: "shy-embassy",
   answer: "ACCESS INVISIBLE INK",
   authors: ["Alex St Claire", "Mike Mannis"],
   editors: [

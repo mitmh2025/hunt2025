@@ -25,6 +25,7 @@ export function makePlaceholder(slug: string, title: string, answer: string) {
   return {
     title,
     slug,
+    code_name: slug,
     initial_description: "A stub puzzle",
     answer,
     authors: [],

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Editor’s Solemnity",
   slug: "editors_solemnity",
+  code_name: "plant-soursop",
   initial_description: "A series of nonsense phrases",
   answer: "KNIFE",
   authors: ["Teddy McArthur", "tinaun"],

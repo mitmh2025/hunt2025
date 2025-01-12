@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Half Baked",
   slug: "half_baked",
+  code_name: "classic-link",
   initial_description: "Photos of ingredients and baked goods",
   answer: "BANANA BREAD",
   authors: ["Sue Broder", "Eric Broder"],

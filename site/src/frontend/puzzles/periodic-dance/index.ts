@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Ultimate Insult",
   slug: "the_ultimate_insult",
+  code_name: "periodic-dance",
   initial_description: "List of insults",
   answer: "SMASH MOUTH",
   authors: ["Alex St Claire", "Kawika Pierson"],

@@ -1807,6 +1807,7 @@ export async function getRouter({
                 {
                   title: definition.title,
                   slug: definition.slug,
+                  code_name: definition.code_name,
                 },
               ];
             }),

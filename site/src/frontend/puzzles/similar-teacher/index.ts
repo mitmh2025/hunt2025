@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Kindred Spirits",
   slug: "kindred_spirits",
+  code_name: "similar-teacher",
   initial_description:
     "A series of crossword-style clues and a series of blanks separated by arrows",
   answer: "FLYER",

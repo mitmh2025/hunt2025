@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Temporal Investigations",
   slug: "temporal_investigations",
+  code_name: "offensive-cat",
   initial_description: "Short summaries of sci-fi events",
   answer: "BRUSH WITH FATE",
   authors: ["Anna Brunner"],

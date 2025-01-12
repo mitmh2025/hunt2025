@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Can-do Transmissions",
   slug: "can_do_transmissions",
+  code_name: "diligent-spy",
   initial_description:
     "A radio broadcast of uninflected voices reading lists of words and numbers",
   answer: "BEAUTIFUL FRIENDSHIP",

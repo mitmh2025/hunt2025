@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Big Names",
   slug: "big_names",
+  code_name: "important-green",
   initial_description:
     "A list of clues written in all caps, in two different sizes",
   answer: "THINK AGAIN",

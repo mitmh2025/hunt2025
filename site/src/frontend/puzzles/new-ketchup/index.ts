@@ -6,6 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "What Do They Call You?",
   slug: "what_do_they_call_you",
+  code_name: "new-ketchup",
   initial_description: "A text-adventure-ish interface",
   answer: "LITTLE TOM",
   authors: ["Karen Rustad Tolva", "Drew Fisher"],

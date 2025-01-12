@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Casino",
   slug: "the_casino",
+  code_name: "fortunate-calf",
   authors: ["Elan Blaustein"],
   editors: ["James Douberley", "Henry Wong", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [

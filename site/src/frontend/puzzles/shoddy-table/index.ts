@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The 10000-Sheet Excel File",
   slug: "the_10000_sheet_excel_file",
+  code_name: "shoddy-table",
   initial_description: "An Excel file with 10000 sheets",
   answer: "HMS ALCASTON",
   authors: ["Hubert Hwang"],

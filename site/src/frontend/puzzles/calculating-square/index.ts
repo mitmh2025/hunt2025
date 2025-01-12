@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Borderline Personality",
   slug: "borderline_personality",
+  code_name: "calculating-square",
   initial_description: "A bunch of haiku. Just, like, so many haiku.",
   answer: "THE WHALE AND THE RISING SUN",
   authors: ["Brie Frame"],

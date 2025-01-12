@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Hello Darkness My Old Friend",
   slug: "hello_darkness_my_old_friend",
+  code_name: "that-bell",
   initial_description: "A block of monospaced text and a bunch of circles",
   answer: "TODO PLACEHOLDER TODO PLACEHOLDER",
   authors: ["Wesley Graybill", "Eric Broder", "Sue Broder"],

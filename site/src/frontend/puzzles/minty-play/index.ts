@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Mystery O’s",
   slug: "mystery_os",
+  code_name: "minty-play",
   initial_description: "Physical Puzzle—a cereal box",
   answer: "RICE UNIVERSITY",
   authors: [

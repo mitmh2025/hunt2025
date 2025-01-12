@@ -6,6 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Annual Massachusetts Spelling Bee",
   slug: "the_annual_massachusetts_spelling_bee",
+  code_name: "few-nail",
   initial_description: "A spelling bee",
   answer: "VAMPIRE BUTTERFLY",
   authors: ["Elan Blaustein"],

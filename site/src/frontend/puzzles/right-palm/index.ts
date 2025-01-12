@@ -6,6 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Follow The Rules",
   slug: "follow_the_rules",
+  code_name: "right-palm",
   initial_description:
     "An interactive interface with a grid of toggle switches and a grid of lights",
   answer: "MATCHBOOK",

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Star Crossed",
   slug: "star_crossed",
+  code_name: "carefree-ghost",
   initial_description:
     "A large isometric grid of letters in the shape of a circle",
   answer: "FISTS",

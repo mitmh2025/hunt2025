@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 5: Stellar Public Relations",
   slug: "shell_corporation_5",
+  code_name: "profitable-trunk",
   authors: ["Li-Mei Lim"],
   editors: ["James Douberley", "Robin Deits"],
   additional_credits: [],

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "It’s All Cheep (And a Sheep) to Me",
   slug: "its_all_cheep_and_a_sheep_to_me",
+  code_name: "outrageous-bank",
   initial_description: "A video featuring cartoon animals and bouncy music",
   answer: "HEREFORD CATTLE",
   authors: ["J. Heléne Andersson", "Liz Oppenheim", "Sarah Leadbeater"],

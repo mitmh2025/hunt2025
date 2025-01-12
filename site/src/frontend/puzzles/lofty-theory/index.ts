@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Seeing the Big Picture",
   slug: "seeing_the_big_picture",
+  code_name: "lofty-theory",
   answer: "THE OLD COLLAGE TRY",
   authors: ["Leland Aldridge", "Li-Mei Lim", "Wesley Graybill"],
   editors: ["James Douberley", "Robin Deits"],

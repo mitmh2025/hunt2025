@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Thief",
   slug: "the_thief",
+  code_name: "dimpled-star",
   answer: "RIDE SIDECAR",
   authors: ["Grant Elliott", "Erin Price", "John Silvio", "Kevin Hwang"],
   editors: ["Henry Wong", "James Douberley", "Li-Mei Lim", "Robin Deits"],

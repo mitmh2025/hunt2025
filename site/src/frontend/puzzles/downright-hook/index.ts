@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Men’s at My Nose",
   slug: "mens_at_my_nose",
+  code_name: "downright-hook",
   initial_description: "A series of quotes",
   answer: "SHOPPING CART",
   authors: ["Teddy McArthur"],

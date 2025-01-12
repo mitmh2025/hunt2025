@@ -6,6 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "_land",
   slug: "_land",
+  code_name: "unhealthy-mint",
   initial_description: "A thin, multicolored horizontal line",
   answer: "PALISADE",
   authors: ["Elan Blaustein"],

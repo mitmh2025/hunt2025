@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Center Is In Plain Sight",
   slug: "the_center_is_in_plain_sight",
+  code_name: "sinful-turkey",
   initial_description: "Image of a box with mini-puzzles",
   answer: "FIORE SARDO", // TODO: set pt 2: "SPARE PARTS"
   authors: ["Elan Blaustein"],

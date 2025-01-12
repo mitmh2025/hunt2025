@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Oversight",
   slug: "the_oversight",
+  code_name: "svelte-conductor",
   answer: "NOMAD",
   authors: ["Grant Elliott"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim", "Robin Deits"],

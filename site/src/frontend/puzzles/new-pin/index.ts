@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Math Quiz",
   slug: "a_math_quiz",
+  code_name: "new-pin",
   initial_description: "A list of math questions",
   answer: "TREE",
   authors: ["Tanya Khovanova"],

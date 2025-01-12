@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "\u7687\u5e1d\u306e\u6697\u53f7",
   slug: "\u7687\u5e1d\u306e\u6697\u53f7",
+  code_name: "tragic-spider",
   initial_description: "A switch and a series of images",
   answer: "THE END OF THE HEISEI ERA",
   authors: ["Leland Aldridge"],

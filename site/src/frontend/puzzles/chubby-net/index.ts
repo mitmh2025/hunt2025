@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Splits Used as History",
   slug: "splits_used_as_history",
+  code_name: "chubby-net",
   initial_description:
     "A scrolling list of alphabetized letter n-grams with enumerations",
   answer: "YOUR WINNINGS SIR",

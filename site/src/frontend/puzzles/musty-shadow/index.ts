@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Eras Puzzle",
   slug: "the_eras_puzzle",
+  code_name: "musty-shadow",
   initial_description: "Colored node charts with pianos and guitars",
   answer: "LUCKIER",
   authors: ["Stratton Vakirtzis"],

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "📑🍝",
   slug: "📑🍝",
+  code_name: "blank-rose",
   initial_description: "A paragraph ❡ of emojipasta 😄🍝",
   answer: "PIDAKALA WAR",
   authors: ["Ollie Shonaldmann", "Fuzzy Shonaldmann"],

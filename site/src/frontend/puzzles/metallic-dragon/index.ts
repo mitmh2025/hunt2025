@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Word Yore",
   slug: "word_yore",
+  code_name: "metallic-dragon",
   initial_description:
     "You are presented with an old-school-looking phone interface (via web browser) and a textbox.",
   answer: "GRASS",

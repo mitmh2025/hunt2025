@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Making Contact With An Informant",
   slug: "making_contact_with_an_informant",
+  code_name: "pricey-robot",
   answer: "UNITY",
   authors: [
     "Leland Aldridge",

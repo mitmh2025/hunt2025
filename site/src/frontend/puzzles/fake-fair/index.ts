@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Read Between the Lines",
   slug: "read_between_the_lines",
+  code_name: "fake-fair",
   initial_description: "Two crosswords",
   answer: "PALM TREE",
   authors: ["Dee Ruttenberg", "Anisa Schardl", "Chris Post"],

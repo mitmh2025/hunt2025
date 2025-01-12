@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "O, Woe is Me",
   slug: "o_woe_is_me",
+  code_name: "past-jam",
   initial_description: "Cryptic crossword",
   answer: "JUGAL BONE",
   authors: ["Julian West"],

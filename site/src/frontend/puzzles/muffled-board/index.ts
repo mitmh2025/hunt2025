@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Press Play",
   slug: "press_play",
+  code_name: "muffled-board",
   initial_description: "Audio files of singing",
   answer: "STENOGRAPHERS",
   authors: [

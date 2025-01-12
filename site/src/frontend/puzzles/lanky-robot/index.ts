@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "An Exchange of Vows",
   slug: "an_exchange_of_vows",
+  code_name: "lanky-robot",
   initial_description: "A list of multi-word clues",
   authors: ["Hubert Hwang"],
   editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Paw Print Detective",
   slug: "paw_print_detective",
+  code_name: "rural-helicopter",
   initial_description:
     "A series of nucleotide sequences and suspect cards. CUTE DOGGOS!",
   answer: "SLEDDER",

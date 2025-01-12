@@ -114,6 +114,9 @@ export const PuzzleDefinitionMetadataSchema = z.object({
   // spaces replaced with underscores.
   slug: z.string(),
 
+  // Puzzup code name for this puzzle
+  code_name: z.string(),
+
   // The non-spoilery description of this puzzle, as seen by hunters while the puzzle is locked but
   // unlockable (by spending unlock currency).  This should be a description of what hunters will
   // see on the puzzle page once they unlock the puzzle.

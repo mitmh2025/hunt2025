@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Mark",
   slug: "the_mark",
+  code_name: "unique-australia",
   answer: "PANDORA",
   authors: ["Grant Elliott"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim", "Robin Deits"],

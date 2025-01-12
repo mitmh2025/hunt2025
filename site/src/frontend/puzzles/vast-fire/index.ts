@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "You’re Playing It Wrong",
   slug: "youre_playing_it_wrong",
+  code_name: "vast-fire",
   initial_description: "A video of someone playing piano, with sheet music",
   answer: "NONET",
   authors: ["Hubert Hwang"],

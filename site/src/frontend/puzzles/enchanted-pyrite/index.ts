@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Good Fences Make Good Otherwise Incompatible Neighbors",
   slug: "good_fences_make_good_otherwise_incompatible_neighbors",
+  code_name: "enchanted-pyrite",
   initial_description: "A hexagonal logic puzzle",
   answer: "SUFFOLK EWES",
   authors: ["Denis Auroux"],

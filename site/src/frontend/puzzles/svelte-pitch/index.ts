@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Recipe Substitutions",
   slug: "recipe_substitutions",
+  code_name: "svelte-pitch",
   initial_description: "A recipe blog post and comments",
   answer: "PINTO BEAN",
   authors: [

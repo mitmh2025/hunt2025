@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 3: Superior Stonework",
   slug: "shell_corporation_3",
+  code_name: "green-princess",
   answer: "ST PETERS BASILICA",
   authors: ["David Greenspan"],
   editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],

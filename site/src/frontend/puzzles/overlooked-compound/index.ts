@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Dear Diary",
   slug: "dear_diary",
+  code_name: "overlooked-compound",
   initial_description: "Two paragraphs of prose",
   answer: "SPEECH",
   authors: ["Mike Mannis"],

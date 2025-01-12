@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Check-a-deez Words Out",
   slug: "check_a_deez_words_out",
+  code_name: "complex-bun",
   initial_description: "A word search",
   answer: "RYAN FLAMINGO",
   authors: ["Henry Wong", "Li-Mei Lim"],

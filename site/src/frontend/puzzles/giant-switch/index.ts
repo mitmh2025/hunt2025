@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Given Up",
   slug: "given_up",
+  code_name: "giant-switch",
   initial_description: "Photos of ceilings and a radio dial with letters",
   answer: "ATHLETIC CLUB",
   authors: ["Quentin Smith", "Kevin Hwang", "Richard Tibbetts"],

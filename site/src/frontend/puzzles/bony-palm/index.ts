@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cross Spread",
   slug: "cross_spread",
+  code_name: "bony-palm",
   initial_description: "Five lines of letters",
   answer: "REUNITED",
   authors: ["Leland Aldridge"],

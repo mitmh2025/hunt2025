@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Why Kan’t We Be Friends, Too?",
   slug: "why_kant_we_be_friends_too",
+  code_name: "milky-swing",
   initial_description:
     "A video and a map of a neighborhood with letters overlaid",
   answer: "FOOTSTEPS",

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Shell Game",
   slug: "the_shell_game",
+  code_name: "subdued-jet",
   authors: [
     "David Greenspan",
     "James Douberley",

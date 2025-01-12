@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Beyond a Shadow of a Doubt",
   slug: "beyond_a_shadow_of_a_doubt",
+  code_name: "total-part",
   initial_description: "A series of colorful dropquote puzzles",
   answer: "YOU PLAYED IT",
   authors: ["Joel Fried"],

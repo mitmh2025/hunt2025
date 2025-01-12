@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Any Coat Will Do",
   slug: "any_coat_will_do",
+  code_name: "dental-police",
   initial_description:
     "An image of people in a club wearing colored coats, and an incomplete setlist",
   answer: "OPAL",

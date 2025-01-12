@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Do The Manual Calculations (Don’t Try Monte Carlo)",
   slug: "do_the_manual_calculations_dont_try_monte_carlo",
+  code_name: "hideous-theater",
   initial_description: "Some unusual chessboards and graphs with rules",
   answer: "BLISTER",
   authors: ["Nicholas Georgiou"],

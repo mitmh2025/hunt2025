@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 6: The MITropolis Times",
   slug: "shell_corporation_6",
+  code_name: "mild-octopus",
   authors: ["Leland Aldridge"],
   editors: ["James Douberley", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [],

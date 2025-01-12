@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Shell Corporation 1: Tasty Food Processors",
   slug: "shell_corporation_1",
+  code_name: "gullible-tooth",
   authors: ["Li-Mei Lim", "James Douberley"],
   editors: ["James Douberley", "Robin Deits"],
   answer: "SLIVERS",

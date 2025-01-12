@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "To Do: Tile That Rectangle",
   slug: "to_do_tile_that_rectangle",
+  code_name: "distorted-bugle",
   initial_description:
     "Rectangles of different lengths with words on the center and edges",
   answer: "PINEWOOD LADDER",
