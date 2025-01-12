@@ -51,8 +51,8 @@ type BaseContentProps = {
 };
 
 type PuzzleContentProps = BaseContentProps & {
+  teamName: string;
   type: "puzzle";
-
   puzzleState: PuzzleState;
 };
 

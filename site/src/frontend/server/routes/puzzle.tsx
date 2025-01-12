@@ -584,6 +584,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           {puzzleStateFrag}
           <ContentComponent
             type="puzzle"
+            teamName={req.teamState.info.teamName}
             teamState={req.teamState.state}
             puzzleState={result.body}
             query={req.query}
