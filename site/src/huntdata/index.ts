@@ -243,7 +243,7 @@ const HUNT: Hunt = {
         { id: "sop07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "recipe_substitutions" },
         { id: "sop08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "superlatives" },
         { id: "sop09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "an_exchange_of_vows" },
-        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 }, // Word Yore
+        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "word_yore" },
         { id: "sop11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "temporal_investigations" },
         { id: "sop12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_recipe_for_success" },
         { id: "sop13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_math_quiz" },
