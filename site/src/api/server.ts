@@ -36,7 +36,10 @@ import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
-import { adminContract } from "../../lib/api/admin_contract";
+import {
+  adminContract,
+  type FermitRegistration,
+} from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
 import { dataContract } from "../../lib/api/data_contract";
 import {
@@ -50,6 +53,11 @@ import { authentikJwtStrategy } from "../../lib/auth";
 import canonicalizeInput from "../../lib/canonicalizeInput";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
+import { albumLookup } from "../../ops/src/opsdata/desertedNinjaImages";
+import {
+  type FermitQuestion,
+  ALL_QUESTIONS,
+} from "../../ops/src/opsdata/desertedNinjaQuestions";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import {
@@ -65,6 +73,16 @@ import {
   puzzleStateLog,
   registerTeam,
   teamRegistrationLog,
+  getFermitSession,
+  getFermitSessions,
+  createFermitSession,
+  updateFermitSession,
+  getFermitRegistrations,
+  createFermitRegistration,
+  deleteFermitRegistration,
+  updateFermitRegistration,
+  getFermitAnswers,
+  saveFermitAnswers,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
@@ -2229,6 +2247,473 @@ export async function getRouter({
           );
 
           return formatMutationResultForAdminApi(result);
+        },
+      },
+      createFermitSession: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ body: { title } }) => {
+          // generate random set of questions
+          // requirements:
+          // * pick 17 distinct questions;
+          // * 4 of them must be geoguessr type
+          // * geoguessrs cannot be consecutive, first, or last
+          // * don't repeat categories
+
+          function shuffle<T>(arr: T[]): T[] {
+            return arr
+              .map((v) => ({ v, sort: Math.random() }))
+              .sort((a, b) => a.sort - b.sort)
+              .map(({ v }) => v);
+          }
+
+          const normalQuestions: FermitQuestion[] = [];
+          const geoguessrQuestions: FermitQuestion[] = [];
+          ALL_QUESTIONS.forEach((q) => {
+            (q.geoguessr === null ? normalQuestions : geoguessrQuestions).push(
+              q,
+            );
+          });
+
+          let tries = 0;
+          let valid = false;
+          // try repeatedly until a working question set comes up
+          // limit to 200 iterations to prevent infinite looping
+          while (tries < 200) {
+            const shuffledN = shuffle(normalQuestions);
+            const shuffledG = shuffle(geoguessrQuestions);
+            const questions = shuffle([
+              ...shuffledN.slice(0, 13),
+              ...shuffledG.slice(0, 4),
+            ]);
+            valid = true;
+            tries++;
+
+            // is a geoguessr question first or last?
+            if (questions[0]?.geoguessr ?? questions[16]?.geoguessr) {
+              valid = false;
+              //console.log("invalid: first/last question is geoguessr");
+            }
+
+            // are two consecutive questions geoguessrs?
+            for (let i = 0; i < 16; i++) {
+              if (questions[i]?.geoguessr && questions[i + 1]?.geoguessr) {
+                valid = false;
+                //console.log("invalid: consecutive geoguessrs");
+              }
+            }
+
+            // are any categories repeated?
+            const categories = new Set<string>();
+            questions.forEach((q: FermitQuestion) => {
+              for (const cat of q.categories) {
+                if (categories.has(cat)) {
+                  valid = false;
+                  //console.log("invalid: repeated category " + cat);
+                } else {
+                  categories.add(cat);
+                }
+              }
+            });
+
+            const ids = questions.map((q) => q.id);
+
+            if (valid) {
+              console.log(`got an acceptable list in ${tries} tries`);
+              const newSession = await createFermitSession(title, ids, knex);
+              if (newSession) {
+                return Promise.resolve({
+                  status: 200 as const,
+                  body: newSession,
+                });
+              } else {
+                return Promise.resolve({
+                  status: 500 as const,
+                  body: null,
+                });
+              }
+            } else {
+              /*
+              console.log(
+                `question list ${ids} failed validation, regenerating`,
+              );
+               */
+            }
+          }
+          console.log("ran out of attempts");
+          return Promise.resolve({
+            status: 500 as const,
+            body: null,
+          });
+        },
+      },
+      updateFermitSession: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId }, body }) => {
+          if (sessionId === body.id.toString()) {
+            const newSession = await updateFermitSession(body, knex);
+
+            if (newSession) {
+              if (body.status === "in_progress") {
+                // when transitioning from "not_started" to "in_progress",
+                // mark any team not checked in as "no_show"
+                const promises: Promise<FermitRegistration | undefined>[] = [];
+                const regs = await getFermitRegistrations(
+                  parseInt(sessionId, 10),
+                  knex,
+                );
+                regs.forEach((reg) => {
+                  if (reg.status === "not_checked_in") {
+                    promises.push(
+                      updateFermitRegistration(
+                        reg.sessionId,
+                        reg.teamId,
+                        "no_show",
+                        knex,
+                      ),
+                    );
+                  }
+                });
+                const updatedRegs = await Promise.all(promises);
+
+                // TODO: what should behavior be if a no-show update fails?
+                // does this whole thing need to be somehow transactionized?
+
+                newSession.teams = newSession.teams.map((t) => {
+                  const newReg = updatedRegs.find((r) => r?.teamId === t.id);
+                  if (newReg) {
+                    return {
+                      id: t.id,
+                      status: newReg.status,
+                    };
+                  } else {
+                    return t;
+                  }
+                });
+              }
+            }
+
+            if (newSession) {
+              return Promise.resolve({
+                status: 200 as const,
+                body: newSession,
+              });
+            }
+          }
+          return Promise.resolve({
+            status: 500 as const,
+            body: null,
+          });
+        },
+      },
+      completeFermitSession: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId } }) => {
+          // To close out a session, score each team then update the puzzle_state log
+          const [session, answers] = await Promise.all([
+            getFermitSession(parseInt(sessionId, 10), knex),
+            getFermitAnswers(parseInt(sessionId, 10), knex),
+          ]);
+
+          if (!session) {
+            return Promise.resolve({
+              status: 404,
+              body: null,
+            });
+          }
+          if (session.status !== "in_progress") {
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
+
+          const questions = session.questionIds.map((qid) =>
+            ALL_QUESTIONS.find((q) => q.id === qid),
+          );
+          if (!questions.every((q) => q !== undefined)) {
+            return Promise.resolve({
+              status: 500,
+              body: `Some questions could not be found for session ${sessionId}`,
+            });
+          }
+
+          function scoreHelper(ranges: number[], value: number) {
+            const n = ranges.findIndex((thresh) => value <= thresh);
+            return n === -1 ? 0 : 5 - n;
+          }
+
+          // run the scoring methods on each, which may involve DB lookups
+          const teamScores = await Promise.all(
+            session.teams.map(async ({ id, status }) => {
+              if (status !== "checked_in") {
+                return { id: id, scores: null };
+              }
+              const scores: number[] = await Promise.all(
+                questions.map(async (question, index) => {
+                  if (!question) {
+                    // this shouldn't happen?  just assume they bombed it
+                    return 0;
+                  }
+
+                  const answerObj = answers.find(
+                    (ans) =>
+                      ans.sessionId.toString() === sessionId &&
+                      ans.teamId === id &&
+                      ans.questionIndex === index + 1,
+                  );
+
+                  if (!answerObj) {
+                    return 0;
+                  }
+
+                  const answer = answerObj.answer;
+                  if (answer === null) {
+                    return 0;
+                  }
+
+                  const percentage =
+                    100 * Math.abs(answer / question.answer - 1);
+                  const difference = Math.abs(answer - question.answer);
+
+                  // two questions need to be computed on the fly via the DB:
+                  //  team_puzzle_solves needs to look up that team's total solve count
+                  //  all_puzzle_submissions needs to look up the global submission count
+                  if (question.scoringMethod === "percent") {
+                    return scoreHelper([2, 5, 10, 20, 50], percentage);
+                  } else if (question.scoringMethod === "12345") {
+                    return scoreHelper([1, 2, 3, 4, 5], difference);
+                  } else if (question.scoringMethod === "12468") {
+                    return scoreHelper([1, 2, 4, 6, 8], difference);
+                  } else if (question.scoringMethod.endsWith("double")) {
+                    const base = parseInt(question.scoringMethod.slice(0, -6));
+                    return scoreHelper(
+                      [base, base * 2, base * 4, base * 8, base * 16],
+                      difference,
+                    );
+                  } else if (question.scoringMethod === "raw") {
+                    // "raw" means take the number as a score, but if out of bounds default to 0
+                    // if not an integer floor it
+                    if (answer < 0 || answer > 5) {
+                      return 0;
+                    }
+                    return Math.floor(answer);
+                  } else if (question.scoringMethod === "team_puzzle_solves") {
+                    // count the number of "puzzle_solved" entries in this team's activity log
+                    const count: number =
+                      (
+                        (await knex("activity_log")
+                          .where({
+                            team_id: id,
+                            type: "puzzle_solved",
+                          })
+                          .count("* as ct")) as { ct: number }[]
+                      )[0]?.ct ?? 0;
+                    console.log(
+                      `counted ${count} correct answers for team ${id}`,
+                    );
+
+                    // score based on % error
+                    return scoreHelper(
+                      [2, 5, 10, 20, 50],
+                      100 * Math.abs(answer / count - 1),
+                    );
+                  } else if (question.scoringMethod === "all_submissions") {
+                    const count: number =
+                      (
+                        (await knex("activity_log")
+                          .where("type", "puzzle_guess_submitted")
+                          .count("* as ct")) as { ct: number }[]
+                      )[0]?.ct ?? 0;
+                    console.log(`counted ${count} puzzle submissions in total`);
+                    return scoreHelper(
+                      [2, 5, 10, 20, 50],
+                      100 * Math.abs(answer / count - 1),
+                    );
+                  } else {
+                    console.log(
+                      `got unknown scoring method: ${question.scoringMethod}`,
+                    );
+                    return 0;
+                  }
+                }),
+              );
+
+              return { id: id, scores: scores };
+            }),
+          );
+
+          // (3) for each team, add to the team state for this puzzle
+          for (const obj of teamScores) {
+            const id: number = obj.id;
+            const scores: number[] | null = obj.scores;
+            if (scores === null) {
+              continue;
+            }
+
+            console.log(id);
+            console.log(scores);
+
+            const cachedLog = await puzzleStateLog.getCachedLog(
+              knex,
+              redisClient,
+              id,
+            );
+            console.log(cachedLog);
+
+            const iteration = cachedLog.entries.length;
+            const imageUrls = scores.map((score, index) => {
+              return albumLookup[index]?.[iteration % 3]?.[score];
+            });
+
+            void (await puzzleStateLog.executeMutation(
+              id,
+              redisClient,
+              knex,
+              async (_, mutator) => {
+                await mutator.appendLog({
+                  team_id: id,
+                  slug: "estimation_dot_jpg",
+                  data: {
+                    scores: scores,
+                    sessionId: session.id,
+                    iteration: iteration,
+                    imageUrls: imageUrls,
+                  },
+                });
+              },
+            ));
+          }
+
+          // when all of this is done, set the status to complete
+          const newSession = await updateFermitSession(
+            {
+              ...session,
+              status: "complete",
+            },
+            knex,
+          );
+
+          if (!newSession) {
+            return Promise.resolve({
+              status: 500 as const,
+              body: `Error closing out ${sessionId}, check DB carefully`,
+            });
+          } else {
+            return Promise.resolve({
+              status: 200 as const,
+              body: newSession,
+            });
+          }
+        },
+      },
+      getFermitSessions: {
+        middleware: [adminAuthMiddleware],
+        handler: async () => {
+          return Promise.resolve({
+            status: 200 as const,
+            body: await getFermitSessions(knex),
+          });
+        },
+      },
+      getFermitAnswers: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId } }) => {
+          const answers = await getFermitAnswers(parseInt(sessionId, 10), knex);
+          return Promise.resolve({
+            status: 200 as const,
+            body: answers,
+          });
+        },
+      },
+      saveFermitAnswers: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId }, body }) => {
+          const answers = body;
+          const session = await getFermitSession(parseInt(sessionId, 10), knex);
+          if (!session) {
+            return Promise.resolve({
+              status: 404 as const,
+              body: null,
+            });
+          }
+          if (session.status !== "in_progress") {
+            return Promise.resolve({
+              status: 400 as const,
+              body: "Session status is not 'in_progress'",
+            });
+          }
+
+          // TODO: filter the passed in answers to the sessionId for safety?
+          //console.log(answers);
+          const updateCount = await saveFermitAnswers(answers, knex);
+          //console.log(`${updateCount} vs ${answers.length.toString()}`);
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: updateCount > 0,
+          });
+        },
+      },
+      createFermitRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId, teamId } }) => {
+          const result = await createFermitRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            knex,
+          );
+          if (result) {
+            return Promise.resolve({
+              status: 200 as const,
+              body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+            });
+          } else {
+            // invalid request, session in wrong status
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
+        },
+      },
+      deleteFermitRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId, teamId } }) => {
+          const result = await deleteFermitRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            knex,
+          );
+          if (result) {
+            return Promise.resolve({
+              status: 200 as const,
+              body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+            });
+          } else {
+            // invalid request, session in wrong status
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
+        },
+      },
+      updateFermitRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({
+          params: { sessionId, teamId },
+          body: { status },
+        }) => {
+          await updateFermitRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            status,
+            knex,
+          );
+          return Promise.resolve({
+            status: 200 as const,
+            body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+          });
         },
       },
     },

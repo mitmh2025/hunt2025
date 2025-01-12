@@ -203,8 +203,8 @@ const HUNT: Hunt = {
 
         {
           // This is a brief in-person interaction which is expected to happen
-          // when teams unlock the Missing Diamond super but before they go on
-          // the funaround.
+          // after teams solve the Missing Diamond super but before they go on the
+          // funaround.
           id: "meet_billie",
           title: "Meet Billie",
           unlock_if: [{ slot_unlocked: "mdm05" }],
@@ -594,7 +594,7 @@ const HUNT: Hunt = {
         { id: "tmp21", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "as_the_world_turandot" },
         { id: "tmp22", unlockable_if: { puzzles_solved: 11 }, unlock_cost: 1, slug: "splits_used_as_history" },
         { id: "tmp23", unlockable_if: { puzzles_solved: 12 }, unlock_cost: 1, slug: "in_communicado_tonight" },
-        { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1 }, // esTIMation dot jpg
+        { id: "tmp24", unlockable_if: { puzzles_solved: 13 }, unlock_cost: 1, slug: "estimation_dot_jpg" },
         { id: "tmm01", is_meta: true, is_supermeta: true, unlocked_if: { puzzles_solved: 16 } },
       ],
       gates: [

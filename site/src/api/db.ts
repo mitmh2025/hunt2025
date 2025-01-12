@@ -7,9 +7,18 @@ import {
   type InsertTeamRegistrationLogEntry,
   type PuzzleStateLogEntryRow,
   type InsertPuzzleStateLogEntry,
+  type FermitRegistrationRow,
+  type FermitSessionRow,
+  type InsertFermitSession,
+  type UpdateFermitSession,
 } from "knex/types/tables";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import connections from "../../knexfile";
+import {
+  type FermitSession,
+  type FermitAnswer,
+  type FermitRegistration,
+} from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
   type TeamRegistrationLogEntry,
@@ -281,6 +290,33 @@ declare module "knex/types/tables" {
     "team_id" | "slug" | "data"
   >;
 
+  type FermitSessionRow = {
+    id: number;
+    status: string;
+    title: string;
+    // SQLite returns JSON fields as string.
+    question_ids: string | number[];
+  };
+
+  type InsertFermitSession = Pick<FermitSessionRow, "title" | "question_ids">;
+
+  type UpdateFermitSession = Partial<Omit<FermitSessionRow, "id">>;
+
+  type FermitAnswerRow = {
+    id: number;
+    session_id: number;
+    team_id: number;
+    question_index: number;
+    answer: number | null;
+  };
+
+  type FermitRegistrationRow = {
+    id: number;
+    session_id: number;
+    team_id: number;
+    status: string;
+  };
+
   /* eslint-disable-next-line @typescript-eslint/consistent-type-definitions --
    * This must be defined as an interface as it's extending a declaration from
    * knex
@@ -299,6 +335,13 @@ declare module "knex/types/tables" {
       PuzzleStateLogEntryRow,
       InsertPuzzleStateLogEntry
     >;
+    fermit_sessions: Knex.Knex.CompositeTableType<
+      FermitSessionRow,
+      InsertFermitSession,
+      UpdateFermitSession
+    >;
+    fermit_answers: FermitAnswerRow;
+    fermit_registrations: FermitRegistrationRow;
   }
 }
 
@@ -321,6 +364,15 @@ export function fixData(value: string | object): object {
   // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
   if (typeof value === "string") {
     return JSON.parse(value) as object;
+  }
+  return value;
+}
+
+// Fix a JSON field that has come from the database.
+export function fixArray<T>(value: string | T[]): T[] {
+  // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
+  if (typeof value === "string") {
+    return JSON.parse(value) as T[];
   }
   return value;
 }
@@ -572,4 +624,207 @@ export async function appendPuzzleStateLog(
       const fixedEntry = cleanupPuzzleStateLogEntryFromDB(insertedEntry);
       return fixedEntry;
     });
+}
+
+export async function getFermitSession(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<FermitSession | undefined> {
+  const sessionRows = await knex("fermit_sessions")
+    .where("id", sessionId)
+    .select();
+
+  if (sessionRows.length === 0) {
+    return undefined;
+  } else {
+    const obj = sessionRows[0];
+    if (obj) {
+      return {
+        id: obj.id,
+        status: obj.status,
+        title: obj.title,
+        teams: [],
+        questionIds: fixArray<number>(obj.question_ids),
+      };
+    } else {
+      return undefined;
+    }
+  }
+}
+
+export async function getFermitSessions(
+  knex: Knex.Knex,
+): Promise<FermitSession[]> {
+  const sessionRows = await knex("fermit_sessions").select();
+
+  return sessionRows.map((obj) => ({
+    id: obj.id,
+    status: obj.status,
+    title: obj.title,
+    teams: [],
+    questionIds: fixArray<number>(obj.question_ids),
+  }));
+}
+
+export async function insertFermitSession(
+  session: InsertFermitSession,
+  knex: Knex.Knex,
+): Promise<FermitSession | undefined> {
+  return await knex("fermit_sessions")
+    .insert({
+      title: session.title,
+      question_ids: session.question_ids,
+    })
+    .returning(["id", "title", "status", "question_ids"])
+    .then((objs) => {
+      const insertedSession = objs[0] as FermitSessionRow;
+
+      return {
+        id: insertedSession.id,
+        title: insertedSession.title,
+        status: insertedSession.status,
+        teams: [],
+        questionIds: fixArray<number>(insertedSession.question_ids),
+      };
+    });
+}
+
+export async function updateFermitSession(
+  id: number,
+  session: UpdateFermitSession,
+  knex: Knex.Knex,
+): Promise<FermitSession | undefined> {
+  return await knex("fermit_sessions")
+    .where("id", id)
+    .update(session)
+    .returning(["id", "title", "status", "question_ids"])
+
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedSession = objs[0] as FermitSessionRow;
+      return {
+        id: insertedSession.id,
+        title: insertedSession.title,
+        status: insertedSession.status,
+        teams: [],
+        questionIds: fixArray<number>(insertedSession.question_ids),
+      };
+    });
+}
+
+export async function getFermitAnswers(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<FermitAnswer[]> {
+  return await knex("fermit_answers")
+    .where("session_id", sessionId)
+    .select()
+    .returning(["session_id", "team_id", "question_index", "answer"])
+    .then((objs) =>
+      objs.map((obj) => ({
+        sessionId: obj.session_id,
+        teamId: obj.team_id,
+        questionIndex: obj.question_index,
+        answer: obj.answer,
+      })),
+    );
+}
+
+export async function insertFermitAnswers(
+  answers: FermitAnswer[],
+  knex: Knex.Knex,
+): Promise<number> {
+  return (
+    await knex("fermit_answers")
+      .insert(
+        answers.map((ans) => ({
+          session_id: ans.sessionId,
+          team_id: ans.teamId,
+          question_index: ans.questionIndex,
+          answer: ans.answer,
+        })),
+      )
+      .returning(["id"])
+      .onConflict(["session_id", "team_id", "question_index"])
+      .merge()
+  ).length;
+}
+
+export async function getFermitRegistrations(
+  sessionId: number | undefined,
+  knex: Knex.Knex,
+): Promise<FermitRegistration[]> {
+  let registrationRows;
+  if (sessionId) {
+    registrationRows = await knex("fermit_registrations")
+      .where("session_id", sessionId)
+      .select();
+  } else {
+    registrationRows = await knex("fermit_registrations").select();
+  }
+
+  return registrationRows.map((obj) => ({
+    id: obj.id,
+    sessionId: obj.session_id,
+    teamId: obj.team_id,
+    status: obj.status,
+  }));
+}
+
+export async function insertFermitRegistration(
+  sessionId: number,
+  teamId: number,
+  status: string,
+  knex: Knex.Knex,
+): Promise<FermitRegistration | undefined> {
+  return await knex("fermit_registrations")
+    .insert({ session_id: sessionId, team_id: teamId, status: status })
+    .returning(["id", "session_id", "team_id", "status"])
+    .then((objs) => {
+      if (objs.length === 0) {
+        return undefined;
+      }
+      const insertedEntry = objs[0] as FermitRegistrationRow;
+      return {
+        sessionId: insertedEntry.session_id,
+        teamId: insertedEntry.team_id,
+        status: insertedEntry.status,
+      };
+    });
+}
+
+export async function deleteFermitRegistration(
+  sessionId: number,
+  teamId: number,
+  knex: Knex.Knex,
+): Promise<boolean> {
+  return (
+    (await knex("fermit_registrations")
+      .where({
+        session_id: sessionId,
+        team_id: teamId,
+      })
+      .del()) > 0
+  );
+}
+
+export async function updateFermitRegistration(
+  sessionId: number,
+  teamId: number,
+  status: string,
+  knex: Knex.Knex,
+): Promise<FermitRegistration> {
+  await knex("fermit_registrations")
+    .where({
+      session_id: sessionId,
+      team_id: teamId,
+    })
+    .update("status", status);
+  return {
+    sessionId: sessionId,
+    teamId: teamId,
+    status: status,
+  };
 }
