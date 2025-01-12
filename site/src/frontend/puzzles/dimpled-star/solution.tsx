@@ -57,12 +57,19 @@ const Solution = () => {
       <p>
         Meanwhile, once a team has solved their fourth location submeta, Billie
         summons them to the Gala Bar to discuss their findings. Before they
-        arrive, Billie spots a key witness and chases after her. Solvers follow
-        Billie through the halls of MIT, via Billie’s voiceover on the radio
-        narrating their actions. Since this is noir, however, all colors are
-        replaced with black, white, or grey. Periodically, the runaround stops
-        at a blue paw print (a Blue’s—or Grey’s—Clue), and strongly suggests
-        that the team record the location. The full route is as follows:
+        arrive, Billie spots a key witness outside, and chases after her. Teams
+        follow Billie through the halls of MIT, via Billie’s voiceover over the
+        radio narrating their actions. However, since this universe is noir,
+        everything is black and white. The only colors Billie refers to are
+        black, white, or grey (which is everything not black or white).
+        Periodically, the runaround stops at a blue paw print (a Blue’s—or
+        Grey’s—Clue), which Billie identifies as tracks left by the witness
+        <a href="#footnote">
+          <sup id="antifootnote">1</sup>
+        </a>
+        . Billie strongly suggests that the team should record the location in a
+        handy-dandy notebook or equivalent. The route can be seen in the video
+        here:
       </p>
       <iframe
         width="560"
@@ -74,16 +81,19 @@ const Solution = () => {
         allowFullScreen
       ></iframe>
       <p>
-        Two messages in the voiceover confirm that the MIT map can be overlaid
-        on the MITropolis map, with the intersection of E and 3rd corresponding
-        to Lobby 10 and the intersection of E and 9th corresponding to the East
-        Campus Goodale entrance. A few moments of scaling and rotating the
-        campus map should reveal a nice correspondence. Notably, the
-        intersection next to the boardwalk corresponds to the sailing pavilion,
-        the river and park are preserved, and—quite by accident—the airport
-        corresponds to the Wright Brothers Wind Tunnel. The note which links to
-        this puzzle appears near the intersection of H and 7th, corresponding to
-        the runaround start location in Stata.
+        The runaround path stops at a campus map stand in lobby 7, and a final
+        message refers back to the map that was picked up along the way, as well
+        as a different map (which is the MITropolis map). Two stops along the
+        runaround path are identified—the intersection of E and 3rd corresponds
+        to Lobby 10 and the intersection of E and 9th street corresponds with
+        the East Campus Goodale entrance. This information allows the solver to
+        overlay the two maps. A few moments of scaling and rotating the campus
+        map should reveal a nice correspondence. Notably, the intersection next
+        to the boardwalk corresponds to the sailing pavilion, the river and park
+        are preserved, and—quite by accident—the airport corresponds to the
+        Wright Brothers Wind Tunnel. The note which links to this puzzle appears
+        near the intersection of H and 7th, corresponding to the runaround start
+        location in Stata.
       </p>
       <LinkedImage
         src={image3}
@@ -95,7 +105,7 @@ const Solution = () => {
       </p>
       <ul>
         <li>
-          Building 32, below the Gates tower: <Mono>R</Mono>
+          Building 32: <Mono>R</Mono>
         </li>
         <li>
           Building 36: <Mono>A</Mono>
@@ -107,25 +117,25 @@ const Solution = () => {
           Building 37: <Mono>E</Mono>
         </li>
         <li>
-          The west end of building 13: <Mono>D</Mono>
+          West side of building 13: <Mono>D</Mono>
         </li>
         <li>
-          Building 13 directly behind lobby 10: <Mono>I</Mono>
+          East side of building 13: <Mono>I</Mono>
         </li>
         <li>
-          Building 3 where it meets the infinite: <Mono>S</Mono>
+          Building 3-mid: <Mono>S</Mono>
         </li>
         <li>
-          The southwest corner of building 1: <Mono>E</Mono>
+          Southwest corner of building 1: <Mono>E</Mono>
         </li>
         <li>
           Lobby 10: <Mono>D</Mono>
         </li>
         <li>
-          The elevator of building 54: <Mono>I</Mono>
+          Building 54: <Mono>I</Mono>
         </li>
         <li>
-          The Goodale entrance to building 64: <Mono>R</Mono>
+          The east parallel of East Campus (Building 64): <Mono>R</Mono>
         </li>
       </ul>
       <p>
@@ -138,6 +148,39 @@ const Solution = () => {
         Solvers may not have counted, but there are exactly fifty uses of “grey”
         in the puzzle. We’re (not) sorry.
       </p>
+      <h3>Song acknowledgements</h3>
+      <p>
+        The video walkthrough uses the following songs, all from Kevin MacLeod (
+        <a href="incompetech.com" target="_blank" rel="noreferrer">
+          incompetech.com
+        </a>
+        ), licensed under Creative Commons: By Attribution 4.0 (
+        <a
+          href="https://creativecommons.org/licenses/by/4.0/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          https://creativecommons.org/licenses/by/4.0/
+        </a>
+        ):
+      </p>
+      <ul>
+        <li>I Knew a Guy</li>
+        <li>Bass Walker</li>
+        <li>Hard Boiled</li>
+        <li>Cool Vibes</li>
+        <li>Walking Along</li>
+        <li>Covert Affair</li>
+        <li>On the Cool Side</li>
+        <li>Dances and Dames</li>
+        <li>Backed Vibes Clean</li>
+        <li>Just as Soon</li>
+      </ul>
+      <hr />
+      <a href="#antifootnote">
+        <sup id="footnote">1</sup>
+      </a>{" "}
+      Nowhere in the rule book does it say a dog can’t appraise diamonds.
     </>
   );
 };

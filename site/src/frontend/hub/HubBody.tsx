@@ -235,7 +235,10 @@ const HubBody = ({ state }: { state: HubState }) => {
             streets of MITropolis for a while. I know the ins and outs of the
             city. I know not to trust anybody – including my clients.
           </SuspectCard>
-          <Events events={state.events} />
+          <Events
+            clickable={state.rounds.some((round) => round.slug === "events")}
+            events={state.events}
+          />
           <Pin src={pin_teal} alt="" $x={729} $y={531} />
           <BusinessCard
             src={BusinessCardImg}

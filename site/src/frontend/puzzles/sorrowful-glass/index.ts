@@ -103,11 +103,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: [
-        "AGRIPPA ENCODING",
-        "THE AGRIPPA ENCODING",
-        "THE FIRST DESTRUCTION USES THE AGRIPPA ENCODING",
-      ],
+      guess: ["THE FIRST DESTRUCTION USES THE AGRIPPA ENCODING"],
       reply: "Keep going!",
     },
   ],
