@@ -71,7 +71,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["GET CODON AT DOG ID"],
-      reply: "Keep going",
+      reply: "Keep going!",
     },
   ],
 };
