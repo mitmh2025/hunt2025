@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from "util";
 import { type Knex } from "knex";
 import {
   type ActivityLogMutator,
@@ -127,7 +128,7 @@ export async function seed(knex: Knex): Promise<void> {
         (entry) =>
           entry.team_id === team_id &&
           entry.slug === slug &&
-          JSON.stringify(entry.data) === JSON.stringify(data),
+          isDeepStrictEqual(entry.data, data),
       )
     ) {
       await mutator.appendLog({
