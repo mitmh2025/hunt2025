@@ -325,8 +325,8 @@ const Solution = (): JSX.Element => {
       </p>
 
       <p>
-        To extract the answer, take the first letter of each artist name.
-        The answer is <PuzzleAnswer>TO STATE THE OBVIOUS</PuzzleAnswer>.
+        To extract the answer, take the first letter of each artist name. The
+        answer is <PuzzleAnswer>TO STATE THE OBVIOUS</PuzzleAnswer>.
       </p>
 
       <h3>Authors’ Note</h3>
