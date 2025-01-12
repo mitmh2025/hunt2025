@@ -319,7 +319,7 @@ const NavBar = ({
               <NavLink href="/all_puzzles">All Puzzles</NavLink>
             </li>
             <li>
-              <NavLink href="/story">Story So Far</NavLink>
+              <NavLink href="/timeline">The Timeline</NavLink>
             </li>
             <SubDropdown>
               <NavLink tabIndex={0}>About</NavLink>
