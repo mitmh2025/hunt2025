@@ -78,6 +78,7 @@ import ಕಾಬವದೋೀ್ from "./limited-marble";
 import SeeingTheBigPicture from "./lofty-theory";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
+import WordYore from "./metallic-dragon";
 import ShellCorporationSix from "./mild-octopus";
 import WhyKantWeBeFriendsToo from "./milky-swing";
 import MysteryOs from "./minty-play";
@@ -253,6 +254,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   taste_explosion: TasteExplosion,
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
+  word_yore: WordYore,
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 

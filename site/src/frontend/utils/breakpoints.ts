@@ -8,14 +8,14 @@ type Size = {
   xl?: string;
 };
 
-const sizeMax: Size = {
+export const sizeMax: Size = {
   xs: "479px", // for mobile
   sm: "767px", // for ipad
   md: "1079px", // small laptop windows
   lg: "1199px", // laptop windows
 };
 
-const sizeMin: Size = {
+export const sizeMin: Size = {
   sm: "480px", // for ipad
   md: "768px", // small laptop windows
   lg: "1080px", // laptop windows

@@ -173,6 +173,7 @@ const HUNT: Hunt = {
         { id: "mdg09", internal_description: '📑🍝: Assigned Navy SEAL copypasta' },
         { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' },
         { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' },
+        { id: "mdg12", internal_description: "The Thief: Manually release funaround video" },
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
@@ -243,7 +244,7 @@ const HUNT: Hunt = {
         { id: "sop07", unlockable_if: { puzzles_solved: 1 }, unlock_cost: 1, slug: "recipe_substitutions" },
         { id: "sop08", unlockable_if: { puzzles_solved: 2 }, unlock_cost: 1, slug: "superlatives" },
         { id: "sop09", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "an_exchange_of_vows" },
-        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1 }, // Word Yore
+        { id: "sop10", unlockable_if: { puzzles_solved: 3 }, unlock_cost: 1, slug: "word_yore" },
         { id: "sop11", unlockable_if: { puzzles_solved: 4 }, unlock_cost: 1, slug: "temporal_investigations" },
         { id: "sop12", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_recipe_for_success" },
         { id: "sop13", unlockable_if: { puzzles_solved: 5 }, unlock_cost: 1, slug: "a_math_quiz" },

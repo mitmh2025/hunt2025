@@ -184,11 +184,31 @@ def request.extending_queue(
         [...s.queue(), ...initial_queue(), ...queue()]
     end
 
+    def get_last_queued_metadata() =
+        queue = get_queue()
+        if queue != [] then
+            request.metadata(list.last(queue))
+        else
+            s.last_metadata()
+        end
+    end
+
+    def get_queue_remaining() =
+        queue = get_queue()
+        s.remaining() + list.fold(
+            fun (a, b) -> a + null.default(request.duration(request.filename(b)), {0.}),
+            0.,
+            queue
+        )
+    end
+
     s =
         s.{
             length={list.length(queue()) + list.length(s.queue())},
             set_queue=set_queue,
-            queue=get_queue
+            queue=get_queue,
+            last_queued_metadata=get_last_queued_metadata,
+            queue_remaining=get_queue_remaining,
         }
 
     s.on_wake_up(
@@ -220,4 +240,40 @@ def request.extending_queue(
         show_queue
     )
     s
+end
+
+def nexter(
+    ~pattern=null(),
+    ~random=false,
+    dir,
+) =
+    playlist = ref([])
+    f = fun () -> begin
+        if playlist() == [] then
+            playlist := file.ls(dir, pattern=pattern, absolute=true, sorted=true)
+            if random then
+                playlist := list.shuffle(playlist())
+            end
+        end
+        if playlist() == [] then
+            error.raise(
+                error.invalid,
+                "empty directory passed to nexter",
+            )
+        else
+            pl = playlist()
+            playlist := list.tl(pl)
+            list.hd(pl)
+        end
+    end
+    f.{
+        request={request.create(f())},
+    }
+end
+
+def randomizer(
+    ~pattern=null(),
+    dir,
+) =
+    nexter(pattern=pattern, random=true, dir)
 end

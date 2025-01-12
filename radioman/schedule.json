@@ -1,0 +1,1012 @@
+[
+  {
+    "hour": 1,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 2,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 3,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-a"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 4,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 5,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-a"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 6,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [
+      "event-upcoming-a-hour"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 6.75,
+    "preempt": true,
+    "music_outro": true,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "event-upcoming-a-fifteen"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 7,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 8,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 9,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 10,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 11,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 12,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 12.4,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "last-call-friday"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 12.7,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "shutdown-friday"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 13,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 14,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 15,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 16,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 17,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 18,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [
+      "morning-saturday"
+    ],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 19,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-b"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 20,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-b"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 21,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [
+      "event-upcoming-b-hour"
+    ],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 21.75,
+    "preempt": true,
+    "music_outro": true,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "event-upcoming-b-fifteen"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 22,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 23,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-c"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 24,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 25,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-c"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 26,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [
+      "event-upcoming-c-hour"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 26.75,
+    "preempt": true,
+    "music_outro": true,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "event-upcoming-c-fifteen"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 27,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 28,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-d"
+    ],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 29,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 30,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": false,
+    "messages": [
+      "event-schedule-d"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 31,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [
+      "event-upcoming-d-hour"
+    ],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 31.75,
+    "preempt": true,
+    "music_outro": true,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "event-upcoming-d-fifteen"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 32,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 33,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 34,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 35,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 36,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 36.4,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "last-call-saturday"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 36.7,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "shutdown-saturday"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 37,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 38,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 39,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 40,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 41,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": false
+  },
+  {
+    "hour": 42,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [
+      "morning-sunday"
+    ],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 43,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 44,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 45,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 46,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 47,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 48,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 49,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 50,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 51,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 52,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 53,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 54,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 55,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 56,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 57,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 58,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 59,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 60,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 60.4,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "last-call-sunday"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 60.7,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [
+      "shutdown-sunday"
+    ],
+    "confidential": false,
+    "weather": false,
+    "music_intro": false
+  },
+  {
+    "hour": 61,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 62,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 63,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 64,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 65,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": true,
+    "sid_bumper": false,
+    "sid": false,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 66,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [
+      "morning-monday"
+    ],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 67,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 68,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 69,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": true,
+    "weather": true,
+    "music_intro": true
+  },
+  {
+    "hour": 70,
+    "preempt": false,
+    "music_outro": false,
+    "overnight": false,
+    "sid_bumper": true,
+    "sid": true,
+    "messages": [],
+    "confidential": false,
+    "weather": true,
+    "music_intro": true
+  }
+]
