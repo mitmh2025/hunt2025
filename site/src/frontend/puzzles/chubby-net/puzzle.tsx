@@ -50,7 +50,6 @@ const Clue = styled.div`
   border: 1px solid #000;
   background: #fff;
   width: 100%;
-  height: 1.75em;
   overflow: hidden;
   white-space: nowrap;
 
