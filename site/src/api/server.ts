@@ -2185,7 +2185,7 @@ export async function getRouter({
       },
       issueErratum: {
         middleware: [adminAuthMiddleware],
-        handler: async ({ params: { slug }, body: {}, req }) => {
+        handler: async ({ params: { slug }, req }) => {
           const { result } = await activityLog.executeMutation(
             hunt,
             undefined,

@@ -1,3 +1,5 @@
+import { Button } from "@mui/material";
+import { useDialogs, useNotifications } from "@toolpad/core";
 import { useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -7,8 +9,6 @@ import PuzzleTeamList from "../components/PuzzleTeamList";
 import { SinglePuzzleStats } from "../components/SinglePuzzleStats";
 import { slotName } from "../opsdata/puzzleTitles";
 import { median } from "../util/stats";
-import { Button } from "@mui/material";
-import { useDialogs, useNotifications } from "@toolpad/core";
 
 export type SinglePuzzleStats = {
   unlockCount: number;
@@ -215,7 +215,7 @@ export default function Puzzle() {
   const title = slotName(puzzleSlot, opsData.puzzleMetadata);
 
   function onClickNotifyErratum() {
-    dialogs.confirm(
+    void dialogs.confirm(
       `Are you sure you want to notify teams that an erratum has been issued for ${title}?`,
       {
         title: "Push Erratum Notification",
