@@ -7,6 +7,7 @@ import {
   BackgroundCheckMain,
   BackgroundCheckHeader,
   getBackgroundCheckManifestOverrides,
+  BackgroundCheckBacklink,
 } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import {
@@ -23,6 +24,7 @@ import {
 } from "../../components/IllegalSearchPuzzleLayout";
 import {
   getMissingDiamondHeader,
+  MissingDiamondAnswer,
   MissingDiamondBacklink,
   MissingDiamondMain,
   MissingDiamondTitle,
@@ -117,6 +119,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     title: MissingDiamondTitle,
     backlink: MissingDiamondBacklink,
     titleWrapper: MissingDiamondTitleWrapper,
+    answer: MissingDiamondAnswer,
     entrypoint: "the_missing_diamond_puzzle",
   },
   stakeout: {
@@ -158,6 +161,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     main: BackgroundCheckMain,
     header: BackgroundCheckHeader,
     wrapper: BackgroundCheckWrapper,
+    backlink: BackgroundCheckBacklink,
     fonts: BackgroundCheckFonts,
   },
   murder_in_mitropolis: {
@@ -790,6 +794,8 @@ export function solutionHandler(req: Request<PuzzleParams>) {
 
   const SolutionWrapperComponent = manifest.wrapper;
   const SolutionHeaderComponent = manifest.header;
+  const SolutionTitleWrapperComponent = manifest.titleWrapper;
+  const SolutionBacklinkComponent = manifest.backlink;
   const SolutionTitleComponent = manifest.title;
   const SolutionMainComponent = manifest.main;
   const SolutionFooterComponent = manifest.footer;
@@ -814,6 +820,22 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     ),
   );
 
+  // Create a backlink, if we need one (Background Check metas construct theirs
+  // separately.)
+  let backlinkFrag = <></>;
+  const isBackgroundCheckMeta = Object.entries(
+    req.teamState.state.rounds.background_check?.slots ?? {},
+  ).find(([_slot, slotObj]: [string, { slug: string; is_meta?: boolean }]) => {
+    return slotObj.slug === slug && slotObj.is_meta;
+  });
+  if (!isBackgroundCheckMeta) {
+    backlinkFrag = (
+      <SolutionBacklinkComponent href={`/puzzles/${slug}`}>
+        ← Back to puzzle
+      </SolutionBacklinkComponent>
+    );
+  }
+
   const answer = puzzle.answer;
   const inlineScript = `window.hints = ${JSON.stringify(puzzle.hints)}; window.cannedResponses = ${JSON.stringify(puzzle.canned_responses)};`;
   const node = (
@@ -821,7 +843,10 @@ export function solutionHandler(req: Request<PuzzleParams>) {
       {SolutionFontsComponent ? <SolutionFontsComponent /> : undefined}
       <SolutionWrapperComponent>
         <SolutionHeaderComponent>
-          <SolutionTitleComponent>Solution to {title}</SolutionTitleComponent>
+          <SolutionTitleWrapperComponent>
+            {backlinkFrag}
+            <SolutionTitleComponent>Solution to {title}</SolutionTitleComponent>
+          </SolutionTitleWrapperComponent>
           <SolutionAnswerComponent>
             Answer:{" "}
             <SolutionSpoilerComponent>{answer}</SolutionSpoilerComponent>

@@ -13,6 +13,7 @@ import {
   PuzzleTitleWrapper,
   PuzzleWrapper,
 } from "./PuzzleLayout";
+import { SolutionAnswer } from "./SolutionLayout";
 import BgLeft from "./missingDiamondAssets/bg-left.png";
 import BgRight from "./missingDiamondAssets/bg-right.png";
 import HeaderBg from "./missingDiamondAssets/roads-header.png";
@@ -154,6 +155,10 @@ export const MissingDiamondMain = styled(PuzzleMain)`
     3.8% auto,
     cover;
   background-repeat: repeat-y;
+`;
+
+export const MissingDiamondAnswer = styled(SolutionAnswer)`
+  margin-top: -1.5rem;
 `;
 
 export const getMissingDiamondHeader = ({
