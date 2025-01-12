@@ -22,7 +22,10 @@ export class TeamStateIntermediate extends LogicTeamState {
 
   static redisKey = "team_state_intermediate";
 
-  constructor(hunt: Hunt, initial?: Hydratable<TeamStateIntermediate>) {
+  constructor(
+    hunt: Hunt,
+    initial?: Partial<Hydratable<TeamStateIntermediate>>,
+  ) {
     super(initial);
     this.epoch = initial?.epoch ?? -1;
     this.puzzles_unlocked_at = new Map(initial?.puzzles_unlocked_at ?? []);
@@ -90,7 +93,7 @@ export class TeamStateIntermediate extends LogicTeamState {
     return this;
   }
 
-  dehydrate(): Hydratable<TeamStateIntermediate> {
+  dehydrate(): Partial<Hydratable<TeamStateIntermediate>> {
     return {
       epoch: this.epoch,
       puzzles_unlocked_at: Array.from(this.puzzles_unlocked_at),
@@ -113,7 +116,7 @@ export class TeamStateIntermediate extends LogicTeamState {
 
 // Converts from the serialized activity log entry (which e.g. has a string for timestamp)
 // into the in-memory representation (which e.g. has a Date object).
-export function hydrateLogEntry<D extends { timestamp: string }>(
+export function hydrateLogEntry<D extends { timestamp: string | Date }>(
   ie: D,
 ): D & { timestamp: Date } {
   const ts = new Date(ie.timestamp);
@@ -227,7 +230,7 @@ export class TeamInfoIntermediate {
     this.deactivated = initial?.deactivated ?? false;
   }
 
-  dehydrate(): Hydratable<TeamInfoIntermediate> {
+  dehydrate(): Partial<Hydratable<TeamInfoIntermediate>> {
     return {
       epoch: this.epoch,
       registration: this.registration,
@@ -350,10 +353,13 @@ export class PuzzleStateIntermediate {
   epoch: number;
   guesses: (InternalActivityLogEntry & { type: "puzzle_guess_submitted" })[];
 
-  constructor(slug: string, initial?: Hydratable<PuzzleStateIntermediate>) {
+  constructor(
+    slug: string,
+    initial?: Partial<Hydratable<PuzzleStateIntermediate>>,
+  ) {
     this._slug = slug;
     this.epoch = initial?.epoch ?? 0;
-    this.guesses = initial?.guesses ?? [];
+    this.guesses = Array.from(initial?.guesses ?? []).map(hydrateLogEntry);
   }
 
   reduce(entry: InternalActivityLogEntry) {
@@ -378,7 +384,7 @@ export class PuzzleStateIntermediate {
     return `puzzle_state_intermediate/${slug}`;
   }
 
-  dehydrate(): Hydratable<PuzzleStateIntermediate> {
+  dehydrate(): Partial<Hydratable<PuzzleStateIntermediate>> {
     return {
       epoch: this.epoch,
       guesses: this.guesses,

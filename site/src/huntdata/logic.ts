@@ -132,7 +132,7 @@ export class LogicTeamState {
   available_currency: number;
   available_strong_currency: number;
 
-  constructor(initial?: Hydratable<LogicTeamState>) {
+  constructor(initial?: Partial<Hydratable<LogicTeamState>>) {
     this.rounds_unlocked = new Set(initial?.rounds_unlocked ?? []);
     this.puzzles_unlockable = new Set(initial?.puzzles_unlockable ?? []);
     this.puzzles_unlocked = new Set(initial?.puzzles_unlocked ?? []);
