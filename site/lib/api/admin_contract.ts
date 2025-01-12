@@ -183,6 +183,16 @@ export const adminContract = c.router({
       200: InternalActivityLogSchema,
     },
   },
+  resetPuzzleRateLimit: {
+    method: "POST",
+    path: "/admin/puzzles/:slug/resetRateLimit",
+    body: z.object({
+      teamIds: z.union([z.array(z.number()), z.literal("all")]),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
   deactivateTeam: {
     method: "POST",
     path: "/teams/:teamId/deactivate",

@@ -2784,6 +2784,53 @@ export async function getRouter({
           });
         },
       },
+
+      resetPuzzleRateLimit: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { slug }, body: { teamIds }, req }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              if (teamIds === "all") {
+                return [
+                  await mutator.appendLog({
+                    type: "rate_limits_reset",
+                    slug: slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                ];
+              }
+
+              const result: (InternalActivityLogEntry | undefined)[] = [];
+              for (const team_id of teamIds) {
+                result.push(
+                  await mutator.appendLog({
+                    team_id,
+                    type: "rate_limits_reset",
+                    slug: slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                );
+              }
+
+              return result;
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
     },
     frontend: {
       mintToken: {
