@@ -142,7 +142,7 @@ export function aboutHandler(req: Request) {
           button, which is primarily tested against Google Sheets, but we cannot
           always guarantee perfect fidelity to the puzzle page. The puzzle as
           displayed on this website is canonical, and as always, “the
-          spreadsheet is not the puzzle”.
+          spreadsheet is not the puzzle” (unless it is the puzzle).
         </p>
         <h2>Getting In Touch</h2>
         <p>
