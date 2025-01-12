@@ -48,7 +48,7 @@ const ALL_GEOGUESSR_LOCATIONS = [
   "corner of 3-1 near building 1",
   "Great Sail, between 50 and 14N",
   "26-100",
-  "Strobe Alley (8-4)",
+  "10-4 near Strobe Alley",
   "outside 26-100",
   "Baker House",
   "MIT Medical",
