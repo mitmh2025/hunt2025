@@ -3,6 +3,14 @@ import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
 
+const ClueGroup = styled.div`
+  margin: 1em 0;
+`;
+
+const Bold = styled.span`
+  font-weight: bold;
+`;
+
 const DATA: ReactNode[][] = [
   [
     "Crowd-sourced interview on Reddit, for short",
@@ -99,10 +107,10 @@ const DATA: ReactNode[][] = [
     "Clickwrap button title",
     "Pictures-in-picture",
     "Birthplace of Jules Verne",
-    <strong key="zero">Zero</strong>,
+    <Bold key="zero">Zero</Bold>,
     "Insecure remote login protocol",
     "Tundra or Highlander",
-    <strong key="one">One</strong>,
+    <Bold key="one">One</Bold>,
     "Remove a cork from",
     "Functional",
   ],
@@ -124,10 +132,6 @@ const DATA: ReactNode[][] = [
   ],
 ];
 
-const ClueGroup = styled.div`
-  margin: 1em 0;
-`;
-
 const Puzzle = (): JSX.Element => {
   return (
     <>
@@ -147,9 +151,16 @@ const Puzzle = (): JSX.Element => {
       {DATA.map((clues, i) => (
         <ClueGroup key={i}>
           {clues.map((clue, j) => (
-            <div key={j}>{clue}</div>
+            <React.Fragment key={j}>
+              {clue}
+              <br />
+            </React.Fragment>
           ))}
-          {i < DATA.length - 1 && <hr />}
+          {i < DATA.length - 1 && (
+            <>
+              <hr />
+            </>
+          )}
         </ClueGroup>
       ))}
     </>
