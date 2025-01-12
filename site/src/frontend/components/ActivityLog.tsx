@@ -316,7 +316,11 @@ const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
     ) {
       // Scroll top bottom automatically if we're near the bottom, sorting ascending,
       // and new logs are added.
-      window.scrollTo(0, document.body.scrollHeight);
+      window.scrollTo({
+        left: 0,
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
     }
     lastLogLength.current = log.length;
   }, [log, sortDesc]);
