@@ -81,7 +81,7 @@ export default async function ({
       throw new Error("$EMAIL_FROM not defined in production");
     }
 
-    const knex = await dbConnect(dbEnvironment);
+    const knex = await dbConnect(dbEnvironment, redisClient);
 
     if (redisClient !== undefined) {
       // Make sure Redis is up to date

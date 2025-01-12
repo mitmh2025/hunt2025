@@ -18,6 +18,8 @@ import {
 } from "../../lib/api/frontend_contract";
 import { jsonPathValue } from "../../lib/migration_helper";
 import { type CannedResponseLink } from "../frontend/puzzles/types";
+import { activityLog, teamRegistrationLog, puzzleStateLog } from "./data";
+import { type RedisClient } from "./redis";
 
 export {
   type ActivityLogEntryRow,
@@ -74,7 +76,10 @@ class WebpackSeedSource {
   }
 }
 
-export async function connect(environment: string) {
+export async function connect(
+  environment: string,
+  redisClient: RedisClient | undefined,
+) {
   const config = connections[environment];
   if (!config) {
     throw new Error("unrecognized environment");
@@ -103,6 +108,18 @@ export async function connect(environment: string) {
     await knex.seed.run({
       seedSource: new WebpackSeedSource(seedContext),
     });
+
+    // Extend all the global and team activity logs
+    if (redisClient) {
+      await activityLog.refreshRedisLog(redisClient, knex);
+      await teamRegistrationLog.refreshRedisLog(redisClient, knex);
+      await puzzleStateLog.refreshRedisLog(redisClient, knex);
+
+      const allTeamIds = await getTeamIds(knex);
+      for (const teamId of allTeamIds) {
+        await activityLog.getCachedLog(knex, redisClient, teamId);
+      }
+    }
   }
   return knex;
 }
@@ -128,8 +145,8 @@ export async function retryOnAbort<T>(
         console.error("transaction failed:", err);
       },
       retries: 5,
-      minTimeout: 0,
-      factor: 1, // No need for exponential backoff
+      minTimeout: 50,
+      factor: 2, // No need for exponential backoff
     },
   );
 }
@@ -387,7 +404,7 @@ export function cleanupPuzzleStateLogEntryFromDB(
 }
 
 export async function getTeamIds(
-  trx: Knex.Knex.Transaction,
+  trx: Knex.Knex.Transaction | Knex.Knex,
 ): Promise<number[]> {
   return trx("teams").pluck("id");
 }
