@@ -1,9 +1,9 @@
-import React, { type ReactNode } from "react";
+import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
 
-const DATA: ReactNode[][] = [
+const DATA: string[][] = [
   [
     "Crowd-sourced interview on Reddit, for short",
     "No particular one",
