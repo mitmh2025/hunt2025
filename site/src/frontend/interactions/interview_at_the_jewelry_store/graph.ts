@@ -142,7 +142,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_start,
         opus: audio_opus_start,
       },
-      timeout_msec: 8000,
+      timeout_msec: 15216,
       next: "1",
     },
     {
@@ -153,7 +153,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_1,
         opus: audio_opus_1,
       },
-      timeout_msec: 5000 + 15000, // 5 second line, 15 seconds voting time?
+      timeout_msec: 5112 + 5000, // 5 second line, 5 seconds voting time?
       choices: [
         {
           text: "Not a jewel this time, but a dame.  But she’s a real gem.",
@@ -181,7 +181,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2a,
         opus: audio_opus_2a,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3600,
       next: "2ab-p1",
     },
     {
@@ -192,7 +192,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2b,
         opus: audio_opus_2b,
       },
-      timeout_msec: 5000,
+      timeout_msec: 5784,
       next: "2ab-p1",
     },
     {
@@ -203,7 +203,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2c,
         opus: audio_opus_2c,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3624,
       next: "2cd-p1",
     },
     {
@@ -214,7 +214,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2d,
         opus: audio_opus_2d,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3264,
       next: "2cd-p1",
     },
     {
@@ -225,7 +225,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2ab_p1,
         opus: audio_opus_2ab_p1,
       },
-      timeout_msec: 5000 + 15000,
+      timeout_msec: 4224 + 10000,
       choices: [
         {
           text: "Yeah, I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
@@ -249,7 +249,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2cd_p1,
         opus: audio_opus_2cd_p1,
       },
-      timeout_msec: 5000 + 15000,
+      timeout_msec: 4848 + 10000,
       choices: [
         {
           text: "I’m tracking down a woman who came in here.  Tall, slender, with dark hair.  Looks like she draws a lot of water.  You couldn’t miss her.",
@@ -274,7 +274,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3a,
         opus: audio_opus_3a,
       },
-      timeout_msec: 10000,
+      timeout_msec: 7824,
       next: "5",
     },
     {
@@ -285,7 +285,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3b,
         opus: audio_opus_3b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 8496,
       next: "5",
     },
     {
@@ -296,7 +296,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3c,
         opus: audio_opus_3c,
       },
-      timeout_msec: 10000,
+      timeout_msec: 8688,
       next: "5",
     },
     {
@@ -307,7 +307,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4a,
         opus: audio_opus_4a,
       },
-      timeout_msec: 10000,
+      timeout_msec: 8064,
       next: "5",
     },
     {
@@ -318,7 +318,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4b,
         opus: audio_opus_4b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 7848,
       next: "5",
     },
     {
@@ -329,7 +329,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4c,
         opus: audio_opus_4c,
       },
-      timeout_msec: 10000,
+      timeout_msec: 8136,
       next: "5",
     },
 
@@ -342,7 +342,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_5,
         opus: audio_opus_5,
       },
-      timeout_msec: 5000 + 15000,
+      timeout_msec: 6888 + 7000,
       choices: remainingOptions,
     },
 
@@ -354,7 +354,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6a,
         opus: audio_opus_6a,
       },
-      timeout_msec: 5000,
+      timeout_msec: 2856,
       next: "6a-p1",
     },
     {
@@ -365,7 +365,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6a_p1,
         opus: audio_opus_6a_p1,
       },
-      timeout_msec: 5000,
+      timeout_msec: 6552,
       choices: remainingOptions,
     },
     {
@@ -376,7 +376,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6b,
         opus: audio_opus_6b,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3168,
       next: "6b-p1",
     },
     {
@@ -387,7 +387,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6b_p1,
         opus: audio_opus_6b_p1,
       },
-      timeout_msec: 5000,
+      timeout_msec: 5088,
       choices: remainingOptions,
     },
     {
@@ -398,7 +398,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6c,
         opus: audio_opus_6c,
       },
-      timeout_msec: 5000,
+      timeout_msec: 4464,
       next: "6cd-p1",
     },
     {
@@ -409,7 +409,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6d,
         opus: audio_opus_6d,
       },
-      timeout_msec: 5000,
+      timeout_msec: 5328,
       next: "6cd-p1",
     },
     // All paths have now converged on 6cd-p1
@@ -421,7 +421,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6cd_p1,
         opus: audio_opus_6cd_p1,
       },
-      timeout_msec: 20000,
+      timeout_msec: 30288,
       next: "7",
     },
     {
@@ -433,7 +433,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7,
         opus: audio_opus_7,
       },
-      timeout_msec: 20000 + 15000,
+      timeout_msec: 13944 + 5000,
       choices: [
         {
           text: "*Whistles* Nice ring.  Her finace’s a lucky man.  Did she mention his name?  Or how about her own?",
@@ -457,7 +457,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7a,
         opus: audio_opus_7a,
       },
-      timeout_msec: 8000,
+      timeout_msec: 6864,
       next: "8",
     },
     {
@@ -468,7 +468,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7b,
         opus: audio_opus_7b,
       },
-      timeout_msec: 8000,
+      timeout_msec: 4680,
       next: "8",
     },
     {
@@ -479,7 +479,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7c,
         opus: audio_opus_7c,
       },
-      timeout_msec: 8000,
+      timeout_msec: 5160,
       next: "8",
     },
     {
@@ -490,7 +490,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_8,
         opus: audio_opus_8,
       },
-      timeout_msec: 20000,
+      timeout_msec: 22728,
       next: "9",
     },
     // The script has no line 10.
@@ -503,7 +503,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_9,
         opus: audio_opus_9,
       },
-      timeout_msec: 10000 + 15000,
+      timeout_msec: 9456 + 5000,
       choices: [
         {
           text: "Thanks – you’ve been a gem!  I knew I could count on you.",
@@ -527,7 +527,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_10a,
         opus: audio_opus_10a,
       },
-      timeout_msec: 8000,
+      timeout_msec: 3696,
       next: "11",
     },
     {
@@ -538,7 +538,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_10b,
         opus: audio_opus_10b,
       },
-      timeout_msec: 8000,
+      timeout_msec: 3696,
       next: "11",
     },
     {
@@ -549,7 +549,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_10c,
         opus: audio_opus_10c,
       },
-      timeout_msec: 8000,
+      timeout_msec: 5808,
       next: "11",
     },
 
@@ -561,7 +561,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11,
         opus: audio_opus_11,
       },
-      timeout_msec: 20000,
+      timeout_msec: 13848,
       next: "12",
     },
     {
@@ -572,7 +572,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
         mp3: audio_mp3_12,
         opus: audio_opus_12,
       },
-      timeout_msec: 20000,
+      timeout_msec: 16272,
       finalState(_state: JewelryStoreState) {
         return "";
       },

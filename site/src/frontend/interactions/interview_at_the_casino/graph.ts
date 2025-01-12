@@ -290,7 +290,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_start,
         opus: audio_opus_start,
       },
-      timeout_msec: 8000,
+      timeout_msec: 9048,
       next: "1",
     },
     {
@@ -301,7 +301,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_1,
         opus: audio_opus_1,
       },
-      timeout_msec: 4000,
+      timeout_msec: 8328,
       next: "1-p1",
     },
     {
@@ -312,7 +312,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_1_p1,
         opus: audio_opus_1_p1,
       },
-      timeout_msec: 5000,
+      timeout_msec: 5784 + 5000,
       choices: [
         {
           text: `Bluff: ${line_2a}`,
@@ -334,7 +334,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2a,
         opus: audio_opus_2a,
       },
-      timeout_msec: 8000,
+      timeout_msec: 8245,
       next: "2a-p1",
     },
     {
@@ -345,7 +345,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2a_p1,
         opus: audio_opus_2a_p1,
       },
-      timeout_msec: 8000,
+      timeout_msec: 7104,
       next: "2a-p2",
     },
     {
@@ -356,7 +356,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2a_p2,
         opus: audio_opus_2a_p2,
       },
-      timeout_msec: 8000,
+      timeout_msec: 3336,
       next: "2a-p3",
     },
     {
@@ -367,7 +367,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2a_p3,
         opus: audio_opus_2a_p3,
       },
-      timeout_msec: 3500,
+      timeout_msec: 4920 + 5000,
       choices: [
         {
           text: `Double Down: ${line_3a}`,
@@ -390,7 +390,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3a,
         opus: audio_opus_3a,
       },
-      timeout_msec: 7000,
+      timeout_msec: 6768,
       next: "3a-p1",
     },
     {
@@ -401,7 +401,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3a_p1,
         opus: audio_opus_3a_p1,
       },
-      timeout_msec: 15000,
+      timeout_msec: 14688 + 3000,
       choices: choices_4,
     },
 
@@ -413,7 +413,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3b,
         opus: audio_opus_3b,
       },
-      timeout_msec: 3000,
+      timeout_msec: 4344,
       next: "3b-p1",
     },
     {
@@ -424,7 +424,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3b_p1,
         opus: audio_opus_3b_p1,
       },
-      timeout_msec: 10000,
+      timeout_msec: 9864,
       next: "3b-p2",
     },
     {
@@ -436,7 +436,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_3b_p2,
         opus: audio_opus_3b_p2,
       },
-      timeout_msec: 10000,
+      timeout_msec: 6840 + 3000,
       choices: choices_4,
     },
 
@@ -448,7 +448,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4a,
         opus: audio_opus_4a,
       },
-      timeout_msec: 8000,
+      timeout_msec: 6648,
       next: "4a-p1",
     },
     {
@@ -459,7 +459,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4a_p1,
         opus: audio_opus_4a_p1,
       },
-      timeout_msec: 3000,
+      timeout_msec: 2736,
       next: "4a-p2",
     },
     {
@@ -470,7 +470,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4a_p2,
         opus: audio_opus_4a_p2,
       },
-      timeout_msec: 7000,
+      timeout_msec: 7128 + 3000,
       choices: choices_5,
     },
 
@@ -482,7 +482,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4b,
         opus: audio_opus_4b,
       },
-      timeout_msec: 8000,
+      timeout_msec: 3744,
       next: "4b-p1",
     },
     {
@@ -493,7 +493,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4b_p1,
         opus: audio_opus_4b_p1,
       },
-      timeout_msec: 3000,
+      timeout_msec: 2928,
       next: "4b-p2",
     },
     {
@@ -504,7 +504,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_4b_p2,
         opus: audio_opus_4b_p2,
       },
-      timeout_msec: 3000,
+      timeout_msec: 5352 + 3000,
       choices: choices_5,
     },
 
@@ -516,7 +516,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_5a,
         opus: audio_opus_5a,
       },
-      timeout_msec: 10000,
+      timeout_msec: 5616,
       next: "5a-p1",
     },
     {
@@ -527,7 +527,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_5a_p1,
         opus: audio_opus_5a_p1,
       },
-      timeout_msec: 5000,
+      timeout_msec: 4056,
       next: "5a-p2",
     },
     {
@@ -538,7 +538,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_5a_p2,
         opus: audio_opus_5a_p2,
       },
-      timeout_msec: 6000,
+      timeout_msec: 6504 + 3000,
       choices: choices_6,
     },
 
@@ -550,7 +550,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_5b,
         opus: audio_opus_5b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 7320,
       next: "5b-p1",
     },
     {
@@ -561,7 +561,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_5b_p1,
         opus: audio_opus_5b_p1,
       },
-      timeout_msec: 13000,
+      timeout_msec: 6336,
       next: "5b-p2",
     },
     {
@@ -572,7 +572,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_5b_p2,
         opus: audio_opus_5b_p2,
       },
-      timeout_msec: 13000,
+      timeout_msec: 9816 + 3000,
       choices: choices_6,
     },
 
@@ -584,7 +584,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6a,
         opus: audio_opus_6a,
       },
-      timeout_msec: 10000,
+      timeout_msec: 4872,
       next: "6a-p1",
     },
     {
@@ -595,7 +595,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6a_p1,
         opus: audio_opus_6a_p1,
       },
-      timeout_msec: 15000,
+      timeout_msec: 15600,
       next: "11",
     },
 
@@ -607,7 +607,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6b,
         opus: audio_opus_6b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 3576,
       next: "6b-p1",
     },
     {
@@ -618,7 +618,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_6b_p1,
         opus: audio_opus_6b_p1,
       },
-      timeout_msec: 15000,
+      timeout_msec: 12816,
       next: "11",
     },
 
@@ -630,7 +630,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2b,
         opus: audio_opus_2b,
       },
-      timeout_msec: 15000,
+      timeout_msec: 5952,
       next: "2b-p1",
     },
     {
@@ -641,7 +641,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_2b_p1,
         opus: audio_opus_2b_p1,
       },
-      timeout_msec: 6000,
+      timeout_msec: 7896 + 3000,
       choices: [
         {
           text: `Double Down: ${line_7a}`,
@@ -664,7 +664,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7a,
         opus: audio_opus_7a,
       },
-      timeout_msec: 7000,
+      timeout_msec: 4440,
       next: "7a-p1",
     },
     {
@@ -675,7 +675,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7a_p1,
         opus: audio_opus_7a_p1,
       },
-      timeout_msec: 3000,
+      timeout_msec: 3168,
       next: "7a-p2",
     },
     {
@@ -686,7 +686,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7a_p2,
         opus: audio_opus_7a_p2,
       },
-      timeout_msec: 10000,
+      timeout_msec: 7824 + 3000,
       choices: choices_8,
     },
 
@@ -698,7 +698,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7b,
         opus: audio_opus_7b,
       },
-      timeout_msec: 6000,
+      timeout_msec: 3720,
       next: "7b-p1",
     },
     {
@@ -709,7 +709,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7b_p1,
         opus: audio_opus_7b_p1,
       },
-      timeout_msec: 3000,
+      timeout_msec: 3048,
       next: "7b-p2",
     },
     {
@@ -720,7 +720,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_7b_p2,
         opus: audio_opus_7b_p2,
       },
-      timeout_msec: 4500,
+      timeout_msec: 6240 + 3000,
       choices: choices_8,
     },
 
@@ -732,7 +732,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_8a,
         opus: audio_opus_8a,
       },
-      timeout_msec: 10000,
+      timeout_msec: 7920,
       next: "8a-p1",
     },
     {
@@ -743,7 +743,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_8a_p1,
         opus: audio_opus_8a_p1,
       },
-      timeout_msec: 10000,
+      timeout_msec: 10512 + 3000,
       choices: choices_9,
     },
 
@@ -755,7 +755,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_8b,
         opus: audio_opus_8b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 6240,
       next: "8b-p1",
     },
     {
@@ -766,7 +766,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_8b_p1,
         opus: audio_opus_8b_p1,
       },
-      timeout_msec: 12000,
+      timeout_msec: 13896 + 3000,
       choices: choices_9,
     },
 
@@ -778,7 +778,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_9a,
         opus: audio_opus_9a,
       },
-      timeout_msec: 10000,
+      timeout_msec: 8784,
       next: "9a-p1",
     },
     {
@@ -789,7 +789,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_9a_p1,
         opus: audio_opus_9a_p1,
       },
-      timeout_msec: 8000,
+      timeout_msec: 7344,
       next: "9a-p2",
     },
     {
@@ -800,7 +800,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_9a_p2,
         opus: audio_opus_9a_p2,
       },
-      timeout_msec: 10000,
+      timeout_msec: 3912 + 3000,
       choices: choices_10,
     },
 
@@ -812,7 +812,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_9b,
         opus: audio_opus_9b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 5040,
       next: "9b-p1",
     },
     {
@@ -823,7 +823,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_9b_p1,
         opus: audio_opus_9b_p1,
       },
-      timeout_msec: 3500,
+      timeout_msec: 3408,
       next: "9b-p2",
     },
     {
@@ -834,7 +834,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_9b_p2,
         opus: audio_opus_9b_p2,
       },
-      timeout_msec: 6000,
+      timeout_msec: 6840 + 3000,
       choices: choices_10,
     },
 
@@ -846,7 +846,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_10a,
         opus: audio_opus_10a,
       },
-      timeout_msec: 10000,
+      timeout_msec: 4872,
       next: "10a-p1",
     },
     {
@@ -857,7 +857,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_10a_p1,
         opus: audio_opus_10a_p1,
       },
-      timeout_msec: 10000,
+      timeout_msec: 11400,
       next: "11",
     },
 
@@ -869,7 +869,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_10b,
         opus: audio_opus_10b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 3288,
       next: "10b-p1",
     },
     {
@@ -880,7 +880,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_10b_p1,
         opus: audio_opus_10b_p1,
       },
-      timeout_msec: 10000,
+      timeout_msec: 6744,
       next: "11",
     },
 
@@ -893,7 +893,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11,
         opus: audio_opus_11,
       },
-      timeout_msec: 3000,
+      timeout_msec: 2640,
       next(state: CasinoState) {
         if (state.points === 5) {
           return "11-perfect";
@@ -914,7 +914,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_weak,
         opus: audio_opus_11_weak,
       },
-      timeout_msec: 2500,
+      timeout_msec: 2400,
       next: "11-weak-p1",
     },
     {
@@ -925,7 +925,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_weak_p1,
         opus: audio_opus_11_weak_p1,
       },
-      timeout_msec: 6000,
+      timeout_msec: 3768,
       next: "11-weak-p2",
     },
     {
@@ -936,7 +936,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_weak_p2,
         opus: audio_opus_11_weak_p2,
       },
-      timeout_msec: 13000,
+      timeout_msec: 14400,
       next: "11-weak-p3",
     },
     {
@@ -947,7 +947,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_weak_p3,
         opus: audio_opus_11_weak_p3,
       },
-      timeout_msec: 8000,
+      timeout_msec: 6576,
       next: "11-weak-p4",
     },
     {
@@ -958,7 +958,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_weak_p4,
         opus: audio_opus_11_weak_p4,
       },
-      timeout_msec: 8000,
+      timeout_msec: 4128,
       next: "final",
     },
 
@@ -971,7 +971,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_strong,
         opus: audio_opus_11_strong,
       },
-      timeout_msec: 15000,
+      timeout_msec: 15984,
       next: "11-strong-p1",
     },
     {
@@ -982,7 +982,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_strong_p1,
         opus: audio_opus_11_strong_p1,
       },
-      timeout_msec: 12000,
+      timeout_msec: 9384,
       next: "11-strong-p2",
     },
     {
@@ -993,7 +993,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_strong_p2,
         opus: audio_opus_11_strong_p2,
       },
-      timeout_msec: 5000,
+      timeout_msec: 4392,
       next: "final",
     },
 
@@ -1006,7 +1006,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_perfect,
         opus: audio_opus_11_perfect,
       },
-      timeout_msec: 24000,
+      timeout_msec: 27240,
       next: "11-perfect-p1",
     },
     {
@@ -1017,7 +1017,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_perfect_p1,
         opus: audio_opus_11_perfect_p1,
       },
-      timeout_msec: 14000,
+      timeout_msec: 13704,
       next: "11-perfect-p2",
     },
     {
@@ -1028,7 +1028,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_perfect_p2,
         opus: audio_opus_11_perfect_p2,
       },
-      timeout_msec: 2000,
+      timeout_msec: 1104,
       next: "11-perfect-p3",
     },
     {
@@ -1039,7 +1039,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_11_perfect_p3,
         opus: audio_opus_11_perfect_p3,
       },
-      timeout_msec: 2000,
+      timeout_msec: 4392,
       next: "final",
     },
 
@@ -1052,7 +1052,7 @@ const CasinoInteractionGraph: InteractionGraph<
         mp3: audio_mp3_final,
         opus: audio_opus_final,
       },
-      timeout_msec: 15000,
+      timeout_msec: 12360,
       finalState(state: CasinoState) {
         if (state.points === 5) {
           return "ace-of-spades";

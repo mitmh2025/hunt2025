@@ -292,7 +292,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_start,
         opus: opus_audio_start,
       },
-      timeout_msec: 8000,
+      timeout_msec: 6360 + 5000,
       choices: [
         {
           text: "Can I talk to you for a sec?",
@@ -326,7 +326,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_1a,
         opus: opus_audio_1a,
       },
-      timeout_msec: 2000,
+      timeout_msec: 2256,
       next: "2",
     },
     {
@@ -337,7 +337,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_1b,
         opus: opus_audio_1b,
       },
-      timeout_msec: 2000,
+      timeout_msec: 1968,
       next: "2",
     },
     {
@@ -348,7 +348,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_1c,
         opus: opus_audio_1c,
       },
-      timeout_msec: 2000,
+      timeout_msec: 2184,
       next: "2",
     },
     {
@@ -359,7 +359,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_1d,
         opus: opus_audio_1d,
       },
-      timeout_msec: 2000,
+      timeout_msec: 1128,
       next: "2",
     },
     {
@@ -370,7 +370,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2,
         opus: opus_audio_2,
       },
-      timeout_msec: 1000,
+      timeout_msec: 1296,
       next: "2-p1",
     },
     {
@@ -382,7 +382,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2_p1,
         opus: opus_audio_2_p1,
       },
-      timeout_msec: 4000,
+      timeout_msec: 3864,
       next: "2-p2",
     },
     {
@@ -393,7 +393,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2_p2,
         opus: opus_audio_2_p2,
       },
-      timeout_msec: 8000,
+      timeout_msec: 5208,
       next: "2-p3",
     },
     {
@@ -404,7 +404,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2_p3,
         opus: opus_audio_2_p3,
       },
-      timeout_msec: 8000 + 15000,
+      timeout_msec: 4728 + 5000,
       choices: [
         {
           text: "No.  I’m Billie O’Ryan.",
@@ -438,7 +438,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2a,
         opus: opus_audio_2a,
       },
-      timeout_msec: 3000,
+      timeout_msec: 2712,
       next: "3",
     },
     {
@@ -449,7 +449,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2b,
         opus: opus_audio_2b,
       },
-      timeout_msec: 3000,
+      timeout_msec: 1872,
       next: "3",
     },
     {
@@ -460,7 +460,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2c,
         opus: opus_audio_2c,
       },
-      timeout_msec: 3000,
+      timeout_msec: 1536,
       next: "2c-p1",
     },
     {
@@ -471,7 +471,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2c_p1,
         opus: opus_audio_2c_p1,
       },
-      timeout_msec: 3000,
+      timeout_msec: 3024,
       next: "3",
     },
     {
@@ -482,7 +482,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2d,
         opus: opus_audio_2d,
       },
-      timeout_msec: 4000,
+      timeout_msec: 2664,
       next: "2d-p1",
     },
     {
@@ -493,7 +493,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2d_p1,
         opus: opus_audio_2d_p1,
       },
-      timeout_msec: 5000,
+      timeout_msec: 4392,
       next: "3",
     },
     {
@@ -504,7 +504,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_3,
         opus: opus_audio_3,
       },
-      timeout_msec: 12000,
+      timeout_msec: 7584 + 4000,
       choices: [
         {
           text: "You’re in debt?  For _arcade games_?",
@@ -527,7 +527,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_first,
         opus: opus_audio_4a_first,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3264,
       next: "4a-first-p1",
     },
     {
@@ -538,7 +538,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_first_p1,
         opus: opus_audio_4a_first_p1,
       },
-      timeout_msec: 8000,
+      timeout_msec: 9096,
       next: "4a-first-p2",
     },
     {
@@ -549,7 +549,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_first_p2,
         opus: opus_audio_4a_first_p2,
       },
-      timeout_msec: 8000,
+      timeout_msec: 7464,
       next: "4b-second",
     },
     {
@@ -560,7 +560,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4b_second,
         opus: opus_audio_4b_second,
       },
-      timeout_msec: 4000,
+      timeout_msec: 2376,
       next: "4b-second-p1",
     },
     {
@@ -571,7 +571,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4b_second_p1,
         opus: opus_audio_4b_second_p1,
       },
-      timeout_msec: 15000,
+      timeout_msec: 12384,
       next: "5",
     },
     // Path 2:
@@ -583,7 +583,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4b_first,
         opus: opus_audio_4b_first,
       },
-      timeout_msec: 4000,
+      timeout_msec: 2376,
       next: "4b-first-p1",
     },
     {
@@ -594,7 +594,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4b_first_p1,
         opus: opus_audio_4b_first_p1,
       },
-      timeout_msec: 15000,
+      timeout_msec: 12384,
       next: "4a-second",
     },
     {
@@ -605,7 +605,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_second,
         opus: opus_audio_4a_second,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3264,
       next: "4a-second-p1",
     },
     {
@@ -616,7 +616,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_second_p1,
         opus: opus_audio_4a_second_p1,
       },
-      timeout_msec: 8000,
+      timeout_msec: 9096,
       next: "4a-second-p2",
     },
     {
@@ -627,7 +627,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_second_p2,
         opus: opus_audio_4a_second_p2,
       },
-      timeout_msec: 8000,
+      timeout_msec: 7464,
       next: "5",
     },
 
@@ -639,7 +639,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5,
         opus: opus_audio_5,
       },
-      timeout_msec: 8000,
+      timeout_msec: 6264,
       next: "5-p1",
     },
     {
@@ -650,7 +650,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5_p1,
         opus: opus_audio_5_p1,
       },
-      timeout_msec: 10000,
+      timeout_msec: 5304,
       next: "5-p2",
     },
     {
@@ -662,7 +662,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5_p2,
         opus: opus_audio_5_p2,
       },
-      timeout_msec: 8000,
+      timeout_msec: 8328,
       next: "5-p3",
     },
     {
@@ -674,7 +674,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5_p3,
         opus: opus_audio_5_p3,
       },
-      timeout_msec: 5000,
+      timeout_msec: 5112 + 4000,
       choices: [
         {
           // TODO: This feels like it should show the actual line
@@ -702,7 +702,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6a,
         opus: opus_audio_6a,
       },
-      timeout_msec: 7000,
+      timeout_msec: 5040,
       next: "7",
     },
     {
@@ -713,7 +713,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6b,
         opus: opus_audio_6b,
       },
-      timeout_msec: 5000,
+      timeout_msec: 4728,
       next: "7",
     },
 
@@ -725,7 +725,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7,
         opus: opus_audio_7,
       },
-      timeout_msec: 4000,
+      timeout_msec: 2976,
       next: "7-p1",
     },
     {
@@ -736,7 +736,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7_p1,
         opus: opus_audio_7_p1,
       },
-      timeout_msec: 6000,
+      timeout_msec: 4824,
       next: "7-p2",
     },
     {
@@ -747,7 +747,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7_p2,
         opus: opus_audio_7_p2,
       },
-      timeout_msec: 3000,
+      timeout_msec: 2280,
       next: "7-p3",
     },
     {
@@ -758,7 +758,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7_p3,
         opus: opus_audio_7_p3,
       },
-      timeout_msec: 4000,
+      timeout_msec: 2592,
       next: "7-p4",
     },
     {
@@ -769,7 +769,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7_p4,
         opus: opus_audio_7_p4,
       },
-      timeout_msec: 12000 + 8000,
+      timeout_msec: 7776 + 5000,
       choices: remainingGameOptions,
     },
     // Each of these plugin nodes should
@@ -784,7 +784,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8a,
         opus: opus_audio_8a,
       },
-      timeout_msec: 2000 + 30000,
+      timeout_msec: 2712 + 30000,
       plugin: "skee-ball",
     },
     {
@@ -795,7 +795,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8b,
         opus: opus_audio_8b,
       },
-      timeout_msec: 2000 + 30000,
+      timeout_msec: 2928 + 30000,
       plugin: "ducks",
     },
     {
@@ -806,7 +806,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8c,
         opus: opus_audio_8c,
       },
-      timeout_msec: 2000 + 30000,
+      timeout_msec: 3072 + 30000,
       plugin: "balloons",
     },
 
@@ -819,7 +819,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_first_win,
         opus: opus_audio_first_win,
       },
-      timeout_msec: 1000 + 8000,
+      timeout_msec: 1776 + 5000,
       choices: remainingGameOptions,
     },
     {
@@ -830,7 +830,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_first_loss,
         opus: opus_audio_first_loss,
       },
-      timeout_msec: 3000 + 8000,
+      timeout_msec: 2616 + 5000,
       choices: remainingGameOptions,
     },
     {
@@ -841,7 +841,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_second_win,
         opus: opus_audio_second_win,
       },
-      timeout_msec: 2000 + 8000,
+      timeout_msec: 1848 + 5000,
       choices: remainingGameOptions,
     },
     {
@@ -852,7 +852,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_second_loss,
         opus: opus_audio_second_loss,
       },
-      timeout_msec: 3000 + 8000,
+      timeout_msec: 2736 + 5000,
       choices: remainingGameOptions,
     },
     {
@@ -863,8 +863,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_third_win,
         opus: opus_audio_third_win,
       },
-      timeout_msec: 3000 + 8000,
-      next: "bigwin",
+      timeout_msec: 3120 + 5000,
+      choices: remainingGameOptions,
     },
     {
       id: "third-loss",
@@ -874,7 +874,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_third_loss,
         opus: opus_audio_third_loss,
       },
-      timeout_msec: 3000 + 8000,
+      timeout_msec: 1968 + 5000,
       choices: remainingGameOptions,
     },
 
@@ -887,7 +887,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_bigwin,
         opus: opus_audio_bigwin,
       },
-      timeout_msec: 10000,
+      timeout_msec: 8280,
       next: "bigwin-p1",
     },
     {
@@ -898,7 +898,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_bigwin_p1,
         opus: opus_audio_bigwin_p1,
       },
-      timeout_msec: 12000,
+      timeout_msec: 6504,
       next: "bigwin-p2",
     },
     {
@@ -909,7 +909,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_bigwin_p2,
         opus: opus_audio_bigwin_p2,
       },
-      timeout_msec: 5000,
+      timeout_msec: 4800,
       next: "bigwin-p3",
     },
     {
@@ -920,7 +920,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_bigwin_p3,
         opus: opus_audio_bigwin_p3,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3312,
       next: "10",
     },
 
@@ -932,7 +932,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_smallwin,
         opus: opus_audio_smallwin,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3432,
       next: "smallwin-p1",
     },
     {
@@ -943,7 +943,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_smallwin_p1,
         opus: opus_audio_smallwin_p1,
       },
-      timeout_msec: 12000,
+      timeout_msec: 4584,
       next: "smallwin-p2",
     },
     {
@@ -954,7 +954,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_smallwin_p2,
         opus: opus_audio_smallwin_p2,
       },
-      timeout_msec: 5000,
+      timeout_msec: 4800,
       next: "smallwin-p3",
     },
     {
@@ -965,7 +965,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_smallwin_p3,
         opus: opus_audio_smallwin_p3,
       },
-      timeout_msec: 7000,
+      timeout_msec: 5040,
       next: "10",
     },
 
@@ -978,7 +978,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_bigloss,
         opus: opus_audio_bigloss,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3696 + 8000,
       choices: [
         {
           text: "Tell him the games are rigged and a money-laundering racket wouldn’t bother to do that.",
@@ -1014,7 +1014,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9a,
         opus: opus_audio_9a,
       },
-      timeout_msec: 12000,
+      timeout_msec: 6384,
       next: "9a-p1",
     },
     {
@@ -1025,7 +1025,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9a_p1,
         opus: opus_audio_9a_p1,
       },
-      timeout_msec: 18000,
+      timeout_msec: 10632,
       next: "9a-p2",
     },
     {
@@ -1036,7 +1036,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9a_p2,
         opus: opus_audio_9a_p2,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3600,
       next: "9a-p3",
     },
     {
@@ -1047,7 +1047,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9a_p3,
         opus: opus_audio_9a_p3,
       },
-      timeout_msec: 4000,
+      timeout_msec: 2736,
       next: "10",
     },
 
@@ -1059,7 +1059,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9b,
         opus: opus_audio_9b,
       },
-      timeout_msec: 10000,
+      timeout_msec: 5136,
       next: "9b-p1",
     },
     {
@@ -1070,7 +1070,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9b_p1,
         opus: opus_audio_9b_p1,
       },
-      timeout_msec: 3000,
+      timeout_msec: 1920,
       next: "10",
     },
 
@@ -1082,7 +1082,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9c,
         opus: opus_audio_9c,
       },
-      timeout_msec: 12000,
+      timeout_msec: 8592,
       next: "9c-p1",
     },
     {
@@ -1093,7 +1093,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9c_p1,
         opus: opus_audio_9c_p1,
       },
-      timeout_msec: 1000,
+      timeout_msec: 1272,
       next: "9c-p2",
     },
     {
@@ -1104,7 +1104,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9c_p2,
         opus: opus_audio_9c_p2,
       },
-      timeout_msec: 4000,
+      timeout_msec: 3048,
       next: "11",
     },
 
@@ -1116,7 +1116,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_10,
         opus: opus_audio_10,
       },
-      timeout_msec: 8000,
+      timeout_msec: 4.56,
       next: "11",
     },
 
@@ -1129,7 +1129,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11,
         opus: opus_audio_11,
       },
-      timeout_msec: 8000,
+      timeout_msec: 5640,
       next: "11-p2",
     },
     {
@@ -1140,7 +1140,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_p2,
         opus: opus_audio_11_p2,
       },
-      timeout_msec: 10000,
+      timeout_msec: 6288,
       next(state: BoardwalkInteractionState) {
         if (state.paranoia <= 1) {
           return "11-details";
@@ -1158,7 +1158,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_details,
         opus: opus_audio_11_details,
       },
-      timeout_msec: 10000,
+      timeout_msec: 6024,
       next(state: BoardwalkInteractionState) {
         if (state.paranoia <= -1) {
           return "11-more-details";
@@ -1176,7 +1176,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_more_details,
         opus: opus_audio_11_more_details,
       },
-      timeout_msec: 7000,
+      timeout_msec: 4152,
       next: "11-more-details-p1",
     },
     {
@@ -1187,7 +1187,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_more_details_p1,
         opus: opus_audio_11_more_details_p1,
       },
-      timeout_msec: 10000,
+      timeout_msec: 7176,
       next: "11-more-details-p2",
     },
     {
@@ -1198,7 +1198,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_more_details_p2,
         opus: opus_audio_11_more_details_p2,
       },
-      timeout_msec: 10000,
+      timeout_msec: 5136,
       next: "11-more-details-p3",
     },
     {
@@ -1209,7 +1209,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_more_details_p3,
         opus: opus_audio_11_more_details_p3,
       },
-      timeout_msec: 3000,
+      timeout_msec: 1920,
       next: "11-more-details-p4",
     },
     {
@@ -1220,7 +1220,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_more_details_p4,
         opus: opus_audio_11_more_details_p4,
       },
-      timeout_msec: 3000,
+      timeout_msec: 1368,
       next: "12",
     },
     {
@@ -1231,7 +1231,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_afraid,
         opus: opus_audio_11_afraid,
       },
-      timeout_msec: 2000,
+      timeout_msec: 2568,
       next: "11-afraid-p1",
     },
     {
@@ -1242,7 +1242,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11_afraid_p1,
         opus: opus_audio_11_afraid_p1,
       },
-      timeout_msec: 2000,
+      timeout_msec: 1344,
       next: "12",
     },
 
@@ -1256,7 +1256,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12,
         opus: opus_audio_12,
       },
-      timeout_msec: 15000,
+      timeout_msec: 8880,
       next: "12-p1",
     },
     {
@@ -1268,7 +1268,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12_p1,
         opus: opus_audio_12_p1,
       },
-      timeout_msec: 5000,
+      timeout_msec: 1896,
       finalState(state: BoardwalkInteractionState): BoardwalkInteractionResult {
         if (state.wins === 3) {
           return "photo";
