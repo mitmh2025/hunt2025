@@ -1774,31 +1774,29 @@ export async function getRouter({
                 address: registration.teamEmail,
               });
             }
-            for (const address of addresses) {
-              const result: {
-                address: Address;
-                success?: boolean;
-              } = {
-                address,
-              };
-              if (!dryRun) {
-                try {
-                  await mailer.sendEmail({
-                    to: address,
-                    messageStream: "hunt-announcements",
-                    templateAlias: body.templateAlias,
-                    templateModel: {
-                      teamName: registration.name,
-                    },
-                  });
-                  result.success = true;
-                } catch (err: unknown) {
-                  console.log("failed sending mail", address, err);
-                  result.success = false;
-                }
+            const result: {
+              addresses: Address[];
+              success?: boolean;
+            } = {
+              addresses,
+            };
+            if (!dryRun) {
+              try {
+                await mailer.sendEmail({
+                  to: addresses,
+                  messageStream: "hunt-announcements",
+                  templateAlias: body.templateAlias,
+                  templateModel: {
+                    teamName: registration.name,
+                  },
+                });
+                result.success = true;
+              } catch (err: unknown) {
+                console.log("failed sending mail", addresses, err);
+                result.success = false;
               }
-              messages.push(result);
             }
+            messages.push(result);
           }
           return {
             status: 200,
