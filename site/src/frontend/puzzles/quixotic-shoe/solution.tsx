@@ -356,7 +356,12 @@ const DRAUGHTQUEENS_DOWN: [string, string, string, string, string, string][] = [
 const TOWNSQUARESPACE_REBUSES: [string, ReactNode][] = [
   ["C", "100 in Times New Roman (100 is C in Roman numerals)"],
   ["C", "Drawing of the sea (pronounce “C”)"],
-  ["E", "mc2 (Einstein’s mass-energy equivalence equation)"],
+  [
+    "E",
+    <>
+      mc<sup>2</sup> (Einstein’s mass-energy equivalence equation)
+    </>,
+  ],
   ["E", "Musical note E on a staff"],
   [
     "E",
@@ -434,15 +439,15 @@ const TOWNSQUARESPACE_LABELS = `
   .map((row) => row.split(""));
 
 const TOWNSQUARESPACE_FILL = `
-CSFOWHILE
-LOECIFSHW
-IHWLSEOCF
-FWLSECHOI
-SCOHFIWEL
-EIHWOLCFS
-HFCILSEWO
-WEIFHOLSC
-OLSECWFIH
+CFSOWHILE
+LOECIFWHS
+IHWLSEOFC
+FWISECHOL
+ELOHFISCW
+SCHWOLFEI
+HICFLSEWO
+WELIHOCSF
+OSFECWLIH
 `
   .split("\n")
   .slice(1, -1)

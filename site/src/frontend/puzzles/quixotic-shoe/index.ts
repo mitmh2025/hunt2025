@@ -71,7 +71,7 @@ const puzzle: PuzzleDefinition = {
   slug: "and_now_a_puzzling_word_from_our_sponsors",
   code_name: "quixotic-shoe",
   initial_description:
-    "MITropolis card rewards portal. Do you have enough points?",
+    "MITropolisCard rewards portal. Do you have enough points?",
   answer: "TENET",
   authors: [
     "Ollie Shonaldmann",
