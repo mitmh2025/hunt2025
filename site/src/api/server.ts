@@ -470,7 +470,6 @@ export async function getRouter({
   const formatPuzzleState = (
     slug: string,
     activity_log: InternalActivityLogEntry[],
-    puzzle_state_log: PuzzleStateLogEntry[],
   ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
@@ -535,22 +534,6 @@ export async function getRouter({
         }),
       ),
     };
-    const puzzleDefinition = PUZZLES[slug];
-    if (puzzleDefinition?.subpuzzles) {
-      const subpuzzleStates: Record<string, SubpuzzleState> = {};
-      const subpuzzleSlugs = new Set(
-        puzzleDefinition.subpuzzles.map(({ slug }) => slug),
-      );
-      for (const subpuzzle of puzzleDefinition.subpuzzles) {
-        const subpuzzleState = formatSubpuzzleState(
-          subpuzzle.slug,
-          slug,
-          puzzle_state_log.filter(({ slug }) => subpuzzleSlugs.has(slug)),
-        );
-        subpuzzleStates[subpuzzle.slug] = subpuzzleState;
-      }
-      result.subpuzzles = subpuzzleStates;
-    }
     if (correct_answers.length > 0) {
       result.answer = correct_answers.join(", ");
     }
@@ -562,13 +545,9 @@ export async function getRouter({
     slug: string,
     knex: Knex,
   ): Promise<PuzzleState | undefined> => {
-    const puzzleStateLogEntries = PUZZLES[slug]?.subpuzzles
-      ? (await puzzleStateLog.getCachedLog(knex, redisClient, team_id)).entries
-      : [];
     return formatPuzzleState(
       slug,
       (await activityLog.getCachedLog(knex, redisClient, team_id)).entries,
-      puzzleStateLogEntries,
     );
   };
 
@@ -1084,11 +1063,9 @@ export async function getRouter({
           if (result.status === 200) {
             return {
               status: 200 as const,
-              // We don't currently have any puzzles where a guess for a puzzle depends
-              // on the puzzle state log. Don't bother fetching it.
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, logEntries, [])!,
+              body: formatPuzzleState(slug, logEntries)!,
             };
           }
           return result;
@@ -1403,11 +1380,9 @@ export async function getRouter({
           if (result) {
             return {
               status: 200 as const,
-              // We don't currently have any puzzles where an unlock for a puzzle depends
-              // on the puzzle state log. Don't bother fetching it.
               /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, logEntries, [])!,
+              body: formatPuzzleState(slug, logEntries)!,
             };
           }
           return {
