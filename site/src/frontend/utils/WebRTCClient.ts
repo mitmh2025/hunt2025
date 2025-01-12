@@ -423,6 +423,7 @@ export class WebRTCClient {
       this.retriesLeft--;
       const retryDelay =
         RETRY_INTERVAL_MIN *
+        (1 + Math.random() / 2) *
         RETRY_INTERVAL_BACKOFF_BASE ** (RETRY_COUNT - this.retriesLeft);
       console.log(
         `WebRTC error. Retrying in ${retryDelay}ms (${this.retriesLeft} retries left)`,
