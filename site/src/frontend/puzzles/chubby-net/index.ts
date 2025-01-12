@@ -12,7 +12,8 @@ const puzzle: PuzzleDefinition = {
   editors: ["Anna Brunner", "James Douberley", "Will Day"],
   additional_credits: [
     {
-      freeform: "Tech mockup",
+      for_what: "Tech mockup",
+      who: ["Anna Brunner"],
     },
   ],
   content: {
@@ -82,7 +83,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: ["LAUNCHDARTATTGTIPO"],
+      guess: ["LAUNCH DART AT TGT IPO"],
       reply:
         "Well if that is your aim, we might be able to help you at the Gala. Tell the bartender that you need a Flying Scotsman to get over a bad split.",
     },
