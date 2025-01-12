@@ -23,7 +23,10 @@ import {
 } from "../../components/IllegalSearchPuzzleLayout";
 import {
   getMissingDiamondHeader,
+  MissingDiamondBacklink,
   MissingDiamondMain,
+  MissingDiamondTitle,
+  MissingDiamondTitleWrapper,
   MissingDiamondWrapper,
 } from "../../components/MissingDiamondPuzzleLayout";
 import {
@@ -111,6 +114,9 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: MissingDiamondWrapper,
     main: MissingDiamondMain,
     fonts: MissingDiamondFonts,
+    title: MissingDiamondTitle,
+    backlink: MissingDiamondBacklink,
+    titleWrapper: MissingDiamondTitleWrapper,
     entrypoint: "the_missing_diamond_puzzle",
   },
   stakeout: {
@@ -521,22 +527,6 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     );
   }
 
-  // Figure out all the props we need for the puzzle backklink.
-  let backlinkHref = `/rounds/${puzzleState.round}`;
-  let backlinkRoundTitle = req.teamState.state.rounds[puzzleState.round]?.title;
-  if (puzzleState.stray) {
-    backlinkHref = "/rounds/stray_leads";
-    backlinkRoundTitle = "Stray Leads";
-  } else if (puzzleState.round === "illegal_search") {
-    // We want to go back to the same node we were at before.
-    const node_id = NODE_IDS_BY_PUZZLE_SLUG[slug] ?? null;
-    console.error("node_id: ", node_id);
-    if (node_id) {
-      backlinkHref += `?node=${node_id}`;
-    }
-  }
-  const backlinkChildren = `← Back to ${backlinkRoundTitle}`;
-
   // TODO: Use round-specific puzzle page layout for result.body.round.  For
   // outlands puzzles, the layout may depend on round and puzzle visibility.
 
@@ -567,6 +557,36 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   const PuzzleFooterComponent = manifest.footer;
   const PuzzleFontsComponent = manifest.fonts;
 
+  // Create a backlink, if we need one (Background Check metas construct theirs
+  // separately.)
+  let backlinkFrag = <></>;
+  const isBackgroundCheckMeta = Object.entries(
+    req.teamState.state.rounds.background_check?.slots ?? {},
+  ).find(([_slot, slotObj]: [string, { slug: string; is_meta?: boolean }]) => {
+    return slotObj.slug === slug && slotObj.is_meta;
+  });
+  if (!isBackgroundCheckMeta) {
+    let backlinkHref = `/rounds/${puzzleState.round}`;
+    let backlinkRoundTitle =
+      req.teamState.state.rounds[puzzleState.round]?.title;
+    if (puzzleState.stray) {
+      backlinkHref = "/rounds/stray_leads";
+      backlinkRoundTitle = "Stray Leads";
+    } else if (puzzleState.round === "illegal_search") {
+      // We want to go back to the same node we were at before.
+      const node_id = NODE_IDS_BY_PUZZLE_SLUG[slug] ?? null;
+      if (node_id) {
+        backlinkHref += `?node=${node_id}`;
+      }
+    }
+    const backlinkChildren = `← Back to ${backlinkRoundTitle}`;
+    backlinkFrag = (
+      <PuzzleBacklinkComponent href={backlinkHref}>
+        {backlinkChildren}
+      </PuzzleBacklinkComponent>
+    );
+  }
+
   const node = (
     <>
       {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
@@ -574,9 +594,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
         <PuzzleHeaderComponent>
           {puzzleState.answer && <Stamp />}
           <PuzzleTitleWrapperComponent>
-            <PuzzleBacklinkComponent href={backlinkHref}>
-              {backlinkChildren}
-            </PuzzleBacklinkComponent>
+            {backlinkFrag}
             <PuzzleTitleComponent>
               <span>{title}</span>
             </PuzzleTitleComponent>

@@ -16,7 +16,7 @@ import super_paper_top from "../rounds/background_check/assets/metas/supermeta_a
 import title_image_alias from "../rounds/background_check/assets/metas/supermeta_alias_puzzle_page_title.png";
 import paper from "../rounds/background_check/assets/puzzle_bkgd.png";
 import { deviceMax, deviceMin } from "../utils/breakpoints";
-import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
+import { PuzzleBacklink, PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
 
 export const BgColor = "#251214";
 export const FridgeColor = "#a4b9b9";
@@ -122,6 +122,13 @@ export const BackgroundCheckHeader = styled(PuzzleHeader)`
   }
 `;
 
+export const BackgroundCheckBacklink = styled(PuzzleBacklink)`
+  @media ${deviceMax.sm} {
+    display: block;
+    max-width: 40%;
+  }
+`;
+
 const BackgroundCheckMetaWrapperInner = styled(BackgroundCheckWrapperInner)<{
   $background_image: string;
 }>`
@@ -187,6 +194,10 @@ const Magnet = styled.img`
 
 export type Setting = "puzzle" | "solution";
 
+const BACK_TO_ROUND_TEXT = "← Back to The Background Check";
+const BACK_TO_PUZZLE_TEXT = "← Back to puzzle";
+const BACK_TO_ROUND_HREF = "/rounds/background_check";
+
 export const getBackgroundCheckManifestOverrides = (
   slot: string,
   setting: Setting,
@@ -196,9 +207,13 @@ export const getBackgroundCheckManifestOverrides = (
       header: ({ children }: { children: ReactNode }) => {
         return (
           <BackgroundCheckMetaHead
+            backlinkHref={
+              setting === "puzzle" ? BACK_TO_ROUND_HREF : "/puzzles/the_mark"
+            }
             magnet={magnet_meta}
             titleImage={title_image_the_mark}
             title="The Mark"
+            setting={setting}
           >
             {children}
           </BackgroundCheckMetaHead>
@@ -217,9 +232,15 @@ export const getBackgroundCheckManifestOverrides = (
       header: ({ children }: { children: ReactNode }) => {
         return (
           <BackgroundCheckMetaHead
+            backlinkHref={
+              setting === "puzzle"
+                ? BACK_TO_ROUND_HREF
+                : "/puzzles/the_grand_illusion"
+            }
             magnet={magnet_meta}
             titleImage={title_image_the_grand_illusion}
             title="The Grand Illusion"
+            setting={setting}
           >
             {children}
           </BackgroundCheckMetaHead>
@@ -240,9 +261,15 @@ export const getBackgroundCheckManifestOverrides = (
       header: ({ children }: { children: ReactNode }) => {
         return (
           <BackgroundCheckMetaHead
+            backlinkHref={
+              setting === "puzzle"
+                ? BACK_TO_ROUND_HREF
+                : "/puzzles/the_oversight"
+            }
             magnet={magnet_meta}
             titleImage={title_image_the_oversight}
             title="The Oversight"
+            setting={setting}
           >
             {children}
           </BackgroundCheckMetaHead>
@@ -261,9 +288,13 @@ export const getBackgroundCheckManifestOverrides = (
       header: ({ children }: { children: ReactNode }) => {
         return (
           <BackgroundCheckMetaHead
+            backlinkHref={
+              setting === "puzzle" ? BACK_TO_ROUND_HREF : "/puzzles/alias"
+            }
             magnet={magnet_super}
             titleImage={title_image_alias}
             title="Alias"
+            setting={setting}
           >
             {children}
           </BackgroundCheckMetaHead>
@@ -310,13 +341,17 @@ const BackgroundCheckMetaHeader = styled(PuzzleHeader)`
 `;
 
 export const BackgroundCheckMetaHead = ({
+  backlinkHref,
   children,
   magnet,
+  setting,
   titleImage,
   title,
 }: {
+  backlinkHref: string;
   children: ReactNode;
   magnet: string;
+  setting: string;
   titleImage: string;
   title: string;
 }) => {
@@ -324,6 +359,9 @@ export const BackgroundCheckMetaHead = ({
     <BackgroundCheckMetaHeader>
       <>
         <Magnet src={magnet} alt="magnet" />
+        <BackgroundCheckBacklink href={backlinkHref}>
+          {setting === "puzzle" ? BACK_TO_ROUND_TEXT : BACK_TO_PUZZLE_TEXT}
+        </BackgroundCheckBacklink>
         <div
           style={{
             marginTop: "2rem",
