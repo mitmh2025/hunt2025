@@ -4,7 +4,7 @@ const Puzzle = () => {
   return (
     <>
       <noscript>This puzzle requires Javascript.</noscript>
-      <div id="wordyore-root" />
+      <div id="word-yore-root" />
     </>
   );
 };

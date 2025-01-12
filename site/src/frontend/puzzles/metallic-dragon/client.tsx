@@ -419,12 +419,12 @@ const App = () => {
   );
 };
 
-const elem = document.getElementById("wordyore-root");
+const elem = document.getElementById("word-yore-root");
 if (elem) {
   const root = createRoot(elem);
   root.render(<App />);
 } else {
   console.error(
-    "Could not mount App because #wordyore-root was nowhere to be found",
+    "Could not mount App because #word-yore-root was nowhere to be found",
   );
 }

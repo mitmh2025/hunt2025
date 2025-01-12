@@ -52,14 +52,14 @@ const puzzle: PuzzleDefinition = {
     {
       order: 80.0,
       description:
-        "Solvers have the phrase PERKY ZITI LIPS but don't know what to do next",
+        "Solvers have the phrase PERKY ZITI LIPS but don’t know what to do next",
       keywords: ["cluephrase"],
       nudge:
         "Have you tried re-applying the textonym mechanic to the cluephrase PERKY ZITI LIPS?",
     },
     {
       order: 100.0,
-      description: "Solvers have REPLY WITH KISS but can't get an answer",
+      description: "Solvers have REPLY WITH KISS but can’t get an answer",
       keywords: ["instruction"],
       nudge: "Have you tried submitting a single word into the answer checker?",
     },
@@ -68,7 +68,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["KISS"],
       reply:
-        "Aww, that's so sweet of you!  Why don't you text a kiss to (617) 798-6122\u202c?",
+        "Aww, that’s so sweet of you!  Email a kiss to info@mitmh2025.com and include your team name.",
     },
     {
       guess: ["PERKY ZITI LIPS"],
