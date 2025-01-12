@@ -67,12 +67,7 @@ import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFon
 import { MurderFonts } from "../../rounds/murder_in_mitropolis/MurderFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
-import {
-  type MissingDiamondSlot,
-  slotToWitness,
-  witnesses,
-  type WitnessRecord,
-} from "../../rounds/the_missing_diamond";
+import { missingDiamondState } from "../../rounds/the_missing_diamond";
 import { MissingDiamondFonts } from "../../rounds/the_missing_diamond/MissingDiamondFonts";
 import { type Entrypoint } from "../assets";
 import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "../constants";
@@ -104,6 +99,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: MissingDiamondWrapper,
     main: MissingDiamondMain,
     fonts: MissingDiamondFonts,
+    entrypoint: "the_missing_diamond_puzzle",
   },
   stakeout: {
     header: StakeoutHeader,
@@ -152,24 +148,6 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   },
   stray_leads: {},
 };
-
-type missingDiamondNameAssetMap = {
-  name: string;
-  asset: string;
-};
-function mapMissingDiamondSlotToNameAndAsset(
-  slot: MissingDiamondSlot,
-): missingDiamondNameAssetMap | undefined {
-  const nameSlug = slotToWitness[slot];
-  if (nameSlug) {
-    const data: WitnessRecord = witnesses[nameSlug];
-    return {
-      name: data.alt,
-      asset: data.asset.solved,
-    };
-  }
-  return undefined;
-}
 
 const DEFAULT_MANIFEST: ComponentManifest = {
   wrapper: PuzzleWrapper,
@@ -244,26 +222,12 @@ function getComponentManifestForPuzzle(
   const roundSpecificOverrides =
     ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round] ?? {};
   if (puzzleState.round === "the_missing_diamond") {
-    const missingDiamondEntry = Object.entries(
-      teamState.rounds.the_missing_diamond?.slots ?? {},
-    ).find(
-      ([_slot, slotObj]: [string, { slug: string; is_meta?: boolean }]) => {
-        return slotObj.slug === slug;
-      },
-    );
-    if (missingDiamondEntry) {
-      const data = mapMissingDiamondSlotToNameAndAsset(
-        missingDiamondEntry[0] as MissingDiamondSlot,
-      );
-      if (data) {
-        return Object.assign({}, DEFAULT_MANIFEST, roundSpecificOverrides, {
-          header: getMissingDiamondHeader({
-            witnessName: data.name,
-            asset: data.asset,
-          }),
-        });
-      }
-    }
+    return Object.assign({}, DEFAULT_MANIFEST, roundSpecificOverrides, {
+      header: getMissingDiamondHeader({
+        state: missingDiamondState(teamState),
+        slug,
+      }),
+    });
   }
   return Object.assign({}, DEFAULT_MANIFEST, roundSpecificOverrides);
 }

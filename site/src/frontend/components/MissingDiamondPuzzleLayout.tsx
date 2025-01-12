@@ -2,6 +2,8 @@ import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { Pin } from "../hub/HubBody";
 import PinImg from "../hub/assets/pin_teal.png";
+import { MissingDiamondPuzzleWitness } from "../rounds/the_missing_diamond/MissingDiamondBody";
+import { type MissingDiamondState } from "../rounds/the_missing_diamond/types";
 import { deviceMax } from "../utils/breakpoints";
 import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
 import BgLeft from "./missingDiamondAssets/bg-left.png";
@@ -133,19 +135,20 @@ export const MissingDiamondMain = styled(PuzzleMain)`
 `;
 
 export const getMissingDiamondHeader = ({
-  witnessName,
-  asset,
+  state,
+  slug,
 }: {
-  witnessName: string;
-  asset: string;
+  state: MissingDiamondState;
+  slug: string;
 }) => {
+  const inlineScript = `window.initialMissingDiamondState = ${JSON.stringify(state)}; window.missingDiamondSlug = ${JSON.stringify(slug)}`;
   return function MissingDiamondHeader({ children }: { children: ReactNode }) {
     return (
       <MissingDiamondHeaderWrapper>
         {children}
-        <div className="witness-assets">
-          <img src={asset} alt="" />
-          <h3>{witnessName}</h3>
+        <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+        <div id="missing-diamond-puzzle-witness-root">
+          <MissingDiamondPuzzleWitness state={state} slug={slug} />
         </div>
         <CornerPin $x={16} $y={16} src={PinImg} />
         <CornerPin $x={16} $y={16} $right={true} src={PinImg} />
