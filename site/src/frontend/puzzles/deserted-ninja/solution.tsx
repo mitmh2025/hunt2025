@@ -48,13 +48,13 @@ const ALL_GEOGUESSR_LOCATIONS = [
   "corner of 3-1 near building 1",
   "Great Sail, between 50 and 14N",
   "26-100",
-  "8-4",
+  "10-4 near Strobe Alley",
   "outside 26-100",
   "Baker House",
   "MIT Medical",
   "10-485",
   "W20-5",
-  "Stata Center",
+  "Stata Center near the Collier Memorial",
   "3-1 on the Infinite",
   "16-0",
 ];
@@ -325,8 +325,8 @@ const Solution = (): JSX.Element => {
       </p>
 
       <p>
-        To extract the answer, take the first four letters of each artist name.
-        The answer is <PuzzleAnswer>TO STATE THE OBVIOUS</PuzzleAnswer>.
+        To extract the answer, take the first letter of each artist name. The
+        answer is <PuzzleAnswer>TO STATE THE OBVIOUS</PuzzleAnswer>.
       </p>
 
       <h3>Authors’ Note</h3>

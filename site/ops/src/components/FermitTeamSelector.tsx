@@ -1,15 +1,14 @@
+import { useMemo } from "react";
 import { useOpsData } from "../OpsDataProvider";
 
 type ITeamSelectorProps = {
   submitCallback: (teamId: number) => void;
   exclude?: number[];
-  includeOnly?: number[];
 };
 
 export function FermitTeamSelector({
   submitCallback,
   exclude = [],
-  includeOnly = [],
 }: ITeamSelectorProps) {
   function doIt(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -20,16 +19,40 @@ export function FermitTeamSelector({
 
   const opsData = useOpsData();
 
-  const filteredTeams = (
-    includeOnly.length > 0
-      ? opsData.teams.filter((t) => includeOnly.includes(t.teamId))
-      : opsData.teams
-  ).filter((t) => !exclude.includes(t.teamId));
+  const [solvedTeamIds, unlockedTeamIds] = useMemo(() => {
+    const solved = new Set<number>();
+    const unlocked = new Set<number>();
 
-  // TODO: need to filter to only include teams that have the puzzle unlocked
+    opsData.activityLog.forEach((entry) => {
+      if (entry.type === "puzzle_solved") {
+        if (entry.slug === "estimation_dot_jpg") {
+          if (entry.team_id) {
+            solved.add(entry.team_id);
+          }
+        }
+      }
+      if (entry.type === "puzzle_unlocked") {
+        if (entry.slug === "estimation_dot_jpg") {
+          if (entry.team_id) {
+            unlocked.add(entry.team_id);
+          }
+        }
+      }
+    });
+
+    return [solved, unlocked];
+  }, [opsData]);
+
+  const filteredTeams = opsData.teams.filter(
+    (t) =>
+      !exclude.includes(t.teamId) &&
+      unlockedTeamIds.has(t.teamId) &&
+      !solvedTeamIds.has(t.teamId),
+  );
+
   const options = filteredTeams.map((t) => (
     <option key={t.teamId} value={t.teamId}>
-      {t.name.slice(0, 40)}
+      {t.name.slice(0, 20)}
     </option>
   ));
 
