@@ -28,7 +28,7 @@ import "./assets/waypoint6.opus";
 import "./assets/waypoint7.opus";
 import "./assets/waypoint8.opus";
 import "./assets/waypoint9.opus";
-import { TeamHuntState } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
