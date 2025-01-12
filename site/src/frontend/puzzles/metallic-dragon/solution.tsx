@@ -75,8 +75,8 @@ const Solution = () => {
           </StyledTableCell>
           <StyledTableCell>
             <StyledDiv>
-              It&apos;s SCRUB every night for dinner at the Navy special ops
-              team barracks.
+              It’s SCRUB every night for dinner at the Navy special ops team
+              barracks.
             </StyledDiv>
           </StyledTableCell>
         </tr>
@@ -90,8 +90,8 @@ const Solution = () => {
           </StyledTableCell>
           <StyledTableCell>
             <StyledDiv>
-              You don’t need a belay device when hiking the North or South
-              SHOP of the Grand Canyon.
+              You don’t need a belay device when hiking the North or South SHOP
+              of the Grand Canyon.
             </StyledDiv>
           </StyledTableCell>
           <StyledTableCell>

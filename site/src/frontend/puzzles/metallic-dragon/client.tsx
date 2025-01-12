@@ -161,7 +161,7 @@ const rooms: Record<string, Room> = {
   vbao: Object.assign(new Room(), {
     name: "vbao",
     description:
-      "It&apos;s SCRUB every night for dinner at the Navy special ops team barracks.",
+      "It’s SCRUB every night for dinner at the Navy special ops team barracks.",
     connections: [
       {
         direction: dir1,
@@ -199,7 +199,7 @@ const rooms: Record<string, Room> = {
   euga: Object.assign(new Room(), {
     name: "euga",
     description:
-      "You don&apos;t need a belay device when hiking the North or South SHOP of the Grand Canyon.",
+      "You don’t need a belay device when hiking the North or South SHOP of the Grand Canyon.",
     connections: [
       {
         direction: dir1,
@@ -325,7 +325,7 @@ const InputArea = styled.div`
   width: 300px;
 `;
 
-const defaultDontUnderstandMessage = "I don&apos;t understand that request.";
+const defaultDontUnderstandMessage = "I don’t understand that request.";
 
 const App = () => {
   const [inputText, setInputText] = useState<string>("");
