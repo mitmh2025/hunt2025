@@ -640,6 +640,18 @@ export async function getTeamInteractionStateLog(
   return interaction_state_log.map(cleanupTeamInteractionStateLogEntryFromDB);
 }
 
+export async function getLastTeamInteractionStateLogEntry(
+  team_id: number,
+  slug: string,
+  trx: Knex.Knex,
+) {
+  const q = trx<TeamInteractionStateLogEntryRow>("team_interaction_states")
+    .where("team_id", team_id)
+    .andWhere("slug", slug);
+  const maybeEntry = await q.orderBy("id", "desc").limit(1);
+  return maybeEntry.map(cleanupTeamInteractionStateLogEntryFromDB)[0];
+}
+
 export async function appendTeamInteractionStateLog(
   entry: InsertTeamInteractionStateLogEntry,
   trx: Knex.Knex,

@@ -195,12 +195,6 @@ export const interactionStartPostHandler: RequestHandler<
   res.redirect(`/interactions/${req.params.slug}`);
 });
 
-const MOCK_INTERACTION_RESULTS: Record<string, string> = {
-  interview_at_the_boardwalk: "photo",
-  interview_at_the_art_gallery: "lemahieu",
-  interview_at_the_jewelry_store: "",
-  interview_at_the_casino: "ace-of-spades",
-};
 export const interactionCompletePostHandler: RequestHandler<
   InteractionParams,
   unknown,
@@ -219,9 +213,7 @@ export const interactionCompletePostHandler: RequestHandler<
       teamId: `${req.teamState.teamId}`,
       interactionId: slug,
     },
-    body: {
-      result: MOCK_INTERACTION_RESULTS[slug] ?? "",
-    },
+    body: {},
   });
   res.redirect(`/interactions/${req.params.slug}`);
 });

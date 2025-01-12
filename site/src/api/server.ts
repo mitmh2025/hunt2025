@@ -82,6 +82,7 @@ import {
   getCurrentTeamName,
   cleanupTeamInteractionStateLogEntryFromDB,
   getTeamInteractionStateLog,
+  getLastTeamInteractionStateLogEntry,
   appendTeamInteractionStateLog,
   fixTimestamp,
   fixData,
@@ -2530,8 +2531,16 @@ export async function getRouter({
       },
       completeInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: ({ params: { teamId, interactionId }, body }) =>
-          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+        handler: async ({ params: { teamId, interactionId } }) => {
+          const interaction = INTERACTIONS[interactionId];
+          if (!interaction) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+
+          return executeTeamStateHandler(teamId, async (trx, mutator, team_id) => {
             const existing = mutator.log.filter(
               (e) =>
                 (e.team_id === team_id || e.team_id === undefined) &&
@@ -2556,17 +2565,35 @@ export async function getRouter({
               return false;
             }
             if (!is_completed) {
+              let interactionResult = "";
+              if (interaction.type === "virtual") {
+                // Then we need to compute the result from the team.  Get the last log entry that
+                // applies to this interaction; we expect it to be a final node.
+                const finalNode = await getLastTeamInteractionStateLogEntry(team_id, interactionId, trx);
+                if (!finalNode) return false;
+                const result = interaction.handler.finalState({
+                  nodeId: finalNode.node,
+                  state: finalNode.graph_state,
+                }) as string | undefined;
+                if (result === undefined) {
+                  // No final result recorded for this interaction in the DB yet.  Finish the interaction.
+                  return false;
+                }
+                interactionResult = result;
+              }
+
               await mutator.appendLog({
                 team_id,
                 type: "interaction_completed",
                 slug: interactionId,
                 data: {
-                  result: body.result,
+                  result: interactionResult,
                 },
               });
             }
             return true;
-          }),
+          });
+        },
       },
       getFullActivityLog: {
         middleware: [frontendAuthMiddleware],

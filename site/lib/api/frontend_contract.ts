@@ -229,9 +229,7 @@ export const frontendContract = c.router({
   completeInteraction: {
     method: "POST",
     path: `/teams/:teamId/interactions/:interactionId/complete`,
-    body: z.object({
-      result: z.string(),
-    }),
+    body: z.object({}),
     responses: {
       200: TeamHuntStateSchema,
       404: z.null(),

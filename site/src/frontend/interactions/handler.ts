@@ -307,4 +307,15 @@ export class VirtualInteractionHandler<
     }
     return undefined;
   }
+
+  public finalState({ nodeId, state }: {
+    nodeId: string;
+    state: T;
+  }): R | undefined {
+    const node = this.lookupNode(nodeId);
+    if (node && isTerminalNode(node)) {
+      return node.finalState(state);
+    }
+    return undefined;
+  }
 }
