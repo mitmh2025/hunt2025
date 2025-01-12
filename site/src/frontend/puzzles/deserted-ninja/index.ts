@@ -15,6 +15,7 @@ const puzzle: PuzzleDefinition = {
   answer: "TO STATE THE OBVIOUS",
   authors: ["Hubert Hwang", "Kevin Hwang"],
   editors: ["Steve Banzaert", "James Douberly", "Robin Deits", "Arcturus Wang"],
+  code_name: "deserted-ninja",
   additional_credits: [
     {
       freeform:
