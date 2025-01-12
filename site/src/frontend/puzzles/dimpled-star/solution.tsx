@@ -80,7 +80,7 @@ const Solution = () => {
         Campus Goodale entrance. A few moments of scaling and rotating the
         campus map should reveal a nice correspondence. Notably, the
         intersection next to the boardwalk corresponds to the sailing pavilion,
-        the river and park are preserved, and - quite by accident - the airport
+        the river and park are preserved, and—quite by accident—the airport
         corresponds to the Wright Brothers Wind Tunnel. The note which links to
         this puzzle appears near the intersection of H and 7th, corresponding to
         the runaround start location in Stata.
