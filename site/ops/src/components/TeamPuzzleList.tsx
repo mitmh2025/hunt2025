@@ -1,5 +1,6 @@
 import UnlockIcon from "@mui/icons-material/LockOpen";
-import { Box, IconButton, Typography } from "@mui/material";
+import ResetIcon from "@mui/icons-material/RestartAlt";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useDialogs, useNotifications } from "@toolpad/core";
 import { DateTime } from "luxon";
 import {
@@ -175,6 +176,55 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         });
     };
 
+    const handleResetPuzzleRateLimit = (puzzle: TeamPuzzleListEntry) => {
+      dialogs
+        .confirm(
+          `Are you sure you want to reset the rate limit for ${puzzle.name} for ${bigBoardTeam.username}?`,
+          {
+            title: "Reset Rate Limit",
+            okText: "Reset",
+            cancelText: "Cancel",
+            onClose: async (result) => {
+              if (!result) {
+                return;
+              }
+
+              try {
+                const res = await adminClient.resetPuzzleRateLimit({
+                  params: { slug: puzzle.slug },
+                  body: { teamIds: [bigBoardTeam.id] },
+                });
+
+                if (res.status !== 200) {
+                  throw new Error(`HTTP ${res.status}: ${res.body}`);
+                }
+
+                await updateActivityLog({ forceRequest: true });
+                updateNow();
+
+                notifications.show(
+                  `Reset rate limit ${puzzle.name} for ${bigBoardTeam.username}`,
+                  {
+                    severity: "success",
+                    autoHideDuration: 3000,
+                  },
+                );
+              } catch (err: unknown) {
+                const msg =
+                  err instanceof Error ? err.message : "Unknown error";
+                notifications.show(`Failed to reset rate limit: ${msg}`, {
+                  severity: "error",
+                  autoHideDuration: 3000,
+                });
+              }
+            },
+          },
+        )
+        .catch((err: unknown) => {
+          console.error(err);
+        });
+    };
+
     const { now, updateNow } = useTime();
 
     const wrapperEl = useRef<HTMLDivElement | null>(null);
@@ -317,24 +367,32 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
       enableDensityToggle: false,
       enableRowActions: isOpsAdmin,
       renderRowActions: ({ row }) => {
-        // TODO: add action for resetting rate limit
-
-        if (
-          row.original.status.state === "unlocked" ||
-          row.original.status.state === "solved"
-        ) {
-          return null;
-        }
-
         return (
           <Box>
-            <IconButton
-              onClick={() => {
-                handleUnlockPuzzle(row.original);
-              }}
-            >
-              <UnlockIcon />
-            </IconButton>
+            {row.original.status.state === "locked" ||
+            row.original.status.state === "unlockable" ? (
+              <Tooltip title="Unlock Puzzle" placement="top">
+                <IconButton
+                  onClick={() => {
+                    handleUnlockPuzzle(row.original);
+                  }}
+                >
+                  <UnlockIcon />
+                </IconButton>
+              </Tooltip>
+            ) : null}
+
+            {row.original.status.state === "unlocked" ? (
+              <Tooltip title="Reset Rate Limit" placement="top">
+                <IconButton
+                  onClick={() => {
+                    handleResetPuzzleRateLimit(row.original);
+                  }}
+                >
+                  <ResetIcon />
+                </IconButton>
+              </Tooltip>
+            ) : null}
           </Box>
         );
       },
