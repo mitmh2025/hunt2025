@@ -111,18 +111,6 @@ export class TeamStateIntermediate extends LogicTeamState {
   }
 }
 
-export function reducerDeriveTeamState(
-  hunt: Hunt,
-  teamActivityLogEntries: InternalActivityLogEntry[],
-): LogicTeamState {
-  const intermediate = teamActivityLogEntries.reduce(
-    (acc, entry) => acc.reduce(entry),
-    new TeamStateIntermediate(hunt),
-  );
-  // Return the LogicTeamState because the recalculated team state no longer represents a committed epoch.
-  return intermediate.recalculateTeamState(hunt);
-}
-
 // Converts from the serialized activity log entry (which e.g. has a string for timestamp)
 // into the in-memory representation (which e.g. has a Date object).
 export function hydrateLogEntry<D extends { timestamp: string }>(
@@ -354,5 +342,46 @@ export class TeamInfoIntermediate {
 
   formatTeamRegistrationIfActive(): TeamRegistration | undefined {
     return this.isActive() ? this.registration : undefined;
+  }
+}
+
+export class PuzzleStateIntermediate {
+  private _slug: string;
+  epoch: number;
+  guesses: (InternalActivityLogEntry & { type: "puzzle_guess_submitted" })[];
+
+  constructor(slug: string, initial?: Hydratable<PuzzleStateIntermediate>) {
+    this._slug = slug;
+    this.epoch = initial?.epoch ?? 0;
+    this.guesses = initial?.guesses ?? [];
+  }
+
+  reduce(entry: InternalActivityLogEntry) {
+    if (entry.id > this.epoch) {
+      this.epoch = entry.id;
+    } else {
+      throw new Error(
+        `Attempting to reduce activity log entry ${entry.id} on top of team state that already includes ${this.epoch}`,
+      );
+    }
+    if (entry.type === "puzzle_guess_submitted" && entry.slug === this._slug) {
+      this.guesses.push(entry);
+    }
+    return this;
+  }
+
+  get slug() {
+    return this._slug;
+  }
+
+  static redisKey(slug: string) {
+    return `puzzle_state_intermediate/${slug}`;
+  }
+
+  dehydrate(): Hydratable<PuzzleStateIntermediate> {
+    return {
+      epoch: this.epoch,
+      guesses: this.guesses,
+    };
   }
 }
