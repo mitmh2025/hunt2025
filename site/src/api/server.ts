@@ -928,10 +928,6 @@ export async function getRouter({
             };
           }
 
-          const cannedResponseProvidesPrize =
-            puzzle?.canned_responses.some(
-              (cr) => cr.providesSolveReward === true,
-            ) ?? false;
           const defaultPrize = slot.slot.is_meta ? 0 : 1;
           const prize = slot.slot.prize ?? defaultPrize;
           const strongCurrencyPrize = slot.slot.strong_currency_prize ?? 0;
@@ -1050,11 +1046,17 @@ export async function getRouter({
                 // This was a new guess.
                 if (correct_answer) {
                   // It was right and the puzzle is now solved.
+                  const hasGottenRewardFromCannedResponse = puzzle_log.some(
+                    (e) => e.type === "puzzle_partially_solved",
+                  );
+
                   await mutator.appendLog({
                     team_id,
                     slug,
                     type: "puzzle_solved",
-                    currency_delta: cannedResponseProvidesPrize ? 0 : prize,
+                    currency_delta: hasGottenRewardFromCannedResponse
+                      ? 0
+                      : prize,
                     strong_currency_delta: strongCurrencyPrize,
                     data: {
                       answer: canonical_input,
@@ -1462,15 +1464,16 @@ export async function getRouter({
                 return { error: "PUZZLE_NOT_UNLOCKED" as const };
               }
 
-              if (
-                data.puzzles_solved.has(slug) ||
-                // Forbid buying answers to puzzles that have been partially solved -- we
-                // have already granted the key for the partial solve, and we don't want to
-                // allow teams to get an extra key for the same puzzle.
-                data.puzzles_partially_solved.has(slug)
-              ) {
+              if (data.puzzles_solved.has(slug)) {
                 return { error: "PUZZLE_ALREADY_SOLVED" as const };
               }
+
+              const hasGottenRewardFromCannedResponse = mutator.log.some(
+                (e) =>
+                  e.type === "puzzle_partially_solved" &&
+                  e.slug === slug &&
+                  e.team_id === team_id,
+              );
 
               const answer = puzzle.answer;
 
@@ -1503,7 +1506,9 @@ export async function getRouter({
                 // normally grant the prize for a partial answer, since the team
                 // won't end up submitting the partial answer and we don't want
                 // to deny them the prize.
-                currency_delta: slot.prize ?? 1,
+                currency_delta: hasGottenRewardFromCannedResponse
+                  ? 0
+                  : slot.prize ?? 1,
                 data: {
                   answer,
                 },

@@ -53,11 +53,7 @@ export function eventsState(
 
   const puzzlesCanBuyAnswerTo = [];
   for (const [slug, puzzle] of Object.entries(teamState.puzzles)) {
-    if (
-      puzzle.answer !== undefined ||
-      puzzle.locked !== "unlocked" ||
-      puzzle.partially_solved === true
-    ) {
+    if (puzzle.answer !== undefined || puzzle.locked !== "unlocked") {
       continue;
     }
 
@@ -66,6 +62,8 @@ export function eventsState(
       puzzlesCanBuyAnswerTo.push(buyableAnswer);
     }
   }
+
+  puzzlesCanBuyAnswerTo.sort((a, b) => a.title.localeCompare(b.title));
 
   return {
     epoch: teamState.epoch,
