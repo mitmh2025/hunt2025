@@ -290,17 +290,17 @@ const Mute = styled.div`
   border-color: transparent transparent transparent var(--black);
   border-style: double;
   border-width: 0px 0px 0px 12px;
-  height: 20px;
+  height: 14px;
   margin-top: 2px;
 `;
 
 const Unmute = styled.div`
   border-color: transparent transparent transparent var(--black);
   border-style: solid;
-  border-width: 10px 0 10px 16px;
-  height: 20px;
+  border-width: 7px 0 7px 10px;
+  height: 14px;
   margin-top: 2px;
-  margin-left: 4px;
+  margin-left: 3px;
 `;
 
 const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
