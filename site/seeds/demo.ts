@@ -3,9 +3,15 @@ import {
   type ActivityLogMutator,
   activityLog,
   registerTeam,
+  type PuzzleStateLogMutator,
+  puzzleStateLog,
 } from "../src/api/data";
 import { retryOnAbort } from "../src/api/db";
 import { PUZZLES } from "../src/frontend/puzzles";
+import {
+  orderedQuixoticSubpuzzleSlugs,
+  quixoticSubpuzzleDataBySlug,
+} from "../src/frontend/puzzles/quixotic-shoe";
 import HUNT from "../src/huntdata";
 import { getSlotSlug, getSlugsBySlot } from "../src/huntdata/logic";
 
@@ -79,6 +85,8 @@ export async function seed(knex: Knex): Promise<void> {
         },
       );
     }
+
+    return team_id;
   };
 
   const ensureActivityLogEntry = async (
@@ -104,6 +112,28 @@ export async function seed(knex: Knex): Promise<void> {
         team_id,
         type,
         slug,
+      });
+    }
+  };
+
+  const ensurePuzzleLogEntry = async (
+    mutator: PuzzleStateLogMutator,
+    team_id: number,
+    slug: string,
+    data: Record<string, unknown>,
+  ) => {
+    if (
+      !mutator.log.some(
+        (entry) =>
+          entry.team_id === team_id &&
+          entry.slug === slug &&
+          JSON.stringify(entry.data) === JSON.stringify(data),
+      )
+    ) {
+      await mutator.appendLog({
+        team_id,
+        slug,
+        data,
       });
     }
   };
@@ -294,6 +324,295 @@ export async function seed(knex: Knex): Promise<void> {
     await ensurePuzzleSolved(mutator, team_id, "papas_bookcase");
     await ensurePuzzleSolved(mutator, team_id, "papas_stash");
   });
+
+  // quixotic-shoe test teams
+  const qsPuzzleUnlockGate = "ptg03";
+  await createTeam("qs1", async (team_id, mutator) => {
+    // puzzle unlocked
+    await ensureActivityLogEntry(
+      mutator,
+      team_id,
+      "gate_completed",
+      qsPuzzleUnlockGate,
+    );
+  });
+
+  const qsPuzzles = [
+    {
+      slug: "hellfresh",
+      discoveryGate: "ptg04",
+      solveGate: "ptg09",
+      answer: "HOTWINGS",
+    },
+    {
+      slug: "betteroprah",
+      discoveryGate: "ptg05",
+      solveGate: "ptg10",
+      answer: "MOVE",
+    },
+    {
+      slug: "hardlysafe",
+      discoveryGate: "ptg06",
+      solveGate: "ptg11",
+      answer: "IMAGE",
+    },
+    {
+      slug: "draughtqueens",
+      discoveryGate: "ptg07",
+      solveGate: "ptg12",
+      answer: "CARTEL",
+    },
+    {
+      slug: "townsquarespace",
+      discoveryGate: "ptg08",
+      solveGate: "ptg13",
+      answer: "BEEF",
+    },
+  ];
+  const qsMartiniUnlockGate = "ptg14";
+  const qsMartiniCompleteGate = "ptg15";
+  const qs2Team = await createTeam("qs2", async (team_id, mutator) => {
+    // subpuzzles discovered; 1, 3, and 5 solved
+    for (const gate of [
+      qsPuzzleUnlockGate,
+      ...qsPuzzles.map((p) => p.discoveryGate),
+      qsPuzzles[0]?.solveGate,
+      qsPuzzles[2]?.solveGate,
+      qsPuzzles[4]?.solveGate,
+    ]) {
+      gate &&
+        (await ensureActivityLogEntry(
+          mutator,
+          team_id,
+          "gate_completed",
+          gate,
+        ));
+    }
+  });
+  await puzzleStateLog.executeMutation(
+    qs2Team,
+    undefined,
+    knex,
+    async (_, mutator) => {
+      for (const { slug, answer } of qsPuzzles) {
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs2Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_unlocked",
+            subpuzzle_slug: slug,
+            subpuzzle_name: quixoticSubpuzzleDataBySlug[slug]?.subpuzzle_name,
+            order: orderedQuixoticSubpuzzleSlugs.indexOf(slug),
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs2Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_guess_submitted",
+            subpuzzle_slug: slug,
+            canonical_input: "WRONG",
+            status: "incorrect",
+            response: "Incorrect",
+          },
+        );
+
+        if (
+          slug === "hellfresh" ||
+          slug === "hardlysafe" ||
+          slug === "townsquarespace"
+        ) {
+          await ensurePuzzleLogEntry(
+            mutator,
+            qs2Team,
+            "and_now_a_puzzling_word_from_our_sponsors",
+            {
+              type: "subpuzzle_guess_submitted",
+              subpuzzle_slug: slug,
+              canonical_input: answer,
+              status: "correct",
+              response: "Correct!",
+            },
+          );
+
+          await ensurePuzzleLogEntry(
+            mutator,
+            qs2Team,
+            "and_now_a_puzzling_word_from_our_sponsors",
+            {
+              type: "subpuzzle_solved",
+              subpuzzle_slug: slug,
+              answer,
+            },
+          );
+        }
+      }
+    },
+  );
+
+  const qs3Team = await createTeam("qs3", async (team_id, mutator) => {
+    // all subpuzzles solved; martini pickup unlocked
+    for (const gate of [
+      qsPuzzleUnlockGate,
+      ...qsPuzzles.map((p) => p.discoveryGate),
+      ...qsPuzzles.map((p) => p.solveGate),
+      qsMartiniUnlockGate,
+    ]) {
+      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
+    }
+  });
+  await puzzleStateLog.executeMutation(
+    qs3Team,
+    undefined,
+    knex,
+    async (_, mutator) => {
+      for (const { slug, answer } of qsPuzzles) {
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs3Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_unlocked",
+            subpuzzle_slug: slug,
+            subpuzzle_name: quixoticSubpuzzleDataBySlug[slug]?.subpuzzle_name,
+            order: orderedQuixoticSubpuzzleSlugs.indexOf(slug),
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs3Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_guess_submitted",
+            subpuzzle_slug: slug,
+            canonical_input: "WRONG",
+            status: "incorrect",
+            response: "Incorrect",
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs3Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_guess_submitted",
+            subpuzzle_slug: slug,
+            canonical_input: answer,
+            status: "correct",
+            response: "Correct!",
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs3Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_solved",
+            subpuzzle_slug: slug,
+            answer,
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs3Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "all_subpuzzles_solved",
+            subpuzzle_slug: slug,
+            ...quixoticSubpuzzleDataBySlug[slug],
+          },
+        );
+      }
+    },
+  );
+
+  const qs4Team = await createTeam("qs4", async (team_id, mutator) => {
+    // martini pickup completed
+    for (const gate of [
+      qsPuzzleUnlockGate,
+      ...qsPuzzles.map((p) => p.discoveryGate),
+      ...qsPuzzles.map((p) => p.solveGate),
+      qsMartiniUnlockGate,
+      qsMartiniCompleteGate,
+    ]) {
+      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
+    }
+  });
+  await puzzleStateLog.executeMutation(
+    qs4Team,
+    undefined,
+    knex,
+    async (_, mutator) => {
+      for (const { slug, answer } of qsPuzzles) {
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs4Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_unlocked",
+            subpuzzle_slug: slug,
+            subpuzzle_name: quixoticSubpuzzleDataBySlug[slug]?.subpuzzle_name,
+            order: orderedQuixoticSubpuzzleSlugs.indexOf(slug),
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs4Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_guess_submitted",
+            subpuzzle_slug: slug,
+            canonical_input: "WRONG",
+            status: "incorrect",
+            response: "Incorrect",
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs4Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_guess_submitted",
+            subpuzzle_slug: slug,
+            canonical_input: answer,
+            status: "correct",
+            response: "Correct!",
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs4Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "subpuzzle_solved",
+            subpuzzle_slug: slug,
+            answer,
+          },
+        );
+
+        await ensurePuzzleLogEntry(
+          mutator,
+          qs4Team,
+          "and_now_a_puzzling_word_from_our_sponsors",
+          {
+            type: "all_subpuzzles_solved",
+            subpuzzle_slug: slug,
+            ...quixoticSubpuzzleDataBySlug[slug],
+          },
+        );
+      }
+    },
+  );
 
   const all_team_ids: number[] = await knex("teams").select("id").pluck("id");
   for (const team_id of all_team_ids) {

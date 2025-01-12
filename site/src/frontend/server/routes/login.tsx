@@ -33,6 +33,10 @@ export function hackLoginGetHandler(_req: Request) {
               <option value="is1">Illegal Search (Stage 1)</option>
               <option value="is2">Illegal Search (Stage 2)</option>
               <option value="is3">Illegal Search (Stage 3)</option>
+              <option value="qs1">Quixotic Shoe (Stage 1)</option>
+              <option value="qs2">Quixotic Shoe (Stage 2)</option>
+              <option value="qs3">Quixotic Shoe (Stage 3)</option>
+              <option value="qs4">Quixotic Shoe (Stage 4)</option>
               <option value="loadtest1">Load Test 1</option>
               <option value="loadtestearly1">Early Load Test 1</option>
             </select>
