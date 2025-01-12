@@ -1,5 +1,10 @@
 import { styled } from "styled-components";
-import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
+import {
+  PuzzleBacklink,
+  PuzzleHeader,
+  PuzzleMain,
+  PuzzleWrapper,
+} from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 
 const BaseIllegalSearchHeader = styled(PuzzleHeader)`
@@ -139,6 +144,30 @@ export const BlacklightIllegalSearchHeader = styled(BaseIllegalSearchHeader)`
 `;
 
 export const IllegalSearchHeader = styled(BaseIllegalSearchHeader)``;
+
+// !important to override specificity from the top level PuzzleWrapper a selector, RIP
+export const IllegalSearchBacklink = styled(PuzzleBacklink)`
+  font-family: "Alegreya SC";
+  color: var(--white) !important;
+  text-decoration-color: var(--white) !important;
+  &:hover {
+    color: var(--gray-100) !important;
+    text-decoration-color: var(--gray-100) !important;
+  }
+`;
+
+export const IllegalSearchBacklinkBlacklight = styled(IllegalSearchBacklink)`
+  text-shadow:
+    0.25em 0.065em 0.06em #3d0a4933,
+    -0.25em 0.06em 0.06em var(--purple-900),
+    0 0 0.5em #e993ff,
+    0 0 0.75em #ffffff88,
+    0 0 1em black;
+  &:hover {
+    color: #f6d4ff !important;
+    text-decoration-color: #f6d4ff !important;
+  }
+`;
 
 const BaseIllegalSearchWrapper = styled(PuzzleWrapper)`
   background-color: #657056;

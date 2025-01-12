@@ -42,10 +42,16 @@ const PuzzleHeader = styled.header`
   }
 `;
 
-const PuzzleTitle = styled.h1`
-  grid-column: 1 / 3;
+const PuzzleTitleWrapper = styled.div`
+  grid-column: 1/3;
   overflow-x: clip;
 `;
+
+const PuzzleTitle = styled.h1`
+  padding-top: 0.5rem;
+`;
+
+const PuzzleBacklink = styled.a``;
 
 const PuzzleMain = styled.main`
   padding: 2rem;
@@ -108,8 +114,10 @@ const AuthorsNoteBlock = styled.div`
 export {
   PuzzleHeader,
   PuzzleMain,
+  PuzzleBacklink,
   PuzzleFooter,
   PuzzleWrapper,
+  PuzzleTitleWrapper,
   PuzzleTitle,
   AuthorsNote,
   AuthorsNoteBlock,

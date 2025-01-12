@@ -7,6 +7,7 @@ import {
   PuzzleMain,
   PuzzleWrapper,
   PuzzleFooter,
+  PuzzleBacklink,
 } from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 
@@ -56,6 +57,10 @@ export const PaperTrailHeader = styled(PuzzleHeader)`
       font-weight: 500;
     }
   }
+`;
+
+export const PaperTrailBacklink = styled(PuzzleBacklink)`
+  margin-left: 40px;
 `;
 
 export const PaperTrailMain = styled(PuzzleMain)`

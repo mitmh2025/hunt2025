@@ -5,7 +5,15 @@ import PinImg from "../hub/assets/pin_teal.png";
 import { MissingDiamondPuzzleWitness } from "../rounds/the_missing_diamond/MissingDiamondBody";
 import { type MissingDiamondState } from "../rounds/the_missing_diamond/types";
 import { deviceMax } from "../utils/breakpoints";
-import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
+import {
+  PuzzleBacklink,
+  PuzzleHeader,
+  PuzzleMain,
+  PuzzleTitle,
+  PuzzleTitleWrapper,
+  PuzzleWrapper,
+} from "./PuzzleLayout";
+import { SolutionAnswer } from "./SolutionLayout";
 import BgLeft from "./missingDiamondAssets/bg-left.png";
 import BgRight from "./missingDiamondAssets/bg-right.png";
 import HeaderBg from "./missingDiamondAssets/roads-header.png";
@@ -14,6 +22,21 @@ const MISSING_DIAMOND_SPECIAL_PURPLE = "#b295bf";
 
 export const MissingDiamondWrapper = styled(PuzzleWrapper)`
   background: var(--white);
+`;
+
+export const MissingDiamondTitle = styled(PuzzleTitle)`
+  padding-top: 0;
+`;
+
+export const MissingDiamondBacklink = styled(PuzzleBacklink)`
+  &:hover {
+    color: var(--gold-800) !important;
+    text-decoration-color: var(--gold-800) !important;
+  }
+`;
+
+export const MissingDiamondTitleWrapper = styled(PuzzleTitleWrapper)`
+  padding-top: 1em;
 `;
 
 const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
@@ -132,6 +155,10 @@ export const MissingDiamondMain = styled(PuzzleMain)`
     3.8% auto,
     cover;
   background-repeat: repeat-y;
+`;
+
+export const MissingDiamondAnswer = styled(SolutionAnswer)`
+  margin-top: -1.5rem;
 `;
 
 export const getMissingDiamondHeader = ({

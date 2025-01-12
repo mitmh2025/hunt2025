@@ -7,6 +7,7 @@ import {
   BackgroundCheckMain,
   BackgroundCheckHeader,
   getBackgroundCheckManifestOverrides,
+  BackgroundCheckBacklink,
 } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import {
@@ -18,10 +19,16 @@ import {
   BlacklightIllegalSearchHeader,
   BlacklightIllegalSearchMain,
   BlacklightIllegalSearchWrapper,
+  IllegalSearchBacklink,
+  IllegalSearchBacklinkBlacklight,
 } from "../../components/IllegalSearchPuzzleLayout";
 import {
   getMissingDiamondHeader,
+  MissingDiamondAnswer,
+  MissingDiamondBacklink,
   MissingDiamondMain,
+  MissingDiamondTitle,
+  MissingDiamondTitleWrapper,
   MissingDiamondWrapper,
 } from "../../components/MissingDiamondPuzzleLayout";
 import {
@@ -30,10 +37,14 @@ import {
   MurderAnswer,
   MurderAcknowledgementBlock,
   MurderSpoiler,
+  MurderBacklink,
+  MurderTitle,
+  MurderTitleWrapper,
 } from "../../components/MurderPuzzleLayout";
 import {
   PaperTrailWrapper,
   PaperTrailMain,
+  PaperTrailBacklink,
   PaperTrailHeader,
   PaperTrailFooter,
   PaperTrailAnswer,
@@ -46,6 +57,8 @@ import {
   PuzzleWrapper,
   PuzzleMain,
   PuzzleFooter,
+  PuzzleBacklink,
+  PuzzleTitleWrapper,
 } from "../../components/PuzzleLayout";
 import {
   SolutionAnswer,
@@ -57,6 +70,7 @@ import {
 import Stamp from "../../components/SparkleStamps";
 import Spoiler from "../../components/Spoiler";
 import {
+  StakeoutBacklink,
   StakeoutHeader,
   StakeoutMain,
   StakeoutWrapper,
@@ -64,6 +78,7 @@ import {
 import { PUZZLES, SUBPUZZLES } from "../../puzzles";
 import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
 import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
+import { NODE_IDS_BY_PUZZLE_SLUG } from "../../rounds/illegal_search/graph";
 import { MurderFonts } from "../../rounds/murder_in_mitropolis/MurderFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
@@ -78,7 +93,9 @@ const SHOW_SOLUTIONS = true as boolean;
 type ComponentManifest = {
   wrapper: React.ComponentType<any>;
   header: React.ComponentType<any>;
+  titleWrapper: React.ComponentType<any>;
   title: React.ComponentType<any>;
+  backlink: React.ComponentType<any>;
   main: React.ComponentType<any>;
   footer: React.ComponentType<any>;
   fonts?: React.ComponentType<any>; // if present, a createGlobalStyle that includes any fonts needed by any of the other components
@@ -99,17 +116,23 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     wrapper: MissingDiamondWrapper,
     main: MissingDiamondMain,
     fonts: MissingDiamondFonts,
+    title: MissingDiamondTitle,
+    backlink: MissingDiamondBacklink,
+    titleWrapper: MissingDiamondTitleWrapper,
+    answer: MissingDiamondAnswer,
     entrypoint: "the_missing_diamond_puzzle",
   },
   stakeout: {
     header: StakeoutHeader,
     main: StakeoutMain,
+    backlink: StakeoutBacklink,
     wrapper: StakeoutWrapper,
     fonts: StakeoutFonts,
   },
   illegal_search: {
     header: IllegalSearchHeader,
     main: IllegalSearchMain,
+    backlink: IllegalSearchBacklink,
     wrapper: IllegalSearchWrapper,
     fonts: IllegalSearchFonts,
     answer: IllegalSearchAnswer,
@@ -118,6 +141,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   illegal_search_blacklight: {
     header: BlacklightIllegalSearchHeader,
     main: BlacklightIllegalSearchMain,
+    backlink: IllegalSearchBacklinkBlacklight,
     wrapper: BlacklightIllegalSearchWrapper,
     fonts: IllegalSearchFonts,
     answer: IllegalSearchAnswer,
@@ -126,6 +150,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   paper_trail: {
     main: PaperTrailMain,
     header: PaperTrailHeader,
+    backlink: PaperTrailBacklink,
     wrapper: PaperTrailWrapper,
     footer: PaperTrailFooter,
     fonts: PaperTrailFonts,
@@ -136,11 +161,15 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     main: BackgroundCheckMain,
     header: BackgroundCheckHeader,
     wrapper: BackgroundCheckWrapper,
+    backlink: BackgroundCheckBacklink,
     fonts: BackgroundCheckFonts,
   },
   murder_in_mitropolis: {
     main: MurderMain,
     header: MurderHeader,
+    titleWrapper: MurderTitleWrapper,
+    title: MurderTitle,
+    backlink: MurderBacklink,
     fonts: MurderFonts,
     answer: MurderAnswer,
     acknowledgementBlock: MurderAcknowledgementBlock,
@@ -152,6 +181,8 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
 const DEFAULT_MANIFEST: ComponentManifest = {
   wrapper: PuzzleWrapper,
   header: PuzzleHeader,
+  backlink: PuzzleBacklink,
+  titleWrapper: PuzzleTitleWrapper,
   title: PuzzleTitle,
   main: PuzzleMain,
   footer: PuzzleFooter,
@@ -322,6 +353,7 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
   const PuzzleWrapperComponent = manifest.wrapper;
   const PuzzleHeaderComponent = manifest.header;
   const PuzzleTitleComponent = manifest.title;
+  const PuzzleTitleWrapperComponent = manifest.titleWrapper;
   const PuzzleMainComponent = manifest.main;
   const PuzzleFooterComponent = manifest.footer;
   const PuzzleFontsComponent = manifest.fonts;
@@ -331,9 +363,11 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
       {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
       <PuzzleWrapperComponent>
         <PuzzleHeaderComponent>
-          <PuzzleTitleComponent>
-            <span>{title}</span>
-          </PuzzleTitleComponent>
+          <PuzzleTitleWrapperComponent>
+            <PuzzleTitleComponent>
+              <span>{title}</span>
+            </PuzzleTitleComponent>
+          </PuzzleTitleWrapperComponent>
           {guessFrag}
         </PuzzleHeaderComponent>
         <PuzzleMainComponent
@@ -522,11 +556,43 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   ];
 
   const PuzzleWrapperComponent = manifest.wrapper;
+  const PuzzleTitleWrapperComponent = manifest.titleWrapper;
   const PuzzleHeaderComponent = manifest.header;
   const PuzzleTitleComponent = manifest.title;
+  const PuzzleBacklinkComponent = manifest.backlink;
   const PuzzleMainComponent = manifest.main;
   const PuzzleFooterComponent = manifest.footer;
   const PuzzleFontsComponent = manifest.fonts;
+
+  // Create a backlink, if we need one (Background Check metas construct theirs
+  // separately.)
+  let backlinkFrag = <></>;
+  const isBackgroundCheckMeta = Object.entries(
+    req.teamState.state.rounds.background_check?.slots ?? {},
+  ).find(([_slot, slotObj]: [string, { slug: string; is_meta?: boolean }]) => {
+    return slotObj.slug === slug && slotObj.is_meta;
+  });
+  if (!isBackgroundCheckMeta) {
+    let backlinkHref = `/rounds/${puzzleState.round}`;
+    let backlinkRoundTitle =
+      req.teamState.state.rounds[puzzleState.round]?.title;
+    if (puzzleState.round === "stray_leads") {
+      backlinkHref = "/rounds/stray_leads";
+      backlinkRoundTitle = "Stray Leads";
+    } else if (puzzleState.round === "illegal_search") {
+      // We want to go back to the same node we were at before.
+      const node_id = NODE_IDS_BY_PUZZLE_SLUG[slug] ?? null;
+      if (node_id) {
+        backlinkHref += `?node=${node_id}`;
+      }
+    }
+    const backlinkChildren = `← Back to ${backlinkRoundTitle}`;
+    backlinkFrag = (
+      <PuzzleBacklinkComponent href={backlinkHref}>
+        {backlinkChildren}
+      </PuzzleBacklinkComponent>
+    );
+  }
 
   const node = (
     <>
@@ -534,9 +600,12 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       <PuzzleWrapperComponent>
         <PuzzleHeaderComponent>
           {puzzleState.answer && <Stamp />}
-          <PuzzleTitleComponent>
-            <span>{title}</span>
-          </PuzzleTitleComponent>
+          <PuzzleTitleWrapperComponent>
+            {backlinkFrag}
+            <PuzzleTitleComponent>
+              <span>{title}</span>
+            </PuzzleTitleComponent>
+          </PuzzleTitleWrapperComponent>
           {/* TODO: add guess form, history, errata, etc. */}
           {guessFrag}
         </PuzzleHeaderComponent>
@@ -728,6 +797,8 @@ export function solutionHandler(req: Request<PuzzleParams>) {
 
   const SolutionWrapperComponent = manifest.wrapper;
   const SolutionHeaderComponent = manifest.header;
+  const SolutionTitleWrapperComponent = manifest.titleWrapper;
+  const SolutionBacklinkComponent = manifest.backlink;
   const SolutionTitleComponent = manifest.title;
   const SolutionMainComponent = manifest.main;
   const SolutionFooterComponent = manifest.footer;
@@ -752,6 +823,22 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     ),
   );
 
+  // Create a backlink, if we need one (Background Check metas construct theirs
+  // separately.)
+  let backlinkFrag = <></>;
+  const isBackgroundCheckMeta = Object.entries(
+    req.teamState.state.rounds.background_check?.slots ?? {},
+  ).find(([_slot, slotObj]: [string, { slug: string; is_meta?: boolean }]) => {
+    return slotObj.slug === slug && slotObj.is_meta;
+  });
+  if (!isBackgroundCheckMeta) {
+    backlinkFrag = (
+      <SolutionBacklinkComponent href={`/puzzles/${slug}`}>
+        ← Back to puzzle
+      </SolutionBacklinkComponent>
+    );
+  }
+
   const answer = puzzle.answer;
   const inlineScript = `window.hints = ${JSON.stringify(puzzle.hints)}; window.cannedResponses = ${JSON.stringify(puzzle.canned_responses)};`;
   const node = (
@@ -759,7 +846,10 @@ export function solutionHandler(req: Request<PuzzleParams>) {
       {SolutionFontsComponent ? <SolutionFontsComponent /> : undefined}
       <SolutionWrapperComponent>
         <SolutionHeaderComponent>
-          <SolutionTitleComponent>Solution to {title}</SolutionTitleComponent>
+          <SolutionTitleWrapperComponent>
+            {backlinkFrag}
+            <SolutionTitleComponent>Solution to {title}</SolutionTitleComponent>
+          </SolutionTitleWrapperComponent>
           <SolutionAnswerComponent>
             Answer:{" "}
             <SolutionSpoilerComponent>{answer}</SolutionSpoilerComponent>

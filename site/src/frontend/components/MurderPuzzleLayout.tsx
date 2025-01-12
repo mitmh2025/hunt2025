@@ -5,7 +5,13 @@ import BorderSide from "../rounds/murder_in_mitropolis/assets/border-side.svg";
 import Border from "../rounds/murder_in_mitropolis/assets/border.svg";
 import Skyline from "../rounds/murder_in_mitropolis/assets/skyline.svg";
 import { deviceMax } from "../utils/breakpoints";
-import { PuzzleHeader, PuzzleMain } from "./PuzzleLayout";
+import {
+  PuzzleBacklink,
+  PuzzleHeader,
+  PuzzleMain,
+  PuzzleTitle,
+  PuzzleTitleWrapper,
+} from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 import Spoiler from "./Spoiler";
 
@@ -61,6 +67,26 @@ export const MurderHeader = styled(PuzzleHeader)`
       font-family: var(--body-font);
       font-size: 1rem;
     }
+  }
+`;
+
+export const MurderTitleWrapper = styled(PuzzleTitleWrapper)`
+  margin-top: 1rem;
+`;
+
+export const MurderTitle = styled(PuzzleTitle)`
+  padding-top: 0;
+`;
+
+// !important to override specificity from top level PuzzleWrapper a selector, RIP
+export const MurderBacklink = styled(PuzzleBacklink)`
+  font-size: 1.25rem;
+  font-family: "Eccentric";
+  color: var(--gold-400) !important;
+  text-decoration-color: var(--gold-400) !important;
+  &:hover {
+    color: var(--gold-600) !important;
+    text-decoration-color: var(--gold-600) !important;
   }
 `;
 

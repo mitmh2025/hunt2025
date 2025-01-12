@@ -1,6 +1,11 @@
 import { styled } from "styled-components";
 import { deviceMax } from "../utils/breakpoints";
-import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
+import {
+  PuzzleBacklink,
+  PuzzleHeader,
+  PuzzleMain,
+  PuzzleWrapper,
+} from "./PuzzleLayout";
 import Bg from "./stakeoutAssets/envelope-bg.png";
 
 export const StakeoutWrapper = styled(PuzzleWrapper)`
@@ -51,6 +56,13 @@ export const StakeoutHeader = styled(PuzzleHeader)`
     transform: rotate(1deg) translateX(2rem);
     padding-bottom: 2rem;
   }
+`;
+
+export const StakeoutBacklink = styled(PuzzleBacklink)`
+  font-size: 1.5rem;
+  color: var(--true-black);
+  text-decoration-color: var(--gray-800);
+  font-family: "Just Another Hand";
 `;
 
 export const StakeoutMain = styled(PuzzleMain)`
