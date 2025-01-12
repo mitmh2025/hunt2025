@@ -55,7 +55,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["FORENAME RYAN"],
-      reply: "Keep going",
+      reply: "Keep going!",
     },
   ],
 };
