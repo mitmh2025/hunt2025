@@ -1,10 +1,14 @@
-from locust import task, run_single_user
+from locust import task, run_single_user, events
 from locust import FastHttpUser
 import random
 from lib.websocket import WSClient
 from lib.admin_token import mint_admin_token
 
 SOCKETS_PER_USER = 5
+
+@events.init_command_line_parser.add_listener
+def _(parser):
+    parser.add_argument("--api-base-url", type=str, env_var="API_BASE_URL", default="http://localhost:3000/api", help="API base URL")
 
 
 class late_load_test(FastHttpUser):
@@ -15,6 +19,9 @@ class late_load_test(FastHttpUser):
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"macOS"',
     }
+
+    def api_rest(self, method, endpoint, *args, **kwargs):
+        return self.rest(method, f"{self.environment.parsed_options.api_base_url}{endpoint}", *args, **kwargs)
 
     @task(10)
     def team_task(self):
@@ -117,16 +124,16 @@ class late_load_test(FastHttpUser):
                 solved = True
 
         if not solved:
-            with self.rest(
+            with self.api_rest(
                 "PUT",
-                "/api/puzzle/give_this_grid_a_shake/guess",
+                "/puzzle/give_this_grid_a_shake/guess",
                 headers={},
                 json={"guess": "ABC"},
             ) as resp:
                 pass
-            with self.rest(
+            with self.api_rest(
                 "PUT",
-                "/api/puzzle/give_this_grid_a_shake/guess",
+                "/puzzle/give_this_grid_a_shake/guess",
                 headers={},
                 json={"guess": "THE BLACK MARKET"},
             ) as resp:
@@ -169,16 +176,16 @@ class late_load_test(FastHttpUser):
                 solved = True
 
         if not solved:
-            with self.rest(
+            with self.api_rest(
                 "PUT",
-                "/api/puzzle/cross_dash_word/guess",
+                "/puzzle/cross_dash_word/guess",
                 headers={},
                 json={"guess": "ABC"},
             ) as resp:
                 pass
-            with self.rest(
+            with self.api_rest(
                 "PUT",
-                "/api/puzzle/cross_dash_word/guess",
+                "/puzzle/cross_dash_word/guess",
                 headers={},
                 json={"guess": "DEAD BIRD"},
             ) as resp:
@@ -217,41 +224,41 @@ class late_load_test(FastHttpUser):
         }
 
         # Request full activity logs
-        with self.client.request(
-            "GET", "/api/frontend/log/team", catch_response=True, headers=headers
+        with self.client.api_rest(
+            "GET", "/frontend/log/team", catch_response=True, headers=headers
         ) as resp:
             pass
-        with self.client.request(
-            "GET", "/api/frontend/log/activity", catch_response=True, headers=headers
+        with self.client.api_rest(
+            "GET", "/frontend/log/activity", catch_response=True, headers=headers
         ) as resp:
             pass
-        with self.client.request(
-            "GET", "/api/admin/puzzles", catch_response=True, headers=headers
+        with self.client.api_rest(
+            "GET", "/admin/puzzles", catch_response=True, headers=headers
         ) as resp:
             pass
-        with self.client.request(
-            "GET", "/api/admin/account", catch_response=True, headers=headers
+        with self.client.api_rest(
+            "GET", "/admin/account", catch_response=True, headers=headers
         ) as resp:
             pass
 
         # Global key grant, puzzle unlock, and gate satisfy
-        with self.rest(
+        with self.api_rest(
             "POST",
-            "/api/admin/grantKeys",
+            "/admin/grantKeys",
             json={"teamIds": "all", "amount": 3},
             headers=headers,
         ) as resp:
             pass
-        with self.rest(
+        with self.api_rest(
             "POST",
-            "/api/admin/puzzles/weirdo_threaded_doodads/unlock",
+            "/admin/puzzles/weirdo_threaded_doodads/unlock",
             json={"teamIds": "all"},
             headers=headers,
         ) as resp:
             pass
-        with self.rest(
+        with self.api_rest(
             "POST",
-            "/api/admin/gates/tmg03/satisfy",
+            "/admin/gates/tmg03/satisfy",
             json={"teamIds": "all"},
             headers=headers,
         ) as resp:
