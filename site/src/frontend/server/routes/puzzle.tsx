@@ -353,6 +353,7 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
   const PuzzleWrapperComponent = manifest.wrapper;
   const PuzzleHeaderComponent = manifest.header;
   const PuzzleTitleComponent = manifest.title;
+  const PuzzleTitleWrapperComponent = manifest.titleWrapper;
   const PuzzleMainComponent = manifest.main;
   const PuzzleFooterComponent = manifest.footer;
   const PuzzleFontsComponent = manifest.fonts;
@@ -362,9 +363,11 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
       {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
       <PuzzleWrapperComponent>
         <PuzzleHeaderComponent>
-          <PuzzleTitleComponent>
-            <span>{title}</span>
-          </PuzzleTitleComponent>
+          <PuzzleTitleWrapperComponent>
+            <PuzzleTitleComponent>
+              <span>{title}</span>
+            </PuzzleTitleComponent>
+          </PuzzleTitleWrapperComponent>
           {guessFrag}
         </PuzzleHeaderComponent>
         <PuzzleMainComponent
