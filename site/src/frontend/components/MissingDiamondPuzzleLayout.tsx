@@ -1,6 +1,7 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import Pin from "../hub/assets/pin_teal.png";
+import { Pin } from "../hub/HubBody";
+import PinImg from "../hub/assets/pin_teal.png";
 import { deviceMax } from "../utils/breakpoints";
 import { PuzzleHeader, PuzzleMain, PuzzleWrapper } from "./PuzzleLayout";
 import BgLeft from "./missingDiamondAssets/bg-left.png";
@@ -15,21 +16,13 @@ export const MissingDiamondWrapper = styled(PuzzleWrapper)`
 
 const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
   position: relative;
-  background-image: url(${Pin}), url(${Pin}), url(${HeaderBg}), url(${BgLeft}),
-    url(${BgRight});
-  background-position:
-    top 16px left 16px,
-    top 16px right 16px,
-    top,
-    left,
-    right;
+  background-image: url(${HeaderBg}), url(${BgLeft}), url(${BgRight});
+  background-position: top, left, right;
   background-size:
-    18px,
-    18px,
     contain,
     3.8% auto,
     3.8% auto;
-  background-repeat: no-repeat, no-repeat, no-repeat, repeat-y, repeat-y;
+  background-repeat: no-repeat, repeat-y, repeat-y;
   background-color: ${MISSING_DIAMOND_SPECIAL_PURPLE};
   padding-left: 5rem;
 
@@ -115,6 +108,13 @@ const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
   }
 `;
 
+const CornerPin = styled(Pin)<{ $x: number; $y: number; $right?: boolean }>`
+  top: ${(props) => `${props.$y}px`};
+  left: ${(props) => (props.$right ? "auto" : `${props.$x}px`)};
+  right: ${(props) => (props.$right ? `${props.$x}px` : "auto")};
+  width: 18px;
+`;
+
 export const MissingDiamondMain = styled(PuzzleMain)`
   background: url(${BgLeft}), url(${BgRight});
   /* linear-gradient(
@@ -147,6 +147,8 @@ export const getMissingDiamondHeader = ({
           <img src={asset} alt="" />
           <h3>{witnessName}</h3>
         </div>
+        <CornerPin $x={16} $y={16} src={PinImg} />
+        <CornerPin $x={16} $y={16} $right={true} src={PinImg} />
       </MissingDiamondHeaderWrapper>
     );
   };
