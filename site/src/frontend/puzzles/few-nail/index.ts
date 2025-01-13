@@ -198,7 +198,12 @@ const puzzle: PuzzleDefinition = {
         "The puzzle is themed around misspellings. Ordering the extracted synonyms according to the punctuation in A Pickle for the Knowing Ones will produce a string of words that, phonetically, spell out the answer, matching the given enumeration (6 7 9).",
     },
   ],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["AND SIR VAN PIE IRE BUD TURF LIE"],
+      reply: "Keep going!",
+    },
+  ],
   router,
 };
 
