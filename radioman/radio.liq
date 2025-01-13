@@ -98,8 +98,8 @@ def check(r)
         true
     end
 end
-
-background_music_next = randomizer(environment.get("MUSIC_DIR"), pattern="*.mp3")
+background_music_dir = environment.get("MUSIC_DIR")
+background_music_next = randomizer(background_music_dir, pattern="*.mp3")
 
 # Tier 2 - Station break
 
@@ -324,6 +324,8 @@ regular_stream.on_metadata(fun (m) -> begin
 end)
 regular_stream.on_track(fun (m) -> print("on_track #{m}"))
 
+fade_regular_stream = fade.on_skip(duration=3., replaygain(regular_stream))
+
 # last_break_time = ref(0.)
 # after_music = ref(false)
 # background_music.on_track(fun (_) -> after_music := true)
@@ -354,7 +356,7 @@ stream = fallback(
         pred_or_skip(
             id="regular_stream_pred_or_skip",
             {not source.is_ready(virtual_interaction)},
-            fade.on_skip(duration=3., replaygain(regular_stream)),
+            fade_regular_stream,
         ),
     ]
 )
@@ -398,13 +400,32 @@ def apply_team_state(new) =
     # TODO: hunt_closed -> radio-signoff
 
     if inserted_content() != [] then
-        # TODO: skip current track?
-        print("inserting urgent content #{inserted_content()}")
-        # TODO: Try not to insert in the middle of an existing announcement
-        queue().set_queue([
-            ...inserted_content(),
-            ...queue().queue(),
-        ])
+        m = null.default(queue().last_metadata(), {[]})
+        if string.contains(
+            m["initial_uri"],
+            substring=background_music_dir
+        ) then
+            # Currently playing music - preempt
+            print("inserting urgent content #{inserted_content()} at front")
+            queue().set_queue([
+                ...inserted_content(),
+                ...queue().queue(),
+            ])
+            fade_regular_stream.skip()
+        else
+            old_queue = queue().queue()
+            first_music = list.index(
+                fun (r) -> begin
+                    m = request.metadata(r)
+                    string.contains(m["initial_uri"], substring=background_music_dir)
+                end, old_queue)
+            print("appending urgent content #{inserted_content()} at index #{first_music}")
+            queue().set_queue([
+                ...list.slice(old_queue, length=first_music),
+                ...inserted_content(),
+                ...list.slice(old_queue, offset=first_music),
+            ])
+        end
     end
 
     team_state := new
