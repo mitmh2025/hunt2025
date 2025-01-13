@@ -9,6 +9,7 @@ import {
   connect as redisConnect,
   activityLog,
   teamRegistrationLog,
+  puzzleStateLog,
 } from "hunt2025/src/api/redis";
 import { newLogTailer } from "hunt2025/src/frontend/server/dataset_tailer";
 import HUNT from "hunt2025/src/huntdata";
@@ -54,6 +55,7 @@ const RadioTeamStateSchema = z.object({
   team_id: z.number(),
   epoch: z.number(),
   quixotic_shoe_enabled: z.boolean(),
+  mystery_hunt_minus_enabled: z.boolean(),
   icy_box_enabled: z.boolean(),
   interaction: z.string(),
   flags: z.array(z.string()),
@@ -181,8 +183,17 @@ async function main({
   });
   teamRegistrationLogTailer.start();
 
+  const puzzleStateLogTailer = newLogTailer({
+    redisClient,
+    fetchMethod:
+      frontendApiClient.getFullPuzzleStateLog.bind(frontendApiClient),
+    log: puzzleStateLog,
+  });
+  puzzleStateLogTailer.start();
+
   const teamInfos = new Map<number, TeamInfoIntermediate>();
   const teamStates = new Map<number, TeamStateIntermediate>();
+  const teamAdFrequency = new Map<number, "plus" | "minus">();
   let emptyTeamState = new TeamStateIntermediate(HUNT);
 
   const teamInfoSyncQueue = new Queue(1);
@@ -391,10 +402,13 @@ async function main({
   const processTeamState = (teamId: number) => {
     // We received activity log update(s) for the team.
     const teamState = teamStates.get(teamId) ?? emptyTeamState;
+    const adFrequency = teamAdFrequency.get(teamId);
     const radioTeamState: RadioTeamState = {
       team_id: teamId,
       epoch: teamState.epoch,
-      quixotic_shoe_enabled: teamState.gates_satisfied.has("ptg03"),
+      quixotic_shoe_enabled:
+        teamState.gates_satisfied.has("ptg03") && adFrequency !== "plus",
+      mystery_hunt_minus_enabled: adFrequency === "minus",
       icy_box_enabled: teamState.gates_satisfied.has("ptg16"),
       interaction:
         [
@@ -442,6 +456,38 @@ async function main({
   });
 
   await teamRegistrationLogTailer.readyPromise();
+
+  puzzleStateLogTailer.watchLog((items) => {
+    const modified = new Set<number>();
+    for (const entry of items) {
+      if (
+        entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
+        entry.data.type === "ad_frequency"
+      ) {
+        if (entry.data.frequency === "plus") {
+          teamAdFrequency.set(entry.team_id, "plus");
+        } else if (entry.data.frequency === "minus") {
+          teamAdFrequency.set(entry.team_id, "minus");
+        } else {
+          teamAdFrequency.delete(entry.team_id);
+        }
+
+        modified.add(entry.team_id);
+      }
+    }
+    console.log("After batch puzzle state", teamAdFrequency);
+    for (const teamId of modified) {
+      teamStateSyncQueue
+        .exec(() => {
+          processTeamState(teamId);
+        })
+        .catch((err: unknown) => {
+          console.warn(err);
+        });
+    }
+  });
+
+  await puzzleStateLogTailer.readyPromise();
 
   // uid to AbortController
   const podSyncers = new Map<string, AbortController>();
