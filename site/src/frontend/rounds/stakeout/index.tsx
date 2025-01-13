@@ -2,7 +2,7 @@ import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import StakeoutBody from "./StakeoutBody";
-import metaEnvelope from "./assets/meta_envelope_full.png";
+import metaEnvelope from "./assets/meta_envelope.png";
 import polaroidDeveloping from "./assets/polaroid_developing_photo_only.png";
 import polaroidSolved01 from "./assets/stakeout_01.jpg";
 import polaroidSolved02 from "./assets/stakeout_02.jpg";
@@ -118,7 +118,7 @@ function stakeoutOverlay(teamState: TeamHuntState): StakeoutState["overlay"] {
     right: "-90px",
     // Left, top, and transform are used to specify the offset for the puzzle link
     left: "87px",
-    top: "157px",
+    top: "147px",
     transform: "rotate(-17deg)",
   };
 }

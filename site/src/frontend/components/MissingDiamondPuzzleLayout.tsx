@@ -72,6 +72,10 @@ const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
     }
   }
 
+  .solved-stamp {
+    right: 5em;
+  }
+
   @media ${deviceMax.md} {
     padding-left: 7vw;
     padding-right: 7vw;
