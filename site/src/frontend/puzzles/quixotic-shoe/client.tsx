@@ -349,7 +349,7 @@ const App = ({
               if (answer) {
                 return (
                   <SubpuzzleLink
-                    key={`subpuzzle-${i}`}
+                    key={`tiled-${subpuzzle_name}`}
                     title={subpuzzle_name}
                     slug={subpuzzle_slug}
                     solved={true}
