@@ -4,7 +4,7 @@ import { type ActivityLogEntry } from "../../../lib/api/client";
 import logoIcon from "../../assets/logo-simple.svg";
 import { PuzzleIcon } from "./PuzzleLink";
 
-const HuntIcon = styled.span`
+export const HuntIcon = styled.span`
   display: inline-block;
   width: 24px;
   height: 24px;

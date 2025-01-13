@@ -28,11 +28,20 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
       title: "The Vault",
     });
   }
+
+  const runningInteractions = Object.values(teamState.rounds).flatMap((round) =>
+    Object.entries(round.interactions ?? {}).flatMap(
+      ([slug, { title, state, virtual }]) =>
+        state === "running" ? [{ slug, title, virtual }] : [],
+    ),
+  );
+
   return {
     epoch: teamState.epoch,
     rounds,
     currency: teamState.currency,
     strongCurrency: teamState.strong_currency,
+    runningInteractions,
   };
 }
 

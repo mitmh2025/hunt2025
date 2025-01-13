@@ -64,6 +64,7 @@ export const InteractionStateSchema = z.object({
   title: z.string(),
   state: z.enum(["unlocked", "running", "completed"]),
   result: z.string().optional(), // an interaction-specific result which may be reflected elsewhere in the UI
+  virtual: z.boolean(),
 });
 
 export type InteractionState = z.infer<typeof InteractionStateSchema>;

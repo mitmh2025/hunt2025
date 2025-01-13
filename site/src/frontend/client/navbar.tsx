@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { type ActivityLogEntry, type TeamInfo } from "../../../lib/api/client";
 import celebration from "../../assets/radio/celebration.mp3";
-import { formatActivityLogEntry } from "../components/ActivityLog";
+import { HuntIcon, formatActivityLogEntry } from "../components/ActivityLog";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import Notifications, {
   type NotificationsHandle,
@@ -89,7 +89,28 @@ const NavBarManager = ({
 
   return (
     <>
-      <Notifications ref={notifications} maxNotifications={5} />
+      <Notifications
+        persistentNotifications={state.runningInteractions
+          .filter(
+            (i) => i.virtual && !document.location.pathname.endsWith(i.slug),
+          )
+          .map((interaction) => ({
+            key: interaction.slug,
+            icon: <HuntIcon />,
+            description: (
+              <>
+                It’s time to interview a key witness! Each person on your team
+                should join Billie to{" "}
+                <a href={`/interactions/${interaction.slug}`}>
+                  conduct an {interaction.title}
+                </a>
+                .
+              </>
+            ),
+          }))}
+        ref={notifications}
+        maxNotifications={5}
+      />
       <NavBar info={info} state={state} whepUrl={whepUrl} />
     </>
   );
