@@ -142,7 +142,7 @@ const TABLE_DATA: {
     story: 8,
     year: 2017,
     country: "🇮🇹 Italy",
-    song: "Occidentali's Karma",
+    song: "Occidentali’s Karma",
     motif: "N228",
     score: 230,
     letter: "2=B",

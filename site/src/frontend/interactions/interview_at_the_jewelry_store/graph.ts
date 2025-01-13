@@ -510,7 +510,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
           next: "10a",
         },
         {
-          text: "Yep, that's definitely her.  Thanks, you’ve been a help!",
+          text: "Yep, that’s definitely her.  Thanks, you’ve been a help!",
           next: "10b",
         },
         {
@@ -533,7 +533,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "10b",
       speaker: "billie",
-      text: "Yep, that's definitely her.  Thanks, you’ve been a help!",
+      text: "Yep, that’s definitely her.  Thanks, you’ve been a help!",
       sound: {
         mp3: audio_mp3_10b,
         opus: audio_opus_10b,

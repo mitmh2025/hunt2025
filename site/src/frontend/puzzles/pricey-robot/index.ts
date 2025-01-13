@@ -11,7 +11,7 @@ const puzzle: PuzzleDefinition = {
     "Leland Aldridge",
     "Atul Shatavart Nadig",
     "Erin Price",
-    "J. Hel\u00e9ne Andersson",
+    "J. Heléne Andersson",
     "Laura Nicholson",
     "rfong",
     "Steven Keyes",

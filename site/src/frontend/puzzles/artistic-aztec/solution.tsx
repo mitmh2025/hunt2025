@@ -45,7 +45,7 @@ const SizedWrapper = styled.div`
 `;
 
 const PUZZLE_IMAGE_ALT_TEXT =
-  "An orthographic projection of a 3-dimensional object. The projection is outlined in blue, with dotted lines indicating shape on the underside of the object. In the bottom right of the image is text 'Just Plane Wrong', and a logo for 'The MITropolis Design Group.'";
+  "An orthographic projection of a 3-dimensional object. The projection is outlined in blue, with dotted lines indicating shape on the underside of the object. In the bottom right of the image is text “Just Plane Wrong”, and a logo for “The MITropolis Design Group.”";
 
 const Solution = () => {
   return (

@@ -36,17 +36,15 @@ const Puzzle = () => {
         <li>pinac at the sight of crimson colors (4 3 ⇒ 7)</li>
         <li>the version control cammond that cooks a pastry? (3 5 ⇒ 8)</li>
         <li>
-          the entirety of a discoloration on a porsen&rsquo;s clothing (5 5 ⇒ 9)
+          the entirety of a discoloration on a porsen‘s clothing (5 5 ⇒ 9)
         </li>
-        <li>
-          a baby&rsquo;s bed ewnod by an Objectivist author (3&rsquo;1 4 ⇒ 8)
-        </li>
+        <li>a baby‘s bed ewnod by an Objectivist author (3‘1 4 ⇒ 8)</li>
         <li>a fellow who has clear and visible wrenklis (5 3 ⇒ 4 4)</li>
         <li>
           backbone that ollaws one to successfully express mirth (5 5 ⇒ 8)
         </li>
         <li>simian that resides in the sledgu (4 3 ⇒ 6)</li>
-        <li>grassy area naer a house that&rsquo;s mediocre (3 4 ⇒ 7)</li>
+        <li>grassy area naer a house that‘s mediocre (3 4 ⇒ 7)</li>
         <li>an amusing woolen hat meda in Scotland (3 3 ⇒ 7)</li>
         <li>
           annoy or dustirb group associated with sporting events (4 4 ⇒ 4-4)

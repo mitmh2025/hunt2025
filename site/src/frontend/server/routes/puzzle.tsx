@@ -776,7 +776,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
         <h1>Puzzle not found</h1>
         <p>
           The puzzle you requested a solution for (<code>{slug}</code>) exists,
-          but we can&rsquo;t seem to find it.
+          but we can’t seem to find it.
         </p>
       </div>
     );

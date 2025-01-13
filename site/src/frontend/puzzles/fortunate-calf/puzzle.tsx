@@ -11,7 +11,7 @@ import casino7 from "./casino7.png";
 
 const PuzzleContent = () => {
   const altText =
-    "An illustration of a round of poker. There are markings visible in the dealer's glasses.";
+    "An illustration of a round of poker. There are markings visible in the dealer’s glasses.";
   return (
     <>
       <AuthorsNote>
@@ -23,9 +23,9 @@ const PuzzleContent = () => {
       </AuthorsNote>
       <div className="flavor">
         <p>
-          Doubling up with your seven lucky cards down your sleeves,
-          you&rsquo;re sure to clean house, as long as you keep rank and conceal
-          your con from the eagle-eyed dealer.
+          Doubling up with your seven lucky cards down your sleeves, you‘re sure
+          to clean house, as long as you keep rank and conceal your con from the
+          eagle-eyed dealer.
         </p>
         <p>How can you discover what Carter was up to at the casino?</p>
       </div>

@@ -67,7 +67,7 @@ const GROUPS: ReactNode[][] = [
     "slogan of Henry V (4,2,3,5)",
     "E.U. HQ (8,10)",
     "dig & die (7)",
-    "Co. Antrim area (5'1,8)",
+    "Co. Antrim area (5’1,8)",
     "“ice man” (4,5)",
     "Old West serial (3,9)",
     "biog. jug (4)",

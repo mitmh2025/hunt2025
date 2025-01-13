@@ -333,7 +333,7 @@ const UNIVERSAL_DATA: ParkDatum[] = [
         name: "Hagrid’s Magical Creatures Motorbike Adventure",
         clues: [
           "Play the flute for Fluffy",
-          "Brush the dragon's Teeth",
+          "Brush the dragon’s Teeth",
           "Polish the unicorn’s horn",
         ],
       },

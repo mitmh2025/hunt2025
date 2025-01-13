@@ -18,7 +18,7 @@ export default function RegsiteWrapper({
             </h1>
 
             <h4>Massachusetts Institute of Technology</h4>
-            <h4>January 17 &ndash; 20</h4>
+            <h4>January 17 – 20</h4>
           </div>
           <img src={sparkle2} alt="" />
         </div>

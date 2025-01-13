@@ -24,7 +24,7 @@ const Puzzle = (): JSX.Element => {
       </p>
       <LinkedImage
         src={image}
-        alt="A 9x9 square grid with three 3x3 subgrids delineated by bolder lines. Some pairs of adjacent grid squares have arrows connecting them. Two squares each have one horse's head in them. These squares are a knight move apart and are connected by a gray line."
+        alt="A 9x9 square grid with three 3x3 subgrids delineated by bolder lines. Some pairs of adjacent grid squares have arrows connecting them. Two squares each have one horse’s head in them. These squares are a knight move apart and are connected by a gray line."
       />
       <StyledDiv>
         <div>Where will the knights find their next great victory?</div>

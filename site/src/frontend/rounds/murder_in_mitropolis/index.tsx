@@ -173,7 +173,7 @@ const objectProperties: Record<MurderSlot, ObjectDescriptor> = {
       unlocked: door_unlocked,
       solved: door_solved,
     },
-    alt: "Art deco frieze above door to MITropolis's version of the Green Building",
+    alt: "Art deco frieze above door to MITropolis’s version of the Green Building",
     pos: {
       top: 1072,
       left: 670,

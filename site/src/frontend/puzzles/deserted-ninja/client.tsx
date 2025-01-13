@@ -82,8 +82,8 @@ const App = () => {
     <>
       <div>
         Please contact Hunt HQ to sign up for the FerMIT Challenge, the Mystery
-        Hunt&rsquo;s approximately-first estimation game show! If you&rsquo;ve
-        played before, your results can be found below.
+        Hunt‘s approximately-first estimation game show! If you‘ve played
+        before, your results can be found below.
       </div>
       {priorScores}
     </>

@@ -14,7 +14,7 @@ const oneDay = String(60 * 60 * 24);
 
 export const render404 = (_req: Request, res: Response) => {
   const html =
-    "<!DOCTYPE html><html><body><h1>404 Not Found</h1><p>We didn&apos;t find what you were looking for.</p></body></html>";
+    "<!DOCTYPE html><html><body><h1>404 Not Found</h1><p>We didn’t find what you were looking for.</p></body></html>";
   res.status(404).send(html);
 };
 

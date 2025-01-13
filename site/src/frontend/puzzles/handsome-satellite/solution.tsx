@@ -66,7 +66,7 @@ const ROWS = [
   ],
   [
     "3",
-    "It's often confused with bison",
+    "It’s often confused with bison",
     "BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO BUFFALO",
     "56",
     "51",

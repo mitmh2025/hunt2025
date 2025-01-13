@@ -180,7 +180,7 @@ const LISTS_2: [string, string, string][][] = [
   [
     [
       "Play the flute for Fluffy",
-      "Brush the dragon's Teeth",
+      "Brush the dragon’s Teeth",
       "Polish the unicorn’s horn",
     ],
     ["Cast a net", "Color by number", "Read a book"],
@@ -230,11 +230,11 @@ export const Formula = (): JSX.Element => {
     <Math>
       <MFrac>
         <MRow>
-          <MI>&#x394;</MI>
+          <MI>Δ</MI>
           <MI>x</MI>
         </MRow>
         <MRow>
-          <MI>&#x394;</MI>
+          <MI>Δ</MI>
           <MI>t</MI>
         </MRow>
       </MFrac>

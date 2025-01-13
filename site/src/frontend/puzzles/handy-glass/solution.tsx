@@ -52,14 +52,14 @@ const HIGHLIGHTS = reduceCoordinatesToIndices(
 );
 
 const ANSWERS_ACROSS = [
-  [1, "This answer's position in the puzzle, horizontally", "LEFT"],
+  [1, "This answer’s position in the puzzle, horizontally", "LEFT"],
   [3, "A young bovine animal", "CALF"],
   [6, "Counterpart to the radius", "ULNA"],
   [8, "Brazilian dance style", "SAMBA"],
   [11, "A period of time after the cessation of conflict", "POSTWAR"],
   [14, "Shortstop Turner", "TREA"],
   [15, "Connector between shin and foot", "ANKLE"],
-  [16, "Thailand's former appellation", "SIAM"],
+  [16, "Thailand’s former appellation", "SIAM"],
   [17, "City where androids might become human", "DETROIT"],
   [18, "Slangily, a demand to settle a debt (2 words)", "PONY UP"],
   [20, "As a precaution (2 words)", "IN CASE"],

@@ -299,7 +299,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
           next: "1a",
         },
         {
-          text: '"Ahoy, matey"?',
+          text: "“Ahoy, matey”?",
           next: "1b",
         },
         {
@@ -332,7 +332,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "1b",
       speaker: "billie",
-      text: '"Ahoy, matey"?',
+      text: "“Ahoy, matey”?",
       sound: {
         mp3: mp3_audio_1b,
         opus: opus_audio_1b,

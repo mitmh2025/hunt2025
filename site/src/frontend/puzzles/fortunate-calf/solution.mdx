@@ -4,7 +4,7 @@ const red = { color: "red" };
 const mono = { fontFamily: "monospace" };
 }
 
-This puzzle contains 7 rounds of Texas Hold 'Em Poker played against
+This puzzle contains 7 rounds of Texas Hold ’Em Poker played against
 an opponent. On the table in each round, the community cards are
 arranged in increasing value (by rank, then by suit ordered Clubs,
 Diamonds, Hearts, Spades), with the chips in front of each player
@@ -28,14 +28,14 @@ feeder begins with either the letter C, H, or S, which are abbreviations
 for card suits. From this, we can infer that each feeder is associated
 with a specific playing card from the standard 52-card deck:
 
-| Feeder Answer | Card |
-| ------------- | ---- |
-| <span style={blue}>C</span>A<span style={red}>NINE</span>PARTNER | 9♣ |
-| <span style={blue}>C</span>HEE<span style={red}>SEVEN</span>DORS | 7♣ |
-| <span style={blue}>C</span>HO<span style={red}>KING</span>HAZARD | K♣ |
-| <span style={blue}>H</span>ARDDISKSP<span style={red}>ACE</span> | A♥ |
-| <span style={blue}>S</span>L<span style={red}>EIGHT</span>OFHAND | 8♠ |
-| <span style={blue}>S</span>P<span style={red}>ACE</span>WARSHIPS | A♠ |
+| Feeder Answer                                                    | Card |
+| ---------------------------------------------------------------- | ---- |
+| <span style={blue}>C</span>A<span style={red}>NINE</span>PARTNER | 9♣  |
+| <span style={blue}>C</span>HEE<span style={red}>SEVEN</span>DORS | 7♣  |
+| <span style={blue}>C</span>HO<span style={red}>KING</span>HAZARD | K♣  |
+| <span style={blue}>H</span>ARDDISKSP<span style={red}>ACE</span> | A♥  |
+| <span style={blue}>S</span>L<span style={red}>EIGHT</span>OFHAND | 8♠  |
+| <span style={blue}>S</span>P<span style={red}>ACE</span>WARSHIPS | A♠  |
 | <span style={blue}>S</span><span style={red}>TEN</span>OGRAPHERS | 10♠ |
 
 These cards represent the pool of cards you have hidden up your sleeves.
@@ -45,47 +45,47 @@ on the table, otherwise you will be caught cheating. In this way, each
 card will be used exactly twice ("double up"), which provides
 confirmation of the correct assignment.
 
-| Round | Community Cards  | Opponent's Hand | Your Hand |
-| ----- | ---------------- | --------------- | --------- |
-| 1     | A♦,5♦,6♠,7♦,K♦   | 3♣,4♥           | 8♠,9♣     |
-| ^     | ^                | 3♣,4♥,5♦,6♠,7♦<br />(Straight, 7-high) | 5♦,6♠,7♦,8♠,9♣<br />(Straight, 9-high) |
-| 2     | A♦,A♠,3♣,J♥,K♠   | 10♦,Q♦          | A♥,K♣     |
-| ^     | ^                | 10♦,J♥,Q♦,K♠,A♠<br />(Straight) | K♣,K♠,A♦,A♥,A♠<br />(Full House) |
-| 3     | A♥,3♣,4♠,7♦,J♥   | A♣,9♥           | 7♣,A♠     |
-| ^     | ^                | A♣,A♥<br />(Pair) | A♥,A♠,7♣,7♦<br />(Two Pair) |
-| 4     | 2♣,5♦,7♥,10♣,10♥ | 7♦,7♠           | 7♣,10♠    |
-| ^     | ^                | 10♣,10♥,7♦,7♥,7♠<br />(Full House, 7s over 10s) | 7♣,7♥,10♣,10♥,10♠<br />(Full House, 10s over 7s) |
-| 5     | 6♣,6♠,J♠,Q♠,K♠   | 6♦,6♥           | A♠,10♠    |
-| ^     | ^                | 6♣,6♦,6♥,6♠<br />(Four-of-a-kind) | 10♠,J♠,Q♠,K♠,A♠<br />(Royal Flush) |
-| 6     | 5♣,6♠,7♣,8♥,10♣  | 8♣,J♣           | 9♣,K♣     |
-| ^     | ^                | 5♣,7♣,8♣,10♣,J♣<br />(Flush, Jack-high) | 5♣,7♣,9♣,10♣,K♣<br />(Flush, King-high) |
-| 7     | A♠,2♥,4♦,8♣,Q♥   | 4♠,Q♦           | A♥,8♠ |
-| ^     | ^                | 4♦,4♠,Q♦,Q♥<br />(Two Pair, Queens over 4s) | 8♣,8♠,A♥,A♠<br />(Two Pair, Aces over 8s) |
+| Round | Community Cards       | Opponent’s Hand                                      | Your Hand                                             |
+| ----- | --------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
+| 1     | A♦,5♦,6♠,7♦,K♦   | 3♣,4♥                                              | 8♠,9♣                                               |
+| ^     | ^                     | 3♣,4♥,5♦,6♠,7♦<br />(Straight, 7-high)          | 5♦,6♠,7♦,8♠,9♣<br />(Straight, 9-high)           |
+| 2     | A♦,A♠,3♣,J♥,K♠   | 10♦,Q♦                                             | A♥,K♣                                               |
+| ^     | ^                     | 10♦,J♥,Q♦,K♠,A♠<br />(Straight)                 | K♣,K♠,A♦,A♥,A♠<br />(Full House)                 |
+| 3     | A♥,3♣,4♠,7♦,J♥   | A♣,9♥                                              | 7♣,A♠                                               |
+| ^     | ^                     | A♣,A♥<br />(Pair)                                  | A♥,A♠,7♣,7♦<br />(Two Pair)                       |
+| 4     | 2♣,5♦,7♥,10♣,10♥ | 7♦,7♠                                              | 7♣,10♠                                              |
+| ^     | ^                     | 10♣,10♥,7♦,7♥,7♠<br />(Full House, 7s over 10s) | 7♣,7♥,10♣,10♥,10♠<br />(Full House, 10s over 7s) |
+| 5     | 6♣,6♠,J♠,Q♠,K♠   | 6♦,6♥                                              | A♠,10♠                                              |
+| ^     | ^                     | 6♣,6♦,6♥,6♠<br />(Four-of-a-kind)                | 10♠,J♠,Q♠,K♠,A♠<br />(Royal Flush)               |
+| 6     | 5♣,6♠,7♣,8♥,10♣  | 8♣,J♣                                              | 9♣,K♣                                               |
+| ^     | ^                     | 5♣,7♣,8♣,10♣,J♣<br />(Flush, Jack-high)         | 5♣,7♣,9♣,10♣,K♣<br />(Flush, King-high)          |
+| 7     | A♠,2♥,4♦,8♣,Q♥   | 4♠,Q♦                                              | A♥,8♠                                               |
+| ^     | ^                     | 4♦,4♠,Q♦,Q♥<br />(Two Pair, Queens over 4s)      | 8♣,8♠,A♥,A♠<br />(Two Pair, Aces over 8s)         |
 
 The 13-letter feeders, alongside the numbers for the card ranks,
 strongly indicate indexing into the feeders. Given the 7 pairings of
-cards, you must use each card's rank (Ace = 1, King = 13) to index
+cards, you must use each card’s rank (Ace = 1, King = 13) to index
 into the other card, extracting 7 bigrams. The bigram ordering can
-easily be brute-forced, but the dealer's button indicates which to
+easily be brute-forced, but the dealer’s button indicates which to
 use. For the rounds where you bet a big blind (you are the dealer), the
 letter extracted from the card of greater value goes first, and
 conversely, for rounds where you bet a small blind, the letter extracted
 from the card of lesser value goes first. Combining all 7 bigrams
 produces the answer `FACECARDSHARKS`.
 
-| Hole Cards | High / Low Card First | Card Feeder | Paired Card Rank | Indexed Letter |
-| ------ | ---- | ---- | - | - |
-| 8♠,9♣  | Low  | SLEIGHTO<span style={red}>F</span>HAND | 9 | F |
-| ^      | ^    | CANINEP<span style={red}>A</span>RTNER | 8 | A |
-| A♥,K♣  | High | <span style={red}>C</span>HOKINGHAZARD | 1 | C |
-| ^      | ^    | HARDDISKSPAC<span style={red}>E</span> | 13 | E |
-| 7♣,A♠  | High | <span style={red}>C</span>HEESEVENDORS | 1 | C |
-| ^      | ^    | SPACEW<span style={red}>A</span>RSHIPS | 7 | A |
-| 7♣,10♠ | High | STENOG<span style={red}>R</span>APHERS | 7 | R |
-| ^      | ^    | CHEESEVEN<span style={red}>D</span>ORS | 10 | D |
-| A♠,10♠ | High | <span style={red}>S</span>TENOGRAPHERS | 1 | S |
-| ^      | ^    | SPACEWARS<span style={red}>H</span>IPS | 10 | H |
-| 9♣,K♣  | High | CHOKINGH<span style={red}>A</span>ZARD | 9 | A |
-| ^      | ^    | CANINEPA<span style={red}>R</span>TNER | 13 | R |
-| A♥,8♠  | Low  | HARDDIS<span style={red}>K</span>SPACE | 8 | K |
-| ^      | ^    | <span style={red}>S</span>LEIGHTOFHAND | 1 | S |
+| Hole Cards | High / Low Card First | Card Feeder                            | Paired Card Rank | Indexed Letter |
+| ---------- | --------------------- | -------------------------------------- | ---------------- | -------------- |
+| 8♠,9♣    | Low                   | SLEIGHTO<span style={red}>F</span>HAND | 9                | F              |
+| ^          | ^                     | CANINEP<span style={red}>A</span>RTNER | 8                | A              |
+| A♥,K♣    | High                  | <span style={red}>C</span>HOKINGHAZARD | 1                | C              |
+| ^          | ^                     | HARDDISKSPAC<span style={red}>E</span> | 13               | E              |
+| 7♣,A♠    | High                  | <span style={red}>C</span>HEESEVENDORS | 1                | C              |
+| ^          | ^                     | SPACEW<span style={red}>A</span>RSHIPS | 7                | A              |
+| 7♣,10♠   | High                  | STENOG<span style={red}>R</span>APHERS | 7                | R              |
+| ^          | ^                     | CHEESEVEN<span style={red}>D</span>ORS | 10               | D              |
+| A♠,10♠   | High                  | <span style={red}>S</span>TENOGRAPHERS | 1                | S              |
+| ^          | ^                     | SPACEWARS<span style={red}>H</span>IPS | 10               | H              |
+| 9♣,K♣    | High                  | CHOKINGH<span style={red}>A</span>ZARD | 9                | A              |
+| ^          | ^                     | CANINEPA<span style={red}>R</span>TNER | 13               | R              |
+| A♥,8♠    | Low                   | HARDDIS<span style={red}>K</span>SPACE | 8                | K              |
+| ^          | ^                     | <span style={red}>S</span>LEIGHTOFHAND | 1                | S              |

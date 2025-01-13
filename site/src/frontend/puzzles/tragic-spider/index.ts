@@ -38,7 +38,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have considered the previous hint and would like more explicit instruction",
       keywords: ["Explicit", "more"],
       nudge:
-        "“The colors are fragrant, but they” is one translation of the first line of the Iroha, a poem attributed to K\u016bkai. This poem has a special property of historical importance which informs the presentation of this puzzle.",
+        "“The colors are fragrant, but they” is one translation of the first line of the Iroha, a poem attributed to Kūkai. This poem has a special property of historical importance which informs the presentation of this puzzle.",
     },
     {
       order: 20.0,
