@@ -47,7 +47,7 @@ const Puzzle = ({
   teamState: TeamHuntState;
 }) => {
   const videoReleased =
-    teamState.rounds.the_missing_diamond?.gates?.includes("mdg12") ?? false;
+    teamState.rounds.missing_diamond?.gates?.includes("mdg12") ?? false;
 
   return (
     <>

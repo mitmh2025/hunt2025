@@ -80,11 +80,11 @@ import { PUZZLES, SUBPUZZLES } from "../../puzzles";
 import { BackgroundCheckFonts } from "../../rounds/background_check/BackgroundCheckFonts";
 import { IllegalSearchFonts } from "../../rounds/illegal_search/IllegalSearchFonts";
 import { NODE_IDS_BY_PUZZLE_SLUG } from "../../rounds/illegal_search/graph";
+import { missingDiamondState } from "../../rounds/missing_diamond";
+import { MissingDiamondFonts } from "../../rounds/missing_diamond/MissingDiamondFonts";
 import { MurderFonts } from "../../rounds/murder_in_mitropolis/MurderFonts";
 import { PaperTrailFonts } from "../../rounds/paper_trail/PaperTrailFonts";
 import { StakeoutFonts } from "../../rounds/stakeout/StakeoutFonts";
-import { missingDiamondState } from "../../rounds/the_missing_diamond";
-import { MissingDiamondFonts } from "../../rounds/the_missing_diamond/MissingDiamondFonts";
 import { type Entrypoint } from "../assets";
 import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "../constants";
 
@@ -113,7 +113,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
   string,
   Partial<ComponentManifest>
 > = {
-  the_missing_diamond: {
+  missing_diamond: {
     wrapper: MissingDiamondWrapper,
     main: MissingDiamondMain,
     fonts: MissingDiamondFonts,
@@ -121,7 +121,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     backlink: MissingDiamondBacklink,
     titleWrapper: MissingDiamondTitleWrapper,
     answer: MissingDiamondAnswer,
-    entrypoint: "the_missing_diamond_puzzle",
+    entrypoint: "missing_diamond_puzzle",
     acknowledgementBlock: MissingDiamondAcknowledgementBlock,
   },
   stakeout: {
@@ -254,7 +254,7 @@ function getComponentManifestForPuzzle(
 
   const roundSpecificOverrides =
     ROUND_PUZZLE_COMPONENT_MANIFESTS[puzzleState.round] ?? {};
-  if (puzzleState.round === "the_missing_diamond") {
+  if (puzzleState.round === "missing_diamond") {
     return Object.assign({}, DEFAULT_MANIFEST, roundSpecificOverrides, {
       header: getMissingDiamondHeader({
         state: missingDiamondState(teamState),

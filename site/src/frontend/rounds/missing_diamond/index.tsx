@@ -167,7 +167,7 @@ function lookupSlug(
   slot: string,
   teamState: TeamHuntState,
 ): string | undefined {
-  const round = teamState.rounds.the_missing_diamond;
+  const round = teamState.rounds.missing_diamond;
   const slotObj = round ? round.slots[slot] : undefined;
   return slotObj?.slug;
 }
@@ -928,7 +928,7 @@ const interactions: Record<
 function genSpeechBubbles(
   teamState: TeamHuntState,
 ): MissingDiamondSpeechBubble[] {
-  const round = teamState.rounds.the_missing_diamond;
+  const round = teamState.rounds.missing_diamond;
   if (!round) return [];
 
   const speechBubbles: MissingDiamondSpeechBubble[] = [firstSpeechBubble];
@@ -1032,7 +1032,7 @@ function genLocations(teamState: TeamHuntState): MissingDiamondEntity[] {
 }
 
 function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
-  const round = teamState.rounds.the_missing_diamond;
+  const round = teamState.rounds.missing_diamond;
   if (!round) return [];
 
   return Object.entries(slotToWitness).flatMap(([slotId, witnessName]) => {
@@ -1071,7 +1071,7 @@ function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
 function genInteractions(
   teamState: TeamHuntState,
 ): MissingDiamondInteractionEntity[] {
-  const round = teamState.rounds.the_missing_diamond;
+  const round = teamState.rounds.missing_diamond;
   if (!round) return [];
 
   return Object.entries(interactions).flatMap(([interactionId, spec]) => {

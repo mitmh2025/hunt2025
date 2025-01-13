@@ -12,7 +12,7 @@ const MissingDiamondManager = ({
   initialState: MissingDiamondState;
   initialTeamState: TeamHuntState;
 }) => {
-  const state = useDataset("the_missing_diamond", undefined, initialState);
+  const state = useDataset("missing_diamond", undefined, initialState);
   const teamState = useDataset("team_state", undefined, initialTeamState);
   return <MissingDiamondBody state={state} teamState={teamState} />;
 };
