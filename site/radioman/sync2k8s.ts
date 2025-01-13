@@ -48,12 +48,14 @@ if (!liquidsoapImage) {
 
 const storageClassName = process.env.PVC_STORAGE_CLASS_NAME;
 
+const scheduleStartEpoch = process.env.SCHEDULE_START_EPOCH;
+
 const RadioTeamStateSchema = z.object({
   team_id: z.number(),
   epoch: z.number(),
   quixotic_shoe_enabled: z.boolean(),
   icy_box_enabled: z.boolean(),
-  interaction: z.boolean(),
+  interaction: z.string(),
   flags: z.array(z.string()),
 });
 
@@ -67,6 +69,13 @@ const PROPAGATED_INTERACTIONS = new Set([
   "confront_gladys",
   "confront_papa",
   "confront_carter",
+]);
+
+const VIRTUAL_INTERACTIONS = new Set([
+  "interview_at_the_boardwalk",
+  "interview_at_the_jewelry_store",
+  "interview_at_the_casino",
+  "interview_at_the_art_gallery",
 ]);
 
 const PROPAGATED_GATES = new Set(["hunt_started"]);
@@ -325,6 +334,14 @@ async function main({
                       },
                     },
                   },
+                  ...(scheduleStartEpoch
+                    ? [
+                        {
+                          name: "SCHEDULE_START_EPOCH",
+                          value: scheduleStartEpoch,
+                        },
+                      ]
+                    : []),
                 ],
                 livenessProbe: {
                   httpGet: {
@@ -379,7 +396,12 @@ async function main({
       epoch: teamState.epoch,
       quixotic_shoe_enabled: teamState.gates_satisfied.has("ptg03"),
       icy_box_enabled: teamState.gates_satisfied.has("ptg16"),
-      interaction: false, // TODO
+      interaction:
+        [
+          ...teamState.interactions_started
+            .difference(teamState.interactions_completed)
+            .intersection(VIRTUAL_INTERACTIONS),
+        ][0] ?? "",
       flags: Array.from(
         PROPAGATED_INTERACTIONS.intersection(
           teamState.interactions_completed,

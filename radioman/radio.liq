@@ -30,7 +30,7 @@ team_state = ref(
             epoch: int,
             quixotic_shoe_enabled: bool,
             icy_box_enabled: bool,
-            interaction: bool,
+            interaction: string,
             flags: [string],
             empty: bool?,
         }) = file.contents(team_state_path)
@@ -42,7 +42,7 @@ team_state = ref(
             epoch=0,
             quixotic_shoe_enabled=false,
             icy_box_enabled=false,
-            interaction=false,
+            interaction="",
             flags=[],
             empty=true,
         }
@@ -180,8 +180,22 @@ bumper_breaking = request.create("#{announcements_dir}/radio-bumper-breaking.ogg
 # Interrupts background music
 # Has its own background music
 # TBD: Include speech or just background music?
-in_interaction = {team_state().interaction}
-virtual_interaction = source.available(track_sensitive=false, single("spy-suite.mp3"), in_interaction)
+in_interaction = {team_state().interaction != ""}
+current_interaction = ref("")
+virtual_interaction = source.available(
+    track_sensitive=false,
+    source.dynamic(
+        {
+            if team_state().interaction != current_interaction() then
+                current_interaction := team_state().interaction
+                single("#{background_music_dir}/interaction/#{team_state().interaction}.ogg")
+            else
+                null()
+            end
+        }
+    ),
+    in_interaction,
+)
 
 # Tier X - Celebration
 # TBD: Included in stream or not?
@@ -375,6 +389,7 @@ final = add([stream, celebration])
 breaking_intro = request.create("#{announcements_dir}/radio-breaking-intro.ogg", persistent=true)
 
 def apply_team_state(new) =
+    log("received team state #{new}")
     def did_anew(name) =
         (not null.defined(team_state().empty)) and list.mem(name, new.flags) and not list.mem(name, team_state().flags)
     end
