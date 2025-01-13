@@ -101,9 +101,16 @@ const SubpuzzleLinkWrapper = styled.a`
   padding: 1rem;
   border-radius: 1rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
 
   text-decoration: none;
+
+  .main-promo-contents {
+    display: flex;
+    align-items: center;
+  }
 
   span.subpuzzle-name {
     flex: 1;
@@ -129,22 +136,29 @@ const SubpuzzleLink = ({
   answer,
   title,
   slug,
+  solved,
+  children,
 }: {
   answer?: string;
   title: string;
   slug: string;
+  solved?: boolean;
+  children?: React.ReactNode;
 }): JSX.Element => {
   return (
     <SubpuzzleLinkWrapper href={`/${slug}`}>
-      <span className="subpuzzle-name">
-        <span>{answer ? "✔️ " : "➕ "}</span>
-        {title}
-      </span>
-      {answer && (
-        <span>
-          (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
+      <div className="main-promo-contents">
+        <span className="subpuzzle-name">
+          <span>{answer ?? solved ? "✔️ " : "➕ "}</span>
+          {title}
         </span>
-      )}
+        {answer && (
+          <span>
+            (Solved! <PuzzleAnswer>{answer}</PuzzleAnswer>){" "}
+          </span>
+        )}
+      </div>
+      {children}
     </SubpuzzleLinkWrapper>
   );
 };
@@ -298,10 +312,11 @@ const App = ({
       <Header>MITropolisCard Rewards™️ Portal</Header>
       {!pickupComplete && (
         <section>
-          <h3>Promotional Rates</h3>
+          <h3>Partner Offers</h3>
           <p>
-            You have promotional rates available! Click the links below to view
-            offers by our product partners and enter your promo codes:
+            MITropolisCard partner companies provide a variety of puzzling
+            offers to earn bonus MITropolisCard Rewards™️ points. Click below to
+            learn more:
           </p>
           {sortedSubpuzzleStatus.map(
             ({ subpuzzle_name, subpuzzle_slug, answer }) => {
@@ -321,10 +336,9 @@ const App = ({
         <section>
           <h3>Martini Reward</h3>
           <p>
-            You should have received a martini glass with 34 tiles. Please
-            contact us at{" "}
-            <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a> if it
-            seems that you are missing pieces.
+            You should have received a martini glass with 34 tiles. If not,
+            please contact us at{" "}
+            <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
           </p>
           <p className="puzzle-flavor">
             It looks like a few ingredients are missing from both your martini
@@ -334,20 +348,17 @@ const App = ({
             ({ subpuzzle_name, subpuzzle_slug, answer, image }, i) => {
               if (answer) {
                 return (
-                  <React.Fragment key={i}>
-                    <div>
-                      <SubpuzzleLink
-                        title={subpuzzle_name}
-                        slug={subpuzzle_slug}
-                      />
-                    </div>
-                    <a href={`/${subpuzzle_slug}`}>
-                      <img
-                        src={image}
-                        alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
-                      />
-                    </a>
-                  </React.Fragment>
+                  <SubpuzzleLink
+                    key={`subpuzzle-${i}`}
+                    title={subpuzzle_name}
+                    slug={subpuzzle_slug}
+                    solved={true}
+                  >
+                    <img
+                      src={image}
+                      alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
+                    />
+                  </SubpuzzleLink>
                 );
               }
               return null;
@@ -361,10 +372,17 @@ const App = ({
           <p>
             You have <strong>{points}</strong> MITropolisCard Points™️.
           </p>
-          <p>
-            Once you have <strong>1,250</strong> MITropolisCard Points™️, you
-            may come to the Gala and receive one complimentary martini!
-          </p>
+          {points >= 1250 ? (
+            <p>
+              You have at least <strong>1,250</strong> MITropolisCard Points™️;
+              come to the Gala and receive your complimentary martini!
+            </p>
+          ) : (
+            <p>
+              Once you have <strong>1,250</strong> MITropolisCard Points™️, you
+              may come to the Gala and receive one complimentary martini!
+            </p>
+          )}
         </section>
       )}
       <section>
