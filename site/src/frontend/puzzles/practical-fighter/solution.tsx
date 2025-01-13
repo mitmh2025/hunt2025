@@ -135,7 +135,7 @@ const Solution = () => {
           </tr>
           <tr>
             <td>
-              I‘m telling you to loosen up my 🎵s baby, but you keep fronting
+              I‘m telling you to loosen up my 🎵s babe, but you keep fronting
             </td>
             <td>BUTTON</td>
             <td>Buttons</td>
@@ -229,7 +229,7 @@ const Solution = () => {
               🎵 walls…”
             </td>
             <td>SUBWAY</td>
-            <td>Sound of Silence</td>
+            <td>The Sound of Silence</td>
             <td>Simon &amp; Garfunkel</td>
           </tr>
           <tr>
@@ -345,13 +345,13 @@ const Solution = () => {
 
       <p>
         The light, foot, button, and knock inputs each play a note of the scale.
-        The magnet input shifts these notes down by 3 steps (a perfect fourth).
-        The headphone jack shifts the four notes up by a perfect fifth. Using
-        the two together shifts the four notes up by an octave. Thus, by
-        combining the notes and the two “shift” inputs, the radio can play any
-        note in the major scale over a two octave range. (The radio is tuned to
-        the key of G and can play any note in the major G scale between D4 and
-        C6)
+        The magnet input shifts these notes down by 3 scale tones (a perfect
+        fourth). The headphone jack shifts the four notes up by 4 scale tones (a
+        perfect fifth). Using the two together shifts the four notes up by an
+        octave. Thus, by combining the notes and the two “shift” inputs, the
+        radio can play any note in the major scale over a two octave range. (The
+        radio is tuned to the key of G and can play any note in the major G
+        scale between D4 and C6)
       </p>
 
       <p>
