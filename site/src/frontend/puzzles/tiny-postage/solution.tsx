@@ -1667,8 +1667,9 @@ const Solution = (): JSX.Element => {
             {row.map((cell, j) => {
               let color = "transparent";
               const shorthand = TOP_COLOR[i]?.[j];
-              if (shorthand && SHORTHAND_TO_COLOR_DARK[shorthand]) {
-                color = SHORTHAND_TO_COLOR_DARK[shorthand];
+              if (shorthand) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- hard-coded array
+                color = SHORTHAND_TO_COLOR_DARK[shorthand]!;
               }
               return (
                 <ColoredTd $color={color} key={j}>
@@ -1685,8 +1686,9 @@ const Solution = (): JSX.Element => {
             {row.map((cell, j) => {
               let color = "transparent";
               const shorthand = BOTTOM_COLOR[i]?.[j];
-              if (shorthand && SHORTHAND_TO_COLOR_LIGHT[shorthand]) {
-                color = SHORTHAND_TO_COLOR_LIGHT[shorthand];
+              if (shorthand) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- hard-coded array
+                color = SHORTHAND_TO_COLOR_LIGHT[shorthand]!;
               }
               return (
                 <ColoredTd $color={color} key={j}>
