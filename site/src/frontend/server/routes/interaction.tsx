@@ -217,3 +217,27 @@ export const interactionCompletePostHandler: RequestHandler<
   });
   res.redirect(`/interactions/${req.params.slug}`);
 });
+
+export const interactionAdvancePostHandler: RequestHandler<
+  InteractionParams & { fromNode: string },
+  unknown,
+  Record<string, never>,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  if (process.env.NODE_ENV !== "development") {
+    // Only supported in devmode
+    return undefined;
+  }
+  if (!req.teamState) return undefined;
+  const slug = req.params.slug;
+  // Ignore the result
+  await req.frontendApi.advanceInteraction({
+    params: {
+      teamId: `${req.teamState.teamId}`,
+      interactionId: slug,
+      fromNode: req.params.fromNode,
+    },
+    body: {},
+  });
+  res.redirect(`/interactions/${req.params.slug}`);
+});

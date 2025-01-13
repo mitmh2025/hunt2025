@@ -34,6 +34,7 @@ import {
   type InteractionParams,
   interactionRequestHandler,
   interactionStartPostHandler,
+  interactionAdvancePostHandler,
 } from "./routes/interaction";
 import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
 import { manageTeamHandler } from "./routes/manage_team";
@@ -345,13 +346,17 @@ export function registerUiRoutes({
       },
     ),
   );
-  // These two POST handlers for interactions are currently only used for devtools to allow
+  // These three POST handlers for interactions are currently only used for devtools to allow
   // synthesizing starting and completing the interaction.  In practice, the backend would determine
   // when the interaction has completed and with what result.
   authRouter.post("/interactions/:slug/start", interactionStartPostHandler);
   authRouter.post(
     "/interactions/:slug/complete",
     interactionCompletePostHandler,
+  );
+  authRouter.post(
+    "/interactions/:slug/advance/:fromNode",
+    interactionAdvancePostHandler,
   );
 
   authRouter.get(
