@@ -187,7 +187,7 @@
     "TrueZ": "1904",
     "x": "383",
     "y": "349",
-    "roomDescription": "Looking down what seems to be a boring tunnel you spot several other entrances on the lower levels. A small chest to the north seems to be requesting a key to go deeper into the heavily corrupted abyss below. To the side, a note is stapled \"Crosses, Keys, Lower\"",
+    "roomDescription": "Looking down what seems to be a boring tunnel you spot several other entrances on the lower levels. A small chest to the north seems to be requesting a key to go deeper into the heavily corrupted abyss below. To the side, a note is stapled “Crosses, Keys, Lower”",
     "moveDescriptions": "There is a path east and west.",
     "moves": [
       {
@@ -433,7 +433,7 @@
       {
         "direction": "EE",
         "destination": "96",
-        "moveDescription": "Although where you were wasn't quite a crossroad, this one definitely is."
+        "moveDescription": "Although where you were wasn’t quite a crossroad, this one definitely is."
       },
       {
         "direction": "SE",
@@ -479,7 +479,7 @@
     "TrueZ": "1900",
     "x": "421",
     "y": "304",
-    "roomDescription": "The room has a large boring tunnel going straight down. Looking around you see other platforms surrounding the tunnel above as well as a small lockbox enticing you to insert a key. To the side, a note is stapled \"Crosses, Keys, Lower\"",
+    "roomDescription": "The room has a large boring tunnel going straight down. Looking around you see other platforms surrounding the tunnel above as well as a small lockbox enticing you to insert a key. To the side, a note is stapled “Crosses, Keys, Lower”",
     "moveDescriptions": "There is a path northeast, south and southwest.",
     "moves": [
       {
@@ -584,7 +584,7 @@
       {
         "direction": "SW",
         "destination": "118",
-        "moveDescription": "Heading downstairs you pass over the conveyer but decide that you don't have time to take the pieces of gold left on it."
+        "moveDescription": "Heading downstairs you pass over the conveyer but decide that you don’t have time to take the pieces of gold left on it."
       }
     ]
   },
@@ -668,7 +668,7 @@
       {
         "direction": "EE",
         "destination": "108",
-        "moveDescription": "You walk into the foreman's office."
+        "moveDescription": "You walk into the foreman’s office."
       },
       {
         "direction": "WW",
@@ -768,7 +768,7 @@
       {
         "direction": "NE",
         "destination": "114",
-        "moveDescription": "Heading down a passage you accidentally fall into a pit of blue fire. Surprisingly it doesn't burn you as you pick yourself up."
+        "moveDescription": "Heading down a passage you accidentally fall into a pit of blue fire. Surprisingly it doesn’t burn you as you pick yourself up."
       },
       {
         "direction": "SE",
@@ -825,7 +825,7 @@
       {
         "direction": "NW",
         "destination": "112",
-        "moveDescription": "Walking through the fire trap seemed to be a bad idea, but for some reason the blue fire doesn't seem to hurt."
+        "moveDescription": "Walking through the fire trap seemed to be a bad idea, but for some reason the blue fire doesn’t seem to hurt."
       }
     ]
   },
@@ -1133,7 +1133,7 @@
     "TrueZ": "1902",
     "x": "399",
     "y": "318",
-    "roomDescription": "A large bore hole was created here, but has seemingly been closed off with a makeshift floor of stone. A nearby crate looks to be a receptacle for a key to go down deeper into the mine. To the side, a note is stapled \"Crosses, Keys, Lower\"",
+    "roomDescription": "A large bore hole was created here, but has seemingly been closed off with a makeshift floor of stone. A nearby crate looks to be a receptacle for a key to go down deeper into the mine. To the side, a note is stapled “Crosses, Keys, Lower”",
     "moveDescriptions": "There is a path north, east, and southwest.",
     "moves": [
       {

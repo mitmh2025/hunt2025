@@ -93,7 +93,7 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers can’t find the 36 tables",
       keywords: ["Tables"],
       nudge:
-        "Each \u2018table’ consists of a 5x5 set of squares, the wires connecting to adjacent tables, and some wire ends at the right and bottom. How do the squares in the 5x5 grid behave?",
+        "Each ‘table’ consists of a 5x5 set of squares, the wires connecting to adjacent tables, and some wire ends at the right and bottom. How do the squares in the 5x5 grid behave?",
     },
     {
       order: 60.0,

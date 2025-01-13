@@ -7,7 +7,7 @@ import rawKeys from "./data/keys_by_floor.json";
 import rawSaves from "./data/saves.json";
 
 export const startMessage =
-  'Entering through some ornate doors labeled "DO" you stand upon a stone platform at the beginning of a winding frozen tunnel. You were given a compass like normal, but the map did not show up and your deck seems to be gone. The cards seem to be useless here, but a map such as the official one Aureeee made is essential, even though that map seems to face west instead of north. From what you can tell, everything seems to be normal, although the dungeon is calm and quiet, and the compass seems to point to locations that artifacts were not placed before.';
+  "Entering through some ornate doors labeled “DO” you stand upon a stone platform at the beginning of a winding frozen tunnel. You were given a compass like normal, but the map did not show up and your deck seems to be gone. The cards seem to be useless here, but a map such as the official one Aureeee made is essential, even though that map seems to face west instead of north. From what you can tell, everything seems to be normal, although the dungeon is calm and quiet, and the compass seems to point to locations that artifacts were not placed before.";
 
 type RawRoom = {
   depth: string;
