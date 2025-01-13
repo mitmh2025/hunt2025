@@ -3164,12 +3164,16 @@ export async function getRouter({
               console.log("is_unlocked", is_unlocked);
               console.log("is_started", is_started);
               console.log("is_completed", is_completed);
-              if (!is_unlocked || !is_started) {
+              if (!is_unlocked) {
                 return false;
               }
+
               if (!is_completed) {
                 let interactionResult = "";
                 if (interaction.type === "virtual") {
+                  if (!is_started) {
+                    return false;
+                  }
                   // Then we need to compute the result from the team.  Get the last log entry that
                   // applies to this interaction; we expect it to be a final node.
                   const finalNode = await getLastTeamInteractionStateLogEntry(
