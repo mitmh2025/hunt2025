@@ -826,6 +826,13 @@ const FlexRow = styled.div`
   margin: 1em 0;
 `;
 
+const FlexWithSizedChildren = styled(FlexRow)`
+  justify-content: center;
+  img {
+    max-width: 50%;
+  }
+`;
+
 const StyledTable = styled.table`
   border-collapse: collapse;
   margin: 1em 0;
@@ -875,11 +882,11 @@ const Solution = (): JSX.Element => {
         <li>
           <div>Which student groups have offices in Walker Memorial?</div>
           <div>
-            <span>A) Roadkill Buffet</span>
-            <strong>B) Voo Doo Magazine</strong>
-            <span>C) Dance Troupe</span>
-            <strong>D) Grad Student Council</strong>
-            <span>E) Tech Squares</span>
+            <span>A) Roadkill Buffet </span>
+            <strong>B) Voo Doo Magazine </strong>
+            <span>C) Dance Troupe </span>
+            <strong>D) Grad Student Council </strong>
+            <span>E) Tech Squares </span>
           </div>
         </li>
         <li>
@@ -887,11 +894,11 @@ const Solution = (): JSX.Element => {
             Which businesses partner with MITAC to give students discounts?
           </div>
           <div>
-            <strong>A) Chunky’s Cinema</strong>
-            <span>B) Duck Tours</span>
-            <strong>C) Boxaroo</strong>
-            <span>D) Boda Borg</span>
-            <strong>E) Isabella Stewart Gardner Museum</strong>
+            <strong>A) Chunky’s Cinema </strong>
+            <span>B) Duck Tours </span>
+            <strong>C) Boxaroo </strong>
+            <span>D) Boda Borg </span>
+            <strong>E) Isabella Stewart Gardner Museum </strong>
           </div>
         </li>
         <li>
@@ -901,9 +908,9 @@ const Solution = (): JSX.Element => {
           <div>
             <strong>A) Theta Xi </strong>
             <span>B) Kappa Sigma </span>
-            <strong>C) Zeta Beta Tau</strong>
-            <span>D) Alpha Delta Phi</span>
-            <strong>E) Phi Delta Theta</strong>
+            <strong>C) Zeta Beta Tau </strong>
+            <span>D) Alpha Delta Phi </span>
+            <strong>E) Phi Delta Theta </strong>
           </div>
         </li>
         <li>
@@ -912,28 +919,28 @@ const Solution = (): JSX.Element => {
             <span>A) Burton Conner </span>
             <strong>B) Random Hall </strong>
             <span>C) Simmons Hall </span>
-            <strong>D) East Campus</strong>
-            <span>E) MacGregor</span>
+            <strong>D) East Campus </strong>
+            <span>E) MacGregor </span>
           </div>
         </li>
         <li>
           <div>Which have been overall themes for past Mystery Hunts?</div>
           <div>
-            <span>A) Pokemon</span>
-            <span>B) Jurassic Park</span>
-            <span>C) Mousetrap</span>
-            <span>D) Toy Story</span>
-            <span>E) Around the World in 80 Days</span>
+            <span>A) Pokemon </span>
+            <span>B) Jurassic Park </span>
+            <span>C) Mousetrap </span>
+            <span>D) Toy Story </span>
+            <span>E) Around the World in 80 Days </span>
           </div>
         </li>
         <li>
           <div>Which names have team Palindrome NOT used for Mystery Hunt?</div>
           <div>
-            <strong>A) Yo Aloha Hola Oy</strong>
-            <span>B) El Google</span>
-            <span>C) I Prefer Pi</span>
-            <span>D) Not So Boston</span>
-            <span>E) Snafu Fans</span>
+            <strong>A) Yo Aloha Hola Oy </strong>
+            <span>B) El Google </span>
+            <span>C) I Prefer Pi </span>
+            <span>D) Not So Boston </span>
+            <span>E) Snafu Fans </span>
           </div>
         </li>
         <li>
@@ -941,11 +948,11 @@ const Solution = (): JSX.Element => {
             Which courses are NOT required to earn a Pirate Certificate at MIT?
           </div>
           <div>
-            <span>A) fencing</span>
-            <span>B) archery</span>
-            <span>C) sailing</span>
-            <span>D) pistol</span>
-            <strong>E) spikeball</strong>
+            <span>A) fencing </span>
+            <span>B) archery </span>
+            <span>C) sailing </span>
+            <span>D) pistol </span>
+            <strong>E) spikeball </strong>
           </div>
         </li>
         <li>
@@ -954,11 +961,11 @@ const Solution = (): JSX.Element => {
             swim test?
           </div>
           <div>
-            <strong>A) butterfly</strong>
-            <span>B) back stroke</span>
-            <strong>C) front crawl</strong>
-            <span>D) drowning</span>
-            <strong>E) breast stroke</strong>
+            <strong>A) butterfly </strong>
+            <span>B) back stroke </span>
+            <strong>C) front crawl </strong>
+            <span>D) drowning </span>
+            <strong>E) breast stroke </strong>
           </div>
         </li>
         <li>
@@ -966,41 +973,41 @@ const Solution = (): JSX.Element => {
             What courses can you take to fulfill your PEandW requirement at MIT?
           </div>
           <div>
-            <strong>A) jazz funk</strong>
-            <span>B) canoeing</span>
+            <strong>A) jazz funk </strong>
+            <span>B) canoeing </span>
             <strong>C) pickleball </strong>
             <span>D) figure skating </span>
-            <strong>E) SCUBA diving</strong>
+            <strong>E) SCUBA diving </strong>
           </div>
         </li>
         <li>
           <div>Which intramural sports leagues exist at MIT?</div>
           <div>
-            <span>A) bowling</span>
-            <strong>B) flag football</strong>
-            <strong>C) dodgeball</strong>
-            <strong>D) ultimate Frisbee</strong>
-            <span>E) lacrosse</span>
+            <span>A) bowling </span>
+            <strong>B) flag football </strong>
+            <strong>C) dodgeball </strong>
+            <strong>D) ultimate Frisbee </strong>
+            <span>E) lacrosse </span>
           </div>
         </li>
         <li>
           <div>What was the theme of the 34th Ig Nobel Prize Ceremony?</div>
           <div>
-            <strong>A) Murphy’s Law</strong>
-            <span>B) Godwin’s Law</span>
-            <span>C) Rule 34</span>
-            <span>D) Occam’s Razor</span>
-            <span>E) the Bechdel Test</span>
+            <strong>A) Murphy’s Law </strong>
+            <span>B) Godwin’s Law </span>
+            <span>C) Rule 34 </span>
+            <span>D) Occam’s Razor </span>
+            <span>E) the Bechdel Test </span>
           </div>
         </li>
         <li>
           <div>Where were Ig Nobel Face-to-Face sessions held in 2024?</div>
           <div>
-            <strong>A) Tokyo</strong>
-            <span>B) Berlin</span>
-            <span>C) Canberra</span>
-            <strong>D) Cambridge</strong>
-            <span>E) Mumbai</span>
+            <strong>A) Tokyo </strong>
+            <span>B) Berlin </span>
+            <span>C) Canberra </span>
+            <strong>D) Cambridge </strong>
+            <span>E) Mumbai </span>
           </div>
         </li>
         <li>
@@ -1008,51 +1015,51 @@ const Solution = (): JSX.Element => {
             Which topics were researched by 2024 Ig Nobel Prize winners?
           </div>
           <div>
-            <strong>A) coin flips</strong>
-            <strong>B) dead trout</strong>
-            <strong>C) hair whorls</strong>
-            <strong>D) drunk worms</strong>
-            <strong>E) pigeon pilots</strong>
+            <strong>A) coin flips </strong>
+            <strong>B) dead trout </strong>
+            <strong>C) hair whorls </strong>
+            <strong>D) drunk worms </strong>
+            <strong>E) pigeon pilots </strong>
           </div>
         </li>
         <li>
           <div>Who (or what) keeps Ig Nobel acceptance speeches short?</div>
           <div>
-            <strong>A) Miss Sweetie-Poo</strong>
-            <span>B) a banana</span>
-            <span>C) entropy</span>
-            <span>D) paper airplanes</span>
-            <span>E) guilt</span>
+            <strong>A) Miss Sweetie-Poo </strong>
+            <span>B) a banana </span>
+            <span>C) entropy </span>
+            <span>D) paper airplanes </span>
+            <span>E) guilt </span>
           </div>
         </li>
         <li>
           <div>What have hackers placed on the Small Done?</div>
           <div>
-            <span>A) $10,000 bill</span>
-            <span>B) a life-size cow</span>
-            <strong>C) a witch’s hat</strong>
-            <strong>D) Bexley hall</strong>
-            <strong>E) moon landing</strong>
+            <span>A) $10,000 bill </span>
+            <span>B) a life-size cow </span>
+            <strong>C) a witch’s hat </strong>
+            <strong>D) Bexley hall </strong>
+            <strong>E) moon landing </strong>
           </div>
         </li>
         <li>
           <div>What should ethical hackers do?</div>
           <div>
-            <span>A) hack alone</span>
-            <span>B) steal things</span>
-            <strong>C) be safe</strong>
-            <span>D) use brute force</span>
-            <span>E) drink and derive</span>
+            <span>A) hack alone </span>
+            <span>B) steal things </span>
+            <strong>C) be safe </strong>
+            <span>D) use brute force </span>
+            <span>E) drink and derive </span>
           </div>
         </li>
         <li>
           <div>Where could you find barber poles on November 8, 2021?</div>
           <div>
-            <strong>A) Banana Lounge</strong>
-            <strong>B) The Alchemist</strong>
-            <strong>C) outside 10-250</strong>
-            <strong>D) atop Kresge</strong>
-            <strong>E) Transparent Horizon</strong>
+            <strong>A) Banana Lounge </strong>
+            <strong>B) The Alchemist </strong>
+            <strong>C) outside 10-250 </strong>
+            <strong>D) atop Kresge </strong>
+            <strong>E) Transparent Horizon </strong>
           </div>
         </li>
       </ol>
@@ -1527,7 +1534,7 @@ const Solution = (): JSX.Element => {
         the paper crane, and two butterflies, then stop at the tile with the
         graduation cap: <Mono>CHEN FAMILY</Mono>.
       </p>
-      <FlexRow style={{ flexWrap: "wrap" }}>
+      <FlexWithSizedChildren style={{ flexWrap: "wrap" }}>
         <img src={hex1} alt="A hexagonal mirror with a triangle drawn on it" />
         <img
           src={hex2}
@@ -1565,7 +1572,7 @@ const Solution = (): JSX.Element => {
           src={hex13}
           alt="A hexagonal mirror with an eye and the words LOOK TO HEAVEN drawn on it"
         />
-      </FlexRow>
+      </FlexWithSizedChildren>
       <p>
         Index into the name on each tile by the number of stars below the
         instruction to get the clue phrase, ME MYSELF, and perhaps notice that
@@ -1827,8 +1834,8 @@ const Solution = (): JSX.Element => {
         printed to look like the filter on a cigarette.
       </p>
       <FlexRow>
-        <img src={filters} alt="A grid of mock cigarette filters." />
-        <img
+        <LinkedImage src={filters} alt="A grid of mock cigarette filters." />
+        <LinkedImage
           src={blacklight}
           alt="A grid of mock cigarette filters under blacklight. Each filter has a letter or number written on it."
         />
