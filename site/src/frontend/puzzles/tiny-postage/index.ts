@@ -18,7 +18,7 @@ const puzzle: PuzzleDefinition = {
   ],
   additional_credits: [
     {
-      for_what: "Kakuros",
+      for_what: "Kakuro",
       who: ["Denis Auroux"],
     },
   ],

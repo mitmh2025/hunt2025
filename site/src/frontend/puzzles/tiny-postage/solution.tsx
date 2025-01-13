@@ -823,6 +823,7 @@ const ARTIST_EXTRACTION = [
 ];
 
 const ScantronAnswers = styled.div`
+  margin-top: 8px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 `;
@@ -857,7 +858,7 @@ const ColoredTd = styled.td<{ $color: string }>`
 
 const SizedImage = styled(LinkedImage)<{ $width: number }>`
   display: block;
-  margin: auto;
+  margin: 1em auto;
   width: ${({ $width }) => $width}%;
 `;
 
@@ -867,7 +868,7 @@ const Solution = (): JSX.Element => {
       <p>
         This was a physical puzzle that teams could pick up from the bar at the
         Gala. Upon request, a bartender handed over a pack of
-        cigarettes—Cambridge Slims, to be specific (full of flavortext!). Inside
+        cigarettes—Cambridge Slims, to be specific (full of flavortext!) Inside
         the pack were 12 cigarettes—er, 12 tightly rolled minipuzzles—and some
         tissue paper packaging.
       </p>
@@ -1288,7 +1289,7 @@ const Solution = (): JSX.Element => {
           </MFrac>
           <MO>=</MO>
         </Math>
-        ”. Flavor confirms that solvers should use the ideal gas law,{" "}
+        . Flavor confirms that solvers should use the ideal gas law,{" "}
         <Math>
           <MI>p</MI>
           <MI>V</MI>
@@ -1337,7 +1338,9 @@ const Solution = (): JSX.Element => {
         <li>make amends / creamy clam soup / picture puzzle type</li>
         <li>online brokerage bought by Ally Financial in 2016</li>
       </ol>
-      <p>Red Flowers</p>
+      <p>
+        <b>Red Flowers</b>
+      </p>
       <ul>
         <li>
           name yelled by Rocky (<strong>ADRIAN</strong>)
@@ -1379,7 +1382,9 @@ const Solution = (): JSX.Element => {
           like, sooo drunk (<strong>WASTED</strong>)
         </li>
       </ul>
-      <p>Yellow Flowers</p>
+      <p>
+        <b>Yellow Flowers</b>
+      </p>
       <ul>
         <li>
           employer of spies (<strong>AGENCY</strong>)
@@ -1421,7 +1426,9 @@ const Solution = (): JSX.Element => {
           soft and flexible (<strong>SUPPLE</strong>)
         </li>
       </ul>
-      <p>Blue Flowers</p>
+      <p>
+        <b>Blue Flowers</b>
+      </p>
       <ul>
         <li>
           burrowing rodent kept as a pet (<strong>GERBIL</strong>)
@@ -1653,7 +1660,8 @@ const Solution = (): JSX.Element => {
         orientation (which is 90° off from the installation) to get{" "}
         <PuzzleAnswer>E</PuzzleAnswer>.
       </p>
-      <LinkedImage
+      <SizedImage
+        $width={100}
         src={brick}
         alt="A concrete brick with studs in it reading E in Braille"
       />
