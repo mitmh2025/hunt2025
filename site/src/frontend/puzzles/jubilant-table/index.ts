@@ -18,6 +18,10 @@ const puzzle: PuzzleDefinition = {
       for_what: "Story writing and editing",
       who: ["John Silvio"],
     },
+    {
+      for_what: "Additional puzzle contributions",
+      who: ["Ben Haytack", "Tom Cochrane", "Tom Rackham", "Will Day"],
+    },
   ],
   content: {
     component: Puzzle,
