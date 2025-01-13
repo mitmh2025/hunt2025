@@ -178,6 +178,7 @@ const StrayLeadsBody = ({
         return (
           <li key={lead.slug}>
             <PuzzleLink
+              epoch={teamState.epoch}
               lockState={puzzleState?.locked ?? "locked"}
               answer={puzzleState?.answer}
               currency={teamState.currency}

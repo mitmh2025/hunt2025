@@ -7,34 +7,63 @@ import React, {
   useState,
 } from "react";
 import { styled } from "styled-components";
+import { type PuzzleState, newClient } from "../../../lib/api/client";
 import icon_solved from "../../assets/solved_status.svg";
 import icon_unlock from "../../assets/unlock-icon.svg";
 import icon_unlocked from "../../assets/unlocked_status.svg";
 import icon_unlockable from "../../assets/visible_status.svg";
+import apiUrl from "../utils/apiUrl";
 import StyledDialog, { DialogActions } from "./StyledDialog";
 import { Button, ButtonSecondary } from "./StyledUI";
 
 export type LockState = "unlockable" | "unlocked" | "locked";
 
+type PuzzleBaseState = {
+  slug: string;
+  title: string;
+  state: "unlocked" | "unlockable" | "locked";
+  answer?: string;
+  desc?: string;
+};
+
+type PuzzleStateHandle = [
+  PuzzleBaseState,
+  (handleApiResponse: PuzzleState) => void,
+];
+
+export function usePuzzleState(
+  wsEpoch: number,
+  wsState: PuzzleBaseState,
+): PuzzleStateHandle {
+  const [apiState, setApiState] = useState<PuzzleState | null>(null);
+
+  let finalState: PuzzleBaseState = wsState;
+  if (apiState && apiState.epoch > wsEpoch) {
+    finalState = {
+      ...finalState,
+      answer: apiState.answer,
+      state: apiState.locked,
+    };
+  }
+  return [finalState, setApiState];
+}
+
 export const PuzzleUnlockModal = React.forwardRef(
   function PuzzleUnlockModalInner(
     {
-      title,
-      slug,
       onDismiss,
       cost,
       currency,
-      desc,
+      stateHandle,
     }: {
-      title: string;
-      slug: string;
       onDismiss: () => void;
       cost: number;
       currency: number;
-      desc?: string;
+      stateHandle: PuzzleStateHandle;
     },
     ref: Ref<HTMLDialogElement>,
   ) {
+    const [{ slug, title, desc }, setApiState] = stateHandle;
     const [fetching, setFetching] = useState<boolean>(false);
     const stopClickPropagation: MouseEventHandler<HTMLDialogElement> =
       useCallback((e) => {
@@ -48,6 +77,26 @@ export const PuzzleUnlockModal = React.forwardRef(
         return;
       }
       setFetching(true);
+
+      const apiClient = newClient(apiUrl(), undefined);
+      apiClient
+        .unlockPuzzle({
+          params: {
+            slug,
+          },
+        })
+        .then((result) => {
+          setFetching(false);
+          if (result.status === 200) {
+            setApiState(result.body);
+            onDismiss();
+          }
+        })
+        .catch((err: unknown) => {
+          console.error("Failed to unlock puzzle", err);
+          setFetching(false);
+        });
+
       fetch(`/puzzles/${slug}/unlock`, {
         method: "POST",
       }).then(
@@ -61,7 +110,7 @@ export const PuzzleUnlockModal = React.forwardRef(
           setFetching(false);
         },
       );
-    }, [fetching, onDismiss, slug]);
+    }, [fetching, onDismiss, slug, setApiState]);
     return (
       <StyledDialog ref={ref} onClick={stopClickPropagation}>
         <div
@@ -153,6 +202,7 @@ const LinkWrapper = styled.span`
 `;
 
 const PuzzleLink = ({
+  epoch,
   lockState,
   answer,
   currency,
@@ -164,6 +214,7 @@ const PuzzleLink = ({
   size = 24,
   style = {},
 }: {
+  epoch: number;
   lockState: LockState;
   answer?: string;
   currency: number;
@@ -191,6 +242,16 @@ const PuzzleLink = ({
     setShowUnlockButton(true);
   }, []);
 
+  const puzzleStateHandle = usePuzzleState(epoch, {
+    slug,
+    title,
+    state: lockState,
+    answer,
+    desc,
+  });
+
+  const [puzzleState] = puzzleStateHandle;
+
   if (lockState === "locked") {
     // This slug was not visible to our current understanding of what puzzles exist,
     // or the puzzle is locked and there's nothing for us to show.
@@ -200,32 +261,34 @@ const PuzzleLink = ({
   const buttonDisabled = currency <= 0;
   return (
     <LinkWrapper
-      className={`puzzle-link ${answer ? "solved" : "unsolved"} ${lockState}`}
+      className={`puzzle-link ${answer ? "solved" : "unsolved"} ${puzzleState.state}`}
       style={{
         fontSize: `${size}px`,
         ...style,
       }}
     >
       {showIcon ? (
-        <PuzzleIcon lockState={lockState} answer={answer} size={size} />
+        <PuzzleIcon
+          lockState={puzzleState.state}
+          answer={puzzleState.answer}
+          size={size}
+        />
       ) : undefined}
-      {lockState === "unlocked" ? (
+      {puzzleState.state === "unlocked" ? (
         <a className="puzzle-link-title" href={`/puzzles/${slug}`}>
           {title}
         </a>
       ) : (
         <span className="puzzle-link-title">{title}</span>
       )}{" "}
-      {showUnlockButton && lockState === "unlockable" ? (
+      {showUnlockButton && puzzleState.state === "unlockable" ? (
         <>
           <PuzzleUnlockModal
             ref={modalRef}
-            title={title}
-            slug={slug}
+            stateHandle={puzzleStateHandle}
             onDismiss={dismissModal}
             cost={1}
             currency={currency}
-            desc={desc}
           />
           <Button
             className="puzzle-unlock-button"

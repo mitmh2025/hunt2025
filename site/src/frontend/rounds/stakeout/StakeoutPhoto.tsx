@@ -85,6 +85,7 @@ const StakeoutPhoto = ({
     if (title && slug) {
       return (
         <PuzzleLink
+          epoch={teamState.epoch}
           lockState={puzzleState?.locked ?? "locked"}
           answer={puzzleState?.answer}
           currency={teamState.currency}

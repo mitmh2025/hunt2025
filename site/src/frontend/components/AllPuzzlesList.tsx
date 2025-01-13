@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { css, styled } from "styled-components";
 import {
   type AllPuzzlesInteraction,
@@ -7,7 +7,7 @@ import {
   type AllPuzzlesState,
 } from "../client/all_puzzles_types";
 import { deviceMax } from "../utils/breakpoints";
-import PuzzleLink from "./PuzzleLink";
+import PuzzleLink, { PuzzleIcon } from "./PuzzleLink";
 
 const StyledRow = styled.tr<{ $bolded: boolean }>`
   ${({ $bolded }) =>
@@ -62,11 +62,13 @@ const RoundHeader = styled.h3`
   font-size: 2rem;
 `;
 
-const AllPuzzlesTable = ({
+const PuzzlesTable = ({
+  epoch,
   puzzles,
   interactions,
   currency,
 }: {
+  epoch: number;
   puzzles: AllPuzzlesPuzzle[];
   interactions?: AllPuzzlesInteraction[];
   currency: number;
@@ -81,6 +83,7 @@ const AllPuzzlesTable = ({
                 <StyledRow key={puz.slug} $bolded={puz.is_meta ?? false}>
                   <td key="puzzle" className="puzzle-name">
                     <PuzzleLink
+                      epoch={epoch}
                       lockState={puz.state ?? "locked"}
                       answer={puz.answer}
                       currency={currency}
@@ -120,9 +123,11 @@ const AllPuzzlesTable = ({
 };
 
 const AllPuzzlesRound = ({
+  epoch,
   round,
   currency,
 }: {
+  epoch: number;
   round: AllPuzzlesRound;
   currency: number;
 }) => {
@@ -131,7 +136,8 @@ const AllPuzzlesRound = ({
       <RoundHeader key={round.slug}>
         <a href={`/rounds/${round.slug}`}>{round.title}</a>
       </RoundHeader>
-      <AllPuzzlesTable
+      <PuzzlesTable
+        epoch={epoch}
         puzzles={round.puzzles}
         interactions={round.interactions}
         currency={currency}
@@ -140,7 +146,7 @@ const AllPuzzlesRound = ({
   );
 };
 
-const AllPuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
+const PuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
   const endgame = state.rounds.find((round) => round.slug === "endgame");
   return (
     <>
@@ -151,6 +157,7 @@ const AllPuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
 
         return (
           <AllPuzzlesRound
+            epoch={state.epoch}
             key={round.slug}
             round={round}
             currency={state.currency}
@@ -162,7 +169,11 @@ const AllPuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
           <RoundHeader key="stray">
             <a href="/rounds/stray_leads">Stray Leads</a>
           </RoundHeader>
-          <AllPuzzlesTable puzzles={state.stray} currency={state.currency} />
+          <PuzzlesTable
+            epoch={state.epoch}
+            puzzles={state.stray}
+            currency={state.currency}
+          />
         </>
       )}
       {endgame?.interactions?.map((int) => (
@@ -174,4 +185,108 @@ const AllPuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
   );
 };
 
-export default AllPuzzlesList;
+const Filters = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--gray-300);
+
+    &:hover {
+      color: var(--gray-200);
+    }
+
+    &.selected {
+      color: var(--gray-100);
+    }
+
+    &.selected:hover {
+      color: var(--true-white);
+    }
+  }
+
+  .puzzle-link-status-icon {
+    margin-right: 0.125rem;
+  }
+`;
+
+export default function AllPuzzlesList({ state }: { state: AllPuzzlesState }) {
+  const [showUnlockable, setShowUnlockable] = useState<boolean>(true);
+  const [showUnlocked, setShowUnlocked] = useState<boolean>(true);
+  const [showSolved, setShowSolved] = useState<boolean>(true);
+
+  const toggleShowUnlockable = useCallback(() => {
+    setShowUnlockable((prevState) => !prevState);
+  }, []);
+  const toggleShowUnlocked = useCallback(() => {
+    setShowUnlocked((prevState) => !prevState);
+  }, []);
+  const toggleShowSolved = useCallback(() => {
+    setShowSolved((prevState) => !prevState);
+  }, []);
+
+  const filteredState = useMemo(() => {
+    const rounds = state.rounds.flatMap((round) => {
+      const filteredPuzzles = round.puzzles.filter((p) => {
+        if (p.answer !== undefined) {
+          return showSolved;
+        }
+        if (p.state === "unlocked") {
+          return showUnlocked;
+        }
+        if (p.state === "unlockable") {
+          return showUnlockable;
+        }
+        return true;
+      });
+      return {
+        ...round,
+        puzzles: filteredPuzzles,
+      };
+    });
+    return {
+      ...state,
+      rounds,
+    };
+  }, [state, showUnlockable, showUnlocked, showSolved]);
+
+  return (
+    <>
+      <Filters>
+        <h4>Show:</h4>
+        <label className={`${showUnlockable && "selected"}`}>
+          <input
+            type="checkbox"
+            checked={showUnlockable}
+            onChange={toggleShowUnlockable}
+          />
+          <PuzzleIcon lockState="unlockable" size={24} />
+          unlockable
+        </label>
+        <label className={`${showUnlocked && "selected"}`}>
+          <input
+            type="checkbox"
+            checked={showUnlocked}
+            onChange={toggleShowUnlocked}
+          />
+          <PuzzleIcon lockState="unlocked" size={24} />
+          unlocked
+        </label>
+        <label className={`${showSolved && "selected"}`}>
+          <input
+            type="checkbox"
+            checked={showSolved}
+            onChange={toggleShowSolved}
+          />
+          <PuzzleIcon lockState="unlocked" answer="dummy" size={24} />
+          solved
+        </label>
+      </Filters>
+      <PuzzlesList state={filteredState} />
+    </>
+  );
+}

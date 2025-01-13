@@ -23,7 +23,7 @@ import { type TeamHuntState } from "../../../../lib/api/client";
 import billie from "../../assets/billie.png";
 import cork from "../../assets/cork.jpg";
 import { CLIPBOARD_MONOSPACE_FONT_FAMILY } from "../../components/CopyToClipboard";
-import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { deviceMax, deviceMin } from "../../utils/breakpoints";
 import map from "./assets/map.png";
@@ -297,11 +297,13 @@ const EntityContainer = styled.div<{ $clickable?: boolean }>`
 `;
 
 const MissingDiamondMapEntity = ({
+  epoch,
   entity,
   currency,
   tooltipChildren,
   additionalImageStyle,
 }: {
+  epoch: number;
   entity: MissingDiamondEntity;
   currency: number;
   tooltipChildren?: React.ReactNode;
@@ -365,35 +367,32 @@ const MissingDiamondMapEntity = ({
     </>
   );
 
-  let iconState;
-  switch (entity.puzzle?.state) {
-    case "unlockable":
-    case "unlocked":
-      iconState = entity.puzzle.state;
-      break;
-    case "solved":
-      iconState = "unlocked" as const;
-      break;
-    default:
-      iconState = "locked" as const;
-      break;
-  }
+  const puzzleStateHandle = usePuzzleState(
+    epoch,
+    entity.puzzle ?? {
+      slug: "",
+      state: "locked",
+      title: "",
+    },
+  );
+
+  const puzzleState = entity.puzzle ? puzzleStateHandle[0] : undefined;
 
   const tooltip = showTooltip && (
     <PuzzleTooltipComponent
       innerRef={refs.setFloating}
       style={{ ...floatingStyles, visibility: "visible" }}
-      title={entity.puzzle?.title ?? entity.alt}
-      answer={entity.puzzle?.answer}
-      desc={entity.puzzle?.desc}
-      lockState={iconState}
+      title={puzzleState?.title ?? entity.alt}
+      answer={puzzleState?.answer}
+      desc={puzzleState?.desc}
+      lockState={puzzleState?.state ?? "locked"}
       {...getFloatingProps()}
     >
       {tooltipChildren}
     </PuzzleTooltipComponent>
   );
 
-  if (entity.puzzle?.state === "unlockable") {
+  if (puzzleState?.state === "unlockable") {
     return (
       <>
         <EntityContainer
@@ -407,22 +406,20 @@ const MissingDiamondMapEntity = ({
         {tooltip}
         <PuzzleUnlockModal
           ref={unlockModalRef}
-          title={entity.puzzle.title}
-          slug={entity.puzzle.slug}
           onDismiss={dismissUnlockModal}
           cost={1}
           currency={currency}
-          desc={entity.puzzle.desc}
+          stateHandle={puzzleStateHandle}
         />
       </>
     );
-  } else if (entity.puzzle) {
+  } else if (puzzleState) {
     return (
       <>
         <EntityContainer
           as="a"
           style={containerStyle}
-          href={`/puzzles/${entity.puzzle.slug}`}
+          href={`/puzzles/${puzzleState.slug}`}
         >
           {image}
         </EntityContainer>
@@ -440,20 +437,21 @@ const MissingDiamondMapEntity = ({
 };
 
 const MissingDiamondLocationImage = ({
+  epoch,
   location,
   currency,
 }: {
+  epoch: number;
   location: MissingDiamondEntity;
   currency: number;
 }) => {
   return (
     <MissingDiamondMapEntity
+      epoch={epoch}
       entity={location}
       currency={currency}
       additionalImageStyle={
-        location.puzzle?.state === "solved"
-          ? { filter: "drop-shadow(0 0 5px white)" }
-          : {}
+        location.puzzle?.answer ? { filter: "drop-shadow(0 0 5px white)" } : {}
       }
     />
   );
@@ -531,9 +529,11 @@ const MissingDiamondInteraction = ({
 };
 
 const MissingDiamondWitnessImage = ({
+  epoch,
   witness,
   currency,
 }: {
+  epoch: number;
   witness: MissingDiamondWitness;
   currency: number;
 }) => {
@@ -628,6 +628,7 @@ const MissingDiamondWitnessImage = ({
 
   return (
     <MissingDiamondMapEntity
+      epoch={epoch}
       entity={witness}
       currency={currency}
       additionalImageStyle={additionalImageStyle}
@@ -675,6 +676,7 @@ const MissingDiamondBody = ({
             />
             {state.locations.map((location) => (
               <MissingDiamondLocationImage
+                epoch={teamState.epoch}
                 key={location.asset}
                 location={location}
                 currency={teamState.currency}
@@ -682,6 +684,7 @@ const MissingDiamondBody = ({
             ))}
             {state.witnesses.map((witness) => (
               <MissingDiamondWitnessImage
+                epoch={teamState.epoch}
                 key={witness.alt}
                 witness={witness}
                 currency={teamState.currency}

@@ -19,7 +19,7 @@ import React, {
   useState,
 } from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
 import { Button } from "../../components/StyledUI";
 import { PuzzleTooltipComponent, Tooltip } from "../../components/Tooltip";
 import { Desk, DeskItem, NotesDialog } from "./Layout";
@@ -71,11 +71,13 @@ const NotesModal = React.forwardRef(function NotesModalInner(
 });
 
 const PaperTrailDeskItem = ({
+  epoch,
   item,
   position,
   imgStyle,
   currency,
 }: {
+  epoch: number;
   item: PaperTrailPuzzleObject;
   position: { left?: string; right?: string; top?: string; bottom?: string };
   imgStyle: { width: string };
@@ -113,15 +115,23 @@ const PaperTrailDeskItem = ({
     unlockModalRef.current?.close();
   }, []);
 
-  const lockState = item.state === "solved" ? "unlocked" : item.state;
+  const puzzleStateHandle = usePuzzleState(epoch, {
+    slug: item.slug,
+    state: item.state === "solved" ? "unlocked" : item.state,
+    title: item.title,
+    answer: item.answer,
+    desc: item.desc,
+  });
+  const [puzzleState] = puzzleStateHandle;
+
   const tooltip = showTooltip && (
     <PuzzleTooltipComponent
       innerRef={refs.setFloating}
       style={{ ...floatingStyles, visibility: "visible" }}
-      title={item.title}
-      lockState={lockState}
-      answer={item.answer}
-      desc={item.desc}
+      title={puzzleState.title}
+      lockState={puzzleState.state}
+      answer={puzzleState.answer}
+      desc={puzzleState.desc}
       {...getFloatingProps()}
     />
   );
@@ -137,7 +147,7 @@ const PaperTrailDeskItem = ({
     </>
   );
 
-  if (lockState === "unlockable") {
+  if (puzzleState.state === "unlockable") {
     return (
       <>
         <DeskItem as="button" style={position} onClick={showUnlockModal}>
@@ -146,24 +156,17 @@ const PaperTrailDeskItem = ({
         </DeskItem>
         <PuzzleUnlockModal
           ref={unlockModalRef}
-          title={item.title}
-          slug={item.slug}
           onDismiss={dismissUnlockModal}
           cost={1}
           currency={currency}
-          desc={item.desc}
+          stateHandle={puzzleStateHandle}
         />
       </>
     );
   } else {
     return (
       <>
-        <DeskItem
-          style={position}
-          href={
-            item.state !== "unlockable" ? `/puzzles/${item.slug}` : undefined
-          }
-        >
+        <DeskItem style={position} href={`/puzzles/${item.slug}`}>
           {itemContents}
           {tooltip}
         </DeskItem>
@@ -215,6 +218,7 @@ const PaperTrailBody = ({
     if ("state" in item) {
       return (
         <PaperTrailDeskItem
+          epoch={state.epoch}
           key={item.slug}
           item={item}
           position={aStyle}

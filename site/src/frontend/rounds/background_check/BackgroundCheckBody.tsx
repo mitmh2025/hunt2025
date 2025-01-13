@@ -16,7 +16,7 @@ import React, {
 } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
 import { BackgroundCheckFonts } from "./BackgroundCheckFonts";
 import { Fridge, SCALED_WIDTH, SCALED_HEIGHT } from "./Layout";
 import { type BackgroundCheckObject, type BackgroundCheckState } from "./types";
@@ -45,9 +45,11 @@ const FridgeItemPopover = styled.div`
 `;
 
 const BackgroundCheckDisplayObject = ({
+  epoch,
   item,
   currency,
 }: {
+  epoch: number;
   item: BackgroundCheckObject;
   currency: number;
 }) => {
@@ -66,6 +68,15 @@ const BackgroundCheckDisplayObject = ({
   const role = useRole(context, {
     role: "label",
   });
+
+  const stateHandle = usePuzzleState(epoch, {
+    slug: item.slug,
+    title: item.title,
+    state: item.state === "solved" ? "unlocked" : item.state,
+    answer: item.answer,
+    desc: item.desc,
+  });
+  const [puzzleState] = stateHandle;
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
@@ -122,16 +133,19 @@ const BackgroundCheckDisplayObject = ({
   };
 
   const itemProps = {
-    key: item.slug,
+    key: puzzleState.slug,
     ...getReferenceProps(),
     ref: refs.setReference,
     style: aStyle,
-    href: item.state !== "unlockable" ? `/puzzles/${item.slug}` : undefined,
-    onClick: item.state === "unlockable" ? showUnlockModal : undefined,
+    href:
+      puzzleState.state !== "unlockable"
+        ? `/puzzles/${puzzleState.slug}`
+        : undefined,
+    onClick: puzzleState.state === "unlockable" ? showUnlockModal : undefined,
   };
 
   const FridgeItemComponent: React.ElementType =
-    item.state === "unlockable" ? FridgeItemButton : FridgeItemLink;
+    puzzleState.state === "unlockable" ? FridgeItemButton : FridgeItemLink;
 
   return (
     <>
@@ -139,15 +153,13 @@ const BackgroundCheckDisplayObject = ({
         <img src={item.asset} alt={item.alt} style={imgStyle} />
         <FridgeMagnet src={item.magnet} style={magnetImgStyle} />
       </FridgeItemComponent>
-      {item.state === "unlockable" ? (
+      {puzzleState.state === "unlockable" ? (
         <PuzzleUnlockModal
           ref={unlockModalRef}
-          title={item.title}
-          slug={item.slug}
           onDismiss={dismissUnlockModal}
           cost={1}
           currency={currency}
-          desc={item.desc}
+          stateHandle={stateHandle}
         />
       ) : undefined}
       {tooltipIsOpen && (
@@ -156,8 +168,12 @@ const BackgroundCheckDisplayObject = ({
           style={floatingStyles}
           {...getFloatingProps()}
         >
-          <div>{item.title}</div>
-          {item.answer ? <div>{item.answer}</div> : <div>{item.desc}</div>}
+          <div>{puzzleState.title}</div>
+          {puzzleState.answer ? (
+            <div>{puzzleState.answer}</div>
+          ) : (
+            <div>{puzzleState.desc}</div>
+          )}
         </FridgeItemPopover>
       )}
     </>
@@ -174,6 +190,7 @@ const BackgroundCheckBody = ({
   const objects = state.imagery.objects.map((item: BackgroundCheckObject) => {
     return (
       <BackgroundCheckDisplayObject
+        epoch={state.epoch}
         key={item.slug}
         item={item}
         currency={teamState.currency}

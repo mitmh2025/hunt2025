@@ -993,21 +993,14 @@ function getLocationPuzzleState(
 
   const puzzleState = teamState.puzzles[slug];
   if (!puzzleState) return undefined;
-  const unlockState = puzzleState.locked;
-  // Metapuzzles can not be unlockable
-  if (unlockState !== "unlocked") return undefined;
-
-  const state =
-    puzzleState.answer !== undefined
-      ? ("solved" as const)
-      : ("unlocked" as const);
+  if (puzzleState.locked === "locked") return undefined;
 
   const puzzleDefinition = PUZZLES[slug];
   return {
     title: puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`,
     slug,
     desc: puzzleDefinition?.initial_description,
-    state,
+    state: puzzleState.locked,
     answer: puzzleState.answer,
   };
 }
@@ -1045,8 +1038,7 @@ function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
     const unlockState = puzzleState.locked;
     if (unlockState === "locked") return [];
 
-    const state =
-      puzzleState.answer !== undefined ? ("solved" as const) : unlockState;
+    const state = unlockState;
     const puzzleDefinition = PUZZLES[slug];
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`;
 

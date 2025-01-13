@@ -1,6 +1,5 @@
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
-//import RoundPuzzleList from "../../components/RoundPuzzleList";
 import { PUZZLES } from "../../puzzles";
 import StakeoutBody from "./StakeoutBody";
 import metaEnvelope from "./assets/meta_envelope_full.png";
