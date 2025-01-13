@@ -68,6 +68,7 @@ import ChemicalsAreSexy from "./innocent-lab";
 import ShellCorporationEight from "./insignificant-thief";
 import TheArtGallery from "./intentional-limousine";
 import WeCanDoThisAllDay from "./iridescent-taxicab";
+import TheKiller from "./jubilant-table";
 import CornMaize from "./kind-ruler";
 import T____ott___P__y from "./kind-ship";
 import ItsNotClear from "./kooky-light";
@@ -381,6 +382,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   its_all_cheep_and_a_sheep_to_me: ItsAllCheepAndASheepToMe,
   sounds_like_a_dodo_to_me: SoundsLikeADodoToMe,
   splits_used_as_history: SplitsUsedAsHistory,
+  the_killer: TheKiller,
   to_do_tile_that_rectangle: ToDoTileThatRectangle,
   we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,
