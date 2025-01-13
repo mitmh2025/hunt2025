@@ -163,8 +163,8 @@ const Solution = (): JSX.Element => {
         normally numbers problems by month: J/F1, J/F2, etc. Solutions to Dan
         Katz’s minipuzzles are withheld—we expect that solvers can find his
         solutions at the end of the May/Jun 2025 Puzzle Corner (or you can go
-        solve them—they’re lovely). Solving the Puzzle Corner metapuzzle J/F5
-        is not required for this puzzle but is recommended, because it’s fun.
+        solve them—they’re lovely). Solving the Puzzle Corner metapuzzle J/F5 is
+        not required for this puzzle but is recommended, because it’s fun.
       </p>
       <ProblemBlock>
         <p>
