@@ -789,7 +789,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         Finally, solvers must sort the chapters by the time of day beginning at
-        midnight, as stated by the flavortext. Each chapter contains 2-3
+        midnight, as stated by the flavortext. Each chapter contains 2–3
         references to the time of day. If solvers don’t notice all of these due
         to the density of the text, they can also sort using the chapter page
         illustrations, which each include a full moon or a sun. All chapter
@@ -976,9 +976,9 @@ const Solution = (): JSX.Element => {
         Distantly comes the <Cyan>sound of a single strike</Cyan>.{" "}
         <Green>Come to my office in the morning. I’ll be there at ten.</Green> I
         was known to swing the bat myself{" "}
-        <em>(i.e. dole out physical punishment to unfaithful underlings)</em>
-        in the old days. One man comes in, another goes out. But the team is
-        what matters. And you understood that too.
+        <em>(i.e. dole out physical punishment to unfaithful underlings)</em> in
+        the old days. One man comes in, another goes out. But the team is what
+        matters. And you understood that too.
       </p>
       <p>
         <em>
@@ -1010,12 +1010,12 @@ const Solution = (): JSX.Element => {
         </em>
         <br />
         Getting the numbers wrong may be regarded as a misfortune. Disrespecting
-        the paperboys was harder to put right. Of course I had to shuffle him
+        the paperboys was harder to put right. Of course I had to shuffle him{" "}
         <em>[Sidecar]</em> out of the way for a while. Shunt him out of the way,
         you could say.{" "}
-        <em>(Papa thinks a “Sidecar” sounds like something you shunt.)</em>
-        For his own good. And while he was laying low I still needed someone to
-        take care of the day to day. And who did I know who would{" "}
+        <em>(Papa thinks a “Sidecar” sounds like something you shunt.)</em> For
+        his own good. And while he was laying low I still needed someone to take
+        care of the day to day. And who did I know who would{" "}
         <Orange>go everywhere with me</Orange> <em>[in the car]</em>? And, let’s
         not forget, had just put the numbers right. We really needed those
         numbers.{" "}
@@ -1039,8 +1039,8 @@ const Solution = (): JSX.Element => {
           Carter has just collected the diamond from a safety deposit box, and
           walks to a casino where he plans to show it to the manager to prove he
           can cover his gambling debts.{" "}
-          <Green>He reminisces about his life of crime.</Green>
-          He is followed by an unidentified man who turns out to be Rover.
+          <Green>He reminisces about his life of crime.</Green> He is followed
+          by an unidentified man who turns out to be Rover.
         </em>
       </p>
       <p>
@@ -1095,7 +1095,7 @@ const Solution = (): JSX.Element => {
         for an opportune moment (to look back over his shoulder).
       </p>
       <p>
-        <em>(The Teapot Dome scandal, Washington, 1921-23)</em>
+        <em>(The Teapot Dome scandal, Washington, 1921–23)</em>
         <br />
         When it started to look like gang warfare{" "}
         <em>
@@ -1163,7 +1163,7 @@ const Solution = (): JSX.Element => {
         handled the accounts. Project was actually on time and under budget.
         It’s just that it had an awful lot of overhead.{" "}
         <Green>In fact, it had overhead like no one had ever seen.</Green>{" "}
-        <em>(i.e. was the tallest building in the world.)</em>
+        <em>(i.e. was the tallest building in the world.)</em>{" "}
         <Green>
           We admired the view, cut the ribbon, and then we walked away. As of
           this writing, the actual owners have yet to see a profit.
@@ -1216,10 +1216,9 @@ const Solution = (): JSX.Element => {
         capitalists really. It absolutely lit a fire under Boeing shares. Third
         base, my favorite position, and nobody playing behind.{" "}
         <em>[Terms from casino blackjack.]</em> Who would be here to play
-        behind? <Cyan>It’s not even noon.</Cyan>
-        Quick look at my hand, but what’s important is to look around the room.
-        I was half expecting to see my shadow staring back at me. Maybe he knows
-        he’s been made.
+        behind? <Cyan>It’s not even noon.</Cyan> Quick look at my hand, but
+        what’s important is to look around the room. I was half expecting to see
+        my shadow staring back at me. Maybe he knows he’s been made.
       </p>
       <p>
         <em>(Time-capsule at New York World’s Fair, 1939)</em>
@@ -1262,7 +1261,7 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         The man reappears with{" "}
-        <Blue>a little box which he presents with a flourish.</Blue>
+        <Blue>a little box which he presents with a flourish.</Blue>{" "}
         <em>
           (It’s a very little box; later she drops it into her handbag.
           Specifically, it’s an engagement ring.)
@@ -1337,7 +1336,7 @@ const Solution = (): JSX.Element => {
         <em>[“The smile on the Mona Lisa”]</em>
       </p>
       <p>
-        I guess that place has bottomless coffee. Or he has bottomless expenses.
+        I guess that place has bottomless coffee. Or he has bottomless expenses.{" "}
         <Orange>Surely he has his beast with him somewhere.</Orange> And it will
         carry two as easily as one. I could be home{" "}
         <Green>faster than Sir Barton.</Green>{" "}
@@ -1361,7 +1360,7 @@ const Solution = (): JSX.Element => {
         <em>
           (Rover is reluctant to leave because he’s on a stake-out; he’s
           followed Sidecar here, because Sidecar has the diamond.)
-        </em>
+        </em>{" "}
         I’ll settle up here and then wait outside.{" "}
         <Green>Now let’s see you move those [NIMBLE FEET]</Green>.{" "}
         <em>[“The nimble…feet of Fred Astaire”]</em>
@@ -1376,7 +1375,7 @@ const Solution = (): JSX.Element => {
         How far did I get <em>[in the song lyrics]</em>? I should take care of
         the meter. The iceman cometh. Good.{" "}
         <em>(It fits the meter of the song.)</em> An arrangement. Doesn’t go.{" "}
-        <em>(Doesn’t fit the meter.)</em> <Green>The iceman cometh.</Green>
+        <em>(Doesn’t fit the meter.)</em> <Green>The iceman cometh.</Green>{" "}
         <em>[“An O’Neill drama”]</em> <Green>A grey arrangement</Green>.{" "}
         <em>[“Whistler’s Mama”, called Arrangement in Grey and Black.]</em>{" "}
         Rubbish. But it’s passing the time.
@@ -1385,7 +1384,7 @@ const Solution = (): JSX.Element => {
         How far away was that <Orange>hitching post</Orange>{" "}
         <em>[where he parked the car]</em>? Don’t you know it’s not good to keep
         a girl waiting like this? It really is{" "}
-        <Green>too damn much. Pardon my French.</Green>
+        <Green>too damn much. Pardon my French.</Green>{" "}
         <em>[“As the French would say, de trop”]</em> In some cities they charge
         for it
         <em>[parking]</em> now. That would put things right. I just want to put
@@ -1415,15 +1414,13 @@ const Solution = (): JSX.Element => {
         If you wanted everybody who is anybody, you can’t complain when
         everybody shows up. That sheepish-looking man who’s somehow spilling two
         martinis at once is a state senator. Guess he’s taking{" "}
-        <Cyan>happy hour</Cyan>
-        seriously. And here’s Silvius{" "}
+        <Cyan>happy hour</Cyan> seriously. And here’s Silvius{" "}
         <em>
           (the love-sick shepherd from As You Like It, representing Carter)
         </em>
-        , looking like a lost sheep himself
+        , looking like a lost sheep himself{" "}
         <em>(appropriately for a shepherd)</em>. Someone please tell him she{" "}
-        <em>[Gladys]</em>
-        doesn’t care.{" "}
+        <em>[Gladys]</em> doesn’t care.{" "}
         <Green>
           Quite a contrast to the married couple over by the door. I’m guessing
           married: they are both wearing rings, and holding hands. How sweet.
@@ -1452,12 +1449,12 @@ const Solution = (): JSX.Element => {
           SERENISSIMA]. I do like her necklace though, sancta simplicitas. White
           on black, pearls alternating with carved jet lozenges.
         </Green>{" "}
-        There’s <Orange>Hoke</Orange>
+        There’s <Orange>Hoke</Orange>{" "}
         <em>
           [Rover; an anachronistic reference: Hoke is the chauffeur in Driving
           Miss Daisy]
         </em>
-        , staring daggers at you-know-who <em>[Sidecar]</em> as usual. He
+        , staring daggers at you-know-who <em>[Sidecar]</em> as usual. He{" "}
         <em>[Sidecar]</em> doesn’t seem too put out for once. In fact, he looks
         miles away.{" "}
         <em>
@@ -1564,13 +1561,13 @@ const Solution = (): JSX.Element => {
         <em>
           [Rover; Kato, the Green Hornet’s sidekick, is another chauffeur. Not
           an anachronism; it’s from 1936.]
-        </em>
+        </em>{" "}
         Whom she normally ignores. Now, he got here quickly.{" "}
         <em>(Last seen beside the Dürer.)</em>{" "}
         <Olive>
           Decided to skip over the Golden Age and gawp at something more modern.
         </Olive>{" "}
-        <em>(Another indication that the exhibition is chronological.)</em>I
+        <em>(Another indication that the exhibition is chronological.)</em> I
         wonder if he’d be an angel and find me some kir.{" "}
         <em>(Asks Rover to go out and run an errand.)</em> The catering here is
         a lot less cosmopolitan than the decor.{" "}
@@ -1579,7 +1576,7 @@ const Solution = (): JSX.Element => {
           That is a lot of gold. She’s wearing at least four bracelets and a
           massive diamond choker. I’d like to have a closer look. But that might
           ruin the effect.
-        </Green>
+        </Green>{" "}
         <em>(Klimt paintings are best viewed from a distance.)</em> I wonder who
         she is? A Brahmin, or just pretending?
       </p>
@@ -1647,8 +1644,8 @@ const Solution = (): JSX.Element => {
         <br />
         <Olive>I wish I could do this in the thief’s shoes.</Olive> But they’d
         probably be too big for me. Or would they?{" "}
-        <Olive>A familiar broad silhouette rolls past me,</Olive>
-        covered up and protected from the elements.{" "}
+        <Olive>A familiar broad silhouette rolls past me,</Olive> covered up and
+        protected from the elements.{" "}
         <em>(The car, with its convertible roof up.)</em> Wonder where she’s off
         to. Why do we say something is out in the elements? Does it mean earth,
         air, fire and water? The Greeks thought everything was made of atoms.
@@ -1673,12 +1670,12 @@ const Solution = (): JSX.Element => {
         Tonight the Philadelphia A’s <em>[Athletics]</em> visit the Mitropolis{" "}
         <em>[Boston]</em> B’s.{" "}
         <Green>Brought to you by [C FOR CLARENDON].</Green> I can’t see the face
-        of <Orange>the man in the box.</Orange>
-        <em>(Rover, in the car…)</em> But I recognise his grip. Hands in firm
-        control, almost touching. Probably going for a long drive. I can just
-        picture the look of steely determination under the peak of his cap. A
-        quick glance to the right to make sure there’s no danger on that side.
-        He looks ahead with eyes firmly set.
+        of <Orange>the man in the box.</Orange> <em>(Rover, in the car…)</em>{" "}
+        But I recognise his grip. Hands in firm control, almost touching.
+        Probably going for a long drive. I can just picture the look of steely
+        determination under the peak of his cap. A quick glance to the right to
+        make sure there’s no danger on that side. He looks ahead with eyes
+        firmly set.
       </p>
       <p>
         <em>
@@ -1760,7 +1757,7 @@ const Solution = (): JSX.Element => {
         <em>(Burning of Fairfield 1779)</em>{" "}
         <Green>Oh, what a beautiful meadow.</Green> <em>(“Fair field”)</em> Now,
         slow down, look ahead. <Orange>A man steps onto the curb</Orange>,
-        dressed smartly but not ostentatiously. He is placing something
+        dressed smartly but not ostentatiously. He is placing something{" "}
         <em>[probably his driving gloves]</em> into his overturned cap.{" "}
         <Cyan>It’s getting dark now; I can’t make out the details.</Cyan> He
         puts the cap under his arm. There remains something{" "}
@@ -1809,15 +1806,13 @@ const Solution = (): JSX.Element => {
         </em>{" "}
         I will be missed, I suppose. I have vanished into airy nothing. I’ll
         find another way back in case he’s still hanging about. And then we’ll
-        see what we can see. When I returned, dear, there stood a man.
+        see what we can see. When I returned, dear, there stood a man.{" "}
         <em>
           (From a song, After The Ball, which comes into her mind because she’s
           returning to the Gala which is now finishing.)
         </em>{" "}
-        A lesson there, perhaps.
-        <em>
-          (The lesson of the song is not to believe everything you see.)
-        </em>{" "}
+        A lesson there, perhaps.{" "}
+        <em>(The lesson of the song is not to believe everything you see.)</em>{" "}
         Many the hopes that have vanished. I’ve come back to Chinatown after
         all.{" "}
         <em>
@@ -1847,10 +1842,10 @@ const Solution = (): JSX.Element => {
       <p>
         <em>(Wonderland)</em>
         <br />I think of this as my personal train of thought. And whatever the
-        case may be, <Olive>I think just as well inbound as outbound.</Olive>
-        Let’s go over everyone’s story again. He <em>
-          [Carter, in chapter 2]
-        </em>{" "}
+        case may be, <Olive>
+          I think just as well inbound as outbound.
+        </Olive>{" "}
+        Let’s go over everyone’s story again. He <em>[Carter, in chapter 2]</em>{" "}
         was walking to the casino. He turned and looked back, and saw…what did
         he see? <Orange>A man?</Orange> A figure, a shadow. Something and
         nothing. Was it a man? Or was it just men? If it was a man, was he just
@@ -1868,15 +1863,14 @@ const Solution = (): JSX.Element => {
           You could esteem a beach, even.
         </Green>{" "}
         A small rabble of youths stumble in, having esteemed the{" "}
-        <Cyan>last drop of pleasure out of the day.</Cyan>
-        Getting back to the stories.{" "}
-        <em>[Gladys tells this story in chapter 3]</em> <Orange>A man</Orange>{" "}
-        looks through the glass at a window where a woman <em>[Gladys]</em> can
-        faintly be seen. Does he see her? No, he does not really see her because
-        he sees his own reflection. <em>[Tom’s Diner, Suzanne Vega 1984]</em> So
-        is the man looking at the woman? Or is he looking at the place where the
-        woman is standing? What if he could see right through her? What would he
-        be looking at then?{" "}
+        <Cyan>last drop of pleasure out of the day.</Cyan> Getting back to the
+        stories. <em>[Gladys tells this story in chapter 3]</em>{" "}
+        <Orange>A man</Orange> looks through the glass at a window where a woman{" "}
+        <em>[Gladys]</em> can faintly be seen. Does he see her? No, he does not
+        really see her because he sees his own reflection.{" "}
+        <em>[Tom’s Diner, Suzanne Vega 1984]</em> So is the man looking at the
+        woman? Or is he looking at the place where the woman is standing? What
+        if he could see right through her? What would he be looking at then?{" "}
         <em>
           (They are getting close to understanding that what Rover really had
           his eye on was Sidecar, who was in the back room of the store.)
@@ -1897,8 +1891,8 @@ const Solution = (): JSX.Element => {
         <Orange>A man</Orange> steps out of the car and disappears up the steps.
         The man is carrying a folded paper. The rock <em>[diamond]</em> was
         found <em>[beside Sidecar’s body]</em>, but not the paper{" "}
-        <em>[although it should have been there, with the diamond]</em>|. But
-        the paper covers <em>[contains information about]</em> the rock…
+        <em>[although it should have been there, with the diamond]</em>. But the
+        paper covers <em>[contains information about]</em> the rock…
       </p>
       <p>
         <em>(Orient Heights)</em>
@@ -1957,7 +1951,7 @@ const Solution = (): JSX.Element => {
         </em>{" "}
         <Orange>A man</Orange> <em>[Rover]</em> walks out, in search of a drink.{" "}
         <em>(Baby’s evidence from chapter 4: she sends Rover out for kir.)</em>{" "}
-        Another man <em>[Sidecar]</em> is carrying ice <em>[the diamond].</em>
+        Another man <em>[Sidecar]</em> is carrying ice <em>[the diamond]. </em>
         Suppose they came together somewhere?{" "}
         <em>(Concludes that Rover killed Sidecar.)</em>
       </p>
@@ -2003,7 +1997,7 @@ const Solution = (): JSX.Element => {
           whole self-contained world. The plants need the animals and the
           animals need the plants.
         </Green>{" "}
-        <em>(Cain and Esau were farmers; Abel and Jacob kept animals.)</em>
+        <em>(Cain and Esau were farmers; Abel and Jacob kept animals.)</em>{" "}
         <Green>
           Everything living in harmony under the surface. And then the big fish
           eats the little fish.
@@ -2023,8 +2017,8 @@ const Solution = (): JSX.Element => {
         were you at the time of? Never mind, I know where you were. And I know
         what you did.{" "}
         <em>(Yes, because he left the Gala just after Sidecar.)</em>{" "}
-        <Blue>And I know what I must do.</Blue>{" "}
-        <em>[Leonard Cohen 1984] This is my stop.</em>
+        <Blue>And I know what I must do.</Blue> <em>[Leonard Cohen 1984]</em>{" "}
+        This is my stop.
       </p>
       <hr />
       <p>
