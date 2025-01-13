@@ -129,7 +129,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["FAT USED AY", "FAT USED AYY", "FAT USED AYYY"],
-      reply: "You’re on the right track. Keep going.",
+      reply: "You’re on the right track. Keep going!",
     },
     {
       guess: ["OBESE PREOWNED THE FONZ SAYING"],
