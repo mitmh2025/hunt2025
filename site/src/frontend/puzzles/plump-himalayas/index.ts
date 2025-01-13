@@ -1,11 +1,11 @@
 import { type PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
-import router from "./server";
 import Solution from "./solution";
 
 const puzzle: PuzzleDefinition = {
   title: "Control Room",
   slug: "control_room",
+  code_name: "plump-himalayas",
   initial_description: "An invitation to schedule an interaction",
   answer: "PIVOT TABLE",
   authors: [
@@ -36,7 +36,6 @@ const puzzle: PuzzleDefinition = {
   },
   hints: [],
   canned_responses: [],
-  router,
 };
 
 export default puzzle;

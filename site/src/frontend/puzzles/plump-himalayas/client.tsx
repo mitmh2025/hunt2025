@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useRef, useEffect, useMemo, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import image from "./assets/video.png";
