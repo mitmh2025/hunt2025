@@ -1,12 +1,12 @@
 diff --git a/app/models/authorization.rb b/app/models/authorization.rb
-index ed69895b33..847784a16e 100644
+index ed69895b33..d213dd4390 100644
 --- a/app/models/authorization.rb
 +++ b/app/models/authorization.rb
 @@ -37,6 +37,24 @@ class Authorization < ApplicationModel
          end
        end
  
-+      groups = hash['extra']['raw_info']['http://schemas.xmlsoap.org/claims/Group']
++      groups = hash['extra']['raw_info'].multi('http://schemas.xmlsoap.org/claims/Group')
 +      if groups&.include? 'Ops'
 +        if !user.role?('Ops')
 +          ops = Role.find_by(name: "Ops")
