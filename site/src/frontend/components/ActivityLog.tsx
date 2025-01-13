@@ -227,7 +227,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Requested a hint for puzzle{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+            <a href={`/puzzles/${entry.slug}/hints`}>{entry.title}</a>
           </>
         ),
         showNotification: false,
@@ -238,7 +238,7 @@ export function formatActivityLogEntry(
         description: (
           <>
             Hint provided for{" "}
-            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+            <a href={`/puzzles/${entry.slug}/hints`}>{entry.title}</a>
           </>
         ),
         showNotification: true,

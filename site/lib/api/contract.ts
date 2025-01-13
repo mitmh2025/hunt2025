@@ -23,6 +23,26 @@ export const GuessSchema = z.object({
   timestamp: z.string().datetime(),
 });
 
+export const HintSchema = z.discriminatedUnion("type", [
+  z.object({
+    id: z.number(),
+    type: z.literal("puzzle_hint_requested"),
+    timestamp: z.string().datetime(),
+    data: z.object({
+      request: z.string(),
+    }),
+  }),
+  z.object({
+    id: z.number(),
+    type: z.literal("puzzle_hint_responded"),
+    timestamp: z.string().datetime(),
+    data: z.object({
+      request_id: z.number(),
+      response: z.string(),
+    }),
+  }),
+]);
+
 export const RateLimitStateSchema = z.object({
   retryAfter: z.string().datetime(),
 });
@@ -52,6 +72,7 @@ export const PuzzleStateSchema = PuzzleSummarySchema.omit({
   unlocked_at: true,
 }).extend({
   guesses: z.array(GuessSchema).default([]),
+  hints: z.array(HintSchema).default([]),
   epoch: z.number(),
 });
 
@@ -97,6 +118,10 @@ export const TeamStateSchema = z.object({
 
 const SubmitGuessSchema = z.object({
   guess: z.string(),
+});
+
+const SubmitHintRequestSchema = z.object({
+  request: z.string(),
 });
 
 export const ActivityLogEntryBaseSchema = z.object({
@@ -411,6 +436,15 @@ export const publicContract = c.router({
     responses: {
       200: PuzzleStateSchema,
       429: RateLimitStateSchema,
+      404: z.null(),
+    },
+  },
+  submitHintRequest: {
+    method: "PUT",
+    path: `/puzzle/:slug/requestHint`,
+    body: SubmitHintRequestSchema,
+    responses: {
+      200: PuzzleStateSchema,
       404: z.null(),
     },
   },

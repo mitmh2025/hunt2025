@@ -333,4 +333,16 @@ export const frontendContract = c.router({
       200: PuzzleStateLogSchema,
     },
   },
+  respondToHintRequest: {
+    method: "POST",
+    path: "/teams/:teamId/puzzles/:slug/respondToHintRequest",
+    body: z.object({
+      request_id: z.number(),
+      response: z.string(),
+    }),
+    responses: {
+      200: TeamHuntStateSchema,
+      404: z.null(),
+    },
+  },
 });

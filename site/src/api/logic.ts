@@ -352,6 +352,9 @@ export class PuzzleStateIntermediate {
   private _slug: string;
   epoch: number;
   guesses: (InternalActivityLogEntry & { type: "puzzle_guess_submitted" })[];
+  hints: (InternalActivityLogEntry & {
+    type: "puzzle_hint_requested" | "puzzle_hint_responded";
+  })[];
 
   constructor(
     slug: string,
@@ -360,6 +363,7 @@ export class PuzzleStateIntermediate {
     this._slug = slug;
     this.epoch = initial?.epoch ?? 0;
     this.guesses = Array.from(initial?.guesses ?? []).map(hydrateLogEntry);
+    this.hints = Array.from(initial?.hints ?? []).map(hydrateLogEntry);
   }
 
   reduce(entry: InternalActivityLogEntry) {
@@ -372,6 +376,12 @@ export class PuzzleStateIntermediate {
     }
     if (entry.type === "puzzle_guess_submitted" && entry.slug === this._slug) {
       this.guesses.push(entry);
+    } else if (
+      (entry.type === "puzzle_hint_requested" ||
+        entry.type === "puzzle_hint_responded") &&
+      entry.slug === this._slug
+    ) {
+      this.hints.push(entry);
     }
     return this;
   }
@@ -388,6 +398,7 @@ export class PuzzleStateIntermediate {
     return {
       epoch: this.epoch,
       guesses: this.guesses,
+      hints: this.hints,
     };
   }
 }

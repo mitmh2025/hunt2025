@@ -7,6 +7,7 @@ import { getBackgroundCheckManifestOverrides } from "../../components/Background
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { getMissingDiamondHeader } from "../../components/MissingDiamondPuzzleLayout";
 import PuzzleGuessSection from "../../components/PuzzleGuessSection";
+import PuzzleHints from "../../components/PuzzleHints";
 import {
   SolutionHintTable,
   SolutionCannedResponseTable,
@@ -729,6 +730,110 @@ export function solutionHandler(req: Request<PuzzleParams>) {
       node,
       entrypoints,
       title: `Solution for ${title}`,
+    },
+    req.teamState,
+  );
+}
+
+export async function puzzleHintsHandler(req: Request<PuzzleParams>) {
+  if (!req.teamState) {
+    return undefined;
+  }
+  const slug = req.params.puzzleSlug;
+  const result = await req.api.getPuzzleState({
+    params: { slug: slug },
+  });
+  if (result.status !== 200 || result.body.locked !== "unlocked") {
+    // Puzzle doesn't exist or team doesn't have access.
+    return undefined;
+  }
+
+  const hints = result.body.hints;
+  const initialHints = JSON.stringify(hints);
+  const initialTeamState = JSON.stringify(req.teamState.state);
+  const inlineScript = `window.initialHints = ${initialHints}; window.initialTeamState=${initialTeamState}; window.puzzleSlug = "${slug}";`;
+
+  const hintsFrag = (
+    <>
+      <script
+        type="text/javascript"
+        dangerouslySetInnerHTML={{ __html: inlineScript }}
+      />
+      <div id="puzzle-hints">
+        <PuzzleHints
+          slug={slug}
+          hints={hints}
+          teamState={req.teamState.state}
+          onReceiveHintsFromApi={() => {
+            /* noop */
+          }}
+        />
+      </div>
+    </>
+  );
+
+  // Look up puzzle by slug.  If none exists, 404.
+  const puzzle = PUZZLES[slug];
+  if (puzzle === undefined) {
+    return undefined;
+  }
+  const title = puzzle.title;
+
+  // Use the components for the relevant round.
+  const manifest = getComponentManifestForPuzzle(
+    req.teamState.state,
+    slug,
+    "puzzle",
+  );
+
+  const entrypoints = [
+    "hints" as const,
+    ...(manifest.entrypoint ? [manifest.entrypoint] : []),
+  ];
+
+  const HintsWrapperComponent = manifest.wrapper;
+  const HintsTitleWrapperComponent = manifest.titleWrapper;
+  const HintsHeaderComponent = manifest.header;
+  const HintsTitleComponent = manifest.title;
+  const HintsBacklinkComponent = manifest.backlink;
+  const HintsMainComponent = manifest.main;
+  const HintsFooterComponent = manifest.footer;
+  const HintsFontsComponent = manifest.fonts;
+
+  const backlinkFrag = (
+    <>
+      <HintsBacklinkComponent href={`/puzzles/${slug}`}>
+        ← Back to puzzle
+      </HintsBacklinkComponent>
+    </>
+  );
+
+  const node = (
+    <>
+      {HintsFontsComponent ? <HintsFontsComponent /> : undefined}
+
+      <HintsWrapperComponent>
+        <HintsHeaderComponent>
+          <HintsTitleWrapperComponent>
+            {backlinkFrag}
+            <HintsTitleComponent>
+              <span>Hints For {title}</span>
+            </HintsTitleComponent>
+          </HintsTitleWrapperComponent>
+        </HintsHeaderComponent>
+        <HintsMainComponent id="hints-content" className="hints-content">
+          {hintsFrag}
+        </HintsMainComponent>
+        <HintsFooterComponent />
+      </HintsWrapperComponent>
+    </>
+  );
+
+  return wrapContentWithNavBar(
+    {
+      node,
+      title: puzzle.title,
+      entrypoints,
     },
     req.teamState,
   );

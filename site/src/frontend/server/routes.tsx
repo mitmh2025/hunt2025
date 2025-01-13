@@ -47,6 +47,7 @@ import {
   subpuzzleHandler,
   type SubpuzzleParams,
   subpuzzleGuessPostHandler,
+  puzzleHintsHandler,
 } from "./routes/puzzle";
 import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
@@ -248,6 +249,14 @@ export function registerUiRoutes({
     asyncHandler(
       async (req: Request<PuzzleParams>, res: Response, next: NextFunction) => {
         await renderApp(solutionHandler, req, res, next);
+      },
+    ),
+  );
+  authRouter.get(
+    "/puzzles/:puzzleSlug/hints",
+    asyncHandler(
+      async (req: Request<PuzzleParams>, res: Response, next: NextFunction) => {
+        await renderApp(puzzleHintsHandler, req, res, next);
       },
     ),
   );

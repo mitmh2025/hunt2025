@@ -21,6 +21,7 @@ export function actionForDataset(dataset: Dataset) {
   if (
     dataset === "activity_log" ||
     dataset === "guess_log" ||
+    dataset === "hint_log" ||
     dataset === "puzzle_state_log" ||
     dataset === "interaction_state_log"
   ) {
