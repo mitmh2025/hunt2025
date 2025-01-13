@@ -5,7 +5,7 @@
     "depth": "4",
     "letter": " ",
     "location": "178",
-    "findMessage": "Searching for something of note you come across, oh, oh that's not... Why is that even here? You're not sure why but you seem to have found a vial of KENGREXAL! This seems out of place here, better call it in just in case."
+    "findMessage": "Searching for something of note you come across, oh, oh that’s not... Why is that even here? You’re not sure why but you seem to have found a vial of KENGREXAL! This seems out of place here, better call it in just in case."
   },
   "1": {
     "name": "Wand of Gorgeousness",
@@ -24,12 +24,12 @@
     "findMessage": "A small timepiece sits within the ice below slowly ticking towards the next night. You found the Pocket Watch of Shreeping!"
   },
   "3": {
-    "name": "Knight's Helm",
+    "name": "Knight’s Helm",
     "floor": 1,
     "depth": "1",
     "letter": " ",
     "location": "43",
-    "findMessage": "Atop a grave sits a prestine helmet clearly well taken care of. You found the Knight's Helm!"
+    "findMessage": "Atop a grave sits a prestine helmet clearly well taken care of. You found the Knight’s Helm!"
   },
   "4": {
     "name": "Golden Eye",
@@ -48,12 +48,12 @@
     "findMessage": "Amidst the small dwelling a model rocket lays dormant but ready to go. You found CF-135!"
   },
   "6": {
-    "name": "Butcher's Apron",
+    "name": "Butcher’s Apron",
     "floor": 2,
     "depth": "2",
     "letter": " ",
     "location": "60",
-    "findMessage": "Washed up along the shore you find a garment soaked through with blood. You found the Butcher's Apron!"
+    "findMessage": "Washed up along the shore you find a garment soaked through with blood. You found the Butcher’s Apron!"
   },
   "7": {
     "name": "Hypnotic Bandana",
@@ -72,12 +72,12 @@
     "findMessage": "A book is laying undisturbed amongst the death and decay while spewing forth countless phrases of insight. You found the Tome of the Hills!"
   },
   "9": {
-    "name": "Axe of the Screamin' Void",
+    "name": "Axe of the Screamin’ Void",
     "floor": 3,
     "depth": "3(Upper)",
     "letter": " ",
     "location": "82",
-    "findMessage": "Within the piles of ore you hear what sounds like several rock bands playing at full volume. You found the Axe of the Screamin' Void!"
+    "findMessage": "Within the piles of ore you hear what sounds like several rock bands playing at full volume. You found the Axe of the Screamin’ Void!"
   },
   "10": {
     "name": "Chisel of the Undead Sculptress",
@@ -85,7 +85,7 @@
     "depth": "3(Middle)",
     "letter": " ",
     "location": "108",
-    "findMessage": "Sitting atop the desk is the freshest hand you've ever seen, its lively green digits still gripping onto its sculptor's tool. You found the Chisel of the Undead Sculptress!"
+    "findMessage": "Sitting atop the desk is the freshest hand you’ve ever seen, its lively green digits still gripping onto its sculptor’s tool. You found the Chisel of the Undead Sculptress!"
   },
   "11": {
     "name": "Death Loop",
@@ -93,7 +93,7 @@
     "depth": "3(Lower)",
     "letter": " ",
     "location": "122",
-    "findMessage": "Along the mineshaft's walls you find a necklace remembering one of it's countlessly laughable demises. You found the Death Loop!"
+    "findMessage": "Along the mineshaft’s walls you find a necklace remembering one of it’s countlessly laughable demises. You found the Death Loop!"
   },
   "12": {
     "name": "Pearl of Cleansing",
@@ -120,7 +120,7 @@
     "findMessage": "Within the tower you find a small device making several larger automations. Seconds after it is done, its project fails spectacularly. You found The Skadoodler!"
   },
   "15": {
-    "name": "An Old Friend's Pickaxe",
+    "name": "An Old Friend’s Pickaxe",
     "floor": 4,
     "depth": "4",
     "letter": " ",
@@ -130,65 +130,65 @@
   "16": {
     "name": "Gem of Greatness",
     "floor": 4,
-  "depth": "4",
+    "depth": "4",
     "letter": " ",
     "location": "207",
     "findMessage": "Beneath the eastern statue a slight gleam of an impressive jewel catches your eye. You found the Gem of Greatness!"
   },
   "180": {
-  "name": "",
-  "floor": 4,
-  "depth": "4",
-  "letter": " ",
-  "location": "205",
-  "findMessage": "Hidden beneath the altar you find a small slip of paper. It reads \"The eggs are searching for their artifacts. Connect their artifacts to them and they'll help you find your artifact. Compass should be set to the total value of the artifacts that are used. Floor 1's artifacts are on upper, Floor 2's are on middle, and Floor 3's are on lower.\""
+    "name": "",
+    "floor": 4,
+    "depth": "4",
+    "letter": " ",
+    "location": "205",
+    "findMessage": "Hidden beneath the altar you find a small slip of paper. It reads “The eggs are searching for their artifacts. Connect their artifacts to them and they’ll help you find your artifact. Compass should be set to the total value of the artifacts that are used. Floor 1’s artifacts are on upper, Floor 2’s are on middle, and Floor 3’s are on lower.”"
   },
   "70": {
-  "name": "Muffin of Blue Skies",
-  "floor": 1,
-  "depth": "1",
-  "letter": " ",
-  "location": "40",
-  "findMessage": "You have found the secret artifact Muffin of Blue Skies! It is worth 34 Frost Embers."
+    "name": "Muffin of Blue Skies",
+    "floor": 1,
+    "depth": "1",
+    "letter": " ",
+    "location": "40",
+    "findMessage": "You have found the secret artifact Muffin of Blue Skies! It is worth 34 Frost Embers."
   },
   "45": {
-  "name":"Order of Life",
-  "floor":1,
-  "depth":"1",
-  "letter":" ",
-  "location":"20",
-  "findMessage":"You have found the secret artifact Order of Life! It is worth 19 Frost Embers."
+    "name": "Order of Life",
+    "floor": 1,
+    "depth": "1",
+    "letter": " ",
+    "location": "20",
+    "findMessage": "You have found the secret artifact Order of Life! It is worth 19 Frost Embers."
   },
-  "41":{
-  "name":"Chef Mizan's Dynamite Surprise",
-  "floor":2,
-  "depth":"2",
-  "letter":" ",
-  "location":"64",
-  "findMessage":"You have found the secret artifact Chef Mizan's Dynamite Surprise! It is worth 48 Frost Embers."
+  "41": {
+    "name": "Chef Mizan’s Dynamite Surprise",
+    "floor": 2,
+    "depth": "2",
+    "letter": " ",
+    "location": "64",
+    "findMessage": "You have found the secret artifact Chef Mizan’s Dynamite Surprise! It is worth 48 Frost Embers."
   },
-  "58":{
-  "name":"Shroom of the Warrior",
-  "floor":2,
-  "depth":"2",
-  "letter":" ",
-  "location":"72",
-  "findMessage":"You have found the secret artifact Shroom of the Warrior! It is worth 39 Frost Embers."
+  "58": {
+    "name": "Shroom of the Warrior",
+    "floor": 2,
+    "depth": "2",
+    "letter": " ",
+    "location": "72",
+    "findMessage": "You have found the secret artifact Shroom of the Warrior! It is worth 39 Frost Embers."
   },
-  "20":{
-  "name":"Morpheus' Razor",
-  "floor":3,
-  "depth":"3(Lower)",
-  "letter":" ",
-  "location":"119",
-  "findMessage":"You have found the secret artifact Morpheus' Razor! It is worth 51 Frost Embers." 
+  "20": {
+    "name": "Morpheus’ Razor",
+    "floor": 3,
+    "depth": "3(Lower)",
+    "letter": " ",
+    "location": "119",
+    "findMessage": "You have found the secret artifact Morpheus’ Razor! It is worth 51 Frost Embers."
   },
-  "33":{
-  "name":" ",
-  "floor":3,
-  "depth":"3(Lower)",
-  "letter":" ",
-  "location":"123",
-  "findMessage":"Within the piles of the miner's collectibles, a small slip of paper sticks out waiting to be read. \"What you seek is at (X=Negative floor 1 secret product, Z=Floor 2 secret product) with Compass=Floor 3 secret, Floor=4.\""
+  "33": {
+    "name": " ",
+    "floor": 3,
+    "depth": "3(Lower)",
+    "letter": " ",
+    "location": "123",
+    "findMessage": "Within the piles of the miner’s collectibles, a small slip of paper sticks out waiting to be read. “What you seek is at (X=Negative floor 1 secret product, Z=Floor 2 secret product) with Compass=Floor 3 secret, Floor=4.”"
   }
 }

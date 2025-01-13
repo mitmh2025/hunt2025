@@ -5,13 +5,13 @@
     "TrueZ": "1965",
     "x": "518",
     "y": "146",
-    "roomDescription": "There is a stone platform with some ornate doors beyond it. They seem to have been sealed shut. Nearby the exit to the dungeon has been cut off by some loose debris, it looks like you're stuck here. Looking at a map, this platform would be in the northwest corner.",
+    "roomDescription": "There is a stone platform with some ornate doors beyond it. They seem to have been sealed shut. Nearby the exit to the dungeon has been cut off by some loose debris, it looks like you’re stuck here. Looking at a map, this platform would be in the northwest corner.",
     "moveDescriptions": "There is a path east and a path south.",
     "moves": [
       {
         "direction": "EE",
         "destination": "3",
-        "moveDescription": "The caves twist and turn as you try to navigate them. The walls here seem fairly stable, though from the sounds echoing through the caves, you don't know how much longer that will last."
+        "moveDescription": "The caves twist and turn as you try to navigate them. The walls here seem fairly stable, though from the sounds echoing through the caves, you don’t know how much longer that will last."
       },
       {
         "direction": "SS",
@@ -37,7 +37,7 @@
       {
         "direction": "SS",
         "destination": "7",
-        "moveDescription": "You push onwards up an icy slope as you come across a rather chilly section of the caves. There seems to be a small breeze permeating through here and a drift starts to build up on a small section of a wall. Perhaps you should hurry, you don't want the caves closing up on you before you can get out."
+        "moveDescription": "You push onwards up an icy slope as you come across a rather chilly section of the caves. There seems to be a small breeze permeating through here and a drift starts to build up on a small section of a wall. Perhaps you should hurry, you don’t want the caves closing up on you before you can get out."
       },
       {
         "direction": "WW",
@@ -78,7 +78,7 @@
     "TrueZ": "1983",
     "x": "409",
     "y": "232",
-    "roomDescription": "Besides water pooling southeast of you there isn't much to this intersection.",
+    "roomDescription": "Besides water pooling southeast of you there isn’t much to this intersection.",
     "moveDescriptions": "There is a path north, southeast and southwest.",
     "moves": [
       {
@@ -120,7 +120,7 @@
       {
         "direction": "SW",
         "destination": "7",
-        "moveDescription": "You get only a second's breath from the thin intersection before a skinnier section of cave presents itself before you. Popping out the otherside, a large swath of paths unveil before you."
+        "moveDescription": "You get only a second’s breath from the thin intersection before a skinnier section of cave presents itself before you. Popping out the otherside, a large swath of paths unveil before you."
       }
     ]
   },
@@ -161,13 +161,13 @@
     "TrueZ": "2000",
     "x": "324",
     "y": "171",
-    "roomDescription": "Although the intersection is larger than the rest you have encountered, you don't notice much here besides a wall that seems softer than the rest. Pushing through the powder you find an egg colored like a protector of a midwestern congregation founded in 1850.",
+    "roomDescription": "Although the intersection is larger than the rest you have encountered, you don’t notice much here besides a wall that seems softer than the rest. Pushing through the powder you find an egg colored like a protector of a midwestern congregation founded in 1850.",
     "moveDescriptions": "There is a path north, northeast, east, southeast and southwest.",
     "moves": [
       {
         "direction": "NN",
         "destination": "2",
-        "moveDescription": "A rather long stretch of ice allows you some time to think about what you're even doing here. Is it for the fun of exploring the dungeon or for the accomplishment of beating it? Before you come to a conclusion, you arrive at another intersection."
+        "moveDescription": "A rather long stretch of ice allows you some time to think about what you’re even doing here. Is it for the fun of exploring the dungeon or for the accomplishment of beating it? Before you come to a conclusion, you arrive at another intersection."
       },
       {
         "direction": "NE",
@@ -187,7 +187,7 @@
       {
         "direction": "SW",
         "destination": "8",
-        "moveDescription": "Walking down the path you don't notice much more than ice and frozen stone lining the ground and walls. Surprisingly the cold doesn't seem to bother you all that much."
+        "moveDescription": "Walking down the path you don’t notice much more than ice and frozen stone lining the ground and walls. Surprisingly the cold doesn’t seem to bother you all that much."
       }
     ]
   },
@@ -197,7 +197,7 @@
     "TrueZ": "2017",
     "x": "237",
     "y": "150",
-    "roomDescription": "Besides the bright light coming from the northeast, there isn't anything interesting about this small intersection.",
+    "roomDescription": "Besides the bright light coming from the northeast, there isn’t anything interesting about this small intersection.",
     "moveDescriptions": "There is a path north, northeast, east, south and southwest.",
     "moves": [
       {
@@ -249,7 +249,7 @@
     "TrueZ": "2018",
     "x": "235",
     "y": "214",
-    "roomDescription": "You're in a large circular room. It seems like this room was used quite a bit by the sheer number of tracks in the ground. Perhaps these crossroads were needed to get through to the rest of this dungeon.",
+    "roomDescription": "You’re in a large circular room. It seems like this room was used quite a bit by the sheer number of tracks in the ground. Perhaps these crossroads were needed to get through to the rest of this dungeon.",
     "moveDescriptions": "There is a path northeast, east, south, west and northwest.",
     "moves": [
       {
@@ -327,12 +327,12 @@
       {
         "direction": "EE",
         "destination": "16",
-        "moveDescription": "The path to the next room is short, with little in the way of interest considering how much ice and snow you've seen thus far."
+        "moveDescription": "The path to the next room is short, with little in the way of interest considering how much ice and snow you’ve seen thus far."
       },
       {
         "direction": "SE",
         "destination": "14",
-        "moveDescription": "Jumping into the water below, so as to not take damage, you quickly realize that you don't seem affected by the freezing cold water."
+        "moveDescription": "Jumping into the water below, so as to not take damage, you quickly realize that you don’t seem affected by the freezing cold water."
       },
       {
         "direction": "SS",
@@ -425,18 +425,18 @@
     "TrueZ": "2022",
     "x": "195",
     "y": "412",
-    "roomDescription": "A stream meanders through the chamber, starting from the southeast corner and winding its way to the northwest, where it disappears into a wall of ice. The stream's movement has smoothed the ice along its banks, creating a serene, almost magical atmosphere.",
+    "roomDescription": "A stream meanders through the chamber, starting from the southeast corner and winding its way to the northwest, where it disappears into a wall of ice. The stream’s movement has smoothed the ice along its banks, creating a serene, almost magical atmosphere.",
     "moveDescriptions": "There is a path north, east, southeast, south and west.",
     "moves": [
       {
         "direction": "NN",
         "destination": "20",
-        "moveDescription": "A small passageway of rock and ice seems to have been carved out by previous explorers. A small lantern sits by the path, bright as day but seemingly cold enough to allow snow to pile up around it. The passage itself seems sturdy enough, although a rather narrow section seems ready to bar someone's passage if it happens to move."
+        "moveDescription": "A small passageway of rock and ice seems to have been carved out by previous explorers. A small lantern sits by the path, bright as day but seemingly cold enough to allow snow to pile up around it. The passage itself seems sturdy enough, although a rather narrow section seems ready to bar someone’s passage if it happens to move."
       },
       {
         "direction": "EE",
         "destination": "17",
-        "moveDescription": "The path here, although narrow, feels relatively safe. There isn't much of a curve, allowing you to see further down into the cave system and into the next area."
+        "moveDescription": "The path here, although narrow, feels relatively safe. There isn’t much of a curve, allowing you to see further down into the cave system and into the next area."
       },
       {
         "direction": "SE",
@@ -1204,7 +1204,7 @@
     "TrueZ": "1991",
     "x": "366",
     "y": "806",
-    "roomDescription": "This raised section of the grand hall features a statue at its center. The statue appears to be reaching out, as if expecting to receive something. A description below the statue reads, \"Cross the artifacts. Find the key.\" Beneath the description it looks as if someone scrawled a reminder that checking your coordinates can help with navigation... if only you could remember what the command was.",
+    "roomDescription": "This raised section of the grand hall features a statue at its center. The statue appears to be reaching out, as if expecting to receive something. A description below the statue reads, “Cross the artifacts. Find the key.” Beneath the description it looks as if someone scrawled a reminder that checking your coordinates can help with navigation... if only you could remember what the command was.",
     "moveDescriptions": "There is a path northeast, southeast and west.",
     "moves": [
       {

@@ -1,7 +1,7 @@
 {
   "46": {
     "depth": "2",
-     "TrueX": "-453",
+    "TrueX": "-453",
     "TrueZ": "2027",
     "x": "210",
     "y": "864",
@@ -32,7 +32,7 @@
   },
   "47": {
     "depth": "2",
-     "TrueX": "-453",
+    "TrueX": "-453",
     "TrueZ": "1984",
     "x": "383",
     "y": "866",
@@ -58,7 +58,7 @@
   },
   "48": {
     "depth": "2",
-     "TrueX": "-453",
+    "TrueX": "-453",
     "TrueZ": "1959",
     "x": "543",
     "y": "864",
@@ -89,7 +89,7 @@
   },
   "49": {
     "depth": "2",
-     "TrueX": "-479",
+    "TrueX": "-479",
     "TrueZ": "2025",
     "x": "202",
     "y": "739",
@@ -110,7 +110,7 @@
   },
   "50": {
     "depth": "2",
-     "TrueX": "-522",
+    "TrueX": "-522",
     "TrueZ": "2023",
     "x": "218",
     "y": "554",
@@ -151,7 +151,7 @@
   },
   "51": {
     "depth": "2",
-     "TrueX": "-553",
+    "TrueX": "-553",
     "TrueZ": "2030",
     "x": "178",
     "y": "378",
@@ -167,7 +167,7 @@
   },
   "52": {
     "depth": "2",
-     "TrueX": "-521",
+    "TrueX": "-521",
     "TrueZ": "2048",
     "x": "98",
     "y": "529",
@@ -183,7 +183,7 @@
   },
   "53": {
     "depth": "2",
-     "TrueX": "-552",
+    "TrueX": "-552",
     "TrueZ": "2015",
     "x": "272",
     "y": "393",
@@ -214,7 +214,7 @@
   },
   "54": {
     "depth": "2",
-     "TrueX": "-541",
+    "TrueX": "-541",
     "TrueZ": "1987",
     "x": "360",
     "y": "398",
@@ -224,7 +224,7 @@
       {
         "direction": "NE",
         "destination": "70",
-        "moveDescription": "The parkour here seems much tougher than elsewhere in the cave, and although they weren't a part of the parkour the spiders seem to have made it their mission to add webs to stop you from advancing."
+        "moveDescription": "The parkour here seems much tougher than elsewhere in the cave, and although they weren’t a part of the parkour the spiders seem to have made it their mission to add webs to stop you from advancing."
       },
       {
         "direction": "SS",
@@ -240,7 +240,7 @@
   },
   "55": {
     "depth": "2",
-     "TrueX": "-583",
+    "TrueX": "-583",
     "TrueZ": "2031",
     "x": "178",
     "y": "224",
@@ -266,7 +266,7 @@
   },
   "56": {
     "depth": "2",
-     "TrueX": "-569",
+    "TrueX": "-569",
     "TrueZ": "2027",
     "x": "197",
     "y": "296",
@@ -282,7 +282,7 @@
   },
   "57": {
     "depth": "2",
-     "TrueX": "-595",
+    "TrueX": "-595",
     "TrueZ": "2019",
     "x": "236",
     "y": "163",
@@ -308,7 +308,7 @@
   },
   "58": {
     "depth": "2",
-     "TrueX": "-597",
+    "TrueX": "-597",
     "TrueZ": "2032",
     "x": "182",
     "y": "163",
@@ -324,7 +324,7 @@
   },
   "59": {
     "depth": "2",
-     "TrueX": "-597",
+    "TrueX": "-597",
     "TrueZ": "2010",
     "x": "286",
     "y": "163",
@@ -340,7 +340,7 @@
   },
   "60": {
     "depth": "2",
-     "TrueX": "-598",
+    "TrueX": "-598",
     "TrueZ": "1998",
     "x": "359",
     "y": "168",
@@ -356,7 +356,7 @@
   },
   "61": {
     "depth": "2",
-     "TrueX": "-585",
+    "TrueX": "-585",
     "TrueZ": "1978",
     "x": "442",
     "y": "213",
@@ -382,7 +382,7 @@
   },
   "62": {
     "depth": "2",
-     "TrueX": "-543",
+    "TrueX": "-543",
     "TrueZ": "1971",
     "x": "470",
     "y": "408",
@@ -398,7 +398,7 @@
   },
   "63": {
     "depth": "2",
-     "TrueX": "-546",
+    "TrueX": "-546",
     "TrueZ": "1955",
     "x": "556",
     "y": "416",
@@ -434,7 +434,7 @@
   },
   "64": {
     "depth": "2",
-     "TrueX": "-572",
+    "TrueX": "-572",
     "TrueZ": "2000",
     "x": "340",
     "y": "275",
@@ -449,7 +449,7 @@
       {
         "direction": "NE",
         "destination": "62",
-        "moveDescription": "As you're about to dive off of the ship you notice a large rock that you would have dived into. Climbing down the ladder gives you a bit more safety in getting into the water."
+        "moveDescription": "As you’re about to dive off of the ship you notice a large rock that you would have dived into. Climbing down the ladder gives you a bit more safety in getting into the water."
       },
       {
         "direction": "EE",
@@ -459,7 +459,7 @@
       {
         "direction": "SE",
         "destination": "53",
-        "moveDescription": "As you're swimming to the next intersection you notice a stream of water falling from the ceiling, likely being the lake's source of water."
+        "moveDescription": "As you’re swimming to the next intersection you notice a stream of water falling from the ceiling, likely being the lake’s source of water."
       },
       {
         "direction": "SS",
@@ -485,7 +485,7 @@
   },
   "65": {
     "depth": "2",
-     "TrueX": "-590",
+    "TrueX": "-590",
     "TrueZ": "1989",
     "x": "386",
     "y": "199",
@@ -501,11 +501,11 @@
   },
   "66": {
     "depth": "2",
-     "TrueX": "-593",
+    "TrueX": "-593",
     "TrueZ": "1952",
     "x": "573",
     "y": "177",
-    "roomDescription": "A large copper door stands tall in the corner, with several danger signs posted around. A small box stands to the side with a key hole as clear as day. A small sign stands tall nearby \"Crosses, Keys\".",
+    "roomDescription": "A large copper door stands tall in the corner, with several danger signs posted around. A small box stands to the side with a key hole as clear as day. A small sign stands tall nearby “Crosses, Keys”.",
     "moveDescriptions": "There is a path north, east, and south.",
     "moves": [
       {
@@ -527,7 +527,7 @@
   },
   "67": {
     "depth": "2",
-     "TrueX": "-568",
+    "TrueX": "-568",
     "TrueZ": "1954",
     "x": "574",
     "y": "302",
@@ -548,7 +548,7 @@
   },
   "68": {
     "depth": "2",
-     "TrueX": "-509",
+    "TrueX": "-509",
     "TrueZ": "1974",
     "x": "476",
     "y": "571",
@@ -569,7 +569,7 @@
   },
   "69": {
     "depth": "2",
-     "TrueX": "-535",
+    "TrueX": "-535",
     "TrueZ": "1943",
     "x": "596",
     "y": "519",
@@ -590,7 +590,7 @@
   },
   "70": {
     "depth": "2",
-     "TrueX": "-532",
+    "TrueX": "-532",
     "TrueZ": "1976",
     "x": "456",
     "y": "488",
@@ -621,7 +621,7 @@
   },
   "71": {
     "depth": "2",
-     "TrueX": "-513",
+    "TrueX": "-513",
     "TrueZ": "1981",
     "x": "402",
     "y": "560",
@@ -636,7 +636,7 @@
       {
         "direction": "EE",
         "destination": "74",
-        "moveDescription": "Heading into another wide open area you don't really notice anything out of the ordinary."
+        "moveDescription": "Heading into another wide open area you don’t really notice anything out of the ordinary."
       },
       {
         "direction": "SS",
@@ -652,7 +652,7 @@
   },
   "72": {
     "depth": "2",
-     "TrueX": "-512",
+    "TrueX": "-512",
     "TrueZ": "1997",
     "x": "336",
     "y": "590",
@@ -678,7 +678,7 @@
   },
   "73": {
     "depth": "2",
-     "TrueX": "-480",
+    "TrueX": "-480",
     "TrueZ": "2008",
     "x": "288",
     "y": "713",
@@ -694,7 +694,7 @@
   },
   "74": {
     "depth": "2",
-     "TrueX": "-493",
+    "TrueX": "-493",
     "TrueZ": "1991",
     "x": "365",
     "y": "667",
@@ -715,7 +715,7 @@
   },
   "75": {
     "depth": "2",
-     "TrueX": "-504",
+    "TrueX": "-504",
     "TrueZ": "1953",
     "x": "578",
     "y": "614",
@@ -736,7 +736,7 @@
   },
   "76": {
     "depth": "2",
-     "TrueX": "-482",
+    "TrueX": "-482",
     "TrueZ": "2004",
     "x": "306",
     "y": "728",
@@ -751,13 +751,13 @@
       {
         "direction": "NW",
         "destination": "74",
-        "moveDescription": "Jumping the fence really wasn't all that hard, although now you must figure out where you are."
+        "moveDescription": "Jumping the fence really wasn’t all that hard, although now you must figure out where you are."
       }
     ]
   },
   "77": {
     "depth": "2",
-     "TrueX": "-492",
+    "TrueX": "-492",
     "TrueZ": "1970",
     "x": "476",
     "y": "671",
@@ -767,7 +767,7 @@
       {
         "direction": "SE",
         "destination": "46",
-        "moveDescription": "The spiders seem pleased to be left alone and don't follow you down towards the stairs to the crypt."
+        "moveDescription": "The spiders seem pleased to be left alone and don’t follow you down towards the stairs to the crypt."
       },
       {
         "direction": "NW",
@@ -778,7 +778,7 @@
   },
   "78": {
     "depth": "2",
-     "TrueX": "-535",
+    "TrueX": "-535",
     "TrueZ": "2005",
     "x": "330",
     "y": "489",
@@ -809,7 +809,7 @@
   },
   "79": {
     "depth": "2",
-     "TrueX": "-527",
+    "TrueX": "-527",
     "TrueZ": "2004",
     "x": "279",
     "y": "492",

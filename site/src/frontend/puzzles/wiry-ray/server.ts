@@ -113,7 +113,7 @@ const internalizeState = (
 
   const room = rooms.get(roomNumber);
   if (!room) {
-    // This shouldn't be possible
+    // This shouldn’t be possible
     throw new Error(`Unable to find room ${roomNumber}`);
   }
 
@@ -204,7 +204,7 @@ const generateCompassMessage = (
   }
 
   if (compass > 16) {
-    return `Your compass is set to ${compass}. The compass seems to be weaker at higher values.  If this points at anything, you'd have to know where it is already for this to be helpful.`;
+    return `Your compass is set to ${compass}. The compass seems to be weaker at higher values.  If this points at anything, you’d have to know where it is already for this to be helpful.`;
   }
 
   if (!artifact) {
@@ -296,7 +296,7 @@ const handler = (req: Request, res: Response) => {
           };
         }
 
-        // If this is moving down a level, we need to make sure it's unlocked
+        // If this is moving down a level, we need to make sure it’s unlocked
         if (newRoom.level > state.currentRoom.level) {
           if (
             !state.key ||
@@ -343,7 +343,7 @@ const handler = (req: Request, res: Response) => {
           return {
             ...state,
             commandSequence: [...state.commandSequence, command],
-            error: "You haven't found a key on this floor yet.",
+            error: "You haven’t found a key on this floor yet.",
           };
         }
 
@@ -351,7 +351,7 @@ const handler = (req: Request, res: Response) => {
           return {
             ...state,
             commandSequence: [...state.commandSequence, command],
-            error: "You've already used the key on this floor.",
+            error: "You’ve already used the key on this floor.",
           };
         }
 
@@ -359,7 +359,7 @@ const handler = (req: Request, res: Response) => {
           return {
             ...state,
             commandSequence: [...state.commandSequence, command],
-            error: "You can't use a key here.",
+            error: "You can’t use a key here.",
           };
         }
 
@@ -451,7 +451,7 @@ const handler = (req: Request, res: Response) => {
         }
         break;
       case "KY":
-        responseComponents.push("You've unlocked the next floor!");
+        responseComponents.push("You’ve unlocked the next floor!");
         break;
       case "RS":
         // Make the typechecker happy but this should always be true
