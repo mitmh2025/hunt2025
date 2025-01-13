@@ -103,7 +103,6 @@ import DoThePacking from "./parallel-ship";
 import OWoeIsMe from "./past-jam";
 import TheUltimateInsult from "./periodic-dance";
 import BarTalk from "./personal-chocolate";
-import { makePlaceholder } from "./placeholder";
 import WeirdoThreadedDoodads from "./plain-roulette";
 import EditorsSolemnity from "./plant-soursop";
 import BeMine from "./pleasing-racket";
@@ -153,6 +152,7 @@ import HelloDarknessMyOldFriend from "./that-bell";
 import DrunkensAndFlagons from "./thorough-arm";
 import EngagementsAndOtherCrimes from "./timely-head";
 import ReuseAndRecyclability from "./tinted-stream";
+import SmokeEmIfYouveGotEm from "./tiny-postage";
 import BeyondAShadowOfADoubt from "./total-part";
 import 皇帝の暗号 from "./tragic-spider";
 import ShellCorporationSeven from "./truthful-wave";
@@ -172,12 +172,6 @@ import SoundsLikeADodoToMe from "./waterlogged-kiwi";
 import XOXO from "./weighty-horseshoe";
 import UnrealIslands from "./whirlwind-saturn";
 import Deepfrost from "./wiry-ray";
-
-const PlaceholderISP10 = makePlaceholder(
-  "placeholder_isp10",
-  "Placeholder 10",
-  "MANUEL ORIBE",
-);
 
 export const PUZZLES: Record<string, PuzzleDefinition> = {
   // The Missing Diamond
@@ -302,7 +296,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_center_is_in_plain_sight: TheCenterIsInPlainSight, // rings, behind binary switches
   jargon: Jargon, // money, behind safe/combination lock
   given_up: GivenUp, // ledger, behind numeric lock/rug
-  placeholder_isp10: PlaceholderISP10, // note, inside cryptex
+  smoke_em_if_youve_got_em: SmokeEmIfYouveGotEm, // note, inside cryptex
 
   a_heap_of_clards: AHeapOfClards,
   bermuda_triangle: BermudaTriangle,
@@ -333,8 +327,8 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
     "BROADCAST NEWS",
     BlacklightData.ledger,
   ),
-  placeholder_isp10_blacklight: blacklightPuzzle(
-    PlaceholderISP10,
+  smoke_em_if_youve_got_em_blacklight: blacklightPuzzle(
+    SmokeEmIfYouveGotEm,
     "BRAZIL",
     BlacklightData.cryptex,
   ),

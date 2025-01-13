@@ -2461,8 +2461,8 @@ const Solution = (): JSX.Element => {
         This spells out the initial answer, <Mono>FOOD COURT</Mono>.
       </p>
       <p>
-        After solving Papa’s Stash, solvers receive two additional Special
-        Instructions:
+        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, solvers
+        receive two additional Special Instructions:
       </p>
       <StyledOl>
         <li>

@@ -1033,7 +1033,8 @@ const Solution = (): JSX.Element => {
         </tr>
       </Table>
       <p>
-        After solving Papa’s Stash, solvers receive new information,{" "}
+        After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, solvers
+        receive new information,{" "}
         <Mono>THE THIRD QUARTILE WAS ALSO ALWAYS IN PLAIN SIGHT</Mono>. This
         suggests that a secondary answer is also hidden in the instructions,
         also indicated by how the instructions don’t just have an odd length,
