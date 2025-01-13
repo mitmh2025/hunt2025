@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import sanitizeHtml from "sanitize-html";
 import { styled } from "styled-components";
 import { type z } from "zod";
@@ -145,12 +145,12 @@ const PuzzleHintHistory = ({ hints }: { hints: Hints }) => {
             {h.type === "puzzle_hint_requested" ? (
               <>
                 <h3>Hint requested at {formatHintTimestamp(h.timestamp)}</h3>
-                <p>{h.data.request}</p>
+                <p style={{ whiteSpace: "pre-wrap" }}>{h.data.request}</p>
               </>
             ) : (
               <>
                 <h3>Hunt HQ response at {formatHintTimestamp(h.timestamp)}</h3>
-                <p
+                <div
                   dangerouslySetInnerHTML={{
                     __html: sanitizeHtml(h.data.response),
                   }}
@@ -176,9 +176,23 @@ const PuzzleHints = ({
   teamState: TeamHuntState;
 }) => {
   let form: JSX.Element | null = null;
-  // TODO: if there is a hint request pending,
+
+  const hintRequestOpen = useMemo(() => {
+    const openHints = new Set<number>();
+    hints.forEach((h) => {
+      if (h.type === "puzzle_hint_requested") {
+        openHints.add(h.id);
+      } else {
+        openHints.delete(h.data.request_id);
+      }
+    });
+
+    return openHints.size > 0;
+  }, [hints]);
+
+  // TODO: if there is a hint request pending for a different puzzle,
   // tell the team to wait
-  if (teamState.puzzles[slug]?.answer) {
+  if (teamState.puzzles[slug]?.answer !== undefined || hintRequestOpen) {
     form = null;
   } else {
     form = (
