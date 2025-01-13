@@ -271,6 +271,11 @@ export type NavBarState = {
   rounds: NavBarRoundData[];
   currency: number;
   strongCurrency: number;
+  runningInteractions: {
+    slug: string;
+    title: string;
+    virtual: boolean;
+  }[];
 };
 
 const NavBar = ({

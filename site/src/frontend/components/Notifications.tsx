@@ -14,6 +14,7 @@ export type Notification = {
 
 type NotificationsProps = {
   maxNotifications: number;
+  persistentNotifications?: Notification[];
 };
 
 export type NotificationsHandle = {
@@ -85,7 +86,7 @@ const NotificationButton = styled.button`
 `;
 
 const Notifications = forwardRef<NotificationsHandle, NotificationsProps>(
-  ({ maxNotifications }, ref) => {
+  ({ maxNotifications, persistentNotifications = [] }, ref) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
     useImperativeHandle(ref, () => ({
@@ -103,6 +104,20 @@ const Notifications = forwardRef<NotificationsHandle, NotificationsProps>(
     return (
       <NotificationWrapper>
         <TransitionGroup>
+          {persistentNotifications.map((notification) => (
+            <CSSTransition
+              key={notification.key}
+              timeout={500}
+              classNames="item"
+            >
+              <Notification>
+                <NotificationIcon>{notification.icon}</NotificationIcon>
+                <NotificationDescription>
+                  <span>{notification.description}</span>
+                </NotificationDescription>
+              </Notification>
+            </CSSTransition>
+          ))}
           {notifications.map((notification) => (
             <CSSTransition
               key={notification.key}

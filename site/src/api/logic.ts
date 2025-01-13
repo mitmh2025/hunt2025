@@ -137,6 +137,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
                 interaction.id,
                 {
                   title: interaction.title,
+                  virtual: interaction.virtual,
                   ...(data.interactions_completed.has(interaction.id)
                     ? {
                         state: "completed" as const,
