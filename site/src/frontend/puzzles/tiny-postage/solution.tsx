@@ -766,6 +766,7 @@ const SHIPWRIGHT_HIGHLIGHTS = reduceCoordinatesToIndices(
     { row: 9, col: 19 },
     { row: 10, col: 19 },
     { row: 11, col: 19 },
+    { row: 12, col: 19 },
   ],
   26,
 );
@@ -852,6 +853,12 @@ const ColoredTd = styled.td<{ $color: string }>`
   border: 1px solid black;
   text-align: center;
   vertical-align: center;
+`;
+
+const SizedImage = styled(LinkedImage)<{ $width: number }>`
+  display: block;
+  margin: auto;
+  width: ${({ $width }) => $width}%;
 `;
 
 const Solution = (): JSX.Element => {
@@ -1080,13 +1087,18 @@ const Solution = (): JSX.Element => {
         The next five lines of the Scantron sheet provide the units, so{" "}
         <Math>
           <MN>8.314</MN>
-          <MI>J</MI>
-          <MO>/</MO>
-          <MI>mol</MI>
-          <MO>*</MO>
-          <MI>K</MI>
+          <MFrac>
+            <MRow>
+              <MI>J</MI>
+            </MRow>
+            <MRow>
+              <MI>mol</MI>
+              <MO>*</MO>
+              <MI>K</MI>
+            </MRow>
+          </MFrac>
         </Math>{" "}
-        = the molar gas constant <Mono>R</Mono>.
+        = the molar gas constant <PuzzleAnswer>R</PuzzleAnswer>.
       </p>
       <h2>The Actor</h2>
       <p>
@@ -1171,8 +1183,9 @@ const Solution = (): JSX.Element => {
         Once solvers have filled in the first names of these four actors, as
         directed by the flavortext, they can read a new link: [sounds like]
         RAINE PHOENIX and ANTHONY JOHNSON. The only movie Rain Phoenix and
-        Anthony Johnson have ever appeared in together is <Mono>O</Mono>, a 2001
-        adaptation of Othello set in a modern high school.
+        Anthony Johnson have ever appeared in together is{" "}
+        <PuzzleAnswer>O</PuzzleAnswer>, a 2001 adaptation of Othello set in a
+        modern high school.
       </p>
       <h3>Author’s Note</h3>
       <p>
@@ -1220,7 +1233,8 @@ const Solution = (): JSX.Element => {
         >
           Bars of Color Within Squares
         </a>{" "}
-        by Sol LeWitt in Building 6C is, of course, a <Mono>U</Mono>.
+        by Sol LeWitt in Building 6C is, of course, a{" "}
+        <PuzzleAnswer>U</PuzzleAnswer>.
       </p>
       <h2>The Coroner</h2>
       <p>
@@ -1283,16 +1297,20 @@ const Solution = (): JSX.Element => {
           <MI>R</MI>
           <MI>T</MI>
         </Math>
-        , making the answer to this minipuzzle <Mono>N</Mono>.
+        , making the answer to this minipuzzle <PuzzleAnswer>N</PuzzleAnswer>.
       </p>
       <h2>The Florist</h2>
       <p>
         This minipuzzle is a standard Rows Garden puzzle, but one flower clue of
         each color is missing. Solving the rest of the puzzle reveals that these
         three unclued six letter answers are BUMBLE, KILLER, and WORKER. The
-        answer to the minipuzzle is <Mono>B</Mono>.
+        answer to the minipuzzle is <PuzzleAnswer>B</PuzzleAnswer>.
       </p>
-      <LinkedImage src={rowsGarden} alt="A solved Rows Garden puzzle" />
+      <SizedImage
+        $width={50}
+        src={rowsGarden}
+        alt="A solved Rows Garden puzzle"
+      />
       <p>
         <strong>Rows (in order)</strong>
       </p>
@@ -1443,7 +1461,11 @@ const Solution = (): JSX.Element => {
         1235; 34/5 must be 46789. This limits options at the places these sums
         cross:
       </p>
-      <LinkedImage src={kakuro1} alt="A partially solved Kakuro puzzle" />
+      <SizedImage
+        $width={50}
+        src={kakuro1}
+        alt="A partially solved Kakuro puzzle"
+      />
       <p>
         Some other crosses limit options as well. For instance, the 14/4 cannot
         contain a 9, so we can fill in the 16/2 and have only one remaining set
@@ -1455,7 +1477,11 @@ const Solution = (): JSX.Element => {
         cannot contain a 9, it must be placed in the 20/5, restricting it to
         12359.
       </p>
-      <LinkedImage src={kakuro2} alt="A partially solved Kakuro puzzle" />
+      <SizedImage
+        $width={50}
+        src={kakuro2}
+        alt="A partially solved Kakuro puzzle"
+      />
       <p>
         The two 6/2 sums require placement of the 3 in the 18/5 at the bottom.
         Placing the 7 makes that sum 12357, and since the 5 cannot go in 9/3 or
@@ -1470,7 +1496,11 @@ const Solution = (): JSX.Element => {
         41/7. Since the 14/3 in the middle of the top row must be 293, we can
         also place the 1 and 2.
       </p>
-      <LinkedImage src={kakuro3} alt="A partially solved Kakuro puzzle" />
+      <SizedImage
+        $width={50}
+        src={kakuro3}
+        alt="A partially solved Kakuro puzzle"
+      />
       <p>
         The 27/5 in the south of the grid can only be 13689, 23589, or 23679,
         which limits the last two cells to 5 or 6 and 7 or 8. With the 5 or 6 in
@@ -1479,28 +1509,37 @@ const Solution = (): JSX.Element => {
         2379. 35/6 must include a 1, 2 or 3, so we can place that in the second
         cell. Completing the 22/3 with a 7 allows us to fill in many sums:
       </p>
-      <LinkedImage src={kakuro4} alt="A partially solved Kakuro puzzle" />
+      <SizedImage
+        $width={50}
+        src={kakuro4}
+        alt="A partially solved Kakuro puzzle"
+      />
       <p>
         The 7, 8 and 9 in the 35/5 are the only options for the second, third
         and fifth cells, so we can fill in the 6 and 5. There is only one option
         remaining for the 35/6 sum, 146789, and the 27/5 must be 23589, allowing
         us to fill in more cells.
       </p>
-      <LinkedImage src={kakuro5} alt="A partially solved Kakuro puzzle" />
+      <SizedImage
+        $width={50}
+        src={kakuro5}
+        alt="A partially solved Kakuro puzzle"
+      />
       <p>
         The 21/4 must be 1389. Filling this sum in also lets us complete the
         11/5, 22/6, and the second unclued /3. The 7 and 9 in the 41/7 are now
         set as well, revealing that the 31/5 is 34789.
       </p>
-      <LinkedImage src={kakuro6} alt="A solved Kakuro puzzle" />
+      <SizedImage $width={50} src={kakuro6} alt="A solved Kakuro puzzle" />
       <p>
         Once teams solve the kakuro, they use the highlighted cells to “deduce
         where to go from here”: 35-213, where they find the following image:
       </p>
-      <LinkedImage src={kakuro7} alt="An empty Kakuro grid" />
+      <SizedImage $width={50} src={kakuro7} alt="An empty Kakuro grid" />
       <p>
         Returning to their solved grid, they can see that the highlighted cells
-        give 13, which means this minipuzzle solves to <Mono>M</Mono>.
+        give 13, which means this minipuzzle solves to{" "}
+        <PuzzleAnswer>M</PuzzleAnswer>.
       </p>
       <h2>The Photographer</h2>
       <p>
@@ -1582,7 +1621,7 @@ const Solution = (): JSX.Element => {
         instruction to get the clue phrase, ME MYSELF, and perhaps notice that
         the tile with an eye is in line of sight (once you “step back” off the
         Chen Family Graduation tile to the two butterflies) to get the answer,{" "}
-        <Mono>I</Mono>.
+        <PuzzleAnswer>I</PuzzleAnswer>.
       </p>
       <StyledTable>
         <tr>
@@ -1612,7 +1651,7 @@ const Solution = (): JSX.Element => {
         originally installed, these studs spell out Sean Collier’s badge number,
         179, in Braille. Read the studs on the indicated brick in the puzzle’s
         orientation (which is 90° off from the installation) to get{" "}
-        <Mono>E</Mono>.
+        <PuzzleAnswer>E</PuzzleAnswer>.
       </p>
       <LinkedImage
         src={brick}
@@ -1631,7 +1670,7 @@ const Solution = (): JSX.Element => {
         in the original speaker’s name. Index into the speaker’s name by
         position of the matching word to get a letter. Taken in order, these
         spell <Mono>FULLER COURSE LETTER</Mono>. Mary C. Fuller is quoted on the
-        Literature display, or course 21<Mono>L</Mono>.
+        Literature display, or course 21<PuzzleAnswer>L</PuzzleAnswer>.
       </p>
       <p>
         Two other displays in the exhibit are not used—the welcome placard, and
@@ -1734,7 +1773,8 @@ const Solution = (): JSX.Element => {
       <p>
         This minipuzzle, when opened, reveals a small capsule. Based on the
         title of the puzzle, solvers should immerse the capsule in water. A few
-        minutes later a foam <Mono>A</Mono> pops out of the dissolving capsule.
+        minutes later a foam <PuzzleAnswer>A</PuzzleAnswer> pops out of the
+        dissolving capsule.
       </p>
       <h2>The Dead Drop</h2>
       <p>
@@ -1984,8 +2024,8 @@ const Solution = (): JSX.Element => {
         photographs appear in the puzzle. Instead, associate the artwork each
         instruction starts from with the building number where the artwork is
         found, and use AZ126 to spell out <Mono>QC DRINKING AGE</Mono>. The
-        legal drinking age in Quebec is 18 which gives the answer <Mono>R</Mono>
-        .
+        legal drinking age in Quebec is 18 which gives the answer{" "}
+        <PuzzleAnswer>R</PuzzleAnswer>.
       </p>
       <HScrollTableWrapper>
         <StyledTable>
@@ -2017,7 +2057,8 @@ const Solution = (): JSX.Element => {
         Hart Nautical Gallery on the first floor of Building 5. Fill the names
         of each model ship on display there into the criss-cross. The USS
         Cochrane, highlighted in the grid, has a 21 prominently painted on the
-        bow, which gives the answer to this minipuzzle, <Mono>U</Mono>.
+        bow, which gives the answer to this minipuzzle,{" "}
+        <PuzzleAnswer>U</PuzzleAnswer>.
       </p>
       <p>
         We were not able to include this minipuzzle since the Hart Nautical
