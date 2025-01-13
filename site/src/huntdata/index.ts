@@ -1669,6 +1669,7 @@ const HUNT: Hunt = {
           is_meta: true,
           is_supermeta: true,
           unlocked_if: { puzzles_solved: 16 },
+          slug: "the_killer",
         },
       ],
       gates: [
