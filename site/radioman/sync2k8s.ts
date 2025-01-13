@@ -54,7 +54,7 @@ const RadioTeamStateSchema = z.object({
   quixotic_shoe_enabled: z.boolean(),
   icy_box_enabled: z.boolean(),
   interaction: z.boolean(),
-  completed_interactions: z.array(z.string()),
+  flags: z.array(z.string()),
 });
 
 type RadioTeamState = z.infer<typeof RadioTeamStateSchema>;
@@ -68,6 +68,8 @@ const PROPAGATED_INTERACTIONS = new Set([
   "confront_papa",
   "confront_carter",
 ]);
+
+const PROPAGATED_GATES = new Set(["hunt_started"]);
 
 const c = initContract();
 const radioContract = c.router({
@@ -378,8 +380,10 @@ async function main({
       quixotic_shoe_enabled: teamState.gates_satisfied.has("ptg03"),
       icy_box_enabled: teamState.gates_satisfied.has("ptg16"),
       interaction: false, // TODO
-      completed_interactions: Array.from(
-        PROPAGATED_INTERACTIONS.intersection(teamState.interactions_completed),
+      flags: Array.from(
+        PROPAGATED_INTERACTIONS.intersection(
+          teamState.interactions_completed,
+        ).union(PROPAGATED_GATES.intersection(teamState.gates_satisfied)),
       ),
     };
     radioTeamStates.set(teamId, radioTeamState);

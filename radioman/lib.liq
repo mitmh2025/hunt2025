@@ -202,8 +202,29 @@ def request.extending_queue(
         )
     end
 
+    def extend(rs) =
+        if
+            started()
+        then
+            log.info(
+                label=id,
+                "Pushing #{rs} on the queue."
+            )
+            queue := [...queue(), ...rs]
+            fn = fetch()
+            ignore(fn())
+        else
+            log.info(
+                label=id,
+                "Pushing #{rs} on the initial queue."
+            )
+            initial_queue := [...initial_queue(), ...rs]
+        end
+    end
+
     s =
         s.{
+            extend=extend,
             length={list.length(queue()) + list.length(s.queue())},
             set_queue=set_queue,
             queue=get_queue,
@@ -227,8 +248,8 @@ def request.extending_queue(
         queue = s.queue()
         string.concat(
             separator=
-                " ",
-            list.map(fun (r) -> string(request.id(r)), queue)
+                "\n",
+            list.map(fun (r) -> "#{request.id(r)} - #{request.metadata(r)}", queue)
         )
     end
 
