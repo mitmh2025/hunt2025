@@ -1221,7 +1221,7 @@ const Solution = (): JSX.Element => {
       <p>
         Solvers can examine the “tissue samples” from the cigarette box and
         recognize the math symbols as being part of The Alchemist sculpture near
-        w20. Visiting the sculpture and using the locations in the autopsy to
+        W20. Visiting the sculpture and using the locations in the autopsy to
         help locate each set (left temple, crook of right elbow, left side of
         ribcage, just to the right of the spine, and centered on the spine),
         they will find that the bullet holes in the drawings replace the symbols
