@@ -65,12 +65,7 @@ const puzzle: PuzzleDefinition = {
         "The answer is two words that fit in the blanks given, clued by the two pictures you get by connecting the dots.  The first word is a general term, but the second word is specific.",
     },
   ],
-  canned_responses: [
-    {
-      guess: ["BIRD FLOWER"],
-      reply: "The second word should be a little more specific.",
-    },
-  ],
+  canned_responses: [],
 };
 
 export default puzzle;
