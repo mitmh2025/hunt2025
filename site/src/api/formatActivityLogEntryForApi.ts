@@ -41,6 +41,8 @@ export default function formatActivityLogEntryForApi(
       case "puzzle_partially_solved":
       case "puzzle_solved":
       case "puzzle_answer_bought":
+      case "puzzle_hint_requested":
+      case "puzzle_hint_responded":
         {
           const title = PUZZLES[e.slug]?.title;
           entry = Object.assign(entry, {

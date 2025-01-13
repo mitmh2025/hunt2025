@@ -94,6 +94,18 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
   InternalActivityLogEntryWithSlug.merge(
     z.object({ type: z.literal("erratum_issued") }),
   ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("puzzle_hint_requested"),
+      data: z.object({ request: z.string().max(2500) }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("puzzle_hint_responded"),
+      data: z.object({ request_id: z.number(), response: z.string() }),
+    }),
+  ),
 ]);
 export type InternalActivityLogEntry = z.output<
   typeof InternalActivityLogEntrySchema

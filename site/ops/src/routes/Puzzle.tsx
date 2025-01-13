@@ -64,7 +64,7 @@ export default function Puzzle() {
   const stats = useMemo(() => {
     let unlockCount = 0;
     let solvedCount = 0;
-    const hintCount = 0;
+    let hintCount = 0;
     let boughtAnswerCount = 0;
 
     const teams: SinglePuzzleStats["teams"] = Object.fromEntries(
@@ -151,9 +151,8 @@ export default function Puzzle() {
         }
 
         case "puzzle_answer_bought":
-          boughtAnswerCount += 1;
-
           if (entry.slug === slug) {
+            boughtAnswerCount += 1;
             if (entry.team_id) {
               const teamData = teams[entry.team_id];
               if (teamData) {
@@ -164,7 +163,16 @@ export default function Puzzle() {
 
           break;
 
-        // TODO: count hints
+        case "puzzle_hint_requested":
+          if (entry.slug === slug) {
+            hintCount += 1;
+            if (entry.team_id) {
+              const teamData = teams[entry.team_id];
+              if (teamData) {
+                teamData.hints += 1;
+              }
+            }
+          }
       }
     });
 

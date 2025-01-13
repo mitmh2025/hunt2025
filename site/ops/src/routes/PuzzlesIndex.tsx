@@ -126,7 +126,12 @@ export default function PuzzlesIndex() {
           break;
         }
 
-        // TODO: count hints
+        case "puzzle_hint_requested": {
+          const puzzleData = getOrCreatePuzzleData(entry.slug);
+          puzzleData.hintCount += 1;
+
+          break;
+        }
       }
     });
 

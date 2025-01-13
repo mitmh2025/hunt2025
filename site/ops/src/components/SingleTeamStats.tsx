@@ -232,6 +232,8 @@ export default function SingleTeamStats({
       puzzlesSolvedLast3Hours: 0,
       metasSolved: 0,
       metasSolvedLast3Hours: 0,
+      hintsRequested: 0,
+      hintsRequestedLast3Hours: 0,
 
       roundsCompleted: bigBoardTeam.rounds.filter((r) => r.progress === 1)
         .length,
@@ -242,8 +244,6 @@ export default function SingleTeamStats({
       unsolvedUnlockedPuzzles: Array.from(team.state.puzzles_unlocked).filter(
         (p) => !team.state.puzzles_solved.has(p),
       ).length,
-      hintsRequested: 0, // TODO
-      hintsRequestedLast3Hours: 0, // TODO
     };
 
     const metaSlugs = new Set(
@@ -273,6 +273,17 @@ export default function SingleTeamStats({
           if (isMeta) {
             d.metasSolvedLast3Hours += 1;
           }
+        }
+      }
+
+      if (entry.type === "puzzle_hint_requested") {
+        const wasLast3Hours =
+          entry.timestamp.getTime() > Date.now() - 3 * 60 * 60 * 1000;
+
+        d.hintsRequested += 1;
+
+        if (wasLast3Hours) {
+          d.hintsRequestedLast3Hours += 1;
         }
       }
     }

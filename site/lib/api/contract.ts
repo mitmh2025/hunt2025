@@ -178,6 +178,19 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({ type: z.literal("erratum_issued") }),
   ),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({
+      type: z.literal("puzzle_hint_requested"),
+      request: z.string().max(2500),
+    }),
+  ),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({
+      type: z.literal("puzzle_hint_responded"),
+      request_id: z.number(),
+      response: z.string(),
+    }),
+  ),
 ]);
 
 export type DehydratedActivityLogEntry = z.input<typeof ActivityLogEntrySchema>;

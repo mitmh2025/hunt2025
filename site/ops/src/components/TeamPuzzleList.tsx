@@ -267,7 +267,12 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
               solvedAt: entry.timestamp,
             };
             break;
-          // TODO: hints. Set to 0 if hints are unlocked
+          case "puzzle_hint_requested":
+            puzzleLogData[entry.slug] = {
+              ...puzzleLogData[entry.slug],
+              hints: (puzzleLogData[entry.slug]?.hints ?? 0) + 1,
+            };
+          // TODO: set hints to 0 when hints are unlocked
         }
       });
 
@@ -309,7 +314,7 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
                 (type === "puzzle" ? puzzleIndex + 100 : puzzleIndex),
               status,
               guesses: logData.guesses ?? 0,
-              hints: null, // TODO
+              hints: logData.hints ?? null,
             };
           });
         });

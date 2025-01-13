@@ -266,7 +266,12 @@ export default function TeamIndex() {
         }
       }
 
-      // TODO: hintsRequested
+      if (entry.type === "puzzle_hint_requested" && entry.team_id) {
+        const team = record[entry.team_id];
+        if (team) {
+          team.hintsRequested += 1;
+        }
+      }
     });
 
     return Object.values(record);

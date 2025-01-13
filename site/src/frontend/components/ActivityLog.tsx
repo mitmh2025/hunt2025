@@ -221,6 +221,28 @@ export function formatActivityLogEntry(
         ),
         showNotification: true,
       };
+    case "puzzle_hint_requested":
+      return {
+        icon: "🛟",
+        description: (
+          <>
+            Requested a hint for puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: false,
+      };
+    case "puzzle_hint_responded":
+      return {
+        icon: "🛟",
+        description: (
+          <>
+            Hint provided for{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: true,
+      };
   }
 }
 
