@@ -8,10 +8,6 @@ import {
 } from "../../components/StyledUI";
 import image01 from "./assets/1.png";
 
-const HighlightSpan = styled.span`
-  background: yellow;
-`;
-
 const StyledTableCell = styled.td`
   border: 2px solid grey;
   padding: 12px;
@@ -29,11 +25,7 @@ const Solution = () => {
         The puzzle presents as a series of strings of As, Cs, Ts, and Gs, along
         with several pictures of dogs identified as “suspects”, listed along
         with a disease. In the flavor, we note “The blasted animals got to him.
-        Which of these{" "}
-        <em>
-          <HighlightSpan>familiar canines</HighlightSpan>
-        </em>{" "}
-        was the one to do him in?”
+        Which of these <em>familiar canines</em> was the one to do him in?”
       </p>
       <p>
         “Blasted” combined with the genetic sequences hints at{" "}
@@ -358,8 +350,8 @@ const Solution = () => {
               <tr>
                 <StyledTableCell>10</StyledTableCell>
                 <StyledTableCell>ITGA10</StyledTableCell>
-                <StyledTableCell>116</StyledTableCell>
-                <StyledTableCell>t</StyledTableCell>
+                <StyledTableCell>Chondrodysplasia</StyledTableCell>
+                <StyledTableCell>Karelian Bear Dog</StyledTableCell>
                 <StyledTableCell>55</StyledTableCell>
                 <StyledTableCell>CTG</StyledTableCell>
                 <StyledTableCell>L</StyledTableCell>
@@ -389,7 +381,7 @@ const Solution = () => {
                 <StyledTableCell>COL4A4</StyledTableCell>
                 <StyledTableCell>Familial Nephropathy</StyledTableCell>
                 <StyledTableCell>English Cocker Spaniel</StyledTableCell>
-                <StyledTableCell>25</StyledTableCell>
+                <StyledTableCell>24</StyledTableCell>
                 <StyledTableCell>GAT</StyledTableCell>
                 <StyledTableCell>D</StyledTableCell>
               </tr>
@@ -424,9 +416,7 @@ const Solution = () => {
             <tr>
               <StyledTableHeaderCell>ID</StyledTableHeaderCell>
               <StyledTableHeaderCell>Breed</StyledTableHeaderCell>
-              <StyledTableHeaderCell>
-                Attribution on Solution Page
-              </StyledTableHeaderCell>
+              <StyledTableHeaderCell>Attribution</StyledTableHeaderCell>
             </tr>
           </thead>
           <tbody>
