@@ -16,7 +16,7 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
       ];
     },
   );
-  if (teamState.rounds.the_missing_diamond?.gates?.includes("hunt_started")) {
+  if (teamState.rounds.missing_diamond?.gates?.includes("hunt_started")) {
     rounds.push({
       href: "/rounds/stray_leads",
       title: "Stray Leads",

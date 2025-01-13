@@ -44,11 +44,11 @@ import {
   painting2State,
   rugState,
 } from "../rounds/illegal_search";
+import { missingDiamondState } from "../rounds/missing_diamond";
 import { murderState } from "../rounds/murder_in_mitropolis";
 import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { strayLeadsState } from "../rounds/stray_leads";
-import { missingDiamondState } from "../rounds/the_missing_diamond";
 import { generateActivityLogForTimeline } from "../timeline";
 import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "./constants";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
@@ -117,7 +117,7 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
     type: "team_state",
     callback: paperTrailState,
   },
-  the_missing_diamond: {
+  missing_diamond: {
     type: "team_state",
     callback: missingDiamondState,
   },

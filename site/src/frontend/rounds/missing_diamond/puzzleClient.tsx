@@ -11,7 +11,7 @@ const MissingDiamondPuzzleHeaderManager = ({
   initialState: MissingDiamondState;
   slug: string;
 }) => {
-  const state = useDataset("the_missing_diamond", undefined, initialState);
+  const state = useDataset("missing_diamond", undefined, initialState);
   return <MissingDiamondPuzzleWitness state={state} slug={slug} />;
 };
 

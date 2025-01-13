@@ -3,7 +3,7 @@ import type { TeamHuntState } from "../../../../lib/api/client";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
   const pickupCompleted =
-    teamState.rounds.the_missing_diamond?.gates?.includes("mdg02") ?? false;
+    teamState.rounds.missing_diamond?.gates?.includes("mdg02") ?? false;
 
   if (pickupCompleted) {
     return (

@@ -2,8 +2,8 @@ import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
 import { Pin } from "../hub/HubBody";
 import PinImg from "../hub/assets/pin_teal.png";
-import { MissingDiamondPuzzleWitness } from "../rounds/the_missing_diamond/MissingDiamondBody";
-import { type MissingDiamondState } from "../rounds/the_missing_diamond/types";
+import { MissingDiamondPuzzleWitness } from "../rounds/missing_diamond/MissingDiamondBody";
+import { type MissingDiamondState } from "../rounds/missing_diamond/types";
 import { deviceMax } from "../utils/breakpoints";
 import {
   PuzzleBacklink,

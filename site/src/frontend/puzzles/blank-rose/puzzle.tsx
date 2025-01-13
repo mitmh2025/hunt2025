@@ -5,7 +5,7 @@ import { AuthorsNote } from "../../components/PuzzleLayout";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
   let children: JSX.Element = <></>;
-  if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg03")) {
+  if (teamState.rounds.missing_diamond?.gates?.includes("mdg03")) {
     children = (
       <p>
         We aren’t 🔲🔲🔲🔲🔲🔲🔲🔲🔲to affection 🏩 💌 ❤️‍🔥. You’re aware 👀of the
@@ -18,7 +18,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         and perjuring 🙊🙊🙊with the best 🤩!
       </p>
     );
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg04")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg04")) {
     children = (
       <p>
         Any lady 💃birthed past the early 🌅90’s 💾is unable to prepare 🍳food
@@ -30,7 +30,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         If you get all 9️⃣back then you’re lifting off 🛫 and soaring! 📈
       </p>
     );
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg05")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg05")) {
     children = (
       <p>
         In line 📈 with each agreed-upon code 🤝 🔐of 🔲🔲🔲🔲🔲🔲🔲🔲, an
@@ -45,7 +45,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         👁️your tattoo ✍️!
       </p>
     );
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg06")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg06")) {
     children = (
       <p>
         well 😏 by all accounts 💸you must have intelligence 🤓 in the topmost
@@ -61,7 +61,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         🛕 🕍 🕌.
       </p>
     );
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg07")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg07")) {
     <p>
       I’m proud 🏳️‍🌈of me ☝️and believe 🧠that I am a person 🧑‍of religion 🙏📿
       🙏, as there’s a ball ⚾hit into the far left ☭☭☭ lawn by Castellanos 🟥
@@ -73,7 +73,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
       you get 3️⃣back, you’re getting legislation ⚖️ 🧑‍⚖️counsel ⛑️. If you get all
       9️⃣back, you’re entitled to a cash 💰payout!
     </p>;
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg08")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg08")) {
     <p>
       If you 🫵or someone you care 👨‍❤️‍👨for came down with
       🔲🔲🔲🔲🔲🔲🔲🔲🔲🔲🔲🔲, you might qualify ✍️for cash 💰 🤑 💵payment.
@@ -86,7 +86,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
       back, you’re starting ▶️ to think 💭 again. If you get all 9️⃣back then
       you’re primed ⚔️ for the tempest! ⛈️
     </p>;
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg09")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg09")) {
     <p>
       what 🤬 did i just 🤬hear from you, you tiny female ♀️ dog 🐕? i placed
       first 🥇 among my peers ⚓️ in the blue 🟦 sea lions 🦭, and i’ve often
@@ -99,7 +99,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
       making friends 👫and waffles 🧇🧇 🧈🍁if you get all 9️⃣back, you’re T3H
       BEST 🔝^_^ 🔝 UwU at making alot of new SPONTANEOUS 🙃 😀🙃 freinds 🤝!!!
     </p>;
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg10")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg10")) {
     <p>
       h0wdy 🤠 all 👋ive just 🛬 arrived 🈁❣️!!!❗!! * 🔼 raises 🏕️ camp cutlery
       🥄🍴* i’m called kathy 🦗 but u 🫵 can refer to me 💁 as the auk 🦤 of
@@ -114,7 +114,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
       you get 4️⃣back, yur kissing 😽💋😘ur lady 👧. If you get all 9️⃣back, THEN
       YOU 🫵WERE CELLPHONE 📱📱📱!
     </p>;
-  } else if (teamState.rounds.the_missing_diamond?.gates?.includes("mdg11")) {
+  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg11")) {
     <p>
       So ur 👉with ur 👉🔲🔲🔲🔲🔲 and yur 👉kissing 😽💋😘 when your cell
       ☎️goes off 📲. U pick it 🆙n the speaker 🗣️is “wut ❓❔❓r u accomplishing

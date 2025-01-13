@@ -3,11 +3,11 @@ import { type ArtGalleryResult } from "../interactions/interview_at_the_art_gall
 import { type BoardwalkInteractionResult } from "../interactions/interview_at_the_boardwalk/graph";
 import { type CasinoResult } from "../interactions/interview_at_the_casino/graph";
 import { eventDataForTeam } from "../rounds/events/eventData";
-import artGallery from "../rounds/the_missing_diamond/assets/art-gallery-solved.svg";
-import boardwalk from "../rounds/the_missing_diamond/assets/boardwalk-solved.svg";
-import casino from "../rounds/the_missing_diamond/assets/casino-solved.svg";
-import jewelryStore from "../rounds/the_missing_diamond/assets/jewelry-store-solved.svg";
-import map from "../rounds/the_missing_diamond/assets/map.png";
+import artGallery from "../rounds/missing_diamond/assets/art-gallery-solved.svg";
+import boardwalk from "../rounds/missing_diamond/assets/boardwalk-solved.svg";
+import casino from "../rounds/missing_diamond/assets/casino-solved.svg";
+import jewelryStore from "../rounds/missing_diamond/assets/jewelry-store-solved.svg";
+import map from "../rounds/missing_diamond/assets/map.png";
 import about_the_hunt_flag from "./assets/about_the_hunt_flag.png";
 import art_gallery_token_kieftenbeld from "./assets/art_gallery_token_kieftenbeld.png";
 import art_gallery_token_lemahieu from "./assets/art_gallery_token_lemahieu.png";
@@ -92,13 +92,11 @@ const ALWAYS = (_: TeamHuntState) => {
 };
 
 const HUNT_NOT_STARTED = (teamState: TeamHuntState) => {
-  return !teamState.rounds.the_missing_diamond?.gates?.includes("hunt_started");
+  return !teamState.rounds.missing_diamond?.gates?.includes("hunt_started");
 };
 
 const HUNT_STARTED = (teamState: TeamHuntState) => {
-  return !!teamState.rounds.the_missing_diamond?.gates?.includes(
-    "hunt_started",
-  );
+  return !!teamState.rounds.missing_diamond?.gates?.includes("hunt_started");
 };
 const ROUND_UNLOCKED = (teamState: TeamHuntState, round: string) => {
   return !!teamState.rounds[round];
@@ -122,14 +120,10 @@ const INTERACTION_COMPLETED = (
   );
 };
 const MISSING_DIAMOND_UNLOCKED = (teamState: TeamHuntState) => {
-  return ROUND_UNLOCKED(teamState, "the_missing_diamond");
+  return ROUND_UNLOCKED(teamState, "missing_diamond");
 };
 const MISSING_DIAMOND_COMPLETED = (teamState: TeamHuntState) => {
-  return INTERACTION_COMPLETED(
-    teamState,
-    "the_missing_diamond",
-    "the_crime_scene",
-  );
+  return INTERACTION_COMPLETED(teamState, "missing_diamond", "the_crime_scene");
 };
 const ILLEGAL_SEARCH_UNLOCKED = (teamState: TeamHuntState) => {
   return ROUND_UNLOCKED(teamState, "illegal_search");
@@ -236,7 +230,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 991,
     rot: 0,
     shadow: true,
-    href: "/rounds/the_missing_diamond",
+    href: "/rounds/missing_diamond",
     condition: MISSING_DIAMOND_UNLOCKED,
   },
   {
@@ -403,7 +397,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_art_gallery",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_art_gallery?.result as ArtGalleryResult | undefined;
       return !!(
         result &&
@@ -426,7 +420,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_art_gallery",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_art_gallery?.result as ArtGalleryResult | undefined;
       return !!(
         result &&
@@ -465,7 +459,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_casino",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_casino?.result as CasinoResult | undefined;
       return !!(result && result === "joker");
     },
@@ -485,7 +479,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_casino",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_casino?.result as CasinoResult | undefined;
       return !!(result && result === "ace-of-diamonds");
     },
@@ -505,7 +499,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_casino",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_casino?.result as CasinoResult | undefined;
       return !!(result && result === "ace-of-spades");
     },
@@ -527,7 +521,7 @@ const OBJECTS: HubObjectSetting[] = [
     condition(teamState: TeamHuntState) {
       return INTERACTION_COMPLETED(
         teamState,
-        "the_missing_diamond",
+        "missing_diamond",
         "the_crime_scene",
       );
     },
@@ -548,7 +542,7 @@ const OBJECTS: HubObjectSetting[] = [
     href: "/interactions/interview_at_the_jewelry_store",
     condition(teamState: TeamHuntState) {
       return (
-        teamState.rounds.the_missing_diamond?.interactions
+        teamState.rounds.missing_diamond?.interactions
           ?.interview_at_the_jewelry_store?.state === "completed"
       );
     },
@@ -569,7 +563,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_boardwalk",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_boardwalk?.result as
         | BoardwalkInteractionResult
         | undefined;
@@ -591,7 +585,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_boardwalk",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_boardwalk?.result as
         | BoardwalkInteractionResult
         | undefined;
@@ -613,7 +607,7 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/interactions/interview_at_the_boardwalk",
     condition(teamState: TeamHuntState) {
-      const result = teamState.rounds.the_missing_diamond?.interactions
+      const result = teamState.rounds.missing_diamond?.interactions
         ?.interview_at_the_boardwalk?.result as
         | BoardwalkInteractionResult
         | undefined;
@@ -678,7 +672,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: -2.7,
     rotOrigin: "top left",
     shadow: true,
-    href: "/rounds/the_missing_diamond",
+    href: "/rounds/missing_diamond",
     condition: MISSING_DIAMOND_UNLOCKED,
     pin: {
       asset: pin_purple,
@@ -805,7 +799,7 @@ const OBJECTS: HubObjectSetting[] = [
     width: 107,
     shadow: false,
     href: "/interactions/the_crime_scene",
-    condition: INTERACTION_UNLOCKED("the_missing_diamond", "the_crime_scene"),
+    condition: INTERACTION_UNLOCKED("missing_diamond", "the_crime_scene"),
   },
   {
     asset: interaction_stamp,
@@ -1123,7 +1117,7 @@ export function hubState(
       title: roundObj.title,
     };
   });
-  if (teamState.rounds.the_missing_diamond?.gates?.includes("hunt_started")) {
+  if (teamState.rounds.missing_diamond?.gates?.includes("hunt_started")) {
     rounds.push({
       slug: "stray_leads",
       title: "Stray Leads",

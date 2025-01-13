@@ -66,7 +66,7 @@ class early_load_test(FastHttpUser):
         with self.client.request("GET", "/", catch_response=True) as resp:
             pass
         with self.client.request(
-            "GET", "/rounds/the_missing_diamond", catch_response=True
+            "GET", "/rounds/missing_diamond", catch_response=True
         ) as resp:
             for slug, _ in puzzles.items():
                 if resp.text and f'href="/puzzles/{slug}"' in resp.text:
@@ -109,7 +109,7 @@ class early_load_test(FastHttpUser):
             pass
 
         with self.client.request(
-            "GET", "/rounds/the_missing_diamond", catch_response=True
+            "GET", "/rounds/missing_diamond", catch_response=True
         ) as resp:
             pass
 
@@ -202,7 +202,7 @@ class early_load_test(FastHttpUser):
         with self.client.request("GET", "/", catch_response=True) as resp:
             pass
         with self.client.request(
-            "GET", "/rounds/the_missing_diamond", catch_response=True
+            "GET", "/rounds/missing_diamond", catch_response=True
         ) as resp:
             pass
         with self.client.request("GET", "/rounds/events", catch_response=True) as resp:
@@ -214,7 +214,7 @@ class early_load_test(FastHttpUser):
         with self.client.request("GET", "/", catch_response=True) as resp:
             pass
         with self.client.request(
-            "GET", "/rounds/the_missing_diamond", catch_response=True
+            "GET", "/rounds/missing_diamond", catch_response=True
         ) as resp:
             pass
         with self.client.request(
@@ -222,7 +222,7 @@ class early_load_test(FastHttpUser):
         ) as resp:
             pass
         with self.client.request(
-            "GET", "/rounds/the_missing_diamond", catch_response=True
+            "GET", "/rounds/missing_diamond", catch_response=True
         ) as resp:
             pass
 

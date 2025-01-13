@@ -479,10 +479,9 @@ export default function createConfigs(_env, argv) {
       solution: "./src/frontend/client/solution.tsx",
 
       // Included on the round pages
-      the_missing_diamond:
-        "./src/frontend/rounds/the_missing_diamond/client.tsx",
-      the_missing_diamond_puzzle:
-        "./src/frontend/rounds/the_missing_diamond/puzzleClient.tsx",
+      missing_diamond: "./src/frontend/rounds/missing_diamond/client.tsx",
+      missing_diamond_puzzle:
+        "./src/frontend/rounds/missing_diamond/puzzleClient.tsx",
       stakeout: "./src/frontend/rounds/stakeout/client.tsx",
       paper_trail: "./src/frontend/rounds/paper_trail/client.tsx",
       illegal_search: "./src/frontend/rounds/illegal_search/client.tsx",
