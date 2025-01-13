@@ -1237,7 +1237,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11-afraid-p1",
       speaker: "billie",
-      text: "...Yes.",
+      text: "...Yeah.",
       sound: {
         mp3: mp3_audio_11_afraid_p1,
         opus: opus_audio_11_afraid_p1,

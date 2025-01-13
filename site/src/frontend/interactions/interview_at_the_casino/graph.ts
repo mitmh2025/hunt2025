@@ -284,7 +284,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "start",
       speaker: "billie",
-      text: "I find the card sharks at the back of the casino.  WIth players like these, you have two choices – you can take a risk and try to bluff them, or just play it straight.",
+      text: "I find the card sharks at the back of the casino.  With players like these, you have two choices – you can take a risk and try to bluff them, or just play it straight.",
       textBubbleType: "thought",
       sound: {
         mp3: audio_mp3_start,
