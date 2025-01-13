@@ -9,6 +9,7 @@ export default function formatActivityLogEntryForApi(
   e: InternalActivityLogEntry,
 ): DehydratedActivityLogEntry | undefined {
   switch (e.type) {
+    case "global_hints_unlocked":
     case "puzzle_guess_submitted":
       return undefined;
   }
@@ -80,6 +81,14 @@ export default function formatActivityLogEntryForApi(
           });
         }
         break;
+      case "team_hints_unlocked": {
+        const title = PUZZLES[e.slug]?.title;
+        entry = Object.assign(entry, {
+          title: title ?? `Stub puzzle for slog ${e.slug}`,
+          timestamp: entry.hints_available_at,
+        });
+        break;
+      }
     }
   }
   // Note: API objects flatten `data` into the object.

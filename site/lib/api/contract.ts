@@ -65,6 +65,7 @@ const PuzzleSummarySchema = z.object({
   locked: PuzzleLockEnum,
   partially_solved: z.boolean().optional(),
   unlocked_at: z.number().optional(), // epoch at which the puzzle was unlocked
+  hints_unlocked_at: z.string().datetime().optional(),
   answer: z.string().optional(),
 });
 
@@ -206,6 +207,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
+<<<<<<< HEAD
       type: z.literal("puzzle_hint_requested"),
     }),
   ),
@@ -222,6 +224,8 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
+=======
+>>>>>>> c7fd7c53 (solver facing presentation)
       type: z.literal("team_hints_unlocked"),
       hints_available_at: z.string().datetime(),
     }),

@@ -195,8 +195,11 @@ export const adminContract = c.router({
   },
   unlockHints: {
     method: "POST",
-    path: "/admin/puzzles/:slug/unlock-hints",
-    body: z.object({ minimumUnlockHours: z.number() }),
+    path: "/admin/puzzles/unlock-hints",
+    body: z.object({
+      puzzleSlugs: z.array(z.string()),
+      minimumUnlockHours: z.number(),
+    }),
     responses: {
       200: InternalActivityLogSchema,
     },

@@ -221,6 +221,20 @@ export function formatActivityLogEntry(
         ),
         showNotification: true,
       };
+    case "team_hints_unlocked":
+      return {
+        icon: "💡",
+        description: (
+          <>
+            Hints will become available for puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> at{" "}
+            {new Date(entry.timestamp).toLocaleString("en-US", {
+              timeZone: "America/New York",
+            })}
+          </>
+        ),
+        showNotification: false,
+      };
     case "puzzle_hint_requested":
       return {
         icon: "🛟",

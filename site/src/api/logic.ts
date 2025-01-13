@@ -228,7 +228,9 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
               : ("locked" as const),
           partially_solved: data.puzzles_partially_solved.has(slug),
           unlocked_at: data.puzzles_unlocked_at.get(slug),
-          hints_unlocked_at: data.team_hints_unlocked_timestamp.get(slug),
+          hints_unlocked_at: data.team_hints_unlocked_timestamp
+            .get(slug)
+            ?.toISOString(),
           answer: data.correct_answers.get(slug),
           ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
         },

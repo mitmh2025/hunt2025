@@ -2977,38 +2977,38 @@ export async function getRouter({
       },
       unlockHints: {
         middleware: [adminAuthMiddleware, requireAdminPermission],
-        handler: async ({
-          params: { slug },
-          body: { minimumUnlockHours },
-          req,
-        }) => {
+        handler: async ({ body: { puzzleSlugs, minimumUnlockHours }, req }) => {
           const { result } = await activityLog.executeMutation(
             hunt,
             undefined,
             redisClient,
             knex,
             async (_trx, mutator) => {
-              // Check if hints have already been released for this puzzle.
-              const alreadyReleased = mutator.log.some(
-                (e) =>
-                  "slug" in e &&
-                  e.slug === slug &&
-                  e.type === "global_hints_unlocked",
-              );
-              if (alreadyReleased) {
-                return [];
-              }
+              const results: (InternalActivityLogEntry | undefined)[] = [];
+              for (const slug of puzzleSlugs) {
+                // Check if hints have already been released for this puzzle.
+                const alreadyReleased = mutator.log.some(
+                  (e) =>
+                    "slug" in e &&
+                    e.slug === slug &&
+                    e.type === "global_hints_unlocked",
+                );
+                if (alreadyReleased) {
+                  continue;
+                }
 
-              return [
-                await mutator.appendLog({
-                  type: "global_hints_unlocked",
-                  slug: slug,
-                  data: { minimum_unlock_hours: minimumUnlockHours },
-                  internal_data: {
-                    operator: req.authInfo?.adminUser,
-                  },
-                }),
-              ];
+                results.push(
+                  await mutator.appendLog({
+                    type: "global_hints_unlocked",
+                    slug: slug,
+                    data: { minimum_unlock_hours: minimumUnlockHours },
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                );
+              }
+              return results;
             },
           );
 
