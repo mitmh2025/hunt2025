@@ -37,9 +37,9 @@ const Solution = () => {
           <MI>y</MI>
         </Math>{" "}
         variables. These feeders, MILLIMETERS and SLIVERS, are made up of
-        letters that can be interpreted as Roman numerals or
-        &ldquo;leetspeak&rdquo; numbers, except for one letter each, as clued by
-        the flavortext (&ldquo;ignore a letter from each file&rdquo;).
+        letters that can be interpreted as Roman numerals or “leetspeak”
+        numbers, except for one letter each, as clued by the flavortext (“ignore
+        a letter from each file”).
       </p>
       <p>
         The inequalities give confirmation that solvers have split the feeders
@@ -196,10 +196,10 @@ const Solution = () => {
         by the true value. These constants are clued by the images below, along
         with the accompanying powers of 10. Taking the difference between the
         true value truncated to the hundredths place and the calculated
-        expression (as per the flavortext: &ldquo;They keep track of the dollars
-        and cents, but they&rsquo;re apt to just cut things off there&rdquo;)
-        and interpreting these two decimal digits as letters with 0.01=A,
-        0.02=B, etc. gives the answer ROUNDING ERROR.
+        expression (as per the flavortext: “They keep track of the dollars and
+        cents, but they’re apt to just cut things off there”) and interpreting
+        these two decimal digits as letters with 0.01=A, 0.02=B, etc. gives the
+        answer ROUNDING ERROR.
       </p>
 
       <HScrollTableWrapper>
@@ -226,7 +226,7 @@ const Solution = () => {
               <td>R</td>
             </tr>
             <tr>
-              <td>Planck&rsquo;s constant</td>
+              <td>Planck’s constant</td>
               <td>Plank</td>
               <td>6.62</td>
               <td>10</td>
@@ -342,7 +342,7 @@ const Solution = () => {
               <td>O</td>
             </tr>
             <tr>
-              <td>Avogadro&rsquo;s number</td>
+              <td>Avogadro’s number</td>
               <td>Avocado</td>
               <td>6.02</td>
               <td>9</td>

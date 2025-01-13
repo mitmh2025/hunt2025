@@ -30,8 +30,8 @@ const Solution = () => {
         That second enumeration matches the number of words in the clue. Extract
         the letter corresponding with the misspelled word and enter into the
         blanks at the bottom to get the clue phrase: PURCHASE DIGIT AT END OF
-        FOOT. The answer to this phrase is &ldquo;buy toe&rdquo;, which needs to
-        have its vowel sounds swapped to give the puzzle answer BOW TIE.
+        FOOT. The answer to this phrase is “buy toe”, which needs to have its
+        vowel sounds swapped to give the puzzle answer BOW TIE.
       </p>
       {/* TODO: make a reusable component for emphasizing clue phrases and a second one for answers */}
 
@@ -107,18 +107,14 @@ const Solution = () => {
             </tr>
             <tr>
               <td>
-                the entirety of a discoloration on a porsen&rsquo;s clothing (5
-                5 ⇒ 9)
+                the entirety of a discoloration on a porsen’s clothing (5 5 ⇒ 9)
               </td>
               <td>WHOLE STAIN</td>
               <td>HAILSTONE</td>
             </tr>
             <tr>
-              <td>
-                a baby&rsquo;s bed ewnod by an Objectivist author (3&rsquo;1 4 ⇒
-                8)
-              </td>
-              <td>AYN&rsquo;S CRIB</td>
+              <td>a baby’s bed ewnod by an Objectivist author (3’1 4 ⇒ 8)</td>
+              <td>AYN’S CRIB</td>
               <td>INSCRIBE</td>
             </tr>
             <tr>
@@ -139,7 +135,7 @@ const Solution = () => {
               <td>MAKEUP</td>
             </tr>
             <tr>
-              <td>grassy area naer a house that&rsquo;s mediocre (3 4 ⇒ 7)</td>
+              <td>grassy area naer a house that’s mediocre (3 4 ⇒ 7)</td>
               <td>MID LAWN</td>
               <td>MAUDLIN</td>
             </tr>

@@ -147,8 +147,8 @@ const Look = ({
       <NavData room={room} />
       {start && (
         <p>
-          Hmmm... might this be one of those text-adventure mazes you&apos;ve
-          heard about?
+          Hmmm... might this be one of those text-adventure mazes you’ve heard
+          about?
         </p>
       )}
       {door && <p>You pass through the door, which closes behind you.</p>}
@@ -161,8 +161,8 @@ const Look = ({
       )}
       {room.character !== undefined && (
         <p>
-          Someone is standing there, wearing a name tag that says &quot;
-          {Characters[room.character]}&quot; and looking like they want to be
+          Someone is standing there, wearing a name tag that says “
+          {Characters[room.character]}” and looking like they want to be
           helpful.
         </p>
       )}

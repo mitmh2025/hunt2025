@@ -230,11 +230,11 @@ export const Formula = (): JSX.Element => {
     <Math>
       <MFrac>
         <MRow>
-          <MI>&#x394;</MI>
+          <MI>Δ</MI>
           <MI>x</MI>
         </MRow>
         <MRow>
-          <MI>&#x394;</MI>
+          <MI>Δ</MI>
           <MI>t</MI>
         </MRow>
       </MFrac>

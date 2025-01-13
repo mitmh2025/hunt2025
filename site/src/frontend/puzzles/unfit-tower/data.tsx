@@ -45,8 +45,8 @@ export const CharacterMessages = [
   /* A */
   <>
     <p>
-      Welcome to the maze! I&apos;m {Characters[0]}, and I&apos;m in charge of
-      your welcome orientation.
+      Welcome to the maze! I’m {Characters[0]}, and I’m in charge of your
+      welcome orientation.
     </p>
     <p>
       This maze consists of a bunch of rooms connected to each other by open
@@ -68,9 +68,8 @@ export const CharacterMessages = [
   <>
     <p>
       Everyone here lies all the time. In particular {Characters[0]} lies all
-      the time. You should listen only to me. I&apos;m pretty sure{" "}
-      {Characters[0]} didn&apos;t even tell you the truth about what you&apos;re
-      supposed to do here.
+      the time. You should listen only to me. I’m pretty sure {Characters[0]}{" "}
+      didn’t even tell you the truth about what you’re supposed to do here.
     </p>
     <p>
       You see, some of the rooms of this maze used to contain a single digit
@@ -87,15 +86,15 @@ export const CharacterMessages = [
     <p>
       Every room of this maze used to contain a single digit from 1 to 9, in
       such a way that two rooms that lie due East or due North of each other
-      can&apos;t contain the same digits, and two rooms that can be joined
-      without passing through a door can&apos;t contain the same digits either.
+      can’t contain the same digits, and two rooms that can be joined without
+      passing through a door can’t contain the same digits either.
     </p>
     <p>
-      Only one of the digits remains visible -- a five -- perhaps you&apos;ve
-      seen it already? And in fact, there are two other 5&apos;s that you will
-      be able to place into the maze as soon as you have learned the rules for
-      their respective regions. Anyway, it would be great if you could help us
-      figure out all the missing digits!
+      Only one of the digits remains visible -- a five -- perhaps you’ve seen it
+      already? And in fact, there are two other 5’s that you will be able to
+      place into the maze as soon as you have learned the rules for their
+      respective regions. Anyway, it would be great if you could help us figure
+      out all the missing digits!
     </p>
   </>,
   /* D */
@@ -117,8 +116,8 @@ export const CharacterMessages = [
   /* E */
   <>
     <p>
-      You need to know that {Characters[3]} is a liar. Here&apos;s the correct
-      information he won&apos;t tell you.
+      You need to know that {Characters[3]} is a liar. Here’s the correct
+      information he won’t tell you.
     </p>
     <p>
       In a region of the maze whose only door opens to the South, the numbers
@@ -138,8 +137,8 @@ export const CharacterMessages = [
       the sum of all the others. And in yet another region, the digits
       encountered along the shortest path between the only two doors are in
       increasing or decreasing order along the path. You seem pretty smart, so
-      it shouldn&apos;t be hard for you to figure out which three regions
-      I&apos;m talking about.
+      it shouldn’t be hard for you to figure out which three regions I’m talking
+      about.
     </p>
     <p>By the way, {Characters[6]} is a liar.</p>
   </>,
@@ -152,8 +151,7 @@ export const CharacterMessages = [
       the only two doors form a prime number when read in the correct direction.
       And in yet another region, the product of the digits encountered along the
       shortest path between the only two doors is a perfect square. Surely
-      you&apos;ll be able to figure out which three regions I&apos;m talking
-      about.
+      you’ll be able to figure out which three regions I’m talking about.
     </p>
     <p>And, by the way, {Characters[5]} is a liar.</p>
   </>,

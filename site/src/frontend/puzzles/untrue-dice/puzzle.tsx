@@ -378,7 +378,7 @@ const PuzzleContent = () => {
                     <MI>x</MI>
                     <MN>5</MN>
                   </MSub>
-                  <MO>&#x2212;</MO>
+                  <MO>-</MO>
                   <MFrac>
                     <MRow>
                       <MSub>
@@ -518,7 +518,7 @@ const PuzzleContent = () => {
                   <MI>x</MI>
                   <MN>1</MN>
                 </MSub>
-                <MO>&#x2212;</MO>
+                <MO>-</MO>
                 <MSub>
                   <MI>x</MI>
                   <MN>4</MN>
@@ -600,12 +600,12 @@ const PuzzleContent = () => {
                   <MI>y</MI>
                   <MN>1</MN>
                 </MSub>
-                <MO>&#x2212;</MO>
+                <MO>-</MO>
                 <MSub>
                   <MI>x</MI>
                   <MN>2</MN>
                 </MSub>
-                <MO>&#x2212;</MO>
+                <MO>-</MO>
                 <MFrac>
                   <MSub>
                     <MI>x</MI>
@@ -641,7 +641,7 @@ const PuzzleContent = () => {
                 <MI>x</MI>
                 <MN>6</MN>
               </MSub>
-              <MO>&#x2212;</MO>
+              <MO>-</MO>
               <MFrac>
                 <MSub>
                   <MI>x</MI>
@@ -684,17 +684,17 @@ const PuzzleContent = () => {
                     <MI>y</MI>
                     <MN>3</MN>
                   </MSub>
-                  <MO>&#x2212;</MO>
+                  <MO>-</MO>
                   <MSub>
                     <MI>x</MI>
                     <MN>6</MN>
                   </MSub>
-                  <MO>&#x2212;</MO>
+                  <MO>-</MO>
                   <MSub>
                     <MI>y</MI>
                     <MN>3</MN>
                   </MSub>
-                  <MO>&#x2212;</MO>
+                  <MO>-</MO>
                   <MSub>
                     <MI>y</MI>
                     <MN>4</MN>
@@ -717,7 +717,7 @@ const PuzzleContent = () => {
                   <MI>y</MI>
                   <MN>1</MN>
                 </MSub>
-                <MO>&#x2212;</MO>
+                <MO>-</MO>
                 <MSub>
                   <MI>y</MI>
                   <MN>3</MN>
@@ -752,12 +752,12 @@ const PuzzleContent = () => {
                   <MI>x</MI>
                   <MN>5</MN>
                 </MSub>
-                <MO>&#x2212;</MO>
+                <MO>-</MO>
                 <MSub>
                   <MI>x</MI>
                   <MN>6</MN>
                 </MSub>
-                <MO>&#x2212;</MO>
+                <MO>-</MO>
                 <MSub>
                   <MI>y</MI>
                   <MN>3</MN>
@@ -797,7 +797,7 @@ const PuzzleContent = () => {
                       <MI>x</MI>
                       <MN>7</MN>
                     </MSub>
-                    <MO>&#x2212;</MO>
+                    <MO>-</MO>
                     <MSub>
                       <MI>y</MI>
                       <MN>3</MN>
@@ -880,7 +880,7 @@ const PuzzleContent = () => {
                       <MN>2</MN>
                     </MSub>
                   </MFrac>
-                  <MO>&#x2212;</MO>
+                  <MO>-</MO>
                   <MFrac>
                     <MSub>
                       <MI>x</MI>
@@ -974,7 +974,7 @@ const PuzzleContent = () => {
             <BoundedImg src={image} />
             {exponent && (
               <Formula>
-                <MO>&#x00d7;</MO>
+                <MO>×</MO>
                 <MSup>
                   <MN>10</MN>
                   <MN>{exponent}</MN>
