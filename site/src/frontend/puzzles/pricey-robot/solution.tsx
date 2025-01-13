@@ -4,6 +4,8 @@ import { PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin: 1em 0;
+  border-collapse: collapse;
+
   td {
     padding: 0 8px;
   }
@@ -14,7 +16,7 @@ const RING_DATA = [
     {
       letter: "A",
       prompt: "Make like Americium and split.",
-      response: "You're just blowing smoke.",
+      response: "You’re just blowing smoke.",
       shape: "B",
       explaination: "Americium is an alpha emitter used in smoke detectors",
     },
@@ -42,7 +44,7 @@ const RING_DATA = [
     {
       letter: "E",
       prompt: "Are you an angel or a firefly?",
-      response: "I'm the most important doll in the dollhouse.",
+      response: "I’m the most important doll in the dollhouse.",
       shape: "G",
       explaination:
         "Joss Whedon shows, Echo was th main character in Dollhouse",
@@ -70,28 +72,28 @@ const RING_DATA = [
     },
     {
       letter: "A",
-      prompt: "I bet you can't name three gods.",
-      response: "Athena, Ares, and Aphrodite. And that's just the beginning.",
+      prompt: "I bet you can’t name three gods.",
+      response: "Athena, Ares, and Aphrodite. And that’s just the beginning.",
       shape: "G",
       explaination: "Greek gods starting with alpha",
     },
     {
       letter: "T",
       prompt: "Would you pick Tang over McCormick?",
-      response: "I don't know much about dormsoup.",
+      response: "I don’t know much about dormsoup.",
       shape: "G",
       explaination: "Tang o_, Tang and McCormick are MIT dorms.",
     },
     {
       letter: "T",
-      prompt: "Ugh this gnat won't leave me alone!",
+      prompt: "Ugh this gnat won’t leave me alone!",
       response: "Oh, just shoo it backwards.",
       shape: "B",
       explaination: "GNAT reversed + Oh",
     },
     {
       letter: "S",
-      prompt: "Sir Gabriel is on the King's quest.",
+      prompt: "Sir Gabriel is on the King’s quest.",
       response: "His quest for glory is a phantasmagoria.",
       shape: "P",
       explaination: "Referencing many Sierra Entertainment software titles",
@@ -120,21 +122,21 @@ const RING_DATA = [
     },
     {
       letter: "M",
-      prompt: "Don't get your audio input too close to your speakers.",
-      response: "Thanks, that's valuable feedback.",
+      prompt: "Don’t get your audio input too close to your speakers.",
+      response: "Thanks, that’s valuable feedback.",
       shape: "Y",
       explaination: "Microphone feedback",
     },
     {
       letter: "M",
       prompt: "How does he eat and breathe though?",
-      response: "It's just a show, you should really just relax.",
+      response: "It’s just a show, you should really just relax.",
       shape: "G",
       explaination: "Mike Nelson, host of MST3K",
     },
     {
       letter: "U",
-      prompt: "We don't want puns from amateurs here.",
+      prompt: "We don’t want puns from amateurs here.",
       response: "You need formal training to participate.",
       shape: "R",
       explaination: "“You need form”",
@@ -149,8 +151,8 @@ const RING_DATA = [
     {
       letter: "H",
       prompt:
-        "There's nothing better than a chocolate chip cookie after a long journey.",
-      response: "That's so true - travel always makes me hungry!",
+        "There’s nothing better than a chocolate chip cookie after a long journey.",
+      response: "That’s so true - travel always makes me hungry!",
       shape: "R",
       explaination: "DoubleTree hotels",
     },
@@ -163,15 +165,15 @@ const RING_DATA = [
     },
     {
       letter: "L",
-      prompt: "When I'm young I'm green.",
-      response: "When I'm mature I'm butter.",
+      prompt: "When I’m young I’m green.",
+      response: "When I’m mature I’m butter.",
       shape: "G",
       explaination: "Mature lima beans also called butter beans",
     },
     {
       letter: "L",
-      prompt: "Didn't your mother tell you not to stare?",
-      response: "Ma told me I lot of things that I don't believe.",
+      prompt: "Didn’t your mother tell you not to stare?",
+      response: "Ma told me I lot of things that I don’t believe.",
       shape: "P",
       explaination: "Lie Ma",
     },
@@ -200,7 +202,7 @@ const RING_DATA = [
     {
       letter: "D",
       prompt: "Triangles are my favorite shape.",
-      response: "They're my favorite letter.",
+      response: "They’re my favorite letter.",
       shape: "R",
       explaination: "Greek letter delta",
     },
@@ -227,7 +229,7 @@ const RING_DATA = [
     },
     {
       letter: "E",
-      prompt: "Why can't I hit the bullseye?",
+      prompt: "Why can’t I hit the bullseye?",
       response: "Somebody has moved the oche!",
       shape: "P",
       explaination: "Anagram OCHE",
@@ -237,7 +239,7 @@ const RING_DATA = [
     {
       letter: "A",
       prompt: "I hate when sprouts get stuck in my teeth.",
-      response: "I can lend you a toothpick, but I'll need it back.",
+      response: "I can lend you a toothpick, but I’ll need it back.",
       shape: "B",
       explaination: "Alfalfa sprouts",
     },
@@ -251,7 +253,7 @@ const RING_DATA = [
     {
       letter: "W",
       prompt: "Scotch, on the rocks.",
-      response: "I'll try not to slip on them.",
+      response: "I’ll try not to slip on them.",
       shape: "Y",
       explaination: "Scotch whiskey",
     },
@@ -267,13 +269,13 @@ const RING_DATA = [
       prompt:
         "Did you know that Death and Mayhem have written an excellent hunt?",
       response:
-        "I keep hearing again and again how excellent Death and Mayhem's hunt is!",
+        "I keep hearing again and again how excellent Death and Mayhem’s hunt is!",
       shape: "B",
       explaination: "Repetition",
     },
     {
       letter: "T",
-      prompt: "It's my last time in Halifax.",
+      prompt: "It’s my last time in Halifax.",
       response: "Might as well do one of these before you leave.",
       shape: "G",
       explaination: "Last Tango In Halifax film title",
@@ -295,7 +297,7 @@ const RING_DATA = [
     {
       letter: "Y",
       prompt: "I hereby dub thee Sir Puzzlehunter of the Round Table.",
-      response: "Even though I'm from Connecticut?",
+      response: "Even though I’m from Connecticut?",
       shape: "R",
       explaination: "A Connecticut Yankee In King Arthur’s court",
     },
@@ -324,13 +326,13 @@ const RING_DATA = [
     {
       letter: "O",
       prompt: "What do you think will win Best Film?",
-      response: "I'm pulling for Saran Wrap.",
+      response: "I’m pulling for Saran Wrap.",
       shape: "G",
       explaination: "Best Film is an Oscars category",
     },
     {
       letter: "R",
-      prompt: "Are you Jet Li? Because I think you're The One.",
+      prompt: "Are you Jet Li? Because I think you’re The One.",
       response: "Go one movie back for your answer.",
       shape: "R",
       explaination: "Jet Li’s previous film, Romeo Must Die",
@@ -344,8 +346,8 @@ const RING_DATA = [
     },
     {
       letter: "C",
-      prompt: "I don't have a nickel for the exit fare.",
-      response: "Here's a sandwich at Scollay Square.",
+      prompt: "I don’t have a nickel for the exit fare.",
+      response: "Here’s a sandwich at Scollay Square.",
       shape: "B",
       explaination: "“Charlie on the M.T.A.” lyrics",
     },
@@ -358,7 +360,7 @@ const RING_DATA = [
     },
     {
       letter: "R",
-      prompt: "Why'd you install ChromeOS on that laptop?",
+      prompt: "Why’d you install ChromeOS on that laptop?",
       response: "I wanted to get to the heart of my computer.",
       shape: "G",
       explaination: "(ch)ROMEO(s)",
@@ -373,14 +375,14 @@ const RING_DATA = [
     {
       letter: "A",
       prompt: "Gordon Shumway sends his regards.",
-      response: "Tell him I'm no puppet.",
+      response: "Tell him I’m no puppet.",
       shape: "R",
       explaination: "Gordon Shumway was ALF’s real name",
     },
     {
       letter: "I",
       prompt: "I pee a lot.",
-      response: "That's what happens when you drink too much beer.",
+      response: "That’s what happens when you drink too much beer.",
       shape: "P",
       explaination: "“I P A” India Pale Ale",
     },
@@ -414,7 +416,7 @@ const RING_DATA = [
     },
     {
       letter: "T",
-      prompt: "Oh, what is an astronaut's favorite drink?",
+      prompt: "Oh, what is an astronaut’s favorite drink?",
       response: "Gravi-tea!",
       shape: "B",
       explaination: "Tang used by NASA + Oh",
@@ -429,7 +431,7 @@ const RING_DATA = [
     {
       letter: "O",
       prompt: "We need a car to help us hide in plain sight.",
-      response: "I've leased the Wienermobile.",
+      response: "I’ve leased the Wienermobile.",
       shape: "R",
       explaination: "Oscar Mayer Wienermobile",
     },
@@ -443,21 +445,21 @@ const RING_DATA = [
     {
       letter: "D",
       prompt: "Is your Left Hand Free?",
-      response: "Let's Tessellate some Breezeblocks.",
+      response: "Let’s Tessellate some Breezeblocks.",
       shape: "B",
       explaination: "Songs by the band Δ",
     },
     {
       letter: "U",
-      prompt: "Let's keep this smooth and even.",
-      response: "Perfect, that's how I like my peanut butter.",
+      prompt: "Let’s keep this smooth and even.",
+      response: "Perfect, that’s how I like my peanut butter.",
       shape: "G",
       explaination: "Def. “smooth and even”",
     },
     {
       letter: "C",
       prompt: "Wow, that kid eats a lot of chocolate.",
-      response: "I know, it's almost like he has his own factory!",
+      response: "I know, it’s almost like he has his own factory!",
       shape: "B",
       explaination: "Charlie and the Chocolate Factory",
     },
@@ -479,7 +481,7 @@ const RING_DATA = [
     },
     {
       letter: "E",
-      prompt: "Did you know bats can sense movement they can't see?",
+      prompt: "Did you know bats can sense movement they can’t see?",
       response: "That makes it easier to hit home runs.",
       shape: "R",
       explaination: "Echolocation",
@@ -493,7 +495,7 @@ const RING_DATA = [
     },
     {
       letter: "E",
-      prompt: "I don't stare into the abyss but I do yell at it.",
+      prompt: "I don’t stare into the abyss but I do yell at it.",
       response: "The same warning still applies.",
       shape: "Y",
       explaination: "The abyss yells also at you",
@@ -522,21 +524,21 @@ const RING_DATA = [
     {
       letter: "I",
       prompt: "Finding the coin is my holy grail.",
-      response: "As long as it's not your crystal skull.",
+      response: "As long as it’s not your crystal skull.",
       shape: "Y",
       explaination: "Indiana Jones films",
     },
     {
       letter: "L",
       prompt: "The proof comes one step at a time.",
-      response: "That's just a theory.",
+      response: "That’s just a theory.",
       shape: "P",
       explaination: "Lemma",
     },
     {
       letter: "L",
-      prompt: "Peru's the place to be.",
-      response: "I'd happily examine it if you told me where.",
+      prompt: "Peru’s the place to be.",
+      response: "I’d happily examine it if you told me where.",
       shape: "B",
       explaination: "Lima, Peru",
     },
@@ -564,7 +566,7 @@ const RING_DATA = [
     {
       letter: "U",
       prompt: "What are my chances?",
-      response: "The same as anybody else's.",
+      response: "The same as anybody else’s.",
       shape: "G",
       explaination: "Uniform distribution",
     },
@@ -599,7 +601,7 @@ const RING_DATA = [
     {
       letter: "H",
       prompt: "One morning I shot elephants in my pajamas.",
-      response: "How they got inside your pajamas, you'll never know.",
+      response: "How they got inside your pajamas, you’ll never know.",
       shape: "P",
       explaination: "sHOT ELephants",
     },
@@ -612,7 +614,7 @@ const RING_DATA = [
     },
     {
       letter: "R",
-      prompt: "This crowd makes me feel like I'm in a zombie film.",
+      prompt: "This crowd makes me feel like I’m in a zombie film.",
       response: "What, Night of the Puzzling Dead?",
       shape: "Y",
       explaination: "George Romero",
@@ -620,7 +622,7 @@ const RING_DATA = [
     {
       letter: "F",
       prompt: "My rabbit runs fast.",
-      response: "My fox's legs are longer.",
+      response: "My fox’s legs are longer.",
       shape: "G",
       explaination: "Fox trotting",
     },
@@ -676,7 +678,7 @@ const RING_DATA = [
     {
       letter: "T",
       prompt: "May I have this dance?",
-      response: "I'm told it takes two.",
+      response: "I’m told it takes two.",
       shape: "B",
       explaination: "It takes two to tango.",
     },
@@ -690,7 +692,7 @@ const RING_DATA = [
     {
       letter: "E",
       prompt: "Ugh, her boyfriend is such a narcissist.",
-      response: "It's too bad she only reflects his worst traits.",
+      response: "It’s too bad she only reflects his worst traits.",
       shape: "B",
       explaination: "Echo and Narcissus",
     },
@@ -704,14 +706,14 @@ const RING_DATA = [
     {
       letter: "C",
       prompt: "He never bothers with people he hates.",
-      response: "That's why the gentleman is a tramp.",
+      response: "That’s why the gentleman is a tramp.",
       shape: "G",
       explaination: "Charlie Chaplin’s The Tramp",
     },
     {
       letter: "U",
       prompt: "Nobody told me what to wear tonight.",
-      response: "You're so uninformed.",
+      response: "You’re so uninformed.",
       shape: "B",
       explaination: "Sounds similar to uniformed",
     },
@@ -741,7 +743,7 @@ const RING_DATA = [
     {
       letter: "I",
       prompt: "Are you under a non-disclosure agreement?",
-      response: "Yes, but it takes two I's to make the deal.",
+      response: "Yes, but it takes two I’s to make the deal.",
       shape: "R",
       explaination: "NDA + I + I",
     },
@@ -776,20 +778,20 @@ const RING_DATA = [
     {
       letter: "M",
       prompt: "Little Mac can beat the champ.",
-      response: "If a Hippo and a Bull couldn't stop him; nothing can!",
+      response: "If a Hippo and a Bull couldn’t stop him; nothing can!",
       shape: "P",
       explaination: "Mike Tyson’s Punch-Out!!",
     },
     {
       letter: "E",
       prompt: "I love to share Arbor Day with everyone I meet.",
-      response: "That's a specific kind of friendly.",
+      response: "That’s a specific kind of friendly.",
       shape: "G",
       explaination: "Eco-friendly",
     },
     {
       letter: "T",
-      prompt: "I'm defeated, I should give up right now.",
+      prompt: "I’m defeated, I should give up right now.",
       response: "Gotta look on the bright side with all of your might.",
       shape: "B",
       explaination: "Tango: Maureen lyrics from RENT",
@@ -804,7 +806,7 @@ const RING_DATA = [
     {
       letter: "L",
       prompt: "Would you take a million for your zoo?",
-      response: "I'd give it all back to keep the lion.",
+      response: "I’d give it all back to keep the lion.",
       shape: "G",
       explaination: "“A MILLION”, minus LION, reversed",
     },
@@ -817,8 +819,8 @@ const RING_DATA = [
     },
     {
       letter: "O",
-      prompt: "What's the last word in bologna?",
-      response: "I'm told it's M-A-Y-E-R.",
+      prompt: "What’s the last word in bologna?",
+      response: "I’m told it’s M-A-Y-E-R.",
       shape: "B",
       explaination: "Oscar Mayer bologna",
     },
@@ -839,7 +841,7 @@ const RING_DATA = [
     {
       letter: "E",
       prompt: "The Empire State Building has such nice style.",
-      response: "I prefer Art D'Brutalism, myself.",
+      response: "I prefer Art D’Brutalism, myself.",
       shape: "R",
       explaination: "Art Deco / D’Eco",
     },
@@ -873,7 +875,7 @@ const RING_DATA = [
     },
     {
       letter: "O",
-      prompt: "Don't let the sunshine spoil your rain.",
+      prompt: "Don’t let the sunshine spoil your rain.",
       response: "Just stand up and complain.",
       shape: "Y",
       explaination: "Oscar the Grouch’s “Grouch Anthem” lyrics",
@@ -881,7 +883,7 @@ const RING_DATA = [
     {
       letter: "A",
       prompt: "The best artwork is a blend of two images",
-      response: "I'm no Picasso, but I have layers.",
+      response: "I’m no Picasso, but I have layers.",
       shape: "R",
       explaination: "Alpha compositing",
     },
@@ -916,14 +918,14 @@ const RING_DATA = [
     {
       letter: "O",
       prompt: "My code name is Dorian Gray.",
-      response: "Now I'm getting the picture.",
+      response: "Now I’m getting the picture.",
       shape: "Y",
       explaination: "Oscar Wilde novel",
     },
     {
       letter: "N",
       prompt: "Never mob a Black Friday sale.",
-      response: "Prices aren't all that get slashed.",
+      response: "Prices aren’t all that get slashed.",
       shape: "P",
       explaination: "Black Friday, day after Thanksgiving",
     },
@@ -950,8 +952,8 @@ const RING_DATA = [
     },
     {
       letter: "A",
-      prompt: "What's he howling about now?",
-      response: "Something about how he's in charge? It's all Greek to me.",
+      prompt: "What’s he howling about now?",
+      response: "Something about how he’s in charge? It’s all Greek to me.",
       shape: "Y",
       explaination: "Alpha wolf",
     },
@@ -965,7 +967,7 @@ const RING_DATA = [
     {
       letter: "E",
       prompt: "Have you read any Bertolt Brecht?",
-      response: "Oh, I've watched The Threepenny Opera again and again.",
+      response: "Oh, I’ve watched The Threepenny Opera again and again.",
       shape: "Y",
       explaination: "“Echt o”",
     },
@@ -981,14 +983,14 @@ const RING_DATA = [
     {
       letter: "O",
       prompt: "Did you spot orcas in the sound?",
-      response: "They're so confusing--are they mammals or fish?",
+      response: "They’re so confusing--are they mammals or fish?",
       shape: "P",
       explaination: "Angram ORCAS",
     },
     {
       letter: "M",
       prompt: "Would you like a lemonade?",
-      response: "Just water please, I don't touch the hard stuff.",
+      response: "Just water please, I don’t touch the hard stuff.",
       shape: "R",
       explaination: "Mike’s Hard Lemonade",
     },
@@ -1009,7 +1011,7 @@ const RING_DATA = [
     {
       letter: "H",
       prompt: "Mary ought to find higher ground.",
-      response: "She'll climb the hill tonight.",
+      response: "She’ll climb the hill tonight.",
       shape: "R",
       explaination: "“Mary ought,” “Hill ton”",
     },
@@ -1024,14 +1026,14 @@ const RING_DATA = [
     {
       letter: "T",
       prompt: "I am as sharp as a blade.",
-      response: "Attach a hilt so you don't cut yourself.",
+      response: "Attach a hilt so you don’t cut yourself.",
       shape: "B",
       explaination: "Tang of a sword/knife",
     },
     {
       letter: "I",
-      prompt: "How 'bout that missin' diamond?",
-      response: "The only thing harder is that Gladys's heart.",
+      prompt: "How ’bout that missin’ diamond?",
+      response: "The only thing harder is that Gladys’s heart.",
       shape: "P",
       explaination: "missIN DIAmond",
     },
@@ -1051,8 +1053,8 @@ const RING_DATA = [
     },
     {
       letter: "N",
-      prompt: "Were you involved in the gunpowder plot'?",
-      response: "I'm pleading the fifth.",
+      prompt: "Were you involved in the gunpowder plot’?",
+      response: "I’m pleading the fifth.",
       shape: "R",
       explaination: "Guy Fawkes Day",
     },
@@ -1079,7 +1081,7 @@ const RING_DATA = [
     },
     {
       letter: "A",
-      prompt: "When you're making avgolemono soup, how do you start?",
+      prompt: "When you’re making avgolemono soup, how do you start?",
       response: "From the beginning, fysiká.",
       shape: "R",
       explaination: "First Greek letter of avgolemono",
@@ -1108,34 +1110,34 @@ const RING_DATA = [
     {
       letter: "A",
       prompt: "I am the beginning of all things.",
-      response: "Don't hurt yourself falling off Mount Olympus",
+      response: "Don’t hurt yourself falling off Mount Olympus",
       shape: "R",
       explaination: "Beginning of Greek alphabet",
     },
     {
       letter: "M",
       prompt: "Keep an eye out for Wazowski.",
-      response: "He doesn't have an eye to spare.",
+      response: "He doesn’t have an eye to spare.",
       shape: "P",
       explaination: "Mike Wazowski, Monsters Inc.",
     },
     {
       letter: "E",
       prompt: "Thus, by a continuous shifting of rhetorical focus...",
-      response: "Yeah, we've all heard it before, Umberto.",
+      response: "Yeah, we’ve all heard it before, Umberto.",
       shape: "Y",
       explaination: "Umberto Eco, “Ur-Fascism”",
     },
     {
       letter: "O",
-      prompt: "How much did Jackie's dress cost?",
+      prompt: "How much did Jackie’s dress cost?",
       response: "More than the price of rent.",
       shape: "B",
       explaination: "Oscar de la Renta, dress designer",
     },
     {
       letter: "F",
-      prompt: "I've got something in my foot.",
+      prompt: "I’ve got something in my foot.",
       response: "Did you step on something extra inside?",
       shape: "G",
       explaination: "FO(XTR)OT",
@@ -1149,15 +1151,15 @@ const RING_DATA = [
     },
     {
       letter: "O",
-      prompt: "I'm very good at being earnest.",
-      response: "You're my ideal husband.",
+      prompt: "I’m very good at being earnest.",
+      response: "You’re my ideal husband.",
       shape: "Y",
       explaination: "Oscar Wilde plays",
     },
     {
       letter: "U",
       prompt: "Every direction looks the same.",
-      response: "Then it doesn't matter which way you go.",
+      response: "Then it doesn’t matter which way you go.",
       shape: "G",
       explaination: "Uniform space",
     },
@@ -1170,7 +1172,7 @@ const RING_DATA = [
     },
     {
       letter: "T",
-      prompt: "What's black and white and rainbow all over?",
+      prompt: "What’s black and white and rainbow all over?",
       response: "That book about gay penguins at the zoo!",
       shape: "G",
       explaination: "And Tango Makes Three",
@@ -1179,21 +1181,21 @@ const RING_DATA = [
       letter: "R",
       prompt: "Leonardo diCaprio spent too much time in the sun.",
       response:
-        "Baz Luhrmann doesn't care about historically accurate tan lines.",
+        "Baz Luhrmann doesn’t care about historically accurate tan lines.",
       shape: "Y",
       explaination: "Romeo + Juliet film",
     },
     {
       letter: "Y",
       prompt: "Go Sox!",
-      response: "Dude, you're from New York.",
+      response: "Dude, you’re from New York.",
       shape: "B",
       explaination: "NY Yankees",
     },
     {
       letter: "S",
       prompt: "You can find me between Guinea and Liberia.",
-      response: "I'll say “hi, jk” in Freetown.",
+      response: "I’ll say “hi, jk” in Freetown.",
       shape: "R",
       explaination: "Sierra Leone",
     },
@@ -1206,7 +1208,7 @@ const RING_DATA = [
     },
     {
       letter: "N",
-      prompt: "I've been working on my miniature novel.",
+      prompt: "I’ve been working on my miniature novel.",
       response: "Call that a nano-book.",
       shape: "R",
       explaination: "NaNoWriMo, November",
@@ -1214,7 +1216,7 @@ const RING_DATA = [
     {
       letter: "G",
       prompt: "They call me Don Quixote on the greens.",
-      response: "Because you're always tilting at the windmills.",
+      response: "Because you’re always tilting at the windmills.",
       shape: "B",
       explaination: "Putt-putt golf",
     },
@@ -1234,7 +1236,7 @@ const RING_DATA = [
     },
     {
       letter: "K",
-      prompt: "I'd make a pun but you'll glare daggers.",
+      prompt: "I’d make a pun but you’ll glare daggers.",
       response: "If looks could kill--oh!",
       shape: "G",
       explaination: "“Kill oh”",
@@ -1255,15 +1257,15 @@ const RING_DATA = [
     },
     {
       letter: "T",
-      prompt: "I'm low on cash.",
+      prompt: "I’m low on cash.",
       response: "I can trade you a Russell for a Stallone.",
       shape: "B",
       explaination: "Tango and Cash",
     },
     {
       letter: "H",
-      prompt: "There's nothing creepy happening in that ballroom, Stephen.",
-      response: "I think you're overlooking some things, king.",
+      prompt: "There’s nothing creepy happening in that ballroom, Stephen.",
+      response: "I think you’re overlooking some things, king.",
       shape: "P",
       explaination: "Overlook Hotel from The Shining",
     },
