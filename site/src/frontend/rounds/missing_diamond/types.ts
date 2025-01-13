@@ -19,7 +19,7 @@ export type MissingDiamondEntity = {
     title: string;
     slug: string;
     desc?: string;
-    state: "unlockable" | "unlocked" | "solved";
+    state: "unlockable" | "unlocked";
     answer?: string;
   };
 };

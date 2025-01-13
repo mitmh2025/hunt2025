@@ -425,6 +425,7 @@ export default function Extra({
 
         <PuzzleLinkBackdrop>
           <PuzzleLink
+            epoch={teamState.epoch}
             lockState={puzzleState?.locked ?? "locked"}
             answer={puzzleState?.answer}
             currency={teamState.currency}

@@ -18,7 +18,7 @@ import React, {
 } from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import { PuzzleUnlockModal } from "../../components/PuzzleLink";
+import { PuzzleUnlockModal, usePuzzleState } from "../../components/PuzzleLink";
 import { PuzzleTooltipComponent } from "../../components/Tooltip";
 import {
   CityWrapper,
@@ -41,17 +41,28 @@ const AbsoluteImg = styled.img`
 `;
 
 const MurderWindow = ({
+  epoch,
   item,
   position,
   imgStyle,
   currency,
 }: {
+  epoch: number;
   item: MurderPuzzleObject;
   position: { left: string; top: string; transform?: string };
   imgStyle: { width: string };
   currency: number;
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const puzzleStateHandle = usePuzzleState(epoch, {
+    slug: item.slug,
+    state: item.state === "solved" ? "unlocked" : item.state,
+    title: item.title,
+    answer: item.answer,
+    desc: item.desc,
+  });
+  const [puzzleState] = puzzleStateHandle;
 
   const { refs, floatingStyles, context } = useFloating({
     placement: item.tooltip_placement ?? "top",
@@ -83,7 +94,6 @@ const MurderWindow = ({
     unlockModalRef.current?.close();
   }, []);
 
-  const lockState = item.state === "solved" ? "unlocked" : item.state;
   const tooltip = showTooltip && (
     <PuzzleTooltipComponent
       innerRef={refs.setFloating}
@@ -93,10 +103,10 @@ const MurderWindow = ({
         maxWidth: "30rem",
         visibility: "visible",
       }}
-      title={item.title}
-      lockState={lockState}
-      answer={item.answer}
-      desc={item.desc}
+      title={puzzleState.title}
+      lockState={puzzleState.state}
+      answer={puzzleState.answer}
+      desc={puzzleState.desc}
       {...getFloatingProps()}
     />
   );
@@ -112,7 +122,7 @@ const MurderWindow = ({
     </>
   );
 
-  if (lockState === "unlockable") {
+  if (puzzleState.state === "unlockable") {
     return (
       <>
         <MurderWindowComponent as="button" onClick={showUnlockModal}>
@@ -121,23 +131,17 @@ const MurderWindow = ({
         </MurderWindowComponent>
         <PuzzleUnlockModal
           ref={unlockModalRef}
-          title={item.title}
-          slug={item.slug}
           onDismiss={dismissUnlockModal}
           cost={1}
           currency={currency}
-          desc={item.desc}
+          stateHandle={puzzleStateHandle}
         />
       </>
     );
   } else {
     return (
       <>
-        <MurderWindowComponent
-          href={
-            item.state !== "unlockable" ? `/puzzles/${item.slug}` : undefined
-          }
-        >
+        <MurderWindowComponent href={`/puzzles/${puzzleState.slug}`}>
           {itemContents}
           {tooltip}
         </MurderWindowComponent>
@@ -197,6 +201,7 @@ const MurderBody = ({
     };
     return (
       <MurderWindow
+        epoch={state.epoch}
         key={item.slug}
         item={item}
         position={aStyle}

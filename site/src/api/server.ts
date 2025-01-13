@@ -539,6 +539,7 @@ export async function getRouter({
       .sort();
 
     const result: PuzzleState = {
+      epoch: puzzle_state.epoch,
       round,
       locked,
       guesses: puzzle_state.guesses.map(
@@ -1327,7 +1328,7 @@ export async function getRouter({
               );
             }
 
-            const subpuzzleState: PuzzleState = {
+            const subpuzzleState: Omit<PuzzleState, "epoch"> = {
               round: slot.roundSlug,
               guesses: guesses.map(
                 ({

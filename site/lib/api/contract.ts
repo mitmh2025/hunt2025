@@ -52,6 +52,7 @@ export const PuzzleStateSchema = PuzzleSummarySchema.omit({
   unlocked_at: true,
 }).extend({
   guesses: z.array(GuessSchema).default([]),
+  epoch: z.number(),
 });
 
 const PuzzleSlotSchema = z.object({
