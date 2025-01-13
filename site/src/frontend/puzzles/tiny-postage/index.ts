@@ -93,7 +93,7 @@ const puzzle: PuzzleDefinition = {
     {
       order: 26.0,
       description:
-        'CORONER: solvers have linked the "tissue samples" with the puzzle text, but either don’t know it references a sculpture or don’t know where to find it on campus',
+        "CORONER: solvers have linked the “tissue samples” with the puzzle text, but either don’t know it references a sculpture or don’t know where to find it on campus",
       nudge:
         "The coroner’s subject can be found at 84 Mass Ave. You should probably examine it in person. Bring a coat.",
     },
