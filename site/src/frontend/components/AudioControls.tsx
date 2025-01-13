@@ -6,7 +6,7 @@ import React, {
   useRef,
 } from "react";
 import { styled } from "styled-components";
-import { WebRTCPlayer } from "../utils/WebRTCPlayer";
+import { WebRTCClient } from "../utils/WebRTCClient";
 import { deviceMax } from "../utils/breakpoints";
 import { Button } from "./StyledUI";
 
@@ -305,7 +305,7 @@ const Unmute = styled.div`
 
 const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
   const activePlayer = useRef<{
-    player: WebRTCPlayer;
+    client: WebRTCClient;
     audio: HTMLAudioElement;
   } | null>(null);
   const [{ audioDucked, loading, playing, volume }, dispatch] = useReducer(
@@ -331,8 +331,7 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
   const handlePause = useCallback(() => {
     if (activePlayer.current) {
       activePlayer.current.audio.pause();
-      activePlayer.current.player.mute();
-      activePlayer.current.player.destroy();
+      activePlayer.current.client.destroy();
       activePlayer.current = null;
     }
     dispatch({ type: AudioControlActionType.PAUSED });
@@ -344,72 +343,24 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
     }
 
     dispatch({ type: AudioControlActionType.LOADING });
-    console.log("LOADING", whepUrl);
 
     const audio = new Audio();
-    const player = new WebRTCPlayer({
-      // WebRTCPlayer expects a video element, but we only want audio -- the
-      // audio element API is similar enough that it just works.
-      video: audio as HTMLVideoElement,
-      mediaConstraints: {
-        audioOnly: true,
-      },
-      debug: true,
-      detectTimeout: true,
-      timeoutThreshold: 5000,
-    });
-    activePlayer.current = { player, audio };
-
-    player.load(new URL(whepUrl)).catch((error: unknown) => {
-      console.error("Failed to load player", error);
-      handlePause();
-    });
-
-    player.on("no-media", () => {
-      console.log("media timeout occured");
-    });
-
-    player.on("media-recovered", () => {
-      console.log("media recovered");
-    });
-
-    player.on("peer-connection-failed", () => {
-      console.log("peer connection failed, will retry");
-
-      dispatch({ type: AudioControlActionType.LOADING });
-    });
-
-    player.on("peer-connection-connected", () => {
-      console.log("peer connection connected");
-
-      player.unmute();
-
-      audio
-        .play()
-        .then(() => {
+    const client = new WebRTCClient({
+      mediaElement: audio,
+      whepUrl: whepUrl,
+      onStateChange: (state) => {
+        if (state === "connected") {
           dispatch({ type: AudioControlActionType.PLAYING });
-        })
-        .catch((error: unknown) => {
-          console.error("Failed to play audio", error);
+        } else if (state === "disconnected") {
           handlePause();
-        });
+        } else {
+          dispatch({ type: AudioControlActionType.LOADING });
+        }
+      },
     });
+    activePlayer.current = { client, audio };
 
-    player.on("initial-connection-failed", () => {
-      console.log("permanent connection failure");
-
-      handlePause();
-    });
-
-    player.on("connect-error", () => {
-      console.log("permanent connection error");
-
-      handlePause();
-    });
-
-    player.on("stats:inbound-rtp", (report) => {
-      console.log("media report", report);
-    });
+    client.connect();
   }, [dispatch, whepUrl, handlePause]);
 
   function handleVolumeChange(event: React.ChangeEvent<HTMLInputElement>) {
