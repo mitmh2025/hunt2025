@@ -16,6 +16,17 @@ const puzzle: PuzzleDefinition = {
       for_what: "Art",
       who: ["Anna Brunner"],
     },
+    {
+      for_what: "Fabrication",
+      who: [
+        "Aletta Tibbetts",
+        "Erin Price",
+        "Grace Daigle",
+        "Molly Frey",
+        "Sarah Leadbeater",
+        "Will Tymowski",
+      ],
+    },
   ],
   content: {
     component: Puzzle,
