@@ -31,21 +31,21 @@ const puzzle: PuzzleDefinition = {
       order: 0.0,
       description: "The solvers don’t know where to start.",
       nudge:
-        "Maybe try solving the crossword clues first. Can you tell how they are organized?",
+        "Maybe try solving the crossword clues first.  Can you tell how they are organized?",
     },
     {
       order: 1.0,
       description:
         "The solvers have most of the crossword clues, but don’t know where to fill them in.",
       nudge:
-        "You might want to zoom waaaay in on the image. This is the World’s Largest Crossword after all!",
+        "You might want to zoom waaaay in on the image.  This is the World’s Largest Crossword after all!",
     },
     {
       order: 5.0,
       description:
         "The solvers understand that each white pixel is a square to fill a letter into, but aren’t sure how to fill the grid.",
       nudge:
-        "Try focusing on small areas of the grid to start. You should be able to fill in some of the smaller pieces!",
+        "Try focusing on small areas of the grid to start.  You should be able to fill in some of the smaller pieces!",
     },
     {
       order: 7.0,
@@ -66,14 +66,14 @@ const puzzle: PuzzleDefinition = {
       description:
         "The solvers have filled in all the grid units in all the various ways, but don’t understand what each unit represents.",
       nudge:
-        "Each grid shape only has a few possibilities for how it gets filled. What do you notice about the edges of these units?",
+        "Each grid shape only has a few possibilities for how it gets filled.  What do you notice about the edges of these units?",
     },
     {
       order: 30.0,
       description:
         "The solvers see that there are 0s and 1s along the boundary of the grid units, but still don’t understand how they work.",
       nudge:
-        "Think of the top and left edges as inputs and the right and bottom edges as outputs. Can you figure out the rules for each of the grid shapes?",
+        "Think of the top and left edges as inputs and the right and bottom edges as outputs.  Can you figure out the rules for each of the grid shapes?",
     },
     {
       order: 31.0,
@@ -93,23 +93,24 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers can’t find the 36 tables",
       keywords: ["Tables"],
       nudge:
-        "Each ‘table’ consists of a 5x5 set of squares, the wires connecting to adjacent tables, and some wire ends at the right and bottom. How do the squares in the 5x5 grid behave?",
+        "Each “table” consists of a 5x5 set of “blocks”; wires that connect to adjacent tables; and some interesting wire ends along the right and bottom. How do the blocks behave?",
     },
     {
       order: 60.0,
       description: "Solvers don’t know what to do with the tables.",
       nudge:
-        "Look at the wire ends in each table. Which ones are truthy? How do we get a value out of that?",
+        "Look at the wire ends in each table. Which ones are constrained to be a logical “one,” versus logical “zero”?  What implications does that have for the rest of the table?",
     },
     {
       order: 70.0,
       description: "Solvers still don’t know what to make of the tables",
       nudge:
-        "Think of the wire as binary. Each block has a 4-digit binary coming in the the top and left. The wires then exit to the right and bottom after adding some numbers. The wire ends can also be treated as binary. What kind of puzzle might this be?",
+        "Think of the wires as carrying binary numbers.  Tables consist of a 5x5 arrangement of “logic blocks,” each of which has a 4-digit binary coming in the top and left. The wires then exit to the right and bottom after adding some numbers. The wire ends can also be treated as binary. What kind of puzzle might this be?",
     },
     {
       order: 80.0,
-      description: "Solvers don’t recognize the logic puzzle",
+      description:
+        "Solvers have made progress reverse-engineering the logic blocks, but can’t quite put together the mechanics of a table",
       nudge:
         "These are Kakurasu puzzles. https://www.puzzle-kakurasu.com/faq.php",
     },
@@ -118,14 +119,14 @@ const puzzle: PuzzleDefinition = {
       description: "The solvers are concerned solutions aren’t unique again.",
       keywords: ["Kakurasu"],
       nudge:
-        "Correct, the kakurasu do not have unique solutions by themselves. Wires connect blocks within each kakurasu grid. This imposes additional restrictions.",
+        "Correct, the kakurasu “tables” do not have unique solutions by themselves.  The wires between tables impose additional restrictions.",
     },
     {
       order: 95.0,
-      description: "Solvers are unsure how to extract",
+      description: "Solvers are unsure how to extract?",
       keywords: ["Extraction"],
       nudge:
-        "How are the tables connected to each other? Where are truthy values propagated?",
+        "How are the tables connected to each other?  Which connections have a logical “one” value?",
     },
   ],
   canned_responses: [],
