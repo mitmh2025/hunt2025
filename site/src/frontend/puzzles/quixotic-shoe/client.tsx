@@ -71,7 +71,7 @@ const FeatureTable = styled.table`
     background-color: #beecc9;
     border-color: #289542;
     border-width: 2px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
 
     &:hover {
