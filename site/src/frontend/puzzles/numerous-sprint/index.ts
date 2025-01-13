@@ -140,7 +140,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       guess: ["ENTER BREGENZ FOREST"],
-      reply: "Have you tried doing that?",
+      reply: "Follow the instruction.",
     },
   ],
 };
