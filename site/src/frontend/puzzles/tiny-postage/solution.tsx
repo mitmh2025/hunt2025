@@ -389,7 +389,7 @@ const POEMS: [string, ReactNode, ReactNode[], ReactNode][] = [
         describe the myriad
       </u>{" "}
       human ways of thinking, doing, and being. Their richly-documented,
-      theoretically-grounded narratives reveal how the strange is familiar --
+      theoretically-grounded narratives reveal how the strange is familiar—
       and the familiar strange.
     </>,
   ],
