@@ -4,8 +4,43 @@ import React from "react";
 import { type z } from "zod";
 import { type TeamState, type TeamHuntState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
+import { getBackgroundCheckManifestOverrides } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
+import {
+  type ComponentManifest,
+  DEFAULT_MANIFEST,
+  ROUND_PUZZLE_COMPONENT_MANIFESTS,
+} from "./manifests";
+
+function getComponentManifestForInteraction(
+  teamState: TeamHuntState,
+  slug: string,
+): ComponentManifest {
+  const round = Object.entries(teamState.rounds).find(
+    ([_id, round]) => round.interactions?.[slug] !== undefined,
+  )?.[0];
+
+  if (!round) {
+    return DEFAULT_MANIFEST;
+  }
+
+  switch (round) {
+    case "background_check":
+      return Object.assign(
+        {},
+        DEFAULT_MANIFEST,
+        ROUND_PUZZLE_COMPONENT_MANIFESTS.background_check,
+        getBackgroundCheckManifestOverrides("", "puzzle"),
+      );
+  }
+
+  return Object.assign(
+    {},
+    DEFAULT_MANIFEST,
+    ROUND_PUZZLE_COMPONENT_MANIFESTS[round] ?? {},
+  );
+}
 
 type Interaction = z.infer<typeof InteractionStateSchema>;
 function stubInteractionState(slug: string, interaction: Interaction) {
@@ -111,17 +146,53 @@ function liveInteractionHandler(
   slug: string,
   _interactionDefinition: InteractionDefinition & { type: "live" },
 ) {
-  const interaction = lookupInteraction(teamState.state, slug);
-  if (!interaction) return undefined;
+  const interactionState = lookupInteraction(teamState.state, slug);
+  if (!interactionState) return undefined;
+
+  const interaction = INTERACTIONS[slug];
+  if (interaction?.type !== "live") {
+    // This should never happen
+    return undefined;
+  }
+
+  const ContentComponent = interaction.component;
+  const title = interaction.title;
+
+  const manifest = getComponentManifestForInteraction(teamState.state, slug);
+  const WrapperComponent = manifest.wrapper;
+  const HeaderComponent = manifest.header;
+  const TitleComponent = manifest.title;
+  const TitleWrapperComponent = manifest.titleWrapper;
+  const MainComponent = manifest.main;
+  const FooterComponent = manifest.footer;
+  const FontsComponent = manifest.fonts;
+
   const node = (
-    <div>
-      <h1>Interaction (devmode-only page)</h1>
-      <p>
-        This page will eventually host an interaction. For now, we just have a
-        stub that allows progressing through the unlock structure.
-      </p>
-      {stubInteractionState(slug, interaction)}
-    </div>
+    <>
+      {FontsComponent ? <FontsComponent /> : undefined}
+      <WrapperComponent>
+        <HeaderComponent>
+          <TitleWrapperComponent>
+            <TitleComponent>
+              <span>{title}</span>
+            </TitleComponent>
+          </TitleWrapperComponent>
+        </HeaderComponent>
+        <MainComponent id="interaction-content" className="interaction-content">
+          <ContentComponent interactionState={interactionState} />
+          {process.env.NODE_ENV === "development" && (
+            <>
+              <p>
+                This is a stub for advancing interaction structure in
+                development (in production it will be driven by ticket state):
+              </p>
+              {stubInteractionState(slug, interactionState)}
+            </>
+          )}
+        </MainComponent>
+        <FooterComponent />
+      </WrapperComponent>
+    </>
   );
   return wrapContentWithNavBar(
     {
@@ -149,28 +220,28 @@ export async function interactionRequestHandler(
     return undefined;
   }
 
-  if (process.env.NODE_ENV === "development") {
-    switch (interactionDefinition.type) {
-      case "virtual":
+  switch (interactionDefinition.type) {
+    case "virtual":
+      if (process.env.NODE_ENV === "development") {
         return virtualInteractionHandler(
           req,
           teamState,
           slug,
           interactionDefinition,
         );
-      case "live":
-        return liveInteractionHandler(
-          req,
-          teamState,
-          slug,
-          interactionDefinition,
-        );
-      default:
-        interactionDefinition satisfies never;
+      } else {
         return undefined;
-    }
-  } else {
-    return undefined;
+      }
+    case "live":
+      return liveInteractionHandler(
+        req,
+        teamState,
+        slug,
+        interactionDefinition,
+      );
+    default:
+      interactionDefinition satisfies never;
+      return undefined;
   }
 }
 
