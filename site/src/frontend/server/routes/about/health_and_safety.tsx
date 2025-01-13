@@ -75,7 +75,7 @@ export function healthAndSafetyHandler(req: Request) {
             <strong>MIT Alert System:</strong> Provides real-time alerts for
             emergencies on campus. We will add at least one contact per team
             just for Hunt weekend (via the Health & Safety Quiz); to subscribe
-            permanently, visit
+            permanently, visit{" "}
             <a
               href="http://em2.mit.edu/mitalert/"
               target="_blank"

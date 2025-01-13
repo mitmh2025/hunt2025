@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import green from "./assets/green.png";
 
 const SizedImage = styled(LinkedImage)`
@@ -20,10 +21,10 @@ const Puzzle = (): JSX.Element => {
         their piece.
       </p>
       <p className="puzzle-flavor">How can you confront the killer?</p>
-      <p className="puzzle-flavor">
+      <AuthorsNote>
         Pages are numbered for your convenience. The given numbering is not
         puzzle content.
-      </p>
+      </AuthorsNote>
       <SizedImage src={green} alt="The Green Building" />
     </>
   );

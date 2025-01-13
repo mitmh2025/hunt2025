@@ -11,6 +11,7 @@ const MEGATABLE: [
   string,
   ReactNode,
   string,
+  string,
 ][] = [
   [
     "",
@@ -21,6 +22,7 @@ const MEGATABLE: [
     "",
     "",
     "Casablanca quotes in movie order",
+    "43",
   ],
   [
     "1",
@@ -33,6 +35,7 @@ const MEGATABLE: [
       Beyon<strong>D A SH</strong>adow of a Doubt
     </>,
     "“You played it for her.”",
+    "53",
   ],
   [
     "2",
@@ -43,6 +46,7 @@ const MEGATABLE: [
     "",
     "",
     "“I heard a story once…I’ve heard a lot of stories in my time.”",
+    "48",
   ],
   [
     "3",
@@ -55,6 +59,7 @@ const MEGATABLE: [
       Give This Gri<strong>D A SH</strong>ake
     </>,
     "“…next step will be to the black market.”",
+    "5",
   ],
   [
     "4",
@@ -65,6 +70,7 @@ const MEGATABLE: [
     "",
     "",
     "“Come to my office in the morning. I’ll be there at ten.”",
+    "30",
   ],
   [
     "5",
@@ -77,6 +83,7 @@ const MEGATABLE: [
       Splits Use<strong>D AS H</strong>istory
     </>,
     "“Your winnings, sir.”",
+    "12",
   ],
   [
     "6",
@@ -87,6 +94,7 @@ const MEGATABLE: [
     "",
     "",
     "“Yes, I have the letters. But I intend on using them myself.”",
+    "16",
   ],
   [
     "7",
@@ -97,6 +105,7 @@ const MEGATABLE: [
     "",
     "",
     "“Maybe not today, maybe not tomorrow, but soon.”",
+    "51",
   ],
   [
     "8",
@@ -109,6 +118,7 @@ const MEGATABLE: [
       Can-<strong>DO T</strong>ransmissions
     </>,
     "“…beautiful friendship.”",
+    "41",
   ],
   [
     "",
@@ -119,6 +129,7 @@ const MEGATABLE: [
     "",
     "",
     "Historical events, chronological",
+    "37",
   ],
   [
     "9",
@@ -129,6 +140,7 @@ const MEGATABLE: [
     "",
     "",
     "The Great Molasses Flood, 1919",
+    "19",
   ],
   [
     "10",
@@ -141,6 +153,7 @@ const MEGATABLE: [
       Weir<strong>DO T</strong>hreaded Doodads
     </>,
     "Sacco and Vanzetti case, 1920",
+    "45",
   ],
   [
     "11",
@@ -153,6 +166,7 @@ const MEGATABLE: [
       Garden Anec<strong>DOT</strong>es
     </>,
     "Teapot Dome Scandal, 1921-23",
+    "3",
   ],
   [
     "12",
@@ -163,6 +177,7 @@ const MEGATABLE: [
     "",
     "",
     "Wall Street crash, 1929",
+    "38",
   ],
   [
     "13",
@@ -173,6 +188,7 @@ const MEGATABLE: [
     "",
     "",
     "Opening of Empire State Building, 1931",
+    "46",
   ],
   [
     "14",
@@ -185,6 +201,7 @@ const MEGATABLE: [
       To <strong>DO: T</strong>ile That Rectangle
     </>,
     "Lindbergh kidnapping, 1932",
+    "34",
   ],
   [
     "15",
@@ -195,6 +212,7 @@ const MEGATABLE: [
     "",
     "",
     "Hindenburg disaster, 1937",
+    "11",
   ],
   [
     "16",
@@ -207,6 +225,7 @@ const MEGATABLE: [
       Engagements an<strong>D OT</strong>her Crimes
     </>,
     "World’s Fair time capsule, 1939",
+    "10",
   ],
   [
     "",
@@ -217,6 +236,7 @@ const MEGATABLE: [
     "",
     "",
     "“You’re the Top” lyrics, by Cole Porter",
+    "22",
   ],
   [
     "17",
@@ -227,6 +247,7 @@ const MEGATABLE: [
     "",
     "",
     "“the Louvre Museum”",
+    "29",
   ],
   [
     "18",
@@ -239,6 +260,7 @@ const MEGATABLE: [
       Caccian<strong>DO T</strong>rio Misterioso
     </>,
     "“melody from a symphony by Strauss”",
+    "23",
   ],
   [
     "19",
@@ -249,6 +271,7 @@ const MEGATABLE: [
     "",
     "",
     "“You’re Mickey Mouse”",
+    "20",
   ],
   [
     "20",
@@ -261,6 +284,7 @@ const MEGATABLE: [
       As the World Turan<strong>DOT</strong>
     </>,
     "“the smile on the Mona Lisa”",
+    "25",
   ],
   [
     "21",
@@ -271,6 +295,7 @@ const MEGATABLE: [
     "",
     "",
     "“the time of a Derby winner”/”turkey dinner”",
+    "14",
   ],
   [
     "22",
@@ -283,6 +308,7 @@ const MEGATABLE: [
       Absolutely Not Balder<strong>DASH</strong>
     </>,
     "“nimble tread on the feet of Fred Astaire”",
+    "47",
   ],
   [
     "23",
@@ -293,6 +319,7 @@ const MEGATABLE: [
     "",
     "",
     "“O’Neill drama”/“Whistler’s mama”",
+    "6",
   ],
   [
     "24",
@@ -305,6 +332,7 @@ const MEGATABLE: [
       A <strong>DASH</strong> of Color
     </>,
     "“As the French would say, de trop”/“an old Dutch master”",
+    "17",
   ],
   [
     "",
@@ -315,6 +343,7 @@ const MEGATABLE: [
     "",
     "",
     "Paintings featuring jewelry, chronological",
+    "28",
   ],
   [
     "25",
@@ -325,6 +354,7 @@ const MEGATABLE: [
     "",
     "",
     "The Arnolfini Portrait, Jan van Eyck, 1434",
+    "9",
   ],
   [
     "26",
@@ -338,6 +368,7 @@ const MEGATABLE: [
       many more friends
     </>,
     "Portrait of a Young Venetian Woman, Albrecht Dürer, 1505",
+    "32",
   ],
   [
     "27",
@@ -348,6 +379,7 @@ const MEGATABLE: [
     "",
     "",
     "The Girl with a Pearl Earring, Johannes Vermeer, 1665",
+    "52",
   ],
   [
     "28",
@@ -360,6 +392,7 @@ const MEGATABLE: [
       Fin<strong>D OT</strong>her Ways of Seeing
     </>,
     "The Duchess of Alba, Francisco Goya, 1797",
+    "4",
   ],
   [
     "29",
@@ -372,6 +405,7 @@ const MEGATABLE: [
       A Map an<strong>D A SH</strong>ade (or Four)
     </>,
     "La Grande Odalisque, Jean-Auguste-Dominique Ingres, 1814",
+    "33",
   ],
   [
     "30",
@@ -382,6 +416,7 @@ const MEGATABLE: [
     "",
     "",
     "Portrait of Madame X, John Singer Sargent, 1884",
+    "36",
   ],
   [
     "31",
@@ -392,6 +427,7 @@ const MEGATABLE: [
     "",
     "",
     "Portrait of Adele Bloch-Bauer I, Gustav Klimt, 1907",
+    "38",
   ],
   [
     "32",
@@ -404,6 +440,7 @@ const MEGATABLE: [
       Cross <strong>DASH</strong> Word
     </>,
     "Self-Portrait with Thorn Necklace and Hummingbird, Frida Kahlo, 1940",
+    "42",
   ],
   [
     "",
@@ -414,6 +451,7 @@ const MEGATABLE: [
     "",
     "",
     "Back Bay streets, alphabetical and east to west",
+    "13",
   ],
   [
     "33",
@@ -426,6 +464,7 @@ const MEGATABLE: [
       We Can <strong>DO T</strong>his All Day
     </>,
     "Arlington",
+    "26",
   ],
   [
     "34",
@@ -436,6 +475,7 @@ const MEGATABLE: [
     "",
     "",
     "Berkeley",
+    "24",
   ],
   [
     "35",
@@ -448,6 +488,7 @@ const MEGATABLE: [
       <strong>DO T</strong>he Packing
     </>,
     "Clarendon",
+    "2",
   ],
   [
     "36",
@@ -458,6 +499,7 @@ const MEGATABLE: [
     "",
     "",
     "Dartmouth",
+    "54",
   ],
   [
     "37",
@@ -470,6 +512,7 @@ const MEGATABLE: [
       Sounds like a Do<strong>DO T</strong>o Me
     </>,
     "Exeter",
+    "8",
   ],
   [
     "38",
@@ -480,6 +523,7 @@ const MEGATABLE: [
     "",
     "",
     "Fairfield",
+    "35",
   ],
   [
     "39",
@@ -490,6 +534,7 @@ const MEGATABLE: [
     "",
     "",
     "Gloucester",
+    "49",
   ],
   [
     "40",
@@ -502,6 +547,7 @@ const MEGATABLE: [
       It’s All Cheep (An<strong>D A SH</strong>eep) To Me
     </>,
     "Hereford",
+    "15",
   ],
   [
     "",
@@ -512,6 +558,7 @@ const MEGATABLE: [
     "",
     "",
     "MBTA blue line stops, inbound",
+    "40",
   ],
   [
     "41",
@@ -524,6 +571,7 @@ const MEGATABLE: [
       In Communica<strong>DO T</strong>onight
     </>,
     "Wonderland",
+    "44",
   ],
   [
     "42",
@@ -534,6 +582,7 @@ const MEGATABLE: [
     "",
     "",
     "Revere Beach",
+    "31",
   ],
   [
     "43",
@@ -546,6 +595,7 @@ const MEGATABLE: [
       Good Fences Make Goo<strong>D OT</strong>herwise Incompatible Neighbors
     </>,
     "Suffolk Downs",
+    "21",
   ],
   [
     "44",
@@ -556,6 +606,7 @@ const MEGATABLE: [
     "",
     "",
     "Orient Heights",
+    "1",
   ],
   [
     "45",
@@ -566,6 +617,7 @@ const MEGATABLE: [
     "",
     "",
     "Wood Island",
+    "39",
   ],
   [
     "46",
@@ -578,6 +630,7 @@ const MEGATABLE: [
       What <strong>DO T</strong>hey Call You?
     </>,
     "Maverick",
+    "7",
   ],
   [
     "47",
@@ -588,6 +641,7 @@ const MEGATABLE: [
     "",
     "",
     "Aquarium",
+    "27",
   ],
   [
     "48",
@@ -600,6 +654,7 @@ const MEGATABLE: [
       esTIMation <strong>DOT</strong> jpg
     </>,
     "State",
+    "50",
   ],
 ];
 
