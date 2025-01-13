@@ -86,7 +86,7 @@ const Touchpoints = {
     created_if: {
       type: "slug_partially_solved",
       slug: "art_history",
-      answer: "TAKEOUT FINGERPAINTS MAKEUP ALTERNATE STOLEN DIAMOND HISTORY",
+      answer: "TAKE OUT FINGERPAINTS MAKE UP ALTERNATE STOLEN DIAMOND HISTORY",
     },
   },
   eponymous_forensic_accountant_pickup: {
