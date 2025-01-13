@@ -233,8 +233,8 @@ async function recalculateTeamState(
     });
   }
   const gates_completed_done = performance.now();
-  for (const [slug, timestamp] of next.puzzle_unlocked_timestamp) {
-    if (!old.puzzle_unlocked_timestamp.has(slug)) {
+  for (const [slug, timestamp] of next.team_hints_unlocked_timestamp) {
+    if (!old.team_hints_unlocked_timestamp.has(slug)) {
       await mutator.appendLog({
         team_id,
         type: "team_hints_unlocked",

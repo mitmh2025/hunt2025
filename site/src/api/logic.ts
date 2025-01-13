@@ -93,10 +93,10 @@ export class TeamStateIntermediate extends LogicTeamState {
         this.puzzles_partially_solved.add(entry.slug);
         break;
       case "global_hints_unlocked": {
-        this.global_hints_unlocked.set(entry.slug, {
-          timestamp: new Date(entry.timestamp),
-          delta: entry.data.minimum_unlock_hours,
-        });
+        this.global_hints_unlocked_delta.set(
+          entry.slug,
+          entry.data.minimum_unlock_hours,
+        );
         break;
       }
       case "team_hints_unlocked": {
