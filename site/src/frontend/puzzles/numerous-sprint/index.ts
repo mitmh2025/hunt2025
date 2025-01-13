@@ -103,7 +103,13 @@ const puzzle: PuzzleDefinition = {
       description: "Solvers don’t know how to find the first four minipuzzles",
       keywords: ["magazines", "mit magazines", "MH1", "MH2", "MH3", "MH4"],
       nudge:
-        "These are illustrations of the covers of the most recent issues of two magazines that are strongly associated with MIT. MH1-4 can be found inside one of these magazines. You’ll need to solve them to solve this mini meta.",
+        "These are illustrations of the covers of the most recent issues of two magazines that are strongly associated with MIT. MH1-4 can be found inside one of these magazines. You'll need to solve them to solve this mini meta.",
+    },
+    {
+      order: 70.0,
+      description: "Solvers ask for hints on MH1-4",
+      keywords: ["MH1", "MH2", "MH3", "MH4"],
+      nudge: "We will not be providing hints for these minipuzzles.",
     },
     {
       order: 90.0,
@@ -130,11 +136,11 @@ const puzzle: PuzzleDefinition = {
         "REFRESH",
         "TEST CENTER",
       ],
-      reply: "This is a correct answer.",
+      reply: "Keep going!",
     },
     {
       guess: ["ENTER BREGENZ FOREST"],
-      reply: "Keep going!",
+      reply: "Have you tried doing that?",
     },
   ],
 };
