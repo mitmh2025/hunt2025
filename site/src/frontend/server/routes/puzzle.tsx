@@ -30,6 +30,7 @@ import {
   MissingDiamondTitle,
   MissingDiamondTitleWrapper,
   MissingDiamondWrapper,
+  MissingDiamondAcknowledgementBlock,
 } from "../../components/MissingDiamondPuzzleLayout";
 import {
   MurderHeader,
@@ -121,6 +122,7 @@ const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     titleWrapper: MissingDiamondTitleWrapper,
     answer: MissingDiamondAnswer,
     entrypoint: "the_missing_diamond_puzzle",
+    acknowledgementBlock: MissingDiamondAcknowledgementBlock,
   },
   stakeout: {
     header: StakeoutHeader,

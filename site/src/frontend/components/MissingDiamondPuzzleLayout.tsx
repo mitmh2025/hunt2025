@@ -13,7 +13,7 @@ import {
   PuzzleTitleWrapper,
   PuzzleWrapper,
 } from "./PuzzleLayout";
-import { SolutionAnswer } from "./SolutionLayout";
+import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 import BgLeft from "./missingDiamondAssets/bg-left.png";
 import BgRight from "./missingDiamondAssets/bg-right.png";
 import HeaderBg from "./missingDiamondAssets/roads-header.png";
@@ -183,3 +183,9 @@ export const getMissingDiamondHeader = ({
     );
   };
 };
+
+export const MissingDiamondAcknowledgementBlock = styled(
+  SolutionAcknowledgementBlock,
+)`
+  max-width: 600px;
+`;
