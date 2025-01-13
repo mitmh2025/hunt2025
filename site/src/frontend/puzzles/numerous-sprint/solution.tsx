@@ -161,10 +161,10 @@ const Solution = (): JSX.Element => {
       <p>
         Puzzles are numbered MH1-11, for Mystery Hunt. The Puzzle Corner
         normally numbers problems by month: J/F1, J/F2, etc. Solutions to Dan
-        Katz’s minipuzzles are withheld–solvers can find his solutions at the
-        end of the March/April 2025 Puzzle Corner (or you can go solve them -
-        they’re lovely). Solving the Puzzle Corner metapuzzle J/F5 is not
-        required for this puzzle but is recommended, because it’s fun.
+        Katz’s minipuzzles are withheld—we expect that solvers can find his
+        solutions at the end of the May/Jun 2025 Puzzle Corner (or you can go
+        solve them—they’re lovely). Solving the Puzzle Corner metapuzzle J/F5 is
+        not required for this puzzle but is recommended, because it’s fun.
       </p>
       <ProblemBlock>
         <p>
@@ -306,7 +306,7 @@ const Solution = (): JSX.Element => {
                 LUNA<Red>R</Red> MODULE
               </td>
               <td>
-                <Red>5</Red>/19/2009
+                <Red>5</Red>/17/2009
               </td>
             </tr>
           </StyledTable>
@@ -422,8 +422,7 @@ const Solution = (): JSX.Element => {
             </tr>
             <tr>
               <td>
-                …I had already walked on the moon (so what if I wasn’t the very
-                first?)!
+                …I walked on the moon (so what if I wasn’t the very first?)!
               </td>
               <td>
                 <Red>B</Red>uzz Aldrin
