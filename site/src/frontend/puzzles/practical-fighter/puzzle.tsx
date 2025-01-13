@@ -75,7 +75,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
               <Icon src={playIcon} alt="An icon" />
             </IconCell>
             <ClueCell>
-              I‘m telling you to loosen up my 🎵s baby, but you keep fronting
+              I‘m telling you to loosen up my 🎵s babe, but you keep fronting
             </ClueCell>
           </tr>
           <tr>
