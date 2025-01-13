@@ -31,7 +31,8 @@ team_state = ref(
             quixotic_shoe_enabled: bool,
             icy_box_enabled: bool,
             interaction: bool,
-            completed_interactions: [string]
+            flags: [string],
+            empty: bool?,
         }) = file.contents(team_state_path)
         v
     catch err do
@@ -42,7 +43,8 @@ team_state = ref(
             quixotic_shoe_enabled=false,
             icy_box_enabled=false,
             interaction=false,
-            completed_interactions=[],
+            flags=[],
+            empty=true,
         }
     end
 )
@@ -53,7 +55,7 @@ play_state = ref(
     try
         let json.parse ( v : {
             last_scheduled_hour: float,
-        }) = file.contents(team_state_path)
+        }) = file.contents(play_state_path)
         v
     catch err do
         log.important("failed to load cached play state: #{err}")
@@ -69,30 +71,6 @@ def save_state() =
 end
 thread.run(save_state, delay=30., every=30.)
 on_shutdown(save_state)
-
-harbor.http.register(
-    port=http_port,
-    method="POST",
-    "/setTeamState",
-    fun (request, response) -> begin
-        try
-            let json.parse v = request.body()
-            if team_state().team_id != 0 and v.team_id != team_state().team_id then
-                response.status_code(400)
-                response.data("wrong team, expecting #{team_state().team_id}")
-            elsif v.epoch >= team_state().epoch then
-                team_state := v
-                response.data("ok")
-            else
-                response.status_code(412) # Stale precondition
-                response.data("stale epoch, already have #{team_state().epoch}")
-            end
-        catch err do
-            response.status_code(400)
-            response.data("invalid team state: #{err}")
-        end
-    end
-)
 
 ICY_BOX_INTERVAL = 20. * 60.
 
@@ -177,6 +155,7 @@ icy_box_handoff_next = randomizer("#{icy_box_dir}/handoff", pattern="*.ogg")
 icy_box_content_next = nexter("#{icy_box_dir}/content", pattern="*.ogg")
 bumper_icy_box = request.create("#{announcements_dir}/radio-bumper-weather.ogg", persistent=true)
 
+bumper_breaking = request.create("#{announcements_dir}/radio-bumper-breaking.ogg", persistent=true)
 
 # Tier 2d - Ad-hoc announcements
 # Play audio as requested by RPC at the next break
@@ -195,7 +174,7 @@ celebration = blank()
 
 def calculate_confidential() =
     def did(name) =
-        list.mem(name, team_state().completed_interactions)
+        list.mem(name, team_state().flags)
     end
     si = list.flatten([
         if did("confront_katrina") then ["confidential-si-katrina"] else [] end,
@@ -265,7 +244,6 @@ def regular_stream_next() =
             elsif null.defined(scheduled_announcement) and null.get(scheduled_announcement).hour != play_state().last_scheduled_hour then
                 s = null.get(scheduled_announcement)
                 log("Playing scheduled announcement #{s}")
-                partial_confidential := true
                 if s.overnight then
                     # The only thing that plays overnight is weather or bumper
                     if icy_box_enabled() then
@@ -285,7 +263,10 @@ def regular_stream_next() =
                         if s.sid_bumper then [bumper_sid] else [] end,
                         if s.sid then [station_id_next.request()] else [] end,
                         list.map(fun (n) -> request.create("#{announcements_dir}/radio-#{n}.ogg"), s.messages),
-                        if s.confidential then [request.create("annotate:confidential=handoff:#{confidential_handoff_next()}")] else
+                        if s.confidential then
+                            partial_confidential := true
+                            [request.create("annotate:confidential=handoff:#{confidential_handoff_next()}")]
+                        else
                             after_confidential()
                         end,
                     ])
@@ -379,6 +360,79 @@ stream = fallback(
 )
 
 final = add([stream, celebration])
+
+breaking_intro = request.create("#{announcements_dir}/radio-breaking-intro.ogg", persistent=true)
+
+def apply_team_state(new) =
+    def did_anew(name) =
+        (not null.defined(team_state().empty)) and list.mem(name, new.flags) and not list.mem(name, team_state().flags)
+    end
+    inserted_content = ref([])
+    def breaking(interaction, name) =
+        if did_anew(interaction) then
+            inserted_content := [...inserted_content(), request.create("#{announcements_dir}/radio-breaking-#{name}.ogg")]
+        end
+    end
+    breaking("the_crime_scene", "crime-scene")
+    breaking("the_safehouse", "safe-house")
+    breaking("the_vault", "vault")
+    breaking("confront_katrina", "katrina")
+    breaking("confront_papa", "papa")
+    breaking("confront_gladys", "gladys")
+    breaking("confront_carter", "ferdinand")
+    inserted_content := if inserted_content() != [] then
+        [
+            bumper_breaking,
+            breaking_intro,
+            ...inserted_content(),
+        ]
+    else [] end
+
+    if did_anew("hunt_started") then
+        inserted_content := [
+            request.create("#{announcements_dir}/radio-release.ogg"),
+            ...inserted_content(),
+        ]
+    end
+
+    # TODO: hunt_closed -> radio-signoff
+
+    if inserted_content() != [] then
+        # TODO: skip current track?
+        print("inserting urgent content #{inserted_content()}")
+        # TODO: Try not to insert in the middle of an existing announcement
+        queue().set_queue([
+            ...inserted_content(),
+            ...queue().queue(),
+        ])
+    end
+
+    team_state := new
+end
+
+harbor.http.register(
+    port=http_port,
+    method="POST",
+    "/setTeamState",
+    fun (request, response) -> begin
+        try
+            let json.parse v = request.body()
+            if team_state().team_id != 0 and v.team_id != team_state().team_id then
+                response.status_code(400)
+                response.data("wrong team, expecting #{team_state().team_id}")
+            elsif v.epoch >= team_state().epoch then
+                apply_team_state(v)
+                response.data("ok")
+            else
+                response.status_code(412) # Stale precondition
+                response.data("stale epoch, already have #{team_state().epoch}")
+            end
+        catch err do
+            response.status_code(400)
+            response.data("invalid team state: #{err}")
+        end
+    end
+)
 
 output_url = environment.get("OUTPUT_URL")
 
