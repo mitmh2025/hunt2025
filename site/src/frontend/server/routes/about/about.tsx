@@ -182,12 +182,12 @@ export function aboutHandler(req: Request) {
           </a>
           ) 4th Floor R&amp;D Commons. Stata can be a bit confusing, but coming
           up the Dreyfoos (not Gates) elevator bank to the 4th floor should get
-          you very close. Note that the elevators do have card readers, so if
-          you are having difficulty with Atlas access, there is another easy
-          option: take the Building 36 elevators to the 4th floor, turn right
-          and then right again, so you’re facing Stata. Then just walk straight
-          through the hallway and the skybridge and keep going until you’re in
-          the Gala.
+          you very close. Note that the Gates elevators and many doors do have
+          card readers, so if you are having difficulty with Atlas access, there
+          is another easy option: take the Building 36 elevators to the 4th
+          floor, turn right and then right again, so you’re facing Stata. Then
+          just walk straight through the hallway and the skybridge and keep
+          going until you’re in the Gala.
         </p>
         <h3>Hours</h3>
         <p>
