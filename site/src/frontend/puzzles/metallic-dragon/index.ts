@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "word_yore",
   code_name: "metallic-dragon",
   initial_description:
-    "You are presented with an old-school-looking phone interface (via web browser) and a textbox.",
+    "A phone interface and a textbox",
   answer: "GRASS",
   authors: ["Michele Pratusevich"],
   editors: ["Anna Brunner", "Hubert Hwang", "tinaun"],

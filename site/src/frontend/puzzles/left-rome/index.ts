@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Cahfee, Regulah",
   slug: "cahfee_regulah",
   code_name: "left-rome",
-  initial_description: "A konundrum",
+  initial_description: "Dunk konundrum",
   answer: "FOOD COURT",
   authors: ["Ariel Schwartz", "Sarah Leadbeater"],
   editors: ["Anna Brunner", "Laura Nicholson", "Nathan Fung"],

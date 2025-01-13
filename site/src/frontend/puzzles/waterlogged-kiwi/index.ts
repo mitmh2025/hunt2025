@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Sounds Like a Dodo to Me",
   slug: "sounds_like_a_dodo_to_me",
   code_name: "waterlogged-kiwi",
-  initial_description: "Diary entries with some scribbles.",
+  initial_description: "Diary entries from a college student with some scribbles",
   answer: "PHILLIPS EXETER",
   authors: ["Becca Chang", "Atul Shatavart Nadig"],
   editors: ["Henry Wong", "James Douberley", "Li-Mei Lim", "Robin Deits"],

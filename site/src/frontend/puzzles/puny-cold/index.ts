@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "worlds_largest_crossword_puzzle",
   code_name: "puny-cold",
   initial_description:
-    "A list of crossword clues and a large bitmap with repeating patterns.",
+    "A list of crossword clues and a large bitmap with repeating patterns",
   answer: "FELON",
   authors: ["David Greenspan"],
   editors: [
