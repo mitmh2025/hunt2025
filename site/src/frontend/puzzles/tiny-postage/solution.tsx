@@ -389,8 +389,8 @@ const POEMS: [string, ReactNode, ReactNode[], ReactNode][] = [
         describe the myriad
       </u>{" "}
       human ways of thinking, doing, and being. Their richly-documented,
-      theoretically-grounded narratives reveal how the strange is familiar—
-      and the familiar strange.
+      theoretically-grounded narratives reveal how the strange is familiar— and
+      the familiar strange.
     </>,
   ],
   [
@@ -821,12 +821,17 @@ const ARTIST_EXTRACTION = [
   ["13", "Ocean Engineering placards", "5-224", "6", "5", "E"],
 ];
 
-const FlexRow = styled.div`
+const ScantronAnswers = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+`;
+
+const FlexWithMargin = styled.div`
   display: flex;
   margin: 1em 0;
 `;
 
-const FlexWithSizedChildren = styled(FlexRow)`
+const FlexWithSizedChildren = styled(FlexWithMargin)`
   justify-content: center;
   img {
     max-width: 50%;
@@ -859,13 +864,13 @@ const Solution = (): JSX.Element => {
         the pack were 12 cigarettes—er, 12 tightly rolled minipuzzles—and some
         tissue paper packaging.
       </p>
-      <FlexRow style={{ justifyContent: "center" }}>
+      <FlexWithMargin style={{ justifyContent: "center" }}>
         <LinkedImage src={cigarettes1} alt="A pack of paper mock cigarettes" />
         <LinkedImage
           src={cigarettes2}
           alt="The back of the pack of cigarettes, with some flavor text."
         />
-      </FlexRow>
+      </FlexWithMargin>
       <p>
         Eleven of the minipuzzles were themed around an agent in MITropolis, and
         each of these puzzles resolved to a single letter. The twelfth puzzle
@@ -881,186 +886,186 @@ const Solution = (): JSX.Element => {
       <ol>
         <li>
           <div>Which student groups have offices in Walker Memorial?</div>
-          <div>
+          <ScantronAnswers>
             <span>A) Roadkill Buffet </span>
             <strong>B) Voo Doo Magazine </strong>
             <span>C) Dance Troupe </span>
             <strong>D) Grad Student Council </strong>
             <span>E) Tech Squares </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>
             Which businesses partner with MITAC to give students discounts?
           </div>
-          <div>
+          <ScantronAnswers>
             <strong>A) Chunky’s Cinema </strong>
             <span>B) Duck Tours </span>
             <strong>C) Boxaroo </strong>
             <span>D) Boda Borg </span>
             <strong>E) Isabella Stewart Gardner Museum </strong>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>
             Which fraternity houses have to cross a bridge to attend classes?
           </div>
-          <div>
+          <ScantronAnswers>
             <strong>A) Theta Xi </strong>
             <span>B) Kappa Sigma </span>
             <strong>C) Zeta Beta Tau </strong>
             <span>D) Alpha Delta Phi </span>
             <strong>E) Phi Delta Theta </strong>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
-          In which dorms may cats be kept?
-          <div>
+          <div>In which dorms may cats be kept?</div>
+          <ScantronAnswers>
             <span>A) Burton Conner </span>
             <strong>B) Random Hall </strong>
             <span>C) Simmons Hall </span>
             <strong>D) East Campus </strong>
             <span>E) MacGregor </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>Which have been overall themes for past Mystery Hunts?</div>
-          <div>
+          <ScantronAnswers>
             <span>A) Pokemon </span>
             <span>B) Jurassic Park </span>
             <span>C) Mousetrap </span>
             <span>D) Toy Story </span>
             <span>E) Around the World in 80 Days </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>Which names have team Palindrome NOT used for Mystery Hunt?</div>
-          <div>
+          <ScantronAnswers>
             <strong>A) Yo Aloha Hola Oy </strong>
             <span>B) El Google </span>
             <span>C) I Prefer Pi </span>
             <span>D) Not So Boston </span>
             <span>E) Snafu Fans </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>
             Which courses are NOT required to earn a Pirate Certificate at MIT?
           </div>
-          <div>
+          <ScantronAnswers>
             <span>A) fencing </span>
             <span>B) archery </span>
             <span>C) sailing </span>
             <span>D) pistol </span>
             <strong>E) spikeball </strong>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>
             What movements are acceptable during the first three laps of the MIT
             swim test?
           </div>
-          <div>
+          <ScantronAnswers>
             <strong>A) butterfly </strong>
             <span>B) back stroke </span>
             <strong>C) front crawl </strong>
             <span>D) drowning </span>
             <strong>E) breast stroke </strong>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>
             What courses can you take to fulfill your PEandW requirement at MIT?
           </div>
-          <div>
+          <ScantronAnswers>
             <strong>A) jazz funk </strong>
             <span>B) canoeing </span>
             <strong>C) pickleball </strong>
             <span>D) figure skating </span>
             <strong>E) SCUBA diving </strong>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>Which intramural sports leagues exist at MIT?</div>
-          <div>
+          <ScantronAnswers>
             <span>A) bowling </span>
             <strong>B) flag football </strong>
             <strong>C) dodgeball </strong>
             <strong>D) ultimate Frisbee </strong>
             <span>E) lacrosse </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>What was the theme of the 34th Ig Nobel Prize Ceremony?</div>
-          <div>
+          <ScantronAnswers>
             <strong>A) Murphy’s Law </strong>
             <span>B) Godwin’s Law </span>
             <span>C) Rule 34 </span>
             <span>D) Occam’s Razor </span>
             <span>E) the Bechdel Test </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>Where were Ig Nobel Face-to-Face sessions held in 2024?</div>
-          <div>
+          <ScantronAnswers>
             <strong>A) Tokyo </strong>
             <span>B) Berlin </span>
             <span>C) Canberra </span>
             <strong>D) Cambridge </strong>
             <span>E) Mumbai </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>
             Which topics were researched by 2024 Ig Nobel Prize winners?
           </div>
-          <div>
+          <ScantronAnswers>
             <strong>A) coin flips </strong>
             <strong>B) dead trout </strong>
             <strong>C) hair whorls </strong>
             <strong>D) drunk worms </strong>
             <strong>E) pigeon pilots </strong>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>Who (or what) keeps Ig Nobel acceptance speeches short?</div>
-          <div>
+          <ScantronAnswers>
             <strong>A) Miss Sweetie-Poo </strong>
             <span>B) a banana </span>
             <span>C) entropy </span>
             <span>D) paper airplanes </span>
             <span>E) guilt </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>What have hackers placed on the Small Done?</div>
-          <div>
+          <ScantronAnswers>
             <span>A) $10,000 bill </span>
             <span>B) a life-size cow </span>
             <strong>C) a witch’s hat </strong>
             <strong>D) Bexley hall </strong>
             <strong>E) moon landing </strong>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>What should ethical hackers do?</div>
-          <div>
+          <ScantronAnswers>
             <span>A) hack alone </span>
             <span>B) steal things </span>
             <strong>C) be safe </strong>
             <span>D) use brute force </span>
             <span>E) drink and derive </span>
-          </div>
+          </ScantronAnswers>
         </li>
         <li>
           <div>Where could you find barber poles on November 8, 2021?</div>
-          <div>
+          <ScantronAnswers>
             <strong>A) Banana Lounge </strong>
             <strong>B) The Alchemist </strong>
             <strong>C) outside 10-250 </strong>
             <strong>D) atop Kresge </strong>
             <strong>E) Transparent Horizon </strong>
-          </div>
+          </ScantronAnswers>
         </li>
       </ol>
       <p>
@@ -1235,8 +1240,7 @@ const Solution = (): JSX.Element => {
         plink
         <br />
         “Bullet two located in crook of right elbow. It would have been all{" "}
-        <strong>over</strong>{" "}
-        for this guy already.”
+        <strong>over</strong> for this guy already.”
         <br />
         plink
         <br />
@@ -1835,13 +1839,13 @@ const Solution = (): JSX.Element => {
         papers. A number (or an X) is written in UV ink in the area that is
         printed to look like the filter on a cigarette.
       </p>
-      <FlexRow>
+      <FlexWithMargin>
         <LinkedImage src={filters} alt="A grid of mock cigarette filters." />
         <LinkedImage
           src={blacklight}
           alt="A grid of mock cigarette filters under blacklight. Each filter has a letter or number written on it."
         />
-      </FlexRow>
+      </FlexWithMargin>
       <StyledTable>
         {EXTRACTION_TABLE.map(([person, letter, extraction], i) => (
           <tr key={i}>

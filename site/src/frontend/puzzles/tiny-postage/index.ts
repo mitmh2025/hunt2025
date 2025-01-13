@@ -6,7 +6,7 @@ const puzzle: PuzzleDefinition = {
   title: "Smoke ’Em if you’ve got ’Em",
   slug: "smoke_em_if_youve_got_em",
   code_name: "tiny-postage",
-  initial_description: "A paper box with twelve paper objects inside.",
+  initial_description: "A paper box with thirteen paper objects inside.",
   answer: "MANUEL ORIBE",
   authors: ["Brie Frame", "Erin Price"],
   editors: [
