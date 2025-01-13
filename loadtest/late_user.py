@@ -224,19 +224,19 @@ class late_load_test(FastHttpUser):
         }
 
         # Request full activity logs
-        with self.client.api_rest(
+        with self.api_rest(
             "GET", "/frontend/log/team", catch_response=True, headers=headers
         ) as resp:
             pass
-        with self.client.api_rest(
+        with self.api_rest(
             "GET", "/frontend/log/activity", catch_response=True, headers=headers
         ) as resp:
             pass
-        with self.client.api_rest(
+        with self.api_rest(
             "GET", "/admin/puzzles", catch_response=True, headers=headers
         ) as resp:
             pass
-        with self.client.api_rest(
+        with self.api_rest(
             "GET", "/admin/account", catch_response=True, headers=headers
         ) as resp:
             pass
