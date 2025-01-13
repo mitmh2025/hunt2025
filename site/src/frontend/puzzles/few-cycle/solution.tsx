@@ -275,7 +275,7 @@ const Solution = () => {
               </TableCell>
               <TableCell leftBlackBorder>13</TableCell>
               <TableCell>A</TableCell>
-              <TableCell>from a to Zzz</TableCell>
+              <TableCell>from a to zzz</TableCell>
               <TableCell bgColor="#516789"></TableCell>
               <TableCell></TableCell>
             </tr>
@@ -349,7 +349,7 @@ const Solution = () => {
               </TableCell>
               <TableCell leftBlackBorder>19</TableCell>
               <TableCell>N</TableCell>
-              <TableCell>Hi maintenance</TableCell>
+              <TableCell>hi maintenance</TableCell>
               <TableCell bgColor="#FFBFC3"></TableCell>
               <TableCell></TableCell>
             </tr>
