@@ -174,7 +174,8 @@ async function main({
   const teamStates = new Map<number, TeamStateIntermediate>();
   let emptyTeamState = new TeamStateIntermediate(HUNT);
 
-  const syncQueue = new Queue(1);
+  const teamInfoSyncQueue = new Queue(1);
+  const teamStateSyncQueue = new Queue(1);
 
   const apply = <T extends k8s.KubernetesObject>(spec: T) =>
     objectApi.patch<T>(
@@ -365,38 +366,12 @@ async function main({
     // StatefulSet exists now
   };
 
-  teamRegistrationLogTailer.watchLog((items) => {
-    const modified = new Set<number>();
-    for (const entry of items) {
-      const teamInfo =
-        teamInfos.get(entry.team_id) ?? new TeamInfoIntermediate();
-      teamInfos.set(entry.team_id, teamInfo.reduce(entry));
-      modified.add(entry.team_id);
-    }
-    console.log("team registration modified for", modified);
-    for (const teamId of modified) {
-      syncQueue
-        .exec(() => processTeamInfo(teamId))
-        .catch((err: unknown) => {
-          console.warn(err);
-        });
-    }
-  });
-
-  await teamRegistrationLogTailer.readyPromise();
-
   const radioTeamStates = new Map<number, RadioTeamState>();
   const radioTeamStateSubscribers = new Map<number, (() => void)[]>();
 
   const processTeamState = (teamId: number) => {
     // We received activity log update(s) for the team.
-    const teamState = teamStates.get(teamId);
-    if (!teamState) {
-      console.warn(
-        `processTeamState called for ${teamId} which doesn't have state`,
-      );
-      return;
-    }
+    const teamState = teamStates.get(teamId) ?? emptyTeamState;
     const radioTeamState: RadioTeamState = {
       team_id: teamId,
       epoch: teamState.epoch,
@@ -414,6 +389,33 @@ async function main({
       s();
     }
   };
+
+  teamRegistrationLogTailer.watchLog((items) => {
+    const modified = new Set<number>();
+    for (const entry of items) {
+      const teamInfo =
+        teamInfos.get(entry.team_id) ?? new TeamInfoIntermediate();
+      teamInfos.set(entry.team_id, teamInfo.reduce(entry));
+      modified.add(entry.team_id);
+    }
+    console.log("team registration modified for", modified);
+    for (const teamId of modified) {
+      teamInfoSyncQueue
+        .exec(() => processTeamInfo(teamId))
+        .catch((err: unknown) => {
+          console.warn(err);
+        });
+      teamStateSyncQueue
+        .exec(() => {
+          processTeamState(teamId);
+        })
+        .catch((err: unknown) => {
+          console.warn(err);
+        });
+    }
+  });
+
+  await teamRegistrationLogTailer.readyPromise();
 
   // uid to AbortController
   const podSyncers = new Map<string, AbortController>();
@@ -549,7 +551,7 @@ async function main({
     }
     console.log("team info updated for", modified);
     for (const teamId of modified) {
-      syncQueue
+      teamStateSyncQueue
         .exec(() => {
           processTeamState(teamId);
         })
