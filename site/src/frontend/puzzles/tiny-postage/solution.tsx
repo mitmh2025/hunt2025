@@ -1045,7 +1045,7 @@ const Solution = (): JSX.Element => {
           </ScantronAnswers>
         </li>
         <li>
-          <div>What have hackers placed on the Small Done?</div>
+          <div>What have hackers placed on the Small Dome?</div>
           <ScantronAnswers>
             <span>A) $10,000 bill </span>
             <span>B) a life-size cow </span>
