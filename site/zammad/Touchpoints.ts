@@ -165,6 +165,15 @@ const Touchpoints = {
     },
     closed_action: { type: "satisfy_gate", gate: "mdg13" },
   },
+  a_dash_of_color_pickup: {
+    type: "pickup",
+    description: "Pickup: COME GET YOUR NAILS DONE",
+    created_if: {
+      type: "slug_partially_solved",
+      slug: "a_dash_of_color",
+      answer: "COME GET YOUR NAILS DONE",
+    },
+  },
 } satisfies Record<string, TouchpointType>;
 
 export default Touchpoints;
