@@ -11,7 +11,7 @@ const puzzle: PuzzleDefinition = {
     "Leland Aldridge",
     "Atul Shatavart Nadig",
     "Erin Price",
-    "J. Heléne Andersson",
+    "J. Hel\u00e9ne Andersson",
     "Laura Nicholson",
     "rfong",
     "Steven Keyes",
@@ -32,7 +32,12 @@ const puzzle: PuzzleDefinition = {
     component: Solution,
   },
   hints: [],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["INGOT", "NAOMI", "TAFFY", "URBAN", "YONDU"],
+      reply: "This is a correct answer.",
+    },
+  ],
 };
 
 export default puzzle;
