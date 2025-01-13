@@ -244,13 +244,6 @@ async function recalculateTeamState(
   return next;
 }
 
-// type Reducer<E, R extends { id: number; team_id?: number }> = { id: number; team_id?: number; reduce: (entry: E) => R };
-
-// type ReducerFactory<E, D, R extends Reducer<E, R>> = {
-//   (dehydrated?: D): R,
-//   redisKey: string,
-// };
-
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- This cannot be represented as a type.
 interface Reducer<Entry extends { id: number }, RedisType> {
   epoch: number;
@@ -266,16 +259,6 @@ type ReducerConstructor<
   hydrate: (redisData?: RedisType) => HydratedType;
   redisKey: string;
 };
-
-// type Reducer<E, D, R> = {
-//   reduce(entry: E): R;
-//   dehydrate(): D;
-// }
-
-// type ReducerClass<E, D, R extends Reducer<E, D, R>> = {
-//   new (): R;
-//   hydrate(dehydrated: D): R;
-// };
 
 abstract class Log<
   I,
