@@ -11,7 +11,12 @@ const puzzle: PuzzleDefinition = {
   answer: "DOWN A RABBIT HOLE",
   authors: ["Steve Banzaert", "Brad Johnson"],
   editors: ["Alex Churchill", "Elan Blaustein", "Hubert Hwang"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Chris Pentacoff", "Sarah Leadbeater", "Will Tymowski"],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: false,
