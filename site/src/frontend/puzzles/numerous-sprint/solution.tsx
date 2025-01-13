@@ -306,7 +306,7 @@ const Solution = (): JSX.Element => {
                 LUNA<Red>R</Red> MODULE
               </td>
               <td>
-                <Red>5</Red>/19/2009
+                <Red>5</Red>/17/2009
               </td>
             </tr>
           </StyledTable>
@@ -422,8 +422,7 @@ const Solution = (): JSX.Element => {
             </tr>
             <tr>
               <td>
-                …I had already walked on the moon (so what if I wasn’t the very
-                first?)!
+                …I walked on the moon (so what if I wasn’t the very first?)!
               </td>
               <td>
                 <Red>B</Red>uzz Aldrin
