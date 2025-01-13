@@ -157,7 +157,7 @@ const puzzle: PuzzleDefinition = {
         "POET: solvers found the Course 21 displays in Building 14 but are having trouble connecting poems with any particular display",
       keywords: ["match"],
       nudge:
-        "The poet simply rhymed extracts from the words of others -- quotes from faculty and students, in specific.",
+        "The poet simply rhymed extracts from the words of others—quotes from faculty and students, in specific.",
     },
     {
       order: 48.0,
