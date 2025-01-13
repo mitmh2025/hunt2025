@@ -1602,7 +1602,7 @@ const Solution = (): JSX.Element => {
       <h2>The Police Officer</h2>
       <p>
         Solvers familiar with campus may recognize the silhouette of the Sean
-        Collier memorial near the Stata Center. Others may need the additional
+        Collier Memorial near the Stata Center. Others may need the additional
         hint of the title. Visiting the memorial will reveal that the bricks
         under the memorial have been inset with stainless steel studs. As
         originally installed, these studs spell out Sean Collier’s badge number,
