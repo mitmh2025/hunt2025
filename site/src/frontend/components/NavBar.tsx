@@ -289,6 +289,7 @@ const NavBar = ({
 }) => {
   const { teamName } = info;
   const { rounds, currency, strongCurrency } = state;
+  const started = rounds.length > 0;
   return (
     <Nav>
       <NavItems>
@@ -310,22 +311,26 @@ const NavBar = ({
             <li id="home-sm">
               <NavLink href="/">Home</NavLink>
             </li>
-            <SubDropdown>
-              <NavLink tabIndex={0}>Rounds</NavLink>
-              <ul>
-                {rounds.map((round) => (
-                  <li key={round.href}>
-                    <NavLink href={round.href}>{round.title}</NavLink>
-                  </li>
-                ))}
-              </ul>
-            </SubDropdown>
-            <li>
-              <NavLink href="/all_puzzles">All Puzzles</NavLink>
-            </li>
-            <li>
-              <NavLink href="/timeline">The Timeline</NavLink>
-            </li>
+            {started && (
+              <>
+                <SubDropdown>
+                  <NavLink tabIndex={0}>Rounds</NavLink>
+                  <ul>
+                    {rounds.map((round) => (
+                      <li key={round.href}>
+                        <NavLink href={round.href}>{round.title}</NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </SubDropdown>
+                <li>
+                  <NavLink href="/all_puzzles">All Puzzles</NavLink>
+                </li>
+                <li>
+                  <NavLink href="/timeline">The Timeline</NavLink>
+                </li>
+              </>
+            )}
             <SubDropdown>
               <NavLink tabIndex={0}>About</NavLink>
               <ul>
@@ -344,10 +349,14 @@ const NavBar = ({
         </TopLevelDropdown>
         <Spacer />
         <AudioControls whepUrl={whepUrl} />
-        <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>
-        <Currency title={`Clues: ${strongCurrency}`}>
-          🔎 {strongCurrency}
-        </Currency>
+        {started && (
+          <>
+            <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>
+            <Currency title={`Clues: ${strongCurrency}`}>
+              🔎 {strongCurrency}
+            </Currency>
+          </>
+        )}
         <Dropdown $alignRight>
           <TeamNameNavLink tabIndex={0}>
             <span>{teamName}</span>
@@ -356,9 +365,11 @@ const NavBar = ({
             <li>
               <NavLink href="/team">Manage Team</NavLink>
             </li>
-            <li>
-              <NavLink href="/activity_log">Activity Log</NavLink>
-            </li>
+            {started && (
+              <li>
+                <NavLink href="/activity_log">Activity Log</NavLink>
+              </li>
+            )}
             <li>
               <NavLink href="/contact">Contact HQ</NavLink>
             </li>
