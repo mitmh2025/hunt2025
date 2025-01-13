@@ -547,7 +547,7 @@ const HUNT: Hunt = {
         { id: "isg30", internal_description: "find the blacklight object behind the numeric lock" },
         { id: "isg31", internal_description: "find the blacklight object behind the word lock" },
         { id: "isg32", internal_description: "find the blacklight version of the bookshelf note (meta)" },
-        { id: "isg33", internal_description: "Picked up Smoke 'Em If You've Got 'Em from the Gala" },
+        { id: "isg33", internal_description: "Picked up Smoke ’Em If You’ve Got ’Em from the Gala" },
       ],
       interactions: [
         {
