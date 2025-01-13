@@ -48,6 +48,8 @@ if (!liquidsoapImage) {
 
 const storageClassName = process.env.PVC_STORAGE_CLASS_NAME;
 
+const scheduleStartEpoch = process.env.SCHEDULE_START_EPOCH;
+
 const RadioTeamStateSchema = z.object({
   team_id: z.number(),
   epoch: z.number(),
@@ -332,6 +334,14 @@ async function main({
                       },
                     },
                   },
+                  ...(scheduleStartEpoch
+                    ? [
+                        {
+                          name: "SCHEDULE_START_EPOCH",
+                          value: scheduleStartEpoch,
+                        },
+                      ]
+                    : []),
                 ],
                 livenessProbe: {
                   httpGet: {
