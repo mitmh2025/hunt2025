@@ -342,9 +342,11 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
         teamPuzzleStatusColumn(columnHelper, now),
         columnHelper.accessor("guesses", {
           header: "Guesses",
+          filterVariant: "range",
         }),
         columnHelper.accessor("hints", {
           header: "Hints",
+          filterVariant: "range",
           Cell: ({ cell }) => cell.getValue() ?? "unavailable",
         }),
       ];
