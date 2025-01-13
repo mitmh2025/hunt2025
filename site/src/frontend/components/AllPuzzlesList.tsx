@@ -170,7 +170,7 @@ const PuzzlesList = ({ state }: { state: AllPuzzlesState }) => {
             <a href="/rounds/stray_leads">Stray Leads</a>
           </RoundHeader>
           <PuzzlesTable
-            epoch={epoch}
+            epoch={state.epoch}
             puzzles={state.stray}
             currency={state.currency}
           />
