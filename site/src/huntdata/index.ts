@@ -174,6 +174,7 @@ const HUNT: Hunt = {
         { id: "mdg10", internal_description: '📑🍝: Assigned Spork copypasta' },
         { id: "mdg11", internal_description: '📑🍝: Assigned But Who Was Phone copypasta' },
         { id: "mdg12", internal_description: "The Thief: Manually release funaround video" },
+        { id: "mdg13", internal_description: "The Thief: Completed funaround kickoff with bartender" },
       ],
       interactions: [
         // These four interviews are the MATE-style in-site interactions which
@@ -201,14 +202,6 @@ const HUNT: Hunt = {
           unlock_if: [{ slot_solved: "mdm04" }],
         },
 
-        {
-          // This is a brief in-person interaction which is expected to happen
-          // after teams solve the Missing Diamond super but before they go on the
-          // funaround.
-          id: "meet_billie",
-          title: "Meet Billie",
-          unlock_if: [{ slot_unlocked: "mdm05" }],
-        },
         {
           // This is a longer in-person interaction which is expected to happen
           // after teams complete the funaround and solve the super.

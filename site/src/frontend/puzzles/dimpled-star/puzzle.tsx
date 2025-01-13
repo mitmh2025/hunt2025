@@ -56,10 +56,11 @@ const Puzzle = ({
       <AuthorsNoteBlock>
         <p>
           Send 2-4 investigators with no mobility or hearing impairments to the
-          Gala, and ask around for Billie. They will need your team’s radio.
-          They will need to be able to do quite a bit of walking, but very
-          little of it outside. They may be out of your office for an hour or so
-          with the radio, so remember to tune to 2π in your browser.
+          Gala, and tell a bartender that you’re looking for Billie. Your
+          investigators will need your team’s radio. They will need to be able
+          to do quite a bit of walking, but very little of it outside. They may
+          be out of your office for an hour or so with the radio, so remember to
+          tune to 2π in your browser.
         </p>
 
         <p>
