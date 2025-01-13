@@ -119,12 +119,20 @@ export function getSlugsBySlot(hunt: Hunt) {
   return slug_by_slot;
 }
 
+type GlobalHintUnlockDatum = {
+  timestamp: Date;
+  delta: number;
+};
+
 export class LogicTeamState {
   rounds_unlocked: Set<string>;
   puzzles_unlockable: Set<string>;
   puzzles_unlocked: Set<string>;
   puzzles_stray: Set<string>;
   puzzles_solved: Set<string>;
+  puzzle_unlocked_timestamp: Map<string, Date>;
+  global_hints_unlocked: Map<string, GlobalHintUnlockDatum>;
+  team_hints_unlocked_timestamp: Map<string, Date>;
   gates_satisfied: Set<string>;
   interactions_unlocked: Set<string>;
   interactions_started: Set<string>;
@@ -138,6 +146,17 @@ export class LogicTeamState {
     this.puzzles_unlocked = new Set(initial?.puzzles_unlocked ?? []);
     this.puzzles_stray = new Set(initial?.puzzles_stray ?? []);
     this.puzzles_solved = new Set(initial?.puzzles_solved ?? []);
+    this.puzzle_unlocked_timestamp = new Map(
+      initial?.puzzle_unlocked_timestamp ?? [],
+    );
+    this.global_hints_unlocked = new Map(
+      (initial?.global_hints_unlocked as
+        | Map<string, GlobalHintUnlockDatum>
+        | undefined) ?? [],
+    );
+    this.team_hints_unlocked_timestamp = new Map(
+      initial?.team_hints_unlocked_timestamp ?? [],
+    );
     this.gates_satisfied = new Set(initial?.gates_satisfied ?? []);
     this.interactions_unlocked = new Set(initial?.interactions_unlocked ?? []);
     this.interactions_started = new Set(initial?.interactions_started ?? []);
@@ -228,6 +247,29 @@ export class LogicTeamState {
               }
               updated = true;
             }
+          }
+          const globalHintsUnlockTime =
+            this.global_hints_unlocked.get(puzzleSlug);
+          const teamPuzzleUnlockTime =
+            this.puzzle_unlocked_timestamp.get(puzzleSlug);
+          if (
+            globalHintsUnlockTime !== undefined &&
+            teamPuzzleUnlockTime !== undefined &&
+            !next.team_hints_unlocked_timestamp.has(puzzleSlug)
+          ) {
+            // Unlock hints for this puzzle at puzzle unlock time + hint unlock delta
+            // or global hint unlock time + hint unlock delta, whichever is later.
+            const teamHintsUnlockTime =
+              globalHintsUnlockTime.timestamp > teamPuzzleUnlockTime
+                ? new Date(globalHintsUnlockTime.timestamp)
+                : new Date(teamPuzzleUnlockTime);
+            teamHintsUnlockTime.setHours(
+              teamHintsUnlockTime.getHours() + globalHintsUnlockTime.delta,
+            );
+            next.team_hints_unlocked_timestamp.set(
+              puzzleSlug,
+              teamHintsUnlockTime,
+            );
           }
         });
         round.interactions?.forEach((interaction) => {

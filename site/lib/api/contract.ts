@@ -211,7 +211,19 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
+      type: z.literal("global_hints_unlocked"),
+      minimum_unlock_hours: z.number(),
+    }),
+  ),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({
       type: z.literal("puzzle_hint_responded"),
+    }),
+  ),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({
+      type: z.literal("team_hints_unlocked"),
+      hints_available_at: z.string().datetime(),
     }),
   ),
 ]);

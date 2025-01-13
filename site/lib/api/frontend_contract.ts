@@ -102,8 +102,20 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   InternalActivityLogEntryWithSlug.merge(
     z.object({
+      type: z.literal("global_hints_unlocked"),
+      data: z.object({ minimum_unlock_hours: z.number() }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
       type: z.literal("puzzle_hint_responded"),
       data: z.object({ request_id: z.number(), response: z.string() }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("team_hints_unlocked"),
+      data: z.object({ hints_available_at: z.string().datetime() }),
     }),
   ),
 ]);

@@ -65,6 +65,9 @@ export class TeamStateIntermediate extends LogicTeamState {
         if (!this.puzzles_unlocked_at.has(entry.slug)) {
           this.puzzles_unlocked_at.set(entry.slug, entry.id);
         }
+        if (!this.puzzle_unlocked_timestamp.has(entry.slug)) {
+          this.puzzle_unlocked_timestamp.set(entry.slug, entry.timestamp);
+        }
         // If this puzzle is not assigned to a round, or if the round to which
         // it is assigned is not unlocked at the time the puzzle unlocks, then
         // it will be included henceforth in the puzzle outlands (stray leads).
@@ -89,6 +92,20 @@ export class TeamStateIntermediate extends LogicTeamState {
       case "puzzle_partially_solved":
         this.puzzles_partially_solved.add(entry.slug);
         break;
+      case "global_hints_unlocked": {
+        this.global_hints_unlocked.set(entry.slug, {
+          timestamp: new Date(entry.timestamp),
+          delta: entry.data.minimum_unlock_hours,
+        });
+        break;
+      }
+      case "team_hints_unlocked": {
+        this.team_hints_unlocked_timestamp.set(
+          entry.slug,
+          new Date(entry.data.hints_available_at),
+        );
+        break;
+      }
     }
     return this;
   }
@@ -211,6 +228,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
               : ("locked" as const),
           partially_solved: data.puzzles_partially_solved.has(slug),
           unlocked_at: data.puzzles_unlocked_at.get(slug),
+          hints_unlocked_at: data.team_hints_unlocked_timestamp.get(slug),
           answer: data.correct_answers.get(slug),
           ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
         },

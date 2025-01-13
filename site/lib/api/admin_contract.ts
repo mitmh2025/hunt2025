@@ -193,6 +193,14 @@ export const adminContract = c.router({
       200: InternalActivityLogSchema,
     },
   },
+  unlockHints: {
+    method: "POST",
+    path: "/admin/puzzles/:slug/unlock-hints",
+    body: z.object({ minimumUnlockHours: z.number() }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
   deactivateTeam: {
     method: "POST",
     path: "/teams/:teamId/deactivate",

@@ -2929,7 +2929,6 @@ export async function getRouter({
           });
         },
       },
-
       resetPuzzleRateLimit: {
         middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ params: { slug }, body: { teamIds }, req }) => {
@@ -2976,7 +2975,48 @@ export async function getRouter({
           return formatMutationResultForAdminApi(result);
         },
       },
+      unlockHints: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({
+          params: { slug },
+          body: { minimumUnlockHours },
+          req,
+        }) => {
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            undefined,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              // Check if hints have already been released for this puzzle.
+              const alreadyReleased = mutator.log.some(
+                (e) =>
+                  "slug" in e &&
+                  e.slug === slug &&
+                  e.type === "global_hints_unlocked",
+              );
+              if (alreadyReleased) {
+                return [];
+              }
+
+              return [
+                await mutator.appendLog({
+                  type: "global_hints_unlocked",
+                  slug: slug,
+                  data: { minimum_unlock_hours: minimumUnlockHours },
+                  internal_data: {
+                    operator: req.authInfo?.adminUser,
+                  },
+                }),
+              ];
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
     },
+
     frontend: {
       mintToken: {
         // Not expected to be called by the frontend, but will be called by ancillary processes.
