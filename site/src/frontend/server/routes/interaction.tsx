@@ -2,9 +2,10 @@ import { type RequestHandler, type Request } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
 import { type z } from "zod";
-import { type TeamHuntState } from "../../../../lib/api/client";
+import { type TeamState, type TeamHuntState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
+import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
 
 type Interaction = z.infer<typeof InteractionStateSchema>;
 function stubInteractionState(slug: string, interaction: Interaction) {
@@ -60,33 +61,114 @@ function lookupInteraction(
 export type InteractionParams = {
   slug: string;
 };
-export function interactionRequestHandler(req: Request<InteractionParams>) {
+
+async function virtualInteractionHandler(
+  req: Request<InteractionParams>,
+  teamState: TeamState,
+  slug: string,
+  interactionDefinition: InteractionDefinition & { type: "virtual" },
+) {
+  const interaction = lookupInteraction(teamState.state, slug);
+  if (!interaction) return undefined;
+  const interactionStateLogResult =
+    await req.frontendApi.getFullTeamInteractionStateLog({
+      query: { team_id: teamState.teamId, slug },
+    });
+  if (interactionStateLogResult.status !== 200) {
+    // Something has gone wrong.
+    return undefined;
+  }
+  const interactionStateLog = interactionStateLogResult.body;
+  const log = interactionStateLog.map((entry) =>
+    interactionDefinition.handler.format(entry),
+  );
+  const inlineScript = `window.initialInteractionState = ${JSON.stringify(log)};`;
+  const node = (
+    <div>
+      <h1>{interaction.title}</h1>
+      <p>
+        This page will eventually host an interaction. For now, we just have a
+        stub that allows progressing through the unlock structure.
+      </p>
+      {stubInteractionState(slug, interaction)}
+      <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+      <div id="interaction-root" />
+    </div>
+  );
+  return wrapContentWithNavBar(
+    {
+      node,
+      title: interaction.title,
+      entrypoints: ["interaction_virtual" as const],
+    },
+    teamState,
+  );
+}
+
+function liveInteractionHandler(
+  _req: Request<InteractionParams>,
+  teamState: TeamState,
+  slug: string,
+  _interactionDefinition: InteractionDefinition & { type: "live" },
+) {
+  const interaction = lookupInteraction(teamState.state, slug);
+  if (!interaction) return undefined;
+  const node = (
+    <div>
+      <h1>Interaction (devmode-only page)</h1>
+      <p>
+        This page will eventually host an interaction. For now, we just have a
+        stub that allows progressing through the unlock structure.
+      </p>
+      {stubInteractionState(slug, interaction)}
+    </div>
+  );
+  return wrapContentWithNavBar(
+    {
+      node,
+      title: interaction.title,
+    },
+    teamState,
+  );
+}
+
+export async function interactionRequestHandler(
+  req: Request<InteractionParams>,
+) {
   if (!req.teamState) {
     return undefined;
   }
+  const teamState = req.teamState;
   const slug = req.params.slug;
   const interaction = lookupInteraction(req.teamState.state, slug);
   if (!interaction) return undefined;
 
+  const interactionDefinition = INTERACTIONS[slug];
+  if (!interactionDefinition) {
+    // Not a defined interaction, this should 404.
+    return undefined;
+  }
+
   if (process.env.NODE_ENV === "development") {
-    const node = (
-      <div>
-        <h1>Interaction (devmode-only page)</h1>
-        <p>
-          This page will eventually host an interaction. For now, we just have a
-          stub that allows progressing through the unlock structure.
-        </p>
-        {stubInteractionState(slug, interaction)}
-      </div>
-    );
-    return wrapContentWithNavBar(
-      {
-        node,
-        title: interaction.title,
-        // entrypoints: ["interaction" as const], // TODO: enable once there's an entrypoint to put here
-      },
-      req.teamState,
-    );
+    switch (interactionDefinition.type) {
+      case "virtual":
+        return virtualInteractionHandler(
+          req,
+          teamState,
+          slug,
+          interactionDefinition,
+        );
+      case "live":
+        return liveInteractionHandler(
+          req,
+          teamState,
+          slug,
+          interactionDefinition,
+        );
+      default:
+        interactionDefinition satisfies never;
+        return undefined;
+    }
   } else {
     return undefined;
   }
@@ -113,12 +195,6 @@ export const interactionStartPostHandler: RequestHandler<
   res.redirect(`/interactions/${req.params.slug}`);
 });
 
-const MOCK_INTERACTION_RESULTS: Record<string, string> = {
-  interview_at_the_boardwalk: "photo",
-  interview_at_the_art_gallery: "lemahieu",
-  interview_at_the_jewelry_store: "",
-  interview_at_the_casino: "ace-of-spades",
-};
 export const interactionCompletePostHandler: RequestHandler<
   InteractionParams,
   unknown,
@@ -137,9 +213,7 @@ export const interactionCompletePostHandler: RequestHandler<
       teamId: `${req.teamState.teamId}`,
       interactionId: slug,
     },
-    body: {
-      result: MOCK_INTERACTION_RESULTS[slug] ?? "",
-    },
+    body: {},
   });
   res.redirect(`/interactions/${req.params.slug}`);
 });

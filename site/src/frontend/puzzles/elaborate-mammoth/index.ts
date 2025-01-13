@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "How I Earned My Gold Star",
   slug: "how_i_earned_my_gold_star",
+  code_name: "elaborate-mammoth",
   initial_description: "A rhyming poem",
   answer: "BLANK TILE",
   authors: ["Teddy McArthur", "Cyrus Eyster"],

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Absolutely Not Balderdash",
   slug: "absolutely_not_balderdash",
+  code_name: "ashamed-tail",
   initial_description: "Five groups of crossword-style clues",
   answer: "NIMBLE FEET",
   authors: ["Julian West", "Chris Pringle"],

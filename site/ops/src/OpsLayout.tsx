@@ -5,8 +5,8 @@ import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { PageContainer } from "@toolpad/core/PageContainer";
 import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
 import { Outlet } from "react-router-dom";
+import { OpsDataLoader } from "./OpsDataLoader";
 import { useOpsData } from "./OpsDataProvider";
-
 function CurrentUser() {
   const data = useOpsData();
   const [_, __, removeCookie] = useCookies(["mitmh2025_api_auth"]);
@@ -15,12 +15,21 @@ function CurrentUser() {
     <Box sx={{ display: "flex", alignItems: "center" }}>
       {data.account.isOpsAdmin && <AdminIcon sx={{ mr: 1 }} />}{" "}
       {data.account.email}
-      <Tooltip title="Refresh permissions">
+      <Tooltip title="Refresh data & permissions">
         <IconButton
           sx={{ ml: 1 }}
           onClick={() => {
             removeCookie("mitmh2025_api_auth");
-            window.location.reload();
+            localStorage.clear();
+
+            OpsDataLoader.dropDB()
+              .then(() => {
+                window.location.reload();
+              })
+              .catch((e: unknown) => {
+                console.error("Failed to drop indexeddb", e);
+                window.location.reload();
+              });
           }}
         >
           <RefreshPermissions />

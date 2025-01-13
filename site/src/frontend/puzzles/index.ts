@@ -20,6 +20,7 @@ import PassageOfTime from "./calculating-mammoth";
 import BorderlinePersonality from "./calculating-square";
 import StarCrossed from "./carefree-ghost";
 import ABadlyBrokenQuote from "./cavernous-angel";
+import SplitsUsedAsHistory from "./chubby-net";
 import EducationalRiteOfPassage from "./circular-greece";
 import HalfBaked from "./classic-link";
 import TheInspectre from "./clean-ivory";
@@ -31,6 +32,7 @@ import SomeAssemblyRequired from "./cultured-rome";
 import WhoseSongIsItAnyway from "./delirious-mammoth";
 import AnyCoatWillDo from "./dental-police";
 import TheBoardwalk from "./dental-shark";
+import EstimationDotJpg from "./deserted-ninja";
 import CanDoTransmissions from "./diligent-spy";
 import TheThief from "./dimpled-star";
 import FindOtherWaysOfSeeing from "./discrete-spine";
@@ -77,6 +79,7 @@ import ಕಾಬವದೋೀ್ from "./limited-marble";
 import SeeingTheBigPicture from "./lofty-theory";
 import MasteringTheArtOfConchFrocking from "./mature-atlantis";
 import ReliefPrinting from "./messy-olive";
+import WordYore from "./metallic-dragon";
 import ShellCorporationSix from "./mild-octopus";
 import WhyKantWeBeFriendsToo from "./milky-swing";
 import MysteryOs from "./minty-play";
@@ -252,6 +255,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   taste_explosion: TasteExplosion,
   temporal_investigations: TemporalInvestigations,
   the_ultimate_insult: TheUltimateInsult,
+  word_yore: WordYore,
   whose_song_is_it_anyway: WhoseSongIsItAnyway,
   why_kant_we_be_friends_too: WhyKantWeBeFriendsToo,
 
@@ -373,6 +377,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   cross_dash_word: CrossDashWord,
   do_the_packing: DoThePacking,
   engagements_and_other_crimes: EngagementsAndOtherCrimes,
+  estimation_dot_jpg: EstimationDotJpg,
   find_other_ways_of_seeing: FindOtherWaysOfSeeing,
   give_this_grid_a_shake: GiveThisGridAShake,
   garden_anecdotes: GardenAnecdotes,
@@ -381,6 +386,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   in_communicado_tonight: InCommunicadoTonight,
   its_all_cheep_and_a_sheep_to_me: ItsAllCheepAndASheepToMe,
   sounds_like_a_dodo_to_me: SoundsLikeADodoToMe,
+  splits_used_as_history: SplitsUsedAsHistory,
   to_do_tile_that_rectangle: ToDoTileThatRectangle,
   we_can_do_this_all_day: WeCanDoThisAllDay,
   weirdo_threaded_doodads: WeirdoThreadedDoodads,

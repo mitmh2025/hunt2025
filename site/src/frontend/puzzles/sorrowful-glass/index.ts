@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "(A Puzzle of the Dead)",
   slug: "a_puzzle_of_the_dead",
+  code_name: "sorrowful-glass",
   initial_description: "A self-destructing transmission",
   answer: "HELL HOLE",
   authors: ["Baltazar Ortiz", "Anisa Schardl"],
@@ -103,11 +104,7 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: [
-        "AGRIPPA ENCODING",
-        "THE AGRIPPA ENCODING",
-        "THE FIRST DESTRUCTION USES THE AGRIPPA ENCODING",
-      ],
+      guess: ["THE FIRST DESTRUCTION USES THE AGRIPPA ENCODING"],
       reply: "Keep going!",
     },
   ],

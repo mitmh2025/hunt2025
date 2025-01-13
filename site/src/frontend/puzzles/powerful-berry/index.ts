@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Celestial Rope",
   slug: "celestial_rope",
+  code_name: "powerful-berry",
   initial_description: "Physical Puzzle—A very long ribbon with tags",
   answer: "SKY REPLAY",
   authors: ["Erin Price", "Ariel Schwartz", "Kat Allen"],

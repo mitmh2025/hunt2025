@@ -21,12 +21,8 @@ const activityCreatesTicket = (
         canonicalizeInput(entry.data.canonical_input) ===
           canonicalizeInput(created_if.answer)
       );
-    // case "gate_satisfied":
-    //   return (
-    //     entry.type === "gate_completed" &&
-    //     entry.slug === created_if.gate &&
-    //     entry.data.puzzle_slug === created_if.puzzle_slug
-    //   );
+    case "gate_satisfied":
+      return entry.type === "gate_completed" && entry.slug === created_if.gate;
     default:
       created_if satisfies never;
       return false;

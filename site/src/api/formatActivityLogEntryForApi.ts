@@ -3,7 +3,7 @@ import { type InternalActivityLogEntry } from "../../lib/api/frontend_contract";
 import { INTERACTIONS } from "../frontend/interactions";
 import { PUZZLES } from "../frontend/puzzles";
 import HUNT, { GATE_LOOKUP } from "../huntdata";
-import { fixData } from "./db";
+import { fixData } from "../utils/fixData";
 
 export default function formatActivityLogEntryForApi(
   e: InternalActivityLogEntry,
@@ -52,9 +52,9 @@ export default function formatActivityLogEntryForApi(
       case "interaction_started":
       case "interaction_completed":
         {
-          const interaction = INTERACTIONS[
-            e.slug as keyof typeof INTERACTIONS
-          ] as undefined | (typeof INTERACTIONS)[keyof typeof INTERACTIONS];
+          const interaction = INTERACTIONS[e.slug] as
+            | undefined
+            | (typeof INTERACTIONS)[keyof typeof INTERACTIONS];
           entry = Object.assign(entry, {
             title: interaction?.title ?? `Untitled interaction ${e.slug}`,
           });

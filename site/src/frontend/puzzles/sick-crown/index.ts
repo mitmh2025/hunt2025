@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Papa’s Bookcase (Under Blacklight)",
   slug: "papas_bookcase_blacklight",
+  code_name: "sick-crown",
   answer: "ADOPT A BABY VOICE",
   authors: ["Alex St Claire", "Mike Mannis"],
   editors: ["James Douberley", "Kevin Hwang", "Li-Mei Lim", "Robin Deits"],

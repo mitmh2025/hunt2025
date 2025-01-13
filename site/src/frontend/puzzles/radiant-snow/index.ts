@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "This Is Just a Test",
   slug: "this_is_just_a_test",
+  code_name: "radiant-snow",
   initial_description: "A bunch of grid logic puzzles",
   answer: "A BAD DECADE",
   authors: ["Denis Auroux"],

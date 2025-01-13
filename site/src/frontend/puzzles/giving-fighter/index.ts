@@ -6,6 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "ChatGPT",
   slug: "chatgpt",
+  code_name: "giving-fighter",
   initial_description: "A blank textbox with a text entry field below it",
   answer: "CREME CARAMEL",
   authors: ["Hubert Hwang", "Leland Aldridge", "Michele Pratusevich"],

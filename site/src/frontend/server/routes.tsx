@@ -49,6 +49,7 @@ import {
 } from "./routes/puzzle";
 import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
+import { timelineHandler } from "./routes/timeline";
 
 // Type parameters to RequestHandler are:
 // 1. Params
@@ -385,6 +386,12 @@ export function registerUiRoutes({
     "/activity_log",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(activityLogHandler, req, res, next);
+    }),
+  );
+  authRouter.get(
+    "/timeline",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(timelineHandler, req, res, next);
     }),
   );
 

@@ -102,6 +102,11 @@ export type InteractionGraphNodeTerminal<T, R, S> =
     finalState: (state: T) => R;
   };
 
+// Notes on types:
+// * T is the State type for the graph
+// * R is the final Result type for the graph
+// * S is the set of Speaker options
+// * P is the set of Plugin options
 export type InteractionGraphNode<T, R, S, P> =
   | InteractionGraphNodeWithNext<T, S>
   | InteractionGraphNodeWithChoices<T, S>

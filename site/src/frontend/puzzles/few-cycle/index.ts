@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Dash of Color",
   slug: "a_dash_of_color",
+  code_name: "few-cycle",
   initial_description: "Several crossword-like clues and a painting",
   answer: "VERMEERS AND REMBRANDTS",
   authors: [

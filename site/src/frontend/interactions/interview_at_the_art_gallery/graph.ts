@@ -306,7 +306,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_start,
         opus: opus_audio_start,
       },
-      timeout_msec: 10000 + 5000, // 10 seconds audio, 5 additional seconds voting
+      timeout_msec: 8304 + 5000, // 8.304 seconds audio, 5 additional seconds voting
       choices: [
         {
           text: "Oh, truly. The richness of the painting complements the texture of the brushwork. You can see Kieffinbalt’s angst at living in such a flat country. He yearns for the Alps.",
@@ -359,7 +359,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2a,
         opus: opus_audio_2a,
       },
-      timeout_msec: 11000,
+      timeout_msec: 10488,
       next: "2a-p1",
     },
     {
@@ -370,7 +370,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2b,
         opus: opus_audio_2b,
       },
-      timeout_msec: 11000,
+      timeout_msec: 10992,
       next: "5",
     },
     {
@@ -381,7 +381,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2c,
         opus: opus_audio_2c,
       },
-      timeout_msec: 10500,
+      timeout_msec: 6864,
       next: "5",
     },
     {
@@ -393,7 +393,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2d,
         opus: opus_audio_2d,
       },
-      timeout_msec: 5000,
+      timeout_msec: 3048,
       next: "2a-p1",
     },
     {
@@ -404,7 +404,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_2a_p1,
         opus: opus_audio_2a_p1,
       },
-      timeout_msec: 3500 + 10000, // 3.5 seconds audio, 10 more seconds voting (it's quick)
+      timeout_msec: 4272 + 10000, // 3.5 seconds audio, 10 more seconds voting (it's quick)
       choices: [
         {
           text: "I know a guy named Art, does that count?  He and his buddy Paul won’t shut up about a bridge.",
@@ -432,7 +432,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_3a,
         opus: opus_audio_3a,
       },
-      timeout_msec: 6250,
+      timeout_msec: 4968,
       next: "3-p1",
     },
     {
@@ -443,7 +443,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_3b,
         opus: opus_audio_3b,
       },
-      timeout_msec: 4250,
+      timeout_msec: 6624,
       next: "3-p1",
     },
     {
@@ -454,7 +454,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_3c,
         opus: opus_audio_3c,
       },
-      timeout_msec: 7800,
+      timeout_msec: 7896,
       next: "3-p1",
     },
     {
@@ -465,7 +465,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_3d,
         opus: opus_audio_3d,
       },
-      timeout_msec: 3250,
+      timeout_msec: 6936,
       next: "3-p1",
     },
     {
@@ -476,7 +476,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_3_p1,
         opus: opus_audio_3_p1,
       },
-      timeout_msec: 5750 + 10000, // 5.75 clip + 10 more seconds voting
+      timeout_msec: 4992 + 10000, // 4.992 clip + 10 more seconds voting
       choices: [
         {
           text: "Billie O’Ryan.  I own a detective agency.",
@@ -504,7 +504,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a,
         opus: opus_audio_4a,
       },
-      timeout_msec: 3700,
+      timeout_msec: 3384,
       next: "4a-p1",
     },
     {
@@ -515,7 +515,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_p1,
         opus: opus_audio_4a_p1,
       },
-      timeout_msec: 4250,
+      timeout_msec: 5424,
       next: "4a-p2",
     },
     {
@@ -526,7 +526,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4a_p2,
         opus: opus_audio_4a_p2,
       },
-      timeout_msec: 4100,
+      timeout_msec: 3552,
       next: "7",
     },
     {
@@ -537,7 +537,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4b,
         opus: opus_audio_4b,
       },
-      timeout_msec: 3900,
+      timeout_msec: 3408,
       next: "4b-p1",
     },
     {
@@ -548,7 +548,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4b_p1,
         opus: opus_audio_4b_p1,
       },
-      timeout_msec: 3600,
+      timeout_msec: 3624,
       next: "4b-p2",
     },
     {
@@ -559,7 +559,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4b_p2,
         opus: opus_audio_4b_p2,
       },
-      timeout_msec: 5600,
+      timeout_msec: 4416,
       next: "7",
     },
     {
@@ -570,7 +570,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4c,
         opus: opus_audio_4c,
       },
-      timeout_msec: 3500,
+      timeout_msec: 3264,
       next: "4c-p1",
     },
     {
@@ -581,7 +581,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4c_p1,
         opus: opus_audio_4c_p1,
       },
-      timeout_msec: 4500,
+      timeout_msec: 4176,
       next: "4a-p2",
     },
     {
@@ -592,7 +592,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4d,
         opus: opus_audio_4d,
       },
-      timeout_msec: 3100,
+      timeout_msec: 2688,
       next: "4d-p1",
     },
     {
@@ -603,7 +603,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4d_p1,
         opus: opus_audio_4d_p1,
       },
-      timeout_msec: 3600,
+      timeout_msec: 3888,
       next: "4d-p2",
     },
     {
@@ -614,7 +614,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4d_p2,
         opus: opus_audio_4d_p2,
       },
-      timeout_msec: 7000,
+      timeout_msec: 7584,
       next: "4d-p3",
     },
     {
@@ -625,7 +625,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4d_p3,
         opus: opus_audio_4d_p3,
       },
-      timeout_msec: 3100,
+      timeout_msec: 2160,
       next: "4d-p4",
     },
     {
@@ -636,7 +636,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_4d_p4,
         opus: opus_audio_4d_p4,
       },
-      timeout_msec: 5250,
+      timeout_msec: 4128,
       next: "7",
     },
     {
@@ -647,7 +647,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5,
         opus: opus_audio_5,
       },
-      timeout_msec: 15000, // 4.5 sec audio + ~10 seconds voting
+      timeout_msec: 5064 + 10000, // 4.5 sec audio + ~10 seconds voting
       choices: [
         {
           text: "I don’t know.  It depends on how much huffery you put before it.",
@@ -675,7 +675,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5a,
         opus: opus_audio_5a,
       },
-      timeout_msec: 4250,
+      timeout_msec: 3816,
       next: "6",
     },
     {
@@ -686,7 +686,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5b,
         opus: opus_audio_5b,
       },
-      timeout_msec: 4500,
+      timeout_msec: 3624,
       next: "6",
     },
     {
@@ -697,7 +697,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5c,
         opus: opus_audio_5c,
       },
-      timeout_msec: 4000,
+      timeout_msec: 3360,
       next: "6",
     },
     {
@@ -708,7 +708,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_5d,
         opus: opus_audio_5d,
       },
-      timeout_msec: 3750,
+      timeout_msec: 3576,
       next: "6",
     },
     {
@@ -719,7 +719,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6,
         opus: opus_audio_6,
       },
-      timeout_msec: 4750 + 10000, // 4.75 sec clip + 10 seconds more to vote
+      timeout_msec: 4968 + 10000, // 4.968 sec clip + 10 seconds more to vote
       choices: [
         {
           text: "Billie O’Ryan, of the O’Ryan Detective Agency.",
@@ -747,7 +747,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6a,
         opus: opus_audio_6a,
       },
-      timeout_msec: 3750,
+      timeout_msec: 2976,
       next: "6a-p1",
     },
     {
@@ -758,7 +758,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6a_p1,
         opus: opus_audio_6a_p1,
       },
-      timeout_msec: 5300,
+      timeout_msec: 4632,
       next: "6a-p2",
     },
     {
@@ -769,7 +769,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6a_p2,
         opus: opus_audio_6a_p2,
       },
-      timeout_msec: 4800,
+      timeout_msec: 4008,
       next: "7",
     },
 
@@ -781,7 +781,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6b,
         opus: opus_audio_6b,
       },
-      timeout_msec: 4000,
+      timeout_msec: 3360,
       next: "6b-p1",
     },
     {
@@ -792,7 +792,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6b_p1,
         opus: opus_audio_6b_p1,
       },
-      timeout_msec: 4500,
+      timeout_msec: 6360,
       next: "6b-p2",
     },
     {
@@ -803,7 +803,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6b_p2,
         opus: opus_audio_6b_p2,
       },
-      timeout_msec: 8000,
+      timeout_msec: 7392,
       next: "7",
     },
 
@@ -815,7 +815,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6c,
         opus: opus_audio_6c,
       },
-      timeout_msec: 3500,
+      timeout_msec: 2952,
       next: "6c-p1",
     },
     {
@@ -826,7 +826,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6c_p1,
         opus: opus_audio_6c_p1,
       },
-      timeout_msec: 3800,
+      timeout_msec: 4560,
       next: "6c-p2",
     },
     {
@@ -837,7 +837,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6c_p2,
         opus: opus_audio_6c_p2,
       },
-      timeout_msec: 8000,
+      timeout_msec: 7080,
       next: "7",
     },
     {
@@ -848,7 +848,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6d,
         opus: opus_audio_6d,
       },
-      timeout_msec: 3000,
+      timeout_msec: 2784,
       next: "6d-p1",
     },
     {
@@ -859,7 +859,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6d_p1,
         opus: opus_audio_6d_p1,
       },
-      timeout_msec: 5300,
+      timeout_msec: 6096,
       next: "6d-p2",
     },
     {
@@ -870,7 +870,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_6d_p2,
         opus: opus_audio_6d_p2,
       },
-      timeout_msec: 5200,
+      timeout_msec: 4392,
       next: "7",
     },
 
@@ -882,7 +882,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7,
         opus: opus_audio_7,
       },
-      timeout_msec: 8100,
+      timeout_msec: 7992,
       next: "7-p1",
     },
     {
@@ -893,7 +893,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7_p1,
         opus: opus_audio_7_p1,
       },
-      timeout_msec: 7000 + 10000, // 7 second clip, 10 seconds voting
+      timeout_msec: 6456 + 10000, // 6.456 second clip, 10 seconds voting
       choices: [
         {
           text: "And when that talk happens, you wouldn’t happen to be adding any exclusive knowledge to those conversations, would you?",
@@ -921,7 +921,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7a,
         opus: opus_audio_7a,
       },
-      timeout_msec: 7500,
+      timeout_msec: 6720,
       next: "8",
     },
     {
@@ -932,7 +932,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7b,
         opus: opus_audio_7b,
       },
-      timeout_msec: 4800,
+      timeout_msec: 3648,
       next: "8",
     },
     {
@@ -943,7 +943,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7c,
         opus: opus_audio_7c,
       },
-      timeout_msec: 5750,
+      timeout_msec: 4848,
       next: "8",
     },
     {
@@ -954,7 +954,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_7d,
         opus: opus_audio_7d,
       },
-      timeout_msec: 7500,
+      timeout_msec: 6648,
       next: "8",
     },
 
@@ -966,7 +966,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8,
         opus: opus_audio_8,
       },
-      timeout_msec: 12250,
+      timeout_msec: 11904,
       next: "8-p1",
     },
     {
@@ -977,7 +977,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8_p1,
         opus: opus_audio_8_p1,
       },
-      timeout_msec: 4000,
+      timeout_msec: 3240,
       next: "9",
     },
     {
@@ -988,7 +988,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9,
         opus: opus_audio_9,
       },
-      timeout_msec: 10000,
+      timeout_msec: 9312,
       next: "9-p1",
     },
     {
@@ -999,7 +999,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9_p1,
         opus: opus_audio_9_p1,
       },
-      timeout_msec: 4600,
+      timeout_msec: 2736,
       next: "9-p2",
     },
     {
@@ -1010,7 +1010,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_9_p2,
         opus: opus_audio_9_p2,
       },
-      timeout_msec: 6750,
+      timeout_msec: 7776,
       next: "10",
     },
 
@@ -1022,7 +1022,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_10,
         opus: opus_audio_10,
       },
-      timeout_msec: 7500,
+      timeout_msec: 7776,
       next: "10-p1",
     },
     {
@@ -1034,7 +1034,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_10_p1,
         opus: opus_audio_10_p1,
       },
-      timeout_msec: 7500 + 10000, // 7.5 sec clip + 10 seconds voting
+      timeout_msec: 6576 + 10000, // 6.576 sec clip + 10 seconds voting
       choices: [
         {
           text: "Then I suppose I’ll take the Kieftenbeld.",
@@ -1086,7 +1086,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11a,
         opus: opus_audio_11a,
       },
-      timeout_msec: 3000,
+      timeout_msec: 2616,
       next: (state: ArtGalleryState) => {
         if (state.opinion === "aficionado") {
           return "12a";
@@ -1103,7 +1103,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11b,
         opus: opus_audio_11b,
       },
-      timeout_msec: 3000,
+      timeout_msec: 3192,
       next: (state: ArtGalleryState) => {
         if (state.opinion === "aficionado") {
           return "12a";
@@ -1120,7 +1120,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11c,
         opus: opus_audio_11c,
       },
-      timeout_msec: 4250,
+      timeout_msec: 4128,
       next: (state: ArtGalleryState) => {
         if (state.opinion === "aficionado") {
           return "12c";
@@ -1137,7 +1137,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_11d,
         opus: opus_audio_11d,
       },
-      timeout_msec: 4000,
+      timeout_msec: 3864,
       next: (state: ArtGalleryState) => {
         if (state.opinion === "aficionado") {
           return "12c";
@@ -1154,7 +1154,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12a,
         opus: opus_audio_12a,
       },
-      timeout_msec: 6500,
+      timeout_msec: 6720,
       next: "12a-p1",
     },
     {
@@ -1165,7 +1165,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12a_p1,
         opus: opus_audio_12a_p1,
       },
-      timeout_msec: 26750,
+      timeout_msec: 25176,
       next: "12a-p2",
     },
     {
@@ -1176,7 +1176,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12a_p2,
         opus: opus_audio_12a_p2,
       },
-      timeout_msec: 18400,
+      timeout_msec: 18744,
       next: "12a-p3",
     },
     {
@@ -1187,7 +1187,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12a_p3,
         opus: opus_audio_12a_p3,
       },
-      timeout_msec: 12400,
+      timeout_msec: 11712,
       next: "12a-p4",
     },
     {
@@ -1198,7 +1198,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12a_p4,
         opus: opus_audio_12a_p4,
       },
-      timeout_msec: 15750,
+      timeout_msec: 16368,
       next: "12a-p5",
     },
     {
@@ -1209,7 +1209,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12a_p5,
         opus: opus_audio_12a_p5,
       },
-      timeout_msec: 9500,
+      timeout_msec: 9528,
       next: "13",
     },
     {
@@ -1220,7 +1220,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12b,
         opus: opus_audio_12b,
       },
-      timeout_msec: 7250,
+      timeout_msec: 7704,
       next: "12b-p1",
     },
     {
@@ -1231,7 +1231,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12b_p1,
         opus: opus_audio_12b_p1,
       },
-      timeout_msec: 21250,
+      timeout_msec: 21024,
       next: "12b-p2",
     },
     {
@@ -1242,7 +1242,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12b_p2,
         opus: opus_audio_12b_p2,
       },
-      timeout_msec: 10800,
+      timeout_msec: 10176,
       next: "12b-p3",
     },
     {
@@ -1253,7 +1253,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12b_p3,
         opus: opus_audio_12b_p3,
       },
-      timeout_msec: 10200,
+      timeout_msec: 10536,
       next: "12b-p4",
     },
     {
@@ -1264,7 +1264,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12b_p4,
         opus: opus_audio_12b_p4,
       },
-      timeout_msec: 15750,
+      timeout_msec: 16368,
       next: "12b-p5",
     },
     {
@@ -1275,7 +1275,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12b_p5,
         opus: opus_audio_12b_p5,
       },
-      timeout_msec: 6800,
+      timeout_msec: 6744,
       next: "13",
     },
 
@@ -1287,7 +1287,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12c,
         opus: opus_audio_12c,
       },
-      timeout_msec: 8500,
+      timeout_msec: 9408,
       next: "12c-p1",
     },
     {
@@ -1298,7 +1298,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12c_p1,
         opus: opus_audio_12c_p1,
       },
-      timeout_msec: 32800,
+      timeout_msec: 31248,
       next: "15",
     },
 
@@ -1310,7 +1310,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12d,
         opus: opus_audio_12d,
       },
-      timeout_msec: 12500,
+      timeout_msec: 11448,
       next: "12d-p1",
     },
     {
@@ -1321,7 +1321,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12d_p1,
         opus: opus_audio_12d_p1,
       },
-      timeout_msec: 15250,
+      timeout_msec: 13176,
       next: "12d-p2",
     },
     {
@@ -1332,7 +1332,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_12d_p2,
         opus: opus_audio_12d_p2,
       },
-      timeout_msec: 12700,
+      timeout_msec: 13224,
       next: "16",
     },
 
@@ -1347,7 +1347,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_13,
         opus: opus_audio_13,
       },
-      timeout_msec: 18600 + 5000, // 18.6 second line, 5 seconds add'l voting time
+      timeout_msec: 16776 + 5000, // 16.776 second line, 5 seconds add'l voting time
       choices: remainingLocationOptions,
     },
     // As originally scripted, node 14 is identical to 13, so I merged them,
@@ -1362,7 +1362,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_15,
         opus: opus_audio_15,
       },
-      timeout_msec: 15800 + 5000, // 15.8 second clip, 5 seconds add'l voting time
+      timeout_msec: 13512, // 13.512 second clip, no add'l voting time (it's a long line and the options are short)
       choices: remainingLocationOptions,
     },
     {
@@ -1375,7 +1375,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_16,
         opus: opus_audio_16,
       },
-      timeout_msec: 20200 + 5000, // 20.2 second clip, 5 seconds add'l voting time
+      timeout_msec: 16200, // 16.2 second clip, no add'l voting time (it's a long line and the options are short)
       choices: remainingLocationOptions,
     },
 
@@ -1388,7 +1388,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_a,
         opus: opus_audio_where_a,
       },
-      timeout_msec: 2200,
+      timeout_msec: 1704,
       next: "where-a1",
     },
     {
@@ -1400,7 +1400,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_a1,
         opus: opus_audio_where_a1,
       },
-      timeout_msec: 8000 + 5000, // 8 second clip, 5 seconds additional voting time
+      timeout_msec: 7968 + 3000, // ~8 second clip, 3 seconds additional voting time
       choices: remainingLocationOptions,
     },
     {
@@ -1412,7 +1412,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_b,
         opus: opus_audio_where_b,
       },
-      timeout_msec: 2000,
+      timeout_msec: 1560,
       next: "where-b1",
     },
     {
@@ -1424,7 +1424,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_b1,
         opus: opus_audio_where_b1,
       },
-      timeout_msec: 8000 + 5000, // 8 second clip, 5 seconds additional voting time
+      timeout_msec: 7632 + 3000, // 7.632 second clip, 3 seconds additional voting time
       choices: remainingLocationOptions,
     },
     {
@@ -1436,7 +1436,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_c,
         opus: opus_audio_where_c,
       },
-      timeout_msec: 2200,
+      timeout_msec: 1728,
       next: "where-c1",
     },
     {
@@ -1448,7 +1448,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_c1,
         opus: opus_audio_where_c1,
       },
-      timeout_msec: 12000 + 5000, // 12 second clip, 5 seconds additional voting time
+      timeout_msec: 11568 + 3000, // 11.568 second clip, 3 seconds additional voting time
       choices: remainingLocationOptions,
     },
     {
@@ -1460,7 +1460,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_d,
         opus: opus_audio_where_d,
       },
-      timeout_msec: 2000,
+      timeout_msec: 1752,
       next: "where-d1",
     },
     {
@@ -1472,7 +1472,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
         mp3: mp3_audio_where_d1,
         opus: opus_audio_where_d1,
       },
-      timeout_msec: 12750,
+      timeout_msec: 13872,
       finalState(state: ArtGalleryState) {
         return state.selection ?? "kieftenbeld-postcard";
       },

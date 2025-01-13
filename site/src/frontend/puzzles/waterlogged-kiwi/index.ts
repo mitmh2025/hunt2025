@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Sounds Like a Dodo to Me",
   slug: "sounds_like_a_dodo_to_me",
+  code_name: "waterlogged-kiwi",
   initial_description: "Diary entries with some scribbles.",
   answer: "PHILLIPS EXETER",
   authors: ["Becca Chang", "Atul Shatavart Nadig"],

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Shrinkage",
   slug: "shrinkage",
+  code_name: "monstrous-spring",
   initial_description: "Two groups of clues and an image",
   answer: "NEWMANS APARTMENT",
   authors: ["Robin Deits", "Michele Pratusevich"],

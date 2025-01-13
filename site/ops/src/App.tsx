@@ -4,6 +4,7 @@ import PuzzleIcon from "@mui/icons-material/Extension";
 import MailIcon from "@mui/icons-material/Mail";
 import GatesIcon from "@mui/icons-material/MeetingRoom";
 import TeamsIcon from "@mui/icons-material/People";
+import ScaleIcon from "@mui/icons-material/Scale";
 import { Box } from "@mui/material";
 import type { Branding, Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/react-router-dom";
@@ -46,6 +47,11 @@ export default function App() {
       segment: "gates",
       title: "Gates",
       icon: <GatesIcon />,
+    },
+    {
+      segment: "deserted-ninja",
+      title: "FerMIT Challenge",
+      icon: <ScaleIcon />,
     },
     ...(isOpsAdmin
       ? [

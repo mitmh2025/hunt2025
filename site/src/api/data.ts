@@ -3,7 +3,13 @@ import {
   type InsertTeamRegistrationLogEntry,
   type InsertActivityLogEntry,
   type InsertPuzzleStateLogEntry,
+  type InsertTeamInteractionStateLogEntry,
 } from "knex/types/tables";
+import {
+  type FermitSession,
+  type FermitAnswer,
+  type FermitRegistration,
+} from "../../lib/api/admin_contract";
 import { type TeamRegistration } from "../../lib/api/contract";
 import {
   type DehydratedTeamRegistrationLogEntry,
@@ -12,6 +18,8 @@ import {
   type InternalActivityLogEntry,
   type DehydratedPuzzleStateLogEntry,
   type PuzzleStateLogEntry,
+  type TeamInteractionStateLogEntry,
+  type DehydratedTeamInteractionStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { type Hunt } from "../huntdata/types";
 import {
@@ -23,7 +31,19 @@ import {
   getTeamIds,
   getPuzzleStateLog as dbGetPuzzleStateLog,
   appendPuzzleStateLog as dbAppendPuzzleStateLog,
+  getTeamInteractionStateLog as dbGetTeamInteractionStateLog,
+  appendTeamInteractionStateLog as dbAppendTeamInteractionStateLog,
   retryOnAbort,
+  getFermitSession as dbGetFermitSession,
+  getFermitSessions as dbGetFermitSessions,
+  insertFermitSession as dbInsertFermitSession,
+  updateFermitSession as dbUpdateFermitSession,
+  getFermitAnswers as dbGetFermitAnswers,
+  insertFermitAnswers as dbInsertFermitAnswers,
+  getFermitRegistrations as dbGetFermitRegistrations,
+  insertFermitRegistration as dbInsertFermitRegistration,
+  deleteFermitRegistration as dbDeleteFermitRegistration,
+  updateFermitRegistration as dbUpdateFermitRegistration,
 } from "./db";
 import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
 import {
@@ -31,6 +51,7 @@ import {
   activityLog as redisActivityLog,
   teamRegistrationLog as redisTeamRegistrationLog,
   puzzleStateLog as redisPuzzleStateLog,
+  teamInteractionStateLog as redisTeamInteractionStateLog,
   type Log as RedisLog,
   getTeamCaches,
   publishTeamCache,
@@ -663,3 +684,191 @@ export class PuzzleStateLog extends Log<
 }
 
 export const puzzleStateLog = new PuzzleStateLog();
+
+export async function createFermitSession(
+  title: string,
+  questionIds: number[],
+  knex: Knex.Knex,
+): Promise<FermitSession | undefined> {
+  return dbInsertFermitSession(
+    {
+      title: title,
+      question_ids: JSON.stringify(questionIds),
+    },
+    knex,
+  );
+}
+
+export class TeamInteractionStateLogMutator extends Mutator<
+  TeamInteractionStateLogEntry,
+  InsertTeamInteractionStateLogEntry
+> {
+  _dbAppendLog = dbAppendTeamInteractionStateLog;
+}
+
+export class TeamInteractionStateLog extends Log<
+  DehydratedTeamInteractionStateLogEntry,
+  TeamInteractionStateLogEntry,
+  TeamInteractionStateLogMutator
+> {
+  constructor() {
+    super(redisTeamInteractionStateLog, TeamInteractionStateLogMutator);
+  }
+
+  protected dbGetLog(knex: Knex.Knex, teamId?: number, since?: number) {
+    return dbGetTeamInteractionStateLog(teamId, since, undefined, knex);
+  }
+
+  async executeMutation<R>(
+    team_id: number,
+    redisClient: RedisClient | undefined,
+    knex: Knex.Knex,
+    fn: (
+      trx: Knex.Knex.Transaction,
+      mutator: TeamInteractionStateLogMutator,
+    ) => R | PromiseLike<R>,
+  ) {
+    return await this.executeRawMutation(team_id, redisClient, knex, fn);
+  }
+}
+
+export const teamInteractionStateLog = new TeamInteractionStateLog();
+export async function updateFermitSession(
+  session: FermitSession,
+  knex: Knex.Knex,
+): Promise<FermitSession | undefined> {
+  const dbSession = await dbUpdateFermitSession(
+    session.id,
+    {
+      title: session.title,
+      status: session.status,
+      question_ids: JSON.stringify(session.questionIds),
+    },
+    knex,
+  );
+  if (dbSession) {
+    return {
+      ...dbSession,
+      id: session.id,
+      teams: session.teams,
+    };
+  } else {
+    return undefined;
+  }
+}
+
+export async function getFermitSession(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<FermitSession | undefined> {
+  const [session, registrations] = await Promise.all([
+    dbGetFermitSession(sessionId, knex),
+    dbGetFermitRegistrations(sessionId, knex),
+  ]);
+  if (!session) {
+    return undefined;
+  }
+  registrations.forEach((r) => {
+    if (r.sessionId === session.id) {
+      session.teams.push({
+        id: r.teamId,
+        status: r.status,
+      });
+    }
+  });
+  return session;
+}
+
+export async function getFermitSessions(
+  knex: Knex.Knex,
+): Promise<FermitSession[]> {
+  const sessions = await dbGetFermitSessions(knex);
+  const registrations = await dbGetFermitRegistrations(undefined, knex);
+  const teamsBySession = new Map<number, { id: number; status: string }[]>();
+
+  registrations.forEach((r) => {
+    const teams = teamsBySession.get(r.sessionId) ?? [];
+    teams.push({ id: r.teamId, status: r.status });
+    teamsBySession.set(r.sessionId, teams);
+  });
+
+  sessions.forEach((s) => {
+    s.teams = teamsBySession.get(s.id) ?? [];
+  });
+
+  return sessions;
+}
+
+export async function getFermitAnswers(
+  sessionId: number,
+  knex: Knex.Knex,
+): Promise<FermitAnswer[]> {
+  return dbGetFermitAnswers(sessionId, knex);
+}
+
+export async function saveFermitAnswers(
+  answers: FermitAnswer[],
+  knex: Knex.Knex,
+): Promise<number> {
+  // TODO: precondition is that these answers share a session
+  // TODO: only allow this for answers where the session is in "in_progress" status
+  return dbInsertFermitAnswers(answers, knex);
+}
+
+export async function getFermitRegistrations(
+  sessionId: number | undefined,
+  knex: Knex.Knex,
+): Promise<FermitRegistration[]> {
+  return dbGetFermitRegistrations(sessionId, knex);
+}
+
+export async function createFermitRegistration(
+  sessionId: number,
+  teamId: number,
+  knex: Knex.Knex,
+): Promise<FermitRegistration | undefined> {
+  // abort if the session isn't in "not_started" status
+  const session = await dbGetFermitSession(sessionId, knex);
+  if (session?.status === "not_started") {
+    return dbInsertFermitRegistration(
+      sessionId,
+      teamId,
+      "not_checked_in",
+      knex,
+    );
+  }
+  return undefined;
+}
+
+export async function deleteFermitRegistration(
+  sessionId: number,
+  teamId: number,
+  knex: Knex.Knex,
+): Promise<boolean> {
+  // abort if the session isn't in "not_started" status
+  const session = await dbGetFermitSession(sessionId, knex);
+  if (session?.status === "not_started") {
+    return dbDeleteFermitRegistration(sessionId, teamId, knex);
+  }
+  return false;
+}
+
+export async function updateFermitRegistration(
+  sessionId: number,
+  teamId: number,
+  status: string,
+  knex: Knex.Knex,
+): Promise<FermitRegistration | undefined> {
+  // TODO: limit to allowable state transitions?
+  //   if session not started: not_checked_in -> checked_in
+  //                           not_checked_in -> no_show
+  //                           checked_in     -> not_checked_in
+  //   if session in progress: nothing
+  //   if session complete:    nothing
+
+  const session = await dbGetFermitSession(sessionId, knex);
+  if (session?.status === "not_started") {
+    return dbUpdateFermitRegistration(sessionId, teamId, status, knex);
+  }
+  return undefined;
+}

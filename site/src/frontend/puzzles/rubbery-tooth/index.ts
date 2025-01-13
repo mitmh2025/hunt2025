@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Synthetic Tagsonomy",
   slug: "synthetic_tagsonomy",
+  code_name: "rubbery-tooth",
   initial_description: "Physical Puzzle—A small bag of drawings",
   answer: "CHEESE VENDORS",
   authors: ["Simone Agha", "David Anderson", "Eric Marion"],

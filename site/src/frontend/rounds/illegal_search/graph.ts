@@ -1550,6 +1550,35 @@ ALL_NODES.forEach((node) => {
   });
 });
 
+const NODE_IDS_BY_PUZZLE_SLUG: Record<string, string> = {
+  皇帝の暗号: "main_west",
+  this_is_just_a_test: "main_west",
+  paw_print_detective: "main_east",
+  a_puzzle_of_the_dead: "main_north",
+  cross_spread: "main_north",
+  cahfee_regulah: "desk_drawer",
+  the_center_is_in_plain_sight: "painting2",
+  jargon: "safe",
+  given_up: "rug",
+  smoke_em_if_youve_got_em: "cryptex",
+  passage_of_time: "secret",
+  corn_maize: "secret",
+  the_annual_massachusetts_spelling_bee: "secret",
+  a_heap_of_clards: "secret",
+  fechtbuch: "secret",
+  bermuda_triangle: "secret",
+  half_baked: "secret",
+  networking_event: "secret",
+  cahfee_regulah_blacklight: "desk_drawer",
+  the_center_is_in_plain_sight_blacklight: "painting2",
+  jargon_blacklight: "safe",
+  given_up_blacklight: "rug",
+  smoke_em_if_youve_got_em_blacklight: "cryptex",
+  papas_bookcase: "main_west",
+  papas_stash: "main_west",
+  papas_bookcase_blacklight: "main_west",
+};
+
 function modalFromModalInternal(
   modalInternal: ModalInternal,
   teamState: TeamHuntState,
@@ -1749,6 +1778,7 @@ function filteredForFrontend(
 
 export {
   NODES_BY_ID,
+  NODE_IDS_BY_PUZZLE_SLUG,
   MODALS_BY_EXTRA_POSTCODE,
   MODALS_BY_POSTCODE,
   LOCK_DATA,

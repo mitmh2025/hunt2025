@@ -325,8 +325,8 @@ const Solution = () => {
           metallic finish bronze PLA filament
         </a>
         ; it should be solvable with any material, but it may be more difficult
-        to see fine details with with white or black. The 3MF file also reflects
-        the settings we used for printing the puzzle using a Bambu X1-series
+        to see fine details with white or black. The 3MF file also reflects the
+        settings we used for printing the puzzle using a Bambu X1-series
         printer; you may need to make adjustments for different printers. We
         recommend printing with supports enabled for the best solving
         experience, although they are not strictly necessary.

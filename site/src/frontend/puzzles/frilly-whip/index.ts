@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Alias",
   slug: "alias",
+  code_name: "frilly-whip",
   answer: "CALL HIM SHIRLEY MAYBE",
   authors: ["Grant Elliott"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim", "Robin Deits"],

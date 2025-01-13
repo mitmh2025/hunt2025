@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Charged",
   slug: "charged",
+  code_name: "lean-lock",
   initial_description:
     "Interactive interface with text entry boxes and lines between them",
   answer: "LEAF",

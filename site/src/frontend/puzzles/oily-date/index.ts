@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "His Life-Story",
   slug: "his_life_story",
+  code_name: "oily-date",
   initial_description:
     "A series of gifs with Ouija boards and a series of cards with notes",
   answer: "SCULLETTS CONE",

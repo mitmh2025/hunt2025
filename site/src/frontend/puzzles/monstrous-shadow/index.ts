@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Grand Illusion",
   slug: "the_grand_illusion",
+  code_name: "monstrous-shadow",
   answer: "ZODIAC",
   authors: ["Grant Elliott"],
   editors: ["James Douberley", "Jesse Moeller", "Li-Mei Lim", "Robin Deits"],

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "A Recipe For Success",
   slug: "a_recipe_for_success",
+  code_name: "tame-chick",
   initial_description: "Several completely normal and reasonable pickup lines",
   answer: "LET THEM EAT CAKE",
 

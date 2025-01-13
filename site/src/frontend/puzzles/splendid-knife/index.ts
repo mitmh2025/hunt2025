@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Fight Night at Mo’s",
   slug: "fight_night_at_mos",
+  code_name: "splendid-knife",
   initial_description:
     "A tournament bracket with ten competitors represented by wacky images",
   answer: "JADE",

@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Fechtbüch",
   slug: "fechtbuch",
+  code_name: "dry-forest",
   initial_description: "Medieval descriptions of battles",
   answer: "FIVE HOLE",
   authors: ["Ariel Schwartz", "Dan Collins", "Teddy McArthur"],

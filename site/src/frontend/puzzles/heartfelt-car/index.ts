@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Be Kind, Rewind",
   slug: "be_kind_rewind",
+  code_name: "heartfelt-car",
   initial_description:
     "A series of text descriptions and a link to a map of several locations",
   answer: "HARD DISK SPACE",

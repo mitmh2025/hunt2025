@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Inspectre",
   slug: "the_inspectre",
+  code_name: "clean-ivory",
   initial_description:
     "Physical Puzzle—A bag of acrylic pieces and a sheet of paper",
   answer: "TILECUTTER",

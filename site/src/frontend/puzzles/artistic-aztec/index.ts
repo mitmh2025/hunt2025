@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Just Plane Wrong",
   slug: "just_plane_wrong",
+  code_name: "artistic-aztec",
   initial_description: "A series of technical drawings",
   answer: "FIRE EXTINGUISHER",
   authors: ["Sarah Leadbeater"],

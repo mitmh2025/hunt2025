@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cahfee, Regulah",
   slug: "cahfee_regulah",
+  code_name: "left-rome",
   initial_description: "A konundrum",
   answer: "FOOD COURT",
   authors: ["Ariel Schwartz", "Sarah Leadbeater"],

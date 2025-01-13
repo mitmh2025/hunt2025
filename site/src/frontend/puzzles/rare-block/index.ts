@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "In Communicado Tonight",
   slug: "in_communicado_tonight",
+  code_name: "rare-block",
   initial_description:
     "Solvers are invited to make a phone call at the Gala bar",
   answer: "DOWN A RABBIT HOLE",

@@ -36,7 +36,10 @@ import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import * as swaggerUi from "swagger-ui-express";
-import { adminContract } from "../../lib/api/admin_contract";
+import {
+  adminContract,
+  type FermitRegistration,
+} from "../../lib/api/admin_contract";
 import { c, authContract, publicContract } from "../../lib/api/contract";
 import { dataContract } from "../../lib/api/data_contract";
 import {
@@ -50,6 +53,16 @@ import { authentikJwtStrategy } from "../../lib/auth";
 import canonicalizeInput from "../../lib/canonicalizeInput";
 import { genId } from "../../lib/id";
 import { nextAcceptableSubmissionTime } from "../../lib/ratelimit";
+import { albumLookup } from "../../ops/src/opsdata/desertedNinjaImages";
+import {
+  type FermitQuestion,
+  ALL_QUESTIONS,
+} from "../../ops/src/opsdata/desertedNinjaQuestions";
+import { INTERACTIONS } from "../frontend/interactions";
+import {
+  countVotes,
+  type VirtualInteractionHandler,
+} from "../frontend/interactions/virtual_interaction_handler";
 import { PUZZLES, SUBPUZZLES } from "../frontend/puzzles";
 import { generateLogEntries } from "../frontend/puzzles/new-ketchup/server";
 import {
@@ -58,13 +71,26 @@ import {
 } from "../frontend/puzzles/quixotic-shoe";
 import { generateSlugToSlotMap } from "../huntdata";
 import { type Hunt } from "../huntdata/types";
+import { fixData } from "../utils/fixData";
+import { fixTimestamp } from "../utils/fixTimestamp";
 import { omit } from "../utils/omit";
 import {
   activityLog,
   type Mutator,
   puzzleStateLog,
   registerTeam,
+  teamInteractionStateLog,
   teamRegistrationLog,
+  getFermitSession,
+  getFermitSessions,
+  createFermitSession,
+  updateFermitSession,
+  getFermitRegistrations,
+  createFermitRegistration,
+  deleteFermitRegistration,
+  updateFermitRegistration,
+  getFermitAnswers,
+  saveFermitAnswers,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
@@ -74,6 +100,10 @@ import {
   cleanupTeamRegistrationLogEntryFromDB,
   cleanupPuzzleStateLogEntryFromDB,
   getCurrentTeamName,
+  cleanupTeamInteractionStateLogEntryFromDB,
+  getTeamInteractionStateLog,
+  getLastTeamInteractionStateLogEntry,
+  appendTeamInteractionStateLog,
 } from "./db";
 import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
@@ -189,7 +219,7 @@ async function newPassport({
         }
         const teamJwt = teamJwtFromRequest(req) ?? undefined;
         done(null, jwtPayload.team_id, {
-          sess_id: jwtPayload.sess_id,
+          sessId: jwtPayload.sess_id,
           adminUser: jwtPayload.adminUser,
           teamJwt,
         });
@@ -914,10 +944,6 @@ export async function getRouter({
             };
           }
 
-          const cannedResponseProvidesPrize =
-            puzzle?.canned_responses.some(
-              (cr) => cr.providesSolveReward === true,
-            ) ?? false;
           const defaultPrize = slot.slot.is_meta ? 0 : 1;
           const prize = slot.slot.prize ?? defaultPrize;
           const strongCurrencyPrize = slot.slot.strong_currency_prize ?? 0;
@@ -1037,11 +1063,17 @@ export async function getRouter({
                   // This was a new guess.
                   if (correct_answer) {
                     // It was right and the puzzle is now solved.
+                    const hasGottenRewardFromCannedResponse = puzzle_log.some(
+                      (e) => e.type === "puzzle_partially_solved",
+                    );
+
                     await mutator.appendLog({
                       team_id,
                       slug,
                       type: "puzzle_solved",
-                      currency_delta: cannedResponseProvidesPrize ? 0 : prize,
+                      currency_delta: hasGottenRewardFromCannedResponse
+                        ? 0
+                        : prize,
                       strong_currency_delta: strongCurrencyPrize,
                       data: {
                         answer: canonical_input,
@@ -1154,6 +1186,14 @@ export async function getRouter({
                     retryAfter: allowAfter.toISOString(),
                   },
                 };
+              }
+
+              // Check if this subpuzzle has already been solved by this team; short-circuit without mutating if so.
+              const alreadySolved =
+                puzzle_log.find((e) => e.data.type === "subpuzzle_solved") ??
+                false;
+              if (alreadySolved) {
+                return { status: 200 as const };
               }
 
               // Determine our disposition on this submission.
@@ -1462,15 +1502,16 @@ export async function getRouter({
                 return { error: "PUZZLE_NOT_UNLOCKED" as const };
               }
 
-              if (
-                data.puzzles_solved.has(slug) ||
-                // Forbid buying answers to puzzles that have been partially solved -- we
-                // have already granted the key for the partial solve, and we don't want to
-                // allow teams to get an extra key for the same puzzle.
-                data.puzzles_partially_solved.has(slug)
-              ) {
+              if (data.puzzles_solved.has(slug)) {
                 return { error: "PUZZLE_ALREADY_SOLVED" as const };
               }
+
+              const hasGottenRewardFromCannedResponse = mutator.log.some(
+                (e) =>
+                  e.type === "puzzle_partially_solved" &&
+                  e.slug === slug &&
+                  e.team_id === team_id,
+              );
 
               const answer = puzzle.answer;
 
@@ -1503,7 +1544,9 @@ export async function getRouter({
                 // normally grant the prize for a partial answer, since the team
                 // won't end up submitting the partial answer and we don't want
                 // to deny them the prize.
-                currency_delta: slot.prize ?? 1,
+                currency_delta: hasGottenRewardFromCannedResponse
+                  ? 0
+                  : slot.prize ?? 1,
                 data: {
                   answer,
                 },
@@ -1647,6 +1690,51 @@ export async function getRouter({
           };
         },
       },
+      castVote: {
+        middleware: [authMiddleware],
+        handler: async ({
+          params: { slug, pollId },
+          body: { choice },
+          req,
+        }) => {
+          const team_id = req.user as number;
+          const sess_id = req.authInfo?.sessId;
+          if (!sess_id) {
+            // Must have a session id
+            return {
+              status: 400 as const,
+              body: null,
+            };
+          }
+
+          if (!redisClient) {
+            console.error(
+              "Cannot implement castVote without valid redis connection",
+            );
+            return {
+              status: 500 as const,
+              body: null,
+            };
+          }
+
+          // TODO: maybe do all this from a redis script instead to avoid any chance of
+          // set/read/publish interleavings confusing order?  But honestly it doesn't really matter
+          const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
+          // Update our vote
+          await redisClient.hSet(redisKey, sess_id, choice);
+          // Read back the votes
+          const votes = await redisClient.hGetAll(redisKey);
+          // Count votes
+          const results = countVotes(votes);
+          // Publish updated tally
+          await redisClient.publish(redisKey, JSON.stringify(votes));
+
+          return {
+            status: 200 as const,
+            body: results,
+          };
+        },
+      },
     },
     admin: {
       getTeamState: {
@@ -1743,31 +1831,29 @@ export async function getRouter({
                 address: registration.teamEmail,
               });
             }
-            for (const address of addresses) {
-              const result: {
-                address: Address;
-                success?: boolean;
-              } = {
-                address,
-              };
-              if (!dryRun) {
-                try {
-                  await mailer.sendEmail({
-                    to: address,
-                    messageStream: "hunt-announcements",
-                    templateAlias: body.templateAlias,
-                    templateModel: {
-                      teamName: registration.name,
-                    },
-                  });
-                  result.success = true;
-                } catch (err: unknown) {
-                  console.log("failed sending mail", address, err);
-                  result.success = false;
-                }
+            const result: {
+              addresses: Address[];
+              success?: boolean;
+            } = {
+              addresses,
+            };
+            if (!dryRun) {
+              try {
+                await mailer.sendEmail({
+                  to: addresses,
+                  messageStream: "hunt-announcements",
+                  templateAlias: body.templateAlias,
+                  templateModel: {
+                    teamName: registration.name,
+                  },
+                });
+                result.success = true;
+              } catch (err: unknown) {
+                console.log("failed sending mail", addresses, err);
+                result.success = false;
               }
-              messages.push(result);
             }
+            messages.push(result);
           }
           return {
             status: 200,
@@ -1807,6 +1893,7 @@ export async function getRouter({
                 {
                   title: definition.title,
                   slug: definition.slug,
+                  code_name: definition.code_name,
                 },
               ];
             }),
@@ -2230,6 +2317,520 @@ export async function getRouter({
           return formatMutationResultForAdminApi(result);
         },
       },
+      createFermitSession: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ body: { title } }) => {
+          // generate random set of questions
+          // requirements:
+          // * pick 17 distinct questions;
+          // * 4 of them must be geoguessr type
+          // * geoguessrs cannot be consecutive, first, or last
+          // * don't repeat categories
+
+          function shuffle<T>(arr: T[]): T[] {
+            return arr
+              .map((v) => ({ v, sort: Math.random() }))
+              .sort((a, b) => a.sort - b.sort)
+              .map(({ v }) => v);
+          }
+
+          const normalQuestions: FermitQuestion[] = [];
+          const geoguessrQuestions: FermitQuestion[] = [];
+          ALL_QUESTIONS.forEach((q) => {
+            (q.geoguessr === null ? normalQuestions : geoguessrQuestions).push(
+              q,
+            );
+          });
+
+          let tries = 0;
+          let valid = false;
+          // try repeatedly until a working question set comes up
+          // limit to 200 iterations to prevent infinite looping
+          while (tries < 200) {
+            const shuffledN = shuffle(normalQuestions);
+            const shuffledG = shuffle(geoguessrQuestions);
+            const questions = shuffle([
+              ...shuffledN.slice(0, 13),
+              ...shuffledG.slice(0, 4),
+            ]);
+            valid = true;
+            tries++;
+
+            // is a geoguessr question first or last?
+            if (questions[0]?.geoguessr ?? questions[16]?.geoguessr) {
+              valid = false;
+              //console.log("invalid: first/last question is geoguessr");
+            }
+
+            // are two consecutive questions geoguessrs?
+            for (let i = 0; i < 16; i++) {
+              if (questions[i]?.geoguessr && questions[i + 1]?.geoguessr) {
+                valid = false;
+                //console.log("invalid: consecutive geoguessrs");
+              }
+            }
+
+            // are any categories repeated?
+            const categories = new Set<string>();
+            questions.forEach((q: FermitQuestion) => {
+              for (const cat of q.categories) {
+                if (categories.has(cat)) {
+                  valid = false;
+                  //console.log("invalid: repeated category " + cat);
+                } else {
+                  categories.add(cat);
+                }
+              }
+            });
+
+            const ids = questions.map((q) => q.id);
+
+            if (valid) {
+              console.log(`got an acceptable list in ${tries} tries`);
+              const newSession = await createFermitSession(title, ids, knex);
+              if (newSession) {
+                return Promise.resolve({
+                  status: 200 as const,
+                  body: newSession,
+                });
+              } else {
+                return Promise.resolve({
+                  status: 500 as const,
+                  body: null,
+                });
+              }
+            } else {
+              /*
+              console.log(
+                `question list ${ids} failed validation, regenerating`,
+              );
+               */
+            }
+          }
+          console.log("ran out of attempts");
+          return Promise.resolve({
+            status: 500 as const,
+            body: null,
+          });
+        },
+      },
+      updateFermitSession: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId }, body }) => {
+          if (sessionId === body.id.toString()) {
+            const newSession = await updateFermitSession(body, knex);
+
+            if (newSession) {
+              if (body.status === "in_progress") {
+                // when transitioning from "not_started" to "in_progress",
+                // mark any team not checked in as "no_show"
+                const promises: Promise<FermitRegistration | undefined>[] = [];
+                const regs = await getFermitRegistrations(
+                  parseInt(sessionId, 10),
+                  knex,
+                );
+                regs.forEach((reg) => {
+                  if (reg.status === "not_checked_in") {
+                    promises.push(
+                      updateFermitRegistration(
+                        reg.sessionId,
+                        reg.teamId,
+                        "no_show",
+                        knex,
+                      ),
+                    );
+                  }
+                });
+                const updatedRegs = await Promise.all(promises);
+
+                // TODO: what should behavior be if a no-show update fails?
+                // does this whole thing need to be somehow transactionized?
+
+                newSession.teams = newSession.teams.map((t) => {
+                  const newReg = updatedRegs.find((r) => r?.teamId === t.id);
+                  if (newReg) {
+                    return {
+                      id: t.id,
+                      status: newReg.status,
+                    };
+                  } else {
+                    return t;
+                  }
+                });
+              }
+            }
+
+            if (newSession) {
+              return Promise.resolve({
+                status: 200 as const,
+                body: newSession,
+              });
+            }
+          }
+          return Promise.resolve({
+            status: 500 as const,
+            body: null,
+          });
+        },
+      },
+      completeFermitSession: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId } }) => {
+          // To close out a session, score each team then update the puzzle_state log
+          const [session, answers] = await Promise.all([
+            getFermitSession(parseInt(sessionId, 10), knex),
+            getFermitAnswers(parseInt(sessionId, 10), knex),
+          ]);
+
+          if (!session) {
+            return Promise.resolve({
+              status: 404,
+              body: null,
+            });
+          }
+          if (session.status !== "in_progress") {
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
+
+          const questions = session.questionIds.map((qid) =>
+            ALL_QUESTIONS.find((q) => q.id === qid),
+          );
+          if (!questions.every((q) => q !== undefined)) {
+            return Promise.resolve({
+              status: 500,
+              body: `Some questions could not be found for session ${sessionId}`,
+            });
+          }
+
+          function scoreHelper(ranges: number[], value: number) {
+            const n = ranges.findIndex((thresh) => value <= thresh);
+            return n === -1 ? 0 : 5 - n;
+          }
+
+          // run the scoring methods on each, which may involve DB lookups
+          const teamScores = await Promise.all(
+            session.teams.map(async ({ id, status }) => {
+              if (status !== "checked_in") {
+                return { id: id, scores: null };
+              }
+              const scores: number[] = await Promise.all(
+                questions.map(async (question, index) => {
+                  if (!question) {
+                    // this shouldn't happen?  just assume they bombed it
+                    return 0;
+                  }
+
+                  const answerObj = answers.find(
+                    (ans) =>
+                      ans.sessionId.toString() === sessionId &&
+                      ans.teamId === id &&
+                      ans.questionIndex === index + 1,
+                  );
+
+                  if (!answerObj) {
+                    return 0;
+                  }
+
+                  const answer = answerObj.answer;
+                  if (answer === null) {
+                    return 0;
+                  }
+
+                  const percentage =
+                    100 * Math.abs(answer / question.answer - 1);
+                  const difference = Math.abs(answer - question.answer);
+
+                  // two questions need to be computed on the fly via the DB:
+                  //  team_puzzle_solves needs to look up that team's total solve count
+                  //  all_puzzle_submissions needs to look up the global submission count
+                  if (question.scoringMethod === "percent") {
+                    return scoreHelper([2, 5, 10, 20, 50], percentage);
+                  } else if (question.scoringMethod === "12345") {
+                    return scoreHelper([1, 2, 3, 4, 5], difference);
+                  } else if (question.scoringMethod === "12468") {
+                    return scoreHelper([1, 2, 4, 6, 8], difference);
+                  } else if (question.scoringMethod.endsWith("double")) {
+                    const base = parseInt(question.scoringMethod.slice(0, -6));
+                    return scoreHelper(
+                      [base, base * 2, base * 4, base * 8, base * 16],
+                      difference,
+                    );
+                  } else if (question.scoringMethod === "raw") {
+                    // "raw" means take the number as a score, but if out of bounds default to 0
+                    // if not an integer floor it
+                    if (answer < 0 || answer > 5) {
+                      return 0;
+                    }
+                    return Math.floor(answer);
+                  } else if (question.scoringMethod === "team_puzzle_solves") {
+                    // count the number of "puzzle_solved" entries in this team's activity log
+                    const count: number =
+                      (
+                        (await knex("activity_log")
+                          .where({
+                            team_id: id,
+                            type: "puzzle_solved",
+                          })
+                          .count("* as ct")) as { ct: number }[]
+                      )[0]?.ct ?? 0;
+                    console.log(
+                      `counted ${count} correct answers for team ${id}`,
+                    );
+
+                    // score based on % error
+                    return scoreHelper(
+                      [2, 5, 10, 20, 50],
+                      100 * Math.abs(answer / count - 1),
+                    );
+                  } else if (question.scoringMethod === "all_submissions") {
+                    const count: number =
+                      (
+                        (await knex("activity_log")
+                          .where("type", "puzzle_guess_submitted")
+                          .count("* as ct")) as { ct: number }[]
+                      )[0]?.ct ?? 0;
+                    console.log(`counted ${count} puzzle submissions in total`);
+                    return scoreHelper(
+                      [2, 5, 10, 20, 50],
+                      100 * Math.abs(answer / count - 1),
+                    );
+                  } else {
+                    console.log(
+                      `got unknown scoring method: ${question.scoringMethod}`,
+                    );
+                    return 0;
+                  }
+                }),
+              );
+
+              return { id: id, scores: scores };
+            }),
+          );
+
+          // (3) for each team, add to the team state for this puzzle
+          for (const obj of teamScores) {
+            const id: number = obj.id;
+            const scores: number[] | null = obj.scores;
+            if (scores === null) {
+              continue;
+            }
+
+            console.log(id);
+            console.log(scores);
+
+            const cachedLog = await puzzleStateLog.getCachedLog(
+              knex,
+              redisClient,
+              id,
+            );
+            console.log(cachedLog);
+
+            const iteration = cachedLog.entries.length;
+            const imageUrls = scores.map((score, index) => {
+              return albumLookup[index]?.[iteration % 3]?.[score];
+            });
+
+            void (await puzzleStateLog.executeMutation(
+              id,
+              redisClient,
+              knex,
+              async (_, mutator) => {
+                await mutator.appendLog({
+                  team_id: id,
+                  slug: "estimation_dot_jpg",
+                  data: {
+                    scores: scores,
+                    sessionId: session.id,
+                    iteration: iteration,
+                    imageUrls: imageUrls,
+                  },
+                });
+              },
+            ));
+          }
+
+          // when all of this is done, set the status to complete
+          const newSession = await updateFermitSession(
+            {
+              ...session,
+              status: "complete",
+            },
+            knex,
+          );
+
+          if (!newSession) {
+            return Promise.resolve({
+              status: 500 as const,
+              body: `Error closing out ${sessionId}, check DB carefully`,
+            });
+          } else {
+            return Promise.resolve({
+              status: 200 as const,
+              body: newSession,
+            });
+          }
+        },
+      },
+      getFermitSessions: {
+        middleware: [adminAuthMiddleware],
+        handler: async () => {
+          return Promise.resolve({
+            status: 200 as const,
+            body: await getFermitSessions(knex),
+          });
+        },
+      },
+      getFermitAnswers: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId } }) => {
+          const answers = await getFermitAnswers(parseInt(sessionId, 10), knex);
+          return Promise.resolve({
+            status: 200 as const,
+            body: answers,
+          });
+        },
+      },
+      saveFermitAnswers: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId }, body }) => {
+          const answers = body;
+          const session = await getFermitSession(parseInt(sessionId, 10), knex);
+          if (!session) {
+            return Promise.resolve({
+              status: 404 as const,
+              body: null,
+            });
+          }
+          if (session.status !== "in_progress") {
+            return Promise.resolve({
+              status: 400 as const,
+              body: "Session status is not 'in_progress'",
+            });
+          }
+
+          // TODO: filter the passed in answers to the sessionId for safety?
+          //console.log(answers);
+          const updateCount = await saveFermitAnswers(answers, knex);
+          //console.log(`${updateCount} vs ${answers.length.toString()}`);
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: updateCount > 0,
+          });
+        },
+      },
+      createFermitRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId, teamId } }) => {
+          const result = await createFermitRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            knex,
+          );
+          if (result) {
+            return Promise.resolve({
+              status: 200 as const,
+              body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+            });
+          } else {
+            // invalid request, session in wrong status
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
+        },
+      },
+      deleteFermitRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { sessionId, teamId } }) => {
+          const result = await deleteFermitRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            knex,
+          );
+          if (result) {
+            return Promise.resolve({
+              status: 200 as const,
+              body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+            });
+          } else {
+            // invalid request, session in wrong status
+            return Promise.resolve({
+              status: 400,
+              body: null,
+            });
+          }
+        },
+      },
+      updateFermitRegistration: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({
+          params: { sessionId, teamId },
+          body: { status },
+        }) => {
+          await updateFermitRegistration(
+            parseInt(sessionId, 10),
+            parseInt(teamId, 10),
+            status,
+            knex,
+          );
+          return Promise.resolve({
+            status: 200 as const,
+            body: await getFermitRegistrations(parseInt(sessionId, 10), knex),
+          });
+        },
+      },
+
+      resetPuzzleRateLimit: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { slug }, body: { teamIds }, req }) => {
+          let singleTeamId: number | undefined = undefined;
+          if (teamIds !== "all" && teamIds.length === 1) {
+            singleTeamId = teamIds[0];
+          }
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            singleTeamId,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              if (teamIds === "all") {
+                return [
+                  await mutator.appendLog({
+                    type: "rate_limits_reset",
+                    slug: slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                ];
+              }
+
+              const result: (InternalActivityLogEntry | undefined)[] = [];
+              for (const team_id of teamIds) {
+                result.push(
+                  await mutator.appendLog({
+                    team_id,
+                    type: "rate_limits_reset",
+                    slug: slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                );
+              }
+
+              return result;
+            },
+          );
+
+          return formatMutationResultForAdminApi(result);
+        },
+      },
     },
     frontend: {
       mintToken: {
@@ -2267,73 +2868,285 @@ export async function getRouter({
       },
       startInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: ({ params: { teamId, interactionId } }) =>
-          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            const existing = mutator.log.filter(
-              (e) =>
-                (e.team_id === team_id || e.team_id === undefined) &&
-                (e.type === "interaction_unlocked" ||
-                  e.type === "interaction_started") &&
-                e.slug === interactionId,
+        handler: async ({ params: { teamId, interactionId } }) => {
+          const result = await executeTeamStateHandler(
+            teamId,
+            async (trx, mutator, team_id) => {
+              const existing = mutator.log.filter(
+                (e) =>
+                  (e.team_id === team_id || e.team_id === undefined) &&
+                  (e.type === "interaction_unlocked" ||
+                    e.type === "interaction_started") &&
+                  e.slug === interactionId,
+              );
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              if (!is_unlocked) {
+                return false;
+              }
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+
+              const interaction = INTERACTIONS[interactionId];
+
+              if (!is_started) {
+                // TODO: if interaction is virtual, ensure that no other incomplete virtual
+                // interaction was unlocked before this one (if one exists, it should be completed
+                // before we let this one proceed)
+
+                await mutator.appendLog({
+                  team_id,
+                  type: "interaction_started",
+                  slug: interactionId,
+                });
+                // Also insert the initial node into team_interaction_states
+                if (interaction?.type === "virtual") {
+                  const { node, state } = (
+                    interaction.handler as VirtualInteractionHandler<
+                      object,
+                      unknown,
+                      string,
+                      unknown
+                    >
+                  ).startState();
+                  await appendTeamInteractionStateLog(
+                    {
+                      team_id,
+                      slug: interactionId,
+                      node,
+                      // no predecessor, we're starting here!
+                      graph_state: state,
+                    },
+                    trx,
+                  );
+                }
+              }
+              return true;
+            },
+          );
+          if (result.status === 200 && redisClient) {
+            // Also refresh the redis state for teamInteractionStateLog, since we also inserted into that DB table
+            await teamInteractionStateLog.refreshRedisLog(redisClient, knex);
+          }
+          return result;
+        },
+      },
+      advanceInteraction: {
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId, interactionId, fromNode } }) => {
+          const team_id = parseInt(teamId, 10);
+          const interaction = INTERACTIONS[interactionId];
+          if (interaction?.type !== "virtual") {
+            console.log(`${interactionId} is not a valid virtual interaction`);
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+          if (!redisClient) {
+            return {
+              status: 500 as const,
+              body: "Cannot reliably advance interactions without a valid redis client",
+            };
+          }
+
+          // We should do as much work as we safely can *before* opening the DB transaction.
+          const node = interaction.handler.lookupNode(fromNode);
+          if (!node) {
+            console.log(
+              `Interaction node ${fromNode} for team ${teamId} not known to interaction graph ${interactionId}`,
             );
-            const is_unlocked = existing.some(
-              (entry) => entry.type === "interaction_unlocked",
+            return {
+              status: 400 as const,
+              body: null,
+            };
+          }
+          if ("finalState" in node) {
+            console.log(
+              `Cannot advance team ${teamId}'s interaction ${interactionId} past final state`,
             );
-            if (!is_unlocked) {
-              return false;
-            }
-            const is_started = existing.some(
-              (entry) => entry.type === "interaction_started",
-            );
-            if (!is_started) {
-              await mutator.appendLog({
-                team_id,
-                type: "interaction_started",
-                slug: interactionId,
-              });
-            }
-            return true;
-          }),
+            return {
+              status: 400 as const,
+              body: null,
+            };
+          }
+
+          // The vote closing is inherently racy.  Votes live in redis.  We can tally the raw
+          // results before opening a DB transaction, so we're not holding the DB transaction open
+          // while we talk to redis over the network some more.
+          const maybeVoteCounts = await interaction.handler.voteCountsForNode(
+            team_id,
+            node,
+            redisClient,
+          );
+
+          // Okay now we have to see if this is still the current node, and what the interaction
+          // graph state for this team is at that node, which does require looking at the DB.
+
+          const { result } = await teamInteractionStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async (_, mutator) => {
+              // Look up the most recent entry in the log for this interaction.
+              const interactionLog = mutator.log.filter(
+                (e) => e.slug === interactionId,
+              );
+              const latest = interactionLog.at(-1);
+              if (!latest) {
+                console.log(
+                  `no latest node for team ${teamId} slug ${interactionId}`,
+                );
+                // No log?  Can't advance.
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
+              }
+              if (latest.node !== fromNode) {
+                // Interaction is not currently at fromNode.
+                console.log(
+                  `latest node is not fromNode: ${latest.node} vs ${fromNode}`,
+                );
+                return {
+                  status: 400 as const,
+                  body: null,
+                };
+              }
+              const now = Date.now();
+              const ts = fixTimestamp(latest.timestamp);
+              const nodeEntered = ts.getTime();
+              const advanceAfter = interaction.handler.advanceAfterTime(
+                fromNode,
+                nodeEntered,
+              );
+              if (advanceAfter === undefined) {
+                return {
+                  status: 500 as const,
+                  body: `Unable to determine time at which to advance ${interactionId} for team ${teamId} from ${fromNode}`,
+                };
+              }
+              const FUDGE_FACTOR = 500;
+              if (now >= advanceAfter - FUDGE_FACTOR) {
+                // Okay we can actually do the work now.
+
+                // Compute the next node & next state
+                const maybeNext = await interaction.handler.computeNext({
+                  teamId: team_id,
+                  currentNode: node,
+                  state: fixData(latest.graph_state),
+                  maybeVoteCounts,
+                  redisClient,
+                });
+                if (!maybeNext) {
+                  // We couldn't figure out where we go next.
+                  return {
+                    status: 500 as const,
+                    body: `Unable to determine next node for team ${teamId} in interaction ${interactionId} at ${fromNode}`,
+                  };
+                }
+                // I don't actually know how to parameterize these over the various flavors of interaction graph so
+                // here we are casting things around
+                const { nextNode, nextState } = maybeNext as {
+                  nextNode: { id: string };
+                  nextState: object;
+                };
+                await mutator.appendLog({
+                  team_id,
+                  slug: interactionId,
+                  predecessor: fromNode,
+                  node: nextNode.id,
+                  graph_state: nextState,
+                });
+                return {
+                  status: 200 as const,
+                  body: {},
+                };
+              } else {
+                return {
+                  status: 429 as const,
+                  body: null,
+                };
+              }
+            },
+          );
+          return result;
+        },
       },
       completeInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: ({ params: { teamId, interactionId }, body }) =>
-          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            const existing = mutator.log.filter(
-              (e) =>
-                (e.team_id === team_id || e.team_id === undefined) &&
-                (e.type === "interaction_unlocked" ||
-                  e.type === "interaction_started" ||
-                  e.type === "interaction_completed") &&
-                e.slug === interactionId,
-            );
-            const is_unlocked = existing.some(
-              (entry) => entry.type === "interaction_unlocked",
-            );
-            const is_started = existing.some(
-              (entry) => entry.type === "interaction_started",
-            );
-            const is_completed = existing.some(
-              (entry) => entry.type === "interaction_completed",
-            );
-            console.log("is_unlocked", is_unlocked);
-            console.log("is_started", is_started);
-            console.log("is_completed", is_completed);
-            if (!is_unlocked || !is_started) {
-              return false;
-            }
-            if (!is_completed) {
-              await mutator.appendLog({
-                team_id,
-                type: "interaction_completed",
-                slug: interactionId,
-                data: {
-                  result: body.result,
-                },
-              });
-            }
-            return true;
-          }),
+        handler: async ({ params: { teamId, interactionId } }) => {
+          const interaction = INTERACTIONS[interactionId];
+          if (!interaction) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+
+          return executeTeamStateHandler(
+            teamId,
+            async (trx, mutator, team_id) => {
+              const existing = mutator.log.filter(
+                (e) =>
+                  (e.team_id === team_id || e.team_id === undefined) &&
+                  (e.type === "interaction_unlocked" ||
+                    e.type === "interaction_started" ||
+                    e.type === "interaction_completed") &&
+                  e.slug === interactionId,
+              );
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+              const is_completed = existing.some(
+                (entry) => entry.type === "interaction_completed",
+              );
+              console.log("is_unlocked", is_unlocked);
+              console.log("is_started", is_started);
+              console.log("is_completed", is_completed);
+              if (!is_unlocked || !is_started) {
+                return false;
+              }
+              if (!is_completed) {
+                let interactionResult = "";
+                if (interaction.type === "virtual") {
+                  // Then we need to compute the result from the team.  Get the last log entry that
+                  // applies to this interaction; we expect it to be a final node.
+                  const finalNode = await getLastTeamInteractionStateLogEntry(
+                    team_id,
+                    interactionId,
+                    trx,
+                  );
+                  if (!finalNode) return false;
+                  const result = interaction.handler.finalState({
+                    nodeId: finalNode.node,
+                    state: finalNode.graph_state,
+                  }) as string | undefined;
+                  if (result === undefined) {
+                    // No final result recorded for this interaction in the DB yet.  Finish the interaction.
+                    return false;
+                  }
+                  interactionResult = result;
+                }
+
+                await mutator.appendLog({
+                  team_id,
+                  type: "interaction_completed",
+                  slug: interactionId,
+                  data: {
+                    result: interactionResult,
+                  },
+                });
+              }
+              return true;
+            },
+          );
+        },
       },
       getFullActivityLog: {
         middleware: [frontendAuthMiddleware],
@@ -2460,6 +3273,66 @@ export async function getRouter({
           return {
             status: 200,
             body,
+          };
+        },
+      },
+      getFullTeamInteractionStateLog: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ query: { since, team_id, slug } }) => {
+          let effectiveSince = undefined;
+          if (since) {
+            const sinceParsed = Number(since);
+            if (sinceParsed > 0) {
+              effectiveSince = sinceParsed;
+            }
+          }
+          let effectiveTeamId = undefined;
+          if (team_id) {
+            const teamIdParsed = Number(team_id);
+            if (teamIdParsed > 0) {
+              effectiveTeamId = teamIdParsed;
+            }
+          }
+          const entries = await knex.transaction(
+            async (trx) => {
+              return getTeamInteractionStateLog(
+                effectiveTeamId,
+                effectiveSince,
+                slug,
+                trx,
+              );
+            },
+            { readOnly: true },
+          );
+          const body = entries.map((e) => {
+            const entry = cleanupTeamInteractionStateLogEntryFromDB(e);
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
+          });
+          return {
+            status: 200,
+            body,
+          };
+        },
+      },
+      getVotes: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId, slug, pollId } }) => {
+          const team_id = parseInt(teamId, 10);
+          if (!redisClient) {
+            return {
+              status: 500,
+              body: null,
+            };
+          }
+          const redisKey = `/team/${team_id}/polls/${slug}/${pollId}`;
+          const votes = await redisClient.hGetAll(redisKey);
+          const results = countVotes(votes);
+          return {
+            status: 200,
+            body: results,
           };
         },
       },

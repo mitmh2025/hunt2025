@@ -1,9 +1,9 @@
-import React, { type ReactNode } from "react";
+import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
 import image from "./assets/image.png";
 
-const DATA: ReactNode[][] = [
+const DATA: string[][] = [
   [
     "Crowd-sourced interview on Reddit, for short",
     "No particular one",
@@ -99,10 +99,10 @@ const DATA: ReactNode[][] = [
     "Clickwrap button title",
     "Pictures-in-picture",
     "Birthplace of Jules Verne",
-    <strong key="zero">Zero</strong>,
+    "Zero",
     "Insecure remote login protocol",
     "Tundra or Highlander",
-    <strong key="one">One</strong>,
+    "One",
     "Remove a cork from",
     "Functional",
   ],
@@ -124,7 +124,7 @@ const DATA: ReactNode[][] = [
   ],
 ];
 
-const ClueGroup = styled.div`
+const StyledTable = styled.table`
   margin: 1em 0;
 `;
 
@@ -145,12 +145,24 @@ const Puzzle = (): JSX.Element => {
         alt="A very large black-and-white tiled bitmap."
       />
       {DATA.map((clues, i) => (
-        <ClueGroup key={i}>
-          {clues.map((clue, j) => (
-            <div key={j}>{clue}</div>
-          ))}
-          {i < DATA.length - 1 && <hr />}
-        </ClueGroup>
+        <React.Fragment key={i}>
+          <StyledTable>
+            {clues.map((clue, j) => (
+              <tr key={j}>
+                <td
+                  style={{
+                    fontWeight: ["Zero", "One"].includes(clue)
+                      ? "bold"
+                      : "normal",
+                  }}
+                >
+                  {clue}
+                </td>
+              </tr>
+            ))}
+          </StyledTable>
+          <hr />
+        </React.Fragment>
       ))}
     </>
   );

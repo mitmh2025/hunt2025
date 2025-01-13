@@ -1,4 +1,5 @@
 import React from "react";
+import { styled } from "styled-components";
 import "./assets/waypoint0.opus";
 import "./assets/waypoint1.opus";
 import "./assets/waypoint10.opus";
@@ -28,9 +29,26 @@ import "./assets/waypoint6.opus";
 import "./assets/waypoint7.opus";
 import "./assets/waypoint8.opus";
 import "./assets/waypoint9.opus";
+import type { TeamHuntState } from "../../../../lib/api/client";
+import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 
-const Puzzle = () => {
+const Note = styled.p`
+  margin: 0 2em;
+  font-size: 24px;
+  font-family: "Reenie Beanie";
+`;
+
+const Puzzle = ({
+  teamName,
+  teamState,
+}: {
+  teamName: string;
+  teamState: TeamHuntState;
+}) => {
+  const videoReleased =
+    teamState.rounds.the_missing_diamond?.gates?.includes("mdg12") ?? false;
+
   return (
     <>
       <p className="puzzle-flavor">We need to speak with Billie right away.</p>
@@ -54,6 +72,63 @@ const Puzzle = () => {
       </AuthorsNoteBlock>
 
       <p className="puzzle-flavor"> How do we confront the thief? </p>
+
+      {videoReleased && (
+        <>
+          <hr />
+          <p>
+            When you arrived at the Gala, a paralegal met you with a note from
+            Billie:
+          </p>
+          <Note>
+            <i>Dear {teamName}:</i>
+            <br />
+            <i>
+              I need your help with something. There’s one more witness we need
+              to track down. But there’s too many open ears in this place, so
+              let’s meet somewhere a little more private. First things first,
+              give my associate that radio.
+            </i>
+          </Note>
+          <p>
+            The paralegal then took your radio and tuned it to{" "}
+            <Math>
+              <MFrac>
+                <MRow>
+                  <MN>17</MN>
+                  <MI>π</MI>
+                </MRow>
+                <MRow>
+                  <MN>10</MN>
+                </MRow>
+              </MFrac>
+            </Math>{" "}
+            before returning it to you and continuing to read:
+          </p>
+          <Note>
+            <i>
+              Make a note, kid; this is the best station for catching crooks. I
+              have some last minute business to take care of nearby, but head
+              down those stairs and out the door and I’ll meet you there in a
+              minute.
+            </i>
+          </Note>
+          <p>
+            You then left down the stairs to find Billie, but when you got to
+            the bottom of the staircase, Billie’s voice came to you over the
+            radio:
+          </p>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/9XjTJp2fDPQ?"
+            title="The Runaround"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
+        </>
+      )}
     </>
   );
 };

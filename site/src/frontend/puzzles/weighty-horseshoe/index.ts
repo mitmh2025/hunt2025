@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "XOXO",
   slug: "xoxo",
+  code_name: "weighty-horseshoe",
   initial_description: "A grid of criss-crosses and a set of love poems",
   answer: "FROM RUSSIA WITH LOVE",
   authors: ["Nicholas Georgiou"],

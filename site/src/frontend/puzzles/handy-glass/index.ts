@@ -7,6 +7,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Wouthit Porbelm", // If this gets moved into Dead Thief, A Csorrowsd Otsefuabcd or Sdntardas Hvae Selppid
   slug: HANDY_GLASS_SLUG, // and remember to update this variable too.
+  code_name: "handy-glass",
   initial_description: "Crossword puzzle.",
   answer: "TODO PENDING",
   authors: ["Hubert Hwang", "Teddy McArthur"],

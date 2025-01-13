@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Find Other Ways of Seeing",
   slug: "find_other_ways_of_seeing",
+  code_name: "discrete-spine",
   initial_description:
     "Strange printed text with handwritten notes and a short voice clip",
   answer: "RED SASH",

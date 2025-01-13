@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Downright Backwards",
   slug: "downright_backwards",
+  code_name: "able-worm",
   initial_description:
     "A list of crossword clues and a list of number triplets",
   answer: "GUIANA CHESTNUT",

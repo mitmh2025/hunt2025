@@ -471,6 +471,8 @@ export default function createConfigs(_env, argv) {
       activity_log: "./src/frontend/client/activity_log.tsx",
       all_puzzles: "./src/frontend/client/all_puzzles.tsx",
       hub: "./src/frontend/client/hub.tsx",
+      interaction_virtual: "./src/frontend/client/interaction_virtual.tsx",
+      timeline: "./src/frontend/timeline/client.tsx",
       manage_team: "./src/frontend/client/manage_team.tsx",
       navbar: "./src/frontend/client/navbar.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
@@ -479,6 +481,8 @@ export default function createConfigs(_env, argv) {
       // Included on the round pages
       the_missing_diamond:
         "./src/frontend/rounds/the_missing_diamond/client.tsx",
+      the_missing_diamond_puzzle:
+        "./src/frontend/rounds/the_missing_diamond/puzzleClient.tsx",
       stakeout: "./src/frontend/rounds/stakeout/client.tsx",
       paper_trail: "./src/frontend/rounds/paper_trail/client.tsx",
       illegal_search: "./src/frontend/rounds/illegal_search/client.tsx",
@@ -508,11 +512,14 @@ export default function createConfigs(_env, argv) {
         "./src/frontend/rounds/illegal_search/client/Telephone.tsx",
 
       // Included on specific puzzle pages
+      puzzle_deserted_ninja: "./src/frontend/puzzles/deserted-ninja/client.tsx",
       puzzle_few_nail: "./src/frontend/puzzles/few-nail/client.tsx",
       puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
       puzzle_lean_lock: "./src/frontend/puzzles/lean-lock/client.tsx",
       puzzle_legitimate_bridge:
         "./src/frontend/puzzles/legitimate-bridge/client.tsx",
+      puzzle_metallic_dragon:
+        "./src/frontend/puzzles/metallic-dragon/client.tsx",
       puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
       puzzle_quixotic_shoe: "./src/frontend/puzzles/quixotic-shoe/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",

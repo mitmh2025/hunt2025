@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Jewelry Store",
   slug: "the_jewelry_store",
+  code_name: "reliable-night",
   answer: "OFFER CARAT TO A LAPIDARY",
   authors: ["Mike Mannis", "Alex St Claire"],
   editors: [

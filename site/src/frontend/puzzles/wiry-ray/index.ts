@@ -6,6 +6,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Deepfrost",
   slug: "deepfrost",
+  code_name: "wiry-ray",
   initial_description: "A text adventure",
   answer: "KENGREXAL",
   authors: ["Chris Gatesman", "Mark Gatesman"],

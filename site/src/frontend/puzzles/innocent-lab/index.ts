@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Chemicals Are Sexy",
   slug: "chemicals_are_sexy",
+  code_name: "innocent-lab",
   initial_description: "Cryptic-y clues and chemical bottles",
   answer: "ESCALATION",
   authors: ["Sid Creutz", "Chris Roske", "Kevin Hwang"],

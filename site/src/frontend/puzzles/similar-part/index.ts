@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Art History",
   slug: "art_history",
+  code_name: "similar-part",
   initial_description: "A suggestion to visit the Gala",
   answer: "FUR COAT",
   authors: ["Sarah Leadbeater", "Arcturus Wang"],

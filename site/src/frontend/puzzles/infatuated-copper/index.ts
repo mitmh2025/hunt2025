@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Tunnels Beneath the Institute",
   slug: "the_tunnels_beneath_the_institute",
+  code_name: "infatuated-copper",
   initial_description:
     "A sequence of video, audio, and text clips, each with an associated content warning",
   answer: "POSANGAR",

@@ -23,7 +23,7 @@ type GatesIndexData = {
 };
 
 export default function Gates() {
-  const { adminClient, appendActivityLogEntries } = useOpsClients();
+  const { adminClient, updateActivityLog } = useOpsClients();
   const opsData = useOpsData();
   const isOpsAdmin = useIsOpsAdmin();
   const dialogs = useDialogs();
@@ -52,7 +52,7 @@ export default function Gates() {
                 throw new Error(`HTTP ${res.status}: ${res.body}`);
               }
 
-              appendActivityLogEntries(res.body);
+              await updateActivityLog({ forceRequest: true });
 
               notifications.show(
                 `Satisfied ${gate.displayName} for all teams`,

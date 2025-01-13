@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "The Boardwalk",
   slug: "the_boardwalk",
+  code_name: "dental-shark",
   authors: ["Michelle Rosen"],
   editors: ["James Douberley", "Henry Wong", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [],

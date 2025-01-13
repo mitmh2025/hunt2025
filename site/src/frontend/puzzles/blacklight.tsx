@@ -22,6 +22,7 @@ export function blacklightPuzzle(
   return {
     ...base,
     title: `${base.title} (Under Blacklight)`,
+    code_name: base.code_name,
     slug: `${base.slug}_blacklight`,
     content: {
       ...base.content,

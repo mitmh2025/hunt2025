@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "No Notes",
   slug: "no_notes",
+  code_name: "false-pole",
   initial_description: "A series of musical staves and text clues",
   answer: "CANINE PARTNER",
   authors: ["Kevin Hwang", "Sid Creutz"],

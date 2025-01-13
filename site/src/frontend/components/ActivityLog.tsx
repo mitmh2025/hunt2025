@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { type ActivityLogEntry } from "../../../lib/api/client";
 import logoIcon from "../../assets/logo-simple.svg";
@@ -299,6 +299,37 @@ const ActivityLogTable = styled.table`
 `;
 
 const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
+  const [sortDesc, setSortDesc] = React.useState(true);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("activityLogSortDesc") === "false") {
+      setSortDesc(false);
+    }
+  }, []);
+
+  const lastLogLength = React.useRef(log.length);
+  useEffect(() => {
+    if (
+      !sortDesc &&
+      log.length > lastLogLength.current &&
+      window.scrollY + window.innerHeight > document.body.scrollHeight - 250
+    ) {
+      // Scroll top bottom automatically if we're near the bottom, sorting ascending,
+      // and new logs are added.
+      window.scrollTo({
+        left: 0,
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+    lastLogLength.current = log.length;
+  }, [log, sortDesc]);
+
+  function toggleSort() {
+    setSortDesc(!sortDesc);
+    window.localStorage.setItem("activityLogSortDesc", String(!sortDesc));
+  }
+
   if (log.length === 0) {
     return <div>No activity yet.</div>;
   }
@@ -315,11 +346,18 @@ const ActivityLog = ({ log }: { log: ActivityLogEntry[] }) => {
     );
   });
 
+  if (sortDesc) {
+    rows.reverse();
+  }
+
   return (
     <ActivityLogTable>
       <thead>
         <tr>
-          <th>Time</th>
+          <th onClick={toggleSort} role="button" style={{ cursor: "pointer" }}>
+            Time
+            {sortDesc ? " ⬇️" : " ⬆️"}
+          </th>
           <th colSpan={2}>Event</th>
           <th>🗝️ change</th>
           <th>🗝️ total</th>

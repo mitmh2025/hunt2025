@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "\u0c95\u0cbe\u0cac\u0cb5\u0ca6\u0ccb\u0cc0\u0ccd",
   slug: "\u0c95\u0cbe\u0cac\u0cb5\u0ca6\u0ccb\u0cc0\u0ccd",
+  code_name: "limited-marble",
   initial_description: "List of words in different language scripts",
   answer: "SKETCHPAD",
   authors: ["Wesley Graybill"],

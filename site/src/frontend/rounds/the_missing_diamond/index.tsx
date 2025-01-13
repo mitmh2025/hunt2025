@@ -160,7 +160,7 @@ const MISSING_DIAMOND_INTERACTIONS = [
   "interview_at_the_art_gallery",
 ] as const;
 
-type MissingDiamondSlot = (typeof MISSING_DIAMOND_SLOTS)[number];
+export type MissingDiamondSlot = (typeof MISSING_DIAMOND_SLOTS)[number];
 type MissingDiamondInteraction = (typeof MISSING_DIAMOND_INTERACTIONS)[number];
 
 function lookupSlug(
@@ -402,7 +402,7 @@ const finalSpeechBubble: Omit<MissingDiamondSpeechBubble, "slug"> = {
 };
 const finalSpeechBubbleSlot = "mdm05";
 
-type WitnessName =
+export type WitnessName =
   | "arborist"
   | "artist"
   | "patrolman"
@@ -431,12 +431,11 @@ type WitnessName =
   | "shop-clerk"
   | "tailor"
   | "vintner";
-const witnesses: Record<
-  WitnessName,
-  Omit<MissingDiamondWitness, "asset" | "puzzle"> & {
-    asset: { unlockable: string; unlocked: string; solved: string };
-  }
-> = {
+
+export type WitnessRecord = Omit<MissingDiamondWitness, "asset" | "puzzle"> & {
+  asset: { unlockable: string; unlocked: string; solved: string };
+};
+export const witnesses: Record<WitnessName, WitnessRecord> = {
   arborist: {
     asset: {
       unlockable: arboristLocked,
@@ -857,7 +856,7 @@ const witnesses: Record<
   },
 };
 
-const slotToWitness: Partial<Record<MissingDiamondSlot, WitnessName>> = {
+export const slotToWitness: Partial<Record<MissingDiamondSlot, WitnessName>> = {
   mdp01: "baker",
   mdp02: "artist",
   mdp03: "florist",
@@ -1084,7 +1083,7 @@ function genInteractions(
 
     return [
       {
-        alt: interaction.title,
+        alt: interaction?.title ?? "unknown interaction",
         pos: spec.pos,
         asset: spec.asset,
         slug: interactionId,

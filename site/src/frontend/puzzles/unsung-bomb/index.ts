@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "An Argument",
   slug: "an_argument",
+  code_name: "unsung-bomb",
   initial_description: "A connect-the-dots with letters, and several clues",
   answer: "RIGHT TO BEAR ARMS",
   authors: ["James Douberley"],

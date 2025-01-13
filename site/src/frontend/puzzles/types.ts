@@ -51,8 +51,8 @@ type BaseContentProps = {
 };
 
 type PuzzleContentProps = BaseContentProps & {
+  teamName: string;
   type: "puzzle";
-
   puzzleState: PuzzleState;
 };
 
@@ -113,6 +113,9 @@ export const PuzzleDefinitionMetadataSchema = z.object({
   // The unique slug for this puzzle, which should be approximately the title in all lowercase, with
   // spaces replaced with underscores.
   slug: z.string(),
+
+  // Puzzup code name for this puzzle
+  code_name: z.string(),
 
   // The non-spoilery description of this puzzle, as seen by hunters while the puzzle is locked but
   // unlockable (by spending unlock currency).  This should be a description of what hunters will

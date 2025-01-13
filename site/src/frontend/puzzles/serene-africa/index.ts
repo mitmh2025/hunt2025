@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Papa’s Bookcase",
   slug: "papas_bookcase",
+  code_name: "serene-africa",
   answer: "FEEL GOOD FICTION",
   authors: ["Hubert Hwang", "Alex St Claire", "James Douberley", "Mike Mannis"],
   editors: ["Kevin Hwang", "Li-Mei Lim", "Robin Deits"],

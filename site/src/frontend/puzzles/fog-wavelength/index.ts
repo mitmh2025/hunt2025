@@ -5,6 +5,7 @@ import Solution from "./solution";
 const puzzle: PuzzleDefinition = {
   title: "Cacciando Trio Misterioso",
   slug: "cacciando_trio_misterioso",
+  code_name: "fog-wavelength",
   initial_description: "A sound clip and a music critic’s review",
   answer: "WALTZES AND MARCHES",
   authors: ["Denis Auroux"],
