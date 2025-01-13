@@ -80,7 +80,7 @@ export function aboutHandler(req: Request) {
           which can be used to instantly get the answer to a (non-meta) puzzle
           that you have unlocked. Spending a clue gives you the answer to a
           puzzle, which you can then submit to solve the puzzle (and receive a
-          key for solving).
+          key for solving, if the puzzle would have otherwise granted one).
         </p>
         <p>
           Clues can also be exchanged for keys, at a rate of 1 clue to 3 keys.
