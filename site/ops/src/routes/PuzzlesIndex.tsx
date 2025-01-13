@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { useNotifications } from "@toolpad/core";
+import { useDialogs, useNotifications } from "@toolpad/core";
 import { Duration } from "luxon";
 import {
   createMRTColumnHelper,
@@ -7,12 +7,13 @@ import {
   MaterialReactTable,
   type MRT_Row,
 } from "material-react-table";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import HUNT from "../../../src/huntdata";
 import { type PuzzleSlot } from "../../../src/huntdata/types";
-import { useOpsData, type OpsData } from "../OpsDataProvider";
+import { useOpsClients, useOpsData, type OpsData } from "../OpsDataProvider";
 import { useIsOpsAdmin } from "../components/AdminOnly";
+import UnlockHintsDialog from "../components/UnlockHintsDialog";
 import { median } from "../util/stats";
 
 function slotNameAndSlug(slot: PuzzleSlot, opsData: OpsData) {
@@ -47,6 +48,9 @@ type PuzzleIndexData = {
 
 export default function PuzzlesIndex() {
   const opsData = useOpsData();
+  const dialogs = useDialogs();
+  const [submitting, setSubmitting] = useState(false);
+  const { adminClient, updateActivityLog } = useOpsClients();
 
   const data = useMemo(() => {
     const puzzleDataBySlug: Record<
@@ -257,6 +261,46 @@ export default function PuzzlesIndex() {
   const isOpsAdmin = useIsOpsAdmin();
   const notifications = useNotifications();
 
+  const onClickUnlockHints = async (
+    selectedPuzzleNames: string[],
+    selectedPuzzleSlugs: string[],
+  ) => {
+    const hours = await dialogs.open(UnlockHintsDialog, selectedPuzzleNames);
+    if (hours !== null) {
+      try {
+        setSubmitting(true);
+        const result = await adminClient.unlockHints({
+          body: {
+            puzzleSlugs: selectedPuzzleSlugs,
+            minimumUnlockHours: hours,
+          },
+        });
+
+        if (result.status !== 200) {
+          throw new Error(`HTTP ${result.status}: ${result.body}`);
+        }
+
+        await updateActivityLog({ forceRequest: true });
+
+        notifications.show(
+          `Hints will unlock for selected puzzles in ${hours} hours`,
+          {
+            severity: "success",
+            autoHideDuration: 3000,
+          },
+        );
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        notifications.show(`Failed to unlock hints: ${msg}`, {
+          severity: "error",
+          autoHideDuration: 3000,
+        });
+      } finally {
+        setSubmitting(false);
+      }
+    }
+  };
+
   const table = useMaterialReactTable({
     columns,
     data,
@@ -294,11 +338,15 @@ export default function PuzzlesIndex() {
         >
           <Button
             variant="contained"
+            disabled={submitting}
             onClick={() => {
-              notifications.show("Not implemented yet", {
-                severity: "error",
-                autoHideDuration: 3000,
-              });
+              const selectedPuzzleNames = table
+                .getSelectedRowModel()
+                .rows.map((r) => r.original.name);
+              const selectedPuzzleSlugs = table
+                .getSelectedRowModel()
+                .rows.map((r) => r.original.slug);
+              void onClickUnlockHints(selectedPuzzleNames, selectedPuzzleSlugs);
             }}
           >
             Enable Hints

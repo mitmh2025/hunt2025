@@ -228,8 +228,8 @@ export function formatActivityLogEntry(
           <>
             Hints will become available for puzzle{" "}
             <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> at{" "}
-            {new Date(entry.timestamp).toLocaleString("en-US", {
-              timeZone: "America/New York",
+            {new Date(entry.hints_available_at).toLocaleString("en-US", {
+              timeZone: "America/New_York",
             })}
           </>
         ),

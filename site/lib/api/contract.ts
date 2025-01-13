@@ -227,7 +227,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
 =======
 >>>>>>> c7fd7c53 (solver facing presentation)
       type: z.literal("team_hints_unlocked"),
-      hints_available_at: z.string().datetime(),
+      hints_available_at: z.string().datetime().pipe(z.coerce.date()),
     }),
   ),
 ]);

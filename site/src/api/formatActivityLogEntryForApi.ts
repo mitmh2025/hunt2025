@@ -83,9 +83,10 @@ export default function formatActivityLogEntryForApi(
         break;
       case "team_hints_unlocked": {
         const title = PUZZLES[e.slug]?.title;
+        console.error("team hints unlocked seen! ", entry);
         entry = Object.assign(entry, {
           title: title ?? `Stub puzzle for slog ${e.slug}`,
-          timestamp: entry.hints_available_at,
+          hints_available_at: entry.hints_available_at,
         });
         break;
       }
