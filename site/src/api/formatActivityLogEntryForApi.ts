@@ -69,6 +69,15 @@ export default function formatActivityLogEntryForApi(
           });
         }
         break;
+      case "erratum_issued":
+        {
+          const title = PUZZLES[e.slug]?.title;
+          entry = Object.assign(entry, {
+            title: title ?? `Stub puzzle for slot ${e.slug}`,
+            show_notification: true,
+          });
+        }
+        break;
     }
   }
   // Note: API objects flatten `data` into the object.

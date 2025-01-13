@@ -2183,6 +2183,60 @@ export async function getRouter({
           };
         },
       },
+      issueErratum: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { slug }, req }) => {
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            undefined,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              // Check if this team has already unlocked this puzzle
+              let teamIdsToNotify = new Set<number>();
+
+              for (const entry of mutator.log) {
+                if (entry.type === "puzzle_unlocked" && entry.slug === slug) {
+                  if (entry.team_id === undefined) {
+                    // This puzzle has been unlocked for all teams by admin.
+                    teamIdsToNotify = new Set(mutator.allTeams);
+                  } else {
+                    teamIdsToNotify.add(entry.team_id);
+                  }
+                }
+              }
+
+              if (teamIdsToNotify.size === mutator.allTeams.size) {
+                return [
+                  await mutator.appendLog({
+                    type: "erratum_issued",
+                    slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                ];
+              }
+
+              const newEntries: (InternalActivityLogEntry | undefined)[] = [];
+              for (const team_id of teamIdsToNotify) {
+                newEntries.push(
+                  await mutator.appendLog({
+                    team_id,
+                    type: "erratum_issued",
+                    slug,
+                    internal_data: {
+                      operator: req.authInfo?.adminUser,
+                    },
+                  }),
+                );
+              }
+              return newEntries;
+            },
+          );
+          return formatMutationResultForAdminApi(result);
+        },
+      },
       deactivateTeam: {
         middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ params: { teamId } }) => {

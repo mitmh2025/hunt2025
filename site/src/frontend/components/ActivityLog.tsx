@@ -210,6 +210,17 @@ export function formatActivityLogEntry(
         ),
         showNotification: true,
       };
+    case "erratum_issued":
+      return {
+        icon: <PuzzleIcon lockState="unlocked" />,
+        description: (
+          <>
+            Erratum issued for puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>
+          </>
+        ),
+        showNotification: true,
+      };
   }
 }
 

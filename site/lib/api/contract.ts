@@ -175,6 +175,9 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
       answer: z.string(),
     }),
   ),
+  ActivityLogEntryWithSlugAndTitle.merge(
+    z.object({ type: z.literal("erratum_issued") }),
+  ),
 ]);
 
 export type DehydratedActivityLogEntry = z.input<typeof ActivityLogEntrySchema>;

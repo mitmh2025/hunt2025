@@ -320,4 +320,12 @@ export const adminContract = c.router({
     },
     summary: "Unregister a team for a deserted-ninja session",
   },
+  issueErratum: {
+    method: "POST",
+    path: "/admin/puzzles/:slug/issueErratum",
+    body: z.object({}),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
 });

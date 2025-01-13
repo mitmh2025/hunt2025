@@ -1,8 +1,10 @@
-import { useMemo } from "react";
+import { Button } from "@mui/material";
+import { useDialogs, useNotifications } from "@toolpad/core";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import HUNT from "../../../src/huntdata";
-import { useOpsData } from "../OpsDataProvider";
+import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import PuzzleTeamList from "../components/PuzzleTeamList";
 import { SinglePuzzleStats } from "../components/SinglePuzzleStats";
 import { slotName } from "../opsdata/puzzleTitles";
@@ -35,8 +37,12 @@ export type SinglePuzzleStats = {
 };
 
 export default function Puzzle() {
+  const dialogs = useDialogs();
   const opsData = useOpsData();
   const slug = useParams().slug ?? "";
+  const [submitting, setSubmitting] = useState(false);
+  const { adminClient, updateActivityLog } = useOpsClients();
+  const notifications = useNotifications();
 
   const { round, puzzleSlot } = useMemo(() => {
     let round = null;
@@ -208,6 +214,51 @@ export default function Puzzle() {
 
   const title = slotName(puzzleSlot, opsData.puzzleMetadata);
 
+  function onClickNotifyErratum() {
+    void dialogs.confirm(
+      `Are you sure you want to notify teams that an erratum has been issued for ${title}?`,
+      {
+        title: "Push Erratum Notification",
+        okText: "Push",
+        cancelText: "Cancel",
+        onClose: async (result) => {
+          if (!result) {
+            return;
+          }
+
+          try {
+            setSubmitting(true);
+            const result = await adminClient.issueErratum({
+              params: { slug },
+              body: {},
+            });
+
+            if (result.status !== 200) {
+              throw new Error(`HTTP ${result.status}: ${result.body}`);
+            }
+
+            postMessage("");
+
+            await updateActivityLog({ forceRequest: true });
+
+            notifications.show("Erratum issued", {
+              severity: "success",
+              autoHideDuration: 3000,
+            });
+          } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : "Unknown error";
+            notifications.show(`Failed to issue erratum: ${msg}`, {
+              severity: "error",
+              autoHideDuration: 3000,
+            });
+          } finally {
+            setSubmitting(false);
+          }
+        },
+      },
+    );
+  }
+
   return (
     <>
       <p>
@@ -236,6 +287,16 @@ export default function Puzzle() {
         >
           Solution
         </a>
+        <br />
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={submitting}
+          sx={{ mt: 2 }}
+          onClick={onClickNotifyErratum}
+        >
+          Push Erratum Notification
+        </Button>
       </p>
 
       <SinglePuzzleStats stats={stats} />
