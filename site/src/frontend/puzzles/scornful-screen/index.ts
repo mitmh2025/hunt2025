@@ -127,7 +127,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["EVANSTRIP"],
-      reply: "Keep going.",
+      reply: "Keep going!",
     },
     {
       guess: ["GO SEE STATA BOARD FIRST LEVEL"],

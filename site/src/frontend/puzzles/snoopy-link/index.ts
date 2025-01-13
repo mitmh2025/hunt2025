@@ -79,7 +79,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["ADAM RUINS EPISODE NUMS", "SORT ON UNESCO HERITAGE"],
-      reply: "Keep going",
+      reply: "Keep going!",
     },
     {
       guess: ["NOW RUIN SOMETHING ELSE"],

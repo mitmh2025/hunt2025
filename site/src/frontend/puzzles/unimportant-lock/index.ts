@@ -100,7 +100,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["HOUSE"],
-      reply: "Well done for recovering the shape; keep going.",
+      reply: "Well done for recovering the shape; keep going!",
     },
   ],
 };

@@ -61,7 +61,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["GHOST LEG"],
-      reply: "Keep going.",
+      reply: "Keep going!",
     },
   ],
 };

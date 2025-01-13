@@ -81,7 +81,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["QWERTY OF TITLE"],
-      reply: "Keep going.",
+      reply: "Keep going!",
     },
   ],
 };
