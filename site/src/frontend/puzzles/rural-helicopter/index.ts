@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "paw_print_detective",
   code_name: "rural-helicopter",
   initial_description:
-    "A series of nucleotide sequences and suspect cards. CUTE DOGGOS!",
+    "A list of nucleotide sequences and suspect cards with disease names",
   answer: "SLEDDER",
   authors: ["Max Wolf"],
   editors: ["Joanna Murray", "Kevin Hwang", "Michele Pratusevich"],

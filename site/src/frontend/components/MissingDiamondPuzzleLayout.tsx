@@ -39,7 +39,7 @@ export const MissingDiamondTitleWrapper = styled(PuzzleTitleWrapper)`
   padding-top: 1em;
 `;
 
-const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
+export const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
   position: relative;
   background-image: url(${HeaderBg}), url(${BgLeft}), url(${BgRight});
   background-position: top, left, right;
@@ -50,6 +50,7 @@ const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
   background-repeat: no-repeat, repeat-y, repeat-y;
   background-color: ${MISSING_DIAMOND_SPECIAL_PURPLE};
   padding-left: 5rem;
+  min-height: calc(421 / 2128 * 1080px);
 
   .witness-assets {
     img {
@@ -70,6 +71,10 @@ const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
       line-height: 1;
       background-color: var(--gray-100);
     }
+  }
+
+  .solved-stamp {
+    right: 5em;
   }
 
   @media ${deviceMax.md} {

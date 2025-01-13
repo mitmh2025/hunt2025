@@ -356,21 +356,25 @@ const HUNT: Hunt = {
           id: "interview_at_the_boardwalk",
           title: "Interview at the Boardwalk",
           unlock_if: [{ slot_solved: "mdm01" }],
+          virtual: true,
         },
         {
           id: "interview_at_the_jewelry_store",
           title: "Interview at the Jewelry Store",
           unlock_if: [{ slot_solved: "mdm02" }],
+          virtual: true,
         },
         {
           id: "interview_at_the_casino",
           title: "Interview at the Casino",
           unlock_if: [{ slot_solved: "mdm03" }],
+          virtual: true,
         },
         {
           id: "interview_at_the_art_gallery",
           title: "Interview at the Art Gallery",
           unlock_if: [{ slot_solved: "mdm04" }],
+          virtual: true,
         },
 
         {
@@ -379,6 +383,7 @@ const HUNT: Hunt = {
           id: "the_crime_scene",
           title: "The Crime Scene",
           unlock_if: [{ slot_solved: "mdm05" }],
+          virtual: false,
         },
       ],
       unlock_if: [
@@ -677,6 +682,7 @@ const HUNT: Hunt = {
           unlock_if: [
             { slot_solved: "som01" }, // stakeout meta
           ],
+          virtual: false,
         },
       ],
       unlock_if: [
@@ -978,6 +984,7 @@ const HUNT: Hunt = {
           unlock_if: [
             { slot_solved: "ptm09" }, // papertrail super
           ],
+          virtual: false,
         },
       ],
       unlock_if: [
@@ -1125,6 +1132,7 @@ const HUNT: Hunt = {
           unlock_if: [
             { slot_solved: "bgm04" }, // background check super
           ],
+          virtual: false,
         },
       ],
       unlock_if: [
@@ -1507,6 +1515,7 @@ const HUNT: Hunt = {
           id: "confront_papa",
           title: "Confront Papa",
           unlock_if: [{ slot_solved: "ism03" }],
+          virtual: false,
         },
       ],
       unlock_if: [
@@ -1697,6 +1706,7 @@ const HUNT: Hunt = {
           unlock_if: [
             { slot_solved: "tmm01" }, // The Murder supermeta
           ],
+          virtual: false,
         },
       ],
       unlock_if: { interaction_completed: "the_crime_scene" },
@@ -1754,6 +1764,7 @@ const HUNT: Hunt = {
             { interaction_completed: "confront_papa" },
             { interaction_completed: "the_safehouse" },
           ],
+          virtual: false,
         },
       ],
       unlock_if: [
