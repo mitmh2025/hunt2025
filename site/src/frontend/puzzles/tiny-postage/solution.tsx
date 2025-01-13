@@ -1235,7 +1235,7 @@ const Solution = (): JSX.Element => {
         plink
         <br />
         “Bullet two located in crook of right elbow. It would have been all{" "}
-        <strong>over</strong>
+        <strong>over</strong>{" "}
         for this guy already.”
         <br />
         plink
