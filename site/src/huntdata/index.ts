@@ -891,7 +891,7 @@ const HUNT: Hunt = {
           internal_description: "Ads enabled for quixotic-shoe",
           satisfied_if: {
             oneOf: [
-              { slot_solved: "songs_on_the_radio" },
+              { slot_solved: "mdp03" }, // songs_on_the_radio
               { round_unlocked: "paper_trail" },
             ],
           },
