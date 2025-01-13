@@ -335,8 +335,9 @@ export function radioHandler(req: Request) {
             </p>
           </>
         )}
-        {teamState.state.rounds.the_missing_diamond?.interactions?.meet_billie
-          ?.state === "completed" && (
+        {teamState.state.rounds.the_missing_diamond?.gates?.includes(
+          "mdg13",
+        ) && (
           <>
             <h3 id="station-17pi-over-10">
               Chasing the Witness: <PiFraction num={17} denom={10} />

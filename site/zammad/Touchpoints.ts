@@ -156,6 +156,15 @@ const Touchpoints = {
     },
     closed_action: { type: "satisfy_gate", gate: "ptg15" },
   },
+  the_thief_activity: {
+    type: "activity",
+    description: "Activity: The Thief",
+    created_if: {
+      type: "slug_unlocked",
+      slug: "the_thief",
+    },
+    closed_action: { type: "satisfy_gate", gate: "mdg13" },
+  },
 } satisfies Record<string, TouchpointType>;
 
 export default Touchpoints;

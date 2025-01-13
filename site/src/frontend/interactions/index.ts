@@ -50,10 +50,6 @@ export const INTERACTIONS: Record<string, InteractionDefinition> = {
       JewelryStoreInteractionGraph,
     ),
   },
-  meet_billie: {
-    title: "Meet Billie",
-    type: "live",
-  },
   the_crime_scene: {
     title: "The Crime Scene",
     type: "live",
