@@ -100,6 +100,7 @@ export type Interaction = {
   id: string; // The globally-unique id for this interaction
   title: string;
   unlock_if: Condition; // A list of dependencies which must *all* be satisfied before this interaction becomes available
+  virtual: boolean;
 };
 
 // A full description of a hunt.

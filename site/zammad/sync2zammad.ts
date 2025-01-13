@@ -44,6 +44,7 @@ if (!zammadSecret) {
 }
 
 const BARTENDER_GROUP = "Bartender";
+const STAGE_MANAGER_GROUP = "Stage Manager";
 
 async function main({
   redisUrl,
@@ -118,6 +119,7 @@ async function main({
     return groupId;
   };
   const bartenderGroupId = await ensureGroup(BARTENDER_GROUP);
+  const stageManagerGroupId = await ensureGroup(STAGE_MANAGER_GROUP);
 
   const teamRegistrationLogTailer = newLogTailer({
     redisClient,
@@ -520,6 +522,7 @@ async function main({
       }
 
       const touchpointSlug = ticket.touchpoint_slug;
+      const interactionSlug = ticket.interaction_slug;
 
       if (touchpointSlug) {
         const touchpoint = (Touchpoints as Record<string, TouchpointType>)[
@@ -582,6 +585,39 @@ async function main({
               }
               break;
           }
+        }
+      }
+
+      if (interactionSlug) {
+        const teamTicketState =
+          teamTicketStates.get(teamId) ??
+          new TeamTicketState(HUNT, emptyTeamTicketState);
+
+        teamTicketState.haveInteractionTickets.set(interactionSlug, ticket);
+        teamTicketStates.set(teamId, teamTicketState);
+
+        if (zammadTicketStates.get(ticket.state_id) === "closed") {
+          frontendApiClient;
+          await pRetry(
+            async () => {
+              const resp = await frontendApiClient.completeInteraction({
+                params: {
+                  teamId: teamId.toString(),
+                  interactionId: interactionSlug,
+                },
+              });
+              if (resp.status !== 200) {
+                throw new Error(`Failed to close interaction: ${resp.status}`);
+              }
+            },
+            {
+              onFailedAttempt: (error) => {
+                console.error(
+                  `Failed to complete interaction for team ${teamId} and interaction ${interactionSlug}: ${error.message}. Retrying...`,
+                );
+              },
+            },
+          );
         }
       }
     }
@@ -663,7 +699,9 @@ async function main({
                 throw new Error("Unexpected touchpoint type");
             }
 
-            console.log("Creating ticket for", teamId, touchpointSlug);
+            console.log(
+              `Creating touchpoint ticket for team=${teamId} slug=${touchpointSlug}`,
+            );
             const ticket = await pRetry(
               () =>
                 zammadClient.createTicket({
@@ -701,6 +739,56 @@ async function main({
 
             teamTicketState.haveTouchpointTickets.set(
               touchpointSlug,
+              ticket.body,
+            );
+          }
+
+          for (const [
+            interactionSlug,
+            interactionTitle,
+          ] of teamTicketState.needInteractionTickets) {
+            if (teamTicketState.haveInteractionTickets.has(interactionSlug)) {
+              continue;
+            }
+
+            console.log(
+              `Creating interaction ticket for team=${teamId} interaction=${interactionSlug}`,
+            );
+            const ticket = await pRetry(
+              () =>
+                zammadClient.createTicket({
+                  body: {
+                    group_id: stageManagerGroupId,
+                    customer_id: zammadCustomer,
+                    title: `Interaction: ${interactionTitle}`,
+                    article: {
+                      type: "note",
+                      internal: true,
+                      body: "Closing this ticket will mark this touchpoint as completed.",
+                    },
+                    interaction_slug: interactionSlug,
+                  },
+                  extraHeaders: {
+                    "X-On-Behalf-Of": zammadCustomer.toString(),
+                  },
+                }),
+              {
+                onFailedAttempt: (error) => {
+                  console.error(
+                    `Failed to create ticket for team ${teamId} and interaction ${interactionSlug}: ${error.message}. Retrying...`,
+                  );
+                },
+              },
+            );
+            if (ticket.status !== 201) {
+              console.error(
+                `Failed to create ticket for team ${teamId}: ${ticket.status}`,
+              );
+              continue;
+            }
+
+            teamTicketState.haveInteractionTickets.set(
+              interactionSlug,
               ticket.body,
             );
           }
