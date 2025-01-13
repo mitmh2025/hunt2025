@@ -10,7 +10,7 @@ import bookcase_note_blacklight from "./assets/bookcase/note_blacklight.svg";
 import bookcase_note_blacklight_modal from "./assets/bookcase/note_blacklight_modal.svg";
 import bookcase_note_modal from "./assets/bookcase/note_modal.svg";
 import cryptex_bg from "./assets/cryptex/cryptex_bg.png";
-import cryptex_note from "./assets/cryptex/cryptex_note.svg";
+import cryptex_note from "./assets/cryptex/cryptex_note.png";
 import cryptex_note_blacklight from "./assets/cryptex/cryptex_note_blacklight.png";
 import cryptex_open from "./assets/cryptex/cryptex_open.svg";
 import cryptex_open_blacklight from "./assets/cryptex/cryptex_open_blacklight.svg";
