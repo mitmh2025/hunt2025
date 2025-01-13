@@ -15,7 +15,7 @@ import baby_aka_teresa_candy_tape from "./assets/baby_aka_teresa_candy_tape.png"
 import background_check_answer_solved from "./assets/background_check_answer_solved.png";
 import background_check_question_unlocked from "./assets/background_check_question_unlocked.png";
 import boardwalk_token_keychain from "./assets/boardwalk_token_keychain.png";
-import boardwalk_token_photo from "./assets/boardwalk_token_photo.png";
+import boardwalk_token_photo from "./assets/boardwalk_token_photo.jpg";
 import boardwalk_token_ticket_stub from "./assets/boardwalk_token_ticket_stub.png";
 import carter_aka_tape from "./assets/carter_aka_tape.png";
 import casino_token_ace_of_diamonds from "./assets/casino_token_ace_of_diamonds.png";

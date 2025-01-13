@@ -116,13 +116,8 @@ const InteractionStateLogView = ({
 
   // This won't actually be here in production, just for testing
   const hackAdvanceInteraction = useCallback(() => {
-    fetch(`/api/teams/4/interactions/${slug}/advance/${currentNodeId}`, {
+    fetch(`/interactions/${slug}/advance/${currentNodeId}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "applicaiton/json",
-        Accept: "application/json",
-        Authorization: "frontend-auth frontend",
-      },
     }).then(
       (result) => {
         console.log(result);
