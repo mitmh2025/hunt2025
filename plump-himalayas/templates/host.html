@@ -1,0 +1,30 @@
+<html>
+    <head>
+      <title>Test</title>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700" rel="stylesheet">
+        <link href="/assets/style.css" rel="stylesheet">
+        <script type="text/javascript" src="/assets/script.js"></script>
+    </head>
+    <body>
+      <div class="fixed" id="messages"></div>
+      <button onclick='sendMessage("start_game");'>START</button>
+      <button onclick='sendMessage("end_game");'>END</button>
+      <div id="chosen"><button id="verb" disabled></button> THE <button id="noun" disabled></button></div>
+      <div class="content" id="content">
+        <div id="col1-ops">
+          <h2>Controls</h2>
+          <div><input type="text" id="vidID" /><button onclick="updateVideoLink();">Update Video Link</button></div>
+        </div>
+        <div id="col2">
+          <div id="tasks-container">
+            <h2>Tasks</h2>
+            <ul id="tasks"> </ul>
+          </div>  
+        </div>
+      </div>
+
+      <script>
+        connectWebSocket("/host/ws/{{ game_id }}", updateFromSocket);
+      </script>
+    </body>
+</html>

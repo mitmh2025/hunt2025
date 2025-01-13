@@ -1,0 +1,20 @@
+<html>
+    <head>
+      <title>Test</title>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700" rel="stylesheet">
+        <link href="/assets/style.css" rel="stylesheet">
+        <script type="text/javascript" src="/assets/script.js"></script>
+    </head>
+    <body>
+      <div class="fixed" id="messages"></div>
+      <div id="display">
+        <div id="chosen"><button id="verb" disabled></button> THE <button id="noun" disabled></button></div>
+      </div>
+      <button id="audio-setup" onclick="hideButton('audio-setup');">Click button to enable audio</button>
+      <script>
+        playSound = true;
+        displayOnly = true;
+        connectWebSocket("/ws/{{game_id}}", updateFromSocket);
+      </script>
+    </body>
+</html>

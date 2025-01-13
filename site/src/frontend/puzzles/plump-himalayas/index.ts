@@ -28,6 +28,8 @@ const puzzle: PuzzleDefinition = {
   ],
   content: {
     component: Puzzle,
+    entrypoint: "puzzle_plump_himalayas",
+    copyable: false,
   },
   solution: {
     component: Solution,
