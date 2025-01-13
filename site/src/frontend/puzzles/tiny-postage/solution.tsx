@@ -1577,7 +1577,7 @@ const Solution = (): JSX.Element => {
         Index into the name on each tile by the number of stars below the
         instruction to get the clue phrase, ME MYSELF, and perhaps notice that
         the tile with an eye is in line of sight (once you “step back” off the
-        Chen Family Graduation tile to the two butterflies) to get the answer,
+        Chen Family Graduation tile to the two butterflies) to get the answer,{" "}
         <Mono>I</Mono>.
       </p>
       <StyledTable>
