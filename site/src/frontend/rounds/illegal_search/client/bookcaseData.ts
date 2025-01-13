@@ -69,7 +69,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         color: c4,
       },
       {
-        title: "Alice's Adventures in Wonderland",
+        title: "Alice’s Adventures in Wonderland",
         author: "Lewis Carroll",
         color: c1,
         size: "13px",
@@ -87,7 +87,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
     ],
     [
       {
-        title: "The Hitchhiker's Guide to the Galaxy",
+        title: "The Hitchhiker’s Guide to the Galaxy",
         author: "Douglas Adams",
         color: c3,
         size: "12px",
@@ -123,7 +123,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         color: c1,
       },
       {
-        title: "Tess of the d'Urbervilles",
+        title: "Tess of the d’Urbervilles",
         author: "Thomas Hardy",
         color: c4,
       },
@@ -218,7 +218,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         color: c4,
       },
       {
-        title: "Old Man's War",
+        title: "Old Man’s War",
         author: "John Scalzi",
         color: c6,
       },
@@ -253,7 +253,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         color: c2,
       },
       {
-        title: "The Handmaid's Tale",
+        title: "The Handmaid’s Tale",
         author: "Margaret Atwood",
         color: c7,
       },
@@ -327,7 +327,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         color: c2,
       },
       {
-        title: "One Flew Over the Cuckoo's Nest",
+        title: "One Flew Over the Cuckoo’s Nest",
         author: "Ken Kesey",
         color: c5,
       },
@@ -405,7 +405,7 @@ const data: { rows: BookShape[][]; extraRows: BookShape[][] } = {
         color: c5,
       },
       {
-        title: "Archangel's Storm",
+        title: "Archangel’s Storm",
         author: "Nalini Singh",
         color: c4,
       },

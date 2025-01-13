@@ -50,7 +50,7 @@ const solvedClues = [
   ["23A", "Rambling man", "/EDDY/"],
   ["24A", "Crumbling Greek product", "F(ish) + ETA"],
   ["26A", "Fishy serving", "SUS + HI_"],
-  ["28A", "He can't cook", "kALE Clearly"],
+  ["28A", "He can’t cook", "kALE Clearly"],
   ["29A", "Bursts", "POP’S + O + PEN"],
   ["32A", "Moved on from", "(l)OVER"],
   ["33A", "Spot on", "N_ + DELIA< + IT"],

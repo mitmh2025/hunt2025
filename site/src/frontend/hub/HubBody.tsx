@@ -108,7 +108,7 @@ const HubBody = ({ state }: { state: HubState }) => {
       <Wall>
         <Board>
           <SuspectCard
-            name='Robert "Papa" Finster'
+            name="Robert “Papa” Finster"
             title="The Boss"
             photoUrl={PapaPhoto}
             photoAlt="Large man with a white tuxedo jacket and a pinky ring"
@@ -159,7 +159,7 @@ const HubBody = ({ state }: { state: HubState }) => {
             one knows what it actually is.
           </SuspectCard>
           <SuspectCard
-            name='Roy "Rover" Canoso'
+            name="Roy “Rover” Canoso"
             title="The Muscle"
             photoUrl={RoverPhoto}
             photoAlt="Large man with newsboy cap, brown vest and tie"
@@ -190,7 +190,7 @@ const HubBody = ({ state }: { state: HubState }) => {
             thrilled about it – she’s in it for the business.
           </SuspectCard>
           <SuspectCard
-            name='Teresa "Baby" Finster'
+            name="Teresa “Baby” Finster"
             title="The Wild Child"
             photoUrl={BabyPhoto}
             photoAlt="Woman with blue beret and pink neck scarf and cardigan"
@@ -221,7 +221,7 @@ const HubBody = ({ state }: { state: HubState }) => {
             her. She’s the wild card in this.
           </SuspectCard>
           <SuspectCard
-            name="Billie O'Ryan"
+            name="Billie O’Ryan"
             title="The Gumshoe"
             photoUrl={BilliePhoto}
             photoAlt="Private investigator with fedora and trenchcoat"
@@ -242,7 +242,7 @@ const HubBody = ({ state }: { state: HubState }) => {
           <Pin src={pin_teal} alt="" $x={729} $y={531} />
           <BusinessCard
             src={BusinessCardImg}
-            alt="Business card: Two P.I. Noir Detective Agency. Billie O'Ryan, Private Investigator."
+            alt="Business card: Two P.I. Noir Detective Agency. Billie O’Ryan, Private Investigator."
           />
           <Pin src={pin_gold} alt="" $x={3527} $y={1832} />
           <MainQuestion

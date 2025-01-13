@@ -200,10 +200,10 @@ const PuzzleContent = () => {
     <>
       <div className="flavor">
         <p>
-          This &ldquo;elite&rdquo; firm wasn&rsquo;t built in a day, but their
-          results are always a little off. They ignore a letter from each file,
-          and even though they keep track of the dollars and cents, they just
-          cut things off there.
+          This “elite” firm wasn‘t built in a day, but their results are always
+          a little off. They ignore a letter from each file, and even though
+          they keep track of the dollars and cents, they just cut things off
+          there.
         </p>
       </div>
       <ContentWrapper className={NO_COPY_CLASS}>

@@ -126,7 +126,7 @@ const App = () => {
             KY -{" "}
             {haveKey
               ? "Use a key. Oh hey, you have one!"
-              : "Use a key, you don't currently have one though."}
+              : "Use a key, you don’t currently have one though."}
           </li>
           <li>RS - Restart the puzzle and get the SV of your current room.</li>
           <li>

@@ -35,7 +35,7 @@ const DATA = [
     extraction: "S",
   },
   {
-    clue: "I stim; I'd to give Herbal Kings up port!",
+    clue: "I stim; I’d to give Herbal Kings up port!",
     letters: "ISTIMIDTOGIVEHERBALKINGSUPPORT",
     definition: "Is timid to give her support",
     answer: "BALKING",
@@ -56,14 +56,14 @@ const DATA = [
     extraction: "I",
   },
   {
-    clue: "Comet ore-- as in Fe. 'Ron?",
+    clue: "Comet ore-- as in Fe. ’Ron?",
     letters: "COMETOREASINFERON",
     definition: "Come to reason",
     answer: "INFER",
     extraction: "F",
   },
   {
-    clue: "Verb at I'm as split era leech.",
+    clue: "Verb at I’m as split era leech.",
     letters: "VERBATIMASSPLITERALEECH",
     definition: "Verbatim as speech",
     answer: "LITERAL",
@@ -77,7 +77,7 @@ const DATA = [
     extraction: "W",
   },
   {
-    clue: "Hew, hos! Elan dismal's wed emo.",
+    clue: "Hew, hos! Elan dismal’s wed emo.",
     letters: "HEWHOSELANDISMALSWEDEMO",
     definition: "He whose land is Malmo",
     answer: "SWEDE",

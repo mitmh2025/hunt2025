@@ -100,7 +100,7 @@ const puzzle: PuzzleDefinition = {
         "Solvers have extracted most of the bigrams, but don’t know the order",
       keywords: ["extraction", "dealer chip", "order"],
       nudge:
-        "The player's cards indicate the ordering of each bigram, depending whether the left or right card is on top.",
+        "The player’s cards indicate the ordering of each bigram, depending whether the left or right card is on top.",
     },
   ],
   canned_responses: [],

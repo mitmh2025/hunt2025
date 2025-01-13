@@ -3,9 +3,9 @@ import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 
 const DATA = [
   "O idee care se răspândește prin imitație în cadrul unui grup social",
-  "Llavor d'alzina",
+  "Llavor d’alzina",
   "Nicht gerade, gebogen",
-  "Perte périodique de plumes ou d'une couche externe",
+  "Perte périodique de plumes ou d’une couche externe",
   "Cosa si fa quando si ha sete",
   "Culoare între alb și negru",
   "Lo que hago dos veces para cortar una vez",
@@ -20,7 +20,7 @@ const DATA = [
   "Hij is niet je zus",
   "Cóctel playero colombiano con tres licores",
   "Een deel van een boom of struik",
-  "La pièce d'échecs la moins puissante",
+  "La pièce d’échecs la moins puissante",
   "Nickname for Margaret",
   "Spiritueller Lehrer",
   "Tawdry",
