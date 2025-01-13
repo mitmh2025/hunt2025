@@ -33,7 +33,7 @@ const activityCreatesTouchpointTicket = (
 const activityCreatesInteractionTicket = (
   entry: InternalActivityLogEntry,
 ): Interaction | undefined => {
-  if (entry.type !== "interaction_started") return undefined;
+  if (entry.type !== "interaction_unlocked") return undefined;
 
   const interaction = HUNT.rounds
     .flatMap((r) => r.interactions ?? [])
