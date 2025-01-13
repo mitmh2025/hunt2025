@@ -101,6 +101,21 @@ end
 background_music_dir = environment.get("MUSIC_DIR")
 background_music_next = randomizer(background_music_dir, pattern="*.mp3")
 
+# Prepare the playlist with:
+# mediainfo --Output=JSON *.{ogg,mp3} | jq -r '"#EXTM3U", (map(.media | [(.track[0].Duration | tonumber), .["@ref"]]) | sort_by(.[1]) | [foreach .[] as $item (0; . + $item[0]; [.-$item[0], $item[0], $item[1]])] | map("#EXTINF:\(.[1] | round),\(.[0])\n\(.[2])") | .[])' | tee playlist.m3u
+kickoff = playlist.parse("#{background_music_dir}/kickoff/playlist.m3u")
+# Playlist has metadata `song` which is a float seconds since 12:00
+kickoff_duration = begin
+    let (m, _) = list.last(kickoff)
+    string.to_float(m["song"])
+end
+kickoff = list.map(fun (e) -> begin
+    let (m, f) = e
+    (string.to_float(m["song"]), f)
+end, kickoff)
+kickoff_played = ref(false)
+# kickoff is now a list of (start_time_seconds, filename) tuples
+
 # Tier 2 - Station break
 
 # At the top of each hour after hunt has started, play a station ID and possibly an event schedule or confidential.
@@ -204,20 +219,37 @@ end
 queue = ref(request.extending_queue(fun () -> []))
 
 def regular_stream_next() =
-    print("regular_stream_next is called")
-    print("current request: #{queue().current()}")
-    print("current request metadata: #{null.map(request.metadata,queue().current())}")
-    print("last metadata: #{queue().last_metadata()}")
-    print("queue: #{queue().queue()}")
-    print("last queued metadata: #{queue().last_queued_metadata()}")
     last_metadata = null.default(queue().last_queued_metadata(), {[]})
 
     fill_time = time() + queue().queue_remaining()
     hunt_elapsed = fill_time - schedule_start_time
     hunt_elapsed_hours = hunt_elapsed / 3600.
 
+    log("hunt elapsed: #{hunt_elapsed}s, last queued metadata: #{last_metadata}")
+
     if in_interaction() then
         []
+    elsif hunt_elapsed < 0. then
+        log("Before noon")
+        []
+    elsif not kickoff_played() and hunt_elapsed < kickoff_duration then
+        start_index = list.index(fun (e) ->
+            begin
+                let (t, _) = e
+                hunt_elapsed <= t
+            end,
+            kickoff) - 1
+        log("Starting kickoff playlist at #{start_index}")
+        # Allow skipping tracks from telnet, even if we're still in the kickoff window
+        kickoff_played := true
+
+        list.map(fun (e) ->
+            begin
+                let (_, f) = e
+                request.create(f)
+            end,
+            list.slice(kickoff, offset=start_index),
+        )
     else
         scheduled_announcement = get_scheduled_announcement(hunt_elapsed_hours)
         after_confidential = {null.case(scheduled_announcement, {[]}, fun (s) -> list.flatten([
@@ -325,29 +357,6 @@ end)
 regular_stream.on_track(fun (m) -> print("on_track #{m}"))
 
 fade_regular_stream = fade.on_skip(duration=3., replaygain(regular_stream))
-
-# last_break_time = ref(0.)
-# after_music = ref(false)
-# background_music.on_track(fun (_) -> after_music := true)
-# def station_break()
-#     let (do_break, chosen_interlude) = if adhoc_announcements.is_ready() then
-#         (true, [adhoc_announcements])
-#     else
-#         # TODO: Check if there's a song-specific interlude
-#         (time()-last_break_time() > STATION_BREAK_INTERVAL, [once(interlude)])
-#     end
-#     if do_break and after_music() then
-#         last_break_time := time()
-#         after_music := false
-#         [
-#             ...chosen_interlude,
-#             once(quixotic_shoe),
-#             once(icy_box),
-#         ]
-#     else
-#         []
-#     end
-# end
 
 stream = fallback(
     id="stream",
