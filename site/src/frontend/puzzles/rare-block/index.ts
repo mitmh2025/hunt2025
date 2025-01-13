@@ -59,7 +59,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["LAST CALL"],
-      reply: "Great! You should tell the bartender what you’ve learned.",
+      reply: "Great! Go back to the bar and try to make that call again.",
     },
   ],
 };
