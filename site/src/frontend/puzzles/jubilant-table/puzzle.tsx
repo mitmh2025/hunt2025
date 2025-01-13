@@ -1,4 +1,13 @@
 import React from "react";
+import { styled } from "styled-components";
+import LinkedImage from "../../components/LinkedImage";
+import green from "./assets/green.png";
+
+const SizedImage = styled(LinkedImage)`
+  display: block;
+  width: 25%;
+  margin: auto;
+`;
 
 const Puzzle = (): JSX.Element => {
   return (
@@ -15,6 +24,7 @@ const Puzzle = (): JSX.Element => {
         Pages are numbered for your convenience. The given numbering is not
         puzzle content.
       </p>
+      <SizedImage src={green} alt="The Green Building" />
     </>
   );
 };
