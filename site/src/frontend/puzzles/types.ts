@@ -7,6 +7,7 @@ import type {
   SubpuzzleState,
   TeamHuntState,
 } from "../../../lib/api/client";
+import { type PuzzleStateLogEntry } from "../../../lib/api/frontend_contract";
 import type { Entrypoint } from "../server/assets";
 
 // Anywhere you see "id" in a type, this is a globally-unique string id known to the backend.
@@ -54,6 +55,7 @@ type PuzzleContentProps = BaseContentProps & {
   teamName: string;
   type: "puzzle";
   puzzleState: PuzzleState;
+  puzzleStateLog: PuzzleStateLogEntry[] | undefined;
 };
 
 type SubpuzzleContentProps = BaseContentProps & {

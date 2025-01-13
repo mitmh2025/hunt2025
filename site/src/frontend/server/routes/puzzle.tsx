@@ -2,6 +2,7 @@ import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import { type PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract";
 import {
   BackgroundCheckWrapper,
   BackgroundCheckMain,
@@ -517,6 +518,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   }
 
   let puzzleStateFrag = <></>;
+  let puzzleStateLog: PuzzleStateLogEntry[] | undefined = undefined;
   if (PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG.includes(slug)) {
     const puzzleStateLogResult = await req.frontendApi.getFullPuzzleStateLog({
       query: { team_id: req.teamState.teamId, slug },
@@ -526,7 +528,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       // we should fail if we can't include it.
       return undefined;
     }
-    const initialPuzzleStateLog = JSON.stringify(puzzleStateLogResult.body);
+    puzzleStateLog = puzzleStateLogResult.body;
+    const initialPuzzleStateLog = JSON.stringify(puzzleStateLog);
     const puzzleStateLogScript = `window.initialPuzzleStateLog = ${initialPuzzleStateLog}`;
     puzzleStateFrag = (
       <script
@@ -622,6 +625,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
             teamName={req.teamState.info.teamName}
             teamState={req.teamState.state}
             puzzleState={result.body}
+            puzzleStateLog={puzzleStateLog}
             query={req.query}
           />
         </PuzzleMainComponent>

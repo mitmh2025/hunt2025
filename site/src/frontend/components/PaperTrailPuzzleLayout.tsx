@@ -65,6 +65,7 @@ export const PaperTrailBacklink = styled(PuzzleBacklink)`
 
 export const PaperTrailMain = styled(PuzzleMain)`
   font-family: var(--body-font);
+  padding: 2rem calc(2rem + 40px);
   padding-bottom: 5rem;
 `;
 
