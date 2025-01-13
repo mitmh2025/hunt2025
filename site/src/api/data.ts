@@ -53,6 +53,8 @@ import {
   puzzleStateLog as redisPuzzleStateLog,
   teamInteractionStateLog as redisTeamInteractionStateLog,
   type Log as RedisLog,
+  getTeamCaches,
+  publishTeamCache,
 } from "./redis";
 
 export abstract class Mutator<T extends { id: number; team_id?: number }, I> {
@@ -242,6 +244,22 @@ async function recalculateTeamState(
   return next;
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- This cannot be represented as a type.
+interface Reducer<Entry extends { id: number }, RedisType> {
+  epoch: number;
+  reduce(entry: Entry): this;
+  dehydrate(): RedisType;
+}
+
+type ReducerConstructor<
+  Entry extends { id: number },
+  RedisType,
+  HydratedType extends Reducer<Entry, RedisType>,
+> = {
+  hydrate: (redisData?: RedisType) => HydratedType;
+  redisKey: string;
+};
+
 abstract class Log<
   I,
   T extends { id: number; team_id?: number },
@@ -270,6 +288,83 @@ abstract class Log<
     teamId?: number,
     since?: number,
   ): Promise<T[]>;
+
+  async getCachedReducers<
+    ReducerConstructors extends ReducerConstructor<
+      T,
+      unknown,
+      Reducer<T, unknown>
+    >[],
+  >(
+    knex: Knex.Knex,
+    redisClient: RedisClient | undefined,
+    teamId: number,
+    ...reducerTypes: ReducerConstructors
+  ): Promise<{
+    [K in keyof ReducerConstructors]: ReturnType<
+      ReducerConstructors[K]["hydrate"]
+    >;
+  }> {
+    if (redisClient) {
+      try {
+        const cached = await getTeamCaches(
+          redisClient,
+          teamId,
+          ...reducerTypes,
+        );
+        const lowWaterMark = Math.max(
+          0,
+          Math.min(...cached.map((c) => c.epoch)),
+        );
+
+        const extraEntries = await this._redisLog.getTeamLog(
+          redisClient,
+          teamId,
+          lowWaterMark,
+        );
+        const reduced = cached.map((start) => {
+          const end = extraEntries.entries.reduce(
+            (acc, entry) => (entry.id > acc.epoch ? acc.reduce(entry) : acc),
+            start,
+          );
+          return end;
+        });
+
+        // TODO: perhaps elide publishing state if it didn't change
+        await Promise.all(
+          reduced.map((updatedState, i) => {
+            const type = reducerTypes[i];
+            if (!type) {
+              throw new Error("Mismatched length of reducerTypes");
+            }
+
+            return publishTeamCache(
+              redisClient,
+              teamId,
+              updatedState,
+              type.redisKey,
+            );
+          }),
+        );
+
+        return reduced as {
+          [K in keyof ReducerConstructors]: ReturnType<
+            ReducerConstructors[K]["hydrate"]
+          >;
+        };
+      } catch (err) {
+        console.error("failed to read caches from redis:", err);
+      }
+    }
+    const entries = await this.dbGetLog(knex, teamId);
+    return reducerTypes.map((reducerType) =>
+      entries.reduce((acc, entry) => acc.reduce(entry), reducerType.hydrate()),
+    ) as {
+      [K in keyof ReducerConstructors]: ReturnType<
+        ReducerConstructors[K]["hydrate"]
+      >;
+    };
+  }
 
   async getCachedLog(
     knex: Knex.Knex,

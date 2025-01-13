@@ -106,6 +106,12 @@ export async function seed(knex: Knex): Promise<void> {
       undefined,
       knex,
       async (_, mutator) => {
+        await mutator.appendLog({
+          type: "gate_completed",
+          slug: "hunt_started",
+          team_id: teamId,
+        });
+
         for (const round of HUNT.rounds) {
           await mutator.appendLog({
             type: "round_unlocked",
@@ -307,6 +313,12 @@ export async function seed(knex: Knex): Promise<void> {
       undefined,
       knex,
       async (_, mutator) => {
+        await mutator.appendLog({
+          type: "gate_completed",
+          slug: "hunt_started",
+          team_id: teamId,
+        });
+
         await mutator.recalculateTeamState(HUNT, teamId);
       },
     );

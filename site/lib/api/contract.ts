@@ -51,7 +51,6 @@ const PuzzleSummarySchema = z.object({
 export const PuzzleStateSchema = PuzzleSummarySchema.omit({
   unlocked_at: true,
 }).extend({
-  subpuzzles: z.record(slug, SubpuzzleStateSchema).optional(),
   guesses: z.array(GuessSchema).default([]),
 });
 

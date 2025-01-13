@@ -1,10 +1,14 @@
-from locust import task, run_single_user
+from locust import task, run_single_user, events
 from locust import FastHttpUser
 import random
 from lib.websocket import WSClient
 
 
 SOCKETS_PER_USER = 5
+
+@events.init_command_line_parser.add_listener
+def _(parser):
+    parser.add_argument("--api-base-url", type=str, env_var="API_BASE_URL", default="http://localhost:3000/api", help="API base URL")
 
 
 class early_load_test(FastHttpUser):
@@ -15,6 +19,9 @@ class early_load_test(FastHttpUser):
         "sec-ch-ua-mobile": "?0",
         "sec-ch-ua-platform": '"macOS"',
     }
+
+    def api_rest(self, method, endpoint, *args, **kwargs):
+        return self.rest(method, f"{self.environment.parsed_options.api_base_url}{endpoint}", *args, **kwargs)
 
     @task
     def t(self):
@@ -83,16 +90,16 @@ class early_load_test(FastHttpUser):
                 solved = True
 
         if not solved:
-            with self.rest(
+            with self.api_rest(
                 "PUT",
-                "/api/puzzle/an_argument/guess",
+                "/puzzle/an_argument/guess",
                 headers={},
                 json={"guess": "abc"},
             ) as resp:
                 pass
-            with self.rest(
+            with self.api_rest(
                 "PUT",
-                "/api/puzzle/an_argument/guess",
+                "/puzzle/an_argument/guess",
                 headers={},
                 json={"guess": "RIGHT TO BEAR ARMS"},
             ) as resp:
@@ -178,13 +185,13 @@ class early_load_test(FastHttpUser):
                 solved = True
 
         if not solved:
-            with self.rest(
-                "PUT", "/api/puzzle/zulu_lima/guess", headers={}, json={"guess": "xyz"}
+            with self.api_rest(
+                "PUT", "/puzzle/zulu_lima/guess", headers={}, json={"guess": "xyz"}
             ) as resp:
                 pass
-            with self.rest(
+            with self.api_rest(
                 "PUT",
-                "/api/puzzle/zulu_lima/guess",
+                "/puzzle/zulu_lima/guess",
                 headers={},
                 json={"guess": "SPACE WARSHIPS"},
             ) as resp:

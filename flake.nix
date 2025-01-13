@@ -112,6 +112,7 @@
         };
         devShells.hunt2025 = pkgs.callPackage ./site/shell.nix {};
         devShells.radioman = pkgs.callPackage ./radioman/shell.nix {};
+        devShells.loadtest = pkgs.callPackage ./loadtest/shell.nix {};
         apps = (lib.mapAttrs (_: terraformConfiguration: {
           # nix run ".#staging.apply"
           apply = {

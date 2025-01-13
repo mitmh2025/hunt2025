@@ -1,3 +1,4 @@
+import type { Hydratable } from "../../lib/types";
 import type { Hunt, Condition, PuzzleSlot } from "./types";
 
 type ConditionState = {
@@ -130,9 +131,8 @@ export class LogicTeamState {
   interactions_completed: Map<string, string>;
   available_currency: number;
   available_strong_currency: number;
-  correct_answers: Record<string, string>;
 
-  constructor(initial?: Partial<LogicTeamState>) {
+  constructor(initial?: Partial<Hydratable<LogicTeamState>>) {
     this.rounds_unlocked = new Set(initial?.rounds_unlocked ?? []);
     this.puzzles_unlockable = new Set(initial?.puzzles_unlockable ?? []);
     this.puzzles_unlocked = new Set(initial?.puzzles_unlocked ?? []);
@@ -146,7 +146,6 @@ export class LogicTeamState {
     );
     this.available_currency = initial?.available_currency ?? 0;
     this.available_strong_currency = initial?.available_strong_currency ?? 0;
-    this.correct_answers = {};
   }
 
   get puzzles_visible() {

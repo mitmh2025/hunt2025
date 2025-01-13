@@ -4,7 +4,6 @@ import {
   defineScript,
 } from "redis";
 import { createTimeout } from "retry";
-import { type TeamHuntState } from "../../lib/api/client";
 import {
   type DehydratedTeamRegistrationLogEntry,
   type TeamRegistrationLogEntry,
@@ -407,17 +406,54 @@ async function publishState(
   }
 }
 
-export async function publishTeamState(
+export async function publishTeamCache(
   redisClient: RedisClient,
   teamId: number,
-  state: TeamHuntState,
+  state: { epoch: number; dehydrate: () => unknown },
+  cacheTypeRedisKey: string,
 ) {
-  await publishState(redisClient, `team_state/${teamId}`, {
+  await publishState(redisClient, `cache/${cacheTypeRedisKey}/${teamId}`, {
     id: `0-${state.epoch}`,
     message: {
-      entry: JSON.stringify(state),
+      entry: JSON.stringify(state.dehydrate()),
     },
   });
+}
+
+type CacheableFactory<RedisType, HydratedType> = {
+  redisKey: string;
+  hydrate: (redisData?: RedisType) => HydratedType;
+};
+
+export function getTeamCaches<
+  Factories extends CacheableFactory<unknown, unknown>[],
+>(
+  redisClient: RedisClient,
+  teamId: number,
+  ...cacheTypes: Factories
+): Promise<{
+  [K in keyof Factories]: ReturnType<Factories[K]["hydrate"]>;
+}> {
+  return Promise.all(
+    cacheTypes.map((cacheType) =>
+      redisClient
+        .xRevRange(`cache/${cacheType.redisKey}/${teamId}`, "+", "-", {
+          COUNT: 1,
+        })
+        .then((messages) => {
+          const message = messages.at(-1);
+          if (message) {
+            return parseStreamMessage(
+              (data) => cacheType.hydrate(data),
+              message,
+            ).entry;
+          }
+          return cacheType.hydrate();
+        }),
+    ),
+  ) as Promise<{
+    [K in keyof Factories]: ReturnType<Factories[K]["hydrate"]>;
+  }>;
 }
 
 // export async function getTeamState(

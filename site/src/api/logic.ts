@@ -8,6 +8,7 @@ import {
   type TeamRegistrationLogEntry,
   type InternalActivityLogEntry,
 } from "../../lib/api/frontend_contract";
+import { type Hydratable } from "../../lib/types";
 import { generateSlugToSlotMap, type SlotLookup } from "../huntdata";
 import { getSlotSlug, LogicTeamState } from "../huntdata/logic";
 import type { Hunt } from "../huntdata/types";
@@ -17,8 +18,14 @@ export class TeamStateIntermediate extends LogicTeamState {
   puzzles_unlocked_at: Map<string, number /* epoch */>;
   puzzles_partially_solved: Set<string>;
   private slugToSlotMap: Map<string, SlotLookup>;
+  correct_answers: Map<string, string>;
 
-  constructor(hunt: Hunt, initial?: Partial<TeamStateIntermediate>) {
+  static redisKey = "team_state_intermediate";
+
+  constructor(
+    hunt: Hunt,
+    initial?: Partial<Hydratable<TeamStateIntermediate>>,
+  ) {
     super(initial);
     this.epoch = initial?.epoch ?? -1;
     this.puzzles_unlocked_at = new Map(initial?.puzzles_unlocked_at ?? []);
@@ -26,6 +33,7 @@ export class TeamStateIntermediate extends LogicTeamState {
       initial?.puzzles_partially_solved ?? [],
     );
     this.slugToSlotMap = generateSlugToSlotMap(hunt);
+    this.correct_answers = new Map(initial?.correct_answers ?? []);
   }
 
   reduce(entry: InternalActivityLogEntry) {
@@ -50,7 +58,7 @@ export class TeamStateIntermediate extends LogicTeamState {
         break;
       case "puzzle_solved":
         this.puzzles_solved.add(entry.slug);
-        this.correct_answers[entry.slug] = entry.data.answer;
+        this.correct_answers.set(entry.slug, entry.data.answer);
       // fallthrough - solved implies unlocked
       case "puzzle_unlocked": {
         this.puzzles_unlocked.add(entry.slug);
@@ -84,23 +92,31 @@ export class TeamStateIntermediate extends LogicTeamState {
     }
     return this;
   }
-}
 
-export function reducerDeriveTeamState(
-  hunt: Hunt,
-  teamActivityLogEntries: InternalActivityLogEntry[],
-): LogicTeamState {
-  const intermediate = teamActivityLogEntries.reduce(
-    (acc, entry) => acc.reduce(entry),
-    new TeamStateIntermediate(hunt),
-  );
-  // Return the LogicTeamState because the recalculated team state no longer represents a committed epoch.
-  return intermediate.recalculateTeamState(hunt);
+  dehydrate(): Partial<Hydratable<TeamStateIntermediate>> {
+    return {
+      epoch: this.epoch,
+      puzzles_unlocked_at: Array.from(this.puzzles_unlocked_at),
+      puzzles_partially_solved: Array.from(this.puzzles_partially_solved),
+      rounds_unlocked: Array.from(this.rounds_unlocked),
+      puzzles_unlockable: Array.from(this.puzzles_unlockable),
+      puzzles_unlocked: Array.from(this.puzzles_unlocked),
+      puzzles_stray: Array.from(this.puzzles_stray),
+      puzzles_solved: Array.from(this.puzzles_solved),
+      gates_satisfied: Array.from(this.gates_satisfied),
+      interactions_unlocked: Array.from(this.interactions_unlocked),
+      interactions_started: Array.from(this.interactions_started),
+      interactions_completed: Array.from(this.interactions_completed),
+      correct_answers: Array.from(this.correct_answers),
+      available_currency: this.available_currency,
+      available_strong_currency: this.available_strong_currency,
+    };
+  }
 }
 
 // Converts from the serialized activity log entry (which e.g. has a string for timestamp)
 // into the in-memory representation (which e.g. has a Date object).
-export function hydrateLogEntry<D extends { timestamp: string }>(
+export function hydrateLogEntry<D extends { timestamp: string | Date }>(
   ie: D,
 ): D & { timestamp: Date } {
   const ts = new Date(ie.timestamp);
@@ -194,7 +210,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
               : ("locked" as const),
           partially_solved: data.puzzles_partially_solved.has(slug),
           unlocked_at: data.puzzles_unlocked_at.get(slug),
-          answer: data.correct_answers[slug],
+          answer: data.correct_answers.get(slug),
           ...(data.puzzles_stray.has(slug) ? { stray: true } : {}),
         },
       ]),
@@ -212,6 +228,14 @@ export class TeamInfoIntermediate {
     this.epoch = initial?.epoch ?? -1;
     this.registration = initial?.registration;
     this.deactivated = initial?.deactivated ?? false;
+  }
+
+  dehydrate(): Partial<Hydratable<TeamInfoIntermediate>> {
+    return {
+      epoch: this.epoch,
+      registration: this.registration,
+      deactivated: this.deactivated,
+    };
   }
 
   reduce(entry: TeamRegistrationLogEntry) {
@@ -321,5 +345,49 @@ export class TeamInfoIntermediate {
 
   formatTeamRegistrationIfActive(): TeamRegistration | undefined {
     return this.isActive() ? this.registration : undefined;
+  }
+}
+
+export class PuzzleStateIntermediate {
+  private _slug: string;
+  epoch: number;
+  guesses: (InternalActivityLogEntry & { type: "puzzle_guess_submitted" })[];
+
+  constructor(
+    slug: string,
+    initial?: Partial<Hydratable<PuzzleStateIntermediate>>,
+  ) {
+    this._slug = slug;
+    this.epoch = initial?.epoch ?? 0;
+    this.guesses = Array.from(initial?.guesses ?? []).map(hydrateLogEntry);
+  }
+
+  reduce(entry: InternalActivityLogEntry) {
+    if (entry.id > this.epoch) {
+      this.epoch = entry.id;
+    } else {
+      throw new Error(
+        `Attempting to reduce activity log entry ${entry.id} on top of team state that already includes ${this.epoch}`,
+      );
+    }
+    if (entry.type === "puzzle_guess_submitted" && entry.slug === this._slug) {
+      this.guesses.push(entry);
+    }
+    return this;
+  }
+
+  get slug() {
+    return this._slug;
+  }
+
+  static redisKey(slug: string) {
+    return `puzzle_state_intermediate/${slug}`;
+  }
+
+  dehydrate(): Partial<Hydratable<PuzzleStateIntermediate>> {
+    return {
+      epoch: this.epoch,
+      guesses: this.guesses,
+    };
   }
 }

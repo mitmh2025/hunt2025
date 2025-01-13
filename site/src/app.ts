@@ -49,7 +49,11 @@ export default async function ({
 }) {
   const redisClient = redisUrl ? await redisConnect(redisUrl) : undefined;
 
-  if (process.env.NODE_ENV === "development" && redisClient) {
+  if (
+    process.env.NODE_ENV === "development" &&
+    redisClient &&
+    enabledComponents.has("api")
+  ) {
     try {
       // Wipe data every time we start in development, since the database might have regressed.
       for await (const key of redisClient.scanIterator()) {
@@ -86,7 +90,7 @@ export default async function ({
       throw new Error("$EMAIL_FROM not defined in production");
     }
 
-    const knex = await dbConnect(dbEnvironment);
+    const knex = await dbConnect(dbEnvironment, redisClient);
 
     if (redisClient !== undefined) {
       // Make sure Redis is up to date

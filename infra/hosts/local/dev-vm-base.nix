@@ -31,7 +31,6 @@
     };
 
     services.thingsboard = {
-      enable = true;
       logback.loggers = {
         "org.thingsboard.server" = "DEBUG";
         "org.thingsboard.server.actors.TbActorMailbox" = "INFO";
@@ -43,7 +42,8 @@
     };
 
     virtualisation.vmVariant = {
-      virtualisation.memorySize = 2048;
+      virtualisation.memorySize = 4096;
+      virtualisation.diskSize = 2048;
       virtualisation.forwardPorts = [
         # Redis
         { from = "host"; host.port = 6379; guest.port = 6379; }

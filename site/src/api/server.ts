@@ -109,9 +109,9 @@ import { confirmationEmailTemplate, type Mailer } from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
 import {
   formatTeamHuntState,
-  reducerDeriveTeamState,
   TeamStateIntermediate,
   TeamInfoIntermediate,
+  PuzzleStateIntermediate,
 } from "./logic";
 import { type RedisClient } from "./redis";
 
@@ -400,31 +400,34 @@ export async function getRouter({
 
   const slugToSlotMap = generateSlugToSlotMap(hunt);
   const getTeamStateIntermediate = async (team_id: number) => {
-    const team_state = (
-      await activityLog.getCachedLog(knex, redisClient, team_id)
-    ).entries.reduce(
-      (acc, entry) => acc.reduce(entry),
-      new TeamStateIntermediate(hunt),
+    const [team_state] = await activityLog.getCachedReducers(
+      knex,
+      redisClient,
+      team_id,
+      {
+        redisKey: "team_state_intermediate",
+        hydrate: (redisObj) => new TeamStateIntermediate(hunt, redisObj ?? {}),
+      },
     );
     return team_state;
   };
   const getTeamState = async (req: Request, team_id: number) => {
-    const team_registration_log = await teamRegistrationLog.getCachedLog(
-      knex,
-      redisClient,
-      team_id,
-    );
+    const [team_state, [team_info]] = await Promise.all([
+      getTeamStateIntermediate(team_id),
+      teamRegistrationLog.getCachedReducers(knex, redisClient, team_id, {
+        redisKey: "team_info_intermediate",
+        hydrate: (redisObj) => new TeamInfoIntermediate(redisObj ?? {}),
+      }),
+    ]);
 
-    const info = team_registration_log.entries
-      .reduce((acc, entry) => acc.reduce(entry), new TeamInfoIntermediate())
-      .formatTeamInfoIfActive();
+    const info = team_info.formatTeamInfoIfActive();
+
     if (info === undefined) {
       return {
         status: 404 as const,
         body: null,
       };
     }
-    const team_state = await getTeamStateIntermediate(team_id);
 
     const teamJwt = req.authInfo?.teamJwt;
     const whepUrl =
@@ -496,8 +499,8 @@ export async function getRouter({
 
   const formatPuzzleState = (
     slug: string,
-    activity_log: InternalActivityLogEntry[],
-    puzzle_state_log: PuzzleStateLogEntry[],
+    team_state: TeamStateIntermediate,
+    puzzle_state: PuzzleStateIntermediate,
   ) => {
     // Look up the slot for this slug.  If the slot does not exist in the hunt, we do not provide a
     // puzzle state for it.
@@ -509,10 +512,7 @@ export async function getRouter({
     // The slot entry contains the round slug for the round that canonically contains this puzzle slug.
     let round = slotEntry.roundSlug;
 
-    // TODO: in the fullness of time, we should materialize puzzle_unlockable in activity_log so we can do purely point loads
-    //       and not have to derive team state here at all.
-    const data = reducerDeriveTeamState(hunt, activity_log);
-    const round_unlocked = data.rounds_unlocked.has(round);
+    const round_unlocked = team_state.rounds_unlocked.has(round);
     // TODO: If the round to which the slug belongs is not unlocked, we mark it as in the "stray_leads" round.
     if (!round_unlocked) {
       round = "stray_leads"; // TODO: configurable?
@@ -520,24 +520,20 @@ export async function getRouter({
 
     // The puzzle must be either unlockable or unlocked.
     if (
-      !data.puzzles_unlockable.has(slug) &&
-      !data.puzzles_unlocked.has(slug)
+      !team_state.puzzles_unlockable.has(slug) &&
+      !team_state.puzzles_unlocked.has(slug)
     ) {
       return undefined;
     }
 
     const locked: "locked" | "unlockable" | "unlocked" =
-      data.puzzles_unlocked.has(slug)
+      team_state.puzzles_unlocked.has(slug)
         ? "unlocked"
-        : data.puzzles_unlockable.has(slug)
+        : team_state.puzzles_unlockable.has(slug)
           ? "unlockable"
           : "locked";
 
-    const guesses = activity_log.filter(
-      (e): e is InternalActivityLogEntry & { type: "puzzle_guess_submitted" } =>
-        e.type === "puzzle_guess_submitted" && e.slug === slug,
-    );
-    const correct_answers = guesses
+    const correct_answers = puzzle_state.guesses
       .filter((e) => e.data.status === "correct")
       .map((e) => e.data.canonical_input)
       .sort();
@@ -545,7 +541,7 @@ export async function getRouter({
     const result: PuzzleState = {
       round,
       locked,
-      guesses: guesses.map(
+      guesses: puzzle_state.guesses.map(
         ({
           data: { canonical_input, link, status, response },
           id,
@@ -562,22 +558,6 @@ export async function getRouter({
         }),
       ),
     };
-    const puzzleDefinition = PUZZLES[slug];
-    if (puzzleDefinition?.subpuzzles) {
-      const subpuzzleStates: Record<string, SubpuzzleState> = {};
-      const subpuzzleSlugs = new Set(
-        puzzleDefinition.subpuzzles.map(({ slug }) => slug),
-      );
-      for (const subpuzzle of puzzleDefinition.subpuzzles) {
-        const subpuzzleState = formatSubpuzzleState(
-          subpuzzle.slug,
-          slug,
-          puzzle_state_log.filter(({ slug }) => subpuzzleSlugs.has(slug)),
-        );
-        subpuzzleStates[subpuzzle.slug] = subpuzzleState;
-      }
-      result.subpuzzles = subpuzzleStates;
-    }
     if (correct_answers.length > 0) {
       result.answer = correct_answers.join(", ");
     }
@@ -589,14 +569,20 @@ export async function getRouter({
     slug: string,
     knex: Knex,
   ): Promise<PuzzleState | undefined> => {
-    const puzzleStateLogEntries = PUZZLES[slug]?.subpuzzles
-      ? (await puzzleStateLog.getCachedLog(knex, redisClient, team_id)).entries
-      : [];
-    return formatPuzzleState(
-      slug,
-      (await activityLog.getCachedLog(knex, redisClient, team_id)).entries,
-      puzzleStateLogEntries,
+    const [teamState, puzzleState] = await activityLog.getCachedReducers(
+      knex,
+      redisClient,
+      team_id,
+      {
+        hydrate: (initial) => new TeamStateIntermediate(hunt, initial ?? {}),
+        redisKey: TeamStateIntermediate.redisKey,
+      },
+      {
+        hydrate: (initial) => new PuzzleStateIntermediate(slug, initial ?? {}),
+        redisKey: PuzzleStateIntermediate.redisKey(slug),
+      },
     );
+    return formatPuzzleState(slug, teamState, puzzleState);
   };
 
   const getSubpuzzleState = async (
@@ -978,146 +964,153 @@ export async function getRouter({
             ),
           );
 
-          const { result, logEntries } = await activityLog.executeMutation(
-            hunt,
-            team_id,
-            redisClient,
-            knex,
-            async function (_, mutator) {
-              const teamState = mutator.getTeamState(hunt, team_id);
-              const puzzle_log = mutator.log.filter(
-                (e) => "slug" in e && e.slug === slug,
-              );
-              // Check that the puzzle is unlocked before allowing guess submission.
-              if (!teamState.puzzles_unlocked.has(slug)) {
-                return {
-                  status: 404 as const,
-                  body: null,
-                };
-              }
-
-              // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
-              // n^2 minutes "correct" and "other" guesses do not count towards rate-limits.
-              // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
-              // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
-              // for the purposes of rate-limiting.
-              const last_reset_time_record = puzzle_log.findLast(
-                (e) => e.type === "rate_limits_reset",
-              );
-              const last_reset_time = last_reset_time_record?.timestamp;
-              const previous_guess_times = puzzle_log
-                .filter(
-                  (e) =>
-                    e.type === "puzzle_guess_submitted" &&
-                    e.data.status === "incorrect",
-                )
-                .map((e) => e.timestamp);
-              const effective_previous_guess_times =
-                last_reset_time !== undefined
-                  ? previous_guess_times.filter((t) => t > last_reset_time)
-                  : previous_guess_times;
-              const allowAfter = nextAcceptableSubmissionTime(
-                effective_previous_guess_times,
-              );
-              const now = Date.now();
-              if (now < allowAfter.getTime()) {
-                return {
-                  status: 429 as const,
-                  body: {
-                    retryAfter: allowAfter.toISOString(),
-                  },
-                };
-              }
-
-              // Check if this puzzle has already been solved by this team;
-              // short-circuit without mutating if so.
-              const alreadySolved =
-                puzzle_log.find((e) => e.type === "puzzle_solved") ?? false;
-              if (alreadySolved) {
-                return { status: 200 as const };
-              }
-
-              // Determine our disposition on this submission.
-              let responseText = "Incorrect";
-              let status: GuessStatus = "incorrect";
-              let link;
-              if (correct_answer) {
-                canonical_input = correct_answer;
-                responseText = "Correct!";
-                status = "correct";
-              } else if (correct_canned_response) {
-                const matching_input = correct_canned_response.guess.find(
-                  (g) => canonicalizeInput(g) === canonical_input,
+          const { result, teamStates, logEntries } =
+            await activityLog.executeMutation(
+              hunt,
+              team_id,
+              redisClient,
+              knex,
+              async function (_, mutator) {
+                const teamState = mutator.getTeamState(hunt, team_id);
+                const puzzle_log = mutator.log.filter(
+                  (e) => "slug" in e && e.slug === slug,
                 );
-                canonical_input = matching_input ?? canonical_input;
-                link = correct_canned_response.link;
-                responseText = correct_canned_response.reply;
-                status = "other";
-              }
-
-              // Attempt to insert a new guess.  If this guess's input matches some other canonical
-              // input, inserted should be empty thanks to the unique index and
-              // onConflict()/ignore().
-              const inserted = await mutator.appendLog({
-                team_id,
-                slug,
-                type: "puzzle_guess_submitted",
-                data: {
-                  canonical_input,
-                  status,
-                  response: responseText,
-                  ...(link !== undefined ? { link } : {}),
-                },
-              });
-
-              // Only add relevant entries to the activity log if the guess was novel and inserted
-              // a record.  Otherwise, we might grant double rewards for the same guess.
-              if (inserted !== undefined) {
-                // This was a new guess.
-                if (correct_answer) {
-                  // It was right and the puzzle is now solved.
-                  const hasGottenRewardFromCannedResponse = puzzle_log.some(
-                    (e) => e.type === "puzzle_partially_solved",
-                  );
-
-                  await mutator.appendLog({
-                    team_id,
-                    slug,
-                    type: "puzzle_solved",
-                    currency_delta: hasGottenRewardFromCannedResponse
-                      ? 0
-                      : prize,
-                    strong_currency_delta: strongCurrencyPrize,
-                    data: {
-                      answer: canonical_input,
-                    },
-                  });
-                } else if (correct_canned_response?.providesSolveReward) {
-                  // The guess matched an intermediate for which we provide the solve reward.  We
-                  // need to issue a prize for this particular canned response, which means we need
-                  // an activity log entry for it.
-                  await mutator.appendLog({
-                    team_id,
-                    slug,
-                    type: "puzzle_partially_solved",
-                    currency_delta: prize,
-                    data: {
-                      partial: canonical_input,
-                    },
-                  });
+                // Check that the puzzle is unlocked before allowing guess submission.
+                if (!teamState.puzzles_unlocked.has(slug)) {
+                  return {
+                    status: 404 as const,
+                    body: null,
+                  };
                 }
-              }
-              return { status: 200 as const };
-            },
-          );
+
+                // Basic rate-limiting: reject guess if more than n incorrect submissions in preceding
+                // n^2 minutes "correct" and "other" guesses do not count towards rate-limits.
+                // We allow an activity log entry type of "rate_limits_reset" on a puzzle to reset the
+                // rate-limit -- we will simply not consider any guesses that occurred earlier than that reset entry
+                // for the purposes of rate-limiting.
+                const last_reset_time_record = puzzle_log.findLast(
+                  (e) => e.type === "rate_limits_reset",
+                );
+                const last_reset_time = last_reset_time_record?.timestamp;
+                const previous_guess_times = puzzle_log
+                  .filter(
+                    (e) =>
+                      e.type === "puzzle_guess_submitted" &&
+                      e.data.status === "incorrect",
+                  )
+                  .map((e) => e.timestamp);
+                const effective_previous_guess_times =
+                  last_reset_time !== undefined
+                    ? previous_guess_times.filter((t) => t > last_reset_time)
+                    : previous_guess_times;
+                const allowAfter = nextAcceptableSubmissionTime(
+                  effective_previous_guess_times,
+                );
+                const now = Date.now();
+                if (now < allowAfter.getTime()) {
+                  return {
+                    status: 429 as const,
+                    body: {
+                      retryAfter: allowAfter.toISOString(),
+                    },
+                  };
+                }
+
+                // Check if this puzzle has already been solved by this team;
+                // short-circuit without mutating if so.
+                const alreadySolved =
+                  puzzle_log.find((e) => e.type === "puzzle_solved") ?? false;
+                if (alreadySolved) {
+                  return { status: 200 as const };
+                }
+
+                // Determine our disposition on this submission.
+                let responseText = "Incorrect";
+                let status: GuessStatus = "incorrect";
+                let link;
+                if (correct_answer) {
+                  canonical_input = correct_answer;
+                  responseText = "Correct!";
+                  status = "correct";
+                } else if (correct_canned_response) {
+                  const matching_input = correct_canned_response.guess.find(
+                    (g) => canonicalizeInput(g) === canonical_input,
+                  );
+                  canonical_input = matching_input ?? canonical_input;
+                  link = correct_canned_response.link;
+                  responseText = correct_canned_response.reply;
+                  status = "other";
+                }
+
+                // Attempt to insert a new guess.  If this guess's input matches some other canonical
+                // input, inserted should be empty thanks to the unique index and
+                // onConflict()/ignore().
+                const inserted = await mutator.appendLog({
+                  team_id,
+                  slug,
+                  type: "puzzle_guess_submitted",
+                  data: {
+                    canonical_input,
+                    status,
+                    response: responseText,
+                    ...(link !== undefined ? { link } : {}),
+                  },
+                });
+
+                // Only add relevant entries to the activity log if the guess was novel and inserted
+                // a record.  Otherwise, we might grant double rewards for the same guess.
+                if (inserted !== undefined) {
+                  // This was a new guess.
+                  if (correct_answer) {
+                    // It was right and the puzzle is now solved.
+                    const hasGottenRewardFromCannedResponse = puzzle_log.some(
+                      (e) => e.type === "puzzle_partially_solved",
+                    );
+
+                    await mutator.appendLog({
+                      team_id,
+                      slug,
+                      type: "puzzle_solved",
+                      currency_delta: hasGottenRewardFromCannedResponse
+                        ? 0
+                        : prize,
+                      strong_currency_delta: strongCurrencyPrize,
+                      data: {
+                        answer: canonical_input,
+                      },
+                    });
+                  } else if (correct_canned_response?.providesSolveReward) {
+                    // The guess matched an intermediate for which we provide the solve reward.  We
+                    // need to issue a prize for this particular canned response, which means we need
+                    // an activity log entry for it.
+                    await mutator.appendLog({
+                      team_id,
+                      slug,
+                      type: "puzzle_partially_solved",
+                      currency_delta: prize,
+                      data: {
+                        partial: canonical_input,
+                      },
+                    });
+                  }
+                }
+                return { status: 200 as const };
+              },
+            );
           if (result.status === 200) {
             return {
               status: 200 as const,
-              // We don't currently have any puzzles where a guess for a puzzle depends
-              // on the puzzle state log. Don't bother fetching it.
-              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+              /* eslint-disable @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, logEntries, [])!,
+              body: formatPuzzleState(
+                slug,
+                teamStates[team_id]!,
+                logEntries.reduce(
+                  (acc, entry) => acc.reduce(entry),
+                  new PuzzleStateIntermediate(slug),
+                ),
+              )!,
+              /* eslint-enable @typescript-eslint/no-non-null-assertion -- done */
             };
           }
           return result;
@@ -1374,77 +1367,84 @@ export async function getRouter({
               body: null,
             };
           }
-          const { result, logEntries } = await activityLog.executeMutation(
-            hunt,
-            team_id,
-            redisClient,
-            knex,
-            async function (trx, mutator) {
-              // Verify puzzle is currently unlockable.
-              const data = mutator.getTeamState(hunt, team_id);
-              const unlock_cost = slot.unlock_cost;
+          const { result, teamStates, logEntries } =
+            await activityLog.executeMutation(
+              hunt,
+              team_id,
+              redisClient,
+              knex,
+              async function (trx, mutator) {
+                // Verify puzzle is currently unlockable.
+                const data = mutator.getTeamState(hunt, team_id);
+                const unlock_cost = slot.unlock_cost;
 
-              // Special case for blank-rose. One of nine gates must be unlocked
-              // for a team upon its unlock, in a round-robin pattern.
-              if (slug === "📑🍝") {
-                const gates = [
-                  "mdg03",
-                  "mdg04",
-                  "mdg05",
-                  "mdg06",
-                  "mdg07",
-                  "mdg08",
-                  "mdg09",
-                  "mdg10",
-                  "mdg11",
-                ];
-                // How many of these gates have been unlocked?
-                const gateUnlockResult = (await trx("activity_log")
-                  .count("id", { as: "gateCount" })
-                  .where("type", "=", "gate_completed")
-                  .whereIn("slug", gates)
-                  .first()) ?? { gateCount: 0 };
-                // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
-                const gateCount =
-                  typeof gateUnlockResult.gateCount === "string"
-                    ? parseInt(gateUnlockResult.gateCount, 10)
-                    : gateUnlockResult.gateCount;
-                // Open the gates in order as teams unlock this puzzle, defaulting
-                // to the first gate for the first team to unlock the puzzle.
-                const gateSlug = gates[gateCount % gates.length] ?? "mdg03";
-                await mutator.appendLog({
-                  team_id,
-                  type: "gate_completed",
-                  slug: gateSlug,
-                });
-              }
+                // Special case for blank-rose. One of nine gates must be unlocked
+                // for a team upon its unlock, in a round-robin pattern.
+                if (slug === "📑🍝") {
+                  const gates = [
+                    "mdg03",
+                    "mdg04",
+                    "mdg05",
+                    "mdg06",
+                    "mdg07",
+                    "mdg08",
+                    "mdg09",
+                    "mdg10",
+                    "mdg11",
+                  ];
+                  // How many of these gates have been unlocked?
+                  const gateUnlockResult = (await trx("activity_log")
+                    .count("id", { as: "gateCount" })
+                    .where("type", "=", "gate_completed")
+                    .whereIn("slug", gates)
+                    .first()) ?? { gateCount: 0 };
+                  // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                  const gateCount =
+                    typeof gateUnlockResult.gateCount === "string"
+                      ? parseInt(gateUnlockResult.gateCount, 10)
+                      : gateUnlockResult.gateCount;
+                  // Open the gates in order as teams unlock this puzzle, defaulting
+                  // to the first gate for the first team to unlock the puzzle.
+                  const gateSlug = gates[gateCount % gates.length] ?? "mdg03";
+                  await mutator.appendLog({
+                    team_id,
+                    type: "gate_completed",
+                    slug: gateSlug,
+                  });
+                }
 
-              if (
-                data.puzzles_unlockable.has(slug) &&
-                !data.puzzles_unlocked.has(slug) &&
-                unlock_cost &&
-                data.available_currency >= unlock_cost
-              ) {
-                // Unlock puzzle.
-                await mutator.appendLog({
-                  team_id,
-                  type: "puzzle_unlocked",
-                  slug,
-                  currency_delta: -unlock_cost,
-                });
-                return true;
-              }
-              return false;
-            },
-          );
+                if (
+                  data.puzzles_unlockable.has(slug) &&
+                  !data.puzzles_unlocked.has(slug) &&
+                  unlock_cost &&
+                  data.available_currency >= unlock_cost
+                ) {
+                  // Unlock puzzle.
+                  await mutator.appendLog({
+                    team_id,
+                    type: "puzzle_unlocked",
+                    slug,
+                    currency_delta: -unlock_cost,
+                  });
+                  return true;
+                }
+                return false;
+              },
+            );
           if (result) {
             return {
               status: 200 as const,
-              // We don't currently have any puzzles where an unlock for a puzzle depends
-              // on the puzzle state log. Don't bother fetching it.
-              /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+              /* eslint-disable @typescript-eslint/no-non-null-assertion --
                * We know the puzzle state exists because we checked the db above. */
-              body: formatPuzzleState(slug, logEntries, [])!,
+              body: formatPuzzleState(
+                slug,
+                teamStates[team_id]!,
+                logEntries.reduce(
+                  (acc, entry) => acc.reduce(entry),
+                  new PuzzleStateIntermediate(slug),
+                ),
+              )!,
+              /* eslint-enable @typescript-eslint/no-non-null-assertion -- done */
             };
           }
           return {
