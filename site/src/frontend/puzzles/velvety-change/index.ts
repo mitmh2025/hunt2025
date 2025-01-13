@@ -7,7 +7,12 @@ const puzzle: PuzzleDefinition = {
   slug: "navigating_high_society",
   code_name: "velvety-change",
   answer: "COSMOPOLITAN",
-  authors: ["Grant Elliott", "Caroline Elliott"],
+  authors: [
+    "Wesley Graybill",
+    "Caroline Elliott",
+    "Grant Elliott",
+    "Leland Aldridge",
+  ],
   editors: [
     "Amanda Giermann",
     "James Douberley",
