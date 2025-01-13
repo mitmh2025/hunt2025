@@ -1,11 +1,12 @@
 import { type InternalActivityLogEntry } from "../lib/api/frontend_contract";
 import canonicalizeInput from "../lib/canonicalizeInput";
 import { TeamStateIntermediate } from "../src/api/logic";
-import { type Hunt } from "../src/huntdata/types";
+import HUNT from "../src/huntdata";
+import { type Interaction, type Hunt } from "../src/huntdata/types";
 import Touchpoints, { type TouchpointSlug } from "./Touchpoints";
 import { type ZammadTicketType } from "./zammadApi";
 
-const activityCreatesTicket = (
+const activityCreatesTouchpointTicket = (
   entry: InternalActivityLogEntry,
   s: TouchpointSlug,
 ): boolean => {
@@ -29,27 +30,52 @@ const activityCreatesTicket = (
   }
 };
 
+const activityCreatesInteractionTicket = (
+  entry: InternalActivityLogEntry,
+): Interaction | undefined => {
+  if (entry.type !== "interaction_started") return undefined;
+
+  const interaction = HUNT.rounds
+    .flatMap((r) => r.interactions ?? [])
+    .find((i) => i.id === entry.slug);
+  if (!interaction) return undefined;
+  return interaction.virtual ? undefined : interaction;
+};
+
 class TeamTicketState {
   teamState: TeamStateIntermediate;
   needTouchpointTickets: Set<TouchpointSlug>;
   haveTouchpointTickets: Map<TouchpointSlug, ZammadTicketType>;
+  needInteractionTickets: Map<string, string>;
+  haveInteractionTickets: Map<string, ZammadTicketType>;
 
   constructor(hunt: Hunt, initial?: Partial<TeamTicketState>) {
     this.teamState = new TeamStateIntermediate(hunt, initial?.teamState);
     this.needTouchpointTickets = new Set(initial?.needTouchpointTickets ?? []);
     this.haveTouchpointTickets = new Map(initial?.haveTouchpointTickets ?? []);
+    this.needInteractionTickets = new Map(
+      initial?.needInteractionTickets ?? [],
+    );
+    this.haveInteractionTickets = new Map(
+      initial?.haveInteractionTickets ?? [],
+    );
   }
 
   reduce(entry: InternalActivityLogEntry) {
     this.teamState.reduce(entry);
     for (const s of Object.keys(Touchpoints) as TouchpointSlug[]) {
-      if (activityCreatesTicket(entry, s)) {
+      if (activityCreatesTouchpointTicket(entry, s)) {
         this.needTouchpointTickets.add(s);
+      }
+
+      const interaction = activityCreatesInteractionTicket(entry);
+      if (interaction) {
+        this.needInteractionTickets.set(interaction.id, interaction.title);
       }
     }
 
-    // haveTouchpointTickets is populated by Zammad ticket changes, not by the
-    // activity log.
+    // haveTouchpointTickets and haveInteractionTickets are populated by Zammad
+    // ticket changes, not by the activity log.
 
     return this;
   }

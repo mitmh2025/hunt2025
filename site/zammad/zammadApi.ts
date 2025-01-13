@@ -57,6 +57,8 @@ const ZammadTicketSchema = z.object({
   activity_log_team_id_num: z.number().nullable(),
   touchpoint_type: z.string().nullable(),
   touchpoint_slug: z.string().nullable(),
+  interaction_slug: z.string().nullable(),
+  puzzle_slug: z.string().nullable(),
   updated_at: z.string(),
 });
 
@@ -71,6 +73,7 @@ const ZammadCreateTicketSchema = z.object({
   }),
   touchpoint_type: z.string().nullable().optional(),
   touchpoint_slug: z.string().nullable().optional(),
+  interaction_slug: z.string().nullable().optional(),
   puzzle_slug: z.string().nullable().optional(),
   puzzle_title: z.string().nullable().optional(),
 });
