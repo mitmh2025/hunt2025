@@ -79,8 +79,8 @@ const PuzzlesTable = ({
         <>
           {puzzles.map((puz) => {
             return (
-              <>
-                <StyledRow key={puz.slug} $bolded={puz.is_meta ?? false}>
+              <React.Fragment key={puz.slug}>
+                <StyledRow $bolded={puz.is_meta ?? false}>
                   <td key="puzzle" className="puzzle-name">
                     <PuzzleLink
                       epoch={epoch}
@@ -98,12 +98,12 @@ const PuzzlesTable = ({
                     </code>
                   </td>
                 </StyledRow>
-                <StyledRow key={`${puz.slug}-desc`} $bolded={false}>
+                <StyledRow $bolded={false}>
                   <td className="desc" colSpan={2}>
                     {puz.desc}
                   </td>
                 </StyledRow>
-              </>
+              </React.Fragment>
             );
           })}
           {interactions?.map((int) => {

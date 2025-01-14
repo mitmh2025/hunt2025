@@ -228,10 +228,9 @@ const PaperTrailBody = ({
       );
     } else {
       return (
-        <>
+        <React.Fragment key={item.title}>
           <DeskItem
             as="button"
-            key={item.title}
             style={aStyle}
             onClick={(e) => {
               if (item.notes.length > 0) showModal(e);
@@ -248,7 +247,7 @@ const PaperTrailBody = ({
               onDismiss={dismissModal}
             />
           )}
-        </>
+        </React.Fragment>
       );
     }
   });
