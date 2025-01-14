@@ -103,7 +103,11 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
   InternalActivityLogEntryWithSlug.merge(
     z.object({
       type: z.literal("puzzle_hint_responded"),
-      data: z.object({ request_id: z.number(), response: z.string() }),
+      data: z.object({
+        request_id: z.number(),
+        response: z.string(),
+        zammad_article_id: z.number(),
+      }),
     }),
   ),
 ]);
@@ -339,6 +343,7 @@ export const frontendContract = c.router({
     body: z.object({
       request_id: z.number(),
       response: z.string(),
+      zammad_article_id: z.number(),
     }),
     responses: {
       200: TeamHuntStateSchema,
