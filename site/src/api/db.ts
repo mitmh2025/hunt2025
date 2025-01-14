@@ -285,6 +285,21 @@ declare module "knex/types/tables" {
           response: string;
         };
       }
+    | {
+        type: "global_hints_unlocked";
+        slug: string; // the puzzle that had hints unlocked
+        data: {
+          minimum_unlock_hours: number;
+        };
+      }
+    | {
+        type: "team_hints_unlocked";
+        slug: string;
+        data: {
+          // SQLite returns timestamps as strings.
+          hints_available_at: Date | string;
+        };
+      }
   );
 
   // ActivityLogEntryRow is the type as returned by the various database engines.

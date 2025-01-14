@@ -125,6 +125,9 @@ export class LogicTeamState {
   puzzles_unlocked: Set<string>;
   puzzles_stray: Set<string>;
   puzzles_solved: Set<string>;
+  puzzle_unlocked_timestamp: Map<string, Date>;
+  global_hints_unlocked_delta: Map<string, number>;
+  team_hints_unlocked_timestamp: Map<string, Date>;
   gates_satisfied: Set<string>;
   interactions_unlocked: Set<string>;
   interactions_started: Set<string>;
@@ -138,6 +141,15 @@ export class LogicTeamState {
     this.puzzles_unlocked = new Set(initial?.puzzles_unlocked ?? []);
     this.puzzles_stray = new Set(initial?.puzzles_stray ?? []);
     this.puzzles_solved = new Set(initial?.puzzles_solved ?? []);
+    this.puzzle_unlocked_timestamp = new Map(
+      initial?.puzzle_unlocked_timestamp ?? [],
+    );
+    this.global_hints_unlocked_delta = new Map(
+      initial?.global_hints_unlocked_delta ?? [],
+    );
+    this.team_hints_unlocked_timestamp = new Map(
+      initial?.team_hints_unlocked_timestamp ?? [],
+    );
     this.gates_satisfied = new Set(initial?.gates_satisfied ?? []);
     this.interactions_unlocked = new Set(initial?.interactions_unlocked ?? []);
     this.interactions_started = new Set(initial?.interactions_started ?? []);
@@ -228,6 +240,25 @@ export class LogicTeamState {
               }
               updated = true;
             }
+          }
+          const globalHintsUnlockDelta =
+            this.global_hints_unlocked_delta.get(puzzleSlug);
+          const teamPuzzleUnlockTime =
+            this.puzzle_unlocked_timestamp.get(puzzleSlug);
+          if (
+            globalHintsUnlockDelta !== undefined &&
+            teamPuzzleUnlockTime !== undefined &&
+            !next.team_hints_unlocked_timestamp.has(puzzleSlug)
+          ) {
+            // Unlock hints for this puzzle at puzzle unlock time + hint unlock delta.
+            const teamHintsUnlockTime = new Date(teamPuzzleUnlockTime);
+            teamHintsUnlockTime.setHours(
+              teamHintsUnlockTime.getHours() + globalHintsUnlockDelta,
+            );
+            next.team_hints_unlocked_timestamp.set(
+              puzzleSlug,
+              teamHintsUnlockTime,
+            );
           }
         });
         round.interactions?.forEach((interaction) => {

@@ -67,18 +67,6 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
   InternalActivityLogEntryWithSlug.merge(
     z.object({ type: z.literal("rate_limits_reset") }),
   ),
-  // Entry types below this point do not appear in the team-visible activity log.
-  InternalActivityLogEntryWithSlug.merge(
-    z.object({
-      type: z.literal("puzzle_guess_submitted"),
-      data: z.object({
-        canonical_input: z.string(),
-        link: CannedResponseLinkSchema.optional(),
-        status: GuessStatus,
-        response: z.string(),
-      }),
-    }),
-  ),
   InternalActivityLogEntryBaseSchema.merge(
     z.object({ type: z.literal("strong_currency_adjusted") }),
   ),
@@ -104,6 +92,30 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({
       type: z.literal("puzzle_hint_responded"),
       data: z.object({ request_id: z.number(), response: z.string() }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("team_hints_unlocked"),
+      data: z.object({ hints_available_at: z.string().datetime() }),
+    }),
+  ),
+  // Entry types below this point do not appear in the team-visible activity log.
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("puzzle_guess_submitted"),
+      data: z.object({
+        canonical_input: z.string(),
+        link: CannedResponseLinkSchema.optional(),
+        status: GuessStatus,
+        response: z.string(),
+      }),
+    }),
+  ),
+  InternalActivityLogEntryWithSlug.merge(
+    z.object({
+      type: z.literal("global_hints_unlocked"),
+      data: z.object({ minimum_unlock_hours: z.number() }),
     }),
   ),
 ]);

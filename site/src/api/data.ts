@@ -233,6 +233,19 @@ async function recalculateTeamState(
     });
   }
   const gates_completed_done = performance.now();
+  for (const [slug, timestamp] of next.team_hints_unlocked_timestamp) {
+    if (!old.team_hints_unlocked_timestamp.has(slug)) {
+      await mutator.appendLog({
+        team_id,
+        type: "team_hints_unlocked",
+        slug,
+        data: {
+          hints_available_at: timestamp.toISOString(),
+        },
+      });
+    }
+  }
+  const team_hints_unlocked_done = performance.now();
   console.log(`recalculateTeamState for team ${team_id}: ${interactions_unlock_done - start} msec
   * calculateTeamState:  ${calculate_team_state_done - start} msec
   * unlock rounds:       ${unlock_rounds_done - calculate_team_state_done} msec
@@ -240,7 +253,8 @@ async function recalculateTeamState(
   * unlockable puzzles:  ${puzzles_unlockable_done - diff_done} msec
   * unlock puzzles:      ${puzzles_unlock_done - puzzles_unlockable_done} msec
   * unlock interactions: ${interactions_unlock_done - puzzles_unlock_done} msec
-  * complete gates:      ${gates_completed_done - interactions_unlock_done} msec`);
+  * complete gates:      ${gates_completed_done - interactions_unlock_done} msec
+  * unlock hints:        ${team_hints_unlocked_done - gates_completed_done}msec`);
   return next;
 }
 
