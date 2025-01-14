@@ -7,7 +7,7 @@ const puzzle: PuzzleDefinition = {
   slug: "the_killer",
   code_name: "jubilant-table",
   answer: "COLLAR A WILD ROVER",
-  authors: ["Julian West", "Chris Pringle", "Joanna Murray"],
+  authors: ["Julian West"],
   editors: ["Erin Price", "James Douberley", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
@@ -15,8 +15,12 @@ const puzzle: PuzzleDefinition = {
       who: ["Simone Agha"],
     },
     {
-      for_what: "Story writing and editing",
+      for_what: "Story writing and editing support",
       who: ["John Silvio"],
+    },
+    {
+      for_what: "Additional authors",
+      who: ["Chris Pringle", "Joanna Murray"],
     },
     {
       for_what: "Additional puzzle contributions",

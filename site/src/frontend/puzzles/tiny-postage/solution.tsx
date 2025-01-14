@@ -707,8 +707,8 @@ const SHIPWRIGHT_LABELS = `
 .........        .. ......
 .............. .... ......
 .............. ...........
-..............5...........
-..............4...........
+.............. ...........
+.............. ...........
 `
   .split("\n")
   .slice(1, -1)
@@ -823,7 +823,7 @@ const ARTIST_EXTRACTION = [
 ];
 
 const ScantronAnswers = styled.div`
-  margin-top: 8px;
+  margin-bottom: 1em;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 `;
@@ -1240,12 +1240,19 @@ const Solution = (): JSX.Element => {
       <h2>The Coroner</h2>
       <p>
         Solvers can examine the “tissue samples” from the cigarette box and
-        recognize the math symbols as being part of The Alchemist sculpture near
-        W20. Visiting the sculpture and using the locations in the autopsy to
-        help locate each set (left temple, crook of right elbow, left side of
-        ribcage, just to the right of the spine, and centered on the spine),
-        they will find that the bullet holes in the drawings replace the symbols
-        p, v, r, t and = on the sculpture.
+        recognize the math symbols as being part of{" "}
+        <a
+          href="https://listart.mit.edu/art-artists/alchemist-2010"
+          target="_blank"
+          rel="noreferrer"
+        >
+          the Alchemist
+        </a>{" "}
+        sculpture near W20. Visiting the sculpture and using the locations in
+        the autopsy to help locate each set (left temple, crook of right elbow,
+        left side of ribcage, just to the right of the spine, and centered on
+        the spine), they will find that the bullet holes in the drawings replace
+        the symbols p, v, r, t and = on the sculpture.
       </p>
       <p>They can use the autopsy transcript to reveal three more symbols:</p>
       <p>
@@ -1858,7 +1865,7 @@ const Solution = (): JSX.Element => {
         the same letter, so AA, PP, or SS. The Swimmer is already set in #2 and
         Stonemason must go after Florist, so it must be either Bartender → Actor
         → Academic or Bartender → P → P. The Actor, however, is immediately
-        preceded by a P in any case, blocking the Shipwright from being followed
+        preceded by a P in any case, blocking the Bartender from being followed
         by the two A titles. And since Actor is specifically preceded by Poet,
         the order must be Bartender → Police Officer → Poet → Actor. This string
         will only fit in the space after the Coroner, leaving Florist and
@@ -1882,10 +1889,10 @@ const Solution = (): JSX.Element => {
       <p>
         After solving <a href="/puzzles/papas_stash">Papa’s Stash</a>, solvers
         gain access to a digital blacklight that reveals new information about
-        the early puzzle in the round. For this puzzle, the digital blacklight
-        instructs solvers to use a real blacklight on the physical puzzle
-        papers. A number (or an X) is written in UV ink in the area that is
-        printed to look like the filter on a cigarette.
+        several early puzzles in the round. For this puzzle, the digital
+        blacklight instructs solvers to use a real blacklight on the physical
+        puzzle papers. A number (or an X) is written in UV ink in the area that
+        is printed to look like the filter on a cigarette.
       </p>
       <FlexWithMargin>
         <LinkedImage src={filters} alt="A grid of mock cigarette filters." />
