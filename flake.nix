@@ -175,6 +175,7 @@
           "prod/deploy"
           "prod/media"
           "prod/things"
+          "prod/tix"
         ] (name: nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {

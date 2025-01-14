@@ -68,5 +68,6 @@
     ./media.nix
     ./things.nix
     ./mail.nix
+    ./tix.nix
   ];
 }
