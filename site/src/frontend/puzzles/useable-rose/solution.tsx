@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const BorderedTable = styled.table`
   border: 1px solid var(--black);
@@ -93,8 +93,8 @@ const Solution = () => {
       <p>
         This resolves to HOUSE, but in a reapplication of the mechanic, and per
         the instruction that the final answer is two words (the untangled hint
-        at the bottom of the puzzle), you need to add a color to get WHITE
-        HOUSE.
+        at the bottom of the puzzle), you need to add a color to get{" "}
+        <PuzzleAnswer>WHITE HOUSE</PuzzleAnswer>.
       </p>
       <p>The full clue and answer list is below:</p>
 

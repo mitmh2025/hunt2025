@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import { Highlight, WordBlock } from "./puzzle";
 
 const Table = styled.table`
@@ -37,7 +37,8 @@ const Solution = () => {
       </p>
       <p>
         Reading out the highlighted blanks spells out FLIRT WITH BARTENDER,
-        which solvers must do at the Gala to receive the final answer.
+        which solvers must do at the Gala to receive the final answer:{" "}
+        <PuzzleAnswer>LET THEM EAT CAKE</PuzzleAnswer>.
       </p>
       <HScrollTableWrapper>
         <Table>

@@ -1,4 +1,5 @@
 import React from "react";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 export default function Solution() {
   return (
@@ -13,7 +14,8 @@ export default function Solution() {
       number of colors that are correctly assigned to items, and the number of
       colors that are correct but assigned to the incorrect item. Once teams
       found the correct drinks to satisfy two of the judges, they were presented
-      with the answer to the event on a cocktail napkin.
+      with the answer to the event on a cocktail napkin:{" "}
+      <PuzzleAnswer>COSMOPOLITAN</PuzzleAnswer>.
     </p>
   );
 }

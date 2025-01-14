@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { Math, MFrac, MI, MN, MO, MSub } from "../../components/MathML";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const CenteredTable = styled.table`
   th,
@@ -199,7 +199,7 @@ const Solution = () => {
         expression (as per the flavortext: “They keep track of the dollars and
         cents, but they’re apt to just cut things off there”) and interpreting
         these two decimal digits as letters with 0.01=A, 0.02=B, etc. gives the
-        answer ROUNDING ERROR.
+        answer <PuzzleAnswer>ROUNDING ERROR</PuzzleAnswer>.
       </p>
 
       <HScrollTableWrapper>

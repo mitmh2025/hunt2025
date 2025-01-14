@@ -1,5 +1,6 @@
 import React from "react";
 import { Math, MI, MN, MO } from "../../components/MathML";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const Solution = (): JSX.Element => {
   return (
@@ -91,7 +92,10 @@ const Solution = (): JSX.Element => {
         After that, the smallest answer is in the set 1,2,3,4 and provides the
         ordering. The second answer provides the letter.
       </p>
-      <p>We have 1 - 20, 2 - 19, 3 - 5, and 4 - 5. The answer is TREE.</p>
+      <p>
+        We have 1 - 20, 2 - 19, 3 - 5, and 4 - 5. The answer is{" "}
+        <PuzzleAnswer>TREE</PuzzleAnswer>.
+      </p>
     </>
   );
 };

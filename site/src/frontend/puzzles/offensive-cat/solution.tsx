@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   th,
@@ -41,6 +41,11 @@ const Solution = (): JSX.Element => {
           Wikipedia
         </a>
         , which the timeline diagram in this puzzle is based off of.
+      </p>
+      <p>
+        Extracting the overlapping letters in the order of the episode/movie air
+        date yields the final answer:
+        <PuzzleAnswer>BRUSH WITH FATE</PuzzleAnswer>.
       </p>
       <HScrollTableWrapper>
         <StyledTable>

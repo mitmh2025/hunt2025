@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import adam from "./assets/adam.mp3";
 import adamCaptions from "./assets/adam.vtt";
 
@@ -70,7 +70,7 @@ const Solution = () => {
         Calling in that answer gets specific instructions for a task to complete
         (“Email us an obscure fact that ruins something for us”), which unlocks
         an audio message in which Adam Conover gives the final answer,{" "}
-        <strong>SAMGAKSAN</strong>.
+        <PuzzleAnswer>SAMGAKSAN</PuzzleAnswer>.
       </p>
       <p>
         <audio controls src={adam}>

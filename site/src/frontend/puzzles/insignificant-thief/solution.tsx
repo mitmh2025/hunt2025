@@ -1,5 +1,6 @@
 import React from "react";
 import { styled, css } from "styled-components";
+import { PuzzleAnswer } from "../../components/StyledUI";
 
 const MonoUL = styled.ul`
   font-family: "Roboto Mono", monospace;
@@ -313,7 +314,7 @@ const Solution = () => {
 
       <p>
         Taken in order, these come together to form the answer to the puzzle:
-        ALPACA LAND.
+        <PuzzleAnswer>ALPACA LAND</PuzzleAnswer>.
       </p>
 
       <hr />

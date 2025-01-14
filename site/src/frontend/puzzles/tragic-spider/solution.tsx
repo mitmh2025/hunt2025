@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import image_adder from "./assets/image_01.png";
 import image_aped from "./assets/image_02.png";
 import image_awn from "./assets/image_03.png";
@@ -399,9 +399,10 @@ const Solution = () => {
         26, 27, 13, and 9. If these are used as indices into the Iroha itself,
         one obtains <NoBreak>へいせいのおわり,</NoBreak> which may be
         interpreted as <NoBreak>平成の終わり,</NoBreak> or translated into
-        English, <code>THE END OF THE HEISEI ERA</code>, which is the answer to
-        this puzzle. To alleviate ambiguity in translation, an enumeration for
-        the intended answer is provided at the bottom of the puzzle.
+        English, <PuzzleAnswer>THE END OF THE HEISEI ERA</PuzzleAnswer>, which
+        is the answer to this puzzle. To alleviate ambiguity in translation, an
+        enumeration for the intended answer is provided at the bottom of the
+        puzzle.
       </p>
     </>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import board_letters from "./assets/board-letters.png";
 import board_locations from "./assets/board-locations.png";
 
@@ -66,7 +67,7 @@ const Solution = () => {
 
       <p>
         Reading these duplicates in order around the board (starting from “GO”)
-        and you get BAIL MATE.
+        and you get <PuzzleAnswer>BAIL MATE</PuzzleAnswer>.
       </p>
 
       <table>

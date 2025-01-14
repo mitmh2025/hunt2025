@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import Crossword from "../../components/Crossword";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import { GRID } from "./puzzle";
 
 const StyledCrossword = styled(Crossword)`
@@ -209,7 +209,7 @@ const Solution = () => {
 
       <p>
         The final puzzle answer is read along the diagonal using the newly
-        inserted letters: <strong>C FOR CLARENDON</strong>.
+        inserted letters: <PuzzleAnswer>C FOR CLARENDON</PuzzleAnswer>.
       </p>
     </>
   );
