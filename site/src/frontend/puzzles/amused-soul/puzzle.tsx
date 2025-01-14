@@ -12,6 +12,8 @@ const FlexWrapper = styled.div`
   justify-content: center;
   gap: 16px;
   align-items: center;
+  width: 100%;
+  overflow-x: auto;
 `;
 
 const Score = styled.span`

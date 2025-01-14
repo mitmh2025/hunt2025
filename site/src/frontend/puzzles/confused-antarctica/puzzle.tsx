@@ -242,10 +242,16 @@ const Puzzle = (): JSX.Element => {
           <Monospace>USELESS EXAMPLE</Monospace>
         </div>
         <LinkedImage
+          className={NO_COPY_CLASS}
           src={example}
-          alt="Stick figure with lettered purple nodes over joints in his body"
+          alt="Stick figure with lettered purple nodes over joints in its body"
         />
       </Centered>
+      <img
+        className={COPY_ONLY_CLASS}
+        src={example}
+        alt={"Stick figure with lettered purple nodes over joints in its body"}
+      />
       <CenteredRow className={NO_COPY_CLASS}>
         {WORD_BANKS.map((wordBank, i) => (
           <WordBank key={i}>
@@ -263,8 +269,17 @@ const Puzzle = (): JSX.Element => {
         ))}
       </table>
       <Centered>
-        <LinkedImage src={image} alt="Mardi Gras beads on a bust" />
+        <LinkedImage
+          className={NO_COPY_CLASS}
+          src={image}
+          alt="Mardi Gras beads on a bust"
+        />
       </Centered>
+      <img
+        className={COPY_ONLY_CLASS}
+        src={image}
+        alt="Mardi Gras beads on a bust"
+      />
     </>
   );
 };
