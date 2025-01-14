@@ -1296,7 +1296,7 @@ export default function Solution() {
         information.
       </p>
 
-      <p>
+      <p style={{ marginLeft: "4rem" }}>
         Each of you will be acting as both detective and informant. As a
         detective, in order to find your informant, you will be using
         pre-prepared signs and countersigns. You have your prompt, and someone
@@ -1307,14 +1307,14 @@ export default function Solution() {
         above their response.
       </p>
 
-      <p>
+      <p style={{ marginLeft: "4rem" }}>
         When you have found your informant, you and your informant should each
         grasp one side of your red ribbon, demonstrating that you have made
         contact. Keep hold of this ribbon until all detectives have found their
         informants!
       </p>
 
-      <p>
+      <p style={{ marginLeft: "4rem" }}>
         Once all informants have been contacted, you should all determine the
         key to a productive collaboration.
       </p>

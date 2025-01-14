@@ -12,6 +12,7 @@ const puzzle: PuzzleDefinition = {
     "Caroline Elliott",
     "Grant Elliott",
     "James Douberley",
+    "Leland Aldridge",
   ],
   editors: [
     "Henry Wong",
