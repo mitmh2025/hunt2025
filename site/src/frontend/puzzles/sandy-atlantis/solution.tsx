@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 
 const StyledImageWrapper = styled.div`
@@ -31,7 +32,8 @@ const Solution = () => {
         there are 10 emojis that have two duplicate letters in the word used
         (for example both “C”s in CANCER). See emojis in green and in red
         borders. If you extract these duplicate letters left-to-right then
-        top-to-bottom it spells out the answer: CHIFFONIER.
+        top-to-bottom it spells out the answer:{" "}
+        <PuzzleAnswer>CHIFFONIER</PuzzleAnswer>.
       </p>
       <p>
         Author’s note: A CHIFFONIER is a piece of furniture with layers of

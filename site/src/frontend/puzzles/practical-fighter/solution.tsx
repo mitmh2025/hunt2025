@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
-import { HScrollTableWrapper, Mono } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import activation from "./assets/activation.mp3";
 import activationCaptions from "./assets/activation.vtt";
 import footIcon from "./assets/foot.svg";
@@ -359,9 +363,9 @@ const Solution = () => {
         song (Mary Had a Little Lamb), the radio requests 4 additional songs
         (Never Gonna Give You Up, Somewhere Over the Rainbow, Hot to Go, and The
         Final Countdown). Once they’ve completed those, they are rewarded with
-        the puzzle‘s answer plus one additional feature: the radio’s tilt sensor
-        now acts as a pitch bend, allowing them to play notes outside of the
-        major scale.
+        the puzzle‘s answer, <PuzzleAnswer>GUARDIAN LAVENDER</PuzzleAnswer>,
+        plus one additional feature: the radio’s tilt sensor now acts as a pitch
+        bend, allowing them to play notes outside of the major scale.
       </p>
     </>
   );

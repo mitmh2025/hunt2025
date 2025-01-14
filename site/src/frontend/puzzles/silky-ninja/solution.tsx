@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   margin-bottom: 1em;
@@ -292,8 +292,8 @@ const Solution = (): JSX.Element => {
         A synonym of PUNCH is JAB. The first letters of ANAKIN and SKYWALKER are
         AS, so inserting them into BB gives BASB. The center letter of DROID is
         O. Anagramming RILE gives ILER. A synonym of DOCK is MOOR, which when
-        reversed gives ROOM. Assembling these pieces gives JABBAS BOILER ROOM
-        which is the answer.
+        reversed gives ROOM. Assembling these pieces gives{" "}
+        <PuzzleAnswer>JABBAS BOILER ROOM</PuzzleAnswer>, which is the answer.
       </p>
       <p>The complete set of regular clues, functions and answers are:</p>
       <ScrollableAnswersTable data={REGULAR_ANSWER_TABLE_DATA} />

@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 import {
   BuildTable,
   Cell,
@@ -120,7 +120,7 @@ const Solution = () => {
       <p>
         Scoring all the words by standard scrabble tile values and rules, and
         reading those scores as letters (A=1, Z=26) in the order given produces
-        the answer, PENROSE, a famous tiler.
+        the answer, <PuzzleAnswer>PENROSE</PuzzleAnswer>, a famous tiler.
       </p>
 
       <HScrollTableWrapper>

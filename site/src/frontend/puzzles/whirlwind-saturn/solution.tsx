@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { HScrollTableWrapper, Mono } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 import nurikabe from "./assets/nurikabe-solved.png";
 import nurikabeWithLetters from "./assets/nurikabe-with-letters.png";
 import walkthrough1 from "./assets/walkthrough1.png";
@@ -85,7 +89,7 @@ const Solution = () => {
         Each word in the islands is the name of a phantom island but is missing
         one letter that has been replaced with the number. The “missing”
         letters, taken in reading order, spell out the answer:{" "}
-        <code>BATH BRICK</code>.
+        <PuzzleAnswer>BATH BRICK</PuzzleAnswer>.
       </p>
 
       <HScrollTableWrapper>

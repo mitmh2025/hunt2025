@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper } from "../../components/StyledUI";
+import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
 
 const StyledTable = styled.table`
   border-collapse: collapse;
@@ -31,9 +31,9 @@ const Solution = () => {
         the letter corresponding with the misspelled word and enter into the
         blanks at the bottom to get the clue phrase: PURCHASE DIGIT AT END OF
         FOOT. The answer to this phrase is “buy toe”, which needs to have its
-        vowel sounds swapped to give the puzzle answer BOW TIE.
+        vowel sounds swapped to give the puzzle answer{" "}
+        <PuzzleAnswer>BOW TIE</PuzzleAnswer>.
       </p>
-      {/* TODO: make a reusable component for emphasizing clue phrases and a second one for answers */}
 
       <HScrollTableWrapper>
         <StyledTable>

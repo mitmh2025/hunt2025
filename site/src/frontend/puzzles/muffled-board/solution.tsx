@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import img1 from "./assets/01.jpg";
 import img2 from "./assets/02.jpg";
 import img3 from "./assets/03.jpg";
@@ -251,8 +252,8 @@ const Solution = () => {
 
       <p>
         Reading the off-keys in order spells out the final answer{" "}
-        <strong>STENOGRAPHERS</strong> (who use a unique keyboard where one
-        types sounds/syllables rather than letters).
+        <PuzzleAnswer>STENOGRAPHERS</PuzzleAnswer> (who use a unique keyboard
+        where one types sounds/syllables rather than letters).
       </p>
     </>
   );
