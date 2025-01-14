@@ -229,7 +229,6 @@ export default globalDatasetManager;
 window.addEventListener("storage", (evt) => {
   if (evt.key === "username") {
     // Check for team ID change
-    const newUsername = localStorage.getItem("username");
     if (evt.newValue !== initialUsername) {
       // Team ID changed; reload
       location.reload();
