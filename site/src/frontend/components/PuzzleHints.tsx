@@ -15,6 +15,37 @@ type Hint = Hints[number];
 
 type FormState = "idle" | "submitting" | "error";
 
+const OutstandingHintNotice = styled.p`
+  font-size: 14px;
+  border: 1px solid var(--gold-700);
+  color: var(--gold-800);
+  padding: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  background-color: var(--gold-200);
+  border-radius: 2px;
+`;
+
+const HintRequest = styled.div`
+  background-color: var(--gray-200);
+  color: var(--black);
+  border-radius: 1rem;
+  border-bottom-left-radius: 0;
+  border: 1px solid var(--gold-700);
+  padding: 0 1rem;
+  margin: 2rem 8rem 2rem 2rem;
+`;
+
+const HintResponse = styled.div`
+  background-color: var(--gray-200);
+  color: var(--black);
+  border-radius: 1rem;
+  border-bottom-right-radius: 0;
+  border: 1px solid var(--gold-700);
+  padding: 0 1rem;
+  margin: 2rem 2rem 2rem 8rem;
+`;
+
 const HintSectionWrapper = styled.section`
   color: var(--black);
   padding: 1rem;
@@ -26,6 +57,8 @@ const HintSectionWrapper = styled.section`
 
   h3 {
     padding-bottom: 0;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--black);
   }
 `;
 
@@ -139,24 +172,21 @@ const PuzzleHintHistory = ({ hints }: { hints: Hints }) => {
   return (
     <div>
       {hints.map((h) => {
-        return (
-          <div key={h.id}>
-            {h.type === "puzzle_hint_requested" ? (
-              <>
-                <h3>Hint requested at {formatHintTimestamp(h.timestamp)}</h3>
-                <p style={{ whiteSpace: "pre-wrap" }}>{h.data.request}</p>
-              </>
-            ) : (
-              <>
-                <h3>Hunt HQ response at {formatHintTimestamp(h.timestamp)}</h3>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: h.data.response,
-                  }}
-                />
-              </>
-            )}
-          </div>
+        return h.type === "puzzle_hint_requested" ? (
+          <HintRequest key={h.id}>
+            <h3>Hint requested at {formatHintTimestamp(h.timestamp)}</h3>
+            <p style={{ whiteSpace: "pre-wrap" }}>{h.data.request}</p>
+          </HintRequest>
+        ) : (
+          <HintResponse key={h.id}>
+            <h3>Hunt HQ response at {formatHintTimestamp(h.timestamp)}</h3>
+            <div
+              style={{ marginBottom: "1em" }}
+              dangerouslySetInnerHTML={{
+                __html: h.data.response,
+              }}
+            />
+          </HintResponse>
         );
       })}
     </div>
@@ -189,10 +219,26 @@ const PuzzleHints = ({
     return openHints.size > 0;
   }, [hints]);
 
-  // TODO: if there is a hint request pending for a different puzzle,
-  // tell the team to wait
-  if (teamState.puzzles[slug]?.answer !== undefined || hintRequestOpen) {
+  if (teamState.puzzles[slug]?.answer !== undefined) {
     form = null;
+  } else if (hintRequestOpen) {
+    form = (
+      <OutstandingHintNotice>
+        Hunt HQ is reviewing your request and will get back to you shortly.
+        You’ll receive an email and a notification when they respond.
+      </OutstandingHintNotice>
+    );
+  } else if (teamState.outstanding_hint_requests.length > 0) {
+    form = (
+      <OutstandingHintNotice>
+        You have an outstanding hint request for{" "}
+        <a href={`/puzzles/${teamState.outstanding_hint_requests[0]}/hints`}>
+          another puzzle
+        </a>
+        . Please wait for a response to that request before submitting another
+        hint request.
+      </OutstandingHintNotice>
+    );
   } else {
     form = (
       <PuzzleHintForm

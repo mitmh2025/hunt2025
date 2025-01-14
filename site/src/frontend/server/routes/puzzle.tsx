@@ -6,13 +6,14 @@ import { type PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract"
 import { getBackgroundCheckManifestOverrides } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import { getMissingDiamondHeader } from "../../components/MissingDiamondPuzzleLayout";
-import PuzzleGuessSection from "../../components/PuzzleGuessSection";
+import PuzzleGuessSection, {
+  SubpuzzleGuessSection,
+} from "../../components/PuzzleGuessSection";
 import PuzzleHints from "../../components/PuzzleHints";
 import {
   SolutionHintTable,
   SolutionCannedResponseTable,
 } from "../../components/SolutionLayout";
-import Stamp from "../../components/SparkleStamps";
 import { PUZZLES, SUBPUZZLES } from "../../puzzles";
 import { NODE_IDS_BY_PUZZLE_SLUG } from "../../rounds/illegal_search/graph";
 import { missingDiamondState } from "../../rounds/missing_diamond";
@@ -133,8 +134,7 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
           dangerouslySetInnerHTML={{ __html: inlineScript }}
         />
         <div id="subpuzzle-guesses">
-          <PuzzleGuessSection
-            type="subpuzzle"
+          <SubpuzzleGuessSection
             slug={slug}
             guesses={guesses}
             onGuessesUpdate={noopOnGuessesUpdate}
@@ -248,7 +248,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   }
   const guesses = result.body.guesses;
   const initialGuesses = JSON.stringify(result.body.guesses);
-  const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}";`;
+  const initialTeamState = JSON.stringify(req.teamState.state);
+  const inlineScript = `window.initialGuesses = ${initialGuesses}; window.puzzleSlug = "${slug}"; window.initialTeamState = ${initialTeamState}`;
   const noopOnGuessesUpdate = () => {
     /* no-op, this is noninteractive in SSR */
   };
@@ -260,9 +261,9 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       />
       <div id="puzzle-guesses">
         <PuzzleGuessSection
-          type="puzzle"
           slug={slug}
           guesses={guesses}
+          teamState={req.teamState.state}
           onGuessesUpdate={noopOnGuessesUpdate}
         />
       </div>
@@ -432,7 +433,6 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
       {PuzzleFontsComponent ? <PuzzleFontsComponent /> : undefined}
       <PuzzleWrapperComponent>
         <PuzzleHeaderComponent>
-          {puzzleState.answer && <Stamp />}
           <PuzzleTitleWrapperComponent>
             {backlinkFrag}
             <PuzzleTitleComponent>
@@ -745,6 +745,22 @@ export async function puzzleHintsHandler(req: Request<PuzzleParams>) {
   });
   if (result.status !== 200 || result.body.locked !== "unlocked") {
     // Puzzle doesn't exist or team doesn't have access.
+    return undefined;
+  }
+
+  const puzzleSumary = req.teamState.state.puzzles[slug];
+  console.log("puzzleSumary", puzzleSumary);
+  if (!puzzleSumary) {
+    return undefined;
+  }
+
+  if (!puzzleSumary.hints_unlocked_at) {
+    // Hints are not available for this puzzle
+    return undefined;
+  }
+
+  if (new Date(puzzleSumary.hints_unlocked_at).getTime() > Date.now()) {
+    // Hints are not available yet for this team
     return undefined;
   }
 

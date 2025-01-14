@@ -19,6 +19,7 @@ export class TeamStateIntermediate extends LogicTeamState {
   puzzles_partially_solved: Set<string>;
   private slugToSlotMap: Map<string, SlotLookup>;
   correct_answers: Map<string, string>;
+  outstanding_hint_requests: Set<string>;
 
   static redisKey = "team_state_intermediate";
 
@@ -34,6 +35,9 @@ export class TeamStateIntermediate extends LogicTeamState {
     );
     this.slugToSlotMap = generateSlugToSlotMap(hunt);
     this.correct_answers = new Map(initial?.correct_answers ?? []);
+    this.outstanding_hint_requests = new Set(
+      initial?.outstanding_hint_requests,
+    );
   }
 
   reduce(entry: InternalActivityLogEntry) {
@@ -106,11 +110,17 @@ export class TeamStateIntermediate extends LogicTeamState {
         );
         break;
       }
+      case "puzzle_hint_requested":
+        this.outstanding_hint_requests.add(entry.slug);
+        break;
+      case "puzzle_hint_responded":
+        this.outstanding_hint_requests.delete(entry.slug);
+        break;
     }
     return this;
   }
 
-  dehydrate(): Partial<Hydratable<TeamStateIntermediate>> {
+  dehydrate(): Hydratable<TeamStateIntermediate> {
     return {
       epoch: this.epoch,
       puzzles_unlocked_at: Array.from(this.puzzles_unlocked_at),
@@ -127,6 +137,13 @@ export class TeamStateIntermediate extends LogicTeamState {
       correct_answers: Array.from(this.correct_answers),
       available_currency: this.available_currency,
       available_strong_currency: this.available_strong_currency,
+      puzzle_unlocked_timestamp: Array.from(this.puzzle_unlocked_timestamp),
+      global_hints_unlocked_delta: Array.from(this.global_hints_unlocked_delta),
+      outstanding_hint_requests: Array.from(this.outstanding_hint_requests),
+      team_hints_unlocked_timestamp: Array.from(
+        this.team_hints_unlocked_timestamp,
+      ),
+      puzzles_visible: Array.from(this.puzzles_visible),
     };
   }
 }
@@ -216,6 +233,7 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
     rounds,
     currency: data.available_currency,
     strong_currency: data.available_strong_currency,
+    outstanding_hint_requests: Array.from(data.outstanding_hint_requests),
     puzzles: Object.fromEntries(
       [...data.puzzles_visible].map((slug) => [
         slug,
@@ -251,7 +269,7 @@ export class TeamInfoIntermediate {
     this.deactivated = initial?.deactivated ?? false;
   }
 
-  dehydrate(): Partial<Hydratable<TeamInfoIntermediate>> {
+  dehydrate(): Hydratable<TeamInfoIntermediate> {
     return {
       epoch: this.epoch,
       registration: this.registration,
@@ -421,11 +439,12 @@ export class PuzzleStateIntermediate {
     return `puzzle_state_intermediate/${slug}`;
   }
 
-  dehydrate(): Partial<Hydratable<PuzzleStateIntermediate>> {
+  dehydrate(): Hydratable<PuzzleStateIntermediate> {
     return {
       epoch: this.epoch,
       guesses: this.guesses,
       hints: this.hints,
+      slug: this._slug,
     };
   }
 }

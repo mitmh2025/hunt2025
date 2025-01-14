@@ -1,10 +1,12 @@
 import React, { useCallback, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { type z } from "zod";
-import { newClient } from "../../../lib/api/client";
+import { type TeamHuntState, newClient } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
 import apiUrl from "../utils/apiUrl";
 import { deviceMax } from "../utils/breakpoints";
+import PuzzleHintLink from "./PuzzleHintLink";
+import Stamp from "./SparkleStamps";
 import { Button, TextInput } from "./StyledUI";
 
 type GetPuzzleStateResponse = z.infer<
@@ -263,23 +265,56 @@ const PuzzleGuessHistoryTable = ({ guesses }: { guesses: Guesses }) => {
 };
 
 const PuzzleGuessSection = ({
-  type,
+  slug,
+  guesses,
+  teamState,
+  onGuessesUpdate,
+}: {
+  slug: string;
+  guesses: Guesses;
+  teamState: TeamHuntState;
+  onGuessesUpdate: (guesses: Guesses) => void;
+}) => {
+  const solved = guesses.some((g) => g.status === "correct");
+  const puzzleState = teamState.puzzles[slug];
+
+  return (
+    <GuessSectionWrapper id="puzzle-guess-section">
+      {solved ? (
+        <Stamp />
+      ) : (
+        <PuzzleGuessForm
+          type="puzzle"
+          slug={slug}
+          onGuessesUpdate={onGuessesUpdate}
+        />
+      )}
+      <PuzzleGuessHistoryTable guesses={guesses} />
+      {!solved && puzzleState && (
+        <PuzzleHintLink slug={slug} puzzleState={puzzleState} />
+      )}
+    </GuessSectionWrapper>
+  );
+};
+
+export default PuzzleGuessSection;
+
+export function SubpuzzleGuessSection({
   slug,
   guesses,
   onGuessesUpdate,
 }: {
-  type: "puzzle" | "subpuzzle";
   slug: string;
   guesses: Guesses;
   onGuessesUpdate: (guesses: Guesses) => void;
-}) => {
+}) {
   const solved = guesses.some((g) => g.status === "correct");
 
   return (
     <GuessSectionWrapper id="puzzle-guess-section">
-      {solved ? undefined : (
+      {solved ? null : (
         <PuzzleGuessForm
-          type={type}
+          type="subpuzzle"
           slug={slug}
           onGuessesUpdate={onGuessesUpdate}
         />
@@ -287,6 +322,4 @@ const PuzzleGuessSection = ({
       <PuzzleGuessHistoryTable guesses={guesses} />
     </GuessSectionWrapper>
   );
-};
-
-export default PuzzleGuessSection;
+}

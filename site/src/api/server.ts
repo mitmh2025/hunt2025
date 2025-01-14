@@ -1173,8 +1173,24 @@ export async function getRouter({
                   };
                 }
 
-                // TODO: check that the team does not have an open hint request
-                // and that they are allowed to submit hints for this puzzle
+                if (teamState.outstanding_hint_requests.size > 0) {
+                  return {
+                    status: 409 as const,
+                    body: null,
+                  };
+                }
+
+                const hintsUnlockedAt =
+                  teamState.team_hints_unlocked_timestamp.get(slug);
+                if (
+                  !hintsUnlockedAt ||
+                  hintsUnlockedAt.getTime() > Date.now()
+                ) {
+                  return {
+                    status: 404 as const,
+                    body: null,
+                  };
+                }
 
                 await mutator.appendLog({
                   team_id,

@@ -1,11 +1,15 @@
-export type Hydratable<Type> = {
-  [Property in keyof Type]: Type[Property] extends Set<infer E> | (infer E)[]
-    ? Iterable<Hydratable<E>>
-    : Type[Property] extends Date
-      ? Type[Property] | string
-      : Type[Property] extends Map<infer K, infer V>
-        ? Iterable<[K, Hydratable<V>]>
-        : Type[Property] extends Record<string, unknown>
-          ? Hydratable<Type[Property]>
-          : Type[Property];
-};
+export type Hydratable<Type> = Type extends Set<infer E> | (infer E)[]
+  ? Iterable<Hydratable<E>>
+  : Type extends Date
+    ? string | Date
+    : Type extends Map<infer K, infer V>
+      ? Iterable<[K, Hydratable<V>]>
+      : // eslint-disable-next-line @typescript-eslint/ban-types -- Object is not the same as Record<string, unknown>
+        Type extends Object
+        ? {
+            // eslint-disable-next-line @typescript-eslint/ban-types -- Function should be general here
+            [Property in keyof Type as Type[Property] extends Function
+              ? never
+              : Property]: Hydratable<Type[Property]>;
+          }
+        : Type;
