@@ -408,7 +408,8 @@ async function main({
       epoch: teamState.epoch,
       quixotic_shoe_enabled:
         teamState.gates_satisfied.has("ptg03") && adFrequency !== "plus",
-      mystery_hunt_minus_enabled: adFrequency === "minus",
+      mystery_hunt_minus_enabled:
+        teamState.gates_satisfied.has("ptg03") && adFrequency === "minus",
       icy_box_enabled: teamState.gates_satisfied.has("ptg16"),
       interaction:
         [
