@@ -13,7 +13,7 @@ const Puzzle = () => {
       </p>
 
       <p className="puzzle-flavor">
-        How do we communicate to Ferdinand that we know his secret?
+        How should we communicate to Ferdinand that we know his secret?
       </p>
 
       <LinkedImage

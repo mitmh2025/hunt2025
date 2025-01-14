@@ -21,14 +21,14 @@ const PuzzleContent = () => {
         find another answer. Many metapuzzles, including most in this Hunt, will
         not have these notes to label them. Sometimes that’s part of the fun!
       </AuthorsNote>
-      <div className="flavor">
-        <p>
-          Doubling up with your seven lucky cards down your sleeves, you‘re sure
-          to clean house, as long as you keep rank and conceal your con from the
-          eagle-eyed dealer.
-        </p>
-        <p>How can you discover what Carter was up to at the casino?</p>
-      </div>
+      <p className="puzzle-flavor">
+        Doubling up with your seven lucky cards down your sleeves, you‘re sure
+        to clean house, as long as you keep rank and conceal your con from the
+        eagle-eyed dealer.
+      </p>
+      <p className="puzzle-flavor">
+        How should we discover what Carter was up to at the casino?
+      </p>
       <div
         style={{
           display: "flex",

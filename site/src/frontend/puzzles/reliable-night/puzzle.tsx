@@ -29,6 +29,9 @@ const PuzzleContent = () => {
         As you watch a jeweler assembling chain bracelets, you contemplate how
         your investigation of Gladys could start off.
       </p>
+      <p className="puzzle-flavor">
+        How should we discover what Gladys was up to at the Jewelry Store?
+      </p>
       <CenteredDiv>
         <SizedLinkedImage
           src={chain}

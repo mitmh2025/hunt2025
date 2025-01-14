@@ -13,8 +13,10 @@ const Puzzle = () => {
       </AuthorsNote>
       <p className="puzzle-flavor">
         You walk around, starting at local attractions and leaving a print with
-        each step, keeping an eye on where your steps overlap. How can you learn
-        what Katrina was up to at the Boardwalk?
+        each step, keeping an eye on where your steps overlap.
+      </p>
+      <p className="puzzle-flavor">
+        How should we discover what Katrina was up to at the Boardwalk?
       </p>
     </>
   );
