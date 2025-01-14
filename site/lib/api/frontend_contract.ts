@@ -371,7 +371,7 @@ export const frontendContract = c.router({
   },
   markSubpuzzleUnlocked: {
     method: "POST",
-    path: `/subpuzzle/:slug/unlock`,
+    path: `/teams/:teamId/subpuzzles/:slug/unlock`,
     body: z.object({}),
     responses: {
       200: SubpuzzleStateSchema,
