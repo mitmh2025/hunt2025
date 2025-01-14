@@ -297,7 +297,8 @@ const HUNT: Hunt = {
         { id: "hunt_started", internal_description: "Hunt Started" }, // Nothing is unlocked until this gate is satisfied.
         {
           id: "hunt_closed",
-          internal_description: "Hunt has ended, and we are shutting down the radio streams"
+          internal_description:
+            "Hunt has ended, and we are shutting down the radio streams",
         },
         {
           id: "mdg01",
@@ -1124,6 +1125,11 @@ const HUNT: Hunt = {
         {
           id: "bgg01",
           internal_description: "Picked up Celestial Rope from Gala",
+        },
+        {
+          id: "bgg02",
+          internal_description:
+            "Release answer audio recording for He Shouldn’t Have Eaten The Apple",
         },
       ],
       interactions: [

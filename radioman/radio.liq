@@ -418,6 +418,7 @@ def apply_team_state(new) =
     breaking("confront_papa", "papa")
     breaking("confront_gladys", "gladys")
     breaking("confront_carter", "ferdinand")
+    breaking("bgg02", "snoopy-link")
     inserted_content := if inserted_content() != [] then
         [
             bumper_breaking,

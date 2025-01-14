@@ -291,11 +291,11 @@
     "radio-media": {
       "flake": false,
       "locked": {
-        "lastModified": 1736807531,
-        "narHash": "sha256-FpuSB/ygZLV0e/mPfQJCH6AgwURR+9zhUQ/gybsLV6c=",
+        "lastModified": 1736884937,
+        "narHash": "sha256-oY7YZ/n5ra28nqLN5hiwAucK84kWjU2jGQMN07vC57U=",
         "ref": "refs/heads/main",
-        "rev": "8f832b9faaa2bd463c36db42fb81b647fd693530",
-        "revCount": 16,
+        "rev": "788e9d5e34cd4529fc5ce6abcc0df1926e2acbc4",
+        "revCount": 17,
         "type": "git",
         "url": "ssh://git@github.com/mitmh2025/radio-media"
       },

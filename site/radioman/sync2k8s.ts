@@ -80,7 +80,7 @@ const VIRTUAL_INTERACTIONS = new Set([
   "interview_at_the_art_gallery",
 ]);
 
-const PROPAGATED_GATES = new Set(["hunt_started", "hunt_closed"]);
+const PROPAGATED_GATES = new Set(["hunt_started", "hunt_closed", "bgg02"]);
 
 const c = initContract();
 const radioContract = c.router({
