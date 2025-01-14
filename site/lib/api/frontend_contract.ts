@@ -100,7 +100,6 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({
       type: z.literal("puzzle_hint_responded"),
       data: z.object({
-        request_id: z.number(),
         response: z.string(),
         zammad_article_id: z.number(),
       }),
@@ -399,7 +398,6 @@ export const frontendContract = c.router({
     method: "POST",
     path: "/teams/:teamId/puzzles/:slug/respondToHintRequest",
     body: z.object({
-      request_id: z.number(),
       response: z.string(),
       zammad_article_id: z.number(),
     }),

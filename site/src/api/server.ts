@@ -573,7 +573,6 @@ export async function getRouter({
             timestamp: hint.timestamp.toISOString(),
             type: "puzzle_hint_responded",
             data: {
-              request_id: hint.data.request_id,
               response: sanitizeHtml(hint.data.response),
             },
           };
@@ -3023,7 +3022,7 @@ export async function getRouter({
         middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({
           params: { teamId, slug },
-          body: { response, request_id, zammad_article_id },
+          body: { response, zammad_article_id },
         }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             if (
@@ -3043,7 +3042,6 @@ export async function getRouter({
               slug: slug,
               data: {
                 response,
-                request_id,
                 zammad_article_id,
               },
             });
