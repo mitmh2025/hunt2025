@@ -3614,7 +3614,7 @@ export async function getRouter({
         },
       },
       markSubpuzzleUnlocked: {
-        middleware: [authMiddleware],
+        middleware: [frontendAuthMiddleware],
         handler: async ({ params: { slug }, req }) => {
           const team_id = req.user as number;
           const subpuzzle = SUBPUZZLES[slug];
