@@ -435,7 +435,7 @@ const Solution = (): JSX.Element => {
               </td>
             </tr>
             <tr>
-              <td>…I had already built a pyramid in France!</td>
+              <td>…I built a pyramid in France!</td>
               <td>
                 <Red>I</Red>. M. Pei
               </td>
@@ -448,8 +448,8 @@ const Solution = (): JSX.Element => {
             </tr>
             <tr>
               <td>
-                …I had already completed the first doctorate in engineering
-                earned by an African-American!
+                …I completed the first doctorate in engineering earned by an
+                African-American!
               </td>
               <td>
                 <Red>M</Red>arron William Fort
