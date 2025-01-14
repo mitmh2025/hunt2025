@@ -1036,7 +1036,7 @@ const Puzzle = () => {
             src={imgF}
             alt="R2-D2 with the letter F on its body"
           />
-          <CopyTable fill={["C", "N", "A", "P", "F", "K"]} />
+          <CopyTable fill={["C", "N", "A", "P", "F", "K", "F"]} />
         </PuzzleRowGray>
         <Separator></Separator>
         <PuzzleRow>
