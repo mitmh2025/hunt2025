@@ -14,6 +14,16 @@ const puzzle: PuzzleDefinition = {
       for_what: "Art",
       who: ["Anna Brunner"],
     },
+    {
+      for_what: "Fabrication",
+      who: [
+        "Erin Price",
+        "Kat Allen",
+        "Melanie Matchett Wood",
+        "Molly Frey",
+        "Sarah Leadbeater",
+      ],
+    },
   ],
   content: {
     component: Puzzle,

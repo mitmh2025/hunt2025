@@ -9,6 +9,7 @@ const puzzle: PuzzleDefinition = {
   answer: "UNITY",
   authors: [
     "Leland Aldridge",
+    "Alex St Claire",
     "Atul Shatavart Nadig",
     "Erin Price",
     "J. Hel\u00e9ne Andersson",
