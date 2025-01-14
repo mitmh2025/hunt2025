@@ -110,7 +110,7 @@ export default function TeamActivityLog({
               activity = `Hint request responded to for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
               break;
             case "teams_notified":
-              activity = `${entry.data.message}`;
+              activity = entry.data.message;
               break;
           }
 
