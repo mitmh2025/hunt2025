@@ -431,7 +431,7 @@ const MEGATABLE: [
     "",
     "",
     "Portrait of Adele Bloch-Bauer I, Gustav Klimt, 1907",
-    "38",
+    "18",
   ],
   [
     "32",
@@ -1169,7 +1169,7 @@ const Solution = (): JSX.Element => {
           the fall guys.
         </Green>{" "}
         No more looking over our shoulders. But old habits die hard. I’ll wait
-        for an opportune moment (to look back over his shoulder).
+        for an opportune moment <em>(to look back over his shoulder)</em>.
       </p>
       <p>
         <em>(The Teapot Dome scandal, Washington, 1921–23)</em>
@@ -1346,10 +1346,10 @@ const Solution = (): JSX.Element => {
         I expect I need to tip him. Here’s a little something for you… what was
         his name again? Jacob? Jason? Something with J. Oh yes, it’s splendid,
         I’m sure he will love it. It’s a real work of art. Not that I ever see
-        real ones. (Her business is selling fake jewelry.) Yes, a work of art
-        that is. Try it on? Oh, no, it’s not for me. It’s for him. I’m sure it
-        will be fine. A work of art, that is. It belongs in the Louvre Museum.{" "}
-        <Olive>Dum-di-dum.</Olive> <Green>In the Louvre Museum.</Green>
+        real ones. <em>(Her business is selling fake jewelry.)</em> Yes, a work
+        of art that is. Try it on? Oh, no, it’s not for me. It’s for him. I’m
+        sure it will be fine. A work of art, that is. It belongs in the Louvre
+        Museum. <Olive>Dum-di-dum.</Olive> <Green>In the Louvre Museum.</Green>
       </p>
       <p>
         Do you want to wrap it <em>[the ring]</em> up? I have about five
@@ -1505,8 +1505,8 @@ const Solution = (): JSX.Element => {
           baby bump, not in any way concealed by her high-waisted emerald gown.
           That gold necklace looks very simple, but you can tell it cost a bomb.
         </Green>{" "}
-        I wonder if Peleus and Thetis will make an appearance [in one of the
-        paintings]? Now that would be appropriate.{" "}
+        I wonder if Peleus and Thetis will make an appearance{" "}
+        <em>[in one of the paintings]</em>? Now that would be appropriate.{" "}
         <em>
           (Peleus and Thetis are the couple whose wedding started the Trojan
           War; Baby imagines herself as the goddess of Discord visiting the
