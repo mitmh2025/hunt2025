@@ -507,15 +507,6 @@ export const publicContract = c.router({
       }),
     },
   },
-  markSubpuzzleUnlocked: {
-    method: "POST",
-    path: `/subpuzzle/:slug/unlock`,
-    body: z.object({}),
-    responses: {
-      200: SubpuzzleStateSchema,
-      404: z.null(),
-    },
-  },
   castVote: {
     method: "POST",
     path: `/polls/:slug/:pollId/votes`,
