@@ -7,9 +7,14 @@ import {
 } from "../../client/all_puzzles_types";
 import AllPuzzlesList from "../../components/AllPuzzlesList";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
-import { Wrapper } from "../../components/StyledUI";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
+import {
+  PageHeader,
+  PageMain,
+  PageTitle,
+  PageWrapper,
+} from "../../components/PageLayout";
 
 export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
   const rounds = Object.entries(teamState.rounds).map(([roundKey, round]) => {
@@ -93,13 +98,19 @@ export function allPuzzlesHandler(req: Request) {
   const inlineScript = `window.initialAllPuzzlesState = ${JSON.stringify(state)}`;
 
   const node = (
-    <Wrapper>
-      <h1>All puzzles</h1>
-      <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="all-puzzles-root">
-        <AllPuzzlesList state={state} />
-      </div>
-    </Wrapper>
+    <PageWrapper>
+      <>
+        <PageHeader>
+          <PageTitle>All puzzles</PageTitle>
+        </PageHeader>
+        <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+        <PageMain>
+          <div id="all-puzzles-root">
+            <AllPuzzlesList state={state} />
+          </div>
+        </PageMain>
+      </>
+    </PageWrapper>
   );
 
   return wrapContentWithNavBar(

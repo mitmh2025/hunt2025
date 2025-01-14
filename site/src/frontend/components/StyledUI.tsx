@@ -17,6 +17,7 @@ export const Button = styled.button`
   margin: 4px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: var(--gold-500);

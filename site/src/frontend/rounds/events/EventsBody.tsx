@@ -1,16 +1,17 @@
 import React from "react";
 import { styled } from "styled-components";
-import {
-  PuzzleMain,
-  PuzzleHeader,
-  PuzzleTitle,
-  PuzzleWrapper,
-} from "../../components/PuzzleLayout";
 import { PuzzleIcon } from "../../components/PuzzleLink";
-import { lightBgLinkStyles } from "../../components/StyledUI";
+import { darkBgLinkStyles } from "../../components/StyledUI";
 import CluesManager from "./CluesManager";
 import { EventsFonts } from "./EventsFonts";
 import { type EventSlug, type EventsState } from "./types";
+import {
+  PageHeader,
+  PageMain,
+  PageTitle,
+  PageWrapper,
+} from "../../components/PageLayout";
+import { deviceMax } from "../../utils/breakpoints";
 
 const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
   making_contact_with_an_informant: (
@@ -51,40 +52,69 @@ const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
   ),
 };
 
-const PuzzleDescription = styled.p`
-  font-style: italic;
-`;
-
 const EventsDescription = styled.p`
   font-style: italic;
 `;
 
-const EventsHeader = styled(PuzzleHeader)`
-  display: block;
-
-  a {
-    ${lightBgLinkStyles}
+const EventsHeader = styled(PageHeader)`
+  h1 {
+    font-family: "Eccentric";
+    font-size: 3rem;
   }
 `;
 
-const EventsMain = styled(PuzzleMain)`
+const EventsMain = styled(PageMain)`
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+
+  > div {
+    flex: 1 1 50%;
+  }
+
+  @media ${deviceMax.md} {
+    flex-direction: column-reverse;
+
+    > div {
+      flex: 1;
+    }
+  }
+
   h2 {
     font-family: "Eccentric", "Noto Color Emoji";
-    font-size: 3rem;
+    font-size: 2.5rem;
     padding: 0;
   }
 
   h3 {
     font-family: "Playwrite";
+    font-size: 1.5rem;
   }
 
   a {
-    ${lightBgLinkStyles}
+    ${darkBgLinkStyles}
+  }
+
+  .clues {
+    border: 1px solid var(--gold-400);
+    background-color: var(--gold-900);
+    padding: 1rem;
+    border-radius: 4px;
+  }
+
+  .schedule {
+    background-color: var(--gray-800);
+    padding: 1rem 2rem;
+    border-radius: 2px;
   }
 `;
 
 const EventListing = styled.div`
   margin-bottom: 2rem;
+
+  .date-and-time {
+    font-size: 1.25rem;
+  }
 `;
 
 const PuzzleLink = styled.div`
@@ -96,11 +126,11 @@ const PuzzleLink = styled.div`
 
 export default function EventsBody({ state }: { state: EventsState }) {
   return (
-    <PuzzleWrapper>
-      <EventsFonts />
-      <EventsHeader>
-        <PuzzleTitle>Events</PuzzleTitle>
-        <EventsDescription>
+    <PageWrapper>
+      <>
+        <EventsFonts />
+        <EventsHeader>
+          <PageTitle>Events</PageTitle>
           <p>
             Billie and the Two P.I. Noir Detective Agency are counting on you to
             get to the bottom of this case. To support you in becoming the best
@@ -109,68 +139,74 @@ export default function EventsBody({ state }: { state: EventsState }) {
             valuable lessons to help you along in your investigation.
           </p>
           <p>
-            At the completion of each training session, you’ll earn a Clue{" "}
+            At the completion of each training session, you’ll earn a{" "}
+            <strong>Clue</strong>{" "}
             <span style={{ fontStyle: "normal" }}>🔎</span>, a valuable tool in
-            your overall ability to proceed in your investigation. Please see{" "}
-            <a href="/about">the About page</a> for more information about Clues{" "}
+            your investigation. Please see <a href="/about">the About page</a>{" "}
+            for more information about Clues{" "}
             <span style={{ fontStyle: "normal" }}>🔎</span>.
           </p>
-        </EventsDescription>
-      </EventsHeader>
+        </EventsHeader>
 
-      <EventsMain>
-        <h2>🔎 Clues</h2>
-        {state.strongCurrency > 0 ? (
-          <CluesManager state={state} />
-        ) : (
-          <PuzzleDescription>
-            You do not have any clues available.
-          </PuzzleDescription>
-        )}
-
-        <h2 style={{ marginTop: "3rem" }}>Event Schedule</h2>
-        {state.events.map((event) => {
-          return (
-            <EventListing key={event.slug}>
-              <h3>{event.name}</h3>
-              <p>
-                {event.time}
-                <br />
-                {event.location}
-              </p>
-              <PuzzleDescription>
-                {puzzleDescriptions[event.slug]}
-              </PuzzleDescription>
-              {event.locked === "locked" ? (
-                <PuzzleLink>
-                  Answer submission will be available shortly after all teams
-                  have completed the event.
-                </PuzzleLink>
-              ) : event.answer ? (
-                <PuzzleLink>
-                  <a href={`/puzzles/${event.slug}`}>
-                    <PuzzleIcon
-                      lockState={event.locked}
-                      answer={event.answer}
-                    />
-                    <code style={{ fontWeight: "bold" }}>{event.answer}</code>
-                  </a>
-                </PuzzleLink>
-              ) : (
-                <PuzzleLink>
-                  <a href={`/puzzles/${event.slug}`}>
-                    <PuzzleIcon
-                      lockState={event.locked}
-                      answer={event.answer}
-                    />
-                    Submit an answer
-                  </a>
-                </PuzzleLink>
-              )}
-            </EventListing>
-          );
-        })}
-      </EventsMain>
-    </PuzzleWrapper>
+        <EventsMain>
+          <div className="schedule">
+            <h2>Schedule</h2>
+            {state.events.map((event) => {
+              return (
+                <EventListing key={event.slug}>
+                  <h3>{event.name}</h3>
+                  <p className="date-and-time">
+                    {event.time}
+                    <br />
+                    {event.location}
+                  </p>
+                  <EventsDescription>
+                    {puzzleDescriptions[event.slug]}
+                  </EventsDescription>
+                  {event.locked === "locked" ? (
+                    <PuzzleLink>
+                      Answer submission will be available shortly after all
+                      teams have completed the event.
+                    </PuzzleLink>
+                  ) : event.answer ? (
+                    <PuzzleLink>
+                      <a href={`/puzzles/${event.slug}`}>
+                        <PuzzleIcon
+                          lockState={event.locked}
+                          answer={event.answer}
+                        />
+                        <code style={{ fontWeight: "bold" }}>
+                          {event.answer}
+                        </code>
+                      </a>
+                    </PuzzleLink>
+                  ) : (
+                    <PuzzleLink>
+                      <a href={`/puzzles/${event.slug}`}>
+                        <PuzzleIcon
+                          lockState={event.locked}
+                          answer={event.answer}
+                        />
+                        Submit an answer
+                      </a>
+                    </PuzzleLink>
+                  )}
+                </EventListing>
+              );
+            })}
+          </div>
+          <div className="clues">
+            <h2>🔎 Clues</h2>
+            {state.strongCurrency > 0 ? (
+              <CluesManager state={state} />
+            ) : (
+              <EventsDescription>
+                You do not have any clues available.
+              </EventsDescription>
+            )}
+          </div>
+        </EventsMain>
+      </>
+    </PageWrapper>
   );
 }
