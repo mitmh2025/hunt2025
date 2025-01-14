@@ -3055,9 +3055,20 @@ export async function getRouter({
         middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({
           params: { teamId, slug },
-          body: { response, request_id },
+          body: { response, request_id, zammad_article_id },
         }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            if (
+              mutator.log.some(
+                (e) =>
+                  e.type === "puzzle_hint_responded" &&
+                  e.data.zammad_article_id === zammad_article_id,
+              )
+            ) {
+              // This response is already in the log
+              return false;
+            }
+
             await mutator.appendLog({
               team_id,
               type: "puzzle_hint_responded",
@@ -3065,6 +3076,7 @@ export async function getRouter({
               data: {
                 response,
                 request_id,
+                zammad_article_id,
               },
             });
 

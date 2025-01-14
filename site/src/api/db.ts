@@ -283,6 +283,7 @@ declare module "knex/types/tables" {
         data: {
           request_id: number;
           response: string;
+          zammad_article_id: number;
         };
       }
     | {
