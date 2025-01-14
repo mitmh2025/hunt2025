@@ -1,10 +1,10 @@
-import { type PuzzleAPIMetadata } from "../../../lib/api/admin_contract";
 import { INTERACTIONS } from "../../../src/frontend/interactions";
 import HUNT from "../../../src/huntdata";
 import { getSlugsBySlot } from "../../../src/huntdata/logic";
 import { type OpsData } from "../OpsDataProvider";
 import { slotName } from "./puzzleTitles";
 import { type TeamData } from "./types";
+import { type PuzzleAPIMetadata } from "lib/api/frontend_contract";
 
 const slugsBySlot = getSlugsBySlot(HUNT);
 

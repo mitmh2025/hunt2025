@@ -1,4 +1,4 @@
-import { type PuzzleAPIMetadata } from "../../../lib/api/admin_contract";
+import { type PuzzleAPIMetadata } from "../../../lib/api/frontend_contract";
 import { type PuzzleSlot } from "../../../src/huntdata/types";
 
 export function slotName(slot: PuzzleSlot, puzzleMetadata: PuzzleAPIMetadata) {
