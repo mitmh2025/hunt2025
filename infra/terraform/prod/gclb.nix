@@ -36,59 +36,9 @@
     http_health_check.port = 80;
     http_health_check.request_path = "/healthz";
   };
-  data.google_compute_network_endpoint_group.prod-api = {
-    depends_on = ["kubernetes_service_v1.api"];
-    name = "prod-api";
-    inherit (config.provider.google) zone;
-  };
-  resource.google_compute_backend_service.api = {
-    name = "api";
-    load_balancing_scheme = "EXTERNAL_MANAGED";
-    backend = [{
-      balancing_mode = "RATE";
-      # If we had more than one backend, this would be used to belance between them.
-      max_rate_per_endpoint = 1;
-      group = lib.tfRef "data.google_compute_network_endpoint_group.prod-api.self_link";
-    }];
-    health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
-    log_config.enable = true;
-  };
-  data.google_compute_network_endpoint_group.prod-regsite = {
-    depends_on = ["kubernetes_service_v1.regsite"];
-    name = "prod-regsite";
-    inherit (config.provider.google) zone;
-  };
-  resource.google_compute_backend_service.regsite = {
-    depends_on = ["kubernetes_service_v1.regsite"];
-    name = "regsite";
-    load_balancing_scheme = "EXTERNAL_MANAGED";
-    backend = [{
-      balancing_mode = "RATE";
-      # If we had more than one backend, this would be used to belance between them.
-      max_rate_per_endpoint = 1;
-      group = lib.tfRef "data.google_compute_network_endpoint_group.prod-regsite.self_link";
-    }];
-    health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
-    log_config.enable = true;
-  };
-  data.google_compute_network_endpoint_group.prod-ops = {
-    depends_on = ["kubernetes_service_v1.ops"];
-    name = "prod-ops";
-    inherit (config.provider.google) zone;
-  };
-  resource.google_compute_backend_service.ops = {
-    depends_on = ["kubernetes_service_v1.ops"];
-    name = "ops";
-    load_balancing_scheme = "EXTERNAL_MANAGED";
-    backend = [{
-      balancing_mode = "RATE";
-      # If we had more than one backend, this would be used to belance between them.
-      max_rate_per_endpoint = 1;
-      group = lib.tfRef "data.google_compute_network_endpoint_group.prod-ops.self_link";
-    }];
-    health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
-    log_config.enable = true;
-  };
+  k8s.prod.deployment.api.backendService = true;
+  k8s.prod.deployment.regsite.backendService = true;
+  k8s.prod.deployment.ops.backendService = true;
   gcp.loadBalancer.mitmh2025 = {
     certificateMapName = "mitmh2025";
     urlMap = {
@@ -246,6 +196,9 @@
     host."two-pi-noir.agency" = "two-pi-noir";
   };
 
+  k8s.prod.deployment.ui.backendService = true;
+  k8s.prod.deployment.ws.backendService = true;
+
   gcp.loadBalancer.two-pi-noir = {
     certificateMapName = "two-pi-noir";
     urlMap = {
@@ -270,8 +223,7 @@
       path_matcher = [
         {
           name = "www";
-          # TODO: Set default_service to the main web server.
-          default_service = lib.tfRef "google_compute_backend_bucket.assets.id";
+          default_service = lib.tfRef "google_compute_backend_service.ui.id";
 
           path_rule = [
             {
@@ -281,6 +233,10 @@
             {
               paths = ["/static/*"];
               service = lib.tfRef "google_compute_backend_bucket.assets.id";
+            }
+            {
+              paths = ["/ws"];
+              service = lib.tfRef "google_compute_backend_service.ws.id";
             }
           ];
         }
@@ -306,6 +262,16 @@
         #   path = "/api";
         #   expected_output_url = "https://www.two-pi-noir.agency/api";
         # }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/";
+          service = lib.tfRef "google_compute_backend_service.ui.id";
+        }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/ws";
+          service = lib.tfRef "google_compute_backend_service.ws.id";
+        }
         {
           host = "www.two-pi-noir.agency";
           path = "/static/main.js";

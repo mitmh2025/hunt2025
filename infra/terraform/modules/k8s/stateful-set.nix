@@ -1,8 +1,9 @@
-{ config, namespace, lib, ... }:
+{ config, namespace, provider, lib, ... }:
 {
   options.statefulSet = with lib; mkOption {
     type = types.tfAttrsOf (types.submodule ({ name, config, ... }: {
       config._module.args.namespace = namespace;
+      config._module.args.provider = provider;
       imports = [
         ./parts/resource.nix
         ./parts/container.nix
@@ -49,6 +50,9 @@
   config = {
     resource = lib.mkMerge (
         lib.mapAttrsToList (_: d: d.resource) config.statefulSet
+    );
+    data = lib.mkMerge (
+        lib.mapAttrsToList (_: d: d.data) config.deployment
     );
   };
 }

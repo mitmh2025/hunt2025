@@ -134,6 +134,76 @@
       };
     };
   };
+  k8s.prod.deployment.ui = {
+    image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
+    port = 80;
+    expose = true;
+    env = {
+      PORT = "80";
+      HUNT_COMPONENTS = "ui";
+      API_BASE_URL = "http://api/api";
+      #OTEL_METRICS_EXPORTER=console
+      #OTEL_LOGS_EXPORTER=console
+      #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
+    };
+    envValueFrom.FRONTEND_API_SECRET.secret_key_ref = [{
+      key = "FRONTEND_API_SECRET";
+      name = lib.tfRef "kubernetes_secret_v1.api.metadata[0].name";
+    }];
+    container = {
+      resources = {
+        limits.cpu = "1.5";
+        limits.memory = "2Gi";
+        requests.cpu = "250m";
+        requests.memory = "250Mi";
+      };
+      liveness_probe = {
+        http_get = {
+          path = "/healthz";
+          port = 80;
+        };
+        initial_delay_seconds = 3;
+        period_seconds = 3;
+      };
+    };
+  };
+  k8s.prod.deployment.ws = {
+    image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
+    port = 80;
+    expose = true;
+    env = {
+      PORT = "80";
+      HUNT_COMPONENTS = "ws";
+      API_BASE_URL = "http://api/api";
+      #OTEL_METRICS_EXPORTER=console
+      #OTEL_LOGS_EXPORTER=console
+      #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
+    };
+    envValueFrom.REDIS_URL.secret_key_ref = [{
+      key = "REDIS_URL";
+      name = lib.tfRef "kubernetes_secret_v1.api.metadata[0].name";
+    }];
+    envValueFrom.FRONTEND_API_SECRET.secret_key_ref = [{
+      key = "FRONTEND_API_SECRET";
+      name = lib.tfRef "kubernetes_secret_v1.api.metadata[0].name";
+    }];
+    container = {
+      resources = {
+        limits.cpu = "1.5";
+        limits.memory = "2Gi";
+        requests.cpu = "250m";
+        requests.memory = "250Mi";
+      };
+      liveness_probe = {
+        http_get = {
+          path = "/healthz";
+          port = 80;
+        };
+        initial_delay_seconds = 3;
+        period_seconds = 3;
+      };
+    };
+  };
   gcp.ar.images.images.ops.sourceImage = pkgs.dockerTools.buildLayeredImage {
     name = "ops";
     contents = with pkgs; [
