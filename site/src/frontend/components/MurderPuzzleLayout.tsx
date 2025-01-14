@@ -14,6 +14,7 @@ import {
 } from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 import Spoiler from "./Spoiler";
+import { darkBgLinkStyles } from "./StyledUI";
 
 // This also relies on the MurderFonts component
 export const MurderHeader = styled(PuzzleHeader)`
@@ -77,12 +78,9 @@ export const MurderHeader = styled(PuzzleHeader)`
     }
 
     a {
-      color: var(--gold-400);
-      text-decoration-color: var(--gold-300);
-    }
-
-    a:hover {
-      color: var(--gold-300);
+      font-family: var(--body-font);
+      font-size: 1rem;
+      ${darkBgLinkStyles}
     }
   }
 `;

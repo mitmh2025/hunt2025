@@ -24,6 +24,12 @@ const PuzzleHeader = styled.header`
   @media ${deviceMax.sm} {
     padding: 0.5rem;
   }
+
+  #puzzle-guess-section {
+    a {
+      ${mdBgLinkStyles}
+    }
+  }
 `;
 
 const PuzzleTitleWrapper = styled.div`

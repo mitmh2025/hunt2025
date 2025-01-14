@@ -56,12 +56,7 @@ const BaseIllegalSearchHeader = styled(PuzzleHeader)`
     }
 
     a {
-      color: var(--gray-100);
-      text-decoration-color: var(--gray-200);
-    }
-
-    a:hover {
-      color: var(--gray-200);
+      ${darkBgLinkStyles};
     }
   }
 `;

@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../lib/api/client";
 
 const HintLinkWrapper = styled.div`
-  margin-top: 1em;
+  margin-top: 1rem;
 `;
 
 export default function PuzzleHintLink({

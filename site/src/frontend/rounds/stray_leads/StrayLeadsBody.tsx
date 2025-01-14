@@ -3,12 +3,12 @@ import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { CourierFont } from "../../assets/SharedFonts";
 import PuzzleLink from "../../components/PuzzleLink";
+import { mdBgLinkStyles } from "../../components/StyledUI";
 import { StrayLeadsFonts } from "./StrayLeadsFonts";
 import Bg from "./assets/bg.jpg";
 import PaperBg from "./assets/paper.png";
 import PostitBg from "./assets/postit.png";
 import { type StrayLeadsState } from "./types";
-import { lightBgLinkStyles, mdBgLinkStyles } from "../../components/StyledUI";
 
 const TableScape = styled.div`
   background-image: url(${Bg});

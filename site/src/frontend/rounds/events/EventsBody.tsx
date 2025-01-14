@@ -7,10 +7,10 @@ import {
   PuzzleWrapper,
 } from "../../components/PuzzleLayout";
 import { PuzzleIcon } from "../../components/PuzzleLink";
+import { lightBgLinkStyles } from "../../components/StyledUI";
 import CluesManager from "./CluesManager";
 import { EventsFonts } from "./EventsFonts";
 import { type EventSlug, type EventsState } from "./types";
-import { lightBgLinkStyles } from "../../components/StyledUI";
 
 const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
   making_contact_with_an_informant: (

@@ -10,6 +10,7 @@ import {
   PuzzleBacklink,
 } from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
+import { darkBgLinkStyles } from "./StyledUI";
 
 export const bg = "#403A36";
 export const contentBg = "#E0D6D5";
@@ -58,12 +59,7 @@ export const PaperTrailHeader = styled(PuzzleHeader)`
     }
 
     a {
-      color: var(--white);
-      text-decoration-color: var(--gray-100);
-    }
-
-    a:hover {
-      color: var(--gray-100);
+      ${darkBgLinkStyles}
     }
   }
 `;
