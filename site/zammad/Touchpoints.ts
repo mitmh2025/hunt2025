@@ -174,6 +174,68 @@ const Touchpoints = {
       answer: "COME GET YOUR NAILS DONE",
     },
   },
+  cross_dash_word_pickup: {
+    type: "pickup",
+    description: "Pickup: Cross Dash Word",
+    created_if: {
+      type: "slug_unlocked",
+      slug: "cross_dash_word",
+    },
+    closed_action: {
+      type: "satisfy_gate",
+      gate: "tmg03",
+    },
+  },
+  smoke_em_if_youve_got_em_pickup: {
+    type: "pickup",
+    description: "Pickup: Smoke ’Em If You’ve Got ’Em",
+    created_if: {
+      type: "slug_unlocked",
+      slug: "smoke_em_if_youve_got_em",
+    },
+    closed_action: {
+      type: "satisfy_gate",
+      gate: "isg33",
+    },
+  },
+  its_not_clear_pickup: {
+    type: "pickup",
+    description: "Pickup: It’s Not Clear",
+    created_if: {
+      type: "slug_unlocked",
+      slug: "its_not_clear",
+    },
+    closed_action: {
+      type: "satisfy_gate",
+      gate: "sog02",
+    },
+  },
+  celestial_rope_pickup: {
+    type: "pickup",
+    description: "Pickup: Celestial Rope",
+    created_if: {
+      type: "slug_unlocked",
+      slug: "celestial_rope",
+    },
+    closed_action: {
+      type: "satisfy_gate",
+      gate: "bgg01",
+    },
+  },
+  abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends_pickup:
+    {
+      type: "pickup",
+      description:
+        "Pickup: abstract art and poems / concerning a pale blue dot / and many more friends",
+      created_if: {
+        type: "slug_unlocked",
+        slug: "abstract_art_and_poems_concerning_a_pale_blue_dot_and_many_more_friends",
+      },
+      closed_action: {
+        type: "satisfy_gate",
+        gate: "tmg04",
+      },
+    },
 } satisfies Record<string, TouchpointType>;
 
 export default Touchpoints;
