@@ -104,7 +104,7 @@ const loginPostHandler: RequestHandler<
     // Redirect to the page the user was trying to view before getting redirected
     // to the login page, or the root route if absent.
 
-    res.redirect(target);
+    res.redirect(`${target}?loginUsername=${username}`);
     return;
   }
   res.redirect(`/login?next=${encodeURIComponent(target)}`);
