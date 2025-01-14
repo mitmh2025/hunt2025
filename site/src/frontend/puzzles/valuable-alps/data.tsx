@@ -137,7 +137,7 @@ export const CLUES: {
     { clue: "Face F:", answer: "" },
     { clue: "Baby wolves (4)", answer: "PUPS" },
     {
-      clue: "Former interest of J.Lo (1-3)",
+      clue: "Former love interest of J.Lo (1-3)",
       answer: "A-ROD",
       highlight: "#00ff00",
     },
@@ -148,7 +148,7 @@ export const CLUES: {
     },
     { clue: "Quintillion prefix (3)", answer: "EXA" },
     {
-      clue: "Factor of two in the amount of light reaching the camera imager (1-4)",
+      clue: "One increment of aperture size equivalent to doubling or halving of its area (1-4)",
       answer: "F-STOP",
       highlight: "#00ff00",
     },
@@ -268,7 +268,7 @@ export const CLUES: {
       clue: "It comes in pitching, sand, lob and gap varieties (5)",
       answer: "WEDGE",
     },
-    { clue: "Killing it? (6)", answer: "LETHAL" },
+    { clue: "Fatal (6)", answer: "LETHAL" },
     {
       clue: "Kind of beam that traces a straight line through 3D space, and might come in handy now (5)",
       answer: "LASER",
@@ -295,7 +295,7 @@ export const CLUES: {
     { clue: "Collection of version-controlled code (4)", answer: "REPO" },
     { clue: "“Ye ____ Shoppe” (4)", answer: "OLDE" },
     { clue: "Winnie’s joey friend (3)", answer: "ROO" },
-    { clue: "They were known for the geocentric model (7)", answer: "PTOLEMY" },
+    { clue: "He was known for the geocentric model (7)", answer: "PTOLEMY" },
     { clue: "Heights of Israel-Syria conflict (5)", answer: "GOLAN" },
     { clue: "Having a moody, goth sensibility (3)", answer: "EMO" },
     { clue: "Primadonna (4)", answer: "DIVA" },
@@ -337,7 +337,7 @@ export const CLUES: {
     { clue: "San Diego team (6)", answer: "PADRES" },
     { clue: "Sand-filled board game piece (5)", answer: "TIMER" },
     {
-      clue: "Letter that is narrower than em-dashes but wider than hyphens; the latter of which are not entered in the imaginary spheres (2)",
+      clue: "Type of dash that is narrower than em-dashes but wider than hyphens; the latter of which are not entered in the imaginary spheres (2)",
       answer: "EN",
       highlight: "#ffff00",
     },
