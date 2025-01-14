@@ -226,10 +226,13 @@ const globalDatasetManager = USE_WORKER
   : new DirectDatasetManager();
 export default globalDatasetManager;
 
-setInterval(() => {
-  const newUsername = localStorage.getItem("username");
-  if (newUsername !== initialUsername) {
-    // Team ID changed; reload
-    location.reload();
+window.addEventListener("storage", (evt) => {
+  if (evt.key === "username") {
+    // Check for team ID change
+    const newUsername = localStorage.getItem("username");
+    if (newUsername !== initialUsername) {
+      // Team ID changed; reload
+      location.reload();
+    }
   }
-}, 1000);
+});
