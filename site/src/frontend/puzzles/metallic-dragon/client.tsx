@@ -21,6 +21,15 @@ const dir4: Direction = {
   input_string: "9378",
 };
 
+function isValidDirectionString(message: string) {
+  return (
+    message === dir1.input_string ||
+    message === dir2.input_string ||
+    message === dir3.input_string ||
+    message === dir4.input_string
+  );
+}
+
 type Connection = {
   direction: Direction;
   name: string;
@@ -326,6 +335,7 @@ const InputArea = styled.div`
 `;
 
 const defaultDontUnderstandMessage = "I don’t understand that request.";
+const directionButCantGoThereMessage = "You can't go that way.";
 
 const App = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -368,6 +378,8 @@ const App = () => {
       nextRoom = rooms[moveResult.nextRoomName];
       if (moveResult.moveIsValid) {
         nextMessageTest = nextRoom?.description ?? "";
+      } else if (isValidDirectionString(inputText)) {
+        nextMessageTest = directionButCantGoThereMessage;
       } else {
         nextMessageTest = defaultDontUnderstandMessage;
       }

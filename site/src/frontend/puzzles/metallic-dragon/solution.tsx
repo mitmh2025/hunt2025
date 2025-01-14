@@ -8,6 +8,13 @@ const StyledTable = styled.table`
   margin-bottom: 1em;
 `;
 
+const StyledInlineTable = styled.table`
+  border-collapse: collapse;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  display: inline-flex;
+`;
+
 const StyledTableCell = styled.td`
   border: 2px solid black;
   max-width: 240px;
@@ -21,6 +28,12 @@ const StyledDiv = styled.div`
 const MarginedDiv = styled.div`
   margin-top: 1em;
   margin-bottom: 1em;
+`;
+
+const StyledSpan = styled.span`
+  display: inline-flex;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 const Solution = () => {
@@ -129,49 +142,49 @@ const Solution = () => {
       <StyledTable>
         <tr>
           <StyledTableCell>
-            <StyledDiv>1 Presidential airplane (Air Force One)</StyledDiv>
+            <StyledDiv>1: Presidential airplane (Air Force One)</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>2 Helium atom (atomic number 2)</StyledDiv>
+            <StyledDiv>2: Helium atom (atomic number 2)</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>3 Tesla sedan (model 3)</StyledDiv>
-          </StyledTableCell>
-        </tr>
-
-        <tr>
-          <StyledTableCell>
-            <StyledDiv>4 Asteroid Vesta (officially called 4 Vesta)</StyledDiv>
-          </StyledTableCell>
-          <StyledTableCell>
-            <StyledDiv>5 Jackson residence (of Jackson 5)</StyledDiv>
-          </StyledTableCell>
-          <StyledTableCell>
-            <StyledDiv>6 Navy special ops team (SEAL Team 6)</StyledDiv>
+            <StyledDiv>3: Tesla sedan (model 3)</StyledDiv>
           </StyledTableCell>
         </tr>
 
         <tr>
           <StyledTableCell>
-            <StyledDiv>7 Rugby union pitch (rugby sevens)</StyledDiv>
+            <StyledDiv>4: Asteroid Vesta (officially called 4 Vesta)</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>8 Belay device (figure 8)</StyledDiv>
+            <StyledDiv>5: Jackson residence (of Jackson 5)</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>9 Cloud (cloud 9)</StyledDiv>
+            <StyledDiv>6: Navy special ops team (SEAL Team 6)</StyledDiv>
           </StyledTableCell>
         </tr>
 
         <tr>
           <StyledTableCell>
-            <StyledDiv>* The sun (a star)</StyledDiv>
+            <StyledDiv>7: Rugby union pitch (rugby sevens)</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>0 Emptiness (zero)</StyledDiv>
+            <StyledDiv>8: Belay device (figure 8)</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv># Medieval animal pound (pound)</StyledDiv>
+            <StyledDiv>9: Cloud (cloud 9)</StyledDiv>
+          </StyledTableCell>
+        </tr>
+
+        <tr>
+          <StyledTableCell>
+            <StyledDiv>*: The sun (a star)</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>0: Emptiness (zero)</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>#: Medieval animal pound (pound)</StyledDiv>
           </StyledTableCell>
         </tr>
       </StyledTable>
@@ -187,55 +200,105 @@ const Solution = () => {
         . The translated word makes the sentence at each location make sense as
         a confirmation.
       </MarginedDiv>
-      <StyledTable>
+      <StyledInlineTable>
         <tr>
           <StyledTableCell>
-            <StyledDiv>REST PERT</StyledDiv>
+            <StyledDiv>REST</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>COD AND</StyledDiv>
+            <StyledDiv>COD</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>COGNATED ANIMATED</StyledDiv>
+            <StyledDiv>COGNATED</StyledDiv>
           </StyledTableCell>
         </tr>
 
         <tr>
           <StyledTableCell>
-            <StyledDiv>DITE FIVE</StyledDiv>
+            <StyledDiv>DITE</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>UVAE TUBE</StyledDiv>
+            <StyledDiv>UVAE</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>SCRUB PASTA</StyledDiv>
+            <StyledDiv>SCRUB</StyledDiv>
           </StyledTableCell>
         </tr>
 
         <tr>
           <StyledTableCell>
-            <StyledDiv>DOTS FOUR</StyledDiv>
+            <StyledDiv>DOTS</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>SHOP RIMS</StyledDiv>
+            <StyledDiv>SHOP</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>ME OF</StyledDiv>
+            <StyledDiv>ME</StyledDiv>
           </StyledTableCell>
         </tr>
 
         <tr>
           <StyledTableCell>
-            <StyledDiv>DACE FACE</StyledDiv>
+            <StyledDiv>DACE</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>GOLF HOLE</StyledDiv>
+            <StyledDiv>GOLF</StyledDiv>
           </StyledTableCell>
           <StyledTableCell>
-            <StyledDiv>DOUR FOUR</StyledDiv>
+            <StyledDiv>DOUR</StyledDiv>
           </StyledTableCell>
         </tr>
-      </StyledTable>
+      </StyledInlineTable>
+      <StyledSpan>-&gt;</StyledSpan>       
+      <StyledInlineTable>
+        <tr>
+          <StyledTableCell>
+            <StyledDiv>PERT</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>AND</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>ANIMATED</StyledDiv>
+          </StyledTableCell>
+        </tr>
+
+        <tr>
+          <StyledTableCell>
+            <StyledDiv>FIVE</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>TUBE</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>PASTA</StyledDiv>
+          </StyledTableCell>
+        </tr>
+
+        <tr>
+          <StyledTableCell>
+            <StyledDiv>FOUR</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>RIMS</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>OF</StyledDiv>
+          </StyledTableCell>
+        </tr>
+
+        <tr>
+          <StyledTableCell>
+            <StyledDiv>FACE</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>HOLE</StyledDiv>
+          </StyledTableCell>
+          <StyledTableCell>
+            <StyledDiv>FOUR</StyledDiv>
+          </StyledTableCell>
+        </tr>
+      </StyledInlineTable>
       <MarginedDiv>
         Taking the clue phrase as clues gives <Mono>PERKY ZITI LIPS</Mono>.
         Re-applying the textonym mechanic gives you the partial{" "}
