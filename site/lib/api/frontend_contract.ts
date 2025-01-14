@@ -7,6 +7,7 @@ import {
   TeamRegistrationSchema,
   CannedResponseLinkSchema,
   MutableTeamRegistrationSchema,
+  SubpuzzleStateSchema,
 } from "./contract";
 
 const InternalActivityLogEntryBaseSchema = ActivityLogEntryBaseSchema.merge(
@@ -374,6 +375,15 @@ export const frontendContract = c.router({
     }),
     responses: {
       200: TeamHuntStateSchema,
+      404: z.null(),
+    },
+  },
+  markSubpuzzleUnlocked: {
+    method: "POST",
+    path: `/teams/:teamId/subpuzzles/:slug/unlock`,
+    body: z.object({}),
+    responses: {
+      200: SubpuzzleStateSchema,
       404: z.null(),
     },
   },

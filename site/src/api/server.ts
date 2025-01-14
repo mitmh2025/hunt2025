@@ -1724,79 +1724,6 @@ export async function getRouter({
           };
         },
       },
-      markSubpuzzleUnlocked: {
-        middleware: [authMiddleware],
-        handler: async ({ params: { slug }, req }) => {
-          const team_id = req.user as number;
-          const subpuzzle = SUBPUZZLES[slug];
-          if (!subpuzzle) {
-            return {
-              status: 404 as const,
-              body: null,
-            };
-          }
-          const { result, logEntries } = await puzzleStateLog.executeMutation(
-            team_id,
-            redisClient,
-            knex,
-            async function (_, mutator) {
-              // Has this puzzle already been accessed by this team?
-              const existing = mutator.log.some(
-                (e) =>
-                  e.team_id === team_id &&
-                  e.data.type === "subpuzzle_unlocked" &&
-                  e.data.subpuzzle_slug === slug &&
-                  e.slug === subpuzzle.parent_slug,
-              );
-              // If not, insert unlock log.
-              // If already present, no change.
-              if (!existing) {
-                const data: {
-                  type: string;
-                  subpuzzle_slug: string;
-                  subpuzzle_name?: string;
-                  order?: number;
-                } = {
-                  type: "subpuzzle_unlocked",
-                  subpuzzle_slug: slug,
-                };
-                // Special case. Hydrate data with quixotic-shoe data if this is a
-                // quixotic-shoe unlock.
-                if (
-                  subpuzzle.parent_slug ===
-                    "and_now_a_puzzling_word_from_our_sponsors" &&
-                  slug in quixoticSubpuzzleDataBySlug
-                ) {
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- membership checked just above
-                  const subpuzzleDatum = quixoticSubpuzzleDataBySlug[slug]!;
-                  data.subpuzzle_name = subpuzzleDatum.subpuzzle_name;
-                  data.order = orderedQuixoticSubpuzzleSlugs.indexOf(slug);
-                }
-                await mutator.appendLog({
-                  team_id,
-                  slug: subpuzzle.parent_slug,
-                  data,
-                });
-              }
-              return true;
-            },
-          );
-          if (result) {
-            return {
-              status: 200 as const,
-              body: formatSubpuzzleState(
-                slug,
-                subpuzzle.parent_slug,
-                logEntries,
-              ),
-            };
-          }
-          return {
-            status: 404 as const,
-            body: null,
-          };
-        },
-      },
       castVote: {
         middleware: [authMiddleware],
         handler: async ({
@@ -3739,6 +3666,79 @@ export async function getRouter({
           return {
             status: 200 as const,
             body,
+          };
+        },
+      },
+      markSubpuzzleUnlocked: {
+        middleware: [frontendAuthMiddleware],
+        handler: async ({ params: { teamId, slug } }) => {
+          const team_id = parseInt(teamId, 10);
+          const subpuzzle = SUBPUZZLES[slug];
+          if (!subpuzzle) {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+          const { result, logEntries } = await puzzleStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              // Has this puzzle already been accessed by this team?
+              const existing = mutator.log.some(
+                (e) =>
+                  e.team_id === team_id &&
+                  e.data.type === "subpuzzle_unlocked" &&
+                  e.data.subpuzzle_slug === slug &&
+                  e.slug === subpuzzle.parent_slug,
+              );
+              // If not, insert unlock log.
+              // If already present, no change.
+              if (!existing) {
+                const data: {
+                  type: string;
+                  subpuzzle_slug: string;
+                  subpuzzle_name?: string;
+                  order?: number;
+                } = {
+                  type: "subpuzzle_unlocked",
+                  subpuzzle_slug: slug,
+                };
+                // Special case. Hydrate data with quixotic-shoe data if this is a
+                // quixotic-shoe unlock.
+                if (
+                  subpuzzle.parent_slug ===
+                    "and_now_a_puzzling_word_from_our_sponsors" &&
+                  slug in quixoticSubpuzzleDataBySlug
+                ) {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- membership checked just above
+                  const subpuzzleDatum = quixoticSubpuzzleDataBySlug[slug]!;
+                  data.subpuzzle_name = subpuzzleDatum.subpuzzle_name;
+                  data.order = orderedQuixoticSubpuzzleSlugs.indexOf(slug);
+                }
+                await mutator.appendLog({
+                  team_id,
+                  slug: subpuzzle.parent_slug,
+                  data,
+                });
+              }
+              return true;
+            },
+          );
+          if (result) {
+            return {
+              status: 200 as const,
+              body: formatSubpuzzleState(
+                slug,
+                subpuzzle.parent_slug,
+                logEntries,
+              ),
+            };
+          }
+          return {
+            status: 404 as const,
+            body: null,
           };
         },
       },

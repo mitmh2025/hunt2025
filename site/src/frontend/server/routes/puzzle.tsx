@@ -111,7 +111,9 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
     return undefined;
   }
 
-  await req.api.markSubpuzzleUnlocked({ params: { slug } });
+  await req.frontendApi.markSubpuzzleUnlocked({
+    params: { teamId: `${teamState.teamId}`, slug },
+  });
 
   const result = await req.api.getSubpuzzleState({ params: { slug: slug } });
   if (result.status !== 200) {
