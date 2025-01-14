@@ -4,6 +4,7 @@ import { lookupStylesheets } from "../server/assets";
 
 export default function RegsiteLayout({
   innerHTML,
+  scripts,
   stylesheets,
   styleElements,
   title,
@@ -18,6 +19,7 @@ export default function RegsiteLayout({
 
   return (
     <BaseLayout
+      scripts={scripts}
       innerHTML={innerHTML}
       stylesheets={allStyles}
       styleElements={styleElements}

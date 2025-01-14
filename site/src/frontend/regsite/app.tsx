@@ -91,6 +91,7 @@ export default function ({
           ),
           title: "Registration",
           layout: RegsiteLayout,
+          entrypoints: ["kickoff_counter"],
         }),
         req,
         res,
