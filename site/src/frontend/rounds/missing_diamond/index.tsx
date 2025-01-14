@@ -1038,7 +1038,7 @@ function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
     const unlockState = puzzleState.locked;
     if (unlockState === "locked") return [];
 
-    const state = puzzleState.answer ? "solved" : unlockState;
+    const state = unlockState;
     const puzzleDefinition = PUZZLES[slug];
     const title = puzzleDefinition?.title ?? `Stub puzzle for slot ${slotId}`;
 
@@ -1046,7 +1046,7 @@ function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
       {
         alt: witness.alt,
         pos: witness.pos,
-        asset: witness.asset[state],
+        asset: witness.asset[puzzleState.answer ? "solved" : state],
         puzzle: {
           title,
           slug,
