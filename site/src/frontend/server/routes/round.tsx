@@ -20,7 +20,7 @@ export const roundHandler = (
   }
   const { roundSlug } = req.params;
   if (
-    roundSlug !== "stray_leads" &&
+    !["stray_leads", "events"].includes(roundSlug) &&
     teamState.state.rounds[roundSlug] === undefined
   ) {
     return undefined;

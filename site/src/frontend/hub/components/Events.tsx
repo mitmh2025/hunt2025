@@ -66,15 +66,9 @@ const EventSchedule = styled.a`
   }
 `;
 
-const Events = ({
-  clickable,
-  events,
-}: {
-  clickable: boolean;
-  events: EventDataWithTime[];
-}) => {
+const Events = ({ events }: { events: EventDataWithTime[] }) => {
   return (
-    <EventSchedule {...(clickable ? { href: "/rounds/events" } : {})}>
+    <EventSchedule href="/rounds/events">
       <h3>Event Schedule</h3>
       <ul>
         {events.map((event) => (
