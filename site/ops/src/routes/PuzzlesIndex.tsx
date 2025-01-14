@@ -283,7 +283,7 @@ export default function PuzzlesIndex() {
         await updateActivityLog({ forceRequest: true });
 
         notifications.show(
-          `Hints will unlock for selected puzzles in ${hours} hours`,
+          `Hints will unlock for selected puzzles in ${hours} hours after teams unlock those puzzles`,
           {
             severity: "success",
             autoHideDuration: 3000,
