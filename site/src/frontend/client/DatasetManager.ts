@@ -45,15 +45,20 @@ class SharedWorkerDatasetManager {
 
   private scriptUrl: string;
 
+  private username: string;
+
   private handleMessageFromWorkerBound: (
     e: MessageEvent<MessageFromWorker>,
   ) => void;
 
-  constructor() {
+  constructor(username: string) {
+    this.username = username;
     this.watches = new Map<string, Watch>();
     this.scriptUrl = workersManifest["websocket_worker.js"];
     this.handleMessageFromWorkerBound = this.handleMessageFromWorker.bind(this);
-    this.sharedWorker = new SharedWorker(this.scriptUrl);
+    this.sharedWorker = new SharedWorker(
+      this.scriptUrl + `?username=${username}`,
+    );
     this.sharedWorker.port.addEventListener(
       "message",
       this.handleMessageFromWorkerBound,
@@ -114,7 +119,7 @@ class SharedWorkerDatasetManager {
   restartWorker() {
     // Executed when we get notified of a new script URL from the current shared worker.
     // We will, in order:
-    // * Close our port to the old worker, so it can be GC'd by the browser.  It
+    // * Close our port to the old worker, so it can be GC’d by the browser.  It
     //   will terminate itself after telling us the new worker script URL.
     this.sharedWorker.port.close();
     // * Remove the event listener, so we will no longer receive messages from the worker.
@@ -123,7 +128,9 @@ class SharedWorkerDatasetManager {
       this.handleMessageFromWorkerBound,
     );
     // * Create a new worker (precondition: this.scriptUrl should have been updated to the new URL)
-    this.sharedWorker = new SharedWorker(this.scriptUrl);
+    this.sharedWorker = new SharedWorker(
+      this.scriptUrl + `?teamId=${this.username}`,
+    );
     this.sharedWorker.port.addEventListener(
       "message",
       this.handleMessageFromWorkerBound,
@@ -189,10 +196,42 @@ class SharedWorkerDatasetManager {
   }
 }
 
+const initialUsername = localStorage.getItem("username");
+const newUsername = new URLSearchParams(document.location.search).get(
+  "loginUsername",
+);
+
+if (newUsername) {
+  if (initialUsername !== newUsername) {
+    // Team username changed; clear localStorage and reload
+    localStorage.clear();
+    localStorage.setItem("username", newUsername);
+
+    location.reload();
+  }
+
+  localStorage.setItem("username", newUsername);
+
+  // Remove the loginUsername query parameter
+  const newSearch = new URLSearchParams(document.location.search);
+  newSearch.delete("loginUsername");
+  document.location.search = newSearch.toString();
+}
+
 // Use the SharedWorkerDatasetManager implementation if the user agent supports it.
 // Otherwise, use the DirectDatasetManager implementation (e.g. Chrome for Android)
 const USE_WORKER = !!window.SharedWorker as boolean;
 const globalDatasetManager = USE_WORKER
-  ? new SharedWorkerDatasetManager()
+  ? new SharedWorkerDatasetManager(initialUsername ?? "unknown")
   : new DirectDatasetManager();
 export default globalDatasetManager;
+
+window.addEventListener("storage", (evt) => {
+  if (evt.key === "username") {
+    // Check for team ID change
+    if (evt.newValue !== initialUsername) {
+      // Team ID changed; reload
+      location.reload();
+    }
+  }
+});
