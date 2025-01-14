@@ -394,6 +394,9 @@ export const PuzzlingWordFromOurSponsors = ({
       )}
       <section>
         <h3>Your Subscription</h3>
+        <p>
+          Changes to your subscriptions can take 5–10 minutes to take effect.
+        </p>
         <FeatureTable>
           <tbody>
             <tr>
