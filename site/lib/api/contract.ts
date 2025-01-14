@@ -207,14 +207,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
-<<<<<<< HEAD
       type: z.literal("puzzle_hint_requested"),
-    }),
-  ),
-  ActivityLogEntryWithSlugAndTitle.merge(
-    z.object({
-      type: z.literal("global_hints_unlocked"),
-      minimum_unlock_hours: z.number(),
     }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
@@ -224,8 +217,6 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({
-=======
->>>>>>> c7fd7c53 (solver facing presentation)
       type: z.literal("team_hints_unlocked"),
       hints_available_at: z.string().datetime().pipe(z.coerce.date()),
     }),
