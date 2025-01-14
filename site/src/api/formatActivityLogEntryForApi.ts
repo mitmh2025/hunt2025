@@ -86,6 +86,7 @@ export default function formatActivityLogEntryForApi(
         entry = Object.assign(entry, {
           title: title ?? `Stub puzzle for slog ${e.slug}`,
           hints_available_at: entry.hints_available_at,
+          show_notification: true,
         });
         break;
       }

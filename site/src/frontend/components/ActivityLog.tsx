@@ -233,7 +233,7 @@ export function formatActivityLogEntry(
             })}
           </>
         ),
-        showNotification: false,
+        showNotification: true,
       };
     case "puzzle_hint_requested":
       return {
