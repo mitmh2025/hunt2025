@@ -46,40 +46,43 @@ const App = () => {
   const submit = useCallback(
     async (command: string) => {
       setLoading(true);
-      const response = await fetch("/puzzles/deepfrost/command", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ command, state }),
-      });
-      if (!response.ok) {
-        setError("An unexpected error occurred.");
-        return;
-      }
+      try {
+        const response = await fetch("/puzzles/deepfrost/command", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ command, state }),
+        });
+        if (!response.ok) {
+          setError("An unexpected error occurred.");
+          return;
+        }
 
-      const {
-        message,
-        haveKey,
-        error,
-        previousCommand,
-        state: newState,
-      } = (await response.json()) as {
-        message: string;
-        haveKey: boolean;
-        error: string | undefined;
-        previousCommand: string;
-        state: unknown;
-      };
-      setMessage(message);
-      setHaveKey(haveKey);
-      setError(error);
-      setPreviousCommand(previousCommand);
-      setState(newState);
-      setLoading(false);
-      setCommand("");
-      inputRef.current?.focus();
+        const {
+          message,
+          haveKey,
+          error,
+          previousCommand,
+          state: newState,
+        } = (await response.json()) as {
+          message: string;
+          haveKey: boolean;
+          error: string | undefined;
+          previousCommand: string;
+          state: unknown;
+        };
+        setMessage(message);
+        setHaveKey(haveKey);
+        setError(error);
+        setPreviousCommand(previousCommand);
+        setState(newState);
+        setCommand("");
+        inputRef.current?.focus();
+      } finally {
+        setLoading(false);
+      }
     },
     [state],
   );
