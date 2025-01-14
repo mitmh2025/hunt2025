@@ -266,7 +266,7 @@ const Solution = (): JSX.Element => {
         </div>
         <div>
           <Highlight>
-            There is a sign along the third floor of the infinite that says{" "}
+            There is a sign along the fourth floor of the infinite that says{" "}
             <Mono>HAROLD E EDGERTON STROBE ALLEY</Mono>
           </Highlight>
         </div>
