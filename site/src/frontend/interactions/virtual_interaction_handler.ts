@@ -321,7 +321,7 @@ export class VirtualInteractionHandler<
 
   public forceGenerateFinalState(): R {
     const terminus = this.graph.nodes.find((node) => isTerminalNode(node));
-    if (!terminus) {
+    if (terminus === undefined) {
       throw new Error(
         `No terminal node found in graph ${this.name} to generate final state`,
       );
