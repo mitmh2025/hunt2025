@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { type ActivityLogEntry, type TeamInfo } from "../../../lib/api/client";
+import type { ActivityLogEntry, TeamInfo } from "../../../lib/api/client";
 import celebration from "../../assets/radio/celebration.mp3";
 import { HuntIcon, formatActivityLogEntry } from "../components/ActivityLog";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import Notifications, {
   type NotificationsHandle,
 } from "../components/Notifications";
+import type { EventsState } from "../rounds/events/types";
 import globalDatasetManager from "./DatasetManager";
 import useDataset from "./useDataset";
 
@@ -33,15 +34,18 @@ function getNotificationHighWaterMark(pageRenderEpoch: number): number {
 }
 
 const NavBarManager = ({
+  initialEventsState,
   initialTeamInfo,
   initialState,
   whepUrl,
 }: {
+  initialEventsState: EventsState;
   initialTeamInfo: TeamInfo;
   initialState: NavBarState;
   whepUrl: string;
 }) => {
   const info = useDataset("team_info", undefined, initialTeamInfo);
+  const eventsState = useDataset("events", undefined, initialEventsState);
   const state = useDataset("navbar", undefined, initialState);
   const notifications = useRef<NotificationsHandle | null>(null);
 
@@ -109,7 +113,12 @@ const NavBarManager = ({
         ref={notifications}
         maxNotifications={5}
       />
-      <NavBar info={info} state={state} whepUrl={whepUrl} />
+      <NavBar
+        eventsState={eventsState}
+        info={info}
+        state={state}
+        whepUrl={whepUrl}
+      />
     </>
   );
 };
@@ -118,6 +127,9 @@ const navbarElem = document.getElementById("navbar");
 if (navbarElem) {
   const initialTeamInfo = (window as unknown as { initialTeamInfo: TeamInfo })
     .initialTeamInfo;
+  const initialEventsState = (
+    window as unknown as { initialEventsState: EventsState }
+  ).initialEventsState;
   const initialNavbarState = (
     window as unknown as { initialNavBarState: NavBarState }
   ).initialNavBarState;
@@ -125,6 +137,7 @@ if (navbarElem) {
   hydrateRoot(
     navbarElem,
     <NavBarManager
+      initialEventsState={initialEventsState}
       initialTeamInfo={initialTeamInfo}
       initialState={initialNavbarState}
       whepUrl={whepUrl}
