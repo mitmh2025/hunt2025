@@ -296,6 +296,10 @@ const HUNT: Hunt = {
       gates: [
         { id: "hunt_started", internal_description: "Hunt Started" }, // Nothing is unlocked until this gate is satisfied.
         {
+          id: "hunt_closed",
+          internal_description: "Hunt has ended, and we are shutting down the radio streams"
+        },
+        {
           id: "mdg01",
           internal_description:
             "Picked up Educational Rite of Passage from Gala",
