@@ -53,8 +53,6 @@ const NavBarManager = ({
       undefined,
       [],
       (value: object) => {
-        console.log("activity log", value);
-
         const entry = value as ActivityLogEntry;
         if (entry.id > highWaterMark) {
           localStorage.setItem(
