@@ -9,7 +9,9 @@ const Puzzle = () => {
         enough—get out there and find what she left at the dead drops!
       </p>
 
-      <p className="puzzle-flavor">How can you let her know you’re onto her?</p>
+      <p className="puzzle-flavor">
+        How should we let Katrina know we’re onto her?
+      </p>
     </>
   );
 };

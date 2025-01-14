@@ -15,6 +15,9 @@ const Puzzle = () => {
         As you pass many shady characters in the art gallery, you ponder how to
         supplement your understanding of Papa’s actions.
       </p>
+      <p className="puzzle-flavor">
+        How should we discover what Papa was up to at the Art Gallery?
+      </p>
     </>
   );
 };

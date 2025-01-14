@@ -20,7 +20,7 @@ const Puzzle = (): JSX.Element => {
         midnight last night. At least every character has an equal chance to say
         their piece.
       </p>
-      <p className="puzzle-flavor">How can you confront the killer?</p>
+      <p className="puzzle-flavor">How should we confront the killer?</p>
       <AuthorsNote>
         Pages are numbered for your convenience. The given numbering is not
         puzzle content.

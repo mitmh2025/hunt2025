@@ -72,7 +72,7 @@ const Puzzle = ({
         </p>
       </AuthorsNoteBlock>
 
-      <p className="puzzle-flavor"> How do we confront the thief? </p>
+      <p className="puzzle-flavor">How should we confront the thief?</p>
 
       {videoReleased && (
         <>

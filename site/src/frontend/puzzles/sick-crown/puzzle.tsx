@@ -44,8 +44,9 @@ export default function Puzzle(): JSX.Element {
     <>
       <p className="puzzle-flavor">
         The stars light up. We should listen to these new leads and audible
-        clues. How should you confront Papa?
+        clues.
       </p>
+      <p className="puzzle-flavor">How should we confront Papa?</p>
       <SideBySideWithBookHighlights>
         <Spacer>
           <LinkedImage

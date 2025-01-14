@@ -17,7 +17,7 @@ const Puzzle = () => {
       <blockquote>
         <p>
           Impressive work. I’m trusting you to follow the paper trails from each
-          subsidiary now – at each step, one piece gets left behind. The shell
+          subsidiary now—at each step, one piece gets left behind. The shell
           corporations have covered their tracks too well; they won’t leave a
           trace.
         </p>
@@ -42,7 +42,7 @@ const Puzzle = () => {
           <li>STILETTO</li>
         </CenteredList>
       </blockquote>
-      <p>How can you confront Gladys?</p>
+      <p className="puzzle-flavor">How should we confront Gladys?</p>
     </>
   );
 };
