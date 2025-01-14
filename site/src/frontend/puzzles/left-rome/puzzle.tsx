@@ -637,7 +637,7 @@ const Puzzle = (): JSX.Element => {
               <li>
                 All numbered route instructions are considered completed when
                 your front wheels enter the indicated intersection or become
-                parallel with the indicated sign.
+                level with the indicated sign.
               </li>
               <li>
                 When put onto a road or highway, stay on it until instructed or
