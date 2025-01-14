@@ -47,16 +47,20 @@ const CenterCell = styled.td`
 const ALL_GEOGUESSR_LOCATIONS = [
   "corner of 3-1 near building 1",
   "Great Sail, between 50 and 14N",
-  "26-100",
-  "10-4 near Strobe Alley",
+  "2-1, near 14N",
+  "outside W20 near the Alchemist",
   "outside 26-100",
   "Baker House",
   "MIT Medical",
   "10-485",
-  "W20-5",
+  "outside W18",
   "Stata Center near the Collier Memorial",
   "3-1 on the Infinite",
   "16-0",
+  "Simmons Hall (W79)",
+  "between Westgate and Next",
+  "Theta Delta Chi (Amherst Alley side)",
+  "Subbasement 9",
 ];
 
 type Artist = {
@@ -368,7 +372,7 @@ const Solution = (): JSX.Element => {
           {ALL_QUESTIONS.filter((q) => q.geoguessr === null).map((q, idx) => (
             <QuestionBlock question={q} key={idx} />
           ))}
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((g) => (
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((g) => (
             <tr key={g}>
               <CenterCell>
                 <GeoguessrContainer>

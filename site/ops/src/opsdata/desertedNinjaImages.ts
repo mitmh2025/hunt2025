@@ -316,6 +316,10 @@ import Geoguessr09 from "../../../src/frontend/puzzles/deserted-ninja/assets/geo
 import Geoguessr10 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr10.jpg";
 import Geoguessr11 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr11.jpg";
 import Geoguessr12 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr12.jpg";
+import Geoguessr13 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr13.jpg";
+import Geoguessr14 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr14.jpg";
+import Geoguessr15 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr15.jpg";
+import Geoguessr16 from "../../../src/frontend/puzzles/deserted-ninja/assets/geoguessr16.jpg";
 
 type AlbumArray = [string, string, string, string, string, string];
 type ArtistType = [AlbumArray, AlbumArray, AlbumArray];
@@ -340,6 +344,10 @@ type AlbumLookup = [
 ];
 
 type GeoguessrLookup = [
+  string,
+  string,
+  string,
+  string,
   string,
   string,
   string,
@@ -454,4 +462,8 @@ export const geoguessrLookup: GeoguessrLookup = [
   Geoguessr10,
   Geoguessr11,
   Geoguessr12,
+  Geoguessr13,
+  Geoguessr14,
+  Geoguessr15,
+  Geoguessr16,
 ];
