@@ -2,6 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import useAppendDataset from "../../client/useAppendDataset";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 
 type ScoreEntryData = {
   sessionId: number;
@@ -41,6 +42,12 @@ const StyledImageContainer = styled.div`
 const StyledImage = styled.img`
   width: 80%;
 `;
+const CTAInstructions = styled.div`
+  margin: 10px 0px;
+`;
+const CTATiming = styled.div`
+  margin: 20px 0px 10px;
+`;
 
 const Result = ({ data }: { data: ScoreEntryData }) => {
   const entries = [];
@@ -78,14 +85,42 @@ const App = () => {
     <Result data={entry.data} key={idx} />
   ));
 
+  const bottomText =
+    priorScores.length > 0 ? (
+      <>
+        <div>
+          Here&rsquo;s what you got from prior attempts. Participate again for
+          approximately better results!
+        </div>
+        {priorScores}
+      </>
+    ) : (
+      ""
+    );
+
   return (
     <>
-      <div>
-        Please contact Hunt HQ to sign up for the FerMIT Challenge, the Mystery
-        Hunt‘s approximately-first estimation game show! If you‘ve played
-        before, your results can be found below.
-      </div>
-      {priorScores}
+      <AuthorsNoteBlock>
+        <CTAInstructions>
+          <div>
+            You are hereby invited to compete in the FerMIT Challenge, the
+            Mystery Hunt&rsquo;s approximately-first estimation game show!
+          </div>
+          <div>
+            Send up to three team members. Knowledge of MIT will be helpful.
+          </div>
+        </CTAInstructions>
+
+        <CTATiming>
+          <div>
+            The FerMIT Challenge runs once per hour, on the hour, in room
+            34-302.
+          </div>
+          <div>Friday, January 17th: 4 PM - 12 AM (hourly)</div>
+          <div>Saturday, January 18th: 8 AM - 12 AM (hourly)</div>
+        </CTATiming>
+      </AuthorsNoteBlock>
+      {bottomText}
     </>
   );
 };

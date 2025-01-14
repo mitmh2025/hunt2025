@@ -9,11 +9,35 @@ import {
   FermitDataActionType,
 } from "../FermitDataProvider";
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
+import { abbreviatedName } from "../util/teamname";
+import { FermitTeamSelector } from "./FermitTeamSelector";
 
 type TeamWithStatus = {
   id: number;
   status: string;
 };
+
+const InfoBox = styled.div`
+  background-color: tan;
+  border: 1px solid brown;
+  border-radius: 5px;
+  width: 100%;
+  padding: 0 5px;
+  margin: 0px auto 20px;
+  text-align: center;
+`;
+
+const RegistrationBox = styled.div`
+  display: flex;
+  column-gap: 30px;
+`;
+const StartSession = styled.div`
+  text-align: center;
+  margin-top: 30px;
+`;
+const StartButton = styled.button`
+  font-size: 120%;
+`;
 
 const ScorekeeperTable = styled.table`
   border: 1px solid black;
@@ -65,10 +89,6 @@ const TeamStatusContainer = styled.div`
 const TeamName = styled.div`
   width: 200px;
 `;
-const TeamStatus = styled.div`
-  width: 150px;
-`;
-const ToggleButton = styled.button``;
 
 function TeamStatusRow({ team }: { team: TeamWithStatus }) {
   const fermitData = useFermitData();
@@ -77,19 +97,14 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
   const opsClients = useOpsClients();
   const notifications = useNotifications();
 
-  function toggleCheckIn(_e: React.MouseEvent<HTMLButtonElement>) {
+  function unregisterTeam(teamId: number) {
     const session = fermitData.activeSession;
-
     if (session) {
       opsClients.adminClient
-        .updateFermitRegistration({
+        .deleteFermitRegistration({
           params: {
             sessionId: session.id.toString(),
-            teamId: team.id.toString(),
-          },
-          body: {
-            status:
-              team.status === "checked_in" ? "not_checked_in" : "checked_in",
+            teamId: teamId.toString(),
           },
         })
         .then((res) => {
@@ -97,9 +112,11 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
             throw new Error(`HTTP ${res.status}: ${res.body}`);
           }
           const regs = res.body;
-
           const newSession = {
-            ...session,
+            id: session.id,
+            title: session.title,
+            status: session.status,
+            questionIds: session.questionIds.slice(),
             teams: regs.map((reg) => ({
               id: reg.teamId,
               status: reg.status,
@@ -118,7 +135,7 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
-          notifications.show(`Failed to update registration: ${msg}`, {
+          notifications.show(`Failed to delete team reg: ${msg}`, {
             severity: "error",
             autoHideDuration: 3000,
           });
@@ -126,28 +143,30 @@ function TeamStatusRow({ team }: { team: TeamWithStatus }) {
     }
   }
 
+  const teamObj = opsData.teams.find((teamData) => team.id === teamData.teamId);
+  const displayName = teamObj ? abbreviatedName(teamObj, true) : "[error]";
+
   return (
     <TeamStatusContainer>
-      <TeamName>
-        {opsData.teams
-          .find((teamData) => team.id === teamData.teamId)
-          ?.name.slice(0, 20)}
-      </TeamName>
-      <TeamStatus>{team.status}</TeamStatus>
-      <ToggleButton onClick={toggleCheckIn}>
-        {team.status === "checked_in" ? "Cancel check-in" : "Confirm check-in"}
-      </ToggleButton>
+      <TeamName>{displayName}</TeamName>
+      <button
+        onClick={(_) => {
+          unregisterTeam(team.id);
+        }}
+      >
+        Unregister
+      </button>
     </TeamStatusContainer>
   );
 }
 
 const TeamStatusBox = styled.div`
-  margin: 10px;
+  margin: 10px 0;
   padding: 5px 10px;
   border: 1px solid black;
 `;
 const TeamStatusHeading = styled.div`
-  font-size: 150%;
+  font-size: 120%;
 `;
 
 function NotStartedPanel() {
@@ -155,10 +174,9 @@ function NotStartedPanel() {
   const dispatch = useFermitDispatch();
   const opsClients = useOpsClients();
   const notifications = useNotifications();
+  const session = fermitData.activeSession;
 
   function startSession() {
-    const session = fermitData.activeSession;
-
     if (session) {
       if (session.status === "not_started") {
         const newSession = {
@@ -203,17 +221,77 @@ function NotStartedPanel() {
     }
   }
 
+  function registerTeam(teamId: number) {
+    if (session) {
+      opsClients.adminClient
+        .createFermitRegistration({
+          params: {
+            sessionId: session.id.toString(),
+            teamId: teamId.toString(),
+          },
+        })
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error(`HTTP ${res.status}: ${res.body}`);
+          }
+
+          const regs = res.body;
+          const newSession = {
+            id: session.id,
+            title: session.title,
+            status: session.status,
+            questionIds: session.questionIds.slice(),
+            teams: regs.map((reg) => ({
+              id: reg.teamId,
+              status: reg.status,
+            })),
+          };
+          if (dispatch) {
+            dispatch({
+              type: FermitDataActionType.SET_ACTIVE_SESSION,
+              activeSession: newSession,
+            });
+            dispatch({
+              type: FermitDataActionType.SESSION_UPDATE,
+              session: newSession,
+            });
+          }
+        })
+        .catch((err: unknown) => {
+          const msg = err instanceof Error ? err.message : "Unknown error";
+          notifications.show(`Failed to register team: ${msg}`, {
+            severity: "error",
+            autoHideDuration: 3000,
+          });
+        });
+    }
+  }
+
+  const statusRows =
+    fermitData.activeSession?.teams.map((team) => (
+      <TeamStatusRow team={team} key={team.id} />
+    )) ?? [];
+
   return (
     <>
       <div>
-        <div>This session has not yet started.</div>
+        <InfoBox>This session has not yet started.</InfoBox>
+        <TeamStatusHeading>Teams in attendance</TeamStatusHeading>
         <TeamStatusBox>
-          <TeamStatusHeading>Team Status:</TeamStatusHeading>
-          {fermitData.activeSession?.teams.map((team) => (
-            <TeamStatusRow team={team} key={team.id} />
-          ))}
+          {statusRows.length > 0 ? statusRows : "None yet!"}
+          <hr />
+          <RegistrationBox>
+            <div>Register a Team</div>
+            <FermitTeamSelector
+              submitCallback={registerTeam}
+              exclude={session?.teams.map(({ id }) => id)}
+              buttonText="Register team"
+            />
+          </RegistrationBox>
         </TeamStatusBox>
-        <button onClick={startSession}>Start Session</button>
+        <StartSession>
+          <StartButton onClick={startSession}>Start Session</StartButton>
+        </StartSession>
       </div>
     </>
   );
@@ -397,13 +475,12 @@ function ScorekeeperPanel() {
   } else {
     const heading = session.teams
       .filter((t) => t.status === "checked_in")
-      .map(({ id }) => (
-        <th key={id}>
-          {opsData.teams
-            .find((teamData) => id === teamData.teamId)
-            ?.name.slice(0, 20)}
-        </th>
-      ));
+      .map(({ id }) => {
+        const team = opsData.teams.find((teamData) => id === teamData.teamId);
+        return (
+          <th key={id}>{team ? abbreviatedName(team, false) : "[error]"}</th>
+        );
+      });
     const body = session.questionIds.map((_, idx) => {
       return (
         <ScoreRow key={idx}>
