@@ -70,7 +70,7 @@ export const PuzzleTooltipComponent = ({
     <PuzzleTooltip className="tooltip" ref={innerRef} style={style}>
       {children}
       <span className="name">
-        <PuzzleIcon lockState={lockState} answer={answer} size={16} />{" "}
+        <PuzzleIcon lockState={lockState} answer={answer} size={16} />
         <span>{title}</span>
       </span>
       {!answer && desc && <span className="desc">{desc}</span>}
