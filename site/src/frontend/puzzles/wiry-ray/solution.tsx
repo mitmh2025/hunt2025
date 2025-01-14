@@ -118,11 +118,11 @@ const Solution = () => {
         access the coordinates of each location. Using the coordinates of the
         artifacts to make a cross you get a set of coordinates that when rounded
         has the coordinates to a room on the floor. Setting the compass to the
-        total value of all of the artifacts on the floor allows for the key to
-        be picked up at this room. This method of finding the key is persistent
-        across the first 3 floors, as seen at each door having a similar hint of
-        “Crosses, Keys”, as well as a depth for floor 3 to simplify the
-        multi-tiered nature of that floor.
+        total frost ember value of all of the artifacts on the floor allows for
+        the key to be picked up at this room. This method of finding the key is
+        persistent across the first 3 floors, as seen at each door having a
+        similar hint of “Crosses, Keys”, as well as a depth for floor 3 to
+        simplify the multi-tiered nature of that floor.
       </p>
 
       <p>
@@ -134,15 +134,17 @@ const Solution = () => {
       </p>
 
       <p>
-        Doing so will give the solver 5 new artifacts that are not a part of
-        Decked Out 2 but have a frost ember value, as well as instructions on
-        how to use these values to get to the final artifact. By following the
-        instructions of getting the product of the first floor secret artifact
-        values and using the negative of it as the X coordinate and the product
-        of the second floor secret artifact values for the Z coordinate, you
-        find a room on floor 4 with these values. Setting the compass to the
-        value of the secret floor 3 artifact in this room and using FD finds the
-        final artifact, which is also the answer, of{" "}
+        Using FD with the compass set to the sum of the frost ember values of
+        the two artifacts associated with the cross at the intersection will
+        give the solver 5 new artifacts that are not a part of Decked Out 2 but
+        have a frost ember value, as well as instructions on how to use these
+        values to get to the final artifact. By following the instructions of
+        getting the product of the first floor secret artifact values and using
+        the negative of it as the X coordinate and the product of the second
+        floor secret artifact values for the Z coordinate, you find a room on
+        floor 4 with these values. Setting the compass to the value of the
+        secret floor 3 artifact in this room and using FD finds the final
+        artifact, which is also the answer, of{" "}
         <PuzzleAnswer>KENGREXAL</PuzzleAnswer>.
       </p>
 
