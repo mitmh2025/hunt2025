@@ -330,7 +330,7 @@ def regular_stream_next() =
                     bumper_icy_box,
                     request.create(icy_box_content_next()),
                 ]
-            elsif quixotic_shoe_enabled() then
+            elsif quixotic_shoe_enabled() and not mystery_hunt_minus_enabled() then
                 [
                     request.create(quixotic_shoe_handoff_next()),
                     request.create(quixotic_shoe_content_next()),
@@ -339,8 +339,17 @@ def regular_stream_next() =
             else
                 []
             end
-        if partial_confidential() or mystery_hunt_minus_enabled() then
+        if partial_confidential() then
             interrupt
+        elsif mystery_hunt_minus_enabled() then
+            handoff_file = quixotic_shoe_handoff_next()
+            handoff_uri = null.case(
+                scheduled_announcement,
+                {handoff_file},
+                fun (s) -> "annotate:last_scheduled_hour=#{s.hour}:#{handoff_file}",
+            )
+            handoff = request.create(handoff_uri)
+            [...interrupt, handoff, request.create(quixotic_shoe_content_next())]
         else
             music_file = background_music_next()
             music_uri = null.case(
