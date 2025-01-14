@@ -1,6 +1,10 @@
 import React, { type ReactNode } from "react";
 import { styled } from "styled-components";
-import { HScrollTableWrapper, PuzzleAnswer } from "../../components/StyledUI";
+import {
+  HScrollTableWrapper,
+  Mono,
+  PuzzleAnswer,
+} from "../../components/StyledUI";
 
 const MEGATABLE: [
   string,
@@ -28,7 +32,7 @@ const MEGATABLE: [
     "1",
     "I have an old photograph…[____________] for her. Perfect late-late show.",
     "?",
-    "C",
+    "",
     "-",
     "YOU PLAYED IT",
     <>
@@ -65,7 +69,7 @@ const MEGATABLE: [
     "4",
     "You understood intuitively the rhythm of this game…",
     "● /",
-    "",
+    "C",
     ".",
     "",
     "",
@@ -76,7 +80,7 @@ const MEGATABLE: [
     "5",
     "What I love about my favorite harvesting tool…[____________]…",
     "?",
-    "O",
+    "",
     "-",
     "YOUR WINNINGS SIR",
     <>
@@ -111,7 +115,7 @@ const MEGATABLE: [
     "8",
     "It doesn’t matter how we got here…But it’s been a [____________].",
     "?",
-    "",
+    "O",
     ".",
     "BEAUTIFUL FRIENDSHIP",
     <>
@@ -135,7 +139,7 @@ const MEGATABLE: [
     "9",
     "I walked out of there feeling like a million bucks…",
     "▬",
-    "L",
+    "",
     "-",
     "",
     "",
@@ -159,7 +163,7 @@ const MEGATABLE: [
     "11",
     "When it started to look like gang warfare…I never saw the [____________] myself…",
     "? /",
-    "",
+    "L",
     ".",
     "LITTLE GREEN HOUSE",
     <>
@@ -172,7 +176,7 @@ const MEGATABLE: [
     "12",
     "Fall finally fell eight years later…",
     "●",
-    "L",
+    "",
     ".",
     "",
     "",
@@ -207,7 +211,7 @@ const MEGATABLE: [
     "15",
     "What goes up must come down…",
     "● /",
-    "",
+    "L",
     ".",
     "",
     "",
@@ -253,7 +257,7 @@ const MEGATABLE: [
     "18",
     "Do you want to wrap it up?…I thought he wrote [____________].",
     "?",
-    "R",
+    "",
     ".",
     "WALTZES AND MARCHES",
     <>
@@ -277,7 +281,7 @@ const MEGATABLE: [
     "20",
     "Must be answering a call…That’s put back the smile on [____________].",
     "? /",
-    "",
+    "R",
     ".",
     "LA GIOCONDA",
     <>
@@ -290,7 +294,7 @@ const MEGATABLE: [
     "21",
     "I guess that place has bottomless coffee…",
     "●",
-    "A",
+    "",
     ".",
     "",
     "",
@@ -301,7 +305,7 @@ const MEGATABLE: [
     "22",
     "No, I don’t want lunch…Now let’s see you move those [____________].",
     "? /",
-    "",
+    "A",
     "-",
     "NIMBLE FEET",
     <>
@@ -360,7 +364,7 @@ const MEGATABLE: [
     "26",
     "The room’s too quiet…I suppose that was how they used to wear them in [____________]…",
     "?",
-    "I",
+    "",
     ".",
     "LA SERENISSIMA",
     <>
@@ -374,7 +378,7 @@ const MEGATABLE: [
     "27",
     "A lady is trying to convince me…",
     "● /",
-    "",
+    "I",
     ".",
     "",
     "",
@@ -385,7 +389,7 @@ const MEGATABLE: [
     "28",
     "A terribly energetic young couple…a black lace gown with a matching veil and a [____________].",
     "?",
-    "L",
+    "",
     ".",
     "RED SASH",
     <>
@@ -422,7 +426,7 @@ const MEGATABLE: [
     "31",
     "Oh and here is Phebe at last…",
     "● /",
-    "",
+    "L",
     ".",
     "",
     "",
@@ -457,7 +461,7 @@ const MEGATABLE: [
     "33",
     "I had to get out of there, clear my head…I’ve been to [____________]…",
     "?",
-    "D",
+    "",
     ".",
     "LEAFY ARLINGTON",
     <>
@@ -470,7 +474,7 @@ const MEGATABLE: [
     "34",
     "I wish I could do this in the thief’s shoes…",
     "● /",
-    "",
+    "D",
     ".",
     "",
     "",
@@ -481,7 +485,7 @@ const MEGATABLE: [
     "35",
     "Now this is a type designed to grab your attention…Brought to you by [____________]…",
     "?",
-    "R",
+    "",
     ".",
     "C FOR CLARENDON",
     <>
@@ -505,7 +509,7 @@ const MEGATABLE: [
     "37",
     "I’ve learned so little…[____________]--those who journey to this place…",
     "? /",
-    "",
+    "R",
     ".",
     "PHILLIPS EXETER",
     <>
@@ -518,7 +522,7 @@ const MEGATABLE: [
     "38",
     "Not far away now. Best hold fire for a moment…",
     "▬",
-    "O",
+    "",
     "-",
     "",
     "",
@@ -540,7 +544,7 @@ const MEGATABLE: [
     "40",
     "Why should this name be here?…I suppose there’s [____________]…",
     "? /",
-    "",
+    "O",
     "-",
     "HEREFORD CATTLE",
     <>
@@ -564,7 +568,7 @@ const MEGATABLE: [
     "41",
     "I think of this as my personal train of thought…Am I going [____________] here?…",
     "?",
-    "V",
+    "",
     ".",
     "DOWN A RABBIT HOLE",
     <>
@@ -601,7 +605,7 @@ const MEGATABLE: [
     "44",
     "Men, men, men…they are all the same!…",
     "▬ /",
-    "",
+    "V",
     "-",
     "",
     "",
@@ -623,7 +627,7 @@ const MEGATABLE: [
     "46",
     "I need to look at this from different angles…I wonder whether [____________] ever touched down here…",
     "?",
-    "R",
+    "",
     ".",
     "LITTLE TOM",
     <>
@@ -647,7 +651,7 @@ const MEGATABLE: [
     "48",
     "Well this is a fine thing, a fine state of affairs…[____________]…",
     "? /",
-    "",
+    "R",
     ".",
     "TO STATE THE OBVIOUS",
     <>
@@ -675,60 +679,60 @@ const SHORTHAND_TO_COLOR: Record<string, string> = {
 };
 
 const MEGATABLE_COLORS = `
-RRRRRRRR
-rraarrrr
-rraarrrr
-rraarrrr
-rraarrrr
-rr  rrrr
-rr  rrrr
-rr  rrrr
-rraarrrr
-OOOOOOOO
-ooaaoooo
-ooaaoooo
-ooaaoooo
-oo  oooo
-oo  oooo
-oo  oooo
-oo  oooo
-ooaaoooo
-YYYYYYYY
-yyaayyyy
-yy  yyyy
-yy  yyyy
-yy  yyyy
-yyaayyyy
-yyaayyyy
-yy  yyyy
-yy  yyyy
-GGGGGGGG
-gg  gggg
-ggaagggg
-ggaagggg
-gg  gggg
-gg  gggg
-gg  gggg
-gg  gggg
-ggaagggg
-BBBBBBBB
-bbaabbbb
-bbaabbbb
-bb  bbbb
-bb  bbbb
-bb  bbbb
-bbaabbbb
-bbaabbbb
-bbaabbbb
-PPPPPPPP
-pp  pppp
-pp  pppp
-pp  pppp
-pp  pppp
-ppaapppp
-pp  pppp
-pp  pppp
-pp  pppp
+RRRRRRRRR
+rraarrrrr
+rraarrrrr
+rraarrrrr
+rraarrrrr
+rr  rrrrr
+rr  rrrrr
+rr  rrrrr
+rraarrrrr
+OOOOOOOOO
+ooaaooooo
+ooaaooooo
+ooaaooooo
+oo  ooooo
+oo  ooooo
+oo  ooooo
+oo  ooooo
+ooaaooooo
+YYYYYYYYY
+yyaayyyyy
+yy  yyyyy
+yy  yyyyy
+yy  yyyyy
+yyaayyyyy
+yyaayyyyy
+yy  yyyyy
+yy  yyyyy
+GGGGGGGGG
+gg  ggggg
+ggaaggggg
+ggaaggggg
+gg  ggggg
+gg  ggggg
+gg  ggggg
+gg  ggggg
+ggaaggggg
+BBBBBBBBB
+bbaabbbbb
+bbaabbbbb
+bb  bbbbb
+bb  bbbbb
+bb  bbbbb
+bbaabbbbb
+bbaabbbbb
+bbaabbbbb
+PPPPPPPPP
+pp  ppppp
+pp  ppppp
+pp  ppppp
+pp  ppppp
+ppaappppp
+pp  ppppp
+pp  ppppp
+pp  ppppp
 `
   .split("\n")
   .slice(1, -1)
@@ -751,6 +755,10 @@ const StyledTd = styled.td<{ $color: string }>`
 
 const StyledSpan = styled.span<{ $color: string }>`
   background-color: ${({ $color }) => $color};
+`;
+
+const LargeMorseText = styled.span`
+  font-size: 24px;
 `;
 
 const Green = ({ children }: { children: ReactNode }): JSX.Element => {
@@ -860,30 +868,44 @@ const Solution = (): JSX.Element => {
       <p>
         The table below includes excerpts from each page, the redacted answer,
         and the Morse character in the correct order. Morse letters are
-        alternating grey and white backgrounds
+        alternating grey and white backgrounds.
       </p>
       <HScrollTableWrapper>
         <StyledTable>
           <tr>
             <th>Solved order</th>
-            <th>page text excerpt</th>
+            <th>Page text excerpt</th>
             <th>Morse on page</th>
             <th>Extraction</th>
             <th>Morse</th>
             <th>Answer</th>
             <th>Puzzle title</th>
             <th>Sorting mechanic</th>
+            <th>Given page ordering</th>
           </tr>
           {MEGATABLE.map((cells, i) => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- hard-coded data
             const colors = MEGATABLE_COLORS[i]!;
             return (
               <tr key={i}>
-                {cells.map((cell, j) => (
-                  <StyledTd $color={colors[j] ?? "white"} key={j}>
-                    {cell}
-                  </StyledTd>
-                ))}
+                {cells.map((cell, j) => {
+                  let children: ReactNode = cell;
+                  if (j === 4) {
+                    children = (
+                      <LargeMorseText>
+                        <strong>{cell}</strong>
+                      </LargeMorseText>
+                    );
+                  }
+                  if (j === 5) {
+                    children = <Mono>{cell}</Mono>;
+                  }
+                  return (
+                    <StyledTd $color={colors[j] ?? "white"} key={j}>
+                      {children}
+                    </StyledTd>
+                  );
+                })}
               </tr>
             );
           })}
