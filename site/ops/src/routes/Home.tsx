@@ -16,9 +16,11 @@ export default function App() {
 
   return (
     <TeamsContainer>
-      {bigBoardData.teams.map((team) => (
-        <BigBoardTeam team={team} key={team.id} />
-      ))}
+      {bigBoardData.teams
+        .filter((team) => !team.username.startsWith("dnm-"))
+        .map((team) => (
+          <BigBoardTeam team={team} key={team.id} />
+        ))}
     </TeamsContainer>
   );
 }
