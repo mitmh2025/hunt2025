@@ -2139,12 +2139,12 @@ const ROUTES: {
       },
       {
         direction: "BR",
-        instruction: "3rd OPP",
+        instruction: "2nd OPP",
         street: "South St",
         odo: 0.3,
         speed: 39,
         donuts: 1,
-        rules: ["Rule TORUS (record O)", "Rule REARVIEW (May 2022)"],
+        rules: ["Rule TORUS (record O)"],
       },
       {
         direction: "R",
@@ -2157,12 +2157,12 @@ const ROUTES: {
       },
       {
         direction: "R",
-        instruction: "2nd OPP",
+        instruction: "3rd OPP",
         street: "Cottage St",
         odo: 0.8,
         speed: 39,
         donuts: 1,
-        rules: [],
+        rules: ["Rule REARVIEW (May 2022)"],
       },
       {
         direction: "",
