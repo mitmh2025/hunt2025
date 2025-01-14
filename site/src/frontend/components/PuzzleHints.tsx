@@ -27,7 +27,7 @@ const OutstandingHintNotice = styled.p`
 `;
 
 const HintRequest = styled.div`
-  background-color: var(--gray-200);
+  background-color: var(--gray-100);
   color: var(--black);
   border-radius: 1rem;
   border-bottom-left-radius: 0;
