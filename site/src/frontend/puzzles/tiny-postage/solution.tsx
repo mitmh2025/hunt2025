@@ -1865,7 +1865,7 @@ const Solution = (): JSX.Element => {
         the same letter, so AA, PP, or SS. The Swimmer is already set in #2 and
         Stonemason must go after Florist, so it must be either Bartender → Actor
         → Academic or Bartender → P → P. The Actor, however, is immediately
-        preceded by a P in any case, blocking the Shipwright from being followed
+        preceded by a P in any case, blocking the Bartender from being followed
         by the two A titles. And since Actor is specifically preceded by Poet,
         the order must be Bartender → Police Officer → Poet → Actor. This string
         will only fit in the space after the Coroner, leaving Florist and
