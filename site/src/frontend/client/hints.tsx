@@ -74,6 +74,6 @@ if (puzzleHintsElem) {
   );
 } else {
   console.error(
-    "Couldn't mount puzzleHints because #puzzle-guesses and #subpuzzle-guesses were nowhere to be found",
+    "Couldn't mount puzzleHints because #puzzle-hints was nowhere to be found",
   );
 }

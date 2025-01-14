@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from "react";
-import sanitizeHtml from "sanitize-html";
 import { styled } from "styled-components";
 import { type z } from "zod";
 import { type TeamHuntState, newClient } from "../../../lib/api/client";
@@ -152,7 +151,7 @@ const PuzzleHintHistory = ({ hints }: { hints: Hints }) => {
                 <h3>Hunt HQ response at {formatHintTimestamp(h.timestamp)}</h3>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(h.data.response),
+                    __html: h.data.response,
                   }}
                 />
               </>

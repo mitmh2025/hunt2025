@@ -351,10 +351,16 @@ export class TeamInfoIntermediate {
 export class PuzzleStateIntermediate {
   private _slug: string;
   epoch: number;
-  guesses: (InternalActivityLogEntry & { type: "puzzle_guess_submitted" })[];
-  hints: (InternalActivityLogEntry & {
-    type: "puzzle_hint_requested" | "puzzle_hint_responded";
-  })[];
+  guesses: Extract<
+    InternalActivityLogEntry,
+    { type: "puzzle_guess_submitted" }
+  >[];
+  hints: Extract<
+    InternalActivityLogEntry,
+    {
+      type: "puzzle_hint_requested" | "puzzle_hint_responded";
+    }
+  >[];
 
   constructor(
     slug: string,

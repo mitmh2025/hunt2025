@@ -35,6 +35,7 @@ import { type Address } from "nodemailer/lib/mailer";
 import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import sanitizeHtml from "sanitize-html";
 import * as swaggerUi from "swagger-ui-express";
 import {
   adminContract,
@@ -571,7 +572,10 @@ export async function getRouter({
             id: hint.id,
             timestamp: hint.timestamp.toISOString(),
             type: "puzzle_hint_responded",
-            data: hint.data,
+            data: {
+              request_id: hint.data.request_id,
+              response: sanitizeHtml(hint.data.response),
+            },
           };
         }
       }),
