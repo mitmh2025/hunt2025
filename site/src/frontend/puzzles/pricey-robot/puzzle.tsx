@@ -1,5 +1,9 @@
 import React from "react";
 
 export default function Puzzle() {
-  return <p>Some puzzle text goes here.</p>;
+  return (
+    <p className="puzzle-flavor">
+      What’s the key to a productive collaboration?
+    </p>
+  );
 }
