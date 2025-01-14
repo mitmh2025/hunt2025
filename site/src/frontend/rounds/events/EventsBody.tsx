@@ -12,10 +12,42 @@ import { EventsFonts } from "./EventsFonts";
 import { type EventSlug, type EventsState } from "./types";
 
 const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
-  making_contact_with_an_informant: <>Some description goes here!</>,
-  navigating_high_society: <>Some description goes here!</>,
-  seeing_the_big_picture: <>Some description goes here!</>,
-  tailing_a_lead: <>Some description goes here!</>,
+  making_contact_with_an_informant: (
+    <>
+      We’ve learned that an informant is interested in giving up some
+      information. Please send 1–2 trainees who like to make connections and
+      make new friends, and who can move around a room for the duration of the
+      event. Please arrive promptly; participation cannot be guaranteed for late
+      arrivals.
+    </>
+  ),
+
+  tailing_a_lead: (
+    <>
+      Please send 1–2 trainees who can think on their feet, are masters of
+      disguise, and have a sixth sense for sneakiness. Each person should bring
+      a towel–a most massively useful thing. Paper, a writing utensil, and a
+      clipboard could also come in handy. They’ll be tailing a lead for a while,
+      so they should be comfortable with moderate physical activity, including
+      navigating stairs.
+    </>
+  ),
+
+  navigating_high_society: (
+    <>
+      Please send 1–2 trainees with an eye for detail. They’ll be handing
+      lemons, limes, oranges, cherries, and grapes; although nothing will be
+      consumed, do not send anyone with food allergies to this event. Please
+      note that this event is not colorblind-friendly.
+    </>
+  ),
+
+  seeing_the_big_picture: (
+    <>
+      Please send 1–2 trainees with a flair for creativity, who can assess a
+      crime scene and see things in new ways.
+    </>
+  ),
 };
 
 const PuzzleDescription = styled.p`
@@ -60,7 +92,20 @@ export default function EventsBody({ state }: { state: EventsState }) {
       <EventsHeader>
         <PuzzleTitle>Events</PuzzleTitle>
         <EventsDescription>
-          This is some text about events. It probably also talks about clues.
+          <p>
+            Billie and the Two P.I. Noir Detective Agency are counting on you to
+            get to the bottom of this case. To support you in becoming the best
+            detective you can be, Billie has organized a crash course of
+            training sessions on how to be a P.I. Come hone your skills with
+            valuable lessons to help you along in your investigation.
+          </p>
+          <p>
+            At the completion of each training session, you’ll earn a Clue{" "}
+            <span style={{ fontStyle: "normal" }}>🔎</span>, a valuable tool in
+            your overall ability to proceed in your investigation. Please see{" "}
+            <a href="/about">the About page</a> for more information about Clues{" "}
+            <span style={{ fontStyle: "normal" }}>🔎</span>.
+          </p>
         </EventsDescription>
       </EventsHeader>
 
