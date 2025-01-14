@@ -428,11 +428,15 @@ const LEGS: {
     },
     {
       direction: "BR",
+      instruction: "2nd OPP",
+      notes: "",
+    },
+    { direction: "R", instruction: "1st SIGNAL", notes: "" },
+    {
+      direction: "R",
       instruction: "3rd OPP",
       notes: "Rule REARVIEW (May 2022)",
     },
-    { direction: "R", instruction: "1st SIGNAL", notes: "" },
-    { direction: "R", instruction: "2nd OPP", notes: "" },
     {
       direction: "",
       instruction: "OBSERVE SOL RIP “LOLLYS BAKERY”",
