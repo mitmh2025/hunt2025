@@ -19,7 +19,6 @@ import {
 } from "../../components/IllegalSearchPuzzleLayout";
 import {
   MissingDiamondAnswer,
-  MissingDiamondBacklink,
   MissingDiamondMain,
   MissingDiamondTitle,
   MissingDiamondTitleWrapper,
@@ -103,7 +102,6 @@ export const ROUND_PUZZLE_COMPONENT_MANIFESTS: Record<
     main: MissingDiamondMain,
     fonts: MissingDiamondFonts,
     title: MissingDiamondTitle,
-    backlink: MissingDiamondBacklink,
     titleWrapper: MissingDiamondTitleWrapper,
     answer: MissingDiamondAnswer,
     entrypoint: "missing_diamond_puzzle",

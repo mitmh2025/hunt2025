@@ -7,6 +7,7 @@ import {
   PuzzleWrapper,
 } from "../../components/PuzzleLayout";
 import { PuzzleIcon } from "../../components/PuzzleLink";
+import { lightBgLinkStyles } from "../../components/StyledUI";
 import CluesManager from "./CluesManager";
 import { EventsFonts } from "./EventsFonts";
 import { type EventSlug, type EventsState } from "./types";
@@ -60,6 +61,10 @@ const EventsDescription = styled.p`
 
 const EventsHeader = styled(PuzzleHeader)`
   display: block;
+
+  a {
+    ${lightBgLinkStyles}
+  }
 `;
 
 const EventsMain = styled(PuzzleMain)`
@@ -71,6 +76,10 @@ const EventsMain = styled(PuzzleMain)`
 
   h3 {
     font-family: "Playwrite";
+  }
+
+  a {
+    ${lightBgLinkStyles}
   }
 `;
 

@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { CourierFont } from "../../assets/SharedFonts";
 import PuzzleLink from "../../components/PuzzleLink";
+import { mdBgLinkStyles } from "../../components/StyledUI";
 import { StrayLeadsFonts } from "./StrayLeadsFonts";
 import Bg from "./assets/bg.jpg";
 import PaperBg from "./assets/paper.png";
@@ -83,14 +84,8 @@ const Paper = styled.main`
 
     li .puzzle-link a,
     li a {
-      color: var(--gold-900);
-      text-decoration-color: var(--gold-800);
+      ${mdBgLinkStyles}
       white-space: wrap;
-
-      &:hover {
-        color: var(--gold-700);
-        text-decoration-color: var(--gold-700);
-      }
     }
 
     .filing {

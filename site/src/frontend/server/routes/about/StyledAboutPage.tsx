@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Wrapper } from "../../../components/StyledUI";
+import { lightBgLinkStyles, Wrapper } from "../../../components/StyledUI";
 
 // Overriding global anchor styles here
 const StyledWrapper = styled(Wrapper)`
@@ -14,13 +14,7 @@ const StyledWrapper = styled(Wrapper)`
   }
 
   a {
-    color: var(--gray-900);
-    text-decoration-color: var(--gray-700);
-
-    &:hover {
-      color: var(--gray-700);
-      text-decoration-color: var(--gray-500);
-    }
+    ${lightBgLinkStyles}
   }
 `;
 

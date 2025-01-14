@@ -6,7 +6,6 @@ import { MissingDiamondPuzzleWitness } from "../rounds/missing_diamond/MissingDi
 import { type MissingDiamondState } from "../rounds/missing_diamond/types";
 import { deviceMax } from "../utils/breakpoints";
 import {
-  PuzzleBacklink,
   PuzzleHeader,
   PuzzleMain,
   PuzzleTitle,
@@ -28,18 +27,14 @@ export const MissingDiamondTitle = styled(PuzzleTitle)`
   padding-top: 0;
 `;
 
-export const MissingDiamondBacklink = styled(PuzzleBacklink)`
-  &:hover {
-    color: var(--gold-800) !important;
-    text-decoration-color: var(--gold-800) !important;
-  }
-`;
-
 export const MissingDiamondTitleWrapper = styled(PuzzleTitleWrapper)`
   padding-top: 1em;
 `;
 
 export const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   position: relative;
   background-image: url(${HeaderBg}), url(${BgLeft}), url(${BgRight});
   background-position: top, left, right;
@@ -50,6 +45,7 @@ export const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
   background-repeat: no-repeat, repeat-y, repeat-y;
   background-color: ${MISSING_DIAMOND_SPECIAL_PURPLE};
   padding-left: 5rem;
+  padding-bottom: 1.5rem;
   min-height: calc(421 / 2128 * 1080px);
 
   .witness-assets {
@@ -80,6 +76,7 @@ export const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
   @media ${deviceMax.md} {
     padding-left: 7vw;
     padding-right: 7vw;
+    gap: 2rem;
 
     h1 {
       font-size: 1.8rem;
@@ -120,6 +117,7 @@ export const MissingDiamondHeaderWrapper = styled(PuzzleHeader)`
   }
 
   @media ${deviceMax.sm} {
+    gap: 1rem;
     .witness-assets {
       h3 {
         font-size: 1.5rem;
@@ -147,19 +145,22 @@ const CornerPin = styled(Pin)<{ $x: number; $y: number; $right?: boolean }>`
 
 export const MissingDiamondMain = styled(PuzzleMain)`
   background: url(${BgLeft}), url(${BgRight});
-  /* linear-gradient(
-      90deg,
-      ${MISSING_DIAMOND_SPECIAL_PURPLE} 1%,
-      rgba(from ${MISSING_DIAMOND_SPECIAL_PURPLE} r g b / 0) 1%,
-      rgba(from ${MISSING_DIAMOND_SPECIAL_PURPLE} r g b / 0) 99%,
-      ${MISSING_DIAMOND_SPECIAL_PURPLE} 99%
-    ); */
   background-position: left, right, top;
   background-size:
     3.8% auto,
     3.8% auto,
     cover;
   background-repeat: repeat-y;
+  padding-left: 3rem;
+  padding-right: 3rem;
+
+  @media ${deviceMax.lg} {
+    padding: 2rem 3rem;
+  }
+
+  @media ${deviceMax.sm} {
+    padding: 1rem 2rem;
+  }
 `;
 
 export const MissingDiamondAnswer = styled(SolutionAnswer)`

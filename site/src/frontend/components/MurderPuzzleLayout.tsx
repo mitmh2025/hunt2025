@@ -14,6 +14,7 @@ import {
 } from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
 import Spoiler from "./Spoiler";
+import { darkBgLinkStyles } from "./StyledUI";
 
 // This also relies on the MurderFonts component
 export const MurderHeader = styled(PuzzleHeader)`
@@ -28,7 +29,12 @@ export const MurderHeader = styled(PuzzleHeader)`
     1.75rem auto,
     auto 11rem;
 
+  @media ${deviceMax.md} {
+    padding-top: 2rem;
+  }
+
   @media ${deviceMax.sm} {
+    padding-top: 1rem;
     background-size:
       1.25rem auto,
       auto 9rem;
@@ -59,6 +65,9 @@ export const MurderHeader = styled(PuzzleHeader)`
     font-family: "Eccentric";
     font-size: 2rem;
 
+    margin: 0 auto;
+    max-width: 600px;
+
     label {
       margin-bottom: -0.5rem;
     }
@@ -69,12 +78,9 @@ export const MurderHeader = styled(PuzzleHeader)`
     }
 
     a {
-      color: var(--gold-400);
-      text-decoration-color: var(--gold-300);
-    }
-
-    a:hover {
-      color: var(--gold-300);
+      font-family: var(--body-font);
+      font-size: 1rem;
+      ${darkBgLinkStyles}
     }
   }
 `;
@@ -87,15 +93,14 @@ export const MurderTitle = styled(PuzzleTitle)`
   padding-top: 0;
 `;
 
-// !important to override specificity from top level PuzzleWrapper a selector, RIP
 export const MurderBacklink = styled(PuzzleBacklink)`
   font-size: 1.25rem;
   font-family: "Eccentric";
-  color: var(--gold-400) !important;
-  text-decoration-color: var(--gold-400) !important;
+  color: var(--teal-300);
+  text-decoration-color: var(--teal-300);
   &:hover {
-    color: var(--gold-600) !important;
-    text-decoration-color: var(--gold-600) !important;
+    color: var(--teal-200);
+    text-decoration-color: var(--teal-200);
   }
 `;
 

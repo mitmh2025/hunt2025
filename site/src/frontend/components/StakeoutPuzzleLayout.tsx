@@ -55,13 +55,12 @@ export const StakeoutHeader = styled(PuzzleHeader)`
     background-color: rgba(248, 248, 246, 0.85);
     transform: rotate(1deg) translateX(2rem);
     padding-bottom: 2rem;
+    margin-right: 4rem;
   }
 `;
 
 export const StakeoutBacklink = styled(PuzzleBacklink)`
   font-size: 1.5rem;
-  color: var(--true-black);
-  text-decoration-color: var(--gray-800);
   font-family: "Just Another Hand";
 `;
 
