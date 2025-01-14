@@ -10,7 +10,7 @@ export const DRAUGHTQUEENS_LABELS = calculateNumberLabels(
 . .. . .. .
 # #     # #
  . . ... .
-#     #    
+#    .#    
  . . . . .
 .#   .#    
 `
