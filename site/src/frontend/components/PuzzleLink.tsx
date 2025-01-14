@@ -159,6 +159,8 @@ export const PuzzleIcon = ({
     } else {
       bgImage = icon_unlocked;
     }
+  } else {
+    return null;
   }
   return (
     <span
