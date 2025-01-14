@@ -11,6 +11,9 @@ const puzzle: PuzzleDefinition = {
   editors: ["Erin Price", "James Douberley", "Li-Mei Lim", "Robin Deits"],
   additional_credits: [
     {
+      freeform: "Additional authors: Chris Pringle and Joanna Murray",
+    },
+    {
       for_what: "Art",
       who: ["Simone Agha"],
     },
@@ -19,12 +22,14 @@ const puzzle: PuzzleDefinition = {
       who: ["John Silvio"],
     },
     {
-      for_what: "Additional authors",
-      who: ["Chris Pringle", "Joanna Murray"],
-    },
-    {
       for_what: "Additional puzzle contributions",
-      who: ["Ben Haytack", "Tom Cochrane", "Tom Rackham", "Will Day"],
+      who: [
+        "Ben Haytack",
+        "Sam Dell",
+        "Tom Cochrane",
+        "Tom Rackham",
+        "Will Day",
+      ],
     },
   ],
   content: {
