@@ -1,7 +1,7 @@
 import { type Request } from "express";
 import React from "react";
 import { wrapContentWithNavBar } from "../../../components/ContentWithNavBar";
-import { Math, MSup, MI, MO, MN, MSub } from "../../../components/MathML";
+import { Math, MSup, MI, MO, MN } from "../../../components/MathML";
 import { AboutWrapper } from "./StyledAboutPage";
 
 export function aboutHandler(req: Request) {
@@ -55,12 +55,8 @@ export function aboutHandler(req: Request) {
           guesses in any{" "}
           <Math>
             <MSup>
-              <MSub>
-                <MI>n</MI>
-              </MSub>
-              <MSub>
-                <MN>2</MN>
-              </MSub>
+              <MI>n</MI>
+              <MN>2</MN>
             </MSup>
           </Math>
           -minute time window.

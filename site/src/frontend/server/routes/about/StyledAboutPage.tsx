@@ -14,8 +14,13 @@ const StyledWrapper = styled(Wrapper)`
   }
 
   a {
-    color: var(--black);
-    text-decoration-color: var(--gray-800);
+    color: var(--gray-900);
+    text-decoration-color: var(--gray-700);
+
+    &:hover {
+      color: var(--gray-700);
+      text-decoration-color: var(--gray-500);
+    }
   }
 `;
 
