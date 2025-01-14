@@ -272,7 +272,12 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
               ...puzzleLogData[entry.slug],
               hints: (puzzleLogData[entry.slug]?.hints ?? 0) + 1,
             };
-          // TODO: set hints to 0 when hints are unlocked
+            break;
+          case "team_hints_unlocked":
+            puzzleLogData[entry.slug] = {
+              ...puzzleLogData[entry.slug],
+              hints: 0,
+            };
         }
       });
 
