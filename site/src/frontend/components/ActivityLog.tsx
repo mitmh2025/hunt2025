@@ -257,6 +257,12 @@ export function formatActivityLogEntry(
         ),
         showNotification: true,
       };
+    case "teams_notified":
+      return {
+        icon: "❗",
+        description: <>{entry.message}</>,
+        showNotification: true,
+      };
   }
 }
 

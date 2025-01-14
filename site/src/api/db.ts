@@ -301,6 +301,10 @@ declare module "knex/types/tables" {
           hints_available_at: Date | string;
         };
       }
+    | {
+        type: "teams_notified";
+        data: { message: string };
+      }
   );
 
   // ActivityLogEntryRow is the type as returned by the various database engines.

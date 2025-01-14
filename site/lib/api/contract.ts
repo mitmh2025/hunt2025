@@ -221,6 +221,9 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
       hints_available_at: z.string().datetime().pipe(z.coerce.date()),
     }),
   ),
+  ActivityLogEntryBaseSchema.merge(
+    z.object({ type: z.literal("teams_notified"), message: z.string() }),
+  ),
 ]);
 
 export type DehydratedActivityLogEntry = z.input<typeof ActivityLogEntrySchema>;

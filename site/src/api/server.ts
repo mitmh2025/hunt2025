@@ -1954,6 +1954,31 @@ export async function getRouter({
           };
         },
       },
+      sendPushNotification: {
+        middleware: [adminAuthMiddleware, requireAdminPermission],
+        handler: async ({ body: { message }, req }) => {
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            undefined,
+            redisClient,
+            knex,
+            async function (_, mutator) {
+              return [
+                await mutator.appendLog({
+                  type: "teams_notified",
+                  data: {
+                    message,
+                  },
+                  internal_data: {
+                    operator: req.authInfo?.adminUser,
+                  },
+                }),
+              ];
+            },
+          );
+          return formatMutationResultForAdminApi(result);
+        },
+      },
       getPuzzleState: {
         middleware: [adminAuthMiddleware],
         handler: async ({ params: { teamId, slug } }) => {

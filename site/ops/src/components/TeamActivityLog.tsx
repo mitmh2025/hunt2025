@@ -109,6 +109,9 @@ export default function TeamActivityLog({
             case "puzzle_hint_responded":
               activity = `Hint request responded to for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
               break;
+            case "teams_notified":
+              activity = entry.data.message;
+              break;
           }
 
           if (entry.internal_data?.operator) {

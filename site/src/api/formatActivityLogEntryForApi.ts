@@ -90,6 +90,14 @@ export default function formatActivityLogEntryForApi(
         });
         break;
       }
+      case "teams_notified":
+        {
+          entry = Object.assign(entry, {
+            message: entry.message,
+            show_notification: true,
+          });
+        }
+        break;
     }
   }
   // Note: API objects flatten `data` into the object.
