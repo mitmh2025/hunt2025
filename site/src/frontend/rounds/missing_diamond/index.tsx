@@ -1046,7 +1046,7 @@ function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
       {
         alt: witness.alt,
         pos: witness.pos,
-        asset: witness.asset[state],
+        asset: witness.asset[puzzleState.answer ? "solved" : state],
         puzzle: {
           title,
           slug,

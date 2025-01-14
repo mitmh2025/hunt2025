@@ -113,8 +113,8 @@ const Solution = (): JSX.Element => {
       <p>
         First of all, thanks to Death & Mayhem for letting me take 8 months to
         build this crazy contraption that brings together so many things I
-        dearly love, and to Sarah Leadbeater and Will Tymowski for designing and
-        fabricating the wood cabinets to house the game.
+        dearly love, and to Chris Pentacoff, Sarah Leadbeater, and Will Tymowski
+        for designing and fabricating the wood cabinets to house the game.
       </p>
       <p>
         The story behind this puzzle’s title is too good not to share. My
