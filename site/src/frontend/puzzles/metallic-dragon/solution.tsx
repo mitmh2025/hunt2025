@@ -249,7 +249,7 @@ const Solution = () => {
           </StyledTableCell>
         </tr>
       </StyledInlineTable>
-      <StyledSpan>-&gt;</StyledSpan>       
+      <StyledSpan>-&gt;</StyledSpan>
       <StyledInlineTable>
         <tr>
           <StyledTableCell>
