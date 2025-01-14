@@ -41,14 +41,14 @@ const EVENT_TIME_GROUPS: EventTimeGroup[] = [
   {
     maxUsername: "ua",
     times: {
-      making_contact_with_an_informant: "Saturday 1/17, 7:00-8:00 PM",
+      making_contact_with_an_informant: "Friday 1/17, 7:00-8:00 PM",
       ...BASE_TIMES,
     },
   },
   {
     maxUsername: "zzz",
     times: {
-      making_contact_with_an_informant: "Saturday 1/17, 8:00-9:00 PM",
+      making_contact_with_an_informant: "Friday 1/17, 8:00-9:00 PM",
       ...BASE_TIMES,
     },
   },
