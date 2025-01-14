@@ -1,17 +1,17 @@
 import React from "react";
 import { styled } from "styled-components";
-import { PuzzleIcon } from "../../components/PuzzleLink";
-import { darkBgLinkStyles } from "../../components/StyledUI";
-import CluesManager from "./CluesManager";
-import { EventsFonts } from "./EventsFonts";
-import { type EventSlug, type EventsState } from "./types";
 import {
   PageHeader,
   PageMain,
   PageTitle,
   PageWrapper,
 } from "../../components/PageLayout";
+import { PuzzleIcon } from "../../components/PuzzleLink";
+import { darkBgLinkStyles } from "../../components/StyledUI";
 import { deviceMax } from "../../utils/breakpoints";
+import CluesManager from "./CluesManager";
+import { EventsFonts } from "./EventsFonts";
+import { type EventSlug, type EventsState } from "./types";
 
 const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
   making_contact_with_an_informant: (

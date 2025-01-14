@@ -7,14 +7,14 @@ import {
 } from "../../client/all_puzzles_types";
 import AllPuzzlesList from "../../components/AllPuzzlesList";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
-import { INTERACTIONS } from "../../interactions";
-import { PUZZLES } from "../../puzzles";
 import {
   PageHeader,
   PageMain,
   PageTitle,
   PageWrapper,
 } from "../../components/PageLayout";
+import { INTERACTIONS } from "../../interactions";
+import { PUZZLES } from "../../puzzles";
 
 export function allPuzzlesState(teamState: TeamHuntState): AllPuzzlesState {
   const rounds = Object.entries(teamState.rounds).map(([roundKey, round]) => {

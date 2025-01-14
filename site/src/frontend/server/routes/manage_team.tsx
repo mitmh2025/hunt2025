@@ -1,13 +1,13 @@
 import { type Request } from "express";
 import React from "react";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
-import TeamManager from "../../components/TeamManager";
 import {
   PageHeader,
   PageMain,
   PageTitle,
   PageWrapper,
 } from "../../components/PageLayout";
+import TeamManager from "../../components/TeamManager";
 
 export async function manageTeamHandler(req: Request) {
   const teamState = req.teamState;

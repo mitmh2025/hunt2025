@@ -1,8 +1,8 @@
 import React from "react";
 import { styled } from "styled-components";
-import { darkBgLinkStyles, Wrapper } from "./StyledUI";
 import { deviceMin } from "../utils/breakpoints";
 import { PuzzleMain } from "./PuzzleLayout";
+import { darkBgLinkStyles, Wrapper } from "./StyledUI";
 
 const BG = "var(--black)";
 
