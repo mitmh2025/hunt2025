@@ -33,48 +33,42 @@
       dir /data
     '';
   };
-  resource.kubernetes_stateful_set_v1.redis = {
-    metadata.namespace = "prod";
-    metadata.name = "redis";
-    metadata.labels.app = "redis";
-    spec = {
-      replicas = 1;
-      selector.match_labels.app = "redis";
-      service_name = lib.tfRef "kubernetes_service_v1.redis.metadata[0].name";
-      template = {
-        metadata.labels.app = "redis";
-        spec.volume = [
-          {
-            name = "config";
-            config_map.name = lib.tfRef "kubernetes_config_map_v1.valkey.metadata[0].name";
-          }
-          {
-            name = "secret";
-            secret.secret_name = lib.tfRef "kubernetes_secret_v1.valkey.metadata[0].name";
-          }
-        ];
-        spec.container = [{
-          name = "valkey";
-          image = lib.tfRef config.gcp.ar.images.images.valkey.urlRef;
-          args = ["valkey-server" "/config/valkey.conf"];
-          resources = {
-            limits.cpu = "2";
-            limits.memory = "1Gi";
-            requests.cpu = "500m";
-            requests.memory = "250Mi";
-          };
-          liveness_probe = {
-            tcp_socket.port = 6379;
-            initial_delay_seconds = 3;
-            period_seconds = 3;
-          };
-          volume_mount = [
-            { name = "valkey-data"; mount_path = "/data"; }
-            { name = "config"; mount_path = "/config"; read_only = true; }
-            { name = "secret"; mount_path = "/secret"; read_only = true; }
-          ];
-        }];
+  k8s.prod.statefulSet.redis = {
+    image = lib.tfRef config.gcp.ar.images.images.valkey.urlRef;
+    port = 6379;
+    template = {
+      spec.volume = [
+        {
+          name = "config";
+          config_map.name = lib.tfRef "kubernetes_config_map_v1.valkey.metadata[0].name";
+        }
+        {
+          name = "secret";
+          secret.secret_name = lib.tfRef "kubernetes_secret_v1.valkey.metadata[0].name";
+        }
+      ];
+    };
+    container = {
+      name = "valkey";
+      args = ["valkey-server" "/config/valkey.conf"];
+      resources = {
+        limits.cpu = "2";
+        limits.memory = "1Gi";
+        requests.cpu = "500m";
+        requests.memory = "250Mi";
       };
+      liveness_probe = {
+        tcp_socket.port = 6379;
+        initial_delay_seconds = 3;
+        period_seconds = 3;
+      };
+      volume_mount = [
+        { name = "valkey-data"; mount_path = "/data"; }
+        { name = "config"; mount_path = "/config"; read_only = true; }
+        { name = "secret"; mount_path = "/secret"; read_only = true; }
+      ];
+    };
+    statefulSet.spec = {
       persistent_volume_claim_retention_policy = {
         # Redis has no long-lived data that we care about.
         when_deleted = "Delete";
@@ -88,24 +82,6 @@
           storage_class_name = "standard-rwo";
         };
       }];
-    };
-  };
-  resource.kubernetes_service_v1.redis = {
-    metadata.namespace = "prod";
-    metadata.name = "redis";
-    metadata.annotations."cloud.google.com/neg" = builtins.toJSON {
-      ingress = false;
-    };
-    spec = {
-      cluster_ip = "None";
-      selector.app = "redis";
-      port = [
-        {
-          port = 6379;
-          protocol = "TCP";
-          target_port = 6379;
-        }
-      ];
     };
   };
 }

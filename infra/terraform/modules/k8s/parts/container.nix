@@ -25,7 +25,7 @@
   };
   config = {
     container = {
-      inherit name;
+      name = lib.mkDefault name;
       inherit (config) image;
       env = lib.attrsToList config.env ++ (lib.mapAttrsToList (key: _: {
         name = key;

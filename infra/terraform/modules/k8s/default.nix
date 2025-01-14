@@ -12,6 +12,7 @@
         };
         imports = [
           ./deployment.nix
+          ./stateful-set.nix
         ];
       }));
       default = {};

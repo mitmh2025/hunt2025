@@ -32,6 +32,7 @@
   k8s.prod.deployment.api = {
     image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
     port = 80;
+    expose = true;
     env = {
       PORT = "80";
       HUNT_COMPONENTS = "api";
@@ -90,6 +91,7 @@
   k8s.prod.deployment.regsite = {
     image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
     port = 80;
+    expose = true;
     # Don't update the regsite until the assets are updated.
     deployment.depends_on = [
       "terraform_data.assets"
@@ -137,6 +139,7 @@
   k8s.prod.deployment.ops = {
     image = lib.tfRef config.gcp.ar.images.images.ops.urlRef;
     port = 80;
+    expose = true;
     env = {
       OPSSITE_PORT = "80";
       OPSSITE_STATIC_PATH = "${pkgs.hunt2025.ops}/share/ops/static";
