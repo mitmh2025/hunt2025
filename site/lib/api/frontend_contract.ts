@@ -68,6 +68,12 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({ type: z.literal("rate_limits_reset") }),
   ),
   InternalActivityLogEntryBaseSchema.merge(
+    z.object({
+      type: z.literal("teams_notified"),
+      data: z.object({ message: z.string() }),
+    }),
+  ),
+  InternalActivityLogEntryBaseSchema.merge(
     z.object({ type: z.literal("strong_currency_adjusted") }),
   ),
   InternalActivityLogEntryBaseSchema.merge(

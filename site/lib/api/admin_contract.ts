@@ -141,6 +141,16 @@ export const adminContract = c.router({
       }),
     },
   },
+  sendPushNotification: {
+    method: "POST",
+    path: "/admin/sendPushNotification",
+    body: z.object({
+      message: z.string(),
+    }),
+    responses: {
+      200: InternalActivityLogSchema,
+    },
+  },
   grantKeys: {
     method: "POST",
     path: "/admin/grantKeys",

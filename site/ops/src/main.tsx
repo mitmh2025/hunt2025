@@ -11,6 +11,7 @@ import EmailTeams from "./routes/EmailTeams.tsx";
 import FermitChallenge from "./routes/FermitChallenge.tsx";
 import Gates from "./routes/Gates.tsx";
 import Home from "./routes/Home.tsx";
+import PushNotifyTeams from "./routes/PushNotifyTeams.tsx";
 import Puzzle from "./routes/Puzzle.tsx";
 import PuzzlesIndex from "./routes/PuzzlesIndex.tsx";
 import Team from "./routes/Team.tsx";
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
           {
             path: "email-teams/",
             Component: EmailTeams,
+          },
+          {
+            path: "push-notify-teams/",
+            Component: PushNotifyTeams,
           },
           {
             path: "gates",

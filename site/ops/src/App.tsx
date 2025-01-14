@@ -1,3 +1,4 @@
+import AnnouncementIcon from "@mui/icons-material/Announcement";
 import ControlCameraIcon from "@mui/icons-material/ControlCamera";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PuzzleIcon from "@mui/icons-material/Extension";
@@ -59,6 +60,11 @@ export default function App() {
             segment: "email-teams",
             title: "Email Teams",
             icon: <MailIcon />,
+          },
+          {
+            segment: "push-notify-teams",
+            title: "Push Notify Teams",
+            icon: <AnnouncementIcon />,
           },
         ]
       : []),
