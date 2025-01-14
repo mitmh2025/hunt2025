@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import type { PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract";
 import { PuzzleAnswer } from "../../components/StyledUI";
+import { deviceMax } from "../../utils/breakpoints";
 
 const Wrapper = styled.div`
   font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
@@ -18,6 +19,12 @@ const Wrapper = styled.div`
   h3 {
     font-weight: 600;
     font-size: 1.8rem;
+  }
+
+  section:last-child {
+    width: 100%;
+    overflow-x: auto;
+    background-color: var(--true-white);
   }
 
   section + section {
@@ -50,6 +57,7 @@ const FeatureTable = styled.table`
 
   td,
   th {
+    width: 160px;
     padding: 1rem;
     text-align: center;
   }
@@ -126,6 +134,12 @@ const SubpuzzleLinkWrapper = styled.a`
 
     span.subpuzzle-name {
       color: #001c8b;
+    }
+  }
+
+  @media ${deviceMax.xs} {
+    img {
+      width: 100%;
     }
   }
 `;
