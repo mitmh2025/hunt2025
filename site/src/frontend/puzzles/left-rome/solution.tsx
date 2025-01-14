@@ -103,7 +103,7 @@ const ROUTES: {
       {
         direction: "",
         instruction: "OBSERVE SRIP “LOW CLEARANCE”",
-        street: "Main St",
+        street: "Memorial Dr",
         odo: 1.4,
         speed: 30,
         donuts: 0,
@@ -130,7 +130,7 @@ const ROUTES: {
         speed: 25,
         donuts: 2,
         rules: [
-          "Rule WHEE (ODO 1.4-3.1 on Memorial Dr)",
+          "Rule COMPLACENT (ODO 1.4-3.1 on Memorial Dr)",
           "Rule ROUNDABOUT (BU Bridge Rotary)",
           "Rule WOOP WOOP WOOP",
         ],
@@ -170,10 +170,10 @@ const ROUTES: {
         speed: 36,
         donuts: 2,
         rules: [
-          "Rule HUNGRY (655 Mass Ave, Cambridge)",
+          "Rule HUNGRY (612 Mass Ave, Cambridge. This Dunkin’ moved across the street to 655 Mass Ave in ~2022, but Street View has not yet updated.)",
           "Rule HUNGRY (1001 Mass Ave, Cambridge)",
           "Rule COMPLACENT (ODO 4.0-5.1 on Mass Ave)",
-          "Rule RETEMODEEPS (sign reads CAMBRIDGE SAVINGS BANK, record A)",
+          "Rule RETEMODEEPS (sign reads HARVARD SQUARE, record A)",
         ],
       },
       {
@@ -232,7 +232,7 @@ const ROUTES: {
       },
       {
         direction: "",
-        instruction: "OBSERVE “MT VERNON ST”",
+        instruction: "OBSERVE HTS “MT VERNON ST”",
         street: "Upland Rd",
         odo: 6.6,
         speed: 31,
@@ -273,7 +273,7 @@ const ROUTES: {
         odo: 6.9,
         speed: 11,
         donuts: 3,
-        rules: ["Rule ANGRY"],
+        rules: ["Rule ANGRY", "Rule TORUS (record O)"],
       },
       {
         direction: "R",
@@ -291,7 +291,7 @@ const ROUTES: {
         odo: 7.2,
         speed: 11,
         donuts: 3,
-        rules: ["Rule TORUS (record O)"],
+        rules: [],
       },
       {
         direction: "",
@@ -303,7 +303,7 @@ const ROUTES: {
         rules: ["SPEEDOMETER (sign reads RINDGE AVE, record R)"],
       },
       {
-        direction: "L",
+        direction: "BL",
         instruction: "1st SIGNAL",
         street: "Rindge Ave",
         odo: 7.4,
@@ -337,8 +337,9 @@ const ROUTES: {
         speed: 14,
         donuts: 3,
         rules: [
-          "Rule SPEEDOMETER (sign reads DUNKIN DONUTS, record D)",
+          "Rule SPEEDOMETER (sign reads DUNKIN, record D)",
           "Rule HUNGRY (201 Alewife Brook Parkway, Cambridge)",
+          "It is easy to get dumped off the bridge by Street View here, consider exiting to Maps and dropping in again on the other side of the bridge",
         ],
       },
 
@@ -356,7 +357,7 @@ const ROUTES: {
         instruction: "4th OPP",
         street: "Concord Ave",
         odo: 8.9,
-        speed: 27,
+        speed: 24,
         donuts: 3,
         rules: ["Rule ROUNDABOUT (Double Donuts of Doom, South)"],
       },
@@ -365,7 +366,7 @@ const ROUTES: {
         instruction: "into DUNKIN’ drive-thru for DIYC. Target ODO 9.1 miles",
         street: "517 Concord Ave, Cambridge",
         odo: 9.0,
-        speed: 27,
+        speed: 24,
         donuts: 3,
         rules: [
           <>
@@ -382,7 +383,7 @@ const ROUTES: {
   {
     maps: [
       "https://www.google.com/maps/dir/Dunkin',+517+Concord+Ave,+Cambridge,+MA+02138/42.3861924,-71.1160724/@42.3872155,-71.1186921,17.59z/data=!4m24!4m23!1m20!1m1!1s0x89e3770af945dc3b:0x43dbe5675743a9ae!2m2!1d-71.1422949!2d42.3878514!3m4!1m2!1d-71.1362363!2d42.3937092!3s0x89e3770f7ae3c731:0x5fd6ad41cc6d0611!3m4!1m2!1d-71.1171437!2d42.3852489!3s0x89e3773e968ef88f:0x9ee027771cab63ce!3m4!1m2!1d-71.115429!2d42.3852713!3s0x89e3773ead96c25f:0x6f9fbc1a8d844ab2!1m0!3e0?entry=ttu&g_ep=EgoyMDI0MTAxNC4wIKXMDSoASAFQAw%3D%3D",
-      "https://www.google.com/maps/dir/42.386082,-71.116172/Broadsheet+Coffee+Roasters,+Kirkland+Street,+Cambridge,+MA/Union+Square+Donuts,+Bow+Street,+Somerville,+MA/Dumpling+Kitchen,+Highland+Avenue,+Somerville,+MA/Dunkin'/@42.398788,-71.1140872,16.04z/data=!4m53!4m52!1m6!3m4!1m2!1d-71.1160024!2d42.3770726!3s0x89e3774145cd0629:0x4bea15f7744099dc!4e1!1m10!1m1!1s0x89e377485b5ee149:0xb94d428b3a73dfe4!2m2!1d-71.1073471!2d42.3779745!3m4!1m2!1d-71.1008672!2d42.3809923!3s0x89e3773453e981a1:0x307a1a296f6baa43!1m10!1m1!1s0x89e370cb2c5868dd:0x4fa1bbd30c0c6648!2m2!1d-71.0972156!2d42.3808329!3m4!1m2!1d-71.1010948!2d42.3833708!3s0x89e377338875d61d:0xb63133331f60bed0!1m15!1m1!1s0x89e3772fea6cd2e5:0x931be7b910316f66!2m2!1d-71.1077242!2d42.3901999!3m4!1m2!1d-71.1011801!2d42.3932554!3s0x89e3772b8788af07:0x716c170e03def7a0!3m4!1m2!1d-71.1108798!2d42.3994703!3s0x89e376d80a59b0a9:0x1baacb31c280efb9!1m5!1m1!1s0x89e376d25b100b7b:0x7bff2ce524b6a8d2!2m2!1d-71.101947!2d42.4053774!3e0?entry=ttu&g_ep=EgoyMDI0MTAxNC4wIKXMDSoASAFQAw%3D%3D",
+      "https://maps.app.goo.gl/o9n4p73FSnAGURpbA",
     ],
     mapsNote:
       "Google Maps will not allow the route described in steps 7-8. This intersection has been checked in person and the legality of the turn has been confirmed. This issue has been reported to Google.",
@@ -406,16 +407,19 @@ const ROUTES: {
         rules: ["Rule ROUNDABOUT (Double Donuts of Doom, North)"],
       },
       {
-        direction: "BR",
-        instruction: "2nd SIGNAL",
+        direction: "R",
+        instruction: "1st SIGNAL",
         street: "Rindge Ave",
         odo: 0.5,
         speed: 31,
         donuts: 0,
-        rules: ["Rule HUNGRY (201 Alewife Brook Parkway, Cambridge)"],
+        rules: [
+          "Rule HUNGRY (201 Alewife Brook Parkway, Cambridge)",
+          "It is easy to get dumped off the bridge by Street View here, consider exiting to Maps and dropping in again on the other side of the bridge",
+        ],
       },
       {
-        direction: "R",
+        direction: "BR",
         instruction: "at T",
         street: "Mass Ave",
         odo: 1.3,
@@ -484,7 +488,7 @@ const ROUTES: {
         rules: ["Rule ANGRY"],
       },
       {
-        direction: "B",
+        direction: "BL",
         instruction: "at Y",
         street: "Lake St",
         odo: 4.0,
@@ -494,7 +498,7 @@ const ROUTES: {
       },
       {
         direction: "R",
-        instruction: "2nd OPP",
+        instruction: "at T",
         street: "Somerville Ave",
         odo: 4.2,
         speed: 19,
@@ -562,7 +566,10 @@ const ROUTES: {
         odo: 5.5,
         speed: 22,
         donuts: 1,
-        rules: [],
+        rules: [
+          "Rule HUNGRY (519 Somerville Ave, Somerville)",
+          "Solvers should know that this parking lot used to be home to an aggressive turkey that would hassle customers of this Dunkin’ and the nearby Wings Over for food. RIP Mayor Turkatone, you were a real one.",
+        ],
       },
       {
         direction: "R",
@@ -589,7 +596,7 @@ const ROUTES: {
         odo: 6.2,
         speed: 25,
         donuts: 1,
-        rules: [],
+        rules: ["Rule HUNGRY (154 Highland Ave, Somerville)"],
       },
       {
         direction: "BL",
@@ -690,7 +697,7 @@ const ROUTES: {
       {
         direction: "L",
         instruction: "at T",
-        street: "Main St",
+        street: "Medford St",
         odo: 0.4,
         speed: 33,
         donuts: 0,
@@ -707,7 +714,7 @@ const ROUTES: {
       },
       {
         direction: "L",
-        instruction: "1st OPP",
+        instruction: "at T",
         street: "Higgins Ave",
         odo: 0.7,
         speed: 28,
@@ -784,7 +791,7 @@ const ROUTES: {
         odo: 2.1,
         speed: 13,
         donuts: 1,
-        rules: [],
+        rules: ["Rule HUNGRY (154 Main St, Medford)"],
       },
       {
         direction: "R",
@@ -793,7 +800,7 @@ const ROUTES: {
         odo: 2.3,
         speed: 16,
         donuts: 1,
-        rules: ["Rule HUNGRY (154 Main St, Medford)"],
+        rules: [],
       },
       {
         direction: "",
@@ -826,7 +833,7 @@ const ROUTES: {
       },
       {
         direction: "",
-        instruction: "OBSERVE SRIP “GINO & ROLANDA”",
+        instruction: "OBSERVE HTS SRIP “GINO & ROLANDA”",
         street: "Salem St",
         odo: 2.9,
         speed: 21,
@@ -968,7 +975,7 @@ const ROUTES: {
       },
       {
         direction: "",
-        instruction: "OBSERVE “TILESTON ST”",
+        instruction: "OBSERVE HTS “TILESTON ST”",
         street: "Main St",
         odo: 2.6,
         speed: 40,
@@ -999,7 +1006,7 @@ const ROUTES: {
         speed: 35,
         donuts: 2,
         rules: [
-          "Rule COMPLACENT (ODO 2.8-4.0 on Alford St)",
+          "Rule COMPLACENT (ODO 2.8-4.0 on Broadway, then Alford St)",
           "Rule ROUNDABOUT (Unnamed rotary near Sullivan Square)",
         ],
       },
@@ -1050,7 +1057,11 @@ const ROUTES: {
         odo: 11.4,
         speed: 25,
         donuts: 8,
-        rules: ["Rule COMPLACENT (ODO 10.4-11.4 on Pond St)", "Rule ANGRY"],
+        rules: [
+          "On Pond St., there are several ostensible OPPs (Parkway, Fairview, Upland) with signs banning left turns at certain times of day, then the north fork of Pond St, which has a no left turn sign. Therefore, the turn from Pond St proper onto Pond St eastbound is the first OPP.",
+          "Rule COMPLACENT (ODO 10.4-11.4 on Pond St)",
+          "Rule ANGRY",
+        ],
       },
       {
         direction: "L",
@@ -1079,9 +1090,7 @@ const ROUTES: {
     ],
   },
   {
-    maps: [
-      "https://www.google.com/maps/dir/Dunkin',+2+Lynn+Fells+Pkwy,+Stoneham,+MA+02180/632+Main+Street,+Wakefield,+MA/@42.4819149,-71.06856,16.67z/data=!4m44!4m43!1m35!1m1!1s0x89e37391994fb999:0xbf7fdab6b4ed57a3!2m2!1d-71.0828444!2d42.4574315!3m4!1m2!1d-71.0751068!2d42.4546605!3s0x89e37395e75c9b51:0xeabee85beb53f7c!3m4!1m2!1d-71.0668676!2d42.4524755!3s0x89e373b94622127b:0x19aee8811996a12d!3m4!1m2!1d-71.0598544!2d42.4659275!3s0x89e373a83aec745f:0x8d99e6f74f243476!3m4!1m2!1d-71.0661685!2d42.4823236!3s0x89e37316c990db1b:0xca23a57f4c937529!3m4!1m2!1d-71.0532908!2d42.5009032!3s0x89e3732baaee572d:0xa48db856f65392b2!3m4!1m2!1d-71.0688167!2d42.5025362!3s0x89e373346c415b25:0xf76b9ebda6a4f162!1m5!1m1!1s0x89e373375d4b45e3:0x2c5a65816392c17d!2m2!1d-71.0690053!2d42.4971219!3e0?entry=ttu&g_ep=EgoyMDI0MDkwNC4wIKXMDSoASAFQAw%3D%3D",
-    ],
+    maps: ["https://maps.app.goo.gl/a1pMCA6xQyZNa7Py8"],
     instructions: [
       {
         direction: "",
@@ -1104,7 +1113,7 @@ const ROUTES: {
       {
         direction: "R",
         instruction: "1st OPP",
-        street: "Conant Rd",
+        street: "Conant Rd / Baxter St",
         odo: 0.3,
         speed: 27,
         donuts: 0,
@@ -1148,7 +1157,7 @@ const ROUTES: {
       },
       {
         direction: "R",
-        instruction: "5th SIGNAL",
+        instruction: "4th SIGNAL",
         street: "Lynn Fells Parkway",
         odo: 2.0,
         speed: 25,
@@ -1166,7 +1175,7 @@ const ROUTES: {
       },
       {
         direction: "BR",
-        instruction: "4th OPP",
+        instruction: "3rd OPP",
         street: "Green St",
         odo: 2.2,
         speed: 30,
@@ -1193,7 +1202,7 @@ const ROUTES: {
       },
       {
         direction: "",
-        instruction: "OBSERVE “PRIMP”",
+        instruction: "OBSERVE HTS “PRIMP”",
         street: "Main St",
         odo: 3.0,
         speed: 30,
@@ -1223,16 +1232,16 @@ const ROUTES: {
         instruction: "at T",
         street: "Old Nahant Rd",
         odo: 4.6,
-        speed: 30,
+        speed: 35,
         donuts: 0,
-        rules: ["Rule ANGRY"],
+        rules: ["Rule COMPLACENT (ODO 3.5-4.6 on Oak St", "Rule ANGRY"],
       },
       {
         direction: "L",
         instruction: "at T",
         street: "Farm St",
         odo: 4.7,
-        speed: 25,
+        speed: 30,
         donuts: 0,
         rules: ["Rule ANGRY"],
       },
@@ -1241,7 +1250,7 @@ const ROUTES: {
         instruction: "at T",
         street: "Water St",
         odo: 5.2,
-        speed: 25,
+        speed: 30,
         donuts: 0,
         rules: [],
       },
@@ -1250,7 +1259,7 @@ const ROUTES: {
         instruction: "OBSERVE “SHAWS”",
         street: "Water St",
         odo: 5.9,
-        speed: 25,
+        speed: 30,
         donuts: 1,
         rules: ["Rule BERRY (sign for Shaw’s, record BERRY)"],
       },
@@ -1259,16 +1268,16 @@ const ROUTES: {
         instruction: "3rd SIGNAL",
         street: "Main St",
         odo: 6.2,
-        speed: 30,
+        speed: 35,
         donuts: 1,
-        rules: ["Rule COMPLACENT (ODO 5.2-6.2 on Main St)"],
+        rules: ["Rule COMPLACENT (ODO 5.2-6.2 on Water St)"],
       },
       {
         direction: "L",
         instruction: "into DUNKIN’ drive-thru for DIYC. Target ODO 6.6 miles",
         street: "632 Main St, Wakefield",
         odo: 6.6,
-        speed: 25,
+        speed: 30,
         donuts: 2,
         rules: [
           "Rule ANGRY",
@@ -1283,9 +1292,7 @@ const ROUTES: {
     ],
   },
   {
-    maps: [
-      "https://www.google.com/maps/dir/632+Main+Street,+Wakefield,+MA/Dunkin',+162+Washington+St,+Peabody,+MA+01960/@42.5026815,-71.0753627,16.46z/data=!4m44!4m43!1m35!1m1!1s0x89e373375d4b45e3:0x2c5a65816392c17d!2m2!1d-71.0690053!2d42.4971219!3m4!1m2!1d-71.0749046!2d42.503176!3s0x89e373358a210c39:0xc0539a4dc8edde94!3m4!1m2!1d-71.0728!2d42.5029448!3s0x89e37335ed7a6ebb:0x1024fda03d89b4f1!3m4!1m2!1d-71.0996088!2d42.4868781!3s0x89e3749ddb294473:0xea79c768d7a0c9f!3m4!1m2!1d-71.101454!2d42.4905035!3s0x89e3749f1caf8039:0x8b29b5722089bb8c!3m4!1m2!1d-70.9913665!2d42.512039!3s0x89e312980ef407ff:0x32a672f9c1f5dd7!3m4!1m2!1d-70.9398362!2d42.5230764!3s0x89e313a775786fc3:0xd155f8f8549b2ef1!1m5!1m1!1s0x89e3130a9dcdc1ab:0xef79f704f3fbaa7c!2m2!1d-70.9329192!2d42.5204721!3e0?entry=ttu&g_ep=EgoyMDI0MDkxOC4xIKXMDSoASAFQAw%3D%3D",
-    ],
+    maps: ["https://maps.app.goo.gl/ZtmfZ8qBDA5ZFuFr5"],
     instructions: [
       {
         direction: "",
@@ -1338,9 +1345,9 @@ const ROUTES: {
       {
         direction: "R",
         instruction: "2nd SIGNAL",
-        street: "North St",
+        street: "North Ave",
         odo: 1.3,
-        speed: 24,
+        speed: 19,
         donuts: 0,
         rules: ["Rule TORUS (record O)"],
       },
@@ -1349,7 +1356,7 @@ const ROUTES: {
         instruction: "1st OPP",
         street: "Broadway St",
         odo: 1.4,
-        speed: 19,
+        speed: 14,
         donuts: 1,
         rules: ["Rule ANGRY"],
       },
@@ -1358,7 +1365,7 @@ const ROUTES: {
         instruction: "at T",
         street: "Albion St",
         odo: 2.0,
-        speed: 19,
+        speed: 14,
         donuts: 1,
         rules: [],
       },
@@ -1435,7 +1442,7 @@ const ROUTES: {
         rules: [],
       },
       {
-        direction: "L",
+        direction: "BL",
         instruction: "1st SIGNAL",
         street: "Main St / Rt 28",
         odo: 4.5,
@@ -1462,6 +1469,7 @@ const ROUTES: {
         rules: [
           "Rule COMPLACENT (ODO 4.3-10.9 on I-95)",
           "Rule ROUNDABOUT (Condon Circle)",
+          "The Dunkin’ right off Condon Circle has a drive-through, and thus does not trigger Rule HUNGRY.",
         ],
       },
       {
@@ -1489,7 +1497,10 @@ const ROUTES: {
         odo: 14.5,
         speed: 37,
         donuts: 1,
-        rules: ["Rule COMPLACENT (ODO 11.6-14.2 on Salem St)"],
+        rules: [
+          "Rule COMPLACENT (ODO 11.6-14.2 on Salem St)",
+          "The Dunkin’ at 79 Lynnfield St, Peabody has a drive-through, and thus does not trigger Rule HUNGRY.",
+        ],
       },
       {
         direction: "L",
@@ -1511,7 +1522,7 @@ const ROUTES: {
       },
       {
         direction: "R",
-        instruction: "2nd SIGNAL",
+        instruction: "1st SIGNAL",
         street: "Foster St",
         odo: 15.7,
         speed: 37,
@@ -1525,7 +1536,9 @@ const ROUTES: {
         odo: 16.1,
         speed: 37,
         donuts: 2,
-        rules: ["Rule BERRY (sign on Oliva’s Market, record BERRY)"],
+        rules: [
+          "Rule BERRY (sign reads OLIVA’S MARKET GROCERY STORE, record BERRY)",
+        ],
       },
       {
         direction: "AL",
@@ -1625,7 +1638,7 @@ const ROUTES: {
       },
       {
         direction: "L",
-        instruction: "3rd SIGNAL",
+        instruction: "2nd SIGNAL",
         street: "Bridge St",
         odo: 2.2,
         speed: 20,
@@ -1634,7 +1647,7 @@ const ROUTES: {
       },
       {
         direction: "R",
-        instruction: "4th SIGNAL",
+        instruction: "3rd SIGNAL",
         street: "Washington St",
         odo: 2.9,
         speed: 20,
@@ -1667,7 +1680,7 @@ const ROUTES: {
         instruction: "1st OPP",
         street: "Margin St",
         odo: 3.2,
-        speed: 23,
+        speed: 18,
         donuts: 0,
         rules: ["Rule ANGRY"],
       },
@@ -1707,7 +1720,10 @@ const ROUTES: {
         odo: 5.5,
         speed: 23,
         donuts: 0,
-        rules: ["Rule COMPLACENT (ODO 4.0-5.5 on Highland Ave)"],
+        rules: [
+          "Rule COMPLACENT (ODO 4.0-5.5 on Highland Ave)",
+          "The Dunkin’ at 248 Highland Ave, Salem has a drive-through and therefore does not trigger Rule HUNGRY",
+        ],
       },
       {
         direction: "BR",
@@ -1716,7 +1732,9 @@ const ROUTES: {
         odo: 5.7,
         speed: 23,
         donuts: 0,
-        rules: [],
+        rules: [
+          "Rule ROUNDABOUT (unnamed rotary at Swampscott St / First St in Salem)",
+        ],
       },
       {
         direction: "L",
@@ -1725,10 +1743,7 @@ const ROUTES: {
         odo: 7.1,
         speed: 33,
         donuts: 0,
-        rules: [
-          "Rule COMPLACENT (ODO 5.7-7.1 on Swampscott Rd / Danvers Rd)",
-          "Rule ROUNDABOUT (unnamed rotary at Swampscott St / First St in Salem)",
-        ],
+        rules: ["Rule COMPLACENT (ODO 5.7-7.1 on Swampscott Rd / Danvers Rd)"],
       },
       {
         direction: "L",
@@ -1744,9 +1759,12 @@ const ROUTES: {
         instruction: "OBSERVE SOL “MOFFATT RD”",
         street: "Loring Ave",
         odo: 8.7,
-        speed: 33,
+        speed: 38,
         donuts: 0,
-        rules: ["Rule RETEMODEEPS (sign reads MOFFATT RD, record T)"],
+        rules: [
+          "Rule COMPLACENT (ODO 7.9-9.0 on Loring Ave)",
+          "Rule RETEMODEEPS (sign reads MOFFATT RD, record T)",
+        ],
       },
       {
         direction: "BR",
@@ -1755,7 +1773,7 @@ const ROUTES: {
         odo: 9.0,
         speed: 38,
         donuts: 0,
-        rules: ["Rule COMPLACENT (ODO 7.9-9.0 on Loring Ave)"],
+        rules: [],
       },
       {
         direction: "R",
@@ -1772,7 +1790,7 @@ const ROUTES: {
         street: "Maple St",
         odo: 10.5,
         speed: 43,
-        donuts: 2,
+        donuts: 0,
         rules: ["Rule COMPLACENT (ODO 9.5-10.5 on Lafayette St)"],
       },
       {
@@ -1781,7 +1799,7 @@ const ROUTES: {
         street: "Tedesco St",
         odo: 10.7,
         speed: 43,
-        donuts: 2,
+        donuts: 0,
         rules: [],
       },
       {
@@ -1789,11 +1807,12 @@ const ROUTES: {
         instruction: "2nd SIGNAL",
         street: "Paradise Rd",
         odo: 11.8,
-        speed: 23,
+        speed: 26,
         donuts: 2,
         rules: [
           "Rule COMPLACENT (ODO 10.7-11.8 on Tedesco St / Vinnin St)",
           "Rule WOOP WOOP WOOP",
+          "Rule HUNGRY (9 1/2 Paradise Rd, Swampscott)",
         ],
       },
       {
@@ -1801,7 +1820,7 @@ const ROUTES: {
         instruction: "into DUNKIN’ drive-thru for DIYC. Target ODO 12.0 miles",
         street: "980 Paradise Rd, Swampscott",
         odo: 12,
-        speed: 23,
+        speed: 26,
         donuts: 2,
         rules: [
           <>
@@ -1876,7 +1895,7 @@ const ROUTES: {
         speed: 19,
         donuts: 2,
         rules: [
-          "Rule FROSTED (sign is for Swampscott commuter rail station, record FROSTED)",
+          "Rule FROSTED (sign reads SWAMPSCOTT PARKING FOR RAILROAD PASSENGERS ONLY, record FROSTED)",
         ],
       },
       {
@@ -1936,7 +1955,7 @@ const ROUTES: {
         rules: [],
       },
       {
-        direction: "L",
+        direction: "AL",
         instruction: "1st SIGNAL",
         street: "Lewis St",
         odo: 2.3,
@@ -1970,7 +1989,7 @@ const ROUTES: {
         instruction: "5th SIGNAL",
         street: "Boston St",
         odo: 4.5,
-        speed: 22,
+        speed: 27,
         donuts: 2,
         rules: ["Rule COMPLACENT (ODO 2.9-4.5 on Chestnut St)"],
       },
@@ -1979,7 +1998,7 @@ const ROUTES: {
         instruction: "1st OPP",
         street: "N Bend St",
         odo: 4.7,
-        speed: 27,
+        speed: 30,
         donuts: 2,
         rules: ["Rule HUNGRY (25 Boston St, Lynn)"],
       },
@@ -2062,7 +2081,7 @@ const ROUTES: {
         odo: 7.2,
         speed: 30,
         donuts: 2,
-        rules: [],
+        rules: ["Rule REARVIEW (May 2022)"],
       },
       {
         direction: "R",
@@ -2120,12 +2139,12 @@ const ROUTES: {
       },
       {
         direction: "BR",
-        instruction: "2nd OPP",
+        instruction: "3rd OPP",
         street: "South St",
         odo: 0.3,
         speed: 39,
         donuts: 1,
-        rules: ["Rule TORUS (record O)"],
+        rules: ["Rule TORUS (record O)", "Rule REARVIEW (May 2022)"],
       },
       {
         direction: "R",
@@ -2375,6 +2394,9 @@ const ROUTES: {
 const StyledTable = styled.table`
   margin: 1em 0;
   border-spacing: 8px 0px;
+  td {
+    text-align: center;
+  }
 `;
 
 const RouteTable = styled(StyledTable)`
