@@ -5,6 +5,8 @@ export default function RegistrationHome({ isAuthed }: { isAuthed: boolean }) {
   return (
     <RegsiteWrapper>
       <div className="container">
+        <noscript>Viewing the live counters requires Javascript.</noscript>
+        <div id="kickoff-counter-root" />
         <section id="registration-button">
           {isAuthed ? (
             <a className="button" href="/registration">

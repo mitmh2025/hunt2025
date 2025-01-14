@@ -532,6 +532,8 @@ export default function createConfigs(_env, argv) {
 
       // Regsite (css only)
       regsite: "./src/frontend/regsite/regsite.css",
+      // regsite kickoff counter
+      kickoff_counter: "./src/frontend/regsite/kickoff_counter.tsx",
     },
     // Client code needs to reference the webworker bundle by URL.
     dependencies: ["worker"],
