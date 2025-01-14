@@ -1,16 +1,28 @@
 import { useMemo } from "react";
+import { styled } from "styled-components";
 import { useOpsData } from "../OpsDataProvider";
+import { abbreviatedName } from "../util/teamname";
+
+const TeamSelectForm = styled.form`
+  display: flex;
+  column-gap: 20px;
+`;
+const TeamSelect = styled.select`
+  min-width: 250px;
+`;
 
 type ITeamSelectorProps = {
   submitCallback: (teamId: number) => void;
+  buttonText?: string;
   exclude?: number[];
 };
 
 export function FermitTeamSelector({
   submitCallback,
   exclude = [],
+  buttonText = "Submit",
 }: ITeamSelectorProps) {
-  function doIt(e: React.FormEvent<HTMLFormElement>) {
+  function selectTeam(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     submitCallback(
       parseInt((e.currentTarget.elements[0] as HTMLInputElement).value, 10),
@@ -52,14 +64,14 @@ export function FermitTeamSelector({
 
   const options = filteredTeams.map((t) => (
     <option key={t.teamId} value={t.teamId}>
-      {t.name.slice(0, 20)}
+      {abbreviatedName(t, true)}
     </option>
   ));
 
   return (
-    <form onSubmit={doIt}>
-      <select>{options}</select>
-      <input type="submit" value="Submit" />
-    </form>
+    <TeamSelectForm onSubmit={selectTeam}>
+      <TeamSelect>{options}</TeamSelect>
+      <input type="submit" value={buttonText} disabled={options.length === 0} />
+    </TeamSelectForm>
   );
 }

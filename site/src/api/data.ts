@@ -813,12 +813,7 @@ export async function createFermitRegistration(
   // abort if the session isn't in "not_started" status
   const session = await dbGetFermitSession(sessionId, knex);
   if (session?.status === "not_started") {
-    return dbInsertFermitRegistration(
-      sessionId,
-      teamId,
-      "not_checked_in",
-      knex,
-    );
+    return dbInsertFermitRegistration(sessionId, teamId, "checked_in", knex);
   }
   return undefined;
 }
@@ -842,13 +837,6 @@ export async function updateFermitRegistration(
   status: string,
   knex: Knex.Knex,
 ): Promise<FermitRegistration | undefined> {
-  // TODO: limit to allowable state transitions?
-  //   if session not started: not_checked_in -> checked_in
-  //                           not_checked_in -> no_show
-  //                           checked_in     -> not_checked_in
-  //   if session in progress: nothing
-  //   if session complete:    nothing
-
   const session = await dbGetFermitSession(sessionId, knex);
   if (session?.status === "not_started") {
     return dbUpdateFermitRegistration(sessionId, teamId, status, knex);

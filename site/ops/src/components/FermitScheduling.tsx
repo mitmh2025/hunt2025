@@ -9,27 +9,24 @@ import {
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { geoguessrLookup } from "../opsdata/desertedNinjaImages";
 import { type FermitQuestion } from "../opsdata/desertedNinjaQuestions";
-import { type TeamData } from "../opsdata/types";
-import { FermitTeamSelector } from "./FermitTeamSelector";
+import { abbreviatedName } from "../util/teamname";
 
 const MiniImage = styled.div`
   width: 10%;
 `;
 
 const RegisteredTeams = styled.div`
-  border: 1px solid black;
   margin-top: 15px;
-  padding: 5px 10px;
 `;
-
-const RegistrationBox = styled.div`
+const RegisteredTeamContainer = styled.div`
   border: 1px solid black;
-  margin-top: 15px;
-  padding: 5px 10px;
+  padding: 10px 0px 10px 15px;
 `;
-
-const QuestionDetails = styled.details`
+const QuestionContainer = styled.div`
   margin-top: 10px;
+`;
+const QuestionList = styled.div`
+  border: 1px solid black;
 `;
 
 function SessionQuestionDetails({
@@ -66,91 +63,13 @@ function SessionQuestionDetails({
   });
 
   return (
-    <QuestionDetails>
-      <summary>Question List</summary>
-      <div style={{ border: "1px solid black" }}>
+    <QuestionContainer>
+      <div>Question List</div>
+      <QuestionList>
         <ul>{questionElts}</ul>
-      </div>
-    </QuestionDetails>
+      </QuestionList>
+    </QuestionContainer>
   );
-}
-
-const TeamRegistrationContainer = styled.div`
-  display: flex;
-`;
-const TeamName = styled.div`
-  width: 200px;
-`;
-const ToggleButton = styled.button``;
-
-function SessionTeamEntry({ team }: { team: TeamData }) {
-  const opsClients = useOpsClients();
-  const fermitData = useFermitData();
-  const dispatch = useFermitDispatch();
-  const notifications = useNotifications();
-
-  function unregisterTeam(teamId: number) {
-    const session = fermitData.activeSession;
-    if (session) {
-      opsClients.adminClient
-        .deleteFermitRegistration({
-          params: {
-            sessionId: session.id.toString(),
-            teamId: teamId.toString(),
-          },
-        })
-        .then((res) => {
-          if (res.status !== 200) {
-            throw new Error(`HTTP ${res.status}: ${res.body}`);
-          }
-          const regs = res.body;
-          const newSession = {
-            id: session.id,
-            title: session.title,
-            status: session.status,
-            questionIds: session.questionIds.slice(),
-            teams: regs.map((reg) => ({
-              id: reg.teamId,
-              status: reg.status,
-            })),
-          };
-          if (dispatch) {
-            dispatch({
-              type: FermitDataActionType.SET_ACTIVE_SESSION,
-              activeSession: newSession,
-            });
-            dispatch({
-              type: FermitDataActionType.SESSION_UPDATE,
-              session: newSession,
-            });
-          }
-        })
-        .catch((err: unknown) => {
-          const msg = err instanceof Error ? err.message : "Unknown error";
-          notifications.show(`Failed to delete team reg: ${msg}`, {
-            severity: "error",
-            autoHideDuration: 3000,
-          });
-        });
-    }
-  }
-
-  if (fermitData.activeSession?.status === "not_started") {
-    return (
-      <TeamRegistrationContainer>
-        <TeamName>{team.name.slice(0, 40)}</TeamName>
-        <ToggleButton
-          onClick={(_) => {
-            unregisterTeam(team.teamId);
-          }}
-        >
-          Remove
-        </ToggleButton>
-      </TeamRegistrationContainer>
-    );
-  } else {
-    return <div>{team.name.slice(0, 40)}</div>;
-  }
 }
 
 function SessionDetails() {
@@ -160,52 +79,6 @@ function SessionDetails() {
   const dispatch = useFermitDispatch();
   const notifications = useNotifications();
 
-  function registerTeam(teamId: number) {
-    const session = fermitData.activeSession;
-    if (session) {
-      opsClients.adminClient
-        .createFermitRegistration({
-          params: {
-            sessionId: session.id.toString(),
-            teamId: teamId.toString(),
-          },
-        })
-        .then((res) => {
-          if (res.status !== 200) {
-            throw new Error(`HTTP ${res.status}: ${res.body}`);
-          }
-
-          const regs = res.body;
-          const newSession = {
-            id: session.id,
-            title: session.title,
-            status: session.status,
-            questionIds: session.questionIds.slice(),
-            teams: regs.map((reg) => ({
-              id: reg.teamId,
-              status: reg.status,
-            })),
-          };
-          if (dispatch) {
-            dispatch({
-              type: FermitDataActionType.SET_ACTIVE_SESSION,
-              activeSession: newSession,
-            });
-            dispatch({
-              type: FermitDataActionType.SESSION_UPDATE,
-              session: newSession,
-            });
-          }
-        })
-        .catch((err: unknown) => {
-          const msg = err instanceof Error ? err.message : "Unknown error";
-          notifications.show(`Failed to register team: ${msg}`, {
-            severity: "error",
-            autoHideDuration: 3000,
-          });
-        });
-    }
-  }
   function createSession(title: string) {
     opsClients.adminClient
       .createFermitSession({ body: { title: title } })
@@ -240,18 +113,7 @@ function SessionDetails() {
   if (session) {
     const signedUpDivs = opsData.teams
       .filter((t) => session.teams.find((elt) => elt.id === t.teamId))
-      .map((t) => <SessionTeamEntry key={t.teamId} team={t} />);
-
-    const registrationBox =
-      session.status === "not_started" ? (
-        <RegistrationBox>
-          <div>Register a Team</div>
-          <FermitTeamSelector
-            submitCallback={registerTeam}
-            exclude={session.teams.map(({ id }) => id)}
-          />
-        </RegistrationBox>
-      ) : null;
+      .map((t) => <div key={t.teamId}>{abbreviatedName(t, true)}</div>);
 
     return (
       <>
@@ -262,9 +124,14 @@ function SessionDetails() {
         </div>
         <RegisteredTeams>
           <div>Teams signed up:</div>
-          {signedUpDivs}
+          <RegisteredTeamContainer>
+            {signedUpDivs.length > 0 ? (
+              <div>{signedUpDivs}</div>
+            ) : (
+              <div>None so far!</div>
+            )}
+          </RegisteredTeamContainer>
         </RegisteredTeams>
-        {registrationBox}
         <SessionQuestionDetails
           questionIds={session.questionIds}
           questions={fermitData.questions}
