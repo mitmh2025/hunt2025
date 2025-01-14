@@ -29,7 +29,7 @@
       "profile mitmh2025-puzzup".credential_process = "/bin/aws-credential-process 891377012427 K8sProdAPI";
     };
   };
-  k8s.prod.deployments.api = {
+  k8s.prod.deployment.api = {
     image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
     port = 80;
     env = {
@@ -87,7 +87,7 @@
       }];
     };
   };
-  k8s.prod.deployments.regsite = {
+  k8s.prod.deployment.regsite = {
     image = lib.tfRef config.gcp.ar.images.images.site.urlRef;
     port = 80;
     # Don't update the regsite until the assets are updated.
@@ -134,7 +134,7 @@
     ];
     config.Cmd = ["ops"];
   };
-  k8s.prod.deployments.ops = {
+  k8s.prod.deployment.ops = {
     image = lib.tfRef config.gcp.ar.images.images.ops.urlRef;
     port = 80;
     env = {
