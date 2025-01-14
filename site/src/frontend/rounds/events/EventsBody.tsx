@@ -15,7 +15,7 @@ const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
   making_contact_with_an_informant: (
     <>
       We’ve learned that an informant is interested in giving up some
-      information. Please send 1-2 trainees who like to make connections and
+      information. Please send 1–2 trainees who like to make connections and
       make new friends, and who can move around a room for the duration of the
       event. Please arrive promptly; participation cannot be guaranteed for late
       arrivals.
@@ -24,7 +24,7 @@ const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
 
   tailing_a_lead: (
     <>
-      Please send 1-2 trainees who can think on their feet, are masters of
+      Please send 1–2 trainees who can think on their feet, are masters of
       disguise, and have a sixth sense for sneakiness. Each person should bring
       a towel–a most massively useful thing. Paper, a writing utensil, and a
       clipboard could also come in handy. They’ll be tailing a lead for a while,
@@ -35,7 +35,7 @@ const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
 
   navigating_high_society: (
     <>
-      Please send 1-2 trainees with an eye for detail. They’ll be handing
+      Please send 1–2 trainees with an eye for detail. They’ll be handing
       lemons, limes, oranges, cherries, and grapes; although nothing will be
       consumed, do not send anyone with food allergies to this event. Please
       note that this event is not colorblind-friendly.
@@ -44,7 +44,7 @@ const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
 
   seeing_the_big_picture: (
     <>
-      Please send 1-2 trainees with a flair for creativity, who can assess a
+      Please send 1–2 trainees with a flair for creativity, who can assess a
       crime scene and see things in new ways.
     </>
   ),
