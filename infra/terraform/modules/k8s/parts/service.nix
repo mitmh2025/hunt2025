@@ -42,6 +42,6 @@
         ];
       };
     };
-    resource.kubernetes_service_v1.${name} = lib.mkIf (config.service != null) config.service;
+    resource.kubernetes_service_v1.${name} = lib.mkIf (config.port != null) config.service;
   };
 }

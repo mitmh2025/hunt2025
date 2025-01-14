@@ -35,7 +35,7 @@
           spec = {
             inherit (config) replicas;
             selector.match_labels.app = name;
-            service_name = lib.tfRef "kubernetes_service_v1.${name}.metadata[0].name";
+            service_name = name;
             inherit (config) template;
           };
         };

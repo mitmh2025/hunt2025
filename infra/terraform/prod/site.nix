@@ -10,6 +10,14 @@
     ];
     config.Cmd = ["hunt2025"];
   };
+  gcp.ar.images.images.misc.sourceImage = pkgs.dockerTools.buildLayeredImage {
+    name = "misc";
+    contents = with pkgs; [
+      dockerTools.caCertificates
+      hunt2025.misc
+      dockerTools.binSh
+    ];
+  };
   sops.keys.site = {};
   data.sops_file.site.source_file = "${../../secrets/prod/site.yaml}";
   resource.tls_private_key.jwt_secret = {
