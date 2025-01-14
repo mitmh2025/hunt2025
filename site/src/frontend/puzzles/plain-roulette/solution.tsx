@@ -1,7 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { PuzzleAnswer } from "../../components/StyledUI";
 import barcode from "./assets/barcode.png";
 import chart from "./assets/chart.jpg";
 import highlightedChart from "./assets/highlighted-chart.jpg";
@@ -12,6 +11,7 @@ import pearlCharted from "./assets/pearl-charted.jpg";
 import qrCode from "./assets/qrcode.png";
 import streetChartedSpread from "./assets/street-charted-spread.jpg";
 import streetCharted from "./assets/street-charted.jpg";
+import { PuzzleAnswer } from "src/frontend/components/StyledUI";
 
 const SizedImage = styled(LinkedImage)`
   display: block;
@@ -226,7 +226,7 @@ const Solution = (): JSX.Element => {
         <code>STrEET</code> on the wrong side (when you flip it over), giving
         the final answer{" "}
         <code>
-          <strong>PEARL STREET</strong>
+          <PuzzleAnswer>PEARL STREET</PuzzleAnswer>
         </code>
         .
       </p>
@@ -236,9 +236,8 @@ const Solution = (): JSX.Element => {
         (especially when you follow the instruction to stretch the work
         vertically). No purl stitches are visible from either side. The yarn
         held to the purl side while slipping disappears. Your final product
-        should look like this, with <PuzzleAnswer>PEArL</PuzzleAnswer> and{" "}
-        <PuzzleAnswer>STrEET</PuzzleAnswer> appearing plain as day on either
-        side:
+        should look like this, with <code>PEArL</code> and <code>STrEET</code>{" "}
+        appearing plain as day on either side:
       </p>
       <LinkedImage src={mosaicRib1} alt="A knitting rectangle, reading PEARL" />
       <LinkedImage

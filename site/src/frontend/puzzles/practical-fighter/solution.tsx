@@ -362,10 +362,10 @@ const Solution = () => {
         Once teams have learned how to play their instrument and the requested
         song (Mary Had a Little Lamb), the radio requests 4 additional songs
         (Never Gonna Give You Up, Somewhere Over the Rainbow, Hot to Go, and The
-        Final Countdown). Once they’ve completed those, they are rewarded with
-        the puzzle‘s answer, <PuzzleAnswer>GUARDIAN LAVENDER</PuzzleAnswer>,
-        plus one additional feature: the radio’s tilt sensor now acts as a pitch
-        bend, allowing them to play notes outside of the major scale.
+        Final Countdown). Once they’ve completed those, the radio announces the
+        puzzle‘s answer, <PuzzleAnswer>GUARDIAN LAVENDER</PuzzleAnswer>, plus
+        unlocks one additional feature: the radio’s tilt sensor now acts as a
+        pitch bend, allowing them to play notes outside of the major scale.
       </p>
     </>
   );
