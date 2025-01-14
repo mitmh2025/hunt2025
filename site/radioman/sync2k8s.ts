@@ -465,9 +465,9 @@ async function main({
         entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
         entry.data.type === "ad_frequency"
       ) {
-        if (entry.data.frequency === "plus") {
+        if (entry.data.status === "plus") {
           teamAdFrequency.set(entry.team_id, "plus");
-        } else if (entry.data.frequency === "minus") {
+        } else if (entry.data.status === "minus") {
           teamAdFrequency.set(entry.team_id, "minus");
         } else {
           teamAdFrequency.delete(entry.team_id);
