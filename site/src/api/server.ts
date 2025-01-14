@@ -3394,6 +3394,62 @@ export async function getRouter({
           );
         },
       },
+      forceSkipInteraction: {
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: async ({ params: { teamId, interactionId } }) => {
+          const interaction = INTERACTIONS[interactionId];
+          if (interaction?.type !== "virtual") {
+            return {
+              status: 404 as const,
+              body: null,
+            };
+          }
+
+          const state = interaction.handler.forceGenerateFinalState() as string;
+          if (!state) {
+            return {
+              status: 500 as const,
+              body: null,
+            };
+          }
+
+          return executeTeamStateHandler(
+            teamId,
+            async (_, mutator, team_id) => {
+              const existing = mutator.log.filter(
+                (e) =>
+                  (e.team_id === team_id || e.team_id === undefined) &&
+                  (e.type === "interaction_unlocked" ||
+                    e.type === "interaction_started" ||
+                    e.type === "interaction_completed") &&
+                  e.slug === interactionId,
+              );
+              const is_unlocked = existing.some(
+                (entry) => entry.type === "interaction_unlocked",
+              );
+              const is_started = existing.some(
+                (entry) => entry.type === "interaction_started",
+              );
+              const is_completed = existing.some(
+                (entry) => entry.type === "interaction_completed",
+              );
+              if (!is_unlocked || !is_started || is_completed) {
+                return false;
+              }
+
+              await mutator.appendLog({
+                team_id,
+                type: "interaction_completed",
+                slug: interactionId,
+                data: {
+                  result: state,
+                },
+              });
+              return true;
+            },
+          );
+        },
+      },
       getFullActivityLog: {
         middleware: [frontendAuthMiddleware],
         handler: async ({ query: { since } }) => {

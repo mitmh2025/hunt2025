@@ -65,6 +65,11 @@ function stubInteractionState(slug: string, interaction: Interaction) {
           <form method="POST" action={`/interactions/${slug}/complete`}>
             <button type="submit">Complete interaction</button>
           </form>
+          {interaction.virtual && (
+            <form method="POST" action={`/interactions/${slug}/skip`}>
+              <button type="submit">Skip interaction</button>
+            </form>
+          )}
         </>
       );
     case "completed":
@@ -280,6 +285,29 @@ export const interactionCompletePostHandler: RequestHandler<
   const slug = req.params.slug;
   // Ignore the result
   await req.frontendApi.completeInteraction({
+    params: {
+      teamId: `${req.teamState.teamId}`,
+      interactionId: slug,
+    },
+    body: {},
+  });
+  res.redirect(`/interactions/${req.params.slug}`);
+});
+
+export const interactionSkipPostHandler: RequestHandler<
+  InteractionParams,
+  unknown,
+  Record<string, never>,
+  Record<string, never>
+> = asyncHandler(async (req, res) => {
+  if (process.env.NODE_ENV !== "development") {
+    // Only supported in devmode
+    return undefined;
+  }
+  if (!req.teamState) return undefined;
+  const slug = req.params.slug;
+  // Ignore the result
+  await req.frontendApi.forceSkipInteraction({
     params: {
       teamId: `${req.teamState.teamId}`,
       interactionId: slug,

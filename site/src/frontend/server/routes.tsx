@@ -35,6 +35,7 @@ import {
   interactionRequestHandler,
   interactionStartPostHandler,
   interactionAdvancePostHandler,
+  interactionSkipPostHandler,
 } from "./routes/interaction";
 import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
 import { manageTeamHandler } from "./routes/manage_team";
@@ -367,6 +368,7 @@ export function registerUiRoutes({
     "/interactions/:slug/advance/:fromNode",
     interactionAdvancePostHandler,
   );
+  authRouter.post("/interactions/:slug/skip", interactionSkipPostHandler);
 
   authRouter.get(
     "/about",
