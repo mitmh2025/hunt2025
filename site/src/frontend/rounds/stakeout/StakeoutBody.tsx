@@ -402,7 +402,7 @@ const StakeoutBody = ({
           width: "448px",
           height: "431px",
           backgroundImage: `url(${state.overlay.asset})`,
-          filter: "drop-shadow(0 0 4px black)",
+          filter: "drop-shadow(4px 4px 4px black)",
           userSelect: "none" as const,
           fontSize: "24px",
         }}

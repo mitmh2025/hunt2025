@@ -7,10 +7,10 @@ const DATA: [string, string, string, string, string][] = [
   ["1865", "Hii! I just…", "COPLEYSQUAREPARK", "3 (Practical Chemistry)", "P"],
   ["1910", "It’s been…", "FARIBORZMASEEHHALL", "10 (Chem E)", "A"],
   ["1916", "Going to…", "GRADUATESTUDENTCOUNCIL", "11 (Sanitary E)", "U"],
-  ["1946", "Haha why…", "HAYDENLIBRARY", "7 (Bio & Public Health)", "L"],
+  ["1950", "Haha why…", "HAYDENLIBRARY", "7 (Bio & Public Health)", "L"],
   ["1955", "Somehow…", "CHARLESMVESTSTUDENTSTREET", "8 (Physics)", "M"],
   ["1957", "“Cool” is…", "HAROLDEEDGERTONSTROBEALLEY", "18 (Mathematics)", "R"],
-  ["1975", "Huh, the…", "THEMITRADIOSOCIETY", "11 (Regional Planning)", "O"],
+  ["1966", "Huh, the…", "THEMITRADIOSOCIETY", "11 (Regional Planning)", "O"],
   [
     "1999",
     "OMG I got…",
@@ -150,7 +150,7 @@ const Solution = (): JSX.Element => {
           <Highlight>
             (The hotel mentioned is Maseeh Hall, now a dorm, but at the time, a
             hotel named Riverbank Court. It was built in 1900, so the year of
-            the entry is 1902)
+            the entry is 1910)
           </Highlight>
         </div>
         <div>
@@ -278,7 +278,7 @@ const Solution = (): JSX.Element => {
           <Highlight>
             (Course 11 at the time—City and Regional Planning)
           </Highlight>
-          . It’s been half a century{" "}
+          . It’s been just over half a century since it was built{" "}
           <Highlight>
             (Walker Memorial, which is being referenced here, was first used in
             1916, so now it is 1966)

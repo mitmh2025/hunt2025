@@ -15,12 +15,16 @@ const Blue = styled.div`
   font-style: italic;
 `;
 
+const StyledImage = styled(LinkedImage)`
+  display: block;
+`;
+
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <LinkedImage src={image1} alt="A page of diary entries" />
-      <LinkedImage src={image2} alt="A page of diary entries" />
-      <LinkedImage src={image3} alt="A page of diary entries" />
+      <StyledImage src={image1} alt="A page of diary entries" />
+      <StyledImage src={image2} alt="A page of diary entries" />
+      <StyledImage src={image3} alt="A page of diary entries" />
       <div className={COPY_ONLY_CLASS}>
         <DiaryEntry>
           <div>Dear Diary,</div>
@@ -172,8 +176,9 @@ const Puzzle = (): JSX.Element => {
         <DiaryEntry>
           <div>Dear Diary,</div>
           <div>
-            Huh, the planning in this region was pretty good. It’s been half a
-            century and the murals in this hall are still as pretty as ever.
+            Huh, the planning in this region was pretty good. It’s been just
+            over half a century since it was built and the murals in this hall
+            are still as pretty as ever.
           </div>
           <Blue>
             Is this a code I’m supposed to use? No, I don’t think I will.
