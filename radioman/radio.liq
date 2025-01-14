@@ -29,6 +29,7 @@ team_state = ref(
             team_id: int,
             epoch: int,
             quixotic_shoe_enabled: bool,
+            mystery_hunt_minus_enabled: bool,
             icy_box_enabled: bool,
             interaction: string,
             flags: [string],
@@ -41,6 +42,7 @@ team_state = ref(
             team_id=string.to_int(environment.get("TEAM_ID"), default=0),
             epoch=0,
             quixotic_shoe_enabled=false,
+            mystery_hunt_minus_enabled=false,
             icy_box_enabled=false,
             interaction="",
             flags=[],
@@ -156,8 +158,9 @@ station_id_next = randomizer(announcements_dir, pattern="radio-station-id-*.ogg"
 bumper_sid = request.create("#{announcements_dir}/radio-bumper-station-id.ogg", persistent=true)
 
 # Tier 2c - Puzzle content
-# quixotic-shoe: inject ads after every song
+# quixotic-shoe: inject ads after every song (or constantly if mystery_hunt_minus_enabled)
 quixotic_shoe_enabled = {team_state().quixotic_shoe_enabled}
+mystery_hunt_minus_enabled = {team_state().mystery_hunt_minus_enabled}
 quixotic_shoe_dir = environment.get("QUIXOTIC_SHOE_DIR")
 quixotic_shoe_handoff_next = randomizer("#{quixotic_shoe_dir}/handoff", pattern="*.ogg")
 quixotic_shoe_content_next = nexter("#{quixotic_shoe_dir}/content", pattern="*.ogg")
@@ -336,7 +339,7 @@ def regular_stream_next() =
             else
                 []
             end
-        if partial_confidential() then
+        if partial_confidential() or mystery_hunt_minus_enabled() then
             interrupt
         else
             music_file = background_music_next()
