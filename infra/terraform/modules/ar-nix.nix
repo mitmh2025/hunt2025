@@ -26,7 +26,7 @@
                 resource.skopeo2_copy.${name} = {
                   depends_on = ["google_artifact_registry_repository.${repoName}"];
                   source_image = "docker-archive:${config.sourceImage}";
-                  destination_image = "docker://${repoConfig.url}/site:${config.sourceImage.imageTag}";
+                  destination_image = "docker://${repoConfig.url}/${config.sourceImage.imageName}:${config.sourceImage.imageTag}";
                   keep_image = true; # Ensure that old replica sets can keep running.
                 };
                 urlRef = ''trimprefix(resource.skopeo2_copy.${name}.destination_image, "docker://")'';
