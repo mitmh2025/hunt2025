@@ -5,7 +5,7 @@ import { DiaryEntry } from "./puzzle";
 
 const DATA: [string, string, string, string, string][] = [
   ["1865", "Hii! I just…", "COPLEYSQUAREPARK", "3 (Practical Chemistry)", "P"],
-  ["1910", "It’s been…", "FARIBORZMASEEHHALL", "10 (Chem E)", "A"],
+  ["ca. 1910", "It’s been…", "FARIBORZMASEEHHALL", "10 (Chem E)", "A"],
   ["1916", "Going to…", "GRADUATESTUDENTCOUNCIL", "11 (Sanitary E)", "U"],
   ["1950", "Haha why…", "HAYDENLIBRARY", "7 (Bio & Public Health)", "L"],
   ["1955", "Somehow…", "CHARLESMVESTSTUDENTSTREET", "8 (Physics)", "M"],
@@ -149,8 +149,8 @@ const Solution = (): JSX.Element => {
           beside the river—makes sense, given its name.{" "}
           <Highlight>
             (The hotel mentioned is Maseeh Hall, now a dorm, but at the time, a
-            hotel named Riverbank Court. It was built in 1900, so the year of
-            the entry is 1910)
+            hotel named Riverbank Court. It was built in the early 1900s, and
+            the entry is from two years after that.)
           </Highlight>
         </div>
         <div>
@@ -202,10 +202,9 @@ const Solution = (): JSX.Element => {
         <div>
           Haha why would they even do this? There must be something wrong with
           the authors’ biologies for them to think this was a good idea{" "}
-          <Highlight>(Course 7—Biology and Public Health)</Highlight>. What is
-          the point of writing a book about a building that you’re not even
-          going to start building for another four years? It did turn out pretty
-          nice though.{" "}
+          <Highlight>(Course 7—Biology)</Highlight>. What is the point of
+          writing a book about a building that you’re not even going to start
+          building for another four years? It did turn out pretty nice though.{" "}
           <Highlight>
             (These refer to the construction of Hayden Library, which the book
             was written about in 1946, but only was constructed in 1950)
