@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { PuzzleAnswer } from "../../components/StyledUI";
 import barcode from "./assets/barcode.png";
 import chart from "./assets/chart.jpg";
 import highlightedChart from "./assets/highlighted-chart.jpg";
@@ -11,7 +12,6 @@ import pearlCharted from "./assets/pearl-charted.jpg";
 import qrCode from "./assets/qrcode.png";
 import streetChartedSpread from "./assets/street-charted-spread.jpg";
 import streetCharted from "./assets/street-charted.jpg";
-import { PuzzleAnswer } from "src/frontend/components/StyledUI";
 
 const SizedImage = styled(LinkedImage)`
   display: block;
