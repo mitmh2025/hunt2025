@@ -318,4 +318,23 @@ export class VirtualInteractionHandler<
     }
     return undefined;
   }
+
+  public forceGenerateFinalState(): R {
+    const terminus = this.graph.nodes.find((node) => isTerminalNode(node));
+    if (!terminus) {
+      throw new Error(
+        `No terminal node found in graph ${this.name} to generate final state`,
+      );
+    }
+    const state = this.finalState({
+      nodeId: terminus.id,
+      state: this.graph.starting_state,
+    });
+    if (!state) {
+      throw new Error(
+        `No final state generated for graph ${this.name} from terminal node ${terminus.id}`,
+      );
+    }
+    return state;
+  }
 }

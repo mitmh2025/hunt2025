@@ -272,6 +272,15 @@ export const frontendContract = c.router({
       404: z.null(),
     },
   },
+  forceSkipInteraction: {
+    method: "POST",
+    path: `/teams/:teamId/interactions/:interactionId/skip`,
+    body: z.object({}),
+    responses: {
+      200: TeamHuntStateSchema,
+      404: z.null(),
+    },
+  },
   getFullActivityLog: {
     method: "GET",
     path: "/frontend/log/activity",
