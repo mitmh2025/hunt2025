@@ -338,8 +338,8 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   },
   {
     id: 41,
-    text: "As of January 4th, how many different e-mail addresses are subscribed to ec-discuss?",
-    answer: 1004,
+    text: "How many different e-mail addresses are subscribed to ec-discuss?",
+    answer: 1003,
     geoguessr: null,
     scoringMethod: "percent",
     categories: [],
