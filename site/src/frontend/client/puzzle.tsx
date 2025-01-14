@@ -1,11 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { type z } from "zod";
+import { type TeamHuntState } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
 import type { PuzzleStateLogEntry } from "../../../lib/api/frontend_contract";
 import CopyToClipboard from "../components/CopyToClipboard";
-import PuzzleGuessSection from "../components/PuzzleGuessSection";
+import PuzzleGuessSection, {
+  SubpuzzleGuessSection,
+} from "../components/PuzzleGuessSection";
 import useAppendDataset from "./useAppendDataset";
+import useDataset from "./useDataset";
 
 type PuzzleData = z.infer<
   (typeof publicContract.getPuzzleState.responses)["200"]
@@ -32,9 +36,11 @@ const mergeGuesses = (oldGuesses: Guess[], newGuesses: Guess[]): Guess[] => {
 
 const GuessSectionManager = ({
   initialGuesses,
+  initialTeamState,
   slug,
 }: {
   initialGuesses: Guesses;
+  initialTeamState: TeamHuntState;
   slug: string;
 }) => {
   const websocketGuesses = useAppendDataset(
@@ -49,12 +55,14 @@ const GuessSectionManager = ({
     });
   }, []);
 
+  const teamState = useDataset("team_state", undefined, initialTeamState);
+
   return (
     <PuzzleGuessSection
-      type={"puzzle"}
       slug={slug}
       guesses={mergeGuesses(guesses, websocketGuesses)}
       onGuessesUpdate={onGuessesUpdate}
+      teamState={teamState}
     />
   );
 };
@@ -97,8 +105,7 @@ const SubpuzzleGuessSectionManager = ({
     });
   }, []);
   return (
-    <PuzzleGuessSection
-      type={"subpuzzle"}
+    <SubpuzzleGuessSection
       slug={slug}
       guesses={mergeGuesses(guesses, websocketGuesses)}
       onGuessesUpdate={onGuessesUpdate}
@@ -112,11 +119,18 @@ if (puzzleGuessSectionElem) {
   const initialGuesses = (
     window as unknown as { initialGuesses: PuzzleData["guesses"] }
   ).initialGuesses;
+  const initialTeamState = (
+    window as unknown as { initialTeamState: TeamHuntState }
+  ).initialTeamState;
   // TODO: extract puzzleSlug from the URL instead of embedding it via script?
   const slug = (window as unknown as { puzzleSlug: string }).puzzleSlug;
   hydrateRoot(
     puzzleGuessSectionElem,
-    <GuessSectionManager initialGuesses={initialGuesses} slug={slug} />,
+    <GuessSectionManager
+      initialGuesses={initialGuesses}
+      initialTeamState={initialTeamState}
+      slug={slug}
+    />,
   );
 } else if (subpuzzleGuessSectionElem) {
   const initialPuzzleStateLog = (

@@ -142,13 +142,19 @@ export class LogicTeamState {
     this.puzzles_stray = new Set(initial?.puzzles_stray ?? []);
     this.puzzles_solved = new Set(initial?.puzzles_solved ?? []);
     this.puzzle_unlocked_timestamp = new Map(
-      initial?.puzzle_unlocked_timestamp ?? [],
+      Array.from(initial?.puzzle_unlocked_timestamp ?? []).map(([k, v]) => [
+        k,
+        new Date(v),
+      ]),
     );
     this.global_hints_unlocked_delta = new Map(
       initial?.global_hints_unlocked_delta ?? [],
     );
     this.team_hints_unlocked_timestamp = new Map(
-      initial?.team_hints_unlocked_timestamp ?? [],
+      Array.from(initial?.team_hints_unlocked_timestamp ?? []).map(([k, v]) => [
+        k,
+        new Date(v),
+      ]),
     );
     this.gates_satisfied = new Set(initial?.gates_satisfied ?? []);
     this.interactions_unlocked = new Set(initial?.interactions_unlocked ?? []);

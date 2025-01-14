@@ -53,6 +53,15 @@ const BaseIllegalSearchHeader = styled(PuzzleHeader)`
       font-family: "Alegreya SC";
       font-size: 1.25rem;
     }
+
+    a {
+      color: var(--gray-100);
+      text-decoration-color: var(--gray-200);
+    }
+
+    a:hover {
+      color: var(--gray-200);
+    }
   }
 `;
 

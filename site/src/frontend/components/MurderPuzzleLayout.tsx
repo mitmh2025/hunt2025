@@ -67,6 +67,15 @@ export const MurderHeader = styled(PuzzleHeader)`
       font-family: var(--body-font);
       font-size: 1rem;
     }
+
+    a {
+      color: var(--gold-400);
+      text-decoration-color: var(--gold-300);
+    }
+
+    a:hover {
+      color: var(--gold-300);
+    }
   }
 `;
 

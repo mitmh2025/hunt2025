@@ -56,6 +56,15 @@ export const PaperTrailHeader = styled(PuzzleHeader)`
     .answer-attempt {
       font-weight: 500;
     }
+
+    a {
+      color: var(--white);
+      text-decoration-color: var(--gray-100);
+    }
+
+    a:hover {
+      color: var(--gray-100);
+    }
   }
 `;
 

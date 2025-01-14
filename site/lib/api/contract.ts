@@ -71,6 +71,7 @@ const PuzzleSummarySchema = z.object({
 
 export const PuzzleStateSchema = PuzzleSummarySchema.omit({
   unlocked_at: true,
+  hints_unlocked_at: true,
 }).extend({
   guesses: z.array(GuessSchema).default([]),
   hints: z.array(HintSchema).default([]),
@@ -105,6 +106,7 @@ export const TeamHuntStateSchema = z.object({
   rounds: z.record(slug, RoundStateSchema),
   puzzles: z.record(slug, PuzzleSummarySchema),
   gates_satisfied: z.array(z.string()),
+  outstanding_hint_requests: z.array(z.string()),
 });
 
 export const TeamStateSchema = z.object({
