@@ -48,7 +48,8 @@ export default function PushNotifyTeams(): JSX.Element {
     <>
       <p>
         Send a push notification to all members of all teams who are logged in
-        to the Hunt site.
+        to the Hunt site. The notification will contain exactly the text you
+        enter below, so be precise.
       </p>
       <Box sx={{ maxWidth: "600px" }}>
         <form onSubmit={handleSubmit}>
