@@ -20,6 +20,7 @@ in {
         cp ${config.sops.templates."auto_wizard.json".path} ./auto_wizard.json
         chmod +w ./auto_wizard.json
         ./script/rails zammad:setup:auto_wizard[./auto_wizard.json]
+        sed -i -e "s|:debug|:info|" ./config/environments/production.rb
       '';
     };
   })];
