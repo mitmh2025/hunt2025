@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { type TeamState, type TeamHuntState } from "../../../lib/api/client";
+import { eventsState } from "../rounds/events";
 import { type RenderedPage } from "../utils/renderApp";
 import NavBar, { type NavBarState } from "./NavBar";
 import Notifications from "./Notifications";
@@ -54,10 +55,13 @@ const ContentWithNavBar = ({
   children: ReactNode;
 }) => {
   const teamInfo = teamState.info;
+  const initialEventsState = eventsState(teamState.state, {
+    username: teamInfo.teamUsername,
+  });
   const navbarState = navBarState(teamState.state);
   const navbarStateJSON = JSON.stringify(navbarState);
   const whepUrlJSON = JSON.stringify(teamState.whepUrl);
-  const inlineScript = `window.initialTeamInfo = ${JSON.stringify(teamInfo)}; window.initialNavBarState = ${navbarStateJSON}; window.whepUrl = ${whepUrlJSON}`;
+  const inlineScript = `window.initialTeamInfo = ${JSON.stringify(teamInfo)}; window.initialEventsState = ${JSON.stringify(initialEventsState)}; window.initialNavBarState = ${navbarStateJSON}; window.whepUrl = ${whepUrlJSON}`;
   return (
     <>
       <script
@@ -67,9 +71,10 @@ const ContentWithNavBar = ({
       <div id="navbar">
         <Notifications ref={null} maxNotifications={5} />
         <NavBar
-          whepUrl={teamState.whepUrl}
           info={teamState.info}
           state={navbarState}
+          eventsState={initialEventsState}
+          whepUrl={teamState.whepUrl}
         />
       </div>
       {children}

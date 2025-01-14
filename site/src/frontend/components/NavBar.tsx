@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { styled } from "styled-components";
 import diamondIcon from "../../assets/logo.svg";
+import type { EventsState } from "../rounds/events/types";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
 import AudioControls from "./AudioControls";
+import { BuyAnswerModal, ExchangeClueModal } from "./ClueModals";
 
 const Nav = styled.nav`
   height: 3rem;
@@ -105,7 +107,7 @@ const NavLink = styled.a`
   text-wrap: nowrap;
   min-height: 3rem;
 
-  max-width: calc(280px - 3rem);
+  max-width: calc(480px - 3rem);
 
   @media ${deviceMax.md} {
     max-width: calc(320px - 3rem);
@@ -178,6 +180,7 @@ const Dropdown = styled.li<{ $alignRight?: boolean }>`
 
     > li > a {
       height: 3rem;
+      cursor: pointer;
       text-align: ${(props) => (props.$alignRight ? "right" : "left")};
       width: 100%;
       align-items: center;
@@ -279,14 +282,18 @@ export type NavBarState = {
 };
 
 const NavBar = ({
+  eventsState,
   info,
   state,
   whepUrl,
 }: {
+  eventsState: EventsState;
   info: { teamName: string };
   state: NavBarState;
   whepUrl: string;
 }) => {
+  const exchangeModalRef = useRef<HTMLDialogElement>(null);
+  const buyAnswerModalRef = useRef<HTMLDialogElement>(null);
   const { teamName } = info;
   const { rounds, currency, strongCurrency } = state;
   const started = rounds.length > 0;
@@ -352,12 +359,42 @@ const NavBar = ({
         {started && (
           <>
             <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>
-            <Currency title={`Clues: ${strongCurrency}`}>
-              🔎 {strongCurrency}
-            </Currency>
+            {strongCurrency > 0 ? (
+              <Dropdown $alignRight>
+                <NavLink tabIndex={0}>
+                  <Currency title={`Clues: ${strongCurrency}`}>
+                    🔎 {strongCurrency}
+                  </Currency>
+                </NavLink>
+                <ul>
+                  <li>
+                    <NavLink
+                      onClick={() => {
+                        exchangeModalRef.current?.showModal();
+                      }}
+                    >
+                      Exchange 1 🔎 for 3 🗝️
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={() => {
+                        buyAnswerModalRef.current?.showModal();
+                      }}
+                    >
+                      Exchange 1 🔎 for a puzzle answer
+                    </NavLink>
+                  </li>
+                </ul>
+              </Dropdown>
+            ) : (
+              <Currency title={`Clues: ${strongCurrency}`}>
+                🔎 {strongCurrency}
+              </Currency>
+            )}
           </>
         )}
-        <Dropdown $alignRight>
+        <Dropdown>
           <TeamNameNavLink tabIndex={0}>
             <span>{teamName}</span>
           </TeamNameNavLink>
@@ -379,6 +416,19 @@ const NavBar = ({
           </ul>
         </Dropdown>
       </NavItems>
+      <ExchangeClueModal
+        ref={exchangeModalRef}
+        onDismiss={() => {
+          exchangeModalRef.current?.close();
+        }}
+      />
+      <BuyAnswerModal
+        ref={buyAnswerModalRef}
+        onDismiss={() => {
+          buyAnswerModalRef.current?.close();
+        }}
+        eventsState={eventsState}
+      />
     </Nav>
   );
 };
