@@ -1,5 +1,7 @@
 import demo from "../../../assets/demo-photo.png";
 import type { InteractionGraph } from "../types";
+import neutralSpeaker from "./assets/Neutral.jpg";
+import surprisedSpeaker from "./assets/Surprised.jpg";
 import audio_mp3_1 from "./audio/mp3/1.mp3";
 import audio_mp3_10a from "./audio/mp3/10a.mp3";
 import audio_mp3_10b from "./audio/mp3/10b.mp3";
@@ -72,7 +74,10 @@ export type JewelryStoreState = {
   idea2: boolean; // did we try option 6b yet?
 };
 type JewelryStoreResult = "";
-type JewelryStoreSpeaker = "billie" | "gemcutter";
+type JewelryStoreSpeaker =
+  | "billie"
+  | "gemcutter_neutral"
+  | "gemcutter_surprised";
 
 const remainingOptions = (state: JewelryStoreState) => {
   const remaining_options = [];
@@ -121,15 +126,19 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     idea1: false,
     idea2: false,
   },
-  background: "", // TODO: get a background image
+  background: "demo", // TODO: get a background image
   speaker_states: {
     billie: {
       label: "Billie",
       image: demo, // TODO: get pose images
     },
-    gemcutter: {
+    gemcutter_neutral: {
       label: "Micah",
-      image: demo, // TODO: get pose images
+      image: neutralSpeaker,
+    },
+    gemcutter_surprised: {
+      label: "Micah",
+      image: surprisedSpeaker,
     },
   },
   nodes: [
