@@ -36,6 +36,7 @@ type PuzzleIndexData = {
   name: string;
   slug: string;
   codeName: string;
+  hintUnlockHours: number | null;
   type: "puzzle" | "meta";
   round: string;
   puzzleOrder: number;
@@ -56,6 +57,7 @@ export default function PuzzlesIndex() {
     const puzzleDataBySlug: Record<
       string,
       {
+        hintUnlockHours: number | null;
         unlockCount: number;
         solveCount: number;
         hintCount: number;
@@ -76,6 +78,7 @@ export default function PuzzlesIndex() {
         unlockCount: 0,
         solveCount: 0,
         hintCount: 0,
+        hintUnlockHours: null,
         teams: Object.fromEntries(
           opsData.teams.map((team) => [
             team.teamId,
@@ -136,6 +139,13 @@ export default function PuzzlesIndex() {
 
           break;
         }
+
+        case "global_hints_unlocked": {
+          const puzzleData = getOrCreatePuzzleData(entry.slug);
+          puzzleData.hintUnlockHours = entry.data.minimum_unlock_hours;
+
+          break;
+        }
       }
     });
 
@@ -166,6 +176,7 @@ export default function PuzzlesIndex() {
 
         const unlockCount = puzzleDataBySlug[slug]?.unlockCount ?? 0;
         const solveCount = puzzleDataBySlug[slug]?.solveCount ?? 0;
+        const hintUnlockHours = puzzleDataBySlug[slug]?.hintUnlockHours ?? null;
         const openCount = unlockCount - solveCount;
 
         return {
@@ -174,6 +185,7 @@ export default function PuzzlesIndex() {
           codeName,
           type: slot.is_meta ? "meta" : "puzzle",
           round: round.title,
+          hintUnlockHours,
           puzzleOrder,
           unlockCount,
           solveCount,
@@ -231,6 +243,24 @@ export default function PuzzlesIndex() {
           return rowA.original.puzzleOrder - rowB.original.puzzleOrder;
         },
       }),
+      columnHelper.accessor(
+        (row) =>
+          row.hintUnlockHours === null
+            ? "Disabled"
+            : `Enabled ${row.hintUnlockHours}`,
+        {
+          header: "Hints?",
+          Cell: ({ row }: { row: MRT_Row<PuzzleIndexData> }) => (
+            <>
+              {row.original.hintUnlockHours === null ? (
+                "Disabled"
+              ) : (
+                <>Enabled {row.original.hintUnlockHours} hours after unlock</>
+              )}
+            </>
+          ),
+        },
+      ),
       columnHelper.accessor("unlockCount", {
         header: "Unlocks",
         filterVariant: "range",
@@ -264,6 +294,7 @@ export default function PuzzlesIndex() {
   const onClickUnlockHints = async (
     selectedPuzzleNames: string[],
     selectedPuzzleSlugs: string[],
+    clearSelection: () => void,
   ) => {
     const hours = await dialogs.open(UnlockHintsDialog, selectedPuzzleNames);
     if (hours !== null) {
@@ -281,6 +312,7 @@ export default function PuzzlesIndex() {
         }
 
         await updateActivityLog({ forceRequest: true });
+        clearSelection();
 
         notifications.show(
           `Hints will unlock for selected puzzles in ${hours} hours after teams unlock those puzzles`,
@@ -318,7 +350,8 @@ export default function PuzzlesIndex() {
       },
       showGlobalFilter: true,
     },
-    enableRowSelection: isOpsAdmin,
+    enableRowSelection: (row) =>
+      isOpsAdmin && row.original.hintUnlockHours === null,
     selectAllMode: "all",
     enableSelectAll: true,
     enableDensityToggle: false,
@@ -346,7 +379,13 @@ export default function PuzzlesIndex() {
               const selectedPuzzleSlugs = table
                 .getSelectedRowModel()
                 .rows.map((r) => r.original.slug);
-              void onClickUnlockHints(selectedPuzzleNames, selectedPuzzleSlugs);
+              void onClickUnlockHints(
+                selectedPuzzleNames,
+                selectedPuzzleSlugs,
+                () => {
+                  table.resetRowSelection();
+                },
+              );
             }}
           >
             Enable Hints

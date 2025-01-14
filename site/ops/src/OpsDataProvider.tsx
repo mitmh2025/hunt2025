@@ -98,6 +98,8 @@ class OpsDataStore {
       return;
     }
 
+    this._activityLog.push(entry);
+
     if (entry.team_id === undefined) {
       // add to universal activity log to apply to future teams
       this._universalActivityLogs.push(entry);
@@ -120,8 +122,6 @@ class OpsDataStore {
 
     const newState = oldState.reduce(entry);
     this._teamStates.set(entry.team_id, newState);
-
-    this._activityLog.push(entry);
   }
 
   applyRegistrationLogEntry(entry: TeamRegistrationLogEntry) {

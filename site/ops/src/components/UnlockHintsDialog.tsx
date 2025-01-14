@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Input,
 } from "@mui/material";
 import type { DialogProps } from "@toolpad/core/useDialogs";
 import React, { useState } from "react";
@@ -29,15 +30,17 @@ export default function UnlockHintsDialog({
         <DialogContentText>
           <b>Unlocking hints for {payload.join(", ")}</b>
         </DialogContentText>
-        <DialogContentText>
+        <DialogContentText sx={{ my: 2 }}>
           For how many hours must these puzzles have been unlocked before teams
           can request hints for them?
         </DialogContentText>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <input
+          <Input
             type="number"
-            min={0}
-            max={36}
+            inputProps={{
+              min: 0,
+              max: 36,
+            }}
             value={value}
             placeholder="?"
             onChange={(e) => {
