@@ -102,7 +102,7 @@ export default function Solution() {
       </p>
       <p>
         As hunters gathered intel from the lead, they noticed that they stopped
-        once at each building 1-13. Also each clue, while potentially ambiguous
+        once at each building 1–13. Also each clue, while potentially ambiguous
         on its own, can identify something with “tail” in it (or something
         sounding similar, like “tale” or “tayl”). Taking the “tail” letter (that
         is, the last letter) of each answer in building order gives the
