@@ -35,6 +35,7 @@ import { type Address } from "nodemailer/lib/mailer";
 import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import sanitizeHtml from "sanitize-html";
 import * as swaggerUi from "swagger-ui-express";
 import {
   adminContract,
@@ -558,6 +559,26 @@ export async function getRouter({
           timestamp: timestamp.toISOString(),
         }),
       ),
+      hints: puzzle_state.hints.map((hint) => {
+        if (hint.type === "puzzle_hint_requested") {
+          return {
+            id: hint.id,
+            timestamp: hint.timestamp.toISOString(),
+            type: "puzzle_hint_requested",
+            data: hint.data,
+          };
+        } else {
+          return {
+            id: hint.id,
+            timestamp: hint.timestamp.toISOString(),
+            type: "puzzle_hint_responded",
+            data: {
+              request_id: hint.data.request_id,
+              response: sanitizeHtml(hint.data.response),
+            },
+          };
+        }
+      }),
     };
     if (correct_answers.length > 0) {
       result.answer = correct_answers.join(", ");
@@ -1095,6 +1116,75 @@ export async function getRouter({
                     });
                   }
                 }
+                return { status: 200 as const };
+              },
+            );
+          if (result.status === 200) {
+            return {
+              status: 200 as const,
+              /* eslint-disable @typescript-eslint/no-non-null-assertion --
+               * We know the puzzle state exists because we checked the db above. */
+              body: formatPuzzleState(
+                slug,
+                teamStates[team_id]!,
+                logEntries.reduce(
+                  (acc, entry) => acc.reduce(entry),
+                  new PuzzleStateIntermediate(slug),
+                ),
+              )!,
+              /* eslint-enable @typescript-eslint/no-non-null-assertion -- done */
+            };
+          }
+          return result;
+        },
+      },
+      submitHintRequest: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { slug }, body: { request }, req }) => {
+          const team_id = req.user as number;
+          const slot = slugToSlotMap.get(slug);
+          if (slot === undefined) {
+            // Puzzle does not exist
+            return {
+              status: 404,
+              body: null,
+            };
+          }
+
+          const { result, teamStates, logEntries } =
+            await activityLog.executeMutation(
+              hunt,
+              team_id,
+              redisClient,
+              knex,
+              async function (_, mutator) {
+                const teamState = mutator.getTeamState(hunt, team_id);
+                if (!teamState.puzzles_unlocked.has(slug)) {
+                  return {
+                    status: 404 as const,
+                    body: null,
+                  };
+                }
+
+                if (teamState.puzzles_solved.has(slug)) {
+                  return {
+                    status: 404 as const,
+                    body: null,
+                  };
+                }
+
+                // TODO: check that the team does not have an open hint request
+                // and that they are allowed to submit hints for this puzzle
+
+                await mutator.appendLog({
+                  team_id,
+                  slug,
+                  type: "puzzle_hint_requested",
+                  data: {
+                    request,
+                  },
+                });
+
                 return { status: 200 as const };
               },
             );
@@ -2918,6 +3008,26 @@ export async function getRouter({
                 slug: gateId,
               });
             }
+            return true;
+          }),
+      },
+      respondToHintRequest: {
+        middleware: [frontendAuthMiddleware, requireAdminPermission],
+        handler: ({
+          params: { teamId, slug },
+          body: { response, request_id },
+        }) =>
+          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
+            await mutator.appendLog({
+              team_id,
+              type: "puzzle_hint_responded",
+              slug: slug,
+              data: {
+                response,
+                request_id,
+              },
+            });
+
             return true;
           }),
       },

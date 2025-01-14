@@ -266,9 +266,6 @@ export default function OpsDataProvider({
   }, [cookies.mitmh2025_api_auth]);
 
   useEffect(() => {
-    // TODO: Switch to loading data from the service worker + keeping
-    // it up to date with websockets
-
     (async () => {
       const [puzzleMetadata, account] = await Promise.all([
         opsClients.adminClient.getPuzzleMetadata(),

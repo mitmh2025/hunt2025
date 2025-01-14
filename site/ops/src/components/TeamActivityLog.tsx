@@ -102,6 +102,13 @@ export default function TeamActivityLog({
               break;
             case "erratum_issued":
               activity = `Erratum issued for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
+            case "puzzle_hint_requested":
+              activity = `Hint requested for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
+            case "puzzle_hint_responded":
+              activity = `Hint request responded to for ${slugTitle(entry.slug, opsData.puzzleMetadata)}`;
+              break;
           }
 
           if (entry.internal_data?.operator) {

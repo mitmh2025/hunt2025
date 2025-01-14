@@ -72,6 +72,9 @@ type DatasetHandler =
       type: "guess_log";
     }
   | {
+      type: "hint_log";
+    }
+  | {
       type: "team_registration";
       callback: (teamInfoIntermediate: TeamInfoIntermediate) => ObjectWithEpoch;
     }
@@ -104,6 +107,9 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   },
   guess_log: {
     type: "guess_log",
+  },
+  hint_log: {
+    type: "hint_log",
   },
   hub: {
     type: "team_state",
@@ -216,6 +222,13 @@ type GuessLogSubscriptionHandler = {
   stop: () => void;
 };
 
+type HintLogSubscriptionHandler = {
+  type: "hint_log";
+  dataset: Dataset;
+  slug: string;
+  stop: () => void;
+};
+
 type TeamRegistrationSubscriptionHandler<T> = {
   type: "team_registration";
   dataset: Dataset;
@@ -252,6 +265,7 @@ type SubscriptionHandler<T> =
   | TeamStateSubscriptionHandler<T>
   | ActivityLogSubscriptionHandler<T>
   | GuessLogSubscriptionHandler
+  | HintLogSubscriptionHandler
   | TeamRegistrationSubscriptionHandler<T>
   | PuzzleStateLogSubscriptionHandler
   | InteractionStateLogSubscriptionHandler
@@ -273,6 +287,12 @@ function isGuessLogSubscription<T>(
   sub: SubscriptionHandler<T>,
 ): sub is GuessLogSubscriptionHandler {
   return sub.type === "guess_log";
+}
+
+function isHintLogSubscription<T>(
+  sub: SubscriptionHandler<T>,
+): sub is HintLogSubscriptionHandler {
+  return sub.type === "hint_log";
 }
 
 function isTeamRegistrationSubscription<T>(
@@ -322,6 +342,13 @@ type ObserverProvider = {
   ): ObserveResult;
 
   observeGuessLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): ObserveResult;
+
+  observeHintLog(
     teamId: number,
     slug: string,
     subId: string,
@@ -448,6 +475,9 @@ class ConnHandler {
           case "guess_log":
             sub.stop();
             break;
+          case "hint_log":
+            sub.stop();
+            break;
           case "puzzle_state_log":
             sub.stop();
             break;
@@ -569,6 +599,27 @@ class ConnHandler {
           link: entry.data.link,
           response: entry.data.response,
           timestamp: entry.timestamp,
+        },
+      });
+    }
+  }
+
+  public appendHintLogEntry(
+    subId: string,
+    entry: InternalActivityLogEntry & {
+      type: "puzzle_hint_requested" | "puzzle_hint_responded";
+    },
+  ) {
+    const sub = this.subs.get(subId);
+    if (sub && isHintLogSubscription(sub)) {
+      this.send({
+        subId,
+        type: "update",
+        value: {
+          id: entry.id,
+          timestamp: entry.timestamp,
+          type: entry.type,
+          data: entry.data,
         },
       });
     }
@@ -750,6 +801,44 @@ class ConnHandler {
                 rpc,
                 type: "fail" as const,
                 error: "guess log ready promise rejected",
+              });
+            });
+          break;
+        }
+        case "hint_log": {
+          if (!params?.slug) {
+            this.send({
+              rpc,
+              type: "fail" as const,
+              error: `No slug provided to sub to ${dataset}`,
+            });
+            return;
+          }
+          const subHandler: SubscriptionHandler<object> = {
+            type: "hint_log",
+            dataset,
+            slug: params.slug,
+            stop: () => {
+              /* stub */
+            },
+          };
+          this.subs.set(subId, subHandler);
+          const { stop, readyPromise } = this.observerProvider.observeHintLog(
+            this.teamId,
+            params.slug,
+            subId,
+            this,
+          );
+          subHandler.stop = stop;
+          readyPromise
+            .then(() => {
+              this.send({ rpc, type: "sub" as const, subId });
+            })
+            .catch(() => {
+              this.send({
+                rpc,
+                type: "fail" as const,
+                error: "hint log ready promise rejected",
               });
             });
           break;
@@ -1151,6 +1240,33 @@ export class WebsocketManager implements ObserverProvider {
             entry.slug === slug
           ) {
             conn.appendGuessLogEntry(subId, entry);
+          }
+        });
+      },
+    );
+
+    return {
+      stop,
+      readyPromise: this.activityLogTailer.readyPromise(),
+    };
+  }
+
+  public observeHintLog(
+    teamId: number,
+    slug: string,
+    subId: string,
+    conn: ConnHandler,
+  ): ObserveResult {
+    const stop = this.activityLogTailer.watchLog(
+      (entries: InternalActivityLogEntry[]) => {
+        entries.forEach((entry) => {
+          if (
+            entry.team_id === teamId &&
+            (entry.type === "puzzle_hint_requested" ||
+              entry.type === "puzzle_hint_responded") &&
+            entry.slug === slug
+          ) {
+            conn.appendHintLogEntry(subId, entry);
           }
         });
       },
