@@ -30,7 +30,7 @@ const MEGATABLE: [
   ],
   [
     "1",
-    "I have an old photograph…[____________] for her. Perfect late-late show.",
+    "I have an old photograph… [____________] for her. Perfect late-late show.",
     "?",
     "",
     "-",
@@ -43,18 +43,18 @@ const MEGATABLE: [
   ],
   [
     "2",
-    "I was a little sad when we traded in the old A for the J…",
+    "I was a little sad when we traded in the old A for the J… ",
     "●",
     "",
     ".",
     "",
     "",
-    "“I heard a story once…I’ve heard a lot of stories in my time.”",
+    "“I heard a story once… I’ve heard a lot of stories in my time.”",
     "48",
   ],
   [
     "3",
-    "And I was right…And the next step will be to [____________]…",
+    "And I was right… And the next step will be to [____________]… ",
     "?",
     "",
     "-",
@@ -62,12 +62,12 @@ const MEGATABLE: [
     <>
       Give This Gri<strong>D A SH</strong>ake
     </>,
-    "“…next step will be to the black market.”",
+    "“… next step will be to the black market.”",
     "5",
   ],
   [
     "4",
-    "You understood intuitively the rhythm of this game…",
+    "You understood intuitively the rhythm of this game… ",
     "● /",
     "C",
     ".",
@@ -78,7 +78,7 @@ const MEGATABLE: [
   ],
   [
     "5",
-    "What I love about my favorite harvesting tool…[____________]…",
+    "What I love about my favorite harvesting tool… [____________]… ",
     "?",
     "",
     "-",
@@ -91,7 +91,7 @@ const MEGATABLE: [
   ],
   [
     "6",
-    "Getting the numbers wrong…",
+    "Getting the numbers wrong… ",
     "▬",
     "",
     "-",
@@ -102,7 +102,7 @@ const MEGATABLE: [
   ],
   [
     "7",
-    "You always got choices in this life…",
+    "You always got choices in this life… ",
     "▬ /",
     "",
     "-",
@@ -113,7 +113,7 @@ const MEGATABLE: [
   ],
   [
     "8",
-    "It doesn’t matter how we got here…But it’s been a [____________].",
+    "It doesn’t matter how we got here… But it’s been a [____________].",
     "?",
     "O",
     ".",
@@ -121,7 +121,7 @@ const MEGATABLE: [
     <>
       Can-<strong>DO T</strong>ransmissions
     </>,
-    "“…beautiful friendship.”",
+    "“… beautiful friendship.”",
     "41",
   ],
   [
@@ -137,7 +137,7 @@ const MEGATABLE: [
   ],
   [
     "9",
-    "I walked out of there feeling like a million bucks…",
+    "I walked out of there feeling like a million bucks… ",
     "▬",
     "",
     "-",
@@ -148,7 +148,7 @@ const MEGATABLE: [
   ],
   [
     "10",
-    "I feel like a walk today…The [____________] job was part of the cleanup…",
+    "I feel like a walk today… The [____________] job was part of the cleanup… ",
     "?",
     "",
     ".",
@@ -161,7 +161,7 @@ const MEGATABLE: [
   ],
   [
     "11",
-    "When it started to look like gang warfare…I never saw the [____________] myself…",
+    "When it started to look like gang warfare… I never saw the [____________] myself… ",
     "? /",
     "L",
     ".",
@@ -174,7 +174,7 @@ const MEGATABLE: [
   ],
   [
     "12",
-    "Fall finally fell eight years later…",
+    "Fall finally fell eight years later… ",
     "●",
     "",
     ".",
@@ -185,7 +185,7 @@ const MEGATABLE: [
   ],
   [
     "13",
-    "My friends also had projects further uptown…",
+    "My friends also had projects further uptown… ",
     "▬",
     "",
     "-",
@@ -196,7 +196,7 @@ const MEGATABLE: [
   ],
   [
     "14",
-    "Building castles in the sky…And the [____________] didn’t look much better.",
+    "Building castles in the sky… And the [____________] didn’t look much better.",
     "?",
     "",
     ".",
@@ -209,7 +209,7 @@ const MEGATABLE: [
   ],
   [
     "15",
-    "What goes up must come down…",
+    "What goes up must come down… ",
     "● /",
     "L",
     ".",
@@ -220,7 +220,7 @@ const MEGATABLE: [
   ],
   [
     "16",
-    "Here comes the boss now…I believe one of them is holding a Mickey Mouse [____________]…",
+    "Here comes the boss now… I believe one of them is holding a Mickey Mouse [____________]… ",
     "?",
     "",
     ".",
@@ -244,7 +244,7 @@ const MEGATABLE: [
   ],
   [
     "17",
-    "The man reappears with a little box…",
+    "The man reappears with a little box… ",
     "▬ /",
     "A",
     "-",
@@ -255,7 +255,7 @@ const MEGATABLE: [
   ],
   [
     "18",
-    "Do you want to wrap it up?…I thought he wrote [____________].",
+    "Do you want to wrap it up?… I thought he wrote [____________].",
     "?",
     "",
     ".",
@@ -268,7 +268,7 @@ const MEGATABLE: [
   ],
   [
     "19",
-    "Oh no, our leadfooted gopher is at the lunch counter…",
+    "Oh no, our leadfooted gopher is at the lunch counter… ",
     "▬",
     "",
     "-",
@@ -279,7 +279,7 @@ const MEGATABLE: [
   ],
   [
     "20",
-    "Must be answering a call…That’s put back the smile on [____________].",
+    "Must be answering a call… That’s put back the smile on [____________].",
     "? /",
     "R",
     ".",
@@ -292,7 +292,7 @@ const MEGATABLE: [
   ],
   [
     "21",
-    "I guess that place has bottomless coffee…",
+    "I guess that place has bottomless coffee… ",
     "●",
     "",
     ".",
@@ -303,7 +303,7 @@ const MEGATABLE: [
   ],
   [
     "22",
-    "No, I don’t want lunch…Now let’s see you move those [____________].",
+    "No, I don’t want lunch… Now let’s see you move those [____________].",
     "? /",
     "A",
     "-",
@@ -316,7 +316,7 @@ const MEGATABLE: [
   ],
   [
     "23",
-    "He really didn’t want to go…",
+    "He really didn’t want to go… ",
     "●",
     "",
     ".",
@@ -327,7 +327,7 @@ const MEGATABLE: [
   ],
   [
     "24",
-    "How far away was that hitching post?…It’s been a long day, and I still have all those [____________] and whatnot to get round…",
+    "How far away was that hitching post?… It’s been a long day, and I still have all those [____________] and whatnot to get round… ",
     "?",
     "",
     "-",
@@ -351,7 +351,7 @@ const MEGATABLE: [
   ],
   [
     "25",
-    "If you wanted everybody who is anybody…",
+    "If you wanted everybody who is anybody… ",
     "▬ /",
     "W",
     "-",
@@ -362,7 +362,7 @@ const MEGATABLE: [
   ],
   [
     "26",
-    "The room’s too quiet…I suppose that was how they used to wear them in [____________]…",
+    "The room’s too quiet… I suppose that was how they used to wear them in [____________]… ",
     "?",
     "",
     ".",
@@ -376,7 +376,7 @@ const MEGATABLE: [
   ],
   [
     "27",
-    "A lady is trying to convince me…",
+    "A lady is trying to convince me… ",
     "● /",
     "I",
     ".",
@@ -387,7 +387,7 @@ const MEGATABLE: [
   ],
   [
     "28",
-    "A terribly energetic young couple…a black lace gown with a matching veil and a [____________].",
+    "A terribly energetic young couple… a black lace gown with a matching veil and a [____________].",
     "?",
     "",
     ".",
@@ -400,7 +400,7 @@ const MEGATABLE: [
   ],
   [
     "29",
-    "There’s a woman over there holding a rather fancy fan…She’s in an astonishing [____________]….",
+    "There’s a woman over there holding a rather fancy fan… She’s in an astonishing [____________]… .",
     "?",
     "",
     "-",
@@ -413,7 +413,7 @@ const MEGATABLE: [
   ],
   [
     "30",
-    "That was not a very constructive thought…",
+    "That was not a very constructive thought… ",
     "●",
     "",
     ".",
@@ -424,7 +424,7 @@ const MEGATABLE: [
   ],
   [
     "31",
-    "Oh and here is Phebe at last…",
+    "Oh and here is Phebe at last… ",
     "● /",
     "L",
     ".",
@@ -435,7 +435,7 @@ const MEGATABLE: [
   ],
   [
     "32",
-    "Well, I guess they saved the best for last…And is that an actual [____________]?…",
+    "Well, I guess they saved the best for last… And is that an actual [____________]?… ",
     "?",
     "",
     "-",
@@ -459,7 +459,7 @@ const MEGATABLE: [
   ],
   [
     "33",
-    "I had to get out of there, clear my head…I’ve been to [____________]…",
+    "I had to get out of there, clear my head… I’ve been to [____________]… ",
     "?",
     "",
     ".",
@@ -472,7 +472,7 @@ const MEGATABLE: [
   ],
   [
     "34",
-    "I wish I could do this in the thief’s shoes…",
+    "I wish I could do this in the thief’s shoes… ",
     "● /",
     "D",
     ".",
@@ -483,7 +483,7 @@ const MEGATABLE: [
   ],
   [
     "35",
-    "Now this is a type designed to grab your attention…Brought to you by [____________]…",
+    "Now this is a type designed to grab your attention… Brought to you by [____________]… ",
     "?",
     "",
     ".",
@@ -496,7 +496,7 @@ const MEGATABLE: [
   ],
   [
     "36",
-    "People don’t understand how far-reaching their victory was…",
+    "People don’t understand how far-reaching their victory was… ",
     "▬",
     "",
     "-",
@@ -507,7 +507,7 @@ const MEGATABLE: [
   ],
   [
     "37",
-    "I’ve learned so little…[____________]--those who journey to this place…",
+    "I’ve learned so little… [____________]--those who journey to this place… ",
     "? /",
     "R",
     ".",
@@ -520,7 +520,7 @@ const MEGATABLE: [
   ],
   [
     "38",
-    "Not far away now. Best hold fire for a moment…",
+    "Not far away now. Best hold fire for a moment… ",
     "▬",
     "",
     "-",
@@ -531,7 +531,7 @@ const MEGATABLE: [
   ],
   [
     "39",
-    "I look down and continue the passage…",
+    "I look down and continue the passage… ",
     "▬",
     "",
     "-",
@@ -542,7 +542,7 @@ const MEGATABLE: [
   ],
   [
     "40",
-    "Why should this name be here?…I suppose there’s [____________]…",
+    "Why should this name be here?… I suppose there’s [____________]… ",
     "? /",
     "O",
     "-",
@@ -566,7 +566,7 @@ const MEGATABLE: [
   ],
   [
     "41",
-    "I think of this as my personal train of thought…Am I going [____________] here?…",
+    "I think of this as my personal train of thought… Am I going [____________] here?… ",
     "?",
     "",
     ".",
@@ -579,7 +579,7 @@ const MEGATABLE: [
   ],
   [
     "42",
-    "I always think this is asking a lot…",
+    "I always think this is asking a lot… ",
     "●",
     "",
     ".",
@@ -590,7 +590,7 @@ const MEGATABLE: [
   ],
   [
     "43",
-    "This name makes me think of a hillside dotted with sheep…And dreaming of [____________]…",
+    "This name makes me think of a hillside dotted with sheep… And dreaming of [____________]… ",
     "?",
     "",
     ".",
@@ -603,7 +603,7 @@ const MEGATABLE: [
   ],
   [
     "44",
-    "Men, men, men…they are all the same!…",
+    "Men, men, men… they are all the same!… ",
     "▬ /",
     "V",
     "-",
@@ -614,7 +614,7 @@ const MEGATABLE: [
   ],
   [
     "45",
-    "This is always a nice place for a walk…",
+    "This is always a nice place for a walk… ",
     "● /",
     "E",
     ".",
@@ -625,7 +625,7 @@ const MEGATABLE: [
   ],
   [
     "46",
-    "I need to look at this from different angles…I wonder whether [____________] ever touched down here…",
+    "I need to look at this from different angles… I wonder whether [____________] ever touched down here… ",
     "?",
     "",
     ".",
@@ -638,7 +638,7 @@ const MEGATABLE: [
   ],
   [
     "47",
-    "And the motive? Our primary aim is to explain the succession…",
+    "And the motive? Our primary aim is to explain the succession… ",
     "▬",
     "",
     "-",
@@ -649,7 +649,7 @@ const MEGATABLE: [
   ],
   [
     "48",
-    "Well this is a fine thing, a fine state of affairs…[____________]…",
+    "Well this is a fine thing, a fine state of affairs… [____________]… ",
     "? /",
     "R",
     ".",
@@ -998,8 +998,8 @@ const Solution = (): JSX.Element => {
         You’re looking away, but it feels like you’re watching out for her.{" "}
         <em>[Because he is watching Casablanca:]</em>{" "}
         <Olive>
-          I love this picture. Everything about it is perfect…everything that is
-          said, and some things that are not said.
+          I love this picture. Everything about it is perfect… everything that
+          is said, and some things that are not said.
         </Olive>{" "}
         <Green>[YOU PLAYED IT] for her.</Green>{" "}
         <Cyan>Perfect late-late show.</Cyan>
@@ -1197,7 +1197,7 @@ const Solution = (): JSX.Element => {
           [These are all slang terms for making money:
           salad/lettuce/mint/green.]
         </em>{" "}
-        And…do I have a tail? <em>(Someone is following him.)</em> I’d better
+        And… do I have a tail? <em>(Someone is following him.)</em> I’d better
         keep my eyes open.
       </p>
       <p>
@@ -1222,7 +1222,7 @@ const Solution = (): JSX.Element => {
         <Orange>
           <em>(his tail, Rover)</em>
         </Orange>
-        …but I’d have to have eyes in the back of my head.
+        … but I’d have to have eyes in the back of my head.
       </p>
       <p>
         <em>(Construction of Empire State Building, New York, 1931)</em>
@@ -1343,7 +1343,7 @@ const Solution = (): JSX.Element => {
           (It’s a very little box; later she drops it into her handbag.
           Specifically, it’s an engagement ring.)
         </em>{" "}
-        I expect I need to tip him. Here’s a little something for you…what was
+        I expect I need to tip him. Here’s a little something for you… what was
         his name again? Jacob? Jason? Something with J. Oh yes, it’s splendid,
         I’m sure he will love it. It’s a real work of art. Not that I ever see
         real ones. (Her business is selling fake jewelry.) Yes, a work of art
@@ -1440,7 +1440,7 @@ const Solution = (): JSX.Element => {
         </em>{" "}
         I’ll settle up here and then wait outside.{" "}
         <Green>Now let’s see you move those [NIMBLE FEET]</Green>.{" "}
-        <em>[“The nimble…feet of Fred Astaire”]</em>
+        <em>[“The nimble… feet of Fred Astaire”]</em>
       </p>
       <p>
         He really didn’t want to go. There was a time when he would have done
@@ -1597,7 +1597,7 @@ const Solution = (): JSX.Element => {
         I’ve never seen anything quite like it. Still, I suppose that’s what
         they’re <em>[the paintings are]</em> here for. To be seen. And what am I
         here for? Well, because of social decorum. But also being anywhere else
-        would look suspicious if…if what exactly? If something went wrong. But
+        would look suspicious if… if what exactly? If something went wrong. But
         what could go wrong?
       </p>
       <p>
@@ -1747,7 +1747,7 @@ const Solution = (): JSX.Element => {
         Tonight the Philadelphia A’s <em>[Athletics]</em> visit the Mitropolis{" "}
         <em>[Boston]</em> B’s.{" "}
         <Green>Brought to you by [C FOR CLARENDON].</Green> I can’t see the face
-        of <Orange>the man in the box.</Orange> <em>(Rover, in the car…)</em>{" "}
+        of <Orange>the man in the box.</Orange> <em>(Rover, in the car… )</em>{" "}
         But I recognise his grip. Hands in firm control, almost touching.
         Probably going for a long drive. I can just picture the look of steely
         determination under the peak of his cap. A quick glance to the right to
@@ -1923,7 +1923,7 @@ const Solution = (): JSX.Element => {
           I think just as well inbound as outbound.
         </Olive>{" "}
         Let’s go over everyone’s story again. He <em>[Carter, in chapter 2]</em>{" "}
-        was walking to the casino. He turned and looked back, and saw…what did
+        was walking to the casino. He turned and looked back, and saw… what did
         he see? <Orange>A man?</Orange> A figure, a shadow. Something and
         nothing. Was it a man? Or was it just men? If it was a man, was he just
         out for a stroll? Or headed to that part of town? Or was it a trick of
@@ -1974,7 +1974,7 @@ const Solution = (): JSX.Element => {
       <p>
         <em>(Orient Heights)</em>
         <br />
-        <Orange>Men, men, men…they are all the same!</Orange>{" "}
+        <Orange>Men, men, men… they are all the same!</Orange>{" "}
         <em>
           (They realize that the three witnessed men on the previous three pages
           are all the same man, Rover.)
