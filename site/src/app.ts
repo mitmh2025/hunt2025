@@ -11,6 +11,7 @@ import { connect as dbConnect } from "./api/db";
 import { getMailer } from "./api/email";
 import { connect as redisConnect } from "./api/redis";
 import { getRouter } from "./api/server";
+import { VirtualInteractionEngine } from "./frontend/interactions/virtual_interaction_engine";
 import {
   getAuthRouter,
   getBaseRouter,
@@ -152,6 +153,23 @@ export default async function ({
     // Forward all other requests to the UI router, which we expect to
     // handle most user requests.
     app.use("/", uiRouter);
+  }
+
+  if (enabledComponents.has("inteng")) {
+    if (!redisClient) {
+      throw new Error("redisClient required for inteng component");
+    }
+    if (!apiUrl) {
+      throw new Error("$API_BASE_URL unset but inteng server requested");
+    }
+    const engine = new VirtualInteractionEngine({
+      redisClient,
+      frontendApiClient: newFrontendClient(apiUrl, {
+        type: "frontend",
+        frontendSecret: frontendApiSecret,
+      }),
+    });
+    engine.start();
   }
 
   return app;

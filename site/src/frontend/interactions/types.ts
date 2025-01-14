@@ -134,7 +134,12 @@ export function isTerminalNode<T, R, S, P>(
   return Object.prototype.hasOwnProperty.call(node, "finalState");
 }
 
-export type InteractionGraph<T, R, S extends string, P = never> = {
+export type InteractionGraph<
+  T extends object,
+  R,
+  S extends string,
+  P = never,
+> = {
   // The universe of nodes that are reachable within this graph.
   nodes: InteractionGraphNode<T, R, S, P>[];
 
