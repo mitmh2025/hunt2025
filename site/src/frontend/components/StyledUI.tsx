@@ -233,3 +233,38 @@ export function Errata({
     </>
   );
 }
+
+export const darkBgLinkStyles = `
+  color: var(--gray-000);
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--gray-200);
+
+  &:hover {
+    color: var(--true-white);
+    text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.4);
+    text-decoration-color: var(--gray-200);
+  }
+`;
+
+export const lightBgLinkStyles = `
+  color: var(--gold-700);
+  text-decoration-color: var(--black);
+
+  &:hover {
+    text-shadow: 0 0 0.5rem hsl(from var(--gold-400) h s l / 0.2);
+    color: var(--gold-600);
+    text-decoration-color: var(--gold-700);
+  }
+`;
+
+export const mdBgLinkStyles = `
+  color: var(--teal-600);
+  text-decoration-color: var(--teal-700);
+
+  &:hover {
+    text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.2);
+    color: var(--teal-400);
+    text-decoration-color: var(--teal-500);
+  }
+`;

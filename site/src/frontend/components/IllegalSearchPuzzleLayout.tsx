@@ -6,6 +6,7 @@ import {
   PuzzleWrapper,
 } from "./PuzzleLayout";
 import { SolutionAnswer, SolutionAcknowledgementBlock } from "./SolutionLayout";
+import { darkBgLinkStyles } from "./StyledUI";
 
 const BaseIllegalSearchHeader = styled(PuzzleHeader)`
   background: #65705699;
@@ -154,27 +155,32 @@ export const BlacklightIllegalSearchHeader = styled(BaseIllegalSearchHeader)`
 
 export const IllegalSearchHeader = styled(BaseIllegalSearchHeader)``;
 
-// !important to override specificity from the top level PuzzleWrapper a selector, RIP
 export const IllegalSearchBacklink = styled(PuzzleBacklink)`
   font-family: "Alegreya SC";
-  color: var(--white) !important;
-  text-decoration-color: var(--white) !important;
-  &:hover {
-    color: var(--gray-100) !important;
-    text-decoration-color: var(--gray-100) !important;
-  }
+  ${darkBgLinkStyles}
+
+  font-size: 1.1rem;
 `;
 
 export const IllegalSearchBacklinkBlacklight = styled(IllegalSearchBacklink)`
+  ${darkBgLinkStyles}
+
+  color: #f6d4ff;
+  text-decoration-color: #f6d4ff;
   text-shadow:
     0.25em 0.065em 0.06em #3d0a4933,
     -0.25em 0.06em 0.06em var(--purple-900),
     0 0 0.5em #e993ff,
     0 0 0.75em #ffffff88,
     0 0 1em black;
+
   &:hover {
-    color: #f6d4ff !important;
-    text-decoration-color: #f6d4ff !important;
+    text-shadow:
+      0.25em 0.065em 0.06em #3d0a4966,
+      -0.25em 0.06em 0.06em var(--purple-900),
+      0 0 0.5em #e993ff,
+      0 0 0.75em #ffffffbb,
+      0 0 1em black;
   }
 `;
 

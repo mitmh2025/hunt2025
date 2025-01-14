@@ -249,7 +249,7 @@ const BillieSpeechContainer = styled.div`
 
 const SpeechBubble = styled.div`
   width: 50%;
-  padding: 20px;
+  padding: 2rem;
   margin-right: 50px;
   margin-bottom: 100px;
   position: relative;

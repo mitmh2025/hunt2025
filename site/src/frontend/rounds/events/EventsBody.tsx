@@ -10,6 +10,7 @@ import { PuzzleIcon } from "../../components/PuzzleLink";
 import CluesManager from "./CluesManager";
 import { EventsFonts } from "./EventsFonts";
 import { type EventSlug, type EventsState } from "./types";
+import { lightBgLinkStyles } from "../../components/StyledUI";
 
 const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
   making_contact_with_an_informant: (
@@ -60,6 +61,10 @@ const EventsDescription = styled.p`
 
 const EventsHeader = styled(PuzzleHeader)`
   display: block;
+
+  a {
+    ${lightBgLinkStyles}
+  }
 `;
 
 const EventsMain = styled(PuzzleMain)`
@@ -71,6 +76,10 @@ const EventsMain = styled(PuzzleMain)`
 
   h3 {
     font-family: "Playwrite";
+  }
+
+  a {
+    ${lightBgLinkStyles}
   }
 `;
 

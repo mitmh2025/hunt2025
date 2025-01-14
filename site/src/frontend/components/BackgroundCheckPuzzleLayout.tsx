@@ -99,8 +99,8 @@ export const BackgroundCheckHeader = styled(PuzzleHeader)`
   }
 
   #puzzle-guess-section {
-    background-color: transparent;
-    border: 1px solid var(--black);
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-400);
 
     label,
     input[type="text"],

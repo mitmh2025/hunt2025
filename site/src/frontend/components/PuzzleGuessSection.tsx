@@ -4,7 +4,6 @@ import { type z } from "zod";
 import { type TeamHuntState, newClient } from "../../../lib/api/client";
 import { type publicContract } from "../../../lib/api/contract";
 import apiUrl from "../utils/apiUrl";
-import { deviceMax } from "../utils/breakpoints";
 import PuzzleHintLink from "./PuzzleHintLink";
 import Stamp from "./SparkleStamps";
 import { Button, TextInput } from "./StyledUI";
@@ -22,16 +21,11 @@ const GuessSectionWrapper = styled.section`
   background-color: var(--gray-200);
   color: var(--black);
   padding: 1rem;
-  grid-column: 1 / 2;
   text-align: center;
   border-radius: 2px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-  @media ${deviceMax.md} {
-    grid-column: 1 / 3;
-  }
 
   @media print {
     display: none;
