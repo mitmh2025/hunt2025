@@ -108,9 +108,10 @@ export const CharacterMessages = [
       There is a region of the maze whose only door opens to the West, in which
       any two adjacent rooms (not separated by a wall or door) must contain
       digits which differ by at least 4. In another region, any two adjacent
-      rooms must contain digits which differ by a power of 2. And in yet another
-      region, any two adjacent rooms must contain digits which differ by at
-      least 2.
+      rooms (again, not separated by a wall or door) must contain digits which
+      differ by a power of 2. And in yet another region, any two adjacent rooms
+      (still not separated by a wall or door) must contain digits which differ
+      by at least 2.
     </p>
   </>,
   /* E */
