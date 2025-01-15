@@ -5,8 +5,9 @@ import BalloonPop from "./BalloonPop";
 import LuckyDuck from "./LuckyDuck";
 import { Button } from "../StyledUI";
 import { DarkStyledDialog } from "../StyledDialog";
+import Skeeball from "./Skeeball";
 
-type GAME = "Balloon Pop" | "Lucky Duck";
+type GAME = "Balloon Pop" | "Lucky Duck" | "Skeeball";
 
 const Buttons = styled.div`
   display: flex;
@@ -34,6 +35,7 @@ const Games = () => {
           Balloon Pop
         </Button>
         <Button onClick={() => setCurrentGame("Lucky Duck")}>Lucky Duck</Button>
+        <Button onClick={() => setCurrentGame("Skeeball")}>Skeeball</Button>
       </Buttons>
       <DarkStyledDialog
         open={!!currentGame}
@@ -51,10 +53,13 @@ const Games = () => {
         >
           {currentGame === "Balloon Pop" && <BalloonPop />}
           {currentGame === "Lucky Duck" && <LuckyDuck />}
+          {currentGame === "Skeeball" && <Skeeball />}
           <p className="help-text">
             {currentGame === "Lucky Duck" && "Click the duck before time's up!"}
             {currentGame === "Balloon Pop" &&
               "Hover to pop balloons before time's up!"}
+            {currentGame === "Skeeball" &&
+              "Click to throw. Aim for the center of the velocity target!"}
           </p>
         </div>
       </DarkStyledDialog>
