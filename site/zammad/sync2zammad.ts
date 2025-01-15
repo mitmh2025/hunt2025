@@ -291,25 +291,28 @@ async function main({
     };
 
     const existing = zammadOrgByTeamId.get(teamId);
-    let result;
-    if (existing) {
-      console.log(`Updating organization: ${zammadName}`);
-      result = await zammadClient.updateOrganization({
-        params: { id: existing },
-        body: update,
-      });
-      if (result.status !== 200) {
-        throw new Error(`Failed to update organization: ${result.status}`);
+    const result = await retry(`updating team ${zammadName}`, async () => {
+      if (existing) {
+        console.log(`Updating organization: ${zammadName}`);
+        const result = await zammadClient.updateOrganization({
+          params: { id: existing },
+          body: update,
+        });
+        if (result.status !== 200) {
+          throw new Error(`Failed to update organization: ${result.status}`);
+        }
+        return result;
+      } else {
+        console.log(`Creating organization: ${zammadName}`);
+        const result = await zammadClient.createOrganization({
+          body: update,
+        });
+        if (result.status !== 201) {
+          throw new Error(`Failed to create organization: ${result.status}`);
+        }
+        return result;
       }
-    } else {
-      console.log(`Creating organization: ${zammadName}`);
-      result = await zammadClient.createOrganization({
-        body: update,
-      });
-      if (result.status !== 201) {
-        throw new Error(`Failed to create organization: ${result.status}`);
-      }
-    }
+    });
 
     zammadOrgByTeamId.set(teamId, result.body.id);
   };
@@ -334,25 +337,28 @@ async function main({
     };
 
     const existing = zammadUserByEmail.get(email);
-    let result;
-    if (existing) {
-      console.log(`Updating user: ${email}`);
-      result = await zammadClient.updateUser({
-        params: { id: existing },
-        body: update,
-      });
-      if (result.status !== 200) {
-        throw new Error(`Failed to update user: ${result.status}`);
+    const result = await retry(`updating user ${email}`, async () => {
+      if (existing) {
+        console.log(`Updating user: ${email}`);
+        const result = await zammadClient.updateUser({
+          params: { id: existing },
+          body: update,
+        });
+        if (result.status !== 200) {
+          throw new Error(`Failed to update user: ${result.status}`);
+        }
+        return result;
+      } else {
+        console.log(`Creating user: ${email}`);
+        const result = await zammadClient.createUser({
+          body: update,
+        });
+        if (result.status !== 201) {
+          throw new Error(`Failed to create user: ${result.status}`);
+        }
+        return result;
       }
-    } else {
-      console.log(`Creating user: ${email}`);
-      result = await zammadClient.createUser({
-        body: update,
-      });
-      if (result.status !== 201) {
-        throw new Error(`Failed to create user: ${result.status}`);
-      }
-    }
+    });
 
     zammadUserByEmail.set(email, result.body.id);
   };
