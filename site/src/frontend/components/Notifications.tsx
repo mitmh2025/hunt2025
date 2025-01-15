@@ -26,7 +26,7 @@ const NotificationWrapper = styled.div`
   top: 48px;
   right: 0;
   padding: 1rem;
-  z-index: 1000;
+  z-index: 50;
 `;
 
 const Notification = styled.div`
