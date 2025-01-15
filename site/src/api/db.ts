@@ -425,6 +425,15 @@ declare module "knex/types/tables" {
   }
 }
 
+// The answer field in fermit_answers is a numeric type and needs to be returned
+// that way, but Postgres returns it as a string
+export function fixAnswer(answer: string | number): number | null {
+  if (typeof answer === "string") {
+    return answer !== "" ? parseFloat(answer) : null;
+  }
+  return answer;
+}
+
 // Fix a JSON field that has come from the database.
 export function fixArray<T>(value: string | T[]): T[] {
   // SQLite returns json fields as strings, and the driver doesn't automatically parse them.
@@ -864,8 +873,7 @@ export async function getFermitAnswers(
         sessionId: obj.session_id,
         teamId: obj.team_id,
         questionIndex: obj.question_index,
-        // Postgres seems to return the answer field as a string, so forcibly convert to a floating point number
-        answer: parseFloat(obj.answer),
+        answer: fixAnswer(obj.answer),
       })),
     );
 }
