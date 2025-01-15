@@ -42,7 +42,6 @@ const TIMELINE_NODES: TimelineNode[] = [
     defaultTime: 200,
   },
   {
-    name: "boardwalksolved",
     event: "puzzle_solved",
     slug: "the_boardwalk",
     thread: "main",
@@ -55,13 +54,12 @@ const TIMELINE_NODES: TimelineNode[] = [
     ],
     threadRoot: {
       id: "katrina",
-      name: "The shady girlfriend",
-      permittedOrders: [5, 4, 3, 2],
+      title: "The shady girlfriend",
+      color: "#6d3b12",
     },
     defaultTime: 275,
   },
   {
-    name: "artgallerysolved",
     event: "puzzle_solved",
     slug: "the_art_gallery",
     thread: "main",
@@ -74,13 +72,12 @@ const TIMELINE_NODES: TimelineNode[] = [
     ],
     threadRoot: {
       id: "papa",
-      name: "The angry gangster",
-      permittedOrders: [5, 4, 3, 2],
+      title: "The angry gangster",
+      color: "#b0b0b0",
     },
     defaultTime: 240,
   },
   {
-    name: "jewelrystoresolved",
     event: "puzzle_solved",
     slug: "the_jewelry_store",
     thread: "main",
@@ -93,13 +90,12 @@ const TIMELINE_NODES: TimelineNode[] = [
     ],
     threadRoot: {
       id: "gladys",
-      name: "The sneaky businesswoman",
-      permittedOrders: [5, 4, 3, 2],
+      title: "The sneaky businesswoman",
+      color: "#347146",
     },
     defaultTime: 300,
   },
   {
-    name: "casinosolved",
     event: "puzzle_solved",
     slug: "the_casino",
     thread: "main",
@@ -112,8 +108,8 @@ const TIMELINE_NODES: TimelineNode[] = [
     ],
     threadRoot: {
       id: "ferdinand",
-      name: "The indebted millionaire",
-      permittedOrders: [5, 4, 3, 2],
+      title: "The indebted millionaire",
+      color: "#a22116",
     },
     defaultTime: 310,
   },
@@ -217,14 +213,14 @@ const TIMELINE_NODES: TimelineNode[] = [
     attention: [
       {
         event: "interaction_unlocked",
-        slug: "the_safe_house",
+        slug: "the_safehouse",
       },
     ],
     defaultTime: 1800,
   },
   {
     event: "interaction_completed",
-    slug: "the_safe_house",
+    slug: "the_safehouse",
     thread: "main",
     text: "Confronting Rover didn't go well. He's in the wind, but before he escaped, we learned that he'd been following Sidecar for some time and he thinks the diamond had already been swapped when Sidecar stole it.",
     defaultTime: 1830,
@@ -267,7 +263,7 @@ const TIMELINE_NODES: TimelineNode[] = [
   },
   {
     event: "interaction_completed",
-    slug: "confront_ferdinand",
+    slug: "confront_carter",
     thread: "ferdinand",
     text: "Called out by name, Ferdinand admitted to being a confidence man. The diamond was his biggest score and his ticket out, but now it was gone, and he feared losing Gladys as well. We agreed to keep it between us, just for now.",
     defaultTime: 3030,
@@ -287,7 +283,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     attention: [
       {
         event: "interaction_unlocked",
-        slug: "confrontation_with_katrina",
+        slug: "confront_katrina",
       },
     ],
     defaultTime: 1320,
@@ -331,7 +327,6 @@ export function generateActivityLogForTimeline(
   const answer = entry.type === "puzzle_solved" ? entry.answer : "";
   return {
     id: entry.id,
-    name: node.name || "",
     timestamp,
     thread: node.thread,
     tiebreaker: node.tiebreaker || 0,

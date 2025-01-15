@@ -7,15 +7,14 @@ type TimelineEvent =
 
 export type TimelineThread = {
   id: string;
-  name: string;
-  permittedOrders: number[];
+  title: string;
+  color: string;
 };
 
 export type TimelineNode = {
   event: TimelineEvent;
   slug: string;
   thread: string;
-  name?: string;
   text: string;
   tiebreaker?: number;
   attention?: {
@@ -28,16 +27,17 @@ export type TimelineNode = {
 
 export type TimelineActivityLogEntry = {
   id: number;
-  name: string;
   timestamp: Date;
   thread: string;
   text: string;
   tiebreaker: number;
-  attention: {
-    event: TimelineEvent;
-    slug: string;
-    title: string;
-  }[];
+  attention: TimelineAttention[];
   answer: string;
   threadRoot: TimelineThread | undefined;
+};
+
+export type TimelineAttention = {
+  event: TimelineEvent;
+  slug: string;
+  title: string;
 };
