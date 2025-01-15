@@ -1,14 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
-// import useAppendDataset from "../../client/useAppendDataset";
-// import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import useAppendDataset from "../../client/useAppendDataset";
+import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { WebRTCClient } from "../../utils/WebRTCClient";
 import { deviceMax, deviceMin } from "../../utils/breakpoints";
+import start from "./assets/start.png";
 import { type ControlRoomServerState, type ControlRoomInfo } from "./types";
-// import { type PuzzleStateLogEntry } from "lib/api/frontend_contract";
 import useGameState, { GameActionType } from "./useGameState";
 import useReconnectingWebsocket from "./useReconnectingWebsocket";
+import { type PuzzleStateLogEntry } from "lib/api/frontend_contract";
 
 const StyledVideo = styled.video`
   width: min(480px, 100%);
@@ -186,7 +187,15 @@ const Video = ({ whepUrl }: { whepUrl: string }) => {
   );
 };
 
-const Game = ({ info }: { info: ControlRoomInfo }) => {
+const Game = ({
+  info,
+  room,
+  time,
+}: {
+  info: ControlRoomInfo;
+  room: string;
+  time: string;
+}) => {
   const [
     {
       started,
@@ -259,8 +268,17 @@ const Game = ({ info }: { info: ControlRoomInfo }) => {
   if (!started) {
     return (
       <FlexWrapper>
-        <VideoWrapper></VideoWrapper>
-        <Col2>This interaction is not currently active.</Col2>
+        <VideoWrapper>
+          <img src={start} alt="Starting soon" />
+        </VideoWrapper>
+        <Col2>
+          <AuthorsNote>
+            Please make sure to send your favorite escape room enthusiast to
+            room {room} by {new Date(Date.parse(time)).toLocaleString("en-US")}{" "}
+            for your scheduled interaction. Other team members should keep an
+            eye on this puzzle page when the interaction begins.
+          </AuthorsNote>
+        </Col2>
       </FlexWrapper>
     );
   }
@@ -337,24 +355,63 @@ const Game = ({ info }: { info: ControlRoomInfo }) => {
 //   complete: boolean;
 // };
 
-const App = () => {
+const App = ({
+  initialPuzzleStateLog,
+}: {
+  initialPuzzleStateLog: PuzzleStateLogEntry[];
+}) => {
   const controlRoomInfo = (
     window as unknown as { controlRoomInfo: ControlRoomInfo }
   ).controlRoomInfo;
 
-  return <Game info={controlRoomInfo} />;
-
-  // const log = useAppendDataset(
-  //   "puzzle_state_log",
-  //   { slug: "control_room" },
-  //   [] as PuzzleStateLogEntry[],
-  // );
+  const log = useAppendDataset(
+    "puzzle_state_log",
+    { slug: "control_room" },
+    initialPuzzleStateLog,
+  );
 
   // each log entry contains whole current state, mostly because it's small and makes it easy to undo anything ig :shrug:
   // const { room, time, video, ws, complete }: PHPuzzleState =
   //   log.length === 0
   //     ? { complete: false }
   //     : (log[log.length - 1]!.data as PHPuzzleState);
+
+  if (log.length === 0) {
+    // Unscheduled.
+    return (
+      <FlexWrapper>
+        <AuthorsNoteBlock>
+          <p>
+            This is an in-person interaction and is only available for on-campus
+            teams.
+          </p>
+          <p>
+            Someone will be calling shortly to schedule this interaction. If
+            this puzzle has been open for longer than 1 hour and you have not
+            been contacted, email info@mitmh2025.com for updates.
+          </p>
+        </AuthorsNoteBlock>
+      </FlexWrapper>
+    );
+  }
+
+  const schedulingMessage = log.find(
+    ({ slug, team_id, data }) =>
+      slug === "control_room" &&
+      team_id === parseInt(controlRoomInfo.teamId, 10) &&
+      data.time &&
+      data.room,
+  );
+
+  if (schedulingMessage) {
+    const { room, time } = schedulingMessage.data as unknown as {
+      room: string;
+      time: string;
+    };
+    return <Game info={controlRoomInfo} room={room} time={time} />;
+  }
+
+  return <>lol</>;
 
   // if (complete) {
   //   return (
@@ -364,43 +421,15 @@ const App = () => {
   //     </FlexWrapper>
   //   );
   // }
-  // if (room !== undefined && time !== undefined) {
-  //   return (
-  //     <FlexWrapper>
-  //       <VideoWrapper></VideoWrapper>
-  //       <Col2>
-  //         <AuthorsNote>
-  //           Please make sure to send your favorite escape room enthusiast to
-  //           room {room} by {time} for your scheduled interaction. Other team
-  //           members should keep an eye on this puzzle page when the interaction
-  //           begins.
-  //         </AuthorsNote>
-  //       </Col2>
-  //     </FlexWrapper>
-  //   );
-  // }
-
-  // return (
-  //   <FlexWrapper>
-  //     <AuthorsNoteBlock>
-  //       <p>
-  //         This is an in-person interaction and is only available for on-campus
-  //         teams.
-  //       </p>
-  //       <p>
-  //         Someone will be calling shortly to schedule this interaction. If this
-  //         puzzle has been open for longer than 1 hour and you have not been
-  //         contacted, email info@mitmh2025.com for updates.
-  //       </p>
-  //     </AuthorsNoteBlock>
-  //   </FlexWrapper>
-  // );
 };
 
 const elem = document.getElementById("control-room-root");
 if (elem) {
+  const initialPuzzleStateLog = (
+    window as unknown as { initialPuzzleStateLog: PuzzleStateLogEntry[] }
+  ).initialPuzzleStateLog;
   const root = createRoot(elem);
-  root.render(<App />);
+  root.render(<App initialPuzzleStateLog={initialPuzzleStateLog} />);
 } else {
   console.error(
     "Could not mount App because #control-room-root was nowhere to be found",

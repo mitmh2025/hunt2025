@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import OpsDataProvider from "./OpsDataProvider.tsx";
 import OpsLayout from "./OpsLayout.tsx";
+import ControlRoom from "./routes/ControlRoom.tsx";
 import EmailTeams from "./routes/EmailTeams.tsx";
 import FermitChallenge from "./routes/FermitChallenge.tsx";
 import Gates from "./routes/Gates.tsx";
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
           {
             path: "deserted-ninja",
             Component: FermitChallenge,
+          },
+          {
+            path: "plump-himalayas",
+            Component: ControlRoom,
           },
         ],
       },

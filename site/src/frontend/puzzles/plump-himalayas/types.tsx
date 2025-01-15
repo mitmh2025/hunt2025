@@ -1,4 +1,5 @@
 export type ControlRoomInfo = {
+  teamId: string;
   whepUrl: string;
   wsUrl: string;
 };

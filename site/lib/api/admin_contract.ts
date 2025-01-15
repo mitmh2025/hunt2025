@@ -7,6 +7,7 @@ import {
 } from "./contract";
 import {
   InternalActivityLogSchema,
+  PuzzleStateLogSchema,
   TeamRegistrationLogSchema,
 } from "./frontend_contract";
 
@@ -325,6 +326,14 @@ export const adminContract = c.router({
     body: z.object({}),
     responses: {
       200: InternalActivityLogSchema,
+    },
+  },
+  scheduleControlRoom: {
+    method: "POST",
+    path: "/admin/controlRoom/schedule/:teamId",
+    body: z.object({ room: z.string(), time: z.string().datetime() }),
+    responses: {
+      200: PuzzleStateLogSchema,
     },
   },
 });

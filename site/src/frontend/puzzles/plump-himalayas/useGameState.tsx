@@ -2,7 +2,7 @@ import { type Dispatch, type Reducer, useReducer } from "react";
 import type { ControlRoomGameState, ControlRoomServerState } from "./types";
 
 const DEFAULT_GAME_STATE: ControlRoomGameState = {
-  started: true,
+  started: false,
   tasks: [],
   verbs: [],
   nouns: [],
