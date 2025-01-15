@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import getConfetti from "./confetti";
 import crash from "./skeeballAssets/crash.mp3";
+import caption from "./skeeballAssets/crash.vtt";
 
 const WIDTH = 400;
 const HEIGHT = 500;
@@ -419,7 +420,7 @@ const Skeeball = () => {
         window.setTimeout(() => {
           if (crashRef.current) {
             crashRef.current.currentTime = 0;
-            crashRef.current?.play();
+            crashRef.current.play();
           }
         }, 400);
       } else if (inverseVelocity > 0.95) {
@@ -477,7 +478,9 @@ const Skeeball = () => {
         />
         <Ball style={ballStyle} />
       </div>
-      <audio ref={crashRef} id="crash" src={crash} preload="auto" />
+      <audio ref={crashRef} id="crash" src={crash} preload="auto">
+        <track default kind="captions" srcLang="en" src={caption} />
+      </audio>
     </Wrapper>
   );
 };
