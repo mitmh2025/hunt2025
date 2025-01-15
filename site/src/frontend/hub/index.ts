@@ -452,7 +452,7 @@ const OBJECTS: HubObjectSetting[] = [
   {
     asset: casino_token_joker,
     alt: "A joker from the Casino",
-    x: 63,
+    x: 33,
     y: 1699,
     width: 449,
     rot: 2.6,
@@ -465,14 +465,14 @@ const OBJECTS: HubObjectSetting[] = [
     },
     pin: {
       asset: pin_teal,
-      x: 275,
+      x: 245,
       y: 1720,
     },
   },
   {
     asset: casino_token_ace_of_diamonds,
     alt: "An Ace of Diamonds from the Casino",
-    x: 63,
+    x: 33,
     y: 1699,
     width: 449,
     rot: 2.6,
@@ -485,14 +485,14 @@ const OBJECTS: HubObjectSetting[] = [
     },
     pin: {
       asset: pin_teal,
-      x: 275,
+      x: 245,
       y: 1720,
     },
   },
   {
     asset: casino_token_ace_of_spades,
     alt: "An Ace of Spades from the Casino",
-    x: 63,
+    x: 33,
     y: 1699,
     width: 449,
     rot: 2.6,
@@ -505,7 +505,7 @@ const OBJECTS: HubObjectSetting[] = [
     },
     pin: {
       asset: pin_teal,
-      x: 275,
+      x: 245,
       y: 1720,
     },
   },

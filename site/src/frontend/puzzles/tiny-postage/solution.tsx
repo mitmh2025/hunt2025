@@ -66,7 +66,7 @@ const SHAKESPEARE_DATA: [
     ["Spring 2014", "Summer 2016", "Spring 2017"],
   ],
   [
-    "Phoenix Swarz",
+    "Phoenix Swartz",
     "Borachio",
     "Much Ado About Nothing",
     "Autumn 2023",
@@ -92,7 +92,7 @@ const SHAKESPEARE_DATA: [
     "Autumn 2017",
     ["Peter Duerst", "Nelson Niu", "Joey Noszek"],
     ["Dumaine", "Ford", "Alcibiades"],
-    ["Love’s Labours Lost", "The Merry Wives of Windsor", "Timon of Athens"],
+    ["Love’s Labour’s Lost", "The Merry Wives of Windsor", "Timon of Athens"],
     ["Spring 2015", "Spring 2020", "Spring 2021"],
   ],
 ];
@@ -210,7 +210,7 @@ const POEMS: [string, ReactNode, ReactNode[], ReactNode][] = [
       RICHARD SAMU<strong>E</strong>LS
     </>,
     [
-      "Free renter berates man, replies to college",
+      "A renter berates man, replies to college",
       <>
         Constructing wordsearch gone self-critical, <strong>economic</strong>{" "}
         plan emotional.
@@ -233,7 +233,7 @@ const POEMS: [string, ReactNode, ReactNode[], ReactNode][] = [
     [
       "Confection gone, glee beheading love",
       <>
-        Pinochle jerk win. Glower, <strong>human</strong>.
+        Pinochle jerk win. Glower, <strong>human</strong> world.
       </>,
     ],
     <>
@@ -246,7 +246,7 @@ const POEMS: [string, ReactNode, ReactNode[], ReactNode][] = [
     </>,
   ],
   [
-    "Women’s and Gender Studies",
+    "Graduate Consortium in Women’s Studies",
     <>
       ADRIENNE CE<strong>C</strong>ILE RICH
     </>,
@@ -528,7 +528,7 @@ o  y b rrr
 p   og    
 rrr  g op 
 r r  g  p 
-rrr     p 
+rrr y   p 
 `
   .split("\n")
   .slice(1, -1)
@@ -591,7 +591,7 @@ const COLOR_GRID = [
     "Cheap Thrills",
     "Free Throw",
     "Armageddon",
-    "Lump Sum",
+    "Lump",
     "Lincoln",
     "Journey",
     "Opal Lee",
@@ -1397,7 +1397,8 @@ const Solution = (): JSX.Element => {
           employer of spies (<strong>AGENCY</strong>)
         </li>
         <li>
-          museum in the Dorchester Brewing Co. (<strong>BAD ART</strong>)
+          museum in the Dorchester Brewing Co. (2 wds.) (
+          <strong>BAD ART</strong>)
         </li>
         <li>
           hard, round-topped felt hat (<strong>BOWLER</strong>)

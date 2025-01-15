@@ -236,7 +236,7 @@ const HubBody = ({ state }: { state: HubState }) => {
             city. I know not to trust anybody – including my clients.
           </SuspectCard>
           <Events events={state.events} />
-          <Pin src={pin_teal} alt="" $x={729} $y={531} />
+          <Pin src={pin_teal} alt="" $x={709} $y={531} />
           <BusinessCard
             src={BusinessCardImg}
             alt="Business card: Two P.I. Noir Detective Agency. Billie O’Ryan, Private Investigator."
