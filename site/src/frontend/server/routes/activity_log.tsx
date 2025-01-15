@@ -2,7 +2,12 @@ import { type Request } from "express";
 import React from "react";
 import ActivityLog from "../../components/ActivityLog";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
-import { Wrapper } from "../../components/StyledUI";
+import {
+  PageHeader,
+  PageMain,
+  PageTitle,
+  PageWrapper,
+} from "../../components/PageLayout";
 
 export async function activityLogHandler(req: Request) {
   const teamState = req.teamState;
@@ -16,13 +21,19 @@ export async function activityLogHandler(req: Request) {
   const inlineScript = `window.initialActivityLog = ${JSON.stringify(log)}`;
 
   const node = (
-    <Wrapper>
-      <h1>Activity Log</h1>
-      <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="activity-log-root">
-        <ActivityLog log={log} />
-      </div>
-    </Wrapper>
+    <PageWrapper>
+      <>
+        <PageHeader>
+          <PageTitle>Activity Log</PageTitle>
+        </PageHeader>
+        <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+        <PageMain>
+          <div id="activity-log-root">
+            <ActivityLog log={log} />
+          </div>
+        </PageMain>
+      </>
+    </PageWrapper>
   );
 
   return wrapContentWithNavBar(

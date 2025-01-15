@@ -142,6 +142,10 @@ export const PageTitle = styled.h1`
 export const PageMain = styled(PuzzleMain)`
   width: 100%;
   padding: 1rem;
+
+  a {
+    ${darkBgLinkStyles}
+  }
 `;
 
 export const PageWrapper = ({ children }: { children: JSX.Element }) => {
