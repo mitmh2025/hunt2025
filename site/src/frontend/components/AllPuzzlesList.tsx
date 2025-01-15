@@ -8,7 +8,6 @@ import {
 } from "../client/all_puzzles_types";
 import { deviceMax } from "../utils/breakpoints";
 import PuzzleLink, { PuzzleIcon } from "./PuzzleLink";
-import { darkBgLinkStyles } from "./StyledUI";
 
 const StyledRow = styled.tr<{ $bolded: boolean }>`
   ${({ $bolded }) =>
@@ -41,10 +40,6 @@ const StyledRow = styled.tr<{ $bolded: boolean }>`
       : undefined}
   font-size: 1.5rem;
 
-  a {
-    ${darkBgLinkStyles}
-  }
-
   td.puzzle-name {
     max-width: 50%;
   }
@@ -74,7 +69,13 @@ const RoundHeader = styled.h3`
   font-size: 2rem;
 
   a {
-    ${darkBgLinkStyles}
+    color: var(--gray-100);
+    text-decoration-color: var(--gray-200);
+
+    &:hover {
+      color: var(--true-white);
+      text-decoration-color: var(--white);
+    }
   }
 `;
 

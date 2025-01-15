@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { type ActivityLogEntry } from "../../../lib/api/client";
 import logoIcon from "../../assets/logo-simple.svg";
 import { PuzzleIcon } from "./PuzzleLink";
+import { darkBgLinkStyles } from "./StyledUI";
 
 export const HuntIcon = styled.span`
   display: inline-block;
@@ -304,6 +305,11 @@ const ActivityLogTable = styled.table`
   border: 1px solid white;
   border-collapse: collapse;
   table-layout: fixed;
+
+  a {
+    ${darkBgLinkStyles}
+  }
+
   thead th {
     position: sticky;
     top: 0;
@@ -325,10 +331,6 @@ const ActivityLogTable = styled.table`
     width: 100px;
   }
 
-  tbody tr:hover td {
-    background-color: #333;
-  }
-
   tbody tr td:nth-child(4),
   tbody tr td:nth-child(5) {
     text-align: right;
@@ -343,11 +345,11 @@ const ActivityLogTable = styled.table`
   }
 
   .puzzle_solved {
-    background-color: var(--gold-700);
+    background-color: var(--teal-500);
   }
 
   .puzzle_partially_solved {
-    background-color: var(--gold-900);
+    background-color: var(--teal-700);
   }
 `;
 

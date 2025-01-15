@@ -236,15 +236,15 @@ export function Errata({
 }
 
 export const darkBgLinkStyles = `
-  color: var(--gray-000);
+  color: var(--gold-200);
   text-decoration-line: underline;
   text-decoration-style: dotted;
-  text-decoration-color: var(--gray-200);
+  text-decoration-color: var(--gold-600);
 
   &:hover {
     color: var(--true-white);
     text-shadow: 0 0 0.5rem hsl(from var(--white) h s l / 0.4);
-    text-decoration-color: var(--gray-200);
+    text-decoration-color: var(--gold-400);
   }
 `;
 

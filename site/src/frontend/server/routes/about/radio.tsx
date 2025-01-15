@@ -7,7 +7,7 @@ import { Math, MFrac, MI, MN, MRow } from "../../../components/MathML";
 import { AuthorsNote } from "../../../components/PuzzleLayout";
 import lightIcon from "../../../puzzles/practical-fighter/assets/light.svg";
 import magnetIcon from "../../../puzzles/practical-fighter/assets/magnet.svg";
-import { AboutWrapper } from "./StyledAboutPage";
+import { RadioWrapper } from "./StyledRadioPage";
 import circle from "./assets/circle.svg";
 import image1 from "./assets/image1.svg";
 import image2 from "./assets/image2.png";
@@ -112,7 +112,7 @@ export function radioHandler(req: Request) {
   if (teamState === undefined) return undefined;
 
   const node = (
-    <AboutWrapper>
+    <RadioWrapper>
       <>
         <IssuedDate>Issued January 2025</IssuedDate>
         <BigCaps>Instruction</BigCaps>
@@ -423,7 +423,7 @@ export function radioHandler(req: Request) {
           features.
         </p>
       </>
-    </AboutWrapper>
+    </RadioWrapper>
   );
 
   return wrapContentWithNavBar(
