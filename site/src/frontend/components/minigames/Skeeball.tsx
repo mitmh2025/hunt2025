@@ -11,6 +11,7 @@ const BALL = "#bf6f23";
 const HOLE = "#1e1c1c";
 const CREAM = "#fffcf0";
 const SUCCESS_RANGE = 0.4;
+const MAJOR_SUCCESS_RANGE = 0.2;
 const CRIT_SUCCESS_RANGE = SUCCESS_RANGE / 10;
 
 const Wrapper = styled.div`
@@ -140,6 +141,20 @@ const Skeeball = () => {
       ctx.lineTo(
         skeeBallWidth + forceWidth / 2,
         meterTop + meterHeight / 2 + (SUCCESS_RANGE * meterHeight) / 2,
+      );
+      ctx.lineWidth = forceWidth / 3;
+      ctx.stroke();
+
+      // better target range
+      ctx.beginPath();
+      ctx.strokeStyle = "#bb8e06";
+      ctx.moveTo(
+        skeeBallWidth + forceWidth / 2,
+        meterTop + meterHeight / 2 - (MAJOR_SUCCESS_RANGE * meterHeight) / 2,
+      );
+      ctx.lineTo(
+        skeeBallWidth + forceWidth / 2,
+        meterTop + meterHeight / 2 + (MAJOR_SUCCESS_RANGE * meterHeight) / 2,
       );
       ctx.lineWidth = forceWidth / 3;
       ctx.stroke();
@@ -377,18 +392,26 @@ const Skeeball = () => {
       setFrozenVelocity(inverseVelocity);
       const minSuccess = 0.5 - SUCCESS_RANGE / 2;
       const maxSuccess = 0.5 + SUCCESS_RANGE / 2;
+      const minMajorSuccess = 0.5 - MAJOR_SUCCESS_RANGE / 2;
+      const maxMajorSuccess = 0.5 + MAJOR_SUCCESS_RANGE / 2;
       const minCrit = 0.5 - CRIT_SUCCESS_RANGE / 2;
       const maxCrit = 0.5 + CRIT_SUCCESS_RANGE / 2;
       if (inverseVelocity >= minCrit && inverseVelocity <= maxCrit) {
         setScore((state) => state + 100);
         getConfetti();
         setBallDestination({ x: 16, y: 16 });
-      } else if (inverseVelocity <= maxSuccess && inverseVelocity >= 0.5) {
-        setScore((state) => state + 30);
-        setBallDestination({ x: 135, y: 140 });
-      } else if (inverseVelocity >= minSuccess && inverseVelocity < 0.5) {
+      } else if (
+        inverseVelocity >= minMajorSuccess &&
+        inverseVelocity <= maxMajorSuccess
+      ) {
         setScore((state) => state + 40);
         setBallDestination({ x: 135, y: 65 });
+      } else if (
+        inverseVelocity >= minSuccess &&
+        inverseVelocity <= maxSuccess
+      ) {
+        setScore((state) => state + 30);
+        setBallDestination({ x: 135, y: 140 });
       } else if (inverseVelocity < 0.1) {
         // big ol goose egg and it goes flying
         setBallDestination({ x: 145, y: -1 * HEIGHT });
