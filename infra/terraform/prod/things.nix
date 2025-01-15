@@ -30,6 +30,7 @@
       MEDIA_BASE_URL = "https://media.mitmh2025.com";
       TB_BASE_URL = "https://things.mitmh2025.com";
       TB_USERNAME = "radioman@mitmh2025.com";
+      FILE_MANIFEST_URL = "https://www.two-pi-noir.agency${lib.tfRef ''jsondecode(file("${pkgs.hunt2025}/lib/hunt2025/dist/radio-manifest.json"))["current_radio_manifest"]''}";
     };
     secretEnv = {
       FRONTEND_API_SECRET = lib.tfRef "random_password.frontend_api_secret.result";
