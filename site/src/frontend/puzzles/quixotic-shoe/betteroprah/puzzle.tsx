@@ -31,7 +31,7 @@ const LETTERBANKS = [
   "AEOOR",
   "EINRTUV",
   "EGHPS",
-  "AEFIRY",
+  "AEFIRT",
   "OORVWY",
   "AEHRW",
   "CENOST",
