@@ -155,7 +155,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 18,
     text: "How many official clubs / organizations have ASA-assigned bulletin board spaces on the Infinite Corridor?",
-    answer: 96,
+    answer: 83,
     geoguessr: null,
     scoringMethod: "3double",
     categories: [],
@@ -243,7 +243,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 29,
     text: "If you traveled from MIT Medical to building 7 through the basements using the shortest path, how far would you travel in smoots?",
-    answer: 435.0839,
+    answer: 435,
     geoguessr: null,
     scoringMethod: "percent",
     categories: ["distance"],
@@ -267,7 +267,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 32,
     text: "How many bathrooms are there in the Main Group? (That’s buildings 1, 3, 5, 7, 2, 4, 6, 8, 6C, 10, and 11.)",
-    answer: 63,
+    answer: 65,
     geoguessr: null,
     scoringMethod: "2double",
     categories: ["bathrooms"],
@@ -299,7 +299,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 36,
     text: "Ignoring wind resistance, what is the maximum speed (in miles per hour) that a pumpkin dropped from the top of the Green Building will reach?",
-    answer: 90.8,
+    answer: 91.03,
     geoguessr: null,
     scoringMethod: "percent",
     categories: ["green"],
@@ -322,8 +322,8 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   },
   {
     id: 39,
-    text: "How many differently-numbered MIT buildings are west of Mass Ave?",
-    answer: 65,
+    text: "How many differently-numbered MIT buildings are west of Mass Ave? (Buildings that have different letters, like W53A and W53 or W15 and WW15, count separately.)",
+    answer: 74,
     geoguessr: null,
     scoringMethod: "2double",
     categories: ["buildings"],
@@ -354,7 +354,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   },
   {
     id: 43,
-    text: "What is the complete dining capacity of Lobdell dining hall?",
+    text: "What is the complete dining capacity of Lobdell dining hall, including both balconies?",
     answer: 360,
     geoguessr: null,
     scoringMethod: "percent",
@@ -370,7 +370,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   },
   {
     id: 45,
-    text: "Assuming ideal packing efficiency, how many standard orchestral snare drums could fit in one layer on the Kresge main stage?",
+    text: "Assuming ideal hexagonal packing density, how many standard orchestral snare drums could fit in one layer on the Kresge main stage?",
     answer: 1084,
     geoguessr: null,
     scoringMethod: "percent",
