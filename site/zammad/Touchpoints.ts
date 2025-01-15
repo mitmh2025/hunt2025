@@ -236,12 +236,22 @@ const Touchpoints = {
         gate: "tmg04",
       },
     },
+  // These aren't true touchpoints; they are cases where we want to set a gate
+  // in response to an inbound email ticket
   he_shouldnt_have_eaten_the_apple_submission: {
     type: "submission",
     description: "Submission: NOW RUIN SOMETHING ELSE",
     closed_action: {
       type: "satisfy_gate",
       gate: "bgg02",
+    },
+  },
+  the_thief_video: {
+    type: "activity",
+    description: "Activity: Video Release for The Thief",
+    closed_action: {
+      type: "satisfy_gate",
+      gate: "mdg12",
     },
   },
 } satisfies Record<string, TouchpointType>;
