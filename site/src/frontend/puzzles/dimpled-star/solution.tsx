@@ -22,7 +22,7 @@ const Solution = () => {
         their fourth submeta, Billie also provides global high-level rules for
         all characters. The puzzle is over-defined and designed to be solved
         without all of the witness statements, and the four paths can be solved
-        independently.
+        independently. Note the one-way streets which restrict movement in cars.
       </p>
       <p>
         The solutions are as follows for Katrina (route shown in{" "}
@@ -139,8 +139,8 @@ const Solution = () => {
         </li>
       </ul>
       <p>
-        Taken in reverse order (retracing our steps, per the voiceover), they
-        spell the instruction for confronting the thief:{" "}
+        Taken in reverse order (looking back through our steps, per the
+        voiceover), they spell the instruction for confronting the thief:{" "}
         <PuzzleAnswer>RIDE SIDECAR</PuzzleAnswer>.
       </p>
       <h3>Author’s Note</h3>
