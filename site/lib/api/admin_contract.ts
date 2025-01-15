@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { PuzzleDefinitionMetadataSchema } from "../../src/frontend/puzzles/types";
 import {
   c,
   PuzzleStateSchema,
@@ -10,19 +9,6 @@ import {
   InternalActivityLogSchema,
   TeamRegistrationLogSchema,
 } from "./frontend_contract";
-
-export const PuzzleAPIMetadataSchema = z.record(
-  z.string(),
-  // We may eventually include the full metadata, but we'll wait until
-  // auth is finalized for the admin endpoints
-  PuzzleDefinitionMetadataSchema.pick({
-    title: true,
-    slug: true,
-    code_name: true,
-  }),
-);
-
-export type PuzzleAPIMetadata = z.infer<typeof PuzzleAPIMetadataSchema>;
 
 const TeamContactsSchema = z.array(
   TeamRegistrationSchema.pick({
@@ -101,14 +87,6 @@ export const adminContract = c.router({
       404: z.null(),
     },
     summary: "Get the state of one puzzle",
-  },
-  getPuzzleMetadata: {
-    method: "GET",
-    path: "/admin/puzzles",
-    responses: {
-      200: PuzzleAPIMetadataSchema,
-    },
-    summary: "Get all puzzle metadata",
   },
   getTeamContacts: {
     method: "GET",

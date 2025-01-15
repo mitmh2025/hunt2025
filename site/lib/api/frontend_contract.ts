@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PuzzleDefinitionMetadataSchema } from "../../src/frontend/puzzles/types";
 import {
   c,
   TeamHuntStateSchema,
@@ -99,7 +100,6 @@ export const InternalActivityLogEntrySchema = z.discriminatedUnion("type", [
     z.object({
       type: z.literal("puzzle_hint_responded"),
       data: z.object({
-        request_id: z.number(),
         response: z.string(),
         zammad_article_id: z.number(),
       }),
@@ -242,7 +242,28 @@ export const AdvanceInteractionFailure = z.object({
   ]),
 });
 
+export const PuzzleAPIMetadataSchema = z.record(
+  z.string(),
+  // We may eventually include the full metadata, but we'll wait until
+  // auth is finalized for the admin endpoints
+  PuzzleDefinitionMetadataSchema.pick({
+    title: true,
+    slug: true,
+    code_name: true,
+  }),
+);
+
+export type PuzzleAPIMetadata = z.infer<typeof PuzzleAPIMetadataSchema>;
+
 export const frontendContract = c.router({
+  getPuzzleMetadata: {
+    method: "GET",
+    path: "/admin/puzzles",
+    responses: {
+      200: PuzzleAPIMetadataSchema,
+    },
+    summary: "Get all puzzle metadata",
+  },
   markTeamGateSatisfied: {
     method: "POST",
     path: `/teams/:teamId/:gateId`,
@@ -377,7 +398,6 @@ export const frontendContract = c.router({
     method: "POST",
     path: "/teams/:teamId/puzzles/:slug/respondToHintRequest",
     body: z.object({
-      request_id: z.number(),
       response: z.string(),
       zammad_article_id: z.number(),
     }),

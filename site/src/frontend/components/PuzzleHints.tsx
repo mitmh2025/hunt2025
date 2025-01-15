@@ -207,16 +207,11 @@ const PuzzleHints = ({
   let form: JSX.Element | null = null;
 
   const hintRequestOpen = useMemo(() => {
-    const openHints = new Set<number>();
-    hints.forEach((h) => {
-      if (h.type === "puzzle_hint_requested") {
-        openHints.add(h.id);
-      } else {
-        openHints.delete(h.data.request_id);
-      }
-    });
-
-    return openHints.size > 0;
+    const lastHint = hints[hints.length - 1];
+    if (!lastHint) {
+      return false;
+    }
+    return lastHint.type === "puzzle_hint_requested";
   }, [hints]);
 
   if (teamState.puzzles[slug]?.answer !== undefined) {

@@ -281,7 +281,6 @@ declare module "knex/types/tables" {
         type: "puzzle_hint_responded";
         slug: string;
         data: {
-          request_id: number;
           response: string;
           zammad_article_id: number;
         };

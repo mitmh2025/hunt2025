@@ -573,7 +573,6 @@ export async function getRouter({
             timestamp: hint.timestamp.toISOString(),
             type: "puzzle_hint_responded",
             data: {
-              request_id: hint.data.request_id,
               response: sanitizeHtml(hint.data.response),
             },
           };
@@ -1939,31 +1938,6 @@ export async function getRouter({
           };
         },
       },
-      getPuzzleMetadata: {
-        middleware: [adminAuthMiddleware],
-        handler: () => {
-          const metadata = Object.fromEntries(
-            Object.entries(PUZZLES).map(([slug, definition]) => {
-              // If we decide to expose the full metadata, we could do:
-              // const { content, solution, router, ...rest } = definition;
-              // return [slug, rest];
-              return [
-                slug,
-                {
-                  title: definition.title,
-                  slug: definition.slug,
-                  code_name: definition.code_name,
-                },
-              ];
-            }),
-          );
-
-          return Promise.resolve({
-            status: 200 as const,
-            body: metadata,
-          });
-        },
-      },
       grantKeys: {
         middleware: [adminAuthMiddleware, requireAdminPermission],
         handler: async ({ body: { teamIds, amount }, req }) => {
@@ -2996,6 +2970,31 @@ export async function getRouter({
           };
         },
       },
+      getPuzzleMetadata: {
+        middleware: [frontendAuthMiddleware],
+        handler: () => {
+          const metadata = Object.fromEntries(
+            Object.entries(PUZZLES).map(([slug, definition]) => {
+              // If we decide to expose the full metadata, we could do:
+              // const { content, solution, router, ...rest } = definition;
+              // return [slug, rest];
+              return [
+                slug,
+                {
+                  title: definition.title,
+                  slug: definition.slug,
+                  code_name: definition.code_name,
+                },
+              ];
+            }),
+          );
+
+          return Promise.resolve({
+            status: 200 as const,
+            body: metadata,
+          });
+        },
+      },
       markTeamGateSatisfied: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({ params: { teamId, gateId } }) =>
@@ -3023,7 +3022,7 @@ export async function getRouter({
         middleware: [frontendAuthMiddleware, requireAdminPermission],
         handler: ({
           params: { teamId, slug },
-          body: { response, request_id, zammad_article_id },
+          body: { response, zammad_article_id },
         }) =>
           executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
             if (
@@ -3043,7 +3042,6 @@ export async function getRouter({
               slug: slug,
               data: {
                 response,
-                request_id,
                 zammad_article_id,
               },
             });

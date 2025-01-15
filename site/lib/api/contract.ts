@@ -37,7 +37,6 @@ export const HintSchema = z.discriminatedUnion("type", [
     type: z.literal("puzzle_hint_responded"),
     timestamp: z.string().datetime(),
     data: z.object({
-      request_id: z.number(),
       response: z.string(),
     }),
   }),

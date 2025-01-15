@@ -37,6 +37,7 @@ const ZammadGroupSchema = z.object({
   name: z.string(),
   follow_up_possible: z.enum(["yes", "new_ticket"]),
 });
+export type ZammadGroupType = z.infer<typeof ZammadGroupSchema>;
 
 // Ticket articles are pretty bare for our purposes; the only useful piece of
 // information for synchronization is the ticket ID for cross-referencing, and
@@ -45,38 +46,41 @@ const ZammadGroupSchema = z.object({
 // (We'll need to revisit this when we get to hints as well as touchpoints)
 const ZammadTicketArticleSchema = z.object({
   id: z.number(),
+  sender_id: z.number(),
   ticket_id: z.number(),
-});
-
-const ZammadTicketSchema = z.object({
-  id: z.number(),
-  group_id: z.number(),
-  organization_id: z.number(),
-  state_id: z.number(),
-  activity_log_id_num: z.number().nullable(),
-  activity_log_team_id_num: z.number().nullable(),
-  touchpoint_type: z.string().nullable(),
-  touchpoint_slug: z.string().nullable(),
-  interaction_slug: z.string().nullable(),
-  puzzle_slug: z.string().nullable(),
+  body: z.string(),
   updated_at: z.string(),
 });
 
-const ZammadCreateTicketSchema = z.object({
+export type ZammadTicketArticleType = z.infer<typeof ZammadTicketArticleSchema>;
+
+const ZammadTicketSchemaCommon = z.object({
+  id: z.number(),
   group_id: z.number(),
+  state_id: z.number(),
   customer_id: z.number(),
   title: z.string(),
-  article: z.object({
-    type: z.enum(["email", "web", "note"]),
-    internal: z.boolean(),
-    body: z.string(),
-  }),
-  touchpoint_type: z.string().nullable().optional(),
-  touchpoint_slug: z.string().nullable().optional(),
-  interaction_slug: z.string().nullable().optional(),
-  puzzle_slug: z.string().nullable().optional(),
-  puzzle_title: z.string().nullable().optional(),
+  article: z
+    .object({
+      type: z.enum(["email", "web", "note"]),
+      internal: z.boolean(),
+      body: z.string(),
+    })
+    .optional(),
+  touchpoint_type: z.string().nullable(),
+  touchpoint_slug: z.string().nullable(),
+  interaction_slug: z.string().nullable(),
+  hint_puzzle_slug: z.string().nullable(),
+  hint_last_request_entry: z.number().nullable(),
+  puzzle_slug: z.string().nullable(),
 });
+
+const ZammadTicketSchema = ZammadTicketSchemaCommon.extend({
+  organization_id: z.number(),
+  updated_at: z.string(),
+});
+
+const ZammadCreateTicketSchema = ZammadTicketSchemaCommon.partial();
 
 const ZammadSearchTicketSchema = z.object({
   tickets: z.number().array(),
@@ -218,6 +222,8 @@ export const zammadContract = c.router({
     query: z.object({
       page: z.number(),
       per_page: z.number(),
+      sort_by: z.string().optional(),
+      order_by: z.enum(["asc", "desc"]).optional(),
     }),
     responses: {
       200: z.array(ZammadTicketArticleSchema),
@@ -239,6 +245,15 @@ export const zammadContract = c.router({
     body: ZammadCreateTicketSchema,
     responses: {
       201: ZammadTicketSchema,
+    },
+  },
+  updateTicket: {
+    method: "PUT",
+    path: "/api/v1/tickets/:id",
+    pathParams: z.object({ id: z.number() }),
+    body: ZammadTicketSchema.omit({ id: true }).partial(),
+    responses: {
+      200: ZammadTicketSchema,
     },
   },
   searchTickets: {

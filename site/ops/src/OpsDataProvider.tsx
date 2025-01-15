@@ -8,12 +8,12 @@ import {
 } from "react";
 import { useCookies } from "react-cookie"; // eslint-disable-line import/no-unresolved -- eslint can't find it
 import { type AdminClient, newAdminClient } from "../../lib/api/admin_client";
-import { type PuzzleAPIMetadata } from "../../lib/api/admin_contract";
 import {
   type FrontendClient,
   newFrontendClient,
 } from "../../lib/api/frontend_client";
 import {
+  type PuzzleAPIMetadata,
   type InternalActivityLogEntry,
   type TeamRegistrationLogEntry,
 } from "../../lib/api/frontend_contract";
@@ -268,7 +268,7 @@ export default function OpsDataProvider({
   useEffect(() => {
     (async () => {
       const [puzzleMetadata, account] = await Promise.all([
-        opsClients.adminClient.getPuzzleMetadata(),
+        opsClients.frontendClient.getPuzzleMetadata(),
         opsClients.adminClient.opsAccount(),
         opsClients.updateRegistrationLog({ forceRequest: true }),
         opsClients.updateActivityLog({ forceRequest: true }),

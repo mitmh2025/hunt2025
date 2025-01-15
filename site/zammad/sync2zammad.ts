@@ -2,6 +2,7 @@ import { initClient } from "@ts-rest/core";
 import { Queue } from "modern-async";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
 import { newFrontendClient } from "../lib/api/frontend_client";
+import { type InternalActivityLogEntry } from "../lib/api/frontend_contract";
 import { TeamInfoIntermediate } from "../src/api/logic";
 import { activityLog, connect, teamRegistrationLog } from "../src/api/redis";
 import { newLogTailer } from "../src/frontend/server/dataset_tailer";
@@ -11,7 +12,12 @@ import Touchpoints, {
   type TouchpointType,
   type TouchpointSlug,
 } from "./Touchpoints";
-import { zammadContract } from "./zammadApi";
+import {
+  type ZammadGroupType,
+  zammadContract,
+  type ZammadTicketType,
+  type ZammadTicketArticleType,
+} from "./zammadApi";
 
 const ZAMMAD_POLL_INTERVAL = 1000;
 
@@ -45,6 +51,15 @@ if (!zammadSecret) {
 
 const BARTENDER_GROUP = "Bartender";
 const STAGE_MANAGER_GROUP = "Stage Manager";
+const HINTS_GROUP = "Hints";
+
+const retry = <T>(op: string, fn: () => Promise<T>): Promise<T> => {
+  return pRetry(fn, {
+    onFailedAttempt: (error) => {
+      console.error(`Failed to ${op}: ${error.message}. Retrying...`);
+    },
+  });
+};
 
 async function main({
   redisUrl,
@@ -75,9 +90,17 @@ async function main({
     throwOnUnknownStatus: true,
   });
 
+  const puzzles = await retry("fetch puzzle data", async () => {
+    const resp = await frontendApiClient.getPuzzleMetadata();
+    if (resp.status !== 200) {
+      throw new Error(`Failed to fetch puzzle metadata: ${resp.status}`);
+    }
+    return resp.body;
+  });
+
   // Synchronize the groups that we expect to exist
   const fetchGroups = async () => {
-    const groups = new Map<string, number>();
+    const groups = new Map<string, ZammadGroupType>();
 
     let page = 1;
     for (;;) {
@@ -92,7 +115,7 @@ async function main({
       }
 
       groupsPage.body.forEach((group) => {
-        groups.set(group.name, group.id);
+        groups.set(group.name, group);
       });
 
       page += 1;
@@ -102,24 +125,45 @@ async function main({
   };
   const zammadGroups = await fetchGroups();
 
-  const ensureGroup = async (name: string) => {
-    let groupId = zammadGroups.get(name);
-    if (!groupId) {
+  const ensureGroup = async (name: string, opts: Partial<ZammadGroupType>) => {
+    const group = zammadGroups.get(name);
+    if (group) {
+      // Make sure required options are set
+      const missingOptions = Object.entries(opts).filter(
+        ([key, value]) => group[key as keyof ZammadGroupType] !== value,
+      );
+      if (missingOptions.length > 0) {
+        console.log(`Updating group: ${name}`);
+        const result = await zammadClient.updateGroup({
+          params: { id: group.id },
+          body: opts,
+        });
+        if (result.status !== 200) {
+          throw new Error(`Failed to update group: ${result.status}`);
+        }
+      }
+      return group.id;
+    } else {
       console.log(`Creating group: ${name}`);
       const result = await zammadClient.createGroup({
-        body: { name, follow_up_possible: "new_ticket" },
+        body: { name, ...opts },
       });
       if (result.status !== 201) {
         throw new Error(`Failed to create group: ${result.status}`);
       }
-      zammadGroups.set(name, result.body.id);
-      groupId = result.body.id;
+      zammadGroups.set(name, result.body);
+      return result.body.id;
     }
-
-    return groupId;
   };
-  const bartenderGroupId = await ensureGroup(BARTENDER_GROUP);
-  const stageManagerGroupId = await ensureGroup(STAGE_MANAGER_GROUP);
+  const bartenderGroupId = await ensureGroup(BARTENDER_GROUP, {
+    follow_up_possible: "new_ticket",
+  });
+  const stageManagerGroupId = await ensureGroup(STAGE_MANAGER_GROUP, {
+    follow_up_possible: "new_ticket",
+  });
+  const hintsGroupId = await ensureGroup(HINTS_GROUP, {
+    follow_up_possible: "yes",
+  });
 
   const teamRegistrationLogTailer = newLogTailer({
     redisClient,
@@ -419,15 +463,18 @@ async function main({
   const changedTicketsSince = async function* (since: Date) {
     let page = 1;
     for (;;) {
-      const ticketsPage = await zammadClient.searchTickets({
-        query: {
-          page,
-          per_page: 100,
-        },
+      const ticketsPage = await retry("get updated tickets", async () => {
+        const ticketsPage = await zammadClient.searchTickets({
+          query: {
+            page,
+            per_page: 100,
+          },
+        });
+        if (ticketsPage.status !== 200) {
+          throw new Error(`Failed to fetch tickets: ${ticketsPage.status}`);
+        }
+        return ticketsPage;
       });
-      if (ticketsPage.status !== 200) {
-        throw new Error(`Failed to fetch tickets: ${ticketsPage.status}`);
-      }
       if (ticketsPage.body.tickets.length === 0) {
         break;
       }
@@ -468,18 +515,8 @@ async function main({
           for (;;) {
             // Build in a 5 second grace period to avoid missing tickets (which
             // does mean we'll continue re-processing the most recent ticket)
-            const tickets = await pRetry(
-              () =>
-                changedTicketsSince(
-                  new Date(mostRecentUpdated.getTime() - 5000),
-                ),
-              {
-                onFailedAttempt: (error) => {
-                  console.error(
-                    `Failed to get updated tickets: ${error.message}. Retrying...`,
-                  );
-                },
-              },
+            const tickets = changedTicketsSince(
+              new Date(mostRecentUpdated.getTime() - 5000),
             );
 
             for await (const ticket of tickets) {
@@ -497,7 +534,97 @@ async function main({
             }
 
             await new Promise((resolve) =>
-              setTimeout(resolve, ZAMMAD_POLL_INTERVAL),
+              setTimeout(
+                resolve,
+                ZAMMAD_POLL_INTERVAL * (0.95 + 0.1 * Math.random()),
+              ),
+            );
+          }
+        } catch (e) {
+          readyReject?.(e);
+          throw e;
+        }
+      })(),
+    };
+  };
+
+  const changedTicketArticlesSince = async function* (since: Date) {
+    let page = 1;
+    for (;;) {
+      const articlesPage = await retry(
+        "get updated ticket articles",
+        async () => {
+          const articlesPage = await zammadClient.listTicketArticles({
+            query: {
+              page,
+              per_page: 100,
+              sort_by: "updated_at",
+              order_by: "desc",
+            },
+          });
+          if (articlesPage.status !== 200) {
+            throw new Error(
+              `Failed to fetch ticket articles: ${articlesPage.status}`,
+            );
+          }
+          return articlesPage;
+        },
+      );
+      if (articlesPage.body.length === 0) {
+        break;
+      }
+
+      for (const article of articlesPage.body) {
+        if (new Date(article.updated_at) < since) {
+          return;
+        }
+
+        yield article;
+      }
+
+      page += 1;
+    }
+  };
+  const changedTicketArticles = () => {
+    let readyResolve: undefined | (() => void);
+    let readyReject: undefined | ((e: unknown) => void);
+    const readyPromise = new Promise<void>((resolve, reject) => {
+      readyResolve = resolve;
+      readyReject = reject;
+    });
+
+    return {
+      readyPromise,
+      articles: (async function* () {
+        try {
+          console.log("Watching for changed ticket articles");
+
+          let mostRecentUpdated = new Date(0);
+          for (;;) {
+            // Build in a 5 second grace period
+            const articles = changedTicketArticlesSince(
+              new Date(mostRecentUpdated.getTime() - 5000),
+            );
+
+            for await (const article of articles) {
+              if (new Date(article.updated_at) > mostRecentUpdated) {
+                mostRecentUpdated = new Date(article.updated_at);
+              }
+
+              yield article;
+            }
+
+            if (readyResolve) {
+              readyResolve();
+              readyResolve = undefined;
+              readyReject = undefined;
+            }
+
+            await new Promise((resolve) =>
+              setTimeout(
+                resolve,
+                ZAMMAD_POLL_INTERVAL * (0.95 + 0.1 * Math.random()),
+              ),
             );
           }
         } catch (e) {
@@ -513,117 +640,175 @@ async function main({
   const teamTicketStates = new Map<number, TeamTicketState>();
   const emptyTeamTicketState = new TeamTicketState(HUNT);
 
-  const { readyPromise, tickets } = changedTickets();
-  void (async () => {
-    for await (const ticket of tickets) {
-      const teamId = teamIdByZammadOrg.get(ticket.organization_id);
-      if (!teamId) {
-        continue;
-      }
+  // We use null for "we know this ticket exists but we don't care about it"
+  const globalHintTicketState = new Map<
+    number,
+    null | { teamId: number; slug: string }
+  >();
+  const globalMaxSyncedHintReply = new Map<number, number>(); // map of ticket ID to article ID
 
-      const touchpointSlug = ticket.touchpoint_slug;
-      const interactionSlug = ticket.interaction_slug;
+  const processTicket = async (ticket: ZammadTicketType) => {
+    const teamId = teamIdByZammadOrg.get(ticket.organization_id);
+    if (!teamId) {
+      globalHintTicketState.set(ticket.id, null);
+      return;
+    }
 
-      if (touchpointSlug) {
-        const touchpoint = (Touchpoints as Record<string, TouchpointType>)[
-          touchpointSlug
-        ];
-        if (!touchpoint) {
-          console.warn(
-            `Unknown touchpoint: ${touchpointSlug} in ticket ${ticket.id}`,
-          );
-          continue;
-        }
+    const teamTicketState =
+      teamTicketStates.get(teamId) ??
+      new TeamTicketState(HUNT, emptyTeamTicketState);
 
-        const teamTicketState =
-          teamTicketStates.get(teamId) ??
-          new TeamTicketState(HUNT, emptyTeamTicketState);
+    const touchpointSlug = ticket.touchpoint_slug;
+    const interactionSlug = ticket.interaction_slug;
+    const hintSlug = ticket.hint_puzzle_slug;
 
-        teamTicketState.haveTouchpointTickets.set(
-          touchpointSlug as TouchpointSlug,
-          ticket,
+    if (touchpointSlug) {
+      const touchpoint = (Touchpoints as Record<string, TouchpointType>)[
+        touchpointSlug
+      ];
+      if (!touchpoint) {
+        console.warn(
+          `Unknown touchpoint: ${touchpointSlug} in ticket ${ticket.id}`,
         );
-
-        teamTicketStates.set(teamId, teamTicketState);
-
-        if (
-          touchpoint.closed_action &&
-          zammadTicketStates.get(ticket.state_id) === "closed"
-        ) {
-          switch (touchpoint.closed_action.type) {
-            case "satisfy_gate":
-              {
-                const { gate: gateId } = touchpoint.closed_action;
-                if (!teamTicketState.teamState.gates_satisfied.has(gateId)) {
-                  console.log(
-                    `Marking gate ${gateId} satisfied for team ${teamId}`,
-                  );
-                  await pRetry(
-                    async () => {
-                      const resp =
-                        await frontendApiClient.markTeamGateSatisfied({
-                          params: {
-                            teamId: teamId.toString(),
-                            gateId,
-                          },
-                        });
-                      if (resp.status !== 200) {
-                        throw new Error(
-                          `Failed to mark gate satisfied: ${resp.status}`,
-                        );
-                      }
-                    },
-                    {
-                      onFailedAttempt: (error) => {
-                        console.error(
-                          `Failed to mark gate satisfied for team ${teamId} and gate ${gateId}: ${error.message}. Retrying...`,
-                        );
-                      },
-                    },
-                  );
-                }
-              }
-              break;
-          }
-        }
+        return;
       }
 
-      if (interactionSlug) {
-        const teamTicketState =
-          teamTicketStates.get(teamId) ??
-          new TeamTicketState(HUNT, emptyTeamTicketState);
+      teamTicketState.haveTouchpointTickets.set(
+        touchpointSlug as TouchpointSlug,
+        ticket,
+      );
 
-        teamTicketState.haveInteractionTickets.set(interactionSlug, ticket);
-        teamTicketStates.set(teamId, teamTicketState);
-
-        if (zammadTicketStates.get(ticket.state_id) === "closed") {
-          frontendApiClient;
-          await pRetry(
-            async () => {
-              const resp = await frontendApiClient.completeInteraction({
-                params: {
-                  teamId: teamId.toString(),
-                  interactionId: interactionSlug,
-                },
-              });
-              if (resp.status !== 200) {
-                throw new Error(`Failed to close interaction: ${resp.status}`);
-              }
-            },
+      if (
+        touchpoint.closed_action &&
+        zammadTicketStates.get(ticket.state_id) === "closed"
+      ) {
+        switch (touchpoint.closed_action.type) {
+          case "satisfy_gate":
             {
-              onFailedAttempt: (error) => {
-                console.error(
-                  `Failed to complete interaction for team ${teamId} and interaction ${interactionSlug}: ${error.message}. Retrying...`,
+              const { gate: gateId } = touchpoint.closed_action;
+              if (!teamTicketState.teamState.gates_satisfied.has(gateId)) {
+                console.log(
+                  `Marking gate ${gateId} satisfied for team ${teamId}`,
                 );
-              },
-            },
-          );
+                await retry("mark gate satisfied", async () => {
+                  const resp = await frontendApiClient.markTeamGateSatisfied({
+                    params: {
+                      teamId: teamId.toString(),
+                      gateId,
+                    },
+                  });
+                  if (resp.status !== 200) {
+                    throw new Error(
+                      `Failed to mark gate satisfied: ${resp.status}`,
+                    );
+                  }
+                });
+              }
+            }
+            break;
         }
       }
     }
+
+    if (interactionSlug) {
+      teamTicketState.haveInteractionTickets.set(interactionSlug, ticket);
+
+      if (zammadTicketStates.get(ticket.state_id) === "closed") {
+        frontendApiClient;
+        await retry("close interaction", async () => {
+          const resp = await frontendApiClient.completeInteraction({
+            params: {
+              teamId: teamId.toString(),
+              interactionId: interactionSlug,
+            },
+          });
+          if (resp.status !== 200) {
+            throw new Error(`Failed to close interaction: ${resp.status}`);
+          }
+        });
+      }
+    }
+
+    if (hintSlug) {
+      globalHintTicketState.set(ticket.id, { teamId, slug: hintSlug });
+      teamTicketState.hintTickets.set(hintSlug, ticket);
+    }
+
+    teamTicketStates.set(teamId, teamTicketState);
+  };
+  const { readyPromise: ticketReadyPromise, tickets } = changedTickets();
+  void (async () => {
+    for await (const ticket of tickets) {
+      await processTicket(ticket).catch((e: unknown) => {
+        console.error(e);
+      });
+    }
   })();
-  await readyPromise;
+  await ticketReadyPromise;
   console.log("Initial ticket fetch complete");
+
+  const { readyPromise: articleReadyPromise, articles } =
+    changedTicketArticles();
+  const processTicketArticle = async (article: ZammadTicketArticleType) => {
+    if (article.sender_id === 2) {
+      // Don't process articles with sender=Customer
+      return;
+    }
+
+    if (!globalHintTicketState.has(article.ticket_id)) {
+      // try to populate ourselves
+      const ticket = await retry(
+        `get ticket ${article.ticket_id}`,
+        async () => {
+          const t = await zammadClient.getTicket({
+            params: { id: article.ticket_id },
+          });
+          if (t.status !== 200) {
+            throw new Error(`Failed to fetch ticket: ${t.status}`);
+          }
+          return t;
+        },
+      );
+      await processTicket(ticket.body);
+    }
+
+    const state = globalHintTicketState.get(article.ticket_id);
+    if (!state) {
+      return;
+    }
+
+    const { teamId, slug } = state;
+
+    const latest = globalMaxSyncedHintReply.get(article.ticket_id) ?? 0;
+    if (article.id <= latest) {
+      return;
+    }
+
+    // Need to sync back to the activity log
+    await retry(
+      `update hint reply for team ${teamId} slug ${slug} article ${article.id}`,
+      () =>
+        frontendApiClient.respondToHintRequest({
+          params: {
+            teamId: teamId.toString(),
+            slug,
+          },
+          body: {
+            response: article.body,
+            zammad_article_id: article.id,
+          },
+        }),
+    );
+  };
+  void (async () => {
+    for await (const article of articles) {
+      await processTicketArticle(article).catch((e: unknown) => {
+        console.error(e);
+      });
+    }
+  })();
+  await articleReadyPromise;
+  console.log("Initial ticket article fetch complete");
 
   const activityLogTailer = newLogTailer({
     redisClient,
@@ -632,6 +817,122 @@ async function main({
   });
   activityLogTailer.start();
 
+  const createHintTicket = async ({
+    teamId,
+    slug,
+    title,
+  }: {
+    teamId: number;
+    slug: string;
+    title: string;
+  }) => {
+    const userId = zammadUserByTeamId.get(teamId);
+    if (!userId) {
+      console.warn(`No customer for team ${teamId}`);
+      return;
+    }
+
+    const ticket = await retry(
+      `creating hint ticket for team ${teamId} and slug ${slug}`,
+      async () => {
+        const ticket = await zammadClient.createTicket({
+          body: {
+            group_id: hintsGroupId,
+            customer_id: userId,
+            title: `Hint: ${title}`,
+            hint_puzzle_slug: slug,
+          },
+          extraHeaders: {
+            "X-On-Behalf-Of": userId.toString(),
+          },
+        });
+        if (ticket.status !== 201) {
+          throw new Error(
+            `Failed to create ticket for team ${teamId}: ${ticket.status}`,
+          );
+        }
+        return ticket.body;
+      },
+    );
+
+    await processTicket(ticket);
+    return ticket;
+  };
+  const processHintRequestActivityLogEntry = async (
+    entry: InternalActivityLogEntry & { type: "puzzle_hint_requested" },
+    teamId: number,
+    teamTicketState: TeamTicketState,
+  ) => {
+    const puzzleTitle = puzzles[entry.slug]?.title ?? entry.slug;
+    const ticket =
+      teamTicketState.hintTickets.get(entry.slug) ??
+      (await createHintTicket({
+        teamId,
+        slug: entry.slug,
+        title: puzzleTitle,
+      }));
+
+    if (ticket && (ticket.hint_last_request_entry ?? 0) < entry.id) {
+      console.log(`Updating hint ticket for team=${teamId} slug=${entry.slug}`);
+      const customerId = zammadUserByTeamId.get(teamId);
+      if (!customerId) {
+        console.warn(`No customer for team ${teamId}`);
+        return;
+      }
+
+      const updated = await retry(
+        `update hint ticket for team ${teamId} and slug ${entry.slug}`,
+        async () => {
+          const result = await zammadClient.updateTicket({
+            params: { id: ticket.id },
+            body: {
+              state_id: [...zammadTicketStates.entries()].find(
+                ([_, v]) => v === "open",
+              )?.[0],
+              hint_last_request_entry: entry.id,
+              puzzle_slug: entry.slug,
+              article: {
+                type: "note",
+                internal: false,
+                body: entry.data.request,
+              },
+            },
+            extraHeaders: {
+              "X-On-Behalf-Of": customerId.toString(),
+            },
+          });
+          if (result.status !== 200) {
+            throw new Error(
+              `Failed to update ticket for team ${teamId}: ${result.status}`,
+            );
+          }
+          return result.body;
+        },
+      );
+      await processTicket(updated);
+    }
+  };
+  const processHintResponseActivityLogEntry = (
+    entry: InternalActivityLogEntry & { type: "puzzle_hint_responded" },
+    _teamId: number,
+    teamTicketState: TeamTicketState,
+  ) => {
+    // The lookup here was going to be a mess one way or another, and it ended
+    // up a mess here. We need to go from slug to ticket to the global tracking
+    // of max article ID.
+    const ticket = teamTicketState.hintTickets.get(entry.slug);
+    if (!ticket) {
+      console.warn(`No ticket for hint ${entry.slug}`);
+      return;
+    }
+
+    const latest = globalMaxSyncedHintReply.get(ticket.id) ?? 0;
+    if (entry.data.zammad_article_id <= latest) {
+      return;
+    }
+
+    globalMaxSyncedHintReply.set(ticket.id, entry.data.zammad_article_id);
+  };
   activityLogTailer.watchLog((items) => {
     const modified = new Set<number>();
 
@@ -654,6 +955,27 @@ async function main({
         teamTicketState.reduce(entry);
         teamTicketStates.set(teamId, teamTicketState);
         modified.add(teamId);
+
+        // touchpoints and interactions are handled as synchronization tasks off
+        // of reduced state below, but hints operate on log entries
+        switch (entry.type) {
+          case "puzzle_hint_requested":
+            syncQueue
+              .exec(() =>
+                processHintRequestActivityLogEntry(
+                  entry,
+                  teamId,
+                  teamTicketState,
+                ),
+              )
+              .catch((e: unknown) => {
+                console.error(e);
+              });
+            break;
+          case "puzzle_hint_responded":
+            processHintResponseActivityLogEntry(entry, teamId, teamTicketState);
+            break;
+        }
       }
     });
 
@@ -702,7 +1024,8 @@ async function main({
             console.log(
               `Creating touchpoint ticket for team=${teamId} slug=${touchpointSlug}`,
             );
-            const ticket = await pRetry(
+            const ticket = await retry(
+              `create ticket for team ${teamId} and touchpoint ${touchpointSlug}`,
               () =>
                 zammadClient.createTicket({
                   body: {
@@ -722,13 +1045,6 @@ async function main({
                     "X-On-Behalf-Of": zammadCustomer.toString(),
                   },
                 }),
-              {
-                onFailedAttempt: (error) => {
-                  console.error(
-                    `Failed to create ticket for team ${teamId} and touchpoint ${touchpointSlug}: ${error.message}. Retrying...`,
-                  );
-                },
-              },
             );
             if (ticket.status !== 201) {
               console.error(
@@ -754,7 +1070,8 @@ async function main({
             console.log(
               `Creating interaction ticket for team=${teamId} interaction=${interactionSlug}`,
             );
-            const ticket = await pRetry(
+            const ticket = await retry(
+              `create ticket for team ${teamId} and interaction ${interactionSlug}`,
               () =>
                 zammadClient.createTicket({
                   body: {
@@ -772,13 +1089,6 @@ async function main({
                     "X-On-Behalf-Of": zammadCustomer.toString(),
                   },
                 }),
-              {
-                onFailedAttempt: (error) => {
-                  console.error(
-                    `Failed to create ticket for team ${teamId} and interaction ${interactionSlug}: ${error.message}. Retrying...`,
-                  );
-                },
-              },
             );
             if (ticket.status !== 201) {
               console.error(

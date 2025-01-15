@@ -146,13 +146,13 @@ in {
         {
           id = 1;
           channel_id = 2;
-          name = "Hunt 2025";
-          email = "help@${cfg.domain}";
+          name = "MIT Mystery Hunt 2025";
+          email = "info@${cfg.domain}";
         }
         {
           id = 2;
           channel_id = 2;
-          name = "Hints";
+          name = "MITMH2025 Hints";
           email = "hints@${cfg.domain}";
         }
       ];
