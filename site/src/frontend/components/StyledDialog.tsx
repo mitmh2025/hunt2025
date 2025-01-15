@@ -30,3 +30,13 @@ export const DialogActions = styled.div`
     padding-right: 2rem;
   }
 `;
+
+export const DarkStyledDialog = styled(StyledDialog)`
+  color: var(--white);
+  background-color: var(--gray-900);
+  border-color: var(--true-black);
+
+  &::backdrop {
+    background-color: rgba(255, 255, 255, 0.35);
+  }
+`;

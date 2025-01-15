@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import pop1 from "./balloonPopAssets/balloonSounds/pop1.mp3";
 import pop2 from "./balloonPopAssets/balloonSounds/pop2.mp3";
@@ -7,6 +7,7 @@ import pop4 from "./balloonPopAssets/balloonSounds/pop4.mp3";
 import pop5 from "./balloonPopAssets/balloonSounds/pop5.mp3";
 import pop6 from "./balloonPopAssets/balloonSounds/pop6.mp3";
 import pop7 from "./balloonPopAssets/balloonSounds/pop7.mp3";
+import getConfetti from "./confetti";
 
 const BALLOON_WIDTH = 24;
 const BALLOON_HEIGHT = Math.floor((BALLOON_WIDTH * 4) / 3);
@@ -17,18 +18,18 @@ const Wrapper = styled.main`
   width: ${WIDTH + 8}px;
   margin: 0 auto;
 
-  svg {
+  /* svg {
     width: 100%;
     font-size: 48px;
     font-family: var(--headline-font);
     fill: var(--gold-600);
-  }
+  } */
 `;
 
 const Scores = styled.div`
   text-align: center;
   margin: 0 auto;
-  margin-top: -4rem;
+  /* margin-top: -4rem; */
   margin-bottom: 1rem;
 
   h2 {
@@ -147,9 +148,16 @@ const BalloonPop = () => {
     );
   }
   const score = balloons.filter((b) => b.popped).length;
+
+  useEffect(() => {
+    if (score === balloons.length) {
+      getConfetti();
+    }
+  }, [score, balloons]);
+
   return (
     <Wrapper>
-      <svg viewBox="0 0 500 150">
+      {/* <svg viewBox="0 0 500 150">
         <path
           id="curve"
           d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97"
@@ -158,7 +166,7 @@ const BalloonPop = () => {
         <text width="500">
           <textPath xlinkHref="#curve">POP THE BALLOON</textPath>
         </text>
-      </svg>
+      </svg> */}
       <Scores>
         <h2>
           YOUR SCORE: <span className="score">{score}</span>{" "}
