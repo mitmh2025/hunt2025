@@ -30,11 +30,27 @@ const Games = () => {
   return (
     <Wrapper>
       <Buttons>
-        <Button onClick={() => { setCurrentGame("Balloon Pop"); }}>
+        <Button
+          onClick={() => {
+            setCurrentGame("Balloon Pop");
+          }}
+        >
           Balloon Pop
         </Button>
-        <Button onClick={() => { setCurrentGame("Lucky Duck"); }}>Lucky Duck</Button>
-        <Button onClick={() => { setCurrentGame("Skeeball"); }}>Skeeball</Button>
+        <Button
+          onClick={() => {
+            setCurrentGame("Lucky Duck");
+          }}
+        >
+          Lucky Duck
+        </Button>
+        <Button
+          onClick={() => {
+            setCurrentGame("Skeeball");
+          }}
+        >
+          Skeeball
+        </Button>
       </Buttons>
       <DarkStyledDialog
         open={!!currentGame}
