@@ -347,7 +347,7 @@ export const PuzzlingWordFromOurSponsors = ({
           </p>
           <p className="puzzle-flavor">
             It looks like a few ingredients are missing from both your martini
-            and the promo codes.
+            and the promo codes…
           </p>
           {sortedSubpuzzleStatus.map(
             ({ subpuzzle_name, subpuzzle_slug, answer, image }) => {

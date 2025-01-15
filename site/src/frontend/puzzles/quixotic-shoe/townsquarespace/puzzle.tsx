@@ -2,7 +2,10 @@ import React from "react";
 import { styled } from "styled-components";
 import { mainPuzzleAccessGates } from "..";
 import type { TeamHuntState } from "../../../../../lib/api/client";
-import { COPY_ONLY_CLASS } from "../../../components/CopyToClipboard";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../../components/CopyToClipboard";
 import LinkedImage from "../../../components/LinkedImage";
 import { AuthorsNote } from "../../../components/PuzzleLayout";
 import img1 from "./assets/img1.png";
@@ -229,7 +232,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           </tr>
         ))}
       </CopyOnlySudoku>
-      <BulletinBoard>
+      <BulletinBoard className={NO_COPY_CLASS}>
         <Row>
           <div></div>
           <div></div>
