@@ -1,7 +1,9 @@
-import demo from "../../../assets/demo-photo.png";
+import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
-import neutralSpeaker from "./assets/Neutral.jpg";
-import surprisedSpeaker from "./assets/Surprised.jpg";
+import neutralBg from "./assets/Neutral.jpg";
+import neutralSpeaker from "./assets/Neutral_Speaker.jpg";
+import surprisedBg from "./assets/Surprised.jpg";
+import surprisedSpeaker from "./assets/Surprised_Speaker.jpg";
 import audio_mp3_1 from "./audio/mp3/1.mp3";
 import audio_mp3_10a from "./audio/mp3/10a.mp3";
 import audio_mp3_10b from "./audio/mp3/10b.mp3";
@@ -79,6 +81,8 @@ type JewelryStoreSpeaker =
   | "gemcutter_neutral"
   | "gemcutter_surprised";
 
+type JewleryStoreBG = "surprised";
+
 const remainingOptions = (state: JewelryStoreState) => {
   const remaining_options = [];
   if (!state.idea1) {
@@ -119,18 +123,19 @@ const remainingOptions = (state: JewelryStoreState) => {
 const JewelryStoreInteractionGraph: InteractionGraph<
   JewelryStoreState,
   JewelryStoreResult,
-  JewelryStoreSpeaker
+  JewelryStoreSpeaker,
+  JewleryStoreBG
 > = {
   starting_node: "start",
   starting_state: {
     idea1: false,
     idea2: false,
   },
-  background: "demo", // TODO: get a background image
+  background: neutralBg,
   speaker_states: {
     billie: {
       label: "Billie",
-      image: demo, // TODO: get pose images
+      image: billie,
     },
     gemcutter_neutral: {
       label: "Micah",
@@ -140,6 +145,9 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       label: "Micah",
       image: surprisedSpeaker,
     },
+  },
+  bg_states: {
+    surprised: surprisedBg,
   },
   nodes: [
     {
@@ -253,6 +261,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "2cd-p1",
       speaker: "gemcutter_surprised",
+      overlay: "surprised",
       text: "Pretty words for a pretty PI...But what are you really here for?",
       sound: {
         mp3: audio_mp3_2cd_p1,
@@ -391,6 +400,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "6b-p1",
       speaker: "gemcutter_surprised",
+      overlay: "surprised",
       text: "Pah, money!  Billie, I thought we were friends.",
       sound: {
         mp3: audio_mp3_6b_p1,
@@ -425,6 +435,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "6cd-p1",
       speaker: "gemcutter_surprised",
+      overlay: "surprised",
       text: "You know me well, Billie.  I’ll hold you to that date!... I remember that woman now.  A real looker of a lady.  Sleek hair, sharp dress, _definitely_ in the chips.  She slipped in the door quick, then started giving orders.  She was acting like the boss of this place, but she also kept looking around like she didn’t want to be seen.  She wanted men’s rings and I sold her a beaut of a gold band.  18K, dome edge, high polish...",
       sound: {
         mp3: audio_mp3_6cd_p1,

@@ -342,7 +342,6 @@ const CasinoInteractionGraph: InteractionGraph<
       },
       timeout_msec: 8328,
       next: "1-p1",
-      overlay: "pleased", // TODO
     },
     {
       id: "1-p1",
@@ -353,7 +352,6 @@ const CasinoInteractionGraph: InteractionGraph<
         opus: audio_opus_1_p1,
       },
       timeout_msec: 5784 + 5000,
-      overlay: "annoyed", // TODO
       choices: [
         {
           text: `Bluff: ${line_2a}`,
@@ -380,7 +378,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "2a-p1",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "Not THE Billie Diamond, the notorious Rakish Rogue of the Rio Rancho?",
       sound: {
         mp3: audio_mp3_2a_p1,
@@ -391,7 +390,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "2a-p2",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_pleased",
+      overlay: "pleased",
       text: "I heard you broke the Casino de Monte Carlo!",
       sound: {
         mp3: audio_mp3_2a_p2,
@@ -402,7 +402,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "2a-p3",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "Oh, yes, you would enjoy playing with Carter.",
       sound: {
         mp3: audio_mp3_2a_p3,
@@ -436,7 +437,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "3a-p1",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "Ever since he’s been back, Carter has been gambling up a storm. He’s a regular at this casino, and he’ll play the ponies. He’s not one to turn up a good wager. Are you looking to go head to head with Ferdie?",
       sound: {
         mp3: audio_mp3_3a_p1,
@@ -459,7 +461,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "3b-p1",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_annoyed",
+      overlay: "annoyed",
       text: "You can drop the act. But I’ll give you this – I bought your bluff at first. Buy us a round and we can discuss your real interest in Carter.",
       sound: {
         mp3: audio_mp3_3b_p1,
@@ -471,6 +474,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "3b-p2",
       speaker: "billie",
+      overlay: "annoyed",
       text: "Should have stuck with it.  Oh well.  It’s going to cost Papa a few drinks.  I can live with that.",
       textBubbleType: "thought",
       sound: {
@@ -494,7 +498,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "4a-p1",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_annoyed",
+      overlay: "annoyed",
       text: "You’re persistent, I’ll give you that",
       sound: {
         mp3: audio_mp3_4a_p1,
@@ -505,7 +510,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "4a-p2",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_annoyed",
+      overlay: "annoyed",
       text: "Hmm, I wonder.  Maybe it’s not Carter’s gambling you’re really interested in.",
       sound: {
         mp3: audio_mp3_4a_p2,
@@ -562,7 +568,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "5a-p1",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_annoyed",
+      overlay: "annoyed",
       text: "Hmm, I smell a bluff.  Bluffs make me thirsty.",
       sound: {
         mp3: audio_mp3_5a_p1,
@@ -573,7 +580,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "5a-p2",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_annoyed",
+      overlay: "annoyed",
       text: "Yes, I’m also feeling a bit parched. I see your drink is dry too.",
       sound: {
         mp3: audio_mp3_5a_p2,
@@ -630,7 +638,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "6a-p1",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_pleased",
+      overlay: "pleased",
       text: "Thanks, pardner. We appreciate the offer, but it’s unnecessary.  We already have it covered.  But as an expression of good will, drinks are on us.  And we’ll give you this – when Carter was here earlier, it was to see the Casino owner.",
       sound: {
         mp3: audio_mp3_6a_p1,
@@ -676,7 +685,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "2b-p1",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_annoyed",
+      overlay: "annoyed",
       text: "We don’t have much time for dicks, especially ones who haven’t bought us a drink.",
       sound: {
         mp3: audio_mp3_2b_p1,
@@ -700,6 +710,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "7a",
       speaker: "billie",
+      overlay: "annoyed",
       text: line_7a,
       sound: {
         mp3: audio_mp3_7a,
@@ -710,7 +721,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "7a-p1",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_pleased",
+      overlay: "pleased",
       text: "I like a person who plays a strong hand.",
       sound: {
         mp3: audio_mp3_7a_p1,
@@ -721,7 +733,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "7a-p2",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "I’ve heard of you.  Word is you’re a straight shooter.  If the cards fall your way, maybe we can do business.",
       sound: {
         mp3: audio_mp3_7a_p2,
@@ -734,6 +747,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "7b",
       speaker: "billie",
+      overlay: "annoyed",
       text: line_7b,
       sound: {
         mp3: audio_mp3_7b,
@@ -778,7 +792,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "8a-p1",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "Nice play.  Ever since he’s been back, Carter has been gambling up a storm.  He’s a regular at this casino, and he’ll play the ponies.",
       sound: {
         mp3: audio_mp3_8a_p1,
@@ -801,7 +816,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "8b-p1",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "Even better.  Nothing better than taking money from someone who doesn’t care if they lose it.  I’ll say Carter is a regular around here.  Buy us another round and maybe we can tell you more.",
       sound: {
         mp3: audio_mp3_8b_p1,
@@ -814,6 +830,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "9a",
       speaker: "billie",
+      overlay: "pleased",
       text: line_9a,
       sound: {
         mp3: audio_mp3_9a,
@@ -848,6 +865,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "9b",
       speaker: "billie",
+      overlay: "pleased",
       text: line_9b,
       sound: {
         mp3: audio_mp3_9b,
@@ -892,7 +910,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "10a-p1",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "Ha!  In that case, it would be our pleasure.  And you’d probably want to know that when Carter was here earlier, it was to see the Casino owner.",
       sound: {
         mp3: audio_mp3_10a_p1,
@@ -915,7 +934,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "10b-p1",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_pleased",
+      overlay: "pleased",
       text: "I’ll be sure to thank him.  And to thank you, I’ll tell you that Carter met with the Casino owner earlier today.",
       sound: {
         mp3: audio_mp3_10b_p1,
@@ -929,6 +949,7 @@ const CasinoInteractionGraph: InteractionGraph<
     {
       id: "11",
       speaker: "billie",
+      overlay: "pleased",
       text: "Why did Carter meet with the Casino owner?",
       sound: {
         mp3: audio_mp3_11,
@@ -971,7 +992,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "11-weak-p2",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_annoyed",
+      overlay: "annoyed",
       text: "You’re not ready for games with high stakes.  But since you’ve bought our next round of drinks, I’ll feed you this crumb: Ferdinand, like you, is in over his head.",
       sound: {
         mp3: audio_mp3_11_weak_p2,
@@ -982,7 +1004,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "11-weak-p3",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_annoyed",
+      overlay: "annoyed",
       text: "I’ve heard he’s racked up some major IOUs.  You should leave the casino before you get in similar trouble.",
       sound: {
         mp3: audio_mp3_11_weak_p3,
@@ -993,7 +1016,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "11-weak-p4",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_annoyed",
+      overlay: "annoyed",
       text: "Here, keep this souvenir as a reminder.",
       sound: {
         mp3: audio_mp3_11_weak_p4,
@@ -1041,7 +1065,8 @@ const CasinoInteractionGraph: InteractionGraph<
     // Perfect conclusion (points == 5)
     {
       id: "11-perfect",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "I can tell you don’t play games when you’re playing games, so I’ll lay my cards on the table.  Even when he was young, Ferdinand had a streak of the gambler in him.  Before he went on his years of travel across the Atlantic, he had it under control.  Moreover, he seemed to have the devil’s own luck.  But when he returned, he was a changed man – at least, a changed gambler.  Carter isn’t the man he used to be.",
       sound: {
         mp3: audio_mp3_11_perfect,
@@ -1052,7 +1077,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "11-perfect-p1",
-      speaker: "shark_two_neutral",
+      speaker: "shark_two_pleased",
+      overlay: "pleased",
       text: "He doubles down on bad beats.  His lucky streaks run drier than the Sahara.  He plays loose and I’ve heard he’s in over his head with debt.  When he was here earlier, I heard he was flashing the Shadow Diamond to show the owner he was good for it.",
       sound: {
         mp3: audio_mp3_11_perfect_p1,
@@ -1074,7 +1100,8 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     {
       id: "11-perfect-p3",
-      speaker: "shark_one_neutral",
+      speaker: "shark_one_pleased",
+      overlay: "pleased",
       text: "Here’s my card — from one shark to another.",
       sound: {
         mp3: audio_mp3_11_perfect_p3,

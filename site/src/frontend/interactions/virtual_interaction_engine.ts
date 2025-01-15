@@ -47,6 +47,7 @@ class VirtualInteractionMonitor {
     object,
     unknown,
     string,
+    string,
     unknown
   >;
 
@@ -89,6 +90,7 @@ class VirtualInteractionMonitor {
     interactionHandler: VirtualInteractionHandler<
       object,
       unknown,
+      string,
       string,
       unknown
     >;
@@ -505,6 +507,7 @@ export class VirtualInteractionEngine {
                     object,
                     unknown,
                     string,
+                    string,
                     unknown
                   >,
                   teamInteractionStateLogTailer:
@@ -573,6 +576,7 @@ export class VirtualInteractionEngine {
                 interactionHandler: nextHandler as VirtualInteractionHandler<
                   object,
                   unknown,
+                  string,
                   string,
                   unknown
                 >,

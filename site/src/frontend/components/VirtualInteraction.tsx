@@ -102,6 +102,10 @@ export const Scrollback = styled.div`
     font-weight: 300;
   }
 
+  .bubble-type-thought {
+    font-style: italic;
+  }
+
   .speaker {
     font-weight: bold;
   }
@@ -166,7 +170,9 @@ export const DialogueChoice = styled.div`
   }
 `;
 
-const Line = styled.p``;
+const Line = styled.p`
+  margin-top: 1em;
+`;
 
 const VotesView = ({
   slug,
@@ -285,7 +291,7 @@ export default function VirtualInteraction({
                 // direction column-reverse (so we scroll to the bottom by
                 // default).
                 const classNames = [];
-                if (i === nodes.length - 1) {
+                if (i === 0) {
                   classNames.push("current-line");
                 }
 
