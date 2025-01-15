@@ -13,6 +13,7 @@ const Puzzle = ({
   const inlineScript = `window.initialTeamState = ${JSON.stringify(teamState)};`;
   return (
     <>
+      <noscript>This puzzle requires Javascript.</noscript>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
       <noscript>This puzzle requires Javascript.</noscript>
       <div id="and-now-a-puzzling-word-from-our-sponsors-root">

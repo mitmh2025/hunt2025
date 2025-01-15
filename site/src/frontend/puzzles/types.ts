@@ -53,6 +53,8 @@ type BaseContentProps = {
 
 type PuzzleContentProps = BaseContentProps & {
   teamName: string;
+  teamId: number;
+  teamJwt: string | undefined;
   type: "puzzle";
   puzzleState: PuzzleState;
   puzzleStateLog: PuzzleStateLogEntry[] | undefined;

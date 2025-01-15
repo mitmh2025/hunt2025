@@ -453,6 +453,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           <ContentComponent
             type="puzzle"
             teamName={req.teamState.info.teamName}
+            teamId={req.teamState.teamId}
+            teamJwt={req.cookies.mitmh2025_auth as string | undefined}
             teamState={req.teamState.state}
             puzzleState={result.body}
             puzzleStateLog={puzzleStateLog}
