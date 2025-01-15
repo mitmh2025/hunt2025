@@ -3,14 +3,18 @@ import canonicalizeInput from "../lib/canonicalizeInput";
 import { TeamStateIntermediate } from "../src/api/logic";
 import HUNT from "../src/huntdata";
 import { type Interaction, type Hunt } from "../src/huntdata/types";
-import Touchpoints, { type TouchpointSlug } from "./Touchpoints";
+import Touchpoints, {
+  type TouchpointType,
+  type TouchpointSlug,
+} from "./Touchpoints";
 import { type ZammadTicketType } from "./zammadApi";
 
 const activityCreatesTouchpointTicket = (
   entry: InternalActivityLogEntry,
   s: TouchpointSlug,
 ): boolean => {
-  const trigger = Touchpoints[s];
+  const trigger: TouchpointType = Touchpoints[s];
+  if (!trigger.created_if) return false;
   const { created_if } = trigger;
   switch (created_if.type) {
     case "slug_unlocked":
