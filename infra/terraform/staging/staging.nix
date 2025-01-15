@@ -17,6 +17,7 @@
       25 # SMTP
       80 # HTTP
       443 # HTTPS
+      8554 # MediaMTX RTSP
       8883 # MQTTs
       9443 # Authentik HTTPS
     ];

@@ -143,4 +143,17 @@ in {
     inherit (self.inputs) radio-media;
   };
   radioImage = final.callPackage ./radio-image.nix {};
+
+  opentelemetry-collector-contrib = prev.opentelemetry-collector-contrib.overrideAttrs {
+    version = "0.110.0";
+
+    src = final.fetchFromGitHub {
+      owner = "open-telemetry";
+      repo = "opentelemetry-collector-contrib";
+      rev = "v0.110.0";
+      hash = "sha256-bDtP7EFKus0NJpLccbD+HlzEusc+KAbKWmS/KGthtwY=";
+    };
+
+    vendorHash = "sha256-pDDEqtXu167b+J1+k7rC1BE5/ehxzG0ZAkhxqmJpHsg=";
+  };
 }

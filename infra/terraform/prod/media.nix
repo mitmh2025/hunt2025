@@ -8,6 +8,7 @@
       22 # SSH
       80 # HTTP
       443 # HTTPS
+      8554 # MediaMTX RTSP
     ];
     firewall.allowedUDPPorts = [
       50000 # MediaMTX RTP

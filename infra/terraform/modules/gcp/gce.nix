@@ -74,7 +74,14 @@ in {
             "google_compute_instance.${name}"
             "google_compute_firewall.${name}"
           ];
-          objects.serviceAccount.displayName = "Used by the ${config.name} VM";
+          objects.serviceAccount = {
+            displayName = "Used by the ${config.name} VM";
+            iamRoles = [
+              "monitoring.metricWriter"
+              "logging.logWriter"
+              "cloudtrace.agent"
+            ];
+          };
           resource.google_compute_disk = {
             inherit (config) name;
             inherit (config.bootDisk) size image;
