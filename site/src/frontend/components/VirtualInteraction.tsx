@@ -18,8 +18,8 @@ function proportionify(size: number) {
 }
 
 const IconSvg = styled.svg`
-  fill: var(--white);
-  stroke: var(--white);
+  fill: var(--black);
+  stroke: var(--black);
   width: 20px;
   height: 20px;
 `;
