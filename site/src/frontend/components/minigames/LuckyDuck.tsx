@@ -1,5 +1,11 @@
-import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
-import styled from "styled-components";
+import React, {
+  useRef,
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useCallback,
+} from "react";
+import { styled } from "styled-components";
 import getConfetti from "./confetti";
 import duckLeft from "./luckyDuckAssets/duck-left.png";
 import duckRight from "./luckyDuckAssets/duck-right.png";
@@ -16,7 +22,7 @@ function fleeSpeed(score: number): number {
   const speeds = [0.9, 0.8, 0.7, 0.6, 0.5];
 
   if (score >= 0 && score < speeds.length) {
-    return speeds[score]!;
+    return speeds[score] ?? (speeds[0]!);
   }
 
   return 0.5 * (1 / Math.pow(1.5, score - 8));
@@ -128,24 +134,24 @@ export default function Game() {
   const isFleeing = useRef(false);
   const quackRef = useRef<HTMLAudioElement | null>(null);
 
-  function flee() {
+  const flee = useCallback(() => {
     if (isFleeing.current) {
       return;
     }
 
-    const boardWidth = gameBoardRef.current!.offsetWidth;
-    const boardHeight = gameBoardRef.current!.offsetHeight;
+    const boardWidth = gameBoardRef.current?.offsetWidth ?? 0;
+    const boardHeight = gameBoardRef.current?.offsetHeight ?? 0;
 
-    const duckWidth = duckRef.current!.offsetWidth;
-    const duckHeight = duckRef.current!.offsetHeight;
+    const duckWidth = duckRef.current?.offsetWidth ?? 0;
+    const duckHeight = duckRef.current?.offsetHeight ?? 0;
 
     const maxLeft = boardWidth - duckWidth;
     const maxTop = boardHeight - duckHeight;
 
     // compute 10 possible locations, then pick the farthest away
     const duckCenter = {
-      x: Number(duckRef.current!.offsetLeft) + duckWidth / 2,
-      y: Number(duckRef.current!.offsetTop) + duckHeight / 2,
+      x: Number(duckRef.current?.offsetLeft) + duckWidth / 2,
+      y: Number(duckRef.current?.offsetTop) + duckHeight / 2,
       facing: duckLocation.facing,
     };
 
@@ -186,11 +192,11 @@ export default function Game() {
 
       isFleeing.current = true;
     }
-  }
+  }, [gameBoardRef, duckRef, duckLocation]);
 
   useEffect(() => {
     function onMouseMove(evt: MouseEvent) {
-      const duckPos = duckRef.current!.getBoundingClientRect();
+      const duckPos = duckRef.current?.getBoundingClientRect()!;
       const threshold = fleeThreshold();
 
       if (
@@ -211,7 +217,7 @@ export default function Game() {
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
     };
-  }, []);
+  }, [flee]);
 
   const duckCount = 1;
   const { width, height } = duckSize(duckCount);
@@ -251,7 +257,7 @@ export default function Game() {
             setIsWinner(true);
             if (quackRef.current) {
               quackRef.current.currentTime = 0;
-              quackRef.current.play();
+              void quackRef.current.play();
             }
             getConfetti();
           }}

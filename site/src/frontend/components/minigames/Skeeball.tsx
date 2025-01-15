@@ -59,7 +59,7 @@ const Skeeball = () => {
     fill?: string,
   ) {
     if (fill) {
-      ctx.fillStyle = fill ?? CREAM;
+      ctx.fillStyle = fill;
       ctx.beginPath();
       ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
       ctx.fill();
@@ -195,7 +195,7 @@ const Skeeball = () => {
         ctx.stroke();
       }
     },
-    [frozenVelocity, tries],
+    [tries, drawBall, getIndicatorPosition],
   );
 
   const drawLabel = useCallback(
@@ -356,7 +356,7 @@ const Skeeball = () => {
       ctx.rect(0, HEIGHT - 30, skeeBallWidth, 30);
       ctx.fill();
     },
-    [],
+    [drawLabel],
   );
 
   const draw = useCallback(() => {
@@ -372,7 +372,7 @@ const Skeeball = () => {
         drawForceMeter(ctx, skeeBallWidth);
       }
     }
-  }, [frozenVelocity, tries]);
+  }, [tries, drawForceMeter, drawSkeeball]);
 
   useEffect(() => {
     if (!periodicHandle.current) {
@@ -389,7 +389,7 @@ const Skeeball = () => {
   const handleClick = () => {
     if (!frozenVelocity && tries > 0) {
       setTries((state) => (state -= 1));
-      const inverseVelocity = getIndicatorPosition() || 0;
+      const inverseVelocity = getIndicatorPosition() ?? 0;
       setFrozenVelocity(inverseVelocity);
       const minSuccess = 0.5 - SUCCESS_RANGE / 2;
       const maxSuccess = 0.5 + SUCCESS_RANGE / 2;
@@ -420,7 +420,7 @@ const Skeeball = () => {
         window.setTimeout(() => {
           if (crashRef.current) {
             crashRef.current.currentTime = 0;
-            crashRef.current.play();
+            void crashRef.current.play();
           }
         }, 400);
       } else if (inverseVelocity > 0.95) {
