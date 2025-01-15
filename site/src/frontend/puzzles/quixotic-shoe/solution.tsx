@@ -58,7 +58,7 @@ const HELLFRESH_DATA: [string, string, string, string][] = [
     "7 Ounces stone pix preferably",
     "Ounces stone pi[pe, ony]x preferably",
   ],
-  ["11D", "AGENT", "11 Queens in DR., our age", "queens in dr[ag ent]ourage"],
+  ["11D", "AGENT", "11 Queens in DR., our age", "Queens in dr[ag ent]ourage"],
   ["13D", "WHALE", "13 Nary eBalls", "Nar[whal e]yeballs"],
   [
     "14D",
