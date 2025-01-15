@@ -26,8 +26,8 @@ const Display = ({ info }: { info: ControlRoomInfo }): JSX.Element => {
       console.log(msg);
       if (msg.name === "game_state" && msg.state.instruction) {
         setInstruction(msg.state.instruction);
+        void new Audio(ding).play();
       }
-      void new Audio(ding).play();
     },
     [setInstruction],
   );
