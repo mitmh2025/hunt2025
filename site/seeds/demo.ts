@@ -8,6 +8,7 @@ import {
   puzzleStateLog,
 } from "../src/api/data";
 import { retryOnAbort } from "../src/api/db";
+import { INTERACTIONS } from "../src/frontend/interactions";
 import { PUZZLES } from "../src/frontend/puzzles";
 import {
   orderedQuixoticSubpuzzleSlugs,
@@ -22,6 +23,7 @@ export async function seed(knex: Knex): Promise<void> {
   const gates = new Set(
     HUNT.rounds.flatMap((round) => (round.gates ?? []).map((gate) => gate.id)),
   );
+  const interactionSlugs = new Set(Object.keys(INTERACTIONS));
 
   const createTeam = async (
     username: string,
@@ -165,6 +167,57 @@ export async function seed(knex: Knex): Promise<void> {
     }
   };
 
+  const ensureInteractionUnlocked = async (
+    mutator: ActivityLogMutator,
+    team_id: number,
+    slug: string,
+  ) => {
+    if (
+      !mutator.log.some(
+        (entry) =>
+          (entry.team_id === team_id || entry.team_id === undefined) &&
+          entry.type === "interaction_unlocked" &&
+          entry.slug === slug,
+      )
+    ) {
+      await mutator.appendLog({
+        team_id,
+        type: "interaction_unlocked",
+        slug,
+      });
+    }
+  };
+
+  const ensureInteractionCompleted = async (
+    mutator: ActivityLogMutator,
+    team_id: number,
+    slug: string,
+  ) => {
+    const resultLookup: Record<string, string> = {
+      interview_at_the_casino: "ace-of-spades",
+      interview_at_the_boardwalk: "photo",
+      interview_at_the_art_gallery: "kieftenbeld",
+    };
+    const result: string = resultLookup[slug] || "";
+    if (
+      !mutator.log.some(
+        (entry) =>
+          (entry.team_id === team_id || entry.team_id === undefined) &&
+          entry.type === "interaction_completed" &&
+          entry.slug === slug,
+      )
+    ) {
+      await mutator.appendLog({
+        team_id,
+        type: "interaction_completed",
+        slug,
+        data: {
+          result,
+        },
+      });
+    }
+  };
+
   await createTeam("prehunt");
   await createTeam("team");
   await createTeam("unlockable", async (team_id, mutator) => {
@@ -226,6 +279,11 @@ export async function seed(knex: Knex): Promise<void> {
     // to row-by-row here
     for (const slug of slugs) {
       await ensurePuzzleSolved(mutator, team_id, slug);
+    }
+    // mark all interactions as completed
+    for (const slug of interactionSlugs) {
+      ensureInteractionUnlocked(mutator, team_id, slug);
+      ensureInteractionCompleted(mutator, team_id, slug);
     }
   });
 
