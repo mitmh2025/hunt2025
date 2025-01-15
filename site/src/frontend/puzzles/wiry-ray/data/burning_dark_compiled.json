@@ -413,11 +413,6 @@
     "moveDescriptions": "There is a path northeast, south, west, and northwest.",
     "moves": [
       {
-        "direction": "NE",
-        "destination": "146",
-        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
-      },
-      {
         "direction": "SS",
         "destination": "148",
         "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
@@ -492,11 +487,6 @@
       {
         "direction": "SS",
         "destination": "148",
-        "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
-      },
-      {
-        "direction": "SW",
-        "destination": "144",
         "moveDescription": "The fog is thick, you cannot see where you are going. Light of a blue fire flickers as you pass through it."
       },
       {
