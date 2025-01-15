@@ -7,6 +7,7 @@ import {
   connect as redisConnect,
   activityLog,
   teamRegistrationLog,
+  teamInteractionStateLog,
 } from "hunt2025/src/api/redis";
 import { newLogTailer } from "hunt2025/src/frontend/server/dataset_tailer";
 import HUNT from "hunt2025/src/huntdata";
@@ -351,6 +352,53 @@ async function main({
   });
 
   await activityLogTailer.readyPromise();
+
+  // Watch the team interaction state log.  When we observe new (not available at startup) entries,
+  // dispatch a request to play them on the radio.
+  let interactionsCaughtUp = false;
+  const teamInteractionStateLogTailer = newLogTailer({
+    redisClient,
+    fetchMethod:
+      frontendApiClient.getFullTeamInteractionStateLog.bind(frontendApiClient),
+    log: teamInteractionStateLog,
+  });
+  teamInteractionStateLogTailer.start();
+  teamInteractionStateLogTailer.watchLog((items) => {
+    if (interactionsCaughtUp) {
+      for (const entry of items) {
+        const customer = customersByTeamId.get(entry.team_id);
+        if (customer) {
+          const opusFilename = `${entry.slug}/${entry.node}.opus`;
+          tbClient.client.ruleEngine
+            .requestEntity({
+              params: {
+                entityType: "CUSTOMER",
+                entityId: customer.id.id,
+              },
+              body: {
+                method: "play_unducked_audio",
+                params: opusFilename,
+              },
+            })
+            .then(check)
+            .then(
+              () => {
+                /* no-op on success */
+              },
+              (err: unknown) => {
+                console.warn(
+                  `Failed to play ${opusFilename} for team ${entry.team_id}`,
+                  err,
+                );
+              },
+            );
+        }
+      }
+    }
+  });
+  await teamInteractionStateLogTailer.readyPromise().then(() => {
+    interactionsCaughtUp = true;
+  });
 
   console.log("radioman running");
 }
