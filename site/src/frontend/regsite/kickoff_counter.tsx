@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 
@@ -31,42 +31,56 @@ const InsideTextDiv = styled.div`
   align-items: center;
 `;
 
+type ApiResponse = {
+  results: [Record<string, number>];
+  error?: string;
+};
+
 const Room = ({ name, slug }: { name: string; slug: string }) => {
   const [occupancy, setOccupancy] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [color, setColor] = useState("#fff");
   const apiUrl = "https://api.beamian.com/api/v2/spaces?slug=" + slug;
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises -- need the await for the fetch
-    setInterval(async () => {
-      const response = await fetch(apiUrl, {
-        mode: "cors",
-        method: "GET",
-        referrerPolicy: "no-referrer",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- don't know how to typescript this
-      const data = await response.json();
-      const capacity: number =
-        data.results !== undefined ? data.results[0].capacity : 0;
-      const current: number =
-        data.results !== undefined ? data.results[0].current : 0;
-      const ratio = capacity > 0 ? current / capacity : 1;
-      setCapacity(capacity);
-      setOccupancy(current);
+  const hitApi = useCallback(() => {
+    fetch(apiUrl, {
+      mode: "cors",
+      method: "GET",
+      referrerPolicy: "no-referrer",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data: ApiResponse) => {
+        const capacity: number =
+          data.results[0].capacity !== undefined ? data.results[0].capacity : 0;
+        const current: number =
+          data.results[0].current !== undefined ? data.results[0].current : 0;
+        const ratio = capacity > 0 ? current / capacity : 1;
+        setCapacity(capacity);
+        setOccupancy(current);
 
-      if (ratio > 0.8) {
-        setColor("red");
-      } else if (ratio > 0.5 && ratio <= 0.8) {
-        setColor("#d0d081");
-      } else {
-        setColor("green");
-      }
-    }, 5000);
+        if (ratio > 0.8) {
+          setColor("red");
+        } else if (ratio > 0.5 && ratio <= 0.8) {
+          setColor("#d0d081");
+        } else {
+          setColor("green");
+        }
+      })
+      .catch((error: unknown) => {
+        console.log(error);
+      });
   }, [apiUrl]);
+
+  // first immediate update
+  hitApi();
+
+  // now update every 5 seconds
+  useEffect(() => {
+    setInterval(hitApi, 5000);
+  }, [hitApi]);
 
   return (
     <>
