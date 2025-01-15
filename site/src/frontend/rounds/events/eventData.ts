@@ -39,16 +39,58 @@ const BASE_TIMES = {
 };
 const EVENT_TIME_GROUPS: EventTimeGroup[] = [
   {
+    maxUsername: "dc",
+    times: {
+      tailing_a_lead: "Saturday 1/18, 10:00-10:45 AM",
+      ...BASE_TIMES,
+    },
+  },
+  {
+    maxUsername: "hj",
+    times: {
+      tailing_a_lead: "Saturday 1/18, 10:10-10:55 AM",
+      ...BASE_TIMES,
+    },
+  },
+  {
+    maxUsername: "lowa",
+    times: {
+      tailing_a_lead: "Saturday 1/18, 10:20-11:05 AM",
+      ...BASE_TIMES,
+    },
+  },
+  {
+    maxUsername: "og",
+    times: {
+      tailing_a_lead: "Saturday 1/18, 10:30-11:15 AM",
+      ...BASE_TIMES,
+    },
+  },
+  {
+    maxUsername: "qe",
+    times: {
+      tailing_a_lead: "Saturday 1/18, 10:40-11:25 AM",
+      ...BASE_TIMES,
+    },
+  },
+  {
+    maxUsername: "spa",
+    times: {
+      tailing_a_lead: "Saturday 1/18, 10:50-11:35 AM",
+      ...BASE_TIMES,
+    },
+  },
+  {
     maxUsername: "ua",
     times: {
-      tailing_a_lead: "Saturday 1/18, 10:00-11:00 AM",
+      tailing_a_lead: "Saturday 1/18, 11:00-11:45 AM",
       ...BASE_TIMES,
     },
   },
   {
     maxUsername: "zzz",
     times: {
-      tailing_a_lead: "Saturday 1/18, 11:00-12:00 AM",
+      tailing_a_lead: "Saturday 1/18, 11:10-11:55 AM",
       ...BASE_TIMES,
     },
   },
