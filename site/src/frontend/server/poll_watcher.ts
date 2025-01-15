@@ -102,6 +102,8 @@ export class PollWatcher {
         this.mergedObservers.set(key, mergedObserver);
         await this.pubsubRedisClient.subscribe(key, listener);
         console.log("mergedObserver subscribe ready");
+      } else {
+        mergedObserver.observers.set(observerId, callback);
       }
 
       return this.stopObserver.bind(this, key, observerId);
