@@ -251,16 +251,12 @@ export async function interactionRequestHandler(
 
   switch (interactionDefinition.type) {
     case "virtual":
-      if (process.env.NODE_ENV === "development") {
-        return virtualInteractionHandler(
-          req,
-          teamState,
-          slug,
-          interactionDefinition,
-        );
-      } else {
-        return undefined;
-      }
+      return virtualInteractionHandler(
+        req,
+        teamState,
+        slug,
+        interactionDefinition,
+      );
     case "live":
       return liveInteractionHandler(
         req,
