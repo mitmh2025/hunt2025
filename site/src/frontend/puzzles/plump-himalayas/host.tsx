@@ -1,11 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { type PHGameState, type PHTask, type ControlRoomInfo } from "./types";
+import {
+  type ControlRoomServerState,
+  type ControlRoomTask,
+  type ControlRoomInfo,
+} from "./types";
 
 type WSMessage =
   | {
       name: "game_state";
-      state: PHGameState;
+      state: ControlRoomServerState;
     }
   | {
       name: "teams";
@@ -13,7 +17,9 @@ type WSMessage =
     };
 
 const Host = ({ info }: { info: ControlRoomInfo }) => {
-  const [state, setState] = useState<PHGameState | undefined>(undefined);
+  const [state, setState] = useState<ControlRoomServerState | undefined>(
+    undefined,
+  );
   const [teams, setTeams] = useState<Record<string, number>>({});
 
   const socketRef = useRef<WebSocket | null>(null);
@@ -64,7 +70,7 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
     socketRef.current?.send(JSON.stringify({ name, ...(args ?? {}) }));
   }
 
-  function markCompletion(task: PHTask) {
+  function markCompletion(task: ControlRoomTask) {
     return (e: React.MouseEvent) => {
       e.preventDefault();
       const complete = !task.finished;
@@ -108,11 +114,11 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
       {state?.started && (
         <div id="chosen">
           <button id="verb" disabled>
-            {state.action.verb}
+            {state.instruction.verb}
           </button>{" "}
           THE{" "}
           <button id="noun" disabled>
-            {state.action.noun}
+            {state.instruction.noun}
           </button>
         </div>
       )}
@@ -137,12 +143,12 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
               <ul id="tasks">
                 {state.tasks.map((task) => (
                   <li key={task.text}>
-                    <a
+                    <button
                       className={task.finished ? "done" : ""}
                       onClick={markCompletion(task)}
                     >
                       {task.text}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>

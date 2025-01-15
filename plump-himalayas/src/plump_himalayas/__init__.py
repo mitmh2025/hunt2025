@@ -49,7 +49,7 @@ class Phase(IntEnum):
 
 @dataclass_json
 @dataclass
-class PHAction:
+class PHInstruction:
     verb: Optional[str] = None
     noun: Optional[str] = None
 
@@ -73,8 +73,8 @@ class PHTask:
 @dataclass_json
 @dataclass
 class PHVote:
-    choice: PHAction
-    old: PHAction
+    choice: PHInstruction
+    old: PHInstruction
 
 @dataclass_json
 @dataclass
@@ -83,12 +83,12 @@ class PHClientMessage:
     tasks: Optional[List[PHTask]] = None
     verbs: Optional[List[str]] = None
     nouns: Optional[List[str]] = None
-    action: Optional[PHAction] = None
+    instruction: Optional[PHInstruction] = None
 
 class PHState:
     def __init__(self):
         self.phase = Phase.NOT_STARTED
-        self.action = PHAction("OPEN", "CHEST")
+        self.instruction = PHInstruction("OPEN", "CHEST")
         self.completed = [[False for _ in phase] for phase in all_tasks]
         self.votes = (defaultdict(lambda: 0),defaultdict(lambda: 0))
     
@@ -133,15 +133,15 @@ class PHState:
                 self.votes[1][vote.old.noun] -= 1
         print(self.votes)
 
-    def update_action(self):
-        v, n = self.action.verb, self.action.noun
+    def update_instruction(self):
+        v, n = self.instruction.verb, self.instruction.noun
         if len(self.votes[0]) > 0:
             print(self.votes[0].items())
-            self.action.verb = max(self.votes[0].items(), key=lambda p: p[1])[0]
+            self.instruction.verb = max(self.votes[0].items(), key=lambda p: p[1])[0]
         if len(self.votes[1]) > 0:
-            self.action.noun = max(self.votes[1].items(), key=lambda p: p[1])[0]
-        print(v, self.action.verb, n, self.action.noun)
-        return v != self.action.verb or n != self.action.noun
+            self.instruction.noun = max(self.votes[1].items(), key=lambda p: p[1])[0]
+        print(v, self.instruction.verb, n, self.instruction.noun)
+        return v != self.instruction.verb or n != self.instruction.noun
 
     def update_phase_on_task_completion(self):
         if self.phase != Phase.START:
@@ -175,7 +175,7 @@ class PHState:
             tasks=self.tasks,
             verbs=self.verbs,
             nouns=self.nouns,
-            action=self.action,
+            instruction=self.instruction,
         )
 
 class WebSocketManager:
@@ -288,11 +288,11 @@ class GameManager:
             case _:  # Default case
                 raise RuntimeError(f"Unknown command {data['name']}.")
             
-    async def update_action(self):
+    async def update_instruction(self):
         while True:
             print("polling")
-            if self.game_state.update_action():
-                print(self.game_state.action)
+            if self.game_state.update_instruction():
+                print(self.game_state.instruction)
                 await self.update_all()
             print("sleep")
             await asyncio.sleep(self.polling_frequency)
@@ -310,7 +310,7 @@ class GameManager:
             self.game_state.phase = Phase.VANILLA
             await self.update_all()
             loop = asyncio.get_event_loop()
-            self.task = loop.create_task(self.update_action())
+            self.task = loop.create_task(self.update_instruction())
         return # TODO
 
     async def end_game(self):

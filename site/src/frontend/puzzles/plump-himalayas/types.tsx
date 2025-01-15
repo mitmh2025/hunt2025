@@ -3,29 +3,38 @@ export type ControlRoomInfo = {
   wsUrl: string;
 };
 
-export type PHAction = {
+export type ControlRoomInstruction = {
   verb: string;
   noun: string;
 };
 
-export type PHTask = {
+export type ControlRoomTask = {
   text: string;
   finished: boolean;
 };
 
-export type PHVote = {
-  choice: Partial<PHAction>;
-  old: PHAction;
+export type ControlRoomVote = {
+  choice: Partial<ControlRoomInstruction>;
+  old: ControlRoomInstruction;
 };
 
-export type PHGameState =
-  | {
-      started: false;
-    }
-  | {
-      started: true;
-      tasks: PHTask[];
-      verbs: string[];
-      nouns: string[];
-      action: PHAction;
-    };
+export type ControlRoomServerMessage = {
+  tasks: ControlRoomTask[];
+  verbs: string[];
+  nouns: string[];
+  instruction: ControlRoomInstruction;
+};
+
+type NotStartedState = { started: false } & Partial<ControlRoomServerMessage>;
+type StartedState = { started: true } & ControlRoomServerMessage;
+
+export type ControlRoomServerState = NotStartedState | StartedState;
+
+export type ControlRoomGameState = ControlRoomServerState & {
+  noun: string | null;
+  verb: string | null;
+  lastNoun: string | null;
+  lastVerb: string | null;
+  disableNouns: boolean;
+  disableVerbs: boolean;
+};
