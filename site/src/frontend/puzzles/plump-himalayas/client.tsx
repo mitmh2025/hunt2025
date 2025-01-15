@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
-import image from "./assets/video.png";
+import endImage from "./assets/end.png";
+import startImage from "./assets/start.png";
+import useAppendDataset from "../../client/useAppendDataset";
+import { PuzzleStateLogEntry } from "lib/api/frontend_contract";
+import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -71,7 +75,7 @@ const TheBox = styled.div`
   padding: 5px;
 `;
 
-const Video = styled.img`
+const VideoPlaceholder = styled.img`
     width:min(480px, 100%);
     aspect-ratio: 4/3;
     align-content: center;
@@ -145,7 +149,7 @@ const initialState: PHState = {
     action: {}
 }
 
-const App = () => {
+const Game = () => {
     const [{tasks, verbs, nouns, action}, setState] = useState(initialState);
     const [choices, setChoices] = useState({} as PHAction);
     const [video, setVideo] = useState("");
@@ -197,7 +201,7 @@ const App = () => {
       return () => {
         socket.close();
       };
-    }, []); // Pass in an empty array to only run on mount.  
+    }, []);
     
     function updateVote(t: "noun" | "verb", value: string) {
         return (e: React.MouseEvent) => {
@@ -221,7 +225,7 @@ const App = () => {
   return (
     <FlexWrapper>
       <VideoWrapper>
-        <Video src={image}></Video>
+        <VideoPlaceholder src={startImage}></VideoPlaceholder>
       </VideoWrapper>
       <Col2>
         <Header>Tasks</Header>
@@ -244,6 +248,60 @@ const App = () => {
     </FlexWrapper>
   );
 };
+
+type PHPuzzleState = {
+  room?: string;
+  time?: string;
+  video?: string;
+  ws?: string;
+  complete: boolean;
+}
+
+const App = () => {
+  const log = useAppendDataset(
+    "puzzle_state_log",
+    { slug: "control_room" },
+    [] as PuzzleStateLogEntry[],
+  );
+  
+  // each log entry contains whole current state, mostly because it's small and makes it easy to undo anything ig :shrug:
+  const {room, time, video, ws, complete}: PHPuzzleState = log.length == 0 ? { complete: false } : log[log.length-1]!.data as PHPuzzleState;
+
+  if (complete) {
+    return (
+      <FlexWrapper>
+        <VideoWrapper>
+          <VideoPlaceholder src={endImage}></VideoPlaceholder>
+        </VideoWrapper>
+        <Col2>This broadcast has ended.</Col2>
+      </FlexWrapper>
+    )
+  }
+  if (room !== undefined && time !== undefined) {
+    if (video !== undefined && ws !== undefined) {
+      return <Game />
+    }
+    return (
+      <FlexWrapper>
+        <VideoWrapper>
+          <VideoPlaceholder src={startImage}></VideoPlaceholder>
+        </VideoWrapper>
+        <Col2>
+        <AuthorsNote>Please make sure to send your favorite escape room enthusiast to room {room} by {time} for your scheduled interaction. Other team members should keep an eye on this puzzle page when the interaction begins.</AuthorsNote>
+        </Col2>
+    </FlexWrapper>
+    )
+  }
+
+  return (
+    <FlexWrapper>
+      <AuthorsNoteBlock>
+        <p>This is an in-person interaction and is only available for on-campus teams.</p>
+        <p>Someone will be calling shortly to schedule this interaction. If this puzzle has been open for longer than 1 hour and you have not been contacted, email info@mitmh2025.com for updates.</p>
+      </AuthorsNoteBlock>
+    </FlexWrapper>
+  )
+}
 
 const elem = document.getElementById("under-control-root");
 if (elem) {
