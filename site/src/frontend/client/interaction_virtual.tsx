@@ -1,5 +1,5 @@
 import React from "react";
-import { createRoot /*, hydrateRoot */ } from "react-dom/client";
+import { hydrateRoot } from "react-dom/client";
 import VirtualInteraction from "../components/VirtualInteraction";
 import { type ExternalInteractionNode } from "../interactions/client-types";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
@@ -95,8 +95,8 @@ if (elem) {
   const match = window.location.pathname.match(/\/interactions\/([A-Za-z_]*)/);
   const slug = match?.[1];
   if (slug) {
-    const root = createRoot(elem);
-    root.render(
+    hydrateRoot(
+      elem,
       <InteractionStateManager
         slug={slug}
         initialState={initialState}

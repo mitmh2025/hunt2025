@@ -138,6 +138,11 @@ async function virtualInteractionHandler(
           slug={slug}
           nodes={log}
           state={initialVirtualInteractionState}
+          syncedTime={{
+            getCurrentTime: () => {
+              return Date.now();
+            },
+          }}
         />
       </div>
       {preloadImages.map((src) => (

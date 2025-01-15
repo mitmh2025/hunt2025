@@ -1,10 +1,10 @@
+import phone_number from "../../hub/assets/jewelry_store_token.png";
 import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
 import neutralBg from "./assets/Neutral.jpg";
 import neutralSpeaker from "./assets/Neutral_Speaker.jpg";
 import surprisedBg from "./assets/Surprised.jpg";
 import surprisedSpeaker from "./assets/Surprised_Speaker.jpg";
-import phone_number from "./assets/phone_number.png";
 import audio_mp3_1 from "./audio/mp3/1.mp3";
 import audio_mp3_10a from "./audio/mp3/10a.mp3";
 import audio_mp3_10b from "./audio/mp3/10b.mp3";

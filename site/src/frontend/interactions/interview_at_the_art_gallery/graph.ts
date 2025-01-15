@@ -1,8 +1,8 @@
+import kieftenbeldPostcard from "../../hub/assets/art_gallery_token_kieftenbeld.png";
+import lemahieuPostcard from "../../hub/assets/art_gallery_token_lemahieu.png";
 import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
 import bg from "./assets/bg.png";
-import kieftenbeldPostcard from "./assets/kieftenbeld-postcard.png";
-import lemahieuPostcard from "./assets/lemahieu-postcard.png";
 import judith_disappointed from "./assets/owner-disappointed-resize.png";
 import judith_disappointed_bg from "./assets/owner-disappointed.png";
 import judith_handshake from "./assets/owner-handshake-resize.png";

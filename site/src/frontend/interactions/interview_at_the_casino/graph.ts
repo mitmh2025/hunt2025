@@ -1,3 +1,6 @@
+import ace_of_diamonds from "../../hub/assets/casino_token_ace_of_diamonds.png";
+import ace_of_spades from "../../hub/assets/casino_token_ace_of_spades.png";
+import joker from "../../hub/assets/casino_token_joker.png";
 import billie from "../assets/billie.png";
 import { type InteractionGraph } from "../types";
 import audio_mp3_1_p1 from "./audio/mp3/1-p1.mp3";
@@ -128,9 +131,6 @@ import audio_opus_9b_p2 from "./audio/opus/9b-p2.opus";
 import audio_opus_9b from "./audio/opus/9b.opus";
 import audio_opus_final from "./audio/opus/final.opus";
 import audio_opus_start from "./audio/opus/start.opus";
-import ace_of_diamonds from "./images/Ad.png";
-import ace_of_spades from "./images/As.png";
-import joker from "./images/JOKER.png";
 import bg_annoyed from "./images/bg-annoyed.png";
 import bg_neutral from "./images/bg-neutral.png";
 import bg_pleased from "./images/bg-pleased.png";
