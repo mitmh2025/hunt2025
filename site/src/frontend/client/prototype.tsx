@@ -1,12 +1,12 @@
 import React from "react";
 import { hydrateRoot } from "react-dom/client";
-import BalloonPop from "../components/BalloonPop";
+import Games from "../components/minigames/Games";
 
 const minigameElem = document.getElementById("minigame-root");
 if (minigameElem) {
-  hydrateRoot(minigameElem, <BalloonPop />);
+  hydrateRoot(minigameElem, <Games />);
 } else {
   console.error(
-    "Couldn't mount minigame because #minigame-root was nowhere to be found",
+    "Couldn't mount minigames because #minigame-root was nowhere to be found",
   );
 }
