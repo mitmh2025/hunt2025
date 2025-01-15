@@ -57,7 +57,7 @@ export function tallyResults(
   };
 }
 
-function indexedNodes<T, R, S extends string, P>(
+function indexedNodes<T extends object, R, S extends string, P>(
   graph: InteractionGraph<T, R, S, P>,
 ): Record<string, InteractionGraphNode<T, R, S, P>> {
   return Object.fromEntries(

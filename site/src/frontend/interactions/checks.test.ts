@@ -15,7 +15,7 @@ import {
   isTerminalNode,
 } from "./types";
 
-function checkAllNodeIdsUnique<T, R, S extends string, P>(
+function checkAllNodeIdsUnique<T extends object, R, S extends string, P>(
   graph: InteractionGraph<T, R, S, P>,
 ) {
   const seen = new Map<
@@ -40,7 +40,7 @@ function checkAllNodeIdsUnique<T, R, S extends string, P>(
   }
 }
 
-function checkStartingNodePresent<T, R, S extends string, P>(
+function checkStartingNodePresent<T extends object, R, S extends string, P>(
   graph: InteractionGraph<T, R, S, P>,
   indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
 ) {
@@ -51,7 +51,7 @@ function checkStartingNodePresent<T, R, S extends string, P>(
   }
 }
 
-type ExecutionState<T> = {
+type ExecutionState<T extends object> = {
   current: NodeId;
   state: T;
   path: NodeId[];
@@ -62,7 +62,7 @@ type Path<R> = {
   result: R;
 };
 
-function allPaths<T, R, S extends string, P>(
+function allPaths<T extends object, R, S extends string, P>(
   graph: InteractionGraph<T, R, S, P>,
   indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
 ): Path<R>[] {
@@ -169,7 +169,7 @@ function allPaths<T, R, S extends string, P>(
   return paths;
 }
 
-function checkAllNodesReachable<T, R, S extends string, P>(
+function checkAllNodesReachable<T extends object, R, S extends string, P>(
   graph: InteractionGraph<T, R, S, P>,
   paths: Path<R>[],
 ) {
@@ -191,7 +191,7 @@ function checkAllNodesReachable<T, R, S extends string, P>(
   }
 }
 
-function expectedTime<T, R, S extends string, P>(
+function expectedTime<T extends object, R, S extends string, P>(
   indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
   path: Path<R>,
 ): number {
@@ -207,7 +207,7 @@ function expectedTime<T, R, S extends string, P>(
   return sum;
 }
 
-function printMinAndMaxRuntimes<T, R, S extends string, P>(
+function printMinAndMaxRuntimes<T extends object, R, S extends string, P>(
   indexedNodes: Map<string, InteractionGraphNode<T, R, S, P>>,
   paths: Path<R>[],
 ) {
@@ -227,7 +227,7 @@ function printMinAndMaxRuntimes<T, R, S extends string, P>(
   console.log(`Longest path: ${longest[0] / 1000} seconds, path:`, longest[1]);
 }
 
-function checkGraph<T, R, S extends string, P>(
+function checkGraph<T extends object, R, S extends string, P>(
   graph: InteractionGraph<T, R, S, P>,
 ) {
   const indexedNodes = new Map<string, InteractionGraphNode<T, R, S, P>>();

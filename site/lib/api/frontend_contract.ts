@@ -233,6 +233,15 @@ export const TeamInteractionStateLogSchema = z.array(
   TeamInteractionStateLogEntrySchema,
 );
 
+export const AdvanceInteractionFailure = z.object({
+  reason: z.enum([
+    "no-log", // We were unable to retrieve the interaction log for this team/interaction pair, or it was empty
+    "invalid-from-node", // The requested fromNode is a terminal node and the caller should request completeInteraction instead
+    "wrong-from-node", // The requested fromNode is, at the time of the request being serviced, no longer the latest node for this team/interaction
+    "too-soon", // The request was received before this node's timeout was reached.  We only advance state once the full audio line has had a chance to play back.
+  ]),
+});
+
 export const frontendContract = c.router({
   markTeamGateSatisfied: {
     method: "POST",
@@ -258,9 +267,8 @@ export const frontendContract = c.router({
     body: z.object({}),
     responses: {
       200: z.object({}), // TODO: maybe plumb next node through?
-      400: z.null(), // Not at fromNode (either too early or too late) or fromNode is final
-      404: z.null(), // No log
-      429: z.null(), // Not ready to transition yet (wait for timeout_msec to pass).
+      400: AdvanceInteractionFailure, // fromNode exists but is final
+      404: z.null(), // invalid interactionId or invalid fromNode
       500: z.string(),
     },
   },

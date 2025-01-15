@@ -3141,10 +3141,10 @@ export async function getRouter({
           const node = interaction.handler.lookupNode(fromNode);
           if (!node) {
             console.log(
-              `Interaction node ${fromNode} for team ${teamId} not known to interaction graph ${interactionId}`,
+              `Interaction node ${fromNode} not known to interaction graph ${interactionId} (requested for ${teamId})`,
             );
             return {
-              status: 400 as const,
+              status: 404 as const,
               body: null,
             };
           }
@@ -3154,7 +3154,7 @@ export async function getRouter({
             );
             return {
               status: 400 as const,
-              body: null,
+              body: { reason: "invalid-from-node" as const },
             };
           }
 
@@ -3186,8 +3186,8 @@ export async function getRouter({
                 );
                 // No log?  Can't advance.
                 return {
-                  status: 404 as const,
-                  body: null,
+                  status: 400 as const,
+                  body: { reason: "no-log" as const },
                 };
               }
               if (latest.node !== fromNode) {
@@ -3197,7 +3197,7 @@ export async function getRouter({
                 );
                 return {
                   status: 400 as const,
-                  body: null,
+                  body: { reason: "wrong-from-node" as const },
                 };
               }
               const now = Date.now();
@@ -3213,8 +3213,7 @@ export async function getRouter({
                   body: `Unable to determine time at which to advance ${interactionId} for team ${teamId} from ${fromNode}`,
                 };
               }
-              const FUDGE_FACTOR = 500;
-              if (now >= advanceAfter - FUDGE_FACTOR) {
+              if (now >= advanceAfter) {
                 // Okay we can actually do the work now.
 
                 // Compute the next node & next state
@@ -3251,8 +3250,8 @@ export async function getRouter({
                 };
               } else {
                 return {
-                  status: 429 as const,
-                  body: null,
+                  status: 400 as const,
+                  body: { reason: "too-soon" as const },
                 };
               }
             },
@@ -3315,7 +3314,7 @@ export async function getRouter({
                   const result = interaction.handler.finalState({
                     nodeId: finalNode.node,
                     state: finalNode.graph_state,
-                  }) as string | undefined;
+                  });
                   if (result === undefined) {
                     // No final result recorded for this interaction in the DB yet.  Finish the interaction.
                     return false;
@@ -3348,7 +3347,7 @@ export async function getRouter({
             };
           }
 
-          const state = interaction.handler.forceGenerateFinalState() as string;
+          const state = interaction.handler.forceGenerateFinalState();
           if (!state) {
             return {
               status: 500 as const,
