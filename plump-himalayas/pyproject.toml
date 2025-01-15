@@ -1,0 +1,15 @@
+[project]
+name = "plump_himalayas"
+version = "0.0.1"
+dependencies = [
+  "aiohttp",
+  "jinja2",
+  "aiohttp_jinja2",
+  "pyjwt",
+  "cryptography",
+  "dataclasses-json",
+]
+[tool.setuptools.packages.find]
+where = ["src"]
+[project.scripts]
+plump-himalayas = "plump_himalayas:main"

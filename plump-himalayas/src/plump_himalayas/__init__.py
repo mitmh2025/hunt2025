@@ -1,13 +1,15 @@
 from dataclasses import dataclass
-from enum import Enum
+from dataclasses_json import dataclass_json
+from enum import IntEnum
 import os
-import threading
 from typing import List, Optional
 from aiohttp import web
 import aiohttp
 import asyncio
 import jinja2
 import aiohttp_jinja2
+import jwt
+from jwt import PyJWKClient
 
 import json
 from collections import defaultdict
@@ -36,7 +38,8 @@ nouns = sorted(["SEAT", "NaN", "THING", "STUFF", "ITEMS", "CHEST", "DESK", "LAMP
 nouns2 = sorted(nouns + ["BODY", "CAMERA", "FORK", "LEG", "OUTLET", "SKULL"])
 
 
-class Phase(Enum):
+class Phase(IntEnum):
+    NOT_STARTED = -1
     START = 0
     VANILLA = 1
     ALARM = 2
@@ -44,6 +47,7 @@ class Phase(Enum):
     FINAL = 4
     DONE = 5
 
+@dataclass_json
 @dataclass
 class PHAction:
     verb: Optional[str]
@@ -61,6 +65,7 @@ class PHAction:
             v['noun'] = self.noun
         return v
 
+@dataclass_json
 @dataclass
 class PHTask:
     text: str
@@ -73,6 +78,7 @@ class PHTask:
     def client_state(self):
         return {'text': self.text, 'finished': self.finished }
 
+@dataclass_json
 @dataclass
 class PHVote:
     choice: PHAction
@@ -82,13 +88,21 @@ class PHVote:
     def from_json(cls, blob):
         return cls(PHAction.from_json(blob['choice']), PHAction.from_json(blob['old']))
 
+@dataclass_json
+@dataclass
+class PHClientMessage:
+    started: bool
+    tasks: Optional[List[PHTask]] = None
+    verbs: Optional[List[str]] = None
+    nouns: Optional[List[str]] = None
+    action: Optional[PHAction] = None
+
 class PHState:
     def __init__(self):
-        self.phase = Phase.START
+        self.phase = Phase.NOT_STARTED
         self.action = PHAction("OPEN", "CHEST")
         self.completed = [[False for _ in phase] for phase in all_tasks]
         self.votes = (defaultdict(lambda: 0),defaultdict(lambda: 0))
-        self.team = None
     
     @property
     def tasks(self):
@@ -143,9 +157,9 @@ class PHState:
 
     def update_phase_on_task_completion(self):
         if self.phase != Phase.START:
-            if all(self.completed[Phase.VANILLA.value]):
-                if all(self.completed[Phase.ALARM.value]):
-                    if all(self.completed[Phase.WEIRD.value]):
+            if all(self.completed[Phase.VANILLA]):
+                if all(self.completed[Phase.ALARM]):
+                    if all(self.completed[Phase.WEIRD]):
                         self.phase = Phase.DONE if all(self.completed[0]) else Phase.FINAL
                     else:
                         self.phase = Phase.WEIRD
@@ -166,19 +180,19 @@ class PHState:
         self.update_phase_on_task_completion()
 
     def client_state(self):
-        return {
-            'tasks': [t.client_state() for t in self.tasks], 
-            'verbs': self.verbs,
-            'nouns': self.nouns,
-            'action': self.action.client_state(),
-            }
+        if self.phase < Phase.START:
+            return PHClientMessage(started=False)
+        return PHClientMessage(
+            started=True,
+            tasks=self.tasks,
+            verbs=self.verbs,
+            nouse=self.nouns,
+            action=self.action,
+        )
 
 @dataclass
 class StoredPuzzleState:
-    game_id: str #idk what 
-    team: str # this needs to be username
-    room: str
-    time: str
+    game_id: str
     video: Optional[str] = None
     started: bool = False # these are the only things that actually needs to get updated. everything else should be set at time of scheduling
     complete: bool = False
@@ -196,10 +210,10 @@ class WebSocketManager:
         async with self.lock:    
             self.sockets.remove(socket)
         
-    async def send_message(self, command, **data):
+    async def send_message(self, data):
         async with self.lock:
             for s in self.sockets:
-                await s.send_json({'name': command, **data})
+                await s.send_json(data)
             
     async def close_all(self):
         async with self.lock:
@@ -240,38 +254,32 @@ class WebSocketListener:
         return self.ws
 
 class GameManager:
-    def __init__(self, state):
-        self.stored_state: StoredPuzzleState = state
+    def __init__(self):
         self.game_state = PHState()
         self.player_ws = WebSocketManager() # display should just attach as player...
-        self.host_ws = WebSocketManager()
+        self.room = None
         self.task = None
         self.polling_frequency = 1
 
     async def init_player_f(self, ws):
-        await ws.send_json({'name': 'state', **self.game_state.client_state()})
+        await ws.send_json(
+            self.game_state.client_state().to_dict()
+        )
 
-    async def send_updates(self, name, **state):
-        print("sending ", state)
-        await self.host_ws.send_message(name, **state)
-        await self.player_ws.send_message(name, **state)
-    
-    async def update_all(self, name):
+    async def update_all(self):
         print("updating")
-        match name:
-            case 'display':
-                await self.send_updates(name, action=self.game_state.action.client_state())
-            case 'tasks':
-                await self.send_updates(name, tasks=self.game_state.client_state()["tasks"])
-            case 'video':
-                await self.send_updates(name, video=self.stored_state.video)
+        state = self.game_state.client_state().to_dict()
+        print("new state", state)
+        if self.room is not None:
+            await self.room.send_game_state(state)
+        await self.player_ws.send_message(state)
         print("done")
 
     async def listen_player_f(self, ws, data):
         print(data)
         match data['name']:
             case 'get_state':
-                await ws.send_json({'name': 'state', **self.game_state.client_state()})
+                await ws.send_json(self.game_state.client_state().to_dict())
             case 'vote':
                 self.game_state.vote(PHVote.from_json(data))
             case _:  # Default case
@@ -281,15 +289,13 @@ class GameManager:
         print(data)
         match data['name']:
             case 'get_state':
-                await ws.send_json({'name': 'state', **self.game_state.client_state()})
+                await ws.send_json({'name': 'state', **self.game_state.client_state().to_dict()})
             case 'task_complete':
-                if self.stored_state.started:
-                    self.game_state.complete_task(data['task'])
-                    await self.update_all('tasks')
+                self.game_state.complete_task(data['task'])
+                await self.update_all('tasks')
             case 'task_incomplete':
-                if self.stored_state.started:
-                    self.game_state.uncomplete_task(data['task'])
-                    await self.update_all('tasks')
+                self.game_state.uncomplete_task(data['task'])
+                await self.update_all('tasks')
             case 'start_game':
                 await self.start_game()
             case 'end_game':
@@ -305,56 +311,113 @@ class GameManager:
             print("polling")
             if self.game_state.update_action():
                 print(self.game_state.action)
-                await self.update_all('display')
+                await self.update_all()
             print("sleep")
             await asyncio.sleep(self.polling_frequency)
             print("slept")
-            
-    async def start_game(self):
-        print("checking start")
-        if not self.stored_state.started:
-            print("starting game")
-            self.stored_state.started = True
+
+    async def assign_room(self):
+        if self.game_state.phase == Phase.NOT_STARTED:
             self.game_state.phase = Phase.VANILLA
-            await self.send_updates('state', **self.game_state.client_state())
+
+    async def start_game(self):
+        if self.game_state.phase == Phase.START:
+            print("starting game")
+            self.game_state.phase = Phase.VANILLA
+            await self.update_all()
             loop = asyncio.get_event_loop()
             self.task = loop.create_task(self.update_action())
         return # TODO
-    
+
     async def end_game(self):
-        self.stored_state.complete = True
         if self.task:
             self.task.cancel()
         # close out video stream
         await self.player_ws.close_all()
 
+class RoomManager:
+    def __init__(self, games):
+        self.host_ws = WebSocketManager()
+        self.games = games
+        self.current_game_id = None
+
+    async def listen_host_f(self, ws, data):
+        print("host said", data)
+        match data["name"]:
+            case "assign_team_id":
+                self.current_game_id = data["team_id"]
+                self.game.assign_room()
+            case _:
+                if self.game:
+                    await self.game.listen_host_f(self, ws, data)
+
+    async def send_game_state(self, state):
+        await self.host_ws.send_message({
+            name: 'game_state',
+            state: state,
+        })
+
+    async def update_games(self):
+        # TODO: Determine games (or at least team names) from the API
+        await self.host_ws.send_message({
+            name: 'teams',
+            teams: {v: v for v in self.games.keys()},
+        })
+
+    @property
+    def game(self):
+        if self.current_game_id is not None:
+            return self.games.get(self.current_game_id)
+
+    async def init_host_f(self, ws):
+        if game := self.game:
+            await ws.send_json({
+                name: 'game_state',
+                state: selfgame.game_state.client_state().to_dict(),
+            })
+
+
 
 # fix task checking
 # make react subcomponents do the thing
 
-routes = web.RouteTableDef()
+def main():
+    routes = web.RouteTableDef()
 
-@routes.get('/host/{id}')
-async def host(request):
-    game_id = request.match_info.get('id', None)
-    if game_id not in app["games"]:
-        app["games"][game_id] = GameManager(StoredPuzzleState(game_id, "team", "room", "time"))
-    response = aiohttp_jinja2.render_template("host.html", request, context={"game_id": game_id})
-    return response
+    jwks_client = PyJWKClient(os.environ.get("JWKS_URI", "http://localhost:3000/api/jwks"))
 
-@routes.get('/display/{id}')
-async def display(request):
-    game_id = request.match_info.get('id', None)
-    if game_id not in app["games"]:
-        app["games"][game_id] = GameManager(StoredPuzzleState(game_id, "team", "room", "time"))
-    response = aiohttp_jinja2.render_template("display.html", request, context={"game_id": game_id})
-    return response
+    @routes.get('/host/{room}')
+    async def host(request):
+        room = request.match_info.get('room')
+        if room not in app["rooms"]:
+            app["rooms"][room] = RoomManager(app["games"])
+        response = aiohttp_jinja2.render_template("host.html", request, context={"room_id": room})
+        return response
 
-@routes.get('/ws/{id}')
-async def ws_player(request):
-    game_id = request.match_info.get('id', None)
-    if game_id and game_id in app["games"]:
-        game = request.app["games"][game_id]
+    @routes.get('/display/{id}')
+    async def display(request):
+        game_id = request.match_info.get('id', None)
+        if game_id not in app["games"]:
+            app["games"][game_id] = GameManager(StoredPuzzleState(game_id, "team", "room", "time"))
+        response = aiohttp_jinja2.render_template("display.html", request, context={"game_id": game_id})
+        return response
+
+    async def get_game(team_id):
+        if team_id not in app["games"]:
+            app["games"][team_id] = GameManager()
+            for room in app["rooms"].values:
+                await room.update_games()
+        return app["games"][team_id]
+
+    @routes.get('/ws')
+    async def ws_player(request):
+        token = request.query["jwt"]
+        token = jwt.decode(
+            token,
+            jwks_client.get_signing_key_from_jwt(token),
+        )
+        team_id = token["team_id"]
+        game = await get_game(team_id)
         listener = WebSocketListener(game.player_ws, game.listen_player_f)
         await listener.prepare(request)
         await game.init_player_f(listener.ws)
@@ -363,24 +426,27 @@ async def ws_player(request):
         finally:
             await listener.close()
 
-@routes.get('/host/ws/{id}')
-async def ws_host(request):
-    game_id = request.match_info.get('id', None)
-    if game_id and game_id in app["games"]:
-        game = request.app["games"][game_id]
-        listener = WebSocketListener(game.host_ws, game.listen_host_f)
+    @routes.get('/host/ws/{room}')
+    async def ws_host(request):
+        room_id = request.match_info.get('room')
+        room = request.app["rooms"][room_id]
+        listener = WebSocketListener(room.host_ws, room.listen_host_f)
         await listener.prepare(request)
-        await game.init_player_f(listener.ws)
+        await room.init_host_f(listener.ws)
         try:
             return await listener.run()
         finally:
             await listener.close()
 
-app = web.Application()
-aiohttp_jinja2.setup(
-    app, loader=jinja2.FileSystemLoader(os.path.join(os.getcwd(), "templates"))
-)
-app["games"] = {}
-app.add_routes(routes)
-app.add_routes([web.static('/assets', 'assets')])
-web.run_app(app, port=8086)
+    app = web.Application()
+    aiohttp_jinja2.setup(
+        app, loader=jinja2.FileSystemLoader(os.path.join(os.getcwd(), "templates"))
+    )
+    app["games"] = {}
+    app["rooms"] = {}
+    app.add_routes(routes)
+    app.add_routes([web.static('/assets', 'assets')])
+    web.run_app(app, port=8086)
+
+if __name__ == "__main__":
+  main()

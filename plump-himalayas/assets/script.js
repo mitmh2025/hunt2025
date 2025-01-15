@@ -63,8 +63,8 @@ function markCompletion(task, complete) {
   sendMessage(complete ? "task_complete" : "task_incomplete", {"task": task});
 }
 
-function updateVideoLink() {
-  sendMessage("set_video", {"video": document.getElementById('vidID').value});
+function assignRoom() {
+  sendMessage("assign_team_id", {"team_id": document.getElementById('team_id').value});
 }
 
 function updateDisplay(action) {
@@ -90,22 +90,16 @@ function updateDisplay(action) {
 function updateFromSocket(command, data) {
   console.log(data)
   switch (command) {
-    case 'display':
-      updateDisplay(data['action']);
-      break;
-    case 'state':
-      updateDisplay(data['action']);
+    case 'game_state':
+      const state = data.state;
+      updateDisplay(state['action']);
       if (!displayOnly) {
-        updateTasks(data['tasks']);
+        updateTasks(state['tasks']);
+        updateTasks(state['tasks']);
       }
       break;
-    case 'tasks':
-      if (!displayOnly) {
-        updateTasks(data['tasks']);
-      }
-      break;
-    case 'video':
-      setVideo(data['video']);
+    case 'teams':
+      const teams = data.teams;
       break;
   }
 }

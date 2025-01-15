@@ -13,7 +13,7 @@
       <div class="content" id="content">
         <div id="col1-ops">
           <h2>Controls</h2>
-          <div><input type="text" id="vidID" /><button onclick="updateVideoLink();">Update Video Link</button></div>
+          <div><select name="team_id"></select><button onclick="assignRoom();">Assign Room</button></div>
         </div>
         <div id="col2">
           <div id="tasks-container">
@@ -24,7 +24,7 @@
       </div>
 
       <script>
-        connectWebSocket("/host/ws/{{ game_id }}", updateFromSocket);
+        connectWebSocket("/host/ws/{{ room_id }}", updateFromSocket);
       </script>
     </body>
 </html>
