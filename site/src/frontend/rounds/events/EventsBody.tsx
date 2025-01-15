@@ -19,8 +19,8 @@ const puzzleDescriptions: { [K in EventSlug]: JSX.Element } = {
       We’ve learned that an informant is interested in giving up some
       information. Please send 1–2 trainees who like to make connections and
       make new friends, and who can move around a room for the duration of the
-      event. Please arrive promptly; participation cannot be guaranteed for late
-      arrivals.
+      event. Please arrive promptly by 7; participation cannot be guaranteed for
+      late arrivals.
     </>
   ),
 
