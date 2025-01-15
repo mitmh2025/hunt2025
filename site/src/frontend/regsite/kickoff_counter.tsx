@@ -31,6 +31,11 @@ const InsideTextDiv = styled.div`
   align-items: center;
 `;
 
+const TinyTextDiv = styled.div`
+  font-size: 0.6em;
+  text-align: center;
+`;
+
 type ApiResponse = {
   results: [Record<string, number>];
   error?: string;
@@ -78,7 +83,7 @@ const Room = ({ name, slug }: { name: string; slug: string }) => {
   // now update every 5 seconds
   useEffect(() => {
     const interval = setInterval(hitApi, 5000);
-    return () => clearInterval(interval);
+    return () => { clearInterval(interval); };
   }, [hitApi]);
 
   return (
@@ -105,6 +110,7 @@ const App = () => {
             <Room name="45-230" slug="white-glue" />
           </SuperCounterDiv>
         </CenteredInsideThisDiv>
+        <TinyTextDiv>Thanks to Beamian for their API!</TinyTextDiv>
       </div>
     </>
   );
