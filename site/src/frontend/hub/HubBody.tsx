@@ -34,6 +34,7 @@ const Wall = styled.div`
   height: 100%;
   min-height: calc(100vh - 3rem);
   padding-top: 1rem;
+  overflow: hidden;
 `;
 
 const Board = styled.main`
@@ -41,7 +42,6 @@ const Board = styled.main`
     url(${BulletinBoardBg}) center / cover,
     url(${BulletinBoardScuffs}) center / cover,
     url(${Cork}) center / ${getRelativeSizeCss(512)} repeat;
-  overflow: hidden;
   width: min(calc(100vw - var(--scrollbar-width)), ${MAX_WIDTH}px);
   height: ${getRelativeSizeCss(MAX_HEIGHT)};
   position: relative;
