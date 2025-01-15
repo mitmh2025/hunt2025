@@ -231,7 +231,7 @@
               service = lib.tfRef "google_compute_backend_service.api.id";
             }
             {
-              paths = ["/static/*"];
+              paths = ["/static/*" "/giant-switch/*"];
               service = lib.tfRef "google_compute_backend_bucket.assets.id";
             }
             {
@@ -275,6 +275,11 @@
         {
           host = "www.two-pi-noir.agency";
           path = "/static/main.js";
+          service = lib.tfRef "google_compute_backend_bucket.assets.id";
+        }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/giant-switch/manifest.json";
           service = lib.tfRef "google_compute_backend_bucket.assets.id";
         }
         {
