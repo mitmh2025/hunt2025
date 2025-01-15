@@ -889,6 +889,7 @@ async function main({
               state_id: [...zammadTicketStates.entries()].find(
                 ([_, v]) => v === "open",
               )?.[0],
+              owner_id: null,
               hint_last_request_entry: entry.id,
               puzzle_slug: entry.slug,
               article: {

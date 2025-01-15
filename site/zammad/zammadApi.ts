@@ -58,6 +58,7 @@ const ZammadTicketSchemaCommon = z.object({
   id: z.number(),
   group_id: z.number(),
   state_id: z.number(),
+  owner_id: z.number().nullable(),
   customer_id: z.number(),
   title: z.string(),
   article: z
