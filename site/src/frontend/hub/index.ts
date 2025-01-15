@@ -452,7 +452,7 @@ const OBJECTS: HubObjectSetting[] = [
   {
     asset: casino_token_joker,
     alt: "A joker from the Casino",
-    x: 33,
+    x: 23,
     y: 1699,
     width: 449,
     rot: 2.6,
@@ -472,7 +472,7 @@ const OBJECTS: HubObjectSetting[] = [
   {
     asset: casino_token_ace_of_diamonds,
     alt: "An Ace of Diamonds from the Casino",
-    x: 33,
+    x: 23,
     y: 1699,
     width: 449,
     rot: 2.6,
@@ -492,7 +492,7 @@ const OBJECTS: HubObjectSetting[] = [
   {
     asset: casino_token_ace_of_spades,
     alt: "An Ace of Spades from the Casino",
-    x: 33,
+    x: 23,
     y: 1699,
     width: 449,
     rot: 2.6,
@@ -555,7 +555,7 @@ const OBJECTS: HubObjectSetting[] = [
   {
     asset: boardwalk_token_photo,
     alt: "A photo from the Boardwalk. Billie is hidden behind the giant stuffed beaver they are holding while Roger flashes a cautious thumbs up",
-    x: 3033,
+    x: 2933,
     y: 1670,
     width: 749,
     rot: 10.1,
@@ -571,7 +571,7 @@ const OBJECTS: HubObjectSetting[] = [
     },
     pin: {
       asset: pin_teal,
-      x: 3321,
+      x: 3221,
       y: 1756,
     },
   },
@@ -601,7 +601,7 @@ const OBJECTS: HubObjectSetting[] = [
     asset: boardwalk_token_ticket_stub,
     alt: "A ticket stub from the Boardwalk",
     x: 3040,
-    y: 1626,
+    y: 1726,
     width: 132,
     rot: -1.4,
     shadow: true,
@@ -616,7 +616,7 @@ const OBJECTS: HubObjectSetting[] = [
     pin: {
       asset: pin_teal,
       x: 3088,
-      y: 1622,
+      y: 1722,
     },
   },
   {
