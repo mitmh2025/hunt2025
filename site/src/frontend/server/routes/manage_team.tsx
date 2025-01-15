@@ -1,7 +1,12 @@
 import { type Request } from "express";
 import React from "react";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
-import { Wrapper } from "../../components/StyledUI";
+import {
+  PageHeader,
+  PageMain,
+  PageTitle,
+  PageWrapper,
+} from "../../components/PageLayout";
 import TeamManager from "../../components/TeamManager";
 
 export async function manageTeamHandler(req: Request) {
@@ -19,13 +24,19 @@ export async function manageTeamHandler(req: Request) {
   const inlineScript = `window.initialRegistration = ${JSON.stringify(registration)};`;
 
   const node = (
-    <Wrapper>
-      <h1>Manage Team</h1>
-      <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="manage-team-root">
-        <TeamManager registration={registration} />
-      </div>
-    </Wrapper>
+    <PageWrapper>
+      <>
+        <PageHeader>
+          <PageTitle>Manage Team</PageTitle>
+        </PageHeader>
+        <PageMain>
+          <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
+          <div id="manage-team-root">
+            <TeamManager registration={registration} />
+          </div>
+        </PageMain>
+      </>
+    </PageWrapper>
   );
 
   return wrapContentWithNavBar(

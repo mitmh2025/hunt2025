@@ -21,18 +21,18 @@ import {
   TextInput,
 } from "./StyledUI";
 
-const Form = styled.form`
-  margin-bottom: 2rem;
-`;
-
 const Section = styled.section`
   width: 100%;
   max-width: 600px;
+
+  & + section {
+    margin-top: 2rem;
+  }
 `;
 
 const SectionHeader = styled.h2`
-  margin-top: 0;
-  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 1rem;
 `;
 
 const WideTextInput = styled(TextInput)`
@@ -41,6 +41,11 @@ const WideTextInput = styled(TextInput)`
 
 const WideTextArea = styled(TextArea)`
   width: 100%;
+`;
+
+const WideButton = styled(Button)`
+  width: 300px;
+  max-width: 100%;
 `;
 
 function LabeledControlledInputWithError({
@@ -277,7 +282,7 @@ const TeamManager = ({
   );
 
   return (
-    <Form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit}>
       <Section>
         <SectionHeader>Identity</SectionHeader>
         <div>
@@ -415,9 +420,9 @@ const TeamManager = ({
             {topLevelAlert.message}
           </Alert>
         )}
-        <Button>Save</Button>
+        <WideButton>Save</WideButton>
       </Section>
-    </Form>
+    </form>
   );
 };
 

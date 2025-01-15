@@ -8,6 +8,7 @@ import {
 } from "../client/all_puzzles_types";
 import { deviceMax } from "../utils/breakpoints";
 import PuzzleLink, { PuzzleIcon } from "./PuzzleLink";
+import { darkBgLinkStyles } from "./StyledUI";
 
 const StyledRow = styled.tr<{ $bolded: boolean }>`
   ${({ $bolded }) =>
@@ -40,8 +41,15 @@ const StyledRow = styled.tr<{ $bolded: boolean }>`
       : undefined}
   font-size: 1.5rem;
 
+  a {
+    ${darkBgLinkStyles}
+  }
+
   td.puzzle-name {
     max-width: 50%;
+  }
+  td.puzzle-answer {
+    padding-left: 1rem;
   }
   td.desc {
     font-size: 1rem;
@@ -54,12 +62,20 @@ const StyledRow = styled.tr<{ $bolded: boolean }>`
     td.puzzle-name {
       width: 50vw;
       padding-right: 1rem;
+
+      .puzzle-link-title {
+        white-space: pre-wrap;
+      }
     }
   }
 `;
 
 const RoundHeader = styled.h3`
   font-size: 2rem;
+
+  a {
+    ${darkBgLinkStyles}
+  }
 `;
 
 const PuzzlesTable = ({
@@ -189,12 +205,19 @@ const Filters = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-top: -1rem;
+
+  h4 {
+    padding: 0;
+    margin: 0;
+  }
 
   label {
     display: flex;
     align-items: center;
     cursor: pointer;
     color: var(--gray-300);
+    padding: 1rem 0;
 
     &:hover {
       color: var(--gray-200);
