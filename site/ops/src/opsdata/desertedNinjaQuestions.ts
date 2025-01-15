@@ -155,7 +155,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 18,
     text: "How many official clubs / organizations have ASA-assigned bulletin board spaces on the Infinite Corridor?",
-    answer: 83,
+    answer: 84,
     geoguessr: null,
     scoringMethod: "3double",
     categories: [],
