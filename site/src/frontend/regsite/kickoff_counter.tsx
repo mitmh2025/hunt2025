@@ -83,7 +83,9 @@ const Room = ({ name, slug }: { name: string; slug: string }) => {
   // now update every 5 seconds
   useEffect(() => {
     const interval = setInterval(hitApi, 5000);
-    return () => { clearInterval(interval); };
+    return () => {
+      clearInterval(interval);
+    };
   }, [hitApi]);
 
   return (
