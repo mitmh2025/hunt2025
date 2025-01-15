@@ -544,6 +544,18 @@ const ALL_NODES: NodeInternal[] = [
         destId: "telephone",
       },
     ],
+    escapes: [
+      {
+        area: {
+          left: 0.09,
+          right: 0.49,
+          top: 0.76,
+          bottom: -0.83,
+        },
+        cursor: move_up_cursor,
+        href: "/",
+      },
+    ],
     interactions: [
       // rug widthwise
       // maybe digital number lock?  might move to fullscreen frame in separate node for it?
@@ -1768,6 +1780,7 @@ function filteredForFrontend(
     title: node.title,
     placedAssets: keptPlacedAssets,
     navigations: keptNavigations,
+    escapes: node.escapes,
     interactions: keptInteractions,
     sounds: node.sounds,
     modals,
