@@ -3,12 +3,16 @@ import { styled } from "styled-components";
 import { newClient } from "../../../lib/api/client";
 import { type ExternalInteractionNode } from "../interactions/client-types";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
+import playSound from "../rounds/illegal_search/client/playSound";
 import apiUrl from "../utils/apiUrl";
 import SpinnerTimer from "./SpinnerTimer";
 import { Button } from "./StyledUI";
 
 const WIDTH = 1920;
 const HEIGHT = 648 * 2;
+
+export const ROLL_CALL_POLL_ID = "roll_call";
+const ROLL_CALL_POLL_OPTION = "present";
 
 function proportionify(size: number) {
   return `calc(${size} * min(calc(min(100vw, ${WIDTH}px) / ${WIDTH}), calc(min(calc(100vh - 3rem), ${HEIGHT}px) / ${HEIGHT})))`;
@@ -304,6 +308,8 @@ function VirtualInteractionPlayer({
   rewardImage,
   pollState,
   syncedTime,
+  audioOn,
+  setAudioOn,
 }: {
   nodes: ExternalInteractionNode[];
   slug: string;
@@ -311,16 +317,23 @@ function VirtualInteractionPlayer({
   rewardDescription?: string;
   pollState: Record<string, number>;
   syncedTime: { getCurrentTime: () => number };
+  audioOn: boolean;
+  setAudioOn: (audioOn: boolean) => void;
 }) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
   const currentNode = nodes[nodes.length - 1];
+  const lastPlayedSound = useRef<string | null>(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      void audioRef.current.play();
+    if (!audioOn || rewardImage) {
+      // muted or already solved
+      return;
     }
-  }, [currentNode?.sound]);
+
+    if (currentNode?.sound && currentNode.sound !== lastPlayedSound.current) {
+      playSound(currentNode.sound);
+      lastPlayedSound.current = currentNode.sound;
+    }
+  }, [currentNode?.sound, audioOn, rewardImage]);
 
   if (!currentNode) {
     return null;
@@ -334,6 +347,25 @@ function VirtualInteractionPlayer({
             style={{ backgroundImage: `url(${currentNode.backgroundOverlay})` }}
           />
         )}
+        <PlayPauseControls>
+          {audioOn ? (
+            <Button
+              onClick={() => {
+                setAudioOn(false);
+              }}
+            >
+              <UnmutedIcon />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setAudioOn(true);
+              }}
+            >
+              <MutedIcon />
+            </Button>
+          )}
+        </PlayPauseControls>
       </Background>
       <UIWrapper>
         <Headshot>
@@ -396,11 +428,6 @@ function VirtualInteractionPlayer({
           </Choices>
         </Content>
       </UIWrapper>
-
-      {!rewardImage && (
-        /* eslint-disable-next-line jsx-a11y/media-has-caption -- text will be shown elsewhere */
-        <audio ref={audioRef} src={currentNode.sound} autoPlay controls />
-      )}
     </Wrapper>
   );
 }
@@ -432,21 +459,57 @@ const CountdownContainer = styled.div`
   margin: 1rem 0;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+`;
+
 function VirtualInteractionNotStarted({
   slug,
   enqueuedAt,
   autostartAt,
   syncedTime,
+  pollState,
+  setAudioOn,
 }: {
   slug: string;
   enqueuedAt: Date;
   autostartAt: Date;
   syncedTime: { getCurrentTime: () => number };
+  pollState: Record<string, number>;
+  setAudioOn: (audioOn: boolean) => void;
 }) {
-  const [submitting, setSubmitting] = useState(false);
+  const [markedPresent, setMarkedPresent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit() {
-    setSubmitting(true);
+  const presentCount = pollState[ROLL_CALL_POLL_OPTION] ?? 0;
+
+  function handleMarkPresent(withAudio: boolean) {
+    setLoading(true);
+
+    const apiClient = newClient(apiUrl(), undefined);
+    apiClient
+      .castVote({
+        body: { choice: ROLL_CALL_POLL_OPTION },
+        params: { slug, pollId: ROLL_CALL_POLL_ID },
+      })
+      .then((resp) => {
+        if (resp.status !== 200) {
+          throw new Error(`Unexpected status code: ${resp.status}`);
+        }
+
+        setAudioOn(withAudio);
+        setMarkedPresent(true);
+      })
+      .catch((err: unknown) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }
+
+  function handleStartEarly() {
+    setLoading(true);
     const apiClient = newClient(apiUrl(), undefined);
     apiClient
       .startVirtualInteractionEarly({ params: { interactionId: slug } })
@@ -459,7 +522,7 @@ function VirtualInteractionNotStarted({
       })
       .catch((err: unknown) => {
         console.error(err);
-        setSubmitting(false);
+        setLoading(false);
       });
   }
 
@@ -475,18 +538,50 @@ function VirtualInteractionNotStarted({
           color="#1b1a18"
         />
       </CountdownContainer>
-      <p>
-        It’s time to interview a key witness! Make sure you can hear your radio
-        stream, and have every person on your team log on and join us here to
-        conduct an interview.
-      </p>
-      <p>
-        The interaction will start automatically. If you’re ready, you can also
-        click the button below to start now.
-      </p>
-      <Button type="submit" disabled={submitting} onClick={handleSubmit}>
-        {submitting ? "Starting..." : "Start The Interview"}
-      </Button>
+      {markedPresent ? (
+        <>
+          <p>
+            The interaction will start automatically. If your whole team is
+            ready, you can also click the button below to start now.
+          </p>
+          <Button type="button" disabled={loading} onClick={handleStartEarly}>
+            {loading ? "Starting..." : "Start The Interview"}
+          </Button>
+          <p>{presentCount} trainees online</p>
+        </>
+      ) : (
+        <>
+          <p>
+            It’s time to interview a key witness! Have every person on your team
+            log on and join us here to conduct an interview.
+          </p>
+          <p>
+            This interaction has audio that can be played via your physical
+            radio, or in your browser. If you are not within earshot of your
+            physical radio, select “Listen In Browser.”
+          </p>
+          <ButtonContainer>
+            <Button
+              type="button"
+              onClick={() => {
+                handleMarkPresent(false);
+              }}
+              disabled={loading}
+            >
+              Listen On Radio
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                handleMarkPresent(true);
+              }}
+              disabled={loading}
+            >
+              Listen In Browser
+            </Button>
+          </ButtonContainer>
+        </>
+      )}
     </StartContainer>
   );
 }
@@ -518,12 +613,16 @@ export default function VirtualInteraction({
   state,
   pollState,
   syncedTime,
+  audioOn,
+  setAudioOn,
 }: {
   slug: string;
   nodes: ExternalInteractionNode[];
   state: TeamVirtualInteractionsState;
   pollState?: Record<string, number>;
   syncedTime: { getCurrentTime: () => number };
+  audioOn: boolean;
+  setAudioOn: (audioOn: boolean) => void;
 }) {
   const interactionState = state.interactions.find((i) => i.slug === slug);
   if (!interactionState) {
@@ -549,6 +648,8 @@ export default function VirtualInteraction({
         autostartAt={new Date(interactionState.autostartAt)}
         enqueuedAt={new Date(interactionState.enqueuedAt)}
         syncedTime={syncedTime}
+        pollState={pollState ?? {}}
+        setAudioOn={setAudioOn}
       />
     );
   }
@@ -562,6 +663,8 @@ export default function VirtualInteraction({
         rewardImage={interactionState.rewardImage}
         pollState={{}}
         syncedTime={syncedTime}
+        audioOn={audioOn}
+        setAudioOn={setAudioOn}
       />
     );
   }
@@ -572,6 +675,8 @@ export default function VirtualInteraction({
       slug={slug}
       pollState={pollState ?? {}}
       syncedTime={syncedTime}
+      audioOn={audioOn}
+      setAudioOn={setAudioOn}
     />
   );
 }
