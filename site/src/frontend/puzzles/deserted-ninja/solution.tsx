@@ -19,6 +19,14 @@ const Example = styled.div`
   border-radius: 5px;
   background-color: tan;
 `;
+const QuestionText = styled.td`
+  padding-right: 25px;
+  border-top: thin solid;
+`;
+const QuestionAnswer = styled.td`
+  border-top: thin solid;
+  padding-left: 10px;
+`;
 const GeoguessrContainer = styled.div`
   width: 40%;
   display: inline-block;
@@ -34,8 +42,22 @@ const Details = styled.details`
   padding: 5px 10px;
   background-color: tan;
 `;
+const LeftHeader = styled.th`
+  text-align: left;
+`;
+const QuestionHeader = styled.th`
+  text-align: left;
+`;
+const AnswerHeader = styled.th`
+  text-align: left;
+  padding-left: 10px;
+`;
 const SummaryLabel = styled.summary`
   font-size: 110%;
+`;
+const GeoguessrCell = styled.td`
+  border-top: thin solid;
+  text-align: center;
 `;
 const TopCell = styled.td`
   border-top: thin solid;
@@ -142,8 +164,8 @@ const ALL_ARTISTS: Artist[] = [
 const QuestionBlock = ({ question }: { question: FermitQuestion }) => {
   return (
     <tr>
-      <td>{question.text}</td>
-      <td>{question.answer}</td>
+      <QuestionText>{question.text}</QuestionText>
+      <QuestionAnswer>{question.answer}</QuestionAnswer>
     </tr>
   );
 };
@@ -154,7 +176,7 @@ const ArtistBlock = ({ artist, index }: { artist: Artist; index: number }) => {
   return (
     <>
       <tr>
-        <TopCell rowSpan={3}>{index}</TopCell>
+        <TopCell rowSpan={3}>{index + 1}</TopCell>
         <TopCell rowSpan={3}>{name}</TopCell>
         <TopCell>{albums[0]}</TopCell>
         <TopCell>
@@ -366,23 +388,23 @@ const Solution = (): JSX.Element => {
         <SummaryLabel>All Questions</SummaryLabel>
         <table>
           <tr>
-            <th>Question</th>
-            <th>Answer</th>
+            <QuestionHeader>Question</QuestionHeader>
+            <AnswerHeader>Answer</AnswerHeader>
           </tr>
           {ALL_QUESTIONS.filter((q) => q.geoguessr === null).map((q, idx) => (
             <QuestionBlock question={q} key={idx} />
           ))}
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((g) => (
             <tr key={g}>
-              <CenterCell>
+              <GeoguessrCell>
                 <GeoguessrContainer>
                   <LinkedImage
                     src={geoguessrLookup[g - 1] ?? ""}
                     alt={"geoguessr " + g.toString()}
                   />
                 </GeoguessrContainer>
-              </CenterCell>
-              <td>{ALL_GEOGUESSR_LOCATIONS[g - 1]}</td>
+              </GeoguessrCell>
+              <QuestionAnswer>{ALL_GEOGUESSR_LOCATIONS[g - 1]}</QuestionAnswer>
             </tr>
           ))}
         </table>
@@ -392,13 +414,13 @@ const Solution = (): JSX.Element => {
         <SummaryLabel>All Albums</SummaryLabel>
         <table>
           <tr>
-            <th>Index</th>
-            <th>Artist</th>
-            <th>Album</th>
-            <th>Fuzzed Images</th>
+            <LeftHeader>Index</LeftHeader>
+            <LeftHeader>Artist</LeftHeader>
+            <LeftHeader>Album</LeftHeader>
+            <LeftHeader>Fuzzed Images</LeftHeader>
           </tr>
           {ALL_ARTISTS.map((artist, idx) => (
-            <ArtistBlock artist={artist} index={idx + 1} key={idx} />
+            <ArtistBlock artist={artist} index={idx} key={idx} />
           ))}
         </table>
       </Details>
