@@ -145,43 +145,62 @@ const initialState: PHGameState = {
 const Game = ({ info }: { info: ControlRoomInfo }) => {
   const [state, setState] = useState<PHGameState>(initialState);
   const [choices, setChoices] = useState({} as PHAction);
+  const [wsOpen, setWsOpen] = useState(false);
+  const [isInRetryWsTimeout, setIsInRetryWsTimeout] = useState(false);
 
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    if (socketRef.current === null) {
-      socketRef.current = new WebSocket(info.wsUrl);
+    if (isInRetryWsTimeout) {
+      return;
     }
 
-    const { current: socket } = socketRef;
+    const client = new WebSocket(info.wsUrl);
+    if (socketRef.current === null) {
+      socketRef.current = client;
+    }
 
     // Connection opened
-    socket.addEventListener("open", (event) => {
+    client.addEventListener("open", (_) => {
       console.log("Connection established");
+      setWsOpen(true);
     });
 
     // Listen for messages
-    socket.addEventListener("message", (event) => {
+    client.addEventListener("message", (event) => {
       const msg: PHGameState = JSON.parse(event.data);
       console.log(msg);
       setState(msg);
     });
 
     // Connection error
-    socket.addEventListener("error", (event) => {
-      // TODO: Reconnect automatically (does "error" mean it's closed?)
+    client.addEventListener("error", (event) => {
       console.log("Connection error", event);
+      setWsOpen(false);
+      setIsInRetryWsTimeout(true);
+      setTimeout(() => {
+        setIsInRetryWsTimeout(false);
+      }, 5000);
     });
 
     // Connection closed
-    socket.addEventListener("close", (event) => {
-      // TODO: Reconnect automatically
+    client.addEventListener("close", (event) => {
       console.log("Connection closed", event);
+      if (!socketRef.current) {
+        // component unmounted, don't try to retry
+        return;
+      }
+      setWsOpen(false);
+      setIsInRetryWsTimeout(true);
+      setTimeout(() => {
+        setIsInRetryWsTimeout(false);
+      }, 5000);
     });
     return () => {
-      socket.close();
+      socketRef.current = null;
+      client.close();
     };
-  }, [info.wsUrl]);
+  }, [info.wsUrl, isInRetryWsTimeout]);
 
   function updateVote(t: "noun" | "verb", value: string) {
     return (e: React.MouseEvent) => {
