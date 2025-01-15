@@ -410,7 +410,9 @@ async function main({
         teamState.gates_satisfied.has("ptg03") && adFrequency !== "plus",
       mystery_hunt_minus_enabled:
         teamState.gates_satisfied.has("ptg03") && adFrequency === "minus",
-      icy_box_enabled: teamState.gates_satisfied.has("ptg16"),
+      icy_box_enabled:
+        teamState.gates_satisfied.has("ptg16") &&
+        !teamState.puzzles_solved.has("a_weathered_note"),
       interaction:
         [
           ...teamState.interactions_started
