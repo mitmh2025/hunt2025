@@ -3,7 +3,8 @@
   gce.instance.media = {
     route53.zone = "mitmh2025";
     machineType = "e2-medium"; # 2 vCPU (capped at 50%), 4 GB RAM
-    bootDisk.size = 100;
+    # 64 Kbps * 200 teams * 72 hours ≈ 400 GB
+    bootDisk.size = 1000;
     firewall.allowedTCPPorts = [
       22 # SSH
       80 # HTTP
