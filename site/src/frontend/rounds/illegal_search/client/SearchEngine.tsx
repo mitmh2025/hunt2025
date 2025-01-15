@@ -22,6 +22,7 @@ import {
   type PlacedAsset,
   type PostcodeResponse,
   type InteractionComponent,
+  type Escape,
 } from "../types";
 import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
@@ -116,6 +117,19 @@ export const Navigation = ({
       href={`/rounds/illegal_search?node=${navigation.destId}`}
       onClick={onClicked}
     />
+  );
+};
+
+export const EscapeLink = ({ escape }: { escape: Escape }) => {
+  const { area, cursor, href } = escape;
+  const style = {
+    position: "absolute" as const,
+    cursor,
+    ...boundsForArea(area),
+  };
+  return (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content -- These are unlikely to have any non-visual content
+    <a style={style} href={href} />
   );
 };
 
@@ -669,6 +683,15 @@ const SearchEngine = ({
     );
   });
 
+  const escapes = (node.escapes ?? []).map((escape) => {
+    return (
+      <EscapeLink
+        key={`escape-${escape.href}-${escape.area.left}-${escape.area.top}-${escape.area.right}-${escape.area.bottom}`}
+        escape={escape}
+      />
+    );
+  });
+
   const billiePopupTrigger = !introModalShown && (
     <BilliePopupTrigger onClick={setShowIntroModal}>
       <img src={billie} alt="Billie" />
@@ -823,6 +846,7 @@ const SearchEngine = ({
             }}
           />
           {navigations}
+          {escapes}
           {billiePopupTrigger}
           {modals}
           {overlayInteractions}

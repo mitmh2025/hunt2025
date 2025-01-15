@@ -48,6 +48,13 @@ export type Navigation = {
   sound?: string; // If present, sound effect that should be played when performing the navigation
 };
 
+export type Escape = {
+  // For <a> tags that don't stay within SearchEngine, but do full browser navigations
+  area: ScreenArea; // Where on the screen should this escape prompt?
+  cursor: string; // What is the value of the CSS cursor property that we want for this area?
+  href: string; // What is the href value of the a tag we'll use
+};
+
 export type NavigationInternal = Navigation & {
   // Internal data model may also specify a visibility-control function, but we
   // should not publish that to client code.
@@ -191,6 +198,7 @@ export type NodeShared = {
   // interactions added in subclass
   // modals added in subclass
   sounds: string[]; // Mostly for prefetching, presumed to be used by one of the interactives or on navigation
+  escapes?: Escape[];
 };
 
 export type NodeInternal = NodeShared & {
