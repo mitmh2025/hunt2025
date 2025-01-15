@@ -1,5 +1,12 @@
 import { useNotifications } from "@toolpad/core";
-import { useContext, createContext, useEffect, useState, useRef } from "react";
+import {
+  useCallback,
+  useContext,
+  createContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { styled } from "styled-components";
 import { useInterval } from "usehooks-ts";
 import { type FermitAnswer } from "../../../lib/api/admin_contract";
@@ -16,6 +23,59 @@ type TeamWithStatus = {
   id: number;
   status: string;
 };
+
+const Modal = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+`;
+const ModalBox = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 15px;
+  border: 2px solid #cc0000;
+  border-radius: 5px;
+`;
+const ModalPrompt = styled.div`
+  font-size: 110%;
+  margin-bottom: 20px;
+`;
+const ButtonRow = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+function ModalConfirmation({
+  prompt,
+  onConfirm,
+  onCancel,
+}: {
+  prompt: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <Modal>
+      <ModalBox>
+        <ModalPrompt>{prompt}</ModalPrompt>
+        <ButtonRow>
+          <button onClick={onConfirm}>Confirm</button>
+          <button onClick={onCancel}>Cancel</button>
+        </ButtonRow>
+      </ModalBox>
+    </Modal>
+  );
+}
 
 const InfoBox = styled.div`
   background-color: tan;
@@ -175,6 +235,13 @@ function NotStartedPanel() {
   const opsClients = useOpsClients();
   const notifications = useNotifications();
   const session = fermitData.activeSession;
+  const [modalShown, setModalShown] = useState<boolean>(false);
+  const showModal = useCallback(() => {
+    setModalShown(true);
+  }, []);
+  const hideModal = useCallback(() => {
+    setModalShown(false);
+  }, []);
 
   function startSession() {
     if (session) {
@@ -256,6 +323,7 @@ function NotStartedPanel() {
               session: newSession,
             });
           }
+          hideModal();
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
@@ -290,8 +358,15 @@ function NotStartedPanel() {
           </RegistrationBox>
         </TeamStatusBox>
         <StartSession>
-          <StartButton onClick={startSession}>Start Session</StartButton>
+          <StartButton onClick={showModal}>Start Session</StartButton>
         </StartSession>
+        {modalShown && (
+          <ModalConfirmation
+            prompt="Start session?"
+            onConfirm={startSession}
+            onCancel={hideModal}
+          />
+        )}
       </div>
     </>
   );
@@ -305,6 +380,13 @@ function ScorekeeperPanel() {
   const notifications = useNotifications();
   const session = fermitData.activeSession;
   const [answerMap, setAnswers] = useState<Map<string, number>>(new Map());
+  const [modalShown, setModalShown] = useState<boolean>(false);
+  const showModal = useCallback(() => {
+    setModalShown(true);
+  }, []);
+  const hideModal = useCallback(() => {
+    setModalShown(false);
+  }, []);
   const formRef: React.RefObject<HTMLFormElement> =
     useRef<HTMLFormElement>(null);
 
@@ -456,6 +538,7 @@ function ScorekeeperPanel() {
               activeSession: s,
             });
           }
+          hideModal();
         })
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : "Unknown error";
@@ -503,7 +586,7 @@ function ScorekeeperPanel() {
     const completeButton =
       session.status === "in_progress" ? (
         <div>
-          <button onClick={completeSession}>Complete session and score</button>
+          <button onClick={showModal}>Complete session and score</button>
         </div>
       ) : null;
 
@@ -522,6 +605,13 @@ function ScorekeeperPanel() {
             </ScorekeeperTable>
           </form>
           {completeButton}
+          {modalShown && (
+            <ModalConfirmation
+              prompt="Complete session?"
+              onConfirm={completeSession}
+              onCancel={hideModal}
+            />
+          )}
         </AnswerContext.Provider>
       </div>
     );
