@@ -1,11 +1,18 @@
 import demo from "../../../assets/demo-photo.png";
 import type { InteractionGraph } from "../types";
-// TODO: these probably all need to become pngs for transparency
-import arcade_owner from "./assets/arcade-owner.jpg";
-import roger_baseline from "./assets/roger-baseline.jpg";
-import roger_eek from "./assets/roger-eek.jpg";
-import roger_focused from "./assets/roger-focused.jpg";
-import roger_okay from "./assets/roger-okay.jpg";
+import arcadia_speaker from "./assets/arcadia-speaker.jpg";
+import roger_baseline_speaker from "./assets/roger-baseline-speaker.jpg";
+import roger_eek_speaker from "./assets/roger-eek-speaker.jpg";
+import roger_focused_speaker from "./assets/roger-focus-speaker.jpg";
+import roger_okay_speaker from "./assets/roger-okay-speaker.jpg";
+// import roger_baseline from "./assets/roger-baseline.png";
+// import roger_eek from "./assets/roger-eek.png";
+// import roger_focused from "./assets/roger-focus.png";
+// import roger_okay from "./assets/roger-okay.png";
+// import roger_arcadia_baseline from "./assets/roger-arcadia-baseline.png";
+// import roger_arcadia_eek from "./assets/roger-arcadia-eek.png";
+// import roger_arcadia_focused from "./assets/roger-arcadia-focus.png";
+// import roger_arcadia_okay from "./assets/roger-arcadia-okay.png";
 import mp3_audio_10 from "./audio/mp3/10.mp3";
 import mp3_audio_11_afraid_p1 from "./audio/mp3/11-afraid-p1.mp3";
 import mp3_audio_11_afraid from "./audio/mp3/11-afraid.mp3";
@@ -263,23 +270,23 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     roger_baseline: {
       label: "Roger",
-      image: roger_baseline, // TODO
+      image: roger_baseline_speaker,
     },
     roger_eek: {
       label: "Roger",
-      image: roger_eek, // TODO
+      image: roger_eek_speaker,
     },
     roger_focused: {
       label: "Roger",
-      image: roger_focused, // TODO
+      image: roger_focused_speaker,
     },
     roger_okay: {
       label: "Roger",
-      image: roger_okay, // TODO
+      image: roger_okay_speaker,
     },
     arcade_owner: {
       label: "Arcade owner",
-      image: arcade_owner, // TODO
+      image: arcadia_speaker,
     },
   },
   nodes: [
