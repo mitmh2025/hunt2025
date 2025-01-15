@@ -1011,7 +1011,11 @@ async function main({
               continue;
             }
 
-            const touchpoint = Touchpoints[touchpointSlug];
+            const touchpoint: TouchpointType = Touchpoints[touchpointSlug];
+            if (!touchpoint.created_if) {
+              continue;
+            }
+
             let puzzleSlug;
             switch (touchpoint.created_if.type) {
               case "slug_unlocked":

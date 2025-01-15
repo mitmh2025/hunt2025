@@ -201,7 +201,7 @@ in {
         mailbox_command_maps = ["hash:/etc/postfix/mailbox_commands"];
       };
       extraAliases = ''
-        help: zammad
+        info: zammad
         hints: zammad
       '';
     };

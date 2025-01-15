@@ -1,7 +1,7 @@
 export type TouchpointType = {
   type: "submission" | "activity" | "pickup";
   description: string;
-  created_if:
+  created_if?:
     | { type: "slug_unlocked"; slug: string }
     | { type: "slug_partially_solved"; slug: string; answer: string }
     | { type: "gate_satisfied"; gate: string; puzzle_slug: string };
@@ -236,6 +236,14 @@ const Touchpoints = {
         gate: "tmg04",
       },
     },
+  he_shouldnt_have_eaten_the_apple_submission: {
+    type: "submission",
+    description: "Submission: NOW RUIN SOMETHING ELSE",
+    closed_action: {
+      type: "satisfy_gate",
+      gate: "bgg02",
+    },
+  },
 } satisfies Record<string, TouchpointType>;
 
 export default Touchpoints;
