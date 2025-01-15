@@ -14,7 +14,12 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [
     {
       for_what: "Fabrication",
-      who: ["Chris Pentacoff", "Sarah Leadbeater", "Will Tymowski"],
+      who: [
+        "Chris Pentacoff",
+        "Chris Post",
+        "Sarah Leadbeater",
+        "Will Tymowski",
+      ],
     },
   ],
   content: {
