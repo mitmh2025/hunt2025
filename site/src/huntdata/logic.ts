@@ -134,8 +134,8 @@ export class LogicTeamState {
   interactions_completed: Map<string, string>;
   available_currency: number;
   available_strong_currency: number;
-  next_interaction: string | null;
-  next_interaction_queued_at: Date | null;
+  next_interaction: string | undefined;
+  next_interaction_queued_at: Date | undefined;
   queued_interactions: string[];
 
   constructor(initial?: Partial<Hydratable<LogicTeamState>>) {
@@ -168,10 +168,10 @@ export class LogicTeamState {
     this.available_currency = initial?.available_currency ?? 0;
     this.available_strong_currency = initial?.available_strong_currency ?? 0;
 
-    this.next_interaction = initial?.next_interaction ?? null;
+    this.next_interaction = initial?.next_interaction;
     this.next_interaction_queued_at = initial?.next_interaction_queued_at
       ? new Date(initial.next_interaction_queued_at)
-      : null;
+      : undefined;
     this.queued_interactions = Array.from(initial?.queued_interactions ?? []);
   }
 

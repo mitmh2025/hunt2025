@@ -88,11 +88,11 @@ export class TeamStateIntermediate extends LogicTeamState {
         this.interactions_completed.set(entry.slug, entry.data.result);
 
         if (this.queued_interactions.length > 0) {
-          this.next_interaction = this.queued_interactions.shift() ?? null;
+          this.next_interaction = this.queued_interactions.shift();
           this.next_interaction_queued_at = entry.timestamp;
         } else {
-          this.next_interaction = null;
-          this.next_interaction_queued_at = null;
+          this.next_interaction = undefined;
+          this.next_interaction_queued_at = undefined;
         }
 
         break;
