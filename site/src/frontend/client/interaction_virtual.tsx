@@ -1,65 +1,83 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React from "react";
 import { createRoot /*, hydrateRoot */ } from "react-dom/client";
 import VirtualInteraction from "../components/VirtualInteraction";
 import { type ExternalInteractionNode } from "../interactions/client-types";
+import { type TeamVirtualInteractionsState } from "../interactions/types";
+import useSyncedTime from "../utils/useSyncedTime";
 import useAppendDataset from "./useAppendDataset";
+import useDataset from "./useDataset";
 
-const InteractionStateLogView = ({
+const InteractionStateManagerWithVotes = ({
   slug,
-  log,
+  nodes,
+  state,
+  pollId,
+  syncedTime,
 }: {
   slug: string;
-  log: ExternalInteractionNode[];
+  nodes: ExternalInteractionNode[];
+  state: TeamVirtualInteractionsState;
+  pollId: string;
+  syncedTime: { getCurrentTime: () => number };
 }) => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const currentNode = log.length > 0 ? log.at(-1) : undefined;
-  const currentNodeId = currentNode?.node;
-
-  // This won't actually be here in production, just for testing
-  const hackAdvanceInteraction = useCallback(() => {
-    fetch(`/interactions/${slug}/advance/${currentNodeId}`, {
-      method: "POST",
-    }).then(
-      (result) => {
-        console.log(result);
-      },
-      (err) => {
-        console.error(err);
-      },
-    );
-  }, [slug, currentNodeId]);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      void audioRef.current.play();
-    }
-  }, [currentNode?.sound]);
-
-  const advanceInteractionButton =
-    currentNode && !("finalState" in currentNode) ? (
-      <button onClick={hackAdvanceInteraction}>Step interaction</button>
-    ) : undefined;
-
+  const votes = useDataset(
+    "poll_responses",
+    { slug, pollId },
+    { epoch: -1, pollState: {} as Record<string, number> },
+  );
   return (
-    <>
-      <VirtualInteraction nodes={log} slug={slug} />
-      <div>{advanceInteractionButton}</div>
-
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption -- text will be shown elsewhere */}
-      <audio ref={audioRef} src={currentNode?.sound} autoPlay controls />
-    </>
+    <VirtualInteraction
+      slug={slug}
+      nodes={nodes}
+      state={state}
+      pollState={votes.pollState}
+      syncedTime={syncedTime}
+    />
   );
 };
 
 const InteractionStateManager = ({
   slug,
   initialState,
+  initialVirtualInteractionState,
 }: {
   slug: string;
   initialState: ExternalInteractionNode[];
+  initialVirtualInteractionState: TeamVirtualInteractionsState;
 }) => {
   const log = useAppendDataset("interaction_state_log", { slug }, initialState);
-  return <InteractionStateLogView slug={slug} log={log} />;
+  const state = useDataset(
+    "virtual_interaction_state",
+    undefined,
+    initialVirtualInteractionState,
+  );
+
+  const syncedTime = useSyncedTime();
+
+  const interactionState = state.interactions.find((i) => i.slug === slug);
+  if (interactionState?.state === "running") {
+    const currentNode = log[log.length - 1];
+    if (currentNode?.choices) {
+      return (
+        <InteractionStateManagerWithVotes
+          slug={slug}
+          nodes={log}
+          state={state}
+          pollId={currentNode.node}
+          syncedTime={syncedTime}
+        />
+      );
+    }
+  }
+
+  return (
+    <VirtualInteraction
+      slug={slug}
+      nodes={log}
+      state={state}
+      syncedTime={syncedTime}
+    />
+  );
 };
 
 const elem = document.getElementById("interaction-root");
@@ -67,12 +85,23 @@ if (elem) {
   const initialState = (
     window as unknown as { initialInteractionState: ExternalInteractionNode[] }
   ).initialInteractionState;
+
+  const initialVirtualInteractionState = (
+    window as unknown as {
+      initialVirtualInteractionState: TeamVirtualInteractionsState;
+    }
+  ).initialVirtualInteractionState;
+
   const match = window.location.pathname.match(/\/interactions\/([A-Za-z_]*)/);
   const slug = match?.[1];
   if (slug) {
     const root = createRoot(elem);
     root.render(
-      <InteractionStateManager slug={slug} initialState={initialState} />,
+      <InteractionStateManager
+        slug={slug}
+        initialState={initialState}
+        initialVirtualInteractionState={initialVirtualInteractionState}
+      />,
     );
   } else {
     console.error("Could not infer interaction slug from URL");

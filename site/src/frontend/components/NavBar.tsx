@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { styled } from "styled-components";
 import diamondIcon from "../../assets/logo.svg";
+import { type TeamVirtualInteractionsState } from "../interactions/types";
 import type { EventsState } from "../rounds/events/types";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
 import AudioControls from "./AudioControls";
@@ -274,11 +275,7 @@ export type NavBarState = {
   rounds: NavBarRoundData[];
   currency: number;
   strongCurrency: number;
-  runningInteractions: {
-    slug: string;
-    title: string;
-    virtual: boolean;
-  }[];
+  virtualInteractions: TeamVirtualInteractionsState["interactions"];
 };
 
 const NavBar = ({

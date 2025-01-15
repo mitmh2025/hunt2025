@@ -1769,6 +1769,84 @@ export async function getRouter({
           };
         },
       },
+      startVirtualInteractionEarly: {
+        middleware: [authMiddleware],
+        handler: async ({ params: { interactionId }, req }) => {
+          const team_id = req.user as number;
+
+          const { result } = await activityLog.executeMutation(
+            hunt,
+            team_id,
+            redisClient,
+            knex,
+            async (trx, mutator) => {
+              const teamState = mutator.getTeamState(hunt, team_id);
+
+              if (teamState.next_interaction !== interactionId) {
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
+              }
+
+              if (
+                teamState.interactions_started.has(interactionId) ||
+                teamState.interactions_completed.has(interactionId)
+              ) {
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
+              }
+
+              const interaction = INTERACTIONS[interactionId];
+              if (interaction?.type !== "virtual") {
+                return {
+                  status: 404 as const,
+                  body: null,
+                };
+              }
+
+              await mutator.appendLog({
+                team_id,
+                type: "interaction_started",
+                slug: interactionId,
+              });
+
+              // Also insert the initial node into team_interaction_states
+              const { node, state } = (
+                interaction.handler as VirtualInteractionHandler<
+                  object,
+                  unknown,
+                  string,
+                  string,
+                  unknown
+                >
+              ).startState();
+              await appendTeamInteractionStateLog(
+                {
+                  team_id,
+                  slug: interactionId,
+                  node,
+                  // no predecessor, we're starting here!
+                  graph_state: state,
+                },
+                trx,
+              );
+
+              return {
+                status: 200 as const,
+                body: {},
+              };
+            },
+          );
+          if (result.status === 200 && redisClient) {
+            // Also refresh the redis state for teamInteractionStateLog, since we also inserted into that DB table
+            await teamInteractionStateLog.refreshRedisLog(redisClient, knex);
+          }
+          return result;
+        },
+      },
     },
     admin: {
       getTeamState: {

@@ -3,6 +3,8 @@ import type { InteractionGraph } from "../types";
 import arcadia_speaker from "./assets/arcadia-speaker.jpg";
 import bg from "./assets/bg.jpg";
 import billie_winner from "./assets/billie-winner.png";
+import keychain from "./assets/keychain.png";
+import grandPrizePhoto from "./assets/memento-grand-prize.jpg";
 import roger_arcadia_baseline from "./assets/roger-arcadia-baseline.png";
 import roger_arcadia_okay from "./assets/roger-arcadia-okay.png";
 import roger_baseline_speaker from "./assets/roger-baseline-speaker.jpg";
@@ -13,6 +15,7 @@ import roger_focus_speaker from "./assets/roger-focus-speaker.jpg";
 import roger_focus from "./assets/roger-focus.png";
 import roger_okay_speaker from "./assets/roger-okay-speaker.jpg";
 import roger_okay from "./assets/roger-okay.png";
+import ticketStub from "./assets/stub.png";
 import mp3_audio_10 from "./audio/mp3/10.mp3";
 import mp3_audio_11_afraid_p1 from "./audio/mp3/11-afraid-p1.mp3";
 import mp3_audio_11_afraid from "./audio/mp3/11-afraid.mp3";
@@ -1388,6 +1391,24 @@ const BoardwalkInteractionGraph: InteractionGraph<
       },
     },
   ],
+};
+
+export const boardwalkRewards: {
+  [K in BoardwalkInteractionResult]: { asset: string; description: string };
+} = {
+  "ticket-stub": {
+    asset: ticketStub,
+    description: "The end of a ticket stub, reading 250117",
+  },
+  keychain: {
+    asset: keychain,
+    description: "A keychain with a small rubber duck",
+  },
+  photo: {
+    asset: grandPrizePhoto,
+    description:
+      "A grayscale photo of Billie holding a giant stuffed toy, and Roger standing beside them",
+  },
 };
 
 export default BoardwalkInteractionGraph;

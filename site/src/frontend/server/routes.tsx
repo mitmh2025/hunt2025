@@ -34,7 +34,6 @@ import {
   type InteractionParams,
   interactionRequestHandler,
   interactionStartPostHandler,
-  interactionAdvancePostHandler,
   interactionSkipPostHandler,
 } from "./routes/interaction";
 import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
@@ -206,6 +205,10 @@ export function registerUiRoutes({
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
 
+  unauthRouter.get("/currentTime", (_req, res) => {
+    res.send(`${Date.now()}`);
+  });
+
   authRouter.get(
     "/",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -363,10 +366,6 @@ export function registerUiRoutes({
   authRouter.post(
     "/interactions/:slug/complete",
     interactionCompletePostHandler,
-  );
-  authRouter.post(
-    "/interactions/:slug/advance/:fromNode",
-    interactionAdvancePostHandler,
   );
   authRouter.post("/interactions/:slug/skip", interactionSkipPostHandler);
 

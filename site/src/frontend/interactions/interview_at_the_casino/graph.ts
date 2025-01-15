@@ -128,6 +128,9 @@ import audio_opus_9b_p2 from "./audio/opus/9b-p2.opus";
 import audio_opus_9b from "./audio/opus/9b.opus";
 import audio_opus_final from "./audio/opus/final.opus";
 import audio_opus_start from "./audio/opus/start.opus";
+import ace_of_diamonds from "./images/Ad.png";
+import ace_of_spades from "./images/As.png";
+import joker from "./images/JOKER.png";
 import bg_annoyed from "./images/bg-annoyed.png";
 import bg_neutral from "./images/bg-neutral.png";
 import bg_pleased from "./images/bg-pleased.png";
@@ -1132,6 +1135,23 @@ const CasinoInteractionGraph: InteractionGraph<
       },
     },
   ],
+};
+
+export const casinoRewards: {
+  [K in CasinoResult]: { asset: string; description: string };
+} = {
+  "ace-of-diamonds": {
+    asset: ace_of_diamonds,
+    description: "An Ace of Diamonds playing card",
+  },
+  "ace-of-spades": {
+    asset: ace_of_spades,
+    description: "An Ace of Spades playing card",
+  },
+  joker: {
+    asset: joker,
+    description: "A Joker playing card",
+  },
 };
 
 export default CasinoInteractionGraph;

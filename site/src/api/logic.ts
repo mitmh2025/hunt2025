@@ -1,4 +1,4 @@
-import { type TeamInfo } from "../../lib/api/client";
+import { type TeamHuntState, type TeamInfo } from "../../lib/api/client";
 import {
   type InteractionState,
   type TeamRegistration,
@@ -86,12 +86,28 @@ export class TeamStateIntermediate extends LogicTeamState {
         break;
       case "interaction_completed":
         this.interactions_completed.set(entry.slug, entry.data.result);
-      // fallthrough - completed implies started
+
+        if (this.queued_interactions.length > 0) {
+          this.next_interaction = this.queued_interactions.shift() ?? null;
+          this.next_interaction_queued_at = entry.timestamp;
+        } else {
+          this.next_interaction = null;
+          this.next_interaction_queued_at = null;
+        }
+
+        break;
       case "interaction_started":
         this.interactions_started.add(entry.slug);
-      // fallthrough - started implies unlocked
+        break;
       case "interaction_unlocked":
         this.interactions_unlocked.add(entry.slug);
+        if (!this.next_interaction) {
+          // no queued interaction -- queue this one
+          this.next_interaction = entry.slug;
+          this.next_interaction_queued_at = entry.timestamp;
+        } else {
+          this.queued_interactions.push(entry.slug);
+        }
         break;
       case "puzzle_partially_solved":
         this.puzzles_partially_solved.add(entry.slug);
@@ -144,6 +160,9 @@ export class TeamStateIntermediate extends LogicTeamState {
         this.team_hints_unlocked_timestamp,
       ),
       puzzles_visible: Array.from(this.puzzles_visible),
+      next_interaction: this.next_interaction,
+      next_interaction_queued_at: this.next_interaction_queued_at,
+      queued_interactions: this.queued_interactions,
     };
   }
 }
@@ -157,7 +176,10 @@ export function hydrateLogEntry<D extends { timestamp: string | Date }>(
   return { ...ie, timestamp: ts };
 }
 
-export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
+export function formatTeamHuntState(
+  hunt: Hunt,
+  data: TeamStateIntermediate,
+): TeamHuntState {
   const rounds = Object.fromEntries(
     hunt.rounds
       .filter(({ slug: roundSlug }) => data.rounds_unlocked.has(roundSlug))
@@ -255,6 +277,8 @@ export function formatTeamHuntState(hunt: Hunt, data: TeamStateIntermediate) {
       ]),
     ),
     gates_satisfied: [...data.gates_satisfied],
+    next_interaction: data.next_interaction ?? undefined,
+    next_interaction_queued_at: data.next_interaction_queued_at?.toISOString(),
   };
 }
 

@@ -6,7 +6,9 @@ import { type TeamState, type TeamHuntState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
 import { getBackgroundCheckManifestOverrides } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
+import VirtualInteraction from "../../components/VirtualInteraction";
 import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
+import virtualInteractionState from "../../interactions/virtualInteractionState";
 import {
   type ComponentManifest,
   DEFAULT_MANIFEST,
@@ -65,11 +67,6 @@ function stubInteractionState(slug: string, interaction: Interaction) {
           <form method="POST" action={`/interactions/${slug}/complete`}>
             <button type="submit">Complete interaction</button>
           </form>
-          {interaction.virtual && (
-            <form method="POST" action={`/interactions/${slug}/skip`}>
-              <button type="submit">Skip interaction</button>
-            </form>
-          )}
         </>
       );
     case "completed":
@@ -119,21 +116,38 @@ async function virtualInteractionHandler(
     return undefined;
   }
   const interactionStateLog = interactionStateLogResult.body;
-  const log = interactionStateLog.map((entry) =>
-    interactionDefinition.handler.format(entry),
+  const log = interactionStateLog.flatMap((entry) => {
+    const formatted = interactionDefinition.handler.format(entry);
+    if (!formatted) return [];
+
+    return [formatted];
+  });
+
+  const initialVirtualInteractionState = virtualInteractionState(
+    teamState.state,
   );
 
   const preloadImages = interactionDefinition.handler.getPreloadImages();
 
-  const inlineScript = `window.initialInteractionState = ${JSON.stringify(log)};`;
+  const inlineScript = `window.initialInteractionState = ${JSON.stringify(log)}; window.initialVirtualInteractionState = ${JSON.stringify(initialVirtualInteractionState)};`;
   const node = (
     <div>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
-      <div id="interaction-root" />
-      {stubInteractionState(slug, interaction)}
+      <div id="interaction-root">
+        <VirtualInteraction
+          slug={slug}
+          nodes={log}
+          state={initialVirtualInteractionState}
+        />
+      </div>
       {preloadImages.map((src) => (
         <link key={src} rel="preload" as="image" href={src} />
       ))}
+      {interaction.virtual && process.env.NODE_ENV === "development" && (
+        <form method="POST" action={`/interactions/${slug}/skip`}>
+          <button type="submit">[DEV MODE] Skip interaction</button>
+        </form>
+      )}
     </div>
   );
   return wrapContentWithNavBar(
@@ -312,30 +326,6 @@ export const interactionSkipPostHandler: RequestHandler<
     params: {
       teamId: `${req.teamState.teamId}`,
       interactionId: slug,
-    },
-    body: {},
-  });
-  res.redirect(`/interactions/${req.params.slug}`);
-});
-
-export const interactionAdvancePostHandler: RequestHandler<
-  InteractionParams & { fromNode: string },
-  unknown,
-  Record<string, never>,
-  Record<string, never>
-> = asyncHandler(async (req, res) => {
-  if (process.env.NODE_ENV !== "development") {
-    // Only supported in devmode
-    return undefined;
-  }
-  if (!req.teamState) return undefined;
-  const slug = req.params.slug;
-  // Ignore the result
-  await req.frontendApi.advanceInteraction({
-    params: {
-      teamId: `${req.teamState.teamId}`,
-      interactionId: slug,
-      fromNode: req.params.fromNode,
     },
     body: {},
   });

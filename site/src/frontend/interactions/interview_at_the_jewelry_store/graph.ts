@@ -4,6 +4,7 @@ import neutralBg from "./assets/Neutral.jpg";
 import neutralSpeaker from "./assets/Neutral_Speaker.jpg";
 import surprisedBg from "./assets/Surprised.jpg";
 import surprisedSpeaker from "./assets/Surprised_Speaker.jpg";
+import phone_number from "./assets/phone_number.png";
 import audio_mp3_1 from "./audio/mp3/1.mp3";
 import audio_mp3_10a from "./audio/mp3/10a.mp3";
 import audio_mp3_10b from "./audio/mp3/10b.mp3";
@@ -75,7 +76,7 @@ export type JewelryStoreState = {
   idea1: boolean; // did we try option 6a yet?
   idea2: boolean; // did we try option 6b yet?
 };
-type JewelryStoreResult = "";
+type JewelryStoreResult = "phone-number";
 type JewelryStoreSpeaker =
   | "billie"
   | "gemcutter_neutral"
@@ -594,10 +595,20 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       },
       timeout_msec: 16272,
       finalState(_state: JewelryStoreState) {
-        return "";
+        return "phone-number";
       },
     },
   ],
+};
+
+export const jewelryStoreRewards: {
+  [K in JewelryStoreResult]: { asset: string; description: string };
+} = {
+  "phone-number": {
+    asset: phone_number,
+    description:
+      'A scrap of paper that says "Call me!" with a heart and the text "PEnnsylvania 6-5000"',
+  },
 };
 
 export default JewelryStoreInteractionGraph;

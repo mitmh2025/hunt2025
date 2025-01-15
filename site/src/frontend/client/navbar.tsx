@@ -89,27 +89,34 @@ const NavBarManager = ({
     return stop;
   }, [highWaterMark]);
 
+  const activeInteraction = state.virtualInteractions.find(
+    (i) => i.state === "unstarted" || i.state === "running",
+  );
+
   return (
     <>
       <Notifications
-        persistentNotifications={state.runningInteractions
-          .filter(
-            (i) => i.virtual && !document.location.pathname.endsWith(i.slug),
-          )
-          .map((interaction) => ({
-            key: interaction.slug,
-            icon: <HuntIcon />,
-            description: (
-              <>
-                It’s time to interview a key witness! Each person on your team
-                should join Billie to{" "}
-                <a href={`/interactions/${interaction.slug}`}>
-                  conduct an {interaction.title}
-                </a>
-                .
-              </>
-            ),
-          }))}
+        persistentNotifications={
+          activeInteraction &&
+          !document.location.pathname.endsWith(activeInteraction.slug)
+            ? [
+                {
+                  key: activeInteraction.slug,
+                  icon: <HuntIcon />,
+                  description: (
+                    <>
+                      It’s time to interview a key witness! Each person on your
+                      team should join Billie to{" "}
+                      <a href={`/interactions/${activeInteraction.slug}`}>
+                        conduct an {activeInteraction.title}
+                      </a>
+                      .
+                    </>
+                  ),
+                },
+              ]
+            : []
+        }
         ref={notifications}
         maxNotifications={5}
       />
