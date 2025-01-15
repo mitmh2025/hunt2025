@@ -48,7 +48,7 @@ const HELLFRESH_DATA: [string, string, string, string][] = [
   ],
   ["1D", "BASH", "1 Jojo rub", "Jojo[ba sh]rub"],
   ["2D", "ONE", "2 Ounces my bags", "Ounces m[one]y bags"],
-  ["3D", "SEX", "3 dashes CASSI tract", "dashes Cassi[s ex]tract"],
+  ["3D", "SEX", "3 Dashes CASSI tract", "Dashes Cassi[s ex]tract"],
   ["4D", "RATIO", "4 Mase do meters", "Mase[rati o]dometers"],
   ["5D", "EARN", "5 Lin umber patterns", "Lin[ear n]umber patterns"],
   ["6D", "TOSS", "6 Ben, if rage beaks", "Ben[t oss]ifrage beaks"],
@@ -58,7 +58,7 @@ const HELLFRESH_DATA: [string, string, string, string][] = [
     "7 Ounces stone pix preferably",
     "Ounces stone pi[pe, ony]x preferably",
   ],
-  ["11D", "AGENT", "11 Queens in DR., our age", "queens in dr[ag ent]our age"],
+  ["11D", "AGENT", "11 Queens in DR., our age", "queens in dr[ag ent]ourage"],
   ["13D", "WHALE", "13 Nary eBalls", "Nar[whal e]yeballs"],
   [
     "14D",
@@ -69,21 +69,21 @@ const HELLFRESH_DATA: [string, string, string, string][] = [
   [
     "15D",
     "CRED",
-    "15 logs from a wooded a own south",
-    "15 logs from a wooded a[cre d]own south",
+    "15 Logs from a wooded a own south",
+    "Logs from a wooded a[cre d]own south",
   ],
   [
     "16D",
     "DUST",
-    "16 stops at promote our locations",
-    "16 stops at promote[d US t]our locations",
+    "16 Stops at promote our locations",
+    "Stops at promote[d US t]our locations",
   ],
-  ["18D", "NOG", "18 of Imogen’s tech loves", "18 of Imogen’s tech[no g]loves"],
+  ["18D", "NOG", "18 Of Imogen’s tech loves", "Of Imogen’s tech[no g]loves"],
   [
     "19D",
     "TUN",
-    "19 percent ambien employment",
-    "19 percent ambien[t un]employment",
+    "19 Percent ambien employment",
+    "Percent ambien[t un]employment",
   ],
 ];
 
@@ -605,11 +605,11 @@ const Solution = (): JSX.Element => {
       <h2>BetterOprah</h2>
       <h3>Podcast ad text</h3>
       <p className="puzzle-flavor">
-        Feeling down? In need of a pick-me-up? Here at BetterOprah, we’ve got
-        you covered! With a subscription that drops the best inspirational
-        quotes from your favorite TV personality, you’ll never miss another
-        word! Go to two-pi-noir.agency/betteroprah and enter promo code [static]
-        at checkout.
+        Are you feeling down? In need of a pick-me-up? Here at BetterOprah,
+        we’ve got you covered! With a subscription that drops the best
+        inspirational quotes from your favorite TV personality, you’ll never
+        miss another word! Go to two-pi-noir.agency/betteroprah and enter promo
+        code [static] at checkout.
       </p>
       <h3>Minipuzzle</h3>
       <p>Solvers get the following drop quote:</p>

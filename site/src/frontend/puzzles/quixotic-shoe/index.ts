@@ -180,7 +180,7 @@ const puzzle: PuzzleDefinition = {
       description: "HardlySafe: extraction (most explicit)",
       keywords: ["hardlysafe", "extraction"],
       nudge:
-        "The rebus squares in this puzzle read “CAMERA” in one direction, and a cardinal direction the other way (N/S/E/W/NE/NW/SE/SW). The flavor text from the ad tells us to think about camera that look at key points from multiple angled. Thinking of the rebus squares as cameras facing in the indicated direction, what squares in the grid are “looked at” by two cameras?",
+        "The rebus squares in this puzzle read “CAMERA” in one direction, and a cardinal direction the other way (N/S/E/W/NE/NW/SE/SW). The flavor text from the ad tells us to think about cameras that look at key points from multiple angles. Thinking of the rebus squares as cameras facing in the indicated direction, what squares in the grid are “looked at” by two cameras?",
     },
     {
       order: 40.0,

@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import puzzle from "./assets/puzzle.png";
 
 const StyledStanza = styled.div`
@@ -30,12 +31,10 @@ const Emphasis = ({ children }: { children: React.ReactNode }) => (
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <p>
-        <strong>
-          Content warning: this puzzle contains uncensored curse words. This
-          warning is not part of the puzzle.
-        </strong>
-      </p>
+      <AuthorsNote>
+        Content warning: this puzzle contains uncensored curse words. This
+        warning is not part of the puzzle.
+      </AuthorsNote>
       <Stanza>
         <div>Sweetie, you know that I love you,</div>
         <div>And that love will never decrease,</div>
