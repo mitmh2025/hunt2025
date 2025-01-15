@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import duckLeft from "./luckyDuckAssets/duck-left.png";
 import duckRight from "./luckyDuckAssets/duck-right.png";
+import quack from "./luckyDuckAssets/quack.mp3";
 import getConfetti from "./confetti";
 
 type duckLocale = {
@@ -125,6 +126,7 @@ export default function Game() {
   const gameBoardRef = useRef<HTMLDivElement>(null);
   const duckRef = useRef<HTMLDivElement>(null);
   const isFleeing = useRef(false);
+  const quackRef = useRef<HTMLAudioElement | null>(null);
 
   function flee() {
     if (isFleeing.current) {
@@ -245,7 +247,10 @@ export default function Game() {
           ref={duckRef}
           onClick={() => {
             setIsWinner(true);
-
+            if (quackRef.current) {
+              quackRef.current.currentTime = 0;
+              quackRef.current?.play();
+            }
             getConfetti();
           }}
           onTransitionEnd={(evt) => {
@@ -276,6 +281,7 @@ export default function Game() {
           ></animate>
         </filter>
       </svg>
+      <audio ref={quackRef} id="quack" src={quack} preload="auto" />
     </Wrapper>
   );
 }
