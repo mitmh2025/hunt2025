@@ -14,8 +14,9 @@ const Container = styled.div`
   }
 `;
 
-const PoolWidth = 753.38;
-const PoolHeight = 562.38;
+const PoolScaleRatio = 675 / 753.38;
+const PoolWidth = 675;
+const PoolHeight = PoolScaleRatio * 562.38;
 
 const PoolContainer = styled.div`
   position: relative;
@@ -60,7 +61,7 @@ const PoolClues: [x: number, y: number, clue: string][] = [
 
 const Pool = (
   <PoolImage
-    viewBox={`0 0 ${PoolWidth} ${PoolHeight}`}
+    viewBox={`0 0 753.38 562.38`}
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -128,8 +129,8 @@ const Puzzle = () => {
           {Pool}
           {PoolClues.map(([x, y, clue]) => {
             const style: CSSProperties = {
-              left: `${(x / PoolWidth) * 100}%`,
-              top: `calc(${(y / PoolHeight) * 100}% - 1.5em)`,
+              left: `${((PoolScaleRatio * x) / PoolWidth) * 100}%`,
+              top: `calc(${((PoolScaleRatio * y) / PoolHeight) * 100}% - 1.5em)`,
             };
             return (
               <PoolClue key={clue} style={style}>
