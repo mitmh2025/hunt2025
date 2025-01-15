@@ -1,3 +1,6 @@
+import keychain from "../../hub/assets/boardwalk_token_keychain.png";
+import grandPrizePhoto from "../../hub/assets/boardwalk_token_photo.jpg";
+import ticketStub from "../../hub/assets/boardwalk_token_ticket_stub.png";
 import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
 import arcadia_speaker from "./assets/arcadia-speaker.jpg";
@@ -1388,6 +1391,24 @@ const BoardwalkInteractionGraph: InteractionGraph<
       },
     },
   ],
+};
+
+export const boardwalkRewards: {
+  [K in BoardwalkInteractionResult]: { asset: string; description: string };
+} = {
+  "ticket-stub": {
+    asset: ticketStub,
+    description: "The end of a ticket stub, reading 250117",
+  },
+  keychain: {
+    asset: keychain,
+    description: "A keychain with a small rubber duck",
+  },
+  photo: {
+    asset: grandPrizePhoto,
+    description:
+      "A grayscale photo of Billie holding a giant stuffed toy, and Roger standing beside them",
+  },
 };
 
 export default BoardwalkInteractionGraph;

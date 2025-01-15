@@ -31,6 +31,7 @@ export const DatasetSchema = z.enum([
   "events",
   "interaction_state_log",
   "poll_responses",
+  "virtual_interaction_state",
 ]);
 export type Dataset = z.infer<typeof DatasetSchema>;
 

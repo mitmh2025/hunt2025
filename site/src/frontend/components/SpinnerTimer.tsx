@@ -29,6 +29,7 @@ const SpinnerTimer = ({
   endTime,
   className,
   color = "#c7c7bb",
+  syncedTime,
 }: {
   width: number;
   height: number;
@@ -36,11 +37,18 @@ const SpinnerTimer = ({
   endTime: number;
   className?: string;
   color?: string;
+  syncedTime?: { getCurrentTime: () => number };
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const periodicHandle = useRef<number | undefined>(undefined);
   const [remainingSeconds, setRemainingSeconds] = useState<number>(
-    Math.max(Math.round((endTime - Date.now()) / 1000), 0),
+    Math.max(
+      Math.round(
+        (endTime - (syncedTime ? syncedTime.getCurrentTime() : Date.now())) /
+          1000,
+      ),
+      0,
+    ),
   );
 
   const drawSpinner = useCallback(() => {
@@ -48,7 +56,7 @@ const SpinnerTimer = ({
     periodicHandle.current = window.requestAnimationFrame(drawSpinner);
 
     // Compute fraction of spinner we should show (100% if <= startTime, 0% if >= endTime)
-    const now = Date.now();
+    const now = syncedTime ? syncedTime.getCurrentTime() : Date.now();
     let frac: number;
     if (now < startTime) {
       frac = 1;
@@ -102,7 +110,7 @@ const SpinnerTimer = ({
         }
       }
     }
-  }, [startTime, endTime, width, height, color]);
+  }, [startTime, endTime, width, height, color, syncedTime]);
 
   useEffect(() => {
     if (!periodicHandle.current) {

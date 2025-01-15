@@ -1,3 +1,5 @@
+import kieftenbeldPostcard from "../../hub/assets/art_gallery_token_kieftenbeld.png";
+import lemahieuPostcard from "../../hub/assets/art_gallery_token_lemahieu.png";
 import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
 import bg from "./assets/bg.png";
@@ -1568,6 +1570,27 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       },
     },
   ],
+};
+
+export const artGalleryRewards: {
+  [K in ArtGalleryResult]: { asset: string; description: string };
+} = {
+  kieftenbeld: {
+    asset: kieftenbeldPostcard,
+    description: "A postcard of a painting by the artist Kieftenbeld",
+  },
+  lemahieu: {
+    asset: lemahieuPostcard,
+    description: "A postcard of a painting by the artist LeMahieu",
+  },
+  "kieftenbeld-postcard": {
+    asset: kieftenbeldPostcard,
+    description: "A postcard of a painting by the artist Kieftenbeld",
+  },
+  "lemahieu-postcard": {
+    asset: lemahieuPostcard,
+    description: "A postcard of a painting by the artist LeMahieu",
+  },
 };
 
 export default ArtGalleryInteractionGraph;

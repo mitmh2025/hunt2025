@@ -160,3 +160,34 @@ export type InteractionGraph<
   // The asset path of the background image for this interaction.
   background: string;
 };
+
+export type VirtualInteractionState =
+  | {
+      state: "queued";
+      slug: string;
+      title: string;
+    }
+  | {
+      state: "unstarted";
+      enqueuedAt: string;
+      autostartAt: string;
+      slug: string;
+      title: string;
+    }
+  | {
+      state: "running";
+      slug: string;
+      title: string;
+    }
+  | {
+      state: "completed";
+      slug: string;
+      title: string;
+      rewardDescription: string;
+      rewardImage: string;
+    };
+
+export type TeamVirtualInteractionsState = {
+  epoch: number;
+  interactions: VirtualInteractionState[];
+};

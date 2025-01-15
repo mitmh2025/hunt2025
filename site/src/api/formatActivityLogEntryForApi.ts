@@ -60,6 +60,7 @@ export default function formatActivityLogEntryForApi(
             | (typeof INTERACTIONS)[keyof typeof INTERACTIONS];
           entry = Object.assign(entry, {
             title: interaction?.title ?? `Untitled interaction ${e.slug}`,
+            virtual: interaction?.type === "virtual",
           });
         }
         break;

@@ -106,6 +106,8 @@ export const TeamHuntStateSchema = z.object({
   puzzles: z.record(slug, PuzzleSummarySchema),
   gates_satisfied: z.array(z.string()),
   outstanding_hint_requests: z.array(z.string()),
+  next_interaction: z.string().optional(),
+  next_interaction_queued_at: z.string().datetime().optional(),
 });
 
 export const TeamStateSchema = z.object({
@@ -168,7 +170,7 @@ const ActivityLogEntrySchema = z.discriminatedUnion("type", [
     }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
-    z.object({ type: z.literal("interaction_unlocked") }),
+    z.object({ type: z.literal("interaction_unlocked"), virtual: z.boolean() }),
   ),
   ActivityLogEntryWithSlugAndTitle.merge(
     z.object({ type: z.literal("interaction_started") }),
@@ -515,6 +517,15 @@ export const publicContract = c.router({
     responses: {
       200: z.object({}).passthrough(),
       400: z.null(), // If election slug is not valid
+      404: z.null(),
+    },
+  },
+  startVirtualInteractionEarly: {
+    method: "POST",
+    path: `/interactions/:interactionId/startVirtualEarly`,
+    body: z.object({}),
+    responses: {
+      200: z.object({}),
       404: z.null(),
     },
   },

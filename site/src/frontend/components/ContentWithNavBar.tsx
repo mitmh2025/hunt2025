@@ -1,5 +1,6 @@
 import React, { type ReactNode } from "react";
 import { type TeamState, type TeamHuntState } from "../../../lib/api/client";
+import virtualInteractionState from "../interactions/virtualInteractionState";
 import { eventsState } from "../rounds/events";
 import { type RenderedPage } from "../utils/renderApp";
 import NavBar, { type NavBarState } from "./NavBar";
@@ -30,19 +31,14 @@ export function navBarState(teamState: TeamHuntState): NavBarState {
     });
   }
 
-  const runningInteractions = Object.values(teamState.rounds).flatMap((round) =>
-    Object.entries(round.interactions ?? {}).flatMap(
-      ([slug, { title, state, virtual }]) =>
-        state === "running" ? [{ slug, title, virtual }] : [],
-    ),
-  );
+  const { interactions } = virtualInteractionState(teamState);
 
   return {
     epoch: teamState.epoch,
     rounds,
     currency: teamState.currency,
     strongCurrency: teamState.strong_currency,
-    runningInteractions,
+    virtualInteractions: interactions,
   };
 }
 

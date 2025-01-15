@@ -1,3 +1,6 @@
+import ace_of_diamonds from "../../hub/assets/casino_token_ace_of_diamonds.png";
+import ace_of_spades from "../../hub/assets/casino_token_ace_of_spades.png";
+import joker from "../../hub/assets/casino_token_joker.png";
 import billie from "../assets/billie.png";
 import { type InteractionGraph } from "../types";
 import audio_mp3_1_p1 from "./audio/mp3/1-p1.mp3";
@@ -1132,6 +1135,23 @@ const CasinoInteractionGraph: InteractionGraph<
       },
     },
   ],
+};
+
+export const casinoRewards: {
+  [K in CasinoResult]: { asset: string; description: string };
+} = {
+  "ace-of-diamonds": {
+    asset: ace_of_diamonds,
+    description: "An Ace of Diamonds playing card",
+  },
+  "ace-of-spades": {
+    asset: ace_of_spades,
+    description: "An Ace of Spades playing card",
+  },
+  joker: {
+    asset: joker,
+    description: "A Joker playing card",
+  },
 };
 
 export default CasinoInteractionGraph;

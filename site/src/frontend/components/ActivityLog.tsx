@@ -137,7 +137,7 @@ export function formatActivityLogEntry(
             <a href={`/interactions/${entry.slug}`}>{entry.title}</a>
           </>
         ),
-        showNotification: true,
+        showNotification: !entry.virtual,
       };
     case "interaction_started":
       return {
