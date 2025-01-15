@@ -7,6 +7,7 @@ import { Math, MFrac, MI, MN, MRow } from "../../../components/MathML";
 import { AuthorsNote } from "../../../components/PuzzleLayout";
 import lightIcon from "../../../puzzles/practical-fighter/assets/light.svg";
 import magnetIcon from "../../../puzzles/practical-fighter/assets/magnet.svg";
+import { deviceMax } from "../../../utils/breakpoints";
 import { RadioWrapper } from "./StyledRadioPage";
 import circle from "./assets/circle.svg";
 import image1 from "./assets/image1.svg";
@@ -40,7 +41,7 @@ const PiFraction = ({ num, denom }: { num: number; denom: number }) => (
 );
 
 const SizedImage = styled(LinkedImage)<{ $width: number }>`
-  width: ${({ $width }) => $width}px;
+  max-width: ${({ $width }) => $width}px;
 `;
 
 const CenteredImage = styled(SizedImage)`
@@ -57,6 +58,11 @@ const FlexWrapper = styled.div`
 const InnerFlexWrapper = styled.div`
   display: inline-flex;
   gap: 1em;
+
+  @media ${deviceMax.sm} {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const StyledLi = styled.li`
