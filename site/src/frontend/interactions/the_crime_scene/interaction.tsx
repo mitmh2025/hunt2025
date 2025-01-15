@@ -25,10 +25,10 @@ const Interaction = ({
           confrontation. If you’re unable to complete this confrontation, you
           may reach out to Hunt HQ at info@mitmh2025.com after the interaction
           has been open for more than 3 hours and we can mark it completed
-          (include the phrase “RIDE SIDECAR”). This interaction does block
-          further investigatory content, but you should have plenty of other
-          leads to follow, so we still recommend you do the live interaction
-          even if you need to wait a bit.
+          (include the phrase “RIDE SIDECAR” in the subject line). This
+          interaction does block further investigatory content, but you should
+          have plenty of other leads to follow, so we still recommend you do the
+          live interaction even if you need to wait a bit.
         </p>
       </AuthorsNoteBlock>
 

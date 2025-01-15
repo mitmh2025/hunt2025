@@ -94,7 +94,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["MAKE PARODY OF BONNIE TYLER HIT"],
       reply:
-        "Correct! Please record a parody of a Bonnie Tyler song and send your parody to info@mitmh2025.com. Include your team name and the phrase MAKE PARODY OF BONNIE TYLER HIT.",
+        "Correct! Please record a parody of a Bonnie Tyler song and send your parody to info@mitmh2025.com. Include your team name and the phrase MAKE PARODY OF BONNIE TYLER HIT in the subject line.",
     },
   ],
 };
