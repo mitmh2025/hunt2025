@@ -3347,7 +3347,7 @@ export async function getRouter({
             };
           }
 
-          const state = interaction.handler.forceGenerateFinalState() as string;
+          const state = interaction.handler.forceGenerateFinalState();
           if (!state) {
             return {
               status: 500 as const,
