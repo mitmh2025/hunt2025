@@ -156,7 +156,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     },
     {
       id: "1",
-      speaker: "gemcutter",
+      speaker: "gemcutter_neutral",
       text: "Back again so soon, O’Ryan?  Got another piece for me to look over?",
       sound: {
         mp3: audio_mp3_1,
@@ -228,7 +228,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     },
     {
       id: "2ab-p1",
-      speaker: "gemcutter",
+      speaker: "gemcutter_neutral",
       text: "A woman, huh?  And you think this lady came through here?",
       sound: {
         mp3: audio_mp3_2ab_p1,
@@ -252,7 +252,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     },
     {
       id: "2cd-p1",
-      speaker: "gemcutter",
+      speaker: "gemcutter_surprised",
       text: "Pretty words for a pretty PI...But what are you really here for?",
       sound: {
         mp3: audio_mp3_2cd_p1,
@@ -345,7 +345,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     // All dialog branches have converged here.
     {
       id: "5",
-      speaker: "gemcutter",
+      speaker: "gemcutter_neutral",
       text: "Ah, yes, I think I remember a lady like that.  Maybe you can help jog my memory.",
       sound: {
         mp3: audio_mp3_5,
@@ -368,7 +368,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     },
     {
       id: "6a-p1",
-      speaker: "gemcutter",
+      speaker: "gemcutter_neutral",
       text: "You’re an eyeful, Billie, but when I look at that face my memory just flies outta my head.",
       sound: {
         mp3: audio_mp3_6a_p1,
@@ -390,7 +390,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     },
     {
       id: "6b-p1",
-      speaker: "gemcutter",
+      speaker: "gemcutter_surprised",
       text: "Pah, money!  Billie, I thought we were friends.",
       sound: {
         mp3: audio_mp3_6b_p1,
@@ -424,7 +424,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     // All paths have now converged on 6cd-p1
     {
       id: "6cd-p1",
-      speaker: "gemcutter",
+      speaker: "gemcutter_surprised",
       text: "You know me well, Billie.  I’ll hold you to that date!... I remember that woman now.  A real looker of a lady.  Sleek hair, sharp dress, _definitely_ in the chips.  She slipped in the door quick, then started giving orders.  She was acting like the boss of this place, but she also kept looking around like she didn’t want to be seen.  She wanted men’s rings and I sold her a beaut of a gold band.  18K, dome edge, high polish...",
       sound: {
         mp3: audio_mp3_6cd_p1,
@@ -493,7 +493,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     },
     {
       id: "8",
-      speaker: "gemcutter",
+      speaker: "gemcutter_neutral",
       text: "You know I can’t give out customers’ names, even for you.  But the name she gave me was an obvious fake.  And because I like you, Billie, I’ll tell you this: she ordered an engraving on the ring: “To Ferdie. Bless your heart. -G”. Now I’m not saying her fiance is “Ferdie” and I’m not saying her name starts with “G”.  But I’m not not saying that either.",
       sound: {
         mp3: audio_mp3_8,
@@ -564,7 +564,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
 
     {
       id: "11",
-      speaker: "gemcutter",
+      speaker: "gemcutter_neutral",
       text: "When your mystery lady is found, I do expect you to come back and take me out on that date you promised! Give me a call when you’re free.  Otherwise I’ll have to play the detective and track you down.  Good luck and keep yourself safe!",
       sound: {
         mp3: audio_mp3_11,
