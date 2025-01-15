@@ -30,6 +30,7 @@ const DeviceAttributesSchema = z
     en_rickroll: z.boolean().optional(),
     en_numbers: z.boolean().optional(),
     whep_url: z.string().optional(),
+    file_manifest: z.string().optional(),
   })
   .passthrough();
 type DeviceAttributes = z.infer<typeof DeviceAttributesSchema>;
@@ -67,6 +68,8 @@ if (!tbArgs.username) {
 if (!tbArgs.password) {
   throw new Error("$TB_PASSWORD was not configured");
 }
+
+const fileManifestUrl = process.env.FILE_MANIFEST_URL;
 
 async function main({
   redisUrl,
@@ -242,11 +245,15 @@ async function main({
           console.warn("Failed to mint token for", teamId, resp);
         }
       }
+      if (fileManifestUrl) {
+        deviceAttributes.file_manifest = fileManifestUrl;
+      }
       if (
         oldDeviceAttributes?.en_knocks !== deviceAttributes.en_knocks ||
         oldDeviceAttributes.en_funaround !== deviceAttributes.en_funaround ||
         oldDeviceAttributes.en_numbers !== deviceAttributes.en_numbers ||
-        oldDeviceAttributes.whep_url !== deviceAttributes.whep_url
+        oldDeviceAttributes.whep_url !== deviceAttributes.whep_url ||
+        oldDeviceAttributes.file_manifest !== deviceAttributes.file_manifest
       ) {
         await tbClient.client.telemetry
           .saveEntityAttributes({
