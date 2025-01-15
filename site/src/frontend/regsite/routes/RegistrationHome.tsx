@@ -1,80 +1,50 @@
 import React from "react";
 import RegsiteWrapper from "../RegsiteWrapper";
 
-const UNATTACHED_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSc-XXPdMMwl52uAcNIa30mLe4OfihuqB4IdshfvEnbzfprYwQ/viewform?usp=sf_link";
-
-export default function RegistrationHome({
-  isAuthed,
-  registrationOpen,
-}: {
-  isAuthed: boolean;
-  registrationOpen: boolean;
-}) {
+export default function RegistrationHome({ isAuthed }: { isAuthed: boolean }) {
   return (
     <RegsiteWrapper>
       <div className="container">
         <section id="registration-button">
-          {isAuthed && registrationOpen ? (
-            <a className="button" href="/registration/new">
+          {isAuthed ? (
+            <a className="button" href="/registration">
               Update your registration
             </a>
           ) : (
-            <a
-              className={`button ${!registrationOpen ? "disabled" : ""}`}
-              href={registrationOpen ? "/registration/new" : "#"}
-            >
+            <button disabled className="button disabled">
               Register your team
-            </a>
+            </button>
           )}
-          {!registrationOpen && (
-            <p className="help">
-              Registration will open in <strong>early December</strong>. Join
-              the{" "}
-              <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
-                puzzle-hunters mailing list
-              </a>{" "}
-              to get the official announcement!
-            </p>
-          )}
-        </section>
-        {registrationOpen && (
-          <>
+          <p className="help">
+            Registration for the 2025 MIT Mystery Hunt is now closed. Join the{" "}
+            <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
+              puzzle-hunters mailing list
+            </a>{" "}
+            if you want to hear about future events!{" "}
             {!isAuthed && (
-              <section id="unattached-hunter-button">
-                <a
-                  className="button"
-                  href={UNATTACHED_FORM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Sign up as an individual
-                </a>
-              </section>
+              <>
+                If you have already registered, you can still{" "}
+                <a href="/login">log in</a> to update your registration.
+              </>
             )}
-            <section id="registration-subtitle">
-              {isAuthed ? (
-                <p>
-                  Or <a href="/logout">log out</a> to register a new team.
-                </p>
-              ) : (
-                <p>
-                  Or you can <a href="/login">log in</a> to update your
-                  registration.
-                </p>
-              )}
-
-              <p>
-                The registration deadline for all teams is{" "}
-                <strong>Wednesday January 15th</strong>. Most fields can be
-                updated at any time before January 17th, and we would appreciate
-                updates as you solidify your team’s plans for the year.
-              </p>
-            </section>
-          </>
-        )}
+          </p>
+        </section>
+        <section id="registration-subtitle">
+          <p>
+            The registration deadline for all teams was{" "}
+            <strong>Wednesday January 15th</strong>. For teams which have
+            already registered, most fields can be updated at any time before
+            January 17th, and we would appreciate updates to help us plan for
+            the event.
+          </p>
+        </section>
         <section id="updates">
           <h2>Latest Updates</h2>
+          <p>
+            <strong>2025.01.14 - </strong>Registration for the 2025 MIT Mystery
+            Hunt is now closed. We look forward to seeing everyone this coming
+            Friday!
+          </p>
           <p>
             <strong>2025.01.08 - </strong>The registration deadline for all
             teams is Wednesday morning on January 15th. We’ve also added some
@@ -99,18 +69,16 @@ export default function RegistrationHome({
             that guidance. No other changes have been made along with this
             removal.
           </p>
-          {registrationOpen && (
-            <p>
-              <strong>2024.12.01 - </strong>Registration is now open! You can
-              find links above to both register your team or to sign up as an
-              individual seeking a team. It would help us greatly with planning
-              if you can register as soon as possible, especially if you are
-              planning to hunt on campus, even if you have to guess at some of
-              the details. Additionally, if you are hunting in person, please
-              register <strong>before December 21st</strong> (even if you are
-              not requesting space at MIT).
-            </p>
-          )}
+          <p>
+            <strong>2024.12.01 - </strong>Registration is now open! You can find
+            links above to both register your team or to sign up as an
+            individual seeking a team. It would help us greatly with planning if
+            you can register as soon as possible, especially if you are planning
+            to hunt on campus, even if you have to guess at some of the details.
+            Additionally, if you are hunting in person, please register{" "}
+            <strong>before December 21st</strong> (even if you are not
+            requesting space at MIT).
+          </p>
           <p>
             <strong>2024.11.29 — </strong>Happy Thanksgiving! We have a handful
             of updates. First, we’ve added details about kickoff, campus access,
@@ -263,40 +231,14 @@ export default function RegistrationHome({
               <h3>How do I sign up?</h3>
             </summary>
             <div className="answer">
-              {registrationOpen ? (
-                <>
-                  <p>
-                    Hunt registration is now open! Team contacts can register
-                    their team by{" "}
-                    <a href="/registration/new">
-                      completing the registration form
-                    </a>{" "}
-                    or by clicking the button above. If you are not already part
-                    of a team, you can sign up as an individual{" "}
-                    <a href={UNATTACHED_FORM_URL}>here</a>.
-                  </p>
-
-                  <p>
-                    If your team will be hunting in person, please register{" "}
-                    <strong>before December 21st</strong>, even if you have to
-                    guess at some of the information, and even if you are not
-                    requesting that we find space for your team. Most fields can
-                    be updated any time before Hunt starts. While we will do our
-                    best to accommodate requests for space after that date, we
-                    cannot make guarantees.
-                  </p>
-                </>
-              ) : (
-                <p>
-                  Hunt registration for teams will open in{" "}
-                  <strong>early December</strong>. The official announcement
-                  will be sent to the{" "}
-                  <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
-                    puzzle-hunters mailing list
-                  </a>
-                  . Check back for more details later.
-                </p>
-              )}
+              <p>
+                Hunt registration is now closed for 2025. If you’d like to
+                receive information about future events, you can join the{" "}
+                <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
+                  puzzle-hunters mailing list
+                </a>
+                .
+              </p>
             </div>
           </details>
 
@@ -305,33 +247,19 @@ export default function RegistrationHome({
               <h3>I’m not part of a team. Can I still participate?</h3>
             </summary>
             <div className="answer">
-              {registrationOpen ? (
-                <p>
-                  Yes you can! You can always start your own team, but if you’re
-                  looking to join an existing team we make an effort to match
-                  new hunters. Please fill out{" "}
-                  <a href={UNATTACHED_FORM_URL}>this form</a> to register as an
-                  unattached hunter. We will do our best to help match you to a
-                  team. If you are a student, please reach out to{" "}
-                  <a href="mailto:puzzle-club-exec@mit.edu">
-                    puzzle-club-exec@mit.edu
-                  </a>{" "}
-                  for help getting matched to a team.
-                </p>
-              ) : (
-                <p>
-                  Yes you can! You can always start your own team, but if you’re
-                  looking to join an existing team we make an effort to match
-                  new hunters. When Hunt registration opens in early December,
-                  there will also be an opportunity for unattached hunters to
-                  register. We will do our best to help match you to a team.
-                  Check back later. If you are a student, please reach out to{" "}
-                  <a href="mailto:puzzle-club-exec@mit.edu">
-                    puzzle-club-exec@mit.edu
-                  </a>{" "}
-                  for help getting matched to a team.
-                </p>
-              )}
+              <p>
+                Registration for unattached hunters is closed at this time. Sign
+                up for the{" "}
+                <a href="https://mailman.mit.edu/mailman/listinfo/puzzle-hunters">
+                  puzzle-hunters mailing list
+                </a>{" "}
+                to be notified of the next year’s MIT Mystery Hunt. If you are a
+                student, please reach out to{" "}
+                <a href="mailto:puzzle-club-exec@mit.edu">
+                  puzzle-club-exec@mit.edu
+                </a>{" "}
+                for help getting matched to a team.
+              </p>
             </div>
           </details>
 
@@ -451,20 +379,11 @@ export default function RegistrationHome({
             </summary>
             <div className="answer">
               <p>
-                If you would like to use classroom space for your HQ during
-                Hunt, there will be a place to indicate this in your general
-                registration
-                {!registrationOpen && " which will open in early December"}. You
-                can expect confirmation about your assigned space from us in
-                early January. Please do not contact the Schedules Office
-                directly for space during the MIT Mystery Hunt, as we’ve already
-                worked with them to reserve rooms.
-              </p>
-              <p>
-                As always, reservable space on campus can get tight and more and
-                more spaces have become department-only. If your team is able to
-                hunt out of non-reservable spaces like living group lounges or
-                restricted department spaces, that’s even better!
+                Classroom space has been assigned for this year. As always,
+                space was quite tight this year and we have done our best to
+                accommodate as many teams as possible. At this time, we are not
+                able to offer additional space on-campus for teams to use as
+                headquarters during the Hunt.
               </p>
             </div>
           </details>

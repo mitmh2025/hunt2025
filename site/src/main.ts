@@ -70,8 +70,6 @@ if (!redisUrl) {
   );
 }
 
-const registrationOpen = !process.env.REGISTRATION_CLOSED;
-
 const emailFrom = process.env.EMAIL_FROM;
 
 async function main() {
@@ -106,7 +104,6 @@ async function main() {
   if (enabledComponents.has("reg") && apiUrl) {
     regsite({
       apiUrl,
-      registrationOpen,
     }).listen(regsitePort, () => {
       console.log(`Regsite listening on port ${regsitePort}`);
     });
