@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 
 const Message = styled.div`
+  word-break: break-word;
   white-space: pre-line;
 `;
 
@@ -10,7 +11,12 @@ const Form = styled.div`
   margin: 1rem 0;
 `;
 
+const BreakingP = styled.p`
+  word-break: break-word;
+`;
+
 const Error = styled.p`
+  word-break: break-word;
   color: var(--red-600);
 `;
 
@@ -117,7 +123,9 @@ const App = () => {
           </button>
         </form>
       </Form>
-      {previousCommand && <p>Last command: {previousCommand}</p>}
+      {previousCommand && (
+        <BreakingP>Last command: {previousCommand}</BreakingP>
+      )}
       {error && <Error>Error: {error}</Error>}
       <div>
         <p>Commands:</p>
