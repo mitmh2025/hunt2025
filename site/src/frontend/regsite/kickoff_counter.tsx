@@ -53,10 +53,8 @@ const Room = ({ name, slug }: { name: string; slug: string }) => {
     })
       .then((response) => response.json())
       .then((data: ApiResponse) => {
-        const capacity: number =
-          data.results[0].capacity !== undefined ? data.results[0].capacity : 0;
-        const current: number =
-          data.results[0].current !== undefined ? data.results[0].current : 0;
+        const capacity: number = data.results[0].capacity ?? 0;
+        const current: number = data.results[0].current ?? 0;
         const ratio = capacity > 0 ? current / capacity : 1;
         setCapacity(capacity);
         setOccupancy(current);
