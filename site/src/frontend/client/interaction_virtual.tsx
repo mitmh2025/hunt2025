@@ -1,107 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { createRoot /*, hydrateRoot */ } from "react-dom/client";
-import { newClient } from "../../../lib/api/client";
-import {
-  type InteractionChoice,
-  type ExternalInteractionNode,
-} from "../interactions/client-types";
-import apiUrl from "../utils/apiUrl";
+import VirtualInteraction from "../components/VirtualInteraction";
+import { type ExternalInteractionNode } from "../interactions/client-types";
 import useAppendDataset from "./useAppendDataset";
-import useDataset from "./useDataset";
-
-const VotesView = ({
-  slug,
-  node,
-}: {
-  slug: string;
-  node: ExternalInteractionNode;
-}) => {
-  const state = useDataset(
-    "poll_responses",
-    { slug, pollId: node.node },
-    { epoch: -1 },
-  );
-
-  console.log("votes now", state);
-
-  return (
-    <>
-      <div>
-        Current votes for slug <code>{slug}</code> pollId{" "}
-        <code>{node.node}</code>:
-      </div>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
-    </>
-  );
-};
-
-const VoteButton = ({
-  choice,
-  onChoiceSelected,
-  currentVote,
-}: {
-  choice: InteractionChoice;
-  onChoiceSelected: (choice: string) => void;
-  currentVote: string | undefined;
-}) => {
-  const onClick = useCallback(() => {
-    onChoiceSelected(choice.key);
-  }, [choice.key, onChoiceSelected]);
-
-  // TODO implement choice.textEffect if present
-  const style = {
-    backgroundColor: currentVote === choice.key ? "#22ff22" : undefined,
-  };
-  return (
-    <button style={style} onClick={onClick}>
-      {choice.text}
-    </button>
-  );
-};
-
-const VotesButtons = ({
-  slug,
-  nodeId,
-  choices,
-}: {
-  slug: string;
-  nodeId: string;
-  choices: InteractionChoice[];
-}) => {
-  const [vote, setVote] = useState<string | undefined>(undefined);
-  const onChoiceSelected = useCallback(
-    (key: string) => {
-      const apiClient = newClient(apiUrl(), undefined);
-      apiClient
-        .castVote({ body: { choice: key }, params: { slug, pollId: nodeId } })
-        .then(
-          () => {
-            setVote(key);
-          },
-          (err) => {
-            // Well your vote was rejected.  That's too bad.  Nothing really to do.
-            console.error(err);
-          },
-        );
-    },
-    [slug, nodeId],
-  );
-  return (
-    <div>
-      {choices.map((choice) => {
-        return (
-          <div key={`${slug}-${nodeId}-${choice.key}`}>
-            <VoteButton
-              choice={choice}
-              currentVote={vote}
-              onChoiceSelected={onChoiceSelected}
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
-};
 
 const InteractionStateLogView = ({
   slug,
@@ -128,27 +29,11 @@ const InteractionStateLogView = ({
     );
   }, [slug, currentNodeId]);
 
-  let votesOptions = undefined;
-  if (currentNode && "choices" in currentNode && currentNode.choices) {
-    votesOptions = (
-      <VotesButtons
-        slug={slug}
-        nodeId={currentNode.node}
-        choices={currentNode.choices}
-      />
-    );
-  }
-
   useEffect(() => {
     if (audioRef.current) {
       void audioRef.current.play();
     }
   }, [currentNode?.sound]);
-
-  const votesView =
-    currentNode && "choices" in currentNode ? (
-      <VotesView slug={slug} node={currentNode} />
-    ) : undefined;
 
   const advanceInteractionButton =
     currentNode && !("finalState" in currentNode) ? (
@@ -157,13 +42,11 @@ const InteractionStateLogView = ({
 
   return (
     <>
+      <VirtualInteraction nodes={log} slug={slug} />
+      <div>{advanceInteractionButton}</div>
+
       {/* eslint-disable-next-line jsx-a11y/media-has-caption -- text will be shown elsewhere */}
       <audio ref={audioRef} src={currentNode?.sound} autoPlay controls />
-      <div>Interaction state log:</div>
-      <pre>{JSON.stringify(log, null, 2)}</pre>
-      <div>{advanceInteractionButton}</div>
-      {votesOptions}
-      {votesView}
     </>
   );
 };

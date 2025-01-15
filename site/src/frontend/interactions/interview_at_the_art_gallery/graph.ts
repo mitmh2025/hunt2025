@@ -1,5 +1,14 @@
-import demo from "../../../assets/demo-photo.png";
+import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
+import bg from "./assets/bg.png";
+import judith_disappointed from "./assets/owner-disappointed-resize.png";
+import judith_disappointed_bg from "./assets/owner-disappointed.png";
+import judith_handshake from "./assets/owner-handshake-resize.png";
+import judith_handshake_bg from "./assets/owner-handshake.png";
+import judith_neutral from "./assets/owner-neutral-resize.png";
+import judith_neutral_bg from "./assets/owner-neutral.png";
+import judith_pleased from "./assets/owner-pleased-resize.png";
+import judith_pleased_bg from "./assets/owner-pleased.png";
 import mp3_audio_10_p1 from "./audio/mp3/10-p1.mp3";
 import mp3_audio_10 from "./audio/mp3/10.mp3";
 import mp3_audio_11a from "./audio/mp3/11a.mp3";
@@ -241,18 +250,24 @@ const remainingLocationOptions = (state: ArtGalleryState) => {
 
 type ArtGallerySpeakers =
   | "billie"
-  | "judith_unintroduced"
-  | "judith_slight_smile_unintroduced"
-  | "judith"
-  | "judith_flat"
-  | "judith_stern"
-  | "judith_slight_smile"
-  | "judith_grin";
+  | "judith_pleased_unintroduced"
+  | "judith_neutral_unintroduced"
+  | "judith_disappointed"
+  | "judith_handshake"
+  | "judith_neutral"
+  | "judith_pleased";
+
+type ArtGalleryBackground =
+  | "disappointed"
+  | "handshake"
+  | "neutral"
+  | "pleased";
 
 const ArtGalleryInteractionGraph: InteractionGraph<
   ArtGalleryState,
   ArtGalleryResult,
-  ArtGallerySpeakers
+  ArtGallerySpeakers,
+  ArtGalleryBackground
 > = {
   starting_node: "start",
   starting_state: {
@@ -262,45 +277,48 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     thought2: false,
     thought3: false,
   },
-  background: "", // TODO: get a background image for this
+  background: bg,
+  bg_states: {
+    disappointed: judith_disappointed_bg,
+    handshake: judith_handshake_bg,
+    neutral: judith_neutral_bg,
+    pleased: judith_pleased_bg,
+  },
   speaker_states: {
     billie: {
       label: "Billie",
-      image: demo, // TODO: get pose images
+      image: billie,
     },
-    judith_unintroduced: {
+    judith_pleased_unintroduced: {
       label: "Woman",
-      image: demo, // TODO: get pose images
+      image: judith_pleased,
     },
-    judith_slight_smile_unintroduced: {
+    judith_pleased: {
+      label: "Judith",
+      image: judith_pleased,
+    },
+    judith_neutral_unintroduced: {
       label: "Woman",
-      image: demo, // TODO: get pose images
+      image: judith_neutral,
     },
-    judith: {
+    judith_neutral: {
       label: "Judith",
-      image: demo, // TODO: get pose images
+      image: judith_neutral,
     },
-    judith_flat: {
+    judith_handshake: {
       label: "Judith",
-      image: demo, // TODO: get pose images
+      image: judith_handshake,
     },
-    judith_stern: {
+    judith_disappointed: {
       label: "Judith",
-      image: demo, // TODO: get pose images
-    },
-    judith_slight_smile: {
-      label: "Judith",
-      image: demo, // TODO: get pose images
-    },
-    judith_grin: {
-      label: "Judith",
-      image: demo, // TODO: get pose images
+      image: judith_disappointed,
     },
   },
   nodes: [
     {
       id: "start",
-      speaker: "judith_unintroduced",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "Ah, I see you’ve got a taste for Korneel Kieftenbeld, hm? The closest thing the late 19th century has to a Dutch master.",
       sound: {
         mp3: mp3_audio_start,
@@ -354,6 +372,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "2a",
       speaker: "billie",
+      overlay: "neutral",
       text: "Oh, truly. The richness of the painting complements the texture of the brushwork. You can see Kieffinbalt’s angst at living in such a flat country. He yearns for the Alps.",
       sound: {
         mp3: mp3_audio_2a,
@@ -365,6 +384,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "2b",
       speaker: "billie",
+      overlay: "neutral",
       text: "Oh, he might be Dutch, but he’s no master. He lacks the transportative quality of Vermeer, of Rembrandt. With them, I’m looking through a window. With him, I’m looking at a wall.",
       sound: {
         mp3: mp3_audio_2b,
@@ -376,6 +396,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "2c",
       speaker: "billie",
+      overlay: "neutral",
       text: "Oh, no, I’m just admiring a rare LeMahieu.  I didn’t think he exhibited outside of Paris these days.",
       sound: {
         mp3: mp3_audio_2c,
@@ -387,6 +408,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "2d",
       speaker: "billie",
+      overlay: "neutral",
       text: "Oh.  Yeah.",
       textEffect: "span",
       sound: {
@@ -398,7 +420,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "2a-p1",
-      speaker: "judith_stern",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "You don’t know the first thing about art, do you?",
       sound: {
         mp3: mp3_audio_2a_p1,
@@ -427,6 +450,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3a",
       speaker: "billie",
+      overlay: "neutral",
       text: "I know a guy named Art, does that count?  He and his buddy Paul won’t shut up about a bridge.",
       sound: {
         mp3: mp3_audio_3a,
@@ -438,6 +462,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3b",
       speaker: "billie",
+      overlay: "neutral",
       text: "I know that art is subjective.  Specifically, my worst subject-ive.  I was always a “recess” sort of student.",
       sound: {
         mp3: mp3_audio_3b,
@@ -449,6 +474,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3c",
       speaker: "billie",
+      overlay: "neutral",
       text: "I know that my finest artwork still hangs on my mother’s fridge.  She moved, so I’m a little worried why the new tenant kept it, but it’s there.",
       sound: {
         mp3: mp3_audio_3c,
@@ -460,6 +486,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "3d",
       speaker: "billie",
+      overlay: "neutral",
       text: "I know that you should’t touch the art.  It took a few docents getting very, very mad at me, but I know that now.",
       sound: {
         mp3: mp3_audio_3d,
@@ -470,7 +497,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "3-p1",
-      speaker: "judith_flat",
+      speaker: "judith_disappointed",
+      overlay: "disappointed",
       text: "Charming, truly.  Judith Calvert.  I own the gallery.",
       sound: {
         mp3: mp3_audio_3_p1,
@@ -499,6 +527,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4a",
       speaker: "billie",
+      overlay: "disappointed",
       text: "Billie O’Ryan.  I own a detective agency.",
       sound: {
         mp3: mp3_audio_4a,
@@ -509,7 +538,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "4a-p1",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "A detective agency?  You must be here about the diamond, then.",
       sound: {
         mp3: mp3_audio_4a_p1,
@@ -521,6 +551,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4a-p2",
       speaker: "billie",
+      overlay: "neutral",
       text: "Careful with that intuition, ma’am.  That’s my job.",
       sound: {
         mp3: mp3_audio_4a_p2,
@@ -532,6 +563,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4b",
       speaker: "billie",
+      overlay: "disappointed",
       text: "Billie O’Ryan.  I own a second trenchcoat to this one.",
       sound: {
         mp3: mp3_audio_4b,
@@ -542,7 +574,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "4b-p1",
-      speaker: "judith_flat",
+      speaker: "judith_disappointed",
+      overlay: "disappointed",
       text: "Really? Is it as shabby as this one?",
       sound: {
         mp3: mp3_audio_4b_p1,
@@ -554,6 +587,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4b-p2",
       speaker: "billie",
+      overlay: "disappointed",
       text: "I’m not here to swap sartorial stories, actually.  I’m here about the diamond.",
       sound: {
         mp3: mp3_audio_4b_p2,
@@ -565,6 +599,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4c",
       speaker: "billie",
+      overlay: "disappointed",
       text: "Billie O’Ryan.  I own a healthy suspicion.",
       sound: {
         mp3: mp3_audio_4c,
@@ -575,7 +610,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "4c-p1",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "Is that right? You must be here about the diamond, then.",
       sound: {
         mp3: mp3_audio_4c_p1,
@@ -587,6 +623,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4d",
       speaker: "billie",
+      overlay: "disappointed",
       text: "Billie O’Ryan.  I own.",
       sound: {
         mp3: mp3_audio_4d,
@@ -597,7 +634,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "4d-p1",
-      speaker: "judith_flat",
+      speaker: "judith_disappointed",
+      overlay: "disappointed",
       text: "You own? ... Own what?",
       sound: {
         mp3: mp3_audio_4d_p1,
@@ -609,6 +647,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4d-p2",
       speaker: "billie",
+      overlay: "disappointed",
       text: "Own... generally.  Dominate.  I’m trying to get some new slang going here.  Is it not working?",
       sound: {
         mp3: mp3_audio_4d_p2,
@@ -619,7 +658,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "4d-p3",
-      speaker: "judith_flat",
+      speaker: "judith_disappointed",
+      overlay: "disappointed",
       text: "Not in the least.",
       sound: {
         mp3: mp3_audio_4d_p3,
@@ -631,6 +671,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "4d-p4",
       speaker: "billie",
+      overlay: "disappointed",
       text: "Well, I’ll have to fall back on my day job of hunting down that diamond, then.",
       sound: {
         mp3: mp3_audio_4d_p4,
@@ -641,7 +682,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "5",
-      speaker: "judith_slight_smile_unintroduced",
+      speaker: "judith_pleased_unintroduced",
+      overlay: "pleased",
       text: "Well, I can see puffery won’t work on you, then, will it?",
       sound: {
         mp3: mp3_audio_5,
@@ -670,6 +712,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5a",
       speaker: "billie",
+      overlay: "pleased",
       text: "I don’t know.  It depends on how much huffery you put before it.",
       sound: {
         mp3: mp3_audio_5a,
@@ -681,6 +724,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5b",
       speaker: "billie",
+      overlay: "pleased",
       text: "I don’t know.  I have a feeling that a sales pitch might be on its way.",
       sound: {
         mp3: mp3_audio_5b,
@@ -692,6 +736,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5c",
       speaker: "billie",
+      overlay: "pleased",
       text: "I don’t know.  It might still be nice to hear the routine.",
       sound: {
         mp3: mp3_audio_5c,
@@ -703,6 +748,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "5d",
       speaker: "billie",
+      overlay: "pleased",
       text: "I don’t know.  They’re cute, but I prefer penguins.",
       sound: {
         mp3: mp3_audio_5d,
@@ -713,7 +759,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "6",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
       text: "Oh, I like you.  Judith Calvert, of the Gallery Calvert.",
       sound: {
         mp3: mp3_audio_6,
@@ -742,6 +788,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6a",
       speaker: "billie",
+      overlay: "pleased",
       text: "Billie O’Ryan, of the O’Ryan Detective Agency.",
       sound: {
         mp3: mp3_audio_6a,
@@ -752,7 +799,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "6a-p1",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "A detective, hm? And here I thought you might be part of the art world.",
       sound: {
         mp3: mp3_audio_6a_p1,
@@ -764,6 +812,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6a-p2",
       speaker: "billie",
+      overlay: "neutral",
       text: "I suppose I might be for as long as it takes to find the diamond, ma’am.",
       sound: {
         mp3: mp3_audio_6a_p2,
@@ -776,6 +825,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6b",
       speaker: "billie",
+      overlay: "pleased",
       text: "Billie O’Ryan, of the O’Ryan Exhibition Center.",
       sound: {
         mp3: mp3_audio_6b,
@@ -786,7 +836,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "6b-p1",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "Exhibition Center? I haven’t heard of that one.  What do you exhibit?",
       sound: {
         mp3: mp3_audio_6b_p1,
@@ -797,7 +848,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "6b-p2",
-      speaker: "billie",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "Right now, a practical installation.  A corkboard with a lot of photos, a lot of strings, and a missing diamond smack in the middle.",
       sound: {
         mp3: mp3_audio_6b_p2,
@@ -810,6 +862,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6c",
       speaker: "billie",
+      overlay: "pleased",
       text: "Billie O’Ryan, of the O’Ryan Shoe Company.",
       sound: {
         mp3: mp3_audio_6c,
@@ -820,7 +873,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "6c-p1",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "Shoe Company?  I didn’t take you for a cobbler.",
       sound: {
         mp3: mp3_audio_6c_p1,
@@ -832,6 +886,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6c-p2",
       speaker: "billie",
+      overlay: "neutral",
       text: "Well, I’ve been burning through loafers while I’m going all over town investigating the diamond.  At this rate I may as well buy the company and save some time.",
       sound: {
         mp3: mp3_audio_6c_p2,
@@ -843,6 +898,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6d",
       speaker: "billie",
+      overlay: "pleased",
       text: "Billie O’Ryan, of the O’Ryans.",
       sound: {
         mp3: mp3_audio_6d,
@@ -853,7 +909,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "6d-p1",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "The O’Ryans?  The O’Ryans?  I don’t believe I’ve heard your name in socialite circles.",
       sound: {
         mp3: mp3_audio_6d_p1,
@@ -865,6 +922,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6d-p2",
       speaker: "billie",
+      overlay: "neutral",
       text: "Well, it’s not there yet.  That might change once I hunt down the diamond.",
       sound: {
         mp3: mp3_audio_6d_p2,
@@ -876,7 +934,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
 
     {
       id: "7",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "Ah, the diamond.  I had heard of what happened.  Such a shock, such an embarrassment, such a scandal.",
       sound: {
         mp3: mp3_audio_7,
@@ -887,7 +946,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "7-p1",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "I’m sure it will be the talk of the town for gallery openings and artist retrospectives for months to come.",
       sound: {
         mp3: mp3_audio_7_p1,
@@ -916,6 +976,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7a",
       speaker: "billie",
+      overlay: "pleased",
       text: "And when that talk happens, you wouldn’t happen to be adding any exclusive knowledge to those conversations, would you?",
       sound: {
         mp3: mp3_audio_7a,
@@ -927,6 +988,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7b",
       speaker: "billie",
+      overlay: "pleased",
       text: "I’m hoping it could be the talk of this gallery for minutes to come.",
       sound: {
         mp3: mp3_audio_7b,
@@ -938,6 +1000,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7c",
       speaker: "billie",
+      overlay: "pleased",
       text: "Any chance I could get a sneak preview of that talk?  I’m so rusty at cocktail chatter.",
       sound: {
         mp3: mp3_audio_7c,
@@ -949,6 +1012,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "7d",
       speaker: "billie",
+      overlay: "pleased",
       text: "I doubt I’ll be invited to those unless I solve the case.  Any chance you can help guide me closer by telling me what you know, ma’am?",
       sound: {
         mp3: mp3_audio_7d,
@@ -960,7 +1024,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
 
     {
       id: "8",
-      speaker: "judith_slight_smile",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "Oh goodness.  The art world is such an insular place, Detective.  And there’s a certain level of discretion that develops in business relationships.  You understand, surely.",
       sound: {
         mp3: mp3_audio_8,
@@ -972,6 +1037,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "8-p1",
       speaker: "billie",
+      overlay: "neutral",
       text: "Are you saying the art world lacks gossip?",
       sound: {
         mp3: mp3_audio_8_p1,
@@ -982,7 +1048,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "9",
-      speaker: "judith_grin",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "Oh, no, the art world would absolutely wither without gossip.  Fresh gossip.  Juicy gossip.  Exciting gossip.",
       sound: {
         mp3: mp3_audio_9,
@@ -993,7 +1060,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "9-p1",
-      speaker: "judith_slight_smile",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "But it’s strictly for the art world.",
       sound: {
         mp3: mp3_audio_9_p1,
@@ -1005,6 +1073,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "9-p2",
       speaker: "billie",
+      overlay: "neutral",
       text: "I see.  And so if I were to... materially become part of the art world, then...",
       sound: {
         mp3: mp3_audio_9_p2,
@@ -1016,7 +1085,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
 
     {
       id: "10",
-      speaker: "judith_slight_smile",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "...then this might be a very different conversation.  Very different, indeed, if you catch my drift.",
       sound: {
         mp3: mp3_audio_10,
@@ -1028,6 +1098,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "10-p1",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "Hm.  I DO have an open expense account on this job.  And I’ve paid less subtle bribes than this before.",
       sound: {
@@ -1081,6 +1152,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11a",
       speaker: "billie",
+      overlay: "neutral",
       text: "Then I suppose I’ll take the Kieftenbeld.",
       sound: {
         mp3: mp3_audio_11a,
@@ -1098,6 +1170,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11b",
       speaker: "billie",
+      overlay: "neutral",
       text: "Then I suppose I’ll take the LeMahieu.",
       sound: {
         mp3: mp3_audio_11b,
@@ -1115,6 +1188,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11c",
       speaker: "billie",
+      overlay: "neutral",
       text: "Then I suppose I’ll take the Kieftenbeld. ...’s postcard.",
       sound: {
         mp3: mp3_audio_11c,
@@ -1132,6 +1206,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "11d",
       speaker: "billie",
+      overlay: "neutral",
       text: "Then I suppose I’ll take the LeMahieu. ...’s postcard.",
       sound: {
         mp3: mp3_audio_11d,
@@ -1148,7 +1223,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12a",
-      speaker: "judith_slight_smile",
+      speaker: "judith_handshake",
+      overlay: "handshake",
       text: "Well, you have outstanding taste, my friend. We can get that paperwork handled right now.",
       sound: {
         mp3: mp3_audio_12a,
@@ -1159,7 +1235,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12a-p1",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "You know, this reminds me. I heard the most fascinating thing when I was hanging this painting up. An older gentleman and a younger lady raised such a ruckus! She came in shouting about how “she knew his secret,” and he stammered and sputtered– “o-o-oh what secret, I don’t have any secrets, what do you mean?” Oh, I’m not getting the voices right, you must excuse me. Just sign there, please.",
       sound: {
         mp3: mp3_audio_12a_p1,
@@ -1170,7 +1247,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12a-p2",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "And then she went on about the secret she was never supposed to know about, the one locked away where she was never supposed to find it. Of course, he tried to hush her up and hustle her out when she started talking about that, so there MUST be something to it. And just initial there, and…",
       sound: {
         mp3: mp3_audio_12a_p2,
@@ -1181,7 +1259,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12a-p3",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "Of course I couldn’t tell you precisely who they were. It would be uncouth; you might be familiar with them. Verrrry familiar indeed. And one more signature there?",
       sound: {
         mp3: mp3_audio_12a_p3,
@@ -1192,7 +1271,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12a-p4",
-      speaker: "judith_slight_smile",
+      speaker: "judith_handshake",
+      overlay: "handshake",
       text: "Lovely. Well, it’s been a delight doing business with you, detective. Once the exhibition is complete, you can pick up what will surely be the new showpiece of your office. Here’s the bill of sale– and a little postcard as a thank-you.",
       sound: {
         mp3: mp3_audio_12a_p4,
@@ -1203,7 +1283,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12a-p5",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "I do hope to see you around once more; this city’s upper crust needs a shot in the arm, and I can’t imagine a stronger shot than you, detective.",
       sound: {
         mp3: mp3_audio_12a_p5,
@@ -1214,7 +1295,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12b",
-      speaker: "judith_slight_smile",
+      speaker: "judith_handshake",
+      overlay: "handshake",
       text: "Well! I’m glad that I could steer you towards such an elegant decision. We can get that paperwork handled now.",
       sound: {
         mp3: mp3_audio_12b,
@@ -1225,7 +1307,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12b-p1",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "You know, this reminds me. I heard the most fascinating thing when I was hanging this painting up. An older gentleman and a younger lady raised such a ruckus! She came in shouting about how she had found out his big secret and he stammered and sputtered, denying he hid any secrets from her. Just sign there, please.",
       sound: {
         mp3: mp3_audio_12b_p1,
@@ -1236,7 +1319,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12b-p2",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "And then she went on about the secret she was never supposed to know about, the one locked away where she was never supposed to find it. And just initial there, and… ",
       sound: {
         mp3: mp3_audio_12b_p2,
@@ -1247,7 +1331,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12b-p3",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "He hustled her out before I could hear the exact details, but from the look on his face, there must have been something to it. And one more signature there?",
       sound: {
         mp3: mp3_audio_12b_p3,
@@ -1258,7 +1343,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12b-p4",
-      speaker: "judith_slight_smile",
+      speaker: "judith_handshake",
+      overlay: "handshake",
       text: "Lovely. Well, it’s been a delight doing business with you, detective. Once the exhibition is complete, you can pick up what will surely be the new showpiece of your office. Here’s the bill of sale– and a little postcard as a thank-you.",
       sound: {
         mp3: mp3_audio_12b_p4,
@@ -1269,7 +1355,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12b-p5",
-      speaker: "judith_slight_smile",
+      speaker: "judith_pleased",
+      overlay: "pleased",
       text: "I hope this is the first step down the line of opening your eyes to the finer things, my friend.",
       sound: {
         mp3: mp3_audio_12b_p5,
@@ -1281,7 +1368,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
 
     {
       id: "12c",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "Ah-ha. You sneaky little thing, you. Is that how you finagle clues and confessions, with your little loopholes?",
       sound: {
         mp3: mp3_audio_12c,
@@ -1292,7 +1380,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12c-p1",
-      speaker: "judith_flat",
+      speaker: "judith_neutral",
+      overlay: "neutral",
       text: "All right, then. I can respect a savvy transactor like yourself, detective. A gentleman and a woman had a bit of a ruckus in here. She had discovered some sort of secret he had been keeping from her, stashed away where she wasn’t supposed to find it. He hushed her up and hustled her out before they could give any details, though. Well, I’d say we’ve gotten what we want from each other– or, at least, all we can expect. If you decide to let your appreciation for the finer things off its leash, do come back.",
       sound: {
         mp3: mp3_audio_12c_p1,
@@ -1304,7 +1393,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
 
     {
       id: "12d",
-      speaker: "judith_stern",
+      speaker: "judith_disappointed",
+      overlay: "disappointed",
       text: "Hm. You’re a little snake, aren’t you? No taste for art, and when given the chance to expand your horizons and get a little culture, you go for the cheap trick.",
       sound: {
         mp3: mp3_audio_12d,
@@ -1315,7 +1405,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12d-p1",
-      speaker: "judith_stern",
+      speaker: "judith_disappointed",
+      overlay: "disappointed",
       text: "Well, let it never be said that I am not a woman of my word, detective. A gentleman and a lady had a rough argument earlier. Something to do with a secret he kept from her, hidden somewhere where she wasn’t supposed to find it.",
       sound: {
         mp3: mp3_audio_12d_p1,
@@ -1326,7 +1417,8 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "12d-p2",
-      speaker: "judith_stern",
+      speaker: "judith_disappointed",
+      overlay: "disappointed",
       text: "And that is precisely as much gossip as you will get for a postcard. Now, if you’ll excuse me, I have people who actually appreciate the finer things ready to be more substantial customers.",
       sound: {
         mp3: mp3_audio_12d_p2,
@@ -1339,7 +1431,6 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     // The following three entries all converge on their destination.
     {
       id: "13",
-      overlay: null,
       speaker: "billie",
       textBubbleType: "thought",
       text: "Being an art connoisseur is fun when someone else is picking up the tab. The “older gentleman” and “younger lady” must be Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",
@@ -1354,7 +1445,6 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     // but for continuity against the interaction draft, I just skip the number
     {
       id: "15",
-      overlay: null,
       speaker: "billie",
       textBubbleType: "thought",
       text: "Well, I can work with that. The two must have been Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",
@@ -1367,7 +1457,6 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     {
       id: "16",
-      overlay: null,
       speaker: "billie",
       textBubbleType: "thought",
       text: "I’ve never seen someone so upset I don’t know who Korfball is. Well, I can work with what little I got. The two must have been Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",

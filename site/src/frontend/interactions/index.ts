@@ -18,7 +18,7 @@ export type InteractionDefinition =
       title: string;
       type: "virtual";
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- types are hard
-      handler: VirtualInteractionHandler<any, string, string, string>;
+      handler: VirtualInteractionHandler<any, string, string, string, string>;
     }
   | {
       title: string;

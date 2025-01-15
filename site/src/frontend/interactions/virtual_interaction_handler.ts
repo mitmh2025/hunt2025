@@ -11,6 +11,7 @@ import {
   isNextNode,
   isPluginNode,
   isTerminalNode,
+  type InteractionCharacterState,
 } from "./types";
 
 // TODO: extract tallyResults to some sort of generic election handler?
@@ -57,9 +58,15 @@ export function tallyResults(
   };
 }
 
-function indexedNodes<T extends object, R, S extends string, P>(
-  graph: InteractionGraph<T, R, S, P>,
-): Record<string, InteractionGraphNode<T, R, S, P>> {
+function indexedNodes<
+  T extends object,
+  R,
+  S extends string,
+  BG extends string,
+  P,
+>(
+  graph: InteractionGraph<T, R, S, BG, P>,
+): Record<string, InteractionGraphNode<T, R, S, BG, P>> {
   return Object.fromEntries(
     graph.nodes.map((node) => {
       return [node.id, node];
@@ -72,8 +79,8 @@ type StartState<T> = {
   state: T;
 };
 
-type Next<T, R, S, P> = {
-  nextNode: InteractionGraphNode<T, R, S, P>;
+type Next<T, R, S, BG, P> = {
+  nextNode: InteractionGraphNode<T, R, S, BG, P>;
   nextState: T;
   previousVoteResult?: VoteResults;
 };
@@ -82,12 +89,13 @@ export class VirtualInteractionHandler<
   T extends object,
   R,
   S extends string,
+  BG extends string,
   P,
 > {
   private name: string;
-  private graph: InteractionGraph<T, R, S, P>;
-  private indexedNodes: Record<string, InteractionGraphNode<T, R, S, P>>;
-  constructor(name: string, graph: InteractionGraph<T, R, S, P>) {
+  private graph: InteractionGraph<T, R, S, BG, P>;
+  private indexedNodes: Record<string, InteractionGraphNode<T, R, S, BG, P>>;
+  constructor(name: string, graph: InteractionGraph<T, R, S, BG, P>) {
     this.name = name;
     this.graph = graph;
     this.indexedNodes = indexedNodes(graph);
@@ -99,17 +107,25 @@ export class VirtualInteractionHandler<
     const graphNode = this.indexedNodes[entry.node];
     if (!graphNode) return undefined;
     const ts = fixTimestamp(entry.timestamp);
+
+    const speaker = this.graph.speaker_states[graphNode.speaker];
+    const overlay = graphNode.overlay
+      ? this.graph.bg_states[graphNode.overlay]
+      : undefined;
+
     const partial: ExternalInteractionNode = {
       id: entry.id,
       ts: ts.getTime(), // When the node was entered
       node: graphNode.id,
-      speaker: graphNode.speaker,
+      speaker: speaker.label,
+      speakerImage: speaker.image,
       text: graphNode.text,
       textBubbleType: graphNode.textBubbleType,
       textEffect: graphNode.textEffect,
       sound: graphNode.sound.mp3, // We always use mp3 for browsers
       timeout_msec: graphNode.timeout_msec,
-      overlay: graphNode.overlay,
+      background: this.graph.background,
+      backgroundOverlay: overlay,
     };
 
     const data = entry.graph_state as T;
@@ -145,7 +161,7 @@ export class VirtualInteractionHandler<
 
   public lookupNode(
     nodeId: string,
-  ): InteractionGraphNode<T, R, S, P> | undefined {
+  ): InteractionGraphNode<T, R, S, BG, P> | undefined {
     return this.indexedNodes[nodeId];
   }
 
@@ -160,14 +176,14 @@ export class VirtualInteractionHandler<
 
   public electionKey(
     teamId: number,
-    node: InteractionGraphNode<T, R, S, P>,
+    node: InteractionGraphNode<T, R, S, BG, P>,
   ): string {
     return `/team/${teamId}/polls/${this.name}/${node.id}`;
   }
 
   public async voteCountsForNode(
     teamId: number,
-    currentNode: InteractionGraphNode<T, R, S, P>,
+    currentNode: InteractionGraphNode<T, R, S, BG, P>,
     redisClient: RedisClient,
   ): Promise<VoteCounts | undefined> {
     // Valid options may be limited by the current state, but we're trying to
@@ -187,11 +203,11 @@ export class VirtualInteractionHandler<
     maybeVoteCounts,
   }: {
     teamId: number;
-    currentNode: InteractionGraphNode<T, R, S, P>;
+    currentNode: InteractionGraphNode<T, R, S, BG, P>;
     state: T;
     redisClient: RedisClient;
     maybeVoteCounts?: VoteCounts;
-  }): Promise<Next<T, R, S, P> | undefined> {
+  }): Promise<Next<T, R, S, BG, P> | undefined> {
     if (isNextNode(currentNode)) {
       let next = currentNode.next;
       if (typeof next === "function") {
@@ -300,7 +316,7 @@ export class VirtualInteractionHandler<
       return {
         nextNode,
         nextState,
-      } as Next<T, R, S, P>;
+      } as Next<T, R, S, BG, P>;
     }
     return undefined;
   }
@@ -336,5 +352,18 @@ export class VirtualInteractionHandler<
       );
     }
     return state;
+  }
+
+  public getPreloadImages(): string[] {
+    const images: string[] = [];
+
+    for (const [_, value] of Object.entries(this.graph.bg_states)) {
+      images.push(value as string);
+    }
+    for (const [_, value] of Object.entries(this.graph.speaker_states)) {
+      images.push((value as InteractionCharacterState).image);
+    }
+
+    return images;
   }
 }
