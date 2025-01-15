@@ -1099,6 +1099,23 @@ const Solution = (): JSX.Element => {
         <Green>Yes, I have the letters. But I intend using them myself</Green>.
       </p>
       <p>
+        <em>(Things between Rover and Sidecar are coming to a head.)</em>
+        <br />
+        You always got choices in this life. You can get on that plane, or you
+        can have what’s behind door number one. You can be a passenger, or you
+        can be a driver. <Orange>And you were a driver.</Orange> They say that a
+        butterfly flapping its wings can cause a hurricane. Something happens,
+        you hardly notice, but it grows with time until it comes crashing down
+        on you. I think that flap (over the lottery) was the beginning of a
+        gathering storm. And the storm has to break.{" "}
+        <Green>Maybe not today, maybe not tomorrow, but soon.</Green>{" "}
+        <Cyan>This is why tomorrow, or today actually, matters</Cyan>{" "}
+        <em>
+          (tomorrow is the Gala, where Carter will be brought into the family)
+        </em>
+        . A chance to steady the ship. Batten down the hatches.
+      </p>
+      <p>
         <em>(End of the chapter, and of the film screening.)</em>
         <br />
         It doesn’t matter how we got here. We are where we are. Maybe you were
