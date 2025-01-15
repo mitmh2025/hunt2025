@@ -6,6 +6,8 @@ import { AuthorsNote, AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import { WebRTCClient } from "../../utils/WebRTCClient";
 import { type PHAction, type PHGameState, type ControlRoomInfo } from "./types";
 import { type PuzzleStateLogEntry } from "lib/api/frontend_contract";
+import { deviceMax, deviceMin } from "../../utils/breakpoints";
+import room from "./assets/room.jpg";
 
 const Video = ({ whepUrl }: { whepUrl: string }) => {
   const el = useRef<HTMLVideoElement>(null);
@@ -37,8 +39,17 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   align-items: stretch;
-  gap: 10px;
+  gap: 1em;
   justify-content: center;
+  width: 100%;
+`;
+
+const NounsAndVerbsWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  @media ${deviceMax.sm} {
+    flex-direction: column;
+  }
 `;
 
 const Box = styled.div`
@@ -65,14 +76,17 @@ const Box = styled.div`
 `;
 
 const Col2 = styled(Box)`
-  width: 450px;
+  width: 400px;
   align-content: center;
-  flex-grow: 5;
+  flex: 0 1 400px;
 `;
 
 const VideoWrapper = styled(Box)`
   width: 480px;
-  flex-grow: 1;
+  flex: 0 1 480px;
+  img {
+    width: 100%;
+  }
 `;
 
 const VoteyWrapper = styled(Box)`
@@ -84,21 +98,57 @@ const TaskList = styled.ul`
   display: flex;
   flex-flow: column wrap;
 `;
-const WordBox = styled.div`
+
+const WordBox = styled.div<{ $words: number }>`
+  flex: 1 1 auto;
   display: flex;
   flex-flow: column wrap;
   align-content: center;
   justify-content: center;
-  gap: 7px;
+  gap: 0.5rem;
   height: 200px;
   padding: 0px 1rem;
+  @media ${deviceMin.lg} {
+    flex-basis: ${({ $words }) => Math.ceil($words / 5) * 108}px;
+  }
+  @media ${deviceMax.md} {
+    flex-direction: row;
+    flex-basis: ${({ $words }) => Math.ceil($words / 3) * 37}px;
+  }
+  &:first-child {
+    align-content: flex-end;
+    @media ${deviceMax.md} {
+      align-content: center;
+    }
+  }
+  &:last-child {
+    align-content: flex-start;
+    @media ${deviceMax.md} {
+      align-content: center;
+    }
+  }
 `;
 
 const TheBox = styled.div`
-  align-content: center;
+  flex: 0 0 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: "belanosima", sans-serif;
   font-size: 1.3rem;
   padding: 5px;
+  @media ${deviceMax.sm} {
+    align-self: center;
+  }
+`;
+
+const WordsWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  @media ${deviceMax.sm} {
+    flex-direction: column;
+  }
 `;
 
 const VideoPlaceholder = styled.img`
@@ -108,6 +158,7 @@ const VideoPlaceholder = styled.img`
 `;
 
 const Button = styled.button`
+  cursor: pointer;
   width: 100px;
   padding: 4px 3px;
   font-size: 1.1rem;
@@ -117,6 +168,7 @@ const Button = styled.button`
   border-radius: 2px;
   border: none;
   &:disabled {
+    cursor: not-allowed;
     color: var(--white);
     background-color: var(--gold-700);
   }
@@ -144,6 +196,8 @@ const initialState: PHGameState = {
 
 const Game = ({ info }: { info: ControlRoomInfo }) => {
   const [state, setState] = useState<PHGameState>(initialState);
+  const [noun, setNoun] = useState<string | null>(null);
+  const [verb, setVerb] = useState<string | null>(null);
   const [choices, setChoices] = useState({} as PHAction);
   const [wsOpen, setWsOpen] = useState(false);
   const [isInRetryWsTimeout, setIsInRetryWsTimeout] = useState(false);
@@ -212,22 +266,28 @@ const Game = ({ info }: { info: ControlRoomInfo }) => {
             JSON.stringify({
               name: "vote",
               choice: { verb: value },
-              old: choices,
+              old: { noun, verb },
             }),
           );
           console.log(t + " " + value);
-          setChoices({ verb: value, noun: choices.noun });
+          setVerb(value);
+          setTimeout(() => {
+            setVerb(null);
+          }, 5000);
           break;
         case "noun":
           socketRef.current?.send(
             JSON.stringify({
               name: "vote",
               choice: { noun: value },
-              old: choices,
+              old: { noun, verb },
             }),
           );
           console.log(t + " " + value);
-          setChoices({ verb: choices.verb, noun: value });
+          setNoun(value);
+          setTimeout(() => {
+            setNoun(null);
+          }, 5000);
           break;
       }
     };
@@ -245,7 +305,8 @@ const Game = ({ info }: { info: ControlRoomInfo }) => {
   return (
     <FlexWrapper>
       <VideoWrapper>
-        <Video whepUrl={info.whepUrl} />
+        {/* <Video whepUrl={info.whepUrl} /> */}
+        <img src={room} alt="lol" />
       </VideoWrapper>
       <Col2>
         <Header>Tasks</Header>
@@ -264,31 +325,33 @@ const Game = ({ info }: { info: ControlRoomInfo }) => {
       </Col2>
       <VoteyWrapper>
         <Header>Send Help</Header>
-        <WordBox id="ph-verbs">
-          {state.verbs.map((v) => (
-            <Button
-              key={v}
-              disabled={choices.verb === v}
-              onClick={updateVote("verb", v)}
-              value={v}
-            >
-              {v}
-            </Button>
-          ))}
-        </WordBox>
-        <TheBox>THE</TheBox>
-        <WordBox id="ph-nouns">
-          {state.nouns.map((n) => (
-            <Button
-              key={n}
-              disabled={choices.noun === n}
-              onClick={updateVote("noun", n)}
-              value={n}
-            >
-              {n}
-            </Button>
-          ))}
-        </WordBox>
+        <WordsWrapper>
+          <WordBox $words={state.verbs.length}>
+            {state.verbs.map((v) => (
+              <Button
+                key={v}
+                disabled={verb === v}
+                onClick={updateVote("verb", v)}
+                value={v}
+              >
+                {v}
+              </Button>
+            ))}
+          </WordBox>
+          <TheBox>THE</TheBox>
+          <WordBox $words={state.nouns.length}>
+            {state.nouns.map((n) => (
+              <Button
+                key={n}
+                disabled={noun === n}
+                onClick={updateVote("noun", n)}
+                value={n}
+              >
+                {n}
+              </Button>
+            ))}
+          </WordBox>
+        </WordsWrapper>
       </VoteyWrapper>
     </FlexWrapper>
   );
