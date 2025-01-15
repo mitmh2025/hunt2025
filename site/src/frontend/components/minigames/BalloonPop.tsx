@@ -118,7 +118,7 @@ function makeBalloons(): Balloon[] {
   return balloons;
 }
 
-const Minigame = () => {
+const BalloonPop = () => {
   const [balloons, setBalloons] = useState<Balloon[]>(makeBalloons());
 
   function pop(i: number) {
@@ -203,4 +203,4 @@ const Minigame = () => {
   );
 };
 
-export default Minigame;
+export default BalloonPop;
