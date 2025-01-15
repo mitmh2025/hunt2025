@@ -8,8 +8,10 @@ import pop5 from "./balloonPopAssets/balloonSounds/pop5.mp3";
 import pop6 from "./balloonPopAssets/balloonSounds/pop6.mp3";
 import pop7 from "./balloonPopAssets/balloonSounds/pop7.mp3";
 
-const WIDTH = 768;
-const HEIGHT = 640;
+const BALLOON_WIDTH = 24;
+const BALLOON_HEIGHT = Math.floor((BALLOON_WIDTH * 4) / 3);
+const WIDTH = 30 * BALLOON_WIDTH;
+const HEIGHT = 15 * BALLOON_HEIGHT;
 
 const Wrapper = styled.main`
   width: ${WIDTH + 8}px;
@@ -26,19 +28,12 @@ const Wrapper = styled.main`
 const Scores = styled.div`
   text-align: center;
   margin: 0 auto;
-  margin-top: -6rem;
+  margin-top: -4rem;
   margin-bottom: 1rem;
 
-  h2,
-  h3 {
-    padding: 0;
-  }
-
   h2 {
+    padding: 0;
     font-size: 2.5rem;
-  }
-  h3 {
-    font-size: 2rem;
   }
 
   .score {
@@ -66,9 +61,6 @@ const Frame = styled.div`
     padding: 0;
   }
 `;
-
-const BALLOON_WIDTH = 24;
-const BALLOON_HEIGHT = (BALLOON_WIDTH * 4) / 3;
 
 const Balloon = styled.div`
   width: ${BALLOON_WIDTH - 2}px;
@@ -114,7 +106,7 @@ function makeBalloons(): Balloon[] {
   const balloons = [];
   for (
     let i = 0;
-    i < (WIDTH / BALLOON_WIDTH) * (HEIGHT / BALLOON_HEIGHT);
+    i < Math.floor(WIDTH / BALLOON_WIDTH) * Math.floor(HEIGHT / BALLOON_HEIGHT);
     i += 1
   ) {
     balloons.push({
@@ -169,13 +161,9 @@ const Minigame = () => {
       </svg>
       <Scores>
         <h2>
-          TEAM SCORE: <span className="score">{score}</span>{" "}
-          {score === balloons.length && "🎉"}
-        </h2>
-        <h3>
           YOUR SCORE: <span className="score">{score}</span>{" "}
           {score === balloons.length && "🎉"}
-        </h3>
+        </h2>
       </Scores>
       <Frame>
         <table>
