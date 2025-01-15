@@ -1401,10 +1401,7 @@ export default function Solution() {
         answer to the event: <PuzzleAnswer>UNITY</PuzzleAnswer>.
       </p>
 
-      <p>
-        A complete list of prompts and responses is below. Color indicates the
-        shape assigned to each pair.
-      </p>
+      <p>A complete list of prompts and responses is below.</p>
 
       {RING_DATA.map((ring, i) => (
         <React.Fragment key={i}>
