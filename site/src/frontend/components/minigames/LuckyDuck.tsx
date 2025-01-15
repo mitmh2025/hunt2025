@@ -1,10 +1,10 @@
 import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 import styled from "styled-components";
-
+import getConfetti from "./confetti";
 import duckLeft from "./luckyDuckAssets/duck-left.png";
 import duckRight from "./luckyDuckAssets/duck-right.png";
 import quack from "./luckyDuckAssets/quack.mp3";
-import getConfetti from "./confetti";
+import caption from "./luckyDuckAssets/quack.vtt";
 
 type duckLocale = {
   x: number;
@@ -16,7 +16,7 @@ function fleeSpeed(score: number): number {
   const speeds = [0.9, 0.8, 0.7, 0.6, 0.5];
 
   if (score >= 0 && score < speeds.length) {
-    return speeds[score] as number;
+    return speeds[score]!;
   }
 
   return 0.5 * (1 / Math.pow(1.5, score - 8));
@@ -208,7 +208,9 @@ export default function Game() {
     }
 
     document.addEventListener("mousemove", onMouseMove);
-    return () => document.removeEventListener("mousemove", onMouseMove);
+    return () => {
+      document.removeEventListener("mousemove", onMouseMove);
+    };
   }, []);
 
   const duckCount = 1;
@@ -249,7 +251,7 @@ export default function Game() {
             setIsWinner(true);
             if (quackRef.current) {
               quackRef.current.currentTime = 0;
-              quackRef.current?.play();
+              quackRef.current.play();
             }
             getConfetti();
           }}
@@ -281,7 +283,9 @@ export default function Game() {
           ></animate>
         </filter>
       </svg>
-      <audio ref={quackRef} id="quack" src={quack} preload="auto" />
+      <audio ref={quack} id="crash" src={quack} preload="auto">
+        <track default kind="captions" srcLang="en" src={caption} />
+      </audio>
     </Wrapper>
   );
 }

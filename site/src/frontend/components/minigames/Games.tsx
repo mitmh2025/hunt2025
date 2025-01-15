@@ -1,10 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
-
+import { DarkStyledDialog } from "../StyledDialog";
+import { Button } from "../StyledUI";
 import BalloonPop from "./BalloonPop";
 import LuckyDuck from "./LuckyDuck";
-import { Button } from "../StyledUI";
-import { DarkStyledDialog } from "../StyledDialog";
 import Skeeball from "./Skeeball";
 
 type GAME = "Balloon Pop" | "Lucky Duck" | "Skeeball";
@@ -31,11 +30,11 @@ const Games = () => {
   return (
     <Wrapper>
       <Buttons>
-        <Button onClick={() => setCurrentGame("Balloon Pop")}>
+        <Button onClick={() => { setCurrentGame("Balloon Pop"); }}>
           Balloon Pop
         </Button>
-        <Button onClick={() => setCurrentGame("Lucky Duck")}>Lucky Duck</Button>
-        <Button onClick={() => setCurrentGame("Skeeball")}>Skeeball</Button>
+        <Button onClick={() => { setCurrentGame("Lucky Duck"); }}>Lucky Duck</Button>
+        <Button onClick={() => { setCurrentGame("Skeeball"); }}>Skeeball</Button>
       </Buttons>
       <DarkStyledDialog
         open={!!currentGame}
