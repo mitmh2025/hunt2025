@@ -48,6 +48,7 @@ class TeamTicketState {
   haveTouchpointTickets: Map<TouchpointSlug, ZammadTicketType>;
   needInteractionTickets: Map<string, string>;
   haveInteractionTickets: Map<string, ZammadTicketType>;
+  hintTickets: Map<string, ZammadTicketType>; // key is puzzle slug
 
   constructor(hunt: Hunt, initial?: Partial<TeamTicketState>) {
     this.teamState = new TeamStateIntermediate(hunt, initial?.teamState);
@@ -59,6 +60,7 @@ class TeamTicketState {
     this.haveInteractionTickets = new Map(
       initial?.haveInteractionTickets ?? [],
     );
+    this.hintTickets = new Map(initial?.hintTickets ?? []);
   }
 
   reduce(entry: InternalActivityLogEntry) {
@@ -75,7 +77,7 @@ class TeamTicketState {
     }
 
     // haveTouchpointTickets and haveInteractionTickets are populated by Zammad
-    // ticket changes, not by the activity log.
+    // ticket changes, not by the activity log. hintTickets is populated directly
 
     return this;
   }
