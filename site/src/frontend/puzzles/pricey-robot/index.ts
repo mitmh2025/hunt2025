@@ -14,6 +14,7 @@ const puzzle: PuzzleDefinition = {
     "Erin Price",
     "J. Hel\u00e9ne Andersson",
     "Laura Nicholson",
+    "Nicholas Georgiou",
     "rfong",
     "Steven Keyes",
     "Teddy McArthur",
