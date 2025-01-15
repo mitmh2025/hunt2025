@@ -220,8 +220,8 @@ export default function TeamOverview({ team }: { team: TeamData }) {
           )}
           {team.registration.teamLocation === "Room Requested" && (
             <>
-              Requested a room.
-              {/* TODO: add room assignment */}
+              Requested a room. Details:
+              {team.registration.teamLocationDetailsRoomRequest}
             </>
           )}
         </>

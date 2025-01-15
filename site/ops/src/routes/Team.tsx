@@ -85,8 +85,6 @@ export default function Team() {
         <TeamOverview team={team} />
       </Box>
 
-      {/* TODO: hints, maybe linking to Zammad tickets? */}
-
       <Box sx={{ mt: 6 }}>
         <h2>Activity</h2>
         <TeamActivityLog activity={teamActivity} />
