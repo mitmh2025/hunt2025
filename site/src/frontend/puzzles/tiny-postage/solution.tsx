@@ -1468,12 +1468,13 @@ const Solution = (): JSX.Element => {
       <h2>The Logician</h2>
       <p>
         This is a standard kakuro (though with some unchecked cells and two sums
-        not provided). One logical path would be to note that several sums have
-        a single set of possible combinations: 41/7 must be 2456789; 42/7 must
-        be 3456789; 7/3 must be 124; 22/6 must be 123457; 35/5 must be 56789;
-        6/3 must be 123; 29/7 must be 1234568; 16/2 must be 79; 11/4 must be
-        1235; 34/5 must be 46789. This limits options at the places these sums
-        cross:
+        not provided). Kakuro solution notation is in the form A/B where A is
+        the sum for a group of cells and B is the number of cells in that group.
+        One logical path would be to note that several sums have a single set of
+        possible combinations: 41/7 must be 2456789; 42/7 must be 3456789; 7/3
+        must be 124; 22/6 must be 123457; 35/5 must be 56789; 6/3 must be 123;
+        29/7 must be 1234568; 16/2 must be 79; 11/4 must be 1235; 34/5 must be
+        46789. This limits options at the places these sums cross:
       </p>
       <SizedImage
         $width={50}
@@ -1482,14 +1483,14 @@ const Solution = (): JSX.Element => {
       />
       <p>
         Some other crosses limit options as well. For instance, the 14/4 cannot
-        contain a 9, so we can fill in the 16/2 and have only one remaining set
-        of digits for the 14/4. The 8/2 in the northeast corner can accommodate
-        71 or 62 but not 44, and the crossing 12/2 can accommodate 57 but not
-        66. We can complete the corner and place several digits in the 14/3 and
-        34/5. In the southwest, the 8/2 crossing the 22/3 and the 7/3 means that
-        there must be a 6 or a 7 in the 22/3, so it must be 679, and since 18/5
-        cannot contain a 9, it must be placed in the 20/5, restricting it to
-        12359.
+        contain a 9, so we can fill in 7 where it crosses the 16/2 and have only
+        one remaining set of digits (124) for the 14/4. The 8/2 in the northeast
+        corner can accommodate 71 or 62 but not 44, and the crossing 12/2 can
+        accommodate 57 but not 66. We can complete the corner and place several
+        digits in the 14/3 and 34/5. In the southwest, the 8/2 crossing the 22/3
+        and the 7/3 means that there must be a 6 or a 7 in the 22/3, so it must
+        be 679, and since 18/5 cannot contain a 9, it must be placed in the
+        20/5, restricting it to 12359.
       </p>
       <SizedImage
         $width={50}
@@ -1497,18 +1498,21 @@ const Solution = (): JSX.Element => {
         alt="A partially solved Kakuro puzzle"
       />
       <p>
-        The two 6/2 sums require placement of the 3 in the 18/5 at the bottom.
-        Placing the 7 makes that sum 12357, and since the 5 cannot go in 9/3 or
-        10/2 and the 1 cannot go in 9/3 we can complete this sum. The vertical
-        18/5 must have a 4 or 5, a 6 or 7, and, due to the 13/2, something more
-        than 4, so it will be 12456 and the 1, 2 and 6 can be placed. The
-        vertical 14/3 is now fairly limited, and the second and third cell of
-        the 41/7 must have 4 and 5 in some order, so we know they do not appear
-        later in the row. The 12/4 can now only be 1236, and since a 34/6 only
-        ever contains one instance of 1 or 2, which will definitely appear in
-        the first cell, we can place the 3 in the 34/6 along with the 6 in the
-        41/7. Since the 14/3 in the middle of the top row must be 293, we can
-        also place the 1 and 2.
+        The two 6/2 sums along the left side and the 7/3 between them cannot
+        include a 3, so the 3 in the 20/5 must be in the bottom cell where the
+        20/5 crosses the 18/5. Since the 8/2 can never contain a 4 and a 5 would
+        cause a conflict in 18/5, we can place 1 and 5 in the lower 6/2 and 7 in
+        8/2. Placing the 7 makes that sum 12357, and since the 5 cannot go in
+        9/3 or 10/2 and the 1 cannot go in 9/3 we can complete this sum. The
+        vertical 18/5 must have a 4 or 5 in 6/2, a 6 or 7 in 22/3, and another
+        digit 4 or higher in 13/2, so it will be 12456 and the 1, 2 and 6 can be
+        placed. The vertical 14/3 is now fairly limited, and the second and
+        third cell of the 41/7 must have 4 and 5 in some order, so we know they
+        do not appear later in the row. The 12/4 can now only be 1236, and since
+        a 34/6 only ever contains one instance of 1 or 2, which will definitely
+        appear in the first cell, we can place the 3 in the 34/6 along with the
+        6 in the 41/7. Since the 14/3 in the middle of the top row must be 293,
+        we can also place the 1 and 2.
       </p>
       <SizedImage
         $width={50}
@@ -1517,11 +1521,14 @@ const Solution = (): JSX.Element => {
       />
       <p>
         The 27/5 in the south of the grid can only be 13689, 23589, or 23679,
-        which limits the last two cells to 5 or 6 and 7 or 8. With the 5 or 6 in
-        the second cell of the 29/7, we can remove those digits as options for
-        the other cells in that sum, which means the 21/4 must be either 1389 or
+        which limits the last two cells to 5 or 6 in the fourth cell and 7 or 8
+        in the fifth cell. If we look at the crossing sum 29/7, the only
+        possibilities for the second, fourth and sixth cells are 4, 5, and 6, in
+        some order, so 1, 2, and 3 must be placed in some order in the third,
+        fifth and seventh cells. This means the 21/4 must be either 1389 or
         2379. 35/6 must include a 1, 2 or 3, so we can place that in the second
-        cell. Completing the 22/3 with a 7 allows us to fill in many sums:
+        cell. In the southwest, completing the 22/3 with a 7 allows us to fill
+        in many sums:
       </p>
       <SizedImage
         $width={50}
@@ -1529,10 +1536,11 @@ const Solution = (): JSX.Element => {
         alt="A partially solved Kakuro puzzle"
       />
       <p>
-        The 7, 8 and 9 in the 35/5 are the only options for the second, third
-        and fifth cells, so we can fill in the 6 and 5. There is only one option
-        remaining for the 35/6 sum, 146789, and the 27/5 must be 23589, allowing
-        us to fill in more cells.
+        There is only one option remaining for the 35/6 sum, 146789, and the 6
+        can only be placed in the third cell. Then the 7, 8, and 9 in the 35/5
+        are the only options for the second, third and fifth cells, so we can
+        fill in the 6 and 5. The 27/5 must be 23589, allowing us to fill in 2
+        and 8.
       </p>
       <SizedImage
         $width={50}
