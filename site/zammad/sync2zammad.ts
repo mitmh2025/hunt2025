@@ -686,7 +686,9 @@ async function main({
 
       if (
         touchpoint.closed_action &&
-        zammadTicketStates.get(ticket.state_id) === "closed"
+        ["closed", "pending close"].includes(
+          zammadTicketStates.get(ticket.state_id) ?? "",
+        )
       ) {
         switch (touchpoint.closed_action.type) {
           case "satisfy_gate":
