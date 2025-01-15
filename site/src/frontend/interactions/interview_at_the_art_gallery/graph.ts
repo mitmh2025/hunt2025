@@ -442,7 +442,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
           next: "3c",
         },
         {
-          text: "I know that you should’t touch the art.  It took a few docents getting very, very mad at me, but I know that now.",
+          text: "I know that you shouldn’t touch the art.  It took a few docents getting very, very mad at me, but I know that now.",
           next: "3d",
         },
       ],
@@ -487,7 +487,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       id: "3d",
       speaker: "billie",
       overlay: "neutral",
-      text: "I know that you should’t touch the art.  It took a few docents getting very, very mad at me, but I know that now.",
+      text: "I know that you shouldn’t touch the art.  It took a few docents getting very, very mad at me, but I know that now.",
       sound: {
         mp3: mp3_audio_3d,
         opus: opus_audio_3d,
@@ -1274,7 +1274,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       id: "12a-p4",
       speaker: "judith_handshake",
       overlay: "handshake",
-      text: "Lovely. Well, it’s been a delight doing business with you, detective. Once the exhibition is complete, you can pick up what will surely be the new showpiece of your office. Here’s the bill of sale– and a little postcard as a thank-you.",
+      text: "And...lovely! Well, it’s been a delight doing business with you, detective. Once the exhibition is complete, you can pick up what will surely be the new showpiece of your office. Here’s the bill of sale– and a little postcard as a thank-you.",
       sound: {
         mp3: mp3_audio_12a_p4,
         opus: opus_audio_12a_p4,
@@ -1346,7 +1346,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       id: "12b-p4",
       speaker: "judith_handshake",
       overlay: "handshake",
-      text: "Lovely. Well, it’s been a delight doing business with you, detective. Once the exhibition is complete, you can pick up what will surely be the new showpiece of your office. Here’s the bill of sale– and a little postcard as a thank-you.",
+      text: "And...lovely! Well, it’s been a delight doing business with you, detective. Once the exhibition is complete, you can pick up what will surely be the new showpiece of your office. Here’s the bill of sale– and a little postcard as a thank-you.",
       sound: {
         mp3: mp3_audio_12b_p4,
         opus: opus_audio_12b_p4,
@@ -1485,7 +1485,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       id: "where-a1",
       speaker: "billie",
       textBubbleType: "thought",
-      text: "Hm. No, he would never let his wallet out of his sight. Besides, Baby’s a lot of things, but I don’t think she’s a pickpocket.",
+      text: "Hm. Nah, he would never let his wallet out of his sight. Besides, Baby’s a lot of things, but I don’t think she’s a pickpocket.",
       sound: {
         mp3: mp3_audio_where_a1,
         opus: opus_audio_where_a1,
@@ -1533,7 +1533,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
       id: "where-c1",
       speaker: "billie",
       textBubbleType: "thought",
-      text: "Hm. No, too many people who could access it. Gladys and Sidecar are so involved in the business and in outdoing each other that anything secret from one or the other at the office wouldn’t stay that way for long.",
+      text: "Hm. Nah, too many people who could access it. Gladys and Sidecar are so involved in the business and in outdoing each other that anything secret from one or the other at the office wouldn’t stay that way for long.",
       sound: {
         mp3: mp3_audio_where_c1,
         opus: opus_audio_where_c1,

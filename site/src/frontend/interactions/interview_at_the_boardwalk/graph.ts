@@ -706,7 +706,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
       id: "5-p1",
       speaker: "roger_eek",
       overlay: "roger_eek",
-      text: "Oh nooooo, I’m not talking.  With all these IOUs hangin’ over me I don’t need any more trouble!",
+      text: "No, no no no no, I’m not talking.  With all these IOUs hangin’ over me I don’t need any more trouble!",
       sound: {
         mp3: mp3_audio_5_p1,
         opus: opus_audio_5_p1,
@@ -718,7 +718,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
       id: "5-p2",
       speaker: "billie",
       overlay: "roger_baseline",
-      text: "The kid’s not wrong about racketeering being a problem in this down.  But I’m prett-y sure this place is legit.  What’s got this kid so rattled?",
+      text: "The kid’s not wrong about racketeering being a problem in this town.  But I’m prett-y sure this place is legit.  What’s got this kid so rattled?",
       textBubbleType: "thought",
       sound: {
         mp3: mp3_audio_5_p2,

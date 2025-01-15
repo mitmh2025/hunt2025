@@ -436,7 +436,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       id: "6cd-p1",
       speaker: "gemcutter_surprised",
       overlay: "surprised",
-      text: "You know me well, Billie.  I’ll hold you to that date!... I remember that woman now.  A real looker of a lady.  Sleek hair, sharp dress, _definitely_ in the chips.  She slipped in the door quick, then started giving orders.  She was acting like the boss of this place, but she also kept looking around like she didn’t want to be seen.  She wanted men’s rings and I sold her a beaut of a gold band.  18K, dome edge, high polish...",
+      text: "You know me well, Billie.  I’ll hold you to that date!... I remember that woman now.  A real looker of a lady.  Sleek hair, sharp dress, _definitely_ in the chips.  She slipped through the door quick, then started giving orders.  She was acting like the boss of this place, but she also kept looking around like she didn’t want to be seen.  She wanted men’s rings and I sold her a beaut of a gold band.  18K, dome edge, high polish...",
       sound: {
         mp3: audio_mp3_6cd_p1,
         opus: audio_opus_6cd_p1,
@@ -460,7 +460,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
           next: "7a",
         },
         {
-          text: "Yep, that sounds like the woman I’m looking for.  Did she leave a name?",
+          text: "Yep, that sounds like the woman I’m looking for.  Any chance she leave a name?",
           next: "7b",
         },
         {
@@ -483,7 +483,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "7b",
       speaker: "billie",
-      text: "Yep, that sounds like the woman I’m looking for.  Did she leave a name?",
+      text: "Yep, that sounds like the woman I’m looking for.  Any chance she leave a name?",
       sound: {
         mp3: audio_mp3_7b,
         opus: audio_opus_7b,
