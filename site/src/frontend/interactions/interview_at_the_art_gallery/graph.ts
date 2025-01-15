@@ -760,6 +760,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "6",
       speaker: "judith_pleased",
+      overlay: "pleased",
       text: "Oh, I like you.  Judith Calvert, of the Gallery Calvert.",
       sound: {
         mp3: mp3_audio_6,
