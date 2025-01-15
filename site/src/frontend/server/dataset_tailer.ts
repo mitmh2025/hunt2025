@@ -70,6 +70,9 @@ export class StreamDatasetTailer<T extends { id: number }> {
   // How many fetches have failed in a row? (governs exponential backoff)
   private fetchFailureCount: number;
 
+  // False until we believe we have read through the stream backlog (at which point we arm this.ready)
+  private caughtUpWithBacklog: boolean;
+
   // Promise which fulfills once we have successfully set up pubsub listening and performed an initial backfill
   private ready: Promise<void>;
 
@@ -103,6 +106,7 @@ export class StreamDatasetTailer<T extends { id: number }> {
     this.retainEntries = retainEntries ?? true;
     this._lastKnownId = undefined;
     this.fetchFailureCount = 0;
+    this.caughtUpWithBacklog = false;
     this.ready = new Promise((resolve) => {
       this.fulfillReady = resolve;
     });
@@ -153,7 +157,6 @@ export class StreamDatasetTailer<T extends { id: number }> {
   protected onFetch(entries: T[]) {
     if (this.state === "shutdown") return;
     this.state = "ready";
-    this.fulfillReady?.();
     this.fetchFailureCount = 0;
     this.log(`fetch got ${entries.length} entries`);
     const lastKnown = this.lastKnownId();
@@ -176,6 +179,8 @@ export class StreamDatasetTailer<T extends { id: number }> {
         this.dispatch(newSlice);
       }
     }
+    // Fulfill ready promise *after* dispatching the initial collection
+    this.fulfillReady?.();
 
     // Start background poll loop
     this.resetIdleTimer();
@@ -218,14 +223,22 @@ export class StreamDatasetTailer<T extends { id: number }> {
               this.log(`getGlobalLog(${lastKnown})`);
               lastLogged = lastKnown;
             }
+            // Do reads without blocking until we have drained the stream, then switch to blocking
+            // while tailing.
+            const BLOCK_OPTIONS = this.caughtUpWithBacklog
+              ? { BLOCK: this.blockTimeoutMsec }
+              : {};
             const results = await this.redisLog.getGlobalLog(
               redisClient,
               lastKnown,
-              { BLOCK: this.blockTimeoutMsec },
+              BLOCK_OPTIONS,
             );
             if (results.entries.length > 0) {
               this.log(`Got ${results.entries.length} stream messages`);
               this.dispatch(results.entries);
+            } else {
+              this.caughtUpWithBacklog = true;
+              this.fulfillReady?.();
             }
           }
         });
@@ -250,7 +263,6 @@ export class StreamDatasetTailer<T extends { id: number }> {
   }
 
   private dispatch(entries: T[]) {
-    this.fulfillReady?.();
     // Call all the listener callbacks on this batch of entries
     if (entries.length > 0) {
       this.listeners.forEach((listener) => {
@@ -262,6 +274,9 @@ export class StreamDatasetTailer<T extends { id: number }> {
       }
       this._lastKnownId = entries[entries.length - 1]?.id;
     }
+
+    this.caughtUpWithBacklog = true;
+    this.fulfillReady?.();
   }
 
   // Public API
