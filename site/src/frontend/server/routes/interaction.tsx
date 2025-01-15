@@ -143,6 +143,10 @@ async function virtualInteractionHandler(
               return Date.now();
             },
           }}
+          audioOn={false}
+          setAudioOn={() => {
+            /* noop */
+          }}
         />
       </div>
       {preloadImages.map((src) => (

@@ -1,6 +1,8 @@
 import React from "react";
 import { hydrateRoot } from "react-dom/client";
-import VirtualInteraction from "../components/VirtualInteraction";
+import VirtualInteraction, {
+  ROLL_CALL_POLL_ID,
+} from "../components/VirtualInteraction";
 import { type ExternalInteractionNode } from "../interactions/client-types";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
 import useSyncedTime from "../utils/useSyncedTime";
@@ -13,12 +15,16 @@ const InteractionStateManagerWithVotes = ({
   state,
   pollId,
   syncedTime,
+  audioOn,
+  setAudioOn,
 }: {
   slug: string;
   nodes: ExternalInteractionNode[];
   state: TeamVirtualInteractionsState;
   pollId: string;
   syncedTime: { getCurrentTime: () => number };
+  audioOn: boolean;
+  setAudioOn: (audioOn: boolean) => void;
 }) => {
   const votes = useDataset(
     "poll_responses",
@@ -32,6 +38,8 @@ const InteractionStateManagerWithVotes = ({
       state={state}
       pollState={votes.pollState}
       syncedTime={syncedTime}
+      audioOn={audioOn}
+      setAudioOn={setAudioOn}
     />
   );
 };
@@ -51,6 +59,7 @@ const InteractionStateManager = ({
     undefined,
     initialVirtualInteractionState,
   );
+  const [audioOn, setAudioOn] = React.useState(false);
 
   const syncedTime = useSyncedTime();
 
@@ -65,9 +74,23 @@ const InteractionStateManager = ({
           state={state}
           pollId={currentNode.node}
           syncedTime={syncedTime}
+          audioOn={audioOn}
+          setAudioOn={setAudioOn}
         />
       );
     }
+  } else if (interactionState?.state === "unstarted") {
+    return (
+      <InteractionStateManagerWithVotes
+        slug={slug}
+        nodes={log}
+        state={state}
+        pollId={ROLL_CALL_POLL_ID}
+        syncedTime={syncedTime}
+        audioOn={audioOn}
+        setAudioOn={setAudioOn}
+      />
+    );
   }
 
   return (
@@ -76,6 +99,8 @@ const InteractionStateManager = ({
       nodes={log}
       state={state}
       syncedTime={syncedTime}
+      audioOn={audioOn}
+      setAudioOn={setAudioOn}
     />
   );
 };

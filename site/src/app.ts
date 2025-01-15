@@ -72,6 +72,11 @@ export default async function ({
   // Install /healthz before the log handler, so we don't log every health check.
   app.use("/healthz", healthzHandler);
 
+  // Similar for the current time endpoint.
+  app.get("/currentTime", (_req, res) => {
+    res.send(`${Date.now()}`);
+  });
+
   app.use(logMiddleware);
 
   if (enabledComponents.has("api")) {
