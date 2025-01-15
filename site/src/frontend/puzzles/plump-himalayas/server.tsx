@@ -292,8 +292,11 @@ dt {
   </style>
 );
 
-const displayHandler = (_req: Request, res: Response) => {
-  const scripts = lookupScripts("puzzle_plump_himalayas_display");
+const displayHandler = (req: Request, res: Response) => {
+  const scripts = [
+    ...lookupScripts("puzzle_plump_himalayas_display"),
+    `window.roomId = ${parseInt(req.query.roomId as string, 10)}`,
+  ];
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +
@@ -314,8 +317,11 @@ const displayHandler = (_req: Request, res: Response) => {
   res.send(html);
 };
 
-const hostHandler = (_req: Request, res: Response) => {
-  const scripts = lookupScripts("puzzle_plump_himalayas_host");
+const hostHandler = (req: Request, res: Response) => {
+  const scripts = [
+    ...lookupScripts("puzzle_plump_himalayas_host"),
+    `window.roomId = ${parseInt(req.query.roomId as string, 10)}`,
+  ];
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +

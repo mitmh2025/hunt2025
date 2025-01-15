@@ -137,9 +137,9 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
   );
 };
 
-const App = () => {
+const App = ({ roomId }: { roomId: number }) => {
   const info = {
-    wsUrl: "ws://localhost:8086/host/ws/1",
+    wsUrl: `ws://localhost:8086/host/ws/${roomId}`,
     whepUrl: "http://localhost/foo",
   };
   return <Host info={info} />;
@@ -147,8 +147,9 @@ const App = () => {
 
 const elem = document.getElementById("root");
 if (elem) {
+  const roomId = (window as unknown as { roomId: number }).roomId;
   const root = createRoot(elem);
-  root.render(<App />);
+  root.render(<App roomId={roomId} />);
 } else {
   console.error("Could not mount App because #root was nowhere to be found");
 }
