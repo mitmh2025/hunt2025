@@ -1,9 +1,9 @@
 import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 import styled from "styled-components";
-import confetti from "canvas-confetti";
 
 import duckLeft from "./luckyDuckAssets/duck-left.png";
 import duckRight from "./luckyDuckAssets/duck-right.png";
+import getConfetti from "./confetti";
 
 type duckLocale = {
   x: number;
@@ -24,6 +24,15 @@ function fleeSpeed(score: number): number {
 function fleeThreshold(): number {
   return 50 - 50 / Math.exp(3 / 10);
 }
+
+const Wrapper = styled.main`
+  width: 100%;
+  margin: 0 auto;
+
+  svg {
+    position: absolute;
+  }
+`;
 
 const GameBoard = styled.div`
   width: 100%;
@@ -219,8 +228,36 @@ export default function Game() {
   }
 
   return (
-    <>
-      <svg>
+    <Wrapper>
+      <GameBoard ref={gameBoardRef}>
+        <Water>
+          <YouWin $isWinner={isWinner}>
+            {isWinner ? "YOU WIN!!!" : "CATCH THAT DUCK!"}
+          </YouWin>
+        </Water>
+        <Duck
+          style={{
+            top: duckLocation.y,
+            left: duckLocation.x,
+            width: width,
+            height: height,
+          }}
+          ref={duckRef}
+          onClick={() => {
+            setIsWinner(true);
+
+            getConfetti();
+          }}
+          onTransitionEnd={(evt) => {
+            if (evt.propertyName === "left") {
+              isFleeing.current = false;
+            }
+          }}
+        >
+          {ducks}
+        </Duck>
+      </GameBoard>
+      <svg className="filter">
         <filter id="turbulence" x="0" y="0" width="100%" height="100%">
           <feTurbulence
             id="sea-filter"
@@ -239,49 +276,6 @@ export default function Game() {
           ></animate>
         </filter>
       </svg>
-      <GameBoard ref={gameBoardRef}>
-        <Water>
-          <YouWin $isWinner={isWinner}>
-            {isWinner ? "YOU WIN!!!" : "CATCH THAT DUCK!"}
-          </YouWin>
-        </Water>
-        <Duck
-          style={{
-            top: duckLocation.y,
-            left: duckLocation.x,
-            width: width,
-            height: height,
-          }}
-          ref={duckRef}
-          onClick={() => {
-            setIsWinner(true);
-
-            const colors = ["#f1db35", "#00bbbb", "#080806", "#f8f8f6"];
-            confetti({
-              particleCount: 200,
-              angle: 60,
-              spread: 55,
-              origin: { x: -0.1 },
-              colors: colors,
-            });
-            confetti({
-              particleCount: 200,
-              angle: 120,
-              spread: 55,
-              origin: { x: 1.1 },
-              colors: colors,
-            });
-          }}
-          onTransitionEnd={(evt) => {
-            if (evt.propertyName === "left") {
-              isFleeing.current = false;
-            }
-          }}
-        >
-          {ducks}
-        </Duck>
-      </GameBoard>
-      <p style={{ textAlign: "center" }}>Click the duck before time's up!</p>
-    </>
+    </Wrapper>
   );
 }
