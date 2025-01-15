@@ -24,68 +24,71 @@ const StairOuterLeft = styled.div`
   background-color: ${BG};
   grid-column: outer-start / mid-start;
   grid-row: outer-start / outer-end;
-  border-left: 1px solid var(--gold-700);
-  border-top: 1px solid var(--gold-700);
-  border-bottom: 1px solid var(--gold-700);
+  border-left: 1px solid var(--gold-800);
+  border-top: 1px solid var(--gold-800);
+  border-bottom: 1px solid var(--gold-800);
 `;
 
 const StairOuterRight = styled.div`
   background-color: ${BG};
   grid-column: mid-end / outer-end;
   grid-row: outer-start / outer-end;
-  border-right: 1px solid var(--gold-700);
-  border-top: 1px solid var(--gold-700);
-  border-bottom: 1px solid var(--gold-700);
+  border-right: 1px solid var(--gold-800);
+  border-top: 1px solid var(--gold-800);
+  border-bottom: 1px solid var(--gold-800);
 `;
 
 const StairMidLeft = styled.div`
   background-color: ${BG};
   grid-column: mid-start / inner-start;
   grid-row: mid-start / mid-end;
-  border-top: 1px solid var(--gold-700);
-  border-bottom: 1px solid var(--gold-700);
+  border-top: 1px solid var(--gold-800);
+  border-bottom: 1px solid var(--gold-800);
+  margin: -1px 0;
 `;
 
 const StairMidRight = styled.div`
   background-color: ${BG};
   grid-column: inner-end / mid-end;
   grid-row: mid-start / mid-end;
-  border-top: 1px solid var(--gold-700);
-  border-bottom: 1px solid var(--gold-700);
+  border-top: 1px solid var(--gold-800);
+  border-bottom: 1px solid var(--gold-800);
+  margin: -1px 0;
 `;
 
 const StairMidTop = styled.div`
   background-color: ${BG};
   grid-column: mid-start / mid-end;
   grid-row: outer-start / mid-start;
-  border-left: 1px solid var(--gold-700);
-  border-right: 1px solid var(--gold-700);
+  border-left: 1px solid var(--gold-800);
+  border-right: 1px solid var(--gold-800);
+  margin-bottom: -1px;
 `;
 
 const StairMidBottom = styled.div`
   background-color: ${BG};
   grid-column: mid-start / mid-end;
   grid-row: mid-end / outer-end;
-  border-left: 1px solid var(--gold-700);
-  border-right: 1px solid var(--gold-700);
+  border-left: 1px solid var(--gold-800);
+  border-right: 1px solid var(--gold-800);
 `;
 
 const StairInnerTop = styled.div`
   background-color: ${BG};
   grid-column: inner-start / inner-end;
   grid-row: inner-start / mid-start;
-  border-left: 1px solid var(--gold-700);
-  border-right: 1px solid var(--gold-700);
-  border-top: 1px solid var(--gold-700);
+  border-left: 1px solid var(--gold-800);
+  border-right: 1px solid var(--gold-800);
+  border-top: 1px solid var(--gold-800);
 `;
 
 const StairInnerBottom = styled.div`
   background-color: ${BG};
   grid-column: inner-start / inner-end;
   grid-row: mid-end / inner-end;
-  border-left: 1px solid var(--gold-700);
-  border-right: 1px solid var(--gold-700);
-  border-bottom: 1px solid var(--gold-700);
+  border-left: 1px solid var(--gold-800);
+  border-right: 1px solid var(--gold-800);
+  border-bottom: 1px solid var(--gold-800);
 `;
 
 const InnerWrapper = styled(Wrapper)`
