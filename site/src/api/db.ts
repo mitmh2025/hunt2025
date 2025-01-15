@@ -864,7 +864,8 @@ export async function getFermitAnswers(
         sessionId: obj.session_id,
         teamId: obj.team_id,
         questionIndex: obj.question_index,
-        answer: obj.answer,
+        // Postgres seems to return the answer field as a string, so forcibly convert to a floating point number
+        answer: parseFloat(obj.answer),
       })),
     );
 }
