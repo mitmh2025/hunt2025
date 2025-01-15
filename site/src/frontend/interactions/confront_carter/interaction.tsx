@@ -23,7 +23,7 @@ const Interaction = ({
           You will receive a video recording after completing this
           confrontation. If you’re unable to complete this confrontation, you
           may reach out to Hunt HQ at info@mitmh2025.com after the interaction
-          has been open for more than 3 hours and we can mark it completed
+          has been open for more than 5 hours and we can mark it completed
           (include the phrase “CALL HIM SHIRLEY MAYBE” in the subject line).
           However, since this does not block any puzzle content and not
           completing this interaction in-person will prevent you from completing
