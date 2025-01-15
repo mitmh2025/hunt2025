@@ -205,10 +205,6 @@ export function registerUiRoutes({
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
 
-  unauthRouter.get("/currentTime", (_req, res) => {
-    res.send(`${Date.now()}`);
-  });
-
   authRouter.get(
     "/",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
