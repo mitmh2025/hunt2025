@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 // import useAppendDataset from "../../client/useAppendDataset";
@@ -8,6 +8,7 @@ import { deviceMax, deviceMin } from "../../utils/breakpoints";
 import { type ControlRoomServerState, type ControlRoomInfo } from "./types";
 // import { type PuzzleStateLogEntry } from "lib/api/frontend_contract";
 import useGameState, { GameActionType } from "./useGameState";
+import useReconnectingWebsocket from "./useReconnectingWebsocket";
 
 const StyledVideo = styled.video`
   width: min(480px, 100%);
@@ -200,65 +201,22 @@ const Game = ({ info }: { info: ControlRoomInfo }) => {
     },
     dispatch,
   ] = useGameState();
-  const [wsOpen, setWsOpen] = useState(false);
-  const [isInRetryWsTimeout, setIsInRetryWsTimeout] = useState(false);
 
-  const socketRef = useRef<WebSocket | null>(null);
-
-  useEffect(() => {
-    if (isInRetryWsTimeout) {
-      return;
-    }
-
-    const client = new WebSocket(info.wsUrl);
-    if (socketRef.current === null) {
-      socketRef.current = client;
-    }
-
-    // Connection opened
-    client.addEventListener("open", (_) => {
-      console.log("Connection established");
-      setWsOpen(true);
-    });
-
-    // Listen for messages
-    client.addEventListener("message", (event) => {
-      const msg = JSON.parse(event.data as string) as ControlRoomServerState;
+  const onMessage = useCallback(
+    (message: string) => {
+      const msg = JSON.parse(message) as ControlRoomServerState;
       console.log(msg);
       dispatch({
         type: GameActionType.SET_GAME_STATE,
         state: { ...msg },
       });
-    });
-
-    // Connection error
-    client.addEventListener("error", (event) => {
-      console.log("Connection error", event);
-      setWsOpen(false);
-      setIsInRetryWsTimeout(true);
-      setTimeout(() => {
-        setIsInRetryWsTimeout(false);
-      }, 5000);
-    });
-
-    // Connection closed
-    client.addEventListener("close", (event) => {
-      console.log("Connection closed", event);
-      if (!socketRef.current) {
-        // component unmounted, don't try to retry
-        return;
-      }
-      setWsOpen(false);
-      setIsInRetryWsTimeout(true);
-      setTimeout(() => {
-        setIsInRetryWsTimeout(false);
-      }, 5000);
-    });
-    return () => {
-      socketRef.current = null;
-      client.close();
-    };
-  }, [dispatch, info.wsUrl, isInRetryWsTimeout]);
+    },
+    [dispatch],
+  );
+  const socketRef = useReconnectingWebsocket({
+    onMessage,
+    wsUrl: info.wsUrl,
+  });
 
   function voteVerb(newVerb: string): void {
     socketRef.current?.send(
@@ -307,7 +265,7 @@ const Game = ({ info }: { info: ControlRoomInfo }) => {
     );
   }
 
-  if (!wsOpen) {
+  if (!socketRef.current?.OPEN) {
     return <FlexWrapper>Loading...</FlexWrapper>;
   }
 

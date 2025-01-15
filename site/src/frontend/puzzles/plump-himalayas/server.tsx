@@ -292,7 +292,29 @@ dt {
   </style>
 );
 
-const handler = (_req: Request, res: Response) => {
+const displayHandler = (_req: Request, res: Response) => {
+  const scripts = lookupScripts("puzzle_plump_himalayas_display");
+  const doctype = "<!DOCTYPE html>";
+  const html =
+    doctype +
+    renderToString(
+      <BaseLayout
+        scripts={scripts}
+        styleElements={[styleElement]}
+        title={"Display"}
+        innerHTML="Loading"
+      />,
+    ) +
+    "\n";
+
+  res.set({
+    "Content-Type": "text/html; charset=utf-8",
+  });
+  res.status(200);
+  res.send(html);
+};
+
+const hostHandler = (_req: Request, res: Response) => {
   const scripts = lookupScripts("puzzle_plump_himalayas_host");
   const doctype = "<!DOCTYPE html>";
   const html =
@@ -315,5 +337,6 @@ const handler = (_req: Request, res: Response) => {
 };
 
 const router = new Router();
-router.get("/host", handler);
+router.get("/display", displayHandler);
+router.get("/host", hostHandler);
 export default router;

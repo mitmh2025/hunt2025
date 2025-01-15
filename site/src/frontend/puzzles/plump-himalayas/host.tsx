@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   type ControlRoomServerState,
   type ControlRoomTask,
   type ControlRoomInfo,
 } from "./types";
+import useReconnectingWebsocket from "./useReconnectingWebsocket";
 
 type WSMessage =
   | {
@@ -22,23 +23,9 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
   );
   const [teams, setTeams] = useState<Record<string, number>>({});
 
-  const socketRef = useRef<WebSocket | null>(null);
-
-  useEffect(() => {
-    if (socketRef.current === null) {
-      socketRef.current = new WebSocket(info.wsUrl);
-    }
-
-    const { current: socket } = socketRef;
-
-    // Connection opened
-    socket.addEventListener("open", (_event) => {
-      console.log("Connection established");
-    });
-
-    // Listen for messages
-    socket.addEventListener("message", (event: MessageEvent<string>) => {
-      const msg = JSON.parse(event.data) as WSMessage;
+  const onMessage = useCallback(
+    (message: string) => {
+      const msg = JSON.parse(message) as WSMessage;
       console.log(msg);
       switch (msg.name) {
         case "game_state":
@@ -48,23 +35,13 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
           setTeams(msg.teams);
           break;
       }
-    });
-
-    // Connection error
-    socket.addEventListener("error", (event) => {
-      // TODO: Reconnect automatically (does "error" mean it's closed?)
-      console.log("Connection error", event);
-    });
-
-    // Connection closed
-    socket.addEventListener("close", (event) => {
-      // TODO: Reconnect automatically
-      console.log("Connection closed", event);
-    });
-    return () => {
-      socket.close();
-    };
-  }, [info.wsUrl]);
+    },
+    [setState, setTeams],
+  );
+  const socketRef = useReconnectingWebsocket({
+    onMessage,
+    wsUrl: info.wsUrl,
+  });
 
   function sendMessage(name: string, args?: Record<string, unknown>) {
     socketRef.current?.send(JSON.stringify({ name, ...(args ?? {}) }));
