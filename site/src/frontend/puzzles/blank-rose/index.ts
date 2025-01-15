@@ -75,7 +75,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["SEND US ONE"],
       reply:
-        "Write ✍️ your own emojipasta 😀🍝 and send ✉️ it to info@mitmh2025.com 🙏. Include your team name 📇 and the phrase 🗣️ SEND US ONE.",
+        "Write ✍️ your own emojipasta 😀🍝 and send ✉️ it to info@mitmh2025.com 🙏. Include your team name 📇 and the phrase 🗣️ SEND US ONE in the subject line.",
     },
   ],
 };

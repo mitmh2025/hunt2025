@@ -68,7 +68,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["KISS"],
       reply:
-        "Aww, that’s so sweet of you!  Email a kiss to info@mitmh2025.com and include your team name.",
+        "Aww, that’s so sweet of you!  Email a kiss to info@mitmh2025.com and include your team name. Make sure to put “5477” in the subject line.",
     },
     {
       guess: ["PERKY ZITI LIPS"],

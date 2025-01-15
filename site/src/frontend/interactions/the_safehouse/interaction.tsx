@@ -25,9 +25,9 @@ const Interaction = ({
           confrontation. If you’re unable to complete this confrontation, you
           may reach out to Hunt HQ at info@mitmh2025.com after the interaction
           has been open for more than 3 hours and we can mark it completed
-          (include the phrase “COLLAR A WILD ROVER”). However, this does not
-          block any puzzle content, so we recommend you do the live interaction
-          even if you need to wait a bit.
+          (include the phrase “COLLAR A WILD ROVER” in the subject line).
+          However, this does not block any puzzle content, so we recommend you
+          do the live interaction even if you need to wait a bit.
         </p>
       </AuthorsNoteBlock>
 

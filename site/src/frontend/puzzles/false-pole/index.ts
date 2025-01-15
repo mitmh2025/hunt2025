@@ -118,7 +118,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["SHARE A TEAM PHOTO"],
       reply:
-        "That is a correct answer instruction! Please take a photo of as many members of your team as possible and send it to us at info@mitmh2025.com. Include your team name and the phrase SHARE A TEAM PHOTO. Please also indicate in your submission if we can have permission to show these images at wrap-up.",
+        "That is a correct answer instruction! Please take a photo of as many members of your team as possible and send it to us at info@mitmh2025.com. Include your team name and the phrase SHARE A TEAM PHOTO in the subject line. Please also indicate in your submission if we can have permission to show these images at wrap-up.",
     },
   ],
 };

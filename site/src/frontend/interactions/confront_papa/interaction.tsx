@@ -24,10 +24,11 @@ const Interaction = ({
           confrontation. If you’re unable to complete this confrontation, you
           may reach out to Hunt HQ at info@mitmh2025.com after the interaction
           has been open for more than 3 hours and we can mark it completed
-          (include the phrase “ADOPT A BABY VOICE”). However, since this does
-          not block any puzzle content and not completing this interaction
-          in-person will prevent you from completing the finale, we strongly
-          recommend you do the live interaction even if you need to wait a bit.
+          (include the phrase “ADOPT A BABY VOICE” in the subject line).
+          However, since this does not block any puzzle content and not
+          completing this interaction in-person will prevent you from completing
+          the finale, we strongly recommend you do the live interaction even if
+          you need to wait a bit.
         </p>
       </AuthorsNoteBlock>
 

@@ -76,7 +76,7 @@ const Puzzle = (): JSX.Element => {
         Uinsg the gird aovbe, pelsae catree a cwosrosrd and celus in the smae
         sylte as tihs pzlzue taht etaxctrs the wrod “A” and sned it to
         info@mitmh2025.com. Ildncue yuor taem naem and the psrahe MAKE US ONE OF
-        THESE.
+        THESE in the sjeucbt lnie.
       </p>
     </>
   );
