@@ -1,18 +1,18 @@
-import demo from "../../../assets/demo-photo.png";
+import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
 import arcadia_speaker from "./assets/arcadia-speaker.jpg";
+import bg from "./assets/bg.jpg";
+import billie_winner from "./assets/billie-winner.png";
+import roger_arcadia_baseline from "./assets/roger-arcadia-baseline.png";
+import roger_arcadia_okay from "./assets/roger-arcadia-okay.png";
 import roger_baseline_speaker from "./assets/roger-baseline-speaker.jpg";
+import roger_baseline from "./assets/roger-baseline.png";
 import roger_eek_speaker from "./assets/roger-eek-speaker.jpg";
-import roger_focused_speaker from "./assets/roger-focus-speaker.jpg";
+import roger_eek from "./assets/roger-eek.png";
+import roger_focus_speaker from "./assets/roger-focus-speaker.jpg";
+import roger_focus from "./assets/roger-focus.png";
 import roger_okay_speaker from "./assets/roger-okay-speaker.jpg";
-// import roger_baseline from "./assets/roger-baseline.png";
-// import roger_eek from "./assets/roger-eek.png";
-// import roger_focused from "./assets/roger-focus.png";
-// import roger_okay from "./assets/roger-okay.png";
-// import roger_arcadia_baseline from "./assets/roger-arcadia-baseline.png";
-// import roger_arcadia_eek from "./assets/roger-arcadia-eek.png";
-// import roger_arcadia_focused from "./assets/roger-arcadia-focus.png";
-// import roger_arcadia_okay from "./assets/roger-arcadia-okay.png";
+import roger_okay from "./assets/roger-okay.png";
 import mp3_audio_10 from "./audio/mp3/10.mp3";
 import mp3_audio_11_afraid_p1 from "./audio/mp3/11-afraid-p1.mp3";
 import mp3_audio_11_afraid from "./audio/mp3/11-afraid.mp3";
@@ -178,9 +178,10 @@ export type BoardwalkInteractionState = {
 export type BoardwalkInteractionResult = "photo" | "keychain" | "ticket-stub";
 type BoardwalkInteractionSpeakers =
   | "billie"
+  | "billie_winner"
   | "roger_baseline"
   | "roger_eek"
-  | "roger_focused"
+  | "roger_focus"
   | "roger_okay"
   | "arcade_owner";
 type BoardwalkInteractionPlugin = "skee-ball" | "ducks" | "balloons";
@@ -248,10 +249,19 @@ const remainingGameOptions = (state: BoardwalkInteractionState) => {
   return remaining_options;
 };
 
+type BoardwalkInteractionBg =
+  | "roger_arcadia_baseline"
+  | "roger_arcadia_okay"
+  | "roger_baseline"
+  | "roger_eek"
+  | "roger_focus"
+  | "roger_okay";
+
 const BoardwalkInteractionGraph: InteractionGraph<
   BoardwalkInteractionState,
   BoardwalkInteractionResult,
   BoardwalkInteractionSpeakers,
+  BoardwalkInteractionBg,
   BoardwalkInteractionPlugin
 > = {
   starting_node: "start",
@@ -262,11 +272,15 @@ const BoardwalkInteractionGraph: InteractionGraph<
     played_lucky_duck: false,
     played_pop_the_balloon: false,
   },
-  background: "", // TODO: add background image
+  background: bg,
   speaker_states: {
     billie: {
       label: "Billie",
-      image: demo, // TODO: get speaker images
+      image: billie,
+    },
+    billie_winner: {
+      label: "Billie",
+      image: billie_winner,
     },
     roger_baseline: {
       label: "Roger",
@@ -276,9 +290,9 @@ const BoardwalkInteractionGraph: InteractionGraph<
       label: "Roger",
       image: roger_eek_speaker,
     },
-    roger_focused: {
+    roger_focus: {
       label: "Roger",
-      image: roger_focused_speaker,
+      image: roger_focus_speaker,
     },
     roger_okay: {
       label: "Roger",
@@ -288,6 +302,19 @@ const BoardwalkInteractionGraph: InteractionGraph<
       label: "Arcade owner",
       image: arcadia_speaker,
     },
+  },
+  bg_states: {
+    roger_arcadia_baseline: roger_arcadia_baseline,
+
+    roger_arcadia_okay: roger_arcadia_okay,
+
+    roger_baseline: roger_baseline,
+
+    roger_eek: roger_eek,
+
+    roger_focus: roger_focus,
+
+    roger_okay: roger_okay,
   },
   nodes: [
     {
@@ -328,6 +355,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "1a",
       speaker: "billie",
+      overlay: "roger_focus",
       text: "Can I talk to you for a sec?",
       sound: {
         mp3: mp3_audio_1a,
@@ -339,6 +367,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "1b",
       speaker: "billie",
+      overlay: "roger_focus",
       text: "“Ahoy, matey”?",
       sound: {
         mp3: mp3_audio_1b,
@@ -350,6 +379,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "1c",
       speaker: "billie",
+      overlay: "roger_focus",
       text: "<breathe>",
       sound: {
         mp3: mp3_audio_1c,
@@ -361,6 +391,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "1d",
       speaker: "billie",
+      overlay: "roger_focus",
       text: "Boo!",
       sound: {
         mp3: mp3_audio_1d,
@@ -372,6 +403,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2",
       speaker: "roger_eek",
+      overlay: "roger_eek",
       text: "Gah!",
       sound: {
         mp3: mp3_audio_2,
@@ -383,6 +415,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2-p1",
       speaker: "billie",
+      overlay: "roger_eek",
       text: "Roger’s throw went wild, ricocheting out the door.",
       textBubbleType: "thought",
       sound: {
@@ -394,7 +427,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "2-p2",
-      speaker: "roger_eek",
+      speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "Why’d you have to sneak up on me like that?  That was my last toss!  I’m in debt enough as it is!",
       sound: {
         mp3: mp3_audio_2_p2,
@@ -406,6 +440,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2-p3",
       speaker: "roger_eek",
+      overlay: "roger_eek",
       text: "Wait...are...are you with <whispers> the mob?",
       sound: {
         mp3: mp3_audio_2_p3,
@@ -440,6 +475,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2a",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "No.  I’m Billie O’Ryan.",
       sound: {
         mp3: mp3_audio_2a,
@@ -451,6 +487,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2b",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "I’m a private detective.",
       sound: {
         mp3: mp3_audio_2b,
@@ -462,6 +499,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2c",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "...Of crows?",
       sound: {
         mp3: mp3_audio_2c,
@@ -473,6 +511,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2c-p1",
       speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "Caw, caw, very funny.",
       sound: {
         mp3: mp3_audio_2c_p1,
@@ -484,6 +523,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "2d",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "Right now, technically, yes?",
       sound: {
         mp3: mp3_audio_2d,
@@ -494,7 +534,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "2d-p1",
-      speaker: "roger_baseline",
+      speaker: "roger_eek",
+      overlay: "roger_eek",
       text: "Oh I knew it!  I knew this arcade joint was a front! I’m so screwed...",
       sound: {
         mp3: mp3_audio_2d_p1,
@@ -505,7 +546,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "3",
-      speaker: "roger_baseline",
+      speaker: "roger_focus",
+      overlay: "roger_focus",
       text: "What do you want from me?  I’m busted, ship’s stuck in port, there’s no work for me right now.  And I’m on a losing streak at these games that’s put me even deeper in the hole!",
       sound: {
         mp3: mp3_audio_3,
@@ -529,6 +571,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4a-first",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "You’re in debt?  For _arcade games_?",
       sound: {
         mp3: mp3_audio_4a_first,
@@ -540,6 +583,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4a-first-p1",
       speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "I’m stuck in port with nothin’ to do and I don’t drink and I don’t dance.  And I don’t gamble.  My mother taught me, never get into gambling, never touch tien gow nor craps nor nuttin’.",
       sound: {
         mp3: mp3_audio_4a_first_p1,
@@ -551,6 +595,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4a-first-p2",
       speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "But these games are games of _skill_!  And I swear, normally I’m a finer hand at ’em too.  It’s how I do my X-mas shopping for the nieces and nephews.",
       sound: {
         mp3: mp3_audio_4a_first_p2,
@@ -562,6 +607,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4b-second",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "Why did you assume I was with the mob?",
       sound: {
         mp3: mp3_audio_4b_second,
@@ -573,6 +619,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4b-second-p1",
       speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "I thought the owner was just being kind when she said I could have a tab open.  But I thought about it later, the way crime is in MITropolis, arcades are the perfect place to launder money!  Lots of cash moving through, lots of tourists and kiddos for cover, you’d never suspect it!",
       sound: {
         mp3: mp3_audio_4b_second_p1,
@@ -585,6 +632,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4b-first",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "Why did you assume I was with the mob?",
       sound: {
         mp3: mp3_audio_4b_first,
@@ -596,6 +644,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4b-first-p1",
       speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "I thought the owner was just being kind when she said I could have a tab open.  But I thought about it later, the way crime is in MITropolis, arcades are the perfect place to launder money!  Lots of cash moving through, lots of tourists and kiddos for cover, you’d never suspect it!",
       sound: {
         mp3: mp3_audio_4b_first_p1,
@@ -607,6 +656,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4a-second",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "You’re in debt?  For _arcade games_?",
       sound: {
         mp3: mp3_audio_4a_second,
@@ -618,6 +668,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4a-second-p1",
       speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "I’m stuck in port with nothin’ to do and I don’t drink and I don’t dance.  And I don’t gamble.  My mother taught me, never get into gambling, never touch tien gow nor craps nor nuttin’.",
       sound: {
         mp3: mp3_audio_4a_second_p1,
@@ -629,6 +680,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "4a-second-p2",
       speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "But these games are games of _skill_!  And I swear, normally I’m a finer hand at ’em too.  It’s how I do my X-mas shopping for the nieces and nephews.",
       sound: {
         mp3: mp3_audio_4a_second_p2,
@@ -641,6 +693,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "5",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "I’m here to ask you about a dame who came through here the other night.  Got a brooch with a bird, maybe a hat with some feathers.",
       sound: {
         mp3: mp3_audio_5,
@@ -652,6 +705,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "5-p1",
       speaker: "roger_eek",
+      overlay: "roger_eek",
       text: "Oh nooooo, I’m not talking.  With all these IOUs hangin’ over me I don’t need any more trouble!",
       sound: {
         mp3: mp3_audio_5_p1,
@@ -663,6 +717,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "5-p2",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "The kid’s not wrong about racketeering being a problem in this down.  But I’m prett-y sure this place is legit.  What’s got this kid so rattled?",
       textBubbleType: "thought",
       sound: {
@@ -675,6 +730,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "5-p3",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "Well, no matter why.  We need to calm him down so he’ll spill on Katrina.",
       textBubbleType: "thought",
       sound: {
@@ -704,6 +760,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "6a",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "You know, Roger, I used to play some of these games back in my day. Maybe I can help you out.",
       sound: {
         mp3: mp3_audio_6a,
@@ -715,6 +772,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "6b",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "Get a grip, kid. This place is legit, you’re fine. I’ll show ya.",
       sound: {
         mp3: mp3_audio_6b,
@@ -726,7 +784,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
 
     {
       id: "7",
-      speaker: "roger_baseline",
+      speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "Really?  I don’t know...",
       sound: {
         mp3: mp3_audio_7,
@@ -737,7 +796,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "7-p1",
-      speaker: "roger_focused",
+      speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "I guess, either way, if you won enough tickets, I bet the owner would take that in exchange for the debt.",
       sound: {
         mp3: mp3_audio_7_p1,
@@ -748,7 +808,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "7-p2",
-      speaker: "roger_okay",
+      speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "Then I wouldn’t owe nothin’ to nobody!",
       sound: {
         mp3: mp3_audio_7_p2,
@@ -759,7 +820,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "7-p3",
-      speaker: "roger_focused",
+      speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "...Except, uh, you, I guess.",
       sound: {
         mp3: mp3_audio_7_p3,
@@ -770,7 +832,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "7-p4",
-      speaker: "roger_baseline",
+      speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "Okay.  There’s three games in this joint that make for the most prize tickets: Skee-Ball, Lucky Duck, and Pop the Balloon.  Which do you wanna try first?",
       sound: {
         mp3: mp3_audio_7_p4,
@@ -786,6 +849,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "8a",
       speaker: "billie",
+      overlay: "roger_okay",
       text: "Skee-ball.  Heck yes.",
       sound: {
         mp3: mp3_audio_8a,
@@ -797,6 +861,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "8b",
       speaker: "billie",
+      overlay: "roger_okay",
       text: "This’ll be duck soup.  Literally!",
       sound: {
         mp3: mp3_audio_8b,
@@ -808,6 +873,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "8c",
       speaker: "billie",
+      overlay: "roger_okay",
       text: "If I can pop a perp, I can pop a balloon.",
       sound: {
         mp3: mp3_audio_8c,
@@ -820,7 +886,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     // Players will reach exactly three of these result nodes exactly once, based on their game performance.
     {
       id: "first-win",
-      speaker: "roger_okay",
+      speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "Wow!",
       sound: {
         mp3: mp3_audio_first_win,
@@ -831,7 +898,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "first-loss",
-      speaker: "roger_focused",
+      speaker: "roger_focus",
+      overlay: "roger_focus",
       text: "Oof, that’s rough buddy.",
       sound: {
         mp3: mp3_audio_first_loss,
@@ -842,7 +910,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "second-win",
-      speaker: "roger_okay",
+      speaker: "roger_eek",
+      overlay: "roger_eek",
       text: "Gee wilickers!",
       sound: {
         mp3: mp3_audio_second_win,
@@ -853,7 +922,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "second-loss",
-      speaker: "roger_focused",
+      speaker: "roger_eek",
+      overlay: "roger_eek",
       text: "Geez, we’re in dutch now.",
       sound: {
         mp3: mp3_audio_second_loss,
@@ -865,6 +935,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "third-win",
       speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "...Can ya teach me how to do that?",
       sound: {
         mp3: mp3_audio_third_win,
@@ -875,7 +946,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "third-loss",
-      speaker: "roger_eek",
+      speaker: "roger_focus",
+      overlay: "roger_focus",
       text: "Uh...",
       sound: {
         mp3: mp3_audio_third_loss,
@@ -889,6 +961,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "bigwin",
       speaker: "arcade_owner",
+      overlay: "roger_arcadia_okay",
       text: "Golly, look at all those tickets!  Here’s the grand prize!  Let me take your picture for our winner’s wall.",
       sound: {
         mp3: mp3_audio_bigwin,
@@ -899,7 +972,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "bigwin-p1",
-      speaker: "billie",
+      speaker: "billie_winner",
+      overlay: "roger_arcadia_baseline",
       text: "Er... <camera click> Actually, what if I left the grand prize with you and we cleared the tab for my friend Roger here?",
       sound: {
         mp3: mp3_audio_bigwin_p1,
@@ -911,6 +985,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "bigwin-p2",
       speaker: "arcade_owner",
+      overlay: "roger_arcadia_okay",
       text: "Oh, isn’t that kind!  Sure, I can do that.",
       sound: {
         mp3: mp3_audio_bigwin_p2,
@@ -922,6 +997,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "bigwin-p3",
       speaker: "arcade_owner",
+      overlay: "roger_arcadia_okay",
       text: "And I’ll send along a copy of that photograph!",
       sound: {
         mp3: mp3_audio_bigwin_p3,
@@ -934,6 +1010,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "smallwin",
       speaker: "arcade_owner",
+      overlay: "roger_arcadia_okay",
       text: "Well done!  Here’s your prize.",
       sound: {
         mp3: mp3_audio_smallwin,
@@ -945,6 +1022,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "smallwin-p1",
       speaker: "billie",
+      overlay: "roger_arcadia_baseline",
       text: "Actually, what if I left the prize with you and we cleared the tab for my friend Roger here?",
       sound: {
         mp3: mp3_audio_smallwin_p1,
@@ -956,6 +1034,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "smallwin-p2",
       speaker: "arcade_owner",
+      overlay: "roger_arcadia_okay",
       text: "Oh, isn’t that kind!  Sure, I can do that.",
       sound: {
         mp3: mp3_audio_smallwin_p2,
@@ -967,6 +1046,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "smallwin-p3",
       speaker: "arcade_owner",
+      overlay: "roger_arcadia_okay",
       text: "That’s more than you need for Roger’s tab.  Here’s a small prize as change.",
       sound: {
         mp3: mp3_audio_smallwin_p3,
@@ -979,6 +1059,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "bigloss",
       speaker: "billie",
+      overlay: "roger_eek",
       text: "Crap.  How do I convince the kid now?",
       textBubbleType: "thought",
       sound: {
@@ -1016,6 +1097,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9a",
       speaker: "billie",
+      overlay: "roger_eek",
       text: "Look.  These games are _obviously_ rigged.  That means this arcade _actually cares about making money_!",
       sound: {
         mp3: mp3_audio_9a,
@@ -1027,6 +1109,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9a-p1",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "If this were a front, they’d want to give legitimate customers as much incentive as possible to spend time at the arcade, to mask the laundered cash.  The prizes would just be a rounding error to them!",
       sound: {
         mp3: mp3_audio_9a_p1,
@@ -1038,6 +1121,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9a-p2",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "_Clearly_ this is just a regular crooked arcade.",
       sound: {
         mp3: mp3_audio_9a_p2,
@@ -1048,7 +1132,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "9a-p3",
-      speaker: "roger_baseline",
+      speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "Huh.  I guess that makes sense...",
       sound: {
         mp3: mp3_audio_9a_p3,
@@ -1061,6 +1146,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9b",
       speaker: "billie",
+      overlay: "roger_eek",
       text: "I think I’ve lost enough money on this joint to effectively make a payment on whatever debt you owe here.",
       sound: {
         mp3: mp3_audio_9b,
@@ -1071,7 +1157,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "9b-p1",
-      speaker: "roger_focused",
+      speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "...Maybe?",
       sound: {
         mp3: mp3_audio_9b_p1,
@@ -1084,6 +1171,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9c",
       speaker: "billie",
+      overlay: "roger_eek",
       text: "Roger.  Buddy.  I’m clearly having a bad day.  _I’m not a fun guy to be around when I’m having a bad day._",
       sound: {
         mp3: mp3_audio_9c,
@@ -1095,6 +1183,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9c-p1",
       speaker: "roger_eek",
+      overlay: "roger_eek",
       text: "<gulp>",
       sound: {
         mp3: mp3_audio_9c_p1,
@@ -1106,6 +1195,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "9c-p2",
       speaker: "billie",
+      overlay: "roger_eek",
       text: "Tell me what you know about that dame.",
       sound: {
         mp3: mp3_audio_9c_p2,
@@ -1118,6 +1208,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "10",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "So.  What can you tell me about that dame who came in?",
       sound: {
         mp3: mp3_audio_10,
@@ -1131,6 +1222,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11",
       speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "I saw her stop by the arcade late last night.  She played one game of Redhot Racers and then she scrammed.",
       sound: {
         mp3: mp3_audio_11,
@@ -1142,6 +1234,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11-p2",
       speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "I’ve seen that lady before, though. In Chinatown, where my family lives. She’s been loiterin’ all over the neighborhood for a while now.",
       sound: {
         mp3: mp3_audio_11_p2,
@@ -1159,7 +1252,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
 
     {
       id: "11-details",
-      speaker: "roger_okay",
+      speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "She never has a reason for bein’ there–doesn’t live there, doesn’t work there, hardly ever buys anything. It’s weird.",
       sound: {
         mp3: mp3_audio_11_details,
@@ -1178,6 +1272,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11-more-details",
       speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "Not that long after she showed up, a huge gang war broke out in Chinatown.",
       sound: {
         mp3: mp3_audio_11_more_details,
@@ -1188,7 +1283,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "11-more-details-p1",
-      speaker: "roger_focused",
+      speaker: "roger_focus",
+      overlay: "roger_focus",
       text: "Two rival gangs destroyed each other. Collateral damage too – brother-in-law got hurt. Baaaad times.",
       sound: {
         mp3: mp3_audio_11_more_details_p1,
@@ -1199,7 +1295,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "11-more-details-p2",
-      speaker: "roger_focused",
+      speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "Papa Finster and his trouble boys picked up the pieces–they’ve owned the neighborhood ever since.",
       sound: {
         mp3: mp3_audio_11_more_details_p2,
@@ -1211,6 +1308,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11-more-details-p3",
       speaker: "roger_okay",
+      overlay: "roger_okay",
       text: "I think that’s all I can tell you.",
       sound: {
         mp3: mp3_audio_11_more_details_p3,
@@ -1222,6 +1320,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11-more-details-p4",
       speaker: "billie",
+      overlay: "roger_okay",
       text: "Thanks, kid.",
       sound: {
         mp3: mp3_audio_11_more_details_p4,
@@ -1232,7 +1331,8 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     {
       id: "11-afraid",
-      speaker: "roger_focused",
+      speaker: "roger_baseline",
+      overlay: "roger_baseline",
       text: "...Can I go now?",
       sound: {
         mp3: mp3_audio_11_afraid,
@@ -1244,6 +1344,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "11-afraid-p1",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "...Yeah.",
       sound: {
         mp3: mp3_audio_11_afraid_p1,

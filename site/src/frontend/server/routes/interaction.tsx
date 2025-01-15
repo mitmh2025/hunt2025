@@ -122,17 +122,18 @@ async function virtualInteractionHandler(
   const log = interactionStateLog.map((entry) =>
     interactionDefinition.handler.format(entry),
   );
+
+  const preloadImages = interactionDefinition.handler.getPreloadImages();
+
   const inlineScript = `window.initialInteractionState = ${JSON.stringify(log)};`;
   const node = (
     <div>
-      <h1>{interaction.title}</h1>
-      <p>
-        This page will eventually host an interaction. For now, we just have a
-        stub that allows progressing through the unlock structure.
-      </p>
-      {stubInteractionState(slug, interaction)}
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
       <div id="interaction-root" />
+      {stubInteractionState(slug, interaction)}
+      {preloadImages.map((src) => (
+        <link key={src} rel="preload" as="image" href={src} />
+      ))}
     </div>
   );
   return wrapContentWithNavBar(
