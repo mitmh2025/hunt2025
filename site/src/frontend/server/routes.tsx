@@ -433,18 +433,28 @@ export function registerUiRoutes({
           if (puzzleRouter) {
             const base = `/puzzles/${slug}`;
             //console.log("Mounting handler at", base);
-            authRouter.use(base, (req, resp, next) => {
-              if (req.teamState?.state.puzzles[slug]?.locked !== "unlocked") {
-                render404(req, resp);
-                return;
-              }
+            authRouter.use(
+              base,
+              asyncHandler(async (req, resp, next) => {
+                if (req.teamState?.state.puzzles[slug]?.locked !== "unlocked") {
+                  await render404(req, resp, next);
+                  return;
+                }
 
-              next();
-            });
+                next();
+              }),
+            );
             authRouter.use(base, puzzleRouter);
           }
         }
       }
     });
   });
+
+  authRouter.get(
+    "*",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await render404(req, res, next);
+    }),
+  );
 }
