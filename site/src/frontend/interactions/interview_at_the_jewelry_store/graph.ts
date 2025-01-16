@@ -456,7 +456,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
       timeout_msec: 13944 + 5000,
       choices: [
         {
-          text: "*Whistles* Nice ring.  Her finace’s a lucky man.  Did she mention his name?  Or how about her own?",
+          text: "*Whistles* Nice ring.  Her fiancé’s a lucky man.  Did she mention his name?  Or how about her own?",
           next: "7a",
         },
         {
@@ -472,7 +472,7 @@ const JewelryStoreInteractionGraph: InteractionGraph<
     {
       id: "7a",
       speaker: "billie",
-      text: "*Whistles* Nice ring.  Her finace’s a lucky man.  Did she mention his name?  Or how about her own?",
+      text: "*Whistles* Nice ring.  Her fiancé’s a lucky man.  Did she mention his name?  Or how about her own?",
       sound: {
         mp3: audio_mp3_7a,
         opus: audio_opus_7a,
