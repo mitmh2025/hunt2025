@@ -30,7 +30,7 @@ const Eggs: [location: number, description: string, hermit: string][] = [
   [54, "rolling mounds of coffee", "JoeHills"],
   [58, "black and white swirl pattern", "Hypnotizd"],
   [62, "surgeon with a singular letter on the nametag", "Docm77"],
-  [67, "newest Apple slime (Doing the minecraft skin here)", "iJevin"],
+  [67, "newest Apple slime", "iJevin"],
   [68, "one of the few enjoyers of a Chicago sports team", "cubfan135"],
   [69, "a fully built first gen Scion", "xBCrafted"],
   [78, "some finely aged steak", "VintageBeef"],
@@ -68,7 +68,6 @@ const NonSecretArtifacts: ArtifactType[] = [
   ["The Skadoodler", 14, "4", 159, 52, "TangoTek (No Egg)"],
   ["An Old Friend’s Pickaxe", 15, "4", 175, 38, "TinFoilChef (No Egg)"],
   ["Gem of Greatness", 16, "4", 207, 40, "GeminiTay (No Egg)"],
-  ["(Instructions)", 180, "4", 205, undefined, "N/A"],
 ];
 
 const SecretArtifacts: ArtifactType[] = [
@@ -302,8 +301,8 @@ const Solution = () => {
       </p>
       <ArtifactCrossingTable />
       <p>
-        At the intersection on 4th floor, instead of a key at the intersection,
-        you get a note:
+        There is no key at the crossing of the 4th floor artifacts. Instead,
+        upon setting your compass to 180 and using FD, you get a note:
       </p>
       <blockquote>
         Hidden beneath the altar you find a small slip of paper. It reads “The
