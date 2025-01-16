@@ -47,7 +47,7 @@ const RING_DATA = [
       response: "I’m the most important doll in the dollhouse.",
       shape: "◀",
       explaination:
-        "Joss Whedon shows, Echo was th main character in Dollhouse",
+        "Joss Whedon shows, Echo was the main character in Dollhouse",
     },
     {
       letter: "S",
@@ -333,7 +333,7 @@ const RING_DATA = [
     {
       letter: "R",
       prompt: "Are you Jet Li? Because I think you’re The One.",
-      response: "Go one movie back for your answer.",
+      response: "Go two movies back for your answer.",
       shape: "◼",
       explaination: "Jet Li’s previous film, Romeo Must Die",
     },
@@ -412,7 +412,8 @@ const RING_DATA = [
       prompt: "A rose by any other name...",
       response: "...would not respond when you called it.",
       shape: "◼",
-      explaination: "Line after “Romeo, Romeo, wherefore art thou Romeo?”",
+      explaination:
+        "Same scene and reference to “Romeo, Romeo, wherefore art thou Romeo?”",
     },
     {
       letter: "T",
@@ -1300,6 +1301,13 @@ const SPARES = [
     response: "His hiss insists: give this a miss.",
     shape: "◼",
     explaination: "co(BRA VO)cally, vocally",
+  },
+  {
+    letter: "R",
+    prompt: "I don't remember you from high school.",
+    response: "I'm Romy. Oh, and this is Michele.",
+    shape: "♥",
+    explaination: "“Romy. Oh,”",
   },
 ] as const;
 
