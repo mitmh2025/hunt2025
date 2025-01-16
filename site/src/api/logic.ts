@@ -21,6 +21,8 @@ export class TeamStateIntermediate extends LogicTeamState {
   correct_answers: Map<string, string>;
   outstanding_hint_requests: Set<string>;
 
+  private virtualInteractions: Set<string>;
+
   static redisKey = "team_state_intermediate";
 
   constructor(
@@ -33,10 +35,17 @@ export class TeamStateIntermediate extends LogicTeamState {
     this.puzzles_partially_solved = new Set(
       initial?.puzzles_partially_solved ?? [],
     );
-    this.slugToSlotMap = generateSlugToSlotMap(hunt);
     this.correct_answers = new Map(initial?.correct_answers ?? []);
     this.outstanding_hint_requests = new Set(
       initial?.outstanding_hint_requests,
+    );
+
+    this.slugToSlotMap = generateSlugToSlotMap(hunt);
+    this.virtualInteractions = new Set(
+      hunt.rounds
+        .flatMap((round) => round.interactions ?? [])
+        .filter((interaction) => interaction.virtual)
+        .map((interaction) => interaction.id),
     );
   }
 
@@ -84,31 +93,38 @@ export class TeamStateIntermediate extends LogicTeamState {
       case "puzzle_unlockable":
         this.puzzles_unlockable.add(entry.slug);
         break;
-      case "interaction_completed":
+      case "interaction_completed": {
         this.interactions_completed.set(entry.slug, entry.data.result);
 
-        if (this.queued_interactions.length > 0) {
-          this.next_interaction = this.queued_interactions.shift();
-          this.next_interaction_queued_at = entry.timestamp;
-        } else {
-          this.next_interaction = undefined;
-          this.next_interaction_queued_at = undefined;
+        if (this.virtualInteractions.has(entry.slug)) {
+          if (this.queued_interactions.length > 0) {
+            this.next_interaction = this.queued_interactions.shift();
+            this.next_interaction_queued_at = entry.timestamp;
+          } else {
+            this.next_interaction = undefined;
+            this.next_interaction_queued_at = undefined;
+          }
         }
 
         break;
+      }
       case "interaction_started":
         this.interactions_started.add(entry.slug);
         break;
-      case "interaction_unlocked":
+      case "interaction_unlocked": {
         this.interactions_unlocked.add(entry.slug);
-        if (!this.next_interaction) {
-          // no queued interaction -- queue this one
-          this.next_interaction = entry.slug;
-          this.next_interaction_queued_at = entry.timestamp;
-        } else {
-          this.queued_interactions.push(entry.slug);
+
+        if (this.virtualInteractions.has(entry.slug)) {
+          if (!this.next_interaction) {
+            // no queued interaction -- queue this one
+            this.next_interaction = entry.slug;
+            this.next_interaction_queued_at = entry.timestamp;
+          } else {
+            this.queued_interactions.push(entry.slug);
+          }
         }
         break;
+      }
       case "puzzle_partially_solved":
         this.puzzles_partially_solved.add(entry.slug);
         break;

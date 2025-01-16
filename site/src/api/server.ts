@@ -27,10 +27,7 @@ import {
   SignJWT,
 } from "jose";
 import { type Knex } from "knex";
-import {
-  type GuessStatus,
-  type InsertActivityLogEntry,
-} from "knex/types/tables";
+import { type GuessStatus } from "knex/types/tables";
 import { type Address } from "nodemailer/lib/mailer";
 import { Passport } from "passport";
 import { Strategy as CustomStrategy } from "passport-custom";
@@ -77,7 +74,6 @@ import { fixTimestamp } from "../utils/fixTimestamp";
 import { omit } from "../utils/omit";
 import {
   activityLog,
-  type Mutator,
   puzzleStateLog,
   registerTeam,
   teamInteractionStateLog,
@@ -92,6 +88,7 @@ import {
   updateFermitRegistration,
   getFermitAnswers,
   saveFermitAnswers,
+  type ActivityLogMutator,
 } from "./data";
 import dataContractImplementation from "./dataContractImplementation";
 import {
@@ -626,7 +623,7 @@ export async function getRouter({
     teamId: string,
     fn: (
       trx: Knex.Transaction,
-      mutator: Mutator<InternalActivityLogEntry, InsertActivityLogEntry>,
+      mutator: ActivityLogMutator,
       team_id: number,
     ) => Promise<boolean>,
   ) => {
@@ -3130,58 +3127,55 @@ export async function getRouter({
           const result = await executeTeamStateHandler(
             teamId,
             async (trx, mutator, team_id) => {
-              const existing = mutator.log.filter(
-                (e) =>
-                  (e.team_id === team_id || e.team_id === undefined) &&
-                  (e.type === "interaction_unlocked" ||
-                    e.type === "interaction_started") &&
-                  e.slug === interactionId,
-              );
-              const is_unlocked = existing.some(
-                (entry) => entry.type === "interaction_unlocked",
-              );
-              if (!is_unlocked) {
+              const teamState = mutator.getTeamState(hunt, team_id);
+              if (!teamState.interactions_unlocked.has(interactionId)) {
                 return false;
               }
-              const is_started = existing.some(
-                (entry) => entry.type === "interaction_started",
-              );
+
+              const isStarted =
+                teamState.interactions_completed.has(interactionId) ||
+                teamState.interactions_started.has(interactionId);
+
+              if (isStarted) {
+                return false;
+              }
 
               const interaction = INTERACTIONS[interactionId];
-
-              if (!is_started) {
-                // TODO: if interaction is virtual, ensure that no other incomplete virtual
-                // interaction was unlocked before this one (if one exists, it should be completed
-                // before we let this one proceed)
-
-                await mutator.appendLog({
-                  team_id,
-                  type: "interaction_started",
-                  slug: interactionId,
-                });
-                // Also insert the initial node into team_interaction_states
-                if (interaction?.type === "virtual") {
-                  const { node, state } = (
-                    interaction.handler as VirtualInteractionHandler<
-                      object,
-                      unknown,
-                      string,
-                      string,
-                      unknown
-                    >
-                  ).startState();
-                  await appendTeamInteractionStateLog(
-                    {
-                      team_id,
-                      slug: interactionId,
-                      node,
-                      // no predecessor, we're starting here!
-                      graph_state: state,
-                    },
-                    trx,
-                  );
+              if (interaction?.type === "virtual") {
+                if (teamState.next_interaction !== interactionId) {
+                  return false;
                 }
               }
+
+              await mutator.appendLog({
+                team_id,
+                type: "interaction_started",
+                slug: interactionId,
+              });
+
+              if (interaction?.type === "virtual") {
+                // Also insert the initial node into team_interaction_states
+                const { node, state } = (
+                  interaction.handler as VirtualInteractionHandler<
+                    object,
+                    unknown,
+                    string,
+                    string,
+                    unknown
+                  >
+                ).startState();
+                await appendTeamInteractionStateLog(
+                  {
+                    team_id,
+                    slug: interactionId,
+                    node,
+                    // no predecessor, we're starting here!
+                    graph_state: state,
+                  },
+                  trx,
+                );
+              }
+
               return true;
             },
           );
