@@ -59,12 +59,12 @@ const BackgroundCheckWrapperOuter = styled.div`
   color: ${BgColor};
 
   a {
-    color: ${MagnetColor};
+    color: var(--red-500);
     text-decoration: underline dotted ${MagnetColor};
 
     &:hover {
-      color: #e56c0f;
-      text-decoration-color: #e56c0f;
+      color: var(--red-600);
+      text-decoration-color: var(--red-600);
     }
   }
 `;
@@ -119,6 +119,10 @@ export const BackgroundCheckHeader = styled(PuzzleHeader)`
         outline-color: #fcb851;
       }
     }
+  }
+
+  #rate-limit-notice {
+    background: #00000033;
   }
 `;
 

@@ -55,6 +55,10 @@ export const StakeoutHeader = styled(PuzzleHeader)`
     background-color: rgba(248, 248, 246, 0.85);
     padding-bottom: 2rem;
   }
+
+  #rate-limit-notice {
+    background: var(--highlighter);
+  }
 `;
 
 export const StakeoutBacklink = styled(PuzzleBacklink)`
