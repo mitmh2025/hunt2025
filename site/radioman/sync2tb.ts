@@ -214,7 +214,7 @@ async function main({
       customer = baseCustomer;
     }
     const teamState = teamStates.get(teamId) ?? emptyTeamState;
-    if ((additionalInfo.teamStateEpoch ?? 0) <= teamState.epoch) {
+    if ((additionalInfo.teamStateEpoch ?? -1) <= teamState.epoch) {
       // en_knocks should be set to true when practical-fighter is unlocked (and remain true). Prior to that it can be unset or false, the radio treats them the same
       // en_funaround should be set to true when dimpled-star is unlocked. (Same deal)
       // en_rickroll should be set to true when the blacklight mode for giant-switch is unlocked
