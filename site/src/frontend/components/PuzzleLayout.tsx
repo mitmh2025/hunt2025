@@ -107,6 +107,27 @@ const AuthorsNoteBlock = styled.div`
   }
 `;
 
+const InteractionLinkBlock = styled.div`
+  font-size: 18px;
+  border: 2px solid var(--gold-900);
+  color: var(--white) !important;
+  padding: 1rem;
+  margin: 0 auto 2rem;
+  background-color: var(--gold-700);
+  max-width: 400px;
+  border-radius: 20px;
+  text-align: center;
+
+  a {
+    color: var(--white) !important;
+    text-decoration-color: var(--white) !important;
+  }
+
+  a:hover {
+    color: var(--gold-300) !important;
+  }
+`;
+
 export {
   PuzzleHeader,
   PuzzleMain,
@@ -117,4 +138,5 @@ export {
   PuzzleTitle,
   AuthorsNote,
   AuthorsNoteBlock,
+  InteractionLinkBlock,
 };

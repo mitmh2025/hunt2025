@@ -1,5 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
+import { type TeamHuntState } from "../../../../lib/api/client";
+import { InteractionLinkBlock } from "../../components/PuzzleLayout";
 
 const CenteredList = styled.ul`
   width: 100%;
@@ -7,9 +9,19 @@ const CenteredList = styled.ul`
   list-style-type: none;
 `;
 
-const Puzzle = () => {
+const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
+  const interactionState =
+    teamState.rounds.paper_trail?.interactions?.confront_gladys?.state;
+
   return (
     <>
+      {interactionState !== undefined ? (
+        <InteractionLinkBlock>
+          Unlocked interaction:{" "}
+          <a href="/interactions/confront_gladys">Confront Gladys</a>
+        </InteractionLinkBlock>
+      ) : null}
+
       <p>
         You must be getting close to untangling Gladys’ web of business
         dealings. We received a letter from a source:
