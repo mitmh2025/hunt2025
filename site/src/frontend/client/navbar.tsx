@@ -38,12 +38,10 @@ const NavBarManager = ({
   initialEventsState,
   initialTeamInfo,
   initialState,
-  whepUrl,
 }: {
   initialEventsState: EventsState;
   initialTeamInfo: TeamInfo;
   initialState: NavBarState;
-  whepUrl: string;
 }) => {
   const info = useDataset("team_info", undefined, initialTeamInfo);
   const eventsState = useDataset("events", undefined, initialEventsState);
@@ -131,12 +129,7 @@ const NavBarManager = ({
         ref={notifications}
         maxNotifications={5}
       />
-      <NavBar
-        eventsState={eventsState}
-        info={info}
-        state={state}
-        whepUrl={whepUrl}
-      />
+      <NavBar eventsState={eventsState} info={info} state={state} />
     </>
   );
 };
@@ -151,14 +144,12 @@ if (navbarElem) {
   const initialNavbarState = (
     window as unknown as { initialNavBarState: NavBarState }
   ).initialNavBarState;
-  const whepUrl = (window as unknown as { whepUrl: string }).whepUrl;
   hydrateRoot(
     navbarElem,
     <NavBarManager
       initialEventsState={initialEventsState}
       initialTeamInfo={initialTeamInfo}
       initialState={initialNavbarState}
-      whepUrl={whepUrl}
     />,
   );
 } else {
