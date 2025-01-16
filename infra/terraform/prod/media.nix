@@ -21,7 +21,7 @@
   };
 
   gcp.ar.images.images.radio.sourceImage = pkgs.radioImage;
-  k8s.prod.statefulSet.sync2k8s = lib.mkIf false {
+  k8s.prod.statefulSet.sync2k8s = {
     image = lib.tfRef config.gcp.ar.images.images.misc.urlRef;
     env = {
       API_BASE_URL = "http://api/api";
@@ -41,5 +41,50 @@
         requests.memory = "100Mi";
       };
     };
+    template.spec.service_account_name = lib.tfRef "kubernetes_service_account_v1.sync2k8s.metadata[0].name";
+    statefulSet.depends_on = ["kubernetes_limit_range_v1.radio"];
+  };
+
+  resource.kubernetes_service_account_v1.sync2k8s = {
+    metadata = {
+      name = "sync2k8s";
+      namespace = lib.tfRef "kubernetes_namespace_v1.prod.metadata[0].name";
+    };
+  };
+
+  resource.kubernetes_role_binding_v1.sync2k8s-radio = {
+    metadata.namespace = lib.tfRef "kubernetes_namespace_v1.radio.metadata[0].name";
+    metadata.name = "radio";
+    subject = [{
+      kind = "ServiceAccount";
+      name = lib.tfRef "kubernetes_service_account_v1.sync2k8s.metadata[0].name";
+      namespace = lib.tfRef "kubernetes_namespace_v1.prod.metadata[0].name";
+    }];
+    role_ref = [{
+      api_group = "rbac.authorization.k8s.io";
+      kind = "ClusterRole";
+      name = "edit";
+    }];
+  };
+
+  resource.kubernetes_namespace_v1.radio.metadata.name = "radio";
+  resource.kubernetes_limit_range_v1.radio = {
+    metadata.namespace = lib.tfRef "kubernetes_namespace_v1.radio.metadata[0].name";
+    metadata.name = "radio";
+    spec.limit = [
+      {
+        type = "Container";
+        # Experimentally discovered
+        default_request = {
+          cpu = "0.1";
+          memory = "125Mi";
+        };
+        # Just to stop runaway processes
+        default = {
+          cpu = "1";
+          memory = "512Mi";
+        };
+      }
+    ];
   };
 }
