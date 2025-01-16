@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import type { PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract";
-import { PuzzleAnswer } from "../../components/StyledUI";
+import { MailtoLink, PuzzleAnswer } from "../../components/StyledUI";
 import { deviceMax } from "../../utils/breakpoints";
 
 const Wrapper = styled.div`
@@ -343,7 +343,11 @@ export const PuzzlingWordFromOurSponsors = ({
           <p>
             You should have received a martini glass with 34 tiles. If not,
             please contact us at{" "}
-            <a href="mailto:info@mitmh2025.com">info@mitmh2025.com</a>.
+            <MailtoLink
+              subject={
+                "Missing pieces for And Now, A Puzzling Word From Our Sponsors"
+              }
+            />
           </p>
           <p className="puzzle-flavor">
             It looks like a few ingredients are missing from both your martini

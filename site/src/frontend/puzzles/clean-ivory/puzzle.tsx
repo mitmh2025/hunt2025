@@ -1,5 +1,6 @@
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { MailtoLink } from "../../components/StyledUI";
 import paper from "./assets/the-inspectre.pdf";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
@@ -14,7 +15,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>
             You should have received a bag of eight larger acrylic pieces, 228
             smaller ones, and a sheet of paper. Please contact us at
-            info@mitmh2025.com if it seems that you are missing pieces.
+            <MailtoLink subject={"Missing pieces for The Inspectre"} /> if it
+            seems that you are missing pieces.
           </p>
           <p>
             The paper should have{" "}
@@ -30,7 +32,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>Please come to the Gala to pick up your copy of this puzzle.</p>
           <p>
             You should receive a bag of eight larger acrylic pieces, 228 smaller
-            ones, and a sheet of paper. Please contact us at info@mitmh2025.com
+            ones, and a sheet of paper. Please contact us at{" "}
+            <MailtoLink subject={"Missing pieces for The Inspectre"} />
             if it seems that you are missing pieces.
           </p>
         </>

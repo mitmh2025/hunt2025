@@ -1,6 +1,7 @@
 import React from "react";
 import { type InteractionState } from "../../../../lib/api/contract";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import { MailtoLink } from "../../components/StyledUI";
 
 const Interaction = ({
   interactionState,
@@ -23,12 +24,12 @@ const Interaction = ({
         <p>
           You will receive a video recording after completing this
           confrontation. If you’re unable to complete this confrontation, you
-          may reach out to Hunt HQ at info@mitmh2025.com after the interaction
-          has been open for more than 3 hours and we can mark it completed
-          (include the phrase “RIDE SIDECAR” in the subject line). This
-          interaction does block further investigatory content, but you should
-          have plenty of other leads to follow, so we still recommend you do the
-          live interaction even if you need to wait a bit.
+          may reach out to Hunt HQ at <MailtoLink subject={"RIDE SIDECAR"} />{" "}
+          after the interaction has been open for more than 3 hours and we can
+          mark it completed (include the phrase “RIDE SIDECAR” in the subject
+          line). This interaction does block further investigatory content, but
+          you should have plenty of other leads to follow, so we still recommend
+          you do the live interaction even if you need to wait a bit.
         </p>
       </AuthorsNoteBlock>
 

@@ -269,3 +269,11 @@ export const mdBgLinkStyles = `
     text-decoration-color: var(--teal-500);
   }
 `;
+
+export const MailtoLink = ({ subject }: { subject: string }): JSX.Element => {
+  return (
+    <a href={`mailto:info@mitmh2025.com?subject=${subject}`}>
+      info@mitmh2025.com
+    </a>
+  );
+};
