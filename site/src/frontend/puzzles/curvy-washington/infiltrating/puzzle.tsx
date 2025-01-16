@@ -13,8 +13,8 @@ import {
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 
 const TEAM_SIZE: [string, number][] = [
-  [">100", 40],
-  ["76–100", 35],
+  [">100", 39],
+  ["76–100", 34],
   ["51–75", 29],
   ["26–50", 24],
   ["1–25", 19],
@@ -144,7 +144,7 @@ const FEATS: Feat[] = [
         <MText>or</MText>
         <MSpace width={"0.3em"} />
         <MN>5</MN>
-        <MText>, whichever is smaller</MText>
+        <MText>, whichever is larger</MText>
       </Math>
     </>,
   ],
@@ -221,7 +221,7 @@ const FEATS: Feat[] = [
         <MText>or</MText>
         <MSpace width={"0.3em"} />
         <MN>10</MN>
-        <MText>, whichever is greater</MText>
+        <MText>, whichever is larger</MText>
       </Math>
     </>,
   ],
@@ -290,17 +290,17 @@ const Puzzle = (): JSX.Element => {
         </p>
         <p>
           Judging will occur in person in your team’s headquarters. To request
-          judgment, please email info@mitmh2025.com with “WE ARE BAD BAD DUDES”
+          judgement, please email info@mitmh2025.com with “WE ARE BAD BAD DUDES”
           in the subject line, and let us know your team name and any details
           for visiting your HQ.
         </p>
       </AuthorsNoteBlock>
       <p>
-        The key to blending in the seedy underbelly of MITropolis is building up
-        street cred. In order to succeed, you will need to demonstrate feats of
-        criminality to meet a minimum threshold of street cred. Larger PI
-        training firms will need more street cred to build up a sufficient
-        network of informants, naturally.
+        The key to blending in among the seedy underbelly of MITropolis is
+        building up street cred. In order to succeed, you will need to
+        demonstrate feats of criminality to meet a minimum threshold of street
+        cred. Larger PI training firms will need more street cred to build up a
+        sufficient network of informants, naturally.
       </p>
       <StyledTable>
         <tr>
