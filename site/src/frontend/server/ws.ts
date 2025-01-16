@@ -50,7 +50,6 @@ import { murderState } from "../rounds/murder_in_mitropolis";
 import { paperTrailState } from "../rounds/paper_trail";
 import { stakeoutState } from "../rounds/stakeout";
 import { strayLeadsState } from "../rounds/stray_leads";
-import { generateActivityLogForTimeline } from "../timeline";
 import { PUZZLE_SLUGS_WITH_PUBLIC_STATE_LOG } from "./constants";
 import { type DatasetTailer, newLogTailer } from "./dataset_tailer";
 import { devtoolsState } from "./devtools";
@@ -93,10 +92,6 @@ const DATASET_REGISTRY: Record<Dataset, DatasetHandler> = {
   activity_log: {
     type: "activity_log",
     callback: (e) => e,
-  },
-  timeline: {
-    type: "activity_log",
-    callback: generateActivityLogForTimeline,
   },
   all_puzzles: {
     type: "team_state",
