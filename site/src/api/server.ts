@@ -3818,57 +3818,59 @@ export async function getRouter({
     responseValidation: true,
   });
 
-  const openApiDocumentFor = (c: AppRouter) =>
-    generateOpenApi(c, {
-      info: {
-        title: "Hunt API",
-        version: "2025",
-      },
-      servers: [
-        {
-          url: "/api/",
+  if (process.env.NODE_ENV === "development") {
+    const openApiDocumentFor = (c: AppRouter) =>
+      generateOpenApi(c, {
+        info: {
+          title: "Hunt API",
+          version: "2025",
         },
-      ],
-    });
-  const prehuntApiDocument = openApiDocumentFor(authContract);
-  const huntApiDocument = openApiDocumentFor(
-    c.router({
-      auth: authContract,
-      public: publicContract,
-    }),
-  );
-  const adminApiDocument = openApiDocumentFor(contract);
-
-  app.use(
-    "/",
-    swaggerUi.serve,
-    (req: Request, res: Response, next: NextFunction) => {
-      (
-        passport.authenticate(
-          ["teamJwt", "adminJwt"],
-          async (
-            _err: unknown,
-            user?: Express.User | false | null,
-            info?: Express.AuthInfo,
-          ) => {
-            const huntStarted =
-              user &&
-              (user as number) > 0 &&
-              (
-                await getTeamStateIntermediate(user as number)
-              ).gates_satisfied.has("hunt_started");
-            const apiDoc =
-              process.env.NODE_ENV === "development" || info?.adminUser
-                ? adminApiDocument
-                : huntStarted
-                  ? huntApiDocument
-                  : prehuntApiDocument;
-            swaggerUi.setup(apiDoc)(req, res, next);
+        servers: [
+          {
+            url: "/api/",
           },
-        ) as RequestHandler
-      )(req, res, next);
-    },
-  );
+        ],
+      });
+    const prehuntApiDocument = openApiDocumentFor(authContract);
+    const huntApiDocument = openApiDocumentFor(
+      c.router({
+        auth: authContract,
+        public: publicContract,
+      }),
+    );
+    const adminApiDocument = openApiDocumentFor(contract);
+
+    app.use(
+      "/",
+      swaggerUi.serve,
+      (req: Request, res: Response, next: NextFunction) => {
+        (
+          passport.authenticate(
+            ["teamJwt", "adminJwt"],
+            async (
+              _err: unknown,
+              user?: Express.User | false | null,
+              info?: Express.AuthInfo,
+            ) => {
+              const huntStarted =
+                user &&
+                (user as number) > 0 &&
+                (
+                  await getTeamStateIntermediate(user as number)
+                ).gates_satisfied.has("hunt_started");
+              const apiDoc =
+                process.env.NODE_ENV === "development" || info?.adminUser
+                  ? adminApiDocument
+                  : huntStarted
+                    ? huntApiDocument
+                    : prehuntApiDocument;
+              swaggerUi.setup(apiDoc)(req, res, next);
+            },
+          ) as RequestHandler
+        )(req, res, next);
+      },
+    );
+  }
 
   return app;
 }
