@@ -3,7 +3,9 @@ import type { ParamsDictionary } from "express-serve-static-core";
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { ServerStyleSheet } from "styled-components";
+import { wrapContentWithNavBar } from "../components/ContentWithNavBar";
 import Layout from "../components/Layout";
+import { PageWrapper } from "../components/PageLayout";
 import {
   type Entrypoint,
   lookupScripts,
@@ -12,10 +14,34 @@ import {
 
 const oneDay = String(60 * 60 * 24);
 
-export const render404 = (_req: Request, res: Response) => {
-  const html =
-    "<!DOCTYPE html><html><body><h1>404 Not Found</h1><p>We didn’t find what you were looking for.</p></body></html>";
-  res.status(404).send(html);
+const notFoundHandler = (req: Request) => {
+  const teamState = req.teamState;
+  if (teamState === undefined) return undefined;
+  const node = (
+    <PageWrapper>
+      <>
+        <h1>404 Not Found</h1>
+        <p>We didn’t find what you were looking for.</p>
+        <a href="/">← Back</a>
+      </>
+    </PageWrapper>
+  );
+
+  return wrapContentWithNavBar(
+    {
+      node,
+      title: "Radio Instruction Manual",
+    },
+    teamState,
+  );
+};
+
+export const render404 = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  await renderApp(notFoundHandler, req, res, next);
 };
 
 export const render500 = (
@@ -59,11 +85,11 @@ export default async function renderApp<Params extends ParamsDictionary>(
   renderer: PageRenderer<Params>,
   req: Request<Params>,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ) {
   const result = await renderer(req, res);
   if (!result) {
-    render404(req, res);
+    await render404(req, res, next);
     return;
   }
   const reactRoot = result.node;
