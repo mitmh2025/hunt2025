@@ -190,6 +190,7 @@ in {
             nodejs
           ];
           text = ''
+            export REDIS_URL=${config.systemd.services.zammad-web.environment.REDIS_URL}
             cd ${config.services.zammad.dataDir} && exec ./script/rails r -e production 'Channel::Driver::MailStdin.new(trusted: true)'
           '';
         };
@@ -197,7 +198,6 @@ in {
         zammad ${deliverZammad}/bin/deliver-zammad
       '';
       config = {
-        myorigin = "$mydomain";
         mailbox_command_maps = ["hash:/etc/postfix/mailbox_commands"];
       };
       extraAliases = ''
