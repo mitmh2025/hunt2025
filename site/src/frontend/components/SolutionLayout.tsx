@@ -41,6 +41,12 @@ const SpoileredRow = styled.tr<{ $revealed: boolean }>`
 `;
 
 const CannedResponseTable = styled.table`
+  border-collapse: collapse;
+  border: 1px solid black;
+  td,
+  th {
+    border: 1px solid black;
+  }
   tbody tr td:nth-child(3) {
     text-align: right;
   }
@@ -64,17 +70,26 @@ const SolutionHintTableRow = ({ hint }: { hint: Hint }) => {
 
   return (
     <SpoileredRow $revealed={revealed} onClick={onClick}>
+      <td>{hint.order}</td>
+      <td>{hint.description}</td>
+      <td>{hint.nudge}</td>
       <td>
         <button type="button" onClick={handleCopy}>
           📋
         </button>
       </td>
-      <td>{hint.order}</td>
-      <td>{hint.description}</td>
-      <td>{hint.nudge}</td>
     </SpoileredRow>
   );
 };
+
+const SolutionHintTableElem = styled.table`
+  border: 1px solid black;
+  border-collapse: collapse;
+  th,
+  td {
+    border: 1px solid black;
+  }
+`;
 
 const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
   if (hints.length > 0) {
@@ -82,13 +97,13 @@ const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
     return (
       <SpacedDetails open>
         <summary>Hints</summary>
-        <table>
+        <SolutionHintTableElem>
           <thead>
             <tr>
-              <th></th>
               <th>Order</th>
               <th>Description</th>
               <th>Nudge</th>
+              <th>Copy</th>
             </tr>
           </thead>
           <tbody>
@@ -96,7 +111,7 @@ const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
               return <SolutionHintTableRow key={hint.order} hint={hint} />;
             })}
           </tbody>
-        </table>
+        </SolutionHintTableElem>
       </SpacedDetails>
     );
   } else {
