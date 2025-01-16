@@ -222,10 +222,18 @@ export function formatActivityLogEntry(
         ),
         showNotification: true,
       };
-    case "team_hints_unlocked":
+    case "team_hints_unlocked": {
+      const availableAt = new Date(entry.hints_available_at);
+      const isPast = availableAt.getTime() < Date.now();
+
       return {
         icon: "💡",
-        description: (
+        description: isPast ? (
+          <>
+            Hints are now available for puzzle{" "}
+            <a href={`/puzzles/${entry.slug}`}>{entry.title}</a>.
+          </>
+        ) : (
           <>
             Hints will become available for puzzle{" "}
             <a href={`/puzzles/${entry.slug}`}>{entry.title}</a> at{" "}
@@ -236,6 +244,7 @@ export function formatActivityLogEntry(
         ),
         showNotification: true,
       };
+    }
     case "puzzle_hint_requested":
       return {
         icon: "🛟",
