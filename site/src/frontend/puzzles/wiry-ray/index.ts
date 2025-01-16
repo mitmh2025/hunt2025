@@ -11,7 +11,12 @@ const puzzle: PuzzleDefinition = {
   answer: "KENGREXAL",
   authors: ["Chris Gatesman", "Mark Gatesman"],
   editors: ["Anna Brunner", "Elan Blaustein", "Jesse Moeller"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      freeform:
+        "The puzzle authors would like to thank Aureeee, whose maps of the Decked Out 2 levels made this puzzle feasible to create!",
+    },
+  ],
   content: {
     component: Puzzle,
     entrypoint: "puzzle_wiry_ray",
