@@ -532,8 +532,6 @@ export default function createConfigs(_env, argv) {
 
       // Regsite (css only)
       regsite: "./src/frontend/regsite/regsite.css",
-
-      prototype: "./src/frontend/client/prototype.tsx",
     },
     // Client code needs to reference the webworker bundle by URL.
     dependencies: ["worker"],

@@ -285,7 +285,21 @@ export class VirtualInteractionHandler<
       //   Each of these plugin nodes should update state.wins based on the outcome of the game and
       //   navigate to one of "first-win", "first-loss", "second-win", "second-loss", "third-win",
       //   or "third-loss" accordingly.
-      const success = Math.random() > 0.5; // TODO: determine this fairly
+      let voteCounts = maybeVoteCounts;
+      if (!voteCounts) {
+        const redisKey = this.electionKey(teamId, currentNode);
+        const votes = await redisClient.hGetAll(redisKey);
+        voteCounts = countVotes(votes);
+      }
+
+      const choices = ["win", "lose"];
+      const voteResults = tallyResults(voteCounts, choices);
+      if (voteResults.winner === undefined) {
+        // Should be unreachable if choiceKeys was not empty
+        return undefined;
+      }
+
+      const success = voteResults.winner === "win";
       const boardwalkPluginState = state as BoardwalkInteractionState;
       const played =
         (boardwalkPluginState.played_lucky_duck ? 1 : 0) +
