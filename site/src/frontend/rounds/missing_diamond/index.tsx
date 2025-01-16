@@ -554,7 +554,7 @@ export const witnesses: Record<WitnessName, WitnessRecord> = {
       width: 80,
     },
     statement:
-      "We were on our way to a late-night delivery to the Jewelry Store when I saw Katrina here.",
+      "We were on our way to a late-night delivery to the Jewelry Store when I saw Katrina here, but I haven’t seen Gladys today.",
   },
   dockworker: {
     asset: {

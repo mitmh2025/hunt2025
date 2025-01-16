@@ -335,7 +335,7 @@ const MEGATABLE: [
     <>
       A <strong>DASH</strong> of Color
     </>,
-    "“As the French would say, de trop”/“an old Dutch master”",
+    "“an old Dutch master”",
     "17",
   ],
   [
@@ -1030,11 +1030,11 @@ const Solution = (): JSX.Element => {
         business. You don’t just take one look at a diamond and decide you have
         the next Star of Africa. First, you have to put it under a microscope.
         You have to look at it from different angles. You have to take it out of
-        its setting and look at it in the light.{" "}
-        <Green>And the next step will be to [THE BLACK MARKET].</Green> I’ll
-        tell you something for free. There is no such thing as perfection in
-        this business. What matters is what kind of imperfections you got. Are
-        you true blue or are you yellow?{" "}
+        its setting and look at it in the light. And the{" "}
+        <Green>next step will be to [THE BLACK MARKET].</Green> I’ll tell you
+        something for free. There is no such thing as perfection in this
+        business. What matters is what kind of imperfections you got. Are you
+        true blue or are you yellow?{" "}
         <em>
           (Certain imperfections in the diamond lattice give it a valuable blue
           color; others a yellow color. Metaphorically, blue is the color of
@@ -1124,7 +1124,7 @@ const Solution = (): JSX.Element => {
         did, once upon a time. To be honest I’m pretty sure she’d still take you
         over an orange cognac <em>(a “Sidecar” cocktail)</em>. Maybe keeping you
         around was a hard-nosed business decision. Maybe it was a feeling in my
-        gut. But <Green>it’s been a [BEAUTIFUL FRIENDSHIP]</Green>.{" "}
+        gut. But it’s been a <Green>[BEAUTIFUL FRIENDSHIP]</Green>.{" "}
         <em>(Last line of Casablanca.)</em>
       </p>
       <hr />
@@ -1189,7 +1189,7 @@ const Solution = (): JSX.Element => {
         for an opportune moment <em>(to look back over his shoulder)</em>.
       </p>
       <p>
-        <em>(The Teapot Dome scandal, Washington, 1921–23)</em>
+        <em>(The Teapot Dome scandal, Washington, D.C., 1921–23)</em>
         <br />
         When it started to look like gang warfare{" "}
         <em>
@@ -1200,7 +1200,7 @@ const Solution = (): JSX.Element => {
         was overrun by elephants and donkeys{" "}
         <em>[Republicans and Democrats]</em> running wild. Found a place tucked
         away in the corner of Trinidad, between the Old City and the arboretum.{" "}
-        <em>[These are all districts of Washington.]</em> It’s good to stop and
+        <em>[These are all areas of Washington, D.C.]</em> It’s good to stop and
         have a little look back every now and then{" "}
         <em>(to see if he is being followed)</em>.{" "}
         <Green>
@@ -1477,12 +1477,10 @@ const Solution = (): JSX.Element => {
       <p>
         How far away was that <Orange>hitching post</Orange>{" "}
         <em>[where he parked the car]</em>? Don’t you know it’s not good to keep
-        a girl waiting like this? It really is{" "}
-        <Green>too damn much. Pardon my French.</Green>{" "}
+        a girl waiting like this? It really is too damn much. Pardon my French.{" "}
         <em>[“As the French would say, de trop”]</em> In some cities they charge
-        for it
-        <em>[parking]</em> now. That would put things right. I just want to put
-        my feet up. It’s been a long day, and{" "}
+        for it <em>[parking]</em> now. That would put things right. I just want
+        to put my feet up. It’s been a long day, and{" "}
         <Cyan>I still have all those</Cyan>{" "}
         <Green>[VERMEERS AND REMBRANDTS]</Green>{" "}
         <em>[“An Old Dutch master”]</em> and whatnot to get round. Ah here he
@@ -1491,7 +1489,7 @@ const Solution = (): JSX.Element => {
       <hr />
       <p>
         <em>
-          Baby wanders through the Gala, which is just getting underway.
+          Baby wanders through the Gala, which is just getting underway.{" "}
           <Green>
             Appropriately enough, it is being held in an art museum which has a
             special exhibition on “the history of jewelry in portraiture from
