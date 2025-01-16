@@ -46,6 +46,7 @@ const CannedResponseTable = styled.table`
   td,
   th {
     border: 1px solid black;
+    padding: 0.25rem 0.5rem;
   }
   tbody tr td:nth-child(3) {
     text-align: right;
