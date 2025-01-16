@@ -395,7 +395,7 @@ const App = ({
     );
   }
 
-  const schedulingMessage = log.find(
+  const schedulingMessage = log.findLast(
     ({ slug, team_id, data }) =>
       slug === "control_room" &&
       team_id === parseInt(controlRoomInfo.teamId, 10) &&
