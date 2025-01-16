@@ -363,7 +363,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 44,
     text: "How many trees are located within Killian Court?",
-    answer: 64,
+    answer: 70,
     geoguessr: null,
     scoringMethod: "2double",
     categories: [],
