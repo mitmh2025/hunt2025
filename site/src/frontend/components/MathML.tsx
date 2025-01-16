@@ -103,6 +103,14 @@ export const MS = (props: MSProps) => {
   return React.createElement("ms", rest, children);
 };
 
+export type MSpaceProps = MathMLProps & {
+  width?: string;
+};
+export const MSpace = (props: MSpaceProps) => {
+  const { children, ...rest } = props;
+  return React.createElement("mspace", rest, children);
+};
+
 export type MSubProps = MathMLProps & {
   subscriptshift?: string;
 };
