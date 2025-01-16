@@ -20,7 +20,12 @@ const puzzle: PuzzleDefinition = {
     "Michele Pratusevich",
     "Wesley Graybill",
   ],
-  additional_credits: [],
+  additional_credits: [
+    {
+      who: ["rfong"],
+      for_what: "Videography",
+    },
+  ],
   content: {
     component: Puzzle,
   },
@@ -28,7 +33,12 @@ const puzzle: PuzzleDefinition = {
     component: Solution,
   },
   hints: [],
-  canned_responses: [],
+  canned_responses: [
+    {
+      guess: ["MRS POTTS LYRIC"],
+      reply: "Keep going!",
+    },
+  ],
 };
 
 export default puzzle;

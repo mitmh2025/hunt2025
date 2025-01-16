@@ -43,7 +43,7 @@ const TABLE_DATA = [
   },
   {
     building: "6",
-    clue: "Poe short story",
+    clue: "Well-known Poe short story",
     answer: "The Tell-Tale Heart",
     tail: "T",
   },
