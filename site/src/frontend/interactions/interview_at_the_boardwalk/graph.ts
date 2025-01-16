@@ -8,14 +8,11 @@ import bg from "./assets/bg.jpg";
 import billie_winner from "./assets/billie-winner.png";
 import roger_arcadia_baseline from "./assets/roger-arcadia-baseline.png";
 import roger_arcadia_okay from "./assets/roger-arcadia-okay.png";
-import roger_baseline_speaker from "./assets/roger-baseline-speaker.jpg";
 import roger_baseline from "./assets/roger-baseline.png";
-import roger_eek_speaker from "./assets/roger-eek-speaker.jpg";
 import roger_eek from "./assets/roger-eek.png";
-import roger_focus_speaker from "./assets/roger-focus-speaker.jpg";
 import roger_focus from "./assets/roger-focus.png";
-import roger_okay_speaker from "./assets/roger-okay-speaker.jpg";
 import roger_okay from "./assets/roger-okay.png";
+import roger_speaker from "./assets/roger-speaker.jpg";
 import mp3_audio_10 from "./audio/mp3/10.mp3";
 import mp3_audio_11_afraid_p1 from "./audio/mp3/11-afraid-p1.mp3";
 import mp3_audio_11_afraid from "./audio/mp3/11-afraid.mp3";
@@ -287,19 +284,19 @@ const BoardwalkInteractionGraph: InteractionGraph<
     },
     roger_baseline: {
       label: "Roger",
-      image: roger_baseline_speaker,
+      image: roger_speaker,
     },
     roger_eek: {
       label: "Roger",
-      image: roger_eek_speaker,
+      image: roger_speaker,
     },
     roger_focus: {
       label: "Roger",
-      image: roger_focus_speaker,
+      image: roger_speaker,
     },
     roger_okay: {
       label: "Roger",
-      image: roger_okay_speaker,
+      image: roger_speaker,
     },
     arcade_owner: {
       label: "Arcade owner",
