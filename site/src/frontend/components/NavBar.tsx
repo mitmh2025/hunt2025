@@ -110,10 +110,6 @@ const NavLink = styled.a`
 
   max-width: calc(480px - 3rem);
 
-  @media ${deviceMax.md} {
-    max-width: calc(320px - 3rem);
-  }
-
   @media ${deviceMax.sm} {
     max-width: 144px;
   }
