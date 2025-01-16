@@ -3038,20 +3038,17 @@ export async function getRouter({
             redisClient,
             knex,
             async (_trx, mutator) => {
-              console.error("\n\nEntering mutator");
               await mutator.appendLog({
                 team_id,
                 slug: "control_room",
                 data: { room, time },
               });
-              console.error("Appended log");
               return mutator.log.filter(
                 (entry) =>
                   entry.team_id === team_id && entry.slug === "control_room",
               );
             },
           );
-          console.log("Result: ", result);
           const body = result.map((entry) => {
             return {
               ...entry,
