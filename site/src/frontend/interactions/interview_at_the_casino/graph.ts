@@ -1066,7 +1066,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "11-perfect",
       speaker: "shark_one_pleased",
       overlay: "pleased",
-      text: "I can tell you don’t play games when you’re playing games, so I’ll lay my cards on the table.  Even when he was young, Ferdinand had a streak of the gambler in him.  Before he went on his years of travel across the Atlantic, he had it under control.  Moreover, he seemed to have the devil’s own luck.  But when he returned, he was a changed man – at least, a changed gambler.  Carter isn’t the man he used to be.",
+      text: "I can tell you don’t play games when you play games, so I’ll lay my cards on the table.  Even when he was young, Ferdinand had a streak of the gambler in him.  Before he went on his years of travel across the Atlantic, he had it under control.  Moreover, he seemed to have the devil’s own luck.  But when he returned, he was a changed man – at least, a changed gambler.  Carter isn’t the man he used to be.",
       sound: {
         mp3: audio_mp3_11_perfect,
         opus: audio_opus_11_perfect,
