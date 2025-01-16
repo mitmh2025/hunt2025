@@ -39,9 +39,6 @@ export const BaseLayout = ({
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
-        {orderedStylesheets.map((s) => (
-          <link key={`preload-${s}`} rel="preload" href={s} as="style" />
-        ))}
         {orderedScripts.map((s) => (
           <link key={`preload-${s}`} rel="preload" href={s} as="script" />
         ))}
@@ -58,7 +55,7 @@ export const BaseLayout = ({
       <body>
         <div id="root" dangerouslySetInnerHTML={{ __html: innerHTML }} />
         {orderedScripts.map((s) => (
-          <script key={s} type="text/javascript" src={s} />
+          <script key={s} type="text/javascript" src={s} defer />
         ))}
       </body>
     </html>
