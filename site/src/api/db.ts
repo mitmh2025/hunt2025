@@ -383,7 +383,7 @@ declare module "knex/types/tables" {
     session_id: number;
     team_id: number;
     question_index: number;
-    answer: number | null;
+    answer: number;
   };
 
   type FermitRegistrationRow = {
@@ -427,9 +427,9 @@ declare module "knex/types/tables" {
 
 // The answer field in fermit_answers is a numeric type and needs to be returned
 // that way, but Postgres returns it as a string
-export function fixAnswer(answer: string | number): number | null {
+export function fixAnswer(answer: string | number): number {
   if (typeof answer === "string") {
-    return answer !== "" ? parseFloat(answer) : null;
+    return parseFloat(answer);
   }
   return answer;
 }
