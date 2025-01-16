@@ -186,6 +186,7 @@ export default function ({ apiUrl }: { apiUrl: string }) {
           ),
           title: "Registration",
           layout: RegsiteLayout,
+          entrypoints: ["kickoff_counter"],
         }),
         req,
         res,
