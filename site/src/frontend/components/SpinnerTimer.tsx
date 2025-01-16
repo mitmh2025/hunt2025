@@ -116,7 +116,15 @@ const SpinnerTimer = ({
         }
       }
     }
-  }, [startTime, endTime, width, height, color, syncedTime]);
+  }, [
+    startTime,
+    endTime,
+    width,
+    height,
+    color,
+    syncedTime,
+    disableColorChange,
+  ]);
 
   useEffect(() => {
     if (!periodicHandle.current) {
