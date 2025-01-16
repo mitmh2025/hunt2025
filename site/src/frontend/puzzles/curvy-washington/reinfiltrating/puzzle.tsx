@@ -166,7 +166,7 @@ const FEATS: Feat[] = [
     "Piracy",
     "“You wouldn’t download a car” (Spoiler alert: you would)",
     [
-      "Must be 3d-printed or otherwise custom manufactured within last 24 hours",
+      "Must be 3D-printed or otherwise custom manufactured within last 24 hours",
       "Must have pirate logo",
       "Must race against our car down a ramp",
       "Must provide a ramp",
