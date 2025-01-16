@@ -64,7 +64,7 @@ export function formatActivityLogEntry(
       return {
         icon: <PuzzleIcon lockState="unlockable" />,
         description: <>Discovered puzzle {entry.title}</>,
-        showNotification: false,
+        showNotification: true,
       };
     case "puzzle_unlocked":
       if (puzzleIsEvent(entry.slug)) {
