@@ -20,7 +20,7 @@ export const CityWrapper = styled.div`
   position: relative;
   overflow: hidden;
 
-  h1 {
+  h1.round-title {
     font-family: "Eccentric";
     font-size: ${proportionify(140)};
     color: var(--purple-300);
