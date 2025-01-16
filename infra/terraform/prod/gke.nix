@@ -82,34 +82,34 @@
           {
             resource_type = "cpu";
             minimum = 1;
-            maximum = 96;
+            maximum = 128;
           }
           {
             resource_type = "memory";
             minimum = 1;
-            maximum = 384;
+            maximum = 512;
           }
         ];
         auto_provisioning_locations = [
           config.provider.google.zone
-        ]; # --autoprovisioning-locations=us-east5-a
+        ];
         auto_provisioning_defaults = {
-          image_type = "COS_CONTAINERD"; # --image-type "COS_CONTAINERD"
-          disk_type = "pd-balanced"; # --disk-type "pd-balanced"
-          disk_size = "25"; # --disk-size "25"
+          image_type = "COS_CONTAINERD";
+          disk_type = "pd-balanced";
+          disk_size = "50";
           service_account = lib.tfRef "google_service_account.gke-k8s-node.email";
           management = {
             auto_repair = true; # --enable-autoprovisioning-autorepair
             auto_upgrade = true; # --enable-autoprovisioning-autoupgrade
           };
-          upgrade_settings.max_surge = 1; # --autoprovisioning-max-surge-upgrade 1
-          upgrade_settings.max_unavailable = 0; # --autoprovisioning-max-unavailable-upgrade 0
+          upgrade_settings.max_surge = 32;
+          upgrade_settings.max_unavailable = 0;
           shielded_instance_config = {
             enable_integrity_monitoring = true;
             enable_secure_boot = false;
           };
         };
-        #autoscaling_profile = "OPTIMIZE_UTILIZATION"; # --autoscaling-profile optimize-utilization
+        # autoscaling_profile = "OPTIMIZE_UTILIZATION"; # --autoscaling-profile optimize-utilization
         autoscaling_profile = "BALANCED";
       };
       node_pool_auto_config.network_tags.tags = [

@@ -73,12 +73,6 @@
         name = "config";
         mount_path = "/config";
       }];
-      resources = {
-        limits.cpu = "1";
-        limits.memory = "512Mi";
-        requests.cpu = "250m";
-        requests.memory = "150Mi";
-      };
       liveness_probe = {
         http_get = {
           path = "/healthz";
@@ -118,12 +112,6 @@
       name = "api";
     }];
     container = {
-      resources = {
-        limits.cpu = "1";
-        limits.memory = "512Mi";
-        requests.cpu = "250m";
-        requests.memory = "150Mi";
-      };
       liveness_probe = {
         http_get = {
           path = "/healthz";
@@ -151,12 +139,6 @@
       name = lib.tfRef "kubernetes_secret_v1.api.metadata[0].name";
     }];
     container = {
-      resources = {
-        limits.cpu = "1.5";
-        limits.memory = "2Gi";
-        requests.cpu = "250m";
-        requests.memory = "250Mi";
-      };
       liveness_probe = {
         http_get = {
           path = "/healthz";
@@ -188,12 +170,6 @@
       name = lib.tfRef "kubernetes_secret_v1.api.metadata[0].name";
     }];
     container = {
-      resources = {
-        limits.cpu = "1.5";
-        limits.memory = "2Gi";
-        requests.cpu = "250m";
-        requests.memory = "250Mi";
-      };
       liveness_probe = {
         http_get = {
           path = "/healthz";
@@ -230,12 +206,6 @@
       OAUTH_CLIENT_SECRET = lib.tfRef ''data.sops_file.site.data["authentik.apps.ops.client_secret"]'';
     };
     container = {
-      resources = {
-        limits.cpu = "1";
-        limits.memory = "512Mi";
-        requests.cpu = "250m";
-        requests.memory = "150Mi";
-      };
       liveness_probe = {
         http_get = {
           path = "/healthz";

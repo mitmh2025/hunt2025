@@ -14,8 +14,6 @@
       "google_service_networking_connection.google-managed-services-default"
     ];
     settings = {
-      edition = "ENTERPRISE";
-      tier = "db-f1-micro";
       availability_type = "ZONAL";
       location_preference.zone = config.provider.google.zone;
       ip_configuration = {

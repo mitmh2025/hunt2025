@@ -33,6 +33,8 @@ in {
         require-sigs = false;
         always-allow-substitutes = true;
       };
+      # Keep old derivations around to improve build speed.
+      nix.gc.automatic = false;
     }
     {
       sops.secrets.ssh_key = {

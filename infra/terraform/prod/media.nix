@@ -2,9 +2,6 @@
 {
   gce.instance.media = {
     route53.zone = "mitmh2025";
-    machineType = "e2-standard-4";
-    # 64 Kbps * 200 teams * 72 hours ≈ 400 GB
-    bootDisk.size = 1000;
     firewall.allowedTCPPorts = [
       22 # SSH
       80 # HTTP
@@ -39,12 +36,6 @@
     };
     container = {
       args = ["sync2k8s"];
-      resources = {
-        limits.cpu = "1";
-        limits.memory = "1Gi";
-        requests.cpu = "200m";
-        requests.memory = "100Mi";
-      };
     };
     template.spec.service_account_name = lib.tfRef "kubernetes_service_account_v1.sync2k8s.metadata[0].name";
     statefulSet.depends_on = ["kubernetes_limit_range_v1.radio"];

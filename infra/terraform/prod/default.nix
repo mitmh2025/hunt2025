@@ -69,5 +69,6 @@
     ./things.nix
     ./mail.nix
     ./tix.nix
+    ./scaling.nix
   ];
 }

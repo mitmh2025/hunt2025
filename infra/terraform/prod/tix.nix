@@ -2,8 +2,6 @@
 {
   gce.instance.tix = {
     route53.zone = "mitmh2025";
-    machineType = "e2-medium"; # 2 vCPU (capped at 50%), 4 GB RAM
-    bootDisk.size = 50;
     firewall.allowedTCPPorts = [
       22 # SSH
       25 # SMTP
@@ -27,15 +25,6 @@
       FRONTEND_API_SECRET = lib.tfRef "random_password.frontend_api_secret.result";
       REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
       ZAMMAD_SECRET = lib.tfRef ''data.sops_file.tix.data["zammad.sync2zammad_token"]'';
-    };
-    container = {
-      args = ["sync2zammad"];
-      resources = {
-        limits.cpu = "1.5";
-        limits.memory = "1Gi";
-        requests.cpu = "200m";
-        requests.memory = "250Mi";
-      };
     };
   };
 }

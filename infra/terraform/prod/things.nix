@@ -2,8 +2,6 @@
 {
   gce.instance.things = {
     route53.zone = "mitmh2025";
-    machineType = "e2-medium"; # 2 vCPU (capped at 50%), 4 GB RAM
-    bootDisk.size = 20;
     firewall.allowedTCPPorts = [
       22 # SSH
       80 # HTTP
@@ -39,12 +37,6 @@
     };
     container = {
       args = ["sync2tb"];
-      resources = {
-        limits.cpu = "1";
-        limits.memory = "1Gi";
-        requests.cpu = "200m";
-        requests.memory = "100Mi";
-      };
     };
   };
 }

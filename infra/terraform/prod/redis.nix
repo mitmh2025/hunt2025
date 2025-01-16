@@ -31,6 +31,7 @@
       logfile ""
       aclfile /secret/aclfile
       dir /data
+      save 60 1
     '';
   };
   k8s.prod.statefulSet.redis = {
@@ -51,12 +52,6 @@
     container = {
       name = "valkey";
       args = ["valkey-server" "/config/valkey.conf"];
-      resources = {
-        limits.cpu = "2";
-        limits.memory = "1Gi";
-        requests.cpu = "500m";
-        requests.memory = "250Mi";
-      };
       liveness_probe = {
         tcp_socket.port = 6379;
         initial_delay_seconds = 3;
@@ -70,15 +65,14 @@
     };
     statefulSet.spec = {
       persistent_volume_claim_retention_policy = {
-        # Redis has no long-lived data that we care about.
-        when_deleted = "Delete";
-        when_scaled = "Delete";
+        when_deleted = "Retain";
+        when_scaled = "Retain";
       };
       volume_claim_template = [{
         metadata.name = "valkey-data";
         spec = {
           access_modes = ["ReadWriteOnce"];
-          resources.requests.storage = "5Gi";
+          resources.requests.storage = "50Gi";
           storage_class_name = "standard-rwo";
         };
       }];
