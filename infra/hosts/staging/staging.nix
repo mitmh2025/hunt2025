@@ -117,6 +117,9 @@
       services.thingsboard = {
         enable = true;
         datasource.createLocally = true;
+        logback.loggers = {
+          "org.thingsboard.server.transport.mqtt.MqttTransportHandler" = "TRACE";
+        };
       };
     }
     {
