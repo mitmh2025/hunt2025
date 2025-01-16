@@ -353,7 +353,6 @@ async function main({
         modified.add(teamId);
       }
     }
-    console.log("After batch teams", teamStates);
     for (const teamId of modified) {
       syncQueue
         .exec(() => processTeam(teamId))
