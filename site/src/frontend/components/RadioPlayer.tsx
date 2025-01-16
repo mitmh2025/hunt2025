@@ -232,7 +232,7 @@ const ControlWrapper = styled.div`
     }
 
     @media ${deviceMax.sm} {
-      width: 80px;
+      width: 200px;
     }
 
     &:focus {
@@ -272,7 +272,7 @@ const ControlWrapper = styled.div`
       }
 
       @media ${deviceMax.sm} {
-        box-shadow: -80px 0 0 80px var(--gold-500);
+        box-shadow: -200px 0 0 200px var(--gold-500);
       }
     }
     &::-moz-range-thumb {
