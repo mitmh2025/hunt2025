@@ -1,4 +1,4 @@
-import { type Request } from "express";
+import { type Request, type Response } from "express";
 import React from "react";
 import {
   PageHeader,
@@ -6,7 +6,7 @@ import {
   PageTitle,
   PageWrapper,
 } from "../../components/PageLayout";
-import { Button, TextInput } from "../../components/StyledUI";
+import { Alert, Button, TextInput } from "../../components/StyledUI";
 
 export function hackLoginGetHandler(_req: Request) {
   const node = (
@@ -59,7 +59,10 @@ export function hackLoginGetHandler(_req: Request) {
   return { node, title: "Login" };
 }
 
-export function loginGetHandler(_req: Request) {
+export function loginGetHandler(req: Request, res: Response) {
+  const login_flash = req.cookies.login_flash as string | undefined;
+  res.clearCookie("login_flash");
+
   const node = (
     <PageWrapper>
       <>
@@ -67,6 +70,24 @@ export function loginGetHandler(_req: Request) {
           <PageTitle>The Case of the Shadow Diamond</PageTitle>
         </PageHeader>
         <PageMain>
+          {login_flash ? (
+            <Alert>
+              Incorrect username or password. Your team captain should have
+              received a confirmation of your team’s username and password in an
+              email after they registered. If you’re having trouble, please
+              reach out to{" "}
+              <a
+                href="mailto:info@mitmh2025.com?subject=Login Issues"
+                style={{
+                  color: "var(--black)",
+                  textDecorationColor: "var(--black)",
+                }}
+              >
+                info@mitmh2025.com
+              </a>
+              .
+            </Alert>
+          ) : null}
           <form method="post">
             <div>
               <label htmlFor="username">Username: </label>
