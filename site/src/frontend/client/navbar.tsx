@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 import type { ActivityLogEntry, TeamInfo } from "../../../lib/api/client";
 import celebration from "../../assets/radio/celebration.mp3";
@@ -6,6 +6,7 @@ import { HuntIcon, formatActivityLogEntry } from "../components/ActivityLog";
 import NavBar, { type NavBarState } from "../components/NavBar";
 import Notifications, {
   type NotificationsHandle,
+  type Notification,
 } from "../components/Notifications";
 import type { EventsState } from "../rounds/events/types";
 import globalDatasetManager from "./DatasetManager";
@@ -93,30 +94,37 @@ const NavBarManager = ({
     (i) => i.state === "unstarted" || i.state === "running",
   );
 
+  const [persistNotifications, setPersistentNotifications] = useState(
+    [] as Notification[],
+  );
+  useEffect(() => {
+    setPersistentNotifications(
+      activeInteraction &&
+        !document.location.pathname.endsWith(activeInteraction.slug)
+        ? [
+            {
+              key: activeInteraction.slug,
+              icon: <HuntIcon />,
+              description: (
+                <>
+                  It’s time to interview a key witness! Each person on your team
+                  should join Billie to{" "}
+                  <a href={`/interactions/${activeInteraction.slug}`}>
+                    conduct an {activeInteraction.title}
+                  </a>
+                  .
+                </>
+              ),
+            },
+          ]
+        : [],
+    );
+  }, [activeInteraction]);
+
   return (
     <>
       <Notifications
-        persistentNotifications={
-          activeInteraction &&
-          !document.location.pathname.endsWith(activeInteraction.slug)
-            ? [
-                {
-                  key: activeInteraction.slug,
-                  icon: <HuntIcon />,
-                  description: (
-                    <>
-                      It’s time to interview a key witness! Each person on your
-                      team should join Billie to{" "}
-                      <a href={`/interactions/${activeInteraction.slug}`}>
-                        conduct an {activeInteraction.title}
-                      </a>
-                      .
-                    </>
-                  ),
-                },
-              ]
-            : []
-        }
+        persistentNotifications={persistNotifications}
         ref={notifications}
         maxNotifications={5}
       />
