@@ -45,8 +45,7 @@ export default function UnlockHintsDialog({
             value={value}
             placeholder="?"
             onChange={(e) => {
-              const val = parseInt(e.target.value, 10);
-              setValue(isNaN(val) ? 0 : val);
+              setValue(e.target.value ? parseFloat(e.target.value) : undefined);
             }}
           />
           <span>hours</span>
