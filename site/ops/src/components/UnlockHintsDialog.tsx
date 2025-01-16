@@ -37,6 +37,7 @@ export default function UnlockHintsDialog({
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Input
             type="number"
+            sx={{ minWidth: "100px" }}
             inputProps={{
               min: 0,
               max: 36,
