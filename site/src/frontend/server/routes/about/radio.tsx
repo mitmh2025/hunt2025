@@ -242,8 +242,8 @@ export function radioHandler(req: Request) {
           coming to you live from the Gala Bar. WDNM is broadcasting important
           news updates all weekend, so we encourage you to make sure to listen
           in all weekend. If for some reason you find that you need to tune your
-          radio away from
-          <TwoPi />, an alternate virtual stream will be available.
+          radio away from <TwoPi />, an alternate virtual stream will be
+          available.
         </p>
         <h3 id="station-7pi-over-5">
           Wireless Configuration: <PiFraction num={7} denom={5} />
