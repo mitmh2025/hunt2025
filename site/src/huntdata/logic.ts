@@ -263,7 +263,8 @@ export class LogicTeamState {
           if (
             globalHintsUnlockDelta !== undefined &&
             teamPuzzleUnlockTime !== undefined &&
-            !next.team_hints_unlocked_timestamp.has(puzzleSlug)
+            !next.team_hints_unlocked_timestamp.has(puzzleSlug) &&
+            !next.puzzles_solved.has(puzzleSlug)
           ) {
             // Unlock hints for this puzzle at puzzle unlock time + hint unlock delta.
             const teamHintsUnlockTime = new Date(teamPuzzleUnlockTime);
