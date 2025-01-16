@@ -121,8 +121,10 @@ export const modalPostHandler: RequestHandler<
           message: "internal error (bad hunt definition)",
         });
       } else {
-        const title = PUZZLES[slug]?.title ?? `Stub puzzle for slot ${slug}`;
-        const body = { title, slug };
+        const puzzle = PUZZLES[slug];
+        const title = puzzle?.title ?? `Stub puzzle for slot ${slug}`;
+        const desc = puzzle?.initial_description;
+        const body = { title, slug, desc };
         res.json(body);
       }
     }
