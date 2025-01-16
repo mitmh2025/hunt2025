@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { styled } from "styled-components";
+import { styled, css } from "styled-components";
 import the_grand_illusion_bg from "../puzzles/monstrous-shadow/assets/The-Grand-Illusion-bg.svg";
 import the_oversight_bg from "../puzzles/svelte-conductor/assets/The-Oversight-bg.svg";
 import the_mark_bg from "../puzzles/unique-australia/assets/The-Mark-bg.svg";
@@ -29,7 +29,9 @@ export const BackgroundCheckWrapper = ({
 }) => {
   return (
     <BackgroundCheckWrapperOuter>
-      <BackgroundCheckWrapperInner>{children}</BackgroundCheckWrapperInner>
+      <BackgroundCheckWrapperInner $paper>
+        {children}
+      </BackgroundCheckWrapperInner>
     </BackgroundCheckWrapperOuter>
   );
 };
@@ -69,8 +71,15 @@ const BackgroundCheckWrapperOuter = styled.div`
   }
 `;
 
-export const BackgroundCheckWrapperInner = styled.div`
-  background-image: url("${paper}");
+export const BackgroundCheckWrapperInner = styled.div<{ $paper: boolean }>`
+  ${({ $paper }) =>
+    $paper
+      ? css`
+          background-image: url("${paper}");
+        `
+      : css`
+          background-color: var(--white);
+        `};
   background-repeat: repeat-y;
   background-size: cover;
   min-height: 800px;
@@ -135,6 +144,7 @@ export const BackgroundCheckBacklink = styled(PuzzleBacklink)`
 
 const BackgroundCheckMetaWrapperInner = styled(BackgroundCheckWrapperInner)<{
   $background_image: string;
+  $paper: boolean;
 }>`
   position: relative;
   &::after {
@@ -157,7 +167,10 @@ const BackgroundCheckMetaWrapperInner = styled(BackgroundCheckWrapperInner)<{
 const TheMarkWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <BackgroundCheckWrapperOuter>
-      <BackgroundCheckMetaWrapperInner $background_image={the_mark_bg}>
+      <BackgroundCheckMetaWrapperInner
+        $background_image={the_mark_bg}
+        $paper={false}
+      >
         {children}
       </BackgroundCheckMetaWrapperInner>
     </BackgroundCheckWrapperOuter>
@@ -169,6 +182,7 @@ const TheGrandIllusionWrapper = ({ children }: { children: ReactNode }) => {
     <BackgroundCheckWrapperOuter>
       <BackgroundCheckMetaWrapperInner
         $background_image={the_grand_illusion_bg}
+        $paper={false}
       >
         {children}
       </BackgroundCheckMetaWrapperInner>
@@ -179,7 +193,10 @@ const TheGrandIllusionWrapper = ({ children }: { children: ReactNode }) => {
 const TheOversightWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <BackgroundCheckWrapperOuter>
-      <BackgroundCheckMetaWrapperInner $background_image={the_oversight_bg}>
+      <BackgroundCheckMetaWrapperInner
+        $background_image={the_oversight_bg}
+        $paper={false}
+      >
         {children}
       </BackgroundCheckMetaWrapperInner>
     </BackgroundCheckWrapperOuter>
