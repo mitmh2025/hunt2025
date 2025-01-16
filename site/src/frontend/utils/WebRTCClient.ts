@@ -40,6 +40,12 @@ export class WebRTCClient {
     this.whepUrl = new URL(opts.whepUrl);
     this.retryForever = opts.retryForever ?? false;
     this.onStateChange = opts.onStateChange;
+    this.mediaElement.addEventListener("playing", () => {
+      if (this.state === "connecting") {
+        this.retriesLeft = RETRY_COUNT;
+        this.setState("connected");
+      }
+    });
   }
 
   private setState(state: WebRTCClientState) {
@@ -380,15 +386,17 @@ export class WebRTCClient {
       this.mediaElement.srcObject.addTrack(track);
     }
 
-    this.mediaElement
-      .play()
-      .then(() => {
-        this.retriesLeft = RETRY_COUNT;
-        this.setState("connected");
-      })
-      .catch((err: unknown) => {
-        this.onError(err);
-      });
+    if (!this.mediaElement.autoplay) {
+      this.mediaElement
+        .play()
+        .then(() => {
+          this.retriesLeft = RETRY_COUNT;
+          this.setState("connected");
+        })
+        .catch((err: unknown) => {
+          this.onError(err);
+        });
+    }
   }
 
   private resetState() {

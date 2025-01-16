@@ -180,6 +180,8 @@ const Video = ({ whepUrl }: { whepUrl: string }) => {
 
   return (
     <StyledVideo
+      autoPlay={true}
+      muted={true}
       ref={(el) => {
         attachWebRTCClient(el);
       }}
