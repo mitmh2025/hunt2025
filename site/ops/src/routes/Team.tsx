@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { useMemo, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { getTeamName } from "../../../src/utils/teamNames";
 import { useOpsData } from "../OpsDataProvider";
 import BigBoardTeamDetail from "../components/BigBoardTeamDetail";
 import SingleTeamStats from "../components/SingleTeamStats";
@@ -53,7 +54,8 @@ export default function Team() {
       </p>
       <h1>
         {team.deactivated && `[DEACTIVATED] `}
-        {team.username} ({team.name})
+        {getTeamName(team.name)} (username:{" "}
+        <span style={{ fontFamily: "monospace" }}>{team.username}</span>)
       </h1>
 
       <SingleTeamStats

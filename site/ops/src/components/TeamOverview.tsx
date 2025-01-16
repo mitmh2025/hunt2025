@@ -1,6 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { useDialogs, useNotifications } from "@toolpad/core";
 import React from "react";
+import { getTeamName } from "../../../src/utils/teamNames";
 import { useOpsClients } from "../OpsDataProvider";
 import { type TeamData } from "../opsdata/types";
 import { AdminOnly } from "./AdminOnly";
@@ -36,7 +37,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
           okText: "Deactivate Team",
           cancelText: "Cancel",
           severity: "error",
-          title: `Deactivate ${team.username} (${team.name})`,
+          title: `Deactivate ${team.username} (${getTeamName(team.username)})`,
           onClose: async (result) => {
             if (!result) {
               return;
@@ -85,7 +86,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
           okText: "Reactivate Team",
           cancelText: "Cancel",
           severity: "success",
-          title: `Reactivate ${team.username} (${team.name})`,
+          title: `Reactivate ${team.username} (${getTeamName(team.username)})`,
           onClose: async (result) => {
             if (!result) {
               return;
@@ -203,6 +204,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
 
   return (
     <div>
+      <p>Current Team Name: {team.registration.name}</p>
       <p>
         Location:{" "}
         <>

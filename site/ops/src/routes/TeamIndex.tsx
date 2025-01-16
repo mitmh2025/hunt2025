@@ -16,6 +16,7 @@ import {
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { getTeamName } from "../../../src/utils/teamNames";
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { useIsOpsAdmin } from "../components/AdminOnly";
 import { formatTeamData } from "../opsdata/bigBoard";
@@ -240,7 +241,7 @@ export default function TeamIndex() {
 
       const bigBoardTeam = formatTeamData(team, opsData.puzzleMetadata);
       record[team.teamId] = {
-        name: team.name,
+        name: getTeamName(team.name),
         username: team.username,
         teamId: team.teamId,
         teamSize: team.registration.peopleTotal,
@@ -286,21 +287,18 @@ export default function TeamIndex() {
         header: "Username",
         Cell: ({ row }: { row: MRT_Row<TeamIndexData> }) => (
           <>
-            <Link to={`/teams/${row.original.username}`}>
-              {row.original.username}
-            </Link>
-            <br />
-            <span
+            <Link
+              to={`/teams/${row.original.username}`}
               style={{
-                fontSize: "12px",
-                maxWidth: "200px",
+                maxWidth: "300px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "block",
               }}
             >
               {row.original.name}
-            </span>
+            </Link>
+            Username: {row.original.username}
           </>
         ),
       }),
