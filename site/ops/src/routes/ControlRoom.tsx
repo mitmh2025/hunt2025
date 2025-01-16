@@ -15,10 +15,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNotifications } from "@toolpad/core";
 import type { Dayjs } from "dayjs";
 import { useMemo, useState } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useOpsData, useOpsClients } from "../OpsDataProvider";
 
-function Scheduling() {
+export default function ControlRoom() {
   const [teamId, setTeamId] = useState<number | undefined>(undefined);
   const [room, setRoom] = useState<string>("10-401");
   const [time, setTime] = useState<Dayjs | null>(null);
@@ -36,6 +35,16 @@ function Scheduling() {
       }, {});
   }, [opsData.teams]);
 
+  const solvedTeamIds = useMemo(() => {
+    const solvedEntries = opsData.activityLog.filter(
+      (entry) =>
+        "slug" in entry &&
+        entry.slug === "control_room" &&
+        entry.type === "puzzle_solved",
+    );
+    return new Set(solvedEntries.map(({ team_id }) => team_id));
+  }, [opsData.activityLog]);
+
   const plumpHimalayasSchedule = useMemo(() => {
     const ids = new Set<number>();
     const teamIds = new Set<number>();
@@ -49,7 +58,11 @@ function Scheduling() {
     for (const entry of opsData.plumpHimalayasLog.slice().reverse()) {
       const { id, team_id, data } = entry;
       // We get duplicate entries here sometimes
-      if (!ids.has(id) && !teamIds.has(team_id)) {
+      if (
+        !ids.has(id) &&
+        !teamIds.has(team_id) &&
+        !solvedTeamIds.has(team_id)
+      ) {
         ids.add(id);
         teamIds.add(team_id);
         const room = data.room as string;
@@ -67,7 +80,7 @@ function Scheduling() {
     return schedule.sort((entry1, entry2) => {
       return entry1.time.valueOf() - entry2.time.valueOf();
     });
-  }, [opsData.plumpHimalayasLog, teamNamesById]);
+  }, [opsData.plumpHimalayasLog, solvedTeamIds, teamNamesById]);
 
   function handleSchedule() {
     setSubmitting(true);
@@ -183,6 +196,10 @@ function Scheduling() {
       </Button>
       <hr />
       <h2>Outstanding Schedule</h2>
+      <p>
+        This displays all teams that have been scheduled but have not yet
+        submitted a correct answer to the puzzle.
+      </p>
       <Table>
         <TableHead>
           <TableRow>
@@ -204,26 +221,5 @@ function Scheduling() {
         </TableBody>
       </Table>
     </Box>
-  );
-}
-
-function ActiveSessions() {
-  return <Box></Box>;
-}
-
-export default function ControlRoom() {
-  return (
-    <Tabs>
-      <TabList>
-        <Tab>Scheduling</Tab>
-        <Tab>Active Sessions</Tab>
-      </TabList>
-      <TabPanel>
-        <Scheduling />
-      </TabPanel>
-      <TabPanel>
-        <ActiveSessions />
-      </TabPanel>
-    </Tabs>
   );
 }

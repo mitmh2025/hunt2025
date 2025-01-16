@@ -407,7 +407,9 @@ const App = ({
     return <Game info={controlRoomInfo} room={room} time={time} />;
   }
 
-  return <>lol</>;
+  return (
+    <>Something has gone wrong. Please contact info@mitmh2025.com for help.</>
+  );
 
   // if (complete) {
   //   return (
