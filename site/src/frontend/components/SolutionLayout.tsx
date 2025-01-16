@@ -52,6 +52,10 @@ const CannedResponseTable = styled.table`
   }
 `;
 
+const ButtonTD = styled.td`
+  text-align: center;
+`;
+
 const SolutionHintTableRow = ({ hint }: { hint: Hint }) => {
   // Post-hunt: change back to true
   const [revealed, setReveal] = useState<boolean>(true);
@@ -73,11 +77,11 @@ const SolutionHintTableRow = ({ hint }: { hint: Hint }) => {
       <td>{hint.order}</td>
       <td>{hint.description}</td>
       <td>{hint.nudge}</td>
-      <td>
+      <ButtonTD>
         <button type="button" onClick={handleCopy}>
           📋
         </button>
-      </td>
+      </ButtonTD>
     </SpoileredRow>
   );
 };
@@ -88,6 +92,7 @@ const SolutionHintTableElem = styled.table`
   th,
   td {
     border: 1px solid black;
+    padding: 0.25rem 0.5rem;
   }
 `;
 
