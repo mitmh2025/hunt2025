@@ -1756,6 +1756,9 @@ const HUNT: Hunt = {
         },
       ],
       unlock_if: [{ gate_satisfied: "hunt_started" }],
+      gates: [
+        { id: "evg01", internal_description: "Tailing a Lead concluded" },
+      ]
     },
     {
       // We don't actually want an "endgame" (or "The Vault") round to appear;
