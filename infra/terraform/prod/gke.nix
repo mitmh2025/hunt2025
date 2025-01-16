@@ -82,12 +82,12 @@
           {
             resource_type = "cpu";
             minimum = 1;
-            maximum = 48;
+            maximum = 96;
           }
           {
             resource_type = "memory";
             minimum = 1;
-            maximum = 96;
+            maximum = 384;
           }
         ];
         auto_provisioning_locations = [
