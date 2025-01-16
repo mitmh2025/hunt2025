@@ -1,4 +1,5 @@
 import React from "react";
+import { Math, MI } from "../../../components/MathML";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 
 const Puzzle = (): JSX.Element => {
@@ -17,7 +18,11 @@ const Puzzle = (): JSX.Element => {
       </AuthorsNoteBlock>
       <p>
         You will need to play a song on your radio, as a duet with another team.
-        Your radio must be tuned to station pi. The choice of song is yours.
+        Your radio must be tuned to station{" "}
+        <Math>
+          <MI>π</MI>
+        </Math>
+        . The choice of song is yours.
       </p>
     </>
   );
