@@ -1045,7 +1045,7 @@ const Solution = (): JSX.Element => {
         <em>
           (The organization is more important than individual ambitions.)
           (“baseball”{" "}
-          <a href="baseball-footnote">
+          <a href="#baseball-footnote">
             <sup id="anti-baseball-footnote">1</sup>
           </a>{" "}
           analogy)
