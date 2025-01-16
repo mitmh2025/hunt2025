@@ -41,36 +41,69 @@ const SpoileredRow = styled.tr<{ $revealed: boolean }>`
 `;
 
 const CannedResponseTable = styled.table`
+  border-collapse: collapse;
+  border: 1px solid black;
+  td,
+  th {
+    border: 1px solid black;
+  }
   tbody tr td:nth-child(3) {
     text-align: right;
   }
 `;
 
 const SolutionHintTableRow = ({ hint }: { hint: Hint }) => {
-  const [revealed, setReveal] = useState<boolean>(false);
+  // Post-hunt: change back to true
+  const [revealed, setReveal] = useState<boolean>(true);
   const onClick = useCallback(() => {
     setReveal(true);
   }, []);
+
+  function handleCopy(evt: React.MouseEvent) {
+    evt.preventDefault();
+
+    navigator.clipboard.writeText(hint.nudge).catch((e: unknown) => {
+      console.error(e);
+      alert("Failed to copy hint to clipboard");
+    });
+  }
+
   return (
     <SpoileredRow $revealed={revealed} onClick={onClick}>
       <td>{hint.order}</td>
       <td>{hint.description}</td>
       <td>{hint.nudge}</td>
+      <td>
+        <button type="button" onClick={handleCopy}>
+          📋
+        </button>
+      </td>
     </SpoileredRow>
   );
 };
 
+const SolutionHintTableElem = styled.table`
+  border: 1px solid black;
+  border-collapse: collapse;
+  th,
+  td {
+    border: 1px solid black;
+  }
+`;
+
 const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
   if (hints.length > 0) {
+    // Post hunt: default to closed
     return (
-      <SpacedDetails>
+      <SpacedDetails open>
         <summary>Hints</summary>
-        <table>
+        <SolutionHintTableElem>
           <thead>
             <tr>
               <th>Order</th>
               <th>Description</th>
               <th>Nudge</th>
+              <th>Copy</th>
             </tr>
           </thead>
           <tbody>
@@ -78,7 +111,7 @@ const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
               return <SolutionHintTableRow key={hint.order} hint={hint} />;
             })}
           </tbody>
-        </table>
+        </SolutionHintTableElem>
       </SpacedDetails>
     );
   } else {
@@ -95,7 +128,8 @@ const SolutionCannedResponseRow = ({
   reply: string;
   providesSolveReward?: boolean;
 }) => {
-  const [revealed, setRevealed] = useState<boolean>(false);
+  // Post-hunt: change back to false
+  const [revealed, setRevealed] = useState<boolean>(true);
   const onClick = useCallback(() => {
     setRevealed(true);
   }, []);
@@ -114,8 +148,9 @@ const SolutionCannedResponseTable = ({
   cannedResponses: CannedResponse[];
 }) => {
   if (cannedResponses.length > 0) {
+    // Post hunt: default to closed
     return (
-      <SpacedDetails>
+      <SpacedDetails open>
         <summary>Canned responses</summary>
         <CannedResponseTable>
           <thead>
