@@ -170,7 +170,7 @@ export function aboutHandler(req: Request) {
             </a>
             . In an urgent situation, you can also call us at 617-324-7732.
           </p>
-          <h2>The Gala</h2>
+          <h2 id="the-gala">The Gala</h2>
           <p>
             The Gala bar is the hub of this entire investigation—and an ongoing
             party. The Finster family, members of the Two P.I. Noir staff, and

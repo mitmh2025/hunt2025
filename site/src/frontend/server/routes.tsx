@@ -24,6 +24,7 @@ import {
 import { addParserMiddleware } from "../utils/expressMiddleware";
 import renderApp, { render404, render500 } from "../utils/renderApp";
 import { aboutHandler } from "./routes/about/about";
+import { contactHandler } from "./routes/about/contact";
 import { healthAndSafetyHandler } from "./routes/about/health_and_safety";
 import { radioHandler } from "./routes/about/radio";
 import { activityLogHandler } from "./routes/activity_log";
@@ -369,6 +370,13 @@ export function registerUiRoutes({
     "/about",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(aboutHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/contact",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(contactHandler, req, res, next);
     }),
   );
 
