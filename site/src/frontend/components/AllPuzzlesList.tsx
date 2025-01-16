@@ -253,28 +253,32 @@ export default function AllPuzzlesList({ state }: { state: AllPuzzlesState }) {
     setShowSolved((prevState) => !prevState);
   }, []);
 
+  function filterPuzzle(puzzle: AllPuzzlesPuzzle): boolean {
+    if (puzzle.answer !== undefined) {
+      return showSolved;
+    }
+    if (puzzle.state === "unlocked") {
+      return showUnlocked;
+    }
+    if (puzzle.state === "unlockable") {
+      return showUnlockable;
+    }
+    return true;
+  }
+
   const filteredState = useMemo(() => {
     const rounds = state.rounds.flatMap((round) => {
-      const filteredPuzzles = round.puzzles.filter((p) => {
-        if (p.answer !== undefined) {
-          return showSolved;
-        }
-        if (p.state === "unlocked") {
-          return showUnlocked;
-        }
-        if (p.state === "unlockable") {
-          return showUnlockable;
-        }
-        return true;
-      });
+      const filteredPuzzles = round.puzzles.filter((p) => filterPuzzle(p));
       return {
         ...round,
         puzzles: filteredPuzzles,
       };
     });
+    const stray = state.stray.filter((puzzle) => filterPuzzle(puzzle));
     return {
       ...state,
       rounds,
+      stray,
     };
   }, [state, showUnlockable, showUnlocked, showSolved]);
 
