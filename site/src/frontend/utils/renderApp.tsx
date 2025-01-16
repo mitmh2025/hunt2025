@@ -5,7 +5,12 @@ import { renderToString } from "react-dom/server";
 import { ServerStyleSheet } from "styled-components";
 import { wrapContentWithNavBar } from "../components/ContentWithNavBar";
 import Layout from "../components/Layout";
-import { PageWrapper } from "../components/PageLayout";
+import {
+  PageHeader,
+  PageMain,
+  PageTitle,
+  PageWrapper,
+} from "../components/PageLayout";
 import {
   type Entrypoint,
   lookupScripts,
@@ -20,9 +25,13 @@ const notFoundHandler = (req: Request) => {
   const node = (
     <PageWrapper>
       <>
-        <h1>404 Not Found</h1>
-        <p>We didn’t find what you were looking for.</p>
-        <a href="/">← Back</a>
+        <PageHeader>
+          <PageTitle>404 Not Found</PageTitle>
+        </PageHeader>
+        <PageMain>
+          <p>We didn’t find what you were looking for.</p>
+          <a href="/">← Back home</a>
+        </PageMain>
       </>
     </PageWrapper>
   );
