@@ -29,6 +29,10 @@ import CheckadeezWordsOut from "./complex-bun";
 import NetworkingEvent from "./confused-antarctica";
 import StoryVisionContest from "./corrupt-embassy";
 import SomeAssemblyRequired from "./cultured-rome";
+import TheComebackItTakesTwo from "./curvy-washington/duet";
+import InfiltratingTheCriminalUnderworld from "./curvy-washington/infiltrating";
+import TraineesFirstRecital from "./curvy-washington/recital";
+import ReInfiltratingTheCriminalUnderworld from "./curvy-washington/reinfiltrating";
 import WhoseSongIsItAnyway from "./delirious-mammoth";
 import AnyCoatWillDo from "./dental-police";
 import TheBoardwalk from "./dental-shark";
@@ -210,6 +214,7 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   the_casino: Casino,
   the_jewelry_store: TheJewelryStore,
   the_art_gallery: TheArtGallery,
+  the_thief: TheThief,
 
   // The Stakeout
   a_badly_broken_quote: ABadlyBrokenQuote,
@@ -394,13 +399,16 @@ export const PUZZLES: Record<string, PuzzleDefinition> = {
   navigating_high_society: NavigatingHighSociety,
   tailing_a_lead: TailingALead,
 
-  // work in progress
-  the_thief: TheThief,
-
   // Staging for floaters
   a_b_c_easy_as_1_2_3: ABCEasyAs123,
   hello_darkness_my_old_friend: HelloDarknessMyOldFriend,
   wouthit_porbelm: WouthitPorbelm,
+
+  // Scavenger hunts
+  infiltrating_the_criminal_underworld: InfiltratingTheCriminalUnderworld,
+  re_infiltrating_the_criminal_underworld: ReInfiltratingTheCriminalUnderworld,
+  the_comeback_it_takes_two: TheComebackItTakesTwo,
+  trainees_first_recital: TraineesFirstRecital,
 };
 
 // Generate the SUBPUZZLES index from PUZZLES
