@@ -1481,47 +1481,47 @@ export async function getRouter({
                 const data = mutator.getTeamState(hunt, team_id);
                 const unlock_cost = slot.unlock_cost;
 
-                // Special case for blank-rose. One of nine gates must be unlocked
-                // for a team upon its unlock, in a round-robin pattern.
-                if (slug === "📑🍝") {
-                  const gates = [
-                    "mdg03",
-                    "mdg04",
-                    "mdg05",
-                    "mdg06",
-                    "mdg07",
-                    "mdg08",
-                    "mdg09",
-                    "mdg10",
-                    "mdg11",
-                  ];
-                  // How many of these gates have been unlocked?
-                  const gateUnlockResult = (await trx("activity_log")
-                    .count("id", { as: "gateCount" })
-                    .where("type", "=", "gate_completed")
-                    .whereIn("slug", gates)
-                    .first()) ?? { gateCount: 0 };
-                  // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
-                  const gateCount =
-                    typeof gateUnlockResult.gateCount === "string"
-                      ? parseInt(gateUnlockResult.gateCount, 10)
-                      : gateUnlockResult.gateCount;
-                  // Open the gates in order as teams unlock this puzzle, defaulting
-                  // to the first gate for the first team to unlock the puzzle.
-                  const gateSlug = gates[gateCount % gates.length] ?? "mdg03";
-                  await mutator.appendLog({
-                    team_id,
-                    type: "gate_completed",
-                    slug: gateSlug,
-                  });
-                }
-
                 if (
                   data.puzzles_unlockable.has(slug) &&
                   !data.puzzles_unlocked.has(slug) &&
                   unlock_cost &&
                   data.available_currency >= unlock_cost
                 ) {
+                  // Special case for blank-rose. One of nine gates must be unlocked
+                  // for a team upon its unlock, in a round-robin pattern.
+                  if (slug === "📑🍝") {
+                    const gates = [
+                      "mdg03",
+                      "mdg04",
+                      "mdg05",
+                      "mdg06",
+                      "mdg07",
+                      "mdg08",
+                      "mdg09",
+                      "mdg10",
+                      "mdg11",
+                    ];
+                    // How many of these gates have been unlocked?
+                    const gateUnlockResult = (await trx("activity_log")
+                      .count("id", { as: "gateCount" })
+                      .where("type", "=", "gate_completed")
+                      .whereIn("slug", gates)
+                      .first()) ?? { gateCount: 0 };
+                    // Postgres helpfully returns everything as a string. Get a number if we don't already have one.
+                    const gateCount =
+                      typeof gateUnlockResult.gateCount === "string"
+                        ? parseInt(gateUnlockResult.gateCount, 10)
+                        : gateUnlockResult.gateCount;
+                    // Open the gates in order as teams unlock this puzzle, defaulting
+                    // to the first gate for the first team to unlock the puzzle.
+                    const gateSlug = gates[gateCount % gates.length] ?? "mdg03";
+                    await mutator.appendLog({
+                      team_id,
+                      type: "gate_completed",
+                      slug: gateSlug,
+                    });
+                  }
+
                   // Unlock puzzle.
                   await mutator.appendLog({
                     team_id,
