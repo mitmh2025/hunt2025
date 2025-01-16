@@ -1,12 +1,24 @@
-import { Box, Button, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputLabel,
+  MenuItem,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNotifications } from "@toolpad/core";
 import type { Dayjs } from "dayjs";
 import { useMemo, useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useOpsData, useOpsClients } from "../OpsDataProvider";
 
-export default function ControlRoom() {
+function Scheduling() {
   const [teamId, setTeamId] = useState<number | undefined>(undefined);
   const [room, setRoom] = useState<string>("10-401");
   const [time, setTime] = useState<Dayjs | null>(null);
@@ -15,20 +27,50 @@ export default function ControlRoom() {
   const notifications = useNotifications();
   const opsData = useOpsData();
 
-  const teamNamesAndIds = useMemo(() => {
+  const teamNamesById = useMemo(() => {
     return opsData.teams
       .filter((team) => !team.deactivated)
-      .map(({ teamId, name }) => ({
-        teamId,
-        name,
-      }));
-  }, [opsData]);
+      .reduce<Record<number, string>>((acc, { teamId, name }) => {
+        acc[teamId] = name;
+        return acc;
+      }, {});
+  }, [opsData.teams]);
+
+  const plumpHimalayasSchedule = useMemo(() => {
+    const ids = new Set<number>();
+    const teamIds = new Set<number>();
+    const schedule: {
+      id: number;
+      team_id: number;
+      name: string;
+      room: string;
+      time: Date;
+    }[] = [];
+    for (const entry of opsData.plumpHimalayasLog.slice().reverse()) {
+      const { id, team_id, data } = entry;
+      // We get duplicate entries here sometimes
+      if (!ids.has(id) && !teamIds.has(team_id)) {
+        ids.add(id);
+        teamIds.add(team_id);
+        const room = data.room as string;
+        const timestamp = data.time as string;
+        schedule.push({
+          id,
+          team_id,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know the team data is here
+          name: teamNamesById[team_id]!,
+          room,
+          time: new Date(Date.parse(timestamp)),
+        });
+      }
+    }
+    return schedule.sort((entry1, entry2) => {
+      return entry1.time.valueOf() - entry2.time.valueOf();
+    });
+  }, [opsData.plumpHimalayasLog, teamNamesById]);
 
   function handleSchedule() {
     setSubmitting(true);
-    const teamNameAndId = teamNamesAndIds.find(
-      (nameAndId) => nameAndId.teamId === teamId,
-    );
     if (teamId && time) {
       adminClient
         .scheduleControlRoom({
@@ -47,7 +89,7 @@ export default function ControlRoom() {
 
           notifications.show(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we know the team data is here
-            `${teamNameAndId!.name} scheduled for ${room} at ${time.format("dddd, MMMM DD,  hh:mm A Z")}`,
+            `${teamNamesById[teamId]!} scheduled for ${room} at ${time.format("dddd, MMMM DD,  hh:mm A Z")}`,
             { severity: "success", autoHideDuration: 3000 },
           );
 
@@ -70,10 +112,8 @@ export default function ControlRoom() {
   return (
     <Box>
       <p>
-        N.B.: This is a fire-and-forget interface. It pushes scheduling
-        information for teams and all records of that schedule disappear from
-        the ops site forever.{" "}
-        <strong>Please keep separate paper records.</strong>
+        N.B.: Once a team is scheduled, they cannot be de-scheduled, but that
+        schedule can be overwritten.
       </p>
       <Box sx={{ display: "flex", gap: 2 }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -96,8 +136,8 @@ export default function ControlRoom() {
             <MenuItem disabled value={undefined}>
               <i>Select team</i>
             </MenuItem>
-            {teamNamesAndIds.map(({ teamId, name }) => (
-              <MenuItem key={teamId} value={teamId}>
+            {Object.entries(teamNamesById).map(([teamId, name]) => (
+              <MenuItem key={teamId} value={parseInt(teamId, 10)}>
                 {name}
               </MenuItem>
             ))}
@@ -141,6 +181,49 @@ export default function ControlRoom() {
       >
         Schedule Team
       </Button>
+      <hr />
+      <h2>Outstanding Schedule</h2>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Team ID</TableCell>
+            <TableCell>Team Name</TableCell>
+            <TableCell>Room</TableCell>
+            <TableCell>Time</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {plumpHimalayasSchedule.map(({ id, team_id, room, time }) => (
+            <TableRow key={id}>
+              <TableCell>{team_id}</TableCell>
+              <TableCell>{teamNamesById[team_id]}</TableCell>
+              <TableCell>{room}</TableCell>
+              <TableCell>{time.toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </Box>
+  );
+}
+
+function ActiveSessions() {
+  return <Box></Box>;
+}
+
+export default function ControlRoom() {
+  return (
+    <Tabs>
+      <TabList>
+        <Tab>Scheduling</Tab>
+        <Tab>Active Sessions</Tab>
+      </TabList>
+      <TabPanel>
+        <Scheduling />
+      </TabPanel>
+      <TabPanel>
+        <ActiveSessions />
+      </TabPanel>
+    </Tabs>
   );
 }
