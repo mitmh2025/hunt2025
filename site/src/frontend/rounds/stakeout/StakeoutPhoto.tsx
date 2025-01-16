@@ -19,9 +19,20 @@ const PhotoLabel = styled.div`
   }
 
   .answer {
+    position: absolute;
     color: var(--red-600);
     transform: rotate(-3deg) translateY(0.5rem);
   }
+`;
+
+const PhotoAnswer = styled.div`
+  position: absolute;
+  color: var(--red-600);
+  transform: rotate(-3deg) translateY(0.5rem);
+  text-align: right;
+  width: 100%;
+  transition-property: bottom, right, width, height, font-size;
+  transition-duration: 0.5s;
 `;
 
 const StakeoutPhoto = ({
@@ -192,6 +203,23 @@ const StakeoutPhoto = ({
     image = <div style={imageStyle} />;
   }
 
+  let maybeAnswer = undefined;
+  if (puzzleState?.answer) {
+    const answerStyles = {
+      bottom: `${scaled(4)}px`,
+      right: `${scaled(4)}px`,
+      transform: focused
+        ? "rotate(-3deg) translateY(0.5rem);"
+        : "rotate(-3deg) translateY(-0.5rem);",
+      fontSize: focused ? "60px" : "15px",
+    };
+    maybeAnswer = (
+      <PhotoAnswer style={answerStyles} className="answer">
+        {puzzleState.answer}
+      </PhotoAnswer>
+    );
+  }
+
   return (
     <div
       key={slot}
@@ -203,10 +231,8 @@ const StakeoutPhoto = ({
         {image}
         <PhotoLabel style={labelStyle} onPointerDown={labelPointerDownHandler}>
           {link}
-          {puzzleState?.answer && (
-            <div className="answer">{puzzleState.answer}</div>
-          )}
         </PhotoLabel>
+        {maybeAnswer}
       </div>
     </div>
   );
