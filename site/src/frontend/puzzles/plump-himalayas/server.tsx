@@ -293,10 +293,8 @@ dt {
 );
 
 const displayHandler = (req: Request, res: Response) => {
-  const scripts = [
-    ...lookupScripts("puzzle_plump_himalayas_display"),
-    `window.roomId = ${parseInt(req.query.roomId as string, 10)}`,
-  ];
+  const scripts = [...lookupScripts("puzzle_plump_himalayas_display")];
+  const inlineScript = `window.roomId = ${JSON.stringify(req.query.roomId)}`;
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +
@@ -305,7 +303,7 @@ const displayHandler = (req: Request, res: Response) => {
         scripts={scripts}
         styleElements={[styleElement]}
         title={"Display"}
-        innerHTML="Loading"
+        innerHTML={`<script>${inlineScript}</script>Loading`}
       />,
     ) +
     "\n";
@@ -318,10 +316,8 @@ const displayHandler = (req: Request, res: Response) => {
 };
 
 const hostHandler = (req: Request, res: Response) => {
-  const scripts = [
-    ...lookupScripts("puzzle_plump_himalayas_host"),
-    `window.roomId = ${parseInt(req.query.roomId as string, 10)}`,
-  ];
+  const scripts = [...lookupScripts("puzzle_plump_himalayas_host")];
+  const inlineScript = `window.roomId = ${JSON.stringify(req.query.roomId)}`;
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +
@@ -330,7 +326,7 @@ const hostHandler = (req: Request, res: Response) => {
         scripts={scripts}
         styleElements={[styleElement]}
         title={"Host"}
-        innerHTML="Loading"
+        innerHTML={`<script>${inlineScript}</script>Loading`}
       />,
     ) +
     "\n";

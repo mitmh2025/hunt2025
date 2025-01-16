@@ -239,8 +239,10 @@ class WebSocketListener:
         return self.ws
 
 class GameManager:
-    def __init__(self):
+    def __init__(self, team_id, http_session):
         self.game_state = PHState()
+        self.team_id = team_id
+        self.http_session = http_session
         self.player_ws = WebSocketManager() # display should just attach as player...
         self.room = None
         self.task = None
@@ -302,6 +304,17 @@ class GameManager:
         self.room = room
         if self.game_state.phase == Phase.NOT_STARTED:
             self.game_state.phase = Phase.START
+            if MEDIAMTX_API_URL:
+                path = f"teams/{self.team_id}/control_room"
+                async with self.http_session.post(
+                    f"{MEDIAMTX_API_URL}/v3/config/paths/replace/{path}?jwt={MEDIAMTX_TOKEN}",
+                    json={
+                        "name": path,
+                        "source": f"rtsp://localhost:8554/control_room/{self.room.room_id}?jwt={MEDIAMTX_TOKEN}",
+                    },
+                ) as resp:
+                    if resp.status != 200:
+                        print("create stream failed:", await resp.text())
             await self.update_all()
 
     async def start_game(self):
@@ -317,13 +330,20 @@ class GameManager:
         if self.task:
             self.task.cancel()
         # close out video stream
+        path = f"teams/{self.team_id}/control_room"
+        async with self.http_session.delete(
+            f"{MEDIAMTX_API_URL}/v3/config/paths/delete/{path}?jwt={MEDIAMTX_TOKEN}",
+        ) as resp:
+            if resp.status != 200:
+                print("delete stream failed:", await resp.text())
         self.room = None
         self.game_state = PHState()
         await self.update_all()
         await self.player_ws.close_all()
 
 class RoomManager:
-    def __init__(self, games):
+    def __init__(self, room_id, games):
+        self.room_id = room_id
         self.host_ws = WebSocketManager()
         self.games = games
         self.current_game_id = None
@@ -372,6 +392,14 @@ class RoomManager:
 # fix task checking
 # make react subcomponents do the thing
 
+MEDIAMTX_API_URL = os.environ.get("MEDIAMTX_API_URL")
+# Generate token with
+#   curl -X POST -H "Content-type: application/json" \
+#   http://localhost/api/admin/mintToken \
+#   -H "Authorization: frontend-auth $secret" \
+#   -d '{ "media": [{"action": "api", "path": ""}, {"action": "read", "path": "~^control_room/.*"}]}'
+MEDIAMTX_TOKEN = os.environ.get("MEDIAMTX_TOKEN")
+
 def main():
     routes = web.RouteTableDef()
 
@@ -379,14 +407,14 @@ def main():
 
     async def get_game(team_id):
         if team_id not in app["games"]:
-            app["games"][team_id] = GameManager()
+            app["games"][team_id] = GameManager(team_id, app[http_session])
             for room in app["rooms"].values():
                 await room.update_games()
         return app["games"][team_id]
 
     async def get_room(room_id):
         if room_id not in app["rooms"]:
-            app["rooms"][room_id] = RoomManager(app["games"])
+            app["rooms"][room_id] = RoomManager(room_id, app["games"])
         return app["rooms"][room_id]
 
     @routes.get('/ws')
@@ -418,11 +446,16 @@ def main():
         finally:
             await listener.close()
 
+    async def http_session(app):
+        async with aiohttp.ClientSession() as session:
+            app[http_session] = session
+            yield
+
     app = web.Application()
     app["games"] = {}
     app["rooms"] = {}
     app.add_routes(routes)
-    app.add_routes([web.static('/assets', 'assets')])
+    app.cleanup_ctx.append(http_session)
     web.run_app(app, port=8086)
 
 if __name__ == "__main__":
