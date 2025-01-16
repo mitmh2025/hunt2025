@@ -123,8 +123,6 @@ in {
               "-XX:+ParallelRefProcEnabled"
               "-XX:MaxTenuringThreshold=10"
 
-              "-Xms256m"
-              "-Xmx1024m"
               "-Djna.debug_load=true"
               "-Dspring.profiles.active=local"
             ];

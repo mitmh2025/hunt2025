@@ -81,13 +81,13 @@
           # Note that these limits are *per-cluster*, not per-node.
           {
             resource_type = "cpu";
-            minimum = 1; # --min-cpu 1
-            maximum = 6; # --max-cpu 6
+            minimum = 1;
+            maximum = 48;
           }
           {
             resource_type = "memory";
-            minimum = 1; # --min-memory 1
-            maximum = 12; # --max-memory 12
+            minimum = 1;
+            maximum = 96;
           }
         ];
         auto_provisioning_locations = [
