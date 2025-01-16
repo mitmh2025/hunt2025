@@ -82,7 +82,12 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["MAKE VIDEO IN OTHER LANGUAGE"],
       reply:
-        "That is correct! Please make a video of the verse of the song containing all the animals in a language not used in this puzzle (live action with animals would make us extra happy) and send it to us at info@mitmh2025.com. Include your team name and the phrase MAKE VIDEO IN OTHER LANGUAGE in the subject line.",
+        "That is correct! Please make a video of the verse of the song containing all the animals in a language not used in this puzzle (live action with animals would make us extra happy) and send it to us at ",
+      link: {
+        display:
+          "info@mitmh2025.com. Include your team name and the phrase MAKE VIDEO IN OTHER LANGUAGE in the subject line.",
+        href: "mailto:info@mitmh.com?subject=MAKE VIDEO IN OTHER LANGUAGE",
+      },
     },
   ],
 };

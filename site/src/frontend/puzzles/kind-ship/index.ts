@@ -108,7 +108,12 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["MAKE US A TEAM TARTAN"],
       reply:
-        "Design a tartan for your team and send it to HQ (with a brief explanation of how it represents your team) to receive your answer! Please email your team tartan to info@mitmh2025.com. Be sure to include your team name and the phrase MAKE US A TEAM TARTAN in the subject line.",
+        "Design a tartan for your team and send it to HQ (with a brief explanation of how it represents your team) to receive your answer! Please email your team tartan to ",
+      link: {
+        display:
+          "info@mitmh2025.com. Be sure to include your team name and the phrase MAKE US A TEAM TARTAN in the subject line.",
+        href: "mailto:info@mitmh2025.com?subject=MAKE US A TEAM TARTAN",
+      },
     },
   ],
 };
