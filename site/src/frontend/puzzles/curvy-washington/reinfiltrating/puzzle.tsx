@@ -35,7 +35,7 @@ const FEATS: Feat[] = [
         </Math>{" "}
         members of your team must sneak from one side of your HQ(s) to the other
       </>,
-      "Cat burglars must not touch the floor--this is a second story job",
+      "Cat burglars must not touch the floor—this is a second story job",
       "Must be sneaky",
     ],
     3,
