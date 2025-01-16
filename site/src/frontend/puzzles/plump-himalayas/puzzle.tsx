@@ -7,7 +7,6 @@ const Puzzle = ({ teamId, teamJwt }: { teamId: number; teamJwt?: string }) => {
     process.env.CONTROL_ROOM_BASE_URL ?? "http://localhost:8086/ws";
   const query = teamJwt ? `?jwt=${teamJwt}` : "";
   const info: ControlRoomInfo = {
-    teamId: `${teamId}`,
     whepUrl: `${mediaBaseUrl}/teams/${teamId}/controlRoom${query}`,
     wsUrl: `${wsBaseUrl}${query}`,
   };
