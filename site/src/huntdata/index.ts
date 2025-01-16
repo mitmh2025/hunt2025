@@ -625,7 +625,11 @@ const HUNT: Hunt = {
           unlock_cost: 1,
           slug: "editors_solemnity",
         },
-        { id: "sop37", unlockable_if: { puzzles_solved: 21 }, unlock_cost: 1 }, // Control Room
+        { id: "sop37", 
+          unlockable_if: { puzzles_solved: 21 }, 
+          unlock_cost: 1,
+          slug: "control_room",
+        },
         {
           id: "sop38",
           unlockable_if: { puzzles_solved: 22 },

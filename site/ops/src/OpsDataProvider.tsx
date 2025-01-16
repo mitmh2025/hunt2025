@@ -14,6 +14,7 @@ import {
 } from "../../lib/api/frontend_client";
 import {
   type PuzzleAPIMetadata,
+  type PuzzleStateLogEntry,
   type InternalActivityLogEntry,
   type TeamRegistrationLogEntry,
 } from "../../lib/api/frontend_contract";
@@ -31,6 +32,7 @@ export type OpsClients = {
   frontendClient: FrontendClient;
   updateRegistrationLog: (opts?: { forceRequest?: boolean }) => Promise<void>;
   updateActivityLog: (opts?: { forceRequest?: boolean }) => Promise<void>;
+  updatePlumpHimalayasLog: (opts?: { forceRequest?: boolean }) => Promise<void>;
 };
 
 const INITIAL_OPS_CLIENTS: OpsClients = {
@@ -40,6 +42,9 @@ const INITIAL_OPS_CLIENTS: OpsClients = {
     return Promise.resolve();
   },
   updateActivityLog: () => {
+    return Promise.resolve();
+  },
+  updatePlumpHimalayasLog: () => {
     return Promise.resolve();
   },
 };
@@ -53,6 +58,7 @@ export type OpsData = {
   puzzleMetadata: PuzzleAPIMetadata;
   registrationLog: TeamRegistrationLogEntry[];
   activityLog: InternalActivityLogEntry[];
+  plumpHimalayasLog: PuzzleStateLogEntry[];
   teams: TeamData[];
   gateDetails: Record<string, { title?: string; roundTitle: string }>;
 };
@@ -65,6 +71,7 @@ const INITIAL_OPS_DATA: OpsData = {
   },
   registrationLog: [],
   activityLog: [],
+  plumpHimalayasLog: [],
   teams: [],
   puzzleMetadata: {},
   gateDetails: {},
@@ -84,6 +91,7 @@ class OpsDataStore {
   private _teamStates = new Map<number, TeamStateIntermediate>();
   private _teamInfos = new Map<number, TeamInfoIntermediate>();
   private _activityLog: InternalActivityLogEntry[] = [];
+  private _plumpHimalayasLog: PuzzleStateLogEntry[] = [];
   private _registrationLog: TeamRegistrationLogEntry[] = [];
   private _universalActivityLogs: InternalActivityLogEntry[] = [];
 
@@ -122,6 +130,18 @@ class OpsDataStore {
 
     const newState = oldState.reduce(entry);
     this._teamStates.set(entry.team_id, newState);
+  }
+
+  applyPlumpHimalayasLogEntry(entry: PuzzleStateLogEntry) {
+    const maxId =
+      this._plumpHimalayasLog[this._plumpHimalayasLog.length - 1]?.id ?? 0;
+    if (entry.id <= maxId) {
+      return;
+    }
+
+    if (entry.team_id && entry.slug === "control_room") {
+      this._plumpHimalayasLog.push(entry);
+    }
   }
 
   applyRegistrationLogEntry(entry: TeamRegistrationLogEntry) {
@@ -175,6 +195,10 @@ class OpsDataStore {
     return this._activityLog;
   }
 
+  getPlumpHimalayasLog() {
+    return this._plumpHimalayasLog;
+  }
+
   getRegistrationLog() {
     return this._registrationLog;
   }
@@ -219,6 +243,8 @@ export default function OpsDataProvider({
 
     const loader = new OpsDataLoader(frontendClient);
 
+    let updateActivityLogPromise: Promise<void> | undefined = undefined;
+
     return {
       adminClient,
       frontendClient,
@@ -243,8 +269,36 @@ export default function OpsDataProvider({
           registrationLog: [...oldData.registrationLog, ...newEntries],
         }));
       },
-      async updateActivityLog({ forceRequest = false } = {}): Promise<void> {
-        const newEntries = await loader.getNewActivityLogEntries({
+      updateActivityLog({ forceRequest = false } = {}): Promise<void> {
+        if (updateActivityLogPromise) {
+          return updateActivityLogPromise;
+        }
+        return (updateActivityLogPromise = (async () => {
+          const newEntries = await loader.getNewActivityLogEntries({
+            forceRequest,
+          });
+
+          if (newEntries.length === 0) {
+            return;
+          }
+
+          newEntries.forEach((entry) => {
+            getStore().applyActivityLogEntry(entry);
+          });
+
+          setData((oldData) => ({
+            ...oldData,
+            teams: getStore().getTeamData(),
+            activityLog: [...oldData.activityLog, ...newEntries],
+          }));
+        })().then((_) => {
+          updateActivityLogPromise = undefined;
+        }));
+      },
+      async updatePlumpHimalayasLog({
+        forceRequest = false,
+      } = {}): Promise<void> {
+        const newEntries = await loader.getNewPlumpHimalayasLogEntries({
           forceRequest,
         });
 
@@ -253,13 +307,13 @@ export default function OpsDataProvider({
         }
 
         newEntries.forEach((entry) => {
-          getStore().applyActivityLogEntry(entry);
+          getStore().applyPlumpHimalayasLogEntry(entry);
         });
 
         setData((oldData) => ({
           ...oldData,
           teams: getStore().getTeamData(),
-          activityLog: [...oldData.activityLog, ...newEntries],
+          plumpHimalayasLog: [...oldData.plumpHimalayasLog, ...newEntries],
         }));
       },
     };
@@ -272,6 +326,7 @@ export default function OpsDataProvider({
         opsClients.adminClient.opsAccount(),
         opsClients.updateRegistrationLog({ forceRequest: true }),
         opsClients.updateActivityLog({ forceRequest: true }),
+        opsClients.updatePlumpHimalayasLog({ forceRequest: true }),
       ]);
 
       if (account.status === 401 || account.status === 403) {
@@ -308,6 +363,7 @@ export default function OpsDataProvider({
         gateDetails,
         registrationLog: getStore().getRegistrationLog(),
         activityLog: getStore().getActivityLog(),
+        plumpHimalayasLog: getStore().getPlumpHimalayasLog(),
       });
     })().catch((e: unknown) => {
       console.error(e);
@@ -327,6 +383,7 @@ export default function OpsDataProvider({
       (async () => {
         await opsClients.updateRegistrationLog();
         await opsClients.updateActivityLog();
+        await opsClients.updatePlumpHimalayasLog();
       })()
         .catch((e: unknown) => {
           console.error("Error updating registration log", e);

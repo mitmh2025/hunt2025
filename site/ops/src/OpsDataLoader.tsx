@@ -2,9 +2,10 @@ const IDB_VERSION = 1;
 
 import { type DBSchema, type IDBPDatabase, openDB, deleteDB } from "idb";
 import { type FrontendClient } from "../../lib/api/frontend_client";
-import {
-  type InternalActivityLogEntry,
-  type TeamRegistrationLogEntry,
+import type {
+  PuzzleStateLogEntry,
+  InternalActivityLogEntry,
+  TeamRegistrationLogEntry,
 } from "../../lib/api/frontend_contract";
 
 type HuntOpsDB = {
@@ -14,6 +15,10 @@ type HuntOpsDB = {
   };
   activityLog: {
     value: InternalActivityLogEntry;
+    key: number;
+  };
+  plumpHimalayasLog: {
+    value: PuzzleStateLogEntry;
     key: number;
   };
 } & DBSchema;
@@ -33,6 +38,7 @@ function formatEntry<T extends { timestamp: string | Date }>(
 export class OpsDataLoader {
   private _registrationHighWaterMark = 0;
   private _activityHighWaterMark = 0;
+  private _plumpHimalayasHighWaterMark = 0;
   private frontendClient: FrontendClient;
 
   constructor(frontendClient: FrontendClient) {
@@ -160,6 +166,67 @@ export class OpsDataLoader {
     return [...dbNewRecords, ...serverNewRecords];
   }
 
+  async getNewPlumpHimalayasLogEntries({ forceRequest = false } = {}): Promise<
+    PuzzleStateLogEntry[]
+  > {
+    const db = await this.getDB();
+    let dbNewRecords = await db.getAll(
+      "plumpHimalayasLog",
+      IDBKeyRange.lowerBound(this._plumpHimalayasHighWaterMark, true),
+    );
+
+    dbNewRecords = dbNewRecords.slice().sort((a, b) => a.id - b.id);
+    if (dbNewRecords.length > 0) {
+      console.log("Got new activity log entries from indexeddb", dbNewRecords);
+    }
+
+    this._plumpHimalayasHighWaterMark =
+      dbNewRecords[dbNewRecords.length - 1]?.id ??
+      this._plumpHimalayasHighWaterMark;
+
+    const lastLoadTimeStr = localStorage.getItem("lastPlumpHimalayasLoadTime");
+    const lastLoadTimeEpoch = lastLoadTimeStr
+      ? parseInt(lastLoadTimeStr, 10)
+      : 0;
+
+    let serverNewRecords: PuzzleStateLogEntry[] = [];
+    if (forceRequest || Date.now() - lastLoadTimeEpoch > REFRESH_INTERVAL) {
+      localStorage.setItem("lastPlumpHimalayasLoadTime", Date.now().toString());
+
+      // fetch from server
+      const serverResponse = await this.frontendClient.getFullPuzzleStateLog({
+        query: {
+          since: this._plumpHimalayasHighWaterMark,
+          slug: "control_room",
+        },
+      });
+
+      if (serverResponse.status === 200) {
+        serverNewRecords = serverResponse.body.map(formatEntry);
+        if (serverNewRecords.length > 0) {
+          console.log(
+            "Got new plump-himalayas log entries from server",
+            serverNewRecords,
+          );
+        }
+
+        // Add to indexeddb
+        const tx = db.transaction("plumpHimalayasLog", "readwrite");
+        for (const entry of serverNewRecords) {
+          await tx.store.put(entry);
+        }
+
+        await tx.done;
+
+        this._plumpHimalayasHighWaterMark =
+          serverNewRecords[serverNewRecords.length - 1]?.id ??
+          this._plumpHimalayasHighWaterMark;
+      }
+    }
+
+    return [...dbNewRecords, ...serverNewRecords];
+  }
+
   async getDB(): Promise<IDBPDatabase<HuntOpsDB>> {
     const db = await openDB<HuntOpsDB>(IDB_NAME, IDB_VERSION, {
       upgrade(db, oldVersion, newVersion) {
@@ -173,8 +240,13 @@ export class OpsDataLoader {
           db.deleteObjectStore("activityLog");
         }
 
+        if (db.objectStoreNames.contains("plumpHimalayasLog")) {
+          db.deleteObjectStore("plumpHimalayasLog");
+        }
+
         db.createObjectStore("registrationLog", { keyPath: "id" });
         db.createObjectStore("activityLog", { keyPath: "id" });
+        db.createObjectStore("plumpHimalayasLog", { keyPath: "id" });
       },
     });
 

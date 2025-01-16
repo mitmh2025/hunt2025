@@ -354,6 +354,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
     const puzzleStateLogResult = await req.frontendApi.getFullPuzzleStateLog({
       query: { team_id: req.teamState.teamId, slug },
     });
+    console.error("\n\npuzzleStateLogResult: ", puzzleStateLogResult, "\n\n");
     if (puzzleStateLogResult.status !== 200) {
       // Something has gone wrong. These puzzles need puzzle state log access, so
       // we should fail if we can't include it.
@@ -453,6 +454,8 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
           <ContentComponent
             type="puzzle"
             teamName={req.teamState.info.teamName}
+            teamId={req.teamState.teamId}
+            teamJwt={req.cookies.mitmh2025_auth as string | undefined}
             teamState={req.teamState.state}
             puzzleState={result.body}
             puzzleStateLog={puzzleStateLog}

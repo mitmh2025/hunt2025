@@ -3029,6 +3029,41 @@ export async function getRouter({
           return formatMutationResultForAdminApi(result);
         },
       },
+      scheduleControlRoom: {
+        middleware: [adminAuthMiddleware],
+        handler: async ({ params: { teamId }, body: { room, time } }) => {
+          const team_id = parseInt(teamId, 10);
+          const { result } = await puzzleStateLog.executeMutation(
+            team_id,
+            redisClient,
+            knex,
+            async (_trx, mutator) => {
+              console.error("\n\nEntering mutator");
+              await mutator.appendLog({
+                team_id,
+                slug: "control_room",
+                data: { room, time },
+              });
+              console.error("Appended log");
+              return mutator.log.filter(
+                (entry) =>
+                  entry.team_id === team_id && entry.slug === "control_room",
+              );
+            },
+          );
+          console.log("Result: ", result);
+          const body = result.map((entry) => {
+            return {
+              ...entry,
+              timestamp: entry.timestamp.toISOString(),
+            };
+          });
+          return {
+            status: 200 as const,
+            body,
+          };
+        },
+      },
     },
 
     frontend: {

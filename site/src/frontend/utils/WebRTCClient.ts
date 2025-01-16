@@ -12,6 +12,7 @@ type WebRTCClientOpts = {
   mediaElement: HTMLMediaElement;
   whepUrl: string;
   onStateChange: (state: WebRTCClientState) => void;
+  retryForever?: boolean;
 };
 
 type OfferData = {
@@ -26,6 +27,7 @@ export class WebRTCClient {
   private onStateChange: (state: WebRTCClientState) => void;
   private state: WebRTCClientState = "disconnected";
   private retriesLeft = RETRY_COUNT;
+  private retryForever = false;
   private pc: RTCPeerConnection | null = null;
   private sessionUrl: string | null = null;
   private queuedCandidates: RTCIceCandidate[] = [];
@@ -36,7 +38,14 @@ export class WebRTCClient {
   constructor(opts: WebRTCClientOpts) {
     this.mediaElement = opts.mediaElement;
     this.whepUrl = new URL(opts.whepUrl);
+    this.retryForever = opts.retryForever ?? false;
     this.onStateChange = opts.onStateChange;
+    this.mediaElement.addEventListener("playing", () => {
+      if (this.state === "connecting") {
+        this.retriesLeft = RETRY_COUNT;
+        this.setState("connected");
+      }
+    });
   }
 
   private setState(state: WebRTCClientState) {
@@ -377,15 +386,17 @@ export class WebRTCClient {
       this.mediaElement.srcObject.addTrack(track);
     }
 
-    this.mediaElement
-      .play()
-      .then(() => {
-        this.retriesLeft = RETRY_COUNT;
-        this.setState("connected");
-      })
-      .catch((err: unknown) => {
-        this.onError(err);
-      });
+    if (!this.mediaElement.autoplay) {
+      this.mediaElement
+        .play()
+        .then(() => {
+          this.retriesLeft = RETRY_COUNT;
+          this.setState("connected");
+        })
+        .catch((err: unknown) => {
+          this.onError(err);
+        });
+    }
   }
 
   private resetState() {
@@ -419,12 +430,13 @@ export class WebRTCClient {
 
     this.resetState();
 
-    if (this.retriesLeft > 0) {
+    if (this.retriesLeft > 0 || this.retryForever) {
       this.retriesLeft--;
-      const retryDelay =
-        RETRY_INTERVAL_MIN *
-        (1 + Math.random() / 2) *
-        RETRY_INTERVAL_BACKOFF_BASE ** (RETRY_COUNT - this.retriesLeft);
+      const retryDelay = this.retryForever
+        ? RETRY_INTERVAL_MIN
+        : RETRY_INTERVAL_MIN *
+          (1 + Math.random() / 2) *
+          RETRY_INTERVAL_BACKOFF_BASE ** (RETRY_COUNT - this.retriesLeft);
       console.log(
         `WebRTC error. Retrying in ${retryDelay}ms (${this.retriesLeft} retries left)`,
         err,

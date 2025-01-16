@@ -521,6 +521,12 @@ export default function createConfigs(_env, argv) {
       puzzle_metallic_dragon:
         "./src/frontend/puzzles/metallic-dragon/client.tsx",
       puzzle_new_ketchup: "./src/frontend/puzzles/new-ketchup/client.tsx",
+      puzzle_plump_himalayas:
+        "./src/frontend/puzzles/plump-himalayas/client.tsx",
+      puzzle_plump_himalayas_host:
+        "./src/frontend/puzzles/plump-himalayas/host.tsx",
+      puzzle_plump_himalayas_display:
+        "./src/frontend/puzzles/plump-himalayas/display.tsx",
       puzzle_quixotic_shoe: "./src/frontend/puzzles/quixotic-shoe/client.tsx",
       puzzle_right_palm: "./src/frontend/puzzles/right-palm/client.tsx",
       puzzle_sorrowful_glass:

@@ -11,6 +11,7 @@ import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type Hunt } from "../../huntdata/types";
 import { PUZZLES } from "../puzzles";
+import plumpHimalayasRouter from "../puzzles/plump-himalayas/server";
 import {
   bookcasePostHandler,
   comboLockPostHandler,
@@ -210,6 +211,8 @@ export function registerUiRoutes({
   );
   unauthRouter.post("/login", loginPostHandler);
   unauthRouter.get("/logout", logoutHandler);
+
+  unauthRouter.use("/JaPCdoKSO193", plumpHimalayasRouter);
 
   authRouter.get(
     "/",

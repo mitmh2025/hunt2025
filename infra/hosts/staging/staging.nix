@@ -191,6 +191,22 @@
       };
     }
     {
+      systemd.services.hunt2025.environment = {
+        CONTROL_ROOM_BASE_URL = "wss://staging.mitmh2025.com/";
+      };
+      sops.secrets."control_room/mediamtx_token" = {};
+      sops.templates."control_room/env" = {
+        owner = "control_room";
+        content = ''
+          MEDIAMTX_TOKEN=${config.sops.placeholder."control_room/mediamtx_token"}
+        '';
+      };
+      hunt2025.controlRoom = {
+        enable = true;
+        environmentFile = config.sops.templates."control_room/env".path;
+      };
+    }
+    {
       services.nginx = {
         enable = true;
 
@@ -208,6 +224,7 @@
         upstreams.hunt2025.servers."unix:/run/hunt2025/hunt2025.sock" = {};
         upstreams.hunt2025-reg.servers."unix:/run/hunt2025/hunt2025-reg.sock" = {};
         upstreams.hunt2025-ops.servers."unix:/run/hunt2025-ops/ops.sock" = {};
+        upstreams.control_room.servers."127.0.0.1:8086" = {};
         upstreams.thingsboard.servers."127.0.0.1:8080" = {};
         virtualHosts = {
           "staging.mitmh2025.com" = {
@@ -225,6 +242,14 @@
             locations."/static/" = {
               alias = "${pkgs.hunt2025.assets}/static/";
               extraConfig = "expires max;";
+            };
+            locations."= /puzzle/control_room/ws" = {
+              proxyPass = "http://control_room";
+              proxyWebsockets = true;
+            };
+            locations."= /JaPCdoKSO193/host/ws" = {
+              proxyPass = "http://control_room";
+              proxyWebsockets = true;
             };
           };
           "reg.staging.mitmh2025.com" = {

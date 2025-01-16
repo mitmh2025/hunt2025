@@ -144,6 +144,8 @@ in {
   };
   radioImage = final.callPackage ./radio-image.nix {};
 
+  plump-himalayas = final.callPackage ../../plump-himalayas {};
+
   opentelemetry-collector-contrib = prev.opentelemetry-collector-contrib.overrideAttrs {
     version = "0.110.0";
 
