@@ -33,7 +33,7 @@ export const FermitAnswerSchema = z.object({
   sessionId: z.number(),
   // index of the question within the session, NOT the question id
   questionIndex: z.number(),
-  answer: z.number().nullable(),
+  answer: z.number(),
 });
 
 export type FermitAnswer = z.infer<typeof FermitAnswerSchema>;

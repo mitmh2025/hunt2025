@@ -2700,9 +2700,6 @@ export async function getRouter({
                   }
 
                   const answer = answerObj.answer;
-                  if (answer === null) {
-                    return 0;
-                  }
 
                   const percentage =
                     100 * Math.abs(answer / question.answer - 1);
