@@ -48,6 +48,10 @@ export function usePuzzleState(
   return [finalState, setApiState];
 }
 
+const PuzzleDescription = styled.p`
+  font-style: italic;
+`;
+
 export const PuzzleUnlockModal = React.forwardRef(
   function PuzzleUnlockModalInner(
     {
@@ -122,7 +126,7 @@ export const PuzzleUnlockModal = React.forwardRef(
           }}
         >
           <h1>Unlock puzzle {title}?</h1>
-          {desc ? <p>{desc}</p> : undefined}
+          {desc ? <PuzzleDescription>{desc}</PuzzleDescription> : undefined}
           <p>
             Unlocking this puzzle will spend {cost} of your team‘s {currency}{" "}
             available key{currency === 1 ? "" : "s"}.

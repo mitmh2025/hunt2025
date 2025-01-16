@@ -240,7 +240,7 @@ const MurderBody = ({
             />
           ))}
         </div>
-        <h1>The Murder in MITropolis</h1>
+        <h1 className="round-title">The Murder in MITropolis</h1>
         {objects}
         {pdfObjects}
       </CityWrapper>
