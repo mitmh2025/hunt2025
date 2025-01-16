@@ -2,7 +2,7 @@
   "ruleChains": [
     {
       "id": {
-        "id": "61b1c960-ce58-11ef-a7d2-890d957e1a43",
+        "id": "a1511950-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
       "createdTime": 1719386644436,
@@ -16,13 +16,13 @@
       "debugMode": false,
       "configuration": null,
       "additionalInfo": null,
-      "version": 7,
+      "version": 17,
       "externalId": null,
       "tenantId": null
     },
     {
       "id": {
-        "id": "61b1c961-ce58-11ef-a7d2-890d957e1a43",
+        "id": "a151b590-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
       "createdTime": 1719386644617,
@@ -36,13 +36,13 @@
       "debugMode": false,
       "configuration": null,
       "additionalInfo": null,
-      "version": 5,
+      "version": 6,
       "externalId": null,
       "tenantId": null
     },
     {
       "id": {
-        "id": "61b1c962-ce58-11ef-a7d2-890d957e1a43",
+        "id": "a151b591-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
       "createdTime": 1728695273621,
@@ -58,7 +58,7 @@
       "additionalInfo": {
         "description": ""
       },
-      "version": 5,
+      "version": 6,
       "externalId": null,
       "tenantId": null
     }
@@ -66,10 +66,10 @@
   "metadata": [
     {
       "ruleChainId": {
-        "id": "61b1c960-ce58-11ef-a7d2-890d957e1a43",
+        "id": "a1511950-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
-      "version": 7,
+      "version": 17,
       "firstNodeIndex": 6,
       "nodes": [
         {
@@ -227,7 +227,7 @@
           "externalId": null,
           "configuration": {
             "forwardMsgToDefaultRuleChain": false,
-            "ruleChainId": "61b1c962-ce58-11ef-a7d2-890d957e1a43"
+            "ruleChainId": "a151b591-d3b6-11ef-9253-0719359e3b02"
           },
           "additionalInfo": {
             "description": "",
@@ -435,7 +435,7 @@
           "debugSettings": {
             "failuresEnabled": false,
             "allEnabled": false,
-            "allEnabledUntil": 0
+            "allEnabledUntil": 1736996018916
           },
           "singletonMode": false,
           "queueName": null,
@@ -461,7 +461,7 @@
           "debugSettings": {
             "failuresEnabled": true,
             "allEnabled": false,
-            "allEnabledUntil": 0
+            "allEnabledUntil": 1736989666447
           },
           "singletonMode": false,
           "queueName": null,
@@ -482,7 +482,11 @@
           "ruleChainId": null,
           "type": "org.thingsboard.rule.engine.rest.TbSendRestApiCallReplyNode",
           "name": "reply",
-          "debugSettings": null,
+          "debugSettings": {
+            "failuresEnabled": false,
+            "allEnabled": false,
+            "allEnabledUntil": 1736989666447
+          },
           "singletonMode": false,
           "queueName": null,
           "configurationVersion": 0,
@@ -503,7 +507,11 @@
           "ruleChainId": null,
           "type": "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode",
           "name": "rpc to devices",
-          "debugSettings": null,
+          "debugSettings": {
+            "failuresEnabled": false,
+            "allEnabled": false,
+            "allEnabledUntil": 1736996018916
+          },
           "singletonMode": false,
           "queueName": null,
           "configurationVersion": 0,
@@ -513,8 +521,30 @@
           },
           "additionalInfo": {
             "description": "",
-            "layoutX": 894,
-            "layoutY": 842
+            "layoutX": 1120,
+            "layoutY": 826
+          }
+        },
+        {
+          "id": null,
+          "createdTime": 1736996666741,
+          "ruleChainId": null,
+          "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+          "name": "Double-JSON params",
+          "debugSettings": null,
+          "singletonMode": false,
+          "queueName": null,
+          "configurationVersion": 0,
+          "externalId": null,
+          "configuration": {
+            "scriptLang": "TBEL",
+            "jsScript": "return {msg: msg, metadata: metadata, msgType: msgType};",
+            "tbelScript": "if (msg.params != null) {\n    msg.params = JSON.stringify(msg.params);\n}\nreturn {msg: msg, metadata: metadata, msgType: msgType};"
+          },
+          "additionalInfo": {
+            "description": "",
+            "layoutX": 850,
+            "layoutY": 848
           }
         }
       ],
@@ -621,7 +651,7 @@
         },
         {
           "fromIndex": 17,
-          "toIndex": 19,
+          "toIndex": 20,
           "type": "Success"
         },
         {
@@ -633,16 +663,21 @@
           "fromIndex": 18,
           "toIndex": 17,
           "type": "Success"
+        },
+        {
+          "fromIndex": 20,
+          "toIndex": 19,
+          "type": "Success"
         }
       ],
       "ruleChainConnections": null
     },
     {
       "ruleChainId": {
-        "id": "61b1c961-ce58-11ef-a7d2-890d957e1a43",
+        "id": "a151b590-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
-      "version": 5,
+      "version": 6,
       "firstNodeIndex": 0,
       "nodes": [
         {
@@ -882,10 +917,10 @@
     },
     {
       "ruleChainId": {
-        "id": "61b1c962-ce58-11ef-a7d2-890d957e1a43",
+        "id": "a151b591-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
-      "version": 5,
+      "version": 6,
       "firstNodeIndex": 0,
       "nodes": [
         {
