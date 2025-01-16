@@ -103,7 +103,11 @@ import {
   getLastTeamInteractionStateLogEntry,
   appendTeamInteractionStateLog,
 } from "./db";
-import { confirmationEmailTemplate, type Mailer } from "./email";
+import {
+  confirmationEmailTemplate,
+  hintResponseEmailTemplate,
+  type Mailer,
+} from "./email";
 import formatActivityLogEntryForApi from "./formatActivityLogEntryForApi";
 import {
   formatTeamHuntState,
@@ -409,13 +413,25 @@ export async function getRouter({
     );
     return team_state;
   };
-  const getTeamState = async (req: Request, team_id: number) => {
-    const [team_state, [team_info]] = await Promise.all([
-      getTeamStateIntermediate(team_id),
-      teamRegistrationLog.getCachedReducers(knex, redisClient, team_id, {
+
+  const getTeamInfoIntermediate = async (team_id: number) => {
+    const [team_info] = await teamRegistrationLog.getCachedReducers(
+      knex,
+      redisClient,
+      team_id,
+      {
         redisKey: "team_info_intermediate",
         hydrate: (redisObj) => new TeamInfoIntermediate(redisObj ?? {}),
-      }),
+      },
+    );
+
+    return team_info;
+  };
+
+  const getTeamState = async (req: Request, team_id: number) => {
+    const [team_state, team_info] = await Promise.all([
+      getTeamStateIntermediate(team_id),
+      getTeamInfoIntermediate(team_id),
     ]);
 
     const info = team_info.formatTeamInfoIfActive();
@@ -3124,34 +3140,64 @@ export async function getRouter({
       },
       respondToHintRequest: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
-        handler: ({
+        handler: async ({
           params: { teamId, slug },
           body: { response, zammad_article_id },
-        }) =>
-          executeTeamStateHandler(teamId, async (_, mutator, team_id) => {
-            if (
-              mutator.log.some(
-                (e) =>
-                  e.type === "puzzle_hint_responded" &&
-                  e.data.zammad_article_id === zammad_article_id,
-              )
-            ) {
-              // This response is already in the log
-              return false;
+        }) => {
+          const result = await executeTeamStateHandler(
+            teamId,
+            async (_, mutator, team_id) => {
+              if (
+                mutator.log.some(
+                  (e) =>
+                    e.type === "puzzle_hint_responded" &&
+                    e.data.zammad_article_id === zammad_article_id,
+                )
+              ) {
+                // This response is already in the log
+                return false;
+              }
+
+              await mutator.appendLog({
+                team_id,
+                type: "puzzle_hint_responded",
+                slug: slug,
+                data: {
+                  response,
+                  zammad_article_id,
+                },
+              });
+
+              return true;
+            },
+          );
+
+          if (result.status === 200) {
+            const reg = (
+              await getTeamInfoIntermediate(parseInt(teamId, 10))
+            ).formatTeamRegistration();
+
+            const puzzle = PUZZLES[slug];
+
+            if (reg && puzzle) {
+              await mailer.sendEmail({
+                to: {
+                  name: reg.name,
+                  address: reg.teamEmail,
+                },
+                subject: `Response to your hint request for ${puzzle.title}`,
+                ...hintResponseEmailTemplate({
+                  puzzleName: puzzle.title,
+                  puzzleSlug: slug,
+                  responseHTML: response,
+                  teamName: reg.name,
+                }),
+              });
             }
+          }
 
-            await mutator.appendLog({
-              team_id,
-              type: "puzzle_hint_responded",
-              slug: slug,
-              data: {
-                response,
-                zammad_article_id,
-              },
-            });
-
-            return true;
-          }),
+          return result;
+        },
       },
       startInteraction: {
         middleware: [frontendAuthMiddleware, requireAdminPermission],
