@@ -37,6 +37,7 @@ export default function UnlockHintsDialog({
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Input
             type="number"
+            sx={{ minWidth: "100px" }}
             inputProps={{
               min: 0,
               max: 36,
@@ -44,7 +45,8 @@ export default function UnlockHintsDialog({
             value={value}
             placeholder="?"
             onChange={(e) => {
-              setValue(e.target.value ? parseFloat(e.target.value) : undefined);
+              const val = parseInt(e.target.value, 10);
+              setValue(isNaN(val) ? 0 : val);
             }}
           />
           <span>hours</span>
