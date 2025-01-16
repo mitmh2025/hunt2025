@@ -26,6 +26,11 @@
       50001 # MediaMTX RTCP
       50189 # MediaMTX WebRTC
     ];
+    firewall.allow = [{
+      # MediaMTX whatever
+      protocol = "udp";
+      ports = ["1024-65535"];
+    }];
     useSops = true;
     nixosConfiguration = self.nixosConfigurations."staging/staging";
   };

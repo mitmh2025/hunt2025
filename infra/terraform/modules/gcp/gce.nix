@@ -46,6 +46,10 @@ in {
               default = [];
               apply = canonicalizePortList;
             };
+            allow = mkOption {
+              type = types.listOf types.anything;
+              default = [];
+            };
           };
           useSops = mkEnableOption "Provision a key for sops secrets";
           objects.serviceAccount = mkOption {
@@ -142,7 +146,7 @@ in {
                 protocol = "udp";
                 ports = map toString config.firewall.allowedUDPPorts;
               }
-            ];
+            ] ++ config.firewall.allow;
 
             target_tags = [name];
           };
