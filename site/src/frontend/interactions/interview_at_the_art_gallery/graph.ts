@@ -1432,6 +1432,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "13",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "Being an art connoisseur is fun when someone else is picking up the tab. The “older gentleman” and “younger lady” must be Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",
       sound: {
@@ -1446,6 +1447,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "15",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "Well, I can work with that. The two must have been Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",
       sound: {
@@ -1458,6 +1460,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "16",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "I’ve never seen someone so upset I don’t know who Korfball is. Well, I can work with what little I got. The two must have been Papa and Baby. But where could he hide a secret where she couldn’t find it– something that would make his own family so irate as to confront him in public? He’d want that where he could keep an eye on it, surely.",
       sound: {
@@ -1471,6 +1474,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-a",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "In his wallet?",
       sound: {
@@ -1483,6 +1487,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-a1",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "Hm. Nah, he would never let his wallet out of his sight. Besides, Baby’s a lot of things, but I don’t think she’s a pickpocket.",
       sound: {
@@ -1495,6 +1500,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-b",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "In his car?",
       sound: {
@@ -1507,6 +1513,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-b1",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "Hm. No, too many others use his car. I’m sure he trusts Rover, but would he trust him with his deepest secrets?",
       sound: {
@@ -1519,6 +1526,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-c",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "In his office?",
       sound: {
@@ -1531,6 +1539,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-c1",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "Hm. Nah, too many people who could access it. Gladys and Sidecar are so involved in the business and in outdoing each other that anything secret from one or the other at the office wouldn’t stay that way for long.",
       sound: {
@@ -1543,6 +1552,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-d",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "In his study?",
       sound: {
@@ -1555,6 +1565,7 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     {
       id: "where-d1",
       speaker: "billie",
+      overlay: "neutral",
       textBubbleType: "thought",
       text: "Hm. His study makes the most sense. His private retreat within his home, already off-limits to everyone else, with plenty of opportunities to hide his dirty little secrets. I think that should be my next stop.",
       sound: {
