@@ -17,6 +17,7 @@ export async function timelineHandler(req: Request) {
     const mapped = generateActivityLogForTimeline(e);
     return mapped ? [mapped] : [];
   });
+  log.sort((e1, e2) => e1.timestamp.valueOf() - e2.timestamp.valueOf());
   const inlineScript = `window.initialTimelineActivityLog = ${JSON.stringify(log)}`;
 
   const node = (
