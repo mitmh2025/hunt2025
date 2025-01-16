@@ -124,7 +124,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
             Please come to the Gala to pick up your copy of this puzzle.
           </p>
           <p className={NO_COPY_CLASS}>
-            You should receive a stack of 56 receipts. Please contact us at
+            You should receive a stack of 56 receipts. Please contact us at{" "}
             <MailtoLink
               subject={"Missing pieces for Eponymous Forensic Accountant"}
             />{" "}
