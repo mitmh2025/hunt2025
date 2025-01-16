@@ -143,7 +143,7 @@ const POEMS: [string, ReactNode, ReactNode[], ReactNode][] = [
     </>,
   ],
   [
-    "Women’s and Gender Studies",
+    "Graduate Consortium in Women’s Studies",
     <>
       R<strong>U</strong>TH PERRY
     </>,
@@ -246,7 +246,7 @@ const POEMS: [string, ReactNode, ReactNode[], ReactNode][] = [
     </>,
   ],
   [
-    "Graduate Consortium in Women’s Studies",
+    "Women’s and Gender Studies",
     <>
       ADRIENNE CE<strong>C</strong>ILE RICH
     </>,

@@ -706,7 +706,7 @@ const ROUTES: {
       {
         direction: "",
         instruction: "OBSERVE “ALBION ST”",
-        street: "Main St",
+        street: "Medford St",
         odo: 0.7,
         speed: 33,
         donuts: 0,
@@ -714,7 +714,7 @@ const ROUTES: {
       },
       {
         direction: "L",
-        instruction: "at T",
+        instruction: "1st OPP",
         street: "Higgins Ave",
         odo: 0.7,
         speed: 28,
@@ -723,7 +723,7 @@ const ROUTES: {
       },
       {
         direction: "L",
-        instruction: "1st OPP",
+        instruction: "at T",
         street: "Bow St",
         odo: 0.8,
         speed: 23,
