@@ -563,7 +563,7 @@ function ScorekeeperPanel() {
       .map(({ id }) => {
         const team = opsData.teams.find((teamData) => id === teamData.teamId);
         return (
-          <th key={id}>{team ? abbreviatedName(team, false) : "[error]"}</th>
+          <th key={id}>{team ? abbreviatedName(team, true) : "[error]"}</th>
         );
       });
     const body = session.questionIds.map((_, idx) => {

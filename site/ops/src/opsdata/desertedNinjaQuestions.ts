@@ -67,7 +67,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 7,
     text: "How many teams are signed up for this Mystery Hunt?",
-    answer: 145,
+    answer: 219,
     geoguessr: null,
     scoringMethod: "3double",
     categories: ["hunt_current"],
@@ -155,7 +155,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 18,
     text: "How many official clubs / organizations have ASA-assigned bulletin board spaces on the Infinite Corridor?",
-    answer: 83,
+    answer: 84,
     geoguessr: null,
     scoringMethod: "3double",
     categories: [],
@@ -203,7 +203,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 24,
     text: "Assuming all registered teams were 100% accurate when they signed up, how many hunters are participating in this Mystery Hunt?",
-    answer: 4164,
+    answer: 4805,
     geoguessr: null,
     scoringMethod: "percent",
     categories: ["hunt_current"],
@@ -363,7 +363,7 @@ export const ALL_QUESTIONS: FermitQuestion[] = [
   {
     id: 44,
     text: "How many trees are located within Killian Court?",
-    answer: 64,
+    answer: 70,
     geoguessr: null,
     scoringMethod: "2double",
     categories: [],
