@@ -128,8 +128,20 @@ const PuzzleHintForm = ({
   const formDisabled = formState === "submitting";
   return (
     <Form method="post" action="#" onSubmit={onSubmit}>
+      <h1>Request a Hint</h1>
+      <p>Let us know how we can help. Please include:</p>
+      <ul>
+        <li>What you’ve tried so far</li>
+        <li>What you think the next steps might be</li>
+        <li>How you think we can get you un-stuck</li>
+      </ul>
+      <p>
+        There is a 2,500 character limit. If you need more space, feel free to
+        link us to a document or spreadsheet that you’re working from. If you’re
+        sharing a Google Doc or Sheet, please make sure you have turned on link
+        sharing so we can access it.
+      </p>
       <LabeledTextAreaWithError
-        label="Request a Hint"
         error={formError}
         id="hint-input"
         name="hint"

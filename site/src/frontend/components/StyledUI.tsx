@@ -149,15 +149,19 @@ export function LabeledWithError({
   error,
   children,
 }: {
-  label: string;
+  label?: string;
   error?: string;
   children: React.ReactNode;
 }) {
   return (
     <div>
       <label style={{ marginLeft: "0.5rem" }}>
-        {label}
-        <br />
+        {label ? (
+          <>
+            {label}
+            <br />
+          </>
+        ) : null}
         {children}
       </label>
       {error && <ErrorText>{error}</ErrorText>}
@@ -191,7 +195,7 @@ export function LabeledTextAreaWithError({
   cols = 40,
   ...props
 }: {
-  label: string;
+  label?: string;
   value?: string | number;
   error?: string;
   rows?: number;
