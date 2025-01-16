@@ -106,7 +106,7 @@ const ArtifactTable: React.FC<ArtifactTableProps> = ({
       <SolutionTable>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Artifact Name</th>
             <th>Compass Value</th>
             <th>Level</th>
             <th>Location</th>
@@ -288,14 +288,17 @@ const Solution = () => {
         key; in this puzzle you can check your coordinates with the undocumented
         command “F3.”)
       </p>
+      <p>
+        The location numbers in the tables below refer to room labels in the
+        maps farther down on this page.
+      </p>
       <ArtifactTable artifacts={NonSecretArtifacts} />
       <p>
         Using the coordinates of the four artifacts on a level to make a cross
         yields a set of coordinates that, when rounded to the nearest integer,
         matches the coordinates of a room on that level. Setting the compass to
         the sum of the frost ember values of all of the artifacts on the floor
-        allows a solver to pick up the key on each of the first three floors
-        using the “FD” command.
+        allows a solver to pick up the key on each of the first three floors.
       </p>
       <ArtifactCrossingTable />
       <p>
