@@ -19,7 +19,7 @@ import {
   type ZammadTicketArticleType,
 } from "./zammadApi";
 
-const ZAMMAD_POLL_INTERVAL = 1000;
+const ZAMMAD_POLL_INTERVAL = 5000;
 
 let apiUrl = process.env.API_BASE_URL;
 if (process.env.NODE_ENV === "development" && !apiUrl) {
