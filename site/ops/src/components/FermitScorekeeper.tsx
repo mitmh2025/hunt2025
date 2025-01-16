@@ -405,7 +405,8 @@ function ScorekeeperPanel() {
           const a = new Map<string, number>();
           answerList.forEach((ans) => {
             const key = `${ans.sessionId}_${ans.teamId}_${ans.questionIndex}`;
-            if (ans.answer === null) {
+            if (ans.answer === -1) {
+              // sentinel value, no answer
               a.delete(key);
             } else {
               a.set(key, ans.answer);
@@ -462,7 +463,8 @@ function ScorekeeperPanel() {
         continue;
       }
 
-      if (!previousAnswer) {
+      // no previous answer
+      if (previousAnswer === undefined || previousAnswer === -1) {
         if (value.length > 0) {
           answerChanges.push({
             teamId: teamId,
@@ -488,7 +490,7 @@ function ScorekeeperPanel() {
             teamId: teamId,
             sessionId: sessionId,
             questionIndex: questionIndex,
-            answer: null,
+            answer: -1,
           });
           newAnswers.delete(name);
         }
