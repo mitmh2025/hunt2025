@@ -447,4 +447,9 @@ export function registerUiRoutes({
       }
     });
   });
+
+  authRouter.get("*", (req, resp) => {
+    render404(req, resp);
+    return;
+  });
 }
