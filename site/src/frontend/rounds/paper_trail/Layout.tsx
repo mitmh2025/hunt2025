@@ -7,6 +7,7 @@ const BG_COLOR = "#272421";
 
 export const NotesDialog = styled(StyledDialog)`
   font-family: "Reenie Beanie";
+  font-size: 24px;
   transform: rotate(-2deg);
   background-color: #f0f0de;
   background-image: url(${NoteBg});
