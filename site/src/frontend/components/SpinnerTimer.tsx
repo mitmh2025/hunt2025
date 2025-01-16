@@ -30,6 +30,7 @@ const SpinnerTimer = ({
   className,
   color = "#c7c7bb",
   syncedTime,
+  disableColorChange,
 }: {
   width: number;
   height: number;
@@ -38,6 +39,7 @@ const SpinnerTimer = ({
   className?: string;
   color?: string;
   syncedTime?: { getCurrentTime: () => number };
+  disableColorChange?: boolean;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const periodicHandle = useRef<number | undefined>(undefined);
@@ -84,12 +86,16 @@ const SpinnerTimer = ({
       if (ctx) {
         ctx.clearRect(0, 0, width, height);
         let computedColor = color;
-        if (frac > 0.75) {
-          computedColor = "#be9d29"; // gold-600
+
+        if (!disableColorChange) {
+          if (frac > 0.75) {
+            computedColor = "#be9d29"; // gold-600
+          }
+          if (frac > 0.9) {
+            computedColor = "#ab371d"; // red-600
+          }
         }
-        if (frac > 0.9) {
-          computedColor = "#ab371d"; // red-600
-        }
+
         ctx.fillStyle = computedColor;
         ctx.beginPath();
         // outer arc
@@ -110,7 +116,15 @@ const SpinnerTimer = ({
         }
       }
     }
-  }, [startTime, endTime, width, height, color, syncedTime]);
+  }, [
+    startTime,
+    endTime,
+    width,
+    height,
+    color,
+    syncedTime,
+    disableColorChange,
+  ]);
 
   useEffect(() => {
     if (!periodicHandle.current) {

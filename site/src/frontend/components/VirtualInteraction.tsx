@@ -757,6 +757,7 @@ function VirtualInteractionNotStarted({
           endTime={autostartAt.getTime()}
           syncedTime={syncedTime}
           color="#1b1a18"
+          disableColorChange
         />
       </CountdownContainer>
       {markedPresent ? (

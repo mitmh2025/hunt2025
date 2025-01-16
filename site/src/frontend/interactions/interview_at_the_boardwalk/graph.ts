@@ -855,7 +855,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8a,
         opus: opus_audio_8a,
       },
-      timeout_msec: 2712 + 30000,
+      timeout_msec: 30000,
       plugin: "skee-ball",
     },
     {
@@ -867,7 +867,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8b,
         opus: opus_audio_8b,
       },
-      timeout_msec: 2928 + 30000,
+      timeout_msec: 30000,
       plugin: "ducks",
     },
     {
@@ -879,7 +879,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
         mp3: mp3_audio_8c,
         opus: opus_audio_8c,
       },
-      timeout_msec: 3072 + 30000,
+      timeout_msec: 30000,
       plugin: "balloons",
     },
 
