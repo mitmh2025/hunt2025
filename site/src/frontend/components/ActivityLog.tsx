@@ -47,6 +47,14 @@ export function formatActivityLogEntry(
         showNotification: true,
       };
     case "round_unlocked":
+      if (
+        entry.slug === "endgame" ||
+        entry.slug === "events" ||
+        entry.slug === "floaters"
+      ) {
+        return null;
+      }
+
       return {
         icon: <HuntIcon />,
         description: (
