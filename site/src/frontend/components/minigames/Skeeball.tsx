@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import getConfetti from "./confetti";
 import crash from "./skeeballAssets/crash.mp3";
-import caption from "./skeeballAssets/crash.vtt";
 
 const WIDTH = 400;
 const HEIGHT = 500;
@@ -42,7 +41,13 @@ const Ball = styled.div`
 
 type Position = { x: number; y: number };
 
-const Skeeball = () => {
+const Skeeball = ({
+  onFirstInteraction,
+  onWin,
+}: {
+  onFirstInteraction: () => void;
+  onWin: () => void;
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const crashRef = useRef<HTMLAudioElement | null>(null);
   const periodicHandle = useRef<number | undefined>(undefined);
@@ -372,7 +377,7 @@ const Skeeball = () => {
         drawForceMeter(ctx, skeeBallWidth);
       }
     }
-  }, [tries, drawForceMeter, drawSkeeball]);
+  }, [drawForceMeter, drawSkeeball]);
 
   useEffect(() => {
     if (!periodicHandle.current) {
@@ -387,6 +392,10 @@ const Skeeball = () => {
   }, [draw]);
 
   const handleClick = () => {
+    if (tries === 3) {
+      onFirstInteraction();
+    }
+
     if (!frozenVelocity && tries > 0) {
       setTries((state) => (state -= 1));
       const inverseVelocity = getIndicatorPosition() ?? 0;
@@ -399,7 +408,6 @@ const Skeeball = () => {
       const maxCrit = 0.5 + CRIT_SUCCESS_RANGE / 2;
       if (inverseVelocity >= minCrit && inverseVelocity <= maxCrit) {
         setScore((state) => state + 100);
-        getConfetti();
         setBallDestination({ x: 16, y: 16 });
       } else if (
         inverseVelocity >= minMajorSuccess &&
@@ -443,11 +451,14 @@ const Skeeball = () => {
     }
   };
 
+  const hasFiredWin = useRef(false);
   useEffect(() => {
-    if (tries < 1 && score > 100) {
+    if (tries < 1 && score >= 100 && !hasFiredWin.current) {
       getConfetti();
+      onWin();
+      hasFiredWin.current = true;
     }
-  }, [score, tries]);
+  }, [score, tries, onWin]);
 
   const ballStyle = ballDestination
     ? {
@@ -478,9 +489,9 @@ const Skeeball = () => {
         />
         <Ball style={ballStyle} />
       </div>
-      <audio ref={crashRef} id="crash" src={crash} preload="auto">
-        <track default kind="captions" srcLang="en" src={caption} />
-      </audio>
+
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption -- no caption needed */}
+      <audio ref={crashRef} id="crash" src={crash} preload="auto" />
     </Wrapper>
   );
 };

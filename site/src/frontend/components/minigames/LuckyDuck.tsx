@@ -1,32 +1,15 @@
-import React, {
-  useRef,
-  useState,
-  useLayoutEffect,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { styled } from "styled-components";
 import getConfetti from "./confetti";
 import duckLeft from "./luckyDuckAssets/duck-left.png";
 import duckRight from "./luckyDuckAssets/duck-right.png";
 import quack from "./luckyDuckAssets/quack.mp3";
-import caption from "./luckyDuckAssets/quack.vtt";
 
 type duckLocale = {
   x: number;
   y: number;
   facing: "left" | "right";
 };
-
-function fleeSpeed(score: number): number {
-  const speeds = [0.9, 0.8, 0.7, 0.6, 0.5];
-
-  if (score >= 0 && score < speeds.length) {
-    return speeds[score] ?? (speeds[0]!);
-  }
-
-  return 0.5 * (1 / Math.pow(1.5, score - 8));
-}
 
 function fleeThreshold(): number {
   return 50 - 50 / Math.exp(3 / 10);
@@ -69,8 +52,8 @@ const Duck = styled.div`
   cursor: grab;
   user-select: none;
   transition:
-    top ${fleeSpeed(1)}s ease-in-out,
-    left ${fleeSpeed(1)}s ease-in-out;
+    top 1s ease-in-out,
+    left 1s ease-in-out;
 `;
 
 const YouWin = styled.h2<{ $isWinner: boolean }>`
@@ -90,44 +73,20 @@ const DuckImg = styled.img`
   user-select: none;
 `;
 
-const DUCK_WIDTH = 52;
-const DUCK_HEIGHT = 40;
-const DUCK_OFFSET = 20;
-
-function layOutImage(count: number, i: number): { top: number; left: number } {
-  const cols = Math.ceil(Math.sqrt(count));
-  const row = Math.floor(i / cols);
-  const col = i % cols;
-
-  return {
-    top: DUCK_OFFSET * row,
-    left: DUCK_OFFSET * col,
-  };
-}
-
-function duckSize(count: number): { width: number; height: number } {
-  const { top, left } = layOutImage(count, count - 1);
-  return {
-    width: DUCK_WIDTH + left,
-    height: DUCK_HEIGHT + top,
-  };
-}
-
-export default function Game() {
+export default function Game({
+  onFirstInteraction,
+  onWin,
+}: {
+  onFirstInteraction: () => void;
+  onWin: () => void;
+}) {
   const [duckLocation, setDuckLocation] = useState<duckLocale>({
-    x: 0,
-    y: 0,
+    x: 100,
+    y: 100,
     facing: "left",
   });
   const [isWinner, setIsWinner] = useState<boolean>(false);
-
-  useLayoutEffect(() => {
-    setDuckLocation({
-      x: (window.innerWidth - DUCK_WIDTH) / 2,
-      y: (window.innerHeight - DUCK_HEIGHT) / 2,
-      facing: "left",
-    });
-  }, []);
+  const hasFiredFirstInteraction = React.useRef(false);
 
   const gameBoardRef = useRef<HTMLDivElement>(null);
   const duckRef = useRef<HTMLDivElement>(null);
@@ -137,6 +96,11 @@ export default function Game() {
   const flee = useCallback(() => {
     if (isFleeing.current) {
       return;
+    }
+
+    if (!hasFiredFirstInteraction.current) {
+      hasFiredFirstInteraction.current = true;
+      onFirstInteraction();
     }
 
     const boardWidth = gameBoardRef.current?.offsetWidth ?? 0;
@@ -192,11 +156,16 @@ export default function Game() {
 
       isFleeing.current = true;
     }
-  }, [gameBoardRef, duckRef, duckLocation]);
+  }, [gameBoardRef, duckRef, duckLocation, isWinner, onFirstInteraction]);
 
   useEffect(() => {
     function onMouseMove(evt: MouseEvent) {
-      const duckPos = duckRef.current?.getBoundingClientRect()!;
+      const duckPos = duckRef.current?.getBoundingClientRect() ?? {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+      };
       const threshold = fleeThreshold();
 
       if (
@@ -219,24 +188,6 @@ export default function Game() {
     };
   }, [flee]);
 
-  const duckCount = 1;
-  const { width, height } = duckSize(duckCount);
-
-  let i = 0;
-  const ducks = [];
-  while (i < duckCount) {
-    ducks.push(
-      <DuckImg
-        src={duckLocation.facing === "right" ? duckRight : duckLeft}
-        style={layOutImage(duckCount, i)}
-        alt=""
-        key={i}
-        draggable={false}
-      />,
-    );
-    i += 1;
-  }
-
   return (
     <Wrapper>
       <GameBoard ref={gameBoardRef}>
@@ -249,11 +200,15 @@ export default function Game() {
           style={{
             top: duckLocation.y,
             left: duckLocation.x,
-            width: width,
-            height: height,
+            width: 50,
+            height: 40,
           }}
           ref={duckRef}
           onClick={() => {
+            if (!isWinner) {
+              onWin();
+            }
+
             setIsWinner(true);
             if (quackRef.current) {
               quackRef.current.currentTime = 0;
@@ -267,7 +222,15 @@ export default function Game() {
             }
           }}
         >
-          {ducks}
+          <DuckImg
+            src={duckLocation.facing === "right" ? duckRight : duckLeft}
+            style={{
+              width: 52,
+              height: 40,
+            }}
+            alt=""
+            draggable={false}
+          />
         </Duck>
       </GameBoard>
       <svg className="filter">
@@ -289,9 +252,8 @@ export default function Game() {
           ></animate>
         </filter>
       </svg>
-      <audio ref={quack} id="crash" src={quack} preload="auto">
-        <track default kind="captions" srcLang="en" src={caption} />
-      </audio>
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption -- no caption needed */}
+      <audio ref={quackRef} id="crash" src={quack} preload="auto" />
     </Wrapper>
   );
 }

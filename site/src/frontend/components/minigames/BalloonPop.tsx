@@ -119,8 +119,18 @@ function makeBalloons(): Balloon[] {
   return balloons;
 }
 
-const BalloonPop = () => {
+const TARGET = 350;
+
+const BalloonPop = ({
+  onFirstInteraction,
+  onWin,
+}: {
+  onFirstInteraction: () => void;
+  onWin: () => void;
+}) => {
   const [balloons, setBalloons] = useState<Balloon[]>(makeBalloons());
+  const hasFiredFirstInteraction = React.useRef(false);
+  const hasFiredWin = React.useRef(false);
 
   function pop(i: number) {
     const audio: HTMLAudioElement | null = document.getElementById(
@@ -130,12 +140,18 @@ const BalloonPop = () => {
       void audio.play();
     }
     setBalloons((balloons) => {
-      const newBalloons = [...balloons];
-      if (newBalloons[i]) {
-        newBalloons[i] = { ...newBalloons[i], popped: true };
-      }
-      return newBalloons;
+      return balloons.map((b, j) => {
+        if (j === i) {
+          return { ...b, popped: true };
+        }
+        return b;
+      });
     });
+
+    if (!hasFiredFirstInteraction.current) {
+      onFirstInteraction();
+      hasFiredFirstInteraction.current = true;
+    }
   }
 
   const balloonRows: Balloon[][] = [];
@@ -148,12 +164,15 @@ const BalloonPop = () => {
     );
   }
   const score = balloons.filter((b) => b.popped).length;
+  const remainingToTarget = Math.max(0, TARGET - score);
 
   useEffect(() => {
-    if (score === balloons.length) {
+    if (!hasFiredWin.current && remainingToTarget === 0) {
       getConfetti();
+      onWin();
+      hasFiredWin.current = true;
     }
-  }, [score, balloons]);
+  }, [remainingToTarget, onWin]);
 
   return (
     <Wrapper>
@@ -169,7 +188,7 @@ const BalloonPop = () => {
       </svg> */}
       <Scores>
         <h2>
-          YOUR SCORE: <span className="score">{score}</span>{" "}
+          Pop <span className="score">{Math.max(0, remainingToTarget)}</span>{" "}
           {score === balloons.length && "🎉"}
         </h2>
       </Scores>

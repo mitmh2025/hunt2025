@@ -5,10 +5,38 @@ import { type ExternalInteractionNode } from "../interactions/client-types";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
 import apiUrl from "../utils/apiUrl";
 import SpinnerTimer from "./SpinnerTimer";
+import { DarkStyledDialog } from "./StyledDialog";
 import { Button } from "./StyledUI";
+import BalloonPop from "./minigames/BalloonPop";
+import LuckyDuck from "./minigames/LuckyDuck";
+import Skeeball from "./minigames/Skeeball";
 
 const WIDTH = 1920;
 const HEIGHT = 648 * 2;
+
+type Plugin = {
+  helpText: string;
+  Component: React.ComponentType<{
+    onWin: () => void;
+    onFirstInteraction: () => void;
+  }>;
+};
+
+const plugins: Record<string, Plugin> = {
+  "skee-ball": {
+    helpText:
+      "Click to throw. Aim for the center of the velocity target! Score 100 to win.",
+    Component: Skeeball,
+  },
+  ducks: {
+    helpText: "Click the duck before time’s up!",
+    Component: LuckyDuck,
+  },
+  balloons: {
+    helpText: "Hover to pop balloons before time’s up!",
+    Component: BalloonPop,
+  },
+};
 
 export const ROLL_CALL_POLL_ID = "roll_call";
 const ROLL_CALL_POLL_OPTION = "present";
@@ -322,6 +350,113 @@ const VotesView = ({
   );
 };
 
+const InteractionWrapper = styled.main`
+  width: 100%;
+  margin: 0 auto;
+
+  .help-text {
+    text-align: center;
+    margin: 1rem;
+    font-size: 1rem;
+  }
+`;
+
+const InteractionPlugin = ({
+  name,
+  slug,
+  node,
+  syncedTime,
+}: {
+  name: string;
+  slug: string;
+  node: ExternalInteractionNode;
+  syncedTime: { getCurrentTime: () => number };
+}) => {
+  const lastVoteRef = useRef<string | undefined>(undefined);
+  const handleFirstInteraction = useCallback(() => {
+    const newVote = "lose";
+
+    if (lastVoteRef.current === newVote) {
+      return;
+    }
+    lastVoteRef.current = newVote;
+
+    const apiClient = newClient(apiUrl(), undefined);
+    apiClient
+      .castVote({
+        body: { choice: newVote },
+        params: { slug, pollId: node.node },
+      })
+      .catch((err: unknown) => {
+        // Well your vote was rejected.  That's too bad.  Nothing really to do.
+        console.error(err);
+      });
+  }, [slug, node.node]);
+
+  const handleWin = useCallback(() => {
+    const newVote = "win";
+
+    if (lastVoteRef.current === newVote) {
+      return;
+    }
+    lastVoteRef.current = newVote;
+
+    const apiClient = newClient(apiUrl(), undefined);
+    apiClient
+      .castVote({
+        body: { choice: newVote },
+        params: { slug, pollId: node.node },
+      })
+      .catch((err: unknown) => {
+        // Well your vote was rejected.  That's too bad.  Nothing really to do.
+        console.error(err);
+      });
+  }, [slug, node.node]);
+
+  const plugin = plugins[name];
+  if (!plugin) {
+    return null;
+  }
+
+  const { helpText, Component } = plugin;
+
+  return (
+    <InteractionWrapper>
+      <DarkStyledDialog
+        open={true}
+        onClose={() => {
+          // noop
+        }}
+      >
+        <div
+          style={{
+            margin: "auto",
+            width: "800px",
+            maxWidth: "72vw",
+            textWrap: "wrap",
+          }}
+        >
+          <Component
+            onWin={handleWin}
+            onFirstInteraction={handleFirstInteraction}
+          />
+          <p className="help-text">{helpText}</p>
+          <CountdownContainer>
+            <SpinnerTimer
+              width={80}
+              height={80}
+              startTime={node.ts}
+              endTime={node.ts + node.timeout_msec}
+              color="#f8f8f6"
+              syncedTime={syncedTime}
+            />
+          </CountdownContainer>
+        </div>
+      </DarkStyledDialog>
+    </InteractionWrapper>
+  );
+};
+
 const RewardAsset = styled.img`
   display: block;
   max-width: 300px;
@@ -393,99 +528,124 @@ function VirtualInteractionPlayer({
     };
   }, [currentNode?.sound, audioOn, rewardImage]);
 
+  const scrollbackRef = useRef<HTMLDivElement | null>(null);
+  const scrollbackLastLength = useRef<number>(0);
+  useEffect(() => {
+    if (scrollbackRef.current && nodes.length > scrollbackLastLength.current) {
+      scrollbackRef.current.scrollTo(0, 0);
+    }
+
+    scrollbackLastLength.current = nodes.length;
+  }, [nodes]);
+
   if (!currentNode) {
     return null;
   }
 
   return (
     <Wrapper>
-      <Background style={{ backgroundImage: `url(${currentNode.background})` }}>
-        {currentNode.backgroundOverlay && (
-          <BackgroundOverlay
-            style={{ backgroundImage: `url(${currentNode.backgroundOverlay})` }}
-          />
-        )}
-        <MuteControls>
-          {audioOn ? (
-            <Button
-              onClick={() => {
-                setAudioOn(false);
-              }}
-            >
-              <UnmutedIcon />
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                setAudioOn(true);
-              }}
-            >
-              <MutedIcon />
-            </Button>
-          )}
-        </MuteControls>
-      </Background>
-      <UIWrapper>
-        <Headshot>
-          <div
-            className="avi"
-            style={{
-              backgroundImage: `url(${currentNode.speakerImage})`,
-            }}
-            title={currentNode.speaker}
-          ></div>
-          <h3>{currentNode.speaker}</h3>
-        </Headshot>
-        <Content>
-          <Scrollback>
-            {rewardImage && (
-              <RewardAsset src={rewardImage} alt={rewardDescription} />
+      {currentNode.plugin ? (
+        <InteractionPlugin
+          name={currentNode.plugin}
+          slug={slug}
+          node={currentNode}
+          syncedTime={syncedTime}
+        />
+      ) : (
+        <>
+          <Background
+            style={{ backgroundImage: `url(${currentNode.background})` }}
+          >
+            {currentNode.backgroundOverlay && (
+              <BackgroundOverlay
+                style={{
+                  backgroundImage: `url(${currentNode.backgroundOverlay})`,
+                }}
+              />
             )}
-            {nodes
-              .slice()
-              .reverse()
-              .map((l, i) => {
-                // We reverse these nodes because we display them with flex
-                // direction column-reverse (so we scroll to the bottom by
-                // default).
-                const classNames = [];
-                if (i === 0) {
-                  classNames.push("current-line");
-                }
+            <MuteControls>
+              {audioOn ? (
+                <Button
+                  onClick={() => {
+                    setAudioOn(false);
+                  }}
+                >
+                  <UnmutedIcon />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    setAudioOn(true);
+                  }}
+                >
+                  <MutedIcon />
+                </Button>
+              )}
+            </MuteControls>
+          </Background>
+          <UIWrapper>
+            <Headshot>
+              <div
+                className="avi"
+                style={{
+                  backgroundImage: `url(${currentNode.speakerImage})`,
+                }}
+                title={currentNode.speaker}
+              ></div>
+              <h3>{currentNode.speaker}</h3>
+            </Headshot>
+            <Content>
+              <Scrollback ref={scrollbackRef}>
+                {rewardImage && (
+                  <RewardAsset src={rewardImage} alt={rewardDescription} />
+                )}
+                {nodes
+                  .slice()
+                  .reverse()
+                  .map((l, i) => {
+                    // We reverse these nodes because we display them with flex
+                    // direction column-reverse (so we scroll to the bottom by
+                    // default).
+                    const classNames = [];
+                    if (i === 0) {
+                      classNames.push("current-line");
+                    }
 
-                if (l.textBubbleType) {
-                  classNames.push(`bubble-type-${l.textBubbleType}`);
-                }
+                    if (l.textBubbleType) {
+                      classNames.push(`bubble-type-${l.textBubbleType}`);
+                    }
 
-                if (l.textEffect) {
-                  classNames.push(`text-effect-${l.textEffect}`);
-                }
+                    if (l.textEffect) {
+                      classNames.push(`text-effect-${l.textEffect}`);
+                    }
 
-                return (
-                  <Line key={l.id} className={classNames.join(" ")}>
-                    {l.speaker && (
-                      <span className="speaker">{l.speaker}: </span>
-                    )}
-                    <span className="speaker-line">{l.text}</span>
-                  </Line>
-                );
-              })}
-          </Scrollback>
-          <Choices>
-            {currentNode.choices && (
-              <>
-                <h4>Select a response:</h4>
-                <VotesView
-                  slug={slug}
-                  node={currentNode}
-                  pollState={pollState}
-                  syncedTime={syncedTime}
-                />
-              </>
-            )}
-          </Choices>
-        </Content>
-      </UIWrapper>
+                    return (
+                      <Line key={l.id} className={classNames.join(" ")}>
+                        {l.speaker && (
+                          <span className="speaker">{l.speaker}: </span>
+                        )}
+                        <span className="speaker-line">{l.text}</span>
+                      </Line>
+                    );
+                  })}
+              </Scrollback>
+              <Choices>
+                {currentNode.choices && (
+                  <>
+                    <h4>Select a response:</h4>
+                    <VotesView
+                      slug={slug}
+                      node={currentNode}
+                      pollState={pollState}
+                      syncedTime={syncedTime}
+                    />
+                  </>
+                )}
+              </Choices>
+            </Content>
+          </UIWrapper>
+        </>
+      )}
     </Wrapper>
   );
 }
