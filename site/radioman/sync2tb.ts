@@ -31,6 +31,7 @@ const DeviceAttributesSchema = z
     en_numbers: z.boolean().optional(),
     whep_url: z.string().optional(),
     file_manifest: z.string().optional(),
+    block_updates: z.boolean().optional(),
   })
   .passthrough();
 type DeviceAttributes = z.infer<typeof DeviceAttributesSchema>;
@@ -226,6 +227,10 @@ async function main({
         en_funaround: teamState.puzzles_unlocked.has("the_thief"),
         en_rickroll: teamState.puzzles_unlocked.has("given_up_blacklight"),
         en_numbers: teamState.puzzles_unlocked.has("can_do_transmissions"),
+        block_updates:
+          teamState.interactions_started.difference(
+            teamState.interactions_completed,
+          ).size > 0,
       };
       if (mediaBaseUrl && deviceAttributes.whep_url === undefined) {
         const path = `teams/${teamId}/radio`;
@@ -253,7 +258,8 @@ async function main({
         oldDeviceAttributes.en_funaround !== deviceAttributes.en_funaround ||
         oldDeviceAttributes.en_numbers !== deviceAttributes.en_numbers ||
         oldDeviceAttributes.whep_url !== deviceAttributes.whep_url ||
-        oldDeviceAttributes.file_manifest !== deviceAttributes.file_manifest
+        oldDeviceAttributes.file_manifest !== deviceAttributes.file_manifest ||
+        oldDeviceAttributes.block_updates !== deviceAttributes.block_updates
       ) {
         await tbClient.client.telemetry
           .saveEntityAttributes({
@@ -315,7 +321,6 @@ async function main({
       teamInfos.set(entry.team_id, teamInfo.reduce(entry));
       modified.add(entry.team_id);
     }
-    console.log("After batch teams", teamInfos);
     for (const teamId of modified) {
       syncQueue
         .exec(() => processTeam(teamId))
