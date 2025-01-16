@@ -261,6 +261,11 @@ async function main({
         oldDeviceAttributes.file_manifest !== deviceAttributes.file_manifest ||
         oldDeviceAttributes.block_updates !== deviceAttributes.block_updates
       ) {
+        console.log(
+          "updating device attributes for customer",
+          customer.id.id,
+          deviceAttributes,
+        );
         await tbClient.client.telemetry
           .saveEntityAttributes({
             params: {
@@ -353,7 +358,6 @@ async function main({
         modified.add(teamId);
       }
     }
-    console.log("After batch teams", teamStates);
     for (const teamId of modified) {
       syncQueue
         .exec(() => processTeam(teamId))
