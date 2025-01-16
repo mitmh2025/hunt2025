@@ -1358,6 +1358,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "12",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "Alright. We need to track where Katrina’s coming and going and what’s with these notes she’s leaving. It sounds like she’s doing a lot of that business in Chinatown.",
       textBubbleType: "thought",
       sound: {
@@ -1370,6 +1371,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
     {
       id: "12-p1",
       speaker: "billie",
+      overlay: "roger_baseline",
       text: "Let’s set up a stakeout.",
       textBubbleType: "thought",
       sound: {
