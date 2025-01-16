@@ -41,9 +41,12 @@
     enable = true;
     desktopManager.surf-display = {
       enable = true;
-      defaultWwwUri = "https://www.mitmh2025.com";
+      defaultWwwUri = "https://www.mitmh2025.com/";
       hideIdlePointer = "false";
       pointerButtonMap = "1 2 3 4 5";
+      extraConfig = ''
+        [ -e /etc/default/plump ] && . /etc/default/plump
+      '';
     };
     displayManager.lightdm.enable = true;
   };
@@ -82,6 +85,22 @@
   users.users.kiosk = {
     isNormalUser = true;
   };
+
+  systemd.services.ffmpeg = {
+    description = "FFmpeg";
+
+    wantedBy = ["multi-user.target"];
+
+    start = ''
+      ${pkgs.ffmpeg}/bin/ffmpeg -f v4l2 -video_size 640x480 -framerate 30 -i /dev/video0 -b:v 500k -vcodec libx264 -tune zerolatency -preset fast -bf 0 -f rtsp -rtsp_transport tcp "''${RTSP_URL}"
+    '';
+
+    serviceConfig = {
+      EnvironmentFile = "/etc/default/plump";
+      Restart = "always";
+      RestartSec = "5s";
+    };
+  }
 
   # programs.firefox.enable = true;
 
