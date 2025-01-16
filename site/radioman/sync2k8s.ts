@@ -73,13 +73,6 @@ const PROPAGATED_INTERACTIONS = new Set([
   "confront_carter",
 ]);
 
-const VIRTUAL_INTERACTIONS = new Set([
-  "interview_at_the_boardwalk",
-  "interview_at_the_jewelry_store",
-  "interview_at_the_casino",
-  "interview_at_the_art_gallery",
-]);
-
 const PROPAGATED_GATES = new Set(["hunt_started", "hunt_closed", "bgg02"]);
 
 const c = initContract();
@@ -413,12 +406,7 @@ async function main({
       icy_box_enabled:
         teamState.gates_satisfied.has("ptg16") &&
         !teamState.puzzles_solved.has("a_weathered_note"),
-      interaction:
-        [
-          ...teamState.interactions_started
-            .difference(teamState.interactions_completed)
-            .intersection(VIRTUAL_INTERACTIONS),
-        ][0] ?? "",
+      interaction: teamState.next_interaction ?? "",
       flags: Array.from(
         PROPAGATED_INTERACTIONS.intersection(
           teamState.interactions_completed,
