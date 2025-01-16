@@ -4,7 +4,6 @@ import diamondIcon from "../../assets/logo.svg";
 import { type TeamVirtualInteractionsState } from "../interactions/types";
 import type { EventsState } from "../rounds/events/types";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
-import AudioControls from "./AudioControls";
 import { BuyAnswerModal, ExchangeClueModal } from "./ClueModals";
 
 const Nav = styled.nav`
@@ -256,7 +255,7 @@ const Spacer = styled.div`
 
 const Currency = styled.div`
   margin: 0 0.25rem;
-  text-wrap: nowrap;
+  white-space: nowrap;
   inline-size: min-content;
   font-size: 1.25rem;
 `;
@@ -278,12 +277,10 @@ const NavBar = ({
   eventsState,
   info,
   state,
-  whepUrl,
 }: {
   eventsState: EventsState;
   info: { teamName: string };
   state: NavBarState;
-  whepUrl: string;
 }) => {
   const exchangeModalRef = useRef<HTMLDialogElement>(null);
   const buyAnswerModalRef = useRef<HTMLDialogElement>(null);
@@ -345,7 +342,9 @@ const NavBar = ({
           </ul>
         </TopLevelDropdown>
         <Spacer />
-        <AudioControls whepUrl={whepUrl} />
+        <NavLink href="/virtual_radio" title="Virtual WDNM radio stream">
+          📻
+        </NavLink>
         {started && (
           <>
             <Currency title={`Keys: ${currency}`}>🗝️ {currency}</Currency>

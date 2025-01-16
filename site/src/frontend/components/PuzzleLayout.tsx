@@ -35,6 +35,7 @@ const PuzzleHeader = styled.header`
 const PuzzleTitleWrapper = styled.div`
   grid-column: 1/3;
   overflow-x: clip;
+  margin-bottom: 1rem;
 `;
 
 const PuzzleTitle = styled.h1`

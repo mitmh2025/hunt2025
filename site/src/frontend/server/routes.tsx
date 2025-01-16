@@ -53,6 +53,7 @@ import {
 } from "./routes/puzzle";
 import { robotsHandler } from "./routes/robots";
 import { roundHandler, type RoundParams } from "./routes/round";
+import { virtualRadioHandler } from "./routes/virtual_radio";
 
 // Type parameters to RequestHandler are:
 // 1. Params
@@ -419,6 +420,13 @@ export function registerUiRoutes({
     "/team",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(manageTeamHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/virtual_radio",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(virtualRadioHandler, req, res, next);
     }),
   );
 
