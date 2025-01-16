@@ -253,18 +253,21 @@ export default function AllPuzzlesList({ state }: { state: AllPuzzlesState }) {
     setShowSolved((prevState) => !prevState);
   }, []);
 
-  function filterPuzzle(puzzle: AllPuzzlesPuzzle): boolean {
-    if (puzzle.answer !== undefined) {
-      return showSolved;
-    }
-    if (puzzle.state === "unlocked") {
-      return showUnlocked;
-    }
-    if (puzzle.state === "unlockable") {
-      return showUnlockable;
-    }
-    return true;
-  }
+  const filterPuzzle = useCallback(
+    (puzzle: AllPuzzlesPuzzle) => {
+      if (puzzle.answer !== undefined) {
+        return showSolved;
+      }
+      if (puzzle.state === "unlocked") {
+        return showUnlocked;
+      }
+      if (puzzle.state === "unlockable") {
+        return showUnlockable;
+      }
+      return true;
+    },
+    [showSolved, showUnlocked, showUnlockable],
+  );
 
   const filteredState = useMemo(() => {
     const rounds = state.rounds.flatMap((round) => {
@@ -280,7 +283,7 @@ export default function AllPuzzlesList({ state }: { state: AllPuzzlesState }) {
       rounds,
       stray,
     };
-  }, [state, showUnlockable, showUnlocked, showSolved]);
+  }, [state, filterPuzzle]);
 
   return (
     <>
