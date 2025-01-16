@@ -298,8 +298,7 @@ const Solution = () => {
         yields a set of coordinates that, when rounded to the nearest integer,
         matches the coordinates of a room on that level. Setting the compass to
         the sum of the frost ember values of all of the artifacts on the floor
-        allows a solver to pick up the key on each of the first three floors
-        using the “FD” command.
+        allows a solver to pick up the key on each of the first three floors.
       </p>
       <ArtifactCrossingTable />
       <p>
