@@ -13,6 +13,7 @@ in {
         type = types.nullOr types.str;
         default = "${config.hunt2025.site.apiBaseUrl}/jwks";
       };
+      record = mkEnableOption "Record streams";
     };
   };
   config = lib.mkIf cfg.enable {
@@ -46,14 +47,14 @@ in {
         metrics = true; # :9998
 
         paths."~teams/(\\d+)/radio" = {
-          record = true;
+          inherit (cfg) record;
           recordPartDuration = "10s";
           recordSegmentDuration = "1h";
           recordDeleteAfter = "0s";
         };
 
         paths."~control_room/(.*)" = {
-          record = true;
+          inherit (cfg) record;
           recordPartDuration = "10s";
           recordSegmentDuration = "1h";
           recordDeleteAfter = "0s";
