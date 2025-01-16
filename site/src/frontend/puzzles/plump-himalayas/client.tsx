@@ -395,11 +395,7 @@ const App = ({
     );
   }
 
-  const schedulingMessage = log.findLast(
-    ({ data }) =>
-      data.time &&
-      data.room,
-  );
+  const schedulingMessage = log.findLast(({ data }) => data.time && data.room);
 
   if (schedulingMessage) {
     const { room, time } = schedulingMessage.data as unknown as {
