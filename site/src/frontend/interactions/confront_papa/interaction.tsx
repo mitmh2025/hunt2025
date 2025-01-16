@@ -1,6 +1,7 @@
 import React from "react";
 import { type InteractionState } from "../../../../lib/api/contract";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import { MailtoLink } from "../../components/StyledUI";
 
 const Interaction = ({
   interactionState,
@@ -22,7 +23,8 @@ const Interaction = ({
         <p>
           You will receive a video recording after completing this
           confrontation. If you’re unable to complete this confrontation, you
-          may reach out to Hunt HQ at info@mitmh2025.com after the interaction
+          may reach out to Hunt HQ at{" "}
+          <MailtoLink subject={"ADOPT A BABY VOICE"} /> after the interaction
           has been open for more than 5 hours and we can mark it completed
           (include the phrase “ADOPT A BABY VOICE” in the subject line).
           However, since this does not block any puzzle content and not

@@ -1,5 +1,6 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import { MailtoLink } from "../../components/StyledUI";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   const pickupCompleted =
@@ -12,7 +13,11 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
         <p>
           You should have received exactly 45 small pieces and one rod in a
           ziploc bag. No two pieces should be exactly identical. Please contact
-          us at info@mitmh2025.com if it seems that you are missing pieces.
+          us at{" "}
+          <MailtoLink
+            subject={"Missing pieces for Educational Rite of Passage"}
+          />{" "}
+          if it seems that you are missing pieces.
         </p>
       </>
     );
@@ -24,7 +29,10 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       <p>
         You should receive exactly 45 small pieces and one rod in a ziploc bag.
         No two pieces should be exactly identical. Please contact us at
-        info@mitmh2025.com if it seems that you are missing pieces.
+        <MailtoLink
+          subject={"Missing pieces for Educational Rite of Passage"}
+        />{" "}
+        if it seems that you are missing pieces.
       </p>
     </>
   );

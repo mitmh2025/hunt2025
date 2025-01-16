@@ -32,6 +32,7 @@ import "./assets/waypoint9.opus";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
 import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import { MailtoLink } from "../../components/StyledUI";
 
 const Note = styled.p`
   margin: 0 2em;
@@ -68,9 +69,10 @@ const Puzzle = ({
           accessibility concerns, or you are stuck or not having fun, you may
           contact HQ if this puzzle has been open for at least 3 hours and we
           will arrange an alternative for you. To do this, send an email to
-          info@mitmh2025.com with the subject line “THE FINAL WITNESS” (that’s
-          not an answer, it just helps us with dispatch). However, we strongly
-          recommend you experience it in person if possible.
+          <MailtoLink subject={"THE FINAL WITNESS"} /> with the subject line
+          “THE FINAL WITNESS” (that’s not an answer, it just helps us with
+          dispatch). However, we strongly recommend you experience it in person
+          if possible.
         </p>
       </AuthorsNoteBlock>
 

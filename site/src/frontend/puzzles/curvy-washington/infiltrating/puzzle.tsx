@@ -11,6 +11,7 @@ import {
   MText,
 } from "../../../components/MathML";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
+import { MailtoLink } from "../../../components/StyledUI";
 
 const TEAM_SIZE: [string, number][] = [
   [">100", 39],
@@ -290,9 +291,10 @@ const Puzzle = (): JSX.Element => {
         </p>
         <p>
           Judging will occur in person in your team’s headquarters. To request
-          judgement, please email info@mitmh2025.com with “WE ARE BAD BAD DUDES”
-          in the subject line, and let us know your team name and any details
-          for visiting your HQ.
+          judgement, please email{" "}
+          <MailtoLink subject={"WE ARE BAD BAD DUDES"} /> with “WE ARE BAD BAD
+          DUDES” in the subject line, and let us know your team name and any
+          details for visiting your HQ.
         </p>
       </AuthorsNoteBlock>
       <p>

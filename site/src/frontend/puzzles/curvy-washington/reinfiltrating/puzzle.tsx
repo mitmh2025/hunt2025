@@ -11,6 +11,7 @@ import {
   MText,
 } from "../../../components/MathML";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
+import { MailtoLink } from "../../../components/StyledUI";
 
 const TEAM_SIZE: [string, number][] = [
   [">100", 39],
@@ -382,9 +383,10 @@ const Puzzle = (): JSX.Element => {
         </p>
         <p>
           Judging will occur in person in your team’s headquarters. To request
-          judgment, please email info@mitmh2025.com with “WRETCHED HIVE OF SCUM
-          AND VILLAINY” in the subject line, and let us know your team name and
-          any details for visiting your HQ.
+          judgment, please email{" "}
+          <MailtoLink subject={"WRETCHED HIVE OF SCUM AND VILLAINY"} /> with
+          “WRETCHED HIVE OF SCUM AND VILLAINY” in the subject line, and let us
+          know your team name and any details for visiting your HQ.
         </p>
       </AuthorsNoteBlock>
       <p>

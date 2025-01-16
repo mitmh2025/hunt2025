@@ -6,6 +6,7 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
+import { MailtoLink } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
@@ -110,7 +111,11 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           </p>
           <p className={NO_COPY_CLASS}>
             You should have received a stack of 56 receipts. Please contact us
-            at info@mitmh2025.com if it seems that you are missing pieces.
+            at{" "}
+            <MailtoLink
+              subject={"Missing pieces for Eponymous Forensic Accountant"}
+            />{" "}
+            if it seems that you are missing pieces.
           </p>
         </>
       ) : (
@@ -120,7 +125,10 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           </p>
           <p className={NO_COPY_CLASS}>
             You should receive a stack of 56 receipts. Please contact us at
-            info@mitmh2025.com if it seems that you are missing pieces.
+            <MailtoLink
+              subject={"Missing pieces for Eponymous Forensic Accountant"}
+            />{" "}
+            if it seems that you are missing pieces.
           </p>
         </>
       )}
