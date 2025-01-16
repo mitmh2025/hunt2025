@@ -104,7 +104,7 @@ const MEGATABLE: [
     "7",
     "You always got choices in this life… ",
     "▬ /",
-    "",
+    "O",
     "-",
     "",
     "",
@@ -115,7 +115,7 @@ const MEGATABLE: [
     "8",
     "It doesn’t matter how we got here… But it’s been a [____________].",
     "?",
-    "O",
+    "",
     ".",
     "BEAUTIFUL FRIENDSHIP",
     <>
@@ -1599,7 +1599,7 @@ const Solution = (): JSX.Element => {
       <p>
         <em>
           (La Grande Odalisque, by Jean-Auguste-Dominique Ingres, 1814,
-          romantic)
+          Neoclassicist)
         </em>
         <br />
         There’s a woman over there holding a rather fancy fan made of peacock
@@ -1730,8 +1730,8 @@ const Solution = (): JSX.Element => {
         <em>(Berkeley Street; reminds her of the radiation lab in Berkeley)</em>
         <br />
         <em>
-          (This is an anachronism; as of 1940 they had only found one element,
-          neptunium.)
+          (This is a mild anachronism; as of 1940 they had only found one
+          element, neptunium. They would find plutonium in 1940 as well.)
         </em>
         <br />
         <Olive>I wish I could do this in the thief’s shoes.</Olive> But they’d
@@ -1835,10 +1835,8 @@ const Solution = (): JSX.Element => {
         <Green>
           Not forgetting that silver-tongued fellow who was up to scratch.
         </Green>{" "}
-        <em>
-          [Webster; “scratch” is a name for the devil.] That’s twice I’ve
-          thought of him.
-        </em>
+        <em>[Webster; “scratch” is a name for the devil.]</em> That’s twice I’ve
+        thought of him.
       </p>
       <p>
         <em>(Fairfield; quotation from George Washington)</em>
@@ -1909,7 +1907,8 @@ const Solution = (): JSX.Element => {
         all.{" "}
         <em>
           (She was trying to avoid thinking about Chinatown but she started to
-          think about a song which is from a revue called “Chinatown”.)
+          think about a song which is from a revue called “A Trip to
+          Chinatown”.)
         </em>
       </p>
       <hr />
@@ -1923,7 +1922,7 @@ const Solution = (): JSX.Element => {
           is really a surrogate for present-day Mystery Hunters; to cement this
           association{" "}
           <Blue>
-            their thoughts include quotations from 1980s pop songs
+            their thoughts include references to quotations from 1980s pop songs
             <a href="#footnote">
               <sup id="antifootnote">1</sup>
             </a>
@@ -1958,9 +1957,11 @@ const Solution = (): JSX.Element => {
         <Cyan>last drop of pleasure out of the day.</Cyan> Getting back to the
         stories. <em>[Gladys tells this story in chapter 3]</em>{" "}
         <Orange>A man</Orange> looks through the glass at a window where a woman{" "}
-        <em>[Gladys]</em> can faintly be seen. Does he see her? No, he does not
-        really see her because he sees his own reflection.{" "}
-        <em>[Tom’s Diner, Suzanne Vega 1984]</em> So is the man looking at the
+        <em>[Gladys]</em> can faintly be seen. Does he see her? No,{" "}
+        <Blue>
+          he does not really see her because he sees his own reflection
+        </Blue>
+        . <em>[Tom’s Diner, Suzanne Vega 1984]</em> So is the man looking at the
         woman? Or is he looking at the place where the woman is standing? What
         if he could see right through her? What would he be looking at then?{" "}
         <em>
@@ -2099,7 +2100,7 @@ const Solution = (): JSX.Element => {
         <em>(State)</em>
         <br />
         Well this is <Blue>a fine thing, a fine state of affairs.</Blue>{" "}
-        <em>[Burton Cummings 1980]</em>{" "}
+        <em>[Fine State of Affairs, Burton Cummings 1980]</em>{" "}
         <Green>
           What is the state of play? What was your state of mind? It might
           interest the state police. [TO STATE THE OBVIOUS].
@@ -2109,8 +2110,8 @@ const Solution = (): JSX.Element => {
         were you at the time of? Never mind, I know where you were. And I know
         what you did.{" "}
         <em>(Yes, because he left the Gala just after Sidecar.)</em>{" "}
-        <Blue>And I know what I must do.</Blue> <em>[Leonard Cohen 1984]</em>{" "}
-        This is my stop.
+        <Blue>And I know what I must do.</Blue>{" "}
+        <em>[Coming Back to You, Leonard Cohen 1984]</em> This is my stop.
       </p>
       <hr />
       <p>
