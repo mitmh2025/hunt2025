@@ -31,7 +31,10 @@ import "./assets/waypoint8.opus";
 import "./assets/waypoint9.opus";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { Math, MFrac, MI, MN, MRow } from "../../components/MathML";
-import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import {
+  AuthorsNoteBlock,
+  InteractionLinkBlock,
+} from "../../components/PuzzleLayout";
 import { MailtoLink } from "../../components/StyledUI";
 
 const Note = styled.p`
@@ -50,8 +53,18 @@ const Puzzle = ({
   const videoReleased =
     teamState.rounds.missing_diamond?.gates?.includes("mdg12") ?? false;
 
+  const interactionState =
+    teamState.rounds.missing_diamond?.interactions?.the_crime_scene?.state;
+
   return (
     <>
+      {interactionState !== undefined ? (
+        <InteractionLinkBlock>
+          Unlocked interaction:{" "}
+          <a href="/interactions/the_crime_scene">The Crime Scene</a>
+        </InteractionLinkBlock>
+      ) : null}
+
       <p className="puzzle-flavor">We need to speak with Billie right away.</p>
 
       <AuthorsNoteBlock>

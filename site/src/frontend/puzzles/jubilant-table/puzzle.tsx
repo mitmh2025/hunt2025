@@ -1,7 +1,11 @@
 import React from "react";
 import { styled } from "styled-components";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import LinkedImage from "../../components/LinkedImage";
-import { AuthorsNote } from "../../components/PuzzleLayout";
+import {
+  AuthorsNote,
+  InteractionLinkBlock,
+} from "../../components/PuzzleLayout";
 import green from "./assets/green.png";
 
 const SizedImage = styled(LinkedImage)`
@@ -10,9 +14,19 @@ const SizedImage = styled(LinkedImage)`
   margin: auto;
 `;
 
-const Puzzle = (): JSX.Element => {
+const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
+  const interactionState =
+    teamState.rounds.murder_in_mitropolis?.interactions?.the_safehouse?.state;
+
   return (
     <>
+      {interactionState !== undefined ? (
+        <InteractionLinkBlock>
+          Unlocked interaction:{" "}
+          <a href="/interactions/the_safehouse">The Safehouse</a>
+        </InteractionLinkBlock>
+      ) : null}
+
       <p className="puzzle-flavor">
         These pages are scattered about at random like that indigestible Cain’s
         Jawbone that someone keeps going on about, but the narrative seems to be
