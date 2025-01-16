@@ -106,7 +106,7 @@ const ArtifactTable: React.FC<ArtifactTableProps> = ({
       <SolutionTable>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Artifact Name</th>
             <th>Compass Value</th>
             <th>Level</th>
             <th>Location</th>
@@ -287,6 +287,10 @@ const Solution = () => {
         was.” (In Minecraft you can check your coordinates by pressing the F3
         key; in this puzzle you can check your coordinates with the undocumented
         command “F3.”)
+      </p>
+      <p>
+        The location numbers in the tables below refer to room labels in the
+        maps farther down on this page.
       </p>
       <ArtifactTable artifacts={NonSecretArtifacts} />
       <p>
