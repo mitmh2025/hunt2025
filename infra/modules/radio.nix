@@ -17,9 +17,14 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
+    systemd.services.mediamtx.serviceConfig = {
+      StateDirectory = "mediamtx";
+    };
     services.mediamtx = {
       enable = true;
-      settings = {
+      settings = let
+        recordPath = "/var/lib/mediamtx/recordings/%path/%Y-%m-%d_%H-%M-%S-%f";
+      in {
         # GCE doesn't give a public IP directly to the VM.
         webrtcIPsFromInterfaces = cfg.externalHostname == null;
         # Just use a domain name to talk to us.
@@ -48,6 +53,7 @@ in {
 
         paths."~teams/(\\d+)/radio" = {
           inherit (cfg) record;
+
           recordPartDuration = "10s";
           recordSegmentDuration = "1h";
           recordDeleteAfter = "0s";
