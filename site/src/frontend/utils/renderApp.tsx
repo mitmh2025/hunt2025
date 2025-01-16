@@ -52,6 +52,7 @@ export type RenderedPage =
   | undefined;
 export type PageRenderer<Params extends ParamsDictionary> = (
   req: Request<Params>,
+  res: Response,
 ) => Promise<RenderedPage> | RenderedPage;
 
 export default async function renderApp<Params extends ParamsDictionary>(
@@ -60,7 +61,7 @@ export default async function renderApp<Params extends ParamsDictionary>(
   res: Response,
   _next: NextFunction,
 ) {
-  const result = await renderer(req);
+  const result = await renderer(req, res);
   if (!result) {
     render404(req, res);
     return;

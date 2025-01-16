@@ -109,6 +109,11 @@ const loginPostHandler: RequestHandler<
     res.redirect(`${target}?loginUsername=${username}`);
     return;
   }
+
+  res.cookie("login_flash", "error", {
+    httpOnly: true,
+    sameSite: "lax",
+  });
   res.redirect(`/login?next=${encodeURIComponent(target)}`);
 });
 
