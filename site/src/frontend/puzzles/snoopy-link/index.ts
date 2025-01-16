@@ -84,7 +84,12 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["NOW RUIN SOMETHING ELSE"],
       reply:
-        "That’s right! Send an email to info@mitmh2025.com with the subject “NOW RUIN SOMETHING ELSE”, your team name, and a fact or piece of trivia that ruins something for us, and we’ll give you the final answer.",
+        "That’s right! Send us an email with your team name, and a fact or piece of trivia that ruins something for us, and we’ll give you the final answer. ",
+      link: {
+        display:
+          "Send the email to info@mitmh2025.com with the subject line “NOW RUIN SOMETHING ELSE”.",
+        href: "mailto:info@mitmh2025.com?subjet=NOW RUIN SOMETHING ELSE",
+      },
     },
   ],
 };

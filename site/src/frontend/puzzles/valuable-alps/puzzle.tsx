@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
 import { AuthorsNote } from "../../components/PuzzleLayout";
+import { MailtoLink } from "../../components/StyledUI";
 import crossDashWord from "./assets/cross-dash-word.pdf";
 import { CLUES } from "./data";
 
@@ -21,8 +22,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>Our records show you have picked up your copy of this puzzle.</p>
           <p>
             You should have received thirteen unique precut pieces of cardstock.
-            Please contact us at info@mitmh2025.com if it seems that you are
-            missing pieces.
+            Please contact us at{" "}
+            <MailtoLink subject={"Missing pieces for Cross Dash Word"} /> if it
+            seems that you are missing pieces.
           </p>
         </>
       ) : (
@@ -30,8 +32,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>Please come to the Gala to pick up your copy of this puzzle.</p>
           <p>
             You should receive thirteen unique precut pieces of cardstock.
-            Please contact us at info@mitmh2025.com if it seems that you are
-            missing pieces.
+            Please contact us at{" "}
+            <MailtoLink subject={"Missing pieces for Cross Dash Word"} /> if it
+            seems that you are missing pieces.
           </p>
         </>
       )}

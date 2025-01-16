@@ -1,5 +1,6 @@
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import { MailtoLink } from "../../components/StyledUI";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
   const pickupCompleted =
@@ -12,8 +13,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>Our records show you have picked up your copy of this puzzle.</p>
           <p>
             You should have received a very long ribbon with nineteen paper tags
-            attached. Please contact us at info@mitmh2025.com if it seems that
-            you are missing pieces.
+            attached. Please contact us at{" "}
+            <MailtoLink subject={"Missing pieces for Celestial Rope"} /> if it
+            seems that you are missing pieces.
           </p>
         </>
       ) : (
@@ -22,8 +24,9 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           <p>Please come to the Gala to pick up your copy of this puzzle.</p>
           <p>
             You should receive a very long ribbon with nineteen paper tags
-            attached. Please contact us at info@mitmh2025.com if it seems that
-            you are missing pieces.
+            attached. Please contact us at{" "}
+            <MailtoLink subject={"Missing pieces for Celestial Rope"} /> if it
+            seems that you are missing pieces.
           </p>
         </>
       )}

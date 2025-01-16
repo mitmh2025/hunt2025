@@ -88,7 +88,12 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["RECORD A STATEMENT"],
       reply:
-        "Record a statement about an unnatural occurrence you experienced during The Hunt, in the style of The Magnus Archives, and email it to us at info@mitmh2025.com. Please include your team name and the phrase RECORD A STATEMENT in the subject line of the email.",
+        "Record a statement about an unnatural occurrence you experienced during The Hunt, in the style of The Magnus Archives, and email it to us at ",
+      link: {
+        display:
+          "info@mitmh2025.com. Please include your team name and the phrase RECORD A STATEMENT in the subject line of the email.",
+        href: "mailto:info@mitmh2025.com?subject=RECORD A STATEMENT",
+      },
     },
     {
       guess: ["TRIGRAM OVERLAP"],
