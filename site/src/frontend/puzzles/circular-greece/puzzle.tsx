@@ -28,7 +28,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
       <p>Please come to the Gala to pick up your copy of this puzzle.</p>
       <p>
         You should receive exactly 45 small pieces and one rod in a ziploc bag.
-        No two pieces should be exactly identical. Please contact us at
+        No two pieces should be exactly identical. Please contact us at{" "}
         <MailtoLink
           subject={"Missing pieces for Educational Rite of Passage"}
         />{" "}

@@ -75,7 +75,7 @@ const Puzzle = (): JSX.Element => {
       />
       <p>
         Uinsg the gird aovbe, pelsae catree a cwosrosrd and celus in the smae
-        sylte as tihs pzlzue taht etaxctrs the wrod “A” and sned it to
+        sylte as tihs pzlzue taht etaxctrs the wrod “A” and sned it to{" "}
         <MailtoLink subject={"MAKE US ONE OF THESE"} />. Ildncue yuor taem naem
         and the psrahe MAKE US ONE OF THESE in the sjeucbt lnie.
       </p>
