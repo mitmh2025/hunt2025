@@ -1,5 +1,5 @@
 import React from "react";
-import { Mono } from "../../components/StyledUI";
+import { Mono, PuzzleAnswer } from "../../components/StyledUI";
 
 const Solution = () => {
   return (
@@ -96,7 +96,8 @@ const Solution = () => {
         spinning one of the dials of the lock), then the handle of the drawer in
         the middle of the desk slides down to reveal a tiny chamber with the key
         for the chest. The player <Mono>OPEN</Mono>s the <Mono>CHEST</Mono> to
-        receive a note with their answer: <Mono>PIVOT TABLE</Mono>.
+        receive a note with their answer:{" "}
+        <PuzzleAnswer>PIVOT TABLE</PuzzleAnswer>.
       </p>
     </>
   );
