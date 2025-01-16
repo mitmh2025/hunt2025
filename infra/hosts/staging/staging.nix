@@ -97,8 +97,8 @@
       services.sync2k8s = {
         enable = true;
       };
-      # Pretend the schedule started at Mon Jan 13 12:00:00 PM EST 2025
-      systemd.services.sync2k8s.environment.SCHEDULE_START_EPOCH = "1736787600";
+      # Pretend the schedule started at Thu Jan 16 8:30:00 AM EST 2025
+      systemd.services.sync2k8s.environment.SCHEDULE_START_EPOCH = "1737034200";
     }
     {
       sops.secrets."zammad/sync2zammad_token" = {};
