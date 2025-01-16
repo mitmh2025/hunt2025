@@ -389,21 +389,6 @@ def main():
             app["rooms"][room_id] = RoomManager(app["games"])
         return app["rooms"][room_id]
 
-    @routes.get('/host/{room}')
-    async def host(request):
-        room = request.match_info.get('room')
-        response = aiohttp_jinja2.render_template("host.html", request, context={"room_id": room})
-        return response
-
-    @routes.get('/display/{id}')
-    async def display(request):
-        game_id = request.match_info.get('id', None)
-        if game_id not in app["games"]:
-            app["games"][game_id] = GameManager(StoredPuzzleState(game_id, "team", "room", "time"))
-        response = aiohttp_jinja2.render_template("display.html", request, context={"game_id": game_id})
-        return response
-
-
     @routes.get('/ws')
     async def ws_player(request):
         token = request.query["jwt"]
@@ -434,9 +419,6 @@ def main():
             await listener.close()
 
     app = web.Application()
-    aiohttp_jinja2.setup(
-        app, loader=jinja2.FileSystemLoader(os.path.join(os.getcwd(), "templates"))
-    )
     app["games"] = {}
     app["rooms"] = {}
     app.add_routes(routes)
