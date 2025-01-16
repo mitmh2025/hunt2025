@@ -33,12 +33,17 @@ export const BaseLayout = ({
   headElements?: ReactNode[];
   title?: string;
 }) => {
+  const orderedStylesheets = dedupedOrderedItems(stylesheets ?? []);
+  const orderedScripts = dedupedOrderedItems(scripts ?? []);
   return (
     <html lang="en">
       <head>
         {title && <title>{title}</title>}
+        {orderedScripts.map((s) => (
+          <link key={`preload-${s}`} rel="preload" href={s} as="script" />
+        ))}
         {headElements}
-        {dedupedOrderedItems(stylesheets ?? []).map((s) => (
+        {orderedStylesheets.map((s) => (
           <link key={s} rel="stylesheet" href={s} />
         ))}
         {styleElements}
@@ -49,8 +54,8 @@ export const BaseLayout = ({
       </head>
       <body>
         <div id="root" dangerouslySetInnerHTML={{ __html: innerHTML }} />
-        {dedupedOrderedItems(scripts ?? []).map((s) => (
-          <script key={s} type="text/javascript" src={s} />
+        {orderedScripts.map((s) => (
+          <script key={s} type="text/javascript" src={s} defer />
         ))}
       </body>
     </html>
