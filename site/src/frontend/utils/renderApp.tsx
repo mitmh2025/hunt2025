@@ -30,7 +30,7 @@ const notFoundHandler = (req: Request) => {
   return wrapContentWithNavBar(
     {
       node,
-      title: "Radio Instruction Manual",
+      title: "404 Not Found",
     },
     teamState,
   );
