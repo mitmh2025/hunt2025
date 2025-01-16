@@ -17,7 +17,7 @@ import twoSigma from "./assets/twoSigma.jpg";
 const FlexP = styled.p`
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   gap: 1em;
   img {
     flex: 0 0 auto;
