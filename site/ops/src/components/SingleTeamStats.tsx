@@ -95,6 +95,7 @@ function GrantKeysDialog({
             <Input
               type="number"
               name="amount"
+              sx={{ minWidth: "100px" }}
               inputProps={{
                 min: 1,
                 max: 99,
@@ -103,7 +104,8 @@ function GrantKeysDialog({
               required
               value={qty}
               onChange={(e) => {
-                setQty(parseInt(e.target.value, 10));
+                const val = parseInt(e.target.value, 10);
+                setQty(isNaN(val) ? 0 : val);
               }}
             />
           </label>
@@ -187,6 +189,7 @@ function GrantCluesDialog({
             <Input
               type="number"
               name="amount"
+              sx={{ minWidth: "100px" }}
               inputProps={{
                 min: 1,
                 max: 99,
@@ -195,7 +198,8 @@ function GrantCluesDialog({
               required
               value={qty}
               onChange={(e) => {
-                setQty(parseInt(e.target.value, 10));
+                const val = parseInt(e.target.value, 10);
+                setQty(isNaN(val) ? 0 : val);
               }}
             />
           </label>
