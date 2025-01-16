@@ -1,5 +1,6 @@
 import { type Request } from "express";
 import React from "react";
+import { styled } from "styled-components";
 import { wrapContentWithNavBar } from "../../../components/ContentWithNavBar";
 import { Math, MSup, MI, MO, MN } from "../../../components/MathML";
 import {
@@ -8,6 +9,15 @@ import {
   PageTitle,
   PageMain,
 } from "../../../components/PageLayout";
+import boxaroo from "./assets/boxaroo.png";
+import hudsonRiverTrading from "./assets/hudsonRiverTrading.png";
+import janeStreet from "./assets/janeStreet.png";
+import twoSigma from "./assets/twoSigma.jpg";
+
+const SizedImage = styled.img<{ $width: number }>`
+  display: block;
+  width: ${({ $width }) => $width}px;
+`;
 
 export function aboutHandler(req: Request) {
   const teamState = req.teamState;
@@ -305,12 +315,20 @@ export function aboutHandler(req: Request) {
             alumni and puzzle community members, and the very generous support
             of our sponsors.
           </p>
-          <h3>Gold Sponsors</h3>
-          <p>TODO(mprat)</p>
-          <h3>Silver Sponsors</h3>
-          <p>TODO(mprat)</p>
-          <h3>Bronze Sponsors</h3>
-          <p>TODO(mprat)</p>
+          <h3>Featured Sponsors</h3>
+          <p>
+            <SizedImage $width={720} src={hudsonRiverTrading} alt="HRT" />
+            <br />
+            <SizedImage $width={720} src={janeStreet} alt="Jane Street" />
+          </p>
+          <h3>Signature Sponsors</h3>
+          <p>
+            <SizedImage $width={480} src={twoSigma} alt="Two Sigma" />
+          </p>
+          <h3>Contributing Sponsors</h3>
+          <p>
+            <SizedImage $width={360} src={boxaroo} alt="Boxaroo" />
+          </p>
           <p>Additional thanks to SOLE, CAC, and MIT PD.</p>
         </PageMain>
       </>
