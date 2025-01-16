@@ -282,7 +282,7 @@ export function radioHandler(req: Request) {
             </h3>
             <AuthorsNote>
               This station was originally discovered in connection with the
-              puzzle <a href="/puzzle/songs-on-the-radio">Songs on the Radio</a>
+              puzzle <a href="/puzzles/songs-on-the-radio">Songs on the Radio</a>
               .
             </AuthorsNote>
 
