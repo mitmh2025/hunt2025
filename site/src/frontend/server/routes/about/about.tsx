@@ -125,7 +125,9 @@ export function aboutHandler(req: Request) {
             To be clear, events are extremely valuable for your overall ability
             to proceed in your investigation. There are four events and the
             schedule is accessible from the home page. We highly recommend
-            attending.
+            attending. We plan to release play-at-home versions of two of the
+            events after their conclusion, but we expect these will be less fun,
+            and more difficult, than participating in-person.
           </p>
           <h3>Hints</h3>
           <p>
@@ -138,9 +140,9 @@ export function aboutHandler(req: Request) {
           <p>
             To request a hint, click the “Request a Hint” button and type out as
             much detail as you can about where you are stuck. The more you tell
-            us about your progress, the more context we will have to provide a
-            suitable hint. Your team may only have one unanswered hint across
-            all puzzles at a time.
+            us about your progress, and specific questions you want answered,
+            the more context we will have to provide a suitable hint. Your team
+            may only have one unanswered hint across all puzzles at a time.
           </p>
           <h3>Physical Puzzles and Interactions</h3>
           <p>
@@ -163,12 +165,19 @@ export function aboutHandler(req: Request) {
           <h2>Hunt Website</h2>
           <p>
             Our Hunt website has been primarily tested in the latest versions of
-            Chrome and Firefox. We cannot make any promises about behavior in
-            other browsers. Where possible, we’ve provided a copy-to-clipboard
-            button, which is primarily tested against Google Sheets, but we
-            cannot always guarantee perfect fidelity to the puzzle page. The
-            puzzle as displayed on this website is canonical, and as always,
-            “the spreadsheet is not the puzzle” (unless it is the puzzle).
+            Chrome and Firefox on non-mobile devices. We cannot make any
+            promises about behavior in other browsers or devices. Where
+            possible, we’ve provided a copy-to-clipboard button, which is
+            primarily tested against Google Sheets, but we cannot always
+            guarantee perfect fidelity to the puzzle page. The puzzle as
+            displayed on this website is canonical, and as always, “the
+            spreadsheet is not the puzzle” (unless it is the puzzle).
+          </p>
+          <p>
+            Nothing in this Hunt requires scripting or automating interactions
+            with the website. If we detect excessive or automated requests to
+            the site, we reserve the right to deactivate your team, and will
+            reach out to your primary contact.
           </p>
           <h2>Getting In Touch</h2>
           <p>
