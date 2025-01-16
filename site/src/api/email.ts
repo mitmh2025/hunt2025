@@ -10,6 +10,7 @@ type Content =
   | {
       subject: string;
       text: string;
+      html?: string;
     }
   | {
       templateAlias: string;
@@ -36,6 +37,9 @@ class MockMailer {
     }
     if ("text" in message) {
       console.log("Text:\n", message.text);
+      if (message.html) {
+        console.log("HTML:\n", message.html);
+      }
     } else {
       console.log("Template alias:", message.templateAlias);
       console.log("Template model:\n", message.templateModel);
@@ -120,4 +124,44 @@ information changes.
 If you have any other questions, please refer to the FAQ at https://www.mitmh2025.com
 or email info@mitmh2025.com.
 `;
+}
+
+export function hintResponseEmailTemplate({
+  teamName,
+  puzzleName,
+  puzzleSlug,
+  responseHTML,
+}: {
+  teamName: string;
+  puzzleName: string;
+  puzzleSlug: string;
+  responseHTML: string;
+}) {
+  return {
+    text: `
+Hi ${teamName},
+
+We've responded to your hint request for ${puzzleName}.
+
+You can view your past requests and ask for more hints at
+https://www.two-pi-noir.agency/puzzles/${puzzleSlug}/hints.
+
+Regards,
+Hunt HQ
+`,
+    html: `
+<p>Hi ${teamName},</p>
+
+<p>We've responded to your hint request for ${puzzleName}:</p>
+
+<div>${responseHTML}</div>
+
+<p>
+You can view your past requests and ask for more hints at
+<a href="https://www.two-pi-noir.agency/puzzles/${puzzleSlug}/hints">https://www.two-pi-noir.agency/puzzles/${puzzleSlug}/hints</a>.
+
+<p>Regards,<br />
+Hunt HQ</p>
+`,
+  };
 }
