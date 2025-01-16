@@ -267,34 +267,35 @@ const Solution = () => {
   return (
     <>
       <p>
-        The puzzle has you exploring the dungeon of Decked Out 2, a minigame
+        The puzzle is an exploration of the dungeon of Decked Out 2, a minigame
         made by TangoTek on the Hermitcraft Minecraft server. This is clued
-        throughout the puzzle, e.g. the title cluing Deepfrost Citadel
+        throughout the puzzle, e.g. the title, a reference to Deepfrost Citadel
         (TangoTek’s base sitting directly above the game), the names of
-        artifacts directly pulled from the game, and the reference to Aureeee’s
-        map. As in the game, this puzzle has you going around the dungeon
-        picking up various artifacts. While moving around the dungeon, solvers
-        can, and should, come across eggs of various hermits, keys to move to
-        deeper levels of the dungeon, and the aforementioned artifacts.
+        artifacts (pulled directly from the game), and the reference to
+        Aureeee’s map. As in the game, this puzzle has you going around the
+        dungeon picking up various items. While moving around the dungeon,
+        solvers come across eggs of various hermits, keys to move to deeper
+        levels of the dungeon, and the aforementioned artifacts.
       </p>
       <p>
-        Each floor has 4 Artifacts, all from the base game, hidden throughout
-        the map. Once all 4 artifacts are found, solvers will have to move down
-        to lower floors to collect more artifacts, however the door down is
-        locked and needs a key. At the door solvers are told,“Cross the
+        Each floor has 4 artifacts, all from the base game, hidden throughout
+        the map. Once all 4 artifacts one one floor are found, solvers need to
+        move down to the next floor to collect more artifacts, but the door down
+        is locked and needs a key. At the door solvers are told, “Cross the
         artifacts. Find the key,” and “a reminder that checking your coordinates
         can help with navigation... if only you could remember what the command
         was.” (In Minecraft you can check your coordinates by pressing the F3
-        key, in this puzzle you can check your coordinates with the undocumented
+        key; in this puzzle you can check your coordinates with the undocumented
         command “F3.”)
       </p>
       <ArtifactTable artifacts={NonSecretArtifacts} />
       <p>
-        Using the coordinates of the artifacts to make a cross yields a set of
-        coordinates that when rounded has the coordinates to a room on that
-        level. Setting the compass to the total frost ember value of all of the
-        artifacts on the floor allows you to pick up the key on each of the
-        first three floors.
+        Using the coordinates of the four artifacts on a level to make a cross
+        yields a set of coordinates that, when rounded to the nearest integer,
+        matches the coordinates of a room on that level. Setting the compass to
+        the sum of the frost ember values of all of the artifacts on the floor
+        allows a solver to pick up the key on each of the first three floors
+        using the “FD” command.
       </p>
       <ArtifactCrossingTable />
       <p>
@@ -344,9 +345,9 @@ const Solution = () => {
       </p>
       <ArtifactTable artifacts={SecretArtifacts} hasHermits={false} />
       <p>
-        The first five of these are new artifacts that are not part of Decked
-        Out 2 but have a frost ember values when you discover them, the sixth
-        item is a new set of instructions:
+        The first five of these are new secret artifacts that are not part of
+        Decked Out 2 but have frost ember values when you discover them, the
+        sixth item is a new set of instructions:
       </p>
       <blockquote>
         Within the piles of the miner’s collectibles, a small slip of paper
@@ -358,11 +359,10 @@ const Solution = () => {
         By following the instructions and using the negative product of the
         first floor secret artifact frost ember values (-646) as the X
         coordinate and the product of the second floor secret artifact frost
-        values (1872) as the Z coordinate, you find a room on floor 4 with these
-        values: room 178. Setting the compass to the frost ember value of the
-        lone secret floor 3 artifact (51) in this room and using FD finds the
-        final artifact, which is also the answer:{" "}
-        <PuzzleAnswer>KENGREXAL</PuzzleAnswer>.
+        ember values (1872) as the Z coordinate, you find a room on floor 4.
+        Setting the compass to the frost ember value of the lone third floor
+        secret artifact (51) in this room and using FD finds the final artifact,
+        which is also the answer: <PuzzleAnswer>KENGREXAL</PuzzleAnswer>.
       </p>
       <p>
         Below are the fully mapped out floors, building off of{" "}
