@@ -278,7 +278,7 @@ const Solution = () => {
       </p>
       <p>
         Each floor has 4 artifacts, all from the base game, hidden throughout
-        the map. Once all 4 artifacts one one floor are found, solvers need to
+        the map. Once all 4 artifacts on one floor are found, solvers need to
         move down to the next floor to collect more artifacts, but the door down
         is locked and needs a key. At the door solvers are told, “Cross the
         artifacts. Find the key,” and “a reminder that checking your coordinates
