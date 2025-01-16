@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { getInfo } from "./puzzle";
 import {
   type ControlRoomServerState,
   type ControlRoomTask,
@@ -137,17 +138,17 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
   );
 };
 
-const App = ({ roomId }: { roomId: number }) => {
-  const info = {
-    wsUrl: `ws://localhost:8086/host/ws/${roomId}`,
-    whepUrl: "http://localhost/foo",
-  };
+const App = ({ roomId }: { roomId: string }) => {
+  const info = getInfo({
+    stream_path: `control_room/${roomId}`,
+    ws_path: `JaPCdoKSO193/host/ws/${roomId}`,
+  });
   return <Host info={info} />;
 };
 
 const elem = document.getElementById("root");
 if (elem) {
-  const roomId = (window as unknown as { roomId: number }).roomId;
+  const roomId = (window as unknown as { roomId: string }).roomId;
   const root = createRoot(elem);
   root.render(<App roomId={roomId} />);
 } else {

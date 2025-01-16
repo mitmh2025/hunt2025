@@ -415,7 +415,7 @@ def main():
             app["rooms"][room_id] = RoomManager(room_id, app["games"])
         return app["rooms"][room_id]
 
-    @routes.get('/ws')
+    @routes.get('/puzzle/control_room/ws')
     async def ws_player(request):
         token = request.query["jwt"]
         token = jwt.decode(
@@ -432,7 +432,7 @@ def main():
         finally:
             await listener.close()
 
-    @routes.get('/host/ws/{room}')
+    @routes.get('/JaPCdoKSO193/host/ws/{room}')
     async def ws_host(request):
         room_id = request.match_info.get('room')
         room = await get_room(room_id)
