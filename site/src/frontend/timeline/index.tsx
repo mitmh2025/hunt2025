@@ -17,35 +17,35 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_unlocked",
     slug: "the_boardwalk",
     thread: "main",
-    text: "The Boardwalk came up a lot. We decided look into it.",
+    text: "A brisk stroll might clear our minds.",
     defaultTime: 220,
   },
   {
     event: "puzzle_unlocked",
     slug: "the_art_gallery",
     thread: "main",
-    text: "A lot of people mentioned the Art Gallery. We looked closer.",
+    text: "We didn't know a thing about art. Maybe we'd be educated.",
     defaultTime: 180,
   },
   {
     event: "puzzle_unlocked",
-    slug: "The Jewelry Store",
+    slug: "the_jewelry_store",
     thread: "main",
-    text: "A number of witnesses spoke of the Jewelry Store, so we investigated.",
+    text: "Anyone need something shiny?",
     defaultTime: 230,
   },
   {
     event: "puzzle_unlocked",
-    slug: "The Casino",
+    slug: "the_casino",
     thread: "main",
-    text: "The Casino was often mentioned. We set our sights on it.",
+    text: "A few hands wouldn't hurt.",
     defaultTime: 200,
   },
   {
     event: "puzzle_solved",
     slug: "the_boardwalk",
     thread: "main",
-    text: "On the Boardwalk we decided to *** and see what he could tell us.",
+    text: "We opted to *** and see what he could tell us.",
     attention: [
       {
         event: "interaction_unlocked",
@@ -55,7 +55,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     threadRoot: {
       id: "katrina",
       title: "The shady girlfriend",
-      color: "#6d3b12",
+      color: "#0B8884",
     },
     defaultTime: 275,
   },
@@ -63,7 +63,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_solved",
     slug: "the_art_gallery",
     thread: "main",
-    text: "At the Art Gallery we endeavored to *** to find out what she knew.",
+    text: "We endeavored to *** to find out what she knew.",
     attention: [
       {
         event: "interaction_unlocked",
@@ -73,7 +73,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     threadRoot: {
       id: "papa",
       title: "The angry gangster",
-      color: "#b0b0b0",
+      color: "#D5C171",
     },
     defaultTime: 240,
   },
@@ -81,7 +81,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_solved",
     slug: "the_jewelry_store",
     thread: "main",
-    text: "At the Jewelry Store, we committed to *** in the hopes that he would tell us something.",
+    text: "We tried to *** in the hopes that he would tell us something.",
     attention: [
       {
         event: "interaction_unlocked",
@@ -91,7 +91,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     threadRoot: {
       id: "gladys",
       title: "The sneaky businesswoman",
-      color: "#347146",
+      color: "#9959A7",
     },
     defaultTime: 300,
   },
@@ -99,7 +99,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_solved",
     slug: "the_casino",
     thread: "main",
-    text: "At the Casino, we realized we had to *** if we were going to learn anything new.",
+    text: "We had no choice but to *** if we were going to learn anything new.",
     attention: [
       {
         event: "interaction_unlocked",
@@ -109,7 +109,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     threadRoot: {
       id: "ferdinand",
       title: "The indebted millionaire",
-      color: "#a22116",
+      color: "#CE0000",
     },
     defaultTime: 310,
   },
@@ -130,7 +130,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "interaction_completed",
     slug: "interview_at_the_art_gallery",
     thread: "papa",
-    text: "The Art Gallery owner overheard Baby and Papa arguing - apparently, Baby was quite upset about some deep secret of Papa's she discovered. We'd have to find it for ourselves the only way we knew how: an Illegal Search of Papa's private study.",
+    text: "The Art Gallery owner overheard Baby and Papa arguing. Apparently, Baby was quite upset about some deep secret of Papa's she discovered. We'd have to find it for ourselves the only way we knew how: an Illegal Search of Papa's private study.",
     attention: [
       {
         event: "round_unlocked",
@@ -143,7 +143,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "interaction_completed",
     slug: "interview_at_the_jewelry_store",
     thread: "gladys",
-    text: "The gem-cutter let slip that Gladys bought Ferdinand's ring at the Jewelry Store. That's pretty suspicious for a jewelry magnate. Maybe her business wasn't as it appeared. Wed have to follow the Paper Trail.",
+    text: "The gem-cutter let slip that Gladys bought Ferdinand's ring at the Jewelry Store. That's pretty suspicious for a jewelry magnate. Maybe her business wasn't as it appeared. We'd have to follow the Paper Trail.",
     attention: [
       {
         event: "round_unlocked",
@@ -169,7 +169,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_unlocked",
     slug: "the_thief",
     thread: "main",
-    text: "Billie asked us to meet him.",
+    text: "Billie asked us to meet them.",
     defaultTime: 340,
   },
   {
@@ -202,6 +202,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_unlocked",
     slug: "the_killer",
     thread: "main",
+    tiebreaker: 1,
     text: "It was time to confront the killer. But how?",
     defaultTime: 1160,
   },
@@ -209,7 +210,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_solved",
     slug: "the_killer",
     thread: "main",
-    text: "We knew to confront the killer we would have to *** Billie knew where to find him and invited us to join him at the Gala.",
+    text: "We knew to confront the killer we would have to *** Billie knew where to find him and invited us to join them at the Gala.",
     attention: [
       {
         event: "interaction_unlocked",
@@ -222,7 +223,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "interaction_completed",
     slug: "the_safehouse",
     thread: "main",
-    text: "Confronting Rover didn't go well. He's in the wind, but before he escaped, we learned that he'd been following Sidecar for some time and he thinks the diamond had already been swapped when Sidecar stole it.",
+    text: "Confronting Rover was a bust. He went to ground, but before he escaped, we learned that he'd been following Sidecar for some time and he thinks the diamond had already been swapped when Sidecar stole it.",
     defaultTime: 1830,
   },
   {
@@ -237,7 +238,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "interaction_completed",
     slug: "the_vault",
     thread: "main",
-    text: "Opening the vault did not go well! Baby revealed herself as the mastermind behind it all and made off with the diamond to start a new life. Everyone else, she locked in the vault.",
+    text: "Opening the vault was catastrophic! Baby revealed herself as the mastermind behind it all and made off with the diamond to start a new life. Everyone else, she locked in the vault with the cops on their way.",
     defaultTime: 3150,
   },
   {
@@ -251,7 +252,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "interaction_completed",
     slug: "confront_papa",
     thread: "papa",
-    text: "Backed into a corner, Papa admitted that his adoption of Baby was a bit unsavory. Her parents were arrested working his job and he's done whatever it took to keep them in the clink ever since. Awful as it was, his care for Baby was obviously genuine and he didn't know how much she had figured out. We promised to keep it to ourselves for now.",
+    text: "Backed into a corner, Papa admitted that his adoption of Baby was a bit unsavory. Her parents were arrested working his job and he's done whatever it took to keep them in the clink ever since. Awful as it was, his concern for Baby was obviously genuine and he didn't think she had pieced the worst of it together. We promised to keep it to ourselves for now.",
     defaultTime: 1030,
   },
   {
@@ -272,6 +273,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_unlocked",
     slug: "chinatown",
     thread: "katrina",
+    tiebreaker: 1,
     text: "Every time I think I should just forget it, a new lead waltzes in the door.",
     defaultTime: 760,
   },
@@ -279,7 +281,7 @@ const TIMELINE_NODES: TimelineNode[] = [
     event: "puzzle_solved",
     slug: "chinatown",
     thread: "katrina",
-    text: "Baby loves her and deserves to know the truth. Find Katrina at the Gala and discretely ***.",
+    text: "Baby loves her and deserves to know the truth. We'd have to find Katrina at the Gala and discretely ***.",
     attention: [
       {
         event: "interaction_unlocked",
@@ -288,7 +290,229 @@ const TIMELINE_NODES: TimelineNode[] = [
     ],
     defaultTime: 1320,
   },
-  // three more threads to fill in
+  {
+    event: "puzzle_unlocked",
+    slug: "papas_bookcase",
+    thread: "papa",
+    text: "There was something strange about this bookcase. Well, there was something strange about this whole room, but the bookcase stood out.",
+    defaultTime: 270,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "papas_bookcase",
+    thread: "papa",
+    text: "With the invokation of *** the bookcase slid away, revealing a secret room.",
+    defaultTime: 350,
+  },
+  {
+    event: "puzzle_unlocked",
+    slug: "papas_stash",
+    thread: "papa",
+    text: "Papa had quite the collection in his secret room.",
+    defaultTime: 360,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "papas_stash",
+    thread: "papa",
+    text: "It had become clear we would need to ***.",
+    defaultTime: 500,
+  },
+  {
+    event: "puzzle_unlocked",
+    slug: "papas_bookcase_blacklight",
+    thread: "papa",
+    text: "Under the blacklight, the bookcase was even more odd than before.",
+    defaultTime: 510,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "papas_bookcase_blacklight",
+    thread: "papa",
+    text: "Does Baby know Papa kept her birth parents in the clink? No wonder she was angry. We'd have to find Papa at the Gala and discretely ***.",
+    attention: [
+      {
+        event: "interaction_unlocked",
+        slug: "confront_papa",
+      },
+    ],
+    defaultTime: 900,
+  },
+  {
+    event: "puzzle_unlocked",
+    slug: "the_mark",
+    thread: "ferdinand",
+    text: "Someone slipped a few postcards under the door.",
+    attention: [
+      {
+        event: "puzzle_unlocked",
+        slug: "the_grand_illusion",
+      },
+      {
+        event: "puzzle_unlocked",
+        slug: "the_oversight",
+      },
+    ],
+    defaultTime: 2200,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "the_mark",
+    thread: "ferdinand",
+    text: "They say if you can't spot the mark, it's you. I guess our friend Ferdinand took that to heart. Maybe it is ***'s fault.",
+    defaultTime: 2800,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "the_grand_illusion",
+    thread: "ferdinand",
+    text: "Imagine being so frightened of the consequences of your own actions that you flee the country in a *** under cover of night.",
+    defaultTime: 2620,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "the_oversight",
+    thread: "ferdinand",
+    text: "The good guys can afford to make mistakes. Ferdinand might say that's the only difference. But I don't have to live like a ***.",
+    defaultTime: 2340,
+  },
+  {
+    event: "puzzle_unlocked",
+    slug: "alias",
+    thread: "ferdinand",
+    tiebreaker: 1,
+    text: "Someone left us an anonymous calling card. Who would ever make such a thing?",
+    defaultTime: 2340,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "alias",
+    thread: "ferdinand",
+    tiebreaker: 1,
+    text: "Clearly, he wasn't the lost scion of Carter Brothers. We'd have to find so-called Ferdinand at the Gala and discretely ***.",
+    attention: [
+      {
+        event: "interaction_unlocked",
+        slug: "confront_carter",
+      },
+    ],
+    defaultTime: 3000,
+  },
+  {
+    event: "puzzle_unlocked",
+    slug: "shell_corporation_1",
+    thread: "gladys",
+    text: "Gladys' corporate structure seems awfully complicated for a jewelry maker. Why would she need some of these subsidiaries? We'd have to look closer.",
+    attention: [
+      {
+        event: "puzzle_unlocked",
+        slug: "shell_corporation_2",
+      },
+      {
+        event: "puzzle_unlocked",
+        slug: "shell_corporation_3",
+      },
+      {
+        event: "puzzle_unlocked",
+        slug: "shell_corporation_4",
+      },
+      {
+        event: "puzzle_unlocked",
+        slug: "shell_corporation_5",
+      },
+      {
+        event: "puzzle_unlocked",
+        slug: "shell_corporation_6",
+      },
+      {
+        event: "puzzle_unlocked",
+        slug: "shell_corporation_7",
+      },
+      {
+        event: "puzzle_unlocked",
+        slug: "shell_corporation_8",
+      },
+    ],
+    defaultTime: 1800,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_1",
+    thread: "gladys",
+    text: "She dined like a fat cat while we scrounged for ***.",
+    defaultTime: 2560,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_2",
+    thread: "gladys",
+    text: "*** she said. A likely story.",
+    defaultTime: 2110,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_3",
+    thread: "gladys",
+    text: "This jewelry maker also happened to own the company that repaired ***. Makes sense.",
+    defaultTime: 2100,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_4",
+    thread: "gladys",
+    text: "The *** was the only thing that was clear in this mess.",
+    defaultTime: 2500,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_5",
+    thread: "gladys",
+    text: "Who was ***? An old friend with connections, no doubt.",
+    defaultTime: 2800,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_6",
+    thread: "gladys",
+    text: "We were going to have to keep digging, down to the ***.",
+    defaultTime: 2100,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_7",
+    thread: "gladys",
+    text: "The pieces were starting to fit together like ***.",
+    defaultTime: 2120,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "shell_corporation_8",
+    thread: "gladys",
+    text: "Maybe she thought the zoo would be good community outreach. All we saw was ***.",
+    defaultTime: 2710,
+  },
+  {
+    event: "puzzle_unlocked",
+    slug: "the_shell_game",
+    thread: "gladys",
+    tiebreaker: 1,
+    text: "Someone slipped one last ledger under the door. Maybe this was the missing piece.",
+    defaultTime: 2800,
+  },
+  {
+    event: "puzzle_solved",
+    slug: "the_shell_game",
+    thread: "gladys",
+    tiebreaker: 1,
+    text: "Her business is a crooked as the old man's! We'd have to find Gladys at the Gala and discretely ***.",
+    attention: [
+      {
+        event: "interaction_unlocked",
+        slug: "confront_gladys",
+      },
+    ],
+    defaultTime: 2920,
+  },
 ];
 
 const SLUG_LOOKUP = {

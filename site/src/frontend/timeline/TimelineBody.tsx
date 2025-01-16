@@ -87,7 +87,7 @@ const KICKOFF_TIME = new Date("2025-01-17T12:00:00.000-05:00");
 const KICKOFF_NODE = {
   id: -1,
   thread: "main",
-  text: "The Finster-Carter gala got off to a rocky start, as the legendary Shadow Diamond, owned by Ferdinand Carter, went missing. Family patriarch and longtime suspected crime boss Papa Finster hired Billie O'Ryan of the Two P.I. Noir detective agency to recover it and he recruited us.",
+  text: "The Finster-Carter gala got off to a rocky start, as the legendary Shadow Diamond, owned by Ferdinand Carter, went missing. Family patriarch and longtime suspected crime boss Papa Finster hired Billie O'Ryan of the Two P.I. Noir Detective Agency to recover it and he recruited us.",
   timestamp: KICKOFF_TIME,
   tiebreaker: 0,
   threadRoot: undefined,
@@ -227,7 +227,7 @@ const TimelineBody = ({ log }: { log: TimelineActivityLogEntry[] }) => {
   const visibleThreads = annotatedThreads.filter((thread) =>
     log.find((entry) => entry.thread === thread.id),
   );
-  const infoTitleHeight = INFO_BOX_FONT_SIZE * 1.2;
+  const infoTitleHeight = INFO_BOX_FONT_SIZE * 1.2 + 1;
   const availableWidth =
     WIDTH - SCALE_BAR_OVERALL_WIDTH - 2 * MARGIN_HORIZONTAL;
   const dx = availableWidth / Math.max(2, visibleThreads.length);
