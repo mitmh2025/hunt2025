@@ -1044,7 +1044,11 @@ const Solution = (): JSX.Element => {
       <p>
         <em>
           (The organization is more important than individual ambitions.)
-          (“baseball” analogy)
+          (“baseball”{" "}
+          <a href="baseball-footnote">
+            <sup id="anti-baseball-footnote">1</sup>
+          </a>{" "}
+          analogy)
         </em>
         <br />
         You understood intuitively the rhythm of this game. You get a turn in
@@ -1293,8 +1297,8 @@ const Solution = (): JSX.Element => {
       </p>
       <p>
         <em>
-          (Hindenburg disaster, New Jersey, 1937) [baseball reference: “third
-          base”]
+          (Hindenburg disaster, New Jersey, 1937) [this page contains a
+          “baseball” reference]
         </em>
         <br />
         What goes up must come down. That’s as true on the stock market as it is
@@ -1710,7 +1714,7 @@ const Solution = (): JSX.Element => {
         <em>(Arlington Street; reminds her of Arlington House in Virginia)</em>
         <br />
         <em>
-          (Katrina mentions three proverbs, each cluing the fact that her walk
+          (Katrina mentions three idioms, each cluing the fact that her walk
           from Boston Common to Massachusetts Avenue is exactly one mile long.)
         </em>
         <br />I had to get out of there, clear my head.{" "}
@@ -1753,7 +1757,7 @@ const Solution = (): JSX.Element => {
           as on baseball caps)
         </em>
         <br />
-        <em>(“baseball” references)</em>
+        <em>(this page contains “baseball” references)</em>
         <br />
         <Green>
           Now this is a type designed to grab your attention. Wanted! Dead or
@@ -1924,7 +1928,7 @@ const Solution = (): JSX.Element => {
           <Blue>
             their thoughts include references to quotations from 1980s pop songs
             <a href="#footnote">
-              <sup id="antifootnote">1</sup>
+              <sup id="antifootnote">2</sup>
             </a>
             .
           </Blue>
@@ -2115,8 +2119,17 @@ const Solution = (): JSX.Element => {
       </p>
       <hr />
       <p>
+        <a href="#anti-baseball-footnote">
+          <sup id="baseball-footnote">1</sup>
+        </a>{" "}
+        These pages are meant to be hard to understand, until they are placed in
+        the correct context. One way to make it hard to know what the text is
+        describing is to make it sound like it might be describing something
+        else. In this case, baseball.
+      </p>
+      <p>
         <a href="#antifootnote">
-          <sup id="footnote">1</sup>
+          <sup id="footnote">2</sup>
         </a>{" "}
         Yes, I know that for some of today’s Hunters the 1980s might as well be
         the 1930s. Let’s say that the reference is to the origins of Hunt in the

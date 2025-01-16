@@ -158,7 +158,6 @@ const FEATS: Feat[] = [
             <MN>10</MN>
           </MRow>
         </MFrac>
-        <MText>, whichever is greater</MText>
       </Math>
     </>,
   ],
@@ -266,7 +265,6 @@ const FEATS: Feat[] = [
         <MN>6</MN>
         <MText>, whichever is greater</MText>
       </Math>
-      ,
     </>,
   ],
   [
@@ -346,7 +344,7 @@ const FEATS: Feat[] = [
         <MText>where</MText>
         <MSpace width={"0.3em"} />
         <MI>n</MI>
-        <MO>=</MO>
+        <MO>≥</MO>
         <MText>your reported team size</MText>
         <MO>*</MO>
         <MN>3</MN>
@@ -384,9 +382,9 @@ const Puzzle = (): JSX.Element => {
         </p>
         <p>
           Judging will occur in person in your team’s headquarters. To request
-          judgment, please email info@mitmh2025.com with “WE ARE BAD BAD DUDES”
-          in the subject line, and let us know your team name and any details
-          for visiting your HQ.
+          judgment, please email info@mitmh2025.com with “WRETCHED HIVE OF SCUM
+          AND VILLAINY” in the subject line, and let us know your team name and
+          any details for visiting your HQ.
         </p>
       </AuthorsNoteBlock>
       <p>
