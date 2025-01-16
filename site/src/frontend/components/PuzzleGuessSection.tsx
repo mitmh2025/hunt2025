@@ -59,6 +59,12 @@ const Label = styled.label`
 
 const Form = styled.form`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const FormContents = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -70,6 +76,11 @@ const RateLimitNotice = styled.div`
   margin-bottom: 0.5rem;
   font-family: var(--body-font);
   font-size: 1rem;
+`;
+
+const ErrorNotice = styled(RateLimitNotice)`
+  background: var(--red-500);
+  color: var(--white);
 `;
 
 const PuzzleGuessForm = ({
@@ -173,26 +184,28 @@ const PuzzleGuessForm = ({
       action={`/${type === "puzzle" ? "puzzles" : "subpuzzles"}/${slug}/guess`}
       onSubmit={onSubmit}
     >
-      {formError ? <div>Error: {formError}</div> : undefined}
+      {formError ? <ErrorNotice>Error: {formError}</ErrorNotice> : undefined}
       {rateLimitedUntil ? (
-        <RateLimitNotice>
+        <RateLimitNotice id="rate-limit-notice">
           Your submissions are being rate-limited and will be rejected until{" "}
           {rateLimitedUntil.toLocaleTimeString()}
         </RateLimitNotice>
       ) : undefined}
-      <Label htmlFor="guess-input">Submit guess</Label>
-      <TextInput
-        id="guess-input"
-        name="guess"
-        type="text"
-        required
-        disabled={formDisabled}
-        value={guessInput}
-        onChange={onInputChanged}
-      />
-      <Button type="submit" disabled={submitDisabled}>
-        Submit
-      </Button>
+      <FormContents>
+        <Label htmlFor="guess-input">Submit guess</Label>
+        <TextInput
+          id="guess-input"
+          name="guess"
+          type="text"
+          required
+          disabled={formDisabled}
+          value={guessInput}
+          onChange={onInputChanged}
+        />
+        <Button type="submit" disabled={submitDisabled}>
+          Submit
+        </Button>
+      </FormContents>
     </Form>
   );
 };

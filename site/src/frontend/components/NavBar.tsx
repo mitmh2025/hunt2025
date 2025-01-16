@@ -105,7 +105,7 @@ const NavLink = styled.a`
   color: var(--gray-100);
   text-shadow: none;
   inline-size: min-content;
-  text-wrap: nowrap;
+  white-space: nowrap;
   min-height: 3rem;
 
   max-width: calc(480px - 3rem);
@@ -391,7 +391,7 @@ const NavBar = ({
             )}
           </>
         )}
-        <Dropdown>
+        <Dropdown $alignRight={true}>
           <TeamNameNavLink tabIndex={0}>
             <span>{teamName}</span>
           </TeamNameNavLink>
