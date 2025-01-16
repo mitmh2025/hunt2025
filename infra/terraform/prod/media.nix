@@ -76,7 +76,7 @@
         type = "Container";
         # Experimentally discovered
         default_request = {
-          cpu = "0.1";
+          cpu = "100m";
           memory = "125Mi";
         };
         # Just to stop runaway processes
