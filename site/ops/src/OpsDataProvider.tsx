@@ -243,6 +243,8 @@ export default function OpsDataProvider({
 
     const loader = new OpsDataLoader(frontendClient);
 
+    let updateActivityLogPromise: Promise<void> | undefined = undefined;
+
     return {
       adminClient,
       frontendClient,
@@ -267,23 +269,30 @@ export default function OpsDataProvider({
           registrationLog: [...oldData.registrationLog, ...newEntries],
         }));
       },
-      async updateActivityLog({ forceRequest = false } = {}): Promise<void> {
-        const newEntries = await loader.getNewActivityLogEntries({
-          forceRequest,
-        });
-
-        if (newEntries.length === 0) {
-          return;
+      updateActivityLog({ forceRequest = false } = {}): Promise<void> {
+        if (updateActivityLogPromise) {
+          return updateActivityLogPromise;
         }
+        return (updateActivityLogPromise = (async () => {
+          const newEntries = await loader.getNewActivityLogEntries({
+            forceRequest,
+          });
 
-        newEntries.forEach((entry) => {
-          getStore().applyActivityLogEntry(entry);
-        });
+          if (newEntries.length === 0) {
+            return;
+          }
 
-        setData((oldData) => ({
-          ...oldData,
-          teams: getStore().getTeamData(),
-          activityLog: [...oldData.activityLog, ...newEntries],
+          newEntries.forEach((entry) => {
+            getStore().applyActivityLogEntry(entry);
+          });
+
+          setData((oldData) => ({
+            ...oldData,
+            teams: getStore().getTeamData(),
+            activityLog: [...oldData.activityLog, ...newEntries],
+          }));
+        })().then((_) => {
+          updateActivityLogPromise = undefined;
         }));
       },
       async updatePlumpHimalayasLog({
