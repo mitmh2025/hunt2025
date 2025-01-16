@@ -547,7 +547,7 @@ const RadioPlayer = ({ whepUrl }: { whepUrl: string }) => {
     <PageWrapper>
       <>
         <PageHeader>
-          <PageTitle>WDNM Virtual Radio Stream</PageTitle>
+          <PageTitle>WDNM 2π Virtual Radio Stream</PageTitle>
         </PageHeader>
         <PageMain>
           <Radio>

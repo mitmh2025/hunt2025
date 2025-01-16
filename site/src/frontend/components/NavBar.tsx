@@ -342,7 +342,7 @@ const NavBar = ({
           </ul>
         </TopLevelDropdown>
         <Spacer />
-        <NavLink href="/virtual_radio" title="Virtual WDNM radio stream">
+        <NavLink href="/virtual_radio" title="Virtual WDNM 2π radio stream">
           📻
         </NavLink>
         {started && (
