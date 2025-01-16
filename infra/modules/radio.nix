@@ -45,7 +45,19 @@ in {
         api = true; # :9997
         metrics = true; # :9998
 
-        paths."~teams/(\\d+)/radio" = {};
+        paths."~teams/(\\d+)/radio" = {
+          record = true;
+          recordPartDuration = "10s";
+          recordSegmentDuration = "1h";
+          recordDeleteAfter = "0s";
+        };
+
+        paths."~control_room/(.*)" = {
+          record = true;
+          recordPartDuration = "10s";
+          recordSegmentDuration = "1h";
+          recordDeleteAfter = "0s";
+        };
       };
     };
     services.nginx = lib.mkIf (cfg.externalHostname != null) {
