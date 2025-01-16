@@ -472,7 +472,6 @@ export default function createConfigs(_env, argv) {
       all_puzzles: "./src/frontend/client/all_puzzles.tsx",
       hub: "./src/frontend/client/hub.tsx",
       interaction_virtual: "./src/frontend/client/interaction_virtual.tsx",
-      timeline: "./src/frontend/timeline/client.tsx",
       manage_team: "./src/frontend/client/manage_team.tsx",
       navbar: "./src/frontend/client/navbar.tsx",
       puzzle: "./src/frontend/client/puzzle.tsx",
