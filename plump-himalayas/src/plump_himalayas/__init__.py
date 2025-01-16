@@ -6,8 +6,6 @@ from typing import List, Optional
 from aiohttp import web
 import aiohttp
 import asyncio
-import jinja2
-import aiohttp_jinja2
 import jwt
 from jwt import PyJWKClient
 
