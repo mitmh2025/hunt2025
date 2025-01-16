@@ -7,6 +7,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
+import { getTeamName } from "../../../src/utils/teamNames";
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { formatAllTeamsData } from "../opsdata/bigBoard";
 import { type SinglePuzzleStats } from "../routes/Puzzle";
@@ -98,7 +99,7 @@ export default function PuzzleTeamList({
       if (!puzzleData) {
         return {
           teamId: team.id,
-          teamName: team.teamName,
+          teamName: getTeamName(team.username),
           username: team.username,
           progress: team.progress,
           status: { state: "locked" },
@@ -126,7 +127,7 @@ export default function PuzzleTeamList({
 
       return {
         teamId: team.id,
-        teamName: team.teamName,
+        teamName: getTeamName(team.username),
         username: team.username,
         progress: team.progress,
         status,
@@ -142,16 +143,13 @@ export default function PuzzleTeamList({
     return [
       columnHelper.accessor((row) => `${row.username} | ${row.teamName}`, {
         size: 300,
-        id: "username",
-        header: "Username",
+        id: "teamName",
+        header: "Team Name",
         Cell: ({ row }: { row: MRT_Row<PuzzleTeamListData> }) => (
           <>
             <Box>
-              {row.original.username}
-              <br />
               <span
                 style={{
-                  fontSize: "12px",
                   maxWidth: "250px",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -160,6 +158,8 @@ export default function PuzzleTeamList({
               >
                 {row.original.teamName}
               </span>
+              Username: {row.original.username}
+              <br />
             </Box>
           </>
         ),

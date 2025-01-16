@@ -1,8 +1,10 @@
+import { getTeamName } from "../../../src/utils/teamNames";
 import { type TeamData } from "../opsdata/types";
 
 export function abbreviatedName(team: TeamData, includeUsername: boolean) {
+  const teamName = getTeamName(team.username);
   const displayName =
-    team.name.length <= 20 ? team.name : `${team.name.slice(0, 20)}...`;
+    teamName.length <= 20 ? teamName : `${teamName.slice(0, 20)}...`;
   if (!includeUsername) {
     return displayName;
   } else {
