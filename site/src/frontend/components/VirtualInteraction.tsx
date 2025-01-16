@@ -597,7 +597,9 @@ function VirtualInteractionPlayer({
             <Content>
               <Scrollback ref={scrollbackRef}>
                 {rewardImage && (
-                  <RewardAsset src={rewardImage} alt={rewardDescription} />
+                  <a href="/">
+                    <RewardAsset src={rewardImage} alt={rewardDescription} />
+                  </a>
                 )}
                 {nodes
                   .slice()
