@@ -67,7 +67,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["GIVE US DOUGH"],
       reply:
-        "Bring us dough—but fully baked, please!  Bring the real thing to the bartenders at the Gala, who will give you the puzzle answer. The bartenders are a bit snobbish, so homemade items will get you some bonus points. If you’re willing, please also take a picture of your baked good and send it along with the recipe to info@mitmh2025.com to enter your submission into the Gala Bake-off. Include your team name and the phrase BRING US DOUGH in the subject line.",
+        "Bring us dough—but fully baked, please!  Bring the real thing to the bartenders at the Gala, who will give you the puzzle answer. The bartenders are a bit snobbish, so homemade items will get you some bonus points. If you’re willing, please also take a picture of your baked good and send it along with the recipe to info@mitmh2025.com to enter your submission into the Gala Bake-off. Include your team name and the phrase GIVE US DOUGH in the subject line.",
       providesSolveReward: true,
     },
   ],
