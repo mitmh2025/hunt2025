@@ -3,14 +3,11 @@ import lemahieuPostcard from "../../hub/assets/art_gallery_token_lemahieu.png";
 import billie from "../assets/billie.png";
 import type { InteractionGraph } from "../types";
 import bg from "./assets/bg.png";
-import judith_disappointed from "./assets/owner-disappointed-resize.png";
 import judith_disappointed_bg from "./assets/owner-disappointed.png";
-import judith_handshake from "./assets/owner-handshake-resize.png";
 import judith_handshake_bg from "./assets/owner-handshake.png";
-import judith_neutral from "./assets/owner-neutral-resize.png";
 import judith_neutral_bg from "./assets/owner-neutral.png";
-import judith_pleased from "./assets/owner-pleased-resize.png";
 import judith_pleased_bg from "./assets/owner-pleased.png";
+import judith_neutral from "./assets/owner-speaker.png";
 import mp3_audio_10_p1 from "./audio/mp3/10-p1.mp3";
 import mp3_audio_10 from "./audio/mp3/10.mp3";
 import mp3_audio_11a from "./audio/mp3/11a.mp3";
@@ -293,11 +290,11 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     judith_pleased_unintroduced: {
       label: "Woman",
-      image: judith_pleased,
+      image: judith_neutral,
     },
     judith_pleased: {
       label: "Judith",
-      image: judith_pleased,
+      image: judith_neutral,
     },
     judith_neutral_unintroduced: {
       label: "Woman",
@@ -309,11 +306,11 @@ const ArtGalleryInteractionGraph: InteractionGraph<
     },
     judith_handshake: {
       label: "Judith",
-      image: judith_handshake,
+      image: judith_neutral,
     },
     judith_disappointed: {
       label: "Judith",
-      image: judith_disappointed,
+      image: judith_neutral,
     },
   },
   nodes: [

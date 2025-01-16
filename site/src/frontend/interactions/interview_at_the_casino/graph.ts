@@ -134,12 +134,8 @@ import audio_opus_start from "./audio/opus/start.opus";
 import bg_annoyed from "./images/bg-annoyed.png";
 import bg_neutral from "./images/bg-neutral.png";
 import bg_pleased from "./images/bg-pleased.png";
-import shark1_annoyed from "./images/shark1-annoyed.png";
 import shark1_neutral from "./images/shark1-neutral.png";
-import shark1_pleased from "./images/shark1-pleased.png";
-import shark2_annoyed from "./images/shark2-annoyed.png";
 import shark2_neutral from "./images/shark2-neutral.png";
-import shark2_pleased from "./images/shark2-pleased.png";
 
 export type CasinoState = {
   points: number;
@@ -299,7 +295,7 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     shark_one_annoyed: {
       label: "Shark 1",
-      image: shark1_annoyed,
+      image: shark1_neutral,
     },
     shark_one_neutral: {
       label: "Shark 1",
@@ -307,11 +303,11 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     shark_one_pleased: {
       label: "Shark 1",
-      image: shark1_pleased,
+      image: shark1_neutral,
     },
     shark_two_annoyed: {
       label: "Shark 2",
-      image: shark2_annoyed,
+      image: shark2_neutral,
     },
     shark_two_neutral: {
       label: "Shark 2",
@@ -319,7 +315,7 @@ const CasinoInteractionGraph: InteractionGraph<
     },
     shark_two_pleased: {
       label: "Shark 2",
-      image: shark2_pleased,
+      image: shark2_neutral,
     },
   },
   nodes: [
