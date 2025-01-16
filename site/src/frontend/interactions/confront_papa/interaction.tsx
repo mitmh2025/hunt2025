@@ -34,7 +34,19 @@ const Interaction = ({
         </p>
       </AuthorsNoteBlock>
 
-      {interactionState.state === "completed" && <p>TODO: video goes here</p>}
+      {interactionState.state === "completed" && (
+        <p>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/tL_bBh4GHCU?si=fpXzc_s_pS1wHxRQ"
+            title="Confronting Papa"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
+        </p>
+      )}
     </>
   );
 };
