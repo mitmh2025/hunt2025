@@ -81,7 +81,7 @@ const Puzzle = ({
           If you cannot do this on-campus activity due to campus availability or
           accessibility concerns, or you are stuck or not having fun, you may
           contact HQ if this puzzle has been open for at least 3 hours and we
-          will arrange an alternative for you. To do this, send an email to
+          will arrange an alternative for you. To do this, send an email to{" "}
           <MailtoLink subject={"THE FINAL WITNESS"} /> with the subject line
           “THE FINAL WITNESS” (that’s not an answer, it just helps us with
           dispatch). However, we strongly recommend you experience it in person
