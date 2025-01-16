@@ -292,7 +292,7 @@ export class VirtualInteractionHandler<
         voteCounts = countVotes(votes);
       }
 
-      const choices = ["win", "lose"];
+      const choices = ["lose", "win"];
       const voteResults = tallyResults(voteCounts, choices);
       if (voteResults.winner === undefined) {
         // Should be unreachable if choiceKeys was not empty
