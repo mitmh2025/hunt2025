@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import { getTeamName } from "../../../src/utils/teamNames";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
 import { CustomTooltip } from "./CustomTooltip";
 
@@ -83,7 +84,7 @@ export default function BigBoardTeam({ team }: { team: BigBoardTeam }) {
         }}
         variant="h6"
       >
-        <Link to={`/teams/${team.username}`}>{team.username}</Link>
+        <Link to={`/teams/${team.username}`}>{getTeamName(team.username)}</Link>
       </Typography>
       <Box>
         {inGroupsOf(team.rounds, 3).map((rounds, i) => (
