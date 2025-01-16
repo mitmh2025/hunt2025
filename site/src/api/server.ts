@@ -3145,7 +3145,15 @@ export async function getRouter({
                 if (teamState.next_interaction !== interactionId) {
                   return false;
                 }
+              }
 
+              await mutator.appendLog({
+                team_id,
+                type: "interaction_started",
+                slug: interactionId,
+              });
+
+              if (interaction?.type === "virtual") {
                 // Also insert the initial node into team_interaction_states
                 const { node, state } = (
                   interaction.handler as VirtualInteractionHandler<
@@ -3167,12 +3175,6 @@ export async function getRouter({
                   trx,
                 );
               }
-
-              await mutator.appendLog({
-                team_id,
-                type: "interaction_started",
-                slug: interactionId,
-              });
 
               return true;
             },
