@@ -1110,8 +1110,8 @@ const Solution = (): JSX.Element => {
         can be a driver. <Orange>And you were a driver.</Orange> They say that a
         butterfly flapping its wings can cause a hurricane. Something happens,
         you hardly notice, but it grows with time until it comes crashing down
-        on you. I think that flap (over the lottery) was the beginning of a
-        gathering storm. And the storm has to break.{" "}
+        on you. I think that flap <em>(over the lottery)</em> was the beginning
+        of a gathering storm. And the storm has to break.{" "}
         <Green>Maybe not today, maybe not tomorrow, but soon.</Green>{" "}
         <Cyan>This is why tomorrow, or today actually, matters</Cyan>{" "}
         <em>
