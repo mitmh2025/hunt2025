@@ -98,6 +98,9 @@ const NavBarManager = ({
     [] as Notification[],
   );
   useEffect(() => {
+    // We do this in a `useEffect` so it's not included in initial
+    // hydration, since the server-side navbar code doesn't have
+    // this logic
     setPersistentNotifications(
       activeInteraction &&
         !document.location.pathname.endsWith(activeInteraction.slug)
