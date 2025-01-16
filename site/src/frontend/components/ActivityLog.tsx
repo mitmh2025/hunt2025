@@ -92,7 +92,7 @@ export function formatActivityLogEntry(
       }
     case "puzzle_partially_solved":
       return {
-        icon: null,
+        icon: "🗝️",
         description: (
           <>
             Partially solved puzzle{" "}
