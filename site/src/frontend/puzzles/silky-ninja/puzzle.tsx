@@ -117,7 +117,7 @@ const Puzzle = () => {
           The Wall Street Journal
         </a>{" "}
         or{" "}
-        <a href="https://www.puzzledpint.com/files/3613/8170/3749/CrypticsGuide.pdf">
+        <a href="https://puzzledpint.org/files/3613/8170/3749/CrypticsGuide.pdf">
           Puzzled Pint
         </a>
         , but note that every cryptic is different, and these guides are not
