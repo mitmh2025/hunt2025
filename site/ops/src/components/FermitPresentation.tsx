@@ -159,7 +159,7 @@ const RulesSlide = (
   <section>
     <SlideH1>The Rules</SlideH1>
     <p className="fragment">
-      I&rsquo;ll show a question on the screen and read it twice.
+      I&rsquo;ll show a question on the screen and read it out.
     </p>
     <p className="fragment">
       Once I&rsquo;m done reading, your team will have 45 seconds to come up
@@ -170,8 +170,8 @@ const RulesSlide = (
       your answer.
     </p>
     <p className="fragment">
-      Please don&rsquo;t use your devices! You&rsquo;ll probably get plenty of
-      screen time this weekend anyhow.
+      Oh, also &ndash; please don&rsquo;t use your devices! You&rsquo;re going
+      to get plenty of screen time this weekend anyhow.
     </p>
   </section>
 );
@@ -181,15 +181,16 @@ const GeoguessrRulesSlide = (
     <SlideH1>Rule Update</SlideH1>
     <p className="fragment">This next question is a bit different.</p>
     <p className="fragment">
-      You&rsquo;ll be receiving laminated maps of campus.
+      You will receive laminated maps of campus. Write your team name and
+      username on the top of each.
     </p>
     <p className="fragment">
-      I&rsquo;ll show a picture of a location on campus, and you will have 45
-      seconds to figure out where the picture was taken from.
+      A picture of a location on campus will be shown. You&rsquo;ll need to
+      figure out where the picture was taken from.
     </p>
     <p className="fragment">
-      Mark that location with an X or a dot. When time is up, hold it up so the
-      scorekeeper can collect them.
+      Mark that location on the map with an X. When time is up, we will come
+      around and collect your maps.
     </p>
   </section>
 );
@@ -205,12 +206,11 @@ const LastSlide = (
     </p>
     <p className="fragment">
       You will see your results on the puzzle page shortly. If you would like to
-      get clearer results, please contact HQ again and schedule another time to
-      play.
+      get better results, please come back next hour and try again!
     </p>
     <p className="fragment">
-      And, if you would like a souvenir to commemorate your participation,
-      please come on up and get a sticker before you go.
+      To commemorate your success, please come on up and get a sticker before
+      you go.
     </p>
   </section>
 );

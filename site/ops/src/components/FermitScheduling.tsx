@@ -22,11 +22,11 @@ const RegisteredTeamContainer = styled.div`
   border: 1px solid black;
   padding: 10px 0px 10px 15px;
 `;
-const QuestionContainer = styled.div`
+const QuestionContainer = styled.details`
   margin-top: 10px;
-`;
-const QuestionList = styled.div`
   border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
 `;
 
 function SessionQuestionDetails({
@@ -64,10 +64,10 @@ function SessionQuestionDetails({
 
   return (
     <QuestionContainer>
-      <div>Question List</div>
-      <QuestionList>
+      <summary>Question List</summary>
+      <div>
         <ul>{questionElts}</ul>
-      </QuestionList>
+      </div>
     </QuestionContainer>
   );
 }
