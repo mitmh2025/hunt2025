@@ -1586,9 +1586,9 @@ const NODE_IDS_BY_PUZZLE_SLUG: Record<string, string> = {
   jargon_blacklight: "safe",
   given_up_blacklight: "rug",
   smoke_em_if_youve_got_em_blacklight: "cryptex",
-  papas_bookcase: "main_west",
-  papas_stash: "main_west",
-  papas_bookcase_blacklight: "main_west",
+  papas_bookcase: "bookcase",
+  papas_stash: "secret",
+  papas_bookcase_blacklight: "bookcase",
 };
 
 function modalFromModalInternal(
