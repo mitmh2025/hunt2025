@@ -559,6 +559,7 @@ async function main({
   };
 
   const watcher = K8s(kind.Pod)
+    .InNamespace(namespace)
     .WithLabel("app", "radio")
     .Watch((pod, phase) => {
       const uid = pod.metadata?.uid;
@@ -626,6 +627,15 @@ async function main({
 
   await activityLogTailer.readyPromise();
 
+  watcher.events.on("network_error", (e) => {
+    console.warn("watch failed with NETWORK_ERROR:", e);
+  });
+  watcher.events.on("data_error", (e) => {
+    console.warn("watch failed with DATA_ERROR:", e);
+  });
+  watcher.events.on("give_up", (e) => {
+    console.warn("watch failed with GIVE_UP:", e);
+  });
   void watcher.start();
 
   console.log("sync2k8s running");
