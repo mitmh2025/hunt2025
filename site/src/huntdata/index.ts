@@ -1759,6 +1759,7 @@ const HUNT: Hunt = {
       unlock_if: [{ gate_satisfied: "hunt_started" }],
       gates: [
         { id: "evg01", internal_description: "Tailing a Lead concluded" },
+        { id: "evg02", internal_description: "Making Contact With An Informant concluded" },
       ]
     },
     {
