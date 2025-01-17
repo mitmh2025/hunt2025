@@ -279,7 +279,7 @@ const SpeechBubble = styled.div`
   color: black;
   font-family: "EB Garamond", serif;
   white-space: pre-wrap;
-  font-size: 22px;
+  font-size: 24px;
 
   &::before {
     content: "";
