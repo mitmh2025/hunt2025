@@ -279,6 +279,11 @@ const ToggleOff = styled(ToggleOn)`
   background: url(${blacklight_off});
 `;
 
+const OtherModalBackdrop = styled(ModalBackdrop)`
+  pointer-events: none;
+  background: #00000033;
+`;
+
 export default function Extra({
   node,
   teamState,
@@ -446,6 +451,7 @@ export default function Extra({
       ) : (
         <ToggleOff onClick={toggleActive} />
       )}
+      {active && <OtherModalBackdrop />}
       {modalOverlay}
       {active && mousePos ? <Pointer pos={mousePos} /> : null}
     </>
