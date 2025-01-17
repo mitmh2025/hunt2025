@@ -216,10 +216,9 @@ export function radioHandler(req: Request) {
             inappropriate, the radio is also equipped with a standard 3.5mm
             headphone jack. Simply plugging in headphones is sufficient to
             change the preferred output device; no additional configuration is
-            necessary. For your convenience, we have also included a pair of
-            earbuds with your radio. We additionally expect this to work with
-            classroom A/V systems, if you find the included speaker underpowered
-            for your space.
+            necessary. We additionally expect this to work with classroom A/V
+            systems, if you find the included speaker underpowered for your
+            space.
             <br />
           </StyledLi>
         </ol>
