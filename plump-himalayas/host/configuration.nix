@@ -91,7 +91,7 @@
 
     wantedBy = ["multi-user.target"];
 
-    start = ''
+    script = ''
       ${pkgs.ffmpeg}/bin/ffmpeg -f v4l2 -video_size 640x480 -framerate 30 -i /dev/video0 -b:v 500k -vcodec libx264 -tune zerolatency -preset fast -bf 0 -f rtsp -rtsp_transport tcp "''${RTSP_URL}"
     '';
 
