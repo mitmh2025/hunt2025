@@ -383,7 +383,7 @@ const Puzzle = (): JSX.Element => {
         </p>
         <p>
           Judging will occur in person in your team’s headquarters. To request
-          judgment, please email{" "}
+          judgement, please email{" "}
           <MailtoLink subject={"WRETCHED HIVE OF SCUM AND VILLAINY"} /> with
           “WRETCHED HIVE OF SCUM AND VILLAINY” in the subject line, and let us
           know your team name and any details for visiting your HQ.
