@@ -11,6 +11,7 @@ const StampWrapper = styled.span`
   color: var(--red-700);
   fill: var(--red-700);
   opacity: 0.7;
+  pointer-events: none;
 
   svg {
     position: absolute;
