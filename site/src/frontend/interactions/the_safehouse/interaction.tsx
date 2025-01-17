@@ -38,7 +38,7 @@ const Interaction = ({
           <iframe
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/rPZqjz7Jonw?si=V6h2O6NuHbm_UAVZ"
+            src="https://www.youtube.com/embed/rPZqjz7Jonw"
             title="The Safehouse"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"

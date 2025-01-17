@@ -33,7 +33,7 @@ const Puzzle = (): JSX.Element => {
       <iframe
         width="560"
         height="315"
-        src="https://www.youtube.com/embed/I0S7-ZeZoFQ?si=t9cnLviFG7cgGS8J"
+        src="https://www.youtube.com/embed/I0S7-ZeZoFQ"
         title="Why Kan’t We Be Friends, Too?"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"

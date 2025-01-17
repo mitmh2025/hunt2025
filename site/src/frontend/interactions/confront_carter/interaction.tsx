@@ -39,7 +39,7 @@ const Interaction = ({
           <iframe
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/LiZTxxRUhe0?si=R0InvqCvEOWP6D7t"
+            src="https://www.youtube.com/embed/LiZTxxRUhe0"
             title="Confronting Carter"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
