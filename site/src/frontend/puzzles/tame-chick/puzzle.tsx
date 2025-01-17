@@ -5,6 +5,7 @@ import {
   COPY_ONLY_CLASS,
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
+import { Errata } from "../../components/StyledUI";
 
 export const Highlight = styled.span`
   background: linear-gradient(
@@ -39,7 +40,7 @@ const BLANKS = [
   { before: "I never turn down a ", blanks: "C____ P__", highlightIndex: 3 },
   { before: "You know I like it ", blanks: "D____", highlightIndex: 3 },
   { before: "Yeah, give me a ", blanks: "F_____", highlightIndex: 5 },
-  { before: "I spend a lot of time ", blanks: "G_______", highlightIndex: 1 },
+  { before: "I spend a lot of time ", blanks: "G_______", highlightIndex: 2 },
   { before: "I do love a good ", blanks: "J___", highlightIndex: 1 },
   {
     before: "I’ll put a ",
@@ -64,6 +65,15 @@ const BLANKS = [
 const Puzzle = () => {
   return (
     <>
+      <Errata
+        errata={[
+          {
+            timestamp: "January 17th, at 7:00 PM",
+            message:
+              "On the line which starts “I spend a lot of time”, the first blank after the letter ‘G’ was originally highlighted. That has been changed to the second blank.",
+          },
+        ]}
+      />
       <p className="puzzle-flavor">
         What do you mean, you want to toast the bagel?
       </p>
@@ -158,7 +168,7 @@ const Puzzle = () => {
       <Innuendo className={NO_COPY_CLASS}>
         I spend a lot of time{" "}
         <WordBlock>
-          G <Highlight>_</Highlight> _ _ _ _ _ _
+          G _ <Highlight>_</Highlight> _ _ _ _ _
         </WordBlock>
         <br />
       </Innuendo>

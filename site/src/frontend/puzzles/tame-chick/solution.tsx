@@ -130,7 +130,7 @@ const Solution = () => {
               <td>
                 I spend a lot of time{" "}
                 <WordBlock>
-                  G <Highlight>_</Highlight> _ _ _ _ _ _
+                  G _ <Highlight>_</Highlight> _ _ _ _ _
                 </WordBlock>
               </td>
               <td>GRINDING</td>
