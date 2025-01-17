@@ -144,16 +144,28 @@ in {
 
       addresses = [
         {
-          id = 1;
+          id = 2;
+          channel_id = 2;
+          name = "Hints";
+          email = "hints@${cfg.domain}";
+        }
+        {
+          id = 3;
           channel_id = 2;
           name = "MIT Mystery Hunt 2025";
           email = "info@${cfg.domain}";
         }
         {
-          id = 2;
+          id = 4;
           channel_id = 2;
-          name = "MITMH2025 Hints";
-          email = "hints@${cfg.domain}";
+          name = "MIT Mystery Hunt 2025";
+          email = "info@${cfg.fqdn}";
+        }
+        {
+          id = 5;
+          channel_id = 2;
+          name = "MIT Puzzle Club";
+          email = "puzzle@mit.edu";
         }
       ];
     };

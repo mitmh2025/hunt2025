@@ -26,5 +26,6 @@
       REDIS_URL = ''redis://default:${lib.tfRef "random_password.valkey.result"}@redis'';
       ZAMMAD_SECRET = lib.tfRef ''data.sops_file.tix.data["zammad.sync2zammad_token"]'';
     };
+    container.args = ["sync2zammad"];
   };
 }
