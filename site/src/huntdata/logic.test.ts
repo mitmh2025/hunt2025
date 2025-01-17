@@ -199,3 +199,33 @@ it("satisfies gate with satisfied_if conditions met", () => {
     }),
   );
 });
+
+it("unlockable implicitly requires the round be unlocked", () => {
+  expect(
+    new LogicTeamState({}).recalculateTeamState({
+      rounds: [
+        {
+          slug: "unlocked",
+          title: "unlocked round",
+          final_puzzle_slot: "",
+          unlock_if: [],
+          puzzles: [],
+          gates: [],
+        },
+        {
+          slug: "locked",
+          title: "locked",
+          final_puzzle_slot: "",
+          unlock_if: { oneOf: [] },
+          puzzles: [{ id: "p1", slug: "p1", unlockable_if: [] }],
+          gates: [],
+        },
+      ],
+    }),
+  ).toStrictEqual(
+    new LogicTeamState({
+      rounds_unlocked: new Set(["unlocked"]),
+      gates_satisfied: new Set(),
+    }),
+  );
+});

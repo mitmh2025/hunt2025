@@ -237,6 +237,7 @@ export class LogicTeamState {
           }
           if (
             slot.unlockable_if !== undefined &&
+            next.rounds_unlocked.has(round.slug) &&
             roundEvaluateCondition(slot.unlockable_if)
           ) {
             if (!next.puzzles_unlockable.has(puzzleSlug)) {
