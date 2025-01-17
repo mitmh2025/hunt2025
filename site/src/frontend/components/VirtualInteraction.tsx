@@ -227,6 +227,8 @@ const DialogueChoice = styled.div`
       border: ${proportionify(1)} solid var(--gold-500);
       border-radius: ${proportionify(8)};
       cursor: pointer;
+      gap: 1rem;
+
       .text {
         flex: 1;
       }
