@@ -210,6 +210,34 @@ class OpsDataStore {
   }
 }
 
+function LoadingErrorState({ children }: { children: React.ReactNode }) {
+  const [_, __, removeCookie] = useCookies(["mitmh2025_api_auth"]);
+
+  function handleReset() {
+    removeCookie("mitmh2025_api_auth");
+    localStorage.clear();
+
+    OpsDataLoader.dropDB()
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((e: unknown) => {
+        console.error("Failed to drop indexeddb", e);
+        window.location.reload();
+      });
+  }
+  return (
+    <div style={{ width: "100vw" }}>
+      <div style={{ maxWidth: "400px", margin: "50px auto" }}>
+        <div>{children}</div>
+        <div style={{ marginTop: "20px" }}>
+          <button onClick={handleReset}>Reset Data & Reload</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function OpsDataProvider({
   children,
 }: {
@@ -403,11 +431,11 @@ export default function OpsDataProvider({
   });
 
   if (data.state === "loading") {
-    return <div>Loading...</div>;
+    return <LoadingErrorState>Loading...</LoadingErrorState>;
   }
 
   if (data.state === "error") {
-    return <div>Error loading data</div>;
+    return <LoadingErrorState>Error loading data</LoadingErrorState>;
   }
 
   return (
