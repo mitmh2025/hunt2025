@@ -405,15 +405,19 @@ async function main({
       const emails: [string, string, string][] = [
         [
           registration.contactEmail.toLowerCase(),
-          registration.contactName.toLowerCase(),
-          registration.contactPhone.toLowerCase(),
+          registration.contactName,
+          registration.contactPhone,
         ],
         [
-          registration.secondaryContactEmail,
+          registration.secondaryContactEmail.toLowerCase(),
           registration.secondaryContactName,
           registration.secondaryContactPhone,
         ],
-        [registration.teamEmail, getTeamName(registration.username), ""],
+        [
+          registration.teamEmail.toLowerCase(),
+          getTeamName(registration.username),
+          "",
+        ],
       ];
       emails.forEach(([email, name, phone]) => {
         if (seen.has(email)) {
