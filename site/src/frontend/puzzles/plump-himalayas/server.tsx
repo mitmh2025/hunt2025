@@ -4,6 +4,7 @@ import { renderToString } from "react-dom/server";
 import { Router } from "websocket-express";
 import { BaseLayout } from "../../components/Layout";
 import { lookupScripts } from "../../server/assets";
+import { getInfo } from "./puzzle";
 
 const styleElement = (
   <style>
@@ -294,7 +295,12 @@ dt {
 
 const displayHandler = (req: Request, res: Response) => {
   const scripts = [...lookupScripts("puzzle_plump_himalayas_display")];
-  const inlineScript = `window.roomId = ${JSON.stringify(req.query.roomId)}`;
+  const roomId = req.query.roomId;
+  const info = getInfo({
+    stream_path: `control_room/${roomId}`,
+    ws_path: `JaPCdoKSO193/host/ws/${roomId}`,
+  });
+  const inlineScript = `window.controlRoomInfo = ${JSON.stringify(info)};`;
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +
@@ -317,7 +323,12 @@ const displayHandler = (req: Request, res: Response) => {
 
 const hostHandler = (req: Request, res: Response) => {
   const scripts = [...lookupScripts("puzzle_plump_himalayas_host")];
-  const inlineScript = `window.roomId = ${JSON.stringify(req.query.roomId)}`;
+  const roomId = req.query.roomId;
+  const info = getInfo({
+    stream_path: `control_room/${roomId}`,
+    ws_path: `JaPCdoKSO193/host/ws/${roomId}`,
+  });
+  const inlineScript = `window.controlRoomInfo = ${JSON.stringify(info)};`;
   const doctype = "<!DOCTYPE html>";
   const html =
     doctype +

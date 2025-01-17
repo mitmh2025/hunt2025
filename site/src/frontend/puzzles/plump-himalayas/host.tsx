@@ -1,6 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { getInfo } from "./puzzle";
 import {
   type ControlRoomServerState,
   type ControlRoomTask,
@@ -138,19 +137,16 @@ const Host = ({ info }: { info: ControlRoomInfo }) => {
   );
 };
 
-const App = ({ roomId }: { roomId: string }) => {
-  const info = getInfo({
-    stream_path: `control_room/${roomId}`,
-    ws_path: `JaPCdoKSO193/host/ws/${roomId}`,
-  });
+const App = () => {
+  const info = (window as unknown as { controlRoomInfo: ControlRoomInfo })
+    .controlRoomInfo;
   return <Host info={info} />;
 };
 
 const elem = document.getElementById("root");
 if (elem) {
-  const roomId = (window as unknown as { roomId: string }).roomId;
   const root = createRoot(elem);
-  root.render(<App roomId={roomId} />);
+  root.render(<App />);
 } else {
   console.error("Could not mount App because #root was nowhere to be found");
 }
