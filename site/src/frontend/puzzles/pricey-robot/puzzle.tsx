@@ -19,9 +19,9 @@ export default function Puzzle({ teamState }: { teamState: TeamHuntState }) {
       {eventConcluded && (
         <>
           <p>
-            For your convenience, this is a summary of what all teams that
-            participated in the event live should have encountered. All teams
-            received the same content.
+            For your convenience, the linked PDF contains the information
+            required to recreate the live event. All teams received the same
+            content.
           </p>
           <p>
             <StyledIframe src={pdf} />
