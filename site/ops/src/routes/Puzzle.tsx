@@ -83,6 +83,10 @@ export default function Puzzle() {
     );
 
     opsData.activityLog.forEach((entry) => {
+      if (entry.team_id && opsData.hiddenTeamIds.has(entry.team_id)) {
+        return;
+      }
+
       switch (entry.type) {
         case "puzzle_unlockable": {
           if (entry.slug === slug) {
@@ -216,7 +220,7 @@ export default function Puzzle() {
       slowestSolveTeamUsername,
       teams,
     };
-  }, [slug, opsData.activityLog, opsData.teams]);
+  }, [slug, opsData.activityLog, opsData.teams, opsData.hiddenTeamIds]);
 
   if (!slug || !round || !puzzleSlot) {
     return <p>No puzzle with that slug</p>;

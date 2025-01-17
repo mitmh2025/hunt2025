@@ -61,6 +61,7 @@ export type OpsData = {
   plumpHimalayasLog: PuzzleStateLogEntry[];
   teams: TeamData[];
   gateDetails: Record<string, { title?: string; roundTitle: string }>;
+  hiddenTeamIds: Set<number>;
 };
 
 const INITIAL_OPS_DATA: OpsData = {
@@ -75,6 +76,7 @@ const INITIAL_OPS_DATA: OpsData = {
   teams: [],
   puzzleMetadata: {},
   gateDetails: {},
+  hiddenTeamIds: new Set(),
 };
 
 export type OpsContextValue = {
@@ -210,8 +212,24 @@ class OpsDataStore {
   }
 }
 
-function LoadingErrorState({ children }: { children: React.ReactNode }) {
+function LoadingErrorState({
+  children,
+  immediateReset = false,
+}: {
+  children: React.ReactNode;
+  immediateReset?: boolean;
+}) {
   const [_, __, removeCookie] = useCookies(["mitmh2025_api_auth"]);
+  const [delayPast, setDelayPast] = useState(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDelayPast(true);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  });
 
   function handleReset() {
     removeCookie("mitmh2025_api_auth");
@@ -230,9 +248,11 @@ function LoadingErrorState({ children }: { children: React.ReactNode }) {
     <div style={{ width: "100vw" }}>
       <div style={{ maxWidth: "400px", margin: "50px auto" }}>
         <div>{children}</div>
-        <div style={{ marginTop: "20px" }}>
-          <button onClick={handleReset}>Reset Data & Reload</button>
-        </div>
+        {immediateReset || delayPast ? (
+          <div style={{ marginTop: "20px" }}>
+            <button onClick={handleReset}>Reset Data & Reload</button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -389,6 +409,12 @@ export default function OpsDataProvider({
         teams: getStore().getTeamData(),
         puzzleMetadata: puzzleMetadata.body,
         gateDetails,
+        hiddenTeamIds: new Set(
+          getStore()
+            .getTeamData()
+            .filter((team) => team.username.startsWith("dnm-"))
+            .map((team) => team.teamId),
+        ),
         registrationLog: getStore().getRegistrationLog(),
         activityLog: getStore().getActivityLog(),
         plumpHimalayasLog: getStore().getPlumpHimalayasLog(),
@@ -435,7 +461,9 @@ export default function OpsDataProvider({
   }
 
   if (data.state === "error") {
-    return <LoadingErrorState>Error loading data</LoadingErrorState>;
+    return (
+      <LoadingErrorState immediateReset>Error loading data</LoadingErrorState>
+    );
   }
 
   return (

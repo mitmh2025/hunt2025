@@ -201,7 +201,7 @@ export async function seed(knex: Knex): Promise<void> {
       await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
     }
   });
-  await createTeam("solved", async (team_id, mutator) => {
+  await createTeam("dnm-solved", async (team_id, mutator) => {
     // For the "solved" team:
     // unlock all rounds and puzzles
     for (const round of HUNT.rounds) {
@@ -283,6 +283,12 @@ export async function seed(knex: Knex): Promise<void> {
       await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
     }
 
+    await ensureActivityLogEntry(
+      mutator,
+      team_id,
+      "puzzle_unlocked",
+      "papas_bookcase",
+    );
     await ensurePuzzleSolved(mutator, team_id, "papas_bookcase");
   });
 
@@ -321,6 +327,19 @@ export async function seed(knex: Knex): Promise<void> {
     for (const gate of [...isPart1Gates, ...isPart2Gates]) {
       await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
     }
+
+    await ensureActivityLogEntry(
+      mutator,
+      team_id,
+      "puzzle_unlocked",
+      "papas_bookcase",
+    );
+    await ensureActivityLogEntry(
+      mutator,
+      team_id,
+      "puzzle_unlocked",
+      "papas_stash",
+    );
 
     await ensurePuzzleSolved(mutator, team_id, "papas_bookcase");
     await ensurePuzzleSolved(mutator, team_id, "papas_stash");

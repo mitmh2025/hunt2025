@@ -244,6 +244,10 @@ export default function TeamIndex() {
         continue;
       }
 
+      if (opsData.hiddenTeamIds.has(team.teamId)) {
+        continue;
+      }
+
       const bigBoardTeam = formatTeamData(team, opsData.puzzleMetadata);
       record[team.teamId] = {
         name: getTeamName(team.username),

@@ -94,47 +94,52 @@ export default function PuzzleTeamList({
       });
   }
   const teams: PuzzleTeamListData[] = useMemo(() => {
-    return bigBoardData.teams.map((team) => {
-      const puzzleData = stats.teams[team.id];
-      if (!puzzleData) {
+    return bigBoardData.teams
+      .filter((team) => !opsData.hiddenTeamIds.has(team.id))
+      .map((team) => {
+        const puzzleData = stats.teams[team.id];
+        if (!puzzleData) {
+          return {
+            teamId: team.id,
+            teamName: getTeamName(team.username),
+            username: team.username,
+            progress: team.progress,
+            status: { state: "locked" },
+            hints: 0,
+            boughtAnswer: false,
+          };
+        }
+
+        let status: PuzzleTeamListData["status"];
+        if (puzzleData.solveTime !== null) {
+          status = {
+            state: "solved",
+            solvedAt: new Date(puzzleData.solveTime),
+          };
+        } else if (puzzleData.unlockTime !== null) {
+          status = {
+            state: "unlocked",
+            unlockedAt: new Date(puzzleData.unlockTime),
+          };
+        } else if (puzzleData.unlockableTime !== null) {
+          status = {
+            state: "unlockable",
+            unlockableAt: new Date(puzzleData.unlockableTime),
+          };
+        } else {
+          status = { state: "locked" };
+        }
+
         return {
           teamId: team.id,
           teamName: getTeamName(team.username),
           username: team.username,
           progress: team.progress,
-          status: { state: "locked" },
-          hints: 0,
-          boughtAnswer: false,
+          status,
+          hints: puzzleData.hints,
+          boughtAnswer: puzzleData.boughtAnswer,
         };
-      }
-
-      let status: PuzzleTeamListData["status"];
-      if (puzzleData.solveTime !== null) {
-        status = { state: "solved", solvedAt: new Date(puzzleData.solveTime) };
-      } else if (puzzleData.unlockTime !== null) {
-        status = {
-          state: "unlocked",
-          unlockedAt: new Date(puzzleData.unlockTime),
-        };
-      } else if (puzzleData.unlockableTime !== null) {
-        status = {
-          state: "unlockable",
-          unlockableAt: new Date(puzzleData.unlockableTime),
-        };
-      } else {
-        status = { state: "locked" };
-      }
-
-      return {
-        teamId: team.id,
-        teamName: getTeamName(team.username),
-        username: team.username,
-        progress: team.progress,
-        status,
-        hints: puzzleData.hints,
-        boughtAnswer: puzzleData.boughtAnswer,
-      };
-    });
+      });
   }, [bigBoardData, stats.teams]);
 
   const columns = useMemo(() => {
