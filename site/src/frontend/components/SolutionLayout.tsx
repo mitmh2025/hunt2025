@@ -131,7 +131,7 @@ const SolutionCannedResponseRow = ({
   providesSolveReward,
 }: {
   guess: string;
-  reply: string;
+  reply: JSX.Element;
   providesSolveReward?: boolean;
 }) => {
   // Post-hunt: change back to false
@@ -168,6 +168,16 @@ const SolutionCannedResponseTable = ({
           </thead>
           <tbody>
             {cannedResponses.map((cannedResponse) => {
+              const reply = (
+                <>
+                  {cannedResponse.reply}
+                  {cannedResponse.link && (
+                    <a href={cannedResponse.link.href}>
+                      {cannedResponse.link.display}
+                    </a>
+                  )}
+                </>
+              );
               return (
                 <Fragment key={cannedResponse.guess.join(",")}>
                   {cannedResponse.guess.map((guess) => {
@@ -175,7 +185,7 @@ const SolutionCannedResponseTable = ({
                       <SolutionCannedResponseRow
                         key={guess}
                         guess={guess}
-                        reply={cannedResponse.reply}
+                        reply={reply}
                         providesSolveReward={cannedResponse.providesSolveReward}
                       />
                     );

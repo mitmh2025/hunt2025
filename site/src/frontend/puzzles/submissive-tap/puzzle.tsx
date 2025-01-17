@@ -20,7 +20,7 @@ export default function Puzzle({ teamState }: { teamState: TeamHuntState }) {
             <iframe
               width="560"
               height="315"
-              src="https://www.youtube.com/embed/Ka2V--_PxXw?si=_PrJyatdoplR7rac"
+              src="https://www.youtube.com/embed/Ka2V--_PxXw"
               title="Tailing a Lead"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"

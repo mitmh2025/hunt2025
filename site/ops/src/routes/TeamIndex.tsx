@@ -26,6 +26,7 @@ type TeamIndexData = {
   username: string;
   teamId: number;
   teamSize: number;
+  onCampus: boolean;
   onCampusSize: number;
   progress: number;
   puzzlesSolved: number;
@@ -249,6 +250,7 @@ export default function TeamIndex() {
         username: team.username,
         teamId: team.teamId,
         teamSize: team.registration.peopleTotal,
+        onCampus: team.registration.teamLocation !== "Fully Remote",
         onCampusSize: team.registration.peopleOnCampus,
         progress: bigBoardTeam.progress,
         puzzlesSolved: team.state.puzzles_solved.size,
@@ -309,6 +311,21 @@ export default function TeamIndex() {
       columnHelper.accessor("teamSize", {
         header: "Team Size",
         filterVariant: "range",
+      }),
+      columnHelper.accessor("onCampus", {
+        header: "On-Campus",
+        filterVariant: "select",
+        filterSelectOptions: [
+          {
+            value: "true",
+            label: "Yes",
+          },
+          {
+            value: "false",
+            label: "No",
+          },
+        ],
+        Cell: ({ cell }) => (cell.getValue() ? "Yes" : "No"),
       }),
       columnHelper.accessor("onCampusSize", {
         header: "On-Campus Size",

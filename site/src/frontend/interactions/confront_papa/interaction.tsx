@@ -39,7 +39,7 @@ const Interaction = ({
           <iframe
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/tL_bBh4GHCU?si=fpXzc_s_pS1wHxRQ"
+            src="https://www.youtube.com/embed/tL_bBh4GHCU"
             title="Confronting Papa"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
