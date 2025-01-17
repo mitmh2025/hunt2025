@@ -8,7 +8,10 @@ import React, {
 import { styled } from "styled-components";
 import { WebRTCClient } from "../utils/WebRTCClient";
 import { deviceMax } from "../utils/breakpoints";
+import { PageHeader, PageMain, PageTitle, PageWrapper } from "./PageLayout";
 import { Button } from "./StyledUI";
+import radioPlayImg from "./radioPlayerAssets/radio-render-play.png";
+import radioImg from "./radioPlayerAssets/radio-render.png";
 
 type AudioControlState = {
   audioDucked: boolean;
@@ -109,6 +112,43 @@ const reducer: Reducer<AudioControlState, AudioControlAction> = (
   }
 };
 
+const Radio = styled.div`
+  position: relative;
+  width: 100%;
+  height: fit-content;
+
+  img {
+    max-width: 100%;
+
+    @media ${deviceMax.sm} {
+      display: none;
+    }
+  }
+
+  #radio-controls {
+    position: absolute;
+    left: 39%;
+    top: 22%;
+    transform: rotate(7deg);
+
+    @media ${deviceMax.lg} {
+      left: 40%;
+    }
+
+    @media ${deviceMax.md} {
+      left: 40%;
+    }
+
+    @media ${deviceMax.sm} {
+      position: relative;
+      margin: 0 auto;
+      left: auto;
+      top: auto;
+      transform: none;
+    }
+  }
+`;
+
 const Throbber = styled.div`
   color: var(--black);
   display: inline-block;
@@ -169,6 +209,7 @@ const Loading = () => {
 const ControlWrapper = styled.div`
   margin: 0 0.25rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
 
   button {
@@ -178,64 +219,106 @@ const ControlWrapper = styled.div`
   }
 
   #volume-slider {
+    appearance: none;
     -webkit-appearance: none;
-    width: 90px;
     cursor: grab;
     background: transparent;
+    overflow: hidden;
+    width: 300px;
+    margin: 1rem auto;
+
+    @media ${deviceMax.lg} {
+      width: 26vw;
+    }
+
+    @media ${deviceMax.sm} {
+      width: 200px;
+    }
+
     &:focus {
       outline: none;
     }
     &::-webkit-slider-runnable-track {
-      height: 8px;
-      background: var(--gold-400);
+      height: 16px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: var(--gray-500);
+      color: var(--gray-500);
       border: none;
       border-radius: 5px;
     }
+    &::-moz-range-progress {
+      background-color: var(--gold-500);
+    }
     &::-moz-range-track {
       height: 8px;
-      background: var(--gold-400);
+      background: var(--gray-500);
       border: none;
       border-radius: 5px;
     }
     &::-webkit-slider-thumb {
+      appearance: none;
       -webkit-appearance: none;
       border: 1px solid var(--gold-700);
-      margin-top: -4px;
       height: 16px;
       width: 16px;
-      border-radius: 8px;
-      background: var(--gold-400);
+      border-radius: 0;
+      background: var(--gray-300);
+      cursor: ew-resize;
+      box-shadow: -300px 0 0 300px var(--gold-500);
+
+      @media ${deviceMax.lg} {
+        box-shadow: -26vw 0 0 26vw var(--gold-500);
+      }
+
+      @media ${deviceMax.sm} {
+        box-shadow: -200px 0 0 200px var(--gold-500);
+      }
     }
     &::-moz-range-thumb {
       border: 1px solid var(--gold-700);
-      height: 16px;
-      width: 16px;
-      border-radius: 8px;
-      background: var(--gold-400);
+      height: 15px;
+      width: 15px;
+      border-radius: 15px;
+      background: var(--gray-300);
     }
+
     &:hover {
       &::-webkit-slider-runnable-track {
-        background: var(--gold-500);
+        background: var(--gray-600);
       }
       &::-moz-range-track {
-        background: var(--gold-500);
+        background: var(--gray-600);
       }
       &::-webkit-slider-thumb {
         background: var(--gold-500);
         border-color: var(--gold-800);
+
+        box-shadow: -300px 0 0 300px var(--gold-400);
+
+        @media ${deviceMax.lg} {
+          box-shadow: -26vw 0 0 26vw var(--gold-400);
+        }
+
+        @media ${deviceMax.sm} {
+          box-shadow: -80px 0 0 80px var(--gold-400);
+        }
       }
       &::-moz-range-thumb {
         background: var(--gold-500);
         border-color: var(--gold-800);
       }
+      &::-moz-range-progress {
+        background-color: var(--gold-300);
+      }
     }
     &:active {
       cursor: grabbing;
       &::-webkit-slider-runnable-track {
-        background: var(--gold-600);
+        background: var(--gray-600);
       }
       &::-moz-range-track {
-        background: var(--gold-600);
+        background: var(--gray-600);
       }
       &::-webkit-slider-thumb {
         background: var(--gold-600);
@@ -262,18 +345,6 @@ const ControlWrapper = styled.div`
         background: var(--gray-200);
         border-color: var(--gray-400);
       }
-    }
-  }
-
-  @media ${deviceMax.md} {
-    #volume-slider {
-      width: auto;
-    }
-  }
-
-  @media ${deviceMax.sm} {
-    #volume-slider {
-      width: 60px;
     }
   }
 `;
@@ -303,7 +374,7 @@ const Unmute = styled.div`
   margin-left: 3px;
 `;
 
-const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
+const RadioPlayer = ({ whepUrl }: { whepUrl: string }) => {
   const activePlayer = useRef<{
     client: WebRTCClient;
     audio: HTMLAudioElement;
@@ -473,37 +544,56 @@ const AudioControls = ({ whepUrl }: { whepUrl: string }) => {
   }, [handleSoundEffect, handlePlay, handlePause]);
 
   return (
-    <ControlWrapper>
-      {playing ? (
-        <MuteUnmuteButton onClick={handlePause} aria-label="Mute">
-          <Mute />
-        </MuteUnmuteButton>
-      ) : loading ? (
-        <MuteUnmuteButton onClick={handlePause} aria-label="Loading...">
-          <Loading />
-        </MuteUnmuteButton>
-      ) : (
-        <MuteUnmuteButton
-          onClick={() => {
-            handlePlay();
-          }}
-          aria-label="Unmute"
-        >
-          <Unmute />
-        </MuteUnmuteButton>
-      )}{" "}
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        id="volume-slider"
-        value={playing ? volume : 0}
-        onChange={handleVolumeChange}
-        disabled={!playing}
-      />
-    </ControlWrapper>
+    <PageWrapper>
+      <>
+        <PageHeader>
+          <PageTitle>WDNM 2π Virtual Radio Stream</PageTitle>
+        </PageHeader>
+        <PageMain>
+          <Radio>
+            <img
+              src={playing ? radioPlayImg : radioImg}
+              alt={
+                playing
+                  ? "Rendering of Hunt radio with sound wave lines"
+                  : "Rendering of Hunt radio"
+              }
+            />
+            <ControlWrapper id="radio-controls">
+              {playing ? (
+                <MuteUnmuteButton onClick={handlePause} aria-label="Mute">
+                  <Mute />
+                </MuteUnmuteButton>
+              ) : loading ? (
+                <MuteUnmuteButton onClick={handlePause} aria-label="Loading...">
+                  <Loading />
+                </MuteUnmuteButton>
+              ) : (
+                <MuteUnmuteButton
+                  onClick={() => {
+                    handlePlay();
+                  }}
+                  aria-label="Unmute"
+                >
+                  <Unmute />
+                </MuteUnmuteButton>
+              )}{" "}
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                id="volume-slider"
+                value={playing ? volume : 0}
+                onChange={handleVolumeChange}
+                disabled={!playing}
+              />
+            </ControlWrapper>
+          </Radio>
+        </PageMain>
+      </>
+    </PageWrapper>
   );
 };
 
-export default AudioControls;
+export default RadioPlayer;

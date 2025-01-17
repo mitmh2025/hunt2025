@@ -70,7 +70,6 @@ const ContentWithNavBar = ({
           info={teamState.info}
           state={navbarState}
           eventsState={initialEventsState}
-          whepUrl={teamState.whepUrl}
         />
       </div>
       {children}
