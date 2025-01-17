@@ -213,6 +213,10 @@ const Filters = styled.div`
     margin: 0;
   }
 
+  input {
+    cursor: pointer;
+  }
+
   label {
     display: flex;
     align-items: center;
