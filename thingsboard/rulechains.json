@@ -16,7 +16,6 @@
       "debugMode": false,
       "configuration": null,
       "additionalInfo": null,
-      "version": 17,
       "externalId": null,
       "tenantId": null
     },
@@ -36,7 +35,6 @@
       "debugMode": false,
       "configuration": null,
       "additionalInfo": null,
-      "version": 6,
       "externalId": null,
       "tenantId": null
     },
@@ -58,7 +56,6 @@
       "additionalInfo": {
         "description": ""
       },
-      "version": 6,
       "externalId": null,
       "tenantId": null
     }
@@ -69,7 +66,6 @@
         "id": "a1511950-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
-      "version": 17,
       "firstNodeIndex": 6,
       "nodes": [
         {
@@ -677,7 +673,6 @@
         "id": "a151b590-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
-      "version": 6,
       "firstNodeIndex": 0,
       "nodes": [
         {
@@ -920,7 +915,6 @@
         "id": "a151b591-d3b6-11ef-9253-0719359e3b02",
         "entityType": "RULE_CHAIN"
       },
-      "version": 6,
       "firstNodeIndex": 0,
       "nodes": [
         {
