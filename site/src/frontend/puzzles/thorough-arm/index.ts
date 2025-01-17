@@ -18,7 +18,38 @@ const puzzle: PuzzleDefinition = {
   solution: {
     component: Solution,
   },
-  hints: [],
+  hints: [
+    {
+      order: 1.0,
+      description: "Solvers do not know where to start",
+      keywords: ["start"],
+      nudge:
+        "This is a “Zebra-style” logic puzzle. If you google that phrase, you may find some example diagrams of grids you can use to organize your solve. Some information is given to you explicitly, so fill that in first.",
+    },
+    {
+      order: 50.0,
+      description:
+        "Solvers have received the receipt and do not know what to do with it",
+      keywords: ["receipt", "drink names"],
+      nudge: "Did you notice that the receipt is itemized?",
+    },
+    {
+      order: 75.0,
+      description:
+        "Solvers have matched the drink name to the drink type but do not know how to proceed",
+      keywords: ["drink names, extraction"],
+      nudge:
+        "The characters insulted each other throughout the puzzle, but some of their insults were pretty strange. What’s up with that?",
+    },
+    {
+      order: 99.0,
+      description:
+        "Solvers have received the cluephrase but do not know what it means",
+      keywords: ["extraction"],
+      nudge:
+        "This puzzle is themed around Dungeons and Dragons. What sort of check would you roll in Dungeons and Dragons in order to steal from someone?",
+    },
+  ],
   canned_responses: [
     {
       guess: ["ANSWER CHECK TO PILFER BAG", "CHECK TO PILFER BAG"],
