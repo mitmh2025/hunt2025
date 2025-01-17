@@ -14,8 +14,8 @@ export default function FermitChallenge() {
         <Tabs>
           <TabList>
             <Tab>Scheduling</Tab>
-            <Tab>Hosts</Tab>
-            <Tab>Scorekeepers</Tab>
+            <Tab>Host</Tab>
+            <Tab>Scorekeeper</Tab>
           </TabList>
           <TabPanel>
             <FermitScheduling />
