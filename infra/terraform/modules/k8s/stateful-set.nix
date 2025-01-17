@@ -39,6 +39,9 @@
             service_name = name;
             inherit (config) template;
           };
+          lifecycle.ignore_changes = [
+            ''metadata[0].annotations["kubectl.kubernetes.io/restartedAt"]''
+          ];
         };
         service = {
           spec.cluster_ip = "None";
