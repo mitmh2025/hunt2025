@@ -33,6 +33,7 @@ in {
       after = deps;
 
       environment.MEDIAMTX_API_URL = cfg.mediamtxApiUrl;
+      environment.JWKS_URI = config.hunt.radio.jwksUri;
 
       serviceConfig = {
         ExecStart = "${lib.getExe pkgs.plump-himalayas}";
