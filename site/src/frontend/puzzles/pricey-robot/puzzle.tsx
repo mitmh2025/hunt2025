@@ -1,9 +1,33 @@
 import React from "react";
+import { styled } from "styled-components";
+import type { TeamHuntState } from "../../../../lib/api/client";
+import pdf from "./assets/making-contact-with-an-informant.pdf";
 
-export default function Puzzle() {
+const StyledIframe = styled.iframe`
+  width: 100%;
+  aspect-ratio: 8.5/11;
+`;
+
+export default function Puzzle({ teamState }: { teamState: TeamHuntState }) {
+  const eventConcluded = teamState.rounds.events?.gates?.includes("evg02");
+
   return (
-    <p className="puzzle-flavor">
-      What’s the key to a productive collaboration?
-    </p>
+    <>
+      <p className="puzzle-flavor">
+        What’s the key to a productive collaboration?
+      </p>
+      {eventConcluded && (
+        <>
+          <p>
+            For your convenience, this is a summary of what all teams that
+            participated in the event live should have encountered. All teams
+            received the same content.
+          </p>
+          <p>
+            <StyledIframe src={pdf} />
+          </p>
+        </>
+      )}
+    </>
   );
 }
