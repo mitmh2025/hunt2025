@@ -22,6 +22,7 @@ import casino_token_ace_of_diamonds from "./assets/casino_token_ace_of_diamonds.
 import casino_token_ace_of_spades from "./assets/casino_token_ace_of_spades.png";
 import casino_token_joker from "./assets/casino_token_joker.png";
 import dont_refresh_postit from "./assets/dont_refresh_postit.png";
+import filmstrip from "./assets/filmstrip.png";
 import gladys_aka_ms_glass_tape from "./assets/gladys_aka_ms_glass_tape.png";
 import health_and_safety_flag from "./assets/health_and_safety_flag.png";
 import illegal_search_answer_solved from "./assets/illegal_search_answer_solved.png";
@@ -221,6 +222,22 @@ const OBJECTS: HubObjectSetting[] = [
     shadow: true,
     href: "/health_and_safety",
     condition: HUNT_NOT_STARTED,
+  },
+  {
+    asset: filmstrip,
+    alt: "A strip of film showing the Shadow Diamond",
+    x: 1003,
+    y: 131,
+    width: 150,
+    rot: -4.5,
+    shadow: true,
+    href: "https://youtube.com/live/cWPZ61YgY6s",
+    condition: ALWAYS,
+    pin: {
+      asset: pin_teal,
+      x: 1058,
+      y: 116,
+    },
   },
   {
     asset: map,
