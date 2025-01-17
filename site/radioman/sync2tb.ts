@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from "node:util";
 import { newFrontendClient } from "hunt2025/lib/api/frontend_client";
 import {
   TeamInfoIntermediate,
@@ -253,14 +254,7 @@ async function main({
       if (fileManifestUrl) {
         deviceAttributes.file_manifest = fileManifestUrl;
       }
-      if (
-        oldDeviceAttributes?.en_knocks !== deviceAttributes.en_knocks ||
-        oldDeviceAttributes.en_funaround !== deviceAttributes.en_funaround ||
-        oldDeviceAttributes.en_numbers !== deviceAttributes.en_numbers ||
-        oldDeviceAttributes.whep_url !== deviceAttributes.whep_url ||
-        oldDeviceAttributes.file_manifest !== deviceAttributes.file_manifest ||
-        oldDeviceAttributes.block_updates !== deviceAttributes.block_updates
-      ) {
+      if (!isDeepStrictEqual(oldDeviceAttributes, deviceAttributes)) {
         console.log(
           "updating device attributes for customer",
           customer.id.id,
