@@ -17,6 +17,7 @@ export function virtualRadioHandler(req: Request) {
     {
       node,
       title: "Virtual Radio",
+      entrypoints: ["virtual_radio"],
     },
     teamState,
   );
