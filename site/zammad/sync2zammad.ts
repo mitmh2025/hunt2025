@@ -330,8 +330,8 @@ async function main({
     info?: EmailOwnerData,
   ) => {
     const update = {
-      firstname: info?.name.split(" ").slice(0, -1).join(" ") ?? "",
-      lastname: info?.name.split(" ").slice(-1).join(" ") ?? "",
+      firstname: info?.name,
+      lastname: "",
       email,
       phone: info?.phone ?? "",
       organization_id: owner ? zammadOrgByTeamId.get(owner) : null,
@@ -367,6 +367,10 @@ async function main({
   teamRegistrationLogTailer.watchLog((items) => {
     const modified = new Map<number, TeamInfoIntermediate>();
     items.forEach((entry) => {
+      if (entry.type === "team_name_changed") {
+        return;
+      }
+
       const teamInfo =
         teamInfos.get(entry.team_id) ?? new TeamInfoIntermediate();
       const updated = teamInfo.reduce(entry);
