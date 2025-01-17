@@ -354,12 +354,12 @@ const ActivityLogTable = styled.table`
   }
 
   .round_unlocked {
-    background-color: #03585f;
+    background-color: var(--teal-800);
   }
 
-  .puzzle_unlocked {
-    background-color: #113135;
-  }
+  /* .puzzle_unlocked {
+    background-color: #2d2405;
+  } */
 
   .puzzle_solved {
     background-color: var(--teal-500);
@@ -367,6 +367,10 @@ const ActivityLogTable = styled.table`
 
   .puzzle_partially_solved {
     background-color: var(--teal-700);
+  }
+
+  .gate_completed {
+    background-color: var(--purple-900);
   }
 `;
 
