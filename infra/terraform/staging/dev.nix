@@ -5,7 +5,7 @@
     route53.aliases = [
       "reg.dev"
     ];
-    machineType = "e2-micro"; # 1 vCPU, 1 GB RAM
+    machineType = "e2-medium"; # 1 vCPU, 4 GB RAM
     firewall.allowedTCPPorts = [
       22 # SSH
       80 # HTTP
