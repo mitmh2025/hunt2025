@@ -9,7 +9,13 @@
       type = types.bool;
       default = false;
     };
-    backendService = mkEnableOption "Create a google_compute_backend_service";
+    backendService = {
+      enable = mkEnableOption "Create a google_compute_backend_service";
+      timeoutSec = mkOption {
+        type = types.int;
+        default = 60;
+      };
+    };
     service = mkOption {
       type = types.nullOr types.anything;
       default = null;
@@ -46,7 +52,7 @@
       };
       resource.kubernetes_service_v1.${name} = lib.mkIf (config.port != null) config.service;
     }
-    (lib.mkIf config.backendService {
+    (lib.mkIf config.backendService.enable {
       data.google_compute_network_endpoint_group."${namespace}-${name}" = {
         depends_on = ["kubernetes_service_v1.${name}"];
         name = "${namespace}-${name}";
@@ -63,6 +69,7 @@
         }];
         health_checks = [(lib.tfRef "google_compute_health_check.healthz.id")];
         log_config.enable = true;
+        timeout_sec = config.backendService.timeoutSec;
       };
     })
   ];

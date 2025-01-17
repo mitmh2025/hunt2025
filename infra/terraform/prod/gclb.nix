@@ -36,9 +36,9 @@
     http_health_check.port = 80;
     http_health_check.request_path = "/healthz";
   };
-  k8s.prod.deployment.api.backendService = true;
-  k8s.prod.deployment.regsite.backendService = true;
-  k8s.prod.deployment.ops.backendService = true;
+  k8s.prod.deployment.api.backendService.enable = true;
+  k8s.prod.deployment.regsite.backendService.enable = true;
+  k8s.prod.deployment.ops.backendService.enable = true;
   gcp.loadBalancer.mitmh2025 = {
     certificateMapName = "mitmh2025";
     urlMap = {
@@ -208,9 +208,15 @@
     "www.two-pi-noir.com"
   ];
 
-  k8s.prod.deployment.ui.backendService = true;
-  k8s.prod.deployment.ws.backendService = true;
-  k8s.prod.statefulSet.control-room.backendService = true;
+  k8s.prod.deployment.ui.backendService.enable = true;
+  k8s.prod.deployment.ws.backendService = {
+    enable = true;
+    timeoutSec = 86400;
+  };
+  k8s.prod.statefulSet.control-room.backendService = {
+    enable = true;
+    timeoutSec = 86400;
+  };
 
   gcp.loadBalancer.two-pi-noir = {
     certificateMapName = "two-pi-noir";
