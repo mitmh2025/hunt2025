@@ -7,6 +7,7 @@ import { TeamInfoIntermediate } from "../src/api/logic";
 import { activityLog, connect, teamRegistrationLog } from "../src/api/redis";
 import { newLogTailer } from "../src/frontend/server/dataset_tailer";
 import HUNT from "../src/huntdata";
+import { getTeamName } from "../src/utils/teamNames";
 import TeamTicketState from "./TeamTicketState";
 import Touchpoints, {
   type TouchpointType,
@@ -272,14 +273,14 @@ async function main({
       return;
     }
 
-    const zammadName = `${teamInfo.registration.username} (${teamInfo.registration.name})`;
+    const zammadName = `${teamInfo.registration.username} (${getTeamName(teamInfo.registration.username)})`;
 
     const update = {
       team_id_num: teamId,
       active: !teamInfo.deactivated,
       name: zammadName,
       team_username: teamInfo.registration.username,
-      team_name: teamInfo.registration.name,
+      team_name: getTeamName(teamInfo.registration.username),
       team_on_campus: teamInfo.registration.teamLocation !== "Fully Remote",
       people_total: teamInfo.registration.peopleTotal,
       people_undergrad: teamInfo.registration.peopleUndergrad,
@@ -406,7 +407,7 @@ async function main({
           registration.secondaryContactName,
           registration.secondaryContactPhone,
         ],
-        [registration.teamEmail, registration.name, ""],
+        [registration.teamEmail, getTeamName(registration.username), ""],
       ];
       emails.forEach(([email, name, phone]) => {
         if (seen.has(email)) {

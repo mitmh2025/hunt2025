@@ -247,7 +247,10 @@ const TEAM_NAMES = [
 
   // seed teams for testing
   { username: "team", name: "Default Team" },
-  { username: "unlocked", name: "Unlocked Team" },
+  {
+    username: "unlocked",
+    name: "Unlocked Team with a 🦢 very long 🦢 and weird name",
+  },
   {
     username: "solved",
     name: "Solved Team with a 🦢 very long 🦢 and weird name that just goes on and on and on and just goes on and on and on and just goes on and on and on and",
