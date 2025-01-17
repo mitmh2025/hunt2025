@@ -100,7 +100,7 @@
       Restart = "always";
       RestartSec = "5s";
     };
-  }
+  };
 
   # programs.firefox.enable = true;
 

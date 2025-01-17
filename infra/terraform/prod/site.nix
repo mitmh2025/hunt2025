@@ -130,6 +130,8 @@
       PORT = "80";
       HUNT_COMPONENTS = "ui";
       API_BASE_URL = "http://api/api";
+      MEDIA_BASE_URL = "https://media.mitmh2025.com";
+      CONTROL_ROOM_BASE_URL = "wss://www.two-pi-noir.agency/";
       #OTEL_METRICS_EXPORTER=console
       #OTEL_LOGS_EXPORTER=console
       #OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
