@@ -247,7 +247,7 @@
               proxyPass = "http://control_room";
               proxyWebsockets = true;
             };
-            locations."= /JaPCdoKSO193/host/ws" = {
+            locations."/JaPCdoKSO193/host/ws/" = {
               proxyPass = "http://control_room";
               proxyWebsockets = true;
             };

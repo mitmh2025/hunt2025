@@ -55,7 +55,7 @@
         lib.mapAttrsToList (_: d: d.resource) config.statefulSet
     );
     data = lib.mkMerge (
-        lib.mapAttrsToList (_: d: d.data) config.deployment
+        lib.mapAttrsToList (_: d: d.data) config.statefulSet
     );
   };
 }

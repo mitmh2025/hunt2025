@@ -210,6 +210,7 @@
 
   k8s.prod.deployment.ui.backendService = true;
   k8s.prod.deployment.ws.backendService = true;
+  k8s.prod.statefulSet.control-room.backendService = true;
 
   gcp.loadBalancer.two-pi-noir = {
     certificateMapName = "two-pi-noir";
@@ -253,6 +254,13 @@
             {
               paths = ["/ws"];
               service = lib.tfRef "google_compute_backend_service.ws.id";
+            }
+            {
+              paths = [
+                "/puzzle/control_room/ws"
+                "/JaPCdoKSO193/host/ws/*"
+              ];
+              service = lib.tfRef "google_compute_backend_service.control-room.id";
             }
           ];
         }
@@ -307,6 +315,16 @@
           host = "www.two-pi-noir.agency";
           path = "/api/register";
           service = lib.tfRef "google_compute_backend_service.api.id";
+        }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/JaPCdoKSO193/host/ws/one";
+          service = lib.tfRef "google_compute_backend_service.control-room.id";
+        }
+        {
+          host = "www.two-pi-noir.agency";
+          path = "/puzzle/control_room/ws";
+          service = lib.tfRef "google_compute_backend_service.control-room.id";
         }
       ];
     };

@@ -454,7 +454,7 @@ def main():
     app["rooms"] = {}
     app.add_routes(routes)
     app.cleanup_ctx.append(http_session)
-    web.run_app(app, port=8086)
+    web.run_app(app, port=int(os.environ.get("PORT", "8086")))
 
 if __name__ == "__main__":
   main()
