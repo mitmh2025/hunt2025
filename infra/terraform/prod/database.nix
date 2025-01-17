@@ -37,7 +37,7 @@
       };
       database_flags = lib.attrsToList {
         "cloudsql.iam_authentication" = "on";
-        "max_connections" = "50";
+        "max_connections" = "1000";
       };
     };
     lifecycle.ignore_changes = ["settings[0].disk_size"];
