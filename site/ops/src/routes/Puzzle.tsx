@@ -190,8 +190,10 @@ export default function Puzzle() {
 
     const medianSolveTime = median(solveTimes.map((entry) => entry.solveTime));
     const avgSolveTime =
-      solveTimes.reduce((sum, entry) => sum + entry.solveTime, 0) /
-      solveTimes.length;
+      solveTimes.length === 0
+        ? 0
+        : solveTimes.reduce((sum, entry) => sum + entry.solveTime, 0) /
+          solveTimes.length;
 
     const fastestSolveTime = solveTimes[0]?.solveTime;
     const fastestSolveTeamUsername = solveTimes[0]?.username;
