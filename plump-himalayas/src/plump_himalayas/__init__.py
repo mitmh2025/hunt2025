@@ -421,6 +421,7 @@ def main():
         token = jwt.decode(
             token,
             jwks_client.get_signing_key_from_jwt(token),
+            algorithms=["RS256"],
         )
         team_id = token["team_id"]
         game = await get_game(team_id)

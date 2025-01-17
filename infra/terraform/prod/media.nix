@@ -22,6 +22,26 @@
     nixosConfiguration = self.nixosConfigurations."prod/media";
   };
 
+  resource.google_compute_firewall.media-from-k8s = {
+    name = "media-from-k8s";
+    network = lib.tfRef "data.google_compute_network.default.name";
+
+    source_ranges = [
+      "10.80.0.0/14"
+    ];
+
+    allow = [
+      {
+        protocol = "tcp";
+      }
+      {
+        protocol = "udp";
+      }
+    ];
+
+    target_tags = ["media"];
+  };
+
   gcp.ar.images.images.radio.sourceImage = pkgs.radioImage;
   k8s.prod.statefulSet.sync2k8s = {
     image = lib.tfRef config.gcp.ar.images.images.misc.urlRef;
