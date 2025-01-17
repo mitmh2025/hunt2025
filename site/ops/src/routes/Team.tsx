@@ -54,7 +54,7 @@ export default function Team() {
       </p>
       <h1>
         {team.deactivated && `[DEACTIVATED] `}
-        {getTeamName(team.name)} (username:{" "}
+        {getTeamName(team.username)} (username:{" "}
         <span style={{ fontFamily: "monospace" }}>{team.username}</span>)
       </h1>
 

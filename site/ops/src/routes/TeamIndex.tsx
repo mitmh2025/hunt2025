@@ -246,7 +246,7 @@ export default function TeamIndex() {
 
       const bigBoardTeam = formatTeamData(team, opsData.puzzleMetadata);
       record[team.teamId] = {
-        name: getTeamName(team.name),
+        name: getTeamName(team.username),
         username: team.username,
         teamId: team.teamId,
         teamSize: team.registration.peopleTotal,
