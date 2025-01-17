@@ -39,7 +39,15 @@ async function main() {
     const result = await client.client.ruleChain.export({
       query: { limit: 999 },
     });
-    process.stdout.write(JSON.stringify(result.body, undefined, 2));
+    if (result.status === 200) {
+      for (const rc of result.body.ruleChains) {
+        delete rc.version;
+      }
+      for (const rcm of result.body.metadata) {
+        delete rcm.version;
+      }
+      process.stdout.write(JSON.stringify(result.body, undefined, 2));
+    }
   });
 
   program
