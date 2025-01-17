@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { styled } from "styled-components";
+import { SparkleBasic } from "../rounds/murder_in_mitropolis/Sparkle";
 export type Notification = {
   key: string;
   icon: ReactNode;
@@ -42,6 +43,11 @@ const Notification = styled.div`
   margin-bottom: 1rem;
   display: flex;
   flex-direction: row;
+  position: relative;
+
+  &.persistent {
+    background-color: var(--purple-900);
+  }
 
   &.item-enter {
     opacity: 0;
@@ -110,7 +116,28 @@ const Notifications = forwardRef<NotificationsHandle, NotificationsProps>(
               timeout={500}
               classNames="item"
             >
-              <Notification>
+              <Notification className="persistent">
+                <SparkleBasic
+                  pos={{ top: "-20px", left: "-10px" }}
+                  startWidth="48px"
+                  delay={0.11}
+                  color="var(--white)"
+                  opacity={1}
+                />
+                <SparkleBasic
+                  pos={{ top: "-12px", left: "26px" }}
+                  startWidth="24px"
+                  delay={0.85}
+                  color="var(--white)"
+                  opacity={1}
+                />
+                <SparkleBasic
+                  pos={{ top: "20px", left: "20px" }}
+                  startWidth="16px"
+                  delay={0.4}
+                  color="var(--white)"
+                  opacity={1}
+                />
                 <NotificationIcon>{notification.icon}</NotificationIcon>
                 <NotificationDescription>
                   <span>{notification.description}</span>

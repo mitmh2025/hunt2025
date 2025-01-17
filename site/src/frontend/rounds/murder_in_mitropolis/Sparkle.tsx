@@ -118,17 +118,23 @@ const Sparkle = styled.svg`
   position: absolute;
 
   animation: ${ANIMATION_DURATION}s infinite ease-in alternate twinkle;
-  opacity: 0.8;
 `;
 
-export type SparkleProps = {
+type BasicSparkleProps = {
   color?: string;
   delay?: number;
-  startWidth?: number;
-  pos: ObjectPosition;
+  startWidth?: number | string;
+  pos: { top: number | string; left: number | string };
+  opacity?: number;
 };
 
-const SparkleComponent = ({ color, delay, startWidth, pos }: SparkleProps) => {
+export const SparkleBasic = ({
+  color,
+  delay,
+  startWidth,
+  pos,
+  opacity,
+}: BasicSparkleProps) => {
   return (
     <Sparkle
       viewBox="0 0 79.332436 108.08878"
@@ -137,10 +143,11 @@ const SparkleComponent = ({ color, delay, startWidth, pos }: SparkleProps) => {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        top: proportionify(pos.top),
-        left: proportionify(pos.left),
-        width: proportionify(startWidth ?? 32),
+        top: pos.top,
+        left: pos.left,
+        width: startWidth ?? 32,
         animationDelay: `${-1 * (delay ?? Math.random()) * ANIMATION_DURATION}s`,
+        opacity: opacity ?? 1,
       }}
     >
       <g transform="translate(-13.169759,-7.8629744)">
@@ -150,6 +157,27 @@ const SparkleComponent = ({ color, delay, startWidth, pos }: SparkleProps) => {
         />
       </g>
     </Sparkle>
+  );
+};
+
+export type SparkleProps = {
+  color?: string;
+  delay?: number;
+  startWidth?: number;
+  pos: ObjectPosition;
+};
+
+const SparkleComponent = (props: SparkleProps) => {
+  return (
+    <SparkleBasic
+      {...props}
+      startWidth={proportionify(props.startWidth ?? 32)}
+      pos={{
+        top: proportionify(props.pos.top),
+        left: proportionify(props.pos.left),
+      }}
+      opacity={0.8}
+    />
   );
 };
 
