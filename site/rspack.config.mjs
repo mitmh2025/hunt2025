@@ -478,6 +478,7 @@ export default function createConfigs(_env, argv) {
       puzzle: "./src/frontend/client/puzzle.tsx",
       solution: "./src/frontend/client/solution.tsx",
       hints: "./src/frontend/client/hints.tsx",
+      virtual_radio: "./src/frontend/client/virtual_radio.tsx",
 
       // Included on the round pages
       missing_diamond: "./src/frontend/rounds/missing_diamond/client.tsx",
