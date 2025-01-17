@@ -1,5 +1,10 @@
 import workersManifest from "../../../dist/worker-manifest.json";
-import { actionForDataset, SocketManager } from "../../../lib/SocketManager";
+import {
+  actionForDataset,
+  SocketManager,
+  type SocketState,
+  type SocketStateChangeCallback,
+} from "../../../lib/SocketManager";
 import {
   type MessageFromWorker,
   type MessageToWorker,
@@ -13,8 +18,15 @@ import { genId } from "../../../lib/id";
 
 class DirectDatasetManager {
   private socketManager: SocketManager;
-  constructor() {
-    this.socketManager = new SocketManager();
+
+  constructor({
+    onConnectionStateChange,
+  }: {
+    onConnectionStateChange: SocketStateChangeCallback;
+  }) {
+    this.socketManager = new SocketManager({
+      onConnectionStateChange,
+    });
   }
 
   watch(
@@ -51,7 +63,17 @@ class SharedWorkerDatasetManager {
     e: MessageEvent<MessageFromWorker>,
   ) => void;
 
-  constructor(username: string) {
+  private onConnectionStateChange: SocketStateChangeCallback;
+
+  constructor(
+    username: string,
+    {
+      onConnectionStateChange,
+    }: {
+      onConnectionStateChange: SocketStateChangeCallback;
+    },
+  ) {
+    this.onConnectionStateChange = onConnectionStateChange;
     this.username = username;
     this.watches = new Map<string, Watch>();
     this.scriptUrl = workersManifest["websocket_worker.js"];
@@ -105,6 +127,10 @@ class SharedWorkerDatasetManager {
         this.scriptUrl = scriptUrl;
         this.restartWorker();
       }
+    }
+
+    if (e.data.type === "connection_state_change") {
+      this.onConnectionStateChange(e.data.state);
     }
   }
 
@@ -220,10 +246,26 @@ if (newUsername) {
 
 // Use the SharedWorkerDatasetManager implementation if the user agent supports it.
 // Otherwise, use the DirectDatasetManager implementation (e.g. Chrome for Android)
+
+function handleConnectionStateChange(state: SocketState) {
+  console.log(`Connection state changed: ${state}`);
+  document.dispatchEvent(
+    new CustomEvent("hunt:socketStateChange", { detail: state }),
+  );
+
+  (
+    window as unknown as { huntConnectionState: SocketState }
+  ).huntConnectionState = state;
+}
+
 const USE_WORKER = !!window.SharedWorker as boolean;
 const globalDatasetManager = USE_WORKER
-  ? new SharedWorkerDatasetManager(initialUsername ?? "unknown")
-  : new DirectDatasetManager();
+  ? new SharedWorkerDatasetManager(initialUsername ?? "unknown", {
+      onConnectionStateChange: handleConnectionStateChange,
+    })
+  : new DirectDatasetManager({
+      onConnectionStateChange: handleConnectionStateChange,
+    });
 export default globalDatasetManager;
 
 window.addEventListener("storage", (evt) => {

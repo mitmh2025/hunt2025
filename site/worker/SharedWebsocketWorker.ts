@@ -1,4 +1,4 @@
-import { SocketManager } from "../lib/SocketManager";
+import { SocketManager, type SocketState } from "../lib/SocketManager";
 import {
   type Dataset,
   type MessageFromWorker,
@@ -74,7 +74,27 @@ class WatchManager {
 }
 
 // globals
-const socketManager = new SocketManager();
+
+// The set of live ports.  We need to keep a list of them so we can notify them
+// all about a new script URL, even if there are no active subscriptions.
+const livePorts: Set<MessagePort> = new Set<MessagePort>();
+
+let socketConnectionState: SocketState = "connecting";
+const socketManager = new SocketManager({
+  onConnectionStateChange: (state: SocketState) => {
+    socketConnectionState = state;
+    console.log("socket connection state changed to", state);
+
+    for (const port of livePorts) {
+      const message: MessageFromWorker = {
+        type: "connection_state_change",
+        state,
+      };
+
+      port.postMessage(message);
+    }
+  },
+});
 const watchManager = new WatchManager();
 // Attach these to the worker global scope, for debug convenience
 (self as unknown as { socketManager: SocketManager }).socketManager =
@@ -83,9 +103,6 @@ const watchManager = new WatchManager();
 
 // Additional globals
 
-// The set of live ports.  We need to keep a list of them so we can notify them
-// all about a new script URL, even if there are no active subscriptions.
-const livePorts: Set<MessagePort> = new Set<MessagePort>();
 // The script URL sent to us by the browser tab, based on what was known when
 // that client script was bundled.
 let clientExpectedScriptUrl: string | undefined = undefined;
@@ -212,6 +229,10 @@ function notifyScriptUrlsIfNeeded() {
       if (DEBUG) {
         port.postMessage({ type: "debug", value: "worker got connection" });
       }
+      port.postMessage({
+        type: "connection_state_change",
+        state: socketConnectionState,
+      });
     }
   },
 );

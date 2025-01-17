@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
+import { type SocketState } from "../../../lib/SocketManager";
 import type { ActivityLogEntry, TeamInfo } from "../../../lib/api/client";
 import celebration from "../../assets/radio/celebration.mp3";
 import { HuntIcon, formatActivityLogEntry } from "../components/ActivityLog";
@@ -122,6 +123,40 @@ const NavBarManager = ({
     );
   }, [activeInteraction]);
 
+  const [socketState, setSocketState] = useState<SocketState>("connected");
+  useEffect(() => {
+    let hasCompletedInitialWait = false;
+    let initialSocketState: SocketState =
+      (window as unknown as { huntConnectionState?: SocketState })
+        .huntConnectionState ?? "connecting";
+
+    function handleConnectionStateEvent(evt: Event) {
+      const state = (evt as CustomEvent).detail as SocketState;
+      if (hasCompletedInitialWait) {
+        setSocketState(state);
+      } else {
+        initialSocketState = state;
+      }
+    }
+    document.addEventListener(
+      "hunt:socketStateChange",
+      handleConnectionStateEvent,
+    );
+
+    const initialTimeout = setTimeout(() => {
+      hasCompletedInitialWait = true;
+      setSocketState(initialSocketState);
+    }, 1000);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      document.removeEventListener(
+        "hunt:socketStateChange",
+        handleConnectionStateEvent,
+      );
+    };
+  }, []);
+
   return (
     <>
       <Notifications
@@ -129,7 +164,12 @@ const NavBarManager = ({
         ref={notifications}
         maxNotifications={5}
       />
-      <NavBar eventsState={eventsState} info={info} state={state} />
+      <NavBar
+        eventsState={eventsState}
+        info={info}
+        state={state}
+        socketState={socketState}
+      />
     </>
   );
 };
