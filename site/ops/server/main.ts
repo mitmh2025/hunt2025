@@ -144,6 +144,15 @@ async function buildApp({
     process.env.OPSSITE_STATIC_PATH ??
     path.join(path.dirname(fileURLToPath(import.meta.url)), "../static");
 
+  app.get("/index.html", (_req, res) => {
+    res.sendFile(path.join(staticPath, "index.html"), {
+      headers: {
+        "Content-Type": "text/html",
+        "Cache-Control": "no-store",
+      },
+    });
+  });
+
   app.use("/", express.static(staticPath));
 
   app.use((_req, res) => {
