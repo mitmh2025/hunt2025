@@ -127,12 +127,20 @@ export const PuzzleUnlockModal = React.forwardRef(
         >
           <h1>Unlock puzzle {title}?</h1>
           {desc ? <PuzzleDescription>{desc}</PuzzleDescription> : undefined}
-          <p>
-            Unlocking this puzzle will spend {cost} of your team‘s {currency}{" "}
-            available key{currency === 1 ? "" : "s"}.
-          </p>
+          {cost > currency ? (
+            <p>
+              Unlocking this puzzle will spend {cost} key{cost === 1 ? "" : "s"}
+              . You have {currency} available key{currency === 1 ? "" : "s"}, so
+              you cannot unlock this puzzle.
+            </p>
+          ) : (
+            <p>
+              Unlocking this puzzle will spend {cost} of your team‘s {currency}{" "}
+              available key{currency === 1 ? "" : "s"}.
+            </p>
+          )}
           <DialogActions>
-            <Button disabled={fetching} onClick={onUnlock}>
+            <Button disabled={fetching || cost > currency} onClick={onUnlock}>
               Unlock
             </Button>
             <ButtonSecondary disabled={fetching} onClick={onDismiss}>
