@@ -17,6 +17,7 @@
     port = 80;
     expose = true;
     env = {
+      PORT = "80";
       MEDIAMTX_API_URL = "http://media.${config.provider.google.zone}.c.${config.provider.google.project}.internal:9997";
       JWKS_URI = "https://www.mitmh2025.com/api/jwks";
     };

@@ -444,6 +444,10 @@ def main():
         finally:
             await listener.close()
 
+    @routes.get('/healthz')
+    async def healthz(request):
+        return web.Response(text="ok")
+
     async def http_session(app):
         async with aiohttp.ClientSession() as session:
             app[http_session] = session
