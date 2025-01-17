@@ -97,6 +97,10 @@ export default function Gates() {
     );
 
     opsData.activityLog.forEach((logEntry) => {
+      if (logEntry.team_id && opsData.hiddenTeamIds.has(logEntry.team_id)) {
+        return;
+      }
+
       if (logEntry.type === "gate_completed") {
         const gate = gatesById[logEntry.slug];
         if (gate) {

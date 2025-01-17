@@ -96,6 +96,10 @@ export default function PuzzlesIndex() {
 
     // Analyze activity log to compute unlock/solve data
     opsData.activityLog.forEach((entry) => {
+      if (entry.team_id && opsData.hiddenTeamIds.has(entry.team_id)) {
+        return;
+      }
+
       switch (entry.type) {
         case "puzzle_unlocked": {
           const puzzleData = getOrCreatePuzzleData(entry.slug);

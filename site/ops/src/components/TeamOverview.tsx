@@ -205,6 +205,7 @@ export default function TeamOverview({ team }: { team: TeamData }) {
   return (
     <div>
       <p>Current Team Name: {team.registration.name}</p>
+      <p>Internal Team ID: {team.teamId}</p>
       <p>
         Location:{" "}
         <>
