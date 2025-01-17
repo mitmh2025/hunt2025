@@ -499,7 +499,7 @@ const CasinoInteractionGraph: InteractionGraph<
       id: "4a-p1",
       speaker: "shark_two_annoyed",
       overlay: "annoyed",
-      text: "You’re persistent, I’ll give you that",
+      text: "You’re persistent, I’ll give you that.",
       sound: {
         mp3: audio_mp3_4a_p1,
         opus: audio_opus_4a_p1,

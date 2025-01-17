@@ -662,13 +662,13 @@ const StartContainer = styled.div`
   text-align: center;
   border-radius: 2px;
 
-  border: 2px solid #856114;
+  border: 2px solid var(--gold-700);
   box-shadow:
     0 0 0 4px var(--gray-100),
-    0 0 0 6px #856114,
-    0 0 2.5rem #6f4b80;
+    0 0 0 6px var(--gold-700),
+    0 0 2.5rem var(--purple-500);
   border-radius: 2px;
-  background: #c29f3a;
+  background: var(--gray-200);
 `;
 
 const CountdownContainer = styled.div`
@@ -757,7 +757,6 @@ function VirtualInteractionNotStarted({
           endTime={autostartAt.getTime()}
           syncedTime={syncedTime}
           color="#1b1a18"
-          disableColorChange
         />
       </CountdownContainer>
       {markedPresent ? (

@@ -912,7 +912,7 @@ const BoardwalkInteractionGraph: InteractionGraph<
       id: "second-win",
       speaker: "roger_eek",
       overlay: "roger_eek",
-      text: "Gee wilickers!",
+      text: "Holy moley!",
       sound: {
         mp3: mp3_audio_second_win,
         opus: opus_audio_second_win,
