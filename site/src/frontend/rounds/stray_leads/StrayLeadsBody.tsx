@@ -205,11 +205,13 @@ const StrayLeadsBody = ({
               belong to.
             </p>
           </Paper>
-          <Postit>
-            <p>I know these go somewhere...</p>
-            <p>I just don’t know where they fit in the bigger picture yet.</p>
-            <p className="signature">— Billie</p>
-          </Postit>
+          {state.leads.length > 0 && (
+            <Postit>
+              <p>I know these go somewhere...</p>
+              <p>I just don’t know where they fit in the bigger picture yet.</p>
+              <p className="signature">— Billie</p>
+            </Postit>
+          )}
         </ContentWrapper>
       </TableScape>
     </Fragment>
