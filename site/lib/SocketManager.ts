@@ -72,14 +72,18 @@ type SubscriptionState = {
 const getWsUrl = () =>
   `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`;
 
+export type SocketState =
+  | "connecting"
+  | "connected-waiting-hello"
+  | "connected"
+  | "reconnect-wait"
+  | "reconnecting"
+  | "closing";
+
+export type SocketStateChangeCallback = (state: SocketState) => void;
+
 export class SocketManager {
-  private sockState:
-    | "connecting"
-    | "connected-waiting-hello"
-    | "connected"
-    | "reconnect-wait"
-    | "reconnecting"
-    | "closing";
+  private sockState: SocketState;
   private sock: WebSocket;
 
   // Server-assigned connection ID.  Potentially useful for debugging?
@@ -108,7 +112,12 @@ export class SocketManager {
   private scriptUrlObserver: ((scriptUrl: string) => void) | undefined;
   private debug: boolean;
 
-  constructor(debug = true) {
+  private onConnectionStateChange: SocketStateChangeCallback;
+
+  constructor(opts: {
+    debug: boolean;
+    onConnectionStateChange: SocketStateChangeCallback;
+  }) {
     this.subsByDataset = new Map<DatasetKey, SubscriptionState>();
     this.subsBySubId = new Map<string, SubscriptionState>();
     this.pendingRPCs = new Map<number, MessageFromClient>();
@@ -121,7 +130,8 @@ export class SocketManager {
     this.onSocketConnectErrorBound = this.onSocketConnectError.bind(this);
     this.onSocketCloseBound = this.onSocketClose.bind(this);
 
-    this.debug = debug;
+    this.debug = opts.debug;
+    this.onConnectionStateChange = opts.onConnectionStateChange;
 
     this.sockState = "connecting";
     this.connId = undefined;
@@ -130,6 +140,16 @@ export class SocketManager {
     this.sock.addEventListener("message", this.onMessageBound);
     this.sock.addEventListener("error", this.onSocketConnectErrorBound);
     this.sock.addEventListener("close", this.onSocketCloseBound);
+  }
+
+  private updateConnectionState(newState: SocketState) {
+    this.sockState = newState;
+
+    try {
+      this.onConnectionStateChange(newState);
+    } catch (e) {
+      console.error("Error in onConnectionStateChange", e);
+    }
   }
 
   tryReconnect() {
@@ -141,7 +161,7 @@ export class SocketManager {
     this.sock.removeEventListener("open", this.onOpenBound);
 
     // Reset state & connection id.
-    this.sockState = "reconnecting";
+    this.updateConnectionState("reconnecting");
     this.connId = undefined;
     this.nextRpc = 1;
     this.pendingRPCs.clear();
@@ -164,7 +184,7 @@ export class SocketManager {
   }
 
   onOpen(_: Event) {
-    this.sockState = "connected-waiting-hello";
+    this.updateConnectionState("connected-waiting-hello");
   }
 
   onMessage(e: MessageEvent) {
@@ -185,7 +205,7 @@ export class SocketManager {
             this.scriptUrlObserver(data.scriptUrl);
           }
           this.log("Websocket connected & got hello");
-          this.sockState = "connected";
+          this.updateConnectionState("connected");
           this.failureCount = 0;
           this.tryDispatchPendingSubRequests();
         } else {
@@ -288,7 +308,7 @@ export class SocketManager {
 
   onSocketConnectError() {
     this.log("onSocketConnectError, state", this.sockState);
-    this.sockState = "reconnect-wait";
+    this.updateConnectionState("reconnect-wait");
     this.failureCount += 1;
     // Attempt reconnection with exponential backoff (up to 64 seconds)
     const waitTimeMsec = Math.pow(2, Math.min(this.failureCount, 6)) * 1000;
@@ -331,7 +351,7 @@ export class SocketManager {
 
   forceDisconnect() {
     // For supporting manual testing.
-    this.sockState = "closing";
+    this.updateConnectionState("closing");
     this.sock.close();
   }
 
