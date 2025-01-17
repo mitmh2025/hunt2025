@@ -12,7 +12,7 @@ const Puzzle = (): JSX.Element => {
       </p>
       <AuthorsNote>
         You should have kept your invitation as a keepsake! If you need another,
-        stop by the gala any time. Alternatively, click{" "}
+        click{" "}
         <a href={pdf} target="_blank" rel="noreferrer">
           here
         </a>
