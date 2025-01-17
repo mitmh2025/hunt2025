@@ -325,6 +325,11 @@ const NavBar = ({
                 </li>
               </>
             )}
+            {started && (
+              <li>
+                <NavLink href="/activity_log">Activity Log</NavLink>
+              </li>
+            )}
             <SubDropdown>
               <NavLink tabIndex={0}>About</NavLink>
               <ul>
@@ -391,11 +396,6 @@ const NavBar = ({
             <li>
               <NavLink href="/team">Manage Team</NavLink>
             </li>
-            {started && (
-              <li>
-                <NavLink href="/activity_log">Activity Log</NavLink>
-              </li>
-            )}
             <li>
               <NavLink href="/contact">Contact HQ</NavLink>
             </li>
