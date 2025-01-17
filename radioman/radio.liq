@@ -40,7 +40,7 @@ team_state = ref(
         log.important("failed to load cached team state: #{err}")
         {
             team_id=string.to_int(environment.get("TEAM_ID"), default=0),
-            epoch=0,
+            epoch=-1,
             quixotic_shoe_enabled=false,
             mystery_hunt_minus_enabled=false,
             icy_box_enabled=false,
