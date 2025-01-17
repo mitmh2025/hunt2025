@@ -585,8 +585,8 @@ const HUNT: Hunt = {
         },
         {
           id: "sop30",
-          unlockable_if: { puzzles_solved: 17 },
-          unlock_cost: 1,
+          unlocked_if: { oneOf: [] }, // Only manual release
+          prize: 0,
           slug: "art_history",
         },
         {
@@ -625,9 +625,9 @@ const HUNT: Hunt = {
           unlock_cost: 1,
           slug: "editors_solemnity",
         },
-        { id: "sop37", 
-          unlockable_if: { puzzles_solved: 21 }, 
-          unlock_cost: 1,
+        { id: "sop37",
+          unlocked_if: { oneOf: [] }, // Only manual unlocks by operators
+          prize: 0,
           slug: "control_room",
         },
         {
@@ -729,6 +729,7 @@ const HUNT: Hunt = {
               { gate_satisfied: "ptg13" },
             ],
           },
+          prize: 0,
           slug: "and_now_a_puzzling_word_from_our_sponsors",
         },
         {
@@ -1677,14 +1678,14 @@ const HUNT: Hunt = {
         },
         {
           id: "tmp23",
-          unlockable_if: { puzzles_solved: 12 },
-          unlock_cost: 1,
+          unlocked_if: { oneOf: [] }, // Manual release only
+          prize: 0,
           slug: "in_communicado_tonight",
         },
         {
           id: "tmp24",
-          unlockable_if: { puzzles_solved: 13 },
-          unlock_cost: 1,
+          unlocked_if: { oneOf: [] }, // Manual release only
+          prize: 0,
           slug: "estimation_dot_jpg",
         },
         {
