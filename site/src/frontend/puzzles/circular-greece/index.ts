@@ -79,7 +79,7 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["MOVE BEZELS UP TWO", "SPIN RINGS PER ROD"],
-      reply: "Keep going! This is an instruction.",
+      reply: "Keep going!",
     },
   ],
 };
