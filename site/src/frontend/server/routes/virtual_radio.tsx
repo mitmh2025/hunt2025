@@ -6,9 +6,12 @@ import RadioPlayer from "../../components/RadioPlayer";
 export function virtualRadioHandler(req: Request) {
   const teamState = req.teamState;
   if (teamState === undefined) return undefined;
-  const whepUrl = (window as unknown as { whepUrl: string }).whepUrl;
 
-  const node = <RadioPlayer whepUrl={whepUrl} />;
+  const node = (
+    <div id="virtual-radio-root">
+      <RadioPlayer whepUrl={teamState.whepUrl} />
+    </div>
+  );
 
   return wrapContentWithNavBar(
     {
