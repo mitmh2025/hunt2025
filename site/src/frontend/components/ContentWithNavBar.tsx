@@ -70,6 +70,7 @@ const ContentWithNavBar = ({
           info={teamState.info}
           state={navbarState}
           eventsState={initialEventsState}
+          socketState="connected"
         />
       </div>
       {children}

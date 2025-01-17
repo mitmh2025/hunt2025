@@ -115,7 +115,7 @@ export class SocketManager {
   private onConnectionStateChange: SocketStateChangeCallback;
 
   constructor(opts: {
-    debug: boolean;
+    debug?: boolean;
     onConnectionStateChange: SocketStateChangeCallback;
   }) {
     this.subsByDataset = new Map<DatasetKey, SubscriptionState>();
@@ -130,7 +130,7 @@ export class SocketManager {
     this.onSocketConnectErrorBound = this.onSocketConnectError.bind(this);
     this.onSocketCloseBound = this.onSocketClose.bind(this);
 
-    this.debug = opts.debug;
+    this.debug = opts.debug ?? false;
     this.onConnectionStateChange = opts.onConnectionStateChange;
 
     this.sockState = "connecting";
@@ -140,6 +140,8 @@ export class SocketManager {
     this.sock.addEventListener("message", this.onMessageBound);
     this.sock.addEventListener("error", this.onSocketConnectErrorBound);
     this.sock.addEventListener("close", this.onSocketCloseBound);
+
+    this.onConnectionStateChange(this.sockState);
   }
 
   private updateConnectionState(newState: SocketState) {

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { type SocketState } from "../SocketManager";
 
 // All messages from the client expect an rpc ID
 const RPCBase = z.object({
@@ -144,4 +145,8 @@ export type MessageFromWorker =
   | {
       type: "new_script_url";
       scriptUrl: string;
+    }
+  | {
+      type: "connection_state_change";
+      state: SocketState;
     };
