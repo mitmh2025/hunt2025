@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from "util";
 import { initClient } from "@ts-rest/core";
 import { Queue } from "modern-async";
 import pRetry from "p-retry"; // eslint-disable-line import/default, import/no-named-as-default -- eslint fails to parse the import
@@ -60,6 +61,15 @@ const retry = <T>(op: string, fn: () => Promise<T>): Promise<T> => {
       console.error(`Failed to ${op}: ${error.message}. Retrying...`);
     },
   });
+};
+
+type ZammadUser = {
+  id: number;
+  firstname: string | null;
+  lastname: string | null;
+  email: string;
+  phone: string | null;
+  organization_id: number | null;
 };
 
 async function main({
@@ -237,7 +247,7 @@ async function main({
   // Same deal for customers. We use the email as the unique identifier (even
   // though it can technically change, but maybe just don't)
   const fetchUsers = async () => {
-    const users = new Map<string, number>();
+    const users = new Map<string, ZammadUser>();
 
     let page = 1;
     for (;;) {
@@ -251,8 +261,19 @@ async function main({
         break;
       }
 
-      usersPage.body.forEach((user) => {
-        users.set(user.email, user.id);
+      usersPage.body.forEach((user: ZammadUser) => {
+        if (!user.email) {
+          return;
+        }
+
+        users.set(user.email, {
+          id: user.id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          phone: user.phone,
+          organization_id: user.organization_id ?? null,
+        });
       });
 
       page += 1;
@@ -266,7 +287,7 @@ async function main({
   const syncQueue = new Queue(1);
 
   const teamInfos = new Map<number, TeamInfoIntermediate>();
-  const zammadUserByTeamId = new Map<number, number>();
+  const zammadUserByTeamId = new Map<number, ZammadUser>();
   const syncTeam = async (teamId: number, teamInfo: TeamInfoIntermediate) => {
     // This shouldn't be possible once we've consumed any log entries
     if (!teamInfo.registration) {
@@ -330,38 +351,65 @@ async function main({
     info?: EmailOwnerData,
   ) => {
     const update = {
-      firstname: info?.name,
-      lastname: "",
       email,
       phone: info?.phone ?? "",
       organization_id: owner ? zammadOrgByTeamId.get(owner) : null,
     };
 
     const existing = zammadUserByEmail.get(email);
-    const result = await retry(`updating user ${email}`, async () => {
+
+    const updatedUser = await retry(`updating user ${email}`, async () => {
       if (existing) {
-        console.log(`Updating user: ${email}`);
-        const result = await zammadClient.updateUser({
-          params: { id: existing },
-          body: update,
-        });
-        if (result.status !== 200) {
-          throw new Error(`Failed to update user: ${result.status}`);
+        const existingData = {
+          email: existing.email,
+          phone: existing.phone,
+          organization_id: existing.organization_id,
+        };
+
+        if (!isDeepStrictEqual(existingData, update)) {
+          console.log(`Updating user: ${email}`, {
+            old: existingData,
+            new: update,
+          });
+          const result = await zammadClient.updateUser({
+            params: { id: existing.id },
+            body: update,
+          });
+
+          if (result.status !== 200) {
+            throw new Error(`Failed to update user: ${result.status}`);
+          }
+
+          return result.body;
         }
-        return result;
+
+        return null;
       } else {
         console.log(`Creating user: ${email}`);
         const result = await zammadClient.createUser({
-          body: update,
+          body: {
+            firstname: info?.name.split(" ").slice(0, -1).join(" ") ?? "",
+            lastname: info?.name.split(" ").slice(-1).join(" ") ?? "",
+            ...update,
+          },
         });
         if (result.status !== 201) {
           throw new Error(`Failed to create user: ${result.status}`);
         }
-        return result;
+        return result.body;
       }
     });
 
-    zammadUserByEmail.set(email, result.body.id);
+    if (updatedUser) {
+      zammadUserByEmail.set(email, {
+        id: updatedUser.id,
+        firstname: updatedUser.firstname,
+        lastname: updatedUser.lastname,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        organization_id: updatedUser.organization_id,
+      });
+    }
   };
 
   teamRegistrationLogTailer.watchLog((items) => {
@@ -468,9 +516,9 @@ async function main({
             return;
           }
 
-          const userId = zammadUserByEmail.get(email);
-          if (userId) {
-            zammadUserByTeamId.set(teamId, userId);
+          const user = zammadUserByEmail.get(email);
+          if (user) {
+            zammadUserByTeamId.set(teamId, user);
           }
         });
       })
@@ -849,11 +897,13 @@ async function main({
     slug: string;
     title: string;
   }) => {
-    const userId = zammadUserByTeamId.get(teamId);
-    if (!userId) {
+    const user = zammadUserByTeamId.get(teamId);
+    if (!user) {
       console.warn(`No customer for team ${teamId}`);
       return;
     }
+
+    const userId = user.id;
 
     const ticket = await retry(
       `creating hint ticket for team ${teamId} and slug ${slug}`,
@@ -897,11 +947,13 @@ async function main({
 
     if (ticket && (ticket.hint_last_request_entry ?? 0) < entry.id) {
       console.log(`Updating hint ticket for team=${teamId} slug=${entry.slug}`);
-      const customerId = zammadUserByTeamId.get(teamId);
-      if (!customerId) {
+      const customer = zammadUserByTeamId.get(teamId);
+      if (!customer) {
         console.warn(`No customer for team ${teamId}`);
         return;
       }
+
+      const customerId = customer.id;
 
       const updated = await retry(
         `update hint ticket for team ${teamId} and slug ${entry.slug}`,
@@ -1017,6 +1069,8 @@ async function main({
             continue;
           }
 
+          const zammadCustomerId = zammadCustomer.id;
+
           const teamInfo = teamInfos.get(teamId);
           if (!teamInfo) {
             console.warn(`No team info for team ${teamId}`);
@@ -1058,7 +1112,7 @@ async function main({
                 zammadClient.createTicket({
                   body: {
                     group_id: bartenderGroupId,
-                    customer_id: zammadCustomer,
+                    customer_id: zammadCustomerId,
                     title: touchpoint.description,
                     article: {
                       type: "note",
@@ -1070,7 +1124,7 @@ async function main({
                     puzzle_slug: puzzleSlug,
                   },
                   extraHeaders: {
-                    "X-On-Behalf-Of": zammadCustomer.toString(),
+                    "X-On-Behalf-Of": zammadCustomerId.toString(),
                   },
                 }),
             );
@@ -1104,7 +1158,7 @@ async function main({
                 zammadClient.createTicket({
                   body: {
                     group_id: stageManagerGroupId,
-                    customer_id: zammadCustomer,
+                    customer_id: zammadCustomerId,
                     title: `Interaction: ${interactionTitle}`,
                     article: {
                       type: "note",
@@ -1114,7 +1168,7 @@ async function main({
                     interaction_slug: interactionSlug,
                   },
                   extraHeaders: {
-                    "X-On-Behalf-Of": zammadCustomer.toString(),
+                    "X-On-Behalf-Of": zammadCustomerId.toString(),
                   },
                 }),
             );
