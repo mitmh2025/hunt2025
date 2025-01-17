@@ -305,7 +305,9 @@ export function aboutHandler(req: Request) {
               event link here
             </a>
             . This enables your Atlas mobile ID to open doors around campus for
-            the duration of the Hunt.
+            the duration of the Hunt. If you are having problems, please contact{" "}
+            <a href="mailto:business-help@mit.edu">business-help@mit.edu</a> for
+            assistance.
           </p>
           <p>
             MIT Alumni should also download and install the Atlas app, but
