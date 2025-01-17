@@ -56,12 +56,12 @@ const Interaction = styled(Puzzle)`
 `;
 
 const stateColors = {
-  solved: "#4caf50",
+  solved: "#175e19",
   unlocked: "#03a9f4",
   locked: "#ccc",
   unlockable: "#ccc",
   started: "#03a9f4",
-  complete: "#4caf50",
+  complete: "#175e19",
 };
 
 function inGroupsOf<T>(array: T[], groupSize: number): T[][] {
