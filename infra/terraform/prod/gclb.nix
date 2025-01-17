@@ -191,10 +191,22 @@
     "two-pi-noir.agency"
     "www.two-pi-noir.agency"
   ];
+  gcp.certificate.two-pi-noir-com.domains = [
+    "two-pi-noir.com"
+  ];
+  gcp.certificate.www-two-pi-noir-com.domains = [
+    "www.two-pi-noir.com"
+  ];
   gcp.certificateMap.two-pi-noir = {
     defaultCertificateName = "www-two-pi-noir";
     host."two-pi-noir.agency" = "two-pi-noir";
+    host."two-pi-noir.com" = "two-pi-noir-com";
+    host."www.two-pi-noir.com" = "www-two-pi-noir-com";
   };
+  route53.two-pi-noir-com.gcp_dns_authorizations = [
+    "two-pi-noir.com"
+    "www.two-pi-noir.com"
+  ];
 
   k8s.prod.deployment.ui.backendService = true;
   k8s.prod.deployment.ws.backendService = true;
@@ -208,7 +220,11 @@
           path_matcher = "www";
         }
         {
-          hosts = ["two-pi-noir.agency"];
+          hosts = [
+            "two-pi-noir.agency"
+            "www.two-pi-noir.com"
+            "two-pi-noir.com"
+          ];
           path_matcher = "root";
         }
       ];
@@ -314,6 +330,30 @@
     records = [(lib.tfRef "google_compute_global_address.two-pi-noir.address")];
   };
   route53.two-pi-noir.rr.www-v6 = {
+    name = "www";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir-v6.address")];
+  };
+
+  route53.two-pi-noir-com.rr.root = {
+    name = lib.tfRef "data.aws_route53_zone.two-pi-noir-com.name";
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir.address")];
+  };
+  route53.two-pi-noir-com.rr.root-v6 = {
+    name = lib.tfRef "data.aws_route53_zone.two-pi-noir-com.name";
+    type = "AAAA";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir-v6.address")];
+  };
+  route53.two-pi-noir-com.rr.www = {
+    type = "A";
+    ttl = "300";
+    records = [(lib.tfRef "google_compute_global_address.two-pi-noir.address")];
+  };
+  route53.two-pi-noir-com.rr.www-v6 = {
     name = "www";
     type = "AAAA";
     ttl = "300";
