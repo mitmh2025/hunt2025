@@ -53,7 +53,7 @@ in {
 
         paths."~teams/(\\d+)/radio" = {
           inherit (cfg) record;
-
+          recordPath = "/var/lib/mediamtx/recordings/%path/%Y-%m-%d_%H-%M-%S-%f";
           recordPartDuration = "10s";
           recordSegmentDuration = "1h";
           recordDeleteAfter = "0s";
@@ -61,6 +61,7 @@ in {
 
         paths."~control_room/(.*)" = {
           inherit (cfg) record;
+          recordPath = "/var/lib/mediamtx/recordings/%path/%Y-%m-%d_%H-%M-%S-%f";
           recordPartDuration = "10s";
           recordSegmentDuration = "1h";
           recordDeleteAfter = "0s";
