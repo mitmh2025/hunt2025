@@ -7,7 +7,7 @@
     bootDisk.size = 200;
   };
   gce.instance.media = {
-    machineType = "e2-standard-8"; # 8 vCPU, 32 GB RAM
+    machineType = "e2-highcpu-32"; # 32 vCPU, 32 GB RAM
     # 64 Kbps * 200 teams * 72 hours ≈ 400 GB
     bootDisk.size = 1000;
   };
