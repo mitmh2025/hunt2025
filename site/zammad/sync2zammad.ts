@@ -389,18 +389,24 @@ async function main({
       }
 
       if (deactivated) {
-        emailOwnership.get(registration.contactEmail)?.delete(teamId);
-        emailOwnership.get(registration.secondaryContactEmail)?.delete(teamId);
-        emailOwnership.get(registration.teamEmail)?.delete(teamId);
+        emailOwnership
+          .get(registration.contactEmail.toLowerCase())
+          ?.delete(teamId);
+        emailOwnership
+          .get(registration.secondaryContactEmail.toLowerCase())
+          ?.delete(teamId);
+        emailOwnership
+          .get(registration.teamEmail.toLowerCase())
+          ?.delete(teamId);
         return;
       }
 
       const seen = new Set<string>();
       const emails: [string, string, string][] = [
         [
-          registration.contactEmail,
-          registration.contactName,
-          registration.contactPhone,
+          registration.contactEmail.toLowerCase(),
+          registration.contactName.toLowerCase(),
+          registration.contactPhone.toLowerCase(),
         ],
         [
           registration.secondaryContactEmail,
