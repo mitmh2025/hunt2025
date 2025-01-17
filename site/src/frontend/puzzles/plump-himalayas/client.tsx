@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { styled } from "styled-components";
 import useAppendDataset from "../../client/useAppendDataset";
@@ -158,15 +158,11 @@ const FinishedTask = styled.li`
 `;
 
 const Video = ({ whepUrl }: { whepUrl: string }) => {
-  const [webRTCClient, setWebRTCClient] = useState<WebRTCClient | null>(null);
-
-  function attachWebRTCClient(el: HTMLVideoElement | null) {
-    if (webRTCClient !== null) {
-      return;
-    }
-    if (el) {
+  const elRef = useRef<HTMLVideoElement | null>(null);
+  useEffect(() => {
+    if (elRef.current) {
       const client = new WebRTCClient({
-        mediaElement: el,
+        mediaElement: elRef.current,
         whepUrl: whepUrl,
         retryForever: true,
         onStateChange: (state) => {
@@ -174,19 +170,14 @@ const Video = ({ whepUrl }: { whepUrl: string }) => {
         },
       });
       client.connect();
-      setWebRTCClient(client);
+      return () => {
+        client.destroy();
+      };
     }
-  }
+    return undefined;
+  }, [whepUrl]);
 
-  return (
-    <StyledVideo
-      autoPlay={true}
-      muted={true}
-      ref={(el) => {
-        attachWebRTCClient(el);
-      }}
-    />
-  );
+  return <StyledVideo autoPlay={true} muted={true} ref={elRef} />;
 };
 
 const Game = ({
