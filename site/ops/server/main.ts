@@ -144,19 +144,28 @@ async function buildApp({
     process.env.OPSSITE_STATIC_PATH ??
     path.join(path.dirname(fileURLToPath(import.meta.url)), "../static");
 
-  app.get("/index.html", (_req, res) => {
+  app.use((req, _res, next) => {
+    delete req.headers["if-modified-since"];
+    delete req.headers["if-none-match"];
+
+    next();
+  });
+
+  app.use(
+    "/",
+    express.static(staticPath, {
+      index: false,
+    }),
+  );
+
+  app.use((_req, res) => {
     res.sendFile(path.join(staticPath, "index.html"), {
+      cacheControl: false,
+      etag: false,
       headers: {
-        "Content-Type": "text/html",
         "Cache-Control": "no-store",
       },
     });
-  });
-
-  app.use("/", express.static(staticPath));
-
-  app.use((_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
   });
 
   return app;
