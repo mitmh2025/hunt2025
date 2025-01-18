@@ -144,19 +144,19 @@ async function buildApp({
     process.env.OPSSITE_STATIC_PATH ??
     path.join(path.dirname(fileURLToPath(import.meta.url)), "../static");
 
-  app.use((req, _res, next) => {
-    delete req.headers["if-modified-since"];
-    delete req.headers["if-none-match"];
-
-    next();
-  });
-
   app.use(
     "/",
     express.static(staticPath, {
       index: false,
     }),
   );
+
+  app.use((req, _res, next) => {
+    delete req.headers["if-modified-since"];
+    delete req.headers["if-none-match"];
+
+    next();
+  });
 
   app.use((_req, res) => {
     res.sendFile(path.join(staticPath, "index.html"), {
