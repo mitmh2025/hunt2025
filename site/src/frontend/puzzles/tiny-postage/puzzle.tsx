@@ -1,6 +1,6 @@
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
-import { MailtoLink } from "../../components/StyledUI";
+import { Errata, MailtoLink } from "../../components/StyledUI";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
   const pickupCompleted =
@@ -8,6 +8,15 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
 
   return (
     <>
+      <Errata
+        errata={[
+          {
+            timestamp: "January 17th, at 9:45 PM",
+            message:
+              "In the Stonemason, the string “Neighbors” should instead have been spelled “Neighbours”. We are not able to correct the physical objects.",
+          },
+        ]}
+      />
       {pickupCompleted ? (
         <>
           <p>Our records show you have picked up your copy of this puzzle.</p>
