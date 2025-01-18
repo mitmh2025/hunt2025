@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
+import { Errata } from "../../components/StyledUI";
 import image from "./assets/image.png";
 
 const DATA: string[][] = [
@@ -36,7 +37,6 @@ const DATA: string[][] = [
     "D&D, e.g.",
     "12th graders (abbr.)",
     "___ kwon do",
-    "“Fresh Air” network",
     "“Better Off ___” (2000s sitcom)",
     "Repeated, a fly",
     "College abroad, briefly",
@@ -131,6 +131,15 @@ const StyledTable = styled.table`
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <Errata
+        errata={[
+          {
+            timestamp: "January 17th, at 8:45 PM",
+            message:
+              "The clue ‘“Fresh Air” network’ originally appeared twice in the list.  The second instance has been removed.",
+          },
+        ]}
+      />
       <p className="puzzle-flavor">
         In this giant room, the floor is covered with black and white squares.
         You see wires snaking about, like adders nibbling at each other,
