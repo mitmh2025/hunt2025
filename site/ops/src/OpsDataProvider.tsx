@@ -224,7 +224,7 @@ function LoadingErrorState({
   useEffect(() => {
     const timeout = setTimeout(() => {
       setDelayPast(true);
-    }, 1000);
+    }, 15000);
 
     return () => {
       clearTimeout(timeout);
