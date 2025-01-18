@@ -5,12 +5,12 @@ import {
   createMRTColumnHelper,
   MaterialReactTable,
   type MRT_Cell,
-  useMaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
 import HUNT from "../../../src/huntdata";
 import { useOpsClients } from "../OpsDataProvider";
 import { type TeamData } from "../opsdata/types";
+import { useOpsTable } from "../util/useOpsTable";
 import { useIsOpsAdmin } from "./AdminOnly";
 
 type GateListEntry = {
@@ -123,21 +123,18 @@ export default function TeamGateList({ team }: { team: TeamData }) {
     ];
   }, []);
 
-  const table = useMaterialReactTable({
+  const table = useOpsTable({
     columns,
     data,
     initialState: {
-      density: "compact",
       sorting: [
         {
           id: "displayName",
           desc: false,
         },
       ],
-      showGlobalFilter: true,
     },
     layoutMode: "grid-no-grow",
-    enableDensityToggle: false,
     enableRowActions: isOpsAdmin,
     renderRowActions: ({ row }) => {
       if (row.original.satisfied) {

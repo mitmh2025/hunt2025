@@ -4,13 +4,13 @@ import { useDialogs, useNotifications } from "@toolpad/core";
 import {
   type MRT_Row,
   createMRTColumnHelper,
-  useMaterialReactTable,
   MaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
 import HUNT from "../../../src/huntdata";
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { useIsOpsAdmin } from "../components/AdminOnly";
+import { useOpsTable } from "../util/useOpsTable";
 
 type GatesIndexData = {
   id: string;
@@ -167,11 +167,10 @@ export default function Gates() {
     ];
   }, []);
 
-  const table = useMaterialReactTable({
+  const table = useOpsTable({
     columns,
     data: gatesData,
     initialState: {
-      density: "compact",
       sorting: [
         {
           id: "round",
@@ -179,7 +178,6 @@ export default function Gates() {
         },
       ],
     },
-    enableDensityToggle: false,
     enableRowActions: isOpsAdmin,
     renderRowActions: ({ row }) => {
       if (row.original.satisfied === opsData.teams.length) {

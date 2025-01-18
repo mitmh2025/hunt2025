@@ -3,7 +3,6 @@ import { useDialogs, useNotifications } from "@toolpad/core";
 import { Duration } from "luxon";
 import {
   createMRTColumnHelper,
-  useMaterialReactTable,
   MaterialReactTable,
   type MRT_Row,
 } from "material-react-table";
@@ -15,6 +14,7 @@ import { useOpsClients, useOpsData, type OpsData } from "../OpsDataProvider";
 import { useIsOpsAdmin } from "../components/AdminOnly";
 import UnlockHintsDialog from "../components/UnlockHintsDialog";
 import { median } from "../util/stats";
+import { useOpsTable } from "../util/useOpsTable";
 
 function slotNameAndSlug(slot: PuzzleSlot, opsData: OpsData) {
   if (!slot.slug) {
@@ -337,11 +337,10 @@ export default function PuzzlesIndex() {
     }
   };
 
-  const table = useMaterialReactTable({
+  const table = useOpsTable({
     columns,
     data,
     initialState: {
-      density: "compact",
       sorting: [
         {
           id: "round",
@@ -352,12 +351,9 @@ export default function PuzzlesIndex() {
         pageIndex: 0,
         pageSize: 25,
       },
-      showGlobalFilter: true,
     },
     enableRowSelection: (row) =>
       isOpsAdmin && row.original.hintUnlockHours === null,
-    selectAllMode: "all",
-    enableSelectAll: true,
     enableDensityToggle: false,
     renderTopToolbarCustomActions: ({ table }) => {
       if (table.getSelectedRowModel().rows.length === 0) {
