@@ -1,15 +1,11 @@
 import React from "react";
 import { AuthorsNote } from "../../components/PuzzleLayout";
-import { MailtoLink } from "../../components/StyledUI";
 
 const Puzzle = (): JSX.Element => {
   return (
     <AuthorsNote>
-      Please contact HQ to schedule a judging for the Infinite Scavenger Hunt.
-      You can do so by sending an email to{" "}
-      <MailtoLink subject={"TO INFINITY AND BEYOND"} />. Please include your
-      team name in the email and put “TO INFINITY AND BEYOND” in the subject
-      line (that’s not an answer, it just helps us with dispatch).
+      Please contact HQ to schedule a judging for the Infinite Scavenger Hunt by
+      calling (617)-324-7732.
     </AuthorsNote>
   );
 };
