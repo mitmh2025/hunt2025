@@ -6,7 +6,6 @@ import { DateTime } from "luxon";
 import {
   createMRTColumnHelper,
   MaterialReactTable,
-  useMaterialReactTable,
   type MRT_ColumnHelper,
   type MRT_Row,
 } from "material-react-table";
@@ -14,6 +13,7 @@ import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
 import { useOpsClients } from "../OpsDataProvider";
 import { type BigBoardTeam } from "../opsdata/bigBoard";
+import { useOpsTable } from "../util/useOpsTable";
 import useTime from "../util/useTime";
 import { useIsOpsAdmin } from "./AdminOnly";
 
@@ -357,11 +357,10 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
       ];
     }, [bigBoardTeam, now]);
 
-    const table = useMaterialReactTable({
+    const table = useOpsTable({
       columns,
       data,
       initialState: {
-        density: "compact",
         sorting: [
           {
             id: "status",
@@ -375,8 +374,8 @@ const TeamPuzzleList = forwardRef<TeamPuzzleListHandle, TeamPuzzleListProps>(
           },
         ],
         showColumnFilters: true,
+        showGlobalFilter: false,
       },
-      enableDensityToggle: false,
       enableRowActions: isOpsAdmin,
       renderRowActions: ({ row }) => {
         return (

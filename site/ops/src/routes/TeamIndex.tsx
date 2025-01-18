@@ -12,7 +12,6 @@ import {
   createMRTColumnHelper,
   MaterialReactTable,
   type MRT_Row,
-  useMaterialReactTable,
 } from "material-react-table";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -20,6 +19,7 @@ import { getTeamName } from "../../../src/utils/teamNames";
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { useIsOpsAdmin } from "../components/AdminOnly";
 import { formatTeamData } from "../opsdata/bigBoard";
+import { useOpsTable } from "../util/useOpsTable";
 
 type TeamIndexData = {
   name: string;
@@ -363,11 +363,10 @@ export default function TeamIndex() {
     ];
   }, []);
 
-  const table = useMaterialReactTable({
+  const table = useOpsTable({
     columns,
     data: indexData,
     initialState: {
-      density: "compact",
       sorting: [
         {
           id: "progress",
@@ -378,12 +377,8 @@ export default function TeamIndex() {
         pageIndex: 0,
         pageSize: 100,
       },
-      showGlobalFilter: true,
     },
     enableRowSelection: isOpsAdmin,
-    selectAllMode: "all",
-    enableSelectAll: true,
-    enableDensityToggle: false,
     renderTopToolbarCustomActions: ({ table }) => {
       if (table.getSelectedRowModel().rows.length === 0) {
         return null;

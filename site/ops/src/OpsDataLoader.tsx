@@ -177,7 +177,10 @@ export class OpsDataLoader {
 
     dbNewRecords = dbNewRecords.slice().sort((a, b) => a.id - b.id);
     if (dbNewRecords.length > 0) {
-      console.log("Got new activity log entries from indexeddb", dbNewRecords);
+      console.log(
+        "Got new plump-himalayas entries from indexeddb",
+        dbNewRecords,
+      );
     }
 
     this._plumpHimalayasHighWaterMark =

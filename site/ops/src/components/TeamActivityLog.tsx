@@ -1,13 +1,13 @@
 import {
   createMRTColumnHelper,
   MaterialReactTable,
-  useMaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
 import { type InternalActivityLogEntry } from "../../../lib/api/frontend_contract";
 import HUNT, { GATE_LOOKUP } from "../../../src/huntdata";
 import { useOpsData } from "../OpsDataProvider";
 import { slugTitle } from "../opsdata/puzzleTitles";
+import { useOpsTable } from "../util/useOpsTable";
 
 export default function TeamActivityLog({
   activity,
@@ -112,6 +112,12 @@ export default function TeamActivityLog({
             case "teams_notified":
               activity = entry.data.message;
               break;
+            case "global_hints_unlocked":
+              activity = `Global hint unlock for ${slugTitle(entry.slug, opsData.puzzleMetadata)} with time delay ${entry.data.minimum_unlock_hours} hours`;
+              break;
+            case "team_hints_unlocked":
+              activity = `Team has unlocked hints for ${slugTitle(entry.slug, opsData.puzzleMetadata)} (after ${entry.data.hints_available_at})`;
+              break;
           }
 
           if (entry.internal_data?.operator) {
@@ -128,11 +134,10 @@ export default function TeamActivityLog({
     ];
   }, [opsData, roundNames, activity]);
 
-  const table = useMaterialReactTable({
+  const table = useOpsTable({
     columns,
     data: activity,
     initialState: {
-      density: "compact",
       sorting: [
         {
           id: "timestamp",
@@ -141,7 +146,6 @@ export default function TeamActivityLog({
       ],
     },
     layoutMode: "grid-no-grow",
-    enableDensityToggle: false,
   });
 
   return <MaterialReactTable table={table} />;

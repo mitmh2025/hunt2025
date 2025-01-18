@@ -4,13 +4,13 @@ import {
   type MRT_Row,
   createMRTColumnHelper,
   MaterialReactTable,
-  useMaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
 import { getTeamName } from "../../../src/utils/teamNames";
 import { useOpsClients, useOpsData } from "../OpsDataProvider";
 import { formatAllTeamsData } from "../opsdata/bigBoard";
 import { type SinglePuzzleStats } from "../routes/Puzzle";
+import { useOpsTable } from "../util/useOpsTable";
 import useTime from "../util/useTime";
 import { useIsOpsAdmin } from "./AdminOnly";
 import {
@@ -140,7 +140,7 @@ export default function PuzzleTeamList({
           boughtAnswer: puzzleData.boughtAnswer,
         };
       });
-  }, [bigBoardData, stats.teams]);
+  }, [bigBoardData, stats.teams, opsData.hiddenTeamIds]);
 
   const columns = useMemo(() => {
     const columnHelper = createMRTColumnHelper<PuzzleTeamListData>();
@@ -208,24 +208,19 @@ export default function PuzzleTeamList({
 
   const userCanUnlock = adminPermissionRequired ? isOpsAdmin : true;
 
-  const table = useMaterialReactTable({
+  const table = useOpsTable({
     columns,
     data: teams,
     initialState: {
-      density: "compact",
       sorting: [
         {
           id: "progress",
           desc: true,
         },
       ],
-      showGlobalFilter: true,
     },
-    enableDensityToggle: false,
     layoutMode: "grid-no-grow",
     enableRowSelection: userCanUnlock,
-    selectAllMode: "all",
-    enableSelectAll: true,
     renderTopToolbarCustomActions: ({ table }) => {
       if (table.getSelectedRowModel().rows.length === 0) {
         return null;
