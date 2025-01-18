@@ -42,6 +42,10 @@
       systemd.services.zammad-websocket = {
         inherit serviceConfig;
       };
+      services.postgresql.settings = {
+        max_connections = 800;
+        shared_buffers = "4GB";
+      };
     })
     {
       services.nginx = {
