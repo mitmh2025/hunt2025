@@ -47,7 +47,7 @@
     };
   };
   k8s.prod.deployment.ui = {
-    replicas = 12;
+    replicas = 6;
     container.resources = {
       limits.cpu = "1.5";
       limits.memory = "4Gi";
@@ -56,7 +56,7 @@
     };
   };
   k8s.prod.deployment.ws = {
-    replicas = 6;
+    replicas = 4;
     container.resources = {
       limits.cpu = "1.5";
       limits.memory = "4Gi";
