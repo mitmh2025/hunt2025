@@ -6,7 +6,7 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
-import { MailtoLink } from "../../components/StyledUI";
+import { Errata, MailtoLink } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
@@ -48,7 +48,7 @@ const SUSPECTS_BLANKS: {
   },
   { structure: "____", highlightIndices: [0] },
   { structure: "___________", highlightIndices: [10] },
-  { structure: "___ _______", highlightIndices: [8] },
+  { structure: "___ _______", highlightIndices: [7] },
   { structure: "____", highlightIndices: [0] },
 ];
 
@@ -101,6 +101,15 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
 
   return (
     <>
+      <Errata
+        errata={[
+          {
+            timestamp: "January 18th, at 18:40 PM",
+            message:
+              "The second-to-last row in the Suspects list previously copied to the clipboard incorrectly.  The image on the puzzle page was correct as given.  We have updated the copy-to-clipboard-button version to highlight the 7th underline in that row rather than the 8th.",
+          },
+        ]}
+      />
       <p className="puzzle-flavor">
         To solve the case, narrow down to only the fraudulent receipts.
       </p>
