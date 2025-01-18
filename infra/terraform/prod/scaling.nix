@@ -16,7 +16,7 @@
     bootDisk.size = 50;
   };
   gce.instance.tix = {
-    machineType = "e2-standard-4"; # 4 vCPU, 16 GB RAM
+    machineType = "e2-standard-8";
     bootDisk.size = 200;
   };
   resource.google_sql_database_instance.prod = {

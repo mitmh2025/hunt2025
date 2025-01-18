@@ -21,6 +21,28 @@
         authentikApp = "tix";
       };
     }
+    (let
+      environment = {
+        WEB_CONCURRENCY = "4";
+        ZAMMAD_SESSION_JOBS_CONCURRENT = "4";
+      };
+      serviceConfig = {
+        Restart = "always";
+        RestartSec = "5s";
+      };
+    in {
+      systemd.services.zammad-web = {
+        inherit environment;
+        inherit serviceConfig;
+      };
+      systemd.services.zammad-worker = {
+        inherit environment;
+        inherit serviceConfig;
+      };
+      systemd.services.zammad-websocket = {
+        inherit serviceConfig;
+      };
+    })
     {
       services.nginx = {
         enable = true;
