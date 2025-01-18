@@ -59,7 +59,7 @@ const BLANKS = [
   { before: "We’ll have to ", blanks: "S_____ T__ L___", highlightIndex: 2 },
   { before: "Give them a ", blanks: "S______", highlightIndex: 3 },
   { before: "I’ll give you a ", blanks: "S____ P___", highlightIndex: 4 },
-  { before: "Only if it’s ", blanks: "U________", highlightIndex: 3 },
+  { before: "Only if it’s ", blanks: "U________", highlightIndex: 2 },
 ];
 
 const Puzzle = () => {
@@ -71,6 +71,11 @@ const Puzzle = () => {
             timestamp: "January 17th, at 7:00 PM",
             message:
               "On the line which starts “I spend a lot of time”, the first blank after the letter ‘G’ was originally highlighted. That has been changed to the second blank.",
+          },
+          {
+            timestamp: "January 17th at 11:55 PM",
+            message:
+              "On the line which starts “Only if it’s”, the third blank after the letter ‘U’ was originally highlighted. That has been changed to the second blank.",
           },
         ]}
       />
@@ -248,7 +253,7 @@ const Puzzle = () => {
       <Innuendo className={NO_COPY_CLASS}>
         Only if it’s{" "}
         <WordBlock>
-          U _ _ <Highlight>_</Highlight> _ _ _ _ _
+          U _ <Highlight>_</Highlight> _ _ _ _ _ _
         </WordBlock>
         <br />
       </Innuendo>

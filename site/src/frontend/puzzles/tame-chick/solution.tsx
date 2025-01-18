@@ -239,7 +239,7 @@ const Solution = () => {
               <td>
                 Only if it’s{" "}
                 <WordBlock>
-                  U _ _ <Highlight>_</Highlight> _ _ _ _ _
+                  U _ <Highlight>_</Highlight> _ _ _ _ _ _
                 </WordBlock>
               </td>
               <td>UNDRESSED</td>
