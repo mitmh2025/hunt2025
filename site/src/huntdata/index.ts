@@ -1753,7 +1753,7 @@ const HUNT: Hunt = {
           id: "evt4",
           slug: "seeing_the_big_picture",
           prize: 0,
-          strong_currency_prize: 1,
+          strong_currency_prize: 2,
         },
       ],
       unlock_if: [{ gate_satisfied: "hunt_started" }],
