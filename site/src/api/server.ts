@@ -1704,7 +1704,7 @@ export async function getRouter({
             knex,
             async (_, mutator) => {
               const data = mutator.getTeamState(hunt, team_id);
-              if (data.available_currency < 1) {
+              if (data.available_strong_currency < 1) {
                 return { error: "INSUFFICIENT_STRONG_CURRENCY" as const };
               }
 
