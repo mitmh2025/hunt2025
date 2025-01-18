@@ -158,52 +158,45 @@ const caseFileHandler = async (req: Request, res: Response) => {
     if (data.isYou) {
       const name = canonicalizeInput(data.speaker);
       const existingIndex = usedNamesIndexes.get(name);
-      // console.log(
-      //   `processing line from ${name}, existing index ${existingIndex}`,
-      // );
-      if (
-        unsatisfiedPerson !== undefined &&
-        unsatisfiedPerson.validAnswers.includes(name) &&
-        nextExtractionLetter !== undefined
-      ) {
-        const usageIdx = name.indexOf(nextExtractionLetter) + 1;
-        if (usageIdx > 0 && usageIdx < 10) {
-          // This is both a valid answer for this unsatisfied person and a valid name to extract a letter from.
-          if (existingIndex !== undefined) {
-            if (existingIndex === 0) {
-              // console.log("screwy branch taken!");
-              // This is the weird case -- we used the name before, but it wasn't satisfying an answer
-              // then.  Yank it out from its original location; we'll use it here.
-              const index = usedNames.indexOf(name);
-              usedNames.splice(index, 1);
-              usedNames.push(name);
-              usedNamesIndexes.set(name, usageIdx);
+
+      let index = 0;
+
+      if (unsatisfiedPerson?.validAnswers.includes(name)) {
+        if (nextExtractionLetter !== undefined) {
+          const usageIdx = name.indexOf(nextExtractionLetter) + 1;
+          if (usageIdx > 0 && usageIdx < 10) {
+            // This is both a valid answer for this unsatisfied person and a valid name to extract a letter from.
+            if (existingIndex !== undefined) {
+              if (existingIndex === 0) {
+                // console.log("screwy branch taken!");
+                // This is the weird case -- we used the name before, but it wasn't satisfying an answer
+                // then.  Yank it out from its original location; we'll use it here.
+                const usedIndex = usedNames.indexOf(name);
+                usedNames.splice(usedIndex, 1);
+                usedNamesIndexes.delete(name);
+                index = usageIdx;
+              }
+              // Otherwise, if existingIndex is already nonzero, then we've already used this name in
+              // a useful way, and we won't be changing how it sits in usedNames or usedNameIndexes.
+            } else {
+              // This is the expected normal "good" matching case
+              index = usageIdx;
             }
-            // Otherwise, if existingIndex is already nonzero, then we've already used this name in
-            // a useful way, and we won't be changing how it sits in usedNames or usedNameIndexes.
-          } else {
-            // This is the expected normal "good" matching case
-            usedNames.push(name);
-            usedNamesIndexes.set(name, usageIdx);
+            // Advance through the extraction
+            nextExtractionIndex += 1;
+            nextExtractionLetter = PUZZLE_ANSWER[nextExtractionIndex];
           }
-          // Advance through the extraction
-          nextExtractionIndex += 1;
-          nextExtractionLetter = PUZZLE_ANSWER[nextExtractionIndex];
-        } else {
-          // No need to extract, but we should mark the name as used.
-          usedNames.push(name);
-          usedNamesIndexes.set(name, 0);
         }
 
         // Advance through the cast of characters.
         unsatisfiedPerson = unsatisfiedPerson.nextPerson;
-      } else {
-        if (existingIndex === undefined) {
-          // Add to usedNames, with a zero index
-          usedNames.push(name);
-          usedNamesIndexes.set(name, 0);
-        }
       }
+
+      if (!usedNamesIndexes.has(name)) {
+        usedNames.push(name);
+        usedNamesIndexes.set(name, index);
+      }
+
       // console.log("usedNames", usedNames);
       // console.log("usedNamesIndexes", usedNamesIndexes);
     }
