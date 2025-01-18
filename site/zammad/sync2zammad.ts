@@ -511,7 +511,7 @@ async function main({
             return;
           }
 
-          const email = registration.teamEmail;
+          const email = registration.teamEmail.toLowerCase();
           if (!email) {
             return;
           }
