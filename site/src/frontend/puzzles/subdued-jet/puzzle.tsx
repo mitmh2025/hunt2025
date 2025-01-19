@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { InteractionLinkBlock } from "../../components/PuzzleLayout";
+import { Errata } from "../../components/StyledUI";
 
 const CenteredList = styled.ul`
   width: 100%;
@@ -21,6 +22,16 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
           <a href="/interactions/confront_gladys">Confront Gladys</a>
         </InteractionLinkBlock>
       ) : null}
+
+      <Errata
+        errata={[
+          {
+            timestamp: "January 19th, at 6:30 AM",
+            message:
+              "The alphabetized list below previously had one item out of alphabetical order. The items are now correctly sorted in alphabetical order.",
+          },
+        ]}
+      />
 
       <p>
         You must be getting close to untangling Gladys’ web of business
@@ -47,8 +58,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
           <li>KILLBUCK</li>
           <li>LOUDEST</li>
           <li>LOW HAT</li>
-          <li>ON WATCH</li>
           <li>MASSED</li>
+          <li>ON WATCH</li>
           <li>REGULATION</li>
           <li>SCORPION</li>
           <li>STILETTO</li>
