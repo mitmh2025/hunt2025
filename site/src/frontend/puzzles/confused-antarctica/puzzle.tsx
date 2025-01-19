@@ -5,6 +5,7 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
+import { Errata } from "../../components/StyledUI";
 import a from "./assets/A.svg";
 import b from "./assets/B.svg";
 import c from "./assets/C.svg";
@@ -142,8 +143,8 @@ const ASSETS_AND_CLUES: { image: string; alt: string; clue: string }[] = [
 const WORD_BANKS: string[][] = [
   [
     "AL",
-    "ARRAY",
     "AROMATICS",
+    "ARRAY",
     "BAD BLAKE",
     "BLUE BLOODS",
     "BONOMO",
@@ -215,6 +216,15 @@ const Monospace = styled.span`
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <Errata
+        errata={[
+          {
+            timestamp: "January 19, 3:50 PM",
+            message:
+              "The alphabetized list at the end below previously had one item out of alphabetical order. The items are now correctly sorted in alphabetical order.",
+          },
+        ]}
+      />
       {ASSETS_AND_CLUES.map(({ image, alt, clue }, i) => (
         <FlexGap key={i} className={NO_COPY_CLASS}>
           <Flex>
