@@ -126,8 +126,8 @@ const Puzzle = () => {
           </li>
           <li>
             Slice off the first two letters and the last letter from what you
-            got. Put what remains a warm place so it doubles while you work on
-            the next component of the recipe.
+            got. Put what remains in a warm place so it doubles while you work
+            on the next component of the recipe.
           </li>
           <li>
             Take the first starting ingredient alphabetically, and slice off the
