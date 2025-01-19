@@ -1,5 +1,10 @@
 import React from "react";
 import { styled } from "styled-components";
+import Blanks from "../../components/Blanks";
+import {
+  COPY_ONLY_CLASS,
+  NO_COPY_CLASS,
+} from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
 import imgDots from "./assets/dots.png";
 import img1 from "./assets/image1.jpg";
@@ -178,7 +183,13 @@ const Puzzle = () => {
           return null;
         })}
       </ClueTable>
-      <AnswerBlanks>_ _ _ _ &nbsp; _ _ _ _ _ _</AnswerBlanks>
+      <Blanks
+        className={COPY_ONLY_CLASS}
+        structure={["_", "_", "_", "_", "", "_", "_", "_", "_", "_", "_"]}
+      />
+      <AnswerBlanks className={NO_COPY_CLASS}>
+        _ _ _ _ &nbsp; _ _ _ _ _ _
+      </AnswerBlanks>
     </>
   );
 };
