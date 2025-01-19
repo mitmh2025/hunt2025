@@ -18,12 +18,12 @@ const Touchpoints = {
       answer: "GIVE US DOUGH",
     },
   },
-  dada_shaves_split_ends_activity: {
+  splits_used_as_history: {
     type: "activity",
     description: "Activity: LAUNCH DART AT TGT IPO",
     created_if: {
       type: "slug_partially_solved",
-      slug: "dada_shaves_split_ends",
+      slug: "splits_used_as_history",
       answer: "LAUNCH DART AT TGT IPO",
     },
   },
