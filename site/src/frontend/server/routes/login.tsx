@@ -32,7 +32,7 @@ export function hackLoginGetHandler(_req: Request) {
                 unlocked (all puzzles unlocked, recommended for validating
                 postprod)
               </option>
-              <option value="solved">
+              <option value="dnm-solved">
                 solved (all puzzles already solved; beware spoilers!)
               </option>
               <option value="is1">Illegal Search (Stage 1)</option>
