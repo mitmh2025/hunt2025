@@ -84,6 +84,7 @@ export async function seed(knex: Knex): Promise<void> {
         async (_, mutator) => {
           await populator(team_id, mutator);
         },
+        { allowImmutable: true },
       );
     }
 
@@ -660,6 +661,7 @@ export async function seed(knex: Knex): Promise<void> {
             });
           }
         },
+        { allowImmutable: true },
       );
     }
   }
@@ -684,6 +686,7 @@ export async function seed(knex: Knex): Promise<void> {
         });
       }
     },
+    { allowImmutable: true },
   );
 
   // Ensure that we trigger any triggerable unlocks
@@ -697,6 +700,7 @@ export async function seed(knex: Knex): Promise<void> {
       async (_, mutator) => {
         await mutator.recalculateTeamState(HUNT, team_id);
       },
+      { allowImmutable: true },
     );
   }
 }

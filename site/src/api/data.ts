@@ -22,6 +22,7 @@ import {
   type DehydratedTeamInteractionStateLogEntry,
 } from "../../lib/api/frontend_contract";
 import { type Hunt } from "../huntdata/types";
+import teamIsImmutable from "../utils/teamIsImmutable";
 import {
   appendActivityLog as dbAppendActivityLog,
   getActivityLog as dbGetActivityLog,
@@ -44,6 +45,7 @@ import {
   insertFermitRegistration as dbInsertFermitRegistration,
   deleteFermitRegistration as dbDeleteFermitRegistration,
   updateFermitRegistration as dbUpdateFermitRegistration,
+  getTeamUsername,
 } from "./db";
 import { TeamInfoIntermediate, TeamStateIntermediate } from "./logic";
 import {
@@ -409,7 +411,19 @@ abstract class Log<
     redisClient: RedisClient | undefined,
     knex: Knex.Knex,
     fn: (trx: Knex.Knex.Transaction, mutator: M) => R | PromiseLike<R>,
+    { allowImmutable = false } = {},
   ) {
+    if (!allowImmutable && team_id) {
+      const username = await getTeamUsername(knex, team_id);
+
+      if (!username) {
+        throw new Error(`Team with id ${team_id} not found`);
+      }
+
+      if (teamIsImmutable(username)) {
+        throw new Error("Cannot make changes to an immutable team");
+      }
+    }
     // All mutations need to follow a similar pattern for correctness:
     // 1. read the current log from cache if possible
     // 2. start transaction
@@ -506,6 +520,7 @@ export class ActivityLog extends Log<
       trx: Knex.Knex.Transaction,
       mutator: ActivityLogMutator,
     ) => R | PromiseLike<R>,
+    { allowImmutable = false } = {},
   ) {
     const result = await super.executeRawMutation(
       team_id,
@@ -525,6 +540,7 @@ export class ActivityLog extends Log<
         }
         return { result, teamStates };
       },
+      { allowImmutable },
     );
     return {
       ...result,
@@ -597,8 +613,11 @@ export class TeamRegistrationLog extends Log<
       trx: Knex.Knex.Transaction,
       mutator: TeamRegistrationLogMutator,
     ) => R | PromiseLike<R>,
+    { allowImmutable = false } = {},
   ) {
-    return await this.executeRawMutation(team_id, redisClient, knex, fn);
+    return await this.executeRawMutation(team_id, redisClient, knex, fn, {
+      allowImmutable,
+    });
   }
 }
 
@@ -631,6 +650,7 @@ export async function registerTeam(
           data,
         });
       },
+      { allowImmutable: true },
     );
     await activityLog.executeMutation(
       hunt,
@@ -641,6 +661,7 @@ export async function registerTeam(
         // Force an initial recalculateTeamState for this new user
         mutator.dirtyTeam(team_id);
       },
+      { allowImmutable: true },
     );
 
     return { usernameAvailable: true, teamId: team_id };
