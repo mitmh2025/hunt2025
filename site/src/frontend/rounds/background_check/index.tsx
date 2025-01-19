@@ -1,5 +1,6 @@
 import React from "react";
-import { type TeamHuntState } from "../../../../lib/api/client";
+import { type TeamInfo, type TeamHuntState } from "../../../../lib/api/client";
+import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import BackgroundCheckBody from "./BackgroundCheckBody";
 import { Background } from "./Layout";
@@ -507,7 +508,14 @@ function lookupValue<T>(
   }
 }
 
-function genObjects(teamState: TeamHuntState): BackgroundCheckState["imagery"] {
+function genObjects(
+  teamState: TeamHuntState,
+  {
+    immutable,
+  }: {
+    immutable: boolean;
+  },
+): BackgroundCheckState["imagery"] {
   const round = teamState.rounds.background_check;
   if (!round) return { height: 1, objects: [] };
 
@@ -522,8 +530,9 @@ function genObjects(teamState: TeamHuntState): BackgroundCheckState["imagery"] {
     if (!puzzleState) return [];
     const unlockState = puzzleState.locked;
     if (unlockState === "locked") return [];
+
     const state =
-      puzzleState.answer !== undefined
+      puzzleState.answer !== undefined || (immutable && !slot.is_meta)
         ? ("solved" as const)
         : unlockState === "unlockable"
           ? ("locked" as const)
@@ -564,19 +573,25 @@ function genObjects(teamState: TeamHuntState): BackgroundCheckState["imagery"] {
 
 export function backgroundCheckState(
   teamState: TeamHuntState,
+  { username }: { username: string },
 ): BackgroundCheckState {
+  const immutable = teamIsImmutable(username);
   const epoch = teamState.epoch;
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
-  const imagery = genObjects(teamState);
+  const imagery = genObjects(teamState, { immutable });
   return { epoch, items, imagery };
 }
 
 const BackgroundCheckRoundPage = ({
   teamState,
+  teamInfo,
 }: {
   teamState: TeamHuntState;
+  teamInfo: TeamInfo;
 }) => {
-  const state = backgroundCheckState(teamState);
+  const state = backgroundCheckState(teamState, {
+    username: teamInfo.teamUsername,
+  });
   const inlineScript = `window.initialBackgroundCheckState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)}`;
   return (
     <>

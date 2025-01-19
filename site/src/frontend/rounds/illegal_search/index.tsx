@@ -1,7 +1,8 @@
 import { type RequestHandler, type Request, type Response } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
-import type { TeamHuntState } from "../../../../lib/api/client";
+import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
+import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import {
   clampAngle,
@@ -43,7 +44,11 @@ export const nodeRequestHandler: RequestHandler<
   const nodeId = req.params.nodeSlug;
   const node = NODES_BY_ID.get(nodeId);
   if (node) {
-    res.json(filteredForFrontend(node, req.teamState.state));
+    res.json(
+      filteredForFrontend(node, req.teamState.state, {
+        immutable: teamIsImmutable(req.teamState.info.teamUsername),
+      }),
+    );
   } else {
     res.status(404).json({
       status: "error",
@@ -220,7 +225,10 @@ async function handleCorrectLockSubmission(
       });
       return;
     } else {
-      const filtered = filteredForFrontend(node, newTeamState);
+      const filtered = filteredForFrontend(node, newTeamState, {
+        immutable:
+          !!req.teamState && teamIsImmutable(req.teamState.info.teamUsername),
+      });
       res.json(filtered);
     }
   }
@@ -524,9 +532,11 @@ export const bookcasePostHandler: RequestHandler<
 
 const IllegalSearchRoundPage = ({
   teamState,
+  teamInfo,
   node,
 }: {
   teamState: TeamHuntState;
+  teamInfo: TeamInfo;
   node?: string;
 }) => {
   // TODO: This should look up via some opaque mapping to node IDs instead of
@@ -541,7 +551,9 @@ const IllegalSearchRoundPage = ({
     // that truth
     return undefined;
   }
-  const filteredNode = filteredForFrontend(initialNode, teamState);
+  const filteredNode = filteredForFrontend(initialNode, teamState, {
+    immutable: teamIsImmutable(teamInfo.teamUsername),
+  });
   const filteredNodeJson = JSON.stringify(filteredNode);
 
   // Embed the initial node JSON in the page, as well as the team state
