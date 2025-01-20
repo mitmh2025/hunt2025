@@ -339,17 +339,15 @@ export function aboutHandler(req: Request) {
           <h3>Featured Sponsors</h3>
           <FlexP>
             <SizedImage $width={360} src={hudsonRiverTrading} alt="HRT" />
-            <br />
             <SizedImage $width={360} src={janeStreet} alt="Jane Street" />
           </FlexP>
-          <h3>Signature Sponsors</h3>
-          <p>
-            <SizedImage $width={240} src={twoSigma} alt="Two Sigma" />
-          </p>
           <h3>Contributing Sponsors</h3>
-          <p>
+          <FlexP>
             <SizedImage $width={180} src={boxaroo} alt="Boxaroo" />
-          </p>
+            <br />
+
+            <SizedImage $width={240} src={twoSigma} alt="Two Sigma" />
+          </FlexP>
           <p>Additional thanks to SOLE, CAC, and MIT PD.</p>
         </PageMain>
       </>
