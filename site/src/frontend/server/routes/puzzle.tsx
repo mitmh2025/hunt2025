@@ -1,7 +1,7 @@
 import { type Request, type RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
-import { type TeamHuntState } from "../../../../lib/api/client";
+import { type TeamInfo, type TeamHuntState } from "../../../../lib/api/client";
 import { type PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract";
 import { getBackgroundCheckManifestOverrides } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
@@ -24,10 +24,9 @@ import {
   ROUND_PUZZLE_COMPONENT_MANIFESTS,
 } from "./manifests";
 
-const SHOW_SOLUTIONS = true as boolean;
-
 function getComponentManifestForPuzzle(
   teamState: TeamHuntState,
+  teamInfo: TeamInfo,
   slug: string,
   usage: "puzzle" | "solution",
 ): ComponentManifest {
@@ -87,7 +86,9 @@ function getComponentManifestForPuzzle(
   if (puzzleState.round === "missing_diamond") {
     return Object.assign({}, DEFAULT_MANIFEST, roundSpecificOverrides, {
       header: getMissingDiamondHeader({
-        state: missingDiamondState(teamState),
+        state: missingDiamondState(teamState, {
+          username: teamInfo.teamUsername,
+        }),
         slug,
       }),
     });
@@ -174,6 +175,7 @@ export async function subpuzzleHandler(req: Request<SubpuzzleParams>) {
 
   const manifest = getComponentManifestForPuzzle(
     teamState.state,
+    teamState.info,
     subpuzzle.parent_slug,
     "puzzle",
   );
@@ -381,6 +383,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
   // Use the components for the relevant round.
   const manifest = getComponentManifestForPuzzle(
     req.teamState.state,
+    req.teamState.info,
     slug,
     "puzzle",
   );
@@ -454,6 +457,7 @@ export async function puzzleHandler(req: Request<PuzzleParams>) {
             type="puzzle"
             teamName={req.teamState.info.teamName}
             teamId={req.teamState.teamId}
+            teamUsername={req.teamState.info.teamUsername}
             teamJwt={req.cookies.mitmh2025_auth as string | undefined}
             teamState={req.teamState.state}
             puzzleState={result.body}
@@ -596,7 +600,11 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     return undefined;
   }
   // Only show solutions if we're in dev mode and showing solutions is enabled
-  if (process.env.NODE_ENV !== "development" || !SHOW_SOLUTIONS) {
+  if (
+    !req.teamState.state.rounds.missing_diamond?.gates?.includes(
+      "solutions_released",
+    )
+  ) {
     return undefined;
   }
 
@@ -625,6 +633,7 @@ export function solutionHandler(req: Request<PuzzleParams>) {
   // Use the entrypoint for pages in the relevant round.
   const manifest = getComponentManifestForPuzzle(
     req.teamState.state,
+    req.teamState.info,
     slug,
     "solution",
   );
@@ -802,6 +811,7 @@ export async function puzzleHintsHandler(req: Request<PuzzleParams>) {
   // Use the components for the relevant round.
   const manifest = getComponentManifestForPuzzle(
     req.teamState.state,
+    req.teamState.info,
     slug,
     "puzzle",
   );

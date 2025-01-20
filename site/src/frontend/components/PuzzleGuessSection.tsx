@@ -83,6 +83,8 @@ const ErrorNotice = styled(RateLimitNotice)`
   color: var(--white);
 `;
 
+const SolutionsLink = styled.div``;
+
 const PuzzleGuessForm = ({
   type,
   slug,
@@ -285,6 +287,9 @@ const PuzzleGuessSection = ({
   const solved = guesses.some((g) => g.status === "correct");
   const puzzleState = teamState.puzzles[slug];
 
+  const solutionAvailable =
+    teamState.gates_satisfied.includes("solutions_released");
+
   return (
     <GuessSectionWrapper id="puzzle-guess-section">
       {solved ? (
@@ -297,7 +302,13 @@ const PuzzleGuessSection = ({
         />
       )}
       <PuzzleGuessHistoryTable guesses={guesses} />
-      {!solved && puzzleState && (
+
+      {solutionAvailable && (
+        <SolutionsLink>
+          <a href={`/puzzles/${slug}/solution`}>View solution</a>
+        </SolutionsLink>
+      )}
+      {!solved && puzzleState && !solutionAvailable && (
         <PuzzleHintLink slug={slug} puzzleState={puzzleState} />
       )}
     </GuessSectionWrapper>

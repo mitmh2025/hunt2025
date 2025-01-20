@@ -14,7 +14,7 @@ import "./assets/interrupt-987.opus";
 import "./assets/interrupt-1011.opus";
 import "./assets/interrupt-1051.opus";
 import "./assets/interrupt-1063.opus";
-import { AuthorsNote } from "../../components/PuzzleLayout";
+import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
 import { Errata } from "../../components/StyledUI";
 // Used presentationally
 import img1 from "./assets/img1.jpg";
@@ -45,6 +45,7 @@ const Puzzle = () => {
           },
         ]}
       />
+      <ArchivalNotice />
       <StyledImage src={img1} alt="A ceiling" />
       <StyledImage src={img2} alt="A ceiling" />
       <StyledImage src={img3} alt="A ceiling" />
