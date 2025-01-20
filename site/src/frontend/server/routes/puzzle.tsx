@@ -24,8 +24,6 @@ import {
   ROUND_PUZZLE_COMPONENT_MANIFESTS,
 } from "./manifests";
 
-const SHOW_SOLUTIONS = true as boolean;
-
 function getComponentManifestForPuzzle(
   teamState: TeamHuntState,
   slug: string,
@@ -596,7 +594,12 @@ export function solutionHandler(req: Request<PuzzleParams>) {
     return undefined;
   }
   // Only show solutions if we're in dev mode and showing solutions is enabled
-  if (process.env.NODE_ENV !== "development" || !SHOW_SOLUTIONS) {
+  if (
+    process.env.NODE_ENV !== "development" &&
+    !req.teamState.state.rounds.missing_diamond?.gates?.includes(
+      "solutions_released",
+    )
+  ) {
     return undefined;
   }
 
