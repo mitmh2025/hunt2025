@@ -177,8 +177,10 @@
           path = "/healthz";
           port = 80;
         };
-        initial_delay_seconds = 3;
+        initial_delay_seconds = 30;
         period_seconds = 3;
+        success_threshold = 1;
+        failure_threshold = 20;
       };
     };
   };
