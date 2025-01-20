@@ -6,7 +6,6 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
 import { Errata, MailtoLink } from "../../components/StyledUI";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
@@ -111,7 +110,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
           },
         ]}
       />
-      <ArchivalNotice />
       <p className="puzzle-flavor">
         To solve the case, narrow down to only the fraudulent receipts.
       </p>

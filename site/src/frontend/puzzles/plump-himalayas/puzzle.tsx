@@ -1,5 +1,4 @@
 import React from "react";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
 
 export function getInfo({
   stream_path,
@@ -30,7 +29,6 @@ const Puzzle = ({ teamId, teamJwt }: { teamId: number; teamJwt?: string }) => {
   const inlineScript = `window.controlRoomInfo = ${JSON.stringify(info)};`;
   return (
     <>
-      <ArchivalNotice />
       <noscript>This puzzle requires Javascript.</noscript>
       <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
       <div id="control-room-root" />

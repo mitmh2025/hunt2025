@@ -1,6 +1,5 @@
 import React from "react";
-import { type TeamInfo, type TeamHuntState } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import { type TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import BackgroundCheckBody from "./BackgroundCheckBody";
 import { Background } from "./Layout";
@@ -508,14 +507,7 @@ function lookupValue<T>(
   }
 }
 
-function genObjects(
-  teamState: TeamHuntState,
-  {
-    immutable,
-  }: {
-    immutable: boolean;
-  },
-): BackgroundCheckState["imagery"] {
+function genObjects(teamState: TeamHuntState): BackgroundCheckState["imagery"] {
   const round = teamState.rounds.background_check;
   if (!round) return { height: 1, objects: [] };
 
@@ -530,9 +522,8 @@ function genObjects(
     if (!puzzleState) return [];
     const unlockState = puzzleState.locked;
     if (unlockState === "locked") return [];
-
     const state =
-      puzzleState.answer !== undefined || (immutable && !slot.is_meta)
+      puzzleState.answer !== undefined
         ? ("solved" as const)
         : unlockState === "unlockable"
           ? ("locked" as const)
@@ -573,25 +564,19 @@ function genObjects(
 
 export function backgroundCheckState(
   teamState: TeamHuntState,
-  { username }: { username: string },
 ): BackgroundCheckState {
-  const immutable = teamIsImmutable(username);
   const epoch = teamState.epoch;
   const items = SLOTS.flatMap((slot: string) => itemForSlot(slot, teamState));
-  const imagery = genObjects(teamState, { immutable });
+  const imagery = genObjects(teamState);
   return { epoch, items, imagery };
 }
 
 const BackgroundCheckRoundPage = ({
   teamState,
-  teamInfo,
 }: {
   teamState: TeamHuntState;
-  teamInfo: TeamInfo;
 }) => {
-  const state = backgroundCheckState(teamState, {
-    username: teamInfo.teamUsername,
-  });
+  const state = backgroundCheckState(teamState);
   const inlineScript = `window.initialBackgroundCheckState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)}`;
   return (
     <>
