@@ -10,6 +10,7 @@ import { newAuthClient } from "../../../lib/api/auth_client";
 import { newClient } from "../../../lib/api/client";
 import { newFrontendClient } from "../../../lib/api/frontend_client";
 import { type Hunt } from "../../huntdata/types";
+import teamIsImmutable from "../../utils/teamIsImmutable";
 import { PUZZLES } from "../puzzles";
 import plumpHimalayasRouter from "../puzzles/plump-himalayas/server";
 import {
@@ -293,10 +294,14 @@ export function registerUiRoutes({
     authRouter.get(
       href,
       asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        const username = req.teamState?.info.teamUsername;
+
         if (
           !(
             req.teamState?.state.rounds.murder_in_mitropolis?.gates ?? []
-          ).includes(gate)
+          ).includes(gate) &&
+          username &&
+          !teamIsImmutable(username)
         ) {
           await req.frontendApi.markTeamGateSatisfied({
             params: { teamId: `${req.teamState?.teamId}`, gateId: gate },
@@ -325,8 +330,14 @@ export function registerUiRoutes({
     authRouter.get(
       href,
       asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        const username = req.teamState?.info.teamUsername;
+
         if (
-          !(req.teamState?.state.rounds.paper_trail?.gates ?? []).includes(gate)
+          !(req.teamState?.state.rounds.paper_trail?.gates ?? []).includes(
+            gate,
+          ) &&
+          username &&
+          !teamIsImmutable(username)
         ) {
           await req.frontendApi.markTeamGateSatisfied({
             params: { teamId: `${req.teamState?.teamId}`, gateId: gate },
