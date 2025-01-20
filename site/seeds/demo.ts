@@ -84,7 +84,6 @@ export async function seed(knex: Knex): Promise<void> {
         async (_, mutator) => {
           await populator(team_id, mutator);
         },
-        { allowImmutable: true },
       );
     }
 
@@ -635,67 +634,6 @@ export async function seed(knex: Knex): Promise<void> {
     },
   );
 
-  const PUBLIC_GATES = [
-    "hunt_started",
-    "solutions_released",
-    "mdg01",
-    "mdg02",
-    "mdg03",
-    "mdg12",
-    "mdg13",
-    "sog01",
-    "sog02",
-    "sog03",
-    "ptg01",
-    "ptg02",
-    "bgg01",
-    ...isPart1Gates,
-    ...isPart2Gates,
-    "isg27",
-    "isg28",
-    "isg29",
-    "isg30",
-    "isg31",
-    "isg32",
-    "isg33",
-    "tmg03",
-    "tmg04",
-    "evg01",
-    "evg02",
-  ];
-
-  const UNRELEASED_PUZZLES = [
-    "a_b_c_easy_as_1_2_3",
-    "hello_darkness_my_old_friend",
-    "wouthit_porbelm",
-    "infiltrating_the_criminal_underworld",
-    "re_infiltrating_the_criminal_underworld",
-  ];
-
-  await createTeam("public", async (team_id, mutator) => {
-    // For the "public" team: create puzzle_unlocked entries for all rounds & puzzles
-    for (const round of HUNT.rounds) {
-      if (round.slug !== "floaters" && round.slug !== "endgame") {
-        await ensureActivityLogEntry(
-          mutator,
-          team_id,
-          "round_unlocked",
-          round.slug,
-        );
-      }
-    }
-
-    for (const slug of slugs) {
-      if (!UNRELEASED_PUZZLES.includes(slug)) {
-        await ensureActivityLogEntry(mutator, team_id, "puzzle_unlocked", slug);
-      }
-    }
-
-    for (const gate of PUBLIC_GATES) {
-      await ensureActivityLogEntry(mutator, team_id, "gate_completed", gate);
-    }
-  });
-
   const all_team_ids: number[] = await knex("teams").select("id").pluck("id");
   for (const team_id of all_team_ids) {
     if (team_id !== 1) {
@@ -722,7 +660,6 @@ export async function seed(knex: Knex): Promise<void> {
             });
           }
         },
-        { allowImmutable: true },
       );
     }
   }
@@ -747,7 +684,6 @@ export async function seed(knex: Knex): Promise<void> {
         });
       }
     },
-    { allowImmutable: true },
   );
 
   // Ensure that we trigger any triggerable unlocks
@@ -761,7 +697,6 @@ export async function seed(knex: Knex): Promise<void> {
       async (_, mutator) => {
         await mutator.recalculateTeamState(HUNT, team_id);
       },
-      { allowImmutable: true },
     );
   }
 }

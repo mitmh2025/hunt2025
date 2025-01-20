@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
-import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import { MailtoLink } from "../../components/StyledUI";
 import crossDashWord from "./assets/cross-dash-word.pdf";
 import { CLUES } from "./data";
@@ -19,7 +19,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
     <>
       {pickupCompleted ? (
         <>
-          <ArchivalNotice />
           <p>Our records show you have picked up your copy of this puzzle.</p>
           <p>
             You should have received thirteen unique precut pieces of cardstock.
@@ -30,7 +29,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         </>
       ) : (
         <>
-          <ArchivalNotice />
           <p>Please come to the Gala to pick up your copy of this puzzle.</p>
           <p>
             You should receive thirteen unique precut pieces of cardstock.

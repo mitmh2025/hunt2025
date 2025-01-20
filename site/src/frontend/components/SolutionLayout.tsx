@@ -53,17 +53,36 @@ const CannedResponseTable = styled.table`
   }
 `;
 
+const ButtonTD = styled.td`
+  text-align: center;
+`;
+
 const SolutionHintTableRow = ({ hint }: { hint: Hint }) => {
-  const [revealed, setReveal] = useState<boolean>(false);
+  // Post-hunt: change back to true
+  const [revealed, setReveal] = useState<boolean>(true);
   const onClick = useCallback(() => {
     setReveal(true);
   }, []);
+
+  function handleCopy(evt: React.MouseEvent) {
+    evt.preventDefault();
+
+    navigator.clipboard.writeText(hint.nudge).catch((e: unknown) => {
+      console.error(e);
+      alert("Failed to copy hint to clipboard");
+    });
+  }
 
   return (
     <SpoileredRow $revealed={revealed} onClick={onClick}>
       <td>{hint.order}</td>
       <td>{hint.description}</td>
       <td>{hint.nudge}</td>
+      <ButtonTD>
+        <button type="button" onClick={handleCopy}>
+          📋
+        </button>
+      </ButtonTD>
     </SpoileredRow>
   );
 };
@@ -80,8 +99,9 @@ const SolutionHintTableElem = styled.table`
 
 const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
   if (hints.length > 0) {
+    // Post hunt: default to closed
     return (
-      <SpacedDetails>
+      <SpacedDetails open>
         <summary>Hints</summary>
         <SolutionHintTableElem>
           <thead>
@@ -89,6 +109,7 @@ const SolutionHintTable = ({ hints }: { hints: Hint[] }) => {
               <th>Order</th>
               <th>Description</th>
               <th>Nudge</th>
+              <th>Copy</th>
             </tr>
           </thead>
           <tbody>
@@ -113,7 +134,8 @@ const SolutionCannedResponseRow = ({
   reply: JSX.Element;
   providesSolveReward?: boolean;
 }) => {
-  const [revealed, setRevealed] = useState<boolean>(false);
+  // Post-hunt: change back to false
+  const [revealed, setRevealed] = useState<boolean>(true);
   const onClick = useCallback(() => {
     setRevealed(true);
   }, []);
@@ -132,8 +154,9 @@ const SolutionCannedResponseTable = ({
   cannedResponses: CannedResponse[];
 }) => {
   if (cannedResponses.length > 0) {
+    // Post hunt: default to closed
     return (
-      <SpacedDetails>
+      <SpacedDetails open>
         <summary>Canned responses</summary>
         <CannedResponseTable>
           <thead>

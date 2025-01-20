@@ -1,6 +1,5 @@
 import React from "react";
-import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { INTERACTIONS } from "../../interactions";
 import { PUZZLES } from "../../puzzles";
 import MissingDiamondBody from "./MissingDiamondBody";
@@ -1025,10 +1024,7 @@ function genLocations(teamState: TeamHuntState): MissingDiamondEntity[] {
   return locations;
 }
 
-function genWitnesses(
-  teamState: TeamHuntState,
-  { immutable = false }: { immutable?: boolean },
-): MissingDiamondWitness[] {
+function genWitnesses(teamState: TeamHuntState): MissingDiamondWitness[] {
   const round = teamState.rounds.missing_diamond;
   if (!round) return [];
 
@@ -1050,8 +1046,7 @@ function genWitnesses(
       {
         alt: witness.alt,
         pos: witness.pos,
-        asset:
-          witness.asset[!!puzzleState.answer || immutable ? "solved" : state],
+        asset: witness.asset[puzzleState.answer ? "solved" : state],
         puzzle: {
           title,
           slug,
@@ -1059,8 +1054,7 @@ function genWitnesses(
           state,
           answer: puzzleState.answer,
         },
-        statement:
-          !!puzzleState.answer || immutable ? witness.statement : undefined,
+        statement: puzzleState.answer ? witness.statement : undefined,
       },
     ];
   });
@@ -1092,13 +1086,10 @@ function genInteractions(
 
 export function missingDiamondState(
   teamState: TeamHuntState,
-  { username }: { username: string },
 ): MissingDiamondState {
-  const immutable = teamIsImmutable(username);
-
   const speechBubbles = genSpeechBubbles(teamState);
   const locations = genLocations(teamState);
-  const witnesses = genWitnesses(teamState, { immutable });
+  const witnesses = genWitnesses(teamState);
   const interactions = genInteractions(teamState);
   return {
     epoch: teamState.epoch,
@@ -1111,14 +1102,10 @@ export function missingDiamondState(
 
 const MissingDiamondRoundPage = ({
   teamState,
-  teamInfo,
 }: {
   teamState: TeamHuntState;
-  teamInfo: TeamInfo;
 }) => {
-  const state = missingDiamondState(teamState, {
-    username: teamInfo.teamUsername,
-  });
+  const state = missingDiamondState(teamState);
   const inlineScript = `window.initialMissingDiamondState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)}`;
   return (
     <>

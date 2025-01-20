@@ -1,6 +1,5 @@
 import React from "react";
-import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import StakeoutBody from "./StakeoutBody";
 import metaEnvelope from "./assets/meta_envelope.png";
@@ -124,12 +123,7 @@ function stakeoutOverlay(teamState: TeamHuntState): StakeoutState["overlay"] {
   };
 }
 
-export function stakeoutState(
-  teamState: TeamHuntState,
-  { username }: { username: string },
-): StakeoutState {
-  const immutable = teamIsImmutable(username);
-
+export function stakeoutState(teamState: TeamHuntState): StakeoutState {
   return {
     epoch: teamState.epoch,
     photos: Object.entries(DEVELOPED_PHOTO_IMAGES).map((record) => {
@@ -162,10 +156,7 @@ export function stakeoutState(
           slot,
           slug,
           title,
-          asset:
-            !!puzzleState.answer || immutable
-              ? solvedAsset
-              : polaroidDeveloping,
+          asset: puzzleState.answer ? solvedAsset : polaroidDeveloping,
         };
       }
       // This is the "unlockable but not yet unlocked" case.
@@ -181,16 +172,8 @@ export function stakeoutState(
   };
 }
 
-const StakeoutRoundPage = ({
-  teamState,
-  teamInfo,
-}: {
-  teamState: TeamHuntState;
-  teamInfo: TeamInfo;
-}) => {
-  const state = stakeoutState(teamState, {
-    username: teamInfo.teamUsername,
-  });
+const StakeoutRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {
+  const state = stakeoutState(teamState);
   const inlineScript = `window.initialStakeoutState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)};`;
   return (
     <>

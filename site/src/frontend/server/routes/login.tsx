@@ -42,7 +42,6 @@ export function hackLoginGetHandler(_req: Request) {
               <option value="qs2">Quixotic Shoe (Stage 2)</option>
               <option value="qs3">Quixotic Shoe (Stage 3)</option>
               <option value="qs4">Quixotic Shoe (Stage 4)</option>
-              <option value="public">Public</option>
               <option value="loadtest1">Load Test 1</option>
               <option value="loadtestearly1">Early Load Test 1</option>
             </select>

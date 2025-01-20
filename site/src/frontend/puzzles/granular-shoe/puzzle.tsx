@@ -1,6 +1,5 @@
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
 import { MailtoLink } from "../../components/StyledUI";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
@@ -9,8 +8,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
 
   return (
     <>
-      <ArchivalNotice />
-
       {pickupCompleted ? (
         <>
           <p>Our records show you have picked up your copy of this puzzle.</p>

@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import LinkedImage from "../../components/LinkedImage";
-import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import image from "./assets/image.png";
 
 const SizedImage = styled(LinkedImage)`
@@ -13,8 +13,6 @@ const SizedImage = styled(LinkedImage)`
 const Puzzle = (): JSX.Element => {
   return (
     <>
-      <ArchivalNotice />
-
       <p>You find a note slipped under your door:</p>
       <SizedImage
         src={image}

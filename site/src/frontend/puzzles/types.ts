@@ -54,7 +54,6 @@ type BaseContentProps = {
 type PuzzleContentProps = BaseContentProps & {
   teamName: string;
   teamId: number;
-  teamUsername: string;
   teamJwt: string | undefined;
   type: "puzzle";
   puzzleState: PuzzleState;

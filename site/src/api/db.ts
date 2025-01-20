@@ -533,19 +533,6 @@ export async function getTeamIds(
   return trx("teams").pluck("id");
 }
 
-export async function getTeamUsername(
-  trx: Knex.Knex.Transaction | Knex.Knex,
-  team_id: number,
-): Promise<string | undefined> {
-  const usernames = (await trx("teams")
-    .where({
-      id: team_id,
-    })
-    .pluck("username")) as string[];
-
-  return usernames[0];
-}
-
 export async function getActivityLog(
   team_id: number | undefined,
   since: number | undefined,

@@ -1,4 +1,3 @@
-import React from "react";
 import { styled } from "styled-components";
 import { deviceMin, deviceMax } from "../utils/breakpoints";
 import { lightBgLinkStyles, mdBgLinkStyles, Wrapper } from "./StyledUI";
@@ -129,17 +128,6 @@ const InteractionLinkBlock = styled.div`
     color: var(--gold-300) !important;
   }
 `;
-
-export function ArchivalNotice() {
-  return (
-    <AuthorsNote>
-      This puzzle had an on-campus or physical component, and is not currently
-      solvable unless you already received the physical materials or completed
-      the in-person interaction. We are working on archival versions of as much
-      of the hunt as we can, so please check back soon.
-    </AuthorsNote>
-  );
-}
 
 export {
   PuzzleHeader,

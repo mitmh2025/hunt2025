@@ -1,7 +1,6 @@
 import { type Placement } from "@floating-ui/react";
 import React from "react";
-import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
-import teamIsImmutable from "../../../utils/teamIsImmutable";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import { PUZZLES } from "../../puzzles";
 import MurderBody from "./MurderBody";
 // pages for meta
@@ -685,10 +684,7 @@ function lookupValue<T>(
   }
 }
 
-function genPDFWindows(
-  teamState: TeamHuntState,
-  { immutable }: { immutable: boolean },
-): MurderPDFObject[] {
+function genPDFWindows(teamState: TeamHuntState): MurderPDFObject[] {
   const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return [];
 
@@ -698,7 +694,7 @@ function genPDFWindows(
 
   const solvedCount = puzzles.filter((puzzle) => !!puzzle?.answer).length;
   const imagery = PDFWindows.map((window, i) => {
-    const isReleased = !!(i < solvedCount * 3) || immutable;
+    const isReleased = !!(i < solvedCount * 3);
 
     return {
       ...window,
@@ -711,10 +707,7 @@ function genPDFWindows(
   return imagery;
 }
 
-function genImagery(
-  teamState: TeamHuntState,
-  { immutable }: { immutable: boolean },
-): MurderPuzzleObject[] {
+function genImagery(teamState: TeamHuntState): MurderPuzzleObject[] {
   const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return [];
 
@@ -731,7 +724,7 @@ function genImagery(
     const unlockState = puzzleState.locked;
     if (unlockState === "locked") return [];
     const state =
-      puzzleState.answer !== undefined || immutable
+      puzzleState.answer !== undefined
         ? ("solved" as const)
         : unlockState === "unlockable"
           ? ("locked" as const)
@@ -766,11 +759,7 @@ function genImagery(
   return imagery;
 }
 
-export function murderState(
-  teamState: TeamHuntState,
-  { username }: { username: string },
-): MurderState {
-  const immutable = teamIsImmutable(username);
+export function murderState(teamState: TeamHuntState): MurderState {
   const epoch = teamState.epoch;
   const round = teamState.rounds.murder_in_mitropolis;
   if (!round) return { epoch, items: [], imagery: [], pdfImagery: [] };
@@ -787,20 +776,14 @@ export function murderState(
     };
   });
 
-  const imagery: MurderPuzzleObject[] = genImagery(teamState, { immutable });
-  const pdfImagery = genPDFWindows(teamState, { immutable });
+  const imagery: MurderPuzzleObject[] = genImagery(teamState);
+  const pdfImagery = genPDFWindows(teamState);
 
   return { epoch, items, imagery, pdfImagery };
 }
 
-const MurderRoundPage = ({
-  teamState,
-  teamInfo,
-}: {
-  teamState: TeamHuntState;
-  teamInfo: TeamInfo;
-}) => {
-  const state = murderState(teamState, { username: teamInfo.teamUsername });
+const MurderRoundPage = ({ teamState }: { teamState: TeamHuntState }) => {
+  const state = murderState(teamState);
   const inlineScript = `window.initialMurderState = ${JSON.stringify(state)}; window.initialTeamState = ${JSON.stringify(teamState)};`;
   return (
     <>
