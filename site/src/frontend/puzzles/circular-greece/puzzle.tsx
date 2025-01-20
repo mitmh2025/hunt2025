@@ -1,5 +1,6 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
+import { ArchivalNotice } from "../../components/PuzzleLayout";
 import { MailtoLink } from "../../components/StyledUI";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
@@ -9,6 +10,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   if (pickupCompleted) {
     return (
       <>
+        <ArchivalNotice />
         <p>Our records show you have picked up your copy of this puzzle.</p>
         <p>
           You should have received exactly 45 small pieces and one rod in a
@@ -25,6 +27,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
 
   return (
     <>
+      <ArchivalNotice />
       <p>Please come to the Gala to pick up your copy of this puzzle.</p>
       <p>
         You should receive exactly 45 small pieces and one rod in a ziploc bag.
