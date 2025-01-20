@@ -1594,6 +1594,7 @@ const NODE_IDS_BY_PUZZLE_SLUG: Record<string, string> = {
 function modalFromModalInternal(
   modalInternal: ModalInternal,
   teamState: TeamHuntState,
+  { immutable }: { immutable: boolean },
 ): [Modal, boolean] | undefined {
   const {
     includeIf,
@@ -1626,7 +1627,7 @@ function modalFromModalInternal(
   const obj: Modal = { ...rest, ...mixin };
 
   if (solvedAssets && slug) {
-    const isSolved = !!teamState.puzzles[slug]?.answer;
+    const isSolved = !!teamState.puzzles[slug]?.answer || immutable;
     if (isSolved) {
       if (solvedAssets.modalAsset) {
         obj.asset = solvedAssets.modalAsset;
@@ -1693,6 +1694,7 @@ function modalFromModalInternal(
 function filteredForFrontend(
   node: NodeInternal,
   teamState: TeamHuntState,
+  { immutable }: { immutable: boolean },
 ): Node {
   // Evaluates the predicates and fills out team state and puzzle information
   const keptNavigations = node.navigations.flatMap((nav) => {
@@ -1738,7 +1740,7 @@ function filteredForFrontend(
   const modals: Modal[] = [];
   const interactionModals: Modal[] = [];
   node.modals.forEach((modal) => {
-    const result = modalFromModalInternal(modal, teamState);
+    const result = modalFromModalInternal(modal, teamState, { immutable });
     if (result) {
       const [objForFrontend, ownedByInteraction] = result;
       if (ownedByInteraction) {

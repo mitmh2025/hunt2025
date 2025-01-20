@@ -72,6 +72,7 @@ import { type Hunt } from "../huntdata/types";
 import { fixData } from "../utils/fixData";
 import { fixTimestamp } from "../utils/fixTimestamp";
 import { omit } from "../utils/omit";
+import teamIsImmutable from "../utils/teamIsImmutable";
 import {
   activityLog,
   puzzleStateLog,
@@ -102,6 +103,7 @@ import {
   getTeamInteractionStateLog,
   getLastTeamInteractionStateLogEntry,
   appendTeamInteractionStateLog,
+  getTeamUsername,
 } from "./db";
 import {
   confirmationEmailTemplate,
@@ -998,6 +1000,50 @@ export async function getRouter({
             ),
           );
 
+          // Determine our disposition on this submission.
+          let responseText = "Incorrect";
+          let status: GuessStatus = "incorrect";
+          let link: { display: string; href: string } | undefined;
+          if (correct_answer) {
+            canonical_input = correct_answer;
+            responseText = "Correct!";
+            status = "correct";
+          } else if (correct_canned_response) {
+            const matching_input = correct_canned_response.guess.find(
+              (g) => canonicalizeInput(g) === canonical_input,
+            );
+            canonical_input = matching_input ?? canonical_input;
+            link = correct_canned_response.link;
+            responseText = correct_canned_response.reply;
+            status = "other";
+          }
+
+          const username = await getTeamUsername(knex, team_id);
+          if (username && teamIsImmutable(username)) {
+            return {
+              status: 200 as const,
+
+              body: {
+                guesses: [
+                  {
+                    id: 0,
+                    canonical_input,
+                    link,
+                    status,
+                    response: responseText,
+                    timestamp: new Date().toISOString(),
+                  },
+                ],
+
+                // The frontend ignores all of this in the response
+                epoch: 0,
+                round: "stray_leads",
+                locked: "unlocked",
+                hints: [],
+              },
+            };
+          }
+
           const { result, teamStates, logEntries } =
             await activityLog.executeMutation(
               hunt,
@@ -1056,24 +1102,6 @@ export async function getRouter({
                   puzzle_log.find((e) => e.type === "puzzle_solved") ?? false;
                 if (alreadySolved) {
                   return { status: 200 as const };
-                }
-
-                // Determine our disposition on this submission.
-                let responseText = "Incorrect";
-                let status: GuessStatus = "incorrect";
-                let link;
-                if (correct_answer) {
-                  canonical_input = correct_answer;
-                  responseText = "Correct!";
-                  status = "correct";
-                } else if (correct_canned_response) {
-                  const matching_input = correct_canned_response.guess.find(
-                    (g) => canonicalizeInput(g) === canonical_input,
-                  );
-                  canonical_input = matching_input ?? canonical_input;
-                  link = correct_canned_response.link;
-                  responseText = correct_canned_response.reply;
-                  status = "other";
                 }
 
                 // Attempt to insert a new guess.  If this guess's input matches some other canonical
@@ -1264,6 +1292,35 @@ export async function getRouter({
             (answer) => canonicalizeInput(answer) === canonical_input,
           );
           const team_id = req.user as number;
+
+          // Determine our disposition on this submission.
+          let responseText = "Incorrect";
+          let status: GuessStatus = "incorrect";
+          if (correct_answer) {
+            canonical_input = correct_answer;
+            responseText = "Correct!";
+            status = "correct";
+          }
+
+          const username = await getTeamUsername(knex, team_id);
+          if (username && teamIsImmutable(username)) {
+            return {
+              status: 200 as const,
+
+              body: {
+                guesses: [
+                  {
+                    id: 0,
+                    canonical_input,
+                    status,
+                    response: responseText,
+                    timestamp: new Date().toISOString(),
+                  },
+                ],
+              },
+            };
+          }
+
           const { result, logEntries } = await puzzleStateLog.executeMutation(
             team_id,
             redisClient,
@@ -1313,15 +1370,6 @@ export async function getRouter({
                 false;
               if (alreadySolved) {
                 return { status: 200 as const };
-              }
-
-              // Determine our disposition on this submission.
-              let responseText = "Incorrect";
-              let status: GuessStatus = "incorrect";
-              if (correct_answer) {
-                canonical_input = correct_answer;
-                responseText = "Correct!";
-                status = "correct";
               }
 
               // Check whether the same guess has already been submitted
