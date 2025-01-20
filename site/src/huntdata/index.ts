@@ -301,6 +301,10 @@ const HUNT: Hunt = {
             "Hunt has ended, and we are shutting down the radio streams",
         },
         {
+          id: "solutions_released",
+          internal_description: "Release all solutions.",
+        },
+        {
           id: "mdg01",
           internal_description:
             "Picked up Educational Rite of Passage from Gala",

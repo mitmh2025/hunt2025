@@ -1,6 +1,9 @@
 import React from "react";
 import { type TeamHuntState } from "../../../../lib/api/client";
-import { InteractionLinkBlock } from "../../components/PuzzleLayout";
+import {
+  ArchivalNotice,
+  InteractionLinkBlock,
+} from "../../components/PuzzleLayout";
 
 const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   const interactionState =
@@ -14,6 +17,8 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
           <a href="/interactions/confront_katrina">Confront Katrina</a>
         </InteractionLinkBlock>
       ) : null}
+
+      <ArchivalNotice />
 
       <p className="puzzle-flavor">
         You’ve spotted Katrina at suspicious locations around Chinatown, and
