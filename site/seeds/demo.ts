@@ -672,8 +672,8 @@ export async function seed(knex: Knex): Promise<void> {
     "re_infiltrating_the_criminal_underworld",
   ];
 
-  await createTeam("public", async (team_id, mutator) => {
-    // For the "public" team: create puzzle_unlocked entries for all rounds & puzzles
+  await createTeam("public_access", async (team_id, mutator) => {
+    // For the "public_access" team: create puzzle_unlocked entries for all rounds & puzzles
     for (const round of HUNT.rounds) {
       if (round.slug !== "floaters" && round.slug !== "endgame") {
         await ensureActivityLogEntry(
