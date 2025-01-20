@@ -75,6 +75,5 @@
     ./mail.nix
     ./tix.nix
     ./scaling.nix
-    ./control-room.nix
   ];
 }
