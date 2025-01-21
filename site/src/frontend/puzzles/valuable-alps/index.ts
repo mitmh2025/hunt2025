@@ -11,7 +11,12 @@ const puzzle: PuzzleDefinition = {
   answer: "DEAD BIRD",
   authors: ["Andrew Russell"],
   editors: ["Kevin Hwang", "Steve Banzaert", "Teddy McArthur"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Jesse Moeller", "Molly Frey", "Arcturus Wang", "Andrew Russell"],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: true,

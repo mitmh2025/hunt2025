@@ -11,7 +11,17 @@ const puzzle: PuzzleDefinition = {
   answer: "TILECUTTER",
   authors: ["Andrew Russell"],
   editors: ["Joel Fried", "Melanie Matchett Wood", "Sid Creutz"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: [
+        "David Ritchie",
+        "J. Heléne Anderson",
+        "Andrew Russell",
+        "Arcturus Wang",
+      ],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: false,

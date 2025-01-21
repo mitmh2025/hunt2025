@@ -1,9 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
-import type { TeamHuntState } from "../../../../lib/api/client";
 import { COPY_ONLY_CLASS } from "../../components/CopyToClipboard";
-import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
-import { MailtoLink } from "../../components/StyledUI";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
 import crossDashWord from "./assets/cross-dash-word.pdf";
 import { CLUES } from "./data";
 
@@ -11,44 +9,31 @@ const ClueGroup = styled.div`
   margin: 1em 0;
 `;
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const pickupCompleted =
-    teamState.rounds.murder_in_mitropolis?.gates?.includes("tmg03");
-
+const Puzzle = (): JSX.Element => {
   return (
     <>
-      {pickupCompleted ? (
-        <>
-          <ArchivalNotice />
-          <p>Our records show you have picked up your copy of this puzzle.</p>
-          <p>
-            You should have received thirteen unique precut pieces of cardstock.
-            Please contact us at{" "}
-            <MailtoLink subject={"Missing pieces for Cross Dash Word"} /> if it
-            seems that you are missing pieces.
-          </p>
-        </>
-      ) : (
-        <>
-          <ArchivalNotice />
-          <p>Please come to the Gala to pick up your copy of this puzzle.</p>
-          <p>
-            You should receive thirteen unique precut pieces of cardstock.
-            Please contact us at{" "}
-            <MailtoLink subject={"Missing pieces for Cross Dash Word"} /> if it
-            seems that you are missing pieces.
-          </p>
-        </>
-      )}
-      <AuthorsNote>
-        A PDF is linked{" "}
-        <a href={crossDashWord} target="_blank" rel="noreferrer">
-          here
-        </a>{" "}
-        if you’d like to produce your own copy (formatted for 11x17, 90lb index
-        cardstock, with blue lines as cut lines), but we strongly recommend
-        picking up the version that we’ve already printed and cut for you.
-      </AuthorsNote>
+      <AuthorsNoteBlock>
+        <p>
+          During Mystery Hunt, teams were instructed to visit us at the Gala to
+          pick up the puzzle. When they did so, they received a paper envelope
+          with 13 pieces of cardstock.
+        </p>
+
+        <p>
+          If you’d like to print and cut your own set of shapes, a PDF is linked{" "}
+          <a href={crossDashWord} target="_blank" rel="noreferrer">
+            here
+          </a>
+          . It is formatted for 11”x17” paper and was printed on 90lb index
+          cardstock; scaling down to thinner/smaller form factors may work well
+          enough but has not been tested. The blue lines in this PDF are cut
+          lines and were not printed on the production version; they were lifted
+          out into a separate layer for a vinyl cutter, but can be cut with
+          scisccors and a knife instead. (Be warned that cutting{" "}
+          <strong>all</strong> of the lines by hand may take upwards of 2
+          hours.)
+        </p>
+      </AuthorsNoteBlock>
       {CLUES.map((group, i) => (
         <React.Fragment key={`group-${i}`}>
           <ClueGroup>
