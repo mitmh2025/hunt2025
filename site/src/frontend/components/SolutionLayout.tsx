@@ -35,6 +35,14 @@ const SpoileredRow = styled.tr<{ $revealed: boolean }>`
     background-color: transparent;
   }
 
+  & a {
+    color: var(--black);
+
+    &:hover {
+      color: inherit;
+    }
+  }
+
   td {
     padding: 0.25rem 0.5rem;
   }
