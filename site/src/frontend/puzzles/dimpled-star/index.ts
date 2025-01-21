@@ -19,6 +19,9 @@ const puzzle: PuzzleDefinition = {
         "Nine Morch",
       ],
     },
+    {
+      freeform: "Billie performed by Hubert Hwang",
+    },
   ],
   content: {
     component: Puzzle,
