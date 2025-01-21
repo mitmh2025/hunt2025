@@ -1,12 +1,10 @@
 import React from "react";
-import { type TeamHuntState } from "../../../../lib/api/client";
-import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
-import { MailtoLink } from "../../components/StyledUI";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import model_3mf from "./assets/rings-with-detentes-postsolve.3mf";
 import model_stl from "./assets/rings-with-detentes-postsolve.stl";
 import pdf_sticker from "./assets/rod-sticker.pdf";
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
+const Puzzle = () => {
   return (
     <AuthorsNote as="div">
       <p>
@@ -58,42 +56,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
         , although that will spoil some steps of the puzzle.
       </p>
     </AuthorsNote>
-  );
-
-  const pickupCompleted =
-    teamState.rounds.missing_diamond?.gates?.includes("mdg01") ?? false;
-
-  if (pickupCompleted) {
-    return (
-      <>
-        <ArchivalNotice />
-        <p>Our records show you have picked up your copy of this puzzle.</p>
-        <p>
-          You should have received exactly 45 small pieces and one rod in a
-          ziploc bag. No two pieces should be exactly identical. Please contact
-          us at{" "}
-          <MailtoLink
-            subject={"Missing pieces for Educational Rite of Passage"}
-          />{" "}
-          if it seems that you are missing pieces.
-        </p>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <ArchivalNotice />
-      <p>Please come to the Gala to pick up your copy of this puzzle.</p>
-      <p>
-        You should receive exactly 45 small pieces and one rod in a ziploc bag.
-        No two pieces should be exactly identical. Please contact us at{" "}
-        <MailtoLink
-          subject={"Missing pieces for Educational Rite of Passage"}
-        />{" "}
-        if it seems that you are missing pieces.
-      </p>
-    </>
   );
 };
 
