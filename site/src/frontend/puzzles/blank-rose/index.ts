@@ -74,12 +74,8 @@ const puzzle: PuzzleDefinition = {
     },
     {
       guess: ["SEND US ONE"],
-      reply: "Write ✍️ your own emojipasta 😀🍝 and send ✉️ it to ",
-      link: {
-        display:
-          "info@mitmh2025.com 🙏. Include your team name 📇 and the phrase 🗣️ SEND US ONE in the subject line.",
-        href: "mailto:info@mitmh2025.com?subject=SEND US ONE",
-      },
+      reply:
+        "Write ✍️ your own emojipasta 😀🍝 and send ✉️ it to info@mitmh2025.com 🙏. Include your team name 📇 and the phrase 🗣️ SEND US ONE in the subject line.\n\nDuring Mystery Hunt 🧩🔎, if a team sent us a 🤣 funny enough copypasta, we’d reply 🔙 with:\n\n🥳🎊🎉 CONGRAT 👏🧍‍♂️👏 ULATIONS 🎊🥳🎂 You 🫵 and your team 💑 got all 9️⃣ messages 📬 back 🔙 and solved 🧐📝✅ the copy📑pasta🍝 puzzle 🧩‼️The answer 🚨 is 'PIDAKALA WAR'. Now ⚠️ get back ➡️👨‍💻 to 🏃‍♂️💨running around 🔁, chomping 🫦 hot chips 🥵🍟, and learning 📚 who was phone 📳 before ⏰ those other teams 🧑‍🤝‍🧑 beat you 🥇 to that cash 🤑 payout 🧩🪙🧩",
     },
   ],
 };

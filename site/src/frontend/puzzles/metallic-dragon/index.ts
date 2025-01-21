@@ -67,12 +67,8 @@ const puzzle: PuzzleDefinition = {
   canned_responses: [
     {
       guess: ["KISS"],
-      reply: "Aww, that’s so sweet of you!  Email a kiss to ",
-      link: {
-        display:
-          "info@mitmh2025.com and include your team name. Make sure to put “5477” in the subject line.",
-        href: "mailto:info@mitmh2025.com?subject=5477",
-      },
+      reply:
+        "Aww, that’s so sweet of you!  Email a kiss to info@mitmh2025.com and include your team name. Make sure to put “5477” in the subject line.\n\nDuring Mystery Hunt, teams who followed the instructions would receive back their answer: GRASS.",
     },
     {
       guess: ["PERKY ZITI LIPS"],

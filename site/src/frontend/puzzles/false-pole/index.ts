@@ -1,4 +1,5 @@
 import { type PuzzleDefinition } from "../types";
+import teamPhoto from "./assets/team-photo.jpg";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
@@ -118,11 +119,10 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["SHARE A TEAM PHOTO"],
       reply:
-        "That is a correct answer instruction! Please take a photo of as many members of your team as possible and email it to us. Please also indicate in your submission if we can have permission to show these images at wrap-up. Please send the email to ",
+        "That is a correct answer instruction! Please take a photo of as many members of your team as possible and email it to us. Please also indicate in your submission if we can have permission to show these images at wrap-up. Please send the email to info@mitmh2025.com. Include your team name and the phrase SHARE A TEAM PHOTO in the subject line.\n\nDuring Mystery Hunt, teams who sent us a photo (or any representation of many of their team members in the same place, physically or virtually) received a ",
       link: {
-        display:
-          "info@mitmh2025.com. Include your team name and the phrase SHARE A TEAM PHOTO in the subject line.",
-        href: "mailto:info@mitmh2025.com?subject=SHARE A TEAM PHOTO",
+        display: "team photo from us in return.",
+        href: teamPhoto,
       },
     },
   ],

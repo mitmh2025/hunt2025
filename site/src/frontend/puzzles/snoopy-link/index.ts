@@ -1,4 +1,5 @@
 import { type PuzzleDefinition } from "../types";
+import adam from "./assets/adam.mp3";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
@@ -84,11 +85,11 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["NOW RUIN SOMETHING ELSE"],
       reply:
-        "That’s right! Send us an email with your team name, and a fact or piece of trivia that ruins something for us, and we’ll give you the final answer. ",
+        "That’s right! Send us an email with your team name, and a fact or piece of trivia that ruins something for us, and we’ll give you the final answer. Send the email to info@mitmh2025.com with the subject line “NOW RUIN SOMETHING ELSE”.\n\nDuring Mystery Hunt, if teams sent us an email ruining something that we found sufficiently disappointing, they would receive a ",
       link: {
         display:
-          "Send the email to info@mitmh2025.com with the subject line “NOW RUIN SOMETHING ELSE”.",
-        href: "mailto:info@mitmh2025.com?subjet=NOW RUIN SOMETHING ELSE",
+          "MITropolis Breaking News update over their radio (and via email)",
+        href: adam,
       },
     },
   ],
