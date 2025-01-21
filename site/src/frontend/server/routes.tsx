@@ -286,6 +286,20 @@ export function registerUiRoutes({
       );
     }),
   );
+  authRouter.get(
+    "/ye_olde_mystery_hunt_tavern_receipt",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "ye_olde_mystery_hunt_tavern_receipt" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
   const plainRouletteData = [
     { href: "/i_kid_ewe_knot", slug: "i_kid_ewe_knot", gate: "tmg01" },
     { href: "/stitchy_situation", slug: "stitchy_situation", gate: "tmg02" },

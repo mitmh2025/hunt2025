@@ -86,7 +86,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["LAUNCH DART AT TGT IPO"],
       reply:
-        "Well if that is your aim, we might be able to help you at the Gala. Tell the bartender that you need a Flying Scotsman to get over a bad split.",
+        "Well if that is your aim, we might be able to help you at the Gala. Tell the bartender that you need a Flying Scotsman to get over a bad split.\n\nDuring Mystery Hunt, teams which arrived at the Gala would have to throw darts at a target (get it?) to get 34 (TGT’s IPO price). Upon achieving this, they would be rewarded with the actual answer to this puzzle: YOUR WINNINGS SIR.",
     },
   ],
 };

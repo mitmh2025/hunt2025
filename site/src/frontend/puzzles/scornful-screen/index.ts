@@ -1,4 +1,5 @@
 import { type PuzzleDefinition } from "../types";
+import flyer from "./assets/flyer.pdf";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
 
@@ -131,7 +132,12 @@ const puzzle: PuzzleDefinition = {
     },
     {
       guess: ["GO SEE STATA BOARD FIRST LEVEL"],
-      reply: "Well? Go do it!",
+      reply:
+        "Well? Go do it!\n\nDuring Mystery Hunt, teams searching the bulletin boards on the first floor of the Stata Center would have found ",
+      link: {
+        display: "this flyer.",
+        href: flyer,
+      },
     },
   ],
 };

@@ -48,7 +48,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["FLIRT WITH BARTENDER"],
       reply:
-        "Great idea! Check in with the Gala bar staff and let them know you’d like to hit on one of their co-workers. I hear bartenders love that. In the meantime, prep your best food-themed pickup line.",
+        "Great idea! Check in with the Gala bar staff and let them know you’d like to hit on one of their co-workers. I hear bartenders love that. In the meantime, prep your best food-themed pickup line.\n\nDuring Mystery Hunt, tems would have had to deliver some sort of pickup line to a bartender. If they did, the bartender would slide them a napkin with their “number” on it, i.e. the answer to this puzzle: LET THEM EAT CAKE.",
       providesSolveReward: true,
     },
   ],

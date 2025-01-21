@@ -67,7 +67,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["WIN AT SUMO"],
       reply:
-        "Great, so you’re ready to step into the dohyo! Go to the Gala and let them know you’re here for the sumo match. Send someone who you think can hold their own in sumo.",
+        "Great, so you’re ready to step into the dohyo! Go to the Gala and let them know you’re here for the sumo match. Send someone who you think can hold their own in sumo.\n\nDuring Mystery Hunt, teams arriving at the Gala were encouraged to warm up and stretch before a bartender would slap down a copy of the card game Sumo. If teams were able to win a round against the bartender (generally not hard, as our bartenders weren’t very good at the game), the bartender would reward them with the final answer to the puzzle: BLANK TILE.",
     },
   ],
 };

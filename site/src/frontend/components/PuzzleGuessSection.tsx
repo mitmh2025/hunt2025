@@ -48,6 +48,10 @@ const GuessTable = styled.table`
       font-weight: 900;
       font-family: monospace;
     }
+
+    &.answer-reply {
+      white-space: pre-wrap;
+    }
   }
 `;
 
@@ -234,7 +238,7 @@ const PuzzleResponse = ({
   response,
 }: Pick<Guess, "link" | "response">): JSX.Element => {
   return (
-    <td>
+    <td className="answer-reply">
       {response}
       {link !== undefined && (
         <a href={link.href} target="_blank" rel="noreferrer">

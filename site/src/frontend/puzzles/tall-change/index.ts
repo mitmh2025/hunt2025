@@ -73,7 +73,7 @@ const puzzle: PuzzleDefinition = {
     {
       guess: ["WORK IT AT OUR GALA"],
       reply:
-        "Great idea! Come strut your stuff at the Gala’s Red Carpet Photo Booth (as dressed up as you like) and share your photos with the bar staff.",
+        "Great idea! Come strut your stuff at the Gala’s Red Carpet Photo Booth (as dressed up as you like) and share your photos with the bar staff.\n\nDuring Mystery Hunt, teams arriving at the Gala would be directed to our red carpet photo booth, where they could take some photos in their finest Mystery Hunt attire (whatever that was). If they showed the photos to a bartender, they would receive the final answer to this puzzle: SERENDIP SANCTUARY.",
       providesSolveReward: true,
     },
   ],
