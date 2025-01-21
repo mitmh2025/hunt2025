@@ -315,12 +315,13 @@ const Solution = () => {
 
       <h4>Production notes</h4>
       <p>
-        This puzzle consisted of 45 3D printed pieces and a 12 inch wooden dowel
-        with a sticker. If you’d like to solve this puzzle, you can find the
-        sticker for the dowel <a href={pdf_sticker}>here</a> and the source file
-        for the 3D printed pieces <a href={model_3mf}>here</a> (in 3MF format)
-        or <a href={model_stl}>here</a> (in STL format). For Hunt, the puzzle
-        was printed using Hatchbox’s{" "}
+        This puzzle consisted of 45 3D printed pieces and a 12” long, ¾”
+        diameter wooden dowel with a sticker. If you’d like to solve this
+        puzzle, you can find the sticker for the dowel{" "}
+        <a href={pdf_sticker}>here</a> and the source file for the 3D printed
+        pieces <a href={model_3mf}>here</a> (in 3MF format) or{" "}
+        <a href={model_stl}>here</a> (in STL format). For Hunt, the puzzle was
+        printed using Hatchbox’s{" "}
         <a href="https://www.hatchbox3d.com/collections/pla-1-75mm/products/3d-pla-1kg1-75-shny-brnz">
           metallic finish bronze PLA filament
         </a>
