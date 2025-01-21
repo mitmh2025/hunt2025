@@ -18,11 +18,24 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
 
       <p>
         If you’d like to solve this puzzle for yourself, you can find the
-        sticker for the dowel <a href={pdf_sticker}>here</a> and the source file
-        for the 3D printed pieces <a href={model_3mf}>here</a> (in 3MF format)
-        or <a href={model_stl}>here</a> (in STL format). For Hunt, the puzzle
-        was printed using Hatchbox’s{" "}
-        <a href="https://www.hatchbox3d.com/collections/pla-1-75mm/products/3d-pla-1kg1-75-shny-brnz">
+        sticker for the dowel{" "}
+        <a href={pdf_sticker} target="_blank" rel="noreferrer">
+          here
+        </a>{" "}
+        and the source file for the 3D printed pieces{" "}
+        <a href={model_3mf} target="_blank" rel="noreferrer">
+          here
+        </a>{" "}
+        (in 3MF format) or{" "}
+        <a href={model_stl} target="_blank" rel="noreferrer">
+          here
+        </a>{" "}
+        (in STL format). For Hunt, the puzzle was printed using Hatchbox’s{" "}
+        <a
+          href="https://www.hatchbox3d.com/collections/pla-1-75mm/products/3d-pla-1kg1-75-shny-brnz"
+          target="_blank"
+          rel="noreferrer"
+        >
           metallic finish bronze PLA filament
         </a>
         ; it should be solvable with any material, but it may be more difficult
@@ -35,7 +48,11 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
 
       <p>
         You can also find the OnShape file used to produce the puzzle{" "}
-        <a href="https://cad.onshape.com/documents/d96dc5539b37502e00e55df7/w/07d99548c15b394bb3432926/e/0d9a17b6d1c7aa63c71d6fb7?renderMode=0&uiState=678fedb86da0a13e5ad260e4">
+        <a
+          href="https://cad.onshape.com/documents/d96dc5539b37502e00e55df7/w/07d99548c15b394bb3432926/e/0d9a17b6d1c7aa63c71d6fb7?renderMode=0&uiState=678fedb86da0a13e5ad260e4"
+          target="_blank"
+          rel="noreferrer"
+        >
           here
         </a>
         , although that will spoil some steps of the puzzle.
