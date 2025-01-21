@@ -29,8 +29,9 @@ const Puzzle = (): JSX.Element => {
           enough but has not been tested. The blue lines in this PDF are cut
           lines and were not printed on the production version; they were lifted
           out into a separate layer for a vinyl cutter, but can be cut with
-          scisccors and a knife instead. (Be warned that cutting <strong>all</strong> of the
-          lines by hand may take upwards of 2 hours.)
+          scisccors and a knife instead. (Be warned that cutting{" "}
+          <strong>all</strong> of the lines by hand may take upwards of 2
+          hours.)
         </p>
       </AuthorsNoteBlock>
       {CLUES.map((group, i) => (
