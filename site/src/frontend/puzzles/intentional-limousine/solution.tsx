@@ -58,7 +58,17 @@ const MutedTD = styled.td`
 const Solution = () => {
   return (
     <>
-      <p>Solution steps:</p>
+      <h2>Additional Credits</h2>
+      <p>
+        We’d additionally like to credit our voice actors, who performed the
+        virtual witness interview after you solved this meta:
+      </p>
+      <ul>
+        <li>Billie: Hubert Hwang</li>
+        <li>Judith: Karen Rustad Tolva</li>
+      </ul>
+      <hr />
+      <h2>Solution steps</h2>
       <ol>
         <li>Sort by answer lengths (9 to 16).</li>
         <li>

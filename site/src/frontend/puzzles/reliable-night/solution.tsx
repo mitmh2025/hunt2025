@@ -19,6 +19,16 @@ const Blue = styled(Mono)`
 const Solution = () => {
   return (
     <div>
+      <h2>Additional Credits</h2>
+      <p>
+        We’d additionally like to credit our voice actors, who performed the
+        virtual witness interview after you solved this meta:
+      </p>
+      <ul>
+        <li>Billie: Hubert Hwang</li>
+        <li>Micah the Gem Cutter: Andrew Russell</li>
+      </ul>
+      <hr />
       <p>
         Solvers should notice that each feeder puzzle answer has exactly two
         trigrams (three characters) that each match a trigram in another answer,

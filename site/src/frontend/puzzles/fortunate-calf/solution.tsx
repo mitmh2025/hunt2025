@@ -25,6 +25,17 @@ const Solution = () => {
   return (
     <>
       <NotoColorEmojiFont />
+      <h2>Additional Credits</h2>
+      <p>
+        We’d additionally like to credit our voice actors, who performed the
+        virtual witness interview after you solved this meta:
+      </p>
+      <ul>
+        <li>Billie: Hubert Hwang</li>
+        <li>Card Shark 1: Alex Churchill</li>
+        <li>Card Shark 2: Molly Frey</li>
+      </ul>
+      <hr />
       <div>
         <p>
           This puzzle contains 7 rounds of Texas Hold’Em Poker played against an

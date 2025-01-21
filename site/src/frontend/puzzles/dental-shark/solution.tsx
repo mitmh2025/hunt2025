@@ -7,6 +7,17 @@ import board_locations from "./assets/board-locations.png";
 const Solution = () => {
   return (
     <>
+      <h2>Additional Credits</h2>
+      <p>
+        We’d additionally like to credit our voice actors, who performed the
+        virtual witness interview after you solved this meta:
+      </p>
+      <ul>
+        <li>Billie: Hubert Hwang</li>
+        <li>Roger the Sailor: Elan Blaustein</li>
+        <li>Arcade Owner: Molly Frey</li>
+      </ul>
+      <hr />
       <p>
         Each of the feeder answers references a property on the board in a
         version of Monopoly:

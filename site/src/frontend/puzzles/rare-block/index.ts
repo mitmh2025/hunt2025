@@ -19,6 +19,7 @@ const puzzle: PuzzleDefinition = {
         "Chris Post",
         "Sarah Leadbeater",
         "Will Tymowski",
+        "Eric Broder",
       ],
     },
   ],
