@@ -10,7 +10,12 @@ const puzzle: PuzzleDefinition = {
   answer: "ATHLETIC CLUB",
   authors: ["Quentin Smith", "Kevin Hwang", "Richard Tibbetts"],
   editors: ["Chris Gatesman", "Evan Broder", "James Douberley"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Quentin Smith", "Kevin Hwang", "Sarah Leadbeater"],
+    },
+  ],
   content: {
     component: Puzzle,
   },

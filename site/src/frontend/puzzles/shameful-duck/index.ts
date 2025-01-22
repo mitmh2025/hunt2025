@@ -10,7 +10,12 @@ const puzzle: PuzzleDefinition = {
   answer: "AXE",
   authors: ["Steve Banzaert"],
   editors: ["Laura Nicholson", "Michele Pratusevich", "Nathan Fung"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Steve Banzaert"],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: false,

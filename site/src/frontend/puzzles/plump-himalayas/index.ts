@@ -19,11 +19,19 @@ const puzzle: PuzzleDefinition = {
   additional_credits: [
     {
       for_what: "Fabrication",
-      who: ["Arcturus Wang", "Brie Frame", 'Robert "Fro" Myers', "Sam Duffley"],
+      who: [
+        "Arcturus Wang",
+        "Brad",
+        "Brie Frame",
+        "Fabiola Hernandez",
+        "Jennifer Wang",
+        "Robert “Fro” Myers",
+        "Sam Duffley",
+      ],
     },
     {
       for_what: "Tech",
-      who: ["Arcturus Wang", "Quentin Smith"],
+      who: ["Arcturus Wang", "Ariel Schwartz", "Quentin Smith"],
     },
   ],
   content: {

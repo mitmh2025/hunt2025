@@ -15,6 +15,10 @@ const puzzle: PuzzleDefinition = {
       for_what: "Art",
       who: ["Simone Agha"],
     },
+    {
+      for_what: "Fabrication",
+      who: ["Michele Pratusevich", "Robin Deits"],
+    },
   ],
   content: {
     component: Puzzle,

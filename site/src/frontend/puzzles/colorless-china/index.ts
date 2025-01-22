@@ -10,7 +10,12 @@ const puzzle: PuzzleDefinition = {
   answer: "COOKED BOOK",
   authors: ["Kawika Pierson", "Atul Shatavart Nadig"],
   editors: ["James Douberley", "Nathan Fung"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Kawika Pierson", "Jesse Moeller"],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: true,

@@ -95,6 +95,20 @@ const puzzle: PuzzleDefinition = {
         "Robert “Fro” Myers",
       ],
     },
+    {
+      for_what: "Fabrication",
+      who: [
+        "Jesse Moeller",
+        "Ollie Shonaldmann",
+        "Robert “Fro” Myers",
+        "Arcturus Wang",
+        "Ariel Schwartz",
+        "Eric Marion",
+        "Fuzzy Shonaldmann",
+        "Nine Morch",
+        "Sarah Leadbeater",
+      ],
+    },
   ],
   content: {
     component: Puzzle,

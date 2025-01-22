@@ -10,7 +10,23 @@ const puzzle: PuzzleDefinition = {
   answer: "RAW ANTIQUE BRASS",
   authors: ["Laura Nicholson", "Arcturus Wang", "Robert “Fro” Myers"],
   editors: ["Elan Blaustein", "Michele Pratusevich", "Nathan Fung"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: [
+        "Evan Broder",
+        "Chris Post",
+        "Jesse Moeller",
+        "Arcturus Wang",
+        "Brie Frame",
+        "Kevin Hwang",
+        "J. Heléne Andersson",
+        "James Douberley",
+        "Robert “Fro” Myers",
+        "Simone Agha",
+      ],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: false,

@@ -20,8 +20,10 @@ const puzzle: PuzzleDefinition = {
       for_what: "Fabrication",
       who: [
         "Aletta Tibbetts",
+        "Arcturus Wang",
         "Erin Price",
         "Grace Daigle",
+        "James Douberley",
         "Molly Frey",
         "Sarah Leadbeater",
         "Will Tymowski",
