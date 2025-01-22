@@ -71,6 +71,16 @@ export function loginGetHandler(req: Request, res: Response) {
           <PageTitle>The Case of the Shadow Diamond</PageTitle>
         </PageHeader>
         <PageMain>
+          <form method="post">
+            <input type="hidden" name="username" value="public_access" />
+            <input type="hidden" name="password" value="public" />
+            <Button type="submit">Log in as Public Access</Button>
+          </form>
+          <br />
+          <p>
+            Teams that participated in the Hunt can also continue to log in with
+            their existing account information:
+          </p>
           {login_flash ? (
             <Alert>
               Incorrect username or password. Your team captain should have
