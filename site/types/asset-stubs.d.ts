@@ -22,6 +22,10 @@ declare module "*.wav" {
   const value: string;
   export default value;
 }
+declare module "*.flac" {
+  const value: string;
+  export default value;
+}
 declare module "*.opus" {
   const value: string;
   export default value;

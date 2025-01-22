@@ -1,6 +1,7 @@
 import { type PuzzleDefinition } from "../types";
 import Puzzle from "./puzzle";
 import Solution from "./solution";
+import staticSubpuzzle from "./static";
 
 const puzzle: PuzzleDefinition = {
   title: "Can-do Transmissions",
@@ -20,6 +21,7 @@ const puzzle: PuzzleDefinition = {
   content: {
     component: Puzzle,
     copyable: false,
+    entrypoint: "puzzle_diligent_spy",
   },
   solution: {
     component: Solution,
@@ -77,13 +79,22 @@ const puzzle: PuzzleDefinition = {
   ],
   canned_responses: [
     {
-      guess: [
-        "ONE TIME PAD IS THE RADIO MANUAL",
-        "READ STATIC BETWEEN PM STATIONS ON LINEAR SCALE NEW PAD IS RADIO MANUFACTURER",
-      ],
+      guess: ["ONE TIME PAD IS THE RADIO MANUAL"],
       reply: "Keep going!",
     },
+    {
+      guess: [
+        "READ STATIC BETWEEN PM STATIONS ON LINEAR SCALE NEW PAD IS RADIO MANUFACTURER",
+      ],
+      reply:
+        "Keep going!\n\nDuring Mystery Hunt, teams would have to tune their radio to some frequency that was not broadcasting on the PM band. You can ",
+      link: {
+        display: "simulate that experience here",
+        href: "/can_do_transmissions_static",
+      },
+    },
   ],
+  subpuzzles: [staticSubpuzzle],
 };
 
 export default puzzle;
