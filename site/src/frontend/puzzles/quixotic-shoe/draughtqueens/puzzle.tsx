@@ -1,7 +1,5 @@
 import React from "react";
 import { styled } from "styled-components";
-import { mainPuzzleAccessGates } from "..";
-import type { TeamHuntState } from "../../../../../lib/api/client";
 import Crossword from "../../../components/Crossword";
 import { DRAUGHTQUEENS_LABELS } from "./data";
 
@@ -9,20 +7,15 @@ const Arrow = styled.span`
   color: var(--black);
 `;
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  const mainPuzzleUnlocked = teamState.gates_satisfied.some((gate) =>
-    mainPuzzleAccessGates.has(gate),
-  );
+const Puzzle = (): JSX.Element => {
   return (
     <>
-      {mainPuzzleUnlocked && (
-        <p>
-          <Arrow>←</Arrow>{" "}
-          <a href="/puzzles/and_now_a_puzzling_word_from_our_sponsors">
-            Back to main puzzle
-          </a>
-        </p>
-      )}
+      <p>
+        <Arrow>←</Arrow>{" "}
+        <a href="/puzzles/and_now_a_puzzling_word_from_our_sponsors">
+          Back to main puzzle
+        </a>
+      </p>
       <p>Enumerations have been withheld.</p>
       <Crossword labels={DRAUGHTQUEENS_LABELS} />
       <h3>Across</h3>

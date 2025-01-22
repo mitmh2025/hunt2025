@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
-import type { TeamHuntState } from "../../../../lib/api/client";
-import type { PuzzleStateLogEntry } from "../../../../lib/api/frontend_contract";
-import { MailtoLink, PuzzleAnswer } from "../../components/StyledUI";
+import LinkedImage from "../../components/LinkedImage";
+import { AuthorsNoteBlock } from "../../components/PuzzleLayout";
+import { Button, PuzzleAnswer } from "../../components/StyledUI";
 import { deviceMax } from "../../utils/breakpoints";
+import beef from "./assets/beef.png";
+import cartel from "./assets/cartel.png";
+import hotwings from "./assets/hotwings.png";
+import image from "./assets/image.png";
+import martini from "./assets/martini.jpg";
+import move from "./assets/move.png";
 
 const Wrapper = styled.div`
   font-family: "Arial", "Helvetica Neue", Helvetica, sans-serif;
@@ -175,186 +181,87 @@ const SubpuzzleLink = ({
   );
 };
 
-export const PuzzlingWordFromOurSponsors = ({
-  teamState,
-  puzzleStateLog,
-}: {
-  teamState: TeamHuntState;
-  puzzleStateLog: PuzzleStateLogEntry[];
-}): JSX.Element => {
-  const subpuzzlesAccessed = puzzleStateLog
-    .filter(
-      (entry) =>
-        entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
-        entry.data.type === "subpuzzle_unlocked",
-    )
-    .map(
-      ({ data: { subpuzzle_slug, subpuzzle_name, order } }) =>
-        ({
-          subpuzzle_slug,
-          subpuzzle_name,
-          order,
-        }) as { subpuzzle_slug: string; subpuzzle_name: string; order: number },
-    );
+export const PuzzlingWordFromOurSponsors = (): JSX.Element => {
+  const [pickupComplete, setPickupComplete] = useState(false);
 
-  const subpuzzlesSolved = puzzleStateLog
-    .filter(
-      (entry) =>
-        entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
-        entry.data.type === "subpuzzle_solved",
-    )
-    .map(
-      ({ data: { subpuzzle_slug, answer } }) =>
-        ({
-          subpuzzle_slug,
-          answer,
-        }) as {
-          subpuzzle_slug: string;
-          answer: string;
-        },
-    );
-
-  const allSubpuzzlesSolved = puzzleStateLog
-    .filter(
-      (entry) =>
-        entry.slug === "and_now_a_puzzling_word_from_our_sponsors" &&
-        entry.data.type === "all_subpuzzles_solved",
-    )
-    .map(
-      ({ data: { subpuzzle_slug, image } }) =>
-        ({
-          subpuzzle_slug,
-          image,
-        }) as {
-          subpuzzle_slug: string;
-          image: string;
-        },
-    );
-
-  const condensedSubpuzzleStatus: Record<
-    string,
+  const sortedSubpuzzleData = [
     {
-      subpuzzle_slug: string;
-      order: number;
-      subpuzzle_name: string;
-      answer?: string;
-      image?: string;
-    }
-  > = {};
-  for (const accessDatum of subpuzzlesAccessed) {
-    condensedSubpuzzleStatus[accessDatum.subpuzzle_slug] = accessDatum;
-  }
-  for (const solveDatum of subpuzzlesSolved) {
-    condensedSubpuzzleStatus[solveDatum.subpuzzle_slug] = {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- puzzle must be accessed to be solved
-      ...condensedSubpuzzleStatus[solveDatum.subpuzzle_slug]!,
-      answer: solveDatum.answer,
-    };
-  }
-  for (const allSolvedDatum of allSubpuzzlesSolved) {
-    condensedSubpuzzleStatus[allSolvedDatum.subpuzzle_slug] = {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- puzzle must be accessed to be solved
-      ...condensedSubpuzzleStatus[allSolvedDatum.subpuzzle_slug]!,
-      image: allSolvedDatum.image,
-    };
-  }
-  const sortedSubpuzzleStatus = Object.values(condensedSubpuzzleStatus).sort(
-    (status1, status2) => status1.order - status2.order,
-  );
-
-  const pickupComplete = teamState.gates_satisfied.includes("ptg15");
-  const points = 250 * subpuzzlesSolved.length;
-
-  const latestAdFrequencyStatusChange =
-    puzzleStateLog.findLast(
-      (puzzleStateLogEntry) => puzzleStateLogEntry.data.type === "ad_frequency",
-    )?.data.status ?? null;
-  const mysteryHuntPlusEnabled = latestAdFrequencyStatusChange === "plus";
-  const mysteryHuntRegularEnabled = latestAdFrequencyStatusChange === null;
-  const mysteryHuntMinusEnabled = latestAdFrequencyStatusChange === "minus";
-  const mysteryHuntPlus = () => {
-    void fetch(
-      "/puzzles/and_now_a_puzzling_word_from_our_sponsors/mysteryHuntPlus",
-      {
-        method: "POST",
-        body: "{}",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      },
-    );
-  };
-  const mysteryHuntRegular = () => {
-    void fetch(
-      "/puzzles/and_now_a_puzzling_word_from_our_sponsors/mysteryHuntRegular",
-      {
-        method: "POST",
-        body: "{}",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      },
-    );
-  };
-  const mysteryHuntMinus = () => {
-    void fetch(
-      "/puzzles/and_now_a_puzzling_word_from_our_sponsors/mysteryHuntMinus",
-      {
-        method: "POST",
-        body: "{}",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      },
-    );
-  };
+      subpuzzle_slug: "hellfresh",
+      subpuzzle_name: "HellFresh",
+      answer: "HOTWINGS",
+      image: hotwings,
+      color: "red",
+    },
+    {
+      subpuzzle_slug: "betteroprah",
+      subpuzzle_name: "BetterOprah",
+      answer: "MOVE",
+      image: move,
+      color: "orange",
+    },
+    {
+      subpuzzle_slug: "hardlysafe",
+      subpuzzle_name: "HardlySafe",
+      answer: "IMAGE",
+      image,
+      color: "green",
+    },
+    {
+      subpuzzle_slug: "draughtqueens",
+      subpuzzle_name: "DraughtQueens",
+      answer: "CARTEL",
+      image: cartel,
+      color: "blue",
+    },
+    {
+      subpuzzle_slug: "townsquarespace",
+      subpuzzle_name: "TownSquareSpace",
+      answer: "BEEF",
+      image: beef,
+      color: "pink",
+    },
+  ];
 
   return (
     <Wrapper>
       <Header>MITropolisCard Rewards™️ Portal</Header>
-      {!pickupComplete && (
-        <section>
-          <h3>Partner Offers</h3>
-          <p>
-            MITropolisCard partner companies provide a variety of puzzling
-            offers to earn bonus MITropolisCard Rewards™️ points. Click below to
-            learn more:
-          </p>
-          {sortedSubpuzzleStatus.map(
-            ({ subpuzzle_name, subpuzzle_slug, answer }) => {
-              return (
-                <SubpuzzleLink
-                  key={subpuzzle_name}
-                  answer={answer}
-                  title={subpuzzle_name}
-                  slug={subpuzzle_slug}
-                />
-              );
-            },
-          )}
-        </section>
-      )}
+      <AuthorsNoteBlock style={{ marginTop: "1rem" }}>
+        <p>
+          After solving all five subpuzzles, teams were instructed to visit the
+          bar to redeem their 1,250 bonus MITropolisCard points for a martini.
+          Click below to proceed once you’ve solved all five subpuzzles.
+        </p>
+        <p>
+          <Button
+            onClick={() => {
+              setPickupComplete(true);
+            }}
+          >
+            Pick up martini
+          </Button>
+        </p>
+      </AuthorsNoteBlock>
       {pickupComplete && (
         <section>
           <h3>Martini Reward</h3>
-          <p>
-            You should have received a martini glass with 34 tiles. If not,
-            please contact us at{" "}
-            <MailtoLink
-              subject={
-                "Missing pieces for And Now, A Puzzling Word From Our Sponsors"
-              }
+          <AuthorsNoteBlock>
+            <p>
+              Teams went to the bar, were the bartender offered them a “very
+              dry” martini. The batender produced a shaker and martini glass,
+              shook the shaker, and poured out 34 colored scrabble tiles into
+              the glass.
+            </p>
+            <LinkedImage
+              src={martini}
+              alt="A set of 34 scrabble tiles. Red ones read TYRT. Orange ones read EEFGNORSSV. Green ones read BELEIET. Blue ones read CEEGIMORST. Pink ones read WHE."
             />
-          </p>
+          </AuthorsNoteBlock>
           <p className="puzzle-flavor">
             It looks like a few ingredients are missing from both your martini
             and the promo codes…
           </p>
-          {sortedSubpuzzleStatus.map(
-            ({ subpuzzle_name, subpuzzle_slug, answer, image }) => {
+          {sortedSubpuzzleData.map(
+            ({ subpuzzle_name, subpuzzle_slug, color, answer, image }) => {
               if (answer) {
                 return (
                   <SubpuzzleLink
@@ -365,7 +272,7 @@ export const PuzzlingWordFromOurSponsors = ({
                   >
                     <img
                       src={image}
-                      alt={`A rack of wooden tiles with colored letters on them reading ${answer}.`}
+                      alt={`A rack of wooden tiles with ${color} letters on them reading ${answer}.`}
                     />
                   </SubpuzzleLink>
                 );
@@ -375,113 +282,78 @@ export const PuzzlingWordFromOurSponsors = ({
           )}
         </section>
       )}
-      {!pickupComplete && (
-        <section>
-          <h3>MITropolisCard Reward Store</h3>
-          {points >= 1250 ? (
-            <p>
-              You have <strong>1,250</strong> MITropolisCard Points™️; come to
-              the Gala and receive your complimentary martini!
-            </p>
-          ) : (
-            <>
-              <p>
-                You have <strong>{points}</strong> MITropolisCard Points™️.
-              </p>
-              <p>
-                Once you have <strong>1,250</strong> MITropolisCard Points™️,
-                you may come to the Gala and receive one complimentary martini!
-              </p>
-            </>
-          )}
-        </section>
-      )}
+
       <section>
         <h3>Your Subscription</h3>
         <p>
           Changes to your subscriptions can take 5–10 minutes to take effect.
         </p>
+        <AuthorsNoteBlock>
+          During the hunt, teams could use this section to control the frequency
+          of advertisement on their radios.
+        </AuthorsNoteBlock>
         <FeatureTable>
           <tbody>
             <tr>
               <th className="feature"></th>
-              <td className={mysteryHuntMinusEnabled ? "active" : ""}></td>
-              <td className={mysteryHuntRegularEnabled ? "active" : ""}></td>
-              <td className={mysteryHuntPlusEnabled ? "active" : ""}></td>
+              <td></td>
+              <td className="active"></td>
+              <td></td>
             </tr>
             <tr className="subscription-titles">
               <th></th>
-              <th className={mysteryHuntMinusEnabled ? "active" : ""}>
-                Mystery Hunt Minus™️
-              </th>
-              <th className={mysteryHuntRegularEnabled ? "active" : ""}>
-                Mystery Hunt™️
-              </th>
-              <th className={mysteryHuntPlusEnabled ? "active" : ""}>
-                Mystery Hunt Plus™️
-              </th>
+              <th>Mystery Hunt Minus™️</th>
+              <th className="active">Mystery Hunt™️</th>
+              <th>Mystery Hunt Plus™️</th>
             </tr>
             <tr className="buttons">
               <th></th>
-              <td className={mysteryHuntMinusEnabled ? "active" : ""}>
-                {mysteryHuntMinusEnabled ? (
-                  <span>Active</span>
-                ) : (
-                  <button onClick={mysteryHuntMinus}>Activate</button>
-                )}
+              <td>
+                <button>Activate</button>
               </td>
-              <td className={mysteryHuntRegularEnabled ? "active" : ""}>
-                {mysteryHuntRegularEnabled ? (
-                  <span>Active</span>
-                ) : (
-                  <button onClick={mysteryHuntRegular}>Activate</button>
-                )}
+              <td className="active">
+                <span>Active</span>
               </td>
-              <td className={mysteryHuntPlusEnabled ? "active" : ""}>
-                {mysteryHuntPlusEnabled ? (
-                  <span>Active</span>
-                ) : (
-                  <button onClick={mysteryHuntPlus}>Activate</button>
-                )}
+              <td>
+                <button>Activate</button>
               </td>
             </tr>
             <tr className="blurbs">
               <th></th>
-              <td className={mysteryHuntMinusEnabled ? "active" : ""}>
+              <td>
                 More of your favorite advertisements, now free from distracting
                 radio content!
               </td>
-              <td className={mysteryHuntRegularEnabled ? "active" : ""}>
+              <td className="active">
                 A classic mix of radio content and advertisements!
               </td>
-              <td className={mysteryHuntPlusEnabled ? "active" : ""}>
+              <td>
                 More of your favorite radio content, now free from distracting
                 advertisements!
               </td>
             </tr>
             <tr>
               <th className="feature">Music</th>
-              <td className={mysteryHuntMinusEnabled ? "active" : ""}>❌</td>
-              <td className={mysteryHuntRegularEnabled ? "active" : ""}>✅</td>
-              <td className={mysteryHuntPlusEnabled ? "active" : ""}>✅</td>
+              <td>❌</td>
+              <td className="active">✅</td>
+              <td>✅</td>
             </tr>
             <tr>
               <th className="feature">Ads</th>
-              <td className={mysteryHuntMinusEnabled ? "active" : ""}>✅</td>
-              <td className={mysteryHuntRegularEnabled ? "active" : ""}>✅</td>
-              <td className={mysteryHuntPlusEnabled ? "active" : ""}>❌</td>
+              <td>✅</td>
+              <td className="active">✅</td>
+              <td>❌</td>
             </tr>
             <tr>
               <th className="feature">Money-back guarantee</th>
-              <td className={mysteryHuntMinusEnabled ? "active" : ""}>✅</td>
-              <td className={mysteryHuntRegularEnabled ? "active" : ""}>✅</td>
-              <td className={mysteryHuntPlusEnabled ? "active" : ""}>✅</td>
+              <td>✅</td>
+              <td className="active">✅</td>
+              <td>✅</td>
             </tr>
             <tr>
               <th></th>
-              <td className={mysteryHuntMinusEnabled ? "active" : ""}></td>{" "}
-              <td className={mysteryHuntRegularEnabled ? "active" : ""}></td>
-              <td className={mysteryHuntPlusEnabled ? "active" : ""}></td>
+              <td></td> <td className="active"></td>
+              <td></td>
             </tr>
           </tbody>
         </FeatureTable>
