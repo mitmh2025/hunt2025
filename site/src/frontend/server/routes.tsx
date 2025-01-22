@@ -300,6 +300,20 @@ export function registerUiRoutes({
       );
     }),
   );
+  authRouter.get(
+    "/can_do_transmissions_static",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "can_do_transmissions_static" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
   const plainRouletteData = [
     { href: "/i_kid_ewe_knot", slug: "i_kid_ewe_knot", gate: "tmg01" },
     { href: "/stitchy_situation", slug: "stitchy_situation", gate: "tmg02" },

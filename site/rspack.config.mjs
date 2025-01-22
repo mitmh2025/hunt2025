@@ -306,6 +306,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const flacRule = {
+    test: /\.flac$/,
+    type: "asset/resource",
+  };
+
   const opusRule = {
     test: /\.opus$/,
     type: "asset/resource",
@@ -408,6 +413,7 @@ export default function createConfigs(_env, argv) {
         imageRule,
         mp3Rule,
         wavRule,
+        flacRule,
         mp4Rule,
         // Opus files should only be used by the radio and thus should
         // never be imported by browser entrypoints, only server entrypoints.
@@ -514,6 +520,7 @@ export default function createConfigs(_env, argv) {
 
       // Included on specific puzzle pages
       puzzle_deserted_ninja: "./src/frontend/puzzles/deserted-ninja/client.tsx",
+      puzzle_diligent_spy: "./src/frontend/puzzles/diligent-spy/client.tsx",
       puzzle_few_nail: "./src/frontend/puzzles/few-nail/client.tsx",
       puzzle_giving_fighter: "./src/frontend/puzzles/giving-fighter/client.tsx",
       puzzle_lean_lock: "./src/frontend/puzzles/lean-lock/client.tsx",
@@ -566,6 +573,7 @@ export default function createConfigs(_env, argv) {
         imageRule,
         mp3Rule,
         wavRule,
+        flacRule,
         mp4Rule,
         fontRule,
       ],
