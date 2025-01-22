@@ -39,7 +39,7 @@ const puzzle: PuzzleDefinition = {
         "Jeremy Braun", // ???
         "James Harvey",
         "Jeff G",
-        "Joanna Cheng", // ???
+        "Joanna Cheng",
         "Joanna Murray",
         "Gita Srivastava",
         "Nine Morch",
