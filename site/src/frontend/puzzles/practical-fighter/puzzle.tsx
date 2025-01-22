@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 import { type TeamHuntState } from "../../../../lib/api/client";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
-import { AuthorsNote } from "../../components/PuzzleLayout";
+import { ArchivalNotice, AuthorsNote } from "../../components/PuzzleLayout";
 import { HScrollTableWrapper } from "../../components/StyledUI";
 import footIcon from "./assets/foot.svg";
 import headphonesIcon from "./assets/headphones.svg";
@@ -54,6 +54,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }) => {
   return (
     <>
       <NotoColorEmojiFont />
+      <ArchivalNotice />
       {teamState.puzzles.songs_on_the_radio?.answer !== undefined && (
         <AuthorsNote>
           Congratulations on solving this puzzle! Your{" "}

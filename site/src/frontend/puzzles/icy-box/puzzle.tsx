@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { CaveatFont } from "../../assets/SharedFonts";
+import { ArchivalNotice } from "../../components/PuzzleLayout";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
@@ -39,6 +40,7 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <CaveatFont />
+      <ArchivalNotice />
       <Wrapper>
         <Paper
           src={paper}
