@@ -20,6 +20,14 @@ const puzzle: PuzzleDefinition = {
       ],
     },
     {
+      for_what: "Fabrication",
+      who: ["James Douberley"],
+    },
+    {
+      for_what: "Bluetooth Integration",
+      who: ["Evan Broder"],
+    },
+    {
       freeform: "Billie performed by Hubert Hwang",
     },
   ],
