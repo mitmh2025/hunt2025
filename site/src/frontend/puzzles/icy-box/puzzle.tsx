@@ -1,7 +1,12 @@
 import React from "react";
 import { styled } from "styled-components";
 import { CaveatFont } from "../../assets/SharedFonts";
-import { ArchivalNotice } from "../../components/PuzzleLayout";
+import { AuthorsNote } from "../../components/PuzzleLayout";
+import weatherLosAngeles from "./assets/icy-box-los-angeles.mp3";
+import weatherParis from "./assets/icy-box-paris.mp3";
+import weatherRome from "./assets/icy-box-rome.mp3";
+import weatherStockholm from "./assets/icy-box-stockholm.mp3";
+import weatherTokyo from "./assets/icy-box-tokyo.mp3";
 import image1 from "./assets/image1.png";
 import image2 from "./assets/image2.png";
 import image3 from "./assets/image3.png";
@@ -40,7 +45,137 @@ const Puzzle = (): JSX.Element => {
   return (
     <>
       <CaveatFont />
-      <ArchivalNotice />
+      <AuthorsNote as="div">
+        <p>
+          During Mystery Hunt, after they had unlocked the Paper Trail round,
+          teams would begin receiving weather reports over their{" "}
+          <a href="/radio">radio</a> approximately every 20 minutes. When they
+          subsequently unlocked this puzzle, they would need to connect those
+          reports with the puzzle content here.
+        </p>
+        <p>
+          Below, you can hear (or read) how the five weather reports would have
+          sounded coming over the radio stream:
+        </p>
+
+        {/* eslint-disable jsx-a11y/media-has-caption -- captions are below the audio elements */}
+        <audio src={weatherLosAngeles} controls />
+        <details>
+          <summary>Transcript</summary>
+          <p>
+            Terry:{" "}
+            <span className="puzzle-flavor">
+              I’m going to hand things off to my good friend Sonny, with the
+              weather.
+            </span>
+          </p>
+          <p>WDNM: The Weather, with Sonny</p>
+          <p>
+            Sonny:{" "}
+            <span className="puzzle-flavor">
+              In Los Angeles, the temperature is currently 100 degrees with a
+              barometric pressure reading of 0.94. It is currently raining and
+              the wind coming from the northwest with the precipitation measured
+              at 0.44. There are low cumulus clouds covering about 2 tenths of
+              the sky and coming in from the south. The Los Angeles River is
+              rising and reporting a gauge reading of 1 and 6 tenths below zero.
+            </span>
+          </p>
+        </details>
+        <audio src={weatherParis} controls />
+        <details>
+          <summary>Transcript</summary>
+          <p>
+            Terry:{" "}
+            <span className="puzzle-flavor">
+              It’s cold out there today in MITropolis. Sonny, what can you tell
+              us about the weather?
+            </span>
+          </p>
+          <p>WDNM: The Weather, with Sonny</p>
+          <p>
+            Sonny:{" "}
+            <span className="puzzle-flavor">
+              In Paris the temperature is currently 54 degrees with a barometric
+              pressure reading of 0.96. At 3pm the dew point was measured to be
+              74 degrees. It is currently snowing and the wind coming from the
+              northwest with the precipitation measured at 0.02. The Seine is
+              continuing to fall with a gauge reading of 18 and 6 tenths.
+            </span>
+          </p>
+        </details>
+        <audio src={weatherRome} controls />
+        <details>
+          <summary>Transcript</summary>
+          <p>
+            Terry:{" "}
+            <span className="puzzle-flavor">
+              It is freezing out there. Sonny, what is going on in the world of
+              weather?
+            </span>
+          </p>
+          <p>WDNM: The Weather, with Sonny</p>
+          <p>
+            Sonny:{" "}
+            <span className="puzzle-flavor">
+              In Rome the temperature is currently 62 degrees with a barometric
+              pressure reading of 0.58. At 10pm the dew point was measured to be
+              52 degrees. The skies are clear and wind coming from the south
+              with the precipitation measured at 0.24. The Tiber is continuing
+              to rise with a gauge reading of 20 and 6 tenths.
+            </span>
+          </p>
+        </details>
+        <audio src={weatherStockholm} controls />
+        <details>
+          <summary>Transcript</summary>
+          <p>
+            Terry:{" "}
+            <span className="puzzle-flavor">
+              I’m here with our famed WDNM meteorologist, Sonny. Sonny, what is
+              going on out there?
+            </span>
+          </p>
+          <p>WDNM: The Weather, with Sonny</p>
+          <p>
+            Sonny:{" "}
+            <span className="puzzle-flavor">
+              In Stockholm the temperature is currently 40 degrees with a
+              barometric pressure reading of 0.90. At 10pm the dew point was
+              measured to be 58 degrees. The skies are cloudy and the wind
+              coming from the northeast with the precipitation measured at 0.98.
+              There are low cumulus clouds covering about 4 tenths of the sky
+              and coming in from the northeast. The Söderström is continuing to
+              rise with a gauge reading of 54 and 1 tenth.
+            </span>
+          </p>
+        </details>
+        <audio src={weatherTokyo} controls />
+        <details>
+          <summary>Transcript</summary>
+          <p>
+            Terry:{" "}
+            <span className="puzzle-flavor">
+              It’s time for another update from WDNM meteorologist Sonny.
+            </span>
+          </p>
+          <p>WDNM: The Weather, with Sonny</p>
+          <p>
+            Sonny:{" "}
+            <span className="puzzle-flavor">
+              In Tokyo the temperature is currently 100 degrees with a
+              barometric pressure reading of 0.02. At 7am the dew point was
+              measured to be 66 degrees. It is currently calm and cloudy with
+              the precipitation measured at 0.08. The sky is fully covered with
+              nimbus clouds that are coming in from the northeast. A maximum
+              wind speed of 16 was measured coming from the northwest. The
+              Sumida is continuing to rise with a gauge reading of 32 and 4
+              tenths.
+            </span>
+          </p>
+        </details>
+        {/* eslint-enable jsx-a11y/media-has-caption -- reenable */}
+      </AuthorsNote>
       <Wrapper>
         <Paper
           src={paper}
