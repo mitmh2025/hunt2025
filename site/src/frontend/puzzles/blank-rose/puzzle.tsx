@@ -1,12 +1,26 @@
 import React from "react";
-import type { TeamHuntState } from "../../../../lib/api/client";
 import { NotoColorEmojiFont } from "../../assets/SharedFonts";
 import { AuthorsNote } from "../../components/PuzzleLayout";
 
-const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
-  let children: JSX.Element;
-  if (teamState.rounds.missing_diamond?.gates?.includes("mdg03")) {
-    children = (
+const Puzzle = (): JSX.Element => {
+  return (
+    <>
+      <NotoColorEmojiFont />
+      <AuthorsNote as="div">
+        <p>
+          During Mystery Hunt, teams were presented with exactly one of these 9
+          texts (evenly distributed based on the order in which the puzzle was
+          unlocked), and if they contacted HQ, were explicitly encouraged to
+          find friends on other teams to exchange with.
+        </p>
+
+        <p>
+          We still think you should make friends on other teams! But for your
+          post-solving convenience, we’ve reproduced all 9 of the possible texts
+          below:
+        </p>
+      </AuthorsNote>
+      <br />
       <p>
         We aren’t 🔲🔲🔲🔲🔲🔲🔲🔲🔲to affection 🏩 💌 ❤️‍🔥. You’re aware 👀of the
         guidelines 📏, as am I ☝️. A complete 🕳️devotion 🙏 is what i’m noodling
@@ -17,9 +31,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         👯‍♀️🪩🕺that booty 🏴‍☠️. If you get all 9️⃣back, you’re chomping 🫦chips 🥔
         and perjuring 🙊🙊🙊with the best 🤩!
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg04")) {
-    children = (
+      <hr />
       <p>
         Any lady 💃birthed past the early 🌅90’s 💾is unable to prepare 🍳food
         🌭… their only knowledge 🧠is Burger 🍔King 👑, power ⚡️up👆they cell
@@ -29,9 +41,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         😪If you get 8️⃣back you’re ready to get your body 🛌off the ground ⛳.
         If you get all 9️⃣back then you’re lifting off 🛫 and soaring! 📈
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg05")) {
-    children = (
+      <hr />
       <p>
         In line 📈 with each agreed-upon code 🤝 🔐of 🔲🔲🔲🔲🔲🔲🔲🔲, an
         apiforme 🐝 simply cannot ⛔be cap🧢able of liftoff 🚀. Its membraneous
@@ -44,9 +54,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         appreciate the jokes 🃏. If you get all 9️⃣back then the ladies 😎can see
         👁️your tattoo ✍️!
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg06")) {
-    children = (
+      <hr />
       <p>
         well 😏 by all accounts 💸you must have intelligence 🤓 in the topmost
         🔝 percentage 📈 to comprehend Ralph 👴 and Morgan 👦. The jokes 😆 are
@@ -60,9 +68,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         working for Wolf 🦊. If you get all 9️⃣back, you’re a man 👱of god ⛪ ⛩️
         🛕 🕍 🕌.
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg07")) {
-    children = (
+      <hr />
       <p>
         I’m proud 🏳️‍🌈of me ☝️and believe 🧠that I am a person 🧑‍of religion 🙏📿
         🙏, as there’s a ball ⚾hit into the far left ☭☭☭ lawn by Castellanos 🟥
@@ -74,9 +80,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         metastasized ☠️. If you get 3️⃣back, you’re getting legislation ⚖️
         🧑‍⚖️counsel ⛑️. If you get all 9️⃣back, you’re entitled to a cash 💰payout!
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg08")) {
-    children = (
+      <hr />
       <p>
         If you 🫵or someone you care 👨‍❤️‍👨for came down with
         🔲🔲🔲🔲🔲🔲🔲🔲🔲🔲🔲🔲, you might qualify ✍️for cash 💰 🤑 💵payment.
@@ -89,9 +93,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         land mass 🌎! if you get 2️⃣ back, you’re starting ▶️ to think 💭 again.
         If you get all 9️⃣back then you’re primed ⚔️ for the tempest! ⛈️
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg09")) {
-    children = (
+      <hr />
       <p>
         what 🤬 did i just 🤬hear from you, you tiny female ♀️ dog 🐕? i placed
         first 🥇 among my peers ⚓️ in the blue 🟦 sea lions 🦭, and i’ve often
@@ -105,9 +107,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         BEST 🔝^_^ 🔝 UwU at making alot of new SPONTANEOUS 🙃 😀🙃 freinds
         🤝!!!
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg10")) {
-    children = (
+      <hr />
       <p>
         h0wdy 🤠 all 👋ive just 🛬 arrived 🈁❣️!!!❗!! * 🔼 raises 🏕️ camp
         cutlery 🥄🍴* i’m called kathy 🦗 but u 🫵 can refer to me 💁 as the auk
@@ -122,9 +122,7 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         🧓. If you get 4️⃣back, yur kissing 😽💋😘ur lady 👧. If you get all
         9️⃣back, THEN YOU 🫵WERE CELLPHONE 📱📱📱!
       </p>
-    );
-  } else if (teamState.rounds.missing_diamond?.gates?.includes("mdg11")) {
-    children = (
+      <hr />
       <p>
         So ur 👉with ur 👉🔲🔲🔲🔲🔲 and yur 👉kissing 😽💋😘 when your cell
         ☎️goes off 📲. U pick it 🆙n the speaker 🗣️is “wut ❓❔❓r u
@@ -135,24 +133,6 @@ const Puzzle = ({ teamState }: { teamState: TeamHuntState }): JSX.Element => {
         🏠you below 🔽. If you get all 9️⃣back, I won’t jog 🏃in a circle ⚫and
         maroon 🏝️you.
       </p>
-    );
-  } else {
-    children = (
-      <p>
-        Something has gone wrong while unlocking this puzzle. Please contact HQ
-        to get it sorted out.
-      </p>
-    );
-  }
-
-  return (
-    <>
-      <NotoColorEmojiFont />
-      <AuthorsNote>
-        If you’re not sure what you’re allowed to do to solve this puzzle,
-        please contact HQ.
-      </AuthorsNote>
-      {children}
     </>
   );
 };
