@@ -21,7 +21,6 @@ const puzzle: PuzzleDefinition = {
       for_what: "Fabrication",
       who: [
         "Arcturus Wang",
-        "Brad",
         "Brie Frame",
         "Fabiola Hernandez",
         "Jennifer Wang",
