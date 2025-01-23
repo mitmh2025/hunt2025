@@ -36,7 +36,8 @@ const puzzle: PuzzleDefinition = {
         "Eric Broder",
         "Erin Price",
         "J. Heléne Andersson",
-        "Jeremy Braun", // ???
+        "Jessica Knapp",
+        "Jeremy Braun",
         "James Harvey",
         "Jeff G",
         "Joanna Cheng",

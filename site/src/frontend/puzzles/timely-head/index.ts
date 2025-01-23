@@ -17,7 +17,7 @@ const puzzle: PuzzleDefinition = {
     },
     {
       for_what: "Fabrication",
-      who: ["Michele Pratusevich", "Robin Deits"],
+      who: ["Felix Deits", "Michele Pratusevich", "Robin Deits"],
     },
   ],
   content: {
