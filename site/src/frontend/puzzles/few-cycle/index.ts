@@ -17,7 +17,12 @@ const puzzle: PuzzleDefinition = {
     "Rebecca Engelke",
   ],
   editors: ["Arcturus Wang", "Hubert Hwang", "Li-Mei Lim"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Emilie Josephs", "James Douberley"],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: true,

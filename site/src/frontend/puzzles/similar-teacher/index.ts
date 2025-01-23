@@ -24,6 +24,16 @@ const puzzle: PuzzleDefinition = {
   editors: ["Anna Brunner", "Nathan Fung", "Teddy McArthur"],
   additional_credits: [
     {
+      for_what: "Art and Packaging",
+      who: ["Sarah Leadbeater"],
+    },
+    {
+      for_what: "Drink Recipes",
+      who: [
+        "Evan Broder, who would like to state for the record that the drinks themselves are James‘s fault",
+      ],
+    },
+    {
       freeform:
         "Thanks to Dan Chadwich, Chief Swizzlestick of Kindred Cocktails, for providing the data for this puzzle",
     },

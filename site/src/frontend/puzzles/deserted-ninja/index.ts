@@ -14,7 +14,12 @@ const puzzle: PuzzleDefinition = {
   initial_description: "A live in-person pub quiz game",
   answer: "TO STATE THE OBVIOUS",
   authors: ["Hubert Hwang", "Kevin Hwang"],
-  editors: ["Steve Banzaert", "James Douberly", "Robin Deits", "Arcturus Wang"],
+  editors: [
+    "Steve Banzaert",
+    "James Douberley",
+    "Robin Deits",
+    "Arcturus Wang",
+  ],
   code_name: "deserted-ninja",
   additional_credits: [
     {

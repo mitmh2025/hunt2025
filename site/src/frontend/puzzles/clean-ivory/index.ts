@@ -16,7 +16,7 @@ const puzzle: PuzzleDefinition = {
       for_what: "Fabrication",
       who: [
         "David Ritchie",
-        "J. Heléne Anderson",
+        "J. Heléne Andersson",
         "Andrew Russell",
         "Arcturus Wang",
       ],

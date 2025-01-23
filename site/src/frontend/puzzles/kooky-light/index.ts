@@ -10,7 +10,12 @@ const puzzle: PuzzleDefinition = {
   answer: "FORWARD SLASH",
   authors: ["Elan Blaustein", "Erin Price"],
   editors: ["Anna Brunner", "Chris Gatesman", "Kevin Hwang"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["James Douberley"],
+    },
+  ],
   content: {
     component: Puzzle,
     copyable: false,

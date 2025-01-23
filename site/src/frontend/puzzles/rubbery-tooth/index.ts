@@ -10,7 +10,12 @@ const puzzle: PuzzleDefinition = {
   answer: "CHEESE VENDORS",
   authors: ["Simone Agha", "David Anderson", "Eric Marion"],
   editors: ["Hubert Hwang", "Steve Banzaert", "tinaun"],
-  additional_credits: [],
+  additional_credits: [
+    {
+      for_what: "Fabrication",
+      who: ["Eric Marion", "Sarah Leadbeater", "Simone Agha"],
+    },
+  ],
   content: {
     component: Puzzle,
   },
