@@ -28,7 +28,9 @@ const Puzzle = () => {
         <a href={model_stl} target="_blank" rel="noreferrer">
           here
         </a>{" "}
-        (in STL format). For Hunt, the puzzle was printed using Hatchbox’s{" "}
+        (in STL format). Note that the sticker is intended to be printed on A4
+        (not letter) sized paper; be careful of scaling. For Hunt, the puzzle
+        was printed using Hatchbox’s{" "}
         <a
           href="https://www.hatchbox3d.com/collections/pla-1-75mm/products/3d-pla-1kg1-75-shny-brnz"
           target="_blank"
@@ -36,12 +38,14 @@ const Puzzle = () => {
         >
           metallic finish bronze PLA filament
         </a>
-        ; it should be solvable with any material, but it may be more difficult
+        . It should be solvable with any material, but it may be more difficult
         to see fine details with white or black. The 3MF file also reflects the
         settings we used for printing the puzzle using a Bambu X1-series
-        printer; you may need to make adjustments for different printers. We
-        recommend printing with supports enabled for the best solving
-        experience, although they are not strictly necessary.
+        printer. These settings were primarily chosen to improve the surface
+        finish and lustre of the finished prints, but should not be necessary
+        for solving, and you may need to make adjustments for different
+        printers. We recommend printing with supports enabled for the best
+        solving experience, although they are not strictly necessary.
       </p>
 
       <p>
