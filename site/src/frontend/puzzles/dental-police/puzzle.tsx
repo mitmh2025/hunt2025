@@ -5,6 +5,7 @@ import {
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
 import LinkedImage from "../../components/LinkedImage";
+import { Errata } from "../../components/StyledUI";
 import scene from "./assets/scene.png";
 import setlist from "./assets/setlist.png";
 
@@ -33,6 +34,16 @@ const SETLIST_STRINGS = [
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <Errata
+        errata={[
+          {
+            timestamp: "January 24th",
+            message:
+              "After Mystery Hunt, we learned that an embedded color profile in the image of coats caused the colors to render slightly differently across different devices. We have removed the color profile and now believe that the colors should render as intended.",
+          },
+        ]}
+      />
+      <br />
       <LinkedImage
         className={NO_COPY_CLASS}
         src={scene}
