@@ -30,7 +30,7 @@
     secret_data = lib.tfRef "tls_private_key.autopush_key.private_key_pem";
   };
 
-  data.google_iam_policy.autopush_key_secret.binding = [
+  data.google_iam_policy.autopush_key_secret.binding = lib.mkIf (cfg.triggers != {}) [
     {
       role = "roles/secretmanager.secretAccessor";
       members = [

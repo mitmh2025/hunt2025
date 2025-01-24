@@ -77,20 +77,20 @@ in {
         secret_data = lib.tfRef "tls_private_key.github_deploy_key[each.key].private_key_pem";
       };
 
-      data.google_iam_policy.github_deploy_key_secret.binding = [
+      data.google_iam_policy.github_deploy_key_secret.binding = (lib.mkIf (cfg.triggers != {}) [
         {
           role = "roles/secretmanager.secretAccessor";
           members = [
             (lib.tfRef "google_service_account.cloud-build.member")
           ];
         }
-      ];
+      ]);
 
-      resource.google_secret_manager_secret_iam_policy.github_deploy_key = {
+      resource.google_secret_manager_secret_iam_policy.github_deploy_key = (lib.mkIf (cfg.triggers != {}) {
         for_each = deployKeyForEach;
         secret_id = lib.tfRef "google_secret_manager_secret.github_deploy_key[each.key].secret_id";
         policy_data = lib.tfRef "data.google_iam_policy.github_deploy_key_secret.policy_data";
-      };
+      });
     })
     (lib.mkIf (cfg.nix.cache.bucket != null) {
       gcp.services.storage-api.enable = true;

@@ -92,19 +92,9 @@
     grant_role = "cloudsqlsuperuser";
     with_admin_option = true;
   };
-  resource.google_sql_user.things-vm = {
-    name = lib.tfRef ''trimsuffix(google_service_account.things-vm.email, ".gserviceaccount.com")'';
-    instance = lib.tfRef "google_sql_database_instance.prod.name";
-    type = "CLOUD_IAM_SERVICE_ACCOUNT";
-  };
   resource.postgresql_role.thingsboard = {
     provider = "postgresql.prod";
     name = "thingsboard";
-  };
-  resource.postgresql_grant_role.thingsboard = {
-    provider = "postgresql.prod";
-    role = lib.tfRef "google_sql_user.things-vm.name";
-    grant_role = lib.tfRef "postgresql_role.thingsboard.name";
   };
   resource.postgresql_grant_role.hunt2025-tech-thingsboard = {
     provider = "postgresql.prod";
