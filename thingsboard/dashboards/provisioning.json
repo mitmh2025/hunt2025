@@ -1,0 +1,280 @@
+{
+  "title": "Provisioning",
+  "image": null,
+  "mobileHide": false,
+  "mobileOrder": null,
+  "configuration": {
+    "description": "",
+    "widgets": {
+      "e03c14f2-5580-5421-ef42-ad6b563bcc35": {
+        "typeFullFqn": "system.cards.entities_table",
+        "type": "latest",
+        "sizeX": 7.5,
+        "sizeY": 6.5,
+        "config": {
+          "timewindow": {
+            "displayValue": "",
+            "selectedTab": 0,
+            "realtime": {
+              "realtimeType": 1,
+              "interval": 1000,
+              "timewindowMs": 86400000,
+              "quickInterval": "CURRENT_DAY",
+              "hideInterval": false,
+              "hideLastInterval": false,
+              "hideQuickInterval": false
+            },
+            "history": {
+              "historyType": 0,
+              "interval": 1000,
+              "timewindowMs": 60000,
+              "fixedTimewindow": {
+                "startTimeMs": 1736905622292,
+                "endTimeMs": 1736992022292
+              },
+              "quickInterval": "CURRENT_DAY",
+              "hideInterval": false,
+              "hideLastInterval": false,
+              "hideFixedInterval": false,
+              "hideQuickInterval": false
+            },
+            "aggregation": {
+              "type": "NONE",
+              "limit": 200
+            }
+          },
+          "showTitle": true,
+          "backgroundColor": "rgb(255, 255, 255)",
+          "color": "rgba(0, 0, 0, 0.87)",
+          "padding": "4px",
+          "settings": {
+            "enableSearch": true,
+            "enableSelectColumnDisplay": true,
+            "enableStickyHeader": true,
+            "enableStickyAction": true,
+            "reserveSpaceForHiddenAction": "true",
+            "displayEntityName": false,
+            "displayEntityLabel": false,
+            "displayEntityType": false,
+            "displayPagination": true,
+            "defaultPageSize": 10,
+            "defaultSortOrder": "name",
+            "useRowStyleFunction": false,
+            "entitiesTitle": "Entities"
+          },
+          "title": "Entities table",
+          "dropShadow": true,
+          "enableFullscreen": true,
+          "titleStyle": {
+            "fontSize": "16px",
+            "fontWeight": 400,
+            "padding": "5px 10px 5px 10px"
+          },
+          "useDashboardTimewindow": false,
+          "showLegend": false,
+          "datasources": [
+            {
+              "type": "entity",
+              "name": "",
+              "entityAliasId": "5adad6a0-41cd-e3ce-7073-6cb418c5ea85",
+              "filterId": null,
+              "dataKeys": [
+                {
+                  "name": "name",
+                  "type": "entityField",
+                  "label": "Name",
+                  "color": "#2196f3",
+                  "settings": {},
+                  "_hash": 0.23054179980767997
+                },
+                {
+                  "name": "ownerName",
+                  "type": "entityField",
+                  "label": "Owner name",
+                  "color": "#ffeb3b",
+                  "settings": {},
+                  "_hash": 0.12025715847514817,
+                  "decimals": 0
+                },
+                {
+                  "name": "label",
+                  "type": "entityField",
+                  "label": "Label",
+                  "color": "#4caf50",
+                  "settings": {},
+                  "_hash": 0.4431514430050256,
+                  "decimals": 0
+                },
+                {
+                  "name": "fw_version",
+                  "type": "attribute",
+                  "label": "fw_version",
+                  "color": "#f44336",
+                  "settings": {},
+                  "_hash": 0.2951694933125275,
+                  "decimals": 0
+                },
+                {
+                  "name": "fw_state",
+                  "type": "timeseries",
+                  "label": "fw_state",
+                  "color": "#ffc107",
+                  "settings": {},
+                  "_hash": 0.1487752425903286,
+                  "decimals": 0
+                },
+                {
+                  "name": "current_fw_version",
+                  "type": "timeseries",
+                  "label": "current_fw_version",
+                  "color": "#607d8b",
+                  "settings": {},
+                  "_hash": 0.6171700109179745,
+                  "decimals": 0
+                },
+                {
+                  "name": "file_cache_last_error",
+                  "type": "timeseries",
+                  "label": "file_cache_last_error",
+                  "color": "#3f51b5",
+                  "settings": {},
+                  "_hash": 0.9598305604875774,
+                  "decimals": 0
+                },
+                {
+                  "name": "file_cache_entry_count",
+                  "type": "timeseries",
+                  "label": "file_cache_entry_count",
+                  "color": "#e91e63",
+                  "settings": {},
+                  "_hash": 0.13135978005500437,
+                  "decimals": 0
+                },
+                {
+                  "name": "file_cache_last_update",
+                  "type": "timeseries",
+                  "label": "file_cache_last_update",
+                  "color": "#3f51b5",
+                  "settings": {},
+                  "_hash": 0.8283672998678921,
+                  "decimals": 0
+                },
+                {
+                  "name": "active",
+                  "type": "attribute",
+                  "label": "active",
+                  "color": "#e91e63",
+                  "settings": {},
+                  "_hash": 0.1673609607155615,
+                  "decimals": 0
+                }
+              ],
+              "alarmFilterConfig": {
+                "statusList": [
+                  "ACTIVE"
+                ]
+              }
+            }
+          ],
+          "displayTimewindow": false,
+          "configMode": "basic",
+          "actions": {},
+          "showTitleIcon": false,
+          "titleIcon": "list",
+          "iconColor": null,
+          "titleFont": null,
+          "titleColor": null
+        },
+        "row": 0,
+        "col": 0,
+        "id": "e03c14f2-5580-5421-ef42-ad6b563bcc35"
+      }
+    },
+    "states": {
+      "default": {
+        "name": "Provisioning",
+        "root": true,
+        "layouts": {
+          "main": {
+            "widgets": {
+              "e03c14f2-5580-5421-ef42-ad6b563bcc35": {
+                "sizeX": 24,
+                "sizeY": 12,
+                "row": 0,
+                "col": 0
+              }
+            },
+            "gridSettings": {
+              "layoutType": "default",
+              "backgroundColor": "#eeeeee",
+              "columns": 24,
+              "margin": 10,
+              "outerMargin": true,
+              "backgroundSizeMode": "100%"
+            }
+          }
+        }
+      }
+    },
+    "entityAliases": {
+      "5adad6a0-41cd-e3ce-7073-6cb418c5ea85": {
+        "id": "5adad6a0-41cd-e3ce-7073-6cb418c5ea85",
+        "alias": "All Radios",
+        "filter": {
+          "type": "deviceType",
+          "resolveMultiple": true,
+          "deviceTypes": [
+            "radio"
+          ],
+          "deviceNameFilter": ""
+        }
+      }
+    },
+    "filters": {},
+    "timewindow": {
+      "displayValue": "",
+      "hideAggregation": false,
+      "hideAggInterval": false,
+      "hideTimezone": false,
+      "selectedTab": 0,
+      "realtime": {
+        "realtimeType": 0,
+        "interval": 1000,
+        "timewindowMs": 60000,
+        "quickInterval": "CURRENT_DAY",
+        "hideInterval": false,
+        "hideLastInterval": false,
+        "hideQuickInterval": false
+      },
+      "history": {
+        "historyType": 0,
+        "interval": 1000,
+        "timewindowMs": 60000,
+        "fixedTimewindow": {
+          "startTimeMs": 1736905503805,
+          "endTimeMs": 1736991903805
+        },
+        "quickInterval": "CURRENT_DAY",
+        "hideInterval": false,
+        "hideLastInterval": false,
+        "hideFixedInterval": false,
+        "hideQuickInterval": false
+      },
+      "aggregation": {
+        "type": "AVG",
+        "limit": 25000
+      }
+    },
+    "settings": {
+      "stateControllerId": "entity",
+      "showTitle": false,
+      "showDashboardsSelect": true,
+      "showEntitiesSelect": true,
+      "showDashboardTimewindow": true,
+      "showDashboardExport": true,
+      "toolbarAlwaysOpen": true
+    }
+  },
+  "name": "Provisioning",
+  "resources": []
+}
