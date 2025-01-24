@@ -70,10 +70,7 @@
     ./assets.nix
     ./site.nix
     ./redis.nix
-    ./media.nix
-    ./things.nix
     ./mail.nix
-    ./tix.nix
     ./scaling.nix
   ];
 }

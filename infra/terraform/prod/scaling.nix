@@ -6,60 +6,47 @@
     # Even though we don't need 200 GiB of capacity, this will give us 96 MiB/s throughput.
     bootDisk.size = 200;
   };
-  gce.instance.media = {
-    machineType = "e2-micro";
-    # 64 Kbps * 200 teams * 72 hours ≈ 400 GB
-    bootDisk.size = 1000;
-  };
-  gce.instance.things = {
-    machineType = "e2-standard-2";
-    bootDisk.size = 50;
-  };
-  gce.instance.tix = {
-    machineType = "e2-standard-4";
-    bootDisk.size = 200;
-  };
   resource.google_sql_database_instance.prod = {
     settings = {
       edition = "ENTERPRISE";
-      tier = "db-custom-2-13312";
+      tier = "db-f1-micro";
     };
   };
   # GKE cluster autoprovisioning limits are configured in ./gke.nix
   k8s.prod.deployment.regsite = {
-    replicas = 2;
+    replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "4Gi";
+      limits.memory = "1Gi";
       requests.cpu = "100m";
       requests.memory = "512Mi";
     };
   };
   k8s.prod.deployment.api = {
-    replicas = 2;
+    replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "4Gi";
-      requests.cpu = "500m";
-      requests.memory = "1Gi";
+      limits.memory = "1Gi";
+      requests.cpu = "100m";
+      requests.memory = "384Mi";
     };
   };
   k8s.prod.deployment.ui = {
-    replicas = 2;
+    replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "4Gi";
-      requests.cpu = "500m";
-      requests.memory = "1Gi";
+      limits.memory = "1Gi";
+      requests.cpu = "100m";
+      requests.memory = "384Mi";
     };
   };
   k8s.prod.deployment.ws = {
-    replicas = 2;
+    replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "4Gi";
-      requests.cpu = "1";
-      requests.memory = "4Gi";
+      limits.memory = "1.5Gi";
+      requests.cpu = "100m";
+      requests.memory = "768Mi";
     };
     deployment.spec.strategy.rolling_update = {
       max_surge = "100%";
@@ -70,18 +57,18 @@
     replicas = 1;
     container.resources = {
       limits.cpu = "1.5";
-      limits.memory = "4Gi";
-      requests.cpu = "500m";
-      requests.memory = "1Gi";
+      limits.memory = "1Gi";
+      requests.cpu = "100m";
+      requests.memory = "384Mi";
     };
   };
   k8s.prod.deployment.ops = {
-    replicas = 2;
+    replicas = 1;
     container.resources = {
       limits.cpu = "500m";
       limits.memory = "1Gi";
       requests.cpu = "100m";
-      requests.memory = "512Mi";
+      requests.memory = "128Mi";
     };
   };
   # k8s.prod.statefulSet.sync2k8s = {
@@ -95,25 +82,9 @@
   k8s.prod.statefulSet.redis = {
     container.resources = {
       limits.cpu = "2";
-      limits.memory = "4Gi";
-      requests.cpu = "1";
-      requests.memory = "2Gi";
-    };
-  };
-  k8s.prod.statefulSet.sync2tb = {
-    container.resources = {
-      limits.cpu = "1.5";
       limits.memory = "1Gi";
-      requests.cpu = "500m";
-      requests.memory = "512Mi";
-    };
-  };
-  k8s.prod.statefulSet.sync2zammad = {
-    container.resources = {
-      limits.cpu = "1.5";
-      limits.memory = "1Gi";
-      requests.cpu = "500m";
-      requests.memory = "512Mi";
+      requests.cpu = "100m";
+      requests.memory = "256Mi";
     };
   };
 }
