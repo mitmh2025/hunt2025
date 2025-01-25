@@ -828,15 +828,6 @@ function VirtualInteractionNotStarted({
           team’s radio.
         </p>
       </AuthorsNoteBlock>
-      <p>
-        It’s time to interview a key witness! Have every person on your team log
-        on and join us here to conduct an interview.
-      </p>
-      <p>
-        This interaction has audio that can be played via your physical radio,
-        or in your browser. If you are not within earshot of your physical
-        radio, select “Listen In Browser.”
-      </p>
       <ButtonContainer>
         <Button
           type="button"
