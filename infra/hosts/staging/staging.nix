@@ -6,7 +6,6 @@
     ../../services/postgres.nix
     ../../services/redis.nix
     ../../services/authentik
-    ../../services/zammad.nix
     ../../services/k3s.nix
   ];
   config = lib.mkMerge [
@@ -66,116 +65,6 @@
       sops.secrets."site/environment" = {};
       systemd.services.hunt2025.serviceConfig.EnvironmentFile = [config.sops.secrets."site/environment".path];
       systemd.services.hunt2025.environment.EMAIL_TRANSPORT = "postmark";
-    }
-    {
-      sops.secrets."thingsboard/sysadmin/password" = {};
-      sops.secrets."radioman/password" = {};
-      sops.templates."tbprovision/env" = {
-        owner = "thingsboard";
-        content = ''
-          TB_SYSADMIN_PASSWORD=${config.sops.placeholder."thingsboard/sysadmin/password"}
-          TB_PASSWORD=${config.sops.placeholder."radioman/password"}
-        '';
-      };
-      sops.templates."sync2tb/env" = {
-        owner = "sync2tb";
-        content = ''
-          TB_PASSWORD=${config.sops.placeholder."radioman/password"}
-        '';
-      };
-      services.thingsboard.provision = {
-        enable = true;
-        ruleChainsFile = ../../../thingsboard/rulechains.json;
-        environmentFile = config.sops.templates."tbprovision/env".path;
-      };
-      services.sync2tb = {
-        enable = true;
-        environmentFile = config.sops.templates."sync2tb/env".path;
-      };
-    }
-    {
-      services.sync2k8s = {
-        enable = true;
-      };
-      # Pretend the schedule started at Thu Jan 16 8:30:00 AM EST 2025
-      systemd.services.sync2k8s.environment.SCHEDULE_START_EPOCH = "1737034200";
-    }
-    {
-      sops.secrets."zammad/sync2zammad_token" = {};
-      sops.templates."sync2zammad/env" = {
-        owner = "sync2zammad";
-        content = ''
-          ZAMMAD_SECRET=${config.sops.placeholder."zammad/sync2zammad_token"}
-        '';
-      };
-      services.sync2zammad = {
-        enable = true;
-        environmentFile = config.sops.templates."sync2zammad/env".path;
-      };
-    }
-    {
-      services.thingsboard = {
-        enable = true;
-        datasource.createLocally = true;
-        logback.loggers = {
-          "org.thingsboard.server.transport.mqtt.MqttTransportHandler" = "TRACE";
-        };
-      };
-    }
-    {
-      users.groups.acme-thingsboard = {};
-      users.users.thingsboard.extraGroups = [ "acme-thingsboard" ];
-      users.users."${config.services.nginx.user}".extraGroups = [ "acme-thingsboard" ];
-      security.acme.certs."things.staging.mitmh2025.com".group = "acme-thingsboard";
-
-      services.thingsboard.settings = let
-        certDir = config.security.acme.certs."things.staging.mitmh2025.com".directory;
-        credentials = {
-          type = "PEM";
-          pem.cert_file = "${certDir}/cert.pem";
-          pem.key_file = "${certDir}/key.pem";
-        };
-      in {
-        server.forward_headers_strategy = "NATIVE";
-        device.connectivity = {
-          mqtts.enabled = true;
-          coaps.enabled = true;
-        };
-        transport.mqtt.ssl = {
-          enabled = true;
-          inherit credentials;
-        };
-        coap.dtls = {
-          enabled = true;
-          inherit credentials;
-        };
-      };
-    }
-    {
-      hunt.radio = {
-        enable = true;
-        externalHostname = "media.staging.mitmh2025.com";
-      };
-
-      services.mediamtx.env = {
-        API_BASE_URL = config.hunt2025.site.apiBaseUrl;
-        FRONTEND_API_SECRET = "%m";
-      };
-
-      services.mediamtx.settings = {
-        paths.music = {
-          runOnInit = ''
-            env MUSIC_DIR=${radio-media}/music/ OUTPUT_URL=rtsp://localhost:$RTSP_PORT/$MTX_PATH ${lib.getExe pkgs.liquidsoap} ${../../../radioman/station-break-test.liq}
-          '';
-          runOnInitRestart = true;
-        };
-        paths.weather = {
-          runOnInit = ''
-            env MUSIC_DIR=${radio-media}/music/ BREAK_DIR=${radio-media}/icy-box/ OUTPUT_URL=rtsp://localhost:$RTSP_PORT/$MTX_PATH ${lib.getExe pkgs.liquidsoap} ${../../../radioman/station-break-test.liq}
-          '';
-          runOnInitRestart = true;
-        };
-      };
     }
     {
       environment.etc."aws/config".source = let
@@ -270,25 +159,11 @@
             };
             locations."/api".proxyPass = "http://hunt2025";
           };
-          "things.staging.mitmh2025.com" = {
-            forceSSL = true;
-            enableACME = true;
-            locations."/" = {
-              proxyPass = "http://thingsboard";
-              proxyWebsockets = true;
-            };
-          };
           "localhost" = {
             # Expose plain HTTP on localhost for use by the frontend
             locations."/api".proxyPass = "http://hunt2025";
           };
         };
-      };
-    }
-    {
-      hunt2025.tix = {
-        domain = "staging.mitmh2025.com";
-        authentikApp = "staging-tix";
       };
     }
   ];
