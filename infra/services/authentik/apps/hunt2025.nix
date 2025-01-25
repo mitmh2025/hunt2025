@@ -39,20 +39,6 @@
     ];
   };
 
-  services.authentik.apps.dev = {
-    name = "Dev Autopush";
-    app.attrs.group = "Dev";
-    type = "proxy";
-    host = "dev.mitmh2025.com";
-  };
-
-  services.authentik.apps.dev-reg = {
-    name = "Dev Autopush Registration";
-    app.attrs.group = "Dev";
-    type = "proxy";
-    host = "reg.dev.mitmh2025.com";
-  };
-
   sops.secrets."authentik/apps/ops/client_id" = {
     sopsFile = ../../../secrets/prod/site.yaml;
   };

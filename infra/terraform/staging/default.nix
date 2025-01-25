@@ -54,7 +54,6 @@
     ./staging.nix
     ./mail.nix
     ./staticsite.nix
-    ./dev.nix
   ];
 
   route53.mitmh2025 = {
