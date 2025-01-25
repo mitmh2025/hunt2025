@@ -12,6 +12,7 @@ import { type Node } from "../types";
 import clamp from "./clamp";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
+import { submitLock } from "./clientState";
 
 // Position of the knob when it is not being moved, in pixels
 const KNOB_INITIAL_LEFT = 518;
@@ -78,44 +79,28 @@ export default function DirectionalLock({
     [solved],
   );
 
-  const handleClick = useCallback(
-    (dir: "u" | "d" | "l" | "r") => {
-      playSound(click);
+  const handleClick = useCallback((dir: "u" | "d" | "l" | "r") => {
+    playSound(click);
 
-      const newCodeBuffer = [...codeBuffer.current, dir].slice(-16);
-      codeBuffer.current = newCodeBuffer;
+    const newCodeBuffer = [...codeBuffer.current, dir].slice(-16);
+    codeBuffer.current = newCodeBuffer;
 
-      const code = newCodeBuffer.join("");
-      console.log(code);
+    const code = newCodeBuffer.join("");
+    console.log(code);
 
-      fetch("/rounds/illegal_search/locks/deskdrawer", {
-        method: "POST",
-        body: JSON.stringify({ code }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-        .then(async (result) => {
-          if (result.ok) {
-            const json = (await result.json()) as Node;
-            playSound(unlock);
-            setSolved(true);
-            setDragging(false);
-            setKnobPosition(0);
+    const result = submitLock("deskdrawer", code);
+    if (result) {
+      playSound(unlock);
+      setSolved(true);
+      setDragging(false);
+      setKnobPosition(0);
 
-            // Allow time for the knob to return to the center before updating the code
-            setTimeout(() => {
-              setNode(json);
-            }, 100);
-          }
-        })
-        .catch(() => {
-          console.log("network error");
-        });
-    },
-    [setNode],
-  );
+      // Allow time for the knob to return to the center before updating the code
+      setTimeout(() => {
+        setNode(result);
+      }, 100);
+    }
+  }, []);
 
   const onPointerMove: PointerEventHandler<HTMLImageElement> = useCallback(
     (e) => {

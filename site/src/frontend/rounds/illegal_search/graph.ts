@@ -1,7 +1,6 @@
 import jsManifest from "../../../../dist/js-manifest-with-chunks.json";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { omit } from "../../../utils/omit";
-import { PUZZLES } from "../../puzzles";
 import bookcase from "./assets/bookcase/bookcase.png";
 import bookcase_blacklight from "./assets/bookcase/bookcase_blacklight.svg";
 import bookcase_paneling from "./assets/bookcase/bookcase_paneling.svg";
@@ -97,6 +96,16 @@ import type {
   PluginName,
 } from "./types";
 
+export type Puzzles = Record<
+  string,
+  {
+    title: string;
+    slug: string;
+    initial_description?: string;
+    slotId: string;
+  }
+>;
+
 export const BlacklightData = {
   candy: {
     asset: candy_blacklight,
@@ -172,6 +181,7 @@ type LockDatum = {
   answer: unknown; // The types of these vary by check
   // TODO: rate limit?
   gateId: string; // The gate which we will unlock when you submit the correct lock answer
+  node: string; // The node to return when you submit the correct lock answer
 };
 // Map from which plugin does the check to the data relevant to that check
 const LOCK_DATA: Record<
@@ -182,11 +192,13 @@ const LOCK_DATA: Record<
     // directional lock
     answer: "dlrddrr",
     gateId: "isg06",
+    node: "desk_drawer",
   },
   painting2: {
     // Fuse box/switches lock
     answer: "1010101110101101110111101100101011011110",
     gateId: "isg07",
+    node: "painting2",
   },
   painting1: {
     // combination lock (safe)
@@ -197,15 +209,18 @@ const LOCK_DATA: Record<
       [30, 4, 19],
     ],
     gateId: "isg08",
+    node: "safe",
   },
   rug: {
     // numeric (seven-segment display) lock
     answer: "37047734",
     gateId: "isg09",
+    node: "rug",
   },
   cryptex: {
     answer: "REUNITED",
     gateId: "isg10",
+    node: "cryptex",
   },
   bookcase: {
     // For the benefit of manual testers: by rows:
@@ -218,6 +233,7 @@ const LOCK_DATA: Record<
     answer:
       "111010111101110101011010001010000000110101101100111001010010001010",
     gateId: "isg16",
+    node: "bookcase",
   },
 };
 
@@ -1594,7 +1610,7 @@ const NODE_IDS_BY_PUZZLE_SLUG: Record<string, string> = {
 function modalFromModalInternal(
   modalInternal: ModalInternal,
   teamState: TeamHuntState,
-  { immutable }: { immutable: boolean },
+  { immutable, puzzles }: { immutable: boolean; puzzles: Puzzles },
 ): [Modal, boolean] | undefined {
   const {
     includeIf,
@@ -1617,7 +1633,7 @@ function modalFromModalInternal(
   // If slug is undefined, then lookup the random slot id => POST code mapping and include that
   // otherwise, lookup (or stub) puzzle title & URL based on the slug from the puzzle data map
   if (slug) {
-    const puzzle = PUZZLES[slug];
+    const puzzle = puzzles[slug];
     const title = puzzle?.title ?? `Stub puzzle for slot ${slotId}`;
     const desc = puzzle?.initial_description;
     mixin = { title, slug, desc };
@@ -1626,8 +1642,9 @@ function modalFromModalInternal(
   }
   const obj: Modal = { ...rest, ...mixin };
 
-  if (solvedAssets && slug) {
-    const isSolved = !!teamState.puzzles[slug]?.answer || immutable;
+  if (solvedAssets) {
+    const isSolved =
+      immutable || (slug !== undefined && !!teamState.puzzles[slug]?.answer);
     if (isSolved) {
       if (solvedAssets.modalAsset) {
         obj.asset = solvedAssets.modalAsset;
@@ -1655,7 +1672,7 @@ function modalFromModalInternal(
     // If slug is undefined, then lookup the random slot id => POST code mapping and include that
     // otherwise, lookup (or stub) puzzle title & URL based on the slug from the puzzle data map
     if (extraSlug) {
-      const extraPuzzle = PUZZLES[extraSlug];
+      const extraPuzzle = puzzles[extraSlug];
       const extraTitle =
         extraPuzzle?.title ?? `Stub puzzle for slot ${extra.slotId}`;
       const extraDesc = extraPuzzle?.initial_description;
@@ -1694,7 +1711,7 @@ function modalFromModalInternal(
 function filteredForFrontend(
   node: NodeInternal,
   teamState: TeamHuntState,
-  { immutable }: { immutable: boolean },
+  { immutable, puzzles }: { immutable: boolean; puzzles: Puzzles },
 ): Node {
   // Evaluates the predicates and fills out team state and puzzle information
   const keptNavigations = node.navigations.flatMap((nav) => {
@@ -1740,7 +1757,10 @@ function filteredForFrontend(
   const modals: Modal[] = [];
   const interactionModals: Modal[] = [];
   node.modals.forEach((modal) => {
-    const result = modalFromModalInternal(modal, teamState, { immutable });
+    const result = modalFromModalInternal(modal, teamState, {
+      immutable,
+      puzzles,
+    });
     if (result) {
       const [objForFrontend, ownedByInteraction] = result;
       if (ownedByInteraction) {

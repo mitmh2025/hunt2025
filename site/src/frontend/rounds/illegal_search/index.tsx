@@ -1,13 +1,13 @@
 import { type RequestHandler, type Request, type Response } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
-import type { TeamHuntState, TeamInfo } from "../../../../lib/api/client";
+import type { TeamHuntState } from "../../../../lib/api/client";
 import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import {
-  clampAngle,
-  rotateMainTumblerBy,
-  TUMBLER_INITIAL_STATE,
+  MAX_TOLERANCE_DEGREES,
+  isRoughlyEqual,
+  simulatedTumblerPositions,
 } from "./combolock";
 import {
   LOCK_DATA,
@@ -16,6 +16,34 @@ import {
   NODES_BY_ID,
   filteredForFrontend,
 } from "./graph";
+import HUNT from "../../../huntdata";
+
+const puzzles = Object.fromEntries(
+  (HUNT.rounds.find((r) => r.slug === "illegal_search")?.puzzles ?? []).flatMap(
+    (slot) => {
+      if (!slot.slug) {
+        return [];
+      }
+
+      const puzzle = PUZZLES[slot.slug];
+      if (!puzzle) {
+        return [];
+      }
+
+      return [
+        [
+          slot.slug,
+          {
+            title: puzzle.title,
+            slug: slot.slug,
+            initial_description: puzzle.initial_description,
+            slotId: slot.id,
+          },
+        ],
+      ];
+    },
+  ),
+);
 
 type NodeRequestParams = {
   nodeSlug: string;
@@ -47,6 +75,7 @@ export const nodeRequestHandler: RequestHandler<
     res.json(
       filteredForFrontend(node, req.teamState.state, {
         immutable: teamIsImmutable(req.teamState.info.teamUsername),
+        puzzles,
       }),
     );
   } else {
@@ -228,6 +257,7 @@ async function handleCorrectLockSubmission(
       const filtered = filteredForFrontend(node, newTeamState, {
         immutable:
           !!req.teamState && teamIsImmutable(req.teamState.info.teamUsername),
+        puzzles,
       });
       res.json(filtered);
     }
@@ -269,67 +299,6 @@ export const fuseboxPostHandler: RequestHandler<
     });
   }
 });
-
-function isRoughlyEqual(
-  exact: number,
-  test: number,
-  maxDelta: number,
-): boolean {
-  const lowerBound = exact - maxDelta;
-  const upperBound = exact + maxDelta;
-  return lowerBound <= test && test <= upperBound;
-}
-
-function degreesForTick(value: number): number {
-  return clampAngle(((50 - value) * 360) / 50);
-}
-
-// Angle, in positive degrees, between the two tick values on the dial
-function clockwiseAngleBetween(start: number, end: number): number {
-  const startDegs = degreesForTick(start);
-  const endDegs = degreesForTick(end);
-  return endDegs >= startDegs ? endDegs - startDegs : endDegs + 360 - startDegs;
-}
-
-function simulatedTumblerPositions(
-  code: [number, number, number],
-): [number, number, number] {
-  // console.log("Simulating tumblers after entering", code);
-  let tumblers = TUMBLER_INITIAL_STATE;
-  // Two full clockwise turns to pick up all three tumblers + turn to the first number
-  let remainingRotation = 360 + 360 + clockwiseAngleBetween(0, code[0]);
-  // We step by small amounts because the logic for the tumbler-binding
-  while (remainingRotation > 0) {
-    const step = Math.min(60, remainingRotation);
-    tumblers = rotateMainTumblerBy(step, tumblers);
-    // console.log("step", step, ": tumblers now", tumblers);
-    remainingRotation -= step;
-  }
-
-  // One full counterclockwise turn, then another (360 - the clockwise distance) to get ot the second number
-  remainingRotation = -360 - 360 + clockwiseAngleBetween(code[0], code[1]);
-  while (remainingRotation < 0) {
-    const step = Math.max(-60, remainingRotation);
-    tumblers = rotateMainTumblerBy(step, tumblers);
-    // console.log("step", step, ": tumblers now", tumblers);
-    remainingRotation -= step;
-  }
-
-  // Clockwise from the second number to the third number
-  remainingRotation = clockwiseAngleBetween(code[1], code[2]);
-  while (remainingRotation > 0) {
-    const step = Math.max(-60, remainingRotation);
-    tumblers = rotateMainTumblerBy(step, tumblers);
-    // console.log("step", step, ": tumblers now", tumblers);
-    remainingRotation -= step;
-  }
-
-  return tumblers;
-}
-
-// How much error do we allow in the tumbler states?  Each tick is 7.2 degrees, so this is "must be
-// actually closest to that number, but no pickier"
-const MAX_TOLERANCE_DEGREES = 3.6;
 
 type ComboLockHandlerBody = {
   tumblers: [number, number, number];
@@ -530,34 +499,9 @@ export const bookcasePostHandler: RequestHandler<
   }
 });
 
-const IllegalSearchRoundPage = ({
-  teamState,
-  teamInfo,
-  node,
-}: {
-  teamState: TeamHuntState;
-  teamInfo: TeamInfo;
-  node?: string;
-}) => {
-  // TODO: This should look up via some opaque mapping to node IDs instead of
-  // transparent ones to avoid the names of the nodes being distracting to hunters.
-  // We should apply the forward mapping in filteredForFrontend and the reverse mapping
-  // on request parameters here and above in nodeRequestHandler.
-  const initialNode =
-    NODES_BY_ID.get(node ?? "main_north") ?? NODES_BY_ID.get("main_north");
-  if (!initialNode) {
-    // NODES_BY_ID should be guaranteed to have "main_north" so this should
-    // never be reached, but this is a good way to convince the typechecker of
-    // that truth
-    return undefined;
-  }
-  const filteredNode = filteredForFrontend(initialNode, teamState, {
-    immutable: teamIsImmutable(teamInfo.teamUsername),
-  });
-  const filteredNodeJson = JSON.stringify(filteredNode);
-
-  // Embed the initial node JSON in the page, as well as the team state
-  const inlineScript = `window.initialNode = ${filteredNodeJson}; window.initialTeamState = ${JSON.stringify(teamState)};`;
+const IllegalSearchRoundPage = () => {
+  // Embed the initial node JSON in the page, as well as the team state, and all puzzle metadata
+  const inlineScript = `window.puzzleMetadata = ${JSON.stringify(puzzles)}`;
 
   return (
     <div>

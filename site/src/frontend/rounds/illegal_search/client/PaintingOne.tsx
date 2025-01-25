@@ -45,7 +45,3 @@ const PaintingOne = ({ navigate }: { navigate: (destId: string) => void }) => {
 };
 
 export default PaintingOne;
-
-if (typeof window !== "undefined") {
-  window.illegalSearchInteractions.painting1 = PaintingOne;
-}

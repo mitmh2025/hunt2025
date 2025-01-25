@@ -221,8 +221,8 @@ export type InteractionComponent = (props: {
   node: Node;
   showModal: ({ modal }: { modal: ModalWithPuzzleFields }) => void;
   setNode: (node: Node) => void;
-  teamState: TeamHuntState;
   navigate: (destId: string) => void;
+  teamState: TeamHuntState;
 }) => JSX.Element;
 
 declare global {

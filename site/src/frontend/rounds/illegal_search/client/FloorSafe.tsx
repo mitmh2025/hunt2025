@@ -17,6 +17,7 @@ import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
 import { default_cursor } from "./cursors";
 import playSound from "./playSound";
+import { submitLock } from "./clientState";
 
 const FloorSafeWrapper = styled.div`
   position: absolute;
@@ -405,31 +406,18 @@ export default function FloorSafe({
             setCode("");
           }}
           onClickEnter={() => {
-            fetch("/rounds/illegal_search/locks/rug", {
-              method: "POST",
-              body: JSON.stringify({ code }),
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            })
-              .then(async (result) => {
-                if (result.ok) {
-                  const json = (await result.json()) as Node;
-                  console.log("okay", json);
-                  setNode(json);
-                  playSound(correct);
-                  setTimeout(() => {
-                    setOpened(true);
-                  }, 500);
-                } else {
-                  playSound(fail);
-                  setCode("");
-                }
-              })
-              .catch(() => {
-                console.log("network error");
-              });
+            const result = submitLock("rug", code);
+            if (result) {
+              console.log("okay", result);
+              setNode(result);
+              playSound(correct);
+              setTimeout(() => {
+                setOpened(true);
+              }, 500);
+            } else {
+              playSound(fail);
+              setCode("");
+            }
           }}
         />
       </NumberLockPadWrapper>

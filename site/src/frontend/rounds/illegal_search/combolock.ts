@@ -65,3 +65,64 @@ export function rotateMainTumblerBy(
 
   return [newTumbler0, newTumbler1, newTumbler2];
 }
+
+// How much error do we allow in the tumbler states?  Each tick is 7.2 degrees, so this is "must be
+// actually closest to that number, but no pickier"
+export const MAX_TOLERANCE_DEGREES = 3.6;
+
+export function isRoughlyEqual(
+  exact: number,
+  test: number,
+  maxDelta: number,
+): boolean {
+  const lowerBound = exact - maxDelta;
+  const upperBound = exact + maxDelta;
+  return lowerBound <= test && test <= upperBound;
+}
+
+function degreesForTick(value: number): number {
+  return clampAngle(((50 - value) * 360) / 50);
+}
+
+// Angle, in positive degrees, between the two tick values on the dial
+function clockwiseAngleBetween(start: number, end: number): number {
+  const startDegs = degreesForTick(start);
+  const endDegs = degreesForTick(end);
+  return endDegs >= startDegs ? endDegs - startDegs : endDegs + 360 - startDegs;
+}
+
+export function simulatedTumblerPositions(
+  code: [number, number, number],
+): [number, number, number] {
+  // console.log("Simulating tumblers after entering", code);
+  let tumblers = TUMBLER_INITIAL_STATE;
+  // Two full clockwise turns to pick up all three tumblers + turn to the first number
+  let remainingRotation = 360 + 360 + clockwiseAngleBetween(0, code[0]);
+  // We step by small amounts because the logic for the tumbler-binding
+  while (remainingRotation > 0) {
+    const step = Math.min(60, remainingRotation);
+    tumblers = rotateMainTumblerBy(step, tumblers);
+    // console.log("step", step, ": tumblers now", tumblers);
+    remainingRotation -= step;
+  }
+
+  // One full counterclockwise turn, then another (360 - the clockwise distance) to get ot the second number
+  remainingRotation = -360 - 360 + clockwiseAngleBetween(code[0], code[1]);
+  while (remainingRotation < 0) {
+    const step = Math.max(-60, remainingRotation);
+    tumblers = rotateMainTumblerBy(step, tumblers);
+    // console.log("step", step, ": tumblers now", tumblers);
+    remainingRotation -= step;
+  }
+
+  // Clockwise from the second number to the third number
+  remainingRotation = clockwiseAngleBetween(code[1], code[2]);
+  while (remainingRotation > 0) {
+    const step = Math.max(-60, remainingRotation);
+    tumblers = rotateMainTumblerBy(step, tumblers);
+    // console.log("step", step, ": tumblers now", tumblers);
+    remainingRotation -= step;
+  }
+
+  return tumblers;
+}
