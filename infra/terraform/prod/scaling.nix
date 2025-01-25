@@ -18,7 +18,7 @@
     container.resources = {
       limits.cpu = "1.5";
       limits.memory = "1Gi";
-      requests.cpu = "100m";
+      requests.cpu = "10m";
       requests.memory = "512Mi";
     };
   };
@@ -27,7 +27,7 @@
     container.resources = {
       limits.cpu = "1.5";
       limits.memory = "1Gi";
-      requests.cpu = "100m";
+      requests.cpu = "50m";
       requests.memory = "384Mi";
     };
   };
@@ -36,7 +36,7 @@
     container.resources = {
       limits.cpu = "1.5";
       limits.memory = "1Gi";
-      requests.cpu = "100m";
+      requests.cpu = "75m";
       requests.memory = "384Mi";
     };
   };
@@ -45,7 +45,7 @@
     container.resources = {
       limits.cpu = "1.5";
       limits.memory = "1.5Gi";
-      requests.cpu = "100m";
+      requests.cpu = "50m";
       requests.memory = "768Mi";
     };
     deployment.spec.strategy.rolling_update = {
@@ -58,7 +58,7 @@
     container.resources = {
       limits.cpu = "1.5";
       limits.memory = "1Gi";
-      requests.cpu = "100m";
+      requests.cpu = "10m";
       requests.memory = "384Mi";
     };
   };
@@ -67,7 +67,7 @@
     container.resources = {
       limits.cpu = "500m";
       limits.memory = "1Gi";
-      requests.cpu = "100m";
+      requests.cpu = "10m";
       requests.memory = "128Mi";
     };
   };
