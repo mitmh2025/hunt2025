@@ -296,6 +296,11 @@ export default function createConfigs(_env, argv) {
     type: "asset/resource",
   };
 
+  const opusRule = {
+    test: /\.opus$/,
+    type: "asset/resource",
+  };
+
   const mp4Rule = {
     test: /\.mp4$/,
     type: "asset/resource",
@@ -308,11 +313,6 @@ export default function createConfigs(_env, argv) {
 
   const flacRule = {
     test: /\.flac$/,
-    type: "asset/resource",
-  };
-
-  const opusRule = {
-    test: /\.opus$/,
     type: "asset/resource",
   };
 
@@ -412,6 +412,7 @@ export default function createConfigs(_env, argv) {
         // the results of the browser build bundles
         imageRule,
         mp3Rule,
+        opusRule,
         wavRule,
         flacRule,
         mp4Rule,
@@ -553,6 +554,7 @@ export default function createConfigs(_env, argv) {
         cssRule,
         imageRule,
         mp3Rule,
+        opusRule,
         wavRule,
         flacRule,
         mp4Rule,

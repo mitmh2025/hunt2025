@@ -1068,13 +1068,14 @@ function genWitnesses(
 
 function genInteractions(
   teamState: TeamHuntState,
+  { immutable }: { immutable: boolean },
 ): MissingDiamondInteractionEntity[] {
   const round = teamState.rounds.missing_diamond;
   if (!round) return [];
 
   return Object.entries(interactions).flatMap(([interactionId, spec]) => {
     const interactionState = round.interactions?.[interactionId]?.state;
-    if (!interactionState) return [];
+    if (!immutable && !interactionState) return [];
 
     const interaction =
       INTERACTIONS[interactionId as MissingDiamondInteraction];
@@ -1099,7 +1100,7 @@ export function missingDiamondState(
   const speechBubbles = genSpeechBubbles(teamState);
   const locations = genLocations(teamState);
   const witnesses = genWitnesses(teamState, { immutable });
-  const interactions = genInteractions(teamState);
+  const interactions = genInteractions(teamState, { immutable });
   return {
     epoch: teamState.epoch,
     speechBubbles,
