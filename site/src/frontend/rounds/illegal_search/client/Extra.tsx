@@ -34,8 +34,8 @@ import {
   ModalBackdrop,
   PuzzleLinkBackdrop,
 } from "./SearchEngine";
-import { zoom_cursor, default_cursor } from "./cursors";
 import { fetchModal } from "./clientState";
+import { zoom_cursor, default_cursor } from "./cursors";
 
 // This is a copy of ModalTrigger, but using the "extra" fields that return
 // the blacklight assets

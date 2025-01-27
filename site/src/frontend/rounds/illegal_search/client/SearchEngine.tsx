@@ -7,6 +7,7 @@ import React, {
   useLayoutEffect,
 } from "react";
 import { styled } from "styled-components";
+import HUNT from "../../../../huntdata";
 import billie from "../../../assets/billie.png";
 import { AuthorsNoteBlock } from "../../../components/PuzzleLayout";
 import PuzzleLink from "../../../components/PuzzleLink";
@@ -22,20 +23,19 @@ import {
   type InteractionComponent,
   type Escape,
 } from "../types";
-import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
-import { ScreenScaleFactor } from "./ScreenScaleFactor";
-import { fetchModal, fetchNode, illegalSearchTeamState } from "./clientState";
-import { default_cursor, zoom_cursor } from "./cursors";
 import Bookcase from "./Bookcase";
 import Cryptex from "./Cryptex";
 import DeskDrawer from "./DeskDrawer";
 import Extra from "./Extra";
+import { ExtraModalRendererProvider } from "./ExtraModalRenderer";
 import PaintingOne from "./PaintingOne";
 import PaintingTwo from "./PaintingTwo";
 import Rug from "./Rug";
 import Safe from "./Safe";
+import { ScreenScaleFactor } from "./ScreenScaleFactor";
 import Telephone from "./Telephone";
-import HUNT from "../../../../huntdata";
+import { fetchModal, fetchNode, illegalSearchTeamState } from "./clientState";
+import { default_cursor, zoom_cursor } from "./cursors";
 
 const plugins: Record<string, InteractionComponent> = {
   bookcase: Bookcase,

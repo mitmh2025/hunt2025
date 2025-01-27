@@ -23,9 +23,9 @@ import {
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
+import { submitSafe } from "./clientState";
 import { default_cursor, draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
-import { submitSafe } from "./clientState";
 
 // TODO: once the assets get updated, adjust this to match the viewBox exactly
 // 50?

@@ -15,9 +15,9 @@ import slide from "../assets/rug/slide.mp3";
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
+import { submitLock } from "./clientState";
 import { default_cursor } from "./cursors";
 import playSound from "./playSound";
-import { submitLock } from "./clientState";
 
 const FloorSafeWrapper = styled.div`
   position: absolute;

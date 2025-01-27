@@ -8,8 +8,8 @@ import cubby_open from "../assets/fuse_box/fusebox_draft6_cubby_open_zarvox.svg"
 import { type ModalWithPuzzleFields, type Node } from "../types";
 import { useRenderModalExtras } from "./ExtraModalRenderer";
 import { Asset, ModalTrigger } from "./SearchEngine";
-import { default_cursor } from "./cursors";
 import { submitLock } from "./clientState";
+import { default_cursor } from "./cursors";
 
 // 40 switches
 const ALL_ON: boolean[] = Array(40).fill(true) as boolean[];

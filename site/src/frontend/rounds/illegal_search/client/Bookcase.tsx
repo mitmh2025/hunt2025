@@ -7,9 +7,9 @@ import dark_wood_texture from "../assets/bookcase/dark_wood_texture.jpg";
 import unlock from "../assets/bookcase/unlock.mp3";
 import { type Node } from "../types";
 import bookcaseData from "./bookcaseData";
+import { submitLock } from "./clientState";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
-import { submitLock } from "./clientState";
 
 const BookcaseContainer = styled.div`
   width: 840px;

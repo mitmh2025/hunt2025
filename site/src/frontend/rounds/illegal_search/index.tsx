@@ -2,6 +2,7 @@ import { type RequestHandler, type Request, type Response } from "express";
 import asyncHandler from "express-async-handler";
 import React from "react";
 import type { TeamHuntState } from "../../../../lib/api/client";
+import HUNT from "../../../huntdata";
 import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { PUZZLES } from "../../puzzles";
 import {
@@ -16,7 +17,6 @@ import {
   NODES_BY_ID,
   filteredForFrontend,
 } from "./graph";
-import HUNT from "../../../huntdata";
 
 const puzzles = Object.fromEntries(
   (HUNT.rounds.find((r) => r.slug === "illegal_search")?.puzzles ?? []).flatMap(

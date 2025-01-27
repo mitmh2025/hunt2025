@@ -11,9 +11,9 @@ import cryptex_base from "../assets/cryptex/cryptex_base.svg";
 import unlock from "../assets/cryptex/unlock.mp3";
 import { type Node } from "../types";
 import { ScreenScaleFactor } from "./ScreenScaleFactor";
+import { submitLock } from "./clientState";
 import { draggable_cursor, dragging_cursor } from "./cursors";
 import playSound from "./playSound";
-import { submitLock } from "./clientState";
 
 function mod(n: number, m: number): number {
   return ((n % m) + m) % m;

@@ -1,18 +1,18 @@
+import { type TeamHuntState } from "../../../../../lib/api/client";
 import {
   MAX_TOLERANCE_DEGREES,
   isRoughlyEqual,
   simulatedTumblerPositions,
 } from "../combolock";
-import { type TeamHuntState } from "../../../../../lib/api/client";
 import {
   LOCK_DATA,
   MODALS_BY_EXTRA_POSTCODE,
   MODALS_BY_POSTCODE,
   NODES_BY_ID,
-  Puzzles,
+  type Puzzles,
   filteredForFrontend,
 } from "../graph";
-import { PluginName, PostcodeResponse, type Node } from "../types";
+import { type PluginName, type PostcodeResponse, type Node } from "../types";
 
 export function illegalSearchTeamState(): TeamHuntState {
   const gatesStr = localStorage.getItem("illegalSearchGates") ?? "";

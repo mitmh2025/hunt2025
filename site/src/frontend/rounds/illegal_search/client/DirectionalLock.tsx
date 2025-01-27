@@ -10,9 +10,9 @@ import knob from "../assets/desk_drawer/knob.svg";
 import unlock from "../assets/desk_drawer/unlock.mp3";
 import { type Node } from "../types";
 import clamp from "./clamp";
+import { submitLock } from "./clientState";
 import { draggable_cursor } from "./cursors";
 import playSound from "./playSound";
-import { submitLock } from "./clientState";
 
 // Position of the knob when it is not being moved, in pixels
 const KNOB_INITIAL_LEFT = 518;
@@ -79,28 +79,31 @@ export default function DirectionalLock({
     [solved],
   );
 
-  const handleClick = useCallback((dir: "u" | "d" | "l" | "r") => {
-    playSound(click);
+  const handleClick = useCallback(
+    (dir: "u" | "d" | "l" | "r") => {
+      playSound(click);
 
-    const newCodeBuffer = [...codeBuffer.current, dir].slice(-16);
-    codeBuffer.current = newCodeBuffer;
+      const newCodeBuffer = [...codeBuffer.current, dir].slice(-16);
+      codeBuffer.current = newCodeBuffer;
 
-    const code = newCodeBuffer.join("");
-    console.log(code);
+      const code = newCodeBuffer.join("");
+      console.log(code);
 
-    const result = submitLock("deskdrawer", code);
-    if (result) {
-      playSound(unlock);
-      setSolved(true);
-      setDragging(false);
-      setKnobPosition(0);
+      const result = submitLock("deskdrawer", code);
+      if (result) {
+        playSound(unlock);
+        setSolved(true);
+        setDragging(false);
+        setKnobPosition(0);
 
-      // Allow time for the knob to return to the center before updating the code
-      setTimeout(() => {
-        setNode(result);
-      }, 100);
-    }
-  }, []);
+        // Allow time for the knob to return to the center before updating the code
+        setTimeout(() => {
+          setNode(result);
+        }, 100);
+      }
+    },
+    [setNode],
+  );
 
   const onPointerMove: PointerEventHandler<HTMLImageElement> = useCallback(
     (e) => {
