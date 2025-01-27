@@ -41,6 +41,7 @@ import {
 } from "./routes/interaction";
 import { hackLoginGetHandler, loginGetHandler } from "./routes/login";
 import { manageTeamHandler } from "./routes/manage_team";
+import { minigamesHandler } from "./routes/minigames";
 import {
   puzzleHandler,
   type PuzzleParams,
@@ -459,6 +460,13 @@ export function registerUiRoutes({
     "/team",
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       await renderApp(manageTeamHandler, req, res, next);
+    }),
+  );
+
+  authRouter.get(
+    "/minigames",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(minigamesHandler, req, res, next);
     }),
   );
 
