@@ -314,6 +314,20 @@ export function registerUiRoutes({
       );
     }),
   );
+  authRouter.get(
+    "/buy_a_flight",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      await renderApp(
+        subpuzzleHandler,
+        {
+          ...req,
+          params: { subpuzzleSlug: "buy_a_flight" },
+        } as Request<SubpuzzleParams>,
+        res,
+        next,
+      );
+    }),
+  );
   const plainRouletteData = [
     { href: "/i_kid_ewe_knot", slug: "i_kid_ewe_knot", gate: "tmg01" },
     { href: "/stitchy_situation", slug: "stitchy_situation", gate: "tmg02" },

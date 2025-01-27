@@ -4,6 +4,7 @@ import {
   COPY_ONLY_CLASS,
   NO_COPY_CLASS,
 } from "../../components/CopyToClipboard";
+import { AuthorsNote } from "../../components/PuzzleLayout";
 import dunkin1 from "./assets/dunkin1.png";
 import dunkin2 from "./assets/dunkin2.png";
 import dunkin3 from "./assets/dunkin3.png";
@@ -603,6 +604,10 @@ const LEGS: {
 const Puzzle = (): JSX.Element => {
   return (
     <>
+      <AuthorsNote>
+        Unless otherwise specified, Rule REARVIEW (January 2025) is in effect
+        for all numbered route instructions.
+      </AuthorsNote>
       <p className="puzzle-flavor">
         In an effort to rallye team morale, your team’s captain has tasked you
         to go to Dunkin’ Donuts to buy donuts for the whole team. You love To
