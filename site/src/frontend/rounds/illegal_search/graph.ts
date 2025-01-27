@@ -1,4 +1,3 @@
-import jsManifest from "../../../../dist/js-manifest-with-chunks.json";
 import type { TeamHuntState } from "../../../../lib/api/client";
 import { omit } from "../../../utils/omit";
 import bookcase from "./assets/bookcase/bookcase.png";
@@ -145,36 +144,6 @@ export const BlacklightData = {
     slotId: "isp20",
   },
 } satisfies Record<string, ModalInternalExtra>;
-
-const scriptSrcs: Record<PluginName, { scriptSrc: string[] }> = {
-  bookcase: {
-    scriptSrc: jsManifest.illegal_search_bookcase,
-  },
-  cryptex: {
-    scriptSrc: jsManifest.illegal_search_cryptex,
-  },
-  deskdrawer: {
-    scriptSrc: jsManifest.illegal_search_deskdrawer,
-  },
-  extra: {
-    scriptSrc: jsManifest.illegal_search_extra,
-  },
-  painting1: {
-    scriptSrc: jsManifest.illegal_search_painting1,
-  },
-  painting2: {
-    scriptSrc: jsManifest.illegal_search_painting2,
-  },
-  rug: {
-    scriptSrc: jsManifest.illegal_search_rug,
-  },
-  safe: {
-    scriptSrc: jsManifest.illegal_search_safe,
-  },
-  telephone: {
-    scriptSrc: jsManifest.illegal_search_telephone,
-  },
-};
 
 // The locks themselves correspond to gates.
 type LockDatum = {
@@ -1773,15 +1742,14 @@ function filteredForFrontend(
 
   const keptInteractions = node.interactions.flatMap((interaction) => {
     const { includeIf, ...rest } = interaction;
-    const publicInteraction = { ...rest, ...scriptSrcs[rest.plugin] };
 
     if (includeIf === undefined) {
       // No condition means always include
-      return [publicInteraction];
+      return [rest];
     } else {
       const keep = includeIf(teamState);
       if (keep) {
-        return [publicInteraction];
+        return [rest];
       } else {
         return [];
       }
@@ -1792,7 +1760,6 @@ function filteredForFrontend(
     keptInteractions.push({
       plugin: "extra",
       overlay: true,
-      ...scriptSrcs.extra,
     });
   }
 

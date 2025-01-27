@@ -63,16 +63,12 @@ export type NavigationInternal = Navigation & {
   includeIf?: (teamState: TeamHuntState) => boolean;
 };
 
-type InteractionBase = {
+export type Interaction = {
   plugin: PluginName;
   overlay?: true;
 };
 
-export type Interaction = InteractionBase & {
-  scriptSrc: string[];
-};
-
-export type InteractionInternal = InteractionBase & {
+export type InteractionInternal = Interaction & {
   // If present, only include the interaction when condition (evaluated on the node's state) returns true
   includeIf?: (teamState: TeamHuntState) => boolean;
 };
