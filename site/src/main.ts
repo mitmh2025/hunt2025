@@ -7,7 +7,7 @@ import "./frontend/server/radio-assets";
 const portStr = process.env.PORT ?? "3000";
 const port = isNaN(parseInt(portStr)) ? portStr : parseInt(portStr);
 
-let defaultComponents = "api,ws,ui,reg,inteng";
+let defaultComponents = "api,ws,ui,reg";
 
 // N.B. process.env.NODE_ENV is compiled by webpack
 const environment = process.env.NODE_ENV ?? "development";

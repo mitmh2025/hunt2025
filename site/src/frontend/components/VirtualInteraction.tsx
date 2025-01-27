@@ -323,12 +323,14 @@ const VotesView = ({
   node: ExternalInteractionNode;
   onAdvance: (vote: string | undefined) => void;
 }) => {
+  const voteRef = useRef<string | undefined>(undefined);
+
   useEffect(() => {
     const autoadvanceTime = node.ts + node.timeout_msec;
     const autoadvanceDelay = autoadvanceTime - Date.now();
 
     const handle = setTimeout(() => {
-      onAdvance(undefined);
+      onAdvance(voteRef.current);
     }, autoadvanceDelay);
     return () => {
       clearTimeout(handle);
@@ -346,7 +348,7 @@ const VotesView = ({
               value={choice.key}
               id={choice.key}
               onChange={(e) => {
-                onAdvance(e.target.value);
+                voteRef.current = e.target.value;
               }}
             />
             <label htmlFor={choice.key}>
