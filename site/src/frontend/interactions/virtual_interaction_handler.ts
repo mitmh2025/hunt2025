@@ -74,7 +74,7 @@ function indexedNodes<
   );
 }
 
-type StartState<T> = {
+export type StartState<T> = {
   node: string;
   state: T;
 };

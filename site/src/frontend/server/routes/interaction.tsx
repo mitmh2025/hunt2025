@@ -4,11 +4,11 @@ import React from "react";
 import { type z } from "zod";
 import { type TeamState, type TeamHuntState } from "../../../../lib/api/client";
 import { type InteractionStateSchema } from "../../../../lib/api/contract";
+import teamIsImmutable from "../../../utils/teamIsImmutable";
 import { getBackgroundCheckManifestOverrides } from "../../components/BackgroundCheckPuzzleLayout";
 import { wrapContentWithNavBar } from "../../components/ContentWithNavBar";
 import VirtualInteraction from "../../components/VirtualInteraction";
 import { type InteractionDefinition, INTERACTIONS } from "../../interactions";
-import virtualInteractionState from "../../interactions/virtualInteractionState";
 import {
   type ComponentManifest,
   DEFAULT_MANIFEST,
@@ -82,11 +82,20 @@ function stubInteractionState(slug: string, interaction: Interaction) {
 }
 
 function lookupInteraction(
-  teamState: TeamHuntState,
+  teamState: TeamState,
   slug: string,
 ): Interaction | undefined {
+  if (teamIsImmutable(teamState.info.teamUsername)) {
+    const def = INTERACTIONS[slug];
+    return {
+      state: "unlocked",
+      title: def?.title ?? "",
+      virtual: def?.type === "virtual",
+    };
+  }
+
   // Look in each round of teamState for an interaction with id matching slug
-  for (const round of Object.values(teamState.rounds)) {
+  for (const round of Object.values(teamState.state.rounds)) {
     if ("interactions" in round) {
       const interaction = round.interactions?.[slug];
       if (interaction !== undefined) return interaction;
@@ -99,55 +108,20 @@ export type InteractionParams = {
   slug: string;
 };
 
-async function virtualInteractionHandler(
-  req: Request<InteractionParams>,
+function virtualInteractionHandler(
+  _req: Request<InteractionParams>,
   teamState: TeamState,
   slug: string,
   interactionDefinition: InteractionDefinition & { type: "virtual" },
 ) {
-  const interaction = lookupInteraction(teamState.state, slug);
+  const interaction = lookupInteraction(teamState, slug);
   if (!interaction) return undefined;
-  const interactionStateLogResult =
-    await req.frontendApi.getFullTeamInteractionStateLog({
-      query: { team_id: teamState.teamId, slug },
-    });
-  if (interactionStateLogResult.status !== 200) {
-    // Something has gone wrong.
-    return undefined;
-  }
-  const interactionStateLog = interactionStateLogResult.body;
-  const log = interactionStateLog.flatMap((entry) => {
-    const formatted = interactionDefinition.handler.format(entry);
-    if (!formatted) return [];
-
-    return [formatted];
-  });
-
-  const initialVirtualInteractionState = virtualInteractionState(
-    teamState.state,
-  );
-
   const preloadImages = interactionDefinition.handler.getPreloadImages();
 
-  const inlineScript = `window.initialInteractionState = ${JSON.stringify(log)}; window.initialVirtualInteractionState = ${JSON.stringify(initialVirtualInteractionState)};`;
   const node = (
     <div>
-      <script dangerouslySetInnerHTML={{ __html: inlineScript }} />
       <div id="interaction-root">
-        <VirtualInteraction
-          slug={slug}
-          nodes={log}
-          state={initialVirtualInteractionState}
-          syncedTime={{
-            getCurrentTime: () => {
-              return Date.now();
-            },
-          }}
-          audioOn={false}
-          setAudioOn={() => {
-            /* noop */
-          }}
-        />
+        <VirtualInteraction slug={slug} />
       </div>
       {preloadImages.map((src) => (
         <link key={src} rel="preload" as="image" href={src} />
@@ -175,7 +149,7 @@ function liveInteractionHandler(
   slug: string,
   _interactionDefinition: InteractionDefinition & { type: "live" },
 ) {
-  const interactionState = lookupInteraction(teamState.state, slug);
+  const interactionState = lookupInteraction(teamState, slug);
   if (!interactionState) return undefined;
 
   const interaction = INTERACTIONS[slug];
@@ -232,15 +206,13 @@ function liveInteractionHandler(
   );
 }
 
-export async function interactionRequestHandler(
-  req: Request<InteractionParams>,
-) {
+export function interactionRequestHandler(req: Request<InteractionParams>) {
   if (!req.teamState) {
     return undefined;
   }
   const teamState = req.teamState;
   const slug = req.params.slug;
-  const interaction = lookupInteraction(req.teamState.state, slug);
+  const interaction = lookupInteraction(req.teamState, slug);
   if (!interaction) return undefined;
 
   const interactionDefinition = INTERACTIONS[slug];

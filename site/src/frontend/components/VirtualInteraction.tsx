@@ -1,15 +1,72 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { styled } from "styled-components";
-import { newClient } from "../../../lib/api/client";
+import { type TeamInteractionStateLogEntry } from "../../../lib/api/frontend_contract";
 import { type ExternalInteractionNode } from "../interactions/client-types";
-import { type TeamVirtualInteractionsState } from "../interactions/types";
-import apiUrl from "../utils/apiUrl";
+import ArtGalleryInteractionGraph, {
+  artGalleryRewards,
+} from "../interactions/interview_at_the_art_gallery/graph";
+import BoardwalkInteractionGraph, {
+  boardwalkRewards,
+} from "../interactions/interview_at_the_boardwalk/graph";
+import CasinoInteractionGraph, {
+  casinoRewards,
+} from "../interactions/interview_at_the_casino/graph";
+import JewelryStoreInteractionGraph, {
+  jewelryStoreRewards,
+} from "../interactions/interview_at_the_jewelry_store/graph";
+import { type InteractionGraph } from "../interactions/types";
+import {
+  type StartState,
+  VirtualInteractionHandler,
+} from "../interactions/virtual_interaction_handler";
+import { AuthorsNoteBlock } from "./PuzzleLayout";
 import SpinnerTimer from "./SpinnerTimer";
 import { DarkStyledDialog } from "./StyledDialog";
 import { Button } from "./StyledUI";
 import BalloonPop from "./minigames/BalloonPop";
 import LuckyDuck from "./minigames/LuckyDuck";
 import Skeeball from "./minigames/Skeeball";
+
+type Rewards = Record<string, { asset: string; description: string }>;
+
+type AnyInteractionGraph = InteractionGraph<
+  object,
+  unknown,
+  string,
+  string,
+  unknown
+>;
+
+const interactions: Record<
+  string,
+  {
+    graph: AnyInteractionGraph;
+    rewards: Rewards;
+  }
+> = {
+  interview_at_the_boardwalk: {
+    graph: BoardwalkInteractionGraph as AnyInteractionGraph,
+    rewards: boardwalkRewards,
+  },
+  interview_at_the_art_gallery: {
+    graph: ArtGalleryInteractionGraph as AnyInteractionGraph,
+    rewards: artGalleryRewards,
+  },
+  interview_at_the_casino: {
+    graph: CasinoInteractionGraph as AnyInteractionGraph,
+    rewards: casinoRewards,
+  },
+  interview_at_the_jewelry_store: {
+    graph: JewelryStoreInteractionGraph as AnyInteractionGraph,
+    rewards: jewelryStoreRewards,
+  },
+};
 
 const WIDTH = 1920;
 const HEIGHT = 648 * 2;
@@ -37,9 +94,6 @@ const plugins: Record<string, Plugin> = {
     Component: BalloonPop,
   },
 };
-
-export const ROLL_CALL_POLL_ID = "roll_call";
-const ROLL_CALL_POLL_OPTION = "present";
 
 function proportionify(size: number) {
   return `calc(${size} * min(calc(min(100vw, ${WIDTH}px) / ${WIDTH}), calc(min(calc(100vh - 3rem), ${HEIGHT}px) / ${HEIGHT})))`;
@@ -263,77 +317,42 @@ const Line = styled.p`
 `;
 
 const VotesView = ({
-  slug,
   node,
-  pollState,
-  syncedTime,
+  onAdvance,
 }: {
-  slug: string;
   node: ExternalInteractionNode;
-  pollState: Record<string, number>;
-  syncedTime: { getCurrentTime: () => number };
+  onAdvance: (vote: string | undefined) => void;
 }) => {
-  const [vote, setVote] = useState<string | undefined>(undefined);
-  const onChoiceSelected = useCallback(
-    (key: string) => {
-      setVote(key);
+  const voteRef = useRef<string | undefined>(undefined);
 
-      const apiClient = newClient(apiUrl(), undefined);
-      apiClient
-        .castVote({
-          body: { choice: key },
-          params: { slug, pollId: node.node },
-        })
-        .catch((err: unknown) => {
-          // Well your vote was rejected.  That's too bad.  Nothing really to do.
-          console.error(err);
-        });
-    },
-    [slug, node.node],
-  );
+  useEffect(() => {
+    const autoadvanceTime = node.ts + node.timeout_msec;
+    const autoadvanceDelay = autoadvanceTime - Date.now();
 
-  console.log("votes now", pollState);
-
-  const totalVotes = Object.values(pollState).reduce(
-    (acc, val) => acc + val,
-    0,
-  );
-
-  const choices = (node.choices ?? []).map((choice) => {
-    const votes = pollState[choice.key] ?? 0;
-    return {
-      key: choice.key,
-      text: choice.text,
-      percentage: totalVotes ? votes / totalVotes : 0,
-      votes,
+    const handle = setTimeout(() => {
+      onAdvance(voteRef.current);
+    }, autoadvanceDelay);
+    return () => {
+      clearTimeout(handle);
     };
-  });
+  }, [node.ts, node.timeout_msec, onAdvance]);
 
   return (
     <ButtonAndCountdownWrapper>
       <ChoiceButtons>
-        {choices.map((choice) => (
-          <DialogueChoice
-            key={`choice-${choice.key}`}
-            style={{
-              background: `linear-gradient(90deg, var(--gray-900) ${choice.percentage * 100}%, transparent ${choice.percentage * 100}%)`,
-            }}
-          >
+        {(node.choices ?? []).map((choice) => (
+          <DialogueChoice key={`choice-${choice.key}`}>
             <input
               type="radio"
               name="current-vote"
               value={choice.key}
               id={choice.key}
-              checked={choice.key === vote}
               onChange={(e) => {
-                onChoiceSelected(e.target.value);
+                voteRef.current = e.target.value;
               }}
             />
             <label htmlFor={choice.key}>
               <span className="text">{choice.text}</span>
-              {choice.votes && (
-                <span className="percentage">{choice.votes}</span>
-              )}
             </label>
           </DialogueChoice>
         ))}
@@ -345,7 +364,6 @@ const VotesView = ({
           startTime={node.ts}
           endTime={node.ts + node.timeout_msec}
           color="#f8f8f6"
-          syncedTime={syncedTime}
         />
       </CountdownWrapper>
     </ButtonAndCountdownWrapper>
@@ -363,57 +381,44 @@ const InteractionWrapper = styled.main`
   }
 `;
 
+const CountdownContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 1rem 0;
+`;
+
 const InteractionPlugin = ({
   name,
-  slug,
   node,
-  syncedTime,
+  onAdvance,
 }: {
   name: string;
   slug: string;
   node: ExternalInteractionNode;
-  syncedTime: { getCurrentTime: () => number };
+  onAdvance: (vote: string | undefined) => void;
 }) => {
   const lastVoteRef = useRef<string | undefined>(undefined);
   const handleFirstInteraction = useCallback(() => {
-    const newVote = "lose";
-
-    if (lastVoteRef.current === newVote) {
-      return;
-    }
-    lastVoteRef.current = newVote;
-
-    const apiClient = newClient(apiUrl(), undefined);
-    apiClient
-      .castVote({
-        body: { choice: newVote },
-        params: { slug, pollId: node.node },
-      })
-      .catch((err: unknown) => {
-        // Well your vote was rejected.  That's too bad.  Nothing really to do.
-        console.error(err);
-      });
-  }, [slug, node.node]);
+    lastVoteRef.current = "lose";
+  }, []);
 
   const handleWin = useCallback(() => {
-    const newVote = "win";
+    lastVoteRef.current = "win";
+  }, []);
 
-    if (lastVoteRef.current === newVote) {
-      return;
-    }
-    lastVoteRef.current = newVote;
+  useEffect(() => {
+    const autoadvanceTime = node.ts + node.timeout_msec;
+    const autoadvanceDelay = autoadvanceTime - Date.now();
 
-    const apiClient = newClient(apiUrl(), undefined);
-    apiClient
-      .castVote({
-        body: { choice: newVote },
-        params: { slug, pollId: node.node },
-      })
-      .catch((err: unknown) => {
-        // Well your vote was rejected.  That's too bad.  Nothing really to do.
-        console.error(err);
-      });
-  }, [slug, node.node]);
+    const handle = setTimeout(() => {
+      onAdvance(lastVoteRef.current);
+    }, autoadvanceDelay);
+    return () => {
+      clearTimeout(handle);
+    };
+  }, [node.ts, node.timeout_msec, onAdvance]);
 
   const plugin = plugins[name];
   if (!plugin) {
@@ -450,7 +455,6 @@ const InteractionPlugin = ({
               startTime={node.ts}
               endTime={node.ts + node.timeout_msec}
               color="#f8f8f6"
-              syncedTime={syncedTime}
             />
           </CountdownContainer>
         </div>
@@ -480,26 +484,23 @@ function VirtualInteractionPlayer({
   slug,
   rewardDescription,
   rewardImage,
-  pollState,
-  syncedTime,
   audioOn,
   setAudioOn,
+  onAdvance,
 }: {
   nodes: ExternalInteractionNode[];
   slug: string;
   rewardImage?: string;
   rewardDescription?: string;
-  pollState: Record<string, number>;
-  syncedTime: { getCurrentTime: () => number };
   audioOn: boolean;
   setAudioOn: (audioOn: boolean) => void;
+  onAdvance: (vote: string | undefined) => void;
 }) {
   const currentNode = nodes[nodes.length - 1];
   const playingAudio = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (!audioOn || rewardImage !== undefined || !currentNode?.sound) {
-      // muted or already solved
+    if (!currentNode?.sound) {
       if (playingAudio.current) {
         playingAudio.current.pause();
         playingAudio.current.src = "";
@@ -507,6 +508,7 @@ function VirtualInteractionPlayer({
       return;
     }
 
+    let endedListener: () => void;
     if (
       !playingAudio.current ||
       playingAudio.current.src !== currentNode.sound
@@ -516,19 +518,37 @@ function VirtualInteractionPlayer({
       }
 
       playingAudio.current.src = currentNode.sound;
-      playingAudio.current.volume = 1;
       playingAudio.current.play().catch((err: unknown) => {
         console.error(err);
       });
+
+      endedListener = () => {
+        if (!currentNode.choices && !currentNode.plugin) {
+          onAdvance(undefined);
+        }
+      };
+      playingAudio.current.addEventListener("ended", endedListener);
     }
 
     return () => {
       if (playingAudio.current) {
+        playingAudio.current.removeEventListener("ended", endedListener);
         playingAudio.current.pause();
         playingAudio.current.src = "";
       }
     };
-  }, [currentNode?.sound, audioOn, rewardImage]);
+  }, [
+    currentNode?.sound,
+    currentNode?.choices,
+    currentNode?.plugin,
+    onAdvance,
+  ]);
+
+  useEffect(() => {
+    if (playingAudio.current) {
+      playingAudio.current.volume = audioOn ? 1 : 0;
+    }
+  }, [audioOn]);
 
   const scrollbackRef = useRef<HTMLDivElement | null>(null);
   const scrollbackLastLength = useRef<number>(0);
@@ -551,7 +571,7 @@ function VirtualInteractionPlayer({
           name={currentNode.plugin}
           slug={slug}
           node={currentNode}
-          syncedTime={syncedTime}
+          onAdvance={onAdvance}
         />
       ) : (
         <>
@@ -637,12 +657,7 @@ function VirtualInteractionPlayer({
                 {currentNode.choices && (
                   <>
                     <h4>Select a response:</h4>
-                    <VotesView
-                      slug={slug}
-                      node={currentNode}
-                      pollState={pollState}
-                      syncedTime={syncedTime}
-                    />
+                    <VotesView node={currentNode} onAdvance={onAdvance} />
                   </>
                 )}
               </Choices>
@@ -651,6 +666,122 @@ function VirtualInteractionPlayer({
         </>
       )}
     </Wrapper>
+  );
+}
+
+let nextId = 1;
+function logEntryForState<T extends object>(
+  node: string,
+  state: T,
+  slug: string,
+): TeamInteractionStateLogEntry {
+  return {
+    id: nextId++,
+    team_id: 1,
+    slug,
+    node,
+    timestamp: new Date(),
+    graph_state: state as unknown as Record<string, unknown>,
+  };
+}
+
+function VirtualInteractionStateManager<
+  T extends object,
+  R,
+  S extends string,
+  BG extends string,
+  P,
+>({
+  handler,
+  rewards,
+  slug,
+  audioOn,
+  setAudioOn,
+}: {
+  handler: VirtualInteractionHandler<T, R, S, BG, P>;
+  rewards: Rewards;
+  slug: string;
+  audioOn: boolean;
+  setAudioOn: (newAudioOn: boolean) => void;
+}) {
+  const [graphState, setGraphState] = useState<StartState<T>>(() => {
+    return handler.startState();
+  });
+
+  const [nodes, setNodes] = useState<ExternalInteractionNode[]>(() => {
+    const node = handler.format(
+      logEntryForState(graphState.node, graphState.state, slug),
+    );
+    return node ? [node] : [];
+  });
+
+  const advance = useCallback(
+    (vote: string | undefined) => {
+      const currentNode = handler.lookupNode(graphState.node);
+      if (!currentNode) {
+        console.warn("No current node found for", graphState.node);
+        return;
+      }
+
+      handler
+        .computeNext({
+          teamId: 1,
+          currentNode,
+          state: graphState.state,
+          maybeVoteCounts: vote ? { [vote]: 1 } : {},
+
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any -- we don't need redis here because we're passing in the vote counts
+          redisClient: null as any,
+        })
+        .then((next) => {
+          if (!next) {
+            console.warn("Could not advance graph", {
+              currentNode,
+              state: graphState.state,
+              vote,
+            });
+            return;
+          }
+
+          setGraphState({
+            node: next.nextNode.id,
+            state: next.nextState,
+          });
+
+          const nextExternalNode = handler.format(
+            logEntryForState(next.nextNode.id, next.nextState, slug),
+          );
+          if (nextExternalNode) {
+            setNodes((prev) => [...prev, nextExternalNode]);
+          }
+        })
+        .catch((e: unknown) => {
+          console.error(e);
+        });
+    },
+    [graphState.node, graphState.state, handler, slug],
+  );
+
+  let rewardImage: string | undefined;
+  let rewardDescription: string | undefined;
+  const currentNode = nodes[nodes.length - 1];
+  if (currentNode?.result) {
+    const reward = rewards[currentNode.result];
+    if (reward) {
+      rewardImage = reward.asset;
+      rewardDescription = reward.description;
+    }
+  }
+  return (
+    <VirtualInteractionPlayer
+      audioOn={audioOn}
+      setAudioOn={setAudioOn}
+      nodes={nodes}
+      slug={slug}
+      rewardImage={rewardImage}
+      rewardDescription={rewardDescription}
+      onAdvance={advance}
+    />
   );
 }
 
@@ -673,14 +804,6 @@ const StartContainer = styled.div`
   background: var(--gray-200);
 `;
 
-const CountdownContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 1rem 0;
-`;
-
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-around;
@@ -688,216 +811,86 @@ const ButtonContainer = styled.div`
 `;
 
 function VirtualInteractionNotStarted({
-  slug,
-  enqueuedAt,
-  autostartAt,
-  syncedTime,
-  pollState,
-  setAudioOn,
+  onStart,
 }: {
-  slug: string;
-  enqueuedAt: Date;
-  autostartAt: Date;
-  syncedTime: { getCurrentTime: () => number };
-  pollState: Record<string, number>;
-  setAudioOn: (audioOn: boolean) => void;
-}) {
-  const [markedPresent, setMarkedPresent] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const presentCount = pollState[ROLL_CALL_POLL_OPTION] ?? 0;
-
-  function handleMarkPresent(withAudio: boolean) {
-    setLoading(true);
-
-    const apiClient = newClient(apiUrl(), undefined);
-    apiClient
-      .castVote({
-        body: { choice: ROLL_CALL_POLL_OPTION },
-        params: { slug, pollId: ROLL_CALL_POLL_ID },
-      })
-      .then((resp) => {
-        if (resp.status !== 200) {
-          throw new Error(`Unexpected status code: ${resp.status}`);
-        }
-
-        setAudioOn(withAudio);
-        setMarkedPresent(true);
-        setLoading(false);
-      })
-      .catch((err: unknown) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }
-
-  function handleStartEarly() {
-    setLoading(true);
-    const apiClient = newClient(apiUrl(), undefined);
-    apiClient
-      .startVirtualInteractionEarly({ params: { interactionId: slug } })
-      .then((resp) => {
-        if (resp.status !== 200) {
-          throw new Error(`Unexpected status code: ${resp.status}`);
-        }
-
-        // noop, wait for the websocket to push out the new state
-      })
-      .catch((err: unknown) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }
-
-  return (
-    <StartContainer>
-      <CountdownContainer>
-        <SpinnerTimer
-          width={200}
-          height={200}
-          startTime={enqueuedAt.getTime()}
-          endTime={autostartAt.getTime()}
-          syncedTime={syncedTime}
-          color="#1b1a18"
-        />
-      </CountdownContainer>
-      {markedPresent ? (
-        <>
-          <p>
-            The interaction will start automatically. If your whole team is
-            ready, you can also click the button below to start now.
-          </p>
-          <Button type="button" disabled={loading} onClick={handleStartEarly}>
-            {loading ? "Starting..." : "Start The Interview"}
-          </Button>
-          <p>{presentCount} trainees online</p>
-        </>
-      ) : (
-        <>
-          <p>
-            It’s time to interview a key witness! Have every person on your team
-            log on and join us here to conduct an interview.
-          </p>
-          <p>
-            This interaction has audio that can be played via your physical
-            radio, or in your browser. If you are not within earshot of your
-            physical radio, select “Listen In Browser.”
-          </p>
-          <ButtonContainer>
-            <Button
-              type="button"
-              onClick={() => {
-                handleMarkPresent(false);
-              }}
-              disabled={loading}
-            >
-              Listen On Radio
-            </Button>
-            <Button
-              type="button"
-              onClick={() => {
-                handleMarkPresent(true);
-              }}
-              disabled={loading}
-            >
-              Listen In Browser
-            </Button>
-          </ButtonContainer>
-        </>
-      )}
-    </StartContainer>
-  );
-}
-
-function VirtualInteractionQueued({
-  otherSlug,
-  otherTitle,
-}: {
-  otherSlug?: string;
-  otherTitle?: string;
+  onStart: (audioOn: boolean) => void;
 }) {
   return (
     <StartContainer>
-      <p>You are currently interviewing a different witness.</p>
-      {otherSlug && otherTitle ? (
+      <AuthorsNoteBlock>
         <p>
-          Join Billie and the rest of your team to{" "}
-          <a href={`/interactions/${otherSlug}`}>conduct an {otherTitle}</a>.
-          You can come back here after.
+          During the hunt, this was a team-wide experience. Every team member
+          was encouraged to join in their browser, and vote on each dialog tree
+          interaction. In this archival version, you’ll be able to have the same
+          experience but without the team-wide voting.
         </p>
-      ) : null}
+        <p>
+          There is voice acting for each line, so we recommend enabling audio
+          for this interaction. During the hunt, the audio was streamed to each
+          team’s radio.
+        </p>
+      </AuthorsNoteBlock>
+      <ButtonContainer>
+        <Button
+          type="button"
+          onClick={() => {
+            onStart(true);
+          }}
+        >
+          Start (With Audio)
+        </Button>
+        <Button
+          type="button"
+          onClick={() => {
+            onStart(false);
+          }}
+          style={{
+            backgroundColor: "var(--gray-300)",
+          }}
+        >
+          Start (Muted)
+        </Button>
+      </ButtonContainer>
     </StartContainer>
   );
 }
 
-export default function VirtualInteraction({
-  slug,
-  nodes,
-  state,
-  pollState,
-  syncedTime,
-  audioOn,
-  setAudioOn,
-}: {
-  slug: string;
-  nodes: ExternalInteractionNode[];
-  state: TeamVirtualInteractionsState;
-  pollState?: Record<string, number>;
-  syncedTime: { getCurrentTime: () => number };
-  audioOn: boolean;
-  setAudioOn: (audioOn: boolean) => void;
-}) {
-  const interactionState = state.interactions.find((i) => i.slug === slug);
-  if (!interactionState) {
-    return null;
+export default function VirtualInteraction({ slug }: { slug: string }) {
+  const interaction = interactions[slug];
+  if (!interaction) {
+    throw new Error(`Unknown interaction slug: ${slug}`);
   }
 
-  if (interactionState.state === "queued") {
-    const activeInteraction = state.interactions.find(
-      (i) => i.state === "running" || i.state === "unstarted",
-    );
-    return (
-      <VirtualInteractionQueued
-        otherSlug={activeInteraction?.slug}
-        otherTitle={activeInteraction?.title}
-      />
-    );
-  }
+  const [started, setStarted] = useState(false);
+  const [audioOn, setAudioOn] = useState(false);
 
-  if (interactionState.state === "unstarted") {
+  const { graph, rewards } = interaction;
+
+  const handler = useMemo(
+    () =>
+      new VirtualInteractionHandler<object, unknown, string, string, unknown>(
+        slug,
+        graph,
+      ),
+    [slug, graph],
+  );
+
+  if (!started) {
     return (
       <VirtualInteractionNotStarted
-        slug={slug}
-        autostartAt={new Date(interactionState.autostartAt)}
-        enqueuedAt={new Date(interactionState.enqueuedAt)}
-        syncedTime={syncedTime}
-        pollState={pollState ?? {}}
-        setAudioOn={setAudioOn}
-      />
-    );
-  }
-
-  if (interactionState.state === "completed") {
-    return (
-      <VirtualInteractionPlayer
-        nodes={nodes}
-        slug={slug}
-        rewardDescription={interactionState.rewardDescription}
-        rewardImage={interactionState.rewardImage}
-        pollState={{}}
-        syncedTime={syncedTime}
-        audioOn={audioOn}
-        setAudioOn={setAudioOn}
+        onStart={(audioOn) => {
+          setAudioOn(audioOn);
+          setStarted(true);
+        }}
       />
     );
   }
 
   return (
-    <VirtualInteractionPlayer
-      nodes={nodes}
+    <VirtualInteractionStateManager
+      handler={handler}
+      rewards={rewards}
       slug={slug}
-      pollState={pollState ?? {}}
-      syncedTime={syncedTime}
       audioOn={audioOn}
       setAudioOn={setAudioOn}
     />
