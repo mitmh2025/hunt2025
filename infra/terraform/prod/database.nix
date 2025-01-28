@@ -61,7 +61,7 @@
   resource.google_sql_user.hunt2025-tech = {
     name = "hunt2025-tech@googlegroups.com";
     instance = lib.tfRef "google_sql_database_instance.prod.name";
-    type = "CLOUD_IAM_SERVICE_ACCOUNT";
+    type = "CLOUD_IAM_GROUP";
   };
   # N.B. Cloud SQL *requires* that permissions be granted by a built-in (non-IAM) user.
   resource.google_sql_user.terraform = {
