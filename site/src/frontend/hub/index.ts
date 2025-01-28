@@ -102,10 +102,10 @@ const HUNT_STARTED = (teamState: TeamHuntState) => {
 const ROUND_UNLOCKED = (teamState: TeamHuntState, round: string) => {
   return !!teamState.rounds[round];
 };
-const PUZZLE_SOLVED =
+const PUZZLE_UNLOCKED =
   (slug: string) =>
   (teamState: TeamHuntState): boolean => {
-    return teamState.puzzles[slug]?.answer !== undefined;
+    return teamState.puzzles[slug]?.unlocked_at !== undefined;
   };
 const INTERACTION_UNLOCKED =
   (round: string, interaction: string) => (teamState: TeamHuntState) => {
@@ -259,7 +259,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: false,
     inert: true,
-    condition: PUZZLE_SOLVED("the_art_gallery"),
+    condition: PUZZLE_UNLOCKED("the_art_gallery"),
   },
   {
     asset: boardwalk,
@@ -270,7 +270,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: false,
     inert: true,
-    condition: PUZZLE_SOLVED("the_boardwalk"),
+    condition: PUZZLE_UNLOCKED("the_boardwalk"),
   },
   {
     asset: casino,
@@ -281,7 +281,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: false,
     inert: true,
-    condition: PUZZLE_SOLVED("the_casino"),
+    condition: PUZZLE_UNLOCKED("the_casino"),
   },
   {
     asset: jewelryStore,
@@ -292,7 +292,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: false,
     inert: true,
-    condition: PUZZLE_SOLVED("the_jewelry_store"),
+    condition: PUZZLE_UNLOCKED("the_jewelry_store"),
   },
   {
     asset: illegal_search_question_unlocked,
@@ -1010,7 +1010,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: true,
     inert: true,
-    condition: PUZZLE_SOLVED("the_art_gallery"),
+    condition: PUZZLE_UNLOCKED("the_art_gallery"),
     pin: {
       asset: pin_teal,
       x: 1565,
@@ -1026,7 +1026,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: true,
     inert: true,
-    condition: PUZZLE_SOLVED("the_casino"),
+    condition: PUZZLE_UNLOCKED("the_casino"),
     pin: {
       asset: pin_teal,
       x: 1702,
@@ -1042,7 +1042,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: true,
     inert: true,
-    condition: PUZZLE_SOLVED("the_boardwalk"),
+    condition: PUZZLE_UNLOCKED("the_boardwalk"),
     pin: {
       asset: pin_teal,
       x: 2179,
@@ -1058,7 +1058,7 @@ const OBJECTS: HubObjectSetting[] = [
     rot: 0,
     shadow: true,
     inert: true,
-    condition: PUZZLE_SOLVED("the_jewelry_store"),
+    condition: PUZZLE_UNLOCKED("the_jewelry_store"),
     pin: {
       asset: pin_teal,
       x: 2114,
